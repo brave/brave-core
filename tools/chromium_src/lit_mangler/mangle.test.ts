@@ -8,7 +8,7 @@ import glob from 'glob'
 import os from 'os'
 import path from 'path'
 import * as diff from 'diff'
-import jestConfig from '../../../jest.config.js'
+import config from '../../../build/commands/lib/config.js'
 
 // Note: Headers are stripped during preprocess, we're not interested in them
 // showing up in the snapshot.
@@ -27,7 +27,7 @@ function* walkManglers(root=chromiumSrc) {
             for (const match of walkManglers(childPath)) {
                 yield match
             }
-        } else if (childPath.endsWith('.mangle.html.ts')) {
+        } else if (childPath.endsWith('.lit_mangler.html.ts')) {
             yield childPath
         }
     }
@@ -37,16 +37,16 @@ describe('mangled files should have up to date snapshots', () => {
     for (const mangler of walkManglers()) {
         const name = path.relative(root, mangler)
         it(`./${name} should match snapshot`, () => {
-            const manglerPath = name.replace('.mangle.html.ts', '.html.ts')
+            const manglerPath = name.replace('.lit_mangler.html.ts', '.html.ts')
                 .replace('chromium_src/', '')
             const baseName = path.basename(manglerPath)
-            
-            const mangledPath = path.relative(root, path.join(root, '..', 'out/Component/gen', manglerPath.replace(baseName, 'preprocessed/' + baseName)))
+
+            const mangledPath = path.relative(root, path.join(config.outputDir, 'gen', manglerPath.replace(baseName, 'preprocessed/' + baseName)))
             const originalPath = path.join('..', manglerPath)
 
             const mangledText = fs.readFileSync(mangledPath, 'utf8')
             const originalText = fs.readFileSync(originalPath, 'utf8').substring(header.length)
-            const linesDiff = diff.createTwoFilesPatch(originalPath, mangledPath, originalText, mangledText)
+            const linesDiff = diff.createTwoFilesPatch(originalPath, path.relative(config.outputDir, mangledPath), originalText, mangledText)
             expect(linesDiff).toMatchSnapshot()
         });
     }

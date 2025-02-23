@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/extensions/detail_view.mangle.html.ts should match snapshot 1`] = `
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/extensions/detail_view.lit_mangler.html.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/extensions/detail_view.html.ts
-+++ ../out/Component/gen/chrome/browser/resources/extensions/preprocessed/detail_view.html.ts
++++ gen/chrome/browser/resources/extensions/preprocessed/detail_view.html.ts
 @@ -342,14 +342,12 @@
                @change=\\"\${this.onPinnedToToolbarChange_}\\">
              <span>$i18n{itemPinToToolbar}</span>
@@ -16,7 +16,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
              <div>
                <div>$i18n{itemAllowIncognito}</div>
 -              <div class=\\"section-content\\">$i18n{incognitoInfoWarning}</div>
-+              <div class=\\"section-content\\">$i18n{privateInfoWarning}<span ?hidden=\${!this.data.incognitoAccess.isActive}> $i18n{spanningInfoWarning}</span><span> $i18n{privateAndTorInfoWarning}</span></div>
++              <div class=\\"section-content\\">$i18n{privateInfoWarning}<span ?hidden=\\"\${!this.data.incognitoAccess.isActive}\\"> $i18n{spanningInfoWarning}</span><span> $i18n{privateAndTorInfoWarning}</span></div>
              </div>
            </extensions-toggle-row>\` : ''}
          \${this.data.fileAccess.isEnabled ? html\`

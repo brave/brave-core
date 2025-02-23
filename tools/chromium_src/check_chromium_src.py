@@ -349,10 +349,14 @@ class ChromiumSrcOverridesChecker:
             display_override_filepath = os.path.join('chromium_src',
                                                      override_filepath)
             if not os.path.isfile(original_filepath):
-                if override_filepath.endswith(
-                        '.mangle.html.ts') and os.path.isfile(
-                            original_filepath.replace('.mangle.html.ts',
-                                                      '.html.ts')):
+                additional_extensions = {
+                    '.lit_mangler.html.ts': '.html.ts',
+                }
+                if any(
+                        override_filepath.endswith(key) and os.path.isfile(
+                            original_filepath.replace(
+                                key, additional_extensions[key]))
+                        for key in additional_extensions):
                     original_filepath_found = True
                 elif self.gen_buildir is None:
                     # When invoked from presubmit there's no gen_dir, so we can

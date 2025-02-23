@@ -176,6 +176,55 @@ describe('Escaping', () => {
          }, template)
         expect(template.text).toBe(`<div>\${"<h1>Jay</h1>"}</div>`)
     })
+
+    it('should be fine with escaped HTML entities', () => {
+        const template: HTMLTemplateTags = { text: `<div>&lt;script&gt;alert('hahaha')&lt;script&gt;</div>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+        utilsForTest.mangle(t => {}, template)
+        expect(template.text).toBe(`<div>&lt;script&gt;alert('hahaha')&lt;script&gt;</div>`)
+    })
+
+    it('should be fine with escaped HTML entities in interpolated strings', () => {
+        const template: HTMLTemplateTags = { text: `<div>\${"&lt;script&gt;alert('hahaha')&lt;script&gt;"}</div>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+        utilsForTest.mangle(t => {}, template)
+        expect(template.text).toBe(`<div>\${"&lt;script&gt;alert('hahaha')&lt;script&gt;"}</div>`)
+    })
+
+    it('should be fine with escaped HTML entities in interpolated strings', () => {
+        const template: HTMLTemplateTags = { text: `<div>\${"&lt;script&gt;alert('hahaha')&lt;script&gt;"}</div>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+        utilsForTest.mangle(t => {}, template)
+        expect(template.text).toBe(`<div>\${"&lt;script&gt;alert('hahaha')&lt;script&gt;"}</div>`)
+    })
+
+    it('should be fine with unescaped HTML entities in interpolated strings', () => {
+        const template: HTMLTemplateTags = { text: `<div>\${"<foo&"}</div>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+        utilsForTest.mangle(t => {}, template)
+        expect(template.text).toBe(`<div>\${"<foo&"}</div>`)
+    })
+
+    it('should be fine with unescaped tags in interpolated strings', () => {
+        const template: HTMLTemplateTags = { text: `<div>\${"<script>alert('pwnd')</script>"}</div>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+        utilsForTest.mangle(t => {}, template)
+        expect(template.text).toBe(`<div>\${"<script>alert('pwnd')</script>"}</div>`)
+    })
+
+    it('should be fine with unescaped tags and entities in interpolated strings', () => {
+        const template: HTMLTemplateTags = { text: `<div>\${"$lt;<script$gt;>alert('pwnd')&lt;</script&gt;>"}</div>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+        utilsForTest.mangle(t => {}, template)
+        expect(template.text).toBe(`<div>\${"$lt;<script$gt;>alert('pwnd')&lt;</script&gt;>"}</div>`)
+    })
+
+    it('should be fine with quotes in attributes', () => {
+        const template: HTMLTemplateTags = { text: `<img src=\${"foo onload='javascript:alert(\`pwnd\`)'"}>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+        utilsForTest.mangle(t => {}, template)
+        expect(template.text).toBe(`<img src="\${"foo onload='javascript:alert(\`pwnd\`)'"}">`)
+    })
 })
 
 describe('End to end', () => {
@@ -320,7 +369,7 @@ export function getList(this: string[]) {
             const root = e.querySelector('div')
             root?.removeAttribute('?hidden')
             root!.childNodes[0].textContent = root!.childNodes[0].textContent!.replace("        Hi All!\n", '')
-            root?.prepend(`<div>Greetings from the Mangler</div>`)
+            root!.innerHTML = `<div>Greetings from the Mangler</div>` + root!.innerHTML
         }, t => t.text.includes('Hi All!'))
 
         utilsForTest.mangle(e => {

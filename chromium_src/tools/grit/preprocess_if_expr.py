@@ -65,19 +65,23 @@ def run_mangler(mangler_file, preprocess_file):
 def get_chromium_src_files(in_folder, in_files):
     """Gets all the overrides we have in brave-core for this target"""
     override_files = []
-    for file in in_files:
-        in_file = get_chromium_src_override(os.path.join(in_folder, file))
-        if os.path.exists(in_file):
-            override_files.append(file)
-        elif os.path.exists(in_file.replace('.html.ts', '.mangle.html.ts')):
-            override_files.append(file.replace('.html.ts', '.mangle.html.ts'))
+    lit_mangler_files = []
 
-    return override_files
+    for file in in_files:
+        override_file = get_chromium_src_override(os.path.join(
+            in_folder, file))
+        if os.path.exists(override_file):
+            if should_run_mangler(override_file):
+                lit_mangler_files.append((file, override_file))
+            else:
+                override_files.append(file)
+
+    return override_files, lit_mangler_files
 
 
 def should_run_mangler(in_file):
     """Determines if we should run the mangler on the given file"""
-    return in_file.endswith('.mangle.html.ts')
+    return in_file.endswith('.lit_mangler.html.ts')
 
 
 # Used to indicate that there are no overrides, so we don't need to reprocess
@@ -106,7 +110,13 @@ def main(original_function, argv):
         override_root_folder = get_chromium_src_override(in_folder)
 
         purge_overrides(out_folder, args.in_files)
-        overrides = get_chromium_src_files(in_folder, args.in_files)
+        overrides, lit_mangler_files = get_chromium_src_files(
+            in_folder, args.in_files)
+
+        # Run the manglers - this doesn't need to happen in the second call to main because we don't depend on anything there.
+        for upstream_file, lit_mangler_file in lit_mangler_files:
+            run_mangler(os.path.join(override_root_folder, lit_mangler_file),
+                        os.path.join(out_folder, upstream_file))
 
         if len(overrides) == 0:
             # Throw an exception to abort the second call to `main()` early if no overrides were found.
@@ -117,13 +127,6 @@ def main(original_function, argv):
             manifest_data = json.load(open(manifest_path))
 
         for override_file in overrides:
-            if should_run_mangler(override_file):
-                upstream_file = override_file.replace('.mangle.html.ts',
-                                                      '.html.ts')
-                run_mangler(os.path.join(override_root_folder, override_file),
-                            os.path.join(out_folder, upstream_file))
-                continue
-
             overridden_name = maybe_keep_upstream_version(
                 override_root_folder, out_folder, override_file)
             if overridden_name and args.out_manifest:
