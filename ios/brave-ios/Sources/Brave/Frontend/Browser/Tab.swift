@@ -431,6 +431,7 @@ class Tab: NSObject {
   }
 
   var translateHelper: BraveTranslateTabHelper?
+  private(set) lazy var leoTabHelper = BraveLeoScriptTabHelper(tab: self)
 
   /// Boolean tracking custom url-scheme alert presented
   var isExternalAppAlertPresented = false
