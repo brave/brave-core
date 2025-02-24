@@ -34,6 +34,8 @@ final class ScriptExecutionTests: XCTestCase {
     let upwardInt: Bool
     let upwardSelector: Bool
     let localFrameElement: Bool
+    let hasTextDisplayIsNone: Bool
+    let hasDisplayIsNone: Bool
   }
 
   override class func setUp() {
@@ -232,6 +234,7 @@ final class ScriptExecutionTests: XCTestCase {
 
   @MainActor func testCosmeticFilteringScript() async throws {
     let viewController = MockScriptsViewController()
+    let siteURL = URL(string: "https://brave.com")!
     let invalidSelectors = Set([
       "div.invalid-selector:has(span.update-components-actor__description:-abp-contains(/Anzeige|Sponsored|Promoted|Dipromosikan|Propagováno|Promoveret|Gesponsert|Promocionado|促銷內容|Post sponsorisé|프로모션|Post sponsorizzato|广告|プロモーション|Treść promowana|Patrocinado|Promovat|Продвигается|Marknadsfört|Nai-promote|ได้รับการโปรโมท|Öne çıkarılan içerik|Gepromoot|الترويج/))"
     ])
@@ -247,15 +250,6 @@ final class ScriptExecutionTests: XCTestCase {
       "test-ad-primary-standard-1st-party", "test-ad-primary-standard-3rd-party",
       "test-ad-primary-aggressive-1st-party", "test-ad-primary-aggressive-3rd-party",
     ]
-    let setup = UserScriptType.ContentCosmeticSetup(
-      hideFirstPartyContent: false,
-      genericHide: false,
-      firstSelectorsPollingDelayMs: nil,
-      switchToSelectorsPollingThreshold: 1000,
-      fetchNewClassIdRulesThrottlingMs: 100,
-      aggressiveSelectors: initialAggressiveSelectors,
-      standardSelectors: initialStandardSelectors.union(invalidSelectors)
-    )
     AdblockEngine.setDomainResolver()
     let engine = try AdblockEngine(
       rules: [
@@ -265,11 +259,20 @@ final class ScriptExecutionTests: XCTestCase {
         "brave.com###test-style-element:style(background-color: red !important)",
         "brave.com###test-upward-int-target:upward(2)",
         "brave.com###test-upward-selector-target:upward(#test-upward-selector)",
+        "brave.com###test-has-text:has-text(hide me)",
+        "brave.com###test-has:has(a.banner-link)",
       ].joined(separator: "\n")
     )
-    let proceduralFilters = try engine.cosmeticFilterModel(
-      forFrameURL: URL(string: "https://brave.com")!
-    )?.proceduralActions
+    let cosmeticFilterModel = try engine.cosmeticFilterModel(forFrameURL: siteURL)!
+    // We only care about our AdblockEngine for this test
+    let models: [AdBlockGroupsManager.CosmeticFilterModelTuple] = [(false, cosmeticFilterModel)]
+    let setup = UserScriptType.ContentCosmeticSetup.makeSetup(
+      from: models,
+      isAggressive: false,
+      cachedStandardSelectors: initialStandardSelectors.union(invalidSelectors),
+      cachedAggressiveSelectors: initialAggressiveSelectors
+    )
+    let proceduralFilters = cosmeticFilterModel.proceduralActions
     XCTAssertNotNil(proceduralFilters)
 
     // Add mock SiteStateListenerScriptHandler and inject the SiteStateListener script so we get a message from each frame with the `WKFrameInfo`.
@@ -362,14 +365,14 @@ final class ScriptExecutionTests: XCTestCase {
     // Load test html in the web view
     let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
     let htmlString = try String(contentsOf: htmlURL, encoding: .utf8)
-    try await viewController.loadHTMLStringAndWait(htmlString)
+    try await viewController.loadHTMLStringAndWait(htmlString, baseURL: siteURL)
 
     // Inject content cosmetic script into each frame received from SiteStateListener script/handler
     var frameInfos: Set<WKFrameInfo> = .init()
     for try await message in siteStateListenerMockMessageHandler {
       frameInfos.insert(message.frameInfo)
       let script = try ScriptFactory.shared.makeScript(
-        for: .contentCosmetic(setup, proceduralActions: Set(proceduralFilters ?? []))
+        for: .contentCosmetic(setup, proceduralActions: Set(proceduralFilters))
       )
       try await viewController.webView.evaluateSafeJavaScriptThrowing(
         functionName: script.source,
@@ -451,6 +454,8 @@ final class ScriptExecutionTests: XCTestCase {
     XCTAssertTrue(resultsAfterPump?.styledElement ?? false)
     XCTAssertTrue(resultsAfterPump?.upwardInt ?? false)
     XCTAssertTrue(resultsAfterPump?.upwardSelector ?? false)
+    XCTAssertTrue(resultsAfterPump?.hasTextDisplayIsNone ?? false)
+    XCTAssertTrue(resultsAfterPump?.hasDisplayIsNone ?? false)
     // Test for local frames
     XCTAssertTrue(resultsAfterPump?.localFrameElement ?? false)
   }
