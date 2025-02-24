@@ -59,13 +59,16 @@ source_set("unit_tests") {
   sources = [
     "ai_chat_throttle_unittest.cc",
     "brave_open_ai_chat_permission_context_unittest.cc",
+    "upload_file_helper_unittest.cc",
   ]
 
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/browser/ai_chat",
     "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/constants",
     "//chrome/common",
     "//chrome/test:test_support",

@@ -7,8 +7,11 @@
 
 #include <utility>
 
+#include "base/files/file.h"
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/no_destructor.h"
+#include "base/sequence_checker.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -20,9 +23,6 @@
 #include "third_party/skia/include/core/SkImage.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/shell_dialogs/selected_file_info.h"
-#if BUILDFLAG(IS_ANDROID)
-#include "base/files/file.h"
-#endif
 
 namespace {
 data_decoder::DataDecoder* GetDataDecoder() {
@@ -39,6 +39,12 @@ using UploadImageCallback = mojom::AIChatUIHandler::UploadImageCallback;
 SkBitmap ScaleBitmap(const SkBitmap& bitmap) {
   constexpr int kTargetWidth = 1024;
   constexpr int kTargetHeight = 768;
+
+  // Don't need to scale if dimensions are already smaller than target
+  // dimensions
+  if (bitmap.width() <= kTargetWidth && bitmap.height() <= kTargetHeight) {
+    return bitmap;
+  }
 
   SkBitmap scaled_bitmap;
   scaled_bitmap.allocN32Pixels(kTargetWidth, kTargetHeight);
@@ -73,9 +79,10 @@ SkBitmap ScaleBitmap(const SkBitmap& bitmap) {
   return scaled_bitmap;
 }
 
-std::optional<std::vector<uint8_t>> ReadFileToBytesHelper(
+// base::ReadFileToBytes doesn't handle content uri so we need to read from
+// base::File which covers content uri.
+std::optional<std::vector<uint8_t>> ReadFileToBytes(
     const base::FilePath& path) {
-#if BUILDFLAG(IS_ANDROID)
   std::optional<int64_t> bytes_to_read = base::GetFileSize(path);
   if (!bytes_to_read) {
     return std::nullopt;
@@ -90,21 +97,23 @@ std::optional<std::vector<uint8_t>> ReadFileToBytesHelper(
     }
   }
   return std::nullopt;
-#else
-  return base::ReadFileToBytes(path);
-#endif
 }
 
 }  // namespace
 
 UploadFileHelper::UploadFileHelper(content::WebContents* web_contents,
                                    Profile* profile)
-    : web_contents_(web_contents), profile_(profile) {}
+    : web_contents_(web_contents), profile_(profile) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+}
 
 UploadFileHelper::~UploadFileHelper() = default;
 
 void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
                                    UploadImageCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  upload_image_callback_ = std::move(callback);
+
   select_file_dialog_ = ui::SelectFileDialog::Create(this, std::move(policy));
   ui::SelectFileDialog::FileTypeInfo info;
   info.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
@@ -120,18 +129,17 @@ void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
       profile_->last_selected_directory(), &info, 0,
       base::FilePath::StringType(), web_contents_->GetTopLevelNativeWindow(),
       nullptr);
-
-  upload_image_callback_ = std::move(callback);
 }
 
 void UploadFileHelper::FileSelected(const ui::SelectedFileInfo& file,
                                     int index) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   profile_->set_last_selected_directory(file.path().DirName());
   auto read_image = base::BindOnce(
       [](const ui::SelectedFileInfo& info)
           -> std::tuple<std::optional<std::vector<uint8_t>>, std::string,
                         std::optional<int64_t>> {
-        return std::make_tuple(ReadFileToBytesHelper(info.path()),
+        return std::make_tuple(ai_chat::ReadFileToBytes(info.path()),
                                info.display_name,
                                base::GetFileSize(info.path()));
       },
@@ -145,6 +153,7 @@ void UploadFileHelper::FileSelected(const ui::SelectedFileInfo& file,
 }
 
 void UploadFileHelper::RemoveUploadedImage(uint32_t index) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (index >= uploaded_images_.size()) {
     return;
   }
@@ -152,6 +161,7 @@ void UploadFileHelper::RemoveUploadedImage(uint32_t index) {
 }
 
 void UploadFileHelper::FileSelectionCanceled() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (upload_image_callback_) {
     std::move(upload_image_callback_).Run(nullptr);
   }
@@ -161,23 +171,30 @@ void UploadFileHelper::OnImageRead(
     std::tuple<std::optional<std::vector<uint8_t>>,
                std::string,
                std::optional<int64_t>> result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto image_data = std::get<0>(result);
   auto filesize = std::get<2>(result);
   if (!image_data || !filesize) {
     std::move(upload_image_callback_).Run(nullptr);
+    return;
   }
   auto on_image_sanitized = base::BindOnce(&UploadFileHelper::OnImageSanitized,
                                            weak_ptr_factory_.GetWeakPtr(),
                                            std::get<1>(result), *filesize);
-  data_decoder::DecodeImage(
-      GetDataDecoder(), *image_data, data_decoder::mojom::ImageCodec::kDefault,
-      true, data_decoder::kDefaultMaxSizeInBytes, gfx::Size(1024, 768),
-      std::move(on_image_sanitized));
+  data_decoder::DecodeImage(GetDataDecoder(), *image_data,
+                            data_decoder::mojom::ImageCodec::kDefault, true,
+                            data_decoder::kDefaultMaxSizeInBytes, gfx::Size(),
+                            std::move(on_image_sanitized));
 }
 
 void UploadFileHelper::OnImageSanitized(std::string filename,
                                         int64_t filesize,
                                         const SkBitmap& decoded_bitmap) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (decoded_bitmap.drawsNothing()) {
+    std::move(upload_image_callback_).Run(nullptr);
+    return;
+  }
   auto encode_image = base::BindOnce(
       [](const SkBitmap& decoded_bitmap) {
         return gfx::PNGCodec::EncodeBGRASkBitmap(ScaleBitmap(decoded_bitmap),
@@ -197,6 +214,7 @@ void UploadFileHelper::OnImageEncoded(
     std::string filename,
     int64_t filesize,
     std::optional<std::vector<uint8_t>> output) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   mojom::UploadedImagePtr uploaded_image;
   if (output) {
     uploaded_image =
@@ -208,6 +226,7 @@ void UploadFileHelper::OnImageEncoded(
 
 std::optional<std::vector<mojom::UploadedImagePtr>>
 UploadFileHelper::GetUploadedImages() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (uploaded_images_.empty()) {
     return std::nullopt;
   }
@@ -219,10 +238,12 @@ UploadFileHelper::GetUploadedImages() {
 }
 
 size_t UploadFileHelper::GetUploadedImagesSize() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return uploaded_images_.size();
 }
 
 void UploadFileHelper::ClearUploadedImages() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   uploaded_images_.clear();
 }
 

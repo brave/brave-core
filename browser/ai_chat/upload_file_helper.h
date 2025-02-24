@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/sequence_checker.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
@@ -42,6 +43,7 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener,
   }
 
  private:
+  friend class UploadFileHelperTest;
   // ui::SelectFileDialog::Listener
   void FileSelected(const ui::SelectedFileInfo& file, int index) override;
   void FileSelectionCanceled() override;
@@ -68,6 +70,7 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener,
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
   mojom::AIChatUIHandler::UploadImageCallback upload_image_callback_;
 
+  SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<UploadFileHelper> weak_ptr_factory_{this};
 };
 
