@@ -304,7 +304,7 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Haiku, a model created by Anthropic to power conversational and text processing tasks.",
+        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageClaudeSonnetMessageDescription = NSLocalizedString(
@@ -312,7 +312,7 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3.5 Sonnet, a model created by Anthropic to power conversational and text processing tasks.",
+        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageGenericMessageDescription = NSLocalizedString(
