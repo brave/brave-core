@@ -202,7 +202,6 @@
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
     *** addOrEditBookmark(...);
-    *** showBookmarkManagerOnPhone(...);
     *** isSpecialFolder(...);
 }
 

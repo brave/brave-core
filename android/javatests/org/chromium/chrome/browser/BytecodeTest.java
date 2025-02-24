@@ -557,15 +557,6 @@ public class BytecodeTest {
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/bookmarks/BookmarkUtils",
-                        "showBookmarkManagerOnPhone",
-                        MethodModifier.STATIC,
-                        void.class,
-                        Activity.class,
-                        String.class,
-                        Profile.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/components/permissions/PermissionDialogModelFactory",
                         "getModel",
                         MethodModifier.STATIC,
