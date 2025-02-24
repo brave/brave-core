@@ -20,9 +20,9 @@ std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
     case LOCATION_BAR_PAGE_ACTION_ICON_PADDING:
       return gfx::Insets::VH(4, 4);
     case TOOLBAR_BUTTON:
-      // Use 5 inset - (TOOLBAR_BUTTON_HEIGHT(28) - icon size(18)) / 2
+      // Use 4 inset - (TOOLBAR_BUTTON_HEIGHT(28) - icon size(20)) / 2
       // icon size - ToolbarButton::kDefaultIconSize
-      return gfx::Insets(touch_ui ? 12 : 5);
+      return gfx::Insets(touch_ui ? 12 : 4);
     case TOOLBAR_INTERIOR_MARGIN:
       return touch_ui ? gfx::Insets() : gfx::Insets::VH(4, 8);
     default:
@@ -66,6 +66,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       return 16;
     }
     case TOOLBAR_BUTTON_HEIGHT: {
+      // See also SidebarButtonView::kSidebarButtonSize
       return touch ? 48 : 28;
     }
     case TOOLBAR_CORNER_RADIUS: {

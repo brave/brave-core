@@ -17,10 +17,10 @@
   virtual void SetHighlight
 
 #define kDefaultIconSize \
-  kDefaultIconSize = 18; \
+  kDefaultIconSize = 20; \
   static constexpr int kDefaultIconSize_UnUsed
 #define kDefaultIconSizeChromeRefresh \
-  kDefaultIconSizeChromeRefresh = 18; \
+  kDefaultIconSizeChromeRefresh = 20; \
   static constexpr int kDefaultIconSizeChromeRefresh_UnUsed
 #include "src/chrome/browser/ui/views/toolbar/toolbar_button.h"  // IWYU pragma: export
 #undef kDefaultIconSizeChromeRefresh
