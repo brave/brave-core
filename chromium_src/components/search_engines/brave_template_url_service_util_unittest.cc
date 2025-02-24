@@ -85,8 +85,9 @@ WDKeywordsResult InitKeywordResult(
     sync_preferences::TestingPrefServiceSyncable* prefs,
     const std::vector<TemplateURLData>& local_turls) {
   WDKeywordsResult kwResult;
-  kwResult.metadata.builtin_keyword_data_version =
-      TemplateURLPrepopulateData::GetDataVersion(prefs);
+  // Set builtin metadata version to 0 so that the prepopulated engines are
+  // merged into the results (see ComputeMergeEnginesRequirements).
+  kwResult.metadata.builtin_keyword_data_version = 0;
   kwResult.keywords = local_turls;
   return kwResult;
 }
@@ -109,8 +110,6 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   TemplateURL::OwnedTemplateURLVector template_urls;
   WDKeywordsResult::Metadata updated_keywords_metadata;
 
-  search_engines_test_environment_.pref_service().SetInteger(
-      kCountryIDAtInstall, 'U' << 8 | 'S');
   GetSearchProvidersUsingKeywordResult(
       result.GetValue(), nullptr,
       &search_engines_test_environment_.pref_service(),
@@ -120,9 +119,10 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
       updated_keywords_metadata, nullptr);
 
   // Verify count and order.
+  // Default prepopulated engines order is :br, :g, :d, :q, :b, :sp
   TestDefaultOrder(template_urls,
-                   {":g", ":d", ":q", ":b", ":sp", ":ya", "random1", "random2",
-                    "@bookmarks", "@history", "@tabs", "@gemini"});
+                   {":br", ":g", ":d", ":q", ":b", ":sp", ":ya", "random1",
+                    "random2", "@bookmarks", "@history", "@tabs", "@gemini"});
 }
 
 TEST_F(BraveTemplateURLServiceUtilTest,
@@ -155,6 +155,7 @@ TEST_F(BraveTemplateURLServiceUtilTest,
       updated_keywords_metadata, nullptr);
 
   // Verify count and order.
+  // Prepopulated engines order for DE is :br, :d, :q, :g, :sp, :e
   TestDefaultOrder(template_urls,
                    {":br", ":d", ":q", ":g", ":b", ":sp", ":e", ":ya",
                     "@bookmarks", "@history", "@tabs", "@gemini"});
