@@ -77,9 +77,9 @@ BraveAvatarToolbarButton::BraveAvatarToolbarButton(BrowserView* browser_view)
   // However, avatar button's icon image size is 16.
   // So, set delta insets to make its height to 28.
 #if BUILDFLAG(IS_LINUX)
-  // On linux, only add horizontal delta as its size is 26x28.
+  // Linux requires only 1px vertical padding and 2px horizontal padding.
   // TODO(simonhong): check why it's different from other platforms.
-  SetLayoutInsetDelta(gfx::Insets::VH(0, 4));
+  SetLayoutInsetDelta(gfx::Insets::VH(1, 2));
 #else
   SetLayoutInsetDelta(gfx::Insets(2));
 #endif
