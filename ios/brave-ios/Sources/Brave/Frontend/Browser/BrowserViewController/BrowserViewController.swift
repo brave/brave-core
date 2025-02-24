@@ -3644,12 +3644,11 @@ extension BrowserViewController {
       return
     }
 
-    let webView = (query == nil) ? tabManager.selectedTab?.webView : nil
+    let webDelegate = (query == nil) ? tabManager.selectedTab?.leoTabHelper : nil
 
     let model = AIChatViewModel(
       braveCore: braveCore,
-      webView: webView,
-      script: BraveLeoScriptHandler.self,
+      webDelegate: webDelegate,
       braveTalkScript: self.braveTalkJitsiCoordinator,
       querySubmited: query
     )

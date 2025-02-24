@@ -853,8 +853,7 @@ class SettingsViewController: TableViewController {
       selection: { [unowned self] in
         let model = AIChatViewModel(
           braveCore: self.braveCore,
-          webView: self.tabManager.selectedTab?.webView,
-          script: BraveLeoScriptHandler.self,
+          webDelegate: self.tabManager.selectedTab?.leoTabHelper,
           braveTalkScript: nil
         )
 
