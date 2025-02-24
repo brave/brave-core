@@ -10,6 +10,7 @@ brave_ui_allow_circular_includes_from =
 if (!is_android) {
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/webui/brave_education",
+    "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_news_internals",
   ]
 }
