@@ -111,7 +111,7 @@ void YouTubeTabFeature::PrimaryMainDocumentElementAvailable() {
 
   if (AreYouTubeExtraControlsEnabled(web_contents())) {
     youtube_registry_->LoadScriptFromPath(
-        url, json->GetPipScript(),
+        url, json->GetScript(YouTubeJson::ScriptType::PIP),
         base::BindOnce(&YouTubeTabFeature::InsertScriptInPage,
                        weak_factory_.GetWeakPtr(),
                        web_contents()->GetPrimaryMainFrame(),
@@ -120,7 +120,7 @@ void YouTubeTabFeature::PrimaryMainDocumentElementAvailable() {
 
   if (IsBackgroundVideoPlaybackEnabled(web_contents())) {
     youtube_registry_->LoadScriptFromPath(
-        url, json->GetPlaybackVideoScript(),
+        url, json->GetScript(YouTubeJson::ScriptType::PLAYBACK_VIDEO),
         base::BindOnce(&YouTubeTabFeature::InsertScriptInPage,
                        weak_factory_.GetWeakPtr(),
                        web_contents()->GetPrimaryMainFrame(),

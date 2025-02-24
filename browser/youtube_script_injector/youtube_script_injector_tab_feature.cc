@@ -47,7 +47,7 @@ void JNI_YouTubeScriptInjectorTabFeature_SetFullscreen(
 
   auto url = web_contents->GetLastCommittedURL();
   registry->LoadScriptFromPath(
-      url, helper->GetJson()->GetFullscreenScript(),
+      url, helper->GetJson()->GetScript(YouTubeJson::ScriptType::FULLSCREEN),
       base::BindOnce(&YouTubeTabFeature::InsertScriptInPage,
                      // TODO: replace with `helper->GetWeakPtr()`
                      base::Owned(helper), web_contents->GetPrimaryMainFrame(),
