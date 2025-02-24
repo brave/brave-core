@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/feedback/android/java/src/org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherDelegate.java b/chrome/browser/feedback/android/java/src/org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherDelegate.java
+index b4410a1abd95f4619ef798c9795218fde81c3552..e7ced8731b84e6e5167295be0c80e1b0d9b32ef2 100644
+--- a/chrome/browser/feedback/android/java/src/org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherDelegate.java
++++ b/chrome/browser/feedback/android/java/src/org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherDelegate.java
+@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
+ 
+ /** Delegate that handles the display of the HelpAndFeedback flows. */
+ public interface HelpAndFeedbackLauncherDelegate {
+-    static final String FALLBACK_SUPPORT_URL = "https://support.google.com/chrome/topic/6069782";
++    static final String FALLBACK_SUPPORT_URL = "https://support.brave.com/hc/en-us";
+ 
+     /**
+      * Starts an activity showing a help page for the specified context ID.
