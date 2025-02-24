@@ -20,6 +20,7 @@
 #include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "ios/web_view/internal/web_view_browser_state.h"
 #include "ios/web_view/public/cwv_navigation_delegate.h"
+#include "net/base/apple/url_conversions.h"
 
 const CWVUserAgentType CWVUserAgentTypeNone =
     static_cast<CWVUserAgentType>(web::UserAgentType::NONE);
@@ -122,6 +123,16 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
       web::WKWebViewConfigurationProvider::FromBrowserState(
           self.webState->GetBrowserState());
   return config_provider.GetWebViewConfiguration();
+}
+
+- (NSURL*)originalRequestURLForLastCommitedNavigation {
+  // Since CWVBackForwardItemListItem doesn't provide the original URL request
+  web::NavigationItem* item =
+      self.webState->GetNavigationManager()->GetLastCommittedItem();
+  if (!item) {
+    return nil;
+  }
+  return net::NSURLWithGURL(item->GetOriginalRequestURL());
 }
 
 @end
