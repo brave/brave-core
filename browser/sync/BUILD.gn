@@ -16,3 +16,18 @@ source_set("sync") {
     "//components/sync_device_info",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+  sources = [ "network_time_helper_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_sync:prefs",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
