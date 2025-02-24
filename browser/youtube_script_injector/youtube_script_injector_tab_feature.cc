@@ -36,9 +36,7 @@ void JNI_YouTubeScriptInjectorTabFeature_SetFullscreen(
     return;
   }
 
-  if (!helper->AreYouTubeExtraControlsEnabled(web_contents)) {
-    return;
-  }
+  DCHECK(helper->AreYouTubeExtraControlsEnabled(web_contents));
 
   auto* registry = YouTubeRegistry::GetInstance();
   if (!registry) {
