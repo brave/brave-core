@@ -2450,6 +2450,12 @@ public abstract class BraveActivity extends ChromeActivity
         ((TabBookmarker) mTabBookmarkerSupplier.get()).addOrEditBookmark(tabToBookmark);
     }
 
+    public void showBookmarkManager(Profile profile) {
+        if (mBookmarkManagerOpenerSupplier.get() != null) {
+            mBookmarkManagerOpenerSupplier.get().showBookmarkManager(this, profile);
+        }
+    }
+
     // We call that method with an interval
     // BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS,
     // as upstream does, to keep the GmsCore process alive.
