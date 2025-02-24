@@ -69,6 +69,7 @@ class GlobalState final {
   mojom::SysInfo& SysInfo();
   mojom::BuildChannelInfo& BuildChannel();
   mojom::Flags& Flags();
+  mojom::ContentSettings& ContentSettings();
 
   void PostDelayedTask(base::OnceClosure task, base::TimeDelta delay);
 
@@ -96,6 +97,7 @@ class GlobalState final {
   mojom::SysInfo mojom_sys_info_;
   mojom::BuildChannelInfo mojom_build_channel_;
   mojom::Flags mojom_flags_;
+  mojom::ContentSettings mojom_content_settings_;
 
   base::WeakPtrFactory<GlobalState> weak_ptr_factory_{this};
 };

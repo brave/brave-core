@@ -23,6 +23,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -42,6 +43,7 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }  // namespace user_prefs
 
+class HostContentSettingsMap;
 class WeeklyStorage;
 
 namespace ntp_background_images {
@@ -54,9 +56,11 @@ struct NTPSponsoredImagesData;
 struct TopSite;
 
 class ViewCounterService : public KeyedService,
+                           public content_settings::Observer,
                            public NTPBackgroundImagesService::Observer {
  public:
-  ViewCounterService(NTPBackgroundImagesService* background_images_service,
+  ViewCounterService(HostContentSettingsMap* host_content_settings,
+                     NTPBackgroundImagesService* background_images_service,
                      BraveNTPCustomBackgroundService* custom_background_service,
                      brave_ads::AdsService* ads_service,
                      PrefService* prefs,
@@ -113,12 +117,7 @@ class ViewCounterService : public KeyedService,
   void BrandedWallpaperWillBeDisplayed(const std::string& wallpaper_id,
                                        const std::string& creative_instance_id,
                                        const std::string& campaign_id);
-
-  NTPBackgroundImagesData* GetCurrentWallpaperData() const;
-  // Gets the current data for branded wallpaper, if there
-  // is a wallpaper active. Does not consider user opt-in
-  // status, or consider whether the wallpaper should be shown.
-  NTPSponsoredImagesData* GetCurrentBrandedWallpaperData() const;
+  NTPSponsoredImagesData* GetSponsoredImagesData() const;
 
   void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
 
@@ -131,36 +130,56 @@ class ViewCounterService : public KeyedService,
     SUPER_REFERRAL,
   };
 
-  friend class NTPBackgroundImagesViewCounterTest;
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           SINotActiveInitially);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           SINotActiveWithBadData);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           NotActiveOptedOut);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, IsActiveOptedIn);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           ActiveInitiallyOptedIn);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+  friend class ViewCounterServiceTest;
+  friend class NTPBackgroundImagesServiceTest;
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowSponsoredImages);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CannotShowSponsoredImages);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      AllowNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToAllowed);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      BlockNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToBlocked);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      AllowNewTabTakeOverWithImageIfJavaScriptContentSettingIsSetToAllowed);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToBlocked);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           CannotShowSponsoredImagesIfUninitialized);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           CannotShowSponsoredImagesIfMalformed);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           CannotShowSponsoredImagesIfOptedOut);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, IsActiveOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ActiveInitiallyOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
                            ActiveOptedInWithNTPBackgoundOption);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           BINotActiveInitially);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           BINotActiveWithBadData);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           BINotActiveWithNTPBackgoundOptionOptedOut);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           PrefsWithModelTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           GetCurrentWallpaperTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ModelTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowBackgroundImages);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CannotShowBackgroundImages);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           CannotShowBackgroundImagesIfUninitialized);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           CannotShowBackgroundImagesIfMalformed);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
+                           CannotShowBackgroundImagesIfOptedOut);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, PrefsWithModelTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, GetCurrentWallpaper);
 
   void OnPreferenceChanged(const std::string& pref_name);
 
-  // KeyedService
+  // content_settings::Observer:
+  void OnContentSettingChanged(
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSettingsTypeSet content_type_set) override;
+
+  // KeyedService:
   void Shutdown() override;
 
-  // NTPBackgroundImagesService::Observer
+  // NTPBackgroundImagesService::Observer:
   void OnBackgroundImagesDataDidUpdate(NTPBackgroundImagesData* data) override;
   void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
   void OnSponsoredContentDidUpdate(const base::Value::Dict& data) override;
@@ -171,14 +190,16 @@ class ViewCounterService : public KeyedService,
   void ResetNotificationState();
   bool IsSponsoredImagesWallpaperOptedIn() const;
   bool IsSuperReferralWallpaperOptedIn() const;
+
   // Do we have a sponsored or referral wallpaper to show and has the user
   // opted-in to showing it at some time.
-  bool IsBrandedWallpaperActive() const;
-  // Should we show background image.
-  bool IsBackgroundWallpaperActive() const;
-  // Should we show the branded wallpaper right now, in addition
-  // to the result from `IsBrandedWallpaperActive()`.
-  bool ShouldShowBrandedWallpaper() const;
+  bool CanShowSponsoredImages() const;
+  // Should we show the branded wallpaper right now, in addition to the result
+  // from `CanShowSponsoredImages()`.
+  bool ShouldShowSponsoredImages() const;
+
+  bool CanShowBackgroundImages() const;
+
   // Should we show custom background that user uploaded or fill background
   // with solid color user selected.
   bool ShouldShowCustomBackground() const;
@@ -189,6 +210,7 @@ class ViewCounterService : public KeyedService,
 
   void UpdateP3AValues();
 
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   raw_ptr<NTPBackgroundImagesService> background_images_service_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;

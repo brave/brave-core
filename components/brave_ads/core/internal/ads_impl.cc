@@ -64,6 +64,12 @@ void AdsImpl::SetFlags(mojom::FlagsPtr mojom_flags) {
   flags.environment_type = mojom_flags->environment_type;
 }
 
+void AdsImpl::SetContentSettings(
+    mojom::ContentSettingsPtr mojom_content_settings) {
+  auto& content_settings = GlobalState::GetInstance()->ContentSettings();
+  content_settings.allow_javascript = mojom_content_settings->allow_javascript;
+}
+
 void AdsImpl::Initialize(mojom::WalletInfoPtr mojom_wallet,
                          InitializeCallback callback) {
   BLOG(1, "Initializing ads");
@@ -178,16 +184,16 @@ void AdsImpl::TriggerInlineContentAdEvent(
 }
 
 void AdsImpl::ParseAndSaveCreativeNewTabPageAds(
-    base::Value::Dict data,
+    base::Value::Dict dict,
     ParseAndSaveCreativeNewTabPageAdsCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(
         &AdsImpl::ParseAndSaveCreativeNewTabPageAds, weak_factory_.GetWeakPtr(),
-        std::move(data), std::move(callback)));
+        std::move(dict), std::move(callback)));
   }
 
   const bool success =
-      database::ParseAndSaveCreativeNewTabPageAds(std::move(data));
+      database::ParseAndSaveCreativeNewTabPageAds(std::move(dict));
 
   std::move(callback).Run(success);
 }

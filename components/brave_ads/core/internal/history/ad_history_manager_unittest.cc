@@ -83,7 +83,8 @@ TEST_F(BraveAdsAdHistoryManagerTest,
 TEST_F(BraveAdsAdHistoryManagerTest, AddNewTabPageAdHistory) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
-      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*should_generate_random_uuids=*/true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act & Assert
@@ -101,7 +102,8 @@ TEST_F(BraveAdsAdHistoryManagerTest,
   test::DisableBraveRewards();
 
   const CreativeNewTabPageAdInfo creative_ad =
-      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*should_generate_random_uuids=*/true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act & Assert

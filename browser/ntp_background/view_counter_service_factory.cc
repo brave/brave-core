@@ -20,6 +20,7 @@
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
@@ -92,7 +93,7 @@ ViewCounterServiceFactory::BuildServiceInstanceForBrowserContext(
     }
 
     return std::make_unique<ViewCounterService>(
-        service,
+        HostContentSettingsMapFactory::GetForProfile(profile), service,
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
         BraveNTPCustomBackgroundServiceFactory::GetForContext(profile),
 #else

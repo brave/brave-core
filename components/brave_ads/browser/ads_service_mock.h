@@ -57,7 +57,7 @@ class AdsServiceMock : public AdsService {
                TriggerAdEventCallback));
 
   MOCK_METHOD(std::optional<NewTabPageAdInfo>,
-              MaybeGetPrefetchedNewTabPageAdForDisplay,
+              MaybeGetPrefetchedNewTabPageAd,
               ());
   MOCK_METHOD(void, PrefetchNewTabPageAd, ());
   MOCK_METHOD(void,
@@ -71,7 +71,7 @@ class AdsServiceMock : public AdsService {
               (const std::string&, const std::string&));
   MOCK_METHOD(void,
               ParseAndSaveCreativeNewTabPageAds,
-              (const base::Value::Dict& data,
+              (const base::Value::Dict& dict,
                ParseAndSaveCreativeNewTabPageAdsCallback));
 
   MOCK_METHOD(void,

@@ -40,6 +40,7 @@ static_library("browser") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
+    "//components/content_settings/core/browser",
     "//components/pref_registry",
     "//components/prefs",
     "//components/sessions",

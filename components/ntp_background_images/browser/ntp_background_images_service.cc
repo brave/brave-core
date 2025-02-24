@@ -98,8 +98,7 @@ NTPBackgroundImagesService::NTPBackgroundImagesService(
     component_updater::ComponentUpdateService* component_update_service,
     PrefService* pref_service)
     : component_update_service_(component_update_service),
-      pref_service_(pref_service),
-      weak_factory_(this) {}
+      pref_service_(pref_service) {}
 
 NTPBackgroundImagesService::~NTPBackgroundImagesService() = default;
 
@@ -464,8 +463,9 @@ NTPBackgroundImagesData* NTPBackgroundImagesService::GetBackgroundImagesData()
   return nullptr;
 }
 
-NTPSponsoredImagesData* NTPBackgroundImagesService::GetBrandedImagesData(
-    bool super_referral) const {
+NTPSponsoredImagesData* NTPBackgroundImagesService::GetSponsoredImagesData(
+    bool super_referral,
+    bool supports_rich_media) const {
   const bool is_super_referrals_enabled =
       base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper);
   if (is_super_referrals_enabled) {
@@ -491,11 +491,14 @@ NTPSponsoredImagesData* NTPBackgroundImagesService::GetBrandedImagesData(
     }
   }
 
-  if (sponsored_images_data_ && sponsored_images_data_->IsValid()) {
-    return sponsored_images_data_.get();
+  NTPSponsoredImagesData* const images_data =
+      supports_rich_media ? sponsored_images_data_.get()
+                          : sponsored_images_data_excluding_rich_media_.get();
+  if (!images_data || !images_data->IsValid()) {
+    return nullptr;
   }
 
-  return nullptr;
+  return images_data;
 }
 
 void NTPBackgroundImagesService::OnComponentReady(
@@ -570,6 +573,23 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
   } else {
     sponsored_images_data_ = std::make_unique<NTPSponsoredImagesData>(
         data, sponsored_images_installed_dir_);
+    sponsored_images_data_excluding_rich_media_ =
+        std::make_unique<NTPSponsoredImagesData>(
+            data, sponsored_images_installed_dir_);
+    for (auto& campaign :
+         sponsored_images_data_excluding_rich_media_->campaigns) {
+      std::erase_if(campaign.creatives, [](const auto& creative) {
+        return creative.wallpaper_type == WallpaperType::kRichMedia;
+      });
+    }
+    std::erase_if(
+        sponsored_images_data_excluding_rich_media_->campaigns,
+        [](const auto& campaign) { return campaign.creatives.empty(); });
+    if (!sponsored_images_data_excluding_rich_media_) {
+      sponsored_images_data_excluding_rich_media_ =
+          std::make_unique<NTPSponsoredImagesData>();
+    }
+
     for (auto& observer : observers_) {
       observer.OnSponsoredContentDidUpdate(data);
     }

@@ -64,6 +64,7 @@ class CreativeNewTabPageAds final : public TableInterface {
 
  private:
   void MigrateToV48(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+  void MigrateToV49(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 
   void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
               const CreativeNewTabPageAdList& creative_ads);

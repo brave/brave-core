@@ -13,14 +13,16 @@
 
 namespace brave_ads::test {
 
-CreativeNewTabPageAdList BuildCreativeNewTabPageAds(size_t count) {
+CreativeNewTabPageAdList BuildCreativeNewTabPageAds(
+    CreativeNewTabPageAdWallpaperType wallpaper_type,
+    size_t count) {
   CHECK_GT(count, 0U);
 
   CreativeNewTabPageAdList creative_ads;
 
   for (size_t i = 0; i < count; ++i) {
-    CreativeNewTabPageAdInfo creative_ad =
-        BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
+    CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd(
+        wallpaper_type, /*should_generate_random_uuids=*/true);
     creative_ad.segment = kSegments[i % kSegments.size()];
 
     creative_ads.push_back(creative_ad);
@@ -30,11 +32,13 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds(size_t count) {
 }
 
 CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
+    CreativeNewTabPageAdWallpaperType wallpaper_type,
     bool should_generate_random_uuids) {
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(should_generate_random_uuids);
   CreativeNewTabPageAdInfo creative_new_tab_page_ad(creative_ad);
 
+  creative_new_tab_page_ad.wallpaper_type = wallpaper_type;
   creative_new_tab_page_ad.company_name = "Test Ad Company Name";
   creative_new_tab_page_ad.alt = "Test Ad Alt";
 

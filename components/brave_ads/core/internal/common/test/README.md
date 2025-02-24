@@ -140,6 +140,7 @@ You can add one or more responses per request. These will be returned in the giv
 | Device identifier  | string  | `21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e`  | `test::MockDeviceId();`  |
 | Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `test::MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);`  |
 | Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `test::MockBuildChannel(test::BuildChannelType::kNightly);`  |
+| JavaScript content setting  | boolean  | `true`  | `test::MockAllowJavaScript(false);`  |
 | Is network connection available  | boolean  | `true`  | `test::MockIsNetworkConnectionAvailable(ads_client_mock_, false);`  |
 | Is browser active  | boolean  | `true`  | `test::MockIsBrowserActive(ads_client_mock_, false);`  |
 | Is browser in full-screen mode  | boolean  | `false`  | `test::MockIsBrowserInFullScreenMode(ads_client_mock_, true);`  |

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/test/values_test_util.h"
@@ -20,7 +19,7 @@ class BraveAdsCreativeNewTabPageAdsDatabaseUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseUtilTest, ParseAndSaveCreativeAds) {
   // Arrange
-  base::Value::Dict data = base::test::ParseJsonDict(R"JSON(
+  base::Value::Dict dict = base::test::ParseJsonDict(R"JSON(
       {
         "schemaVersion": 2,
         "campaigns": [
@@ -110,7 +109,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseUtilTest, ParseAndSaveCreativeAds) {
       })JSON");
 
   // Act & Assert
-  EXPECT_TRUE(database::ParseAndSaveCreativeNewTabPageAds(std::move(data)));
+  EXPECT_TRUE(database::ParseAndSaveCreativeNewTabPageAds(std::move(dict)));
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseUtilTest,
@@ -122,11 +121,11 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseUtilTest,
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseUtilTest,
        DoNotParseAndSaveCreativeAdsWithMissingCampaigns) {
-  base::Value::Dict data =
+  base::Value::Dict dict =
       base::test::ParseJsonDict(R"JSON({"schemaVersion": 2})JSON");
 
   // Act & Assert
-  EXPECT_FALSE(database::ParseAndSaveCreativeNewTabPageAds(std::move(data)));
+  EXPECT_FALSE(database::ParseAndSaveCreativeNewTabPageAds(std::move(dict)));
 }
 
 }  // namespace brave_ads

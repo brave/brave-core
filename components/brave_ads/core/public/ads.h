@@ -47,6 +47,9 @@ class Ads {
 
   virtual void SetFlags(mojom::FlagsPtr mojom_flags) = 0;
 
+  virtual void SetContentSettings(
+      mojom::ContentSettingsPtr mojom_content_settings) = 0;
+
   // Called to initialize ads for the specified `mojom::WalletInfoPtr`.
   // `mojom_wallet` can be nullptr if there is no wallet. The callback takes one
   // argument - `bool` is set to `true` if successful otherwise `false`.
@@ -95,7 +98,7 @@ class Ads {
   // Called to parse and save creative new tab page ads. The callback takes one
   // argument - `bool` is set to `true` if successful otherwise `false`.
   virtual void ParseAndSaveCreativeNewTabPageAds(
-      base::Value::Dict data,
+      base::Value::Dict dict,
       ParseAndSaveCreativeNewTabPageAdsCallback callback) = 0;
 
   // Called to serve a new tab page ad. The callback takes one argument -

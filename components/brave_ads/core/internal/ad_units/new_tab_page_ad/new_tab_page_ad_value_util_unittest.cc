@@ -45,14 +45,16 @@ TEST_F(BraveAdsNewTabPageAdValueUtilTest, NewTabPageAdFromValue) {
 
   // Assert
   const CreativeNewTabPageAdInfo creative_ad =
-      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/false);
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*should_generate_random_uuids=*/false);
   EXPECT_EQ(BuildNewTabPageAd(test::kPlacementId, creative_ad), ad);
 }
 
 TEST_F(BraveAdsNewTabPageAdValueUtilTest, NewTabPageAdToValue) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
-      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/false);
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*should_generate_random_uuids=*/false);
   const NewTabPageAdInfo ad =
       BuildNewTabPageAd(test::kPlacementId, creative_ad);
 

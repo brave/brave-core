@@ -88,7 +88,8 @@ class NTPBackgroundImagesServiceObserverBridge
 }
 
 - (NTPSponsoredImageData*)sponsoredImageData {
-  auto* data = _service->GetBrandedImagesData(/* super_referral */ false);
+  auto* data = _service->GetSponsoredImagesData(/*super_referral=*/false,
+                                                /*supports_rich_media=*/false);
   if (data == nullptr) {
     return nil;
   }
@@ -96,7 +97,8 @@ class NTPBackgroundImagesServiceObserverBridge
 }
 
 - (NTPSponsoredImageData*)superReferralImageData {
-  auto* data = _service->GetBrandedImagesData(/* super_referral */ true);
+  auto* data = _service->GetSponsoredImagesData(/* super_referral=*/true,
+                                                /*supports_rich_media=*/false);
   if (data == nullptr) {
     return nil;
   }

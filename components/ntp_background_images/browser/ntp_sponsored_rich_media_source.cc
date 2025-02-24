@@ -38,8 +38,8 @@ std::optional<std::string> ReadFileToString(const base::FilePath& path) {
 }  // namespace
 
 NTPSponsoredRichMediaSource::NTPSponsoredRichMediaSource(
-    NTPBackgroundImagesService* service)
-    : service_(service), weak_factory_(this) {}
+    NTPBackgroundImagesService* background_images_service)
+    : background_images_service_(background_images_service) {}
 
 NTPSponsoredRichMediaSource::~NTPSponsoredRichMediaSource() = default;
 
@@ -53,12 +53,14 @@ void NTPSponsoredRichMediaSource::StartDataRequest(
     GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  if (!service_) {
+  if (!background_images_service_) {
     return DenyAccess(std::move(callback));
   }
 
   const NTPSponsoredImagesData* const images_data =
-      service_->GetBrandedImagesData(/*super_referral=*/false);
+      background_images_service_->GetSponsoredImagesData(
+          /*super_referral=*/false,
+          /*supports_rich_media=*/true);
   if (!images_data) {
     return DenyAccess(std::move(callback));
   }
@@ -71,12 +73,7 @@ void NTPSponsoredRichMediaSource::StartDataRequest(
     return DenyAccess(std::move(callback));
   }
 
-  // Allow access.
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&ReadFileToString, *file_path),
-      base::BindOnce(&NTPSponsoredRichMediaSource::ReadFileCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+  AllowAccess(*file_path, std::move(callback));
 }
 
 std::string NTPSponsoredRichMediaSource::GetMimeType(const GURL& url) {
@@ -137,6 +134,15 @@ void NTPSponsoredRichMediaSource::ReadFileCallback(
 
   std::move(callback).Run(
       new base::RefCountedBytes(base::as_byte_span(*input)));
+}
+
+void NTPSponsoredRichMediaSource::AllowAccess(const base::FilePath& file_path,
+                                              GotDataCallback callback) {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&ReadFileToString, file_path),
+      base::BindOnce(&NTPSponsoredRichMediaSource::ReadFileCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void NTPSponsoredRichMediaSource::DenyAccess(GotDataCallback callback) {

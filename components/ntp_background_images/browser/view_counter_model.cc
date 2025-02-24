@@ -56,7 +56,7 @@ std::tuple<size_t, size_t> ViewCounterModel::GetCurrentBrandedImageIndex()
           campaigns_current_branded_image_index_[current_campaign_index_]};
 }
 
-bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
+bool ViewCounterModel::ShouldShowSponsoredImages() const {
   if (always_show_branded_wallpaper_) {
     return true;
   }

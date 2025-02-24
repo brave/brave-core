@@ -27,6 +27,10 @@ struct Flags {
   EnvironmentType environment_type;
 };
 
+struct ContentSettings {
+  bool allow_javascript;
+};
+
 struct WalletInfo {
   string payment_id;
   string recovery_seed_base64;

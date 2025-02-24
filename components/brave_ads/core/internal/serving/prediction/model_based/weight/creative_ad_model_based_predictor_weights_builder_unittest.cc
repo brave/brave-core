@@ -46,7 +46,8 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
        BuildCreativeNewTabPageAdModelBasedPredictorWeights) {
   // Arrange
   const CreativeNewTabPageAdList creative_ads =
-      test::BuildCreativeNewTabPageAds(/*count=*/1);
+      test::BuildCreativeNewTabPageAds(
+          CreativeNewTabPageAdWallpaperType::kImage, /*count=*/1);
 
   // Act
   const CreativeAdModelBasedPredictorWeightsInfo weights =

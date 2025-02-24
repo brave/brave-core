@@ -29,9 +29,9 @@ std::string ReadFileToString(const base::FilePath& path) {
 }  // namespace
 
 NTPCustomImagesSource::NTPCustomImagesSource(
-    BraveNTPCustomBackgroundService* service)
-    : service_(service), weak_factory_(this) {
-  DCHECK(service_);
+    BraveNTPCustomBackgroundService* custom_background_service)
+    : custom_background_service_(custom_background_service) {
+  DCHECK(custom_background_service_);
 }
 
 NTPCustomImagesSource::~NTPCustomImagesSource() = default;
@@ -45,7 +45,8 @@ void NTPCustomImagesSource::StartDataRequest(
     const content::WebContents::Getter& /*wc_getter*/,
     GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  GetImageFile(service_->GetImageFilePath(url), std::move(callback));
+  GetImageFile(custom_background_service_->GetImageFilePath(url),
+               std::move(callback));
 }
 
 std::string NTPCustomImagesSource::GetMimeType(const GURL& /*url*/) {

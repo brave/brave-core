@@ -259,6 +259,8 @@ void TestBase::Mock() {
 
   MockBuildChannel(BuildChannelType::kRelease);
 
+  MockContentSettings();
+
   SetUpMocks();
 
   // Must be called after `SetUpMocks` because `SetupMocks` may call

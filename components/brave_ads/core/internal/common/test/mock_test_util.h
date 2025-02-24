@@ -31,6 +31,8 @@ void MockPlatformHelper(const PlatformHelperMock& platform_helper_mock,
 
 void MockBuildChannel(BuildChannelType type);
 
+void MockAllowJavaScript(bool allow_javascript);
+
 void MockIsNetworkConnectionAvailable(const AdsClientMock& ads_client_mock,
                                       bool is_available);
 

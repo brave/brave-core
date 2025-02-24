@@ -117,6 +117,11 @@ void MockBuildChannel(BuildChannelType type) {
                << base::to_underlying(type);
 }
 
+void MockAllowJavaScript(bool allow_javascript) {
+  GlobalState::GetInstance()->ContentSettings().allow_javascript =
+      allow_javascript;
+}
+
 void MockIsNetworkConnectionAvailable(const AdsClientMock& ads_client_mock,
                                       bool is_available) {
   ON_CALL(ads_client_mock, IsNetworkConnectionAvailable())

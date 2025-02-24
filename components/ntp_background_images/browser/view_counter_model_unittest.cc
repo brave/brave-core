@@ -66,13 +66,13 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesTest) {
   // Loading initial count times.
   for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
        ++i) {
-    EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
+    EXPECT_FALSE(model.ShouldShowSponsoredImages());
     model.RegisterPageView();
   }
 
   for (size_t i = 0; i < 30; i++) {
     // Random image should be displayed now after loading initial count.
-    EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+    EXPECT_TRUE(model.ShouldShowSponsoredImages());
 
     const auto [campaign_index, image_index] =
         model.GetCurrentBrandedImageIndex();
@@ -82,7 +82,7 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesTest) {
 
     // Loading regular-count times.
     for (int j = 0; j < features::kCountToBrandedWallpaper.Get() - 1; ++j) {
-      EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
+      EXPECT_FALSE(model.ShouldShowSponsoredImages());
       model.RegisterPageView();
     }
   }
@@ -105,22 +105,22 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountToBrandedWallpaperTest) {
   EXPECT_FALSE(model.always_show_branded_wallpaper_);
 
   // Count is 1 so we should not show branded wallpaper.
-  EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
+  EXPECT_FALSE(model.ShouldShowSponsoredImages());
   model.RegisterPageView();
 
   // Count is 0 so we should show branded wallpaper.
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  EXPECT_TRUE(model.ShouldShowSponsoredImages());
   model.RegisterPageView();
 
   // Loading regular-count times from kCountToBrandedWallpaper to 0 and do not
   // show branded wallpaper.
   for (int i = 0; i < features::kCountToBrandedWallpaper.Get() - 1; ++i) {
-    EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
+    EXPECT_FALSE(model.ShouldShowSponsoredImages());
     model.RegisterPageView();
   }
 
   // Count is 0 so we should show branded wallpaper.
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  EXPECT_TRUE(model.ShouldShowSponsoredImages());
   model.RegisterPageView();
 }
 
@@ -131,9 +131,9 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountResetTest) {
   // Verify param value for initial count was used
   EXPECT_EQ(1, model.count_to_branded_wallpaper_);
   model.RegisterPageView();
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  EXPECT_TRUE(model.ShouldShowSponsoredImages());
   model.RegisterPageView();
-  EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
+  EXPECT_FALSE(model.ShouldShowSponsoredImages());
   EXPECT_EQ(3, model.count_to_branded_wallpaper_);
 
   // We expect to be reset to initial count when source data updates (which
@@ -149,13 +149,13 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountResetMinTest) {
   // Verify param value for initial count was used
   EXPECT_EQ(1, model.count_to_branded_wallpaper_);
   model.RegisterPageView();
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  EXPECT_TRUE(model.ShouldShowSponsoredImages());
   EXPECT_EQ(0, model.count_to_branded_wallpaper_);
 
   // We expect to be reset to initial count only if count_to_branded_wallpaper_
   // is higher than initial count.
   model.Reset();
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  EXPECT_TRUE(model.ShouldShowSponsoredImages());
   EXPECT_EQ(0, model.count_to_branded_wallpaper_);
 }
 
@@ -166,9 +166,9 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountResetTimerTest) {
   // Verify param value for initial count was used
   EXPECT_EQ(1, model.count_to_branded_wallpaper_);
   model.RegisterPageView();
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  EXPECT_TRUE(model.ShouldShowSponsoredImages());
   model.RegisterPageView();
-  EXPECT_FALSE(model.ShouldShowBrandedWallpaper());
+  EXPECT_FALSE(model.ShouldShowSponsoredImages());
   EXPECT_EQ(3, model.count_to_branded_wallpaper_);
   task_environment_.FastForwardBy(features::kResetCounterAfter.Get());
   EXPECT_EQ(1, model.count_to_branded_wallpaper_);
@@ -274,7 +274,7 @@ TEST_F(ViewCounterModelTest, NTPSuperReferralTest) {
   // Loading any number of times and check branded wallpaper is visible always
   // with proper index from the start.
   for (int i = 0; i < 10; ++i) {
-    EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+    EXPECT_TRUE(model.ShouldShowSponsoredImages());
     const auto current_index = model.GetCurrentBrandedImageIndex();
     // Always first campaign is used in SR mode.
     EXPECT_EQ(0UL, std::get<0>(current_index));
@@ -298,7 +298,7 @@ TEST_F(ViewCounterModelTest, NTPFailedToLoadSponsoredImagesTest) {
     EXPECT_EQ(i, model.current_wallpaper_image_index());
     model.RegisterPageView();
   }
-  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  EXPECT_TRUE(model.ShouldShowSponsoredImages());
   const int initial_wallpaper_image_index =
       model.current_wallpaper_image_index();
 
