@@ -9,8 +9,13 @@ import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
 
 /**
@@ -21,7 +26,12 @@ public class YouTubeScriptInjectorTabFeature {
     private static final String TAG = "YouTubeTabFeature";
 
     public static void setFullscreen(WebContents webContents) {
-        YouTubeScriptInjectorTabFeatureJni.get().setFullscreen(webContents);
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_YOUTUBE_SCRIPT_INJECTOR)
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_YOUTUBE_EXTRA_CONTROLS)
+                && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getBoolean(BravePref.YOU_TUBE_EXTRA_CONTROLS_ENABLED)) {
+            YouTubeScriptInjectorTabFeatureJni.get().setFullscreen(webContents);
+        }
     }
 
     @NativeMethods
