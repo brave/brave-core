@@ -265,6 +265,8 @@ void AdBlockEngine::UpdateAdBlockClient(
     rust::Box<adblock::Engine> ad_block_client,
     const std::string& resources_json) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  TRACE_EVENT("brave.adblock", "UpdateAdBlockClient");
   ad_block_client_ = std::move(ad_block_client);
   if (regex_discard_policy_) {
     ad_block_client_->set_regex_discard_policy(*regex_discard_policy_);
@@ -289,12 +291,12 @@ void AdBlockEngine::OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   base::ElapsedTimer timer;
-  TRACE_EVENT_BEGIN1("brave.adblock", "MakeEngineWithRules",
-                     "is_default_engine", is_default_engine_);
+  TRACE_EVENT_BEGIN("brave.adblock", "MakeEngineWithRules", "is_default_engine",
+                    is_default_engine_);
 
   auto result = adblock::engine_from_filter_set(std::move(filter_set));
 
-  TRACE_EVENT_END0("brave.adblock", "MakeEngineWithRules");
+  TRACE_EVENT_END("brave.adblock");
   if (is_default_engine_) {
     base::UmaHistogramTimes("Brave.Adblock.MakeEngineWithRules.Default",
                             timer.Elapsed());
@@ -316,12 +318,12 @@ void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   base::ElapsedTimer timer;
-  TRACE_EVENT_BEGIN2("brave.adblock", "MakeEngineWithRules", "size",
-                     filters.size(), "is_default_engine", is_default_engine_);
+  TRACE_EVENT_BEGIN("brave.adblock", "MakeEngineWithRules", "size",
+                    filters.size(), "is_default_engine", is_default_engine_);
 
   auto result = adblock::engine_with_rules(filters);
 
-  TRACE_EVENT_END0("brave.adblock", "MakeEngineWithRules");
+  TRACE_EVENT_END("brave.adblock");
   if (is_default_engine_) {
     base::UmaHistogramTimes("Brave.Adblock.MakeEngineWithRules.Default",
                             timer.Elapsed());
@@ -348,13 +350,13 @@ void AdBlockEngine::OnDATLoaded(const DATFileDataBuffer& dat_buf,
   }
 
   base::ElapsedTimer timer;
-  TRACE_EVENT_BEGIN2("brave.adblock", "EngineDeserialize", "size",
-                     dat_buf.size(), "is_default_engine", is_default_engine_);
+  TRACE_EVENT_BEGIN("brave.adblock", "EngineDeserialize", "size",
+                    dat_buf.size(), "is_default_engine", is_default_engine_);
 
   auto client = adblock::new_engine();
   const auto result = client->deserialize(dat_buf);
 
-  TRACE_EVENT_END0("brave.adblock", "EngineDeserialize");
+  TRACE_EVENT_END("brave.adblock");
   if (is_default_engine_) {
     base::UmaHistogramTimes("Brave.Adblock.EngineDeserialize.Default",
                             timer.Elapsed());

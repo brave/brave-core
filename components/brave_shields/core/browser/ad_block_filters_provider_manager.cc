@@ -14,7 +14,9 @@
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
+#include "base/rand_util.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/trace_event/trace_event.h"
 
 namespace brave_shields {
 
@@ -77,6 +79,11 @@ void AdBlockFiltersProviderManager::LoadFilterSetForEngine(
     bool is_for_default_engine,
     base::OnceCallback<
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+  const uint64_t flow_id = base::RandUint64();
+  TRACE_EVENT("brave.adblock",
+              "AdBlockFiltersProviderManager::LoadFilterSetForEngine",
+              perfetto::Flow::ProcessScoped(flow_id), "is_default_engine",
+              is_for_default_engine);
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
@@ -84,7 +91,7 @@ void AdBlockFiltersProviderManager::LoadFilterSetForEngine(
       base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>(
       filters_providers.size(),
       base::BindOnce(&AdBlockFiltersProviderManager::FinishCombinating,
-                     weak_factory_.GetWeakPtr(), std::move(cb)));
+                     weak_factory_.GetWeakPtr(), std::move(cb), flow_id));
   for (auto* const provider : filters_providers) {
     task_tracker_.PostTask(
         base::SequencedTaskRunner::GetCurrentDefault().get(), FROM_HERE,
@@ -106,8 +113,12 @@ void RunAllResults(
 void AdBlockFiltersProviderManager::FinishCombinating(
     base::OnceCallback<
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
+    uint64_t flow_id,
     std::vector<base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>
         results) {
+  TRACE_EVENT("brave.adblock",
+              "AdBlockFiltersProviderManager::FinishCombinating",
+              perfetto::TerminatingFlow::ProcessScoped(flow_id));
   std::move(cb).Run(base::BindOnce(&RunAllResults, std::move(results)));
 }
 

@@ -15,6 +15,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/threading/thread_restrictions.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
@@ -92,6 +93,7 @@ void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(
 
 void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
+  TRACE_EVENT("brave.adblock", "OnFilterSetCreated");
   filter_set_ = std::move(filter_set);
   // multiple AddObserver calls are ignored
   resource_provider_->AddObserver(this);
@@ -129,6 +131,8 @@ adblock::BlockerResult AdBlockService::ShouldStartRequest(
     bool previously_matched_exception,
     bool previously_matched_important) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+
+  TRACE_EVENT("brave.adblock", "ShouldStartRequest", "url", url);
 
   adblock::BlockerResult fp_result = default_engine_->ShouldStartRequest(
       url, resource_type, tab_host, previously_matched_rule,
@@ -179,6 +183,8 @@ std::optional<std::string> AdBlockService::GetCspDirectives(
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+
+  TRACE_EVENT("brave.adblock", "GetCspDirectives", "url", url);
   auto csp_directives =
       default_engine_->GetCspDirectives(url, resource_type, tab_host);
 
@@ -193,6 +199,8 @@ base::Value::Dict AdBlockService::UrlCosmeticResources(
     const std::string& url,
     bool aggressive_blocking) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+
+  TRACE_EVENT("brave.adblock", "UrlCosmeticResources", "url", url);
   base::Value::Dict resources = default_engine_->UrlCosmeticResources(url);
 
   if (!aggressive_blocking) {
@@ -240,6 +248,9 @@ base::Value::Dict AdBlockService::HiddenClassIdSelectors(
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+
+  TRACE_EVENT("brave.adblock", "HiddenClassIdSelectors", "classes", classes,
+              "ids", ids);
   base::Value::List hide_selectors =
       default_engine_->HiddenClassIdSelectors(classes, ids, exceptions);
 
@@ -299,6 +310,7 @@ AdBlockService::AdBlockService(
           std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
               new AdBlockEngine(false /* is_default */),
               base::OnTaskRunnerDeleter(GetTaskRunner()))) {
+  TRACE_EVENT("brave.adblock", "AdBlockService");
   // Initializes adblock-rust's domain resolution implementation
   adblock::set_domain_resolver();
 
@@ -496,6 +508,7 @@ void AdBlockService::TagExistsForTest(const std::string& tag,
 void AdBlockService::MergeResourcesInto(base::Value::Dict from,
                                         base::Value::Dict& into,
                                         bool force_hide) {
+  TRACE_EVENT("brave.adblock", "MergeResourcesInto");
   base::Value::List* resources_hide_selectors = nullptr;
   if (force_hide) {
     resources_hide_selectors = into.FindList("force_hide_selectors");
@@ -550,6 +563,7 @@ void AdBlockService::MergeResourcesInto(base::Value::Dict from,
 //
 // static
 void AdBlockService::StripProceduralFilters(base::Value::Dict& resources) {
+  TRACE_EVENT("brave.adblock", "StripProceduralFilters");
   base::Value::List* procedural_actions =
       resources.FindList(kCosmeticResourcesProceduralActions);
   if (procedural_actions) {
