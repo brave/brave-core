@@ -74,7 +74,8 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBraveSharedPinnedTabDummyViewTitle] = {nala::kColorTextPrimary};
   mixer[kColorBraveSharedPinnedTabDummyViewBackground] = {
       nala::kColorContainerBackground};
-  mixer[kColorBraveSplitViewInactiveWebViewBorder] = {kColorToolbar};
+  mixer[kColorBraveSplitViewInactiveWebViewBorder] = {
+      nala::kColorDesktopbrowserToolbarButtonOutline};
 }
 
 void AddBraveTabPrivateThemeColorMixer(ui::ColorProvider* provider,

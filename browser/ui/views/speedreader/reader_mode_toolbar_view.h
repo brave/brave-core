@@ -12,10 +12,10 @@
 #include "ui/views/controls/webview/webview.h"
 
 namespace content {
+class BrowserContext;
 class WebContents;
-}
+}  // namespace content
 
-class Browser;
 class ReaderModeToolbarView : public views::View {
   METADATA_HEADER(ReaderModeToolbarView, views::View)
  public:
@@ -24,7 +24,8 @@ class ReaderModeToolbarView : public views::View {
     virtual void OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) {}
   };
 
-  explicit ReaderModeToolbarView(Browser* browser);
+  ReaderModeToolbarView(content::BrowserContext* browser_context,
+                        bool use_rounded_corners);
   ~ReaderModeToolbarView() override;
 
   ReaderModeToolbarView(const ReaderModeToolbarView&) = delete;
@@ -50,6 +51,7 @@ class ReaderModeToolbarView : public views::View {
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
   bool OnMousePressed(const ui::MouseEvent& event) override;
 
+  bool use_rounded_corners_ = false;
   std::unique_ptr<views::WebView> toolbar_;
   std::unique_ptr<content::WebContents> toolbar_contents_;
   raw_ptr<Delegate> delegate_ = nullptr;

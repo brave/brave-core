@@ -7,6 +7,12 @@
 
 #include "ui/views/view.h"
 
+// static
+BraveContentsLayoutManager* BraveContentsLayoutManager::GetLayoutManagerForView(
+    views::View* host) {
+  return static_cast<BraveContentsLayoutManager*>(host->GetLayoutManager());
+}
+
 BraveContentsLayoutManager::BraveContentsLayoutManager(
     views::View* devtools_view,
     views::View* contents_view,
@@ -26,6 +32,12 @@ BraveContentsLayoutManager::BraveContentsLayoutManager(
 
 BraveContentsLayoutManager::~BraveContentsLayoutManager() = default;
 
+void BraveContentsLayoutManager::SetWebContentsBorderInsets(
+    const gfx::Insets& insets) {
+  border_insets_ = insets;
+  InvalidateHost(true);
+}
+
 views::ProposedLayout BraveContentsLayoutManager::CalculateProposedLayout(
     const views::SizeBounds& size_bounds) const {
   views::ProposedLayout layouts =
@@ -35,6 +47,8 @@ views::ProposedLayout BraveContentsLayoutManager::CalculateProposedLayout(
   if (!contents_layout) {
     return layouts;
   }
+
+  contents_layout->bounds.Inset(border_insets_);
 
   if (reader_mode_toolbar_->GetVisible()) {
     gfx::Rect toolbar_bounds = contents_layout->bounds;
