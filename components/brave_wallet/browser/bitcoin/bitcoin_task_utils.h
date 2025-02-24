@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_TASK_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_TASK_UTILS_H_
 
-#include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {

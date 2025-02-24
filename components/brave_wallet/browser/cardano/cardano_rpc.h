@@ -1,12 +1,11 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_RPC_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_RPC_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_RPC_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_RPC_H_
 
-#include <list>
 #include <map>
 #include <string>
 #include <utility>
@@ -16,23 +15,23 @@
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc_responses.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_responses.h"
 
 namespace brave_wallet {
 class NetworkManager;
 }
 
-namespace brave_wallet::bitcoin_rpc {
+namespace brave_wallet::cardano_rpc {
 
 using UnspentOutputs = std::vector<UnspentOutput>;
 
 struct EndpointQueue;
 
-class BitcoinRpc {
+class CardanoRpc {
  public:
-  BitcoinRpc(NetworkManager& network_manager,
+  CardanoRpc(NetworkManager& network_manager,
              scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~BitcoinRpc();
+  ~CardanoRpc();
 
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using APIRequestResult = api_request_helper::APIRequestResult;
@@ -46,34 +45,13 @@ class BitcoinRpc {
       base::OnceCallback<void(base::expected<T, std::string>)>;
 
   using GetChainHeightCallback = RpcResponseCallback<uint32_t>;
-  using GetFeeEstimatesCallback =
-      RpcResponseCallback<std::map<uint32_t, double>>;
-  using GetTransactionCallback = RpcResponseCallback<Transaction>;
-  using GetTransactionRawCallback = RpcResponseCallback<std::vector<uint8_t>>;
-  using GetAddressStatsCallback = RpcResponseCallback<AddressStats>;
-  using GetUtxoListCallback = RpcResponseCallback<UnspentOutputs>;
-  using PostTransactionCallback = RpcResponseCallback<std::string>;
-
   void GetChainHeight(const std::string& chain_id,
                       GetChainHeightCallback callback);
-  void GetFeeEstimates(const std::string& chain_id,
-                       GetFeeEstimatesCallback callback);
-  void GetTransaction(const std::string& chain_id,
-                      const std::string& txid,
-                      GetTransactionCallback callback);
-  void GetTransactionRaw(const std::string& chain_id,
-                         const std::string& txid,
-                         GetTransactionRawCallback callback);
-  void GetAddressStats(const std::string& chain_id,
-                       const std::string& address,
-                       GetAddressStatsCallback callback);
+
+  using GetUtxoListCallback = RpcResponseCallback<UnspentOutputs>;
   void GetUtxoList(const std::string& chain_id,
                    const std::string& address,
                    GetUtxoListCallback callback);
-
-  void PostTransaction(const std::string& chain_id,
-                       const std::vector<uint8_t>& transaction,
-                       PostTransactionCallback callback);
 
   void SetUrlLoaderFactoryForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -90,20 +68,9 @@ class BitcoinRpc {
 
   void OnGetChainHeight(GetChainHeightCallback callback,
                         APIRequestResult api_request_result);
-  void OnGetFeeEstimates(GetFeeEstimatesCallback callback,
-                         APIRequestResult api_request_result);
-  void OnGetTransaction(GetTransactionCallback callback,
-                        APIRequestResult api_request_result);
-  void OnGetTransactionRaw(GetTransactionRawCallback callback,
-                           APIRequestResult api_request_result);
-  void OnGetAddressStats(GetAddressStatsCallback callback,
-                         APIRequestResult api_request_result);
   void OnGetUtxoList(GetUtxoListCallback callback,
                      const std::string& address,
                      APIRequestResult api_request_result);
-
-  void OnPostTransaction(PostTransactionCallback callback,
-                         APIRequestResult api_request_result);
 
   GURL GetNetworkURL(const std::string& chain_id);
 
@@ -112,9 +79,9 @@ class BitcoinRpc {
   // Uses hostname as key. Tracks request throttling(if required) per host.
   std::map<std::string, EndpointQueue> endpoints_;
   APIRequestHelper api_request_helper_;
-  base::WeakPtrFactory<BitcoinRpc> weak_ptr_factory_{this};
+  base::WeakPtrFactory<CardanoRpc> weak_ptr_factory_{this};
 };
 
-}  // namespace brave_wallet::bitcoin_rpc
+}  // namespace brave_wallet::cardano_rpc
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_RPC_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_RPC_H_

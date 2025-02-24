@@ -11,8 +11,8 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
-#include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
 #include "brave/components/json/json_helper.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
