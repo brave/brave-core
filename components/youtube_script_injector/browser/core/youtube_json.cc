@@ -12,6 +12,7 @@
 
 #include "base/files/file_path.h"
 #include "base/json/json_reader.h"
+#include "base/notreached.h"
 #include "base/types/expected.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/url_util.h"
@@ -48,6 +49,18 @@ YouTubeJson::YouTubeJson(const YouTubeJson& other) {
       other.extra_controls_fullscreen_script_path_;
   extra_controls_pip_script_path_ = other.extra_controls_pip_script_path_;
   version_ = other.version_;
+}
+
+const base::FilePath& YouTubeJson::GetScript(ScriptType type) const {
+  switch (type) {
+    case ScriptType::PLAYBACK_VIDEO:
+      return playback_video_script_path_;
+    case ScriptType::FULLSCREEN:
+      return extra_controls_fullscreen_script_path_;
+    case ScriptType::PIP:
+      return extra_controls_pip_script_path_;
+  }
+  NOTREACHED();
 }
 
 // static
