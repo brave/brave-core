@@ -93,7 +93,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   void GetFaviconImageDataForAssociatedContent(
       GetFaviconImageDataCallback callback,
-      mojom::SiteInfoPtr content_info,
+      mojom::AssociatedContentPtr content_info,
       bool should_send_page_contents);
 
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
