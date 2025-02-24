@@ -21,6 +21,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.back_press.BackPressManager;
+import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
@@ -108,7 +109,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @Nullable MultiInstanceManager multiInstanceManager,
             @NonNull ObservableSupplier<Integer> overviewColorSupplier,
             @NonNull ManualFillingComponentSupplier manualFillingComponentSupplier,
-            @NonNull EdgeToEdgeManager edgeToEdgeManager) {
+            @NonNull EdgeToEdgeManager edgeToEdgeManager,
+            @NonNull ObservableSupplier<BookmarkManagerOpener> bookmarkManagerOpenerSupplier) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -155,7 +157,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 multiInstanceManager,
                 overviewColorSupplier,
                 manualFillingComponentSupplier,
-                edgeToEdgeManager);
+                edgeToEdgeManager,
+                bookmarkManagerOpenerSupplier);
 
         mActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;
