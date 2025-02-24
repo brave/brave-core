@@ -6,19 +6,12 @@
 package org.chromium.chrome.browser.bookmarks;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.Callback;
-import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.chrome.browser.IntentHandler;
-import org.chromium.chrome.browser.app.bookmarks.BraveBookmarkActivity;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileIntentUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkItem;
@@ -58,26 +51,11 @@ public class BraveBookmarkUtils extends BookmarkUtils {
                 fromExplicitTrackUi);
     }
 
-    public static void showBookmarkManagerOnPhone(Activity activity, String url, Profile profile) {
-        Intent intent =
-                new Intent(
-                        activity == null ? ContextUtils.getApplicationContext() : activity,
-                        BraveBookmarkActivity.class);
-        ProfileIntentUtils.addProfileToIntent(profile, intent);
-        intent.setData(Uri.parse(url));
-        if (activity != null) {
-            // Start from an existing activity.
-            intent.putExtra(IntentHandler.EXTRA_PARENT_COMPONENT, activity.getComponentName());
-            activity.startActivity(intent);
-        } else {
-            // Start a new task.
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            IntentHandler.startActivityForTrustedIntent(intent);
-        }
-    }
-
-    public static void showBookmarkImportExportDialog(AppCompatActivity appCompatActivity,
-            boolean isImport, boolean isSuccess, String exportFilePath) {
+    public static void showBookmarkImportExportDialog(
+            AppCompatActivity appCompatActivity,
+            boolean isImport,
+            boolean isSuccess,
+            String exportFilePath) {
         try {
             BraveBookmarkImportExportDialogFragment dialogFragment =
                     BraveBookmarkImportExportDialogFragment.newInstance(
