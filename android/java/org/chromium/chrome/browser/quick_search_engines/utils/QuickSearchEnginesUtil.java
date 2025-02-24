@@ -280,7 +280,8 @@ public class QuickSearchEnginesUtil {
                         searchEngineTemplateUrl.getShortName(),
                         keyword,
                         searchEngineTemplateUrl.getURL(),
-                        true);
+                        true,
+                        QuickSearchEnginesModel.QuickSearchEnginesModelType.SEARCH_ENGINE);
         searchEnginesMap.put(keyword, quickSearchEnginesModel);
     }
 
@@ -300,7 +301,8 @@ public class QuickSearchEnginesUtil {
                         youtubeDisplayName,
                         BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD,
                         YOUTUBE_SEARCH_ENGINE_URL,
-                        true);
+                        true,
+                        QuickSearchEnginesModel.QuickSearchEnginesModelType.SEARCH_ENGINE);
 
         searchEnginesMap.put(youtubeSearchEngine.getKeyword(), youtubeSearchEngine);
     }
@@ -358,7 +360,8 @@ public class QuickSearchEnginesUtil {
                 defaultEngine.getShortName(),
                 defaultEngine.getKeyword(),
                 defaultEngine.getURL(),
-                true);
+                true,
+                QuickSearchEnginesModel.QuickSearchEnginesModelType.SEARCH_ENGINE);
     }
 
     /** Helper method to get the keyword of the default search engine */
