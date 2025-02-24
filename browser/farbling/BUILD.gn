@@ -46,7 +46,7 @@ if (!is_android) {
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//components/content_settings/renderer",
-      "//components/embedder_support:browser_util",
+      "//components/embedder_support:user_agent",
       "//components/language/core/browser",
       "//components/permissions:permissions",
       "//components/prefs",
