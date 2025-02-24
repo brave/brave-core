@@ -13,6 +13,7 @@
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/split_view/split_view.h"
 #include "brave/browser/ui/views/split_view/split_view_location_bar_model_delegate.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "cc/paint/paint_flags.h"
@@ -35,8 +36,9 @@
 #include "ui/views/widget/widget_delegate.h"
 
 SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs,
-                                           views::View* parent_web_view)
+                                           SplitView* split_view)
     : prefs_(prefs),
+      split_view_(split_view),
       location_bar_model_delegate_(
           std::make_unique<SplitViewLocationBarModelDelegate>()),
       location_bar_model_(std::make_unique<LocationBarModelImpl>(
@@ -44,8 +46,8 @@ SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs,
           content::kMaxURLDisplayChars)) {
   set_owned_by_client();
 
-  if (parent_web_view) {
-    view_observation_.Observe(parent_web_view);
+  if (split_view_) {
+    view_observation_.Observe(split_view_->secondary_contents_container());
   } else {
     CHECK_IS_TEST();
   }
@@ -213,6 +215,9 @@ void SplitViewLocationBar::UpdateBounds() {
   }
 
   gfx::Point point;
+  if (split_view_) {
+    point = split_view_->GetSplitViewLocationBarOffset();
+  }
   views::View::ConvertPointToWidget(view, &point);
 
   auto* widget = GetWidget();

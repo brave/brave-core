@@ -25,6 +25,7 @@ class Label;
 class ImageView;
 }  // namespace views
 
+class SplitView;
 class SplitViewLocationBarModelDelegate;
 class PrefService;
 class LocationBarModel;
@@ -38,7 +39,7 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
   METADATA_HEADER(SplitViewLocationBar, views::WidgetDelegateView)
 
  public:
-  SplitViewLocationBar(PrefService* prefs, views::View* parent_web_view);
+  SplitViewLocationBar(PrefService* prefs, SplitView* split_view);
   ~SplitViewLocationBar() override;
 
   static views::Widget::InitParams GetWidgetInitParams(
@@ -91,6 +92,7 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
   SkPath GetBorderPath(bool close);
 
   raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<SplitView> split_view_ = nullptr;
 
   std::unique_ptr<SplitViewLocationBarModelDelegate>
       location_bar_model_delegate_;
