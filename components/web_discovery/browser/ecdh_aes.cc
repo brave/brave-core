@@ -5,12 +5,12 @@
 
 #include "brave/components/web_discovery/browser/ecdh_aes.h"
 
+#include <algorithm>
 #include <array>
 
 #include "base/base64.h"
 #include "base/containers/span_writer.h"
 #include "base/logging.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "crypto/random.h"
 #include "crypto/sha2.h"

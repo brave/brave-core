@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
 
+#include <algorithm>
 #include <optional>
 #include <utility>
 
@@ -14,7 +15,6 @@
 #include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -118,7 +118,7 @@ void TestRewardsEngineClient::FetchFavIcon(const std::string& url,
 void TestRewardsEngineClient::LoadURL(mojom::UrlRequestPtr request,
                                       LoadURLCallback callback) {
   DCHECK(request);
-  auto iter = base::ranges::find_if(network_results_, [&request](auto& result) {
+  auto iter = std::ranges::find_if(network_results_, [&request](auto& result) {
     return request->url == result.url && request->method == result.method;
   });
 
@@ -141,7 +141,7 @@ void TestRewardsEngineClient::GetSPLTokenAccountBalance(
     const std::string& solana_address,
     const std::string& token_mint_address,
     GetSPLTokenAccountBalanceCallback callback) {
-  auto iter = base::ranges::find_if(spl_balance_results_, [&](auto& result) {
+  auto iter = std::ranges::find_if(spl_balance_results_, [&](auto& result) {
     return solana_address == result.solana_address &&
            token_mint_address == result.token_mint_address;
   });

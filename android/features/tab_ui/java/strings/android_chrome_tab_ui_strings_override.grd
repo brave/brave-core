@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- android_chrome_strings.grd contains strings for tab ui DFM of Brave for Android. -->
-<grit current_release="1" latest_public_release="0" output_all_resource_defines="false">
+<grit current_release="1" latest_public_release="0">
   <translations>
     <file path="translations/android_chrome_tab_ui_strings_override_af.xtb" lang="af" />
     <file path="translations/android_chrome_tab_ui_strings_override_am.xtb" lang="am" />

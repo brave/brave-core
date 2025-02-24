@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 
+#include <algorithm>
 #include <map>
 #include <optional>
 #include <string>
@@ -69,7 +70,7 @@ constexpr int kCurrentDatabaseVersion = 2;
 AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
     : db_file_path_(db_file_path),
-      db_({.page_size = 4096, .cache_size = 1000},
+      db_(sql::DatabaseOptions().set_page_size(4096).set_cache_size(1000),
           sql::Database::Tag("AIChatDatabase")),
       encryptor_(std::move(encryptor)) {}
 
@@ -331,7 +332,7 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
 
     // insert events in order
     if (!events.empty()) {
-      base::ranges::sort(events, [](const Event& a, const Event& b) {
+      std::ranges::sort(events, [](const Event& a, const Event& b) {
         return a.event_order < b.event_order;
       });
       entry->events = std::vector<mojom::ConversationEntryEventPtr>{};

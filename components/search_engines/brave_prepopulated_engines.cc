@@ -6,8 +6,8 @@
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 
 #include "build/build_config.h"
-#include "components/search_engines/prepopulated_engines.h"
 #include "components/search_engines/search_engine_type.h"
+#include "third_party/search_engines_data/resources/definitions/prepopulated_engines.h"
 
 namespace TemplateURLPrepopulateData {
 
@@ -36,8 +36,6 @@ PrepopulatedEngine MakeBravePrepopulatedEngine(const char16_t* const name,
           /*search_url_post_params=*/nullptr,
           /*suggest_url_post_params=*/nullptr,
           /*image_url_post_params=*/nullptr,
-          /*side_search_param=*/nullptr,
-          /*side_image_search_param=*/nullptr,
           /*image_translate_source_language_param_key=*/nullptr,
           /*image_translate_target_language_param_key=*/nullptr,
           /*image_search_branding_label=*/nullptr,
@@ -89,8 +87,6 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
           engine.search_url_post_params,
           engine.suggest_url_post_params,
           engine.image_url_post_params,
-          engine.side_search_param,
-          engine.side_image_search_param,
           engine.image_translate_source_language_param_key,
           engine.image_translate_target_language_param_key,
           engine.image_search_branding_label,

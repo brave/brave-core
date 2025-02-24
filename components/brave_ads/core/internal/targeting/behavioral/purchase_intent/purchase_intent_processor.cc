@@ -5,8 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
 
+#include <algorithm>
+
 #include "base/check.h"
-#include "base/ranges/algorithm.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
@@ -101,7 +102,7 @@ PurchaseIntentProcessor::MaybeExtractSignalForSearchQuery(
   BLOG(1, "Extracting purchase intent signal from search query");
 
   KeywordList search_query_keywords = ParseKeyphrase(search_query);
-  base::ranges::sort(search_query_keywords);
+  std::ranges::sort(search_query_keywords);
 
   const std::optional<SegmentList> search_query_segments =
       MaybeGetSegmentsForSearchQuery(search_query_keywords);
@@ -125,11 +126,11 @@ PurchaseIntentProcessor::MaybeGetSegmentsForSearchQuery(
     return std::nullopt;
   }
 
-  const auto iter = base::ranges::find_if(
+  const auto iter = std::ranges::find_if(
       purchase_intent->segment_keyphrases,
       [&search_query_keywords](const auto& segment_keyphrase) {
-        return base::ranges::includes(search_query_keywords,
-                                      segment_keyphrase.keywords);
+        return std::ranges::includes(search_query_keywords,
+                                     segment_keyphrase.keywords);
       });
 
   if (iter == purchase_intent->segment_keyphrases.cend()) {
@@ -151,8 +152,8 @@ int PurchaseIntentProcessor::ComputeFunnelKeyphraseWeightForSearchQuery(
 
   for (const auto& funnel_keyphrase : purchase_intent->funnel_keyphrases) {
     if (funnel_keyphrase.weight > max_funnel_keyphrase_weight &&
-        base::ranges::includes(search_query_keywords,
-                               funnel_keyphrase.keywords)) {
+        std::ranges::includes(search_query_keywords,
+                              funnel_keyphrase.keywords)) {
       max_funnel_keyphrase_weight = funnel_keyphrase.weight;
     }
   }

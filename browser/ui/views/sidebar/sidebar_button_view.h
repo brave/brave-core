@@ -28,7 +28,6 @@ class SidebarButtonView : public views::ImageButton {
   void OnThemeChanged() override;
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
-  std::u16string GetTooltipText(const gfx::Point& p) const override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_BUTTON_VIEW_H_

@@ -38,6 +38,7 @@ class COMPONENT_EXPORT(STORAGE_BROWSER) BlobURLStoreImpl
   void ResolveForNavigation(
       const GURL& url,
       mojo::PendingReceiver<blink::mojom::BlobURLToken> token,
+      bool is_top_level_navigation,
       ResolveForNavigationCallback callback) override;
 
  private:

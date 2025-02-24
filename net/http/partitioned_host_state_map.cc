@@ -5,6 +5,7 @@
 
 #include "brave/net/http/partitioned_host_state_map.h"
 
+#include <algorithm>
 #include <optional>
 #include <utility>
 
@@ -17,8 +18,8 @@ namespace {
 
 bool IsEmptyPartitionHash(
     const net::PartitionedHostStateMapBase::HashedHost& hashed_host) {
-  return base::ranges::all_of(hashed_host.begin(), hashed_host.end(),
-                              [](uint8_t i) { return i == 0; });
+  return std::ranges::all_of(hashed_host.begin(), hashed_host.end(),
+                             [](uint8_t i) { return i == 0; });
 }
 
 }  // namespace

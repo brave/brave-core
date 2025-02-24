@@ -17,9 +17,11 @@
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/views/frame/scrim_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/view.h"
+#include "ui/views/widget/widget_observer.h"
 
 namespace content {
 class WebContents;
@@ -38,7 +40,9 @@ class SplitViewLocationBar;
 class SplitViewSeparator;
 
 // Contains a pair of contents container view.
-class SplitView : public views::View, public SplitViewBrowserDataObserver {
+class SplitView : public views::View,
+                  public views::WidgetObserver,
+                  public SplitViewBrowserDataObserver {
   METADATA_HEADER(SplitView, views::View)
  public:
   using BrowserViewKey = base::PassKey<BraveBrowserView>;
@@ -100,6 +104,11 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
   void OnDidBreakTile(const TabTile& tile) override;
   void OnSwapTabsInTile(const TabTile& tile) override;
 
+  // views::WidgetObserver:
+  void OnWidgetDestroying(views::Widget* widget) override;
+  void OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
+                                            bool visible) override;
+
  private:
   friend class SplitViewBrowserTest;
   friend class SplitViewLocationBarBrowserTest;
@@ -124,6 +133,7 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
   raw_ptr<views::View> secondary_contents_container_ = nullptr;
   raw_ptr<views::WebView> secondary_devtools_web_view_ = nullptr;
   raw_ptr<ContentsWebView> secondary_contents_web_view_ = nullptr;
+  raw_ptr<ScrimView> secondary_contents_scrim_view_ = nullptr;
 
   raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
 
@@ -132,6 +142,8 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
 
   base::ScopedObservation<SplitViewBrowserData, SplitViewBrowserDataObserver>
       split_view_observation_{this};
+  base::ScopedObservation<views::Widget, views::WidgetObserver>
+      widget_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_H_

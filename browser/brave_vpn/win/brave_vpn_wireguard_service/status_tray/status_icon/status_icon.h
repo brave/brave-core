@@ -60,7 +60,7 @@ class StatusIcon {
   UINT message_id_;
 
   // The currently-displayed icon for the window.
-  base::win::ScopedHICON icon_;
+  base::win::ScopedGDIObject<HICON> icon_;
   std::unique_ptr<NativePopupMenu> popup_menu_;
   // Context menu, if any.
   std::unique_ptr<TrayMenuModel> menu_model_;

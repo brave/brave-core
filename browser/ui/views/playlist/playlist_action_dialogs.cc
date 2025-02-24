@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/playlist/playlist_action_dialogs.h"
 
+#include <algorithm>
 #include <string>
 #include <utility>
 
@@ -214,7 +215,7 @@ void ShowMoveItemsDialog(content::WebContents* contents,
   param.service = playlist::PlaylistServiceFactory::GetForBrowserContext(
       contents->GetBrowserContext());
   param.playlist_id = playlist_id;
-  base::ranges::copy(items, std::back_inserter(param.items));
+  std::ranges::copy(items, std::back_inserter(param.items));
 
   PlaylistActionDialog::Show<PlaylistMoveDialog>(
       FindBrowserViewFromWebContents(contents), std::move(param));
@@ -433,7 +434,7 @@ END_METADATA
 // static
 bool PlaylistMoveDialog::CanMoveItems(
     const std::vector<playlist::mojom::PlaylistItemPtr>& items) {
-  return base::ranges::all_of(items, &CanMoveItem);
+  return std::ranges::all_of(items, &CanMoveItem);
 }
 
 void PlaylistMoveDialog::ContentsChanged(views::Textfield* sender,
@@ -661,9 +662,9 @@ void PlaylistMoveDialog::OnMoveToPlaylist() {
     // rebuild views. It's okay because this view is about to be closed.
     tab_helper_observation_.Reset();
     std::vector<playlist::mojom::PlaylistItemPtr> items;
-    base::ranges::transform(get_tab_helper()->saved_items(),
-                            std::back_inserter(items),
-                            [](const auto& item) { return item->Clone(); });
+    std::ranges::transform(get_tab_helper()->saved_items(),
+                           std::back_inserter(items),
+                           [](const auto& item) { return item->Clone(); });
     get_tab_helper()->MoveItems(std::move(items), selected.front()->Clone());
   } else {
     auto& move_param = get_move_param();
@@ -685,9 +686,9 @@ void PlaylistMoveDialog::OnCreatePlaylistAndMove() {
     tab_helper_observation_.Reset();
 
     std::vector<playlist::mojom::PlaylistItemPtr> items;
-    base::ranges::transform(get_tab_helper()->saved_items(),
-                            std::back_inserter(items),
-                            [](const auto& item) { return item->Clone(); });
+    std::ranges::transform(get_tab_helper()->saved_items(),
+                           std::back_inserter(items),
+                           [](const auto& item) { return item->Clone(); });
     get_tab_helper()->MoveItemsToNewPlaylist(
         std::move(items),
         base::UTF16ToUTF8(new_playlist_name_textfield_->GetText()));

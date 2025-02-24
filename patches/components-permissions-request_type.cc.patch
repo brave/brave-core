@@ -1,8 +1,8 @@
 diff --git a/components/permissions/request_type.cc b/components/permissions/request_type.cc
-index 1b7d23b65334cccc1f1ccdaba26b2e2e1dfb765f..65176449365c7c05e4627ef9a3e791b3e51c6d4e 100644
+index 00db9b31085208523b92fdac06d29943425f2ccf..57ee48f08a78c5e3c3f31b851ecb1b39ccdade13 100644
 --- a/components/permissions/request_type.cc
 +++ b/components/permissions/request_type.cc
-@@ -453,6 +453,7 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
+@@ -462,6 +462,7 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
  #endif
      case permissions::RequestType::kIdentityProvider:
        return "identity_provider";

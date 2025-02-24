@@ -107,7 +107,7 @@ class ToggleButton : public ToolbarButton {
     }
   }
 
-  std::u16string GetTooltipText(const gfx::Point& p) const override {
+  std::u16string GetRenderedTooltipText(const gfx::Point& p) const override {
     if (region_view_->state() == VerticalTabStripRegionView::State::kExpanded) {
       return l10n_util::GetStringUTF16(IDS_VERTICAL_TABS_MINIMIZE);
     }
@@ -545,7 +545,7 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
       RemoveChildView(children().front());
     }
 
-    base::ranges::for_each(new_children, [&](auto* v) { AddChildView(v); });
+    std::ranges::for_each(new_children, [&](auto* v) { AddChildView(v); });
     layout_->SetFlexForView(spacer_,
                             1 /* resize |spacer| to fill the rest of space */);
   }
@@ -696,9 +696,9 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
 
   // At this point, Browser hasn't finished its initialization. In order to
   // access some of its member, we should observe BrowserList.
-  DCHECK(base::ranges::find(*BrowserList::GetInstance(),
-                            browser_view->browser()) ==
-         BrowserList::GetInstance()->end())
+  DCHECK(
+      std::ranges::find(*BrowserList::GetInstance(), browser_view->browser()) ==
+      BrowserList::GetInstance()->end())
       << "Browser shouldn't be added at this point.";
   BrowserList::AddObserver(this);
 
@@ -1215,11 +1215,8 @@ void VerticalTabStripRegionView::UpdateOriginalTabSearchButtonVisibility() {
   const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser_);
   const bool use_search_button =
       browser_->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
-  if (auto* tab_search_container =
-          original_region_view_->GetTabSearchContainer()) {
-    if (auto* tab_search_button = tab_search_container->tab_search_button()) {
-      tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
-    }
+  if (auto* tab_search_button = original_region_view_->GetTabSearchButton()) {
+    tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
   }
 }
 

@@ -16,6 +16,7 @@
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/google/core/common/google_switches.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_test_utils.h"
 #include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/search_terms_data.h"
@@ -48,9 +49,12 @@ const std::unordered_set<std::u16string_view> kOverriddenEnginesNames = {
 class BraveTemplateURLPrepopulateDataTest : public testing::Test {
  public:
   BraveTemplateURLPrepopulateDataTest()
-      : search_engine_choice_service_(
+      : regional_capabilities_service_(
+            regional_capabilities::CreateServiceWithFakeClient(prefs_)),
+        search_engine_choice_service_(
             prefs_,
             &local_state_,
+            *regional_capabilities_service_,
             /*is_profile_eligible_for_dse_guest_propagation=*/false) {}
   void SetUp() override {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
@@ -88,6 +92,8 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
   TestingPrefServiceSimple local_state_;
+  std::unique_ptr<regional_capabilities::RegionalCapabilitiesService>
+      regional_capabilities_service_;
   search_engines::SearchEngineChoiceService search_engine_choice_service_;
   std::vector<const PrepopulatedEngine*> brave_prepopulated_engines_;
 };

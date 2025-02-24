@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 
+#include <algorithm>
+
 #include "base/strings/pattern.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util_internal.h"
@@ -65,7 +67,7 @@ bool MatchUrlPattern(const std::vector<GURL>& redirect_chain,
     return false;
   }
 
-  const auto iter = base::ranges::find_if(
+  const auto iter = std::ranges::find_if(
       redirect_chain, [&pattern](const GURL& redirect_chain_url) {
         return MatchUrlPattern(redirect_chain_url, pattern);
       });
@@ -80,10 +82,10 @@ bool SameDomainOrHost(const GURL& lhs, const GURL& rhs) {
 
 bool DomainOrHostExists(const std::vector<GURL>& redirect_chain,
                         const GURL& url) {
-  return base::ranges::any_of(
-      redirect_chain, [&url](const GURL& redirect_chain_url) {
-        return SameDomainOrHost(redirect_chain_url, url);
-      });
+  return std::ranges::any_of(redirect_chain,
+                             [&url](const GURL& redirect_chain_url) {
+                               return SameDomainOrHost(redirect_chain_url, url);
+                             });
 }
 
 }  // namespace brave_ads

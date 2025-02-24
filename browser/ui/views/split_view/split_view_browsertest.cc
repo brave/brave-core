@@ -17,6 +17,7 @@
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -47,6 +48,10 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
     return *browser_view().split_view_->secondary_contents_container_;
   }
 
+  ScrimView& secondary_contents_scrim_view() {
+    return *browser_view().split_view_->secondary_contents_scrim_view_;
+  }
+
   views::WebView& secondary_contents_view() {
     return *browser_view().split_view_->secondary_contents_web_view();
   }
@@ -70,6 +75,39 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
           ->contents_container(),
       &split_view());
 }
+
+// MacOS does not need views window scrim. We use sheet to show window modals
+// (-[NSWindow beginSheet:]), which natively draws a scrim since macOS 11.
+#if !BUILDFLAG(IS_MAC)
+IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, ScrimForSecondaryContents) {
+  if (!base::FeatureList::IsEnabled(features::kScrimForBrowserWindowModal)) {
+    GTEST_SKIP();
+  }
+
+  brave::NewSplitViewForTab(browser());
+
+  auto child_widget_delegate = std::make_unique<views::WidgetDelegate>();
+  auto child_widget = std::make_unique<views::Widget>();
+  child_widget_delegate->SetModalType(ui::mojom::ModalType::kWindow);
+  views::Widget::InitParams params(
+      views::Widget::InitParams::CLIENT_OWNS_WIDGET,
+      views::Widget::InitParams::TYPE_WINDOW);
+  params.delegate = child_widget_delegate.get();
+  params.parent = secondary_contents_container().GetWidget()->GetNativeView();
+  child_widget->Init(std::move(params));
+
+  child_widget->Show();
+  EXPECT_TRUE(secondary_contents_scrim_view().GetVisible());
+  child_widget->Hide();
+  EXPECT_FALSE(secondary_contents_scrim_view().GetVisible());
+  child_widget->Show();
+  EXPECT_TRUE(secondary_contents_scrim_view().GetVisible());
+  // Destroy the child widget, the parent should be notified about child modal
+  // visibility change.
+  child_widget.reset();
+  EXPECT_FALSE(secondary_contents_scrim_view().GetVisible());
+}
+#endif  // !BUILDFLAG(IS_MAC)
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
                        GetAccessiblePaneContainsSecondaryViews) {

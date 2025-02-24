@@ -30,7 +30,7 @@ namespace permissions {
 PermissionContextBase::PermissionContextBase(
     content::BrowserContext* browser_context,
     ContentSettingsType content_settings_type,
-    blink::mojom::PermissionsPolicyFeature permissions_policy_feature)
+    network::mojom::PermissionsPolicyFeature permissions_policy_feature)
     : PermissionContextBase_ChromiumImpl(browser_context,
                                          content_settings_type,
                                          permissions_policy_feature) {}
@@ -139,11 +139,12 @@ void PermissionContextBase::DecidePermission(
 }
 
 void PermissionContextBase::CleanUpRequest(
+    content::WebContents* web_contents,
     const PermissionRequestID& id,
     bool embedded_permission_element_initiated) {
   if (!IsGroupedPermissionType(content_settings_type())) {
     PermissionContextBase_ChromiumImpl::CleanUpRequest(
-        id, embedded_permission_element_initiated);
+        web_contents, id, embedded_permission_element_initiated);
     return;
   }
 

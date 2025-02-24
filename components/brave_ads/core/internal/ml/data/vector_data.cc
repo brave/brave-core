@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
+#include <algorithm>
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
@@ -13,7 +14,6 @@
 #include <utility>
 
 #include "base/check_op.h"
-#include "base/ranges/algorithm.h"
 
 namespace brave_ads::ml {
 
@@ -250,8 +250,8 @@ size_t VectorData::GetNonZeroElementCount() const {
     return 0;
   }
 
-  return base::ranges::count_if(storage_->values(),
-                                [](float value) { return value != 0; });
+  return std::ranges::count_if(storage_->values(),
+                               [](float value) { return value != 0; });
 }
 
 const std::vector<float>& VectorData::GetData() const {

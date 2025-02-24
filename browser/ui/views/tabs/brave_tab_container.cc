@@ -31,8 +31,8 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
-#include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
 #include "chrome/grit/theme_resources.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -294,7 +294,7 @@ void BraveTabContainer::UpdateLayoutOrientation() {
 void BraveTabContainer::PaintBoundingBoxForTiles(
     gfx::Canvas& canvas,
     const SplitViewBrowserData* split_view_data) {
-  base::ranges::for_each(split_view_data->tiles(), [&](const auto& tile) {
+  std::ranges::for_each(split_view_data->tiles(), [&](const auto& tile) {
     PaintBoundingBoxForTile(canvas, tile);
   });
 }
@@ -396,7 +396,7 @@ void BraveTabContainer::CompleteAnimationAndLayout() {
 
   // Should force tabs to layout as they might not change bounds, which makes
   // insets not updated.
-  base::ranges::for_each(children(), &views::View::DeprecatedLayoutImmediately);
+  std::ranges::for_each(children(), &views::View::DeprecatedLayoutImmediately);
 }
 
 void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {

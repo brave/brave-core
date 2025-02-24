@@ -12,7 +12,6 @@
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -326,7 +325,7 @@ mojom::BlockchainTokenPtr BlockchainRegistry::GetTokenByAddress(
   }
 
   const auto& tokens = token_list_map_[key];
-  auto token_it = base::ranges::find_if(
+  auto token_it = std::ranges::find_if(
       tokens, [&](const mojom::BlockchainTokenPtr& current_token) {
         return current_token->contract_address == address;
       });
@@ -343,7 +342,7 @@ void BlockchainRegistry::GetTokenBySymbol(const std::string& chain_id,
     return;
   }
   const auto& tokens = token_list_map_[key];
-  auto token_it = base::ranges::find_if(
+  auto token_it = std::ranges::find_if(
       tokens, [&](const mojom::BlockchainTokenPtr& current_token) {
         return current_token->symbol == symbol;
       });

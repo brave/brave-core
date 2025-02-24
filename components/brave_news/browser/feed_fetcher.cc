@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <iterator>
 #include <string>
@@ -18,7 +19,6 @@
 #include "base/functional/callback_forward.h"
 #include "base/location.h"
 #include "base/memory/weak_ptr.h"
-#include "base/ranges/algorithm.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -171,7 +171,7 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(
 
               if (auto* feed =
                       absl::get_if<DirectFeedResult>(&response.result)) {
-                base::ranges::transform(
+                std::ranges::transform(
                     feed->articles, std::back_inserter(result.items),
                     [](auto& article) {
                       return mojom::FeedItem::NewArticle(std::move(article));
@@ -317,7 +317,7 @@ void FeedFetcher::OnIsUpdateAvailableFetchedHead(
 void FeedFetcher::OnIsUpdateAvailableCheckedFeeds(
     UpdateAvailableCallback callback,
     std::vector<bool> has_updates) {
-  std::move(callback).Run(base::ranges::any_of(
+  std::move(callback).Run(std::ranges::any_of(
       has_updates, [](bool has_update) { return has_update; }));
 }
 

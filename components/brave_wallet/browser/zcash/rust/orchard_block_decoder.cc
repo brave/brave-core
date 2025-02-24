@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder.h"
 
+#include <algorithm>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -63,8 +64,8 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoder::DecodeBlocks(
   prior_tree_state.block_height = tree_state.block_height;
   prior_tree_state.tree_size = tree_state.tree_size;
 
-  base::ranges::copy(tree_state.frontier,
-                     std::back_inserter(prior_tree_state.frontier));
+  std::ranges::copy(tree_state.frontier,
+                    std::back_inserter(prior_tree_state.frontier));
 
   ::rust::Box<CxxOrchardDecodedBlocksBundleResult> decode_result = batch_decode(
       fvk, std::move(prior_tree_state), std::move(orchard_actions));

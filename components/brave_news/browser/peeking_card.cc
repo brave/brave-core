@@ -56,8 +56,8 @@ base::flat_set<std::string> GetTopStoryUrls(
     const base::span<TopicAndArticles>& topics) {
   std::vector<std::string> urls;
   for (auto& [topic, articles] : topics) {
-    base::ranges::transform(articles, std::back_inserter(urls),
-                            [](const auto& article) { return article.url; });
+    std::ranges::transform(articles, std::back_inserter(urls),
+                           [](const auto& article) { return article.url; });
   }
   return base::flat_set<std::string>(urls);
 }
@@ -163,7 +163,7 @@ std::optional<size_t> PickPeekingCardWithMax(
     }
   }
 
-  base::ranges::sort(candidates, [get_article](const auto& a, const auto& b) {
+  std::ranges::sort(candidates, [get_article](const auto& a, const auto& b) {
     const auto& [a_index, a_score] = a;
     const auto& [b_index, b_score] = b;
     if (a_score != b_score) {

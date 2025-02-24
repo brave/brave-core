@@ -167,7 +167,7 @@ TEST_F(DeviceInfoSyncBridgeTest,
   const DeviceInfoSpecifics specifics = CreateLocalDeviceSpecifics();
   syncer::EntityChangeList entity_change_list;
   entity_change_list.push_back(
-      EntityChange::CreateDelete(specifics.cache_guid()));
+      EntityChange::CreateDelete(specifics.cache_guid(), syncer::EntityData()));
   auto error_on_delete = bridge()->ApplyIncrementalSyncChanges(
       bridge()->CreateMetadataChangeList(), std::move(entity_change_list));
   EXPECT_FALSE(error_on_delete);
@@ -180,8 +180,8 @@ TEST_F(DeviceInfoSyncBridgeTest,
   ASSERT_EQ(1u, bridge()->GetAllDeviceInfo().size());
 
   EntityChangeList changes;
-  changes.push_back(
-      EntityChange::CreateDelete(CacheGuidForSuffix(kLocalSuffix)));
+  changes.push_back(EntityChange::CreateDelete(CacheGuidForSuffix(kLocalSuffix),
+                                               syncer::EntityData()));
 
   // An incoming deletion for the local device info should not cause a reupload
   EXPECT_CALL(*processor(), Put(CacheGuidForSuffix(kLocalSuffix), _, _))

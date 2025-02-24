@@ -127,7 +127,7 @@ void PlaylistMediaFileDownloader::ScheduleToDetachCachedFile(
 void PlaylistMediaFileDownloader::DetachCachedFile(
     download::DownloadItem* item) {
   // We allow only one item to be downloaded at a time.
-  auto iter = base::ranges::find_if(
+  auto iter = std::ranges::find_if(
       download_items_to_be_detached_,
       [item](const auto& download) { return download.get() == item; });
   DCHECK(iter != download_items_to_be_detached_.end());

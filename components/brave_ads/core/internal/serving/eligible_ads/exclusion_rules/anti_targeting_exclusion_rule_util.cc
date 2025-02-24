@@ -5,14 +5,15 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule_util.h"
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
+
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 
 namespace brave_ads {
 
 bool HasVisitedAntiTargetedSites(const SiteHistoryList& site_history,
                                  const AntiTargetingSiteList& sites) {
-  return base::ranges::find_first_of(site_history, sites, SameDomainOrHost) !=
+  return std::ranges::find_first_of(site_history, sites, SameDomainOrHost) !=
          site_history.cend();
 }
 

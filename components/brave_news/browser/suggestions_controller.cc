@@ -62,7 +62,7 @@ base::flat_map<std::string, double> GetVisitWeightings(
   // Normalize (between 0 and 1) the visit counts by dividing
   // by the maximum number of visits.
   auto max_visits =
-      base::ranges::max(weightings, [](const auto& a, const auto& b) {
+      std::ranges::max(weightings, [](const auto& a, const auto& b) {
         return a.second < b.second;
       }).second;
 

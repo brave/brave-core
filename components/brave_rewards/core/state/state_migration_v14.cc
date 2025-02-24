@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_rewards/core/state/state_migration_v14.h"
 
+#include <algorithm>
 #include <utility>
 #include <vector>
 
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"

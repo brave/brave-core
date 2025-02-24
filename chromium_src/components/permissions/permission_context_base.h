@@ -41,7 +41,7 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
   PermissionContextBase(
       content::BrowserContext* browser_context,
       ContentSettingsType content_settings_type,
-      blink::mojom::PermissionsPolicyFeature permissions_policy_feature);
+      network::mojom::PermissionsPolicyFeature permissions_policy_feature);
 
   ~PermissionContextBase() override;
 
@@ -93,7 +93,8 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
                          ContentSetting content_setting,
                          bool is_one_time,
                          bool is_final_decision) override;
-  void CleanUpRequest(const PermissionRequestID& id,
+  void CleanUpRequest(content::WebContents* web_contents,
+                      const PermissionRequestID& id,
                       bool embedded_permission_element_initiated) override;
 
   std::map<std::string, std::unique_ptr<GroupedPermissionRequests>>

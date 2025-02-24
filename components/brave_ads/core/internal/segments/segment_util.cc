@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
+#include <algorithm>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
 #include "base/containers/flat_set.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
@@ -102,7 +102,7 @@ bool ShouldFilterSegment(const std::string& segment) {
 
   {
     // Filter matching segment, i.e. "technology & computing-linux".
-    const auto iter = base::ranges::find(
+    const auto iter = std::ranges::find(
         segment_reactions, segment,
         &std::pair<const std::string, mojom::ReactionType>::first);
     if (iter != segment_reactions.cend() &&
@@ -114,7 +114,7 @@ bool ShouldFilterSegment(const std::string& segment) {
   {
     // Filter matching parent segment, i.e. "technology & computing".
     const std::string parent_segment = GetParentSegment(segment);
-    const auto iter = base::ranges::find(
+    const auto iter = std::ranges::find(
         segment_reactions, parent_segment,
         &std::pair<const std::string, mojom::ReactionType>::first);
     if (iter != segment_reactions.cend() &&

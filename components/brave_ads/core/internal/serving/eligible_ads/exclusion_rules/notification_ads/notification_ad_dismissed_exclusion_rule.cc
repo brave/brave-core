@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_dismissed_exclusion_rule.h"
 
+#include <algorithm>
 #include <iterator>
 #include <utility>
 
 #include "base/check.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -51,7 +51,7 @@ AdEventList FilterAdEvents(const AdEventList& ad_events,
   const base::Time now = base::Time::Now();
 
   AdEventList filtered_ad_events;
-  base::ranges::copy_if(
+  std::ranges::copy_if(
       ad_events, std::back_inserter(filtered_ad_events),
       [now, time_constraint, &creative_ad](const AdEventInfo& ad_event) {
         CHECK(ad_event.created_at);

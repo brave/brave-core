@@ -10,6 +10,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "components/external_intents/android/jni_headers/InterceptNavigationDelegateImpl_jni.h"
 #include "components/navigation_interception/intercept_navigation_delegate.h"
+#include "components/navigation_interception/intercept_navigation_throttle.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -30,6 +31,7 @@ namespace external_intents {
 namespace {
 
 using navigation_interception::InterceptNavigationDelegate;
+using navigation_interception::InterceptNavigationThrottle;
 
 class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
  public:
@@ -40,14 +42,18 @@ class BraveInterceptNavigationDelegate : public InterceptNavigationDelegate {
     pref_service_ = pref_service;
   }
 
-  bool ShouldIgnoreNavigation(
-      content::NavigationHandle* navigation_handle) override {
+  void ShouldIgnoreNavigation(
+      content::NavigationHandle* navigation_handle,
+      bool should_run_async,
+      InterceptNavigationThrottle::ResultCallback result_callback) override {
     if (ShouldPlayVideoInBrowser(GURL(base::EscapeExternalHandlerValue(
-            navigation_handle->GetURL().spec()))))
-      return false;
+            navigation_handle->GetURL().spec())))) {
+      std::move(result_callback).Run(false);
+      return;
+    }
 
     return InterceptNavigationDelegate::ShouldIgnoreNavigation(
-        navigation_handle);
+        navigation_handle, should_run_async, std::move(result_callback));
   }
 
  private:

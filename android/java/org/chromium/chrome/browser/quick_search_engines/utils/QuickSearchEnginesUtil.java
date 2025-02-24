@@ -14,10 +14,12 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesModel;
+import org.chromium.chrome.browser.regional_capabilities.RegionalCapabilitiesServiceFactory;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.util.SharedPreferencesHelper;
+import org.chromium.components.regional_capabilities.RegionalCapabilitiesService;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
@@ -113,10 +115,13 @@ public class QuickSearchEnginesUtil {
         // Get template URL service and default search engine
         TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(profile);
         TemplateUrl defaultSearchEngine = templateUrlService.getDefaultSearchEngineTemplateUrl();
+        RegionalCapabilitiesService regionalCapabilities =
+                RegionalCapabilitiesServiceFactory.getForProfile(profile);
 
         // Get sorted and filtered list of template URLs
         List<TemplateUrl> templateUrls =
-                getSortedTemplateUrls(templateUrlService, defaultSearchEngine);
+                getSortedTemplateUrls(
+                        templateUrlService, defaultSearchEngine, regionalCapabilities);
 
         // Get existing or create new search engines map
         Map<String, QuickSearchEnginesModel> searchEnginesMap = getOrCreateSearchEnginesMap();
@@ -139,11 +144,13 @@ public class QuickSearchEnginesUtil {
 
     /** Gets sorted and filtered list of template URLs */
     private static List<TemplateUrl> getSortedTemplateUrls(
-            TemplateUrlService service, TemplateUrl defaultSearchEngine) {
+            TemplateUrlService service,
+            TemplateUrl defaultSearchEngine,
+            RegionalCapabilitiesService regionalCapabilities) {
         List<TemplateUrl> templateUrls = service.getTemplateUrls();
         // Sort and filter unnecessary template URLs based on region
         SearchEngineAdapter.sortAndFilterUnnecessaryTemplateUrl(
-                templateUrls, defaultSearchEngine, service.isEeaChoiceCountry());
+                templateUrls, defaultSearchEngine, regionalCapabilities.isInEeaCountry());
         return templateUrls;
     }
 

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 
+#include <algorithm>
 #include <memory>
 
 #include "base/functional/bind.h"
@@ -78,7 +79,7 @@ void SharedPinnedTabServiceBrowserTest::TearDownOnMainThread() {
   }
 
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return base::ranges::none_of(browsers_, [](const auto& b) { return b; });
+    return std::ranges::none_of(browsers_, [](const auto& b) { return !!b; });
   }));
 
   InProcessBrowserTest::TearDownOnMainThread();

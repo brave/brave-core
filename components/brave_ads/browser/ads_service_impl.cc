@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
+#include <algorithm>
 #include <optional>
 #include <utility>
 
@@ -21,7 +22,6 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -1598,9 +1598,9 @@ void AdsServiceImpl::GetSiteHistory(int max_count,
               site_history.push_back(result.url().GetWithEmptyPath());
             }
 
-            base::ranges::sort(site_history);
-            site_history.erase(base::ranges::unique(site_history),
-                               site_history.cend());
+            std::ranges::sort(site_history);
+            auto to_remove = std::ranges::unique(site_history);
+            site_history.erase(to_remove.begin(), to_remove.end());
             std::move(callback).Run(site_history);
           },
           std::move(callback)),

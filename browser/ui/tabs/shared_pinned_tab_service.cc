@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -427,8 +428,8 @@ void SharedPinnedTabService::TabChangedAt(content::WebContents* contents,
     return;
   }
 
-  auto iter = base::ranges::find(pinned_tab_data_, contents,
-                                 &PinnedTabData::shared_contents);
+  auto iter = std::ranges::find(pinned_tab_data_, contents,
+                                &PinnedTabData::shared_contents);
   if (iter == pinned_tab_data_.end()) {
     return;
   }
@@ -621,8 +622,8 @@ void SharedPinnedTabService::OnTabUnpinned(
 
   // We shouldn't count on |index| in this case. The previous index could be
   // different from |index|.
-  auto iter = base::ranges::find(pinned_tab_data_, shared_contents,
-                                 &PinnedTabData::shared_contents);
+  auto iter = std::ranges::find(pinned_tab_data_, shared_contents,
+                                &PinnedTabData::shared_contents);
   DCHECK(iter != pinned_tab_data_.end());
   const auto previous_index = std::distance(pinned_tab_data_.begin(), iter);
 
@@ -723,7 +724,7 @@ void SharedPinnedTabService::SynchronizeNewBrowser(Browser* browser) {
          .contents_owner_model = model});
   }
 
-  if (base::ranges::equal(
+  if (std::ranges::equal(
           new_pinned_tabs, pinned_tab_data_,
           [&](const auto& new_pin_tab, const auto& old_pin_tab) {
             return new_pin_tab.renderer_data.last_committed_url ==
@@ -830,9 +831,9 @@ void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
   } else {
     // Restore a shared pinned tab from a closed browser.
     auto iter =
-        base::ranges::find(cached_shared_contentses_from_closing_browser_,
-                           pinned_tab_data.shared_contents,
-                           &std::unique_ptr<content::WebContents>::get);
+        std::ranges::find(cached_shared_contentses_from_closing_browser_,
+                          pinned_tab_data.shared_contents,
+                          &std::unique_ptr<content::WebContents>::get);
     DCHECK(iter != cached_shared_contentses_from_closing_browser_.end());
     auto unique_shared_contents = std::move(*iter);
     DCHECK(unique_shared_contents);

@@ -1,5 +1,5 @@
 diff --git a/crypto/unexportable_key_metrics.cc b/crypto/unexportable_key_metrics.cc
-index 1c80cebe266bbd0856cade1f127c0446786304a8..7e855d4c6cf4ac478ea3794729d695000c9d695b 100644
+index 5144c7c9574dcc0b752551d0651977cd4ba50006..e9a87eef4128531e4b8a3437b8b925d51107f55b 100644
 --- a/crypto/unexportable_key_metrics.cc
 +++ b/crypto/unexportable_key_metrics.cc
 @@ -23,6 +23,7 @@ enum class KeyType {
@@ -26,7 +26,7 @@ index 1c80cebe266bbd0856cade1f127c0446786304a8..7e855d4c6cf4ac478ea3794729d69500
          supported_algo = internal::TPMSupport::kECDSA;
          break;
        case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:
-@@ -297,6 +300,7 @@ std::string AlgorithmToString(SignatureVerifier::SignatureAlgorithm algorithm) {
+@@ -299,6 +302,7 @@ std::string AlgorithmToString(SignatureVerifier::SignatureAlgorithm algorithm) {
      case SignatureVerifier::SignatureAlgorithm::RSA_PSS_SHA256:
        return "RSA";
      case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:

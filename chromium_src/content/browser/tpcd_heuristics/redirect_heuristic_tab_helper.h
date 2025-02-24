@@ -13,7 +13,7 @@
 #undef MaybeRecordRedirectHeuristic
 #undef RedirectHeuristicTabHelper
 
-// Disable RedirectHeuristicTabHelper functionality since we disable kDIPS, so
+// Disable RedirectHeuristicTabHelper functionality since we disable kBtm, so
 // the upstream code would not work (and crash because it doesn't check that
 // dips_service_ can be a null).
 class RedirectHeuristicTabHelper

@@ -6,7 +6,7 @@ for making strings OS specific.  Other platform defines such as use_titlecase
 are declared in tools/grit/grit_args.gni.
 -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
-<grit base_dir="." latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
+<grit base_dir="." latest_public_release="0" current_release="1" source_lang_id="en" enc_check="möl">
   <outputs>
     <output filename="grit/generated_resources.h" type="rc_header">
       <emit emit_type="prepend" />
@@ -296,11 +296,12 @@ are declared in tools/grit/grit_args.gni.
       <!-- Profiles specific strings -->
       <part file="profiles_strings.grdp" />
 
+      <!-- Shortcut Input specific strings -->
+      <part file="shortcut_input_strings.grdp" />
+
       <!-- Brave-OS-specific strings -->
       <if expr="is_chromeos">
         <part file="chromeos_shared_strings.grdp" />
-      </if>
-      <if expr="chromeos_ash">
         <part file="chromeos_strings.grdp" />
         <part file="os_settings_strings.grdp" />
         <part file="os_settings_search_tag_strings.grdp" />
@@ -589,6 +590,9 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_READING_MODE" desc="Context menu menuitem to open page in reading mode view">
            Open in reading mode
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_CLOSE_GLIC" desc="Context menu item to close glic view">
+           Close
           </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="The name of the Reload command in the content area context menu">
             &amp;Reload
@@ -900,6 +904,9 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_READING_MODE" desc="Context menu menuitem to open page in reading mode view">
            Open in Reading Mode
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_CLOSE_GLIC" desc="Context menu item to close glic view">
+           Close
           </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="In Title Case: The name of the Reload command in the content area context menu">
             &amp;Reload
@@ -1543,7 +1550,7 @@ are declared in tools/grit/grit_args.gni.
         </if>
       </if>
 
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_VISIT_DESKTOP_OF_LRU_USER" desc="The text label of the menu item which allows the user to move a window from one users desktop to another.">
           Move window to <ph name="USER_NAME">$1<ex>User name</ex></ph> (<ph name="USER_EMAIL">$2<ex>john@google.com</ex></ph>)
         </message>
@@ -1602,9 +1609,6 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_NAME_WINDOW" desc="The text label of the Name Window menu item, used to give a user-specified name to a window.">
           Name &amp;window...
         </message>
-        <message name="IDS_COMPACT_MODE" desc="The text label of the Toggle Compact Mode item, used to make the browser compact.">
-          &amp;Toggle Compact Mode
-        </message>
         <message name="IDS_CHROMELABS" desc="The text label of the Brave Labs menu item">
           Brave &amp;Labs...
         </message>
@@ -1654,9 +1658,6 @@ are declared in tools/grit/grit_args.gni.
         </message>
         <message name="IDS_NAME_WINDOW" desc="In Title Case: The text label of the Name Window menu item, used to give a user-specified name to a window.">
           Name &amp;Window...
-        </message>
-        <message name="IDS_COMPACT_MODE" desc="The text label of the Toggle Compact Mode item, used to make the browser compact.">
-          &amp;Toggle Compact Mode
         </message>
         <message name="IDS_CHROMELABS" desc="In Title Case: The text label of the Brave Labs menu item">
           Brave &amp;Labs...
@@ -2444,50 +2445,6 @@ are declared in tools/grit/grit_args.gni.
         This file contains malware or comes from a suspicious site.
       </message>
 
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_TITLE" desc="On the downloads page, the title in the interstitial to bypass a dangerous download warning.">
-        Download warning
-      </message>
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_CONTINUE" desc="On the downloads page, the text for the continue anyway button in the interstitial to bypass a dangerous download warning.">
-        Continue anyway
-      </message>
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_CANCEL" desc="On the downloads page, the text for the back to safety button in the interstitial to bypass a dangerous download warning.">
-        Back to safety
-      </message>
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_DOWNLOAD" desc="On the downloads page, the text for the download button in the interstitial to bypass a dangerous download warning.">
-        Download
-      </message>
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_SURVEY_TITLE" desc="On the downloads page, the survey title in the interstitial to bypass a dangerous download warning.">
-        Tell us why you're downloading this file anyway
-      </message>
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_SURVEY_CREATED_FILE" desc="On the downloads page, the created file survey option in the interstitial to bypass a dangerous download warning.">
-        I created this file
-      </message>
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_SURVEY_TRUST_SITE_WITHOUT_URL" desc="On the downloads page, the trust site survey option within the interstitial to bypass a dangerous download warning.">
-        I trust the site
-      </message>
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_SURVEY_TRUST_SITE_WITH_URL" desc="On the downloads page, the trust site survey option with a url within the interstitial to bypass a dangerous download warning.">
-        I trust the site (<ph name="SITE_URL">$1<ex>https://example.com</ex></ph>)
-      </message>
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_SURVEY_ACCEPT_RISK" desc="On the downloads page, the accept risk survey option in the interstitial to bypass a dangerous download warning.">
-        I'm willing to accept the risk
-      </message>
-      <!-- Dangerous Download Interstitial Accessibility -->
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_SURVEY_TITLE_ACCESSIBLE" desc="On the downloads page, the accessible label text for the survey title in the interstitial to bypass a dangerous download warning.">
-        Tell us why you're downloading this file anyway survey
-      </message>
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_SURVEY_CREATED_FILE_ACCESSIBLE" desc="On the downloads page, the accessible label text for the created file survey option in the interstitial to bypass a dangerous download warning.">
-        I created this file, radio button group, 1 of 3
-      </message>
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_SURVEY_TRUST_SITE_WITHOUT_URL_ACCESSIBLE" desc="On the downloads page, the accessible label text for the trust site survey option within the interstitial to bypass a dangerous download warning.">
-        I trust the site, radio button group, 2 of 3
-      </message>
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_SURVEY_TRUST_SITE_WITH_URL_ACCESSIBLE" desc="On the downloads page, the accessible label text for the trust site survey option with a url within the interstitial to bypass a dangerous download warning.">
-        I trust the site (<ph name="SITE_URL">$1<ex>https://example.com</ex></ph>), radio button group, 2 of 3
-      </message>
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_INTERSTITIAL_SURVEY_ACCEPT_RISK_ACCESSIBLE" desc="On the downloads page, the accessible label text for the accept risk survey option in the interstitial to bypass a dangerous download warning.">
-        I'm willing to accept the risk, radio button group, 3 of 3
-      </message>
-
       <!-- Download Alerts for Accessibility -->
       <message name="IDS_DOWNLOAD_STATUS_IN_PROGRESS_ACCESSIBLE_ALERT" desc="The title of a download notification: the current download status is in progress. This message is for screen reader users.">
                Downloading <ph name="SIZE">$1<ex>52.7 MB</ex></ph>, <ph name="FILE_NAME">$2<ex>somedocument.pdf</ex></ph>
@@ -3129,12 +3086,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_IMMEDIATE_DEEP_SCAN_BYPASS" desc="Text shown in the download bubble to allow users to bypass a deep scan">
         Download suspicious file
       </message>
-      <message name="IDS_DEEP_SCANNING_PROMPT_REMOVAL_NOTICE" desc="Notice shown in the download bubble when deep scanning is going to happen automatically">
-        The next time Google Safe Browsing finds a suspicious download, it will automatically scan it as part of the <ph name="LINK">$1<ex>enhanced protection</ex></ph> you chose
-      </message>
-      <message name="IDS_DEEP_SCANNING_PROMPT_REMOVAL_NOTICE_LINK" desc="Link text within the notice in the download bubble about deep scanning happening automatically. See IDS_DEEP_SCANNING_PROMPT_REMOVAL_NOTICE">
-        enhanced protection
-      </message>
 
       <!-- Local archive decryption in download bubble -->
       <message name="IDS_DOWNLOAD_BUBBLE_STATUS_LOCAL_DECRYPTION_STATUS" desc="Prompt when a suspicious archive is blocked due to being encrypted">
@@ -3163,7 +3114,7 @@ are declared in tools/grit/grit_args.gni.
       </message>
 
       <!-- Web App Window Title string -->
-      <message name="IDS_WEB_APP_WITH_APP_TITLE" desc="Title of the web app window with app_title.">
+      <message name="IDS_WEB_APP_WITH_APP_TITLE" desc="Title of the web app window with application-title.">
         <ph name="APP_NAME">$1<ex>Sample App</ex></ph> - <ph name="APP_TITLE">$2<ex>News</ex></ph>
       </message>
 
@@ -4766,7 +4717,7 @@ are declared in tools/grit/grit_args.gni.
         Parallels Desktop: <ph name="PLUGIN_VM_NAME">$1<ex>PvmDefault</ex></ph>
       </message>
 
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_UTILITY_PROCESS_IPP_PARSER_SERVICE_NAME" desc="The name of the utility process used for parsing IPP requests out-of-process.">
           IPP Parser
         </message>
@@ -5015,6 +4966,12 @@ are declared in tools/grit/grit_args.gni.
       </message>
 
       <if expr="enable_extensions_core">
+        <message name="IDS_EXTENSIONS_LOAD_ERROR_ALERT_HEADING" desc="The title of the section that describes an extension load error.">
+          Error Loading Extension
+        </message>
+        <message name="IDS_EXTENSIONS_LOAD_ERROR_MESSAGE" desc="The message which tells the user that an extension failed to load.">
+          Failed to load extension from:
+        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_FULL_ACCESS" desc="Permission string for full access to the computer and all websites.">
           Read and change all your data on your computer and all websites
         </message>
@@ -5402,7 +5359,7 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_APP_CANT_DOWNGRADE_VERSION" desc="Error message when a user tries to install an app with a lower version than a version that it already installed.">
         Attempted to downgrade app.
       </message>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_EXTENSION_CANT_INSTALL_IN_DEVICE_LOCAL_ACCOUNT" desc="Error message when a user tries to install or the administrator tries to force-install through policy an extension that is not allowed in a device-local account.">
           <ph name="EXTENSION_NAME">$1<ex>Brave Talk</ex></ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>nckgahadagoaajjgafhacjanaoiihapd</ex></ph>") is not allowed in this type of session.
         </message>
@@ -5496,12 +5453,12 @@ are declared in tools/grit/grit_args.gni.
           To use this extension, type "<ph name="EXTENSION_KEYWORD">$1<ex>search</ex></ph>", then TAB, then your command or search.
         </message>
 
-        <if expr="not chromeos_ash and not is_macosx">
+        <if expr="not is_chromeos and not is_macosx">
           <message name="IDS_EXTENSION_INSTALLED_MANAGE_INFO" desc="Text displayed in the InfoBubble with instructions on how to find the chrome://extensions/ management page">
             Manage your extensions by clicking Extensions in the Tools menu.
           </message>
         </if>
-        <if expr="chromeos_ash">
+        <if expr="is_chromeos">
           <message name="IDS_EXTENSION_INSTALLED_MANAGE_INFO" desc="Text displayed in the InfoBubble with instructions on how to find the chrome://extensions/ management page on ChromeOS">
             Manage your extensions by clicking Extensions in the "More tools" menu.
           </message>
@@ -5551,12 +5508,6 @@ are declared in tools/grit/grit_args.gni.
 
       <!-- Extensions strings, which are not used by chrome://extensions. -->
       <if expr="enable_extensions">
-        <message name="IDS_EXTENSIONS_LOAD_ERROR_ALERT_HEADING" desc="The title of the section that describes an extension load error.">
-          Error Loading Extension
-        </message>
-        <message name="IDS_EXTENSIONS_LOAD_ERROR_MESSAGE" desc="The message which tells the user that an extension failed to load.">
-          Failed to load extension from:
-        </message>
         <message name="IDS_EXTENSIONS_WANTS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension wants to run on a specific site.">
           Wants access to this site
         </message>
@@ -6882,7 +6833,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PLUGIN_BLOCKED_BY_POLICY" desc="The placeholder text for a plugin blocked by enterprise policy.">
         <ph name="PLUGIN_NAME">$1<ex>Flash</ex></ph> is blocked by enterprise policy
       </message>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_NACL_PLUGIN_BLOCKED" desc="The placeholder text for a blocked plugin.">
           This plugin is not supported on this device
         </message>
@@ -6994,7 +6945,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!-- chrome://browser-switch strings -->
-      <if expr="toolkit_views and not chromeos_lacros and not chromeos_ash">
+      <if expr="toolkit_views and not is_chromeos">
         <message name="IDS_ABOUT_BROWSER_SWITCH_TITLE" desc="about:browser-switch page title">
           Legacy Browser Support
         </message>
@@ -7131,29 +7082,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
 
-      <if expr="chromeos_ash">
-        <message name="IDS_ABOUT_OS_TEXT1_LABEL" desc="Begin label text on the os://about page from ChromeOS which directs a user to a dialog showing Brave browser specific about page - enclosing url link.">
-          Looking for the browser about page? Visit
-        </message>
-        <message name="IDS_ABOUT_OS_TEXT2_LABEL" desc="End label text on the os://about page from ChromeOS which directs a user to a dialog showing Brave browser specific about page - enclosing url link.">
-          .
-        </message>
-        <message name="IDS_ABOUT_OS_LINK" translateable="false" desc="Label for button on the os://about page from ChromeOS which shows the user the link to the Brave browser specific about page.">
-          chrome://about
-        </message>
-      </if>
-      <if expr="chromeos_lacros">
-        <message name="IDS_ABOUT_OS_TEXT1_LABEL" desc="Begin label text on the chrome://about page from ChromeOS which directs a user to a dialog showing system specific about page - enclosing url link.">
-          Looking for the system about page? Visit
-        </message>
-        <message name="IDS_ABOUT_OS_TEXT2_LABEL" desc="End label text on the chrome://about page from ChromeOS which directs a user to a dialog showing system specific about page - enclosing url link.">
-          .
-        </message>
-        <message name="IDS_ABOUT_OS_LINK" translateable="false" desc="Label for button on the chrome://about page from ChromeOS which shows the user the link to the system specific about page.">
-          os://about
-        </message>
-      </if>
-
       <!-- NaCl plugin strings -->
       <message name="IDS_NACL_APP_MISSING_ARCH_MESSAGE" desc="Shown if a Native Client app does not support the current architecture">
         This page uses a Native Client app that doesn't work on your computer.
@@ -7257,8 +7185,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT_CONTEXTUAL" desc="The text displayed in the overlay contextual searchbox when it is empty. It is meant to invite the user to ask a question about their current page and inform them that this is a contextual searchbox.">
         Ask about this page
       </message>
+      <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT_CONTEXTUAL_PDF" desc="The text displayed in the overlay contextual searchbox when it is empty over a PDF document. It is meant to invite the user to ask a question about their current PDF document and inform them that this is a contextual searchbox.">
+        Ask about this document
+      </message>
       <message name="IDS_GOOGLE_SEARCH_BOX_CONTEXTUAL_LOADING_HINT_PRIMARY" desc="The hint text displayed in the overlay contextual searchbox ghost loader. It is meant to inform the user that suggestions are still being generated.">
         Generating suggestions for this page…
+      </message>
+      <message name="IDS_GOOGLE_SEARCH_BOX_CONTEXTUAL_LOADING_HINT_PRIMARY_PDF" desc="The hint text displayed in the overlay contextual searchbox ghost loader when the user is viewing a PDF document. It is meant to inform the user that suggestions are still being generated about the PDF document they are on.">
+        Generating suggestions for this document…
       </message>
       <message name="IDS_GOOGLE_SEARCH_BOX_CONTEXTUAL_LOADING_HINT_SECONDARY" desc="The hint text displayed in the overlay contextual searchbox ghost loader. It is meant to inform the user that they can still ask questions about the page while suggestions are being generated.">
         You can also ask things like “summarize”
@@ -8190,17 +8124,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_DRIVE_DISABLE_BUTTON_TEXT_V2" desc="Text shown on the disable button of a NTP Drive module v2.">
        Don't show Drive
       </message>
-      <message name="IDS_NTP_MODULES_DRIVE_DISMISS_BUTTON_TEXT" desc="Text shown on the disable button of a NTP Drive module v2.">
-       Hide these files
-      </message>
       <message name="IDS_NTP_MODULES_DRIVE_NAME" desc="Name of the Drive module in sentence case shown in various UIs.">
         Google Drive
       </message>
-      <!-- TODO(crbug.com/372724129): Finalize and translate IDS_NTP_MODULES_SHAREPOINT_NAME. -->
-      <message name="IDS_NTP_MODULES_SHAREPOINT_NAME" translateable="false" desc="Name of the SharePoint module in sentence case shown in various UIs.">
-        SharePoint
-      </message>
-      <message name="IDS_NTP_MODULES_DRIVE_FILES_SENTENCE" desc="Name of the files in the Drive module in sentence case shown in various UIs.">
+      <message name="IDS_NTP_MODULES_FILES_SENTENCE" desc="Name of the files in the Drive and Microsoft files module in sentence case shown in various UIs.">
         Files
       </message>
       <message name="IDS_NTP_MODULES_DUMMY_LOWER" translateable="false" desc="Name of the dummy module in lowercase shown in various UIs.">
@@ -8215,12 +8142,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <ph name="BREAK">&lt;br&gt;</ph>
         You can manage settings from the card menu or see more options in Customize Brave.
       </message>
-      <!-- TODO(crbug.com/372724129): Finalize and translate IDS_NTP_MODULES_SHAREPOINT_INFO. -->
-      <message name="IDS_NTP_MODULES_SHAREPOINT_INFO" translateable="false" desc="Text shown in the body of the info dialog of the SharePoint module.">
-        You’re seeing suggested files to help you easily get back to your most recent activity in Microsoft Sharepoint.
+      <message name="IDS_NTP_MODULES_MICROSOFT_FILES_NAME" desc="Name of the Microsoft files module in sentence case shown in various UIs.">
+        SharePoint and OneDrive files
+      </message>
+      <message name="IDS_NTP_MODULES_MICROSOFT_FILES_INFO" desc="Text shown in the body of the info dialog of the Microsoft files card.">
+        You’re seeing suggested files to help you easily get back to your most recent activity in Microsoft SharePoint and OneDrive.
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
         You can manage settings from the card menu or see more options in Customize Brave.
+      </message>
+      <message name="IDS_NTP_MODULES_MICROSOFT_FILES_DISABLE_BUTTON_TEXT" desc="Text shown on the disable button of a NTP Microsoft files card.">
+        Don't show SharePoint and OneDrive files
       </message>
       <message name="IDS_NTP_MODULES_DISMISS_FOR_HOURS_BUTTON_TEXT" desc="Text shown on the dismiss button of an NTP module that specifies length of time in hours.">
         Hide for <ph name="MODULE_TITLE">$1<ex>5</ex></ph> hours
@@ -8246,12 +8178,24 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_GOOGLE_CALENDAR_DISABLE_BUTTON_TEXT" desc="Text shown on the disable button of a NTP Brave Calendar card.">
         Don't show Brave Calendar
       </message>
+      <message name="IDS_NTP_MODULES_MICROSOFT_SIGN_OUT_BUTTON_TEXT" desc="Button text for signing out of Microsoft for the Microsoft cards on the NTP." meaning="Sign out of account.">
+        Sign out of Microsoft
+      </message>
       <message name="IDS_NTP_MODULES_OUTLOOK_CALENDAR_TITLE" desc="Title of the Brave Calendar module shown in various UIs for Customize Brave and the NTP." meaning="Title of feature for showing a glimpse of a user's Google Calendar.">
         Outlook Calendar
       </message>
       <message name="IDS_NTP_MODULES_OUTLOOK_CALENDAR_DISABLE_BUTTON_TEXT" desc="Text shown on the disable button of a NTP Outlook Calendar card." translateable="false">
         Don't show Outlook Calendar
       </message>
+      <message name="IDS_NTP_MODULES_OUTLOOK_CALENDAR_DISMISS_TOAST_MESSAGE" desc="Text shown on toast on the NTP indicating that the Outlook Calendar card has been dismissed">
+        Outlook Calendar hidden
+      </message>
+     <message name="IDS_NTP_MODULES_OUTLOOK_CALENDAR_INFO" desc="Text shown in the body of the info dialog of the Outlook calendar module.">
+       You’re seeing your calendar to help you easily navigate to your next event in Outlook Calendar.
+       <ph name="BREAK">&lt;br&gt;</ph>
+       <ph name="BREAK">&lt;br&gt;</ph>
+       You can manage settings from the card menu or see more options in Customize Brave.
+     </message>
       <message name="IDS_NTP_MODULES_CALENDAR_DOUBLE_BOOKED" desc="Text displaying that the calendar event is booked at the same time as another." meaning="The meeting takes place at the same time as another.">
         Double-Booked
       </message>
@@ -9881,22 +9825,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAB_GROUPS_NAMED_GROUP_TOOLTIP" desc="Dynamic tooltip to display on hover over named tab group.">
         <ph name="GROUP_NAME">$1<ex>New Group</ex></ph> - <ph name="GROUP_CONTENT_STRING">$2<ex>"New Tab" and one other</ex></ph>
       </message>
-      <message name="IDS_GLIC_PROMO_TITLE" desc="Glic promo title.">
-        [placeholder text]
-      </message>
-      <message name="IDS_GLIC_PROMO_BODY" desc="Glic promo body text.">
-        [placeholder text]
-      </message>
-      <if expr="use_titlecase">
-        <message name="IDS_GLIC_PROMO_CUSTOM_ACTION" desc="Glic promo custom action button caption.">
-          Try It Out
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_GLIC_PROMO_CUSTOM_ACTION" desc="Glic promo custom action button caption.">
-          Try it out
-        </message>
-      </if>
       <message name="IDS_SHARED_HIGHLIGHTING_PROMO" desc="The title of in-product-help message encouraging users to interact with the highlight">
         To create a highlight like this one, select any text and right-click.
       </message>
@@ -10287,9 +10215,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_PASSWORD_MANAGER_SAVE_BUTTON" desc="Save button text for password manager">
           Save
         </message>
-        <message name="IDS_PASSWORD_MANAGER_SAVE_BUBBLE_OPT_IN_BUTTON" desc="Text for action button in the save bubble that leads the user to opt in to the account-scoped password storage.">
-          Next
-        </message>
         <message name="IDS_PASSWORD_MANAGER_MOVE_BUBBLE_CANCEL_BUTTON" desc="Text for the cancel button in the password manager move bubble.">
           No thanks
         </message>
@@ -10578,12 +10503,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_FEEDBACK_OFFLINE_DIALOG_TEXT" desc="The content of the message box displayed when the user attempts to send a report while offline">
           Thank you for your feedback. You are offline now, and your report will be sent later.
         </message>
-        <if expr="not chromeos_ash">
+        <if expr="not is_chromeos">
           <message name="IDS_FEEDBACK_INCLUDE_SYSTEM_INFORMATION_CHKBOX" desc="Checkbox for including system information on the bug report dialog box">
             Send <ph name="BEGIN_LINK1">&lt;a href="#" id="sys-info-url"&gt;</ph>system information<ph name="END_LINK1">&lt;/a&gt;</ph>
           </message>
         </if>
-        <if expr="chromeos_ash">
+        <if expr="is_chromeos">
           <message name="IDS_FEEDBACK_INCLUDE_SYSTEM_INFORMATION_AND_METRICS_CHKBOX" desc="Checkbox for including system information and metrics on the bug report dialog box">
             Send <ph name="BEGIN_LINK1">&lt;a href="#" id="sys-info-url"&gt;</ph>system information<ph name="END_LINK1">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK2">&lt;a href="#" id="histograms-url"&gt;</ph>metrics<ph name="END_LINK2">&lt;/a&gt;</ph>
           </message>
@@ -10719,7 +10644,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           Error details:
         </message>
       </if>
-      <if expr="is_win or is_macosx or chromeos_ash">
+      <if expr="is_win or is_macosx or is_chromeos">
         <message name="IDS_UPGRADE_DISABLED_BY_POLICY" desc="Status label: Upgrades disabled by policy">
           Updates are disabled by your administrator.
         </message>
@@ -10916,6 +10841,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           =1 {Add tab to new group}
           other {Add tabs to new group}}
         </message>
+        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_SPLIT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
+          Split tab with active tab
+        </message>
         <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
           New group
         </message>
@@ -10943,6 +10871,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_TAB_CXMENU_COMMERCE_PRODUCT_SPEC" desc="The text for the context menu item to compare selected tabs." translateable="false">
           Compare tabs
+        </message>
+        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_COMPARISON_TABLE" desc="The label for the tab context menu item to add the current tab to a new comparison table">
+          Add tab to new comparison table
         </message>
         <if expr="is_chromeos">
           <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_MENU_ITEM_A11Y" desc="The a11y message for menu items in 'Move tabs to another window' when grouped by desk.">
@@ -11014,6 +10945,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           =1 {Add Tab to New Group}
           other {Add Tabs to New Group}}
         </message>
+        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_SPLIT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
+          Split Tab With Active Tab
+        </message>
         <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="In Title Case: The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
           New Group
         </message>
@@ -11041,6 +10975,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_TAB_CXMENU_COMMERCE_PRODUCT_SPEC" desc="In Title Case: The text for the context menu item to compare selected tabs." translateable="false">
           Compare Tabs
+        </message>
+        <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_COMPARISON_TABLE" desc="The label for the tab context menu item to add the current tab to a new comparison table">
+          Add Tab to New Comparison Table
         </message>
       </if>
 
@@ -11203,9 +11140,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_TAB_ORGANIZATION_SUCCESS_MISSING_ACTIVE_TAB_TITLE" desc="The header text for the success state in the tab organization UI, when there were no groups found for the selected tab">
         There are no similar tabs to organize, but you might like these groups
       </message>
-      <message name="IDS_TAB_ORGANIZATION_SUCCESS_TITLE" desc="The header text for the MVP success state in the tab organization UI">
-        Tab group suggestion
-      </message>
       <message name="IDS_TAB_ORGANIZATION_SUCCESS_TITLE_SINGLE" desc="The singular form header text for the success state in the tab organization UI">
         Tab group suggested
       </message>
@@ -11359,7 +11293,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           Your tab groups now automatically save
         </message>
 
-    <!-- Tab Group Deletion Dialog -->
+      <!-- Saved Tab Group Error -->
+      <message name="IDS_SAVED_TAB_GROUPS_UNSUPPORTED_ERROR" desc="The text on an error page showing that the URL from the remote device is not supported by the saved tab griups feature and cannot be synced.">
+          The URL from the remote device is not supported
+      </message>
+
+      <!-- Tab Group Deletion Dialog -->
       <message name="IDS_TAB_GROUP_DELETION_DIALOG_MISSING_EMAIL" desc="The email address used in the deletion dialog body when an email is missing.">
         Brave with this Brave sync chain
       </message>
@@ -11481,6 +11420,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_SHARE_GROUP" desc="The label of the tab group header context menu item for sharing the current group.">
           Share group
         </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_RECENT_ACTIVITY" desc="The label of the tab group header context menu item for open recent activity for the current group.">
+          Recent activity
+        </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_MANAGE_GROUP" desc="The label of the tab group header context menu item for managing the shared group.">
           Manage sharing
         </message>
@@ -11528,6 +11470,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_SHARE_GROUP" desc="The label of the tab group header context menu item for sharing the current group.">
           Share Group
+        </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_RECENT_ACTIVITY" desc="The label of the tab group header context menu item for open recent activity for the current group.">
+          Recent Activity
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_MANAGE_GROUP" desc="The label of the tab group header context menu item for managing the shared group.">
           Manage Sharing
@@ -11577,6 +11522,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
             <message name="IDS_DATA_SHARING_MANAGE_STOP_SHARING_OPTION" desc="The Label for the manage flow stop sharing option and confirmation button.">
               Stop Sharing
             </message>
+            <message name="IDS_DATA_SHARING_MANAGE_ACTIVITY_LOG_OPTION" desc="The Label for the manage flow stop sharing option and confirmation button.">
+              Activity Log
+            </message>
           <!-- !Data Sharing Owner Manage Flow -->
 
           <!-- Data Sharing Owner Stop Sharing Dialog -->
@@ -11616,10 +11564,10 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
               Join Tab Group with <ph name="OWNER_FIRST_NAME">$1<ex>Ali</ex></ph>
             </message>
             <message name="IDS_DATA_SHARING_PREVIEW_DIALOG_TITLE_SINGULAR" desc="The title for the dialog that shows a preview of a tab group with 1 other member.">
-              Join Tab Group with <ph name="OWNER_FIRST_NAME">$1<ex>Ali</ex></ph> and <ph name="NUM_OTHER_MEMBERS">$1<ex>1</ex></ph> Other
+              Join Tab Group with <ph name="OWNER_FIRST_NAME">$1<ex>Ali</ex></ph> and <ph name="NUM_OTHER_MEMBERS">$2<ex>1</ex></ph> Other
             </message>
             <message name="IDS_DATA_SHARING_PREVIEW_DIALOG_TITLE_PLURAL" desc="The title for the dialog that shows a preview of a tab group with &gt;1 other members.">
-              Join Tab Group with <ph name="OWNER_FIRST_NAME">$1<ex>Ali</ex></ph> and <ph name="NUM_OTHER_MEMBERS">$1<ex>2</ex></ph> Others
+              Join Tab Group with <ph name="OWNER_FIRST_NAME">$1<ex>Ali</ex></ph> and <ph name="NUM_OTHER_MEMBERS">$2<ex>2</ex></ph> Others
             </message>
             <message name="IDS_DATA_SHARING_PREVIEW_DIALOG_CONFIRM" desc="A button that allows a user to join a shared group.">
               Join and Open
@@ -11685,17 +11633,17 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
             </message>
 
           <!-- Delete Last Tab Dialog -->
-            <message name="IDS_DATA_SHARING_DELETE_LAST_TAB_TITLE" desc="Title for the delete last tab dialog.">
-              Keep Tab Group?
+            <message name="IDS_DATA_SHARING_DELETE_LAST_TAB_TITLE" desc="Title for the delete last tab dialog. [ICU Syntax]">
+              {NUM_GROUPS, plural, =1 {Keep Tab Group?} other {Keep Tab Groups?}}
             </message>
-            <message name="IDS_DATA_SHARING_DELETE_LAST_TAB_CANCEL" desc="Cancel button text for the delete last tab dialog.">
-              Keep Group
+            <message name="IDS_DATA_SHARING_DELETE_LAST_TAB_CONFIRM" desc="Confirm button text for the delete last tab dialog. [ICU Syntax]">
+              {NUM_GROUPS, plural, =1 {Keep Group} other {Keep Groups}}
             </message>
-            <message name="IDS_DATA_SHARING_OWNER_DELETE_LAST_TAB_CONFIRM" desc="Confirm button text for the delete last tab dialog if the user is the owner of the group.">
-              Delete Group
+            <message name="IDS_DATA_SHARING_OWNER_DELETE_LAST_TAB_CANCEL" desc="Cancel button text for the delete last tab dialog if the user is the owner of the groups. [ICU Syntax]">
+              {NUM_GROUPS, plural, =1 {Delete Group} other {Delete Groups}}
             </message>
-            <message name="IDS_DATA_SHARING_MEMBER_DELETE_LAST_TAB_CONFIRM" desc="Confirm button text for the delete last tab dialog if the user is the member of the group.">
-              Leave Group
+            <message name="IDS_DATA_SHARING_MEMBER_DELETE_LAST_TAB_CANCEL" desc="Cancel button text for the delete last tab dialog if the user is a member of the groups. [ICU Syntax]">
+              {NUM_GROUPS, plural, =1 {Leave Group} other {Leave Groups}}
             </message>
           <!-- /Delete Last Tab Dialog -->
 
@@ -11725,6 +11673,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
             </message>
             <message name="IDS_DATA_SHARING_MANAGE_STOP_SHARING_OPTION" desc="The Label for the manage flow stop sharing option and confirmation button.">
               Stop sharing
+            </message>
+            <message name="IDS_DATA_SHARING_MANAGE_ACTIVITY_LOG_OPTION" desc="The Label for the manage flow stop sharing option and confirmation button.">
+              Activity log
             </message>
           <!-- !Data Sharing Owner Manage Flow -->
 
@@ -11765,10 +11716,10 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
               Join tab group with <ph name="OWNER_FIRST_NAME">$1<ex>Ali</ex></ph>
             </message>
             <message name="IDS_DATA_SHARING_PREVIEW_DIALOG_TITLE_SINGULAR" desc="The title for the dialog that shows a preview of a tab group with 1 other member.">
-              Join tab group with <ph name="OWNER_FIRST_NAME">$1<ex>Ali</ex></ph> and <ph name="NUM_OTHER_MEMBERS">$1<ex>1</ex></ph> other
+              Join tab group with <ph name="OWNER_FIRST_NAME">$1<ex>Ali</ex></ph> and <ph name="NUM_OTHER_MEMBERS">$2<ex>1</ex></ph> other
             </message>
             <message name="IDS_DATA_SHARING_PREVIEW_DIALOG_TITLE_PLURAL" desc="The title for the dialog that shows a preview of a tab group with &gt;1 other members.">
-              Join tab group with <ph name="OWNER_FIRST_NAME">$1<ex>Ali</ex></ph> and <ph name="NUM_OTHER_MEMBERS">$1<ex>2</ex></ph> others
+              Join tab group with <ph name="OWNER_FIRST_NAME">$1<ex>Ali</ex></ph> and <ph name="NUM_OTHER_MEMBERS">$2<ex>2</ex></ph> others
             </message>
             <message name="IDS_DATA_SHARING_PREVIEW_DIALOG_CONFIRM" desc="A button that allows a user to join a shared group.">
               Join and open
@@ -11834,17 +11785,17 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
             </message>
 
           <!-- Delete Last Tab Dialog -->
-            <message name="IDS_DATA_SHARING_DELETE_LAST_TAB_TITLE" desc="Title for the delete last tab dialog.">
-              Keep tab group?
+            <message name="IDS_DATA_SHARING_DELETE_LAST_TAB_TITLE" desc="Title for the delete last tab dialog. [ICU Syntax]">
+              {NUM_GROUPS, plural, =1 {Keep tab group?} other {Keep tab groups?}}
             </message>
-            <message name="IDS_DATA_SHARING_DELETE_LAST_TAB_CANCEL" desc="cancel button text for the delete last tab dialog.">
-              Keep group
+            <message name="IDS_DATA_SHARING_DELETE_LAST_TAB_CONFIRM" desc="Confirm button text for the delete last tab dialog. [ICU Syntax]">
+              {NUM_GROUPS, plural, =1 {Keep group} other {Keep groups}}
             </message>
-            <message name="IDS_DATA_SHARING_OWNER_DELETE_LAST_TAB_CONFIRM" desc="confirm button text for the delete last tab dialog if the user is the owner of the group.">
-              Delete group
+            <message name="IDS_DATA_SHARING_OWNER_DELETE_LAST_TAB_CANCEL" desc="Cancel button text for the delete last tab dialog if the user is the owner of the groups. [ICU Syntax]">
+              {NUM_GROUPS, plural, =1 {Delete group} other {Delete groups}}
             </message>
-            <message name="IDS_DATA_SHARING_MEMBER_DELETE_LAST_TAB_CONFIRM" desc="confirm button text for the delete last tab dialog if the user is the member of the group.">
-              Leave group
+            <message name="IDS_DATA_SHARING_MEMBER_DELETE_LAST_TAB_CANCEL" desc="Cancel button text for the delete last tab dialog if the user is a member of the groups. [ICU Syntax]">
+              {NUM_GROUPS, plural, =1 {Leave group} other {Leave groups}}
             </message>
           <!-- /Delete Last Tab Dialog -->
 
@@ -11893,6 +11844,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_DATA_SHARING_OWNER_DELETE_DIALOG_BODY" desc="The body for the owner's delete group dialog.">
           Everyone will immediately lose access to the “<ph name="GROUP_NAME">$1<ex>Vacation</ex></ph>” tab group, and it will be deleted from all devices
         </message>
+        <message name="IDS_DATA_SHARING_OWNER_DELETE_DIALOG_BODY_NO_GROUP_TITLE" desc="The body for the owner's delete group dialog when the group does not have a title.">
+          Everyone will immediately lose access to this tab group, and it will be deleted from all devices
+        </message>
       <!-- /Data Sharing Owner Delete Group -->
 
       <!-- Data Sharing Preview Dialog -->
@@ -11908,11 +11862,17 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_DATA_SHARING_JOIN_GROUP_JOIN_AS" desc="A sublabel showing which profile the shared group is being joined as.">
           Join as <ph name="OWNER_FULL_NAME">$1<ex>John Doe</ex></ph>
         </message>
+        <message name="IDS_DATA_SHARING_GET_GROUP_PREVIEW_ARIA_LABEL" desc="Aria label for the group preview card.">
+          View more details about <ph name="GROUP_NAME">$1<ex>vacation group</ex></ph>
+        </message>
       <!-- /Data Sharing Preview Dialog -->
 
       <!-- Data Sharing Leave Dialog -->
         <message name="IDS_DATA_SHARING_LEAVE_DIALOG_BODY" desc="The body for the leave group dialog.">
           You’ll immediately lose access to the “<ph name="GROUP_NAME">$1<ex>Vacation</ex></ph>” tab group, and it will be deleted from all your devices
+        </message>
+        <message name="IDS_DATA_SHARING_LEAVE_DIALOG_BODY_NO_GROUP_TITLE" desc="The body for the leave group dialog when the group does not have a title.">
+          You’ll immediately lose access to this tab group, and it will be deleted from all your devices
         </message>
         <message name="IDS_DATA_SHARING_LEAVE_DIALOG_CONFIRM" desc="The text for the confirmation button for the leave group dialog.">
           Leave
@@ -11983,14 +11943,14 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <!-- /errors and warnings -->
 
       <!-- Delete Last Tab Dialog -->
-        <message name="IDS_DATA_SHARING_OWNER_DELETE_LAST_TAB_BODY" desc="Description for the confirming the owner deleting the last tab of the shared group.">
-          Keep this group to add tabs later, or delete it if you no longer need it.
+        <message name="IDS_DATA_SHARING_OWNER_DELETE_LAST_TAB_BODY" desc="Description for the confirming the owner deleting the last tab of the shared group. [ICU_Syntax]">
+          {NUM_GROUPS, plural, =1 {Keep this group to add tabs later, or delete it if you no longer need it.} other {Keep these groups to add tabs later, or delete them if you no longer need them.}}
         </message>
         <message name="IDS_DATA_SHARING_OWNER_DELETE_LAST_TAB_BODY_2" desc="More description for the confirming the owner deleting the last tab of the shared group.">
           If you delete it, everyone will immediately lose access to the "<ph name="GROUP_NAME">$1<ex>Vacation</ex></ph>" tab group, and it will be deleted from all devices.
         </message>
-        <message name="IDS_DATA_SHARING_MEMBER_DELETE_LAST_TAB_BODY" desc="Description for the confirming the member deleting the last tab of the shared group.">
-          Keep this group to add tabs later, or leave it if you no longer want access to it
+        <message name="IDS_DATA_SHARING_MEMBER_DELETE_LAST_TAB_BODY" desc="Description for the confirming the member deleting the last tab of one or more shared groups. [ICU_Syntax]">
+          {NUM_GROUPS, plural, =1 {Keep this group to add tabs later, or leave it if you no longer want access to it} other {Keep these groups to add tabs later, or leave them if you no longer want access to them}}
         </message>
       <!-- /Delete Last Tab Dialog -->
 
@@ -12290,27 +12250,27 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
 
       <!-- chrome://help -->
       <if expr="not is_android">
-        <if expr="not chromeos_ash and use_titlecase">
+        <if expr="not is_chromeos and use_titlecase">
           <message name="IDS_RELAUNCH_BUTTON" desc="Titlecase: The label for the relaunch button that relaunches the browser once update is complete">
             Relaunch
           </message>
         </if>
-        <if expr="not chromeos_ash and not use_titlecase">
+        <if expr="not is_chromeos and not use_titlecase">
           <message name="IDS_RELAUNCH_BUTTON" desc="The label for the relaunch button that relaunches the browser once update is complete">
             Relaunch
           </message>
         </if>
-        <if expr="chromeos_ash and use_titlecase">
+        <if expr="is_chromeos and use_titlecase">
           <message name="IDS_RELAUNCH_BUTTON" desc="Titlecase: The label for the relaunch button that relaunches the browser once update is complete">
             Restart
           </message>
         </if>
-        <if expr="chromeos_ash and not use_titlecase">
+        <if expr="is_chromeos and not use_titlecase">
           <message name="IDS_RELAUNCH_BUTTON" desc="The label for the relaunch button that relaunches the browser once update is complete">
             Restart
           </message>
         </if>
-        <if expr="not chromeos_ash">
+        <if expr="not is_chromeos">
           <message name="IDS_HELP_MANAGED_BY_YOUR_PARENT" desc="The text label shown in chrome://settings/help for users subject to parental controls.">
             Your browser is managed by your parent
           </message>
@@ -13051,7 +13011,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
 
       <!-- Managed UI on pages like chrome://settings and chrome://downloads -->
       <if expr="not is_android">
-        <if expr="chromeos_ash">
+        <if expr="is_chromeos">
           <message name="IDS_DEVICE_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (ChromeOS)">
             Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
           </message>
@@ -13155,12 +13115,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_NEW_TAB_GUEST_SESSION_HEADING" desc="Heading used when a person enters Guest Session">
           You're browsing as a Guest
         </message>
-        <if expr="chromeos_ash">
+        <if expr="is_chromeos">
           <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a person enters Guest Session">
             Pages you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you sign out. Files you download and bookmarks you create won't be preserved.
           </message>
         </if>
-        <if expr="not chromeos_ash">
+        <if expr="not is_chromeos">
           <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a person enters Guest Session">
             Pages you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you close all open Guest windows. Any files you download will be preserved, however.
           </message>
@@ -13281,7 +13241,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_APP_CONTEXT_MENU_OPEN_TAB" desc="Text for the button that opens the app in a tab. (In sentence case.)">
           Open in a tab
         </message>
-        <if expr="chromeos_ash">
+        <if expr="is_chromeos">
           <message name="IDS_APP_CONTEXT_MENU_ACTIVATE_ARC" desc="Text for the button that activates Android App. (In sentence case.)">
             Open
           </message>
@@ -13341,7 +13301,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_APP_CONTEXT_MENU_OPEN_TAB" desc="Text for the button that opens the app in a tab. (In title case.)">
           Open in a Tab
         </message>
-        <if expr="chromeos_ash">
+        <if expr="is_chromeos">
           <message name="IDS_APP_CONTEXT_MENU_ACTIVATE_ARC" desc="Text for the button that activates Android App. (In title case.)">
             Open
           </message>
@@ -13415,11 +13375,6 @@ This can include information about installed software, files, your browser, and 
       <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_TITLE" desc="This string appears as a subheading on a screen, and it asks users if they want to turn on sync. This string explains to users that they can back up their Brave data and use it on all their computers, phones, and other devices; a user's Brave data includes their bookmarks, passwords, history, settings, and more. If there is no natural translation for the word 'stuff' in your language, the word can be translated as 'data' or similar. Maintain the level of formality that your language generally uses in the Brave app. The tone should be informative and inviting.">
         Back up your stuff and use it on any device
       </message>
-      <if expr="chromeos_lacros">
-        <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_TITLE_LACROS" desc="This string appears as a subheading on a screen, and it asks users if they want to turn on sync. This string explains to users that they can back up their Brave browser data and use it on all their computers, phones, and other devices; a user's Brave data includes their bookmarks, passwords, history, settings, and more. If there is no natural translation for the word 'stuff' in your language, the word can be translated as 'data' or similar. Maintain the level of formality that your language generally uses in the Brave app. The tone should be informative and inviting. Please keep translations consistent with TC 7137558043921529662 (Windows, Mac, Linux) and TC 3833960754549650885 (iOS).">
-          Back up your browser stuff and use it on any device
-        </message>
-      </if>
       <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_TITLE_SIGNIN_INTERCEPT_V2" desc="This string appears as a subheading on a pop-up dialog, and it asks users if they want to turn on sync. This string explains to users that they can back up their Brave data and use it on all their computers, phones, and other devices; a user's Brave data includes their bookmarks, passwords, history, settings, and more. If there is no natural translation for the word 'stuff' in your language, the word can be translated as 'data' or similar. Maintain the level of formality that your language generally uses in the Brave app. The tone should be informative and inviting.">
         Turn on sync to back up your stuff and use it on any device
       </message>
@@ -13441,12 +13396,6 @@ This can include information about installed software, files, your browser, and 
       <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_DESC" desc="This string appears in the footer on a screen that asks users if they want to turn on sync. This string informs the user that if they choose to sync, then their history may be used to personalize Search and other services. Translate 'history' according to https://localization.google.com/glossary/termset?gid=27517723&amp;tsid=59c3162">
         You can always choose what to sync in settings. Brave may personalize Search and other services based on your history.
       </message>
-
-      <if expr="chromeos_lacros">
-        <message name="IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_DESC_WITH_ASH_SETTINGS_LINK" desc="This string appears in the footer on a screen that asks users if they want to turn on browser sync. It lets the user know that browser data is controlled in Brave settings. If Apps data type sync is enabled, it lets the user know that app sync is controlled in ChromeOS device settings. We use the same message IDS_SYNC_CONFIRMATION_TANGIBLE_SYNC_INFO_DESC at the end.">
-          You can always choose what browser data to sync in Brave settings. In <ph name="LINK_BEGIN">&lt;a href='#'&gt;</ph>device settings<ph name="LINK_END">&lt;/a&gt;</ph>, you can control sync for web apps installed from Brave browser. Brave may personalize Search and other services based on your history.
-        </message>
-      </if>
 
       <!--  Sync Confirmation section of the Signin Intercept first run experience flow -->
       <message name="IDS_SYNC_CONFIRMATION_WELCOME_TITLE_SIGNIN_INTERCEPT" desc="This string appears as a heading on a pop-up dialog that shows up after users create a new profile. It welcomes users. The tone should be friendly and inviting.">
@@ -13485,7 +13434,7 @@ This can include information about installed software, files, your browser, and 
         Loading account information...
       </message>
 
-      <if expr="not chromeos_ash and not is_android and not chromeos_lacros">
+      <if expr="not is_chromeos and not is_android">
         <!-- Dice Web Signin Interception Bubble-->
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL" desc="Label of the confirmation button in the web signin interception bubble">
           Ok
@@ -13587,11 +13536,14 @@ This can include information about installed software, files, your browser, and 
           go to settings
         </message>
 
-        <message name="IDS_SYNC_PASSPHRASE_DIALOG_FOOTER" desc="">
-          If you forgot your passphrase or want to change this setting, <ph name="SETTINGS_LINK">$1<ex>clear the data in your account</ex></ph>.
+        <message name="IDS_SYNC_PASSPHRASE_DIALOG_FOOTER_LINK" desc="Highlighted link in the dialog footer of the passphrase dialog.">
+          clear
         </message>
-        <message name="IDS_SYNC_PASSPHRASE_DIALOG_TITLE" desc="">
+        <message name="IDS_SYNC_PASSPHRASE_DIALOG_TITLE" desc="Title of the sync passphrase dialog">
           Enter your passphrase
+        </message>
+        <message name="IDS_SYNC_PASSPHRASE_DIALOG_OK_BUTTON" desc="Label of the main button of the sync passphrase dialog">
+          Enter
         </message>
 
         <if expr="use_titlecase">
@@ -13606,7 +13558,7 @@ This can include information about installed software, files, your browser, and 
         </if>
       </if>
 
-      <if expr="not chromeos_ash and not is_android">
+      <if expr="not is_chromeos and not is_android">
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME" desc="Default name for work profiles created after signin interception">
           Work
         </message>
@@ -13657,26 +13609,6 @@ This can include information about installed software, files, your browser, and 
         Continue
       </message>
 
-      <!-- Account password storage reauth tab modal dialog -->
-      <message name="IDS_ACCOUNT_PASSWORDS_WITH_PASSKEYS_REAUTH_TITLE" desc="Title of the account password storage reauth tab modal dialog. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
-        Use your Brave sync chain to save and fill passwords and passkeys?
-      </message>
-      <message name="IDS_ACCOUNT_PASSWORDS_WITH_PASSKEYS_REAUTH_DESC" desc="Body of the account password storage reauth tab modal dialog. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
-        Passwords and passkeys in your Brave sync chain will also be available on this device while you're signed in
-      </message>
-      <message name="IDS_ACCOUNT_PASSWORDS_WITH_PASSKEYS_REAUTH_DESC_ALREADY_SAVED_LOCALLY" desc="Body of the account password storage reauth tab modal dialog, shown in the case where the password was already saved locally. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
-        Brave saved your password to this device, but you can save it to your Brave sync chain instead. Then, all passwords and passkeys in your Brave sync chain will also be available while you're signed in.
-      </message>
-      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the account password storage reauth tab modal dialog.">
-        Yes
-      </message>
-      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_CLOSE_BUTTON_LABEL" desc="Label of the close button in the account password storage reauth tab modal dialog.">
-        No thanks
-      </message>
-      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_CLOSE_BUTTON_LABEL_ALREADY_SAVED_LOCALLY" desc="Label of the close button in the account password storage reauth tab modal dialog, shown in the case where the password was already saved locally.">
-        No, this device only
-      </message>
-
       <message name="IDS_PLUGIN_CRASHED_PROMPT" desc="Infobar message to notify about a crashed plugin">
        <ph name="PLUGIN_NAME">$1<ex>Flash</ex></ph> has crashed
       </message>
@@ -13711,7 +13643,7 @@ This can include information about installed software, files, your browser, and 
       <message name="IDS_EXTERNAL_PROTOCOL_CHECKBOX_PER_ORIGIN_TEXT" desc="The External Protocol Dialog is shown when a navigation is started from a webpage, such as https://google.com, to a URL where the protocol indicates that a different software application on the machine should be opened, external to the browser. For example, 'skype:' may indicate that the Skype application be opened. This string describes a checkbox that allows the user to opt out of seeing this confirmation dialog in the future from pages with the same origin as the current page, when trying to launch the same protocol currently being launched">
         Always allow <ph name="ORIGIN">$1<ex>https://google.com</ex></ph> to open links of this type in the associated app
       </message>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_EXTERNAL_PROTOCOL_CLOSE_BUTTON_TEXT" desc="Button in External Protocol Dialog that closes the dialog">
           Close
         </message>
@@ -13829,16 +13761,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DEFAULT_DOWNLOAD_FILENAME" desc="Default name for downloaded files when we have no idea what they could be.">
         download
       </message>
-      <if expr="is_macosx or chromeos_ash">
+      <if expr="is_macosx or is_chromeos">
         <message name="IDS_BROWSER_WINDOW_MAC_TAB_UNTITLED" desc="Tabs and windows on MacOS with no title use this string.">
           Untitled
         </message>
       </if>
 
       <message name="IDS_DEFAULT_BROWSER_INFOBAR_OK_BUTTON_LABEL" desc="The label of the 'set as default' button on the default browser infobar.">
-        Set as default
-      </message>
-      <message name="IDS_DEFAULT_BROWSER_INFOBAR_REFRESH_OK_BUTTON_LABEL" desc="The label of the 'set as default' button on the default browser infobar.">
         Set as default
       </message>
 
@@ -13920,32 +13849,48 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SYNC_ERROR_RECOVERABILITY_DEGRADED_FOR_PASSWORDS_USER_MENU_TITLE" desc="Title of a sync error header of desktop user menu that prompts the user to add recovery options.">
         Make sure you can always access your saved passwords
       </message>
-      <message name="IDS_SYNC_ERROR_USER_MENU_SIGNIN_BUTTON" desc="Button in the header of desktop user menu that prompts the user to sign in again to fix the out-of-date signin info error.">
-        Sign in again
-      </message>
       <message name="IDS_SYNC_NEEDS_VERIFICATION_BUBBLE_VIEW_TITLE" desc="Title in the sync error bubble view/notification for the case where sync needs to verify the user.">
         Sync needs to verify it's you
-      </message>
-      <message name="IDS_SYNC_ERROR_USER_MENU_PASSPHRASE_BUTTON" desc="Button in the header of desktop user menu that prompts the user to enter the sync passphrase to fix the out-of-date passphrase error.">
-        Enter passphrase
-      </message>
-      <message name="IDS_SYNC_ERROR_USER_MENU_RECOVERABILITY_BUTTON" desc="Button in the header of desktop user menu that prompts the user to reauthentication to fix the sync error affecting encrypted datatypes.">
-        Verify it's you
-      </message>
-      <message name="IDS_SYNC_ERROR_USER_MENU_RETRIEVE_KEYS_BUTTON" desc="Button in the header of desktop user menu that prompts the user to reauthentication to fix the sync error affecting encrypted datatypes.">
-        Verify it's you
-      </message>
-      <message name="IDS_SYNC_ERROR_USER_MENU_SIGNOUT_BUTTON" desc="Button in the header of desktop user menu for managed users to sign out in an attempt to resolve an unrecoverable error.">
-        Sign out
-      </message>
-      <message name="IDS_SYNC_ERROR_USER_MENU_CONFIRM_SYNC_SETTINGS_BUTTON" desc="Button in the header of desktop user menu prompting users to confirm their sync settings.">
-        Open settings
       </message>
       <message name="IDS_SIGNIN_PAUSED_USER_MENU_VERIFY_MESSAGE" desc="This is the text of a card that means the user needs to sign back in to Brave in order to continue saving and using data (like passwords or payment methods) in their Brave sync chain. This is an error message that appears when the user's sign-in credential has expired; to fix the issue, the user needs to sign back in. The tone should be straightforward and motivating.">
         To keep using the passwords and more in your Brave sync chain, verify it's you
       </message>
+      <if expr="use_titlecase">
+        <message name="IDS_SYNC_ERROR_USER_MENU_SIGNIN_BUTTON" desc="Button in the header of desktop user menu that prompts the user to sign in again to fix the out-of-date signin info error.">
+          Sign In Again
+        </message>
+        <message name="IDS_SYNC_ERROR_USER_MENU_PASSPHRASE_BUTTON" desc="Button in the header of desktop user menu that prompts the user to enter the sync passphrase to fix the out-of-date passphrase error.">
+          Enter Passphrase
+        </message>
+        <message name="IDS_SYNC_ERROR_USER_MENU_RETRIEVE_KEYS_BUTTON" desc="Button in the header of desktop user menu that prompts the user to reauthentication to fix the sync error affecting encrypted datatypes.">
+          Verify It's You
+        </message>
+        <message name="IDS_SYNC_ERROR_USER_MENU_CONFIRM_SYNC_SETTINGS_BUTTON" desc="Button in the header of desktop user menu prompting users to confirm their sync settings.">
+          Open Settings
+        </message>
+        <message name="IDS_SYNC_ERROR_USER_MENU_SIGNOUT_BUTTON" desc="Button in the header of desktop user menu for managed users to sign out in an attempt to resolve an unrecoverable error.">
+          Sign Out
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_SYNC_ERROR_USER_MENU_SIGNIN_BUTTON" desc="Button in the header of desktop user menu that prompts the user to sign in again to fix the out-of-date signin info error.">
+          Sign in again
+        </message>
+        <message name="IDS_SYNC_ERROR_USER_MENU_PASSPHRASE_BUTTON" desc="Button in the header of desktop user menu that prompts the user to enter the sync passphrase to fix the out-of-date passphrase error.">
+          Enter passphrase
+        </message>
+        <message name="IDS_SYNC_ERROR_USER_MENU_RETRIEVE_KEYS_BUTTON" desc="Button in the header of desktop user menu that prompts the user to reauthentication to fix the sync error affecting encrypted datatypes.">
+          Verify it's you
+        </message>
+        <message name="IDS_SYNC_ERROR_USER_MENU_CONFIRM_SYNC_SETTINGS_BUTTON" desc="Button in the header of desktop user menu prompting users to confirm their sync settings.">
+          Open settings
+        </message>
+        <message name="IDS_SYNC_ERROR_USER_MENU_SIGNOUT_BUTTON" desc="Button in the header of desktop user menu for managed users to sign out in an attempt to resolve an unrecoverable error.">
+          Sign out
+        </message>
+      </if>
 
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_SYNC_PASSPHRASE_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error bubble view when the user needs to enter their sync passphrase.">
           To start sync, enter your passphrase
         </message>
@@ -13965,7 +13910,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
       <!-- Sync options dialog strings -->
       <message name="IDS_SYNC_EMPTY_STRING" desc="Empty string, exist only to make code generic. No translation required." translateable="false" />
-      <if expr="not chromeos_ash">
+      <if expr="not is_chromeos">
         <message name="IDS_SYNC_OVERVIEW" desc="The message that appears in the options dialog when sync has not been set up by the user.">
           Sign in to get your bookmarks, history, passwords and other settings on all your devices. You'll also automatically be signed in to your Brave services.
         </message>
@@ -13976,7 +13921,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SIGNED_IN_WITH_SYNC_DISABLED_BY_POLICY" desc="The message that appears in the settings page indicating that user is signed in, but sync is disabled by enterprise policy.">
         Sync is disabled by your administrator.
       </message>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_SIGNED_IN_WITH_SYNC_STOPPED_VIA_DASHBOARD" desc="The message that appears in the settings page indicating that user is signed in, but sync has been stopped via the Brave dashboard.">
           Sync has been stopped via the Brave Dashboard.
         </message>
@@ -14003,22 +13948,22 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Verify it's you
       </message>
 
-      <if expr="not chromeos_ash">
+      <if expr="not is_chromeos">
         <message name="IDS_SYNC_RELOGIN_ERROR" desc="The text to display on in the hyperlink when the user needs to sign in again to use sync.">
           Sign in again to resume sync
         </message>
       </if>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_SYNC_RELOGIN_ERROR" desc="The text to display on in the hyperlink when the user needs to sign out and sign in again to use sync on ChromeOS.">
           Sign out then sign in again to start sync
         </message>
       </if>
-      <if expr="not chromeos_ash">
+      <if expr="not is_chromeos">
         <message name="IDS_SYNC_RELOGIN_BUTTON" desc="The text to display on the button when the user needs to sign in again to use sync.">
           Sign in again
         </message>
       </if>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_SYNC_RELOGIN_BUTTON" desc="The text to display on the button when the user needs to sign out and sign in again to use sync on ChromeOS.">
           Sign out
         </message>
@@ -14039,7 +13984,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Advanced settings
       </message>
 
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <!-- Spinner dialog for waiting sync backend to start up -->
         <message name="IDS_SYNC_SETUP_SPINNER_TITLE" desc="The title of the sync setup dialog showing spinner.">
           Please wait...
@@ -14234,12 +14179,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_NOTIFICATION_REPLY_PLACEHOLDER" desc="Placeholder text shown in the text box before any text is entered when replying directly to a notification.">
         Send message
       </message>
-      <if expr="not chromeos_ash">
+      <if expr="not is_chromeos">
         <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification." meaning="Not on ChromeOS.">
           Details are hidden while you share your screen
         </message>
       </if>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_NOTIFICATION_MUTED_MESSAGE" desc="Informative message describing that notification content is currently hidden while the screen is being shared. Shown as the body of a notification." meaning="On ChromeOS only.">
           Details are hidden while you share your screen
         </message>
@@ -15120,7 +15065,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Shelf strings -->
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_SHELF_CONTEXT_MENU_CLOSE" desc="Title text for the 'close' context menu item of the shelf">
           Close
         </message>
@@ -15150,12 +15095,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Caret browsing. -->
-      <if expr="not chromeos_ash">
+      <if expr="not is_chromeos">
         <message name="IDS_ENABLE_CARET_BROWSING_INFO" desc="Information in the confirmation dialog for enabling caret browsing">
           You can navigate pages with a text cursor. Press F7 to turn off.
         </message>
       </if>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_ENABLE_CARET_BROWSING_INFO" desc="Information in the confirmation dialog for enabling caret browsing">
           You can navigate pages with a text cursor. Press Ctrl + <ph name="key">$1<ex>Search + Brightness up</ex></ph> to turn off.
         </message>
@@ -15249,7 +15194,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
 
       <!-- App List. -->
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_APP_ACTION_SHORTCUT_ACCESSIBILITY_NAME" desc="Hint text for the search result that performs a specific action with an app.">
           <ph name="ACTION_NAME">$1<ex>Compose</ex></ph> with <ph name="APP_NAME">$2<ex>GMail</ex></ph> App
         </message>
@@ -15479,9 +15424,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TOOLTIP_TAB_ALERT_STATE_VR_PRESENTING" desc="Extra tool tip text, when the tab is presenting VR content to a headset.">
         This tab is presenting VR content to a headset
       </message>
-      <message name="IDS_TOOLTIP_TAB_ALERT_STATE_GLIC_ACCESSING" desc="[Placeholder Description]">
-        [Placeholder String]
-      </message>
 
       <!-- Tab accessibility labels -->
       <message name="IDS_TAB_AX_LABEL_MEDIA_RECORDING_FORMAT" is_accessibility_with_no_ui="true" desc="Accessibility label text, when the tab is recording media. Example: 'Brave Hangouts - Camera and microphone recording'">
@@ -15533,11 +15475,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <ph name="WINDOW_TITLE">
           $1<ex>A VR-enabled website</ex>
         </ph> - VR presenting to headset
-      </message>
-      <message name="IDS_TAB_AX_LABEL_GLIC_ACCESSING" is_accessibility_with_no_ui="true" desc="[Placeholder Description]">
-        <ph name="WINDOW_TITLE">
-          $1<ex>Google Photos</ex>
-        </ph> - [Placeholder String]
       </message>
       <message name="IDS_TAB_AX_LABEL_UNNAMED_GROUP_FORMAT" desc="Accessibility label text for a tab, when it is in a group that has not been named by the user. Example: 'Brave Search - Part of unnamed group'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Part of unnamed group
@@ -15636,7 +15573,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Accessibility alerts -->
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_A11Y_ALERT_CAPS_OFF" desc="Alert sent to the accessibility api when caps lock is turned off.">
           caps lock off
         </message>
@@ -15849,7 +15786,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
     </if>
 
-    <if expr="chromeos_ash">
+    <if expr="is_chromeos">
       <!-- CrOSUsb Notification -->
       <message name="IDS_CROSUSB_DEVICE_DETECTED_NOTIFICATION" desc="Content for notification shown to the user when a USB device gets plugged in.">
           Open Settings to connect <ph name="USB_DEVICE_NAME">$1<ex>Nexus 5</ex></ph> to <ph name="USB_VM_NAME">$2<ex>Linux</ex></ph>
@@ -16363,12 +16300,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- Relaunch notification bubble and dialog. -->
     <if expr="not is_android">
-      <if expr="not chromeos_ash">
+      <if expr="not is_chromeos">
         <message name="IDS_RELAUNCH_ACCEPT_BUTTON" desc="The text in the accept button of a dialog that causes the browser to be relaunched immediately.">
           Relaunch now
         </message>
       </if>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         <message name="IDS_RELAUNCH_ACCEPT_BUTTON" desc="The text in the accept button of a dialog that causes the device to be restarted immediately.">
           Restart now
         </message>
@@ -16987,11 +16924,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_TITLE" translateable="false">
-        Retrieve credentials from phone or tablet.
+        Scan this QR code to use an ID from an Android device
       </message>
 
       <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_BODY" translateable="false">
-        Scan this QR code with a camera on the device from which you want to retrieve credentials for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
+        Scan this QR code with a camera on the device from which you want to retrieve an ID for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
       </message>
 
       <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_CODE_ALT_TEXT" translateable="false">
@@ -17255,23 +17192,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Open now
     </message>
 
-    <!-- Deep scanning timed out dialog -->
-    <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_TITLE" desc="Title shown in tab modal dialog when deep scaning times out.">
-      Timed out
-    </message>
-    <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_MESSAGE" desc="Message shown in tab modal dialog when the deep scanning times out.">
-      Something went wrong. Scanning could not be completed. Please try again.
-    </message>
-    <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_ACCEPT_BUTTON" desc="The text on the accept button in tab modal dialog when deep scanning times out.">
-      Scan again
-    </message>
-    <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_CANCEL_BUTTON" desc="The text on the cancel button in tab modal dialog when deep scanning times out.">
-      Cancel
-    </message>
-    <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_OPEN_NOW_BUTTON" desc="The text on the open now button in tab modal dialog when deep scanning times out.">
-      Open now
-    </message>
-
     <!-- In product help bubble dialog for users referred from ESB promotions -->
     <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_IPH_BUBBLE_TEXT" desc="The text on an In-Product-Help bubble that is shown when a user navigates to the security settings page from an ESB promotion">
       Get more protection against dangerous websites and downloads
@@ -17330,6 +17250,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_TAILORED_SECURITY_CONSENTED_MESSAGE_OK_BUTTON" desc="The text on the ok button in the Android message when the account tailored security setting changes for a consented primary account">
       OK
+    </message>
+    <message name="IDS_TAILORED_SECURITY_CONSENTED_ENHANCED_PROTECTION_ENABLE_MESSAGE_TITLE" desc="Title shown in the Android message when the account tailored security setting changes for a consented primary account">
+      Enhanced protection is on
     </message>
 
     <!-- App uninstall prompt title -->
@@ -17543,6 +17466,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Continue
       </message>
     </if>
+    <message name="IDS_TAILORED_SECURITY_CONSENTED_PROMOTION_MESSAGE_TURN_ON" desc="Turn On button shown in the message shown when a user changes their account-level tailored security setting allowing them to re-enable Enhanced Safe Browsing">
+      Turn on
+    </message>
+    <message name="IDS_TAILORED_SECURITY_CONSENTED_ESB_OFF_MESSAGE_TITLE" desc="Title shown in the message shown when a user changes their account-level tailored security setting encouraging them to enable Enhanced Safe Browsing">
+      Enhanced protection is off
+    </message>
 
     <!-- FedCM Account Selection strings -->
     <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT_SIGN_IN" desc="Header for sign-in sheet. Sheet is shown to prompt the user to sign-in to a website using an account from an identity provider.">
@@ -17574,12 +17503,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_PICTURE" desc="A user's profile picture, to be used in a list of items shared with a website">
       profile picture
-    </message>
-    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_STRING" desc="A list of a number of items (that will be shared with a website), for example 'name and email address'.">
-      {count, plural,
-        =1 {{field_1}}
-        =2 {{field_1} and {field_2}}
-        other {{field_1}, {field_2}, and {field_3}}}
     </message>
     <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP_OR_TOS" desc="The consent text shown to the user before sign up when there is no privacy policy or terms of service.">
       To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">$2<ex>name and email address</ex></ph> with this site.
@@ -17694,7 +17617,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Input overlay strings -->
-    <if expr="chromeos_ash">
+    <if expr="is_chromeos">
       <message name="IDS_INPUT_OVERLAY_GAME_CONTROLS_ALPHA" desc="Generic feature name during alpha phase, to be displayed in educational and settigns UI.">
         Game controls
       </message>
@@ -18245,27 +18168,31 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Choose an audio output device
     </message>
 
-    <!-- Internal debug pages disabled interstitial. -->
-    <message name="IDS_INTERNAL_DEBUG_PAGES_DISABLED_HEADING" desc="This is the heading for the page that appears when a user attempts to load an internal developer debugging page when such pages are disabled by a pref.">
-      Internal debugging pages are currently disabled.
-    </message>
-
-    <!-- Glic status tray icon strings -->
-    <if expr="enable_glic">
-      <!-- TODO(https://crbug.com/382287104): Replace with finalized strings -->
-      <message name="IDS_GLIC_STATUS_ICON_TOOLTIP" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered.">
-        Open
-      </message>
-      <message name="IDS_GLIC_STATUS_ICON_MENU_SHOW" translateable="false" desc="This is the menu item for showing the glic UI.">
-        Open glic
-      </message>
-      <message name="IDS_GLIC_STATUS_ICON_MENU_CUSTOMIZE_KEYBOARD_SHORTCUT" translateable="false" desc="This is the menu item for customizing the keyboard shortcut.">
-        Customize keyboard shortcut
-      </message>
-      <message name="IDS_GLIC_STATUS_ICON_MENU_SETTINGS" translateable="false" desc="This is the menu item for opening the glic settings.">
-        Settings...
+    <!-- Smart Card Readers -->
+    <if expr="is_chromeos">
+      <message name="IDS_SMART_CARD_POLICY_DESCRIPTION_FOR_ANY_DEVICE" desc="String describing a smart card reader permission granted by permission policy to a site for all devices.">
+        Any smart card reader
       </message>
     </if>
+
+
+  <message name="IDS_CHROME_NO_LONGER_SHOW_WARNINGS_NOTIFICATION_TITLE" desc="The title for the notification sent by Brave informing the user that their decision to never show warnings for the url has been applied.">
+    Always allow
+  </message>
+  <message name="IDS_CHROME_NO_LONGER_SHOW_WARNINGS_NOTIFICATION_BODY" desc="The body for the notification sent by Brave informing the user that their decision to never show warnings for the url has been applied.">
+    Brave will stop flagging notifications from this site as spam
+  </message>
+
+     <!-- Merchant Trust IPH strings -->
+    <message name="IDS_MERCHANT_TRUST_IPH_TITLE" desc="Title of in product help to introduce merchant trust feature.">
+      See ratings for this store
+    </message>
+    <message name="IDS_MERCHANT_TRUST_IPH_BODY" desc="Content of in product help to introduce merchant trust feature.">
+      You can get a summary of what people are saying in their reviews
+    </message>
+    <message name="IDS_MERCHANT_TRUST_IPH_BODY_SCREEN_READER" desc="Announcement to screen reader users when the merchant trust IPH is shown." is_accessibility_with_no_ui="true">
+      You can get a summary of what people are saying in their reviews
+    </message>
   </messages>
 </release>
 </grit>

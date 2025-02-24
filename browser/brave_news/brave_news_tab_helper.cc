@@ -16,7 +16,6 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
-#include "base/ranges/algorithm.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -101,8 +100,8 @@ bool BraveNewsTabHelper::IsSubscribed(const GURL& feed_url) {
 
 bool BraveNewsTabHelper::IsSubscribed() {
   return (default_feed_ && brave_news::IsSubscribed(default_feed_)) ||
-         base::ranges::any_of(rss_page_feeds_,
-                              [](const auto& feed) { return feed.subscribed; });
+         std::ranges::any_of(rss_page_feeds_,
+                             [](const auto& feed) { return feed.subscribed; });
 }
 
 std::string BraveNewsTabHelper::GetTitleForFeedUrl(const GURL& feed_url) {
@@ -114,7 +113,7 @@ std::string BraveNewsTabHelper::GetTitleForFeedUrl(const GURL& feed_url) {
 
   // Otherwise, find the |FeedDetails| for this |feed_url|.
   auto it =
-      base::ranges::find(rss_page_feeds_, feed_url, &FeedDetails::feed_url);
+      std::ranges::find(rss_page_feeds_, feed_url, &FeedDetails::feed_url);
   // If we don't have any details, return the empty string as we don't know what
   // the title should be.
   if (it == rss_page_feeds_.end()) {
@@ -212,15 +211,15 @@ void BraveNewsTabHelper::OnFoundFeedData(
   }
 
   if (feeds.empty()) {
-    rss_page_feeds_.erase(
-        base::ranges::remove(rss_page_feeds_, feed_url, &FeedDetails::feed_url),
-        rss_page_feeds_.end());
+    auto to_remove =
+        std::ranges::remove(rss_page_feeds_, feed_url, &FeedDetails::feed_url);
+    rss_page_feeds_.erase(to_remove.begin(), to_remove.end());
   } else {
     DCHECK_EQ(1u, feeds.size())
         << "As we were passed a FeedURL, this should only find one feed.";
 
     // Find the FeedDetails this title is for.
-    auto result = base::ranges::find_if(
+    auto result = std::ranges::find_if(
         rss_page_feeds_,
         [feed_url](const auto& detail) { return detail.feed_url == feed_url; });
 

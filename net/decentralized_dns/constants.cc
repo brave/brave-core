@@ -5,8 +5,9 @@
 
 #include "brave/net/decentralized_dns/constants.h"
 
+#include <algorithm>
+
 #include "base/containers/fixed_flat_set.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 
 namespace decentralized_dns {
@@ -69,7 +70,7 @@ inline constexpr auto kUnstoppableDomains =
 // Ensure all domain suffixes start with `.`
 constexpr bool CheckAllDomainSuffixesStartWithDot() {
   for (const auto& domain : kUnstoppableDomains) {
-    if (domain[0] != '.' && base::ranges::count(domain, '.') == 1) {
+    if (domain[0] != '.' && std::ranges::count(domain, '.') == 1) {
       return false;
     }
   }

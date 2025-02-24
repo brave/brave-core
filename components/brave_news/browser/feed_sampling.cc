@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/browser/feed_sampling.h"
 
+#include <algorithm>
 #include <numeric>
 #include <optional>
 #include <vector>
@@ -13,7 +14,6 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/rand_util.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 
 namespace brave_news {
@@ -70,11 +70,11 @@ std::optional<size_t> PickFirstIndex(const ArticleInfos& articles) {
 std::optional<size_t> PickRouletteWithWeighting(const ArticleInfos& articles,
                                                 GetWeighting get_weighting) {
   std::vector<double> weights;
-  base::ranges::transform(articles, std::back_inserter(weights),
-                          [&get_weighting](const auto& article_info) {
-                            return get_weighting.Run(std::get<0>(article_info),
-                                                     std::get<1>(article_info));
-                          });
+  std::ranges::transform(articles, std::back_inserter(weights),
+                         [&get_weighting](const auto& article_info) {
+                           return get_weighting.Run(std::get<0>(article_info),
+                                                    std::get<1>(article_info));
+                         });
 
   // None of the items are eligible to be picked.
   const auto total_weight =

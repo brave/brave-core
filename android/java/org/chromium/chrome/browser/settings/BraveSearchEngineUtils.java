@@ -7,11 +7,14 @@ package org.chromium.chrome.browser.settings;
 
 import android.content.SharedPreferences;
 
+import androidx.annotation.Nullable;
+
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
+import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider;
 import org.chromium.components.search_engines.TemplateUrl;
@@ -19,10 +22,21 @@ import org.chromium.components.search_engines.TemplateUrlService;
 
 public class BraveSearchEngineUtils {
     public static void initializeBraveSearchEngineStates(TabModelSelector tabModelSelector) {
-        // There is no point in creating service for OTR profile in advance since they change
-        // It will be initialized in SearchEngineTabModelSelectorObserver when called on an OTR
-        // profile
-        tabModelSelector.addObserver(new SearchEngineTabModelSelectorObserver());
+        tabModelSelector
+                .getCurrentTabModelSupplier()
+                .addObserver(
+                        (@Nullable TabModel newModel) -> {
+                            if (newModel == null) {
+                                return;
+                            }
+
+                            if (newModel.getProfile().isOffTheRecord()) {
+                                BraveSearchEngineUtils.initializeBraveSearchEngineStates(
+                                        newModel.getProfile());
+                            } else {
+                                BraveSearchEngineUtils.updateActiveDSE(newModel.getProfile(), null);
+                            }
+                        });
 
         // For first-run initialization, it needs default TemplateUrl,
         // so do it after TemplateUrlService is loaded to get it if it isn't loaded yet.

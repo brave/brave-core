@@ -20,6 +20,7 @@
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -77,13 +78,16 @@ SplitView::SplitView(Browser& browser,
       std::make_unique<views::WebView>(browser_->profile()));
   secondary_contents_web_view_ = secondary_contents_container_->AddChildView(
       std::make_unique<ActivatableContentsWebView>(browser_->profile()));
+  secondary_contents_scrim_view_ = secondary_contents_container_->AddChildView(
+      std::make_unique<ScrimView>());
 
   split_view_separator_ = AddChildView(
       std::make_unique<SplitViewSeparator>(base::to_address(browser_)));
 
   secondary_contents_container_->SetLayoutManager(
       std::make_unique<ContentsLayoutManager>(secondary_devtools_web_view_,
-                                              secondary_contents_web_view_));
+                                              secondary_contents_web_view_,
+                                              secondary_contents_scrim_view_));
 
   SetLayoutManager(std::make_unique<SplitViewLayoutManager>(
       contents_container_, secondary_contents_container_,
@@ -201,6 +205,8 @@ void SplitView::Layout(PassKey key) {
 }
 
 void SplitView::AddedToWidget() {
+  widget_observation_.Observe(GetWidget());
+
   secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
       browser_->profile()->GetPrefs(), secondary_contents_container_);
   secondary_location_bar_widget_ = std::make_unique<views::Widget>();
@@ -439,6 +445,26 @@ void SplitView::UpdateSecondaryDevtoolsLayoutAndVisibility() {
     secondary_devtools_web_view_->SetVisible(false);
     SetSecondaryContentsResizingStrategy(DevToolsContentsResizingStrategy());
   }
+}
+
+void SplitView::OnWidgetDestroying(views::Widget* widget) {
+  DCHECK(widget_observation_.IsObservingSource(widget));
+  widget_observation_.Reset();
+}
+
+void SplitView::OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
+                                                     bool visible) {
+  if (!base::FeatureList::IsEnabled(features::kScrimForBrowserWindowModal)) {
+    return;
+  }
+
+#if !BUILDFLAG(IS_MAC)
+  // MacOS does not need views window scrim. We use sheets to show window modals
+  // (-[NSWindow beginSheet:]), which natively draw a scrim since macOS 11.
+  if (secondary_contents_container_->GetVisible()) {
+    secondary_contents_scrim_view_->SetVisible(visible);
+  }
+#endif
 }
 
 SplitViewLayoutManager* SplitView::GetSplitViewLayoutManager() {
