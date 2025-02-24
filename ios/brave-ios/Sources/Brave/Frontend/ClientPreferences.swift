@@ -360,6 +360,9 @@ extension Preferences {
 extension Preferences {
   final public class Translate {
     /// Determines whether Brave Translate is enabled
+    /// - true = Enabled
+    /// - false = Disabled
+    /// - nil = Onboarding dismissed, state unknown
     public static let translateEnabled =
       Option<Bool?>(key: "brave-translate.enabled", default: nil)
 

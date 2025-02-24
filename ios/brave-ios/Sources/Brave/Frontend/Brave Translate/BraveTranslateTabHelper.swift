@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
+import Preferences
 import SwiftUI
 import WebKit
 import os.log
@@ -313,16 +314,47 @@ class BraveTranslateTabHelper: NSObject {
       return
     }
 
+    // Check if the translation language is supported
     let isTranslationSupported = await BraveTranslateSession.isTranslationSupported(
       from: pageLanguage,
       to: currentLanguageInfo.currentLanguage
     )
 
-    try Task.checkCancellation()
     delegate?.updateTranslateURLBar(
       tab: tab,
       state: isTranslationSupported ? .available : .unavailable
     )
+
+    try Task.checkCancellation()
+
+    // Check if the user can view the translation onboarding
+    guard delegate?.canShowTranslateOnboarding(tab: tab) == true else {
+      let translateEnabled = Preferences.Translate.translateEnabled.value == true
+
+      delegate?.updateTranslateURLBar(
+        tab: tab,
+        state: translateEnabled ? .available : .unavailable
+      )
+
+      return
+    }
+
+    // Let the user enable or disable translation via onboarding
+    let translateEnabled = await withCheckedContinuation { continuation in
+      delegate?.showTranslateOnboarding(tab: tab) { translateEnabled in
+        continuation.resume(returning: translateEnabled)
+      }
+    }
+
+    delegate?.updateTranslateURLBar(
+      tab: tab,
+      state: translateEnabled == true ? .available : .unavailable
+    )
+
+    // User enabled translation via onboarding
+    if translateEnabled == true {
+      startTranslation(canShowToast: true)
+    }
   }
 }
 

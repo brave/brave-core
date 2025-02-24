@@ -8,8 +8,9 @@ window.__firefox__ = window.__firefox__ || {};
 Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
   enumerable: false,
   configurable: false,
-  writable: false,
+  writable: true,
   value: {
+    "translateScriptLoaded": false,
     "useNativeNetworking": true,
     "getPageSource": (function() {
       return encodeURIComponent(document.documentElement.outerHTML);
@@ -23,16 +24,31 @@ Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
     "checkTranslate": (function() {
       setTimeout(function() {
         try {
-          var oldWebkit = window.webkit;
-          delete window['webkit'];
           window.webkit.messageHandlers["$<message_handler>"].postMessage({
             "command": "ready"
           })
-          window.webkit = oldWebkit;
         } catch (error) {
-          console.error(error);
+          cr.googleTranslate.onTranslateElementError(error);
         }
       }, 100);
+    }),
+    "loadTranslateScript": (function() {
+      if (window.__firefox__.$<brave_translate_script>.translateScriptLoaded) {
+        return;
+      }
+      
+      window.webkit.messageHandlers["$<message_handler>"].postMessage({
+        "command": "load_brave_translate_script"
+      }).then((script) => {
+        try {
+          new Function(script).call(window /*this*/);
+          window.__firefox__.$<brave_translate_script>.translateScriptLoaded = true
+        } catch (error) {
+          cr.googleTranslate.onTranslateElementError(error);
+        }
+      }).catch((error) => {
+        cr.googleTranslate.onTranslateElementError(error);
+      });
     })
   }
 });
@@ -287,20 +303,4 @@ try {
 
 
 // Brave Translate
-
-try {
-    var oldWebkit = window.webkit;
-    delete window['webkit'];
-    window.webkit.messageHandlers["$<message_handler>"].postMessage({
-      "command": "load_brave_translate_script"
-    }).then((script) => {
-      try {
-        new Function(script).call(this);
-      } catch (error) {
-        cr.googleTranslate.onTranslateElementError(error);
-      }
-    });
-    window.webkit = oldWebkit;
-} catch (error) {
-  console.error(error);
-}
+window.__firefox__.$<brave_translate_script>.loadTranslateScript();
