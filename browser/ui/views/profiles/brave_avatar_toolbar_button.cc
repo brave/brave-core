@@ -79,7 +79,7 @@ BraveAvatarToolbarButton::BraveAvatarToolbarButton(BrowserView* browser_view)
 #if BUILDFLAG(IS_LINUX)
   // On linux, only add horizontal delta as its size is 26x28.
   // TODO(simonhong): check why it's different from other platforms.
-  SetLayoutInsetDelta(gfx::Insets::VH(0, 2));
+  SetLayoutInsetDelta(gfx::Insets::VH(0, 4));
 #else
   SetLayoutInsetDelta(gfx::Insets(2));
 #endif
