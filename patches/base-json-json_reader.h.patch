@@ -1,0 +1,18 @@
+diff --git a/base/json/json_reader.h b/base/json/json_reader.h
+index b0b6f1949471a8ec7f86777d5b3fbdcb8e323de1..469546e8fcb2f0b60e7a3a36b09aab4cfa02b062 100644
+--- a/base/json/json_reader.h
++++ b/base/json/json_reader.h
+@@ -123,6 +123,13 @@ class BASE_EXPORT JSONReader {
+       int options = JSON_PARSE_CHROMIUM_EXTENSIONS,
+       size_t max_depth = internal::kAbsoluteMaxDepth);
+ 
++  // Reads and parses |json|, returning a Value::List.
++  // If |json| is not a properly formed JSON list string, returns std::nullopt.
++  static std::optional<Value::List> ReadList(
++      std::string_view json,
++      int options = JSON_PARSE_CHROMIUM_EXTENSIONS,
++      size_t max_depth = internal::kAbsoluteMaxDepth);
++
+   // Reads and parses |json| like Read(). On success returns a Value as the
+   // expected value. Otherwise, it returns an Error instance, populated with a
+   // formatted error message, an error code, and the error location if

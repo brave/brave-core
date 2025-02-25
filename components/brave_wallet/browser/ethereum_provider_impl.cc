@@ -168,13 +168,13 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
-  auto json_value = base::JSONReader::Read(
+  auto json_value = base::JSONReader::ReadDict(
       json_payload,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
-  if (!json_value || !json_value->is_dict()) {
+  if (!json_value) {
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
-  const auto& root = json_value->GetDict();
+  const auto& root = *json_value;
 
   const auto* params = root.FindList(brave_wallet::kParams);
   if (!params || params->empty()) {

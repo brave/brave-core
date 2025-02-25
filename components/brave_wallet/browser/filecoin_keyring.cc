@@ -107,16 +107,16 @@ bool FilecoinKeyring::DecodeImportPayload(
   if (!base::HexStringToString(payload_hex, &key_payload)) {
     return false;
   }
-  std::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value::Dict> records_v = base::JSONReader::ReadDict(
       key_payload, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                        base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
+  if (!records_v) {
     VLOG(1) << "Invalid payload, could not parse JSON, JSON is: "
             << key_payload;
     return false;
   }
 
-  const auto& dict = records_v->GetDict();
+  const auto& dict = *records_v;
   const std::string* type = dict.FindString("Type");
   if (!type || (*type != "secp256k1" && *type != "bls")) {
     return false;

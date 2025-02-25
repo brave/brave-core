@@ -245,13 +245,13 @@ std::optional<std::string> FilTransaction::ConvertSignedTxStringFieldsToInt64(
 }
 
 // static
-std::optional<base::Value> FilTransaction::DeserializeSignedTx(
+std::optional<base::Value::Dict> FilTransaction::DeserializeSignedTx(
     const std::string& signed_tx) {
   std::string json =
       json::convert_int64_value_to_string("/Message/GasLimit", signed_tx, true);
   json = json::convert_int64_value_to_string("/Message/Nonce", json, true);
   json = json::convert_int64_value_to_string("/Message/Method", json, true);
-  return base::JSONReader::Read(json);
+  return base::JSONReader::ReadDict(json);
 }
 
 // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures

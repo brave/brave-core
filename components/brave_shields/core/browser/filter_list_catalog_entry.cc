@@ -211,16 +211,16 @@ std::vector<FilterListCatalogEntry> FilterListCatalogFromJSON(
   std::vector<FilterListCatalogEntry> catalog =
       std::vector<FilterListCatalogEntry>();
 
-  std::optional<base::Value> parsed_json = base::JSONReader::Read(catalog_json);
-  if (!parsed_json || !parsed_json->is_list()) {
+  std::optional<base::Value::List> parsed_json =
+      base::JSONReader::ReadList(catalog_json);
+  if (!parsed_json) {
     LOG(ERROR) << "Could not load regional adblock catalog";
     return catalog;
   }
 
   base::JSONValueConverter<FilterListCatalogEntry> converter;
 
-  base::Value::List& regional_lists = parsed_json->GetList();
-  for (const auto& item : regional_lists) {
+  for (const auto& item : *parsed_json) {
     DCHECK(item.is_dict());
     FilterListCatalogEntry entry;
     converter.Convert(item, &entry);

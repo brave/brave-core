@@ -80,14 +80,14 @@ GetCapabilities::ProcessResponse(const mojom::UrlResponse& response) const {
 
 GetCapabilities::CapabilityMap GetCapabilities::ParseBody(
     const std::string& body) const {
-  const auto value = base::JSONReader::Read(body);
-  if (!value || !value->is_list()) {
+  const auto value = base::JSONReader::ReadList(body);
+  if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid body format";
     return {};
   }
 
   std::map<std::string, Capability> capability_map;
-  for (const auto& item : value->GetList()) {
+  for (const auto& item : *value) {
     DCHECK(item.is_dict());
     const auto& dict = item.GetDict();
     const auto* key = dict.FindString("key");

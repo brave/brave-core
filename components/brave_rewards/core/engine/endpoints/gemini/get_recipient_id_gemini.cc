@@ -22,13 +22,13 @@ using Result = GetRecipientIDGemini::Result;
 namespace {
 
 Result ParseBody(RewardsEngine& engine, const std::string& body) {
-  auto value = base::JSONReader::Read(body);
-  if (!value || !value->is_list()) {
+  auto value = base::JSONReader::ReadList(body);
+  if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  for (auto& item : value->GetList()) {
+  for (auto& item : *value) {
     auto* pair = item.GetIfDict();
     if (!pair) {
       engine.LogError(FROM_HERE) << "Failed to parse body";

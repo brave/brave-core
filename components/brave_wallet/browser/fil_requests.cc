@@ -94,7 +94,7 @@ std::string getStateSearchMsgLimited(const std::string& cid, uint64_t period) {
 std::optional<std::string> getSendTransaction(const std::string& signed_tx) {
   base::Value::List params;
   auto signed_tx_value = FilTransaction::DeserializeSignedTx(signed_tx);
-  if (!signed_tx_value || !signed_tx_value->is_dict()) {
+  if (!signed_tx_value) {
     return std::nullopt;
   }
   params.Append(std::move(signed_tx_value.value()));

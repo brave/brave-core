@@ -1,0 +1,22 @@
+diff --git a/base/json/json_reader.cc b/base/json/json_reader.cc
+index af1d4f46d02c97b46352cdaa4834732ce645e145..32d8707d3ad5d55e5479ab87352edcd911770e21 100644
+--- a/base/json/json_reader.cc
++++ b/base/json/json_reader.cc
+@@ -164,6 +164,17 @@ std::optional<Value::Dict> JSONReader::ReadDict(std::string_view json,
+   return std::move(*value).TakeDict();
+ }
+ 
++// static
++std::optional<Value::List> JSONReader::ReadList(std::string_view json,
++                                                int options,
++                                                size_t max_depth) {
++  std::optional<Value> value = Read(json, options, max_depth);
++  if (!value || !value->is_list()) {
++    return std::nullopt;
++  }
++  return std::move(*value).TakeList();
++}
++
+ // static
+ JSONReader::Result JSONReader::ReadAndReturnValueWithError(
+     std::string_view json,
