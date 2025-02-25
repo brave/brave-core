@@ -371,7 +371,7 @@ extension URL {
     )
 
     // Site domains that should NOT inject night mode
-    let siteList = [
+    let siteList = Set([
       "twitter", "youtube", "twitch",
       "soundcloud", "github", "netflix",
       "imdb", "mail.proton", "amazon",
@@ -387,15 +387,9 @@ extension URL {
       // Casual sites
       "wowhead", "xbox", "thegamer",
       "cineplex", "starwars",
-    ]
+    ])
 
-    for site in siteList {
-      if domainName == site {
-        return true
-      }
-    }
-
-    return false
+    return siteList.contains(domainName)
   }
 
   public func uniquePathForFilename(_ filename: String) throws -> URL {
