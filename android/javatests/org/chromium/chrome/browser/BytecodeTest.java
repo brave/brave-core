@@ -1484,7 +1484,8 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/SwipeRefreshHandler",
                         "org/chromium/chrome/browser/BraveSwipeRefreshHandler",
-                        Tab.class));
+                        Tab.class,
+                        SwipeRefreshHandler.SwipeRefreshLayoutCreator.class));
 
         Assert.assertTrue(
                 constructorsMatch(
@@ -1556,7 +1557,8 @@ public class BytecodeTest {
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
                         ManualFillingComponentSupplier.class,
-                        EdgeToEdgeManager.class));
+                        EdgeToEdgeManager.class,
+                        ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
@@ -1587,12 +1589,12 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerCoordinator",
                         Context.class,
-                        ComponentName.class,
                         boolean.class,
                         SnackbarManager.class,
                         Profile.class,
                         BookmarkUiPrefs.class,
-                        Runnable.class));
+                        BookmarkOpener.class,
+                        ComponentName.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
@@ -1635,10 +1637,10 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkPage",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkPage",
-                        ComponentName.class,
                         SnackbarManager.class,
                         Profile.class,
-                        NativePageHost.class));
+                        NativePageHost.class,
+                        ComponentName.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl",
