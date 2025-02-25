@@ -42,7 +42,14 @@ class BraveUtilsOnlineBenchmark(BraveUtilsBenchmark):
   }
 
   def CreateStorySet(self, options):
-    return BravePerfUtilsStorySet(3 * 60, options)
+    # SB database update is started <=5 minutes after browser start
+    # (kV4TimerStartIntervalSecMax = 300). Add an extra 1 minute to ensure
+    # the database is updated.
+    return BravePerfUtilsStorySet(6 * 60, options)
+
+  def SetExtraBrowserOptions(self, options):
+    # To enable Safe Browsing updates:
+    options.disable_background_networking = False
 
   @classmethod
   def Name(cls):
