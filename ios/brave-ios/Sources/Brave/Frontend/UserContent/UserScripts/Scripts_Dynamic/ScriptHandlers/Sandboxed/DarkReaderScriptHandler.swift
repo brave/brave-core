@@ -100,7 +100,7 @@ public class DarkReaderScriptHandler: TabContentScript {
     Preferences.General.nightModeEnabled.value = enabled
 
     for tab in tabManager.allTabs {
-      if let fetchedTabURL = tab.fetchedURL {
+      if let fetchedTabURL = tab.fetchedURL, !fetchedTabURL.isNightModeBlockedURL {
         tab.nightMode = enabled
       }
     }
