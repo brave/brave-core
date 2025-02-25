@@ -113,11 +113,6 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
       return (nil, nil)
     }
 
-    guard let isTranslateEnabled = Preferences.Translate.translateEnabled.value, isTranslateEnabled
-    else {
-      return (nil, BraveTranslateError.translateDisabled.rawValue)
-    }
-
     if command == "request" {
       do {
         let message = try JSONDecoder().decode(
@@ -145,10 +140,17 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
           ],
           nil
         )
+      } catch let error as BraveTranslateError {
+        Logger.module.error("Brave Translate Error: \(error)")
+        return (nil, "Translation Error: \(error.rawValue)")
       } catch {
         Logger.module.error("Brave Translate Error: \(error)")
         return (nil, "Translation Error")
       }
+    }
+
+    if command == "status" {
+      Logger.module.debug("[Brave Translate] - Status: \(body["errorCode"] as? Int ?? 0)")
     }
 
     return (nil, nil)

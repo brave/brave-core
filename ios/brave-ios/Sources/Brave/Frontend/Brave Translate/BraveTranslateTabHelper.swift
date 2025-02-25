@@ -183,6 +183,12 @@ class BraveTranslateTabHelper: NSObject {
     let translationSession = self.translationSession ?? BraveTranslateSession()
     let isTranslationRequest = BraveTranslateSession.isPhraseTranslationRequest(request)
 
+    // We cannot process translation requests when translation is not enabled
+    // Other requests like fetching the core script and css can be processed
+    if Preferences.Translate.translateEnabled.value != true && isTranslationRequest {
+      throw BraveTranslateError.translateDisabled
+    }
+
     // The message is for HTML or CSS request
     if self.translationSession == nil
       && isTranslationRequest
@@ -324,6 +330,10 @@ class BraveTranslateTabHelper: NSObject {
       tab: tab,
       state: isTranslationSupported ? .available : .unavailable
     )
+
+    if !isTranslationSupported {
+      return
+    }
 
     try Task.checkCancellation()
 
