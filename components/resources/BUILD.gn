@@ -69,6 +69,11 @@ repack("resources") {
     "$root_gen_dir/components/brave_components_static.pak",
   ]
 
+  if (is_android) {
+    deps += [ "//brave/components/new_tab_takeover:new_tab_takeover_generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/new_tab_takeover/new_tab_takeover_generated.pak" ]
+  }
+
   if (!is_ios) {
     deps += [
       "//brave/components/brave_adblock_ui:generated_resources",

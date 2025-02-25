@@ -1,0 +1,21 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module new_tab_takeover.mojom;
+
+import "url/mojom/url.mojom";
+import "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom";
+
+interface NewTabTakeover {
+  SetSponsoredRichMediaAdEventHandler(
+      pending_receiver<ntp_background_images.mojom.SponsoredRichMediaAdEventHandler> event_handler);
+
+  GetCurrentWallpaper() => (url.mojom.Url? url,
+                            string? placement_id,
+                            string? creative_instance_id,
+                            url.mojom.Url? target_url);
+
+  NavigateToUrl(url.mojom.Url url);
+};

@@ -23,6 +23,9 @@ struct NewTabPageAdInfo;
 
 namespace ntp_background_images {
 
+inline constexpr char kImageWallpaperType[] = "image";
+inline constexpr char kRichMediaWallpaperType[] = "richMedia";
+
 struct TopSite {
   TopSite();
 

@@ -104,6 +104,10 @@
       <part file="../ai_chat/resources/ai_chat_ui_resources.grdp" />
       <part file="../ai_rewriter/resources/page/ai_rewriter_ui_resources.grdp" />
       <part file="brave_wallet_resources.grdp" />
+
+      <if expr="is_android">
+        <part file="../new_tab_takeover/new_tab_takeover_resources.grdp" />
+      </if>
     </includes>
   </release>
 </grit>

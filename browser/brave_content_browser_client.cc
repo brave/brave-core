@@ -228,6 +228,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
+#include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -681,7 +682,10 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<brave_news::mojom::BraveNewsController>()
         .Add<brave_news::mojom::BraveNewsInternals>();
   }
-#endif
+#else   // !BUILDFLAG(IS_ANDROID)
+  registry.ForWebUI<NewTabTakeoverUI>()
+      .Add<new_tab_takeover::mojom::NewTabTakeover>();
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 std::optional<base::UnguessableToken>

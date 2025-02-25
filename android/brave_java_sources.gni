@@ -259,6 +259,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/NtpUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/OnBraveNtpListener.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp/SponsoredRichMediaWebView.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/model/BackgroundImage.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/model/ImageCredit.java",

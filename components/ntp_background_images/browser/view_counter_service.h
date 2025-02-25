@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
@@ -90,6 +91,12 @@ class ViewCounterService : public KeyedService,
   std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaper() const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaper();
+  void GetCurrentBrandedWallpaper(
+      base::OnceCallback<
+          void(const std::optional<GURL>& url,
+               const std::optional<std::string>& placement_id,
+               const std::optional<std::string>& creative_instance_id,
+               const std::optional<GURL>& target_url)> callback) const;
   std::optional<brave_ads::ConditionMatcherMap> GetConditionMatchers(
       const base::Value::Dict& dict);
   std::optional<base::Value::Dict>
@@ -187,6 +194,7 @@ class ViewCounterService : public KeyedService,
   PrefChangeRegistrar pref_change_registrar_;
   ViewCounterModel model_;
   base::WallClockTimer p3a_update_timer_;
+  std::optional<base::Value::Dict> current_wallpaper_;
 
   // Can be null if custom background is not supported.
   raw_ptr<BraveNTPCustomBackgroundService> custom_background_service_ = nullptr;

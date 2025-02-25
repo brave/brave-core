@@ -12,6 +12,7 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/browser/ads_service_mock.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
@@ -513,6 +514,62 @@ TEST_F(NTPBackgroundImagesViewCounterTest, WrongSponsoredImageAdServed) {
   EXPECT_TRUE(si_wallpaper->FindBool(kIsBackgroundKey).value_or(false));
   EXPECT_FALSE(si_wallpaper->FindString(kCreativeInstanceIDKey));
   EXPECT_FALSE(si_wallpaper->FindString(kWallpaperIDKey));
+}
+
+TEST_F(NTPBackgroundImagesViewCounterTest,
+       GetCurrentBrandedWallpaperIfNotDisplayed) {
+  InitBackgroundAndSponsoredImageWallpapers();
+
+  prefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
+
+  auto background_wallpaper = view_counter_->GetCurrentWallpaperForDisplay();
+  EXPECT_TRUE(background_wallpaper->FindBool(kIsBackgroundKey).value_or(false));
+
+  base::MockCallback<base::OnceCallback<void(
+      const std::optional<GURL>&, const std::optional<std::string>&,
+      const std::optional<std::string>&, const std::optional<GURL>&)>>
+      callback;
+  EXPECT_CALL(callback,
+              Run(/*url=*/std::optional<GURL>(),
+                  /*placement_id=*/std::optional<std::string>(),
+                  /*creative_instance_id=*/std::optional<std::string>(),
+                  /*target_url=*/std::optional<GURL>()));
+
+  view_counter_->GetCurrentBrandedWallpaper(callback.Get());
+}
+
+TEST_F(NTPBackgroundImagesViewCounterTest, GetCurrentBrandedWallpaper) {
+  InitBackgroundAndSponsoredImageWallpapers();
+
+  prefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
+
+  auto sponsored_wallpaper = TryGetFirstSponsoredImageWallpaper();
+
+  const std::string* url = sponsored_wallpaper->FindString(kWallpaperURLKey);
+  ASSERT_TRUE(url);
+
+  const std::string* placement_id =
+      sponsored_wallpaper->FindString(kWallpaperIDKey);
+  ASSERT_TRUE(placement_id);
+
+  const std::string* creative_instance_id =
+      sponsored_wallpaper->FindString(kCreativeInstanceIDKey);
+  ASSERT_TRUE(creative_instance_id);
+
+  const std::string* target_url =
+      sponsored_wallpaper->FindStringByDottedPath(kLogoDestinationURLPath);
+  ASSERT_TRUE(target_url);
+
+  base::MockCallback<base::OnceCallback<void(
+      const std::optional<GURL>&, const std::optional<std::string>&,
+      const std::optional<std::string>&, const std::optional<GURL>&)>>
+      callback;
+  EXPECT_CALL(callback, Run(std::optional<GURL>(*url),
+                            std::optional<std::string>(*placement_id),
+                            std::optional<std::string>(*creative_instance_id),
+                            std::optional<GURL>(*target_url)));
+
+  view_counter_->GetCurrentBrandedWallpaper(callback.Get());
 }
 
 }  // namespace ntp_background_images
