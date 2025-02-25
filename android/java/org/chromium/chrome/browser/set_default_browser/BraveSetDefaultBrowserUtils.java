@@ -37,6 +37,10 @@ public class BraveSetDefaultBrowserUtils {
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "https://brave.com/privacy-features/";
 
+    public static final String BRAVE_DEFAULT_SET_COUNTER = "brave_default_set_counter";
+    public static final String BRAVE_DEFAULT_NEXT_DAY = "brave_default_next_day";
+    public static final String BRAVE_DEFAULT_APP_OPEN_COUNTER = "brave_default_app_open_counter";
+
     public static boolean isBottomSheetVisible;
 
     public static boolean isBraveSetAsDefaultBrowser(Context context) {
@@ -140,49 +144,6 @@ public class BraveSetDefaultBrowserUtils {
         }
     }
 
-    public static void setDefaultBrowser(Activity activity) {
-        if (supportsDefaultRoleManager()) {
-            RoleManager roleManager = activity.getSystemService(RoleManager.class);
-            Log.e("brave_default", "setDefaultBrowser 1");
-
-            if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
-                Log.e("brave_default", "setDefaultBrowser : RoleManager.ROLE_BROWSER");
-                if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
-                    Log.e("brave_default", "setDefaultBrowser : !isRoleHeld");
-                    activity.startActivityForResult(
-                        roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
-                        BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE);
-                } else if (!isBraveSetAsDefaultBrowser(activity)) {
-                    Log.e("brave_default", "setDefaultBrowser : RoleHeld");
-                    openDefaultAppsSettings(activity);
-                }
-            } else {
-                Log.e("brave_default", "setDefaultBrowser 3");
-                openDefaultAppsSettings(activity);
-            }
-        } else {
-            Log.e("brave_default", "setDefaultBrowser 4");
-            ResolveInfo resolveInfo = getResolveInfo(activity);
-            if (resolveInfo.activityInfo.packageName.equals(ANDROID_SETUPWIZARD_PACKAGE_NAME)
-                    || resolveInfo.activityInfo.packageName.equals(ANDROID_PACKAGE_NAME)) {
-                Log.e("brave_default", "setDefaultBrowser 5");
-                openBraveBlog(activity);
-            } else {
-                Log.e("brave_default", "setDefaultBrowser 6");
-                Toast toast =
-                        Toast.makeText(
-                                activity,
-                                R.string.brave_default_browser_go_to_settings,
-                                Toast.LENGTH_LONG);
-                toast.show();
-            }
-        }
-    }
-
-    public static boolean supportsDefaultRoleManager() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
-    }
-
     private static ResolveInfo getResolveInfo(Activity activity) {
         Intent browserIntent =
                 new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
@@ -244,5 +205,75 @@ public class BraveSetDefaultBrowserUtils {
     public static boolean isBraveDefaultDontAsk() {
         return ChromeSharedPreferences.getInstance()
                 .readBoolean(BravePreferenceKeys.BRAVE_DEFAULT_DONT_ASK, false);
+    }
+
+    // New changes
+    public static boolean supportsDefaultRoleManager() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+    }
+
+    public static void decideToShowBraveSetDefaultBrowserDialog(Activity activity) {
+        if (getBraveDefaultAppOpenCounter() >= 5 && !isBraveSetAsDefaultBrowser(activity)) {
+            setDefaultBrowser(activity);
+            resetBraveDefaultAppOpenCounter();
+        }
+    }
+
+    public static void setDefaultBrowser(Activity activity) {
+        if (supportsDefaultRoleManager()) {
+            RoleManager roleManager = activity.getSystemService(RoleManager.class);
+
+            if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
+                if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
+                    activity.startActivityForResult(
+                            roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
+                            BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE);
+                }
+            } else {
+                openDefaultAppsSettings(activity);
+            }
+        } else {
+            ResolveInfo resolveInfo = getResolveInfo(activity);
+            if (resolveInfo.activityInfo.packageName.equals(ANDROID_SETUPWIZARD_PACKAGE_NAME)
+                    || resolveInfo.activityInfo.packageName.equals(ANDROID_PACKAGE_NAME)) {
+                openBraveBlog(activity);
+            } else {
+                Toast toast =
+                        Toast.makeText(
+                                activity,
+                                R.string.brave_default_browser_go_to_settings,
+                                Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
+    }
+
+    public static boolean shouldSetBraveDefaultSetCounter() {
+        return ChromeSharedPreferences.getInstance().readBoolean(BRAVE_DEFAULT_SET_COUNTER, true);
+    }
+
+    public static void setBraveDefaultSetCounter() {
+        ChromeSharedPreferences.getInstance().writeBoolean(BRAVE_DEFAULT_SET_COUNTER, false);
+    }
+
+    public static void incrementBraveDefaultAppOpenCounter() {
+        ChromeSharedPreferences.getInstance()
+                .writeInt(BRAVE_DEFAULT_APP_OPEN_COUNTER, getBraveDefaultAppOpenCounter() + 1);
+    }
+
+    public static int getBraveDefaultAppOpenCounter() {
+        return ChromeSharedPreferences.getInstance().readInt(BRAVE_DEFAULT_APP_OPEN_COUNTER, 0);
+    }
+
+    public static void resetBraveDefaultAppOpenCounter() {
+        ChromeSharedPreferences.getInstance().writeInt(BRAVE_DEFAULT_APP_OPEN_COUNTER, 0);
+    }
+
+    public static void setBraveDefaultNextDay(long nextDay) {
+        ChromeSharedPreferences.getInstance().writeLong(BRAVE_DEFAULT_NEXT_DAY, nextDay);
+    }
+
+    public static long getBraveDefaultNextDay() {
+        return ChromeSharedPreferences.getInstance().readLong(BRAVE_DEFAULT_NEXT_DAY, 0);
     }
 }

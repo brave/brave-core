@@ -1097,6 +1097,12 @@ public abstract class BraveActivity extends ChromeActivity
             setBraveAsDefaultPrivateMode();
         }
 
+        // if (appOpenCount == 0 && BraveSetDefaultBrowserUtils.shouldSetBraveDefaultSetCounter()) {
+        //     BraveSetDefaultBrowserUtils.setBraveDefaultSetCounter();
+        // }
+        BraveSetDefaultBrowserUtils.incrementBraveDefaultAppOpenCounter();
+        BraveSetDefaultBrowserUtils.decideToShowBraveSetDefaultBrowserDialog(BraveActivity.this);
+
         migrateBgPlaybackToFeature();
 
         Context app = ContextUtils.getApplicationContext();
@@ -1177,9 +1183,9 @@ public abstract class BraveActivity extends ChromeActivity
             BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
         }
 
-        if (!mIsSetDefaultBrowserNotification) {
-            BraveSetDefaultBrowserUtils.checkSetDefaultBrowserModal(this);
-        }
+        // if (!mIsSetDefaultBrowserNotification) {
+        //     BraveSetDefaultBrowserUtils.checkSetDefaultBrowserModal(this);
+        // }
 
         checkFingerPrintingOnUpgrade(isFirstInstall);
         checkForVpnCallout();
@@ -2203,14 +2209,16 @@ public abstract class BraveActivity extends ChromeActivity
 
         } else if (resultCode == RESULT_OK
                 && requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE) {
-                Log.e("brave_default", "resultCode : "+resultCode+" : requestCode : "+requestCode);
-                if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(BraveActivity.this)) {
-                    Log.e("brave_default", ": 1 :");
-                    BraveSetDefaultBrowserUtils.openDefaultAppsSettings(BraveActivity.this);
-                } else {
-                    Log.e("brave_default", ": 2 :");
-                    BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
-                }
+            Log.e(
+                    "brave_default",
+                    "resultCode : " + resultCode + " : requestCode : " + requestCode);
+            if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(BraveActivity.this)) {
+                Log.e("brave_default", ": 1 :");
+                BraveSetDefaultBrowserUtils.openDefaultAppsSettings(BraveActivity.this);
+            } else {
+                Log.e("brave_default", ": 2 :");
+                BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
