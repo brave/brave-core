@@ -44,9 +44,7 @@ public class BraveSetDefaultBrowserUtils {
                 new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
         ResolveInfo resolveInfo =
                 context.getPackageManager()
-                        .resolveActivity(
-                                browserIntent,
-                                supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
+                        .resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY);
         if (resolveInfo == null
                 || resolveInfo.activityInfo == null
                 || resolveInfo.activityInfo.packageName == null) {
@@ -71,9 +69,7 @@ public class BraveSetDefaultBrowserUtils {
                 new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
         ResolveInfo resolveInfo =
                 context.getPackageManager()
-                        .resolveActivity(
-                                browserIntent,
-                                supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
+                        .resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY);
         if (resolveInfo == null
                 || resolveInfo.activityInfo == null
                 || resolveInfo.activityInfo.packageName == null) {
@@ -147,27 +143,37 @@ public class BraveSetDefaultBrowserUtils {
     public static void setDefaultBrowser(Activity activity) {
         if (supportsDefaultRoleManager()) {
             RoleManager roleManager = activity.getSystemService(RoleManager.class);
+            Log.e("brave_default", "setDefaultBrowser 1");
 
             if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
+                Log.e("brave_default", "setDefaultBrowser : RoleManager.ROLE_BROWSER");
                 if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
+                    Log.e("brave_default", "setDefaultBrowser : !isRoleHeld");
                     activity.startActivityForResult(
-                            roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
-                            BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE);
+                        roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
+                        BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE);
+                } else if (!isBraveSetAsDefaultBrowser(activity)) {
+                    Log.e("brave_default", "setDefaultBrowser : RoleHeld");
+                    openDefaultAppsSettings(activity);
                 }
             } else {
+                Log.e("brave_default", "setDefaultBrowser 3");
                 openDefaultAppsSettings(activity);
             }
-
-        } else if (supportsDefault()) {
-            openDefaultAppsSettings(activity);
         } else {
+            Log.e("brave_default", "setDefaultBrowser 4");
             ResolveInfo resolveInfo = getResolveInfo(activity);
             if (resolveInfo.activityInfo.packageName.equals(ANDROID_SETUPWIZARD_PACKAGE_NAME)
                     || resolveInfo.activityInfo.packageName.equals(ANDROID_PACKAGE_NAME)) {
+                Log.e("brave_default", "setDefaultBrowser 5");
                 openBraveBlog(activity);
             } else {
-                Toast toast = Toast.makeText(
-                        activity, R.string.brave_default_browser_go_to_settings, Toast.LENGTH_LONG);
+                Log.e("brave_default", "setDefaultBrowser 6");
+                Toast toast =
+                        Toast.makeText(
+                                activity,
+                                R.string.brave_default_browser_go_to_settings,
+                                Toast.LENGTH_LONG);
                 toast.show();
             }
         }
@@ -177,19 +183,15 @@ public class BraveSetDefaultBrowserUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
     }
 
-    private static boolean supportsDefault() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
-    }
-
     private static ResolveInfo getResolveInfo(Activity activity) {
         Intent browserIntent =
                 new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
 
-        return activity.getPackageManager().resolveActivity(
-                browserIntent, supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
+        return activity.getPackageManager()
+                .resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY);
     }
 
-    private static void openDefaultAppsSettings(Activity activity) {
+    public static void openDefaultAppsSettings(Activity activity) {
         if (activity instanceof OnBraveSetDefaultBrowserListener) {
             ((OnBraveSetDefaultBrowserListener) activity).onCheckDefaultResume();
         }
