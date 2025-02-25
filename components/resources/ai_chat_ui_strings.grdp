@@ -39,6 +39,12 @@
   <message name="IDS_CHAT_UI_SUMMARIZE_VIDEO" desc="Button to summarize the video on the current page">
     Summarize this video
   </message>
+  <message name="IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION" desc="Button to summarize the currently attached page(s) [ICU Syntax]">
+    {PAGE_COUNT, plural,
+      =1 {Summarize this page}
+      other {Summarize these pages}
+    }
+  </message>
   <message name="IDS_CHAT_UI_SUMMARIZE_PAGE" desc="Button to summarize the article on the current page">
     Summarize this page
   </message>
@@ -457,10 +463,10 @@
     Chat Privately with Brave Leo
   </message>
   <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_LABEL" desc="Label for toggle that enabled/disabled contextual conversations.">
-    Shape answers based on the page's contents
+    Shape answers based on the tab(s) contents
   </message>
   <message name="IDS_CHAT_UI_CONTEXT_TOGGLE_TOOLTIP_INFO" desc="Info tooltip for contextual toggle">
-    Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.
+    Toggle on to ask about these tab(s). Contents will be sent to Brave Leo along with your messages.
   </message>
   <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices">
     All subscriptions are auto-renewed but can be cancelled at any time before renewal.

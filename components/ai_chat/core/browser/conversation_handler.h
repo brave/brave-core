@@ -58,8 +58,8 @@ namespace ai_chat {
 
 class AIChatFeedbackAPI;
 class AIChatService;
-class AssociatedArchiveContent;
 class AIChatCredentialManager;
+class AssociatedContentManager;
 
 // Performs all conversation-related operations, responsible for sending
 // messages to the conversation engine, handling the responses, and owning
@@ -85,14 +85,21 @@ class ConversationHandler : public mojom::ConversationHandler,
   using GetStagedEntriesCallback = base::OnceCallback<void(
       const std::optional<std::vector<SearchQuerySummary>>& entries)>;
 
+  // TODO(https://github.com/brave/brave-browser/issues/45732): Move this to its
+  // own file and merge with AssociatedContentDriver.
   // Supplements a conversation with associated page content
   class AssociatedContentDelegate {
    public:
+    class Observer : public base::CheckedObserver {
+     public:
+      ~Observer() override {}
+      virtual void OnNavigated(AssociatedContentDelegate* delegate) {}
+      virtual void OnTitleChanged(AssociatedContentDelegate* delegate) {}
+    };
+
     AssociatedContentDelegate();
     virtual ~AssociatedContentDelegate();
-    virtual void AddRelatedConversation(ConversationHandler* conversation) {}
-    virtual void OnRelatedConversationDisassociated(
-        ConversationHandler* conversation) {}
+
     // Unique ID for the content. For browser Tab content, this should be
     // a navigation ID that's re-used during back navigations.
     virtual int GetContentId() const = 0;
@@ -107,8 +114,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void GetContent(GetPageContentCallback callback) = 0;
     // Get current cache of content, if available. Do not perform any fresh
     // fetch for the content.
-    virtual std::string_view GetCachedTextContent() = 0;
-    virtual bool GetCachedIsVideo() = 0;
+    virtual std::string_view GetCachedTextContent() const = 0;
+    virtual bool GetCachedIsVideo() const = 0;
     // Get summarizer-key meta tag content from Brave Search SERP if exists and
     // use it to fetch search query and summary from Brave search chatllm
     // endpoint.
@@ -136,12 +143,23 @@ class ConversationHandler : public mojom::ConversationHandler,
       return weak_ptr_factory_.GetWeakPtr();
     }
 
+    virtual void OnTitleChanged();
+
+    void AddObserver(Observer* observer);
+    void RemoveObserver(Observer* observer);
+
+    const std::string& uuid() const { return uuid_; }
+    void set_uuid(std::string uuid) { uuid_ = uuid; }
+
    protected:
     // Content has navigated
     virtual void OnNewPage(int64_t navigation_id);
 
    private:
     void OnTextEmbedderInitialized(bool initialized);
+
+    std::string uuid_;
+    base::ObserverList<Observer> observers_;
 
     // Owned by this class so that all associated conversation can benefit from
     // a single cache as page content is unlikely to change between messages
@@ -166,7 +184,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void OnConversationEntryAdded(
         ConversationHandler* handler,
         mojom::ConversationTurnPtr& entry,
-        std::optional<std::string_view> associated_content_value) {}
+        std::optional<std::vector<std::string_view>> associated_content_value) {
+    }
     virtual void OnConversationEntryRemoved(ConversationHandler* handler,
                                             std::string turn_uuid) {}
 
@@ -182,8 +201,7 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void OnSelectedLanguageChanged(
         ConversationHandler* handler,
         const std::string& selected_language) {}
-    virtual void OnAssociatedContentDestroyed(ConversationHandler* handler,
-                                              int content_id) {}
+    virtual void OnAssociatedContentUpdated(ConversationHandler* handler) {}
   };
 
   ConversationHandler(
@@ -220,8 +238,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  // Called when the provided Conversation data is updated
-  void OnConversationMetadataUpdated();
   void OnArchiveContentUpdated(mojom::ConversationArchivePtr conversation_data);
 
   bool IsAnyClientConnected();
@@ -231,16 +247,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Returns true if the conversation has associated content that is non-archive
   bool IsAssociatedContentAlive();
 
-  // Called when the associated content is destroyed or navigated away. If
-  // it's a navigation, the AssociatedContentDelegate will set itself to a new
-  // ConversationHandler.
-  void OnAssociatedContentDestroyed(std::string last_text_content,
-                                    bool is_video);
-
-  // This can be called multiple times, e.g. when the user navigates back to
-  // content, this conversation can be reunited with the delegate.
-  void SetAssociatedContentDelegate(
-      base::WeakPtr<AssociatedContentDelegate> delegate);
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
 
@@ -296,7 +302,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void AddSubmitSelectedTextError(const std::string& selected_text,
                                   mojom::ActionType action_type,
                                   mojom::APIError error);
-  void OnAssociatedContentTitleChanged();
+  void OnAssociatedContentUpdated();
+
   void OnUserOptedIn();
   size_t GetConversationHistorySize() override;
   void GetScreenshots(GetScreenshotsCallback callback) override;
@@ -328,8 +335,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     }
   }
 
-  AssociatedContentDelegate* GetAssociatedContentDelegateForTesting() {
-    return associated_content_delegate_.get();
+  AssociatedContentManager* associated_content_manager() {
+    return associated_content_manager_.get();
   }
 
   void SetRequestInProgressForTesting(bool in_progress) {
@@ -386,8 +393,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void InitEngine();
   void UpdateAssociatedContentInfo();
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
-  bool IsContentAssociationPossible();
-  int GetContentUsedPercentage();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
   void PerformAssistantGeneration(std::string page_content = "",
                                   bool is_video = false,
@@ -400,24 +405,15 @@ class ConversationHandler : public mojom::ConversationHandler,
                                  bool is_video,
                                  std::string invalidation_token);
 
-  // Disassociate with the current associated content. Use this instead of
-  // settings associated_content_delegegate_ to nullptr to ensure that we
-  // inform the delegate, otherwise when this class instance is destroyed,
-  // the delegate will not be informed.
-  void DisassociateContentDelegate();
-
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 
   void GeneratePageContent(GetPageContentCallback callback);
-
-  void SetArchiveContent(std::string text_content, bool is_video);
-
+  // This method is the same as |GeneratePageContent| but without DCHECKs.
+  // Its used in tests.
+  void GeneratePageContentInternal(GetPageContentCallback callback);
   void OnGeneratePageContentComplete(GetPageContentCallback callback,
-                                     std::string previous_content,
-                                     std::string contents_text,
-                                     bool is_video,
-                                     std::string invalidation_token);
+                                     std::string previous_content);
   void OnGetRefinedPageContent(
       EngineConsumer::GenerationDataCallback data_received_callback,
       EngineConsumer::GenerationCompletedCallback data_completed_callback,
@@ -436,7 +432,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnConversationEntryAdded(mojom::ConversationTurnPtr& entry);
   void OnConversationEntryRemoved(std::optional<std::string> turn_id);
   void OnSuggestedQuestionsChanged();
-  void OnAssociatedContentInfoChanged();
   void OnClientConnectionChanged();
   void OnConversationTitleChanged(std::string_view title);
   void OnConversationTokenInfoChanged(uint64_t total_tokens,
@@ -446,8 +441,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAPIRequestInProgressChanged();
   void OnStateForConversationEntriesChanged();
 
-  base::WeakPtr<AssociatedContentDelegate> associated_content_delegate_;
-  std::unique_ptr<AssociatedArchiveContent> archive_content_;
+  std::unique_ptr<AssociatedContentManager> associated_content_manager_;
 
   std::string model_key_;
   // Chat conversation entries
@@ -474,15 +468,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   mojom::SuggestionGenerationStatus suggestion_generation_status_ =
       mojom::SuggestionGenerationStatus::None;
 
-  // TODO(petemill): Remove the AssociatedContentDelegate when
-  // not sending paging contents instead of keeping track with a bool,
-  // so that it's impossible to use page content when disconnected.
-  // The UI can have access to the UI's associated content in order
-  // to both get metadata and and ask this conversation to be associated with
-  // it. This would also be a good strategy if we can keep a conversation
-  // but change AssociatedContentDelegate as the active Tab navigates to
-  // different pages.
-  bool should_send_page_contents_ = false;
   bool is_content_refined_ = false;
   // When this is true, the most recent content retrieval was different to the
   // previous one.

@@ -57,6 +57,7 @@ export default function BeginGeneration() {
           removeImage: () => {},
           uploadImage: (useMediaCapture: boolean) => {},
           getScreenshots: () => {},
+          associatedContentInfo: [],
           conversationHistory: [],
           pendingMessageImages: [],
           isUploadingFiles: false,

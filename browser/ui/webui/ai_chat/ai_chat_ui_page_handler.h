@@ -14,6 +14,8 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/browser/ai_chat/upload_file_helper.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -30,9 +32,10 @@ class FaviconService;
 }  // namespace favicon
 
 namespace ai_chat {
-class AIChatUIPageHandler : public mojom::AIChatUIHandler,
-                            public AIChatTabHelper::Observer,
-                            public UploadFileHelper::Observer {
+class AIChatUIPageHandler
+    : public mojom::AIChatUIHandler,
+      public ConversationHandler::AssociatedContentDelegate::Observer,
+      public UploadFileHelper::Observer {
  public:
   AIChatUIPageHandler(
       content::WebContents* owner_web_contents,
@@ -67,6 +70,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       override;
   void AssociateTab(mojom::TabDataPtr tab,
                     const std::string& conversation_uuid) override;
+  void DisassociateTab(mojom::TabDataPtr tab,
+                       const std::string& conversation_uuid) override;
   void NewConversation(
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
@@ -90,8 +95,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   void HandleWebContentsDestroyed();
 
-  // AIChatTabHelper::Observer
-  void OnAssociatedContentNavigated(int new_navigation_id) override;
+  // AssociatedContentDelegate::Observer
+  void OnNavigated(
+      ConversationHandler::AssociatedContentDelegate* delegate) override;
 
   // UploadFileHelper::Observer
   void OnFilesSelected() override;
@@ -101,8 +107,10 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
-  base::ScopedObservation<AIChatTabHelper, AIChatTabHelper::Observer>
-      chat_tab_helper_observation_{this};
+  base::ScopedObservation<
+      ConversationHandler::AssociatedContentDelegate,
+      ConversationHandler::AssociatedContentDelegate::Observer>
+      associated_content_delegate_observation_{this};
   std::unique_ptr<ChatContextObserver> chat_context_observer_;
 
   std::unique_ptr<UploadFileHelper> upload_file_helper_;
