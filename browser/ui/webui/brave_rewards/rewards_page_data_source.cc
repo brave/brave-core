@@ -247,7 +247,6 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"payoutPendingText", IDS_REWARDS_PAYMENT_PENDING},
     {"payoutProcessingText", IDS_REWARDS_PAYMENT_PROCESSING},
     {"payoutSupportLink", IDS_REWARDS_PAYMENT_SUPPORT},
-    {"recurringListEmptyText", IDS_REWARDS_RECURRING_LIST_EMPTY_TEXT},
     {"recurringNextContributionLabel",
      IDS_REWARDS_RECURRING_NEXT_CONTRIBUTION_LABEL},
     {"recurringTitle", IDS_REWARDS_RECURRING_TITLE},

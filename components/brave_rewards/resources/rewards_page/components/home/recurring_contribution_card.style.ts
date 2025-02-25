@@ -99,12 +99,6 @@ export const style = scoped.css`
     }
   }
 
-  .empty {
-    margin: 24px 0;
-    text-align: center;
-    color: ${color.text.secondary};
-  }
-
   .show-all {
     text-align: center;
   }
