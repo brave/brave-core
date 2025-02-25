@@ -36,7 +36,7 @@ extension Strings {
       "focusOnboarding.p3aScreenTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Make Brave Better.",
+      value: "Make Brave Better",
       comment: "The title of the screen which asks user to enable privacy preserving analytics."
     )
 
@@ -52,31 +52,26 @@ extension Strings {
       "focusOnboarding.p3aToggleTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Share Private & Anonymous Product Insights.",
-      comment: "The title of the toggle for enable / disable the privacy preserving analytics."
+      value: "Share **completely private & anonymous** product insights.",
+      comment:
+        "The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The \"completely private & anonymous\" snippet should be bold in all languages"
     )
 
     public static let p3aToggleDescription = NSLocalizedString(
       "focusOnboarding.p3aToggleDescription",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Change this at any time in Brave Settings under ‘Brave Shields and Privacy’.",
-      comment: "The title of the toggle for enable / disable privacy preserving analytics."
-    )
-
-    public static let p3aInformationButtonTitle = NSLocalizedString(
-      "focusOnboarding.p3aInformationButtonTitle",
-      tableName: "FocusOnboarding",
-      bundle: .module,
-      value: "Learn more about our Privacy Preserving Product Analytics (P3A)",
-      comment: "The title of the button that opens the website abouyt privacy preserving analytics."
+      value:
+        "You can opt-out any time in Settings under **Shields and Privacy**. [Learn more](#p3a-learn-more) about our Privacy Preserving Product Analytics.",
+      comment:
+        "The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment"
     )
 
     public static let defaultBrowserScreenTitle = NSLocalizedString(
       "focusOnboarding.defaultBrowserScreenTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Set Brave as your Default Browser",
+      value: "Get Ad Blocking With Every Site You Visit",
       comment: "The title of the screen that requests user to set Brave as default"
     )
 
@@ -84,7 +79,7 @@ extension Strings {
       "focusOnboarding.defaultBrowserScreenDescription",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Open every link you tap with Brave’s privacy protections",
+      value: "Set Brave as your default browser today.",
       comment: "The subtitle of the screen that requests user to set Brave as default"
     )
 

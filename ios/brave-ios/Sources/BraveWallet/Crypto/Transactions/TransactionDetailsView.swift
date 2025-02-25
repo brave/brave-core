@@ -154,13 +154,7 @@ struct TransactionDetailsView: View {
                 .frame(maxWidth: .infinity)
               }
             )
-            .buttonStyle(
-              BraveOutlineButtonStyle(
-                size: .large,
-                enabledTextColor: .braveBlurple,
-                enabledOutlineColor: .braveBlurpleTint
-              )
-            )
+            .buttonStyle(BraveOutlineButtonStyle(size: .large))
           }
           if transactionDetailsStore.isCancelOrSpeedupAvailable {
             Divider()
