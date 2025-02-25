@@ -187,6 +187,7 @@ void Reporter::PrepareRequest(const base::Value& request_data) {
     return;
   }
 
+  VLOG(2) << "Preparing to report payload: " << final_payload_json;
   auto payload_hash = crypto::SHA256HashString(final_payload_json);
   credential_signer_->Sign(
       std::vector<uint8_t>(payload_hash.begin(), payload_hash.end()),
