@@ -50,8 +50,8 @@ TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,
   if (!data.should_show_discard_status) {
     content::WebContents* const contents = model->GetWebContentsAt(index);
     using resource_coordinator::TabLoadTracker;
-    const auto loaded_state = TabLoadTracker::Get()->GetLoadingState(contents);    
-    if (loaded_state == TabLoadTracker::LoadingState::UNLOADED) {
+    const auto loading_state = TabLoadTracker::Get()->GetLoadingState(contents);
+    if (loading_state == TabLoadTracker::LoadingState::UNLOADED) {
       data.should_show_discard_status = true;
     }
   }
