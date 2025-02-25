@@ -152,7 +152,7 @@ void MessageManager::UpdateMetricValue(
   }
   const auto* metric_config = GetMetricConfig(histogram_name);
   if (metric_config && *metric_config &&
-      (*metric_config)->record_activation_date) {
+      (*metric_config)->record_activation_date && bucket >= 1) {
     // Record activation date for metric, for retention measurement purposes
     ScopedDictPrefUpdate update(&*local_state_, kActivationDatesDictPref);
     if (!update->contains(histogram_name)) {
