@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/extensions/detail_view.lit_mangler.html.ts should match snapshot 1`] = `
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/extensions/detail_view.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/extensions/detail_view.html.ts
 +++ gen/chrome/browser/resources/extensions/preprocessed/detail_view.html.ts

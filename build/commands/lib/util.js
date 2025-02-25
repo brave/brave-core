@@ -548,15 +548,15 @@ const util = {
       const relativeChromiumSrcFile = chromiumSrcFile.slice(chromiumSrcDirLen)
       let overriddenFile = path.join(config.srcDir, relativeChromiumSrcFile)
 
-      const additionalExtensions = {
-        // .lit_mangler.html.ts files are used to modify the upstream .html.ts file at
+      const additionalExtensions = [
+        // .lit_mangler.ts files are used to modify the upstream .html.ts file at
         // build time.
-        '.lit_mangler.html.ts': '.html.ts',
-      }
+        '.lit_mangler.ts',
+      ]
 
-      const additionalExtension = Object.keys(additionalExtensions).find(key => overriddenFile.endsWith(key))
+      const additionalExtension = additionalExtensions.find(key => overriddenFile.endsWith(key))
       if (additionalExtension) {
-        overriddenFile = overriddenFile.replace(additionalExtension, additionalExtensions[additionalExtension])
+        overriddenFile = overriddenFile.substring(0, overriddenFile.length - additionalExtension.length)
       }
 
       if (fs.existsSync(overriddenFile)) {
