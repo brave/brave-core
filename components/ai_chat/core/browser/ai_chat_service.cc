@@ -1017,6 +1017,21 @@ void AIChatService::AssociateContent(
                                         content->GetWeakPtr());
 }
 
+void AIChatService::DisassociateContent(
+    ConversationHandler::AssociatedContentDelegate* content,
+    const std::string& conversation_uuid) {
+  CHECK(content);
+
+  // Note: This will only work if the conversation is already loaded.
+  auto* conversation = GetConversation(conversation_uuid);
+  if (!conversation) {
+    return;
+  }
+  conversation->SetAssociatedContentDelegate(nullptr);
+  content_conversations_.erase(content->GetContentId());
+}
+
+
 void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
                                        GetSuggestedTopicsCallback callback) {
   GetEngineForTabOrganization(base::BindOnce(

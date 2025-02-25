@@ -148,6 +148,9 @@ class AIChatService : public KeyedService,
 
   void AssociateContent(ConversationHandler::AssociatedContentDelegate* content,
                         const std::string& conversation_uuid);
+  void DisassociateContent(
+      ConversationHandler::AssociatedContentDelegate* content,
+      const std::string& conversation_uuid);
 
   void GetFocusTabs(const std::vector<Tab>& tabs,
                     const std::string& topic,
