@@ -355,43 +355,6 @@ extension URL {
     return urlHost == "talk.brave.com"
   }
 
-  // Check if the website is a night mode blocked site
-  public var isNightModeBlockedURL: Bool {
-    // The reason we use `normalizedHost` is because we want to keep the eTLD+1
-    // IE: (search.brave.com instead of brave.com)
-    guard let urlHost = self.normalizedHost(), let registry = self.publicSuffix else {
-      return false
-    }
-
-    // Remove the `registry` so we get `search.brave` instead of `search.brave.com`
-    // We get amazon instead of amazon.co.uk
-    // mail.proton instead of mail.proton.com
-    let domainName = urlHost.dropLast(registry.count).trimmingCharacters(
-      in: CharacterSet(charactersIn: ".")
-    )
-
-    // Site domains that should NOT inject night mode
-    let siteList = Set([
-      "twitter", "youtube", "twitch",
-      "soundcloud", "github", "netflix",
-      "imdb", "mail.proton", "amazon",
-      "x", "search.brave",
-
-      // Search Engines
-      "search.brave", "google", "qwant",
-      "startpage", "duckduckgo", "presearch",
-
-      // Dev sites
-      "macrumors", "9to5mac", "developer.apple",
-
-      // Casual sites
-      "wowhead", "xbox", "thegamer",
-      "cineplex", "starwars",
-    ])
-
-    return siteList.contains(domainName)
-  }
-
   public func uniquePathForFilename(_ filename: String) throws -> URL {
     let basePath = self.appendingPathComponent(filename)
     let fileExtension = basePath.pathExtension
