@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import NaturalLanguage
+import Preferences
 import SwiftUI
 import WebKit
 import os.log
@@ -23,7 +23,6 @@ enum BraveTranslateError: String, Error {
 class BraveTranslateTabHelper: NSObject {
   private weak var tab: Tab?
   private weak var delegate: BraveTranslateScriptHandlerDelegate?
-  private let recognizer = NLLanguageRecognizer()
   private static var requestCache = [URL: (data: Data, response: HTTPURLResponse)]()
 
   private var url: URL?
@@ -145,7 +144,7 @@ class BraveTranslateTabHelper: NSObject {
         return
       }
 
-      try? await executeChromiumFunction(tab: tab, name: "translate.revertTranslation")
+      _ = try? await executeChromiumFunction(tab: tab, name: "translate.revertTranslation")
       self.delegate?.updateTranslateURLBar(tab: tab, state: .available)
     }
   }
@@ -255,7 +254,7 @@ class BraveTranslateTabHelper: NSObject {
     tab: Tab,
     name functionName: String,
     args: [Any] = []
-  ) async throws -> Any {
+  ) async throws -> Any? {
     guard let webView = tab.webView else {
       throw BraveTranslateError.otherError
     }
@@ -281,7 +280,7 @@ class BraveTranslateTabHelper: NSObject {
 
   @MainActor
   private func guessLanguage(for tab: Tab) async -> Locale.Language? {
-    try? await executeChromiumFunction(tab: tab, name: "languageDetection.detectLanguage")
+    _ = try? await executeChromiumFunction(tab: tab, name: "languageDetection.detectLanguage")
 
     // Language was identified by the Translate Script
     if let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
@@ -300,16 +299,6 @@ class BraveTranslateTabHelper: NSObject {
       return Locale.Language(identifier: languageCode)
     }
 
-    // Language identified by running the NL detection on the page source
-    if let rawPageSource = await executePageFunction(tab: tab, name: "getRawPageSource") {
-      recognizer.reset()
-      recognizer.processString(rawPageSource)
-
-      if let dominantLanguage = recognizer.dominantLanguage, dominantLanguage != .undetermined {
-        return Locale.Language(identifier: dominantLanguage.rawValue)
-      }
-    }
-
     return nil
   }
 
@@ -325,16 +314,55 @@ class BraveTranslateTabHelper: NSObject {
       return
     }
 
+    // Check if the translation language is supported
     let isTranslationSupported = await BraveTranslateSession.isTranslationSupported(
       from: pageLanguage,
       to: currentLanguageInfo.currentLanguage
     )
 
-    try Task.checkCancellation()
     delegate?.updateTranslateURLBar(
       tab: tab,
       state: isTranslationSupported ? .available : .unavailable
     )
+
+    try Task.checkCancellation()
+
+    // Check if the user can view the translation onboarding
+    guard delegate?.canShowTranslateOnboarding(tab: tab) == true else {
+      let translateEnabled = Preferences.Translate.translateEnabled.value == true
+
+      delegate?.updateTranslateURLBar(
+        tab: tab,
+        state: translateEnabled ? .available : .unavailable
+      )
+
+      return
+    }
+
+    // Let the user enable or disable translation via onboarding
+    let translateEnabled = await withCheckedContinuation { continuation in
+      delegate?.showTranslateOnboarding(tab: tab) { translateEnabled in
+        continuation.resume(returning: translateEnabled)
+      }
+    }
+
+    delegate?.updateTranslateURLBar(
+      tab: tab,
+      state: translateEnabled == true ? .available : .unavailable
+    )
+
+    // User enabled translation via onboarding
+    if translateEnabled == true {
+      // Lazy loading. Load the translate script if needed.
+      _ = try await tab.webView?.callAsyncJavaScript(
+        "return await window.__firefox__.\(BraveTranslateScriptHandler.namespace).loadTranslateScript();",
+        arguments: [:],
+        contentWorld: BraveTranslateScriptHandler.scriptSandbox
+      )
+
+      // Automatically translate
+      startTranslation(canShowToast: true)
+    }
   }
 }
 
