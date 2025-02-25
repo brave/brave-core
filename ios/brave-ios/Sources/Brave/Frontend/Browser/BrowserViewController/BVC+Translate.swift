@@ -28,6 +28,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     }
 
     return Preferences.Translate.translateEnabled.value == nil
+      && !topToolbar.inOverlayMode
       && topToolbar.secureContentState == .secure
       && Preferences.Translate.translateURLBarOnboardingCount.value < 2
       && shouldShowTranslationOnboardingThisSession && presentedViewController == nil
@@ -100,6 +101,11 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
   }
 
   func presentToast(tab: Tab?, languageInfo: BraveTranslateLanguageInfo) {
+    if presentedViewController != nil || topToolbar.inOverlayMode || tab !== tabManager.selectedTab
+    {
+      return
+    }
+
     let popover = PopoverController(
       content: TranslateToast(languageInfo: languageInfo) { [weak tab] _ in
         tab?.translateHelper?.startTranslation(canShowToast: false)
