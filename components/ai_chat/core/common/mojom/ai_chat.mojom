@@ -106,7 +106,7 @@ struct Conversation {
   // Model key, if different than default
   string? model_key;
 
-  AssociatedContent? associated_content;
+  array<AssociatedContent> associated_content;
 };
 
 struct ContentArchive {
