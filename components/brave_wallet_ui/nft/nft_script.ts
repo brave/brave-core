@@ -37,7 +37,10 @@ const imageSrc = stripChromeImageURL(imageUrl) ?? Placeholder
 function render() {
   const imgEl = document.getElementById('nft-image') as HTMLImageElement
   // update img src
-  imgEl.src = displayMode === 'details' && nftMetadata ? mediaUrl : imageSrc
+  imgEl.src =
+    displayMode === 'details' && nftMetadata
+      ? `chrome-untrusted://image?url=${encodeURIComponent(mediaUrl)}`
+      : imageSrc
 }
 
 document.addEventListener('DOMContentLoaded', render)

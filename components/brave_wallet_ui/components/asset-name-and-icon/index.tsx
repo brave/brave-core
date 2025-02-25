@@ -25,9 +25,9 @@ export const AssetNameAndIcon = (props: Props) => {
   return (
     <StyledWrapper>
       <AssetIcon
-        // This usage is good, but it's breaking because it looks like it's being loaded from chrome-untrusted://market-display frame
-        // the image is coming from https://assets.cgproxy.brave.com
-        src={`chrome://image?url=${encodeURIComponent(assetLogo)}&staticEncode=true16`} 
+        src={`chrome-untrusted://image?url=${encodeURIComponent(
+          assetLogo
+        )}&staticEncode=true`}
         loading='lazy'
       />
       <NameAndSymbolWrapper>

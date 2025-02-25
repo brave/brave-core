@@ -55,9 +55,9 @@ export const NftIcon = (props: NftIconProps) => {
   const nftIframeUrl = React.useMemo(() => {
     const urlParams = new URLSearchParams({
       displayMode: 'icon',
-      // appears to still be broken. Seems this is being used in brave://wallet/crypto/accounts/<account-id>/nfts to display nft images
-      // seems to be not working because we're trying to load from chrome-untrusted://nft-display frame which might not be allowed even with the CSP set correctly
-      icon: `chrome://image?url=${encodeURIComponent(remoteImage)}&staticEncode=true&test=8`
+      icon: `chrome-untrusted://image?url=${encodeURIComponent(
+        remoteImage
+      )}&staticEncode=true`
     })
     return `chrome-untrusted://nft-display?${urlParams.toString()}`
   }, [remoteImage])

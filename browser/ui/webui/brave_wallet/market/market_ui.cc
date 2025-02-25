@@ -7,13 +7,16 @@
 
 #include <string>
 
+#include "brave/browser/ui/webui/untrusted_sanitized_image_source.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/market_display/resources/grit/market_display_generated_map.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/grit/browser_resources.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/webui/resources/grit/webui_resources.h"
@@ -55,7 +58,7 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       std::string("img-src 'self' https://assets.cgproxy.brave.com "
-                  "chrome-untrusted://resources;"));
+                  "chrome-untrusted://resources chrome-untrusted://image;"));
 
   untrusted_source->AddResourcePath("load_time_data_deprecated.js",
                                     IDR_WEBUI_JS_LOAD_TIME_DATA_DEPRECATED_JS);
@@ -67,6 +70,10 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
   untrusted_source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   untrusted_source->AddString("braveWalletMarketUiBridgeUrl",
                               kUntrustedMarketURL);
+
+  Profile* profile = Profile::FromWebUI(web_ui);
+  content::URLDataSource::Add(
+      profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
 }
 
 UntrustedMarketUI::~UntrustedMarketUI() = default;
