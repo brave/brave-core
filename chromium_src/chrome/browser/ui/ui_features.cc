@@ -17,6 +17,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {kFewerUpdateConfirmations, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+    {kSideBySide, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
