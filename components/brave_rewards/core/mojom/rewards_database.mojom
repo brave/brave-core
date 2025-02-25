@@ -71,3 +71,12 @@ struct DBCommandResponse {
   DBCommandResult? result;
   Status status;
 };
+
+interface RewardsDatabase {
+  RunDBTransaction(DBTransaction transaction) => (DBCommandResponse response);
+};
+
+struct HashPrefixData {
+  string prefixes;
+  uint32 prefix_size;
+};

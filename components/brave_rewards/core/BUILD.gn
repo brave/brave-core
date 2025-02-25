@@ -33,6 +33,7 @@ static_library("core") {
     "//base",
     "//brave/components/l10n/common",
     "//components/prefs",
+    "//mojo/public/mojom/base",
     "//net",
     "//url",
   ]

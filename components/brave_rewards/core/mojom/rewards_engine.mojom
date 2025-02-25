@@ -207,6 +207,10 @@ interface RewardsEngineClient {
 
   RunDBTransaction(DBTransaction transaction) => (DBCommandResponse response);
 
+  UpdateCreatorPrefixStore(HashPrefixData prefix_data) => (bool success);
+
+  CreatorPrefixStoreContains(string value) => (bool contains_prefix);
+
   Log(string file, int32 line, int32 verbose_level, string message);
 
   ClearAllNotifications();
