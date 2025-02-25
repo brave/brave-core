@@ -564,8 +564,11 @@ RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
     return SetConnectionParamsWin32(entry_name, phone_book_path);
   }
 
-  // Can ignore proxy setting failure. VPN works w/o it.
-  SetConnectionProxyParamsUsingPowerShell(entry_name, proxy);
+  // Only provide proxy params if the host supports smart routing.
+  if (info.smart_routing_enabled()) {
+    // Can ignore proxy setting failure. VPN works w/o it.
+    SetConnectionProxyParamsUsingPowerShell(entry_name, proxy);
+  }
 
   return GetRasSuccessResult();
 }

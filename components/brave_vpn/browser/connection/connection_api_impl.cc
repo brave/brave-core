@@ -171,6 +171,10 @@ void ConnectionAPIImpl::ResetHostname() {
   hostname_.reset();
 }
 
+bool ConnectionAPIImpl::SmartRoutingEnabled() const {
+  return hostname_ ? hostname_->smart_routing_enabled : false;
+}
+
 void ConnectionAPIImpl::UpdateAndNotifyConnectionStateChange(
     mojom::ConnectionState state) {
   // this is a simple state machine for handling connection state

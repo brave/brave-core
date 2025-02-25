@@ -23,12 +23,14 @@ class BraveVPNConnectionInfo {
                          const std::string& hostname,
                          const std::string& username,
                          const std::string& password,
+                         bool smart_routing_enabled,
                          const std::string& proxy);
 
   std::string connection_name() const { return connection_name_; }
   std::string hostname() const { return hostname_; }
   std::string username() const { return username_; }
   std::string password() const { return password_; }
+  bool smart_routing_enabled() const { return smart_routing_enabled_; }
   std::string proxy() const { return proxy_; }
 
  private:
@@ -36,6 +38,7 @@ class BraveVPNConnectionInfo {
   std::string hostname_;
   std::string username_;
   std::string password_;
+  bool smart_routing_enabled_;
   std::string proxy_;
 };
 

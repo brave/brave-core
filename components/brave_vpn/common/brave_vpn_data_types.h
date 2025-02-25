@@ -15,6 +15,7 @@ struct Hostname {
   std::string display_name;
   bool is_offline;
   int capacity_score;
+  bool smart_routing_enabled;
 };
 
 }  // namespace brave_vpn

@@ -327,7 +327,7 @@ void SystemVPNConnectionAPIImplBase::OnGetProfileCredentials(
 
     connection_info_.SetConnectionInfo(manager_->target_vpn_entry_name(),
                                        GetHostname(), *username, *password,
-                                       kProxyUrl);
+                                       SmartRoutingEnabled(), kProxyUrl);
     // Let's create os vpn entry with |connection_info_|.
     CreateVPNConnection();
     return;

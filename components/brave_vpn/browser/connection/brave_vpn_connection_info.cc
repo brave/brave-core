@@ -20,6 +20,7 @@ void BraveVPNConnectionInfo::Reset() {
   hostname_.clear();
   username_.clear();
   password_.clear();
+  smart_routing_enabled_ = false;
   proxy_.clear();
 }
 
@@ -33,11 +34,13 @@ void BraveVPNConnectionInfo::SetConnectionInfo(
     const std::string& hostname,
     const std::string& username,
     const std::string& password,
+    const bool smart_routing_enabled,
     const std::string& proxy) {
   connection_name_ = connection_name;
   hostname_ = hostname;
   username_ = username;
   password_ = password;
+  smart_routing_enabled_ = smart_routing_enabled;
   proxy_ = proxy;
 }
 
