@@ -446,11 +446,6 @@ void ConversationHandler::SetArchiveContent(std::string text_content,
 
 void ConversationHandler::SetAssociatedContentDelegate(
     base::WeakPtr<AssociatedContentDelegate> delegate) {
-  // If this conversation is allowed to fetch content, this is the delegate
-  // that can provide fresh content for the conversation.
-  CHECK(delegate)
-      << "Don't send a null delegate. Start a new conversation instead.";
-
   if (associated_content_delegate_ &&
       (delegate.get() == associated_content_delegate_.get())) {
     return;
@@ -470,7 +465,10 @@ void ConversationHandler::SetAssociatedContentDelegate(
 
   DisassociateContentDelegate();
   associated_content_delegate_ = delegate;
-  associated_content_delegate_->AddRelatedConversation(this);
+  if (associated_content_delegate_) {
+    associated_content_delegate_->AddRelatedConversation(this);
+  }
+
   // Default to send page contents when we have a valid contents.
   // This class should only be provided with a delegate when
   // it is allowed to use it (e.g. not internal WebUI content).

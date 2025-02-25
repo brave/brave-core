@@ -139,6 +139,9 @@ class AIChatService : public KeyedService,
 
   void AssociateContent(ConversationHandler::AssociatedContentDelegate* content,
                         const std::string& conversation_uuid);
+  void DisassociateContent(
+      ConversationHandler::AssociatedContentDelegate* content,
+      const std::string& conversation_uuid);
 
   // mojom::Service
   void MarkAgreementAccepted() override;
