@@ -71,7 +71,7 @@ extension Strings {
       "focusOnboarding.defaultBrowserScreenTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Set Brave as your Default Browser",
+      value: "Get Ad Blocking With Every Site You Visit",
       comment: "The title of the screen that requests user to set Brave as default"
     )
 
@@ -79,7 +79,7 @@ extension Strings {
       "focusOnboarding.defaultBrowserScreenDescription",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Open every link you tap with Brave’s privacy protections",
+      value: "Set Brave as your default browser today.",
       comment: "The subtitle of the screen that requests user to set Brave as default"
     )
 
