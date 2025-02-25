@@ -7,10 +7,6 @@ module ai_chat.mojom;
 
 import "url/mojom/url.mojom";
 
-// Used to indicate that this content id is empty. Unfortunately we need this as
-// iOS doesn't support optional numbers.
-const int32 kContentIdNone = -1;
-
 struct TabData {
     // This is the ID of the tab. It should be possible to look up the
     // Tab/TabAndroid from this ID.
