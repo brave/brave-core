@@ -4,12 +4,12 @@ version = 4
 
 [[package]]
 name = "adblock"
-version = "0.9.3"
+version = "0.9.5-brave-core"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "base64",
  "bitflags 1.3.2",
- "cssparser 0.28.1",
+ "cssparser 0.29.6",
  "idna 0.2.3",
  "itertools",
  "memchr",
@@ -18,10 +18,10 @@ dependencies = [
  "regex",
  "rmp-serde",
  "seahash",
- "selectors 0.23.0",
+ "selectors 0.24.0",
  "serde",
  "serde_json",
- "thiserror",
+ "thiserror 1.0.65",
  "url",
 ]
 
@@ -32,7 +32,7 @@ dependencies = [
  "adblock",
  "cxx",
  "serde_json",
- "thiserror",
+ "thiserror 1.0.65",
 ]
 
 [[package]]
@@ -96,7 +96,7 @@ dependencies = [
  "cxx",
  "lazy_static",
  "rand 0.8.5",
- "thiserror",
+ "thiserror 1.0.65",
 ]
 
 [[package]]
@@ -226,7 +226,7 @@ dependencies = [
  "rand_core 0.6.4",
  "sha2 0.9.9",
  "subtle",
- "thiserror",
+ "thiserror 1.0.65",
 ]
 
 [[package]]
@@ -503,28 +503,12 @@ dependencies = [
 
 [[package]]
 name = "cssparser"
-version = "0.27.2"
+version = "0.29.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cssparser-macros",
  "dtoa-short",
- "itoa 0.4.8",
- "matches",
- "phf 0.8.0",
- "proc-macro2",
- "quote",
- "smallvec",
- "syn 1.0.109",
-]
-
-[[package]]
-name = "cssparser"
-version = "0.28.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "cssparser-macros",
- "dtoa-short",
- "itoa 0.4.8",
+ "itoa",
  "matches",
  "phf 0.8.0",
  "proc-macro2",
@@ -540,7 +524,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cssparser-macros",
  "dtoa-short",
- "itoa 1.0.14",
+ "itoa",
  "phf 0.11.3",
  "smallvec",
 ]
@@ -788,7 +772,7 @@ dependencies = [
  "multihash-codetable",
  "serde",
  "serde_json",
- "thiserror",
+ "thiserror 1.0.65",
 ]
 
 [[package]]
@@ -963,7 +947,7 @@ dependencies = [
  "serde_ipld_dagcbor",
  "serde_repr",
  "serde_tuple",
- "thiserror",
+ "thiserror 1.0.65",
 ]
 
 [[package]]
@@ -985,7 +969,7 @@ dependencies = [
  "num-traits",
  "serde",
  "serde_tuple",
- "thiserror",
+ "thiserror 1.0.65",
  "unsigned-varint",
 ]
 
@@ -1158,7 +1142,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bytes",
  "fnv",
- "itoa 1.0.14",
+ "itoa",
 ]
 
 [[package]]
@@ -1225,11 +1209,6 @@ dependencies = [
 
 [[package]]
 name = "itoa"
-version = "0.4.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[[package]]
-name = "itoa"
 version = "1.0.14"
 
 [[package]]
@@ -1265,13 +1244,13 @@ dependencies = [
 
 [[package]]
 name = "kuchikiki"
-version = "0.8.7-speedreader"
+version = "0.8.8-speedreader"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "cssparser 0.28.1",
+ "cssparser 0.29.6",
  "html5ever",
  "indexmap",
- "selectors 0.23.0",
+ "selectors 0.24.0",
 ]
 
 [[package]]
@@ -1280,11 +1259,6 @@ version = "1.5.0"
 dependencies = [
  "spin",
 ]
-
-[[package]]
-name = "lazycell"
-version = "1.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "libc"
@@ -1367,20 +1341,18 @@ version = "0.4.25"
 
 [[package]]
 name = "lol_html"
-version = "2.1.0"
+version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 2.8.0",
  "cfg-if",
- "cssparser 0.27.2",
+ "cssparser 0.29.6",
  "encoding_rs",
  "hashbrown",
- "lazy_static",
- "lazycell",
  "memchr",
  "mime",
- "selectors 0.22.0",
- "thiserror",
+ "selectors 0.24.0",
+ "thiserror 2.0.11",
 ]
 
 [[package]]
@@ -1968,7 +1940,7 @@ dependencies = [
  "lazy_static",
  "regex",
  "serde_json",
- "thiserror",
+ "thiserror 1.0.65",
  "time",
  "url",
 ]
@@ -1986,7 +1958,7 @@ dependencies = [
  "pasta_curves",
  "rand_core 0.6.4",
  "serde",
- "thiserror",
+ "thiserror 1.0.65",
  "zeroize",
 ]
 
@@ -2082,37 +2054,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "selectors"
-version = "0.22.0"
+version = "0.24.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 1.3.2",
- "cssparser 0.27.2",
- "derive_more",
- "fxhash",
- "log",
- "matches",
- "phf 0.8.0",
- "phf_codegen 0.8.0",
- "precomputed-hash",
- "servo_arc 0.1.1",
- "smallvec",
- "thin-slice",
-]
-
-[[package]]
-name = "selectors"
-version = "0.23.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "bitflags 1.3.2",
- "cssparser 0.28.1",
+ "cssparser 0.29.6",
  "derive_more",
  "fxhash",
  "log",
  "phf 0.8.0",
  "phf_codegen 0.8.0",
  "precomputed-hash",
- "servo_arc 0.1.1",
+ "servo_arc 0.2.0",
  "smallvec",
 ]
 
@@ -2177,7 +2130,7 @@ dependencies = [
 name = "serde_json"
 version = "1.0.137"
 dependencies = [
- "itoa 1.0.14",
+ "itoa",
  "memchr",
  "ryu",
  "serde",
@@ -2214,7 +2167,7 @@ dependencies = [
 
 [[package]]
 name = "servo_arc"
-version = "0.1.1"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "nodrop",
@@ -2333,7 +2286,7 @@ dependencies = [
  "readability",
  "regex",
  "serde_json",
- "thiserror",
+ "thiserror 1.0.65",
  "url",
 ]
 
@@ -2506,16 +2459,19 @@ dependencies = [
 ]
 
 [[package]]
-name = "thin-slice"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[[package]]
 name = "thiserror"
 version = "1.0.65"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "thiserror-impl",
+ "thiserror-impl 1.0.65",
+]
+
+[[package]]
+name = "thiserror"
+version = "2.0.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "thiserror-impl 2.0.11",
 ]
 
 [[package]]
@@ -2529,12 +2485,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "thiserror-impl"
+version = "2.0.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.96",
+]
+
+[[package]]
 name = "time"
 version = "0.3.36"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "deranged",
- "itoa 1.0.14",
+ "itoa",
  "num-conv",
  "powerfmt",
  "serde",

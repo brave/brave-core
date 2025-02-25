@@ -46,4 +46,7 @@ cargo_crate("lib") {
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
+  if (epoch == "2") {
+    output_name = "thiserror_impl_v2"
+  }
 }

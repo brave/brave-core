@@ -155,7 +155,7 @@ build_script_outputs = [ "lib.rs" ]
 [crate.cssparser]
 license_files = ['LICENSE']
 extra_kv = { raw_gn = '''
-if (epoch == "0.28" || epoch == "0.27") {
+if (epoch == "0.29") {
     build_script_inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-" + cargo_pkg_version + "/build/match_byte.rs" ]
     build_script_outputs = [ "tokenizer.rs" ]
   }
@@ -365,8 +365,12 @@ if (target_name == "buildrs_support" && epoch == "1") {
 [crate.tap]
 license_files = ['LICENSE.txt']
 
-[crate.thin-slice]
-license_files = ['../../../../../common/licenses/MPL-2.0']
+[crate.thiserror-impl]
+extra_kv = { raw_gn = '''
+if (epoch == "2") {
+  output_name = "thiserror_impl_v2"
+}
+''' }
 
 [crate.time]
 license_files = ['LICENSE-Apache']

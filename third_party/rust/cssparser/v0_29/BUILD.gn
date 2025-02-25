@@ -1,0 +1,69 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "cssparser"
+  epoch = "0.29"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/color.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/cow_rc_str.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/from_bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/nth.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/parser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/rules_and_declarations.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/serializer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/size_of_tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/tokenizer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/src/unicode_range.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2018"
+  cargo_pkg_version = "0.29.6"
+  cargo_pkg_authors = "Simon Sapin <simon.sapin@exyr.org>"
+  cargo_pkg_name = "cssparser"
+  cargo_pkg_description = "Rust implementation of CSS Syntax Level 3"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/cssparser_macros/v0_6:lib",
+    "//brave/third_party/rust/dtoa_short/v0_3:lib",
+    "//brave/third_party/rust/itoa/v1:lib",
+    "//brave/third_party/rust/matches/v0_1:lib",
+    "//brave/third_party/rust/phf/v0_8:lib",
+    "//brave/third_party/rust/smallvec/v1:lib",
+  ]
+  build_deps = [
+    "//brave/third_party/rust/proc_macro2/v1:buildrs_support",
+    "//brave/third_party/rust/quote/v1:buildrs_support",
+    "//brave/third_party/rust/syn/v1:buildrs_support",
+  ]
+  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/build.rs"
+  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.29.6/build.rs" ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
+  if (epoch == "0.29") {
+    build_script_inputs =
+        [ "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-" +
+          cargo_pkg_version + "/build/match_byte.rs" ]
+    build_script_outputs = [ "tokenizer.rs" ]
+  }
+}

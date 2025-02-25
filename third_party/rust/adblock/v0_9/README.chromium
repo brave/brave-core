@@ -1,9 +1,9 @@
 Name: adblock
 URL: https://crates.io/crates/adblock
-Version: 0.9.3
-Revision: 96986d558f8b4d5025c0bc4bbc65cd409b6c4360
+Version: 0.9.5-brave-core
+Revision: c0dc258dd1fddbc24a049914b53a440d961ec189
 License: Mozilla-Public-License-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.3/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/LICENSE
 Shipped: yes
 Security Critical: yes
 
