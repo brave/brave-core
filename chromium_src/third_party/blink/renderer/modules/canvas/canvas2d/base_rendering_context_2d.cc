@@ -9,6 +9,7 @@
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+#include "ui/gfx/skia_span_util.h"
 
 namespace {
 
@@ -28,9 +29,7 @@ bool IsGoogleMaps(const blink::KURL& url) {
     if (!IsGoogleMaps(context->Url())) {                                  \
       SkPixmap image_data_pixmap = image_data->GetSkPixmap();             \
       brave::BraveSessionCache::From(*context).PerturbPixels(             \
-          static_cast<const unsigned char*>(                              \
-              image_data_pixmap.writable_addr()),                         \
-          image_data_pixmap.computeByteSize());                           \
+          gfx::SkPixmapToWritableSpan(image_data_pixmap));                \
     }                                                                     \
   }
 
