@@ -92,13 +92,13 @@ function FeedbackForm() {
             />
           </label>
         </fieldset>
-        {conversationContext.associatedContentInfo && (
+        {conversationContext.associatedContentInfo.length > 0 && (
           <fieldset>
             <Checkbox checked={shouldSendUrl} onChange={handleCheckboxChange}>
               <label>{
                 formatMessage(getLocale('sendSiteHostnameLabel'), {
                   placeholders: {
-                    $1: getHostName(conversationContext.associatedContentInfo.url.url)
+                    $1: conversationContext.associatedContentInfo.map(c => getHostName(c.url.url)).join(', ')
                   }
                 })
               }</label>

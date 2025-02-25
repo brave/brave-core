@@ -7,13 +7,14 @@ import * as React from 'react'
 import classnames from '$web-common/classnames'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
+import { AssociatedContent } from 'components/ai_chat/resources/common/mojom'
+
 interface SiteTitleProps {
   size: 'default' | 'small'
+  content: AssociatedContent
 }
 
 function SiteTitle(props: SiteTitleProps) {
-  const context = useConversation()
-  const url = context.associatedContentInfo?.url.url
   return (
     <div
       className={classnames({
@@ -27,7 +28,7 @@ function SiteTitle(props: SiteTitleProps) {
           [styles.favIconContainerSm]: props.size === 'small'
         })}
       >
-        {url && <img src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(url)}`} />}
+        {props.content.url?.url && <img src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(props.content.url.url)}`} />}
       </div>
       <div
         className={classnames({
@@ -37,13 +38,21 @@ function SiteTitle(props: SiteTitleProps) {
       >
         <p
           className={styles.title}
-          title={context.associatedContentInfo?.title}
+          title={props.content.title}
         >
-          {context.associatedContentInfo?.title}
+          {props.content.title}
         </p>
       </div>
     </div>
   )
 }
 
-export default SiteTitle
+export default function SiteTitles(props: { size: 'default' | 'small' }) {
+  const context = useConversation()
+  return <div className={classnames({
+    [styles.container]: true,
+    [styles.small]: props.size === 'small'
+  })}>
+    {context.associatedContentInfo.map(c => <SiteTitle key={c.uuid} size={props.size} content={c} />)}
+  </div>
+}

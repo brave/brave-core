@@ -114,7 +114,7 @@ struct Conversation {
   // Things that can be trimmed include associated content(s) and server side things like search results.
   uint64 trimmed_tokens;
 
-  AssociatedContent? associated_content;
+  array<AssociatedContent> associated_content;
 };
 
 struct ContentArchive {
@@ -431,6 +431,9 @@ interface AIChatUIHandler {
   // Associates an open tab with a conversation.
   AssociateTab(TabData tab, string conversation_uuid);
 
+  // Disassociates an open tab from a conversation.
+  DisassociateTab(TabData tab, string conversation_uuid);
+
   // Make a completely new conversation, which may
   // be bound to the associated conversation, if this UI has a target
   NewConversation(pending_receiver<ConversationHandler> conversation,
@@ -452,7 +455,7 @@ struct ConversationState {
   string current_model_key;
   array<string> suggested_questions;
   SuggestionGenerationStatus suggestion_status;
-  AssociatedContent? associated_content;
+  array<AssociatedContent> associated_content;
   bool should_send_content;
   APIError error;
   // TODO(petemill): include conversation history, once
@@ -512,9 +515,9 @@ interface ConversationHandler {
   SubmitSuggestion(string suggestion);
 
   // Get associated page information. If there is none then |associated_content|
-  // will be |null|.
+  // will be empty.
   GetAssociatedContentInfo() => (
-      AssociatedContent? associated_content, bool should_send_content);
+      array<AssociatedContent> associated_content, bool should_send_content);
 
   SetShouldSendPageContents(bool should_send);
 
@@ -581,7 +584,7 @@ interface ConversationUI {
       array<string> questions, SuggestionGenerationStatus status);
   // Associated page information has changed. If there is none then |associated_content|
   // will be |null|.
-  OnAssociatedContentInfoChanged(AssociatedContent? associated_content, bool should_send_page_contents);
+  OnAssociatedContentInfoChanged(array<AssociatedContent> associated_content, bool should_send_page_contents);
   OnConversationDeleted();
 };
 
