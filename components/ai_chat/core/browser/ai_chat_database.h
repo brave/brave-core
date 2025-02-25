@@ -52,7 +52,7 @@ class AIChatDatabase {
   // Update any properties of associated content metadata or full-text content
   bool AddOrUpdateAssociatedContent(
       std::string_view conversation_uuid,
-      mojom::AssociatedContentPtr associated_content,
+      std::vector<mojom::AssociatedContentPtr> associated_content,
       std::optional<std::string> content);
 
   // Adds a new conversation entry to the conversation with the provided UUID

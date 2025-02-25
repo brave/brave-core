@@ -53,13 +53,6 @@ namespace ai_chat {
 class AssociatedContentDriver
     : public ConversationHandler::AssociatedContentDelegate {
  public:
-  class Observer : public base::CheckedObserver {
-   public:
-    ~Observer() override {}
-
-    virtual void OnAssociatedContentNavigated(int new_navigation_id) {}
-  };
-
   explicit AssociatedContentDriver(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~AssociatedContentDriver() override;
@@ -67,13 +60,7 @@ class AssociatedContentDriver
   AssociatedContentDriver(const AssociatedContentDriver&) = delete;
   AssociatedContentDriver& operator=(const AssociatedContentDriver&) = delete;
 
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
-
   // ConversationHandler::AssociatedContentDelegate
-  void AddRelatedConversation(ConversationHandler* conversation) override;
-  void OnRelatedConversationDisassociated(
-      ConversationHandler* conversation) override;
   int GetContentId() const override;
   GURL GetURL() const override;
   std::u16string GetTitle() const override;
@@ -106,9 +93,6 @@ class AssociatedContentDriver
   virtual void GetPageContent(
       ConversationHandler::GetPageContentCallback callback,
       std::string_view invalidation_token) = 0;
-
-  // Implementer should call this when the title is updated
-  void OnTitleChanged();
 
   // Implementer should call this when the content is updated in a way that
   // will not be detected by the on-demand techniques used by GetPageContent.
@@ -146,11 +130,6 @@ class AssociatedContentDriver
       int64_t navigation_id,
       api_request_helper::APIRequestResult result);
 
-  // Let all conversations using this content know that the content
-  // has been destroyed or changed to represent different content (e.g. a
-  // navigation).
-  void DisassociateWithConversations();
-
   static std::optional<std::vector<SearchQuerySummary>>
   ParseSearchQuerySummaryResponse(const base::Value& value);
 
@@ -159,14 +138,10 @@ class AssociatedContentDriver
   // Used for fetching search query summary.
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 
-  base::ObserverList<Observer> observers_;
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_ = nullptr;
   std::string cached_text_content_;
   std::string content_invalidation_token_;
   bool is_video_ = false;
-
-  // Handlers that are interested in this content for the current navigation.
-  std::set<raw_ptr<ConversationHandler>> associated_conversations_;
 
   // Store the unique ID for each "page" so that
   // we can ignore API async responses against any navigated-away-from

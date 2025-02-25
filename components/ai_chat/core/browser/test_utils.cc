@@ -12,7 +12,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -78,20 +77,31 @@ void ExpectConversationEquals(base::Location location,
                                 b->associated_content);
 }
 
-void ExpectAssociatedContentEquals(base::Location location,
-                                   const mojom::AssociatedContentPtr& a,
-                                   const mojom::AssociatedContentPtr& b) {
+void ExpectAssociatedContentEquals(
+    base::Location location,
+    const std::vector<mojom::AssociatedContentPtr>& a,
+    const std::vector<mojom::AssociatedContentPtr>& b) {
   SCOPED_TRACE(testing::Message() << location.ToString());
-  if (!a || !b) {
-    EXPECT_EQ(a, b);  // Both should be null or neither
-    return;
+  ASSERT_EQ(a.size(), b.size());
+
+  for (size_t i = 0; i < a.size(); ++i) {
+    SCOPED_TRACE(testing::Message()
+                 << "Comparing associated content at index " << i);
+    const auto& a_content = a[i];
+    const auto& b_content = b[i];
+
+    if (!a_content || !b_content) {
+      EXPECT_EQ(a_content, b_content);  // Both should be null or neither
+      return;
+    }
+    EXPECT_EQ(a_content->uuid, b_content->uuid);
+    EXPECT_EQ(a_content->title, b_content->title);
+    EXPECT_EQ(a_content->url, b_content->url);
+    EXPECT_EQ(a_content->content_type, b_content->content_type);
+    EXPECT_EQ(a_content->content_used_percentage,
+              b_content->content_used_percentage);
+    EXPECT_EQ(a_content->is_content_refined, b_content->is_content_refined);
   }
-  EXPECT_EQ(a->uuid, b->uuid);
-  EXPECT_EQ(a->title, b->title);
-  EXPECT_EQ(a->url, b->url);
-  EXPECT_EQ(a->content_type, b->content_type);
-  EXPECT_EQ(a->content_used_percentage, b->content_used_percentage);
-  EXPECT_EQ(a->is_content_refined, b->is_content_refined);
 }
 
 void ExpectConversationHistoryEquals(

@@ -109,8 +109,7 @@ class AIChatService : public KeyedService,
   void OnConversationTokenInfoChanged(const std::string& conversation_uuid,
                                       uint64_t total_tokens,
                                       uint64_t trimmed_tokens) override;
-  void OnAssociatedContentDestroyed(ConversationHandler* handler,
-                                    int content_id) override;
+  void OnAssociatedContentUpdated(ConversationHandler* handler) override;
 
   // mojom::TabDataObserver
   void TabDataChanged(std::vector<mojom::TabDataPtr> tab_data) override;
@@ -155,6 +154,9 @@ class AIChatService : public KeyedService,
 
   void AssociateContent(ConversationHandler::AssociatedContentDelegate* content,
                         const std::string& conversation_uuid);
+  void DisassociateContent(
+      ConversationHandler::AssociatedContentDelegate* content,
+      const std::string& conversation_uuid);
 
   void GetFocusTabs(const std::vector<Tab>& tabs,
                     const std::string& topic,
