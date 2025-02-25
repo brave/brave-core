@@ -53,10 +53,10 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
   }
 
   views::WebView& secondary_contents_view() {
-    return *browser_view().split_view_->secondary_contents_web_view();
+    return *browser_view().split_view_->secondary_contents_web_view_;
   }
   views::WebView& secondary_dev_tools() {
-    return *browser_view().split_view_->secondary_devtools_web_view();
+    return *browser_view().split_view_->secondary_devtools_web_view_;
   }
 
   SplitView& split_view() { return *browser_view().split_view_; }
