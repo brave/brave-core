@@ -20,9 +20,7 @@ class FavoritesViewController: UIViewController {
       frame: .zero,
       collectionViewLayout: compositionalLayout
     )
-  private let backgroundView = UIVisualEffectView(
-    effect: UIBlurEffect(style: .systemUltraThinMaterial)
-  )
+  private let backgroundView = UIView()
 
   private var favoriteGridSize: CGSize = .zero
 
@@ -46,7 +44,8 @@ class FavoritesViewController: UIViewController {
     $0.interSectionSpacing = 8.0
   }
   private lazy var compositionalLayout = UICollectionViewCompositionalLayout(
-    sectionProvider: { sectionIndex, _ in
+    sectionProvider: { [weak self] sectionIndex, _ in
+      guard let self else { return nil }
       let section = self.availableSections[sectionIndex]
       switch section {
       case .favorites:
@@ -115,7 +114,7 @@ class FavoritesViewController: UIViewController {
     collectionView.do {
       $0.register(FavoritesCollectionViewCell.self)
       $0.register(FavoritesRecentSearchCell.self)
-      $0.register(FavoritesRecentSearchOptInCell.self)
+      $0.register(SearchActionsCell.self)
       $0.register(
         FavoritesHeaderView.self,
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -205,6 +204,7 @@ class FavoritesViewController: UIViewController {
       elementKind: UICollectionView.elementKindSectionHeader,
       alignment: .top
     )
+    headerItem.contentInsets = .init(top: 0, leading: 12, bottom: 0, trailing: 12)
     section.boundarySupplementaryItems = [headerItem]
 
     let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: "background")
@@ -240,6 +240,7 @@ class FavoritesViewController: UIViewController {
       elementKind: UICollectionView.elementKindSectionHeader,
       alignment: .top
     )
+    headerItem.contentInsets = .init(top: 0, leading: 12, bottom: 0, trailing: 12)
     supplementaryItems.append(headerItem)
 
     if let fetchedObjects = recentSearchesFRC.fetchedObjects {
@@ -274,11 +275,11 @@ class FavoritesViewController: UIViewController {
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     let groupSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .absolute(276)
+      heightDimension: .estimated(184)
     )
     let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
     let section = NSCollectionLayoutSection(group: group)
-    section.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+    section.contentInsets = .init(top: 0, leading: 12, bottom: 0, trailing: 12)
 
     let headerItemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
@@ -289,6 +290,7 @@ class FavoritesViewController: UIViewController {
       elementKind: UICollectionView.elementKindSectionHeader,
       alignment: .top
     )
+    headerItem.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
     section.boundarySupplementaryItems = [headerItem]
 
     let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: "background")
@@ -329,9 +331,7 @@ class FavoritesViewController: UIViewController {
 
   private func updateColors() {
     let browserColors = privateBrowsingManager.browserColors
-    // Have to apply a custom alpha here because UIVisualEffectView blurs come with their own tint
-    backgroundView.contentView.backgroundColor = browserColors.containerFrostedGlass
-      .withAlphaComponent(0.8)
+    backgroundView.backgroundColor = browserColors.browserButtonBackgroundHover
   }
 
   private func fetchRecentSearches() {
@@ -666,17 +666,30 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
       return cell
     case .recentSearchOptIn:
       let cell =
-        collectionView.dequeueReusableCell(for: indexPath) as FavoritesRecentSearchOptInCell
-      cell.showButton.addTarget(
-        self,
-        action: #selector(onRecentSearchShowPressed),
-        for: .touchUpInside
-      )
-      cell.hideButton.addTarget(
-        self,
-        action: #selector(onRecentSearchHidePressed(_:)),
-        for: .touchUpInside
-      )
+        collectionView.dequeueReusableCell(for: indexPath) as SearchActionsCell
+      cell.do {
+        $0.titleLabel.text = Strings.recentSearchSectionTitle
+        $0.subtitleLabel.text = Strings.recentSearchSectionDescription
+        $0.imageView.image = UIImage(named: "recent-search-opt-in", in: .module, with: nil)
+        $0.primaryButton.setTitle(
+          Strings.recentSearchShow,
+          for: .normal
+        )
+        $0.primaryButton.addTarget(
+          self,
+          action: #selector(onRecentSearchShowPressed),
+          for: .touchUpInside
+        )
+        $0.secondaryButton.setTitle(
+          Strings.recentSearchHide,
+          for: .normal
+        )
+        $0.secondaryButton.addTarget(
+          self,
+          action: #selector(onRecentSearchHidePressed(_:)),
+          for: .touchUpInside
+        )
+      }
 
       return cell
     }
