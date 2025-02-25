@@ -6,18 +6,19 @@
 #include "base/auto_reset.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
+#include "ui/gfx/skia_span_util.h"
 
-#define BRAVE_TO_DATA_URL_INTERNAL                               \
-  {                                                              \
-    ExecutionContext* execution_context = GetExecutionContext(); \
-    if (!execution_context) {                                    \
-      execution_context = scoped_execution_context_.Get();       \
-    }                                                            \
-    if (execution_context) {                                     \
-      brave::BraveSessionCache::From(*execution_context)         \
-          .PerturbPixels(data_buffer->Pixels(),                  \
-                         data_buffer->ComputeByteSize());        \
-    }                                                            \
+#define BRAVE_TO_DATA_URL_INTERNAL                                          \
+  {                                                                         \
+    ExecutionContext* execution_context = GetExecutionContext();            \
+    if (!execution_context) {                                               \
+      execution_context = scoped_execution_context_.Get();                  \
+    }                                                                       \
+    if (execution_context) {                                                \
+      brave::BraveSessionCache::From(*execution_context)                    \
+          .PerturbPixels(                                                   \
+              gfx::SkPixmapToWritableSpan(data_buffer->pixmap_multable())); \
+    }                                                                       \
   }
 
 #include "src/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc"
