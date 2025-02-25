@@ -30,6 +30,7 @@ source_set("headers") {
     "ads_feature.h",
     "ads_observer_interface.h",
     "ads_util.h",
+    "common/url/url_util.h",
     "flags/flags_util.h",
     "history/ad_history_feature.h",
     "history/ad_history_item_info.h",

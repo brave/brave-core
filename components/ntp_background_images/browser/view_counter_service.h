@@ -13,6 +13,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/values.h"
@@ -158,6 +159,8 @@ class ViewCounterService : public KeyedService,
   void OnSponsoredContentDidUpdate(const base::Value::Dict& data) override;
   void OnSuperReferralCampaignDidEnd() override;
 
+  void ParseAndSaveCreativeNewTabPageAdsCallback(bool success);
+
   void ResetNotificationState();
   bool IsSponsoredImagesWallpaperOptedIn() const;
   bool IsSuperReferralWallpaperOptedIn() const;
@@ -200,6 +203,8 @@ class ViewCounterService : public KeyedService,
   base::ScopedObservation<NTPBackgroundImagesService,
                           NTPBackgroundImagesService::Observer>
       ntp_background_images_service_observation_{this};
+
+  base::WeakPtrFactory<ViewCounterService> weak_ptr_factory_{this};
 };
 
 }  // namespace ntp_background_images

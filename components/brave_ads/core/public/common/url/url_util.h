@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_URL_URL_UTIL_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_URL_URL_UTIL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_COMMON_URL_URL_UTIL_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_COMMON_URL_URL_UTIL_H_
 
 #include <string>
 #include <vector>
@@ -34,4 +34,4 @@ bool DomainOrHostExists(const std::vector<GURL>& redirect_chain,
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_URL_URL_UTIL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_COMMON_URL_URL_UTIL_H_
