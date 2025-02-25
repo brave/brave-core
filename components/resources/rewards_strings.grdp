@@ -825,9 +825,6 @@
   <message name="IDS_REWARDS_BENEFITS_TITLE" desc="">
     Your benefits
   </message>
-  <message name="IDS_REWARDS_RECURRING_LIST_EMPTY_TEXT" desc="">
-    You don't have any recurring contributions set up yet.
-  </message>
   <message name="IDS_REWARDS_RECURRING_NEXT_CONTRIBUTION_LABEL" desc="">
     Next contribution:
   </message>

@@ -173,7 +173,6 @@ export type StringKey =
   'payoutPendingText' |
   'payoutProcessingText' |
   'payoutSupportLink' |
-  'recurringListEmptyText' |
   'recurringNextContributionLabel' |
   'recurringTitle' |
   'removeButtonLabel' |

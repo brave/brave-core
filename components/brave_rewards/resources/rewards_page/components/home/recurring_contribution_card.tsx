@@ -92,10 +92,6 @@ export function RecurringContributionCard() {
   }
 
   function renderList() {
-    if (contributions.length === 0) {
-      return <p className='empty'>{getString('recurringListEmptyText')}</p>
-    }
-
     const topEntries = [...contributions]
       .sort((a, b) => a.nextContributionDate - b.nextContributionDate)
       .slice(0, showAll ? Infinity : 5)
@@ -116,6 +112,10 @@ export function RecurringContributionCard() {
   }
 
   if (!externalWallet || isSelfCustodyProvider(externalWallet.provider)) {
+    return null
+  }
+
+  if (contributions.length === 0) {
     return null
   }
 

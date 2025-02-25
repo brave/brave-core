@@ -171,7 +171,6 @@ export const localeStrings: { [K in StringKey]: string }  = {
   payoutPendingText: 'The payout for $1 rewards will begin processing by $2.',
   payoutProcessingText: 'The payout for $1 rewards is in progress.',
   payoutSupportLink: 'Support',
-  recurringListEmptyText: 'You don\'t have any recurring contributions set up yet.',
   recurringNextContributionLabel: 'Next contribution:',
   recurringTitle: 'Recurring Contributions',
   removeButtonLabel: 'Remove',
