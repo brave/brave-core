@@ -8,6 +8,15 @@
 #import <Foundation/Foundation.h>
 #import <WebKit/WebKit.h>
 
+namespace web {
+class WebState;
+}
+
+namespace brave {
+bool ShouldBlockUniversalLinks(web::WebState* webState, NSURLRequest* request);
+bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request);
+}  // namespace brave
+
 #include "src/ios/web/navigation/crw_wk_navigation_handler.mm"
 
 @implementation BraveCRWWKNavigationHandler

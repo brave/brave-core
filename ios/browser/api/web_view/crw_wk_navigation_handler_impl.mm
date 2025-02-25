@@ -6,14 +6,38 @@
 #import <Foundation/Foundation.h>
 
 #import "brave/ios/browser/api/web_view/brave_web_view.h"
+#include "ios/web/common/url_scheme_util.h"
 #include "ios/web/public/web_state.h"
 #import "ios/web_view/internal/cwv_web_view_internal.h"
 
 namespace brave {
 
+bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request) {
+  if (!web::UrlHasWebScheme(request.URL)) {
+    return false;
+  }
+  BraveWebView* webView =
+      static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  if (!webView) {
+    return false;
+  }
+  id<BraveWebViewNavigationDelegate> navigationDelegate =
+      webView.navigationDelegate;
+
+  if ([navigationDelegate respondsToSelector:@selector
+                          (webView:shouldBlockJavaScriptForRequest:)]) {
+    return [navigationDelegate webView:webView
+        shouldBlockJavaScriptForRequest:request];
+  }
+  return false;
+}
+
 bool ShouldBlockUniversalLinks(web::WebState* webState, NSURLRequest* request) {
   BraveWebView* webView =
       static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  if (!webView) {
+    return false;
+  }
   id<BraveWebViewNavigationDelegate> navigationDelegate =
       webView.navigationDelegate;
 

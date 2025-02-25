@@ -7,8 +7,7 @@ source_set("web_view") {
   sources = [
     "brave_web_view.h",
     "brave_web_view.mm",
-    "javascript_block_util.mm",
-    "universal_link_block_util.mm",
+    "crw_wk_navigation_handler_impl.mm",
   ]
   deps = [
     "//base",
