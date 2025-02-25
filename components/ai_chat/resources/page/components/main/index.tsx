@@ -6,12 +6,13 @@
 import * as React from 'react'
 import AlertCenter from '@brave/leo/react/alertCenter'
 import Button from '@brave/leo/react/button'
+import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import { useConversation, useSupportsAttachments } from '../../state/conversation_context'
-import { useAIChat } from '../../state/ai_chat_context'
+import { useAIChat, useIsSmall } from '../../state/ai_chat_context'
 import { isLeoModel } from '../../model_utils'
 import ErrorConnection from '../alerts/error_connection'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
@@ -38,7 +39,6 @@ import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 import Attachments from '../attachments'
-
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
 const SCROLL_BOTTOM_THRESHOLD = 20
@@ -54,6 +54,7 @@ const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
+  const isSmall = useIsSmall()
   const [isConversationListOpen, setIsConversationsListOpen] = React.useState(false)
   const [isContentReady, setIsContentReady] = React.useState(false)
 
@@ -316,9 +317,13 @@ function Main() {
             )}
           </div>
         </div>
-        {showAttachments && <div className={styles.attachmentsContainer}>
+        {showAttachments && (isSmall ?
+          <Dialog isOpen onClose={() => conversationContext.setShowAttachments(false)}>
+              <Attachments />
+          </Dialog>
+        : <div className={styles.attachmentsContainer}>
           <Attachments />
-        </div>}
+        </div>)}
         <div className={styles.input}>
           {showContextToggle && (
             <div className={styles.toggleContainer}>
