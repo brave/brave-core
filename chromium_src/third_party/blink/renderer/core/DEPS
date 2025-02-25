@@ -4,4 +4,5 @@ include_rules = [
   "+brave/third_party/blink/renderer",
   "+ui/display",
   "+ui/gfx/geometry",
+  "+ui/gfx/skia_span_util.h",
 ]
