@@ -16,7 +16,7 @@
 #include "components/url_formatter/url_fixer.h"
 
 #define BraveBookmarkBridge BookmarkBridge
-#include "brave/build/android/jni_headers/BraveBookmarkBridge_jni.h"
+#include "chrome/android/chrome_jni_headers/BraveBookmarkBridge_jni.h"
 #undef BraveBookmarkBridge
 
 #include "src/chrome/browser/bookmarks/android/bookmark_bridge.cc"
