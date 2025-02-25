@@ -4,8 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import fs from 'fs'
-import glob from 'glob'
-import os from 'os'
 import path from 'path'
 import * as diff from 'diff'
 import config from '../../../build/commands/lib/config.js'
@@ -27,7 +25,7 @@ function* walkManglers(root=chromiumSrc) {
             for (const match of walkManglers(childPath)) {
                 yield match
             }
-        } else if (childPath.endsWith('.lit_mangler.html.ts')) {
+        } else if (childPath.endsWith('.lit_mangler.ts')) {
             yield childPath
         }
     }
@@ -37,7 +35,7 @@ describe('mangled files should have up to date snapshots', () => {
     for (const mangler of walkManglers()) {
         const name = path.relative(root, mangler)
         it(`./${name} should match snapshot`, () => {
-            const manglerPath = name.replace('.lit_mangler.html.ts', '.html.ts')
+            const manglerPath = name.replace('.lit_mangler.ts', '')
                 .replace('chromium_src/', '')
             const baseName = path.basename(manglerPath)
 

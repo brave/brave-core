@@ -9,9 +9,11 @@ import childProcess from 'child_process'
 import path from 'path'
 import fs from 'fs'
 import os from 'os'
+import config from '../../../build/commands/lib/config.js'
 
 const baseDir = path.join(__dirname, '../../../')
 const tsConfigPath = path.join(baseDir, 'tsconfig-mangle.json')
+const genDir = path.join(config.outputDir, 'gen')
 
 /**
  * Unfortunately tsc doesn't support passing in a path map for a single file
@@ -34,9 +36,9 @@ const getTsConfigForFiles = (files: string[]) => {
     // so everything resolvese correctly.
     tsConfig.compilerOptions.baseUrl = baseDir
 
-    // Write the tsconfig to a temporary file.
-    const tempDir = os.tmpdir()
-    const tempTsConfigPath = path.join(tempDir, `lit-mangler-check-tsconfig.json`)
+    // Write the tsconfig to the gen directory.
+    const tsConfigName = `lit-mangler-check-tsconfig_${files.map(file => path.basename(file)).join('_')}.json`
+    const tempTsConfigPath = path.join(genDir, tsConfigName)
     fs.writeFileSync(tempTsConfigPath, JSON.stringify(tsConfig, null, 2))
     return tempTsConfigPath
 }
@@ -44,7 +46,7 @@ const getTsConfigForFiles = (files: string[]) => {
 const runTypecheck = (files: string[]) => {
     const result = childProcess.spawnSync('tsc', ['-p', getTsConfigForFiles(files)])
     if (result.status !== 0) {
-        console.error('Typechecking failed:\n', result.stdout.toString())
+        console.error('Typechecking failed:\n', result.stdout?.toString())
         process.exit(1)
     }
 }
