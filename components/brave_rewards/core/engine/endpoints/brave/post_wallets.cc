@@ -24,13 +24,13 @@ using Result = PostWallets::Result;
 namespace {
 
 Result ParseBody(RewardsEngine& engine, const std::string& body) {
-  const auto value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  const auto value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  const auto* payment_id = value->GetDict().FindString("paymentId");
+  const auto* payment_id = value->FindString("paymentId");
   if (!payment_id || payment_id->empty()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);

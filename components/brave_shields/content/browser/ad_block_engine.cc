@@ -213,15 +213,12 @@ base::Value::Dict AdBlockEngine::UrlCosmeticResources(const std::string& url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto result = ad_block_client_->url_cosmetic_resources(url);
 
-  std::optional<base::Value> parsed_result =
-      base::JSONReader::Read(result.c_str());
-
+  std::optional<base::Value::Dict> parsed_result =
+      base::JSONReader::ReadDict(result.c_str());
   if (!parsed_result) {
     return base::Value::Dict();
-  } else {
-    DCHECK(parsed_result->is_dict());
-    return std::move(parsed_result->GetDict());
   }
+  return std::move(parsed_result).value();
 }
 
 base::Value::List AdBlockEngine::HiddenClassIdSelectors(

@@ -75,14 +75,15 @@ void MaybeAssignWalletLinks(RewardsEngine& engine,
 mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(RewardsEngine& engine,
                                                    std::string wallet_string,
                                                    std::string wallet_type) {
-  std::optional<base::Value> value = base::JSONReader::Read(wallet_string);
-  if (!value || !value->is_dict()) {
+  std::optional<base::Value::Dict> value =
+      base::JSONReader::ReadDict(wallet_string);
+  if (!value) {
     engine.LogError(FROM_HERE)
         << "Parsing of " + wallet_type + " wallet failed";
     return nullptr;
   }
 
-  const base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict& dict = *value;
   auto wallet = mojom::ExternalWallet::New();
   wallet->type = wallet_type;
 

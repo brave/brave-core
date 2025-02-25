@@ -70,18 +70,14 @@ std::unique_ptr<QrCodeData> QrCodeData::FromJson(
     const std::string& json_string) {
   auto qr_data = std::unique_ptr<QrCodeData>(new QrCodeData());
 
-  std::optional<base::Value> value = base::JSONReader::Read(json_string);
+  std::optional<base::Value::Dict> value =
+      base::JSONReader::ReadDict(json_string);
   if (!value) {
-    VLOG(1) << "Could not parse string " << json_string;
-    return nullptr;
-  }
-
-  if (!value->is_dict()) {
     VLOG(1) << "Invalid JSON: " << *value;
     return nullptr;
   }
 
-  const auto& root = value->GetDict();
+  const auto& root = *value;
   const std::string* version_value = root.FindString("version");
   if (!version_value) {
     VLOG(1) << "Missing version";

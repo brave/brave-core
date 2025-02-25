@@ -5,7 +5,7 @@
 
 #include <optional>
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -19,24 +19,17 @@ class CosmeticResourceMergeTest : public testing::Test {
   CosmeticResourceMergeTest() = default;
   ~CosmeticResourceMergeTest() override = default;
 
-  void CompareMergeFromStrings(const std::string& a,
-                               const std::string& b,
+  void CompareMergeFromStrings(std::string_view a,
+                               std::string_view b,
                                bool force_hide,
-                               const std::string& expected) {
-    std::optional<base::Value> a_val = base::JSONReader::Read(a);
-    ASSERT_TRUE(a_val);
+                               std::string_view expected) {
+    base::Value::Dict a_val = base::test::ParseJsonDict(a);
+    base::Value::Dict b_val = base::test::ParseJsonDict(b);
+    base::Value::Dict expected_val = base::test::ParseJsonDict(expected);
 
-    std::optional<base::Value> b_val = base::JSONReader::Read(b);
-    ASSERT_TRUE(b_val);
+    AdBlockService::MergeResourcesInto(std::move(b_val), a_val, force_hide);
 
-    const std::optional<base::Value> expected_val =
-        base::JSONReader::Read(expected);
-    ASSERT_TRUE(expected_val);
-
-    AdBlockService::MergeResourcesInto(std::move(b_val->GetDict()),
-                                       *a_val->GetIfDict(), force_hide);
-
-    ASSERT_EQ(*a_val, *expected_val);
+    ASSERT_EQ(a_val, expected_val);
   }
 
  protected:

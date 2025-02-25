@@ -29,14 +29,14 @@ namespace {
 bool getJSONValue(const std::string& field_name,
                   const std::string& json,
                   std::string* value) {
-  auto result =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!result || !result->is_dict()) {
+  auto result = base::JSONReader::ReadDict(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!result) {
     return false;
   }
 
-  if (auto* field = result->GetDict().FindString(field_name)) {
+  if (auto* field = result->FindString(field_name)) {
     *value = *field;
     return true;
   }
