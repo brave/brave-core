@@ -160,6 +160,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &features::kSCTAuditing,
       &features::kServiceWorkerAutoPreload,
+      &features::kSideBySide,
       &features::kSupportSearchSuggestionForPrerender2,
       &features::kTabHoverCardImages,
 #if !BUILDFLAG(IS_ANDROID)
