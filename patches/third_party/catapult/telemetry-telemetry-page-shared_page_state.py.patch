@@ -1,12 +1,12 @@
 diff --git a/telemetry/telemetry/page/shared_page_state.py b/telemetry/telemetry/page/shared_page_state.py
-index 70fbf130a9680248683706786f4ac50602fd5186..162fbd93860a0017767ceef02d91f7c17777a2f2 100644
+index 70fbf130a9680248683706786f4ac50602fd5186..59f56ab39eaeb8e540fe2efa264561b64424f443 100644
 --- a/telemetry/telemetry/page/shared_page_state.py
 +++ b/telemetry/telemetry/page/shared_page_state.py
 @@ -219,6 +219,7 @@ class SharedPageState(story_module.SharedState):
      if archive_path is not None and not os.path.isfile(archive_path):
        logging.warning('WPR archive missing: %s', archive_path)
        archive_path = None
-+      raise Exception('WPR missing %s', archive_path) # Brave: always raise
++      assert self._finder_options.use_live_sites # Brave: assert if no WPR
      self.platform.network_controller.StartReplay(
          archive_path, page.make_javascript_deterministic, self._extra_wpr_args)
  
