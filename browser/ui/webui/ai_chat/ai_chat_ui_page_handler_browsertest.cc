@@ -84,8 +84,14 @@ class AIChatUIPageHandlerBrowserTest : public PlatformBrowserTest,
   }
 
   mojom::TabDataPtr GetTabDataForFirstMatchingURL(const GURL& url) {
-    auto it = std::find_if(tabs_.begin(), tabs_.end(),
-                           [url](const auto& tab) { return tab->url == url; });
+    auto find_tab = [&]() {
+      return std::find_if(tabs_.begin(), tabs_.end(),
+                          [url](const auto& tab) { return tab->url == url; });
+    };
+
+    CHECK(base::test::RunUntil([&]() { return find_tab() != tabs_.end(); }));
+
+    auto it = find_tab();
     if (it == tabs_.end()) {
       return nullptr;
     }
