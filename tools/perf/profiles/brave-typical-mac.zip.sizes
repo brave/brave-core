@@ -19,9 +19,8 @@ GROUP Ntp [12983K total]
 GROUP Other [172K total]
    172K Brave Local Data Files Updater 1.0.1072 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP large_files [76440K total]
+GROUP large_files [67658K total]
   3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
  44320K Default/publisher_info_db
-  1636K Safe Browsing/ChromeExtMalware.store.32_13357750397781780
-  1054K Safe Browsing/UrlMalBin.store.4_13357750397776940
- 26166K Safe Browsing/UrlSoceng.store.4_13357750397723129
+  1880K Safe Browsing/ChromeExtMalware.store.32_13384976907622724
+ 18195K Safe Browsing/UrlSoceng.store.4_13384976907464747
