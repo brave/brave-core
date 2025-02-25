@@ -84,6 +84,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &android_webview::features::kWebViewMediaIntegrityApiBlinkExtension,
 #endif
       &attribution_reporting::features::kConversionMeasurement,
+      &autofill::features::kAutofillEnableCardBenefitsForAmericanExpress,
+      &autofill::features::kAutofillEnableCardBenefitsForBmo,
       &autofill::features::test::kAutofillServerCommunication,
 #if BUILDFLAG(IS_ANDROID)
       &base::features::kCollectAndroidFrameTimelineMetrics,
