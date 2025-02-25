@@ -183,12 +183,6 @@ class BraveTranslateTabHelper: NSObject {
     let translationSession = self.translationSession ?? BraveTranslateSession()
     let isTranslationRequest = BraveTranslateSession.isPhraseTranslationRequest(request)
 
-    // We cannot process translation requests when translation is not enabled
-    // Other requests like fetching the core script and css can be processed
-    if Preferences.Translate.translateEnabled.value != true && isTranslationRequest {
-      throw BraveTranslateError.translateDisabled
-    }
-
     // The message is for HTML or CSS request
     if self.translationSession == nil
       && isTranslationRequest
@@ -331,10 +325,6 @@ class BraveTranslateTabHelper: NSObject {
       state: isTranslationSupported ? .available : .unavailable
     )
 
-    if !isTranslationSupported {
-      return
-    }
-
     try Task.checkCancellation()
 
     // Check if the user can view the translation onboarding
@@ -363,6 +353,14 @@ class BraveTranslateTabHelper: NSObject {
 
     // User enabled translation via onboarding
     if translateEnabled == true {
+      // Lazy loading. Load the translate script if needed.
+      _ = try await tab.webView?.callAsyncJavaScript(
+        "return await window.__firefox__.\(BraveTranslateScriptHandler.namespace).loadTranslateScript();",
+        arguments: [:],
+        contentWorld: BraveTranslateScriptHandler.scriptSandbox
+      )
+
+      // Automatically translate
       startTranslation(canShowToast: true)
     }
   }

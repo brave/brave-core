@@ -33,21 +33,42 @@ Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
       }, 100);
     }),
     "loadTranslateScript": (function() {
-      if (window.__firefox__.$<brave_translate_script>.translateScriptLoaded) {
-        return;
-      }
-      
-      window.webkit.messageHandlers["$<message_handler>"].postMessage({
-        "command": "load_brave_translate_script"
-      }).then((script) => {
-        try {
-          new Function(script).call(window /*this*/);
-          window.__firefox__.$<brave_translate_script>.translateScriptLoaded = true
-        } catch (error) {
-          cr.googleTranslate.onTranslateElementError(error);
+      return new Promise((resolve, reject) => {
+        if (window.__firefox__.$<brave_translate_script>.translateScriptLoaded) {
+          return resolve();
         }
-      }).catch((error) => {
-        cr.googleTranslate.onTranslateElementError(error);
+        
+        window.webkit.messageHandlers["$<message_handler>"].postMessage({
+          "command": "load_brave_translate_script"
+        }).then((script) => {
+          try {
+            cr.googleTranslate.readyCallback = () => {
+              cr.googleTranslate.readyCallback = null;
+              resolve();
+            }
+            
+            new Function(script).call(window /*this*/);
+            window.__firefox__.$<brave_translate_script>.translateScriptLoaded = true;
+            
+            if ((cr.googleTranslate.libReady || cr.googleTranslate.finished) && cr.googleTranslate.readyCallback) {
+              cr.googleTranslate.readyCallback = null;
+              resolve();
+            }
+            
+            setTimeout(() => {
+              if (cr.googleTranslate.readyCallback) {
+                cr.googleTranslate.readyCallback = null;
+                resolve();
+              }
+            }, 3000);
+          } catch (error) {
+            cr.googleTranslate.onTranslateElementError(error);
+            reject(error);
+          }
+        }).catch((error) => {
+          cr.googleTranslate.onTranslateElementError(error);
+          reject(error);
+        });
       });
     })
   }

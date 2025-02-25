@@ -104,8 +104,11 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     body: [String: Any]
   ) async throws -> (Any?, String?) {
     if command == "load_brave_translate_script" {
-      let script = try await BraveTranslateScriptHandler.elementScriptTask.value
-      return (script, nil)
+      if Preferences.Translate.translateEnabled.value == true {
+        let script = try await BraveTranslateScriptHandler.elementScriptTask.value
+        return (script, nil)
+      }
+      return (nil, BraveTranslateError.translateDisabled.rawValue)
     }
 
     if command == "ready" {
