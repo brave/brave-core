@@ -42,7 +42,7 @@
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-#include "brave/browser/ui/views/email_aliases_bubble_view.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_bubble_ui.h"
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -526,8 +526,9 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
           auto* browser_view =
               BrowserView::GetBrowserViewForBrowser(GetBrowser());
           views::View* anchor_view = browser_view->GetLocationBarView();
-          EmailAliasesBubbleView::Show(source_web_contents_, anchor_view,
-                                       params_.field_renderer_id);
+          email_aliases::EmailAliasesBubbleUI::Show(GetBrowser(), anchor_view,
+                                                    source_web_contents_,
+                                                    params_.field_renderer_id);
         }
       }
       break;

@@ -116,8 +116,6 @@ source_set("ui") {
   # Also, for now email aliases is only available on desktop.
   if (!is_android && !is_ios) {
     sources += [
-      "views/email_aliases_bubble_view.cc",
-      "views/email_aliases_bubble_view.h",
       "webui/settings/brave_email_aliases_handler.cc",
       "webui/settings/brave_email_aliases_handler.h",
       "webui/webcompat_reporter/webcompat_reporter_ui.cc",

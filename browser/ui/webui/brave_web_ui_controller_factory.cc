@@ -181,11 +181,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
       return new ai_rewriter::AIRewriterUI(web_ui);
     }
 #endif
-#if !BUILDFLAG(IS_ANDROID)
-  } else if (host == kEmailAliasesHost &&
-             base::FeatureList::IsEnabled(features::kBraveEmailAliases)) {
-    return new email_aliases::EmailAliasesBubbleUI(web_ui);
-#endif  // !BUILDFLAG(IS_ANDROID)
   }
   return nullptr;
 }
