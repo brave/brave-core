@@ -1130,7 +1130,7 @@ extension Strings {
     "SearchHistorySectionHeader",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Open Tabs & Bookmarks & History",
+    value: "On Your Device",
     comment: "Section header for history and bookmarks and open tabs option"
   )
   public static let searchSuggestionOpenTabActionTitle = NSLocalizedString(
@@ -8419,6 +8419,20 @@ extension Strings {
     bundle: .module,
     value: "Clear Recent",
     comment: "The button title that shows when you clear all recent searches"
+  )
+  public static let searchSuggestionsSubtitle = NSLocalizedString(
+    "searchSuggestionsSubtitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Would you like to enable Search Suggestion?",
+    comment: "Search suggestions optin subtitle when prompting to turn on suggestions"
+  )
+  public static let searchQuickBarPrefix = NSLocalizedString(
+    "searchSuggestionsSubtitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Search \"%@\"",
+    comment: "The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list."
   )
 }
 

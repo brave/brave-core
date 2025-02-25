@@ -15,7 +15,7 @@ class SearchSectionBackgroundView: UICollectionReusableView {
     super.init(frame: frame)
 
     self.do {
-      $0.backgroundColor = UIColor(braveSystemName: .containerBackground).withAlphaComponent(0.55)
+      $0.backgroundColor = UIColor(braveSystemName: .materialThin)
       $0.layer.cornerRadius = 16
     }
 

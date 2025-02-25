@@ -12,14 +12,19 @@ class FavoritesRecentSearchHeaderView: UICollectionReusableView {
 
   private let label = UILabel().then {
     $0.text = Strings.recentSearchSectionHeaderTitle
-    $0.font = .systemFont(ofSize: 17, weight: .semibold)
     $0.textColor = UIColor(braveSystemName: .textPrimary)
+
+    let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
+    $0.font = UIFont.systemFont(
+      ofSize: desc.pointSize,
+      weight: .semibold
+    )
   }
 
   let clearButton = UIButton()
 
   private let hStackView = UIStackView().then {
-    $0.spacing = 9.0
+    $0.spacing = 8.0
   }
 
   override init(frame: CGRect) {
@@ -46,17 +51,11 @@ class FavoritesRecentSearchHeaderView: UICollectionReusableView {
   private func doLayout() {
     addSubview(hStackView)
     hStackView.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview().inset(16.0)
-      $0.top.bottom.equalToSuperview().inset(12.0)
+      $0.top.bottom.equalToSuperview().inset(12)
+      $0.leading.trailing.equalToSuperview()
     }
 
-    let spacer = UIView().then {
-      $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
-      $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-    }
-
-    [label, spacer, clearButton].forEach(hStackView.addArrangedSubview(_:))
-    hStackView.setCustomSpacing(15, after: spacer)
+    [label, clearButton].forEach(hStackView.addArrangedSubview(_:))
 
     clearButton.do {
       $0.setContentHuggingPriority(.required, for: .horizontal)

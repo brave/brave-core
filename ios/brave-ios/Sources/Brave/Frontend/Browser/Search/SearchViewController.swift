@@ -76,15 +76,20 @@ public class SearchViewController: UIViewController, LoaderListener {
   }
 
   private lazy var compositionalLayout = UICollectionViewCompositionalLayout(
-    sectionProvider: { sectionIndex, _ in
+    sectionProvider: { [weak self] sectionIndex, _ in
+      guard let self else { return nil }
       let section = self.availableSections[sectionIndex]
-      if section == .braveSearchPromotion {
+      switch section {
+      case .searchSuggestionsOptin:
+        return self.searchSuggestionOptinLayoutSection()
+      case .searchSuggestions, .findInPage, .openTabsAndHistoryAndBookmarks:
+        return self.searchLayoutSection(
+          headerEnabled: section != .searchSuggestions,
+          footerEnabled: section == .openTabsAndHistoryAndBookmarks
+        )
+      case .braveSearchPromotion:
         return self.braveSearchPromotionLayoutSection()
       }
-      return self.searchLayoutSection(
-        headerEnabled: section != .searchSuggestions,
-        footerEnabled: section == .openTabsAndHistoryAndBookmarks
-      )
     },
     configuration: layoutConfig
   ).then {
@@ -111,9 +116,7 @@ public class SearchViewController: UIViewController, LoaderListener {
       $0.leading.trailing.equalTo(scrollView.frameLayoutGuide)
     }
   }
-  private let backgroundView = UIVisualEffectView(
-    effect: UIBlurEffect(style: .systemUltraThinMaterial)
-  )
+  private let backgroundView = UIView()
   private let searchEngineScrollViewContent = UIView()
 
   private lazy var suggestionLongPressGesture = UILongPressGestureRecognizer(
@@ -138,7 +141,20 @@ public class SearchViewController: UIViewController, LoaderListener {
   private var browserColors: any BrowserColors
 
   private var availableSections: [SearchSuggestionDataSource.SearchListSection] {
-    var result = dataSource.searchSuggestionSections
+    var result = [SearchSuggestionDataSource.SearchListSection]()
+
+    if !dataSource.tabType.isPrivate
+      && dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn == true
+    {
+      result.append(.searchSuggestionsOptin)
+    } else {
+      result.append(.searchSuggestions)
+    }
+
+    if dataSource.braveSearchPromotionAvailable {
+      result.append(.braveSearchPromotion)
+    }
+
     if let sd = searchDelegate, sd.searchViewControllerAllowFindInPage() {
       result.append(.findInPage)
     }
@@ -149,6 +165,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     } else if !dataSource.siteData.isEmpty {
       result.append(.openTabsAndHistoryAndBookmarks)
     }
+
     return result
   }
 
@@ -186,14 +203,13 @@ public class SearchViewController: UIViewController, LoaderListener {
       $0.edges.equalToSuperview()
     }
 
-    // Have to apply a custom alpha here because UIVisualEffectView blurs come with their own tint
-    backgroundView.contentView.backgroundColor = browserColors.containerFrostedGlass
-      .withAlphaComponent(0.8)
-    searchEngineScrollView.backgroundColor = browserColors.containerBackground
+    backgroundView.backgroundColor = browserColors.browserButtonBackgroundHover
 
     setupSearchEngineScrollViewIfNeeded()
 
     collectionView.do {
+      $0.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "search_optin_separator")
+      $0.register(SearchActionsCell.self)
       $0.register(SearchSuggestionCell.self)
       $0.register(SearchFindInPageCell.self)
       $0.register(SearchOnYourDeviceCell.self)
@@ -259,7 +275,6 @@ public class SearchViewController: UIViewController, LoaderListener {
 
   @objc func dynamicFontChanged(_ notification: Notification) {
     if notification.name == .dynamicFontChanged {
-      //      reloadData()
       reloadSearchData()
     }
   }
@@ -477,33 +492,21 @@ public class SearchViewController: UIViewController, LoaderListener {
     }
   }
 
-  public func loader(dataLoaded data: [Site]) {
-    dataSource.siteData = data
+  private func searchSuggestionOptin(enable: Bool) {
+    dataSource.searchEngines?.shouldShowSearchSuggestions = enable
+    dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn = false
+
+    if enable {
+      self.dataSource.querySuggestClient()
+    }
+    layoutSuggestionsOptInPrompt()
+    reloadSearchEngines()
     collectionView.reloadData()
   }
 
-  private func isBraveSearchPrompt(for indexPath: IndexPath) -> Bool {
-    guard let section = availableSections[safe: indexPath.section] else {
-      return false
-    }
-
-    switch section {
-    case .searchSuggestionsOptIn:
-      return indexPath.row == 1 && dataSource.braveSearchPromotionAvailable
-    case .searchSuggestions:
-      let index =
-        traitCollection.horizontalSizeClass == .regular && UIDevice.current.orientation.isPortrait
-        ? 4 : 2
-      switch dataSource.suggestions.count {
-      case 0...index:
-        return indexPath.row == dataSource.suggestions.count
-          && dataSource.braveSearchPromotionAvailable
-      default:
-        return indexPath.row == index && dataSource.braveSearchPromotionAvailable
-      }
-    default:
-      return false
-    }
+  public func loader(dataLoaded data: [Site]) {
+    dataSource.siteData = data
+    collectionView.reloadData()
   }
 
   private func changeBraveSearchPromotionState() {
@@ -597,6 +600,48 @@ public class SearchViewController: UIViewController, LoaderListener {
     return section
   }
 
+  private func searchSuggestionOptinLayoutSection() -> NSCollectionLayoutSection {
+    let quickBarItemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .absolute(52)
+    )
+    let quickBarItem = NSCollectionLayoutItem(layoutSize: quickBarItemSize)
+    quickBarItem.contentInsets = .init(top: 16, leading: 20, bottom: 8, trailing: 20)
+
+    let separatorItemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .absolute(1)
+    )
+    let separatorItem = NSCollectionLayoutItem(layoutSize: separatorItemSize)
+    separatorItem.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+
+    let optinItemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(130)
+    )
+    let optinItem = NSCollectionLayoutItem(layoutSize: optinItemSize)
+    optinItem.contentInsets = .init(top: 8, leading: 4, bottom: 0, trailing: 4)
+
+    let groupSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(183)
+    )
+    let group = NSCollectionLayoutGroup.vertical(
+      layoutSize: groupSize,
+      subitems: [quickBarItem, separatorItem, optinItem]
+    )
+    let section = NSCollectionLayoutSection(group: group)
+    section.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+
+    let backgroundItem = NSCollectionLayoutDecorationItem.background(
+      elementKind: "background_plain"
+    )
+    backgroundItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+    section.decorationItems = [backgroundItem]
+
+    return section
+  }
+
   private func braveSearchPromotionLayoutSection() -> NSCollectionLayoutSection {
     let itemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
@@ -605,12 +650,12 @@ public class SearchViewController: UIViewController, LoaderListener {
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     let groupSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .absolute(164)
+      heightDimension: .estimated(168)
     )
-    item.contentInsets = .init(top: 8, leading: 14, bottom: 8, trailing: 14)
+    item.contentInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4)
     let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
     let section = NSCollectionLayoutSection(group: group)
-    section.contentInsets = .init(top: 16, leading: 16, bottom: 16, trailing: 16)
+    section.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
 
     let backgroundItem = NSCollectionLayoutDecorationItem.background(
       elementKind: "background_plain"
@@ -657,107 +702,23 @@ public class SearchViewController: UIViewController, LoaderListener {
     collectionView.reloadData()
   }
 
-  // MARK: UITableViewDelegate, UITableViewDataSource
+  @objc func onBraveSearchPromotionOptinButton() {
+    submitSeachTemplateQuery(isBraveSearchPromotion: true)
+    collectionView.reloadData()
+  }
 
-  //
-  //
-  //
-  //
-  //  override public func tableView(
-  //    _ tableView: UITableView,
-  //    cellForRowAt indexPath: IndexPath
-  //  ) -> UITableViewCell {
-  //    func createSearchSuggestionPromotionCell() -> UITableViewCell {
-  //      let cell = tableView.dequeueReusableCell(
-  //        withIdentifier: BraveSearchPromotionCell.identifier,
-  //        for: indexPath
-  //      )
-  //      if let promotionSearchCell = cell as? BraveSearchPromotionCell {
-  //        promotionSearchCell.trySearchEngineTapped = { [weak self] in
-  //          self?.submitSeachTemplateQuery(isBraveSearchPromotion: true)
-  //        }
-  //
-  //        promotionSearchCell.dismissTapped = { [weak self] in
-  //          self?.changeBraveSearchPromotionState()
-  //          tableView.reloadData()
-  //        }
-  //      }
-  //
-  //      return cell
-  //    }
-  //
-  //    guard let section = dataSource.availableSections[safe: indexPath.section] else {
-  //      return UITableViewCell()
-  //    }
-  //
-  //    switch section {
-  //    case .searchSuggestionsOptIn:
-  //      var cell: UITableViewCell?
-  //
-  //      if isBraveSearchPrompt(for: indexPath) {
-  //        cell = createSearchSuggestionPromotionCell()
-  //      } else {
-  //        cell = tableView.dequeueReusableCell(
-  //          withIdentifier: SearchSuggestionPromptCell.identifier,
-  //          for: indexPath
-  //        )
-  //        if let promptCell = cell as? SearchSuggestionPromptCell {
-  //          promptCell.selectionStyle = .none
-  //          promptCell.onOptionSelected = { [weak self] option in
-  //            guard let self = self else { return }
-  //
-  //            self.dataSource.searchEngines?.shouldShowSearchSuggestions = option
-  //            self.dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn = false
-  //
-  //            if option {
-  //              self.dataSource.querySuggestClient()
-  //            }
-  //            self.layoutSuggestionsOptInPrompt()
-  //            self.reloadSearchEngines()
-  //            self.tableView.reloadData()
-  //          }
-  //        }
-  //      }
-  //
-  //      guard let tableViewCell = cell else { return UITableViewCell() }
-  //      tableViewCell.separatorInset = .zero
-  //
-  //      return tableViewCell
-  //    case .searchSuggestions:
-  //      var cell: UITableViewCell?
-  //
-  //      if isBraveSearchPrompt(for: indexPath) {
-  //        cell = createSearchSuggestionPromotionCell()
-  //      } else {
-  //        cell = tableView.dequeueReusableCell(
-  //          withIdentifier: SuggestionCell.identifier,
-  //          for: indexPath
-  //        )
-  //
-  //        if let suggestionCell = cell as? SuggestionCell,
-  //          let suggestion = dataSource.suggestions[safe: indexPath.row]
-  //        {
-  //          suggestionCell.setTitle(suggestion)
-  //          suggestionCell.separatorInset = UIEdgeInsets(
-  //            top: 0.0,
-  //            left: view.bounds.width,
-  //            bottom: 0.0,
-  //            right: -view.bounds.width
-  //          )
-  //          suggestionCell.openButtonActionHandler = { [weak self] in
-  //            guard let self = self else { return }
-  //
-  //            self.searchDelegate?.searchViewController(self, didLongPressSuggestion: suggestion)
-  //          }
-  //        }
-  //      }
-  //
-  //      guard let tableViewCell = cell else { return UITableViewCell() }
-  //      tableViewCell.separatorInset = .zero
-  //
-  //      return tableViewCell
-  //    }
-  //  }
+  @objc func onBraveSearchPromtionIgnoreButton() {
+    changeBraveSearchPromotionState()
+    collectionView.reloadData()
+  }
+
+  @objc func onSearchSuggestionEnableButton() {
+    searchSuggestionOptin(enable: true)
+  }
+
+  @objc func onSearchSuggestionDisableButton() {
+    searchSuggestionOptin(enable: false)
+  }
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
@@ -773,22 +734,22 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     let section = availableSections[section]
 
     switch section {
-    case .searchSuggestionsOptIn:
-      return dataSource.braveSearchPromotionAvailable ? 2 : 1
+    case .searchSuggestionsOptin:
+      return 3  // quick bar + separator + optin
     case .searchSuggestions:
-      guard let shouldShowSuggestions = dataSource.searchEngines?.shouldShowSearchSuggestions else {
-        return 0
+      guard
+        let shouldShowSuggestions = dataSource.searchEngines?.shouldShowSearchSuggestions,
+        shouldShowSuggestions
+      else {
+        return 1  // quick bar
       }
 
-      var searchSuggestionsCount = min(
+      let searchSuggestionsCount = min(
         dataSource.suggestions.count,
         dataSource.maxSearchSuggestions
       )
-      if dataSource.braveSearchPromotionAvailable {
-        searchSuggestionsCount += 1
-      }
 
-      return shouldShowSuggestions && !dataSource.searchQuery.looksLikeAURL()
+      return !dataSource.searchQuery.looksLikeAURL()
         && !dataSource.tabType.isPrivate ? searchSuggestionsCount + 1 : 1  // + 1 for quickBar
     case .openTabsAndHistoryAndBookmarks:
       return dataSource.siteData.count
@@ -805,12 +766,58 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
   ) -> UICollectionViewCell {
     let section = availableSections[indexPath.section]
     switch section {
+    case .searchSuggestionsOptin:
+      if indexPath.row == 0 {
+        // quick bar
+        let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchSuggestionCell
+        cell.setTitle(String(format: Strings.searchQuickBarPrefix, dataSource.searchQuery))
+
+        return cell
+      } else if indexPath.row == 1 {
+        let cell = collectionView.dequeueReusableCell(
+          withReuseIdentifier: "search_optin_separator",
+          for: indexPath
+        )
+        cell.backgroundColor = UIColor(braveSystemName: .dividerSubtle)
+
+        return cell
+      } else {
+        let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchActionsCell
+        cell.do {
+          $0.layer.cornerRadius = 12
+          $0.titleLabel.text = Strings.recentSearchSuggestionsTitle
+          $0.subtitleLabel.text = Strings.searchSuggestionsSubtitle
+          $0.imageView.image = UIImage(named: "search-suggestion-opt-in", in: .module, with: nil)
+          $0.primaryButton.setTitle(
+            Strings.recentSearchEnableSuggestions,
+            for: .normal
+          )
+          $0.primaryButton.addTarget(
+            self,
+            action: #selector(onSearchSuggestionEnableButton),
+            for: .touchUpInside
+          )
+          $0.secondaryButton.setTitle(
+            Strings.recentSearchDisableSuggestions,
+            for: .normal
+          )
+          $0.secondaryButton.addTarget(
+            self,
+            action: #selector(onSearchSuggestionDisableButton),
+            for: .touchUpInside
+          )
+        }
+
+        return cell
+      }
     case .searchSuggestions:
       let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchSuggestionCell
       if indexPath.row == 0 {
         // quick bar
-        cell.setTitle(String(format: "Search \"%@\"", dataSource.searchQuery))
-      } else {
+        cell.setTitle(String(format: Strings.searchQuickBarPrefix, dataSource.searchQuery))
+
+        return cell
+      } else {  // search suggestion opt-in
         if let suggestion = dataSource.suggestions[safe: indexPath.row - 1] {
           cell.setTitle(suggestion)
           cell.openButtonActionHandler = { [weak self] in
@@ -819,6 +826,38 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
             self.searchDelegate?.searchViewController(self, didLongPressSuggestion: suggestion)
           }
         }
+
+        return cell
+      }
+    case .braveSearchPromotion:
+      let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchActionsCell
+      cell.do {
+        $0.backgroundColor = UIColor(braveSystemName: .containerInteractive)
+        $0.layer.cornerRadius = 12
+        $0.titleLabel.text = Strings.BraveSearchPromotion.braveSearchPromotionBannerTitle
+        $0.subtitleLabel.text = Strings.BraveSearchPromotion.braveSearchPromotionBannerDescription
+        $0.imageView.image = UIImage(named: "brave-search-promotion", in: .module, with: nil)
+        $0.primaryButton.setTitle(
+          Strings.BraveSearchPromotion.braveSearchPromotionBannerTryButtonTitle,
+          for: .normal
+        )
+        $0.primaryButton.addTarget(
+          self,
+          action: #selector(onBraveSearchPromotionOptinButton),
+          for: .touchUpInside
+        )
+        $0.secondaryButton.setTitle(
+          Preferences.BraveSearch.braveSearchPromotionCompletionState.value
+            != BraveSearchPromotionState.maybeLaterUpcomingSession.rawValue
+            ? Strings.BraveSearchPromotion.braveSearchPromotionBannerMaybeLaterButtonTitle
+            : Strings.BraveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle,
+          for: .normal
+        )
+        $0.secondaryButton.addTarget(
+          self,
+          action: #selector(onBraveSearchPromtionIgnoreButton),
+          for: .touchUpInside
+        )
       }
 
       return cell
@@ -830,11 +869,6 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
       let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchOnYourDeviceCell
       let site = dataSource.siteData[indexPath.row]
       cell.setSite(site, isPrivateBrowsing: dataSource.tabType.isPrivate)
-
-      return cell
-    default:
-      let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchSuggestionCell
-      cell.setTitle("a placeholder")
 
       return cell
     }
@@ -857,14 +891,12 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         ) as? SearchSectionHeaderView
       {
         switch section {
-        case .searchSuggestions, .braveSearchPromotion:
+        case .searchSuggestionsOptin, .searchSuggestions, .braveSearchPromotion:
           assertionFailure("no header for search suggestion")
-        case .searchSuggestionsOptIn:
-          header.setTitle("Search Suggestion")
         case .findInPage:
-          header.setTitle("On This Page")
+          header.setTitle(Strings.findOnPageSectionHeader)
         case .openTabsAndHistoryAndBookmarks:
-          header.setTitle("On Your Device")
+          header.setTitle(Strings.searchHistorySectionHeader)
         }
         return header
       }
@@ -901,12 +933,16 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     guard let section = availableSections[safe: indexPath.section] else { return }
 
     switch section {
-    case .searchSuggestionsOptIn: return
+    case .searchSuggestionsOptin:
+      if indexPath.row == 0 {
+        // quick bar
+        submitSeachTemplateQuery(isBraveSearchPromotion: false)
+      }
     case .searchSuggestions:
       if indexPath.row == 0 {
         // quick bar
         submitSeachTemplateQuery(isBraveSearchPromotion: false)
-      } else if !isBraveSearchPrompt(for: indexPath) {
+      } else {
         // Assume that only the default search engine can provide search suggestions.
         let engine = dataSource.searchEngines?.defaultEngine(
           forType: dataSource.isPrivate ? .privateMode : .standard
@@ -925,6 +961,8 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
           searchDelegate?.searchViewController(self, didSelectURL: url)
         }
       }
+    case .braveSearchPromotion:
+      return
     case .findInPage:
       let localSearchQuery = dataSource.searchQuery.lowercased()
       searchDelegate?.searchViewController(self, shouldFindInPage: localSearchQuery)
@@ -941,8 +979,6 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
           searchDelegate?.searchViewController(self, didSelectURL: url)
         }
       }
-    case .braveSearchPromotion:
-      return
     }
   }
 }

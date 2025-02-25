@@ -23,9 +23,9 @@ class SearchSuggestionDataSource {
   // MARK: SearchListSection
 
   enum SearchListSection: Int, CaseIterable {
-    case braveSearchPromotion
-    case searchSuggestionsOptIn
+    case searchSuggestionsOptin
     case searchSuggestions
+    case braveSearchPromotion
     case findInPage
     case openTabsAndHistoryAndBookmarks
   }
@@ -86,20 +86,6 @@ class SearchSuggestionDataSource {
     !tabType.isPrivate
       && Preferences.AIChat.autocompleteSuggestionsEnabled.value
       && FeatureList.kAIChat.enabled
-  }
-
-  var searchSuggestionSections: [SearchListSection] {
-    var sections = [SearchListSection]()
-
-    if !isPrivate && searchEngines?.shouldShowSearchSuggestionsOptIn == true {
-      sections.append(.searchSuggestionsOptIn)
-    }
-
-    if !isPrivate && searchEngines?.shouldShowSearchSuggestions == true {
-      sections.append(.searchSuggestions)
-    }
-
-    return sections
   }
 
   var braveSearchPromotionAvailable: Bool {
