@@ -43,7 +43,7 @@ export default function ToolsButtonMenu(props: Props) {
                     key={i}
                     onClick={() =>
                       props.handleActionTypeClick(
-                        entry.details?.type as Mojom.ActionType
+                        entry.details?.type ?? Mojom.ActionType.UNSPECIFIED
                       )
                     }
                   >

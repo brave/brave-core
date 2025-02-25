@@ -30,7 +30,12 @@ export default function BeginGeneration() {
   return <>
     <FiltersContainer>
       <InitialText />
-      <ToolsButtonMenu isToolsMenuOpen={context.isToolsMenuOpen} setIsToolsMenuOpen={context.setIsToolsMenuOpen} actionList={context.actionList} handleActionTypeClick={context.handleActionTypeClick} inputText={context.instructionsText} />
+      <ToolsButtonMenu
+        isToolsMenuOpen={context.isToolsMenuOpen}
+        setIsToolsMenuOpen={context.setIsToolsMenuOpen}
+        actionList={context.actionList}
+        handleActionTypeClick={context.handleActionTypeClick}
+        inputText={context.instructionsText} />
       <InputBox
         conversationStarted
         context={{

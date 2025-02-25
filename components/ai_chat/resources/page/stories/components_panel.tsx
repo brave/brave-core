@@ -116,6 +116,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -128,6 +129,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent('The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.')],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -140,6 +142,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -152,6 +155,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent(`## How We Created an Accessible, Scalable Color Palette\n\nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor [communication](https://www.google.com) between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product **design** needs.`)],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -164,6 +168,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getPageContentRefineEvent()],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -176,6 +181,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -188,6 +194,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent('The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.')],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -200,6 +207,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -212,6 +220,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent("Hello! As a helpful and respectful AI assistant, I'd be happy to assist you with your question. However, I'm a text-based AI and cannot provide code in a specific programming language like C++. Instead, I can offer a brief explanation of how to write a \"hello world\" program in C++.\n\nTo write a \"hello world\" program in C++, you can use the following code:\n\n```c++\n#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world!\" << std::endl;\n    return 0;\n}\n```\nThis code will print \"Hello, world!\" and uses `iostream` std library. If you have any further questions or need more information, please don't hesitate to ask!")],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -224,6 +233,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -236,6 +246,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.')],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -248,6 +259,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -269,6 +281,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
         { title: 'Tesla Model Y', faviconUrl: { url: 'https://www.tesla.com/favicon.ico' }, url: { url: 'https://www.tesla.com/modely' } }
       ])
     ],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -288,10 +301,12 @@ const HISTORY: Mojom.ConversationTurn[] = [
       createdTime: { internalValue: BigInt('13278618001000000') },
       edits: [],
       events: [],
+      uploadedImages : [],
       fromBraveSearchSERP: false
     }],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   },
   {
@@ -304,6 +319,36 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getSearchStatusEvent(), getSearchEvent(['LTT store backpack dimensions', 'Tesla Model Y frunk dimensions'])],
+    uploadedImages : [],
+    fromBraveSearchSERP: false
+  },
+  {
+    uuid: undefined,
+    text: 'What is this image?',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [],
+    uploadedImages : [
+      { filename: 'lion.png', filesize: BigInt('128'),
+        imageData: Array.from(new Uint8Array(128)) }
+    ],
+    fromBraveSearchSERP: false
+  },
+  {
+    uuid: undefined,
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [getCompletionEvent('It is a lion!')],
+    uploadedImages : [],
     fromBraveSearchSERP: false
   }
 ]
@@ -312,6 +357,7 @@ const MODELS: Mojom.Model[] = [
   {
     key: '1',
     displayName: 'Model One',
+    visionSupport: false,
     options: {
       leoModelOptions: {
         name: 'model-one',
@@ -328,6 +374,7 @@ const MODELS: Mojom.Model[] = [
   {
     key: '2',
     displayName: 'Model Two',
+    visionSupport: true,
     options: {
       leoModelOptions: {
         name: 'model-two-premium',
@@ -344,6 +391,7 @@ const MODELS: Mojom.Model[] = [
   {
     key: '3',
     displayName: 'Model Three',
+    visionSupport: false,
     options: {
       leoModelOptions: {
         name: 'model-three-freemium',
@@ -360,6 +408,7 @@ const MODELS: Mojom.Model[] = [
   {
     key: '4',
     displayName: 'Microsoft Phi-3',
+    visionSupport: false,
     options: {
       leoModelOptions: undefined,
       customModelOptions: {

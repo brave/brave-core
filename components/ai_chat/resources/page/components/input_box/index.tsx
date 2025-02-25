@@ -105,12 +105,12 @@ function InputBox(props: InputBoxProps) {
       )}
       {props.context.imgData && (
         <div className={styles.attachmentWrapper}>
-          {props.context.imgData.map((img, i) => 
+          {props.context.imgData.map((img, i) =>
             <UploadedImgItem
               key={img.fileName}
               imageData={img}
               removeImage={() => props.context.removeImage(i)}
-            />            
+            />
           )}
         </div>
       )}
