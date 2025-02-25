@@ -114,7 +114,7 @@ struct Conversation {
   // Things that can be trimmed include associated content(s) and server side things like search results.
   uint64 trimmed_tokens;
 
-  AssociatedContent? associated_content;
+  array<AssociatedContent> associated_content;
 };
 
 struct ContentArchive {
