@@ -228,10 +228,10 @@ ConversationHandler::ConversationHandler(
     mojom::ConversationArchivePtr conversation_data =
         std::move(initial_state.value());
     if (!conversation_data->associated_content.empty()) {
-      CHECK(metadata_->associated_content);
+      CHECK(!metadata_->associated_content.empty());
       CHECK_EQ(conversation_data->associated_content[0]->content_uuid,
-               metadata_->associated_content->uuid);
-      bool is_video = (metadata_->associated_content->content_type ==
+               metadata_->associated_content[0]->uuid);
+      bool is_video = (metadata_->associated_content[0]->content_type ==
                        mojom::ContentType::VideoTranscript);
       SetArchiveContent(conversation_data->associated_content[0]->content,
                         is_video);
@@ -289,12 +289,12 @@ void ConversationHandler::BindUntrustedConversationUI(
 
 void ConversationHandler::OnConversationMetadataUpdated() {
   if (archive_content_) {
-    if (metadata_->associated_content) {
+    if (!metadata_->associated_content.empty()) {
       // Pass the updated data to archive content
       archive_content_->SetMetadata(
-          metadata_->associated_content->url,
-          base::UTF8ToUTF16(metadata_->associated_content->title),
-          metadata_->associated_content->content_type ==
+          metadata_->associated_content[0]->url,
+          base::UTF8ToUTF16(metadata_->associated_content[0]->title),
+          metadata_->associated_content[0]->content_type ==
               mojom::ContentType::VideoTranscript);
     } else {
       archive_content_ = nullptr;
@@ -316,7 +316,7 @@ void ConversationHandler::OnArchiveContentUpdated(
     std::string text_content;
     if (!conversation_data->associated_content.empty() &&
         conversation_data->associated_content[0]->content_uuid ==
-            metadata_->associated_content->uuid) {
+            metadata_->associated_content[0]->uuid) {
       text_content = conversation_data->associated_content[0]->content;
     } else {
       text_content = "";
@@ -416,7 +416,7 @@ void ConversationHandler::OnAssociatedContentDestroyed(
                         : -1;
   DisassociateContentDelegate();
   if (!chat_history_.empty() && should_send_page_contents_ &&
-      metadata_->associated_content) {
+      !metadata_->associated_content.empty()) {
     // Get the latest version of article text and
     // associated_content_info_ if this chat has history and was connected to
     // the associated conversation, then store the content so the conversation
@@ -432,13 +432,13 @@ void ConversationHandler::OnAssociatedContentDestroyed(
 
 void ConversationHandler::SetArchiveContent(std::string text_content,
                                             bool is_video) {
-  CHECK(metadata_->associated_content);
+  CHECK(!metadata_->associated_content.empty());
 
   // Construct a "content archive" implementation of AssociatedContentDelegate
   // with a duplicate of the article text.
   auto archive_content = std::make_unique<AssociatedArchiveContent>(
-      metadata_->associated_content->url, std::move(text_content),
-      base::UTF8ToUTF16(metadata_->associated_content->title), is_video);
+      metadata_->associated_content[0]->url, std::move(text_content),
+      base::UTF8ToUTF16(metadata_->associated_content[0]->title), is_video);
   associated_content_delegate_ = archive_content->GetWeakPtr();
   archive_content_ = std::move(archive_content);
   should_send_page_contents_ = features::IsPageContextEnabledInitially();
@@ -517,12 +517,16 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   std::vector<std::string> suggestions;
   std::ranges::transform(suggestions_, std::back_inserter(suggestions),
                          [](const auto& s) { return s.title; });
+
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  std::ranges::transform(metadata_->associated_content,
+                         std::back_inserter(associated_content),
+                         [](const auto& content) { return content->Clone(); });
   mojom::ConversationStatePtr state = mojom::ConversationState::New(
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
       model_key, std::move(suggestions), suggestion_generation_status_,
-      metadata_->associated_content ? metadata_->associated_content->Clone()
-                                    : nullptr,
-      should_send_page_contents_, current_error_);
+      std::move(associated_content), should_send_page_contents_,
+      current_error_);
 
   std::move(callback).Run(std::move(state));
 }
@@ -985,9 +989,11 @@ void ConversationHandler::DisassociateContentDelegate() {
 void ConversationHandler::GetAssociatedContentInfo(
     GetAssociatedContentInfoCallback callback) {
   UpdateAssociatedContentInfo();
-  std::move(callback).Run(metadata_->associated_content
-                              ? metadata_->associated_content->Clone()
-                              : nullptr,
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  std::ranges::transform(metadata_->associated_content,
+                         std::back_inserter(associated_content),
+                         [](const auto& content) { return content->Clone(); });
+  std::move(callback).Run(std::move(associated_content),
                           should_send_page_contents_);
 }
 
@@ -1449,8 +1455,8 @@ void ConversationHandler::OnGeneratePageContentComplete(
   is_content_different_ =
       is_content_different_ || contents_text != previous_content;
 
-  if (metadata_->associated_content) {
-    metadata_->associated_content->content_type =
+  if (!metadata_->associated_content.empty()) {
+    metadata_->associated_content[0]->content_type =
         is_video ? mojom::ContentType::VideoTranscript
                  : mojom::ContentType::PageContent;
   }
@@ -1696,22 +1702,22 @@ void ConversationHandler::UpdateAssociatedContentInfo() {
     // Note: We don't create a new AssociatedContent object here unless one
     // doesn't exist. If we generate one with a new UUID the deserializer
     // breaks.
-    if (!metadata_->associated_content) {
-      metadata_->associated_content = mojom::AssociatedContent::New();
-      metadata_->associated_content->uuid =
+    if (metadata_->associated_content.empty()) {
+      metadata_->associated_content.push_back(mojom::AssociatedContent::New());
+      metadata_->associated_content[0]->uuid =
           base::Uuid::GenerateRandomV4().AsLowercaseString();
     }
-    metadata_->associated_content->title =
+    metadata_->associated_content[0]->title =
         base::UTF16ToUTF8(associated_content_delegate_->GetTitle());
     const GURL url = associated_content_delegate_->GetURL();
-    metadata_->associated_content->url = url;
-    metadata_->associated_content->content_id =
+    metadata_->associated_content[0]->url = url;
+    metadata_->associated_content[0]->content_id =
         associated_content_delegate_->GetContentId();
-    metadata_->associated_content->content_used_percentage =
+    metadata_->associated_content[0]->content_used_percentage =
         GetContentUsedPercentage();
-    metadata_->associated_content->is_content_refined = is_content_refined_;
+    metadata_->associated_content[0]->is_content_refined = is_content_refined_;
   } else {
-    metadata_->associated_content = nullptr;
+    metadata_->associated_content.clear();
   }
 }
 
@@ -1728,9 +1734,9 @@ ConversationHandler::GetStateForConversationEntries() {
   entries_state->total_tokens = metadata_->total_tokens;
   entries_state->trimmed_tokens = metadata_->trimmed_tokens;
   entries_state->content_used_percentage =
-      metadata_->associated_content
+      !metadata_->associated_content.empty()
           ? std::make_optional(
-                metadata_->associated_content->content_used_percentage)
+                metadata_->associated_content[0]->content_used_percentage)
           : std::nullopt;
   // Can't submit if not a premium user and the model is premium-only
   entries_state->can_submit_user_entries =
@@ -1744,10 +1750,12 @@ ConversationHandler::GetStateForConversationEntries() {
 void ConversationHandler::OnAssociatedContentInfoChanged() {
   UpdateAssociatedContentInfo();
   for (auto& client : conversation_ui_handlers_) {
+    std::vector<mojom::AssociatedContentPtr> associated_content;
+    std::ranges::transform(metadata_->associated_content,
+                           std::back_inserter(associated_content),
+                           [](const auto& content) { return content->Clone(); });
     client->OnAssociatedContentInfoChanged(
-        metadata_->associated_content ? metadata_->associated_content->Clone()
-                                      : nullptr,
-        should_send_page_contents_);
+        std::move(associated_content), should_send_page_contents_);
   }
   OnStateForConversationEntriesChanged();
 }
