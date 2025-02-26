@@ -26,3 +26,9 @@
                         list-title="$i18n{walletZecNetworksListTitle}">
   </wallet-networks-list>
 </template>
+<template is="dom-if" if="[[isCardanoEnabled]]" restamp>
+  <wallet-networks-list id="ada-networks-section"
+                        coin="[[adaCoin]]"
+                        list-title="$i18n{walletCardanoNetworksListTitle}">
+  </wallet-networks-list>
+</template>

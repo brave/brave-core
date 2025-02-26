@@ -120,6 +120,8 @@ void WalletPanelUI::CreatePanelHandler(
         bitcoin_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
         zcash_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::CardanoWalletService>
+        cardano_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapService>
         swap_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SimulationService>
@@ -163,6 +165,7 @@ void WalletPanelUI::CreatePanelHandler(
     wallet_service->Bind(std::move(json_rpc_service_receiver));
     wallet_service->Bind(std::move(bitcoin_wallet_service_receiver));
     wallet_service->Bind(std::move(zcash_wallet_service_receiver));
+    wallet_service->Bind(std::move(cardano_wallet_service_receiver));
     wallet_service->Bind(std::move(keyring_service_receiver));
     wallet_service->Bind(std::move(tx_service_receiver));
     wallet_service->Bind(std::move(eth_tx_manager_proxy_receiver));

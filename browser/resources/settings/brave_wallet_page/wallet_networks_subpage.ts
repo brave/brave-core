@@ -42,6 +42,10 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
         type: Boolean,
         value: false
       },
+      isCardanoEnabled: {
+        type: Boolean,
+        value: false
+      },
       ethCoin: {
         type: Number,
         value: 60
@@ -61,17 +65,23 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
       zecCoin: {
         type: Number,
         value: 133
+      },
+      adaCoin: {
+        type: Number,
+        value: 1815
       }
     }
   }
 
   private isZCashEnabled: boolean
   private isBitcoinEnabled: boolean
+  private isCardanoEnabled: boolean
   private ethCoin: number
   private filCoin: number
   private solCoin: number
   private btcCoin: number
   private zecCoin: number
+  private adaCoin: number
 
   private browserProxy_: BraveWalletBrowserProxy =
     BraveWalletBrowserProxyImpl.getInstance()
@@ -85,6 +95,10 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
 
     this.browserProxy_.isBitcoinEnabled().then((enabled: boolean) => {
       this.isBitcoinEnabled = enabled
+    })
+
+    this.browserProxy_.isCardanoEnabled().then((enabled: boolean) => {
+      this.isCardanoEnabled = enabled
     })
   }
 }

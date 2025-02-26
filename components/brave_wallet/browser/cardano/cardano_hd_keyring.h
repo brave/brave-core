@@ -9,7 +9,6 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519_slip23.h"
@@ -29,6 +28,8 @@ class CardanoHDKeyring {
   mojom::CardanoAddressPtr GetAddress(
       uint32_t account,
       const mojom::CardanoKeyId& payment_key_id);
+
+  std::optional<std::string> AddNewHDAccount(uint32_t index);
 
   mojom::KeyringId keyring_id() const { return keyring_id_; }
   bool IsTestnet() const;

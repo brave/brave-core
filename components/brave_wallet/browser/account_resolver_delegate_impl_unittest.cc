@@ -36,7 +36,8 @@ class AccountResolverDelegateImplUnitTest : public testing::Test {
                 &url_loader_factory_)) {
     feature_list_.InitWithFeatures({features::kBraveWalletBitcoinFeature,
                                     features::kBraveWalletBitcoinLedgerFeature,
-                                    features::kBraveWalletZCashFeature},
+                                    features::kBraveWalletZCashFeature,
+                                    features::kBraveWalletCardanoFeature},
                                    {});
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
@@ -102,15 +103,16 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
     EXPECT_EQ(account_id, resolver()->ResolveAccountId(&account_id->unique_key,
                                                        &some_acc->address));
     if (account_id->coin != mojom::CoinType::BTC &&
-        account_id->coin != mojom::CoinType::ZEC) {
+        account_id->coin != mojom::CoinType::ZEC &&
+        account_id->coin != mojom::CoinType::ADA) {
       // Resolved by address.
       EXPECT_EQ(account_id,
                 resolver()->ResolveAccountId(nullptr, &acc->address));
     }
   }
-  static_assert(AllCoinsTested<5>());
+  static_assert(AllCoinsTested<6>());
 
-  static_assert(AllKeyringsTested<12>());
+  static_assert(AllKeyringsTested<14>());
 
   // HW account is not resolvable after removal.
   keyring_service()->RemoveAccount(hw_eth_acc->account_id.Clone(),
@@ -128,20 +130,25 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
 
   // Btc-like accs have no address and should not be resolvable by an empty
   // address.
-  for (const auto& keyring_id :
-       {mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoin84Testnet,
-        mojom::KeyringId::kBitcoinImport,
-        mojom::KeyringId::kBitcoinImportTestnet,
-        mojom::KeyringId::kBitcoinHardware,
-        mojom::KeyringId::kBitcoinHardwareTestnet,
-        mojom::KeyringId::kZCashMainnet, mojom::KeyringId::kBitcoin84Testnet}) {
+  for (const auto& keyring_id : {
+           mojom::KeyringId::kBitcoin84,
+           mojom::KeyringId::kBitcoin84Testnet,
+           mojom::KeyringId::kBitcoinImport,
+           mojom::KeyringId::kBitcoinImportTestnet,
+           mojom::KeyringId::kBitcoinHardware,
+           mojom::KeyringId::kBitcoinHardwareTestnet,
+           mojom::KeyringId::kZCashMainnet,
+           mojom::KeyringId::kZCashTestnet,
+           mojom::KeyringId::kCardanoMainnet,
+           mojom::KeyringId::kCardanoTestnet,
+       }) {
     auto btc_like_account = GetAccountUtils().EnsureAccount(keyring_id, 0);
     EXPECT_EQ("", btc_like_account->address);
     EXPECT_EQ("", btc_like_account->account_id->address);
   }
-  static_assert(AllCoinsTested<5>());
+  static_assert(AllCoinsTested<6>());
 
-  static_assert(AllKeyringsTested<12>());
+  static_assert(AllKeyringsTested<14>());
 
   const std::string empty_address = "";
   EXPECT_FALSE(resolver()->ResolveAccountId(nullptr, &empty_address));
@@ -172,9 +179,9 @@ TEST_F(AccountResolverDelegateImplUnitTest, ValidateAccountId) {
     ASSERT_TRUE(acc);
     EXPECT_TRUE(resolver()->ValidateAccountId(acc->account_id));
   }
-  static_assert(AllCoinsTested<5>());
+  static_assert(AllCoinsTested<6>());
 
-  static_assert(AllKeyringsTested<12>());
+  static_assert(AllKeyringsTested<14>());
 
   EXPECT_FALSE(
       resolver()->ValidateAccountId(GetAccountUtils().EthUnkownAccountId()));

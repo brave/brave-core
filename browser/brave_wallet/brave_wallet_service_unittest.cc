@@ -1673,7 +1673,17 @@ TEST_F(BraveWalletServiceUnitTest, AddCustomNetwork) {
               *network_manager_->GetAllCustomChains(mojom::CoinType::ZEC)[0]);
   }
 
-  static_assert(AllCoinsTested<5>());
+  {
+    mojom::NetworkInfo chain_ada =
+        GetTestNetworkInfo1(mojom::kCardanoMainnet, mojom::CoinType::ADA);
+    json_rpc_service_->AddChain(chain_ada.Clone(), base::DoNothing());
+    ASSERT_EQ(
+        1u, network_manager_->GetAllCustomChains(mojom::CoinType::ADA).size());
+    EXPECT_EQ(chain_ada,
+              *network_manager_->GetAllCustomChains(mojom::CoinType::ADA)[0]);
+  }
+
+  static_assert(AllCoinsTested<6>());
 }
 
 TEST_F(BraveWalletServiceUnitTest, AddCustomNetworkTwice) {

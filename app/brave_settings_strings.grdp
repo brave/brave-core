@@ -1383,6 +1383,9 @@
   <message name="IDS_SETTINGS_WALLET_ZEC_NETWORK_LIST_TITLE" desc="The title of the list with wallet Zcash networks">
     Zcash networks
   </message>
+  <message name="IDS_SETTINGS_WALLET_CARDANO_NETWORK_LIST_TITLE" desc="The title of the list with wallet Cardano networks">
+    Cardano networks
+  </message>
   <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_TEST_NETWORKS" desc="The description for showing the Brave wallet test networks">
     Show test networks
   </message>

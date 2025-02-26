@@ -367,10 +367,11 @@ TEST(CommonUtils, GetActiveEndpointUrl) {
   EXPECT_EQ(GURL(), GetActiveEndpointUrl(chain));
 }
 
-TEST(CommonUtils, GetSupportedCoins) {
+TEST(CommonUtils, GetEnabledCoins) {
   base::test::ScopedFeatureList disabled_feature_list;
   const std::vector<base::test::FeatureRef> coin_features = {
-      features::kBraveWalletBitcoinFeature, features::kBraveWalletZCashFeature};
+      features::kBraveWalletBitcoinFeature, features::kBraveWalletZCashFeature,
+      features::kBraveWalletCardanoFeature};
   disabled_feature_list.InitWithFeatures({}, coin_features);
 
   uint32_t test_cases_count = (1 << coin_features.size());
@@ -385,7 +386,7 @@ TEST(CommonUtils, GetSupportedCoins) {
     base::test::ScopedFeatureList feature_list;
     feature_list.InitWithFeatures(enabled_features, {});
 
-    auto coins = GetSupportedCoins();
+    auto coins = GetEnabledCoins();
     size_t last_pos = 0;
 
     EXPECT_EQ(coins[last_pos++], mojom::CoinType::ETH);
@@ -400,16 +401,25 @@ TEST(CommonUtils, GetSupportedCoins) {
       EXPECT_EQ(coins[last_pos++], mojom::CoinType::ZEC);
     }
 
+    if (IsCardanoEnabled()) {
+      EXPECT_EQ(coins[last_pos++], mojom::CoinType::ADA);
+    }
+
     EXPECT_EQ(last_pos, coins.size());
   }
+
+  static_assert(AllCoinsTested<6>());
 }
 
 TEST(CommonUtils, GetSupportedKeyrings) {
   base::test::ScopedFeatureList disabled_feature_list;
   const std::vector<base::test::FeatureRef> coin_features = {
-      features::kBraveWalletBitcoinFeature, features::kBraveWalletZCashFeature,
+      features::kBraveWalletBitcoinFeature,
+      features::kBraveWalletZCashFeature,
       features::kBraveWalletBitcoinImportFeature,
-      features::kBraveWalletBitcoinLedgerFeature};
+      features::kBraveWalletBitcoinLedgerFeature,
+      features::kBraveWalletCardanoFeature,
+  };
   disabled_feature_list.InitWithFeatures({}, coin_features);
 
   uint32_t test_cases_count = (1 << coin_features.size());
@@ -454,8 +464,15 @@ TEST(CommonUtils, GetSupportedKeyrings) {
       EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kZCashTestnet);
     }
 
+    if (IsCardanoEnabled()) {
+      EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kCardanoMainnet);
+      EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kCardanoTestnet);
+    }
+
     EXPECT_EQ(last_pos, keyrings.size());
   }
+
+  static_assert(AllKeyringsTested<14>());
 }
 
 TEST(CommonUtils, GetSupportedKeyringsForNetwork) {
@@ -515,9 +532,19 @@ TEST(CommonUtils, GetSupportedKeyringsForNetwork) {
                                              "any non mainnet chain"),
               ElementsAreArray({mojom::KeyringId::kZCashTestnet}));
 
-  static_assert(AllCoinsTested<5>());
+  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ADA,
+                                             mojom::kCardanoMainnet),
+              ElementsAreArray({mojom::KeyringId::kCardanoMainnet}));
+  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ADA,
+                                             mojom::kCardanoTestnet),
+              ElementsAreArray({mojom::KeyringId::kCardanoTestnet}));
+  EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ADA,
+                                             "any non mainnet chain"),
+              ElementsAreArray({mojom::KeyringId::kCardanoTestnet}));
 
-  static_assert(AllKeyringsTested<12>());
+  static_assert(AllCoinsTested<6>());
+
+  static_assert(AllKeyringsTested<14>());
 }
 
 TEST(CommonUtils, MakeAccountId) {
@@ -541,7 +568,8 @@ TEST(CommonUtils, MakeAccountId) {
   for (const auto& coin : kAllCoins) {
     if (coin == mojom::CoinType::ETH) {
       continue;
-    } else if (coin == mojom::CoinType::BTC || coin == mojom::CoinType::ZEC) {
+    } else if (coin == mojom::CoinType::BTC || coin == mojom::CoinType::ZEC ||
+               coin == mojom::CoinType::ADA) {
       EXPECT_DCHECK_DEATH(
           MakeAccountId(coin, id.keyring_id, id.kind, id.address));
     } else {
@@ -555,7 +583,8 @@ TEST(CommonUtils, MakeAccountId) {
   for (const auto& keyring : kAllKeyrings) {
     if (keyring == mojom::KeyringId::kDefault) {
       continue;
-    } else if (IsBitcoinKeyring(keyring) || IsZCashKeyring(keyring)) {
+    } else if (IsBitcoinKeyring(keyring) || IsZCashKeyring(keyring) ||
+               IsCardanoKeyring(keyring)) {
       EXPECT_DCHECK_DEATH(MakeAccountId(id.coin, keyring, id.kind, id.address));
     } else {
       EXPECT_NE(
@@ -582,14 +611,39 @@ TEST(CommonUtils, MakeAccountId) {
   EXPECT_TRUE(MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kDefault,
                             mojom::AccountKind::kDerived, "0xabc"));
   EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::BTC,
-                                    mojom::KeyringId::kDefault,
+                                    mojom::KeyringId::kBitcoin84,
                                     mojom::AccountKind::kDerived, "0xabc"));
   EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::ZEC,
-                                    mojom::KeyringId::kDefault,
+                                    mojom::KeyringId::kZCashMainnet,
                                     mojom::AccountKind::kDerived, "0xabc"));
-  static_assert(AllCoinsTested<5>());
+  EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::ADA,
+                                    mojom::KeyringId::kCardanoMainnet,
+                                    mojom::AccountKind::kDerived, "0xabc"));
+  static_assert(AllCoinsTested<6>());
 
-  static_assert(AllKeyringsTested<12>());
+  static_assert(AllKeyringsTested<14>());
+}
+
+TEST(CommonUtils, MakeIndexBasedAccountId) {
+  // Coin differs
+  for (const auto& coin : kAllCoins) {
+    if (coin == mojom::CoinType::BTC || coin == mojom::CoinType::ZEC ||
+        coin == mojom::CoinType::ADA) {
+      continue;
+    }
+    EXPECT_DCHECK_DEATH(MakeIndexBasedAccountId(
+        coin, mojom::KeyringId::kBitcoin84, mojom::AccountKind::kDerived, 123));
+  }
+
+  // Keyring differs
+  for (const auto& keyring : kAllKeyrings) {
+    if (IsBitcoinKeyring(keyring) || IsZCashKeyring(keyring) ||
+        IsCardanoKeyring(keyring)) {
+      continue;
+    }
+    EXPECT_DCHECK_DEATH(MakeIndexBasedAccountId(
+        mojom::CoinType::BTC, keyring, mojom::AccountKind::kDerived, 123));
+  }
 }
 
 TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
@@ -623,24 +677,6 @@ TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
                                       mojom::KeyringId::kBitcoin84,
                                       mojom::AccountKind::kDerived, 123));
 
-  // Coin differs
-  for (const auto& coin : kAllCoins) {
-    if (coin == mojom::CoinType::BTC || coin == mojom::CoinType::ZEC) {
-      continue;
-    }
-    EXPECT_DCHECK_DEATH(MakeIndexBasedAccountId(
-        coin, mojom::KeyringId::kBitcoin84, mojom::AccountKind::kDerived, 123));
-  }
-
-  // Keyring differs
-  for (const auto& keyring : kAllKeyrings) {
-    if (IsBitcoinKeyring(keyring) || IsZCashKeyring(keyring)) {
-      continue;
-    }
-    EXPECT_DCHECK_DEATH(MakeIndexBasedAccountId(
-        mojom::CoinType::BTC, keyring, mojom::AccountKind::kDerived, 123));
-  }
-
   // kImported is a valid kind.
   EXPECT_TRUE(MakeIndexBasedAccountId(mojom::CoinType::BTC,
                                       mojom::KeyringId::kBitcoinImport,
@@ -655,9 +691,9 @@ TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
   EXPECT_TRUE(MakeIndexBasedAccountId(mojom::CoinType::BTC,
                                       mojom::KeyringId::kBitcoinHardwareTestnet,
                                       mojom::AccountKind::kHardware, 123));
-  static_assert(AllCoinsTested<5>());
+  static_assert(AllCoinsTested<6>());
 
-  static_assert(AllKeyringsTested<12>());
+  static_assert(AllKeyringsTested<14>());
 }
 
 TEST(CommonUtils, MakeIndexBasedAccountId_ZEC) {
@@ -682,31 +718,48 @@ TEST(CommonUtils, MakeIndexBasedAccountId_ZEC) {
             MakeIndexBasedAccountId(id.coin, id.keyring_id, id.kind, 321)
                 ->unique_key);
 
-  for (const auto& coin : kAllCoins) {
-    if (coin == mojom::CoinType::BTC || coin == mojom::CoinType::ZEC) {
-      continue;
-    }
-    EXPECT_DCHECK_DEATH(
-        MakeIndexBasedAccountId(coin, mojom::KeyringId::kZCashMainnet,
-                                mojom::AccountKind::kDerived, 123));
-  }
-
-  for (const auto& keyring : kAllKeyrings) {
-    if (IsBitcoinKeyring(keyring) || IsZCashKeyring(keyring)) {
-      continue;
-    }
-    EXPECT_DCHECK_DEATH(MakeIndexBasedAccountId(
-        mojom::CoinType::ZEC, keyring, mojom::AccountKind::kDerived, 123));
-  }
-
-  // Imported not supported for Zcash
+  // Imported not supported.
   EXPECT_DCHECK_DEATH(MakeIndexBasedAccountId(
       mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
       mojom::AccountKind::kImported, 123));
 
-  static_assert(AllCoinsTested<5>());
+  // Hardware not supported.
+  EXPECT_DCHECK_DEATH(MakeIndexBasedAccountId(
+      mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
+      mojom::AccountKind::kHardware, 123));
+}
 
-  static_assert(AllKeyringsTested<12>());
+TEST(CommonUtils, MakeIndexBasedAccountId_ADA) {
+  auto id = *MakeIndexBasedAccountId(mojom::CoinType::ADA,
+                                     mojom::KeyringId::kCardanoMainnet,
+                                     mojom::AccountKind::kDerived, 123);
+  EXPECT_EQ(id.coin, mojom::CoinType::ADA);
+  EXPECT_EQ(id.keyring_id, mojom::KeyringId::kCardanoMainnet);
+  EXPECT_EQ(id.kind, mojom::AccountKind::kDerived);
+  EXPECT_EQ(id.address, "");
+  EXPECT_EQ(id.account_index, 123u);
+  EXPECT_EQ(id.unique_key, "1815_12_0_123");
+
+  // Keyring differs
+  EXPECT_EQ("1815_13_0_123",
+            MakeIndexBasedAccountId(id.coin, mojom::KeyringId::kCardanoTestnet,
+                                    id.kind, id.account_index)
+                ->unique_key);
+
+  // Index differs
+  EXPECT_EQ("1815_12_0_321",
+            MakeIndexBasedAccountId(id.coin, id.keyring_id, id.kind, 321)
+                ->unique_key);
+
+  // Imported not supported.
+  EXPECT_DCHECK_DEATH(MakeIndexBasedAccountId(
+      mojom::CoinType::ADA, mojom::KeyringId::kCardanoMainnet,
+      mojom::AccountKind::kImported, 123));
+
+  // Hardware not supported.
+  EXPECT_DCHECK_DEATH(MakeIndexBasedAccountId(
+      mojom::CoinType::ADA, mojom::KeyringId::kCardanoMainnet,
+      mojom::AccountKind::kHardware, 123));
 }
 
 TEST(CommonUtils, CoinSupportsDapps) {

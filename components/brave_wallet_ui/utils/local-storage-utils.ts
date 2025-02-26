@@ -6,7 +6,6 @@
 // types
 import {
   SupportedTestNetworks,
-  SupportedCoinTypes,
   BraveWallet,
   PanelTypes,
   AssetIdsByCollectionNameRegistry
@@ -44,12 +43,21 @@ export const parseJSONFromLocalStorage = <T = any>(
 }
 
 export const makeInitialFilteredOutNetworkKeys = () => {
-  const localHostNetworkKeys = SupportedCoinTypes.map((coin) => {
-    return getNetworkId({
+  const localHostNetworkKeys = [
+    getNetworkId({
       chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-      coin: coin
+      coin: BraveWallet.CoinType.ETH
+    }),
+    getNetworkId({
+      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
+      coin: BraveWallet.CoinType.SOL
+    }),
+    getNetworkId({
+      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
+      coin: BraveWallet.CoinType.FIL
     })
-  })
+  ]
+
   const testNetworkKeys = SupportedTestNetworks.filter(
     (chainId) => chainId !== BraveWallet.LOCALHOST_CHAIN_ID
   ).map((chainId) => {

@@ -5,12 +5,6 @@
 
 import {sendWithPromise} from 'chrome://resources/js/cr.js'
 
-export enum CoinType {
-  ETH = 60,
-  FIL = 461,
-  SOL = 501
-}
-
 export type Currency = {
   symbol: string
   name: string
@@ -24,7 +18,7 @@ export type NetworkInfo = {
   iconUrls: string[]
   activeRpcEndpointIndex: number
   rpcUrls: string[]
-  coin: CoinType
+  coin: number
   is_eip1559: boolean
   nativeCurrency: Currency
 }
@@ -52,6 +46,7 @@ export interface BraveWalletBrowserProxy {
   isNativeWalletEnabled: () => Promise<boolean>
   isBitcoinEnabled: () => Promise<boolean>
   isZCashEnabled: () => Promise<boolean>
+  isCardanoEnabled: () => Promise<boolean>
   getAutoLockMinutes: () => Promise<number>
   getNetworksList: (coin: number) => Promise<NetworksList>
   getPrepopulatedNetworksList: () => Promise<NetworkInfo[]>
@@ -133,6 +128,10 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
 
   isZCashEnabled() {
     return sendWithPromise('isZCashEnabled')
+  }
+
+  isCardanoEnabled() {
+    return sendWithPromise('isCardanoEnabled')
   }
 
   getTransactionSimulationOptInStatusOptions() {

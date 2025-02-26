@@ -101,6 +101,18 @@ mojom::CardanoAddressPtr CardanoHDKeyring::GetAddress(
       payment_key_id.Clone(), delegation_key_id.Clone());
 }
 
+std::optional<std::string> CardanoHDKeyring::AddNewHDAccount(uint32_t index) {
+  if (!accounts_root_) {
+    return std::nullopt;
+  }
+
+  auto new_account = DeriveAccount(index);
+  if (!new_account) {
+    return std::nullopt;
+  }
+  return "";
+}
+
 bool CardanoHDKeyring::IsTestnet() const {
   return IsCardanoTestnetKeyring(keyring_id_);
 }

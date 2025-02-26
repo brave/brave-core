@@ -120,6 +120,10 @@ base::Value::Dict GetDefaultHiddenNetworks() {
   zec_hidden.Append(mojom::kZCashTestnet);
   hidden_networks.Set(kZCashPrefKey, std::move(zec_hidden));
 
+  base::Value::List cardano_hidden;
+  cardano_hidden.Append(mojom::kCardanoTestnet);
+  hidden_networks.Set(kCardanoPrefKey, std::move(cardano_hidden));
+
   return hidden_networks;
 }
 

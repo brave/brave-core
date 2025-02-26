@@ -2,13 +2,19 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import { assert } from 'chrome://resources/js/assert.js'
+
 import { useMemo } from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // hooks
 import { useSafeWalletSelector } from './use-safe-selector'
 import { useGetTokenBalancesForChainIdQuery } from '../slices/api.slice'
-import { defaultQuerySubscriptionOptions } from '../slices/constants'
+import {
+  coinTypesMapping,
+  defaultQuerySubscriptionOptions
+} from '../slices/constants'
 
 // Types / constants
 import { BraveWallet, CoinTypes } from '../../constants/types'
@@ -18,14 +24,6 @@ interface Arg {
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
   accounts: BraveWallet.AccountInfo[]
   tokens: BraveWallet.BlockchainToken[]
-}
-
-const coinTypesMapping = {
-  [BraveWallet.CoinType.SOL]: CoinTypes.SOL,
-  [BraveWallet.CoinType.ETH]: CoinTypes.ETH,
-  [BraveWallet.CoinType.FIL]: CoinTypes.FIL,
-  [BraveWallet.CoinType.BTC]: CoinTypes.BTC,
-  [BraveWallet.CoinType.ZEC]: CoinTypes.ZEC
 }
 
 export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
@@ -39,20 +37,21 @@ export const useScopedBalanceUpdater = (arg: Arg | typeof skipToken) => {
       return []
     }
 
-    const nonSolArgs = arg.accounts.flatMap((account) =>
-      account.accountId.coin !== CoinTypes.SOL &&
-      arg.tokens &&
-      coinTypesMapping[account.accountId.coin] !== undefined
-        ? [
-            {
-              accountId: account.accountId,
-              chainId: arg.network.chainId,
-              coin: coinTypesMapping[account.accountId.coin],
-              tokens: arg.tokens
-            }
-          ]
-        : []
-    )
+    const nonSolArgs = arg.accounts.flatMap((account) => {
+      assert(coinTypesMapping[account.accountId.coin] !== undefined)
+
+      if (account.accountId.coin !== CoinTypes.SOL && arg.tokens) {
+        return [
+          {
+            accountId: account.accountId,
+            chainId: arg.network.chainId,
+            coin: coinTypesMapping[account.accountId.coin],
+            tokens: arg.tokens
+          }
+        ]
+      }
+      return []
+    })
 
     const solArgs = arg.accounts.flatMap((account) =>
       account.accountId.coin === CoinTypes.SOL

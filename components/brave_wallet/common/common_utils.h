@@ -17,32 +17,12 @@ class PrefService;
 
 namespace brave_wallet {
 
-inline constexpr mojom::CoinType kAllCoins[] = {
-    mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL,
-    mojom::CoinType::BTC, mojom::CoinType::ZEC,
-};
-
-inline constexpr mojom::KeyringId kAllKeyrings[] = {
-    mojom::KeyringId::kDefault,
-    mojom::KeyringId::kBitcoin84,
-    mojom::KeyringId::kBitcoin84Testnet,
-    mojom::KeyringId::kFilecoin,
-    mojom::KeyringId::kFilecoinTestnet,
-    mojom::KeyringId::kSolana,
-    mojom::KeyringId::kZCashMainnet,
-    mojom::KeyringId::kZCashTestnet,
-    mojom::KeyringId::kBitcoinImport,
-    mojom::KeyringId::kBitcoinImportTestnet,
-    mojom::KeyringId::kBitcoinHardware,
-    mojom::KeyringId::kBitcoinHardwareTestnet,
-};
-
 bool IsNativeWalletEnabled();
 bool IsBitcoinEnabled();
 bool IsBitcoinImportEnabled();
 bool IsBitcoinLedgerEnabled();
-bool IsCardanoEnabled();
 bool IsZCashEnabled();
+bool IsCardanoEnabled();
 bool IsZCashShieldedTransactionsEnabled();
 bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
@@ -93,7 +73,7 @@ mojom::CoinType GetCoinTypeFromTxDataUnion(
 
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
-std::vector<mojom::CoinType> GetSupportedCoins();
+std::vector<mojom::CoinType> GetEnabledCoins();
 std::vector<mojom::KeyringId> GetSupportedKeyringsForTesting();
 const std::vector<mojom::KeyringId>& GetSupportedKeyrings();
 bool IsKeyringSupported(mojom::KeyringId keyring_id);
