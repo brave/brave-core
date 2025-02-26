@@ -1262,6 +1262,13 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     return;
   }
 
+  if (event->is_content_receipt_event()) {
+    OnContentReceiptChanged(event->get_content_receipt_event()->total_tokens,
+                            event->get_content_receipt_event()->tokens_trimmed);
+    // Don't add this event to history
+    return;
+  }
+
   entry->events->push_back(std::move(event));
   // Update clients for partial entries but not observers, who will get notified
   // when we know this is a complete entry.
@@ -1696,6 +1703,12 @@ void ConversationHandler::UpdateAssociatedContentInfo() {
         associated_content_delegate_->GetContentId();
     metadata_->associated_content->content_used_percentage =
         GetContentUsedPercentage();
+    if (tokens_trimmed_ > 0) {
+      metadata_->associated_content->content_used_percentage =
+          100 - static_cast<int>(static_cast<double>(tokens_trimmed_) /
+                                 total_tokens_ * 100);
+      metadata_->associated_content->has_trimmed_tokens = tokens_trimmed_ > 0;
+    }
     metadata_->associated_content->is_content_refined = is_content_refined_;
   } else {
     metadata_->associated_content = nullptr;
@@ -1711,6 +1724,7 @@ ConversationHandler::GetStateForConversationEntries() {
       mojom::ConversationEntriesState::New();
   entries_state->is_generating = IsRequestInProgress();
   entries_state->is_content_refined = is_content_refined_;
+  entries_state->has_trimmed_tokens = tokens_trimmed_ > 0;
   entries_state->is_leo_model = is_leo_model;
   entries_state->content_used_percentage =
       metadata_->associated_content
@@ -1760,6 +1774,13 @@ void ConversationHandler::OnConversationUIConnectionChanged(
 void ConversationHandler::OnSelectedLanguageChanged(
     const std::string& selected_language) {
   selected_language_ = selected_language;
+}
+
+void ConversationHandler::OnContentReceiptChanged(uint64_t total_tokens,
+                                                  uint64_t tokens_trimmed) {
+  total_tokens_ = total_tokens;
+  tokens_trimmed_ = tokens_trimmed;
+  UpdateAssociatedContentInfo();
 }
 
 void ConversationHandler::OnAssociatedContentFaviconImageDataChanged() {

@@ -354,6 +354,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LocalModelsUpdater);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedderInitialized);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest_NoAssociatedContent,
+                           ContentReceipt);
 
   struct Suggestion {
     std::string title;
@@ -428,6 +430,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnConversationTitleChanged(std::string_view title);
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
   void OnSelectedLanguageChanged(const std::string& selected_language);
+  void OnContentReceiptChanged(uint64_t total_tokens, uint64_t tokens_trimmed);
   void OnAssociatedContentFaviconImageDataChanged();
   void OnAPIRequestInProgressChanged();
   void OnStateForConversationEntriesChanged();
@@ -442,6 +445,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Any previously-generated suggested questions
   std::vector<Suggestion> suggestions_;
   std::string selected_language_;
+  uint64_t total_tokens_;
+  uint64_t tokens_trimmed_;
+
   // Is a conversation engine request in progress (does not include
   // non-conversation engine requests.
   bool is_request_in_progress_ = false;
