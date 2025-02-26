@@ -95,11 +95,9 @@ struct DataImporterPasswordConflictView: View {
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .onGeometryChange(
         for: CGSize.self,
-        of: { proxy in
-          return proxy.size
-        },
+        of: { $0.size },
         action: {
-          sheetHeight = min($0.height, UIScreen.main.bounds.height * 0.7)
+          sheetHeight = $0.height
         }
       )
     }
