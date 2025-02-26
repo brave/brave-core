@@ -557,9 +557,16 @@ export function useConversation() {
   return React.useContext(ConversationReactContext)
 }
 
+export function useIsNewConversation() {
+  const conversationContext = useConversation()
+  const aiChatContext = useAIChat()
+
+  // A conversation is new if it isn't in the list of visible conversations.
+  return !aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
+}
+
 export function useSupportsAttachments() {
   const aiChatContext = useAIChat()
-  const conversationContext = useConversation()
-  return aiChatContext.isStandalone
-    && !aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
+  const isNew = useIsNewConversation()
+  return aiChatContext.isStandalone && isNew
 }
