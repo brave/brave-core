@@ -56,6 +56,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveVPNWidgetUsageWeeklyStorage);
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 // Region name map between v1 and v2. Some region from region list v2
 // uses different name with v1. If previously selected region name
 // uses different with v2, we can't proper region with it. So, map
@@ -80,7 +81,6 @@ constexpr auto kV1ToV2Map =
          {"us-west", "na-usa"},     {"eu-ua", "eu-ua"},
          {"eu-en", "eu-en"}});
 
-#if !BUILDFLAG(IS_ANDROID)
 void MigrateFromV1ToV2(PrefService* local_prefs) {
   const auto selected_region_v1 =
       local_prefs->GetString(prefs::kBraveVPNSelectedRegion);
@@ -103,23 +103,6 @@ void MigrateFromV1ToV2(PrefService* local_prefs) {
 #endif
 
 }  // namespace
-
-std::string_view GetMigratedNameIfNeeded(PrefService* local_prefs,
-                                         const std::string& name) {
-  if (local_prefs->GetInteger(prefs::kBraveVPNRegionListVersion) == 1) {
-    return name;
-  }
-
-  auto it = kV1ToV2Map.find(name);
-  // |kV1ToV2Map| doesn't include newly supported timezone names.
-  // Use |name| in that case.
-  // TODO(simonhong): Need to check this new name is aligned with
-  // v2 region list data.
-  if (it == kV1ToV2Map.end()) {
-    return name;
-  }
-  return it->second;
-}
 
 bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
   if (!IsBraveVPNFeatureEnabled()) {

@@ -99,6 +99,7 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
     return R"([
         {
           "name": "us-central",
+          "country-iso-code": "US",
           "timezones": [
             "America/Guatemala",
             "America/Guayaquil",
@@ -108,6 +109,7 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
         },
         {
           "name": "eu-es",
+          "country-iso-code": "ES",
           "timezones": [
             "Europe/Madrid",
             "Europe/Gibraltar",
@@ -117,12 +119,14 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
         },
         {
           "name": "eu-ch",
+          "country-iso-code": "CH",
           "timezones": [
             "Europe/Zurich"
           ]
         },
         {
           "name": "eu-nl",
+          "country-iso-code": "NL",
           "timezones": [
             "Europe/Amsterdam",
             "Europe/Brussels"
@@ -130,6 +134,7 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
         },
         {
           "name": "asia-sg",
+          "country-iso-code": "SG",
           "timezones": [
             "Asia/Aden",
             "Asia/Almaty",
@@ -138,6 +143,7 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
         },
         {
           "name": "asia-jp",
+          "country-iso-code": "JP",
           "timezones": [
             "Pacific/Guam",
             "Pacific/Saipan",

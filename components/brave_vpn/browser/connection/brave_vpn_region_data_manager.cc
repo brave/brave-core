@@ -106,10 +106,6 @@ void BraveVPNRegionDataManager::SetDeviceRegionWithTimezone(
       continue;
     }
 
-    const std::string* region_name = timezones.GetDict().FindString("name");
-    if (!region_name) {
-      continue;
-    }
     const auto* timezone_list_value = timezones.GetDict().FindList("timezones");
     if (!timezone_list_value) {
       continue;
@@ -121,10 +117,10 @@ void BraveVPNRegionDataManager::SetDeviceRegionWithTimezone(
         continue;
       }
       if (current_time_zone == timezone.GetString()) {
-        VLOG(2) << "Found default region: " << *region_name;
-        // Get new region name as timezone data could use old name.
-        std::string_view new_name =
-            GetMigratedNameIfNeeded(local_prefs_, *region_name);
+        const std::string* country_iso =
+            timezones.GetDict().FindString(kRegionCountryIsoCodeKey);
+        // Get region name of |country_iso| from region list.
+        const std::string new_name = GetCountryRegionNameFrom(*country_iso);
         SetDeviceRegion(new_name);
         // Use device region as a default selected region.
         if (local_prefs_->GetString(prefs::kBraveVPNSelectedRegionV2).empty()) {
@@ -134,6 +130,19 @@ void BraveVPNRegionDataManager::SetDeviceRegionWithTimezone(
       }
     }
   }
+}
+
+std::string BraveVPNRegionDataManager::GetCountryRegionNameFrom(
+    const std::string& country_iso) const {
+  CHECK(!regions_.empty());
+  for (const auto& region : regions_) {
+    if (region->country_iso_code == country_iso) {
+      return region->name;
+    }
+  }
+
+  // Fallback to first region item.
+  return regions_[0]->name;
 }
 
 void BraveVPNRegionDataManager::LoadCachedRegionData() {
