@@ -226,6 +226,20 @@ TEST(BraveVPNUtilsUnitTest, InvalidSelectedRegionNameMigration) {
   EXPECT_EQ(2, local_state_pref_service.GetInteger(
                    brave_vpn::prefs::kBraveVPNRegionListVersion));
 }
+
+TEST(BraveVPNUtilsUnitTest, NewTimeZoneName) {
+  TestingPrefServiceSimple local_state_pref_service;
+  brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
+  EXPECT_EQ(1, local_state_pref_service.GetInteger(
+                   brave_vpn::prefs::kBraveVPNRegionListVersion));
+  brave_vpn::MigrateLocalStatePrefs(&local_state_pref_service);
+  EXPECT_EQ(2, local_state_pref_service.GetInteger(
+                   brave_vpn::prefs::kBraveVPNRegionListVersion));
+
+  // Check passed timezone name is returned if it's not included in V1ToV2Map.
+  EXPECT_EQ("asia-new", brave_vpn::GetMigratedNameIfNeeded(
+                            &local_state_pref_service, "asia-new"));
+}
 #endif
 
 TEST(BraveVPNUtilsUnitTest, VPNPaymentsEnv) {

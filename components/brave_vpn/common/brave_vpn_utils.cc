@@ -56,7 +56,10 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveVPNWidgetUsageWeeklyStorage);
 }
 
-// Region name map between v1 and v2.
+// Region name map between v1 and v2. Some region from region list v2
+// uses different name with v1. If previously selected region name
+// uses different with v2, we can't proper region with it. So, map
+// v1 name to v2's.
 constexpr auto kV1ToV2Map =
     base::MakeFixedFlatMap<std::string_view, std::string_view>(
         {{"au-au", "ocn-aus"},      {"eu-at", "eu-at"},
@@ -108,7 +111,13 @@ std::string_view GetMigratedNameIfNeeded(PrefService* local_prefs,
   }
 
   auto it = kV1ToV2Map.find(name);
-  CHECK(it != kV1ToV2Map.end());
+  // |kV1ToV2Map| doesn't include newly supported timezone names.
+  // Use |name| in that case.
+  // TODO(simonhong): Need to check this new name is aligned with
+  // v2 region list data.
+  if (it == kV1ToV2Map.end()) {
+    return name;
+  }
   return it->second;
 }
 
