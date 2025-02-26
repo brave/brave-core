@@ -15,32 +15,7 @@ import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Tooltip from '@brave/leo/react/tooltip'
 import { getLocale } from '$web-common/locale'
 import formatMessage from '$web-common/formatMessage'
-import {
-  AccountRow,
-  AliasAnnotation,
-  AliasControls,
-  AliasItemRow,
-  AliasListIntro,
-  BraveIconCircle,
-  BraveIconWrapper,
-  ButtonRow,
-  Card,
-  CloseButton,
-  Col,
-  CopyButtonWrapper,
-  EmailContainer,
-  GeneratedEmailContainer,
-  GrayOverlay,
-  MainEmail,
-  MainEmailDescription,
-  MainEmailTextContainer,
-  ManageAccountLink,
-  MenuButton,
-  Modal,
-  ModalSectionCol,
-  Row,
-  SignupRow,
-} from './styles'
+import * as S from './styles'
 
 const MAX_ALIASES = 5;
 
@@ -58,40 +33,40 @@ const onEnterKey = (onSubmit: Function) =>
   }
 
 const BraveIcon = ({style}: {style?: React.CSSProperties}) => (
-  <BraveIconCircle style={{...style, flexGrow: 0}}>
-    <BraveIconWrapper>
+  <S.BraveIconCircle style={{...style, flexGrow: 0}}>
+    <S.BraveIconWrapper>
       <Icon name='brave-icon-release-color' />
-    </BraveIconWrapper>
-  </BraveIconCircle>
+    </S.BraveIconWrapper>
+  </S.BraveIconCircle>
 )
 
 const Introduction = () => (
-  <Card id='introduction'>
+ <S.Card id='introduction'>
     <h2>{getLocale('emailAliasesShortDescription')}</h2>
     <div>{getLocale('emailAliasesDescription')} <a href="https://support.brave.com" target='_blank'>{getLocale('emailAliasesLearnMore')}</a>
     </div>
-  </Card>
+  </S.Card>
 )
 
 const MainEmailDisplay = ({ email, onLogout }: { email: string, onLogout: Function }) => (
-  <Card id='main-email-display'>
-    <AccountRow>
-    <Row>
+  <S.Card id='main-email-display'>
+    <S.AccountRow>
+    <S.Row>
       <BraveIcon />
-      <MainEmailTextContainer>
-        <MainEmail>{email === '' ? getLocale('emailAliasesConnectingToBraveAccount') : email}</MainEmail>
-        <MainEmailDescription>{getLocale('emailAliasesBraveAccount')}</MainEmailDescription>
-      </MainEmailTextContainer>
-    </Row>
-    <ManageAccountLink
+      <S.MainEmailTextContainer>
+        <S.MainEmail>{email === '' ? getLocale('emailAliasesConnectingToBraveAccount') : email}</S.MainEmail>
+        <S.MainEmailDescription>{getLocale('emailAliasesBraveAccount')}</S.MainEmailDescription>
+      </S.MainEmailTextContainer>
+    </S.Row>
+    <S.ManageAccountLink
       title={getLocale('emailAliasesSignOutTitle')}
       href='#'
       onClick={(e) => { e.preventDefault(); onLogout() }}>
       <Icon name="outside" />
       <span style={{ margin: '0.25em' }}>{getLocale('emailAliasesSignOut')}</span>
-    </ManageAccountLink>
-  </AccountRow>
-</Card>
+      </S.ManageAccountLink>
+  </S.AccountRow>
+</S.Card>
 )
 
 const copyEmailToClipboard = (
@@ -104,10 +79,10 @@ const AliasMenuItem = ({ onClick, iconName, text }:
   { onClick: EventListener, iconName: string, text: string }) => (
   <leo-menu-item
     onClick={onClick}>
-    <Row style={{ fontSize: '90%' }}>
+    <S.Row style={{ fontSize: '90%' }}>
       <Icon name={iconName} />
       <span style={{ marginInlineStart: '0.5em' }}>{text}</span>
-    </Row>
+    </S.Row>
   </leo-menu-item>
 )
 
@@ -126,37 +101,37 @@ const CopyToast = ({ children }: React.PropsWithChildren) => {
 
 const AliasItem = ({ alias, onEdit, onDelete }: { alias: Alias, onEdit: Function, onDelete: Function }) => {
   return (
-    <AliasItemRow>
-      <Col>
+    <S.AliasItemRow>
+      <S.Col>
         <CopyToast>
-          <EmailContainer title={getLocale('emailAliasesClickToCopyAlias')}
+          <S.EmailContainer title={getLocale('emailAliasesClickToCopyAlias')}
             onClick={(event: React.MouseEvent<HTMLElement>) => copyEmailToClipboard(alias.email)}>
             {alias.email}
-          </EmailContainer>
+          </S.EmailContainer>
         </CopyToast>
         {((alias.note || alias.domains) &&
-          <AliasAnnotation>
+          <S.AliasAnnotation>
             {(alias.note && <span>{alias.note}</span>)}
             {alias.domains && alias.note && <span>. </span>}
             {(alias.domains && <span>{formatMessage( getLocale('emailAliasesUsedBy'),
               { placeholders: { $1: alias.domains?.join(", ") } })}</span>)}
-          </AliasAnnotation>
+          </S.AliasAnnotation>
         )}
-      </Col>
-      <AliasControls>
+      </S.Col>
+      <S.AliasControls>
         <CopyToast>
-          <CopyButtonWrapper
+          <S.CopyButtonWrapper
             title={getLocale('emailAliasesClickToCopyAlias')}
             onClick={() => {
               copyEmailToClipboard(alias.email)
             }}>
             <Icon name="copy" style={{color: color.text.secondary}}/>
-          </CopyButtonWrapper>
+          </S.CopyButtonWrapper>
         </CopyToast>
         <ButtonMenu>
-          <MenuButton slot='anchor-content' kind='plain-faint' size="large" style='width: 1.5em;'>
+          <S.MenuButton slot='anchor-content' kind='plain-faint' size="large" style='width: 1.5em;'>
             <Icon name="more-vertical" />
-          </MenuButton>
+          </S.MenuButton>
           <AliasMenuItem
             iconName="edit-pencil"
             text={getLocale('emailAliasesEdit')}
@@ -166,20 +141,20 @@ const AliasItem = ({ alias, onEdit, onDelete }: { alias: Alias, onEdit: Function
             text={getLocale('emailAliasesDelete')}
             onClick={() => onDelete(alias)} />
         </ButtonMenu>
-      </AliasControls>
-    </AliasItemRow>
+      </S.AliasControls>
+    </S.AliasItemRow>
   )
 }
 
 const AliasList = ({ aliases, onViewChange, onListChange, mappingService }: { mappingService: MappingService, aliases: Alias[], onViewChange: Function, onListChange: Function }) => (
-  <Card style={{ borderTop: `1px solid ${color.legacy.divider1}` }}>
-    <AliasListIntro>
-      <Col>
+  <S.Card style={{ borderTop: `1px solid ${color.legacy.divider1}` }}>
+    <S.AliasListIntro>
+      <S.Col>
         <h2>{getLocale('emailAliasesListTitle')}</h2>
         <div>
           {getLocale('emailAliasesCreateDescription')}
         </div>
-      </Col>
+      </S.Col>
       <Button style='flex-grow: 0;'
         isDisabled={aliases.length >= MAX_ALIASES}
         title={getLocale('emailAliasesCreateAliasTitle')}
@@ -193,7 +168,7 @@ const AliasList = ({ aliases, onViewChange, onListChange, mappingService }: { ma
         }>
         {getLocale('emailAliasesCreateAliasLabel')}
       </Button>
-    </AliasListIntro>
+    </S.AliasListIntro>
     {aliases.map(
       alias => <AliasItem
         key={alias.email}
@@ -203,9 +178,8 @@ const AliasList = ({ aliases, onViewChange, onListChange, mappingService }: { ma
           await mappingService.deleteAlias(alias.email)
           onListChange()
         }}></AliasItem>)}
-  </Card>
+  </S.Card>
 )
-
 
 const RefreshButton = ( { onClicked } : { onClicked: Function }) => (
   <Button title={getLocale('emailAliasesRefreshButtonTitle')}
@@ -216,10 +190,10 @@ const RefreshButton = ( { onClicked } : { onClicked: Function }) => (
 )
 
 const ModalWithCloseButton = ({ children, returnToMain }: React.PropsWithChildren & { returnToMain: Function }) => (
-  <Modal>
-    <CloseButton onClick={() => returnToMain()}><Icon name='close' /></CloseButton>
+  <S.Modal>
+    <S.CloseButton onClick={() => returnToMain()}><Icon name='close' /></S.CloseButton>
     {children}
-  </Modal>
+  </S.Modal>
 )
 
 export const EmailAliasModal = (
@@ -257,18 +231,18 @@ export const EmailAliasModal = (
     mappingService.getAccountEmail().then(email => setMainEmail(email ?? ''))
   }, [])
   return (
-    <span>
+    <S.InnerModal>
       <h2>{mode == ViewMode.Create ? getLocale('emailAliasesCreateAliasTitle') : getLocale('emailAliasesEditAliasTitle')}</h2>
       {bubble && <div>{getLocale('emailAliasesBubbleDescription')}</div>}
-      <ModalSectionCol style={{}}>
+      <S.ModalSectionCol style={{}}>
         <h3 style={{ margin: '0.25em' }}>{getLocale('emailAliasesAliasLabel')}</h3>
-      <GeneratedEmailContainer>
+      <S.GeneratedEmailContainer>
         <div>{proposedAlias}</div>
         {mode == ViewMode.Create && <RefreshButton onClicked={regenerateAlias} />}
-      </GeneratedEmailContainer>
+      </S.GeneratedEmailContainer>
       <div>{formatMessage(  getLocale('emailAliasesEmailsWillBeForwardedTo'), { placeholders: { $1: mainEmail } })}</div>
-    </ModalSectionCol>
-    <ModalSectionCol>
+    </S.ModalSectionCol>
+    <S.ModalSectionCol>
       <h3 style={{ margin: '0.25em' }}>{getLocale('emailAliasesNoteLabel')}</h3>
       <Input id='note-input'
         type='text'
@@ -280,8 +254,8 @@ export const EmailAliasModal = (
         style='margin: 0.25em 0em'>
       </Input>
       {mode == ViewMode.Edit && viewState?.alias?.domains && <div>getLocale('emailAliasesUsedBy', viewState?.alias?.domains?.join(', '))</div>}
-    </ModalSectionCol>
-    <ButtonRow style={{justifyContent: bubble ? 'space-between' : 'end'}}>
+    </S.ModalSectionCol>
+    <S.ButtonRow style={{justifyContent: bubble ? 'space-between' : 'end'}}>
       <span>
         {bubble && <Button onClick={() => mappingService.showSettingsPage()} kind='plain' style='flex-grow: 0;'>
           {getLocale('emailAliasesManageButton')}
@@ -298,17 +272,17 @@ export const EmailAliasModal = (
         {mode == ViewMode.Create ? getLocale('emailAliasesCreateAliasButton') : getLocale('emailAliasesSaveAliasButton')}
         </Button>
       </span>
-      </ButtonRow>
-    </span>
+      </S.ButtonRow>
+    </S.InnerModal>
   )
 }
 
 const BeforeSendingEmailForm = ({ initEmail, onSubmit }: { initEmail: string, onSubmit: Function }) => {
   const [email, setEmail] = React.useState<string>(initEmail)
-  return (<Col>
+  return (<S.Col>
     <h3>{getLocale('emailAliasesSignInOrCreateAccount')}</h3>
     <div style={{ marginBottom: '1em' }}>{getLocale('emailAliasesEnterEmailToGetLoginLink')}</div>
-      <Row>
+      <S.Row>
         <Input autofocus={true}
           onChange={(detail: InputEventDetail) => setEmail(detail.value)}
           onKeyDown={onEnterKey(() => onSubmit(email))}
@@ -319,27 +293,27 @@ const BeforeSendingEmailForm = ({ initEmail, onSubmit }: { initEmail: string, on
           value={email || ''}
         ></Input>
         <Button onClick={() => onSubmit(email)} type='submit' style='flex-grow: 1' kind='filled'>{getLocale('emailAliasesGetLoginLinkButton')}</Button>
-      </Row>
-  </Col>
+      </S.Row>
+  </S.Col>
   )
 }
 
 const AfterSendingEmailMessage = ({mainEmail, tryAgain}: {mainEmail: string, tryAgain: Function}) => (
-  <Col style={{flexGrow: 1}}>
+  <S.Col style={{flexGrow: 1}}>
     <h3>{formatMessage(getLocale('emailAliasesLoginEmailOnTheWay'), { placeholders: { $1: mainEmail } })}</h3>
     <div style={{ marginBottom: '1em' }}>{getLocale('emailAliasesClickOnSecureLogin')}</div>
     <div style={{ marginBottom: '1em' }}>{getLocale('emailAliasesDontSeeEmail')} <a href='#' onClick={(e) => { e.preventDefault(); tryAgain()}}>{getLocale('emailAliasesTryAgain')}</a>
     </div>
-  </Col>
+  </S.Col>
 )
 
 const MainEmailEntryForm = ({viewState, mainEmail, onEmailSubmitted, restart} : {viewState:ViewState, mainEmail: string, onEmailSubmitted: Function, restart: Function}) => (
-  <Card id='main-email-entry-form'>
-    <SignupRow>
+  <S.Card id='main-email-entry-form'>
+    <S.SignupRow>
       <BraveIcon style={{marginTop: '1em'}}/>
       {viewState.mode === ViewMode.SignUp ? (<BeforeSendingEmailForm initEmail={mainEmail} onSubmit={onEmailSubmitted}/>) : (<AfterSendingEmailMessage mainEmail={mainEmail} tryAgain={restart}/>)}
-    </SignupRow>
-  </Card>
+    </S.SignupRow>
+  </S.Card>
 )
 
 const MainView = ({
@@ -355,9 +329,9 @@ const MainView = ({
   onListChange: Function
 }) => (
   (viewState.mode === ViewMode.Startup ?
-    (<Row style={{margin: '1em', flexGrow: 1, justifyContent: 'center', alignItems: 'center'}}><Icon name='loading-spinner' />
+    (<S.Row style={{margin: '1em', flexGrow: 1, justifyContent: 'center', alignItems: 'center'}}><Icon name='loading-spinner' />
       <h3 style={{margin: '0.25em'}}>{getLocale('emailAliasesConnectingToBraveAccount')}</h3>
-     </Row>) :
+     </S.Row>) :
     (<span>
       <MainEmailDisplay onLogout={onLogout} email={mainEmail} />
       <AliasList aliases={aliasesState} onViewChange={setViewState}
@@ -416,13 +390,13 @@ export const ManagePage = ({ mappingService }:
     })
   }, [] /* Only run at mount. */)
   return (
-    <Col style={{ padding: spacing.l }}>
+    <S.Col style={{ padding: spacing.l }}>
       <Introduction />
       {viewState.mode === ViewMode.SignUp || viewState.mode === ViewMode.AwaitingAuthorization ?
         (<MainEmailEntryForm viewState={viewState} mainEmail={mainEmail} onEmailSubmitted={onMainEmailSubmitted} restart={restart}/>) :
         <MainView viewState={viewState} mainEmail={mainEmail} onLogout={onLogout} aliasesState={aliasesState} setViewState={setViewState} mappingService={mappingService} onListChange={onListChange}/>}
       {(mode == ViewMode.Create || mode == ViewMode.Edit) &&
-        (<span><GrayOverlay onClick={returnToMain}>&nbsp;</GrayOverlay>
+        (<span><S.GrayOverlay onClick={returnToMain}>&nbsp;</S.GrayOverlay>
           <ModalWithCloseButton returnToMain={returnToMain}>
             <EmailAliasModal
               returnToMain={returnToMain}
@@ -432,7 +406,7 @@ export const ManagePage = ({ mappingService }:
               mappingService={mappingService} />
           </ModalWithCloseButton>
         </span>)}
-    </Col>
+    </S.Col>
   )
 }
 

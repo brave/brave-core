@@ -123,9 +123,12 @@ export const Modal = styled(Col)`
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
-  width: 45em;
-  padding: 1em 2em;
   justify-content: flex-start;
+`
+
+export const InnerModal = styled.div`
+  width: 42em;
+  margin: 1em 2em;
 `
 
 export const CloseButton = styled.span`
