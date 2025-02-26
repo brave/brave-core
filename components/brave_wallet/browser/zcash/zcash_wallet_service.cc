@@ -96,8 +96,8 @@ void ZCashWalletService::GetBalance(const std::string& chain_id,
                                     GetBalanceCallback callback) {
   auto& task = resolve_balance_tasks_.emplace_back(
       std::make_unique<ZCashResolveBalanceTask>(
-          base::PassKey<ZCashWalletService>(), *this, chain_id,
-          std::move(account_id),
+          base::PassKey<ZCashWalletService>(), *this,
+          CreateActionContext(account_id, chain_id),
           base::BindOnce(&ZCashWalletService::OnResolveBalanceResult,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
   task->Start();
@@ -937,9 +937,16 @@ void ZCashWalletService::Reset() {
 ZCashActionContext ZCashWalletService::CreateActionContext(
     const mojom::AccountIdPtr& account_id,
     const std::string chain_id) {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  std::optional<OrchardAddrRawPart> internal_addr;
+  if (IsZCashShieldedTransactionsEnabled()) {
+    internal_addr = keyring_service_->GetOrchardRawBytes(
+        account_id, mojom::ZCashKeyId::New(account_id->account_index, 1, 0));
+  }
+#endif
   return ZCashActionContext(*zcash_rpc_,
 #if BUILDFLAG(ENABLE_ORCHARD)
-                            sync_state_,
+                            internal_addr, sync_state_,
 #endif
                             account_id.Clone(), chain_id);
 }

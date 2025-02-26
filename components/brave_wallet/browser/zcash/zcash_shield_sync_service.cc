@@ -242,9 +242,9 @@ void ZCashShieldSyncService::OnScanRangeResult(
 }
 
 uint32_t ZCashShieldSyncService::GetSpendableBalance() {
-  CHECK(spendable_notes_.has_value());
+  CHECK(spendable_notes_bundle_.has_value());
   uint32_t balance = 0;
-  for (const auto& note : spendable_notes_.value()) {
+  for (const auto& note : spendable_notes_bundle_->spendable_notes) {
     balance += note.amount;
   }
   return balance;
@@ -252,9 +252,16 @@ uint32_t ZCashShieldSyncService::GetSpendableBalance() {
 
 void ZCashShieldSyncService::UpdateSpendableNotes(
     const ScanRangeResult& scan_range_result) {
+  if (!context_.account_internal_addr) {
+    error_ = Error{ErrorCode::kFailedToRetrieveSpendableNotes,
+                   "Internal address error"};
+    ScheduleWorkOnTask();
+    return;
+  }
   sync_state()
       .AsyncCall(&OrchardSyncState::GetSpendableNotes)
-      .WithArgs(context_.account_id.Clone())
+      .WithArgs(context_.account_id.Clone(),
+                context_.account_internal_addr.value())
       .Then(base::BindOnce(&ZCashShieldSyncService::OnGetSpendableNotes,
                            weak_ptr_factory_.GetWeakPtr(),
                            std::move(scan_range_result)));
@@ -262,7 +269,8 @@ void ZCashShieldSyncService::UpdateSpendableNotes(
 
 void ZCashShieldSyncService::OnGetSpendableNotes(
     const ScanRangeResult& scan_range_result,
-    base::expected<std::vector<OrchardNote>, OrchardStorage::Error> result) {
+    base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
+                   OrchardStorage::Error> result) {
   if (!result.has_value()) {
     error_ = Error{ErrorCode::kFailedToRetrieveSpendableNotes,
                    result.error().message};
@@ -270,15 +278,22 @@ void ZCashShieldSyncService::OnGetSpendableNotes(
     return;
   }
 
-  spendable_notes_ = result.value();
+  if (!result.value().has_value()) {
+    error_ = Error{ErrorCode::kFailedToRetrieveSpendableNotes,
+                   "Failed to retrieve spendable bundle"};
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  spendable_notes_bundle_ = std::move(result.value());
   latest_scanned_block_result_ = scan_range_result;
 
   current_sync_status_ = mojom::ZCashShieldSyncStatus::New(
       latest_scanned_block_result_->start_block,
       latest_scanned_block_result_->end_block,
       latest_scanned_block_result_->total_ranges,
-      latest_scanned_block_result_->ready_ranges, spendable_notes_->size(),
-      GetSpendableBalance());
+      latest_scanned_block_result_->ready_ranges,
+      spendable_notes_bundle_->all_notes.size(), GetSpendableBalance());
 
   if (observer_) {
     observer_->OnSyncStatusUpdate(context_.account_id,

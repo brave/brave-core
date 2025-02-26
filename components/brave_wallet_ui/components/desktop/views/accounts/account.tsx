@@ -33,7 +33,10 @@ import {
 // utils
 import { getLocale } from '../../../../../common/locale'
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
-import { getBalance } from '../../../../utils/balance-utils'
+import {
+  getBalance,
+  formatTokenBalanceWithSymbol
+} from '../../../../utils/balance-utils'
 import { filterNetworksForAccount } from '../../../../utils/network-utils'
 import {
   makeAccountRoute,
@@ -115,7 +118,8 @@ import {
   useStartShieldSyncMutation,
   useGetChainTipStatusQuery,
   useGetZCashAccountInfoQuery,
-  useStopShieldSyncMutation
+  useStopShieldSyncMutation,
+  useGetZCashBalanceQuery
 } from '../../../../common/slices/api.slice'
 import {
   querySubscriptionOptions60s //
@@ -216,6 +220,12 @@ export const Account = () => {
     isShieldedAccount && selectedAccount ? selectedAccount.accountId : skipToken
   )
 
+  const { data: zcashBalance } =
+    useGetZCashBalanceQuery(isShieldedAccount && selectedAccount ? {
+        chainId: BraveWallet.Z_CASH_MAINNET, 
+        accountId: selectedAccount.accountId
+      } : skipToken)
+
   // state
   const [showAddNftModal, setShowAddNftModal] = React.useState<boolean>(false)
   const [showViewOnBlockExplorerModal, setShowViewOnBlockExplorerModal] =
@@ -232,8 +242,9 @@ export const Account = () => {
 
   const showSyncWarning =
     isShieldedAccount &&
-    (blocksBehind > 0 || chainTipStatus === null) &&
     !syncWarningDismissed
+
+  const enableSyncButton = showSyncWarning && blocksBehind > 0
 
   // custom hooks & memos
   const scrollIntoView = useScrollIntoView()
@@ -595,6 +606,16 @@ export const Account = () => {
                       : 'braveWalletOutOfSyncBlocksBehindTitle'
                   ).replace('$1', blocksBehind.toLocaleString())}
             </div>
+            <div>
+              {(accountsTokensList && zcashBalance &&
+                zcashBalance.shieldedPendingBalance > 0) && 
+                getLocale('braveWalletZCashPendingBalanceTitle').replace('$1',
+                  formatTokenBalanceWithSymbol(
+                    (zcashBalance?.shieldedPendingBalance || 0).toString(),
+                    accountsTokensList[0].decimals,
+                    accountsTokensList[0].symbol))
+              }
+            </div>
             {getLocale('braveWalletOutOfSyncDescription')}
             <Row
               slot='actions'
@@ -603,6 +624,7 @@ export const Account = () => {
             >
               <Button
                 size='small'
+                isDisabled={!enableSyncButton}
                 onClick={onStartShieldSync}
               >
                 <Icon
@@ -610,7 +632,7 @@ export const Account = () => {
                   slot='icon-before'
                 />
                 {getLocale('braveWalletSyncAccountButton')}
-              </Button>
+              </Button>              
               <Button
                 size='small'
                 kind='plain-faint'

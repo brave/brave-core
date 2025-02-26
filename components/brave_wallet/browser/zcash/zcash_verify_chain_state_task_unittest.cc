@@ -143,7 +143,7 @@ class ZCashVerifyChainStateTaskTest : public testing::Test {
   }
 
   ZCashActionContext CreateContext() {
-    return ZCashActionContext(zcash_rpc_, sync_state_, account_id_,
+    return ZCashActionContext(zcash_rpc_, {}, sync_state_, account_id_,
                               mojom::kZCashMainnet);
   }
 

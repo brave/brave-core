@@ -1538,6 +1538,8 @@ provideStrings({
   braveWalletOutOfSyncBlocksBehindTitle: 'Out of sync ($1 blocks behind)',
   braveWalletOutOfSyncDescription:
     'Sync your account to access the latest transactions and balance.',
+  braveWalletZCashPendingBalanceTitle:
+    'Pending balance(requires more confirmations): $1',
   braveWalletSyncAccountButton: 'Sync account',
   braveWalletSyncAccountName: 'Sync $1',
   braveWalletInitializing: 'Initializing...',
