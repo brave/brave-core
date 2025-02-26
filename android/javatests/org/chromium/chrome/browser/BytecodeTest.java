@@ -1178,7 +1178,6 @@ public class BytecodeTest {
                         boolean.class,
                         BackPressManager.class,
                         ObservableSupplier.class,
-                        View.class,
                         ObservableSupplier.class,
                         DesktopWindowStateManager.class));
         Assert.assertTrue(
@@ -1587,7 +1586,6 @@ public class BytecodeTest {
                         Bundle.class,
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
-                        View.class,
                         ManualFillingComponentSupplier.class,
                         EdgeToEdgeManager.class));
         Assert.assertTrue(
