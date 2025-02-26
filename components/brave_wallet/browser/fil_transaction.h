@@ -62,7 +62,7 @@ class FilTransaction {
 
   // Deserializes JSON which contains value, provided by SignTransaction
   // Wraps uint64_t fields to string
-  static std::optional<base::Value> DeserializeSignedTx(
+  static std::optional<base::Value::Dict> DeserializeSignedTx(
       const std::string& signed_tx);
   // Finds signed tx JSON by path and converts some string fields to uint64 form
   static std::optional<std::string> ConvertMesssageStringFieldsToInt64(

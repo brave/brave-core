@@ -46,14 +46,13 @@ mojom::Result GetCards::ParseBody(const std::string& body,
                                   std::string* id) const {
   DCHECK(id);
 
-  std::optional<base::Value> value = base::JSONReader::Read(body);
-  if (!value || !value->is_list()) {
+  std::optional<base::Value::List> value = base::JSONReader::ReadList(body);
+  if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
-  auto& list = value->GetList();
-  for (const auto& it : list) {
+  for (const auto& it : *value) {
     DCHECK(it.is_dict());
     const auto& dict = it.GetDict();
     const auto* label = dict.FindString("label");

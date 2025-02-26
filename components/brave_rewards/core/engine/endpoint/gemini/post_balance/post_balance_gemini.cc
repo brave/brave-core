@@ -33,14 +33,13 @@ mojom::Result PostBalance::ParseBody(const std::string& body,
                                      double* available) {
   DCHECK(available);
 
-  std::optional<base::Value> value = base::JSONReader::Read(body);
-  if (!value || !value->is_list()) {
+  std::optional<base::Value::List> value = base::JSONReader::ReadList(body);
+  if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
-  auto& balances = value->GetList();
-  for (auto& item : balances) {
+  for (auto& item : *value) {
     DCHECK(item.is_dict());
     auto& balance = item.GetDict();
     const auto* currency_code = balance.FindString("currency");

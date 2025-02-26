@@ -400,10 +400,10 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
 
   const std::string decrypted_keyrings_str =
       std::string(decrypted_keyrings->begin(), decrypted_keyrings->end());
-  auto keyrings = base::JSONReader::Read(
+  auto keyrings = base::JSONReader::ReadList(
       decrypted_keyrings_str,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
-  if (!keyrings || !keyrings->is_list()) {
+  if (!keyrings) {
     VLOG(1) << "not a valid JSON: " << decrypted_keyrings_str;
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
@@ -411,7 +411,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
 
   std::optional<std::string> mnemonic = std::nullopt;
   std::optional<int> number_of_accounts = std::nullopt;
-  for (const auto& keyring_listed : keyrings->GetList()) {
+  for (const auto& keyring_listed : *keyrings) {
     DCHECK(keyring_listed.is_dict());
     const auto& keyring = *keyring_listed.GetIfDict();
     const auto* type = keyring.FindString("type");

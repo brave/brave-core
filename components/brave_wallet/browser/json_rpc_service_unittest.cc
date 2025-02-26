@@ -30,6 +30,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -87,22 +88,6 @@ MATCHER_P(MatchesCIDv1URL, ipfs_url, "") {
 namespace brave_wallet {
 
 namespace {
-
-// Compare two JSON strings, ignoring the order of the keys and other
-// insignificant whitespace differences.
-void CompareJSON(const std::string& response,
-                 const std::string& expected_response) {
-  auto response_val = base::JSONReader::Read(response);
-  auto expected_response_val = base::JSONReader::Read(expected_response);
-  EXPECT_EQ(response_val, expected_response_val);
-  if (response_val) {
-    // If the JSON is valid, compare the parsed values.
-    EXPECT_EQ(*response_val, *expected_response_val);
-  } else {
-    // If the JSON is invalid, compare the raw strings.
-    EXPECT_EQ(response, expected_response);
-  }
-}
 
 void GetErrorCodeMessage(base::Value formed_response,
                          mojom::ProviderError* error,
@@ -304,13 +289,14 @@ class TestJsonRpcServiceObserver
 constexpr char https_metadata_response[] =
     R"({"attributes":[{"trait_type":"Feet","value":"Green Shoes"},{"trait_type":"Legs","value":"Tan Pants"},{"trait_type":"Suspenders","value":"White Suspenders"},{"trait_type":"Upper Body","value":"Indigo Turtleneck"},{"trait_type":"Sleeves","value":"Long Sleeves"},{"trait_type":"Hat","value":"Yellow / Blue Pointy Beanie"},{"trait_type":"Eyes","value":"White Nerd Glasses"},{"trait_type":"Mouth","value":"Toothpick"},{"trait_type":"Ears","value":"Bing Bong Stick"},{"trait_type":"Right Arm","value":"Swinging"},{"trait_type":"Left Arm","value":"Diamond Hand"},{"trait_type":"Background","value":"Blue"}],"description":"5,000 animated Invisible Friends hiding in the metaverse. A collection by Markus Magnusson & Random Character Collective.","image":"https://rcc.mypinata.cloud/ipfs/QmXmuSenZRnofhGMz2NyT3Yc4Zrty1TypuiBKDcaBsNw9V/1817.gif","name":"Invisible Friends #1817"})";
 
-std::optional<base::Value> ToValue(const network::ResourceRequest& request) {
+std::optional<base::Value::Dict> ToValue(
+    const network::ResourceRequest& request) {
   std::string_view request_string(request.request_body->elements()
                                       ->at(0)
                                       .As<network::DataElementBytes>()
                                       .AsStringPiece());
-  return base::JSONReader::Read(request_string,
-                                base::JSONParserOptions::JSON_PARSE_RFC);
+  return base::JSONReader::ReadDict(request_string,
+                                    base::JSONParserOptions::JSON_PARSE_RFC);
 }
 
 class EthCallHandler {
@@ -680,8 +666,8 @@ class JsonRpcEndpointHandler {
     }
 
     auto value = ToValue(request);
-    if (value && value->is_dict()) {
-      auto response = HandleCall(value->GetDict());
+    if (value) {
+      auto response = HandleCall(*value);
       if (response) {
         return response;
       }
@@ -1897,7 +1883,12 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                        const std::string& response,
                                        mojom::SolanaProviderError error,
                                        const std::string& error_message) {
-          CompareJSON(response, expected_response);
+          if (response.empty()) {
+            EXPECT_EQ(response, expected_response);
+          } else {
+            EXPECT_EQ(base::test::ParseJson(response),
+                      base::test::ParseJson(expected_response));
+          }
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           loop.Quit();
@@ -5801,13 +5792,13 @@ class OffchainGatewayHandler {
     }
 
     auto payload = ToValue(request);
-    if (!payload || !payload->is_dict()) {
+    if (!payload) {
       return std::nullopt;
     }
-    auto* sender = payload->GetDict().FindString("sender");
+    auto* sender = payload->FindString("sender");
     EXPECT_EQ(EthAddress::FromHex(*sender), resolver_address_);
 
-    auto* data = payload->GetDict().FindString("data");
+    auto* data = payload->FindString("data");
     auto bytes = PrefixedHexStringToBytes(*data);
     if (!bytes) {
       NOTREACHED();

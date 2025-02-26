@@ -120,9 +120,10 @@ void ConnectionAPIImpl::OnFetchHostnames(const std::string& region,
 
   ResetAPIRequestInstance();
 
-  std::optional<base::Value> value = base::JSONReader::Read(hostnames);
-  if (value && value->is_list()) {
-    ParseAndCacheHostnames(region, value->GetList());
+  std::optional<base::Value::List> value =
+      base::JSONReader::ReadList(hostnames);
+  if (value) {
+    ParseAndCacheHostnames(region, *value);
     return;
   }
 

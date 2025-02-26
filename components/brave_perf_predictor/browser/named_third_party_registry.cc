@@ -37,14 +37,15 @@ ParseMappings(std::string_view entities, bool discard_irrelevant) {
   auto& [entity_by_domain, entity_by_root_domain] = result;
 
   // Parse the JSON
-  std::optional<base::Value> document = base::JSONReader::Read(entities);
-  if (!document || !document->is_list()) {
+  std::optional<base::Value::List> document =
+      base::JSONReader::ReadList(entities);
+  if (!document) {
     LOG(ERROR) << "Cannot parse the third-party entities list";
     return {};
   }
 
   // Collect the mappings
-  for (auto& item : document->GetList()) {
+  for (auto& item : *document) {
     const auto& entity = item.GetDict();
 
     const std::string* entity_name = entity.FindString("name");
