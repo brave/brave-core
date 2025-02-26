@@ -5,14 +5,13 @@
 
 #include "brave/browser/browsing_data/brave_browsing_data_remover_delegate.h"
 
-#include <memory>
 #include <utility>
+#include <vector>
 
+#include "base/containers/flat_map.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
@@ -24,6 +23,47 @@
 #include "components/browsing_data/content/browsing_data_helper.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/browsing_data_remover.h"
+
+namespace {
+
+class ContentSettingsDefaultsKeeper {
+ public:
+  explicit ContentSettingsDefaultsKeeper(Profile* profile) : profile_(profile) {
+    auto* map = HostContentSettingsMapFactory::GetForProfile(profile_);
+
+    const auto shields_content_types =
+        content_settings::GetShieldsContentSettingsTypes();
+    for (const auto content_type : shields_content_types) {
+      ContentSettingsForOneType settings =
+          map->GetSettingsForOneType(content_type);
+      for (const auto& setting : settings) {
+        if (setting.source !=
+                content_settings::ProviderType::kDefaultProvider &&
+            setting.primary_pattern.MatchesAllHosts()) {
+          defaults_[content_type].push_back(setting);
+        }
+      }
+    }
+  }
+
+  ~ContentSettingsDefaultsKeeper() {
+    auto* map = HostContentSettingsMapFactory::GetForProfile(profile_);
+    for (auto&& [content_type, settings] : defaults_) {
+      for (auto&& setting : settings) {
+        map->SetWebsiteSettingCustomScope(
+            setting.primary_pattern, setting.secondary_pattern, content_type,
+            std::move(setting.setting_value));
+      }
+    }
+  }
+
+ private:
+  raw_ptr<Profile> profile_ = nullptr;
+  base::flat_map<ContentSettingsType, std::vector<ContentSettingPatternSource>>
+      defaults_;
+};
+
+}  // namespace
 
 BraveBrowsingDataRemoverDelegate::BraveBrowsingDataRemoverDelegate(
     content::BrowserContext* browser_context)
@@ -39,6 +79,8 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     content::BrowsingDataFilterBuilder* filter_builder,
     uint64_t origin_type_mask,
     base::OnceCallback<void(/*failed_data_types=*/uint64_t)> callback) {
+  ContentSettingsDefaultsKeeper default_values_keeper(profile_);
+
   ChromeBrowsingDataRemoverDelegate::RemoveEmbedderData(
       delete_begin, delete_end, remove_mask, filter_builder, origin_type_mask,
       std::move(callback));
