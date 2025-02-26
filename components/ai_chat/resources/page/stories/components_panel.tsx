@@ -86,6 +86,8 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     updatedTime: { internalValue: BigInt('13278618001000000') },
     associatedContent: undefined,
     modelKey: undefined,
+    totalTokens: 0,
+    trimmedTokens: 0,
   },
   {
     title: 'Sorting C++ vectors is hard especially when you have to have a very long title for your conversation to test text clipping or wrapping',
@@ -94,6 +96,8 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     updatedTime: { internalValue: BigInt('13278618001000001') },
     associatedContent: undefined,
     modelKey: undefined,
+    totalTokens: 0,
+    trimmedTokens: 0,
   },
   {
     title: '',
@@ -102,6 +106,8 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     updatedTime: { internalValue: BigInt('13278618001000002') },
     associatedContent: undefined,
     modelKey: undefined,
+    totalTokens: 0,
+    trimmedTokens: 0,
   }
 ]
 
@@ -395,6 +401,8 @@ const ASSOCIATED_CONTENT: Mojom.AssociatedContent = {
   contentUsedPercentage: 40,
   url: { url: 'https://www.example.com/a' },
   isContentRefined: false,
+  totalTokens: 0,
+  trimmedTokens: 0,
   contentId: 1,
 }
 
@@ -425,6 +433,8 @@ type CustomArgs = {
   shouldShowLongConversationInfo: boolean
   shouldShowLongPageWarning: boolean
   shouldShowRefinedWarning: boolean
+  totalTokens: number
+  trimmedTokens: number
   isGenerating: boolean
   showAttachments: boolean
   isNewConversation: boolean
@@ -457,6 +467,8 @@ const args: CustomArgs = {
   shouldShowLongConversationInfo: false,
   shouldShowLongPageWarning: false,
   shouldShowRefinedWarning: false,
+  totalTokens: 0,
+  trimmedTokens: 0,
   isGenerating: false,
   showAttachments: true,
   isNewConversation: false,
@@ -649,9 +661,13 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     conversationHistory: conversationContext.conversationHistory,
     isGenerating: conversationContext.isGenerating,
     isLeoModel: conversationContext.isCurrentModelLeo,
-    contentUsedPercentage: (options.args.shouldShowLongPageWarning || options.args.shouldShowRefinedWarning)
+    contentUsedPercentage: (options.args.shouldShowLongPageWarning ||
+                            options.args.shouldShowRefinedWarning ||
+                            options.args.totalTokens > 0 && options.args.trimmedTokens > 0)
       ? 48 : 100,
     isContentRefined: options.args.shouldShowRefinedWarning,
+    totalTokens: options.args.totalTokens,
+    trimmedTokens: options.args.trimmedTokens,
     canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
     isMobile: aiChatContext.isMobile
   }
