@@ -56,7 +56,7 @@ public struct DataImportView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(braveSystemName: .pageBackground))
         .transition(.opacity)
-      } else if model.importState == .importing {
+      } else if model.importState == .importing || model.importState == .dataConflict {
         DataImporterLoadingView()
           .padding(16.0)
           .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -108,7 +108,8 @@ public struct DataImportView: View {
     }
     .animation(.default, value: model.importState)
     .toolbar(
-      [.success, .failure, .importing].contains(model.importState) ? .hidden : .visible,
+      [.success, .failure, .importing, .dataConflict].contains(model.importState)
+        ? .hidden : .visible,
       for: .navigationBar
     )
     .onDisappear {

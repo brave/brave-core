@@ -20,7 +20,7 @@ struct DataImporterFailedView: View {
 
         VStack {
           Text(Strings.DataImporter.importStateFailureTitle)
-            .font(.title)
+            .font(.title.weight(.semibold))
             .foregroundColor(Color(braveSystemName: .textPrimary))
 
           Text(Strings.DataImporter.importStateFailureMessage)

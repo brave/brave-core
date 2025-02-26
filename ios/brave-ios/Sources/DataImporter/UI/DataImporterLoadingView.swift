@@ -20,7 +20,7 @@ struct DataImporterLoadingView: View {
 
       VStack {
         Text(Strings.DataImporter.loadingTitle)
-          .font(.headline)
+          .font(.title.weight(.semibold))
           .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.horizontal, 24.0)
 

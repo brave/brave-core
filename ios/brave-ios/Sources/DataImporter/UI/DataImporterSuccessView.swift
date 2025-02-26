@@ -20,7 +20,7 @@ struct DataImporterSuccessView: View {
 
         VStack {
           Text(Strings.DataImporter.importStateSuccessTitle)
-            .font(.title)
+            .font(.title.weight(.semibold))
             .foregroundColor(Color(braveSystemName: .textPrimary))
 
           Text(Strings.DataImporter.importStateSuccessMessage)
