@@ -43,8 +43,6 @@ void BraveRegisterBrowserStatePrefs(
   ai_chat::ModelService::RegisterProfilePrefs(registry);
   omnibox::RegisterBraveProfilePrefs(registry);
   brave_news::prefs::RegisterProfilePrefs(registry);
-
-  registry->RegisterBooleanPref(prefs::kHttpsUpgradesEnabled, true);
 }
 
 void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
