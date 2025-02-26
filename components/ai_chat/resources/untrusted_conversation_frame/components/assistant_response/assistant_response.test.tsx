@@ -17,7 +17,8 @@ const eventTemplate: Mojom.ConversationEntryEvent = {
   searchStatusEvent: undefined,
   selectedLanguageEvent: undefined,
   conversationTitleEvent: undefined,
-  sourcesEvent: undefined
+  sourcesEvent: undefined,
+  contentReceiptEvent: undefined
 }
 
 function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {

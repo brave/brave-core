@@ -312,6 +312,9 @@
   <message name="IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING" desc="A warning issued when the user is trying to summarize a long content page">
     The page is too long for Leo. Some context could be missing from the conversation. Leo was able to read <ph name="PERCENTAGE">$1<ex>75.5%</ex></ph> of the page's contents.
   </message>
+  <message name="IDS_CHAT_UI_TRIMMED_TOKENS_WARNING" desc="A warning issued when the user is trying to summarize a long content page">
+    Some context could be missing from the conversation. Leo was able to retain <ph name="PERCENTAGE">$1<ex>75.5%</ex></ph> of the conversation's associated content.
+  </message>
   <message name="IDS_CHAT_UI_PAGE_CONTENT_REFINED_WARNING" desc="A warning issued when the page content has been refined">
     The page content has been refined through extracting the most relevant information from the page because it was too long for Leo.
   </message>

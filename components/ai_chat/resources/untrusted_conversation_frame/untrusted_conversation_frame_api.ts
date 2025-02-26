@@ -20,6 +20,8 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   isLeoModel: true,
   contentUsedPercentage: undefined,
   isContentRefined: false,
+  trimmedTokens: BigInt(0),
+  totalTokens: BigInt(0),
   canSubmitUserEntries: false,
   isMobile: loadTimeData.getBoolean('isMobile')
 }
