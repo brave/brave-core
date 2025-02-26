@@ -285,13 +285,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             } else {
                 nextOnboardingStep();
             }
-        } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
+        } else if (isWDPEnabled() && mCurrentStep == getWDPPageStep()) {
             if (mIvBrave != null) {
                 mIvBrave.setVisibility(View.VISIBLE);
             }
-            showAnalyticsConsentPage();
-        } else if (isWDPEnabled() && mCurrentStep == getWDPPageStep()) {
             showWDPPage();
+        } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
+            showAnalyticsConsentPage();
         } else {
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
             OnboardingPrefManager.getInstance().setOnboardingSearchBoxTooltip(true);
@@ -312,11 +312,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private int getAnalyticsConsentPageStep() {
-        return 1;
+        return 2;
     }
 
     private int getWDPPageStep() {
-        return 2;
+        return 1;
     }
 
     private void showBrowserSelectionPage() {
