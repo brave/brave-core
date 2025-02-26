@@ -117,7 +117,8 @@ void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
   select_file_dialog_ = ui::SelectFileDialog::Create(this, std::move(policy));
   ui::SelectFileDialog::FileTypeInfo info;
   info.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
-  info.extensions = {{"png", "jpeg", "jpg", "webp"}};
+  info.extensions = {{FILE_PATH_LITERAL("png"), FILE_PATH_LITERAL("jpeg"),
+                      FILE_PATH_LITERAL("jpg"), FILE_PATH_LITERAL("webp")}};
 #if BUILDFLAG(IS_ANDROID)
   // Set the list of acceptable MIME types for the file picker; this will apply
   // to any subsequent SelectFile() calls.
@@ -140,7 +141,7 @@ void UploadFileHelper::FileSelected(const ui::SelectedFileInfo& file,
           -> std::tuple<std::optional<std::vector<uint8_t>>, std::string,
                         std::optional<int64_t>> {
         return std::make_tuple(ai_chat::ReadFileToBytes(info.path()),
-                               info.display_name,
+                               base::FilePath(info.display_name).AsUTF8Unsafe(),
                                base::GetFileSize(info.path()));
       },
       file);
