@@ -314,11 +314,7 @@ RegisterPolymerTemplateModifications({
     if (autofillEl && languagesEl) {
       languagesEl.insertAdjacentElement('beforebegin', autofillEl)
     }
-    // Allow Accessibility to be removed :-(
-    const a11yEl = getMenuElement(templateContent, '/accessibility')
-    if (a11yEl) {
-      a11yEl.setAttribute('hidden', '[[!pageVisibility.a11y]')
-    }
+
     // Remove extensions link
     const extensionsLinkEl = templateContent.querySelector('#extensionsLink')
     if (!extensionsLinkEl) {
