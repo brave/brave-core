@@ -80,9 +80,11 @@ const Dialog = styled.dialog<{ offsetY: number }>`
 
   &.closing {
     animation: ${exitDialog} ${duration} ${easing};
+    animation-fill-mode: forwards; /* Remain in end state until removed from DOM */
 
     &::backdrop {
       animation: ${exitBackdrop} ${duration} ${easing};
+      animation-fill-mode: forwards; /* Remain in end state until removed from DOM */
     }
   }
 `
