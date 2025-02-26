@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/default_conversion/creative_set_conversion_url_pattern/creative_set_conversion_url_pattern_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/public/common/url/url_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

@@ -498,7 +498,6 @@ static_library("internal") {
     "common/url/url_response_string_util.cc",
     "common/url/url_response_string_util.h",
     "common/url/url_util.cc",
-    "common/url/url_util.h",
     "common/url/url_util_internal.cc",
     "common/url/url_util_internal.h",
     "creatives/campaigns_database_table.cc",

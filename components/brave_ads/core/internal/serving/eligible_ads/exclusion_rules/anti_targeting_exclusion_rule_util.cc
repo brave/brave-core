@@ -7,7 +7,7 @@
 
 #include <algorithm>
 
-#include "brave/components/brave_ads/core/internal/common/url/url_util.h"
+#include "brave/components/brave_ads/core/public/common/url/url_util.h"
 
 namespace brave_ads {
 

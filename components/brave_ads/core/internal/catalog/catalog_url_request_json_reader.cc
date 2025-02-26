@@ -14,10 +14,10 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/json/json_helper.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
+#include "brave/components/brave_ads/core/public/common/url/url_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads::json::reader {
