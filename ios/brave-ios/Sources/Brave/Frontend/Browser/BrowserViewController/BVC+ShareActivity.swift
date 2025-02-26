@@ -232,7 +232,8 @@ extension BrowserViewController {
                       .union(.newlines)
                       .union(.controlCharacters)
                       .union(.illegalCharacters)
-                    let filename = webView.title?.components(separatedBy: validFilenameSet).joined()
+                    let filename =
+                      webView.title?.components(separatedBy: validFilenameSet).joined() ?? ""
                     let url = URL(fileURLWithPath: NSTemporaryDirectory())
                       .appendingPathComponent("\(filename ?? "Untitled").pdf")
                     do {

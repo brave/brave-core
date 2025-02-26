@@ -219,7 +219,7 @@ extension BrowserViewController: TabWebDelegate {
             let touchPoint = braveWebView.lastHitPoint
             let touchRect = CGRect(origin: touchPoint, size: .zero)
 
-            // TODO: Find a way to add fixes #3323 and #2961 here:
+            // TODO: Find a way to add fixes brave-ios#3323 and brave-ios#2961 here:
             // Normally we use `tab.temporaryDocument` for the downloaded file on the tab.
             // `temporaryDocument` returns the downloaded file to disk on the current tab.
             // Using a downloaded file url results in having functions like "Save to files" available.
