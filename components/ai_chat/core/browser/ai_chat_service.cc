@@ -866,6 +866,14 @@ void AIChatService::OnConversationTokenInfoChanged(
   conversation_metadata->trimmed_tokens = trimmed_tokens;
 
   OnConversationListChanged();
+
+  // Persist the change
+  if (ai_chat_db_) {
+    ai_chat_db_
+        .AsyncCall(
+            base::IgnoreResult(&AIChatDatabase::UpdateConversationTokenInfo))
+        .WithArgs(conversation_uuid, total_tokens, trimmed_tokens);
+  }
 }
 
 void AIChatService::OnAssociatedContentDestroyed(ConversationHandler* handler,
