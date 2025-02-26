@@ -102,9 +102,7 @@ class CustomEngineViewController: UIViewController {
   }
 
   private var titleLabel = UILabel().then {
-    let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .title3)
-    let font = UIFont.systemFont(ofSize: desc.pointSize, weight: .semibold)
-    $0.font = font
+    $0.font = .preferredFont(for: .title3, weight: .semibold)
     $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.textAlignment = .center
     $0.numberOfLines = 0
