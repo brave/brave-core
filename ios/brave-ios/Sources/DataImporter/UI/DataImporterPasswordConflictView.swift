@@ -23,7 +23,7 @@ struct DataImporterPasswordConflictView: View {
       VStack {
         Image("failure_import_logo", bundle: .module)
           .padding(.top, 24.0)
-          .padding(.bottom, 32.0)
+          .padding(.bottom, 16.0)
 
         VStack {
           Text(Strings.DataImporter.importStatePasswordConflictTitle)
@@ -93,14 +93,13 @@ struct DataImporterPasswordConflictView: View {
       }
       .padding(16.0)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(
-        GeometryReader { proxy in
-          Color.clear
-            .onAppear {
-              let screenHeight = UIScreen.main.bounds.height
-              let maxHeight = screenHeight * 0.7
-              sheetHeight = min(proxy.size.height, maxHeight)
-            }
+      .onGeometryChange(
+        for: CGSize.self,
+        of: { proxy in
+          return proxy.size
+        },
+        action: {
+          sheetHeight = min($0.height, UIScreen.main.bounds.height * 0.7)
         }
       )
     }

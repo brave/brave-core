@@ -87,14 +87,13 @@ struct DataImporterMultipleProfilesView: View {
       }
       .padding(16.0)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(
-        GeometryReader { proxy in
-          Color.clear
-            .onAppear {
-              let screenHeight = UIScreen.main.bounds.height
-              let maxHeight = screenHeight * 0.7
-              sheetHeight = min(proxy.size.height, maxHeight)
-            }
+      .onGeometryChange(
+        for: CGSize.self,
+        of: { proxy in
+          return proxy.size
+        },
+        action: {
+          sheetHeight = min($0.height, UIScreen.main.bounds.height * 0.7)
         }
       )
     }

@@ -10,19 +10,17 @@ import SwiftUI
 
 struct DataImporterLoadingView: View {
   var body: some View {
-    VStack {
+    VStack(spacing: 32.0) {
       ProgressView()
         .progressViewStyle(BraveProgressStyleCircular(thickness: 5, speed: 3.0))
         .backgroundStyle(Color(braveSystemName: .blurple20))
         .foregroundStyle(Color(braveSystemName: .iconInteractive))
         .frame(width: 40, height: 40)
-        .padding(.vertical, 32.0)
 
       VStack {
         Text(Strings.DataImporter.loadingTitle)
           .font(.title.weight(.semibold))
           .foregroundColor(Color(braveSystemName: .textPrimary))
-          .padding(.horizontal, 24.0)
 
         Text(Strings.DataImporter.loadingMessage)
           .font(.footnote)
@@ -31,8 +29,8 @@ struct DataImporterLoadingView: View {
       .multilineTextAlignment(.center)
       .frame(maxWidth: .infinity)
       .fixedSize(horizontal: false, vertical: true)
-      .padding(.horizontal, 24.0)
     }
+    .padding(.horizontal, 16.0)
   }
 }
 
