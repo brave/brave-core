@@ -74,9 +74,7 @@ mojom::CoinType GetCoinTypeFromTxDataUnion(
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
 std::vector<mojom::CoinType> GetEnabledCoins();
-std::vector<mojom::KeyringId> GetSupportedKeyringsForTesting();
-const std::vector<mojom::KeyringId>& GetSupportedKeyrings();
-bool IsKeyringSupported(mojom::KeyringId keyring_id);
+std::vector<mojom::KeyringId> GetEnabledKeyrings();
 bool CoinSupportsDapps(mojom::CoinType coin);
 std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
     mojom::CoinType coin,
