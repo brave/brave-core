@@ -1094,6 +1094,7 @@ public abstract class BraveActivity extends ChromeActivity
         if (isFirstInstall && appOpenCount == 0) {
             checkForYandexSE();
             enableSearchSuggestions();
+            setBraveAsDefaultPrivateMode();
         }
 
         migrateBgPlaybackToFeature();
@@ -1323,6 +1324,24 @@ public abstract class BraveActivity extends ChromeActivity
                         public void afterTextChanged(Editable s) {}
                     });
         }
+    }
+
+    private void setBraveAsDefaultPrivateMode() {
+        Runnable onTemplateUrlServiceReady =
+                () -> {
+                    if (isActivityFinishingOrDestroyed()) return;
+                    TemplateUrl braveTemplateUrl =
+                            BraveSearchEngineUtils.getTemplateUrlByShortName(
+                                    getCurrentProfile(), OnboardingPrefManager.BRAVE);
+                    if (braveTemplateUrl != null) {
+                        BraveSearchEngineUtils.setDSEPrefs(
+                                braveTemplateUrl,
+                                getCurrentProfile()
+                                        .getPrimaryOtrProfile(/* createIfNeeded= */ true));
+                    }
+                };
+        TemplateUrlServiceFactory.getForProfile(getCurrentProfile())
+                .runWhenLoaded(onTemplateUrlServiceReady);
     }
 
     private void enableSearchSuggestions() {
