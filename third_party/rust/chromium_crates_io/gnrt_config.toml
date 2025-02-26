@@ -151,9 +151,13 @@ if (is_apple && target_cpu == "arm64") {
 build_script_outputs = [ "lib.rs" ]
 
 [crate.cssparser]
-build_script_outputs = [ "tokenizer.rs" ]
-extra_build_script_src_roots = [ "../build" ]
 license_files = ['LICENSE']
+extra_kv = { raw_gn = '''
+if (epoch == "0.28" || epoch == "0.27") {
+    build_script_inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-" + cargo_pkg_version + "/build/match_byte.rs" ]
+    build_script_outputs = [ "tokenizer.rs" ]
+  }
+''' }
 
 [crate.cssparser-macros]
 license_files = ['LICENSE']
@@ -227,10 +231,6 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.halo2_proofs]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
-[crate.html5ever]
-extra_build_script_src_roots = [ "../macros/match_token.rs" ]
-build_script_outputs = [ "rules.rs" ]
-
 [crate.ipld-core]
 extra_input_roots = [ "../README.md" ]
 
@@ -261,6 +261,9 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.markup5ever]
 extra_build_script_src_roots = [ "entities.rs" ]
 build_script_outputs = [ "generated.rs", "named_entities.rs", ]
+
+[crate.match_token]
+license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.multihash]
 extra_kv = { rustenv = [ "CARGO_MANIFEST_DIR=\" + rebase_path(\"//brave/third_party/rust/chromium_crates_io/vendor/multihash-0.19.2\") + \"" ]}
@@ -297,6 +300,13 @@ license_files = ['LICENSE-Apache']
 
 [crate.num-traits]
 extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] }
+
+[crate.phf_macros]
+extra_kv = { raw_gn = '''
+if (epoch == "0.11") {
+  output_name = "phf_macros_v0_11"
+}
+''' }
 
 [crate.powerfmt]
 license_files = ['LICENSE-Apache']
@@ -341,6 +351,7 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.siphasher]
+extra_input_roots = [ "../README.md" ]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.sta-rs]
@@ -386,6 +397,9 @@ build_script_outputs = [ "consts.rs", "op.rs" ]
 extra_kv = { rustenv = [ "TYPENUM_BUILD_CONSTS=\" + rebase_path(target_gen_dir) + \"/lib/consts.rs", "TYPENUM_BUILD_OP=\" + rebase_path(target_gen_dir) + \"/lib/op.rs" ] }
 
 [crate.uint]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.unicode-width]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.wasi]

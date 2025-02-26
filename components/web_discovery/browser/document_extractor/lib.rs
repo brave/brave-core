@@ -6,12 +6,7 @@
 use std::collections::HashMap;
 
 use cxx::{CxxString, CxxVector};
-use html5ever::tree_builder::TreeSink;
-use kuchikiki::{
-    iter::{Descendants, Elements, Select},
-    parse_html,
-    traits::TendrilSink,
-};
+use scraper::{html::Select, Html, Selector};
 
 #[cxx::bridge(namespace = "web_discovery")]
 mod ffi {
@@ -63,32 +58,32 @@ const TEXT_CONTENT_ATTRIBUTE_NAME: &str = "textContent";
 fn extract_attributes_from_nodes(
     root_selector: &str,
     attribute_requests: &[SelectAttributeRequest],
-    nodes: Select<Elements<Descendants>>,
+    selection: Select<'_, '_>,
     results: &mut Vec<AttributeResult>,
 ) {
-    for node in nodes {
+    for node in selection {
         let mut attribute_map = HashMap::new();
         for attribute_request in attribute_requests {
             let sub_node = match attribute_request.sub_selector.is_empty() {
-                false => match node.as_node().select_first(&attribute_request.sub_selector) {
-                    Ok(e) => Some(e),
-                    Err(_) => {
-                        attribute_map.insert(attribute_request.key.clone(), String::new());
-                        continue;
-                    }
+                false => match Selector::parse(&attribute_request.sub_selector) {
+                    Ok(selector) => match node.select(&selector).next() {
+                        Some(e) => Some(e),
+                        None => {
+                            attribute_map.insert(attribute_request.key.clone(), String::new());
+                            continue;
+                        }
+                    },
+                    Err(_) => continue,
                 },
                 true => None,
             };
-            let node_to_query = sub_node.as_ref().unwrap_or(&node).as_node();
+            let node_to_query = sub_node.as_ref().unwrap_or(&node);
 
             let attribute_value = match attribute_request.attribute == TEXT_CONTENT_ATTRIBUTE_NAME {
-                true => node_to_query.text_contents(),
+                true => node_to_query.text().collect::<Vec<_>>().join(""),
                 false => node_to_query
-                    .as_element()
-                    .and_then(|element| {
-                        let attributes = element.attributes.borrow();
-                        attributes.get(attribute_request.attribute.as_str()).map(|v| v.to_string())
-                    })
+                    .attr(attribute_request.attribute.as_str())
+                    .map(|v| v.to_string())
                     .unwrap_or_default(),
             };
             attribute_map.insert(attribute_request.key.clone(), attribute_value);
@@ -107,15 +102,14 @@ pub fn query_element_attributes(
     html: &CxxString,
     requests: &CxxVector<SelectRequest>,
 ) -> Vec<AttributeResult> {
-    let mut sink = parse_html().one(html.to_str().unwrap_or_default());
+    let document = Html::parse_document(html.to_str().unwrap_or_default());
     let mut results = Vec::new();
-    let document = sink.get_document();
     for request in requests {
-        if let Ok(nodes) = document.select(&request.root_selector) {
+        if let Ok(selector) = Selector::parse(&request.root_selector) {
             extract_attributes_from_nodes(
                 &request.root_selector,
                 &request.attribute_requests,
-                nodes,
+                document.select(&selector),
                 &mut results,
             );
         }
