@@ -17,10 +17,10 @@ public class AboutHomeHandler: InternalSchemeResponse {
     let bg = UIColor.braveBackground.toHexString()
     // Blank page with a color matching the background of the panels which is displayed for a split-second until the panel shows.
     let html = """
-          <!DOCTYPE html>
-          <html>
-            <body style='background-color:\(bg)'></body>
-          </html>
+      <!DOCTYPE html>
+      <html>
+        <body style='background-color: #\(bg)'></body>
+      </html>
       """
     let data = Data(html.utf8)
     return (response, data)
