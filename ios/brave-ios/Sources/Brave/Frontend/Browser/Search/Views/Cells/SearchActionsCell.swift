@@ -22,21 +22,13 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
   let titleLabel = UILabel().then {
     $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.numberOfLines = 0
-    let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-    $0.font = UIFont.systemFont(
-      ofSize: desc.pointSize,
-      weight: .semibold
-    )
+    $0.font = .preferredFont(for: .body, weight: .semibold)
   }
 
   let subtitleLabel = UILabel().then {
     $0.textColor = UIColor(braveSystemName: .textSecondary)
     $0.numberOfLines = 0
-    let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-    $0.font = UIFont.systemFont(
-      ofSize: desc.pointSize,
-      weight: .regular
-    )
+    $0.font = .preferredFont(for: .body, weight: .regular)
   }
 
   let primaryButton = UIButton()
@@ -120,11 +112,7 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
       $0.layer.borderColor = nil
       $0.layer.borderWidth = 0.0
       $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-      let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .subheadline)
-      $0.titleLabel?.font = UIFont.systemFont(
-        ofSize: desc.pointSize,
-        weight: .semibold
-      )
+      $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)
       $0.setTitleColor(
         UIColor(braveSystemName: .schemesOnPrimary),
         for: .normal
@@ -134,11 +122,7 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
 
     secondaryButton.do {
       $0.backgroundColor = .clear
-      let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .subheadline)
-      $0.titleLabel?.font = UIFont.systemFont(
-        ofSize: desc.pointSize,
-        weight: .semibold
-      )
+      $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)
       $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
       $0.setTitleColor(UIColor(braveSystemName: .textInteractive), for: .normal)
       $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
