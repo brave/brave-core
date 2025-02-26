@@ -13,7 +13,6 @@ extension Strings {
     public static let importFolderName =
       NSLocalizedString(
         "SyncImportFolderName",
-        tableName: "DataImporter",
         bundle: .module,
         value: "Imported Bookmarks",
         comment:
@@ -24,7 +23,6 @@ extension Strings {
 
     public static let personalImportTitle = NSLocalizedString(
       "personalImportTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Personal",
       comment:
@@ -35,7 +33,6 @@ extension Strings {
 
     public static let loadingTitle = NSLocalizedString(
       "loadingTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Importing Your Data...",
       comment:
@@ -44,7 +41,6 @@ extension Strings {
 
     public static let loadingMessage = NSLocalizedString(
       "loadingMessage",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Please wait while we securely transfer your data.\nThis might take a few moments.",
       comment:
@@ -55,7 +51,6 @@ extension Strings {
 
     public static let multipleProfilesTitle = NSLocalizedString(
       "multipleProfilesTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Multiple profiles detected",
       comment:
@@ -64,7 +59,6 @@ extension Strings {
 
     public static let multipleProfilesMessage = NSLocalizedString(
       "multipleProfilesMessage",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Choose the profile you want to import data from",
       comment:
@@ -75,7 +69,6 @@ extension Strings {
 
     public static let importStateFailureTitle = NSLocalizedString(
       "importStateFailureTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Import Failed",
       comment:
@@ -84,7 +77,6 @@ extension Strings {
 
     public static let importStateFailureMessage = NSLocalizedString(
       "importStateFailureMessage",
-      tableName: "DataImporter",
       bundle: .module,
       value:
         "Something went wrong while importing your data.\nPlease try again.\nIf the problem persists, contact support.",
@@ -94,7 +86,6 @@ extension Strings {
 
     public static let importStateSuccessTitle = NSLocalizedString(
       "importStateSuccessTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Successful!",
       comment:
@@ -103,7 +94,6 @@ extension Strings {
 
     public static let importStateSuccessMessage = NSLocalizedString(
       "importStateSuccessMessage",
-      tableName: "DataImporter",
       bundle: .module,
       value:
         "Your data has been successfully imported.\nYou're all set to start browsing with Brave.",
@@ -113,7 +103,6 @@ extension Strings {
 
     public static let importStatePasswordConflictTitle = NSLocalizedString(
       "importStatePasswordConflictTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Password conflicts",
       comment:
@@ -122,7 +111,6 @@ extension Strings {
 
     public static let importStatePasswordConflictMessage = NSLocalizedString(
       "importStatePasswordConflictMessage",
-      tableName: "DataImporter",
       bundle: .module,
       value: "%d Password conflicts were found.\nChoose what to import.",
       comment:
@@ -131,7 +119,6 @@ extension Strings {
 
     public static let importStateTryAgainTitle = NSLocalizedString(
       "importStateTryAgainTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Try Again",
       comment:
@@ -140,7 +127,6 @@ extension Strings {
 
     public static let importStatePasswordConflictKeepExistingPasswordsTitle = NSLocalizedString(
       "importStatePasswordConflictKeepExistingPasswordsTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Keep passwords from Brave",
       comment:
@@ -149,7 +135,6 @@ extension Strings {
 
     public static let importStatePasswordConflictKeepImportedPasswordsTitle = NSLocalizedString(
       "importStatePasswordConflictKeepImportedPasswordsTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Use passwords from Safari",
       comment:
@@ -158,7 +143,6 @@ extension Strings {
 
     public static let importStateSuccessContinueTitle = NSLocalizedString(
       "importStateSuccessContinueTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Continue",
       comment:
@@ -169,7 +153,6 @@ extension Strings {
 
     public static let importTutorialStepTitle = NSLocalizedString(
       "importTutorialStepTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Step %d",
       comment:
@@ -178,7 +161,6 @@ extension Strings {
 
     public static let importTutorialStepOneTitle = NSLocalizedString(
       "importTutorialStepOneTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Open **Settings**, scroll down, and tap **Apps**.",
       comment:
@@ -187,7 +169,6 @@ extension Strings {
 
     public static let importTutorialStepTwoTitle = NSLocalizedString(
       "importTutorialStepTwoTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "From the list of apps (sorted alphabetically), find and tap **Safari**.",
       comment:
@@ -196,7 +177,6 @@ extension Strings {
 
     public static let importTutorialStepThreeTitle = NSLocalizedString(
       "importTutorialStepThreeTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Scroll down and tap **Export**.",
       comment:
@@ -205,7 +185,6 @@ extension Strings {
 
     public static let importTutorialStepFourTitle = NSLocalizedString(
       "importTutorialStepFourTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value:
         "**Select** the data you want to export (Bookmarks, History, Credit Cards, Passwords).",
@@ -215,7 +194,6 @@ extension Strings {
 
     public static let importTutorialStepFiveTitle = NSLocalizedString(
       "importTutorialStepFiveTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Save the file in **Files**, choosing a location you can easily find later.",
       comment:
@@ -224,7 +202,6 @@ extension Strings {
 
     public static let importTutorialDetailedProcessTitle = NSLocalizedString(
       "importTutorialDetailedProcessTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Want a detailed export process?",
       comment:
@@ -233,7 +210,6 @@ extension Strings {
 
     public static let importTutorialDetailedProcessMessage = NSLocalizedString(
       "importTutorialDetailedProcessMessage",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Open Safari help page",
       comment:
@@ -242,7 +218,6 @@ extension Strings {
 
     public static let importTutorialScreenTitle = NSLocalizedString(
       "importTutorialScreenTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "How to export from Safari",
       comment:
@@ -253,7 +228,6 @@ extension Strings {
 
     public static let importDataFileSelectorTitle = NSLocalizedString(
       "importDataFileSelectorTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Import Bookmarks and more",
       comment:
@@ -262,7 +236,6 @@ extension Strings {
 
     public static let importDataFileSelectorMessage = NSLocalizedString(
       "importDataFileSelectorMessage",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Bring your bookmarks, history, and other browser data into Brave.",
       comment:
@@ -271,7 +244,6 @@ extension Strings {
 
     public static let importDataFileSelectorButtonTitle = NSLocalizedString(
       "importDataFileSelectorButtonTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Choose a file...",
       comment:
@@ -280,7 +252,6 @@ extension Strings {
 
     public static let importDataViewTutorialButtonTitle = NSLocalizedString(
       "importDataViewTutorialButtonTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "How to export from Safari",
       comment:
@@ -289,7 +260,6 @@ extension Strings {
 
     public static let importDataFileSelectorNavigationTitle = NSLocalizedString(
       "importDataFileSelectorNavigationTitle",
-      tableName: "DataImporter",
       bundle: .module,
       value: "Import Browsing Data",
       comment:
@@ -301,7 +271,6 @@ extension Strings {
     public static let failedToUnzipError =
       NSLocalizedString(
         "failedToUnzipError",
-        tableName: "DataImporter",
         bundle: .module,
         value: "An error occurred while unzipping the file.",
         comment:
@@ -311,7 +280,6 @@ extension Strings {
     public static let failedToImportBookmarksError =
       NSLocalizedString(
         "failedToImportBookmarks",
-        tableName: "DataImporter",
         bundle: .module,
         value: "An error occurred while importing Bookmarks.",
         comment:
@@ -321,7 +289,6 @@ extension Strings {
     public static let failedToImportHistoryError =
       NSLocalizedString(
         "failedToImportHistory",
-        tableName: "DataImporter",
         bundle: .module,
         value: "An error occurred while importing History.",
         comment:
@@ -331,7 +298,6 @@ extension Strings {
     public static let failedToImportPasswordsError =
       NSLocalizedString(
         "failedToImportPasswordsError",
-        tableName: "DataImporter",
         bundle: .module,
         value: "An error occurred while importing Passwords.",
         comment:
@@ -341,7 +307,6 @@ extension Strings {
     public static let failedToImportPasswordsDueToConflictError =
       NSLocalizedString(
         "failedToImportPasswordsDueToConflictError",
-        tableName: "DataImporter",
         bundle: .module,
         value:
           "An error occurred while importing Passwords.\nSome passwords could not be imported due to conflicts.",
@@ -352,7 +317,6 @@ extension Strings {
     public static let invalidZipFileDataError =
       NSLocalizedString(
         "invalidZipFileDataError",
-        tableName: "DataImporter",
         bundle: .module,
         value: "The zip file does not contain import data.",
         comment:
@@ -362,7 +326,6 @@ extension Strings {
     public static let unknownError =
       NSLocalizedString(
         "unknownError",
-        tableName: "DataImporter",
         bundle: .module,
         value: "The zip file does not contain import data.",
         comment:

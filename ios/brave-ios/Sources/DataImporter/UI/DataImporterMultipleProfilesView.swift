@@ -20,7 +20,7 @@ struct DataImporterMultipleProfilesView: View {
 
   var body: some View {
     ScrollView {
-      VStack {
+      VStack(spacing: 16.0) {
         Button {
           dismiss()
         } label: {
@@ -37,7 +37,6 @@ struct DataImporterMultipleProfilesView: View {
         .frame(maxWidth: .infinity, alignment: .trailing)
 
         Image("multi_profile_logo", bundle: .module)
-          .padding(.bottom, 24.0)
 
         VStack {
           Text(Strings.DataImporter.multipleProfilesTitle)
@@ -51,7 +50,6 @@ struct DataImporterMultipleProfilesView: View {
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity)
         .fixedSize(horizontal: false, vertical: true)
-        .padding(.horizontal, 24.0)
 
         VStack {
           ForEach(Array(profiles.keys.sorted().enumerated()), id: \.element) { (offset, profile) in
@@ -85,7 +83,7 @@ struct DataImporterMultipleProfilesView: View {
         )
         .padding()
       }
-      .padding(16.0)
+      .padding(24.0)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .onGeometryChange(
         for: CGSize.self,
