@@ -31,6 +31,7 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
@@ -205,8 +206,8 @@ class ConversationHandlerUnitTest : public testing::Test {
         os_crypt_.get(), shared_url_loader_factory_, "",
         temp_directory_.GetPath());
 
-    conversation_ = mojom::Conversation::New("uuid", "title", base::Time::Now(),
-                                             false, std::nullopt, nullptr);
+    conversation_ = mojom::Conversation::New(
+        "uuid", "title", base::Time::Now(), false, std::nullopt, 0, 0, nullptr);
 
     conversation_handler_ = std::make_unique<ConversationHandler>(
         conversation_.get(), ai_chat_service_.get(), model_service_.get(),
@@ -1610,6 +1611,73 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
   // was set
   EXPECT_EQ(conversation_handler_->selected_language_,
             expected_selected_language);
+
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  auto delegate = std::make_unique<AssociatedArchiveContent>(
+      GURL("https://example.com"), "This is the way - page contents",
+      u"The way",
+      /*is_video=*/false);
+  conversation_handler_->SetAssociatedContentDelegate(delegate->GetWeakPtr());
+
+  std::string expected_input = "What is the way?";
+  uint64_t expected_total_tokens = 1000;
+  uint64_t expected_trimmed_tokens = 200;
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse(
+                           false, StrEq("This is the way - page contents"),
+                           LastTurnHasText(expected_input), StrEq(""), _, _))
+      .Times(1)
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<4>(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New(
+                      "That may be your way, but it's not mine."))),
+          base::test::RunOnceCallback<4>(
+              mojom::ConversationEntryEvent::NewContentReceiptEvent(
+                  mojom::ContentReceiptEvent::New(expected_total_tokens,
+                                                  expected_trimmed_tokens))),
+          base::test::RunOnceCallback<5>(base::ok(""))));
+
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AtLeast(1));
+
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+
+  // OnConversationTokenInfoChanged should be called
+  EXPECT_CALL(observer, OnConversationTokenInfoChanged(
+                            conversation_handler_->metadata_->uuid,
+                            expected_total_tokens, expected_trimmed_tokens))
+      .Times(1);
+
+  conversation_handler_->SubmitHumanConversationEntry(expected_input,
+                                                      std::nullopt);
+
+  loop.Run();
+
+  // ContentReceipt events should not be added to the conversation events
+  // history
+  const auto& conversation_history =
+      conversation_handler_->GetConversationHistory();
+  ASSERT_FALSE(conversation_history.empty());
+  bool has_content_receipt_event =
+      std::ranges::any_of(conversation_history, [](const auto& entry) {
+        return entry->events.has_value() &&
+               std::ranges::any_of(*entry->events, [](const auto& event) {
+                 return event->is_content_receipt_event();
+               });
+      });
+  EXPECT_FALSE(has_content_receipt_event)
+      << "There is an is_content_receipt_event present.";
 
   testing::Mock::VerifyAndClearExpectations(engine);
 }
