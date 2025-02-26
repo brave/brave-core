@@ -55,6 +55,15 @@ bool MigrateFrom1To2(sql::Database* db) {
   return statement.is_valid() && statement.Run();
 }
 
+bool MigrateFrom2To3(sql::Database* db) {
+  static constexpr char kAddTokenColumnQuery[] =
+      "ALTER TABLE associated_content ADD COLUMN has_trimmed_tokens INTEGER "
+      "DEFAULT 0;";
+
+  sql::Statement statement(db->GetUniqueStatement(kAddTokenColumnQuery));
+  return statement.is_valid() && statement.Run();
+}
+
 void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
                               store::WebSourcesEventProto* proto_event) {
   proto_event->clear_sources();
@@ -111,7 +120,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 constexpr int kCompatibleDatabaseVersionNumber = 1;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 2;
+constexpr int kCurrentDatabaseVersion = 3;
 
 AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
@@ -135,17 +144,20 @@ bool AIChatDatabase::LazyInit(bool re_init) {
 sql::InitStatus AIChatDatabase::InitInternal() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!GetDB().is_open() && !GetDB().Open(db_file_path_)) {
+    DVLOG(0) << "Failed to open database at " << db_file_path_.value();
     return sql::InitStatus::INIT_FAILURE;
   }
 
   if (sql::MetaTable::RazeIfIncompatible(
           &GetDB(), kLowestSupportedDatabaseVersion, kCurrentDatabaseVersion) ==
       sql::RazeIfIncompatibleResult::kFailed) {
+    DVLOG(0) << "Failed to raze incompatible database";
     return sql::InitStatus::INIT_FAILURE;
   }
 
   sql::Transaction transaction(&GetDB());
   if (!transaction.Begin()) {
+    DVLOG(0) << "Failed to begin transaction: " << GetDB().GetErrorMessage();
     return sql::InitStatus::INIT_FAILURE;
   }
 
@@ -157,7 +169,7 @@ sql::InitStatus AIChatDatabase::InitInternal() {
   }
 
   if (meta_table.GetCompatibleVersionNumber() > kCurrentDatabaseVersion) {
-    LOG(ERROR) << "AIChat database version is too new.";
+    DVLOG(0) << "Init too new";
     return sql::InitStatus::INIT_TOO_NEW;
   }
 
@@ -168,17 +180,31 @@ sql::InitStatus AIChatDatabase::InitInternal() {
 
   if (meta_table.GetVersionNumber() < kCurrentDatabaseVersion) {
     bool migration_success = true;
-    if (meta_table.GetVersionNumber() == 1) {
+    int current_version = meta_table.GetVersionNumber();
+    if (current_version == 1) {
       migration_success = MigrateFrom1To2(&GetDB());
-      migration_success = meta_table.SetCompatibleVersionNumber(
-                              kCompatibleDatabaseVersionNumber) &&
-                          meta_table.SetVersionNumber(kCurrentDatabaseVersion);
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(2);
+      }
+      current_version = 2;
+    }
+    if (migration_success && current_version == 2) {
+      migration_success = MigrateFrom2To3(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(3);
+      }
+      current_version = 3;
     }
     // Migration unsuccessful, raze the database and re-init
     if (!migration_success) {
       if (db_.Raze()) {
         return InitInternal();
       }
+      DVLOG(0) << "Init failure after unsuccessful migration and raze";
       return sql::InitStatus::INIT_FAILURE;
     }
   }
@@ -195,15 +221,13 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
   if (!LazyInit()) {
     return {};
   }
+
   // All conversation metadata, associated content and most
   // and most recent entry date. 1 row for each associated content.
   static constexpr char kQuery[] =
       "SELECT conversation.uuid, conversation.title, conversation.model_key,"
       "  last_activity_date.date,"
-      "  associated_content.uuid, associated_content.title,"
-      "  associated_content.url, associated_content.content_type,"
-      "  associated_content.content_used_percentage,"
-      "  associated_content.is_content_refined"
+      "  associated_content.*"
       " FROM conversation"
       " LEFT JOIN associated_content"
       " ON conversation.uuid = associated_content.conversation_uuid"
@@ -247,6 +271,7 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
       DVLOG(1) << __func__ << " got associated content";
       conversation->associated_content = mojom::AssociatedContent::New();
       conversation->associated_content->uuid = statement.ColumnString(index++);
+      index++;  // Pass over conversation_uuid
       conversation->associated_content->title =
           DecryptOptionalColumnToString(statement, index++).value_or("");
       auto url_raw = DecryptOptionalColumnToString(statement, index++);
@@ -255,10 +280,17 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
       }
       conversation->associated_content->content_type =
           static_cast<mojom::ContentType>(statement.ColumnInt(index++));
+      index++;  // Pass over last_contents
       conversation->associated_content->content_used_percentage =
           statement.ColumnInt(index++);
       conversation->associated_content->is_content_refined =
           statement.ColumnBool(index++);
+
+      // has_trimmed_tokens does not exist for older databases
+      if (statement.ColumnCount() > index) {
+        conversation->associated_content->has_trimmed_tokens =
+            statement.ColumnBool(index++);
+      }
     }
   }
 
@@ -556,7 +588,8 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
         " content_type = ?,"
         " last_contents = ?,"
         " content_used_percentage = ?,"
-        " is_content_refined = ?"
+        " is_content_refined = ?,"
+        " has_trimmed_tokens = ?"
         " WHERE uuid=? and conversation_uuid=?";
     statement.Assign(GetDB().GetUniqueStatement(kUpdateAssociatedContentQuery));
   } else {
@@ -565,8 +598,8 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
     static constexpr char kInsertAssociatedContentQuery[] =
         "INSERT INTO associated_content(title, url,"
         " content_type, last_contents, content_used_percentage,"
-        " is_content_refined, uuid, conversation_uuid)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?) ";
+        " is_content_refined, has_trimmed_tokens, uuid, conversation_uuid)"
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?) ";
     statement.Assign(GetDB().GetUniqueStatement(kInsertAssociatedContentQuery));
   }
   CHECK(statement.is_valid());
@@ -579,6 +612,7 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
   BindAndEncryptOptionalString(statement, index++, contents);
   statement.BindInt(index++, associated_content->content_used_percentage);
   statement.BindBool(index++, associated_content->is_content_refined);
+  statement.BindBool(index++, associated_content->has_trimmed_tokens);
   statement.BindString(index++, associated_content->uuid);
   statement.BindString(index, conversation_uuid);
 
@@ -987,8 +1021,8 @@ bool AIChatDatabase::DeleteConversationEntry(
     CHECK(delete_statement.is_valid());
     delete_statement.BindString(0, conversation_entry_uuid);
     if (!delete_statement.Run()) {
-      LOG(ERROR) << "Failed to delete from conversation_entry for id: "
-                 << conversation_entry_uuid;
+      DLOG(ERROR) << "Failed to delete from conversation_entry for id: "
+                  << conversation_entry_uuid;
       return false;
     }
   }
@@ -1148,7 +1182,8 @@ bool AIChatDatabase::CreateSchema() {
       // we're never using decimal values.
       // UI expects 0 - 100 values.
       "content_used_percentage INTEGER NOT NULL,"
-      "is_content_refined INTEGER NOT NULL)";
+      "is_content_refined INTEGER NOT NULL,"
+      "has_trimmed_tokens INTEGER NOT NULL)";
   CHECK(GetDB().IsSQLValid(kCreateAssociatedContentTableQuery));
   if (!GetDB().Execute(kCreateAssociatedContentTableQuery)) {
     return false;
