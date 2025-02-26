@@ -194,7 +194,7 @@ void PromotionButtonView::AddChildViews() {
       custom_font));
   button_label->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
   button_label->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
-  button_label->SetEnabledColorId(kColorSearchConversionButtonText);
+  button_label->SetEnabledColor(kColorSearchConversionButtonText);
   button_label->SetBackgroundColor(SK_ColorTRANSPARENT);
 
   auto set_image = [](views::ImageButton* close_button,
