@@ -5,6 +5,11 @@
 ## why the filter is required and create an associated tracking issue if needed.
 ##
 
+# This test fails, because it expects an active tab's accessible name instead
+# of an inactive tab's.  It is an inactive tab, because Brave sets
+# `should_show_discard_status` for unloaded tabs.
+-TabStripBrowsertest.AccessibleName
+
 # This test fails because we call WebUI::OverrideTitle for new tab page which
 # returns the overridden title instead of the regular title that the test
 # expects.
