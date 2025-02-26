@@ -13,27 +13,16 @@ struct DataImporterPasswordConflictView: View {
   @Environment(\.dismiss)
   private var dismiss
 
+  @State
+  var sheetHeight: CGFloat = 0.0
+
   var model: DataImportModel
 
   var body: some View {
-    VStack {
-      Button {
-        dismiss()
-      } label: {
-        Label {
-          Text(Strings.close)
-        } icon: {
-          Image(braveSystemName: "leo.close")
-            .foregroundColor(Color(braveSystemName: .iconDefault))
-            .padding(8)
-        }
-        .labelStyle(.iconOnly)
-      }
-      .background(Color(braveSystemName: .materialSeparator), in: Circle())
-      .frame(maxWidth: .infinity, alignment: .trailing)
-
+    ScrollView {
       VStack {
         Image("failure_import_logo", bundle: .module)
+          .padding(.top, 24.0)
           .padding(.bottom, 32.0)
 
         VStack {
@@ -56,69 +45,75 @@ struct DataImporterPasswordConflictView: View {
         .frame(maxWidth: .infinity)
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, 24.0)
-      }
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.bottom, 16.0)
 
-      Spacer()
-
-      Button(
-        action: {
-          Task {
-            await model.keepPasswords(option: .keepBravePasswords)
-          }
-        },
-        label: {
-          Text(
-            Strings.DataImporter
-              .importStatePasswordConflictKeepExistingPasswordsTitle
-          )
-          .font(.headline)
-          .padding(.horizontal)
-          .padding(.vertical, 12.0)
-          .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
-          .frame(maxWidth: .infinity)
-          .background(
-            Color(braveSystemName: .buttonBackground),
-            in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
-          )
-        }
-      )
-      .buttonStyle(.plain)
-
-      Button(
-        action: {
-          Task {
-            await model.keepPasswords(option: .keepSafariPasswords)
-          }
-        },
-        label: {
-          Text(
-            Strings.DataImporter
-              .importStatePasswordConflictKeepImportedPasswordsTitle
-          )
-          .font(.headline)
-          .padding(.horizontal)
-          .padding(.vertical, 12.0)
-          .foregroundStyle(Color(braveSystemName: .textInteractive))
-          .frame(maxWidth: .infinity)
-        }
-      )
-      .buttonStyle(.plain)
-
-      Button(
-        action: {
-          dismiss()
-        },
-        label: {
-          Text(Strings.CancelString)
+        Button(
+          action: {
+            Task {
+              await model.keepPasswords(option: .keepBravePasswords)
+            }
+          },
+          label: {
+            Text(
+              Strings.DataImporter
+                .importStatePasswordConflictKeepExistingPasswordsTitle
+            )
             .font(.headline)
             .padding(.horizontal)
             .padding(.vertical, 12.0)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
+            .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
             .frame(maxWidth: .infinity)
+            .background(
+              Color(braveSystemName: .buttonBackground),
+              in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
+            )
+          }
+        )
+        .buttonStyle(.plain)
+
+        Button(
+          action: {
+            Task {
+              await model.keepPasswords(option: .keepSafariPasswords)
+            }
+          },
+          label: {
+            Text(
+              Strings.DataImporter
+                .importStatePasswordConflictKeepImportedPasswordsTitle
+            )
+            .font(.headline)
+            .padding(.horizontal)
+            .padding(.vertical, 12.0)
+            .foregroundStyle(Color(braveSystemName: .textInteractive))
+            .frame(maxWidth: .infinity)
+          }
+        )
+        .buttonStyle(.plain)
+      }
+      .padding(16.0)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(
+        GeometryReader { proxy in
+          Color.clear
+            .onAppear {
+              let screenHeight = UIScreen.main.bounds.height
+              let maxHeight = screenHeight * 0.7
+              sheetHeight = min(proxy.size.height, maxHeight)
+            }
         }
       )
-      .buttonStyle(.plain)
     }
+    .presentationDetents([.height(sheetHeight)])
+    .presentationDragIndicator(.visible)
+    .osAvailabilityModifiers({
+      if #available(iOS 16.4, *) {
+        $0.presentationBackground(.thickMaterial)
+          .presentationCornerRadius(15.0)
+          .presentationCompactAdaptation(.sheet)
+      } else {
+        $0.background(.thickMaterial)
+      }
+    })
   }
 }

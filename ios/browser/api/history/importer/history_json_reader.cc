@@ -48,14 +48,14 @@ bool ParseHistoryItems(
   CHECK(!json_data.empty());
   CHECK(history_items);
 
-  std::optional<base::Value> parsed_json = base::JSONReader::Read(json_data);
-  if (!parsed_json || !parsed_json->is_dict()) {
+  std::optional<base::Value::Dict> parsed_json =
+      base::JSONReader::ReadDict(json_data);
+  if (!parsed_json) {
     return false;  // History file format is incorrect. Expected
                    // Structure/Dictionary (meta-data).
   }
 
-  const base::Value::Dict& meta_data = parsed_json->GetDict();
-  auto* items = meta_data.FindList("history");
+  auto* items = parsed_json->FindList("history");
   if (!items) {
     return false;  // History file format is incorrect. Expected Array/List
                    // (history).

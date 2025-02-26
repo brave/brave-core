@@ -76,38 +76,19 @@ public struct DataImportView: View {
       isPresented: $model.isLoadingProfiles,
       content: {
         if let zipFileURL = model.zipFileURL {
-          GeometryReader { proxy in
-            ScrollView {
-              multiProfileView(zipFileURL: zipFileURL)
-                .frame(minHeight: proxy.size.height)
-            }
-            .osAvailabilityModifiers({ content in
-              if #available(iOS 16.4, *) {
-                content
-              } else {
-                content.background(.thickMaterial)
-              }
-            })
-          }
+          DataImporterMultipleProfilesView(
+            zipFileExtractedURL: zipFileURL,
+            profiles: model.profiles,
+            onProfileSelected: onProfileSelected
+          )
         }
       }
     )
     .sheet(
       isPresented: $model.hasDataConflict,
       content: {
-        GeometryReader { proxy in
-          ScrollView {
-            passwordsConflictView
-              .frame(minHeight: proxy.size.height)
-          }
-          .osAvailabilityModifiers({ content in
-            if #available(iOS 16.4, *) {
-              content
-            } else {
-              content.background(.thickMaterial)
-            }
-          })
-        }
+        DataImporterPasswordConflictView(model: model)
+          .interactiveDismissDisabled()
       }
     )
     .fileImporter(
@@ -218,46 +199,6 @@ public struct DataImportView: View {
     .padding(16.0)
     .navigationTitle(Strings.DataImporter.importDataFileSelectorNavigationTitle)
     .toolbar(.visible, for: .navigationBar)
-  }
-
-  @ViewBuilder
-  private var passwordsConflictView: some View {
-    DataImporterPasswordConflictView(model: model)
-      .padding(16.0)
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .presentationDetents([.fraction(0.60)])
-      .presentationDragIndicator(.visible)
-      .osAvailabilityModifiers({
-        if #available(iOS 16.4, *) {
-          $0.presentationBackground(.thickMaterial)
-            .presentationCornerRadius(15.0)
-            .presentationCompactAdaptation(.sheet)
-        } else {
-          $0.background(.thickMaterial)
-        }
-      })
-  }
-
-  @ViewBuilder
-  private func multiProfileView(zipFileURL: URL) -> some View {
-    DataImporterMultipleProfilesView(
-      zipFileExtractedURL: zipFileURL,
-      profiles: model.profiles,
-      onProfileSelected: onProfileSelected
-    )
-    .padding(16.0)
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .presentationDetents([.fraction(0.60)])
-    .presentationDragIndicator(.visible)
-    .osAvailabilityModifiers({
-      if #available(iOS 16.4, *) {
-        $0.presentationBackground(.thickMaterial)
-          .presentationCornerRadius(15.0)
-          .presentationCompactAdaptation(.sheet)
-      } else {
-        $0.background(.thickMaterial)
-      }
-    })
   }
 
   private func onFileSelected(files: [URL]) async {

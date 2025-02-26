@@ -15,81 +15,99 @@ struct DataImporterMultipleProfilesView: View {
   @Environment(\.dismiss)
   private var dismiss
 
+  @State
+  var sheetHeight: CGFloat = 0.0
+
   var body: some View {
-    VStack {
-      Button {
-        dismiss()
-      } label: {
-        Label {
-          Text(Strings.close)
-        } icon: {
-          Image(braveSystemName: "leo.close")
-            .foregroundColor(Color(braveSystemName: .iconDefault))
-            .padding(8)
+    ScrollView {
+      VStack {
+        Button {
+          dismiss()
+        } label: {
+          Label {
+            Text(Strings.close)
+          } icon: {
+            Image(braveSystemName: "leo.close")
+              .foregroundColor(Color(braveSystemName: .iconDefault))
+              .padding(8)
+          }
+          .labelStyle(.iconOnly)
         }
-        .labelStyle(.iconOnly)
-      }
-      .background(Color(braveSystemName: .materialSeparator), in: Circle())
-      .frame(maxWidth: .infinity, alignment: .trailing)
+        .background(Color(braveSystemName: .materialSeparator), in: Circle())
+        .frame(maxWidth: .infinity, alignment: .trailing)
 
-      Image("multi_profile_logo", bundle: .module)
-        .padding(.bottom, 24.0)
+        Image("multi_profile_logo", bundle: .module)
+          .padding(.bottom, 24.0)
 
-      VStack {
-        Text(Strings.DataImporter.multipleProfilesTitle)
-          .font(.headline)
-          .foregroundColor(Color(braveSystemName: .textPrimary))
+        VStack {
+          Text(Strings.DataImporter.multipleProfilesTitle)
+            .font(.headline)
+            .foregroundColor(Color(braveSystemName: .textPrimary))
 
-        Text(Strings.DataImporter.multipleProfilesMessage)
-          .font(.footnote)
-          .foregroundStyle(Color(braveSystemName: .textSecondary))
-      }
-      .multilineTextAlignment(.center)
-      .frame(maxWidth: .infinity)
-      .fixedSize(horizontal: false, vertical: true)
-      .padding(.horizontal, 24.0)
+          Text(Strings.DataImporter.multipleProfilesMessage)
+            .font(.footnote)
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity)
+        .fixedSize(horizontal: false, vertical: true)
+        .padding(.horizontal, 24.0)
 
-      VStack {
-        ForEach(Array(profiles.keys.sorted().enumerated()), id: \.element) { (offset, profile) in
-          Button {
-            onProfileSelected(profile)
-          } label: {
-            HStack {
-              Image(braveSystemName: "leo.user.picture")
-                .foregroundStyle(Color(braveSystemName: .iconInteractive))
+        VStack {
+          ForEach(Array(profiles.keys.sorted().enumerated()), id: \.element) { (offset, profile) in
+            Button {
+              onProfileSelected(profile)
+            } label: {
+              HStack {
+                Image(braveSystemName: "leo.user.picture")
+                  .foregroundStyle(Color(braveSystemName: .iconInteractive))
 
-              Text(profile.localizedCapitalized)
-                .foregroundStyle(Color(braveSystemName: .textInteractive))
-                .padding(.vertical, 12.0)
+                Text(profile.localizedCapitalized)
+                  .foregroundStyle(Color(braveSystemName: .textInteractive))
+                  .padding(.vertical, 12.0)
 
-              Spacer()
+                Spacer()
 
-              Image(braveSystemName: "leo.carat.right")
-                .foregroundStyle(Color(braveSystemName: .iconDefault))
+                Image(braveSystemName: "leo.carat.right")
+                  .foregroundStyle(Color(braveSystemName: .iconDefault))
+              }
+              .padding(.horizontal, 16.0)
             }
-            .padding(.horizontal, 16.0)
-          }
 
-          if offset != profiles.count - 1 {
-            Divider().padding(.leading)
+            if offset != profiles.count - 1 {
+              Divider().padding(.leading)
+            }
           }
         }
+        .background(
+          Color(braveSystemName: .iosBrowserElevatedIos),
+          in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
+        )
+        .padding()
       }
+      .padding(16.0)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(
-        Color(braveSystemName: .iosBrowserElevatedIos),
-        in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
+        GeometryReader { proxy in
+          Color.clear
+            .onAppear {
+              let screenHeight = UIScreen.main.bounds.height
+              let maxHeight = screenHeight * 0.7
+              sheetHeight = min(proxy.size.height, maxHeight)
+            }
+        }
       )
-      .padding()
-
-      Button {
-        dismiss()
-      } label: {
-        Text(Strings.CancelString)
-          .font(.subheadline.weight(.semibold))
-          .foregroundStyle(Color(braveSystemName: .textSecondary))
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-      }
-      .buttonStyle(.plain)
     }
+    .presentationDetents([.height(sheetHeight)])
+    .presentationDragIndicator(.visible)
+    .osAvailabilityModifiers({
+      if #available(iOS 16.4, *) {
+        $0.presentationBackground(.thickMaterial)
+          .presentationCornerRadius(15.0)
+          .presentationCompactAdaptation(.sheet)
+      } else {
+        $0.background(.thickMaterial)
+      }
+    })
   }
 }
