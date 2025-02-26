@@ -52,11 +52,17 @@ class SplitView : public views::View,
   METADATA_HEADER(SplitView, views::View)
  public:
   using BrowserViewKey = base::PassKey<BraveBrowserView>;
+
+  static constexpr int kBorderThickness = 1;
+
   SplitView(Browser& browser,
             views::View* contents_container,
             ContentsWebView* contents_web_view);
 
   ~SplitView() override;
+
+  // true when active tab is in tile.
+  bool IsSplitViewActive() const;
 
   // Called before/after BrowserView::OnActiveTabChanged() as we have some
   // jobs such as reducing flickering while active tab changing. See the
@@ -78,8 +84,6 @@ class SplitView : public views::View,
 
   // Update dev tools
   void UpdateSecondaryDevtoolsLayoutAndVisibility();
-
-  gfx::Point GetSplitViewLocationBarOffset() const;
 
   views::View* secondary_contents_container() {
     return secondary_contents_container_;
@@ -105,7 +109,6 @@ class SplitView : public views::View,
       const DevToolsContentsResizingStrategy& strategy);
 
   // views::View:
-  void OnThemeChanged() override;
   void Layout(PassKey) override;
   void AddedToWidget() override;
 
