@@ -9,11 +9,6 @@ import Shared
 import UIKit
 
 class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable {
-  static let placeholderImage = UIImage(
-    named: "defaultTopSiteIcon",
-    in: .module,
-    compatibleWith: nil
-  )!
 
   let imageContainer = UIView().then {
     $0.layer.cornerRadius = 12.0

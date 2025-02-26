@@ -30,10 +30,11 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
       let itemProvider = NSItemProvider(object: "\(indexPath)" as NSString)
       let dragItem = UIDragItem(itemProvider: itemProvider)
       dragItem.previewProvider = { () -> UIDragPreview? in
-        guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell else {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
+        else {
           return nil
         }
-        return UIDragPreview(view: cell.imageView)
+        return UIDragPreview(view: cell.imageContainer)
       }
       dragItem.localObject = bookmark
       return [dragItem]
@@ -93,8 +94,8 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
   ) -> UIDragPreviewParameters? {
     let params = UIDragPreviewParameters()
     params.backgroundColor = .clear
-    if let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell {
-      params.visiblePath = UIBezierPath(roundedRect: cell.imageView.frame, cornerRadius: 8)
+    if let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell {
+      params.visiblePath = UIBezierPath(roundedRect: cell.imageContainer.frame, cornerRadius: 8)
     }
     return params
   }
@@ -105,8 +106,8 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
   ) -> UIDragPreviewParameters? {
     let params = UIDragPreviewParameters()
     params.backgroundColor = .clear
-    if let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell {
-      params.visiblePath = UIBezierPath(roundedRect: cell.imageView.frame, cornerRadius: 8)
+    if let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell {
+      params.visiblePath = UIBezierPath(roundedRect: cell.imageContainer.frame, cornerRadius: 8)
     }
     return params
   }
