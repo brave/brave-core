@@ -230,7 +230,10 @@ export const Account = () => {
     ? chainTipStatus.chainTip - chainTipStatus.latestScannedBlock
     : 0
 
-  const showSyncWarning = isShieldedAccount && !syncWarningDismissed
+  const showSyncWarning =
+    isShieldedAccount &&
+    (blocksBehind > 0 || chainTipStatus === null) &&
+    !syncWarningDismissed
 
   // custom hooks & memos
   const scrollIntoView = useScrollIntoView()
