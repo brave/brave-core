@@ -414,7 +414,9 @@ class Tab: NSObject {
     didSet {
       var isNightModeEnabled = false
 
-      if let fetchedTabURL = fetchedURL, nightMode {
+      if let fetchedTabURL = fetchedURL, nightMode,
+        !DarkReaderScriptHandler.isNightModeBlockedURL(fetchedTabURL)
+      {
         isNightModeEnabled = true
       }
 
