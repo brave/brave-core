@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# Push string changes to Transifex
+# Push string changes to Crowdin
 #
 # Error Codes:
 #   0 = Success
@@ -24,12 +24,6 @@ report_error()
 
 cleanup()
 {
-  if [ -e transifex.log ] ; then
-    cat transifex.log >> output.log
-    echo >> output.log
-    rm transifex.log
-  fi
-
   if [ -e ../../Client/en.xcloc ]; then
     rm -R ../../Client/en.xcloc
   fi
@@ -41,6 +35,10 @@ cleanup()
 
 if [ "${TOKEN}" = "" ] ; then
   report_error 1 "TOKEN environment variable must be set to \"api\""
+fi
+
+if [ "${VERSION}" = "" ] ; then
+  report_error 1 "VERSION environment variable must be set"
 fi
 
 cd $(dirname "$0")
@@ -104,7 +102,7 @@ add_file()
     --data @- << EOF
       {
         "storageId": $crowdin_storage_id,
-        "name": "en.xliff",
+        "name": "${VERSION}.xliff",
         "type": "xliff"
       }
 EOF
@@ -131,39 +129,13 @@ else
   echo "Crowdin Storage ID: $crowdin_storage_id"
 fi
 
-echo "Checking if there is already a file id for our project in Crowdin..."
-file_result=$(curl --silent \
-  -X "GET" "https://brave-software.crowdin.com/api/v2/projects/$crowdin_project_id/files" \
-  -H "Authorization: Bearer ${TOKEN}" \
-  -H "Content-Type: application/json"
-)
-file_id=$(echo "$file_result" | jq '.data.[0].data.id')
-if [ "$file_id" == "null" ]
+echo "Adding a new source file..."
+add_file_http_code=$(add_file)
+if [ $add_file_http_code != 201 ]
 then
-  echo "No, there is no file. Adding a new file..."
-  add_file_http_code=$(add_file)
-  if [ $add_file_http_code != 201 ]
-  then
-    report_error 5 "ERROR: Failed to add a file to the project in Crowdin"
-  else
-    echo "The new source file has been added to the project in Crowdin"
-  fi
+  report_error 5 "ERROR: Failed to add a file to the project in Crowdin"
 else
-  echo "Yes, there is a file id: $file_id. Deleting this file ..."
-  delete_file_http_code=$(delete_file $file_id)
-  if [ $delete_file_http_code != 204 ]
-  then
-    report_error 5 "ERROR: Failed to delete the existed file in Crowdin"
-  else 
-    echo "Now, adding a new file ..."
-    add_file_http_code=$(add_file)
-    if [ $add_file_http_code != 201 ]
-    then
-      report_error 5 "ERROR: Failed to add a file to the project in Crowdin"
-    else
-      echo "The new source file has added to the project in Crowdin"
-    fi
-  fi
+  echo "The new source file has been added to the project in Crowdin"
 fi
 
 cleanup

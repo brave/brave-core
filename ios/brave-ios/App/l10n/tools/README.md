@@ -30,10 +30,11 @@ Once your english strings are all up to date. These changes can be pushed to Cro
 
 ```
 cd l10n/
-TOKEN=<token> ./push-strings-to-crowdin.sh
+TOKEN=<token> VERSION=<release_version> ./push-strings-to-crowdin.sh
 ```
 
 If there any issues pushing strings to Crowdin then these issues are logged to ```output.log```
+The `VERSION` is in the format of `version_number`. For example: `1_75_0`.
 
 ### Importing the latest translations from Crowdin
  
