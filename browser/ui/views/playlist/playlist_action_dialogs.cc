@@ -335,7 +335,7 @@ PlaylistNewPlaylistDialog::PlaylistNewPlaylistDialog(
         container_label->font_list().DeriveWithSizeDelta(
             container_label->font_list().GetFontSize() -
             container_label_font_size));
-    container_label->SetEnabledColorId(container_label_color_id);
+    container_label->SetEnabledColor(container_label_color_id);
     return container;
   };
 
@@ -548,7 +548,7 @@ void PlaylistMoveDialog::EnterChoosePlaylistMode() {
   auto* description = contents_container_->AddChildView(
       std::make_unique<views::Label>(l10n_util::GetStringUTF16(
           IDS_PLAYLIST_MOVE_MEDIA_DIALOG_DESCRIPTION)));
-  description->SetEnabledColorId(kColorBravePlaylistMoveDialogDescription);
+  description->SetEnabledColor(kColorBravePlaylistMoveDialogDescription);
   description->SetPreferredSize(gfx::Size(kContentsWidth, 17));
   description->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
 
@@ -613,7 +613,7 @@ void PlaylistMoveDialog::EnterCreatePlaylistMode() {
   auto* title = contents_container_->AddChildView(
       std::make_unique<views::Label>(l10n_util::GetStringUTF16(
           IDS_PLAYLIST_MOVE_MEDIA_DIALOG_PLAYLIST_NAME)));
-  title->SetEnabledColorId(
+  title->SetEnabledColor(
       kColorBravePlaylistMoveDialogCreatePlaylistAndMoveTitle);
   title->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
 

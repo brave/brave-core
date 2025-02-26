@@ -209,7 +209,7 @@ void BraveVideoOverlayWindowViews::SetUpViews() {
 
   timestamp_ =
       controls_container_view_->AddChildView(std::make_unique<views::Label>());
-  timestamp_->SetEnabledColorId(kColorPipWindowForeground);
+  timestamp_->SetEnabledColor(kColorPipWindowForeground);
   timestamp_->SetSubpixelRenderingEnabled(false);
   timestamp_->SetAutoColorReadabilityEnabled(false);
   timestamp_->SetElideBehavior(gfx::NO_ELIDE);

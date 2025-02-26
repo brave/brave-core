@@ -71,14 +71,14 @@ SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs,
                   views::Builder<views::Label>()
                       .SetText(u"https")
                       .CopyAddressTo(&https_with_strike_)
-                      .SetEnabledColorId(kColorOmniboxSecurityChipDangerous))
+                      .SetEnabledColor(kColorOmniboxSecurityChipDangerous))
               .AddChild(views::Builder<views::Label>()
                             .SetText(u"://")
                             .CopyAddressTo(&scheme_separator_)
-                            .SetEnabledColorId(kColorBraveSplitViewUrl))
+                            .SetEnabledColor(kColorBraveSplitViewUrl))
               .AddChild(views::Builder<views::Label>()
                             .CopyAddressTo(&url_)
-                            .SetEnabledColorId(kColorBraveSplitViewUrl)))
+                            .SetEnabledColor(kColorBraveSplitViewUrl)))
       .BuildChildren();
 
   for (auto url_part : {https_with_strike_, scheme_separator_, url_}) {
