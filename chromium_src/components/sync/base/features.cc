@@ -10,6 +10,7 @@
 namespace syncer {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kSyncAutofillLoyaltyCard, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSyncEnableBookmarksInTransportMode, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
