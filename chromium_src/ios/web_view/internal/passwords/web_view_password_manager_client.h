@@ -15,6 +15,11 @@
 
 namespace ios_web_view {
 
+// We do not use any WebView* specific clients & services since we would instead
+// use the Chrome iOS ones.
+//
+// Replaces the implementation of the WebViewPasswordManagerClient with one that
+// does nothing
 class WebViewPasswordManagerClient
     : public password_manager::PasswordManagerClient {
  public:

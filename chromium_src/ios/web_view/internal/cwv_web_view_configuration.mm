@@ -23,6 +23,11 @@
 #import "ios/web_view/internal/passwords/web_view_account_password_store_factory.h"
 #import "ios/web_view/internal/web_view_global_state_util.h"
 
+// We completely replace the CWVWebViewConfiguration implementation so that
+// we can nop certain services such as access to CWVWebView specific wrappers
+// around autofill, sync, etc (since we would use Chrome's) and replace
+// the exposed browser state to be a plain `web::BrowserState`
+
 @interface CWVWebViewConfiguration () {
   // The BrowserState for this configuration.
   raw_ptr<web::BrowserState> _browserState;

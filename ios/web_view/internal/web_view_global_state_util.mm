@@ -8,7 +8,13 @@
 namespace ios_web_view {
 
 void InitializeGlobalState() {
-  // We already provide global initialization with BraveCoreMain
+  // We already provide global initialization with BraveCoreMain so this is a
+  // stub of a required function.
+  //
+  // Typically the implementation of this method
+  // is in `//ios/web_view/internal/web_view_global_state_util.mm` but this
+  // file is not part of the web_view_sources target and only part of the
+  // framework target which we don't use
 }
 
 }  // namespace ios_web_view

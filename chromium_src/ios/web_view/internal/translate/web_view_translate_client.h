@@ -15,6 +15,11 @@
 
 namespace ios_web_view {
 
+// We do not use any WebView* specific clients & services since we would instead
+// use the Chrome iOS ones.
+//
+// Replaces the implementation of the WebViewTranslateClient with one that
+// does nothing
 class WebViewTranslateClient : public translate::TranslateClient {
  public:
   static std::unique_ptr<WebViewTranslateClient> Create(

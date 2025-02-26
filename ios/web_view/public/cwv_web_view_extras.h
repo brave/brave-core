@@ -21,6 +21,8 @@ OBJC_EXPORT const CWVUserAgentType CWVUserAgentTypeDesktop;
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Adds additional functionality to CWVWebView that is not be supported out
+/// of the box but can be implemented using the underlying WebState
 CWV_EXPORT
 @interface CWVWebView (Extras)
 

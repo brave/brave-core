@@ -17,6 +17,11 @@
 
 namespace autofill {
 
+// We do not use any WebView* specific clients & services since we would instead
+// use the Chrome iOS ones.
+//
+// Replaces the implementation of the WebViewAutofillClientIOS with one that
+// does nothing
 class WebViewAutofillClientIOS : public AutofillClientIOS {
  public:
   static std::unique_ptr<WebViewAutofillClientIOS> Create(

@@ -19,6 +19,9 @@ bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request);
 
 #include "src/ios/web/navigation/crw_wk_navigation_handler.mm"
 
+// Setup a CRWWKNavigationHandler subclass so that we may integrate Brave
+// features that Chrome does not support or expose access to (such as the
+// requiring the use of WKWebpagePreferences)
 @implementation BraveCRWWKNavigationHandler
 
 - (void)webView:(WKWebView*)webView
@@ -28,6 +31,9 @@ bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request);
                                               WKWebpagePreferences*))handler {
   auto decisionHandler =
       ^(WKNavigationActionPolicy policy, WKWebpagePreferences*) {
+        // Check if we want to block JavaScript execution on the page
+        // Typically this would go through `ContentSettingsType::JAVASCRIPT`,
+        // but Chrome iOS does not support this yet.
         bool shouldBlockJavaScript = brave::ShouldBlockJavaScript(
             static_cast<web::WebState*>(self.webStateImpl), action.request);
         if (shouldBlockJavaScript && preferences) {

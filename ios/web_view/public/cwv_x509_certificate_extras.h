@@ -8,6 +8,9 @@
 
 #include "cwv_x509_certificate.h"  // NOLINT
 
+/// Adds additional functionality to CWVX509Certificate that is not be supported
+/// out of the box but can be implemented using the underlying
+/// net::X509Certificate
 @interface CWVX509Certificate (Extras)
 /// The underlying security reference
 @property(readonly, nullable) SecCertificateRef certificateRef;

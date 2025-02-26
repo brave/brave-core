@@ -12,6 +12,7 @@ private let braveCoreMain: BraveCoreMain = {
   return main
 }()
 
+// Basic nav delegate to test some Brave specific features in the web shell app
 private class NavDelegate: NSObject, BraveWebViewNavigationDelegate {
   func webView(_ webView: CWVWebView, shouldBlockJavaScriptFor request: URLRequest) -> Bool {
     return true
@@ -21,6 +22,7 @@ private class NavDelegate: NSObject, BraveWebViewNavigationDelegate {
   }
 }
 
+// A basic observable model to bind observable CWVWebView changes to the SwiftUI view
 @dynamicMemberLookup
 class WebViewModel: ObservableObject {
   private let delegate = NavDelegate()

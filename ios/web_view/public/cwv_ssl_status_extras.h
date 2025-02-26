@@ -24,6 +24,8 @@ OBJC_EXPORT
 
 @end
 
+/// Adds additional functionality to CWVSSLStatus that is not be supported out
+/// of the box but can be implemented using the underlying web::SSLStatus
 OBJC_EXPORT
 @interface CWVSSLStatus (Extras)
 
