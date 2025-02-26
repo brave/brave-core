@@ -33,10 +33,7 @@ class CustomEngineAddButtonCell: UITableViewCell, TableViewReusable {
       $0.setTitle(Strings.done, for: .normal)
       $0.layer.cornerRadius = 12.0
       $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-
-      let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .subheadline)
-      let font = UIFont.systemFont(ofSize: desc.pointSize, weight: .semibold)
-      $0.titleLabel?.font = font
+      $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)
     }
     spinner.do {
       $0.color = UIColor(braveSystemName: .dividerInteractive)

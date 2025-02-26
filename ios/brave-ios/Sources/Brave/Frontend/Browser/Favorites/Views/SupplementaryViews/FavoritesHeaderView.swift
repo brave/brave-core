@@ -11,12 +11,7 @@ class FavoritesHeaderView: UICollectionReusableView {
   let label = UILabel().then {
     $0.text = Strings.recentSearchFavorites
     $0.textColor = UIColor(braveSystemName: .textPrimary)
-
-    let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-    $0.font = UIFont.systemFont(
-      ofSize: desc.pointSize,
-      weight: .semibold
-    )
+    $0.font = .preferredFont(for: .body, weight: .semibold)
   }
 
   override init(frame: CGRect) {

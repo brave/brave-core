@@ -1014,8 +1014,8 @@ extension Strings {
     "FindInPageFormat",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Find \"%@\"",
-    comment: "Find %@ text in page."
+    value: "Find the ",
+    comment: "Find the `searcg query`"
   )
 }
 

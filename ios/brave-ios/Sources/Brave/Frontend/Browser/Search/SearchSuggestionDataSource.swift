@@ -23,7 +23,7 @@ class SearchSuggestionDataSource {
   // MARK: SearchListSection
 
   enum SearchListSection: Int, CaseIterable {
-    case searchSuggestionsOptin
+    case searchSuggestionsOptIn
     case searchSuggestions
     case braveSearchPromotion
     case findInPage

@@ -21,7 +21,7 @@ class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
   }
 
   private let titleLabel = UILabel().then {
-    $0.font = .systemFont(ofSize: 15.0)
+    $0.font = .preferredFont(for: .subheadline, weight: .regular)
     $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.lineBreakMode = .byTruncatingTail
     $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -52,7 +52,7 @@ class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
 
   func setTitle(_ title: String) {
     let attString = NSMutableAttributedString(
-      string: "Find the ",
+      string: Strings.findInPageFormat,
       attributes: [
         .font: UIFont.systemFont(ofSize: 15.0, weight: .semibold),
         .foregroundColor: UIColor(braveSystemName: .textTertiary),

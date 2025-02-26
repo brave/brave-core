@@ -40,7 +40,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
   }
 
   private let titleLabel = UILabel().then {
-    $0.font = .systemFont(ofSize: 15.0)
+    $0.font = .preferredFont(for: .subheadline, weight: .regular)
     $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.lineBreakMode = .byTruncatingTail
     $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -48,7 +48,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
   }
 
   private let subtitleLabel = UILabel().then {
-    $0.font = .systemFont(ofSize: 13.0)
+    $0.font = .preferredFont(for: .footnote, weight: .regular)
     $0.textColor = UIColor(braveSystemName: .textSecondary)
     $0.lineBreakMode = .byTruncatingTail
     $0.setContentHuggingPriority(.defaultLow, for: .horizontal)

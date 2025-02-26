@@ -8,9 +8,9 @@ import Shared
 import UIKit
 
 class SearchSectionHeaderView: UICollectionReusableView, CollectionViewReusable {
-  let label = UILabel().then {
+  private let label = UILabel().then {
     $0.text = Strings.recentSearchFavorites
-    $0.font = .systemFont(ofSize: 17, weight: .semibold)
+    $0.font = .preferredFont(for: .body, weight: .semibold)
     $0.textColor = UIColor(braveSystemName: .textPrimary)
   }
 

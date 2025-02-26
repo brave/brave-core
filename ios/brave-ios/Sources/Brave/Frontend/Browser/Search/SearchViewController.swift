@@ -80,7 +80,7 @@ public class SearchViewController: UIViewController, LoaderListener {
       guard let self else { return nil }
       let section = self.availableSections[sectionIndex]
       switch section {
-      case .searchSuggestionsOptin:
+      case .searchSuggestionsOptIn:
         return self.searchSuggestionOptinLayoutSection()
       case .searchSuggestions, .findInPage, .openTabsAndHistoryAndBookmarks:
         return self.searchLayoutSection(
@@ -146,7 +146,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     if !dataSource.tabType.isPrivate
       && dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn == true
     {
-      result.append(.searchSuggestionsOptin)
+      result.append(.searchSuggestionsOptIn)
     } else {
       result.append(.searchSuggestions)
     }
@@ -204,6 +204,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     }
 
     backgroundView.backgroundColor = browserColors.browserButtonBackgroundHover
+    searchEngineScrollView.backgroundColor = browserColors.chromeBackground
 
     setupSearchEngineScrollViewIfNeeded()
 
@@ -288,7 +289,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     searchEngineScrollView.addSubview(searchEngineScrollViewContent)
 
     layoutSearchEngineScrollView()
-    layoutTable()
+    layoutCollectionView()
 
     searchEngineScrollViewContent.snp.makeConstraints { make in
       make.center.equalTo(searchEngineScrollView).priority(.low)
@@ -325,18 +326,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     }
   }
 
-  private func layoutSuggestionsOptInPrompt() {
-    if dataSource.isPrivate
-      || dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn == false
-    {
-      reloadSearchData()
-      return
-    }
-
-    layoutTable()
-  }
-
-  private func layoutTable() {
+  private func layoutCollectionView() {
     collectionView.snp.remakeConstraints { make in
       make.top.equalTo(view.snp.top)
       make.leading.trailing.equalTo(view)
@@ -357,7 +347,6 @@ public class SearchViewController: UIViewController, LoaderListener {
 
     // Reload the footer list of search engines.
     reloadSearchEngines()
-    layoutSuggestionsOptInPrompt()
   }
 
   func setSearchQuery(query: String, showSearchSuggestions: Bool = true) {
@@ -372,65 +361,70 @@ public class SearchViewController: UIViewController, LoaderListener {
     searchEngineScrollViewContent.subviews.forEach { $0.removeFromSuperview() }
     var leftEdge = searchEngineScrollViewContent.snp.left
 
-    let leoButtonContainer = UIView().then {
-      $0.layer.cornerRadius = 8.0
-      $0.clipsToBounds = true
-    }
+    if dataSource.isAIChatAvailable {
+      let leoButtonContainer = UIView().then {
+        $0.layer.cornerRadius = 8.0
+        $0.clipsToBounds = true
+      }
 
-    let leoButtonBackgroundView = GradientView(braveSystemName: .iconsActive)
+      let leoButtonBackgroundView = GradientView(braveSystemName: .iconsActive)
 
-    let leoButton = UIButton()
-    leoButton.setImage(
-      UIImage(braveSystemNamed: "leo.product.brave-leo")!.template,
-      for: []
-    )
-    leoButton.imageView?.contentMode = .center
-    leoButton.addTarget(self, action: #selector(didClickLeoButton), for: .touchUpInside)
-    leoButton.accessibilityLabel = Strings.searchSettingsButtonTitle
-    leoButton.tintColor = .white
-    leoButton.imageView?.snp.makeConstraints { make in
-      make.width.height.equalTo(SearchViewControllerUX.searchImageWidth)
-      return
-    }
-
-    leoButtonContainer.addSubview(leoButtonBackgroundView)
-    leoButtonContainer.addSubview(leoButton)
-
-    leoButtonBackgroundView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-    leoButton.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-
-    searchEngineScrollViewContent.addSubview(leoButtonContainer)
-    leoButtonContainer.snp.makeConstraints { make in
-      make.size.equalTo(SearchViewControllerUX.faviconSize)
-      // offset the left edge to align with search results
-      make.left.equalTo(leftEdge).offset(SearchViewControllerUX.searchButtonMargin * 2)
-      make.top.equalTo(searchEngineScrollViewContent).offset(
-        SearchViewControllerUX.searchButtonMargin
+      let leoButton = UIButton()
+      leoButton.setImage(
+        UIImage(braveSystemNamed: "leo.product.brave-leo")!.template,
+        for: []
       )
-      make.bottom.equalTo(searchEngineScrollViewContent).offset(
-        -SearchViewControllerUX.searchButtonMargin
-      )
-    }
+      leoButton.imageView?.contentMode = .center
+      leoButton.addTarget(self, action: #selector(didClickLeoButton), for: .touchUpInside)
+      leoButton.accessibilityLabel = Strings.searchSettingsButtonTitle
+      leoButton.tintColor = .white
+      leoButton.imageView?.snp.makeConstraints { make in
+        make.width.height.equalTo(SearchViewControllerUX.searchImageWidth)
+        return
+      }
 
-    leftEdge = leoButtonContainer.snp.right
+      leoButtonContainer.addSubview(leoButtonBackgroundView)
+      leoButtonContainer.addSubview(leoButton)
 
-    let separator = UIView().then {
-      $0.backgroundColor = UIColor(braveSystemName: .materialSeparator)
-    }
+      leoButtonBackgroundView.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+      leoButton.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
 
-    searchEngineScrollView.addSubview(separator)
-    separator.snp.makeConstraints { make in
-      make.size.equalTo(SearchViewControllerUX.separatorSize)
-      make.left.equalTo(leftEdge).offset(SearchViewControllerUX.searchButtonMargin * 2)
-      make.centerY.equalTo(leoButtonBackgroundView)
+      searchEngineScrollViewContent.addSubview(leoButtonContainer)
+      leoButtonContainer.snp.makeConstraints { make in
+        make.size.equalTo(SearchViewControllerUX.faviconSize)
+        // offset the left edge to align with search results
+        make.left.equalTo(leftEdge).offset(
+          SearchViewControllerUX.searchButtonMargin * 2
+        )
+        make.top.equalTo(searchEngineScrollViewContent).offset(
+          SearchViewControllerUX.searchButtonMargin
+        )
+        make.bottom.equalTo(searchEngineScrollViewContent).offset(
+          -SearchViewControllerUX.searchButtonMargin
+        )
+      }
+
+      leftEdge = leoButtonContainer.snp.right
+
+      let separator = UIView().then {
+        $0.backgroundColor = UIColor(braveSystemName: .materialSeparator)
+      }
+
+      searchEngineScrollView.addSubview(separator)
+      separator.snp.makeConstraints { make in
+        make.size.equalTo(SearchViewControllerUX.separatorSize)
+        make.left.equalTo(leftEdge).offset(SearchViewControllerUX.searchButtonMargin * 2)
+        make.centerY.equalTo(leoButtonBackgroundView)
+      }
+
+      leftEdge = separator.snp.right
     }
 
     // search engines
-    leftEdge = separator.snp.right
     for engine in dataSource.quickSearchEngines {
       let engineButton = UIButton()
       engineButton.setImage(engine.image, for: [])
@@ -483,8 +477,8 @@ public class SearchViewController: UIViewController, LoaderListener {
       make.top.equalTo(searchEngineScrollViewContent).offset(
         SearchViewControllerUX.searchButtonMargin
       )
-      make.bottom.equalTo(searchEngineScrollViewContent).offset(
-        -SearchViewControllerUX.searchButtonMargin
+      make.bottom.equalTo(searchEngineScrollViewContent).inset(
+        SearchViewControllerUX.searchButtonMargin
       )
       make.right.equalTo(searchEngineScrollViewContent).inset(
         SearchViewControllerUX.searchButtonMargin * 2
@@ -499,8 +493,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     if enable {
       self.dataSource.querySuggestClient()
     }
-    layoutSuggestionsOptInPrompt()
-    reloadSearchEngines()
+
     collectionView.reloadData()
   }
 
@@ -606,21 +599,20 @@ public class SearchViewController: UIViewController, LoaderListener {
       heightDimension: .absolute(52)
     )
     let quickBarItem = NSCollectionLayoutItem(layoutSize: quickBarItemSize)
-    quickBarItem.contentInsets = .init(top: 16, leading: 20, bottom: 8, trailing: 20)
+    quickBarItem.contentInsets = .init(top: 16, leading: 16, bottom: 8, trailing: 16)
 
     let separatorItemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
       heightDimension: .absolute(1)
     )
     let separatorItem = NSCollectionLayoutItem(layoutSize: separatorItemSize)
-    separatorItem.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+    separatorItem.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
 
     let optinItemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
       heightDimension: .estimated(130)
     )
     let optinItem = NSCollectionLayoutItem(layoutSize: optinItemSize)
-    optinItem.contentInsets = .init(top: 8, leading: 4, bottom: 0, trailing: 4)
 
     let groupSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
@@ -631,7 +623,7 @@ public class SearchViewController: UIViewController, LoaderListener {
       subitems: [quickBarItem, separatorItem, optinItem]
     )
     let section = NSCollectionLayoutSection(group: group)
-    section.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+    section.contentInsets = .init(top: 0, leading: 12, bottom: 0, trailing: 12)
 
     let backgroundItem = NSCollectionLayoutDecorationItem.background(
       elementKind: "background_plain"
@@ -648,11 +640,11 @@ public class SearchViewController: UIViewController, LoaderListener {
       heightDimension: .fractionalHeight(1)
     )
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
+    item.contentInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4)
     let groupSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
       heightDimension: .estimated(168)
     )
-    item.contentInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4)
     let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
     let section = NSCollectionLayoutSection(group: group)
     section.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
@@ -734,7 +726,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     let section = availableSections[section]
 
     switch section {
-    case .searchSuggestionsOptin:
+    case .searchSuggestionsOptIn:
       return 3  // quick bar + separator + optin
     case .searchSuggestions:
       guard
@@ -766,7 +758,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
   ) -> UICollectionViewCell {
     let section = availableSections[indexPath.section]
     switch section {
-    case .searchSuggestionsOptin:
+    case .searchSuggestionsOptIn:
       if indexPath.row == 0 {
         // quick bar
         let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchSuggestionCell
@@ -891,7 +883,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         ) as? SearchSectionHeaderView
       {
         switch section {
-        case .searchSuggestionsOptin, .searchSuggestions, .braveSearchPromotion:
+        case .searchSuggestionsOptIn, .searchSuggestions, .braveSearchPromotion:
           assertionFailure("no header for search suggestion")
         case .findInPage:
           header.setTitle(Strings.findOnPageSectionHeader)
@@ -933,7 +925,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     guard let section = availableSections[safe: indexPath.section] else { return }
 
     switch section {
-    case .searchSuggestionsOptin:
+    case .searchSuggestionsOptIn:
       if indexPath.row == 0 {
         // quick bar
         submitSeachTemplateQuery(isBraveSearchPromotion: false)
@@ -1029,7 +1021,7 @@ extension SearchViewController {
 // MARK: - SearchQuickEnginesViewControllerDelegate
 
 extension SearchViewController: SearchQuickEnginesViewControllerDelegate {
-  func searchQuickEnginesUpdates() {
+  func searchQuickEnginesUpdated() {
     reloadSearchEngines()
   }
 }

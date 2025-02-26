@@ -22,7 +22,7 @@ class SearchSuggestionCell: UICollectionViewCell, CollectionViewReusable {
   }
 
   private let titleLabel = UILabel().then {
-    $0.font = .systemFont(ofSize: 15.0)
+    $0.font = .preferredFont(for: .subheadline, weight: .regular)
     $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.lineBreakMode = .byTruncatingMiddle
     $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
