@@ -94,7 +94,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kAllowURNsInIframes,
       &blink::features::kAttributionReportingInBrowserMigration,
       &blink::features::kBackgroundResourceFetch,
-      &blink::features::kBiddingAndScoringDebugReportingAPI,
       &blink::features::kBrowsingTopics,
       &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
