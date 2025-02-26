@@ -131,9 +131,9 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
                           content_uuid, mojom::ContentType::PageContent,
                           "page title", 1, page_url, 62, true)
                     : nullptr;
-    const mojom::ConversationPtr metadata =
-        mojom::Conversation::New(uuid, "title", now - base::Hours(2), true,
-                                 std::nullopt, std::move(associated_content));
+    const mojom::ConversationPtr metadata = mojom::Conversation::New(
+        uuid, "title", now - base::Hours(2), true, std::nullopt, 0, 0,
+        std::move(associated_content));
 
     // Persist the first entry (and get the response ready)
     auto history = CreateSampleChatHistory(1u);
@@ -261,8 +261,8 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent) {
   const std::string uuid = "first";
   const GURL page_url = GURL("https://example.com/page");
   mojom::ConversationPtr metadata = mojom::Conversation::New(
-      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
-      nullptr);
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, nullptr);
 
   // Test 2 entries to verify they are recorded against different entries
   auto history = CreateSampleChatHistory(2u);
@@ -306,8 +306,8 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent_Invalid) {
   const std::string uuid = "first";
   const GURL page_url = GURL("https://example.com/page");
   mojom::ConversationPtr metadata = mojom::Conversation::New(
-      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
-      nullptr);
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, nullptr);
 
   // Test 2 entries to verify they are recorded against different entries. Make
   // some entries invalid to verify they are not persisted.
@@ -362,8 +362,8 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent_Invalid) {
 TEST_P(AIChatDatabaseTest, UploadImage) {
   constexpr char kUUID[] = "upload_image_uuid";
   mojom::ConversationPtr metadata = mojom::Conversation::New(
-      kUUID, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
-      nullptr);
+      kUUID, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, nullptr);
   auto history = CreateSampleChatHistory(2u, 0, 3u);
 
   EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
@@ -400,8 +400,9 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
     const std::string uuid =
         base::StrCat({"for_conversation_title_", initial_title});
     const std::string updated_title = "updated title";
-    mojom::ConversationPtr metadata = mojom::Conversation::New(
-        uuid, initial_title, base::Time::Now(), true, std::nullopt, nullptr);
+    mojom::ConversationPtr metadata =
+        mojom::Conversation::New(uuid, initial_title, base::Time::Now(), true,
+                                 std::nullopt, 0, 0, nullptr);
 
     // Persist the first entry (and get the response ready)
     const auto history = CreateSampleChatHistory(1u);
@@ -425,12 +426,47 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
   }
 }
 
+TEST_P(AIChatDatabaseTest, UpdateConversationTokenInfo) {
+  uint64_t initial_total_tokens = 4000;
+  uint64_t initial_trimmed_tokens = 800;
+  const std::string uuid = "for_token_info";
+  uint64_t updated_total_tokens = 5000;
+  uint64_t updated_trimmed_tokens = 1200;
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now(), true, std::nullopt,
+      initial_total_tokens, initial_trimmed_tokens, nullptr);
+
+  // Persist the first entry (and get the response ready)
+  const auto history = CreateSampleChatHistory(1u);
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
+                                   history[0]->Clone()));
+
+  // Verify initial token info
+  std::vector<mojom::ConversationPtr> conversations =
+      db_->GetAllConversations();
+  // get this conversation
+  auto* conversation = GetConversation(FROM_HERE, conversations, uuid);
+  EXPECT_EQ(conversation->total_tokens, initial_total_tokens);
+  EXPECT_EQ(conversation->trimmed_tokens, initial_trimmed_tokens);
+
+  // Update token info
+  EXPECT_TRUE(db_->UpdateConversationTokenInfo(uuid, updated_total_tokens,
+                                               updated_trimmed_tokens));
+
+  // Verify updated token info
+  conversations = db_->GetAllConversations();
+  conversation = GetConversation(FROM_HERE, conversations, uuid);
+  EXPECT_EQ(conversation->total_tokens, updated_total_tokens);
+  EXPECT_EQ(conversation->trimmed_tokens, updated_trimmed_tokens);
+}
+
 TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   const std::string uuid = "for_associated_content";
   const std::string content_uuid = "content_uuid";
   const GURL page_url = GURL("https://example.com/page");
   mojom::ConversationPtr metadata = mojom::Conversation::New(
-      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0,
       mojom::AssociatedContent::New(content_uuid,
                                     mojom::ContentType::PageContent,
                                     "page title", 1, page_url, 62, true));
@@ -454,7 +490,6 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   // Change data and call AddOrUpdateAssociatedContent
   expected_contents = "Second contents";
   metadata->associated_content->content_used_percentage = 50;
-  metadata->associated_content->is_content_refined = false;
   EXPECT_TRUE(db_->AddOrUpdateAssociatedContent(
       uuid, metadata->associated_content->Clone(),
       std::make_optional(expected_contents)));
@@ -473,8 +508,8 @@ TEST_P(AIChatDatabaseTest, DeleteAllData) {
   const std::string uuid = "first";
   const GURL page_url = GURL("https://example.com/page");
   mojom::ConversationPtr metadata = mojom::Conversation::New(
-      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
-      nullptr);
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, nullptr);
 
   auto history = CreateSampleChatHistory(1u);
 
@@ -511,11 +546,13 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   // are persisted.
   mojom::ConversationPtr metadata_first = mojom::Conversation::New(
       "first", "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
+      0, 0,
       mojom::AssociatedContent::New("first-content",
                                     mojom::ContentType::PageContent,
                                     "page title", 1, page_url, 62, true));
   mojom::ConversationPtr metadata_second = mojom::Conversation::New(
-      "second", "title", base::Time::Now() - base::Hours(1), true, "model-2",
+      "second", "title", base::Time::Now() - base::Hours(1), true, "model-2", 0,
+      0,
       mojom::AssociatedContent::New("second-content",
                                     mojom::ContentType::PageContent,
                                     "page title", 2, page_url, 62, true));
@@ -634,8 +671,8 @@ class AIChatDatabaseMigrationTest : public testing::Test,
   }
 
   bool IsInitOk() {
-    return (db_->db_init_status_.has_value() &&
-            db_->db_init_status_.value() == sql::InitStatus::INIT_OK);
+    return db_->db_init_status_.has_value() &&
+           db_->db_init_status_.value() == sql::InitStatus::INIT_OK;
   }
 
   base::FilePath db_file_path() {
@@ -662,7 +699,12 @@ INSTANTIATE_TEST_SUITE_P(,
 
 // Tests the migration of the database from version() to kCurrentVersionNumber
 TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
-  if (version() < 2) {
+  if (version() == kCurrentDatabaseVersion) {
+    return;
+  }
+
+  // V2 Specific Migration checks
+  {
     // Verify we have existing entries
     auto conversations = db_->GetAllConversations();
     EXPECT_GT(conversations.size(), 0u);
@@ -672,7 +714,7 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     auto now = base::Time::Now();
     const std::string uuid = "migrationtest";
     const mojom::ConversationPtr metadata = mojom::Conversation::New(
-        uuid, "title", now - base::Hours(2), true, std::nullopt, nullptr);
+        uuid, "title", now - base::Hours(2), true, std::nullopt, 0, 0, nullptr);
 
     // Persist the first entry (and get the response ready)
     auto history = CreateSampleChatHistory(1u);
@@ -699,6 +741,49 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
       history.push_back(std::move(entry));
     }
     ExpectConversationHistoryEquals(FROM_HERE, result_2->entries, history);
+  }
+
+  // V3 Specific Migration checks
+  {
+    // Make sure conversations have the default value after migration
+    auto existing_conversations = db_->GetAllConversations();
+    ASSERT_EQ(existing_conversations.size(), 3u);
+    EXPECT_EQ(existing_conversations[0]->total_tokens, 0u);
+    EXPECT_EQ(existing_conversations[0]->trimmed_tokens, 0u);
+    EXPECT_EQ(existing_conversations[1]->total_tokens, 0u);
+    EXPECT_EQ(existing_conversations[1]->trimmed_tokens, 0u);
+    // This one was created above and not from
+    // test/data/ai_chat/aichat_database_dump_version_[%i].sql
+    EXPECT_EQ(existing_conversations[2]->total_tokens, 0u);
+    EXPECT_EQ(existing_conversations[2]->trimmed_tokens, 0u);
+
+    // Create site info with the new token field
+    const std::string uuid = "migrationtest2";
+    const std::string content_uuid = "content_uuid";
+    mojom::AssociatedContentPtr associated_content =
+        mojom::AssociatedContent::New(
+            content_uuid, mojom::ContentType::PageContent, "test title", 1,
+            GURL("https://example.com"), 62, true);
+
+    uint64_t expected_total_tokens = 3770;
+    uint64_t expected_trimmed_tokens = 100;
+    auto metadata = mojom::Conversation::New(
+        uuid, "title", base::Time::Now(), true, std::nullopt,
+        expected_total_tokens, expected_trimmed_tokens,
+        std::move(associated_content));
+
+    // Add a conversation entry
+    auto history = CreateSampleChatHistory(1u);
+    std::string expected_contents = "Test content";
+    EXPECT_TRUE(db_->AddConversation(metadata->Clone(),
+                                     std::make_optional(expected_contents),
+                                     history[0]->Clone()));
+
+    // Verify the token values were properly stored after migration
+    auto conversations = db_->GetAllConversations();
+    auto* test_conversation = GetConversation(FROM_HERE, conversations, uuid);
+    EXPECT_EQ(test_conversation->total_tokens, expected_total_tokens);
+    EXPECT_EQ(test_conversation->trimmed_tokens, expected_trimmed_tokens);
   }
 }
 
