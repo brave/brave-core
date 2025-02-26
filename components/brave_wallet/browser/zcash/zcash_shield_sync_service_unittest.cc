@@ -251,7 +251,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
 #define MAYBE_ScanBlocks ScanBlocks
 #endif
 
-TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
+TEST_F(ZCashShieldSyncServiceTest, MAYBE_ScanBlocks) {
   auto mock_block_scanner = CreateMockOrchardBlockScannerProxy();
 
   sync_service()->SetOrchardBlockScannerProxyForTesting(
