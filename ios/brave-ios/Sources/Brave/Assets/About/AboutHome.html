@@ -9,37 +9,19 @@
         transition: background-color 0.1s, color 0.1s;
       }
 
-      body.light-mode {
-        background-color: #LIGHT_MODE_COLOUR;
+      .theme {
         color: black;
+        background-color: #LIGHT_MODE_COLOUR;
       }
 
-      body.dark-mode {
-        background-color: #DARK_MODE_COLOUR;
-        color: white;
+      @media (prefers-color-scheme: dark) {
+        .theme {
+          color: white;
+          background-color: #DARK_MODE_COLOUR;
+        }
       }
     </style>
   </head>
-  <body>
-    <script>
-      function applyTheme() {
-        if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          document.body.classList.remove("light-mode");
-          document.body.classList.add('dark-mode');
-        } else {
-          document.body.classList.remove("dark-mode");
-          document.body.classList.add("light-mode");
-        }
-      }
-
-      applyTheme();
-
-      let themeMatch = window.matchMedia("(prefers-color-scheme: dark)");
-      if (themeMatch) {
-        themeMatch.addEventListener("change", (event) => {
-          applyTheme();
-        });
-      }
-    </script>
+  <body class="theme">
   </body>
 </html>
