@@ -153,19 +153,11 @@ public class BraveSetDefaultBrowserUtils {
     }
 
     public static void openDefaultAppsSettings(Activity activity) {
-        if (activity instanceof OnBraveSetDefaultBrowserListener) {
-            ((OnBraveSetDefaultBrowserListener) activity).onCheckDefaultResume();
-        }
-
         Intent intent = new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
         activity.startActivity(intent);
     }
 
     private static void openBraveBlog(Activity activity) {
-        if (activity instanceof OnBraveSetDefaultBrowserListener) {
-            ((OnBraveSetDefaultBrowserListener) activity).onCheckDefaultResume();
-        }
-
         LayoutInflater inflater = activity.getLayoutInflater();
         View layout = inflater.inflate(R.layout.brave_set_default_browser_dialog,
                 (ViewGroup) activity.findViewById(R.id.brave_set_default_browser_toast_container));

@@ -69,20 +69,11 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                                               .getDormantUsersNotificationTime(notificationType)) {
                                 braveActivity.showDormantUsersEngagementDialog(notificationType);
                             } else {
-                                RetentionNotificationUtil.scheduleNotificationWithTime(context,
+                                RetentionNotificationUtil.scheduleNotificationWithTime(
+                                        context,
                                         notificationType,
                                         OnboardingPrefManager.getInstance()
                                                 .getDormantUsersNotificationTime(notificationType));
-                            }
-                            break;
-                        case RetentionNotificationUtil.DEFAULT_BROWSER_1:
-                        case RetentionNotificationUtil.DEFAULT_BROWSER_2:
-                        case RetentionNotificationUtil.DEFAULT_BROWSER_3:
-                            if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(
-                                        braveActivity)
-                                    && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
-                                BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
-                                        braveActivity, false);
                             }
                             break;
                     }
@@ -93,18 +84,10 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                 switch (notificationType) {
                 case RetentionNotificationUtil.HOUR_3:
                 case RetentionNotificationUtil.HOUR_24:
-                case RetentionNotificationUtil.DAY_6:
-                    createNotification(context, intent);
-                    break;
-                case RetentionNotificationUtil.DEFAULT_BROWSER_1:
-                case RetentionNotificationUtil.DEFAULT_BROWSER_2:
-                case RetentionNotificationUtil.DEFAULT_BROWSER_3:
-                    if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(context)
-                            && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
+                    case RetentionNotificationUtil.DAY_6:
                         createNotification(context, intent);
-                    }
-                    break;
-                case RetentionNotificationUtil.DAY_10:
+                        break;
+                    case RetentionNotificationUtil.DAY_10:
                 case RetentionNotificationUtil.DAY_30:
                 case RetentionNotificationUtil.DAY_35:
                     // Can't check for rewards code in background

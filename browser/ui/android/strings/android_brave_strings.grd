@@ -1829,9 +1829,6 @@ Are you sure you want to do this?
       <message name="IDS_START_BROWSING_TO_SEE" desc="Brave stats empty text">
         Start browsing to see privacy reporting
       </message>
-      <message name="IDS_SET_BRAVE_AS_YOUR" desc="Deafult browser notification text">
-        Set Brave as your default browser for private and secure browsing.
-      </message>
       <message name="IDS_ALLOWS_BRAVE_TO_SHOW" desc="Brave stats pref summary text">
         Allows Brave to show your privacy statistics
       </message>

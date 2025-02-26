@@ -38,9 +38,6 @@ public class RetentionNotificationUtil {
     public static final String DAY_10 = "day_10";
     public static final String DAY_30 = "day_30";
     public static final String DAY_35 = "day_35";
-    public static final String DEFAULT_BROWSER_1 = "default_browser_1";
-    public static final String DEFAULT_BROWSER_2 = "default_browser_2";
-    public static final String DEFAULT_BROWSER_3 = "default_browser_3";
 
     public static final String DORMANT_USERS_DAY_14 = "dormant_users_days_14";
     public static final String DORMANT_USERS_DAY_25 = "dormant_users_days_25";
@@ -95,27 +92,6 @@ public class RetentionNotificationUtil {
                             new RetentionNotification(
                                     35,
                                     35 * 24 * 60,
-                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
-                                    BRAVE_BROWSER)),
-                    Map.entry(
-                            DEFAULT_BROWSER_1,
-                            new RetentionNotification(
-                                    17,
-                                    3 * 24 * 60,
-                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
-                                    BRAVE_BROWSER)),
-                    Map.entry(
-                            DEFAULT_BROWSER_2,
-                            new RetentionNotification(
-                                    18,
-                                    6 * 24 * 60,
-                                    BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
-                                    BRAVE_BROWSER)),
-                    Map.entry(
-                            DEFAULT_BROWSER_3,
-                            new RetentionNotification(
-                                    19,
-                                    30 * 24 * 60,
                                     BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
                                     BRAVE_BROWSER)),
                     Map.entry(
@@ -206,24 +182,22 @@ public class RetentionNotificationUtil {
                 return context.getResources().getString(R.string.notification_hour_24_text_2);
             }
         case EVERY_SUNDAY:
-            long adsTrackersCountWeekly =
-                    mDatabaseHelper
-                            .getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", -7),
-                                    BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0))
-                            .size();
-            Log.e("NTP", "Weekly count : " + adsTrackersCountWeekly);
-            return String.format(context.getResources().getString(R.string.notification_weekly_stats), adsTrackersCountWeekly);
+                long adsTrackersCountWeekly =
+                        mDatabaseHelper
+                                .getAllStatsWithDate(
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", -7),
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0))
+                                .size();
+                return String.format(
+                        context.getResources().getString(R.string.notification_weekly_stats),
+                        adsTrackersCountWeekly);
         case DAY_6:
             return context.getResources().getString(R.string.notification_marketing);
         case DAY_10:
-        case DAY_30:
-        case DAY_35:
-            return context.getResources().getString(R.string.notification_rewards);
-        case DEFAULT_BROWSER_1:
-        case DEFAULT_BROWSER_2:
-        case DEFAULT_BROWSER_3:
-            return context.getResources().getString(R.string.set_brave_as_your);
-        case DORMANT_USERS_DAY_14:
+            case DAY_30:
+            case DAY_35:
+                return context.getResources().getString(R.string.notification_rewards);
+            case DORMANT_USERS_DAY_14:
             return context.getResources().getString(
                     R.string.dormant_users_engagement_notification_body_1);
         case DORMANT_USERS_DAY_25:
