@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index bd552f69662c0cdb4225d0527d76f996bf0740af..076a627297cce11bcce4d9fb660fa01f40de2a96 100644
+index 7880436660edd644869f559c6c72e921e6461d49..71c15c9bc8cca749a621690688b3b00c5a9749c2 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -668,6 +668,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -662,6 +662,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // Deprecated 02/2025.
    registry->RegisterIntegerPref(kNumberOfProfiles, 0);
    registry->RegisterListPref(kLastActiveProfiles);
@@ -10,10 +10,10 @@ index bd552f69662c0cdb4225d0527d76f996bf0740af..076a627297cce11bcce4d9fb660fa01f
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1027,6 +1028,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
- 
-   // Added 02/2025
-   safety_check_prefs::RegisterPrefs(registry);
+@@ -1033,6 +1034,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterIntegerPref(
+       prefs::kIosMagicStackSegmentationTabResumptionImpressionsSinceFreshness,
+       -1);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
