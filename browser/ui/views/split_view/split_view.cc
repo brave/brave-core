@@ -390,9 +390,7 @@ void SplitView::UpdateContentsWebViewBorder() {
       return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
                  base::to_address(browser_))
                  ? views::CreateThemedRoundedRectBorder(
-                       kBorderThickness,
-                       BraveContentsViewUtil::kBorderRadius +
-                           kBorderThickness / 2,
+                       kBorderThickness, BraveContentsViewUtil::kBorderRadius,
                        color_id)
                  : views::CreateThemedSolidBorder(kBorderThickness, color_id);
     };
