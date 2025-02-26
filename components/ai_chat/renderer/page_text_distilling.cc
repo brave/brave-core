@@ -18,8 +18,8 @@
 #include <vector>
 
 #include "base/compiler_specific.h"
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -50,18 +50,18 @@ namespace ai_chat {
 
 namespace {
 
-static const ax::mojom::Role kContentParentRoles[]{
+constexpr auto kContentParentRoles = base::MakeFixedFlatSet<ax::mojom::Role>({
     ax::mojom::Role::kMain,
     ax::mojom::Role::kArticle,
-};
+});
 
-static const ax::mojom::Role kContentRoles[]{
+constexpr auto kContentRoles = base::MakeFixedFlatSet<ax::mojom::Role>({
     ax::mojom::Role::kHeading,
     ax::mojom::Role::kParagraph,
     ax::mojom::Role::kNote,
-};
+});
 
-static const ax::mojom::Role kRolesToSkip[]{
+constexpr auto kRolesToSkip = base::MakeFixedFlatSet<ax::mojom::Role>({
     ax::mojom::Role::kAudio,
     ax::mojom::Role::kBanner,
     ax::mojom::Role::kButton,
@@ -83,7 +83,7 @@ static const ax::mojom::Role kRolesToSkip[]{
     ax::mojom::Role::kSlider,
     ax::mojom::Role::kSpinButton,
     ax::mojom::Role::kSearchBox,
-};
+});
 
 void GetContentRootNodes(const ui::AXNode* root,
                          std::vector<const ui::AXNode*>* content_root_nodes) {
@@ -94,7 +94,7 @@ void GetContentRootNodes(const ui::AXNode* root,
     queue.pop();
     // If a main or article node is found, add it to the list of content root
     // nodes and continue. Do not explore children for nested article nodes.
-    if (base::Contains(kContentParentRoles, node->GetRole())) {
+    if (kContentParentRoles.contains(node->GetRole())) {
       content_root_nodes->push_back(node);
       continue;
     }
@@ -107,11 +107,11 @@ void GetContentRootNodes(const ui::AXNode* root,
 
 void AddContentNodesToVector(const ui::AXNode* node,
                              std::vector<const ui::AXNode*>* content_nodes) {
-  if (base::Contains(kContentRoles, node->GetRole())) {
+  if (kContentRoles.contains(node->GetRole())) {
     content_nodes->emplace_back(node);
     return;
   }
-  if (base::Contains(kRolesToSkip, node->GetRole())) {
+  if (kRolesToSkip.contains(node->GetRole())) {
     return;
   }
   for (auto iter = node->UnignoredChildrenBegin();
@@ -124,7 +124,7 @@ void AddTextNodesToVector(const ui::AXNode* node,
                           std::vector<std::u16string>* strings) {
   const ui::AXNodeData& node_data = node->data();
 
-  if (base::Contains(kRolesToSkip, node_data.role)) {
+  if (kRolesToSkip.contains(node_data.role)) {
     return;
   }
 

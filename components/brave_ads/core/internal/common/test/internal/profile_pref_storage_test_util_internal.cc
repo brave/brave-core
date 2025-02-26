@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_storage_test_util_internal.h"
 
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/current_test_util_internal.h"
@@ -23,8 +22,7 @@ base::flat_map</*uuid=*/std::string, PrefValueInfo>& ProfilePrefStorage() {
 }  // namespace
 
 bool FindProfilePref(const std::string& path) {
-  return base::Contains(ProfilePrefStorage(),
-                        GetUuidForCurrentTestAndValue(path));
+  return ProfilePrefStorage().contains(GetUuidForCurrentTestAndValue(path));
 }
 
 PrefValueInfo& ProfilePref(const std::string& path) {
@@ -33,8 +31,7 @@ PrefValueInfo& ProfilePref(const std::string& path) {
 }
 
 bool HasProfilePref(const std::string& path) {
-  return base::Contains(ProfilePrefStorage(),
-                        GetUuidForCurrentTestAndValue(path));
+  return ProfilePrefStorage().contains(GetUuidForCurrentTestAndValue(path));
 }
 
 }  // namespace brave_ads::test

@@ -152,8 +152,8 @@ ArticleInfos GetArticleInfos(const std::string& locale,
         continue;
       }
 
-      const bool discoverable = !base::Contains(non_discoverable_publishers,
-                                                article->data->publisher_id);
+      const bool discoverable =
+          !non_discoverable_publishers.contains(article->data->publisher_id);
 
       auto channels = GetChannelsForPublisher(
           locale, publishers.at(article->data->publisher_id));
@@ -230,7 +230,7 @@ FeedGenerationInfo::GetEligibleContentGroups() {
 
     std::vector<ContentGroup> content_groups;
     for (const auto& channel_id : channels_) {
-      if (base::Contains(available_counts_, channel_id)) {
+      if (available_counts_.contains(channel_id)) {
         content_groups.emplace_back(channel_id, true);
         DVLOG(1) << "Subscribed to channel: " << channel_id;
       } else {
@@ -244,7 +244,7 @@ FeedGenerationInfo::GetEligibleContentGroups() {
     for (const auto& [publisher_id, publisher] : publishers_) {
       if (publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
           publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
-        if (base::Contains(available_counts_, publisher_id)) {
+        if (available_counts_.contains(publisher_id)) {
           content_groups.emplace_back(publisher_id, false);
           DVLOG(1) << "Subscribed to publisher: " << publisher->publisher_name;
         } else {
