@@ -411,7 +411,7 @@ TEST(CommonUtils, GetEnabledCoins) {
   static_assert(AllCoinsTested<6>());
 }
 
-TEST(CommonUtils, GetSupportedKeyrings) {
+TEST(CommonUtils, GetEnabledKeyrings) {
   base::test::ScopedFeatureList disabled_feature_list;
   const std::vector<base::test::FeatureRef> coin_features = {
       features::kBraveWalletBitcoinFeature,
@@ -434,7 +434,7 @@ TEST(CommonUtils, GetSupportedKeyrings) {
     base::test::ScopedFeatureList feature_list;
     feature_list.InitWithFeatures(enabled_features, {});
 
-    auto keyrings = GetSupportedKeyringsForTesting();
+    auto keyrings = GetEnabledKeyrings();
     size_t last_pos = 0;
 
     EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kDefault);

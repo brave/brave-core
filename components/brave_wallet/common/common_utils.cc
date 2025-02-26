@@ -34,36 +34,6 @@ bool IsDisabledByPolicy(PrefService* prefs) {
 #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 }
 
-std::vector<mojom::KeyringId> GetSupportedKeyringsInternal() {
-  std::vector<mojom::KeyringId> ids = {mojom::KeyringId::kDefault};
-  ids.push_back(mojom::KeyringId::kFilecoin);
-  ids.push_back(mojom::KeyringId::kFilecoinTestnet);
-  ids.push_back(mojom::KeyringId::kSolana);
-  if (IsBitcoinEnabled()) {
-    ids.push_back(mojom::KeyringId::kBitcoin84);
-    ids.push_back(mojom::KeyringId::kBitcoin84Testnet);
-    if (IsBitcoinImportEnabled()) {
-      ids.push_back(mojom::KeyringId::kBitcoinImport);
-      ids.push_back(mojom::KeyringId::kBitcoinImportTestnet);
-    }
-    if (IsBitcoinLedgerEnabled()) {
-      ids.push_back(mojom::KeyringId::kBitcoinHardware);
-      ids.push_back(mojom::KeyringId::kBitcoinHardwareTestnet);
-    }
-  }
-  if (IsZCashEnabled()) {
-    ids.push_back(mojom::KeyringId::kZCashMainnet);
-    ids.push_back(mojom::KeyringId::kZCashTestnet);
-  }
-  if (IsCardanoEnabled()) {
-    ids.push_back(mojom::KeyringId::kCardanoMainnet);
-    ids.push_back(mojom::KeyringId::kCardanoTestnet);
-  }
-
-  DCHECK_GT(ids.size(), 0u);
-  return ids;
-}
-
 }  // namespace
 
 bool IsNativeWalletEnabled() {
@@ -341,22 +311,34 @@ std::vector<mojom::CoinType> GetEnabledCoins() {
   return coins;
 }
 
-std::vector<mojom::KeyringId> GetSupportedKeyringsForTesting() {
-  return GetSupportedKeyringsInternal();
-}
+std::vector<mojom::KeyringId> GetEnabledKeyrings() {
+  std::vector<mojom::KeyringId> ids = {mojom::KeyringId::kDefault};
+  ids.push_back(mojom::KeyringId::kFilecoin);
+  ids.push_back(mojom::KeyringId::kFilecoinTestnet);
+  ids.push_back(mojom::KeyringId::kSolana);
+  if (IsBitcoinEnabled()) {
+    ids.push_back(mojom::KeyringId::kBitcoin84);
+    ids.push_back(mojom::KeyringId::kBitcoin84Testnet);
+    if (IsBitcoinImportEnabled()) {
+      ids.push_back(mojom::KeyringId::kBitcoinImport);
+      ids.push_back(mojom::KeyringId::kBitcoinImportTestnet);
+    }
+    if (IsBitcoinLedgerEnabled()) {
+      ids.push_back(mojom::KeyringId::kBitcoinHardware);
+      ids.push_back(mojom::KeyringId::kBitcoinHardwareTestnet);
+    }
+  }
+  if (IsZCashEnabled()) {
+    ids.push_back(mojom::KeyringId::kZCashMainnet);
+    ids.push_back(mojom::KeyringId::kZCashTestnet);
+  }
+  if (IsCardanoEnabled()) {
+    ids.push_back(mojom::KeyringId::kCardanoMainnet);
+    ids.push_back(mojom::KeyringId::kCardanoTestnet);
+  }
 
-const std::vector<mojom::KeyringId>& GetSupportedKeyrings() {
-  static base::NoDestructor<std::vector<mojom::KeyringId>> keyrings(
-      GetSupportedKeyringsInternal());
-
-  return *keyrings.get();
-}
-
-bool IsKeyringSupported(mojom::KeyringId keyring_id) {
-  static base::NoDestructor<base::flat_set<mojom::KeyringId>> ids(
-      GetSupportedKeyrings());
-
-  return ids->contains(keyring_id);
+  DCHECK_GT(ids.size(), 0u);
+  return ids;
 }
 
 bool CoinSupportsDapps(mojom::CoinType coin) {
