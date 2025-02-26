@@ -75,11 +75,11 @@ extension FavoritesViewController {
     previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
   ) -> UITargetedPreview? {
     guard let indexPath = configuration.identifier as? IndexPath,
-      let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
+      let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
     else {
       return nil
     }
-    return UITargetedPreview(view: cell.imageView)
+    return UITargetedPreview(view: cell.imageContainer)
   }
 
   func collectionView(
@@ -87,10 +87,10 @@ extension FavoritesViewController {
     previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
   ) -> UITargetedPreview? {
     guard let indexPath = configuration.identifier as? IndexPath,
-      let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
+      let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
     else {
       return nil
     }
-    return UITargetedPreview(view: cell.imageView)
+    return UITargetedPreview(view: cell.imageContainer)
   }
 }
