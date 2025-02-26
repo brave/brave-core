@@ -180,7 +180,7 @@ void ReaderModeBubble::Init() {
     label->SetFontList(font);
     label->SetMultiLine(true);
     label->SetLineHeight(kNotesLineHeight);
-    label->SetEnabledColorId(ui::kColorSecondaryForeground);
+    label->SetEnabledColor(ui::kColorSecondaryForeground);
     layout->SetFlexForView(box->AddChildView(std::move(label)), 1);
   }
 }

@@ -240,8 +240,7 @@ class ShortcutBox : public views::View {
     const auto shortcut_font = shortcut_part->font_list();
     shortcut_part->SetFontList(shortcut_font.DeriveWithSizeDelta(
         kFontSize - shortcut_font.GetFontSize()));
-    shortcut_part->SetEnabledColorId(
-        kColorBraveVerticalTabNTBShortcutTextColor);
+    shortcut_part->SetEnabledColor(kColorBraveVerticalTabNTBShortcutTextColor);
     shortcut_part->SetBorder(views::CreateThemedRoundedRectBorder(
         /*thickness*/ 1, /*radius*/ 4, kColorBraveVerticalTabSeparator));
 
@@ -312,7 +311,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     const auto text_font = text_->font_list();
     text_->SetFontList(
         text_font.DeriveWithSizeDelta(kFontSize - text_font.GetFontSize()));
-    text_->SetEnabledColorId(kColorBraveVerticalTabNTBTextColor);
+    text_->SetEnabledColor(kColorBraveVerticalTabNTBTextColor);
 
     auto* spacer = AddChildView(std::make_unique<views::View>());
     spacer->SetProperty(
