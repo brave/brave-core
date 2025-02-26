@@ -11,7 +11,7 @@ import os.log
 // MARK: - SearchQuickEnginesViewControllerDelegate
 
 protocol SearchQuickEnginesViewControllerDelegate: AnyObject {
-  func searchQuickEnginesUpdates()
+  func searchQuickEnginesUpdated()
 }
 
 // MARK: - SearchQuickEnginesViewController
@@ -185,7 +185,7 @@ class SearchQuickEnginesViewController: UITableViewController {
           try await searchEngines.deleteCustomEngine(engine)
           tableView.deleteRows(at: [forRowAtIndexPath], with: .right)
           tableView.reloadData()
-          delegate?.searchQuickEnginesUpdates()
+          delegate?.searchQuickEnginesUpdated()
         } catch {
           Logger.module.error("Search Engine Error while deleting")
         }
@@ -223,7 +223,7 @@ extension SearchQuickEnginesViewController {
         type: isPrivateBrowsing ? .privateMode : .standard
       )
     }
-    delegate?.searchQuickEnginesUpdates()
+    delegate?.searchQuickEnginesUpdated()
   }
 
   @objc func onEditButton() {
@@ -239,7 +239,7 @@ extension SearchQuickEnginesViewController {
     )
     addCustomSearchEngineVC.onAddSucceed = { [weak self] in
       self?.tableView.reloadData()
-      self?.delegate?.searchQuickEnginesUpdates()
+      self?.delegate?.searchQuickEnginesUpdated()
     }
     let navVC = UINavigationController(rootViewController: addCustomSearchEngineVC)
     navVC.sheetPresentationController?.detents = [.large()]
