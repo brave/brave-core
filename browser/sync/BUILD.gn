@@ -17,17 +17,19 @@ source_set("sync") {
   ]
 }
 
-source_set("browser_tests") {
-  testonly = true
-  sources = [ "network_time_helper_browsertest.cc" ]
+if (!is_ios) {
+  source_set("browser_tests") {
+    testonly = true
+    sources = [ "network_time_helper_browsertest.cc" ]
 
-  deps = [
-    "//base",
-    "//base/test:test_support",
-    "//brave/components/brave_sync:prefs",
-    "//chrome/browser",
-    "//chrome/test:test_support",
-  ]
+    deps = [
+      "//base",
+      "//base/test:test_support",
+      "//brave/components/brave_sync:prefs",
+      "//chrome/browser",
+      "//chrome/test:test_support",
+    ]
 
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  }
 }
