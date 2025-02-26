@@ -107,7 +107,7 @@ pub fn query_element_attributes(
     html: &CxxString,
     requests: &CxxVector<SelectRequest>,
 ) -> Vec<AttributeResult> {
-    let mut sink = parse_html().one(html.to_str().unwrap_or_default());
+    let sink = parse_html().one(html.to_str().unwrap_or_default());
     let mut results = Vec::new();
     let document = sink.get_document();
     for request in requests {
