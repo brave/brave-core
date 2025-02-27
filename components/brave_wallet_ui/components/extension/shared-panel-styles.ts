@@ -228,5 +228,5 @@ export const FloatingCard = styled.div`
   justify-content: center;
   border-radius: 8px;
   background-color: ${leo.color.container.background};
-  box-shadow: 0px 10px 48px 0px ${leo.effect.elevation['06']};
+  box-shadow: 0px 10px 48px 0px ${leo.effect.elevation['05']};
 `

@@ -122,7 +122,7 @@ const StyledInput = styled.input`
   color: ${color.text.primary};
   font: ${font.heading.h4};
   border: none;
-  border-radius: ${radius[8]};
+  border-radius: ${radius.m};
   background: ${color.container.highlight};
   padding: 8px 50px 8px 10px;
   width: 100%;
@@ -212,7 +212,7 @@ function NameEditField ({
           }
         }}
       />
-      <StyledLengthLabel onClick={() => {inputRef.current?.focus()}}>
+      <StyledLengthLabel onClick={() => { inputRef.current?.focus() }}>
         {currentLength}/{maxNameLength}
       </StyledLengthLabel>
     </NameEditFieldContainer>

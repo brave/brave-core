@@ -463,7 +463,8 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                         account.accountId.uniqueKey === fromAccountId?.uniqueKey
                       }
                       accountAlias={
-                        fevmTranslatedAddresses?.[account.accountId.address]
+                        fevmTranslatedAddresses?.get(account.accountId.address)
+                          ?.fvmAddress
                       }
                     />
                   ))}
@@ -557,7 +558,7 @@ function getAddressMessageInfo({
   if (showFilecoinFEVMWarning) {
     return {
       ...FEVMAddressConvertionMessage,
-      placeholder: fevmTranslatedAddresses?.[toAddressOrUrl]
+      placeholder: fevmTranslatedAddresses?.get(toAddressOrUrl)?.fvmAddress
     }
   }
   if (

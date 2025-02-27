@@ -26,7 +26,7 @@ module.exports = {
     'chrome': 'readonly'
   },
   'parserOptions': {
-    'project': './tsconfig-lint.json'
+    'project': './tsconfig-lint.json',
   },
   'rules': {
     'no-unsanitized/method': 'error',
@@ -88,6 +88,8 @@ module.exports = {
     '@typescript-eslint/prefer-optional-chain': 0,
     '@typescript-eslint/prefer-nullish-coalescing': 0,
     '@typescript-eslint/no-misused-promises': 0,
+    '@typescript-eslint/no-unsafe-argument': 0,
+    '@typescript-eslint/unbound-method': 0,
     'no-mixed-operators': 0,
     'no-prototype-builtins': 0,
     '@typescript-eslint/promise-function-async': 0,

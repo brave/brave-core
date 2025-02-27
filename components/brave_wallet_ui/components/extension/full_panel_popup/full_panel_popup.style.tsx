@@ -21,7 +21,7 @@ export const FullScreenPanelPopupWrapper = styled.div<{
     p.kind === 'danger' ? leo.color.systemfeedback.errorBackground : 'unset'};
   color: ${(p) =>
     p.kind === 'danger' ? leo.color.systemfeedback.errorBackground : 'unset'};
-  box-shadow: ${leo.effect.elevation['06']};
+  box-shadow: ${leo.effect.elevation['05']};
 `
 
 export const IconButton = styled(Button)`

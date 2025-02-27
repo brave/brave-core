@@ -23,7 +23,7 @@ export class TrezorCommandHandler extends MessagingTransport {
     if (!message || !this.handlers.has(message.command)) {
       return
     }
-    const callback = this.handlers.get(message.command) as Function
+    const callback = this.handlers.get(message.command)!
     const response = await callback.call(this, event.data)
     const target = event.source as Window
     target.postMessage(response, response.origin)

@@ -1,14 +1,17 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { Reducer } from 'redux'
 import { types } from '../constants/stack_widget_types'
 
-const widgets = {
+const widgets: Record<NewTab.StackWidget, keyof NewTab.State> = {
   'rewards': 'showRewards',
   'braveTalk': 'showBraveTalk',
-  'braveVPN': 'showBraveVPN'
+  'braveVPN': 'showBraveVPN',
+  'bitcoinDotCom': 'showBitcoinDotCom',
+  '': undefined as any
 }
 
 const removeStackWidget = (widget: NewTab.StackWidget, state: NewTab.State): NewTab.State => {
@@ -49,7 +52,7 @@ const setForegroundStackWidget = (widget: NewTab.StackWidget, state: NewTab.Stat
 
 const handleWidgetPrefsChange = (state: NewTab.State, oldState: NewTab.State): NewTab.State => {
   for (const val in widgets) {
-    const widget = val as NewTab.StackWidget
+    const widget = val as keyof typeof widgets
     const showKey = widgets[widget]
     const newShowValue = state[showKey]
     const oldShowValue = oldState[showKey]

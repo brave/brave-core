@@ -18,12 +18,12 @@ import { VerifiedTooltip } from './verified_tooltip'
 
 import * as style from './creator_view.style'
 
-export function CreatorView () {
+export function CreatorView() {
   const { getString } = useLocaleContext()
   const creatorBanner = useModelState(state => state.creatorBanner)
   const creatorVerified = useModelState(state => state.creatorVerified)
 
-  const styleProps = {}
+  const styleProps: { [key: string]: string } = {}
 
   if (creatorBanner.background) {
     styleProps['--creator-background-image-url'] =
@@ -34,7 +34,7 @@ export function CreatorView () {
     styleProps['--creator-avatar-image-url'] = `url("${creatorBanner.logo}")`
   }
 
-  function getName () {
+  function getName() {
     if (creatorBanner.title) {
       return creatorBanner.title
     }
@@ -47,7 +47,7 @@ export function CreatorView () {
     return creatorBanner.name
   }
 
-  function renderLink (platform: string, url: string) {
+  function renderLink(platform: string, url: string) {
     const Icon = getSocialIcon(platform)
     if (!Icon) {
       return null
@@ -81,12 +81,12 @@ export function CreatorView () {
         <style.name>{getName()}</style.name>
         {
           creatorVerified &&
-            <style.verifiedCheck>
-              <Icon name='verification-filled-color' />
-              <div className='tooltip'>
-                <VerifiedTooltip />
-              </div>
-            </style.verifiedCheck>
+          <style.verifiedCheck>
+            <Icon name='verification-filled-color' />
+            <div className='tooltip'>
+              <VerifiedTooltip />
+            </div>
+          </style.verifiedCheck>
         }
       </style.title>
       <style.text>

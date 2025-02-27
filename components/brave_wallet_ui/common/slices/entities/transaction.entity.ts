@@ -46,12 +46,13 @@ export const combineTransactionRegistries = (
   initialRegistry: TransactionEntityState,
   registriesToAdd: TransactionEntityState[]
 ): TransactionEntityState => {
-  const idsByChainId = {}
-  const pendingIdsByChainId = {}
+  const idsByChainId: typeof initialRegistry.idsByChainId = {}
+  const pendingIdsByChainId: typeof initialRegistry.pendingIdsByChainId = {}
   const pendingIds: EntityId[] = []
   const combinedRegistry: TransactionEntityState = registriesToAdd.reduce(
     (combinedReg, registry) => {
-      for (const key in registry.idsByChainId) {
+      for (const keyUntyped in registry.idsByChainId) {
+        const key: EntityId= keyUntyped
         idsByChainId[key] = Array.from(
           new Set((idsByChainId[key] || []).concat(registry.idsByChainId[key]))
         )

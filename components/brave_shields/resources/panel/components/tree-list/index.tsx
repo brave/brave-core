@@ -19,7 +19,7 @@ import { ContentSettingsType } from 'gen/components/content_settings/core/common
 
 import Toggle from '../../../../../web-components/toggle'
 
-interface WebcompatSettingsMap {[index: ContentSettingsType]: boolean}
+interface WebcompatSettingsMap { [index: ContentSettingsType]: boolean }
 
 const kLearnMoreLink = 'https://support.brave.com/hc/en-us/articles/360022806212-How-do-I-use-Shields-while-browsing#h_01HXSZ8JPHR8YMBEZCT5M0VZTR'
 
@@ -37,7 +37,7 @@ function generateWebcompatEntries (invokedWebcompatList: Number[] | undefined) :
   const names = Object.keys(ContentSettingsType)
   let raw : Array<[string, Number]> = []
   for (const name of names) {
-    const value = ContentSettingsType[name]
+    const value = ContentSettingsType[name as keyof typeof ContentSettingsType]
     if (value > ContentSettingsType.BRAVE_WEBCOMPAT_NONE &&
         value < ContentSettingsType.BRAVE_WEBCOMPAT_ALL &&
         invokedWebcompatList.includes(value)) {

@@ -75,7 +75,7 @@ export default function Keys({
     <>
       {keys.map((k, i) => (
         <Kbd key={i} large={large} square={k.length <= 2 && k !== ' '}>
-          {keySymbols[k]}
+          {keySymbols[k as keyof typeof keySymbols]}
           {k}
         </Kbd>
       ))}
