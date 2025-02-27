@@ -13,6 +13,7 @@
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/resource_coordinator/tab_load_tracker.h"
 #include "url/gurl.h"
 
 TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,
@@ -42,6 +43,16 @@ TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,
         (url.host_piece() == kWelcomeHost ||
          url.host_piece() == kRewardsPageHost)) {
       data.should_themify_favicon = false;
+    }
+  }
+
+  // Show which tabs are unloaded.
+  if (!data.should_show_discard_status) {
+    content::WebContents* const contents = model->GetWebContentsAt(index);
+    using resource_coordinator::TabLoadTracker;
+    const auto loading_state = TabLoadTracker::Get()->GetLoadingState(contents);
+    if (loading_state == TabLoadTracker::LoadingState::UNLOADED) {
+      data.should_show_discard_status = true;
     }
   }
   return data;
