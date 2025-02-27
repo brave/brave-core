@@ -10,4 +10,5 @@ include_rules += [
   "+brave/components/p3a",
   "+ios/chrome/browser",
   "+ios/web/web_state",
+  "+ios/web_view",
 ]
