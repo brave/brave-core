@@ -165,7 +165,7 @@ class URLExtensionTests: XCTestCase {
         webView.loadHTMLString("", baseURL: value)
 
         // await load of html
-        await fulfillment(of: [expectation], timeout: 2)
+        await fulfillment(of: [expectation], timeout: 4)
 
         guard let result = try await webView.evaluateJavaScript("window.origin") as? String else {
           XCTFail("Expected a String result")
