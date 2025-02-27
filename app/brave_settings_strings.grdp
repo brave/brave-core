@@ -385,6 +385,9 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_DESCRIPTION" desc="The description for the email alias bubble">
     Create a random email address that forwards to your inbox while keeping your personal email private.
   </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_LIMIT_REACHED" desc="The description for the email alias bubble when the limit is reached">
+    You have reached the limit of 5 free email aliases. Click "Manage" to re-use or delete an alias.
+  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL" desc="The label for the create alias">
     New alias
   </message>

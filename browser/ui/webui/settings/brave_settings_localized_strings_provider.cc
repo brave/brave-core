@@ -1038,6 +1038,8 @@ void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
        IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE},
       {"emailAliasesBubbleDescription",
        IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_DESCRIPTION},
+      {"emailAliasesBubbleLimitReached",
+       IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_LIMIT_REACHED},
       {"emailAliasesCreateAliasLabel",
        IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL},
       {"emailAliasesRefreshButtonTitle",

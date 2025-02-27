@@ -44,7 +44,8 @@ provideStrings({
   emailAliasesClickOnSecureLogin: 'Click on the secure login link in the email to access your account.',
   emailAliasesDontSeeEmail: 'Don\'t see the email? Check your spam folder or',
   emailAliasesTryAgain: 'try again.',
-  emailAliasesBubbleDescription: 'Create a random email address that forwards to your inbox while keeping your personal email private.'
+  emailAliasesBubbleDescription: 'Create a random email address that forwards to your inbox while keeping your personal email private.',
+  emailAliasesBubbleLimitReached: 'You have reached the limit of 5 free email aliases. Click "Manage" to re-use or delete an alias.',
 })
 
 export default {

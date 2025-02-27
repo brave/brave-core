@@ -205,6 +205,7 @@ export const EmailAliasModal = (
       email: string,
       mappingService: MappingService }
 ) => {
+  const [limitReached, setLimitReached] = React.useState<boolean>(false)
   const [mainEmail, setMainEmail] = React.useState<string>(email)
   const [proposedAlias, setProposedAlias] = React.useState<string>(viewState?.alias?.email ?? '')
   const [proposedNote, setProposedNote] = React.useState<string>(viewState?.alias?.note ?? '')
@@ -229,49 +230,59 @@ export const EmailAliasModal = (
       regenerateAlias()
     }
     mappingService.getAccountEmail().then(email => setMainEmail(email ?? ''))
+    if (bubble) {
+      mappingService.getAliases().then(aliases => {
+        setLimitReached(aliases.length >= MAX_ALIASES)
+      })
+    }
   }, [])
   return (
     <S.InnerModal>
       <h2>{mode == ViewMode.Create ? getLocale('emailAliasesCreateAliasTitle') : getLocale('emailAliasesEditAliasTitle')}</h2>
       {bubble && <div>{getLocale('emailAliasesBubbleDescription')}</div>}
-      <S.ModalSectionCol style={{}}>
-        <h3 style={{ margin: '0.25em' }}>{getLocale('emailAliasesAliasLabel')}</h3>
-      <S.GeneratedEmailContainer>
-        <div>{proposedAlias}</div>
-        {mode == ViewMode.Create && <RefreshButton onClicked={regenerateAlias} />}
-      </S.GeneratedEmailContainer>
-      <div>{formatMessage(  getLocale('emailAliasesEmailsWillBeForwardedTo'), { placeholders: { $1: mainEmail } })}</div>
-    </S.ModalSectionCol>
-    <S.ModalSectionCol>
-      <h3 style={{ margin: '0.25em' }}>{getLocale('emailAliasesNoteLabel')}</h3>
-      <Input id='note-input'
-        type='text'
-        placeholder={getLocale('emailAliasesEditNotePlaceholder')}
-        maxlength={255}
-        value={proposedNote}
-        onChange={(detail: InputEventDetail) => setProposedNote(detail.value)}
-        onKeyDown={onEnterKey(createOrSave)}
-        style='margin: 0.25em 0em'>
-      </Input>
-      {mode == ViewMode.Edit && viewState?.alias?.domains && <div>getLocale('emailAliasesUsedBy', viewState?.alias?.domains?.join(', '))</div>}
-    </S.ModalSectionCol>
-    <S.ButtonRow style={{justifyContent: bubble ? 'space-between' : 'end'}}>
-      <span>
-        {bubble && <Button onClick={() => mappingService.showSettingsPage()} kind='plain' style='flex-grow: 0;'>
-          {getLocale('emailAliasesManageButton')}
-        </Button>}
-      </span>
-      <span>
-      <Button onClick={() => returnToMain()} kind='plain' style='flex-grow: 0;'>
-        {getLocale('emailAliasesCancelButton')}
-      </Button>
-      <Button
-        style='flex-grow: 0; margin-inline-start: 1em;'
-        kind='filled'
-        onClick={() => createOrSave()}>
-        {mode == ViewMode.Create ? getLocale('emailAliasesCreateAliasButton') : getLocale('emailAliasesSaveAliasButton')}
-        </Button>
-      </span>
+      {bubble && (limitReached ?
+        <h3 style={{margin: '1em'}}>{getLocale('emailAliasesBubbleLimitReached')}</h3> :
+        <span>
+          <S.ModalSectionCol style={{}}>
+            <h3 style={{ margin: '0.25em' }}>{getLocale('emailAliasesAliasLabel')}</h3>
+            <S.GeneratedEmailContainer>
+              <div>{proposedAlias}</div>
+              {mode == ViewMode.Create && <RefreshButton onClicked={regenerateAlias} />}
+            </S.GeneratedEmailContainer>
+            <div>{formatMessage(getLocale('emailAliasesEmailsWillBeForwardedTo'), { placeholders: { $1: mainEmail } })}</div>
+          </S.ModalSectionCol>
+          <S.ModalSectionCol>
+            <h3 style={{ margin: '0.25em' }}>{getLocale('emailAliasesNoteLabel')}</h3>
+            <Input id='note-input'
+              type='text'
+              placeholder={getLocale('emailAliasesEditNotePlaceholder')}
+              maxlength={255}
+              value={proposedNote}
+              onChange={(detail: InputEventDetail) => setProposedNote(detail.value)}
+              onKeyDown={onEnterKey(createOrSave)}
+              style='margin: 0.25em 0em'>
+            </Input>
+            {mode == ViewMode.Edit && viewState?.alias?.domains && <div>getLocale('emailAliasesUsedBy', viewState?.alias?.domains?.join(', '))</div>}
+          </S.ModalSectionCol>
+        </span>)}
+      <S.ButtonRow style={{ justifyContent: bubble ? 'space-between' : 'end' }}>
+        <span>
+          {bubble && <Button onClick={() => mappingService.showSettingsPage()} kind='plain' style='flex-grow: 0;'>
+            {getLocale('emailAliasesManageButton')}
+          </Button>}
+        </span>
+        <span>
+          <Button onClick={() => returnToMain()} kind='plain' style='flex-grow: 0;'>
+            {getLocale('emailAliasesCancelButton')}
+          </Button>
+          <Button
+            style='flex-grow: 0; margin-inline-start: 1em;'
+            kind='filled'
+            isDisabled={limitReached}
+            onClick={() => createOrSave()}>
+            {mode == ViewMode.Create ? getLocale('emailAliasesCreateAliasButton') : getLocale('emailAliasesSaveAliasButton')}
+          </Button>
+        </span>
       </S.ButtonRow>
     </S.InnerModal>
   )
