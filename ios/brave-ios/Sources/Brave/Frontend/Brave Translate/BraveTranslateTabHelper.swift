@@ -325,6 +325,12 @@ class BraveTranslateTabHelper: NSObject {
       state: isTranslationSupported ? .available : .unavailable
     )
 
+    // Translation is not supported on this page, so do not show onboarding
+    // Return immediately
+    if !isTranslationSupported {
+      return
+    }
+
     try Task.checkCancellation()
 
     // Check if the user can view the translation onboarding
