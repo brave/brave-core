@@ -1,12 +1,12 @@
-diff --git a/ui/base/BUILD.gn b/ui/base/BUILD.gn
-index 5ca4c8fc961d24985aa4e0459dc2c42003a5346f..b764434560dbeec56cdf26df46e56617df4b4c8e 100644
---- a/ui/base/BUILD.gn
-+++ b/ui/base/BUILD.gn
-@@ -548,6 +548,7 @@ component("base") {
-       "//ui/events",
-       "//ui/events/devices",
-     ]
-+    import("//brave/chromium_src/ui/base/sources.gni") deps += brave_chromium_src_ui_base_deps
-     public_deps += [ "//ui/color:color_headers" ]
-   }
+diff --git i/ui/base/BUILD.gn w/ui/base/BUILD.gn
+index 5ca4c8fc961d2..8e957b64ff517 100644
+--- i/ui/base/BUILD.gn
++++ w/ui/base/BUILD.gn
+@@ -513,6 +513,7 @@ component("base") {
+     "//ui/webui/resources:resources_grit",
+     "//url",
+   ]
++  import("//brave/chromium_src/ui/base/sources.gni") deps += brave_chromium_src_ui_base_deps
  
+   if (is_debug || dcheck_always_on) {
+     deps += [ "//third_party/re2" ]
