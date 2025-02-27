@@ -1,0 +1,62 @@
+diff --git a/content/web_test/browser/web_test_background_fetch_delegate.cc b/content/web_test/browser/web_test_background_fetch_delegate.cc
+index 9dc5c4f96ea70e48dec7f863023ed1db697c5b4a..6e092540df8c5f0b3bbe7eb3cc1990f47453d307 100644
+--- a/content/web_test/browser/web_test_background_fetch_delegate.cc
++++ b/content/web_test/browser/web_test_background_fetch_delegate.cc
+@@ -22,6 +22,7 @@
+ #include "components/download/public/background_service/download_metadata.h"
+ #include "components/download/public/background_service/download_params.h"
+ #include "components/download/public/background_service/features.h"
++#include "components/download/public/background_service/url_loader_factory_getter.h"
+ #include "components/keyed_service/core/simple_factory_key.h"
+ #include "components/keyed_service/core/simple_key_map.h"
+ #include "content/public/browser/background_fetch_description.h"
+@@ -63,6 +64,30 @@ class TestBlobContextGetterFactory : public download::BlobContextGetterFactory {
+   raw_ptr<content::BrowserContext> browser_context_;
+ };
+ 
++// Provides URLLoaderFactory from a BrowserContext.
++class TestURLLoaderFactoryGetter : public download::URLLoaderFactoryGetter {
++ public:
++  TestURLLoaderFactoryGetter(content::BrowserContext* browser_context)
++      : browser_context_(browser_context) {}
++
++  TestURLLoaderFactoryGetter(const TestURLLoaderFactoryGetter&) = delete;
++  TestURLLoaderFactoryGetter& operator=(const TestURLLoaderFactoryGetter&) =
++      delete;
++
++  ~TestURLLoaderFactoryGetter() override = default;
++
++ private:
++  // download::URLLoaderFactoryGetter implementation.
++  void RetrieveURLLoaderFactory(
++      download::URLLoaderFactoryGetterCallback callback) override {
++    auto url_loader_factory = browser_context_->GetDefaultStoragePartition()
++                                  ->GetURLLoaderFactoryForBrowserProcess();
++    std::move(callback).Run(url_loader_factory);
++  }
++
++  raw_ptr<content::BrowserContext> browser_context_;
++};
++
+ // Implementation of a Download Service client that will be servicing
+ // Background Fetch requests when running web tests.
+ class WebTestBackgroundFetchDelegate::WebTestBackgroundFetchDownloadClient
+@@ -273,16 +298,14 @@ void WebTestBackgroundFetchDelegate::CreateDownloadJob(
+       base::test::ScopedFeatureList download_service_configuration;
+       download_service_configuration.InitAndEnableFeatureWithParameters(
+           download::kDownloadServiceFeature, {{"start_up_delay_ms", "0"}});
+-      auto* url_loader_factory = browser_context_->GetDefaultStoragePartition()
+-                                     ->GetURLLoaderFactoryForBrowserProcess()
+-                                     .get();
+       SimpleFactoryKey* simple_key =
+           SimpleKeyMap::GetInstance()->GetForBrowserContext(browser_context_);
+       download_service_ = download::BuildInMemoryDownloadService(
+           simple_key, std::move(clients), GetNetworkConnectionTracker(),
+           base::FilePath(),
+           std::make_unique<TestBlobContextGetterFactory>(browser_context_),
+-          GetIOThreadTaskRunner({}), url_loader_factory);
++          GetIOThreadTaskRunner({}),
++          std::make_unique<TestURLLoaderFactoryGetter>(browser_context_));
+     }
+   }
+ }
