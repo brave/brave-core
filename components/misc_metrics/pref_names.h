@@ -70,6 +70,9 @@ inline constexpr char kMiscMetricsLastDayZeroReport[] =
 inline constexpr char kMiscMetricsNTPWidgetUsageStorage[] =
     "brave.misc_metrics.ntp_widget_usage";
 
+inline constexpr char kMiscMetricsSplitViewUsageStorage[] =
+    "brave.misc_metrics.split_view_usage";
+
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_
