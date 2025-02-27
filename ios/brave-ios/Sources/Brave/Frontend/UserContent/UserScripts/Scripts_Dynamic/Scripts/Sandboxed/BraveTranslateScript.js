@@ -22,15 +22,15 @@ Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
       return document.documentElement.outerText;
     }),
     "checkTranslate": (function() {
-      setTimeout(function() {
-        try {
+      try {
+        if ((cr.googleTranslate.libReady || cr.googleTranslate.finished) && !cr.googleTranslate.readyCallback) {
           window.webkit.messageHandlers["$<message_handler>"].postMessage({
             "command": "ready"
-          })
-        } catch (error) {
-          cr.googleTranslate.onTranslateElementError(error);
+          });
         }
-      }, 100);
+      } catch (error) {
+        cr.googleTranslate.onTranslateElementError(error);
+      }
     }),
     "loadTranslateScript": (function() {
       return new Promise((resolve, reject) => {
