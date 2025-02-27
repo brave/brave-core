@@ -1,0 +1,12 @@
+diff --git a/components/download/public/background_service/BUILD.gn b/components/download/public/background_service/BUILD.gn
+index 1cdb334db8c6edc3984a998e3fa23277cafc05d0..cc2358c70286584e7f3a3edad7d8a6acba496d4c 100644
+--- a/components/download/public/background_service/BUILD.gn
++++ b/components/download/public/background_service/BUILD.gn
+@@ -34,6 +34,7 @@ component("public") {
+       "blob_context_getter_factory.h",
+       "logger.h",
+       "navigation_monitor.h",
++      "//brave/chromium_src/components/download/public/background_service/url_loader_factory_getter.h",
+     ]
+   }
+ 
