@@ -4,13 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/android/brave_shields_content_settings.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 
 #include <string>
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
-#include "brave/build/android/jni_headers/BraveShieldsContentSettings_jni.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "chrome/android/chrome_jni_headers/BraveShieldsContentSettings_jni.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

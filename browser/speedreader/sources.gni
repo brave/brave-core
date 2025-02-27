@@ -31,6 +31,6 @@ if (enable_speedreader) {
     brave_browser_speedreader_sources +=
         [ "//brave/browser/android/speedreader/speedreader_utils.cc" ]
 
-    brave_browser_speedreader_deps += [ "//brave/build/android:jni_headers" ]
+    brave_browser_speedreader_deps += [ "//chrome/android:chrome_jni_headers" ]
   }
 }

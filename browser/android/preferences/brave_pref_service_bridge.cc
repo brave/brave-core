@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/android/jni_string.h"
-#include "brave/build/android/jni_headers/BravePrefServiceBridge_jni.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -16,6 +15,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
+#include "chrome/android/chrome_jni_headers/BravePrefServiceBridge_jni.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"

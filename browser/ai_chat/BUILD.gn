@@ -46,7 +46,7 @@ static_library("ai_chat") {
   ]
 
   if (is_android) {
-    deps += [ "//brave/build/android:jni_headers" ]
+    deps += [ "//chrome/android:chrome_jni_headers" ]
   }
 }
 

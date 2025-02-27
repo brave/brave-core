@@ -22,5 +22,6 @@ if (is_android) {
     "//brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h",
   ]
 
-  brave_browser_cosmetic_filters_deps += [ "//brave/build/android:jni_headers" ]
+  brave_browser_cosmetic_filters_deps +=
+      [ "//chrome/android:chrome_jni_headers" ]
 }

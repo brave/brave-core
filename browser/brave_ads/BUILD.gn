@@ -107,7 +107,7 @@ source_set("impl") {
 
     deps += [
       "//brave/browser/brave_ads/android:jni_headers",
-      "//brave/build/android:jni_headers",
+      "//chrome/android:chrome_jni_headers",
       "//chrome/browser/notifications:jni_headers",
       "//chrome/browser/notifications:notifications_java_enum_srcjar",
     ]

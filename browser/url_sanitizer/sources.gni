@@ -13,7 +13,7 @@ if (is_android) {
   brave_browser_url_sanitizer_sources += [ "//brave/browser/url_sanitizer/android/url_sanitizer_service_factory_android.cc" ]
 
   brave_browser_url_sanitizer_deps += [
-    "//brave/build/android:jni_headers",
+    "//chrome/android:chrome_jni_headers",
     "//mojo/public/cpp/bindings",
   ]
 }

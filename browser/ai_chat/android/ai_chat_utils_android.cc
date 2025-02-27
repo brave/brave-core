@@ -8,12 +8,12 @@
 #include "base/time/time.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
-#include "brave/build/android/jni_headers/BraveLeoUtils_jni.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/android/chrome_jni_headers/BraveLeoUtils_jni.h"
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 

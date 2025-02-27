@@ -6,7 +6,7 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 
 #include "base/android/jni_android.h"
-#include "brave/build/android/jni_headers/BraveVpnServiceFactoryAndroid_jni.h"
+#include "chrome/android/chrome_jni_headers/BraveVpnServiceFactoryAndroid_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 

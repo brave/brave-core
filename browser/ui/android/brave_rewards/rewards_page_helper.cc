@@ -7,7 +7,7 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
-#include "brave/build/android/jni_headers/TabUtils_jni.h"
+#include "chrome/android/chrome_jni_headers/TabUtils_jni.h"
 
 namespace brave_rewards {
 

@@ -14,7 +14,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/jni_android.h"
-#include "brave/build/android/jni_headers/BraveSyncAccountDeletedInformer_jni.h"
+#include "chrome/android/chrome_jni_headers/BraveSyncAccountDeletedInformer_jni.h"
 #else
 #include "chrome/browser/ui/browser.h"
 #endif

@@ -7,7 +7,7 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
-#include "brave/build/android/jni_headers/BraveLeoSettingsLauncherHelper_jni.h"
+#include "chrome/android/chrome_jni_headers/BraveLeoSettingsLauncherHelper_jni.h"
 #include "content/public/browser/web_contents.h"
 
 namespace ai_chat {

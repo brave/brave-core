@@ -46,6 +46,6 @@ if (is_android) {
   ]
   brave_browser_brave_shields_deps += [
     "//brave/browser/android:android_browser_process",
-    "//brave/build/android:jni_headers",
+    "//chrome/android:chrome_jni_headers",
   ]
 }

@@ -35,6 +35,7 @@ if (is_android) {
   ]
 
   brave_browser_search_engines_deps += [
+    "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers",
     "//brave/components/brave_search/browser",
     "//chrome/browser/profiles:profile",
     "//components/prefs",
