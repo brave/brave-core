@@ -190,6 +190,7 @@ ViewCounterService::GetCurrentWallpaperForDisplay() {
 
   if (std::optional<base::Value::Dict> branded_wallpaper =
           GetCurrentBrandedWallpaper()) {
+    current_wallpaper_ = branded_wallpaper->Clone();
     return branded_wallpaper;
   }
 
@@ -239,6 +240,53 @@ ViewCounterService::GetCurrentBrandedWallpaper() {
   }
 
   return GetNextBrandedWallpaperWhichMatchesConditions();
+}
+
+void ViewCounterService::GetCurrentBrandedWallpaper(
+    base::OnceCallback<
+        void(const std::optional<GURL>& url,
+             const std::optional<std::string>& placement_id,
+             const std::optional<std::string>& creative_instance_id,
+             const std::optional<GURL>& target_url)> callback) const {
+  auto failed = [&callback]() {
+    std::move(callback).Run(/*url=*/std::nullopt,
+                            /*placement_id=*/std::nullopt,
+                            /*creative_instance_id=*/std::nullopt,
+                            /*target_url=*/std::nullopt);
+  };
+
+  if (!current_wallpaper_) {
+    return failed();
+  }
+
+  const std::string* const url =
+      current_wallpaper_->FindString(ntp_background_images::kWallpaperURLKey);
+  if (!url) {
+    return failed();
+  }
+
+  const std::string* const creative_instance_id =
+      current_wallpaper_->FindString(
+          ntp_background_images::kCreativeInstanceIDKey);
+  if (!creative_instance_id) {
+    return failed();
+  }
+
+  const std::string* const placement_id =
+      current_wallpaper_->FindString(ntp_background_images::kWallpaperIDKey);
+  if (!placement_id) {
+    return failed();
+  }
+
+  const std::string* const target_url =
+      current_wallpaper_->FindStringByDottedPath(
+          ntp_background_images::kLogoDestinationURLPath);
+  if (!target_url) {
+    return failed();
+  }
+
+  std::move(callback).Run(GURL(*url), *placement_id, *creative_instance_id,
+                          GURL(*target_url));
 }
 
 std::optional<brave_ads::ConditionMatcherMap>

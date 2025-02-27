@@ -1,0 +1,16 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("mojom") {
+  generate_java = true
+  sources = [ "new_tab_takeover.mojom" ]
+
+  public_deps = [
+    "//brave/components/ntp_background_images/browser/mojom",
+    "//mojo/public/mojom/base",
+  ]
+}

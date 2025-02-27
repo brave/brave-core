@@ -151,7 +151,10 @@ source_set("ui") {
       "android/brave_rewards/rewards_page_helper.h",
     ]
 
-    deps += [ "//brave/build/android:jni_headers" ]
+    deps += [
+      "//brave/browser/ui/webui/new_tab_takeover/android:new_tab_takeover",
+      "//brave/build/android:jni_headers",
+    ]
   }
 
   if (enable_ai_rewriter) {

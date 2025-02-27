@@ -146,13 +146,28 @@ public class NTPBackgroundImagesBridge {
     }
 
     @CalledByNative
-    public static Wallpaper createBrandedWallpaper(String imagePath, int focalPointX,
-            int focalPointY, String logoPath, String logoDestinationUrl, String themeName,
-            boolean isSponsored, String creativeInstanceId, String wallpaperId) {
-        return new Wallpaper(imagePath, focalPointX, focalPointY,
-                             logoPath, logoDestinationUrl,
-                             themeName, isSponsored, creativeInstanceId,
-                             wallpaperId);
+    public static Wallpaper createBrandedWallpaper(
+            String imagePath,
+            int focalPointX,
+            int focalPointY,
+            String logoPath,
+            String logoDestinationUrl,
+            String themeName,
+            boolean isSponsored,
+            String creativeInstanceId,
+            String wallpaperId,
+            boolean isRichMedia) {
+        return new Wallpaper(
+                imagePath,
+                focalPointX,
+                focalPointY,
+                logoPath,
+                logoDestinationUrl,
+                themeName,
+                isSponsored,
+                creativeInstanceId,
+                wallpaperId,
+                isRichMedia);
     }
 
     @CalledByNative

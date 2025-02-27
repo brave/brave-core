@@ -177,6 +177,13 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
   const std::string* wallpaper_id =
       data.FindString(ntp_background_images::kWallpaperIDKey);
 
+  bool is_rich_media = false;
+  if (const std::string* sponsored_rich_media_type =
+          data.FindString(ntp_background_images::kWallpaperTypeKey)) {
+    is_rich_media = *sponsored_rich_media_type ==
+                    ntp_background_images::kRichMediaWallpaperType;
+  }
+
   view_counter_service_->BrandedWallpaperWillBeDisplayed(
       wallpaper_id ? *wallpaper_id : "",
       creative_instance_id ? *creative_instance_id : "",
@@ -190,7 +197,8 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
       ConvertUTF8ToJavaString(env, *theme_name), is_sponsored,
       ConvertUTF8ToJavaString(
           env, creative_instance_id ? *creative_instance_id : ""),
-      ConvertUTF8ToJavaString(env, wallpaper_id ? *wallpaper_id : ""));
+      ConvertUTF8ToJavaString(env, wallpaper_id ? *wallpaper_id : ""),
+      is_rich_media);
 }
 
 void NTPBackgroundImagesBridge::GetTopSites(JNIEnv* env,

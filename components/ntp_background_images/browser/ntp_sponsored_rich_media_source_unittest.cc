@@ -143,8 +143,9 @@ TEST_F(NTPSponsoredRichMediaSourceTest, GetContentSecurityPolicy) {
     const auto directive = static_cast<network::mojom::CSPDirectiveName>(i);
     switch (directive) {
       case network::mojom::CSPDirectiveName::FrameAncestors: {
-        EXPECT_EQ("frame-ancestors chrome://newtab/;",
-                  url_data_source()->GetContentSecurityPolicy(directive));
+        EXPECT_EQ(
+            "frame-ancestors chrome://newtab/ chrome://new-tab-takeover/;",
+            url_data_source()->GetContentSecurityPolicy(directive));
         break;
       }
 

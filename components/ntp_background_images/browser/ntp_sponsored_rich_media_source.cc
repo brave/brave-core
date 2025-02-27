@@ -12,6 +12,7 @@
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/memory/ref_counted_memory.h"
+#include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -98,7 +99,8 @@ std::string NTPSponsoredRichMediaSource::GetContentSecurityPolicy(
     network::mojom::CSPDirectiveName directive) {
   switch (directive) {
     case network::mojom::CSPDirectiveName::FrameAncestors:
-      return std::string("frame-ancestors ") + kBraveUINewTabURL + ";";
+      return base::StringPrintf("frame-ancestors %s %s;", kBraveUINewTabURL,
+                                kBraveUINewTabTakeoverURL);
     case network::mojom::CSPDirectiveName::Sandbox:
       return "sandbox allow-scripts;";
     case network::mojom::CSPDirectiveName::DefaultSrc:
