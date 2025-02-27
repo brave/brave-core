@@ -128,7 +128,7 @@ class RunableConfiguration:
 
     rebase_benchmark.pageset_repeat = 2 if online_rebase else 1
 
-    REBASE_TIMEOUT = 240 * rebase_benchmark.pageset_repeat
+    REBASE_TIMEOUT = 10 * 60 * rebase_benchmark.pageset_repeat
 
     rebase_out_dir = os.path.join(self.out_dir, 'rebase_artifacts')
     result = self.RunSingleTest(rebase_runner_config, rebase_benchmark,
