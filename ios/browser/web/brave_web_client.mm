@@ -39,8 +39,6 @@ std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
   if (!legacy_user_agent_.empty()) {
     return legacy_user_agent_;
   }
-  // FIXME: Decide on whether or not to adjust the product type (defaults to
-  // CriOS/<version>)
   return ChromeWebClient::GetUserAgent(type);
 }
 
@@ -69,13 +67,11 @@ bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
 
 std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     web::BrowserState* browser_state) const {
-  // Disable majority of ChromeWebClient JS features
+  // Add any JavaScriptFeature's from Chromium or Brave as needed
   std::vector<web::JavaScriptFeature*> features;
-  // FIXME: Add any JavaScriptFeature's from Chromium as needed
   features.push_back(
       security_interstitials::IOSSecurityInterstitialJavaScriptFeature::
           GetInstance());
-  features.push_back(translate::TranslateJavaScriptFeature::GetInstance());
   return features;
 }
 
@@ -91,7 +87,6 @@ bool BraveWebClient::EnableLongPressUIContextMenu() const {
 
 bool BraveWebClient::EnableWebInspector(
     web::BrowserState* browser_state) const {
-  // FIXME: Probably better to just use prefs::kWebInspectorEnabled
   return CWVWebView.webInspectorEnabled;
 }
 

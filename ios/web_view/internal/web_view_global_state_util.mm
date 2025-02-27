@@ -8,13 +8,19 @@
 namespace ios_web_view {
 
 void InitializeGlobalState() {
-  // We already provide global initialization with BraveCoreMain so this is a
-  // stub of a required function.
+  // We already provide global initialization with -[BraveCoreMain init] so this
+  // is a stub of a required function.
   //
-  // Typically the implementation of this method
-  // is in `//ios/web_view/internal/web_view_global_state_util.mm` but this
-  // file is not part of the web_view_sources target and only part of the
-  // framework target which we don't use
+  // This function when implemented by the main `//ios/web_view` target would
+  // typically setup the required Chromium web infrastructure required to
+  // support CWVWebView: `WebMain`, `WebMainDelegate` and `WebClient`
+  //
+  // We already set this up in a similar fashion to Chrome iOS however so there
+  // is no need to do it here.
+  //
+  // Note: This method is removed in M135 and replaced with a new type that
+  // handles things similarily: `CWVGlobalState`. This new type will need a
+  // chromium_src override to remove said initialization
 }
 
 }  // namespace ios_web_view

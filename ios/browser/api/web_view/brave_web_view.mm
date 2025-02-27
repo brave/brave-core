@@ -5,7 +5,7 @@
 
 #include "brave/ios/browser/api/web_view/brave_web_view.h"
 
-#include "base/notimplemented.h"
+#include "base/notreached.h"
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
@@ -25,12 +25,12 @@
 }
 
 - (CWVAutofillController*)autofillController {
-  NOTIMPLEMENTED();
+  NOTREACHED();
   return nil;
 }
 
 - (CWVTranslationController*)translationController {
-  NOTIMPLEMENTED();
+  NOTREACHED();
   return nil;
 }
 

@@ -6,7 +6,7 @@
 #import <memory>
 
 #import "base/memory/raw_ptr.h"
-#import "base/notimplemented.h"
+#import "base/notreached.h"
 #import "base/threading/thread_restrictions.h"
 #import "components/keyed_service/core/service_access_type.h"
 #import "components/keyed_service/ios/browser_state_dependency_manager.h"
@@ -27,7 +27,6 @@
 // we can nop certain services such as access to CWVWebView specific wrappers
 // around autofill, sync, etc (since we would use Chrome's) and replace
 // the exposed browser state to be a plain `web::BrowserState`
-
 @interface CWVWebViewConfiguration () {
   // The BrowserState for this configuration.
   raw_ptr<web::BrowserState> _browserState;
@@ -43,17 +42,17 @@
 }
 
 + (instancetype)defaultConfiguration {
-  NOTIMPLEMENTED();
+  NOTREACHED();
   return nil;
 }
 
 + (instancetype)incognitoConfiguration {
-  NOTIMPLEMENTED();
+  NOTREACHED();
   return nil;
 }
 
 + (CWVWebViewConfiguration*)nonPersistentConfiguration {
-  NOTIMPLEMENTED();
+  NOTREACHED();
   return nil;
 }
 
@@ -71,14 +70,14 @@
 - (CWVPreferences*)preferences {
   // This property is not nullable, so will crash anyways on the Swift side if
   // accessed.
-  NOTIMPLEMENTED();
+  NOTREACHED();
   return nil;
 }
 
 - (CWVUserContentController*)userContentController {
   // This property is not nullable, so will crash anyways on the Swift side if
   // accessed.
-  NOTIMPLEMENTED();
+  NOTREACHED();
   return nil;
 }
 

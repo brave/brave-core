@@ -47,8 +47,12 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
   config_provider.UpdateScripts();
 }
 
-- (void)createPDF:(void (^)(NSData* _Nullable))completionHandler {
+- (void)createFullPagePDF:(void (^)(NSData* _Nullable))completionHandler {
   self.webState->CreateFullPagePdf(base::BindOnce(completionHandler));
+}
+
+- (BOOL)canTakeSnapshot {
+  return self.webState->CanTakeSnapshot();
 }
 
 - (void)takeSnapshotWithRect:(CGRect)rect
@@ -111,7 +115,7 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
       }));
 }
 
-- (WKWebView*)underlyingWebView {
+- (WKWebView*)internalWebView {
   CRWWebController* web_controller =
       web::WebStateImpl::FromWebState(self.webState)->GetWebController();
   return web_controller.webView;

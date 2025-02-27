@@ -6,11 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_WEB_VIEW_CONFIGURATION_INTERNAL_H_
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_WEB_VIEW_CONFIGURATION_INTERNAL_H_
 
-// We completely replace the CWVWebViewConfiguration implementation so that
-// we can nop certain services such as access to CWVWebView specific wrappers
-// around autofill, sync, etc (since we would use Chrome's) and replace
-// the exposed browser state to be a plain `web::BrowserState`
-
 #import "ios/web_view/public/cwv_web_view_configuration.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -21,6 +16,10 @@ class BrowserState;
 
 @class CWVWebView;
 
+// We completely replace the CWVWebViewConfiguration implementation so that
+// we can nop certain services such as access to CWVWebView specific wrappers
+// around autofill, sync, etc (since we would use Chrome's) and replace
+// the exposed browser state to be a plain `web::BrowserState`
 @interface CWVWebViewConfiguration ()
 
 // The browser state associated with this configuration.

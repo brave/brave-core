@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_PUBLIC_BROWSER_STATE_H_
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_PUBLIC_BROWSER_STATE_H_
 
+#include "base/notreached.h"
+
 class PrefService;
 
 // This override is tied to the replaced implementation of `//ios/web_view`'s
@@ -22,6 +24,7 @@ class PrefService;
 #define GetURLLoaderFactory() \
   GetURLLoaderFactory();      \
   PrefService* GetPrefs() {   \
+    NOTREACHED();             \
     return nullptr;           \
   }                           \
   void Unused()

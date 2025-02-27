@@ -37,7 +37,10 @@ CWV_EXPORT
 /// Creates a PDF of the current page
 ///
 /// Equivalent of -[WKWebView createPDFWithConfiguration:completionHandler:]
-- (void)createPDF:(void (^)(NSData* _Nullable))completionHandler;
+- (void)createFullPagePDF:(void (^)(NSData* _Nullable))completionHandler;
+
+/// Whether or not you can create a snapshot using `takeSnapshotWithRect`
+- (BOOL)canTakeSnapshot;
 
 /// Creates an image from the current rendered page for a given CGRect
 ///
@@ -67,9 +70,15 @@ CWV_EXPORT
 - (void)updateScripts;
 
 /// The underlying WKWebView if one has been created already.
-@property(readonly, nullable) WKWebView* underlyingWebView;
+///
+/// This is only available for `use_blink=false` builds and be used for WebKit
+/// specific paths.
+@property(readonly, nullable) WKWebView* internalWebView;
 
 /// The underlying WKWebViewConfiguration for this CWVWebView
+///
+/// This is only available for `use_blink=false` builds and be used for WebKit
+/// specific paths.
 @property(readonly) WKWebViewConfiguration* WKConfiguration;
 
 @end
