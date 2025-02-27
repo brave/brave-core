@@ -39,7 +39,26 @@
   align-items: flex-start;
 }
 
+.nameAndExtensionRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.forEllipsis {
+  display: grid;
+}
+
 .nameText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.extensionText {
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
 }

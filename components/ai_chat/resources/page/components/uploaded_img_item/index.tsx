@@ -43,6 +43,8 @@ export default function UploadedImgItem(props: Props) {
     return `${bytes.toFixed(2)} ${units[index]}`
   }, [props.imageData.fileSize])
 
+  const fileNameParts = props.imageData.fileName.split('.')
+
   return (
     <div className={styles.itemWrapper}>
       <div className={styles.leftSide}>
@@ -51,7 +53,12 @@ export default function UploadedImgItem(props: Props) {
           src={dataUrl}
         />
         <div className={styles.imageInfo}>
-          <span className={styles.nameText}>{props.imageData.fileName}</span>
+          <div className={styles.nameAndExtensionRow}>
+            <div className={styles.forEllipsis}>
+              <span className={styles.nameText}>{fileNameParts[0]}</span>
+            </div>
+            <span className={styles.extensionText}>.{fileNameParts[1]}</span>
+          </div>
           <span className={styles.sizeText}>{fileSize}</span>
         </div>
       </div>
