@@ -74,7 +74,6 @@ class TabManager: NSObject {
 
   private(set) var allTabs = [Tab]()
   private var _selectedIndex = -1
-  private let navDelegate: TabManagerNavDelegate
   private(set) var isRestoring = false
   private(set) var isBulkDeleting = false
 
@@ -126,16 +125,12 @@ class TabManager: NSObject {
 
     self.windowId = windowId
     self.prefs = prefs
-    self.navDelegate = TabManagerNavDelegate()
     self.rewards = rewards
     self.tabGeneratorAPI = tabGeneratorAPI
     self.historyAPI = historyAPI
     self.privateBrowsingManager = privateBrowsingManager
     self.tabEventHandlers = TabEventHandlers.create(with: prefs)
     super.init()
-
-    self.navDelegate.tabManager = self
-    addNavigationDelegate(self)
 
     Preferences.Shields.blockImages.observe(from: self)
     Preferences.General.blockPopups.observe(from: self)
@@ -162,12 +157,6 @@ class TabManager: NSObject {
 
   deinit {
     syncTabsTask?.cancel()
-  }
-
-  func addNavigationDelegate(_ delegate: WKNavigationDelegate) {
-    assert(Thread.isMainThread)
-
-    self.navDelegate.insert(delegate)
   }
 
   var count: Int {
@@ -657,7 +646,6 @@ class TabManager: NSObject {
     if !zombie {
       tab.createWebview()
     }
-    tab.navigationDelegate = self.navDelegate
 
     if let request = request {
       tab.loadRequest(request)
@@ -1037,9 +1025,6 @@ class TabManager: NSObject {
 
     assert(count == prevCount - 1, "Make sure the tab count was actually removed")
 
-    // There's still some time between this and the webView being destroyed. We don't want to pick up any stray events.
-    tab.webView?.navigationDelegate = nil
-
     delegates.forEach { $0.get()?.tabManager(self, didRemoveTab: tab) }
     TabEvent.post(.didClose, for: tab)
 
@@ -1220,7 +1205,7 @@ class TabManager: NSObject {
     configuration.processPool = WKProcessPool()
   }
 
-  private func preserveScreenshot(for tab: Tab) {
+  func preserveScreenshot(for tab: Tab) {
     assert(Thread.isMainThread)
     if isRestoring { return }
 
@@ -1343,10 +1328,6 @@ class TabManager: NSObject {
   func restoreTab(_ tab: Tab) {
     guard let webView = tab.webView else { return }
     guard let sessionTab = SessionTab.from(tabId: tab.id) else {
-
-      // Restore Tab with its Last-Request URL
-      tab.navigationDelegate = navDelegate
-
       var sessionData: (String, URLRequest)?
 
       if let tabURL = tab.url {
@@ -1367,8 +1348,6 @@ class TabManager: NSObject {
     // Tab was created with no active webview session data.
     // Restore tab data from Core-Data URL, and configure it.
     if sessionTab.interactionState.isEmpty {
-      tab.navigationDelegate = navDelegate
-
       if let tabURL = sessionTab.url {
         let request =
           InternalURL.isValid(url: tabURL)
@@ -1390,8 +1369,6 @@ class TabManager: NSObject {
       return
     }
 
-    // Restore tab data from Core-Data, and configure it.
-    tab.navigationDelegate = navDelegate
     tab.restore(
       webView,
       restorationData: (sessionTab.title, sessionTab.interactionState)
@@ -1420,7 +1397,6 @@ class TabManager: NSObject {
     isRestoring = true
     for tab in savedTabs {
       allTabs.append(tab)
-      tab.navigationDelegate = self.navDelegate
       for delegate in delegates {
         delegate.get()?.tabManager(self, didAddTab: tab)
       }
@@ -1494,7 +1470,6 @@ class TabManager: NSObject {
     guard let webView = tab.webView else { return }
 
     if let interactionState = recentlyClosed.interactionState, !interactionState.isEmpty {
-      tab.navigationDelegate = navDelegate
       tab.restore(webView, restorationData: (recentlyClosed.title ?? "", interactionState))
     }
 
@@ -1538,64 +1513,6 @@ class TabManager: NSObject {
       interactionState: tab.webView?.sessionData,
       order: -1
     )
-  }
-}
-
-extension TabManager: WKNavigationDelegate {
-
-  // Note the main frame JSContext (i.e. document, window) is not available yet.
-  func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-    if let tab = self[webView] {
-      tab.contentBlocker.clearPageStats()
-    }
-  }
-
-  // The main frame JSContext is available, and DOM parsing has begun.
-  // Do not excute JS at this point that requires running prior to DOM parsing.
-  func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-  }
-
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    // only store changes if this is not an error page
-    // as we current handle tab restore as error page redirects then this ensures that we don't
-    // call storeChanges unnecessarily on startup
-
-    if let url = webView.url {
-      // tab restore uses internal pages,
-      // so don't call storeChanges unnecessarily on startup
-      if InternalURL(url)?.isSessionRestore == true {
-        return
-      }
-
-      if let tab = tabForWebView(webView) {
-        if Preferences.Privacy.privateBrowsingOnly.value
-          || (tab.isPrivate && !Preferences.Privacy.persistentPrivateBrowsing.value)
-        {
-          return
-        }
-
-        preserveScreenshot(for: tab)
-        saveTab(tab)
-      }
-    }
-  }
-
-  func tabForWebView(_ webView: WKWebView) -> Tab? {
-    objc_sync_enter(self)
-    defer { objc_sync_exit(self) }
-
-    return allTabs.first(where: { $0.webView === webView })
-  }
-
-  func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-  }
-
-  /// Called when the WKWebView's content process has gone away. If this happens for the currently selected tab
-  /// then we immediately reload it.
-  func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-    if let tab = selectedTab, tab.webView == webView {
-      webView.reload()
-    }
   }
 }
 

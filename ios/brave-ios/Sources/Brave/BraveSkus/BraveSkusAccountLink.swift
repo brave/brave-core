@@ -44,17 +44,17 @@ class BraveSkusAccountLink {
   }
 
   @MainActor
-  static func injectLocalStorage(webView: WKWebView) async {
+  static func injectLocalStorage(tab: Tab) async {
     if let vpnSubscriptionProductId = Preferences.VPN.subscriptionProductId.value,
       let product = BraveStoreProduct(rawValue: vpnSubscriptionProductId)
     {
-      await BraveSkusAccountLink.injectLocalStorage(webView: webView, product: product)
+      await BraveSkusAccountLink.injectLocalStorage(tab: tab, product: product)
     }
 
     if let aiChatSubscriptionProductId = Preferences.AIChat.subscriptionProductId.value,
       let product = BraveStoreProduct(rawValue: aiChatSubscriptionProductId)
     {
-      await BraveSkusAccountLink.injectLocalStorage(webView: webView, product: product)
+      await BraveSkusAccountLink.injectLocalStorage(tab: tab, product: product)
     }
   }
 
@@ -63,11 +63,11 @@ class BraveSkusAccountLink {
   /// - Parameter product: The product whose receipt information to inject
   @MainActor
   @discardableResult private static func injectLocalStorage(
-    webView: WKWebView,
+    tab: Tab,
     product: BraveStoreProduct
   ) async -> Bool {
     // The WebView has no URL so do nothing
-    guard let url = webView.url else {
+    guard let webView = tab.webView, let url = webView.url else {
       return false
     }
 

@@ -487,7 +487,6 @@ public class BrowserViewController: UIViewController {
   fileprivate func didInit() {
     updateApplicationShortcuts()
     tabManager.addDelegate(self)
-    tabManager.addNavigationDelegate(self)
     UserScriptManager.shared.fetchWalletScripts(from: braveCore.braveWalletAPI)
     downloadQueue.delegate = self
 
@@ -697,11 +696,9 @@ public class BrowserViewController: UIViewController {
     updateToolbarUsingTabManager(tabManager)
     updateUsingBottomBar(using: newCollection)
 
-    if let tab = tabManager.selectedTab,
-      let webView = tab.webView
-    {
+    if let tab = tabManager.selectedTab {
       updateURLBar()
-      updateBackForwardActionStatus(for: webView)
+      updateBackForwardActionStatus(for: tab)
       topToolbar.locationView.loading = tab.loading
     }
 
@@ -1973,7 +1970,7 @@ public class BrowserViewController: UIViewController {
         break
       }
 
-      updateBackForwardActionStatus(for: webView)
+      updateBackForwardActionStatus(for: tab)
     case .hasOnlySecureContent:
       Task {
         await tab.updateSecureContentState()
@@ -2030,8 +2027,8 @@ public class BrowserViewController: UIViewController {
     DebugLogger.log(for: .secureState, text: text)
   }
 
-  func updateBackForwardActionStatus(for webView: WKWebView?) {
-    guard let webView = webView else { return }
+  func updateBackForwardActionStatus(for tab: Tab) {
+    guard let webView = tab.webView else { return }
 
     if let forwardListItem = webView.backForwardList.forwardList.first,
       forwardListItem.url.isInternalURL(for: .readermode)
@@ -2267,18 +2264,16 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  func displayPageZoom(visible: Bool) {
-    if !visible || pageZoomBar != nil {
-      pageZoomBar?.view.removeFromSuperview()
-      updateViewConstraints()
-      pageZoomBar = nil
+  func clearPageZoomDialog() {
+    pageZoomBar?.view.removeFromSuperview()
+    updateViewConstraints()
+    pageZoomBar = nil
+  }
 
-      return
-    }
-
-    guard let selectTab = tabManager.selectedTab else { return }
+  func displayPageZoomDialog() {
+    guard let tab = tabManager.selectedTab else { return }
     let zoomHandler = PageZoomHandler(
-      tab: selectTab,
+      tab: tab,
       isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
     )
     let pageZoomBar = UIHostingController(rootView: PageZoomView(zoomHandler: zoomHandler))
@@ -2338,7 +2333,7 @@ public class BrowserViewController: UIViewController {
     statusBarOverlay.backgroundColor = color
   }
 
-  func navigateInTab(tab: Tab, to navigation: WKNavigation? = nil) {
+  func navigateInTab(tab: Tab) {
     tabManager.expireSnackbars()
 
     guard let webView = tab.webView else {
@@ -2628,6 +2623,7 @@ extension BrowserViewController: TabDelegate {
 
     // Observers that live as long as the tab. Make sure these are all cleared in willDeleteWebView below!
     KVOs.forEach { webView.addObserver(self, forKeyPath: $0.keyPath, options: .new, context: nil) }
+    webView.navigationDelegate = self
     webView.uiDelegate = self
 
     var injectedScripts: [TabContentScript] = [

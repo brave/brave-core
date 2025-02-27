@@ -154,7 +154,7 @@ extension BrowserViewController: WKDownloadDelegate {
     }
 
     // Never present the download alert on a tab that isn't visible
-    guard let webView = download.webView, let tab = tabManager.tabForWebView(webView),
+    guard let webView = download.webView, let tab = tabManager[webView],
       tab === tabManager.selectedTab
     else {
       return false

@@ -36,7 +36,7 @@ class ReadabilityOperation: Operation {
       let configuration = WKWebViewConfiguration()
       self.tab = Tab(configuration: configuration)
       self.tab.createWebview()
-      self.tab.navigationDelegate = self
+      self.tab.webView?.navigationDelegate = self
 
       let readerMode = ReaderModeScriptHandler()
       readerMode.delegate = self

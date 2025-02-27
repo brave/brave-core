@@ -478,14 +478,6 @@ class Tab: NSObject {
     self.contentScriptManager.tab = self
   }
 
-  weak var navigationDelegate: WKNavigationDelegate? {
-    didSet {
-      if let webView = webView {
-        webView.navigationDelegate = navigationDelegate
-      }
-    }
-  }
-
   /// A helper property that handles native to Brave Search communication.
   var braveSearchManager: BraveSearchManager?
 
@@ -530,7 +522,6 @@ class Tab: NSObject {
       // Turning off masking allows the web content to flow outside of the scrollView's frame
       // which allows the content appear beneath the toolbars in the BrowserViewController
       webView.scrollView.layer.masksToBounds = false
-      webView.navigationDelegate = navigationDelegate
 
       restore(webView, restorationData: self.sessionData)
 
