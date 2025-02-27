@@ -25,6 +25,20 @@ component("common") {
   ]
 }
 
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "test_utils.cc",
+    "test_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//crypto",
+  ]
+}
+
 if (!is_ios) {
   source_set("unit_tests") {
     testonly = true

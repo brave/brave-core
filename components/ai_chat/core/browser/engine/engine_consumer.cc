@@ -7,8 +7,9 @@
 
 #include <optional>
 #include <string>
-#include <string_view>
 
+#include "base/base64.h"
+#include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 namespace ai_chat {
@@ -27,6 +28,11 @@ EngineConsumer::~EngineConsumer() = default;
 
 bool EngineConsumer::SupportsDeltaTextResponses() const {
   return false;
+}
+
+std::string EngineConsumer::GetImageDataURL(base::span<uint8_t> image_data) {
+  constexpr char kDataUrlPrefix[] = "data:image/png;base64,";
+  return base::StrCat({kDataUrlPrefix, base::Base64Encode(image_data)});
 }
 
 bool EngineConsumer::CanPerformCompletionRequest(

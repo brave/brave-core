@@ -8,14 +8,13 @@
 #include <string>
 #include <utility>
 
-#include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "crypto/random.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
@@ -221,15 +220,9 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
   for (size_t i = 0; i < num_query_pairs; i++) {
     // query
     std::optional<std::vector<mojom::UploadedImagePtr>> uploaded_images;
-    for (size_t j = 0; j < num_uploaded_images_per_query; ++j) {
-      std::vector<uint8_t> image_data(base::RandGenerator(64));
-      crypto::RandBytes(image_data);
-      if (!uploaded_images) {
-        uploaded_images = std::vector<mojom::UploadedImagePtr>();
-      }
-      uploaded_images->emplace_back(mojom::UploadedImage::New(
-          "filename" + base::NumberToString(base::RandUint64()),
-          sizeof(image_data), image_data));
+    if (num_uploaded_images_per_query) {
+      uploaded_images =
+          CreateSampleUploadedImages(num_uploaded_images_per_query);
     }
     history.push_back(mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),

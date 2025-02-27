@@ -11,6 +11,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/containers/checked_iterators.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
@@ -22,12 +23,14 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -446,35 +449,35 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
 TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
   EngineConsumer::ConversationHistory history;
   auto* client = GetClient();
-  auto run_loop = std::make_unique<base::RunLoop>();
-  const std::vector<std::vector<uint8_t>> test_images = {
-      {0x01, 0x02, 0x03, 0x04, 0x05},
-      {0xde, 0xed, 0xbe, 0xef},
-      {0xff, 0xff, 0xff},
-  };
+  auto uploaded_images = CreateSampleUploadedImages(3);
   constexpr char kTestPrompt[] = "Tell the user what is in the image?";
   constexpr char kAssistantResponse[] = "It's a lion!";
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce(
-          [kTestPrompt, kAssistantResponse](
+          [kTestPrompt, kAssistantResponse, &uploaded_images](
               const mojom::CustomModelOptions, base::Value::List messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback) {
             EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
 
-            auto expected_dict = ParseJsonDict(R"({
+            constexpr char kJsonTemplate[] = R"({
                  "content": [ {
                     "text": "These images are uploaded by the users",
                     "type": "text"
                  }, {
                     "image_url": {
-                       "url": "data:image/png;base64,AQIDBAU="
+                       "url": "data:image/png;base64,$1"
                     },
                     "type": "image_url"
                  } ],
                  "role": "user"
                 }
-            )");
+            )";
+            const std::string json_str = base::ReplaceStringPlaceholders(
+                kJsonTemplate,
+                {base::Base64Encode(uploaded_images[0]->image_data)}, nullptr);
+            auto expected_dict = ParseJsonDict(json_str);
+
             EXPECT_EQ(messages[1].GetDict(), expected_dict);
 
             EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
@@ -484,27 +487,15 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
                 .Run(EngineConsumer::GenerationResult(kAssistantResponse));
           });
 
-  std::vector<mojom::UploadedImagePtr> uploaded_images;
-  uploaded_images.emplace_back(
-      mojom::UploadedImage::New("filename1", 1, test_images[0]));
-  uploaded_images.emplace_back(
-      mojom::UploadedImage::New("filename", 2, test_images[1]));
-  uploaded_images.emplace_back(
-      mojom::UploadedImage::New("filename", 3, test_images[2]));
-
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "What is this image?", kTestPrompt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::move(uploaded_images), false));
-
-  engine_->GenerateAssistantResponse(
-      false, "", history, "", base::DoNothing(),
-      base::BindLambdaForTesting([&run_loop, kAssistantResponse](
-                                     EngineConsumer::GenerationResult result) {
-        EXPECT_STREQ(result.value().c_str(), kAssistantResponse);
-        run_loop->Quit();
-      }));
-  run_loop->Run();
+      base::Time::Now(), std::nullopt, CloneUpdatedImages(uploaded_images),
+      false));
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+  engine_->GenerateAssistantResponse(false, "", history, "", base::DoNothing(),
+                                     future.GetCallback());
+  EXPECT_STREQ(future.Take()->c_str(), kAssistantResponse);
   testing::Mock::VerifyAndClearExpectations(client);
 }
 

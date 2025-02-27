@@ -11,6 +11,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
@@ -19,6 +20,7 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
@@ -26,6 +28,7 @@
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -435,11 +438,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
-  const std::vector<std::vector<uint8_t>> test_images = {
-      {0x01, 0x02, 0x03, 0x04, 0x05},
-      {0xde, 0xed, 0xbe, 0xef},
-      {0xff, 0xff, 0xff},
-  };
+  auto uploaded_images = CreateSampleUploadedImages(3);
   constexpr char kTestPrompt[] = "Tell the user what is in the image?";
   constexpr char kAssistantResponse[] = "It's a lion!";
   auto* mock_api_client = GetMockConversationAPIClient();
@@ -452,7 +451,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
         // Only support one image for now.
         ASSERT_EQ(conversation.size(), 2u);
         EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
-        EXPECT_EQ(conversation[0].content, "data:image/png;base64,AQIDBAU=");
+        EXPECT_EQ(
+            conversation[0].content,
+            base::StrCat({"data:image/png;base64,",
+                          base::Base64Encode(uploaded_images[0]->image_data)}));
         EXPECT_EQ(conversation[0].type, ConversationAPIClient::UploadImage);
         EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
         EXPECT_EQ(conversation[1].content, kTestPrompt);
@@ -460,28 +462,17 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
         std::move(callback).Run(kAssistantResponse);
       });
 
-  std::vector<mojom::UploadedImagePtr> uploaded_images;
-  uploaded_images.emplace_back(
-      mojom::UploadedImage::New("filename1", 1, test_images[0]));
-  uploaded_images.emplace_back(
-      mojom::UploadedImage::New("filename", 2, test_images[1]));
-  uploaded_images.emplace_back(
-      mojom::UploadedImage::New("filename", 3, test_images[2]));
-
   std::vector<mojom::ConversationTurnPtr> history;
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "What is this image?", kTestPrompt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::move(uploaded_images), false));
+      base::Time::Now(), std::nullopt, CloneUpdatedImages(uploaded_images),
+      false));
 
-  engine_->GenerateAssistantResponse(
-      false, "", history, "", base::DoNothing(),
-      base::BindLambdaForTesting([&run_loop, kAssistantResponse](
-                                     EngineConsumer::GenerationResult result) {
-        EXPECT_STREQ(result.value().c_str(), kAssistantResponse);
-        run_loop.Quit();
-      }));
-  run_loop.Run();
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+  engine_->GenerateAssistantResponse(false, "", history, "", base::DoNothing(),
+                                     future.GetCallback());
+  EXPECT_STREQ(future.Take()->c_str(), kAssistantResponse);
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 

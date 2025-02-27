@@ -11,7 +11,6 @@
 #include <type_traits>
 #include <vector>
 
-#include "base/base64.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
@@ -101,7 +100,6 @@ base::Value::List BuildMessages(
     user_message.Set("text", "These images are uploaded by the users");
     content.Append(std::move(user_message));
     size_t counter = 0;
-    constexpr char kImageUrl[] = R"(data:image/png;base64,$1)";
     // Only send the first uploaded_image becasue llama-vision seems to take the
     // last one if there are multiple uploaded_images
     for (const auto& uploaded_image : last_entry->uploaded_images.value()) {
@@ -110,10 +108,9 @@ base::Value::List BuildMessages(
       }
       base::Value::Dict image;
       image.Set("type", "image_url");
-      const std::string image_url = base::ReplaceStringPlaceholders(
-          kImageUrl, {base::Base64Encode(uploaded_image->image_data)}, nullptr);
       base::Value::Dict image_url_dict;
-      image_url_dict.Set("url", image_url);
+      image_url_dict.Set(
+          "url", EngineConsumer::GetImageDataURL(uploaded_image->image_data));
       image.Set("image_url", std::move(image_url_dict));
       content.Append(std::move(image));
     }

@@ -40,6 +40,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
@@ -1299,18 +1300,7 @@ TEST_F(ConversationHandlerUnitTest, UploadImage) {
   loop2.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
 
-  const std::vector<std::vector<uint8_t>> test_images = {
-      {0x01, 0x02, 0x03, 0x04, 0x05},
-      {0xde, 0xed, 0xbe, 0xef},
-      {0xff, 0xff, 0xff},
-  };
-  std::vector<mojom::UploadedImagePtr> uploaded_images;
-  uploaded_images.emplace_back(mojom::UploadedImage::New(
-      "filename1", sizeof(test_images[0]), test_images[0]));
-  uploaded_images.emplace_back(mojom::UploadedImage::New(
-      "filename2", sizeof(test_images[1]), test_images[1]));
-  uploaded_images.emplace_back(mojom::UploadedImage::New(
-      "filename3", sizeof(test_images[2]), test_images[2]));
+  auto uploaded_images = CreateSampleUploadedImages(3);
 
   // There are uploaded images.
   // Note that this will need to be put at the end of this test suite
@@ -1319,7 +1309,7 @@ TEST_F(ConversationHandlerUnitTest, UploadImage) {
   EXPECT_CALL(delegate, GetUploadedImagesSize()).WillOnce(testing::Return(3));
   EXPECT_CALL(delegate, GetUploadedImages())
       .Times(1)
-      .WillOnce(testing::Return(std::move(uploaded_images)));
+      .WillOnce(testing::Return(Clone(uploaded_images)));
   EXPECT_CALL(delegate, ClearUploadedImages()).Times(1);
   base::RunLoop loop3;
   EXPECT_CALL(client, OnModelDataChanged)
@@ -1336,15 +1326,11 @@ TEST_F(ConversationHandlerUnitTest, UploadImage) {
   auto& last_entry = conversation_handler_->GetConversationHistory().back();
   EXPECT_TRUE(last_entry->uploaded_images);
   const auto& images = last_entry->uploaded_images.value();
-  EXPECT_EQ(images[0]->filename, "filename1");
-  EXPECT_EQ(images[0]->filesize, static_cast<int64_t>(sizeof(test_images[0])));
-  EXPECT_EQ(images[0]->image_data, test_images[0]);
-  EXPECT_EQ(images[1]->filename, "filename2");
-  EXPECT_EQ(images[1]->filesize, static_cast<int64_t>(sizeof(test_images[1])));
-  EXPECT_EQ(images[1]->image_data, test_images[1]);
-  EXPECT_EQ(images[2]->filename, "filename3");
-  EXPECT_EQ(images[2]->filesize, static_cast<int64_t>(sizeof(test_images[2])));
-  EXPECT_EQ(images[2]->image_data, test_images[2]);
+  for (size_t i = 0; i < images.size(); ++i) {
+    EXPECT_EQ(images[i]->filename, uploaded_images[i]->filename);
+    EXPECT_EQ(images[i]->filesize, uploaded_images[i]->filesize);
+    EXPECT_EQ(images[i]->image_data, uploaded_images[i]->image_data);
+  }
 }
 
 TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,

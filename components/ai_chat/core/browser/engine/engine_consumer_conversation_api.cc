@@ -11,7 +11,6 @@
 #include <type_traits>
 #include <vector>
 
-#include "base/base64.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -20,7 +19,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/numerics/clamped_math.h"
 #include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -121,17 +119,15 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   const auto& last_entry = conversation_history.back();
   if (last_entry->uploaded_images) {
     size_t counter = 0;
-    constexpr char kImageUrl[] = R"(data:image/png;base64,$1)";
     for (const auto& uploaded_image : last_entry->uploaded_images.value()) {
       // Only send the first uploaded_image becasue llama-vision seems to take
       // the last one if there are multiple images
       if (counter++ > 0) {
         break;
       }
-      const std::string image_url = base::ReplaceStringPlaceholders(
-          kImageUrl, {base::Base64Encode(uploaded_image->image_data)}, nullptr);
       conversation.push_back({mojom::CharacterType::HUMAN,
-                              ConversationEventType::UploadImage, image_url});
+                              ConversationEventType::UploadImage,
+                              GetImageDataURL(uploaded_image->image_data)});
     }
   }
   // history
