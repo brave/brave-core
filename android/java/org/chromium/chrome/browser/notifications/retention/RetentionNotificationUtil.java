@@ -16,7 +16,6 @@ import androidx.core.app.NotificationCompat;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
@@ -43,7 +42,7 @@ public class RetentionNotificationUtil {
     public static final String DORMANT_USERS_DAY_25 = "dormant_users_days_25";
     public static final String DORMANT_USERS_DAY_40 = "dormant_users_days_40";
 
-    private static Map<String, RetentionNotification> mNotificationMap =
+    private static Map<String, RetentionNotification> sNotificationMap =
             Map.ofEntries(
                     Map.entry(
                             HOUR_3,
@@ -129,14 +128,14 @@ public class RetentionNotificationUtil {
                                                             .dormant_users_engagement_notification_text_3))));
 
     public static RetentionNotification getNotificationObject(String notificationType) {
-        return mNotificationMap.get(notificationType);
+        return sNotificationMap.get(notificationType);
     }
 
     public static Notification getNotification(
             Context context, String notificationType, String notificationText) {
         RetentionNotification retentionNotification = getNotificationObject(notificationType);
-        Log.e("NTP", notificationText);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, retentionNotification.getChannelId());
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context, retentionNotification.getChannelId());
         builder.setContentTitle(retentionNotification.getNotificationTitle());
         builder.setContentText(notificationText);
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText));
@@ -161,27 +160,34 @@ public class RetentionNotificationUtil {
     public static String getNotificationText(Context context, String notificationType) {
         DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
         switch (notificationType) {
-        case HOUR_3:
-            if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-                long adsTrackersCount = mDatabaseHelper.getAllStats().size();
-                if (adsTrackersCount >= 5) {
-                    return String.format(context.getResources().getString(R.string.notification_hour_3_text_1), adsTrackersCount);
+            case HOUR_3:
+                if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                    long adsTrackersCount = mDatabaseHelper.getAllStats().size();
+                    if (adsTrackersCount >= 5) {
+                        return String.format(
+                                context.getResources()
+                                        .getString(R.string.notification_hour_3_text_1),
+                                adsTrackersCount);
+                    } else {
+                        return context.getResources()
+                                .getString(R.string.notification_hour_3_text_2);
+                    }
                 } else {
-                    return context.getResources().getString(R.string.notification_hour_3_text_2);
+                    return context.getResources().getString(R.string.notification_hour_3_text_3);
                 }
-            } else {
-                return context.getResources().getString(R.string.notification_hour_3_text_3);
-            }
-        case HOUR_24:
-            if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-                Pair<String, String> dataSavedPair =
-                        BraveStatsUtil.getBraveStatsStringFormNumberPair(
-                                mDatabaseHelper.getTotalSavedBandwidth(), true);
-                return String.format(context.getResources().getString(R.string.notification_hour_24_text_1), dataSavedPair.first, dataSavedPair.second);
-            } else {
-                return context.getResources().getString(R.string.notification_hour_24_text_2);
-            }
-        case EVERY_SUNDAY:
+            case HOUR_24:
+                if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                    Pair<String, String> dataSavedPair =
+                            BraveStatsUtil.getBraveStatsStringFormNumberPair(
+                                    mDatabaseHelper.getTotalSavedBandwidth(), true);
+                    return String.format(
+                            context.getResources().getString(R.string.notification_hour_24_text_1),
+                            dataSavedPair.first,
+                            dataSavedPair.second);
+                } else {
+                    return context.getResources().getString(R.string.notification_hour_24_text_2);
+                }
+            case EVERY_SUNDAY:
                 long adsTrackersCountWeekly =
                         mDatabaseHelper
                                 .getAllStatsWithDate(
@@ -191,21 +197,21 @@ public class RetentionNotificationUtil {
                 return String.format(
                         context.getResources().getString(R.string.notification_weekly_stats),
                         adsTrackersCountWeekly);
-        case DAY_6:
-            return context.getResources().getString(R.string.notification_marketing);
-        case DAY_10:
+            case DAY_6:
+                return context.getResources().getString(R.string.notification_marketing);
+            case DAY_10:
             case DAY_30:
             case DAY_35:
                 return context.getResources().getString(R.string.notification_rewards);
             case DORMANT_USERS_DAY_14:
-            return context.getResources().getString(
-                    R.string.dormant_users_engagement_notification_body_1);
-        case DORMANT_USERS_DAY_25:
-            return context.getResources().getString(
-                    R.string.dormant_users_engagement_notification_body_2);
-        case DORMANT_USERS_DAY_40:
-            return context.getResources().getString(
-                    R.string.dormant_users_engagement_notification_body_3);
+                return context.getResources()
+                        .getString(R.string.dormant_users_engagement_notification_body_1);
+            case DORMANT_USERS_DAY_25:
+                return context.getResources()
+                        .getString(R.string.dormant_users_engagement_notification_body_2);
+            case DORMANT_USERS_DAY_40:
+                return context.getResources()
+                        .getString(R.string.dormant_users_engagement_notification_body_3);
         }
         return "";
     }

@@ -1082,11 +1082,8 @@ public abstract class BraveActivity extends ChromeActivity
             setBraveAsDefaultPrivateMode();
         }
 
-        // if (appOpenCount == 0 && BraveSetDefaultBrowserUtils.shouldSetBraveDefaultSetCounter()) {
-        //     BraveSetDefaultBrowserUtils.setBraveDefaultSetCounter();
-        // }
-        BraveSetDefaultBrowserUtils.incrementBraveDefaultAppOpenCounter();
-        BraveSetDefaultBrowserUtils.decideToShowBraveSetDefaultBrowserDialog(BraveActivity.this);
+        BraveSetDefaultBrowserUtils.checkForBraveSetDefaultBrowser(
+                appOpenCount, BraveActivity.this);
 
         migrateBgPlaybackToFeature();
 

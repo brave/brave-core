@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.chromium.base.ApplicationStatus;
-import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -82,18 +81,18 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                 }
             } else {
                 switch (notificationType) {
-                case RetentionNotificationUtil.HOUR_3:
-                case RetentionNotificationUtil.HOUR_24:
+                    case RetentionNotificationUtil.HOUR_3:
+                    case RetentionNotificationUtil.HOUR_24:
                     case RetentionNotificationUtil.DAY_6:
                         createNotification(context, intent);
                         break;
                     case RetentionNotificationUtil.DAY_10:
-                case RetentionNotificationUtil.DAY_30:
-                case RetentionNotificationUtil.DAY_35:
-                    // Can't check for rewards code in background
-                    try {
-                        BraveRewardsNativeWorker rewardsNativeWorker =
-                                BraveRewardsNativeWorker.getInstance();
+                    case RetentionNotificationUtil.DAY_30:
+                    case RetentionNotificationUtil.DAY_35:
+                        // Can't check for rewards code in background
+                        try {
+                            BraveRewardsNativeWorker rewardsNativeWorker =
+                                    BraveRewardsNativeWorker.getInstance();
                             if (braveActivity != null
                                     && rewardsNativeWorker != null
                                     && !rewardsNativeWorker.isRewardsEnabled()
@@ -142,10 +141,11 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
         final RetentionNotification retentionNotification =
                 RetentionNotificationUtil.getNotificationObject(notificationType);
         new AsyncTask<Void>() {
-            String notificationText = "";
+            String mNotificationText = "";
+
             @Override
             protected Void doInBackground() {
-                notificationText =
+                mNotificationText =
                         RetentionNotificationUtil.getNotificationText(context, notificationType);
                 return null;
             }
@@ -155,16 +155,18 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                 assert ThreadUtils.runningOnUiThread();
                 if (isCancelled()) return;
                 NotificationManager notificationManager =
-                        (NotificationManager) context.getSystemService(
-                                Context.NOTIFICATION_SERVICE);
-                Log.e("NTP", "Notification : " + notificationType);
-                Notification notification = RetentionNotificationUtil.getNotification(
-                        context, notificationType, notificationText);
+                        (NotificationManager)
+                                context.getSystemService(Context.NOTIFICATION_SERVICE);
+                Notification notification =
+                        RetentionNotificationUtil.getNotification(
+                                context, notificationType, mNotificationText);
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                     int importance = NotificationManager.IMPORTANCE_HIGH;
                     NotificationChannel notificationChannel =
-                            new NotificationChannel(retentionNotification.getChannelId(),
-                                    NOTIFICATION_CHANNEL_NAME, importance);
+                            new NotificationChannel(
+                                    retentionNotification.getChannelId(),
+                                    NOTIFICATION_CHANNEL_NAME,
+                                    importance);
                     assert notificationManager != null;
                     notificationManager.createNotificationChannel(notificationChannel);
                 }
