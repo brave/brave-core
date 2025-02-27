@@ -11,7 +11,8 @@ import { skipToken } from '@reduxjs/toolkit/query'
 import {
   isComponentInStorybook,
   isIpfs,
-  stripERC20TokenImageURL
+  stripERC20TokenImageURL,
+  stripChromeImageURL
 } from '../../../utils/string-utils'
 
 // hooks
@@ -54,7 +55,9 @@ export const NftIcon = (props: NftIconProps) => {
   const nftIframeUrl = React.useMemo(() => {
     const urlParams = new URLSearchParams({
       displayMode: 'icon',
-      icon: encodeURI(remoteImage || '')
+      icon: `chrome-untrusted://image?url=${encodeURIComponent(
+        remoteImage
+      )}&staticEncode=true`
     })
     return `chrome-untrusted://nft-display?${urlParams.toString()}`
   }, [remoteImage])
@@ -97,7 +100,7 @@ export const NftIcon = (props: NftIconProps) => {
 
 export const StorybookNftIcon = (props: NftIconProps) => {
   const { icon, responsive, iconStyles } = props
-  const tokenImageURL = icon ? stripERC20TokenImageURL(icon) : ''
+  const tokenImageURL = icon ? stripChromeImageURL(icon) : ''
 
   return responsive ? (
     <NftImageResponsiveIframe

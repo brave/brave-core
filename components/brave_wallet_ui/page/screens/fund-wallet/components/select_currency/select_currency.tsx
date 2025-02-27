@@ -62,7 +62,11 @@ export const CurrencyListItem = ({
         justifyContent='flex-start'
         gap='16px'
       >
-        <CurrencyImage src={`chrome://image?${currency.symbolImageUrl}`} />
+        <CurrencyImage
+          src={`chrome://image?url=${encodeURIComponent(
+            currency.symbolImageUrl ?? ''
+          )}&staticEncode=true`}
+        />
         <CurrencyName>{currency.name}</CurrencyName>
       </Row>
       <Row

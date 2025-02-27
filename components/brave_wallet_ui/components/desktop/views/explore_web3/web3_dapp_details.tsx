@@ -58,7 +58,7 @@ export const DappDetails = ({ dapp, ...rest }: DappDetailsProps) => {
         >
           {isHttpsUrl(dapp.logo) ? (
             <img
-              src={`chrome://image?${dapp.logo}`}
+              src={`chrome://image?url=${encodeURIComponent(dapp.logo)}&staticEncode=true`}
               width={72}
               height={72}
             />

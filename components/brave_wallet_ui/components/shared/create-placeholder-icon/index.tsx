@@ -13,12 +13,10 @@ import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import {
-  stripERC20TokenImageURL,
   isRemoteImageURL,
   isValidIconExtension,
   isDataURL,
-  isComponentInStorybook,
-  stripChromeImageURL
+  isComponentInStorybook
 } from '../../../utils/string-utils'
 import { isNativeAsset } from '../../../utils/asset-utils'
 
@@ -74,12 +72,18 @@ export function withPlaceholderIcon<
     const nativeAssetLogo =
       isNative && asset ? makeNativeAssetLogo(asset.symbol, asset.chainId) : ''
 
-    const tokenImageURL = stripERC20TokenImageURL(
-      nativeAssetLogo || asset?.logo || ''
-    )
-    const isRemoteURL = isRemoteImageURL(tokenImageURL)
+    const initialTokenImageURL = nativeAssetLogo || asset?.logo || ''
+
+    const isRemoteURL = isRemoteImageURL(initialTokenImageURL)
 
     const isNonFungibleToken = asset?.isNft || asset?.isErc721
+
+    const tokenImageURL =
+      isRemoteURL || isNonFungibleToken || isNative
+        ? initialTokenImageURL
+        : `chrome://erc-token-images/${encodeURIComponent(
+            initialTokenImageURL
+          )}`
 
     // memos + computed
     const isValidIcon = React.useMemo(() => {
@@ -87,21 +91,15 @@ export function withPlaceholderIcon<
         return !!asset?.logo
       }
 
-      const isDataUri = isDataURL(asset?.logo)
+      const isDataUri = isDataURL(tokenImageURL)
 
       if (isRemoteURL || isDataUri) {
-        return tokenImageURL?.includes('data:image/') ||
-          isNonFungibleToken
+        return tokenImageURL?.includes('data:image/') || isNonFungibleToken
           ? true
-          : isValidIconExtension(new URL(asset?.logo || '').pathname)
+          : isValidIconExtension(new URL(tokenImageURL).pathname)
       }
       return false
-    }, [
-      asset?.logo,
-      isRemoteURL,
-      tokenImageURL,
-      isNonFungibleToken
-    ])
+    }, [asset?.logo, isRemoteURL, tokenImageURL, isNonFungibleToken])
 
     const needsPlaceholder =
       (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
@@ -118,7 +116,9 @@ export function withPlaceholderIcon<
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
-        return isStorybook ? tokenImageURL || '' : `chrome://image?${tokenImageURL}`
+        return `chrome://image?url=${encodeURIComponent(
+          tokenImageURL
+        )}&staticEncode=true`
       }
       return ''
     }, [isRemoteURL, tokenImageURL])
@@ -128,7 +128,7 @@ export function withPlaceholderIcon<
       return null
     }
 
-    const icon = nativeAssetLogo || (isRemoteURL ? remoteImage : asset?.logo)
+    const icon = nativeAssetLogo || (isRemoteURL ? remoteImage : tokenImageURL)
 
     if (needsPlaceholder || !icon) {
       return (
@@ -157,7 +157,7 @@ export function withPlaceholderIcon<
           {...(wrappedComponentProps as PROPS_FOR_FUNCTION & {
             icon?: undefined
           })}
-          icon={isStorybook ? stripChromeImageURL(tokenImageURL) : icon}
+          icon={isStorybook ? tokenImageURL : icon}
         />
       </IconWrapper>
     )

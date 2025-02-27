@@ -318,7 +318,7 @@ export class BaseQueryCache {
     }
     return token.logo.startsWith('ipfs://')
       ? (await this.getIpfsGatewayTranslatedNftUrl(token.logo)) || ''
-      : `chrome://erc-token-images/${token.logo}`
+      : token.logo
   }
 
   getNftMetadata = async (tokenArg: GetBlockchainTokenIdArg) => {

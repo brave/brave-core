@@ -25,7 +25,9 @@ export const AssetNameAndIcon = (props: Props) => {
   return (
     <StyledWrapper>
       <AssetIcon
-        src={assetLogo}
+        src={`chrome-untrusted://image?url=${encodeURIComponent(
+          assetLogo
+        )}&staticEncode=true`}
         loading='lazy'
       />
       <NameAndSymbolWrapper>

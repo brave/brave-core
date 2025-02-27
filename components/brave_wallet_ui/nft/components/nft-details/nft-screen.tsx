@@ -233,11 +233,7 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
         spamTokenBalancesRegistry
       ) && (
         <>
-          <Alert
-            type='info'
-          >
-            {getLocale('braveWalletUnownedNftAlert')}
-          </Alert>
+          <Alert type='info'>{getLocale('braveWalletUnownedNftAlert')}</Alert>
           <VerticalSpace space='24px' />
         </>
       )}
@@ -249,7 +245,9 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
             <NftMultimedia
               as='img'
               visible={!isFetchingNFTMetadata}
-              src={nftMetadata?.imageURL}
+              src={`chrome-untrusted://image?url=${encodeURIComponent(
+                nftMetadata?.imageURL || ''
+              )}&staticEncode=true`}
             />
           ) : (
             <NftMultimedia

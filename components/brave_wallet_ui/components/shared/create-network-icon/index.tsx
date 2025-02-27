@@ -92,7 +92,7 @@ export const CreateNetworkIcon = ({ network, marginRight, size }: Props) => {
 
   // complex compute + render
   const networkIcon = network.iconUrls[0]
-  const isSandboxUrl = networkIcon?.startsWith('chrome://erc-token-images/')
+  const isSandboxUrl = networkIcon?.startsWith('chrome://image/')
   const networkImageURL = isSandboxUrl
     ? stripERC20TokenImageURL(networkIcon)
     : networkIcon
@@ -124,7 +124,11 @@ export const CreateNetworkIcon = ({ network, marginRight, size }: Props) => {
     >
       <NetworkIcon
         size={size}
-        icon={isRemoteURL ? `chrome://image?${networkImageURL}` : networkIcon}
+        icon={
+          isRemoteURL
+            ? `chrome://image?url=${encodeURIComponent(networkImageURL)}&staticEncode=true`
+            : networkIcon
+        }
       />
     </IconWrapper>
   )
