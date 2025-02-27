@@ -382,7 +382,8 @@ void MeldIntegrationService::OnGetServiceProviders(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ParseServiceProviders, api_request_result.TakeBody()),
+      base::BindOnce(&ParseServiceProviders,
+                     std::move(api_request_result).TakeBody()),
       base::BindOnce(&MeldIntegrationService::OnParseServiceProviders,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -454,7 +455,8 @@ void MeldIntegrationService::OnGetCryptoQuotes(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ParseCryptoQuotes, api_request_result.TakeBody()),
+      base::BindOnce(&ParseCryptoQuotes,
+                     std::move(api_request_result).TakeBody()),
       base::BindOnce(&MeldIntegrationService::OnParseCryptoQuotes,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -524,7 +526,8 @@ void MeldIntegrationService::OnGetPaymentMethods(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ParsePaymentMethods, api_request_result.TakeBody()),
+      base::BindOnce(&ParsePaymentMethods,
+                     std::move(api_request_result).TakeBody()),
       base::BindOnce(&MeldIntegrationService::OnParsePaymentMethods,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -587,7 +590,8 @@ void MeldIntegrationService::OnGetFiatCurrencies(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ParseFiatCurrencies, api_request_result.TakeBody()),
+      base::BindOnce(&ParseFiatCurrencies,
+                     std::move(api_request_result).TakeBody()),
       base::BindOnce(&MeldIntegrationService::OnParseFiatCurrencies,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -650,7 +654,8 @@ void MeldIntegrationService::OnGetCryptoCurrencies(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ParseCryptoCurrencies, api_request_result.TakeBody()),
+      base::BindOnce(&ParseCryptoCurrencies,
+                     std::move(api_request_result).TakeBody()),
       base::BindOnce(&MeldIntegrationService::OnParseCryptoCurrencies,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -710,7 +715,8 @@ void MeldIntegrationService::OnGetCountries(
   }
 
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&ParseCountries, api_request_result.TakeBody()),
+      FROM_HERE,
+      base::BindOnce(&ParseCountries, std::move(api_request_result).TakeBody()),
       base::BindOnce(&MeldIntegrationService::OnParseCountries,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -784,7 +790,8 @@ void MeldIntegrationService::OnCryptoBuyWidgetCreate(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ParseCryptoWidgetCreate, api_request_result.TakeBody()),
+      base::BindOnce(&ParseCryptoWidgetCreate,
+                     std::move(api_request_result).TakeBody()),
       base::BindOnce(&MeldIntegrationService::OnParseCryptoBuyWidgetCreate,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -846,7 +853,8 @@ void MeldIntegrationService::OnCryptoSellWidgetCreate(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ParseCryptoWidgetCreate, api_request_result.TakeBody()),
+      base::BindOnce(&ParseCryptoWidgetCreate,
+                     std::move(api_request_result).TakeBody()),
       base::BindOnce(&MeldIntegrationService::OnParseCryptoSellWidgetCreate,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -908,7 +916,8 @@ void MeldIntegrationService::OnCryptoTransferWidgetCreate(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ParseCryptoWidgetCreate, api_request_result.TakeBody()),
+      base::BindOnce(&ParseCryptoWidgetCreate,
+                     std::move(api_request_result).TakeBody()),
       base::BindOnce(&MeldIntegrationService::OnParseCryptoTransferWidgetCreate,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }

@@ -273,8 +273,8 @@ void SimpleHashClient::OnFetchNFTsFromSimpleHash(
 
   std::optional<std::pair<std::optional<std::string>,
                           std::vector<mojom::BlockchainTokenPtr>>>
-      result = ParseNFTsFromSimpleHash(api_request_result.TakeBody(), skip_spam,
-                                       only_spam);
+      result = ParseNFTsFromSimpleHash(api_request_result.value_body(),
+                                       skip_spam, only_spam);
   if (!result) {
     std::move(callback).Run(std::move(nfts), std::nullopt);
     return;
@@ -369,7 +369,7 @@ void SimpleHashClient::OnFetchSolCompressedNftProofData(
   }
 
   std::move(callback).Run(
-      ParseSolCompressedNftProofData(api_request_result.TakeBody()));
+      ParseSolCompressedNftProofData(api_request_result.value_body()));
 }
 
 void SimpleHashClient::GetNftBalances(
@@ -410,7 +410,7 @@ void SimpleHashClient::OnGetNftsForBalances(
     return;
   }
 
-  auto owners = ParseBalances(api_request_result.TakeBody());
+  auto owners = ParseBalances(api_request_result.value_body());
 
   if (!owners) {
     std::move(callback).Run(base::unexpected(InternalError()));
@@ -475,7 +475,7 @@ void SimpleHashClient::OnGetNftsForMetadatas(
   }
 
   // A map of NftIdentifierPtr to their metadata
-  auto metadatas = ParseMetadatas(api_request_result.TakeBody());
+  auto metadatas = ParseMetadatas(api_request_result.value_body());
   if (!metadatas) {
     std::move(callback).Run(base::unexpected(InternalError()));
     return;
@@ -534,7 +534,7 @@ void SimpleHashClient::OnGetNfts(
   }
 
   auto result =
-      ParseNFTsFromSimpleHash(api_request_result.TakeBody(),
+      ParseNFTsFromSimpleHash(api_request_result.value_body(),
                               false /* skip_spam */, false /* only_spam */);
 
   // Add the NFT results

@@ -97,7 +97,7 @@ double GetVisitWeighting(
 }
 
 SuggestionsController::PublisherSimilarities ParseSimilarityResponse(
-    base::Value records_v,
+    const base::Value& records_v,
     const std::string& locale) {
   if (!records_v.is_dict()) {
     return {};
@@ -315,7 +315,8 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
                                 controller->locale_ = locale;
                                 controller->similarities_ =
                                     ParseSimilarityResponse(
-                                        api_request_result.TakeBody(), locale);
+                                        api_request_result.value_body(),
+                                        locale);
                                 controller->on_current_update_complete_
                                     ->Signal();
                                 controller->is_update_in_progress_ = false;
