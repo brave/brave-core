@@ -1,0 +1,12 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
+index 2c3e387f09b7b4cb47de76fb479c2bdc696a7107..fad6ca49cb62231b9879e8af5dff3f3ef8916ca5 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
+@@ -560,6 +560,7 @@ public class FullscreenVideoPictureInPictureController {
+         Log.i(TAG, "Dismiss activity with reason " + reason);
+         updateAutoPictureInPictureStatusIfNeeded();
+         mDismissPending = false;
++        if (reason == MetricsEndReason.START || reason == MetricsEndReason.RESUME) return;
+ 
+         if (!isPipSessionActive()) {
+             return;
