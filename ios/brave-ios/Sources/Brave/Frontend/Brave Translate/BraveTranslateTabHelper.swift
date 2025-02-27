@@ -209,12 +209,12 @@ class BraveTranslateTabHelper: NSObject {
     // Cache CSS and JS requests
     Self.requestCache[request.url] = (data, response)
 
-    if isTranslationRequest && canShowToast {
-      canShowToast = false
+    if isTranslationRequest {
+      delegate?.updateTranslateURLBar(tab: tab, state: .active)
 
-      Task { @MainActor in
-        self.delegate?.updateTranslateURLBar(tab: tab, state: .active)
-        self.delegate?.presentToast(tab: tab, languageInfo: currentLanguageInfo)
+      if canShowToast {
+        canShowToast = false
+        delegate?.presentToast(tab: tab, languageInfo: currentLanguageInfo)
       }
     }
 
