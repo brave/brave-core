@@ -27,6 +27,11 @@ import org.chromium.components.embedder_support.util.UrlConstants;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Utility class for managing Brave browser's default browser status. Provides functionality to: -
+ * Check if Brave is set as the default browser - Set Brave as the default browser - Track default
+ * browser prompting state - Handle default browser settings interactions
+ */
 public class BraveSetDefaultBrowserUtils {
     private static final String TAG = "BSDBrowserUtils";
 
@@ -42,6 +47,14 @@ public class BraveSetDefaultBrowserUtils {
 
     public static boolean isBottomSheetVisible;
 
+    /**
+     * Checks if any Brave browser variant (Production, Beta, or Nightly) is set as the default
+     * browser. For production builds, only checks if production Brave is default. For other builds
+     * (Beta/Nightly), checks if any Brave variant is default.
+     *
+     * @param context The application context
+     * @return true if appropriate Brave variant is set as default browser, false otherwise
+     */
     public static boolean isBraveSetAsDefaultBrowser(Context context) {
         Intent browserIntent =
                 new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
@@ -67,6 +80,14 @@ public class BraveSetDefaultBrowserUtils {
         }
     }
 
+    /**
+     * Checks if the current app is set as the default browser. This differs from
+     * isBraveSetAsDefaultBrowser() by only checking if the current package is the default, rather
+     * than checking for specific Brave browser variants.
+     *
+     * @param context The application context
+     * @return true if this app is set as default browser, false otherwise
+     */
     public static boolean isAppSetAsDefaultBrowser(Context context) {
         Intent browserIntent =
                 new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
@@ -81,11 +102,16 @@ public class BraveSetDefaultBrowserUtils {
         return resolveInfo.activityInfo.packageName.equals(context.getPackageName());
     }
 
+    /**
+     * Shows a bottom sheet dialog prompting the user to set Brave as their default browser. The
+     * dialog will only be shown if no other bottom sheet is currently visible.
+     *
+     * @param activity The current AppCompatActivity instance needed to show the dialog
+     * @throws IllegalStateException if the activity is not in foreground when showing dialog
+     */
     public static void showBraveSetDefaultBrowserDialog(AppCompatActivity activity) {
-
         if (!isBottomSheetVisible) {
             isBottomSheetVisible = true;
-
             try {
                 SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
                         new SetDefaultBrowserBottomSheetFragment();
@@ -101,29 +127,50 @@ public class BraveSetDefaultBrowserUtils {
         }
     }
 
+    /**
+     * Opens the system settings page for managing default apps. This allows users to change their
+     * default browser and other app defaults.
+     *
+     * @param activity The activity context needed to start the settings activity
+     */
     public static void openDefaultAppsSettings(Activity activity) {
         Intent intent = new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
         activity.startActivity(intent);
     }
 
-    // New changes
+    /**
+     * Checks and manages the default browser setting prompt flow. This method handles the logic for
+     * when to show the default browser prompt to users.
+     *
+     * @param appOpenCount Number of times the app has been opened, used to determine first launch
+     * @param activity The current activity context needed for showing dialogs
+     */
     public static void checkForBraveSetDefaultBrowser(
             int appOpenCount, AppCompatActivity activity) {
         if (appOpenCount == 0 && shouldSetBraveDefaultSetCounter()) {
             setBraveDefaultSetCounter();
             setBraveDefaultShowTimer(DAYS_7);
         }
+
         if (getBraveDefaultTimerDay() != DAYS_NONE) {
             incrementBraveDefaultAppOpenCounter();
             decideToShowBraveSetDefaultBrowserDialog(activity);
         }
     }
 
+    /**
+     * Sets a timer for when to show the "Set Brave as Default Browser" prompt again.
+     *
+     * @param days Number of days to wait before showing the prompt again
+     */
     private static void setBraveDefaultShowTimer(int days) {
-        Calendar calender = Calendar.getInstance();
-        calender.setTime(new Date());
-        calender.add(Calendar.DATE, days);
-        setBraveDefaultShowTime(calender.getTimeInMillis());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        // Add specified number of days
+        calendar.add(Calendar.DATE, days);
+        // Store the future timestamp when we should show the prompt
+        setBraveDefaultShowTime(calendar.getTimeInMillis());
+        // Store the number of days we're waiting
         setBraveDefaultTimerDay(days);
     }
 
@@ -139,19 +186,19 @@ public class BraveSetDefaultBrowserUtils {
     }
 
     public static void decideToShowBraveSetDefaultBrowserDialog(AppCompatActivity activity) {
-        logAppOpenCounter();
-
         if (shouldShowDefaultBrowserDialog(activity)) {
             handleDefaultBrowserPrompt(activity);
         }
     }
 
-    private static void logAppOpenCounter() {
-        Log.e(
-                "brave_default",
-                "getBraveDefaultAppOpenCounter() : " + getBraveDefaultAppOpenCounter());
-    }
-
+    /**
+     * Determines whether the "Set Brave as Default Browser" dialog should be shown to the user.
+     *
+     * @param activity The current Activity context
+     * @return true if all conditions are met to show the dialog: - Brave is not currently set as
+     *     the default browser - The app has been opened at least 5 times since the last prompt -
+     *     The configured wait time has elapsed since the last prompt
+     */
     private static boolean shouldShowDefaultBrowserDialog(Activity activity) {
         return !isBraveSetAsDefaultBrowser(activity)
                 && getBraveDefaultAppOpenCounter() >= 5
@@ -166,10 +213,16 @@ public class BraveSetDefaultBrowserUtils {
 
     private static void updateNextPromptTimer() {
         int nextDay = calculateNextPromptDay();
-        Log.e("brave_default", "nextDay : " + nextDay);
         setBraveDefaultShowTimer(nextDay);
     }
 
+    /**
+     * Calculates the next day to show the default browser prompt based on the current timer day.
+     * The prompt timing follows a progression from 7 days to 8 days to 15 days.
+     *
+     * @return The next day to show the prompt: - Returns 8 days if current timer is 7 days -
+     *     Returns 15 days if current timer is 8 days - Returns -1 for any other current timer value
+     */
     private static int calculateNextPromptDay() {
         int currentDay = getBraveDefaultTimerDay();
         if (currentDay == DAYS_7) {
@@ -180,22 +233,31 @@ public class BraveSetDefaultBrowserUtils {
         return -1;
     }
 
+    /**
+     * Attempts to set Brave as the default browser using the appropriate system mechanism.
+     *
+     * <p>On Android 10+ devices that support the RoleManager API, this will: - Request the browser
+     * role if available and not already held - Open system default apps settings if role is
+     * unavailable
+     *
+     * <p>On older Android versions or when RoleManager is unsupported: - Shows the Brave default
+     * browser dialog if not coming from onboarding - Opens system default apps settings directly if
+     * coming from onboarding
+     *
+     * @param activity The current activity context
+     * @param isFromOnboarding Whether this request is coming from the onboarding flow
+     */
     public static void setDefaultBrowser(AppCompatActivity activity, boolean isFromOnboarding) {
-        Log.e("brave_default", "setDefaultBrowser 1 : ");
         if (supportsDefaultRoleManager()) {
-            Log.e("brave_default", "setDefaultBrowser 2 : ");
             RoleManager roleManager = activity.getSystemService(RoleManager.class);
 
             if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
-                Log.e("brave_default", "setDefaultBrowser 3 : ");
                 if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
-                    Log.e("brave_default", "setDefaultBrowser 4 : ");
                     activity.startActivityForResult(
                             roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
                             BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE);
                 }
             } else {
-                Log.e("brave_default", "setDefaultBrowser 5 : ");
                 openDefaultAppsSettings(activity);
             }
         } else {

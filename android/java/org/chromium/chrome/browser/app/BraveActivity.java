@@ -307,7 +307,6 @@ public abstract class BraveActivity extends ChromeActivity
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
     private boolean mIsVerification;
-    private boolean mIsDefaultCheckOnResume;
     public boolean mIsDeepLink;
     private BraveWalletService mBraveWalletService;
     private KeyringService mKeyringService;
@@ -2173,7 +2172,7 @@ public abstract class BraveActivity extends ChromeActivity
 
         } else if (resultCode == RESULT_OK
                 && requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE) {
-            // BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
+            // We don't need to anything with the result here.
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

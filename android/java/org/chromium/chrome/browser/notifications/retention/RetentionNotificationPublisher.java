@@ -98,17 +98,18 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                                     && !rewardsNativeWorker.isRewardsEnabled()
                                     && rewardsNativeWorker.isSupported()) {
                                 createNotification(context, intent);
+                            }
+                        } catch (IllegalStateException exc) {
+                            // We can receive 'Browser hasn't finished initialization yet!' if
+                            // Profile.getLastUsedRegularProfile is called too early. Just ignore
+                            // it,
+                            // it's better comparing to crashing
                         }
-                    } catch (IllegalStateException exc) {
-                        // We can receive 'Browser hasn't finished initialization yet!' if
-                        // Profile.getLastUsedRegularProfile is called too early. Just ignore it,
-                        // it's better comparing to crashing
-                    }
-                    break;
-                case RetentionNotificationUtil.EVERY_SUNDAY:
-                    if (OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled()) {
-                        createNotification(context, intent);
-                    }
+                        break;
+                    case RetentionNotificationUtil.EVERY_SUNDAY:
+                        if (OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled()) {
+                            createNotification(context, intent);
+                        }
                         break;
                     case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
                     case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
