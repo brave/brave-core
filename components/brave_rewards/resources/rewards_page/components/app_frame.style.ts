@@ -98,14 +98,6 @@ export const style = scoped.css`
         background: ${color.container.highlight};
       }
     }
-
-    .expand-button {
-      visibility: hidden;
-
-      .is-bubble & {
-        visibility: visible;
-      }
-    }
   }
 
   &.page-frame {
