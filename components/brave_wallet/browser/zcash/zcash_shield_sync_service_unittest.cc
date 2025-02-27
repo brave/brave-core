@@ -245,12 +245,6 @@ class ZCashShieldSyncServiceTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
 };
 
-#if defined(IS_MAC)
-#define MAYBE_ScanBlocks DISABLED_ScanBlocks
-#else
-#define MAYBE_ScanBlocks ScanBlocks
-#endif
-
 TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
   auto mock_block_scanner = CreateMockOrchardBlockScannerProxy();
 
