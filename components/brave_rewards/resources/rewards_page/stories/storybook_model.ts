@@ -20,6 +20,12 @@ export function createModel(): AppModel {
   const locale = createLocaleContextForTesting(localeStrings)
   const stateManager = createStateManager<AppState>({
     ...defaultState(),
+    embedder: {
+      platform: 'desktop',
+      isAutoResizeBubble: false,
+      isBubble: false,
+      animatedBackgroundEnabled: false
+    },
     loading: false,
     paymentId: 'abc123',
     countryCode: 'US',
