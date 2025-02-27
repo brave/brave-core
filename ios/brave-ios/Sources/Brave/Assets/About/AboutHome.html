@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Home</title>
+    <style>
+      body {
+        transition: background-color 0.1s, color 0.1s;
+      }
+
+      .theme {
+        color: black;
+        background-color: #LIGHT_MODE_COLOUR;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .theme {
+          color: white;
+          background-color: #DARK_MODE_COLOUR;
+        }
+      }
+    </style>
+  </head>
+  <body class="theme">
+  </body>
+</html>
