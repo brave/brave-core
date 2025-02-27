@@ -269,8 +269,8 @@ void BraveVpnAPIRequest::OnGetSubscriberCredential(
     APIRequestResult api_request_result) {
   bool success = api_request_result.response_code() == 200;
   std::string error;
-  std::string subscriber_credential =
-      ParseSubscriberCredentialFromJson(api_request_result.TakeBody(), &error);
+  std::string subscriber_credential = ParseSubscriberCredentialFromJson(
+      api_request_result.value_body(), &error);
   if (!success) {
     subscriber_credential = error;
     VLOG(1) << __func__ << " Response from API was not HTTP 200 (Received "

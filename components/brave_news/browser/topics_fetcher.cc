@@ -145,8 +145,8 @@ void TopicsFetcher::OnFetchedTopicArticles(
 
   state.topic_articles_result = std::move(result);
 
-  auto topics = ParseTopics(state.topics_result.TakeBody(),
-                            state.topic_articles_result.TakeBody());
+  auto topics = ParseTopics(state.topics_result.value_body(),
+                            state.topic_articles_result.value_body());
   std::move(state.callback).Run(std::move(topics));
 }
 

@@ -265,7 +265,7 @@ void PublishersController::EnsurePublishersIsUpdating(
                 << ", final_url: " << api_request_result.final_url();
         // TODO(petemill): handle bad status or response
         std::optional<Publishers> publisher_list =
-            ParseCombinedPublisherList(api_request_result.TakeBody());
+            ParseCombinedPublisherList(api_request_result.value_body());
 
         // Update failed, we'll just reuse whatever publishers we had before.
         if (!publisher_list) {

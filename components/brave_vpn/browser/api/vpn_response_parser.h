@@ -12,7 +12,7 @@
 
 namespace brave_vpn {
 
-std::string ParseSubscriberCredentialFromJson(base::Value records_v,
+std::string ParseSubscriberCredentialFromJson(const base::Value& records_v,
                                               std::string* error);
 
 }  // namespace brave_vpn

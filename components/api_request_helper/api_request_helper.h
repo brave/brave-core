@@ -59,7 +59,7 @@ class APIRequestResult {
   int response_code() const { return response_code_; }
 
   // Extract the sanitized response as base::Value.
-  base::Value TakeBody();
+  base::Value TakeBody() &&;
 
   // Returns the sanitized response as base::Value.
   // Note: don't clone large responses, use TakeBody() instead.
@@ -87,7 +87,6 @@ class APIRequestResult {
   base::flat_map<std::string, std::string> headers_;
   int error_code_ = -1;
   GURL final_url_;
-  bool body_consumed_ = false;
 };
 
 struct APIRequestOptions {

@@ -147,9 +147,7 @@ bool APIRequestResult::IsResponseCodeValid() const {
   return response_code_ >= 100 && response_code_ <= 599;
 }
 
-base::Value APIRequestResult::TakeBody() {
-  CHECK(!body_consumed_);
-  body_consumed_ = true;
+base::Value APIRequestResult::TakeBody() && {
   return std::move(value_body_);
 }
 
