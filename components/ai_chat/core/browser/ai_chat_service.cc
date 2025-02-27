@@ -656,9 +656,7 @@ void AIChatService::MaybeUnloadConversation(
   auto uuid = conversation_handler->get_conversation_uuid();
   conversation_observations_.RemoveObservation(conversation_handler);
   conversation_handlers_.erase(uuid);
-  if (ai_chat_metrics_) {
-    ai_chat_metrics_->RecordConversationUnload(uuid);
-  }
+
   DVLOG(1) << "Unloaded conversation (" << uuid << ") from memory. Now have "
            << conversations_.size() << " Conversation metadata items and "
            << conversation_handlers_.size()
@@ -819,6 +817,10 @@ void AIChatService::OnConversationEntryRemoved(ConversationHandler* handler,
 void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
   DVLOG(4) << "Client connection changed for conversation "
            << handler->get_conversation_uuid();
+  if (ai_chat_metrics_ != nullptr && !handler->IsAnyClientConnected()) {
+    ai_chat_metrics_->RecordConversationUnload(
+        handler->get_conversation_uuid());
+  }
   MaybeUnloadConversation(handler);
 }
 

@@ -172,8 +172,8 @@ class AIChatMetrics : public mojom::Metrics {
   void MaybeRecordLastError(ConversationHandlerForMetrics* handler);
 
   // Metrics:
-  void WillSendPromptWithFullPage() override;
-  void WillSendPromptWithQuickAction() override;
+  void OnSendingPromptWithFullPage() override;
+  void OnQuickActionStatusChange(bool is_enabled) override;
 
  private:
   void ReportAllMetrics();

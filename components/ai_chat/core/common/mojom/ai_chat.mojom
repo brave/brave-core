@@ -558,9 +558,11 @@ interface ConversationUI {
 };
 
 interface Metrics {
-  WillSendPromptWithFullPage();
+  // Notify metrics service that a full page prompt is being sent
+  OnSendingPromptWithFullPage();
 
-  WillSendPromptWithQuickAction();
+  // Notify metrics service if a quick action is being used
+  OnQuickActionStatusChange(bool is_enabled);
 };
 
 [EnableIf=is_android]

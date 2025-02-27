@@ -547,7 +547,7 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
   auto* ai_chat_metrics =
       g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
   if (ai_chat_metrics) {
-    ai_chat_metrics->WillSendPromptWithQuickAction();
+    ai_chat_metrics->OnQuickActionStatusChange(true);
   }
 
   if (rewrite_in_place) {

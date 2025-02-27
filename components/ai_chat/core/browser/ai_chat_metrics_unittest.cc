@@ -554,16 +554,26 @@ TEST_F(AIChatMetricsUnitTest, ContextSource) {
 
   histogram_tester_.ExpectTotalCount(kMostUsedContextSourceHistogramName, 0);
 
+  // Test conversation starter context when history size > 1
+  conversation_handler_.current_history_size_ = 2;
+  auto chat = CreateConversationAndTurn("chat10", "hello");
+  chat.second->action_type = mojom::ActionType::CONVERSATION_STARTER;
+  ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
+                                    chat.second);
+  histogram_tester_.ExpectUniqueSample(kMostUsedContextSourceHistogramName, 4,
+                                       1);
+  histogram_tester_.ExpectTotalCount(kMostUsedContextSourceHistogramName, 1);
+
   conversation_handler_.current_history_size_ = 1;
   // Test conversation starter context
-  auto chat = CreateConversationAndTurn("chat2", "hello");
+  chat = CreateConversationAndTurn("chat2", "hello");
   chat.second->action_type = mojom::ActionType::CONVERSATION_STARTER;
   ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
                                     chat.second);
   ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
                                     chat.second);
-  histogram_tester_.ExpectUniqueSample(kMostUsedContextSourceHistogramName, 1,
-                                       2);
+  histogram_tester_.ExpectBucketCount(kMostUsedContextSourceHistogramName, 1,
+                                      2);
 
   // Test page summary context
   chat = CreateConversationAndTurn("chat1", "test");
@@ -588,17 +598,17 @@ TEST_F(AIChatMetricsUnitTest, ContextSource) {
 
   // Test text input without page context (default)
   chat = CreateConversationAndTurn("chat6", "test");
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < 4; i++) {
     ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
                                       chat.second);
   }
   histogram_tester_.ExpectBucketCount(kMostUsedContextSourceHistogramName, 4,
-                                      1);
+                                      2);
 
   // Test text input via full page context
   chat = CreateConversationAndTurn("chat5", "test");
   for (int i = 0; i < 6; i++) {
-    ai_chat_metrics_->WillSendPromptWithFullPage();
+    ai_chat_metrics_->OnSendingPromptWithFullPage();
     ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
                                       chat.second);
   }
@@ -608,7 +618,7 @@ TEST_F(AIChatMetricsUnitTest, ContextSource) {
   // Test quick action context
   chat = CreateConversationAndTurn("chat3", "test");
   for (size_t i = 0; i < 7; i++) {
-    ai_chat_metrics_->WillSendPromptWithQuickAction();
+    ai_chat_metrics_->OnQuickActionStatusChange(true);
     ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
                                       chat.second);
   }

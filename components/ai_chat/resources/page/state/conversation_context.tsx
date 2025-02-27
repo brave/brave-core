@@ -415,11 +415,16 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     })
   }
 
+  React.useEffect(() => {
+    try {
+      getAPI().metrics.onQuickActionStatusChange(!!context.selectedActionType)
+    } catch (e) {}
+  }, [context.selectedActionType])
+
   const handleActionTypeClick = (actionType: Mojom.ActionType) => {
     setPartialContext({
       selectedActionType: actionType
     })
-    getAPI().metrics.willSendPromptWithQuickAction()
     // TODO(petemill): Explain why the settimeout?
     setTimeout(() => {
       if (context.inputText.startsWith('/')) {
@@ -463,7 +468,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
 
     if (aiChatContext.isStandalone) {
-      getAPI().metrics.willSendPromptWithFullPage()
+      getAPI().metrics.onSendingPromptWithFullPage()
     }
 
     if (context.selectedActionType) {

@@ -309,7 +309,6 @@ void AIChatMetrics::RecordEnabled(
   }
 
   ReportAllMetrics();
-  MaybeReportFirstChatPrompts(false);
 }
 
 void AIChatMetrics::RecordReset() {
@@ -399,12 +398,12 @@ void AIChatMetrics::RecordConversationsCleared() {
   MaybeReportFirstChatPrompts(false);
 }
 
-void AIChatMetrics::WillSendPromptWithFullPage() {
+void AIChatMetrics::OnSendingPromptWithFullPage() {
   prompted_via_full_page_ = true;
 }
 
-void AIChatMetrics::WillSendPromptWithQuickAction() {
-  prompted_via_quick_action_ = true;
+void AIChatMetrics::OnQuickActionStatusChange(bool is_enabled) {
+  prompted_via_quick_action_ = is_enabled;
 }
 
 void AIChatMetrics::MaybeReportFirstChatPrompts(bool new_prompt_made) {
