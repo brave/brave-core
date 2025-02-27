@@ -31,6 +31,7 @@
 #include "brave/base/process/process_launcher.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "url/gurl.h"
 
 namespace brave_vpn {
 
@@ -427,6 +428,27 @@ RasOperationResult SetConnectionParamsUsingPowerShell(
 RasOperationResult SetConnectionProxyParamsUsingPowerShell(
     const std::wstring& entry_name,
     const std::wstring& pac_file_url) {
+  // Validate the entry name
+  DWORD nRet = RasValidateEntryName(NULL, entry_name.c_str());
+  switch (nRet) {
+    case ERROR_INVALID_NAME:
+      return GetRasErrorResult("`entry_name` is not a valid format");
+    case ERROR_CANNOT_FIND_PHONEBOOK_ENTRY:
+      return GetRasErrorResult("`entry_name` is not in phone book");
+    default:
+      // ERROR_SUCCESS
+      // ERROR_ALREADY_EXISTS
+      break;
+  }
+
+  // Validate the URL of the provided PAC file
+  GURL pac_file = GURL(base::WideToUTF8(pac_file_url));
+  if (!pac_file.is_valid()) {
+    VLOG(2) << __func__ << " `pac_file_url` is not a valid URL: \""
+            << pac_file_url << "\"";
+    return GetRasErrorResult("`pac_file_url` is not a valid URL");
+  }
+
   base::CommandLine power_shell(base::FilePath(L"PowerShell"));
   power_shell.AppendArg("Set-VpnConnectionProxy");
   power_shell.AppendArg("-ConnectionName");
