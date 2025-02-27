@@ -109,24 +109,24 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                     if (OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled()) {
                         createNotification(context, intent);
                     }
-                    break;
-                case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
-                case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
-                case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
-                    if (System.currentTimeMillis()
-                                    > OnboardingPrefManager.getInstance()
-                                              .getDormantUsersNotificationTime(notificationType)
-                            && !BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(
-                                    braveActivity)
-                            && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
-                        createNotification(context, intent);
-                    } else {
-                        RetentionNotificationUtil.scheduleNotificationWithTime(context,
-                                notificationType,
-                                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
-                                        notificationType));
-                    }
-                    break;
+                        break;
+                    case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
+                    case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
+                    case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
+                        if (System.currentTimeMillis()
+                                        > OnboardingPrefManager.getInstance()
+                                                .getDormantUsersNotificationTime(notificationType)
+                                && !BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(
+                                        braveActivity)) {
+                            createNotification(context, intent);
+                        } else {
+                            RetentionNotificationUtil.scheduleNotificationWithTime(
+                                    context,
+                                    notificationType,
+                                    OnboardingPrefManager.getInstance()
+                                            .getDormantUsersNotificationTime(notificationType));
+                        }
+                        break;
                 }
             }
         } catch (Exception exc) {

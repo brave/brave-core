@@ -69,7 +69,7 @@ public class DormantUsersEngagementDialogFragment extends BraveDialogFragment {
                     public void onClick(View v) {
                         try {
                             BraveSetDefaultBrowserUtils.setDefaultBrowser(
-                                    BraveActivity.getBraveActivity());
+                                    BraveActivity.getBraveActivity(), false);
                         } catch (BraveActivity.BraveActivityNotFoundException e) {
                             Log.e(TAG, "onViewCreated doneButton click " + e);
                         }
