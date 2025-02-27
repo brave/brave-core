@@ -15,10 +15,10 @@ public class AboutHomeHandler: InternalSchemeResponse {
     guard let url = request.url else { return nil }
     let response = InternalSchemeHandler.response(forUrl: url)
 
-    let lightModeColour = UIColor.braveBackground.resolvedColor(
+    let lightModeColour = UIColor(braveSystemName: .containerBackground).resolvedColor(
       with: .init(userInterfaceStyle: .light)
     ).toHexString()
-    let darkModeColour = UIColor.braveBackground.resolvedColor(
+    let darkModeColour = UIColor(braveSystemName: .containerBackground).resolvedColor(
       with: .init(userInterfaceStyle: .dark)
     ).toHexString()
 
