@@ -49,7 +49,8 @@ bool BlobURLStoreImpl::IsBlobResolvable(const GURL& url) const {
                               ? BlobUrlUtils::ClearUrlFragment(url)
                               : url;
   constexpr std::string_view kChromeExtensionScheme = "chrome-extension";
-  return (registry_ && registry_->IsUrlMapped(clean_url, storage_key_)) ||
+  return (registry_ && registry_->IsUrlMapped(clean_url, storage_key_) ==
+                           BlobUrlRegistry::MappingStatus::kIsMapped) ||
          (url.SchemeIsBlob() &&
           (url::Origin::Create(url).scheme() == kChromeExtensionScheme ||
            storage_key_.origin().scheme() == kChromeExtensionScheme));
