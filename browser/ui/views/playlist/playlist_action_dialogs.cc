@@ -262,7 +262,7 @@ class PlaylistLabelButton : public views::LabelButton {
   PlaylistLabelButton(views::Button::PressedCallback callback = {},
                       const std::u16string& text = std::u16string())
       : LabelButton(std::move(callback), text) {
-    SetEnabledTextColorIds(kColorBravePlaylistTextInteractive);
+    SetEnabledTextColors(kColorBravePlaylistTextInteractive);
     const int size_diff = 13 - label()->font_list().GetFontSize();
     label()->SetFontList(label()->font_list().Derive(
         size_diff, gfx::Font::FontStyle::NORMAL, gfx::Font::Weight::SEMIBOLD));
