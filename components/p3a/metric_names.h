@@ -186,8 +186,11 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Today.WeeklyTotalCardClicks", MetricConfig{.ephemeral = true}},
     {"Brave.Today.WeeklyTotalCardViews", {}},
     {"Brave.VPN.HideWidget", MetricConfig{.ephemeral = true}},
-    {"Brave.VPN.LastUsageTime", {}},
-    {"Brave.VPN.NewUserReturning", {}},
+    {"Brave.VPN.LastUsageTime", MetricConfig{.record_activation_date = true}},
+    {"Brave.VPN.NewUserReturning", MetricConfig{
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfActivation, MetricAttribute::kDateOfInstall, MetricAttribute::kVersion, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
+      .activation_metric_name = "Brave.VPN.LastUsageTime"
+    }},
     {"Brave.VPN.WidgetUsage", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.GroupTabs", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.OpenTabs", MetricConfig{.ephemeral = true}},
