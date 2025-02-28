@@ -235,7 +235,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/local_database/TopSiteTable.java",
   "../../brave/android/java/org/chromium/chrome/browser/media/BravePictureInPictureActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/media/ui/BraveMediaNotificationControllerDelegate.java",
-  "../../brave/android/java/org/chromium/chrome/browser/media/ui/BraveMediaNotificationControllerServices.java",
   "../../brave/android/java/org/chromium/chrome/browser/media/ui/BraveMediaSessionTabHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsConnectionErrorHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
@@ -549,6 +548,7 @@ brave_java_base_sources = [
 
 brave_java_base_module_sources = [
   "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatJobIntentService.java",
+  "//brave/android/java/org/chromium/chrome/browser/media/ui/BraveMediaNotificationControllerServices.java",
   "//brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsService.java",
   "//brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardService.java",

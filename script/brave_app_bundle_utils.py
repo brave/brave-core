@@ -6,11 +6,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 
-# Here we can extend the list of non-base services that are allowed to be included in the app bundle.
+# Here we can extend the list of non-base services that are allowed to be
+# included in the app bundle.
 def extend_allowlisted_non_base_services(allowlisted_non_base_services):
     allowlisted_non_base_services.add(
         'com.brave.playlist.playback_service.VideoPlaybackService')
-    allowlisted_non_base_services.add(
-        'org.chromium.chrome.browser.media.ui.BraveMediaNotificationControllerServices$PlaybackListenerMicService'
-    )
     return allowlisted_non_base_services
