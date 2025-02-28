@@ -521,7 +521,8 @@ extension BrowserViewController: TabWebPolicyDecider {
     if ["http", "https", "data", "blob", "file"].contains(requestURL.scheme) {
       pendingRequests[requestURL.absoluteString] = request
 
-      if let etldP1 = requestURL.baseDomain,
+      if requestInfo.isMainFrame,
+        let etldP1 = requestURL.baseDomain,
         tab.proceedAnywaysDomainList.contains(etldP1) == false
       {
         let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
