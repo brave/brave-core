@@ -78,17 +78,5 @@
             style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
-
-    <CheckBox
-        android:id="@+id/checkbox_dont_ask"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:button="@drawable/brave_checkbox"
-        android:layout_marginTop="20dp"
-        android:paddingStart="8dp"
-        android:text="@string/brave_dont_ask_again"
-        android:textSize="14sp"
-        android:textColor="@color/set_default_text_color"/>
     
 </LinearLayout>
