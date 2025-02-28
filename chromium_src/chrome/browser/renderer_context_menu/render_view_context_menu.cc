@@ -544,6 +544,12 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
   auto [action_type, p3a_action] = GetActionTypeAndP3A(command);
   auto selected_text = base::UTF16ToUTF8(params_.selection_text);
 
+  auto* ai_chat_metrics =
+      g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
+  if (ai_chat_metrics) {
+    ai_chat_metrics->OnQuickActionStatusChange(true);
+  }
+
   if (rewrite_in_place) {
     source_web_contents_->SetUserData(kAIChatRewriteDataKey,
                                       std::make_unique<AIChatRewriteData>());
@@ -594,9 +600,9 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
     conversation->SubmitSelectedText(selected_text, action_type);
   }
 
-  g_brave_browser_process->process_misc_metrics()
-      ->ai_chat_metrics()
-      ->RecordContextMenuUsage(p3a_action);
+  if (ai_chat_metrics) {
+    ai_chat_metrics->RecordContextMenuUsage(p3a_action);
+  }
 }
 
 void BraveRenderViewContextMenu::BuildAIChatMenu() {
