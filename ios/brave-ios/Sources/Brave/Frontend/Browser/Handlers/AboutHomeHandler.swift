@@ -14,14 +14,24 @@ public class AboutHomeHandler: InternalSchemeResponse {
   public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let url = request.url else { return nil }
     let response = InternalSchemeHandler.response(forUrl: url)
-    let bg = UIColor.braveBackground.toHexString()
+
+    let lightModeColour = UIColor(braveSystemName: .containerBackground).resolvedColor(
+      with: .init(userInterfaceStyle: .light)
+    ).toHexString()
+    let darkModeColour = UIColor(braveSystemName: .containerBackground).resolvedColor(
+      with: .init(userInterfaceStyle: .dark)
+    ).toHexString()
+
     // Blank page with a color matching the background of the panels which is displayed for a split-second until the panel shows.
-    let html = """
-          <!DOCTYPE html>
-          <html>
-            <body style='background-color:\(bg)'></body>
-          </html>
-      """
+    guard let asset = Bundle.module.url(forResource: "AboutHome", withExtension: "html"),
+      var html = await AsyncFileManager.default.utf8Contents(at: asset)
+    else {
+      return nil
+    }
+
+    html = html.replacingOccurrences(of: "LIGHT_MODE_COLOUR", with: lightModeColour)
+      .replacingOccurrences(of: "DARK_MODE_COLOUR", with: darkModeColour)
+
     let data = Data(html.utf8)
     return (response, data)
   }
