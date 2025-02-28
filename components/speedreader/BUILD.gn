@@ -22,6 +22,8 @@ static_library("speedreader") {
     "speedreader_distilled_page_producer.h",
     "speedreader_extended_info_handler.cc",
     "speedreader_extended_info_handler.h",
+    "speedreader_metrics.cc",
+    "speedreader_metrics.h",
     "speedreader_pref_names.h",
     "speedreader_rewriter_service.cc",
     "speedreader_rewriter_service.h",
@@ -36,6 +38,7 @@ static_library("speedreader") {
   deps = [
     "rust/ffi",
     "//brave/components/body_sniffer",
+    "//brave/components/p3a_utils",
     "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/speedreader/common:mojom",
@@ -52,6 +55,31 @@ static_library("speedreader") {
     "//services/network/public/mojom",
     "//third_party/blink/public/common",
     "//ui/base",  # For ResourceBundle, consider getting rid of this ?
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "speedreader_metrics_unittest.cc",
+    "speedreader_rewriter_unittest.cc",
+    "speedreader_util_unittest.cc",
+  ]
+
+  deps = [
+    ":speedreader",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//brave/components/p3a_utils",
+    "//brave/components/time_period_storage",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//testing/gtest",
     "//url",
   ]
 }

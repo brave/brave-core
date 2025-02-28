@@ -274,6 +274,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
  protected:
   base::test::ScopedFeatureList feature_list_;
   net::EmbeddedTestServer https_server_;
+  base::HistogramTester histogram_tester_;
 };
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, PRE_RestoreSpeedreaderPage) {
@@ -446,11 +447,18 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ClickingOnReaderButton) {
 
   EXPECT_FALSE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
+
+  histogram_tester_.ExpectTotalCount(
+      speedreader::kSpeedreaderPageViewsHistogramName, 0);
+
   ClickReaderButton();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
   EXPECT_TRUE(GetReaderButton()->GetVisible());
+
+  histogram_tester_.ExpectTotalCount(
+      speedreader::kSpeedreaderPageViewsHistogramName, 1);
 
   ClickReaderButton();
   EXPECT_TRUE(GetReaderButton()->GetVisible());

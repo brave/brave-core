@@ -43,10 +43,12 @@ bool IsSpeedreaderEnabled() {
 }  // namespace features
 
 SpeedreaderService::SpeedreaderService(content::BrowserContext* browser_context,
+                                       PrefService* local_state,
                                        HostContentSettingsMap* content_rules)
     : browser_context_(browser_context),
       content_rules_(content_rules),
-      prefs_(user_prefs::UserPrefs::Get(browser_context_)) {
+      prefs_(user_prefs::UserPrefs::Get(browser_context_)),
+      metrics_(local_state, content_rules_, IsEnabledForAllSites()) {
   DCHECK(features::IsSpeedreaderEnabled());
 }
 
@@ -79,6 +81,11 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kSpeedreaderPrefTtsVoice, "");
   registry->RegisterIntegerPref(kSpeedreaderPrefTtsSpeed,
                                 static_cast<int>(PlaybackSpeed::k100));
+}
+
+// static
+void SpeedreaderService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  SpeedreaderMetrics::RegisterPrefs(registry);
 }
 
 void SpeedreaderService::AddObserver(Observer* observer) {
@@ -164,6 +171,8 @@ void SpeedreaderService::EnableForAllSites(bool enabled) {
   for (auto& o : observers_) {
     o.OnAllSitesEnableSettingChanged(enabled);
   }
+
+  metrics_.UpdateEnabledSitesMetric(enabled);
 }
 
 void SpeedreaderService::EnableForSite(const GURL& url, bool enabled) {
@@ -188,6 +197,8 @@ void SpeedreaderService::EnableForSite(const GURL& url, bool enabled) {
   content_rules_->SetContentSettingCustomScope(
       pattern, ContentSettingsPattern::Wildcard(),
       ContentSettingsType::BRAVE_SPEEDREADER, setting);
+
+  metrics_.UpdateEnabledSitesMetric(IsEnabledForAllSites());
 }
 
 void SpeedreaderService::EnableForSite(content::WebContents* contents,
@@ -198,6 +209,8 @@ void SpeedreaderService::EnableForSite(content::WebContents* contents,
       o.OnSiteEnableSettingChanged(contents, enabled);
     }
   }
+
+  metrics_.UpdateEnabledSitesMetric(IsEnabledForAllSites());
 }
 
 void SpeedreaderService::SetAppearanceSettings(

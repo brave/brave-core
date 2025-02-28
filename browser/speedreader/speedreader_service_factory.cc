@@ -9,6 +9,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/components/speedreader/speedreader_service.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -49,7 +50,8 @@ SpeedreaderServiceFactory::BuildServiceInstanceForBrowserContext(
     return {};
   }
   return std::make_unique<SpeedreaderService>(
-      context, HostContentSettingsMapFactory::GetForProfile(context));
+      context, g_browser_process->local_state(),
+      HostContentSettingsMapFactory::GetForProfile(context));
 }
 
 bool SpeedreaderServiceFactory::ServiceIsCreatedWithBrowserContext() const {

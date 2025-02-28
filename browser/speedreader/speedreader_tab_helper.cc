@@ -448,6 +448,9 @@ std::string SpeedreaderTabHelper::TakePageContent() {
 void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
   // Perform a state transition
   Transit(distill_state_, DistillStates::Distilled(result));
+  if (result == DistillationResult::kSuccess) {
+    GetSpeedreaderService()->metrics().RecordPageView();
+  }
 }
 
 void SpeedreaderTabHelper::OnDistilledDocumentSent() {

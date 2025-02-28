@@ -43,6 +43,9 @@ inline constexpr char kSpeedreaderPrefTtsVoice[] =
 inline constexpr char kSpeedreaderPrefTtsSpeed[] =
     "brave.speedreader.tts_speed";
 
+inline constexpr char kSpeedreaderPageViewsStoragePref[] =
+    "brave.speedreader.page_views";
+
 }  // namespace speedreader
 
 #endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_PREF_NAMES_H_

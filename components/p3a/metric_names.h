@@ -240,6 +240,8 @@ inline constexpr auto kCollectedSlowHistograms =
     {"Brave.Rewards.TipsSent.2", MetricConfig{.ephemeral = true}},
     {"Brave.Search.SearchSuggest", {}},
     {"Brave.Shields.ForgetFirstParty", {}},
+    {"Brave.Speedreader.EnabledSites", {}},
+    {"Brave.Speedreader.PageViews", MetricConfig{.ephemeral = true}},
     {"Brave.SplitView.UsageMonthly", {}},
     {"Brave.Sync.EnabledTypes", {}},
     {"Brave.Sync.SyncedObjectsCount.2", {}},
