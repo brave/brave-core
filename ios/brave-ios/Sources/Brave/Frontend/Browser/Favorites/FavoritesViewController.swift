@@ -543,6 +543,14 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
           toSection: .recentSearches
         )
       }
+
+      // New snapshot is created, need to add back `.recentSearchesOptIn` if there is one before
+      if recentSearchesOptInSectionExists {
+        newSnapshot.appendItems(
+          currentSnapshot.itemIdentifiers(inSection: .recentSearchesOptIn),
+          toSection: .recentSearchesOptIn
+        )
+      }
     }
 
     if controller === recentSearchesFRC {
