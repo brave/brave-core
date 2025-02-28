@@ -151,10 +151,10 @@ try {
       }
   };
 
-  const emptySvgDataUrl = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg"/>');
-
   // Make replacements in loading .js files.
   function processJavascript(text) {
+      const emptySvgDataUrl = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg"/>');
+    
       // Replace gen204 telemetry requests with loading an empty svg.
       text = text.replaceAll('"//"+po+"/gen204?"+Bo(b)', '"' + emptySvgDataUrl + '"');
 
@@ -166,6 +166,8 @@ try {
 
   // Make replacements in loading .css files.
   function processCSS(text) {
+      const emptySvgDataUrl = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg"/>');
+    
       // Used in the injected elements, that are currently not visible. Replace it
       // to hide the loading error in devtools (because of CSP).
       text = text.replaceAll('//www.gstatic.com/images/branding/product/2x/translate_24dp.png', emptySvgDataUrl);
@@ -309,17 +311,17 @@ try {
       xhr.send();
   }
 
-  // The styles to hide root elements that are injected by the scripts in the DOM.
-  // Currently they are always invisible. The styles are added in case of changes
-  // in future versions.
-  const braveExtraStyles = `.goog-te-spinner-pos, #goog-gt-tt {display: none;}`
-
   // An overridden version of onLoadCSS from translate.js.
   // The differences:
   // 1. change url via rewriteUrl();
   // 2. process the loaded styles via processCSS().
   // 3. Add braveExtraStyles in the end.
   cr.googleTranslate.onLoadCSS = function(url) {
+      // The styles to hide root elements that are injected by the scripts in the DOM.
+      // Currently they are always invisible. The styles are added in case of changes
+      // in future versions.
+      const braveExtraStyles = `.goog-te-spinner-pos, #goog-gt-tt {display: none;}`
+    
       const xhr = new XMLHttpRequest();
       xhr.open('GET', rewriteUrl(url), true);
       xhr.onreadystatechange = function() {
