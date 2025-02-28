@@ -53,7 +53,8 @@ class SplitView : public views::View,
  public:
   using BrowserViewKey = base::PassKey<BraveBrowserView>;
 
-  static constexpr int kBorderThickness = 1;
+  static constexpr int kInactiveBorderThickness = 1;
+  static constexpr int kBorderThickness = 2;
 
   SplitView(Browser& browser,
             views::View* contents_container,
