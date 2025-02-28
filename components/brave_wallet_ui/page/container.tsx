@@ -16,7 +16,6 @@ import {
   isPersistableSessionRoute
 } from '../utils/routes-utils'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
-import { loadTimeData } from '../../common/loadTimeData'
 
 // actions
 import * as WalletPageActions from './actions/wallet_page_actions'
@@ -112,7 +111,6 @@ export const Container = () => {
     : isWalletLocked
     ? WalletRoutes.Unlock
     : sessionRoute || WalletRoutes.PortfolioAssets
-  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
   // Methods
   const handleAcceptPartnerConsent = () => {
@@ -154,13 +152,12 @@ export const Container = () => {
 
   React.useEffect(() => {
     if (
-      !isAndroid &&
       !acceptedPartnerConsentTerms &&
       walletLocation.includes(WalletRoutes.FundWalletPageStart)
     ) {
       setShowPartnerConsentModal(true)
     }
-  }, [isAndroid, acceptedPartnerConsentTerms, walletLocation, history])
+  }, [acceptedPartnerConsentTerms, walletLocation, history])
 
   // render
   if (!hasInitialized) {
