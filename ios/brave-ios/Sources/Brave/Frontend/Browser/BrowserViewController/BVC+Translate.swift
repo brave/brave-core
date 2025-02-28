@@ -74,10 +74,11 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
             completion(false)
           }
         ),
-        autoLayoutConfiguration: .init(preferredWidth: self.view.bounds.width - (32.0 * 2.0))
+        autoLayoutConfiguration: .phoneWidth
       )
 
       popover.arrowDistance = 10.0
+      popover.outerMargins = UIEdgeInsets(equalInset: 16.0)
 
       popover.previewForOrigin = .init(
         view: self.topToolbar.locationView.translateButton.then {
