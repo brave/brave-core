@@ -242,14 +242,14 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     const std::string cached_json_data = pref_service_->GetString(
         prefs::kNewTabPageCachedSuperReferralComponentData);
     if (!cached_json_data.empty()) {
-      std::optional<base::Value> cached_data =
-          base::JSONReader::Read(cached_json_data);
-      if (!cached_data || !cached_data->is_dict()) {
+      std::optional<base::Value::Dict> cached_data =
+          base::JSONReader::ReadDict(cached_json_data);
+      if (!cached_data) {
         return;
       }
       DVLOG(6) << "Initialize Super Referral Data from cache.";
       super_referrals_images_data_ = std::make_unique<NTPSponsoredImagesData>(
-          cached_data->GetDict(), super_referrals_installed_dir_);
+          *cached_data, super_referrals_installed_dir_);
     }
     return;
   }
@@ -419,23 +419,18 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
     return;
   }
 
-  std::optional<base::Value> mapping_table_value =
-      base::JSONReader::Read(json_string);
+  std::optional<base::Value::Dict> mapping_table_value =
+      base::JSONReader::ReadDict(json_string);
 
   if (!mapping_table_value) {
     DVLOG(6) << "Mapping table is invalid.";
     return;
   }
 
-  if (!mapping_table_value->is_dict()) {
-    DVLOG(6) << "Mapping table is empty.";
-    return;
-  }
-
   DVLOG(6) << "Downloaded valid mapping table.";
 
   if (base::Value::Dict* value =
-          mapping_table_value->GetDict().FindDict(GetReferralPromoCode())) {
+          mapping_table_value->FindDict(GetReferralPromoCode())) {
     DVLOG(6) << "This is super referral. Cache SR's referral code";
     initial_super_referrals_component_info_ = std::move(*value);
     RegisterSuperReferralComponent();
@@ -549,12 +544,13 @@ void NTPBackgroundImagesService::OnSponsoredComponentReady(
 void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     bool is_super_referral,
     const std::string& json_string) {
-  std::optional<base::Value> json_value = base::JSONReader::Read(json_string);
-  if (!json_value || !json_value->is_dict()) {
+  std::optional<base::Value::Dict> json_value =
+      base::JSONReader::ReadDict(json_string);
+  if (!json_value) {
     DVLOG(2) << "Read json data failed. Invalid JSON data";
     return;
   }
-  base::Value::Dict& data = json_value->GetDict();
+  base::Value::Dict& data = *json_value;
 
   if (is_super_referral) {
     pref_service_->SetBoolean(

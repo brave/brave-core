@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
@@ -221,7 +221,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
   meta.set_chain_id("0x66");
 
   base::Value::Dict value = meta.ToValue();
-  auto expect_value = base::JSONReader::Read(R"(
+  auto expect_value = base::test::ParseJsonDict(R"(
     {
       "coin": 501,
       "chain_id" : "0x66",
@@ -305,8 +305,7 @@ TEST(SolanaTxMetaUnitTest, ToValue) {
       }
     }
   )");
-  ASSERT_TRUE(expect_value);
-  EXPECT_EQ(*expect_value, value);
+  EXPECT_EQ(expect_value, value);
 }
 
 }  // namespace brave_wallet

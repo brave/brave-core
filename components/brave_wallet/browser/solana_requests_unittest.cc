@@ -7,7 +7,6 @@
 
 #include <optional>
 
-#include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
@@ -49,14 +48,12 @@ TEST(SolanaRequestsUnitTest, sendTransaction) {
         }]
       }
   )";
-  auto expected_json = base::JSONReader::Read(expected_json_string);
-  ASSERT_TRUE(expected_json);
+  auto expected_json = base::test::ParseJsonDict(expected_json_string);
   std::string json_string = sendTransaction(
       "signed_tx",
       SolanaTransaction::SendOptions(UINT64_MAX, "confirmed", true));
-  auto json = base::JSONReader::Read(json_string);
-  ASSERT_TRUE(json);
-  EXPECT_EQ(*json, *expected_json);
+  auto json = base::test::ParseJsonDict(json_string);
+  EXPECT_EQ(json, expected_json);
 }
 
 TEST(SolanaRequestsUnitTest, getLatestBlockhash) {
@@ -79,16 +76,14 @@ TEST(SolanaRequestsUnitTest, getSignatureStatuses) {
           }
         ]
       })";
-  auto expected_json = base::JSONReader::Read(expected_json_string);
-  ASSERT_TRUE(expected_json);
+  auto expected_json = base::test::ParseJsonDict(expected_json_string);
   std::string json_string =
       getSignatureStatuses({"5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8u"
                             "irBgmQpjKhoR4tjF3ZpRzrFmBV6UjKdiSZkQUW",
                             "5j7s6NiJS3JAkvgkoc18WVAsiSaci2pxB2A6ueCJP4tprA2TFg"
                             "9wSyTLeYouxPBJEMzJinENTkpA52YStRW5Dia7"});
-  auto json = base::JSONReader::Read(json_string);
-  ASSERT_TRUE(json);
-  EXPECT_EQ(*json, *expected_json);
+  auto json = base::test::ParseJsonDict(json_string);
+  EXPECT_EQ(json, expected_json);
 }
 
 TEST(SolanaRequestsUnitTest, getAccountInfo) {

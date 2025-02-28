@@ -68,11 +68,11 @@ std::optional<std::string> RefineParseURL(const std::string& value,
 std::optional<std::string> RefineJsonExtract(const std::string& value,
                                              const std::string& path,
                                              bool extract_objects) {
-  auto parsed = base::JSONReader::Read(value);
-  if (!parsed || !parsed->is_dict()) {
+  auto parsed = base::JSONReader::ReadDict(value);
+  if (!parsed) {
     return std::nullopt;
   }
-  const auto* found_value = parsed->GetDict().FindByDottedPath(path);
+  const auto* found_value = parsed->FindByDottedPath(path);
   if (!found_value) {
     return std::nullopt;
   }

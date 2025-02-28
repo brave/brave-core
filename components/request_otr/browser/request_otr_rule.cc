@@ -90,7 +90,7 @@ RequestOTRRule::ParseRules(const std::string& contents) {
   if (contents.empty()) {
     return base::unexpected("Could not obtain request_otr configuration");
   }
-  std::optional<base::Value> root = base::JSONReader::Read(contents);
+  std::optional<base::Value::List> root = base::JSONReader::ReadList(contents);
   if (!root) {
     return base::unexpected("Failed to parse request_otr configuration");
   }
@@ -99,7 +99,7 @@ RequestOTRRule::ParseRules(const std::string& contents) {
       result;
   auto& [rules, hosts] = result;
   base::JSONValueConverter<RequestOTRRule> converter;
-  for (base::Value& it : root->GetList()) {
+  for (base::Value& it : *root) {
     std::unique_ptr<RequestOTRRule> rule = std::make_unique<RequestOTRRule>();
     if (!converter.Convert(it, rule.get())) {
       continue;

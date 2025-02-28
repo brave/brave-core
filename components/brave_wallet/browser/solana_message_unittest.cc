@@ -9,9 +9,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "base/sys_byteorder.h"
 #include "base/test/gtest_util.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
@@ -384,7 +384,7 @@ TEST(SolanaMessageUnitTest, FromToValue) {
   // legacy
   SolanaMessage message = GetTestLegacyMessage();
   base::Value::Dict value = message.ToValue();
-  auto expect_message_value = base::JSONReader::Read(R"(
+  auto expect_message_value = base::test::ParseJsonDict(R"(
     {
       "version": 0,
       "recent_blockhash": "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6",
@@ -442,8 +442,7 @@ TEST(SolanaMessageUnitTest, FromToValue) {
       ]
     }
   )");
-  ASSERT_TRUE(expect_message_value);
-  EXPECT_EQ(value, expect_message_value->GetDict());
+  EXPECT_EQ(value, expect_message_value);
 
   auto message_from_value = SolanaMessage::FromValue(value);
   EXPECT_EQ(message, message_from_value);
@@ -455,15 +454,14 @@ TEST(SolanaMessageUnitTest, FromToValue) {
       R"({"fee_payer": "fee payer", "instructions": []})"};
 
   for (const auto& invalid_value_string : invalid_value_strings) {
-    std::optional<base::Value> invalid_value =
-        base::JSONReader::Read(invalid_value_string);
-    ASSERT_TRUE(invalid_value) << ":" << invalid_value_string;
-    EXPECT_FALSE(SolanaMessage::FromValue(invalid_value->GetDict()))
+    base::Value::Dict invalid_value =
+        base::test::ParseJsonDict(invalid_value_string);
+    EXPECT_FALSE(SolanaMessage::FromValue(invalid_value))
         << ":" << invalid_value_string;
   }
 
   // v0
-  expect_message_value = base::JSONReader::Read(R"(
+  expect_message_value = base::test::ParseJsonDict(R"(
     {
       "version": 1,
       "recent_blockhash": "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6",
@@ -527,11 +525,10 @@ TEST(SolanaMessageUnitTest, FromToValue) {
       ]
     }
   )");
-  ASSERT_TRUE(expect_message_value);
 
   SolanaMessage message2 = GetTestV0Message();
   value = message2.ToValue();
-  EXPECT_EQ(value, expect_message_value->GetDict());
+  EXPECT_EQ(value, expect_message_value);
 
   message_from_value = SolanaMessage::FromValue(value);
   EXPECT_EQ(message2, message_from_value);

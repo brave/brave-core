@@ -5,7 +5,7 @@
 
 #include "brave/components/skus/browser/skus_utils.h"
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -62,7 +62,7 @@ TEST(SkusUtilsUnittest, Migrate) {
   EXPECT_FALSE(local_state_pref_service.HasPrefPath(
       skus::prefs::kSkusStateMigratedToLocalState));
   EXPECT_FALSE(local_state_pref_service.HasPrefPath(skus::prefs::kSkusState));
-  auto skus_settings = base::JSONReader::Read(R"({
+  auto skus_settings = base::test::ParseJsonDict(R"({
     "skus":
       {
           "state":
@@ -71,13 +71,13 @@ TEST(SkusUtilsUnittest, Migrate) {
           }
       }
     })");
-  profile_pref_service.Set(skus::prefs::kSkusState, *skus_settings);
+  profile_pref_service.SetDict(skus::prefs::kSkusState, skus_settings.Clone());
   skus::MigrateSkusSettings(&profile_pref_service, &local_state_pref_service);
 
   EXPECT_FALSE(profile_pref_service.HasPrefPath(skus::prefs::kSkusState));
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(skus::prefs::kSkusState));
   EXPECT_EQ(local_state_pref_service.GetDict(skus::prefs::kSkusState),
-            *skus_settings);
+            skus_settings);
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       skus::prefs::kSkusStateMigratedToLocalState));
 }
@@ -89,15 +89,16 @@ TEST(SkusUtilsUnittest, AlreadyMigrated) {
   skus::RegisterLocalStatePrefs(local_state_pref_service.registry());
   local_state_pref_service.SetBoolean(
       skus::prefs::kSkusStateMigratedToLocalState, true);
-  auto existing_skus = base::JSONReader::Read(R"({
+  auto existing_skus = base::test::ParseJsonDict(R"({
       "skus": {
             "state":{
               "migrated_to_local_state": true
             }
         }
       })");
-  local_state_pref_service.Set(skus::prefs::kSkusState, *existing_skus);
-  auto skus_settings = base::JSONReader::Read(R"({
+  local_state_pref_service.SetDict(skus::prefs::kSkusState,
+                                   existing_skus.Clone());
+  auto skus_settings = base::test::ParseJsonDict(R"({
     "skus":
       {
           "state":
@@ -106,12 +107,13 @@ TEST(SkusUtilsUnittest, AlreadyMigrated) {
           }
       }
     })");
-  profile_pref_service.Set(skus::prefs::kSkusState, *skus_settings);
+  profile_pref_service.SetDict(skus::prefs::kSkusState,
+                               std::move(skus_settings));
   skus::MigrateSkusSettings(&profile_pref_service, &local_state_pref_service);
 
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(skus::prefs::kSkusState));
   EXPECT_EQ(local_state_pref_service.GetDict(skus::prefs::kSkusState),
-            *existing_skus);
+            existing_skus);
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       skus::prefs::kSkusStateMigratedToLocalState));
 }

@@ -143,22 +143,12 @@ void SkusJSHandler::OnRefreshOrder(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
-  std::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value::Dict> result_dict = base::JSONReader::ReadDict(
       response->message, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                              base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
-    v8::Local<v8::String> result =
-        v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
-            .ToLocalChecked();
-    std::ignore = resolver->Reject(context, result);
-    return;
-  }
-
-  const base::Value::Dict* result_dict = records_v->GetIfDict();
   if (!result_dict) {
     v8::Local<v8::String> result =
-        v8::String::NewFromUtf8(isolate,
-                                "Error converting response to dictionary")
+        v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
             .ToLocalChecked();
     std::ignore = resolver->Reject(context, result);
     return;
@@ -306,10 +296,10 @@ void SkusJSHandler::OnCredentialSummary(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
-  std::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value::Dict> result_dict = base::JSONReader::ReadDict(
       response->message, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                              base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
+  if (!result_dict) {
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
             .ToLocalChecked();
@@ -317,15 +307,6 @@ void SkusJSHandler::OnCredentialSummary(
     return;
   }
 
-  const base::Value::Dict* result_dict = records_v->GetIfDict();
-  if (!result_dict) {
-    v8::Local<v8::String> result =
-        v8::String::NewFromUtf8(isolate,
-                                "Error converting response to dictionary")
-            .ToLocalChecked();
-    std::ignore = resolver->Reject(context, result);
-    return;
-  }
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (vpn_service_.is_bound()) {
     vpn_service_->LoadPurchasedState(domain);

@@ -85,14 +85,14 @@ std::optional<std::vector<PsstRule>> PsstRule::ParseRules(
   if (contents.empty()) {
     return std::nullopt;
   }
-  std::optional<base::Value> root = base::JSONReader::Read(contents);
+  std::optional<base::Value::List> root = base::JSONReader::ReadList(contents);
   if (!root) {
     VLOG(1) << "PsstRule::ParseRules: invalid JSON";
     return std::nullopt;
   }
   std::vector<PsstRule> rules;
   base::JSONValueConverter<PsstRule> converter;
-  for (base::Value& it : root->GetList()) {
+  for (base::Value& it : *root) {
     PsstRule rule = PsstRule();
     if (!converter.Convert(it, &rule)) {
       VLOG(1) << "PsstRule::ParseRules: invalid rule";

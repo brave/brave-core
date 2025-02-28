@@ -11,11 +11,11 @@
 
 #include "base/base64.h"
 #include "base/files/file_util.h"
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/util.h"
@@ -52,9 +52,7 @@ class WebDiscoveryCredentialManagerTest : public testing::Test {
         data_path.AppendASCII(
             "web_discovery/credential_keys_and_responses.json"),
         &test_data_json));
-    auto test_data_value = base::JSONReader::Read(test_data_json);
-    ASSERT_TRUE(test_data_value);
-    const auto& test_data_dict = test_data_value->GetDict();
+    auto test_data_dict = base::test::ParseJsonDict(test_data_json);
     const auto* rsa_priv_key = test_data_dict.FindString("rsa_priv_key");
     const auto* group_pub_key = test_data_dict.FindString("group_pub_key");
     const auto* join_responses = test_data_dict.FindDict("join_responses");
@@ -100,9 +98,8 @@ class WebDiscoveryCredentialManagerTest : public testing::Test {
     auto body_json =
         elements->at(0).As<network::DataElementBytes>().AsStringPiece();
 
-    auto body_value = base::JSONReader::Read(body_json);
-    ASSERT_TRUE(body_value && body_value->is_dict());
-    const auto* ts = body_value->GetDict().FindString("ts");
+    auto body_value = base::test::ParseJsonDict(body_json);
+    const auto* ts = body_value.FindString("ts");
     ASSERT_TRUE(ts);
     ASSERT_TRUE(join_responses_.contains(*ts));
     ASSERT_EQ(request.url.spec(), GetDirectHPNHost() + "/join");
