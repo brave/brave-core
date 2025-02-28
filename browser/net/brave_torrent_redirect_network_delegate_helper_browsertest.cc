@@ -9,12 +9,14 @@
 #include "base/command_line.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/page_type.h"
@@ -96,6 +98,7 @@ class BraveTorrentRedirectNetworkDelegateHelperTest
 
 IN_PROC_BROWSER_TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
                        TorrentFileIsRedirected) {
+  browser()->profile()->GetPrefs()->SetBoolean(kWebTorrentEnabled, true);
   auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   NavigateParams params(browser(), torrent_url(),
@@ -108,6 +111,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 
 IN_PROC_BROWSER_TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
                        LinkToExtensionFails) {
+  browser()->profile()->GetPrefs()->SetBoolean(kWebTorrentEnabled, true);
   auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   NavigateParams params(browser(), torrent_extension_url(),
