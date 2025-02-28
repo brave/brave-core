@@ -190,18 +190,31 @@ class BraveTranslateTabHelper: NSObject {
       throw BraveTranslateError.otherError
     }
 
+    // Check request cache for CSS and JS requests
+    if request.method == "GET",
+      request.url.lastPathComponent == "translateelement.css"
+        || request.url.lastPathComponent == "main.js"
+    {
+      if let (data, response) = Self.requestCache[request.url], response.statusCode == 200 {
+        return (data, response)
+      }
+    }
+
     let (data, response) = try await translationSession.translate(request)
 
     guard let response = response as? HTTPURLResponse else {
       throw BraveTranslateError.invalidTranslationResponse
     }
 
-    if isTranslationRequest && canShowToast {
-      canShowToast = false
+    // Cache CSS and JS requests
+    Self.requestCache[request.url] = (data, response)
 
-      Task { @MainActor in
-        self.delegate?.updateTranslateURLBar(tab: tab, state: .active)
-        self.delegate?.presentToast(tab: tab, languageInfo: currentLanguageInfo)
+    if isTranslationRequest {
+      delegate?.updateTranslateURLBar(tab: tab, state: .active)
+
+      if canShowToast {
+        canShowToast = false
+        delegate?.presentToast(tab: tab, languageInfo: currentLanguageInfo)
       }
     }
 
