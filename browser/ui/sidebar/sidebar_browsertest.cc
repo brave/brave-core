@@ -13,6 +13,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_browser.h"
@@ -22,6 +23,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_resize_widget.h"
@@ -72,7 +74,7 @@ namespace sidebar {
 
 class SidebarBrowserTest : public InProcessBrowserTest {
  public:
-  SidebarBrowserTest() = default;
+  SidebarBrowserTest() : scoped_features_(tabs::features::kBraveSplitView) {}
   ~SidebarBrowserTest() override = default;
 
   void PreRunTestOnMainThread() override {
@@ -284,6 +286,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return std::distance(items.cbegin(), iter);
   }
 
+  base::test::ScopedFeatureList scoped_features_;
   raw_ptr<views::View, DanglingUntriaged> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
   base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
@@ -581,20 +584,44 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
   auto* widget = GetEventDetectWidget();
   auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  auto* contents_container = browser_view->contents_container();
+  auto* contents_container =
+      BraveBrowserView::From(browser_view)->GetContentsBoundingView();
   auto* prefs = browser()->profile()->GetPrefs();
+  auto* sidebar_container = GetSidebarContainerView();
 
   // Check widget is located on left side when sidebar on left.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   service->SetSidebarShowOption(
       SidebarService::ShowSidebarOption::kShowOnMouseOver);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return sidebar_container->width() == 0; }));
   EXPECT_EQ(contents_container->GetBoundsInScreen().x(),
             widget->GetWindowBoundsInScreen().x());
 
   // Check widget is located on right side when sidebar on right.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return sidebar_container->width() == 0; }));
   EXPECT_EQ(contents_container->GetBoundsInScreen().right(),
             widget->GetWindowBoundsInScreen().right());
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  brave::NewSplitViewForTab(browser());
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser());
+  ASSERT_TRUE(split_view_data);
+  ASSERT_TRUE(split_view_data->IsTabTiled(
+      tab_strip_model->GetTabAtIndex(0)->GetHandle()));
+  ASSERT_TRUE(split_view_data->IsTabTiled(
+      tab_strip_model->GetTabAtIndex(1)->GetHandle()));
+
+  // Check event detect widget position with split view.
+  EXPECT_EQ(contents_container->GetBoundsInScreen().right(),
+            widget->GetWindowBoundsInScreen().right());
+  prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return sidebar_container->width() == 0; }));
+  EXPECT_EQ(contents_container->GetBoundsInScreen().x(),
+            widget->GetWindowBoundsInScreen().x());
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, HideSidebarUITest) {
