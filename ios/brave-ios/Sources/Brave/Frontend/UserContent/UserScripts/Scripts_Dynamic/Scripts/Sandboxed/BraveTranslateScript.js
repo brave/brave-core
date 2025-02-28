@@ -21,9 +21,27 @@ Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
     "getRawPageSource": (function() {
       return document.documentElement.outerText;
     }),
+    "hasNoTranslate": (function() {
+      for (const metaTag of document.getElementsByTagName('meta')) {
+        if (metaTag.name === 'google') {
+          if (metaTag.content === 'notranslate' ||
+              metaTag.getAttribute('value') === 'notranslate') {
+            return true;
+          }
+        }
+      }
+      return false;
+    }),
+    "isSameLanguage": (function() {
+      let userLanguage = (navigator.language || navigator.userLanguage).split('-')[0];
+      let pageLanguage = document.documentElement.lang
+      return userLanguage == pageLanguage;
+    }),
     "checkTranslate": (function() {
       try {
-        if ((cr.googleTranslate.libReady || cr.googleTranslate.finished) && !cr.googleTranslate.readyCallback) {
+        if ((cr.googleTranslate.libReady || cr.googleTranslate.finished) &&
+            !cr.googleTranslate.readyCallback &&
+            !window.__firefox__.$<brave_translate_script>.isSameLanguage()) {
           window.webkit.messageHandlers["$<message_handler>"].postMessage({
             "command": "ready"
           });
