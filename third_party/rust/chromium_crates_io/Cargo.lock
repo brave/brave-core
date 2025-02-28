@@ -10,7 +10,7 @@ dependencies = [
  "base64",
  "bitflags 1.3.2",
  "cssparser 0.29.6",
- "idna 0.2.3",
+ "idna",
  "itertools",
  "memchr",
  "once_cell",
@@ -796,14 +796,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "form_urlencoded"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "percent-encoding",
-]
-
-[[package]]
 name = "fpe"
 version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1151,15 +1143,6 @@ version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "matches",
- "unicode-bidi",
- "unicode-normalization",
-]
-
-[[package]]
-name = "idna"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
  "unicode-bidi",
  "unicode-normalization",
 ]
@@ -2648,12 +2631,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "url"
 version = "2.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "form_urlencoded",
- "idna 0.3.0",
- "percent-encoding",
-]
 
 [[package]]
 name = "urlencoding"
