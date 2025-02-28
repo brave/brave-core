@@ -2370,6 +2370,9 @@ public class BrowserViewController: UIViewController {
           // Saving Tab.
           tabManager.saveTab(tab)
         }
+
+        // Fire the Brave Translate check.
+        BraveTranslateScriptHandler.checkTranslate(tab: tab)
       }
 
       TabEvent.post(.didChangeURL(url), for: tab)
@@ -3374,10 +3377,14 @@ extension BrowserViewController: PreferencesObserver {
         screenTimeViewController = nil
       }
     case Preferences.Translate.translateEnabled.key:
+      tabManager.selectedTab?.translationState = .unavailable
       tabManager.selectedTab?.setScripts(scripts: [
-        .braveTranslate: Preferences.Translate.translateEnabled.value
+        .braveTranslate: Preferences.Translate.translateEnabled.value != false
       ])
-      tabManager.reloadSelectedTab()
+      // Only reload the tab if the setting was changed from the settings controller
+      if presentedViewController is SettingsNavigationController {
+        tabManager.reloadSelectedTab()
+      }
     default:
       Logger.module.debug(
         "Received a preference change for an unknown key: \(key, privacy: .public) on \(type(of: self), privacy: .public)"

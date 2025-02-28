@@ -98,7 +98,7 @@ extension BrowserViewController {
 
     // Translate Activity
     if let translationState = tab?.translationState, translationState != .unavailable,
-      Preferences.Translate.translateEnabled.value
+      Preferences.Translate.translateEnabled.value != false
     {
       activities.append(
         BasicMenuActivity(
