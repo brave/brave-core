@@ -18,6 +18,8 @@ import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.components.web_discovery.WebDiscoveryPrefs;
+import org.chromium.chrome.browser.BraveConfig;
 
 public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -29,6 +31,7 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
             "show_autocomplete_in_address_bar";
     private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
     private static final String PREF_ADD_OPEN_SEARCH_ENGINES = "brave.other_search_engines_enabled";
+    private static final String PREF_SEND_WEB_DISCOVERY = "send_web_discovery";
 
     private ChromeManagedPreferenceDelegate mManagedPreferenceDelegate;
 
@@ -36,6 +39,7 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mSearchSuggestions;
     private ChromeSwitchPreference mAutocompleteTopSites;
     private ChromeSwitchPreference mAddOpenSearchEngines;
+    private ChromeSwitchPreference mSendWebDiscovery;
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
@@ -60,6 +64,13 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         mManagedPreferenceDelegate = createManagedPreferenceDelegate();
+    }
+
+    private void removePreferenceIfPresent(String key) {
+        Preference preference = getPreferenceScreen().findPreference(key);
+        if (preference != null) {
+            getPreferenceScreen().removePreference(preference);
+        }
     }
 
     private ChromeManagedPreferenceDelegate createManagedPreferenceDelegate() {
@@ -116,6 +127,23 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         mAddOpenSearchEngines.setOnPreferenceChangeListener(this);
         mAddOpenSearchEngines.setChecked(
                 UserPrefs.get(getProfile()).getBoolean(BravePref.ADD_OPEN_SEARCH_ENGINES));
+
+        if (BraveConfig.WEB_DISCOVERY_ENABLED) {
+            mSendWebDiscovery = (ChromeSwitchPreference) findPreference(PREF_SEND_WEB_DISCOVERY);
+            mSendWebDiscovery.setOnPreferenceChangeListener(this);
+        } else {
+            removePreferenceIfPresent(PREF_SEND_WEB_DISCOVERY);
+        }
+
+        if (mSendWebDiscovery != null) {
+            mSendWebDiscovery.setTitle(
+                    getActivity().getResources().getString(R.string.send_web_discovery_title));
+            mSendWebDiscovery.setSummary(
+                    getActivity().getResources().getString(R.string.send_web_discovery_summary));
+            mSendWebDiscovery.setChecked(
+                    UserPrefs.get(getProfile())
+                            .getBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED));
+        }
     }
 
     @Override
@@ -135,6 +163,9 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         } else if (PREF_ADD_OPEN_SEARCH_ENGINES.equals(key)) {
             UserPrefs.get(getProfile())
                     .setBoolean(BravePref.ADD_OPEN_SEARCH_ENGINES, (boolean) newValue);
+        } else if (PREF_SEND_WEB_DISCOVERY.equals(key)) {
+            UserPrefs.get(getProfile())
+                    .setBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED, (boolean) newValue);
         }
         return true;
     }
