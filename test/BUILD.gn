@@ -283,6 +283,7 @@ test("brave_unit_tests") {
     "//chrome:resources",
     "//chrome:strings",
     "//chrome/app:command_ids",
+    "//chrome/browser/browsing_data:constants",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/favicon",
     "//chrome/browser/permissions",

@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/time/time.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_constraints.h"
 #include "components/content_settings/core/common/content_settings_types.h"

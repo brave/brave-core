@@ -6,17 +6,16 @@
 #include "brave/browser/browsing_data/brave_browsing_data_remover_delegate.h"
 
 #include <memory>
-#include <string>
-#include <utility>
 
-#include "base/functional/bind.h"
+#include "base/test/bind.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+#include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "content/public/browser/browsing_data_filter_builder.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -84,4 +83,32 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsClearTest) {
   EXPECT_EQ(2 + start_count, GetShieldsSettingsCount());
   delegate()->ClearShieldsSettings(k1DaysOld, kNow);
   EXPECT_EQ(start_count, GetShieldsSettingsCount());
+}
+
+TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsKeepDefaults) {
+  brave_shields::SetAdControlType(map(), brave_shields::ControlType::BLOCK,
+                                  GURL());
+  brave_shields::SetCosmeticFilteringControlType(
+      map(), brave_shields::ControlType::BLOCK, GURL());
+
+  EXPECT_EQ(brave_shields::DomainBlockingType::kAggressive,
+            brave_shields::GetDomainBlockingType(map(), GURL()));
+  auto filter_builder = content::BrowsingDataFilterBuilder::Create(
+      content::BrowsingDataFilterBuilder::Mode::kPreserve);
+  base::RunLoop run_loop;
+  profile()->GetBrowsingDataRemoverDelegate()->RemoveEmbedderData(
+      /*delete_begin=*/base::Time::Min(),
+      /*delete_end=*/base::Time::Max(),
+      /*remove_mask=*/
+      chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS,
+      filter_builder.get(),
+      /*origin_type_mask=*/1,
+      base::BindLambdaForTesting([&run_loop](uint64_t failed_data_types) {
+        EXPECT_EQ(failed_data_types, 0U);
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+
+  EXPECT_EQ(brave_shields::DomainBlockingType::kAggressive,
+            brave_shields::GetDomainBlockingType(map(), GURL()));
 }
