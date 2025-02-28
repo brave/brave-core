@@ -488,6 +488,7 @@ var braveTarget: PackageDescription.Target = .target(
   ],
   resources: [
     .copy("Assets/About/Licenses.html"),
+    .copy("Assets/About/AboutHome.html"),
     .copy("Assets/__firefox__.js"),
     .copy("Assets/AllFramesAtDocumentEnd.js"),
     .copy("Assets/AllFramesAtDocumentEndSandboxed.js"),
