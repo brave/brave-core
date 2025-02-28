@@ -36,6 +36,7 @@
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/components/skus/browser/skus_utils.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -179,6 +180,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   web_discovery::WebDiscoveryService::RegisterLocalStatePrefs(registry);
 #endif
+  speedreader::SpeedreaderService::RegisterLocalStatePrefs(registry);
 }
 
 }  // namespace brave
