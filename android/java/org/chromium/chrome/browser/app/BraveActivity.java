@@ -173,7 +173,6 @@ import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
-import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
@@ -247,7 +246,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public abstract class BraveActivity extends ChromeActivity
         implements BrowsingDataBridge.OnClearBrowsingDataListener,
                 BraveVpnObserver,
-                OnBraveSetDefaultBrowserListener,
                 ConnectionErrorHandler,
                 PrefObserver,
                 BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate,
@@ -309,8 +307,6 @@ public abstract class BraveActivity extends ChromeActivity
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
     private boolean mIsVerification;
-    private boolean mIsDefaultCheckOnResume;
-    private boolean mIsSetDefaultBrowserNotification;
     public boolean mIsDeepLink;
     private BraveWalletService mBraveWalletService;
     private KeyringService mKeyringService;
@@ -428,7 +424,7 @@ public abstract class BraveActivity extends ChromeActivity
         } else if (id == R.id.exit_id) {
             exitBrave();
         } else if (id == R.id.set_default_browser) {
-            BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.this, true);
+            BraveSetDefaultBrowserUtils.openDefaultAppsSettings(BraveActivity.this);
         } else if (id == R.id.brave_rewards_id) {
             showRewardsPage();
         } else if (id == R.id.brave_wallet_id) {
@@ -933,21 +929,9 @@ public abstract class BraveActivity extends ChromeActivity
     public void onBrowsingDataCleared() {}
 
     @Override
-    public void onCheckDefaultResume() {
-        mIsDefaultCheckOnResume = true;
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         mIsProcessingPendingDappsTxRequest = false;
-        if (mIsDefaultCheckOnResume) {
-            mIsDefaultCheckOnResume = false;
-
-            if (BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
-                BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
-            }
-        }
 
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> { BraveStatsUtil.removeShareStatsFile(); });
@@ -1097,6 +1081,9 @@ public abstract class BraveActivity extends ChromeActivity
             setBraveAsDefaultPrivateMode();
         }
 
+        BraveSetDefaultBrowserUtils.checkForBraveSetDefaultBrowser(
+                appOpenCount, BraveActivity.this);
+
         migrateBgPlaybackToFeature();
 
         Context app = ContextUtils.getApplicationContext();
@@ -1161,9 +1148,6 @@ public abstract class BraveActivity extends ChromeActivity
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_10);
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_30);
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_35);
-            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_1);
-            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_2);
-            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_3);
             OnboardingPrefManager.getInstance().setOneTimeNotificationStarted(true);
         }
 
@@ -1175,10 +1159,6 @@ public abstract class BraveActivity extends ChromeActivity
             calender.setTime(new Date());
             calender.add(Calendar.DATE, DAYS_4);
             BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
-        }
-
-        if (!mIsSetDefaultBrowserNotification) {
-            BraveSetDefaultBrowserUtils.checkSetDefaultBrowserModal(this);
         }
 
         checkFingerPrintingOnUpgrade(isFirstInstall);
@@ -1743,16 +1723,6 @@ public abstract class BraveActivity extends ChromeActivity
                 case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
                     showDormantUsersEngagementDialog(notificationType);
                     break;
-                case RetentionNotificationUtil.DEFAULT_BROWSER_1:
-                case RetentionNotificationUtil.DEFAULT_BROWSER_2:
-                case RetentionNotificationUtil.DEFAULT_BROWSER_3:
-                    if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(BraveActivity.this)
-                            && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
-                        mIsSetDefaultBrowserNotification = true;
-                        BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
-                                BraveActivity.this, false);
-                    }
-                    break;
             }
         }
     }
@@ -2093,8 +2063,7 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void showDormantUsersEngagementDialog(String notificationType) {
-        if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(BraveActivity.this)
-                && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
+        if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(BraveActivity.this)) {
             DormantUsersEngagementDialogFragment dormantUsersEngagementDialogFragment =
                     new DormantUsersEngagementDialogFragment();
             dormantUsersEngagementDialogFragment.setNotificationType(notificationType);
@@ -2203,7 +2172,7 @@ public abstract class BraveActivity extends ChromeActivity
 
         } else if (resultCode == RESULT_OK
                 && requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE) {
-            BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
+            // We don't need to anything with the result here.
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

@@ -28,16 +28,23 @@ import java.util.List;
 public class DormantUsersEngagementDialogFragment extends BraveDialogFragment {
     private static final String TAG = "DormantEngagement";
 
-    private static final List<String> mTexts =
-            Arrays.asList(ContextUtils.getApplicationContext().getResources().getString(
-                                  R.string.dormant_users_engagement_text_1),
-                    ContextUtils.getApplicationContext().getResources().getString(
-                            R.string.dormant_users_engagement_text_2),
-                    ContextUtils.getApplicationContext().getResources().getString(
-                            R.string.dormant_users_engagement_text_3));
-    private static final List<Integer> mImages = Arrays.asList(
-            R.drawable.ic_rocket, R.drawable.ic_brave_battery, R.drawable.ic_brave_mobiledata);
-    private String notificationType;
+    private static final List<String> sTexts =
+            Arrays.asList(
+                    ContextUtils.getApplicationContext()
+                            .getResources()
+                            .getString(R.string.dormant_users_engagement_text_1),
+                    ContextUtils.getApplicationContext()
+                            .getResources()
+                            .getString(R.string.dormant_users_engagement_text_2),
+                    ContextUtils.getApplicationContext()
+                            .getResources()
+                            .getString(R.string.dormant_users_engagement_text_3));
+    private static final List<Integer> sImages =
+            Arrays.asList(
+                    R.drawable.ic_rocket,
+                    R.drawable.ic_brave_battery,
+                    R.drawable.ic_brave_mobiledata);
+    private String mNotificationType;
 
     @Override
     public View onCreateView(
@@ -51,15 +58,15 @@ public class DormantUsersEngagementDialogFragment extends BraveDialogFragment {
         TextView engagementText = view.findViewById(R.id.dormant_users_engagement_text);
         ImageView imageView = view.findViewById(R.id.image_view);
 
-        if (notificationType.equals(RetentionNotificationUtil.DORMANT_USERS_DAY_14)) {
-            engagementText.setText(mTexts.get(0));
-            imageView.setImageResource(mImages.get(0));
-        } else if (notificationType.equals(RetentionNotificationUtil.DORMANT_USERS_DAY_25)) {
-            engagementText.setText(mTexts.get(1));
-            imageView.setImageResource(mImages.get(1));
-        } else if (notificationType.equals(RetentionNotificationUtil.DORMANT_USERS_DAY_40)) {
-            engagementText.setText(mTexts.get(2));
-            imageView.setImageResource(mImages.get(2));
+        if (mNotificationType.equals(RetentionNotificationUtil.DORMANT_USERS_DAY_14)) {
+            engagementText.setText(sTexts.get(0));
+            imageView.setImageResource(sImages.get(0));
+        } else if (mNotificationType.equals(RetentionNotificationUtil.DORMANT_USERS_DAY_25)) {
+            engagementText.setText(sTexts.get(1));
+            imageView.setImageResource(sImages.get(1));
+        } else if (mNotificationType.equals(RetentionNotificationUtil.DORMANT_USERS_DAY_40)) {
+            engagementText.setText(sTexts.get(2));
+            imageView.setImageResource(sImages.get(2));
         }
 
         Button doneButton = view.findViewById(R.id.btn_done);
@@ -69,7 +76,7 @@ public class DormantUsersEngagementDialogFragment extends BraveDialogFragment {
                     public void onClick(View v) {
                         try {
                             BraveSetDefaultBrowserUtils.setDefaultBrowser(
-                                    BraveActivity.getBraveActivity());
+                                    BraveActivity.getBraveActivity(), false);
                         } catch (BraveActivity.BraveActivityNotFoundException e) {
                             Log.e(TAG, "onViewCreated doneButton click " + e);
                         }
@@ -88,6 +95,6 @@ public class DormantUsersEngagementDialogFragment extends BraveDialogFragment {
     }
 
     public void setNotificationType(String notificationType) {
-        this.notificationType = notificationType;
+        mNotificationType = notificationType;
     }
 }
