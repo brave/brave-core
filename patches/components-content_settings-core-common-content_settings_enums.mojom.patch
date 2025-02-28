@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/common/content_settings_enums.mojom b/components/content_settings/core/common/content_settings_enums.mojom
-index 205708324d4cf1cbf0fd925a4988d817297db7fb..2a85643b7cb0bd10dbf1cc917241cdd5b33099df 100644
+index ca1647986c01e3651378fa1d359a091d9935aba0..94b74395223374357b6c9376284a5ced610d85de 100644
 --- a/components/content_settings/core/common/content_settings_enums.mojom
 +++ b/components/content_settings/core/common/content_settings_enums.mojom
-@@ -75,6 +75,7 @@ enum ProviderType {
-   kNotificationAndroidProvider,
+@@ -76,6 +76,7 @@ enum ProviderType {
    kOneTimePermissionProvider,
    kPrefProvider,
+   kJavascriptOptimizerAndroidProvider,
 +  kRemoteListProvider,
  
    // The following providers are for tests only. The priority is intentionally
