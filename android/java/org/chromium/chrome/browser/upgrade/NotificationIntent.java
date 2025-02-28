@@ -32,7 +32,7 @@ public class NotificationIntent {
     private static final String NOTIFICATION_TAG = "16c570a4-da7d-4c4e-8518-d2b7d6e41615";
     private static final String NOTIFICATION_CHANNEL_ID = "a79c3102-4183-4001-a553-ec3041bd0f49";
     private static final String URL = "https://support.brave.com/hc/en-us/articles/360045401211/";
-    private static final List<String> mWhitelistedRegionalLocales =
+    private static final List<String> sWhitelistedRegionalLocales =
             Arrays.asList("en", "ru", "uk", "de", "pt", "pl", "ja", "es", "fr");
     private static final int NOTIFICATION_ID = 732;
 
@@ -80,7 +80,7 @@ public class NotificationIntent {
     private static boolean shouldNotify(Context context) {
         String deviceLanguage = Locale.getDefault().getLanguage();
         if (getPreferences(context) != 0
-                || !mWhitelistedRegionalLocales.contains(
+                || !sWhitelistedRegionalLocales.contains(
                         new Locale(deviceLanguage).getLanguage())) {
             return false;
         }

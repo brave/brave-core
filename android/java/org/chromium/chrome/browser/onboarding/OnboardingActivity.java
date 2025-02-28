@@ -61,7 +61,7 @@ public class OnboardingActivity extends AppCompatActivity implements OnViewPager
         finish();
     }
 
-    static public OnboardingActivity getOnboardingActivity() {
+    public static OnboardingActivity getOnboardingActivity() {
         for (Activity ref : ApplicationStatus.getRunningActivities()) {
             if (!(ref instanceof OnboardingActivity)) continue;
 
