@@ -1752,7 +1752,8 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         ActivityTabProvider.class,
                         TopUiThemeColorProvider.class,
-                        EdgeToEdgeSystemBarColorHelper.class));
+                        EdgeToEdgeSystemBarColorHelper.class,
+                        OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment", // presubmit: ignore-long-line
