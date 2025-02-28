@@ -12,11 +12,13 @@ import android.view.Window;
 import androidx.annotation.ColorInt;
 
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
+import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 import org.chromium.ui.util.ColorUtils;
 
@@ -33,7 +35,8 @@ public class BraveStatusBarColorController extends StatusBarColorController {
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             ActivityTabProvider tabProvider,
             TopUiThemeColorProvider topUiThemeColorProvider,
-            EdgeToEdgeSystemBarColorHelper edgeToEdgeSystemBarColorHelper) {
+            EdgeToEdgeSystemBarColorHelper edgeToEdgeSystemBarColorHelper,
+            OneshotSupplier<DesktopWindowStateManager> desktopWindowStateManagerSupplier) {
         super(
                 window,
                 isTablet,
@@ -43,7 +46,8 @@ public class BraveStatusBarColorController extends StatusBarColorController {
                 activityLifecycleDispatcher,
                 tabProvider,
                 topUiThemeColorProvider,
-                edgeToEdgeSystemBarColorHelper);
+                edgeToEdgeSystemBarColorHelper,
+                desktopWindowStateManagerSupplier);
 
         // Dark theme doesn't have the regression, apply adjustment to light one only
         if (!ColorUtils.inNightMode(context)) {
