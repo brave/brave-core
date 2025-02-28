@@ -88,6 +88,11 @@ function checkReadability() {
         readabilityResult.cspMetaTags = [...cspMetaTags].map((e) => new XMLSerializer().serializeToString(e));
       }
       
+      let documentLanguage = document.documentElement.lang || document.querySelector('meta[http-equiv="Content-Language"]')?.content || null;
+      if (documentLanguage) {
+        readabilityResult.documentLanguage = documentLanguage;
+      }
+      
       debug({Type: "ReaderModeStateChange", Value: readabilityResult !== null ? "Available" : "Unavailable"});
       webkit.messageHandlers.readerModeMessageHandler.postMessage({"securityToken": SECURITY_TOKEN, "data": {Type: "ReaderModeStateChange", Value: readabilityResult !== null ? "Available" : "Unavailable"}});
       webkit.messageHandlers.readerModeMessageHandler.postMessage({"securityToken": SECURITY_TOKEN, "data": {Type: "ReaderContentParsed", Value: readabilityResult}});
