@@ -12,6 +12,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/devtools/devtools_window.h"
+#include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -24,7 +25,6 @@
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
-
 namespace {
 constexpr char kTestProfileName[] = "TestProfile";
 }  // namespace
@@ -84,6 +84,10 @@ TEST_F(TorProfileManagerUnitTest, InitTorProfileUserPrefs) {
   // Check translate.enabled for translate bubble.
   EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(
       translate::prefs::kOfferTranslateEnabled));
+
+  // In Tor windows Media Router is disabled, even if it's enabled in prefs.
+  EXPECT_TRUE(tor_profile->GetPrefs()->GetBoolean(prefs::kEnableMediaRouter));
+  EXPECT_FALSE(media_router::MediaRouterEnabled(tor_profile));
 }
 
 TEST_F(TorProfileManagerUnitTest, ProfileForDevToolsWindow) {
