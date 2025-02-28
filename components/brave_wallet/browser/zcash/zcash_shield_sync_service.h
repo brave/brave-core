@@ -138,8 +138,9 @@ class ZCashShieldSyncService {
   uint32_t GetSpendableBalance();
 
   // Update spendable notes state
-  void UpdateSpendableNotes();
+  void UpdateSpendableNotes(const ScanRangeResult& scan_range_result);
   void OnGetSpendableNotes(
+      const ScanRangeResult& scan_range_result,
       base::expected<std::vector<OrchardNote>, OrchardStorage::Error> result);
 
   void StartBlockScanning();
