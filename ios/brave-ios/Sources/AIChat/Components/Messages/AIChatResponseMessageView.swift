@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveUI
 import DesignSystem
 import SwiftUI
 
@@ -99,7 +100,7 @@ struct AIChatResponseMessageView: View {
           HStack {
             ProgressView()
               .progressViewStyle(
-                CircularProgressViewStyle(
+                BraveProgressStyleCircular(
                   thickness: 4.0
                 )
               )
@@ -119,7 +120,7 @@ struct AIChatResponseMessageView: View {
           HStack {
             ProgressView()
               .progressViewStyle(
-                CircularProgressViewStyle(
+                BraveProgressStyleCircular(
                   thickness: 4.0
                 )
               )

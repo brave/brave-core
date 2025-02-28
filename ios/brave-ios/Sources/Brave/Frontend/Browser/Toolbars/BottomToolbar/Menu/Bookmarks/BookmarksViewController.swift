@@ -6,6 +6,7 @@ import BraveShared
 import CoreData
 import CoreServices
 import Data
+import DataImporter
 import Favicon
 import Preferences
 import Shared
@@ -64,7 +65,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     return self.currentFolder == nil
   }
 
-  private let importExportUtility = BraveCoreImportExportUtility()
+  private let importExportUtility = BookmarksImportExportUtility()
   private var documentInteractionController: UIDocumentInteractionController?
 
   private var searchBookmarksTimer: Timer?
@@ -269,7 +270,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     alert.popoverPresentationController?.barButtonItem = sender
     let importAction = UIAlertAction(title: Strings.bookmarksImportAction, style: .default) {
       [weak self] _ in
-      let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.html])
+      let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.html, .zip])
       vc.delegate = self
       self?.present(vc, animated: true)
     }
@@ -967,9 +968,8 @@ extension BookmarksViewController {
   func importBookmarks(from url: URL) {
     isLoading = true
 
-    self.importExportUtility.importBookmarks(from: url) { [weak self] success in
-      guard let self = self else { return }
-
+    Task { @MainActor in
+      let success = await self.importExportUtility.importBookmarks(from: url)
       self.isLoading = false
 
       let alert = UIAlertController(
@@ -987,8 +987,8 @@ extension BookmarksViewController {
   func exportBookmarks(to url: URL) {
     isLoading = true
 
-    self.importExportUtility.exportBookmarks(to: url) { [weak self] success in
-      guard let self = self else { return }
+    Task { @MainActor in
+      let success = await self.importExportUtility.exportBookmarks(to: url)
 
       self.isLoading = false
 

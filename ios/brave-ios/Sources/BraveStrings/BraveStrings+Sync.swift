@@ -580,17 +580,6 @@ extension Strings {
         value: "Bookmark Import Failed",
         comment: "Message of the popup if bookmark import fails."
       )
-    /// Important: Do NOT change the `KEY` parameter without updating it in
-    /// BraveCore's brave_bookmarks_importer.mm file.
-    public static let importFolderName =
-      NSLocalizedString(
-        "SyncImportFolderName",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Imported Bookmarks",
-        comment:
-          "Folder name for where bookmarks are imported into when the root folder is not empty."
-      )
     public static let configurationInformationText =
       NSLocalizedString(
         "sync.configurationInformationText",

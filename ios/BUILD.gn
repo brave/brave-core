@@ -37,6 +37,7 @@ import("//brave/ios/browser/api/skus/headers.gni")
 import("//brave/ios/browser/api/storekit_receipt/headers.gni")
 import("//brave/ios/browser/api/translate/headers.gni")
 import("//brave/ios/browser/api/unicode/headers.gni")
+import("//brave/ios/browser/api/unzip/headers.gni")
 import("//brave/ios/browser/api/url/headers.gni")
 import("//brave/ios/browser/api/url_sanitizer/headers.gni")
 import("//brave/ios/browser/api/web/ui/headers.gni")
@@ -85,6 +86,8 @@ brave_core_public_headers = [
   "//brave/ios/browser/api/bookmarks/brave_bookmarks_observer.h",
   "//brave/ios/browser/api/bookmarks/importer/brave_bookmarks_importer.h",
   "//brave/ios/browser/api/bookmarks/exporter/brave_bookmarks_exporter.h",
+  "//brave/ios/browser/api/history/importer/brave_history_importer.h",
+  "//brave/ios/browser/api/password/importer/brave_password_importer.h",
   "//brave/ios/browser/api/history/brave_history_api.h",
   "//brave/ios/browser/api/history/brave_history_observer.h",
   "//brave/ios/browser/api/net/certificate_utility.h",
@@ -135,6 +138,7 @@ brave_core_public_headers += content_settings_public_headers
 brave_core_public_headers += webcompat_reporter_public_headers
 brave_core_public_headers += browser_api_translate_public_headers
 brave_core_public_headers += browser_api_unicode_public_headers
+brave_core_public_headers += browser_api_unzip_public_headers
 brave_core_public_headers += brave_web_view_public_headers
 
 action("brave_core_umbrella_header") {

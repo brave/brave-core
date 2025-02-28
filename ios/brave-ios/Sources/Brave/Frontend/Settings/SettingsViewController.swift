@@ -12,6 +12,7 @@ import BraveVPN
 import BraveWallet
 import Combine
 import Data
+import DataImporter
 import Growth
 import LocalAuthentication
 import NetworkExtension
@@ -281,7 +282,25 @@ class SettingsViewController: TableViewController {
             UIApplication.shared.open(settingsUrl)
           },
           cellClass: MultilineButtonCell.self
-        )
+        ),
+        .init(
+          text: Strings.importBrowsingDataSettingsMenuTitle,
+          selection: { [unowned self] in
+            let controller = UIHostingController(
+              rootView: DataImportView(
+                openURL: { [unowned self] url in
+                  self.settingsDelegate?.settingsOpenURLInNewTab(url)
+                  self.dismiss(animated: true)
+                },
+                onDismiss: { [weak self] in
+                  self?.navigationController?.setNavigationBarHidden(false, animated: false)
+                }
+              )
+            )
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          cellClass: MultilineButtonCell.self
+        ),
       ]
     )
 
