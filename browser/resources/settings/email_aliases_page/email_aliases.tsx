@@ -240,7 +240,7 @@ export const EmailAliasModal = (
     <S.InnerModal>
       <h2>{mode == ViewMode.Create ? getLocale('emailAliasesCreateAliasTitle') : getLocale('emailAliasesEditAliasTitle')}</h2>
       {bubble && <div>{getLocale('emailAliasesBubbleDescription')}</div>}
-      {bubble && (limitReached ?
+      {(bubble && limitReached) ?
         <h3 style={{margin: '1em'}}>{getLocale('emailAliasesBubbleLimitReached')}</h3> :
         <span>
           <S.ModalSectionCol style={{}}>
@@ -264,7 +264,8 @@ export const EmailAliasModal = (
             </Input>
             {mode == ViewMode.Edit && viewState?.alias?.domains && <div>getLocale('emailAliasesUsedBy', viewState?.alias?.domains?.join(', '))</div>}
           </S.ModalSectionCol>
-        </span>)}
+        </span>
+      }
       <S.ButtonRow style={{ justifyContent: bubble ? 'space-between' : 'end' }}>
         <span>
           {bubble && <Button onClick={() => mappingService.showSettingsPage()} kind='plain' style='flex-grow: 0;'>
