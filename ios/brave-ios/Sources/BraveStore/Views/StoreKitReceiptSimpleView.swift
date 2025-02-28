@@ -141,7 +141,7 @@ public struct StoreKitReceiptSimpleView: View {
         }
       )
       .navigationBarTitleDisplayMode(.inline)
-      .buttonStyle(PlainButtonStyle())
+      .buttonStyle(.plain)
       .padding()
     }
   }

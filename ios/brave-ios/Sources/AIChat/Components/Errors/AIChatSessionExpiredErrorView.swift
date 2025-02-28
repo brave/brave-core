@@ -27,13 +27,10 @@ struct AIChatSessionExpiredErrorView: View {
           },
           label: {
             Text(Strings.AIChat.refreshCredentialsActionTitle)
-              .font(.body.weight(.semibold))
+              .font(.headline)
               .padding()
               .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
-              .background(
-                Color(braveSystemName: .buttonBackground),
-                in: Capsule()
-              )
+              .background(Color(braveSystemName: .buttonBackground), in: .capsule)
           }
         )
         .buttonStyle(.plain)
