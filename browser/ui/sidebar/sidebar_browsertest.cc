@@ -74,7 +74,7 @@ namespace sidebar {
 
 class SidebarBrowserTest : public InProcessBrowserTest {
  public:
-  SidebarBrowserTest() = default;
+  SidebarBrowserTest() : scoped_features_(tabs::features::kBraveSplitView) {}
   ~SidebarBrowserTest() override = default;
 
   void PreRunTestOnMainThread() override {
@@ -286,6 +286,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return std::distance(items.cbegin(), iter);
   }
 
+  base::test::ScopedFeatureList scoped_features_;
   raw_ptr<views::View, DanglingUntriaged> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
   base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
