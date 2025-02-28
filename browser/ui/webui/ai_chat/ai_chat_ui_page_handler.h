@@ -100,6 +100,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   raw_ptr<content::WebContents> owner_web_contents_ = nullptr;
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
   base::CancelableTaskTracker favicon_task_tracker_;
 
