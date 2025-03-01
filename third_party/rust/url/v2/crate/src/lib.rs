@@ -91,20 +91,28 @@ mod ffi {
 
 #[derive(Clone)]
 pub struct Url {
-  parsed_result: ffi::ParseResult
+   parsed_result: ffi::ParseResult
 }
 
 impl Url {
-    #[inline]
     pub fn parse(input: &str) -> Result<Url, ParseError> {
         let res = ffi::ParseURL(input);
-        if (!res.valid) {
-          return Err(ParseError::Invalid);
+        if res.valid {
+            Ok(Url{parsed_result: res})
+        } else {
+            Err(ParseError::Invalid)
         }
+    }
 
-        return Ok(Url {
-          parsed_result: res
-        });
+    pub fn join(&self, input: &str) -> Result<Url, ParseError> {
+        let url = Url {
+            parsed_result: ffi::Resolve(&self.parsed_result, input)
+        };
+        if url.parsed_result.valid {
+            Ok(url)
+        } else {
+            Err(ParseError::Invalid)
+        }
     }
 
     #[inline]
@@ -119,60 +127,49 @@ impl Url {
     }
 
     #[inline]
-    pub fn join(&self, input: &str) -> Result<Url, ParseError> {
-      let url = Url {
-        parsed_result: ffi::Resolve(&self.parsed_result, input)
-      };
-      if url.parsed_result.valid {
-        Ok(url)
-      } else {
-        Err(ParseError::Invalid)
-      }
-    }
-
-    #[inline]
     pub fn scheme(&self) -> &str {
         self.parsed_result.scheme.as_str()
     }
 
+    #[inline]
     pub fn has_host(&self) -> bool {
         self.parsed_result.has_host
     }
 
+    #[inline]
     pub fn host_str(&self) -> Option<&str> {
-        if self.parsed_result.has_host {
-            Some(self.parsed_result.host.as_str())
-        } else {
-            None
+        match self.has_host() {
+            false => None,
+            true => Some(self.parsed_result.host.as_str())
         }
     }
 
     #[inline]
     pub fn port(&self) -> Option<u16> {
-      if self.parsed_result.has_port {
-        Some(self.parsed_result.port)
-      } else {
-        None
-      }
+        match self.parsed_result.has_port {
+            false => None,
+            true => Some(self.parsed_result.port)
+        }
     }
 
+    #[inline]
     pub fn path(&self) -> &str {
         self.parsed_result.path.as_str()
     }
 
+    #[inline]
     pub fn query(&self) -> Option<&str> {
-        if self.parsed_result.has_query {
-            Some(self.parsed_result.query.as_str())
-        } else {
-            None
+        match self.parsed_result.has_query {
+            false => None,
+            true => Some(self.parsed_result.query.as_str())
         }
     }
 
+    #[inline]
     pub fn fragment(&self) -> Option<&str> {
-        if self.parsed_result.has_fragment {
-            Some(self.parsed_result.fragment.as_str())
-        } else {
-            None
+        match self.parsed_result.has_fragment {
+            false => None,
+            true => Some(self.parsed_result.fragment.as_str())
         }
     }
 }
@@ -262,6 +259,9 @@ impl AsRef<str> for Url {
 }
 
 // Tests from original url crate
+// To build tests run
+// `npm run build -- --target=brave/third_party/rust/url/v0_2:lib_url_v0_2_unittests`
+// and then run `out_dir/lib_url_v0_2_unittests`
 #[test]
 fn test_relative() {
     let base: Url = "sc://%C3%B1".parse().unwrap();
