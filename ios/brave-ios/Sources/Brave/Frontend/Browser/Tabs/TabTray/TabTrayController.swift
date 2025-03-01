@@ -910,8 +910,7 @@ class TabTrayController: AuthenticationController {
     case .noSyncChain:
       openInsideSettingsNavigation(
         with: SyncWelcomeViewController(
-          syncAPI: braveCore.syncAPI,
-          syncProfileServices: braveCore.syncProfileService,
+          braveCore: braveCore,
           tabManager: tabManager,
           windowProtection: windowProtection,
           isModallyPresented: true
@@ -925,8 +924,7 @@ class TabTrayController: AuthenticationController {
 
       let syncSettingsScreen = SyncSettingsTableViewController(
         isModallyPresented: true,
-        syncAPI: braveCore.syncAPI,
-        syncProfileService: braveCore.syncProfileService,
+        braveCoreMain: braveCore,
         tabManager: tabManager,
         windowProtection: windowProtection
       )

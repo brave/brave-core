@@ -55,6 +55,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
 
   // MARK: Private
 
+  private let braveCoreMain: BraveCoreMain
   private let syncAPI: BraveSyncAPI
   private let syncProfileService: BraveSyncProfileServiceIOS
   private let tabManager: TabManager
@@ -88,14 +89,14 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
 
   init(
     isModallyPresented: Bool = false,
-    syncAPI: BraveSyncAPI,
-    syncProfileService: BraveSyncProfileServiceIOS,
+    braveCoreMain: BraveCoreMain,
     tabManager: TabManager,
     windowProtection: WindowProtection?
   ) {
     self.isModallyPresented = isModallyPresented
-    self.syncAPI = syncAPI
-    self.syncProfileService = syncProfileService
+    self.braveCoreMain = braveCoreMain
+    self.syncAPI = braveCoreMain.syncAPI
+    self.syncProfileService = braveCoreMain.syncProfileService
     self.tabManager = tabManager
 
     // Local Authentication (Biometric - Pincode) needed only for actions
@@ -358,9 +359,12 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
     askForAuthentication(viewType: .sync) { [weak self] status, error in
       guard let self = self, status else { return }
 
-      let syncInternalsController = ChromeWebViewController(privateBrowsing: false).then {
+      let syncInternalsController = ChromeWebUIController(
+        braveCore: braveCoreMain,
+        isPrivateBrowsing: false
+      ).then {
         $0.title = Strings.Sync.internalsTitle
-        $0.loadURL("brave://sync-internals")
+        $0.webView.load(URLRequest(url: URL(string: "brave://sync-internals")!))
       }
 
       self.navigationController?.pushViewController(syncInternalsController, animated: true)

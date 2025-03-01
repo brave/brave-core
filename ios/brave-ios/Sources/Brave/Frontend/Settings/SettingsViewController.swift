@@ -476,9 +476,7 @@ class SettingsViewController: TableViewController {
               }
 
               let syncSettingsViewController = SyncSettingsTableViewController(
-                syncAPI: syncAPI,
-                syncProfileService:
-                  syncProfileServices,
+                braveCoreMain: braveCore,
                 tabManager: tabManager,
                 windowProtection: windowProtection
               )
@@ -487,8 +485,7 @@ class SettingsViewController: TableViewController {
                 .pushViewController(syncSettingsViewController, animated: true)
             } else {
               let syncWelcomeViewController = SyncWelcomeViewController(
-                syncAPI: syncAPI,
-                syncProfileServices: syncProfileServices,
+                braveCore: braveCore,
                 tabManager: tabManager,
                 windowProtection: windowProtection
               )

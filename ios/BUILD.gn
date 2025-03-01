@@ -40,7 +40,6 @@ import("//brave/ios/browser/api/unicode/headers.gni")
 import("//brave/ios/browser/api/unzip/headers.gni")
 import("//brave/ios/browser/api/url/headers.gni")
 import("//brave/ios/browser/api/url_sanitizer/headers.gni")
-import("//brave/ios/browser/api/web/ui/headers.gni")
 import("//brave/ios/browser/api/web/web_state/headers.gni")
 import("//brave/ios/browser/api/web_view/headers.gni")
 import("//brave/ios/browser/api/webcompat_reporter/headers.gni")
@@ -128,7 +127,6 @@ brave_core_public_headers += brave_p3a_public_headers
 brave_core_public_headers += browser_api_web_webstate_public_headers
 brave_core_public_headers += ipfs_public_headers
 brave_core_public_headers += ntp_background_images_public_headers
-brave_core_public_headers += browser_api_web_ui_public_headers
 brave_core_public_headers += brave_services_key_public_headers
 brave_core_public_headers += browser_api_features_public_headers
 brave_core_public_headers += credential_provider_public_headers
