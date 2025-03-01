@@ -7,6 +7,7 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_stats/first_run_util.h"
+#include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
 #include "brave/browser/misc_metrics/theme_metrics.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
@@ -74,6 +75,7 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
     theme_metrics_ = std::make_unique<ThemeMetrics>(theme_service);
   }
   if (profile_prefs_) {
+    new_tab_metrics_ = std::make_unique<ProfileNewTabMetrics>(profile_prefs_);
     pref_change_registrar_.Add(
         prefs::kSearchSuggestEnabled,
         base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,

@@ -24,6 +24,7 @@ namespace misc_metrics {
 class MiscAndroidMetrics;
 #else
 class ExtensionMetrics;
+class ProfileNewTabMetrics;
 class ThemeMetrics;
 #endif
 class AutofillMetrics;
@@ -63,6 +64,7 @@ class ProfileMiscMetricsService : public KeyedService {
 #else
   std::unique_ptr<ExtensionMetrics> extension_metrics_ = nullptr;
   std::unique_ptr<ThemeMetrics> theme_metrics_ = nullptr;
+  std::unique_ptr<ProfileNewTabMetrics> new_tab_metrics_ = nullptr;
 #endif
 };
 

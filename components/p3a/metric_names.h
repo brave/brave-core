@@ -72,6 +72,7 @@ inline constexpr auto kCollectedTypicalHistograms =
 
     {"Brave.Importer.ImporterSource.2", {}},
     {"Brave.NTP.CustomizeUsageStatus.2", {}},
+    {"Brave.NTP.DefaultPage", {}},
     {"Brave.NTP.NewTabsCreated.3", {}},
     {"Brave.NTP.SponsoredMediaType", {}},
     {"Brave.Omnibox.SearchCount.3", {}},
