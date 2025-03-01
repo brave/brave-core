@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { SecurityInterstitialCommandId, sendCommand } from 'chrome://interstitials/common/resources/interstitial_common.js';
-import { loadTimeData } from 'chrome://resources/js/load_time_data.js';
 
 function setupEvents() {
   const primaryButton = document.querySelector('#primary-button');
@@ -17,15 +16,21 @@ function setupEvents() {
     sendCommand(SecurityInterstitialCommandId.CMD_DONT_PROCEED);
   });
 
-  // Check if we should show the "Don't warn again" checkbox.
-  const showCheckbox = loadTimeData.getBoolean('showDontWarnAgainCheckbox');
+  const dontWarnAgainCheckbox =
+      document.querySelector('#dont-warn-again-checkbox');
+  dontWarnAgainCheckbox.addEventListener('click', function() {
+    sendCommand(dontWarnAgainCheckbox.checked ?
+                SecurityInterstitialCommandId.CMD_DO_REPORT :
+                SecurityInterstitialCommandId.CMD_DONT_REPORT);
+  });
+
+  // Check if we should hide the "Don't warn again" div.
+  // We hide this in private browsing, because the checkbox
+  // adds a custom exception rule.
+  const showCheckbox = loadTimeDataRaw.showDontWarnAgainCheckbox;
   if (showCheckbox) {
-    const dontWarnAgain = document.querySelector('#dont-warn-again-checkbox')
-    dontWarnAgain.addEventListener('click', function() {
-      sendCommand(dontWarnAgain.checked ?
-                  SecurityInterstitialCommandId.CMD_DO_REPORT :
-                  SecurityInterstitialCommandId.CMD_DONT_REPORT);
-    });
+    const dontWarnAgainDiv = document.querySelector('#dont-warn-again');
+    dontWarnAgainDiv.classList.remove('hidden');
   }
 }
 
