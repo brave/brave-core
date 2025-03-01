@@ -8,21 +8,39 @@
 
 import("//build/rust/cargo_crate.gni")
 
+static_library("idna") {
+  visibility = [ ":*" ]
+  sources = [
+    "crate/idna.cc",
+    "crate/idna.h",
+  ]
+
+  deps = [
+    ":cxx_generated",
+    "//base",
+    "//base:i18n",
+    "//build/rust:cxx_cppdeps",
+    "//url",
+  ]
+}
+
+# cargo_crate target has to depend on `idna` for rust unit tests so we can't
+# use the auto-generated target from `cargo_crate` as that would create a
+# circular dependency
+rust_cxx("cxx_generated") {
+  visibility = [ ":*" ]
+  sources = [ "crate/src/lib.rs" ]
+  export_symbols = is_component_build
+}
+
 cargo_crate("lib") {
   crate_name = "idna"
   epoch = "0.2"
   crate_type = "rlib"
-  crate_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/idna-0.2.3/src/lib.rs"
-  sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/idna-0.2.3/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/idna-0.2.3/src/punycode.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/idna-0.2.3/src/uts46.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/idna-0.2.3/src/uts46_mapping_table.rs",
-  ]
-  inputs = []
+  crate_root = "crate/src/lib.rs"
+  sources = [ "crate/src/lib.rs" ]
 
-  build_native_rust_unit_tests = false
+  build_native_rust_unit_tests = true
   edition = "2018"
   cargo_pkg_version = "0.2.3"
   cargo_pkg_authors = "The rust-url developers"
@@ -36,9 +54,9 @@ cargo_crate("lib") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//brave/third_party/rust/matches/v0_1:lib",
-    "//brave/third_party/rust/unicode_bidi/v0_3:lib",
-    "//brave/third_party/rust/unicode_normalization/v0_1:lib",
+    ":cxx_generated",
+    ":idna",
+    "//build/rust:cxx_rustdeps",
   ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
