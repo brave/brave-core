@@ -13,7 +13,7 @@ export function getDistillationLevel() {
   return _DISTILLATION_LEVEL
 }
 
-export default function distill(level: LEO_DISTILLATION_LEVEL) {
+export default function distill(level = LEO_DISTILLATION_LEVEL.LOW) {
   _DISTILLATION_LEVEL = level
 
   switch (GetPageType(document)) {
