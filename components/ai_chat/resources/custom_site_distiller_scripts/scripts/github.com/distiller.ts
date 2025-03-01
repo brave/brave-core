@@ -7,13 +7,13 @@ import { LEO_DISTILLATION_LEVEL } from '../distillation'
 import { distillBranches } from './branches'
 import { GetPageType, SupportedPage } from './utils'
 
-let _DISTILLATION_LEVEL = LEO_DISTILLATION_LEVEL.LOW
+let _DISTILLATION_LEVEL = LEO_DISTILLATION_LEVEL.FULL
 
 export function getDistillationLevel() {
   return _DISTILLATION_LEVEL
 }
 
-export default function distill(level = LEO_DISTILLATION_LEVEL.LOW) {
+export default function distill(level = LEO_DISTILLATION_LEVEL.FULL) {
   _DISTILLATION_LEVEL = level
 
   switch (GetPageType(document)) {

@@ -10,13 +10,13 @@ import { distillPostElement } from './post'
 import { distillSeenUsers } from './user'
 import { LEO_DISTILLATION_LEVEL } from '../distillation'
 
-let _DISTILLATION_LEVEL = LEO_DISTILLATION_LEVEL.LOW
+let _DISTILLATION_LEVEL = LEO_DISTILLATION_LEVEL.FULL
 
 export function getDistillationLevel() {
   return _DISTILLATION_LEVEL
 }
 
-export default function distill(distillLevel = LEO_DISTILLATION_LEVEL.LOW) {
+export default function distill(distillLevel = LEO_DISTILLATION_LEVEL.FULL) {
   if (!isSupportedPage(document)) {
     return null
   }

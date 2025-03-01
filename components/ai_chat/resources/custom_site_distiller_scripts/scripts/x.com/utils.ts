@@ -96,9 +96,8 @@ export function msToMinutesAndSeconds(ms: number) {
 
 export function getDateString(date: any) {
   const dateObject = new Date(date)
-  const distillLevel = getDistillationLevel()
 
-  if (distillLevel < LEO_DISTILLATION_LEVEL.MEDIUM) {
+  if (getDistillationLevel() < LEO_DISTILLATION_LEVEL.MEDIUM) {
     return dateObject.toISOString().substring(0, 10)
   }
 
