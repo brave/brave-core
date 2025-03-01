@@ -209,12 +209,12 @@ class BraveTranslateTabHelper: NSObject {
     // Cache CSS and JS requests
     Self.requestCache[request.url] = (data, response)
 
-    if isTranslationRequest {
-      delegate?.updateTranslateURLBar(tab: tab, state: .active)
+    if isTranslationRequest && canShowToast {
+      canShowToast = false
 
-      if canShowToast {
-        canShowToast = false
-        delegate?.presentToast(tab: tab, languageInfo: currentLanguageInfo)
+      Task { @MainActor in
+        self.delegate?.updateTranslateURLBar(tab: tab, state: .active)
+        self.delegate?.presentToast(tab: tab, languageInfo: currentLanguageInfo)
       }
     }
 
@@ -324,6 +324,12 @@ class BraveTranslateTabHelper: NSObject {
       tab: tab,
       state: isTranslationSupported ? .available : .unavailable
     )
+
+    // Translation is not supported on this page, so do not show onboarding
+    // Return immediately
+    if !isTranslationSupported {
+      return
+    }
 
     try Task.checkCancellation()
 
