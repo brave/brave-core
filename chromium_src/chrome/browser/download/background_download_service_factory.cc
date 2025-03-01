@@ -54,17 +54,17 @@ std::unique_ptr<BackgroundDownloadService> BuildInMemoryDownloadServiceOverride(
     const base::FilePath& storage_dir,
     BlobContextGetterFactoryPtr blob_context_getter_factory,
     scoped_refptr<base::SingleThreadTaskRunner> io_task_runner,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+    URLLoaderFactoryGetterPtr url_loader_factory_getter) {
   clients->insert(std::make_pair(
       download::DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS,
       std::make_unique<download::DeferredClientWrapper>(
           base::BindOnce(&CreateAdBlockSubscriptionDownloadClient),
           simple_factory_key)));
 
-  return BuildInMemoryDownloadService(simple_factory_key, std::move(clients),
-                                      network_connection_tracker, storage_dir,
-                                      std::move(blob_context_getter_factory),
-                                      io_task_runner, url_loader_factory);
+  return BuildInMemoryDownloadService(
+      simple_factory_key, std::move(clients), network_connection_tracker,
+      storage_dir, std::move(blob_context_getter_factory), io_task_runner,
+      std::move(url_loader_factory_getter));
 }
 
 }  // namespace download
