@@ -87,7 +87,6 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
         action: { popover in
           popover.previewForOrigin = nil
           popover.dismissPopover()
-          completion(nil)
         }
       )
 
