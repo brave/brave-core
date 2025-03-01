@@ -7,13 +7,11 @@
 
 #include <algorithm>
 #include <iterator>
-#include <map>
 #include <memory>
 #include <optional>
 #include <queue>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -23,14 +21,11 @@
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/memory/raw_ptr.h"
-#include "base/numerics/safe_math.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/resources/custom_site_distiller_scripts/grit/custom_site_distiller_scripts_generated.h"
 #include "content/public/renderer/render_frame.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/mojom/script/script_evaluation_params.mojom-shared.h"
@@ -232,21 +227,9 @@ void DistillPageTextViaSiteScript(
     int32_t world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
   CHECK(ai_chat::features::IsCustomSiteDistillerScriptsEnabled());
-  // TODO (jonathansampson): Wrap scripts at build/transpile-time instead
-  // This produces an injected script that resembles the following:
-  // (() => {
-  //   function distillPrimaryColumn (level) { ... }
-  //   function distill(level) {
-  //     return distillPrimaryColumn(level);
-  //   }
-  //   return distill(3);
-  // })())
-  std::string script = absl::StrFormat(
-      R"((()=> {
-        %s
-        return distill(3);
-      })())",
-      script_content);
+
+  // Wrap the distiller content in a block to avoid polluting global scope
+  std::string script = absl::StrFormat("{%s\ndistill()}", script_content);
 
   blink::WebScriptSource source =
       blink::WebScriptSource(blink::WebString::FromUTF8(script));
@@ -261,7 +244,6 @@ void DistillPageTextViaSiteScript(
         }
       };
 
-  // Execute the combined script as a single source
   render_frame->GetWebFrame()->RequestExecuteScript(
       world_id, base::span_from_ref(source),
       blink::mojom::UserActivationOption::kDoNotActivate,
@@ -270,21 +252,11 @@ void DistillPageTextViaSiteScript(
       base::BindOnce(on_script_executed, std::move(callback)),
       blink::BackForwardCacheAware::kAllow,
       blink::mojom::WantResultOption::kWantResult,
-      // Because we are using a promise to resolve the result, we will use the
-      // `kAwait` option to ensure the promise is resolved before the callback
-      // is invoked.
-      blink::mojom::PromiseResultOption::kAwait);
+      blink::mojom::PromiseResultOption::kDoNotWait);
 }
 
 std::optional<std::pair<std::string, bool>> LoadSiteScriptForHost(
     std::string_view host) {
-  static constexpr auto kHostToScriptResource =
-      base::MakeFixedFlatMap<std::string_view, std::pair<int, bool>>({
-          {"github.com",
-           {IDR_CUSTOM_SITE_DISTILLER_SCRIPTS_GITHUB_COM_BUNDLE_JS, false}},
-          {"x.com", {IDR_CUSTOM_SITE_DISTILLER_SCRIPTS_X_COM_BUNDLE_JS, true}},
-      });
-
   auto it = kHostToScriptResource.find(
       net::registry_controlled_domains::GetDomainAndRegistry(
           host, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES));

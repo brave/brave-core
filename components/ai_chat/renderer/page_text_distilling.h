@@ -11,8 +11,9 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/fixed_flat_map.h"
 #include "base/functional/callback_forward.h"
-#include "url/gurl.h"
+#include "brave/components/ai_chat/resources/custom_site_distiller_scripts/grit/custom_site_distiller_scripts_generated.h"
 
 namespace content {
 class RenderFrame;
@@ -27,6 +28,16 @@ void DistillPageText(
     int32_t global_world_id,
     int32_t isolated_world_id,
     base::OnceCallback<void(const std::optional<std::string>&)>);
+
+// A map of hostnames to the corresponding custom site distiller script.
+// The value is a pair consisting of the resource ID of the script, and a
+// boolean indicating if the script is intended for the main world or not.
+inline constexpr auto kHostToScriptResource =
+    base::MakeFixedFlatMap<std::string_view, std::pair<int, bool>>({
+        {"github.com",
+         {IDR_CUSTOM_SITE_DISTILLER_SCRIPTS_GITHUB_COM_BUNDLE_JS, false}},
+        {"x.com", {IDR_CUSTOM_SITE_DISTILLER_SCRIPTS_X_COM_BUNDLE_JS, true}},
+    });
 
 // Attempts to retrieve a a custom site distiller script for the given host.
 // Returns a pair consisting of the script content, and a boolean indicating if
