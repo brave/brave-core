@@ -14,6 +14,8 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/web_contents.h"
 #include "url/origin.h"
 
 namespace brave_shields {
@@ -83,9 +85,15 @@ void DomainBlockPage::PopulateInterstitialStrings(
                      brave_l10n::GetLocalizedResourceUTF16String(
                          IDS_DOMAIN_BLOCK_EXPLANATION));
 
+  // This needs to be set even if it's not shown.
   load_time_data.Set("dontWarnAgainText",
                      brave_l10n::GetLocalizedResourceUTF16String(
                          IDS_DOMAIN_BLOCK_DONT_WARN_AGAIN_BUTTON));
+  // Hide "don't warn again" checkbox if in private browsing mode.
+  // This checkbox adds a custom exception rule, which we shouldn't
+  // do in private browsing mode.
+  load_time_data.Set("showDontWarnAgainCheckbox",
+                     !web_contents()->GetBrowserContext()->IsOffTheRecord());
 
   load_time_data.Set("proceedAnywayText",
                      brave_l10n::GetLocalizedResourceUTF16String(
