@@ -191,6 +191,7 @@ void WelcomeDOMHandler::HandleGetWelcomeCompleteURL(
     const base::Value::List& args) {
   CHECK_EQ(1U, args.size());
   const auto& callback_id = args[0].GetString();
+  AllowJavascript();
   if (!base::FeatureList::IsEnabled(
           brave_education::features::kShowGettingStartedPage)) {
     OnGettingStartedServerCheck(callback_id, /* available */ false);
