@@ -11,6 +11,9 @@ RegisterPolymerTemplateModifications({
     // depending on whether `captionSettingsOpensExternally_` is set. We remove
     // both.
     const captionsLinkTemplates = templateContent.querySelectorAll('template[if*="captionSettingsOpensExternally_"]')
+    if (captionsLinkTemplates.length !== 3) {
+      console.error(`Expected 3 captionsLinkTemplates, got ${captionsLinkTemplates.length} - this indicates something upstream has changed. The override may need to be updated.`)
+    }
     for (const link of captionsLinkTemplates) {
       link.remove()
     }
