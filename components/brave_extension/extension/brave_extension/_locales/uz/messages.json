@@ -28,7 +28,7 @@
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Report a broken site",
+    "message": "Nosoz sayt haqida xabar qilish",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
@@ -56,7 +56,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked",
+    "message": "Bloklangan trekerlar va reklamalar",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
@@ -68,7 +68,7 @@
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Allow all trackers & ads",
+    "message": "Barcha trekerlar va reklamalarga ruxsat",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
@@ -140,7 +140,7 @@
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
-    "message": "Allow",
+    "message": "Ruxsat",
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
@@ -156,7 +156,7 @@
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
-    "message": "Cancel",
+    "message": "Bekor qilish",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
   },
   "goBack": {
@@ -200,11 +200,11 @@
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
-    "message": "Got it",
+    "message": "Tushunarli",
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Learn more",
+    "message": "Batafsil",
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {

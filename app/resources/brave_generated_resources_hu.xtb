@@ -407,6 +407,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="3570081523466826008">Kapcsolat bővítése HTTPS-re</translation>
 <translation id="3357319404342882895">Szigorú</translation>
 <translation id="8823559166155093873">Sütik letiltása</translation>
+<translation id="7093267802941377072">A "Minden süti blokkolása" opciót már nem használjuk. Ha szeretné megtudni, hogyan lehet ezt az opciót használni, látogasson el a <ph name="BEGIN_LINK"/>súgó oldalunkra<ph name="END_LINK"/>.</translation>
 <translation id="6196640612572343990">Harmadik féltől származó cookie-k letiltása</translation>
 <translation id="5657156137487675418">Összes süti engedélyezése</translation>
 <translation id="6883611015375728278">Összes süti blokkolása</translation>
@@ -594,6 +595,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="5522403133543437426">A címsorban használt keresőmotor.</translation>
 <translation id="280472502078788655">A privát ablakok címsorában használt keresőmotor.</translation>
 <translation id="7232120595886556478">Normál ablak</translation>
+<translation id="6739674350896546324">Vyhledávací program pro soukromá okna</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> mostantól az Ön alapértelmezett keresőmotorja a privát ablakokban</translation>
 <translation id="6864914031231797928">Google bejelentkezés engedélyezése a bővítmények számára</translation>
 <translation id="7878791177459550035">A média router engedélyezi a kivetítés funkciót a böngészőben.</translation>
@@ -734,7 +736,7 @@ Leóval. Ezt a műveletet nem lehet visszavonni.</translation>
 <translation id="3213787232304349732">Az az url, ahol az Ön kiszolgáló keretrendszere figyeli a kéréseket. Ha nem biztos benne, nézze meg a kiszolgáló keretrendszer dokumentációját. Például az Ollama esetében ez mindig a http://localhost:11434/v1/chat/completions.</translation>
 <translation id="1058790648388035953">Egyes kiszolgáló keretrendszerek hitelesítő adatokat, például API-kulcsot vagy hozzáférési tokent igényelhetnek. Ezek bekerülnek a kérés fejlécébe.</translation>
 <translation id="4335128003329183586">Szövegméret</translation>
-<translation id="8794525422794607973">A maximális tokenek száma, amit a modell egy interakcióval fel tud dolgozni. Minden token nagyjából 3/4 szót ér. Nagyobb szöveg esetén a modell hosszabb beszélgetésre is képes. Különböző modellek, különböző méretű szövegek előállítására képesek.</translation>
+<translation id="3153779001670804829">A maximális tokenek száma, amit a modell egy interakcióval fel tud dolgozni. Nagyobb szöveg esetén a modell hosszabb beszélgetésre is képes. Különböző modellek, különböző méretű szövegek előállítására képesek.</translation>
 <translation id="217141195370578385">A Brave nem kezeli proxyként ezeket a kéréseket, kérjük, olvassa el a kiválasztott szolgáltató adatvédelmi feltételeit.</translation>
 <translation id="2645532768679870478">A nem helyi végpontoknak a HTTPS protokollt kell használniuk a biztonságos adatátvitelhez.</translation>
 <translation id="8177205483022887785">Érvénytelen URL-t adott meg. Kérjük, adjon meg egy érvényes URL-t.</translation>

@@ -24,9 +24,11 @@
 <translation id="176485176228926164"><ph name="BEGIN_LINK1"/>შეიტყვეთ მეტი<ph name="END_LINK1"/></translation>
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> ჩანართი დაჯგუფდა</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ჩანართი}other{<ph name="TABS_COUNT_MANY"/> ჩანართი}}</translation>
+<translation id="1909810060368225529">შეტყობინება: ამ საზიარო ჩანართების ჯგუფში შეტანილი ცვლილებები ხილულია ყველასთვის. ყველას შეუძლია ცვლილებების შეტანა თქვენს საზიარო ჩანართების ჯგუფში</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> არჩეული ჩანართის სანიშნეებში დამატება}other{<ph name="TABS_COUNT_MANY"/> არჩეული ჩანართის სანიშნეებში დამატება}}</translation>
 <translation id="2118649612461486615">მაღაზიის ინფორმაცია</translation>
 <translation id="2162620598375156287"><ph name="SOURCE_WEBSITE"/>-ზე ახლა <ph name="CURRENT_PRICE"/> ღირს</translation>
+<translation id="2242907120821295124">ჩანართების <ph name="TAB_GROUP_NAME"/> ჯგუფი მიუწვდომელია</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{ჩანართის დაჯგუფების გაუქმება}other{ჩანართების დაჯგუფების გაუქმება}}</translation>
 <translation id="2271452184061378400">თქვენი ჩანართების ჯგუფები აქ ინახება</translation>
 <translation id="2277224997687551299">ჯგუფის სახელის რედაქტირება</translation>
@@ -41,6 +43,7 @@
 <translation id="2671423594960767771">ჯგუფის გაზიარება</translation>
 <translation id="2677748264148917807">დატოვება</translation>
 <translation id="2753098591787393794">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> ჩანართი დაემატა, <ph name="ANY_CHANGED"/> შეიცვალა, <ph name="ANY_CLOSED"/> დაიხურა}other{<ph name="MANY_ADDED"/> ჩანართი დაემატა, <ph name="ANY_CHANGED"/> შეიცვალა, <ph name="ANY_CLOSED"/> დაიხურა}}</translation>
+<translation id="2755485474385016903">შეტანილ ცვლილებებს ნახავს ამ ჯგუფის ყველა წევრი</translation>
 <translation id="2776817246640326047">{NUM_HOURS,plural, =1{შეიქმნა <ph name="NUM_HOURS_ONE"/> საათის წინ}other{შეიქმნა <ph name="NUM_HOURS_MANY"/> საათის წინ}}</translation>
 <translation id="2801787514987684416">გსურთ მაღაზიის ინფორმაციის ნახვა?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> ჩანართი დაიხურა}other{<ph name="MANY_CLOSED"/> ჩანართი დაიხურა}}</translation>
@@ -74,6 +77,7 @@
 <translation id="427987768447457592">ჩანართების ახალი ჯგუფი</translation>
 <translation id="4320174784941799771">{NUMBER_OF_TABS_CHANGED,plural, =1{<ph name="ONE_CHANGED"/> ჩანართი შეიცვალა, <ph name="ANY_CLOSED"/> დაიხურა}other{<ph name="MANY_CHANGED"/> ჩანართი შეიცვალა, <ph name="ANY_CLOSED"/> დაიხურა}}</translation>
 <translation id="4371591986692297148">არააქტიური</translation>
+<translation id="4431937619879060901">თქვენ მყისიერად დაკარგავთ წვდომას ჩანართების ჯგუფზე „<ph name="GROUP_NAME"/>“ და ის წაიშლება თქვენი ყველა მოწყობილობიდან</translation>
 <translation id="4460014764210899310">დაჯგუფების გაუქმება</translation>
 <translation id="4632233446660511480">{TAB_COUNT,plural, =1{გსურთ, დახუროთ 1 არააქტიური ჩანართი?}other{გსურთ, დახუროთ <ph name="TAB_COUNT_MANY"/> არააქტიური ჩანართი?}}</translation>
 <translation id="4686942373615810936">შეიქმნა ახლახან</translation>
@@ -82,6 +86,8 @@
 <translation id="4783638485675352219">ამ მოწყობილობაში არსებული ღია ჩანართების სათაურებისა და URL-ების გაზიარება ოპერაციულ სისტემასთან</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> მიმოხილვა)}other{(<ph name="REVIEWS_COUNT_MANY"/> მიმოხილვა)}}</translation>
 <translation id="4850886885716139402">გადახედვა</translation>
+<translation id="4861611890274104875">ბარათის დახურვა.</translation>
+<translation id="4861953997778766866">ყველას შეუძლია ცვლილებების შეტანა თქვენს საზიარო ჩანართების ჯგუფში</translation>
 <translation id="4870911314065352661">გსურთ, ყველა ჩანართი დაიხუროს?</translation>
 <translation id="4871719318659334896">ჯგუფის დახურვა</translation>
 <translation id="4881695831933465202">გახსნა</translation>
@@ -102,11 +108,9 @@
 <translation id="5494920125229734069">აარჩიეთ ყველა</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{დახურეთ ჩანართების <ph name="TABS_COUNT_ONE"/>-ჩანართიანი <ph name="COLOR_NAME"/> ფერის ჯგუფი.}other{დახურეთ ჩანართების <ph name="TABS_COUNT_MANY"/>-ჩანართიანი <ph name="COLOR_NAME"/> ფერის ჯგუფი.}}</translation>
 <translation id="5556417849629758491">მაღაზიის ინფორმაციის ნახვა, ვარიანტი ხელმისაწვდომია ეკრანის ზედა ნაწილთან</translation>
-<translation id="5615302411300498438">შეინარჩუნეთ ეს ჯგუფი, რომ მოგვიანებით დაამატოთ ჩანართები, ან დატოვეთ ის.
-
-თუ დატოვებთ, ჩანართების ჯგუფზე „<ph name="TITLE_OF_GROUP"/>“ წვდომას დაუყოვნებლივ დაკარგავთ.</translation>
 <translation id="5627941783489838464">ჩანართის შესახებ განახლებები არ არის</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{ჩანართის აღდგენა}other{ჩანართების აღდგენა}}</translation>
+<translation id="5647702255748985085">დატოვებთ ჯგუფს?</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ბმული Brave-იდან}other{<ph name="TABS_COUNT_MANY"/> ბმული Brave-იდან}}</translation>
 <translation id="58326064309361797">ჩანართების დასაჯგუფებლად ჩავლებით გადაიტანეთ ისინი</translation>
 <translation id="5901630391730855834">ყვითელი</translation>
@@ -115,7 +119,6 @@
 <translation id="6040143037577758943">დახურვა</translation>
 <translation id="6051432659151380973">თქვენი ჩანართების ჯგუფი ავტომატურად ინახება</translation>
 <translation id="6054741997831917303">ამ ერთეულის ფასმა ახლახან დაიკლო <ph name="PREVIOUS_PRICE"/>-დან <ph name="NEW_PRICE"/>-მდე</translation>
-<translation id="6082313992897617440">თქვენ მყისიერად დაკარგავთ წვდომას ჩანართების ჯგუფზე „<ph name="GROUP_NAME"/>“</translation>
 <translation id="6109251075362363230">ყველა დუბლირებული ჩანართი დაარქივდება, ყველაზე ხშირად გამოყენებული დუბლიკატის გარდა.</translation>
 <translation id="6193448654517602979">აირჩიეთ ჩანართები</translation>
 <translation id="6228793724645064692">(მაღაზიის შეფასება)</translation>
@@ -124,11 +127,13 @@
 <translation id="6381032505162537930">თქვენს ჩანართების ჯგუფებს აქ ნახავთ</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{გააუქმეთ <ph name="TABS_COUNT_ONE"/> არჩეული ჩანართის დაჯგუფება}other{გააუქმეთ <ph name="TABS_COUNT_MANY"/> არჩეული ჩანართის დაჯგუფება}}</translation>
 <translation id="6422650314852876533">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ჩანართი}other{<ph name="TABS_COUNT_MANY"/> ჩანართი}}</translation>
+<translation id="6499296376514955580">საზიარო ჩანართების ჯგუფის ცვლილების შესახებ შეტყობინება დაიხურა</translation>
 <translation id="6527303717912515753">გაზიარება</translation>
 <translation id="6542289363124393690">{DAY_COUNT,plural, =1{1 დღის შემდეგ}other{<ph name="DAY_COUNT_MANY"/> დღის შემდეგ}}</translation>
 <translation id="6549021453810473782">მაღაზიის ინფორმაციის ნახვა</translation>
 <translation id="6557858706263317126">+<ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">ჩანართის მარცხნივ გადატანა</translation>
+<translation id="6589356853295569750">საზიარო ჩანართების ჯგუფის ცვლილების შესახებ შეტყობინება გაიხსნა სრულ სიმაღლეზე</translation>
 <translation id="6590332670428149473">გახსენით ჩანართების ჯგუფზე მოქმედებების მენიუ ჩანართების <ph name="COLOR_NAME"/> ფერის გაზიარებული ჯგუფისთვის „<ph name="TITLE_OF_GROUP"/>“.</translation>
 <translation id="6615455863669487791">მაჩვენე</translation>
 <translation id="6668311240800004911">{NUMBER_OF_TABS_CHANGED,plural, =1{<ph name="ONE_CHANGED"/> ჩანართი შეიცვალა}other{<ph name="MANY_CHANGED"/> ჩანართი შეიცვალა}}</translation>
@@ -143,9 +148,10 @@
 <translation id="731648547091221002"><ph name="COLOR_NAME"/> არჩეულია</translation>
 <translation id="7326879924029668159">იხილეთ დაბრუნების წესები და სხვა ინფორმაცია</translation>
 <translation id="7352298686197644113">იხილეთ, რომელ ერთეულს აქვს უფრო დაბალი ფასი თქვენს გახსნილ ჩანართებში</translation>
-<translation id="7421293530411019405">დატოვებთ ჩანართების ჯგუფს?</translation>
+<translation id="742664698522525515">შეინარჩუნებთ ჯგუფს?</translation>
 <translation id="7452985128687107478">ჩანართების ჯგუფები ავტომატურად შეინახება და განახლდება თქვენს ყველა მოწყობილობაში</translation>
 <translation id="747459581954555080">ყველას აღდგენა</translation>
+<translation id="750886945254958667">შეინარჩუნეთ ეს ჯგუფი, რომ მოგვიანებით მასში დაამატოთ ჩანართები, ან დატოვეთ ის, თუ აღარ გსურთ მასზე წვდომა</translation>
 <translation id="753732157349120914">ჩანართების გადამრთველი</translation>
 <translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> მიმოხილვა Brave-იდან}other{<ph name="REVIEWS_COUNT_MANY"/> მიმოხილვა Brave-იდან}}</translation>
 <translation id="7559245342362162951">ჯგუფის ჩანართების სრულეკრანიან ბადეში ჩვენება</translation>
@@ -154,6 +160,7 @@
 <translation id="7699041944097291312">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> არჩეული ჩანართის გაზიარება}other{<ph name="TABS_COUNT_MANY"/> არჩეული ჩანართის გაზიარება}}</translation>
 <translation id="7773714564112603605">ჩანართის ამოშლა და ჯგუფის წაშლა</translation>
 <translation id="7792771145871471484">შემოთავაზებების გადახედვა.</translation>
+<translation id="7792860826279960128">საზიარო ჩანართების ჯგუფის ცვლილების შესახებ შეტყობინება ნახევარ სიმაღლეზე</translation>
 <translation id="7825973332242257878">ჩანართების ჯგუფები</translation>
 <translation id="7838146321400849846">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> არჩეული ჩანართის დაჯგუფება}other{<ph name="TABS_COUNT_MANY"/> არჩეული ჩანართის დაჯგუფება}}</translation>
 <translation id="7853202427316060426">აქტივობა</translation>
@@ -175,10 +182,9 @@
 <translation id="8398929769197326728">ახალი საქაღალდე — <ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="8428213095426709021">პარამეტრები</translation>
 <translation id="8516612320289425423">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> ჩანართი დაემატა, <ph name="ANY_CLOSED"/> დაიხურა}other{<ph name="MANY_ADDED"/> ჩანართი დაემატა, <ph name="ANY_CLOSED"/> დაიხურა}}</translation>
-<translation id="8631711675211020168">ყველა მყისიერად დაკარგავს წვდომას ჩანართების ჯგუფზე „<ph name="GROUP_NAME"/>“, ხოლო ის ამოიშლება ყველა მოწყობილობიდან.</translation>
 <translation id="8633025649649592204">ბოლოდროინდელი აქტივობა</translation>
-<translation id="8635399646025169806">გსურთ ჩანართების ჯგუფის შენარჩუნება?</translation>
 <translation id="870736955561925754">დაიხუროს ჩანართი და წაიშალოს ჯგუფი?</translation>
+<translation id="8712637175834984815">კარგი</translation>
 <translation id="8714939927607906138">უფრო დაბალი ფასი</translation>
 <translation id="8730621377337864115">მზადაა</translation>
 <translation id="6687920250729800417">ამ ინკოგნიტო ჩანართებში თქვენი აქტივობა წაიშლება ამ მოწყობილობიდან</translation>
@@ -189,9 +195,12 @@
 <translation id="8915916167043355778">ყველას დახურვა</translation>
 <translation id="9090098097337832354">ამ მაღაზიის შესახებ ინფორმაცია დახურულია</translation>
 <translation id="9114502155681725011">გახსენით ჩანართების ჯგუფზე მოქმედებების მენიუ ჩანართების <ph name="COLOR_NAME"/> ფერის ჯგუფისთვის „<ph name="TITLE_OF_GROUP"/>“.</translation>
+<translation id="9169141410816678175">ყველა მომენტალურად დაკარგავს წვდომას ჩანართების ჯგუფზე „<ph name="GROUP_NAME"/>“ და ის წაიშლება ყველა მოწყობილობიდან</translation>
 <translation id="9169594135889675189">ჯგუფში ახალი ჩანართის დამატება</translation>
 <translation id="9216898458513705996">ჩანართები დარჩება გახსნილი ამ მოწყობილობაზე, მაგრამ ჯგუფი წაიშლება ყველა მოწყობილობიდან, რომელიც შესულია ანგარიშში: <ph name="USER_EMAIL"/></translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{გააფართოვეთ ჩანართების <ph name="TABS_COUNT_ONE"/>-ჩანართიანი <ph name="COLOR_NAME"/> ფერის ჯგუფი.}other{გააფართოვეთ ჩანართების <ph name="TABS_COUNT_MANY"/>-ჩანართიანი <ph name="COLOR_NAME"/> ფერის ჯგუფი.}}</translation>
+<translation id="945522503751344254">შეფასების გაგზავნა</translation>
+<translation id="94870150074703282">წაშლით ჯგუფს?</translation>
 <translation id="992256792861109788">ვარდისფერი</translation>
 <translation id="3228718275011575753">ნამდვილად გსურთ ყველა პირადი ჩანართის დახურვა?</translation>
 <translation id="6086127758480584723">{INCOGNITO_TABS_COUNT, plural,

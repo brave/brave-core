@@ -29,6 +29,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           și asigurați-vă că aveți configurația setată la „fără proxy” sau „direct”.</translation>
+<translation id="6159073403999048272">Aceste pagini sunt destinate utilizării de către dezvoltatorii Brave și este posibil să nu fie întreținute sau testate în mod activ. Pentru a le activa, accesează <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, dă clic pe butonul pentru a activa paginile de remediere a erorilor, apoi accesează din nou această pagină.</translation>
 <translation id="2765022094254723779">Brave acceptă și alte opțiuni de <ph name="BEGIN_LINK_OSS"/>software open source<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
 <translation id="8828443087767259398">Brave are nevoie de acces la Bluetooth pentru a continua conectarea. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>

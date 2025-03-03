@@ -29,6 +29,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           i upewnij się, że w konfiguracji wybrano połączenie bez serwera proxy lub bezpośrednie.</translation>
+<translation id="6159073403999048272">Te strony są przeznaczone dla programistów Brave i mogą nie być aktywnie utrzymywane ani testowane. Aby je włączyć, otwórz <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, kliknij przycisk włączania debugowania stron, a potem ponownie otwórz tę stronę.</translation>
 <translation id="2765022094254723779">Stworzenie przeglądarki Brave było też możliwe dzięki innemu <ph name="BEGIN_LINK_OSS"/>oprogramowaniu open source<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave.</translation>
 <translation id="8828443087767259398">Aby kontynuować parowanie, Brave potrzebuje dostępu do Bluetootha. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
