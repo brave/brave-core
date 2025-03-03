@@ -1,0 +1,17 @@
+[package]
+edition = "2018"
+rust-version = "1.51"
+name = "url"
+version = "2.3.1"
+authors = ["The rust-url developers", "Brave developers"]
+include = [
+    "src/**/*",
+    "LICENSE-*",
+    "README.md",
+    "tests/**",
+]
+description = "URL library for Rust, based on the WHATWG URL Standard"
+documentation = "https://docs.rs/url"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/servo/rust-url"

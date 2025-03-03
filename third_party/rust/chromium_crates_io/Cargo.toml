@@ -29,6 +29,10 @@ zcash = "1"
 anonymous-credentials = "0.1"
 document-extractor = "0.1"
 
+[patch.crates-io.url_v2]
+path = "../url/v2/crate"
+package = "url"
+
 [patch.crates-io.futures-retry_v0_5]
 path = "../futures_retry/v0_5/crate"
 package = "futures-retry"

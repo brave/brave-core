@@ -392,6 +392,9 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.unicode-width]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
+[crate.url]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
 [crate.wasi]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
