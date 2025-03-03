@@ -51,7 +51,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     // Ensure url bar is expanded before presenting a popover on it
     toolbarVisibilityViewModel.toolbarState = .expanded
 
-    DispatchQueue.main.async {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
       let popover = PopoverController(
         content: OnboardingTranslateView(
           onContinueButtonPressed: { [weak self, weak tab] in
