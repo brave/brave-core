@@ -6,7 +6,6 @@
 .main {
   --conversation-content-margin: var(--leo-spacing-2xl);
   --conversation-content-max-width: calc(680px + calc(var(--conversation-content-margin) * 2));
-  --leo-dialog-padding: 0;
 
   display: flex;
   flex-direction: column;
@@ -14,6 +13,15 @@
   height: 100%;
   position: relative;
   overflow: hidden;
+}
+
+.attachmentsDialog {
+  --leo-dialog-padding: 0;
+  --leo-dialog-width: 600px;
+
+  & > * {
+    width: min(var(--leo-dialog-width), calc(100vw - var(--leo-spacing-xl)));
+  }
 }
 
 .input {
