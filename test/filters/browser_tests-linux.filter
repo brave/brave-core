@@ -14,6 +14,7 @@
 
 # These tests pass locally but fail on CI.
 -DebuggerExtensionApiTest.ParentTargetPermissions
+-EventPage/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
 -EventPage/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 -InfoBarUiTest.InvokeUi_bad_flags
 -InfoBarUiTest.InvokeUi_reload_plugin
@@ -21,6 +22,7 @@
 -PageInfoBubbleViewBrowserTest.MalwareAndEvCert
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
+-ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/0
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 
 # This test fails on Linux only due to the UI it shows being off-screen. Have
