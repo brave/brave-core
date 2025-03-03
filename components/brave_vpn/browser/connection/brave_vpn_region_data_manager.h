@@ -54,6 +54,7 @@ class BraveVPNRegionDataManager {
   friend class BraveVPNServiceTest;
   friend class SystemVPNConnectionAPIUnitTest;
 
+  std::string GetCountryRegionNameFrom(const std::string& country_iso) const;
   void SetDeviceRegion(std::string_view name);
 
   void SetFallbackDeviceRegion();

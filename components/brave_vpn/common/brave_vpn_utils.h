@@ -40,8 +40,6 @@ std::string GetSubscriberCredential(PrefService* local_prefs);
 bool HasValidSkusCredential(PrefService* local_prefs);
 std::string GetSkusCredential(PrefService* local_prefs);
 bool IsBraveVPNWireguardEnabled(PrefService* local_state);
-std::string_view GetMigratedNameIfNeeded(PrefService* local_prefs,
-                                         const std::string& name);
 GURL GetManageURLForUIType(mojom::ManageURLType type, const GURL& manage_url);
 
 #if BUILDFLAG(IS_WIN)
