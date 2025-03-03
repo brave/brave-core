@@ -35,19 +35,23 @@ function MainPanel () {
     await getPanelBrowserAPI().dataHandler.openWebCompatWindow()
   }
 
-  const [isBlockedElementsAvailable, setIsBlockedElementsAvailable] = React.useState(false);
+  const [isBlockedElementsAvailable,
+    setIsBlockedElementsAvailable] = React.useState(false);
   React.useEffect(() => {
     const getBlockedElementsAvailability = () => {
-       getPanelBrowserAPI().dataHandler.isBlockedElementsAvailable().then((data) => {
-      console.log('isBlockedElementsAvailable:', data.isAvailable)
-      setIsBlockedElementsAvailable(data.isAvailable)
-    })};
+       getPanelBrowserAPI().dataHandler.isBlockedElementsAvailable()
+        .then((data) => {
+          setIsBlockedElementsAvailable(data.isAvailable)
+        })
+    };
 
-    document.addEventListener('visibilitychange', getBlockedElementsAvailability)
+    document.addEventListener('visibilitychange',
+      getBlockedElementsAvailability)
     getBlockedElementsAvailability()
 
     return () => {
-      document.removeEventListener('visibilitychange', getBlockedElementsAvailability)
+      document.removeEventListener('visibilitychange',
+        getBlockedElementsAvailability)
     }
   }, []);
 
