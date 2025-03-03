@@ -3,7 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_sync/network_time_helper.h"
+
+#include "base/test/gtest_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -72,4 +76,17 @@ IN_PROC_BROWSER_TEST_F(BraveSyncNetworkTimeHelperBrowserTest, DidntCrash) {
   // 92c41053e2da9d5931ed44036f7594b69559fa66
 
   EXPECT_TRUE(true);
+}
+
+using BraveSyncNetworkTimeHelperBrowserDeathTest =
+    BraveSyncNetworkTimeHelperBrowserTest;
+
+IN_PROC_BROWSER_TEST_F(BraveSyncNetworkTimeHelperBrowserDeathTest,
+                       CrashNoUiTaskRunner) {
+  brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
+      g_browser_process->network_time_tracker(), nullptr);
+
+  EXPECT_CHECK_DEATH(
+      brave_sync::NetworkTimeHelper::GetInstance()->GetNetworkTime(
+          base::DoNothing()));
 }
