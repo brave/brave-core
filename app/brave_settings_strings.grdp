@@ -815,6 +815,9 @@
   <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_NONE_DESC" desc="Description for safe browsing no protection mode">
     Does not protect you against dangerous websites, downloads, and extensions.
   </message>
+  <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_DESC" desc="Description for safe browsing standard protection mode">
+    Protects against sites, downloads, and extensions that are known to be dangerous.
+  </message>
 
   <!-- Settings / Privacy and security / Site and Shields Settings -->
   <message name="IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS" desc="Label for site and shields settings in clear browsing data dialog">
