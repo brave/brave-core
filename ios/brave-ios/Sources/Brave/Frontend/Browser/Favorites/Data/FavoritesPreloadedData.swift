@@ -50,7 +50,7 @@ struct FavoritesPreloadedData {
       }
 
       if let url = URL(string: "https://m.yahoo.co.jp/") {
-        list.append(FavoriteSite(url: url, title: "Yahoo! Japan"))
+        list.append(FavoriteSite(url: url, title: "Yahoo! JAPAN"))
       }
 
       if let url = URL(string: "https://brave.com/ja/ntp-tutorial") {
