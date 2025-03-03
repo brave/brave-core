@@ -254,6 +254,7 @@ const Config = function () {
   this.service_key_aichat = getEnvConfig(['service_key_aichat']) || ''
   this.braveIOSDeveloperOptionsCode = getEnvConfig(['brave_ios_developer_options_code']) || ''
   this.service_key_stt = getEnvConfig(['service_key_stt']) || ''
+  this.skip_download_rust_toolchain_aux = getEnvConfig(['skip_download_rust_toolchain_aux']) || false
 }
 
 Config.prototype.isReleaseBuild = function () {
@@ -1135,6 +1136,10 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     if (process.platform === 'win32') {
       // Disable vcvarsall.bat telemetry.
       env.VSCMD_SKIP_SENDTELEMETRY = '1'
+    }
+
+    if (this.isCI && this.skip_download_rust_toolchain_aux) {
+      env.SKIP_DOWNLOAD_RUST_TOOLCHAIN_AUX = '1'
     }
 
     // TeamCity displays only stderr on the "Build Problems" page when an error
