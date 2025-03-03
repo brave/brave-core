@@ -15,6 +15,12 @@
 
 #define TabDragController TabDragControllerChromium
 
+// Wraps function calls so that they can work with a child NativeWindow as well.
+#define non_client_view()                                    \
+  non_client_view()                                          \
+      ? source->GetWidget()->non_client_view()->frame_view() \
+      : source->GetWidget()->GetTopLevelWidget()->non_client_view()
+
 // Remove drag threshold when it's vertical tab strip
 #define GetHorizontalDragThreshold()                          \
   GetHorizontalDragThreshold() -                              \
@@ -27,6 +33,7 @@
 
 #include "src/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.cc"
 
+#undef non_client_view
 #undef GetHorizontalDragThreshold
 #undef GetBrowserViewForNativeWindow
 #undef TabDragController
