@@ -51,6 +51,9 @@ def create_ds_store(app_name, bg_file, ds_store_path):
             copyfile(bg_file, join(background_dir, 'background.png'))
             ds_store_tmp = join(mount_path, '.DS_Store')
             with DSStore.open(ds_store_tmp, 'w+') as d:
+                # Many of the magic string constants below were gleaned from
+                # resources online where people partially reverse-engineered
+                # the DS_Store format.
                 d[app_name + '.app']['Iloc'] = (150, 155)
                 d[' ']['Iloc'] = (430, 150)
                 d['.']['bwsp'] = {
