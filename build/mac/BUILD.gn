@@ -24,6 +24,13 @@ target_dmg_path = "$root_out_dir/$brave_dmg"
 upstream_packaged_basename =
     "$packaging_out_dir/" + string_replace(chrome_product_full_name, " ", "") +
     "-$chrome_version_full"
+
+# Brave's .dmg/.pkg/.zip artifacts used to be generated with custom code. Now,
+# we use upstream's implementation instead. The output paths of the legacy and
+# upstream implementations are different. The variables below contain the new
+# paths. CI expects the legacy paths. To bridge this gap, several copy(...)
+# actions further below put the artifacts at the legacy paths. In the future,
+# it would be nice to make CI use the new paths and remove the copy actions.
 upstream_dmg_path = "$upstream_packaged_basename.dmg"
 upstream_pkg_path = "$upstream_packaged_basename.pkg"
 upstream_zip_path = "$upstream_packaged_basename.zip"
