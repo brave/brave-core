@@ -3,6 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# This script updates the DS_Store files in this directory. (Cf. README.md.)
+# It is not used in the build process. The motivation for having it here is that
+# DS_Store is a proprietary format that is notoriously hard to edit. This script
+# gives us a way to edit the files in a more convenient way, should we need to
+# do so in the future.
+
 from ds_store import DSStore
 from mac_alias import Alias
 from os import makedirs, symlink
