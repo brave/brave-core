@@ -388,38 +388,6 @@ public class BytecodeTest {
     public void testMethodsExist() throws Exception {
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
-                        "extensiveBookmarkChangesBeginning",
-                        MethodModifier.REGULAR,
-                        void.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
-                        "extensiveBookmarkChangesEnded",
-                        MethodModifier.REGULAR,
-                        void.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
-                        "createBookmarkItem",
-                        MethodModifier.STATIC,
-                        BookmarkItem.class,
-                        long.class,
-                        int.class,
-                        String.class,
-                        GURL.class,
-                        boolean.class,
-                        long.class,
-                        int.class,
-                        boolean.class,
-                        boolean.class,
-                        long.class,
-                        boolean.class,
-                        long.class,
-                        boolean.class));
-
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/LaunchIntentDispatcher",
                         "isCustomTabIntent",
                         MethodModifier.STATIC,
