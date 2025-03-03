@@ -205,7 +205,14 @@ extension BrowserViewController: TabWebPolicyDecider {
     }
 
     // Handle internal:// urls
-    if InternalURL.isValid(url: requestURL), requestInfo.navigationType != .backForward {
+    if InternalURL.isValid(url: requestURL) {
+      // Requests for Internal pages have a 60s timeout by default
+      let isPrivilegedRequest =
+        Int64(request.timeoutInterval) < Int64(Int32.max) || request.isPrivileged
+
+      if !isPrivilegedRequest {
+        Logger.module.error("Denying Unprivileged Request: \(request)")
+      }
       return .allow
     }
 
