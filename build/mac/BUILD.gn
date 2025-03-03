@@ -264,7 +264,7 @@ if (install_omaha4_with_pkg) {
     outputs = [ output ]
   }
 } else {
-  copy("postinstall") {
+  copy("copy_postinstall") {
     sources = [ "pkg-scripts/postinstall" ]
     outputs = [ postinstall_script ]
   }
@@ -277,13 +277,13 @@ action("package") {
     upstream_zip_path,
   ]
   deps = [
-    ":browser_install_script",
-    ":dmg_background_image",
-    ":dmg_icon",
-    ":ds_store",
-    ":helper_entitlements",
-    ":postinstall",
-    ":signing_config",
+    ":copy_browser_install_script",
+    ":copy_dmg_background_image",
+    ":copy_dmg_icon",
+    ":copy_ds_store",
+    ":copy_helper_entitlements",
+    ":copy_postinstall",
+    ":copy_signing_config",
     "//chrome:chrome_app",
     "//chrome/installer/mac",
   ]
@@ -304,7 +304,7 @@ action("package") {
     "--installer-identity=$installer_identity",
   ]
   if (is_official_build) {
-    deps += [ ":provisionprofile" ]
+    deps += [ ":copy_provisionprofile" ]
   } else {
     args += [ "--development" ]
   }
@@ -331,7 +331,7 @@ action("package") {
   }
 }
 
-copy("signing_config") {
+copy("copy_signing_config") {
   visibility = [ ":package" ]
   sources = [
     "signing/internal_config.py",
@@ -340,18 +340,18 @@ copy("signing_config") {
   outputs = [ "$packaging_dir/signing/{{source_file_part}}" ]
 }
 
-copy("browser_install_script") {
+copy("copy_browser_install_script") {
   deps = [ "//chrome/updater/mac:browser_install_script" ]
   sources = [ "$root_out_dir/$browser_product_name Packaging/updater/.install" ]
   outputs = [ "$packaging_dir/keystone_install.sh" ]
 }
 
-copy("dmg_background_image") {
+copy("copy_dmg_background_image") {
   sources = [ "dmg-background.png" ]
   outputs = [ "$packaging_dir/chrome_dmg_background.png" ]
 }
 
-copy("dmg_icon") {
+copy("copy_dmg_icon") {
   dmg_icon_file_name = "dmg"
   if (!is_release_channel) {
     dmg_icon_file_name = "dmg-$brave_channel"
@@ -360,7 +360,7 @@ copy("dmg_icon") {
   outputs = [ "$packaging_dir/chrome_dmg_icon.icns" ]
 }
 
-copy("ds_store") {
+copy("copy_ds_store") {
   ds_store_file_name = "DS_Store"
   if (!is_release_channel) {
     ds_store_file_name = "DS_Store.$brave_channel"
@@ -369,7 +369,7 @@ copy("ds_store") {
   outputs = [ "$packaging_dir/chrome_dmg_dsstore" ]
 }
 
-copy("helper_entitlements") {
+copy("copy_helper_entitlements") {
   visibility = [ ":package" ]
   sources = [ "//brave/app/helper-entitlements.plist" ]
   public_deps = [ "//chrome/installer/mac" ]
@@ -377,7 +377,7 @@ copy("helper_entitlements") {
 }
 
 if (is_official_build) {
-  copy("provisionprofile") {
+  copy("copy_provisionprofile") {
     if (is_release_channel) {
       channel_nonempty = "release"
     } else {
@@ -394,7 +394,7 @@ group("create_dist_mac") {
     ":copy_zip",
   ]
   if (skip_signing) {
-    deps += [ ":unsigned_dmg" ]
+    deps += [ ":copy_unsigned_dmg" ]
   } else {
     deps += [ ":copy_pkg" ]
     if (sparkle_dsa_private_key_file != "") {
@@ -433,7 +433,7 @@ copy("copy_zip") {
 }
 
 if (skip_signing) {
-  copy("unsigned_dmg") {
+  copy("copy_unsigned_dmg") {
     deps = [ ":package" ]
     sources = [ upstream_dmg_path ]
     outputs = [ "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg" ]
