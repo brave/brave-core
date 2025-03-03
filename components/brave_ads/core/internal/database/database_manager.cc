@@ -79,6 +79,11 @@ void DatabaseManager::RunTransaction(
       .Then(std::move(callback));
 }
 
+void DatabaseManager::Shutdown(ShutdownCallback callback) {
+  database_.AsyncCall(&Database::Poison)
+      .Then(base::BindOnce(std::move(callback), /*success=*/true));
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void DatabaseManager::CreateOrOpenCallback(

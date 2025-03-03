@@ -47,6 +47,9 @@ class DatabaseManager final {
                       RunDBTransactionCallback callback,
                       uint64_t trace_id);
 
+  // Shutdowns the database.
+  void Shutdown(ShutdownCallback callback);
+
  private:
   void CreateOrOpenCallback(
       ResultCallback callback,
@@ -78,7 +81,7 @@ class DatabaseManager final {
   void NotifyDatabaseIsReady() const;
 
   const scoped_refptr<base::SequencedTaskRunner> database_task_runner_;
-  const base::SequenceBound<Database> database_;
+  base::SequenceBound<Database> database_;
 
   base::ObserverList<DatabaseManagerObserver> observers_;
 

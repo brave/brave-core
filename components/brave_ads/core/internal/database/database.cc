@@ -92,6 +92,10 @@ mojom::DBTransactionResultInfoPtr Database::RunTransaction(
   return mojom_db_transaction_result;
 }
 
+void Database::Poison() {
+  db_.Poison();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 mojom::DBTransactionResultInfo::StatusCode Database::RunActions(

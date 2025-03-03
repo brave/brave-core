@@ -87,7 +87,7 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
 
   NotificationAdManager::GetInstance().RemoveAll(/*should_close=*/true);
 
-  std::move(callback).Run(/*success=*/true);
+  DatabaseManager::GetInstance().Shutdown(std::move(callback));
 }
 
 void AdsImpl::GetInternals(GetInternalsCallback callback) {
