@@ -243,8 +243,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
       &shared_highlighting::kSharedHighlightingManager,
       &subresource_filter::kAdTagging,
+      &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillLoyaltyCard,
-      &syncer::kSyncEnableBookmarksInTransportMode,
 #if !BUILDFLAG(IS_ANDROID)
       &translate::kTFLiteLanguageDetectionEnabled,
 #endif
