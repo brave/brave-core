@@ -6,78 +6,118 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
-#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/webui_url_constants.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/child_process_termination_info.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/render_process_host_observer.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/common/result_codes.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
 
 using namespace content;  // NOLINT
 
 namespace {
-class ObserverLogger : public RenderProcessHostObserver {
+
+class RenderProcessExitObserver : public RenderProcessHostObserver {
  public:
-  explicit ObserverLogger(RenderProcessHost* observed_host) :
-      observed_host_(observed_host) {
-    observed_host->AddObserver(this);
+  explicit RenderProcessExitObserver(RenderProcessHost* render_process_host)
+      : render_process_host_(render_process_host) {
+    render_process_host_->AddObserver(this);
   }
 
  protected:
-  // Make sure we aren't exiting because of a crash
-  void RenderProcessExited(RenderProcessHost* host,
+  // RenderProcessHostObserver:
+  void RenderProcessExited(RenderProcessHost* /*host*/,
                            const ChildProcessTerminationInfo& info) override {
-    observed_host_->RemoveObserver(this);
-    EXPECT_EQ(info.exit_code, 0);
+    render_process_host_->RemoveObserver(this);
+
+    // Ensure the process exited normally and not due to a crash.
+    EXPECT_EQ(info.exit_code, content::RESULT_CODE_NORMAL_EXIT);
   }
-  raw_ptr<RenderProcessHost, DanglingUntriaged> observed_host_ = nullptr;
+
+  const raw_ptr<RenderProcessHost, DanglingUntriaged> render_process_host_ =
+      nullptr;
 };
+
+void VerifyDocumentBodyInnerTextExpectation(
+    content::WebContents* web_contents,
+    const std::string& expected_inner_text) {
+  EXPECT_EQ(expected_inner_text,
+            content::EvalJs(web_contents, "document.body.innerText;")
+                .ExtractString());
+}
+
+void VerifyNewTabPageLoadedExpectation(content::WebContents* web_contents) {
+  EXPECT_TRUE(content::EvalJs(web_contents,
+                              "!!document.querySelector(`html[data-test-id="
+                              "'brave-new-tab-page']`)")
+                  .ExtractBool());
+}
+
+void SimulateGoBack(WebContents* web_contents) {
+  content::TestNavigationObserver observer(
+      web_contents, /*expected_number_of_navigations=*/1);
+  web_contents->GetController().GoBack();
+  observer.Wait();
+  EXPECT_TRUE(WaitForLoadStop(web_contents));
+}
 
 }  // namespace
 
 class BraveNewTabUIBrowserTest : public extensions::ExtensionFunctionalTest {
- public:
-  void GoBack(WebContents* web_contents, const GURL& expected_url) {
-    ui_test_utils::UrlLoadObserver url_observer(expected_url);
-    web_contents->GetController().GoBack();
-    url_observer.Wait();
+ protected:
+  content::WebContents* GetActiveWebContents() {
+    content::WebContents* web_contents =
+        chrome_test_utils::GetActiveWebContents(this);
+    EXPECT_TRUE(web_contents);
+    return web_contents;
+  }
+
+  void SimulateNavigateToUrlAndWaitForLoad(content::WebContents* web_contents,
+                                           const GURL& url) {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    EXPECT_TRUE(WaitForLoadStop(web_contents));
+  }
+
+  void SimulateOpenNewTabAndWaitForLoad(content::WebContents* web_contents) {
+    SimulateNavigateToUrlAndWaitForLoad(web_contents,
+                                        GURL(chrome::kChromeUINewTabURL));
   }
 };
 
 // Test that properties are set on the correct RenderViewHost.
 IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, StartupURLTest) {
-  auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
-  RenderProcessHost* host = contents->GetPrimaryMainFrame()->GetProcess();
-  ObserverLogger observer_logger(host);
+  content::WebContents* web_contents = GetActiveWebContents();
 
-  const GURL new_tab_url(chrome::kChromeUINewTabURL);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), new_tab_url));
-  WaitForLoadStop(contents);
+  RenderProcessHost* render_process_host =
+      web_contents->GetPrimaryMainFrame()->GetProcess();
+  RenderProcessExitObserver observer(render_process_host);
 
-  GURL simple_url = embedded_test_server()->GetURL("/simple.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), simple_url));
-  WaitForLoadStop(contents);
+  SimulateOpenNewTabAndWaitForLoad(web_contents);
+  VerifyNewTabPageLoadedExpectation(web_contents);
 
-  GoBack(contents, new_tab_url);
-  WaitForLoadStop(contents);
+  SimulateNavigateToUrlAndWaitForLoad(
+      web_contents, embedded_test_server()->GetURL("/simple.html"));
+  VerifyDocumentBodyInnerTextExpectation(web_contents, "Non empty simple page");
+
+  SimulateGoBack(web_contents);
+  VerifyNewTabPageLoadedExpectation(web_contents);
 }
 
 // This test simply checks that by default the Brave new tab page is used.
 // It does this by loading the newtab page and then checking if
 // window.brave_new_tab exists.
 IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, BraveNewTabIsDefault) {
-  auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
-  GURL new_tab_url(chrome::kChromeUINewTabURL);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), new_tab_url));
-  WaitForLoadStop(contents);
-  EXPECT_EQ(true, content::EvalJs(contents,
-                                  "!!document.querySelector(`html[data-test-id="
-                                  "'brave-new-tab-page']`)"));
+  content::WebContents* web_contents = GetActiveWebContents();
+  SimulateOpenNewTabAndWaitForLoad(web_contents);
+  VerifyNewTabPageLoadedExpectation(web_contents);
 }
 
 // This test simply loads an extension that sets a newtab override.
@@ -88,12 +128,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, NewTabPageLocationOverride) {
   InstallExtensionSilently(extension_service(),
       test_data_dir.AppendASCII("new_tab_override.crx"));
 
-  auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
-  GURL new_tab_url(chrome::kChromeUINewTabURL);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), new_tab_url));
-  WaitForLoadStop(contents);
-
-  std::string inner_text;
-  ASSERT_EQ("New tab override!",
-            content::EvalJs(contents, "document.body.innerText;"));
+  content::WebContents* web_contents = GetActiveWebContents();
+  SimulateOpenNewTabAndWaitForLoad(web_contents);
+  VerifyDocumentBodyInnerTextExpectation(web_contents, "New tab override!");
 }

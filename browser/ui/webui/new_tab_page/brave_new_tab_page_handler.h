@@ -25,7 +25,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 namespace base {
 class FilePath;
@@ -113,15 +113,15 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   PrefChangeRegistrar pref_change_registrar_;
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
       template_url_service_observation_{this};
-  mojo::Receiver<brave_new_tab_page::mojom::PageHandler> page_handler_;
-  mojo::Remote<brave_new_tab_page::mojom::Page> page_;
-  raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<content::WebContents> web_contents_ = nullptr;
+  const mojo::Receiver<brave_new_tab_page::mojom::PageHandler> page_handler_;
+  const mojo::Remote<brave_new_tab_page::mojom::Page> page_;
+  const raw_ptr<Profile> profile_ = nullptr;
+  const raw_ptr<content::WebContents> web_contents_ = nullptr;
 
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
-  std::unique_ptr<CustomBackgroundFileManager> file_manager_;
+  const std::unique_ptr<CustomBackgroundFileManager> file_manager_;
 
-  base::WeakPtrFactory<BraveNewTabPageHandler> weak_factory_;
+  base::WeakPtrFactory<BraveNewTabPageHandler> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_BRAVE_NEW_TAB_PAGE_HANDLER_H_
