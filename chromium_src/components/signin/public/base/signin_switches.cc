@@ -7,6 +7,14 @@
 
 #include "base/feature_override.h"
 
+namespace switches {
+
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kSyncEnableBookmarksInTransportMode, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
+
+}  // namespace switches
+
 OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if BUILDFLAG(ENABLE_MIRROR) && !BUILDFLAG(IS_IOS)
     {kVerifyRequestInitiatorForMirrorHeaders,
