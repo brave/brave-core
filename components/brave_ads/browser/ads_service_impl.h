@@ -138,10 +138,11 @@ class AdsServiceImpl final : public AdsService,
 
   void NotifyAdsServiceInitialized() const;
 
-  void ShutdownAndClearAdsServiceDataAndMaybeRestart(
-      ClearDataCallback callback);
-  void ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart(
-      ClearDataCallback callback);
+  void ClearDataPrefsAndAdsServiceDataAndMaybeRestart(
+      ClearDataCallback callback,
+      bool shutdown_succeeded);
+  void ClearAllPrefsAndAdsServiceDataAndMaybeRestart(ClearDataCallback callback,
+                                                     bool shutdown_succeeded);
   void ClearAdsServiceDataAndMaybeRestart(ClearDataCallback callback);
   void ClearAdsServiceDataAndMaybeRestartCallback(ClearDataCallback callback,
                                                   bool success);
@@ -217,6 +218,9 @@ class AdsServiceImpl final : public AdsService,
   void SnoozeScheduledCaptchaCallback();
 
   void DoRecordNotificationAdPositionMetric();
+
+  void ShutdownAds(ShutdownCallback callback);
+  void ShutdownAdsCallback(ShutdownCallback callback, bool success);
 
   void ShutdownAdsService();
 

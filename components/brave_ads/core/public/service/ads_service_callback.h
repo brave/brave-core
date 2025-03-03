@@ -40,6 +40,8 @@ using GetAdHistoryForUICallback =
 
 using ToggleReactionCallback = base::OnceCallback<void(bool success)>;
 
+using ShutdownCallback = base::OnceCallback<void(bool success)>;
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVICE_ADS_SERVICE_CALLBACK_H_
