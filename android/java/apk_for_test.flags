@@ -29,9 +29,6 @@
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkBridge {
     *** mNativeBookmarkBridge;
-    *** extensiveBookmarkChangesBeginning(...);
-    *** extensiveBookmarkChangesEnded(...);
-    *** createBookmarkItem(...);
     <init>(...);
 }
 
