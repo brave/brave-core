@@ -25,6 +25,7 @@ if (!is_ios) {
     deps = [
       "//base",
       "//base/test:test_support",
+      "//brave/components/brave_sync:network_time_helper",
       "//brave/components/brave_sync:prefs",
       "//chrome/browser",
       "//chrome/test:test_support",
