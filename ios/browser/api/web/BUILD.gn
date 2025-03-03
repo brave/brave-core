@@ -7,8 +7,5 @@ import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
 group("web") {
-  public_deps = [
-    "ui",
-    "web_state",
-  ]
+  public_deps = [ "web_state" ]
 }

@@ -1,4 +1,0 @@
-include_rules = [
-  "+ios/web/js_messaging",
-  "+ios/web/webui",
-]
