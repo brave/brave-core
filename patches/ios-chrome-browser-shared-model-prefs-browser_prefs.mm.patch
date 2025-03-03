@@ -1,16 +1,16 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 7880436660edd644869f559c6c72e921e6461d49..71c15c9bc8cca749a621690688b3b00c5a9749c2 100644
+index 137e88253501fc09a4469b6a64ad5dcdd7a976b1..52e91749a9d05f72b220748e4ffad8e7476b5671 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -662,6 +662,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   // Deprecated 02/2025.
-   registry->RegisterIntegerPref(kNumberOfProfiles, 0);
-   registry->RegisterListPref(kLastActiveProfiles);
+@@ -666,6 +666,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+ 
+   registry->RegisterIntegerPref(
+       prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1033,6 +1034,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1039,6 +1040,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterIntegerPref(
        prefs::kIosMagicStackSegmentationTabResumptionImpressionsSinceFreshness,
        -1);
