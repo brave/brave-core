@@ -191,13 +191,12 @@ class InitialSearchEngines {
       replaceOrInsert(engineId: .daum, customId: nil)
     }
 
-    if !Preferences.Search.shouldExcludeYahooJPSearchEngine.value {
-      // This means it is new install, we want to execute the below logic to add Yahoo!
-      // for Japan region
-      if yahooJapanEnabledRegions.contains(region) {
-        replaceOrInsert(engineId: .yahoojp, customId: nil)
-      }
+    if yahooJapanDefaultRegions.contains(region) {
+      replaceOrInsert(engineId: .yahoojp, customId: nil)
+    }
 
+    if Preferences.Search.shouldOverrideDSEForJapanRegion.value {
+      // This means it is new install, we want to override DSE for Japan region
       if yahooJapanDefaultRegions.contains(region) {
         defaultSearchEngine = .yahoojp
       }
@@ -207,9 +206,7 @@ class InitialSearchEngines {
   private func priorityOverrides() {
     guard let region = locale.region?.identifier else { return }
 
-    if !Preferences.Search.shouldExcludeYahooJPSearchEngine.value
-      && yahooJapanEnabledRegions.contains(region)
-    {
+    if yahooJapanEnabledRegions.contains(region) {
       priorityEngine = .yahoojp
     }
   }
