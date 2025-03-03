@@ -174,7 +174,7 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
         campaign_dict->FindInt(kCampaignDailyCapKey).value_or(0);
 
     creative_ad.priority =
-        campaign_dict->FindInt(kCampaignPriorityKey).value_or(0);
+        campaign_dict->FindInt(kCampaignPriorityKey).value_or(10);
 
     creative_ad.pass_through_rate =
         campaign_dict->FindInt(kCampaignPassThroughRateKey).value_or(1.0);
