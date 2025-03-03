@@ -57,7 +57,6 @@ function getPageVisibility () {
     // future-proof chromium actually defining something,
     ...chromiumPageVisibility,
     // overrides
-    a11y: false,
     people: false,
     defaultBrowser: false,
     onStartup: false,

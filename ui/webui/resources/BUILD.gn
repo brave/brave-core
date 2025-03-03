@@ -137,6 +137,7 @@ leo_icons_base_path = "../../../node_modules/@brave/leo/icons"
 # are a **LOT** of icons in Leo. You can check if there's an icon  which suits
 # your needs here: https://leo.bravesoftware.com/?path=/story/icon--all-icons
 leo_icons = [
+  "accessibility.svg",
   "activity.svg",
   "attachment.svg",
   "appearance.svg",
