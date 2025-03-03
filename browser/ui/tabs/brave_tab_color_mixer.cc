@@ -61,10 +61,8 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBraveSplitViewMenuItemIcon] = {nala::kColorIconDefault};
   mixer[kColorBraveSplitViewUrl] = {nala::kColorTextTertiary};
   mixer[kColorBraveSplitViewMenuButtonBorder] = {nala::kColorDividerSubtle};
-
-  // Picked orange color from tab group colors. It doesn't have nala token.
   mixer[kColorBraveSplitViewActiveWebViewBorder] = {
-      SkColorSetRGB(0xff, 0x82, 0x3f)};
+      nala::kColorPrimitiveBrandsRorange1};
   mixer[kColorBraveSplitViewMenuButtonBackground] = {
       nala::kColorContainerBackground};
   mixer[kColorBraveSplitViewMenuButtonIcon] = {nala::kColorIconInteractive};
