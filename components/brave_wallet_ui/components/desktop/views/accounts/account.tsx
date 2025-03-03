@@ -222,7 +222,7 @@ export const Account = () => {
 
   const { data: zcashBalance } =
     useGetZCashBalanceQuery(isShieldedAccount && selectedAccount ? {
-        chainId: BraveWallet.Z_CASH_MAINNET, 
+        chainId: BraveWallet.Z_CASH_MAINNET,
         accountId: selectedAccount.accountId
       } : skipToken)
 
@@ -608,7 +608,7 @@ export const Account = () => {
             </div>
             <div>
               {(accountsTokensList && zcashBalance &&
-                zcashBalance.shieldedPendingBalance > 0) && 
+                zcashBalance.shieldedPendingBalance > 0) &&
                 getLocale('braveWalletZCashPendingBalanceTitle').replace('$1',
                   formatTokenBalanceWithSymbol(
                     (zcashBalance?.shieldedPendingBalance || 0).toString(),
@@ -632,7 +632,7 @@ export const Account = () => {
                   slot='icon-before'
                 />
                 {getLocale('braveWalletSyncAccountButton')}
-              </Button>              
+              </Button>
               <Button
                 size='small'
                 kind='plain-faint'

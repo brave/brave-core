@@ -1168,7 +1168,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSPARENT" desc="Transparent label">Transparent</message>
   <message name="IDS_BRAVE_WALLET_OUT_OF_SYNC_TITLE" desc="Warning title for when an account is out of sync.">Out of sync</message>
   <message name="IDS_BRAVE_WALLET_OUT_OF_SYNC_BLOCKS_BEHIND_TITLE" desc="Warning title for when an account is out of sync with blocks behind.">Out of sync (<ph name="BLOCKS">$1<ex>12,568</ex></ph> blocks behind)</message>
-  <message name="IDS_BRAVE_WALLET_ZCASH_PENDING_BALANCE_TITLE" desc="Warning title for when an account has shielded funds that need more blocks to be synced.">Pending balance(more confirmations required): <ph name="FUNDS">$1<ex>12,568</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_ZCASH_PENDING_BALANCE_TITLE" desc="Warning title for when an account has shielded funds that need more blocks to be synced.">Pending balance (more confirmations required): <ph name="FUNDS">$1<ex>12,568</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_OUT_OF_SYNC_DESCRIPTION" desc="Warning description for when an account is out of sync.">Sync your account to access the latest transactions and balance.</message>
   <message name="IDS_BRAVE_WALLET_SYNC_ACCOUNT_BUTTON" desc="Sync account button label.">Sync account</message>
   <message name="IDS_BRAVE_WALLET_SYNC_ACCOUNT_NAME" desc="Sync account name title on sync dialog.">Sync <ph name="ACCOUNT">$1<ex>Zcash Account 1</ex></ph></message>

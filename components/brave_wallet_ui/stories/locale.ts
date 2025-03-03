@@ -1539,7 +1539,7 @@ provideStrings({
   braveWalletOutOfSyncDescription:
     'Sync your account to access the latest transactions and balance.',
   braveWalletZCashPendingBalanceTitle:
-    'Pending balance(requires more confirmations): $1',
+    'Pending balance (more confirmations required): $1',
   braveWalletSyncAccountButton: 'Sync account',
   braveWalletSyncAccountName: 'Sync $1',
   braveWalletInitializing: 'Initializing...',

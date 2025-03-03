@@ -99,7 +99,7 @@ void ZCashCreateOrchardToOrchardTransactionTask::OnGetSpendableNotes(
     return;
   }
 
-  spendable_notes_ = std::move(**result);
+  spendable_notes_ = std::move(*result.value());
   ScheduleWorkOnTask();
 }
 
