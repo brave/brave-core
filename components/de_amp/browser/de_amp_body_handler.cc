@@ -35,19 +35,17 @@ constexpr const char kDeAmpHeaderName[] = "X-Brave-De-AMP";
 constexpr size_t kMaxBytesToCheck = 3 * 65536;
 constexpr size_t kMaxRedirectHops = 7;
 
-base::Value LoadNavigationChain(const network::ResourceRequest& request) {
+base::Value::List LoadNavigationChain(const network::ResourceRequest& request) {
   std::optional<std::string> de_amp_header =
       request.headers.GetHeader(kDeAmpHeaderName);
   if (!de_amp_header) {
-    return base::Value(
-        base::Value::List().Append(base::Value(request.url.spec())));
+    return base::Value::List().Append(base::Value(request.url.spec()));
   }
-  auto value = base::JSONReader::Read(*de_amp_header);
-  if (!value || !value->is_list()) {
-    return base::Value(
-        base::Value::List().Append(base::Value(request.url.spec())));
+  auto value = base::JSONReader::ReadList(*de_amp_header);
+  if (!value) {
+    return base::Value::List().Append(base::Value(request.url.spec()));
   }
-  DCHECK(value->GetList().size() < kMaxRedirectHops);
+  DCHECK(value->size() < kMaxRedirectHops);
   return std::move(*value);
 }
 
@@ -61,9 +59,8 @@ bool CheckUrlsAreEquivalent(std::string_view left, std::string_view right) {
   return left == right;
 }
 
-bool FindUrlInNavigationChain(const GURL& url, const base::Value& chain) {
-  const auto& list = chain.GetList();
-  for (const auto& entry : list) {
+bool FindUrlInNavigationChain(const GURL& url, const base::Value::List& chain) {
+  for (const auto& entry : chain) {
     const std::string& entry_url = entry.GetString();
     if (CheckUrlsAreEquivalent(entry_url, url.spec())) {
       return true;
@@ -72,8 +69,8 @@ bool FindUrlInNavigationChain(const GURL& url, const base::Value& chain) {
   return false;
 }
 
-std::string AddUrlToNavigationChain(const GURL& url, base::Value chain) {
-  chain.GetList().Append(url.spec());
+std::string AddUrlToNavigationChain(const GURL& url, base::Value::List chain) {
+  chain.Append(url.spec());
   return base::WriteJson(chain).value_or(std::string());
 }
 
@@ -124,7 +121,7 @@ bool DeAmpBodyHandler::ShouldProcess(
   }
   *defer = true;
   response_url_ = response_url;
-  return navigation_chain_.GetList().size() < kMaxRedirectHops;
+  return navigation_chain_.size() < kMaxRedirectHops;
 }
 
 void DeAmpBodyHandler::OnBeforeSending() {}

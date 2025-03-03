@@ -31,13 +31,13 @@ namespace {
 
 std::optional<base::Value::List> GetParamsList(const std::string& json) {
   auto json_value =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSON_ALLOW_TRAILING_COMMAS);
-  if (!json_value || !json_value->is_dict()) {
+      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                           base::JSON_ALLOW_TRAILING_COMMAS);
+  if (!json_value) {
     return std::nullopt;
   }
 
-  auto& value = json_value->GetDict();
+  auto& value = *json_value;
   auto* params = value.FindListByDottedPath(brave_wallet::kParams);
   if (!params) {
     return std::nullopt;
@@ -58,12 +58,12 @@ std::optional<base::Value::Dict> GetObjectFromParamsList(
 
 std::optional<base::Value::Dict> GetParamsDict(const std::string& json) {
   auto json_value =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSON_ALLOW_TRAILING_COMMAS);
-  if (!json_value || !json_value->is_dict()) {
+      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                           base::JSON_ALLOW_TRAILING_COMMAS);
+  if (!json_value) {
     return std::nullopt;
   }
-  auto* value = json_value->GetDict().FindDict(brave_wallet::kParams);
+  auto* value = json_value->FindDict(brave_wallet::kParams);
   if (!value) {
     return std::nullopt;
   }
@@ -212,14 +212,9 @@ bool GetEthJsonRequestInfo(const std::string& json,
                            base::Value* id,
                            std::string* method,
                            base::Value::List* params_list) {
-  std::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
-    return false;
-  }
-
-  base::Value::Dict* response_dict = records_v->GetIfDict();
+  std::optional<base::Value::Dict> response_dict = base::JSONReader::ReadDict(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                base::JSONParserOptions::JSON_PARSE_RFC);
   if (!response_dict) {
     return false;
   }
@@ -260,14 +255,9 @@ bool GetEthJsonRequestInfo(const std::string& json,
 bool NormalizeEthRequest(const std::string& input_json,
                          std::string* output_json) {
   CHECK(output_json);
-  std::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value::Dict> out_dict = base::JSONReader::ReadDict(
       input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
-    return false;
-  }
-
-  base::Value::Dict* out_dict = records_v->GetIfDict();
   if (!out_dict) {
     return false;
   }
@@ -472,13 +462,9 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
 
   // TODO(apaymyshev): support dict there per
   // https://github.com/MetaMask/metamask-extension/issues/18462
-  auto typed_data = base::JSONReader::Read(
+  auto dict = base::JSONReader::ReadDict(
       *typed_data_str,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
-  if (!typed_data) {
-    return nullptr;
-  }
-  auto* dict = typed_data->GetIfDict();
   if (!dict) {
     return nullptr;
   }

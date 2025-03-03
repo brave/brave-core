@@ -8,9 +8,9 @@
 #include <optional>
 
 #include "base/containers/to_vector.h"
-#include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
+#include "base/test/values_test_util.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -252,31 +252,16 @@ TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
 }
 
 TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
-  std::string json;
-  std::optional<base::Value> json_value;
-
-  // Non dictionary JSON response yields nullopt
-  json = R"([])";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  auto result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
-  ASSERT_FALSE(result);
-
   // Missing 'nfts' key yields nullopt
-  json = R"({"foo": "bar"})";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
+  std::string json = R"({"foo": "bar"})";
+  auto result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, false);
   ASSERT_FALSE(result);
 
   // Dictionary type 'nfts' key yields nullopt
   json = R"({"nfts": {}})";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, false);
   ASSERT_FALSE(result);
 
   // Missing next_cursor yields empty next_cursor
@@ -300,10 +285,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
       }
     ]
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, false);
   ASSERT_TRUE(result);
   ASSERT_FALSE(result->first);
 
@@ -329,10 +312,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
       }
     ]
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->first, std::nullopt);
 
@@ -358,14 +339,12 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
       }
     ]
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, false);
 
   // Valid, 1 ETH NFT
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, false);
   ASSERT_TRUE(result);
   ASSERT_TRUE(result->first);
   EXPECT_EQ(result->first, "abc123");
@@ -424,10 +403,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
       }
     ]
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, false);
   ASSERT_TRUE(result);
   ASSERT_TRUE(result->first);
   EXPECT_EQ(result->first, "abc123");
@@ -552,10 +529,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
       }
     ]
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
 
@@ -587,10 +562,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
     ]
   })";
 
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -638,10 +611,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
       }
     ]
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -691,10 +662,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
       }
     ]
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -764,13 +733,11 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
       }
     ]
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
 
   // When skip_spam is true and only_spam is false, non spam token should be
   // parsed
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, false);
   ASSERT_TRUE(result);
   ASSERT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -778,8 +745,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_FALSE(result->second[0]->is_spam);
 
   // When skip_spam is false and only_spam is true, spam token should be parsed
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, false, true);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), false, true);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -787,14 +754,14 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_FALSE(result->second[0]->is_spam);
 
   // When only_spam is set and skip_spam is set, parsing should fail
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, true);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), true, true);
   ASSERT_FALSE(result);
 
   // When only_spam is false and skip_spam is false, spam and non spam should be
   // parsed
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, false, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), false, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 2u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -858,10 +825,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
       }
     ]
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, false, false);
+  result = simple_hash_client_->ParseNFTsFromSimpleHash(
+      base::test::ParseJsonDict(json), false, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -872,11 +837,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
 }
 
 TEST_F(SimpleHashClientUnitTest, ParseSolCompressedNftProofData) {
-  std::string json;
-  std::optional<base::Value> json_value;
-
   // Valid JSON data
-  json = R"({
+  std::string json = R"({
   "root": "5bR96ZfMpkDCBQBFvNwdMRizNTp5ZcNEAYq6J3D7mXMR",
   "proof": [
     "ANs5srcJ9fSZpbGmJGXy8M6G3NeNABzK8SshSb9JCwAz",
@@ -912,10 +874,8 @@ TEST_F(SimpleHashClientUnitTest, ParseSolCompressedNftProofData) {
   "delegate": "6G9UfJJEgQpNB7rDWoVRHcF93nAShcFu7EwedYkua3PH",
   "canopy_depth": "0"
 })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  auto result =
-      simple_hash_client_->ParseSolCompressedNftProofData(*json_value);
+  auto result = simple_hash_client_->ParseSolCompressedNftProofData(
+      base::test::ParseJsonDict(json));
   ASSERT_TRUE(result);
 
   EXPECT_EQ(result->root, "5bR96ZfMpkDCBQBFvNwdMRizNTp5ZcNEAYq6J3D7mXMR");
@@ -937,16 +897,8 @@ TEST_F(SimpleHashClientUnitTest, ParseSolCompressedNftProofData) {
   json = R"({
     "data_hash": "79vyLbMksGJdhR8MBRCi73QhxtUxhSdLPQCCkwNpv5MH"
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseSolCompressedNftProofData(*json_value);
-  ASSERT_FALSE(result);
-
-  // Non-dictionary JSON response yields std::nullopt
-  json = R"([])";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseSolCompressedNftProofData(*json_value);
+  result = simple_hash_client_->ParseSolCompressedNftProofData(
+      base::test::ParseJsonDict(json));
   ASSERT_FALSE(result);
 
   // Incorrect data type for `canopy_depth` yields std::nullopt
@@ -960,9 +912,8 @@ TEST_F(SimpleHashClientUnitTest, ParseSolCompressedNftProofData) {
     "merkle_tree": "D7kub8uwwptGUyiuRFpHUBPmYc446ocpoWDoopcDhW42",
     "canopy_depth": "twelve"
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseSolCompressedNftProofData(*json_value);
+  result = simple_hash_client_->ParseSolCompressedNftProofData(
+      base::test::ParseJsonDict(json));
   ASSERT_FALSE(result);
 }
 
@@ -1573,10 +1524,9 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
       }
     ]
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
   std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
-      result = simple_hash_client_->ParseMetadatas(*json_value);
+      result =
+          simple_hash_client_->ParseMetadatas(base::test::ParseJsonDict(json));
   ASSERT_TRUE(result);
 
   // Verify there is one Ethereum entry.
@@ -1639,9 +1589,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
       }
     ]
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseMetadatas(*json_value);
+  result = simple_hash_client_->ParseMetadatas(base::test::ParseJsonDict(json));
   ASSERT_TRUE(result);
 
   // Verify there are two Solana entries.
@@ -1692,9 +1640,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
 
   // Missing nfts key should return nullopt.
   json = R"({"foo": "bar"})";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseMetadatas(*json_value);
+  result = simple_hash_client_->ParseMetadatas(base::test::ParseJsonDict(json));
   EXPECT_FALSE(result);
 
   // NFT missing chain or contract_address should be skipped. The rest should be
@@ -1725,9 +1671,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
       }
     ]
   })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseMetadatas(*json_value);
+  result = simple_hash_client_->ParseMetadatas(base::test::ParseJsonDict(json));
   ASSERT_TRUE(result);
   EXPECT_EQ(result->size(), 1u);
 
@@ -2058,11 +2002,10 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
 
   // JSON missing NFT key should return nullopt.
   json = R"({"foo": "bar"})";
-  std::optional<base::Value> json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
   std::optional<base::flat_map<mojom::NftIdentifierPtr,
                                base::flat_map<std::string, uint64_t>>>
-      result = simple_hash_client_->ParseBalances(*json_value);
+      result =
+          simple_hash_client_->ParseBalances(base::test::ParseJsonDict(json));
   EXPECT_FALSE(result);
 
   // Ethereum test data. Use all uppercase case address to verify that it is
@@ -2089,9 +2032,8 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
     ]
   })";
 
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  auto owners = simple_hash_client_->ParseBalances(*json_value);
+  auto owners =
+      simple_hash_client_->ParseBalances(base::test::ParseJsonDict(json));
   ASSERT_TRUE(owners);
 
   // Verify there is one Ethereum entry.
@@ -2131,9 +2073,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
     ]
   })";
 
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  owners = simple_hash_client_->ParseBalances(*json_value);
+  owners = simple_hash_client_->ParseBalances(base::test::ParseJsonDict(json));
   ASSERT_TRUE(owners);
 
   // Verify there is one Solana entry.
@@ -2175,10 +2115,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
     ]
   })";
 
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-
-  owners = simple_hash_client_->ParseBalances(*json_value);
+  owners = simple_hash_client_->ParseBalances(base::test::ParseJsonDict(json));
   ASSERT_TRUE(owners);
   EXPECT_EQ(owners->size(), 1u);
   it = owners->find(warrior_identifier);
@@ -2209,10 +2146,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
     ]
   })";
 
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-
-  owners = simple_hash_client_->ParseBalances(*json_value);
+  owners = simple_hash_client_->ParseBalances(base::test::ParseJsonDict(json));
   ASSERT_TRUE(owners);
   EXPECT_EQ(owners->size(), 1u);
 

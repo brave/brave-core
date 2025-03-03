@@ -9,9 +9,9 @@
 #include <string_view>
 
 #include "base/base64.h"
-#include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -29,21 +29,6 @@ namespace brave_wallet {
 
 namespace {
 
-// Compare two JSON strings, ignoring the order of the keys and other
-// insignificant whitespace differences.
-void CompareJSON(const std::string& response,
-                 const std::string& expected_response) {
-  auto response_val = base::JSONReader::Read(response);
-  auto expected_response_val = base::JSONReader::Read(expected_response);
-  EXPECT_EQ(response_val, expected_response_val);
-  if (response_val) {
-    // If the JSON is valid, compare the parsed values.
-    EXPECT_EQ(*response_val, *expected_response_val);
-  } else {
-    // If the JSON is invalid, compare the raw strings.
-    EXPECT_EQ(response, expected_response);
-  }
-}
 constexpr char https_metadata_response[] = R"({
     "attributes": [
       {
@@ -128,7 +113,12 @@ class NftMetadataFetcherUnitTest : public testing::Test {
         url,
         base::BindLambdaForTesting([&](const std::string& response, int error,
                                        const std::string& error_message) {
-          CompareJSON(response, expected_response);
+          if (response.empty()) {
+            EXPECT_EQ(response, expected_response);
+          } else {
+            EXPECT_EQ(base::test::ParseJson(response),
+                      base::test::ParseJson(expected_response));
+          }
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           run_loop.Quit();
@@ -149,7 +139,12 @@ class NftMetadataFetcherUnitTest : public testing::Test {
         base::BindLambdaForTesting(
             [&](const std::string& url, const std::string& response,
                 mojom::ProviderError error, const std::string& error_message) {
-              CompareJSON(response, expected_response);
+              if (response.empty()) {
+                EXPECT_EQ(response, expected_response);
+              } else {
+                EXPECT_EQ(base::test::ParseJson(response),
+                          base::test::ParseJson(expected_response));
+              }
               EXPECT_EQ(error, expected_error);
               EXPECT_EQ(error_message, expected_error_message);
               run_loop.Quit();
@@ -169,7 +164,12 @@ class NftMetadataFetcherUnitTest : public testing::Test {
                                        const std::string& response,
                                        mojom::SolanaProviderError error,
                                        const std::string& error_message) {
-          CompareJSON(response, expected_response);
+          if (response.empty()) {
+            EXPECT_EQ(response, expected_response);
+          } else {
+            EXPECT_EQ(base::test::ParseJson(response),
+                      base::test::ParseJson(expected_response));
+          }
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           loop.Quit();

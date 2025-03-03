@@ -184,7 +184,7 @@ DebounceRule::ParseRules(const std::string& contents) {
   if (contents.empty()) {
     return base::unexpected("Could not obtain debounce configuration");
   }
-  std::optional<base::Value> root = base::JSONReader::Read(contents);
+  std::optional<base::Value::List> root = base::JSONReader::ReadList(contents);
   if (!root) {
     return base::unexpected("Failed to parse debounce configuration");
   }
@@ -194,7 +194,7 @@ DebounceRule::ParseRules(const std::string& contents) {
       result;
   auto& [rules, hosts] = result;
   base::JSONValueConverter<DebounceRule> converter;
-  for (base::Value& it : root->GetList()) {
+  for (base::Value& it : *root) {
     std::unique_ptr<DebounceRule> rule = std::make_unique<DebounceRule>();
     if (!converter.Convert(it, rule.get())) {
       continue;

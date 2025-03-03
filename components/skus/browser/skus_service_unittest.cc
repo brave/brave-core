@@ -3,16 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/skus/browser/skus_service_impl.h"
-
 #include <string>
 
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/skus/browser/pref_names.h"
+#include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -202,10 +201,10 @@ constexpr char kTestVpnOrders[] = R"(
   )";
 
 std::string GenerateTestingCreds(const std::string& domain) {
-  auto value = base::JSONReader::Read(kTestVpnOrders);
+  auto value = base::test::ParseJsonDict(kTestVpnOrders);
   std::string json;
   base::JSONWriter::WriteWithOptions(
-      value.value(), base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
+      value, base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
 
   auto now = base::Time::Now();
   base::Time::Exploded exploded;
@@ -218,10 +217,8 @@ std::string GenerateTestingCreds(const std::string& domain) {
 
 base::Value GetExpectedCreds(const std::string& json,
                              const std::string& order_id) {
-  auto value = base::JSONReader::Read(json);
-  EXPECT_TRUE(value);
-  const auto* order_value =
-      value->GetDict().FindByDottedPath("orders." + order_id);
+  auto value = base::test::ParseJsonDict(json);
+  const auto* order_value = value.FindByDottedPath("orders." + order_id);
   EXPECT_TRUE(order_value);
   return order_value->Clone();
 }
@@ -284,8 +281,8 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummarySuccess) {
   prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
   auto credentials = GetCredentialsSummary(domain);
   EXPECT_FALSE(credentials.empty());
-  auto credentials_json = base::JSONReader::Read(credentials);
-  auto* order = credentials_json->GetDict().Find("order");
+  auto credentials_json = base::test::ParseJsonDict(credentials);
+  auto* order = credentials_json.Find("order");
   EXPECT_TRUE(order);
   EXPECT_EQ(*order, GetExpectedCreds(testing_payload,
                                      "ed5a53c1-9555-4b9c-81df-485521ab8161"));
@@ -296,14 +293,14 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
   auto env = skus::GetDefaultEnvironment();
   auto domain = skus::GetDomain("vpn", env);
   auto testing_payload = GenerateTestingCreds(domain);
-  auto payload_value = base::JSONReader::Read(testing_payload);
-  auto* orders = payload_value->GetDict().FindDict("orders");
+  auto payload_value = base::test::ParseJsonDict(testing_payload);
+  auto* orders = payload_value.FindDict("orders");
   EXPECT_TRUE(orders);
   // Remove unexpired creds
   orders->Remove("ed5a53c1-9555-4b9c-81df-485521ab8161");
   std::string json;
   base::JSONWriter::WriteWithOptions(
-      payload_value.value(), base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
+      payload_value, base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
   // Save prefs with expired prefs only
   state.Set("skus:" + env, json);
 

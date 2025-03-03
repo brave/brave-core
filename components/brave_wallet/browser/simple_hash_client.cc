@@ -266,15 +266,15 @@ void SimpleHashClient::OnFetchNFTsFromSimpleHash(
   }
 
   // Invalid JSON becomes an empty string after sanitization
-  if (api_request_result.value_body().is_none()) {
+  if (!api_request_result.value_body().is_dict()) {
     std::move(callback).Run(std::move(nfts), std::nullopt);
     return;
   }
 
   std::optional<std::pair<std::optional<std::string>,
                           std::vector<mojom::BlockchainTokenPtr>>>
-      result = ParseNFTsFromSimpleHash(api_request_result.value_body(),
-                                       skip_spam, only_spam);
+      result = ParseNFTsFromSimpleHash(
+          api_request_result.value_body().GetDict(), skip_spam, only_spam);
   if (!result) {
     std::move(callback).Run(std::move(nfts), std::nullopt);
     return;
@@ -363,13 +363,13 @@ void SimpleHashClient::OnFetchSolCompressedNftProofData(
   }
 
   // Invalid JSON becomes an empty string after sanitization
-  if (api_request_result.value_body().is_none()) {
+  if (!api_request_result.value_body().is_dict()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
-  std::move(callback).Run(
-      ParseSolCompressedNftProofData(api_request_result.value_body()));
+  std::move(callback).Run(ParseSolCompressedNftProofData(
+      api_request_result.value_body().GetDict()));
 }
 
 void SimpleHashClient::GetNftBalances(
@@ -405,12 +405,12 @@ void SimpleHashClient::OnGetNftsForBalances(
     GetNftBalancesCallback callback,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode() ||
-      api_request_result.value_body().is_none()) {
+      !api_request_result.value_body().is_dict()) {
     std::move(callback).Run(base::unexpected(InternalError()));
     return;
   }
 
-  auto owners = ParseBalances(api_request_result.value_body());
+  auto owners = ParseBalances(api_request_result.value_body().GetDict());
 
   if (!owners) {
     std::move(callback).Run(base::unexpected(InternalError()));
@@ -469,13 +469,13 @@ void SimpleHashClient::OnGetNftsForMetadatas(
     GetNftMetadatasCallback callback,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode() ||
-      api_request_result.value_body().is_none()) {
+      !api_request_result.value_body().is_dict()) {
     std::move(callback).Run(base::unexpected(InternalError()));
     return;
   }
 
   // A map of NftIdentifierPtr to their metadata
-  auto metadatas = ParseMetadatas(api_request_result.value_body());
+  auto metadatas = ParseMetadatas(api_request_result.value_body().GetDict());
   if (!metadatas) {
     std::move(callback).Run(base::unexpected(InternalError()));
     return;
@@ -528,13 +528,13 @@ void SimpleHashClient::OnGetNfts(
     GetNftsCallback callback,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode() ||
-      api_request_result.value_body().is_none()) {
+      !api_request_result.value_body().is_dict()) {
     std::move(callback).Run(std::move(nfts_so_far));
     return;
   }
 
   auto result =
-      ParseNFTsFromSimpleHash(api_request_result.value_body(),
+      ParseNFTsFromSimpleHash(api_request_result.value_body().GetDict(),
                               false /* skip_spam */, false /* only_spam */);
 
   // Add the NFT results
@@ -572,7 +572,7 @@ void SimpleHashClient::OnGetNfts(
 
 std::optional<std::pair<std::optional<std::string>,
                         std::vector<mojom::BlockchainTokenPtr>>>
-SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
+SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value::Dict& dict,
                                           bool skip_spam,
                                           bool only_spam) {
   // Parses responses like this
@@ -758,12 +758,7 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
     return std::nullopt;
   }
 
-  const base::Value::Dict* dict = json_value.GetIfDict();
-  if (!dict) {
-    return std::nullopt;
-  }
-
-  auto* next_cursor_ptr = dict->FindString("next_cursor");
+  auto* next_cursor_ptr = dict.FindString("next_cursor");
   std::optional<std::string> next_cursor;
   if (next_cursor_ptr) {
     next_cursor = *next_cursor_ptr;
@@ -771,7 +766,7 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
     next_cursor = std::nullopt;
   }
 
-  const base::Value::List* nfts = dict->FindList("nfts");
+  const base::Value::List* nfts = dict.FindList("nfts");
   if (!nfts) {
     return std::nullopt;
   }
@@ -922,29 +917,24 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
 
 std::optional<SolCompressedNftProofData>
 SimpleHashClient::ParseSolCompressedNftProofData(
-    const base::Value& json_value) {
-  const base::Value::Dict* dict = json_value.GetIfDict();
-  if (!dict) {
-    return std::nullopt;
-  }
-
+    const base::Value::Dict& dict) {
   SolCompressedNftProofData result;
 
-  const std::string* root_opt = dict->FindString("root");
-  const std::string* data_hash_opt = dict->FindString("data_hash");
-  const std::string* creator_hash_opt = dict->FindString("creator_hash");
+  const std::string* root_opt = dict.FindString("root");
+  const std::string* data_hash_opt = dict.FindString("data_hash");
+  const std::string* creator_hash_opt = dict.FindString("creator_hash");
   uint64_t leaf_index = 0;
-  if (!GetUint64FromDictValue(*dict, "leaf_index", false, &leaf_index)) {
+  if (!GetUint64FromDictValue(dict, "leaf_index", false, &leaf_index)) {
     return std::nullopt;
   }
   if (leaf_index > UINT32_MAX) {
     return std::nullopt;
   }
-  const std::string* owner_opt = dict->FindString("owner");
-  const std::string* merkle_tree_opt = dict->FindString("merkle_tree");
-  const std::string* delegate_opt = dict->FindString("delegate");
+  const std::string* owner_opt = dict.FindString("owner");
+  const std::string* merkle_tree_opt = dict.FindString("merkle_tree");
+  const std::string* delegate_opt = dict.FindString("delegate");
   uint64_t canopy_depth = 0;
-  if (!GetUint64FromDictValue(*dict, "canopy_depth", false, &canopy_depth)) {
+  if (!GetUint64FromDictValue(dict, "canopy_depth", false, &canopy_depth)) {
     return std::nullopt;
   }
   if (canopy_depth > UINT32_MAX) {
@@ -967,7 +957,7 @@ SimpleHashClient::ParseSolCompressedNftProofData(
   }
   result.canopy_depth = canopy_depth;
 
-  const base::Value::List* proofs = dict->FindList("proof");
+  const base::Value::List* proofs = dict.FindList("proof");
   if (!proofs) {
     return std::nullopt;
   }
@@ -984,13 +974,8 @@ SimpleHashClient::ParseSolCompressedNftProofData(
 
 std::optional<base::flat_map<mojom::NftIdentifierPtr,
                              base::flat_map<std::string, uint64_t>>>
-SimpleHashClient::ParseBalances(const base::Value& json_value) {
-  const base::Value::Dict* dict = json_value.GetIfDict();
-  if (!dict) {
-    return std::nullopt;
-  }
-
-  const base::Value::List* nfts = dict->FindList("nfts");
+SimpleHashClient::ParseBalances(const base::Value::Dict& dict) {
+  const base::Value::List* nfts = dict.FindList("nfts");
   if (!nfts) {
     return std::nullopt;
   }
@@ -1076,13 +1061,8 @@ SimpleHashClient::ParseBalances(const base::Value& json_value) {
 }
 
 std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
-SimpleHashClient::ParseMetadatas(const base::Value& json_value) {
-  const base::Value::Dict* dict = json_value.GetIfDict();
-  if (!dict) {
-    return std::nullopt;
-  }
-
-  const base::Value::List* nfts = dict->FindList("nfts");
+SimpleHashClient::ParseMetadatas(const base::Value::Dict& dict) {
+  const base::Value::List* nfts = dict.FindList("nfts");
   if (!nfts) {
     return std::nullopt;
   }
