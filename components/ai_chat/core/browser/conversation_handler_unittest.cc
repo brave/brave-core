@@ -111,8 +111,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
               (const mojom::AssociatedContentPtr, bool),
               (override));
 
-  MOCK_METHOD(void, OnFaviconImageDataChanged, (), (override));
-
   MOCK_METHOD(void, OnConversationDeleted, (), (override));
 
  private:

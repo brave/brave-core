@@ -19,7 +19,6 @@
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
-#include "components/favicon/core/favicon_driver_observer.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -29,9 +28,6 @@
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "url/gurl.h"
 
-namespace favicon {
-class FaviconDriver;
-}  // namespace favicon
 namespace gfx {
 class Image;
 }  // namespace gfx
@@ -60,7 +56,6 @@ class AIChatMetrics;
 class AIChatTabHelper : public content::WebContentsObserver,
                         public content::WebContentsUserData<AIChatTabHelper>,
                         public mojom::PageContentExtractorHost,
-                        public favicon::FaviconDriverObserver,
                         public AssociatedContentDriver {
  public:
   using GetPageContentCallback = ConversationHandler::GetPageContentCallback;
@@ -166,13 +161,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
       content::RenderFrameHost* render_frame_host) override;
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
-
-  // favicon::FaviconDriverObserver
-  void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
-                        NotificationIconType notification_icon_type,
-                        const GURL& icon_url,
-                        bool icon_url_changed,
-                        const gfx::Image& image) override;
 
   // ai_chat::AssociatedContentDriver
   GURL GetPageURL() const override;

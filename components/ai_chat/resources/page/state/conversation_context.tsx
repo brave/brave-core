@@ -32,8 +32,6 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   suggestedQuestions: string[]
   isGenerating: boolean
   suggestionStatus: Mojom.SuggestionGenerationStatus
-  faviconUrl?: string
-  faviconCacheKey?: string
   currentError: Mojom.APIError | undefined
   apiHasError: boolean
   shouldDisableUserInput: boolean
@@ -291,13 +289,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     )
     listenerIds.push(id)
 
-    id = callbackRouter.onFaviconImageDataChanged.addListener(() =>
-      setPartialContext({
-        faviconCacheKey: new Date().getTime().toFixed(0)
-      })
-    )
-    listenerIds.push(id)
-
     id = callbackRouter.onConversationDeleted.addListener(() => {
       // TODO(petemill): Show deleted UI
       console.debug('DELETED')
@@ -311,23 +302,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       }
     }
   }, [conversationHandler, callbackRouter])
-
-  // Update favicon
-  React.useEffect(() => {
-    if (!context.conversationUuid || !aiChatContext.uiHandler) {
-      return
-    }
-    aiChatContext.uiHandler.getFaviconImageData(context.conversationUuid)
-      .then(({ faviconImageData }) => {
-        if (!faviconImageData) {
-          return
-        }
-        const blob = new Blob([new Uint8Array(faviconImageData)], { type: 'image/*' })
-        setPartialContext({
-          faviconUrl: URL.createObjectURL(blob)
-        })
-      })
-  }, [context.conversationUuid, context.faviconCacheKey])
 
   // Update the location when the visible conversation changes
   const isVisible = useIsConversationVisible(context.conversationUuid)
