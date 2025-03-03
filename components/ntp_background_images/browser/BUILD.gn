@@ -64,7 +64,6 @@ static_library("browser") {
     "//components/prefs",
     "//crypto",
     "//services/network/public/cpp",
-    "//ui/base",
     "//ui/gfx/geometry",
     "//url",
   ]
