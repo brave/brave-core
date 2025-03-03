@@ -44,6 +44,10 @@ void MockFlags() {
   }
 }
 
+void MockContentSettings() {
+  GlobalState::GetInstance()->ContentSettings().allow_javascript = true;
+}
+
 void MockAdsClientNotifierAddObserver(AdsClientMock& ads_client_mock,
                                       TestBase& test_base) {
   ON_CALL(ads_client_mock, AddObserver)

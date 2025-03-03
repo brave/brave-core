@@ -53,7 +53,8 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
   test::ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo creative_ad =
-      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*should_generate_random_uuids=*/true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act & Assert
@@ -72,7 +73,8 @@ TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
   test::ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo creative_ad =
-      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*should_generate_random_uuids=*/true);
   database::SaveCreativeNewTabPageAds({creative_ad});
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
@@ -110,7 +112,8 @@ TEST_F(BraveAdsNewTabPageAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
-      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*should_generate_random_uuids=*/true);
   database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act & Assert

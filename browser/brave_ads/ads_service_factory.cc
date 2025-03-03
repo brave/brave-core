@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
@@ -56,6 +57,7 @@ AdsServiceFactory::AdsServiceFactory()
   DependsOn(HistoryServiceFactory::GetInstance());
   DependsOn(brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::
                 GetInstance());
+  DependsOn(HostContentSettingsMapFactory::GetInstance());
 }
 
 AdsServiceFactory::~AdsServiceFactory() = default;
@@ -73,21 +75,25 @@ std::unique_ptr<KeyedService>
 AdsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
+
   auto* brave_adaptive_captcha_service =
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
           profile);
   CHECK(brave_adaptive_captcha_service);
+
   auto delegate = std::make_unique<AdsServiceDelegate>(
       *profile, g_browser_process->local_state(),
       *brave_adaptive_captcha_service,
       std::make_unique<NotificationAdPlatformBridge>(*profile));
 
-  auto* history_service = HistoryServiceFactory::GetInstance()->GetForProfile(
+  auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
 
   auto* rewards_service =
-      brave_rewards::RewardsServiceFactory::GetInstance()->GetForProfile(
-          profile);
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(profile);
 
   return std::make_unique<AdsServiceImpl>(
       std::move(delegate), profile->GetPrefs(),
@@ -98,7 +104,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       std::make_unique<DeviceIdImpl>(),
       std::make_unique<BatAdsServiceFactoryImpl>(),
       g_brave_browser_process->resource_component(), history_service,
-      rewards_service);
+      rewards_service, host_content_settings_map);
 }
 
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {

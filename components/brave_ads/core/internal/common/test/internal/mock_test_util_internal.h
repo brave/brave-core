@@ -15,6 +15,8 @@ class TestBase;
 
 void MockFlags();
 
+void MockContentSettings();
+
 void MockAdsClientNotifierAddObserver(AdsClientMock& ads_client_mock,
                                       TestBase& test_base);
 void MockNotifyPendingObservers(AdsClientMock& ads_client_mock,

@@ -130,8 +130,7 @@ class AdsService : public KeyedService {
   virtual void PrefetchNewTabPageAd() = 0;
 
   // Called to get the prefetched new tab page ad for display.
-  virtual std::optional<NewTabPageAdInfo>
-  MaybeGetPrefetchedNewTabPageAdForDisplay() = 0;
+  virtual std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAd() = 0;
 
   // Called when failing to prefetch a new tab page ad for the specified
   // `placement_id` and `creative_instance_id`.
@@ -142,7 +141,7 @@ class AdsService : public KeyedService {
   // Called to parse and save creative new tab page ads. The callback takes one
   // argument - `bool` is set to `true` if successful otherwise `false`.
   virtual void ParseAndSaveCreativeNewTabPageAds(
-      const base::Value::Dict& data,
+      const base::Value::Dict& dict,
       ParseAndSaveCreativeNewTabPageAdsCallback callback) = 0;
 
   // Called when a user views or interacts with a new tab page ad to trigger a

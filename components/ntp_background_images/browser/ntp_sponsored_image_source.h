@@ -25,7 +25,8 @@ class NTPBackgroundImagesService;
 // This serves background image data.
 class NTPSponsoredImageSource : public content::URLDataSource {
  public:
-  explicit NTPSponsoredImageSource(NTPBackgroundImagesService* service);
+  explicit NTPSponsoredImageSource(
+      NTPBackgroundImagesService* background_images_service);
 
   ~NTPSponsoredImageSource() override;
 
@@ -52,9 +53,10 @@ class NTPSponsoredImageSource : public content::URLDataSource {
                       std::optional<std::string> input);
   bool IsValidPath(const std::string& path) const;
 
-  raw_ptr<NTPBackgroundImagesService> service_ = nullptr;  // not owned
+  raw_ptr<NTPBackgroundImagesService> background_images_service_ =
+      nullptr;  // Not owned.
 
-  base::WeakPtrFactory<NTPSponsoredImageSource> weak_factory_;
+  base::WeakPtrFactory<NTPSponsoredImageSource> weak_factory_{this};
 };
 
 }  // namespace ntp_background_images

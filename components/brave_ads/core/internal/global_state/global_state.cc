@@ -148,6 +148,11 @@ mojom::Flags& GlobalState::Flags() {
   return mojom_flags_;
 }
 
+mojom::ContentSettings& GlobalState::ContentSettings() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return mojom_content_settings_;
+}
+
 void GlobalState::PostDelayedTask(base::OnceClosure task,
                                   base::TimeDelta delay) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

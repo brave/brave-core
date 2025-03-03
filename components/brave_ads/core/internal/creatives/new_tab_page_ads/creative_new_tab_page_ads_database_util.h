@@ -11,7 +11,7 @@
 
 namespace brave_ads::database {
 
-bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict data);
+bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict);
 
 void SaveCreativeNewTabPageAds(const CreativeNewTabPageAdList& creative_ads);
 

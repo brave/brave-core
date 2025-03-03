@@ -37,8 +37,8 @@ bool IsSuperReferralPath(const std::string& path) {
 }  // namespace
 
 NTPSponsoredImageSource::NTPSponsoredImageSource(
-    NTPBackgroundImagesService* service)
-    : service_(service), weak_factory_(this) {}
+    NTPBackgroundImagesService* background_images_service)
+    : background_images_service_(background_images_service) {}
 
 NTPSponsoredImageSource::~NTPSponsoredImageSource() = default;
 
@@ -113,7 +113,9 @@ base::FilePath NTPSponsoredImageSource::GetLocalFilePathFor(
     const std::string& path) {
   const bool is_super_referral_path = IsSuperReferralPath(path);
   const NTPSponsoredImagesData* const images_data =
-      service_->GetBrandedImagesData(is_super_referral_path);
+      background_images_service_->GetSponsoredImagesData(
+          is_super_referral_path,
+          /*supports_rich_media=*/false);
   CHECK(images_data);
 
   const base::FilePath basename_from_path =
@@ -150,7 +152,9 @@ base::FilePath NTPSponsoredImageSource::GetLocalFilePathFor(
 bool NTPSponsoredImageSource::IsValidPath(const std::string& path) const {
   const bool is_super_referral_path = IsSuperReferralPath(path);
   const NTPSponsoredImagesData* const images_data =
-      service_->GetBrandedImagesData(is_super_referral_path);
+      background_images_service_->GetSponsoredImagesData(
+          is_super_referral_path,
+          /*supports_rich_media=*/false);
   if (!images_data) {
     return false;
   }

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
 
 namespace brave_ads {
 
@@ -27,6 +28,8 @@ struct CreativeNewTabPageAdInfo final : CreativeAdInfo {
 
   bool operator==(const CreativeNewTabPageAdInfo&) const = default;
 
+  CreativeNewTabPageAdWallpaperType wallpaper_type =
+      CreativeNewTabPageAdWallpaperType::kUndefined;
   std::string company_name;
   std::string alt;
 };

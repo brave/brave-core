@@ -76,7 +76,8 @@ struct Creative {
   Creative();
 
   // For unit test.
-  Creative(const base::FilePath& file_path,
+  Creative(WallpaperType wallpaper_type,
+           const base::FilePath& file_path,
            const gfx::Point& point,
            const Logo& test_logo,
            const std::string& creative_instance_id);

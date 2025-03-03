@@ -25,7 +25,8 @@ class NTPBackgroundImagesService;
 // This serves background image data.
 class NTPBackgroundImagesSource : public content::URLDataSource {
  public:
-  explicit NTPBackgroundImagesSource(NTPBackgroundImagesService* service);
+  explicit NTPBackgroundImagesSource(
+      NTPBackgroundImagesService* background_images_service);
 
   ~NTPBackgroundImagesSource() override;
 
@@ -51,8 +52,10 @@ class NTPBackgroundImagesSource : public content::URLDataSource {
                       std::optional<std::string> input);
   int GetWallpaperIndexFromPath(const std::string& path) const;
 
-  raw_ptr<NTPBackgroundImagesService> service_ = nullptr;  // not owned
-  base::WeakPtrFactory<NTPBackgroundImagesSource> weak_factory_;
+  raw_ptr<NTPBackgroundImagesService> background_images_service_ =
+      nullptr;  // Not owned.
+
+  base::WeakPtrFactory<NTPBackgroundImagesSource> weak_factory_{this};
 };
 
 }  // namespace ntp_background_images

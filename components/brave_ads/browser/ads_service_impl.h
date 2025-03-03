@@ -30,6 +30,9 @@
 #include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/content_settings_type_set.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
@@ -39,6 +42,7 @@
 #include "ui/base/idle/idle.h"
 
 class GURL;
+class HostContentSettingsMap;
 class PrefService;
 
 namespace base {
@@ -69,7 +73,8 @@ class AdsServiceImpl final : public AdsService,
                              public bat_ads::mojom::BatAdsObserver,
                              BackgroundHelper::Observer,
                              public ResourceComponentObserver,
-                             public brave_rewards::RewardsServiceObserver {
+                             public brave_rewards::RewardsServiceObserver,
+                             public content_settings::Observer {
  public:
   explicit AdsServiceImpl(
       std::unique_ptr<Delegate> delegate,
@@ -83,7 +88,8 @@ class AdsServiceImpl final : public AdsService,
       std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
       brave_ads::ResourceComponent* resource_component,
       history::HistoryService* history_service,
-      brave_rewards::RewardsService* rewards_service);
+      brave_rewards::RewardsService* rewards_service,
+      HostContentSettingsMap* host_content_settings);
 
   AdsServiceImpl(const AdsServiceImpl&) = delete;
   AdsServiceImpl& operator=(const AdsServiceImpl&) = delete;
@@ -145,6 +151,7 @@ class AdsServiceImpl final : public AdsService,
   void SetSysInfo();
   void SetBuildChannel();
   void SetFlags();
+  void SetContentSettings();
 
   bool ShouldShowOnboardingNotification();
   void MaybeShowOnboardingNotification();
@@ -168,6 +175,9 @@ class AdsServiceImpl final : public AdsService,
   void GetRewardsWallet();
   void NotifyRewardsWalletDidUpdate(
       brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
+
+  void RefetchNewTabPageAd();
+  void RefetchNewTabPageAdCallback(bool success);
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
   // state business logic.
@@ -243,14 +253,13 @@ class AdsServiceImpl final : public AdsService,
       mojom::InlineContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 
-  std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAdForDisplay()
-      override;
+  std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAd() override;
   void PrefetchNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
   void ParseAndSaveCreativeNewTabPageAds(
-      const base::Value::Dict& data,
+      const base::Value::Dict& dict,
       ParseAndSaveCreativeNewTabPageAdsCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
@@ -406,6 +415,12 @@ class AdsServiceImpl final : public AdsService,
   void OnExternalWalletConnected() override;
   void OnCompleteReset(bool success) override;
 
+  // content_settings::Observer:
+  void OnContentSettingChanged(
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      ContentSettingsTypeSet content_type_set) override;
+
   bool is_bat_ads_initialized_ = false;
 
   bool is_shutting_down_ = false;
@@ -453,6 +468,9 @@ class AdsServiceImpl final : public AdsService,
       resource_component_observation_{this};
 
   const raw_ptr<history::HistoryService> history_service_ =
+      nullptr;  // Not owned.
+
+  const raw_ptr<HostContentSettingsMap> host_content_settings_map_ =
       nullptr;  // Not owned.
 
   const std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;

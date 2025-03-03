@@ -9,11 +9,15 @@
 #include <cstddef>
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
 
 namespace brave_ads::test {
 
-CreativeNewTabPageAdList BuildCreativeNewTabPageAds(size_t count);
+CreativeNewTabPageAdList BuildCreativeNewTabPageAds(
+    CreativeNewTabPageAdWallpaperType wallpaper_type,
+    size_t count);
 CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
+    CreativeNewTabPageAdWallpaperType wallpaper_type,
     bool should_generate_random_uuids);
 
 }  // namespace brave_ads::test

@@ -202,7 +202,7 @@ void AdsServiceImplIOS::PrefetchNewTabPageAd() {
 }
 
 std::optional<NewTabPageAdInfo>
-AdsServiceImplIOS::MaybeGetPrefetchedNewTabPageAdForDisplay() {
+AdsServiceImplIOS::MaybeGetPrefetchedNewTabPageAd() {
   // TODO(https://github.com/brave/brave-browser/issues/39703): Unify iOS new
   // tab takeover ad serving
   NOTIMPLEMENTED() << "Not used on iOS.";
@@ -218,13 +218,13 @@ void AdsServiceImplIOS::OnFailedToPrefetchNewTabPageAd(
 }
 
 void AdsServiceImplIOS::ParseAndSaveCreativeNewTabPageAds(
-    const base::Value::Dict& data,
+    const base::Value::Dict& dict,
     ParseAndSaveCreativeNewTabPageAdsCallback callback) {
   if (!IsInitialized()) {
     return std::move(callback).Run(/*success*/ false);
   }
 
-  ads_->ParseAndSaveCreativeNewTabPageAds(data.Clone(), std::move(callback));
+  ads_->ParseAndSaveCreativeNewTabPageAds(dict.Clone(), std::move(callback));
 }
 
 void AdsServiceImplIOS::TriggerNewTabPageAdEvent(

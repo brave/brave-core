@@ -45,7 +45,7 @@ class ViewCounterModel {
   void set_show_branded_wallpaper(bool show) { show_branded_wallpaper_ = show; }
   void set_show_wallpaper(bool show) { show_wallpaper_ = show; }
 
-  bool ShouldShowBrandedWallpaper() const;
+  bool ShouldShowSponsoredImages() const;
   void RegisterPageView();
   void MaybeResetBrandedWallpaperCount();
   void NextBrandedImage();
@@ -53,7 +53,7 @@ class ViewCounterModel {
   void RotateBackgroundWallpaperImageIndex();
 
  private:
-  friend class NTPBackgroundImagesViewCounterTest;
+  friend class ViewCounterServiceTest;
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPSponsoredImagesTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
                            NTPSponsoredImagesCountResetTest);
@@ -70,9 +70,8 @@ class ViewCounterModel {
                            NTPBackgroundImagesWithEmptyCampaignTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
                            NTPFailedToLoadSponsoredImagesTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
-                           PrefsWithModelTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ModelTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, PrefsWithModelTest);
 
   void RegisterPageViewForBrandedImages();
 

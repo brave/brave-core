@@ -83,14 +83,13 @@ class AdsServiceImplIOS : public AdsService {
       mojom::InlineContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 
-  std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAdForDisplay()
-      override;
+  std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAd() override;
   void PrefetchNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
   void ParseAndSaveCreativeNewTabPageAds(
-      const base::Value::Dict& data,
+      const base::Value::Dict& dict,
       ParseAndSaveCreativeNewTabPageAdsCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,

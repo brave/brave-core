@@ -35,8 +35,8 @@ std::optional<std::string> ReadFileToString(const base::FilePath& path) {
 }  // namespace
 
 NTPBackgroundImagesSource::NTPBackgroundImagesSource(
-    NTPBackgroundImagesService* service)
-    : service_(service), weak_factory_(this) {}
+    NTPBackgroundImagesService* background_images_service)
+    : background_images_service_(background_images_service) {}
 
 NTPBackgroundImagesSource::~NTPBackgroundImagesSource() = default;
 
@@ -51,7 +51,7 @@ void NTPBackgroundImagesSource::StartDataRequest(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   const NTPBackgroundImagesData* const images_data =
-      service_->GetBackgroundImagesData();
+      background_images_service_->GetBackgroundImagesData();
   const std::string path = URLDataSource::URLToRequestPath(url);
   const int index = GetWallpaperIndexFromPath(path);
 
@@ -110,7 +110,7 @@ std::string NTPBackgroundImagesSource::GetMimeType(const GURL& url) {
 int NTPBackgroundImagesSource::GetWallpaperIndexFromPath(
     const std::string& path) const {
   const NTPBackgroundImagesData* const images_data =
-      service_->GetBackgroundImagesData();
+      background_images_service_->GetBackgroundImagesData();
   if (!images_data) {
     return -1;
   }

@@ -28,6 +28,7 @@ source_set("ntp_background") {
     "//brave/components/ntp_background_images/buildflags",
     "//brave/components/p3a",
     "//chrome/browser:browser_process",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
     "//components/pref_registry",

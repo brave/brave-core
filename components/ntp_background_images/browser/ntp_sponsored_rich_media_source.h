@@ -23,7 +23,8 @@ class NTPBackgroundImagesService;
 
 class NTPSponsoredRichMediaSource : public content::URLDataSource {
  public:
-  explicit NTPSponsoredRichMediaSource(NTPBackgroundImagesService* service);
+  explicit NTPSponsoredRichMediaSource(
+      NTPBackgroundImagesService* background_images_service);
 
   NTPSponsoredRichMediaSource(const NTPSponsoredRichMediaSource&) = delete;
   NTPSponsoredRichMediaSource& operator=(const NTPSponsoredRichMediaSource&) =
@@ -45,11 +46,13 @@ class NTPSponsoredRichMediaSource : public content::URLDataSource {
   void ReadFileCallback(GotDataCallback callback,
                         std::optional<std::string> input);
 
+  void AllowAccess(const base::FilePath& file_path, GotDataCallback callback);
   void DenyAccess(GotDataCallback callback);
 
-  const raw_ptr<NTPBackgroundImagesService> service_;  // not owned.
+  const raw_ptr<NTPBackgroundImagesService>
+      background_images_service_;  // Not owned.
 
-  base::WeakPtrFactory<NTPSponsoredRichMediaSource> weak_factory_;
+  base::WeakPtrFactory<NTPSponsoredRichMediaSource> weak_factory_{this};
 };
 
 }  // namespace ntp_background_images
