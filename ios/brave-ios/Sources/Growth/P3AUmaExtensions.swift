@@ -78,6 +78,7 @@ public func UmaHistogramRecordLastFeatureUsage(
   }
   let buckets: [Bucket] =
     alternativeBuckets ?? [
+      .init(contains: { _ in false }), // Typical P3A feature usage buckets start at 1
       .r(0...6),
       .r(7...13),
       .r(14...20),
