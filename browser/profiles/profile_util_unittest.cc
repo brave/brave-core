@@ -7,6 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -37,6 +38,9 @@ class BraveProfileUtilTest : public testing::Test {
   TestingProfileManager testing_profile_manager_;
   base::ScopedTempDir temp_dir_;
 };
+
+// SetDefaultSearchVersion
+// #######################
 
 // No entry yet. Check initialized value
 TEST_F(BraveProfileUtilTest, SetDefaultSearchVersionExistingProfileNoEntryYet) {
@@ -78,3 +82,45 @@ TEST_F(BraveProfileUtilTest,
   brave::SetDefaultSearchVersion(GetProfile(), true);
   ASSERT_EQ(GetPrefs()->GetInteger(prefs::kBraveDefaultSearchVersion), 1);
 }
+
+// SetWebTorrentEnabled
+// ####################
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+// No entry yet. Check initialized value
+TEST_F(BraveProfileUtilTest, SetWebTorrentEnabledExistingProfileNoEntryYet) {
+  const PrefService::Preference* pref =
+      GetPrefs()->FindPreference(kWebTorrentEnabled);
+  EXPECT_FALSE(pref->HasUserSetting());
+  brave::SetWebTorrentEnabled(GetProfile(), false);
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kWebTorrentEnabled));
+}
+
+TEST_F(BraveProfileUtilTest, SetWebTorrentEnabledNewProfileNoEntryYet) {
+  const PrefService::Preference* pref =
+      GetPrefs()->FindPreference(kWebTorrentEnabled);
+  EXPECT_FALSE(pref->HasUserSetting());
+  brave::SetWebTorrentEnabled(GetProfile(), true);
+  EXPECT_FALSE(GetPrefs()->GetBoolean(kWebTorrentEnabled));
+}
+
+// Entry there; ensure value is kept
+TEST_F(BraveProfileUtilTest,
+       SetWebTorrentEnabledExistingProfileHasEntryKeepsValue) {
+  GetPrefs()->SetBoolean(kWebTorrentEnabled, true);
+  const PrefService::Preference* pref =
+      GetPrefs()->FindPreference(kWebTorrentEnabled);
+  EXPECT_TRUE(pref->HasUserSetting());
+  brave::SetWebTorrentEnabled(GetProfile(), false);
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kWebTorrentEnabled));
+}
+
+TEST_F(BraveProfileUtilTest, SetWebTorrentEnabledNewProfileHasEntryKeepsValue) {
+  // This is an anomaly case; new profile won't ever have a hard set value
+  GetPrefs()->SetBoolean(kWebTorrentEnabled, true);
+  const PrefService::Preference* pref =
+      GetPrefs()->FindPreference(kWebTorrentEnabled);
+  EXPECT_TRUE(pref->HasUserSetting());
+  brave::SetWebTorrentEnabled(GetProfile(), true);
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kWebTorrentEnabled));
+}
+#endif  // ENABLE_BRAVE_WEBTORRENT
