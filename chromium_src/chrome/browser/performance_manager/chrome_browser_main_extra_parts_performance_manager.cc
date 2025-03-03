@@ -12,7 +12,6 @@
 // 2. disable MetricsProviderDesktop::Initialize() to support overrides in
 //    ChromeMetricsServiceClient.
 
-#include "chrome/browser/performance_manager/metrics/metrics_provider_desktop.h"
 #include "components/performance_manager/public/metrics/page_resource_monitor.h"
 
 #if !BUILDFLAG(IS_ANDROID)
