@@ -30,6 +30,7 @@ upstream_zip_path = "$upstream_packaged_basename.zip"
 upstream_crx_path = "$upstream_packaged_basename.crx3"
 
 if (is_universal_binary) {
+  assert(target_cpu == "arm64")
   x64_arch_app_path = "$root_out_dir/x64/$brave_exe"
   universal_dir = "$root_out_dir/universal"
   universal_app_path = "$universal_dir/$brave_exe"
