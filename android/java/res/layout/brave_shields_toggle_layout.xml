@@ -56,4 +56,5 @@
 	    android:alpha="0.5"
 	    android:visibility="gone"
 	    android:background="@color/shield_divider_color"/>
+
 </LinearLayout>
