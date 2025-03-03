@@ -34,14 +34,11 @@ class FrequencyQuery {
   private func fetchOpenTabs(containing query: String) async -> [Site] {
     let startTime = Date()
     let openTabSites = try? fetchSitesFromTabs(tabManager.tabsForCurrentMode(for: query))
-
-    print("Open Tab Sites: \(Date().timeIntervalSince(startTime)) seconds")
     return openTabSites ?? []
   }
 
   @MainActor
   private func fetchBookmarks(containing query: String) async -> [Site] {
-    let bookmarksStartTime = Date()
     return await withCheckedContinuation { continuation in
       self.bookmarkManager.byFrequency(query: query) { [weak self] sites in
         guard let self = self, let task = self.task, !task.isCancelled else {
@@ -54,15 +51,12 @@ class FrequencyQuery {
             Site(url: $0.url ?? "", title: $0.title ?? "", siteType: .bookmark)
           }
         )
-
-        print("Bookmarks: \(Date().timeIntervalSince(bookmarksStartTime)) seconds")
       }
     }
   }
 
   @MainActor
   private func fetchHistories(containing query: String) async -> [Site] {
-    let historysStartTime = Date()
     return await withCheckedContinuation { continuation in
       self.historyCancellable = self.historyAPI.byFrequency(query: query) { [weak self] sites in
         guard let self = self, let task = self.task, !task.isCancelled else {
@@ -75,8 +69,6 @@ class FrequencyQuery {
             Site(url: $0.url.absoluteString, title: $0.title ?? "", siteType: .history)
           }
         )
-
-        print("History: \(Date().timeIntervalSince(historysStartTime)) seconds")
       }
     }
   }
