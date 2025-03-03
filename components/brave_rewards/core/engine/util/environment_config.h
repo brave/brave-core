@@ -23,30 +23,23 @@ class EnvironmentConfig : public RewardsEngineHelper,
 
   mojom::Environment current_environment() const;
 
-  std::string auto_contribute_sku() const;
-  std::string auto_contribute_public_key() const;
-  std::string user_funds_public_key() const;
-
   GURL brave_pcdn_url() const;
 
   GURL rewards_url() const;
   GURL rewards_api_url() const;
   GURL rewards_grant_url() const;
-  GURL rewards_payment_url() const;
 
   GURL uphold_oauth_url() const;
   GURL uphold_api_url() const;
   std::string uphold_client_id() const;
   std::string uphold_client_secret() const;
   std::string uphold_fee_address() const;
-  std::string uphold_sku_destination() const;
 
   GURL gemini_oauth_url() const;
   GURL gemini_api_url() const;
   std::string gemini_client_id() const;
   std::string gemini_client_secret() const;
   std::string gemini_fee_address() const;
-  std::string gemini_sku_destination() const;
 
   GURL zebpay_oauth_url() const;
   GURL zebpay_api_url() const;
