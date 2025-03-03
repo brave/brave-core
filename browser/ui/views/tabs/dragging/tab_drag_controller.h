@@ -42,13 +42,6 @@ class TabDragController : public TabDragControllerChromium {
   void DetachAndAttachToNewContext(ReleaseCapture release_capture,
                                    TabDragContext* target_context) override;
 
-  gfx::Rect CalculateNonMaximizedDraggedBrowserBounds(
-      views::Widget* widget,
-      const gfx::Point& point_in_screen) override;
-  gfx::Rect CalculateDraggedBrowserBounds(
-      TabDragContext* source,
-      const gfx::Point& point_in_screen,
-      std::vector<gfx::Rect>* drag_bounds) override;
   [[nodiscard]] Liveness ContinueDragging(
       const gfx::Point& point_in_screen) override;
 
