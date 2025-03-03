@@ -40,36 +40,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "app-delegate")
 
   var window: UIWindow?
-  private weak var application: UIApplication?
   let appVersion = Bundle.main.infoDictionaryString(forKey: "CFBundleShortVersionString")
   var receivedURLs: [URL]?
 
   private var cancellables: Set<AnyCancellable> = []
+
+  override init() {
+    super.init()
+
+    // Setup AppState
+    // This sets up AppConstants & BraveCore
+    _ = AppState.shared
+  }
 
   @discardableResult
   func application(
     _ application: UIApplication,
     willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    // Hold references to willFinishLaunching parameters for delayed app launch
-    self.application = application
-
-    // Application Constants must be initialized first
-    #if BRAVE_CHANNEL_RELEASE
-    AppConstants.setBuildChannel(.release)
-    #elseif BRAVE_CHANNEL_BETA
-    AppConstants.setBuildChannel(.beta)
-    #elseif BRAVE_CHANNEL_NIGHTLY
-    AppConstants.setBuildChannel(.nightly)
-    #elseif BRAVE_CHANNEL_DEBUG
-    AppConstants.setBuildChannel(.debug)
-    #endif
-
-    #if OFFICIAL_BUILD
-    AppConstants.setOfficialBuild(true)
-    #endif
-
-    AppState.shared.state = .launching(options: launchOptions ?? [:], active: false)
+    AppState.shared.state = .willLaunch(options: launchOptions ?? [:])
 
     // Set the Safari UA for browsing.
     setUserAgent()
@@ -140,19 +129,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    AppState.shared.state = .launching(options: launchOptions ?? [:], active: true)
-
-    // Run migrations that need access to Data
-    Migration.postDataLoadMigration()
-
     // IAPs can trigger on the app as soon as it launches,
     // for example when a previous transaction was not finished and is in pending state.
     SKPaymentQueue.default().add(BraveVPN.iapObserver)
-    // Editing Product Promotion List
-    Task { @MainActor in
-      await BraveVPN.updateStorePromotionOrder()
-      await BraveVPN.hideActiveStorePromotion()
-    }
 
     // Brave Store SDK - Initialization
     BraveStoreSDK.shared.refreshAllSkusOrders()
@@ -185,9 +164,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     Preferences.Review.launchCount.value += 1
 
     let isFirstLaunch = Preferences.General.isFirstLaunch.value
-
     Preferences.AppState.dailyUserPingAwaitingUserConsent.value = isFirstLaunch
-
     Preferences.AppState.shouldDeferPromotedPurchase.value = isFirstLaunch
 
     if Preferences.Onboarding.basicOnboardingCompleted.value
@@ -226,16 +203,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     Preferences.General.isFirstLaunch.value = false
-
-    Task {
-      await AppState.shared.profile.searchEngines.loadSearchEngines()
-      // Search engine setup must be checked outside of 'firstLaunch' loop because of #2770.
-      // There was a bug that when you skipped onboarding, default search engine preference
-      // was not set.
-      if Preferences.Search.defaultEngineName.value == nil {
-        AppState.shared.profile.searchEngines.searchEngineSetup()
-      }
-    }
 
     if isFirstLaunch {
       let currentDate = Date()
@@ -312,6 +279,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     LanguageMetrics.recordPrimaryLanguageP3A()
 
+    // MARK: - Tasks
+
+    AppState.shared.braveCore.application(application, didFinishLaunchingWithOptions: launchOptions ?? [:])
+    AppState.shared.state = .didLaunch(options: launchOptions ?? [:])
+
+    // Editing Product Promotion List
+    Task { @MainActor in
+      await BraveVPN.updateStorePromotionOrder()
+      await BraveVPN.hideActiveStorePromotion()
+    }
+
+    Task {
+      await AppState.shared.profile.searchEngines.loadSearchEngines()
+      // Search engine setup must be checked outside of 'firstLaunch' loop because of #2770.
+      // There was a bug that when you skipped onboarding, default search engine preference
+      // was not set.
+      if Preferences.Search.defaultEngineName.value == nil {
+        AppState.shared.profile.searchEngines.searchEngineSetup()
+      }
+    }
+
     Task(priority: .low) {
       await self.cleanUpLargeTemporaryDirectory()
     }
@@ -356,14 +344,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   #endif
 
   func applicationWillTerminate(_ application: UIApplication) {
-    AppState.shared.profile.shutdown()
-
     SKPaymentQueue.default().remove(BraveVPN.iapObserver)
 
-    // Clean up BraveCore
-    AppState.shared.braveCore.syncAPI.removeAllObservers()
+    AppState.shared.state = .terminating
+    AppState.shared.braveCore.applicationWillTerminate(application)
 
     log.debug("Cleanly Terminated the Application")
+  }
+
+  func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+    AppState.shared.braveCore.applicationDidReceiveMemoryWarning(application)
   }
 
   func application(
@@ -429,6 +419,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       }
     }
   }
+  
+  @objc
+  func getInternalAppState() -> NSObject {
+    AppState.shared.braveCore.getInternalAppState()
+  }
 }
 
 extension AppDelegate: MFMailComposeViewControllerDelegate {
@@ -443,6 +438,7 @@ extension AppDelegate: MFMailComposeViewControllerDelegate {
 }
 
 extension AppDelegate {
+  
   // MARK: UISceneSession Lifecycle
 
   func application(
@@ -452,6 +448,16 @@ extension AppDelegate {
   ) -> UISceneConfiguration {
     // Called when a new scene session is being created.
     // Use this method to select a configuration to create the new scene with.
+//    if connectingSceneSession.configuration.name == "Default Configuration" {
+//      return UISceneConfiguration(
+//        name: connectingSceneSession.configuration.name,
+//        sessionRole: connectingSceneSession.role
+//      ).then {
+//        $0.sceneClass = connectingSceneSession.configuration.sceneClass
+//        $0.delegateClass = BraveCoreMain.sceneDelegateClass()
+//      }
+//    }
+    
     return UISceneConfiguration(
       name: connectingSceneSession.configuration.name,
       sessionRole: connectingSceneSession.role
@@ -465,6 +471,8 @@ extension AppDelegate {
     _ application: UIApplication,
     didDiscardSceneSessions sceneSessions: Set<UISceneSession>
   ) {
+    AppState.shared.braveCore.application(application, didDiscardSceneSessions: sceneSessions)
+    
     // Do not discard sessions on iPhones!
     // There is a bug in the OS where this will be called randomly
     // especially after launching and closing the app hundreds of times
@@ -489,5 +497,17 @@ extension AppDelegate {
         SessionWindow.delete(windowId: windowId)
       }
     }
+  }
+
+  func application(
+    _ application: UIApplication,
+    handleEventsForBackgroundURLSession identifier: String,
+    completionHandler: @escaping () -> Void
+  ) {
+    AppState.shared.braveCore.application(
+      application,
+      handleEventsForBackgroundURLSession: identifier,
+      completionHandler: completionHandler
+    )
   }
 }

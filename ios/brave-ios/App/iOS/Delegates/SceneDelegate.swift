@@ -29,146 +29,155 @@ extension Logger {
   }
 }
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
-  // This property must be non-null because even though it's optional,
-  // Chromium force unwraps it and uses it. For this reason, we always set this window property to the scene's main window.
-  internal var window: UIWindow?
+class SceneDelegate: BraveCoreSceneDelegate {
   private var windowProtection: WindowProtection?
   static var shouldHandleUrpLookup = false
   static var shouldHandleInstallAttributionFetch = false
+  
+  static var braveCoreMain: BraveCoreMain {
+    AppState.shared.braveCore
+  }
 
   private var cancellables: Set<AnyCancellable> = []
 
-  func scene(
+  override func scene(
     _ scene: UIScene,
     willConnectTo session: UISceneSession,
     options connectionOptions: UIScene.ConnectionOptions
   ) {
+    super.scene(scene, willConnectTo: session, options: connectionOptions)
+    
     guard let windowScene = (scene as? UIWindowScene) else { return }
-
-    let attributionManager = AttributionManager(
-      dau: AppState.shared.dau,
-      urp: UserReferralProgram.shared
-    )
-
-    let browserViewController = createBrowserWindow(
-      scene: windowScene,
-      braveCore: AppState.shared.braveCore,
-      profile: AppState.shared.profile,
-      attributionManager: attributionManager,
-      migration: AppState.shared.migration,
-      rewards: AppState.shared.rewards,
-      newsFeedDataSource: AppState.shared.newsFeedDataSource,
-      userActivity: connectionOptions.userActivities.first ?? session.stateRestorationActivity
-    )
-
-    let conditions = scene.activationConditions
-    conditions.canActivateForTargetContentIdentifierPredicate = NSPredicate(value: true)
-    if let windowId = session.userInfo?["WindowID"] as? String {
-      let preferPredicate = NSPredicate(format: "self == %@", windowId)
-      conditions.prefersToActivateForTargetContentIdentifierPredicate = preferPredicate
+    
+    let window = UIWindow(windowScene: windowScene).then {
+      $0.backgroundColor = .black
+      $0.tintColor = .red
+      $0.overrideUserInterfaceStyle = expectedThemeOverride(for: windowScene)
+      $0.tintColor = .braveBlurpleTint
     }
 
-    Preferences.General.themeNormalMode.objectWillChange
-      .receive(on: RunLoop.main)
-      .sink { [weak self, weak scene] _ in
-        guard let self = self,
-          let scene = scene as? UIWindowScene
-        else { return }
-        self.updateTheme(for: scene)
-      }
-      .store(in: &cancellables)
-
-    Preferences.General.nightModeEnabled.objectWillChange
-      .receive(on: RunLoop.main)
-      .sink { [weak self, weak scene] _ in
-        guard let self = self,
-          let scene = scene as? UIWindowScene
-        else { return }
-        self.updateTheme(for: scene)
-      }
-      .store(in: &cancellables)
-
-    browserViewController.privateBrowsingManager.$isPrivateBrowsing
-      .removeDuplicates()
-      .receive(on: RunLoop.main)
-      .sink { [weak self, weak scene] _ in
-        guard let self = self,
-          let scene = scene as? UIWindowScene
-        else { return }
-        self.updateTheme(for: scene)
-      }
-      .store(in: &cancellables)
-
-    // Handle URP Lookup at first launch
-    if SceneDelegate.shouldHandleUrpLookup {
-      SceneDelegate.shouldHandleUrpLookup = false
-
-      attributionManager.handleReferralLookup { [weak browserViewController] url in
-        browserViewController?.openReferralLink(url: url)
-      }
-    }
-
-    // Setup Playlist Car-Play
-    // TODO: Decide what to do if we have multiple windows
-    // as it is only possible to have a single car-play instance.
-    // Once we move to iOS 14+, this is easy to fix as we just pass car-play a `MediaStreamer`
-    // instance instead of a `BrowserViewController`.
-    PlaylistCoordinator.shared.do {
-      $0.browserController = browserViewController
-    }
-
-    self.present(
-      browserViewController: browserViewController,
-      windowScene: windowScene,
-      connectionOptions: connectionOptions
-    )
-
-    // Handle Install Attribution Fetch at first launch
-    if SceneDelegate.shouldHandleInstallAttributionFetch {
-      SceneDelegate.shouldHandleInstallAttributionFetch = false
-
-      // First time user should send dau ping after onboarding last stage _ p3a consent screen
-      // The reason p3a user consent is necesserray to call search ad install attribution API methods
-      if !Preferences.AppState.dailyUserPingAwaitingUserConsent.value {
-        // If P3A is not enabled, send the organic install code at daily pings which is BRV001
-        // User has not opted in to share private and anonymous product insights
-        if AppState.shared.braveCore.p3aUtils.isP3AEnabled {
-          Task { @MainActor in
-            do {
-              try await attributionManager.handleSearchAdsInstallAttribution()
-            } catch {
-              Logger.module.debug("Error fetching ads attribution default code is sent \(error)")
-              // Sending default organic install code for dau
-              attributionManager.setupReferralCodeAndPingServer()
-            }
-          }
-        } else {
-          // Sending default organic install code for dau
-          attributionManager.setupReferralCodeAndPingServer()
-        }
-      }
-    }
-
-    if Preferences.URP.installAttributionLookupOutstanding.value == nil {
-      // Similarly to referral lookup, this prefrence should be set if it is a new user
-      // Trigger install attribution fetch only first launch
-      Preferences.URP.installAttributionLookupOutstanding.value =
-        Preferences.General.isFirstLaunch.value
-    }
-
-    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
-    PrivacyReportsManager.consolidateData()
-    PrivacyReportsManager.scheduleProcessingBlockedRequests(
-      isPrivateBrowsing: browserViewController.privateBrowsingManager.isPrivateBrowsing
-    )
-    PrivacyReportsManager.scheduleVPNAlertsTask()
-
-    // Handle Custom Activity and Intents
-    if let currentActivity = connectionOptions.userActivities.first {
-      handleCustomUserActivityActions(scene, userActivity: currentActivity)
-    }
+//    let attributionManager = AttributionManager(
+//      dau: AppState.shared.dau,
+//      urp: UserReferralProgram.shared
+//    )
+//
+//    let browserViewController = createBrowserWindow(
+//      scene: windowScene,
+//      braveCore: AppState.shared.braveCore,
+//      profile: AppState.shared.profile,
+//      attributionManager: attributionManager,
+//      migration: AppState.shared.migration,
+//      rewards: AppState.shared.rewards,
+//      newsFeedDataSource: AppState.shared.newsFeedDataSource,
+//      userActivity: connectionOptions.userActivities.first ?? session.stateRestorationActivity
+//    )
+//
+//    let conditions = scene.activationConditions
+//    conditions.canActivateForTargetContentIdentifierPredicate = NSPredicate(value: true)
+//    if let windowId = session.userInfo?["WindowID"] as? String {
+//      let preferPredicate = NSPredicate(format: "self == %@", windowId)
+//      conditions.prefersToActivateForTargetContentIdentifierPredicate = preferPredicate
+//    }
+//
+//    Preferences.General.themeNormalMode.objectWillChange
+//      .receive(on: RunLoop.main)
+//      .sink { [weak self, weak scene] _ in
+//        guard let self = self,
+//          let scene = scene as? UIWindowScene
+//        else { return }
+//        self.updateTheme(for: scene)
+//      }
+//      .store(in: &cancellables)
+//
+//    Preferences.General.nightModeEnabled.objectWillChange
+//      .receive(on: RunLoop.main)
+//      .sink { [weak self, weak scene] _ in
+//        guard let self = self,
+//          let scene = scene as? UIWindowScene
+//        else { return }
+//        self.updateTheme(for: scene)
+//      }
+//      .store(in: &cancellables)
+//
+//    browserViewController.privateBrowsingManager.$isPrivateBrowsing
+//      .removeDuplicates()
+//      .receive(on: RunLoop.main)
+//      .sink { [weak self, weak scene] _ in
+//        guard let self = self,
+//          let scene = scene as? UIWindowScene
+//        else { return }
+//        self.updateTheme(for: scene)
+//      }
+//      .store(in: &cancellables)
+//
+//    // Handle URP Lookup at first launch
+//    if SceneDelegate.shouldHandleUrpLookup {
+//      SceneDelegate.shouldHandleUrpLookup = false
+//
+//      attributionManager.handleReferralLookup { [weak browserViewController] url in
+//        browserViewController?.openReferralLink(url: url)
+//      }
+//    }
+//
+//    // Setup Playlist Car-Play
+//    // TODO: Decide what to do if we have multiple windows
+//    // as it is only possible to have a single car-play instance.
+//    // Once we move to iOS 14+, this is easy to fix as we just pass car-play a `MediaStreamer`
+//    // instance instead of a `BrowserViewController`.
+//    PlaylistCoordinator.shared.do {
+//      $0.browserController = browserViewController
+//    }
+//
+//    self.present(
+//      browserViewController: browserViewController,
+//      windowScene: windowScene,
+//      connectionOptions: connectionOptions
+//    )
+//
+//    // Handle Install Attribution Fetch at first launch
+//    if SceneDelegate.shouldHandleInstallAttributionFetch {
+//      SceneDelegate.shouldHandleInstallAttributionFetch = false
+//
+//      // First time user should send dau ping after onboarding last stage _ p3a consent screen
+//      // The reason p3a user consent is necesserray to call search ad install attribution API methods
+//      if !Preferences.AppState.dailyUserPingAwaitingUserConsent.value {
+//        // If P3A is not enabled, send the organic install code at daily pings which is BRV001
+//        // User has not opted in to share private and anonymous product insights
+//        if AppState.shared.braveCore.p3aUtils.isP3AEnabled {
+//          Task { @MainActor in
+//            do {
+//              try await attributionManager.handleSearchAdsInstallAttribution()
+//            } catch {
+//              Logger.module.debug("Error fetching ads attribution default code is sent \(error)")
+//              // Sending default organic install code for dau
+//              attributionManager.setupReferralCodeAndPingServer()
+//            }
+//          }
+//        } else {
+//          // Sending default organic install code for dau
+//          attributionManager.setupReferralCodeAndPingServer()
+//        }
+//      }
+//    }
+//
+//    if Preferences.URP.installAttributionLookupOutstanding.value == nil {
+//      // Similarly to referral lookup, this prefrence should be set if it is a new user
+//      // Trigger install attribution fetch only first launch
+//      Preferences.URP.installAttributionLookupOutstanding.value =
+//        Preferences.General.isFirstLaunch.value
+//    }
+//
+//    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
+//    PrivacyReportsManager.consolidateData()
+//    PrivacyReportsManager.scheduleProcessingBlockedRequests(
+//      isPrivateBrowsing: browserViewController.privateBrowsingManager.isPrivateBrowsing
+//    )
+//    PrivacyReportsManager.scheduleVPNAlertsTask()
+//
+//    // Handle Custom Activity and Intents
+//    if let currentActivity = connectionOptions.userActivities.first {
+//      handleCustomUserActivityActions(scene, userActivity: currentActivity)
+//    }
   }
 
   private func present(
@@ -224,11 +233,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
   }
 
-  func sceneDidDisconnect(_ scene: UIScene) {
+  override func sceneDidDisconnect(_ scene: UIScene) {
     Logger.module.debug("[SCENE] - Scene Disconnected")
+    super.sceneDidDisconnect(scene)
   }
 
-  func sceneDidBecomeActive(_ scene: UIScene) {
+  override func sceneDidBecomeActive(_ scene: UIScene) {
+    super.sceneDidBecomeActive(scene)
+    
     scene.userActivity?.becomeCurrent()
 
     guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
@@ -276,29 +288,37 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     Task { @MainActor in
       let isPrivateBrowsing =
         scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
-      await BraveSkusManager(isPrivateMode: isPrivateBrowsing)?.refreshVPNCredentials()
+      //await BraveSkusManager(isPrivateMode: isPrivateBrowsing)?.refreshVPNCredentials()
     }
   }
 
-  func sceneWillResignActive(_ scene: UIScene) {
+  override func sceneWillResignActive(_ scene: UIScene) {
+    super.sceneWillResignActive(scene)
+    
     Preferences.AppState.backgroundedCleanly.value = true
     Preferences.AppState.shouldDeferPromotedPurchase.value = false
     scene.userActivity?.resignCurrent()
     AppState.shared.uptimeMonitor.pauseMonitoring()
   }
 
-  func sceneWillEnterForeground(_ scene: UIScene) {
+  override func sceneWillEnterForeground(_ scene: UIScene) {
+    super.sceneWillEnterForeground(scene)
+    
     if let scene = scene as? UIWindowScene {
       scene.browserViewController?.windowProtection = windowProtection
     }
   }
 
-  func sceneDidEnterBackground(_ scene: UIScene) {
+  override func sceneDidEnterBackground(_ scene: UIScene) {
+    super.sceneDidEnterBackground(scene)
+    
     AppState.shared.profile.shutdown()
     BraveVPN.sendVPNWorksInBackgroundNotification()
   }
 
-  func scene(_ scene: UIScene, openURLContexts contexts: Set<UIOpenURLContext>) {
+  override func scene(_ scene: UIScene, openURLContexts contexts: Set<UIOpenURLContext>) {
+    super.scene(scene, openURLContexts: contexts)
+    
     guard let scene = scene as? UIWindowScene else {
       Logger.module.error("[SCENE] - Scene is not a UIWindowScene")
       return
@@ -336,19 +356,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
   }
 
-  func scene(_ scene: UIScene, didUpdate userActivity: NSUserActivity) {
+  override func scene(_ scene: UIScene, didUpdate userActivity: NSUserActivity) {
     Logger.module.debug("[SCENE] - Updated User Activity for Scene")
+    super.scene(scene, didUpdate: userActivity)
   }
 
-  func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+  override func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+    super.scene(scene, continue: userActivity)
     handleCustomUserActivityActions(scene, userActivity: userActivity)
   }
 
-  func windowScene(
+  override func windowScene(
     _ windowScene: UIWindowScene,
     performActionFor shortcutItem: UIApplicationShortcutItem,
     completionHandler: @escaping (Bool) -> Void
   ) {
+    super.windowScene(windowScene, performActionFor: shortcutItem, completionHandler: completionHandler)
+    
     if let browserViewController = windowScene.browserViewController {
       QuickActions.sharedInstance.handleShortCutItem(
         shortcutItem,
@@ -360,8 +384,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
   }
 
-  func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
-    return scene.userActivity
+  override func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+    return super.stateRestorationActivity(for: scene) ?? scene.userActivity
   }
 }
 

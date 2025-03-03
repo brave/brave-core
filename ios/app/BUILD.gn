@@ -21,8 +21,16 @@ source_set("app") {
     "brave_core_main.mm",
     "brave_core_switches.h",
     "brave_core_switches.mm",
+    "brave_ios_main.h",
+    "brave_ios_main.mm",
     "brave_main_delegate.h",
     "brave_main_delegate.mm",
+    "brave_app_state.h",
+    "brave_app_state.mm",
+    "brave_scene_delegate.h",
+    "brave_scene_delegate.mm",
+    "scene_controller.h",
+    "scene_controller.mm",
   ]
 
   deps = [

@@ -7,6 +7,7 @@
 #define BRAVE_IOS_APP_BRAVE_CORE_MAIN_H_
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #import "brave_core_switches.h"  // NOLINT
 
@@ -122,6 +123,24 @@ OBJC_EXPORT
 @property(readonly) CWVWebViewConfiguration* nonPersistentWebViewConfiguration;
 - (void)notifyLastPrivateTabClosed;
 
++ (Class)sceneDelegateClass;
+- (NSObject*)getInternalAppState;
+@end
+
+@interface BraveCoreMain (AppDelegate)
+- (BOOL)application:(UIApplication*)application
+    didFinishLaunchingWithOptions:(NSDictionary*)launchOptions;
+
+- (void)applicationWillTerminate:(UIApplication*)application;
+
+- (void)applicationDidReceiveMemoryWarning:(UIApplication*)application;
+
+- (void)application:(UIApplication*)application
+    didDiscardSceneSessions:(NSSet<UISceneSession*>*)sceneSessions;
+
+- (void)application:(UIApplication*)application
+    handleEventsForBackgroundURLSession:(NSString*)identifier
+                      completionHandler:(void (^)())completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END

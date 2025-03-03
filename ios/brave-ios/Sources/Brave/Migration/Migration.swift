@@ -78,56 +78,6 @@ public class Migration {
     braveCore.syncAPI.enableSyncTypes(syncProfileService: braveCore.syncProfileService)
   }
 
-  public static func migrateLostTabsActiveWindow() {
-    if UIApplication.shared.supportsMultipleScenes { return }
-    if Preferences.Migration.lostTabsWindowIDMigration.value { return }
-
-    var sessionWindows = SessionWindow.all()
-    var activeWindow = sessionWindows.first(where: { $0.isSelected })
-    if activeWindow == nil {
-      activeWindow = sessionWindows.removeFirst()
-    }
-
-    guard let activeWindow = activeWindow else {
-      Preferences.Migration.lostTabsWindowIDMigration.value = true
-      return
-    }
-
-    let windowIds = UIApplication.shared.openSessions
-      .compactMap({ BrowserState.getWindowInfo(from: $0).windowId })
-      .filter({ $0 != activeWindow.windowId.uuidString })
-
-    let zombieTabs =
-      sessionWindows
-      .filter({ windowIds.contains($0.windowId.uuidString) })
-      .compactMap({
-        $0.sessionTabs
-      })
-      .flatMap({ $0 })
-
-    if !zombieTabs.isEmpty {
-      let activeURLs = activeWindow.sessionTabs?.compactMap({ $0.url }) ?? []
-
-      // Restore private tabs if persistency is enabled
-      if Preferences.Privacy.persistentPrivateBrowsing.value {
-        zombieTabs.filter({ $0.isPrivate }).forEach {
-          if let url = $0.url, !activeURLs.contains(url) {
-            SessionTab.move(tab: $0.tabId, toWindow: activeWindow.windowId)
-          }
-        }
-      }
-
-      // Restore regular tabs
-      zombieTabs.filter({ !$0.isPrivate }).forEach {
-        if let url = $0.url, !activeURLs.contains(url) {
-          SessionTab.move(tab: $0.tabId, toWindow: activeWindow.windowId)
-        }
-      }
-    }
-
-    Preferences.Migration.lostTabsWindowIDMigration.value = true
-  }
-
   public static func migrateAdsConfirmations(for configruation: BraveRewards.Configuration) {
     // To ensure after a user launches 1.21 that their ads confirmations, viewed count and
     // estimated payout remain correct.

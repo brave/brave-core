@@ -17,17 +17,20 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/i18n/icu_util.h"
+#include "base/ios/scoped_critical_action.h"
 #include "base/logging.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "base/types/fixed_array.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
+#include "brave/ios/app/brave_ios_main.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat+private.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_delegate.h"
@@ -55,6 +58,7 @@
 #import "build/blink_buildflags.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
+#include "components/download/public/background_service/background_download_service.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/password_store/password_store.h"
@@ -62,6 +66,9 @@
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
 #include "components/sync/base/features.h"
+#include "ios/chrome/app/application_delegate/app_state.h"
+#include "ios/chrome/app/application_delegate/memory_warning_helper.h"
+#include "ios/chrome/app/main_controller.h"
 #include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
@@ -69,13 +76,20 @@
 #include "ios/chrome/browser/browsing_data/model/browsing_data_remover_factory.h"
 #include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/credential_provider/model/credential_provider_buildflags.h"
+#include "ios/chrome/browser/download/model/background_service/background_download_service_factory.h"
 #include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/history/model/web_history_service_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
+#include "ios/chrome/browser/sessions/model/session_restoration_service.h"
+#include "ios/chrome/browser/sessions/model/session_restoration_service_factory.h"
+#include "ios/chrome/browser/sessions/model/session_util.h"
+#include "ios/chrome/browser/shared/coordinator/scene/scene_state.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list_factory.h"
+#include "ios/chrome/browser/shared/model/browser/browser_provider.h"
+#include "ios/chrome/browser/shared/model/browser/browser_provider_interface.h"
 #include "ios/chrome/browser/shared/model/paths/paths.h"
 #include "ios/chrome/browser/shared/model/prefs/pref_names.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -85,6 +99,7 @@
 #include "ios/chrome/browser/sync/model/send_tab_to_self_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/session_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
+#include "ios/chrome/browser/tabs/model/inactive_tabs/utils.h"
 #include "ios/chrome/browser/webui/ui_bundled/chrome_web_ui_ios_controller_factory.h"
 #include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
@@ -97,6 +112,10 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/ui_base_paths.h"
+#include "brave/ios/app/brave_app_state.h"
+#include "ios/chrome/browser/shared/coordinator/scene/scene_state.h"
+#include "ios/chrome/browser/shared/coordinator/scene/scene_delegate.h"
+#include "ios/chrome/app/startup/ios_chrome_main.h"
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
 #include "ios/chrome/browser/credential_provider/model/credential_provider_service_factory.h"
@@ -133,12 +152,14 @@ const BraveCoreLogSeverity BraveCoreLogSeverityInfo = logging::LOGGING_INFO;
 const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     logging::LOGGING_VERBOSE;
 
+namespace {
+// The time delay after firstSceneWillEnterForeground: before checking for main
+// intent signals.
+constexpr base::TimeDelta kMainIntentCheckDelay = base::Seconds(1);
+}  // namespace
+
 @interface BraveCoreMain () {
-  std::unique_ptr<BraveWebClient> _webClient;
-  std::unique_ptr<BraveMainDelegate> _delegate;
-  std::vector<std::string> _argv_store;
-  std::unique_ptr<const char*[]> _raw_args;
-  std::unique_ptr<web::WebMain> _webMain;
+  std::unique_ptr<base::AtExitManager> _exit_manager;
   std::unique_ptr<Browser> _browser;
   std::unique_ptr<Browser> _otr_browser;
   std::unique_ptr<ios_web_view::WebViewDownloadManager> _downloadManager;
@@ -149,6 +170,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   scoped_refptr<p3a::P3AService> _p3a_service;
   scoped_refptr<p3a::HistogramsBraveizer> _histogram_braveizer;
 }
+@property(nonatomic) MemoryWarningHelper* memoryHelper;
+@property(nonatomic) MainController* mainController;
+@property(nonatomic) BraveAppState* appState;
+@property(nonatomic) bool didFinishLaunching;
+
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
 @property(nonatomic) BravePasswordAPI* passwordAPI;
@@ -180,21 +206,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
                additionalSwitches:
                    (NSArray<BraveCoreSwitch*>*)additionalSwitches {
   if ((self = [super init])) {
-    [[NSNotificationCenter defaultCenter]
-        addObserver:self
-           selector:@selector(onAppEnterBackground:)
-               name:UIApplicationDidEnterBackgroundNotification
-             object:nil];
-    [[NSNotificationCenter defaultCenter]
-        addObserver:self
-           selector:@selector(onAppEnterForeground:)
-               name:UIApplicationWillEnterForegroundNotification
-             object:nil];
-    [[NSNotificationCenter defaultCenter]
-        addObserver:self
-           selector:@selector(onAppWillTerminate:)
-               name:UIApplicationWillTerminateNotification
-             object:nil];
+    BraveIOSMain::InitStartTime();
+    _exit_manager = std::make_unique<base::AtExitManager>();
 
     @autoreleasepool {
       ios::RegisterPathProvider();
@@ -218,68 +231,40 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     [ProviderRegistration registerProviders];
 
     // Setup WebClient ([ClientRegistration registerClients])
-    _webClient.reset(new BraveWebClient());
+    web::SetWebClient(new BraveWebClient());
     if (userAgent != nil) {
-      _webClient->SetLegacyUserAgent(base::SysNSStringToUTF8(userAgent));
+      reinterpret_cast<BraveWebClient*>(web::GetWebClient())->SetLegacyUserAgent(base::SysNSStringToUTF8(userAgent));
     }
-    web::SetWebClient(_webClient.get());
-
-    _delegate.reset(new BraveMainDelegate());
-
-    // Start Main ([ChromeMainStarter startChromeMain])
-    web::WebMainParams params(_delegate.get());
+    
 
     // Parse Switches, Features, Arguments (Command-Line Arguments)
     NSMutableArray* arguments =
         [[[NSProcessInfo processInfo] arguments] mutableCopy];
-    NSMutableArray* switches = [[NSMutableArray alloc] init];
     for (BraveCoreSwitch* sv in additionalSwitches) {
       if (!sv.value) {
-        [switches addObject:[NSString stringWithFormat:@"--%@", sv.key]];
+        [arguments addObject:[NSString stringWithFormat:@"--%@", sv.key]];
       } else {
-        [switches
+        [arguments
             addObject:[NSString stringWithFormat:@"--%@=%@", sv.key, sv.value]];
       }
     }
-    [arguments addObjectsFromArray:switches];
-    params.argc = [arguments count];
 
-    // Allocate memory to convert from iOS arguments to Native arguments
-    _raw_args.reset(new const char*[params.argc]);
-    _argv_store.resize([arguments count]);
+    base::FixedArray<const char*> argv([arguments count]);
+    std::vector<std::string> argv_store([arguments count]);
 
-    for (NSUInteger i = 0; i < [arguments count]; i++) {
-      _argv_store[i] = base::SysNSStringToUTF8([arguments objectAtIndex:i]);
-      _raw_args[i] = _argv_store[i].c_str();
+    for (NSUInteger i = 0; i < [arguments count]; ++i) {
+      argv_store[i] = base::SysNSStringToUTF8([arguments objectAtIndex:i]);
+      argv[i] = argv_store[i].c_str();
     }
-    params.argv = _raw_args.get();
 
-    // Setup WebMain
-    _webMain = std::make_unique<web::WebMain>(std::move(params));
+    // Initialize Command-Line BEFORE anything else
+    base::CommandLine::Init([arguments count], argv.data());
 
-    ProfileIOS* profile = brave::CreateMainProfileIOS();
-    [self profileLoaded:profile];
-
-    // Initialize the provider UI global state.
-    ios::provider::InitializeUI();
-
-    // Setup WebUI (Sync Internals and other WebViews)
-    web::WebUIIOSControllerFactory::RegisterFactory(
-        BraveWebUIControllerFactory::GetInstance());
-
-    // TODO(darkdh): move _adblockService and _backgroundImageService to
-    // BraveWebMainParts::PreMainMessageLoopRun
-    // https://github.com/brave/brave-browser/issues/40567
-    component_updater::ComponentUpdateService* cus =
-        GetApplicationContext()->GetComponentUpdateService();
-
-    _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
-
-    _backgroundImagesService = [[NTPBackgroundImagesService alloc]
-        initWithBackgroundImagesService:
-            std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
-                cus, GetApplicationContext()->GetLocalState())];
-
+    // Setup Chromium
+    _memoryHelper = [[MemoryWarningHelper alloc] init];
+    _mainController = [[MainController alloc] init];
+    _appState = [[BraveAppState alloc] initWithStartupInformation:_mainController];
+    [_mainController setAppState:_appState];
   }
   return self;
 }
@@ -321,11 +306,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _browser.reset();
 
   _main_profile = nullptr;
-  _webMain.reset();
-  _raw_args.reset();
-  _argv_store = {};
-  _delegate.reset();
-  _webClient.reset();
 
   VLOG(1) << "Terminated Brave-Core";
 }
@@ -340,45 +320,58 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _browserList = BrowserListFactory::GetForProfile(profile);
   _browser = Browser::Create(_main_profile, {});
   _browserList->AddBrowser(_browser.get());
+  [self setSessionIDForBrowser:_browser.get()];
+
+  // Setup inactive browser
+  auto* inactiveBrowser = _browser->CreateInactiveBrowser();
+  _browserList->AddBrowser(inactiveBrowser);
+  [self setSessionIDForBrowser:inactiveBrowser];
 
   // Setup otr browser
-  ProfileIOS* otr_last_used_profile = profile->GetOffTheRecordProfile();
-  _otr_browserList = BrowserListFactory::GetForProfile(otr_last_used_profile);
-  _otr_browser = Browser::Create(otr_last_used_profile, {});
+  ProfileIOS* otr_profile = profile->GetOffTheRecordProfile();
+  _otr_browserList = BrowserListFactory::GetForProfile(otr_profile);
+  _otr_browser = Browser::Create(otr_profile, {});
   _otr_browserList->AddBrowser(_otr_browser.get());
+  [self setSessionIDForBrowser:_otr_browser.get()];
 
   // Setup download managers for CWVWebView
   _downloadManager =
       std::make_unique<ios_web_view::WebViewDownloadManager>(profile);
-  _otrDownloadManager = std::make_unique<ios_web_view::WebViewDownloadManager>(
-      otr_last_used_profile);
+  _otrDownloadManager =
+      std::make_unique<ios_web_view::WebViewDownloadManager>(otr_profile);
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
   CredentialProviderServiceFactory::GetForProfile(profile);
 #endif
 }
 
-- (void)onAppEnterBackground:(NSNotification*)notification {
-  auto* context = GetApplicationContext();
-  if (context) {
-    context->OnAppEnterBackground();
-    // Since we don't use the WebViewWebMainParts, local state is never commited
-    // on app background
-    context->GetLocalState()->CommitPendingWrite();
-  }
+// Configures the BrowserAgent with the session identifier for `browser`.
+- (void)setSessionIDForBrowser:(Browser*)browser {
+  const std::string identifier = session_util::GetSessionIdentifier(browser);
+
+  //  SnapshotBrowserAgent::FromBrowser(browser)->SetSessionID(identifier);
+
+  ProfileIOS* profile = browser->GetProfile();
+  SessionRestorationServiceFactory::GetForProfile(profile)->SetSessionID(
+      browser, identifier);
 }
 
-- (void)onAppEnterForeground:(NSNotification*)notification {
-  auto* context = GetApplicationContext();
-  if (context)
-    context->OnAppEnterForeground();
-}
+- (void)restoreSession {
+  Browser* inactiveBrowser = _browser->GetInactiveBrowser();
 
-- (void)onAppWillTerminate:(NSNotification*)notification {
-  // ApplicationContextImpl doesn't get teardown call at the moment because we
-  // cannot dealloc this class yet without crashing.
-  GetApplicationContext()->GetLocalState()->CommitPendingWrite();
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  // loadSessionForBrowser
+  SessionRestorationServiceFactory::GetForProfile(_browser->GetProfile())
+      ->LoadSession(_browser.get());
+  SessionRestorationServiceFactory::GetForProfile(inactiveBrowser->GetProfile())
+      ->LoadSession(inactiveBrowser);
+  SessionRestorationServiceFactory::GetForProfile(_otr_browser->GetProfile())
+      ->LoadSession(_otr_browser.get());
+
+  // https://source.chromium.org/chromium/chromium/src/+/main:ios/chrome/browser/main/ui_bundled/browser_view_wrangler.mm
+  // MoveTabsFromInactiveToActive(inactiveBrowser, _mainBrowser.get());
+  // MoveTabsFromActiveToInactive(_mainBrowser.get(), inactiveBrowser);
+
+  RestoreAllInactiveTabs(inactiveBrowser, _browser.get());
 }
 
 - (void)scheduleLowPriorityStartupTasks {
@@ -693,6 +686,9 @@ static bool CustomLogHandler(int severity,
   BrowserList* browserList = BrowserListFactory::GetForProfile(profile);
   browserList->RemoveBrowser(browser);
 
+  // Stop serializing the state of `browser`.
+  SessionRestorationServiceFactory::GetForProfile(profile)->Disconnect(browser);
+
   WebStateList* webStateList = browser->GetWebStateList();
   // Close all webstates in `webStateList`. Do this in an @autoreleasepool as
   // WebStateList observers will be notified (they are unregistered later). As
@@ -729,4 +725,219 @@ static bool CustomLogHandler(int severity,
   browserList->AddBrowser(_otr_browser.get());
 }
 
++ (Class)sceneDelegateClass {
+  return [SceneDelegate class];
+}
+
+- (NSObject*)getInternalAppState {
+  return self.appState;
+}
+@end
+
+@implementation BraveCoreMain (AppDelegate)
+- (BOOL)application:(UIApplication*)application
+    didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
+  // Initialize Chromium
+  _appState.startupInformation.didFinishLaunchingTime = base::TimeTicks::Now();
+  [_appState startInitialization];
+
+  // Setup Chromium Notifications
+  [[NSNotificationCenter defaultCenter]
+      addObserver:self
+         selector:@selector(sceneWillConnect:)
+             name:UISceneWillConnectNotification
+           object:nil];
+
+  [[NSNotificationCenter defaultCenter]
+      addObserver:self
+         selector:@selector(lastSceneWillEnterBackground:)
+             name:UIApplicationWillResignActiveNotification
+           object:nil];
+
+  [[NSNotificationCenter defaultCenter]
+      addObserver:self
+         selector:@selector(lastSceneDidEnterBackground:)
+             name:UIApplicationDidEnterBackgroundNotification
+           object:nil];
+
+  [[NSNotificationCenter defaultCenter]
+      addObserver:self
+         selector:@selector(firstSceneWillEnterForeground:)
+             name:UIApplicationWillEnterForegroundNotification
+           object:nil];
+  
+//  Browser* mainBrowser =
+//        self.sceneState.browserProviderInterface.mainBrowserProvider.browser
+
+  //  // Setup Profiles
+//  ProfileIOS* profile = brave::CreateMainProfileIOS();
+//  [self profileLoaded:profile];
+//
+//  // Initialize the provider UI global state.
+//  ios::provider::InitializeUI();
+//
+//  // Setup WebUI (Sync Internals and other WebViews)
+//  web::WebUIIOSControllerFactory::RegisterFactory(
+//      BraveWebUIControllerFactory::GetInstance());
+//
+//  // TODO(darkdh): move _adblockService and _backgroundImageService to
+//  // BraveWebMainParts::PreMainMessageLoopRun
+//  // https://github.com/brave/brave-browser/issues/40567
+//  component_updater::ComponentUpdateService* cus =
+//      GetApplicationContext()->GetComponentUpdateService();
+//
+//  _adblockService = [[AdblockService alloc] initWithComponentUpdater:cus];
+//
+//  _backgroundImagesService = [[NTPBackgroundImagesService alloc]
+//      initWithBackgroundImagesService:
+//          std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
+//              cus, GetApplicationContext()->GetLocalState())];
+
+  return YES;
+}
+
+- (void)applicationWillTerminate:(UIApplication*)application {
+  base::ios::ScopedCriticalAction::ApplicationWillTerminate();
+
+  // If `self.didFinishLaunching` is NO, that indicates that the app was
+  // terminated before startup could be run. In this situation, skip running
+  // shutdown, since the app was never fully started.
+  if (!self.didFinishLaunching) {
+    return;
+  }
+
+  if (_appState.initStage <= AppInitStage::kSafeMode) {
+    return;
+  }
+
+  // Instead of adding code here, consider if it could be handled by listening
+  // for  UIApplicationWillterminate.
+  [_mainController applicationWillTerminate:application];
+}
+
+- (void)applicationDidReceiveMemoryWarning:(UIApplication*)application {
+  if (_appState.initStage <= AppInitStage::kSafeMode) {
+    return;
+  }
+
+  [_memoryHelper handleMemoryPressure];
+}
+
+- (void)application:(UIApplication*)application
+    didDiscardSceneSessions:(NSSet<UISceneSession*>*)sceneSessions {
+  [_mainController application:application
+       didDiscardSceneSessions:sceneSessions];
+}
+
+- (void)application:(UIApplication*)application
+    handleEventsForBackgroundURLSession:(NSString*)identifier
+                      completionHandler:(void (^)())completionHandler {
+  if (![identifier
+          hasPrefix:base::SysUTF8ToNSString(
+                        download::kBackgroundDownloadIdentifierPrefix)]) {
+    completionHandler();
+    return;
+  }
+  // TODO(crbug.com/325613461) Remove this Browser dependency, ideally by
+  // refactoring into a dedicated agent.
+  Browser* browser = _mainController.browserProviderInterfaceDoNotUse
+                         .mainBrowserProvider.browser;
+  if (!browser) {
+    // TODO(crbug.com/40240359): We should store the completionHandler and wait
+    // for mainBrowserProvider creation.
+    completionHandler();
+    return;
+  }
+  // TODO(crbug.com/325613461): Associate downloads with a specific file path to
+  // determine which profile / download service to use here.
+  download::BackgroundDownloadService* download_service =
+      BackgroundDownloadServiceFactory::GetForProfile(browser->GetProfile());
+  if (download_service) {
+    download_service->HandleEventsForBackgroundURLSession(
+        base::BindOnce(completionHandler));
+    return;
+  }
+  completionHandler();
+}
+
+#pragma mark - Scenes lifecycle
+
+- (NSInteger)foregroundSceneCount {
+  NSInteger foregroundSceneCount = 0;
+  for (UIScene* scene in UIApplication.sharedApplication.connectedScenes) {
+    if ((scene.activationState == UISceneActivationStateForegroundInactive) ||
+        (scene.activationState == UISceneActivationStateForegroundActive)) {
+      foregroundSceneCount++;
+    }
+  }
+  return foregroundSceneCount;
+}
+
+- (void)sceneWillConnect:(NSNotification*)notification {
+  UIWindowScene* scene =
+      base::apple::ObjCCastStrict<UIWindowScene>(notification.object);
+  id<UISceneDelegate> sceneDelegate = scene.delegate;
+
+  // Under some iOS 15 betas, Chrome gets scene connection events for some
+  // system scene connections. To handle this, early return if the connecting
+  // scene doesn't have a valid delegate. (See crbug.com/1217461)
+  if (!sceneDelegate ||
+      ![sceneDelegate conformsToProtocol:@protocol(UIWindowSceneDelegate)]) {
+    return;
+  }
+
+  // TODO(crbug.com/40679152): This should be called later, or this flow should
+  // be changed completely.
+  if (self.foregroundSceneCount == 0) {
+    [_mainController
+        applicationWillEnterForeground:UIApplication.sharedApplication
+                          memoryHelper:_memoryHelper];
+  }
+}
+
+- (void)lastSceneWillEnterBackground:(NSNotification*)notification {
+  [_mainController applicationWillResignActive:UIApplication.sharedApplication];
+}
+
+- (void)lastSceneDidEnterBackground:(NSNotification*)notification {
+  [_mainController applicationDidEnterBackground:UIApplication.sharedApplication
+                                    memoryHelper:_memoryHelper];
+}
+
+- (void)firstSceneWillEnterForeground:(NSNotification*)notification {
+  // This method may be invoked really early in the application lifetime
+  // even before the creation of the main loop. Thus it is not possible
+  // to use PostTask API here, and we have to use dispatch_async(...).
+  __weak BraveCoreMain* weakSelf = self;
+  dispatch_after(
+      dispatch_time(DISPATCH_TIME_NOW, kMainIntentCheckDelay.InNanoseconds()),
+      dispatch_get_main_queue(), ^{
+        [weakSelf firstSceneDidEnterForeground];
+      });
+
+  [_mainController
+      applicationWillEnterForeground:UIApplication.sharedApplication
+                        memoryHelper:_memoryHelper];
+}
+
+#pragma mark - Private
+
+// Returns whether the application was started via an external intent or
+// directly (i.e. by tapping on the app button directly).
+- (BOOL)appStartupFromExternalIntent {
+  for (SceneState* scene in self.appState.connectedScenes) {
+    if (scene.startupHadExternalIntent) {
+      return YES;
+    }
+  }
+
+  return NO;
+}
+
+// Invoked on the main sequence after -firstSceneWillEnterForeground: is
+// called, after a small delay. The delay is there to give time for the
+// intents to be received by the application (as they are not guaranteed
+// to happen before -firstSceneWillEnterForeground:).
+- (void)firstSceneDidEnterForeground {
+}
 @end

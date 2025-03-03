@@ -12,7 +12,7 @@ import Foundation
 import Growth
 import Preferences
 import RuntimeWarnings
-import Shared
+@_spi(AppLaunch) import Shared
 import Storage
 import UIKit
 import UserAgent
@@ -32,41 +32,58 @@ public class AppState {
   public static let shared = AppState()
 
   public let braveCore: BraveCoreMain
-  public let dau: DAU
-  public let migration: Migration
-  public let profile: Profile
-  public let rewards: Brave.BraveRewards
-  public let newsFeedDataSource: FeedDataSource
-  public let uptimeMonitor = UptimeMonitor()
-  private var didBecomeActive = false
 
-  public var state: State = .launching(options: [:], active: false) {
+  private(set) public var dau: DAU!
+  private(set) public var migration: Migration!
+  private(set) public var profile: Profile!
+  private(set) public var rewards: Brave.BraveRewards!
+  private(set) public var newsFeedDataSource: FeedDataSource!
+  private(set) public var uptimeMonitor = UptimeMonitor()
+
+  public var state: State = .willLaunch(options: [:]) {
     didSet {
       switch state {
-      case .launching(_, let isActive):
-        if didBecomeActive {
-          assertionFailure("Cannot set launching state twice!")
-        }
+      case .willLaunch(_):
+        // Setup Profile
+        profile = BrowserProfile(localName: "profile")
 
-        if isActive && !didBecomeActive {
-          // We have to wait until pre 1.12 migration is done until we proceed with database
-          // initialization. This is because Database container may change. See bugs #3416, #3377.
-          didBecomeActive = true
-          DataController.shared.initializeOnce()
-          DataController.sharedInMemory.initializeOnce()
-          Migration.migrateLostTabsActiveWindow()
-        }
+        // Setup Migrations
+        migration = Migration(braveCore: braveCore)
+
+        // Perform Migrations
+        migration.launchMigrations(keyPrefix: profile.prefs.getBranchPrefix(), profile: profile)
+
+        // Setup DAU
+//        dau = DAU(braveCoreStats: braveCore.braveStats)
+
+        // Setup Rewards & Ads
+//        let configuration = BraveRewards.Configuration.current()
+//        rewards = BraveRewards(configuration: configuration)
+//        newsFeedDataSource = FeedDataSource()
+
+        // Setup Custom URL scheme handlers
+        setupCustomSchemeHandlers(profile: profile)
 
         if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {
           NetworkMonitor.shared.start()
         }
-        break
+      case .didLaunch(_):
+        // We have to wait until pre 1.12 migration is done until we proceed with database
+        // initialization. This is because Database container may change. See bugs #3416, #3377.
+        DataController.shared.initializeOnce()
+        DataController.sharedInMemory.initializeOnce()
+
+        // Run migrations that need access to Data
+        MainActor.assumeIsolated {
+          Migration.postDataLoadMigration()
+        }
       case .active:
         break
       case .backgrounded:
         break
       case .terminating:
-        break
+        profile.shutdown()
+        braveCore.syncAPI.removeAllObservers()
       }
     }
   }
@@ -76,40 +93,32 @@ public class AppState {
     AppState.setupConstants()
 
     // Setup BraveCore
-    braveCore = AppState.setupBraveCore().then {
-      $0.scheduleLowPriorityStartupTasks()
-    }
-
-    // Setup DAU
-    dau = DAU(braveCoreStats: braveCore.braveStats)
-
-    // Setup Profile
-    profile = BrowserProfile(localName: "profile")
-
-    // Setup Migrations
-    migration = Migration(braveCore: braveCore)
-
-    // Perform Migrations
-    migration.launchMigrations(keyPrefix: profile.prefs.getBranchPrefix(), profile: profile)
-
-    // Setup Rewards & Ads
-    let configuration = BraveRewards.Configuration.current()
-    Self.migrateAdsConfirmations(for: configuration)
-    rewards = BraveRewards(configuration: configuration)
-    newsFeedDataSource = FeedDataSource()
-
-    // Setup Custom URL scheme handlers
-    setupCustomSchemeHandlers(profile: profile)
+    braveCore = AppState.setupBraveCore()
   }
 
   public enum State {
-    case launching(options: [UIApplication.LaunchOptionsKey: Any], active: Bool)
+    case willLaunch(options: [UIApplication.LaunchOptionsKey: Any])
+    case didLaunch(options: [UIApplication.LaunchOptionsKey: Any])
     case active
     case backgrounded
     case terminating
   }
 
   private static func setupConstants() {
+    // Application Constants must be initialized first
+    #if BRAVE_CHANNEL_RELEASE
+    AppConstants.setBuildChannel(.release)
+    #elseif BRAVE_CHANNEL_BETA
+    AppConstants.setBuildChannel(.beta)
+    #elseif BRAVE_CHANNEL_NIGHTLY
+    AppConstants.setBuildChannel(.nightly)
+    #elseif BRAVE_CHANNEL_DEBUG
+    AppConstants.setBuildChannel(.debug)
+    #endif
+
+    #if OFFICIAL_BUILD
+    AppConstants.setOfficialBuild(true)
+    #endif
   }
 
   private static func setupBraveCore() -> BraveCoreMain {
@@ -215,40 +224,6 @@ public class AppState {
 
     responders.forEach { (path, responder) in
       InternalSchemeHandler.responders[path] = responder
-    }
-  }
-
-  private static func migrateAdsConfirmations(for configuruation: Brave.BraveRewards.Configuration)
-  {
-    // To ensure after a user launches 1.21 that their ads confirmations, viewed count and
-    // estimated payout remain correct.
-    //
-    // This hack is unfortunately neccessary due to a missed migration path when moving
-    // confirmations from ledger to ads, we must extract `confirmations.json` out of ledger's
-    // state file and save it as a new file under the ads directory.
-    let base = configuruation.storageURL
-    let ledgerStateContainer = base.appendingPathComponent("ledger/random_state.plist")
-    let adsConfirmations = base.appendingPathComponent("ads/confirmations.json")
-    let fm = FileManager.default
-
-    if !fm.fileExists(atPath: ledgerStateContainer.path)
-      || fm.fileExists(atPath: adsConfirmations.path)
-    {
-      // Nothing to migrate or already migrated
-      return
-    }
-
-    do {
-      let contents = NSDictionary(contentsOfFile: ledgerStateContainer.path)
-      guard let confirmations = contents?["confirmations.json"] as? String else {
-        adsRewardsLog.debug("No confirmations found to migrate in ledger's state container")
-        return
-      }
-      try confirmations.write(toFile: adsConfirmations.path, atomically: true, encoding: .utf8)
-    } catch {
-      adsRewardsLog.error(
-        "Failed to migrate confirmations.json to ads folder: \(error.localizedDescription)"
-      )
     }
   }
 }

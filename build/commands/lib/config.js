@@ -683,7 +683,7 @@ Config.prototype.buildArgs = function () {
     // however it causes crashes for us at launch. Check `ios/features.gni`
     // in the future to see if this is no longer needed
     // https://github.com/brave/brave-browser/issues/29934
-    args.ios_partition_alloc_enabled = false
+    args.ios_partition_alloc_enabled = true
 
     args.ios_provider_target = "//brave/ios/browser/providers:brave_providers"
 
