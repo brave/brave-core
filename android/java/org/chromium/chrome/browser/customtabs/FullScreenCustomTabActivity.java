@@ -13,7 +13,6 @@ import static org.chromium.chrome.browser.customtabs.CustomTabIntentDataProvider
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.Browser;
 import android.view.Gravity;
@@ -24,7 +23,6 @@ import android.widget.ImageView;
 
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
@@ -75,14 +73,10 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                 CLOSE_BUTTON_PADDING,
                 CLOSE_BUTTON_PADDING,
                 CLOSE_BUTTON_PADDING);
-
-        Drawable drawable =
-                ResourcesCompat.getDrawable(
-                        getResources(), R.drawable.fullscreen_custom_tab_close_bg, null);
-        closeImg.setBackground(drawable);
-        closeImg.setImageResource(R.drawable.ic_baseline_close_24);
+        closeImg.setImageResource(R.drawable.ic_close);
         closeImg.setColorFilter(
-                ContextCompat.getColor(FullScreenCustomTabActivity.this, android.R.color.black),
+                ContextCompat.getColor(
+                        FullScreenCustomTabActivity.this, R.color.schemes_on_surface_variant),
                 android.graphics.PorterDuff.Mode.SRC_IN);
         closeImg.setOnClickListener(
                 button -> {
