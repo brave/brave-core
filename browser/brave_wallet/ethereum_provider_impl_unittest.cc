@@ -219,13 +219,10 @@ class EthereumProviderImplUnitTest : public testing::Test {
         BraveWalletServiceDelegate::Create(browser_context()), prefs(),
         local_state_->Get());
     ASSERT_TRUE(brave_wallet_service_.get());
-    json_rpc_service_ = brave_wallet_service_->json_rpc_service();
-    json_rpc_service_->SetAPIRequestHelperForTesting(
+    json_rpc_service()->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
     SetNetwork(mojom::kMainnetChainId, std::nullopt);
-    keyring_service_ = brave_wallet_service_->keyring_service();
-    tx_service_ = brave_wallet_service_->tx_service();
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+    WaitForTxStorageDelegateInitialized(tx_service()->GetDelegateForTesting());
     SetNetwork(mojom::kMainnetChainId, std::nullopt);
 
     profile_.SetPermissionControllerDelegate(
@@ -246,7 +243,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
   EthTxManager* eth_tx_manager() {
     return static_cast<EthTxManager*>(
-        tx_service_->GetTxManager(mojom::CoinType::ETH));
+        tx_service()->GetTxManager(mojom::CoinType::ETH));
   }
 
   void SetInterceptor(const std::string& content) {
@@ -260,7 +257,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
   void SetNetwork(const std::string& chain_id,
                   const std::optional<::url::Origin>& origin) {
     EXPECT_TRUE(
-        json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH, origin));
+        json_rpc_service()->SetNetwork(chain_id, mojom::CoinType::ETH, origin));
   }
 
   void CreateWallet() {
@@ -274,13 +271,13 @@ class EthereumProviderImplUnitTest : public testing::Test {
         "device1", mojom::kDefaultKeyringId));
 
     auto added_accounts =
-        keyring_service_->AddHardwareAccountsSync(std::move(hw_accounts));
+        keyring_service()->AddHardwareAccountsSync(std::move(hw_accounts));
     return std::move(added_accounts[0]);
   }
 
   void Unlock() {
     base::RunLoop run_loop;
-    keyring_service_->Unlock(
+    keyring_service()->Unlock(
         "brave", base::BindLambdaForTesting([&run_loop](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
@@ -289,13 +286,13 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   void Lock() {
-    keyring_service_->Lock();
+    keyring_service()->Lock();
     browser_task_environment_.RunUntilIdle();
   }
 
   void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
     base::RunLoop run_loop;
-    keyring_service_->SetSelectedAccount(
+    keyring_service()->SetSelectedAccount(
         account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
@@ -403,10 +400,14 @@ class EthereumProviderImplUnitTest : public testing::Test {
   ~EthereumProviderImplUnitTest() override = default;
 
   content::TestWebContents* web_contents() { return web_contents_.get(); }
-  TxService* tx_service() { return tx_service_; }
-  JsonRpcService* json_rpc_service() { return json_rpc_service_; }
-  KeyringService* keyring_service() { return keyring_service_; }
-  AccountUtils GetAccountUtils() { return AccountUtils(keyring_service_); }
+  TxService* tx_service() { return brave_wallet_service_->tx_service(); }
+  JsonRpcService* json_rpc_service() {
+    return brave_wallet_service_->json_rpc_service();
+  }
+  KeyringService* keyring_service() {
+    return brave_wallet_service_->keyring_service();
+  }
+  AccountUtils GetAccountUtils() { return AccountUtils(keyring_service()); }
   EthereumProviderImpl* provider() { return provider_.get(); }
   content::BrowserContext* browser_context() { return &profile_; }
   PrefService* prefs() { return profile_.GetPrefs(); }
@@ -668,7 +669,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
                 SCOPED_TRACE(
                     request->sign_data->get_eth_standard_sign_data()->message);
                 EXPECT_EQ(request->chain_id,
-                          json_rpc_service_->GetChainIdSync(
+                          json_rpc_service()->GetChainIdSync(
                               mojom::CoinType::ETH, GetOrigin()));
                 requests_out.push_back(request.Clone());
               }
@@ -710,7 +711,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
   std::vector<std::string> GetAddresses() {
     std::vector<std::string> result;
-    for (const auto& account_info : keyring_service_->GetAllAccountInfos()) {
+    for (const auto& account_info : keyring_service()->GetAllAccountInfos()) {
       if (account_info->account_id->coin == mojom::CoinType::ETH) {
         result.push_back(account_info->address);
       }
@@ -785,7 +786,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
             }),
         base::Value());
     if (user_approved) {
-      json_rpc_service_->NotifySwitchChainRequestProcessed(
+      json_rpc_service()->NotifySwitchChainRequestProcessed(
           GetPendingSwitchChainRequestId(), *user_approved);
     }
     run_loop.Run();
@@ -923,7 +924,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
   }
 
   std::string GetPendingSwitchChainRequestId() {
-    auto requests = json_rpc_service_->GetPendingSwitchChainRequestsSync();
+    auto requests = json_rpc_service()->GetPendingSwitchChainRequestsSync();
     EXPECT_EQ(1u, requests.size());
     return requests[0]->request_id;
   }
@@ -942,12 +943,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   base::ScopedTempDir temp_dir_;
   TestingProfile profile_;
-  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_ = nullptr;
   raw_ptr<AssetRatioService> asset_ratio_service_;
-  raw_ptr<TxService, DanglingUntriaged> tx_service_;
 
  protected:
-  raw_ptr<JsonRpcService, DanglingUntriaged> json_rpc_service_ = nullptr;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
 };
 
@@ -2627,7 +2625,7 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
           }),
       base::Value());
   EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
-  json_rpc_service_->NotifySwitchChainRequestProcessed(
+  json_rpc_service()->NotifySwitchChainRequestProcessed(
       GetPendingSwitchChainRequestId(), true);
   run_loop.Run();
   brave_wallet_tab_helper()->CloseBubble();

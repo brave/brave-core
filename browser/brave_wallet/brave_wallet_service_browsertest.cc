@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -84,8 +85,6 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
     https_server_.ServeFilesFromDirectory(test_data_dir);
     EXPECT_TRUE(https_server_.Start());
     host_resolver()->AddRule("*", "127.0.0.1");
-    wallet_service_ = brave_wallet::BraveWalletServiceFactory::GetInstance()
-                          ->GetServiceForContext(browser()->profile());
   }
 
   void TestIsPrivateWindow(BraveWalletService* wallet_service,
@@ -96,7 +95,11 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
     wallet_service->IsPrivateWindow(callback.Get());
   }
 
-  BraveWalletService* wallet_service() { return wallet_service_; }
+  BraveWalletService* wallet_service() {
+    return BraveWalletServiceFactory::GetServiceForContext(
+        browser()->profile());
+  }
+
   BraveWalletService* incognito_wallet_service() {
     return brave_wallet::BraveWalletServiceFactory::GetInstance()
         ->GetServiceForContext(
@@ -105,7 +108,6 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
   const net::EmbeddedTestServer* https_server() const { return &https_server_; }
 
  private:
-  raw_ptr<BraveWalletService, DanglingUntriaged> wallet_service_ = nullptr;
   net::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
 };

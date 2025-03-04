@@ -95,11 +95,6 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
     https_server_->ServeFilesFromDirectory(test_data_dir);
 
-    brave_wallet_service_ =
-        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-            browser()->profile());
-    keyring_service_ = brave_wallet_service_->keyring_service();
-
     ASSERT_TRUE(https_server_->Start());
   }
 
@@ -113,7 +108,7 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
   mojo::Remote<brave_wallet::mojom::JsonRpcService> GetJsonRpcService() {
     if (!json_rpc_service_) {
       mojo::PendingRemote<brave_wallet::mojom::JsonRpcService> remote;
-      brave_wallet_service_->json_rpc_service()->Bind(
+      brave_wallet_service()->json_rpc_service()->Bind(
           remote.InitWithNewPipeAndPassReceiver());
       json_rpc_service_.Bind(std::move(remote));
     }
@@ -128,27 +123,33 @@ class BraveWalletEventEmitterTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  BraveWalletService* brave_wallet_service() {
+    return BraveWalletServiceFactory::GetServiceForContext(
+        browser()->profile());
+  }
+
+  KeyringService* keyring_service() {
+    return brave_wallet_service()->keyring_service();
+  }
+
   url::Origin GetLastCommitedOrigin() {
     return url::Origin::Create(web_contents()->GetLastCommittedURL());
   }
 
-  AccountUtils GetAccountUtils() { return AccountUtils(keyring_service_); }
+  AccountUtils GetAccountUtils() { return AccountUtils(keyring_service()); }
 
   void RestoreWallet() {
-    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
+    ASSERT_TRUE(keyring_service()->RestoreWalletSync(
         kMnemonicDripCaution, kTestWalletPassword, false));
   }
 
   void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
-    ASSERT_TRUE(keyring_service_->SetSelectedAccountSync(account_id.Clone()));
+    ASSERT_TRUE(keyring_service()->SetSelectedAccountSync(account_id.Clone()));
   }
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   mojo::Remote<brave_wallet::mojom::JsonRpcService> json_rpc_service_;
-  raw_ptr<BraveWalletService, DanglingUntriaged> brave_wallet_service_ =
-      nullptr;
-  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   base::test::ScopedFeatureList feature_list_;
 };

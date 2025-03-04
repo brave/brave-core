@@ -124,8 +124,8 @@ class BitcoinTxManagerUnitTest : public testing::Test {
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
-  std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
   std::unique_ptr<KeyringService> keyring_service_;
+  std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
   std::unique_ptr<TxService> tx_service_;
   std::unordered_map<std::string, std::string> responses_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;

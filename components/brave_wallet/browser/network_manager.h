@@ -79,7 +79,7 @@ class NetworkManager {
   void SetNetworkURLForTesting(const std::string& chain_id, GURL url);
 
  private:
-  raw_ptr<PrefService, DanglingUntriaged> prefs_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
 
   std::map<std::string, GURL> network_url_for_testing_;
 };
