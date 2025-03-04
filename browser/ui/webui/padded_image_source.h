@@ -22,6 +22,14 @@ class SimpleURLLoader;
 class PaddedImageSource : public SanitizedImageSource {
  public:
   explicit PaddedImageSource(Profile* profile);
+
+  // This constructor lets us pass mock dependencies for testing.
+  PaddedImageSource(
+      Profile* profile,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::unique_ptr<DataDecoderDelegate> delegate,
+      std::string pcdn_domain);
+
   ~PaddedImageSource() override;
 
  protected:

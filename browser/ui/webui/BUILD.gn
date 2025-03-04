@@ -31,22 +31,37 @@ source_set("browser_tests") {
   }
 }
 
-if (enable_sparkle) {
-  source_set("unit_tests") {
-    testonly = true
-    sources = [ "help/brave_version_updater_mac_unittest.mm" ]
-    deps = [
-      "//base",
-      "//base/test:test_support",
-      "//brave/browser:mac_features",
-      "//chrome/browser/ui",
-      "//testing/gtest",
+source_set("unit_tests") {
+  testonly = true
+
+  sources = []
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+
+  if (enable_sparkle) {
+    sources += [ "help/brave_version_updater_mac_unittest.mm" ]
+    deps += [ "//brave/browser:mac_features" ]
+  }
+
+  if (!is_android) {
+    sources += [ "padded_image_source_unittest.cc" ]
+    deps += [
+      "//brave/browser/ui/webui:padded_image_source",
+      "//content/test:test_support",
+      "//services/data_decoder/public/cpp:test_support",
+      "//services/network:test_support",
     ]
   }
 }
 
 source_set("padded_image_source") {
-  # This is to match the upstream include for SanitizedImageSource.
+  # This is to match the upstream include for sanitized_image_source in
+  # //chrome/browser/ui
   assert(!is_android)
 
   sources = [

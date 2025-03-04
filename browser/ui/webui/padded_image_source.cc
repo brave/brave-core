@@ -19,6 +19,14 @@ PaddedImageSource::PaddedImageSource(Profile* profile)
     : SanitizedImageSource(profile),
       pcdn_domain_(brave_domains::GetServicesDomain("pcdn")) {}
 
+PaddedImageSource::PaddedImageSource(
+    Profile* profile,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    std::unique_ptr<DataDecoderDelegate> delegate,
+    std::string pcdn_domain)
+    : SanitizedImageSource(profile, url_loader_factory, std::move(delegate)),
+      pcdn_domain_(pcdn_domain) {}
+
 PaddedImageSource::~PaddedImageSource() = default;
 
 void PaddedImageSource::OnImageLoaded(
