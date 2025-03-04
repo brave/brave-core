@@ -1036,7 +1036,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     env = this.addPathToEnv(env, this.depotToolsDir, true)
     if (this.getTargetOS() === 'mac' && process.platform !== 'darwin') {
       const crossCompilePath = path.join(this.srcDir, 'brave', 'build', 'mac',
-                                         'cross-compile', 'path')
+                                         'cross_compile', 'path')
       env = this.addPathToEnv(env, crossCompilePath, true)
     }
     const pythonPaths = [
