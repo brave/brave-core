@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.chromium.base.ThreadUtils.runOnUiThread;
+
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,6 +27,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.bumptech.glide.Glide;
 
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.task.PostTask;
@@ -70,13 +73,16 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        initBraveNewsController();
-
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.recyclerview);
 
         mBraveNewsPreferencesType =
                 getArguments().getString(BraveConstants.BRAVE_NEWS_PREFERENCES_TYPE);
-        setData();
+
+        Runnable onBraveNewsControllerReady =
+                () -> {
+                    setData();
+                };
+        initBraveNewsController(onBraveNewsControllerReady);
     }
 
     private void setData() {
@@ -135,13 +141,24 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
         return mPageTitle;
     }
 
-    private void initBraveNewsController() {
+    private void initBraveNewsController(final Runnable action) {
+        ThreadUtils.assertOnUiThread();
         if (mBraveNewsController != null) {
+            if (action != null) {
+                action.run();
+            }
             return;
         }
 
-        mBraveNewsController =
-                BraveNewsControllerFactory.getInstance().getBraveNewsController(this);
+        BraveNewsControllerFactory.getInstance()
+                .getBraveNewsController(this)
+                .then(
+                        braveNewsController -> {
+                            mBraveNewsController = braveNewsController;
+                            if (action != null) {
+                                action.run();
+                            }
+                        });
     }
 
     @Override
@@ -333,7 +350,10 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
             mBraveNewsController.close();
         }
         mBraveNewsController = null;
-        initBraveNewsController();
+        runOnUiThread(
+                () -> {
+                    initBraveNewsController(null);
+                });
     }
 
     @Override
