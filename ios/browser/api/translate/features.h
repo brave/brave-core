@@ -13,6 +13,9 @@ namespace brave::features {
 // Whether or not to use the new Brave-Translate feature
 BASE_DECLARE_FEATURE(kBraveTranslateEnabled);
 
+// Whether or not to use the new Brave-Translate with Apple feature
+BASE_DECLARE_FEATURE(kBraveAppleTranslateEnabled);
+
 }  // namespace brave::features
 
 #endif  // BRAVE_IOS_BROWSER_API_TRANSLATE_FEATURES_H_

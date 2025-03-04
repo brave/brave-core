@@ -334,4 +334,9 @@
       initWithFeature:&brave::features::kBraveTranslateEnabled];
 }
 
++ (Feature*)kBraveAppleTranslateFeature {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kBraveAppleTranslateEnabled];
+}
+
 @end

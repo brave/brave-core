@@ -185,6 +185,13 @@
           FEATURE_VALUE_TYPE(brave::features::kBraveTranslateEnabled),         \
       },                                                                       \
       {                                                                        \
+          "brave-translate-apple-enabled",                                     \
+          "Use Apple Offline Translate",                                       \
+          "Enables page translation using Apple APIs",                         \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kBraveAppleTranslateEnabled),    \
+      },                                                                       \
+      {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \
           "New Tab Page Demo Branded Wallpaper",                               \
           "Force dummy data for the Branded Wallpaper New Tab Page "           \

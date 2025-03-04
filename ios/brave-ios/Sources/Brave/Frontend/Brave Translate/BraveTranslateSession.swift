@@ -3,16 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import SwiftUI
 import Translation
 import os.log
 
-// If set to true, Apple Translate will be used
-// If set to false, Brave Translate will be used
-// Apple Translate is causing a lot of issues with an unknown reason.
-// IE: It won't translate French to English, etc... so it's disabled atm.
-private let useAppleTranslate = false
+// If FeatureList.kBraveAppleTranslateFeature is true, Apple Translate will be used
+// If FeatureList.kBraveAppleTranslateFeature is false, Brave Translate will be used
+// Apple Translate is causing a lot of issues so it's disabled for now
 
 class BraveTranslateSession {
   struct RequestMessage: Codable {
@@ -32,7 +31,7 @@ class BraveTranslateSession {
     from source: Locale.Language,
     to target: Locale.Language
   ) async -> Bool {
-    if #available(iOS 18.0, *), useAppleTranslate {
+    if #available(iOS 18.0, *), FeatureList.kBraveAppleTranslateFeature.enabled {
       #if !targetEnvironment(simulator)
       let availability = LanguageAvailability()
       let status = await availability.status(from: source, to: target)
@@ -81,7 +80,7 @@ struct BraveTranslateContainerView: View {
   var body: some View {
     Color.clear
       .osAvailabilityModifiers({ view in
-        if #available(iOS 18.0, *), useAppleTranslate {
+        if #available(iOS 18.0, *), FeatureList.kBraveAppleTranslateFeature.enabled {
           #if !targetEnvironment(simulator)
           view
             .translationTask(
