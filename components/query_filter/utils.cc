@@ -128,6 +128,8 @@ static constexpr auto kSimpleQueryStringTrackers =
 
 static constexpr auto kConditionalQueryStringTrackers =
     base::MakeFixedFlatMap<std::string_view, std::string_view>({
+        // https://github.com/brave/brave-browser/issues/44341
+        {"ck_subscriber_id", "/unsubscribe"},
         // https://github.com/brave/brave-browser/issues/30731
         {"h_sid", "/email/"},
         {"h_slt", "/email/"},
