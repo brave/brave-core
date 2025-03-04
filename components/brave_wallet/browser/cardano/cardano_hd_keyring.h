@@ -16,6 +16,9 @@
 
 namespace brave_wallet {
 
+inline constexpr uint32_t kCardanoSignatureSize =
+    kEd25519PublicKeySize + kEd25519SignatureSize;
+
 // Keyring based on SLIP-0023 keys.
 class CardanoHDKeyring {
  public:
@@ -30,6 +33,11 @@ class CardanoHDKeyring {
       const mojom::CardanoKeyId& payment_key_id);
 
   std::optional<std::string> AddNewHDAccount(uint32_t index);
+
+  std::optional<std::array<uint8_t, kCardanoSignatureSize>> SignMessage(
+      uint32_t account,
+      const mojom::CardanoKeyId& key_id,
+      base::span<const uint8_t> message);
 
   mojom::KeyringId keyring_id() const { return keyring_id_; }
   bool IsTestnet() const;
