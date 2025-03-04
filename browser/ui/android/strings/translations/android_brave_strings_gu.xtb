@@ -2,6 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="gu">
 <translation id="370665806235115550">લોડ કરી રહ્યું છે...</translation>
+<translation id="7931127789630755251">Braveમાં તમે જે ખાનગી જાહેરાતો જુઓ છો તેના માટે ટોકન કમાઓ</translation>
 <translation id="7859066142771796818">ટોકનનો ઉપયોગ ગિફ્ટ કાર્ડ ખરીદવા, અન્ય કરન્સીમાં એક્સચેન્જ કરવા, કન્ટેન્ટ ક્રિએટર્સને સપોર્ટ કરવા વગેરે માટે કરો.</translation>
 <translation id="3863981251715594911">તે કેવી રીતે કાર્ય કરે છે?</translation>
 <translation id="2965798296974325760">રિવોર્ડનો ઉપયોગ કરવાનું શરૂ કરો</translation>
@@ -54,7 +55,6 @@
 <translation id="6587448235155023666">આગલા વખતે જ્યારે તમે Brave ને ફરીથી લોન્ચ કરો ત્યારે તમારા ફેરફારો પ્રભાવમાં આવશે</translation>
 <translation id="8701563696941209024">હમણાં ફરીથી લોન્ચ કરો</translation>
 <translation id="834487290629916192">પછીની</translation>
-<translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="4117451092682672487">ગોપનિયતા. હવે બની સરળ.</translation>
 <translation id="7909375417585209817">Braveને ડિફોલ્ટ રાખ્યું હોય, તો તમે ક્લિક કરો છો તે દરેક લિંક Braveના ગોપનિયતા સંરક્ષણોમાં ખૂલે છે.</translation>
 <translation id="7281027579943912834">Braveને ડિફોલ્ટ રાખ્યું હોય, તો તમે ક્લિક કરો છો તે દરેક લિંકને Braveનું એડ-બ્લોક સંરક્ષણ પ્રાપ્ત થાય છે. દરેક પેજ, વીડિયો અને સ્ટ્રીમ પર.</translation>
@@ -177,6 +177,7 @@
 <translation id="8363792084628930008">રિવોર્ડ સક્ષમ કરીને, તમે <ph name="TERMS_OF_SERVICE"/> અને <ph name="PRIVACY_POLICY"/> સાથે સંમત થાઓ છો.</translation>
 <translation id="3479552764303398839">હમણાં નહીં</translation>
 <translation id="7701040980221191251">કોઈ નહીં</translation>
+<translation id="8488282162676695335">Brave વૉલેટ</translation>
 <translation id="8798099450830957504">ડિફૉલ્ટ</translation>
 <translation id="1483493594462132177">મોકલો</translation>
 <translation id="2359808026110333948">આગળ વધો</translation>
@@ -221,7 +222,6 @@
 <translation id="1367951781824006909">એક ફાઇલ પસંદ કરો</translation>
 <translation id="1165039591588034296">ભૂલ</translation>
 <translation id="1450735350187803276">આ મહિને જોયેલી જાહેરાતો</translation>
-<translation id="7335371657242627509">આપમેળે-ફાળામાં સામેલ કરો</translation>
 <translation id="3074127054582480056">ધ્યાન આપો</translation>
 <translation id="7791543448312431591">ઉમેરો</translation>
 <translation id="2653659639078652383">સબમિટ કરો</translation>
@@ -247,6 +247,7 @@
 <translation id="3264975266761862670">કમાવાની શરૂઆત કરવા તૈયાર છો?</translation>
 <translation id="265337947574975838">એકાઉન્ટ કનેક્ટ કરો અથવા અમારા કોઈ પાર્ટનર સાથે નવું એકાઉન્ટ બનાવો.</translation>
 <translation id="654447476965480878">BAT કમાવવા વિશે વધુ જાણો</translation>
+<translation id="6278643716658443228">રિવોર્ડના સેટિંગ્સ</translation>
 <translation id="4272136334824111854">આ મહિને, તમે Brave રિવોર્ડ દ્વારા સપોર્ટ કરાયેલ <ph name="CREATOR_COUNT"/> ક્રિએટર્સની મુલાકાત લીધી છે</translation>
 <translation id="3435896845095436175">સક્ષમ કરો</translation>
 <translation id="5494920125229734069">બધા પસંદ કરો</translation>

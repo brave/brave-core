@@ -29,6 +29,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           ja varmista, että asetus on "ei välityspalvelinta" tai "suora".</translation>
+<translation id="6159073403999048272">Nämä sivut on tarkoitettu Bravein kehittäjille, eikä niitä välttämättä ylläpidetä tai testata aktiivisesti. Voit ottaa ne käyttöön siirtymällä osoitteeseen <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, klikkaamalla painiketta, jolla voit ottaa virheenkorjaussivut käyttöön, ja siirtymällä sitten uudelleen tälle sivulle.</translation>
 <translation id="2765022094254723779">Muu <ph name="BEGIN_LINK_OSS"/>avoimen lähdekoodin ohjelmisto<ph name="END_LINK_OSS"/> tukee Braveia.</translation>
 <translation id="9156965752763025780">Muutokset tulevat voimaan, kun käynnistät Bravein seuraavan kerran.</translation>
 <translation id="8828443087767259398">Brave tarvitsee Bluetoothia jatkaakseen 

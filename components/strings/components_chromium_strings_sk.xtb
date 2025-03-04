@@ -28,6 +28,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           a uistite sa, že je vaša konfigurácia nastavená na hodnotu „žiadny server proxy" alebo „priame".</translation>
+<translation id="6159073403999048272">Tieto stránky môžu používať vývojári prehliadača Brave a nemusia byť aktívne udržiavané ani testované. Ak ich chcete povoliť, prejdite na <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, kliknutím na tlačidlo povoľte stránky ladenia a potom sa vráťte na túto stránku.</translation>
 <translation id="2765022094254723779">Prehliadač Brave je založený aj na inom <ph name="BEGIN_LINK_OSS"/>softvéri open source<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Zmeny sa prejavia pri nasledujúcom reštartovaní prehliadača Brave.</translation>
 <translation id="8828443087767259398">Prehliadač Brave potrebuje prístup k rozhraniu Bluetooth, aby mohol pokračovať 

@@ -28,6 +28,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           en zorg ervoor dat de configuratie is ingesteld op 'geen proxy' of 'direct'.</translation>
+<translation id="6159073403999048272">Deze pagina's zijn bedoeld voor Brave-ontwikkelaars en worden misschien niet actief onderhouden of getest. Als je ze wilt aanzetten, ga je naar <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, klik je op de knop om pagina's voor foutopsporing aan te zetten en ga je opnieuw naar deze pagina.</translation>
 <translation id="2765022094254723779">Brave wordt ook mogelijk gemaakt door andere <ph name="BEGIN_LINK_OSS"/>opensource-software<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
 <translation id="8828443087767259398">Brave heeft bluetooth-toegang nodig om door te gaan met koppelen. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>

@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ka">
+<translation id="7931127789630755251">მიიღეთ ტოკენები Brave-ის პერსონალიზირებული რეკლამების ყურებისას</translation>
 <translation id="7859066142771796818">გამოიყენეთ ტოკენები სასაჩუქრე ბარათების შესაძენად, სხვა ვალუტაზე გადასაცვლელად, კონტენტ კრეატორების მხარდასაჭერად და სხვა.</translation>
 <translation id="3863981251715594911">როგორ მუშაობს?</translation>
 <translation id="2965798296974325760">დაიწყეთ ჯილდოების გამოყენება</translation>
@@ -38,10 +39,12 @@
 <translation id="2877653791257935258">შეიყვანეთ საიტის დასახელება ან URL</translation>
 <translation id="5329830149661250028">Brave ბრაუზერი უნიკალურია. ისიამოვნეთ გვერდების ჩატვირთვის შეუდარებელი სიჩქარით, რეკლამების და ტრეკერების გარეშე.</translation>
 <translation id="3941792073703079607">Brave-ის უპირატესობა: დაბლოკეთ რეკლამები, დაზოგეთ მონაცემები, ისარგებლეთ უფრო სწრაფი სტრიმინგით.</translation>
+<translation id="6165508094623778733">გაიგეთ მეტი</translation>
 <translation id="5806601733251372221">Brave-ის დაცვის სისტემა</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3570367516044491911">ნაგულისხმევ ბრაუზერად დაყენება</translation>
 <translation id="3546439402724649282">Brave უკვე დაყენებულია თქვენს ნაგულისხმევ ბრაუზერად.</translation>
+<translation id="7658239707568436148">გაუქმება</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave სიახლეები</translation>
 <translation id="8428213095426709021">პარამეტრები</translation>
@@ -75,6 +78,7 @@
 <translation id="2977461003134694205">კონფიდენციალურობის სტატისტიკა</translation>
 <translation id="8363792084628930008">Brave Rewards-ის გააქტიურებით, თქვენ ეთანხმებით <ph name="TERMS_OF_SERVICE"/> და <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3479552764303398839">ამჟამად არა</translation>
+<translation id="8488282162676695335">Brave საფულე</translation>
 <translation id="2359808026110333948">გაგრძელება</translation>
 <translation id="1544192797660353713">საფულე</translation>
 <translation id="719977489961414786">VPN უზრუნველყოფს თქვენი ინტერნეტ კავშირის უსაფრთხოებას და გიცავთ ტრეკერებისგან.</translation>
@@ -94,14 +98,17 @@
 <translation id="6053992191006521518">სცადეთ უფასოდ</translation>
 <translation id="5903391101107992067">სცადეთ უფასოდ 7 დღის განმავლობაში</translation>
 <translation id="8681480718817027245">გამოწერა</translation>
+<translation id="9065203028668620118">რედაქტირება</translation>
 <translation id="1450735350187803276">ამ თვეში ნანახი რეკლამები</translation>
 <translation id="5233638681132016545">ახალი ჩანართი</translation>
+<translation id="5039804452771397117">დაშვება</translation>
 <translation id="4250680216510889253">არა</translation>
 <translation id="5456039738087398178">მთავარი გვერდის ვიჯეტი</translation>
 <translation id="5899814466108868020">თქვენ ხელს უწყობთ Brave-ისა და BAT ქომიუნითის განვითარებას</translation>
 <translation id="3264975266761862670">მზად ხართ დაიწყოთ ფულის გამომუშავება?</translation>
 <translation id="265337947574975838">დაუკავშირდით ან შექმენით ანგარიში ჩვენს პარტნიორ სერვისთან.</translation>
 <translation id="654447476965480878">გაიგეთ მეტი, თუ როგორ მიიღოთ BAT ტოკენები</translation>
+<translation id="6278643716658443228">ჯილდოების პარამეტრები</translation>
 <translation id="4272136334824111854">ამ თვეში თქვენ ეწვიეთ <ph name="CREATOR_COUNT"/> Brave Rewards-ის მიერ მხარდაჭერილ კრეატორებს</translation>
 <translation id="1179407411385015942">Leo არის AI ასისტენტი, რომელიც პირდაპირ ბრაუზერშია ინტეგრირებული</translation>
 <translation id="4109670531935487117">ავტომატური შევსების შემოთავაზებების მისამართის ზოლში ჩვენება</translation>
@@ -122,4 +129,5 @@
 <translation id="614530507403667291">ახალი საუბრის მოდელის არჩევა</translation>
 <translation id="4071849832011229600">ნაგულისხმევი მოდელი</translation>
 <translation id="7557539689487606886">პრემიუმის გააქტიურება</translation>
+<translation id="3488199663160411179">სახელი</translation>
 </translationbundle>

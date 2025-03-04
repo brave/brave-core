@@ -407,6 +407,7 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="3570081523466826008">Aggiorna le connessioni a HTTPS</translation>
 <translation id="3357319404342882895">Restrittivo</translation>
 <translation id="8823559166155093873">Blocca i cookie</translation>
+<translation id="7093267802941377072">L'opzione "Blocca tutti i cookie" è stata rimossa. Per sapere come forzare l'attivazione di questa opzione, visita <ph name="BEGIN_LINK"/>la nostra pagina di supporto<ph name="END_LINK"/>.</translation>
 <translation id="6196640612572343990">Blocca cookie di terze parti</translation>
 <translation id="5657156137487675418">Consenti tutti i cookie</translation>
 <translation id="6883611015375728278">Blocca tutti i cookie</translation>
@@ -594,6 +595,7 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="5522403133543437426">Motore di ricerca utilizzato nella barra degli indirizzi.</translation>
 <translation id="280472502078788655">Motore di ricerca utilizzato nella barra degli indirizzi delle finestre private.</translation>
 <translation id="7232120595886556478">Finestra normale</translation>
+<translation id="6739674350896546324">Motore di ricerca per finestre private</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> è ora il motore di ricerca predefinito per le finestre private</translation>
 <translation id="6864914031231797928">Consenti l'accesso a Google per le estensioni</translation>
 <translation id="7878791177459550035">Il router multimediale permette le trasmissioni nel browser.</translation>
@@ -731,7 +733,7 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="3213787232304349732">L’URL in cui il framework di servizio è in ascolto per le richieste. Se hai dubbi, controlla la documentazione del framework di servizio. Ad esempio per Ollama, questa è sempre http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Alcuni framework di servizio possono richiedere credenziali di autenticazione, come una chiave API o un token di accesso. Queste saranno aggiunte all’intestazione della richiesta.</translation>
 <translation id="4335128003329183586">Dimensioni del contesto</translation>
-<translation id="8794525422794607973">Il numero massimo di token che il modello può elaborare in una singola interazione. Ogni token rappresenta circa 3⁄4 di una parola. Un limite più alto per i token consente al modello di gestire conversazioni più lunghe. La dimensione massima del contesto varia a seconda del modello utilizzato.</translation>
+<translation id="3153779001670804829">Il numero massimo di token che un modello può elaborare in una singola interazione. Una dimensione contestuale maggiore permette al modello di gestire conversazioni più lunghe. Ogni modello supporta dimensioni contestuali differenti.</translation>
 <translation id="217141195370578385">Brave non filtra queste richieste. Leggi le condizioni di privacy del fornitore scelto.</translation>
 <translation id="2645532768679870478">Gli endpoint non locali devono utilizzare il protocollo HTTPS per la trasmissione sicura dei dati.</translation>
 <translation id="8177205483022887785">Hai inserito un URL non valido. Inserisci un URL valido.</translation>

@@ -410,6 +410,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="3570081523466826008">Posodobi povezave na HTTPS</translation>
 <translation id="3357319404342882895">Strožje</translation>
 <translation id="8823559166155093873">Blokiraj piškotke</translation>
+<translation id="7093267802941377072">Možnost "Blokiraj vse piškotke" je bila odpravljena. Če želite izvedeti, kako na silo omogočiti to možnost, obiščite <ph name="BEGIN_LINK"/>našo stran za pomoč<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Blokiraj piškotke drugih spletnih mest</translation>
 <translation id="5657156137487675418">Dovoli vse piškotke</translation>
 <translation id="6883611015375728278">Blokiraj vse piškotke</translation>
@@ -597,6 +598,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="5522403133543437426">Spletni iskalnik, ki se uporablja v naslovni vrstici.</translation>
 <translation id="280472502078788655">Spletni iskalnik, ki se uporablja v naslovni vrstici zasebnih oken.</translation>
 <translation id="7232120595886556478">Običajno okno</translation>
+<translation id="6739674350896546324">Iskalnik za zasebna okna</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> je zdaj vaš privzeti spletni iskalnik za zasebna okna</translation>
 <translation id="6864914031231797928">Dovoli Googlovo prijavo za razširitve</translation>
 <translation id="7878791177459550035">Predstavnostni usmerjevalnik omogoča funkcijo oddajanja v brskalniku.</translation>
@@ -734,7 +736,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="3213787232304349732">URL, kjer vaše strežno ogrodje posluša zahteve. Če niste prepričani, preverite dokumentacijo strežnega ogrodja. Za npr. Ollamo je to vedno http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Nekatera strežna ogrodja utegnejo zahtevati poverilnice za preverjanje pristnosti, kot je ključ API ali žeton za dostop. Dodane bodo v glavo zahteve.</translation>
 <translation id="4335128003329183586">Velikost konteksta</translation>
-<translation id="8794525422794607973">Največje število žetonov, ki jih lahko model obdela v eni interakciji. Vsak žeton je približno 3/4 besede. Večja velikost konteksta omogoča modelu, da obdela daljše pogovore. Različni modeli podpirajo različne največje velikosti konteksta.</translation>
+<translation id="3153779001670804829">Največje število žetonov, ki jih lahko model obdela v eni interakciji. Večja velikost konteksta omogoča modelu, da obdela daljše pogovore. Različni modeli podpirajo različne največje velikosti konteksta.</translation>
 <translation id="217141195370578385">Brave teh zahtev ne posreduje, preberite pogoje zasebnosti izbranega ponudnika.</translation>
 <translation id="2645532768679870478">Nelokalne končne točke morajo za varen prenos podatkov uporabljati protokol HTTPS.</translation>
 <translation id="8177205483022887785">Vnesli ste neveljaven URL. Vnesite veljaven URL.</translation>

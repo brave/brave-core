@@ -24,10 +24,12 @@ Ezabatzen baduzu, berehala galduko dute denek "<ph name="TITLE_OF_GROUP"/>" fitx
 <translation id="176485176228926164"><ph name="BEGIN_LINK1"/>Lortu informazio gehiago<ph name="END_LINK1"/></translation>
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> fitxa taldekatu da</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> fitxa}other{<ph name="TABS_COUNT_MANY"/> fitxa}}</translation>
+<translation id="1909810060368225529">Oharra: partekatutako fitxa talde honetan egindako aldaketak denek ikus ditzakete. Guztiek egin ditzakete aldaketak zure fitxa talde partekatuetan.</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Egin hautatutako fitxa <ph name="TABS_COUNT_ONE"/>en laster-marka}other{Egin hautatutako <ph name="TABS_COUNT_MANY"/> fitxen laster-markak}}</translation>
 <translation id="2118649612461486615">Dendari buruzko informazioa</translation>
 <translation id="6086127758480584723">{INCOGNITO_TABS_COUNT,plural, =1{Itxitako fitxak eta taldeak Azkenaldiko fitxak eta Fitxa taldeak ataletatik ireki daitezke berriro. Zure ezkutuko moduko fitxa ez da egongo erabilgarri.}other{Itxitako fitxak eta taldeak Azkenaldiko fitxak eta Fitxa taldeak ataletatik ireki daitezke berriro. Zure ezkutuko moduko # fitxak ez dira egongo erabilgarri.}}</translation>
 <translation id="2162620598375156287">Orain, <ph name="CURRENT_PRICE"/> balio du <ph name="SOURCE_WEBSITE"/> webgunean</translation>
+<translation id="2242907120821295124"><ph name="TAB_GROUP_NAME"/> fitxa taldea ez dago erabilgarri jada</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Kendu fitxa taldetik}other{Kendu fitxak taldetik}}</translation>
 <translation id="2271452184061378400">Hemen gordetzen dira fitxa taldeak</translation>
 <translation id="2277224997687551299">Editatu taldearen izena</translation>
@@ -42,6 +44,7 @@ Ezabatzen baduzu, berehala galduko dute denek "<ph name="TITLE_OF_GROUP"/>" fitx
 <translation id="2671423594960767771">Partekatu taldea</translation>
 <translation id="2677748264148917807">Irten</translation>
 <translation id="2753098591787393794">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> fitxa gehitu da, <ph name="ANY_CHANGED"/> aldatu, eta <ph name="ANY_CLOSED"/> itxi}other{<ph name="MANY_ADDED"/> fitxa gehitu dira, <ph name="ANY_CHANGED"/> aldatu, eta <ph name="ANY_CLOSED"/> itxi}}</translation>
+<translation id="2755485474385016903">Egindako aldaketak taldeko guztiek ikusten dituzte</translation>
 <translation id="2776817246640326047">{NUM_HOURS,plural, =1{Duela <ph name="NUM_HOURS_ONE"/> ordu sortua}other{Duela <ph name="NUM_HOURS_MANY"/> ordu sortua}}</translation>
 <translation id="2801787514987684416">Dendari buruzko informazioa ikusi nahi duzu?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> fitxa itxi da}other{<ph name="MANY_CLOSED"/> fitxa itxi dira}}</translation>
@@ -75,6 +78,7 @@ Ezabatzen baduzu, berehala galduko dute denek "<ph name="TITLE_OF_GROUP"/>" fitx
 <translation id="427987768447457592">Fitxa talde berria</translation>
 <translation id="4320174784941799771">{NUMBER_OF_TABS_CHANGED,plural, =1{<ph name="ONE_CHANGED"/> fitxa aldatu da, eta <ph name="ANY_CLOSED"/> itxi}other{<ph name="MANY_CHANGED"/> fitxa aldatu dira, eta <ph name="ANY_CLOSED"/> itxi}}</translation>
 <translation id="4371591986692297148">Inaktibo</translation>
+<translation id="4431937619879060901">Berehala galduko duzu "<ph name="GROUP_NAME"/>" fitxa talderako sarbidea, eta zure gailu guztietatik ezabatuko da</translation>
 <translation id="4460014764210899310">Desegin taldea</translation>
 <translation id="4632233446660511480">{TAB_COUNT,plural, =1{1 fitxa inaktibo itxi nahi duzu?}other{<ph name="TAB_COUNT_MANY"/> fitxa inaktibo itxi nahi dituzu?}}</translation>
 <translation id="4686942373615810936">Oraintxe bertan sortua</translation>
@@ -83,6 +87,8 @@ Ezabatzen baduzu, berehala galduko dute denek "<ph name="TITLE_OF_GROUP"/>" fitx
 <translation id="4783638485675352219">Partekatu gailu honetan irekita dauden fitxen izenak eta URLak sistema eragilearekin</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> iritzi)}other{(<ph name="REVIEWS_COUNT_MANY"/> iritzi)}}</translation>
 <translation id="4850886885716139402">Ikusi</translation>
+<translation id="4861611890274104875">Baztertu txartela.</translation>
+<translation id="4861953997778766866">Guztiek egin ditzakete aldaketak zure fitxa talde partekatuetan</translation>
 <translation id="4870911314065352661">Fitxa guztiak itxi nahi dituzu?</translation>
 <translation id="4871719318659334896">Itxi taldea</translation>
 <translation id="4881695831933465202">Ireki</translation>
@@ -103,11 +109,9 @@ Ezabatzen baduzu, berehala galduko dute denek "<ph name="TITLE_OF_GROUP"/>" fitx
 <translation id="5494920125229734069">Hautatu guztiak</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{Itxi <ph name="TABS_COUNT_ONE"/> fitxa duen fitxa taldea, <ph name="COLOR_NAME"/> kolorekoa.}other{Itxi <ph name="TABS_COUNT_MANY"/> fitxa dituen fitxa taldea, <ph name="COLOR_NAME"/> kolorekoa.}}</translation>
 <translation id="5556417849629758491">Ikusi dendari buruzko informazioa, pantailaren goialdean dago erabilgarri</translation>
-<translation id="5615302411300498438">Mantendu talde hau geroago fitxak gehitzeko. Bestela, irten.
-
-Irteten bazara, berehala galduko duzu "<ph name="TITLE_OF_GROUP"/>" fitxa talderako sarbidea.</translation>
 <translation id="5627941783489838464">Ez dago fitxei buruzko berritasunik</translation>
 <translation id="5635915157654811450">{TAB_COUNT,plural, =1{Leheneratu fitxa}other{Leheneratu fitxak}}</translation>
+<translation id="5647702255748985085">Taldetik irten nahi duzu?</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave-ko <ph name="TABS_COUNT_ONE"/> esteka}other{Brave-ko <ph name="TABS_COUNT_MANY"/> esteka}}</translation>
 <translation id="58326064309361797">Fitxak taldekatzeko, arrasta itzazu</translation>
 <translation id="5901630391730855834">Horia</translation>
@@ -116,7 +120,6 @@ Irteten bazara, berehala galduko duzu "<ph name="TITLE_OF_GROUP"/>" fitxa talder
 <translation id="6040143037577758943">Itxi</translation>
 <translation id="6051432659151380973">Fitxa taldeak automatikoki gordetzen dira</translation>
 <translation id="6054741997831917303">Produktu honen prezioa jaitsi egin da, eta <ph name="PREVIOUS_PRICE"/> izatetik <ph name="NEW_PRICE"/> izatera pasatu</translation>
-<translation id="6082313992897617440">Berehala galduko duzu <ph name="GROUP_NAME"/> fitxa talderako sarbidea</translation>
 <translation id="6109251075362363230">Orain, fitxa bikoiztu guztiak ere artxibatuko dira, erabilitako azken kopia izan ezik.</translation>
 <translation id="6193448654517602979">Hautatu fitxak</translation>
 <translation id="6228793724645064692">(dendaren balorazioa)</translation>
@@ -125,11 +128,13 @@ Irteten bazara, berehala galduko duzu "<ph name="TITLE_OF_GROUP"/>" fitxa talder
 <translation id="6381032505162537930">Hemen aurkituko dituzu fitxa taldeak</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{Desegin hautatutako <ph name="TABS_COUNT_ONE"/> fitxaren taldea}other{Desegin hautatutako <ph name="TABS_COUNT_MANY"/> fitxen taldea}}</translation>
 <translation id="6422650314852876533">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> fitxa}other{<ph name="TABS_COUNT_MANY"/> fitxa}}</translation>
+<translation id="6499296376514955580">Partekatutako fitxa taldeetako aldaketei buruzko oharra itxita dago</translation>
 <translation id="6527303717912515753">Partekatu</translation>
 <translation id="6542289363124393690">{DAY_COUNT,plural, =1{Egun bat igaro ondoren}other{<ph name="DAY_COUNT_MANY"/> egun igaro ondoren}}</translation>
 <translation id="6549021453810473782">Ikusi dendari buruzko informazioa</translation>
 <translation id="6557858706263317126">+ <ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">Eraman fitxa ezkerrera</translation>
+<translation id="6589356853295569750">Partekatutako fitxa taldeetako aldaketei buruzko oharra altuera osoan irekita dago</translation>
 <translation id="6590332670428149473">Ireki <ph name="COLOR_NAME"/> koloreko <ph name="TITLE_OF_GROUP"/> fitxa talde partekatuaren ekintza-menua.</translation>
 <translation id="6615455863669487791">Erakutsi</translation>
 <translation id="6668311240800004911">{NUMBER_OF_TABS_CHANGED,plural, =1{<ph name="ONE_CHANGED"/> fitxa aldatu da}other{<ph name="MANY_CHANGED"/> fitxa aldatu dira}}</translation>
@@ -144,9 +149,10 @@ Irteten bazara, berehala galduko duzu "<ph name="TITLE_OF_GROUP"/>" fitxa talder
 <translation id="731648547091221002"><ph name="COLOR_NAME"/> hautatu da</translation>
 <translation id="7326879924029668159">Ikusi dendaren itzultze-gidalerroak</translation>
 <translation id="7352298686197644113">Ikusi irekita dauzkazun fitxetako zein produkturen prezioa jaitsi den</translation>
-<translation id="7421293530411019405">Fitxa taldetik irten nahi duzu?</translation>
+<translation id="742664698522525515">Taldea mantendu nahi duzu?</translation>
 <translation id="7452985128687107478">Fitxa taldeak automatikoki gordetzen eta eguneratzen dira zure gailu guztietan</translation>
 <translation id="747459581954555080">Leheneratu guztiak</translation>
+<translation id="750886945254958667">Mantendu talde hau geroago fitxak gehitzeko. Aurrerantzean hura atzitu nahi ez baduzu, irten bertatik.</translation>
 <translation id="753732157349120914">Fitxa-aldatzailea</translation>
 <translation id="1068242749670180460">{REVIEWS,plural, =1{Brave-tik datorren <ph name="REVIEWS_COUNT_ONE"/> iritzi}other{Brave-tik datozen <ph name="REVIEWS_COUNT_MANY"/> iritzi}}</translation>
 <translation id="7559245342362162951">Erakutsi taldearen fitxak pantaila osoko saretan</translation>
@@ -155,6 +161,7 @@ Irteten bazara, berehala galduko duzu "<ph name="TITLE_OF_GROUP"/>" fitxa talder
 <translation id="7699041944097291312">{TABS_COUNT,plural, =1{Partekatu hautatutako <ph name="TABS_COUNT_ONE"/> fitxa}other{Partekatu hautatutako <ph name="TABS_COUNT_MANY"/> fitxak}}</translation>
 <translation id="7773714564112603605">Kendu fitxa eta ezabatu taldea</translation>
 <translation id="7792771145871471484">Berrikusi iradokizunak.</translation>
+<translation id="7792860826279960128">Partekatutako fitxa taldeetako aldaketei buruzko oharra altuera erdian irekita dago</translation>
 <translation id="7825973332242257878">Fitxa taldeak</translation>
 <translation id="7838146321400849846">{TABS_COUNT,plural, =1{Taldekatu hautatutako <ph name="TABS_COUNT_ONE"/> fitxa}other{Taldekatu hautatutako <ph name="TABS_COUNT_MANY"/> fitxak}}</translation>
 <translation id="7853202427316060426">Jarduerak</translation>
@@ -176,10 +183,9 @@ Irteten bazara, berehala galduko duzu "<ph name="TITLE_OF_GROUP"/>" fitxa talder
 <translation id="8398929769197326728">Karpeta berria (<ph name="CURRENT_TIMESTAMP_MS"/>)</translation>
 <translation id="8428213095426709021">Ezarpenak</translation>
 <translation id="8516612320289425423">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> fitxa gehitu da, eta <ph name="ANY_CLOSED"/> itxi}other{<ph name="MANY_ADDED"/> fitxa gehitu dira, eta <ph name="ANY_CLOSED"/> itxi}}</translation>
-<translation id="8631711675211020168">Berehala galduko dute denek <ph name="GROUP_NAME"/> fitxa talderako sarbidea, eta gailu guztietatik ezabatuko da</translation>
 <translation id="8633025649649592204">Azkenaldiko jarduerak</translation>
-<translation id="8635399646025169806">Fitxa taldea mantendu nahi duzu?</translation>
 <translation id="870736955561925754">Fitxa itxi eta taldea ezabatu nahi duzu?</translation>
+<translation id="8712637175834984815">Ados</translation>
 <translation id="8714939927607906138">Merkeagoa</translation>
 <translation id="8730621377337864115">Eginda</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Duela <ph name="NUM_MONTHS_ONE"/> hilabete sortua}other{Duela <ph name="NUM_MONTHS_MANY"/> hilabete sortua}}</translation>
@@ -189,9 +195,12 @@ Irteten bazara, berehala galduko duzu "<ph name="TITLE_OF_GROUP"/>" fitxa talder
 <translation id="8915916167043355778">Itxi guztiak</translation>
 <translation id="9090098097337832354">Denda honi buruzko informazioa itxita dago</translation>
 <translation id="9114502155681725011">Ireki <ph name="COLOR_NAME"/> koloreko <ph name="TITLE_OF_GROUP"/> fitxa taldearen ekintza-menua.</translation>
+<translation id="9169141410816678175">Berehala galduko dute denek "<ph name="GROUP_NAME"/>" fitxa talderako sarbidea, eta gailu guztietatik ezabatuko da</translation>
 <translation id="9169594135889675189">Gehitu beste fitxa bat taldean</translation>
 <translation id="9216898458513705996">Fitxak irekita mantenduko dira gailu honetan, baina <ph name="USER_EMAIL"/> kontuan saioa hasita daukaten gailu guztietan ezabatuko da taldea</translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{Zabaldu <ph name="TABS_COUNT_ONE"/> fitxa duen fitxa taldea, <ph name="COLOR_NAME"/> kolorekoa.}other{Zabaldu <ph name="TABS_COUNT_MANY"/> fitxa dituen fitxa taldea, <ph name="COLOR_NAME"/> kolorekoa.}}</translation>
+<translation id="945522503751344254">Bidali oharrak</translation>
+<translation id="94870150074703282">Taldea ezabatu nahi duzu?</translation>
 <translation id="992256792861109788">Arrosa</translation>
 <translation id="3228718275011575753">Ezkutuko moduko fitxa guztiak itxi nahi dituzu?</translation>
 <translation id="6687920250729800417">Ezkutuko moduko fitxa hauetan egin dituzun jarduerak kendu egingo dira gailu honetatik</translation>
