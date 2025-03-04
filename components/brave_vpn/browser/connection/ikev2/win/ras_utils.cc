@@ -12,6 +12,7 @@
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 
 #include <windows.h>
+
 #include <ras.h>
 #include <raserror.h>
 #include <stdio.h>
@@ -442,11 +443,14 @@ RasOperationResult SetConnectionProxyParamsUsingPowerShell(
   }
 
   // Validate the URL of the provided PAC file
+  VLOG(2) << __func__ << " validating `pac_file_url`: \"" << pac_file_url
+          << "\"";
   GURL pac_file = GURL(base::WideToUTF8(pac_file_url));
   if (!pac_file.is_valid()) {
-    VLOG(2) << __func__ << " `pac_file_url` is not a valid URL: \""
-            << pac_file_url << "\"";
     return GetRasErrorResult("`pac_file_url` is not a valid URL");
+  }
+  if (!pac_file.SchemeIs(url::kHttpsScheme)) {
+    return GetRasErrorResult("`pac_file_url` is not using HTTPS");
   }
 
   base::CommandLine power_shell(base::FilePath(L"PowerShell"));
