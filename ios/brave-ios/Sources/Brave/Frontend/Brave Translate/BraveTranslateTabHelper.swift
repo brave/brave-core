@@ -121,6 +121,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
         try Task.checkCancellation()
 
         if !(await isTranslateLibAvailable()) {
+          self.delegate?.updateTranslateURLBar(tab: tab, state: previousState)
           throw BraveTranslateError.otherError
         }
       }
@@ -367,7 +368,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
     }
 
     // Lazy loading. Load the translate script if needed.
-    _ = try await webView.callAsyncJavaScript(
+    _ = try? await webView.callAsyncJavaScript(
       """
       await window.__firefox__.\(BraveTranslateScriptHandler.namespace).loadTranslateScript();
       """,
