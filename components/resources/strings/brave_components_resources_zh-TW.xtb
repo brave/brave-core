@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">此頁面不是透過 HTTP/HTTPS 提供，無法回報問題。</translation>
 <translation id="7907023135990310743">此頁面是本機網頁，無法回報問題。</translation>
 <translation id="8740275226259417070">此頁面為錯誤頁面，無法將其回報為損壞的網站。</translation>
+<translation id="6367576083705149078">如果您提供聯絡資訊，該資訊將被儲存，以備日後的報告使用.</translation>
 <translation id="6806248680442980382">感謝您協助 Brave 改善服務。此報告只會包含我們修復此網站所需的資訊。</translation>
 <translation id="6476216365964140603">其他詳細資訊 (選填)</translation>
 <translation id="6145852496180774737">聯絡方式：(選填)</translation>
@@ -712,8 +713,8 @@
 <translation id="4622826307953794521">透過 Web Discovery Project 貢獻部分匿名搜尋與瀏覽資料，以使 Brave 搜索更完善。原始碼是完全開放的。</translation>
 <translation id="4174337572777167894">Web 發現專案</translation>
 <translation id="9034669711835382440">社群</translation>
-<translation id="814503310257431685">檢視全部</translation>
 <translation id="845020633253356720">檢視商店</translation>
+<translation id="7777123407058400802">基本注意力代幣 - BAT</translation>
 <translation id="7090992647511817643">帳戶</translation>
 <translation id="4822132585477111396">鏈 ID</translation>
 <translation id="3269475789479462358">網域</translation>
@@ -1739,6 +1740,20 @@
 <translation id="3819528427777765709">盾牌已啟用</translation>
 <translation id="2142946302539262412">統一</translation>
 <translation id="4438043733494739848">透明</translation>
+<translation id="1950406774300125954">未同步</translation>
+<translation id="68413355604013935">未同步 (<ph name="BLOCKS"/> 個區塊落後)</translation>
+<translation id="1597233669965903034">同步您的帳戶，以存取最新的交易和餘額。</translation>
+<translation id="7499262814309712782">同步帳戶</translation>
+<translation id="2804568727504456403">同步 <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">初始化⋯⋯</translation>
+<translation id="4404141491825711928">處理區塊：</translation>
+<translation id="4983989175143324911">尚餘 <ph name="BLOCKS"/></translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> / <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">範圍：</translation>
+<translation id="1178581264944972037">暫停</translation>
+<translation id="7714298753782862705">同步完成。現在您可以關閉此視窗。</translation>
+<translation id="7716113567047550378">在同步完成之前，請不要關閉此視窗。</translation>
+<translation id="5123590959308755060">在新標籤頁中繼續使用錢包</translation>
 <translation id="7144878232160441200">重試</translation>
 <translation id="9094621390791852268">交易預覽失敗。</translation>
 <translation id="4982713341035600933">預估餘額變化</translation>
@@ -2063,7 +2078,7 @@
 <translation id="8637805148029768813">摘要工具功能目前僅適用於特定文章和其他完整格式網頁。</translation>
 <translation id="1223498995510244364">摘要</translation>
 <translation id="7491773233732232424">關於 Leo</translation>
-<translation id="5208096220706490232">Brave Leo 是私人 AI 智慧助理，可提升您的網際網路使用體驗。您可以免費使用 Leo，但存取權限會受到限制。Brave Leo Premium 提供更多模型、提高上限，訂閱者還能搶先使用新功能。目前所有使用者的預設模型為 Mixtral 8x7B。如需瞭解詳細資訊，請參閱 <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/>。</translation>
+<translation id="4885527781814382758">Brave Leo 是私人 AI 智慧助理，可提升您的網際網路使用體驗。您可以免費使用 Leo，但存取權限會受到限制。Brave Leo 高級版提供更多模型、更高的上限，訂閱者還能搶先使用新功能。預設模型會隨時變更。如需瞭解詳細資訊，請參閱 <ph name="LINK_BEFORE"/>Brave 支援中心<ph name="LINK_AFTER"/>gt;。</translation>
 <translation id="7189603330209995455">根據預設，當您向 Leo 提問，系統可能會傳送並使用您正在瀏覽的網頁內容，或將您在頁面上醒目標示的任何文字傳送給 Brave Leo，以便系統為您提供回應。我們無法保證回應的準確度，且其中可能含有不準確、誤導或錯誤的資訊。Leo 會使用 Brave Search 來改善回應品質。請勿送出敏感資料或私人資訊，並請審慎使用任何有關健康、財務、個人安全或類似主題的回答。您可以隨時前往「設定」調整 Leo 的選項。如要調整，請依序前往「設定」和「Leo」。</translation>
 <translation id="3038772045018370764">Leo 不會收集識別碼，例如可連結到您所在位置的 IP 位址等。我們不會使用資料來訓練 AI 模型，除了 Anthropic 會保留資料 30 天後再刪除之外，AI 模型不會保留任何個人資料。如需瞭解詳細資訊，請參閱<ph name="LINK_BEFORE"/>隱私權政策<ph name="LINK_AFTER"/>。</translation>
 <translation id="7839853125981164613">在此處輸入提示</translation>
@@ -2074,12 +2089,15 @@
 <translation id="2712650703044366764">此模型的端點無效。請檢查您的設定並重試。</translation>
 <translation id="1167803637855350748">連線至 Leo 時發生網路問題，請檢查連線狀態並再試一次。</translation>
 <translation id="1996126325390835277">您已達到  premium 速率限制。請在幾小時候重試。</translation>
+<translation id="3683964919745779766">您已到達此模型的費率上限，或點數已用完。請稍後再試。</translation>
+<translation id="7692501701960747469">為此模型設定的 API 金鑰無效。請檢查您的設定並重試。</translation>
+<translation id="7905602379229309187">端點目前已超載。請稍後再試。</translation>
 <translation id="8151638057146502721">設定</translation>
 <translation id="4177458398826096846">您好，我是 Leo。我是完全託管於 Brave 的 AI 助理，由 Meta 建立的模型 Llama 3.1 8B 提供技術支援，效能強大，可適用於許多使用案例。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">您好，我是 Leo。我是由 Brave 完全管理的 AI 助手。我的技術支援來自 Mixtral 8x7B，這是由 Mistral AI 建立的模型，適用於處理進階工作。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">您好，我是 Leo。我是由 Brave 代理並由 Claude Instant 提供技術支援，Claude Instant 是 Anthropic 建立的模型，用於為會話和文字處理任務提供技術支援。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">您好，我是 Leo。我是由 Brave 代理，並使用 Anthropic 建立的 Claude 3 Haiku 模型來處理對話與文字處理工作。</translation>
-<translation id="1107977270364670952">您好，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的模型 Claude 3.5 Sonnet 提供技術支援，可勝任對話和文字處理工作。</translation>
+<translation id="2001874998841390450">您好，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的 Claude Haiku 模型提供技術支援，可勝任對話與文字處理工作。<ph name="LINK_BEFORE"/>進一步了解<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">您好，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的模型 Claude Sonnet 提供技術支援，可勝任對話和文字處理工作。<ph name="LINK_BEFORE"/>進一步了解<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="COMPANY_NAME"/> 的 <ph name="MODEL_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">聊天</translation>
@@ -2098,6 +2116,9 @@
 <translation id="4165928407303989823">避免離題</translation>
 <translation id="2389665228467129817">延長聊天時間</translation>
 <translation id="8556044455877152001">美金 $ <ph name="PRICE_VALUE"/> /月</translation>
+<translation id="9031958221569934724">美金 $ <ph name="PRICE_VALUE"/> /年</translation>
+<translation id="1028627582482425924">1 年</translation>
+<translation id="36366199652730057">最佳價值</translation>
 <translation id="5151923271944811339">切換至免費模型</translation>
 <translation id="5474757891469990756">透過 Premium 徹底釋放 Leo 強大效能：</translation>
 <translation id="3453542753968940696">搶先使用具備不同技能的強大模型。</translation>
@@ -2117,6 +2138,8 @@
 <translation id="9018766373792005944">您的意見反應是關於什麼內容？</translation>
 <translation id="7355096922131918313">在此處提供意見反應</translation>
 <translation id="3027575440738035995">Leo Premium 提供了擴充的語言模型，以提供更具深度的答案。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">刪除</translation>
+<translation id="6574153208133461043">您確定要刪除此對話嗎？此動作無法撤銷。</translation>
 <translation id="7488762544858401571">已編輯</translation>
 <translation id="1406205536570262057">編輯回答</translation>
 <translation id="2399439821649319175">沒有幫助</translation>
@@ -2130,6 +2153,7 @@
 <translation id="8171760814579050200">重新命名對話</translation>
 <translation id="7754678742055438573">刪除對話</translation>
 <translation id="7494736170250048402">傳送訊息給 Leo</translation>
+<translation id="8650874793377330048">停止回答</translation>
 <translation id="8712637175834984815">我瞭解了</translation>
 <translation id="1093419424466417703">對 Leo 而言，此頁面過於冗長。對話可能遺漏某些內容。因此 Leo 無法讀取該頁面內容的 <ph name="PERCENTAGE"/> 。</translation>
 <translation id="2186990448773134544">由於頁面對 Leo 來說過長，因此已從中擷取最相關的資訊，以精簡頁面內容。</translation>

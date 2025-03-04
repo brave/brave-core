@@ -408,6 +408,7 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="3570081523466826008">Actualizar las conexiones a HTTPS</translation>
 <translation id="3357319404342882895">Estricto</translation>
 <translation id="8823559166155093873">Bloquear cookies</translation>
+<translation id="7093267802941377072">La opción "Bloquear todas las cookies" ha quedado obsoleta. Para saber cómo forzar la activación de esta opción, visita <ph name="BEGIN_LINK"/>nuestra página de ayuda<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Bloquear cookies de terceros</translation>
 <translation id="5657156137487675418">Permitir todas las cookies</translation>
 <translation id="6883611015375728278">Bloquear todas las cookies</translation>
@@ -595,6 +596,7 @@ volver a usar Sync de nuevo, deberás crear otra cuenta y volver a agregar cada 
 <translation id="5522403133543437426">Motor de búsqueda usado en la barra de direcciones.</translation>
 <translation id="280472502078788655">Motor de búsqueda utilizado en la barra de direcciones de las ventanas privadas.</translation>
 <translation id="7232120595886556478">Ventana normal</translation>
+<translation id="6739674350896546324">Motor de búsqueda para ventanas privadas</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> es ahora tu motor de búsqueda predeterminado para ventanas privadas</translation>
 <translation id="6864914031231797928">Permitir inicio de sesión de Google en extensiones</translation>
 <translation id="7878791177459550035">El router multimedia permite hacer transmisiones en el navegador.</translation>
@@ -732,7 +734,7 @@ volver a usar Sync de nuevo, deberás crear otra cuenta y volver a agregar cada 
 <translation id="3213787232304349732">La URL en la que tu marco de servicio atiende peticiones. Si no la sabes con certeza, consulta la documentación al respecto. Por ejemplo, en el caso de Ollama, se trata siempre de http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Existe la posibilidad de que algunos marcos de servicio exijan credenciales de autenticación a modo de clave de API o token de acceso. En ese caso, se añadirán al encabezado de la solicitud.</translation>
 <translation id="4335128003329183586">Tamaño del contexto</translation>
-<translation id="8794525422794607973">La cantidad máxima de tokens que el modelo puede procesar en una sola interacción. Cada token es aproximadamente 3/4 de una palabra. Un tamaño de contexto mayor permite al modelo manejar conversaciones más largas. Los distintos modelos admiten distintos tamaños de contexto máximos.</translation>
+<translation id="3153779001670804829">La cantidad máxima de tokens que el modelo puede procesar en una sola interacción. Un tamaño de contexto mayor permite al modelo manejar conversaciones más largas. Los distintos modelos admiten distintos tamaños de contexto máximos.</translation>
 <translation id="217141195370578385">Brave no hace de proxy para estas solicitudes. Consulte los términos de privacidad del proveedor elegido.</translation>
 <translation id="2645532768679870478">Los terminales no locales deben emplear el protocolo HTTPS para llevar a cabo una transmisión segura de los datos.</translation>
 <translation id="8177205483022887785">Ha introducido una URL no válida. Introduzca una que sí lo sea.</translation>

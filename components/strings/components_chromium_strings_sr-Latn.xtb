@@ -29,6 +29,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           i proverite da li je konfiguracija podešena na „no proxy“ (bez proksija) ili „direct“ (direktno).</translation>
+<translation id="6159073403999048272">Ove stranice su namenjene programerima Brave-a i možda se ne održavaju niti testiraju aktivno. Da biste ih omogućili, idite na <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, kliknite na dugme da biste omogućili stranice za otklanjanje grešaka, pa ponovo idite na ovu stranicu.</translation>
 <translation id="2765022094254723779">Brave omogućava i drugi <ph name="BEGIN_LINK_OSS"/>softver otvorenog koda<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Promene će stupiti na snagu kada sledeći put ponovo pokrenete Brave.</translation>
 <translation id="8828443087767259398">Brave zahteva pristup Bluetooth-u radi nastavljanja sa 

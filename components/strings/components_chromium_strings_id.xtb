@@ -29,6 +29,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           dan pastikan konfigurasi Anda disetel ke "tanpa proxy" atau "langsung".</translation>
+<translation id="6159073403999048272">Halaman ini ditujukan untuk digunakan oleh developer Brave, dan mungkin tidak dikelola atau diuji secara aktif. Untuk mengaktifkannya, buka <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, klik tombol untuk mengaktifkan halaman debug, lalu buka lagi halaman ini.</translation>
 <translation id="2765022094254723779">Brave juga terwujud karena adanya <ph name="BEGIN_LINK_OSS"/>software open source<ph name="END_LINK_OSS"/> lainnya.</translation>
 <translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Brave.</translation>
 <translation id="8828443087767259398">Brave memerlukan akses Bluetooth untuk melanjutkan 

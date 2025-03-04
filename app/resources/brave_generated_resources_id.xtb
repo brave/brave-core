@@ -407,6 +407,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3570081523466826008">Tingkatkan koneksi ke HTTPS</translation>
 <translation id="3357319404342882895">Ketat</translation>
 <translation id="8823559166155093873">Blokir kuki</translation>
+<translation id="7093267802941377072">Opsi "Blokir semua Kuki" telah dinonaktifkan. Untuk tahu cara mengaktifkan paksa opsi ini, buka <ph name="BEGIN_LINK"/>halaman bantuan kami<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Blokir cookie pihak ketiga</translation>
 <translation id="5657156137487675418">Izinkan semua cookie</translation>
 <translation id="6883611015375728278">Blokir semua kuki</translation>
@@ -594,6 +595,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5522403133543437426">Mesin penelusuran yang digunakan di bilah alamat.</translation>
 <translation id="280472502078788655">Mesin penelusuran yang digunakan di bilah alamat untuk jendela privat.</translation>
 <translation id="7232120595886556478">Jendela Normal</translation>
+<translation id="6739674350896546324">Mesin penelusuran untuk Jendela Pribadi</translation>
 <translation id="1280261732441045146">Sekarang <ph name="SEARCH_ENGINE_NAME"/> adalah mesin penelusuran default Anda untuk jendela privat</translation>
 <translation id="6864914031231797928">Izinkan login Google untuk ekstensi</translation>
 <translation id="7878791177459550035">Perute media memungkinkan fitur tayang di peramban.</translation>
@@ -731,7 +733,7 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3213787232304349732">URL tempat kerangka kerja pelayanan Anda mendengarkan permintaan. Jika tidak yakin, periksa dokumentasi kerangka kerja pelayanan. Misalnya, untuk Ollama, ini selalu http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Beberapa kerangka kerja pelayanan mungkin memerlukan kredensial autentikasi, seperti kunci API atau token akses. Ini akan ditambahkan ke tajuk permintaan.</translation>
 <translation id="4335128003329183586">Ukuran konteks</translation>
-<translation id="8794525422794607973">Jumlah maksimum token yang dapat diproses oleh model dalam satu interaksi. Setiap token kira-kira 3/4 dari sebuah kata. Ukuran konteks yang lebih besar memungkinkan model untuk menangani percakapan yang lebih panjang. Model yang berbeda mendukung ukuran konteks maksimum yang berbeda.</translation>
+<translation id="3153779001670804829">Jumlah maksimum token yang dapat diproses oleh model dalam satu interaksi. Ukuran konteks yang lebih besar memungkinkan model untuk menangani percakapan yang lebih panjang. Model yang berbeda mendukung ukuran konteks maksimum yang berbeda.</translation>
 <translation id="217141195370578385">Brave tidak memproksi permintaan ini, silakan baca persyaratan privasi dari penyedia yang dipilih.</translation>
 <translation id="2645532768679870478">Titik akhir non-lokal harus menerapkan protokol HTTPS untuk transmisi data yang aman.</translation>
 <translation id="8177205483022887785">Anda telah memasukkan URL yang tidak valid. Silakan masukkan URL yang valid.</translation>

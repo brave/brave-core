@@ -39,9 +39,6 @@
 <translation id="6198411733024382246">일부 데이터를 Brave 계정에 저장하고 모든 기기에서 사용하려면 Brave에서 본인 인증을 거쳐야 합니다. 로그아웃하면 해당 데이터가 이 기기에 유지됩니다</translation>
 <translation id="1902837727299679178">Brave에서 비밀번호 관리자 데이터를 삭제하려고 합니다. 허용하려면 Windows 비밀번호를 입력하세요.</translation>
 <translation id="4449148723378534338">Brave의 주요 개인 정보 보호 및 보안 제어 기능을 검토합니다.</translation>
-<translation id="8702821939435101066">이 계정을 한 번만 사용하려면 Brave 브라우저에서 <ph name="GUEST_LINK_BEGIN"/>게스트 모드<ph name="GUEST_LINK_END"/>를 사용하세요. 다른 사용자를 위해 계정을 추가하려면 <ph name="DEVICE_TYPE"/>에 <ph name="LINK_BEGIN"/>새 사용자를 추가<ph name="LINK_END"/>하세요.
-
-이 계정에는 웹사이트와 앱에 이미 부여한 권한이 적용될 수 있습니다. <ph name="SETTINGS_LINK_BEGIN"/>설정<ph name="SETTINGS_LINK_END"/>에서 Brave 계정을 관리할 수 있습니다.</translation>
 <translation id="1640672724030957280">다운로드 중...</translation>
 <translation id="1709772298389099340"><ph name="BROWSER_NAME"/>에 승격된 권한을 제공합니다.</translation>
 <translation id="2913217021115517297">Brave은 이러한 기능을 개선하도록 사용자와의 상호작용을 Brave에 전송합니다. 검토자가 이 데이터를 읽고 처리하고 이 데이터에 주석을 달 수 있습니다.</translation>
@@ -123,7 +120,6 @@
 <translation id="7788346643684168549">Brave이 더 빠르게 실행되며 JavaScript를 사용하는 기능이 의도한 대로 작동함(권장)</translation>
 <translation id="7387051847644272380">설치 중 운영체제 오류가 발생했습니다. Brave을 다시 다운로드하세요.</translation>
 <translation id="2648689842065142443">기기를 공유하는 경우 친구와 가족이 개별적으로 탐색하고 원하는 대로 Brave을 설정할 수 있습니다.</translation>
-<translation id="6384359666082467439"><ph name="ACCOUNT_FIRST_NAME"/>님, Brave에 오신 것을 환영합니다</translation>
 <translation id="6791166902140255175">Brave 탭</translation>
 <translation id="8372880274820509128">보안 강화를 위해 Brave에서 사용자 데이터를 암호화합니다.</translation>
 <translation id="8752006915531191162">Brave에서 Brave 계정을 삭제하려면 로그아웃하세요.</translation>
@@ -203,13 +199,11 @@
 <translation id="6324134303015966238">Brave은 사용자가 방문할 가능성이 있는 페이지를 미리 로드하여 사용자가 방문할 때 페이지를 더 빠르게 로드합니다.</translation>
 <translation id="2401189691232800402">ChromeOS 시스템</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
-<translation id="6009720635797285369"><ph name="ACCOUNT_EMAIL"/> 계정으로 Brave 브라우저 기능을 이용해 보세요</translation>
 <translation id="3885770153807205175">언어 선택 도구</translation>
 <translation id="6315734375101223238">Brave을 맞춤설정 및 제어합니다. 확인이 필요한 항목이 있습니다. 클릭하여 세부정보를 보세요.</translation>
 <translation id="7130675370997202556">Brave을 열고 탐색을 시작하려면 내 이름을 클릭하세요.</translation>
 <translation id="3892148308691398805">텍스트 복사</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/>님이 이미 Brave 프로필에 로그인되어 있습니다. 인터넷 사용 기록을 별도로 보관하기 위해 Brave에서 나만의 프로필을 만들 수 있습니다.</translation>
-<translation id="2337217774418822704">내 계정은 <ph name="MANAGER_NAME"/>에서 관리합니다. 관리자가 이 Brave 브라우저 프로필과 북마크, 방문 기록, 비밀번호 등의 데이터를 보고 수정할 수 있습니다.</translation>
 <translation id="3941890832296813527">설치 오류: 설치 프로그램 파일 이름이 잘못되었거나 지원되지 않습니다.</translation>
 <translation id="8090497651549769448">Brave에서 비밀번호를 복사하려고 합니다. 허용하려면 Windows 비밀번호를 입력하세요.</translation>
 <translation id="4256965182800026277">Brave 계정에 저장된 비밀번호, 결제 수단, 주소가 이 기기에서 삭제됩니다. Brave에서 다시 사용하려면 다시 로그인하세요</translation>
@@ -290,7 +284,6 @@
 <translation id="1204184037023366446">Brave에서 손 추적 기능을 사용하려면 권한이 필요합니다.</translation>
 <translation id="5174969993834422967">기본적으로 알림을 차단하는 중입니다. 이 사이트의 알림을 허용하려면 위치 표시줄의 오른쪽 모서리에 있는 알림 아이콘을 클릭하세요.</translation>
 <translation id="8157129267754368853">Brave 계정에 재인증이 필요함</translation>
-<translation id="874416006132366599">Brave 계정에서 Brave 데이터를 사용하고 저장하려면 암호(<ph name="ACCOUNT_EMAIL"/>)를 입력하세요</translation>
 <translation id="9078804073692109646">저장된 비밀번호가 없습니다. 비밀번호를 저장하면 Brave에서 확인할 수 있습니다.</translation>
 <translation id="6234515504547364178">Brave에서 로그아웃</translation>
 <translation id="5234764350956374838">닫기</translation>
@@ -298,7 +291,6 @@
 <translation id="8586264863973514035">변경사항을 적용하려면 Brave을 다시 실행하세요.</translation>
 <translation id="5286907366254680517">감지됨</translation>
 <translation id="300369155175407115">무료 체험이 사용 설정되어 있는 경우와 Brave에서 임의로 나에게 현재 진행 중인 무료 체험을 적용한 경우, 표시되는 광고 및 아래의 예측 관심분야에 방문 기록이 영향을 미칩니다. 개인 정보를 보호하기 위해 Brave에서는 매월 최소 한 번씩 수시로 관심분야를 삭제합니다.</translation>
-<translation id="6296746404132250684"><ph name="USER_EMAIL"/> 계정으로 Brave에 로그인</translation>
 <translation id="6944930779012811739">Brave 업데이터 내부 서비스</translation>
 <translation id="7573068992266397941">Brave에서 발견한 보안 권장사항을 검토해 주세요</translation>
 <translation id="8174413867995118050">기타 Brave 프로필</translation>
@@ -330,6 +322,7 @@
 <translation id="569897634095159764">인터넷에 연결할 수 없습니다. 프록시 서버를 인증해야 합니다.</translation>
 <translation id="1481566334825682976">최근에 사이트를 방문하지 않았습니다. Brave에서 <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/> 권한을 삭제했습니다.</translation>
 <translation id="1834213228893578875">Brave이 비활성 탭에서 메모리를 확보합니다. 이에 따라 활성 탭과 기타 앱에 더 많은 컴퓨터 리소스가 제공되고 Brave의 빠른 속도가 유지됩니다. 비활성 탭으로 돌아가면 탭이 자동으로 다시 활성화됩니다. <ph name="BEGIN_LINK"/>메모리 절약 모드에 관해 자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="899523323751802352">암호가 기억나지 않거나 이 설정을 변경하려면 계정의 Brave 데이터를 <ph name="SETTINGS_LINK"/>하세요.</translation>
 <translation id="82926023981336111">Brave을 맞춤설정 및 제어합니다. Brave을 기본 브라우저로 설정합니다.</translation>
 <translation id="5809516625706423866">인터넷에 연결할 수 없습니다(HTTP 401 Unauthorized). 프록시 설정을 확인하시기 바랍니다.</translation>
 <translation id="1224606669200461217">Brave 계정에서 Brave 데이터를 사용하고 저장하려면 Brave을 업데이트하세요.</translation>
@@ -358,12 +351,12 @@
 <translation id="5849446944780602366">Brave을 맞춤설정하고 제어하세요. 업데이트가 출시되었습니다.</translation>
 <translation id="5711722515923392428">사용 중 • Brave에서 이 확장 프로그램의 출처를 확인할 수 없습니다.</translation>
 <translation id="7433698744896946664">확장 프로그램이 Brave 툴바에 액세스 요청을 표시하도록 허용</translation>
-<translation id="492209281555538239">Brave에서 내 Brave 계정에 이 비밀번호를 저장하므로 기억하지 않아도 됩니다.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/>은(는) 위험한 파일이므로 Brave에서 차단했습니다.</translation>
 <translation id="991182453936521413">Brave이 곧 종료되고 데이터가 삭제됩니다</translation>
 <translation id="4060970194201477024">여기에서 Brave 프로필 간에 전환할 수 있습니다.</translation>
 <translation id="7815000350132166985">사용자가 쿠키를 허용하면 Brave에서 미리 로드할 때 쿠키를 사용할 수 있습니다.</translation>
 <translation id="6165508094623778733">자세히 알아보기</translation>
+<translation id="5739368447874065758">계정의 Brave 데이터 삭제</translation>
 <translation id="6685697979743742605">위험한 파일일 수도 있습니다.<ph name="LINE_BREAK"/>비밀번호를 제공하면 Brave에서 이 다운로드 항목을 확인할 수 있습니다. 파일에 관한 정보는 Brave 세이프 브라우징으로 전송되지만 파일 콘텐츠와 비밀번호는 기기에 보관됩니다.</translation>
 <translation id="6182736845697986886">업데이트 서버 내부 오류로 인해 설치할 수 없습니다.</translation>
 <translation id="4368341489795135329"><ph name="TARGET_DEVICE_NAME"/>에서 Brave에 로그인되어 있는지 확인한 다음 다시 전송해 보세요.</translation>
@@ -396,7 +389,6 @@
 <translation id="1684121725014454063">Brave 프로필에 오신 것을 환영합니다</translation>
 <translation id="7906693299331092358">Brave에서 계정 삭제</translation>
 <translation id="2675662665675552980">또한 Brave을 시작할 때 표시되는 페이지를 설정합니다.</translation>
-<translation id="6159073403999048272">이 페이지는 Brave 개발자를 위한 것으로, 적극적으로 유지보수되거나 테스트되지 않을 수 있습니다. 사용 설정하려면 <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>로 이동하여 버튼을 클릭하여 디버그 페이지를 사용 설정한 다음 이 페이지로 다시 이동하세요.</translation>
 <translation id="648319183876919572">향상된 세이프 브라우징은 위험한 웹사이트와 다운로드로부터 사용자를 보호합니다.</translation>
 <translation id="5590013613412457132">Brave 설치 제거</translation>
 <translation id="7185585387858242335">Brave에서 바로가기가 열립니다</translation>
@@ -468,7 +460,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8580803879249090057">파일이 <ph name="USER_EMAIL"/> 등의 개인 및 소셜 네트워크 계정에 피해를 줄 수 있기 때문에 Brave에서 이 다운로드를 차단했습니다</translation>
 <translation id="4631170166710903214">이 확장 프로그램은 더 이상 지원되지 않습니다. 대신 Brave에서는 이 프로그램을 삭제할 것을 권장합니다.</translation>
 <translation id="4923445196497670664">Brave이 양식을 더 잘 이해하고 더 빠르게 자동 완성할 수 있습니다. <ph name="BEGIN_LINK"/>Brave 자동 완성<ph name="END_LINK"/> 자세히 알아보기</translation>
-<translation id="38294420683216447">Brave 프로필을 사용하면 모든 Brave 데이터를 분리할 수 있습니다. 업무용 데이터와 개인용 데이터를 더 쉽게 분리해 보세요.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - 개발자용 Brave</translation>
 <translation id="7450541714075000668">텍스트 복사됨</translation>
 <translation id="2034072705932785495">이 사이트에서 카메라에 액세스하려면 Brave에 권한이 필요합니다</translation>
@@ -502,7 +493,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="7872446069773932638">다운로드 중... <ph name="SECONDS"/>초 남았습니다.</translation>
 <translation id="5687542525349822727">Brave을 기본 브라우저로 설정</translation>
 <translation id="6396151137840491551">가능한 경우 Brave이 비보안 연결을 HTTPS로 자동 업그레이드합니다.</translation>
-<translation id="1523322630961631757">Brave이 관리됨</translation>
 <translation id="2925193881330501265"><ph name="USER_EMAIL_ADDRESS"/>(으)로 Brave에 로그인되어 있습니다. 같은 계정으로 다시 로그인해 주세요.</translation>
 <translation id="6915252145142862992">Brave의 보조 설치이며 기본 브라우저로 설정할 수 없습니다.</translation>
 <translation id="8010081455002666927">자동 감지</translation>
@@ -518,6 +508,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="813913629614996137">초기화 중...</translation>
 <translation id="7550680632761245819">Brave의 JavaScript 및 WebAssembly 엔진에서 추가 보호 기능 사용 설정</translation>
 <translation id="9067428552314418522">이 파일은 위험하므로 Brave에서 차단했습니다.</translation>
+<translation id="6219250889396046657"><ph name="USER_EMAIL"/> 계정에서 Brave 데이터를 사용하고 저장하려면 비밀번호를 입력하세요</translation>
 <translation id="8221491193165283816">기본적으로 알림을 차단하는 중입니다. 이 사이트의 알림을 허용하려면 여기를 클릭하세요.</translation>
 <translation id="8377926237617998195">카메라를 사용하려면 <ph name="BEGIN_LINK"/>시스템 설정<ph name="END_LINK"/>에서 Brave에 액세스 권한을 부여하세요.</translation>
 <translation id="1755067029031059271">Brave에서 이 확장 프로그램의 출처를 확인할 수 없습니다. 안전하지 않은 확장 프로그램일 수 있습니다. 더 이상 개인 정보를 비롯한 방문 사이트의 데이터를 확인하고 변경할 수 없도록 Brave에서 이 확장 프로그램을 삭제하세요.</translation>
@@ -527,10 +518,8 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8313851650939857356">시작 오류: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894"><ph name="TIMEOUT_DURATION"/> 동안 사용하지 않으면 조직에서 Brave을 종료합니다.</translation>
 <translation id="8321888067342493336">이미지로 저장</translation>
-<translation id="5978040826230365177">계정의 Brave 데이터를 삭제합니다.</translation>
 <translation id="3360368475735266712">로그인하여 모든 기기에서 Brave을 동기화하고 맞춤설정하세요.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/>에서 이전에 Brave을 사용한 적이 있음</translation>
-<translation id="3098618823450433881">모든 기기에서 Brave 브라우저 데이터에 액세스하려면 로그인한 후 동기화를 사용 설정하세요</translation>
 <translation id="5592122595094519401">Brave 계정(<ph name="ACCOUNT_EMAIL"/>)의 Brave 데이터를 계속 사용하려면 Brave을 업데이트하세요</translation>
 <translation id="2569754604093464025">향후 Brave 업데이트를 받으려면 Windows 10 이상이 필요합니다. 이 컴퓨터에서는 Windows 8을 사용 중입니다.</translation>
 <translation id="8362914115861174987">도착어</translation>
@@ -579,7 +568,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="82609232232243542">Brave에 로그인</translation>
 <translation id="7055223246119657449">보관 파일에 멀웨어를 숨길 수 있는 다른 파일이 포함되어 있기 때문에 Brave에서 이 다운로드를 차단했습니다</translation>
 <translation id="9049928023195059068">다른 Brave 서비스에 로그인할 때 Brave에 로그인</translation>
-<translation id="3273774796888928550">Brave에 로그인합니다. 계정에 한 번만 로그인하려면 <ph name="GUEST_LINK_BEGIN"/>기기를 게스트로 사용<ph name="GUEST_LINK_END"/>하면 됩니다.</translation>
 <translation id="4561046754724442504">Brave이 자동으로 종료되었습니다</translation>
 <translation id="5173820533850252773">Brave이 이전 버전임</translation>
 <translation id="310518206836658214">{0,plural, =1{1시간 후 Brave이 다시 시작됩니다}other{#시간 후 Brave이 다시 시작됩니다}}</translation>

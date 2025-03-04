@@ -197,6 +197,8 @@
 <translation id="1680858055899097121">Nesaglabāt cilnes pārlūkošanas sesiju starplaikos</translation>
 <translation id="7142548388914389999">Atļaut privātuma nodrošināšanas produktu analīzi (P3A)</translation>
 <translation id="5254037869598726291">Anonimizēta P3A informācija palīdz Brave noteikt vispārējo lietošanas apmēru un ļauj uzlabot populāras funkcijas.</translation>
+<translation id="4174337572777167894">Tīmekļa atklāšanas projekts</translation>
+<translation id="8659271182272561965">Sniedziet anonīmus meklēšanas un pārlūkošanas datus, lai Brave meklēšana kļūtu labāka.</translation>
 <translation id="933652931229970927">Automātiski nosūtīt diagnostikas ziņojumus</translation>
 <translation id="5987838417172370108">Palīdziet uzlabot Brave\u2019s produktu stabilitāti, automātiski nosūtot diagnostikas ziņojumus, kad Brave pārlūks avarē vai pārstāj darboties.</translation>
 <translation id="7977176350719484850">Apr. ietaupītie\ndati</translation>
@@ -233,7 +235,6 @@
 <translation id="6587448235155023666">Šīs izmaiņas tiks piemērotas nākamajā reizē, kad atvērsiet programmu Brave</translation>
 <translation id="8701563696941209024">ATVĒRT TAGAD</translation>
 <translation id="834487290629916192">VĒLĀK</translation>
-<translation id="7207456302801184289">Laipni lūdzam pārlūkā Brave!</translation>
 <translation id="4117451092682672487">Privātums. Vienkārši.</translation>
 <translation id="7909375417585209817">Ja Brave būs noklusējuma pārlūks, visas saites, kam pieskaraties, tiks atvērtas ar Brave privātuma aizsardzību.</translation>
 <translation id="7370959926683925817">Bloķēt reklāmas. Saglabājiet datus. Katru dienu.</translation>
@@ -241,6 +242,9 @@
 <translation id="5148943178722443958">Palīdziet uzlabot Brave.</translation>
 <translation id="6718362830686703942">Sūtiet diagnostikas ziņojumus, ja programma avarē vai sastingst.</translation>
 <translation id="8616157231067364693">Kopīgojiet privātus un anonīmus viedokļus par produktiem un par to, kādas funkcijas izmanto Brave lietotāji.</translation>
+<translation id="2888496576732880897">Atbalstiet Brave meklēšanas izaugsmi</translation>
+<translation id="7044431516245362795">Pievienojieties Tīmekļa izpētes projektam, lai palīdzētu mums paplašināt indeksu un uzlabot meklēšanas rezultātus. <ph name="LEARN_MORE_START"/>Uzzināt vairāk.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7818938154803162778">Protams, es palīdzēšu</translation>
 <translation id="2877653791257935258">Ierakstiet tīmekļa vietnes nosaukumu vai URL</translation>
 <translation id="5329830149661250028">Apskatiet, ar ko atšķiras Brave: bez reklāmām. Bez sekotājiem. Daudz ātrāka lapas ielāde.</translation>
 <translation id="3941792073703079607">Uzziniet par Brave atšķirību: bloķējiet reklāmas. Saglabājiet datus. Straumējiet ātrāk.</translation>
@@ -457,6 +461,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="3624048886326677117">Bloķēt izsekotājus un reklāmas (agresīvi)</translation>
 <translation id="7151914815476509258">Bloķēt izsekotājus un reklāmas (standarta)</translation>
 <translation id="7384778069178817075">Atļaut visus izsekotājus un reklāmas</translation>
+<translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>Opcija "Bloķēt visus sīkfailus" ir novecojusi. Lai uzzinātu, kā veikt šīs opcijas piespiedu pieņemšanu, dodieties uz<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>mūsu palīdzības lapu<ph name="END_LINK_1"/></translation>
 <translation id="3763681089644577874">Bloķēt sīkfailus</translation>
 <translation id="614747795780742163">Neļauj tīmekļa vietnēm saglabāt informāciju par iepriekšējiem apmeklējumiem</translation>
 <translation id="6883611015375728278">Bloķēt visus sīkfailus</translation>
@@ -499,6 +504,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8459191579769999214">Aplūkot ekrānuzņēmumu</translation>
 <translation id="6476216365964140603">Papildu informācija (pēc izvēles)</translation>
 <translation id="6145852496180774737">Sazināties ar mani: (pēc izvēles)</translation>
+<translation id="6367576083705149078">Ja sniegsiet savu kontaktinformāciju, tā tiks saglabāta turpmāku ziņojumu sniegšanas nolūkiem.</translation>
 <translation id="7616645803364270729">E-pasts, Twitter utt.</translation>
 <translation id="5299848999918506028">Paldies!</translation>
 <translation id="76550953340008122">Paldies, ka paziņojāt Brave izstrādātājiem par problēmām ar šo vietni. Pacentīsimies to salabot!</translation>
@@ -857,7 +863,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="590733288489975971">Peļņa no reklāmām</translation>
 <translation id="1450735350187803276">Šomēnes saņemtās reklāmas</translation>
 <translation id="1767561995429774671">Ziedot</translation>
-<translation id="7335371657242627509">Iekļaut automātiskajā ziedošanā</translation>
 <translation id="6727102863431372879">Iestatīt</translation>
 <translation id="3074127054582480056">Uzmanību</translation>
 <translation id="2280319752798785157">Ikmēneša ieguldījums</translation>
@@ -1243,4 +1248,5 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1336494649091412226">Vai tiešām vēlaties aizvērt Brave?</translation>
 <translation id="2361906291514218784">Leo MI</translation>
 <translation id="7942415993090181327">Tērzēšanas vēsture</translation>
+<translation id="6859935199732075666">Rādīt drošās pārlūkošanas kļūdas</translation>
 </translationbundle>

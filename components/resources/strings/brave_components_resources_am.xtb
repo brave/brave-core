@@ -496,6 +496,7 @@
 <translation id="6965382102122355670">እሺ</translation>
 <translation id="6727102863431372879">ያዘጋጁ</translation>
 <translation id="8853725596990766789">መጠኑን ይቀይሩ</translation>
+<translation id="5899814466108868020">እርስዎ ብሬቭን እና የBAT ማህበረሰብን በመደገፍ እየረዱን ነው።</translation>
 <translation id="654447476965480878">ስለ BAT የበለጠ ይወቁ።</translation>
 <translation id="4105212447337987768"><ph name="DATE"/> ላይ ለነባር ምናባዊ BAT ቀሪ ሒሳቦች ድጋፍን እናቆማለን። የተገኘውን ሒሳብዎን ወደ በአዋቂ የሚተዳደር የልጅ ሒሳብዎ ማስተላለፍ እንድንችል ከዚህ ቀን በፊት ያገናኙ፣ ያለበለዚያ ቀሪ ሒሳቡ ይጠፋል።</translation>
 <translation id="707569835145765061">እርምጃ መውሰድ ያስፈልጋል፦ በአዋቂ የሚተዳደር የልጅ መለያን ያገናኙ አለበለዚያ የእርስዎ vBAT ይጠፋል</translation>
@@ -610,9 +611,12 @@
 <translation id="5376524136040178759">በUphold መሠረት በአሁኑ ጊዜ በእርስዎ የUphold መለያ ላይ አንዳንድ ገደቦች አሉ። እባክዎ ወደ የUphold መለያዎ ይግቡና ለማጠናቀቅ ማሳወቂያዎች ወይም ቀሪ የመለያ መስፈርቶች መኖራቸውን ያረጋግጡ እና እንደገና ይሞክሩ። ለምሳሌ፣ ተጨማሪ መረጃን ወደ Uphold ማስገባት ሊኖርብዎ ይችላል።</translation>
 <translation id="8285276813470932793">ጥያቄዎን ማጠናቀቅ አልቻልንም። እባክዎን እንደገና ይሞክሩ እና ችግሩ ከቀጠለ <ph name="LINK_BEGIN"/>ድጋፍ ሰጪን<ph name="LINK_END"/> ያነጋግሩ።</translation>
 <translation id="135956957367307069">ጥያቄዎ ገና እየተከወነ ነው፣ እባክዎ ይጠብቁ።</translation>
+<translation id="4477865412359526485">በአሁኑ ጊዜ የ Brave ማስታወቂያዎች ታሪክ የለም.</translation>
 <translation id="5860033963881614850">አጥፋ</translation>
 <translation id="5916664084637901428">በርቷል</translation>
 <translation id="7924320838799747606">ቀሪ ሂሳብዎ</translation>
+<translation id="8414447476773253869">ሒሳብዎን ለማየት ወደ <ph name="PROVIDER"/> ይግቡ።</translation>
+<translation id="957921474773060718">ቀጣይ አስተዋፅዖ:</translation>
 <translation id="7751260505918304024">ሁሉንም አሳይ</translation>
 <translation id="4114667046481794032">የመዋጮ መጠን</translation>
 <translation id="7550470870580166294">በቂ ያልሆነ ተቀማጭ</translation>
@@ -1461,6 +1465,8 @@
 <translation id="193368604235852218">Web3</translation>
 <translation id="1472675084647422956">ተጨማሪ አሳይ</translation>
 <translation id="4522570452068850558">ዝርዝሮች</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> ከ <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="1178581264944972037">ለአፍታ አቁም</translation>
 <translation id="7144878232160441200">እንደገና ሞክር</translation>
 <translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
 <translation id="3745016858329272300">አጠቃላይ መረጃ</translation>
@@ -1720,7 +1726,6 @@
 <translation id="8637805148029768813">የማጠቃለያ ባህሪው በአሁኑ ጊዜ ለተመረጡ መጣጥፎች እና ሌሎች ረጅም ቅጽ ድረ-ገጾች ብቻ ይገኛል።</translation>
 <translation id="1223498995510244364">አጠቃልል</translation>
 <translation id="7491773233732232424">ስለ Leo</translation>
-<translation id="5208096220706490232">Brave Leo የበይነመረብ አጠቃቀምን የሚያሻሽል የግል AI ብልጥ ረዳት ነው። Leo ከተገደበ መዳረሻ ጋር ለመጠቀም ነፃ ነው። Brave Leo Premium ተጨማሪ ሞዴሎችን፣ ከፍተኛ ገደቦችን ያቀርባል እና ለደንበኝነት ተመዝጋቢዎች አዳዲስ ባህሪያትን አስቀድሞ መዳረሻ ይሰጣል። የሁሉም ተጠቃሚዎች ነባሪ ሞዴል በአሁኑ ጊዜ Mixtral 8x7B ነው። ለተጨማሪ ዝርዝሮች <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/>ን ይመልከቱ።</translation>
 <translation id="7189603330209995455">በነባሪነት፣ ለLeo ጥያቄ ሲጠይቁ የሚመለከቱትን የድረ-ገጹን ይዘት ወይም በገጽ ላይ የሚያደምቁትን ማንኛውንም ጽሁፍ ለBrave Leo ምላሽ ለመስጠት ሊልክና ሊጠቀም ይችላል። የምላሾች ትክክለኛነት ዋስትና የለውም እናም ትክክል ያልሆነ፣ አሳሳች ወይም የሀሰት መረጃን ሊያካትት ይችላል። Leo የምላሽ ጥራትን ለማሻሻል ከ Brave ፍለጋ የተገኘውን መረጃ ይጠቀማል። ሚስጥራዊነት ያለው ወይም ግላዊ መረጃ አታስገባ፣ እና ከጤና፣ ፋይናንስ፣ የግል ደህንነት ወይም ተመሳሳይ ጉዳዮች ጋር በተያያዙ ማናቸውም መልሶች ጥንቃቄን ይጠቀሙ። በማንኛውም ጊዜ የLeo አማራጮችን በቅንብሮች ውስጥ ማስተካከል ይችላሉ። ወደ ቅንብሮች እና Leo ይሂዱ።</translation>
 <translation id="3038772045018370764">Leo ከእርስዎ ጋር ሊገናኙ የሚችሉ እንደ የእርስዎ IP አድራሻ ያሉ መለያዎችን አይሰበስብም። የ AI ሞዴሎችን ለማሰልጠን ምንም አይነት መረጃ ጥቅም ላይ አይውልም እና ምንም የግል መረጃ በ AI ሞዴሎች አይቀመጥም (ከመሰረዝዎ በፊት ለ 30 ቀናት መረጃን ከሚይዘው አንትሮፒክ በስተቀር)። ለተጨማሪ መረጃ <ph name="LINK_BEFORE"/>የግላዊነት ፖሊሲ<ph name="LINK_AFTER"/> ይመልከቱ።</translation>
 <translation id="7839853125981164613">ጥያቄ እዚህ ያስገቡ</translation>
@@ -1741,6 +1746,7 @@
 <translation id="3245401959451976966">የእርስዎን የፈጠራ አቅምን ይክፈቱ</translation>
 <translation id="4165928407303989823">በርዕሰ ጉዳዩ ላይ ይቆዩ</translation>
 <translation id="2389665228467129817">ረዘም ላለ ጊዜ ይወያዩ</translation>
+<translation id="1028627582482425924">አንድ ዓመት</translation>
 <translation id="5151923271944811339">ወደ ነፃው ሞዴል ቀይር</translation>
 <translation id="5474757891469990756">የLeo ሙሉ ሃይል በPremium ያስከፍቱ፡</translation>
 <translation id="3453542753968940696">የተለያየ ችሎታ ያላቸው ኃይለኛ ሞዴሎችን አስቀድሞ ማግኘት</translation>
@@ -1759,6 +1765,7 @@
 <translation id="9018766373792005944">ግብረመልስዎ ስለምንድን ነው?</translation>
 <translation id="7355096922131918313">ግብረመልስዎን እዚህ ያቅርቡ</translation>
 <translation id="3027575440738035995">Leo Premium ለበለጡ የተዛባ ምላሽ እንኳን ሳይቀር የተስፋፋ የቋንቋ ሞዴሎች መዳረሻን ያቀርባል። <ph name="LINK_BEFORE"/>የበለጠ ይወቁ<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">ሰርዝ</translation>
 <translation id="2399439821649319175">አጋዥ አይደለም</translation>
 <translation id="2976167228906046828">ልክ አይደለም</translation>
 <translation id="1183055847065865059">ደህንነቱ ያልተጠበቀ/ጎጂ</translation>
@@ -1878,10 +1885,12 @@
 <translation id="546481172717459539">ከስርዓቱ ቅንብር ጋር አዛምድ</translation>
 <translation id="7799817062559422778">የብርሃን ሁነታ</translation>
 <translation id="4117637339509843559">የጨለማ ሁነታ</translation>
+<translation id="6764845498618413165">የበለጠ ይወቁ.</translation>
 <translation id="958268166261124668">Brave VPN፦ ተገናኝቷል</translation>
 <translation id="6021669293402055982">Brave VPN፦ ግንኙነት ተቋርጧል</translation>
 <translation id="3541307549916475335">የBrave ቪፒኤን ፓነል ዩአይ</translation>
 <translation id="7143207342074048698">በመያያዝ ላይ</translation>
+<translation id="1202549130170287307">ግንኙነት በማቋረጥ ላይ</translation>
 <translation id="2325196879156848326">ግንኙነት ተቋርጧል</translation>
 <translation id="745054660363064771">ከሰርቨሩ ጋር መገናኘት አልተቻለም</translation>
 <translation id="3936826714240735937">ሌላ ሰርቨር ይምረጡ</translation>

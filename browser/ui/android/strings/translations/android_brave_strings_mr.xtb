@@ -2,6 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="mr">
 <translation id="370665806235115550">लोड करीत आहे...</translation>
+<translation id="7931127789630755251">ब्रेव्हमध्ये तुम्ही पाहिलेल्या खासगी जाहिरातींसाठी टोकन्स कमवा</translation>
 <translation id="7859066142771796818">गिफ्ट कार्ड्‌स खरेदी करण्यासाठी, इतर चलनांत बदलण्यासाठी, काँटेंट निर्मात्यांना समर्थन देण्यासाठी, आणि इतर बऱ्यांच गोष्टींसाठी टोकन्स वापरा.</translation>
 <translation id="3863981251715594911">हे काम कसे करते?</translation>
 <translation id="2965798296974325760">बक्षिसे वापरायला सुरुवात करा</translation>
@@ -57,7 +58,6 @@
 <translation id="4275663329226226506">माध्यम</translation>
 <translation id="2433507940547922241">स्वरूप</translation>
 <translation id="6587448235155023666">तुम्ही पुढल्या वेळी Brave रीलाँच कराल तोपर्यंत तुमचे बदल प्रभावी होतील</translation>
-<translation id="7207456302801184289">Brave मध्ये स्वागत आहे</translation>
 <translation id="4117451092682672487">गोपनीयता. सहज साध्य.</translation>
 <translation id="7909375417585209817">ब्रेव्ह डीफॉल्ट असताना तुम्ही टॅप केलेली प्रत्येक लिंक ब्रेव्हच्या गोपनीयता संरक्षणांसह उघडते.</translation>
 <translation id="7281027579943912834">ब्रेव्ह डीफॉल्ट असताना तुम्ही टॅप केलेल्या प्रत्येक लिंकला मिळते ब्रेव्हचे ॲड-ब्लॉक संरक्षण. प्रत्येक पान, व्हिडिओ आणि स्ट्रीम.</translation>
@@ -129,6 +129,7 @@
 <translation id="8363792084628930008">बक्षिसे सुरु करून, तुम्ही <ph name="TERMS_OF_SERVICE"/> आणि <ph name="PRIVACY_POLICY"/> मान्य करता.</translation>
 <translation id="3479552764303398839">सध्या नाही</translation>
 <translation id="7701040980221191251">काहीही नाही</translation>
+<translation id="8488282162676695335">ब्रेव्ह वॉलेट</translation>
 <translation id="8798099450830957504">डीफॉल्ट</translation>
 <translation id="1483493594462132177">पाठवा</translation>
 <translation id="2359808026110333948">सुरू ठेवा</translation>
@@ -197,6 +198,7 @@
 <translation id="3264975266761862670">कमाई सुरु करायला तयार?</translation>
 <translation id="265337947574975838">कनेक्ट व्हा किंवा आमच्या एखाद्या पार्टनरबरोबर खाते तयार करा.</translation>
 <translation id="654447476965480878">BAT कमावण्याविषयी अधिक जाणून घ्या</translation>
+<translation id="6278643716658443228">बक्षिसांच्या सेटिंग्ज</translation>
 <translation id="4272136334824111854">या महिन्यात, तुम्ही ब्रेव्ह बक्षिसांद्वारे समर्थित <ph name="CREATOR_COUNT"/> निर्मात्यांना भेट दिलीत</translation>
 <translation id="3435896845095436175">सक्षम करा</translation>
 <translation id="5494920125229734069">सर्व निवडा</translation>
