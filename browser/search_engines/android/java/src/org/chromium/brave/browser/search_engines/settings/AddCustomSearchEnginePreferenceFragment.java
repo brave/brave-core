@@ -23,6 +23,7 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
+import org.chromium.components.search_engines.BraveTemplateUrlService;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.widget.Toast;
 
@@ -99,30 +100,29 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
 
                             TemplateUrlService braveTemplateUrlService =
                                     TemplateUrlServiceFactory.getForProfile(getProfile());
-                            // if (braveTemplateUrlService instanceof BraveTemplateUrlService) {
-                            // ((BraveTemplateUrlService) braveTemplateUrlService)
-                            //         .addSearchEngine();
-                            // boolean isAdded =
-                            // ((BraveTemplateUrlService) braveTemplateUrlService).addSearchEngine(
-                            //                 mTitleEdittext.getText().toString(),
-                            //                 keyword,
-                            //                 mUrlEdittext.getText().toString());
-                            boolean isAdded =
-                                    braveTemplateUrlService.addSearchEngine(
-                                            mTitleEdittext.getText().toString(),
-                                            keyword,
-                                            mUrlEdittext.getText().toString());
-                            if (isAdded) {
-                                CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
-                                getActivity().finish();
-                            } else {
-                                Toast.makeText(
-                                                getActivity(),
-                                                "Failed to add search engine",
-                                                Toast.LENGTH_SHORT)
-                                        .show();
+                            if (braveTemplateUrlService instanceof BraveTemplateUrlService) {
+                                boolean isAdded =
+                                        ((BraveTemplateUrlService) braveTemplateUrlService)
+                                                .addSearchEngine(
+                                                        mTitleEdittext.getText().toString(),
+                                                        keyword,
+                                                        mUrlEdittext.getText().toString());
+                                // boolean isAdded =
+                                //         braveTemplateUrlService.addSearchEngine(
+                                //                 mTitleEdittext.getText().toString(),
+                                //                 keyword,
+                                //                 mUrlEdittext.getText().toString());
+                                if (isAdded) {
+                                    CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
+                                    getActivity().finish();
+                                } else {
+                                    Toast.makeText(
+                                                    getActivity(),
+                                                    "Failed to add search engine",
+                                                    Toast.LENGTH_SHORT)
+                                            .show();
+                                }
                             }
-                            // }
                         }
                     }
                 });

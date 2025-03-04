@@ -5,31 +5,40 @@
 
 package org.chromium.components.search_engines;
 
+import org.jni_zero.NativeMethods;
+
+import org.chromium.base.Log;
+
 public class BraveTemplateUrlService extends TemplateUrlService {
 
     // Overridden Chromium's TemplateUrlService.mNativeTemplateUrlServiceAndroid
-    // private long mNativeTemplateUrlServiceAndroid;
+    private long mNativeTemplateUrlServiceAndroid;
 
     public BraveTemplateUrlService(long nativeTemplateUrlServiceAndroid) {
         super(nativeTemplateUrlServiceAndroid);
+        Log.e(
+                "brave_search",
+                "BraveTemplateUrlService : nativeTemplateUrlServiceAndroid : "
+                        + nativeTemplateUrlServiceAndroid);
     }
 
-    // public boolean addSearchEngine(String title, String keyword, String url) {
-    //     Log.e("brave_search", "addSearchEngine");
-    //     return BraveTemplateUrlServiceJni.get().addSearchEngine(mNativeTemplateUrlServiceAndroid,
-    // title, keyword, url);
-    // }
+    public boolean addSearchEngine(String title, String keyword, String url) {
+        Log.e("brave_search", "addSearchEngine");
+        return BraveTemplateUrlServiceJni.get()
+                .addSearchEngine(mNativeTemplateUrlServiceAndroid, title, keyword, url);
+    }
 
-    // public void removeSearchEngine(String keyword) {
-    //     Log.e("brave_search", "removeSearchEngine");
-    //     BraveTemplateUrlServiceJni.get().removeSearchEngine(mNativeTemplateUrlServiceAndroid,
-    // keyword);
-    // }
+    public void removeSearchEngine(String keyword) {
+        Log.e("brave_search", "removeSearchEngine");
+        BraveTemplateUrlServiceJni.get()
+                .removeSearchEngine(mNativeTemplateUrlServiceAndroid, keyword);
+    }
 
-    // @NativeMethods
-    // public interface Natives {
-    //     boolean addSearchEngine(long nativeTemplateUrlServiceAndroid, String title, String
-    // keyword, String url);
-    //     void removeSearchEngine(long nativeTemplateUrlServiceAndroid, String keyword);
-    // }
+    @NativeMethods
+    public interface Natives {
+        boolean addSearchEngine(
+                long nativeTemplateUrlServiceAndroid, String title, String keyword, String url);
+
+        void removeSearchEngine(long nativeTemplateUrlServiceAndroid, String keyword);
+    }
 }

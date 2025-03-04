@@ -19,6 +19,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.components.search_engines.BraveTemplateUrlService;
 
 import java.util.List;
 
@@ -86,7 +87,7 @@ public class CustomSearchEnginesPreference extends Preference
         Runnable templateUrlServiceReady =
                 () -> {
                     Log.e("brave_search", "removeSearchEngine");
-                    TemplateUrlServiceFactory.getForProfile(mProfile)
+                    ((BraveTemplateUrlService) TemplateUrlServiceFactory.getForProfile(mProfile))
                             .removeSearchEngine(searchEngineKeyword);
                     CustomSearchEnginesUtil.removeCustomSearchEngine(searchEngineKeyword);
                     updateCustomSearchEngines();
