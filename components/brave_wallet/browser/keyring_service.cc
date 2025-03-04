@@ -582,16 +582,12 @@ bool UpdateBitcoinAccountIndexes(
     account_changed =
         account_changed ||
         account.bitcoin_next_receive_address_index != *next_receive_index;
-    DCHECK_GE(*next_receive_index,
-              account.bitcoin_next_receive_address_index.value_or(0u));
     account.bitcoin_next_receive_address_index = *next_receive_index;
   }
   if (next_change_index) {
     account_changed =
         account_changed ||
         account.bitcoin_next_change_address_index != *next_change_index;
-    DCHECK_GE(*next_change_index,
-              account.bitcoin_next_change_address_index.value_or(0u));
     account.bitcoin_next_change_address_index = *next_change_index;
   }
 
