@@ -41,10 +41,11 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest,
 
   // DialogBrowserTest:
   void ShowUi(const std::string& name) override {
-    TabRendererData new_tab_data = TabRendererData();
-    new_tab_data.title = kTabTitle;
-    new_tab_data.last_committed_url = GURL(kTabUrl);
-    GetTabStrip(browser())->AddTabAt(0, new_tab_data);
+    std::vector<std::pair<int, TabRendererData>> data_list;
+    data_list.emplace_back(0, TabRendererData());
+    data_list[0].second.title = kTabTitle;
+    data_list[0].second.last_committed_url = GURL(kTabUrl);
+    GetTabStrip(browser())->AddTabsAt(std::move(data_list));
 
     SimulateHoverTab(browser(), 0);
   }
