@@ -989,10 +989,13 @@ source_set("ui") {
     sources += [
       "//chrome/browser/ui/webui/favicon_source.cc",
       "//chrome/browser/ui/webui/favicon_source.h",
+      "//chrome/browser/ui/webui/sanitized_image_source.cc",
+      "//chrome/browser/ui/webui/sanitized_image_source.h",
     ]
 
     deps += [
       "//chrome/browser/favicon",
+      "//chrome/browser/image_fetcher",
       "//components/favicon/core",
       "//components/favicon_base",
       "//components/history/core/browser",
