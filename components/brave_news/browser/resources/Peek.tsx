@@ -13,7 +13,6 @@ import Variables from './Variables';
 import { MetaInfo } from './feed/ArticleMetaRow';
 import Card, { SmallImage, Title } from './feed/Card';
 import { useBraveNews } from './shared/Context';
-import { useUnpaddedImageUrl } from './shared/useUnpaddedImageUrl';
 import { loadTimeData } from '$web-common/loadTimeData';
 
 const NewsButton = styled.button`
@@ -99,7 +98,7 @@ export default function Peek() {
   const { feedV2, isShowOnNTPPrefEnabled, isOptInPrefEnabled } = useBraveNews()
   const top = feedV2?.items?.find(a => a.article || a.hero)
   const data = (top?.hero ?? top?.article)?.data
-  const imageUrl = useUnpaddedImageUrl(data?.image.paddedImageUrl?.url ?? data?.image.imageUrl?.url, undefined, true)
+  const imageUrl = `chrome://image?url=${data?.image.paddedImageUrl?.url ?? data?.image.imageUrl?.url}`
 
   // Show the news button if:
   // 1. We haven't opted in
@@ -128,7 +127,7 @@ export default function Peek() {
           <MetaInfo article={data} />
           <Title>{data.title}</Title>
         </div>
-        <SmallImage src={imageUrl} />
+        <SmallImage loading='eager' src={imageUrl} />
       </PeekingCard>}
     </Container>
     : null

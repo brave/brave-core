@@ -8,7 +8,6 @@ import { Article as Info } from 'gen/brave/components/brave_news/common/brave_ne
 import * as React from 'react';
 import styled from 'styled-components';
 import { useBraveNews } from '../shared/Context';
-import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import ArticleMetaRow from './ArticleMetaRow';
 import Card, { BraveNewsLink, SmallImage, Title, braveNewsCardClickHandler } from './Card';
 
@@ -27,21 +26,16 @@ const Container = styled(Card)`
 
 export default function Article({ info, hideChannel, feedDepth }: Props) {
   const { reportVisit } = useBraveNews()
-  const { url: imageUrl, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, {
-    useCache: true,
-    rootMargin: '500px 0px'
-  })
   const url = info.data.url.url;
 
   return <Container
-      ref={setElementRef}
-      onClick={e => {
-        braveNewsCardClickHandler(url)(e)
-        if (feedDepth !== undefined) {
-          reportVisit(feedDepth)
-        }
-      }}
-    >
+    onClick={e => {
+      braveNewsCardClickHandler(url)(e)
+      if (feedDepth !== undefined) {
+        reportVisit(feedDepth)
+      }
+    }}
+  >
     <ArticleMetaRow article={info.data} hideChannel={hideChannel} />
     <Flex direction='row' gap={spacing.xl} justify='space-between' align='start'>
       <Title>
@@ -52,7 +46,7 @@ export default function Article({ info, hideChannel, feedDepth }: Props) {
           {info.data.title}
         </BraveNewsLink>
       </Title>
-      <SmallImage src={imageUrl} />
+      <SmallImage loading='lazy' src={`chrome://image?url=${info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url}`} />
     </Flex>
   </Container>
 }

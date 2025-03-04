@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { HeroArticle as Info } from 'gen/brave/components/brave_news/common/brave_news.mojom.m';
 import * as React from 'react';
-import { useLazyUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import ArticleMetaRow from './ArticleMetaRow';
 import Card, { BraveNewsLink, LargeImage, Title, braveNewsCardClickHandler } from './Card';
 import styled from 'styled-components';
@@ -28,19 +27,14 @@ const Container = styled(Card)`
 
 export default function HeroArticle({ info, feedDepth }: Props) {
   const { reportVisit } = useBraveNews()
-  const { url, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, {
-    useCache: true,
-    rootElement: document.body,
-    rootMargin: '500px 0px'
-  })
   return <Container
     onClick={e => {
       braveNewsCardClickHandler(info.data.url.url)(e)
       if (feedDepth !== undefined) {
         reportVisit(feedDepth)
       }
-    }} ref={setElementRef}>
-    <LargeImage src={url} />
+    }}>
+    <LargeImage loading='lazy' src={`chrome://image?url=${info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url}`} />
     <ArticleMetaRow article={info.data} />
     <Title>
       <BraveNewsLink
