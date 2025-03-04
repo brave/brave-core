@@ -100,3 +100,7 @@
 -keep class org.chromium.chrome.browser.media.FullscreenVideoPictureInPictureController {
     *** dismissActivityIfNeeded(...);
 }
+
+-keep class org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver {
+    public <init>(...);
+}

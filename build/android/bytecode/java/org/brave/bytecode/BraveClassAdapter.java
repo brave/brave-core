@@ -127,6 +127,7 @@ public class BraveClassAdapter {
         chain = new BraveWebsiteClassAdapter(chain);
         chain = new BraveWebsitePermissionsFetcherClassAdapter(chain);
         chain = new BraveFullscreenVideoPictureInPictureControllerClassAdapter(chain);
+        chain = new BraveTabModelSelectorTabObserverClassAdapter(chain);
         return chain;
     }
 }
