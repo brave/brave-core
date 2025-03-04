@@ -272,6 +272,49 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
+                       NavigationRedirectCookiesAreCleared) {
+  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
+                                                   GURL());
+
+  const GURL a_site_url =
+      https_server_.GetURL("0.com",
+                           "/cross-site-with-site-cookie/1.com/"
+                           "cross-site-with-site-cookie/a.com/empty.html");
+
+  WebContents* site_a = LoadURLInNewTab(a_site_url);
+
+  // Default cookie storage request should return non empty results for 0.com
+  // and 1.com as these websites should set cookies on server redirect.
+  EXPECT_FALSE(content::GetCookies(browser()->profile(),
+                                   https_server_.GetURL("0.com", "/"))
+                   .empty());
+  EXPECT_FALSE(content::GetCookies(browser()->profile(),
+                                   https_server_.GetURL("1.com", "/"))
+                   .empty());
+
+  // a.com/empty.html should not set cookies.
+  EXPECT_TRUE(content::GetCookies(browser()->profile(),
+                                  https_server_.GetURL("a.com", "/"))
+                  .empty());
+
+  // Navigating to a new TLD should clear all ephemeral cookies after keep-alive
+  // timeout.
+  ASSERT_TRUE(content::NavigateToURL(site_a, c_site_ephemeral_storage_url_));
+  EXPECT_EQ(3u, WaitForCleanupAfterKeepAlive());
+
+  // Cookies should be cleared for 0.com and 1.com.
+  EXPECT_TRUE(content::GetCookies(browser()->profile(),
+                                  https_server_.GetURL("0.com", "/"))
+                  .empty());
+  EXPECT_TRUE(content::GetCookies(browser()->profile(),
+                                  https_server_.GetURL("1.com", "/"))
+                  .empty());
+  EXPECT_TRUE(content::GetCookies(browser()->profile(),
+                                  https_server_.GetURL("a.com", "/"))
+                  .empty());
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                        PRE_ForgetFirstPartyAfterRestart) {
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
