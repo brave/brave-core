@@ -113,7 +113,7 @@ class ZCashBlocksBatchScanTest : public testing::Test {
   }
 
   ZCashActionContext CreateContext() {
-    return ZCashActionContext(zcash_rpc_, sync_state_, account_id_,
+    return ZCashActionContext(zcash_rpc_, {}, sync_state_, account_id_,
                               mojom::kZCashMainnet);
   }
 
@@ -121,18 +121,21 @@ class ZCashBlocksBatchScanTest : public testing::Test {
 
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
-  base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
+  base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
+                 OrchardStorage::Error>
   GetSpendableNotes() {
     std::optional<
-        base::expected<std::vector<OrchardNote>, OrchardStorage::Error>>
+        base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
+                       OrchardStorage::Error>>
         result;
     sync_state_.AsyncCall(&OrchardSyncState::GetSpendableNotes)
-        .WithArgs(account_id_.Clone())
+        .WithArgs(account_id_.Clone(), OrchardAddrRawPart({}))
         .Then(base::BindLambdaForTesting(
-            [&](base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
-                    r) { result = std::move(r); }));
+            [&](base::expected<
+                std::optional<OrchardSyncState::SpendableNotesBundle>,
+                OrchardStorage::Error> r) { result = std::move(r); }));
     task_environment().RunUntilIdle();
-    return result.value();
+    return std::move(result.value());
   }
 
   std::unique_ptr<MockOrchardBlockScannerProxy>

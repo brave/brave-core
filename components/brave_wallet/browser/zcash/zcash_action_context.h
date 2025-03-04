@@ -12,23 +12,27 @@
 #include "base/threading/sequence_bound.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
 
-class ZCashRpc;
 class OrchardSyncState;
+class ZCashRpc;
 
 // Basic context required by most orchard-related operations.
 struct ZCashActionContext {
-  ZCashActionContext(ZCashRpc& zcash_rpc,
+  ZCashActionContext(
+      ZCashRpc& zcash_rpc,
 #if BUILDFLAG(ENABLE_ORCHARD)
-                     base::SequenceBound<OrchardSyncState>& sync_state,
+      const std::optional<OrchardAddrRawPart>& account_internal_addr,
+      base::SequenceBound<OrchardSyncState>& sync_state,
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
-                     const mojom::AccountIdPtr& account_id,
-                     const std::string& chain_id);
+      const mojom::AccountIdPtr& account_id,
+      const std::string& chain_id);
   ~ZCashActionContext();
   raw_ref<ZCashRpc> zcash_rpc;
 #if BUILDFLAG(ENABLE_ORCHARD)
+  std::optional<OrchardAddrRawPart> account_internal_addr;
   raw_ref<base::SequenceBound<OrchardSyncState>> sync_state;
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
   ZCashActionContext(ZCashActionContext&) = delete;

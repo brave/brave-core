@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/numerics/checked_math.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -70,28 +71,42 @@ void ZCashCreateOrchardToOrchardTransactionTask::WorkOnTask() {
 }
 
 void ZCashCreateOrchardToOrchardTransactionTask::GetSpendableNotes() {
+  if (!context_.account_internal_addr) {
+    error_ = "No internal address provided";
+    ScheduleWorkOnTask();
+    return;
+  }
   context_.sync_state->AsyncCall(&OrchardSyncState::GetSpendableNotes)
-      .WithArgs(context_.account_id.Clone())
+      .WithArgs(context_.account_id.Clone(),
+                context_.account_internal_addr.value())
       .Then(base::BindOnce(
           &ZCashCreateOrchardToOrchardTransactionTask::OnGetSpendableNotes,
           weak_ptr_factory_.GetWeakPtr()));
 }
 
 void ZCashCreateOrchardToOrchardTransactionTask::OnGetSpendableNotes(
-    base::expected<std::vector<OrchardNote>, OrchardStorage::Error> result) {
+    base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
+                   OrchardStorage::Error> result) {
   if (!result.has_value()) {
     error_ = result.error().message;
     ScheduleWorkOnTask();
     return;
   }
 
-  spendable_notes_ = result.value();
+  if (!result.value()) {
+    error_ = "No spendable notes";
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  spendable_notes_ = std::move(*result.value());
   ScheduleWorkOnTask();
 }
 
 void ZCashCreateOrchardToOrchardTransactionTask::CreateTransaction() {
   CHECK(spendable_notes_);
-  auto pick_result = PickZCashOrchardInputs(spendable_notes_.value(), amount_);
+  auto pick_result =
+      PickZCashOrchardInputs(spendable_notes_->spendable_notes, amount_);
   if (!pick_result) {
     error_ = "Can't pick inputs";
     ScheduleWorkOnTask();
@@ -106,22 +121,24 @@ void ZCashCreateOrchardToOrchardTransactionTask::CreateTransaction() {
   }
   zcash_transaction.set_fee(pick_result->fee);
 
+  if (!context_.account_internal_addr) {
+    error_ = "Internal address error";
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  if (!spendable_notes_->anchor_block_id) {
+    error_ = "Failed to select anchor";
+    ScheduleWorkOnTask();
+    return;
+  }
+
   // Create shielded change
   if (pick_result->change != 0) {
     OrchardOutput& orchard_output =
         zcash_transaction.orchard_part().outputs.emplace_back();
     orchard_output.value = pick_result->change;
-    auto change_addr =
-        zcash_wallet_service_->keyring_service_->GetOrchardRawBytes(
-            context_.account_id.Clone(),
-            mojom::ZCashKeyId::New(context_.account_id->account_index,
-                                   1 /* internal */, 0));
-    if (!change_addr) {
-      error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
-      ScheduleWorkOnTask();
-      return;
-    }
-    orchard_output.addr = *change_addr;
+    orchard_output.addr = context_.account_internal_addr.value();
   }
 
   // Create shielded output
@@ -133,6 +150,8 @@ void ZCashCreateOrchardToOrchardTransactionTask::CreateTransaction() {
   orchard_output.value = value.ValueOrDie();
   orchard_output.addr = receiver_;
   orchard_output.memo = memo_;
+  zcash_transaction.orchard_part().anchor_block_height =
+      spendable_notes_->anchor_block_id.value();
 
   auto orchard_unified_addr = GetOrchardUnifiedAddress(
       receiver_, context_.chain_id == mojom::kZCashTestnet);

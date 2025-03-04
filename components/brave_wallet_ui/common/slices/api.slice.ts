@@ -263,6 +263,7 @@ export const {
   useGetUserTokensRegistryQuery,
   useGetWalletsToImportQuery,
   useGetZCashAccountInfoQuery,
+  useGetZCashBalanceQuery,
   useHideNetworksMutation,
   useImportEthAccountFromJsonMutation,
   useImportEthAccountMutation,

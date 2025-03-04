@@ -14,6 +14,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_action_context.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -46,11 +47,14 @@ class ZCashCreateTransparentToOrchardTransactionTask {
 
   void GetAllUtxos();
   void GetChangeAddress();
+  void GetLatestBlock();
 
   void OnGetChangeAddress(
       base::expected<mojom::ZCashAddressPtr, std::string> result);
   void OnGetUtxos(
       base::expected<ZCashWalletService::UtxoMap, std::string> utxo_map);
+  void OnGetLatestBlockHeight(
+      base::expected<zcash::mojom::BlockIDPtr, std::string> result);
 
   void SetError(const std::string& error_string) { error_ = error_string; }
 
@@ -67,6 +71,7 @@ class ZCashCreateTransparentToOrchardTransactionTask {
   std::optional<std::string> error_;
 
   std::optional<ZCashWalletService::UtxoMap> utxo_map_;
+  std::optional<uint32_t> chain_tip_height_;
   mojom::ZCashAddressPtr change_address_;
 
   std::optional<ZCashTransaction> transaction_;

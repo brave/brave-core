@@ -16,6 +16,11 @@ type MakeAccountShieldedPayloadType = {
   accountBirthdayBlock: number
 }
 
+type GetZCashBalancePayloadType = {
+  chainId: string
+  accountId: BraveWallet.AccountId
+}
+
 export const zcashEndpoints = ({
   query,
   mutation
@@ -77,6 +82,31 @@ export const zcashEndpoints = ({
         }
       },
       providesTags: ['ZCashAccountInfo']
+    }),
+    getZCashBalance: query<
+    BraveWallet.ZCashBalance | null,
+    GetZCashBalancePayloadType
+    >({
+      queryFn: async (args, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { zcashWalletService } = baseQuery(undefined).data
+
+          const { balance } = await zcashWalletService.getBalance(
+            args.chainId, args.accountId
+          )
+
+          return {
+            data: balance
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Error getting ZCash balance info: ',
+            error
+          )
+        }
+      },
+      providesTags: ['ZCashBalance']
     }),
     getIsShieldingAvailable: query<boolean, BraveWallet.AccountId[]>({
       queryFn: async (args, { endpoint }, _extraOptions, baseQuery) => {

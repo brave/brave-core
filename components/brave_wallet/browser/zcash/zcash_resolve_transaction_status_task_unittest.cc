@@ -121,7 +121,7 @@ class ZCashResolveTransactionStatusTaskTest : public testing::Test {
   ZCashActionContext CreateContext() {
     return ZCashActionContext(zcash_rpc_,
 #if BUILDFLAG(ENABLE_ORCHARD)
-                              sync_state_,
+                              {}, sync_state_,
 #endif
                               account_id_, mojom::kZCashMainnet);
   }

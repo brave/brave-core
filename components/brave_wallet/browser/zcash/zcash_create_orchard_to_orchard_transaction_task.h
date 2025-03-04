@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_action_context.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
@@ -43,11 +44,9 @@ class ZCashCreateOrchardToOrchardTransactionTask {
 
   void GetSpendableNotes();
   void OnGetSpendableNotes(
-      base::expected<std::vector<OrchardNote>, OrchardStorage::Error> result);
+      base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
+                     OrchardStorage::Error> result);
   void CreateTransaction();
-
-  void GetAnchor();
-  void OnGetAnchor();
 
   void CalculateWitness();
   void OnWittnessCalculated();
@@ -62,7 +61,7 @@ class ZCashCreateOrchardToOrchardTransactionTask {
   bool started_ = false;
 
   std::optional<std::string> error_;
-  std::optional<std::vector<OrchardNote>> spendable_notes_;
+  std::optional<OrchardSyncState::SpendableNotesBundle> spendable_notes_;
   std::optional<PickOrchardInputsResult> picked_notes_;
   std::optional<OrchardSpendsBundle> spends_bundle_;
   std::optional<ZCashTransaction> transaction_;

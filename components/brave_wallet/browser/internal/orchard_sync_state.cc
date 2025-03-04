@@ -16,6 +16,14 @@
 
 namespace brave_wallet {
 
+OrchardSyncState::SpendableNotesBundle::SpendableNotesBundle() = default;
+OrchardSyncState::SpendableNotesBundle::~SpendableNotesBundle() = default;
+OrchardSyncState::SpendableNotesBundle::SpendableNotesBundle(
+    OrchardSyncState::SpendableNotesBundle&&) = default;
+OrchardSyncState::SpendableNotesBundle&
+OrchardSyncState::SpendableNotesBundle::operator=(
+    OrchardSyncState::SpendableNotesBundle&&) = default;
+
 OrchardSyncState::OrchardSyncState(const base::FilePath& path_to_database)
     : storage_(OrchardStorage(path_to_database)) {}
 
@@ -87,10 +95,49 @@ OrchardSyncState::Rewind(const mojom::AccountIdPtr& account_id,
   }
 }
 
-base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
-OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
+base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
+               OrchardStorage::Error>
+OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id,
+                                    const OrchardAddrRawPart& change_address) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return storage_.GetSpendableNotes(account_id);
+  ASSIGN_OR_RETURN(auto account_meta, storage_.GetAccountMeta(account_id));
+  if (!account_meta.has_value()) {
+    return base::ok(std::nullopt);
+  }
+  auto latest_scanned_block_id = account_meta->latest_scanned_block_id;
+  if (!latest_scanned_block_id) {
+    return OrchardSyncState::SpendableNotesBundle();
+  }
+  ASSIGN_OR_RETURN(auto notes, storage_.GetSpendableNotes(account_id));
+  ASSIGN_OR_RETURN(auto anchor, storage_.GetMaxCheckpointedHeight(
+                                    account_id, latest_scanned_block_id.value(),
+                                    kZCashInternalAddressMinConfirmations));
+
+  SpendableNotesBundle result;
+  result.anchor_block_id = anchor;
+  result.all_notes = notes;
+
+  // Anchor may not exist due chain reorg
+  if (anchor) {
+    result.spendable_notes = notes;
+    auto to_remove = std::ranges::remove_if(
+        result.spendable_notes,
+        [&change_address, &anchor,
+         &latest_scanned_block_id](const OrchardNote& note) {
+          if (note.block_id > latest_scanned_block_id ||
+              note.block_id > anchor.value()) {
+            return true;
+          }
+
+          bool is_internal = note.addr == change_address;
+          auto diff = latest_scanned_block_id.value() - note.block_id;
+          return (is_internal &&
+                  diff < kZCashInternalAddressMinConfirmations) ||
+                 (!is_internal && diff < kZCashPublicAddressMinConfirmations);
+        });
+    result.spendable_notes.erase(to_remove.begin(), to_remove.end());
+  }
+  return std::move(result);
 }
 
 base::expected<std::vector<OrchardNoteSpend>, OrchardStorage::Error>
@@ -202,16 +249,6 @@ base::expected<std::optional<uint32_t>, OrchardStorage::Error>
 OrchardSyncState::GetMinCheckpointId(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return storage_.MinCheckpointId(account_id);
-}
-
-base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-OrchardSyncState::GetMaxCheckpointedHeight(
-    const mojom::AccountIdPtr& account_id,
-    uint32_t chain_tip_height,
-    uint32_t min_confirmations) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return storage_.GetMaxCheckpointedHeight(account_id, chain_tip_height,
-                                           min_confirmations);
 }
 
 void OrchardSyncState::ResetDatabase() {
