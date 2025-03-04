@@ -1432,7 +1432,15 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     @Override
-    public void initBraveNewsController() {
+    public void initBraveNewsControllerFromAWorkerThread() {
+        runOnUiThread(
+                () -> {
+                    initBraveNewsController();
+                });
+    }
+
+    private void initBraveNewsController() {
+        ThreadUtils.assertOnUiThread();
         if (mBraveNewsController != null) {
             return;
         }
@@ -1442,10 +1450,13 @@ public abstract class BraveActivity extends ChromeActivity
 
         if (BravePrefServiceBridge.getInstance().getShowNews()
                 && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
-            mBraveNewsController = BraveNewsControllerFactory.getInstance().getBraveNewsController(
-                    mBraveNewsConnectionErrorHandler);
-
-            BraveNewsUtils.getBraveNewsSettingsData(mBraveNewsController, null);
+            BraveNewsControllerFactory.getInstance()
+                    .getBraveNewsController(mBraveNewsConnectionErrorHandler)
+                    .then(
+                            braveNewsController -> {
+                                mBraveNewsController = braveNewsController;
+                                BraveNewsUtils.getBraveNewsSettingsData(mBraveNewsController, null);
+                            });
         }
     }
 

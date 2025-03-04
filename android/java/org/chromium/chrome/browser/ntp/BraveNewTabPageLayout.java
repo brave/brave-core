@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.ntp;
 
+import static org.chromium.base.ThreadUtils.runOnUiThread;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
@@ -207,7 +208,7 @@ public class BraveNewTabPageLayout
         super.onFinishInflate();
 
         mFeedHash = "";
-        initBraveNewsController();
+        initBraveNewsController(null);
         try {
             if (BraveNewsUtils.shouldDisplayNewsFeed()
                     && BraveActivity.getBraveActivity().isLoadedFeed()) {
@@ -992,12 +993,20 @@ public class BraveNewTabPageLayout
             mNtpAdapter.setImageCreditAlpha(1f);
             mNtpAdapter.setNewsLoading(true);
         }
-        initBraveNewsController();
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-            if (mBraveNewsController != null) {
-                mBraveNewsController.getFeed(feed -> { runFeed(isNewContent, feed); });
-            }
-        });
+        Runnable onBraveNewsControllerReady =
+                () -> {
+                    PostTask.postTask(
+                            TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                            () -> {
+                                if (mBraveNewsController != null) {
+                                    mBraveNewsController.getFeed(
+                                            feed -> {
+                                                runFeed(isNewContent, feed);
+                                            });
+                                }
+                            });
+                };
+        initBraveNewsController(onBraveNewsControllerReady);
     }
 
     private void runFeed(boolean isNewContent, Feed feed) {
@@ -1515,20 +1524,34 @@ public class BraveNewTabPageLayout
             mBraveNewsController.close();
         }
         mBraveNewsController = null;
-        initBraveNewsController();
+        runOnUiThread(
+                () -> {
+                    initBraveNewsController(null);
+                });
     }
 
-    private void initBraveNewsController() {
+    private void initBraveNewsController(final Runnable action) {
+        ThreadUtils.assertOnUiThread();
         if (mBraveNewsController != null) {
+            if (action != null) {
+                action.run();
+            }
+
             return;
         }
 
-        mBraveNewsController =
-                BraveNewsControllerFactory.getInstance().getBraveNewsController(this);
-
-        if (mNtpAdapter != null) {
-            mNtpAdapter.setBraveNewsController(mBraveNewsController);
-        }
+        BraveNewsControllerFactory.getInstance()
+                .getBraveNewsController(this)
+                .then(
+                        braveNewsController -> {
+                            mBraveNewsController = braveNewsController;
+                            if (mNtpAdapter != null) {
+                                mNtpAdapter.setBraveNewsController(mBraveNewsController);
+                            }
+                            if (action != null) {
+                                action.run();
+                            }
+                        });
     }
 
     @Override
