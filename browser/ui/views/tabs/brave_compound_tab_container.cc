@@ -310,29 +310,32 @@ views::SizeBounds BraveCompoundTabContainer::GetAvailableSize(
                            /*height=*/views::SizeBound());
 }
 
-Tab* BraveCompoundTabContainer::AddTab(std::unique_ptr<Tab> tab,
-                                       int model_index,
-                                       TabPinned pinned) {
-  auto* new_tab =
-      CompoundTabContainer::AddTab(std::move(tab), model_index, pinned);
+std::vector<Tab*> BraveCompoundTabContainer::AddTabs(
+    std::vector<TabInsertionParams> tabs_params) {
+  std::vector<Tab*> new_tabs =
+      CompoundTabContainer::AddTabs(std::move(tabs_params));
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
-    return new_tab;
+    return new_tabs;
   }
 
-  if (pinned == TabPinned::kPinned && !pinned_tab_container_->GetVisible()) {
-    // When the browser was initialized without any pinned tabs, pinned tabs
-    // could be hidden initially by the FlexLayout.
-    pinned_tab_container_->SetVisible(true);
-  }
+  for (auto* new_tab : new_tabs) {
+    const auto pinned =
+        new_tab->data().pinned ? TabPinned::kPinned : TabPinned::kUnpinned;
 
-  if (scroll_view_ && pinned == TabPinned::kUnpinned && new_tab->IsActive()) {
-    ScrollTabToBeVisible(model_index);
-  }
+    if (pinned == TabPinned::kPinned && !pinned_tab_container_->GetVisible()) {
+      // When the browser was initialized without any pinned tabs, pinned tabs
+      // could be hidden initially by the FlexLayout.
+      pinned_tab_container_->SetVisible(true);
+    }
 
+    if (scroll_view_ && pinned == TabPinned::kUnpinned && new_tab->IsActive()) {
+      ScrollTabToBeVisible(new_tab);
+    }
+  }
   UpdatePinnedTabContainerBorder();
 
-  return new_tab;
+  return new_tabs;
 }
 
 void BraveCompoundTabContainer::MoveTab(int from_model_index,
@@ -438,7 +441,7 @@ void BraveCompoundTabContainer::SetActiveTab(
     std::optional<size_t> new_active_index) {
   CompoundTabContainer::SetActiveTab(prev_active_index, new_active_index);
   if (new_active_index.has_value()) {
-    ScrollTabToBeVisible(*new_active_index);
+    ScrollTabToBeVisible(GetTabAtModelIndex(*new_active_index));
   }
 }
 
@@ -526,12 +529,12 @@ void BraveCompoundTabContainer::UpdateUnpinnedContainerSize() {
   }
 }
 
-void BraveCompoundTabContainer::ScrollTabToBeVisible(int model_index) {
+void BraveCompoundTabContainer::ScrollTabToBeVisible(Tab* tab) {
+  CHECK(tab);
   if (!scroll_view_) {
     return;
   }
 
-  auto* tab = GetTabAtModelIndex(model_index);
   if (tab->data().pinned) {
     return;
   }

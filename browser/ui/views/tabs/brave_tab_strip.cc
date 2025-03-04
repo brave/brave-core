@@ -328,18 +328,20 @@ void BraveTabStrip::UpdateTabContainer() {
 
     // Resets TabSlotViews for the new TabContainer.
     auto* model = GetBrowser()->tab_strip_model();
+    std::vector<TabContainer::TabInsertionParams> added_tabs;
     for (int i = 0; i < model->count(); i++) {
       auto* tab = original_container->GetTabAtModelIndex(i);
       // At this point, we don't have group views in the container. So before
       // restoring groups, clears group for tabs.
       tab->SetGroup(std::nullopt);
-      tab_container_->AddTab(
+      added_tabs.emplace_back(
           tab->parent()->RemoveChildViewT(tab), i,
           tab->data().pinned ? TabPinned::kPinned : TabPinned::kUnpinned);
       if (tab->dragging()) {
         GetDragContext()->AddChildView(tab);
       }
     }
+    tab_container_->AddTabs(std::move(added_tabs));
 
     auto* group_model = model->group_model();
     for (auto group_id : group_model->ListTabGroups()) {
