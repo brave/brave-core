@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/containers/contains.h"
 #include "base/containers/extend.h"
@@ -1217,6 +1218,7 @@ bool NetworkManager::SetCurrentChainId(mojom::CoinType coin,
 
 void NetworkManager::SetNetworkURLForTesting(const std::string& chain_id,
                                              GURL url) {
+  CHECK_IS_TEST();
   if (url.is_valid()) {
     network_url_for_testing_[chain_id] = std::move(url);
   } else {

@@ -22,7 +22,7 @@
 namespace brave_wallet {
 
 GetCardanoUtxosTask::GetCardanoUtxosTask(
-    base::WeakPtr<CardanoWalletService> cardano_wallet_service,
+    CardanoWalletService& cardano_wallet_service,
     const std::string& chain_id,
     std::vector<mojom::CardanoAddressPtr> addresses,
     GetCardanoUtxosTask::Callback callback)
@@ -82,15 +82,6 @@ void GetCardanoUtxosTask::OnGetUtxoList(
 }
 
 void GetCardanoUtxosTask::WorkOnTask() {
-  if (!callback_) {
-    return;
-  }
-  if (!cardano_wallet_service_) {
-    std::move(callback_).Run(this,
-                             base::unexpected(WalletInternalErrorMessage()));
-    return;
-  }
-
   if (error_) {
     std::move(callback_).Run(this, base::unexpected(std::move(*error_)));
     return;

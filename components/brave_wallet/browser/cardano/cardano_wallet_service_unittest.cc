@@ -93,10 +93,6 @@ class CardanoWalletServiceUnitTest : public testing::Test {
     return cardano_account_->account_id.Clone();
   }
 
-  mojom::AccountIdPtr hw_account_id() const {
-    return hw_btc_account_->account_id.Clone();
-  }
-
  protected:
   base::test::ScopedFeatureList scoped_btc_feature_{
       features::kBraveWalletCardanoFeature};

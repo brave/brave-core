@@ -27,11 +27,10 @@ class GetCardanoUtxosTask {
       base::OnceCallback<void(GetCardanoUtxosTask*,
                               base::expected<UtxoMap, std::string>)>;
 
-  GetCardanoUtxosTask(
-      base::WeakPtr<CardanoWalletService> cardano_wallet_service,
-      const std::string& chain_id,
-      std::vector<mojom::CardanoAddressPtr> addresses,
-      Callback callback);
+  GetCardanoUtxosTask(CardanoWalletService& cardano_wallet_service,
+                      const std::string& chain_id,
+                      std::vector<mojom::CardanoAddressPtr> addresses,
+                      Callback callback);
   virtual ~GetCardanoUtxosTask();
 
   void ScheduleWorkOnTask();
@@ -43,7 +42,7 @@ class GetCardanoUtxosTask {
       mojom::CardanoAddressPtr address,
       base::expected<cardano_rpc::UnspentOutputs, std::string> utxos);
 
-  base::WeakPtr<CardanoWalletService> cardano_wallet_service_;
+  raw_ref<CardanoWalletService> cardano_wallet_service_;
   std::string chain_id_;
   std::vector<mojom::CardanoAddressPtr> addresses_;
   bool requests_sent_ = false;

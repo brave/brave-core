@@ -582,12 +582,16 @@ bool UpdateBitcoinAccountIndexes(
     account_changed =
         account_changed ||
         account.bitcoin_next_receive_address_index != *next_receive_index;
+    DCHECK_GE(*next_receive_index,
+              account.bitcoin_next_receive_address_index.value_or(0u));
     account.bitcoin_next_receive_address_index = *next_receive_index;
   }
   if (next_change_index) {
     account_changed =
         account_changed ||
         account.bitcoin_next_change_address_index != *next_change_index;
+    DCHECK_GE(*next_change_index,
+              account.bitcoin_next_change_address_index.value_or(0u));
     account.bitcoin_next_change_address_index = *next_change_index;
   }
 
@@ -628,12 +632,16 @@ bool UpdateCardanoAccountIndexes(
     account_changed =
         account_changed ||
         account.cardano_next_external_address_index != *next_external_index;
+    DCHECK_GE(*next_external_index,
+              account.cardano_next_external_address_index.value_or(0u));
     account.cardano_next_external_address_index = *next_external_index;
   }
   if (next_internal_index) {
     account_changed =
         account_changed ||
         account.cardano_next_internal_address_index != *next_internal_index;
+    DCHECK_GE(*next_internal_index,
+              account.cardano_next_internal_address_index.value_or(0u));
     account.cardano_next_internal_address_index = *next_internal_index;
   }
 

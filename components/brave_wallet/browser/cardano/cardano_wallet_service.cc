@@ -77,8 +77,7 @@ void CardanoWalletService::GetBalance(mojom::AccountIdPtr account_id,
 
   auto& task = get_cardano_utxo_tasks_.emplace_back(
       std::make_unique<GetCardanoUtxosTask>(
-          weak_ptr_factory_.GetWeakPtr(),
-          GetNetworkForCardanoAccount(account_id), CloneVector(*addresses),
+          *this, GetNetworkForCardanoAccount(account_id), std::move(*addresses),
           base::BindOnce(&CardanoWalletService::OnGetCardanoUtxosTaskDone,
                          weak_ptr_factory_.GetWeakPtr())),
       std::move(callback));
