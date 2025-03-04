@@ -29,6 +29,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>,
           és gondoskodjon róla, hogy a konfiguráció beállítása „nincs proxy” vagy „közvetlen” legyen.</translation>
+<translation id="6159073403999048272">Ezek az oldalak a Brave fejlesztői számára készültek, és előfordulhat, hogy nincsenek aktívan karbantartva vagy tesztelve. Az engedélyezésükhöz lépjen a <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/> oldalra, kattintson a hibaelhárítási oldalak engedélyezéséhez tartozó gombra, majd lépjen ismét erre az oldalra.</translation>
 <translation id="2765022094254723779">A Braveot létrejöttéhez más <ph name="BEGIN_LINK_OSS"/>nyílt forráskódú szoftverek<ph name="END_LINK_OSS"/> is hozzájárultak.</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
 <translation id="8828443087767259398">A Bravenak Bluetooth-hozzáférésre van szükséges a párosítás 

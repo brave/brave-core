@@ -175,6 +175,7 @@
 <translation id="3110968385867124099">このページはHTTP/HTTPSに対応していないため、報告することができません。</translation>
 <translation id="7907023135990310743">このページはローカルWebページであるため、報告対象に含めることができません。</translation>
 <translation id="8740275226259417070">このページはエラーページです。報告対象に含めることができません。</translation>
+<translation id="6367576083705149078">連絡先情報を入力すると、今後の報告のために保存されます.</translation>
 <translation id="6806248680442980382">Braveの改善に向けてのご協力をいただきありがとうございます。このレポートには、このサイトを修正するために必要な情報のみが含まれています。</translation>
 <translation id="6476216365964140603">追加情報 (オプション)</translation>
 <translation id="6145852496180774737">連絡先: (オプション)</translation>
@@ -715,8 +716,8 @@
 <translation id="4622826307953794521">Brave Searchのサービス向上のため、検索閲覧データの匿名提供にご協力ください。この Web Discovery Project は完全にオープンソースです。</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">コミュニティ</translation>
-<translation id="814503310257431685">すべて表示</translation>
 <translation id="845020633253356720">ストアを表示</translation>
+<translation id="7777123407058400802">ベーシックアテンショントークン - BAT</translation>
 <translation id="7090992647511817643">アカウント</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">ドメイン</translation>
@@ -1744,6 +1745,20 @@
 <translation id="3819528427777765709">シールド済</translation>
 <translation id="2142946302539262412">統合</translation>
 <translation id="4438043733494739848">透明</translation>
+<translation id="1950406774300125954">同期されていません</translation>
+<translation id="68413355604013935">同期されていません (<ph name="BLOCKS"/> ブロック遅延)</translation>
+<translation id="1597233669965903034">最新の取引と残高にアクセスするには、アカウントを同期してください。</translation>
+<translation id="7499262814309712782">アカウントを同期</translation>
+<translation id="2804568727504456403"><ph name="ACCOUNT"/>を同期</translation>
+<translation id="813913629614996137">初期化中...</translation>
+<translation id="4404141491825711928">処理中のブロック:</translation>
+<translation id="4983989175143324911">残り<ph name="BLOCKS"/></translation>
+<translation id="1703172100615786285"><ph name="TOTAL_BLOCKS"/>の<ph name="BLOCKS"/></translation>
+<translation id="5055918601206839704">処理範囲:</translation>
+<translation id="1178581264944972037">一時停止</translation>
+<translation id="7714298753782862705">同期が完了しました。このウィンドウを閉じてください。</translation>
+<translation id="7716113567047550378">同期が終了するまでこのウィンドウを閉じないでください。</translation>
+<translation id="5123590959308755060">新しいタブでウォレットを使い続ける</translation>
 <translation id="7144878232160441200">再試行</translation>
 <translation id="9094621390791852268">トランザクションをプレビューできませんでした。</translation>
 <translation id="4982713341035600933">推定される残高の変化</translation>
@@ -2068,7 +2083,7 @@
 <translation id="8637805148029768813">コンテンツ要約機能は、現在一部の記事とその他の縦長のWebページのみで利用可能です。</translation>
 <translation id="1223498995510244364">要約</translation>
 <translation id="7491773233732232424">Leoについて</translation>
-<translation id="5208096220706490232">Brave Leoは、インターネット利用を向上させるプライベートAIスマートアシスタントです。Leoは限定的なアクセスで無料です。Brave Leoプレミアムはより多くのモデル、より高い限度を提供し、加入者に新機能の早期アクセスを提供します。全ユーザーの現在のデフォルトモデルはMixtral 8x7Bです。詳細は<ph name="LINK_BEFORE"/>Brave Wiki<ph name="LINK_AFTER"/>をご覧ください。</translation>
+<translation id="4885527781814382758">Brave Leoは、インターネットの使い方をより強化する、プライベートなAIスマートアシスタントです。Leoは無料で一定のアクセスをご利用いただけます。Brave Leoプレミアムでは、より多くのモデルが利用できるほか、アクセス上限が高くなり、新機能への早期アクセスが提供されます。デフォルトモデルは随時変更されます。詳細は<ph name="LINK_BEFORE"/>Braveヘルプセンター<ph name="LINK_AFTER"/>をご覧ください。</translation>
 <translation id="7189603330209995455">デフォルトでは、Leoに質問すると、閲覧中のウェブページの内容やページ上でハイライトしたテキストをBrave Leoに送信し、回答を提供するために使用することがあります。回答の正確さは保証されず、不正確な情報、誤解を招く情報、または偽の情報が含まれることがあります。LeoはBrave Searchからのデータを使用して回答の品質を向上させます。機密性の高い情報や個人情報を送信しないでください。また、健康、財務、個人の安全、またはそれに類する内容に関する回答には注意してください。Leoのオプションはいつでも設定で調整できます。設定 &gt; Leoにアクセスしてください。</translation>
 <translation id="3038772045018370764">Leoは、あなたを特定できるIPアドレスなどの識別子を収集しません。AIモデルのトレーニングにデータは使用されませんし、AIモデルによる個人データの保持もありません（Anthropicがデータを30日間保持し、その後削除する場合を除く）。詳細は<ph name="LINK_BEFORE"/>プライバシーポリシー<ph name="LINK_AFTER"/>をご覧ください。</translation>
 <translation id="7839853125981164613">ここにプロンプトを入力</translation>
@@ -2079,12 +2094,15 @@
 <translation id="2712650703044366764">このモデルのエンドポイントは無効です。設定を確認し、再試行してください。</translation>
 <translation id="1167803637855350748">Leoに接続する際にネットワーク上の問題が発生しました。接続を解除してもう一度お試しください。</translation>
 <translation id="1996126325390835277">プレミアムレートの制限に達しました。数時間お待ちいただき、もう一度お試しください。</translation>
+<translation id="3683964919745779766">このモデルのレートが上限に達しているか、あるいはクレジットが不足しています。後でもう一度お試しください。</translation>
+<translation id="7692501701960747469">このモデルに設定されているAPIキーが無効です。設定を確認し、もう一度お試しください。</translation>
+<translation id="7905602379229309187">エンドポイントは現在過負荷の状態です。時間をおいて再度お試しください。</translation>
 <translation id="8151638057146502721">設定</translation>
 <translation id="4177458398826096846">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Llama 3.1 8Bを搭載しています。このモデルはMetaによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">こんにちは、Leoです。私はBraveにホストされているAIアシスタントです。高度なタスクを処理するためにMistral AIによって作られたモデル、Mixtral 8x7Bを搭載しています<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicによって作成された会話・テキスト処理タスクモデルであるClaude Instantを搭載しています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicによって作成された会話・テキスト処理タスクモデルであるClaude 3 Haikuを搭載しています。</translation>
-<translation id="1107977270364670952">こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicによって作成された会話・テキスト処理タスクモデルであるClaude 3.5 Sonnetを搭載しています。</translation>
+<translation id="2001874998841390450">こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicの会話・テキスト処理タスクモデルであるClaude Instantを搭載しています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicの会話・テキスト処理タスクモデルであるClaude Sonnetを搭載しています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>、作成元: <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">プレミアム</translation>
 <translation id="6187065185557150870">チャット</translation>
@@ -2103,6 +2121,9 @@
 <translation id="4165928407303989823">トピックに集中</translation>
 <translation id="2389665228467129817">より長時間のチャット</translation>
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/>ドル / 月</translation>
+<translation id="9031958221569934724"><ph name="PRICE_VALUE"/> 米ドル /年</translation>
+<translation id="1028627582482425924">1年間</translation>
+<translation id="36366199652730057">ベストバリュー</translation>
 <translation id="5151923271944811339">無料モデルに切り替え</translation>
 <translation id="5474757891469990756">プレミアムでLeoの全能力を引き出してください。</translation>
 <translation id="3453542753968940696">さまざまなスキルを持つパワフルなモデルへの優先アクセス。</translation>
@@ -2122,6 +2143,8 @@
 <translation id="9018766373792005944">フィードバックのカテゴリを選択してください</translation>
 <translation id="7355096922131918313">フィードバックをここに入力してください</translation>
 <translation id="3027575440738035995">Leo Premiumでは、より高度な回答ニュアンスを実現するために拡張された言語モデルのセットをご利用いただけます。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">削除</translation>
+<translation id="6574153208133461043">本当にこの会話を削除しますか？この操作は元に戻せません。</translation>
 <translation id="7488762544858401571">編集済み</translation>
 <translation id="1406205536570262057">回答を編集</translation>
 <translation id="2399439821649319175">役に立たなかった</translation>
@@ -2135,6 +2158,7 @@
 <translation id="8171760814579050200">会話名を変更</translation>
 <translation id="7754678742055438573">会話を削除</translation>
 <translation id="7494736170250048402">Leoにメッセージを送信</translation>
+<translation id="8650874793377330048">回答を停止</translation>
 <translation id="8712637175834984815">閉じる</translation>
 <translation id="1093419424466417703">このページはLeoには長すぎるため、会話から一部のコンテキストが欠ける可能性があります。Leoはページコンテンツの<ph name="PERCENTAGE"/>を解析可能です。</translation>
 <translation id="2186990448773134544">ページコンテンツがLeoには長すぎるため、ページから抽出した関連情報をもとに内容を修正しました。</translation>

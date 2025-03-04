@@ -197,6 +197,8 @@
 <translation id="1680858055899097121">브라우징 세션 간에 탭을 유지하지 마십시오</translation>
 <translation id="7142548388914389999">프라이버시 보호 제품 분석(P3A) 허용</translation>
 <translation id="5254037869598726291">익명 P3A 정보는 Brave가 총체적인 사용 패턴을 평가하여 인기 기능을 개선하는 데 도움이 됩니다.</translation>
+<translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
+<translation id="8659271182272561965">익명 검색 및 인터넷 사용 기록 데이터 일부를 보내 Brave Search 개선에 도움을 주세요.</translation>
 <translation id="933652931229970927">진단 보고서 자동 전송</translation>
 <translation id="5987838417172370108">Brave 브라우저가 작동이 멎거나 프리징이 발생하면 진단 보고서를 자동 전송하여 Brave 제품 안정성 향상에 도움을 주세요.</translation>
 <translation id="7977176350719484850">절약 예상\n데이터량</translation>
@@ -233,7 +235,6 @@
 <translation id="6587448235155023666">변경 사항은 다음번에 Brave를 재실행할 때 적용됩니다</translation>
 <translation id="8701563696941209024">지금 재실행</translation>
 <translation id="834487290629916192">나중에</translation>
-<translation id="7207456302801184289">Brave에 오신걸 환영합니다</translation>
 <translation id="4117451092682672487">프라이버시. 더욱 간편하게.</translation>
 <translation id="7909375417585209817">Brave를 기본 브라우저로 설정하면 탭하는 모든 링크가 프라이버시를 보호하는 Brave로 열립니다.</translation>
 <translation id="7370959926683925817">광고 차단. 데이터 절약. 언제나.</translation>
@@ -241,6 +242,9 @@
 <translation id="5148943178722443958">Brave 개선에 참여.</translation>
 <translation id="6718362830686703942">충돌 또는 프리징이 발생하면 진단 보고서를 보냅니다.</translation>
 <translation id="8616157231067364693">Brave 사용자가 사용하고 있는 기능에 대한 프라이빗 익명 제품 인사이트를 공유합니다.</translation>
+<translation id="2888496576732880897">Brave 검색 성장 지원</translation>
+<translation id="7044431516245362795">웹 디스커버리 프로젝트에 참여하여 Brave가 인덱스를 확장하고 검색 결과를 향상할 수 있도록 도와주세요. <ph name="LEARN_MORE_START"/>자세히 알아보기.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7818938154803162778">좋아요, 도울게요</translation>
 <translation id="2877653791257935258">웹사이트 이름 또는 URL 입력</translation>
 <translation id="5329830149661250028">Brave의 차별점: 광고 없음. 트래커 없음. 더욱 빠른 페이지 로드.</translation>
 <translation id="3941792073703079607">Brave의 특장점: 광고 차단. 데이터 절약. 더 빠른 스트리밍.</translation>
@@ -457,6 +461,7 @@
 <translation id="3624048886326677117">트래커 및 광고 차단(공격적)</translation>
 <translation id="7151914815476509258">트래커 및 광고 차단(표준)</translation>
 <translation id="7384778069178817075">모든 트래커 &amp; 광고 허용</translation>
+<translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>'모든 쿠키 차단' 옵션은 더 이상 사용되지 않습니다. 이 옵션을 강제 활성화하는 방법을 알아보려면 <ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>도움말 페이지<ph name="END_LINK_1"/>를 방문하세요.</translation>
 <translation id="3763681089644577874">쿠키 차단</translation>
 <translation id="614747795780742163">웹사이트가 이전 방문에 대한 정보를 저장하지 못하도록 합니다</translation>
 <translation id="6883611015375728278">모든 쿠키 차단</translation>
@@ -499,6 +504,7 @@
 <translation id="8459191579769999214">스크린샷 보기</translation>
 <translation id="6476216365964140603">추가 세부정보(선택사항)</translation>
 <translation id="6145852496180774737">연락 방법:(선택사항)</translation>
+<translation id="6367576083705149078">연락처 정보를 제공하면 향후 보고서를 위해 저장됩니다.</translation>
 <translation id="7616645803364270729">이메일, Twitter 등</translation>
 <translation id="5299848999918506028">감사합니다!</translation>
 <translation id="76550953340008122">이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!</translation>
@@ -856,7 +862,6 @@
 <translation id="590733288489975971">광고로 받은 리워드</translation>
 <translation id="1450735350187803276">이번 달에 본 광고</translation>
 <translation id="1767561995429774671">기부</translation>
-<translation id="7335371657242627509">자동 기부에 포함하기</translation>
 <translation id="6727102863431372879">설정</translation>
 <translation id="3074127054582480056">주의</translation>
 <translation id="2280319752798785157">매월 기부금</translation>
@@ -1242,4 +1247,5 @@
 <translation id="1336494649091412226">Brave를 종료하시겠습니까?</translation>
 <translation id="2361906291514218784">레오 AI</translation>
 <translation id="7942415993090181327">대화 기록</translation>
+<translation id="6859935199732075666">안전한 브라우징 오류 표시</translation>
 </translationbundle>

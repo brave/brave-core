@@ -707,7 +707,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1355326130503900056">The name of the model as it should appear in the request to the serving framework, e.g. phi-3 (note that if this name doesn’t match exactly what is expected by the serving framework, the integration won't work)</translation>
 <translation id="1058790648388035953">Some serving frameworks may require authentication credentials, such as an API key or an access token. These will be added to the request header.</translation>
 <translation id="4335128003329183586">Context size</translation>
-<translation id="8794525422794607973">The maximum number of tokens the model can process in a single interaction. Each token is roughly 3/4 of a word. A larger context size allows the model to handle longer conversations. Different models support different maximum context sizes.</translation>
 <translation id="217141195370578385">Brave doesn't proxy these requests. Please read privacy terms of the chosen provider.</translation>
 <translation id="2645532768679870478">Non-local endpoints should employ the HTTPS protocol for secure data transmission.</translation>
 <translation id="8177205483022887785">You have entered an invalid URL. Please enter a valid URL.</translation>

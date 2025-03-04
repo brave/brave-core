@@ -197,6 +197,8 @@
 <translation id="1680858055899097121">No recuperar las pestañas al abrir una nueva sesión de navegación</translation>
 <translation id="7142548388914389999">Permitir análisis de productos que preservan la privacidad (P3A)</translation>
 <translation id="5254037869598726291">La información P3A anonimizada permite a Brave estimar el uso general y seguir mejorando las funciones más populares.</translation>
+<translation id="4174337572777167894">Proyecto de descubrimiento web</translation>
+<translation id="8659271182272561965">Contribuya con algunos datos de búsqueda y navegación anónimos para refinar Brave Search.</translation>
 <translation id="933652931229970927">Enviar automáticamente informes de diagnóstico</translation>
 <translation id="5987838417172370108">Ayuda a mejorar la estabilidad de Brave enviando automáticamente informes de diagnóstico cuando el navegador falle o se bloquee.</translation>
 <translation id="7977176350719484850">Datos\nahorrados est.</translation>
@@ -233,7 +235,6 @@
 <translation id="6587448235155023666">Los cambios se aplicarán la próxima vez que inicies Brave.</translation>
 <translation id="8701563696941209024">REINICIAR AHORA</translation>
 <translation id="834487290629916192">DESPUÉS</translation>
-<translation id="7207456302801184289">Bienvenido a Brave</translation>
 <translation id="4117451092682672487">La privacidad, simplificada.</translation>
 <translation id="7909375417585209817">Si utilizas Brave de manera predeterminada, todos los enlaces que pulses se abrirán con las protecciones de privacidad de Brave.</translation>
 <translation id="7370959926683925817">Bloquee anuncios y ahorre datos. Todos los días.</translation>
@@ -241,6 +242,9 @@
 <translation id="5148943178722443958">Ayuda a mejorar Brave</translation>
 <translation id="6718362830686703942">Envía informes de diagnóstico en caso de fallos o bloqueos.</translation>
 <translation id="8616157231067364693">Comparta de forma privada y anónima su opinión sobre las funciones que utilizan los usuarios de Brave.</translation>
+<translation id="2888496576732880897">Ayuda a que el Buscador de Brave crezca</translation>
+<translation id="7044431516245362795">Opte por el Proyecto de Descubrimiento Web para ayudar a crecer el índice y mejorar los resultados de búsqueda. <ph name="LEARN_MORE_START"/>Más información.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7818938154803162778">Sí, quiero ayudar</translation>
 <translation id="2877653791257935258">Escribe el nombre o la URL de un sitio web</translation>
 <translation id="5329830149661250028">Así es cómo Brave marca la diferencia: no hay anuncios ni rastreadores, y las páginas cargan muchísimo más rápido.</translation>
 <translation id="3941792073703079607">Vea cómo Brave marca la diferencia: Bloquea anuncios. Ahorra datos. Transmite más rápido.</translation>
@@ -457,6 +461,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="3624048886326677117">Bloquear rastreadores y anuncios (agresiva)</translation>
 <translation id="7151914815476509258">Bloquear rastreadores y anuncios (estándar)</translation>
 <translation id="7384778069178817075">Permitir todos los rastreadores y anuncios</translation>
+<translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>La opción "Bloquear todas las cookies" ha quedado obsoleta. Para saber cómo forzar la activación de esta opción, visita <ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>nuestra página de ayuda<ph name="END_LINK_1"/></translation>
 <translation id="3763681089644577874">Bloquear cookies</translation>
 <translation id="614747795780742163">Evita que los sitios web almacenen información sobre tus visitas anteriores</translation>
 <translation id="6883611015375728278">Bloquear todas las cookies</translation>
@@ -499,6 +504,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="8459191579769999214">Ver captura de pantalla</translation>
 <translation id="6476216365964140603">Detalles adicionales (opcional)</translation>
 <translation id="6145852496180774737">Contacto: (opcional)</translation>
+<translation id="6367576083705149078">Si proporcionas información de contacto, se almacenará para futuros informes.</translation>
 <translation id="7616645803364270729">Correo electrónico, Twitter, etc.</translation>
 <translation id="5299848999918506028">¡Gracias!</translation>
 <translation id="76550953340008122">Gracias por informar a los desarrolladores de Brave de que hay un problema en este sitio. Haremos todo lo posible por solucionarlo.</translation>
@@ -856,7 +862,6 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="590733288489975971">Recompensas de anuncios</translation>
 <translation id="1450735350187803276">Anuncios vistos este mes</translation>
 <translation id="1767561995429774671">Contribuir</translation>
-<translation id="7335371657242627509">Incluir en Autocontribuir</translation>
 <translation id="6727102863431372879">Configurar</translation>
 <translation id="3074127054582480056">Atención</translation>
 <translation id="2280319752798785157">Contribución mensual</translation>
@@ -1242,4 +1247,5 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="1336494649091412226">¿Tienes la certeza de que quieres salir de Brave?</translation>
 <translation id="2361906291514218784">IA de Leo</translation>
 <translation id="7942415993090181327">Historial de chat</translation>
+<translation id="6859935199732075666">Mostrar errores de Safe Browsing</translation>
 </translationbundle>

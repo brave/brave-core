@@ -1690,6 +1690,8 @@
 <translation id="803703704549420287">Clear filters</translation>
 <translation id="1472675084647422956">Show more</translation>
 <translation id="4522570452068850558">Details</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> of <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="1178581264944972037">Pause</translation>
 <translation id="7144878232160441200">Retry</translation>
 <translation id="9094621390791852268">Transaction preview failed.</translation>
 <translation id="4982713341035600933">Estimated balance change</translation>
@@ -2011,7 +2013,6 @@
 <translation id="8637805148029768813">The summariser feature is currently available only for select articles and other long-form web pages.</translation>
 <translation id="1223498995510244364">Summarise</translation>
 <translation id="7491773233732232424">About Leo</translation>
-<translation id="5208096220706490232">Brave Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the <ph name="LINK_BEFORE"/>Brave Wiki<ph name="LINK_AFTER"/> for more details.</translation>
 <translation id="7189603330209995455">By default, when you ask Leo a question, it may send and use the content of the web page you are viewing or any text you highlight on a page to Brave Leo to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading or false information. Leo uses data from Brave Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety or similar. You can adjust Leo’s options in Settings any time. Go to Settings &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the <ph name="LINK_BEFORE"/>privacy policy<ph name="LINK_AFTER"/> for more information.</translation>
 <translation id="7839853125981164613">Enter a prompt here</translation>
@@ -2024,8 +2025,6 @@
 <translation id="4177458398826096846">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Haiku, a model created by Anthropic to power conversational and text processing tasks.</translation>
-<translation id="1107977270364670952">Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3.5 Sonnet, a model created by Anthropic to power conversational and text processing tasks.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> by <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2042,6 +2041,7 @@
 <translation id="4165928407303989823">Stay on topic</translation>
 <translation id="2389665228467129817">Chat for longer</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /month</translation>
+<translation id="1028627582482425924">One year</translation>
 <translation id="5151923271944811339">Switch to the free model</translation>
 <translation id="5474757891469990756">Unleash Leo's full powers with Premium:</translation>
 <translation id="3453542753968940696">Priority access to powerful models with different skills.</translation>
@@ -2060,6 +2060,7 @@
 <translation id="9018766373792005944">What's your feedback about?</translation>
 <translation id="7355096922131918313">Provide feedback here</translation>
 <translation id="3027575440738035995">Leo Premium provides access to an expanded set of language models for even greater answer nuance. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Delete</translation>
 <translation id="7488762544858401571">Edited</translation>
 <translation id="1406205536570262057">Edit answer</translation>
 <translation id="2399439821649319175">Not helpful</translation>
@@ -2294,6 +2295,7 @@ Let's get you connected!</translation>
 <translation id="1498770726476841108">Manage account</translation>
 <translation id="6825718953004242472">Remove icon</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4295077644587784828">Extra privacy &amp; security online.</translation>
 <translation id="8425213833346101688">Change</translation>
 <translation id="8703188411226330709">Start free trial</translation>
 <translation id="3287942014983548982">Open here</translation>
