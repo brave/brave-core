@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 137e88253501fc09a4469b6a64ad5dcdd7a976b1..52e91749a9d05f72b220748e4ffad8e7476b5671 100644
+index 8622f98a6fdd370a5ab86bc75a153ac003d6b8ed..e57c41f3b8ada3129cd522c16ab40dd190509b7b 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -666,6 +666,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -662,6 +662,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
    registry->RegisterIntegerPref(
        prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
@@ -10,10 +10,10 @@ index 137e88253501fc09a4469b6a64ad5dcdd7a976b1..52e91749a9d05f72b220748e4ffad8e7
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1039,6 +1040,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterIntegerPref(
-       prefs::kIosMagicStackSegmentationTabResumptionImpressionsSinceFreshness,
-       -1);
+@@ -1037,6 +1038,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+ 
+   // Deprecated 12/2024.
+   registry->RegisterBooleanPref(kPageContentCollectionEnabled, false);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
