@@ -40,6 +40,10 @@ class CardanoWalletService : public mojom::CardanoWalletService {
   void GetBalance(mojom::AccountIdPtr account_id,
                   GetBalanceCallback callback) override;
 
+  using GetUtxosCallback = base::OnceCallback<void(
+      base::expected<GetCardanoUtxosTask::UtxoMap, std::string>)>;
+  void GetUtxos(mojom::AccountIdPtr account_id, GetUtxosCallback callback);
+
   cardano_rpc::CardanoRpc& cardano_rpc() { return cardano_rpc_; }
   KeyringService& keyring_service() { return *keyring_service_; }
   NetworkManager& network_manager() { return *network_manager_; }
@@ -52,14 +56,18 @@ class CardanoWalletService : public mojom::CardanoWalletService {
   const raw_ref<NetworkManager> network_manager_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
-  void OnGetCardanoUtxosTaskDone(
+  void OnGetUtxosForGetBalance(
+      GetBalanceCallback callback,
+      base::expected<GetCardanoUtxosTask::UtxoMap, std::string> utxos);
+
+  void OnGetUtxosTaskDone(
       GetCardanoUtxosTask* task,
       base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result);
 
   mojo::ReceiverSet<mojom::CardanoWalletService> receivers_;
   cardano_rpc::CardanoRpc cardano_rpc_;
 
-  std::list<std::pair<std::unique_ptr<GetCardanoUtxosTask>, GetBalanceCallback>>
+  std::list<std::pair<std::unique_ptr<GetCardanoUtxosTask>, GetUtxosCallback>>
       get_cardano_utxo_tasks_;
 
   base::WeakPtrFactory<CardanoWalletService> weak_ptr_factory_{this};

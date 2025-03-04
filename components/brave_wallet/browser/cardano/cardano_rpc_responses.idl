@@ -9,7 +9,16 @@ namespace cardano_rpc {
   dictionary Block {
     // uint32_t
     DOMString height;
+
+    // uint32_t
+    DOMString epoch;
   };
+
+  dictionary EpochParameters {
+    long min_fee_a;
+    long min_fee_b;
+  };
+
 
   dictionary UnspentOutputAsset {
     DOMString unit;

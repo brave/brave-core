@@ -71,7 +71,7 @@ bool UrlPathEndsWithSlash(const GURL& base_url) {
   return !path_piece.empty() && path_piece.back() == '/';
 }
 
-GURL MakeGetChainHeightUrl(const GURL& base_url) {
+GURL MakeGetLatestBlockUrl(const GURL& base_url) {
   if (!base_url.is_valid()) {
     return GURL();
   }
@@ -81,6 +81,22 @@ GURL MakeGetChainHeightUrl(const GURL& base_url) {
 
   GURL::Replacements replacements;
   const std::string path = base::StrCat({base_url.path(), "blocks/latest"});
+  replacements.SetPathStr(path);
+
+  return base_url.ReplaceComponents(replacements);
+}
+
+GURL MakeGetLatestEpochParametersUrl(const GURL& base_url) {
+  if (!base_url.is_valid()) {
+    return GURL();
+  }
+  if (!UrlPathEndsWithSlash(base_url)) {
+    return GURL();
+  }
+
+  GURL::Replacements replacements;
+  const std::string path =
+      base::StrCat({base_url.path(), "epochs/latest/parameters"});
   replacements.SetPathStr(path);
 
   return base_url.ReplaceComponents(replacements);
@@ -151,22 +167,22 @@ CardanoRpc::CardanoRpc(
 
 CardanoRpc::~CardanoRpc() = default;
 
-void CardanoRpc::GetChainHeight(const std::string& chain_id,
-                                GetChainHeightCallback callback) {
-  GURL request_url = MakeGetChainHeightUrl(GetNetworkURL(chain_id));
+void CardanoRpc::GetLatestBlock(const std::string& chain_id,
+                                GetLatestBlockCallback callback) {
+  GURL request_url = MakeGetLatestBlockUrl(GetNetworkURL(chain_id));
   if (!request_url.is_valid()) {
     return ReplyWithInternalError(std::move(callback));
   }
 
   auto internal_callback =
-      base::BindOnce(&CardanoRpc::OnGetChainHeight,
+      base::BindOnce(&CardanoRpc::OnGetLatestBlock,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
   RequestInternal(request_url, std::move(internal_callback),
                   std::move(conversion_callback));
 }
 
-void CardanoRpc::OnGetChainHeight(GetChainHeightCallback callback,
+void CardanoRpc::OnGetLatestBlock(GetLatestBlockCallback callback,
                                   APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
     return ReplyWithInternalError(std::move(callback));
@@ -182,12 +198,51 @@ void CardanoRpc::OnGetChainHeight(GetChainHeightCallback callback,
     return ReplyWithInvalidJsonError(std::move(callback));
   }
 
-  uint32_t height = 0;
-  if (!base::StringToUint(block->height, &height)) {
+  // uint32_t height = 0;
+  // if (!base::StringToUint(block->height, &height)) {
+  //   return ReplyWithInvalidJsonError(std::move(callback));
+  // }
+
+  std::move(callback).Run(base::ok(std::move(*block)));
+}
+
+void CardanoRpc::GetLatestEpochParameters(
+    const std::string& chain_id,
+    GetLatestEpochParametersCallback callback) {
+  GURL request_url = MakeGetLatestEpochParametersUrl(GetNetworkURL(chain_id));
+  if (!request_url.is_valid()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto internal_callback =
+      base::BindOnce(&CardanoRpc::OnGetLatestEpochParameters,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(request_url, std::move(internal_callback));
+}
+
+void CardanoRpc::OnGetLatestEpochParameters(
+    GetLatestEpochParametersCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    return ReplyWithInternalError(std::move(callback));
+  }
+
+  auto* dict = api_request_result.value_body().GetIfDict();
+  if (!dict) {
     return ReplyWithInvalidJsonError(std::move(callback));
   }
 
-  std::move(callback).Run(base::ok(height));
+  auto epoch_parameters = EpochParameters::FromValue(*dict);
+  if (!epoch_parameters) {
+    return ReplyWithInvalidJsonError(std::move(callback));
+  }
+
+  // uint32_t height = 0;
+  // if (!base::StringToUint(block->height, &height)) {
+  //   return ReplyWithInvalidJsonError(std::move(callback));
+  // }
+
+  std::move(callback).Run(base::ok(std::move(*epoch_parameters)));
 }
 
 void CardanoRpc::GetUtxoList(const std::string& chain_id,
@@ -236,7 +291,8 @@ void CardanoRpc::OnGetUtxoList(GetUtxoListCallback callback,
 void CardanoRpc::RequestInternal(
     const GURL& request_url,
     RequestIntermediateCallback callback,
-    APIRequestHelper::ResponseConversionCallback conversion_callback) {
+    APIRequestHelper::ResponseConversionCallback
+        conversion_callback /* = base::NullCallback() */) {
   DCHECK(request_url.is_valid());
 
   auto endpoint_host = EndpointHost(request_url);

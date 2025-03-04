@@ -22,6 +22,14 @@ namespace brave_wallet {
 
 class CardanoWalletService;
 
+namespace cardano_rpc {
+
+bool operator==(const UnspentOutputAsset& l, const UnspentOutputAsset& r);
+bool operator==(const UnspentOutput& l, const UnspentOutput& r);
+bool operator==(const Block& l, const Block& r);
+
+}  // namespace cardano_rpc
+
 class CardanoTestRpcServer {
  public:
   CardanoTestRpcServer();

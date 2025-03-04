@@ -44,9 +44,13 @@ class CardanoRpc {
   using RpcResponseCallback =
       base::OnceCallback<void(base::expected<T, std::string>)>;
 
-  using GetChainHeightCallback = RpcResponseCallback<uint32_t>;
-  void GetChainHeight(const std::string& chain_id,
-                      GetChainHeightCallback callback);
+  using GetLatestBlockCallback = RpcResponseCallback<Block>;
+  void GetLatestBlock(const std::string& chain_id,
+                      GetLatestBlockCallback callback);
+
+  using GetLatestEpochParametersCallback = RpcResponseCallback<EpochParameters>;
+  void GetLatestEpochParameters(const std::string& chain_id,
+                                GetLatestEpochParametersCallback callback);
 
   using GetUtxoListCallback = RpcResponseCallback<UnspentOutputs>;
   void GetUtxoList(const std::string& chain_id,
@@ -66,8 +70,10 @@ class CardanoRpc {
                              APIRequestResult api_request_result);
   void MaybeStartQueuedRequest(const GURL& endpoint_host);
 
-  void OnGetChainHeight(GetChainHeightCallback callback,
+  void OnGetLatestBlock(GetLatestBlockCallback callback,
                         APIRequestResult api_request_result);
+  void OnGetLatestEpochParameters(GetLatestEpochParametersCallback callback,
+                                  APIRequestResult api_request_result);
   void OnGetUtxoList(GetUtxoListCallback callback,
                      const std::string& address,
                      APIRequestResult api_request_result);

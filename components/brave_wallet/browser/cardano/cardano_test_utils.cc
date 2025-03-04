@@ -24,6 +24,23 @@
 
 namespace brave_wallet {
 
+namespace cardano_rpc {
+
+bool operator==(const UnspentOutputAsset& l, const UnspentOutputAsset& r) {
+  return l.unit == r.unit && l.quantity == r.quantity;
+}
+
+bool operator==(const UnspentOutput& l, const UnspentOutput& r) {
+  return l.tx_hash == r.tx_hash && l.output_index == r.output_index &&
+         l.amount == r.amount;
+}
+
+bool operator==(const Block& l, const Block& r) {
+  return l.epoch == r.epoch && l.height == r.height;
+}
+
+}  // namespace cardano_rpc
+
 CardanoTestRpcServer::CardanoTestRpcServer(
     CardanoWalletService& cardano_wallet_service)
     : cardano_wallet_service_(cardano_wallet_service) {

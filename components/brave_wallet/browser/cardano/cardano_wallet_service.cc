@@ -16,6 +16,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_get_utxos_task.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -25,20 +26,13 @@ namespace brave_wallet {
 
 namespace {
 
-constexpr char kNativeLovelaceToken[] = "lovelace";
-
 mojom::CardanoBalancePtr BalanceFromUtxos(GetCardanoUtxosTask::UtxoMap& utxos) {
   auto result = mojom::CardanoBalance::New();
 
   for (auto& items : utxos) {
     for (auto& utxo : items.second) {
-      for (auto& token : utxo.amount) {
-        if (token.unit == kNativeLovelaceToken) {
-          uint64_t quantity = 0;
-          if (base::StringToUint64(token.quantity, &quantity)) {
-            result->total_balance += quantity;
-          }
-        }
+      if (auto lovelace_amount = GetLovelaceAmountFromUtxo(utxo)) {
+        result->total_balance += *lovelace_amount;
       }
     }
   }
@@ -69,23 +63,63 @@ void CardanoWalletService::Reset() {
 
 void CardanoWalletService::GetBalance(mojom::AccountIdPtr account_id,
                                       GetBalanceCallback callback) {
+  GetUtxos(account_id.Clone(),
+           base::BindOnce(&CardanoWalletService::OnGetUtxosForGetBalance,
+                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void CardanoWalletService::OnGetUtxosForGetBalance(
+    GetBalanceCallback callback,
+    base::expected<GetCardanoUtxosTask::UtxoMap, std::string> utxos) {
+  if (!utxos.has_value()) {
+    std::move(callback).Run(nullptr, utxos.error());
+    return;
+  }
+  std::move(callback).Run(BalanceFromUtxos(utxos.value()), std::nullopt);
+}
+
+// void CardanoWalletService::OnGetCardanoUtxosTaskDone(
+//     GetCardanoUtxosTask* task,
+//     base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result) {
+//   auto it = std::ranges::find(get_cardano_utxo_tasks_, task,
+//                               [](auto& t) { return t.first.get(); });
+//   if (it == get_cardano_utxo_tasks_.end()) {
+//     NOTREACHED();
+//   }
+
+//   auto cb = std::move(it->second);
+//   get_cardano_utxo_tasks_.erase(it);
+
+//   if (!result.has_value()) {
+//     std::move(cb).Run(nullptr, result.error());
+//     return;
+//   }
+
+//   std::move(cb).Run(BalanceFromUtxos(result.value()), std::nullopt);
+// }
+
+void CardanoWalletService::GetUtxos(mojom::AccountIdPtr account_id,
+                                    GetUtxosCallback callback) {
   auto addresses = keyring_service().GetCardanoAddresses(account_id);
   if (!addresses) {
-    std::move(callback).Run(nullptr, WalletInternalErrorMessage());
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
 
   auto& task = get_cardano_utxo_tasks_.emplace_back(
       std::make_unique<GetCardanoUtxosTask>(
-          *this, GetNetworkForCardanoAccount(account_id), std::move(*addresses),
-          base::BindOnce(&CardanoWalletService::OnGetCardanoUtxosTaskDone,
-                         weak_ptr_factory_.GetWeakPtr())),
+          *this, GetNetworkForCardanoAccount(account_id),
+          std::move(*addresses)),
       std::move(callback));
+
+  task.first->set_callback(
+      base::BindOnce(&CardanoWalletService::OnGetUtxosTaskDone,
+                     weak_ptr_factory_.GetWeakPtr(), task.first.get()));
 
   task.first->ScheduleWorkOnTask();
 }
 
-void CardanoWalletService::OnGetCardanoUtxosTaskDone(
+void CardanoWalletService::OnGetUtxosTaskDone(
     GetCardanoUtxosTask* task,
     base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result) {
   auto it = std::ranges::find(get_cardano_utxo_tasks_, task,
@@ -97,12 +131,12 @@ void CardanoWalletService::OnGetCardanoUtxosTaskDone(
   auto cb = std::move(it->second);
   get_cardano_utxo_tasks_.erase(it);
 
-  if (!result.has_value()) {
-    std::move(cb).Run(nullptr, result.error());
-    return;
-  }
+  // if (!result.has_value()) {
+  //   std::move(cb).Run(nullptr, result.error());
+  //   return;
+  // }
 
-  std::move(cb).Run(BalanceFromUtxos(result.value()), std::nullopt);
+  std::move(cb).Run(std::move(result));
 }
 
 void CardanoWalletService::SetUrlLoaderFactoryForTesting(

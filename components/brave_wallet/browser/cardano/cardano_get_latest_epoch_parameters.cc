@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/cardano/cardano_get_utxos_task.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_get_latest_epoch_parameters.h"
 
 #include <stdint.h>
 
@@ -21,7 +21,7 @@
 
 namespace brave_wallet {
 
-GetCardanoUtxosTask::GetCardanoUtxosTask(
+GetLatestEpochParametersTask::GetLatestEpochParametersTask(
     CardanoWalletService& cardano_wallet_service,
     const std::string& chain_id,
     std::vector<mojom::CardanoAddressPtr> addresses)
@@ -29,15 +29,15 @@ GetCardanoUtxosTask::GetCardanoUtxosTask(
       chain_id_(chain_id),
       addresses_(std::move(addresses)) {}
 
-GetCardanoUtxosTask::~GetCardanoUtxosTask() = default;
+GetLatestEpochParametersTask::~GetLatestEpochParametersTask() = default;
 
-void GetCardanoUtxosTask::ScheduleWorkOnTask() {
+void GetLatestEpochParametersTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&GetCardanoUtxosTask::WorkOnTask,
+      FROM_HERE, base::BindOnce(&GetLatestEpochParametersTask::WorkOnTask,
                                 weak_factory_.GetWeakPtr()));
 }
 
-void GetCardanoUtxosTask::MaybeSendRequests() {
+void GetLatestEpochParametersTask::MaybeSendRequests() {
   if (requests_sent_) {
     return;
   }
@@ -56,12 +56,12 @@ void GetCardanoUtxosTask::MaybeSendRequests() {
   for (const auto& address_info : addresses_) {
     cardano_wallet_service_->cardano_rpc().GetUtxoList(
         chain_id_, address_info->address_string,
-        base::BindOnce(&GetCardanoUtxosTask::OnGetUtxoList,
+        base::BindOnce(&GetLatestEpochParametersTask::OnGetUtxoList,
                        weak_factory_.GetWeakPtr(), address_info->Clone()));
   }
 }
 
-void GetCardanoUtxosTask::OnGetUtxoList(
+void GetLatestEpochParametersTask::OnGetUtxoList(
     mojom::CardanoAddressPtr address,
     base::expected<cardano_rpc::UnspentOutputs, std::string> utxos) {
   if (!utxos.has_value()) {
@@ -79,7 +79,7 @@ void GetCardanoUtxosTask::OnGetUtxoList(
   WorkOnTask();
 }
 
-void GetCardanoUtxosTask::WorkOnTask() {
+void GetLatestEpochParametersTask::WorkOnTask() {
   if (error_) {
     std::move(callback_).Run(base::unexpected(std::move(*error_)));
     return;
