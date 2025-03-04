@@ -29,6 +29,10 @@ zcash = "1"
 anonymous-credentials = "0.1"
 document-extractor = "0.1"
 
+[patch.crates-io.idna_v0_2]
+path = "../idna/v0_2/crate"
+package = "idna"
+
 [patch.crates-io.url_v2]
 path = "../url/v2/crate"
 package = "url"
