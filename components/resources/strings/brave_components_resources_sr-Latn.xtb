@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Ovu stranicu nije moguće prijaviti jer nije prikazana preko HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Ovaj sajt je lokalna veb-stranica i ne ispunjava uslove za prijavu.</translation>
 <translation id="8740275226259417070">Ova stranica je stranica sa greškom. Ona se ne može prijaviti kao sajt koji ne funkcioniše.</translation>
+<translation id="6367576083705149078">Ako date informacije za kontakt, one će biti sačuvane za buduće prijave.</translation>
 <translation id="6806248680442980382">Hvala što doprinosite tome da Brave bude bolji za sve. Ova prijava će sadržati samo informacije koje su neophodne da bismo ispravili problem na ovom sajtu.</translation>
 <translation id="6476216365964140603">Dodatni detalji (opciono)</translation>
 <translation id="6145852496180774737">Obratite mi se na: (opciono)</translation>
@@ -1738,6 +1739,8 @@
 <translation id="3819528427777765709">Zaštićeno</translation>
 <translation id="2142946302539262412">Ujednačeno</translation>
 <translation id="4438043733494739848">Transparentno</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> od <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="1178581264944972037">Pauziraj</translation>
 <translation id="7144878232160441200">Probaj ponovo</translation>
 <translation id="9094621390791852268">Prikaz transakcije nije uspeo</translation>
 <translation id="4982713341035600933">Procenjena promena stanja</translation>
@@ -2062,7 +2065,6 @@
 <translation id="8637805148029768813">Funkcija sažimanja trenutno je dostupna samo za odabrane članke i druge veb-stranice dugog formata.</translation>
 <translation id="1223498995510244364">Sažmi</translation>
 <translation id="7491773233732232424">O asistentu Leo</translation>
-<translation id="4885527781814382758">Brave Leo je privatni pametni asistent zasnovan na veštačkoj inteligenciji koji poboljšava vaše korišćenje interneta. Leo je besplatan za korišćenje uz ograničen pristup. Brave Leo Premium nudi više modela, veće limite i daje pretplatnicima rani pristup novim funkcijama. Podrazumevani model za sve korisnike trenutno je Mixtral 8x7B. Pogledajte <ph name="LINK_BEFORE"/>Brave viki-stranicu<ph name="LINK_AFTER"/> ako želite više detalja.</translation>
 <translation id="7189603330209995455">Podrazumevano, kada postavite pitanje asistentu Leo, on može da pošalje i koristi sadržaj veb-stranice koju gledate ili bilo koji tekst na stranici koji istaknete asistentu Brave Leo kako bi vam pružio odgovor. Tačnost odgovora nije zagarantovana i može obuhvatati netačne, obmanjujuće ili lažne informacije. Leo koristi podatke iz Brave pretrage kako bi poboljšao kvalitet odgovora. Nemojte slati osetljive ili privatne informacije i budite oprezni sa bilo kakvim odgovorima koji se odnose na zdravlje, finansije, ličnu bezbednost ili slično. Možete da prilagodite opcije asistenta Leo u podešavanjima u bilo kom trenutku. Idite na Podešavanja &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo ne prikuplja identifikatore kao što je vaša IP adresa koja se može povezati sa vama. Nikakvi podaci se ne koriste za obuku modela veštačke inteligencije i modeli veštačke inteligencije ne zadržavaju nikakve podatke o ličnosti (osim Anthropic-a koji zadržava podatke 30 dana pre nego što ih izbriše). Ako vam je potrebno više informacija pogledajte <ph name="LINK_BEFORE"/>pravila za zaštitu privatnosti<ph name="LINK_AFTER"/>.</translation>
 <translation id="7839853125981164613">Unesite upit ovde</translation>
@@ -2095,6 +2097,7 @@
 <translation id="4165928407303989823">Budite u toku</translation>
 <translation id="2389665228467129817">Ćaskajte duže</translation>
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD mesečno</translation>
+<translation id="1028627582482425924">Godinu dana</translation>
 <translation id="5151923271944811339">Prebaci na besplatni model</translation>
 <translation id="5474757891469990756">Osetite punu snagu asistenta Leo uz paket Premium:</translation>
 <translation id="3453542753968940696">Prioritetni pristup moćnim modelima sa različitim mogućnostima.</translation>
@@ -2114,6 +2117,7 @@
 <translation id="9018766373792005944">O čemu su vaše povratne informacije?</translation>
 <translation id="7355096922131918313">Unesite povratne informacije ovde</translation>
 <translation id="3027575440738035995">Leo Premium pruža pristup proširenom skupu jezičkih modela kako bi odgovori bili još precizniji. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Izbriši</translation>
 <translation id="7488762544858401571">Izmenjeno</translation>
 <translation id="1406205536570262057">Izmeni odgovor</translation>
 <translation id="2399439821649319175">Nije od pomoći</translation>

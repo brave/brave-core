@@ -406,6 +406,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3570081523466826008">Aktualizacje HTTPS</translation>
 <translation id="3357319404342882895">Ścisłe</translation>
 <translation id="8823559166155093873">Zablokuj pliki cookies</translation>
+<translation id="7093267802941377072">Opcja „Blokuj wszystkie pliki cookie” została wycofana. Aby dowiedzieć się, jak wymusić włączenie tej opcji, wejdź na <ph name="BEGIN_LINK"/>naszą stronę pomocy<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Blokuj pliki cookie innych firm</translation>
 <translation id="5657156137487675418">Zezwól na wszystkie pliki cookies</translation>
 <translation id="6883611015375728278">Blokuj wszystkie pliki cookies</translation>
@@ -593,6 +594,7 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5522403133543437426">Wyszukiwarka używana na pasku adresu.</translation>
 <translation id="280472502078788655">Wyszukiwarka używana na pasku adresu dla okien prywatnych.</translation>
 <translation id="7232120595886556478">Normalne okno</translation>
+<translation id="6739674350896546324">Wyszukiwarka w oknach prywatnych</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> jest teraz twoją domyślną wyszukiwarką dla okien prywatnych</translation>
 <translation id="6864914031231797928">Zezwól na logowanie Google w przypadku rozszerzeń</translation>
 <translation id="7878791177459550035">Router mediów umożliwia korzystanie z funkcji przesyłania w przeglądarce.</translation>
@@ -732,7 +734,7 @@ poprzednich rozmów z SI Leo Brave. Tego działania nie można cofnąć.</transl
 <translation id="3213787232304349732">Adres URL, pod którym platforma obsługujące odbiera przesyłane prośby. Jeśli nie masz pewności, sprawdź dokumentację obsługującej struktury. Przykładowo w przypadku Ollama jest to zawsze http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Niektóre obsługujące struktury mogą wymagać podania poświadczeń uwierzytelniających, takich jak klucz interfejsu API lub token dostępu. Zostanie to dodane do nagłówka prośby.</translation>
 <translation id="4335128003329183586">Rozmiar kontekstu</translation>
-<translation id="8794525422794607973">Maksymalna liczba tokenów, jaką model może przetworzyć w pojedynczej interakcji. Każdy token to mniej więcej 3/4 słowa. Większy rozmiar kontekstu pozwala modelowi obsługiwać dłuższe konwersacje. Różne modele obsługują różne maksymalne rozmiary kontekstu.</translation>
+<translation id="3153779001670804829">Maksymalna liczba tokenów, jaką model może przetworzyć w pojedynczej interakcji. Większy rozmiar kontekstu pozwala modelowi obsługiwać dłuższe konwersacje. Różne modele obsługują różne maksymalne rozmiary kontekstu.</translation>
 <translation id="217141195370578385">Brave nie uczestniczy w przekazywaniu tych próśb. Zapoznaj się z Polityką ochrony prywatności wybranego dostawcy</translation>
 <translation id="2645532768679870478">Punkty końcowe, które nie są lokalne, powinny korzystać z protokołu HTTPS w celu zabezpieczenia transmisji danych.</translation>
 <translation id="8177205483022887785">Wprowadzono nieprawidłowy adres URL. Podaj prawidłowy adres URL.</translation>

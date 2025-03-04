@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Túto stránku nie je možné nahlásiť, pretože nie je prevádzkovaná prostredníctvom protokolu HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Táto stránka je lokálnou webovou stránkou a nie je možné ju nahlásiť.</translation>
 <translation id="8740275226259417070">Toto je chybová stránka. Nemožno ju nahlásiť ako nefunkčnú lokalitu.</translation>
+<translation id="6367576083705149078">Ak poskytnete kontaktné údaje, budú uložené pre budúce správy.</translation>
 <translation id="6806248680442980382">Ďakujeme, že pomáhate zlepšovať prehliadač Brave pre všetkých. Táto správa bude obsahovať len informácie, ktoré potrebujeme na opravu tejto lokality.</translation>
 <translation id="6476216365964140603">Ďalšie podrobnosti (voliteľné)</translation>
 <translation id="6145852496180774737">Kontaktujte ma na: (voliteľné)</translation>
@@ -708,8 +709,8 @@
 <translation id="4622826307953794521">Poskytnite anonymné údaje o vyhľadávaní a prehliadaní na zdokonalenie vyhľadávača Brave pomocou projektu Web Discovery. Ide o celkom otvorený zdrojový kód.</translation>
 <translation id="4174337572777167894">Project Web Discovery</translation>
 <translation id="9034669711835382440">Komunita</translation>
-<translation id="814503310257431685">Zobraziť všetko</translation>
 <translation id="845020633253356720">Zobraziť obchod</translation>
+<translation id="7777123407058400802">Basic Attention Token – BAT</translation>
 <translation id="7090992647511817643">účet</translation>
 <translation id="4822132585477111396">ID reťazca</translation>
 <translation id="3269475789479462358">doména</translation>
@@ -1735,6 +1736,20 @@
 <translation id="3819528427777765709">Chránený</translation>
 <translation id="2142946302539262412">Zjednotený</translation>
 <translation id="4438043733494739848">Transparentný</translation>
+<translation id="1950406774300125954">Nesynchronizované</translation>
+<translation id="68413355604013935">Nesynchronizované (bloky pozadu: <ph name="BLOCKS"/>)</translation>
+<translation id="1597233669965903034">Synchronizujte svoj účet a získajte prístup k najnovším transakciám a zostatku.</translation>
+<translation id="7499262814309712782">Synchronizovať účet</translation>
+<translation id="2804568727504456403">Synchronizovať <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">Inicializácia...</translation>
+<translation id="4404141491825711928">Spracovávajú sa bloky:</translation>
+<translation id="4983989175143324911">zostáva <ph name="BLOCKS"/></translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> z <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">Rozsahy:</translation>
+<translation id="1178581264944972037">Pozastaviť</translation>
+<translation id="7714298753782862705">Synchronizácia dokončená. Teraz môžete toto okno zatvoriť.</translation>
+<translation id="7716113567047550378">Nezatvárajte toto okno, kým sa synchronizácia neskončí.</translation>
+<translation id="5123590959308755060">Pokračovať v používaní peňaženky na novej karte</translation>
 <translation id="7144878232160441200">Skúsiť znova</translation>
 <translation id="9094621390791852268">Zobrazenie transakcie zlyhalo.</translation>
 <translation id="4982713341035600933">Odhadovaná zmena zostatku</translation>
@@ -2060,7 +2075,7 @@
 <translation id="8637805148029768813">Funkcia nástroja na vytváranie súhrnu je v súčasnosti k dispozícii len pre vybrané články a ďalšie dlhé webové stránky.</translation>
 <translation id="1223498995510244364">Vytvoriť súhrn</translation>
 <translation id="7491773233732232424">Informácie o Leo</translation>
-<translation id="5208096220706490232">Brave Leo je súkromný asistent s umelou inteligenciou, ktorý vylepšuje vaše používanie internetu. Leo je bezplatný s obmedzeným prístupom. Brave Leo Premium ponúka viac modelov, vyššie limity a poskytuje predplatiteľom skorší prístup k novým funkciám. Predvolený model pre všetkých používateľov je v súčasnosti Mixtral 8x7B. <ph name="LINK_BEFORE"/>Ďalšie podrobnosti nájdete na <ph name="LINK_AFTER"/>Brave wiki.</translation>
+<translation id="4885527781814382758">Brave Leo je súkromný asistent s umelou inteligenciou, ktorý zlepšuje vaše používanie internetu. Leo je bezplatný s obmedzeným prístupom. Brave Leo Premium ponúka viac modelov, vyššie limity a poskytuje predplatiteľom skorší prístup k novým funkciám. Predvolený model sa bude z času na čas meniť. Viac informácií nájdete v <ph name="LINK_BEFORE"/>Centre pomoci Brave<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Keď položíte Leovi otázku, predvolene môže do Brave Leo na poskytnutie odpovede odoslať a použiť obsah webovej stránky, ktorú si prezeráte, alebo akýkoľvek text, ktorý na stránke zvýrazníte. Presnosť odpovedí nie je zaručená a môže obsahovať nepresné, zavádzajúce alebo nepravdivé informácie. Funkcia Leo používa údaje z vyhľadávača Brave Search na zlepšenie kvality odpovedí. Nevkladajte citlivé alebo súkromné informácie a pri odpovediach týkajúcich sa zdravia, financií, osobnej bezpečnosti, a pod. buďte opatrní. Možnosti funkcie Leo môžete kedykoľvek upraviť v Nastaveniach. Prejdite do časti Nastavenia &gt; Leo.</translation>
 <translation id="3038772045018370764">Spoločnosť Leo nezhromažďuje identifikátory, ako je vaša IP adresa, ktoré by sa s vami dali spojiť. Na trénovanie modelov umelej inteligencie sa nepoužívajú žiadne údaje a modely umelej inteligencie neuchovávajú žiadne osobné údaje (okrem modelu Anthropic, ktorý uchováva údaje na 30 dní pred tým, než ich vymaže). Viac informácií nájdete v <ph name="LINK_BEFORE"/>Zásadách ochrany osobných údajov<ph name="LINK_AFTER"/>.</translation>
 <translation id="7839853125981164613">Tu zadajte pokyn</translation>
@@ -2071,12 +2086,15 @@
 <translation id="2712650703044366764">Tento model má neplatný koncový bod. Skontrolujte prosím svoju konfiguráciu a skúste to znova.</translation>
 <translation id="1167803637855350748">Pri pripájaní k Leovi došlo k sieťovému problému, skontrolujte pripojenie a skúste to znova.</translation>
 <translation id="1996126325390835277">Dosiahli ste limit odozvy pre Premium. Skúste to znova o niekoľko hodín.</translation>
+<translation id="3683964919745779766">Dosiahli ste limit sadzby pre tento model alebo vám došli kredity. Skúste to prosím neskôr.</translation>
+<translation id="7692501701960747469">Kľúč API nakonfigurovaný pre tento model je neplatný. Skontrolujte prosím svoju konfiguráciu a skúste to znova.</translation>
+<translation id="7905602379229309187">Koncový bod je v súčasnosti preťažený. Skúste to prosím neskôr.</translation>
 <translation id="8151638057146502721">Konfigurovať</translation>
 <translation id="4177458398826096846">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama 3.1 8B vytvoreným spoločnosťou Meta, aby som bol výkonný a použiteľný v mnohých prípadoch použitia. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Mixtral 8x7B vytvoreným spoločnosťou Mistral AI na zvládanie pokročilých úloh. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Ahoj, ja som Leo. Som sprostredkovaný spoločnosťou Brave a poháňaný modelom Claude Instant vytvoreným spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude 3 Haiku, model vytvorený spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu.</translation>
-<translation id="1107977270364670952">Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude 3.5 Sonnet, model vytvorený spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu.</translation>
+<translation id="2001874998841390450">Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude Haiku, model vytvorený spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude Sonnet, model vytvorený spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> spoločnosťou <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2095,6 +2113,9 @@
 <translation id="4165928407303989823">Majte prehľad</translation>
 <translation id="2389665228467129817">Chatujte dlhšie</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /mesiac</translation>
+<translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/> /rok</translation>
+<translation id="1028627582482425924">Jeden rok</translation>
+<translation id="36366199652730057">Najvýhodnejšie</translation>
 <translation id="5151923271944811339">Prechod na bezplatný model</translation>
 <translation id="5474757891469990756">Vychutnajte si Leo na maximum s možnosťou Premium:</translation>
 <translation id="3453542753968940696">Prioritný prístup k výkonným modelom s rôznymi funkciami.</translation>
@@ -2114,6 +2135,8 @@
 <translation id="9018766373792005944">Čoho sa týka vaša spätná väzba?</translation>
 <translation id="7355096922131918313">Uviesť spätnú väzbu sem</translation>
 <translation id="3027575440738035995">Leo Premium poskytuje prístup k rozšírenej súprave jazykových modelov pre ešte presnejšie odpovede. <ph name="LINK_BEFORE"/>Zistite viac na<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Odstrániť</translation>
+<translation id="6574153208133461043">Určite chcete túto konverzáciu vymazať? Túto akciu nemožno vrátiť späť.</translation>
 <translation id="7488762544858401571">Upravené</translation>
 <translation id="1406205536570262057">Upraviť odpoveď</translation>
 <translation id="2399439821649319175">Nepomohlo</translation>
@@ -2127,6 +2150,7 @@
 <translation id="8171760814579050200">Premenovať konverzáciu</translation>
 <translation id="7754678742055438573">Odstrániť konverzáciu</translation>
 <translation id="7494736170250048402">Poslať správu do asistenta Leo</translation>
+<translation id="8650874793377330048">Zastaviť odpovede</translation>
 <translation id="8712637175834984815">Dobre</translation>
 <translation id="1093419424466417703">Stránka je pre Lea príliš dlhá. V konverzácii môže chýbať určitý kontext. Z obsahu stránky prečítal Leo<ph name="PERCENTAGE"/>.</translation>
 <translation id="2186990448773134544">Obsah stránky bol vylepšený vyňatím najdôležitejších informácií zo stránky, pretože pre Lea bol príliš dlhý.</translation>

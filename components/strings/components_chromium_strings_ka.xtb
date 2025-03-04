@@ -29,6 +29,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
          და დარწმუნდით, რომ კონფიგურაციაში დაყენებულია მნიშვნელობები „პროქსის გარეშე“ ან „პირდაპირი“</translation>
+<translation id="6159073403999048272">ეს გვერდები განკუთვნილია Brave დეველოპერების მიერ გამოყენებისთვის და მათი აქტიურად შენარჩუნება ან ტესტირება დაუშვებელია. მათ ჩასართავად გახსენით <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, დააწკაპუნეთ ღილაკზე გვერდების გამართვის ჩასართავად და შემდეგ ისევ გადადით ამ გვერდზე.</translation>
 <translation id="2765022094254723779">Brave, ასევე, მუშაობს <ph name="BEGIN_LINK_OSS"/>ღია კოდის სხვა პროგრამული უზრუნველყოფის<ph name="END_LINK_OSS"/> დამსახურებით.</translation>
 <translation id="9156965752763025780">თქვენი ცვლილებები გააქტიურდება Brave-ის შემდეგი გაშვებისას.</translation>
 <translation id="8828443087767259398">დაწყვილების გასაგრძელებლად Brave საჭიროებს Bluetooth-ზე წვდომას. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>

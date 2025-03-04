@@ -408,6 +408,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="3570081523466826008">Bağlantıları HTTPS'e yükselt</translation>
 <translation id="3357319404342882895">Katı</translation>
 <translation id="8823559166155093873">Çerezleri engelle</translation>
+<translation id="7093267802941377072">"Tüm Çerezleri Engelle" seçeneği kullanımdan kaldırılmıştır. Bu seçeneği nasıl etkinleştireceğinizi öğrenmek için <ph name="BEGIN_LINK"/>yardım sayfamızı<ph name="END_LINK"/> ziyaret edin</translation>
 <translation id="6196640612572343990">Üçüncü taraf çerezlerini engelle</translation>
 <translation id="5657156137487675418">Tüm çerezlere izin ver</translation>
 <translation id="6883611015375728278">Tüm çerezleri engelle</translation>
@@ -595,6 +596,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="5522403133543437426">Adres çubuğunda kullanılan arama motoru.</translation>
 <translation id="280472502078788655">Gizli pencereler için adres çubuğunda kullanılan arama motoru.</translation>
 <translation id="7232120595886556478">Normal Pencere</translation>
+<translation id="6739674350896546324">Gizli Pencereler için arama motoru</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> artık gizli pencereler için varsayılan arama motorunuz</translation>
 <translation id="6864914031231797928">Uzantılar için Google ile oturum açmaya izin ver</translation>
 <translation id="7878791177459550035">Medya yönlendiricisi tarayıcıda yayın özelliğini etkinleştirir.</translation>
@@ -732,7 +734,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="3213787232304349732">Sunum çerçevenizin istekleri dinlediği URL. Emin değilseniz, hizmet çerçevesi belgelerini kontrol edin. Örneğin Ollama için bu her zaman http://localhost:11434/v1/chat/completions adresidir</translation>
 <translation id="1058790648388035953">Hizmet veren çerçevelerin bazıları, bir API anahtarı veya bir erişim belirteci gibi kimlik doğrulama bilgileri gerektirebilir. Bunlar talep başlığına eklenecektir.</translation>
 <translation id="4335128003329183586">Bağlam boyutu</translation>
-<translation id="8794525422794607973">Bağlam boyutu, modelin tek bir etkileşimde işleyebileceği maksimum token sayısıdır. Her token kabaca bir kelimenin 3/4'üne denk gelir. Daha büyük bir bağlam boyutu, modelin daha uzun konuşmaları işlemesini sağlar. Farklı modeller farklı maksimum bağlam boyutlarını destekler.</translation>
+<translation id="3153779001670804829">Modelin tek bir etkileşimde işleyebileceği maksimum token sayısıdır. Daha büyük bir bağlam boyutu, modelin daha uzun konuşmaları işlemesini sağlar. Farklı modeller farklı maksimum bağlam boyutlarını destekler.</translation>
 <translation id="217141195370578385">Brave, bu talepleri proxy üzerinden aktarmaz, lütfen seçtiğiniz sağlayıcının gizlilik hükümlerini okuyun.</translation>
 <translation id="2645532768679870478">Yerel olmayan uç noktalar, güvenli veri aktarımı için HTTPS prokolünü kullanmalıdır.</translation>
 <translation id="8177205483022887785">Geçersiz bir URL girdiniz. Lütfen geçerli bir URL girin.</translation>
