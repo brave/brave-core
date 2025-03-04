@@ -459,10 +459,25 @@ export const useBuy = () => {
         }).unwrap()
         setIsCreatingWidgetFor(undefined)
 
-        if (widget) {
-          const { widgetUrl } = widget
-          chrome.tabs.create({ url: widgetUrl })
+        if (!widget) {
+          return 
         }
+
+        const { widgetUrl } = widget
+        if (chrome.tabs !== undefined) {
+          chrome.tabs.create({ url: widgetUrl }, () => {
+            if (chrome.runtime.lastError) {
+              console.error(
+                'tabs.create failed: ' + chrome.runtime.lastError.message
+              )
+            }
+          })
+        } else {
+          // Tabs.create is desktop specific. Using window.open for android.
+          window.open(widgetUrl, '_blank', 'noopener noreferrer')
+        }
+
+
       } catch (error) {
         console.error('createMeldBuyWidget failed', error)
         setIsCreatingWidgetFor(undefined)
