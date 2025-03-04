@@ -15,7 +15,6 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/timer/timer.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
@@ -24,7 +23,6 @@
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
-#include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -41,10 +39,6 @@ class PrefService;
 namespace brave_ads {
 class AdsService;
 }  // namespace brave_ads
-
-namespace favicon {
-class FaviconService;
-}
 
 namespace history {
 class HistoryService;

@@ -44,3 +44,21 @@ if (enable_sparkle) {
     ]
   }
 }
+
+source_set("padded_image_source") {
+  # This is to match the upstream include for SanitizedImageSource.
+  assert(!is_android)
+
+  sources = [
+    "padded_image_source.cc",
+    "padded_image_source.h",
+  ]
+
+  deps = [
+    "//brave/brave_domains",
+    "//brave/components/brave_private_cdn",
+    "//chrome/browser/profiles:profile",
+    "//net",
+    "//services/network/public/cpp",
+  ]
+}

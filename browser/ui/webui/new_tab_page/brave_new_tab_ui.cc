@@ -21,6 +21,7 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/top_sites_message_handler.h"
+#include "brave/browser/ui/webui/padded_image_source.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
@@ -144,10 +145,6 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui,
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       base::StringPrintf("frame-src %s;", kNTPNewTabTakeoverRichMediaUrl));
-  //   source->OverrideContentSecurityPolicy(
-  //       network::mojom::CSPDirectiveName::ImgSrc,
-  //       "img-src 'self' data: blob: chrome://resources
-  //       chrome://background-wallpaper chrome://favicon chrome://image;");
   source->AddString("ntpNewTabTakeoverRichMediaUrl",
                     kNTPNewTabTakeoverRichMediaUrl);
 
@@ -163,7 +160,7 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui,
 
   // Add a PaddedImageSource to allow fetching images for Brave News.
   content::URLDataSource::Add(profile,
-                              std::make_unique<SanitizedImageSource>(profile));
+                              std::make_unique<PaddedImageSource>(profile));
 }
 
 BraveNewTabUI::~BraveNewTabUI() = default;
