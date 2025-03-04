@@ -36,15 +36,6 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
 
   func showTranslateOnboarding(tab: Tab?, completion: @escaping (_ translateEnabled: Bool?) -> Void)
   {
-    // Do NOT show the translate onboarding popup if the tab isn't visible
-    guard canShowTranslateOnboarding(tab: tab)
-    else {
-      completion(nil)
-      return
-    }
-
-    Preferences.Translate.translateURLBarOnboardingCount.value += 1
-
     topToolbar.layoutIfNeeded()
     view.layoutIfNeeded()
 
@@ -52,6 +43,15 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     toolbarVisibilityViewModel.toolbarState = .expanded
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+      // Do NOT show the translate onboarding popup if the tab isn't visible
+      guard self.canShowTranslateOnboarding(tab: tab)
+      else {
+        completion(nil)
+        return
+      }
+
+      Preferences.Translate.translateURLBarOnboardingCount.value += 1
+
       let popover = PopoverController(
         content: OnboardingTranslateView(
           onContinueButtonPressed: { [weak self, weak tab] in
@@ -95,12 +95,11 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
         completion(nil)
       }
       popover.present(from: self.topToolbar.locationView.translateButton, on: self)
+      self.shouldShowTranslationOnboardingThisSession = false
     }
-
-    shouldShowTranslationOnboardingThisSession = false
   }
 
-  func presentToast(tab: Tab?, languageInfo: BraveTranslateLanguageInfo) {
+  func presentTranslateToast(tab: Tab?, languageInfo: BraveTranslateLanguageInfo) {
     if presentedViewController != nil || topToolbar.inOverlayMode || tab !== tabManager.selectedTab
     {
       return
@@ -113,5 +112,20 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
       autoLayoutConfiguration: nil
     )
     popover.present(from: self.topToolbar.locationView.translateButton, on: self)
+  }
+
+  func presentTranslateError(tab: Tab?) {
+    if presentedViewController != nil || topToolbar.inOverlayMode || tab !== tabManager.selectedTab
+    {
+      return
+    }
+
+    let alert = UIAlertController(
+      title: Strings.genericErrorTitle,
+      message: Strings.genericErrorBody,
+      preferredStyle: .alert
+    )
+    alert.addAction(UIAlertAction(title: Strings.OBErrorOkay, style: .default))
+    self.present(alert, animated: true)
   }
 }

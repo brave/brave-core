@@ -16,6 +16,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/skus/common/features.h"
+#include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/browser_menu/features.h"
 #include "build/build_config.h"
@@ -175,6 +176,13 @@
           "Replace the standard more button menu with a modern replacement",   \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave::features::kModernBrowserMenuEnabled),      \
+      },                                                                       \
+      {                                                                        \
+          "brave-translate-enabled",                                           \
+          "Use Brave Translate",                                               \
+          "Enables page translation",                                          \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kBraveTranslateEnabled),         \
       },                                                                       \
       {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \

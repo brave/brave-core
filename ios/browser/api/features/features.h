@@ -78,6 +78,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveHttpsByDefault;
 @property(class, nonatomic, readonly) Feature* kBlockAllCookiesToggle;
 @property(class, nonatomic, readonly) Feature* kModernBrowserMenuEnabled;
+@property(class, nonatomic, readonly) Feature* kBraveTranslateFeature;
 @end
 
 NS_ASSUME_NONNULL_END
