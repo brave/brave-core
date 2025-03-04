@@ -67,6 +67,8 @@ class BraveTranslateTabHelper: NSObject {
           self.url = url
           self.isTranslationReady = false
           self.canShowToast = false
+          self.currentLanguageInfo = BraveTranslateLanguageInfo()
+          self.translationTask = nil
           self.delegate?.updateTranslateURLBar(tab: self.tab, state: .unavailable)
         }
       }
