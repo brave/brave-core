@@ -245,5 +245,8 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/webcompat_reporter/WebcompatReporterServiceFactory.java",
   ]
 
-  public_deps = [ "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers" ]
+  public_deps = [
+    "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers",
+    "//brave/components/search_engines/android:jni_headers",
+  ]
 }
