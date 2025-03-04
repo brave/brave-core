@@ -179,6 +179,7 @@ hooks = [
   {
     'name': 'download_rust_toolchain_aux',
     'pattern': '.',
+    'condition': 'checkout_linux or checkout_mac or checkout_win or checkout_android',
     'action': ['python3', 'build/rust/download_rust_toolchain_aux.py']
   },
 ]
