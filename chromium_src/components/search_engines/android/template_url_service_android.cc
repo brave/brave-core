@@ -10,10 +10,10 @@
 
 #define DoesDefaultSearchEngineHaveLogo \
   DoesDefaultSearchEngineHaveLogo_ChromiumImpl
-
 #include "src/components/search_engines/android/template_url_service_android.cc"
-
 #undef DoesDefaultSearchEngineHaveLogo
+
+#include "brave/components/search_engines/android/jni_headers/BraveTemplateUrlService_jni.h"
 
 jboolean TemplateUrlServiceAndroid::DoesDefaultSearchEngineHaveLogo(
     JNIEnv* env,
@@ -29,6 +29,8 @@ jboolean TemplateUrlServiceAndroid::AddSearchEngine(
     const base::android::JavaParamRef<jstring>& search_engine_title,
     const base::android::JavaParamRef<jstring>& search_engine_keyword,
     const base::android::JavaParamRef<jstring>& search_engine_url) {
+  LOG(ERROR) << "brave_search : "
+             << "TemplateUrlServiceAndroid::AddSearchEngine";
   const TemplateURL* existing = template_url_service_->GetTemplateURLForKeyword(
       base::android::ConvertJavaStringToUTF16(env, search_engine_title));
   if (existing) {

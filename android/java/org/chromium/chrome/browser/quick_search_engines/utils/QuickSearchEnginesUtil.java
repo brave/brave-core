@@ -397,11 +397,24 @@ public class QuickSearchEnginesUtil {
                 .getKeyword();
     }
 
+    /**
+     * Removes a search engine from the quick search engines list and saves the updated preferences
+     *
+     * @param profile The user profile to remove the search engine from
+     * @param keyword The keyword identifying the search engine to remove
+     */
     public static void removeSearchEngine(Profile profile, String keyword) {
+        // Get current search engines map
         Map<String, QuickSearchEnginesModel> searchEnginesMap = getQuickSearchEngines(profile);
+
+        // Remove specified search engine
         searchEnginesMap.remove(keyword);
-        Map<String, QuickSearchEnginesModel> orderedMap = new LinkedHashMap<>();
-        orderedMap.putAll(searchEnginesMap);
-        saveSearchEnginesIntoPref(orderedMap);
+
+        // Create new ordered map to maintain insertion order
+        Map<String, QuickSearchEnginesModel> orderedSearchEngines = new LinkedHashMap<>();
+        orderedSearchEngines.putAll(searchEnginesMap);
+
+        // Save updated search engines to preferences
+        saveSearchEnginesIntoPref(orderedSearchEngines);
     }
 }
