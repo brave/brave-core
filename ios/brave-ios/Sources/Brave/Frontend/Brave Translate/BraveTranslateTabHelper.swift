@@ -20,7 +20,7 @@ enum BraveTranslateError: String, Error {
   case otherError
 }
 
-class BraveTranslateTabHelper: NSObject {
+class BraveTranslateTabHelper: NSObject, TabObserver {
   private weak var tab: Tab?
   private weak var delegate: BraveTranslateScriptHandlerDelegate?
   private static var requestCache = [URL: (data: Data, response: HTTPURLResponse)]()
@@ -29,7 +29,6 @@ class BraveTranslateTabHelper: NSObject {
   private var isTranslationReady = false
   private var translationController: UIHostingController<BraveTranslateContainerView>!
   private var translationSession: BraveTranslateSession?
-  private var urlObserver: NSObjectProtocol?
   private var translationTask: (() async throws -> Void)?
   private var canShowToast = false
 
@@ -58,21 +57,7 @@ class BraveTranslateTabHelper: NSObject {
       )
     )
 
-    urlObserver = tab.webView?.observe(
-      \.url,
-      options: [.new],
-      changeHandler: { [weak self] _, change in
-        guard let self = self, let url = change.newValue else { return }
-        if self.url != url {
-          self.url = url
-          self.isTranslationReady = false
-          self.canShowToast = false
-          self.currentLanguageInfo = BraveTranslateLanguageInfo()
-          self.translationTask = nil
-          self.delegate?.updateTranslateURLBar(tab: self.tab, state: .unavailable)
-        }
-      }
-    )
+    tab.addObserver(self)
   }
 
   deinit {
@@ -221,6 +206,17 @@ class BraveTranslateTabHelper: NSObject {
     }
 
     return (data, response)
+  }
+
+  // MARK: - TabObserver
+
+  func tabDidUpdateURL(_ tab: Tab) {
+    url = tab.url
+    isTranslationReady = false
+    canShowToast = false
+    currentLanguageInfo = BraveTranslateLanguageInfo()
+    translationTask = nil
+    delegate?.updateTranslateURLBar(tab: self.tab, state: .unavailable)
   }
 
   // MARK: - Private
