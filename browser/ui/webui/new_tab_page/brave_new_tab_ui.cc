@@ -33,6 +33,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
+#include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/navigation_entry.h"
@@ -143,6 +144,10 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui,
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       base::StringPrintf("frame-src %s;", kNTPNewTabTakeoverRichMediaUrl));
+  //   source->OverrideContentSecurityPolicy(
+  //       network::mojom::CSPDirectiveName::ImgSrc,
+  //       "img-src 'self' data: blob: chrome://resources
+  //       chrome://background-wallpaper chrome://favicon chrome://image;");
   source->AddString("ntpNewTabTakeoverRichMediaUrl",
                     kNTPNewTabTakeoverRichMediaUrl);
 
@@ -155,6 +160,10 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui,
   rich_media_ad_event_handler_ = std::make_unique<
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
       ads_service, std::move(ntp_p3a_helper));
+
+  // Add a PaddedImageSource to allow fetching images for Brave News.
+  content::URLDataSource::Add(profile,
+                              std::make_unique<SanitizedImageSource>(profile));
 }
 
 BraveNewTabUI::~BraveNewTabUI() = default;
