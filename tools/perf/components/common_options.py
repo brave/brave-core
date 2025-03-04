@@ -128,7 +128,7 @@ class CommonOptions:
         help='[ci-mode] Report to the dashboard despite test failures')
     parser.add_argument(
         '--upload',
-        action='store_true',
+        type=lambda x: x.lower() == 'true',
         default=True,
         help=(
             '[For profile updating] Upload the updated profile to cloud storage'

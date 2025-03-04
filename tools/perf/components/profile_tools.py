@@ -16,11 +16,13 @@ from dataclasses import dataclass, asdict
 
 import components.cloud_storage as cloud_storage
 import components.git_tools as git_tools
+import components.perf_test_runner as perf_test_runner
+import components.perf_config as perf_config
 
 from components.path_util import GetBravePerfProfileDir
 from components.perf_profile import GetProfilePath
 from components.perf_config import RunnerConfig
-from components.common_options import CommonOptions
+from components.common_options import CommonOptions, PerfMode
 
 from lib.util import make_zip, scoped_cwd
 
@@ -43,6 +45,10 @@ Notes:
 * Until the PR is merged it has no effect, so CI/skip is added.
 
 [See details]({_PR_SEE_DETAILS_LINK})"""
+
+
+def _GetSafeBrowsingDir(profile_dir: str) -> str:
+  return os.path.join(profile_dir, 'Safe Browsing')
 
 
 def _GetDirectorySize(path: str):
@@ -73,15 +79,20 @@ def _EraseVariationsFromLocalState(local_state_path: str):
     json.dump(local_state, f)
 
 
-def CleanupBrowserComponents(cfg: RunnerConfig, options: CommonOptions):
+def PreRebaseCleanup(cfg: RunnerConfig, options: CommonOptions):
   assert cfg.version is not None
   profile_dir = GetProfilePath(cfg.profile, options.working_directory,
                                cfg.version)
+
+  # Remove all components to re download them
   for f in os.listdir(profile_dir):
     fullpath = os.path.join(profile_dir, f)
     if _GetComponentInfo(fullpath) is not None:
       # looks like a component, remove it to re download if needed
       shutil.rmtree(fullpath, ignore_errors=True)
+
+  # Remove safe browsing database
+  shutil.rmtree(_GetSafeBrowsingDir(profile_dir), ignore_errors=True)
 
 
 def CleanProfileCaches(profile_dir: str):
@@ -89,7 +100,8 @@ def CleanProfileCaches(profile_dir: str):
     shutil.rmtree(os.path.join(profile_dir, path), ignore_errors=True)
 
 
-def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions):
+def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
+                              extra_dirs_to_add: List[str]) -> str:
   assert cfg.version is not None
   profile_dir = GetProfilePath(cfg.profile, options.working_directory,
                                cfg.version)
@@ -115,6 +127,12 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions):
                              zip_filename)
   profile_zip_sizes = os.path.join(options.working_directory, 'artifacts',
                                    sizes_filename)
+
+  for extra_dir in extra_dirs_to_add:
+    target_dir = os.path.join(profile_dir, os.path.basename(extra_dir))
+    logging.info('Adding extra %s to %s', extra_dir, target_dir)
+    shutil.copytree(extra_dir, target_dir, dirs_exist_ok=True)
+
   logging.info('Packing profile %s to %s', profile_dir, profile_zip)
   with scoped_cwd(profile_dir):
     make_zip(profile_zip, files=[], dirs=['.'])
@@ -145,6 +163,7 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions):
                              body=_PR_BODY,
                              reviewers=[git_tools.GH_BRAVE_PERF_TEAM],
                              extra_args=['--label', 'CI/skip'])
+  return profile_dir
 
 
 
@@ -181,8 +200,10 @@ class GroupStat:
 
 
 class ProfileStats:
-  total_size: int = 0
-  groups: Dict[str, GroupStat] = {}
+
+  def __init__(self):
+    self.total_size: int = 0
+    self.groups: Dict[str, GroupStat] = {}
 
   def toJSON(self) -> Dict:
     return {
@@ -250,3 +271,51 @@ def GetProfileStats(profile_dir: str,
                                      GroupStat()).items.append(item)
 
   return result
+
+
+def RunUpdateProfile(brave_config: perf_config.PerfConfig,
+                     chromium_config: perf_config.PerfConfig,
+                     options: CommonOptions) -> bool:
+  brave_profile = _RunUpdateProfileForConfig(brave_config, options, [])
+  if not brave_profile:
+    return False
+
+  # Take Safe Browsing database from Brave profile
+  safe_browsing = _GetSafeBrowsingDir(brave_profile)
+  extra_dirs_to_add = []
+  if os.path.isdir(safe_browsing):
+    extra_dirs_to_add.append(safe_browsing)
+
+  if not _RunUpdateProfileForConfig(chromium_config, options,
+                                    extra_dirs_to_add):
+    return False
+
+  return True
+
+
+def _RunUpdateProfileForConfig(config: perf_config.PerfConfig,
+                               options: CommonOptions,
+                               extra_dirs_to_add: List[str]) -> Optional[str]:
+  if len(config.runners) != 1:
+    raise RuntimeError('Only one configuration should be specified.')
+  options.do_report = False
+  config.runners[0].profile_rebase = perf_config.ProfileRebaseType.NONE
+  config.benchmarks = [
+      perf_config.BenchmarkConfig({
+          'name': 'brave_utils.online',
+          'pageset-repeat': 3,
+          'stories': ['UpdateProfile'],
+          'stories_exclude': [],
+      })
+  ]
+
+  configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
+      options.targets, config.runners[0])
+  assert len(configurations) == 1
+  PreRebaseCleanup(configurations[0], options)
+  if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,
+                                            options):
+    return None
+
+  return MakeUpdatedProfileArchive(configurations[0], options,
+                                   extra_dirs_to_add)
