@@ -183,6 +183,16 @@ extension Preferences {
       key: "search.yahoo-jp-phase-one-completed",
       default: false
     )
+    /// User picked DSE name for normal mode
+    public static let userPickedDSEName = Option<String?>(
+      key: "search.user-picked-dse-name",
+      default: nil
+    )
+    /// User picked DSE name for private mode
+    public static let userPickedPrivateDSEName = Option<String?>(
+      key: "search.user-picked-private-dse-name",
+      default: nil
+    )
   }
 
   final public class BraveSearch {

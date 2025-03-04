@@ -149,6 +149,11 @@ public class SearchEngines {
   func updateDefaultEngine(_ engine: String, forType type: DefaultEngineType) {
     let originalEngine = defaultEngine(forType: type)
     type.option.value = engine
+    if type == .standard {
+      Preferences.Search.userPickedDSEName.value = engine
+    } else {
+      Preferences.Search.userPickedPrivateDSEName.value = engine
+    }
 
     // The default engine is always enabled.
     guard let newDefaultEngine = defaultEngine(forType: type) else {
