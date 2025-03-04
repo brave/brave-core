@@ -407,6 +407,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3570081523466826008">Upgrade conexiuni la HTTPS</translation>
 <translation id="3357319404342882895">Stricte</translation>
 <translation id="8823559166155093873">Blochează cookie-urile</translation>
+<translation id="7093267802941377072">Opțiunea „Blochează toate modulele cookie” a fost eliminată. Pentru a afla cum să activezi forțat această opțiune, vizitează <ph name="BEGIN_LINK"/>pagina noastră de ajutor<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Blochează cookie-urile terță parte</translation>
 <translation id="5657156137487675418">Permiteți toate cookie-urile</translation>
 <translation id="6883611015375728278">Blochează toate cookie-urile</translation>
@@ -594,6 +595,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="5522403133543437426">Motor de căutare utilizat în bara de adrese.</translation>
 <translation id="280472502078788655">Motor de căutare utilizat în bara de adrese pentru ferestrele private.</translation>
 <translation id="7232120595886556478">Fereastră normală</translation>
+<translation id="6739674350896546324">Motor de căutare pentru Fereastre Incognito</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> este acum motorul tău de căutare implicit pentru ferestrele private</translation>
 <translation id="6864914031231797928">Permite conectarea cu contul Google pentru extensii</translation>
 <translation id="7878791177459550035">Router-ul media activează funcția de proiecție în browser.</translation>
@@ -731,7 +733,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3213787232304349732">URL-ul în care cadrul furnizor recepționează solicitările. Dacă nu ești sigur(ă), verifică documentația privind cadrul furnizor. De ex., pentru Ollama, acesta este întotdeauna http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Este posibil ca unele cadre furnizoare să necesite date de conectare pentru autentificare, precum o cheie API sau un token de acces. Acestea vor fi adăugate la antetul solicitării.</translation>
 <translation id="4335128003329183586">Dimensiunea contextului</translation>
-<translation id="8794525422794607973">Numărul maxim de token-uri pe care modelul le poate procesa într-o singură interacțiune. Fiecare token reprezintă aproximativ 3/4 dintr-un cuvânt. O dimensiune mai mare a contextului permite modelului să gestioneze conversații mai lungi. Modelele diferite acceptă dimensiuni maxime diferite ale contextului.</translation>
+<translation id="3153779001670804829">Numărul maxim de token-uri pe care modelul le poate procesa într-o singură interacțiune. O dimensiune mai mare a contextului permite modelului să gestioneze conversații mai lungi. Modelele diferite acceptă dimensiuni maxime diferite ale contextului.</translation>
 <translation id="217141195370578385">Brave nu utilizează un server proxy pentru aceste solicitări, vă rugăm să citiți termenii de confidențialitate privind furnizorul ales.</translation>
 <translation id="2645532768679870478">Punctele finale nelocale trebuie să utilizeze protocolul HTTPS pentru transmiterea securizată a datelor.</translation>
 <translation id="8177205483022887785">Ați introdus un URL nevalid. Vă rugăm să introduceți un URL valid.</translation>

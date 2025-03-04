@@ -407,6 +407,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="3570081523466826008">Pakeisti ryšius į HTTPS</translation>
 <translation id="3357319404342882895">Griežtai</translation>
 <translation id="8823559166155093873">Blokuoti slapukus</translation>
+<translation id="7093267802941377072">Parinktis „Blokuoti visus slapukus“ nebenaudojama. Norėdami sužinoti, kaip priverstinai įjungti šią parinktį, apsilankykite <ph name="BEGIN_LINK"/>mūsų pagalbos puslapyje<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Blokuoti trečiosios šalies slapukus</translation>
 <translation id="5657156137487675418">Leisti visus slapukus</translation>
 <translation id="6883611015375728278">Blokuoti visus slapukus</translation>
@@ -594,6 +595,7 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="5522403133543437426">Paieškos sistema naudojama adreso juostoje.</translation>
 <translation id="280472502078788655">Paieškos sistema naudojama inkognito langų adreso juostoje.</translation>
 <translation id="7232120595886556478">Įprastas langas</translation>
+<translation id="6739674350896546324">„Private Windows“ skirta paieškos sistema</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> dabar yra jūsų numatytoji inkognito langų paieškos sitema</translation>
 <translation id="6864914031231797928">Leisti „Google“ prisijungti prie plėtinių</translation>
 <translation id="7878791177459550035">Medijos maršrutizatorius naršyklėje įgalina perdavimo funkciją.</translation>
@@ -731,7 +733,7 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="3213787232304349732">URL, kuriame jūsų aptarnaujanti sistema klausosi užklausų. Jei nesate tikri, patikrinkite aptarnaujančios sistemos dokumentaciją. Pavyzdžiui, „Ollama“ atveju tai visada yra http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Kai kurios aptarnaujančios sistemos gali reikalauti autentifikavimo duomenų, pavyzdžiui, API rakto arba prieigos žetono. Jie bus įtraukti į užklausos antraštę.</translation>
 <translation id="4335128003329183586">Konteksto dydis</translation>
-<translation id="8794525422794607973">Didžiausias žetonų skaičius, kurį modelis gali apdoroti per vieną sąveiką. Kiekvieną žetoną sudaro maždaug 3/4 žodžio. Daugiau konteksto leidžia modeliui apdoroti ilgesnius pokalbius. Skirtingi modeliai palaiko skirtingus didžiausius konteksto dydžius.</translation>
+<translation id="3153779001670804829">Didžiausias žetonų skaičius, kurį modelis gali apdoroti per vieną sąveiką. Daugiau konteksto leidžia modeliui apdoroti ilgesnius pokalbius. Skirtingi modeliai palaiko skirtingus didžiausius konteksto dydžius.</translation>
 <translation id="217141195370578385">„Brave“ nepatvirtina šių prašymų, perskaitykite pasirinkto paslaugų teikėjo privatumo sąlygas.</translation>
 <translation id="2645532768679870478">Saugiam duomenų perdavimui ne vietiniuose galiniuose taškuose turėtų būti naudojamas HTTPS protokolas.</translation>
 <translation id="8177205483022887785">Įvedėte netinkamą URL adresą. Įveskite tinkamą URL adresą.</translation>

@@ -19,6 +19,7 @@
 <translation id="1080365971383768617">Kata laluan pada semua peranti anda</translation>
 <translation id="1082920045291562218">Berkongsi dengan helaian maklum balas ringkasan ditutup</translation>
 <translation id="1087176310396019910">Kemungkinan spam</translation>
+<translation id="1087799850623149508">Anda boleh menyentuh dan menahan untuk mengalihkan bar alamat kepada bahagian bawah</translation>
 <translation id="1089606299949659462">Semakan selesai!</translation>
 <translation id="1094555143448724771">Untuk melihat tab daripada peranti anda yang lain, segerakkan tab dan sejarah anda</translation>
 <translation id="1095761715416917775">Pastikan anda dapat mengakses data penyegerakan anda pada bila-bila masa</translation>
@@ -92,7 +93,6 @@
 <translation id="1373696734384179344">Memori tidak mencukupi untuk memuat turun kandungan yang dipilih.</translation>
 <translation id="1376578503827013741">Mengira...</translation>
 <translation id="1381838868249179644">Untuk memastikan anda selamat, kebenaran dialih keluar daripada beberapa laman</translation>
-<translation id="1382912999714108023">Maklumat yang dipaparkan telah lapuk? Sila hubungi bank anda untuk mengemas kini maklumat.</translation>
 <translation id="1383876407941801731">Carian</translation>
 <translation id="1384704387250346179">Terjemah imej dgn Lens <ph name="BEGIN_NEW"/>Baharu<ph name="END_NEW"/></translation>
 <translation id="1386674309198842382">Aktif <ph name="LAST_UPDATED"/> hari lalu</translation>
@@ -114,6 +114,7 @@ Untuk mendapatkan lebih banyak tetapan yang menggunakan data untuk meningkatkan 
 <translation id="1435593198351412143">Buka PDF secara automatik</translation>
 <translation id="1436784010935106834">Dibuang</translation>
 <translation id="1437543266176261764">Dijalankan dalam <ph name="APP_NAME"/></translation>
+<translation id="1448147069872048656">Sahkan identiti anda untuk memastikan anda dapat mengakses semua kata laluan anda pada peranti ini</translation>
 <translation id="1448440926884431741">Atur produk yang dijejaki dalam Penanda Halaman</translation>
 <translation id="1460751212339734034">Jimatkan masa, kurangkan menaip</translation>
 <translation id="5598889255595678761">Pilih bahasa Brave</translation>
@@ -126,10 +127,10 @@ Untuk mendapatkan lebih banyak tetapan yang menggunakan data untuk meningkatkan 
 <translation id="1502010315804028179">Untuk mengurus kata laluan anda, kemas kini perkhidmatan Google Play</translation>
 <translation id="1506061864768559482">Enjin carian</translation>
 <translation id="1513352483775369820">Penanda halaman dan sejarah web</translation>
-<translation id="1513814250881909472">Segerakkan untuk mendapatkan tab anda daripada peranti anda yang lain</translation>
 <translation id="1513858653616922153">Padam kata laluan</translation>
 <translation id="1521774566618522728">Aktif hari ini</translation>
 <translation id="5840742727909553422">Versi baharu Brave tersedia</translation>
+<translation id="1540012742443808215">Bar alamat terletak pada bahagian atas pada masa ini</translation>
 <translation id="6656719574110770130">{BOOKMARKS_COUNT,plural, =1{1 penanda halaman disimpan pada peranti ini sahaja. Untuk menggunakan kata laluan ini pada peranti anda yang lain, simpan kata laluan tersebut dalam Brave sync chain anda, <ph name="ACCOUNT_EMAIL"/>.}other{# penanda halaman disimpan pada peranti ini sahaja. Untuk menggunakan penanda halaman dan item ini pada peranti anda yang lain, simpan penanda halaman dan item tersebut dalam Brave sync chain anda, <ph name="ACCOUNT_EMAIL"/>.}}</translation>
 <translation id="3748360913454941567">Kaedah pembayaran dan alamat tidak akan disulitkan. Sejarah penyemakan imbas daripada Brave tidak akan disegerakkan.
 Orang yang mengetahui ungkapan laluan anda sahaja yang dapat membaca data anda yang disulitkan. Ungkapan laluan tidak dihantar kepada atau disimpan oleh Brave. Jika anda terlupa ungkapan laluan anda atau mahu menukar tetapan ini, <ph name="BEGIN_LINK"/>kosongkan data Brave dalam akaun anda<ph name="END_LINK"/>.</translation>
@@ -151,7 +152,6 @@ Orang yang mengetahui ungkapan laluan anda sahaja yang dapat membaca data anda y
 <translation id="164269334534774161">Anda sedang melihat salinan luar talian halaman ini dari <ph name="CREATION_TIME"/></translation>
 <translation id="1644574205037202324">Sejarah</translation>
 <translation id="1645262572857218659">Log masuk dengan <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
-<translation id="1670399744444387456">Asas</translation>
 <translation id="1671236975893690980">Muat turun belum selesai...</translation>
 <translation id="1672586136351118594">Jangan tunjukkan lagi</translation>
 <translation id="1680919990519905526">Beli-belah dgn Lens <ph name="BEGIN_NEW"/>Baharu<ph name="END_NEW"/></translation>
@@ -186,7 +186,6 @@ Orang yang mengetahui ungkapan laluan anda sahaja yang dapat membaca data anda y
 <translation id="1829244130665387512">Cari dalam halaman</translation>
 <translation id="1832459821645506983">Ya, saya setuju</translation>
 <translation id="4544426875066706571">Untuk melindungi data anda, benarkan Brave mengalih keluar kebenaran daripada laman yang belum anda lawati baru-baru ini</translation>
-<translation id="5488575152752589250">Segerakkan untuk mendapatkan kandungan yang paling berkaitan daripada Brave</translation>
 <translation id="7175072311426658869">Buka dalam penyemak imbas Brave</translation>
 <translation id="5173820533850252773">Brave sudah usang</translation>
 <translation id="1877073879466606884">Profil yang anda log masuk ialah profil terurus. Pentadbir anda boleh membuat perubahan pada tetapan profil anda dari jauh, menganalisis maklumat tentang penyemak imbas melalui pelaporan dan melaksanakan tugas penting yang lain.</translation>
@@ -235,7 +234,6 @@ Orang yang mengetahui ungkapan laluan anda sahaja yang dapat membaca data anda y
 <translation id="8992364521253636633">Untuk menyelesaikan persediaan autolengkap, mulakan semula Brave sekarang. Tab anda akan dibuka semula secara automatik.</translation>
 <translation id="2091863218454846791">Menunjukkan paparan sarat</translation>
 <translation id="2093731487903423814">15 minit yang lalu</translation>
-<translation id="2096012225669085171">Segerakkan dan peribadikan pada semua peranti</translation>
 <translation id="2100273922101894616">Auto Log masuk</translation>
 <translation id="2109384632594340939">gambar profil</translation>
 <translation id="2111511281910874386">Pergi ke halaman</translation>
@@ -275,7 +273,6 @@ Orang yang mengetahui ungkapan laluan anda sahaja yang dapat membaca data anda y
 <translation id="228704530595896923">Senarai pilihan perkongsian.</translation>
 <translation id="2287421207599770907">{NUMBER_OF_TABS,plural, =1{Lihat <ph name="TABS_COUNT_ONE"/> tab}other{Lihat <ph name="TABS_COUNT_MANY"/> tab}}</translation>
 <translation id="2297822946037605517">Kongsi halaman ini</translation>
-<translation id="22981027763501686">Buat penyegerakan untuk mendapatkan penanda halaman dan sejarah anda serta pelbagai lagi pada peranti anda yang lain</translation>
 <translation id="230115972905494466">Tiada peranti yang serasi ditemui</translation>
 <translation id="2318045970523081853">Ketik untuk membuat panggilan</translation>
 <translation id="2321086116217818302">Menyediakan kata laluan…</translation>
@@ -286,6 +283,7 @@ Orang yang mengetahui ungkapan laluan anda sahaja yang dapat membaca data anda y
 <translation id="233375395665273385">Padamkan dan log keluar</translation>
 <translation id="2341410551640223969">Tidak dapat memasang <ph name="WEBAPK_NAME"/>.</translation>
 <translation id="3587672679800759167">Jumlah data yang digunakan oleh Brave, termasuk akaun, penanda halaman dan tetapan yang disimpan</translation>
+<translation id="2349954856814571872">Ikon butang bar penanda halaman</translation>
 <translation id="2767094839186957509">Dasar Privasi Brave</translation>
 <translation id="2359808026110333948">Teruskan</translation>
 <translation id="2362083820973145409">Log masuk sebagai <ph name="USER_NAME"/>. <ph name="USER_EMAIL"/>. Membuka tetapan.</translation>
@@ -339,12 +337,10 @@ Orang yang mengetahui ungkapan laluan anda sahaja yang dapat membaca data anda y
 <translation id="2571834852878229351">Buat kata laluan sendiri</translation>
 <translation id="7242554556818074465">Untuk melihat tab anda daripada mana-mana tempat anda menggunakan Brave, log masuk ke semua peranti anda</translation>
 <translation id="5021250666812601581"><ph name="MEMBER_FULL_NAME"/> (<ph name="EMAIL"/>) akan kehilangan akses kepada kumpulan tab “<ph name="GROUP_NAME"/>” dengan serta-merta dan tidak akan dapat berinteraksi dengan anda lagi merentas perkhidmatan Brave.</translation>
-<translation id="8661556138616664061">Kandungan oleh Brave untuk minda muda</translation>
 <translation id="2579297619530305344">Kata laluan pada semua peranti anda dibuka pada ketinggian penuh</translation>
 <translation id="2324920234469020158">Tindakan ini akan menghapuskan kuki, cache dan data tapak yang lain yang Brave anggap tidak penting.</translation>
 <translation id="2587052924345400782">Versi lebih baharu tersedia</translation>
 <translation id="2593272815202181319">Monospace</translation>
-<translation id="2603212228005142861">Log masuk untuk mengurus keutamaan anda</translation>
 <translation id="260403163289591229">Mengikuti</translation>
 <translation id="2604446170045642109">Anda boleh mematikan tema gelap untuk laman dalam tetapan anda.</translation>
 <translation id="2607441479295509868">Dilog keluar. Log masuk semula untuk menggunakan penanda halaman, kata laluan dan pelbagai lagi dalam akaun anda.</translation>
@@ -386,7 +382,6 @@ Orang yang mengetahui ungkapan laluan anda sahaja yang dapat membaca data anda y
 <translation id="2781151931089541271">1 saat lagi</translation>
 <translation id="2789486458103222910">Okey</translation>
 <translation id="7717639919252237580">{NUM_PASSWORDS,plural, =1{Brave menemukan kata laluan yang digunakan semula yang boleh anda tingkatkan}other{Brave menemukan # kata laluan yang digunakan semula yang boleh anda tingkatkan}}</translation>
-<translation id="2796651346651857052">Sentuh dan tahan bar alamat untuk menukar kedudukan bar alamat.</translation>
 <translation id="2800066122460699237">Tab <ph name="TAB_TITLE"/> akan ditutup</translation>
 <translation id="2805756323405976993">Apl</translation>
 <translation id="7068873021383263704">Lihat dan urus kata laluan yang disimpan dalam <ph name="BEGIN_LINK"/>Brave sync chain<ph name="END_LINK"/> anda</translation>
@@ -399,7 +394,6 @@ Orang yang mengetahui ungkapan laluan anda sahaja yang dapat membaca data anda y
 <translation id="2839327205551510876">Telah berhenti mengikuti <ph name="SITE_NAME"/></translation>
 <translation id="2841216154655874070">{NUM_DAYS,plural, =1{Disemak 1 hari yang lalu}other{Disemak # hari yang lalu}}</translation>
 <translation id="2842985007712546952">Folder induk</translation>
-<translation id="2855243985454069333">Memadamkan sejarah daripada semua peranti yang disegerakkan</translation>
 <translation id="2860954141821109167">Pastikan apl telefon didayakan pada peranti ini</translation>
 <translation id="6518254564747115579">Sesetengah ciri Brave tidak akan tersedia lagi</translation>
 <translation id="2869430948265924908">Untuk melindungi kandungan sensitif anda di dalam kereta, anda mestilah membuat kunci profil kereta.  Anda boleh melakukan tindakan itu dengan PIN, kod atau kata laluan.</translation>
@@ -480,7 +474,6 @@ Orang yang mengetahui ungkapan laluan anda sahaja yang dapat membaca data anda y
 <translation id="3207960819495026254">Ditandai halaman</translation>
 <translation id="3208584281581115441">Semak sekarang</translation>
 <translation id="3211426585530211793"><ph name="ITEM_TITLE"/> dipadamkan</translation>
-<translation id="1892217432793359605"><ph name="BEGIN_LINK1"/>Sejarah carian<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>bentuk aktiviti lain<ph name="END_LINK2"/> mungkin disimpan dalam Brave sync chain anda semasa anda dilog masuk. Anda boleh memadamkan data tersebut pada bila-bila masa.</translation>
 <translation id="3220943972464248773">Untuk menyegerakkan kata laluan anda, sahkan orang itu ialah anda</translation>
 <translation id="3232293466644486101">Padamkan data semakan imbas…</translation>
 <translation id="3232754137068452469">Apl Web</translation>
@@ -558,7 +551,6 @@ Orang yang mengetahui ungkapan laluan anda sahaja yang dapat membaca data anda y
 <translation id="3577473026931028326">Kesilapan telah berlaku. Cuba lagi.</translation>
 <translation id="3577558748185201054">Urus minat dan pilihan anda</translation>
 <translation id="3587482841069643663">Semua</translation>
-<translation id="3597179440835065298">Dapatkan cadangan yang lebih baik</translation>
 <translation id="3602290021589620013">Pratonton</translation>
 <translation id="3614126103057878858">Cerapan harga</translation>
 <translation id="3616113530831147358">Audio</translation>
@@ -721,12 +713,12 @@ Orang yang mengetahui ungkapan laluan anda sahaja yang dapat membaca data anda y
 <translation id="4405224443901389797">Alihkan ke…</translation>
 <translation id="4405636711880428279">Alih keluar kad maya anda?</translation>
 <translation id="4409014848144759297"><ph name="WEBSITE_TITLE"/> dan <ph name="TAB_COUNT"/> tab lain</translation>
-<translation id="4409271659088619928">Enjin carian anda ialah <ph name="DSE"/>. Lihat arahan enjin carian itu untuk memadamkan sejarah carian anda, jika berkenaan.</translation>
 <translation id="4414179633735763985"><ph name="TAB_GROUPS_AND_TABS_PART"/> dipadamkan</translation>
 <translation id="5749788945734786627">Urus Brave sync chain anda</translation>
 <translation id="4425140285732600465">Menjejaki harga. Dapatkan makluman sekiranya harga jatuh pada mana-mana laman.</translation>
 <translation id="4425173294238317796">Helaian pengesahan kunci laluan</translation>
 <translation id="442518031075347249">Anda tidak dapat menggunakan kad maya anda dengan Google Pay lagi. <ph name="BEGIN_LINK1"/>Ketahui lebih lanjut tentang kad maya<ph name="END_LINK1"/></translation>
+<translation id="4426508677408162512">Semua Penanda Halaman</translation>
 <translation id="4430277756566635951"><ph name="EMAIL"/> dipilih pada masa ini. Pilih akaun.</translation>
 <translation id="4452411734226507615">Tutup tab <ph name="TAB_TITLE"/></translation>
 <translation id="4452548195519783679">Ditandai halaman ke <ph name="FOLDER_NAME"/></translation>
@@ -796,7 +788,6 @@ Brave sync chain anda mungkin mempunyai sejarah penyemakan imbas dalam bentuk la
 <translation id="5788625372408165654">Data Brave yang dipadamkan</translation>
 <translation id="4742970037960872810">Alih keluar serlahan</translation>
 <translation id="4749960740855309258">Buka tab baharu</translation>
-<translation id="4750356170202299988">Kandungan untuk minda muda</translation>
 <translation id="4758061975920522644">Kongsi imej sahaja</translation>
 <translation id="4759238208242260848">Muat turun</translation>
 <translation id="4763480195061959176">video</translation>
@@ -818,12 +809,10 @@ Brave sync chain anda mungkin mempunyai sejarah penyemakan imbas dalam bentuk la
 <translation id="481574578487123132">Peranti terpaut</translation>
 <translation id="4822710610088666676"><ph name="TAB_GROUP_TITLE"/> kumpulan tab ditutup dan disimpan</translation>
 <translation id="4826163340425232009">Helaian bawah log masuk.</translation>
-<translation id="4834007576107377210">Lihat arahan enjin carian anda untuk memadamkan sejarah carian anda, jika berkenaan</translation>
 <translation id="4834250788637067901">Kaedah pembayaran, tawaran dan alamat yang menggunakan Google Pay</translation>
 <translation id="2593289874938379417">Brave tidak boleh mengakses sumber yang diminta.</translation>
 <translation id="483742037940503070">{TAB_COUNT,plural, =1{Pulihkan kumpulan tab <ph name="TAB_COUNT_ONE"/> tab, warna <ph name="COLOR_NAME"/>, sebagai kumpulan tab latar baharu.}other{Pulihkan kumpulan tab <ph name="TAB_COUNT_MANY"/> tab, warna <ph name="COLOR_NAME"/>, sebagai kumpulan tab latar baharu.}}</translation>
 <translation id="4837753911714442426">Buka pilihan untuk mencetak halaman</translation>
-<translation id="4842092870884894799">Menunjukkan tetingkap timbul penjanaan kata laluan</translation>
 <translation id="6195403640086187022">Untuk keselamatan tambahan, sulitkan kata laluan pada peranti sebelum disimpan ke Pengurus Kata Laluan Brave</translation>
 <translation id="4850886885716139402">Lihat</translation>
 <translation id="4852014461738377247">Sedang log masuk</translation>
@@ -842,6 +831,7 @@ Brave sync chain anda mungkin mempunyai sejarah penyemakan imbas dalam bentuk la
 <translation id="4910889077668685004">Apl pembayaran</translation>
 <translation id="4912413785358399818">Alihkan tab</translation>
 <translation id="4913169188695071480">Berhenti memuat semula</translation>
+<translation id="4913841543356834596">Dapatkan akses kepada semua kata laluan anda</translation>
 <translation id="4918086044614829423">Terima</translation>
 <translation id="4925120120285606924">Tangkapan skrin <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="49268022542405662">Kata laluan anda akan dieksport dan dimuat turun sebagai fail teks. Kata laluan itu akan dapat dilihat oleh sesiapa dan sebarang apl yang mempunyai akses kepada folder destinasi.</translation>
@@ -875,7 +865,6 @@ Brave sync chain anda mungkin mempunyai sejarah penyemakan imbas dalam bentuk la
 <translation id="5039678609803776426">{TAB_COUNT,plural, =1{<ph name="TAB_COUNT_ONE"/> tab - <ph name="URL_LIST"/>}other{<ph name="TAB_COUNT_MANY"/> tab - <ph name="URL_LIST"/>}}</translation>
 <translation id="5040262127954254034">Privasi</translation>
 <translation id="504456571576643789">Perkara yang perlu dipertimbangkan</translation>
-<translation id="4858031288914533863"><ph name="BEGIN_LINK1"/>Bentuk aktiviti lain<ph name="END_LINK1"/> mungkin disimpan dalam Brave sync chain anda semasa anda dilog masuk. Anda boleh memadamkan data tersebut pada bila-bila masa.</translation>
 <translation id="506254248375231072">Tiada tab</translation>
 <translation id="5062960805900435602">Kemaskinian tentang gabungan kata laluan telah ditutup</translation>
 <translation id="5075939510584558547">Simpan tanpa penyulitan</translation>
@@ -953,13 +942,13 @@ Brave sync chain anda mungkin mempunyai sejarah penyemakan imbas dalam bentuk la
 <translation id="544776284582297024">Untuk membuka tab dan melawat halaman yang berlainan pada masa yang sama, ketik butang buka tab</translation>
 <translation id="5454166040603940656">dengan <ph name="PROVIDER"/></translation>
 <translation id="5454215368971121976">Apabila peranti anda dilipat, anda boleh membuat pilihan atau menyentuh dan menahan bar alamat untuk menukar kedudukan.</translation>
+<translation id="5456381639095306749">Muat turun halaman</translation>
 <translation id="5458366071038729214">Anda akan menemukan laman yang anda ikuti di sini</translation>
 <translation id="5468068603361015296">Adakah anda mahu memuat turun <ph name="FILE_NAME"/> juga?</translation>
 <translation id="548278423535722844">Buka dalam apl peta</translation>
 <translation id="5492637351392383067">Penyulitan pada peranti</translation>
 <translation id="549660026907543296">Sertai sebagai <ph name="MEMBER_FULL_NAME"/></translation>
 <translation id="5503125329065007089">Kata laluan pada semua peranti anda dibuka pada separuh ketinggian</translation>
-<translation id="5514904542973294328">Dilumpuhkan oleh pentadbir peranti ini</translation>
 <translation id="5515439363601853141">Buka kunci untuk melihat kata laluan anda</translation>
 <translation id="5517095782334947753">Anda mempunyai penanda halaman, sejarah, kata laluan dan tetapan lain daripada <ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="5517326820028369152">Helaian bawah aktiviti baru-baru ini</translation>
@@ -995,6 +984,7 @@ Brave sync chain anda mungkin mempunyai sejarah penyemakan imbas dalam bentuk la
 <translation id="5665379678064389456">Buat acara dalam <ph name="APP_NAME"/></translation>
 <translation id="5680616253592639556">Maklumat tidak lengkap</translation>
 <translation id="5668833306439455813">Brave tidak dapat menyemak kemas kini</translation>
+<translation id="5683916195767086779">Kumpulan tab</translation>
 <translation id="5686790454216892815">Nama fail terlalu panjang</translation>
 <translation id="4809211418322514799">Brave memadamkan laman yang disimpan melebihi 30 hari secara automatik. Laman yang anda lawati sekali lagi mungkin dipaparkan semula dalam senarai. Atau anda boleh menyekat laman daripada mencadangkan iklan untuk anda. Ketahui lebih lanjut tentang <ph name="BEGIN_LINK"/>pengurusan privasi iklan anda dalam Brave.<ph name="END_LINK"/></translation>
 <translation id="569536719314091526">Terjemahkan halaman ini ke dalam sebarang bahasa lain daripada butang Lagi pilihan</translation>
@@ -1042,7 +1032,6 @@ Brave sync chain anda mungkin mempunyai sejarah penyemakan imbas dalam bentuk la
 <translation id="6538479075382111079">Menghantar perangkaan penggunaan dan laporan ranap sistem secara automatik kepada Brave</translation>
 <translation id="5869522115854928033">Kata laluan disimpan</translation>
 <translation id="5604589745019948682">Untuk mengikuti laman, pergi ke laman tersebut, buka menu Brave dan ketik Ikut.</translation>
-<translation id="5879072387416556377">Dapatkan cadangan lebih baik</translation>
 <translation id="5883855034004058011">Biometrik gagal terlalu banyak kali. Kunci dan buka kunci peranti anda untuk mencuba semula.</translation>
 <translation id="2496394743292988533">Pemberitahuan <ph name="SEPARATOR"/> Brave telah mengalih keluar kebenaran ini kerana laman ini berbahaya</translation>
 <translation id="5895834791314695851">Kata laluan akan berhenti berfungsi tidak lama lagi pada peranti ini. Untuk terus menggunakan kata laluan anda, kemas kinikan perkhidmatan Google Play. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>
@@ -1176,6 +1165,7 @@ Sebagai contoh, sesetengah laman web mungkin memberi respons kepada permintaan i
 <translation id="6459045781120991510">Tinjauan</translation>
 <translation id="6461962085415701688">Tidak dapat membuka fail</translation>
 <translation id="9055113864158719823">Anda dapat melihat tapak yang anda lawati dalam Brave dan menetapkan pemasa untuk tapak tersebut.\n\nBrave menerima maklumat tentang tapak yang pemasanya telah anda tetapkan dan tempoh anda berada di tapak itu. Maklumat ini digunakan untuk menambah baik Kesejahteraan Digital.</translation>
+<translation id="6468703991511753953">Bar alamat terletak pada bahagian bawah</translation>
 <translation id="1774272248732824119">Halaman yang telah anda buka dalam Brave semasa menggunakan <ph name="APP_LABEL"/> akan dipaparkan di sini.</translation>
 <translation id="6473086018775716761">Senarai pilihan perkongsian dibuka pada ketinggian separuh.</translation>
 <translation id="6475951671322991020">Muat turun video</translation>
@@ -1199,10 +1189,12 @@ Sebagai contoh, sesetengah laman web mungkin memberi respons kepada permintaan i
 <translation id="6556542240154580383">{TAB_COUNT,plural, =1{<ph name="TAB_TITLE"/> dan <ph name="TAB_COUNT_ONE"/> lagi tab akan ditutup}other{<ph name="TAB_TITLE"/> dan <ph name="TAB_COUNT_MANY"/> lagi tab akan ditutup}}</translation>
 <translation id="6560414384669816528">Cari dengan Sogou</translation>
 <translation id="656065428026159829">Lihat lagi</translation>
+<translation id="971059121491380239">Peranti Android anda mungkin menerapkan tetapan yang serupa. Jika pengukuran iklan dihidupkan dalam Brave dan pada peranti Android anda, syarikat mungkin dapat mengukur keberkesanan iklan pada semua laman web yang anda lawati dan apl yang anda gunakan.</translation>
 <translation id="6565959834589222080">Wi-Fi akan digunakan apabila tersedia</translation>
 <translation id="4480935821314799946">Kini anda akan melihat cerita daripada <ph name="SITE_NAME"/> apabila anda membuka tab baharu. Laman yang anda ikuti disimpan pada Brave sync chain anda. Anda boleh mengurus laman tersebut dalam tetapan Discover.</translation>
 <translation id="6570116402456758630">Ringkasan halaman</translation>
 <translation id="657177046675873214">Hidupkan “Penanda halaman” dalam tetapan untuk mendapatkan penanda halaman pada semua peranti anda</translation>
+<translation id="6573096386450695060">Sentiasa benarkan</translation>
 <translation id="5157964048453367290">Tab yang telah anda buka dalam Brave pada peranti anda yang lain akan dipaparkan di sini.</translation>
 <translation id="6583199322650523874">Tandai halaman semasa</translation>
 <translation id="6588043302623806746">Gunakan DNS selamat</translation>
@@ -1316,6 +1308,7 @@ Sebagai contoh, sesetengah laman web mungkin memberi respons kepada permintaan i
 <translation id="6983306615164277634">Anda juga boleh sentuh dan tahan bar alamat untuk menukar kedudukan.</translation>
 <translation id="4436469586880564451">Kata laluan anda akan dimuat turun sebagai fail CSV. Kata laluan tersebut akan dapat dilihat oleh sesiapa sahaja yang boleh mengakses fail tersebut, termasuk apl. Kata laluan yang telah dieksport akan dipadamkan daripada Brave.</translation>
 <translation id="6996145122199359148">Muat turun halaman ini</translation>
+<translation id="2971862257346039617">Sahkan identiti anda untuk mengakses kata laluan dalam Brave sync chain anda</translation>
 <translation id="7013762323294215682">Kunci laluan akan disimpan pada Password Manager anda. Sesiapa sahaja yang boleh mengakses Password Manager anda akan dapat menggunakan kunci laluan ini.</translation>
 <translation id="7020741890149022655">Tambah pd senarai bacaan <ph name="BEGIN_NEW"/>Baru<ph name="END_NEW"/></translation>
 <translation id="7022756207310403729">Buka dalam penyemak imbas</translation>
@@ -1334,6 +1327,7 @@ Sebagai contoh, sesetengah laman web mungkin memberi respons kepada permintaan i
 <translation id="5499149312981370855">Pilih sama ada untuk memasukkan sejarah Brave untuk mendapatkan pengalaman yang lebih diperibadikan dalam Perkhidmatan Brave</translation>
 <translation id="8208853227947884571">Brave sudah dikemas kini</translation>
 <translation id="7094933634769755999">Tidak tepat</translation>
+<translation id="7102843846294013537">Sesetengah kata laluan anda tidak tersedia pada peranti ini</translation>
 <translation id="7106762743910369165">Penyemak imbas anda diurus oleh organisasi anda</translation>
 <translation id="144902786838571419">Brave memberi anda lebih banyak kawalan terhadap iklan dan mengehadkan perkara yang laman boleh pelajari tentang anda apabila iklan diperibadikan dipaparkan kepada anda.</translation>
 <translation id="7136902389402789299">{NUM_SITES,plural, =1{Kebenaran telah disemak untuk 1 laman}other{Kebenaran telah disemak untuk # laman}}</translation>
@@ -1360,7 +1354,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>padamkan data Brave dalam akau
 <translation id="7191430249889272776">Tab dibuka di latar belakang.</translation>
 <translation id="7192397795254933433">{NUM_PASSWORDS,plural, =1{Anda perlu menukar kata laluan ini sekarang}other{Anda perlu menukar kata laluan ini sekarang}}</translation>
 <translation id="7196215469483532480">Penjelasan panduan privasi dibuka pada ketinggian penuh</translation>
-<translation id="1014116676551114642">Kandungan oleh Brave untuk minda muda - matikan</translation>
 <translation id="7207760545532569765">Pulihkan <ph name="TAB_COUNT"/> tab sebagai tab latar baharu.</translation>
 <translation id="7221869452894271364">Muatkan semula halaman ini</translation>
 <translation id="8713221522704424328">Semua kata laluan yang disimpan hanya pada peranti ini untuk Brave dan <ph name="CHROME_CHANNEL"/> telah digabungkan. Anda dapat membuat autolengkap semua kata laluan anda yang disimpan pada kedua-dua apl.</translation>
@@ -1381,7 +1374,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>padamkan data Brave dalam akau
 <translation id="7313188324932846546">Ketik untuk menyediakan penyegerakan</translation>
 <translation id="7324354302972299151">Hantar permintaan "Do Not Track"</translation>
 <translation id="7333041109965360609">Nyahlanggan daripada pemberitahuan</translation>
-<translation id="8716243540027092298">Segerakkan untuk mendapatkan kandungan yang paling berkaitan daripada Brave</translation>
 <translation id="7336259382292148213">Pemberitahuan nampak baik</translation>
 <translation id="7339898014177206373">Tetingkap baharu</translation>
 <translation id="7340958967809483333">Pilihan untuk Discover</translation>
@@ -1406,7 +1398,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>padamkan data Brave dalam akau
 <translation id="7431991332293347422">Kawal cara sejarah penyemakan imbas anda digunakan untuk memperibadikan Carian dan pelbagai lagi</translation>
 <translation id="7435356471928173109">Dimatikan oleh pentadbir anda</translation>
 <translation id="6234515504547364178">Log keluar dari Brave</translation>
-<translation id="3699067418237091329">Mengelog anda keluar daripada kebanyakan tapak. Anda tidak akan dilog keluar daripada Brave sync chain anda.</translation>
 <translation id="7453810262525006706">Kuncupkan kepada pandangan sisi</translation>
 <translation id="7454641608352164238">Tidak cukup ruang</translation>
 <translation id="7454744349230173024">Organisasi anda mematikan kata laluan disimpan</translation>
@@ -1425,7 +1416,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>padamkan data Brave dalam akau
 <translation id="749294055653435199">Google Lens tidak tersedia pada peranti ini</translation>
 <translation id="7493994139787901920"><ph name="VERSION"/> (Dikemas kini <ph name="TIME_SINCE_UPDATE"/>)</translation>
 <translation id="7498271377022651285">Sila tunggu…</translation>
-<translation id="8156131600798538460">Untuk log keluar daripada Brave sync chain dalam semua laman web, <ph name="BEGIN_LINK1"/>log keluar daripada Brave<ph name="END_LINK1"/>.</translation>
 <translation id="750228856503700085">Kemaskinian Tidak Tersedia</translation>
 <translation id="7507207699631365376">Lihat <ph name="BEGIN_LINK"/>dasar privasi<ph name="END_LINK"/> penyedia ini</translation>
 <translation id="750886945254958667">Simpan kumpulan ini untuk menambahkan tab kemudian atau keluar daripada kumpulan ini jika anda tidak mahu akses kepada kumpulan ini lagi</translation>
@@ -1476,7 +1466,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>padamkan data Brave dalam akau
 <translation id="7698359219371678927">Buat e-mel dalam <ph name="APP_NAME"/></translation>
 <translation id="7702420606070050505">Helaian bawah aktiviti baru-baru ini dibuka pada ketinggian penuh</translation>
 <translation id="7707922173985738739">Gunakan data mudah alih</translation>
-<translation id="7709918231054955894">Dapatkan semua tab anda</translation>
 <translation id="7733878270780732638">Ruang pada peranti tidak mencukupi.</translation>
 <translation id="5321611925570577577">Brave Password Manager akan berhenti berfungsi tidak lama lagi pada peranti ini</translation>
 <translation id="774876555279732384">Perkhidmatan autolengkap juga diurus dalam <ph name="BEGIN_LINK"/>Tetapan Android<ph name="END_LINK"/>.</translation>
@@ -1513,7 +1502,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>padamkan data Brave dalam akau
 <translation id="7876243839304621966">Buangkan semua</translation>
 <translation id="6143689084714664628">Sedang berjalan dalam Brave</translation>
 <translation id="7887174313503389866">Ikuti lawatan berpandu privasi dan kawalan keselamatan utama. Untuk mendapatkan lagi pilihan, pergi ke tetapan individu.</translation>
-<translation id="7896724475402191389">Kandungan untuk minda muda - matikan</translation>
 <translation id="7907478394153853634">Lorem ipsum</translation>
 <translation id="7913993612870913335">{FILE_COUNT,plural, =1{1 muat turun disekat oleh organisasi anda}other{# muat turun disekat oleh organisasi anda}}</translation>
 <translation id="7914399737746719723">Apl dipasang</translation>
@@ -1625,6 +1613,7 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>padamkan data Brave dalam akau
 <translation id="8378850197701296741">Anda mempunyai penanda halaman, sejarah dan tetapan lain daripada <ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="8387617938027387193">Sahkan itu anda</translation>
 <translation id="8393700583063109961">Hantar mesej</translation>
+<translation id="8396098434728053815">Kongsi audio tab juga</translation>
 <translation id="8402673309244746971">Pergi ke Mengikuti</translation>
 <translation id="8413126021676339697">Paparkan sejarah penuh</translation>
 <translation id="5348884013239264115">Melindungi daripada laman, muat turun dan sambungan yang diketahui berbahaya. Apabila anda melawat laman, Brave menghantar bahagian pengeliruan URL kepada Brave melalui pelayan privasi yang menyembunyikan alamat IP anda. Jika laman melakukan sesuatu yang mencurigakan, URL penuh dan sedikit kandungan halaman turut dihantar.</translation>
@@ -1693,7 +1682,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>padamkan data Brave dalam akau
 <translation id="8635399646025169806">Simpan kumpulan tab?</translation>
 <translation id="8636825310635137004">Hidupkan penyegerakan untuk mendapatkan tab daripada peranti anda yang lain.</translation>
 <translation id="864544049772947936">Urus tetingkap (<ph name="INSTANCE_COUNTS"/>)</translation>
-<translation id="7436978557885042606">Guna Brave dengan cara anda</translation>
 <translation id="8664979001105139458">Nama fail sudah wujud</translation>
 <translation id="3188408398745868028">Sesetengah kata laluan pada peranti ini akan berhenti berfungsi tidak lama lagi. Anda boleh mengalihkan kata laluan kepada Brave Password Manager.</translation>
 <translation id="8676276370198826499">Daftar <ph name="SITE_ETLD_PLUS_ONE"/> dengan <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>

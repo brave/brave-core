@@ -197,6 +197,8 @@
 <translation id="1680858055899097121">Ne persistez pas dans les onglets entre les sessions de navigation</translation>
 <translation id="7142548388914389999">Autoriser l'analyse de produits respectueuse de la vie privée (P3A)</translation>
 <translation id="5254037869598726291">Les données P3A anonymisées permettent à Brave d'estimer l'utilisation globale et de garantir que nous améliorons les fonctionnalités populaires.</translation>
+<translation id="4174337572777167894">Projet de découverte web</translation>
+<translation id="8659271182272561965">Fournissez des données de recherche et de navigation anonymes pour affiner Brave Search.</translation>
 <translation id="933652931229970927">Envoyer automatiquement les rapports de diagnostic</translation>
 <translation id="5987838417172370108">Contribuez à améliorer la stabilité des produits de Brave en envoyant automatiquement des rapports de diagnostic lorsque le navigateur Brave plante ou se bloque.</translation>
 <translation id="7977176350719484850">Données\néconomisées</translation>
@@ -233,7 +235,6 @@
 <translation id="6587448235155023666">Vos changements prendront effet la prochaine fois que vous lancerez Brave</translation>
 <translation id="8701563696941209024">RELANCEZ MAINTENANT</translation>
 <translation id="834487290629916192">PLUS TARD</translation>
-<translation id="7207456302801184289">Bienvenue dans Brave</translation>
 <translation id="4117451092682672487">Protégez votre vie privée en toute facilité.</translation>
 <translation id="7909375417585209817">En définissant Brave comme navigateur par défaut, chaque lien s'ouvrira avec les protections de confidentialité de Brave.</translation>
 <translation id="7370959926683925817">Bloquez les publicités. Économisez des données. Chaque jour.</translation>
@@ -241,6 +242,9 @@
 <translation id="5148943178722443958">Aidez-nous à améliorer Brave.</translation>
 <translation id="6718362830686703942">Envoyer des rapports de diagnostic en cas de dysfonctionnement.</translation>
 <translation id="8616157231067364693">Partagez des renseignements privés et anonymes sur les fonctionnalités utilisées par les utilisateurs de Brave.</translation>
+<translation id="2888496576732880897">Aidez-nous à développer la recherche Brave</translation>
+<translation id="7044431516245362795">Participez au projet Web Discovery pour aider à développer l'index et améliorer les résultats de recherche. <ph name="LEARN_MORE_START"/>En savoir plus.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7818938154803162778">Oui, je veux apporter mon aide</translation>
 <translation id="2877653791257935258">Saisissez le nom ou l'URL d'un site Web</translation>
 <translation id="5329830149661250028">Constatez la différence avec Brave : aucune publicité, aucun traceur, et un chargement beaucoup plus rapide des pages.</translation>
 <translation id="3941792073703079607">Découvrez la différence Brave : Bloquez les publicités. Économisez des données. Diffusez plus vite.</translation>
@@ -412,6 +416,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="944340256927461196">Ne laissez aucune trace sur votre appareil</translation>
 <translation id="2063044449012253966">Les sites que vous consultez dans une fenêtre de navigation privée n'apparaissent pas dans votre historique. Les témoins, les données de formulaire et les données de site sont effacées lorsque vous fermez la fenêtre.</translation>
 <translation id="7395764193745523646">Activité de navigation</translation>
+<translation id="8670344404057978375">Notez que même dans des fenêtres privées, votre activité de navigation peut toujours être visible par votre FAI, les observateurs du réseau ou votre employeur (si vous utilisez un réseau ou un appareil professionnel).</translation>
 <translation id="1413177583895309156">Brave VPN crypte et protège tout ce que vous faites en ligne, même en dehors du navigateur Brave.</translation>
 <translation id="3974348661685061050">Essayez gratuitement pendant 7 jours</translation>
 <translation id="5789441016350810005">Publicités de Brave envoyées lorsque le navigateur est en arrière-plan</translation>
@@ -456,6 +461,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="3624048886326677117">Bloquer les traqueurs et les annonces (agressif)</translation>
 <translation id="7151914815476509258">Bloquer les traqueurs et les publicités (standard)</translation>
 <translation id="7384778069178817075">Autoriser tous les traqueurs et annonces</translation>
+<translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>L'option « Bloquer tous les témoins » est obsolète. Pour savoir comment forcer cette option, consultez<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>notre page d'aide.<ph name="END_LINK_1"/></translation>
 <translation id="3763681089644577874">Bloquer les cookies</translation>
 <translation id="614747795780742163">Empêche les sites web de stocker des informations sur vos précédentes visites</translation>
 <translation id="6883611015375728278">Bloquer tous les cookies</translation>
@@ -471,6 +477,8 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="7854108565842971747">Voici les paramètres par défaut de Shields pour les nouveaux sites. Si vous les modifiez, les paramètres spécifiques aux sites existants seront conservés.</translation>
 <translation id="218587021686734263">Empêcher la prise d'empreintes digitales via les paramètres linguistiques</translation>
 <translation id="1706099589708266367">Réduit la quantité de renseignements que les sites Web peuvent obtenir sur vous en fonction des paramètres linguistiques de votre navigateur.</translation>
+<translation id="6486971767955110687">Enregistrer les informations de contact pour d'éventuels signalements futurs</translation>
+<translation id="4085787265464238844">Si vous fournissez vos informations de contact, celles-ci seront conservées pour d'éventuels futurs signalements.</translation>
 <translation id="4721088070859595932">Empêche les sites Web de reconnaître votre appareil</translation>
 <translation id="7445306466605902444">Prise des empreintes digitales bloquée (stricte, peut briser des sites)</translation>
 <translation id="5582686930349810484">Prise des empreintes digitales bloquée (standard)</translation>
@@ -496,6 +504,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="8459191579769999214">Afficher la capture d'écran</translation>
 <translation id="6476216365964140603">Plus de détails (facultatif)</translation>
 <translation id="6145852496180774737">Communiquez avec moi : (facultatif)</translation>
+<translation id="6367576083705149078">Si vous fournissez vos informations de contact, celles-ci seront conservées pour d'éventuels futurs signalements de problèmes avec certains sites.</translation>
 <translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
 <translation id="5299848999918506028">Merci!</translation>
 <translation id="76550953340008122">Merci de faire savoir aux développeurs de Brave qu'il y a quelque chose qui ne va pas sur ce site. Nous ferons de notre mieux pour le réparer !</translation>
@@ -503,6 +512,10 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="5370478469168390143">Sauvegarder les données en ligne</translation>
 <translation id="1118508688433541158">Naviguez plus rapidement et bloquez les publicités avec Brave</translation>
 <translation id="7427391215172269363">Chaque jour, j'économise des données en naviguant sur Internet avec Brave.</translation>
+<translation id="357198789571802914">Regardez YouTube, sans les publicités.</translation>
+<translation id="2154817758398495571">Ouvrez les liens YouTube dans Brave pour bloquer les publicités.</translation>
+<translation id="1580816390443799567">Activer maintenant</translation>
+<translation id="8589748782214271192">Non merci</translation>
 <translation id="8374242949413616101">Protection de la confidentialité</translation>
 <translation id="4955406228638026265">Brave empêche les publicités et les traqueurs de collecter des informations à propos de vous sans votre consentement.</translation>
 <translation id="752842701893882688">Économisez des données et votre batterie</translation>
@@ -849,7 +862,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="590733288489975971">Rewards d'Ads</translation>
 <translation id="1450735350187803276">Publicités vues ce mois-ci</translation>
 <translation id="1767561995429774671">Contribuer</translation>
-<translation id="7335371657242627509">Inclure dans l'auto-contribution</translation>
 <translation id="6727102863431372879">Définir</translation>
 <translation id="3074127054582480056">Attention</translation>
 <translation id="2280319752798785157">Contribution mensuelle</translation>
@@ -1098,7 +1110,13 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="2471230424465522689">Pas avant</translation>
 <translation id="4841860051609590575">ID de la demande</translation>
 <translation id="1179407411385015942">Leo est un assistant intelligent exécuté par l'IA, directement intégré à votre navigateur</translation>
+<translation id="5781842473834867765">Conserver l'historique des conversations</translation>
 <translation id="4109670531935487117">Afficher les suggestions semi-automatiques dans la barre d'adresse</translation>
+<translation id="6106701981952170121">Supprimer toutes les données de conversation avec l'IA Leo</translation>
+<translation id="423600389315522551">La réinitialisation de l'IA Leo requiert que vous choisissiez d'utiliser Brave
+Leo à l'avenir et effacera également votre historique de clavardage. L'effacement de votre historique de clavardage supprimera toutes vos conversations précédentes avec Brave Leo. Cette action est définitive.</translation>
+<translation id="6742599753610126012">Effacer l'historique des conversations</translation>
+<translation id="3443052382074796867">Si vous désactivez l'enregistrement des conversations, toutes les conversations enregistrées seront définitivement supprimées. Cette action ne peut être annulée.</translation>
 <translation id="3692772534525889713">Associez votre achat sur le Play Store à votre compte Brave pour utiliser Brave Leo sur d'autres appareils.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Un an</translation>
@@ -1229,4 +1247,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="3098054327870766317">Afficher le bouton Rétablir lorsque les onglets sont fermés</translation>
 <translation id="1336494649091412226">Voulez-vous vraiment fermer Brave?</translation>
 <translation id="2361906291514218784">IA Leo</translation>
+<translation id="7942415993090181327">Historique des conversations</translation>
+<translation id="6859935199732075666">Afficher les erreurs de navigation sécurisée</translation>
 </translationbundle>

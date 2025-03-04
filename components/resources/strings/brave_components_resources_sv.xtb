@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Denna sida kan inte anmälas eftersom den inte levererades via HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Denna sida är en lokal webbsida och kan inte anmälas.</translation>
 <translation id="8740275226259417070">Detta är en felsida. Den kan inte rapporteras som en ej fungerande webbplats.</translation>
+<translation id="6367576083705149078">Om du uppger kontaktinformation kommer den att lagras för framtida rapporter.</translation>
 <translation id="6806248680442980382">Tack för att du hjälper till att göra Brave bättre för alla. Denna rapport kommer endast att innehålla information som är nödvändig för att vi ska kunna åtgärda webbplatsen.</translation>
 <translation id="6476216365964140603">Ytterligare information (valfritt)</translation>
 <translation id="6145852496180774737">Kontakta mig på: (valfritt)</translation>
@@ -712,8 +713,8 @@
 <translation id="4622826307953794521">Bidra med anonym sökning och bläddra bland data för att förfina Brave Sökning med Web Discovery Project. Det är helt öppen källkod.</translation>
 <translation id="4174337572777167894">Web Discovery projekt</translation>
 <translation id="9034669711835382440">Community</translation>
-<translation id="814503310257431685">Visa alla</translation>
 <translation id="845020633253356720">Visa butik</translation>
+<translation id="7777123407058400802">Grundläggande uppmärksamhetsgåva – BAT</translation>
 <translation id="7090992647511817643">konto</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">domän</translation>
@@ -1739,6 +1740,20 @@
 <translation id="3819528427777765709">Skyddat</translation>
 <translation id="2142946302539262412">Samlad</translation>
 <translation id="4438043733494739848">Transparent</translation>
+<translation id="1950406774300125954">Ur synk</translation>
+<translation id="68413355604013935">Ur synk (<ph name="BLOCKS"/> blockerar bakom)</translation>
+<translation id="1597233669965903034">Synkronisera ditt konto för att komma åt de senaste transaktionerna och saldo.</translation>
+<translation id="7499262814309712782">Synka konto</translation>
+<translation id="2804568727504456403">Synka <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">Initierar ...</translation>
+<translation id="4404141491825711928">Bearbetningsblock:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> kvar</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> av <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">Intervall:</translation>
+<translation id="1178581264944972037">Paus</translation>
+<translation id="7714298753782862705">Synkronisering slutförd. Du kan nu stänga detta fönster.</translation>
+<translation id="7716113567047550378">Stäng inte det här fönstret förrän synkroniseringen är klar.</translation>
+<translation id="5123590959308755060">Fortsätt använda plånboken i en ny flik</translation>
 <translation id="7144878232160441200">Försök igen</translation>
 <translation id="9094621390791852268">Förhandsgranskning av transaktionen misslyckades.</translation>
 <translation id="4982713341035600933">Beräknad saldoförändring</translation>
@@ -2063,7 +2078,7 @@
 <translation id="8637805148029768813">Sammanfattningsfunktionen är för närvarande endast tillgänglig för utvalda artiklar och andra webbsidor i långt format.</translation>
 <translation id="1223498995510244364">Sammanfatta</translation>
 <translation id="7491773233732232424">Om Leo</translation>
-<translation id="5208096220706490232">Brave Leo är en privat, smart AI-assistent som förbättrar din användning av internet. Leo är gratis att använda med begränsad åtkomst. Brave Leo Premium erbjuder fler modeller, högre gränser och ger prenumeranter tidig åtkomst till nya funktioner. Standardmodellen för alla användare är för närvarande Mixtral 8x7B. Se <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/> för mer information.</translation>
+<translation id="4885527781814382758">Brave Leo är en privat, smart AI-assistent som förbättrar din internetanvändning. Leo är gratis att använda med begränsad åtkomst. Brave Leo Premium erbjuder fler modeller, högre gränser och ger prenumeranter tidig åtkomst till nya funktioner. Standardmodellen för alla användare är för närvarande Mixtral 8x7B. Se <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/> för mer information.</translation>
 <translation id="7189603330209995455">Som standard, när du frågar Leo en fråga kan innehållet på webbsidan du tittar på eller valfri text du markerar på en sida skickas och användas för att ge ett svar. Exaktheten i svaren är inte garanterad och kan innehålla felaktig, vilseledande eller falsk information. Leo använder data från Brave Search för att förbättra svarskvaliteten. Skicka inte känslig eller privat information och var försiktig med svar relaterade till hälsa, ekonomi, personlig säkerhet eller liknande. Du kan justera Leos inställningar när som helst. Gå till Inställningar &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo samlar inte in identifierare som din IP-adress som kan kopplas till dig. Ingen data används för att träna AI-modellerna och inga personliga data sparas av AI-modellerna (förutom Anthropic som behåller data i 30 dagar innan den raderas). Se <ph name="LINK_BEFORE"/>integritetspolicyn<ph name="LINK_AFTER"/> för mer information.</translation>
 <translation id="7839853125981164613">Ange en uppmaning här</translation>
@@ -2074,12 +2089,15 @@
 <translation id="2712650703044366764">Den här modellen har en ogiltig slutpunkt. Kontrollera din konfiguration och försök igen.</translation>
 <translation id="1167803637855350748">Det uppstod ett nätverksproblem vid anslutning till Leo, kontrollera anslutningen och försök igen.</translation>
 <translation id="1996126325390835277">Du har nått frekvensgränsen för Premium. Försök igen om några timmar.</translation>
+<translation id="3683964919745779766">Du har nått prisgränsen för den här modellen eller har slut på krediter. Vänligen försök igen senare.</translation>
+<translation id="7692501701960747469">API-nyckeln som är konfigurerad för den här modellen är ogiltig. Kontrollera din konfiguration och försök igen.</translation>
+<translation id="7905602379229309187">Slutpunkten är för närvarande överbelastad. Vänligen försök igen senare.</translation>
 <translation id="8151638057146502721">Konfigurera</translation>
 <translation id="4177458398826096846">Hej, jag heter Leo. Jag är en AI-assistent som hostas helt av Brave. Jag drivs av Llama 3.1 8B, en modell skapad av Meta för att vara effektiv och mångsidig. <ph name="LINK_BEFORE"/>Läs mer om Leo<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hej, jag heter Leo. Jag är enAI-assistent som hostas helt av Brave. Jag drivs av Mixtral 8x7B, en modell som skapats av Mistral AI för att hantera avancerade uppgifter. <ph name="LINK_BEFORE"/>Läs mer om Leo<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Instant, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Hej! Jag heter Leo. Jag är en proxybaserad assistent från Brave. Jag drivs av Claude 3 Haiku, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter.</translation>
-<translation id="1107977270364670952">Hej! Jag heter Leo. Jag är en proxybaserad assistent från Brave. Jag drivs av Claude 3.5 Sonnet, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter.</translation>
+<translation id="2001874998841390450">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Haiku, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Sonnet, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> av <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chatt</translation>
@@ -2098,6 +2116,9 @@
 <translation id="4165928407303989823">Håll dig till ämnet</translation>
 <translation id="2389665228467129817">Chatta längre</translation>
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD/månad</translation>
+<translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/> /year</translation>
+<translation id="1028627582482425924">Ett år</translation>
+<translation id="36366199652730057">Bästa värde</translation>
 <translation id="5151923271944811339">Byt till gratismodellen</translation>
 <translation id="5474757891469990756">Släpp fri Leos fullständiga kraft med Premium:</translation>
 <translation id="3453542753968940696">Prioriterad åtkomst till kraftfulla modeller med olika färdigheter.</translation>
@@ -2117,6 +2138,8 @@
 <translation id="9018766373792005944">Vad handlar din feedback om?</translation>
 <translation id="7355096922131918313">Ge feedback här</translation>
 <translation id="3027575440738035995">Leo Premium ger tillgång till en utökad uppsättning språkmodeller för ännu mer nyanserade svar. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Radera</translation>
+<translation id="6574153208133461043">Är du säker på att du vill ta bort denna konversation? Denna åtgärd kan inte ångras.</translation>
 <translation id="7488762544858401571">Redigerad</translation>
 <translation id="1406205536570262057">Redigera svar</translation>
 <translation id="2399439821649319175">Inte till hjälp</translation>
@@ -2130,6 +2153,7 @@
 <translation id="8171760814579050200">Byt namn på konversation</translation>
 <translation id="7754678742055438573">Ta bort konversation</translation>
 <translation id="7494736170250048402">Skicka meddelande till Leo</translation>
+<translation id="8650874793377330048">Sluta svara</translation>
 <translation id="8712637175834984815">Uppfattat</translation>
 <translation id="1093419424466417703">Sidan är för lång för Leo. Viss kontext kan saknas i konversationen. Leo kunde läsa <ph name="PERCENTAGE"/> av sidans innehåll.</translation>
 <translation id="2186990448773134544">Sidans innehåll har förfinats genom att extrahera den mest relevanta informationen från sidan eftersom den var för lång för Leo.</translation>
@@ -2187,17 +2211,17 @@
 <translation id="4572010449071015143">Starta ny konversation</translation>
 <translation id="345901077335355561">Gå tillbaka till den aktiva konversationen</translation>
 <translation id="6287023598025162715">Ny konversation</translation>
-<translation id="6303294677342628402">Sköldar</translation>
-<translation id="8458987127502506209">Aktivera Brave Sköld</translation>
-<translation id="7509914170164691086">Shields är UPP <ph name="LINK_BEFORE"/> för <ph name="LINK_AFTER"/></translation>
+<translation id="6303294677342628402">Shields</translation>
+<translation id="8458987127502506209">Aktivera Brave Shields</translation>
+<translation id="7509914170164691086">Shields är aktiverat <ph name="LINK_BEFORE"/> för <ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">Shields är inaktiverat <ph name="LINK_BEFORE"/>för<ph name="LINK_AFTER"/></translation>
-<translation id="3907405056878805220">Om den här sidan verkar trasig, prova Shields ner.
+<translation id="3907405056878805220">Om den här sidan verkar trasig, prova inaktivera Shields.
  <ph name="LINK_BEFORE"/>Obs! Detta kan minska Braves integritetsskydd.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Spårare, annonser och mer blockeras <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Skyddas inte av Brave Shields <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Avancerade kontroller</translation>
 <translation id="5799940914270080805">Om du ändrar dessa inställningar kan webbplatser sluta fungera.</translation>
-<translation id="9204041448536398473">Globala Sköld-inställningar</translation>
+<translation id="9204041448536398473">Globala inställningar för Shields</translation>
 <translation id="2108334320919763866">Global standard</translation>
 <translation id="3440043456924990296">Inställningar hanterade av organisation</translation>
 <translation id="7053983685419859001">Blockera</translation>
@@ -2239,7 +2263,7 @@
 <translation id="264682546981571963">Trött på meddelanden om samtycke till cookies?</translation>
 <translation id="4986297793092101884">Brave blockerar redan tredjepartscookies. Vi kan också blockera meddelanden om samtycke till cookies.</translation>
 <translation id="535688588637568715">Ja, blockera meddelanden om samtycke till cookies</translation>
-<translation id="2808175374672429053">Jokertecken tillåts inte för Sköldar i Brave.</translation>
+<translation id="2808175374672429053">Jokertecken tillåts inte för Brave Shields.</translation>
 <translation id="7630425922041907505">{BLOCKED_COUNT, plural,
       =1 {Brave Shields blockerade 1 spårare på <ph name="SITE_URL"/>}
       other {Brave Shields blockerade {BLOCKED_COUNT} spårare på <ph name="SITE_URL"/>}

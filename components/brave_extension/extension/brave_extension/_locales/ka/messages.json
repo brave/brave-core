@@ -28,7 +28,7 @@
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Report a broken site",
+    "message": "გატეხილი საიტის შესახებ შეტყობინება",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
@@ -56,7 +56,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked",
+    "message": "ტრეკერები და რეკლამები დაბლოკილია",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
@@ -68,7 +68,7 @@
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Allow all trackers & ads",
+    "message": "ტრეკერების და რეკლამების დაშვება",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
@@ -140,7 +140,7 @@
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
-    "message": "Allow",
+    "message": "დაშვება",
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
@@ -156,7 +156,7 @@
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
-    "message": "Cancel",
+    "message": "გაუქმება",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
   },
   "goBack": {
@@ -200,11 +200,11 @@
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
-    "message": "Got it",
+    "message": "გასაგებია",
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Learn more",
+    "message": "გაიგეთ მეტი",
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {

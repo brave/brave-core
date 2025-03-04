@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Par šo lapu nevar ziņot, jo tā nav HTTP/HTTPS lapa.</translation>
 <translation id="7907023135990310743">Šī lapa ir vietēja tīmekļa lapa, un par to nevar ziņot.</translation>
 <translation id="8740275226259417070">Šī ir kļūdas lapa. To nevar norādīt bojātas vietnes ziņojumā.</translation>
+<translation id="6367576083705149078">Ja sniegsiet savu kontaktinformāciju, tā tiks saglabāta turpmāku ziņojumu sniegšanas nolūkiem.</translation>
 <translation id="6806248680442980382">Paldies, ka palīdzat padarīt Brave labāku. Šajā ziņojumā būs tikai tā informācija, kas nepieciešama, lai mēs šo vietni salabotu.</translation>
 <translation id="6476216365964140603">Papildu informācija (pēc izvēles)</translation>
 <translation id="6145852496180774737">Sazināties ar mani: (pēc izvēles)</translation>
@@ -712,8 +713,8 @@
 <translation id="4622826307953794521">Sniedziet mums dažus anonimizētus meklēšanas un pārlūkošanas datus, lai uzlabotu Brave meklētāju ar Tīmekļa atklāšanas projektu (pilnībā atvērtā pirmkoda projekts).</translation>
 <translation id="4174337572777167894">Tīmekļa atklāšanas projekts</translation>
 <translation id="9034669711835382440">Kopiena</translation>
-<translation id="814503310257431685">Skatīt visu</translation>
 <translation id="845020633253356720">Skatīt veikalu</translation>
+<translation id="7777123407058400802">Pamata uzmanības žetons – BAT</translation>
 <translation id="7090992647511817643">konts</translation>
 <translation id="4822132585477111396">Ķēdes ID</translation>
 <translation id="3269475789479462358">domēns</translation>
@@ -1739,6 +1740,20 @@
 <translation id="3819528427777765709">Aizsargāts</translation>
 <translation id="2142946302539262412">Vienots</translation>
 <translation id="4438043733494739848">Caurskatāms</translation>
+<translation id="1950406774300125954">Nav sinhronizēts</translation>
+<translation id="68413355604013935">Nav sinhronizēts (nav apstrādāti<ph name="BLOCKS"/> bloki)</translation>
+<translation id="1597233669965903034">Sinhronizējiet savu kontu, lai piekļūtu pēdējiem darījumiem un konta atlikumam.</translation>
+<translation id="7499262814309712782">Sinhronizēt kontu</translation>
+<translation id="2804568727504456403">Sinhronizēt <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">Uzsāk procesu...</translation>
+<translation id="4404141491825711928">Apstrādā blokus:</translation>
+<translation id="4983989175143324911">Atlikušais skaits: <ph name="BLOCKS"/></translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> no <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">Diapazoni:</translation>
+<translation id="1178581264944972037">Pauzēt</translation>
+<translation id="7714298753782862705">Sinhronizācija pabeigta. Tagad varat aizvērt šo logu.</translation>
+<translation id="7716113567047550378">Lūdzu, neaizveriet šo logu, kamēr sinhronizācija nav pabeigta.</translation>
+<translation id="5123590959308755060">Turpināt lietot maku jaunā cilnē</translation>
 <translation id="7144878232160441200">Mēģināt vēlreiz</translation>
 <translation id="9094621390791852268">Neizdevās izveidot darījuma priekšskatījumu.</translation>
 <translation id="4982713341035600933">Plānotās bilances izmaiņas</translation>
@@ -2063,7 +2078,7 @@
 <translation id="8637805148029768813">Kopsavilcēja funkcija pašreiz ir pieejama tikai rakstu atlasīšanai un citām garas formas tīmekļa lapām.</translation>
 <translation id="1223498995510244364">Kopsavilkt</translation>
 <translation id="7491773233732232424">Par Leo</translation>
-<translation id="5208096220706490232">Brave Leo ir privāts AI viedais palīgs, kas uzlabo interneta lietošanu. Leo bezmaksas versija nodrošina ierobežotu piekļuvi. Brave Leo Premium nodrošina vairāk modeļu, augstākus limitus un sniedz abonentiem ātrāku piekļuvi jaunām funkcijām. Noklsusējuma modelis visiem lietotājiem pašlaik ir Mixtral 8x7B. Plašāku informāciju skatiet <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/>.</translation>
+<translation id="4885527781814382758">Brave Leo ir privāts MI viedais palīgs, kas uzlabo to, kā jūs lietojat internetu. Leo bezmaksas versijai ir ierobežotas funkcijas. Brave Leo Premium abonenti iegūst vairāk modeļus, lielāku mijiedarbību skaitu un ātrāku piekļuvi jaunajām funkcijām. Noklusējuma modelis laiku pa laikam tiek atjaunots. Plašāku informāciju skatiet <ph name="LINK_BEFORE"/>Brave Palīdzības centrā<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Pēc noklusējuma, kad uzdodat Leo jautājumu, tas, lai sniegtu atbildi, var nosūtīt Brave Leo un izmantot jūsu skatītās tīmekļa lapas saturu vai jebkuru tekstu, ko lapā iezīmējat. Atbilžu precizitāte netiek garantēta, un tajās var būt ietverta neprecīza, maldinoša vai nepatiesa informācija. Leo izmanto datus no Brave meklēšanas, lai uzlabotu atbildes kvalitāti. Neiesniedziet sensitīvu vai privātu informāciju un ievērojiet piesardzību atbildēs saistībā ar veselību, finansēm, personīgo drošību vai tamlīdzīgi. Jūs jebkurā laikā varat pielāgot Leo opcijas Iestatījumos. Dodieties uz Iestatījumi &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo neapkopo identifikatorus, piemēram, jūsu IP adresi, ko var saistīt ar jums. Nekādi dati netiek izmantoti, lai apmācītu AI modeļus, un AI modeļi nesaglabā personas datus (izņemot Anthropic, kurā dati tiek glabāti 30 dienas pirms to dzēšanas). Plašāku informāciju skatiet <ph name="LINK_BEFORE"/>konfidencialitātes politikā<ph name="LINK_AFTER"/>.</translation>
 <translation id="7839853125981164613">Ievadiet uzvedni šeit</translation>
@@ -2074,12 +2089,16 @@
 <translation id="2712650703044366764">Šī modeļa galapunkts ir nederīgs. Pārbaudiet konfigurāciju un mēģiniet vēlreiz.</translation>
 <translation id="1167803637855350748">Pievienojoties Leo, radās tīkla problēma, pārbaudiet savu savienojumu un mēģiniet vēlreiz.</translation>
 <translation id="1996126325390835277">Esat sasniedzis augstākās likmes ierobežojumu. Lūdzu, mēģiniet vēlreiz pēc dažām stundām.</translation>
+<translation id="3683964919745779766">Jūs esat sasnieguši pieprasījumu ierobežojumu vai jums ir beigušies kredīti. Lūdzu, mēģiniet vēlreiz vēlāk.</translation>
+<translation id="7692501701960747469">Šim modelim konfigurētā API atslēga nav derīga. Lūdzu, pārbaudiet konfigurāciju un mēģiniet vēlreiz.</translation>
+<translation id="7905602379229309187">Galapunkts pašlaik ir pārslogots. Lūdzu, vēlāk mēģiniet vēlreiz.</translation>
 <translation id="8151638057146502721">Konfigurēt</translation>
 <translation id="4177458398826096846">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Llama 3.1 8B, kas ir Meta radīts modelis izmantošanai dažādās situācijās. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Sveiki! Es esmu Leo, pilnībā mitināts Brave mākslīgā intelekta asistents. Manas darbības pamatā ir Mixtral 8x7B — MIstral MI izveidots modelis sarežģītu uzdevumu risināšanai. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Sveiki! Es esmu Leo. Brave nodrošina manu starpniekserveri, bet manas darbības pamatā ir Claude Instant — Anthropic izveidots modelis sarunu un teksta apstrādes funkciju veikšanai. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Sveiki! Es esmu Leo. Brave mani pilnvaroja, un manu darbību nodrošina Claude 3 Haiku, kas ir Anthropic radītais modelis sarunu un teksta apstrādes uzdevumu veikšanai.</translation>
-<translation id="1107977270364670952">Sveiki! Mani sauc Leo. Manu darbību nodrošina Claude 3.5 Sonnet, kas ir Antropic radīts modelis, lai izpildītu sarunu un teksta apstrādes uzdevumus.</translation>
+<translation id="2001874998841390450">Sveiki, es esmu Leo. Brave uztur manu starpniekserveri, bet sarunu un teksta apstrādes uzdevumus veic Anthropic izveidotais modelis Claude Haiku. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Sveiki, es esmu Leo. Brave uztur manu starpniekserveri, bet sarunu un teksta apstrādes uzdevumus veic Anthropic izveidotais modelis Claude Sonnet. 
+<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> no <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Tērzēt</translation>
@@ -2098,6 +2117,9 @@
 <translation id="4165928407303989823">Palieciet pie tēmas</translation>
 <translation id="2389665228467129817">Tērzējiet ilgāk</translation>
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> ASV dolāri mēnesī</translation>
+<translation id="9031958221569934724"><ph name="PRICE_VALUE"/> ASV dolāri gadā</translation>
+<translation id="1028627582482425924">Viens gads</translation>
+<translation id="36366199652730057">Labākā cena</translation>
 <translation id="5151923271944811339">Pārslēgties uz bezmaksas modeli</translation>
 <translation id="5474757891469990756">Atbloķējiet pilnu Leo potenciālu ar Premium:</translation>
 <translation id="3453542753968940696">Prioritāra piekļuve jaudīgiem modeļiem ar dažādām prasmēm.</translation>
@@ -2117,6 +2139,8 @@
 <translation id="9018766373792005944">Par ko ir jūsu atsauksme?</translation>
 <translation id="7355096922131918313">Sniegt atsauksmi šeit</translation>
 <translation id="3027575440738035995">Leo Premium sniedz piekļuvi vairāk valodu modeļiem vēl niansētākām atbildēm. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Dzēst</translation>
+<translation id="6574153208133461043">Vai tiešām vēlaties dzēst šo sarunu? Šo darbību nevar atsaukt.</translation>
 <translation id="7488762544858401571">Labots</translation>
 <translation id="1406205536570262057">Rediģēt atbildi</translation>
 <translation id="2399439821649319175">Nebija noderīgi</translation>
@@ -2130,6 +2154,7 @@
 <translation id="8171760814579050200">Pārsaukt sarunu</translation>
 <translation id="7754678742055438573">Dzēst sarunu</translation>
 <translation id="7494736170250048402">Nosūtīt ziņojumu Leo</translation>
+<translation id="8650874793377330048">Apturēt atbildes ģenerēšanu</translation>
 <translation id="8712637175834984815">Sapratu!</translation>
 <translation id="1093419424466417703">Lapa Leo ir pārāk gara. Sarunā var trūkt nedaudz konteksta. Leo spēja nolasīt <ph name="PERCENTAGE"/> lapas satura.</translation>
 <translation id="2186990448773134544">Lapas saturs ir saīsināts, izvelkot svarīgāko lapas informāciju, jo teksts Leo bija par garu.</translation>

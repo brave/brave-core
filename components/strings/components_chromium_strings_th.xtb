@@ -29,6 +29,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           และตรวจสอบว่าคุณตั้งการกำหนดค่าของคุณเป็น "ไม่มีพร็อกซี" หรือ "โดยตรง"</translation>
+<translation id="6159073403999048272">หน้าเหล่านี้มีไว้สำหรับนักพัฒนาซอฟต์แวร์ Brave เท่านั้น และอาจไม่ได้รับการดูแลรักษาหรือทดสอบอย่างสม่ำเสมอ หากต้องการเปิดใช้ ให้ไปที่ <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/> คลิกปุ่มเพื่อเปิดใช้หน้าแก้ไขข้อบกพร่อง แล้วมาที่หน้านี้อีกครั้ง</translation>
 <translation id="2765022094254723779">Brave ยังเกิดขึ้นได้ด้วย<ph name="BEGIN_LINK_OSS"/>ซอฟต์แวร์โอเพนซอร์ส<ph name="END_LINK_OSS"/>อื่นๆ</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="8828443087767259398">Brave ต้องการสิทธิ์เข้าถึงบลูทูธเพื่อจับคู่ต่อ <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>

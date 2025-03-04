@@ -1,62 +1,62 @@
 {
   "appName": {
-    "message": "The Brave Extension",
+    "message": "Shtesë e Braves",
     "description": "The name of the extension."
   },
   "shields": {
-    "message": "Shields",
+    "message": "Mburoja",
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "up",
+    "message": "sipër",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "down",
+    "message": "poshtë",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "for this site",
+    "message": "për këtë faqe interneti",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "If a site appears broken, try shields down",
+    "message": "Nëse një faqe interneti shfaqet e dëmtuar, provo heqjen e mburojës",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "You’re browsing this site without Brave’s privacy and security protections. Does it not work right with Shields up?",
+    "message": "Ju po lundroni në këtë faqe interneti pa privatësinë dhe sigurinë që të jep mbrojtja e Braves. Nuk punohet si duhet me mbrojtjen të aktivizuar?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Report a broken site",
+    "message": "Raporto një sajt të dëmtuar",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
-    "message": "Items blocked",
+    "message": "Njësi të bllokuara",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Item blocked",
+    "message": "Njësi e bllokuar",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
-    "message": "and",
+    "message": "dhe",
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "connections upgraded",
+    "message": "lidhje cilësisht të përmirësuara",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
-    "message": "connection upgraded",
+    "message": "lidhje cilësisht e përmirësuar",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Cross-site trackers blocked",
+    "message": "Gjurmuesit e nderfaqes u bllokuan",
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked",
+    "message": "Gjurmues dhe reklama të bllokuara",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
@@ -68,31 +68,31 @@
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Allow all trackers & ads",
+    "message": "Lejo gjithë gjurmuesit dhe reklamat",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Connections upgraded to HTTPS",
+    "message": "Lidhje cilësisht të përmirësuara në HTTPS",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Connection upgraded to HTTPS",
+    "message": "Lidhje cilësisht e përmirësuar në HTTPS",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Scripts blocked",
+    "message": "Skripte të bllokuara",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cross-site cookies blocked",
+    "message": "Gjurmët në ndërfaqe u bllokuan. ",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "Cookies blocked",
+    "message": "Krijuesit e gjurmëve u bllokuan",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "All cookies allowed",
+    "message": "Të gjithë krijuesit e gjurmëve lejohen",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
@@ -116,59 +116,59 @@
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
-    "message": "Scripts on this site",
+    "message": "Skripte në këtë faqe interneti",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Blocked scripts",
+    "message": "Skripte të bllokuar",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "Allowed scripts",
+    "message": "Skripte të lejuara",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {
-    "message": "Block all",
+    "message": "Bllokoji të gjithë",
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
-    "message": "Allow all",
+    "message": "Lejoji të gjithë",
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
-    "message": "Block",
+    "message": "Bllokoje",
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
-    "message": "Allow",
+    "message": "Lejoje",
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Blocked once",
+    "message": "Bllokuar një herë",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Allowed once",
+    "message": "Lejuar një herë",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Allow scripts once",
+    "message": "Lejoji skriptet një herë",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
-    "message": "Cancel",
+    "message": "Anuloje",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
   },
   "goBack": {
-    "message": "Go back",
+    "message": "Shko mbrapsht",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
-    "message": "Apply once",
+    "message": "Aplikoje një herë",
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Change global shield defaults",
+    "message": "Ndrysho opcionet e paracaktuara të përgjithshme të mbrojtjes",
     "description": "Message for the button action linking to the settings page"
   },
   "manageCustomFilters": {
@@ -180,31 +180,31 @@
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Advanced View",
+    "message": "Pamje e detajuar",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Simple View",
+    "message": "Pamje normale",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Sites often include cookies and scripts which try to identify you and your device (often embedded into ads). They want to work out who you are and follow you across the web — tracking what you do on every site. Brave blocks these things so that you can browse without being followed around.",
+    "message": "Faqet e internetit shpesh përfshijnë krijues gjurmësh dhe skripte të cilat tentojnë të të identifikojnë ty dhe pajisjen tënde (shpesh here të ngulitura në reklama). Ato duan të kuptojnë se cili je dhe të të ndjekin kudo në web - të gjurmojnë se çfarë bën ti në çdo faqe interneti. Brave i bllokon të gjitha këto dhe ti mund të lundrosh në internet pa patur njeri neper këmbë",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Cross-site trackers and other creepy things blocked",
+    "message": "Krijuesit e gjurmëve të ndërfaqes dhe të tjera mbeturina u bllokuan",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Changing Shield settings in this view may affect web compatibility on this site.",
+    "message": "Ndryshimi i opcioneve të Mbrojtjes në këtë pamje mund të ndikojë në perputhshmërinë e web-it në këtë faqe interneti",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
-    "message": "Got it",
+    "message": "E mora vesh",
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Learn more",
+    "message": "Mësoni më tepër",
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {

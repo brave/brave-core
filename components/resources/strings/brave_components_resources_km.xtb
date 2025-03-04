@@ -73,7 +73,11 @@
 <translation id="2394961582378297792">បានចាកចេញ</translation>
 <translation id="590733288489975971">រង្វាន់មកពី Ads</translation>
 <translation id="5308380583665731573">ភ្ជាប់</translation>
+<translation id="3264975266761862670">ត្រៀម​ខ្លួន​ដើម្បី​ចាប់​ផ្តើ​ម​រក​ប្រាក់​ឬនៅ?</translation>
 <translation id="2359808026110333948">បន្ត</translation>
+<translation id="3863981251715594911">តើ​វា​ដំណើរការ​ដោយ​របៀប​ណា?</translation>
+<translation id="7931127789630755251">ទទួលបានថូខឹនសម្រាប់ការផ្សាយពាណិជ្ជកម្មឯកជនដែលអ្នកឃើញនៅក្នុង Brave</translation>
+<translation id="6278643716658443228">ការកំណត់រង្វាន់</translation>
 <translation id="2965798296974325760">ចាប់ផ្តើមប្រើប្រាស់រង្វាន់</translation>
 <translation id="2956070106555335453">របាយការណ៍សង្ខេប</translation>
 <translation id="2369994359029526515">អ្នកបង្កើតដែលមិនបានផ្ទៀងផ្ទាត់</translation>
@@ -82,13 +86,13 @@
 <translation id="6965382102122355670">យល់ព្រម</translation>
 <translation id="6727102863431372879">កំណត់</translation>
 <translation id="8853725596990766789">ផ្លាស់ប្ដូរចំនួន</translation>
+<translation id="5899814466108868020">អ្នកកំពុងជួយគាំទ្រ Brave និងសហគមន៍ BAT</translation>
 <translation id="654447476965480878">ស្វែងយល់បន្ថែមអំពីការទទួលបាន BAT</translation>
 <translation id="2429828319207652823">មានបញ្ហាក្នុងដំណើរការបរិច្ចាគរបស់អ្នក។</translation>
 <translation id="6390041270339783491">ការបរិច្ចាគប្រចាំខែបានបរាជ័យ</translation>
 <translation id="7047578174221019462">ការបរិច្ចាគរបស់អ្នក ត្រូវបានដំណើរការ។</translation>
 <translation id="1565888393553870503">ការផ្សាយពាណិជ្ជកម្ម Brave នឹងបន្ត។ សូមអរគុណសម្រាប់ការជួយយើងការពាររង្វាន់ Brave។</translation>
 <translation id="5234764350956374838">ច្រានចោល</translation>
-<translation id="7931127789630755251">ទទួលបានថូខឹនសម្រាប់ការផ្សាយពាណិជ្ជកម្មឯកជនដែលអ្នកឃើញនៅក្នុង Brave</translation>
 <translation id="7859066142771796818">ប្រើថូខឹនដើម្បីទិញកាតកាដូ ប្តូររូបិយបណ្ណផ្សេងៗទៀត គាំទ្រអ្នកបង្កើតមាតិកា និងអ្វីៗជាច្រើនទៀត។</translation>
 <translation id="6945221475159498467">ជ្រើសរើស</translation>
 <translation id="1450735350187803276">ការផ្សាយពាណិជ្ជកម្មដែលបានឃើញក្នុងខែនេះ</translation>
@@ -152,11 +156,11 @@
 <translation id="6657585470893396449">ពាក្យសម្ងាត់</translation>
 <translation id="8044899503464538266">យឺត</translation>
 <translation id="7019805045859631636">លឿន</translation>
-<translation id="6278643716658443228">ការកំណត់រង្វាន់</translation>
 <translation id="8688672835843460752">អាចប្រើបាន</translation>
 <translation id="3248185426436836442">កំពុងព្យួរទុក</translation>
 <translation id="1472675084647422956">បង្ហាញ​ច្រើនទៀត</translation>
 <translation id="4522570452068850558">ព័ត៌មានលំអិត</translation>
+<translation id="1178581264944972037">ផ្អាក</translation>
 <translation id="7144878232160441200">ព្យាយាមម្តងទៀត</translation>
 <translation id="1765217911817124376">បើក Brave ព័ត៌មាន</translation>
 <translation id="939305735877869636">Brave</translation>
@@ -169,9 +173,18 @@
 <translation id="5210365745912300556">បិទផ្ទាំង</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">Monospace</translation>
+<translation id="7557539689487606886">ដំឡើងទៅ Premium</translation>
+<translation id="4173478269537830374">ស្វែងរកម៉ូដែល AI ផ្សេងៗគ្នា</translation>
+<translation id="3245401959451976966">ដោះសោភាពច្នៃប្រឌិតរបស់អ្នក</translation>
 <translation id="4165928407303989823">បន្ត​នៅ​លើ​ប្រធានបទ</translation>
+<translation id="2389665228467129817">ជជែក​គ្នា​បាន​យូរ</translation>
+<translation id="1028627582482425924">មួយឆ្នាំ</translation>
 <translation id="5474757891469990756">បញ្ចេញថាមពលពេញលេញរបស់ Leo ជាមួយ Premium៖</translation>
+<translation id="3453542753968940696">ការចូលប្រើជាអាទិភាពចំពោះម៉ូដែលដ៏មានឥទ្ធិពលដែលមានជំនាញផ្សេងៗគ្នា។</translation>
+<translation id="5031778211368112461">ចូលប្រើម៉ូដែលដែលបានរចនាឡើងសម្រាប់កិច្ចការច្នៃប្រឌិត និងការបង្កើតខ្លឹមសារ។</translation>
+<translation id="298783097210745222">ទទួលបានចម្លើយដែលត្រឹមត្រូវជាងមុនសម្រាប់ការសន្ទនាដែលស្មុគស្មាញ។</translation>
 <translation id="4314705522985583059">ទទួលបានដែនកំណត់អត្រាខ្ពស់ជាងមុនសម្រាប់ការសន្ទនាបានកាន់តែយូរ។</translation>
+<translation id="8261506727792406068">លុប</translation>
 <translation id="8712637175834984815">យល់ហើយ</translation>
 <translation id="6291843235651817590">ការជជែកអំពីគោលបំណងទូទៅ</translation>
 <translation id="8193130769524604031">កិច្ចការជជែកកម្រិតខ្ពស់</translation>
@@ -197,5 +210,6 @@
 <translation id="7410504850864021600">ល្បឿននៃការតភ្ជាប់យ៉ាងរហ័ស</translation>
 <translation id="2422309687188612485">ការពារឧបករណ៍រហូតដល់ 10 ដោយប្រើគម្រោងតែមួយ</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4295077644587784828">ភាពឯកជនបន្ថែម &amp; សុវត្ថិភាពតាមអនឡាញ.</translation>
 <translation id="8425213833346101688">ប្តូរ</translation>
 </translationbundle>

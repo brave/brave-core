@@ -407,6 +407,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="3570081523466826008">Nadogradi veze na HTTPS</translation>
 <translation id="3357319404342882895">Strogo</translation>
 <translation id="8823559166155093873">Blokiraj kolačiće</translation>
+<translation id="7093267802941377072">Opcija „Blokiraj sve kolačiće” je zastarjela. Kako biste saznali kako prinudno aktivirati ovu opciju, posjetite <ph name="BEGIN_LINK"/>našu stranicu za pomoć<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Blokiraj kolačiće trećih strana</translation>
 <translation id="5657156137487675418">Dopusti sve kolačiće</translation>
 <translation id="6883611015375728278">Blokiraj sve kolačiće</translation>
@@ -593,6 +594,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="5522403133543437426">Tražilica koja se upotrebljava u adresnoj traci.</translation>
 <translation id="280472502078788655">Tražilica koja se upotrebljava u adresnoj traci za privatne prozore.</translation>
 <translation id="7232120595886556478">Normalan prozor</translation>
+<translation id="6739674350896546324">Tražilica za Inkognito prozore</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> je sad vaša zadana tražilica za privatne prozore</translation>
 <translation id="6864914031231797928">Dopusti prijavu uslugom Google za proširenja</translation>
 <translation id="7878791177459550035">Medijskim usmjerivačem omogućuje se značajka emitiranja u pregledniku.</translation>
@@ -730,7 +732,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="3213787232304349732">URL na kojem vaš okvir za implementaciju sluša zahtjeve. Ako niste sigurni, provjerite dokumentaciju okvira za implementaciju. Npr. kod modela Ollama to je uvijek http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Neki okviri za posluživanje mogu zahtijevati podatke za provjeru vjerodostojnosti, poput API ključa ili pristupnog tokena. Oni će biti dodani zaglavlju zahtjeva.</translation>
 <translation id="4335128003329183586">Veličina konteksta</translation>
-<translation id="8794525422794607973">Maksimalni broj tokena koje model može obraditi u jednoj interakciji. Svaki token je otprilike 3/4 riječi. Veća veličina konteksta omogućuje modelu da obrađuje duže razgovore. Različiti modeli podržavaju različite maksimalne veličine konteksta.</translation>
+<translation id="3153779001670804829">Najveći mogući broj tokena koji model može obraditi u jednoj interakciji. Veća veličina konteksta omogućuje modelu da obrađuje duže konverzacije. Različiti modeli podržavaju različite maksimalne veličine konteksta.</translation>
 <translation id="217141195370578385">Platforma Brave nije posrednik za te zahtjeve, pročitajte politiku zaštite privatnosti odabranog pružatelja.</translation>
 <translation id="2645532768679870478">Završne točke koje nisu lokalne trebaju upotrebljavati HTTPS protokol za siguran prijenos podataka.</translation>
 <translation id="8177205483022887785">Upisali ste nevažeću URL adresu. Upišite važeću URL adresu.</translation>

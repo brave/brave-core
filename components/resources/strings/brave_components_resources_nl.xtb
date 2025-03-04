@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Deze pagina kan niet worden gerapporteerd omdat deze niet wordt aangeboden via HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Deze pagina is een lokale webpagina en kan niet worden gerapporteerd.</translation>
 <translation id="8740275226259417070">Dit is een foutpagina die niet als een defecte site kan worden gemeld.</translation>
+<translation id="6367576083705149078">Als je contactgegevens opgeeft, worden deze bewaard voor toekomstige rapporten.</translation>
 <translation id="6806248680442980382">Bedankt voor je hulp om Brave beter te maken voor iedereen. Dit rapport zal alleen informatie bevatten die we nodig hebben om deze site te herstellen.</translation>
 <translation id="6476216365964140603">Aanvullende gegevens (optioneel)</translation>
 <translation id="6145852496180774737">Neem contact met me op via: (optioneel)</translation>
@@ -712,8 +713,8 @@
 <translation id="4622826307953794521">Deel enkele anonieme zoek- en surfgegevens om Brave Search te verbeteren met het Web Discovery Project. Het is volledig opensource.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Community</translation>
-<translation id="814503310257431685">Alles weergeven</translation>
 <translation id="845020633253356720">Naar winkel</translation>
+<translation id="7777123407058400802">Basic Attention Token – BAT</translation>
 <translation id="7090992647511817643">account</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">domein</translation>
@@ -1739,6 +1740,20 @@
 <translation id="3819528427777765709">Afgeschermd</translation>
 <translation id="2142946302539262412">Gecombineerd</translation>
 <translation id="4438043733494739848">Transparant</translation>
+<translation id="1950406774300125954">Niet gesynchroniseerd</translation>
+<translation id="68413355604013935">Niet gesynchroniseerd (<ph name="BLOCKS"/> blokken achter)</translation>
+<translation id="1597233669965903034">Synchroniseer je account om toegang te krijgen tot je laatste transacties en saldo.</translation>
+<translation id="7499262814309712782">Account synchroniseren</translation>
+<translation id="2804568727504456403"><ph name="ACCOUNT"/> synchroniseren</translation>
+<translation id="813913629614996137">Initialiseren...</translation>
+<translation id="4404141491825711928">Blok verwerken:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> resterend</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> of <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">Reeksen:</translation>
+<translation id="1178581264944972037">Onderbreken</translation>
+<translation id="7714298753782862705">Synchronisatie voltooid. Je kunt dit venster nu sluiten.</translation>
+<translation id="7716113567047550378">Sluit dit venster pas nadat de synchronisatie is voltooid.</translation>
+<translation id="5123590959308755060">Wallet verder gebruiken op ander tabblad</translation>
 <translation id="7144878232160441200">Opnieuw proberen</translation>
 <translation id="9094621390791852268">Geen transactievoorbeeld mogelijk.</translation>
 <translation id="4982713341035600933">Geschatte saldowijziging</translation>
@@ -2063,7 +2078,7 @@
 <translation id="8637805148029768813">De samensvattingfunctie is momenteel alleen beschikbaar voor bepaalde artikelen en andere webpagina's in lange vorm.</translation>
 <translation id="1223498995510244364">Samenvatten</translation>
 <translation id="7491773233732232424">Over Leo</translation>
-<translation id="5208096220706490232">Brave Leo is onze eigen slimme AI-assistent die uw gebruik van het internet verbetert. U kunt Leo gratis gebruiken, maar sommige functies zijn beperkt. Brave Leo Premium biedt meer modellen, hogere limieten en geeft abonnees eerdere toegang tot nieuwe functies. Het standaardmodel voor alle gebruikers gebruikt momenteel Mixtral 8x7B. U vindt meer informatie op <ph name="LINK_BEFORE"/>Brave-wiki<ph name="LINK_AFTER"/>.</translation>
+<translation id="4885527781814382758">Brave Leo is je persoonlijke slimme AI-assistent waarmee je het web beter gebruikt. Leo kun je gratis gebruiken met beperkte toegang. Brave Leo Premium biedt meer modellen, hogere limieten en geeft abonnees vroegtijdige toegang tot nieuwe functies. Het standaardmodel zal van tijd tot tijd veranderen. Ga naar het <ph name="LINK_BEFORE"/>Brave Helpcentrum<ph name="LINK_AFTER"/> voor meer informatie.</translation>
 <translation id="7189603330209995455">Als u Leo een vraag stelt, wordt normaal gesproken de inhoud van de webpagina die u bekijkt of tekst die u hebt gemarkeerd op een pagina naar Brave Leo gestuurd om een antwoord te geven. De nauwkeurigheid van de antwoorden is niet gegarandeerd en kan misleidende, onjuiste of valse informatie bevatten. Leo gebruikt gegevens van Brave Zoeken om de kwaliteit van de antwoorden te verbeteren. Geef geen gevoelige of privé-informatie en wees voorzichtig met antwoorden die gaan over gezondheid, financiën, persoonlijke veiligheid en dergelijke. U kunt de instellingen van Leo op elk gewenst moment aanpassen. Ga hiervoor naar Instellingen &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo verzamelt geen identifiers die aan u kunnen worden gekoppeld, zoals uw IP-adres. Er worden geen gegevens gebruikt om de AI-modellen te trainen en de AI-model en modellen van derden bewaren geen persoonsgegevens (met uitzondering van Anthropic, dat gegevens 30 dagen bewaart alvorens deze te verwijderen). Ga naar het <ph name="LINK_BEFORE"/>privacybeleid<ph name="LINK_AFTER"/> voor meer informatie.</translation>
 <translation id="7839853125981164613">Voer hier een opdracht in</translation>
@@ -2074,12 +2089,15 @@
 <translation id="2712650703044366764">Dit model heeft een ongeldig eindpunt. Controleer je configuratie en probeer het opnieuw.</translation>
 <translation id="1167803637855350748">Er was een netwerkprobleem bij het verbinden met Leo. Controleer uw verbinding en probeer het opnieuw.</translation>
 <translation id="1996126325390835277">Je hebt de limiet van Premium bereikt. Probeer het opnieuw over een paar uur.</translation>
+<translation id="3683964919745779766">Je hebt de limiet voor dit model bereikt of je hebt geen credits meer. Probeer het later nog eens.</translation>
+<translation id="7692501701960747469">De geconfigureerde API-sleutel voor dit model is ongeldig. Controleer de configuratie en probeer het opnieuw.</translation>
+<translation id="7905602379229309187">Het eindpunt is momenteel overbelast. Probeer het later nog eens.</translation>
 <translation id="8151638057146502721">Configureren</translation>
 <translation id="4177458398826096846">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik word gestuurd door Llama 3.1 8B, een model ontwikkeld door Meta om hoge prestaties te leveren en breed inzetbaar te zijn. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hallo, ik ben Leo. Ik ben een volledig gehoste AI-assistent van Brave. Ik draai op Mixtral 8x7B, een model dat ontwikkeld is door Mistral om geavanceerde taken uit te voeren. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hallo, ik ben Leo. Ik ben een proxy van Brave en draai op Claude Instant, een model dat ontwikkeld is door Anthropic om gespreks- en tekstverwerkingstaken te ondersteunen. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Hallo, ik ben Leo. Ik werk via een proxy van Brave en wordt mede mogelijk gemaakt door Claude 3 Haiku, een model dat door Anthropic is gemaakt voor gespreks- en tekstverwerkingstaken.</translation>
-<translation id="1107977270364670952">Hallo, ik ben Leo. Ik werk via een proxy van Brave en word gestuurd door Claude 3.5 Sonnet, een model ontwikkeld door Anthropic voor gesprekken en tekstverwerking.</translation>
+<translation id="2001874998841390450">Hallo, ik ben Leo. Ik werk via een proxy van Brave en word aangestuurd door Claude Haiku, een model gemaakt door Anthropic om gespreks- en tekstverwerkingstaken uit te voeren. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Hallo, ik ben Leo. Ik ben een proxy van Brave en draai op Claude Sonnet, een model dat ontwikkeld is door Anthropic om gespreks- en tekstverwerkingstaken te ondersteunen. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> door <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2098,6 +2116,9 @@
 <translation id="4165928407303989823">Blijf bij het onderwerp</translation>
 <translation id="2389665228467129817">Chat langer</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /maand</translation>
+<translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/>/jaar</translation>
+<translation id="1028627582482425924">Eén jaar</translation>
+<translation id="36366199652730057">Beste optie</translation>
 <translation id="5151923271944811339">Naar gratis model gaan</translation>
 <translation id="5474757891469990756">Benut de volledige capaciteit van Leo met Premium:</translation>
 <translation id="3453542753968940696">Als eerste toegang tot krachtige modellen met verschillende vaardigheden.</translation>
@@ -2117,6 +2138,8 @@
 <translation id="9018766373792005944">Waar gaat uw feedback over?</translation>
 <translation id="7355096922131918313">Schrijf hier uw feedback</translation>
 <translation id="3027575440738035995">Leo Premium biedt toegang tot een uitgebreide set taalmodellen voor betere, genuanceerdere antwoorden. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Verwijder</translation>
+<translation id="6574153208133461043">Weet je zeker dat je dit gesprek wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.</translation>
 <translation id="7488762544858401571">Bewerkt</translation>
 <translation id="1406205536570262057">Antwoord bewerken</translation>
 <translation id="2399439821649319175">Niet nuttig</translation>
@@ -2130,6 +2153,7 @@
 <translation id="8171760814579050200">Gesprek hernoemen</translation>
 <translation id="7754678742055438573">Gesprek verwijderen</translation>
 <translation id="7494736170250048402">Bericht naar Leo sturen</translation>
+<translation id="8650874793377330048">Antwoord stoppen</translation>
 <translation id="8712637175834984815">Begrepen</translation>
 <translation id="1093419424466417703">Deze pagina is te lang voor Leo. Sommige context van het gesprek kan ontbreken. Leo heeft <ph name="PERCENTAGE"/> van de content op de pagina kunnen lezen.</translation>
 <translation id="2186990448773134544">De inhoud van de pagina is verfijnd door de meest relevante informatie uit de pagina te halen omdat deze te lang was voor Leo.</translation>

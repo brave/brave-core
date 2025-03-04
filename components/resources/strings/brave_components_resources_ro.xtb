@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Această pagină nu poate fi raportată deoarece nu a fost furnizată prin HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Această pagină este o pagină web locală și nu este eligibilă pentru raportare.</translation>
 <translation id="8740275226259417070">Aceasta este o pagină de eroare. Ea nu poate fi raportată ca un site nefuncțional.</translation>
+<translation id="6367576083705149078">Dacă furnizezi informații de contact, acestea vor fi stocate pentru rapoarte viitoare.</translation>
 <translation id="6806248680442980382">Vă mulțumim pentru că ne ajutați să facem Brave mai bun pentru toți. Acest raport va conține doar informațiile necesare pentru a repara acest site.</translation>
 <translation id="6476216365964140603">Detalii suplimentare (opțional)</translation>
 <translation id="6145852496180774737">Contactați-mă la: (opțional)</translation>
@@ -712,8 +713,8 @@
 <translation id="4622826307953794521">Contribuiți cu date anonime de căutare și navigare pentru a perfecționa Brave Search cu Web Discovery Project. Este complet open-source.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Comunitate</translation>
-<translation id="814503310257431685">Vezi toate</translation>
 <translation id="845020633253356720">Vezi magazinul</translation>
+<translation id="7777123407058400802">Token de atenție de bază - BAT</translation>
 <translation id="7090992647511817643">cont</translation>
 <translation id="4822132585477111396">ID lanț</translation>
 <translation id="3269475789479462358">domeniu</translation>
@@ -1741,6 +1742,20 @@
 <translation id="3819528427777765709">Protejat</translation>
 <translation id="2142946302539262412">Unificat</translation>
 <translation id="4438043733494739848">Transparent</translation>
+<translation id="1950406774300125954">Nesincronizat</translation>
+<translation id="68413355604013935">Nesincronizat (<ph name="BLOCKS"/> blocuri în urmă)</translation>
+<translation id="1597233669965903034">Sincronizează contul tău pentru a accesa cele mai recente tranzacții și sold.</translation>
+<translation id="7499262814309712782">Cont de sincronizare</translation>
+<translation id="2804568727504456403">Sincronizare <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">Se inițializează...</translation>
+<translation id="4404141491825711928">Bloc de prelucrare:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> rămase</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> din <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">Intervale:</translation>
+<translation id="1178581264944972037">Întrerupe</translation>
+<translation id="7714298753782862705">Sincronizare completă. Acum puteți închide această fereastră.</translation>
+<translation id="7716113567047550378">Te rugăm să nu închizi această fereastră până când sincronizarea nu se termină.</translation>
+<translation id="5123590959308755060">Continuă să folosești portofelul într-o filă nouă</translation>
 <translation id="7144878232160441200">Reîncearcă</translation>
 <translation id="9094621390791852268">Previzualizarea tranzacției a eșuat.</translation>
 <translation id="4982713341035600933">Modificarea estimată a soldului</translation>
@@ -2065,7 +2080,7 @@ other {# surse}
 <translation id="8637805148029768813">Funcția de rezumare este momentan disponibilă doar pentru anumite articole și alte pagini web în format lung.</translation>
 <translation id="1223498995510244364">Rezumați</translation>
 <translation id="7491773233732232424">Despre Leo</translation>
-<translation id="5208096220706490232">Brave Leo este un asistent inteligent de IA privat menit să îmbunătățească folosirea internetului. Leo poate fi folosit gratuit cu funcții limitate. Brave Leo Premium oferă mai multe modele, limite mai ridicate și oferă abonaților acces timpuriu la funcții noi. Modelul implicit pentru toți utilizatori este acum Mixtral 8x7B. Consultați <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/> pentru mai multe detalii.</translation>
+<translation id="4885527781814382758">Brave Leo este un asistent inteligent de IA privat menit să îmbunătățească folosirea internetului. Leo poate fi folosit gratuit cu funcții limitate. Brave Leo Premium oferă mai multe modele, limite mai ridicate și oferă abonaților acces timpuriu la funcții noi. Modelul implicit se va schimba din când în când. Consultă <ph name="LINK_BEFORE"/>Centrul de ajutor<ph name="LINK_AFTER"/> pentru mai multe detalii.</translation>
 <translation id="7189603330209995455">În mod implicit, când îi adresați o întrebare lui Leo, acesta poate trimite și folosi conținutul paginii web pe care o vizualizați, respectiv un fragment de text evidențiat dintr-o pagină la Brave Leo în vederea generării unui răspuns. Acuratețea răspunsurilor nu este garantată, acestea putând conține informații inexacte, înșelătoare sau false. Leo folosește datele de la Brave Search pentru a îmbunătăți calitatea răspunsurilor. Nu trimiteți informații sensibile sau confidențiale și manifestați prudență în ceea ce privește răspunsurile referitoare la sănătate, finanțe, siguranță personală etc. Puteți ajusta opțiunile Leo în Setări, în orice moment. Accesați Setările &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo nu colectează identificatori precum adresa de IP care pot fi asociați cu dvs. Datele nu sunt folosite pentru antrenarea modelelor IA, iar datele personale nu sunt reținute de modelele IA (cu excepția Anthropic, care păstrează datele timp de 30 de zile). Consultați <ph name="LINK_BEFORE"/>politica de confidențialitate<ph name="LINK_AFTER"/> pentru mai multe informații.</translation>
 <translation id="7839853125981164613">Introduceți o întrebare aici</translation>
@@ -2076,12 +2091,15 @@ other {# surse}
 <translation id="2712650703044366764">Acest model are un punct final invalid. Te rugăm să verifici configurația și să încerci din nou.</translation>
 <translation id="1167803637855350748">A apărut o problemă de rețea în timpul conectării la Leo. Verificați-vă conexiunea și încercați din nou.</translation>
 <translation id="1996126325390835277">Ai ajuns la limita maximă a nivelului premium. Încearcă din nou peste câteva ore.</translation>
+<translation id="3683964919745779766">Ai atins limita pentru acest model sau nu mai ai credite. Te rugăm să încerci din nou mai târziu.</translation>
+<translation id="7692501701960747469">Cheia API configurată pentru acest model nu este valabilă. Te rugăm să verifici configurația și să încerci din nou.</translation>
+<translation id="7905602379229309187">Punctul final este în prezent supraîncărcat. Te rugăm să încerci din nou mai târziu.</translation>
 <translation id="8151638057146502721">Configurare</translation>
 <translation id="4177458398826096846">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Llama 3.1 8B, un model creat de Meta pentru a fi performant și aplicabil la multe cazuri de utilizare. <ph name="LINK_BEFORE"/>Aflați mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit și oferit de Brave, structurat pe baza Mixtral 8x7B, un model creat de Mistral AI pentru a gestiona sarcini complexe.<ph name="LINK_BEFORE"/>Aflați mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Salut, eu sunt Leo. Sunt oferit prin proxy de către Brave și structurat pe baza Claude Instant, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. <ph name="LINK_BEFORE"/>Aflați mai multe<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Salut, eu sunt Leo. Sunt oferit de către Brave și furnizat de Claude 3 Haiku, un model creat de Anthropic pentru a asigura activități de conversație și de procesare de text.</translation>
-<translation id="1107977270364670952">Salut, eu sunt Leo. Sunt oferit prin proxy de către Brave și furnizat de Claude 3.5 Sonnet, un model creat de Anthropic pentru a asigura activități de conversație și de procesare de text.</translation>
+<translation id="2001874998841390450">Salut, eu sunt Leo. Sunt oferit prin proxy de către Brave și structurat pe baza Claude Haiku, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. <ph name="LINK_BEFORE"/>Aflați mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Salut, eu sunt Leo. Sunt oferit prin proxy de către Brave și structurat pe baza Claude Sonnet, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. <ph name="LINK_BEFORE"/>Aflați mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> oferit de <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2100,6 +2118,9 @@ other {# surse}
 <translation id="4165928407303989823">Rămâneți mereu la subiect</translation>
 <translation id="2389665228467129817">Prelungiți conversațiile</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /lună</translation>
+<translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/> /an</translation>
+<translation id="1028627582482425924">Un an</translation>
+<translation id="36366199652730057">Cea mai bună valoare</translation>
 <translation id="5151923271944811339">Comutați la modelul gratuit</translation>
 <translation id="5474757891469990756">Dezlănțuiți întreaga putere a lui Leo cu Premium:</translation>
 <translation id="3453542753968940696">Acces prioritar la modele puternice cu diverse competențe.</translation>
@@ -2119,6 +2140,8 @@ other {# surse}
 <translation id="9018766373792005944">Despre ce e feedbackul?</translation>
 <translation id="7355096922131918313">Oferiți feedback aici</translation>
 <translation id="3027575440738035995">Leo Premium oferă acces la un set extins de modele de limbaj pentru și mai multă precizie a răspunsurilor. <ph name="LINK_BEFORE"/>Aflați mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Șterge</translation>
+<translation id="6574153208133461043">Ești sigur că vrei să ștergi această conversație? Această acțiune nu poate fi anulată.</translation>
 <translation id="7488762544858401571">Editat</translation>
 <translation id="1406205536570262057">Editați răspunsul</translation>
 <translation id="2399439821649319175">Inutil</translation>
@@ -2132,6 +2155,7 @@ other {# surse}
 <translation id="8171760814579050200">Redenumiți conversația</translation>
 <translation id="7754678742055438573">Ștergeți conversația</translation>
 <translation id="7494736170250048402">Trimiteți-i un mesaj lui Leo</translation>
+<translation id="8650874793377330048">Nu mai răspunde</translation>
 <translation id="8712637175834984815">Am înțeles</translation>
 <translation id="1093419424466417703">Această pagină este prea lungă pentru Leo. E posibil să lipsească context din conversație. Leo a putut citi <ph name="PERCENTAGE"/> din conținutul paginii.</translation>
 <translation id="2186990448773134544">Conținutul paginii a fost rafinat prin extragerea celor mai relevante informații din pagină, deoarece acesta era prea lung pentru Leo.</translation>

@@ -407,6 +407,7 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3570081523466826008">Naik taraf sambungan kepada HTTPS</translation>
 <translation id="3357319404342882895">Terbatas</translation>
 <translation id="8823559166155093873">Sekat kuki</translation>
+<translation id="7093267802941377072">Pilihan "Sekat Semua Kuki" tidak lagi disokong. Untuk mengetahui cara mengaktifkan pilihan ini secara paksa, lawati <ph name="BEGIN_LINK"/>halaman bantuan kami<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Sekat kuki pihak ketiga</translation>
 <translation id="5657156137487675418">Benarkan semua kuki</translation>
 <translation id="6883611015375728278">Sekat semua kuki</translation>
@@ -594,6 +595,7 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5522403133543437426">Enjin carian yang digunakan dalam bar alamat.</translation>
 <translation id="280472502078788655">Enjin carian yang digunakan dalam bar alamat untuk tetingkap peribadi.</translation>
 <translation id="7232120595886556478">Tetingkap Biasa</translation>
+<translation id="6739674350896546324">Enjin Carian untuk Tetingkap Peribadi</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> kini merupakan enjin carian lalai untuk tetingkap peribadi</translation>
 <translation id="6864914031231797928">Benarkan log masuk Google untuk sambungan</translation>
 <translation id="7878791177459550035">Penghala media mendayakan ciri siaran dalam pelayar.</translation>
@@ -731,7 +733,7 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3213787232304349732">URL di mana rangka kerja pelayan anda mendengar permintaan. Jika anda tidak pasti, semak dokumentasi rangka kerja pelayan. Contohnya, untuk Ollama, ia adalah http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Sesetengah rangkai kerja pelayan mungkin mengehendaki bukti kelayakan pengesahan, seperti kunci API atau token akses. Keperluan ini akan ditambahkan pada pengepala permintaan.</translation>
 <translation id="4335128003329183586">Saiz konteks</translation>
-<translation id="8794525422794607973">Jumlah maksimum token yang dapat diproses oleh model dalam satu interaksi. Setiap token bersamaan lebih kurang 3/4 daripada satu perkataan. Saiz konteks yang lebih besar membolehkan model menguruskan perbualan yang lebih panjang. Model yang berbeza menyokong saiz konteks maksimum yang berbeza.</translation>
+<translation id="3153779001670804829">Jumlah maksimum token yang boleh diproses oleh model dalam satu interaksi. Saiz konteks yang lebih besar membolehkan model mengendalikan perbualan yang lebih panjang. Setiap model mempunyai had saiz konteks yang berbeza.</translation>
 <translation id="217141195370578385">Brave tidak menjadi perantara untuk permintaan ini, sila baca terma privasi penyedia yang dipilih.</translation>
 <translation id="2645532768679870478">Titik akhir bukan setempat hendaklah menggunakan protokol HTTPS untuk penghantaran data yang selamat.</translation>
 <translation id="8177205483022887785">Anda telah memasukkan URL tidak sah. Sila masukkan URL yang sah.</translation>
