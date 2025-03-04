@@ -683,6 +683,7 @@ TEST_F(
 
   MockBackgroundImagesData();
   ASSERT_TRUE(view_counter_service_->CanShowBackgroundImages());
+
   background_images_service_->OnGetSponsoredComponentJsonData(
       /*is_super_referral=*/false, kSponsoredRichMediaCampaignsJson);
   ASSERT_TRUE(view_counter_service_->CanShowSponsoredImages());

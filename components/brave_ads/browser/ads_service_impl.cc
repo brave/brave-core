@@ -620,15 +620,11 @@ void AdsServiceImpl::SetContentSettings() {
     return;
   }
 
-  const ContentSetting javascript_content_setting =
-      host_content_settings_map_->GetDefaultContentSetting(
-          ContentSettingsType::JAVASCRIPT);
-
   mojom::ContentSettingsPtr mojom_content_settings =
       mojom::ContentSettings::New();
   mojom_content_settings->allow_javascript =
-      javascript_content_setting == CONTENT_SETTING_ALLOW ||
-      javascript_content_setting == CONTENT_SETTING_SESSION_ONLY;
+      host_content_settings_map_->GetDefaultContentSetting(
+          ContentSettingsType::JAVASCRIPT) == CONTENT_SETTING_ALLOW;
 
   bat_ads_associated_remote_->SetContentSettings(
       std::move(mojom_content_settings));
