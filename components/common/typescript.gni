@@ -91,6 +91,8 @@ brave_common_web_compile_inputs = [
 #   sync_wasm
 #     Synchronous WASM loading (experiments.syncWebAssembly - deprecated).
 #     If not used, we default to asynchronous WASM loading (experiments.asyncWebAssembly).
+#   no_iife
+#     If true, the resulting bundle will not be wrapped in an IIFE.
 template("transpile_web_ui") {
   if (defined(invoker.rust_packages)) {
     rust_to_wasm("build_rust_packages") {
@@ -113,6 +115,7 @@ template("transpile_web_ui") {
       # generated
       "//brave/components/webpack:generate_tsconfig",
     ]
+
     if (defined(invoker.deps)) {
       # If there are any mojo js bindings deps make sure to build mojo js
       # bindings first
@@ -212,6 +215,10 @@ template("transpile_web_ui") {
 
     if (defined(invoker.sync_wasm) && invoker.sync_wasm) {
       args += [ "--sync_wasm" ]
+    }
+
+    if (defined(invoker.no_iife) && invoker.no_iife) {
+      args += [ "--no_iife" ]
     }
 
     forward_variables_from(invoker,

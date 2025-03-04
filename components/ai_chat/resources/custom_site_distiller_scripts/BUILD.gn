@@ -12,14 +12,17 @@ transpile_web_ui("custom_site_distiller_scripts") {
   entry_points = [
     [
       "x_com",
-      rebase_path("scripts/x.com/index.ts"),
+      rebase_path("scripts/x.com/distiller.ts"),
     ],
     [
       "github_com",
-      rebase_path("scripts/github.com/index.ts"),
+      rebase_path("scripts/github.com/distiller.ts"),
     ],
   ]
-  output_module = true
+
+  # Distillation scripts are provided a `return` statement and IIFE by
+  # ai_chat::DistillPageTextViaSiteScript in page_text_distilling.cc
+  no_iife = true
 }
 
 pack_web_resources("generated_resources") {
