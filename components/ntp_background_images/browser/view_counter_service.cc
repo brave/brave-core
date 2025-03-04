@@ -180,13 +180,9 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
 }
 
 NTPSponsoredImagesData* ViewCounterService::GetSponsoredImagesData() const {
-  const ContentSetting content_setting =
-      host_content_settings_map_->GetDefaultContentSetting(
-          ContentSettingsType::JAVASCRIPT);
-
   const bool supports_rich_media =
-      content_setting == CONTENT_SETTING_ALLOW ||
-      content_setting == CONTENT_SETTING_SESSION_ONLY;
+      host_content_settings_map_->GetDefaultContentSetting(
+          ContentSettingsType::JAVASCRIPT) == CONTENT_SETTING_ALLOW;
 
   NTPSponsoredImagesData* images_data =
       background_images_service_->GetSponsoredImagesData(
