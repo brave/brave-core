@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index db887bc023639301e2f939c952544e51ca5eb25a..c0466a8fd4105ad6f90aff8e6aa5b9c02eccedeb 100644
+index c9600922e50e0007c453ba8956916cd9ed60e739..c9182e85bf7a8b7e0e9eb12806c808a7c5c0c0ce 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
-@@ -246,6 +246,7 @@ class BrowserProcessImpl : public BrowserProcess,
+@@ -243,6 +243,7 @@ class BrowserProcessImpl : public BrowserProcess,
    void CreateGlobalFeaturesForTesting() override;
  
   private:

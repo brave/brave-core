@@ -1,8 +1,8 @@
 diff --git a/ios/web_view/BUILD.gn b/ios/web_view/BUILD.gn
-index 87d7a08bd5ef7c081169d2f56b0dc0b8416580b7..38f2fd8b0a65a927c97eddd4a4a1ce142f3ee2cd 100644
+index 7e4fbe764e299aa2f0dd2098c6ef750e38c6baf0..09d79a816a79e98a520b4f1cd9d07bf6b4303173 100644
 --- a/ios/web_view/BUILD.gn
 +++ b/ios/web_view/BUILD.gn
-@@ -438,6 +438,7 @@ source_set("web_view_sources") {
+@@ -445,6 +445,7 @@ source_set("web_view_sources") {
      "//components/version_info:channel",
    ]
    configs += [ ":config" ]

@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/syn/v2/BUILD.gn b/third_party/rust/syn/v2/BUILD.gn
-index 337e318c2fec282ce22d58aed50b07c75e3ca601..4e4bfee7cf2ec315174e656091d3917fe791492a 100644
+index 5fe49af9f1c7b6c9dd658973a101ff6f9c8155a8..2386f6dcaf178b89667df9258a6e3d913f43ce92 100644
 --- a/third_party/rust/syn/v2/BUILD.gn
 +++ b/third_party/rust/syn/v2/BUILD.gn
-@@ -105,4 +105,5 @@ cargo_crate("lib") {
+@@ -106,4 +106,5 @@ cargo_crate("lib") {
    rustflags = [
      "--cap-lints=allow",  # Suppress all warnings in crates.io crates
    ]
