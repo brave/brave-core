@@ -365,7 +365,7 @@ copy("copy_ds_store") {
   if (!is_release_channel) {
     ds_store_file_name = "DS_Store.$brave_channel"
   }
-  sources = [ "DS_Store-files/$ds_store_file_name" ]
+  sources = [ "ds_store/$ds_store_file_name" ]
   outputs = [ "$packaging_dir/chrome_dmg_dsstore" ]
 }
 
