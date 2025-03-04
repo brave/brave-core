@@ -13,16 +13,25 @@
 
 class Profile;
 
+namespace network {
+class SimpleURLLoader;
+}  // namespace network
+
+// This class is a drop in replacement for SanitizedImageSource that also allows
+// use to download padded images from the Brave Private CDN.
 class PaddedImageSource : public SanitizedImageSource {
  public:
   explicit PaddedImageSource(Profile* profile);
   ~PaddedImageSource() override;
 
  protected:
-    void OnImageLoaded(std::unique_ptr<network::SimpleURLLoader> loader,
-                       RequestAttributes request_attributes,
-                       content::URLDataSource::GotDataCallback callback,
-                       std::unique_ptr<std::string> body) override;
+  void OnImageLoaded(std::unique_ptr<network::SimpleURLLoader> loader,
+                     RequestAttributes request_attributes,
+                     content::URLDataSource::GotDataCallback callback,
+                     std::unique_ptr<std::string> body) override;
+
+ private:
+  std::string pcdn_domain_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_PADDED_IMAGE_SOURCE_H_

@@ -29,7 +29,6 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
@@ -43,10 +42,6 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
-#include "brave/components/brave_private_cdn/private_cdn_helper.h"
-#include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
-#include "components/favicon/core/favicon_service.h"
-#include "components/favicon_base/favicon_types.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -60,10 +55,6 @@
 
 namespace brave_news {
 namespace {
-
-// The favicon size we desire. The favicons are rendered at 24x24 pixels but
-// they look quite a bit nicer if we get a 48x48 pixel icon and downscale it.
-constexpr uint32_t kDesiredFaviconSizePixels = 48;
 
 // Creates a ChangeEvent from a lookup of all possible items and a diff.
 template <class MojomType, class EventType>
@@ -105,16 +96,11 @@ mojo::StructPtr<EventType> CreateChangeEvent(
 
 BraveNewsController::BraveNewsController(
     PrefService* prefs,
-    favicon::FaviconService* favicon_service,
     brave_ads::AdsService* ads_service,
     history::HistoryService* history_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
-    : favicon_service_(favicon_service),
-      ads_service_(ads_service),
-      api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
-      private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
-                                  url_loader_factory),
+    : ads_service_(ads_service),
       history_service_(history_service),
       url_loader_factory_(url_loader_factory),
       direct_feed_fetcher_delegate_(std::move(direct_feed_fetcher_delegate)),
@@ -449,104 +435,6 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
     event->removed.push_back(publisher_id);
     receiver->Changed(std::move(event));
   }
-}
-
-void BraveNewsController::GetImageData(const GURL& padded_image_url,
-                                       GetImageDataCallback callback) {
-  VLOG(2) << __FUNCTION__ << " " << padded_image_url.spec();
-  // Validate
-  if (!padded_image_url.is_valid()) {
-    std::optional<std::vector<uint8_t>> args;
-    std::move(callback).Run(std::move(args));
-    return;
-  }
-  // Use file ending to determine if response
-  // will contain (Brave's PrivateCDN) padding or
-  // be a direct image
-  const auto file_name = padded_image_url.path();
-  const std::string ending = ".pad";
-  if (file_name.length() >= file_name.max_size() - 1 ||
-      file_name.length() <= ending.length()) {
-    std::optional<std::vector<uint8_t>> args;
-    std::move(callback).Run(std::move(args));
-    return;
-  }
-  const bool is_padded =
-      (file_name.compare(file_name.length() - ending.length(), ending.length(),
-                         ending) == 0);
-  VLOG(3) << "is padded: " << is_padded;
-  // Make the request
-  private_cdn_request_helper_.DownloadToString(
-      padded_image_url,
-      base::BindOnce(
-          [](GetImageDataCallback callback, const bool is_padded,
-             const int response_code, const std::string& body) {
-            // Handle the response
-            VLOG(3) << "getimagedata response code: " << response_code;
-            // Attempt to remove byte padding if applicable
-            std::string_view body_payload(body.data(), body.size());
-            if (response_code < 200 || response_code >= 300 ||
-                (is_padded &&
-                 !brave::PrivateCdnHelper::GetInstance()->RemovePadding(
-                     &body_payload))) {
-              // Byte padding removal failed
-              std::move(callback).Run(std::nullopt);
-              return;
-            }
-            // Download (and optional unpadding) was successful,
-            // uint8Array will be easier to move over mojom.
-            std::vector<uint8_t> image_bytes(body_payload.begin(),
-                                             body_payload.end());
-            std::move(callback).Run(image_bytes);
-          },
-          std::move(callback), is_padded));
-}
-
-void BraveNewsController::GetFavIconData(const std::string& publisher_id,
-                                         GetFavIconDataCallback callback) {
-  DVLOG(1) << __FUNCTION__;
-  GetPublishers(base::BindOnce(
-      [](BraveNewsController* controller, const std::string& publisher_id,
-         GetFavIconDataCallback callback, Publishers publishers) {
-        // If the publisher doesn't exist, there's nothing we can do.
-        const auto& it = publishers.find(publisher_id);
-        if (it == publishers.end()) {
-          std::move(callback).Run(std::nullopt);
-          return;
-        }
-
-        // If we have a FavIcon url, use that.
-        const auto& publisher = it->second;
-        if (publisher->favicon_url) {
-          controller->GetImageData(publisher->favicon_url.value(),
-                                   std::move(callback));
-          return;
-        }
-
-        auto source_url = publisher->site_url.is_valid()
-                              ? publisher->site_url
-                              : publisher->feed_source;
-        favicon_base::IconTypeSet icon_types{
-            favicon_base::IconType::kFavicon,
-            favicon_base::IconType::kTouchIcon};
-        controller->favicon_service_->GetRawFaviconForPageURL(
-            source_url, icon_types, kDesiredFaviconSizePixels, true,
-            base::BindOnce(
-                [](GetFavIconDataCallback callback,
-                   const favicon_base::FaviconRawBitmapResult& result) {
-                  if (!result.is_valid()) {
-                    std::move(callback).Run(std::nullopt);
-                    return;
-                  }
-
-                  std::vector<uint8_t> bytes_vec(result.bitmap_data->begin(),
-                                                 result.bitmap_data->end());
-                  std::move(callback).Run(std::move(bytes_vec));
-                },
-                std::move(callback)),
-            &controller->task_tracker_);
-      },
-      base::Unretained(this), publisher_id, std::move(callback)));
 }
 
 void BraveNewsController::SetPublisherPref(const std::string& publisher_id,

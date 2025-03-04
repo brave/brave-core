@@ -59,7 +59,6 @@ class BraveNewsController
  public:
   BraveNewsController(
       PrefService* prefs,
-      favicon::FaviconService* favicon_service,
       brave_ads::AdsService* ads_service,
       history::HistoryService* history_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -110,10 +109,6 @@ class BraveNewsController
       const GURL& feed_url,
       SubscribeToNewDirectFeedCallback callback) override;
   void RemoveDirectFeed(const std::string& publisher_id) override;
-  void GetImageData(const GURL& padded_image_url,
-                    GetImageDataCallback callback) override;
-  void GetFavIconData(const std::string& publisher_id,
-                      GetFavIconDataCallback callback) override;
   void SetPublisherPref(const std::string& publisher_id,
                         mojom::UserEnabled new_status) override;
   void ClearPrefs() override;
@@ -172,10 +167,7 @@ class BraveNewsController
 
   BackgroundHistoryQuerier MakeHistoryQuerier();
 
-  raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
-  api_request_helper::APIRequestHelper api_request_helper_;
-  brave_private_cdn::PrivateCDNRequestHelper private_cdn_request_helper_;
   raw_ptr<history::HistoryService> history_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
