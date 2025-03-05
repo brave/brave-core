@@ -691,20 +691,8 @@ extension WKPermissionDecision {
 
 extension WKFrameInfo {
   fileprivate var origin: URLOrigin? {
-    if securityOrigin.protocol.isEmpty || securityOrigin.host.isEmpty {
-      return nil
-    }
-    let defaultPort: UInt16 =
-      switch securityOrigin.protocol {
-      case "https": 443
-      case "http": 80
-      default: 0
-      }
-    return URLOrigin(
-      scheme: securityOrigin.protocol,
-      host: securityOrigin.host,
-      port: securityOrigin.port == 0 ? defaultPort : UInt16(securityOrigin.port)
-    )
+    let origin = URLOrigin(wkSecurityOrigin: securityOrigin)
+    return !origin.isOpaque ? origin : nil
   }
 }
 
