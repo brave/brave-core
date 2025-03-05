@@ -408,7 +408,8 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
 
   @MainActor
   private func checkTranslationStatus() async throws {
-    let timeout = 30
+    // Give the Javascript 5 seconds to execute and update its status
+    let timeout = 5
     let startTime = Date()
 
     guard let tab = tab, let delegate = delegate else {
