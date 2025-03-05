@@ -2450,7 +2450,7 @@ extension BrowserViewController: TabDelegate {
       ]
     }
 
-    if FeatureList.kBraveTranslateFeature.enabled {
+    if FeatureList.kBraveTranslateEnabled.enabled {
       injectedScripts.append(contentsOf: [
         BraveTranslateScriptLanguageDetectionHandler(),
         BraveTranslateScriptHandler(),

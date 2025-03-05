@@ -169,7 +169,7 @@ class UserScriptManager {
       case .braveLeoAIChat:
         return Preferences.UserScript.leo.value ? BraveLeoScriptHandler.userScript : nil
       case .braveTranslate:
-        return Preferences.UserScript.translate.value && FeatureList.kBraveTranslateFeature.enabled
+        return Preferences.UserScript.translate.value && FeatureList.kBraveTranslateEnabled.enabled
           ? BraveTranslateScriptHandler.userScript : nil
       }
     }

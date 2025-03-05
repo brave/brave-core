@@ -159,7 +159,7 @@ extension BrowserViewController: TabManagerDelegate {
       topToolbar.updateReaderModeState(.unavailable)
     }
 
-    if FeatureList.kBraveTranslateFeature.enabled, let selectedTab = selected,
+    if FeatureList.kBraveTranslateEnabled.enabled, let selectedTab = selected,
       selectedTab.translateHelper != nil
     {
       updateTranslateURLBar(tab: selectedTab, state: selectedTab.translationState)

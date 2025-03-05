@@ -329,7 +329,7 @@
       initWithFeature:&brave::features::kModernBrowserMenuEnabled];
 }
 
-+ (Feature*)kBraveTranslateFeature {
++ (Feature*)kBraveTranslateEnabled {
   return [[Feature alloc]
       initWithFeature:&brave::features::kBraveTranslateEnabled];
 }

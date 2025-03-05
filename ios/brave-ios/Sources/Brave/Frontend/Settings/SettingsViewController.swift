@@ -434,7 +434,7 @@ class SettingsViewController: TableViewController {
       )
     )
 
-    if FeatureList.kBraveTranslateFeature.enabled {
+    if FeatureList.kBraveTranslateEnabled.enabled {
       section.rows.append(
         Row(
           text: Strings.BraveTranslate.settingsMenuTitle,
