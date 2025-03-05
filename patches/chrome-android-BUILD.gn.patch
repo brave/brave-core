@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 9cd6abf563e8b515f80abbe71267b0654e527db4..3e19087e7209f09172367f240a6976bb1828c153 100644
+index cd1f242c915a4dca7b547f8261eac658bfe5707f..d510fd20d8b9e9324e735742b2fa8b2e24155d66 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -189,6 +189,7 @@ if (current_toolchain == default_toolchain) {
+@@ -187,6 +187,7 @@ if (current_toolchain == default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -10,7 +10,7 @@ index 9cd6abf563e8b515f80abbe71267b0654e527db4..3e19087e7209f09172367f240a6976bb
    }
  
    android_resources("chrome_app_java_resources") {
-@@ -286,6 +287,7 @@ if (current_toolchain == default_toolchain) {
+@@ -284,6 +285,7 @@ if (current_toolchain == default_toolchain) {
      if (enable_screen_capture) {
        deps += [ "//chrome/browser:screen_capture_java_resources" ]
      }
@@ -18,7 +18,7 @@ index 9cd6abf563e8b515f80abbe71267b0654e527db4..3e19087e7209f09172367f240a6976bb
    }
  
    android_resources("java_overlay_resources") {
-@@ -766,6 +768,7 @@ if (current_toolchain == default_toolchain) {
+@@ -767,6 +769,7 @@ if (current_toolchain == default_toolchain) {
      ]
  
      deps += feed_deps
@@ -26,7 +26,7 @@ index 9cd6abf563e8b515f80abbe71267b0654e527db4..3e19087e7209f09172367f240a6976bb
  
      srcjar_deps = [
        ":chrome_android_java_enums_srcjar",
-@@ -782,6 +785,7 @@ if (current_toolchain == default_toolchain) {
+@@ -783,6 +786,7 @@ if (current_toolchain == default_toolchain) {
        "//components/sharing_message:sharing_send_message_result_generated_enum",
        "//components/supervised_user/core/browser:supervised_user_utils_enum_javagen",
      ]
@@ -34,7 +34,7 @@ index 9cd6abf563e8b515f80abbe71267b0654e527db4..3e19087e7209f09172367f240a6976bb
  
      # From java_sources.gni.
      sources = chrome_java_sources
-@@ -904,6 +908,7 @@ if (current_toolchain == default_toolchain) {
+@@ -909,6 +913,7 @@ if (current_toolchain == default_toolchain) {
        "//components/saved_tab_groups/public:conversion_utils_java",
        "//components/segmentation_platform/internal:internal_java",
      ]
@@ -42,7 +42,7 @@ index 9cd6abf563e8b515f80abbe71267b0654e527db4..3e19087e7209f09172367f240a6976bb
    }
  
    action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -1591,6 +1596,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1603,6 +1608,7 @@ if (current_toolchain == default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -50,7 +50,7 @@ index 9cd6abf563e8b515f80abbe71267b0654e527db4..3e19087e7209f09172367f240a6976bb
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -1803,6 +1809,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1815,6 +1821,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -58,7 +58,7 @@ index 9cd6abf563e8b515f80abbe71267b0654e527db4..3e19087e7209f09172367f240a6976bb
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
        }
-@@ -2081,6 +2088,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2095,6 +2102,7 @@ if (current_toolchain == default_toolchain) {
        "//third_party/androidx:androidx_annotation_annotation_experimental_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
@@ -66,7 +66,7 @@ index 9cd6abf563e8b515f80abbe71267b0654e527db4..3e19087e7209f09172367f240a6976bb
  
      # More deps for DFMs.
      if (dfmify_dev_ui) {
-@@ -3180,6 +3188,7 @@ generate_jni("chrome_jni_headers") {
+@@ -3207,6 +3215,7 @@ generate_jni("chrome_jni_headers") {
      "java/src/org/chromium/chrome/browser/webapps/WebApkUpdateManager.java",
      "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
    ]
