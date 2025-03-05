@@ -47,8 +47,6 @@ void PaddedImageSource::OnImageLoaded(
       return;
     }
 
-    // TODO: Ask a C++ person if this is safe. |body_payload| points to a
-    // substring of |body|, so I'm not sure if we need to force a copy first.
     *body = body_payload;
   }
 
