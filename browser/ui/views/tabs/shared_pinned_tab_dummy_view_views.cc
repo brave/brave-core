@@ -57,7 +57,7 @@ SharedPinnedTabDummyViewViews::SharedPinnedTabDummyViewViews(
       ->SetOrientation(views::LayoutOrientation::kVertical)
       .SetCrossAxisAlignment(views::LayoutAlignment::kCenter)
       .SetMainAxisAlignment(views::LayoutAlignment::kCenter);
-  SetBackground(views::CreateThemedSolidBackground(
+  SetBackground(views::CreateSolidBackground(
       kColorBraveSharedPinnedTabDummyViewBackground));
 
   constexpr auto kTitleFontSize = 22;
