@@ -623,8 +623,7 @@ BraveWalletService::GetNetworkForSelectedAccountOnActiveOriginSync() {
 mojom::NetworkInfoPtr BraveWalletService::GetNetworkForAccountOnOriginSync(
     const url::Origin& origin,
     const mojom::AccountIdPtr& account) {
-  if (account->coin != mojom::CoinType::ETH &&
-      account->coin != mojom::CoinType::SOL) {
+  if (!CoinSupportsDapps(account->coin)) {
     return nullptr;
   }
 
@@ -639,8 +638,7 @@ bool BraveWalletService::SetNetworkForAccountOnOriginSync(
     url::Origin& origin,
     const mojom::AccountIdPtr& account,
     const std::string& chain_id) {
-  if (account->coin != mojom::CoinType::ETH &&
-      account->coin != mojom::CoinType::SOL) {
+  if (!CoinSupportsDapps(account->coin)) {
     return false;
   }
 
