@@ -58,8 +58,6 @@ source_set("brave_wallet") {
 
 source_set("brave_wallet_delegate") {
   sources = [
-    "brave_wallet_provider_delegate_impl.cc",
-    "brave_wallet_provider_delegate_impl.h",
     "brave_wallet_service_delegate_base.cc",
     "brave_wallet_service_delegate_base.h",
     "brave_wallet_service_delegate_helper.cc",
@@ -136,17 +134,27 @@ source_set("external_wallets_importer") {
 
 source_set("tab_helper") {
   sources = [
+    "brave_wallet_provider_delegate_impl.cc",
+    "brave_wallet_provider_delegate_impl.h",
     "brave_wallet_tab_helper.cc",
     "brave_wallet_tab_helper.h",
   ]
 
   deps = [
+    "//brave/browser/brave_wallet:brave_wallet",
     "//brave/common",
+    "//brave/components/brave_wallet/browser:browser",
+    "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:permission_utils",
+    "//brave/components/brave_wallet/browser:utils",
+    "//chrome/browser/content_settings:content_settings_factory",
     "//components/permissions",
     "//components/sessions",
+    "//components/user_prefs:user_prefs",
     "//content/public/browser",
   ]
+
+  public_deps = [ "//brave/components/brave_wallet/common:mojom" ]
 
   if (!is_android) {
     deps += [ "//brave/browser/ui/brave_wallet" ]

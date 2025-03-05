@@ -13,7 +13,6 @@
 
 #include "base/command_line.h"
 #include "base/functional/bind.h"
-#include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -28,6 +27,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
@@ -76,8 +76,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a_private.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
-#include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
@@ -366,65 +364,6 @@ void MaybeBindWalletP3A(
         std::make_unique<brave_wallet::BraveWalletP3APrivate>(),
         std::move(receiver));
   }
-}
-
-void MaybeBindEthereumProvider(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_wallet::mojom::EthereumProvider> receiver) {
-  auto* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-          frame_host->GetBrowserContext());
-  if (!brave_wallet_service) {
-    return;
-  }
-
-  content::WebContents* web_contents =
-      content::WebContents::FromRenderFrameHost(frame_host);
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_wallet::EthereumProviderImpl>(
-          HostContentSettingsMapFactory::GetForProfile(
-              Profile::FromBrowserContext(frame_host->GetBrowserContext())),
-          brave_wallet_service,
-          std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
-              web_contents, frame_host),
-          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())),
-      std::move(receiver));
-}
-
-void MaybeBindSolanaProvider(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_wallet::mojom::SolanaProvider> receiver) {
-  auto* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-          frame_host->GetBrowserContext());
-  if (!brave_wallet_service) {
-    return;
-  }
-
-  auto* json_rpc_service = brave_wallet_service->json_rpc_service();
-  CHECK(json_rpc_service);
-
-  auto* keyring_service = brave_wallet_service->keyring_service();
-  CHECK(keyring_service);
-
-  auto* tx_service = brave_wallet_service->tx_service();
-  CHECK(tx_service);
-
-  auto* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(
-          frame_host->GetBrowserContext());
-  if (!host_content_settings_map) {
-    return;
-  }
-
-  content::WebContents* web_contents =
-      content::WebContents::FromRenderFrameHost(frame_host);
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<brave_wallet::SolanaProviderImpl>(
-          *host_content_settings_map, brave_wallet_service,
-          std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
-              web_contents, frame_host)),
-      std::move(receiver));
 }
 
 void BindBraveSearchFallbackHost(
@@ -842,10 +781,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (brave_wallet::IsAllowedForContext(
           render_frame_host->GetBrowserContext())) {
     if (brave_wallet::IsNativeWalletEnabled()) {
-      map->Add<brave_wallet::mojom::EthereumProvider>(
-          base::BindRepeating(&MaybeBindEthereumProvider));
-      map->Add<brave_wallet::mojom::SolanaProvider>(
-          base::BindRepeating(&MaybeBindSolanaProvider));
+      map->Add<brave_wallet::mojom::EthereumProvider>(base::BindRepeating(
+          &brave_wallet::BraveWalletTabHelper::BindEthereumProvider));
+      map->Add<brave_wallet::mojom::SolanaProvider>(base::BindRepeating(
+          &brave_wallet::BraveWalletTabHelper::BindSolanaProvider));
     }
   }
 
@@ -1060,8 +999,7 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
   // TODO(iefremov): Skip proxying for certain requests?
   BraveProxyingURLLoaderFactory::MaybeProxyRequest(
-      browser_context, frame,
-      factory_builder, navigation_response_task_runner);
+      browser_context, frame, factory_builder, navigation_response_task_runner);
 
   ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,

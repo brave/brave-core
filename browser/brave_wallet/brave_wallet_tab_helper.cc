@@ -9,11 +9,17 @@
 #include <utility>
 #include <vector>
 
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/request_type.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/web_contents.h"
 
@@ -32,6 +38,74 @@ BraveWalletTabHelper::~BraveWalletTabHelper() {
     CloseBubble();
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
+}
+
+// static
+void BraveWalletTabHelper::BindEthereumProvider(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<mojom::EthereumProvider> receiver) {
+  auto* brave_wallet_service = BraveWalletServiceFactory::GetServiceForContext(
+      frame_host->GetBrowserContext());
+  if (!brave_wallet_service) {
+    return;
+  }
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(
+          frame_host->GetBrowserContext());
+  if (!host_content_settings_map) {
+    return;
+  }
+
+  content::WebContents* web_contents =
+      content::WebContents::FromRenderFrameHost(frame_host);
+
+  auto* prefs = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
+  if (!prefs) {
+    return;
+  }
+
+  auto* tab_helper = BraveWalletTabHelper::FromWebContents(web_contents);
+  if (!tab_helper) {
+    return;
+  }
+  tab_helper->ethereum_provider_receivers_.Add(
+      std::make_unique<EthereumProviderImpl>(
+          host_content_settings_map, brave_wallet_service,
+          std::make_unique<BraveWalletProviderDelegateImpl>(web_contents,
+                                                            frame_host),
+          prefs),
+      std::move(receiver));
+}
+
+// static
+void BraveWalletTabHelper::BindSolanaProvider(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<mojom::SolanaProvider> receiver) {
+  auto* brave_wallet_service = BraveWalletServiceFactory::GetServiceForContext(
+      frame_host->GetBrowserContext());
+  if (!brave_wallet_service) {
+    return;
+  }
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(
+          frame_host->GetBrowserContext());
+  if (!host_content_settings_map) {
+    return;
+  }
+  content::WebContents* web_contents =
+      content::WebContents::FromRenderFrameHost(frame_host);
+
+  auto* tab_helper = BraveWalletTabHelper::FromWebContents(web_contents);
+  if (!tab_helper) {
+    return;
+  }
+
+  tab_helper->solana_provider_receivers_.Add(
+      std::make_unique<SolanaProviderImpl>(
+          *host_content_settings_map, brave_wallet_service,
+          std::make_unique<BraveWalletProviderDelegateImpl>(web_contents,
+                                                            frame_host)),
+      std::move(receiver));
 }
 
 void BraveWalletTabHelper::AddSolanaConnectedAccount(
@@ -148,7 +222,7 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
   url::Origin requesting_origin;
   for (permissions::PermissionRequest* request : manager->Requests()) {
     std::string account;
-    if (!brave_wallet::ParseRequestingOriginFromSubRequest(
+    if (!ParseRequestingOriginFromSubRequest(
             request->request_type(),
             url::Origin::Create(request->requesting_origin()),
             &requesting_origin, &account)) {
@@ -158,8 +232,8 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
   }
   DCHECK(!accounts.empty());
 
-  webui_url = brave_wallet::GetConnectWithSiteWebUIURL(webui_url, accounts,
-                                                       requesting_origin);
+  webui_url =
+      GetConnectWithSiteWebUIURL(webui_url, accounts, requesting_origin);
   DCHECK(webui_url.is_valid());
 
   return webui_url;
