@@ -369,8 +369,7 @@ extension BrowserViewController: WKUIDelegate {
     type: WKMediaCaptureType,
     decisionHandler: @escaping (WKPermissionDecision) -> Void
   ) {
-    guard let tab = tabManager[webView], let captureType = WebMediaCaptureType(type)
-    else {
+    guard let tab = tabManager[webView], let captureType = WebMediaCaptureType(type) else {
       decisionHandler(.deny)
       return
     }
