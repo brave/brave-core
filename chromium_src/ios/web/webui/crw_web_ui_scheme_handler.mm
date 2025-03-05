@@ -8,7 +8,6 @@
 #include <map>
 
 #import "base/files/file_path.h"
-#import "base/ranges/algorithm.h"
 #import "base/strings/sys_string_conversions.h"
 #import "ios/web/webui/url_fetcher_block_adapter.h"
 #import "ios/web/webui/web_ui_ios_controller_factory_registry.h"
