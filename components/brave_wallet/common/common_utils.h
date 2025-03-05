@@ -37,6 +37,8 @@ bool IsSolanaAccount(const mojom::AccountIdPtr& account_id);
 
 bool IsFilecoinKeyring(mojom::KeyringId keyring_id);
 bool IsFilecoinAccount(const mojom::AccountIdPtr& account_id);
+mojom::KeyringId GetFilecoinKeyringId(const std::string& network);
+std::string GetFilecoinChainId(mojom::KeyringId keyring_id);
 
 bool IsBitcoinKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinMainnetKeyring(mojom::KeyringId keyring_id);
@@ -46,12 +48,15 @@ bool IsBitcoinImportKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinHardwareKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinNetwork(const std::string& network_id);
 bool IsBitcoinAccount(const mojom::AccountIdPtr& account_id);
+std::string GetNetworkForBitcoinKeyring(const mojom::KeyringId& keyring_id);
+std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id);
 
 bool IsZCashAccount(const mojom::AccountIdPtr& account_id);
 bool IsZCashNetwork(const std::string& network_id);
 bool IsZCashKeyring(mojom::KeyringId keyring_id);
 bool IsZCashMainnetKeyring(mojom::KeyringId keyring_id);
 bool IsZCashTestnetKeyring(mojom::KeyringId keyring_id);
+std::string GetNetworkForZCashKeyring(const mojom::KeyringId& keyring_id);
 
 bool IsCardanoKeyring(mojom::KeyringId keyring_id);
 bool IsCardanoMainnetKeyring(mojom::KeyringId keyring_id);
@@ -61,10 +66,8 @@ bool IsCardanoImportKeyring(mojom::KeyringId keyring_id);
 bool IsCardanoHardwareKeyring(mojom::KeyringId keyring_id);
 bool IsCardanoNetwork(const std::string& network_id);
 bool IsCardanoAccount(const mojom::AccountIdPtr& account_id);
-
-mojom::KeyringId GetFilecoinKeyringId(const std::string& network);
-
-std::string GetFilecoinChainId(mojom::KeyringId keyring_id);
+std::string GetNetworkForCardanoKeyring(const mojom::KeyringId& keyring_id);
+std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id);
 
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id);
 
@@ -88,10 +91,6 @@ mojom::AccountIdPtr MakeIndexBasedAccountId(mojom::CoinType coin,
                                             mojom::KeyringId keyring_id,
                                             mojom::AccountKind kind,
                                             uint32_t account_index);
-std::string GetNetworkForBitcoinKeyring(const mojom::KeyringId& keyring_id);
-std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id);
-
-std::string GetNetworkForZCashKeyring(const mojom::KeyringId& keyring_id);
 
 bool IsHTTPSOrLocalhostURL(const std::string& url);
 

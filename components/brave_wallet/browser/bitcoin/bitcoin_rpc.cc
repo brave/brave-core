@@ -13,17 +13,14 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/json/json_helper.h"
-#include "components/grit/brave_components_strings.h"
 #include "net/http/http_request_headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -202,13 +199,13 @@ std::optional<std::string> ConvertPlainStringToJsonArray(
 template <class TCallback>
 void ReplyWithInvalidJsonError(TCallback callback) {
   std::move(callback).Run(
-      base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
+      base::unexpected(brave_wallet::WalletParsingErrorMessage()));
 }
 
 template <class TCallback>
 void ReplyWithInternalError(TCallback callback) {
   std::move(callback).Run(
-      base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+      base::unexpected(brave_wallet::WalletInternalErrorMessage()));
 }
 
 }  // namespace

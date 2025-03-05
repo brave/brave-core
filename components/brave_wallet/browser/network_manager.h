@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_NETWORK_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_NETWORK_MANAGER_H_
 
+#include <map>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -75,8 +76,12 @@ class NetworkManager {
                          const std::optional<url::Origin>& origin,
                          std::string_view chain_id);
 
+  void SetNetworkURLForTesting(const std::string& chain_id, GURL url);
+
  private:
   raw_ptr<PrefService, DanglingUntriaged> prefs_ = nullptr;
+
+  std::map<std::string, GURL> network_url_for_testing_;
 };
 
 }  // namespace brave_wallet

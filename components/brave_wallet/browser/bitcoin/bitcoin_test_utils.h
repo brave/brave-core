@@ -13,8 +13,8 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
-#include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 

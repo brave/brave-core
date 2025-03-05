@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/containers/contains.h"
 #include "base/containers/extend.h"
@@ -1036,9 +1037,15 @@ std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllKnownChains(
 
 GURL NetworkManager::GetNetworkURL(std::string_view chain_id,
                                    mojom::CoinType coin) {
+  if (network_url_for_testing_.contains(std::string(chain_id))) {
+    return network_url_for_testing_.at(std::string(chain_id));
+  }
+
   if (auto custom_chain = GetCustomChain(chain_id, coin)) {
     return GetActiveEndpointUrl(*custom_chain);
-  } else if (auto known_chain = GetKnownChain(chain_id, coin)) {
+  }
+
+  if (auto known_chain = GetKnownChain(chain_id, coin)) {
     return GetActiveEndpointUrl(*known_chain);
   }
   return GURL();
@@ -1207,6 +1214,16 @@ bool NetworkManager::SetCurrentChainId(mojom::CoinType coin,
     }
   }
   return true;
+}
+
+void NetworkManager::SetNetworkURLForTesting(const std::string& chain_id,
+                                             GURL url) {
+  CHECK_IS_TEST();
+  if (url.is_valid()) {
+    network_url_for_testing_[chain_id] = std::move(url);
+  } else {
+    network_url_for_testing_.erase(chain_id);
+  }
 }
 
 }  // namespace brave_wallet

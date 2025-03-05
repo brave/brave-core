@@ -79,4 +79,29 @@ TEST(CardanoHDKeyringUnitTest, TestVectors2) {
       "w96paj");
 }
 
+TEST(CardanoHDKeyringUnitTest, TestVectorsAbandon24) {
+  // Full zeros entropy of 24-words 'abandon abandon ... abandon art' mnemonic.
+  std::array<uint8_t, 32> entropy = {};
+
+  CardanoHDKeyring mainnet_keyring(base::span(entropy), kCardanoMainnet);
+  EXPECT_EQ(
+      mainnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0))
+          ->address_string,
+      "addr"
+      "1qy"
+      "qt0pru382hy9vjlsxv3ye02z50sfvt8xunscg5pgden77z"
+      "73dpdfng2ctw2ekqplqgrljelz7h4dneac27nn3qx3rqrh"
+      "qvwd");
+
+  CardanoHDKeyring testnet_keyring(base::span(entropy), kCardanoTestnet);
+  EXPECT_EQ(
+      testnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0))
+          ->address_string,
+      "addr_test"
+      "1qq"
+      "qt0pru382hy9vjlsxv3ye02z50sfvt8xunscg5pgden77z"
+      "73dpdfng2ctw2ekqplqgrljelz7h4dneac27nn3qx3rqqp"
+      "avzj");
+}
+
 }  // namespace brave_wallet
