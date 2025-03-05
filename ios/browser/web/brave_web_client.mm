@@ -30,9 +30,8 @@ BraveWebClient::BraveWebClient() {}
 
 BraveWebClient::~BraveWebClient() {}
 
-std::unique_ptr<web::WebMainParts> BraveWebClient::CreateWebMainParts() {
-  return std::make_unique<BraveWebMainParts>(
-      *base::CommandLine::ForCurrentProcess());
+void BraveWebClient::SetLegacyUserAgent(const std::string& user_agent) {
+  legacy_user_agent_ = user_agent;
 }
 
 std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
@@ -42,27 +41,29 @@ std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
   return ChromeWebClient::GetUserAgent(type);
 }
 
+// WebClient implementation
+
+std::unique_ptr<web::WebMainParts> BraveWebClient::CreateWebMainParts() {
+  return std::make_unique<BraveWebMainParts>(
+      *base::CommandLine::ForCurrentProcess());
+}
+
 void BraveWebClient::AddAdditionalSchemes(Schemes* schemes) const {
   ChromeWebClient::AddAdditionalSchemes(schemes);
 
   schemes->standard_schemes.push_back(kBraveUIScheme);
   schemes->secure_schemes.push_back(kBraveUIScheme);
+
+  schemes->standard_schemes.push_back(kChromeUIUntrustedScheme);
+  schemes->secure_schemes.push_back(kChromeUIUntrustedScheme);
 }
 
 bool BraveWebClient::IsAppSpecificURL(const GURL& url) const {
   // temporarily add `internal://` scheme handling until those pages can be
   // ported to WebUI
   return ChromeWebClient::IsAppSpecificURL(url) ||
-         url.SchemeIs(kBraveUIScheme) || url.SchemeIs("internal");
-}
-
-bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
-  if (url->SchemeIs(kBraveUIScheme)) {
-    GURL::Replacements replacements;
-    replacements.SetSchemeStr(kChromeUIScheme);
-    *url = url->ReplaceComponents(replacements);
-  }
-  return false;
+         url.SchemeIs(kBraveUIScheme) ||
+         url.SchemeIs(kChromeUIUntrustedScheme) || url.SchemeIs("internal");
 }
 
 std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
@@ -75,12 +76,6 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
   return features;
 }
 
-void BraveWebClient::PostBrowserURLRewriterCreation(
-    web::BrowserURLRewriter* rewriter) {
-  rewriter->AddURLRewriter(&WillHandleBraveURLRedirect);
-  ChromeWebClient::PostBrowserURLRewriterCreation(rewriter);
-}
-
 bool BraveWebClient::EnableLongPressUIContextMenu() const {
   return CWVWebView.chromeContextMenuEnabled;
 }
@@ -90,6 +85,17 @@ bool BraveWebClient::EnableWebInspector(
   return CWVWebView.webInspectorEnabled;
 }
 
-void BraveWebClient::SetLegacyUserAgent(const std::string& user_agent) {
-  legacy_user_agent_ = user_agent;
+bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
+  if (url->SchemeIs(kBraveUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(kChromeUIScheme);
+    *url = url->ReplaceComponents(replacements);
+  }
+  return false;
+}
+
+void BraveWebClient::PostBrowserURLRewriterCreation(
+    web::BrowserURLRewriter* rewriter) {
+  rewriter->AddURLRewriter(&WillHandleBraveURLRedirect);
+  ChromeWebClient::PostBrowserURLRewriterCreation(rewriter);
 }
