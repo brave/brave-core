@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/anyhow/v1/BUILD.gn b/third_party/rust/anyhow/v1/BUILD.gn
-index 32bbd3ff85e5bb395f1349e3f85e818651cd6614..2b2566cfd5dcb3c75eef01b42e8e3897eeb64fda 100644
+index 7e28cc89cce75ca0e193471dd81548b490302542..9eced79d500e54c5f9e9225267668129707c2904 100644
 --- a/third_party/rust/anyhow/v1/BUILD.gn
 +++ b/third_party/rust/anyhow/v1/BUILD.gn
-@@ -51,5 +51,4 @@ cargo_crate("lib") {
+@@ -52,5 +52,4 @@ cargo_crate("lib") {
      "--cap-lints=allow",  # Suppress all warnings in crates.io crates
    ]
  

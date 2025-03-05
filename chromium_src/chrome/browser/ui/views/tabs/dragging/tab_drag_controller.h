@@ -31,16 +31,11 @@ using TabDragControllerBrave = TabDragController;
   virtual views::Widget* GetAttachedBrowserWidget
 #define GetLocalProcessWindow virtual GetLocalProcessWindow
 #define DetachAndAttachToNewContext virtual DetachAndAttachToNewContext
-#define CalculateNonMaximizedDraggedBrowserBounds \
-  virtual CalculateNonMaximizedDraggedBrowserBounds
-#define CalculateDraggedBrowserBounds virtual CalculateDraggedBrowserBounds
 #define ContinueDragging virtual ContinueDragging
 
 #include "src/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"  // IWYU pragma: export
 
 #undef ContinueDragging
-#undef CalculateDraggedBrowserBounds
-#undef CalculateNonMaximizedDraggedBrowserBounds
 #undef DetachAndAttachToNewContext
 #undef GetLocalProcessWindow
 #undef GetAttachedBrowserWidget

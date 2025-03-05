@@ -17,8 +17,7 @@ namespace syncer {
 class BraveSyncAuthManager : public SyncAuthManager {
  public:
   BraveSyncAuthManager(signin::IdentityManager* identity_manager,
-                       const AccountStateChangedCallback& account_state_changed,
-                       const CredentialsChangedCallback& credentials_changed);
+                       SyncAuthManager::Delegate* delegate);
   BraveSyncAuthManager(const BraveSyncAuthManager&) = delete;
   BraveSyncAuthManager& operator=(const BraveSyncAuthManager&) = delete;
   ~BraveSyncAuthManager() override;

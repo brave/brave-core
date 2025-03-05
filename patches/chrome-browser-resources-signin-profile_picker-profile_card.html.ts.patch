@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_card.html.ts b/chrome/browser/resources/signin/profile_picker/profile_card.html.ts
-index 8fcf1023fc7ce94f39314cddbecbdbd92505ca5d..b43a8a6e0dde60ac49222f15b6d6e236d1378788 100644
+index 1aaf591af5d51f3268fdf1413592cb95c3a60066..286c6db5fc27b75e9db2fbe3ebeacbd5f9950cdc 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_card.html.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_card.html.ts
 @@ -10,7 +10,7 @@ import {isGlicVersion} from './profile_picker_flags.js';

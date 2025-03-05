@@ -171,7 +171,7 @@ void BraveBrowserProcessImpl::Init() {
     local_state()->ClearPref(prefs::kSuppressUnsupportedOSWarning);
   }
 
-  brave::PrepareSearchSuggestionsConfig(local_state(),
+  brave::PrepareSearchSuggestionsConfig(*local_state(),
                                         first_run::IsChromeFirstRun());
 #endif
 }

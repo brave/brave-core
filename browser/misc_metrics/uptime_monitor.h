@@ -14,13 +14,11 @@
 class PrefService;
 class PrefRegistrySimple;
 
-#if !BUILDFLAG(IS_ANDROID)
-namespace resource_coordinator {
-class UsageClock;
-}  // namespace resource_coordinator
-#endif
-
 namespace misc_metrics {
+
+#if !BUILDFLAG(IS_ANDROID)
+class UsageClock;
+#endif
 
 inline constexpr char kBrowserOpenTimeHistogramName[] =
     "Brave.Uptime.BrowserOpenTime.2";
@@ -54,7 +52,7 @@ class UptimeMonitor {
   raw_ptr<PrefService> local_state_;
 
 #if !BUILDFLAG(IS_ANDROID)
-  std::unique_ptr<resource_coordinator::UsageClock> usage_clock_;
+  std::unique_ptr<UsageClock> usage_clock_;
 
   base::TimeDelta current_total_usage_;
   base::RepeatingTimer timer_;

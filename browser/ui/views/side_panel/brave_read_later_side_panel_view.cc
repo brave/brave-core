@@ -62,7 +62,7 @@ class ReadLaterSidePanelHeaderView : public views::View {
         AddChildView(std::make_unique<views::Label>(l10n_util::GetStringUTF16(
             IDS_SIDEBAR_READING_LIST_PANEL_HEADER_TITLE)));
     header_label->SetFontList(gfx::FontList("Poppins, Semi-Bold 16px"));
-    header_label->SetEnabledColorId(kColorSidebarPanelHeaderTitle);
+    header_label->SetEnabledColor(kColorSidebarPanelHeaderTitle);
     header_label->SetAutoColorReadabilityEnabled(false);
 
     AddChildView(std::make_unique<views::View>())

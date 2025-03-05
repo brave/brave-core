@@ -69,8 +69,6 @@ BraveTooltipPopup::BraveTooltipPopup(std::unique_ptr<BraveTooltip> tooltip)
   GetViewAccessibility().SetRoleDescription(l10n_util::GetStringUTF8(
       IDS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_ACCESSIBLE_NAME));
 
-  NotifyAccessibilityEvent(ax::mojom::Event::kAlert, true);
-
   display::Screen* screen = display::Screen::GetScreen();
   if (screen) {
     screen->AddObserver(this);
