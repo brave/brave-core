@@ -3,7 +3,6 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
-import BraveShields
 import CertificateUtilities
 import Data
 import Foundation
@@ -13,20 +12,16 @@ import WebKit
 import os.log
 
 extension BrowserViewController: WKNavigationDelegate {
-  public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!)
-  {
+  public func webView(
+    _ webView: WKWebView,
+    didStartProvisionalNavigation navigation: WKNavigation
+  ) {
     guard let tab = tabManager[webView] else { return }
     self.tabDidStartWebViewNavigation(tab)
   }
 
-  private func defaultAllowPolicy(
-    for navigationAction: WKNavigationAction
-  ) -> WKNavigationActionPolicy {
-    let isPrivateBrowsing = tabManager.privateBrowsingManager.isPrivateBrowsing
-    if shouldBlockUniversalLinksFor(
-      request: navigationAction.request,
-      isPrivateBrowsing: isPrivateBrowsing
-    ) {
+  private func defaultAllowPolicy(for tab: Tab, request: URLRequest) -> WKNavigationActionPolicy {
+    if self.tab(tab, shouldBlockUniversalLinksForRequest: request) {
       // Stop Brave from opening universal links by using the private enum value
       // `_WKNavigationActionPolicyAllowWithoutTryingAppLink` which is defined here:
       // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/Cocoa/WKNavigationDelegatePrivate.h#L62
@@ -94,6 +89,8 @@ extension BrowserViewController: WKNavigationDelegate {
       return (.cancel, preferences)
     }
 
+    self.shouldDownloadNavigationResponse = false
+
     if ["http", "https", "data", "blob", "file"].contains(requestURL.scheme) {
       // Handle updating the user agent
       if navigationAction.targetFrame?.isMainFrame == true {
@@ -101,33 +98,25 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       // Handle blocking JS
-      let documentTargetURL = navigationAction.request.mainDocumentURL ?? requestURL
-      let domainForShields = Domain.getOrCreate(
-        forUrl: documentTargetURL,
-        persistent: !privateBrowsingManager.isPrivateBrowsing
-      )
-      let isScriptsEnabled = !domainForShields.isShieldExpected(
-        .noScript,
-        considerAllShieldsOption: true
-      )
-
-      // Due to a bug in iOS WKWebpagePreferences.allowsContentJavaScript does NOT work!
-      // https://github.com/brave/brave-ios/issues/8585
-      //
-      // However, the deprecated API WKWebViewConfiguration.preferences.javaScriptEnabled DOES work!
-      // Even though `configuration` is @NSCopying, somehow this actually updates the preferences LIVE!!
-      // This follows the same behaviour as Safari
-      //
-      // - Brandon T.
-      //
-      preferences.allowsContentJavaScript = isScriptsEnabled
-      webView.configuration.preferences.javaScriptEnabled = isScriptsEnabled
+      if self.tab(tab, shouldBlockJavaScriptForRequest: navigationAction.request) {
+        // Due to a bug in iOS WKWebpagePreferences.allowsContentJavaScript does NOT work!
+        // https://github.com/brave/brave-ios/issues/8585
+        //
+        // However, the deprecated API WKWebViewConfiguration.preferences.javaScriptEnabled DOES work!
+        // Even though `configuration` is @NSCopying, somehow this actually updates the preferences LIVE!!
+        // This follows the same behaviour as Safari
+        //
+        // - Brandon T.
+        //
+        preferences.allowsContentJavaScript = false
+        webView.configuration.preferences.javaScriptEnabled = false
+      }
 
       // Downloads
       self.shouldDownloadNavigationResponse = navigationAction.shouldPerformDownload
     }
 
-    return (defaultAllowPolicy(for: navigationAction), preferences)
+    return (defaultAllowPolicy(for: tab, request: navigationAction.request), preferences)
   }
 
   @MainActor
@@ -136,79 +125,33 @@ extension BrowserViewController: WKNavigationDelegate {
     decidePolicyFor navigationResponse: WKNavigationResponse
   ) async -> WKNavigationResponsePolicy {
     guard let tab = tabManager[webView] else { return .cancel }
-    let responseURL = navigationResponse.response.url
-    let request = responseURL.flatMap { pendingRequests[$0.absoluteString] }
     let response = navigationResponse.response
-    defer {
-      if let responseURL {
-        pendingRequests.removeValue(forKey: responseURL.absoluteString)
+
+    let shouldRenderResponse: Bool = {
+      if !navigationResponse.canShowMIMEType {
+        return false
       }
-    }
-    let decision: WebPolicyDecision = await self.tab(
-      tab,
-      shouldAllowResponse: navigationResponse.response,
-      responseInfo: .init(isForMainFrame: navigationResponse.isForMainFrame)
-    )
-
-    if decision == .cancel {
-      return .cancel
-    }
-
-    /// WebKit Download handling
-
-    // We can only show this content in the web view if this web view is not pending
-    // download via the context menu.
-    let canShowInWebView = navigationResponse.canShowMIMEType
-
-    // If the response has the attachment content-disposition, download it
-    let mimeType = response.mimeType ?? MIMEType.octetStream
-    let isAttachment =
-      (response as? HTTPURLResponse)?.value(
+      if shouldDownloadNavigationResponse {
+        return false
+      }
+      let mimeType = response.mimeType ?? MIMEType.octetStream
+      if let contentDisposition = (response as? HTTPURLResponse)?.value(
         forHTTPHeaderField: "Content-Disposition"
-      )?.starts(with: "attachment") ?? (mimeType == MIMEType.octetStream)
-
-    if isAttachment {
-      return .download
-    }
-
-    if [MIMEType.passbook, MIMEType.passbookBundle].contains(response.mimeType) {
-      return .download
-    }
-
-    // Check if this response should be handed off to Passbook.
-    if shouldDownloadNavigationResponse {
-      shouldDownloadNavigationResponse = false
-      return .download
-    }
-
-    if canShowInWebView {
-      return .allow
-    }
-
-    // Check if this response should be downloaded.
-    let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
-    if let downloadHelper = DownloadHelper(
-      request: request,
-      response: response,
-      cookieStore: cookieStore,
-      canShowInWebView: canShowInWebView
-    ) {
-      let downloadAlertAction: (HTTPDownload) -> Void = { [weak self] download in
-        self?.downloadQueue.enqueue(download)
+      ), contentDisposition.starts(with: "attachment") {
+        return false
       }
+      return mimeType != MIMEType.octetStream
+    }()
 
-      // Open our helper and cancel this response from the webview.
-      if tab === tabManager.selectedTab,
-        let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction)
-      {
-        present(downloadAlert, animated: true, completion: nil)
-      }
-
-      return .cancel
+    if shouldRenderResponse {
+      let decision: WebPolicyDecision = await self.tab(
+        tab,
+        shouldAllowResponse: navigationResponse.response,
+        responseInfo: .init(isForMainFrame: navigationResponse.isForMainFrame)
+      )
+      return decision == .cancel ? .cancel : .allow
     }
 
-    // If none of our helpers are responsible for handling this response,
-    // just let the webview handle it as normal.
     return .download
   }
 
@@ -390,25 +333,7 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-      // Check for invalid upgrade to https
-      if url.scheme == "https",  // verify failing url was https
-        let response = handleInvalidHTTPSUpgrade(
-          tab: tab,
-          responseURL: url
-        )
-      {
-        // load original or strict mode interstitial
-        tab.loadRequest(response)
-        return
-      }
-
       ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
-
-      // Submitting same erroneous URL using toolbar will cause progress bar get stuck
-      // Reseting the progress bar in case there is an error is necessary
-      if tab == self.tabManager.selectedTab {
-        self.topToolbar.hideProgressBar()
-      }
     }
   }
 }
@@ -422,51 +347,19 @@ extension BrowserViewController: WKUIDelegate {
     for navigationAction: WKNavigationAction,
     windowFeatures: WKWindowFeatures
   ) -> WKWebView? {
-    guard let parentTab = tabManager[webView] else { return nil }
-
-    guard !navigationAction.request.isInternalUnprivileged,
-      let navigationURL = navigationAction.request.url,
-      navigationURL.shouldRequestBeOpenedAsPopup()
-    else {
-      print("Denying popup from request: \(navigationAction.request)")
-      return nil
-    }
-
-    if let currentTab = tabManager.selectedTab {
-      screenshotHelper.takeScreenshot(currentTab)
-    }
-
-    // If the page uses `window.open()` or `[target="_blank"]`, open the page in a new tab.
-    // IMPORTANT!!: WebKit will perform the `URLRequest` automatically!! Attempting to do
-    // the request here manually leads to incorrect results!!
-    let newTab = tabManager.addPopupForParentTab(parentTab, configuration: configuration)
-
-    newTab.setVirtualURL(URL(string: "about:blank"))
-
-    toolbarVisibilityViewModel.toolbarState = .expanded
-
-    // Wait until WebKit starts the request before selecting the new tab, otherwise the tab manager may
-    // restore it as if it was a dead tab.
-    var observation: NSKeyValueObservation?
-    observation = newTab.webView?.observe(
-      \.url,
-      changeHandler: { [weak self] webView, _ in
-        _ = observation  // Silence write but not read warning
-        observation = nil
-        guard let self = self, let tab = self.tabManager[webView] else { return }
-
-        // When a child tab is being selected, dismiss any popups on the parent tab
-        tab.parent?.shownPromptAlert?.dismiss(animated: false)
-        self.tabManager.selectTab(tab)
-      }
-    )
-
-    return newTab.webView
+    guard let tab = tabManager[webView],
+      let childTab = self.tab(
+        tab,
+        createNewTabWithRequest: navigationAction.request,
+        configuration: configuration
+      )
+    else { return nil }
+    return childTab.webView
   }
 
   public func webViewDidClose(_ webView: WKWebView) {
     guard let tab = tabManager[webView] else { return }
-    tabWebViewDidClose(tab)
+    self.tabWebViewDidClose(tab)
   }
 
   public func webView(
@@ -574,70 +467,6 @@ extension BrowserViewController: WKUIDelegate {
   ) {
     guard let url = elementInfo.linkURL else { return }
     webView.load(URLRequest(url: url))
-  }
-}
-
-extension BrowserViewController {
-  /// Determines if the given url should be upgraded from http to https.
-  func shouldUpgradeToHttps(url: URL, isPrivate: Bool) -> Bool {
-    guard FeatureList.kBraveHttpsByDefault.enabled,
-      let httpUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: isPrivate),
-      url.scheme == "http", let host = url.host
-    else {
-      return false
-    }
-    let isInUserAllowList = httpUpgradeService.isHttpAllowed(forHost: host)
-    let shouldUpgrade: Bool
-    switch ShieldPreferences.httpsUpgradeLevel {
-    case .strict:
-      // Always upgrade for Strict HTTPS upgrade unless previously allowed by user.
-      shouldUpgrade = !isInUserAllowList
-    case .standard:
-      // Upgrade for Standard HTTPS upgrade if host is not on the exceptions list and not previously allowed by user.
-      shouldUpgrade =
-        braveCore.httpsUpgradeExceptionsService.canUpgradeToHTTPS(for: url)
-        && !isInUserAllowList
-    case .disabled:
-      shouldUpgrade = false
-    }
-    return shouldUpgrade
-  }
-
-  /// Upon an invalid response, check that we need to roll back any HTTPS upgrade
-  /// or show the interstitial page
-  func handleInvalidHTTPSUpgrade(tab: Tab, responseURL: URL) -> URLRequest? {
-    // Handle invalid upgrade to https
-    guard let originalRequest = tab.upgradedHTTPSRequest,
-      let originalURL = originalRequest.url,
-      responseURL.baseDomain == originalURL.baseDomain
-    else {
-      return nil
-    }
-
-    if ShieldPreferences.httpsUpgradeLevel.isStrict,
-      let url = originalURL.encodeEmbeddedInternalURL(for: .httpBlocked)
-    {
-      Logger.module.debug(
-        "Show http blocked interstitial for `\(originalURL.absoluteString)`"
-      )
-
-      let request = PrivilegedRequest(url: url) as URLRequest
-      return request
-    } else {
-      Logger.module.debug(
-        "Revert HTTPS upgrade for `\(originalURL.absoluteString)`"
-      )
-
-      tab.upgradedHTTPSRequest = nil
-      tab.upgradeHTTPSTimeoutTimer?.invalidate()
-      tab.upgradeHTTPSTimeoutTimer = nil
-      if let httpsUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: tab.isPrivate),
-        let host = originalURL.host
-      {
-        httpsUpgradeService.allowHttp(forHost: host)
-      }
-      return originalRequest
-    }
   }
 }
 
