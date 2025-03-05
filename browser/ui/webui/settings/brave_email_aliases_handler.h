@@ -12,15 +12,17 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/browser/webui_config.h"
-#include "content/public/common/url_constants.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 
 class GURL;
 class Profile;
+
+using BodyAsStringCallback =
+    base::OnceCallback<void(std::optional<std::string> response_body)>;
+
+namespace network {
+class SimpleURLLoader;
+}
 
 class BraveEmailAliasesHandler : public settings::SettingsPageUIHandler {
  public:
@@ -77,16 +79,13 @@ class BraveEmailAliasesHandler : public settings::SettingsPageUIHandler {
                 const char* method,
                 const std::optional<std::string>& bearer_token,
                 const base::Value::Dict& bodyValue,
-                network::SimpleURLLoader::BodyAsStringCallback
-                    download_to_string_callback);
+                BodyAsStringCallback download_to_string_callback);
 
   void SetNote(const std::string& alias_email, const std::string& note);
   void DeleteNote(const std::string& alias_email);
   std::optional<std::string> GetNote(const std::string& alias_email);
 
   raw_ptr<Profile> profile_ = nullptr;
-  std::string verification_token_;
-  std::string session_token_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
 
   base::WeakPtrFactory<BraveEmailAliasesHandler> weak_factory_{this};

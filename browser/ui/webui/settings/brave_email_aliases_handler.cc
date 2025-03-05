@@ -356,9 +356,7 @@ void BraveEmailAliasesHandler::OnGetSessionResponse(
       const auto* session_token = response_value->GetDict().Find("authToken");
       if (session_token && session_token->is_string()) {
         // Store the session token for long-term use.
-        session_token_ = session_token->GetString();
-        GetProfile()->GetPrefs()->SetString(kEmailAliasesAuthToken,
-                                            session_token->GetString());
+        SetStringPref(kEmailAliasesAuthToken, session_token->GetString());
         // Acknowledge success to the caller.
         ResolveJavascriptCallback(base::Value(callback_id), base::Value());
         return;
