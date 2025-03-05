@@ -47,16 +47,6 @@ bool IsGoogleMaps(const blink::KURL& url) {
 #undef BRAVE_GET_IMAGE_DATA
 #undef BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT
 
-namespace {
-
-bool AllowFingerprintingFromScriptState(blink::ScriptState* script_state) {
-  return brave::AllowFingerprinting(
-      blink::ExecutionContext::From(script_state),
-      ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS);
-}
-
-}  // namespace
-
 namespace blink {
 
 ImageData* BaseRenderingContext2D::getImageData(
@@ -119,42 +109,6 @@ ImageData* BaseRenderingContext2D::getImageData(
     ExceptionState& exception_state) {
   return getImageDataInternal(script_state, sx, sy, sw, sh, image_data_settings,
                               exception_state);
-}
-
-bool BaseRenderingContext2D::isPointInPath(ScriptState* script_state,
-                                           const double x,
-                                           const double y,
-                                           const V8CanvasFillRule& winding) {
-  if (!AllowFingerprintingFromScriptState(script_state))
-    return false;
-  return isPointInPath(x, y, winding);
-}
-
-bool BaseRenderingContext2D::isPointInPath(ScriptState* script_state,
-                                           Path2D* dom_path,
-                                           const double x,
-                                           const double y,
-                                           const V8CanvasFillRule& winding) {
-  if (!AllowFingerprintingFromScriptState(script_state))
-    return false;
-  return isPointInPath(dom_path, x, y, winding);
-}
-
-bool BaseRenderingContext2D::isPointInStroke(ScriptState* script_state,
-                                             const double x,
-                                             const double y) {
-  if (!AllowFingerprintingFromScriptState(script_state))
-    return false;
-  return isPointInStroke(x, y);
-}
-
-bool BaseRenderingContext2D::isPointInStroke(ScriptState* script_state,
-                                             Path2D* dom_path,
-                                             const double x,
-                                             const double y) {
-  if (!AllowFingerprintingFromScriptState(script_state))
-    return false;
-  return isPointInStroke(dom_path, x, y);
 }
 
 }  // namespace blink
