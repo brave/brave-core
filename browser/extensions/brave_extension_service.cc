@@ -45,11 +45,9 @@ void BraveExtensionService::AddComponentExtension(const Extension* extension) {
   // ContentSettingsStore::GetValueMap always returns nullptr. I don't think
   // Chromium is affected by this simply because they don't use content settings
   // from default component extensions.
-  extension_prefs_->OnExtensionInstalled(extension, Extension::ENABLED,
-                                         syncer::StringOrdinal(),
-                                         extensions::kInstallFlagNone,
-                                         std::string(),
-                                         {} /* ruleset_checksums */);
+  extension_prefs_->OnExtensionInstalled(
+      extension, /*disable_reasons=*/{}, syncer::StringOrdinal(),
+      extensions::kInstallFlagNone, std::string(), {} /* ruleset_checksums */);
   extensions::ContentSettingsService::Get(profile_)->OnExtensionPrefsLoaded(
       extension->id(), extension_prefs_);
 }
