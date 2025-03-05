@@ -1,11 +1,11 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index a9cde18492fcbe09a1a4efc8b46b6313e0554849..1309c1dfc4fd6037e88980abfe9609bc9ea28d84 100755
+index e2267c6ce7f98b4d69f65dfbc86f293fffdfa79c..ad5c1c953db71858a240734cc9c1b892f906fc0c 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
-@@ -30,6 +30,7 @@ DEFAULT_IGNORE_WARNINGS = (
-     # META-INF/. This means that all rules with a '-upto-' qualifier will be
-     # excluded and all rules with a -from- qualifier will be included.
-     r'Running R8 version main', )
+@@ -33,6 +33,7 @@ DEFAULT_IGNORE_WARNINGS = (
+     # https://issuetracker.google.com/327611582
+     r'The companion object Companion could not be found',
+ )
 +DEFAULT_IGNORE_WARNINGS += ( r'.Brave', )
  
  _MERGE_SERVICE_ENTRIES = (
