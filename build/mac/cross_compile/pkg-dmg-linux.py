@@ -105,7 +105,9 @@ def parse_args():
     parser.add_argument("--tempdir")
     parser.add_argument("--mkdir", action="append")
     parser.add_argument("--icon", help='Currently ignored.')
-    parser.add_argument("--symlink", action="append", help='Currently ignored.')
+    parser.add_argument("--symlink",
+                        action="append",
+                        help='Currently ignored.')
 
     return parser.parse_args()
 
