@@ -165,6 +165,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="not use_titlecase">
         </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="is_chromeos">
         </if>
       <if expr="is_linux">
@@ -187,7 +191,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="is_macosx">
         </if>
 
-      <if expr="enable_extensions">
+      <if expr="enable_extensions_core">
         </if>
 
       <message name="IDS_SAFETY_CHECK_EXTENSIONS_POLICY_VIOLATION" desc="The text explaining the reason for disabling extension. The extension in question violates Web Store policy.">
