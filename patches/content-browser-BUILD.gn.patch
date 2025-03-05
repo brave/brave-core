@@ -1,10 +1,10 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index 1bc1315a26668fa3550fafa22f44ae783620612b..67f0f177be280a4f20990b58f9a42bd9bc334db3 100644
+index a23f4125b0b1aae800c8d4c4573778b8632ae5f2..708cad2c414f3d2fe6338c9359c9b42ad2b22ba9 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -3647,6 +3647,7 @@ source_set("browser") {
-       "profiling_utils.cc",
-     ]
+@@ -3673,6 +3673,7 @@ source_set("browser") {
+   if (is_chromeos) {
+     deps += [ "//ash/constants:constants" ]
    }
 +  import("//brave/content/browser/sources.gni") sources += brave_content_browser_sources deps += brave_content_browser_deps
  }
