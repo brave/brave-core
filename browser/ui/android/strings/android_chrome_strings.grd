@@ -454,8 +454,8 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
 
       <!-- Address bar settings -->
-      <message name="IDS_ADDRESS_BAR_SETTINGS" desc="Title for Address Bar settings. [CHAR_LIMIT=32]">
-        Address bar
+      <message name="IDS_ADDRESS_BAR_SETTINGS" desc="Title for Address Bar settings. The NEW label is displayed until the user clicks on this menu item at least twice. [CHAR_LIMIT=32]">
+        Address bar  <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
 
       <message name="IDS_ADDRESS_BAR_SETTINGS_CURRENTLY_ON_TOP" desc="Description for Address Bar Settings image when the address bar is top-anchored.">
@@ -471,7 +471,7 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
 
       <message name="IDS_ADDRESS_BAR_SETTINGS_DESCRIPTION_FOLDABLE" desc="Label explaining how to change the address bar position on foldable devices.">
-        When your device is folded, you can choose an option or touch and hold the address bar to change the position.
+        When your device is folded, you can choose an option or touch and hold the address bar to change the position
       </message>
 
       <message name="IDS_ADDRESS_BAR_SETTINGS_TOP" desc="Title for the toggle that will show the address bar on the top. [CHAR_LIMIT=32]">
@@ -556,9 +556,6 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_BILLING_ADDRESS" desc="Label for a spinner input field containing a list of billing addresses for a credit card. [CHAR_LIMIT=32]">
         Billing address
-      </message>
-      <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_PROGRESS_BAR_MESSAGE" desc="Message shown on the progress bar after the user selects an authenticator from a list of options and proceeds.">
-        Contacting your bank\u2026
       </message>
       <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_NEGATIVE_BUTTON_LABEL" desc="Negative button label for the dialog where the user selects an authenticator from a list of options.">
         Cancel
@@ -870,17 +867,14 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_PWD_ACCESS_LOSS_NOTIFICATION_UPDATE_GMS_CORE_TEXT" desc="The text of the password access loss notification when the GMS Core version doesn't support local passwords." formatter_data="android_java">
         Passwords may stop working soon on this device. To keep using your passwords, update Google Play services.
       </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_TITLE" desc="The title of the password migration warning sheet.">
-        We’re changing how passwords are saved on this device
+      <message name="IDS_SOME_PASSWORDS_ARE_NOT_ACCESSIBLE_SUBTITLE" desc="Subtitle shown under the Brave Password Manager entry point, when the password manager is available for the user, but they have unmigrated passwords left behind in Brave.">
+        Some of your passwords aren’t accessible
       </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_SUBTITLE" desc="The subtitle of the password migration warning sheet." formatter_data="android_java">
-        Right now, passwords saved on this device cannot be used across Brave channels. After Brave 125, passwords saved on your device for Brave and <ph name="CHROME_CHANNEL">%1$s<ex>Brave Dev</ex></ph> will be merged and can be used in both apps.
+      <message name="IDS_GPM_STOPPED_WORKING_SUBTITLE" desc="Subtitle shown under the Brave Password Manager entry point, when the password manager is not available for the user. Among other reasons, this can happen when Google Play services is not updated.">
+        Stopped working on this device
       </message>
       <message name="IDS_PASSWORD_MIGRATION_WARNING_ACKNOWLEDGE" desc="The text on the button that acknowledges the password migration warning.">
         Got it
-      </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_OTHER_OPTIONS" desc="The text on the button that leads to other options in the password migration warning sheet.">
-        Other options
       </message>
       <message name="IDS_PASSWORD_MIGRATION_WARNING_CONTENT_DESCRIPTION" desc="Accessibility string read when the password migration warning sheet opens." formatter_data="android_java">
         Brave Password Manager update
@@ -894,23 +888,38 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_PWD_ACCESS_LOSS_WARNING_CLOSED" desc="Accessibility string read when the password access loss warning sheet closes.">
         Brave Password Manager update closed
       </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_TURN_ON_SYNC" desc="The text that describes the option to start syncing that is offered in the password migration warning sheet.">
-        Save the passwords on this device in your Brave sync chain by turning on sync
+      <message name="IDS_PWM_DISABLED_NO_GMS_DIALOG_TITLE" desc="Title for the dialog shown to users without saved passwords for whom the password manager is unavailble because they don't have Google Play services.">
+        Brave Password Manager stopped working
       </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_TURN_ON_SYNC_SUBTITLE" desc="The subtitle that appears under the option to turn on sync in the password migration warning sheet if the user is not signed in.">
-        You’ll be asked to sign in to your Brave sync chain
+      <message name="IDS_PWM_DISABLED_NO_GMS_DIALOG_DESCRIPTION_PARAGRAPH1" desc="First paragraph of the description text for the dialog shown to users without saved passwords for whom the password manager is unavailble because they don't have access to Google Play services.">
+        You don’t have passwords saved in Brave Password Manager.
       </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_PASSWORD_EXPORT" desc="The text that describes the option to export the passwords that is offered in the password migration warning sheet.">
-        Export &amp; delete passwords saved to this device
+      <message name="IDS_PWM_DISABLED_NO_GMS_DIALOG_DESCRIPTION_PARAGRAPH2" desc="Second paragraph of the description text for dialog shown to users without saved passowrds for whom the password manager is unavailble because they don't have access to Google Play services.">
+        If you previously exported passwords, look for a CSV file on your device and import them to your preferred password manager.
       </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_PASSWORD_EXPORT_SUBTITLE" desc="The subtitle that explaint the password export option in the password migration warning sheet.">
-        All passwords will be downloaded on your device and removed from <ph name="CHROME_CHANNEL">%1$s<ex>Brave Dev</ex></ph>
+      <message name="IDS_PWM_DISABLED_NO_GMS_DIALOG_BUTTON_TEXT" desc="Button text for dialog shown to users without saved passowrds for whom the password manager is unavailble because they don't have access to Google Play services.">
+        Got it
       </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_NEXT" desc="The text for the next button in the password migration warning sheet. It starts one of the flows offered on the sheet.">
-        Next
+      <message name="IDS_PWM_DISABLED_UPDATE_DIALOG_DESCRIPTION" desc="Description text for the dialog shown to users without saved passwords for whom the password manager is unavailble because the Google Play services version installed is outdated.">
+        To start saving and using passwords with Brave Password Manager, update Google Play services.
       </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_CANCEL" desc="The text for the cancel button in the password migration warning sheet. It closes the sheet">
-        Cancel
+      <message name="IDS_PWM_DISABLED_UPDATE_DIALOG_CANCEL" desc="Button used to dimsiss the dialog shown to users without saved passwords who need to update Google Play services to regain access to the password manager.">
+       Cancel
+      </message>
+      <message name="IDS_KEEP_ACCESS_TO_YOUR_PASSWORDS_DIALOG_TITLE" desc="Title for a dialog shown to users when they have unmigrated passwords left over in Brave after Brave's storage has been deprecated">
+        Keep access to you passwords
+      </message>
+      <message name="IDS_CSV_DOWNLOAD_DIALOG_WITH_GMS_PARAGRAPH1" desc="First paragraph of the description in the dialog shown to users when they have unmigrated passwords left over in Brave after Brave's storage has been deprecated. This text is shown to users who have Google Play Services on the device.">
+        To keep access to your passwords, export them now, update Google Play Services, and then import them back to Brave Password Manager. <ph name="BEGIN_LINK">&lt;link&gt;</ph>See full instructions<ph name="END_LINK">&lt;/link&gt;</ph>.
+      </message>
+      <message name="IDS_CSV_DOWNLOAD_DIALOG_PARAGRAPH2" desc="Second paragraph of the description in the dialog shown to users when they have unmigrated passwords left over in Brave after Brave's storage has been deprecated">
+        The exported file may be accessible to others, including apps. Once you export, your passwords are deleted from Brave.
+      </message>
+      <message name="IDS_CSV_DOWNLOAD_DIALOG_NO_GMS_PARAGRAPH1" desc="First paragraph of the description in the dialog shown to users when they have unmigrated passwords left over in Brave after Brave's storage has been deprecated. This text is shown to users who don't have Google Play Services.">
+        To keep access to your passwords, export them now and then import them to your preferred password manager. Brave Password Manager stopped working because Google Play services isn’t available.
+      </message>
+      <message name="IDS_CSV_DOWNLOAD_DIALOG_POSITIVE_BUTTON_TEXT" desc="The text for the dialog button through which users can initiate password export. The dilog is shown to users who have unmigrated passwords left over in Brave after Brave's storage has been deprecated.">
+        Export passwords
       </message>
       <message name="IDS_POST_PASSWORD_MIGRATION_SHEET_TITLE" desc="The title of the post password migration sheet that informs the user that the migration happened." formatter_data="android_java">
         We changed how passwords are saved on this device
@@ -1065,6 +1074,11 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <!-- Notifications preferences -->
       <message name="IDS_PREFS_NOTIFICATIONS" desc="Title for Notification preferences.">
         Notifications
+      </message>
+
+      <!-- Appearance settings -->
+      <message name="IDS_APPEARANCE_SETTINGS" desc="Title for Appearance settings.">
+        Appearance
       </message>
 
       <!-- Themes settings -->
@@ -1794,6 +1808,14 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_HUB_VIEW_SITES_BUTTON" desc="Text found on the secondary button of the revoked permissions and notifications module warning state. When clicked it will open a subpage where the user can review notifications or revoked permissions.">
         View sites
       </message>
+      <message name="IDS_SAFETY_HUB_LOCAL_PASSWORDS_CHECKING_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the check is in progress.">
+        Checking passwords on this device…
+      </message>
+      <message name="IDS_SAFETY_HUB_LOCAL_PASSWORDS_COMPROMISED_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the user has local passwords which have been compromised.">
+        {NUM_PASSWORDS, plural,
+        =1 {1 compromised password on this device}
+        other {# compromised passwords on this device}}
+      </message>
       <message name="IDS_SAFETY_HUB_PASSWORDS_NAVIGATION_BUTTON" desc="Text for the button in the password check row in the Safety Check page indicating that upon clicking on it, the user will be redirected to the Brave password manager.">
         Go to Password Manager
       </message>
@@ -1842,8 +1864,17 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_HUB_CHECKED_RECENTLY" desc="Subtitle for the card at the very top of the Safety Check page, this informs the user that Safety Check has ran checkups for modules recently.">
         Checked recently
       </message>
+      <message name="IDS_SAFETY_HUB_NO_COMPROMISED_LOCAL_PASSWORDS_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the checkup did not find any local compromised passwords.">
+        No compromised passwords on this device
+      </message>
+      <message name="IDS_SAFETY_HUB_NO_COMPROMISED_LOCAL_PASSWORDS_SUMMARY" desc="Summary for the local password check row in the Safety Check page indicating that the checkup didn't find any compromised local passwords">
+        If your passwords are compromised, we’ll let you know
+      </message>
       <message name="IDS_SAFETY_HUB_NO_PASSWORDS_TITLE" desc="Title for the password check row in the Safety Check page indicating that the user does not have any passwords saved to their Brave account.">
         No saved passwords
+      </message>
+      <message name="IDS_SAFETY_HUB_NO_LOCAL_PASSWORDS_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the user does not have any local passwords saved.">
+        No saved passwords on this device
       </message>
       <message name="IDS_SAFETY_HUB_NO_COMPROMISED_PASSWORDS_TITLE" desc="Title for the password check row in the Safety Check page indicating that the checkup did not find any compromised passwords.">
         No compromised passwords
@@ -1883,6 +1914,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_HUB_PASSWORD_CHECK_UNAVAILABLE_TITLE" desc="Title for the password check row in the Safety Check page indicating that the password checkup could not be completed.">
         Can't check passwords
       </message>
+      <message name="IDS_SAFETY_HUB_LOCAL_PASSWORD_CHECK_UNAVAILABLE_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the local password checkup could not be completed.">
+        Can’t check passwords on this device
+      </message>
       <message name="IDS_SAFETY_HUB_UNAVAILABLE_SUMMARY" desc="Summary for the rows in the Safety Check page indicating that the checkup for the specific module could not be run at this time and to check again later.">
         Try again later
       </message>
@@ -1900,6 +1934,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_SAFETY_HUB_REUSED_WEAK_PASSWORDS_TITLE" desc="Title for the password hub row in the Safety Check page indicating that the checkup found reused or/and weak passwords.">
         Strengthen your passwords
+      </message>
+      <message name="IDS_SAFETY_HUB_REUSED_WEAK_LOCAL_PASSWORDS_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the checkup found reused or/and weak local passwords.">
+        Strengthen your passwords on this device
       </message>
       <message name="IDS_SAFETY_HUB_WEAK_PASSWORDS_SUMMARY" desc="Summary for the password hub row in the Safety Check page indicating that the checkup found weak passwords and that the user should improve them.">
         {NUM_PASSWORDS, plural,
@@ -2935,15 +2972,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_TOOLBAR_BTN_MENU" desc="Content description for the settings menu button in the Tab Switcher Toolbar.">
         Manage open tabs
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB" desc="Content description for the tab title.">
-        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, tab
-      </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_NOTIFICATION" desc="Content description for the tab title with a notification status.">
-        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, new or updated tab
-      </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_CLOSE_TAB" desc="Content description for the close tab button.">
-        Close <ph name="TAB_TITLE">%1$s<ex>Brave</ex></ph> tab
-      </message>
       <message name="IDS_TAB_LOADING_DEFAULT_TITLE" desc="The title of a tab when we are still waiting for either the URL or the real title. This generally shows when the page is first loading.">
         Loading…
       </message>
@@ -3864,6 +3892,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS" desc="This string is the body of a card that appears when the user opens Brave's recent tabs. The user may be signed in to Brave, but has not opted in for syncing History and Tabs. This message means that the user can see some of their recent tabs from their computer on their phone, and their phone's recent tabs on their computer once opted in history and tabs syncing. We want users to read this card and tap the 'Turn on' button and turn on History and Tabs syncing. The tone should be inviting. There's no character limit but try to keep the translation under 120 characters.">
         To see tabs from your other devices, sync your tabs and history
       </message>
+      <message name="IDS_SIGNIN_PROMO_TITLE_HISTORY_PAGE" desc="This string is the headline of a card that appears when the user opens Brave's history page. The user is signed in to Brave, but has not opted in for syncing History and Tabs. We want users to read this card and tap the button below to turn on history and tabs syncing. The tone should be inviting. [CHAR_LIMIT=70]">
+        See your history on other devices
+      </message>
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_HISTORY_PAGE" desc="This string is the body of a card that appears when the user opens Brave's history page. The user is signed in to Brave, but has not opted in for syncing History and Tabs. We want users to read this card and tap the button below to turn on History and Tabs syncing. The tone should be inviting. There's no character limit but try to keep the translation under 120 characters.">
+        To easily pick up where you left off, sync your history and tabs
+      </message>
       <message name="IDS_SIGNIN_PROMO_CHOOSE_ANOTHER_ACCOUNT" desc="Button that the user can press if they want to select a different account before signing in. This button is shown below 'Continue as Joe Doe' button that signs user in with default account.">
         Choose another account
       </message>
@@ -4279,6 +4313,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new Private tab that facilitates pseudononymous browsing. [CHAR_LIMIT=27]" meaning="Android menu">
         New Private tab
       </message>
+      <message name="IDS_ACCESSIBILITY_INCOGNITO_TAB" desc="Content description for tabs that are in Private mode">
+        Private Tab
+      </message>
       <message name="IDS_MENU_BOOKMARKS" desc="Menu item for opening the bookmarks page that contains all the user's bookmarks. [CHAR_LIMIT=27]">
         Bookmarks
       </message>
@@ -4338,6 +4375,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_SETTINGS" desc="Menu item for opening browser settings. [CHAR_LIMIT=27]">
         Settings
+      </message>
+      <message name="IDS_MENU_NTP_CUSTOMIZATION" desc="Option in item menu. User can click the 'Customize new tab page' option to open the 'Customize your new tab page' bottom sheet. [CHAR_LIMIT=27]">
+        Customize new tab page
       </message>
       <message name="IDS_MENU_SETTINGS_ACCOUNT_ERROR" desc="Accessibility string for settings menu item with a badge on the icon in case of sync/identity error.">
         Settings, Brave sync chain error
@@ -4485,6 +4525,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_BOOKMARK_BAR_ALL_BOOKMARKS_BUTTON_TITLE" desc="The title for the 'All Bookmarks' button in the bookmark bar.">
         All Bookmarks
+      </message>
+      <message name="IDS_BOOKMARK_BAR_OVERFLOW_BUTTON_CONTENT_DESCRIPTION" desc="The content description for the bookmark bar overflow button.">
+        Bookmark bar overflow button
       </message>
 
       <!-- Power bookmarks strings -->
@@ -4814,6 +4857,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
 
       <!-- Accessibility -->
 
+      <!-- Accessibility strings for toolbar -->
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MENU_UPDATE" desc="Content description for the menu button when it is covered by the update icon that is displayed when a newer version of Brave is available.">
         Update available. More options
       </message>
@@ -4887,30 +4931,48 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_FIND_TOOLBAR_BTN_PREV" desc="Content description for the button to go to the previous find in page result.">
         Previous
       </message>
+
+      <!-- Accessibility strings for tablet tab strip -->
       <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_STANDARD" desc="Content description for the Private tabs toggle button when viewing standard tabs.">
         Enter Private mode
       </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_INCOGNITO" desc="Content description for the Private tabs toggle button when viewing Private tabs.">
         Leave Private mode
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_GROUP_IDENTIFIER_MULTIPLE_TABS" desc="Content description for group identifiers with multiple tabs.">
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_GROUP_MULTIPLE_TABS" desc="Content description for tab group with multiple tabs.">
         <ph name="WEBSITE_TITLE">%1$s<ex>Crater Lake National Park (U.S. National Park Service)</ex></ph> and <ph name="TAB_COUNT">%2$d<ex>12</ex></ph> other tabs
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_GROUP_IDENTIFIER_UNNAMED" desc="Content description for group identifiers without a name.">
-        Unnamed group
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_GROUP" desc="Content description for tab group.">
+        <ph name="GROUP_TITLE">%1$s<ex>Wiki tabs</ex></ph> tab group
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_IDENTIFIER" desc="Content description for tabs that are not selected" meaning="Tab as in the UI element in the tabstrip containing a website">
-        Tab
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_SHARED_GROUP" desc="Content description for shared group.">
+        Shared <ph name="GROUP_TITLE">%1$s<ex>Wiki tabs</ex></ph> tab group
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_IDENTIFIER_SELECTED" desc="Content description for the tab that is selected">
-        Selected Tab
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_SHARED_GROUP_WITH_NEW_ACTIVITY" desc="Content description for shared group with new activity.">
+        Shared <ph name="GROUP_TITLE">%1$s<ex>Wiki tabs</ex></ph> tab group with new activity
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER" desc="Content description for tabs that are not selected in Private mode">
-        Private Tab
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED" desc="Content description for tabs that are selected">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Tab
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER_SELECTED" desc="Content description for the tab that is selected in Private mode">
-        Selected Private Tab
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_INCOGNITO" desc="Content description for tabs that are not selected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Private Tab
       </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_INCOGNITO_SELECTED" desc="Content description for the tab that is selected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Private Tab
+      </message>
+
+      <!-- Accessibility strings used in both tablet and phone tab strips -->
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB" desc="Content description for the tab title.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_NOTIFICATION" desc="Content description for the tab title with a notification status.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, New or Updated Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_CLOSE_TAB" desc="Content description for the close tab button.">
+        Close <ph name="TAB_TITLE">%1$s<ex>Brave</ex></ph> tab
+      </message>
+
+      <!-- Accessibility strings for omnibox -->
       <message name="IDS_ACCESSIBILITY_OMNIBOX_BTN_REFINE" desc="Content description for the omnibox refine button followed with the text or URL that will be shown in the Omnibox if the user clicks the refine button, eg. User input 'The' may offer a suggestion 'The meaning of life' or 'thewirecutter.com'.">
         Refine: <ph name="REFINE_TEXT">%1$s<ex>The meaning of life</ex></ph>
       </message>
@@ -6141,6 +6203,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
     <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_PICTURE" desc="A user's profile picture, to be used in a list of items shared with a website">
       profile picture
     </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_PHONE" desc="A user's phone number, to be used in a list of items shared with a website" translateable="false">
+      phone number
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_USERNAME" desc="A user's username, to be used in a list of items shared with a website" translateable="false">
+      username
+    </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP_OR_TOS" desc="The consent text shown to the user before sign up when there is no privacy policy or terms of service.">
       To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">%2$s<ex>name and email address</ex></ph> with this site.
       </message>
@@ -6546,72 +6614,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Passkey confirmation sheet closed
       </message>
 
-      <!-- Share with Summary Bottom Sheet -->
-      <message name="IDS_SHARE_WITH_SUMMARY_SHEET_TITLE" desc="Title of a bottomsheet that appears when generating a summary to share along a web page.">
-        Summary
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_SHEET_DESCRIPTION" desc="Accessibility string that describes a bottomsheet that appears when generating a summary to share along a web page." formatter_data="android_java" is_accessibility_with_no_ui="true">
-        Share with summary sheet
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_SHEET_OPENED" desc="Accessibility string that describes opening a bottomsheet that appears when generating a summary to share along a web page." formatter_data="android_java" is_accessibility_with_no_ui="true">
-        Share with summary sheet opened
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_SHEET_CLOSED" desc="Accessibility string that describes closing a bottomsheet that appears when generating a summary to share along a web page." formatter_data="android_java" is_accessibility_with_no_ui="true">
-        Share with summary sheet closed
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_POSITIVE_FEEDBACK_DESCRIPTION" desc="Accessibility string that describes a thumbs up button to provide positive feedback on a generated summary." formatter_data="android_java" is_accessibility_with_no_ui="true">
-        Thumbs up submits feedback that you like this summary
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_NEGATIVE_FEEDBACK_DESCRIPTION" desc="Accessibility string that describes a thumbs down button to provide negative feedback on a generated summary." formatter_data="android_java" is_accessibility_with_no_ui="true">
-        Thumbs down submits feedback that you dislike this summary
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_SHEET_ADD_SUMMARY" desc="Label of a button to add a generated summary to a share sheet.">
-        Add summary
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_SHEET_ERROR_MESSAGE" desc="Error message shown after a summary failed to generate.">
-        Something went wrong. Summary couldn\u2019t be completed
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_SHEET_DISCLAIMER" desc="Disclaimer at the bottom of a sheet with a generated summary. The learn more link will open a help article.">
-        This is an experimental AI feature and won\u2019t always get it right. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_FEEDBACK_SHEET_TITLE" desc="Title of a bottom sheet that appears when providing feedback for a generated web page summary.">
-        Select an issue
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_FEEDBACK_SHEET_SUBMIT" desc="Button label to submit feedback on a generated web page summary.">
-        Submit
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_FEEDBACK_SHEET_DESCRIPTION" desc="Accessibility string that describes a bottomsheet that appears when providing feedback on a generated web page summary." formatter_data="android_java" is_accessibility_with_no_ui="true">
-        Share with summary feedback sheet
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_FEEDBACK_SHEET_OPENED" desc="Accessibility string that describes opening a bottomsheet that appears when providing feedback on a generated web page summary." formatter_data="android_java" is_accessibility_with_no_ui="true">
-        Share with summary feedback sheet opened
-      </message>
-      <message name="IDS_SHARING_CREATE_SUMMARY" desc="Label of share sheet action to create a summary of the currently shared page.">
+      <message name="IDS_SHARING_CREATE_SUMMARY" desc="Label of menu item to create a summary of the currently shared page.">
         Create summary
-      </message>
-      <message name="IDS_SHARING_REMOVE_SUMMARY" desc="Label of share sheet action to remove a summary when sharing a web page.">
-        Remove summary
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_FEEDBACK_SHEET_CLOSED" desc="Accessibility string that describes closing a bottomsheet that appears when providing feedback on a generated web page summary." formatter_data="android_java" is_accessibility_with_no_ui="true">
-        Share with summary feedback sheet closed
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_FEEDBACK_DISCLAIMER" desc="Disclaimer at the bottom of a bottom sheet to provide feedback for a generated web page summary.">
-        The URL of the page you\u2019re providing feedback for will be sent to Brave, and may be reviewed by humans to improve this feature
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_FEEDBACK_LABEL_OFFENSIVE" desc="Label of a radio button item for providing feedback on a generated summary that's offensive or unsafe.">
-        Offensive or unsafe
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_FEEDBACK_LABEL_INACCURATE" desc="Label of a radio button item for providing feedback on a generated summary that's inaccurate.">
-        Inaccurate
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_FEEDBACK_LABEL_REPETITIVE" desc="Label of a radio button item for providing feedback on a generated summary that's repetitive.">
-        Repetitive
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_FEEDBACK_LABEL_MISSING_INFO" desc="Label of a radio button item for providing feedback on a generated summary that's missing information.">
-        Missing information
-      </message>
-      <message name="IDS_SHARE_WITH_SUMMARY_FEEDBACK_LABEL_OTHER" desc="Label of a radio button item for providing feedback on a generated summary that doesn't fit any other category.">
-        Other
       </message>
 
       <!-- Data Sharing -->
@@ -6670,9 +6674,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_COLLABORATION_PREVIEW_DIALOG_DETAILS_TITLE" desc="The title for the details page of the dialog that shows a preview of a tab group.">
         Tab group details
-      </message>
-      <message name="IDS_COLLABORATION_LINK_FAILED_TITLE" desc="The title for the link failed dialog.">
-        This link doesn’t work
       </message>
       <!-- Data Sharing Preview Dialog -->
 
@@ -6762,9 +6763,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_COLLABORATION_PREVIEW_DIALOG_DETAILS_TABS_IN_GROUP" desc="The title for the tabs in group section in the preview details for a group.">
         Tabs in group
-      </message>
-      <message name="IDS_COLLABORATION_LINK_FAILED_BODY" desc="The body for the link failed dialog.">
-        Contact the sender to ask for a new link
       </message>
       <message name="IDS_COLLABORATION_JOIN_GROUP_AS" desc="A sublabel showing which profile the shared group is being joined as.">
         Join as <ph name="MEMBER_FULL_NAME">%1$s<ex>John Doe</ex></ph>
@@ -6897,19 +6895,19 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Interstitial shown prior to making digital identity request to wallet -->
-      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_DIALOG_TITLE" translateable="false">
-        Make sure you trust this site with your data
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_DIALOG_TITLE">
+        Do you trust this site with your data?
       </message>
-      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_LOW_RISK_DIALOG_TEXT" translateable="false">
-        <ph name="WEBSITE_ORIGIN">%1$s<ex>www.cheapalcohol.com</ex></ph> wants to use personal info from your digital wallet. Only continue if you trust this site.
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_LOW_RISK_DIALOG_TEXT">
+        <ph name="WEBSITE_ORIGIN">%1$s<ex>www.cheapalcohol.com</ex></ph> wants to use personal info from your digital wallet.
       </message>
-      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_LOW_RISK_NEGATIVE_BUTTON_TEXT" translateable="false">
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_LOW_RISK_NEGATIVE_BUTTON_TEXT">
         Cancel
       </message>
-      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_HIGH_RISK_DIALOG_TEXT" translateable="false">
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_HIGH_RISK_DIALOG_TEXT">
         <ph name="WEBSITE_ORIGIN">%1$s<ex>www.cheapalcohol.com</ex></ph> wants to use personal info from your digital wallet. Only continue if you trust this site. Dangerous sites might trick you into revealing things like your legal name or ID number.
       </message>
-      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_HIGH_RISK_NEGATIVE_BUTTON_TEXT" translateable="false">
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_HIGH_RISK_NEGATIVE_BUTTON_TEXT">
         Back to safety
       </message>
       <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_REQUEST_ABORTED_DIALOG_TEXT" translateable="false">
