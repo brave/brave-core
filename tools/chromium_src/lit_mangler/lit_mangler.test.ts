@@ -95,7 +95,7 @@ describe('Attribute handling', () => {
         utilsForTest.mangle(e => {
             const iframe = e.querySelector('iframe')
             expect(iframe).toBeDefined()
-            expect(iframe?.getAttribute('sandbox')).toBe('allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions}')
+            expect(iframe?.getAttribute('sandbox')).toBe('allow-scripts allow-same-origin allow-forms allow-popups ${this.additionalRestrictions}')
         }, template)
 
         expect(template.text).toBe(`<iframe class="wp-embedded-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions}" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>`)
@@ -108,7 +108,7 @@ describe('Attribute handling', () => {
         utilsForTest.mangle(e => {
             const iframe = e.querySelector('iframe')
             expect(iframe).toBeDefined()
-            expect(iframe?.getAttribute('sandbox')).toBe('allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions ? "allow-foo" : ""}')
+            expect(iframe?.getAttribute('sandbox')).toBe('allow-scripts allow-same-origin allow-forms allow-popups ${this.additionalRestrictions ? "allow-foo" : ""}')
         }, template)
 
         expect(template.text).toBe(`<iframe class="wp-embedded-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions ? "allow-foo" : ""}" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>`)
@@ -121,7 +121,7 @@ describe('Attribute handling', () => {
         utilsForTest.mangle(e => {
             const iframe = e.querySelector('iframe')
             expect(iframe).toBeDefined()
-            expect(iframe?.getAttribute('sandbox')).toBe('allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions ? "allow-foo" : \'\'}')
+            expect(iframe?.getAttribute('sandbox')).toBe('allow-scripts allow-same-origin allow-forms allow-popups ${this.additionalRestrictions ? "allow-foo" : \'\'}')
         }, template)
 
         expect(template.text).toBe(`<iframe class="wp-embedded-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions ? "allow-foo" : ''}" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>`)
@@ -336,7 +336,7 @@ export function getList(this: string[]) {
         utilsForTest.getTemplateLiterals(sourceFile, sourceFile, result)
         utilsForTest.injectPlaceholders(result)
         utilsForTest.mangle((element) => {
-            expect(element.querySelector('b')?.outerHTML).toBe('<b>\${g}</b>')
+            expect(element.querySelector('b')?.outerHTML).toBe('<b>${g}</b>')
         }, t => t.text.startsWith('<b>'))
     })
 
