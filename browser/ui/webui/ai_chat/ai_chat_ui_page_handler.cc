@@ -180,21 +180,9 @@ void AIChatUIPageHandler::UploadImage(const std::string& conversation_uuid,
     upload_file_helper_ =
         std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
   }
-  ConversationHandler* conversation =
-      AIChatServiceFactory::GetForBrowserContext(profile_)->GetConversation(
-          conversation_uuid);
-  if (!conversation) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-  conversation->SetUploadedContentDelegate(upload_file_helper_->GetWeakPtr());
   upload_file_helper_->UploadImage(
       std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
       std::move(callback));
-}
-
-void AIChatUIPageHandler::RemoveUploadedImage(uint32_t index) {
-  upload_file_helper_->RemoveUploadedImage(index);
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {

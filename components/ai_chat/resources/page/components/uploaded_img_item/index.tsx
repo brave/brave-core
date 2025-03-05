@@ -8,13 +8,13 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 // Types
-import { UploadedImageData } from '../../state/conversation_context'
+import * as Mojom from '../../../common/mojom'
 
 // Styles
 import styles from './style.module.scss'
 
 type Props = {
-  imageData: UploadedImageData
+  uploadedImage: Mojom.UploadedImage
   // removeImage is optional here so we can also reuse
   // this component in the conversation thread where remove
   // is not needed.
@@ -24,14 +24,14 @@ type Props = {
 export default function UploadedImgItem(props: Props) {
   // Memos
   const dataUrl = React.useMemo(() => {
-    const blob = new Blob([new Uint8Array(props.imageData.data)], {
+    const blob = new Blob([new Uint8Array(props.uploadedImage.imageData)], {
       type: 'image/*'
     })
     return URL.createObjectURL(blob)
-  }, [props.imageData])
+  }, [props.uploadedImage])
 
-  const fileSize = React.useMemo(() => {
-    let bytes = props.imageData.fileSize
+  const filesize = React.useMemo(() => {
+    let bytes = Number(props.uploadedImage.filesize)
     const units = ['B', 'KB', 'MB', 'GB']
     let index = 0
 
@@ -41,9 +41,9 @@ export default function UploadedImgItem(props: Props) {
     }
 
     return `${bytes.toFixed(2)} ${units[index]}`
-  }, [props.imageData.fileSize])
+  }, [props.uploadedImage.filesize])
 
-  const fileNameParts = props.imageData.fileName.split('.')
+  const filenameParts = props.uploadedImage.filename.split('.')
 
   return (
     <div className={styles.itemWrapper}>
@@ -55,11 +55,11 @@ export default function UploadedImgItem(props: Props) {
         <div className={styles.imageInfo}>
           <div className={styles.nameAndExtensionRow}>
             <div className={styles.forEllipsis}>
-              <span className={styles.nameText}>{fileNameParts[0]}</span>
+              <span className={styles.nameText}>{filenameParts[0]}</span>
             </div>
-            <span className={styles.extensionText}>.{fileNameParts[1]}</span>
+            <span className={styles.extensionText}>.{filenameParts[1]}</span>
           </div>
-          <span className={styles.sizeText}>{fileSize}</span>
+          <span className={styles.sizeText}>{filesize}</span>
         </div>
       </div>
       {props.removeImage && (

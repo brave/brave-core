@@ -16,6 +16,7 @@
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "content/public/test/file_system_chooser_test_helpers.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
@@ -63,16 +64,6 @@ class UploadFileHelperTest : public content::RenderViewHostTestHarness {
     return std::make_unique<TestingProfile>();
   }
 
-  std::optional<std::vector<mojom::UploadedImagePtr>> GetUploadedImages() {
-    return file_helper_->GetUploadedImages();
-  }
-
-  size_t GetUploadedImagesSize() {
-    return file_helper_->GetUploadedImagesSize();
-  }
-
-  void ClearUploadedImages() { file_helper_->ClearUploadedImages(); }
-
  protected:
   base::ScopedTempDir temp_dir_;
   data_decoder::test::InProcessDataDecoder data_decoder_;
@@ -113,8 +104,6 @@ TEST_F(UploadFileHelperTest, ImageRead) {
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{path}));
   EXPECT_FALSE(UploadImageSync());
-  EXPECT_EQ(GetUploadedImagesSize(), 0u);
-  EXPECT_FALSE(GetUploadedImages());
 
   base::FilePath path2 = temp_dir_.GetPath().AppendASCII("empty.png");
   ASSERT_TRUE(base::WriteFile(path2, base::span<uint8_t>()));
@@ -122,8 +111,6 @@ TEST_F(UploadFileHelperTest, ImageRead) {
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{path2}));
   EXPECT_FALSE(UploadImageSync());
-  EXPECT_EQ(GetUploadedImagesSize(), 0u);
-  EXPECT_FALSE(GetUploadedImages());
 
   constexpr uint8_t kSamplePng[] = {
       0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00,
@@ -148,9 +135,6 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   // Check dimensions are the same.
   EXPECT_EQ(sample_bitmap.width(), encoded_bitmap.width());
   EXPECT_EQ(sample_bitmap.height(), encoded_bitmap.height());
-  EXPECT_EQ(GetUploadedImagesSize(), 1u);
-  ASSERT_TRUE(GetUploadedImages());
-  EXPECT_EQ(GetUploadedImages()->at(0), sample_result);
 
   // Large image will be scaled into 1024x768
   auto large_png_bytes = gfx::test::CreatePNGBytes(2048);
@@ -167,25 +151,6 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   encoded_bitmap = gfx::PNGCodec::Decode(large_result->image_data);
   EXPECT_EQ(1024, encoded_bitmap.width());
   EXPECT_EQ(768, encoded_bitmap.height());
-  EXPECT_EQ(GetUploadedImagesSize(), 2u);
-  ASSERT_TRUE(GetUploadedImages());
-  EXPECT_EQ(GetUploadedImages()->at(1), large_result);
-
-  // No effect
-  file_helper_->RemoveUploadedImage(3);
-  EXPECT_EQ(GetUploadedImagesSize(), 2u);
-  ASSERT_TRUE(GetUploadedImages());
-  EXPECT_EQ(GetUploadedImages()->at(0), sample_result);
-  EXPECT_EQ(GetUploadedImages()->at(1), large_result);
-
-  file_helper_->RemoveUploadedImage(0);
-  EXPECT_EQ(GetUploadedImagesSize(), 1u);
-  ASSERT_TRUE(GetUploadedImages());
-  EXPECT_EQ(GetUploadedImages()->at(0), large_result);
-
-  ClearUploadedImages();
-  EXPECT_EQ(GetUploadedImagesSize(), 0u);
-  EXPECT_FALSE(GetUploadedImages());
 }
 
 }  // namespace ai_chat

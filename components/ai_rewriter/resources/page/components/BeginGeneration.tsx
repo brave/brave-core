@@ -56,7 +56,8 @@ export default function BeginGeneration() {
           handleStopGenerating: async () => {},
           removeImage: () => {},
           uploadImage: () => {},
-          conversationHistory: []
+          conversationHistory: [],
+          imgData: null
         }} />
     </FiltersContainer>
     <NoContent />

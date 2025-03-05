@@ -482,11 +482,6 @@ void ConversationHandler::SetAssociatedContentDelegate(
   OnAssociatedContentInfoChanged();
 }
 
-void ConversationHandler::SetUploadedContentDelegate(
-    base::WeakPtr<UploadedContentDelegate> delegate) {
-  uploaded_content_delegate_ = std::move(delegate);
-}
-
 const mojom::Model& ConversationHandler::GetCurrentModel() {
   const mojom::Model* model = model_service_->GetModel(model_key_);
   CHECK(model);
@@ -657,27 +652,13 @@ void ConversationHandler::GetIsRequestInProgress(
 }
 
 void ConversationHandler::SubmitHumanConversationEntry(
-    const std::string& input) {
+    const std::string& input,
+    std::optional<std::vector<mojom::UploadedImagePtr>> uploaded_images) {
   DCHECK(!is_request_in_progress_)
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
 
-  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
-      std::nullopt /* prompt */, std::nullopt /* selected_text */,
-      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt /* uploaded_images */, false);
-  SubmitHumanConversationEntry(std::move(turn));
-}
-
-void ConversationHandler::SubmitHumanConversationEntry(
-    mojom::ConversationTurnPtr turn) {
-  VLOG(1) << __func__;
-  DVLOG(4) << __func__ << ": " << turn->text;
-
-  if (uploaded_content_delegate_ &&
-      uploaded_content_delegate_->GetUploadedImagesSize()) {
-    // Change to vision support model before submitting
+  if (uploaded_images && !uploaded_images->empty()) {
     auto* current_model =
         model_service_->GetModel(metadata_->model_key.value_or("").empty()
                                      ? model_service_->GetDefaultModelKey()
@@ -685,10 +666,19 @@ void ConversationHandler::SubmitHumanConversationEntry(
     if (!current_model->vision_support) {
       ChangeModel("chat-vision-basic");
     }
-    turn->uploaded_images = uploaded_content_delegate_->GetUploadedImages();
-    // Clear staging uploaded images once submitted into history
-    uploaded_content_delegate_->ClearUploadedImages();
   }
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
+      std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
+      std::nullopt /* prompt */, std::nullopt /* selected_text */,
+      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
+      std::move(uploaded_images), false);
+  SubmitHumanConversationEntry(std::move(turn));
+}
+
+void ConversationHandler::SubmitHumanConversationEntry(
+    mojom::ConversationTurnPtr turn) {
+  VLOG(1) << __func__;
+  DVLOG(4) << __func__ << ": " << turn->text;
 
   // If there's edits, use the last one as the latest turn.
   bool has_edits = turn->edits && !turn->edits->empty();

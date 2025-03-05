@@ -21,13 +21,5 @@ std::vector<mojom::UploadedImagePtr> CreateSampleUploadedImages(size_t number) {
   }
   return uploaded_images;
 }
-std::vector<mojom::UploadedImagePtr> CloneUpdatedImages(
-    const std::vector<mojom::UploadedImagePtr>& input) {
-  std::vector<mojom::UploadedImagePtr> output;
-  for (const auto& image : input) {
-    output.emplace_back(image.Clone());
-  }
-  return output;
-}
 
 }  // namespace ai_chat

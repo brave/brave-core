@@ -171,27 +171,6 @@ class MockTextEmbedder : public TextEmbedder {
       (override));
 };
 
-class MockUploadedContentDelegate
-    : public ConversationHandler::UploadedContentDelegate {
- public:
-  MockUploadedContentDelegate() = default;
-  ~MockUploadedContentDelegate() = default;
-  MOCK_METHOD(std::optional<std::vector<mojom::UploadedImagePtr>>,
-              GetUploadedImages,
-              (),
-              (override));
-  MOCK_METHOD(size_t, GetUploadedImagesSize, (), (override));
-  MOCK_METHOD(void, ClearUploadedImages, (), (override));
-
-  base::WeakPtr<ConversationHandler::UploadedContentDelegate> GetWeakPtr() {
-    return weak_ptr_factory_.GetWeakPtr();
-  }
-
- private:
-  base::WeakPtrFactory<ConversationHandler::UploadedContentDelegate>
-      weak_ptr_factory_{this};
-};
-
 }  // namespace
 
 class ConversationHandlerUnitTest : public testing::Test {
@@ -1090,7 +1069,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(observer, OnConversationEntryAdded).Times(6);
   EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(3);
 
-  conversation_handler_->SubmitHumanConversationEntry("query3");
+  conversation_handler_->SubmitHumanConversationEntry("query3", std::nullopt);
 
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -1264,7 +1243,6 @@ TEST_F(ConversationHandlerUnitTest,
 TEST_F(ConversationHandlerUnitTest, UploadImage) {
   conversation_handler_->SetShouldSendPageContents(false);
   constexpr char kTestPrompt[] = "What is this?";
-  NiceMock<MockUploadedContentDelegate> delegate;
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -1273,31 +1251,30 @@ TEST_F(ConversationHandlerUnitTest, UploadImage) {
           base::ok("This is a lion.")));
   ASSERT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
 
-  // delegate is not set
-  EXPECT_CALL(delegate, GetUploadedImagesSize()).Times(0);
-  EXPECT_CALL(delegate, GetUploadedImages()).Times(0);
-  EXPECT_CALL(delegate, ClearUploadedImages()).Times(0);
-
+  // No uploaded images
   base::RunLoop loop;
+  EXPECT_CALL(client, OnModelDataChanged).Times(0);
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
-  conversation_handler_->SubmitHumanConversationEntry(kTestPrompt);
+  conversation_handler_->SubmitHumanConversationEntry(kTestPrompt,
+                                                      std::nullopt);
   loop.Run();
+  EXPECT_FALSE(
+      conversation_handler_->GetConversationHistory().back()->uploaded_images);
   testing::Mock::VerifyAndClearExpectations(&client);
 
-  // delegate is set but no images yet
-  conversation_handler_->SetUploadedContentDelegate(delegate.GetWeakPtr());
-  EXPECT_CALL(delegate, GetUploadedImagesSize()).WillOnce(testing::Return(0));
-  EXPECT_CALL(delegate, GetUploadedImages()).Times(0);
-  EXPECT_CALL(delegate, ClearUploadedImages()).Times(0);
-
+  // Empty uploaded images
   base::RunLoop loop2;
+  EXPECT_CALL(client, OnModelDataChanged).Times(0);
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop2, &base::RunLoop::Quit));
-  conversation_handler_->SubmitHumanConversationEntry(kTestPrompt);
+  conversation_handler_->SubmitHumanConversationEntry(
+      kTestPrompt, std::vector<mojom::UploadedImagePtr>());
   loop2.Run();
+  EXPECT_FALSE(
+      conversation_handler_->GetConversationHistory().back()->uploaded_images);
   testing::Mock::VerifyAndClearExpectations(&client);
 
   auto uploaded_images = CreateSampleUploadedImages(3);
@@ -1306,11 +1283,6 @@ TEST_F(ConversationHandlerUnitTest, UploadImage) {
   // Note that this will need to be put at the end of this test suite
   // because currently there is no perfect timing to call
   // SetEngineForTesting() after auto model switch.
-  EXPECT_CALL(delegate, GetUploadedImagesSize()).WillOnce(testing::Return(3));
-  EXPECT_CALL(delegate, GetUploadedImages())
-      .Times(1)
-      .WillOnce(testing::Return(Clone(uploaded_images)));
-  EXPECT_CALL(delegate, ClearUploadedImages()).Times(1);
   base::RunLoop loop3;
   EXPECT_CALL(client, OnModelDataChanged)
       .WillOnce(base::test::RunClosure(base::BindLambdaForTesting([&]() {
@@ -1319,7 +1291,8 @@ TEST_F(ConversationHandlerUnitTest, UploadImage) {
         loop3.Quit();
       })));
 
-  conversation_handler_->SubmitHumanConversationEntry(kTestPrompt);
+  conversation_handler_->SubmitHumanConversationEntry(kTestPrompt,
+                                                      Clone(uploaded_images));
   loop3.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
   // verify image in history
@@ -1596,7 +1569,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
 
-  conversation_handler_->SubmitHumanConversationEntry(expected_input1);
+  conversation_handler_->SubmitHumanConversationEntry(expected_input1,
+                                                      std::nullopt);
 
   loop.Run();
 
@@ -1613,7 +1587,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop2, &base::RunLoop::Quit));
 
-  conversation_handler_->SubmitHumanConversationEntry(expected_input2);
+  conversation_handler_->SubmitHumanConversationEntry(expected_input2,
+                                                      std::nullopt);
   loop2.Run();
 
   // Selected Language events should not be added to the conversation events

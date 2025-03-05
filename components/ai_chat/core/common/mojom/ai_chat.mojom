@@ -396,7 +396,6 @@ interface AIChatUIHandler {
   HandleVoiceRecognition(string conversation_uuid);
   ShowSoftKeyboard();
   UploadImage(string conversation_uuid) => (UploadedImage? uploaded_image);
-  RemoveUploadedImage(uint32 index);
 
   // This might be a no-op if the UI isn't closeable
   CloseUI();
@@ -481,7 +480,8 @@ interface ConversationHandler {
   // are ready.
   GenerateQuestions();
 
-  SubmitHumanConversationEntry(string input);
+  SubmitHumanConversationEntry(
+      string input, array<UploadedImage>? uploaded_images);
   SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
   ModifyConversation(uint32 turn_index, string new_text);
   SubmitSummarizationRequest();

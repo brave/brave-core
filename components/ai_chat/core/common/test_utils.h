@@ -14,9 +14,6 @@ namespace ai_chat {
 
 std::vector<mojom::UploadedImagePtr> CreateSampleUploadedImages(size_t number);
 
-std::vector<mojom::UploadedImagePtr> CloneUpdatedImages(
-    const std::vector<mojom::UploadedImagePtr>& input);
-
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_TEST_UTILS_H_

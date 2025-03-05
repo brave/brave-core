@@ -153,14 +153,6 @@ void UploadFileHelper::FileSelected(const ui::SelectedFileInfo& file,
                                                std::move(on_image_read));
 }
 
-void UploadFileHelper::RemoveUploadedImage(uint32_t index) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (index >= uploaded_images_.size()) {
-    return;
-  }
-  uploaded_images_.erase(uploaded_images_.begin() + index);
-}
-
 void UploadFileHelper::FileSelectionCanceled() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (upload_image_callback_) {
@@ -220,32 +212,8 @@ void UploadFileHelper::OnImageEncoded(
   if (output) {
     uploaded_image =
         mojom::UploadedImage::New(std::move(filename), filesize, *output);
-    uploaded_images_.emplace_back(uploaded_image.Clone());
   }
   std::move(upload_image_callback_).Run(std::move(uploaded_image));
-}
-
-std::optional<std::vector<mojom::UploadedImagePtr>>
-UploadFileHelper::GetUploadedImages() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (uploaded_images_.empty()) {
-    return std::nullopt;
-  }
-  std::vector<mojom::UploadedImagePtr> result;
-  for (const auto& uploaded_image : uploaded_images_) {
-    result.emplace_back(uploaded_image.Clone());
-  }
-  return result;
-}
-
-size_t UploadFileHelper::GetUploadedImagesSize() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return uploaded_images_.size();
-}
-
-void UploadFileHelper::ClearUploadedImages() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  uploaded_images_.clear();
 }
 
 }  // namespace ai_chat

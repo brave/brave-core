@@ -11,10 +11,8 @@
 #include <tuple>
 #include <vector>
 
-#include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 #include "ui/shell_dialogs/select_file_policy.h"
@@ -27,8 +25,7 @@ class Profile;
 
 namespace ai_chat {
 
-class UploadFileHelper : public ui::SelectFileDialog::Listener,
-                         public ConversationHandler::UploadedContentDelegate {
+class UploadFileHelper : public ui::SelectFileDialog::Listener {
  public:
   UploadFileHelper(content::WebContents* web_contents, Profile* profile);
   ~UploadFileHelper() override;
@@ -37,14 +34,8 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener,
 
   void UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
                    mojom::AIChatUIHandler::UploadImageCallback callback);
-  void RemoveUploadedImage(uint32_t index);
-
-  base::WeakPtr<UploadFileHelper> GetWeakPtr() {
-    return weak_ptr_factory_.GetWeakPtr();
-  }
 
  private:
-  friend class UploadFileHelperTest;
   // ui::SelectFileDialog::Listener
   void FileSelected(const ui::SelectedFileInfo& file, int index) override;
   void FileSelectionCanceled() override;
@@ -59,13 +50,6 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener,
                       int64_t filesize,
                       std::optional<std::vector<uint8_t>> output);
 
-  // ConversationHandler::UploadedContentDelegate
-  std::optional<std::vector<mojom::UploadedImagePtr>> GetUploadedImages()
-      override;
-  size_t GetUploadedImagesSize() override;
-  void ClearUploadedImages() override;
-
-  std::vector<mojom::UploadedImagePtr> uploaded_images_;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;

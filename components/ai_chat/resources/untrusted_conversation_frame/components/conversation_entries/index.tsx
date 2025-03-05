@@ -176,11 +176,7 @@ function ConversationEntries() {
                           latestTurn.uploadedImages.map((img) => (
                             <UploadedImgItem
                               key={img.filename}
-                              imageData={{
-                                data: img.imageData,
-                                fileSize: Number(img.filesize),
-                                fileName: img.filename
-                              }}
+                              uploadedImage={img}
                             />
                           ))}
                       </div>

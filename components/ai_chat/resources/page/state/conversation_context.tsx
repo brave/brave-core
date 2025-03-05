@@ -22,11 +22,7 @@ export interface CharCountContext {
   inputTextCharCountDisplay: string
 }
 
-export type UploadedImageData = {
-  data: number[]
-  fileName: string
-  fileSize: number
-}
+export type UploadedImageData = Mojom.UploadedImage
 
 export type ConversationContext = SendFeedbackState & CharCountContext & {
   historyInitialized: boolean
@@ -70,7 +66,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
 
   showAttachments: boolean
   setShowAttachments: (show: boolean) => void
-  imgData?: UploadedImageData[]
+  imgData: Mojom.UploadedImage[] | null
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -116,7 +112,7 @@ const defaultContext: ConversationContext = {
   removeImage: () => { },
   ...defaultSendFeedbackState,
   ...defaultCharCountContext,
-  imgData: undefined
+  imgData: null
 }
 
 export function useCharCountInfo(inputText: string) {
@@ -459,12 +455,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         context.selectedActionType
       )
     } else {
-      conversationHandler.submitHumanConversationEntry(context.inputText)
+      conversationHandler.submitHumanConversationEntry(context.inputText,
+                                                       context.imgData)
     }
 
     setPartialContext({
       inputText: '',
-      imgData: undefined
+      imgData: null
     })
     resetSelectedActionType()
   }
@@ -515,29 +512,23 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
     // For now we only allow uploading 1 image per conversation.
     if (context.imgData) {
-      aiChatContext.uiHandler?.removeUploadedImage(0)
       setPartialContext({
-        imgData: undefined
+        imgData: null
       })
     }
     aiChatContext.uiHandler?.uploadImage(context.conversationUuid)
     .then(({uploadedImage}) => {
       if (uploadedImage) {
         setPartialContext({
-          imgData: [{
-            data: uploadedImage.imageData,
-            fileName: uploadedImage.filename,
-            fileSize: Number(uploadedImage.filesize)
-          }]
+          imgData: [uploadedImage]
         })
       }
     })
   }
 
   const removeImage = (index: number) => {
-    aiChatContext.uiHandler?.removeUploadedImage(index)
     setPartialContext({
-      imgData: undefined
+      imgData: null
     })
   }
 

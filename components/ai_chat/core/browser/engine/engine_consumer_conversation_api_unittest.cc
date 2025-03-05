@@ -466,8 +466,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "What is this image?", kTestPrompt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, CloneUpdatedImages(uploaded_images),
-      false));
+      base::Time::Now(), std::nullopt, Clone(uploaded_images), false));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse(false, "", history, "", base::DoNothing(),
