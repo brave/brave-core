@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/global_keyboard_shortcuts_mac.mm b/chrome/browser/global_keyboard_shortcuts_mac.mm
-index bc90493907668cc0224ea4deffb6b5d706b25e14..918f02fad0fbd2eb5e963b4ca178097b0d32661e 100644
+index 60188f03eb4e5c2b35fa00a126f17dc0b2559923..ffe933a1fee5eaabeb1cf6eb20ed6e62d39e0aef 100644
 --- a/chrome/browser/global_keyboard_shortcuts_mac.mm
 +++ b/chrome/browser/global_keyboard_shortcuts_mac.mm
-@@ -149,6 +149,7 @@ const std::vector<KeyboardShortcutData>& GetShortcutsNotPresentInMainMenu() {
-       {true,  false, false, true,  kVK_DownArrow,         IDC_FOCUS_NEXT_PANE},
-       {true,  false, false, true,  kVK_UpArrow,           IDC_FOCUS_PREVIOUS_PANE},
-       {true,  true,  false, true,  kVK_ANSI_A,            IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY},
+@@ -153,6 +153,7 @@ const std::vector<KeyboardShortcutData>& GetShortcutsNotPresentInMainMenu() {
+ #if BUILDFLAG(ENABLE_GLIC)
+       {true,  false,  true, false,  kVK_ANSI_G,            IDC_GLIC_TOGGLE_FOCUS},
+ #endif
 +    {true,  false, false, true,  kVK_ANSI_N,            IDC_NEW_OFFTHERECORD_WINDOW_TOR},
      });
      // clang-format on
