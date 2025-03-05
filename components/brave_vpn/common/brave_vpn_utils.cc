@@ -53,7 +53,8 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(IS_MAC)
   registry->RegisterBooleanPref(prefs::kBraveVPNOnDemandEnabled, false);
 #endif
-  registry->RegisterBooleanPref(prefs::kBraveVPNSmartProxyRoutingEnabled, true);
+  registry->RegisterBooleanPref(prefs::kBraveVPNSmartProxyRoutingEnabled,
+                                false);
   registry->RegisterListPref(prefs::kBraveVPNWidgetUsageWeeklyStorage);
 }
 
