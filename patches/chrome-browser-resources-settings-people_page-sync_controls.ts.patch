@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.ts b/chrome/browser/resources/settings/people_page/sync_controls.ts
-index cd8ace31f26ba562c8a9fe8c25e02361eb198565..1aa411e3cfd16accbaadcb56e130c59af9fb63d7 100644
+index 6a1d9078cf2adf66f6279de9012f901c8428f910..7dc5304e115c0b0bf3fc42d55cfa4a4f1e7d490c 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.ts
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.ts
 @@ -97,7 +97,7 @@ export class SettingsSyncControlsElement extends

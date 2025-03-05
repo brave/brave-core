@@ -1,8 +1,8 @@
 diff --git a/tools/json_schema_compiler/feature_compiler.py b/tools/json_schema_compiler/feature_compiler.py
-index 0f421314850da09295cbad7cb2b0946f9a7f03a1..b3a3240e2c4cd88412cb2441db75a16b02c96cb4 100644
+index 3176b816b1a5acc1d9b2f0b4e266fa410512b2ad..0f98d9371b782ce26b45d8b001529661f855e2c6 100644
 --- a/tools/json_schema_compiler/feature_compiler.py
 +++ b/tools/json_schema_compiler/feature_compiler.py
-@@ -1009,6 +1009,7 @@ class FeatureCompiler(object):
+@@ -1008,6 +1008,7 @@ class FeatureCompiler(object):
        f.write(cc_file.Render().strip())
  
  
