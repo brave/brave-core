@@ -479,7 +479,6 @@
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
-    *** mNativeInitialized;
     *** mDropdownViewInfoListManager;
     *** mDropdownViewInfoListBuilder;
     public <init>(...);
