@@ -24,16 +24,6 @@
                                  ExceptionState&);                             \
   ImageData* getImageData_Unused(int sx, int sy, int sw, int sh,               \
                                  ImageDataSettings*, ExceptionState&);         \
-                                                                               \
-  bool isPointInPath(ScriptState*, const double x, const double y,             \
-                     const V8CanvasFillRule& winding =                         \
-                         V8CanvasFillRule(V8CanvasFillRule::Enum::kNonzero));  \
-  bool isPointInPath(ScriptState*, Path2D*, const double x, const double y,    \
-                     const V8CanvasFillRule& winding =                         \
-                         V8CanvasFillRule(V8CanvasFillRule::Enum::kNonzero));  \
-  bool isPointInStroke(ScriptState*, const double x, const double y);          \
-  bool isPointInStroke(ScriptState*, Path2D*, const double x, const double y); \
-                                                                               \
   virtual ImageData* getImageDataInternal_Unused
 
 #include "src/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"  // IWYU pragma: export
