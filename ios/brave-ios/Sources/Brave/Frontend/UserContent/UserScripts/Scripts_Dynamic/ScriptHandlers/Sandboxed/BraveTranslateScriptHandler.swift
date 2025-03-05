@@ -91,14 +91,15 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     }
 
     // Processing
-    Task {
+    Task { [weak tab] in
+      guard let tab = tab else { return }
       let (result, error) = try await processScriptMessage(for: tab, command: command, body: body)
       replyHandler(result, error)
     }
   }
 
   private func processScriptMessage(
-    for tab: Tab?,
+    for tab: Tab,
     command: String,
     body: [String: Any]
   ) async throws -> (Any?, String?) {
@@ -112,13 +113,13 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
         return (Self.elementScript, nil)
       }
 
-      try await tab?.translateHelper?.setupOnboarding()
+      try await tab.translateHelper?.setupOnboarding()
       return (nil, BraveTranslateError.translateDisabled.rawValue)
     }
 
     if command == "ready" {
       // Translate is ready
-      try await tab?.translateHelper?.beginSetup()
+      try await tab.translateHelper?.beginSetup()
       return (nil, nil)
     }
 
@@ -129,7 +130,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
           from: JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
         )
 
-        guard let tab = tab, let translateHelper = tab.translateHelper
+        guard let translateHelper = tab.translateHelper
         else {
           return (nil, BraveTranslateError.otherError.rawValue)
         }
@@ -159,7 +160,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     }
 
     if command == "status" {
-      guard let tab = tab, let translateHelper = tab.translateHelper else {
+      guard let translateHelper = tab.translateHelper else {
         Logger.module.debug("[Brave Translate] - Status: \(body)")
         return (nil, nil)
       }
@@ -223,9 +224,7 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
       return
     }
 
-    guard
-      let translateHelper = tab.translateHelper
-    else {
+    guard let translateHelper = tab.translateHelper else {
       return
     }
 
@@ -248,8 +247,8 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
         translateHelper.currentLanguageInfo.pageLanguage = nil
       }
 
-      Task {
-        try await translateHelper.finishSetup()
+      Task { [weak translateHelper] in
+        try await translateHelper?.finishSetup()
         replyHandler(nil, nil)
       }
     } catch {
