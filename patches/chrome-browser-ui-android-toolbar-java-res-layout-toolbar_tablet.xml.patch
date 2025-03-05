@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-index 0992c2793168a99aa301d72e28348864120cae67..5922e6e887a2134acd04604c072c4dbcd3b2c7db 100644
+index 04125b96b094cfb736252e857bdfdb7e9ff1cbf9..f02413c5595f7ffd336ff5d44f6e03666bf4be20 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-@@ -70,6 +70,7 @@ found in the LICENSE file.
-             android:layout_gravity="center_vertical"
+@@ -71,6 +71,7 @@ found in the LICENSE file.
              android:background="@drawable/modern_toolbar_tablet_text_box_background"
-             android:paddingEnd="@dimen/location_bar_end_padding" />
+             android:paddingEnd="@dimen/location_bar_end_padding"
+             android:clipToPadding="false" />
 +        <include layout="@layout/brave_toolbar" android:layout_height="wrap_content" android:layout_width="wrap_content" />
  
          <ViewStub
