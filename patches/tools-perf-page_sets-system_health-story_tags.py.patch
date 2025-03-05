@@ -1,5 +1,5 @@
 diff --git a/tools/perf/page_sets/system_health/story_tags.py b/tools/perf/page_sets/system_health/story_tags.py
-index b6ae8fdc9d6916222031697f0292e1def36b95ee..ebc8f73dc9fd186a00ae44b6975e98adcce254a3 100644
+index 24881e7639bd16a11c4c842b156ce1690fffd6e3..fd79969257d6fed4e2431478740c2eb638ca4a11 100644
 --- a/tools/perf/page_sets/system_health/story_tags.py
 +++ b/tools/perf/page_sets/system_health/story_tags.py
 @@ -64,6 +64,7 @@ YEAR_2019 = Tag('2019', 'Story was created or updated in 2019.')
@@ -7,6 +7,6 @@ index b6ae8fdc9d6916222031697f0292e1def36b95ee..ebc8f73dc9fd186a00ae44b6975e98ad
  YEAR_2021 = Tag('2021', 'Story was created or updated in 2021.')
  YEAR_2023 = Tag('2023', 'Story was created or updated in 2023.')
 +YEAR_2024 = Tag('2024', 'Story was created or updated in 2024.')
+ YEAR_2025 = Tag('2025', 'Story was created or updated in 2025.')
  
  
- def _ExtractAllTags():

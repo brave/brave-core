@@ -1,24 +1,24 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index f2b819d7a75e2988bdc6cb11abfa2e0e301104e9..7107dd9331f8ee0e5a6e68865413381cf40d3bf1 100644
+index 2f74ecf59d4a7c33515770f14d7610772bbd8f5f..f7e80a17f1547c5f480ee7c2b9f7771adb7e0ae1 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-@@ -77,6 +77,7 @@ public class SiteSettingsCategory {
-         Type.TRACKING_PROTECTION,
+@@ -78,6 +78,7 @@ public class SiteSettingsCategory {
          Type.FILE_EDITING,
          Type.JAVASCRIPT_OPTIMIZER,
+         Type.SERIAL_PORT,
 +        Type.AUTOPLAY, Type.BRAVE_GOOGLE_SIGN_IN, Type.BRAVE_LOCALHOST_ACCESS,
          Type.NUM_ENTRIES
      })
      @Retention(RetentionPolicy.SOURCE)
-@@ -117,9 +118,10 @@ public class SiteSettingsCategory {
-         int HAND_TRACKING = 31;
+@@ -119,9 +120,10 @@ public class SiteSettingsCategory {
          int FILE_EDITING = 32;
          int JAVASCRIPT_OPTIMIZER = 33;
-+        int AUTOPLAY = 34; int BRAVE_GOOGLE_SIGN_IN = 35; int BRAVE_LOCALHOST_ACCESS = 36;
+         int SERIAL_PORT = 34;
++        int AUTOPLAY = 35; int BRAVE_GOOGLE_SIGN_IN = 36; int BRAVE_LOCALHOST_ACCESS = 37;
  
          /** Number of handled categories used for calculating array sizes. */
--        int NUM_ENTRIES = 34;
-+        int NUM_ENTRIES = 37;
+-        int NUM_ENTRIES = 35;
++        int NUM_ENTRIES = 38;
      }
  
      private final BrowserContextHandle mBrowserContextHandle;

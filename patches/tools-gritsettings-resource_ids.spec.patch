@@ -1,7 +1,7 @@
-diff --git i/tools/gritsettings/resource_ids.spec w/tools/gritsettings/resource_ids.spec
-index 2cd6ca756a745..decd3cac99da6 100644
---- i/tools/gritsettings/resource_ids.spec
-+++ w/tools/gritsettings/resource_ids.spec
+diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
+index b7c03fa573ff1ac0766d4570d47c4d84d6a2266b..5c2db4dbc967c692ac88d3c32b1c8d4665aaa5eb 100644
+--- a/tools/gritsettings/resource_ids.spec
++++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,9 @@
    "chrome/app/chromium_strings.grd": {
      "messages": [800],
@@ -40,8 +40,8 @@ index 2cd6ca756a745..decd3cac99da6 100644
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1447,7 +1453,7 @@
-     "includes": [9980],
+@@ -1451,7 +1457,7 @@
+     "includes": [9990],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_resources.grd": {
 -    "META": {"sizes": {"includes": [1100]}},
