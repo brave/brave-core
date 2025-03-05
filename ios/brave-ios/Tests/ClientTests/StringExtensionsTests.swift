@@ -67,7 +67,7 @@ import XCTest
 
     for (file, nounicode) in zip(files, nounicodes) {
       XCTAssert(file != nounicode)
-      let strip = HTTPDownload.stripUnicode(fromFilename: file)
+      let strip = Download.stripUnicode(fromFilename: file)
       XCTAssert(strip == nounicode)
     }
   }

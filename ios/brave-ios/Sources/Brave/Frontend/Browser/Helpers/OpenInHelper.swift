@@ -28,106 +28,11 @@ struct MIMEType {
   static let png = "image/png"
   static let webP = "image/webp"
   static let xHTML = "application/xhtml+xml"
-
-  private static let webViewViewableTypes: [String] = [
-    MIMEType.bitmap, MIMEType.gif, MIMEType.jpeg, MIMEType.html, MIMEType.pdf, MIMEType.plainText,
-    MIMEType.png, MIMEType.webP, MIMEType.xHTML,
-  ]
-
-  static func canShowInWebView(_ mimeType: String) -> Bool {
-    return webViewViewableTypes.contains(mimeType.lowercased())
-  }
-
-  static func mimeTypeFromFileExtension(_ fileExtension: String) -> String {
-    guard let mimeType = UTType(filenameExtension: fileExtension)?.preferredMIMEType else {
-      return MIMEType.octetStream
-    }
-    return mimeType
-  }
 }
 
 extension String {
   var isKindOfHTML: Bool {
     return [MIMEType.html, MIMEType.xHTML].contains(self)
-  }
-}
-
-class DownloadHelper: NSObject {
-  fileprivate let request: URLRequest
-  fileprivate let preflightResponse: URLResponse
-  fileprivate let cookieStore: WKHTTPCookieStore
-
-  required init?(
-    request: URLRequest?,
-    response: URLResponse,
-    cookieStore: WKHTTPCookieStore,
-    canShowInWebView: Bool
-  ) {
-    guard let request = request else {
-      return nil
-    }
-
-    let contentDisposition = (response as? HTTPURLResponse)?.value(
-      forHTTPHeaderField: "Content-Disposition"
-    )
-    let mimeType = response.mimeType ?? MIMEType.octetStream
-    let isAttachment =
-      contentDisposition?.starts(with: "attachment") ?? (mimeType == MIMEType.octetStream)
-
-    guard isAttachment || !canShowInWebView else {
-      return nil
-    }
-
-    self.cookieStore = cookieStore
-    self.request = request
-    self.preflightResponse = response
-  }
-
-  func downloadAlert(
-    from view: UIView,
-    okAction: @escaping (HTTPDownload) -> Void
-  ) -> UIAlertController? {
-    guard let host = request.url?.host, let filename = request.url?.lastPathComponent else {
-      return nil
-    }
-
-    let download = HTTPDownload(
-      cookieStore: cookieStore,
-      preflightResponse: preflightResponse,
-      request: request
-    )
-
-    let expectedSize =
-      download.totalBytesExpected != nil
-      ? ByteCountFormatter.string(fromByteCount: download.totalBytesExpected!, countStyle: .file)
-      : nil
-
-    let title = "\(filename) - \(host)"
-
-    let downloadAlert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-
-    var downloadActionText = Strings.download
-    // The download can be of undetermined size, adding expected size only if it's available.
-    if let expectedSize = expectedSize {
-      downloadActionText += " (\(expectedSize))"
-    }
-
-    let okAction = UIAlertAction(title: downloadActionText, style: .default) { _ in
-      okAction(download)
-    }
-
-    let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel)
-
-    downloadAlert.addAction(okAction)
-    downloadAlert.addAction(cancelAction)
-
-    downloadAlert.popoverPresentationController?.do {
-      $0.sourceView = view
-      $0.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.maxY - 16, width: 0, height: 0)
-      $0.permittedArrowDirections = []
-    }
-
-    return downloadAlert
   }
 }
 

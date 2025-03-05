@@ -198,6 +198,12 @@ private func makeSUT() -> (sut: DownloadQueue, delegate: DownloadQueueDelegateSp
   return (sut, delegate)
 }
 
+extension Download {
+  convenience override init() {
+    self.init(suggestedFilename: "", originalURL: nil, response: .init())
+  }
+}
+
 private class DownloadSpy: Download {
   enum Message {
     case resume
@@ -206,6 +212,10 @@ private class DownloadSpy: Download {
   }
 
   var receivedMessages: [Message] = []
+
+  init() {
+    super.init(suggestedFilename: "", originalURL: nil, response: .init())
+  }
 
   override func resume() {
     receivedMessages.append(.resume)
