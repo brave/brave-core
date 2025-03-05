@@ -1,0 +1,12 @@
+diff --git a/tools/crates/gnrt/lib/deps.rs b/tools/crates/gnrt/lib/deps.rs
+index e7c6bee1d1d89f58733af04dfc145a5322777152..b7bfe343cbf6ce8fba167ca741a00a75cebda067 100644
+--- a/tools/crates/gnrt/lib/deps.rs
++++ b/tools/crates/gnrt/lib/deps.rs
+@@ -363,6 +363,7 @@ pub fn collect_dependencies(
+     }
+     dependencies
+         .retain(|dep| !extra_config.resolve.remove_crates.iter().any(|r| **r == dep.package_name));
++    dependencies.retain(|dep| !dep.is_local );
+ 
+     // Return a flat list of dependencies.
+     dependencies.sort_unstable_by(|a, b| {
