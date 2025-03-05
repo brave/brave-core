@@ -159,19 +159,17 @@ extension BrowserViewController: TabManagerDelegate {
       topToolbar.updateReaderModeState(.unavailable)
     }
 
-    if FeatureList.kBraveTranslateFeature.enabled {
-      if (selected?.getContentScript(
-        name: BraveTranslateScriptHandler.scriptName
-      ) as? BraveTranslateScriptHandler) != nil {
-        updateTranslateURLBar(tab: selected, state: selected?.translationState ?? .unavailable)
-        updatePlaylistURLBar(
-          tab: selected,
-          state: selected?.playlistItemState ?? .none,
-          item: selected?.playlistItem
-        )
-      } else {
-        topToolbar.updateTranslateButtonState(.unavailable)
-      }
+    if FeatureList.kBraveTranslateFeature.enabled, let selectedTab = selected,
+      selectedTab.translateHelper != nil
+    {
+      updateTranslateURLBar(tab: selectedTab, state: selectedTab.translationState)
+      updatePlaylistURLBar(
+        tab: selectedTab,
+        state: selectedTab.playlistItemState,
+        item: selectedTab.playlistItem
+      )
+    } else {
+      topToolbar.updateTranslateButtonState(.unavailable)
     }
 
     updateScreenTimeUrl(tabManager.selectedTab?.url)

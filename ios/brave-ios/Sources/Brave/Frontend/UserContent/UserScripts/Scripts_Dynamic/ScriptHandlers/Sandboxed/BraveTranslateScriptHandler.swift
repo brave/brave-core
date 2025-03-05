@@ -11,11 +11,11 @@ import WebKit
 import os.log
 
 protocol BraveTranslateScriptHandlerDelegate: NSObject {
-  func updateTranslateURLBar(tab: Tab?, state: TranslateURLBarButton.TranslateState)
-  func canShowTranslateOnboarding(tab: Tab?) -> Bool
-  func showTranslateOnboarding(tab: Tab?, completion: @escaping (_ translateEnabled: Bool?) -> Void)
-  func presentTranslateToast(tab: Tab?, languageInfo: BraveTranslateLanguageInfo)
-  func presentTranslateError(tab: Tab?)
+  func updateTranslateURLBar(tab: Tab, state: TranslateURLBarButton.TranslateState)
+  func canShowTranslateOnboarding(tab: Tab) -> Bool
+  func showTranslateOnboarding(tab: Tab, completion: @escaping (_ translateEnabled: Bool?) -> Void)
+  func presentTranslateToast(tab: Tab, languageInfo: BraveTranslateLanguageInfo)
+  func presentTranslateError(tab: Tab)
 }
 
 class BraveTranslateScriptHandler: NSObject, TabContentScript {
@@ -70,13 +70,6 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     // Setup
-
-    if !FeatureList.kBraveTranslateFeature.enabled {
-      Logger.module.debug("Translation Feature Disabled")
-      replyHandler(nil, BraveTranslateError.translateDisabled.rawValue)
-      return
-    }
-
     let isReaderMode = tab.url?.isInternalURL(for: .readermode) == true
     if tab.lastKnownSecureContentState != .secure && !isReaderMode {
       Logger.module.debug("Translation Disabled - Insecure Page")
@@ -172,7 +165,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
       }
 
       if let errorCode = body["errorCode"] as? Int,
-        let status = BraveTranslateTabHelper.TranslationStatus(rawValue: errorCode)
+        let status = BraveTranslateTabHelper.TranslateError(rawValue: errorCode)
       {
         Logger.module.debug("[Brave Translate] - Status: \(String(describing: status))")
         await translateHelper.setTranslationStatus(status: status)
