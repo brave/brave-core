@@ -1,8 +1,8 @@
 diff --git a/ui/color/BUILD.gn b/ui/color/BUILD.gn
-index edee028ec928dedcb5fdee09b54546449a5fd756..779c463c76bb1a5bec9b062e01e710f9c2a8f7e5 100644
+index 026b757a1f7504a48fc1bf7200c9483053e840f6..188913a670b54e2125586215d679f6286d9b4712 100644
 --- a/ui/color/BUILD.gn
 +++ b/ui/color/BUILD.gn
-@@ -84,6 +84,7 @@ component("color") {
+@@ -89,6 +89,7 @@ component("color") {
      ]
      frameworks = [ "AppKit.framework" ]
    }
@@ -10,7 +10,7 @@ index edee028ec928dedcb5fdee09b54546449a5fd756..779c463c76bb1a5bec9b062e01e710f9
  }
  
  source_set("test_support") {
-@@ -193,6 +194,7 @@ component("mixers") {
+@@ -198,6 +199,7 @@ component("mixers") {
      ]
      deps += [ ":accent_color_observer" ]
    }
