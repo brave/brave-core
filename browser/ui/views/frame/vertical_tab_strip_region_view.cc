@@ -379,8 +379,8 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
       bg_color_id = kColorBraveVerticalTabHoveredBackground;
     }
 
-    SetBackground(views::CreateThemedRoundedRectBackground(bg_color_id,
-                                                           GetCornerRadius()));
+    SetBackground(
+        views::CreateRoundedRectBackground(bg_color_id, GetCornerRadius()));
   }
 
  private:
@@ -615,7 +615,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   header_view_->toggle_button()->SetHighlighted(state_ == State::kExpanded);
   separator_ = AddChildView(std::make_unique<views::View>());
   separator_->SetBackground(
-      views::CreateThemedSolidBackground(kColorBraveVerticalTabSeparator));
+      views::CreateSolidBackground(kColorBraveVerticalTabSeparator));
   new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
       original_region_view_->tab_strip_,
       base::BindRepeating(&TabStrip::NewTabButtonPressed,
@@ -623,7 +623,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       GetShortcutTextForNewTabButton(browser_view)));
 
   resize_area_ = AddChildView(std::make_unique<ResettableResizeArea>(this));
-  SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
+  SetBackground(views::CreateSolidBackground(kColorToolbar));
 
   auto* prefs = browser_->profile()->GetPrefs();
 

@@ -128,7 +128,7 @@ class SidebarSeparator : public views::View {
  public:
   SidebarSeparator() {
     SetBackground(
-        views::CreateThemedSolidBackground(kColorBraveVerticalTabSeparator));
+        views::CreateSolidBackground(kColorBraveVerticalTabSeparator));
   }
 };
 BEGIN_METADATA(SidebarSeparator)
@@ -140,7 +140,7 @@ class ContentsBackground : public views::View {
   METADATA_HEADER(ContentsBackground, views::View)
  public:
   ContentsBackground() {
-    SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
+    SetBackground(views::CreateSolidBackground(kColorToolbar));
     SetEnabled(false);
   }
 };
