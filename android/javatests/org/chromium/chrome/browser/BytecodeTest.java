@@ -2032,12 +2032,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
-                        "mNativeInitialized",
-                        true,
-                        boolean.class));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                         "mDropdownViewInfoListManager"));
         Assert.assertTrue(
                 fieldExists(
