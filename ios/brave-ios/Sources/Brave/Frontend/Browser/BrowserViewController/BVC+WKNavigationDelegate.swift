@@ -369,7 +369,9 @@ extension BrowserViewController: WKUIDelegate {
     type: WKMediaCaptureType,
     decisionHandler: @escaping (WKPermissionDecision) -> Void
   ) {
-    guard let tab = tabManager[webView], let captureType = WebMediaCaptureType(type) else {
+    guard let tab = tabManager[webView], let captureType = WebMediaCaptureType(type),
+      tab === tabManager.selectedTab
+    else {
       decisionHandler(.deny)
       return
     }
@@ -401,7 +403,8 @@ extension BrowserViewController: WKUIDelegate {
     initiatedByFrame frame: WKFrameInfo,
     completionHandler: @escaping () -> Void
   ) {
-    guard let tab = tabManager[webView], let url = frame.origin?.url else {
+    guard let tab = tabManager[webView], let url = frame.origin?.url, tab === tabManager.selectedTab
+    else {
       completionHandler()
       return
     }
@@ -417,7 +420,8 @@ extension BrowserViewController: WKUIDelegate {
     initiatedByFrame frame: WKFrameInfo,
     completionHandler: @escaping (Bool) -> Void
   ) {
-    guard let tab = tabManager[webView], let url = frame.origin?.url else {
+    guard let tab = tabManager[webView], let url = frame.origin?.url, tab === tabManager.selectedTab
+    else {
       completionHandler(false)
       return
     }
@@ -434,7 +438,8 @@ extension BrowserViewController: WKUIDelegate {
     initiatedByFrame frame: WKFrameInfo,
     completionHandler: @escaping (String?) -> Void
   ) {
-    guard let tab = tabManager[webView], let url = frame.origin?.url else {
+    guard let tab = tabManager[webView], let url = frame.origin?.url, tab === tabManager.selectedTab
+    else {
       completionHandler(nil)
       return
     }
