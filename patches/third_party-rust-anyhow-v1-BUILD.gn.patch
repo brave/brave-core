@@ -1,10 +1,10 @@
 diff --git a/third_party/rust/anyhow/v1/BUILD.gn b/third_party/rust/anyhow/v1/BUILD.gn
-index 7e28cc89cce75ca0e193471dd81548b490302542..9eced79d500e54c5f9e9225267668129707c2904 100644
+index e567f277596fbe45c772a59b2c05f8a20ecf660d..06a9b385460dbb245ca67beb2bc19fb31f769b71 100644
 --- a/third_party/rust/anyhow/v1/BUILD.gn
 +++ b/third_party/rust/anyhow/v1/BUILD.gn
-@@ -52,5 +52,4 @@ cargo_crate("lib") {
-     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
-   ]
- 
+@@ -56,5 +56,4 @@ cargo_crate("lib") {
+   # //third_party/rust/chromium_crates_io/Cargo.toml to use
+   # it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
 -  testonly = true
  }
