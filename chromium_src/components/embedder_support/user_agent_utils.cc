@@ -6,12 +6,21 @@
 #include "components/embedder_support/user_agent_utils.h"
 
 #include "base/strings/strcat.h"
+#include "base/system/sys_info.h"
 
 namespace {
 
 constexpr char kBraveBrandNameForCHUA[] = "Brave";
 
 }  // namespace
+
+namespace embedder_support {
+std::string BuildModelInfo_ChromiumImpl();
+
+std::string BuildModelInfo() {
+  return std::string();
+}
+}  // namespace embedder_support
 
 // Chromium uses `version_info::GetProductName()` to get the browser's "brand"
 // name, but on MacOS we use different names for different channels (adding Beta
@@ -25,6 +34,19 @@ constexpr char kBraveBrandNameForCHUA[] = "Brave";
 #define BRAVE_BRAND_VERSION_OVERRIDE_FOR_FULL_BRAND_VERSION_TYPE \
   base::StrCat({major_version, ".0.0.0"})
 
+#define BRAVE_GET_ANDROID_OS_INFO \
+  include_android_model = IncludeAndroidModel::Exclude;
+
+// In the translation unit `BuildModelInfo` occurrences are translated to
+// `BuildModelInfo_ChromiumImpl`, which cancels out the empty string override.
+// This particular override enforces that definition.
+#define HardwareModelName() HardwareModelName() == "" ? "" : ""
+
+#define BuildModelInfo BuildModelInfo_ChromiumImpl
+
 #include "src/components/embedder_support/user_agent_utils.cc"
 #undef BRAVE_BRAND_VERSION_OVERRIDE_FOR_FULL_BRAND_VERSION_TYPE
 #undef BRAVE_GET_USER_AGENT_BRAND_LIST
+#undef BuildModelInfo
+#undef BRAVE_GET_ANDROID_OS_INFO
+#undef HardwareModelName
