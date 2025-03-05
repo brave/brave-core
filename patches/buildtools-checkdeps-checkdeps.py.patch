@@ -1,5 +1,5 @@
 diff --git a/buildtools/checkdeps/checkdeps.py b/buildtools/checkdeps/checkdeps.py
-index 19e0854786de291fd9c94ac64dbbe181faee6180..55e02d2aee620da2312c0d41e5965ea828fc471b 100755
+index 00e5da345c451a66c33fabd206b91093b01e6351..121bcb8849264e00650d6ac421fddac383654687 100755
 --- a/buildtools/checkdeps/checkdeps.py
 +++ b/buildtools/checkdeps/checkdeps.py
 @@ -290,5 +290,6 @@ def main():
