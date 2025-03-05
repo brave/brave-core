@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 9bb34fe40f0cc08cb832ee6728ac8e32458c969b..d9996a8931038ceebb89b77db255f675f286c6cf 100644
+index 9bb34fe40f0cc08cb832ee6728ac8e32458c969b..ee4d625c34c7c5d3eaa05d358878288a00b22ca7 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -195,6 +195,7 @@ if (!is_android && !is_mac) {
@@ -60,15 +60,16 @@ index 9bb34fe40f0cc08cb832ee6728ac8e32458c969b..d9996a8931038ceebb89b77db255f675
        }
  
        extra_substitutions = [
-@@ -915,6 +922,7 @@ if (is_win) {
+@@ -913,7 +920,7 @@ if (is_win) {
+     }
+ 
      if (enable_updater) {
-       if (is_chrome_branded) {
+-      if (is_chrome_branded) {
++      if (use_prebuilt_omaha4) {
          sources += [ "//third_party/updater/chrome_mac_universal_prod/cipd/${updater_product_full_name}.app" ]
-+      } else if (use_prebuilt_omaha4) { sources += [ "//build/mac_files/omaha4/${updater_product_full_name}.app" ]
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
- 
-@@ -1221,6 +1229,7 @@ if (is_win) {
+@@ -1221,6 +1228,7 @@ if (is_win) {
        "-current_version",
        chrome_dylib_version,
      ]
@@ -76,7 +77,7 @@ index 9bb34fe40f0cc08cb832ee6728ac8e32458c969b..d9996a8931038ceebb89b77db255f675
  
      if (!is_component_build) {
        # Specify a sensible install_name for static builds. The library is
-@@ -1402,6 +1411,7 @@ if (is_win) {
+@@ -1402,6 +1410,7 @@ if (is_win) {
  
  group("dependencies") {
    public_deps = [
@@ -84,7 +85,7 @@ index 9bb34fe40f0cc08cb832ee6728ac8e32458c969b..d9996a8931038ceebb89b77db255f675
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1457,7 +1467,7 @@ group("dependencies") {
+@@ -1457,7 +1466,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -93,7 +94,7 @@ index 9bb34fe40f0cc08cb832ee6728ac8e32458c969b..d9996a8931038ceebb89b77db255f675
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1506,6 +1516,7 @@ group("resources") {
+@@ -1506,6 +1515,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -101,7 +102,7 @@ index 9bb34fe40f0cc08cb832ee6728ac8e32458c969b..d9996a8931038ceebb89b77db255f675
    ]
  }
  
-@@ -1559,6 +1570,7 @@ if (!is_android) {
+@@ -1559,6 +1569,7 @@ if (!is_android) {
      if (enable_resource_allowlist_generation) {
        repack_allowlist = _chrome_resource_allowlist
        deps = [ ":resource_allowlist" ]

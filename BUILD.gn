@@ -313,11 +313,7 @@ group("create_dist") {
     }
   }
   if (is_mac) {
-    if (skip_signing) {
-      deps += [ "build/mac:create_dmg" ]
-    } else {
-      deps += [ "build/mac:finalize_dmg_pkg" ]
-    }
+    deps += [ "//brave/build/mac:create_dist_mac" ]
   }
   if (is_linux) {
     deps += [
@@ -544,7 +540,7 @@ action("create_dist_zips") {
     if (is_mac) {
       dir_inputs += [ brave_exe ]
       rebase_base_dir = rebase_path(root_out_dir)
-      deps += [ "//brave/build/mac:finalize_app" ]
+      deps += [ "//chrome:chrome_app" ]
     } else {
       rebase_base_dir = rebase_path(brave_dist_dir, root_out_dir)
     }
