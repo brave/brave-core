@@ -28,6 +28,8 @@ import {
 } from './partners_consent_modal.style'
 import { Row } from '../../../shared/style'
 
+const MELD_TERMS_OF_USE_URL = 'https://www.meld.io/terms-of-use'
+
 interface PartnerConsentModalProps {
   isOpen: boolean
   onClose: () => void
@@ -51,18 +53,23 @@ export function PartnersConsentModal(
   )
 
   const onClickTermsOfUse = () => {
-    chrome.tabs.create(
-      {
-        url: 'https://www.meld.io/terms-of-use'
-      },
-      () => {
-        if (chrome.runtime.lastError) {
-          console.error(
-            'tabs.create failed: ' + chrome.runtime.lastError.message
-          )
+    if (chrome.tabs !== undefined) {
+      chrome.tabs.create(
+        {
+          url: MELD_TERMS_OF_USE_URL
+        },
+        () => {
+          if (chrome.runtime.lastError) {
+            console.error(
+              'tabs.create failed: ' + chrome.runtime.lastError.message
+            )
+          }
         }
-      }
-    )
+      )
+      return
+    }
+    // Tabs.create is desktop specific. Using window.open for android.
+    window.open(MELD_TERMS_OF_USE_URL, '_blank', 'noopener noreferrer')
   }
 
   return (
