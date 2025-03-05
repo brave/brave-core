@@ -15,7 +15,7 @@ type Props = {
 }
 
 export default function CardImage(props: Props) {
-  const imageUrl = `chrome://image?url=${props.imageUrl}`
+  const imageUrl = `chrome://maybe-padded-image?url=${props.imageUrl}`
   const [isImageLoaded, setIsImageLoaded] = React.useState(false)
   React.useEffect(() => {
     if (imageUrl) {

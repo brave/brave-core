@@ -33,7 +33,7 @@ export function MaybeImage(props: React.DetailedHTMLProps<React.ImgHTMLAttribute
   React.useEffect(() => {
     setLoaded(false)
   }, [src])
-  return <img {...rest} style={loaded ? undefined : hide} onLoad={onLoad} src={`chrome://image?url=${src}`} />
+  return <img {...rest} style={loaded ? undefined : hide} onLoad={onLoad} src={`chrome://maybe-padded-image?url=${src}`} />
 }
 
 export function SearchEngineIcon(props: { engine?: SearchEngineInfo, className?: string }) {

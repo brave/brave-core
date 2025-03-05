@@ -32,6 +32,13 @@ class PaddedImageSource : public SanitizedImageSource {
 
   ~PaddedImageSource() override;
 
+  // content::URLDataSource:
+  std::string GetSource() override;
+  void StartDataRequest(
+      const GURL& url,
+      const content::WebContents::Getter& wc_getter,
+      content::URLDataSource::GotDataCallback callback) override;
+
  protected:
   void OnImageLoaded(std::unique_ptr<network::SimpleURLLoader> loader,
                      RequestAttributes request_attributes,
@@ -39,7 +46,7 @@ class PaddedImageSource : public SanitizedImageSource {
                      std::unique_ptr<std::string> body) override;
 
  private:
-  std::string pcdn_domain_;
+  const std::string pcdn_domain_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_PADDED_IMAGE_SOURCE_H_

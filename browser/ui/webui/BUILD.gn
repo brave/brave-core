@@ -60,10 +60,6 @@ source_set("unit_tests") {
 }
 
 source_set("padded_image_source") {
-  # This is to match the upstream include for sanitized_image_source in
-  # //chrome/browser/ui
-  assert(!is_android)
-
   sources = [
     "padded_image_source.cc",
     "padded_image_source.h",
@@ -73,6 +69,7 @@ source_set("padded_image_source") {
     "//brave/brave_domains",
     "//brave/components/brave_private_cdn",
     "//chrome/browser/profiles:profile",
+    "//chrome/common",
     "//net",
     "//services/network/public/cpp",
   ]

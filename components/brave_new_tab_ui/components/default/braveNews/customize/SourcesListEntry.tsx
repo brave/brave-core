@@ -75,7 +75,7 @@ function FavIcon (props: { publisherId: string }) {
 
   return (
     <FavIconContainer>
-      {faviconUrl && !error && <img loading='lazy' src={`chrome://image?url=${faviconUrl}`} onError={() => setError(true)} />}
+      {faviconUrl && !error && <img loading='lazy' src={`chrome://maybe-padded-image?url=${faviconUrl}`} onError={() => setError(true)} />}
     </FavIconContainer>
   )
 }
