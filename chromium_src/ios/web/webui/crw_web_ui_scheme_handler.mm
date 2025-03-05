@@ -20,7 +20,9 @@
                               fetcher:(web::URLFetcherBlockAdapter*)fetcher;
 @end
 
-// Override
+// Override Chromium's `didReceiveResponse
+// So we can replace the responseHeaders with our own,
+// and whatever comes from the server, so WebKit can enforce CSP
 
 #define didReceiveResponse                                                   \
   didReceiveResponse:[strongSelf processResponse:response fetcher:fetcher]]; \
@@ -34,16 +36,24 @@
 - (void)dummy:(NSHTTPURLResponse*)response {
 }
 
+// Modify the `response` to add the headers from the `fetcher`
+// to enable CSPs
+// Chromium hard-codes headers which is wrong:
+// https://source.chromium.org/chromium/chromium/src/+/main:ios/web/webui/crw_web_ui_scheme_handler.mm;l=83-90?q=CRWWebUISchemeHandler&ss=chromium%2Fchromium%2Fsrc
+// This allows us to fix it and pass on the proper headers to WebKit
 - (NSHTTPURLResponse*)processResponse:(NSHTTPURLResponse*)response
                               fetcher:(web::URLFetcherBlockAdapter*)fetcher {
+  // Get the real response
   const network::mojom::URLResponseHeadPtr responseHead =
       fetcher->getResponse();
   if (responseHead) {
     const scoped_refptr<net::HttpResponseHeaders> headers =
         responseHead->headers;
     if (headers) {
+      // Parse the headers of the real response, into a dictionary
       NSMutableDictionary* responseHeaders = [self parseHeaders:headers];
 
+      // Modify the headers of the outgoing response
       if (![responseHeaders objectForKey:@"Content-Type"]) {
         [responseHeaders setObject:[response MIMEType] forKey:@"Content-Type"];
       }
@@ -52,6 +62,7 @@
         [responseHeaders setObject:@"*" forKey:@"Access-Control-Allow-Origin"];
       }
 
+      // Return the modified response with all the new headers added
       return [[NSHTTPURLResponse alloc] initWithURL:[response URL]
                                          statusCode:[response statusCode]
                                         HTTPVersion:@"HTTP/1.1"
