@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
-index c16bbdce2b2a3f8568934a4f40a00d8497f3f696..241b69ee53cdac5b5bab20d6dc04dacd5fa86a8e 100644
+index 4caa95def3fe8153a68d5b56d7a9171dfcb58698..5c952442fa6811448fe4927240f9bc14582fae67 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
-@@ -38,6 +38,7 @@ found in the LICENSE file.
+@@ -39,6 +39,7 @@ found in the LICENSE file.
          android:orientation="horizontal"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
@@ -10,7 +10,7 @@ index c16bbdce2b2a3f8568934a4f40a00d8497f3f696..241b69ee53cdac5b5bab20d6dc04dacd
          android:layout_gravity="top|end"
          android:focusable="true"
          android:focusableInTouchMode="true">
-@@ -50,6 +51,7 @@ found in the LICENSE file.
+@@ -51,6 +52,7 @@ found in the LICENSE file.
              android:layout_width="52dp"
              style="@style/ToolbarHoverableButton" />
  
