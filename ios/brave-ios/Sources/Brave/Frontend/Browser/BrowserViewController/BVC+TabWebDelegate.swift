@@ -293,7 +293,9 @@ extension BrowserViewController: TabWebDelegate {
     _ tab: Tab,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
   ) async -> WebPermissionDecision {
-    guard let origin = tab.committedURL?.origin else { return .deny }
+    guard let origin = tab.committedURL?.origin, tab === tabManager.selectedTab else {
+      return .deny
+    }
 
     let presentAlert: (CheckedContinuation<WebPermissionDecision, Never>) -> Void = {
       [weak self] contination in
@@ -356,7 +358,9 @@ extension BrowserViewController: TabWebDelegate {
   }
 
   func tab(_ tab: Tab, runJavaScriptAlertPanelWithMessage message: String, pageURL: URL) async {
-    guard case let origin = pageURL.origin, !origin.isOpaque else { return }
+    guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
+      return
+    }
     await withCheckedContinuation { continuation in
       let completionHandler: () -> Void = {
         continuation.resume()
@@ -378,7 +382,9 @@ extension BrowserViewController: TabWebDelegate {
     runJavaScriptConfirmPanelWithMessage message: String,
     pageURL: URL
   ) async -> Bool {
-    guard case let origin = pageURL.origin, !origin.isOpaque else { return false }
+    guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
+      return false
+    }
     return await withCheckedContinuation { continuation in
       let completionHandler: (Bool) -> Void = { result in
         continuation.resume(returning: result)
@@ -401,7 +407,9 @@ extension BrowserViewController: TabWebDelegate {
     defaultText: String?,
     pageURL: URL
   ) async -> String? {
-    guard case let origin = pageURL.origin, !origin.isOpaque else { return nil }
+    guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
+      return nil
+    }
     return await withCheckedContinuation { continuation in
       let completionHandler: (String?) -> Void = { result in
         continuation.resume(returning: result)
