@@ -46,9 +46,6 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     private Supplier<Tab> mActivityTabSupplier;
 
     /** Will be deleted in bytecode, value from the parent class will be used instead. */
-    private boolean mNativeInitialized;
-
-    /** Will be deleted in bytecode, value from the parent class will be used instead. */
     private DropdownItemViewInfoListManager mDropdownViewInfoListManager;
 
     /** Will be deleted in bytecode, value from the parent class will be used instead. */
@@ -95,13 +92,6 @@ class BraveAutocompleteMediator extends AutocompleteMediator
 
         mDelegate = delegate;
         mActivityTabSupplier = activityTabSupplier;
-    }
-
-    @Override
-    public void onOmniboxSessionStateChange(boolean activated) {
-        if (!mNativeInitialized) return;
-
-        super.onOmniboxSessionStateChange(activated);
     }
 
     @Override
