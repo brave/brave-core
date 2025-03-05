@@ -349,13 +349,10 @@ extension BrowserViewController: TopToolbarDelegate {
     controller.webView.load(URLRequest(url: url))
     controller.title = url.host?.capitalizeFirstLetter
     let webView = controller.webView
-    // TODO: brave-browser#44346 Using CWVFindInPageController will DCHECK on deinit, use when fixed
-    webView.internalWebView?.isFindInteractionEnabled = true
     controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
       systemItem: .search,
       primaryAction: .init { [weak webView] _ in
-        webView?.internalWebView?.findInteraction?.searchText = ""
-        webView?.internalWebView?.findInteraction?.presentFindNavigator(showingReplace: false)
+        webView?.findInPageController.startFindInPage()
       }
     )
     let container = UINavigationController(rootViewController: controller)
