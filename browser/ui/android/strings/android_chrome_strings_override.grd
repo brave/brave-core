@@ -195,6 +195,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new Private tab that facilitates pseudononymous browsing. [CHAR_LIMIT=27]" meaning="Android menu">
         New Private tab
       </message>
+      <message name="IDS_ACCESSIBILITY_INCOGNITO_TAB" desc="Content description for tabs that are in Private mode">
+        Private Tab
+      </message>
       <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_TABS" desc="Menu item for closing all open Private tabs. [CHAR_LIMIT=27]">
         Close all Private tabs
       </message>
@@ -226,12 +229,13 @@ CHAR_LIMIT guidelines:
       <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_INCOGNITO" desc="Content description for the Private tabs toggle button when viewing Private tabs.">
         Leave Private mode
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER" desc="Content description for tabs that are not selected in Private mode">
-        Private Tab
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_INCOGNITO" desc="Content description for tabs that are not selected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Private Tab
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_INCOGNITO_IDENTIFIER_SELECTED" desc="Content description for the tab that is selected in Private mode">
-        Selected Private Tab
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_INCOGNITO_SELECTED" desc="Content description for the tab that is selected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Private Tab
       </message>
+
       <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new tab in Private mode
       </message>
