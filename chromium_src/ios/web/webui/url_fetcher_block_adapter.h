@@ -9,6 +9,10 @@
 #include "base/memory/raw_ptr.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
+/// Override to add a function to get the server response
+/// So we can pass on the CSP headers and other headers
+/// To WKURLSchemeHandler
+
 #define completion_handler_                                \
   completion_handler_;                                     \
                                                            \
