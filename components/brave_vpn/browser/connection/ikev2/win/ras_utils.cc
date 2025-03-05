@@ -12,6 +12,7 @@
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 
 #include <windows.h>
+
 #include <ras.h>
 #include <raserror.h>
 #include <stdio.h>
@@ -31,6 +32,7 @@
 #include "brave/base/process/process_launcher.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "url/gurl.h"
 
 namespace brave_vpn {
 
@@ -422,6 +424,50 @@ RasOperationResult SetConnectionParamsUsingPowerShell(
   return GetRasSuccessResult();
 }
 
+// `Set-VpnConnectionProxy` cmdlet:
+// https://learn.microsoft.com/en-us/powershell/module/vpnclient/set-vpnconnectionproxy?view=windowsserver2022-ps
+RasOperationResult SetConnectionProxyParamsUsingPowerShell(
+    const std::wstring& entry_name,
+    const std::wstring& pac_file_url) {
+  // Validate the entry name
+  DWORD nRet = RasValidateEntryName(NULL, entry_name.c_str());
+  switch (nRet) {
+    case ERROR_INVALID_NAME:
+      return GetRasErrorResult("`entry_name` is not a valid format");
+    case ERROR_CANNOT_FIND_PHONEBOOK_ENTRY:
+      return GetRasErrorResult("`entry_name` is not in phone book");
+    default:
+      // ERROR_SUCCESS
+      // ERROR_ALREADY_EXISTS
+      break;
+  }
+
+  // Validate the URL of the provided PAC file
+  VLOG(2) << __func__ << " validating `pac_file_url`: \"" << pac_file_url
+          << "\"";
+  GURL pac_file = GURL(base::WideToUTF8(pac_file_url));
+  if (!pac_file.is_valid()) {
+    return GetRasErrorResult("`pac_file_url` is not a valid URL");
+  }
+  if (!pac_file.SchemeIs(url::kHttpsScheme)) {
+    return GetRasErrorResult("`pac_file_url` is not using HTTPS");
+  }
+
+  base::CommandLine power_shell(base::FilePath(L"PowerShell"));
+  power_shell.AppendArg("Set-VpnConnectionProxy");
+  power_shell.AppendArg("-ConnectionName");
+  power_shell.AppendArg(base::WideToUTF8(entry_name));
+  power_shell.AppendArg("-AutoConfigurationScript");
+  power_shell.AppendArg(base::WideToUTF8(pac_file_url));
+  base::LaunchOptions options;
+  options.start_hidden = true;
+  auto result = brave::ProcessLauncher::ReadAppOutput(power_shell, options, 10);
+  if (!result.has_value()) {
+    return GetRasErrorResult(logging::SystemErrorCodeToString(GetLastError()));
+  }
+  return GetRasSuccessResult();
+}
+
 RasOperationResult SetConnectionParamsWin32(
     const std::wstring& entry_name,
     const std::wstring& phone_book_path) {
@@ -466,6 +512,7 @@ RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
   const auto hostname = base::UTF8ToWide(info.hostname());
   const auto username = base::UTF8ToWide(info.username());
   const auto password = base::UTF8ToWide(info.password());
+  const auto proxy = base::UTF8ToWide(info.proxy());
 
   // `RasSetEntryProperties` can have problems if fields are empty.
   // Specifically, it will crash if `hostname` is NULL. Entry name
@@ -542,6 +589,13 @@ RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
   if (!SetConnectionParamsUsingPowerShell(entry_name).success) {
     return SetConnectionParamsWin32(entry_name, phone_book_path);
   }
+
+  // Only provide proxy params if the host supports smart routing.
+  if (info.smart_routing_enabled()) {
+    // Can ignore proxy setting failure. VPN works w/o it.
+    SetConnectionProxyParamsUsingPowerShell(entry_name, proxy);
+  }
+
   return GetRasSuccessResult();
 }
 

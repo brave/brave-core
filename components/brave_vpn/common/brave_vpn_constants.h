@@ -57,6 +57,8 @@ inline constexpr char kSubscriberCredentialKey[] = "credential";
 inline constexpr char kSkusCredentialKey[] = "skus_credential";
 inline constexpr char kRetriedSkusCredentialKey[] = "retried_skus_credential";
 inline constexpr char kSubscriberCredentialExpirationKey[] = "expiration";
+inline constexpr char kProxyUrl[] =
+    "https://connect-api.guardianapp.com/api/v1/smart-proxy-routing/static-pac";
 
 #if !BUILDFLAG(IS_ANDROID)
 inline constexpr char kTokenNoLongerValid[] = "Token No Longer Valid";

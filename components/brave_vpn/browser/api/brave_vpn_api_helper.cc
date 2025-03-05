@@ -36,8 +36,9 @@ std::unique_ptr<Hostname> PickBestHostname(
               return a.capacity_score > b.capacity_score;
             });
 
-  if (filtered_hostnames.empty())
+  if (filtered_hostnames.empty()) {
     return std::make_unique<Hostname>();
+  }
 
   // Pick highest capacity score.
   return std::make_unique<Hostname>(filtered_hostnames[0]);
@@ -47,24 +48,30 @@ std::vector<Hostname> ParseHostnames(const base::Value::List& hostnames_value) {
   std::vector<Hostname> hostnames;
   for (const auto& value : hostnames_value) {
     DCHECK(value.is_dict());
-    if (!value.is_dict())
+    if (!value.is_dict()) {
       continue;
+    }
 
     const auto& dict = value.GetDict();
     constexpr char kHostnameKey[] = "hostname";
     constexpr char kDisplayNameKey[] = "display-name";
     constexpr char kOfflineKey[] = "offline";
     constexpr char kCapacityScoreKey[] = "capacity-score";
+    constexpr char kSmartRoutingEnabled[] = "smart-routing-enabled";
     const std::string* hostname_str = dict.FindString(kHostnameKey);
     const std::string* display_name_str = dict.FindString(kDisplayNameKey);
     std::optional<bool> offline = dict.FindBool(kOfflineKey);
     std::optional<int> capacity_score = dict.FindInt(kCapacityScoreKey);
+    std::optional<bool> smart_routing_enabled =
+        dict.FindBool(kSmartRoutingEnabled);
 
-    if (!hostname_str || !display_name_str || !offline || !capacity_score)
+    if (!hostname_str || !display_name_str || !offline || !capacity_score) {
       continue;
+    }
 
-    hostnames.push_back(
-        Hostname{*hostname_str, *display_name_str, *offline, *capacity_score});
+    hostnames.push_back(Hostname{*hostname_str, *display_name_str, *offline,
+                                 *capacity_score,
+                                 smart_routing_enabled.value_or(false)});
   }
 
   return hostnames;

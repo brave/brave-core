@@ -53,6 +53,8 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(IS_MAC)
   registry->RegisterBooleanPref(prefs::kBraveVPNOnDemandEnabled, false);
 #endif
+  registry->RegisterBooleanPref(prefs::kBraveVPNSmartProxyRoutingEnabled,
+                                false);
   registry->RegisterListPref(prefs::kBraveVPNWidgetUsageWeeklyStorage);
 }
 
@@ -244,12 +246,15 @@ std::string GetBraveVPNEntryName(version_info::Channel channel) {
 }
 
 std::string GetManageUrl(const std::string& env) {
-  if (env == skus::kEnvProduction)
+  if (env == skus::kEnvProduction) {
     return brave_vpn::kManageUrlProd;
-  if (env == skus::kEnvStaging)
+  }
+  if (env == skus::kEnvStaging) {
     return brave_vpn::kManageUrlStaging;
-  if (env == skus::kEnvDevelopment)
+  }
+  if (env == skus::kEnvDevelopment) {
     return brave_vpn::kManageUrlDev;
+  }
 
   NOTREACHED() << "All env handled above.";
 }
@@ -300,29 +305,34 @@ void MigrateLocalStatePrefs(PrefService* local_prefs) {
 bool HasValidSubscriberCredential(PrefService* local_prefs) {
   const base::Value::Dict& sub_cred_dict =
       local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
-  if (sub_cred_dict.empty())
+  if (sub_cred_dict.empty()) {
     return false;
+  }
 
   const std::string* cred = sub_cred_dict.FindString(kSubscriberCredentialKey);
   const base::Value* expiration_time_value =
       sub_cred_dict.Find(kSubscriberCredentialExpirationKey);
 
-  if (!cred || !expiration_time_value)
+  if (!cred || !expiration_time_value) {
     return false;
+  }
 
-  if (cred->empty())
+  if (cred->empty()) {
     return false;
+  }
 
   auto expiration_time = base::ValueToTime(expiration_time_value);
-  if (!expiration_time || expiration_time < base::Time::Now())
+  if (!expiration_time || expiration_time < base::Time::Now()) {
     return false;
+  }
 
   return true;
 }
 
 std::string GetSubscriberCredential(PrefService* local_prefs) {
-  if (!HasValidSubscriberCredential(local_prefs))
+  if (!HasValidSubscriberCredential(local_prefs)) {
     return "";
+  }
   const base::Value::Dict& sub_cred_dict =
       local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
   const std::string* cred = sub_cred_dict.FindString(kSubscriberCredentialKey);
