@@ -11,12 +11,12 @@ const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
 
 function getBuildOutputPathList(buildOutputRelativePath) {
-  return buildConfigs.reduce((acc, e) =>
-    [...acc, e, ...crossPlatforms.map(pref => `${pref}_${e}`)],
-  []).reduce((acc, e) =>
-    [...acc, e, ...extraArchitectures.map(suf => `${e}_${suf}`)],
-  []).map(e =>
-    `<rootDir>/../out/${e}/${buildOutputRelativePath}`
+  return buildConfigs.reduce((outDirs, outDir) =>
+    [...outDirs, outDir, ...crossPlatforms.map(platform => `${platform}_${outDir}`)],
+  []).reduce((outDirs, outDir) =>
+    [...outDirs, outDir, ...extraArchitectures.map(arch => `${outDir}_${arch}`)],
+  []).map(outDir =>
+    `<rootDir>/../out/${outDir}/${buildOutputRelativePath}`
   )
 }
 
