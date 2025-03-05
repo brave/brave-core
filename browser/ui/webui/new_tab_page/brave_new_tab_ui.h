@@ -23,15 +23,11 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"  // nogncheck
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 namespace brave_ads {
 class AdsService;
 }  // namespace brave_ads
-
-namespace brave_news {
-class BraveNewsController;
-}  // namespace brave_news
 
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
