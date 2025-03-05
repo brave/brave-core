@@ -24,6 +24,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
   private weak var tab: Tab?
   private weak var delegate: BraveTranslateScriptHandlerDelegate?
   private static var requestCache = [URL: (data: Data, response: HTTPURLResponse)]()
+  private var tasks = [UUID: Task<Void, Error>]()
 
   private var url: URL?
   private var isTranslationReady = false
@@ -81,6 +82,8 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
     translationController?.removeFromParent()
     translationController = nil
     translationTask = nil
+
+    tasks.values.forEach({ $0.cancel() })
   }
 
   func startTranslation(canShowToast: Bool) {
@@ -191,17 +194,36 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
     }
 
     if translationSession != nil {
-      Task { @MainActor in
-        try? await translationTask?()
-        translationTask = nil
+      let taskId = UUID()
+      let task = Task { @MainActor [weak self] in
+        guard let self = self else {
+          return
+        }
+
+        defer {
+          tasks.removeValue(forKey: taskId)
+        }
+
+        try await self.translationTask?()
+        self.translationTask = nil
       }
+
+      tasks[taskId] = task
     }
   }
 
   func revertTranslation() {
-    Task { @MainActor [weak self] in
-      guard let self = self,
-        let tab = self.tab,
+    let taskId = UUID()
+    let task = Task { @MainActor [weak self] in
+      guard let self = self else {
+        return
+      }
+
+      defer {
+        tasks.removeValue(forKey: taskId)
+      }
+
+      guard let tab = self.tab,
         let delegate = delegate,
         tab.translationState == .active
       else {
@@ -224,6 +246,8 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
 
       delegate.updateTranslateURLBar(tab: tab, state: .available)
     }
+
+    tasks[taskId] = task
   }
 
   @MainActor

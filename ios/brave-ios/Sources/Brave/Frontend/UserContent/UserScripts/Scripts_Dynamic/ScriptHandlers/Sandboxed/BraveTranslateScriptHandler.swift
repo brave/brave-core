@@ -20,6 +20,8 @@ protocol BraveTranslateScriptHandlerDelegate: NSObject {
 
 class BraveTranslateScriptHandler: NSObject, TabContentScript {
   private static var elementScript: String?
+  private var tasks = [UUID: Task<Void, Error>]()
+
   static let namespace = "translate_\(uniqueID)"
   static let scriptName = "BraveTranslateScript"
   static let scriptId = UUID().uuidString
@@ -48,6 +50,10 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
       in: scriptSandbox
     )
   }()
+
+  deinit {
+    tasks.values.forEach({ $0.cancel() })
+  }
 
   static func checkTranslate(tab: Tab) {
     tab.webView?.evaluateSafeJavaScript(
@@ -91,15 +97,22 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     }
 
     // Processing
-    Task { [weak tab] in
-      guard let tab = tab else {
+    let taskId = UUID()
+    let task = Task { [weak self, weak tab] in
+      guard let self = self, let tab = tab else {
         replyHandler(nil, BraveTranslateError.otherError.rawValue)
         return
+      }
+
+      defer {
+        self.tasks.removeValue(forKey: taskId)
       }
 
       let (result, error) = try await processScriptMessage(for: tab, command: command, body: body)
       replyHandler(result, error)
     }
+
+    tasks[taskId] = task
   }
 
   private func processScriptMessage(
