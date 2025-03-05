@@ -8,8 +8,8 @@ import BraveShared
 import Foundation
 import os.log
 
-class ZipImporter {
-  enum ZipImportError: Error {
+public class ZipImporter {
+  public enum ZipImportError: Error {
     case failedToUnzip
     case invalidFileSystemURL
   }

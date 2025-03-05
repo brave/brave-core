@@ -4,6 +4,7 @@
 
 import BraveCore
 import BraveShared
+import DataImporter
 import Foundation
 import MobileCoreServices
 import PassKit
