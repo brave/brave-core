@@ -1,19 +1,19 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 8622f98a6fdd370a5ab86bc75a153ac003d6b8ed..e57c41f3b8ada3129cd522c16ab40dd190509b7b 100644
+index fe01f6f29c99cd5eed375815a34b095080e5c73e..eb7a2c89967cb507a6cc46544396a4b10a36a8cf 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -662,6 +662,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
- 
+@@ -644,6 +644,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+   // Deprecated 03/2025, migrated to profile pref.
    registry->RegisterIntegerPref(
-       prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
+       prefs::kHomeCustomizationMagicStackSafetyCheckIssuesCount, 0);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1037,6 +1038,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
- 
-   // Deprecated 12/2024.
-   registry->RegisterBooleanPref(kPageContentCollectionEnabled, false);
+@@ -1031,6 +1032,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   // Deprecated 02/2025 (migrated to localState prefs).
+   registry->RegisterIntegerPref(
+       prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
