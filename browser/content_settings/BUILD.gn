@@ -3,6 +3,37 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+static_library("autoplay") {
+  sources = [
+    "autoplay_content_setting_observer.cc",
+    "autoplay_content_setting_observer.h",
+  ]
+
+  deps = [
+    "//brave/brave_domains",
+    "//brave/browser:browser_process",
+    "//brave/browser/misc_metrics",
+    "//brave/browser/skus",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//brave/net/base:utils",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//chrome/common:channel_info",
+    "//components/browsing_data/core",
+    "//components/keyed_service/content",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//ui/base",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 

@@ -12,6 +12,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
+#include "brave/browser/content_settings/autoplay_content_setting_observer.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
@@ -49,6 +50,8 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
   // Expect upstream's Init to create the registry.
   CHECK(side_panel_registry());
   brave::RegisterContextualSidePanel(side_panel_registry(), tab.GetContents());
+
+  AutoPlayContentSettingObserver::MaybeCreateForWebContents(tab.GetContents());
 
   if (ai_chat::IsAllowedForContext(profile)) {
     tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(

@@ -3,33 +3,49 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "third_party/blink/public/mojom/autoplay/autoplay.mojom-blink.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/html/media/html_media_element.h"
+#include "third_party/blink/renderer/core/page/page.h"
 
 namespace blink {
 namespace {
 
-bool IsAutoplayAllowedForFrame(LocalFrame* frame, bool play_requested) {
-  if (!frame)
+// bool IsAutoplayAllowedForFrame(LocalFrame* frame, bool play_requested) {
+//   if (!frame)
+//     return false;
+//   if (auto* settings_client = frame->GetContentSettingsClient()) {
+//     bool allow_autoplay = settings_client->AllowAutoplay(play_requested);
+//     // Clear it in order to block media when refresh or navigate
+//     if (!allow_autoplay) {
+//       frame->ClearUserActivation();
+//     }
+//     return allow_autoplay;
+//   }
+//   return true;
+// }
+
+// bool IsAutoplayAllowedForDocument(const Document& document) {
+//   return IsAutoplayAllowedForFrame(document.GetFrame(), false);
+// }
+
+// bool IsAutoplayAllowedForElement(Member<HTMLMediaElement> element) {
+//   return IsAutoplayAllowedForFrame(element->GetDocument().GetFrame(), true);
+// }
+
+bool DocumentHasBraveAllowFlag(const Document& document) {
+  if (!document.GetPage())
     return false;
-  if (auto* settings_client = frame->GetContentSettingsClient()) {
-    bool allow_autoplay = settings_client->AllowAutoplay(play_requested);
-    // Clear it in order to block media when refresh or navigate
-    if (!allow_autoplay) {
-      frame->ClearUserActivation();
-    }
-    return allow_autoplay;
-  }
-  return true;
+  return document.GetPage()->AutoplayFlags() &
+         mojom::blink::kBraveAutoPlayFlagAllow;
 }
 
-bool IsAutoplayAllowedForDocument(const Document& document) {
-  return IsAutoplayAllowedForFrame(document.GetFrame(), false);
-}
-
-bool IsAutoplayAllowedForElement(Member<HTMLMediaElement> element) {
-  return IsAutoplayAllowedForFrame(element->GetDocument().GetFrame(), true);
+bool DocumentHasBraveBlockFlag(const Document& document) {
+  if (!document.GetPage())
+    return false;
+  return document.GetPage()->AutoplayFlags() &
+         mojom::blink::kBraveAutoPlayFlagBlock;
 }
 
 }  // namespace
@@ -43,7 +59,14 @@ bool IsAutoplayAllowedForElement(Member<HTMLMediaElement> element) {
   if (!IsAutoplayAllowedForDocument(document)) \
     return Type::kUserGestureRequired;
 
+#define BRAVE_IS_DOCUMENT_ALLOWED_TO_PLAY(document) \
+  if (DocumentHasBraveAllowFlag(document))          \
+    return true;                                    \
+  if (DocumentHasBraveBlockFlag(document))          \
+    return false;
+
 #include "src/third_party/blink/renderer/core/html/media/autoplay_policy.cc"
 
+#undef BRAVE_IS_DOCUMENT_ALLOWED_TO_PLAY
 #undef BRAVE_AUTOPLAY_POLICY_IS_GESTURE_NEEDED_FOR_PLAYBACK
 #undef BRAVE_GET_AUTOPLAY_POLICY_FOR_DOCUMENT

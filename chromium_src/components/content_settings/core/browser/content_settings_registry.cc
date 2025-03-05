@@ -153,7 +153,7 @@ void ContentSettingsRegistry::BraveInit() {
   // DiscardObsoleteAutoplayAsk test case
   content_settings_info_.erase(ContentSettingsType::AUTOPLAY);
   website_settings_registry_->UnRegister(ContentSettingsType::AUTOPLAY);
-  Register(ContentSettingsType::AUTOPLAY, "autoplay", CONTENT_SETTING_ALLOW,
+  Register(ContentSettingsType::AUTOPLAY, "autoplay", CONTENT_SETTING_ASK,
            WebsiteSettingsInfo::UNSYNCABLE, /*allowlisted_schemes=*/{},
            /*valid_settings=*/
            {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},

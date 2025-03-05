@@ -1,20 +1,38 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index 429b4b07c292bba49550962133ae341d40eafd75..52ce54953330b9829f18f977e6ad6beb6bab6aab 100644
+index 429b4b07c292bba49550962133ae341d40eafd75..c2d4a8e51a2a8aa8436d6aac15b18175b88bda32 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 @@ -65,6 +65,7 @@ bool ComputeLockPendingUserGestureRequired(const Document& document) {
  // static
  AutoplayPolicy::Type AutoplayPolicy::GetAutoplayPolicyForDocument(
      const Document& document) {
-+  BRAVE_GET_AUTOPLAY_POLICY_FOR_DOCUMENT
++  // BRAVE_GET_AUTOPLAY_POLICY_FOR_DOCUMENT
    if (!document.GetSettings())
      return Type::kNoUserGestureRequired;
  
-@@ -339,6 +340,7 @@ void AutoplayPolicy::TryUnlockingUserGesture() {
+@@ -82,6 +83,8 @@ AutoplayPolicy::Type AutoplayPolicy::GetAutoplayPolicyForDocument(
+ 
+ // static
+ bool AutoplayPolicy::IsDocumentAllowedToPlay(const Document& document) {
++  BRAVE_IS_DOCUMENT_ALLOWED_TO_PLAY(document)
++
+   if (DocumentHasForceAllowFlag(document))
+     return true;
+ 
+@@ -189,6 +192,8 @@ bool AutoplayPolicy::IsEligibleForAutoplayMuted() const {
+     return false;
+   }
+ 
++  BRAVE_IS_DOCUMENT_ALLOWED_TO_PLAY(element_->GetDocument())
++
+   return !element_->EffectiveMediaVolume() &&
+          DocumentShouldAutoplayMutedVideos(element_->GetDocument());
+ }
+@@ -339,6 +344,7 @@ void AutoplayPolicy::TryUnlockingUserGesture() {
  bool AutoplayPolicy::IsGestureNeededForPlayback() const {
    if (!IsLockedPendingUserGesture())
      return false;
-+  BRAVE_AUTOPLAY_POLICY_IS_GESTURE_NEEDED_FOR_PLAYBACK
++  // BRAVE_AUTOPLAY_POLICY_IS_GESTURE_NEEDED_FOR_PLAYBACK
  
    // We want to allow muted video to autoplay if the element is allowed to
    // autoplay muted.

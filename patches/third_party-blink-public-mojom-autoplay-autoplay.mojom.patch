@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/public/mojom/autoplay/autoplay.mojom b/third_party/blink/public/mojom/autoplay/autoplay.mojom
+index fb538ccf6d8441a29e31f40b1e35b3604bd0dc6e..ade2780bf4d593c173b94f5e544f8b45cbc87e62 100644
+--- a/third_party/blink/public/mojom/autoplay/autoplay.mojom
++++ b/third_party/blink/public/mojom/autoplay/autoplay.mojom
+@@ -18,6 +18,9 @@ const int32 kAutoplayFlagForceAllow          = 0x00002;
+ // user has added an exception for it.
+ const int32 kAutoplayFlagUserException       = 0x00004;
+ 
++const int32 kBraveAutoPlayFlagAllow              = 0x80000000;
++const int32 kBraveAutoPlayFlagBlock              = 0x40000000;
++
+ interface AutoplayConfigurationClient {
+   // The browser tells the renderer that an origin has specific autoplay flags.
+   AddAutoplayFlags(url.mojom.Origin origin, int32 flags);
