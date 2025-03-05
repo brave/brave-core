@@ -1,8 +1,8 @@
 diff --git a/tools/crates/gnrt/lib/gn.rs b/tools/crates/gnrt/lib/gn.rs
-index 06ca0a9e6b6a144615bb158bda56ad8b2b516b6b..981b57207f2fbfabe1c56e8b81bc0ccbc2870ce2 100644
+index 101360d5e04515b12674023a88d173942769ecc5..0bcb3523f56a19ce25b333aee7517f10e1165caf 100644
 --- a/tools/crates/gnrt/lib/gn.rs
 +++ b/tools/crates/gnrt/lib/gn.rs
-@@ -202,8 +202,9 @@ pub fn build_rule_from_dep(
+@@ -201,8 +201,9 @@ pub fn build_rule_from_dep(
          let mut aliases = Vec::new();
          for dep in &normal_deps {
              let target_name = NormalizedName::from_crate_name(&dep.package_name).to_string();
@@ -13,7 +13,26 @@ index 06ca0a9e6b6a144615bb158bda56ad8b2b516b6b..981b57207f2fbfabe1c56e8b81bc0ccb
              }
          }
          aliases.sort_unstable();
-@@ -537,6 +538,7 @@ fn target_os_to_condition(target_os: &str) -> &'static str {
+@@ -575,6 +576,7 @@ fn cfg_to_condition(cfg: &cargo_platform::Cfg) -> Condition {
+             "target_family" => target_family_to_condition(value),
+             "target_os" => target_os_to_condition(value),
+             "target_vendor" => target_vendor_to_condition(value),
++            "curve25519_dalek_backend" => Condition::AlwaysFalse,
+             _ => Condition::Unsupported(format!("Unknown key `{key}` in `{cfg}`")),
+         },
+     }
+@@ -593,6 +595,10 @@ fn cfg_name_to_condition(name: &str) -> Condition {
+         return Condition::AlwaysFalse;
+     }
+ 
++    if ["tracing_unstable"].contains(&name) {
++        return Condition::AlwaysFalse;
++    }
++
+     Condition::Unsupported(format!("unknown option name: `#[cfg({name})]`"))
+ }
+ 
+@@ -697,6 +703,7 @@ fn target_os_to_condition(target_os: &str) -> Condition {
      for (t, c) in &[
          ("android", "is_android"),
          ("darwin", "is_mac"),
@@ -21,3 +40,14 @@ index 06ca0a9e6b6a144615bb158bda56ad8b2b516b6b..981b57207f2fbfabe1c56e8b81bc0ccb
          ("fuchsia", "is_fuchsia"),
          ("ios", "is_ios"),
          ("linux", "is_linux || is_chromeos"),
+@@ -722,6 +729,10 @@ fn target_vendor_to_condition(target_vendor: &str) -> Condition {
+         return Condition::AlwaysFalse;
+     }
+ 
++    if target_vendor == "apple" {
++        return Condition::Expr("is_apple".to_string());
++    }
++
+     Condition::Unsupported(format!("unknown `target_vendor` name: `{target_vendor}`"))
+ }
+ 
