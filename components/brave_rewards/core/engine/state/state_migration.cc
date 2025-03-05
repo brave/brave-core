@@ -12,7 +12,7 @@
 
 namespace {
 
-constexpr int kCurrentVersionNumber = 14;
+constexpr int kCurrentVersionNumber = 15;
 
 }  // namespace
 
@@ -31,7 +31,8 @@ StateMigration::StateMigration(RewardsEngine& engine)
       v11_(engine),
       v12_(engine),
       v13_(engine),
-      v14_(engine) {}
+      v14_(engine),
+      v15_(engine) {}
 
 StateMigration::~StateMigration() = default;
 
@@ -127,6 +128,10 @@ void StateMigration::Migrate(ResultCallback callback) {
     }
     case 14: {
       v14_.Migrate(std::move(migrate_callback));
+      return;
+    }
+    case 15: {
+      v15_.Migrate(std::move(migrate_callback));
       return;
     }
   }

@@ -90,7 +90,7 @@ void RefreshNext(std::unique_ptr<RefreshTaskInfo> task_info) {
 
   // Look for publisher key in hash index.
   auto& key = task_info->current->first;
-  task_info->engine->database()->SearchPublisherPrefixList(
+  task_info->engine->client()->CreatorPrefixStoreContains(
       key, base::BindOnce(on_prefix_searched, std::move(task_info)));
 }
 

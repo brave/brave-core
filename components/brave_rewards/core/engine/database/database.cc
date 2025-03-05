@@ -26,7 +26,6 @@ Database::Database(RewardsEngine& engine)
       external_transactions_(engine),
       media_publisher_info_(engine),
       publisher_info_(engine),
-      publisher_prefix_list_(engine),
       recurring_tip_(engine),
       server_publisher_info_(engine),
       sku_order_(engine),
@@ -358,17 +357,6 @@ void Database::RemoveRecurringTip(const std::string& publisher_key,
 /**
  * SERVER PUBLISHER INFO
  */
-void Database::SearchPublisherPrefixList(
-    const std::string& publisher_prefix,
-    SearchPublisherPrefixListCallback callback) {
-  publisher_prefix_list_.Search(publisher_prefix, std::move(callback));
-}
-
-void Database::ResetPublisherPrefixList(publisher::PrefixListReader reader,
-                                        ResultCallback callback) {
-  publisher_prefix_list_.Reset(std::move(reader), std::move(callback));
-}
-
 void Database::InsertServerPublisherInfo(
     const mojom::ServerPublisherInfo& server_info,
     ResultCallback callback) {

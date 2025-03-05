@@ -145,7 +145,7 @@ void Publisher::SaveVisit(const std::string& publisher_key,
                      weak_factory_.GetWeakPtr(), publisher_key, visit_data,
                      duration, first_visit, window_id, std::move(callback));
 
-  engine_->database()->SearchPublisherPrefixList(
+  engine_->client()->CreatorPrefixStoreContains(
       publisher_key, base::BindOnce(&Publisher::OnSearchPrefixListForSaveVisit,
                                     weak_factory_.GetWeakPtr(), publisher_key,
                                     std::move(on_server_info)));
@@ -682,7 +682,7 @@ void Publisher::OnServerPublisherInfoLoaded(
     // If we don't have a record in the database for this publisher, search the
     // prefix list. If the prefix list indicates that the publisher is likely
     // registered, then fetch the publisher data.
-    engine_->database()->SearchPublisherPrefixList(
+    engine_->client()->CreatorPrefixStoreContains(
         publisher_key,
         base::BindOnce(&Publisher::OnSearchPrefixListForGetServerPublisherInfo,
                        weak_factory_.GetWeakPtr(), publisher_key,

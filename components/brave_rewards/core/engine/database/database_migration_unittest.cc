@@ -829,4 +829,11 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_40) {
   EXPECT_FALSE(GetDB()->DoesTableExist("processed_publisher"));
 }
 
+TEST_F(RewardsDatabaseMigrationTest, Migration_41) {
+  DatabaseMigration::SetTargetVersionForTesting(41);
+  InitializeDatabaseAtVersion(39);
+  InitializeEngine();
+  EXPECT_FALSE(GetDB()->DoesTableExist("publisher_prefix_list"));
+}
+
 }  // namespace brave_rewards::internal
