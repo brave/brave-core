@@ -77,7 +77,7 @@ public final class Domain: NSManagedObject, CRUD {
   /// A list of etld+1s that are always aggressive
   private let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
 
-  /// The shred level for this current domain
+  /// The shield level for this current domain (standard/aggressive/disabled).
   @MainActor public var domainBlockAdsAndTrackingLevel: ShieldLevel {
     get {
       guard let level = self.shield_blockAdsAndTrackingLevel else {
