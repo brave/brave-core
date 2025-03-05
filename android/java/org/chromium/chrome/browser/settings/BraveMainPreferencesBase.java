@@ -75,6 +75,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_PAYMENT_METHODS = "autofill_payment_methods";
     private static final String PREF_ADDRESSES = "autofill_addresses";
     private static final String PREF_AUTOFILL_PRIVATE_WINDOW = "autofill_private_window";
+    private static final String PREF_TABS = "tabs";
     private static final String PREF_MEDIA = "media";
     private static final String PREF_APPEARANCE = "appearance";
     private static final String PREF_NEW_TAB_PAGE = "background_images";
@@ -326,6 +327,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         int displaySectionOrder = generalOrder;
         findPreference(PREF_DISPLAY_SECTION).setOrder(++displaySectionOrder);
 
+        findPreference(PREF_TABS).setOrder(++displaySectionOrder);
         findPreference(PREF_MEDIA).setOrder(++displaySectionOrder);
         findPreference(PREF_APPEARANCE).setOrder(++displaySectionOrder);
         findPreference(PREF_NEW_TAB_PAGE).setOrder(++displaySectionOrder);
