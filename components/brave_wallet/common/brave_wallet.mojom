@@ -2529,6 +2529,8 @@ interface BraveWalletService {
   // so any account can be used.
   // But in the future we are going to make unique relation
   // between origin, account and chain.
+  // GetNetworkForSelectedAccountOnActiveOrigin and
+  // SetNetworkForSelectedAccountOnActiveOrigin will be deprecated.
   GetNetworkForAccountOnActiveOrigin(AccountId account)
     => (NetworkInfo? network);
   SetNetworkForAccountOnActiveOrigin(AccountId account, string chain_id)
