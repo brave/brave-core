@@ -8,7 +8,6 @@ import { load, write } from './lit_mangler'
 import childProcess from 'child_process'
 import path from 'path'
 import fs from 'fs'
-import os from 'os'
 import config from '../../../build/commands/lib/config.js'
 
 const baseDir = path.join(__dirname, '../../../')
