@@ -92,7 +92,11 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 
     // Processing
     Task { [weak tab] in
-      guard let tab = tab else { return }
+      guard let tab = tab else {
+        replyHandler(nil, BraveTranslateError.otherError.rawValue)
+        return
+      }
+
       let (result, error) = try await processScriptMessage(for: tab, command: command, body: body)
       replyHandler(result, error)
     }
