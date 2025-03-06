@@ -29,6 +29,7 @@ group("grdp") {
     ":fonts_grdp",
     ":icons_grdp",
     ":leo_web_components",
+    ":opaque_ke",
     ":static_grdp",
   ]
   if (include_polymer) {
@@ -99,6 +100,29 @@ transpile_web_ui("leo_web_components") {
       ] ]
 
   resource_name = "leo"
+}
+
+transpile_web_ui("opaque_ke") {
+  resource_name = "opaque_ke"
+  generate_grdp = true
+  resource_path_prefix = "brave"
+
+  entry_points = [ [
+        "opaque_ke",
+        rebase_path("opaque_ke/index.js"),
+      ] ]
+
+  inputs = [
+    rebase_path("opaque_ke/src/lib.rs"),
+  ]
+
+  rust_packages = [
+    rebase_path("opaque_ke/Cargo.toml"),
+  ]
+
+  no_iife = true
+  output_module = true
+  public_asset_path = "chrome://resources/brave/"
 }
 
 # Create a grdp that //ui/webui/resources can include in its main resources GRD
