@@ -33,6 +33,7 @@ source_set("test") {
     "//brave/components/brave_rewards/core/engine/endpoint/uphold/post_cards/post_cards_unittest.cc",
     "//brave/components/brave_rewards/core/engine/endpoints/bitflyer/post_commit_transaction_bitflyer_unittest.cc",
     "//brave/components/brave_rewards/core/engine/endpoints/brave/get_parameters_unittest.cc",
+    "//brave/components/brave_rewards/core/engine/endpoints/brave/get_ui_cards_unittest.cc",
     "//brave/components/brave_rewards/core/engine/endpoints/brave/get_wallet_unittest.cc",
     "//brave/components/brave_rewards/core/engine/endpoints/brave/patch_wallets_unittest.cc",
     "//brave/components/brave_rewards/core/engine/endpoints/brave/post_challenges_unittest.cc",

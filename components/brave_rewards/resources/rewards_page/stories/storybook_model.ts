@@ -124,6 +124,7 @@ export function createModel(): AppModel {
     cards: [
       {
         name: 'community-card',
+        title: '',
         items: [
           {
             title: 'Brave meetup in Toronto!',
@@ -135,12 +136,25 @@ export function createModel(): AppModel {
       },
       {
         name: 'merch-store-card',
+        title: '',
         items: [
           {
             title: 'Brave Embroidered Crop Top',
             description: 'The beautiful embroidery, trendy raw hem, and matching drawstring are great.',
             url: 'https://store.brave.com/p/brave-lion-embroidered-eco-hoodie/3576345201/',
             thumbnail: 'https://cdn.store.brave.com/6944e95453a447ed8bd4ba69524eb76bb0b6b924db88ab0726b169affe0ac743.png'
+          }
+        ]
+      },
+      {
+        name: 'partner-promo-card',
+        title: 'Ledger Hardware Wallet',
+        items: [
+          {
+            title: 'Secure Your Crypto with Ledger Nano',
+            description: 'Keep your cryptocurrencies, NFTs and tokens safe with industry-leading hardware wallet security.',
+            url: "https://shop.ledger.com/products/ledger-nano-x",
+            thumbnail: ''
           }
         ]
       }
