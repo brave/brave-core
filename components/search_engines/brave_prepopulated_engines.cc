@@ -250,7 +250,9 @@ const PrepopulatedEngine brave_yahoo_jp = ModifyEngineParams(
 #endif
     // suggest url
     "https://search.yahooapis.jp/AssistSearchService/V2/"
-    "webassistSearch?p={searchTerms}&output=fxjson&fr="
+    "webassistSearch?p={searchTerms}&appid="
+    "oQsoxcyxg66enp0TYoirkKoryq6rF8bK76mW0KYxZ0v0WPLtn.Lix6wy8F_LwGWHUII-&"
+    "output=fxjson&fr="
 #if BUILDFLAG(IS_ANDROID)
     "brave-mobile_ext",
 #else
