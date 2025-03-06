@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/padded_image_source.h"
+#include "chrome/browser/ui/webui/sanitized_image_source.h"
 
 #include <memory>
 #include <string>
@@ -15,7 +15,6 @@
 #include "base/test/bind.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/web_contents.h"
@@ -33,7 +32,7 @@ constexpr char kInvalidImage[] = "normal.js";
 
 const std::string LoadTestFile(const std::string& name) {
   base::FilePath path = base::PathService::CheckedGet(brave::DIR_TEST_DATA);
-  path = path.Append(name);
+  path = path.AppendASCII(name);
 
   base::ScopedAllowBlockingForTesting allow_blocking;
   std::string contents;
@@ -42,20 +41,20 @@ const std::string LoadTestFile(const std::string& name) {
 }
 }  // namespace
 
-class PaddedImageSourceTest : public testing::Test {
+class SanitizedImageSourceTest : public testing::Test {
  public:
-  PaddedImageSourceTest()
+  SanitizedImageSourceTest()
       : source_(
             &profile_,
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &test_url_loader_factory_),
             std::make_unique<SanitizedImageSource::DataDecoderDelegate>(),
             "pcdn.brave.com") {}
-  ~PaddedImageSourceTest() override = default;
+  ~SanitizedImageSourceTest() override = default;
 
   scoped_refptr<base::RefCountedMemory> Decode(GURL url, std::string filename) {
     std::string data = LoadTestFile(filename);
-    GURL image_url = GURL("chrome://maybe-padded-image/?" + url.spec());
+    GURL image_url = GURL("chrome://image/?" + url.spec());
     test_url_loader_factory_.AddResponse(url.spec(), std::move(data));
     base::RunLoop run_loop;
     scoped_refptr<base::RefCountedMemory> result;
@@ -77,35 +76,35 @@ class PaddedImageSourceTest : public testing::Test {
   network::TestURLLoaderFactory test_url_loader_factory_;
 
   TestingProfile profile_;
-  PaddedImageSource source_;
+  SanitizedImageSource source_;
 };
 
-TEST_F(PaddedImageSourceTest, ImageIsDecoded) {
+TEST_F(SanitizedImageSourceTest, ImageIsDecoded) {
   auto url = GURL("https://example.com/image.png");
   EXPECT_TRUE(Decode(url, kValidImage));
 }
 
-TEST_F(PaddedImageSourceTest, PaddedImageIsDecoded) {
+TEST_F(SanitizedImageSourceTest, PaddedImageIsDecoded) {
   auto url = GURL("https://pcdn.brave.com/image.png.pad");
   EXPECT_TRUE(Decode(url, kPaddedImage));
 }
 
-TEST_F(PaddedImageSourceTest, InvalidPaddedImageIsNotDecoded) {
+TEST_F(SanitizedImageSourceTest, InvalidPaddedImageIsNotDecoded) {
   auto url = GURL("https://example.com/image.png.pad");
   EXPECT_FALSE(Decode(url, kInvalidImage));
 }
 
-TEST_F(PaddedImageSourceTest, PaddedImageWithoutDotPadIsNotDecoded) {
+TEST_F(SanitizedImageSourceTest, PaddedImageWithoutDotPadIsNotDecoded) {
   auto url = GURL("https://pcdn.brave.com/image.png");
   EXPECT_FALSE(Decode(url, kPaddedImage));
 }
 
-TEST_F(PaddedImageSourceTest, PaddedImageOnNonBraveCDNIsNotDecoded) {
+TEST_F(SanitizedImageSourceTest, PaddedImageOnNonBraveCDNIsNotDecoded) {
   auto url = GURL("https://example.com/image.png.pad");
   EXPECT_FALSE(Decode(url, kPaddedImage));
 }
 
-TEST_F(PaddedImageSourceTest, DotPadOnNonBraveCDNButValidIsDecoded) {
+TEST_F(SanitizedImageSourceTest, DotPadOnNonBraveCDNButValidIsDecoded) {
   auto url = GURL("https://example.com/image.png.pad");
   EXPECT_TRUE(Decode(url, kValidImage));
 }

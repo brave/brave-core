@@ -34,12 +34,15 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = []
+  sources = [ "sanitized_image_source_unittest.cc" ]
   deps = [
     "//base",
     "//base/test:test_support",
     "//chrome/browser/ui",
     "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//services/data_decoder/public/cpp:test_support",
+    "//services/network:test_support",
     "//testing/gtest",
   ]
 
@@ -47,30 +50,4 @@ source_set("unit_tests") {
     sources += [ "help/brave_version_updater_mac_unittest.mm" ]
     deps += [ "//brave/browser:mac_features" ]
   }
-
-  if (!is_android) {
-    sources += [ "padded_image_source_unittest.cc" ]
-    deps += [
-      "//brave/browser/ui/webui:padded_image_source",
-      "//content/test:test_support",
-      "//services/data_decoder/public/cpp:test_support",
-      "//services/network:test_support",
-    ]
-  }
-}
-
-source_set("padded_image_source") {
-  sources = [
-    "padded_image_source.cc",
-    "padded_image_source.h",
-  ]
-
-  deps = [
-    "//brave/brave_domains",
-    "//brave/components/brave_private_cdn",
-    "//chrome/browser/profiles:profile",
-    "//chrome/common",
-    "//net",
-    "//services/network/public/cpp",
-  ]
 }

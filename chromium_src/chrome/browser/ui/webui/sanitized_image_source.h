@@ -6,12 +6,51 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SANITIZED_IMAGE_SOURCE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SANITIZED_IMAGE_SOURCE_H_
 
-#define OnImageLoaded             \
-  OnImageLoaded_Chromium() {}     \
-  friend class PaddedImageSource; \
+// This juggling is required so we can still friend the Brave implementation
+// without clashing with the
+// #define SanitizedImageSource SanitizedImageSource_Chromium
+class SanitizedImageSource;
+using SanitizedImageSource_BraveImpl = SanitizedImageSource;
+
+// We override SanitizedImageSource to add support for unpadding images from the
+// Brave Private CDN.
+#define SanitizedImageSource SanitizedImageSource_Chromium
+#define OnImageLoaded                    \
+  OnImageLoaded_Chromium() {}            \
+  friend SanitizedImageSource_BraveImpl; \
   virtual void OnImageLoaded
 
 #include "src/chrome/browser/ui/webui/sanitized_image_source.h"  // IWYU pragma: export
+
 #undef OnImageLoaded
+#undef SanitizedImageSource
+
+class SanitizedImageSource : public SanitizedImageSource_Chromium {
+ public:
+  explicit SanitizedImageSource(Profile* profile);
+
+  // For upstream tests
+  SanitizedImageSource(
+      Profile* profile,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::unique_ptr<DataDecoderDelegate> delegate);
+
+  // For Brave tests.
+  SanitizedImageSource(
+      Profile* profile,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::unique_ptr<DataDecoderDelegate> delegate,
+      std::string pcdn_domain);
+
+  ~SanitizedImageSource() override;
+
+ private:
+  void OnImageLoaded(std::unique_ptr<network::SimpleURLLoader> loader,
+                     RequestAttributes request_attributes,
+                     content::URLDataSource::GotDataCallback callback,
+                     std::unique_ptr<std::string> body) override;
+
+  std::string pcdn_domain_;
+};
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SANITIZED_IMAGE_SOURCE_H_

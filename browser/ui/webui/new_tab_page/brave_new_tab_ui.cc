@@ -21,7 +21,6 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/top_sites_message_handler.h"
-#include "brave/browser/ui/webui/padded_image_source.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
@@ -158,9 +157,9 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui,
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
       ads_service, std::move(ntp_p3a_helper));
 
-  // Add a PaddedImageSource to allow fetching images for Brave News.
+  // Add a SanitizedImageSource to allow fetching images for Brave News.
   content::URLDataSource::Add(profile,
-                              std::make_unique<PaddedImageSource>(profile));
+                              std::make_unique<SanitizedImageSource>(profile));
 }
 
 BraveNewTabUI::~BraveNewTabUI() = default;

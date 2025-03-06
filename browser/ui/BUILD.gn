@@ -1311,7 +1311,6 @@ source_set("ui") {
       "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/resources/settings/shortcuts_page:generated_resources",
       "//brave/browser/ui/brave_wallet",
-      "//brave/browser/ui/webui:padded_image_source",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
       "//brave/components/brave_wallet/browser:permission_utils",
       "//brave/components/brave_wallet/common",
