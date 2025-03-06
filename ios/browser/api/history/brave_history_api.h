@@ -146,12 +146,14 @@ OBJC_EXPORT
     searchWithQuery:(NSString* _Nullable)query
             options:(IOSHistorySearchOptions*)searchOptions
          completion:
-             (void (^)(NSArray<IOSHistoryNode*>* historyResults))completion;
+             (void (^)(NSArray<IOSHistoryNode*>* historyResults))completion
+    NS_WARN_UNUSED_RESULT;
 
 /// Gets a count of unique domains visited as of now based on the `type` passed
 - (IOSHistoryCancellable*)
     fetchDomainDiversityForType:(DomainMetricTypeIOS)type
-                     completion:(void (^)(NSInteger count))completion;
+                     completion:(void (^)(NSInteger count))completion
+    NS_WARN_UNUSED_RESULT;
 
 @end
 
