@@ -1144,7 +1144,7 @@ name = "lol_html"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.8.0",
+ "bitflags 2.9.0",
  "cfg-if",
  "cssparser 0.29.6",
  "encoding_rs",
@@ -1673,7 +1673,7 @@ dependencies = [
 name = "readability"
 version = "0.1.4"
 dependencies = [
- "bitflags 2.8.0",
+ "bitflags 2.9.0",
  "html5ever",
  "kuchikiki",
  "lazy_static",
@@ -1705,7 +1705,7 @@ name = "redox_syscall"
 version = "0.5.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.8.0",
+ "bitflags 2.9.0",
 ]
 
 [[package]]
@@ -1812,7 +1812,7 @@ name = "selectors"
 version = "0.26.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.8.0",
+ "bitflags 2.9.0",
  "cssparser 0.34.0",
  "derive_more",
  "fxhash",
@@ -1899,7 +1899,7 @@ name = "shardtree"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 2.8.0",
+ "bitflags 2.9.0",
  "either",
  "incrementalmerkletree",
  "tracing",
