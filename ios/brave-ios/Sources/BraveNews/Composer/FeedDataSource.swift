@@ -110,7 +110,6 @@ public class FeedDataSource: ObservableObject {
   /// An ads object to handle inserting Inline Content Ads within the Brave News sequence
   public var getAdsAPI: (() -> BraveAds)?
   public var historyAPI: BraveHistoryAPI?
-  private var historySearchCancellable: HistoryCancellable
 
   private let todayQueue = DispatchQueue(label: "com.brave.today")
   private let reloadQueue = DispatchQueue(label: "com.brave.today.reload")
@@ -949,8 +948,10 @@ public class FeedDataSource: ObservableObject {
         duplicateHandling: .removePerDay
       )
 
-      historySearchCancellable = historyAPI.search(withQuery: "", options: options) {
+      var historyCancellable: HistoryCancellable?
+      historyCancellable = historyAPI.search(withQuery: "", options: options) {
         historyNodeList in
+        historyCancellable = nil
         completion(historyNodeList)
       }
     } else {
