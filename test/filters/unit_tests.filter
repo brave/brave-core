@@ -59,8 +59,9 @@
 # BraveToolbarView is set to nullptr
 -PinnedToolbarActionsContainerTest.*
 
-# Disabling signin promo tests as brave does not support them.
+# Disabling signin promo tests as Brave does not support them.
 -ShowSigninPromoTestExplicitBrowserSignin.*
+-ShowSigninPromoTestWithFeatureFlags.*
 
 # This test crashes due to invalid memory access as described in the comment in
 # PrefChangeRegistrar::~PrefChangeRegistrar:
@@ -87,11 +88,12 @@
 
 # These tests crash because we have kOptimizationHints feature disabled, which
 # causes OptimizationGuideKeyedServiceFactory::GetForProfile return a nullptr.
+-AILanguageModelHackyPrototypeTest.Basic
+-AILanguageModelTest.*
 -AIManagerTest.*
 -AIRewriterTest.*
 -AISummarizerTest.*
 -AIWriterTest.*
--All/AILanguageModelTest.*
 -All/AILanguageModelVisionTest.*
 -ChangeFormSubmissionVerifierTest.*
 -ChromeAutofillAiClientTest.GetModelExecutor
@@ -308,16 +310,7 @@
 -ChromeTailoredSecurityServiceTest.EpWasEnabledByTsAndTsNowDisabledShowsDialog
 -ChromeTailoredSecurityServiceTest.TsEnabledEnablesEp
 -ClientSideDetectionHostNotificationTest.*
--ClientSideDetectionHostScamDetectionTest.AllowlistedOnHCDoesNotTriggersOnDeviceLLM
--ClientSideDetectionHostScamDetectionTest.EmptyInnerTextDoesNotTriggersOnDeviceLLM
--ClientSideDetectionHostScamDetectionTest.KeyboardLockRequestTriggersOnDeviceLLMWithEmptyResponse
--ClientSideDetectionHostScamDetectionTest.KeyboardLockRequestTriggersOnDeviceLLMWithFullResponse
--ClientSideDetectionHostScamDetectionTest.NonKeyboardLockRequestDoesNotTriggersOnDeviceLLM
--ClientSideDetectionHostScamDetectionTest.ScamExperimentVerdictOnClientPhishingResponseAndShowBlockingPage
--ClientSideDetectionHostScamDetectionTest.ScamExperimentVerdictOnClientPhishingResponseButDoesntShowBlockingPage
--ClientSideDetectionHostScamDetectionTest.RTLookupResponseDoesNotHaveLlamaForcedTriggerInfoSoItDoesNotTriggersOnDeviceLLM
--ClientSideDetectionHostScamDetectionTest.RTLookupResponseHaveFalseIntelligentScanSoItDoesNotTriggersOnDeviceLLM
--ClientSideDetectionHostScamDetectionTest.RTLookupResponseLlamaForcedTriggerInfoTriggersOnDeviceLLM
+-ClientSideDetectionHostScamDetectionTest.*
 -ClientSideDetectionHostTest.CSDFeaturesCacheContainsVerdictAndFullDebuggingMetadata
 -ClientSideDetectionHostTest.PhishingDetectionDoneCalledTwiceShouldSucceed
 -ClientSideDetectionHostTest.PhishingDetectionDoneEnhancedProtectionShouldHaveToken
@@ -395,6 +388,10 @@
 # These tests fail because we disable
 # optimization_guide::features::kOptimizationGuideFetchingForSRP
 -ChromeHintsManagerFetchingTest.HintsFetched_*
+-PasswordChangeDelegateImplTest.MetricsReportedFlowCanceledDuringSignInCheck
+-PasswordChangeDelegateImplTest.MetricsReportedWasPasswordChangeNewTabFocused
+-PasswordChangeDelegateImplTest.PasswordChangeFormNotFound
+-PasswordChangeDelegateImplTest.RestartPasswordChange
 
 # This test fails because we remove description and 3p cookies toggle from the
 # Page Info cookies view.
@@ -474,7 +471,7 @@
 -StorageAccessGrantPermissionContextAPIDisabledTest.InsecureOriginsDisallowed*
 -StorageAccessGrantPermissionContextAPIDisabledTest.PermissionBlocked*
 -StorageAccessGrantPermissionContextAPIDisabledTest.PermissionStatusBlocked*
--StorageAccessGrantPermissionContextAPIWithFedCMConnectionTest.AutoResolveWithConnection
+-StorageAccessGrantPermissionContextAPIWithFedCMConnectionTest.AutoResolveWithConnection/*
 -StorageAccessGrantPermissionContextAPIWithFirstPartySetsTest.ImplicitGrant_AutograntedWithinFPS*
 -StorageAccessGrantPermissionContextAPIWithImplicitGrantsTest.*
 -StorageAccessGrantPermissionContextTest.*
@@ -553,7 +550,18 @@
 
 # This test fails because we block installation of Probabilistic Reveal Token
 # component installation.
--ProbabilisticRevealTokenComponentInstallerTest.ComponentRegistration
+-ProbabilisticRevealTokenComponentInstallerTest.*
+
+# These tests are disabled because we don't show the default browser prompt item
+# in the Hamburger menu
+-AppMenuModelTest.DefaultBrowserPrompt
+-DefaultBrowserPromptManagerTest.AppMenuItemHiddenOnPromptAccept
+-DefaultBrowserPromptManagerTest.AppMenuItemPersistsOnPromptDismissed
+-DefaultBrowserPromptManagerTest.ShowsAppMenuItem
+
+# These tests are disabled because the required navigation throttle is only
+# created when the test profile is using the first-party NTP
+-NtpMicrosoftAuthResponseCaptureNavigationThrottleTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -583,7 +591,7 @@
 -ChromeWebContentsViewDelegateViewsTest.*
 -ClearBrowsingDataHandlerUnitTest.*
 -ClickToCallUtilsTest.TelLink*
--CloudBinaryUploadServiceTest.DeepScanESBEnabledEnhancedProtectionMalwareRequestAuthorized/*
+-CloudBinaryUploadServiceTest.DeepScanESBEnabledEnhancedProtectionMalwareRequestAuthorized
 -ConfigParserTest.*
 -CountingPolicyTest.*
 -CWSInfoServiceTest.IgnoresNonCWSExtensions
