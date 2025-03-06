@@ -502,9 +502,13 @@ void AdsServiceImpl::NotifyAdsServiceInitialized() const {
   }
 }
 
-void AdsServiceImpl::ShutdownAndClearAdsServiceDataAndMaybeRestart(
-    ClearDataCallback callback) {
-  ShutdownAdsService();
+void AdsServiceImpl::ClearDataPrefsAndAdsServiceDataAndMaybeRestart(
+    ClearDataCallback callback,
+    bool shutdown_succeeded) {
+  if (!shutdown_succeeded) {
+    VLOG(0) << "Failed to clear ads data because Ads Service shutdown failed";
+    return std::move(callback).Run(/*success=*/false);
+  }
 
   VLOG(6) << "Clearing ads data";
 
@@ -526,10 +530,13 @@ void AdsServiceImpl::ShutdownAndClearAdsServiceDataAndMaybeRestart(
   ClearAdsServiceDataAndMaybeRestart(std::move(callback));
 }
 
-void AdsServiceImpl::ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart(
-    ClearDataCallback callback) {
-  ShutdownAdsService();
-
+void AdsServiceImpl::ClearAllPrefsAndAdsServiceDataAndMaybeRestart(
+    ClearDataCallback callback,
+    bool shutdown_succeeded) {
+  if (!shutdown_succeeded) {
+    VLOG(0) << "Failed to clear ads data because Ads Service shutdown failed";
+    return std::move(callback).Run(/*success=*/false);
+  }
   VLOG(6) << "Clearing ads data";
 
   // Clear all ads preferences.
@@ -1076,6 +1083,23 @@ void AdsServiceImpl::DoRecordNotificationAdPositionMetric() {
   RecordNotificationAdPositionMetric(ShouldShowCustomNotificationAds(), prefs_);
 }
 
+void AdsServiceImpl::ShutdownAds(ShutdownCallback callback) {
+  if (!bat_ads_associated_remote_) {
+    return std::move(callback).Run(/*success=*/true);
+  }
+
+  bat_ads_associated_remote_->Shutdown(
+      base::BindOnce(&AdsServiceImpl::ShutdownAdsCallback,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::ShutdownAdsCallback(ShutdownCallback callback,
+                                         bool success) {
+  ShutdownAdsService();
+
+  std::move(callback).Run(success);
+}
+
 void AdsServiceImpl::ShutdownAdsService() {
   if (is_bat_ads_initialized_) {
     SuspendP2AHistograms();
@@ -1182,7 +1206,9 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
 void AdsServiceImpl::ClearData(ClearDataCallback callback) {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
-  ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart(std::move(callback));
+  ShutdownAds(base::BindOnce(
+      &AdsServiceImpl::ClearAllPrefsAndAdsServiceDataAndMaybeRestart,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImpl::GetInternals(GetInternalsCallback callback) {
@@ -1868,14 +1894,16 @@ void AdsServiceImpl::OnRewardsWalletCreated() {
 void AdsServiceImpl::OnExternalWalletConnected() {
   ShowReminder(mojom::ReminderType::kExternalWalletConnected);
 
-  ShutdownAndClearAdsServiceDataAndMaybeRestart(
-      /*intentional*/ base::DoNothing());
+  ShutdownAds(base::BindOnce(
+      &AdsServiceImpl::ClearDataPrefsAndAdsServiceDataAndMaybeRestart,
+      weak_ptr_factory_.GetWeakPtr(), /*intentional*/ base::DoNothing()));
 }
 
 void AdsServiceImpl::OnCompleteReset(bool success) {
   if (success) {
-    ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart(
-        /*intentional*/ base::DoNothing());
+    ShutdownAds(base::BindOnce(
+        &AdsServiceImpl::ClearAllPrefsAndAdsServiceDataAndMaybeRestart,
+        weak_ptr_factory_.GetWeakPtr(), /*intentional*/ base::DoNothing()));
   }
 }
 

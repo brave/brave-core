@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
+#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 
 namespace base {
 class FilePath;
@@ -46,6 +47,9 @@ class DatabaseManager final {
                         RunDBTransactionCallback callback,
                         uint64_t trace_id);
 
+  // Shutdowns the database.
+  void Shutdown(ShutdownCallback callback);
+
  private:
   void CreateOrOpenCallback(
       ResultCallback callback,
@@ -77,7 +81,7 @@ class DatabaseManager final {
   void NotifyDatabaseIsReady() const;
 
   const scoped_refptr<base::SequencedTaskRunner> database_task_runner_;
-  const base::SequenceBound<Database> database_;
+  base::SequenceBound<Database> database_;
 
   base::ObserverList<DatabaseManagerObserver> observers_;
 
