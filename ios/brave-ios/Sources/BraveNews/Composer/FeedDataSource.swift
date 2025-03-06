@@ -949,6 +949,7 @@ public class FeedDataSource: ObservableObject {
       )
 
       var historyCancellable: HistoryCancellable?
+      _ = historyCancellable
       historyCancellable = historyAPI.search(withQuery: "", options: options) {
         historyNodeList in
         historyCancellable = nil

@@ -913,6 +913,7 @@ class TabManager: NSObject {
 
       let nodes = await withCheckedContinuation { continuation in
         var historyCancellable: HistoryCancellable?
+        _ = historyCancellable
         historyCancellable = historyAPI.search(
           withQuery: query,
           options: HistorySearchOptions(
