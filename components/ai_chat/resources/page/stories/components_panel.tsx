@@ -395,6 +395,7 @@ const ASSOCIATED_CONTENT: Mojom.AssociatedContent = {
   contentUsedPercentage: 40,
   url: { url: 'https://www.example.com/a' },
   isContentRefined: false,
+  hasTrimmedTokens: false,
   contentId: 1,
 }
 
@@ -425,6 +426,7 @@ type CustomArgs = {
   shouldShowLongConversationInfo: boolean
   shouldShowLongPageWarning: boolean
   shouldShowRefinedWarning: boolean
+  shouldShowTokensTrimmedWarning: boolean
   isGenerating: boolean
   showAttachments: boolean
   isNewConversation: boolean
@@ -457,6 +459,7 @@ const args: CustomArgs = {
   shouldShowLongConversationInfo: false,
   shouldShowLongPageWarning: false,
   shouldShowRefinedWarning: false,
+  shouldShowTokensTrimmedWarning: false,
   isGenerating: false,
   showAttachments: true,
   isNewConversation: false,
@@ -649,9 +652,12 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     conversationHistory: conversationContext.conversationHistory,
     isGenerating: conversationContext.isGenerating,
     isLeoModel: conversationContext.isCurrentModelLeo,
-    contentUsedPercentage: (options.args.shouldShowLongPageWarning || options.args.shouldShowRefinedWarning)
+    contentUsedPercentage: (options.args.shouldShowLongPageWarning ||
+                            options.args.shouldShowRefinedWarning ||
+                            options.args.shouldShowTokensTrimmedWarning)
       ? 48 : 100,
     isContentRefined: options.args.shouldShowRefinedWarning,
+    hasTrimmedTokens: options.args.shouldShowTokensTrimmedWarning,
     canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
     isMobile: aiChatContext.isMobile
   }

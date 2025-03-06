@@ -93,6 +93,9 @@ struct AssociatedContent {
   // Indicates content has been refined through extracting most relevant parts
   // from long page content
   bool is_content_refined;
+
+  // Indicates content has been trimmed from the server side
+  bool has_trimmed_tokens;
 };
 
 struct Conversation {
@@ -180,6 +183,11 @@ struct SelectedLanguageEvent {
   string selected_language;
 };
 
+struct ContentReceiptEvent {
+  uint64 total_tokens;
+  uint64 tokens_trimmed;
+};
+
 struct ConversationTitleEvent {
   string title;
 };
@@ -195,6 +203,7 @@ union ConversationEntryEvent {
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.
   SelectedLanguageEvent selected_language_event;
+  ContentReceiptEvent content_receipt_event;
   ConversationTitleEvent conversation_title_event;
 };
 
@@ -445,6 +454,8 @@ struct ConversationEntriesState {
   uint32? content_used_percentage;
   // Whether the content has been refined
   bool is_content_refined;
+  // Whether the tokens have been trimmed
+  bool has_trimmed_tokens;
   // Whether the UI should represent that the user cannot submit new messages
   // or edits to the conversation.
   bool can_submit_user_entries;

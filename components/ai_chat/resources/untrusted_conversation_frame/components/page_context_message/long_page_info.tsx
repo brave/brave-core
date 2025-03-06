@@ -12,13 +12,22 @@ import styles from './style.module.scss'
 
 export default function LongPageInfo() {
   const context = useUntrustedConversationContext()
-  const warningText = context.isContentRefined
-    ? getLocale('pageContentRefinedWarning')
-    : formatMessage(getLocale('pageContentTooLongWarning'), {
+  let warningText
+  if (context.isContentRefined) {
+    warningText = getLocale('pageContentRefinedWarning')
+  } else if (context.hasTrimmedTokens) {
+      warningText = formatMessage(getLocale('tokensTrimmedWarning'), {
         placeholders: {
           $1: context.contentUsedPercentage + '%'
         }
       })
+  } else {
+    warningText = formatMessage(getLocale('pageContentTooLongWarning'), {
+        placeholders: {
+          $1: context.contentUsedPercentage + '%'
+        }
+      })
+  }
 
   return (
     <div className={styles.info}>
