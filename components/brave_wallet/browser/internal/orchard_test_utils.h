@@ -23,6 +23,10 @@ OrchardBlockScanner::Result CreateResultForTesting(
 OrchardCommitmentValue CreateMockCommitmentValue(uint32_t position,
                                                  uint32_t rseed);
 
+OrchardCommitment CreateCommitment(OrchardCommitmentValue value,
+                                   bool marked,
+                                   std::optional<uint32_t> checkpoint_id);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_TEST_UTILS_H_

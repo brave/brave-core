@@ -63,6 +63,11 @@ void ZCashCreateTransparentToOrchardTransactionTask::WorkOnTask() {
     return;
   }
 
+  if (!chain_tip_height_) {
+    GetLatestBlock();
+    return;
+  }
+
   if (amount_ != kZCashFullAmount && !change_address_) {
     GetChangeAddress();
     return;
@@ -115,6 +120,8 @@ void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
                          pick_transparent_inputs_result->change;
   orchard_output.addr = receiver_;
   orchard_output.memo = memo_;
+  zcash_transaction.orchard_part().anchor_block_height =
+      chain_tip_height_.value();
 
   auto orchard_unified_addr = GetOrchardUnifiedAddress(
       receiver_, context_.chain_id == mojom::kZCashTestnet);
@@ -137,6 +144,26 @@ void ZCashCreateTransparentToOrchardTransactionTask::GetAllUtxos() {
       base::BindOnce(
           &ZCashCreateTransparentToOrchardTransactionTask::OnGetUtxos,
           weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ZCashCreateTransparentToOrchardTransactionTask::GetLatestBlock() {
+  context_.zcash_rpc->GetLatestBlock(
+      context_.chain_id,
+      base::BindOnce(&ZCashCreateTransparentToOrchardTransactionTask::
+                         OnGetLatestBlockHeight,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ZCashCreateTransparentToOrchardTransactionTask::OnGetLatestBlockHeight(
+    base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
+  if (!result.has_value()) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  chain_tip_height_ = result.value()->height;
+  ScheduleWorkOnTask();
 }
 
 void ZCashCreateTransparentToOrchardTransactionTask::GetChangeAddress() {

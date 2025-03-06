@@ -114,6 +114,7 @@ class ZCashTransaction {
 
     std::vector<OrchardInput> inputs;
     std::vector<OrchardOutput> outputs;
+    std::optional<uint32_t> anchor_block_height;
     std::optional<std::array<uint8_t, kZCashDigestSize>> digest;
     std::optional<std::vector<uint8_t>> raw_tx;
   };

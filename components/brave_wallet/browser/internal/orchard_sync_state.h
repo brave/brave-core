@@ -20,12 +20,27 @@
 
 namespace brave_wallet {
 
+inline constexpr uint32_t kZCashInternalAddressMinConfirmations = 3u;
+inline constexpr uint32_t kZCashPublicAddressMinConfirmations = 10u;
+
 // Represents the persisted synchronization state for the Zcash blockchain.
 // The synchronization state includes account-specific information regarding
 // spendable and spent notes, sync progress, and the state of the Orchard
 // commitment tree, which is used to sign notes for spending.
 class OrchardSyncState {
  public:
+  struct SpendableNotesBundle {
+    SpendableNotesBundle();
+    SpendableNotesBundle(const SpendableNotesBundle&) = delete;
+    SpendableNotesBundle(SpendableNotesBundle&&);
+    SpendableNotesBundle& operator=(const SpendableNotesBundle&) = delete;
+    SpendableNotesBundle& operator=(SpendableNotesBundle&&);
+    ~SpendableNotesBundle();
+    std::vector<OrchardNote> all_notes;
+    std::vector<OrchardNote> spendable_notes;
+    std::optional<uint32_t> anchor_block_id;
+  };
+
   explicit OrchardSyncState(const base::FilePath& path_to_database);
   virtual ~OrchardSyncState();
 
@@ -42,9 +57,6 @@ class OrchardSyncState {
       uint32_t rewind_block_height,
       const std::string& rewind_block_hash);
 
-  virtual base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
-  GetSpendableNotes(const mojom::AccountIdPtr& account_id);
-
   base::expected<std::vector<OrchardNoteSpend>, OrchardStorage::Error>
   GetNullifiers(const mojom::AccountIdPtr& account_id);
 
@@ -60,10 +72,10 @@ class OrchardSyncState {
   virtual base::expected<std::optional<uint32_t>, OrchardStorage::Error>
   GetMinCheckpointId(const mojom::AccountIdPtr& account_id);
 
-  virtual base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-  GetMaxCheckpointedHeight(const mojom::AccountIdPtr& account_id,
-                           uint32_t chain_tip_height,
-                           uint32_t min_confirmations);
+  virtual base::expected<std::optional<SpendableNotesBundle>,
+                         OrchardStorage::Error>
+  GetSpendableNotes(const mojom::AccountIdPtr& account_id,
+                    const OrchardAddrRawPart& change_address);
 
   // Clears sync data related to the account except it's birthday.
   base::expected<OrchardStorage::Result, OrchardStorage::Error>

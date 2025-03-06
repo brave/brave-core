@@ -25,8 +25,7 @@ class ZCashResolveBalanceTask {
       base::expected<mojom::ZCashBalancePtr, std::string>)>;
   ZCashResolveBalanceTask(base::PassKey<ZCashWalletService> pass_key,
                           ZCashWalletService& zcash_wallet_service,
-                          const std::string& chain_id,
-                          mojom::AccountIdPtr account_id,
+                          ZCashActionContext context,
                           ZCashResolveBalanceTaskCallback callback);
   ~ZCashResolveBalanceTask();
 
@@ -44,15 +43,15 @@ class ZCashResolveBalanceTask {
 
 #if BUILDFLAG(ENABLE_ORCHARD)
   void OnGetSpendableNotes(
-      base::expected<std::vector<OrchardNote>, OrchardStorage::Error> result);
+      base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
+                     OrchardStorage::Error> result);
 
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
   void CreateBalance();
 
   const raw_ref<ZCashWalletService> zcash_wallet_service_;  // Owns this
-  std::string chain_id_;
-  mojom::AccountIdPtr account_id_;
+  ZCashActionContext context_;
   ZCashResolveBalanceTaskCallback callback_;
 
   bool started_ = false;
@@ -63,7 +62,7 @@ class ZCashResolveBalanceTask {
   std::optional<mojom::ZCashBalancePtr> result_;
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-  std::optional<std::vector<OrchardNote>> orchard_notes_;
+  std::optional<OrchardSyncState::SpendableNotesBundle> spendable_notes_result_;
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
   base::WeakPtrFactory<ZCashResolveBalanceTask> weak_ptr_factory_{this};

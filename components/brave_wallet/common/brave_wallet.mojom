@@ -1861,6 +1861,7 @@ struct ZCashBalance {
   uint64 total_balance;
   uint64 transparent_balance;
   uint64 shielded_balance;
+  uint64 shielded_pending_balance;
   // Transparent balances
   map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
 };
