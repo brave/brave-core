@@ -74,14 +74,23 @@ void DatabaseManager::RunTransaction(
   CHECK(mojom_db_transaction);
   CHECK(callback);
 
+  // Wrap `callback` with `DatabaseManager::OnRunTransactionCallback` to ensure
+  // it's not called after `DatabaseManager` deletion.
   database_.AsyncCall(&Database::RunTransaction)
       .WithArgs(std::move(mojom_db_transaction), trace_id)
-      .Then(std::move(callback));
+      .Then(base::BindOnce(&DatabaseManager::OnRunTransactionCallback,
+                           weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void DatabaseManager::Shutdown(ShutdownCallback callback) {
+  CHECK(callback);
+
+  // Wrap `callback` with `DatabaseManager::OnShutdownCallback` to ensure it's
+  // not called after `DatabaseManager` deletion.
   database_.AsyncCall(&Database::Poison)
-      .Then(base::BindOnce(std::move(callback), /*success=*/true));
+      .Then(base::BindOnce(&DatabaseManager::OnShutdownCallback,
+                           weak_factory_.GetWeakPtr(), std::move(callback),
+                           /*success=*/true));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -117,6 +126,20 @@ void DatabaseManager::CreateOrOpenCallback(
   NotifyDidOpenDatabase();
 
   MaybeMigrate(from_version, std::move(callback));
+}
+
+void DatabaseManager::OnRunTransactionCallback(
+    RunDBTransactionCallback callback,
+    mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
+  CHECK(callback);
+  CHECK(mojom_db_transaction_result);
+  std::move(callback).Run(std::move(mojom_db_transaction_result));
+}
+
+void DatabaseManager::OnShutdownCallback(ShutdownCallback callback,
+                                         bool success) {
+  CHECK(callback);
+  std::move(callback).Run(success);
 }
 
 void DatabaseManager::Create(ResultCallback callback) const {
