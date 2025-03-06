@@ -977,6 +977,11 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForBtc) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForZec) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "false"}});
+
   GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
 
   auto zec_mainnet_token = GetZcashNativeToken(mojom::kZCashMainnet);
@@ -1687,6 +1692,11 @@ TEST_F(BraveWalletServiceUnitTest, AddCustomNetwork) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, AddCustomNetworkTwice) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "false"}});
+
   json_rpc_service_->SetSkipEthChainIdValidationForTesting(true);
 
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
