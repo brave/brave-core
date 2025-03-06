@@ -381,11 +381,14 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/media/ui/MediaSessionTabHelper"));
         Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController")); // presubmit: ignore-long-line
+                classExists(
+                        "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController")); // presubmit: ignore-long-line
         Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerCompat")); // presubmit: ignore-long-line
+                classExists(
+                        "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerCompat")); // presubmit: ignore-long-line
         Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerLegacy")); // presubmit: ignore-long-line
+                classExists(
+                        "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerLegacy")); // presubmit: ignore-long-line
     }
 
     @Test
