@@ -33,7 +33,8 @@ import {
 } from '../../../../common/slices/api.slice.extra'
 import {
   useGetAccountInfosRegistryQuery,
-  useGetNetworkQuery
+  useGetNetworkQuery,
+  useGetZCashTransactionTypeQuery
 } from '../../../../common/slices/api.slice'
 import {
   accountInfoEntityAdaptorInitialState //
@@ -80,8 +81,28 @@ export const TransactionIntent = (props: Props) => {
     combinedTokensList
   )
 
-  // Custom Hooks
   const transactionNetwork = useTransactionsNetwork(transaction)
+
+  const {
+    data: getZCashTransactionTypeResult = { txType: null, error: null }
+  } = useGetZCashTransactionTypeQuery(
+    txCoinType === BraveWallet.CoinType.ZEC &&
+      transactionNetwork &&
+      transactionsToken &&
+      txToAddress
+      ? {
+          testnet: transactionNetwork.chainId === BraveWallet.Z_CASH_TESTNET,
+          use_shielded_pool: transactionsToken.isShielded,
+          address: txToAddress
+        }
+      : skipToken
+  )
+
+  const isShieldingFunds =
+    getZCashTransactionTypeResult.txType ===
+    BraveWallet.ZCashTxType.kTransparentToOrchard
+
+  // Custom Hooks
   const onClickViewOnBlockExplorer = useExplorer(transactionNetwork)
 
   const { normalizedTransferredValue } =
@@ -268,6 +289,12 @@ export const TransactionIntent = (props: Props) => {
     if (isERC20Approval) {
       return 'braveWalletApprovingAmountOnExchange'
     }
+    if (transactionConfirmed && isShieldingFunds) {
+      return 'braveWalletAmountHasBeenShielded'
+    }
+    if (isShieldingFunds) {
+      return 'braveWalletShieldingAmount'
+    }
     if (transactionConfirmed) {
       return 'braveWalletAmountSentToAccount'
     }
@@ -279,7 +306,8 @@ export const TransactionIntent = (props: Props) => {
     isBridge,
     isSwap,
     isERC20Approval,
-    isSOLSwapOrBridge
+    isSOLSwapOrBridge,
+    isShieldingFunds
   ])
 
   const descriptionString = getLocale(descriptionLocale)
