@@ -22,9 +22,9 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
   update_data.Set(
       "tabOrganizationEnabled",
       ai_chat::AIChatServiceFactory::GetForBrowserContext(profile) &&
-          ai_chat::features::IsTabFocusEnabled() &&
+          ai_chat::features::IsTabOrganizationEnabled() &&
           profile->GetPrefs()->GetBoolean(
-              ai_chat::prefs::kBraveAIChatTabFocusEnabled));
+              ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 
   update_data.Set("tabOrganizationTitle",
                   l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_TITLE));

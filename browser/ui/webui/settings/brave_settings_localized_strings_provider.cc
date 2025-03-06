@@ -527,8 +527,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_LABEL},
       {"braveLeoAssistantShowInContextMenuDesc",
        IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_DESC},
-      {"braveLeoAssistantTabFocusLabel",
-       IDS_SETTINGS_LEO_ASSISTANT_TAB_FOCUS_LABEL},
+      {"braveLeoAssistantTabOrganizationLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_LABEL},
       {"braveLeoAssistantHistoryPreferenceLabel",
        IDS_SETTINGS_LEO_ASSISTANT_HISTORY_PREFERENCE_LABEL},
       {"braveLeoAssistantHistoryPreferenceConfirm",
@@ -950,10 +950,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "braveLeoAssistantInputDefaultContextSize",
       base::NumberToString16(ai_chat::kDefaultCustomModelContextSize));
 
-  html_source->AddString(
-      "braveLeoAssistantTabFocusDesc",
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_TAB_FOCUS_DESC,
-                                 kLeoPrivacyPolicyURL));
+  html_source->AddString("braveLeoAssistantTabOrganizationDesc",
+                         l10n_util::GetStringFUTF16(
+                             IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_DESC,
+                             kLeoPrivacyPolicyURL));
 
   html_source->AddString("braveLeoAssistanPrivacyPolicyURL",
                          kLeoPrivacyPolicyURL);

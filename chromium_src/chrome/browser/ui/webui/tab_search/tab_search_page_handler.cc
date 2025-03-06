@@ -32,7 +32,7 @@ TabSearchPageHandler::TabSearchPageHandler(
 
 TabSearchPageHandler::~TabSearchPageHandler() = default;
 
-ai_chat::EngineConsumer* TabSearchPageHandler::GetAIEngineForTabFocus() {
+ai_chat::EngineConsumer* TabSearchPageHandler::GetAIEngineForTabOrganization() {
   if (!ai_chat_engine_) {
     Profile* profile = Profile::FromWebUI(web_ui_);
     ai_chat::AIChatService* ai_chat_service =
@@ -90,7 +90,7 @@ tab_search::mojom::ErrorPtr TabSearchPageHandler::GetError(
 
 void TabSearchPageHandler::GetSuggestedTopics(
     GetSuggestedTopicsCallback callback) {
-  auto* engine = GetAIEngineForTabFocus();
+  auto* engine = GetAIEngineForTabOrganization();
 
   std::vector<ai_chat::Tab> tabs = GetTabsForAIEngine();
   engine->GetSuggestedTopics(
@@ -112,7 +112,7 @@ void TabSearchPageHandler::OnGetSuggestedTopics(
 
 void TabSearchPageHandler::GetFocusTabs(const std::string& topic,
                                         GetFocusTabsCallback callback) {
-  auto* engine = GetAIEngineForTabFocus();
+  auto* engine = GetAIEngineForTabOrganization();
   focus_tabs_info_.clear();
 
   std::vector<ai_chat::Tab> tabs = GetTabsForAIEngine();

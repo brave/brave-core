@@ -82,7 +82,7 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
                                            ai_chat::mojom::APIError> result);
   tab_search::mojom::ErrorPtr GetError(ai_chat::mojom::APIError error);
 
-  ai_chat::EngineConsumer* GetAIEngineForTabFocus();
+  ai_chat::EngineConsumer* GetAIEngineForTabOrganization();
   std::vector<ai_chat::Tab> GetTabsForAIEngine();
 
   // Map from session id to the list of tab info for undo last get focus tabs

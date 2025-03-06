@@ -45,7 +45,7 @@ inline constexpr float kMaxContentLengthThreshold = 0.6f;
 inline constexpr size_t kReservedTokensForPrompt = 300;
 inline constexpr size_t kReservedTokensForMaxNewTokens = 400;
 
-// Model key for Claude 3 Haiku model.
+// Model key for Claude Haiku model.
 inline constexpr char kClaudeHaikuModelKey[] = "chat-claude-haiku";
 
 // Model key for Claude Sonnet model.

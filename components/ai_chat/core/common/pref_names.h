@@ -93,8 +93,8 @@ inline constexpr char kEnabledByPolicy[] = "brave.ai_chat.enabled_by_policy";
 inline constexpr char kObseleteBraveChatAutoGenerateQuestions[] =
     "brave.ai_chat.auto_generate_questions";
 
-inline constexpr char kBraveAIChatTabFocusEnabled[] =
-    "brave.ai_chat.tab_focus_enabled";
+inline constexpr char kBraveAIChatTabOrganizationEnabled[] =
+    "brave.ai_chat.tab_organization_enabled";
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);

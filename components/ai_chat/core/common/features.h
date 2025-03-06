@@ -64,8 +64,8 @@ BASE_DECLARE_FEATURE(kPageContextEnabledInitially);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsPageContextEnabledInitially();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-BASE_DECLARE_FEATURE(kTabFocus);
-COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsTabFocusEnabled();
+BASE_DECLARE_FEATURE(kTabOrganization);
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsTabOrganizationEnabled();
 
 }  // namespace ai_chat::features
 
