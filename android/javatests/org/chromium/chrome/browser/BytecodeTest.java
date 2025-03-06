@@ -380,6 +380,12 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/media/ui/ChromeMediaNotificationControllerDelegate")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/media/ui/MediaSessionTabHelper"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerCompat")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerLegacy")); // presubmit: ignore-long-line
     }
 
     @Test
@@ -1071,6 +1077,13 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         int.class,
                         boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController", // presubmit: ignore-long-line
+                        "dismissActivityIfNeeded",
+                        MethodModifier.REGULAR,
+                        Activity.class,
+                        int.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -1793,6 +1806,20 @@ public class BytecodeTest {
                         // ignore-long-line
                         "org/chromium/chrome/browser/media/ui/BraveMediaSessionTabHelper", // presubmit: ignore-long-line
                         Tab.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerCompat",
+                        "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerCompat", // presubmit: ignore-long-line
+                        Activity.class,
+                        ObservableSupplier.class,
+                        boolean.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerLegacy",
+                        "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerLegacy", // presubmit: ignore-long-line
+                        Activity.class,
+                        ObservableSupplier.class,
+                        boolean.class));
     }
 
     @Test
@@ -2187,6 +2214,10 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
                         "mCustomTabFeatureOverridesManager"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController", // presubmit: ignore-long-line
+                        "mDismissPending"));
     }
 
     @Test
@@ -2332,6 +2363,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/components/browser_ui/media/MediaSessionHelper",
                         "org/chromium/components/browser_ui/media/BraveMediaSessionHelper"));
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/media/BraveFullscreenVideoPictureInPictureController")); // presubmit: ignore-long-line
     }
 
     @Test
