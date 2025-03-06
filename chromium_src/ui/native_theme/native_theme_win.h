@@ -18,7 +18,7 @@ namespace ui {
 // Set true when browser should not response to system theme change.
 // If user set dark or light explicitly, browser should ignore system dark mode
 // setting.
-void NATIVE_THEME_EXPORT IgnoreSystemDarkModeChange(bool ignore);
+void COMPONENT_EXPORT(NATIVE_THEME) IgnoreSystemDarkModeChange(bool ignore);
 
 }  // namespace ui
 
