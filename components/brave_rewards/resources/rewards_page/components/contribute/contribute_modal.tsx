@@ -6,7 +6,6 @@
 import * as React from 'react'
 
 import { AppModelContext, useAppState } from '../../lib/app_model_context'
-import { useCallbackWrapper } from '../../lib/callback_wrapper'
 import { isSelfCustodyProvider } from '../../../shared/lib/external_wallet'
 import { Modal } from '../modal'
 import { PaymentForm } from './payment_form'
@@ -30,7 +29,6 @@ interface Props {
 
 export function ContributeModal (props: Props) {
   const model = React.useContext(AppModelContext)
-  const wrapCallback = useCallbackWrapper()
 
   const [creator, externalWallet] = useAppState((state) => [
     state.currentCreator,
@@ -59,9 +57,7 @@ export function ContributeModal (props: Props) {
 
     model
       .sendContribution(creator.site.id, amount, recurring)
-      .then(wrapCallback((success) => {
-        setViewType(success ? 'success' : 'error')
-      }))
+      .then((success) => { setViewType(success ? 'success' : 'error') })
   }
 
   function renderHeader() {
