@@ -51,9 +51,14 @@ public struct P3ATimedStorage<Value: Codable> {
   private let storage: Preferences.Option<Data>
 
   /// Creates a storage container to hold onto P3A data for up to a given number of days
-  public init(name: String, lifetimeInDays: Int) {
+  public init(
+    name: String,
+    lifetimeInDays: Int,
+    calendar: Calendar = .init(identifier: .gregorian)
+  ) {
     self.name = name
     self.lifetimeInDays = lifetimeInDays
+    self.calendar = calendar
     self.storage = .init(key: "p3a.event-storage.\(name)", default: .init())
 
     if let data = try? JSONDecoder().decode([Record].self, from: storage.value) {
@@ -70,7 +75,7 @@ public struct P3ATimedStorage<Value: Codable> {
     ) ?? Date()
   }
 
-  fileprivate let calendar: Calendar = .init(identifier: .gregorian)
+  fileprivate let calendar: Calendar
 
   /// Purges any records that are outside of the lifetime
   private mutating func purge() {
