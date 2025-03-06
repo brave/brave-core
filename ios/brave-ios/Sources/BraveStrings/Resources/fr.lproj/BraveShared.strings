@@ -3284,7 +3284,7 @@
 "TabToolbarReloadButtonAccessibilityLabel" = "Recharger";
 
 /* The text shown in the URL bar on about:home */
-"TabToolbarSearchAddressPlaceholderText" = "Test Search or enter address in French";
+"TabToolbarSearchAddressPlaceholderText" = "Rechercher ou saisir une adresse";
 
 /* Accessibility Label for the browser toolbar Share button */
 "TabToolbarShareButtonAccessibilityLabel" = "Partager";
