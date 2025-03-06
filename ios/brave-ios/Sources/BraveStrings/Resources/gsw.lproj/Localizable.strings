@@ -1,5 +1,20 @@
+/* A label shown above a list of icons designed by Brave */
+"altAppIcon.braveIconsHeader" = "Brave Icons";
+
+/* The title for the screen that lets the user select a custom app icon */
+"altAppIcon.changeAppIcon" = "App-Symbol ändern";
+
+/* A label shown next to the default Brave app icon */
+"altAppIcon.defaultAppIcon" = "Standardeinstellung";
+
+/* A title shown if some sort of error occurs while changing the app icon */
+"altAppIcon.errorTitle" = "App-Symbol kann nicht geändert werden";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "BackTitle" = "Zurück";
+
+/* Accessibility message e.g. spoken by VoiceOver when page translation becomes available. */
+"BraveTranslate.availableVoiceOverAnnouncement" = "Seitenübersetzung verfügbar";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Alle Tabs schließen";

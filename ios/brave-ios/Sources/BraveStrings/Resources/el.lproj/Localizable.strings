@@ -1,5 +1,20 @@
+/* A label shown above a list of icons designed by Brave */
+"altAppIcon.braveIconsHeader" = "Εικονίδια Brave";
+
+/* The title for the screen that lets the user select a custom app icon */
+"altAppIcon.changeAppIcon" = "Αλλαγή εικονιδίου εφαρμογής";
+
+/* A label shown next to the default Brave app icon */
+"altAppIcon.defaultAppIcon" = "Προεπιλογή";
+
+/* A title shown if some sort of error occurs while changing the app icon */
+"altAppIcon.errorTitle" = "Αποτυχία αλλαγής εικονιδίου εφαρμογής";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "BackTitle" = "Πίσω";
+
+/* Accessibility message e.g. spoken by VoiceOver when page translation becomes available. */
+"BraveTranslate.availableVoiceOverAnnouncement" = "Διαθέσιμη μετάφραση σελίδας";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Κλείσιμο όλων των καρτελών";

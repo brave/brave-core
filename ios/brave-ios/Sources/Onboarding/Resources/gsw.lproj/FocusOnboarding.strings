@@ -10,6 +10,12 @@
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Nicht jetzt";
 
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "Blockiere nervige Unterbrechungen auf deinen Lieblings-Streaming-Seiten.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "Blockiere Unterbrechungen, während du streamst";
+
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Erfahre mehr über unsere Produktanalyse, die den Datenschutz respektiert (P3A)";
 
@@ -27,6 +33,12 @@
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Mit dem Surfen beginnen";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "Als Standard festlegen";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "Starte das Streaming und genieße weniger Werbung und Tracking";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Erlebe den Brave Unterschied";

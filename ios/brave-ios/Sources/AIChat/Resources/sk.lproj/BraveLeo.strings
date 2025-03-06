@@ -137,7 +137,7 @@
 "aichat.infoAboutPageContext" = "Tvarujte odpovede na základe obsahu stránky";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude 3 Haiku, model vytvorený spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude Haiku, model vytvorený spoločnosťou Anthropic na spracovanie konverzačných a textových úloh.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku od Anthropic";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Chat s bleskovou rýchlosťou";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude 3.5 Sonnet, model vytvorený spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude Sonnet, model vytvorený spoločnosťou Anthropic na spracovanie konverzačných a textových úloh.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonet od Anthropic";

@@ -23,7 +23,7 @@
 "AddFolderActionCellTitle" = "Nouveau dossier";
 
 /* Add to favorites share action. */
-"AddToFavorites" = "Testing Add to Favorites in French";
+"AddToFavorites" = "Ajouter aux favoris";
 
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Ajouter aux favoris";
@@ -71,10 +71,10 @@
 "AutoRedirectAMPPagesDescription" = "Toujours visiter les URL des pages originales (non AMP), au lieu des versions accélérées des pages mobiles de Google.";
 
 /* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
-"AutoRedirectTrackingURLs" = "Rediriger automatiquement les URL de suivi";
+"AutoRedirectTrackingURLs" = "Redirection automatique des URL de suivi";
 
 /* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Activer la prise en charge du contournement des URL de suivi de redirection de niveau supérieur";
+"AutoRedirectTrackingURLsDescription" = "Active la prise en charge du contournement des URL de suivi de redirection de niveau supérieur";
 
 /* cookie settings option */
 "Block3rdPartyCookies" = "Bloquer les cookies tiers";
@@ -95,10 +95,10 @@
 "BlockAllCookiesFailedAlertMsg" = "Échec de la configuration de la préférence, réessayez.";
 
 /* A title for a setting that enables cookie consent notices */
-"BlockCookieConsentNotices" = "Bloquer les avis de consentement aux cookies";
+"BlockCookieConsentNotices" = "Blocage des fenêtres de consentement aux cookies";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Empêche les sites de stocker des informations sur vos visites précédentes.";
+"BlockCookiesDescription" = "Empêche les sites Web d'enregistrer des informations sur vos visites précédentes. L'option « Bloquer tous les cookies » est obsolète. Pour savoir comment forcer cette option, consultez [notre page d'aide] (https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting).";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Écran des blocages";
@@ -107,10 +107,10 @@
 "BlockPopups" = "Bloquer les fenêtres contextuelles";
 
 /* No comment provided by engineer. */
-"BlockScripts" = "Bloquer les scripts";
+"BlockScripts" = "Blocage des scripts";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Bloque JavaScript (certains sites risquent de ne pas fonctionner correctement).";
+"BlockScriptsDescription" = "Bloque JavaScript (certains sites risquent de ne pas fonctionner correctement)";
 
 /* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
 "BookmarkAllTabsTitle" = "Ajouter tous les onglets aux marque-pages";
@@ -146,16 +146,16 @@
 "BravePanel" = "Panneau Brave";
 
 /* No comment provided by engineer. */
-"BraveRewardsAdNotificationTitle" = "Récompenses Brave";
+"BraveRewardsAdNotificationTitle" = "Programme de récompenses Brave";
 
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Ouvrir";
 
 /* Brave Rewards title in settings */
-"BraveRewardsSettingsTitle" = "Rewards";
+"BraveRewardsSettingsTitle" = "Programme de récompenses";
 
 /* Brave Rewards title */
-"BraveRewardsTitle" = "Récompenses Brave";
+"BraveRewardsTitle" = "Programme de récompenses Brave";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
 "braveSearchPromotion.bannerDescription" = "La recherche Brave n'établit pas de profil vous concernant.";
@@ -197,7 +197,7 @@
 "BraveShieldsGlobalControls" = "Contrôles globaux";
 
 /* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Enregistre les informations de contact pour d’éventuels futurs rapports concernant l'indisponibilité des sites";
+"BraveShieldsSaveContactInfo" = "Enregistrement des informations de contact pour les rapports";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
 "BraveShieldsSaveContactInfoDescription" = "Si vous fournissez vos informations de contact, celles-ci seront conservées pour d'éventuels futurs rapports.";
@@ -219,6 +219,33 @@
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Appels Brave";
+
+/* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
+"BraveTranslate.languageSelectionButtonTitle" = "Choisir la langue";
+
+/* Title for a text element that lets the user know the page was translated successfully. */
+"BraveTranslate.pageTranslatedTitle" = "Page traduite";
+
+/* Title for the search field in the navigation bar for the translate language selection page. The user can search for a language to translate to or from. */
+"BraveTranslate.searchInputTitle" = "Recherche";
+
+/* This text is for the settings menu for all Brave-Translate options. */
+"BraveTranslate.settingsMenuTitle" = "Traduction Brave";
+
+/* This text is for the translate settings screen. It's the title of the settings menu. */
+"BraveTranslate.settingsScreenTitle" = "Traduction Brave";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionDescription" = "Lorsque cette option est activée, Brave Traduction détecte automatiquement la langue de la page actuelle et affiche un bouton de traduction dans la barre d'URL.";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionTitle" = "Traduction activée";
+
+/* The word 'to', is used in the sentenced: Translate [language-a] to [language-b] */
+"BraveTranslate.translateFromToTitle" = "Vers";
+
+/* This text is used as a placeholder for languages when the language detected on the page is unsupported or unknown. */
+"BraveTranslate.unknownLanguageTitle" = "Langue inconnue";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Verrouillage du navigateur";
@@ -407,7 +434,7 @@
 "ClearData" = "Suppression des données";
 
 /* Section title in settings panel */
-"ClearPrivateData" = "Testing Clear Private Data 5 for French";
+"ClearPrivateData" = "Effacer les données";
 
 /* The cancel button when confirming clear private data. */
 "ClearPrivateDataAlertCancelButtonTitle" = "Annuler";
@@ -590,7 +617,7 @@
 "defaultThemeName" = "Thème Brave par défaut";
 
 /* No comment provided by engineer. */
-"Delete" = "Testing Delete 1 for French";
+"Delete" = "Supprimer";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
 "DeleteBookmarksFolderAlertMessage" = "Tous les dossiers et les favoris qu'ils contiennent seront supprimés. Voulez-vous vraiment continuer ?";
@@ -611,7 +638,7 @@
 "DeleteLoginAlertTitle" = "Confirmer ?";
 
 /* Label for the button used to delete the current login. */
-"DeleteLoginButtonTitle" = "Testing Delete 1 for French";
+"DeleteLoginButtonTitle" = "Supprimer";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Appareil %1$@ (%2$@)";
@@ -785,10 +812,10 @@
 "FingerprintingMethods" = "Méthodes de relevé des empreintes digitales";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Bloquez les empreintes numériques";
+"FingerprintingProtection" = "Blocage du fingerprinting";
 
 /* No comment provided by engineer. */
-"FingerprintingProtectionDescription" = "Empêche les sites de reconnaître facilement les caractéristiques uniques de votre appareil.";
+"FingerprintingProtectionDescription" = "Empêche les sites de reconnaître facilement les caractéristiques uniques de votre appareil";
 
 /* Setting to follow universal links */
 "FollowUniversalLinks" = "Permet aux liens universels de s'ouvrir dans des applications externes";
@@ -803,7 +830,7 @@
 "genericErrorTitle" = "Erreur";
 
 /* No comment provided by engineer. */
-"GoogleSafeBrowsing" = "Bloquer les sites Web dangereux";
+"GoogleSafeBrowsing" = "Blocage des sites Web dangereux";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "La navigation sécurisée vous protège contre les sites Web connus pour être dangereux. [En savoir plus](%@)";
@@ -812,7 +839,7 @@
 "HideLinkPreviewsActionTitle" = "Masquer les aperçus de liens";
 
 /* Hides the rewards icon */
-"HideRewardsIcon" = "Masquer l'icône Brave Rewards";
+"HideRewardsIcon" = "Masquer l'icône du programme de récompenses";
 
 /* Hide the rewards icon explination. */
 "HideRewardsIconSubtitle" = "Masque l'icône du programme de récompenses Brave lorsque celui-ci n'est pas activé.";
@@ -845,7 +872,7 @@
 "Home" = "Accueil";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Mettre à niveau les connexions vers HTTPS";
+"HTTPSEverywhere" = "Mise à niveau des connexions vers HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Ouvrir les sites en utilisant une connexion HTTPS sécurisée au lieu d'une connexion HTTP lorsque cela est possible.";
@@ -1052,7 +1079,7 @@
 "ntp.settingsSponsoredImagesSelection" = "Images sponsorisées";
 
 /* Title on settings page to adjust the primary home screen functionality. */
-"ntp.settingsTitle" = "Page Nouvel onglet";
+"ntp.settingsTitle" = "Page de nouvel onglet";
 
 /* A button title to show more bookmarks, that opens a new menu. */
 "ntp.showMoreFavorites" = "Afficher plus";
@@ -1121,7 +1148,7 @@
 "OBRewardsAgreementDetailsAnd" = "et la";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Récompenses Brave";
+"OBRewardsAgreementTitle" = "Programme de récompenses Brave";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "En optant pour les publicités privées Brave, vous soutiendrez les diffuseurs et les créateurs de contenu à chaque fois que vous visionnez une publicité.";
@@ -1133,7 +1160,7 @@
 "OBRewardsPrivacyPolicyDetailLink" = "Politique de confidentialité";
 
 /* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Récompenses Brave";
+"OBRewardsTitle" = "Programme de récompenses Brave";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Enregistrer";
@@ -1235,7 +1262,7 @@
 "OpenMobileConfigurationAlertTitle" = "Profil de configuration disponible";
 
 /* Context menu option for opening a link in a new private tab */
-"OpenNewPrivateTabButtonTitle" = "Testing Open In New Private Tab 2 for French";
+"OpenNewPrivateTabButtonTitle" = "Ouvrir dans un nouvel onglet de navigation privée";
 
 /* Context menu item for opening a link in a new tab */
 "OpenNewTabButtonTitle" = "Ouvrir dans un nouvel onglet";
@@ -1445,7 +1472,7 @@
 "PersistentPrivateBrowsingAlertMessage" = "Permet à Brave de restaurer les onglets de navigation privée, même si vous fermez/rouvrez l'application";
 
 /* Persistent private browsing alert title to existing users */
-"PersistentPrivateBrowsingAlertTitle" = "Restaurer les onglets privés";
+"PersistentPrivateBrowsingAlertTitle" = "Restaurer les onglets de navigation privée";
 
 /* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
 "PhotoBy" = "Photo par %@";
@@ -1880,7 +1907,7 @@
 "privacyHub.hidePrivacyHubWidgetActionTitle" = "Masquer les statistiques de confidentialité";
 
 /* The description in alert of the hide action which hides the privacy hub */
-"privacyHub.hidePrivacyHubWidgetAlertDescription" = "Appuyez sur Masquer pour supprimer le widget des statistiques de confidentialité. Vous pourrez le réactiver à tout moment dans les paramètres, à la page Nouvel onglet.";
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "Appuyez sur Masquer pour supprimer le widget des statistiques de confidentialité. Vous pourrez le réactiver à tout moment dans les paramètres, à la page de nouvel onglet.";
 
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "La semaine dernière";
@@ -1928,7 +1955,7 @@
 "privacyHub.riskiestWebsiteTitle" = "Site avec le plus de traqueurs";
 
 /* This text explains a setting that lets Brave monitor blocked network requests */
-"privacyHub.settingsEnableShieldsFooter" = "Le centre de confidentialité affiche le nombre d'éléments bloqués par les boucliers. Ce paramètre n'affectera pas les compteurs sur la page « Nouvel onglet ». Les données en mode navigation privée ne sont pas prises en compte.";
+"privacyHub.settingsEnableShieldsFooter" = "Le centre de confidentialité affiche le nombre d'éléments bloqués par les boucliers. Ce paramètre n'affectera pas les compteurs sur la page de nouvel onglet. Les données en mode navigation privée ne sont pas prises en compte.";
 
 /* Title of a setting that lets Brave monitor blocked network requests */
 "privacyHub.settingsEnableShieldsTitle" = "Afficher les données associées aux boucliers";
@@ -1994,13 +2021,13 @@
 "PrivateBrowsingOnlyWarning" = "Le mode«  Navigation privée uniquement » fermera tous vos onglets actuels et vous déconnectera de tous les sites.";
 
 /* Private tab details */
-"PrivateTabBody" = "Même si les onglets privés ne sont pas enregistrés dans Brave, ces derniers ne vous rendent pas anonymes sur Internet. Les sites que vous consultez dans un onglet privé ne s'affichent pas dans votre historique, et leurs cookies sont toujours supprimés (ils ne sont pas conservés dans Brave) lorsque vous fermez leur onglet. Vos téléchargements sont toutefois enregistrés.\nLes onglets privés n'empêchent pas votre opérateur mobile (ou le propriétaire du réseau Wi-Fi ou du VPN auquel vous êtes connecté) de voir les sites que vous consultez, ni ces sites d'obtenir votre adresse IP publique.";
+"PrivateTabBody" = "Même si les onglets de navigation privée ne sont pas enregistrés dans Brave, ces derniers ne vous rendent pas anonymes sur Internet. Les sites que vous consultez dans un onglet de navigation privée ne s'affichent pas dans votre historique, et leurs cookies sont toujours supprimés (ils ne sont pas conservés dans Brave) lorsque vous fermez leur onglet. Vos téléchargements sont toutefois enregistrés.\nLes onglets privés n'empêchent pas votre opérateur mobile (ou le propriétaire du réseau Wi-Fi ou du VPN auquel vous êtes connecté) de voir les sites que vous consultez, ni ces sites d'obtenir votre adresse IP publique.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "L'utilisation des onglets privés change seulement les opérations que Brave peut effectuer sur votre appareil, mais pas le comportement des autres.\n\nLes sites obtiennent toujours votre adresse IP lorsque vous les consultez. Grâce à elle, ils peuvent souvent deviner votre position approximative (généralement votre ville). Parfois, cette localisation peut être déterminée de manière beaucoup plus précise. Les sites reçoivent toutes les informations que vous leur communiquez, comme les termes de recherche. Si vous vous connectez à un site, il saura que vous êtes le propriétaire de ce compte. Cependant, vous serez toujours déconnecté lorsque vous fermerez les onglets privés, car Brave supprime le cookie qui permet de vous garder connecté.\n\nQuel que soit votre fournisseur d'accès Internet, il peut voir toutes vos activités sur le réseau. Il s'agit souvent de votre opérateur mobile. Si vous êtes connecté à un réseau Wi-Fi, il s'agit du propriétaire du réseau, et si vous utilisez un VPN, il s'agit du fournisseur de ce VPN. Votre fournisseur d'accès Internet peut voir les sites que vous consultez lorsque vous les consultez. Si ces sites utilisent le protocole HTTPS, votre fournisseur n'aura aucune information concrète concernant vos activités sur ce site. Cependant, si un site utilise seulement le protocole HTTP, alors votre fournisseur d'accès Internet peut tout voir : vos termes de recherche, les pages que vous avez lues et les liens sur lesquels vous avez cliqué.\n\nSi un employeur gère votre appareil, il peut également suivre l'utilisation que vous en faites. L'utilisation des onglets privés ne l'empêchera certainement pas de savoir quels sites vous consultez. De plus, une personne ayant accès à votre appareil a pu installer un logiciel qui surveille votre activité, et les onglets privés ne vous protégeront pas contre cela non plus.";
+"PrivateTabDetails" = "L'utilisation des onglets de navigation privée change seulement les opérations que Brave peut effectuer sur votre appareil, mais pas le comportement des autres.\n\nLes sites obtiennent toujours votre adresse IP lorsque vous les consultez. Grâce à elle, ils peuvent souvent deviner votre position approximative (généralement votre ville). Parfois, cette localisation peut être déterminée de manière beaucoup plus précise. Les sites reçoivent toutes les informations que vous leur communiquez, comme les termes de recherche. Si vous vous connectez à un site, il saura que vous êtes le propriétaire de ce compte. Cependant, vous serez toujours déconnecté lorsque vous fermerez les onglets privés, car Brave supprime le cookie qui permet de vous garder connecté.\n\nQuel que soit votre fournisseur d'accès Internet, il peut voir toutes vos activités sur le réseau. Il s'agit souvent de votre opérateur mobile. Si vous êtes connecté à un réseau Wi-Fi, il s'agit du propriétaire du réseau, et si vous utilisez un VPN, il s'agit du fournisseur de ce VPN. Votre fournisseur d'accès Internet peut voir les sites que vous consultez lorsque vous les consultez. Si ces sites utilisent le protocole HTTPS, votre fournisseur n'aura aucune information concrète concernant vos activités sur ce site. Cependant, si un site utilise seulement le protocole HTTP, alors votre fournisseur d'accès Internet peut tout voir : vos termes de recherche, les pages que vous avez lues et les liens sur lesquels vous avez cliqué.\n\nSi un employeur gère votre appareil, il peut également suivre l'utilisation que vous en faites. L'utilisation des onglets privés ne l'empêchera certainement pas de savoir quels sites vous consultez. De plus, une personne ayant accès à votre appareil a pu installer un logiciel qui surveille votre activité, et les onglets privés ne vous protégeront pas contre cela non plus.";
 
 /* Private tab information link */
-"PrivateTabLink" = "En savoir plus sur les onglets privés.";
+"PrivateTabLink" = "En savoir plus sur les onglets de navigation privée.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Onglet privé";
@@ -2234,10 +2261,10 @@
 "rewards.optInDisclaimer" = "En cliquant, vous acceptez les %1$@ et la %2$@. Désactivez cette option à tout moment dans les paramètres.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Soutenez Brave et la communauté BAT en activant le programme de récompenses Brave et en visionnant les publicités Brave.";
+"rewards.settingsToggleMessage" = "Soutenez Brave et la communauté BAT en activant le programme de récompenses Brave et en affichant les publicités Brave.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleTitle" = "Autoriser Brave Rewards";
+"rewards.settingsToggleTitle" = "Activer le programme de récompenses Brave";
 
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Ce créateur de contenu fait partie des créateurs Brave validés";
@@ -2258,7 +2285,7 @@
 "RewardsInternalsBalanceInfoHeader" = "Solde";
 
 /* No comment provided by engineer. */
-"RewardsInternalsClearLogsConfirmation" = "Voulez-vous vraiment supprimer tous les journaux Rewards ?";
+"RewardsInternalsClearLogsConfirmation" = "Voulez-vous vraiment supprimer tous les journaux du programme de récompenses ?";
 
 /* No comment provided by engineer. */
 "RewardsInternalsClearLogsTitle" = "Supprimer les journaux";
@@ -2306,7 +2333,7 @@
 "RewardsInternalsContributionsStepReserve" = "Réserver";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionsStepRewardsOff" = "Récompenses Brave désactivées";
+"RewardsInternalsContributionsStepRewardsOff" = "Programme de récompenses Brave désactivé";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionsStepStart" = "Démarrer";
@@ -2672,7 +2699,7 @@
 "shieldEducation.videoAdBlockTitle" = "Les publicités sont bloquées pendant le visionnage de vidéos sur ce site Web.";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Réglages par défaut Brave Shields";
+"ShieldsDefaults" = "Paramètres généraux par défaut des boucliers Brave";
 
 /* Section footer for global shields defaults */
 "ShieldsDefaultsFooter" = "Réglages par défaut des boucliers pour les nouveaux sites. La modification de ces paramètres n'affectera pas les réglages que vous avez définis pour un site en particulier.";
@@ -2687,7 +2714,7 @@
 "ShieldsOverviewFooter" = "Remarque : pour fonctionner correctement, certains sites doivent exécuter des scripts ; ce shield est donc désactivé par défaut.";
 
 /* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleNewPrivateTab" = "Testing New Private Tab 4 for French";
+"ShortcutItemTitleNewPrivateTab" = "Nouvel onglet de navigation privée";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewTab" = "Nouvel onglet";
@@ -3206,7 +3233,7 @@
 "tabs.settings.persistentPrivateBrowsingDescription" = "Conservez les onglets de navigation privée ouverts lorsque vous fermez l'application, afin que les sessions de navigation privée se poursuivent de manière transparente.";
 
 /* No comment provided by engineer. */
-"tabs.settings.persistentPrivateBrowsingTitle" = "Conserver les onglets privés";
+"tabs.settings.persistentPrivateBrowsingTitle" = "Conserver les onglets de navigation privée";
 
 /* No comment provided by engineer. */
 "tabs.settings.privateBrowsingLockTitleFaceID" = "Face ID requis";
@@ -3218,7 +3245,7 @@
 "tabs.settings.privateBrowsingLockTitleTouchID" = "Touch ID requis";
 
 /* No comment provided by engineer. */
-"tabs.settings.privateTabsSettingsTitle" = "Onglets privés";
+"tabs.settings.privateTabsSettingsTitle" = "Onglets de navigation privée";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Barre d'outils de navigation";
@@ -3251,7 +3278,7 @@
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Mode Lecture";
 
 /* Accessibility label for action adding current page to reading list. */
-"TabToolbarReaderViewButtonTitle" = "Testing Add to Reading List 2 for French";
+"TabToolbarReaderViewButtonTitle" = "Ajouter à la liste de lecture";
 
 /* Accessibility Label for the tab toolbar Reload button */
 "TabToolbarReloadButtonAccessibilityLabel" = "Recharger";
@@ -3510,6 +3537,9 @@
 
 /* Button title that when tapped toggles the web page in our out of reader mode */
 "ToggleReaderMode" = "Activer/désactiver le mode Lecture";
+
+/* Title of an action that allows the user to translate the current web-page to another language */
+"TranslatePage" = "Traduire";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Activer les suggestions de recherche ?";

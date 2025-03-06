@@ -97,6 +97,9 @@
 /* A title for a setting that enables cookie consent notices */
 "BlockCookieConsentNotices" = "Cookie-Einwilligungshinweise blockieren";
 
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "Verhindert, dass Websites Informationen über Ihre früheren Besuche speichern.\nDie Option „Alle Cookies blockieren“ ist veraltet. Um zu erfahren, wie du diese Option zwangsweise aktivieren kannst, besuche [unsere Hilfeseite] (https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
+
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Übersicht über Blockierungen";
 
@@ -216,6 +219,33 @@
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
+
+/* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
+"BraveTranslate.languageSelectionButtonTitle" = "Sprache auswählen";
+
+/* Title for a text element that lets the user know the page was translated successfully. */
+"BraveTranslate.pageTranslatedTitle" = "Seite übersetzen";
+
+/* Title for the search field in the navigation bar for the translate language selection page. The user can search for a language to translate to or from. */
+"BraveTranslate.searchInputTitle" = "Suchen";
+
+/* This text is for the settings menu for all Brave-Translate options. */
+"BraveTranslate.settingsMenuTitle" = "Brave Translate";
+
+/* This text is for the translate settings screen. It's the title of the settings menu. */
+"BraveTranslate.settingsScreenTitle" = "Brave Translate";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionDescription" = "Wenn diese Funktion aktiviert ist, erkennt Brave Translate automatisch die aktuelle Sprache Ihrer Seite und zeigt eine Übersetzungsschaltfläche in der URL-Leiste an.";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionTitle" = "Translate aktiviert";
+
+/* The word 'to', is used in the sentenced: Translate [language-a] to [language-b] */
+"BraveTranslate.translateFromToTitle" = "An";
+
+/* This text is used as a placeholder for languages when the language detected on the page is unsupported or unknown. */
+"BraveTranslate.unknownLanguageTitle" = "Sprache unbekannt";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Browsersperre";
@@ -2050,6 +2080,9 @@
 /* Accessibility label for button decreasing font size in display settings of reader mode */
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Textgröße verringern";
 
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Ändert das Farbschema.";
 
@@ -3504,6 +3537,9 @@
 
 /* Button title that when tapped toggles the web page in our out of reader mode */
 "ToggleReaderMode" = "Lesemodus umschalten";
+
+/* Title of an action that allows the user to translate the current web-page to another language */
+"TranslatePage" = "Translate";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Sollen Suchvorschläge aktiviert werden?";

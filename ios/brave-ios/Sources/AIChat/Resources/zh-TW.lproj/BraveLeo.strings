@@ -137,7 +137,7 @@
 "aichat.infoAboutPageContext" = "根據頁面内容產生回答";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "您好，我是 Leo。我是由 Brave 代理，並使用 Anthropic 建立的 Claude 3 Haiku 模型來處理對話與文字處理工作。";
+"aichat.introMessageClaudeHaikuMessageDescription" = "您好，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的模型 Claude Haiku 提供技術支援，可勝任對話和文字處理工作。";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "由 Anthropic 建置的 Claude Haiku";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "快速流暢的聊天";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "您好，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的模型 Claude 3.5 Sonnet 提供技術支援，可勝任對話和文字處理工作。";
+"aichat.introMessageClaudeSonnetMessageDescription" = "您好，我是 Leo。我是 Brave 的代理機器人，由 Anthropic 建立的模型 Claude Sonnet 提供技術支援，可勝任對話和文字處理工作。";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "由 Anthropic 建置的 Claude Sonnet";

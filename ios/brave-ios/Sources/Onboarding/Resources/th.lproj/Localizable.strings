@@ -4,6 +4,15 @@
 /* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
 "advanceStep2OnboardingButtonTitle" = "ลองเลย!";
 
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "ปิดฟีเจอร์นี้";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "หน้าเว็บสามารถแปลเป็นภาษาที่รองรับโดยอุปกรณ์ iOS ของคุณ คุณอาจต้องกำหนดค่าภาษา หากนี่เป็นครั้งแรกที่คุณใช้ฟีเจอร์นี้";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "การแปลหน้าเว็บ";
+
 /* A button title that when tapped opens Brave Playlist */
 "confirmationActionButtonTitle" = "นำฉันไปที่เพลย์ลสต์ของฉัน";
 

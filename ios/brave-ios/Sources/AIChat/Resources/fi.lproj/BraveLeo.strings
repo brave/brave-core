@@ -137,7 +137,7 @@
 "aichat.infoAboutPageContext" = "Muotoile vastauksia sivun sisällön perusteella";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude 3 Haiku, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude Haiku, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Anthropicin Claude Haiku";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Salamannopea chatti";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude 3.5 Sonnet, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude Sonnet, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Anthropicin Claude Sonnet";
