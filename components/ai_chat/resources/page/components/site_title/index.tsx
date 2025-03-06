@@ -13,7 +13,7 @@ interface SiteTitleProps {
 
 function SiteTitle(props: SiteTitleProps) {
   const context = useConversation()
-
+  const url = context.associatedContentInfo?.url.url
   return (
     <div
       className={classnames({
@@ -27,7 +27,7 @@ function SiteTitle(props: SiteTitleProps) {
           [styles.favIconContainerSm]: props.size === 'small'
         })}
       >
-        { context.faviconUrl && <img src={context.faviconUrl} /> }
+        {url && <img src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(url)}`} />}
       </div>
       <div
         className={classnames({

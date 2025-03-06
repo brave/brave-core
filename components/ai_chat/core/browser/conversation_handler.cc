@@ -1108,13 +1108,6 @@ void ConversationHandler::AddSubmitSelectedTextError(
   SetAPIError(error);
 }
 
-void ConversationHandler::OnFaviconImageDataChanged() {
-  for (const mojo::Remote<mojom::ConversationUI>& client :
-       conversation_ui_handlers_) {
-    client->OnFaviconImageDataChanged();
-  }
-}
-
 void ConversationHandler::OnAssociatedContentTitleChanged() {
   OnAssociatedContentInfoChanged();
 }
@@ -1760,15 +1753,6 @@ void ConversationHandler::OnConversationUIConnectionChanged(
 void ConversationHandler::OnSelectedLanguageChanged(
     const std::string& selected_language) {
   selected_language_ = selected_language;
-}
-
-void ConversationHandler::OnAssociatedContentFaviconImageDataChanged() {
-  for (auto& client : conversation_ui_handlers_) {
-    client->OnFaviconImageDataChanged();
-  }
-  for (auto& client : untrusted_conversation_ui_handlers_) {
-    client->OnFaviconImageDataChanged();
-  }
 }
 
 void ConversationHandler::OnSuggestedQuestionsChanged() {

@@ -288,7 +288,6 @@ class ConversationHandler : public mojom::ConversationHandler,
                                   mojom::ActionType action_type,
                                   mojom::APIError error);
   void OnAssociatedContentTitleChanged();
-  void OnFaviconImageDataChanged();
   void OnUserOptedIn();
   size_t GetConversationHistorySize() override;
 
@@ -428,7 +427,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnConversationTitleChanged(std::string_view title);
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
   void OnSelectedLanguageChanged(const std::string& selected_language);
-  void OnAssociatedContentFaviconImageDataChanged();
   void OnAPIRequestInProgressChanged();
   void OnStateForConversationEntriesChanged();
 
