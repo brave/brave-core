@@ -53,6 +53,7 @@ import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
+import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.BookmarkMoveSnackbarManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkOpener;
@@ -522,7 +523,8 @@ public class BytecodeTest {
                         Activity.class,
                         int.class,
                         Callback.class,
-                        boolean.class));
+                        boolean.class,
+                        BookmarkManagerOpener.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/permissions/PermissionDialogModelFactory",
@@ -1551,7 +1553,8 @@ public class BytecodeTest {
                         ModalDialogManager.class,
                         Runnable.class,
                         BookmarkMoveSnackbarManager.class,
-                        BooleanSupplier.class));
+                        BooleanSupplier.class,
+                        BookmarkManagerOpener.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
@@ -1562,7 +1565,7 @@ public class BytecodeTest {
                         Profile.class,
                         BookmarkUiPrefs.class,
                         BookmarkOpener.class,
-                        ComponentName.class));
+                        BookmarkManagerOpener.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
@@ -1588,7 +1591,8 @@ public class BytecodeTest {
                         SnackbarManager.class,
                         BooleanSupplier.class,
                         Consumer.class,
-                        BookmarkMoveSnackbarManager.class));
+                        BookmarkMoveSnackbarManager.class,
+                        BookmarkManagerOpener.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
