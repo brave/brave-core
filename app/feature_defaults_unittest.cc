@@ -141,7 +141,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kFewerUpdateConfirmations,
       &features::kShortcutsNotApps,
 #endif
+#if BUILDFLAG(ENABLE_GLIC)
       &features::kGlic,
+#endif
       &features::kHttpsFirstBalancedMode,
       &features::kIdentifiabilityStudyMetaExperiment,
       &features::kIdleDetection,
