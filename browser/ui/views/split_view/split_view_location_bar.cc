@@ -160,7 +160,7 @@ void SplitViewLocationBar::OnPaintBorder(gfx::Canvas* canvas) {
   flags.setColor(cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder));
   flags.setAntiAlias(true);
   flags.setStyle(cc::PaintFlags::kStroke_Style);
-  flags.setStrokeWidth(2);
+  flags.setStrokeWidth(SplitView::kBorderThickness);
   canvas->DrawPath(path, flags);
 }
 
@@ -215,9 +215,6 @@ void SplitViewLocationBar::UpdateBounds() {
   }
 
   gfx::Point point;
-  if (split_view_) {
-    point = split_view_->GetSplitViewLocationBarOffset();
-  }
   views::View::ConvertPointToWidget(view, &point);
 
   auto* widget = GetWidget();

@@ -9,9 +9,8 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
@@ -28,6 +27,11 @@ struct ContextMenuParams;
 namespace {
 
 constexpr gfx::Size kToolbarSize{870, 40};
+constexpr gfx::RoundedCornersF kRoundedCorners(
+    BraveContentsViewUtil::kBorderRadius,
+    BraveContentsViewUtil::kBorderRadius,
+    0,
+    0);
 
 class Toolbar : public views::WebView {
  public:
@@ -60,17 +64,23 @@ void ReaderModeToolbarView::SetDelegate(Delegate* delegate) {
   delegate_ = delegate;
 }
 
-ReaderModeToolbarView::ReaderModeToolbarView(Browser* browser) {
+ReaderModeToolbarView::ReaderModeToolbarView(
+    content::BrowserContext* browser_context,
+    bool use_rounded_corners)
+    : use_rounded_corners_(use_rounded_corners) {
   SetVisible(false);
-  SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
 
-  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser)) {
+  toolbar_ = std::make_unique<Toolbar>(this, browser_context);
+  AddChildView(toolbar_.get());
+
+  if (use_rounded_corners_) {
+    SetBackground(views::CreateThemedRoundedRectBackground(kColorToolbar,
+                                                           kRoundedCorners));
+  } else {
     SetBorder(views::CreateThemedSolidSidedBorder(
         gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
+    SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
   }
-
-  toolbar_ = std::make_unique<Toolbar>(this, browser->profile());
-  AddChildView(toolbar_.get());
 }
 
 ReaderModeToolbarView::~ReaderModeToolbarView() = default;
@@ -86,6 +96,9 @@ void ReaderModeToolbarView::SetVisible(bool visible) {
     toolbar_contents_->GetController().LoadURLWithParams(params);
 
     toolbar_->SetWebContents(toolbar_contents_.get());
+    if (use_rounded_corners_) {
+      toolbar_->holder()->SetCornerRadii(kRoundedCorners);
+    }
   }
   views::View::SetVisible(visible);
 }
