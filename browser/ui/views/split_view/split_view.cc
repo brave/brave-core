@@ -29,6 +29,7 @@
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/webview/webview.h"
+#include "ui/views/painter.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
@@ -383,24 +384,33 @@ void SplitView::UpdateContentsWebViewBorder() {
     return;
   }
 
+  auto* cp = GetColorProvider();
+  if (!cp) {
+    return;
+  }
+
   DCHECK(split_view_browser_data);
 
   if (split_view_browser_data->GetTile(GetActiveTabHandle())) {
-    auto create_border = [this](int color_id) {
-      return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
-                 base::to_address(browser_))
-                 ? views::CreateThemedRoundedRectBorder(
-                       kBorderThickness, BraveContentsViewUtil::kBorderRadius,
-                       color_id)
-                 : views::CreateThemedSolidBorder(kBorderThickness, color_id);
-    };
-    contents_container_->SetBorder(
-        create_border(kColorBraveSplitViewActiveWebViewBorder));
+    const auto kRadius =
+        BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+            base::to_address(browser_))
+            ? BraveContentsViewUtil::kBorderRadius + kBorderThickness
+            : 0;
+    // Use same color for active focus border.
+    contents_container_->SetBorder(views::CreateThemedRoundedRectBorder(
+        kBorderThickness, kRadius, kColorBraveSplitViewActiveWebViewBorder));
+
     BraveContentsLayoutManager::GetLayoutManagerForView(contents_container_)
         ->SetWebContentsBorderInsets(gfx::Insets(kBorderThickness));
 
-    secondary_contents_container_->SetBorder(
-        create_border(kColorBraveSplitViewInactiveWebViewBorder));
+    secondary_contents_container_->SetBorder(views::CreateBorderPainter(
+        views::Painter::CreateRoundRectWith1PxBorderPainter(
+            cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder),
+            cp->GetColor(kColorToolbar), kRadius, SkBlendMode::kSrc,
+            /*anti_alias*/ true,
+            /*should_border_scale*/ true),
+        gfx::Insets(kBorderThickness)));
     BraveContentsLayoutManager::GetLayoutManagerForView(
         secondary_contents_container_)
         ->SetWebContentsBorderInsets(gfx::Insets(kBorderThickness));
