@@ -15,19 +15,22 @@ public class BraveFullscreenHtmlApiHandlerCompat extends FullscreenHtmlApiHandle
      * Constructs the legacy handler that will manage the UI transitions from the HTML fullscreen
      * API.
      *
-     * @param activity             The activity that supports fullscreen.
-     * @param areControlsHidden    Supplier of a flag indicating if browser controls are hidden.
+     * @param activity The activity that supports fullscreen.
+     * @param areControlsHidden Supplier of a flag indicating if browser controls are hidden.
      * @param exitFullscreenOnStop Whether fullscreen mode should exit on stop - should be true for
-     *                             Activities that are not always fullscreen.
+     *     Activities that are not always fullscreen.
      */
-    public BraveFullscreenHtmlApiHandlerCompat(Activity activity, ObservableSupplier<Boolean> areControlsHidden, boolean exitFullscreenOnStop) {
+    public BraveFullscreenHtmlApiHandlerCompat(
+            Activity activity,
+            ObservableSupplier<Boolean> areControlsHidden,
+            boolean exitFullscreenOnStop) {
         super(activity, areControlsHidden, exitFullscreenOnStop);
     }
 
     @Override
-   public void exitPersistentFullscreenMode() {
-       if (!mActivity.isInPictureInPictureMode() || mTabHiddenByChangedTabs) {
-           super.exitPersistentFullscreenMode();
-       }
-   }
+    public void exitPersistentFullscreenMode() {
+        if (!mActivity.isInPictureInPictureMode() || mTabHiddenByChangedTabs) {
+            super.exitPersistentFullscreenMode();
+        }
+    }
 }

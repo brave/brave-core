@@ -3,21 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- package org.brave.bytecode;
+package org.brave.bytecode;
 
- import org.objectweb.asm.ClassVisitor;
- 
- public class BraveFullscreenVideoPictureInPictureControllerClassAdapter extends BraveClassVisitor {
+import org.objectweb.asm.ClassVisitor;
+
+public class BraveFullscreenVideoPictureInPictureControllerClassAdapter extends BraveClassVisitor {
     static String sFullscreenVideoPictureInPictureController =
             "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController";
     static String sBraveFullscreenVideoPictureInPictureController =
             "org/chromium/chrome/browser/media/BraveFullscreenVideoPictureInPictureController";
- 
+
     public BraveFullscreenVideoPictureInPictureControllerClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeSuperName(sFullscreenVideoPictureInPictureController, sBraveFullscreenVideoPictureInPictureController);
+        changeSuperName(
+                sFullscreenVideoPictureInPictureController,
+                sBraveFullscreenVideoPictureInPictureController);
         deleteField(sFullscreenVideoPictureInPictureController, "mDismissPending");
-        changeMethodOwner(sFullscreenVideoPictureInPictureController, "dismissActivityIfNeeded", sBraveFullscreenVideoPictureInPictureController);
+        changeMethodOwner(
+                sFullscreenVideoPictureInPictureController,
+                "dismissActivityIfNeeded",
+                sBraveFullscreenVideoPictureInPictureController);
     }
 }

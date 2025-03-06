@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- package org.brave.bytecode;
+package org.brave.bytecode;
 
- import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassVisitor;
 
- public class BraveFullscreenHtmlApiHandlerLegacyClassAdapter extends BraveClassVisitor {
+public class BraveFullscreenHtmlApiHandlerLegacyClassAdapter extends BraveClassVisitor {
     static String sFullscreenHtmlApiHandlerLegacy =
             "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerLegacy";
     static String sBraveFullscreenHtmlApiHandlerLegacy =

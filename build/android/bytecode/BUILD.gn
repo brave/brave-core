@@ -53,6 +53,9 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFeedSurfaceMediatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveForegroundServiceUtilsClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFreIntentCreatorClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFullscreenHtmlApiHandlerCompatClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFullscreenHtmlApiHandlerLegacyClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFullscreenVideoPictureInPictureControllerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHelpAndFeedbackLauncherImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHomepageManagerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHubManagerImplClassAdapter.java",
@@ -132,9 +135,6 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/ClassPathValidator.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/ThreadAssertionClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/TypeUtils.java",
-    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFullscreenVideoPictureInPictureControllerClassAdapter.java",
-    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFullscreenHtmlApiHandlerCompatClassAdapter.java",
-    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveFullscreenHtmlApiHandlerLegacyClassAdapter.java",
   ]
   main_class = "org.brave.bytecode.ByteCodeProcessor"
   deps = [

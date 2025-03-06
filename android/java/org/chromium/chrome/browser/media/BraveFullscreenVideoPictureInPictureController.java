@@ -10,17 +10,24 @@ import android.app.Activity;
 import org.chromium.base.BraveReflectionUtil;
 
 public class BraveFullscreenVideoPictureInPictureController {
-   /**
-    * This variable will be used instead of {@link FullscreenVideoPictureInPictureController}'s variable, that will
-    * be deleted in bytecode.
-    */
-   protected boolean mDismissPending;
+    /**
+     * This variable will be used instead of {@link FullscreenVideoPictureInPictureController}'s
+     * variable, that will be deleted in bytecode.
+     */
+    protected boolean mDismissPending;
 
-   void dismissActivityIfNeeded(Activity activity, /*MetricsEndReason*/ int reason) {
-      if (reason == 8 /*MetricsEndReason.START*/ || reason == 0 /*MetricsEndReason.RESUME*/) {
-         mDismissPending = false;
-         return;
-      }
-      BraveReflectionUtil.invokeMethod(FullscreenVideoPictureInPictureController.class, this, "dismissActivityIfNeeded", Activity.class, activity, int.class, reason);
-   }
+    void dismissActivityIfNeeded(Activity activity, /*MetricsEndReason*/ int reason) {
+        if (reason == 8 /*MetricsEndReason.START*/ || reason == 0 /*MetricsEndReason.RESUME*/) {
+            mDismissPending = false;
+            return;
+        }
+        BraveReflectionUtil.invokeMethod(
+                FullscreenVideoPictureInPictureController.class,
+                this,
+                "dismissActivityIfNeeded",
+                Activity.class,
+                activity,
+                int.class,
+                reason);
+    }
 }
