@@ -17,7 +17,7 @@ bool s_ignore_system_dark_mode_change = false;
 
 namespace ui {
 
-void NATIVE_THEME_EXPORT IgnoreSystemDarkModeChange(bool ignore) {
+void COMPONENT_EXPORT(NATIVE_THEME) IgnoreSystemDarkModeChange(bool ignore) {
   s_ignore_system_dark_mode_change = ignore;
 }
 
