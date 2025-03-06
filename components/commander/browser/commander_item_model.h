@@ -20,7 +20,8 @@ struct COMPONENT_EXPORT(COMMANDER_BROWSER) CommandItemModel {
  public:
   CommandItemModel(const std::u16string& title,
                    const std::vector<gfx::Range>& matched_ranges,
-                   const std::u16string& annotation);
+                   const std::u16string& annotation,
+                   double score);
   ~CommandItemModel();
   CommandItemModel(const CommandItemModel& other);
   CommandItemModel(CommandItemModel&& other);
@@ -30,6 +31,7 @@ struct COMPONENT_EXPORT(COMMANDER_BROWSER) CommandItemModel {
   std::u16string title;
   std::vector<gfx::Range> matched_ranges;
   std::u16string annotation;
+  double score;
 };
 
 }  // namespace commander
