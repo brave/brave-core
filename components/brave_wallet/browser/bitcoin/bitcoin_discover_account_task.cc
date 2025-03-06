@@ -21,26 +21,17 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_import_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_task_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "components/grit/brave_components_strings.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
 namespace {
 
 const uint32_t kAddressDiscoveryGapLimit = 20;
-
-std::string InternalErrorString() {
-  return l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
-}
-
-std::string ParsingErrorString() {
-  return l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
-}
 
 }  // namespace
 
@@ -139,7 +130,7 @@ void DiscoverAccountTaskBase::WorkOnTask() {
     }
   }
   if (queue_requests_failed) {
-    error_ = InternalErrorString();
+    error_ = WalletInternalErrorMessage();
     ScheduleWorkOnTask();
     return;
   }
@@ -187,7 +178,7 @@ void DiscoverAccountTaskBase::OnGetAddressStats(
   if (!base::StringToUint(stats->chain_stats.tx_count, &chain_stats_tx_count) ||
       !base::StringToUint(stats->mempool_stats.tx_count,
                           &mempool_stats_tx_count)) {
-    error_ = ParsingErrorString();
+    error_ = WalletParsingErrorMessage();
     WorkOnTask();
     return;
   }

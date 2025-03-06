@@ -159,14 +159,14 @@ extension BrowserViewController: TabManagerDelegate {
       topToolbar.updateReaderModeState(.unavailable)
     }
 
-    if (selected?.getContentScript(
-      name: BraveTranslateScriptHandler.scriptName
-    ) as? BraveTranslateScriptHandler) != nil {
-      updateTranslateURLBar(tab: selected, state: selected?.translationState ?? .unavailable)
+    if FeatureList.kBraveTranslateEnabled.enabled, let selectedTab = selected,
+      selectedTab.translateHelper != nil
+    {
+      updateTranslateURLBar(tab: selectedTab, state: selectedTab.translationState)
       updatePlaylistURLBar(
-        tab: selected,
-        state: selected?.playlistItemState ?? .none,
-        item: selected?.playlistItem
+        tab: selectedTab,
+        state: selectedTab.playlistItemState,
+        item: selectedTab.playlistItem
       )
     } else {
       topToolbar.updateTranslateButtonState(.unavailable)
@@ -190,6 +190,7 @@ extension BrowserViewController: TabManagerDelegate {
       updateToolbarUsingTabManager(tabManager)
     }
     tab.tabDelegate = self
+    tab.addObserver(self)
     tab.walletKeyringService = BraveWallet.KeyringServiceFactory.get(privateMode: tab.isPrivate)
     updateTabsBarVisibility()
   }
@@ -204,6 +205,7 @@ extension BrowserViewController: TabManagerDelegate {
     // so we don't expcitly unset it.
     topToolbar.leaveOverlayMode(didCancel: true)
     updateTabsBarVisibility()
+    tab.removeObserver(self)
 
     if !privateBrowsingManager.isPrivateBrowsing {
       rewards.reportTabClosed(tabId: Int(tab.rewardsId))

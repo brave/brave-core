@@ -71,13 +71,17 @@
 <translation id="5939518447894949180">रीसेट करा</translation>
 <translation id="6583902294974160967">सपोर्ट</translation>
 <translation id="5308380583665731573">कनेक्‍ट करा</translation>
+<translation id="3264975266761862670">कमाई सुरु करायला तयार?</translation>
 <translation id="2359808026110333948">सुरू ठेवा</translation>
+<translation id="3863981251715594911">हे काम कसे करते?</translation>
+<translation id="7931127789630755251">ब्रेव्हमध्ये तुम्ही पाहिलेल्या खासगी जाहिरातींसाठी टोकन्स कमवा</translation>
+<translation id="6278643716658443228">बक्षिसांच्या सेटिंग्ज</translation>
 <translation id="2965798296974325760">बक्षिसे वापरायला सुरुवात करा</translation>
 <translation id="6965382102122355670">ठीक आहे</translation>
+<translation id="5899814466108868020">तुम्ही ब्रेव्हला आणि BAT समुदायाला समर्थन देण्यास मदत करत आहात</translation>
 <translation id="654447476965480878">BAT कमावण्याविषयी अधिक जाणून घ्या</translation>
 <translation id="1565888393553870503">ब्रेव्ह जाहिराती सुरु होतील. ब्रेव्ह बक्षिसे सुरक्षित ठेवायला आम्हाला मदत केल्याबद्दल धन्यवाद.</translation>
 <translation id="5234764350956374838">डिसमिस करा</translation>
-<translation id="7931127789630755251">ब्रेव्हमध्ये तुम्ही पाहिलेल्या खासगी जाहिरातींसाठी टोकन्स कमवा</translation>
 <translation id="7859066142771796818">गिफ्ट कार्ड्‌स खरेदी करण्यासाठी, इतर चलनांत बदलण्यासाठी, काँटेंट निर्मात्यांना समर्थन देण्यासाठी, आणि इतर बऱ्यांच गोष्टींसाठी टोकन्स वापरा.</translation>
 <translation id="6945221475159498467">निवडा</translation>
 <translation id="1450735350187803276">या महिन्यात पाहिलेल्या जाहिराती</translation>
@@ -93,6 +97,7 @@
 <translation id="5860033963881614850">बंद</translation>
 <translation id="5916664084637901428">चालू</translation>
 <translation id="7751260505918304024">सर्व दर्शवा</translation>
+<translation id="1166682575529520472">मासिक</translation>
 <translation id="7138678301420049075">इतर</translation>
 <translation id="7090992647511817643">खाते</translation>
 <translation id="3269475789479462358">डोमेन</translation>
@@ -153,11 +158,11 @@
 <translation id="6657585470893396449">पासवर्ड</translation>
 <translation id="8044899503464538266">धीमी</translation>
 <translation id="7019805045859631636">जलद</translation>
-<translation id="6278643716658443228">बक्षिसांच्या सेटिंग्ज</translation>
 <translation id="8688672835843460752">उपलब्ध</translation>
 <translation id="8775144690796719618">चुकीची URL</translation>
 <translation id="1472675084647422956">अधिक दर्शवा</translation>
 <translation id="4522570452068850558">तपशील</translation>
+<translation id="1178581264944972037">विराम द्या</translation>
 <translation id="7144878232160441200">पुन्हा प्रयत्न करा</translation>
 <translation id="939305735877869636">Brave Software</translation>
 <translation id="1264974993859112054">क्रीडा</translation>
@@ -173,9 +178,19 @@
 <translation id="2367972762794486313">अ‍ॅप्स दर्शवा</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">मोनोस्पेस</translation>
+<translation id="8151638057146502721">कॉन्फिगर करा</translation>
+<translation id="7557539689487606886">प्रीमियम घ्या</translation>
+<translation id="4173478269537830374">वेगवेगळे AI मॉडेल्स पाहा</translation>
+<translation id="3245401959451976966">तुमची कल्पनाशक्ती खुलून येऊ द्या</translation>
 <translation id="4165928407303989823">विषय चालू ठेवा</translation>
+<translation id="2389665228467129817">जास्त काळ चॅट करा</translation>
+<translation id="1028627582482425924">एक वर्ष</translation>
 <translation id="5474757891469990756">लिओची पूर्ण शक्ती अनुभवा प्रीमियमसह :</translation>
+<translation id="3453542753968940696">वेगवेगळी कौशल्ये असणारी शक्तिशाली मॉडेल्स प्राप्त करण्यात प्राधान्य मिळवा.</translation>
+<translation id="5031778211368112461">कल्पक कामांसाठी आणि काँटेंट निर्मितीसाठी जास्त अनुरूप असणारी मॉडेल्स मिळवा.</translation>
+<translation id="298783097210745222">जास्त गहन संभाषणांसाठी अधिक अचूक उत्तरे मिळवा.</translation>
 <translation id="4314705522985583059">मिळवा मोठ्या संभाषणांसाठी उच्च दराच्या मर्यादा.</translation>
+<translation id="8261506727792406068">हटवा</translation>
 <translation id="8712637175834984815">समजले</translation>
 <translation id="6291843235651817590">सर्वसाधारण हेतुसाठीचे चॅट</translation>
 <translation id="8193130769524604031">प्रगत चॅट कामे</translation>
@@ -203,5 +218,6 @@
 <translation id="2422309687188612485">एका प्लॅनसह 10 डिव्हायसेस सुरक्षित करा</translation>
 <translation id="2740531572673183784">ठीक आहे</translation>
 <translation id="3960619311638643872">ब्रेव्ह VPN</translation>
+<translation id="4295077644587784828">अतिरिक्त गोपनीयता &amp; ऑनलाईन संरक्षण.</translation>
 <translation id="8425213833346101688">बदल करा</translation>
 </translationbundle>

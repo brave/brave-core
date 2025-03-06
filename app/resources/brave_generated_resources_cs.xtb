@@ -407,6 +407,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3570081523466826008">Upgradovat spojení k HTTPS</translation>
 <translation id="3357319404342882895">Striktní</translation>
 <translation id="8823559166155093873">Blokovat cookies</translation>
+<translation id="7093267802941377072">Možnost „Blokovat všechny soubory cookie“ byla zrušena. Chcete-li zjistit, jak tuto možnost vynuceně povolit, navštivte <ph name="BEGIN_LINK"/>naši stránku nápovědy<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Blokovat soubory cookie třetích stran</translation>
 <translation id="5657156137487675418">Povolit všechny soubory cookies</translation>
 <translation id="6883611015375728278">Blokovat všechny soubory cookie</translation>
@@ -594,6 +595,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5522403133543437426">Vyhledávač používaný v adresním řádku.</translation>
 <translation id="280472502078788655">Vyhledávač používaný v adresním řádku pro soukromá okna.</translation>
 <translation id="7232120595886556478">Normální okno</translation>
+<translation id="6739674350896546324">Vyhledávací program pro soukromá okna</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> je nyní vaším výchozím vyhledávačem pro soukromá okna.</translation>
 <translation id="6864914031231797928">Povolit rozšířením přihlášení pomocí Google</translation>
 <translation id="7878791177459550035">Směrovač médií umožňuje funkci odesílání v prohlížeči.</translation>
@@ -732,7 +734,7 @@ v budoucnu a také vymaže historii vašeho chatu. Vymazání vaší historie ch
 <translation id="3213787232304349732">Adresa URL, kde váš obslužný rámec naslouchá požadavkům. Pokud si nejste jisti, podívejte se do dokumentace k obslužnému rámci. Např. pro nástroj Ollama je to vždy http://localhost:11434/v1/chat/completions.</translation>
 <translation id="1058790648388035953">Některé obslužné rámce mohou vyžadovat ověřovací údaje, například klíč API nebo přístupový token. Ty budou přidány do hlavičky požadavku.</translation>
 <translation id="4335128003329183586">Velikost kontextu</translation>
-<translation id="8794525422794607973">Maximální počet tokenů, které dokáže model zpracovat v rámci jedné interakce. Každý token tvoří zhruba 3/4 slova. Větší velikost kontextu umožňuje modelu zpracovávat delší konverzace. Různé modely podporují různé maximální velikosti kontextu.</translation>
+<translation id="3153779001670804829">Maximální počet tokenů, které dokáže model zpracovat v rámci jedné interakce. Větší velikost kontextu umožňuje modelu zpracovávat delší konverzace. Různé modely podporují různé maximální velikosti kontextu.</translation>
 <translation id="217141195370578385">Brave tyto požadavky nezprostředkovává; přečtěte si prosím podmínky ochrany osobních údajů vybraného poskytovatele.</translation>
 <translation id="2645532768679870478">Nelokální koncové body by měly pro bezpečný přenos dat používat protokol HTTPS.</translation>
 <translation id="8177205483022887785">Zadali jste neplatnou adresu URL. Zadejte prosím platnou adresu URL.</translation>

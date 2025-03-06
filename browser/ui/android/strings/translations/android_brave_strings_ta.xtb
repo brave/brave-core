@@ -2,6 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ta">
 <translation id="370665806235115550">ஏற்றுகிறது…</translation>
+<translation id="7931127789630755251">Brave-இல் நீங்கள் பார்க்கும் தனியார் விளம்பரங்களுக்கு டோக்கன்களைச் சம்பாதிக்கவும்</translation>
 <translation id="7859066142771796818">பரிசு அட்டைகள் வாங்குவதற்கும், பிற நாணயங்களுக்குப் பரிமாற்றம் செய்வதற்கும், உள்ளடக்கப் படைப்பாளிகளை ஆதரிப்பதற்கும், மேலும் பலவற்றிற்கும் டோக்கன்களைப் பயன்படுத்தவும்.</translation>
 <translation id="3863981251715594911">இது எவ்வாறு வேலை செய்கிறது?</translation>
 <translation id="2965798296974325760">வெகுமதிகளை பயன்படுத்த ஆரம்பி</translation>
@@ -64,7 +65,6 @@
 <translation id="6587448235155023666">அடுத்த முறை நீங்கள் பிரேவை மறுஏவும்போது உங்கள் மாற்றங்கள் செயல்படும்.</translation>
 <translation id="8701563696941209024">இப்போது மறுஏவு</translation>
 <translation id="834487290629916192">பின்னர்</translation>
-<translation id="7207456302801184289">பிரேவுக்கு வரவேற்கிறோம்</translation>
 <translation id="4117451092682672487">தனியுரிமை. எளிமையாக்கியது.</translation>
 <translation id="7909375417585209817">Brave-ஐ இயல்புநிலையாக்குவதன் மூலம், நீங்கள் தட்டும் ஒவ்வொரு இணைப்பும் Brave-இன் தனியுரிமைப் பாதுகாப்புகளுடன் திறக்கிறது.</translation>
 <translation id="7281027579943912834">Brave-ஐ இயல்புநிலையாக்குவதன் மூலம், நீங்கள் தட்டும் ஒவ்வோர் இணைப்பும் Brave-இன் விளம்பரத் தடுப்புப் பாதுகாப்பைப் பெறுகிறது. ஒவ்வொரு பக்கமும், காணொளி மற்றும் ஒளிபரப்பு.</translation>
@@ -156,6 +156,7 @@
 <translation id="6336451774241870485">புது மறைநிலைத் தாவல்</translation>
 <translation id="3110967157686007724">மறைநிலைத் தாவல்</translation>
 <translation id="4973347371961481083">பங்களிப்புகள்</translation>
+<translation id="1486343603936278248">கிள்ளாக்கு</translation>
 <translation id="7781069478569868053">புது தாவல் பக்கம்</translation>
 <translation id="8522669544471808198">பின்னணி படங்களை காட்டு</translation>
 <translation id="3870475560794762985">ஆதரவளிக்கப்பட்ட படங்களை காட்டு</translation>
@@ -190,6 +191,7 @@
 <translation id="7616645803364270729">மின்னஞ்சல், டுவிட்டர், போன்றவை.</translation>
 <translation id="5299848999918506028">நன்றி!</translation>
 <translation id="650318023204990401">மேம்பட்ட கட்டுப்பாடுகள்</translation>
+<translation id="8589748782214271192">பரவாயில்லை, நன்றி</translation>
 <translation id="8374242949413616101">தனியுரிமை பாதுகாப்பு</translation>
 <translation id="4955406228638026265">உன் சம்மதமின்றி விளம்பரங்கள் &amp; தடமறிகள் உம்மைப்பற்றிய தகவலைச் சேகரிப்பதிலிருந்து பிரேவ் நிறுத்துகிறது.</translation>
 <translation id="752842701893882688">தரவு மற்றும் மின்கலம் சேமி</translation>
@@ -280,7 +282,6 @@
 <translation id="3494964159182650590">வெகுமதிகள் சுருக்கம்</translation>
 <translation id="1450735350187803276">இந்த மாதம் பார்த்த விளம்பரங்கள்</translation>
 <translation id="1767561995429774671">பங்களி</translation>
-<translation id="7335371657242627509">தானியங்கு-பங்களிப்பில் சேர்</translation>
 <translation id="3074127054582480056">கவனத்திற்கு</translation>
 <translation id="2280319752798785157">மாதாந்திர பங்களிப்பு</translation>
 <translation id="7059127752542505809">உரலியை உள்ளிடு</translation>
@@ -288,6 +289,7 @@
 <translation id="7791543448312431591">சேர்</translation>
 <translation id="2653659639078652383">சமர்ப்பி</translation>
 <translation id="5233638681132016545">புதிய தாவல்</translation>
+<translation id="8030169304546394654">துண்டிக்கப்பட்டது</translation>
 <translation id="2391762656119864333">திரும்பப்பெறு</translation>
 <translation id="3950820424414687140">உள்நுழைக</translation>
 <translation id="385051799172605136">முந்தைய பக்கம்</translation>
@@ -314,6 +316,7 @@
 <translation id="3264975266761862670">சம்பாதிக்கத் தயாராகிவிட்டீர்களா?</translation>
 <translation id="265337947574975838">நமது பங்காளிகளில் ஒருவருடன் இணைக்கவும் அல்லது கணக்கை உருவாக்கவும்.</translation>
 <translation id="654447476965480878">BAT சம்பாதிப்பதைப் பற்றிய கூடுதல் தகவல்களை அறிந்துகொள்ளவும்</translation>
+<translation id="6278643716658443228">வெகுமதிகளுக்கான அமைப்புகள்</translation>
 <translation id="4272136334824111854">இந்த மாதம், Brave Rewards-ஆல் ஆதரிக்கப்பட்ட <ph name="CREATOR_COUNT"/> படைப்பாளிகளை நீங்கள் பார்வையிட்டுள்ளீர்கள்</translation>
 <translation id="3435896845095436175">இயக்கு</translation>
 <translation id="5494920125229734069">எல்லாவற்றையும் தேர்ந்தெடு</translation>
@@ -346,6 +349,11 @@
 <translation id="614530507403667291">புதிய உரையாடல்களுக்கான இயல்புநிலை மாதிரி</translation>
 <translation id="4071849832011229600">இயல்புநிலை மாதிரி</translation>
 <translation id="7557539689487606886">பிரீமியம் அம்சத்திற்கு மாறவும்</translation>
+<translation id="1496514951988037011">பயனர்பெயர்</translation>
+<translation id="6155129418108337061">உள்நுழைவு</translation>
 <translation id="901834265349196618">மின்னஞ்சல்</translation>
+<translation id="3488199663160411179">பெயர்</translation>
+<translation id="8621068256433641644">மொபைல்</translation>
+<translation id="598301471034819706">முகவரி</translation>
 <translation id="4776146737004271126">Android அமைப்புகளைத் திற</translation>
 </translationbundle>

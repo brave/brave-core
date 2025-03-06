@@ -106,6 +106,12 @@ class RewardsClientIOS : public brave_rewards::mojom::RewardsEngineClient {
   void ReconcileStampReset() override;
   void RunDBTransaction(brave_rewards::mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
+  void UpdateCreatorPrefixStore(
+      brave_rewards::mojom::HashPrefixDataPtr prefix_data,
+      UpdateCreatorPrefixStoreCallback callback) override;
+  void CreatorPrefixStoreContains(
+      const std::string& value,
+      CreatorPrefixStoreContainsCallback callback) override;
   void ClearAllNotifications() override;
   void ExternalWalletConnected() override;
   void ExternalWalletLoggedOut() override;

@@ -220,6 +220,9 @@ export const SendScreen = React.memo((props: Props) => {
     )
 
   const isAccountSyncing = useIsAccountSyncing(accountFromParams?.accountId)
+  const isShieldingFunds =
+    getZCashTransactionTypeResult.txType ===
+    BraveWallet.ZCashTxType.kTransparentToOrchard
 
   // memos & computed
   const sendAmountValidationError: AmountValidationErrorType | undefined =
@@ -639,7 +642,8 @@ export const SendScreen = React.memo((props: Props) => {
                     getReviewButtonText(
                       sendAmountValidationError,
                       insufficientFundsError,
-                      isAccountSyncing
+                      isAccountSyncing,
+                      isShieldingFunds
                     )
                   ).replace('$1', CoinTypesMap[networkFromParams?.coin ?? 0])}
                 </LeoSquaredButton>
@@ -692,7 +696,8 @@ function ethToWeiAmount(
 function getReviewButtonText(
   sendAmountValidationError: string | undefined,
   insufficientFundsError: boolean,
-  isAccountSyncing?: boolean
+  isAccountSyncing?: boolean,
+  isShieldingFunds?: boolean
 ) {
   if (sendAmountValidationError) {
     return 'braveWalletDecimalPlacesError'
@@ -702,6 +707,9 @@ function getReviewButtonText(
   }
   if (isAccountSyncing) {
     return 'braveWalletAccountIsSyncing'
+  }
+  if (isShieldingFunds) {
+    return 'braveWalletReviewShield'
   }
 
   return 'braveWalletReviewSend'

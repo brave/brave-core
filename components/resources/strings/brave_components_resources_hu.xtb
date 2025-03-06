@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Ez az oldal nem jelenthető, mert nem HTTP/HTTPS protokollon keresztül került kiszolgálásra.</translation>
 <translation id="7907023135990310743">Ez az oldal egy helyi weboldal, és nem lehet jelenteni.</translation>
 <translation id="8740275226259417070">Ez egy hibaoldal. Nem jelenthető nem működő oldalként.</translation>
+<translation id="6367576083705149078">Ha kitölti elérhetőségi adatait, azokat tároljuk, hogy a jövőben bizonyos oldalakon felmerülő problémákat jelenthessünk.</translation>
 <translation id="6806248680442980382">Köszönjük, hogy segít a Brave továbbfejlesztésében. Ebben a jelentésben csak az oldal javításához számunkra szükséges információk szerepelnek.</translation>
 <translation id="6476216365964140603">További részletek (opcionális)</translation>
 <translation id="6145852496180774737">Kapcsolatba léphetnek velem itt: (opcionális)</translation>
@@ -706,8 +707,8 @@
 <translation id="4622826307953794521">Anonim keresési és böngészési adatok megosztásával hozzájárulhat a Brave keresőjének finomításához a Web Discovery projekt segítségével, amely teljes mértékben nyílt forráskódú.</translation>
 <translation id="4174337572777167894">Web Discovery projekt</translation>
 <translation id="9034669711835382440">Közösség</translation>
-<translation id="814503310257431685">Összes megtekintése</translation>
 <translation id="845020633253356720">Bolt megtekintése</translation>
+<translation id="7777123407058400802">Basic Attention Token - BAT</translation>
 <translation id="7090992647511817643">fiók</translation>
 <translation id="4822132585477111396">Lánc azonosítója</translation>
 <translation id="3269475789479462358">domain</translation>
@@ -1733,6 +1734,20 @@
 <translation id="3819528427777765709">Védett</translation>
 <translation id="2142946302539262412">Egységesített</translation>
 <translation id="4438043733494739848">Átlátszó</translation>
+<translation id="1950406774300125954">Nincs szinkronban</translation>
+<translation id="68413355604013935">Nincs szinkronban (<ph name="BLOCKS"/> blokklánc késésben)</translation>
+<translation id="1597233669965903034">Szinkronizálja fiókját, hogy hozzáférjen a legfrissebb tranzakciókhoz és egyenleghez is.</translation>
+<translation id="7499262814309712782">Fiók szinkronizálása</translation>
+<translation id="2804568727504456403">Szinkronizálás <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">Indítás...</translation>
+<translation id="4404141491825711928">Blokkok kezelése:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> maradt</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/>/<ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">Tartományok:</translation>
+<translation id="1178581264944972037">Szünet</translation>
+<translation id="7714298753782862705">A szinkronizálás befejeződött. Most bezárhatja ezt az ablakot.</translation>
+<translation id="7716113567047550378">Kérjük, ne zárja be ezt az ablakot, amíg a szinkronizálás be nem fejeződik.</translation>
+<translation id="5123590959308755060">Folytassa a pénztárca használatát egy új lapon</translation>
 <translation id="7144878232160441200">Újra</translation>
 <translation id="9094621390791852268">Nem sikerült megjeleníteni a tranzakció előnézetét.</translation>
 <translation id="4982713341035600933">Becsült egyenlegváltozás</translation>
@@ -2057,7 +2072,7 @@
 <translation id="8637805148029768813">Az összefoglaló funkció jelenleg csak bizonyos cikkeknél és egyéb hosszú formátumú webhelyeknél elérhető.</translation>
 <translation id="1223498995510244364">Összefoglalás</translation>
 <translation id="7491773233732232424">Tudnivalók a Leóról</translation>
-<translation id="5208096220706490232">A Brave Leo egy privát MI-alapú okos asszisztens, ami tökéletesíti a módszert, amivel Ön az internetet használja. A Leo korlátozott hozzáférésű változata ingyenesen használható. A Brave Leo Prémium több modellt és magasabb határértékeket tartalmaz, valamint korai hozzáférést biztosít a felhasználónak az új funkciókhoz. Az alapértelmezett modell jelenleg minden felhasználó számára a Mixtral 8x7B. Tekintse meg a <ph name="LINK_BEFORE"/>Brave wikit<ph name="LINK_AFTER"/> további információért.</translation>
+<translation id="4885527781814382758">A Brave Leo egy MI-alapú intelligens asszisztens, amely tiszteletben tartja az Ön adatainak védelmét és javítja az internetfelhasználó élményt. A Leo korlátozott verzióban ingyenesen elérhető. A Brave Leo Prémium több modellt és nagyobb kapacitást kínál, és az előfizetőknek korai hozzáférést biztosít az új funkciókhoz. Az alapértelmezett modell változhat. További részletekért lásd a <ph name="LINK_BEFORE"/>Brave Súgóközpont<ph name="LINK_AFTER"/> .</translation>
 <translation id="7189603330209995455">Alapértelmezetten ha Ön feltesz egy kérdést a Leónak, akkor az elküldheti az Ön által megtekintett weboldal tartalmát, valamint az Ön által az oldalon kijelölt szövegeket a Brave Leónak a válaszadáshoz. A válaszok pontossága nem garantált; tartalmaz pontatlan, félrevezető vagy hamis adatokat. A Leo a Brave keresőmotorjának adatait használja a válaszok minőségének javításához. Ne adjon meg érzékeny vagy magánjellegű adatokat és legyen óvatos az egészséggel, pénzüggyel, személyes biztonsággal és hasonló témákkal kapcsolatos válaszokkal. A Leo beállításait bármikor módosíthatja a Beállításokban. Lépjen a Beállítások és Leo lehetőségre.</translation>
 <translation id="3038772045018370764">A Leo nem gyűjt olyan Önnel összeköthető egyedi azonosítókat, mint például az Ön IP-címe. Nem használunk adatokat az MI-modell kiképzésére és az MI-modelljeink semmilyen személyes adatot nem őriznek meg (kivéve az Anthropic-ot, ami 30 napig megőrzi azt adatokat, mielőtt törölné azokat). Tekintse meg <ph name="LINK_BEFORE"/>adatvédelmi szabályzatunkat<ph name="LINK_AFTER"/>, ha további információra van szüksége.</translation>
 <translation id="7839853125981164613">Itt tehet fel kérdéseket</translation>
@@ -2068,12 +2083,15 @@
 <translation id="2712650703044366764">Ez a modell érvénytelen végponttal rendelkezik. Ellenőrizze a konfigurációt, majd próbálja meg újra.</translation>
 <translation id="1167803637855350748">Hálózati probléma lépett fel a Leo rendszeréhez való kapcsolódás során. Ellenőrizze a hálózati kapcsolatot, és próbálja újra.</translation>
 <translation id="1996126325390835277">Elérte a prémium gyakorisági korlátot. Néhány óra múlva próbálja újra.</translation>
+<translation id="3683964919745779766">Elérte a modell által megengedett használati mennyiséget, vagy nem rendelkezik elegendő kredittel a további használathoz. Kérjük próbálja meg később.</translation>
+<translation id="7692501701960747469">A modellhez konfigurált API-kulcs érvénytelen. Kérjük, ellenőrizze a konfigurációt, és próbálja meg újra.</translation>
+<translation id="7905602379229309187">A szolgáltatás jelenleg túlterhelt. Kérjük, próbálja meg később.</translation>
 <translation id="8151638057146502721">Konfiguráció</translation>
 <translation id="4177458398826096846">Üdvözlöm, Leo vagyok, a Brave AI-asszisztense. Llama 3.1 8B motorral működöm, amely egy, a Meta által kifejlesztett nagy teljesítményű modell számos használati eset kezelésére. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Üdvözlöm, Leo vagyok, a Brave MI-asszisztense. Mixtral 8x7B motorral működöm, amely egy, a Mistral AI által az összetett feladatok végrehajtására kifejlesztett modell. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Üdvözlöm, Leo vagyok. A Brave proxyval üzemeltet, a működésem pedig a Claude Instant modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem pedig a Claude 3 Haiku modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.</translation>
-<translation id="1107977270364670952">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem pedig a Claude 3.5 Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.</translation>
+<translation id="2001874998841390450">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem pedig a Claude  Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére. <ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem pedig a Claude  Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére. <ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>, a(z) <ph name="COMPANY_NAME"/> által</translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Csevegés</translation>
@@ -2092,6 +2110,9 @@
 <translation id="4165928407303989823">Maradjon a témánál</translation>
 <translation id="2389665228467129817">Csevegjen hosszabb ideig</translation>
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD/hó</translation>
+<translation id="9031958221569934724"><ph name="PRICE_VALUE"/> USD/év</translation>
+<translation id="1028627582482425924">Egy év</translation>
+<translation id="36366199652730057">Legjobb ajánlat</translation>
 <translation id="5151923271944811339">Váltás az ingyenes modellre</translation>
 <translation id="5474757891469990756">Engedje szabadjára a Leóban rejlő teljes potenciált a Prémiummal:</translation>
 <translation id="3453542753968940696">Kiemelt hozzáférés a különböző képességekkel rendelkező, nagy teljesítményű modellekhez.</translation>
@@ -2111,6 +2132,8 @@
 <translation id="9018766373792005944">Mihez kapcsolódik a visszajelzése?</translation>
 <translation id="7355096922131918313">Itt adja meg a visszajelzést</translation>
 <translation id="3027575440738035995">A Leo Premium a nyelvmodellek szélesebb köréhez nyújt hozzáférést a még részletesebb válaszok érdekében. <ph name="LINK_BEFORE"/>További információ<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Törlés</translation>
+<translation id="6574153208133461043">Biztosan törli ezt a lejátszási listát és annak teljes tartalmát? Ezt a műveletet nem lehet visszavonni.</translation>
 <translation id="7488762544858401571">Szerkesztve</translation>
 <translation id="1406205536570262057">Válasz szerkesztése</translation>
 <translation id="2399439821649319175">Nem hasznos</translation>
@@ -2124,6 +2147,7 @@
 <translation id="8171760814579050200">Beszélgetés átnevezése</translation>
 <translation id="7754678742055438573">Beszélgetés törlése</translation>
 <translation id="7494736170250048402">Üzenet küldése a Leónak</translation>
+<translation id="8650874793377330048">Válasz megszakítása</translation>
 <translation id="8712637175834984815">Sikerült</translation>
 <translation id="1093419424466417703">Ez az oldal túl hosszú Leo számára. A kontextus egy része hiányozni fog a beszélgetésből. Leo ennyit tudott elolvasni az oldal tartalmából: <ph name="PERCENTAGE"/>.</translation>
 <translation id="2186990448773134544">Az oldal tartalma finomítva lett a legrelevánsabb információk kivonatolása révén, mert az oldal tartalma túl hosszú volt a Leo számára.</translation>

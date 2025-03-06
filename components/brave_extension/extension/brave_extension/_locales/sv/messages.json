@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "shields": {
-    "message": "Sköldar",
+    "message": "Shields",
     "description": "The Shields feature name"
   },
   "up": {
@@ -20,7 +20,7 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Om en webbplats inte verkar fungera, prova att avaktivera sköldarna",
+    "message": "Om en webbplats verkar trasig, prova inaktivera Shields",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
@@ -168,7 +168,7 @@
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Ändra inställningar för global sköld",
+    "message": "Ändra globala standardinställningar för Shields",
     "description": "Message for the button action linking to the settings page"
   },
   "manageCustomFilters": {

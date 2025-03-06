@@ -21,7 +21,7 @@ function TabItem({ tab }: { tab: TabData }) {
         aiChat.uiHandler?.associateTab(tab, conversationUuid!)
     }}>
         <span className={styles.title}>{tab.title}</span>
-        <img className={styles.icon} src={`chrome://favicon2/?size=20&pageUrl=${encodeURIComponent(tab.url.url)}`} />
+        <img key={tab.contentId} className={styles.icon} src={`chrome://favicon2/?size=20&pageUrl=${encodeURIComponent(tab.url.url)}`} />
     </RadioButton>
 }
 

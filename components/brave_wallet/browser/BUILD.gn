@@ -83,6 +83,10 @@ static_library("browser") {
     "brave_wallet_service_delegate.cc",
     "brave_wallet_service_delegate.h",
     "brave_wallet_service_observer_base.h",
+    "cardano/cardano_get_utxos_task.cc",
+    "cardano/cardano_get_utxos_task.h",
+    "cardano/cardano_rpc.cc",
+    "cardano/cardano_rpc.h",
     "cardano/cardano_wallet_service.cc",
     "cardano/cardano_wallet_service.h",
     "ens_resolver_task.cc",
@@ -267,7 +271,6 @@ static_library("browser") {
   ]
   deps = [
     ":constants",
-    ":generated_bitcoin_rpc_responses",
     ":generated_blockchain_list_schemas",
     ":generated_json_rpc_responses",
     ":generated_simulation_responses",
@@ -281,6 +284,8 @@ static_library("browser") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/api",
+    "//brave/components/brave_wallet/browser/bitcoin:generated_bitcoin_rpc_responses",
+    "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_responses",
     "//brave/components/brave_wallet/browser/internal:hd_key_common",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:buildflags",
@@ -514,17 +519,6 @@ generated_types("generated_blockchain_list_schemas") {
   visibility = [
     ":browser",
     "test:brave_wallet_unit_tests",
-  ]
-}
-
-generated_types("generated_bitcoin_rpc_responses") {
-  sources = [ "bitcoin_rpc_responses.idl" ]
-  root_namespace = "brave_wallet::%(namespace)s"
-  deps = [ "//base" ]
-  visibility = [
-    ":browser",
-    "test:brave_wallet_unit_tests",
-    "//brave/components/brave_wallet/browser/test:test_support",
   ]
 }
 

@@ -197,6 +197,8 @@
 <translation id="1680858055899097121">Que non sigan as lapelas aí entre as sesións de navegación</translation>
 <translation id="7142548388914389999">Permitir análises de produtos que protexan a privacidade (P3A)</translation>
 <translation id="5254037869598726291">A información anónima de P3A axuda a Brave a calcular o uso xeral e a asegurar que estamos a mellorar as funcións máis populares.</translation>
+<translation id="4174337572777167894">Proxecto de detección web</translation>
+<translation id="8659271182272561965">Envía datos anónimos sobre buscas e navegación para mellorar Brave Search.</translation>
 <translation id="933652931229970927">Envía informes de diagnóstico automaticamente</translation>
 <translation id="5987838417172370108">Envía informes de diagnóstico automaticamente cando falle ou se bloquee o navegador de Brave para que poidamos mellorar a estabilidade dos produtos de Brave.</translation>
 <translation id="7977176350719484850">Est. de datos\naforrados</translation>
@@ -233,7 +235,6 @@
 <translation id="6587448235155023666">Os teus cambios entrarán en vigor a próxima vez que volvas a iniciar Brave</translation>
 <translation id="8701563696941209024">Relanzar agora</translation>
 <translation id="834487290629916192">Máis tarde</translation>
-<translation id="7207456302801184289">Dámosche a benvida a Brave</translation>
 <translation id="4117451092682672487">Privacidade de xeito simplificado.</translation>
 <translation id="7909375417585209817">Se empregas Brave de xeito predefinido, abriranse todas as ligazóns que premas coas proteccións de privacidade de Brave.</translation>
 <translation id="7370959926683925817">Bloquea os anuncios e aforra datos todos os días.</translation>
@@ -241,6 +242,9 @@
 <translation id="5148943178722443958">Axúdanos a mellorar Brave.</translation>
 <translation id="6718362830686703942">Envía informes de diagnóstico anónimos se tes algún fallo ou bloqueo.</translation>
 <translation id="8616157231067364693">Comparte de xeito privado e anónimo a túa opinión sobre as funcións que usan os usuarios de Brave.</translation>
+<translation id="2888496576732880897">Axuda a que creza a Busca de Brave</translation>
+<translation id="7044431516245362795">Participa no Web Discovery Project para axudar a expandir o índice e optimizar os resultados de busca. <ph name="LEARN_MORE_START"/>Máis información.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7818938154803162778">Claro, axudarei!</translation>
 <translation id="2877653791257935258">Escribe o nome ou o URL dun sitio web</translation>
 <translation id="5329830149661250028">Isto é o que fai que Brave sexa diferente: non hai anuncios nin rastreadores, e as páxinas cargan moito máis rápido.</translation>
 <translation id="3941792073703079607">En que se diferencia Brave da competencia? Bloquea anuncios, aforra datos e transmite máis rápido.</translation>
@@ -412,6 +416,7 @@ Seguro que queres facelo?</translation>
 <translation id="944340256927461196">Non deixa rastro no teu dispositivo</translation>
 <translation id="2063044449012253966">Os sitios que visites en xanelas privadas non aparecerán no teu historial. Os rastros, os datos dos formularios e os datos dos sitios desaparecen unha vez pechadas todas as xanelas privadas.</translation>
 <translation id="7395764193745523646">Visibilidade de navegación</translation>
+<translation id="8670344404057978375">Ten en conta que, incluso nas xanelas privadas, a túa actividade de navegación pode ser visible para o teu provedor de servizos de Internet (ISP), os supervisores da rede ou o teu empregador (se estás a usar un dispositivo/rede de traballo).</translation>
 <translation id="1413177583895309156">A función Brave VPN cifra e protexe todo o que fagas en liña, inclusive fóra do navegador de Brave.</translation>
 <translation id="3974348661685061050">Próbaa de balde durante 7 días</translation>
 <translation id="5789441016350810005">Os anuncios de Brave son enviados cando o navegador está nun segundo plano</translation>
@@ -456,6 +461,7 @@ Seguro que queres facelo?</translation>
 <translation id="3624048886326677117">Bloquear rastreadores e anuncios (opción agresiva)</translation>
 <translation id="7151914815476509258">Bloquear os rastreadores e os anuncios (opción estándar)</translation>
 <translation id="7384778069178817075">Permitir todos os rastreadores e os anuncios</translation>
+<translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>A opción "Bloquear todos os rastros" xa non está dispoñible. Se desexas saber como activala manualmente, consulta<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>a nosa páxina de axuda<ph name="END_LINK_1"/></translation>
 <translation id="3763681089644577874">Bloquear cookies</translation>
 <translation id="614747795780742163">Evita que os sitios web almacenen información sobre as túas visitas anteriores</translation>
 <translation id="6883611015375728278">Bloquear todas as cookies</translation>
@@ -471,6 +477,8 @@ Seguro que queres facelo?</translation>
 <translation id="7854108565842971747">Esta é a configuración predeterminada de Escudos para novos sitios. Cambiala non afectará á configuración existente de cada sitio.</translation>
 <translation id="218587021686734263">Evita o uso das pegadas dixitais mediante a configuración do idioma</translation>
 <translation id="1706099589708266367">Reduce a cantidade de datos persoais sobre ti que poden obter os sitios web segundo a configuración do idioma do teu navegador.</translation>
+<translation id="6486971767955110687">Conservar información de contacto para futuros informes sobre sitios caídos</translation>
+<translation id="4085787265464238844">Se facilitas a información de contacto, esta gardarase para futuros informes</translation>
 <translation id="4721088070859595932">Evita que os sitios web recoñezan o teu dispositivo</translation>
 <translation id="7445306466605902444">Pegada dixital bloqueada (estrita, pode que algúns sitios non funcionen)</translation>
 <translation id="5582686930349810484">Pegada dixital bloqueada (estándar)</translation>
@@ -496,6 +504,7 @@ Seguro que queres facelo?</translation>
 <translation id="8459191579769999214">Ver captura de pantalla</translation>
 <translation id="6476216365964140603">Detalles adicionais (opcional)</translation>
 <translation id="6145852496180774737">Contacto: (opcional)</translation>
+<translation id="6367576083705149078">Se compartes a túa información de contacto, gardarase para futuros informes.</translation>
 <translation id="7616645803364270729">Correo electrónico, Twitter, etc.</translation>
 <translation id="5299848999918506028">Por favor!</translation>
 <translation id="76550953340008122">Grazas por facer saber aos desenvolvedores de Brave que hai algo mal neste sitio. Faremos o mellor para solucionalo!</translation>
@@ -503,6 +512,10 @@ Seguro que queres facelo?</translation>
 <translation id="5370478469168390143">Gardar os datos en liña</translation>
 <translation id="1118508688433541158">Navega máis rápido e bloquea os anuncios con Brave</translation>
 <translation id="7427391215172269363">Aforro datos cada día navegando pola rede con Brave.</translation>
+<translation id="357198789571802914">Desfruta de YouTube sen anuncios.</translation>
+<translation id="2154817758398495571">Abre as ligazóns de YouTube en Brave para bloquear os anuncios.</translation>
+<translation id="1580816390443799567">Activar agora</translation>
+<translation id="8589748782214271192">Non, grazas</translation>
 <translation id="8374242949413616101">Protección da privacidade</translation>
 <translation id="4955406228638026265">Brave impide que os anuncios e rastreadores recollan información sobre ti sen o teu consentimento.</translation>
 <translation id="752842701893882688">Aforra datos e batería</translation>
@@ -848,7 +861,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="590733288489975971">Recompensas de Brave Ads</translation>
 <translation id="1450735350187803276">Anuncios vistos este mes</translation>
 <translation id="1767561995429774671">Contribuír</translation>
-<translation id="7335371657242627509">Incluído na Conctribución automática</translation>
 <translation id="6727102863431372879">Configurar</translation>
 <translation id="3074127054582480056">Atención</translation>
 <translation id="2280319752798785157">Contribución mensual</translation>
@@ -1097,7 +1109,12 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="2471230424465522689">Non antes de</translation>
 <translation id="4841860051609590575">ID da solicitude</translation>
 <translation id="1179407411385015942">Leo é un asistente intelixente de IA que se integra no navegador</translation>
+<translation id="5781842473834867765">Gardar o meu historial de conversas</translation>
 <translation id="4109670531935487117">Mostrar suxestións autocompletadas na barra de enderezos</translation>
+<translation id="6106701981952170121">Eliminar todos os datos das conversas con Leo AI</translation>
+<translation id="423600389315522551">Ao restablecer Leo AI, terás que aceptar usar Leo AI de Brave no futuro e isto tamén eliminará o teu historial de conversas. Limpar o historial borrará todas as conversas que tiveches con Leo AI. Isto non se pode desfacer.</translation>
+<translation id="6742599753610126012">Eliminar historial de conversas</translation>
+<translation id="3443052382074796867">Ao desactivar o almacenamento das conversas, eliminarás para sempre todas as conversas gardadas. Isto non se pode desfacer.</translation>
 <translation id="3692772534525889713">Vincula a túa compra de Play Store á túa conta de Brave para usar Brave Leo noutros dispositivos.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Un ano</translation>
@@ -1228,4 +1245,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="3098054327870766317">Amosar o botón de desfacer cando se pechan os separadores</translation>
 <translation id="1336494649091412226">Queres saír de Brave?</translation>
 <translation id="2361906291514218784">IA de Leo</translation>
+<translation id="7942415993090181327">Historial de conversas</translation>
+<translation id="6859935199732075666">Mostrar erros de Navegación segura</translation>
 </translationbundle>

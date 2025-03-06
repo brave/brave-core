@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="az">
+<translation id="7931127789630755251">Brave-də gördüyünüz məxfi reklamlardan tokenlər qazanın</translation>
 <translation id="7859066142771796818">Hədiyyə kartları satın almaq, digər valyutalarla mübadilə, məzmun yaradıcılarını dəstəkləmək və daha bir çox şey üçün tokenlərdən istifadə edin.</translation>
 <translation id="3863981251715594911">Necə işləyir?</translation>
 <translation id="2965798296974325760">Mükafatlardan istifadə etməyə başla</translation>
@@ -38,10 +39,13 @@
 <translation id="2877653791257935258">Veb saytın adını və ya URL-ni daxil edin</translation>
 <translation id="5329830149661250028">Brave fərqini görün: Reklamsız. İzləyicisiz. Daha sürətli səhifə yükləmə üsulu.</translation>
 <translation id="3941792073703079607">Brave fərqini görün: Bloklanmış reklamlar. Verilənlərə qənaət. Daha sürətli yayın.</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklamlar və i̇zləyicilər bloklandı</translation>
+<translation id="6165508094623778733">Ətraflı məlumat</translation>
 <translation id="5806601733251372221">Brave Qalxanları</translation>
 <translation id="3333887201479867589">Brave Mükafatları</translation>
 <translation id="3570367516044491911">Standart brauzer kimi təyin et</translation>
 <translation id="3546439402724649282">Brave artıq standart brauzeriniz kimi təyin edilib.</translation>
+<translation id="7658239707568436148">Ləğv et</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave Xəbərlər</translation>
 <translation id="8428213095426709021">Parametrlər</translation>
@@ -72,9 +76,12 @@
 <translation id="7450323860390658083">Ziyarət etdiyiniz veb-saytlardan hansının məxfiliyə ən çox müdaxilə etdiyi barədə məlumat alın.\n\nBu məxfilik statistikasını yalnız siz görə bilərsiniz. Heç bir şəxsi məlumat və ya baxış tarixçəsi cihazınızdakı Brave brauzerindən heç vaxt çıxmır.</translation>
 <translation id="6170159749517116894">Məxfilik hesabatlarını aç</translation>
 <translation id="8248593573177859437">Məxfilik hesabatı</translation>
+<translation id="453601949003770390">İzləyicilər və reklamlar bloklandı</translation>
+<translation id="2401984885421380890">İzləyicilər və reklamlar\nbloklandı</translation>
 <translation id="2977461003134694205">Məxfilik statistikası</translation>
 <translation id="8363792084628930008">Mükafatları aktivləşdirməklə siz, <ph name="TERMS_OF_SERVICE"/> və <ph name="PRIVACY_POLICY"/> ilə razılaşırsınız.</translation>
 <translation id="3479552764303398839">İndi deyil</translation>
+<translation id="8488282162676695335">Brave Balansı</translation>
 <translation id="2359808026110333948">Davam et</translation>
 <translation id="1544192797660353713">Balans</translation>
 <translation id="719977489961414786">Əlaqənizin qorunması və yayılmış izləyicilərin hər yerdən bloklaması üçün VPN-ə yüksəldin.</translation>
@@ -94,14 +101,17 @@
 <translation id="6053992191006521518">PULSUZ versiyanı sınaqdan keçir</translation>
 <translation id="5903391101107992067">7 günlük pulsuz versiyanı sınaqdan keçirin</translation>
 <translation id="8681480718817027245">Abunəlik</translation>
+<translation id="9065203028668620118">Redaktə et</translation>
 <translation id="1450735350187803276">Bu ay görülən reklamlar</translation>
 <translation id="5233638681132016545">Yeni tabulyasiya</translation>
+<translation id="5039804452771397117">İcazə ver</translation>
 <translation id="4250680216510889253">Xeyr</translation>
 <translation id="5456039738087398178">Əsas ekran vidceti</translation>
 <translation id="5899814466108868020">Brave və BAT icmasını dəstəkləməyə kömək edirsiniz</translation>
 <translation id="3264975266761862670">Qazanmağa hazırsınız?</translation>
 <translation id="265337947574975838">Tərəfdaşlarımızdan biri ilə əlaqə saxlayın və ya bir hesab yaradın.</translation>
 <translation id="654447476965480878">BAT qazanmaq haqqında ətraflı məlumat</translation>
+<translation id="6278643716658443228">Mükafat parametrləri</translation>
 <translation id="4272136334824111854">Bu ay siz, Brave Mükafatlar tərəfindən dəstəklənən <ph name="CREATOR_COUNT"/> yaradıcı saytına baş çəkmisiniz</translation>
 <translation id="1179407411385015942">Leo brauzerin içində yaradılmış Sİ dəstəkli ağıllı köməkçidir</translation>
 <translation id="4109670531935487117">Ünvan panelində avtomatik tamamlama təkliflərini göstər</translation>
@@ -122,4 +132,5 @@
 <translation id="614530507403667291">Yeni söhbətlər üçün standart model</translation>
 <translation id="4071849832011229600">Standart model</translation>
 <translation id="7557539689487606886">Premiuma keç</translation>
+<translation id="3488199663160411179">ad</translation>
 </translationbundle>

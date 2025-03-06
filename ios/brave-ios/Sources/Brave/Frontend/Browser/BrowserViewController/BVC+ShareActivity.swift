@@ -97,7 +97,9 @@ extension BrowserViewController {
     }
 
     // Translate Activity
-    if let translationState = tab?.translationState, translationState != .unavailable,
+    if FeatureList.kBraveTranslateEnabled.enabled,
+      let translationState = tab?.translationState,
+      translationState != .unavailable,
       Preferences.Translate.translateEnabled.value != false
     {
       activities.append(

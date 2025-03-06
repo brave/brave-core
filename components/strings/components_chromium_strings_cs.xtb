@@ -28,6 +28,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           a zkontrolujte, zda je konfigurace nastavena na možnost „no proxy“ (bez proxy) nebo „direct“ (přímo).</translation>
+<translation id="6159073403999048272">Tyto stránky jsou určeny pro vývojáře prohlížeče Brave a nemusí být aktivně udržovány ani testovány. Pokud je chcete povolit, přejděte na adresu <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, kliknutím na příslušné tlačítko povolte ladicí stránky a pak znovu přejděte na tuto stránku.</translation>
 <translation id="2765022094254723779">Brave využívá také další <ph name="BEGIN_LINK_OSS"/>open source software<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="8828443087767259398">Brave potřebuje přístup k Bluetooth, aby bylo možné

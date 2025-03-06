@@ -267,12 +267,6 @@ AssociatedContentDriver::ParseSearchQuerySummaryResponse(
   return entries;
 }
 
-void AssociatedContentDriver::OnFaviconImageDataChanged() {
-  for (auto& conversation : associated_conversations_) {
-    conversation->OnFaviconImageDataChanged();
-  }
-}
-
 void AssociatedContentDriver::OnTitleChanged() {
   for (auto& conversation : associated_conversations_) {
     conversation->OnAssociatedContentTitleChanged();

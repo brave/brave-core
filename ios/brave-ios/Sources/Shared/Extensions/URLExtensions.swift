@@ -252,7 +252,7 @@ extension URL {
       return false
     }
     let utilityURLs = [
-      "/\(InternalURL.Path.errorpage.rawValue)", "/\(InternalURL.Path.sessionrestore.rawValue)",
+      "/\(InternalURL.Path.errorpage.rawValue)",
       "/about/home", "/\(InternalURL.Path.readermode.rawValue)",
     ]
     return utilityURLs.contains { self.path.hasPrefix($0) }
@@ -432,7 +432,6 @@ public struct InternalURL {
 
   public enum Path: String {
     case errorpage
-    case sessionrestore
     case readermode = "reader-mode"
     case blocked
     case httpBlocked = "http-blocked"
@@ -455,8 +454,6 @@ public struct InternalURL {
   }
 
   public let url: URL
-  private let sessionRestoreHistoryItemBaseUrl =
-    "\(InternalURL.baseUrl)/\(InternalURL.Path.sessionrestore.rawValue)?url="
 
   public static func isValid(url: URL) -> Bool {
     return InternalURL.scheme == url.scheme && InternalURL.host == url.host
@@ -501,16 +498,8 @@ public struct InternalURL {
     return components.url
   }
 
-  public var isSessionRestore: Bool {
-    return url.absoluteString.hasPrefix(sessionRestoreHistoryItemBaseUrl)
-  }
-
   public var isErrorPage: Bool {
-    // Error pages can be nested in session restore URLs, and session restore handler will forward them to the error page handler
-    let path =
-      url.absoluteString.hasPrefix(sessionRestoreHistoryItemBaseUrl)
-      ? extractedUrlParam?.path : url.path
-    return InternalURL.Path.errorpage.matches(path ?? "")
+    return InternalURL.Path.errorpage.matches(url.path)
   }
 
   public var isBlockedPage: Bool {
@@ -530,9 +519,10 @@ public struct InternalURL {
   }
 
   public var originalURLFromErrorPage: URL? {
-    if !url.absoluteString.hasPrefix(sessionRestoreHistoryItemBaseUrl) {
-      return isErrorPage ? extractedUrlParam : nil
+    if isErrorPage {
+      return extractedUrlParam
     }
+
     if let urlParam = extractedUrlParam, let nested = InternalURL(urlParam), nested.isErrorPage {
       return nested.extractedUrlParam
     }

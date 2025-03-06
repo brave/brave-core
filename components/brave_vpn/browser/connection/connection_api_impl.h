@@ -46,6 +46,7 @@ class ConnectionAPIImpl
   void ResetConnectionState();
   std::string GetLastConnectionError() const;
   std::string GetHostname() const;
+  bool SmartRoutingEnabled() const;
 
   virtual void Connect() = 0;
   virtual void Disconnect() = 0;

@@ -64,6 +64,12 @@ std::string EncodeCardanoAddress(
                         bech32::Encoding::kBech32);
 }
 
+mojom::CardanoKeyId CardanoDefaultDelegationKeyId() {
+  // Using same recommended value of `0` for all generated stake addresses.
+  // https://cips.cardano.org/cip/CIP-0011#address_index-value
+  return mojom::CardanoKeyId(mojom::CardanoKeyRole::kStaking, 0);
+}
+
 }  // namespace
 
 CardanoHDKeyring::CardanoHDKeyring(base::span<const uint8_t> entropy,
@@ -83,11 +89,7 @@ mojom::CardanoAddressPtr CardanoHDKeyring::GetAddress(
     return nullptr;
   }
 
-  // Using same recommended value of `0` for all generated stake addresses.
-  // https://cips.cardano.org/cip/CIP-0011#address_index-value
-  auto delegation_key_id =
-      mojom::CardanoKeyId(mojom::CardanoKeyRole::kStaking, 0);
-  auto delegation_hd_key = DeriveKey(account, delegation_key_id);
+  auto delegation_hd_key = DeriveKey(account, CardanoDefaultDelegationKeyId());
   if (!delegation_hd_key) {
     return nullptr;
   }
@@ -98,7 +100,7 @@ mojom::CardanoAddressPtr CardanoHDKeyring::GetAddress(
                                payment_hd_key->GetPublicKeyAsSpan()),
                            Blake2bHash<kStakeKeyHashLength>(
                                delegation_hd_key->GetPublicKeyAsSpan())),
-      payment_key_id.Clone(), delegation_key_id.Clone());
+      payment_key_id.Clone());
 }
 
 std::optional<std::string> CardanoHDKeyring::AddNewHDAccount(uint32_t index) {

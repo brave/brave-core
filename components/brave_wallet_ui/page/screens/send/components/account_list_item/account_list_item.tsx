@@ -17,6 +17,11 @@ import {
 import { reduceAddress } from '../../../../../utils/reduce-address'
 import { getLocale } from '../../../../../../common/locale'
 
+// Components
+import {
+  ShieldedLabel //
+} from '../../../../../components/shared/shielded_label/shielded_label'
+
 // Styled Components
 import {
   Button,
@@ -30,15 +35,26 @@ interface Props {
   account: BraveWallet.AccountInfo
   onClick: (account: BraveWallet.AccountInfo) => void
   isSelected: boolean
+  isDisabled: boolean
   accountAlias: string | undefined
+  isShielded?: boolean
+  addressOverride?: string
 }
 
 export const AccountListItem = (props: Props) => {
-  const { onClick, account, isSelected, accountAlias } = props
+  const {
+    onClick,
+    account,
+    isSelected,
+    isDisabled,
+    accountAlias,
+    isShielded,
+    addressOverride
+  } = props
 
   return (
     <Button
-      disabled={isSelected}
+      disabled={isDisabled}
       onClick={() => onClick(account)}
     >
       <CreateAccountIcon
@@ -54,6 +70,7 @@ export const AccountListItem = (props: Props) => {
           width='100%'
           justifyContent='flex-start'
           alignItems='center'
+          gap='8px'
         >
           <NameAndBalanceText
             textSize='14px'
@@ -65,13 +82,14 @@ export const AccountListItem = (props: Props) => {
           {isSelected && (
             <DisabledLabel>{getLocale('braveWalletFrom')}</DisabledLabel>
           )}
+          {isShielded && <ShieldedLabel />}
         </Row>
         <AddressText
           textSize='12px'
           isBold={false}
           textAlign='left'
         >
-          {reduceAddress(account.address)}
+          {reduceAddress(addressOverride ?? account.address)}
         </AddressText>
         {accountAlias && accountAlias !== '' && (
           <AddressText

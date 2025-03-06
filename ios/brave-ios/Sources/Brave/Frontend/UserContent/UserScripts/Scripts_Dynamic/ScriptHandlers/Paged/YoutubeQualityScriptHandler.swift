@@ -9,7 +9,7 @@ import Preferences
 import Shared
 import WebKit
 
-class YoutubeQualityScriptHandler: NSObject, TabContentScript {
+class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
   private var url: URL?
   private var urlObserver: NSObjectProtocol?
 
@@ -17,22 +17,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript {
     self.url = tab.url
     super.init()
 
-    urlObserver = tab.webView?.observe(
-      \.url,
-      options: [.new],
-      changeHandler: { [weak self] object, change in
-        guard let self = self, let url = change.newValue else { return }
-        if self.url?.withoutFragment != url?.withoutFragment {
-          self.url = url
-
-          object.evaluateSafeJavaScript(
-            functionName: "window.__firefox__.\(Self.refreshQuality)",
-            contentWorld: Self.scriptSandbox,
-            asFunction: true
-          )
-        }
-      }
-    )
+    tab.addObserver(self)
   }
 
   private static let refreshQuality = "refresh_youtube_quality_\(uniqueID)"
@@ -107,5 +92,20 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript {
 
       return qualityPreference == .on
     }
+  }
+
+  // MARK: - TabObserver
+
+  func tabDidUpdateURL(_ tab: Tab) {
+    if url?.withoutFragment == tab.url?.withoutFragment {
+      return
+    }
+
+    url = tab.url
+    tab.webView?.evaluateSafeJavaScript(
+      functionName: "window.__firefox__.\(Self.refreshQuality)",
+      contentWorld: Self.scriptSandbox,
+      asFunction: true
+    )
   }
 }

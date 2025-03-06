@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Hind mare-report ang page na ito dahil hindi ito na-serve sa HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Isang lokal na web page ang page na ito at hindi karapat-dapat na i-report.</translation>
 <translation id="8740275226259417070">Isa itong page ng error. Hindi ito mare-report bilang sirang site.</translation>
+<translation id="6367576083705149078">Kung magbibigay ka ng contact info, maii-store ito para sa mga susunod na report.</translation>
 <translation id="6806248680442980382">Salamat sa pagtulong na mas pagandahin ang Brave para sa lahat. Ang impormasyon lang na kailangan namin para ayusin ng site na ito ang makikita sa report na ito.</translation>
 <translation id="6476216365964140603">Mga karagdagang detalye (opsyonal)</translation>
 <translation id="6145852496180774737">Makipag-ugnayan sa akin sa: (opsyonal)</translation>
@@ -712,8 +713,8 @@
 <translation id="4622826307953794521">Mag-ambag ng ilang data ng anonymous na paghahanap at pag-browse para pinuhin ang Brave Search gamit ang Web Discovery Project. Open-source ito.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Community</translation>
-<translation id="814503310257431685">Tingnan lahat</translation>
 <translation id="845020633253356720">Tingnan ang Store</translation>
+<translation id="7777123407058400802">Basic Attention Token – BAT</translation>
 <translation id="7090992647511817643">account</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">domain</translation>
@@ -1739,6 +1740,20 @@
 <translation id="3819528427777765709">Shielded</translation>
 <translation id="2142946302539262412">Pinagsama</translation>
 <translation id="4438043733494739848">Transparent</translation>
+<translation id="1950406774300125954">Hindi naka-sync</translation>
+<translation id="68413355604013935">Hindi naka-sync (<ph name="BLOCKS"/> (na) block pa)</translation>
+<translation id="1597233669965903034">I-sync ang iyong account para ma-access ang mga pinakabagong transaksyon at balanse.</translation>
+<translation id="7499262814309712782">I-sync ang account</translation>
+<translation id="2804568727504456403">I-sync ang <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">Ini-initialize...</translation>
+<translation id="4404141491825711928">Pinoproseso ang block:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> ang natitira</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> sa <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">Mga Range:</translation>
+<translation id="1178581264944972037">I-pause</translation>
+<translation id="7714298753782862705">Nakumpleto na ang pag-sync. Puwede mo nang isara ang window na ito.</translation>
+<translation id="7716113567047550378">Huwag isara ang window na ito hanggang sa matapos ang pag-sync.</translation>
+<translation id="5123590959308755060">Magpatuloy sa paggamit ng wallet sa isang bagong tab</translation>
 <translation id="7144878232160441200">I-retry</translation>
 <translation id="9094621390791852268">Nabigo ang pag-preview ng transaksyon.</translation>
 <translation id="4982713341035600933">Tinantyang pagbabago sa balanse</translation>
@@ -2063,7 +2078,7 @@
 <translation id="8637805148029768813">Kasalukuyang available ang feature na pambuo para lang sa ilang piling artikulo at iba pang long-form na web page.</translation>
 <translation id="1223498995510244364">Ibuod</translation>
 <translation id="7491773233732232424">Tungkol sa Leo</translation>
-<translation id="5208096220706490232">Ang Brave Leo ay isang pribadong AI smart assistant na pinapahusay ang iyong paggamit sa Internet. Libreng gamitin ang Leo na may limitadong access. Nag-aalok ang Brave Leo Premium ng higit pang model, mas matataas na limitasyon, at nagbibigay sa mga subscriber ng maagang access sa mga bagong feature. Mixtral 8x7B ang kasalukuyang default na model para sa lahat ng user. Tingnan ang <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/> para sa higit pang detalye.</translation>
+<translation id="4885527781814382758">Ang Brave Leo ay isang pribadong AI smart assistant na pinapahusay ang iyong paggamit sa Internet. Libreng gamitin ang Leo na may limitadong access. Nag-aalok ang Brave Leo Premium ng higit pang model, mas matataas na limitasyon, at nagbibigay sa mga subscriber ng maagang access sa mga bagong feature. Magbabago ang default na model pana-panahon. Tingnan ang <ph name="LINK_BEFORE"/>Brave Help Center<ph name="LINK_AFTER"/> para sa higit pang mga detalye.</translation>
 <translation id="7189603330209995455">Bilang default, kapag nagtanong ka sa Leo, posibleng ipadala at gamitin nito ang content ng web page na tinitingnan mo o anumang text na hina- highlight mo sa isang page sa Brave Leo para magbigay ng sagot. Hindi garantisado ang katumpakan ng mga sagot, at posibleng may kasamang hindi tumpak, mapanlinlang, o maling impormasyon. Gumagamit ang Leo ng data mula sa Brave Search para pahusayin ang kalidad ng sagot. Huwag magsumite ng sensitibo o pribadong impormasyon, at mag-ingat sa anumang sagot na nauugnay sa kalusugan, pananalapi, personal na kaligtasan, o katulad na paksa. Puwede mong i-adjust ang mga opsyon ng Leo sa Mga Setting anumang oras. Pumunta sa Mga Setting &gt; Leo.</translation>
 <translation id="3038772045018370764">Hindi nangongolekta ang Leo ng mga identifier gaya ng iyong IP address na puwedeng maiugnay sa iyo. Walang ginagamit na data para sanayin ang mga AI model at walang pinapanatiling personal na data ang mga AI model (maliban sa Anthropic na nagtatabi ng data sa loob ng 30 araw bago ito i-delete). Tingnan ang <ph name="LINK_BEFORE"/>patakaran sa privacy<ph name="LINK_AFTER"/> para sa higit pang impormasyon.</translation>
 <translation id="7839853125981164613">Maglagay ng prompt dito</translation>
@@ -2074,12 +2089,15 @@
 <translation id="2712650703044366764">May hindi valid na endpoint ang model na ito. Pakitingnan ang iyong configuration at subukan ulit.</translation>
 <translation id="1167803637855350748">Nagkaroon ng isyu sa network habang kumokonekta sa Leo, tingnan ang koneksyon mo at subukan ulit.</translation>
 <translation id="1996126325390835277">Naabot na ninyo ang limitasyon sa rate ng premium. Pakisubukan ulit pagkalipas ng ilang oras.</translation>
+<translation id="3683964919745779766">Naabot mo ang limit ng rate para sa model na ito o naubusan ka ng mga credit. Pakisubukan ulit sa ibang pagkakataon.</translation>
+<translation id="7692501701960747469">Hindi valid ang naka-configure na API key para sa model na ito. Pakitingnan ang iyong configuration at subukan ulit.</translation>
+<translation id="7905602379229309187">Kasalukuyang overloaded ang endpoint. Pakisubukan ulit sa ibang pagkakataon.</translation>
 <translation id="8151638057146502721">I-configure</translation>
 <translation id="4177458398826096846">Hi, ako si Leo. Ako ay isang ganap na naka-host na AI assistant ng Brave. Pinapagana ako ng Llama 3.1 8B, isang modelo na ginawa ng Meta para maging gumaganap at nagagamit sa maraming paraan. <ph name="LINK_BEFORE"/>Matuto pa<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hi, ako si Leo. Ako ay isang fully hosted na AI assistant ng Brave. Pinapagana ako ng Mixtral 8x7B, isang model na ginawa ng Mistral AI para mamahala ng mga advanced na task. <ph name="LINK_BEFORE"/>Matuto pa<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hi, ako si Leo. Pino-proxy ako ng Brave at pinapagana ng Claude Instant, isang model na ginawa ng Anthropic para magpagana ng task. <ph name="LINK_BEFORE"/>Matuto pa<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Hi, ako si Leo. Pino-proxy ako ng Brave at pinapagana ng Claude 3 Haiku, isang model na ginawa ng Anthropic para paganahin ang mga task ng pagpoproseso ng pag-uusap at teksto.</translation>
-<translation id="1107977270364670952">Hi, ako si Leo. Pino-proxy ako ng Brave at pinapagana ng Claude 3.5 Sonnet, isang modelo na ginawa ng Anthropic para paganahin ang mga gawain ng pagpoproseso ng pag-uusap at teksto.</translation>
+<translation id="2001874998841390450">Hi, ako si Leo. Pino-proxy ako ng Brave at pinapagana ng Claude Haiku, isang model na ginawa ng Anthropic para paganahin ang conversational at text processing na mga gawain. <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Hi, ako si Leo. Pino-proxy ako ng Brave at pinapagana ng Claude Sonnet, isang model na ginawa ng Anthropic para paganahin ang conversational at text processing na mga gawain. <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> ng <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2098,6 +2116,9 @@
 <translation id="4165928407303989823">Manatiling nasa paksa</translation>
 <translation id="2389665228467129817">Makipag-chat nang mas matagal</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /buwan</translation>
+<translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/> /taon</translation>
+<translation id="1028627582482425924">Isang taon</translation>
+<translation id="36366199652730057">Pinakamahusay na value</translation>
 <translation id="5151923271944811339">Lumipat sa libreng model</translation>
 <translation id="5474757891469990756">Palabasin ang buong kakayahan ng Leo sa pamamagitan ng Premium:</translation>
 <translation id="3453542753968940696">Priyoridad na access sa mahuhusay na model na may iba't ibang kakayahan.</translation>
@@ -2117,6 +2138,8 @@
 <translation id="9018766373792005944">Tungkol saan ang feedback mo?</translation>
 <translation id="7355096922131918313">Magbigay ng feedback dito</translation>
 <translation id="3027575440738035995">Nagbibigay ang Leo Premium ng access sa isang pinalawak na set ng mga model ng wika para sa higit na nuance sa sagot. <ph name="LINK_BEFORE"/>Matuto pa<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">I-delete</translation>
+<translation id="6574153208133461043">Sigurado ka bang gusto mong i-delete ang pag-uusap na ito? Hindi puwedeng i-undo ang aksyong ito.</translation>
 <translation id="7488762544858401571">Na-edit</translation>
 <translation id="1406205536570262057">I-edit ang sagot</translation>
 <translation id="2399439821649319175">Hindi kapaki-pakinabang</translation>
@@ -2130,6 +2153,7 @@
 <translation id="8171760814579050200">Palitan ang pangalan ng pag-uusap</translation>
 <translation id="7754678742055438573">I-delete ang pag-uusap</translation>
 <translation id="7494736170250048402">Magpadala ng mensahe kay Leo</translation>
+<translation id="8650874793377330048">Huminto sa pagsagot</translation>
 <translation id="8712637175834984815">Nakuha ko</translation>
 <translation id="1093419424466417703">Masyadong mahaba ang page para kay Leo. Puwedeng mawala ang ilang konteksto mula sa pag-uusap. Nabasa ni Leo ang <ph name="PERCENTAGE"/> ng nilalaman ng page.</translation>
 <translation id="2186990448773134544">Pinino ang content ng page sa pamamagitan ng pagkuha sa pinakamakabuluhang impormasyon mula sa page dahil masyadong mahaba sa Leo.</translation>

@@ -197,6 +197,8 @@
 <translation id="1680858055899097121">อย่าคงแท็บไว้เมื่อจบการท่องเว็บแต่ละรอบ</translation>
 <translation id="7142548388914389999">อนุญาตการวิเคราะห์ผลิตภัณฑ์โดยรักษาความเป็นส่วนตัว (P3A)</translation>
 <translation id="5254037869598726291">ข้อมูล P3A ที่ไม่ระบุชื่อช่วยให้ Brave ประเมินการใช้งานโดยรวม และช่วยให้มั่นใจว่าเรากำลังปรับปรุงฟีเจอร์ยอดนิยม</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">ร่วมให้ข้อมูลการค้นหาและการเลือกดูแบบไม่ระบุตัวตน เพื่อช่วยให้ Brave Search ทำงานได้ดีขึ้น</translation>
 <translation id="933652931229970927">ส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
 <translation id="5987838417172370108">ช่วยปรับปรุงความเสถียรของผลิตภัณฑ์ Brave โดยส่งรายงานการวินิจฉัยโดยอัตโนมัติเมื่อเบราว์เซอร์ Brave ขัดข้องหรือค้าง</translation>
 <translation id="7977176350719484850">ข้อมูลที่บันทึกไว้โดยประมาณ</translation>
@@ -233,7 +235,6 @@
 <translation id="6587448235155023666">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิดใช้งาน Brave อีกครั้ง</translation>
 <translation id="8701563696941209024">เปิดใช้งานใหม่เลย</translation>
 <translation id="834487290629916192">ภายหลัง</translation>
-<translation id="7207456302801184289">ยินดีต้อนรับสู่ Brave</translation>
 <translation id="4117451092682672487">ปกป้องความเป็นส่วนตัวง่ายๆ</translation>
 <translation id="7909375417585209817">เมื่อ Brave เป็นค่าเริ่มต้น ทุกลิงก์ที่คุณคลิกจะเปิดด้วยการป้องกันความเป็นส่วนตัวของ Brave</translation>
 <translation id="7370959926683925817">บล็อกโฆษณาและบันทึกข้อมูลทุกวัน</translation>
@@ -241,6 +242,9 @@
 <translation id="5148943178722443958">ช่วยปรับปรุง Brave ให้ดีขึ้น</translation>
 <translation id="6718362830686703942">ส่งรายงานการวินิจฉัยหากคุณพบข้อขัดข้องหรืออาการค้าง</translation>
 <translation id="8616157231067364693">แชร์ข้อมูลเชิงลึกของผลิตภัณฑ์แบบส่วนตัวและไม่ระบุชื่อ ซึ่งมีข้อมูลเกี่ยวกับคุณสมบัติที่ผู้ใช้ Brave ใช้</translation>
+<translation id="2888496576732880897">ช่วยให้ Brave Search เติบโต</translation>
+<translation id="7044431516245362795">เข้าร่วมโครงการ Web Discovery เพื่อช่วยขยายดัชนีและปรับปรุงผลการค้นหา <ph name="LEARN_MORE_START"/>ดูข้อมูลเพิ่มเติม<ph name="LEARN_MORE_END"/></translation>
+<translation id="7818938154803162778">แน่นอน ฉันจะช่วย</translation>
 <translation id="2877653791257935258">พิมพ์ชื่อเว็บไซต์หรือ URL</translation>
 <translation id="5329830149661250028">ดูความแตกต่างที่ Brave มอบให้: ไม่มีโฆษณา ไม่มีตัวติดตาม โหลดหน้าเร็วกว่า</translation>
 <translation id="3941792073703079607">ดูความแตกต่างของ Brave: บล็อกโฆษณา บันทึกข้อมูล สตรีมได้เร็วขึ้น</translation>
@@ -457,6 +461,7 @@
 <translation id="3624048886326677117">บล็อกตัวติดตาม &amp; Ads (ที่รุนแรง)</translation>
 <translation id="7151914815476509258">บล็อกตัวติดตาม &amp; Ads (ทั่วไป)</translation>
 <translation id="7384778069178817075">อนุญาตโฆษณา &amp; แอปติดตามทั้งหมด</translation>
+<translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>ตัวเลือก "บล็อกคุกกี้ทั้งหมด" ถูกยกเลิกแล้ว หากต้องการเรียนรู้วิธีการเปิดใช้งานตัวเลือกนี้แบบบังคับ ให้ไปที่<ph name="END_LINK_0"/><ph name="BEGIN_LINK_1"/>หน้าความช่วยเหลือของเรา<ph name="END_LINK_1"/></translation>
 <translation id="3763681089644577874">บล็อกคุกกี้</translation>
 <translation id="614747795780742163">ป้องกันเว็บไซต์จากการเก็บข้อมูลเกี่ยวกับการเยี่ยมชมเว็บก่อนหน้านี้ของคุณ</translation>
 <translation id="6883611015375728278">บล็อกคุกกี้ทั้งหมด</translation>
@@ -499,6 +504,7 @@
 <translation id="8459191579769999214">ดูภาพหน้าจอ</translation>
 <translation id="6476216365964140603">รายละเอียดเพิ่มเติม (ไม่บังคับ)</translation>
 <translation id="6145852496180774737">ติดต่อฉันที่: (ไม่บังคับ)</translation>
+<translation id="6367576083705149078">หากคุณให้ข้อมูลการติดต่อ มันจะถูกบันทึกไว้สำหรับการรายงานในอนาคต.</translation>
 <translation id="7616645803364270729">อีเมล Twitter ฯลฯ</translation>
 <translation id="5299848999918506028">ขอบคุณค่ะ</translation>
 <translation id="76550953340008122">ขอบคุณที่แจ้งให้ผู้พัฒนา Brave ทราบว่ามีข้อผิดพลาดในเว็บไซต์นี้ เราจะพยายามแก้ไขปัญหานี้อย่างเต็มที่</translation>
@@ -856,7 +862,6 @@
 <translation id="590733288489975971">Rewards จาก Ads</translation>
 <translation id="1450735350187803276">โฆษณาที่เห็นในเดือนนี้</translation>
 <translation id="1767561995429774671">สนับสนุน</translation>
-<translation id="7335371657242627509">รวมไว้ในการบริจาคแบบอัตโนมัติ</translation>
 <translation id="6727102863431372879">ตั้งค่า</translation>
 <translation id="3074127054582480056">โปรดระวัง</translation>
 <translation id="2280319752798785157">การสนับสนุนรายเดือน</translation>
@@ -1242,4 +1247,5 @@
 <translation id="1336494649091412226">คุณแน่ใจไหมว่าต้องการออกจาก Brave</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">ประวัติการแชท</translation>
+<translation id="6859935199732075666">แสดงข้อผิดพลาดของ Safe Browsing</translation>
 </translationbundle>

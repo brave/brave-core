@@ -407,6 +407,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
 <translation id="3357319404342882895">Tiukka</translation>
 <translation id="8823559166155093873">Estä evästeet</translation>
+<translation id="7093267802941377072">"Estä kaikki evästeet" -vaihtoehto on poistettu käytöstä. Jos haluat tietää, miten voit ottaa tämän vaihtoehdon käyttöön, käy osoitteessa <ph name="BEGIN_LINK"/>ohjesivullamme<ph name="END_LINK"/>.</translation>
 <translation id="6196640612572343990">Estä kolmannen osapuolen evästeet</translation>
 <translation id="5657156137487675418">Salli kaikki evästeet</translation>
 <translation id="6883611015375728278">Estä kaikki evästeet</translation>
@@ -594,6 +595,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="5522403133543437426">Osoitepalkissa käytettävä hakukone.</translation>
 <translation id="280472502078788655">Hakukone, jota käytetään yksityisten ikkunoiden osoiterivillä.</translation>
 <translation id="7232120595886556478">Tavallinen ikkuna</translation>
+<translation id="6739674350896546324">Incognito-ikkunoiden hakukone</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> on nyt oletushakukoneesi yksityisikkunoissa</translation>
 <translation id="6864914031231797928">Salli laajennuksille Google-kirjautuminen</translation>
 <translation id="7878791177459550035">Mediareititin mahdollistaa suoratoisto-ominaisuuden selaimessa.</translation>
@@ -731,7 +733,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="3213787232304349732">URL-osoite, jossa tarjoajan viitekehys kuuntelee pyyntöjä. Jos et ole varma, tarkista palveluntarjoajan viitekehyksen asiakirjat, esim. Ollamalle tämä on aina http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Jotkin palveluntarjoajan viitekehykset voivat vaatia todennustunnukset, kuten API-avaimen tai käyttötunnuksen. Nämä lisätään pyynnön nimeen.</translation>
 <translation id="4335128003329183586">Kontekstikoko</translation>
-<translation id="8794525422794607973">Merkkien enimmäismäärä, jonka malli voi käsitellä yhdessä vuorovaikutuksessa. Kukin merkki on noin 3/4 sanasta. Suurempi kontekstikoko mahdollistaa sen, että malli voi käsitellä pidempiä keskusteluja. Eri mallit tukevat erilaisia kontekstin enimmäiskokoja.</translation>
+<translation id="3153779001670804829">Tokenien enimmäismäärä, jonka malli voi käsitellä yhdellä kertaa. Suurempi kontekstikoko mahdollistaa sen, että malli voi käsitellä pidempiä keskusteluja. Eri mallit tukevat erilaisia kontekstin enimmäiskokoja.</translation>
 <translation id="217141195370578385">Brave ei välitä näitä pyyntöjä, lue valitun palveluntarjoajan tietosuojaehdot.</translation>
 <translation id="2645532768679870478">Muiden kuin paikallisten päätepisteiden pitäisi käyttää HTTPS-protokollaa tiedonsiirron suojauksen varmistamiseksi.</translation>
 <translation id="8177205483022887785">Olet antanut virheellisen URL-osoitteen. Anna kelvollinen URL-osoite.</translation>

@@ -13,115 +13,12 @@
 
 use std::{error::Error as StdError, fmt};
 
-#[derive(Default)]
-pub struct Errors {
-    punycode: bool,
-    check_hyphens: bool,
-    check_bidi: bool,
-    start_combining_mark: bool,
-    invalid_mapping: bool,
-    nfc: bool,
-    disallowed_by_std3_ascii_rules: bool,
-    disallowed_mapped_in_std3: bool,
-    disallowed_character: bool,
-    too_long_for_dns: bool,
-    too_short_for_dns: bool,
-    disallowed_in_idna_2008: bool,
-}
-
-impl Errors {
-    fn is_err(&self) -> bool {
-        let Errors {
-            punycode,
-            check_hyphens,
-            check_bidi,
-            start_combining_mark,
-            invalid_mapping,
-            nfc,
-            disallowed_by_std3_ascii_rules,
-            disallowed_mapped_in_std3,
-            disallowed_character,
-            too_long_for_dns,
-            too_short_for_dns,
-            disallowed_in_idna_2008,
-        } = *self;
-        punycode
-            || check_hyphens
-            || check_bidi
-            || start_combining_mark
-            || invalid_mapping
-            || nfc
-            || disallowed_by_std3_ascii_rules
-            || disallowed_mapped_in_std3
-            || disallowed_character
-            || too_long_for_dns
-            || too_short_for_dns
-            || disallowed_in_idna_2008
-    }
-}
-
-impl fmt::Debug for Errors {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let Errors {
-            punycode,
-            check_hyphens,
-            check_bidi,
-            start_combining_mark,
-            invalid_mapping,
-            nfc,
-            disallowed_by_std3_ascii_rules,
-            disallowed_mapped_in_std3,
-            disallowed_character,
-            too_long_for_dns,
-            too_short_for_dns,
-            disallowed_in_idna_2008,
-        } = *self;
-
-        let fields = [
-            ("punycode", punycode),
-            ("check_hyphens", check_hyphens),
-            ("check_bidi", check_bidi),
-            ("start_combining_mark", start_combining_mark),
-            ("invalid_mapping", invalid_mapping),
-            ("nfc", nfc),
-            (
-                "disallowed_by_std3_ascii_rules",
-                disallowed_by_std3_ascii_rules,
-            ),
-            ("disallowed_mapped_in_std3", disallowed_mapped_in_std3),
-            ("disallowed_character", disallowed_character),
-            ("too_long_for_dns", too_long_for_dns),
-            ("too_short_for_dns", too_short_for_dns),
-            ("disallowed_in_idna_2008", disallowed_in_idna_2008),
-        ];
-
-        let mut empty = true;
-        f.write_str("Errors { ")?;
-        for (name, val) in &fields {
-            if *val {
-                if !empty {
-                    f.write_str(", ")?;
-                }
-                f.write_str(*name)?;
-                empty = false;
-            }
-        }
-
-        if !empty {
-            f.write_str(" }")
-        } else {
-            f.write_str("}")
-        }
-    }
-}
+#[derive(Default, Debug)]
+pub struct Errors {}
 
 impl From<Errors> for Result<(), Errors> {
     fn from(e: Errors) -> Result<(), Errors> {
-        if !e.is_err() {
-            Ok(())
-        } else {
-            Err(e)
-        }
+        Err(e)
     }
 }
 

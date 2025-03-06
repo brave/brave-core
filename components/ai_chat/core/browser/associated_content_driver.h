@@ -107,9 +107,6 @@ class AssociatedContentDriver
       ConversationHandler::GetPageContentCallback callback,
       std::string_view invalidation_token) = 0;
 
-  // Implementer should call this when the favicon for the content changes
-  void OnFaviconImageDataChanged();
-
   // Implementer should call this when the title is updated
   void OnTitleChanged();
 

@@ -30,6 +30,12 @@ typedef NS_ENUM(NSInteger, HistoryDuplicateHandlingIOS) {
   HistoryDuplicateHandlingIOSKeepAll
 };
 
+NS_SWIFT_NAME(HistoryCancellable)
+OBJC_EXPORT
+@interface IOSHistoryCancellable : NSObject
+- (void)cancel;
+@end
+
 NS_SWIFT_NAME(HistoryNode)
 OBJC_EXPORT
 @interface IOSHistoryNode : NSObject
@@ -136,14 +142,16 @@ OBJC_EXPORT
 /// @param options - Additional search options
 /// @param completion - Block that notifies querying is finished with list of
 /// items
-- (void)searchWithQuery:(NSString* _Nullable)query
-                options:(IOSHistorySearchOptions*)searchOptions
-             completion:
-                 (void (^)(NSArray<IOSHistoryNode*>* historyResults))completion;
+- (IOSHistoryCancellable*)
+    searchWithQuery:(NSString* _Nullable)query
+            options:(IOSHistorySearchOptions*)searchOptions
+         completion:
+             (void (^)(NSArray<IOSHistoryNode*>* historyResults))completion;
 
 /// Gets a count of unique domains visited as of now based on the `type` passed
-- (void)fetchDomainDiversityForType:(DomainMetricTypeIOS)type
-                         completion:(void (^)(NSInteger count))completion;
+- (IOSHistoryCancellable*)
+    fetchDomainDiversityForType:(DomainMetricTypeIOS)type
+                     completion:(void (^)(NSInteger count))completion;
 
 @end
 

@@ -54,6 +54,9 @@ inline constexpr char kBraveVPNOnDemandEnabled[] =
     "brave.brave_vpn.on_demand_enabled";
 #endif
 
+inline constexpr char kBraveVPNSmartProxyRoutingEnabled[] =
+    "brave.brave_vpn.smart_proxy_routing_enabled";
+
 inline constexpr char kBraveVPNWireguardProfileCredentials[] =
     "brave.brave_vpn.wireguard.profile_credentials";
 inline constexpr char kBraveVPNEnvironment[] = "brave.brave_vpn.env";

@@ -44,7 +44,8 @@ namespace commander {
 namespace {
 constexpr size_t kMaxResults = 8;
 CommandItemModel FromCommand(const std::unique_ptr<CommandItem>& item) {
-  return CommandItemModel(item->title, item->matched_ranges, item->annotation);
+  return CommandItemModel(item->title, item->matched_ranges, item->annotation,
+                          item->score);
 }
 }  // namespace
 

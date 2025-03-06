@@ -100,6 +100,16 @@ void PrintTo(const BtcHardwareTransactionSignInputDataPtr& input_data,
       << input_data->associated_path;
 }
 
+void PrintTo(const CardanoAddressPtr& address, ::std::ostream* os) {
+  *os << base::StringPrintf("[%s %d/%d]", address->address_string.c_str(),
+                            address->payment_key_id->role,
+                            address->payment_key_id->index);
+}
+
+void PrintTo(const CardanoBalancePtr& balance, ::std::ostream* os) {
+  *os << base::StringPrintf("[%d]", balance->total_balance);
+}
+
 }  // namespace mojom
 
 }  // namespace brave_wallet

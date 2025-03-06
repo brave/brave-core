@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Diese Seite kann nicht gemeldet werden, weil sie nicht über HTTP/HTTPS bereitgestellt wurde.</translation>
 <translation id="7907023135990310743">Diese Seite ist eine lokale Webseite und kann nicht gemeldet werden</translation>
 <translation id="8740275226259417070">Dies ist eine Fehlerseite. Sie kann nicht als defekte Seite gemeldet werden.</translation>
+<translation id="6367576083705149078">Wenn du Kontaktinformationen angibst, werden diese für zukünftige Berichte gespeichert.</translation>
 <translation id="6806248680442980382">Danke, dass du uns hilfst, Brave für alle besser zu machen. Dieser Bericht wird nur Informationen enthalten, die wir benötigen, um diese Seite zu verbessern.</translation>
 <translation id="6476216365964140603">Zusätzliche Details (optional)</translation>
 <translation id="6145852496180774737">Kontaktieren Sie mich unter: (optional)</translation>
@@ -708,8 +709,8 @@
 <translation id="4622826307953794521">Trage mit anonymen Such- und Browsing-Daten zur Verfeinerung von Brave Search mit Web Discovery Project bei. Es ist vollständig Open-Source.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Community</translation>
-<translation id="814503310257431685">Alle anzeigen</translation>
 <translation id="845020633253356720">Store anzeigen</translation>
+<translation id="7777123407058400802">Basic Attention Token – BAT</translation>
 <translation id="7090992647511817643">Konto</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">Domain</translation>
@@ -1735,6 +1736,17 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="3819528427777765709">Geschützt</translation>
 <translation id="2142946302539262412">Einheitlich</translation>
 <translation id="4438043733494739848">Transparent</translation>
+<translation id="1597233669965903034">Synchronisiere dein Konto, um die neuesten Transaktionen und den Kontostand anzuzeigen.</translation>
+<translation id="7499262814309712782">Konto synchronisieren</translation>
+<translation id="813913629614996137">Wird initialisiert…</translation>
+<translation id="4404141491825711928">Block wird verarbeitet</translation>
+<translation id="4983989175143324911">Noch <ph name="BLOCKS"/> übrig</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> von <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">Spanne:</translation>
+<translation id="1178581264944972037">Anhalten</translation>
+<translation id="7714298753782862705">Synchronisierung abgeschlossen. Du kannst dieses Fenster jetzt schließen.</translation>
+<translation id="7716113567047550378">Bitte schließe dieses Fenster nicht, bis die Synchronisierung abgeschlossen ist.</translation>
+<translation id="5123590959308755060">Fahre fort, dein Wallet in einem neuen Tab zu verwenden.</translation>
 <translation id="7144878232160441200">Erneut versuchen</translation>
 <translation id="9094621390791852268">Vorschau der Transaktion fehlgeschlagen.</translation>
 <translation id="4982713341035600933">Geschätzte Änderung des Guthabens</translation>
@@ -2059,7 +2071,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8637805148029768813">Die Zusammenfassungsfunktion ist derzeit nur für ausgewählte Artikel und andere Webseiten in Langform verfügbar.</translation>
 <translation id="1223498995510244364">Zusammenfassen</translation>
 <translation id="7491773233732232424">Über Leo</translation>
-<translation id="5208096220706490232">Brave Leo ist ein persönlicher, intelligenter KI-Assistent, der Ihnen die Nutzung des Internets erleichtert. Die Nutzung von Leo ist kostenlos mit eingeschränktem Zugang. Brave Leo Premium bietet weitere Modelle, höhere Limits und ermöglicht Abonnenten einen frühzeitigen Zugang zu neuen Funktionen. Das Standardmodell für alle Benutzer ist derzeit Mixtral 8x7B. Weitere Informationen finden Sie im <ph name="LINK_BEFORE"/>Brave-Wiki<ph name="LINK_AFTER"/>.</translation>
+<translation id="4885527781814382758">Brave Leo ist ein privater AI-Smart-Assistant, der deine Internetnutzung verbessert. Leo ist kostenlos mit eingeschränktem Zugang. Brave Leo Premium bietet mehr Modelle, höhere Limits und gewährt Abonnenten frühen Zugriff auf neue Funktionen. Das Standardmodell wird von Zeit zu Zeit geändert. Weitere Details findest du im <ph name="LINK_BEFORE"/>Brave Help Center<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Wenn Sie Leo eine Frage stellen, kann er standardmäßig den Inhalt der von Ihnen angezeigten Webseite oder jeden Text, den Sie auf einer Seite markieren, an Brave Leo senden und verwenden, um eine Antwort zu geben. Die Richtigkeit der Antworten ist nicht garantiert und kann ungenaue, irreführende oder falsche Informationen enthalten. Leo verwendet die Daten der Brave-Suche, um die Qualität der Antworten zu verbessern. Geben Sie keine sensiblen oder privaten Daten ein und seien Sie vorsichtig bei Antworten, die sich auf Gesundheit, Finanzen, persönliche Sicherheit oder ähnliches beziehen. Sie können die Optionen von Leo in den Einstellungen jederzeit anpassen. Gehen Sie dazu zu Einstellungen &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo sammelt keine Identifikatoren wie Ihre IP-Adresse, die mit Ihnen in Verbindung gebracht werden können. Es werden keine Daten verwendet, um die KI-Modelle zu trainieren. Die KI-Modelle speichern keine persönlichen Daten (außer Anthropic, das Daten 30 Tage lang speichert, bevor es sie löscht). Weitere Informationen finden Sie in der <ph name="LINK_BEFORE"/>Datenschutzrichtlinie<ph name="LINK_AFTER"/>.</translation>
 <translation id="7839853125981164613">Befehl hier eingeben</translation>
@@ -2070,12 +2082,15 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="2712650703044366764">Dieses Modell hat einen ungültigen Endpunkt. Bitte überprüfe deine Konfiguration und versuche es erneut.</translation>
 <translation id="1167803637855350748">Bei der Verbindung mit Leo ist ein Netzwerkproblem aufgetreten. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.</translation>
 <translation id="1996126325390835277">Sie haben die Premium-Antwortquote erreicht. Bitte versuchen Sie es in ein paar Stunden erneut.</translation>
+<translation id="3683964919745779766">Es scheint, dass das Kontingent für dieses Modell erreicht oder keine Credits mehr verfügbar sind. Bitte versuche es später erneut.</translation>
+<translation id="7692501701960747469">Es scheint ein Problem mit dem API-Schlüssel zu geben. Bitte prüfe die Konfiguration und versuche es erneut.</translation>
+<translation id="7905602379229309187">Es scheint, dass der Endpunkt momentan überlastet ist. Bitte versuche es später noch einmal.</translation>
 <translation id="8151638057146502721">Konfiguriere</translation>
 <translation id="4177458398826096846">Hallo, ich bin Leo. Ich bin ein vollständig gehosteter KI-Assistent von Brave. Ich laufe auf Llama 3.1 8B, einem Modell, das von Meta entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hallo, ich bin Leo. Ich bin ein vollständig gehosteter KI-Assistent von Brave. Ich laufe auf Mixtral 8x7B, einem Modell, das von Mistral AI für fortgeschrittene Aufgaben entwickelt wurde. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hallo, ich bin Leo. Ich bin ein Proxy von Brave und laufe auf Claude Instant, einem von Anthropic entwickeltem Modell, um Konversations- und Textverarbeitungsaufgaben zu unterstützen. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Hallo, ich bin Leo. Ich bin ein Proxy von Brave und werde von Claude 3 Haiku angetrieben, einem von Anthropic entwickeltem Modell, um Konversations- und Textverarbeitungsaufgaben zu unterstützen.</translation>
-<translation id="1107977270364670952">Hallo, ich bin Leo. Ich bin ein Proxy von Brave und werde von Claude 3.5 Sonnet angetrieben, einem von Anthropic entwickeltem Modell, um Konversations- und Textverarbeitungsaufgaben zu unterstützen.</translation>
+<translation id="2001874998841390450">Hallo, ich bin Leo! Ich werde von Brave vermittelt und von Claude Haiku betrieben, einem Modell von Anthropic, das für Konversations- und Textverarbeitungsaufgaben entwickelt wurde. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Hallo, ich bin Leo! Ich werde von Brave vermittelt und von Claude Sonnet betrieben, einem Modell von Anthropic, das für Konversations- und Textverarbeitungsaufgaben entwickelt wurde. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> von <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2094,6 +2109,8 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="4165928407303989823">Bleiben Sie im Thema</translation>
 <translation id="2389665228467129817">Chatten Sie länger</translation>
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD/Monat</translation>
+<translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/> /pro Jahr</translation>
+<translation id="1028627582482425924">Ein Jahr</translation>
 <translation id="5151923271944811339">Zum kostenlosen Modell wechseln</translation>
 <translation id="5474757891469990756">Entfesseln Sie mit Premium die volle Stärke von Leo:</translation>
 <translation id="3453542753968940696">Prioritärer Zugang zu leistungsstarken Modellen mit unterschiedlichen Fähigkeiten.</translation>
@@ -2113,6 +2130,8 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="9018766373792005944">Worum geht Ihr Feedback?</translation>
 <translation id="7355096922131918313">Geben Sie hier Ihr Feedback</translation>
 <translation id="3027575440738035995">Leo Premium bietet Zugriff auf mehr Sprachmodelle, um noch differenziertere Antworten zu geben. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Löschen</translation>
+<translation id="6574153208133461043">Bist du sicher, dass du dieses Gespräch löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.</translation>
 <translation id="7488762544858401571">Bearbeitet</translation>
 <translation id="1406205536570262057">Antwort bearbeiten</translation>
 <translation id="2399439821649319175">Nicht hilfreich</translation>
@@ -2126,6 +2145,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8171760814579050200">Unterhaltung umbenennen</translation>
 <translation id="7754678742055438573">Unterhaltung löschen</translation>
 <translation id="7494736170250048402">Nachricht an Leo schicken</translation>
+<translation id="8650874793377330048">Nicht mehr antworten</translation>
 <translation id="8712637175834984815">Alles klar</translation>
 <translation id="1093419424466417703">Diese Seite ist zu lang für Leo. Teile des Kontexts fehlen in der Unterhaltung möglicherweise. Leo konnte <ph name="PERCENTAGE"/> der Seiteninhalte lesen.</translation>
 <translation id="2186990448773134544">Der Inhalt der Seite wurde verfeinert, indem die wichtigsten Informationen aus der Seite extrahiert wurden, da sie für Leo zu lang war.</translation>

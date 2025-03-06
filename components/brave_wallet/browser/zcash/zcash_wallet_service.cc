@@ -13,6 +13,7 @@
 #include "base/check_is_test.h"
 #include "base/containers/span.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_discover_next_unused_zcash_address_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_get_transparent_utxos_context.h"
@@ -20,7 +21,6 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_resolve_transaction_status_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
-#include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -119,8 +119,7 @@ void ZCashWalletService::GetReceiverAddress(
   auto id = mojom::ZCashKeyId::New(account_id->account_index, 0, 0);
   auto addr = keyring_service_->GetZCashAddress(account_id, *id);
   if (!addr) {
-    std::move(callback).Run(
-        nullptr, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    std::move(callback).Run(nullptr, WalletInternalErrorMessage());
     return;
   }
   auto str_addr = addr->address_string;
@@ -286,8 +285,7 @@ void ZCashWalletService::OnRunDiscoveryDone(
       UpdateNextUnusedAddressForAccount(account_id, *item);
       result.push_back(item->Clone());
     } else {
-      std::move(callback).Run(base::unexpected(
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+      std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
       return;
     }
   }
@@ -317,7 +315,7 @@ void ZCashWalletService::DiscoverNextUnusedAddress(
   auto account_info = keyring_service_->GetZCashAccountInfo(account_id);
   if (!account_info) {
     return std::move(callback).Run(
-        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+        base::unexpected(WalletInternalErrorMessage()));
   }
   auto start_address =
       change ? account_info->next_transparent_change_address.Clone()
@@ -333,15 +331,13 @@ void ZCashWalletService::GetUtxos(const std::string& chain_id,
                                   GetUtxosCallback callback) {
   if (!IsZCashNetwork(chain_id)) {
     // Desktop frontend sometimes does that.
-    std::move(callback).Run(
-        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
 
   const auto& addresses = keyring_service_->GetZCashAddresses(account_id);
   if (!addresses) {
-    std::move(callback).Run(
-        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
 
@@ -462,8 +458,7 @@ void ZCashWalletService::OnSendTransactionResult(
     CHECK(tx_id_hex.starts_with("0x"));
     std::move(callback).Run(tx_id_hex.substr(2), std::move(tx), "");
   } else {
-    std::move(callback).Run(
-        "", std::move(tx), l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    std::move(callback).Run("", std::move(tx), WalletInternalErrorMessage());
   }
 }
 
@@ -473,8 +468,7 @@ void ZCashWalletService::OnDiscoveryDoneForBalance(
     GetBalanceCallback callback,
     RunDiscoveryResult discovery_result) {
   if (!discovery_result.has_value()) {
-    std::move(callback).Run(
-        nullptr, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    std::move(callback).Run(nullptr, WalletInternalErrorMessage());
     return;
   }
   GetUtxos(chain_id, std::move(account_id),
@@ -637,8 +631,7 @@ void ZCashWalletService::CreateOrchardToOrchardTransaction(
   auto receiver_addr =
       GetOrchardRawBytes(address_to, chain_id == mojom::kZCashTestnet);
   if (!receiver_addr) {
-    std::move(callback).Run(
-        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
 
@@ -662,8 +655,7 @@ void ZCashWalletService::CreateTransparentToOrchardTransaction(
   auto receiver_addr =
       GetOrchardRawBytes(address_to, chain_id == mojom::kZCashTestnet);
   if (!receiver_addr) {
-    std::move(callback).Run(
-        base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
 
@@ -693,8 +685,7 @@ void ZCashWalletService::CreateShieldAllTransactionTaskDone(
     ShieldAllFundsCallback callback,
     base::expected<ZCashTransaction, std::string> transaction) {
   if (!transaction.has_value()) {
-    std::move(callback).Run(
-        std::nullopt, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
     return;
   }
   SignAndPostTransaction(

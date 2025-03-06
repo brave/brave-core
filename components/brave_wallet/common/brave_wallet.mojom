@@ -1837,12 +1837,16 @@ struct CardanoKeyId {
 struct CardanoAddress {
   string address_string;
   CardanoKeyId payment_key_id;
-  CardanoKeyId delegation_key_id;
 };
 
 struct CardanoBalance {
   // Total balance. Either all available now or will be available soon.
   uint64 total_balance;
+};
+
+struct CardanoAccountInfo {
+  CardanoAddress next_external_address;
+  CardanoAddress next_internal_address;
 };
 
 interface CardanoWalletService {

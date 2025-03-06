@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Denne siden kan ikke rapporteres fordi den ikke ble vist med HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Denne siden er en lokal nettside og kvalifiserer ikke for rapportering.</translation>
 <translation id="8740275226259417070">Dette er en feilside. Den kan ikke rapporteres inn som en ødelagt nettside.</translation>
+<translation id="6367576083705149078">Dersom du angir kontaktinformasjon vil det lagres for rapportering i fremtiden.</translation>
 <translation id="6806248680442980382">Takk for at du hjelper til med å gjøre Brave bedre for alle. Denne rapporten inneholder kun informasjon som kreves for at vi skal kunne fikse dette nettstedet.</translation>
 <translation id="6476216365964140603">Ytterligere informasjon (valgfritt)</translation>
 <translation id="6145852496180774737">Kontakt meg på: (valgfritt)</translation>
@@ -713,8 +714,8 @@
 <translation id="4622826307953794521">Del nettleser- og søkedata helt anonymt for å gjøre Brave Search bedre med Web Discovery Project. Det har helt åpen kildekode.</translation>
 <translation id="4174337572777167894">Web Discovery-prosjektet</translation>
 <translation id="9034669711835382440">Community</translation>
-<translation id="814503310257431685">Se alt</translation>
 <translation id="845020633253356720">Gå til butikken</translation>
+<translation id="7777123407058400802">Basic Attention Token – BAT</translation>
 <translation id="7090992647511817643">konto</translation>
 <translation id="4822132585477111396">Blokkjede</translation>
 <translation id="3269475789479462358">domene</translation>
@@ -1740,6 +1741,20 @@
 <translation id="3819528427777765709">Skjermet</translation>
 <translation id="2142946302539262412">Samlet</translation>
 <translation id="4438043733494739848">Transparent</translation>
+<translation id="1950406774300125954">Ikke synkronisert</translation>
+<translation id="68413355604013935">Ikke synkronisert (<ph name="BLOCKS"/> blokker bak)</translation>
+<translation id="1597233669965903034">Synkroniser kontoen din for å se de nyeste transaksjonene og saldooppdateringene.</translation>
+<translation id="7499262814309712782">Synkroniser konto</translation>
+<translation id="2804568727504456403">Synkroniser <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">Starter ...</translation>
+<translation id="4404141491825711928">Behandler blokk:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> igjen</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> av <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">Områder:</translation>
+<translation id="1178581264944972037">Stans midlertidig</translation>
+<translation id="7714298753782862705">Synkroniseringen er fullført. Du kan nå lukke dette vinduet.</translation>
+<translation id="7716113567047550378">Ikke lukk vinduet før synkroniseringen er fullført.</translation>
+<translation id="5123590959308755060">Fortsett å bruke lommeboken i en ny fane</translation>
 <translation id="7144878232160441200">Prøv på nytt</translation>
 <translation id="9094621390791852268">Forhåndsvisning av transaksjon mislyktes.</translation>
 <translation id="4982713341035600933">Anslått saldoendring</translation>
@@ -2064,7 +2079,7 @@
 <translation id="8637805148029768813">Oppsummeringsfunksjonen er inntil videre bare tilgjengelig for utvalgte artikler og andre nettsteder med mye tekst.</translation>
 <translation id="1223498995510244364">Oppsummer</translation>
 <translation id="7491773233732232424">Om Leo</translation>
-<translation id="5208096220706490232">Brave Leo er en privat, smart KI-assistent som lar deg bruke internett på en smartere måte. Leo er gratis å bruke med begrenset tilgang. Brave Leo Premium tilbyr flere modeller, utvidede grenser og tidlig tilgang til nye funksjoner for abonnenter. Standardmodellen for alle brukere er i dag Mixtral 8x7B. Ta en titt på <ph name="LINK_BEFORE"/>Brave-wikien<ph name="LINK_AFTER"/> for mer informasjon.</translation>
+<translation id="4885527781814382758">Brave Leo er en privat, smart KI-assistent som lar deg bruke internett på en smartere måte. Leo er gratis å bruke med begrenset tilgang. Med Brave Leo Premium-abonnement kan du velge mellom flere modeller, ha lengre samtaler og få tidlig tilgang til nye funksjoner. Standardmodellen byttes ut fra tid til annen. Besøk <ph name="LINK_BEFORE"/>Braves hjelpesenter<ph name="LINK_AFTER"/> for å finne ut mer om Leo.</translation>
 <translation id="7189603330209995455">Når du stiller et spørsmål til Leo, kan tjenesten som standard sende og bruke innholdet på nettsiden du er på, eller tekst markert på siden, til Brave Leo for å gi svar. Det gis ingen garantier for at svarene er riktige, og de kan inneholde upresis, villedende eller feil informasjon. Leo bruker data fra Brave Search til å forbedre kvaliteten på svarene. Ikke send inn sensitiv eller privat informasjon, og bruk svar knyttet til helse, økonomi, personlig sikkerhet og lignende med største forsiktighet. Du kan når som helst tilpasse alternativene for Leo i innstillingene. Gå til Innstillinger &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo samler ikke inn identifikatorer som kan knyttes til deg, som IP-adressen din. Ingen data brukes til å trene opp KI-modeller, og ingen personopplysninger lagres av KI-modellene (unntatt Antrophic, som lagrer data i 30 dager før de slettes). Les <ph name="LINK_BEFORE"/>personvernerklæringen<ph name="LINK_AFTER"/> for mer informasjon.</translation>
 <translation id="7839853125981164613">Skriv inn spørsmål her</translation>
@@ -2075,12 +2090,15 @@
 <translation id="2712650703044366764">Denne modellen har et ugyldig endepunkt. Kontroller konfigurasjonen og prøv på nytt.</translation>
 <translation id="1167803637855350748">Det oppstod et nettverksproblem under tilkoblingen til Leo. Kontroller forbindelsen og prøv på nytt.</translation>
 <translation id="1996126325390835277">Du har nådd premium-grensen. Prøv på nytt om noen timer.</translation>
+<translation id="3683964919745779766">Du har enten nådd maksgrensen for denne modellen, eller så er du tom for kreditter. Prøv igjen senere.</translation>
+<translation id="7692501701960747469">API-nøkkelen som er konfigurert for denne modellen er ugyldig. Sjekk konfigurasjonen og prøv på nytt.</translation>
+<translation id="7905602379229309187">Endepunktet er overbelastet. Prøv igjen senere.</translation>
 <translation id="8151638057146502721">Konfigurer</translation>
 <translation id="4177458398826096846">Hei, jeg er Leo. Jeg er en fullstendig vertsbasert AI-assistent av Brave. Jeg er drevet av Llama 3.1 8B, en modell skapt av Meta for å være ytelsesdyktig og anvendelig i mange bruksområder. <ph name="LINK_BEFORE"/>Finn ut mer<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hei, jeg er Leo. Jeg er en fullstendig vertsbasert AI-assistent fra Brave. Jeg er drevet av Mixtral 8x7B, en modell skapt av Mistral AI for å håndtere avanserte oppgaver. <ph name="LINK_BEFORE"/>Finn ut mer<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hei, jeg er Leo. Jeg har proxy hos Brave og er drevet av Claude Instant, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver. <ph name="LINK_BEFORE"/>Finn ut mer<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Hei, jeg er Leo! Jeg brukes i proxyversjon av Brave og er basert på Claude 3 Haiku, en modell som er utviklet av Anthropic for å håndtere oppgaver knyttet til behandling av tekst og samtaler.</translation>
-<translation id="1107977270364670952">Hei, jeg er Leo! Jeg har proxy hos Brave og er drevet av Claude 3.5 Sonnet, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver.</translation>
+<translation id="2001874998841390450">Hei, jeg er Leo! Jeg brukes i proxyversjon av Brave og er basert på Claude Haiku, en modell som er utviklet av Anthropic for å håndtere oppgaver knyttet til behandling av tekst og samtaler. <ph name="LINK_BEFORE"/>Finn ut mer.<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Hei, jeg er Leo! Jeg brukes i proxyversjon av Brave og er basert på Claude Sonnet, en modell som er utviklet av Anthropic for å håndtere oppgaver knyttet til behandling av tekst og samtaler. <ph name="LINK_BEFORE"/>Finn ut mer.<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> etter <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2099,6 +2117,9 @@
 <translation id="4165928407303989823">Fortsett videre med samme tema</translation>
 <translation id="2389665228467129817">Snakk sammen lenger</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /måned</translation>
+<translation id="9031958221569934724"><ph name="PRICE_VALUE"/> USD per år</translation>
+<translation id="1028627582482425924">Ett år</translation>
+<translation id="36366199652730057">Mest for pengene</translation>
 <translation id="5151923271944811339">Bytt til gratismodellen</translation>
 <translation id="5474757891469990756">Få tilgang til Leos fulle potensial med Premium:</translation>
 <translation id="3453542753968940696">Få prioritert tilgang til kraftige modeller med ulike ferdigheter.</translation>
@@ -2118,6 +2139,8 @@
 <translation id="9018766373792005944">Hva handler tilbakemeldingen om?</translation>
 <translation id="7355096922131918313">Gi tilbakemelding her</translation>
 <translation id="3027575440738035995">Leo Premium gir tilgang til et utvidet sett språkmodeller for enda mer nyanserte svar. <ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Slett</translation>
+<translation id="6574153208133461043">Er du sikker på at du vil slette denne samtalen? Dette kan ikke angres.</translation>
 <translation id="7488762544858401571">Redigert</translation>
 <translation id="1406205536570262057">Rediger svaret</translation>
 <translation id="2399439821649319175">Ikke nyttig</translation>
@@ -2131,6 +2154,7 @@
 <translation id="8171760814579050200">Gi samtalen et nytt navn</translation>
 <translation id="7754678742055438573">Slett samtale</translation>
 <translation id="7494736170250048402">Send en melding til Leo</translation>
+<translation id="8650874793377330048">Slutt å svare</translation>
 <translation id="8712637175834984815">Skjønner</translation>
 <translation id="1093419424466417703">Siden er for lang for Leo. Det kan mangle noe kontekst fra samtalen. Leo klarte å lese <ph name="PERCENTAGE"/> av sidens innhold.</translation>
 <translation id="2186990448773134544">Sideinnholdet er oppsummert ved å trekke ut den mest relevante informasjonen fra siden, ettersom den inneholdt for mye tekst for Leo.</translation>

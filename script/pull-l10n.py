@@ -58,6 +58,10 @@ def main():
     source_string_path = os.path.join(
         BRAVE_SOURCE_ROOT, args.source_string_path[0])
     filename = os.path.basename(source_string_path).split('.')[0]
+    if filename in ('android_webapps_strings', 'locale_settings_linux',
+                    'locale_settings_mac', 'locale_settings_win'):
+        print(f'Skipping {filename}.grd - no translations needed.')
+        return
 
     use_crowdin = service == 'Crowdin'
     should_use_service_for_file = (should_use_crowdin_for_file(

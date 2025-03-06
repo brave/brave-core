@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
+#include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/sequenced_task_runner.h"
@@ -41,7 +42,7 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "net/base/features.h"
 #include "net/dns/mock_host_resolver.h"
-#include "net/test/embedded_test_server/default_handlers.h"
+#include "net/http/http_status_code.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "net/test/embedded_test_server/request_handler_util.h"
 #include "services/network/public/cpp/network_switches.h"
@@ -103,6 +104,39 @@ std::unique_ptr<HttpResponse> HandleFileRequestWithCustomHeaders(
       }
     }
   }
+  return http_response;
+}
+
+// This mostly mimics the behavior of /cross-site-with-cookie handler, but with
+// additional cookie attributes set.
+std::unique_ptr<HttpResponse> HandleCrossSiteRedirectWithSiteCookie(
+    EmbeddedTestServer* server,
+    const HttpRequest& request) {
+  const std::string prefix = "/cross-site-with-site-cookie";
+  if (!net::test_server::ShouldHandle(request, prefix)) {
+    return nullptr;
+  }
+
+  std::string dest_all = base::UnescapeBinaryURLComponent(
+      request.relative_url.substr(prefix.size() + 1));
+
+  std::string dest;
+  size_t delimiter = dest_all.find("/");
+  if (delimiter != std::string::npos) {
+    dest = base::StringPrintf(
+        "//%s:%hu/%s", dest_all.substr(0, delimiter).c_str(), server->port(),
+        dest_all.substr(delimiter + 1).c_str());
+  }
+
+  auto http_response = std::make_unique<BasicHttpResponse>();
+  http_response->set_code(net::HTTP_MOVED_PERMANENTLY);
+  http_response->AddCustomHeader("Location", dest);
+  http_response->AddCustomHeader(
+      "Set-Cookie",
+      "server-redirect=true;path=/;SameSite=None;Secure;Max-Age=600");
+  http_response->set_content_type("text/html");
+  http_response->set_content(
+      base::StringPrintf("<!doctype html><p>Redirecting to %s", dest.c_str()));
   return http_response;
 }
 
@@ -181,6 +215,8 @@ void EphemeralStorageBrowserTest::SetUpOnMainThread() {
   base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dirs[0]);
   base::PathService::Get(content::DIR_TEST_DATA, &test_data_dirs[1]);
 
+  https_server_.RegisterRequestHandler(base::BindRepeating(
+      &HandleCrossSiteRedirectWithSiteCookie, &https_server_));
   https_server_.RegisterDefaultHandler(base::BindRepeating(
       &HandleFileRequestWithCustomHeaders,
       base::Unretained(&http_request_monitor_), test_data_dirs));

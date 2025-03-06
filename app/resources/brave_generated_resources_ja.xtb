@@ -407,6 +407,7 @@
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="3357319404342882895">厳格</translation>
 <translation id="8823559166155093873">クッキーをブロック</translation>
+<translation id="7093267802941377072">「すべてのクッキーをブロック」オプションは廃止されました。このオプションを強制的に有効にする方法については、 <ph name="BEGIN_LINK"/>ヘルプページ<ph name="END_LINK"/> をご覧ください。</translation>
 <translation id="6196640612572343990">3rdパーティクッキーをブロック</translation>
 <translation id="5657156137487675418">すべてのクッキーを許可する</translation>
 <translation id="6883611015375728278">すべてのクッキーをブロック</translation>
@@ -594,6 +595,7 @@
 <translation id="5522403133543437426">アドレスバーで使用される検索エンジン。</translation>
 <translation id="280472502078788655">プライベートウィンドウのアドレスバーで使用される検索エンジン。</translation>
 <translation id="7232120595886556478">標準ウィンドウ</translation>
+<translation id="6739674350896546324">プライベートウインドウ用の検索エンジン</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/>をプライベートウィンドウのデフォルト検索エンジンに設定しました</translation>
 <translation id="6864914031231797928">拡張機能のGoogleログインを許可する</translation>
 <translation id="7878791177459550035">メディアルーターは、ブラウザのキャスト機能を有効にします。</translation>
@@ -732,7 +734,7 @@
 <translation id="3213787232304349732">サービングフレームワークがリクエストをリッスンする URL。不明点がある場合は、サービングフレームワークのドキュメントを確認してください。例えばOllama の場合は、常に「http://localhost:11434/v1/chat/completions」となります。</translation>
 <translation id="1058790648388035953">サービングフレームワークによっては、APIキーやアクセストークンなどの認証情報を必要とする場合があります。これらはリクエストヘッダーに追加されます。</translation>
 <translation id="4335128003329183586">コンテキストサイズ</translation>
-<translation id="8794525422794607973">モデルが1つのインタラクションで処理できるトークンの最大値です。各トークンはおよそ1単語の3/4です。 コンテキストサイズが大きいほど、モデルは長い会話を処理することが可能になります。コンテキストサイズの最大値はモデルにより異なります。</translation>
+<translation id="3153779001670804829">モデルが1つのインタラクションで処理できるトークンの最大値です。コンテキストサイズが大きいほど、モデルは長い会話を処理することが可能になります。コンテキストサイズの最大値はモデルにより異なります。</translation>
 <translation id="217141195370578385">Braveはこれらのリクエストのプロキシを行いません。選択したプロバイダーのプライバシー規約をお読みください。</translation>
 <translation id="2645532768679870478">非ローカルのエンドポイントには、安全なデータ伝送のためにHTTPSプロトコルを採用してください。</translation>
 <translation id="8177205483022887785">入力されたURLが無効です。有効なURLを入力してください。</translation>

@@ -47,6 +47,7 @@ import {
   useGetNetworkQuery,
   useGetSolanaEstimatedFeeQuery,
   useGetTokenSpotPricesQuery,
+  useGetZCashTransactionTypeQuery,
   useRejectTransactionsMutation,
   walletApi
 } from '../slices/api.slice'
@@ -507,18 +508,37 @@ export const usePendingTransactions = () => {
     }
   }, [approveTransaction, dispatch, transactionInfo])
 
+  const {
+    data: getZCashTransactionTypeResult = { txType: null, error: null }
+  } = useGetZCashTransactionTypeQuery(
+    transactionsNetwork?.coin === BraveWallet.CoinType.ZEC &&
+      txToken &&
+      transactionDetails?.recipient
+      ? {
+          testnet: transactionsNetwork.chainId === BraveWallet.Z_CASH_TESTNET,
+          use_shielded_pool: txToken.isShielded,
+          address: transactionDetails.recipient
+        }
+      : skipToken
+  )
+
   // memos
   const fromOrb = useAccountOrb(txAccount)
   const toOrb = useAddressOrb(transactionDetails?.recipient, { scale: 10 })
+  const isShieldingFunds =
+    getZCashTransactionTypeResult.txType ===
+    BraveWallet.ZCashTxType.kTransparentToOrchard
 
   const transactionTitle = React.useMemo(
     (): string =>
-      isSolanaDappTransaction
+      isShieldingFunds
+        ? getLocale('braveWalletShielding')
+        : isSolanaDappTransaction
         ? getLocale('braveWalletApproveTransaction')
         : transactionDetails?.isSwap
         ? getLocale('braveWalletSwap')
         : getLocale('braveWalletSend'),
-    [isSolanaDappTransaction, transactionDetails?.isSwap]
+    [isShieldingFunds, isSolanaDappTransaction, transactionDetails?.isSwap]
   )
 
   const isLoadingGasFee = React.useMemo(() => {
@@ -661,6 +681,7 @@ export const usePendingTransactions = () => {
     insufficientFundsForGasError,
     isZCashTransaction: isZCashTransaction(transactionInfo),
     isBitcoinTransaction: isBitcoinTransaction(transactionInfo),
-    isAccountSyncing
+    isAccountSyncing,
+    isShieldingFunds
   }
 }

@@ -18,14 +18,12 @@
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/l10n/l10n_util.h"
 
 using testing::Truly;
 
@@ -36,11 +34,11 @@ auto MatchError(const std::string& error) {
 }
 
 std::string InternalError() {
-  return l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
+  return WalletInternalErrorMessage();
 }
 
 std::string ParsingError() {
-  return l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
+  return WalletParsingErrorMessage();
 }
 
 }  // namespace

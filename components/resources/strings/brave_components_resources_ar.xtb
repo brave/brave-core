@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">يتعذر الإبلاغ عن هذه الصفحة لأنه لم يتم عرضها عبر HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">هذه الصفحة هي صفحة ويب محلية وليست مؤهلة لإعداد التقارير.</translation>
 <translation id="8740275226259417070">هذه صفحة خطأ. ولا يمكن الإبلاغ عنها باعتبارها موقعًا مُعطلًا.</translation>
+<translation id="6367576083705149078">إذا قدمت معلومات الاتصال، فسيتم تخزينها للتقارير المستقبلية.</translation>
 <translation id="6806248680442980382">نشكرك على تقديم المساعدة في أن يصبح Brave أفضل للجميع. لن يحتوي هذا التقرير إلا على المعلومات اللازمة لنا لإصلاح هذا الموقع.</translation>
 <translation id="6476216365964140603">التفاصيل الإضافية (اختياري):</translation>
 <translation id="6145852496180774737">تواصل معي على: (اختياري)</translation>
@@ -712,8 +713,8 @@
 <translation id="4622826307953794521">ساهم ببيانات مجهولة للبحث والتصفح لتحسين بحث Brave Search مع مشروع اكتشاف الويب مفتوح المصدر بالكامل.</translation>
 <translation id="4174337572777167894">مشروع اكتشاف الويب</translation>
 <translation id="9034669711835382440">المجتمع</translation>
-<translation id="814503310257431685">عرض الكل</translation>
 <translation id="845020633253356720">عرض المتجر</translation>
+<translation id="7777123407058400802">رمز الاهتمام الأساسي – BAT</translation>
 <translation id="7090992647511817643">الحساب</translation>
 <translation id="4822132585477111396">معرّف السلسلة</translation>
 <translation id="3269475789479462358">النطاق</translation>
@@ -1740,6 +1741,20 @@
 <translation id="3819528427777765709">محمي</translation>
 <translation id="2142946302539262412">موحد</translation>
 <translation id="4438043733494739848">شفاف</translation>
+<translation id="1950406774300125954">غير متزامن</translation>
+<translation id="68413355604013935">غير متزامن (<ph name="BLOCKS"/> وحدات متبقية)</translation>
+<translation id="1597233669965903034">قم بمزامنة حسابك للوصول إلى أحدث المعاملات والرصيد.</translation>
+<translation id="7499262814309712782">مزامنة الحساب</translation>
+<translation id="2804568727504456403">مزامنة <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">في طور التهيئة.</translation>
+<translation id="4404141491825711928">جارٍ معالجة الوحدة:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> متبقية</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> من<ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">النطاقات:</translation>
+<translation id="1178581264944972037">الإيقاف مؤقتًا</translation>
+<translation id="7714298753782862705">اكتملت المزامنة. يمكنك الآن إغلاق هذه النافذة.</translation>
+<translation id="7716113567047550378">يُرجى عدم إغلاق هذه النافذة حتى تنتهي المزامنة.</translation>
+<translation id="5123590959308755060">مواصلة استخدام المحفظة في علامة تبويب جديدة</translation>
 <translation id="7144878232160441200">إعادة المحاولة</translation>
 <translation id="9094621390791852268">فشلت معاينة المعاملة.</translation>
 <translation id="4982713341035600933">تغير الرصيد التقديري</translation>
@@ -2064,7 +2079,7 @@
 <translation id="8637805148029768813">تتاح ميزة الملخص في الوقت الراهن لمقالات مختارة وصفحات ويب طويلة أخرى فقط.</translation>
 <translation id="1223498995510244364">تلخيص</translation>
 <translation id="7491773233732232424">نبذة عن Leo</translation>
-<translation id="5208096220706490232">Brave Leo هو مساعد ذكي خاص يعمل بالذكاء الاصطناعي ويعمل على تحسين استخدامك للإنترنت. تستطيع استخدام Leo مجانًا مع إمكانيات وصول محدودة. يقدم Brave Leo Premium المزيد من النماذج وحدود أعلى ويمنح المشتركين إمكانية الوصول المبكر إلى الميزات الجديدة. النموذج الافتراضي لجميع المستخدمين حاليًا هو Mixtral 8x7B. راجع <ph name="LINK_BEFORE"/>Brave wiki <ph name="LINK_AFTER"/>لمزيد من التفاصيل.</translation>
+<translation id="4885527781814382758">Brave Leo هو مساعد ذكي خاص يعمل بالذكاء الاصطناعي ويعمل على تحسين استخدامك للإنترنت. تستطيع استخدام Leo مجانًا مع إمكانيات وصول محدودة. يقدم Brave Leo Premium المزيد من النماذج وحدود أعلى ويمنح المشتركين إمكانية الوصول المبكر إلى الميزات الجديدة. يتغير النموذج الافتراضي من حين لآخر. راجع <ph name="LINK_BEFORE"/> مركز مساعدة Brave<ph name="LINK_AFTER"/> لمزيد من التفاصيل.</translation>
 <translation id="7189603330209995455">افتراضيًا، عندما تطرح على Leo سؤالاً، فإنه قد يرسل ويستخدم محتوى صفحة الويب التي تشاهدها أو أي نص تبرزه في الصفحة إلى Brave Leo لتقديم إجابة. دقة الردود غير مضمونة، وقد تتضمن معلومات غير دقيقة أو مضللة أو خاطئة. يستخدم Leo بيانات من Brave Search لتحسين جودة الاستجابة. لا ترسل معلومات حساسة أو خاصة، وتوخي الحذر مع أي إجابات تتعلق بالصحة أو الماليات أو السلامة الشخصية أو ما شابه ذلك. يمكنك ضبط خيارات Leo في الإعدادات في أي وقت. انتقل إلى الإعدادات &gt; Leo.</translation>
 <translation id="3038772045018370764">لا يجمع Leo المعرفات مثل عنوان IP الخاص بك الذي يمكن ربطه بك. لا تستخدم أي بيانات لتدريب نماذج الذكاء الاصطناعي ولا تحتفظ نماذج الذكاء الاصطناعي بأي بيانات شخصية (باستثناء Anthropic الذي يحتفظ بالبيانات لمدة 30 يومًا قبل حذفها). راجع <ph name="LINK_BEFORE"/>سياسة الخصوصية<ph name="LINK_AFTER"/> لمزيد من المعلومات.</translation>
 <translation id="7839853125981164613">أدخل الأمر هنا</translation>
@@ -2075,12 +2090,15 @@
 <translation id="2712650703044366764">هذا النموذج يحتوي على نقطة نهاية غير صالحة. يرجى التحقق من الإعداد الخاص بك والمحاولة مرة أخرى.</translation>
 <translation id="1167803637855350748">حدثت مشكلة في الشبكة أثناء الاتصال بـ Leo، تحقق من الاتصال بالإنترنت وحاول مرة أخرى.</translation>
 <translation id="1996126325390835277">لقد وصلت إلى الحد الأقصى للسعر المميز. يُرجى المحاولة مرة أخرى في غضون ساعات قليلة.</translation>
+<translation id="3683964919745779766">لقد بلغت حد المعدل الأقصى لهذا النموذج أو نفذت أرصدتك. يرجى المحاولة مرة أخرى لاحقاً.</translation>
+<translation id="7692501701960747469">مفتاح API الذي تم إعداده لهذا النموذج غير صالح. يُرجى التحقق من إعداداتك والمحاولة مرة أخرى.</translation>
+<translation id="7905602379229309187">نقطة النهاية محملة فوق طاقتها حاليًا. يرجى المحاولة مرة أخرى لاحقًا.</translation>
 <translation id="8151638057146502721">إعداد</translation>
 <translation id="4177458398826096846">مرحبا ، أنا Leo. أنا مساعد الذكاء الاصطناعي مستضاف بالكامل بواسطة Brave. أنا مدعوم من Llama 3 8B، وهو نموذج تم إنشاؤه بواسطة Meta ليكون فعالًا وقابلًا للتطبيق على العديد من حالات الاستخدام. <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">مرحبًا، أنا Leo. مساعد ذكاء اصطناعي مستضاف بالكامل بواسطة Brave. أنا مدعوم بـ Mixtral 8x7B، وهو نموذج تم إنشاؤه بواسطة Mistral AI للتعامل مع المهام المتقدمة.<ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">مرحبًا، أنا Leo. أنا موكل بواسطة Brave، ومدعوم من Claude Instant، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص.<ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Brave، كما أنني مدعوم بواسطة Claude 3 Haiku، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.</translation>
-<translation id="1107977270364670952">مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Brave، كما أنني مدعوم بواسطة Claude 3 Sonnet، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.</translation>
+<translation id="2001874998841390450">مرحبًا، أنا Leo. أنا موكل بواسطة Brave، ومدعوم من Claude Haiku، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص.<ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">مرحبًا، أنا Leo. أنا موكل بواسطة Brave، ومدعوم من Claude Sonnet، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص.<ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> بواسطة <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">الدردشة</translation>
@@ -2099,6 +2117,9 @@
 <translation id="4165928407303989823">البقاء على الموضوع</translation>
 <translation id="2389665228467129817">الدردشة لفترة أطول</translation>
 <translation id="8556044455877152001">دولار أمريكي<ph name="PRICE_VALUE"/>/الشهر</translation>
+<translation id="9031958221569934724"><ph name="PRICE_VALUE"/> دولار أمريكي /السنة</translation>
+<translation id="1028627582482425924">سنة واحدة</translation>
+<translation id="36366199652730057">أفضل قيمة</translation>
 <translation id="5151923271944811339">التبديل إلى النموذج المجاني</translation>
 <translation id="5474757891469990756">أطلق قوى Leo الكاملة مع Premium:</translation>
 <translation id="3453542753968940696">أولوية الوصول إلى النماذج القوية ذات المهارات المختلفة.</translation>
@@ -2118,6 +2139,8 @@
 <translation id="9018766373792005944">ما هي فئة تعليقك؟</translation>
 <translation id="7355096922131918313">أضف تعليقًا هنا</translation>
 <translation id="3027575440738035995">يوفر Leo Premium إمكانية الوصول إلى مجموعات موسعة من نماذج اللغات للحصول على إجابات أكثر دقة. <ph name="LINK_BEFORE"/>لمزيد من المعلومات<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">حذف</translation>
+<translation id="6574153208133461043">هل أنت متأكد من أنك تريد حذف هذه المحادثة؟ لا يمكن التراجع عن هذا الإجراء.</translation>
 <translation id="7488762544858401571">مُحرّر</translation>
 <translation id="1406205536570262057">تعديل الإجابة</translation>
 <translation id="2399439821649319175">غير مفيد</translation>
@@ -2131,6 +2154,7 @@
 <translation id="8171760814579050200">إعادة تسمية المحادثة</translation>
 <translation id="7754678742055438573">حذف المحادثة</translation>
 <translation id="7494736170250048402">إرسال رسالة إلى Leo</translation>
+<translation id="8650874793377330048">توقف عن الإجابة</translation>
 <translation id="8712637175834984815">تم</translation>
 <translation id="1093419424466417703">تعد الصفحة طويلة للغاية بالنسبة لـ Leo، لذا فقد يفقد بعض السياق من المحادثة، إذ تمكن Leo من قراءة نسبة <ph name="PERCENTAGE"/> فقط من محتويات الصفحة.</translation>
 <translation id="2186990448773134544">لقد تم تحسين محتوى الصفحة من خلال استخراج المعلومات الأكثر صلة من الصفحة لأنها كانت طويلة للغاية بالنسبة إلى Leo.</translation>

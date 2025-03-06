@@ -1,4 +1,42 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="mn">
+<translation id="3333887201479867589">Brave-н Урамшуулал</translation>
+<translation id="7561196759112975576">Байнга</translation>
+<translation id="7961015016161918242">Хэзээ ч</translation>
+<translation id="8507663778530179003">Бүх Хадгалагдсан Хуудасны Товчийг Харуулах</translation>
+<translation id="9018648632047670921">Бүх хадгалагдсан хуудасны товчийг харуулах</translation>
+<translation id="1209739344687072997">Эвдрэлтэй сайтыг мэдээлэх</translation>
+<translation id="6406506848690869874">Синк хийх</translation>
+<translation id="1544192797660353713">Хэтэвч</translation>
+<translation id="1990886731975529483">Google Widevine-ыг суулгаж, уншуулах</translation>
+<translation id="5039804452771397117">Зөвшөөрөх</translation>
+<translation id="8915916167043355778">Бүгдийг хаах</translation>
+<translation id="7658239707568436148">Цуцлах</translation>
+<translation id="4870911314065352661">Бүх табыг хаах уу?</translation>
+<translation id="9194637241566114638">Хэрэглээний мэдээллээ нэрээ нууцлан илгээж <ph name="SEARCH_NAME"/> сайжруулахад туслаарай. <ph name="MORE_INFO"/></translation>
+<translation id="7400418766976504921">URL холбоос</translation>
+<translation id="5916664084637901428">Харуулах</translation>
+<translation id="5860033963881614850">Нуух</translation>
+<translation id="8712637175834984815">Ойлгосон</translation>
+<translation id="8428213095426709021">Тохиргоо</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4759238208242260848">Татаж авсан зүйлс</translation>
+<translation id="9065203028668620118">Засварлах</translation>
+<translation id="1426410128494586442">Тийм</translation>
+<translation id="4250680216510889253">Үгүй</translation>
+<translation id="4472575034687746823">Эхлүүлэх</translation>
+<translation id="984275831282074731">Төлбөр төлөх аргууд</translation>
+<translation id="8076492880354921740">Табууд</translation>
+<translation id="4109670531935487117">Хаяг оруулах хэсэгт автоматаар утга санал болгох</translation>
+<translation id="8820817407110198400">Хадгалсан хуудсууд</translation>
+<translation id="7781069478569868053">Шинэ таб хуудас</translation>
+<translation id="3719826155360621982">Нүүр хуудас</translation>
+<translation id="2133317862976486547">Тракер &amp; зар сурталчилгааг хаах</translation>
+<translation id="5327248766486351172">Нэр</translation>
+<translation id="6165508094623778733">Дэлгэрэнгүйг харах</translation>
+<translation id="933652931229970927">Алдааны тайланг автоматаар илгээх</translation>
+<translation id="3858860766373142691">Нэр</translation>
+<translation id="8488282162676695335">Brave хэтэвч</translation>
+<translation id="614530507403667291">Шинэ харилцан ярианы үндсэн загвар</translation>
 </translationbundle>

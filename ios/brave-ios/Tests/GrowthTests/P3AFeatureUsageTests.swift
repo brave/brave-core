@@ -10,6 +10,13 @@ import XCTest
 
 class P3AFeatureUsageTests: XCTestCase {
 
+  private let testCalendar: Calendar = {
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = .init(abbreviation: "GMT")!
+    calendar.locale = .init(identifier: "en_US_POSIX")
+    return calendar
+  }()
+
   func testEmptyStart() {
     let feature = P3AFeatureUsage(name: "testEmptyStart", histogram: "")
     feature.reset()
@@ -27,6 +34,7 @@ class P3AFeatureUsageTests: XCTestCase {
 
   func testBasicUsage() {
     var feature = P3AFeatureUsage(name: "testBasicUsage", histogram: "")
+    feature.calendar = testCalendar
     feature.reset()
     let firstUsageDate = Date()
     feature.date = { firstUsageDate }
@@ -37,11 +45,11 @@ class P3AFeatureUsageTests: XCTestCase {
     // Dates are set as start of day
     XCTAssertEqual(
       feature.firstUsageOption.value,
-      Calendar(identifier: .gregorian).startOfDay(for: firstUsageDate)
+      testCalendar.startOfDay(for: firstUsageDate)
     )
     XCTAssertEqual(
       feature.lastUsageOption.value,
-      Calendar(identifier: .gregorian).startOfDay(for: lastUsageDate)
+      testCalendar.startOfDay(for: lastUsageDate)
     )
   }
 
@@ -53,6 +61,7 @@ class P3AFeatureUsageTests: XCTestCase {
 
   func testReturningUserUsedAfterFirstWeek() {
     var feature = P3AFeatureUsage(name: "testReturningUserUsedAfterFirstWeek", histogram: "")
+    feature.calendar = testCalendar
     feature.reset()
     feature.recordUsage()
     feature.date = { Date().addingTimeInterval(8.days) }
@@ -62,6 +71,7 @@ class P3AFeatureUsageTests: XCTestCase {
 
   func testReturningUserUsedDayAfter() {
     var feature = P3AFeatureUsage(name: "testReturningUserUsedDayAfter", histogram: "")
+    feature.calendar = testCalendar
     feature.reset()
     feature.recordUsage()
     feature.date = { Date().addingTimeInterval(1.days) }
@@ -86,6 +96,7 @@ class P3AFeatureUsageTests: XCTestCase {
 
   func testReturningUserUsedDayDuringFirstWeek() {
     var feature = P3AFeatureUsage(name: "testReturningUserUsedDayDuringFirstWeek", histogram: "")
+    feature.calendar = testCalendar
     feature.reset()
     feature.recordUsage()
     feature.date = { Date().addingTimeInterval(3.days) }
@@ -96,6 +107,7 @@ class P3AFeatureUsageTests: XCTestCase {
 
   func testReturningUserDidNotUseDuringWeek() {
     var feature = P3AFeatureUsage(name: "testReturningUserDidNotUseDuringWeek", histogram: "")
+    feature.calendar = testCalendar
     feature.reset()
     feature.recordUsage()
     feature.date = { Date().addingTimeInterval(7.days) }

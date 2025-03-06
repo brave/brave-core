@@ -6,16 +6,18 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
+const crossPlatforms = ['mac', 'win']
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
 
 function getBuildOutputPathList(buildOutputRelativePath) {
-  return buildConfigs.flatMap((config) => [
-    `<rootDir>/../out/${config}/${buildOutputRelativePath}`,
-    ...extraArchitectures.map(
-      (arch) => `<rootDir>/../out/${config}_${arch}/${buildOutputRelativePath}`
-    )
-  ])
+  return buildConfigs.reduce((outDirs, outDir) =>
+    [...outDirs, outDir, ...crossPlatforms.map(platform => `${platform}_${outDir}`)],
+  []).reduce((outDirs, outDir) =>
+    [...outDirs, outDir, ...extraArchitectures.map(arch => `${outDir}_${arch}`)],
+  []).map(outDir =>
+    `<rootDir>/../out/${outDir}/${buildOutputRelativePath}`
+  )
 }
 
 function getReporters() {

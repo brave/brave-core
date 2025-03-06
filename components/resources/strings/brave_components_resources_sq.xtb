@@ -178,14 +178,17 @@
 <translation id="5308380583665731573">Lidh</translation>
 <translation id="3264975266761862670">Gati për të fituar?</translation>
 <translation id="2359808026110333948">Vazhdo</translation>
+<translation id="3863981251715594911">Si funksionon?</translation>
+<translation id="7931127789630755251">Fito emblema për reklamat private që sheh në Brave</translation>
+<translation id="6278643716658443228">Parametrat e Shpërblimeve</translation>
 <translation id="2965798296974325760">Fillo përdor Shpërblimet</translation>
 <translation id="7335371657242627509">Përfshije në Auto-kontribut</translation>
 <translation id="6965382102122355670">OK</translation>
+<translation id="5899814466108868020">Po ndihmon në mbështetjen e Brave dhe të komunitetit BAT</translation>
 <translation id="654447476965480878">Mëso më shumë si të fitosh BAT</translation>
 <translation id="2429828319207652823">Pati një problem me përpunimin e ndihmesës tuaj.</translation>
 <translation id="7047578174221019462">Kontributi yt mujor u përfundua.</translation>
 <translation id="1565888393553870503">Do të lejohen sërish reklamat e Brave. Faleminderit që na ndihmon të mbrojmë Shpërblimet Brave.</translation>
-<translation id="7931127789630755251">Fito emblema për reklamat private që sheh në Brave</translation>
 <translation id="7859066142771796818">Përdor emblemat për të blerë karta dhuratë, shkëmbeji me monedha të tjera, mbështet krijuesit e përmbajtjes dhe më shumë.</translation>
 <translation id="7352651011704765696">Ndodhi një gabim</translation>
 <translation id="6945221475159498467">Përzgjidhni</translation>
@@ -258,10 +261,10 @@
 <translation id="6657585470893396449">Fjalëkalim</translation>
 <translation id="8044899503464538266">I ngadaltë</translation>
 <translation id="7019805045859631636">E shpejtë</translation>
-<translation id="6278643716658443228">Parametrat e Shpërblimeve</translation>
 <translation id="8688672835843460752">Në shitje</translation>
 <translation id="1472675084647422956">Shfaq më shumë</translation>
 <translation id="4522570452068850558">Hollësi</translation>
+<translation id="1178581264944972037">Pauzë</translation>
 <translation id="4744699166186440">Investues</translation>
 <translation id="3155170474926428993">Nisës Tor-i</translation>
 <translation id="939305735877869636">Brave</translation>
@@ -277,9 +280,18 @@
 <translation id="5975083100439434680">Zvogëlo</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">Me hapësirë fikse</translation>
+<translation id="7557539689487606886">Bëhu Premium</translation>
+<translation id="4173478269537830374">Zbulo modele të ndryshme IA</translation>
+<translation id="3245401959451976966">Zhblloko krijimtarinë</translation>
 <translation id="4165928407303989823">Qëndro në temë</translation>
+<translation id="2389665228467129817">Bisedo më gjatë</translation>
+<translation id="1028627582482425924">Një vit</translation>
 <translation id="5474757891469990756">Çliroje fuqinë e plotë të Leo me Premium:</translation>
+<translation id="3453542753968940696">Qasje me përparësi në modele të fuqishme me aftësi të ndryshme.</translation>
+<translation id="5031778211368112461">Qasje në modele më të përshtatshme për detyra krijuese dhe gjenerim përmbajtjeje.</translation>
+<translation id="298783097210745222">Merr përgjigje më të sakta për biseda me më shumë nuanca.</translation>
 <translation id="4314705522985583059">Përfito kufij më të lartë për biseda më të gjata.</translation>
+<translation id="8261506727792406068">Fshije</translation>
 <translation id="8712637175834984815">E mora vesh</translation>
 <translation id="6291843235651817590">Biseda të përgjithshme</translation>
 <translation id="8193130769524604031">Detyra bisedash të përparuara</translation>
@@ -305,6 +317,7 @@
 <translation id="6764845498618413165">Mësoni Më Tepër.</translation>
 <translation id="8814357473522731680">Mundësuar nga</translation>
 <translation id="7805768142964895445">Statusi</translation>
+<translation id="1116694919640316211">Rreth</translation>
 <translation id="755045397420611731">Privatësi shtesë &amp; siguri në internet</translation>
 <translation id="4520128772974831415">IP e fshehtë &amp; ndrysho vendndodhjen</translation>
 <translation id="2044418816479192294">Qindra servera në mbarë botën</translation>
@@ -313,5 +326,6 @@
 <translation id="2740531572673183784">Ok</translation>
 <translation id="6819278685469225453">Mbroni çdo aplikacion në pajisjen tuaj</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4295077644587784828">Privatësi shtesë &amp; siguri në internet.</translation>
 <translation id="8425213833346101688">Ndrysho</translation>
 </translationbundle>

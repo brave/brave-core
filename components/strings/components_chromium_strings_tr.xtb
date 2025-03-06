@@ -27,6 +27,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
            öğesine gidin ve yapılandırmanızın "proxy yok" veya "doğrudan" olarak ayarlandığından emin olun.</translation>
+<translation id="6159073403999048272">Bu sayfalar Brave geliştiricilerinin kullanması için tasarlanmış olup etkin şekilde yönetilmiyor veya test edilmemiş olabilir. Bu özellikleri etkinleştirmek için <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/> adresine giderek hata ayıklama sayfalarını etkinleştirme düğmesini tıklayın ve tekrar bu sayfaya gelin.</translation>
 <translation id="2765022094254723779">Brave ayrıca diğer <ph name="BEGIN_LINK_OSS"/>açık kaynak yazılımlardan<ph name="END_LINK_OSS"/> yararlanılarak geliştirilmiştir.</translation>
 <translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
 <translation id="8828443087767259398">Brave'un eşlemeye devam edebilmesi için Bluetooth'a erişmesi gerekiyor. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>

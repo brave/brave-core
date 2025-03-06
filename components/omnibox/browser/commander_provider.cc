@@ -89,6 +89,12 @@ void CommanderProvider::OnCommanderUpdated() {
   int rank = (has_prefix ? 1000 : 100) + items.size();
   for (uint32_t i = 0; i < items.size(); ++i) {
     const auto& option = items[i];
+
+    // When we're not in prefix mode, only show commands that are a good match.
+    if (!has_prefix && option.score < 0.65) {
+      continue;
+    }
+
     AutocompleteMatch match(this, rank--, false,
                             AutocompleteMatchType::BOOKMARK_TITLE);
     match.RecordAdditionalInfo(kCommanderMatchMarker, true);

@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">לא ניתן לדווח על דף זה משום שהוא הועבר באמצעות HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">דף זה הוא דף אינטרנט מקומי ולא ניתן לדווח עליו.</translation>
 <translation id="8740275226259417070">זוהי שגיאת דף. לא ניתן לדווח עליה כעל אתר שבור.</translation>
+<translation id="6367576083705149078">אם סיפקת פרטי קשר, הם יאוחסנו עבור דוחות עתידיים.</translation>
 <translation id="6806248680442980382">תודה שעזרת להפוך את Brave לטוב יותר עבור כולם. דיווח זה יכלול רק את המידע הדרוש לנו לתיקון אתר זה.</translation>
 <translation id="6476216365964140603">פרטים נוספים (אופציונלי)</translation>
 <translation id="6145852496180774737">צור איתי קשר בכתובת: (לא חובה)</translation>
@@ -718,8 +719,8 @@
 <translation id="4622826307953794521">לתרום נתוני חיפוש וגלישה אנונימיים כדי לשפר את חיפוש Brave עם פרויקט Web Discovery. זה מבוסס-קוד פתוח לחלוטין.</translation>
 <translation id="4174337572777167894">פרויקט גילוי אתרים</translation>
 <translation id="9034669711835382440">קהילה</translation>
-<translation id="814503310257431685">הצגת הכל</translation>
 <translation id="845020633253356720">הצגת חנות</translation>
+<translation id="7777123407058400802">אסימון תשומת לב בסיסי – BAT</translation>
 <translation id="7090992647511817643">חֶשְׁבּוֹן</translation>
 <translation id="4822132585477111396">מזהה שרשרת</translation>
 <translation id="3269475789479462358">תְחוּם</translation>
@@ -1753,6 +1754,20 @@ CoinGecko</translation>
 <translation id="3819528427777765709">מוגן</translation>
 <translation id="2142946302539262412">מאוחד</translation>
 <translation id="4438043733494739848">שקוף</translation>
+<translation id="1950406774300125954">לא מסונכרן</translation>
+<translation id="68413355604013935">לא מסונכרן (בעיכוב של <ph name="BLOCKS"/> בלוקים)</translation>
+<translation id="1597233669965903034">יש לסנכרן את החשבון שלך כדי לגשת לעסקאות האחרונות וליתרה העדכנית.</translation>
+<translation id="7499262814309712782">סנכרון חשבון</translation>
+<translation id="2804568727504456403">סנכרון <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">בהקמה...</translation>
+<translation id="4404141491825711928">עיבוד בלוקים:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> נותרו</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> של <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">טווחים:</translation>
+<translation id="1178581264944972037">השהה</translation>
+<translation id="7714298753782862705">הסנכרון הושלם. אפשר לסגור את החלון הזה.</translation>
+<translation id="7716113567047550378">נא לא לסגור את החלון הזה עד שהסנכרון יסתיים.</translation>
+<translation id="5123590959308755060">המשך השימוש בארנק בכרטיסיה חדשה</translation>
 <translation id="7144878232160441200">נסה שוב</translation>
 <translation id="9094621390791852268">תצוגה מקדימה של העסקה נכשלה.</translation>
 <translation id="4982713341035600933">שינוי יתרה משוער</translation>
@@ -2079,7 +2094,7 @@ CoinGecko</translation>
 <translation id="8637805148029768813">תכונת הסיכום זמינה כרגע רק עבור מאמרים נבחרים ודפי אינטרנט ארוכים אחרים.</translation>
 <translation id="1223498995510244364">סכם</translation>
 <translation id="7491773233732232424">על ליאו</translation>
-<translation id="5208096220706490232">Brave Leo הוא עוזר חכם אישי המופעל באמצעות בינה מלאכותית המשפר את השימוש שלכם באינטרנט. השימוש ב-Leo ניתן ללא עלות עם גישה מוגבלת. גרסת Brave Leo Premium מציעה דגמים נוספים, אפשרויות נוספות ומאפשרת למנויים גישה מוקדמת לתכונות חדשות.מודל ברירת המחדל עבור כל המשתמשים הוא Mixtral 8x7B נכון לרגע זה. למידע נוסף ניתן לקרוא את <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/>.</translation>
+<translation id="4885527781814382758">Brave Leo הוא עוזר חכם אישי המופעל באמצעות בינה מלאכותית ומשפר את השימוש שלך באינטרנט. השימוש ב-Leo ניתן ללא עלות עם גישה מוגבלת. גרסת Brave Leo Premium מציעה מודלים נוספים, מגבלות רחבות יותר, ומאפשרת למנויים גישה מוקדמת לפיצ׳רים חדשים. מודל ברירת ישתנה מעת לעת. ניתן לבקר ב<ph name="LINK_BEFORE"/>מרכז העזרה של Brave<ph name="LINK_AFTER"/> לפרטים נוספים.</translation>
 <translation id="7189603330209995455">כברירת מחדל, כששואלים את Leo שאלה, הוא עשוי לשלוח את התוכן של דף הרשת שאתם צופים בו או של כל טקסט שאתם מדגישים בדף ל-Brave Leo ולעשות בהם שימוש. דיוק התגובה אינו מובטח ועשוי לכלול מידע לא מדויקף מטעה או לא נכון. Leo עושה שימוש בנתונים מחיפוש Brave כדי לשפר את איכות התגובה. אין לשלוח מידע רגיש או אישי ויש להתייחס לכל התשובות הקשורות לתחום הבריאות, הכלכלה, הבטיחות האישית או לתחומים דומים במשנה זהירות. באפשרותכם להתאים את אפשרויות Leo בהגדרות בכל עת. עברו אל 'הגדרות' ולאחר מכן אל 'Leo'.</translation>
 <translation id="3038772045018370764">Leo אינו אוסף מידע מזהה כגון כתובת IP שניתן לקשר אותה אליכם. לא נעשה שימוש בנתונים למקד את מודלי הבינה המלאכותית ונתונים אישיים אינם נשמרים על ידי מודלי הבינה המלאכותית (למעט Anthropic המחזיק בנתונים למשך 30 ימים לפני מחיקתם). יש לעיין <ph name="LINK_BEFORE"/>במדיניות הפרטיות<ph name="LINK_AFTER"/> למידע נוסף.</translation>
 <translation id="7839853125981164613">הזינו כאן הנחייה</translation>
@@ -2090,12 +2105,15 @@ CoinGecko</translation>
 <translation id="2712650703044366764">בדגם הזה יש נקודת קצה לא חוקית. יש לבדוק את הקונפיגורציה ולנסות שוב.</translation>
 <translation id="1167803637855350748">הייתה בעיית רשת בחיבור ל-Leo, נא לבדוק את החיבור ולנסות שוב.</translation>
 <translation id="1996126325390835277">הגעתם לגבול דירוג הפרימיום. אנא נסו שוב בעוד מספר שעות</translation>
+<translation id="3683964919745779766">הגעת למגבלת התעריף עבור מודל זה או שאזלו לך הקרדיטים. נא לנסות שוב מאוחר יותר.</translation>
+<translation id="7692501701960747469">מפתח ה-API שהוגדר עבור מודל זה אינו חוקי. נא לבדוק את הקונפיגורציה שלך ולנסות שוב.</translation>
+<translation id="7905602379229309187">נקודת הקצה נמצאת בעומס יתר כרגע. נא לנסות שוב מאוחר יותר.</translation>
 <translation id="8151638057146502721">קביעת קונפיגורציה</translation>
 <translation id="4177458398826096846">שלום, שמי Leo. אני עוזר המבוסס בינה מלאכותית של Brave. אני מופעל על ידי Llama 3.1 8B, דגם שנוצר על ידי Meta לשיפור ביצועים ויכול להיות שימושי במגוון תחומים. <ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">שלום, אני ליאו. אני אסיסטנט באחסון מלא של Brave. אני מופעל על ידי Mixtral 8x7B, דגם שנוצר על ידי Mistral AI לטיפול במשימות מתקדמות. <ph name="LINK_BEFORE"/>למד עוד<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">שלום, אני ליאו. אני משתמש ב־Brave כפרוקסי ומופעל על ידי Claude Instant, דגם שנוצר על ידי Anthropic להפעלת משימות עיבוד שיחות וטקסטים. <ph name="LINK_BEFORE"/>למד עוד<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">שלום, שמי ליאו. אני מוצג על ידי Brave ומונע על ידי Claude 3 Haiku, מודל שנוצר על ידי Anthropic להפעלת משימות שיחה ועיבוד טקסט.</translation>
-<translation id="1107977270364670952">שלום, שמי Leo. אני מוצג על ידי Brave ומופעל על ידי Claude 3.5 Sonnet, דגם שנוצר על ידי Anthropic להפעלת משימות שיחה ועיבוד טקסט.</translation>
+<translation id="2001874998841390450">היי, אני Leo. אני מתווך באמצעות Brave ומופעל באמצעות Claude Haiku, מודל שנוצר על ידי Anthropic כדי לאפשר משימות עיבוד של שיחה וטקסט. <ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">היי, אני Leo. אני מתווך באמצעות Brave ומופעל באמצעות Claude Sonnet, מודל שנוצר על ידי Anthropic כדי לאפשר משימות עיבוד של שיחה וטקסט. <ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>על ידי<ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">פרמיום</translation>
 <translation id="6187065185557150870">לְשׂוֹחֵחַ</translation>
@@ -2114,6 +2132,9 @@ CoinGecko</translation>
 <translation id="4165928407303989823">הישארו בנושאים שמעניינים אתכם</translation>
 <translation id="2389665228467129817">נהלו צ'טים ארוכים יותר</translation>
 <translation id="8556044455877152001">דולר ארה"ב <ph name="PRICE_VALUE"/> /חודש</translation>
+<translation id="9031958221569934724">דולר אמריקאי $ <ph name="PRICE_VALUE"/> /לשנה</translation>
+<translation id="1028627582482425924">שנה אחת</translation>
+<translation id="36366199652730057">הערך הטוב ביותר</translation>
 <translation id="5151923271944811339">עבור לדגם החינמי</translation>
 <translation id="5474757891469990756">בואו לגלות את העוצמה המרבית של Leo במנוי ה-Premium:</translation>
 <translation id="3453542753968940696">גישה מועדפת למודלים העוצמתיים בעלי המיומנויות השונות.</translation>
@@ -2133,6 +2154,8 @@ CoinGecko</translation>
 <translation id="9018766373792005944">על מה המשוב שלך?</translation>
 <translation id="7355096922131918313">תן משוב כאן</translation>
 <translation id="3027575440738035995">Leo Premium מספקת גישה לסט מורחב של דגמי שפה לגוון תשובות גדול עוד יותר.<ph name="LINK_BEFORE"/>למד עוד<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">מחיקה</translation>
+<translation id="6574153208133461043">בטוח שברצונך למחוק את השיחה הזו? הפעולה הזו לא ניתנת לביטול.</translation>
 <translation id="7488762544858401571">נערך</translation>
 <translation id="1406205536570262057">ערוך תשובה</translation>
 <translation id="2399439821649319175">לא עוזר</translation>
@@ -2146,6 +2169,7 @@ CoinGecko</translation>
 <translation id="8171760814579050200">שינוי שם שיחה</translation>
 <translation id="7754678742055438573">מחיקת שיחה</translation>
 <translation id="7494736170250048402">שלח הודעה לליאו</translation>
+<translation id="8650874793377330048">הפסקת מענה</translation>
 <translation id="8712637175834984815">הבנתי</translation>
 <translation id="1093419424466417703">הדף ארוך מדי עבור ליאו. ייתכן שחלק מההקשר חסר מהשיחה. ליאו הצליח לקרוא <ph name="PERCENTAGE"/> מתוכן הדף.</translation>
 <translation id="2186990448773134544">תוכן הדף משופר באמצעות חילוץ המידע הרלוונטי ביותר מהדף משום שהוא ארוך מדי עבור Leo.</translation>

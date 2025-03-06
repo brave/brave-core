@@ -197,6 +197,8 @@
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
 <translation id="7142548388914389999">允许保留隐私的产品分析 (P3A)</translation>
 <translation id="5254037869598726291">匿名的 P3A 信息有助于 Brave 估计总体使用量，并确保我们’在改进受欢迎的功能。</translation>
+<translation id="4174337572777167894">Web 发现项目</translation>
+<translation id="8659271182272561965">提供一些匿名搜索和浏览数据来完善 Brave 搜索。</translation>
 <translation id="933652931229970927">自动发送诊断报告</translation>
 <translation id="5987838417172370108">Brave 浏览器崩溃或无响应时自动发送诊断报告，帮助提高 Brave\u2019s 产品稳定性。</translation>
 <translation id="7977176350719484850">预计\n节省的数据</translation>
@@ -233,7 +235,6 @@
 <translation id="6587448235155023666">您所做的更改将在您下次重新启动 Brave 时生效</translation>
 <translation id="8701563696941209024">立即重新启动</translation>
 <translation id="834487290629916192">后来</translation>
-<translation id="7207456302801184289">欢迎使用 Brave</translation>
 <translation id="4117451092682672487">轻松保护个人隐私。</translation>
 <translation id="7909375417585209817">只要将 Brave 作为默认设置，您轻击的每个链接都会在 Brave 的隐私保护下打开。</translation>
 <translation id="7370959926683925817">每一天都屏蔽广告、保存数据。</translation>
@@ -241,6 +242,9 @@
 <translation id="5148943178722443958">帮助让 Brave 变得更好。</translation>
 <translation id="6718362830686703942">如果遇到系统崩溃或冻结，请发送诊断报告。</translation>
 <translation id="8616157231067364693">分享与 Brave 用户正在使用哪些功能有关的私密、匿名的产品见解。</translation>
+<translation id="2888496576732880897">帮助 Brave 搜索不断进步</translation>
+<translation id="7044431516245362795">选择加入网络发现项目，帮助我们增加索引并优化搜索结果。<ph name="LEARN_MORE_START"/>了解更多。<ph name="LEARN_MORE_END"/></translation>
+<translation id="7818938154803162778">没问题，我愿意协助</translation>
 <translation id="2877653791257935258">输入网站名称或 URL</translation>
 <translation id="5329830149661250028">看到 Brave 的不同之处：没有广告、没有跟踪器，而且页面加载速度更快。</translation>
 <translation id="3941792073703079607">查看 Brave 会有什么不同：可屏蔽广告、保存数据，且流速更快。</translation>
@@ -457,6 +461,7 @@
 <translation id="3624048886326677117">拦截跟踪器和广告 （积极地）</translation>
 <translation id="7151914815476509258">拦截跟踪器和广告 （标准）</translation>
 <translation id="7384778069178817075">允许所有跟踪器和广告</translation>
+<translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>“阻止所有 Cookie”选项已被弃用。如需了解如何强制启用该选项，请访问<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>我们的帮助页面<ph name="END_LINK_1"/></translation>
 <translation id="3763681089644577874">阻止 Cookie</translation>
 <translation id="614747795780742163">阻止网站存储有关您以前访问的信息</translation>
 <translation id="6883611015375728278">拦截所有 cookies</translation>
@@ -499,6 +504,7 @@
 <translation id="8459191579769999214">查看截图</translation>
 <translation id="6476216365964140603">其他详细信息（可选）</translation>
 <translation id="6145852496180774737">联系方式：（可选）</translation>
+<translation id="6367576083705149078">如果您提供联系信息，这些信息将会被储存起来，在日后的报告中使用.</translation>
 <translation id="7616645803364270729">电子邮箱、Twitter 等</translation>
 <translation id="5299848999918506028">谢谢！</translation>
 <translation id="76550953340008122">感谢您让 Brave 的开发人员知道此站点出了问题。我们会尽力解决问题！</translation>
@@ -856,7 +862,6 @@
 <translation id="590733288489975971">广告奖励</translation>
 <translation id="1450735350187803276">本月看过的广告</translation>
 <translation id="1767561995429774671">贡献</translation>
-<translation id="7335371657242627509">包含在自动贡献中</translation>
 <translation id="6727102863431372879">设定</translation>
 <translation id="3074127054582480056">注意</translation>
 <translation id="2280319752798785157">每月捐款</translation>
@@ -1245,4 +1250,5 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="1336494649091412226">确定要退出 Brave 吗？</translation>
 <translation id="2361906291514218784">Leo 人工智能</translation>
 <translation id="7942415993090181327">聊天记录</translation>
+<translation id="6859935199732075666">显示安全浏览时出错</translation>
 </translationbundle>

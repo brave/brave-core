@@ -26,13 +26,11 @@
 #include "brave/components/brave_rewards/core/engine/database/database_initialize.h"
 #include "brave/components/brave_rewards/core/engine/database/database_media_publisher_info.h"
 #include "brave/components/brave_rewards/core/engine/database/database_publisher_info.h"
-#include "brave/components/brave_rewards/core/engine/database/database_publisher_prefix_list.h"
 #include "brave/components/brave_rewards/core/engine/database/database_recurring_tip.h"
 #include "brave/components/brave_rewards/core/engine/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/core/engine/database/database_sku_order.h"
 #include "brave/components/brave_rewards/core/engine/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/engine/database/database_unblinded_token.h"
-#include "brave/components/brave_rewards/core/engine/publisher/prefix_list_reader.h"
 #include "brave/components/brave_rewards/core/engine/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
@@ -232,12 +230,6 @@ class Database {
   /**
    * SERVER PUBLISHER INFO
    */
-  void SearchPublisherPrefixList(const std::string& publisher_key,
-                                 SearchPublisherPrefixListCallback callback);
-
-  void ResetPublisherPrefixList(publisher::PrefixListReader reader,
-                                ResultCallback callback);
-
   void InsertServerPublisherInfo(const mojom::ServerPublisherInfo& server_info,
                                  ResultCallback callback);
 
@@ -317,7 +309,6 @@ class Database {
   DatabaseExternalTransactions external_transactions_;
   DatabaseMediaPublisherInfo media_publisher_info_;
   DatabasePublisherInfo publisher_info_;
-  DatabasePublisherPrefixList publisher_prefix_list_;
   DatabaseRecurringTip recurring_tip_;
   DatabaseServerPublisherInfo server_publisher_info_;
   DatabaseSKUOrder sku_order_;

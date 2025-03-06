@@ -29,6 +29,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           և համոզվեք, որ ընտրված է «առանց պրոքսի-սերվերի» կամ «անմիջական» կազմաձևումը:</translation>
+<translation id="6159073403999048272">Այս էջերը, որոնք նախատեսված են Brave-ի մշակողների համար, չեն կարող պարբերաբար փորձարկվել կամ մշակվել։ Միացնելու համար անցեք <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/> էջ, սեղմեք կոճակը՝ վրիպազերծման էջերը միացնելու համար, այնուհետև վերադարձեք այստեղ։</translation>
 <translation id="2765022094254723779">Brave-ը նաև աշխատում է այլ <ph name="BEGIN_LINK_OSS"/>բաց կոդով ծրագրակազմի<ph name="END_LINK_OSS"/> շնորհիվ։</translation>
 <translation id="9156965752763025780">Փոփոխություններն ուժի մեջ կմտնեն Brave-ը հաջորդ անգամ գործարկելիս:</translation>
 <translation id="8828443087767259398">Զուգակցումը շարունակելու համար Brave-ին հասանելի դարձրեք Bluetooth-ը։ <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>

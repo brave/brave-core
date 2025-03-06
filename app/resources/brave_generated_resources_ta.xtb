@@ -86,6 +86,7 @@
 <translation id="4378551569595875038">இணைக்கிறது...</translation>
 <translation id="3368922792935385530">இணைக்கப்பட்டது</translation>
 <translation id="1536754031901697553">துண்டிக்கிறது...</translation>
+<translation id="8030169304546394654">துண்டிக்கப்பட்டது</translation>
 <translation id="8041089156583427627">கருத்துத் தெரிவிக்கவும்</translation>
 <translation id="945522503751344254">பின்னூட்டம் அனுப்புக</translation>
 <translation id="4989337484121655457">முழு வன்தட்டு அணுகல் தேவை</translation>
@@ -159,8 +160,12 @@
 <translation id="130615081792797568">எளிய பார்வை</translation>
 <translation id="2360360976480535628">மேம்பட்ட பார்வை</translation>
 <translation id="7791543448312431591">சேர்</translation>
+<translation id="9204006549413740506">கடைசியாக புதுப்பித்தது</translation>
 <translation id="6745592621698551453">இப்போது புதுப்பி</translation>
+<translation id="5334844597069022743">மூலத்தைப் பார்</translation>
+<translation id="4720556299488643018">குழுவிலகு</translation>
 <translation id="802154636333426148">பதிவிறக்க முடியவில்லை</translation>
+<translation id="6655190889273724601">டெவெலப்பர் பயன்முறை</translation>
 <translation id="5327248766486351172">பெயர்</translation>
 <translation id="9185018653595759199">சமூக ஊடகம் தடுத்தல்</translation>
 <translation id="863171915776379000">முகநூல் உள்நுழைவுகள் மற்றும் உட்பதித்த இடுகைகளை அனுமதி</translation>
@@ -233,5 +238,4 @@
 <translation id="3047726704186619366">படவுரு உரலிகள்</translation>
 <translation id="2156993118928861787">செல்லாத முகவரி</translation>
 <translation id="614530507403667291">புதிய உரையாடல்களுக்கான இயல்புநிலை மாதிரி</translation>
-<translation id="8794525422794607973">ஒற்றை இடைவினையில் மாதிரியால் செயலாக்கக்கூடிய டோக்கன்களின் அதிகபட்ச எண்ணிக்கை. ஒவ்வொரு டோக்கனும் ஒரு வார்த்தையின் சுமார் 3/4 பங்கு ஆகும். பெரிய சூழல் அளவானது நீண்ட உரையாடல்களை மாதிரி கையாள அனுமதிக்கிறது. வெவ்வேறு மாதிரிகள் வெவ்வேறு அதிகபட்ச சூழல் அளவுகளை ஆதரிக்கின்றன.</translation>
 </translationbundle>

@@ -77,11 +77,11 @@ class BraveLocationBarViewFocusRingHighlightPathGenerator
 };
 
 std::optional<BraveColorIds> GetFocusRingColor(Profile* profile) {
-  if (profile->IsRegularProfile() || profile->IsGuestSession()) {
+  if (profile->IsGuestSession()) {
     // Don't update color.
     return std::nullopt;
   }
-  // Private or Tor window - use color mixer.
+
   return kColorLocationBarFocusRing;
 }
 

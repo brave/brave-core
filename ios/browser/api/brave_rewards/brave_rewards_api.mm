@@ -24,6 +24,7 @@
 #include "base/values.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
+#include "brave/components/brave_rewards/core/engine/hash_prefix_store.h"
 #include "brave/components/brave_rewards/core/engine/rewards_database.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
@@ -41,6 +42,8 @@
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
 #endif
+
+using brave_rewards::internal::HashPrefixStore;
 
 namespace brave_rewards::internal {
 
@@ -104,6 +107,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                   brave_rewards::internal::task_deleter<RewardsClientIOS>>
       _rewardsClient;
   base::SequenceBound<brave_rewards::internal::RewardsDatabase> rewardsDatabase;
+  base::SequenceBound<HashPrefixStore> _creatorPrefixStore;
   scoped_refptr<base::SequencedTaskRunner> databaseQueue;
   scoped_refptr<base::SequencedTaskRunner> _engineTaskRunner;
 }
@@ -171,6 +175,10 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
     rewardsDatabase =
         base::SequenceBound<brave_rewards::internal::RewardsDatabase>(
             databaseQueue, base::FilePath(dbPath));
+
+    _creatorPrefixStore = base::SequenceBound<HashPrefixStore>(
+        databaseQueue,
+        base::FilePath(base::SysNSStringToUTF8([self creatorPrefixStorePath])));
 
     _engineTaskRunner->PostTask(
         FROM_HERE, base::BindOnce(^{
@@ -266,6 +274,11 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   return [self.storagePath stringByAppendingPathComponent:@"Rewards.db"];
 }
 
+- (NSString*)creatorPrefixStorePath {
+  return
+      [self.storagePath stringByAppendingPathComponent:@"RewardsCreators.db"];
+}
+
 - (void)resetRewardsDatabase {
   const auto dbPath = [self rewardsDatabasePath];
   [NSFileManager.defaultManager removeItemAtPath:dbPath error:nil];
@@ -275,6 +288,11 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   rewardsDatabase =
       base::SequenceBound<brave_rewards::internal::RewardsDatabase>(
           databaseQueue, base::FilePath(base::SysNSStringToUTF8(dbPath)));
+
+  const auto prefixPath = [self creatorPrefixStorePath];
+  [NSFileManager.defaultManager removeItemAtPath:prefixPath error:nil];
+  _creatorPrefixStore = base::SequenceBound<HashPrefixStore>(
+      databaseQueue, base::FilePath(base::SysNSStringToUTF8(prefixPath)));
 }
 
 - (NSString*)randomStatePath {
@@ -1022,6 +1040,25 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
             }
           },
           std::move(callback)));
+}
+
+- (void)updateCreatorPrefixStore:
+            (brave_rewards::mojom::HashPrefixDataPtr)prefix_data
+                        callback:
+                            (brave_rewards::mojom::RewardsEngineClient::
+                                 UpdateCreatorPrefixStoreCallback)callback {
+  _creatorPrefixStore.AsyncCall(&HashPrefixStore::UpdatePrefixes)
+      .WithArgs(std::move(prefix_data->prefixes), prefix_data->prefix_size)
+      .Then(std::move(callback));
+}
+
+- (void)creatorPrefixStoreContains:(const std::string&)value
+                          callback:
+                              (brave_rewards::mojom::RewardsEngineClient::
+                                   CreatorPrefixStoreContainsCallback)callback {
+  _creatorPrefixStore.AsyncCall(&HashPrefixStore::ContainsPrefix)
+      .WithArgs(value)
+      .Then(std::move(callback));
 }
 
 - (void)walletDisconnected:(const std::string&)wallet_type {

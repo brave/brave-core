@@ -74,6 +74,7 @@
 <translation id="2414886740292270097">गडद</translation>
 <translation id="8076492880354921740">टॅब</translation>
 <translation id="8168435359814927499">आशय</translation>
+<translation id="4109670531935487117">ॲड्रेस बारमध्ये ऑटोकम्प्लीट शिफारसी दाखवा</translation>
 <translation id="2858138569776157458">टॉप साइट</translation>
 <translation id="8820817407110198400">Bookmarks</translation>
 <translation id="383007806262310953">बुकमार्क बार दर्शवा</translation>
@@ -89,6 +90,7 @@
 <translation id="7791543448312431591">जोडा</translation>
 <translation id="6745592621698551453">आता अपडेट करा</translation>
 <translation id="802154636333426148">डाउनलोड अयशस्वी झाले</translation>
+<translation id="6655190889273724601">विकसक मोड</translation>
 <translation id="5327248766486351172">नाव</translation>
 <translation id="863171915776379000">फेसबुक लॉगिन आणि अंतःस्थापित पोस्टना अनुमती द्या</translation>
 <translation id="958971637207126733">लिंक्डइन एम्बेड केलेल्या पोस्टना परवानगी द्या</translation>
@@ -120,6 +122,6 @@
 <translation id="2653659639078652383">सबमिट करा</translation>
 <translation id="8137559199583651773">विस्तार व्यवस्थापित करा</translation>
 <translation id="5840822070878669614">Brave वेब स्टोअर उघडा</translation>
+<translation id="8488282162676695335">ब्रेव्ह वॉलेट</translation>
 <translation id="614530507403667291">नवीन संभाषणांसाठीचे डीफॉल्ट मॉडेल</translation>
-<translation id="8794525422794607973">मॉडेल एका आंतरक्रियेत प्रक्रिया करू शकणाऱ्या टोकन्सची कमाल संख्या. प्रत्येक टोकन एका शब्दाच्या सुमारे 3/4 असते. अनुषंगाचे माप मोठे असेल तर मॉडेलला दीर्घकाळ चालणारी संभाषणे हाताळता येतात. वेगवेगळी मॉडेल्स वेगवेगळ्या मापाचे अनुषंग हाताळू शकतात.</translation>
 </translationbundle>

@@ -12,7 +12,6 @@ import { ConnectExternalWalletResult } from '../lib/app_state'
 import { AppModelContext } from '../lib/app_model_context'
 import { formatMessage } from '../../shared/lib/locale_context'
 import { useLocaleContext } from '../lib/locale_strings'
-import { useCallbackWrapper } from '../lib/callback_wrapper'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { Modal } from './modal'
 import * as routes from '../lib/app_routes'
@@ -29,7 +28,6 @@ export function AuthorizationModal() {
   const router = React.useContext(RouterContext)
   const model = React.useContext(AppModelContext)
   const { getString } = useLocaleContext()
-  const wrapCallback = useCallbackWrapper()
 
   const [result, setResult] =
     React.useState<ConnectExternalWalletResult | null>(null)
@@ -57,13 +55,13 @@ export function AuthorizationModal() {
     const params = new URLSearchParams(location.search)
     const args = Object.fromEntries(params.entries())
 
-    model.connectExternalWallet(provider, args).then(wrapCallback((result) => {
+    model.connectExternalWallet(provider, args).then((result) => {
       if (result === 'success') {
         onClose()
       } else {
         setResult(result)
       }
-    }))
+    })
   }, [model])
 
   function errorTitle() {

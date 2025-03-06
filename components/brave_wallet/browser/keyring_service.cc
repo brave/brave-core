@@ -384,6 +384,16 @@ struct DerivedAccountInfo {
       derived_account.SetByDottedPath(kZcashAccountBirthdayBlockHash,
                                       zcash_account_birthday->second);
     }
+    if (cardano_next_external_address_index) {
+      derived_account.SetByDottedPath(
+          kCardanoNextExternalIndex,
+          base::NumberToString(*cardano_next_external_address_index));
+    }
+    if (cardano_next_internal_address_index) {
+      derived_account.SetByDottedPath(
+          kCardanoNextInternalIndex,
+          base::NumberToString(*cardano_next_internal_address_index));
+    }
     return base::Value(std::move(derived_account));
   }
 
@@ -442,6 +452,25 @@ struct DerivedAccountInfo {
                                              *zcash_account_birthday_hash};
     }
 
+    if (auto* cardano_external_string =
+            value_dict->FindStringByDottedPath(kCardanoNextExternalIndex)) {
+      uint32_t cardano_external_value = 0;
+      if (!base::StringToUint(*cardano_external_string,
+                              &cardano_external_value)) {
+        return std::nullopt;
+      }
+      account_info.cardano_next_external_address_index = cardano_external_value;
+    }
+    if (auto* cardano_internal_string =
+            value_dict->FindStringByDottedPath(kCardanoNextInternalIndex)) {
+      uint32_t cardano_internal_value = 0;
+      if (!base::StringToUint(*cardano_internal_string,
+                              &cardano_internal_value)) {
+        return std::nullopt;
+      }
+      account_info.cardano_next_internal_address_index = cardano_internal_value;
+    }
+
     return account_info;
   }
 
@@ -451,6 +480,8 @@ struct DerivedAccountInfo {
   std::string account_address;
   std::optional<uint32_t> bitcoin_next_receive_address_index;
   std::optional<uint32_t> bitcoin_next_change_address_index;
+  std::optional<uint32_t> cardano_next_external_address_index;
+  std::optional<uint32_t> cardano_next_internal_address_index;
   std::optional<std::pair<uint64_t, std::string>> zcash_account_birthday;
 };
 
@@ -588,12 +619,64 @@ mojom::BitcoinAccountInfoPtr BitcoinAccountInfoFromPrefInfo(
   return result;
 }
 
+bool UpdateCardanoAccountIndexes(
+    DerivedAccountInfo& account,
+    const std::optional<uint32_t>& next_external_index,
+    const std::optional<uint32_t>& next_internal_index) {
+  bool account_changed = false;
+  if (next_external_index) {
+    account_changed =
+        account_changed ||
+        account.cardano_next_external_address_index != *next_external_index;
+    DCHECK_GE(*next_external_index,
+              account.cardano_next_external_address_index.value_or(0u));
+    account.cardano_next_external_address_index = *next_external_index;
+  }
+  if (next_internal_index) {
+    account_changed =
+        account_changed ||
+        account.cardano_next_internal_address_index != *next_internal_index;
+    DCHECK_GE(*next_internal_index,
+              account.cardano_next_internal_address_index.value_or(0u));
+    account.cardano_next_internal_address_index = *next_internal_index;
+  }
+
+  return account_changed;
+}
+
+template <class T>
+mojom::CardanoAccountInfoPtr CardanoAccountInfoFromPrefInfo(
+    CardanoHDKeyring& cardano_base_keyring,
+    const T& pref_info) {
+  auto result = mojom::CardanoAccountInfo::New();
+  const auto next_external_index =
+      pref_info.cardano_next_external_address_index.value_or(0);
+  const auto next_internal_index =
+      pref_info.cardano_next_internal_address_index.value_or(0);
+
+  result->next_external_address = cardano_base_keyring.GetAddress(
+      pref_info.account_index,
+      mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal,
+                          next_external_index));
+
+  result->next_internal_address = cardano_base_keyring.GetAddress(
+      pref_info.account_index,
+      mojom::CardanoKeyId(mojom::CardanoKeyRole::kInternal,
+                          next_internal_index));
+
+  if (!result->next_external_address || !result->next_internal_address) {
+    return nullptr;
+  }
+
+  return result;
+}
+
 }  // namespace
 
 struct KeyringSeed {
   std::vector<uint8_t> eth_seed;
   std::vector<uint8_t> seed;
-  std::vector<uint8_t> cardano_entropy;
+  std::vector<uint8_t> entropy;
 };
 
 std::optional<KeyringSeed> MakeSeedFromMnemonic(
@@ -621,7 +704,7 @@ std::optional<KeyringSeed> MakeSeedFromMnemonic(
     result.eth_seed = result.seed;
   }
 
-  result.cardano_entropy = *entropy;
+  result.entropy = *entropy;
 
   return result;
 }
@@ -797,11 +880,11 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
 
   if (IsKeyringEnabled(KeyringId::kCardanoMainnet)) {
     cardano_hd_mainnet_keyring_ = std::make_unique<CardanoHDKeyring>(
-        keyring_seed.seed, KeyringId::kCardanoMainnet);
+        keyring_seed.entropy, KeyringId::kCardanoMainnet);
   }
   if (IsKeyringEnabled(KeyringId::kCardanoTestnet)) {
     cardano_hd_testnet_keyring_ = std::make_unique<CardanoHDKeyring>(
-        keyring_seed.seed, KeyringId::kCardanoTestnet);
+        keyring_seed.entropy, KeyringId::kCardanoTestnet);
   }
 }
 
@@ -2335,6 +2418,103 @@ std::optional<OrchardSpendingKey> KeyringService::GetOrchardSpendingKey(
 }
 
 #endif
+
+void KeyringService::UpdateNextUnusedAddressForCardanoAccount(
+    const mojom::AccountIdPtr& account_id,
+    std::optional<uint32_t> next_external_index,
+    std::optional<uint32_t> next_internal_index) {
+  CHECK(IsCardanoAccount(account_id));
+  CHECK(next_external_index || next_internal_index);
+
+  const auto keyring_id = account_id->keyring_id;
+
+  if (IsCardanoHDKeyring(keyring_id)) {
+    auto accounts = GetDerivedAccountsForKeyring(profile_prefs_, keyring_id);
+    for (auto& account : accounts) {
+      if (account_id == account.GetAccountId()) {
+        if (UpdateCardanoAccountIndexes(account, next_external_index,
+                                        next_internal_index)) {
+          SetDerivedAccountsForKeyring(profile_prefs_, keyring_id, accounts);
+          NotifyAccountsChanged();
+          return;
+        }
+      }
+    }
+    return;
+  }
+}
+
+mojom::CardanoAccountInfoPtr KeyringService::GetCardanoAccountInfo(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(IsCardanoAccount(account_id));
+
+  auto keyring_id = account_id->keyring_id;
+  if (auto* cardano_keyring = GetKeyring<CardanoHDKeyring>(keyring_id)) {
+    for (const auto& derived_account_info :
+         GetDerivedAccountsForKeyring(profile_prefs_, keyring_id)) {
+      if (account_id->account_index == derived_account_info.account_index) {
+        return CardanoAccountInfoFromPrefInfo(*cardano_keyring,
+                                              derived_account_info);
+      }
+    }
+  }
+
+  return nullptr;
+}
+
+std::optional<std::vector<mojom::CardanoAddressPtr>>
+KeyringService::GetCardanoAddresses(const mojom::AccountIdPtr& account_id) {
+  CHECK(IsCardanoAccount(account_id));
+
+  auto* cardano_keyring = GetKeyring<CardanoHDKeyring>(account_id->keyring_id);
+  if (!cardano_keyring) {
+    return std::nullopt;
+  }
+
+  auto cardano_account_info = GetCardanoAccountInfo(account_id);
+  if (!cardano_account_info) {
+    return std::nullopt;
+  }
+
+  std::vector<mojom::CardanoAddressPtr> addresses;
+  for (auto i = 0u;
+       i <= cardano_account_info->next_external_address->payment_key_id->index;
+       ++i) {
+    addresses.emplace_back(cardano_keyring->GetAddress(
+        account_id->account_index,
+        mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal, i)));
+    if (!addresses.back()) {
+      return std::nullopt;
+    }
+  }
+  for (auto i = 0u;
+       i <= cardano_account_info->next_internal_address->payment_key_id->index;
+       ++i) {
+    addresses.emplace_back(cardano_keyring->GetAddress(
+        account_id->account_index,
+        mojom::CardanoKeyId(mojom::CardanoKeyRole::kInternal, i)));
+    if (!addresses.back()) {
+      return std::nullopt;
+    }
+  }
+
+  return addresses;
+}
+
+mojom::CardanoAddressPtr KeyringService::GetCardanoAddress(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::CardanoKeyIdPtr& payment_key_id) {
+  CHECK(IsCardanoAccount(account_id));
+  CHECK(payment_key_id);
+
+  auto* cardano_keyring = GetKeyring<CardanoHDKeyring>(account_id->keyring_id);
+  if (!cardano_keyring) {
+    return {};
+  }
+
+  return cardano_keyring->GetAddress(account_id->account_index,
+                                     *payment_key_id);
+}
 
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
     const mojom::AccountIdPtr& account_id,

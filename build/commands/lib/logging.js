@@ -130,13 +130,16 @@ function printFailedPatchesInJsonFormat(allPatchStatus, bravePath) {
     return;
   }
 
-  const patchFailuresOutput = failedPatches.map(({path, patchPath}) => {
+  const GitPatcher = require('./gitPatcher')
+
+  const patchFailuresOutput = failedPatches.map(({path, patchPath, reason}) => {
     return {
       // Trimming the patch path to be relative to the brave core repo. We skip
       // the first character to avoid the trailing slash from the absolute
       // path.
       patchPath:
         patchPath.replace(bravePath, '').substring(1),
+      reason: GitPatcher.getReasonName(reason),
       path: path
     }
   })

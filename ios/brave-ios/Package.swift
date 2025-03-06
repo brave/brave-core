@@ -514,7 +514,6 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Assets/MainFrameAtDocumentEndSandboxed.js"),
     .copy("Assets/MainFrameAtDocumentStart.js"),
     .copy("Assets/MainFrameAtDocumentStartSandboxed.js"),
-    .copy("Assets/SessionRestore.html"),
     .copy("Assets/Fonts/FiraSans-Bold.ttf"),
     .copy("Assets/Fonts/FiraSans-BoldItalic.ttf"),
     .copy("Assets/Fonts/FiraSans-Book.ttf"),

@@ -406,6 +406,7 @@
 <translation id="3570081523466826008">升级连接为 HTTPS</translation>
 <translation id="3357319404342882895">严格</translation>
 <translation id="8823559166155093873">阻止 cookies</translation>
+<translation id="7093267802941377072">“阻止所有 Cookie”选项已被弃用。如需了解如何强制启用该选项，请访问 <ph name="BEGIN_LINK"/>我们的帮助页面<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">阻止第三方 Cookie</translation>
 <translation id="5657156137487675418">允许所有 cookies</translation>
 <translation id="6883611015375728278">拦截所有 cookies</translation>
@@ -593,6 +594,7 @@
 <translation id="5522403133543437426">地址栏中使用的搜索引擎。</translation>
 <translation id="280472502078788655">无痕窗口地址栏中使用的搜索引擎。</translation>
 <translation id="7232120595886556478">普通窗口</translation>
+<translation id="6739674350896546324">无痕窗口搜索引擎</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> 现在是您的无痕窗口默认搜索引擎</translation>
 <translation id="6864914031231797928">允许 Google 登录以获取扩展程序</translation>
 <translation id="7878791177459550035">媒体路由器在浏览器中启用投射功能。</translation>
@@ -733,7 +735,7 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="3213787232304349732">服务框架正在监听申请的网址。如果不确定，请查阅服务框架文档。例如，对于 Ollama 来说，这始终是 http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">某些服务框架可能需要认证凭证，如 API 密钥或访问令牌。这些凭证将添加到申请标题中。</translation>
 <translation id="4335128003329183586">上下文大小</translation>
-<translation id="8794525422794607973">模型在单次交互中可处理的最大字符数。每个字符约为一个单词的 3/4。上下文大小越大，模型就越能处理较长的对话。不同的模型支持不同的最大上下文大小。</translation>
+<translation id="3153779001670804829">模型在单次交互中可处理的最大字符数。上下文大小越大，模型就越能处理较长的对话。不同的模型支持不同的最大上下文大小。</translation>
 <translation id="217141195370578385">Brave不代理这些请求，请阅读所选供应商的隐私条款。</translation>
 <translation id="2645532768679870478">非本地端点应使用 HTTPS 协议进行安全数据传输。</translation>
 <translation id="8177205483022887785">您输入的网址无效。请输入有效的网址。</translation>

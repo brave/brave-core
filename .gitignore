@@ -76,5 +76,8 @@ build/config/gclient_args.gni
 third_party/rust/target
 xcuserdata
 
+# This is a temp file used by script/version_up.py
+.version_upgrade
+
 # buffer exclusion file generated locally during sync
 build/config/unsafe_buffers_paths.txt

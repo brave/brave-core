@@ -9,12 +9,23 @@ import XCTest
 
 class P3ATimedStorageTests: XCTestCase {
 
+  private let testCalendar: Calendar = {
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = .init(abbreviation: "GMT")!
+    calendar.locale = .init(identifier: "en_US_POSIX")
+    return calendar
+  }()
+
   /// ---------
   /// Test Cases from brave-core's similar `TimePeriodStorageTest` (`time_period_storage_unittest.cc`)
   /// ---------
 
   func testStartsZero() {
-    var storage = P3ATimedStorage<Int>(name: "testStartsZero", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testStartsZero",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     XCTAssertEqual(storage.combinedValue, 0)
@@ -22,7 +33,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testAddSavings() {
-    var storage = P3ATimedStorage<Int>(name: "testAddSavings", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testAddSavings",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let savings = 10000
@@ -35,7 +50,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testSubDelta() {
-    var storage = P3ATimedStorage<Int>(name: "testSubDelta", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testSubDelta",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     storage.append(value: 5000)
@@ -61,7 +80,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testForgetsOldSavingsWeekly() {
-    var storage = P3ATimedStorage<Int>(name: "testForgetsOldSavingsWeekly", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testForgetsOldSavingsWeekly",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let savings = 10000
@@ -78,7 +101,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testForgetsOldSavingsMonthly() {
-    var storage = P3ATimedStorage<Int>(name: "testForgetsOldSavingsMonthly", lifetimeInDays: 30)
+    var storage = P3ATimedStorage<Int>(
+      name: "testForgetsOldSavingsMonthly",
+      lifetimeInDays: 30,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let savings = 10000
@@ -95,7 +122,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testRetrievesDailySavings() {
-    var storage = P3ATimedStorage<Int>(name: "testRetrievesDailySavings", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testRetrievesDailySavings",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let savings = 10000
@@ -108,7 +139,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testHandlesSkippedDay() {
-    var storage = P3ATimedStorage<Int>(name: "testHandlesSkippedDay", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testHandlesSkippedDay",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let savings = 10000
@@ -121,7 +156,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testIntermittentUsageWeekly() {
-    var storage = P3ATimedStorage<Int>(name: "testIntermittentUsageWeekly", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testIntermittentUsageWeekly",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let savings = 10000
@@ -133,7 +172,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testIntermittentUsageMonthly() {
-    var storage = P3ATimedStorage<Int>(name: "testIntermittentUsageMonthly", lifetimeInDays: 30)
+    var storage = P3ATimedStorage<Int>(
+      name: "testIntermittentUsageMonthly",
+      lifetimeInDays: 30,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let savings = 10000
@@ -145,7 +188,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testInfrequentUsageWeekly() {
-    var storage = P3ATimedStorage<Int>(name: "testInfrequentUsageWeekly", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testInfrequentUsageWeekly",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let savings = 10000
@@ -157,7 +204,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testInfrequentUsageMonthly() {
-    var storage = P3ATimedStorage<Int>(name: "testInfrequentUsageWeekly", lifetimeInDays: 30)
+    var storage = P3ATimedStorage<Int>(
+      name: "testInfrequentUsageWeekly",
+      lifetimeInDays: 30,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let savings = 10000
@@ -169,7 +220,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testGetHighestValueInPeriod() throws {
-    var storage = P3ATimedStorage<Int>(name: "testGetHighestValueInPeriod", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testGetHighestValueInPeriod",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let lowestValue = 20
@@ -187,7 +242,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testRecordsHigherValueForToday() {
-    var storage = P3ATimedStorage<Int>(name: "testRecordsHigherValueForToday", lifetimeInDays: 30)
+    var storage = P3ATimedStorage<Int>(
+      name: "testRecordsHigherValueForToday",
+      lifetimeInDays: 30,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let lowValue = 50
@@ -217,14 +276,22 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testStartsEmpty() {
-    var storage = P3ATimedStorage<TestEvents>(name: "testStartsEmpty", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<TestEvents>(
+      name: "testStartsEmpty",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     XCTAssertTrue(storage.records.isEmpty)
   }
 
   func testAddEvents() {
-    var storage = P3ATimedStorage<TestEvents>(name: "testAddEvents", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<TestEvents>(
+      name: "testAddEvents",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     storage.append(value: .null)
@@ -235,7 +302,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testForgetsOldEvents() {
-    var storage = P3ATimedStorage<TestEvents>(name: "testForgetsOldEvents", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<TestEvents>(
+      name: "testForgetsOldEvents",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     storage.append(value: .foo)
@@ -251,7 +322,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testIntermittentEventUsage() {
-    var storage = P3ATimedStorage<TestEvents>(name: "testIntermittentEventUsage", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<TestEvents>(
+      name: "testIntermittentEventUsage",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let value: TestEvents = .foo
@@ -263,7 +338,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testInfrequentEventUsage() {
-    var storage = P3ATimedStorage<TestEvents>(name: "testInfrequentEventUsage", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<TestEvents>(
+      name: "testInfrequentEventUsage",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     storage.append(value: .foo)
@@ -276,7 +355,11 @@ class P3ATimedStorageTests: XCTestCase {
 
   func testSerializationOrder() {
     let prefName = "testSerializationOrder"
-    var storage = P3ATimedStorage<TestEvents>(name: prefName, lifetimeInDays: 7)
+    var storage = P3ATimedStorage<TestEvents>(
+      name: prefName,
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     storage.append(value: .foo)
@@ -288,7 +371,11 @@ class P3ATimedStorageTests: XCTestCase {
 
     XCTAssertEqual(storage.records.last?.value, .brave)
 
-    let newStorage = P3ATimedStorage<TestEvents>(name: prefName, lifetimeInDays: 7)
+    let newStorage = P3ATimedStorage<TestEvents>(
+      name: prefName,
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     XCTAssertEqual(newStorage.records.last?.value, .brave)
   }
 
@@ -297,7 +384,11 @@ class P3ATimedStorageTests: XCTestCase {
   /// ------
 
   func testMinimumValue() {
-    var storage = P3ATimedStorage<Int>(name: "testMinimumValue", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testMinimumValue",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     storage.append(value: 1)
@@ -308,7 +399,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testMaximumValue() {
-    var storage = P3ATimedStorage<Int>(name: "testMaximumValue", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testMaximumValue",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     storage.append(value: 1)
@@ -319,7 +414,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testAddingToDate() {
-    var storage = P3ATimedStorage<Int>(name: "testAddingToDate", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testAddingToDate",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let date = Date()
@@ -345,14 +444,22 @@ class P3ATimedStorageTests: XCTestCase {
     XCTAssertEqual(storage.combinedValue, 4)
 
     // Test that add also persists properly
-    let newStorage = P3ATimedStorage<Int>(name: "testAddingToDate", lifetimeInDays: 7)
+    let newStorage = P3ATimedStorage<Int>(
+      name: "testAddingToDate",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
 
     XCTAssertEqual(newStorage.records.count, 3)
     XCTAssertEqual(newStorage.combinedValue, 4)
   }
 
   func testMaximumDaysCombinedValue() {
-    var storage = P3ATimedStorage<Int>(name: "testMaximumDaysCombinedValue", lifetimeInDays: 7)
+    var storage = P3ATimedStorage<Int>(
+      name: "testMaximumDaysCombinedValue",
+      lifetimeInDays: 7,
+      calendar: testCalendar
+    )
     storage.reset()
 
     let lowestValue = 20
@@ -371,7 +478,11 @@ class P3ATimedStorageTests: XCTestCase {
   }
 
   func testCombinedValueInDateRange() {
-    var storage = P3ATimedStorage<Int>(name: "testCombinedValueInDateRange", lifetimeInDays: 14)
+    var storage = P3ATimedStorage<Int>(
+      name: "testCombinedValueInDateRange",
+      lifetimeInDays: 14,
+      calendar: testCalendar
+    )
     storage.reset()
 
     storage.replaceTodaysRecordsIfLargest(value: 1)
@@ -380,7 +491,7 @@ class P3ATimedStorageTests: XCTestCase {
     storage.date = { Date().addingTimeInterval(2.days) }
     storage.replaceTodaysRecordsIfLargest(value: 1)
 
-    let startOfDay = Calendar(identifier: .gregorian).startOfDay(for: Date())
+    let startOfDay = testCalendar.startOfDay(for: Date())
     XCTAssertEqual(storage.combinedValue(in: startOfDay..<startOfDay.addingTimeInterval(2.days)), 2)
     XCTAssertEqual(storage.combinedValue(in: startOfDay...startOfDay.addingTimeInterval(2.days)), 3)
   }

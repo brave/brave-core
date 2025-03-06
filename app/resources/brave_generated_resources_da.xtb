@@ -408,6 +408,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
 <translation id="3357319404342882895">Striks</translation>
 <translation id="8823559166155093873">Blokér cookies</translation>
+<translation id="7093267802941377072">Indstillingen "Bloker alle cookies" er blevet forældet. Hvis du vil vide, hvordan du aktiverer denne indstilling, kan du besøge <ph name="BEGIN_LINK"/>vores hjælpeside<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Bloker cookies fra tredjeparter</translation>
 <translation id="5657156137487675418">Tillad alle cookies</translation>
 <translation id="6883611015375728278">Blokér alle cookies</translation>
@@ -595,6 +596,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="5522403133543437426">Søgemaskine brugt i adresselinjen.</translation>
 <translation id="280472502078788655">Søgemaskine, der bruges i adresselinjen i private vinduer.</translation>
 <translation id="7232120595886556478">Normalt vindue</translation>
+<translation id="6739674350896546324">Søgemaskine til private vinduer</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> er nu din standardsøgemaskine til private vinduer</translation>
 <translation id="6864914031231797928">Tillad Google-login for udvidelser</translation>
 <translation id="7878791177459550035">Medierouter slår cast-funktionen i browseren til.</translation>
@@ -733,7 +735,7 @@ Leo AI fremover, og denne handling sletter også din chathistorik. Hvis du slett
 <translation id="3213787232304349732">Den URL, hvor dit serversystem lytter efter anmodninger. Hvis du ikke er sikker, så tjek dokumentationen for serversystemet. For Ollama er det f.eks. altid http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Nogle serversystemer kan kræve autentificeringsoplysninger, f.eks. en API-nøgle eller et adgangstoken. Disse vil blive tilføjet til anmodningsheaderen.</translation>
 <translation id="4335128003329183586">Kontekststørrelse</translation>
-<translation id="8794525422794607973">Det maksimale antal tokens, som modellen kan behandle i en enkelt interaktion. Hvert token er ca. 3/4 af et ord. En større kontekststørrelse gør det muligt for modellen at håndtere længere samtaler. Forskellige modeller understøtter forskellige maksimale kontekststørrelser.</translation>
+<translation id="3153779001670804829">Det maksimale antal tokens, som modellen kan behandle i en enkelt interaktion. En større kontekststørrelse gør det muligt for modellen at håndtere længere samtaler. Forskellige modeller understøtter forskellige maksimale kontekststørrelser.</translation>
 <translation id="217141195370578385">Brave bruger ikke proxy på disse anmodninger, læs den valgte udbyders vilkår for beskyttelse af personlige oplysninger.</translation>
 <translation id="2645532768679870478">Ikke-lokale slutpunkter bør anvende HTTPS-protokollen til sikker datatransmission.</translation>
 <translation id="8177205483022887785">Du har indtastet en ugyldig URL. Indtast en gyldig URL.</translation>

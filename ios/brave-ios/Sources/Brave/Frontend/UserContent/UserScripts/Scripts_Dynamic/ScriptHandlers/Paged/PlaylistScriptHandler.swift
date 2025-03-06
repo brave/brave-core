@@ -26,10 +26,9 @@ protocol PlaylistScriptHandlerDelegate: NSObject {
   func showPlaylistOnboarding(tab: Tab?)
 }
 
-class PlaylistScriptHandler: NSObject, TabContentScript {
+class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
   public weak var delegate: PlaylistScriptHandlerDelegate?
   private var url: URL?
-  private var urlObserver: NSObjectProtocol?
   private var asset: AVURLAsset?
   private static let queue = DispatchQueue(label: "com.playlisthelper.queue", qos: .userInitiated)
 
@@ -37,21 +36,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     self.url = tab.url
     super.init()
 
-    urlObserver = tab.webView?.observe(
-      \.url,
-      options: [.new],
-      changeHandler: { [weak self, weak tab] _, change in
-        guard let self = self, let url = change.newValue else { return }
-        if self.url != url {
-          self.url = url
-          self.asset?.cancelLoading()
-          self.asset = nil
-
-          self.delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
-        }
-      }
-    )
-
+    tab.addObserver(self)
     tab.webView?.addGestureRecognizer(
       UILongPressGestureRecognizer(target: self, action: #selector(onLongPressedWebView(_:))).then {
         $0.delegate = self
@@ -227,6 +212,16 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
         }
       }
     }
+  }
+
+  // MARK: - TabObserver
+
+  func tabDidUpdateURL(_ tab: Tab) {
+    url = tab.url
+    asset?.cancelLoading()
+    asset = nil
+
+    delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
   }
 }
 

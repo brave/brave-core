@@ -2,6 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="km">
 <translation id="370665806235115550">កំពុងដំណើរការ...</translation>
+<translation id="7931127789630755251">ទទួលបានថូខឹនសម្រាប់ការផ្សាយពាណិជ្ជកម្មឯកជនដែលអ្នកឃើញនៅក្នុង Brave</translation>
 <translation id="7859066142771796818">ប្រើថូខឹនដើម្បីទិញកាតកាដូ ប្តូររូបិយបណ្ណផ្សេងៗទៀត គាំទ្រអ្នកបង្កើតមាតិកា និងអ្វីៗជាច្រើនទៀត។</translation>
 <translation id="3863981251715594911">តើ​វា​ដំណើរការ​ដោយ​របៀប​ណា?</translation>
 <translation id="2965798296974325760">ចាប់ផ្តើមប្រើប្រាស់រង្វាន់</translation>
@@ -179,6 +180,7 @@
 <translation id="5705882733397021510">ទៅក្រោយវិញ</translation>
 <translation id="3479552764303398839">មិនមែនឥឡូវនេះទេ</translation>
 <translation id="7701040980221191251">គ្មាន</translation>
+<translation id="8488282162676695335">កាបូប Brave</translation>
 <translation id="8798099450830957504">លំនាំដើម</translation>
 <translation id="1483493594462132177">ផ្ញើ</translation>
 <translation id="2359808026110333948">បន្ត</translation>
@@ -242,6 +244,7 @@
 <translation id="3264975266761862670">ត្រៀម​ខ្លួន​ដើម្បី​ចាប់​ផ្តើ​ម​រក​ប្រាក់​ឬនៅ?</translation>
 <translation id="265337947574975838">ភ្ជាប់ ឬបង្កើតគណនីជាមួយដៃគូររបស់យើង។</translation>
 <translation id="654447476965480878">ស្វែងយល់បន្ថែមអំពីការទទួលបាន BAT</translation>
+<translation id="6278643716658443228">ការកំណត់រង្វាន់</translation>
 <translation id="4272136334824111854">ខែនេះ អ្នកបានចូលមើល <ph name="CREATOR_COUNT"/> អ្នកបង្កើតដែលត្រូវបានគាំទ្រដោយរង្វាន់ Brave</translation>
 <translation id="579702532610384533">ភ្ជាប់ឡើងវិញ</translation>
 <translation id="6390041270339783491">ការបរិច្ចាគប្រចាំខែបានបរាជ័យ</translation>

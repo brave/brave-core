@@ -407,6 +407,7 @@
 <translation id="3570081523466826008">升級連線至 HTTPS</translation>
 <translation id="3357319404342882895">嚴格</translation>
 <translation id="8823559166155093873">封鎖 Cookie</translation>
+<translation id="7093267802941377072">「攔截所有 Cookie」選項已被廢除。若要瞭解如何強制啟用此選項，請前往<ph name="BEGIN_LINK"/><ph name="BEGIN_LINK"/>支援頁面<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">封鎖第三方 Cookie</translation>
 <translation id="5657156137487675418">允許所有 cookie</translation>
 <translation id="6883611015375728278">阻擋所有 cookies</translation>
@@ -595,6 +596,7 @@
 <translation id="5522403133543437426">網址列中使用的搜尋引擎。</translation>
 <translation id="280472502078788655">無痕式視窗網址列中使用的搜尋引擎。</translation>
 <translation id="7232120595886556478">一般視窗</translation>
+<translation id="6739674350896546324">無痕視窗搜尋引擎</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> 現在是您無痕式視窗的預設搜尋引擎</translation>
 <translation id="6864914031231797928">允許延伸套件登入 Google</translation>
 <translation id="7878791177459550035">媒體路由器可在瀏覽器中啟用投影功能。</translation>
@@ -732,7 +734,7 @@
 <translation id="3213787232304349732">您的服務架構會以此 URL 聆聽要求。如果您不確定，請查閱服務架構的說明文件。例如，對 Ollama 而言，這個 URL 永遠是 http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">部分服務架構可能須要驗證認證，例如 API 金鑰或存取權杖。這些認證會新增至要求標頭。</translation>
 <translation id="4335128003329183586">內容大小</translation>
-<translation id="8794525422794607973">模型在單次互動中可處理的最大指標數。每個指標大約是一個單字的 3/4。較大的內容大小可讓模型處理較長的對話。不同的模型支援不同的最大內容大小。</translation>
+<translation id="3153779001670804829">模型在單次互動中可處理的最大指標數。較大的內容大小可讓模型處理較長的對話。不同的模型支援不同的最大內容大小。</translation>
 <translation id="217141195370578385">Brave 不會通過 Proxy 處理這些要求，請詳閱所選提供者的隱私權條款。</translation>
 <translation id="2645532768679870478">非本機端點應採用 HTTPS 通訊協定以安全傳輸資料。</translation>
 <translation id="8177205483022887785">您輸入了無效的 URL，請輸入有效的 URL。</translation>

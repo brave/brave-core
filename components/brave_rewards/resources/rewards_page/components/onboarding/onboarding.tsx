@@ -10,7 +10,6 @@ import Button from '@brave/leo/react/button'
 import { EnableRewardsResult, AvailableCountryInfo } from '../../lib/app_state'
 import { AppModelContext } from '../../lib/app_model_context'
 import { useLocaleContext } from '../../lib/locale_strings'
-import { useCallbackWrapper } from '../../lib/callback_wrapper'
 import { formatMessage } from '../../../shared/lib/locale_context'
 import { CountrySelectModal } from './country_select_modal'
 import { OnboardingErrorModal } from './onboarding_error_modal'
@@ -25,7 +24,6 @@ interface Props {
 }
 
 export function Onboarding(props: Props) {
-  const wrapCallback = useCallbackWrapper()
   const model = React.useContext(AppModelContext)
   const { getString } = useLocaleContext()
 
@@ -41,7 +39,7 @@ export function Onboarding(props: Props) {
     React.useState<EnableRewardsResult | null>(null)
 
   React.useEffect(() => {
-    model.getAvailableCountries().then(wrapCallback(setAvailableCountries))
+    model.getAvailableCountries().then(setAvailableCountries)
   }, [])
 
   function onCountrySelectClose() {
@@ -50,7 +48,7 @@ export function Onboarding(props: Props) {
 
   function onCountrySelected(country: string) {
     setLoading(true)
-    model.enableRewards(country).then(wrapCallback((result) => {
+    model.enableRewards(country).then((result) => {
       setLoading(false)
       setEnableRewardsResult(result)
       if (result === 'success') {
@@ -58,7 +56,7 @@ export function Onboarding(props: Props) {
       } else {
         setShowCountrySelect(false)
       }
-    }))
+    })
   }
 
   function onStartClick() {

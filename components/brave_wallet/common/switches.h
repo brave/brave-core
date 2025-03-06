@@ -27,6 +27,9 @@ inline constexpr char kCardanoMainnetRpcUrl[] = "cardano-mainnet-rpc-url";
 // Cardano rpc testnet endpoint.
 inline constexpr char kCardanoTestnetRpcUrl[] = "cardano-testnet-rpc-url";
 
+// Cardano rpc project id.
+inline constexpr char kCardanoProjectId[] = "cardano-project-id";
+
 }  // namespace brave_wallet::switches
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SWITCHES_H_

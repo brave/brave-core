@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_TEST_UTILS_H_
 
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
@@ -109,6 +111,8 @@ void PrintTo(const BitcoinKeyId& key_id, ::std::ostream* os);
 void PrintTo(const BitcoinAccountInfoPtr& account_info, ::std::ostream* os);
 void PrintTo(const BtcHardwareTransactionSignInputDataPtr& input_data,
              ::std::ostream* os);
+void PrintTo(const CardanoAddressPtr& address, ::std::ostream* os);
+void PrintTo(const CardanoBalancePtr& balance, ::std::ostream* os);
 
 }  // namespace mojom
 

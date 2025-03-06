@@ -23,6 +23,7 @@
 #include "brave/components/p3a/features.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/skus/common/features.h"
+#include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/browser_menu/features.h"
 #import "build/blink_buildflags.h"
@@ -326,6 +327,16 @@
 + (Feature*)kModernBrowserMenuEnabled {
   return [[Feature alloc]
       initWithFeature:&brave::features::kModernBrowserMenuEnabled];
+}
+
++ (Feature*)kBraveTranslateEnabled {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kBraveTranslateEnabled];
+}
+
++ (Feature*)kBraveAppleTranslateEnabled {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kBraveAppleTranslateEnabled];
 }
 
 @end

@@ -10,8 +10,12 @@ namespace commander {
 CommandItemModel::CommandItemModel(
     const std::u16string& title,
     const std::vector<gfx::Range>& matched_ranges,
-    const std::u16string& annotation)
-    : title(title), matched_ranges(matched_ranges), annotation(annotation) {}
+    const std::u16string& annotation,
+    double score)
+    : title(title),
+      matched_ranges(matched_ranges),
+      annotation(annotation),
+      score(score) {}
 
 CommandItemModel::CommandItemModel(const CommandItemModel& other) = default;
 CommandItemModel::CommandItemModel(CommandItemModel&& other) = default;

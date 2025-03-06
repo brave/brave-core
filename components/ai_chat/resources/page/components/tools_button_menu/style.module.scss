@@ -18,7 +18,7 @@
 
 .menuSectionTitle {
   background-color: var(--leo-color-page-background);
-  padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+  padding: var(--leo-spacing-l);
   color: var(--leo-color-text-tertiary);
   font: var(--leo-font-components-label);
   text-transform: uppercase;
@@ -26,7 +26,7 @@
 
 .menuSubtitle {
   margin: 0 var(--leo-spacing-s);
-  padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+  padding: var(--leo-spacing-l);
   color: var(--leo-color-text-tertiary);
   font: var(--leo-font-components-label);
   text-transform: uppercase;

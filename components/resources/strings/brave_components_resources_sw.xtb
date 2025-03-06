@@ -666,6 +666,7 @@
 <translation id="2446517297521536638">Dhibiti aina za Matangazo ya Brave unayoona, na mara ngapi. Kadri unavyoona matangazo zaidi, ndivyo unavyoweza kupata mapato zaidi.</translation>
 <translation id="5860033963881614850">Kimezimwa</translation>
 <translation id="5916664084637901428">Imewashwa</translation>
+<translation id="3977723631999461201">Matangazo <ph name="NUM"/> yalipokelewa mwezi huu</translation>
 <translation id="7924320838799747606">Salio lako</translation>
 <translation id="8714473477079007268">Pochi ya <ph name="PROVIDER"/></translation>
 <translation id="3175337080016717494">Akaunti ya Malipo</translation>
@@ -1685,6 +1686,8 @@
 <translation id="803703704549420287">Futa vichujio</translation>
 <translation id="1472675084647422956">Onyesha zaidi</translation>
 <translation id="4522570452068850558">Maelezo</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> kati ya <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="1178581264944972037">Sitisha</translation>
 <translation id="7144878232160441200">Jaribu tena</translation>
 <translation id="9094621390791852268">Pitio la muamala halijafaulu.</translation>
 <translation id="4982713341035600933">Kadirio la mabadiliko ya salio</translation>
@@ -2006,7 +2009,6 @@
 <translation id="8637805148029768813">Kipengele cha kufupisha kwa sasa kinapatikana tu kwa makala teule na kurasa nyingine za wavuti zenye maudhui marefu.</translation>
 <translation id="1223498995510244364">Fupisha</translation>
 <translation id="7491773233732232424">Kuhusu Leo</translation>
-<translation id="5208096220706490232">Brave Leo ni programu ya mahiri ya mratibu ya AI ya faragha ambayo huboresha matumizi yako ya Intaneti. Leo hailipishwi na ina uwezo mdogo wa ufikiaji. Brave Leo Premium inatoa miundo zaidi, vikomo vya juu na huwapa wateja uwezo wa kufikia mapema vipengele vipya. Muundo chaguo-msingi kwa watumiaji wote kwa sasa ni Mixtral 8x7B. Angalia <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/> kwa maelezo zaidi.</translation>
 <translation id="7189603330209995455">Kwa chaguomsingi, unapouliza programu ya Leo swali inaweza kutuma na kutumia maudhui ya ukurasa wa wavuti unaotazama au maandishi yoyote unayoyaangazia kwenye ukurasa kwa Brave Leo ili kutoa jibu. Usahihi wa majibu haujahakikishwa, na inaweza kujumuisha maelezo yasiyo sahihi, ya kupotosha au ya uongo. Leo hutumia data kutoka kwa huduma ya Brave Search ili kuboresha ubora wa majibu. Usitume maelezo nyeti au ya binafsi, na uwe mwangalifu na majibu yoyote yanayohusiana na afya, fedha, usalama wa binafsi au mengineyo. Unaweza kurekebisha chaguo za Leo katika Mipangilio wakati wowote. Nenda kwenye Mipangilio &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo haikusanyi vitambulishi kama vile anwani yako ya IP inayoweza kukutambulisha. Hakuna data inayotumika kufunza miundo ya AI na hakuna data ya binafsi inayohifadhiwa na miundo ya AI (isipokuwa kwa Anthropic ambayo huhifadhi data kwa siku 30 kabla ya kuifuta). Angalia <ph name="LINK_BEFORE"/>sera ya faragha<ph name="LINK_AFTER"/> kwa maelezo zaidi.</translation>
 <translation id="7839853125981164613">Weka kidokezo hapa</translation>
@@ -2019,8 +2021,6 @@
 <translation id="4177458398826096846">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI anayepangishwa kikamilifu na Brave. Ninaendeshwa na Llama 3.1 8B, muundo ulioundwa na Meta kuweza kufanya kazi na kutumika katika hali nyingi za matumizi. <ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI anayepangishwa kikamilifu na Brave. Ninaendeshwa na Mixtral 8x7B, muundo ulioundwa na Mistral AI ili kushughulikia kazi ngumu. <ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hujambo, mimi ni Leo. Ninapangishwa na Brave na kuendeshwa na Claude Instant, muundo ulioundwa na Anthropic ili kuwezesha kazi za kuchakata mazungumzo na maandishi. <ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Hujambo, ninaitwa Leo. Ninapangishwa na Brave na kuwezeshwa na Claude 3 Haiku, muundo ulioundwa na  Anthropic ili kuwezesha kazi za kuchakata mazungumzo na maandishi.</translation>
-<translation id="1107977270364670952">Hujambo, ninaitwa Leo. Ninapangishwa na Brave na kuwezeshwa na Claude 3.5 Sonnet, muundo ulioundwa na Anthropic ili kuwezesha kazi za kuchakata mazungumzo na maandishi.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> kutoka <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Toleo la Kulipia</translation>
 <translation id="6187065185557150870">Gumzo</translation>
@@ -2037,6 +2037,7 @@
 <translation id="4165928407303989823">Zingatia mada.</translation>
 <translation id="2389665228467129817">Piga gumzo kwa muda mrefu</translation>
 <translation id="8556044455877152001">Dola <ph name="PRICE_VALUE"/> za Marekani/mwezi</translation>
+<translation id="1028627582482425924">Mwaka mmoja</translation>
 <translation id="5151923271944811339">Badilisha hadi kwa hali isiyo ya malipo</translation>
 <translation id="5474757891469990756">Furahia uwezo kamili wa Leo kwa kutumia usajili wa Premium.</translation>
 <translation id="3453542753968940696">Ufikiaji mkuu kwa miundo thabiti zaidi na ujuzi tofauti.</translation>
@@ -2055,6 +2056,7 @@
 <translation id="9018766373792005944">Je, maoni yako ni kuhusu nini?</translation>
 <translation id="7355096922131918313">Toa maoni hapa</translation>
 <translation id="3027575440738035995">Leo Inayolipiwa hutoa ufikiaji wa seti pana ya miundo ya lugha ili kutoa hata usahihi zaidi wa majibu. <ph name="LINK_BEFORE"/>Pata habari zaidi<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Futa</translation>
 <translation id="7488762544858401571">Imehaririwa</translation>
 <translation id="1406205536570262057">Hariri jibu</translation>
 <translation id="2399439821649319175">Haisaidii</translation>

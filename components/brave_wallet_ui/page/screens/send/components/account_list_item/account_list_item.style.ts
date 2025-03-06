@@ -56,5 +56,4 @@ export const DisabledLabel = styled.div`
   line-height: 12px;
   padding: 4px 6px;
   border-radius: 4px;
-  margin-left: 8px;
 `

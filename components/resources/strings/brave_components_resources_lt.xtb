@@ -173,6 +173,7 @@
 <translation id="3110968385867124099">Apie šį puslapį pranešti negalima, nes jis pristatytas ne per HTTP / HTTPS.</translation>
 <translation id="7907023135990310743">Tai vietinis tinklalapis, ir apie jį pranešti negalima.</translation>
 <translation id="8740275226259417070">Tai klaidos puslapis. Apie jį negalima pranešti kaip apie neveikiančią interneto svetainę.</translation>
+<translation id="6367576083705149078">Jei pateiksite kontaktinę informaciją, ji bus išsaugota būsimiems pranešimams.</translation>
 <translation id="6806248680442980382">Dėkojame, kad padedate kurti geresnę „Brave“ naršyklę visiems. Šiame pranešime rasite tik tą informaciją, kuri reikalinga, kad galėtume sutvarkyti šią interneto svetainę.</translation>
 <translation id="6476216365964140603">Papildoma informacija (neprivaloma)</translation>
 <translation id="6145852496180774737">Susisiekite su manimi šiuo adresu: (neprivaloma)</translation>
@@ -714,8 +715,8 @@
 <translation id="4622826307953794521">Prisidėkite prie anoniminės paieškos ir naršymo duomenų, kad patobulintumėte „Brave“ paiešką su „Web Discovery“ projektu. Tai visiškai atviras šaltinis.</translation>
 <translation id="4174337572777167894">Žiniatinklio pažinimo projektas</translation>
 <translation id="9034669711835382440">Bendruomenė</translation>
-<translation id="814503310257431685">Žiūrėti viską</translation>
 <translation id="845020633253356720">Peržiūrėti parduotuvę</translation>
+<translation id="7777123407058400802">Pagrindinis dėmesio žetonas – BAT</translation>
 <translation id="7090992647511817643">paskyra</translation>
 <translation id="4822132585477111396">Grandinės ID</translation>
 <translation id="3269475789479462358">domenas</translation>
@@ -1741,6 +1742,20 @@
 <translation id="3819528427777765709">Apsaugota</translation>
 <translation id="2142946302539262412">Bendrasis</translation>
 <translation id="4438043733494739848">Skaidrus</translation>
+<translation id="1950406774300125954">Nesinchronizuota</translation>
+<translation id="68413355604013935">Nesinchronizuota (<ph name="BLOCKS"/> blokai atsilieka)</translation>
+<translation id="1597233669965903034">Sinchronizuokite savo paskyrą, kad galėtumėte peržiūrėti naujausias operacijas ir likutį.</translation>
+<translation id="7499262814309712782">Sinchronizuokite paskyrą</translation>
+<translation id="2804568727504456403">Sinchronizavimas <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">Inicijuojama...</translation>
+<translation id="4404141491825711928">Apdorojamas blokas:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> kairė</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> iš <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">Rėžiai:</translation>
+<translation id="1178581264944972037">Pristabdyti</translation>
+<translation id="7714298753782862705">Sinchronizavimas baigtas. Dabar galite uždaryti šį langą.</translation>
+<translation id="7716113567047550378">Neuždarykite šio lango, kol nebus baigta sinchronizacija.</translation>
+<translation id="5123590959308755060">Tęsti naudojimąsi „wallet“ naujame skirtuke</translation>
 <translation id="7144878232160441200">Kartoti</translation>
 <translation id="9094621390791852268">Operacijos peržiūra nepavyko.</translation>
 <translation id="4982713341035600933">Numatomas balanso pokytis</translation>
@@ -2066,7 +2081,7 @@
 <translation id="8637805148029768813">Šiuo metu apibendrinimo funkcija veikia tik tam tikruose straipsniuose ir kituose didelės apimties tinklalapiuose.</translation>
 <translation id="1223498995510244364">Apibendrinti</translation>
 <translation id="7491773233732232424">Apie „Leo“</translation>
-<translation id="5208096220706490232">„Brave Leo“ yra privatus išmanusis DI padėjėjas, padedantis geriau naudotis internetu. Ribota „Leo“ prieiga yra nemokama. „Brave Leo Premium“ siūlo daugiau modelių, didesnius limitus ir anksti suteikia prenumeratoriams prieigas prie naujų funkcijų. Numatytasis modelis visiems naudotojams šiuo metu yra „Mixtral 8x7B“. Daugiau informacijos rasite <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/>.</translation>
+<translation id="4885527781814382758">„Brave Leo“ yra privatus dirbtinio intelekto išmanusis asistentas, kuris pagerina jūsų naudojimąsi internetu. „Leo“ galima naudotis nemokamai, o prieiga yra ribota. „Brave Leo Premium“ siūlo daugiau modelių, didesnius apribojimus ir suteikia prenumeratoriams išankstinę prieigą prie naujų funkcijų. Numatytasis modelis kartkartėmis keisis. Daugiau informacijos rasite <ph name="LINK_BEFORE"/>„Brave“ pagalbos centre<ph name="LINK_AFTER"/></translation>
 <translation id="7189603330209995455">Kai užduodate „Leo“ klausimą, pagal numatymą jis gali siųsti „Brave Leo“ ir naudoti jūsų žiūrimo tinklalapio turinį arba bet kurį jūsų paryškintą puslapyje turinį, kad galėtų atsakyti. Atsakymų tikslumas neužtikrinamas, juose gali būti netikslios, klaidinamos ar neteisingos informacijos. „Leo“ naudoja gautus iš „Brave Search“ duomenis, kad pagerintų atsako kokybę. Neteikite neatskleistinos ar privačios informacijos ir atsargiai vertinkite visus atsakymus, susijusius su sveikata, finansais, asmens saugumu ar panašia informacija. Galite bet kada koreguoti „Leo“ parinktis nuostatose. Eikite į nuostatas &gt; „Leo“.</translation>
 <translation id="3038772045018370764">„Leo“ nerenka identifikatorių, pvz., IP adreso, kuriuos galima susieti su jumis. Jokie duomenys nenaudojami DI modeliams mokyti ir DI modeliai nelaiko jokių asmens duomenų (išskyrus „Anthropic“, kuris laiko duomenis 30 dienų, o vėliau juos pašalina). Daugiau informacijos žr. <ph name="LINK_BEFORE"/>privatumo politikoje<ph name="LINK_AFTER"/>.</translation>
 <translation id="7839853125981164613">Čia įveskite raginimą</translation>
@@ -2077,12 +2092,15 @@
 <translation id="2712650703044366764">Šis modelis turi netinkamą galinį tašką. Patikrinkite savo konfigūraciją ir bandykite dar kartą.</translation>
 <translation id="1167803637855350748">Prisijungiant prie „Leo“ kilo tinklo problema. Patikrinkite ryšį ir bandykite dar kartą.</translation>
 <translation id="1996126325390835277">Pasiekėte „Premium“ tarifo limitą. Bandykite dar kartą po kelių valandų.</translation>
+<translation id="3683964919745779766">Pasiekėte šio modelio tarifų limitą arba nebeturite kreditų. Prašome pabandyti vėliau.</translation>
+<translation id="7692501701960747469">Šiam modeliui sukonfigūruotas API raktas negalioja. Patikrinkite savo konfigūraciją ir bandykite dar kartą.</translation>
+<translation id="7905602379229309187">Šiuo metu galinis taškas yra perkrautas. Prašome pabandyti vėliau.</translation>
 <translation id="8151638057146502721">Konfigūruoti</translation>
 <translation id="4177458398826096846">Sveiki, aš esu „Leo“. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Mane valdo „Llama 3.1 8B“ – „Meta“ sukurtas modelis, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Sveiki, aš esu Leo. Esu „Brave“ teikiamas visapusę prieglobą naudojantis DI padėjėjas. Veikiu „Mixtral 8x7B“ pagrindu – šį modelį sukūrė „Mistral AI“ sudėtingesnėms užduotims vykyti.<ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Sveiki, aš Leo. Mane teikia „Brave“ ir naudoju „Claude Instant“ – „Anthropic“ sukurtą modelį, skirtą pokalbių ir teksto apdorojimo užduotims atlikti.<ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Sveiki, aš Leo. Mane teikia „Brave“ ir naudoju „Claude 3 Haiku“ – „Anthropic“ sukurtą modelį, skirtą pokalbių ir teksto apdorojimo užduotims atlikti.</translation>
-<translation id="1107977270364670952">Sveiki, aš „Leo“. Mane teikia „Brave“ ir naudoju „Claude 3.5 Sonnet“ – „Anthropic“ sukurtą modelį, skirtą pokalbių ir teksto apdorojimo užduotims atlikti.</translation>
+<translation id="2001874998841390450">Sveiki, aš esu Leo. Mane atstovauja „Brave“ ir naudoja „Claude Haiku“ – „Anthropic“ sukurtas modelis, skirtas pokalbių ir teksto apdorojimo užduotims atlikti. <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Sveiki, aš esu Leo. Mane atstovauja „Brave“ ir naudoja „Claude Sonnet“ – „Anthropic“ sukurtas modelis, skirtas pokalbių ir teksto apdorojimo užduotims atlikti. <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>, sukurta <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">„Premium“</translation>
 <translation id="6187065185557150870">Pokalbiai</translation>
@@ -2101,6 +2119,9 @@
 <translation id="4165928407303989823">Žinokite aktualijas</translation>
 <translation id="2389665228467129817">Kalbėkitės ilgiau</translation>
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/>USD/mėn.</translation>
+<translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/> /metai</translation>
+<translation id="1028627582482425924">Vieni metai</translation>
+<translation id="36366199652730057">Geriausia vertė</translation>
 <translation id="5151923271944811339">Perjungti į nemokamą modelį</translation>
 <translation id="5474757891469990756">Atskleiskite visas „Leo“ galimybes naudodamiesi „Premium“:</translation>
 <translation id="3453542753968940696">Pirmenybinė prieiga prie veiksmingų modelių naudojantis skirtingais įgūdžiais.</translation>
@@ -2120,6 +2141,8 @@
 <translation id="9018766373792005944">Apie ką jūsų atsiliepimas?</translation>
 <translation id="7355096922131918313">Pateikite atsiliepimą čia</translation>
 <translation id="3027575440738035995">„Leo Premium“ suteikia prieigą prie išplėstinio kalbos modelių rinkinio, pateikdamas dar išsamesnius atsakymus.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Ištrinti</translation>
+<translation id="6574153208133461043">Ar tikrai norite ištrinti šį pokalbį? Šio veiksmo atšaukti negalima.</translation>
 <translation id="7488762544858401571">Redaguota</translation>
 <translation id="1406205536570262057">Redaguoti atsakymą</translation>
 <translation id="2399439821649319175">Nenaudinga</translation>
@@ -2133,6 +2156,7 @@
 <translation id="8171760814579050200">Pervadinti pokalbį</translation>
 <translation id="7754678742055438573">Šalinti pokalbį</translation>
 <translation id="7494736170250048402">Siųsti „Leo“ žinutę</translation>
+<translation id="8650874793377330048">Nustokite atsakinėti</translation>
 <translation id="8712637175834984815">Supratau</translation>
 <translation id="1093419424466417703">Puslapis yra per ilgas Leo. Pokalbyje gali trūkti tam tikro konteksto. Leo galėjo perskaityti <ph name="PERCENTAGE"/> puslapio turinio.</translation>
 <translation id="2186990448773134544">Puslapio turinys buvo patobulintas iš puslapio išgaunant svarbiausią informaciją, nes „Leo“ jis buvo per ilgas.</translation>

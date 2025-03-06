@@ -349,6 +349,24 @@ TEST(CommonUtils, IsCardanoAccount) {
                     mojom::AccountKind::kImported, "0xasdf")));
 }
 
+TEST(CommonUtils, GetNetworkForCardanoKeyring) {
+  EXPECT_EQ(mojom::kCardanoMainnet,
+            GetNetworkForCardanoKeyring(mojom::KeyringId::kCardanoMainnet));
+  EXPECT_EQ(mojom::kCardanoTestnet,
+            GetNetworkForCardanoKeyring(mojom::KeyringId::kCardanoTestnet));
+}
+
+TEST(CommonUtils, GetNetworkForCardanoAccount) {
+  EXPECT_EQ(mojom::kCardanoMainnet,
+            GetNetworkForCardanoAccount(MakeIndexBasedAccountId(
+                mojom::CoinType::ADA, mojom::KeyringId::kCardanoMainnet,
+                mojom::AccountKind::kDerived, 123)));
+  EXPECT_EQ(mojom::kCardanoTestnet,
+            GetNetworkForCardanoAccount(MakeIndexBasedAccountId(
+                mojom::CoinType::ADA, mojom::KeyringId::kCardanoTestnet,
+                mojom::AccountKind::kDerived, 123)));
+}
+
 TEST(CommonUtils, GetActiveEndpointUrl) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
   EXPECT_EQ(GURL("https://url1.com"), GetActiveEndpointUrl(chain));

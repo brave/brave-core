@@ -29,6 +29,7 @@
           <ph name="PROXIES_TITLE"/>
           va “proksi-serversiz” yoki “to‘g‘ridan-to‘g‘ri” sozlamalaridan biri
           belgilanganligiga ishonch xosil qiling.</translation>
+<translation id="6159073403999048272">Bu sahifalar Brave dastur ishlab chiquvchilari foydalanishi uchun moʻljallangan va faol ishlatish yoki sinovdan oʻtkazish mumkin emas. Ularni yoqish uchun <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/> havolasiga oʻting, debag sahifalarini yoqish uchun tugmani bosib, keyin yana bu sahifaga oʻting.</translation>
 <translation id="2765022094254723779">Brave paydo boʻlishida boshqa <ph name="BEGIN_LINK_OSS"/>ochiq kodli dastur<ph name="END_LINK_OSS"/> taʼminotining katta oʻrni bor.</translation>
 <translation id="9156965752763025780">O‘zgartirishlar Brave qaytadan ishga tushirilganda kuchga kiradi.</translation>
 <translation id="8828443087767259398">Brave ulanishi uchun Bluetooth orqali kirish ruxsati 

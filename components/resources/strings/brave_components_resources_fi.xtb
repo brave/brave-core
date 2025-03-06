@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Tästä sivusta ei voida ilmoittaa, koska sitä ei toimitettu HTTP:n/HTTPS:n kautta.</translation>
 <translation id="7907023135990310743">Tämä sivu on paikallinen verkkosivu, joten se ei kelpaa ilmoittamiseen.</translation>
 <translation id="8740275226259417070">Tämä on virhesivu. Sitä ei voi ilmoittaa toimimattomaksi sivustoksi.</translation>
+<translation id="6367576083705149078">Jos annat yhteystiedot, ne tallennetaan tulevia raportteja varten.</translation>
 <translation id="6806248680442980382">Kiitos Braven parantamisesta. Tämä ilmoitus sisältää vain sellaista tietoa, jota vaaditaan sivuston korjaamiseen.</translation>
 <translation id="6476216365964140603">Lisätiedot (valinnainen)</translation>
 <translation id="6145852496180774737">Ota minuun yhteyttä paikassa: (valinnainen)</translation>
@@ -712,8 +713,8 @@
 <translation id="4622826307953794521">Anna nimettömänä haku- ja selaustietoja Brave Searchin kehittämiseksi Web Discovery Projectin avulla. Lähdekoodi on avoin.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Yhteisö</translation>
-<translation id="814503310257431685">Näytä kaikki</translation>
 <translation id="845020633253356720">Näytä kauppa</translation>
+<translation id="7777123407058400802">Basic Attention Token – BAT</translation>
 <translation id="7090992647511817643">tili</translation>
 <translation id="4822132585477111396">Ketjun tunnus</translation>
 <translation id="3269475789479462358">verkkotunnus</translation>
@@ -1739,6 +1740,20 @@
 <translation id="3819528427777765709">Suojattu</translation>
 <translation id="2142946302539262412">Yhdistetty</translation>
 <translation id="4438043733494739848">Avoin</translation>
+<translation id="1950406774300125954">Ei synkronoitu</translation>
+<translation id="68413355604013935">Ei synkronoitu (<ph name="BLOCKS"/> lohkoa jäljessä).</translation>
+<translation id="1597233669965903034">Synkronoi tilisi, jotta näet viimeisimmät tapahtumat ja saldon.</translation>
+<translation id="7499262814309712782">Synkronoi tili</translation>
+<translation id="2804568727504456403">Synkronoi <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">Aloitetaan...</translation>
+<translation id="4404141491825711928">Käsitellään lohkoa:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> jäljellä</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/>/<ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">Määrä:</translation>
+<translation id="1178581264944972037">Tauko</translation>
+<translation id="7714298753782862705">Synkronointi on valmis. Voit nyt sulkea tämän ikkunan.</translation>
+<translation id="7716113567047550378">Älä sulje tätä ikkunaa ennen kuin synkronointi on valmis.</translation>
+<translation id="5123590959308755060">Jatka lompakon käyttöä uudessa välilehdessä</translation>
 <translation id="7144878232160441200">Yritä uudestaan</translation>
 <translation id="9094621390791852268">Maksutapahtuman esikatselu epäonnistui.</translation>
 <translation id="4982713341035600933">Arvioitu saldomuutos</translation>
@@ -2063,7 +2078,7 @@
 <translation id="8637805148029768813">Yhteenvetäjä-ominaisuus on tällä hetkellä saatavilla vain valituille artikkeleille ja muille pitkille verkkosivuille.</translation>
 <translation id="1223498995510244364">Tee yhteenveto</translation>
 <translation id="7491773233732232424">Tietoja Leosta</translation>
-<translation id="5208096220706490232">Brave Leo on älykäs yksityinen tekoälyavustaja, joka tehostaa internetin käyttöä. Leon käyttö yhdistetynä rajoitettuun pääsyyn on maksutonta. Brave Leo Premium tarjoaa enemmän malleja, korkeampia rajoja ja antaa tilaajille varhaisen pääsyn uusiin ominaisuuksiin. Kaikkien käyttäjien tämänhetkinen oletusmalli on Mixtral 8x7B. Katso lisätietoja <ph name="LINK_BEFORE"/>Brave wikistä<ph name="LINK_AFTER"/>.</translation>
+<translation id="4885527781814382758">Brave Leo on älykäs yksityinen tekoälyavustaja, joka tehostaa internetin käyttöä. Leon rajoitettu käyttö on maksutonta. Brave Leo Premium tarjoaa enemmän malleja, korkeammat rajat ja tilaajille varhaisen pääsyn uusiin ominaisuuksiin. Oletusmalli vaihtuu aika ajoin. Katso lisätietoja <ph name="LINK_BEFORE"/>Brave-ohjekeskuksesta<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Kun kysyt Leolta kysymyksen, se saattaa oletusarvoisesti käyttää ja lähettää Brave Leolle katsomasi verkkosivun sisältöä tai sivulla korostamaasi tekstiä vastauksen antamiseksi. Vastausten tarkkuutta ei taata, ja ne voivat sisältää epätarkkaa, harhaanjohtavaa tai virheellistä tietoa. Leo käyttää Brave-hausta peräisin olevaa dataa vastausten laadun parantamiseen. Älä lähetä arkaluonteisia tai yksityisiä tietoja ja ole varovainen terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai vastaaviin asioihin liittyvien vastausten kanssa. Asetuksissa Leon vaihtoehtoja voi säätää milloin tahansa. Siirry kohtaan Asetukset &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo ei kerää tunnisteita, kuten IP-osoitettasi, joka voitaisiin yhdistää sinuun. Dataa ei käytetä tekoälymallien kouluttamiseen, eikä tekoälymalleissa säilytetä henkilökohtaista dataa (lukuun ottamatta Anthropicia, joka säilyttää dataa 30 päivää ennen sen poistamista). Katso lisätietoja <ph name="LINK_BEFORE"/>yksityisyyskäytännöstä<ph name="LINK_AFTER"/>.</translation>
 <translation id="7839853125981164613">Kirjoita kehote tähän</translation>
@@ -2074,12 +2089,15 @@
 <translation id="2712650703044366764">Tällä mallilla on virheellinen päätepiste. Tarkista konfigurointi ja yritä uudelleen.</translation>
 <translation id="1167803637855350748">Leoon yhteyden muodostamisessa oli verkko-ongelma, tarkista yhteys ja yritä uudelleen.</translation>
 <translation id="1996126325390835277">Olet saavuttanut premium-määrärajan. Yritä uudelleen muutaman tunnin kuluttua.</translation>
+<translation id="3683964919745779766">Olet saavuttanut tämän mallin hintarajan tai sinulla ei ole enää krediittejä. Yritä myöhemmin uudelleen.</translation>
+<translation id="7692501701960747469">Tähän malliin määritetty API-avain on virheellinen. Tarkista asetukset ja yritä uudelleen.</translation>
+<translation id="7905602379229309187">Päätepiste on tällä hetkellä ylikuormitettu. Yritä myöhemmin uudelleen.</translation>
 <translation id="8151638057146502721">Konfiguroi</translation>
 <translation id="4177458398826096846">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Llama 3.1 8B:hen, Metan luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Mixtral 8x7B:hen, Mistral AI:n luomaan malliin, joka soveltuu edistyneisiin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Claude Instantiin, Anthropicin luomaan malliin, joka soveltuu edistyneisiin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude 3 Haiku, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.</translation>
-<translation id="1107977270364670952">Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude 3.5 Sonnet, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.</translation>
+<translation id="2001874998841390450">Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude Haiku, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude Sonnet, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> palveluntarjoaja <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
@@ -2098,6 +2116,9 @@
 <translation id="4165928407303989823">Pysy aiheessa</translation>
 <translation id="2389665228467129817">Juttele tavallista pidempään</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /kuukaudessa</translation>
+<translation id="9031958221569934724"><ph name="PRICE_VALUE"/> USD $ vuodessa</translation>
+<translation id="1028627582482425924">Yksi vuosi</translation>
+<translation id="36366199652730057">Paras tarjous</translation>
 <translation id="5151923271944811339">Vaihda ilmaiseen malliin</translation>
 <translation id="5474757891469990756">Päästä Leon täydet voimat valloilleen Premiumin avulla:</translation>
 <translation id="3453542753968940696">Ensisijainen pääsy tehokkaisiin malleihin, joilla on erilaisia taitoja.</translation>
@@ -2117,6 +2138,8 @@
 <translation id="9018766373792005944">Mitä palautteesi koskee?</translation>
 <translation id="7355096922131918313">Anna palautetta tässä</translation>
 <translation id="3027575440738035995">Leo Premium tarjoaa pääsyn laajennettuun joukkoon kielimalleja, jotka tarjoavat entistä tarkempia vastauksia. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Poista</translation>
+<translation id="6574153208133461043">Haluatko varmasti poistaa tämän keskustelun? Tätä toimenpidettä ei voi peruuttaa.</translation>
 <translation id="7488762544858401571">Muokattu</translation>
 <translation id="1406205536570262057">Muokkaa vastausta</translation>
 <translation id="2399439821649319175">Ei auta</translation>
@@ -2130,6 +2153,7 @@
 <translation id="8171760814579050200">Nimeä keskustelu uudelleen</translation>
 <translation id="7754678742055438573">Tyhjennä keskustelu</translation>
 <translation id="7494736170250048402">Lähetä Leolle viesti</translation>
+<translation id="8650874793377330048">Lopeta vastaaminen</translation>
 <translation id="8712637175834984815">Ymmärretty</translation>
 <translation id="1093419424466417703">Sivu on liian pitkä Leolle. Keskustelusta saattaa puuttua jokin asiayhteys. Leo pystyi lukemaan <ph name="PERCENTAGE"/> sivun sisällöstä.</translation>
 <translation id="2186990448773134544">Sivun sisältöä on parannettu poimimalla sivulta tärkeimmät tiedot, koska se oli liian pitkä Leolle.</translation>

@@ -29,6 +29,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           og gakktu úr skugga um að stillt sé á „ekki proxy“ eða „beint“.</translation>
+<translation id="6159073403999048272">Þessar síður eru ætlaðar til notkunar hjá þróunaraðilum Brave og er e.t.v. ekki haldið við eða prófaðar reglulega. Til að kveikja á þeim skaltu fara á <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, smella á hnappinn til að kveikja á villuleitarsíðum og fara síðan aftur á þessa síðu.</translation>
 <translation id="2765022094254723779">Brave virkar einnig í krafti annars <ph name="BEGIN_LINK_OSS"/>hugbúnaðar með opinn kóða<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Breytingar þínar munu taka gildi næst þegar þú endurræsir Brave.</translation>
 <translation id="8828443087767259398">Brave þarf Bluetooth-aðgang til að halda pörun 

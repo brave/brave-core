@@ -328,6 +328,18 @@ void TestRewardsEngineClient::RunDBTransaction(
   std::move(callback).Run(std::move(response));
 }
 
+void TestRewardsEngineClient::UpdateCreatorPrefixStore(
+    mojom::HashPrefixDataPtr prefix_data,
+    UpdateCreatorPrefixStoreCallback callback) {
+  std::move(callback).Run(false);
+}
+
+void TestRewardsEngineClient::CreatorPrefixStoreContains(
+    const std::string& value,
+    CreatorPrefixStoreContainsCallback callback) {
+  std::move(callback).Run(false);
+}
+
 void TestRewardsEngineClient::Log(const std::string& file,
                                   int32_t line,
                                   int32_t verbose_level,

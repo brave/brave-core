@@ -407,6 +407,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3570081523466826008">Atualizar ligações para HTTPS</translation>
 <translation id="3357319404342882895">Rigorosa</translation>
 <translation id="8823559166155093873">Bloquear cookies</translation>
+<translation id="7093267802941377072">A opção "Bloquear todos os cookies" foi descontinuada. Para saber como forçar a ativação desta opção, visite <ph name="BEGIN_LINK"/>a nossa página de ajuda<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Bloquear cookies de terceiros</translation>
 <translation id="5657156137487675418">Permitir todas as cookies</translation>
 <translation id="6883611015375728278">Bloquear todas as cookies</translation>
@@ -593,6 +594,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5522403133543437426">Motor de pesquisa utilizado na barra de endereço.</translation>
 <translation id="280472502078788655">Motor de pesquisa utilizado na barra de endereço de janelas privadas.</translation>
 <translation id="7232120595886556478">Janela Normal</translation>
+<translation id="6739674350896546324">Motor de pesquisa para Janelas Privadas</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> é agora o seu motor de pesquisa predefinido em janelas privadas</translation>
 <translation id="6864914031231797928">Autorizar logins do Google para extensões</translation>
 <translation id="7878791177459550035">O router multimédia ativa a funcionalidade de transmissão no navegador.</translation>
@@ -731,7 +733,7 @@ Leo AI. Esta ação não pode ser revertida.</translation>
 <translation id="3213787232304349732">O URL onde o seu framework de serviço está a aguardar solicitações. Se não tiver a certeza, consulte a documentação do framework de serviço. Por exemplo, para Ollama, é sempre http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Alguns frameworks de serviço podem exigir credenciais de autenticação, como uma chave de API ou um token de acesso. Estas serão adicionadas ao cabeçalho da solicitação.</translation>
 <translation id="4335128003329183586">Tamanho do contexto</translation>
-<translation id="8794525422794607973">O número máximo de tokens que o modelo consegue processar numa única interação. Cada token corresponde a cerca de 3/4 de uma palavra. Um contexto mais alargado permite que o modelo processe conversas mais longas. Modelos diferentes suportam contextos com diferentes tamanhos máximos.</translation>
+<translation id="3153779001670804829">O número máximo de tokens que o modelo consegue processar numa única interação. Um contexto mais abrangente permite que o modelo processe conversas mais longas. Modelos diferentes suportam contextos com diferentes tamanhos máximos.</translation>
 <translation id="217141195370578385">A Brave não faz proxy destas solicitações, leia os termos de privacidade do fornecedor escolhido.</translation>
 <translation id="2645532768679870478">Os pontos finais não locais devem utilizar o protocolo HTTPS para transmitir os dados em segurança.</translation>
 <translation id="8177205483022887785">Introduziu um URL inválido. Introduza um URL válido.</translation>

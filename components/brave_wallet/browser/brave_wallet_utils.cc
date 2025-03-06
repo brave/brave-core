@@ -779,6 +779,10 @@ std::string WalletInternalErrorMessage() {
   return l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
 }
 
+std::string WalletParsingErrorMessage() {
+  return l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
+}
+
 mojom::BlockchainTokenPtr GetBitcoinNativeToken(std::string_view chain_id) {
   auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::BTC);
   CHECK(network);

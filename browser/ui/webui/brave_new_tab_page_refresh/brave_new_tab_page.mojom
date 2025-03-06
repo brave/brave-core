@@ -1,0 +1,18 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_new_tab_page_refresh.mojom;
+
+// WebUI-side handler for notifications from the browser.
+interface NewTabPage {};
+
+// Browser-side handler for requests from the WebUI page.
+interface NewTabPageHandler {
+
+  // Sets the NewTabPage remote interface that will receive notifications from
+  // the browser.
+  SetNewTabPage(pending_remote<NewTabPage> page);
+
+};

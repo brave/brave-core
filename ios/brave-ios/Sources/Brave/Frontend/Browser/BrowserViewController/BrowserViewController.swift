@@ -40,19 +40,6 @@ import BraveTalk
 import BraveTalk
 #endif
 
-// swift-format-ignore
-private let KVOs: [KVOConstants] = [
-  .estimatedProgress,
-  .loading,
-  .canGoBack,
-  .canGoForward,
-  .url,
-  .title,
-  .hasOnlySecureContent,
-  .serverTrust,
-  ._sampledPageTopColor,
-]
-
 public class BrowserViewController: UIViewController {
   let webViewContainer = UIView()
   private(set) lazy var screenshotHelper = ScreenshotHelper(tabManager: tabManager)
@@ -1635,9 +1622,7 @@ public class BrowserViewController: UIViewController {
 
       if isAboutHomeURL {
         showNewTabPageController()
-      } else if !url.absoluteString.hasPrefix(
-        "\(InternalURL.baseUrl)/\(SessionRestoreHandler.path)"
-      ) {
+      } else {
         hideActiveNewTabPageController(url.isInternalURL(for: .readermode))
       }
     } else if isAboutHomeURL {
@@ -1813,218 +1798,10 @@ public class BrowserViewController: UIViewController {
       return true
     } else if let selectedTab = tabManager.selectedTab, selectedTab.canGoBack {
       selectedTab.goBack()
-      resetExternalAlertProperties(selectedTab)
+      selectedTab.resetExternalAlertProperties()
       return true
     }
     return false
-  }
-
-  override public func observeValue(
-    forKeyPath keyPath: String?,
-    of object: Any?,
-    change: [NSKeyValueChangeKey: Any]?,
-    context: UnsafeMutableRawPointer?
-  ) {
-
-    guard let webView = object as? WKWebView else {
-      Logger.module.error(
-        "An object of type: \(String(describing: object), privacy: .public) is being observed instead of a WKWebView"
-      )
-      return  // False alarm.. the source MUST be a web view.
-    }
-
-    // WebView is a zombie and somehow still has an observer attached to it
-    guard let tab = tabManager[webView] else {
-      Logger.module.error(
-        "WebView has been removed from TabManager but still has attached observers"
-      )
-      return
-    }
-
-    // Must handle ALL keypaths
-    guard let kp = keyPath else {
-      assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
-      return
-    }
-
-    let path = KVOConstants(keyPath: kp)
-    switch path {
-    case .estimatedProgress:
-      guard tab === tabManager.selectedTab,
-        // `WKWebView.estimatedProgress` is a `Double` type so it must be casted as such
-        let progress = change?[.newKey] as? Double
-      else { break }
-      if let url = webView.url, !InternalURL.isValid(url: url) {
-        topToolbar.updateProgressBar(Float(progress))
-      } else {
-        topToolbar.hideProgressBar()
-      }
-    case .loading:
-      if tab === tabManager.selectedTab {
-        topToolbar.locationView.loading = tab.loading
-        // There is a bug in WebKit where if you cancel a load on a request the progress can stick to 0.1
-        if !tab.loading, webView.estimatedProgress != 1 {
-          topToolbar.updateProgressBar(1)
-        }
-      }
-    case .url:
-      guard let tab = tabManager[webView] else { break }
-
-      // Special case for "about:blank" popups, if the webView.url is nil, keep the tab url as "about:blank"
-      if tab.url?.absoluteString == "about:blank" && webView.url == nil {
-        break
-      }
-
-      // To prevent spoofing, only change the URL immediately if the new URL is on
-      // the same origin as the current URL. Otherwise, do nothing and wait for
-      // didCommitNavigation to confirm the page load.
-      if tab.url?.origin == webView.url?.origin {
-        tab.url = webView.url
-
-        if tab === tabManager.selectedTab && !tab.restoring {
-          updateUIForReaderHomeStateForTab(tab)
-        }
-
-        // Catch history pushState navigation, but ONLY for same origin navigation,
-        // for reasons above about URL spoofing risk.
-        navigateInTab(tab: tab)
-      } else {
-        updateURLBar()
-
-        // If navigation will start from NTP, tab display url will be nil until
-        // didCommit is called and it will cause url bar be empty in that period
-        // To fix this when tab display url is empty, webview url is used
-        if tab === tabManager.selectedTab, tab.url?.displayURL == nil {
-          if let url = webView.url, !url.isLocal, !InternalURL.isValid(url: url) {
-            updateToolbarCurrentURL(url.displayURL)
-          }
-        } else if tab === tabManager.selectedTab, tab.url?.displayURL?.scheme == "about",
-          !webView.isLoading
-        {
-          if let url = webView.url {
-            tab.url = url
-
-            if !tab.restoring {
-              updateUIForReaderHomeStateForTab(tab)
-            }
-
-            navigateInTab(tab: tab)
-          }
-        } else if tab === tabManager.selectedTab, tab.isDisplayingBasicAuthPrompt {
-          updateToolbarCurrentURL(
-            URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
-          )
-        }
-      }
-
-      // Rewards reporting
-      if let url = change?[.newKey] as? URL, !url.isLocal {
-        // Notify Brave Rewards library of the same document navigation.
-        if let tab = tabManager.selectedTab,
-          let rewardsURL = tab.rewardsXHRLoadURL,
-          url.host == rewardsURL.host
-        {
-          if let url = webView.url {
-            tab.reportPageLoad(to: rewards, redirectChain: [url])
-          }
-        }
-      }
-
-      // Update the estimated progress when the URL changes. Estimated progress may update to 0.1 when the url
-      // is still an internal URL even though a request may be pending for a web page.
-      if tab === tabManager.selectedTab, let url = webView.url,
-        !InternalURL.isValid(url: url), webView.estimatedProgress > 0
-      {
-        topToolbar.updateProgressBar(Float(webView.estimatedProgress))
-      }
-
-      Task {
-        await tab.updateSecureContentState()
-        self.logSecureContentState(tab: tab, path: .url, change: change)
-        if self.tabManager.selectedTab === tab {
-          self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
-        }
-      }
-    case .title:
-      // Ensure that the tab title *actually* changed to prevent repeated calls
-      // to navigateInTab(tab:).
-      guard
-        let title = (webView.title?.isEmpty == true ? webView.url?.absoluteString : webView.title)
-      else { break }
-      if !title.isEmpty && title != tab.lastTitle {
-        navigateInTab(tab: tab)
-        tabsBar.updateSelectedTabTitle()
-
-        if let url = webView.url,
-          webView.configuration.preferences.isFraudulentWebsiteWarningEnabled,
-          webView.responds(to: Selector(("_safeBrowsingWarning"))),
-          webView.value(forKey: "_safeBrowsingWarning") != nil
-        {
-          tab.url = url  // We can update the URL whenever showing an interstitial warning
-          updateToolbarCurrentURL(url.displayURL)
-          updateInContentHomePanel(url)
-        }
-      }
-    case .canGoBack, .canGoForward:
-      guard tab === tabManager.selectedTab else {
-        break
-      }
-
-      updateBackForwardActionStatus(for: tab)
-    case .hasOnlySecureContent:
-      Task {
-        await tab.updateSecureContentState()
-        self.logSecureContentState(tab: tab, path: .hasOnlySecureContent, change: change)
-        if tabManager.selectedTab === tab {
-          self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
-        }
-      }
-    case .serverTrust:
-      Task {
-        await tab.updateSecureContentState()
-        self.logSecureContentState(tab: tab, path: .serverTrust, change: change)
-        if self.tabManager.selectedTab === tab {
-          self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
-        }
-      }
-    case ._sampledPageTopColor:
-      updateStatusBarOverlayColor()
-    default:
-      assertionFailure("Unhandled KVO key: \(kp)")
-    }
-  }
-
-  func logSecureContentState(
-    tab: Tab,
-    path: KVOConstants? = nil,
-    change: [NSKeyValueChangeKey: Any]? = nil
-  ) {
-    var text = """
-      Tab URL: \(tab.url?.absoluteString ?? "Empty Tab URL")
-       Secure State: \(tab.lastKnownSecureContentState.rawValue)
-      """
-
-    if let keyPath = path?.keyPath {
-      text.append("\n Value Observed: \(keyPath)\n")
-    }
-
-    if let webView = tab.webView {
-      text.append(
-        """
-         WebView url: \(webView.url?.absoluteString ?? "nil")
-         WebView hasOnlySecureContent: \(webView.hasOnlySecureContent ? "true" : "false")
-         WebView serverTrust: \(webView.serverTrust != nil ? "present" : "nil")
-        """
-      )
-    }
-
-    if let change, path == .serverTrust, let newServerTrust = change[.newKey] {
-      text.append("\n Change: \(newServerTrust != nil ? "present" : "nil")")
-    } else if let change, let value = change[.newKey] {
-      text.append("\n Change: \(String(describing: value))")
-    }
-
-    DebugLogger.log(for: .secureState, text: text)
   }
 
   func updateBackForwardActionStatus(for tab: Tab) {
@@ -2358,15 +2135,12 @@ public class BrowserViewController: UIViewController {
         // Only add history of a url which is not a localhost url
         if !url.isInternalURL(for: .readermode) {
           if !tab.isPrivate {
-            braveCore.historyAPI.add(url: url, title: tab.title, dateAdded: Date())
+            braveCore.historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date())
           }
 
           // Saving Tab.
           tabManager.saveTab(tab)
         }
-
-        // Fire the Brave Translate check.
-        BraveTranslateScriptHandler.checkTranslate(tab: tab)
       }
 
       TabEvent.post(.didChangeURL(url), for: tab)
@@ -2621,15 +2395,12 @@ extension BrowserViewController: TabDelegate {
   func tab(_ tab: Tab, didCreateWebView webView: WKWebView) {
     webView.frame = webViewContainer.frame
 
-    // Observers that live as long as the tab. Make sure these are all cleared in willDeleteWebView below!
-    KVOs.forEach { webView.addObserver(self, forKeyPath: $0.keyPath, options: .new, context: nil) }
     webView.navigationDelegate = self
     webView.uiDelegate = self
 
     var injectedScripts: [TabContentScript] = [
       ReaderModeScriptHandler(),
       ErrorPageHelper(certStore: profile.certStore),
-      SessionRestoreScriptHandler(),
       BlockedDomainScriptHandler(),
       HTTPBlockedScriptHandler(tabManager: tabManager),
       PrintScriptHandler(browserController: self),
@@ -2656,9 +2427,6 @@ extension BrowserViewController: TabDelegate {
 
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
-
-      BraveTranslateScriptLanguageDetectionHandler(),
-      BraveTranslateScriptHandler(),
     ]
 
     #if canImport(BraveTalk)
@@ -2682,6 +2450,13 @@ extension BrowserViewController: TabDelegate {
       ]
     }
 
+    if FeatureList.kBraveTranslateEnabled.enabled {
+      injectedScripts.append(contentsOf: [
+        BraveTranslateScriptLanguageDetectionHandler(),
+        BraveTranslateScriptHandler(),
+      ])
+    }
+
     // XXX: Bug 1390200 - Disable NSUserActivity/CoreSpotlight temporarily
     // let spotlightHelper = SpotlightHelper(tab: tab)
     // tab.addHelper(spotlightHelper, name: SpotlightHelper.name())
@@ -2696,8 +2471,6 @@ extension BrowserViewController: TabDelegate {
 
     (tab.getContentScript(name: ReaderModeScriptHandler.scriptName) as? ReaderModeScriptHandler)?
       .delegate = self
-    (tab.getContentScript(name: SessionRestoreScriptHandler.scriptName)
-      as? SessionRestoreScriptHandler)?.delegate = self
     (tab.getContentScript(name: PlaylistScriptHandler.scriptName) as? PlaylistScriptHandler)?
       .delegate = self
     (tab.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName)
@@ -2711,7 +2484,6 @@ extension BrowserViewController: TabDelegate {
 
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
     tab.cancelQueuedAlerts()
-    KVOs.forEach { webView.removeObserver(self, forKeyPath: $0.keyPath) }
     toolbarVisibilityViewModel.endScrollViewObservation(webView.scrollView)
     webView.uiDelegate = nil
     webView.removeFromSuperview()
@@ -2864,11 +2636,6 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
-  func didReloadTab(_ tab: Tab) {
-    // Resetting External Alert Properties
-    resetExternalAlertProperties(tab)
-  }
-
   @MainActor
   private func isPendingRequestAvailable() async -> Bool {
     let privateMode = privateBrowsingManager.isPrivateBrowsing
@@ -2899,12 +2666,6 @@ extension BrowserViewController: TabDelegate {
       )
     }
     return false
-  }
-
-  func resetExternalAlertProperties(_ tab: Tab?) {
-    if let tab = tab {
-      tab.resetExternalAlertProperties()
-    }
   }
 }
 
@@ -3010,16 +2771,6 @@ extension BrowserViewController: UIAdaptivePresentationControllerDelegate {
   public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
     // need to update tab bar visibility after user dismiss the `ChromeWebViewController`
     updateTabsBarVisibility()
-  }
-}
-
-extension BrowserViewController: SessionRestoreScriptHandlerDelegate {
-  func sessionRestore(_ handler: SessionRestoreScriptHandler, didRestoreSessionForTab tab: Tab) {
-    tab.restoring = false
-
-    if let tab = tabManager.selectedTab {
-      updateUIForReaderHomeStateForTab(tab)
-    }
   }
 }
 

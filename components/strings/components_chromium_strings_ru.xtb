@@ -29,6 +29,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           и убедитесь, что в конфигурации отключено использование прокси-сервера или выбрано непосредственное подключение.</translation>
+<translation id="6159073403999048272">Эти страницы, предназначенные для разработчиков Brave, могут тестироваться или поддерживаться нерегулярно. Чтобы включить их, перейдите по адресу <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, нажмите на кнопку включения отладочных страниц, а затем вернитесь сюда.</translation>
 <translation id="2765022094254723779">Brave также работает благодаря <ph name="BEGIN_LINK_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
 <translation id="8828443087767259398">Чтобы продолжить подключение, предоставьте браузеру Brave доступ к Bluetooth. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>

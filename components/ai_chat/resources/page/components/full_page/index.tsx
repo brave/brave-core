@@ -29,7 +29,11 @@ export default function FullScreen() {
   const canStartNewConversation = aiChatContext.hasAcceptedAgreement &&
     !!conversationContext.conversationHistory.length
 
+  const asideRef = React.useRef<HTMLElement | null>(null)
+
   const initAsideAnimation = React.useCallback((node: HTMLElement | null) => {
+    asideRef.current = node
+
     if (!node) return
     const open = { width: 'var(--navigation-width)', opacity: 1 }
     const close = { width: '0px', opacity: 0 }
@@ -100,6 +104,19 @@ export default function FullScreen() {
       toggleAside()
     }
   }, [aiChatContext.showSidebar])
+
+  // Add handler for closing the sidebar when clicking outside of it.
+  React.useEffect(() => {
+    if (aiChatContext.showSidebar || !isSmall) return
+    const handleClick = (e: MouseEvent) => {
+      if (!e.composedPath().includes(asideRef.current!)) {
+        aiChatContext.toggleSidebar()
+      }
+    }
+
+    document.addEventListener('click', handleClick, { capture: true })
+    return () => document.removeEventListener('click', handleClick, { capture: true })
+  }, [aiChatContext.showSidebar, isSmall])
 
   return (
     <div className={classNames(styles.fullscreen, aiChatContext.isMobile && isSmall && styles.mobile)}>

@@ -76,8 +76,6 @@ void ConversationClient::OnAssociatedContentInfoChanged(
           shouldSendContent:should_send_content];
 }
 
-void ConversationClient::OnFaviconImageDataChanged() {}
-
 void ConversationClient::OnConversationDeleted() {
   // TODO(petemill): UI should bind to a new conversation. This only
   // needs to be handled when the AIChatStorage feature is enabled, which

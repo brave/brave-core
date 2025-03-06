@@ -123,15 +123,8 @@ class ErrorPageHelper {
 
     components.queryItems = queryItems
     if let urlWithQuery = components.url {
-      if let internalUrl = InternalURL(webViewUrl), internalUrl.isSessionRestore,
-        let page = InternalURL.authorize(url: urlWithQuery)
-      {
-        // A session restore page is already on the history stack, so don't load another page on the history stack.
-        webView.replaceLocation(with: page)
-      } else {
-        // A new page needs to be added to the history stack (i.e. the simple case of trying to navigate to an url for the first time and it fails, without pushing a page on the history stack, the webview will just show the current page).
-        webView.load(PrivilegedRequest(url: urlWithQuery) as URLRequest)
-      }
+      // A new page needs to be added to the history stack (i.e. the simple case of trying to navigate to an url for the first time and it fails, without pushing a page on the history stack, the webview will just show the current page).
+      webView.load(PrivilegedRequest(url: urlWithQuery) as URLRequest)
     }
   }
 }

@@ -407,6 +407,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="3570081523466826008">Upgrade verbindingen naar HTTPS</translation>
 <translation id="3357319404342882895">Streng</translation>
 <translation id="8823559166155093873">Cookies blokkeren</translation>
+<translation id="7093267802941377072">De optie 'Alle cookies blokkeren' is uitgefaseerd. Als je wilt weten hoe je deze optie geforceerd kunt inschakelen, ga je naar <ph name="BEGIN_LINK"/>onze Help-pagina<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Indirecte cookies blokkeren</translation>
 <translation id="5657156137487675418">Sta alle cookies toe</translation>
 <translation id="6883611015375728278">Blokkeer alle cookies</translation>
@@ -594,6 +595,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="5522403133543437426">Zoekmachine die in de adresbalk wordt gebruikt.</translation>
 <translation id="280472502078788655">Zoekmachine die in de adresbalk van privévensters wordt gebruikt.</translation>
 <translation id="7232120595886556478">Normaal venster</translation>
+<translation id="6739674350896546324">Zoekmachine voor privévensters</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> is nu je standaard zoekmachine voor privévensters</translation>
 <translation id="6864914031231797928">Google-login voor extensies toestaan</translation>
 <translation id="7878791177459550035">Mediarouter maakt castfunctie beschikbaar in de browser.</translation>
@@ -734,7 +736,7 @@ gesprekken met Brave Leo AI. Deze actie kun je niet ongedaan maken.</translation
 <translation id="3213787232304349732">De URL waar je server framework luistert naar verzoeken. Als je het niet zeker weet, controleer dan de documentatie van het server framework. Voor Ollama is dit bijvoorbeeld altijd http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Voor sommige server frameworks zijn authenticatiegegevens vereist, zoals een API-sleutel of een toegangstoken. Deze zullen worden toegevoegd aan de header van het verzoek.</translation>
 <translation id="4335128003329183586">Contextgrootte</translation>
-<translation id="8794525422794607973">Het maximale aantal tokens dat het model kan verwerken in een enkele interactie. Elk token is ongeveer 3/4 van een woord. Met een grotere contextgrootte kan het model langere gesprekken aan. Verschillende modellen ondersteunen verschillende maximale contextgroottes.</translation>
+<translation id="3153779001670804829">Het maximale aantal tokens dat het model kan verwerken in een enkele interactie. Met een grotere contextgrootte kan het model langere gesprekken aan. Verschillende modellen ondersteunen verschillende maximale contextgroottes.</translation>
 <translation id="217141195370578385">Brave gebruikt geen proxy voor deze verzoeken. Lees de privacyvoorwaarden van de gekozen provider.</translation>
 <translation id="2645532768679870478">Niet-lokale eindpunten moeten het HTTPS-protocol gebruiken voor veilige gegevensoverdracht.</translation>
 <translation id="8177205483022887785">Je hebt een ongeldige URL ingevoerd. Voer een geldige URL in.</translation>

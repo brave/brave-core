@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_KEYRING_SERVICE_PREFS_H_
 
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -24,6 +25,8 @@ inline constexpr char kEncryptedPrivateKey[] = "encrypted_private_key";
 inline constexpr char kCoinType[] = "coin_type";
 inline constexpr char kBitcoinNextReceiveIndex[] = "bitcoin.next_receive";
 inline constexpr char kBitcoinNextChangeIndex[] = "bitcoin.next_change";
+inline constexpr char kCardanoNextExternalIndex[] = "cardano.next_external";
+inline constexpr char kCardanoNextInternalIndex[] = "cardano.next_internal";
 inline constexpr char kBitcoinXpub[] = "bitcoin.xpub";
 inline constexpr char kNextAccountIndex[] = "next_account_index";
 inline constexpr char kLedgerPrefValue[] = "Ledger";

@@ -407,6 +407,7 @@
 <translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
 <translation id="3357319404342882895">엄격</translation>
 <translation id="8823559166155093873">쿠키 차단</translation>
+<translation id="7093267802941377072">'모든 쿠키 차단' 옵션은 더 이상 사용되지 않습니다. 이 옵션을 강제 활성화하는 방법을 알아보려면 <ph name="BEGIN_LINK"/>도움말 페이지<ph name="END_LINK"/>를 방문하세요.</translation>
 <translation id="6196640612572343990">타사 쿠키 차단</translation>
 <translation id="5657156137487675418">모든 쿠키 허용</translation>
 <translation id="6883611015375728278">모든 쿠키 차단</translation>
@@ -594,6 +595,7 @@
 <translation id="5522403133543437426">주소 표시줄에서 사용하는 검색 엔진입니다.</translation>
 <translation id="280472502078788655">비공개(시크릿) 창의 주소 표시줄에서 사용하는 검색 엔진입니다.</translation>
 <translation id="7232120595886556478">일반 창</translation>
+<translation id="6739674350896546324">비공개 창을 위한 검색 엔진</translation>
 <translation id="1280261732441045146">이제 <ph name="SEARCH_ENGINE_NAME"/>이(가) 비공개(시크릿) 창의 기본 검색 엔진입니다</translation>
 <translation id="6864914031231797928">확장 프로그램에 대한 Google 로그인 허용</translation>
 <translation id="7878791177459550035">미디어 라우터가 브라우저 내  전송 기능을 활성화합니다.</translation>
@@ -734,7 +736,7 @@ Brave 레오 AI와 나눴던 모든 대화가 삭제됩니다.
 <translation id="3213787232304349732">서버 측 프레임워크가 요청을 수신하는 URL입니다. 잘 모르겠으면 서버 측 프레임워크 문서를 확인하시기 바랍니다. 예를 들어, Ollama의 경우 항상 http://localhost:11434/v1/chat/completions입니다.</translation>
 <translation id="1058790648388035953">몇몇 서버 측 프레임워크가 API 키나 액세스 토큰 등, 인증 자격증명을 요구할 수 있습니다. 요청 헤더에 추가됩니다.</translation>
 <translation id="4335128003329183586">컨텍스트 크기</translation>
-<translation id="8794525422794607973">모델이 단일 상호작용에서 처리할 수 있는 최대 토큰 수입니다. 각 토큰은 대략 단어의 3/4 크기입니다. 컨텍스트 크기가 클수록 모델이 더 긴 대화를 처리할 수 있습니다. 모델마다 지원하는 최대 컨텍스트 크기가 다릅니다.</translation>
+<translation id="3153779001670804829">모델이 단일 상호작용에서 처리할 수 있는 최대 토큰 수입니다. 컨텍스트 크기가 클수록 모델이 처리할 수 있는 대화가 더 길어집니다. 모델마다 지원하는 최대 컨텍스트 크기가 다릅니다.</translation>
 <translation id="217141195370578385">Brave는 이들 요청을 프록시하지 않습니다. 선택된 제공자의 프라이버시 조항을 읽으세요.</translation>
 <translation id="2645532768679870478">안전한 데이터 전송을 위해서는 비로컬 엔드포인트에 HTTPS 프로토콜이 채용되어 있어야 합니다.</translation>
 <translation id="8177205483022887785">유효하지 않은 URL을 입력했습니다. 유효한 URL을 입력하세요.</translation>

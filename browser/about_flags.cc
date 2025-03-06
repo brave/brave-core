@@ -542,6 +542,11 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           "Enables screenshot support via browser commands and context menu.", \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(brave_screenshots::features::kBraveScreenshots),  \
+          "brave-ntp-refresh-enabled",                                         \
+          "New Tab Page refresh",                                              \
+          "Enables the refreshed version of the New Tab Page",                 \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(features::kBraveNewTabPageRefreshEnabled),        \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \

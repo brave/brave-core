@@ -35,10 +35,6 @@ class URLExtensionTests: XCTestCase {
         URL(string: "http://vitalik.eth/")
       ),
       (
-        "internal://local/sessionrestore?url=https://en.m.wikipedia.org/wiki/Main_Page",
-        URL(string: "https://en.m.wikipedia.org/wiki/Main_Page")
-      ),
-      (
         "internal://local/reader-mode?url=https://en.m.wikipedia.org/wiki/Main_Page",
         URL(string: "https://en.m.wikipedia.org/wiki/Main_Page")
       ),
@@ -69,7 +65,6 @@ class URLExtensionTests: XCTestCase {
     ]
     let badURLs = [
       "http://google.com",
-      "http://localhost:6571/sessionrestore.html",
       "http://localhost:1234/about/home/#panel=0",
       [
         "http://localhost:6571/reader-mode/page",
@@ -97,7 +92,6 @@ class URLExtensionTests: XCTestCase {
     ]
     let badURLs = [
       "http://google.com",
-      "http://localhost:6571/sessionrestore.html",
       "http://localhost:1234/about/home/#panel=0",
       "http://localhost:6571/reader-mode/page",
     ]

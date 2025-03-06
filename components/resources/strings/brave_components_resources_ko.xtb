@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">HTTP/HTTPS를 통해 서비스되지 않는 서비스이기 때문에 신고할 수 없습니다.</translation>
 <translation id="7907023135990310743">이 페이지는 로컬 웹페이지이기 때문에 보고할 수 없습니다.</translation>
 <translation id="8740275226259417070">오류 페이지입니다. 깨진 사이트라고 신고할 수 없습니다.</translation>
+<translation id="6367576083705149078">연락처 정보를 제공하면 향후 보고서를 위해 저장됩니다.</translation>
 <translation id="6806248680442980382">모두를 위해 Brave 개선에 도움을 주셔서 감사합니다. 이 신고는 사이트 문제 해결에 필요한 정보만 포함합니다.</translation>
 <translation id="6476216365964140603">추가 세부정보(선택사항)</translation>
 <translation id="6145852496180774737">연락 방법:(선택사항)</translation>
@@ -712,8 +713,8 @@
 <translation id="4622826307953794521">Web Discovery Project를 통해 익명 검색 및 인터넷 사용 기록 데이터를 제공하여 Brave 검색 개선에 도움을 주세요. Brave 검색은 완전한 오픈 소스입니다.</translation>
 <translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
 <translation id="9034669711835382440">커뮤니티</translation>
-<translation id="814503310257431685">모두 보기</translation>
 <translation id="845020633253356720">가맹점 보기</translation>
+<translation id="7777123407058400802">Basic Attention Token – BAT</translation>
 <translation id="7090992647511817643">계정</translation>
 <translation id="4822132585477111396">체인 ID</translation>
 <translation id="3269475789479462358">도메인</translation>
@@ -1739,6 +1740,20 @@
 <translation id="3819528427777765709">보호</translation>
 <translation id="2142946302539262412">통합된 입금</translation>
 <translation id="4438043733494739848">투명한 입금</translation>
+<translation id="1950406774300125954">동기화되지 않음</translation>
+<translation id="68413355604013935">동기화되지 않음 (동기화되지 않은 블록 <ph name="BLOCKS"/>개)</translation>
+<translation id="1597233669965903034">계정을 동기화하여 최신 트랜잭션과 잔액에 액세스하세요.</translation>
+<translation id="7499262814309712782">계정 동기화</translation>
+<translation id="2804568727504456403"><ph name="ACCOUNT"/> 동기화</translation>
+<translation id="813913629614996137">초기화 중...</translation>
+<translation id="4404141491825711928">블록 처리 중:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/>개 남음</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> / <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">범위:</translation>
+<translation id="1178581264944972037">중지</translation>
+<translation id="7714298753782862705">동기화가 완료되었습니다. 이제 이 창을 닫아도 됩니다.</translation>
+<translation id="7716113567047550378">동기화가 완료될 때까지 이 창을 닫지 마세요.</translation>
+<translation id="5123590959308755060">새 탭에서 지갑 계속 사용</translation>
 <translation id="7144878232160441200">재시도</translation>
 <translation id="9094621390791852268">트랜잭션 미리보기 실패.</translation>
 <translation id="4982713341035600933">예상 잔액 변화</translation>
@@ -2063,7 +2078,7 @@
 <translation id="8637805148029768813">요약기 기능은 현재 일부 기사와 긴 형식의 웹페이지에만 사용할 수 있습니다.</translation>
 <translation id="1223498995510244364">요약하기</translation>
 <translation id="7491773233732232424">레오 소개</translation>
-<translation id="5208096220706490232">Brave 레오는 인터넷 사용성을 개선해주는 개인용 AI 스마트 어시스턴트입니다. 레오는 무료로 사용할 수 있으며 액세스 한도가 있습니다. Brave 레오 프리미엄은 더 많은 모델을 지원하고 한도가 높으며 구독자가 새로운 기능을 먼저 이용해볼 수 있습니다. 모든 사용자를 위한 기본 모델은 현재 Mixtral 8x7B입니다. 자세한 정보는 <ph name="LINK_BEFORE"/>Brave 위키<ph name="LINK_AFTER"/>를 참조하세요.</translation>
+<translation id="4885527781814382758">Brave 레오는 인터넷 사용성을 개선해주는 개인용 AI 스마트 어시스턴트입니다. 레오는 무료로 사용할 수 있으며 액세스 한도가 있습니다. Brave 레오 프리미엄은 더 많은 모델을 지원하고 한도가 높으며 구독자 여러분께 새로운 기능을 먼저 제공해 드립니다. 기본 모델은 수시로 변경됩니다. 자세한 정보는 <ph name="LINK_BEFORE"/>Brave 도움말 센터<ph name="LINK_AFTER"/>를 참조하세요.</translation>
 <translation id="7189603330209995455">기본적으로, 사용자가 보고 있는 웹페이지나 페이지상에 강조된 텍스트에 대해 레오에게 질문을 하면 그 내용이 Brave 레오에게 전송되어 답변을 제공합니다. 답변의 정확성은 보장되지 않으며 부정확하거나 오인할 수 있거나 잘못된 정보가 포함될 수 있습니다. 레오는 Brave 검색에서 얻어진 데이터를 사용하여 답변의 품질을 개선합니다. 민감하거나 사적인 정보를 입력하지 않아야 하며, 건강, 재무, 개인 안전 등과 관련된 텍스트에는 특별한 주의를 요합니다. 레오 옵션은 설정에서 언제든 조정할 수 있습니다. 설정 &gt; 레오로 이동하세요.</translation>
 <translation id="3038772045018370764">레오는 IP 주소와 같이 개인을 특정할 수 있는 식별자를 수집하지 않습니다. 어떠한 데이터도 AI 모델을 훈련하는 데 사용되지 않으며 AI 모델은 개인 데이터를 보관하지 않습니다(예외적으로 Anthropic의 경우 30일간 보관 후 삭제). 자세한 정보는 <ph name="LINK_BEFORE"/>개인정보 보호정책<ph name="LINK_AFTER"/>을 참조하세요.</translation>
 <translation id="7839853125981164613">여기 프롬프트 입력</translation>
@@ -2074,12 +2089,15 @@
 <translation id="2712650703044366764">이 모델의 엔드포인트가 잘못되었습니다. 구성을 확인한 후 다시 시도하세요.</translation>
 <translation id="1167803637855350748">레오에 연결 중 네트워크 문제가 있습니다. 연결 상태를 확인하고 다시 시도하세요.</translation>
 <translation id="1996126325390835277">프리미엄 답변 한도에 도달했습니다. 몇 시간 후 다시 시도해보세요.</translation>
+<translation id="3683964919745779766">이 모델의 요청 한도에 도달했거나 크레딧이 부족합니다. 나중에 다시 시도해 주세요.</translation>
+<translation id="7692501701960747469">이 모델에 구성된 API 키가 잘못되었습니다. 구성을 확인한 후 다시 시도하세요.</translation>
+<translation id="7905602379229309187">현재 엔드포인트에 과부하가 걸렸습니다. 나중에 다시 시도하세요.</translation>
 <translation id="8151638057146502721">구성</translation>
 <translation id="4177458398826096846">안녕하세요, 저는 레오예요. 전 Meta가 만든 모델인 Llama 3.1 8B 기반으로 구동되어 많은 사용 사례에 적용이 가능합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">안녕하세요, 저는 레오예요. 전 Mistral AI가 만든 모델인 Mixtral 8x7B 기반으로 구동되어 고도의 작업도 처리 가능합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, Anthropic가 만든 모델인 Claude Instant 기반으로 구동되어 대화문 및 텍스트 처리 성능이 강력합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, Anthropic가 만든 모델인 Claude 3 Haiku 기반으로 구동되어 대화문 및 텍스트 처리 성능이 강력합니다.</translation>
-<translation id="1107977270364670952">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, Anthropic가 만든 모델인  Claude 3.5 Sonnet 기반으로 구동되어 대화문 및 텍스트 처리 성능이 강력합니다.</translation>
+<translation id="2001874998841390450">안녕하세요, 저는 레오입니다. 저는 Brave의 프록시를 통해 Anthropic에서 개발한 모델인 Claude Haiku를 사용하여 대화와 텍스트 작업을 처리합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">안녕하세요, 저는 레오입니다. 저는 Brave의 프록시를 통해 Anthropic에서 개발한 모델인 Claude Sonnet를 사용하여 대화와 텍스트 작업을 처리합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> by <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">프리미엄</translation>
 <translation id="6187065185557150870">채팅</translation>
@@ -2098,6 +2116,9 @@
 <translation id="4165928407303989823">높은 주제 집중력</translation>
 <translation id="2389665228467129817">더 길게 채팅</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /월</translation>
+<translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/>/년</translation>
+<translation id="1028627582482425924">1년</translation>
+<translation id="36366199652730057">최고의 가성비</translation>
 <translation id="5151923271944811339">무료 모델로 전환</translation>
 <translation id="5474757891469990756">레오의 능력이 온전히 발휘되는 프리미엄:</translation>
 <translation id="3453542753968940696">여러 스킬을 갖춘 강력한 모델에 우선 액세스.</translation>
@@ -2117,6 +2138,8 @@
 <translation id="9018766373792005944">어떤 내용의 피드백인가요?</translation>
 <translation id="7355096922131918313">여기서 피드백 제공</translation>
 <translation id="3027575440738035995">레오 프리미엄은 더욱 다양한 언어 모델 세트를 활용하여 맥락을 더 잘 이해한 사람 같은 답변을 합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">삭제</translation>
+<translation id="6574153208133461043">이 대화를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.</translation>
 <translation id="7488762544858401571">편집됨</translation>
 <translation id="1406205536570262057">답변 편집</translation>
 <translation id="2399439821649319175">유용하지 않음</translation>
@@ -2130,6 +2153,7 @@
 <translation id="8171760814579050200">대화 이름 변경</translation>
 <translation id="7754678742055438573">대화 삭제</translation>
 <translation id="7494736170250048402">레오에게 메시지 보내기</translation>
+<translation id="8650874793377330048">응답 중지</translation>
 <translation id="8712637175834984815">확인</translation>
 <translation id="1093419424466417703">페이지가 레오에게 너무 깁니다. 일부 맥락이 대화에서 누락될 수 있습니다. 레오가 페이지 콘텐츠의 <ph name="PERCENTAGE"/>를 읽을 수 있었습니다.</translation>
 <translation id="2186990448773134544">페이지가 레오에겐 너무 길어 가장 관련성 있는 정보만 추출하여 페이지 콘텐츠를 정제했습니다.</translation>

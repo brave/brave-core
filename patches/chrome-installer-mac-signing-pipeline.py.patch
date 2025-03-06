@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/pipeline.py b/chrome/installer/mac/signing/pipeline.py
-index fbebaf4df216151858f012f7b4682127de5fe44d..c6931889093a459b29c66844071c4463a22ecf54 100644
+index fbebaf4df216151858f012f7b4682127de5fe44d..87b832a15f85a95984721361c23f77bac44b8806 100644
 --- a/chrome/installer/mac/signing/pipeline.py
 +++ b/chrome/installer/mac/signing/pipeline.py
 @@ -745,6 +745,9 @@ def sign_all(orig_paths,
@@ -12,3 +12,9 @@ index fbebaf4df216151858f012f7b4682127de5fe44d..c6931889093a459b29c66844071c4463
  
      _package_installer_tools(orig_paths, config)
  
+@@ -863,3 +866,4 @@ def _package_and_maybe_notarize_distributions(config, distributions,
+             if config.notarize.should_staple():
+                 package_path = uuids_to_package_path[result]
+                 notarize.staple(package_path)
++from brave_chromium_utils import inline_file; inline_file("//brave/chromium_src/chrome/installer/mac/signing/pipeline.py", globals(), locals())
+\ No newline at end of file

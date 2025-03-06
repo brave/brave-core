@@ -407,6 +407,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="3570081523466826008">Actualitza connexions a HTTPS</translation>
 <translation id="3357319404342882895">Estricte</translation>
 <translation id="8823559166155093873">Bloqueja les galetes</translation>
+<translation id="7093267802941377072">L'opció "Bloquejar totes les cookies" està obsoleta. Si vols saber com activar aquesta opció a la força, visita <ph name="BEGIN_LINK"/>la nostra pàgina d'ajuda<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Bloqueja les galetes de tercers</translation>
 <translation id="5657156137487675418">Permet totes les galetes</translation>
 <translation id="6883611015375728278">Bloqueja totes les galetes</translation>
@@ -594,6 +595,7 @@ Segur que vols continuar?</translation>
 <translation id="5522403133543437426">Motor de cerca en ús a la barra de direccions.</translation>
 <translation id="280472502078788655">Motor de cerca en ús a la barra de direccions per finestres d'incògnit.</translation>
 <translation id="7232120595886556478">Finestra normal</translation>
+<translation id="6739674350896546324">Motor de cerca per a Finestres d'incògnit</translation>
 <translation id="1280261732441045146">El teu motor de cerca per defecte a les finestres d'incògnit ara és <ph name="SEARCH_ENGINE_NAME"/></translation>
 <translation id="6864914031231797928">Permetre l'accés a Google per obtenir extensions</translation>
 <translation id="7878791177459550035">L'encaminador multimèdia habilita la funció de transmissió al navegador.</translation>
@@ -731,7 +733,7 @@ Segur que vols continuar?</translation>
 <translation id="3213787232304349732">URL on el teu marc de servidor rep les teves sol·licituds. Si no ho tens clar, consulta la documentació del marc de servidor. Per exemple, per a Ollama, aquest és sempre http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Alguns entorns de servidor poden requerir credencials d'autenticació, com una clau API o un token d'accés. S'afegiran a l'encapçalament de la sol·licitud.</translation>
 <translation id="4335128003329183586">Mida de context</translation>
-<translation id="8794525422794607973">El nombre màxim de tokens que pot processar el model durant una sola interacció. Cada token correspon, aproximadament, a 3/4 de paraula. Una mida de context més alta permet al model processar converses més llargues. Cada model és compatible amb diferents mides de context màximes.</translation>
+<translation id="3153779001670804829">El nombre màxim de tokens que pot processar el model durant una sola interacció. Una mida de context més alta permet al model processar converses més llargues. Cada model és compatible amb diferents mides de context màximes.</translation>
 <translation id="217141195370578385">El servidor de Brave no admet aquestes sol·licituds, llegiu els termes de privacitat del proveïdor triat.</translation>
 <translation id="2645532768679870478">Els punts finals no locals han de fer servir el protocol d'HTTPS per a la transmissió segura de dades.</translation>
 <translation id="8177205483022887785">Heu introduït un URL no vàlid. Introduïu-ne un de vàlid.</translation>

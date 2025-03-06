@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/engine/publisher/prefix_iterator.h"
+#include "brave/components/brave_rewards/core/engine/hash_prefix_iterator.h"
 
 namespace brave_rewards::internal {
 namespace publisher {
@@ -42,14 +42,20 @@ class PrefixListReader {
   ParseError Parse(const std::string& contents);
 
   // Returns an iterator pointing to the first prefix in the list
-  PrefixIterator begin() const {
-    return PrefixIterator(prefixes_.data(), 0, prefix_size_);
+  HashPrefixIterator begin() const {
+    return HashPrefixIterator(prefixes_, 0, prefix_size_);
   }
 
   // Returns an iterator pointing to the past-the-end element in the list
-  PrefixIterator end() const {
-    return PrefixIterator(prefixes_.data(), size(), prefix_size_);
+  HashPrefixIterator end() const {
+    return HashPrefixIterator(prefixes_, size(), prefix_size_);
   }
+
+  // Returns the hash prefix size.
+  size_t prefix_size() const { return prefix_size_; }
+
+  // Returns the entire raw prefix list.
+  const std::string& prefixes() const { return prefixes_; }
 
   // Returns the number of prefixes in the list
   size_t size() const { return prefixes_.size() / prefix_size_; }

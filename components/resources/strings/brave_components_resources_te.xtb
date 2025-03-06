@@ -16,6 +16,7 @@
 <translation id="7658239707568436148">రద్దు చేయి</translation>
 <translation id="3435896845095436175">ప్రారంభించండి</translation>
 <translation id="780301667611848630">వద్దు , ధన్యవాదాలు</translation>
+<translation id="2875302873837723333">టాప్ సైట్‌లు</translation>
 <translation id="1383876407941801731">వెతుకు</translation>
 <translation id="385051799172605136">వెనుకకు</translation>
 <translation id="370665806235115550">లోడ్ అవుతోంది...</translation>
@@ -42,9 +43,15 @@
 <translation id="3587482841069643663">మొత్తం</translation>
 <translation id="2631006050119455616">సేవ్ చేయబడింది</translation>
 <translation id="3866249974567520381">వివరణ</translation>
+<translation id="1389143276807887637">దిగుమతి చెయ్యి</translation>
+<translation id="3630697955794050612">ఆఫ్ అయ్యింది</translation>
+<translation id="4921250468871504777">సరే</translation>
+<translation id="7866482334467279021">ఆన్ చేయి</translation>
 <translation id="1430915738399379752">ముద్రించు</translation>
 <translation id="2799223571221894425">మళ్లీ ప్రారంభించు</translation>
+<translation id="1110535155349301542">తీసివేయి</translation>
 <translation id="8428213095426709021">సెట్టింగ్‌లు</translation>
+<translation id="1792148354504719133">సైట్</translation>
 <translation id="2448312741937722512">రకం</translation>
 <translation id="923467487918828349">అన్నీ చూపించు</translation>
 <translation id="2356070529366658676">అడుగు</translation>
@@ -71,6 +78,9 @@
 <translation id="5916664084637901428">ఆన్ చేయి</translation>
 <translation id="7751260505918304024">అన్నీ చూపించు</translation>
 <translation id="7138678301420049075">ఇతర</translation>
+<translation id="7090992647511817643">ఖాతా</translation>
+<translation id="3269475789479462358">డొమైన్</translation>
+<translation id="1288078776976153868">నెట్‌వర్క్</translation>
 <translation id="1987317783729300807">ఖాతాలు</translation>
 <translation id="6979737339423435258">మొత్తం సమయం</translation>
 <translation id="629730747756840877">ఖాతా</translation>
@@ -101,12 +111,14 @@
 <translation id="8131740175452115882">నిర్ధారించు</translation>
 <translation id="8030852056903932865">ఆమోదించు</translation>
 <translation id="7982789257301363584">నెట్‌వర్క్</translation>
+<translation id="5821668936183240062">తరువాత</translation>
 <translation id="4804818685124855865">డిస్‌కనెక్ట్ చెయ్యి</translation>
 <translation id="2391762656119864333">ఉపసంహరించు</translation>
 <translation id="5565735124758917034">సక్రియం</translation>
 <translation id="8874184842967597500">కనెక్ట్ చేయబడలేదు</translation>
 <translation id="5677928146339483299">బ్లాక్ చేయబడింది</translation>
 <translation id="3380365263193509176">తెలియని లోపం</translation>
+<translation id="6989562355845156390">ఆమోదించు</translation>
 <translation id="9218430445555521422">డిఫాల్ట్ లా సెట్ చెయ్యండి</translation>
 <translation id="4289540628985791613">స్థూలదృష్టి</translation>
 <translation id="4430019312045809116">వాల్యూమ్</translation>
@@ -118,6 +130,7 @@
 <translation id="3798449238516105146">సంస్కరణ</translation>
 <translation id="6129953537138746214">ఖాళీ</translation>
 <translation id="4412698727486357573">సహాయ కేంద్రం</translation>
+<translation id="8918368616587206671">బలమైన!</translation>
 <translation id="8297006494302853456">బలహీనం</translation>
 <translation id="4634124774493850572">పాస్‌వర్డ్‌ను ఉపయోగించు</translation>
 <translation id="6657585470893396449">పాస్‌వర్డ్</translation>
@@ -127,6 +140,7 @@
 <translation id="8775144690796719618">URL చెల్లదు</translation>
 <translation id="1472675084647422956">మరిన్ని చూపించు</translation>
 <translation id="4522570452068850558">వివరాలు</translation>
+<translation id="1178581264944972037">పాజ్ చేయి</translation>
 <translation id="7144878232160441200">మళ్లీ ప్రయత్నించండి</translation>
 <translation id="939305735877869636">Brave Software</translation>
 <translation id="1264974993859112054">క్రీడలు</translation>
@@ -141,6 +155,7 @@
 <translation id="2367972762794486313">అనువర్తనాలను చూపు</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">మోనోస్పేస్</translation>
+<translation id="8261506727792406068">తొలగించు</translation>
 <translation id="8712637175834984815">అర్థమైంది</translation>
 <translation id="7053983685419859001">నిరోధించు</translation>
 <translation id="6196640612572343990">మూడవ పక్షం కుక్కీలను బ్లాక్ చేయి</translation>

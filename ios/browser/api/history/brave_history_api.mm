@@ -55,6 +55,45 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     static_cast<history::DomainMetricType>(
         history::DomainMetricType::kEnableLast28DayMetric);
 
+#pragma mark - IOSHistoryCancellable
+
+@interface IOSHistoryCancellable () {
+  // Tracker for history requests.
+  base::CancelableTaskTracker tracker_;
+  base::OnceCallback<void()> callback_;
+}
+@end
+
+@implementation IOSHistoryCancellable
+- (instancetype)initWithCallback:(base::OnceCallback<void()>)callback {
+  if ((self = [super init])) {
+    callback_ = std::move(callback);
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [self cancel];
+  [self reset];
+}
+
+- (void)cancel {
+  tracker_.TryCancelAll();
+
+  if (callback_) {
+    std::move(callback_).Run();
+  }
+}
+
+- (void)reset {
+  callback_ = base::DoNothing();
+}
+
+- (base::CancelableTaskTracker*)tracker {
+  return &tracker_;
+}
+@end
+
 #pragma mark - IOSHistoryNode
 
 @interface IOSHistoryNode () {
@@ -156,7 +195,6 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
   raw_ptr<history::WebHistoryService> web_history_service_;
   // Tracker for history requests.
   base::CancelableTaskTracker tracker_;
-
   // Provides dependencies and funnels callbacks from BrowsingHistoryService.
   std::unique_ptr<HistoryDriverIOS> _browsingHistoryDriver;
   // Abstraction to communicate with HistoryService and WebHistoryService.
@@ -274,16 +312,22 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
       FROM_HERE, base::BindOnce(delete_history, completion));
 }
 
-- (void)searchWithQuery:(NSString*)queryArg
-                options:(IOSHistorySearchOptions*)searchOptionsArg
-             completion:
-                 (void (^)(NSArray<IOSHistoryNode*>* historyResults))callback {
+- (IOSHistoryCancellable*)
+    searchWithQuery:(NSString*)queryArg
+            options:(IOSHistorySearchOptions*)searchOptionsArg
+         completion:
+             (void (^)(NSArray<IOSHistoryNode*>* historyResults))callback {
+  IOSHistoryCancellable* cancellable = [[IOSHistoryCancellable alloc]
+      initWithCallback:base::BindOnce(callback, @[])];
+
   __weak BraveHistoryAPI* weak_history_api = self;
+  __weak IOSHistoryCancellable* weak_cancellable = cancellable;
   auto search_with_query = ^(NSString* query,
                              IOSHistorySearchOptions* searchOptions,
                              void (^completion)(NSArray<IOSHistoryNode*>*)) {
     BraveHistoryAPI* historyAPI = weak_history_api;
     if (!historyAPI) {
+      [weak_cancellable reset];
       completion(@[]);
       return;
     }
@@ -334,23 +378,32 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
             [historyNodes addObject:historyNode];
           }
 
+          [weak_cancellable reset];
           completion(historyNodes);
         }),
-        &historyAPI->tracker_);
+        [weak_cancellable tracker]);
   };
 
   web::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE,
       base::BindOnce(search_with_query, queryArg, searchOptionsArg, callback));
+
+  return cancellable;
 }
 
-- (void)fetchDomainDiversityForType:(DomainMetricTypeIOS)type
-                         completion:(void (^)(NSInteger count))completion {
+- (IOSHistoryCancellable*)
+    fetchDomainDiversityForType:(DomainMetricTypeIOS)type
+                     completion:(void (^)(NSInteger count))completion {
+  IOSHistoryCancellable* cancellable = [[IOSHistoryCancellable alloc]
+      initWithCallback:base::BindOnce(completion, 0)];
+
   __weak BraveHistoryAPI* weak_history_api = self;
+  __weak IOSHistoryCancellable* weak_cancellable = cancellable;
   auto fetchDomainDiversity =
       ^(DomainMetricTypeIOS metricType, void (^callback)(NSInteger)) {
         BraveHistoryAPI* historyAPI = weak_history_api;
         if (!historyAPI) {
+          [weak_cancellable reset];
           callback(0);
           return;
         }
@@ -364,6 +417,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
                 ^(std::pair<history::DomainDiversityResults,
                             history::DomainDiversityResults> metrics) {
                   if (!metrics.first.empty()) {
+                    [weak_cancellable reset];
                     callback(0);
                     return;
                   }
@@ -388,12 +442,16 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
                       }
                       break;
                   }
+
+                  [weak_cancellable reset];
                   callback(value);
                 }),
-            &historyAPI->tracker_);
+            [weak_cancellable tracker]);
       };
   web::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE, base::BindOnce(fetchDomainDiversity, type, completion));
+
+  return cancellable;
 }
 
 @end

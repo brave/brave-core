@@ -197,6 +197,8 @@
 <translation id="1680858055899097121">Behåll inte flikarna mellan surfsessioner</translation>
 <translation id="7142548388914389999">Tillåt integritetsbevarande produktanalys (P3A)</translation>
 <translation id="5254037869598726291">Anonymiserad P3A-info hjälper Brave att uppskatta den totala användningen och se till att vi förbättrar populära funktioner.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Bidra med anonym sökning &amp; surfdata för att förfina Brave Search.</translation>
 <translation id="933652931229970927">Skicka diagnostikrapporter automatiskt</translation>
 <translation id="5987838417172370108">Hjälp till att förbättra Braves produktstabilitet genom att automatiskt skicka diagnostikrapporter när Brave Browser kraschar eller fryser.</translation>
 <translation id="7977176350719484850">Uppsk. data\nsparade</translation>
@@ -233,7 +235,6 @@
 <translation id="6587448235155023666">Dina ändringar träder i kraft nästa gång du startar om Brave</translation>
 <translation id="8701563696941209024">STARTA OM NU</translation>
 <translation id="834487290629916192">SENARE</translation>
-<translation id="7207456302801184289">Välkommen till Brave</translation>
 <translation id="4117451092682672487">Sekretess har gjorts enkelt.</translation>
 <translation id="7909375417585209817">Om du gör Brave till standard öppnas alla länkar som du trycker på med Braves sekretesskydd.</translation>
 <translation id="7370959926683925817">Blockera annonser. Spara data. Varje dag.</translation>
@@ -241,6 +242,9 @@
 <translation id="5148943178722443958">Hjälp till att göra Brave bättre.</translation>
 <translation id="6718362830686703942">Skicka diagnostikrapporter om du upplever en krasch eller frysning.</translation>
 <translation id="8616157231067364693">Dela anonyma produktinsikter om vilka funktioner som Brave-användarna använder.</translation>
+<translation id="2888496576732880897">Hjälp Brave Sök att växa</translation>
+<translation id="7044431516245362795">Gå in på Web Discovery Project för att hjälpa till att utöka indexet och förbättra sökresultaten. <ph name="LEARN_MORE_START"/>Läs mer.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7818938154803162778">Ok, jag hjälper till.</translation>
 <translation id="2877653791257935258">Ange ett webbplatsnamn eller URL</translation>
 <translation id="5329830149661250028">Se Brave-skillnaden: Inga annonser. Inga spårare. Mycket snabbare hämtning av sidor.</translation>
 <translation id="3941792073703079607">Se den modiga skillnaden: Blockera annonser. Spara data. Streama snabbare.</translation>
@@ -457,6 +461,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="3624048886326677117">Blockera spårare och annonser (Aggressiv)</translation>
 <translation id="7151914815476509258">Blockera spårare och annonser (Standard)</translation>
 <translation id="7384778069178817075">Tillåt alla spårare och annonser</translation>
+<translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>Alternativet "Blockera alla cookies" har utgått. Om du vill veta hur du tvingar fram aktivering av det här alternativet kan du besöka<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>vår hjälpsida<ph name="END_LINK_1"/></translation>
 <translation id="3763681089644577874">Blockera cookies</translation>
 <translation id="614747795780742163">Förhindrar att sajter sparar information om dina tidigare besök.</translation>
 <translation id="6883611015375728278">Blockera alla kakor</translation>
@@ -480,7 +485,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="769702552748212954">Tillåt att alla fingeravtryck tas</translation>
 <translation id="876424292214881779">annonser och andra oönskade saker har blockerats</translation>
 <translation id="6849027612978668678">Webbplatser innehåller ofta cookies och skript som försöker identifiera dig och din enhet. De vill ta reda på vem du är och följa dig över hela webben och spåra vad du gör på varje webbplats.\n\nBrave blockerar dessa saker så att du kan surfa utan att bli förföljd.</translation>
-<translation id="8553998445606452168">Om Brave-sköldar</translation>
+<translation id="8553998445606452168">Om Brave Shields</translation>
 <translation id="8912304686498704084">UPP</translation>
 <translation id="4963218453264888510">NED</translation>
 <translation id="7474113515179313724">Du surfar på denna sajt utan Braves integritetsskydd. Fungerar den inte som den ska med Shields?</translation>
@@ -499,6 +504,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="8459191579769999214">Visa skärmdump</translation>
 <translation id="6476216365964140603">Ytterligare information (valfritt)</translation>
 <translation id="6145852496180774737">Kontakta mig på: (valfritt)</translation>
+<translation id="6367576083705149078">Om du uppger kontaktinformation kommer den att lagras för framtida rapporter.</translation>
 <translation id="7616645803364270729">E-post, Twitter, osv.</translation>
 <translation id="5299848999918506028">Tack!</translation>
 <translation id="76550953340008122">Tack för att du lät Braves utvecklare veta att något är fel på denna webbplats. Vi ska göra vårt bästa för att fixa det!</translation>
@@ -856,7 +862,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="590733288489975971">Belöningar från Ads</translation>
 <translation id="1450735350187803276">Annonser som setts denna månad</translation>
 <translation id="1767561995429774671">Bidra</translation>
-<translation id="7335371657242627509">Inkludera i Donera automatiskt</translation>
 <translation id="6727102863431372879">Ange</translation>
 <translation id="3074127054582480056">Viktigt</translation>
 <translation id="2280319752798785157">Månatligt bidrag</translation>
@@ -1242,4 +1247,5 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1336494649091412226">Är du säker på att du vill lämna Brave?</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Chatthistorik</translation>
+<translation id="6859935199732075666">Visa fel i Säker surfning</translation>
 </translationbundle>

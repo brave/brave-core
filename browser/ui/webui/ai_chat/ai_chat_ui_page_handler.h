@@ -67,8 +67,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
       override;
-  void GetFaviconImageData(const std::string& conversation_id,
-                           GetFaviconImageDataCallback callback) override;
 
   void BindParentUIFrameFromChildFrame(
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver);
@@ -91,18 +89,10 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   // AIChatTabHelper::Observer
   void OnAssociatedContentNavigated(int new_navigation_id) override;
 
-  void GetFaviconImageDataForAssociatedContent(
-      GetFaviconImageDataCallback callback,
-      mojom::AssociatedContentPtr content_info,
-      bool should_send_page_contents);
-
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
   raw_ptr<content::WebContents> owner_web_contents_ = nullptr;
-  raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
-
-  base::CancelableTaskTracker favicon_task_tracker_;
 
   base::ScopedObservation<AIChatTabHelper, AIChatTabHelper::Observer>
       chat_tab_helper_observation_{this};

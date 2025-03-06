@@ -46,7 +46,6 @@ class ConversationClient : public mojom::ConversationUI,
   void OnAssociatedContentInfoChanged(
       const mojom::AssociatedContentPtr site_info,
       bool should_send_content) override;
-  void OnFaviconImageDataChanged() override;
   void OnConversationDeleted() override;
 
   // mojom::ServiceObserver

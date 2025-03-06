@@ -131,8 +131,6 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
           std::move(print_preview_extraction_delegate)),
       page_content_fetcher_delegate_(
           std::make_unique<PageContentFetcher>(web_contents)) {
-  favicon::ContentFaviconDriver::FromWebContents(web_contents)
-      ->AddObserver(this);
   previous_page_title_ = web_contents->GetTitle();
 }
 
@@ -160,8 +158,6 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
 // content::WebContentsObserver
 
 void AIChatTabHelper::WebContentsDestroyed() {
-  favicon::ContentFaviconDriver::FromWebContents(web_contents())
-      ->RemoveObserver(this);
   inner_web_contents_ = nullptr;
 }
 
@@ -250,16 +246,6 @@ void AIChatTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
       GetPageContent(std::move(pending_get_page_content_callback_), "");
     }
   }
-}
-
-// favicon::FaviconDriverObserver
-void AIChatTabHelper::OnFaviconUpdated(
-    favicon::FaviconDriver* favicon_driver,
-    NotificationIconType notification_icon_type,
-    const GURL& icon_url,
-    bool icon_url_changed,
-    const gfx::Image& image) {
-  OnFaviconImageDataChanged();
 }
 
 // mojom::PageContentExtractorHost

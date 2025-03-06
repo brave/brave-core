@@ -162,7 +162,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     // add some non-private tabs to the tab manager
     for _ in 0..<3 {
       let tab = Tab(configuration: configuration, type: .private)
-      tab.url = URL(string: "http://yahoo.com")!
+      tab.setVirtualURL(URL(string: "http://yahoo.com")!)
       manager.configureTab(
         tab,
         request: URLRequest(url: tab.url!),

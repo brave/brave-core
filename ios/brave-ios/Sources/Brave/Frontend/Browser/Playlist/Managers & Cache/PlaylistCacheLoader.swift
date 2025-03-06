@@ -85,14 +85,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
       }
 
       self.certStore = browserViewController.profile.certStore
-      let kvos: [KVOConstants] = [
-        .estimatedProgress, .loading, .canGoBack,
-        .canGoForward, .url, .title,
-        .hasOnlySecureContent, .serverTrust,
-      ]
-
       browserViewController.tab(tab, didCreateWebView: webView)
-      kvos.forEach { webView.removeObserver(browserViewController, forKeyPath: $0.keyPath) }
 
       // When creating a tab, TabManager automatically adds a uiDelegate
       // This webView is invisible and we don't want any UI being handled.
@@ -392,7 +385,6 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
 
       if let mainDocumentURL = navigationAction.request.mainDocumentURL,
         mainDocumentURL.schemelessAbsoluteString == url.schemelessAbsoluteString,
-        !(InternalURL(url)?.isSessionRestore ?? false),
         navigationAction.sourceFrame.isMainFrame
           || navigationAction.targetFrame?.isMainFrame == true
       {

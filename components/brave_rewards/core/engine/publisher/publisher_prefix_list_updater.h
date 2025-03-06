@@ -55,7 +55,7 @@ class PublisherPrefixListUpdater {
 
   void OnFetchTimerElapsed();
   void OnFetchCompleted(mojom::Result result, std::string body);
-  void OnPrefixListInserted(mojom::Result result);
+  void OnPrefixListInserted(bool success);
 
   base::TimeDelta GetAutoUpdateDelay();
   base::TimeDelta GetRetryAfterFailureDelay();

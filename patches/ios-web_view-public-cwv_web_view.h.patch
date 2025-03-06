@@ -1,5 +1,5 @@
 diff --git a/ios/web_view/public/cwv_web_view.h b/ios/web_view/public/cwv_web_view.h
-index c17c6eb810f3122705cc0124e68e1b4a32cd10b8..c76bc2193fb3230585e719e35db730d24eee60e1 100644
+index ac0707fd52e41bb943c557e5c4b2919dded68507..a985cec0284242a182f3162e2fda9fb8d5614576 100644
 --- a/ios/web_view/public/cwv_web_view.h
 +++ b/ios/web_view/public/cwv_web_view.h
 @@ -71,7 +71,7 @@ CWV_EXPORT

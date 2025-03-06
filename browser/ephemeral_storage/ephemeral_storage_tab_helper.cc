@@ -60,6 +60,38 @@ EphemeralStorageTabHelper::GetEphemeralStorageToken(const url::Origin& origin) {
 
 void EphemeralStorageTabHelper::WebContentsDestroyed() {}
 
+void EphemeralStorageTabHelper::DidStartNavigation(
+    NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInMainFrame() ||
+      navigation_handle->IsSameDocument()) {
+    return;
+  }
+
+  CreateProvisionalTLDEphemeralLifetime(navigation_handle);
+}
+
+void EphemeralStorageTabHelper::DidRedirectNavigation(
+    NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInMainFrame() ||
+      navigation_handle->IsSameDocument()) {
+    return;
+  }
+
+  CreateProvisionalTLDEphemeralLifetime(navigation_handle);
+}
+
+void EphemeralStorageTabHelper::DidFinishNavigation(
+    NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInMainFrame() ||
+      navigation_handle->IsSameDocument()) {
+    return;
+  }
+
+  // Clear all provisional ephemeral lifetimes. A committed ephemeral lifetime
+  // is created in ReadyToCommitNavigation().
+  provisional_tld_ephemeral_lifetimes_.clear();
+}
+
 void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInMainFrame()) {
@@ -94,6 +126,27 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
 
   tld_ephemeral_lifetime_ = TLDEphemeralLifetime::GetOrCreate(
       browser_context, new_domain, site_instance->GetStoragePartitionConfig());
+}
+
+void EphemeralStorageTabHelper::CreateProvisionalTLDEphemeralLifetime(
+    NavigationHandle* navigation_handle) {
+  const GURL& url = navigation_handle->GetURL();
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+
+  const std::string new_domain = net::URLToEphemeralStorageDomain(url);
+  if (new_domain.empty()) {
+    return;
+  }
+
+  auto* browser_context = web_contents()->GetBrowserContext();
+  auto* site_instance = web_contents()->GetSiteInstance();
+
+  provisional_tld_ephemeral_lifetimes_.emplace(
+      TLDEphemeralLifetime::GetOrCreate(
+          browser_context, new_domain,
+          site_instance->GetStoragePartitionConfig()));
 }
 
 void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {

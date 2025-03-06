@@ -15,6 +15,8 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_vpn {
@@ -169,6 +171,23 @@ std::string ConnectionAPIImpl::GetHostname() const {
 
 void ConnectionAPIImpl::ResetHostname() {
   hostname_.reset();
+}
+
+bool ConnectionAPIImpl::SmartRoutingEnabled() const {
+  if (hostname_ && hostname_->smart_routing_enabled) {
+    bool smart_routing_user_supported = manager_->local_prefs()->GetBoolean(
+        prefs::kBraveVPNSmartProxyRoutingEnabled);
+    VLOG(2) << __func__ << " Host \"" << hostname_->hostname
+            << "\" supports smart proxy routing. "
+            << (smart_routing_user_supported
+                    ? "Smart proxy routing will be used."
+                    : "However, user has disabled smart proxy routing.");
+    return smart_routing_user_supported;
+  } else if (hostname_) {
+    VLOG(2) << __func__ << " Host \"" << hostname_->hostname
+            << "\" does not support smart proxy routing. ";
+  }
+  return false;
 }
 
 void ConnectionAPIImpl::UpdateAndNotifyConnectionStateChange(

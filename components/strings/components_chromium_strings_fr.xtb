@@ -29,6 +29,7 @@
           &gt;
           <ph name="PROXIES_TITLE"/>
           et assurez-vous que vos paramètres sont définis sur "sans proxy" ou "direct".</translation>
+<translation id="6159073403999048272">Ces pages sont destinées aux développeurs Brave, et il est possible qu'elles ne fassent pas l'objet d'une maintenance ni de tests actifs. Pour les activer, accédez à <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, cliquez sur le bouton pour activer les pages de débogage, puis accédez à nouveau à cette page.</translation>
 <translation id="2765022094254723779">Brave fonctionne également grâce à d'autres <ph name="BEGIN_LINK_OSS"/>logiciels Open Source<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
 <translation id="8828443087767259398">Brave a besoin d'accéder au Bluetooth pour continuer 

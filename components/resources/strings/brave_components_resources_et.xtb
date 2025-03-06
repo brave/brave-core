@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Sellest lehest ei saa teatada, sest seda ei esitatud HTTP/HTTPS-i kaudu.</translation>
 <translation id="7907023135990310743">See leht on kohalik veebileht ega sobi teatamiseks.</translation>
 <translation id="8740275226259417070">See on tõrkeleht. Sellest ei saa katkise veebisaidina teada anda.</translation>
+<translation id="6367576083705149078">Kui lisate kontaktandmed, salvestatakse need tulevaste aruannete jaoks.</translation>
 <translation id="6806248680442980382">Aitäh, et aitate teha Brave'i kõigi jaoks paremaks. See teade sisaldab üksnes veebisaidi parandamiseks vajalikku teavet.</translation>
 <translation id="6476216365964140603">Lisateave (valikuline)</translation>
 <translation id="6145852496180774737">Minu kontaktandmed (valikuline):</translation>
@@ -712,8 +713,8 @@
 <translation id="4622826307953794521">Anonüümsete otsingu- ja sirvimisandmete panustamine Brave'i otsingu täiustamiseks veebiavastusprojektiga. See on täielikult avatud lähtekoodiga.</translation>
 <translation id="4174337572777167894">Projekt Web Discovery</translation>
 <translation id="9034669711835382440">Kogukond</translation>
-<translation id="814503310257431685">Vaata kõiki</translation>
 <translation id="845020633253356720">Vaata poodi</translation>
+<translation id="7777123407058400802">Basic Attention Token - BAT</translation>
 <translation id="7090992647511817643">konto</translation>
 <translation id="4822132585477111396">Ahela ID</translation>
 <translation id="3269475789479462358">domeen</translation>
@@ -1739,6 +1740,20 @@
 <translation id="3819528427777765709">Kaitstud</translation>
 <translation id="2142946302539262412">Ühtlustatud</translation>
 <translation id="4438043733494739848">Läbipaistev</translation>
+<translation id="1950406774300125954">Sünkroonimata</translation>
+<translation id="68413355604013935">Sünkroonimata (<ph name="BLOCKS"/> blocks behind)</translation>
+<translation id="1597233669965903034">Sünkroonige oma konto, et pääseda ligi viimastele tehingutele ja saldole.</translation>
+<translation id="7499262814309712782">Sünkrooni konto</translation>
+<translation id="2804568727504456403">Sünkrooni <ph name="ACCOUNT"/></translation>
+<translation id="813913629614996137">Lähtestamine...</translation>
+<translation id="4404141491825711928">Töötlemise blokeering</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> jäänud</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> kokku <ph name="TOTAL_BLOCKS"/>-st</translation>
+<translation id="5055918601206839704">Vahemikud:</translation>
+<translation id="1178581264944972037">Peata</translation>
+<translation id="7714298753782862705">Sünkroniseerimine lõpetatud. Võite selle akna sulgeda.</translation>
+<translation id="7716113567047550378">Palun ärge sulgege seda akent enne, kui sünkroniseerimine on lõppenud.</translation>
+<translation id="5123590959308755060">Jätka rahakoti kasutamist uuel vahelehel</translation>
 <translation id="7144878232160441200">Proovi uuesti</translation>
 <translation id="9094621390791852268">Ülekande eelvaade nurjus.</translation>
 <translation id="4982713341035600933">Saldo hinnanguline muutus</translation>
@@ -2063,7 +2078,7 @@
 <translation id="8637805148029768813">Kokkuvõtja funktsioon on praegu saadaval ainult valitud artiklite ja muude pika vormi veebilehtede jaoks.</translation>
 <translation id="1223498995510244364">Võta kokku</translation>
 <translation id="7491773233732232424">Leo tutvustus</translation>
-<translation id="5208096220706490232">Brave Leo on privaatne TI-põhine nutiabiline, mis täiustab teie internetikasutust. Leo on juurdepääsupiiranguga tasuta. Brave Leo Premium pakub rohkem mudeleid ja suuremaid piirmääri ning annab tellijale varase juurdepääsu uutele funktsioonidele. Kõigi kasutajate vaikemudel on praegu Mixtral 8x7B. Lisateavet vaadake <ph name="LINK_BEFORE"/>Brave'i vikist<ph name="LINK_AFTER"/>.</translation>
+<translation id="4885527781814382758">Brave Leo on privaatne TI-põhine nutiabiline, mis täiustab teie internetikasutust. Leo kasutamine on piiratud mahus tasuta. Brave Leo Premium pakub rohkem mudeleid ja suuremaid piirmääri ning annab tellijale varase juurdepääsu uutele funktsioonidele. Vaikimisi mudel muutub aeg-ajalt. Lisateavet vaadake <ph name="LINK_BEFORE"/>Brave'i Abikeskusest<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Kui esitate Leole küsimuse, võib ta vaikimisi saata vastuse andmiseks Brave'i Leole veebilehe sisu, mida parajasti vaatate, või teksti, mille lehel esile tõstate. Vastuste täpsus ei ole tagatud ja vastused võivad sisaldada ebatäpset, eksitavat või vale teavet. Leo kasutab vastuse kvaliteedi parandamiseks Brave'i Otsingu andmeid. Ärge esitage tundlikku või privaatset teavet ja olge ettevaatlik mis tahes tervise, raha või isikliku ohutuse ja muu sarnasega seotud vastuste korral. Leo suvandeid saab igal ajal seadetes kohandada. Avage Seaded &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo ei kogu identifikaatoreid, mida saaks teiega seostada, näiteks IP-aadresse. Andmeid ei kasutata tehisintellektimudelite treenimiseks ja tehisintellektimudel ei säilita isikuandmeid (välja arvatud Anthropic, mis säilitab andmeid enne kustutamist 30 päeva). Lisateavet vaadake <ph name="LINK_BEFORE"/>privaatsuspõhimõtetest<ph name="LINK_AFTER"/>.</translation>
 <translation id="7839853125981164613">Sisestage siia viip</translation>
@@ -2074,12 +2089,15 @@
 <translation id="2712650703044366764">Sellel mudelil on vigane lõpp-punkt. Palun kontrollige oma konfiguratsiooni ja proovige uuesti.</translation>
 <translation id="1167803637855350748">Leoga ühenduse loomisel ilmnes võrguprobleem, kontrollige oma ühendust ja proovige uuesti.</translation>
 <translation id="1996126325390835277">Olete jõudnud Premiumi määralimiidini. Proovige paari tunni pärast uuesti.</translation>
+<translation id="3683964919745779766">Olete jõudnud selle mudeli tariifilimiidini või on teil krediit otsas. Proovige hiljem uuesti.</translation>
+<translation id="7692501701960747469">Selle mudeli jaoks konfigureeritud API võti ei kehti. Palun kontrollige oma konfiguratsiooni ja proovige uuesti.</translation>
+<translation id="7905602379229309187">Lõpp-punkt on praegu ülekoormatud. Proovige hiljem uuesti.</translation>
 <translation id="8151638057146502721">Konfigureeri</translation>
 <translation id="4177458398826096846">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil Llama 3.1 8B. See on Meta loodud mudel, mis võimaldab toimimist ja kohaldamist paljude kasutusmallide korral. <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil Mixtral 8x7B. See on Mistral AI loodud mudel keerukamate ülesannetega tegelemiseks. <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Tere, olen Leo. Mind vahendab Brave ja ma põhinen platvormil Claude Instant. See on Anthropicu loodud mudel vestlus- ja tekstitöötlusülesannete võimaldamiseks. <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Tere, olen Leo. Olen Brave'i poolt volitatud ja kasutan Claude 3 Haikut, mis on Anthropicu poolt loodud mudel vestlus- ja tekstitöötlusülesannete täitmiseks.</translation>
-<translation id="1107977270364670952">Tere, olen Leo. Olen Brave'i poolt volitatud ja kasutan Claude 3.5 Sonnetit, mis on Anthropicu poolt loodud mudel vestlus- ja tekstitöötlusülesannete täitmiseks.</translation>
+<translation id="2001874998841390450">Tere, olen Leo. Mind vahendab Brave ja ma põhinen platvormil Claude Haiku, mis on Anthropicu loodud mudel vestlus- ja tekstitöötlusülesannete võimaldamiseks. <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Tere, olen Leo. Mind vahendab Brave ja ma põhinen platvormil Claude Sonnet, mis on Anthropicu loodud mudel vestlus- ja tekstitöötlusülesannete võimaldamiseks. <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> ettevõttelt <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Vestlus</translation>
@@ -2098,6 +2116,9 @@
 <translation id="4165928407303989823">Püsige teemas</translation>
 <translation id="2389665228467129817">Pikem vestlus</translation>
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD $ / kuus</translation>
+<translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/> /aastas</translation>
+<translation id="1028627582482425924">Üks aasta</translation>
+<translation id="36366199652730057">Parima hinnaga</translation>
 <translation id="5151923271944811339">Lülitu tasuta mudelile</translation>
 <translation id="5474757891469990756">Premiumiga saate kasutada kõiki Leo võimalusi:</translation>
 <translation id="3453542753968940696">Eelisjuurdepääs võimsatele eri oskustega mudelitele.</translation>
@@ -2117,6 +2138,8 @@
 <translation id="9018766373792005944">Mille kohta annate tagasisidet?</translation>
 <translation id="7355096922131918313">Kirjutage tagasiside siia</translation>
 <translation id="3027575440738035995">Leo Premium-versioonis saate juurdepääsu rohkematele keelemudelitele, et vastused oleksid veelgi nüansirikkamad. <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Kustuta</translation>
+<translation id="6574153208133461043">Kas olete kindel, et soovite vestluse kustutada? Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="7488762544858401571">Muudetud</translation>
 <translation id="1406205536570262057">Muuda vastust</translation>
 <translation id="2399439821649319175">Ei aita</translation>
@@ -2130,6 +2153,7 @@
 <translation id="8171760814579050200">Nimeta vestlus ümber</translation>
 <translation id="7754678742055438573">Kustuta vestlus</translation>
 <translation id="7494736170250048402">Saada Leole sõnum</translation>
+<translation id="8650874793377330048">Lõpeta vastamine</translation>
 <translation id="8712637175834984815">Selge</translation>
 <translation id="1093419424466417703">See leht on Leo jaoks liiga pikk. Osa konteksti võib vestlusest välja jääda. Leo suutis lugeda <ph name="PERCENTAGE"/>lehe sisust.</translation>
 <translation id="2186990448773134544">Lehe sisu täpsustati lehelt kõige asjakohasema teabe väljavõtmise teel, sest lehe sisu oli Leo jaoks liiga pikk.</translation>

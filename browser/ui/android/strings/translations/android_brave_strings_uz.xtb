@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="uz">
+<translation id="7931127789630755251">Brave brauzerida koʻrsatiladigan maxsus reklamalar uchun tokenlar ishlab oling</translation>
 <translation id="7859066142771796818">Tokenlarni boshqa valyutalarga ayirboshlash, hadya kartalarini sotib olish, kontent mualliflarini dastaklash va boshqalar uchun ishlatish mumkin.</translation>
 <translation id="3863981251715594911">Bu qanday ishlaydi?</translation>
 <translation id="2965798296974325760">Mukofotlardan foydalanishni boshlash</translation>
@@ -38,10 +39,12 @@
 <translation id="2877653791257935258">Veb-sayt nomi yoki URL manzilini kiriting</translation>
 <translation id="5329830149661250028">Brave boshqa brauzerlardan farq qiladi: Reklamasiz. Trekerlarsiz. Sahifa tezkor yuklanadi.</translation>
 <translation id="3941792073703079607">Brave boshqa brauzerlardan farq qiladi: Reklamalarni bloklaydi. Trafikni tejaydi. Translatsiyani tezlatadi.</translation>
+<translation id="6165508094623778733">Batafsil</translation>
 <translation id="5806601733251372221">Brave Qalqon</translation>
 <translation id="3333887201479867589">Brave Mukofotlar</translation>
 <translation id="3570367516044491911">Birlamchi brauzer qilib sozlash</translation>
 <translation id="3546439402724649282">Brave allaqachon birlamchi brauzer qilib sozlangan.</translation>
+<translation id="7658239707568436148">Bekor qilish</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave Yangiliklar</translation>
 <translation id="8428213095426709021">Sozlamalar</translation>
@@ -75,6 +78,7 @@
 <translation id="2977461003134694205">Maxfiylik statistikasi</translation>
 <translation id="8363792084628930008">Mukofotlar funksiyasini yoqish orqali <ph name="TERMS_OF_SERVICE"/> va <ph name="PRIVACY_POLICY"/> uchun rozilik berasiz.</translation>
 <translation id="3479552764303398839">Hozir emas</translation>
+<translation id="8488282162676695335">Brave Hamyon</translation>
 <translation id="2359808026110333948">Davom etish</translation>
 <translation id="1544192797660353713">Hamyon</translation>
 <translation id="719977489961414786">VPN yordamida aloqani himoyalang va keraksiz trekerlarni hamma joyda bloklang.</translation>
@@ -94,14 +98,17 @@
 <translation id="6053992191006521518">BEPUL sinash</translation>
 <translation id="5903391101107992067">7 kun bepul sinash</translation>
 <translation id="8681480718817027245">Obuna</translation>
+<translation id="9065203028668620118">Tahrirlash</translation>
 <translation id="1450735350187803276">Bu oyda koʻrilgan reklamalar</translation>
 <translation id="5233638681132016545">Yangi varaq</translation>
+<translation id="5039804452771397117">Ruxsat</translation>
 <translation id="4250680216510889253">Yoʻq</translation>
 <translation id="5456039738087398178">Bosh ekran vidjeti</translation>
 <translation id="5899814466108868020">Siz Brave va BAT hamjamiyatini dastaklashga yordam beryapsiz</translation>
 <translation id="3264975266761862670">Mukofotlar ishlab olishga tayyormisiz?</translation>
 <translation id="265337947574975838">Hisobingizni ulang yoki hamkorlarimizdan biri orqali hisob yarating.</translation>
 <translation id="654447476965480878">BAT ishlab olish haqida batafsil</translation>
+<translation id="6278643716658443228">Mukofotlar sozlamalari</translation>
 <translation id="4272136334824111854">Bu oyda Brave Mukofotlar tomonidan dastaklanadigan <ph name="CREATOR_COUNT"/> ta ijodkorning sahifasiga tashrif buyurdingiz</translation>
 <translation id="1179407411385015942">Leo bu – AI asosida ishlovchi brauzerning ichki intellektual assistentidir</translation>
 <translation id="4109670531935487117">Manzil qatorida avtomatik kiritish tavsiyalarini chiqarish</translation>
@@ -122,4 +129,5 @@
 <translation id="614530507403667291">Yangi suhbatlar uchun odatiy model</translation>
 <translation id="4071849832011229600">Birlamchi model</translation>
 <translation id="7557539689487606886">Premium obuna qilish</translation>
+<translation id="3488199663160411179">nomi</translation>
 </translationbundle>

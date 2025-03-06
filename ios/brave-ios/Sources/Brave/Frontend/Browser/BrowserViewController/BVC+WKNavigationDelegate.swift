@@ -171,7 +171,7 @@ extension BrowserViewController: WKNavigationDelegate {
       return .download
     }
 
-    if response.mimeType == MIMEType.passbook {
+    if [MIMEType.passbook, MIMEType.passbookBundle].contains(response.mimeType) {
       return .download
     }
 
@@ -340,18 +340,6 @@ extension BrowserViewController: WKNavigationDelegate {
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.url
 
-    // Server Trust and URL is also updated in didCommit
-    // However, WebKit does NOT trigger the `serverTrust` observer when the URL changes, but the trust has not.
-    // WebKit also does NOT trigger the `serverTrust` observer when the page is actually insecure (non-https).
-    // So manually trigger it with the current trust.
-
-    observeValue(
-      forKeyPath: KVOConstants.serverTrust.keyPath,
-      of: webView,
-      change: [.newKey: webView.serverTrust as Any, .kindKey: 1],
-      context: nil
-    )
-
     self.tabDidCommitWebViewNavigation(tab)
   }
 
@@ -421,14 +409,6 @@ extension BrowserViewController: WKNavigationDelegate {
       if tab == self.tabManager.selectedTab {
         self.topToolbar.hideProgressBar()
       }
-
-      // If the local web server isn't working for some reason (Brave cellular data is
-      // disabled in settings, for example), we'll fail to load the session restore URL.
-      // We rely on loading that page to get the restore callback to reset the restoring
-      // flag, so if we fail to load that page, reset it here.
-      if InternalURL(url)?.aboutComponent == "sessionrestore" {
-        tab.restoring = false
-      }
     }
   }
 }
@@ -461,7 +441,7 @@ extension BrowserViewController: WKUIDelegate {
     // the request here manually leads to incorrect results!!
     let newTab = tabManager.addPopupForParentTab(parentTab, configuration: configuration)
 
-    newTab.url = URL(string: "about:blank")
+    newTab.setVirtualURL(URL(string: "about:blank"))
 
     toolbarVisibilityViewModel.toolbarState = .expanded
 

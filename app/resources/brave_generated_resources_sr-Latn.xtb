@@ -730,7 +730,6 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="3213787232304349732">URL adresa na kojoj vaš okvir za implementaciju sluša zahteve. Ako niste sigurni, proverite dokumentaciju okvira za implementaciju. Npr. kod modela Ollama, to je uvek http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Neki okviri za implementaciju mogu zahtevati podatke za prijavu kao što su API ključ ili token za pristup. Oni će biti dodati u zaglavlje zahteva.</translation>
 <translation id="4335128003329183586">Veličina konteksta</translation>
-<translation id="3153779001670804829">Maksimalan broj tokena koji model može da obradi u jednoj interakciji. Svaki token je otprilike 3/4 reči. Veća veličina konteksta omogućava modelu da upravlja dužim razgovorima. Različiti modeli podržavaju različite maksimalne veličine konteksta.</translation>
 <translation id="217141195370578385">Brave ne posreduje ove zahteve, pročitajte uslove izabranog provajdera u pogledu privatnosti.</translation>
 <translation id="2645532768679870478">Krajnje tačke koje nisu lokalne trebalo bi da koriste HTTPS protokol kako bi prenos podataka bio bezbedan.</translation>
 <translation id="8177205483022887785">Uneli ste pogrešan URL. Unesite ispravan URL.</translation>

@@ -12,7 +12,6 @@ import Tooltip from '@brave/leo/react/tooltip'
 import { AppModelContext, useAppState } from '../lib/app_model_context'
 import { RouterContext } from '../lib/router'
 import { formatMessage } from '../../shared/lib/locale_context'
-import { useCallbackWrapper } from '../lib/callback_wrapper'
 import { useLocaleContext } from '../lib/locale_strings'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { WalletProviderIcon } from '../../shared/components/icons/wallet_provider_icon'
@@ -36,7 +35,6 @@ export function ConnectAccount() {
   const model = React.useContext(AppModelContext)
   const router = React.useContext(RouterContext)
   const { getString } = useLocaleContext()
-  const wrapCallback = useCallbackWrapper()
 
   let [
     countryCode,
@@ -141,9 +139,9 @@ export function ConnectAccount() {
       if (allowed) {
         setSelectedProvider(provider)
         setLoadingState('loading')
-        model.beginExternalWalletLogin(provider).then(wrapCallback((ok) => {
+        model.beginExternalWalletLogin(provider).then((ok) => {
           setLoadingState(ok ? '' : 'error')
-        }))
+        })
       }
     }
 

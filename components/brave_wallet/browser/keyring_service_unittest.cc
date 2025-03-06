@@ -41,6 +41,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/switches.h"
+#include "brave/components/brave_wallet/common/test_utils.h"  // IWYU pragma: keep
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -3925,5 +3926,163 @@ TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes_ZCashDisabled) {
 }
 
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
+
+TEST_F(KeyringServiceUnitTest, GetCardanoAccountInfo) {
+  using mojom::CardanoAddress;
+  using mojom::CardanoKeyId;
+  using mojom::CardanoKeyRole::kExternal;
+  using mojom::CardanoKeyRole::kInternal;
+
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletCardanoFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto ada_acc = GetAccountUtils(&service).EnsureAdaAccount(0);
+
+  service.UpdateNextUnusedAddressForCardanoAccount(ada_acc->account_id, 7, 9);
+  EXPECT_EQ(
+      CardanoAddress::New(
+          "addr1qy2klrtn9yawwdudw4avq0dhk70ujmj7jdluwhy7358npu8927ysx5sftuw0dlf"
+          "t05dz3c7revpf7jx0xnlcjz3g69mqwrk490",
+          CardanoKeyId::New(kExternal, 7)),
+      service.GetCardanoAccountInfo(ada_acc->account_id)
+          ->next_external_address);
+  EXPECT_EQ(CardanoAddress::New(
+                "addr1qyrrx9fp9krpk3qa8n777gw4d0fah3u3kwsell8qjx3h968927ysx5sft"
+                "uw0dlft05dz3c7revpf7jx0xnlcjz3g69mqyhva2g",
+                CardanoKeyId::New(kInternal, 9)),
+            service.GetCardanoAccountInfo(ada_acc->account_id)
+                ->next_internal_address);
+}
+
+TEST_F(KeyringServiceUnitTest, GetCardanoAddresses) {
+  using mojom::CardanoAddress;
+  using mojom::CardanoKeyId;
+  using mojom::CardanoKeyRole::kExternal;
+  using mojom::CardanoKeyRole::kInternal;
+
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletCardanoFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+
+  EXPECT_THAT(GetAccountUtils(&service).AllAdaAccounts(), testing::IsEmpty());
+
+  auto added_account =
+      AddAccount(&service, mojom::CoinType::ADA,
+                 mojom::KeyringId::kCardanoMainnet, "Cadano Acc");
+
+  EXPECT_THAT(GetAccountUtils(&service).AllAdaAccounts(), testing::SizeIs(1u));
+  auto cardano_acc = GetAccountUtils(&service).AllAdaAccounts()[0]->Clone();
+  EXPECT_EQ(cardano_acc, added_account);
+  EXPECT_EQ(cardano_acc->address, "");
+  EXPECT_EQ(cardano_acc->name, "Cadano Acc");
+  EXPECT_EQ(cardano_acc->account_id->kind, mojom::AccountKind::kDerived);
+  EXPECT_EQ(cardano_acc->account_id->coin, mojom::CoinType::ADA);
+  EXPECT_EQ(cardano_acc->account_id->keyring_id,
+            mojom::KeyringId::kCardanoMainnet);
+
+  auto addresses = service.GetCardanoAddresses(cardano_acc->account_id);
+  ASSERT_TRUE(addresses);
+  ASSERT_EQ(addresses->size(), 2u);  // 1 receive + 1 change for fresh account.
+  EXPECT_EQ(
+      addresses->at(0),
+      CardanoAddress::New("addr1qy8ac7qqy0vtulyl7wntmsxc6wex80gvcyjy33qffrhm7sh"
+                          "927ysx5sftuw0dlft05dz3c7revpf7jx0xnlcjz3g69mq4afdhv",
+                          CardanoKeyId::New(kExternal, 0)));
+  EXPECT_EQ(
+      addresses->at(1),
+      CardanoAddress::New("addr1qykhadtnvjpkxh76xgr0mu4huc9tg800x2sxsqemn9uz8jh"
+                          "927ysx5sftuw0dlft05dz3c7revpf7jx0xnlcjz3g69mq28kufu",
+                          CardanoKeyId::New(kInternal, 0)));
+
+  service.UpdateNextUnusedAddressForCardanoAccount(cardano_acc->account_id, 1,
+                                                   std::nullopt);
+  addresses = service.GetCardanoAddresses(cardano_acc->account_id);
+  ASSERT_EQ(addresses->size(), 3u);  // +1 receive .
+  EXPECT_EQ(
+      addresses->at(0),
+      CardanoAddress::New("addr1qy8ac7qqy0vtulyl7wntmsxc6wex80gvcyjy33qffrhm7sh"
+                          "927ysx5sftuw0dlft05dz3c7revpf7jx0xnlcjz3g69mq4afdhv",
+                          CardanoKeyId::New(kExternal, 0)));
+  EXPECT_EQ(
+      addresses->at(1),
+      CardanoAddress::New("addr1qyz85693g4fr8c55mfyxhae8j2u04pydxrgqr73vmwpx3a8"
+                          "927ysx5sftuw0dlft05dz3c7revpf7jx0xnlcjz3g69mqu2c0f9",
+                          CardanoKeyId::New(kExternal, 1)));
+  EXPECT_EQ(
+      addresses->at(2),
+      CardanoAddress::New("addr1qykhadtnvjpkxh76xgr0mu4huc9tg800x2sxsqemn9uz8jh"
+                          "927ysx5sftuw0dlft05dz3c7revpf7jx0xnlcjz3g69mq28kufu",
+                          CardanoKeyId::New(kInternal, 0)));
+
+  service.UpdateNextUnusedAddressForCardanoAccount(cardano_acc->account_id,
+                                                   std::nullopt, 1);
+  addresses = service.GetCardanoAddresses(cardano_acc->account_id);
+  ASSERT_EQ(addresses->size(), 4u);  // + 1 change.
+  EXPECT_EQ(
+      addresses->at(0),
+      CardanoAddress::New("addr1qy8ac7qqy0vtulyl7wntmsxc6wex80gvcyjy33qffrhm7sh"
+                          "927ysx5sftuw0dlft05dz3c7revpf7jx0xnlcjz3g69mq4afdhv",
+                          CardanoKeyId::New(kExternal, 0)));
+  EXPECT_EQ(
+      addresses->at(1),
+      CardanoAddress::New("addr1qyz85693g4fr8c55mfyxhae8j2u04pydxrgqr73vmwpx3a8"
+                          "927ysx5sftuw0dlft05dz3c7revpf7jx0xnlcjz3g69mqu2c0f9",
+                          CardanoKeyId::New(kExternal, 1)));
+  EXPECT_EQ(
+      addresses->at(2),
+      CardanoAddress::New("addr1qykhadtnvjpkxh76xgr0mu4huc9tg800x2sxsqemn9uz8jh"
+                          "927ysx5sftuw0dlft05dz3c7revpf7jx0xnlcjz3g69mq28kufu",
+                          CardanoKeyId::New(kInternal, 0)));
+  EXPECT_EQ(
+      addresses->at(3),
+      CardanoAddress::New("addr1q82yuszh972054meuuqdhm9ll4q995863nhunk2flpaua48"
+                          "927ysx5sftuw0dlft05dz3c7revpf7jx0xnlcjz3g69mqzc4y8x",
+                          CardanoKeyId::New(kInternal, 1)));
+  service.UpdateNextUnusedAddressForCardanoAccount(cardano_acc->account_id, 5,
+                                                   5);
+  addresses = service.GetCardanoAddresses(cardano_acc->account_id);
+  ASSERT_EQ(addresses->size(), 12u);  // 6 receive + 6 change.
+  EXPECT_EQ(
+      addresses->at(6),
+      CardanoAddress::New("addr1qykhadtnvjpkxh76xgr0mu4huc9tg800x2sxsqemn9uz8jh"
+                          "927ysx5sftuw0dlft05dz3c7revpf7jx0xnlcjz3g69mq28kufu",
+                          CardanoKeyId::New(kInternal, 0)));
+}
+
+TEST_F(KeyringServiceUnitTest, GetCardanoAddress) {
+  using mojom::CardanoAddress;
+  using mojom::CardanoKeyId;
+  using mojom::CardanoKeyRole::kExternal;
+  using mojom::CardanoKeyRole::kInternal;
+
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletCardanoFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto ada_acc = GetAccountUtils(&service).EnsureAdaAccount(0);
+
+  EXPECT_EQ(
+      CardanoAddress::New(
+          "addr1qy2klrtn9yawwdudw4avq0dhk70ujmj7jdluwhy7358npu8927ysx5sftuw0dlf"
+          "t05dz3c7revpf7jx0xnlcjz3g69mqwrk490",
+          CardanoKeyId::New(kExternal, 7)),
+      service.GetCardanoAddress(ada_acc->account_id,
+                                CardanoKeyId::New(kExternal, 7)));
+  EXPECT_EQ(
+      CardanoAddress::New(
+          "addr1qyrrx9fp9krpk3qa8n777gw4d0fah3u3kwsell8qjx3h968927ysx5sftuw0dlf"
+          "t05dz3c7revpf7jx0xnlcjz3g69mqyhva2g",
+          CardanoKeyId::New(kInternal, 9)),
+      service.GetCardanoAddress(ada_acc->account_id,
+                                CardanoKeyId::New(kInternal, 9)));
+}
 
 }  // namespace brave_wallet

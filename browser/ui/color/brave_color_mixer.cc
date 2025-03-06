@@ -310,6 +310,8 @@ void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
   mixer[kColorToolbarButtonActivated] = {SkColorSetRGB(0x7C, 0x91, 0xFF)};
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
 
+  mixer[kColorLocationBarFocusRing] = {nala::kColorPrimitivePrimary50};
+
   // Search conversion button in omnibox.
   mixer[kColorSearchConversionButtonText] = {nala::kColorPrimary60};
   mixer[kColorSearchConversionButtonBorder] = {nala::kColorPrimary20};

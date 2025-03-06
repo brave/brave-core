@@ -172,6 +172,7 @@
 <translation id="3110968385867124099">Bu sayfa HTTP/HTTPS üzerinden sunulmadığı için rapor edilemiyor.</translation>
 <translation id="7907023135990310743">Bu sayfa bir yerel sayfa ve raporlama için uygun değil.</translation>
 <translation id="8740275226259417070">Bu bir hata sayfasıdır. Bozuk bir site olarak rapor edilemez.</translation>
+<translation id="6367576083705149078">İletişim bilgilerinizi verirseniz, gelecekteki raporlar için saklanacaktır.</translation>
 <translation id="6806248680442980382">Brave'in herkes için daha iyi olmasına yardımcı olduğunuz için teşekkürler. Bu rapor sadece bu siteyi düzeltmemiz için gereken bilgileri içerecektir.</translation>
 <translation id="6476216365964140603">Ek ayrıntılar (isteğe bağlı)</translation>
 <translation id="6145852496180774737">Benimle şuradan iletişime geçin (isteğe bağlı):</translation>
@@ -712,8 +713,8 @@
 <translation id="4622826307953794521">Web Discovery Project ile anonim arama ve gezinme verilerinizi paylaşarak Brave Arama'yı geliştirmemize yardımcı olun. Proje tamamen açık kaynaklıdır.</translation>
 <translation id="4174337572777167894">Web Keşif Projesi</translation>
 <translation id="9034669711835382440">Topluluk</translation>
-<translation id="814503310257431685">Tümünü görüntüle</translation>
 <translation id="845020633253356720">Mağazayı Görüntüle</translation>
+<translation id="7777123407058400802">Temel İlgi Tokeni – BAT</translation>
 <translation id="7090992647511817643">hesap</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">alan adı</translation>
@@ -1739,6 +1740,20 @@
 <translation id="3819528427777765709">Korumalı</translation>
 <translation id="2142946302539262412">Birleşik</translation>
 <translation id="4438043733494739848">Şeffaf</translation>
+<translation id="1950406774300125954">Senkronize edilmemiş</translation>
+<translation id="68413355604013935">Senkronize edilmemiş (<ph name="BLOCKS"/> blok geride)</translation>
+<translation id="1597233669965903034">En son işlemlere ve bakiyeye erişmek için hesabınızı senkronize edin.</translation>
+<translation id="7499262814309712782">Hesabı senkronize et</translation>
+<translation id="2804568727504456403"><ph name="ACCOUNT"/> hesabını senkronize et</translation>
+<translation id="813913629614996137">Başlatılıyor...</translation>
+<translation id="4404141491825711928">İşlenen blok:</translation>
+<translation id="4983989175143324911"><ph name="BLOCKS"/> kaldı</translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> / <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="5055918601206839704">Aralıklar:</translation>
+<translation id="1178581264944972037">Duraklat</translation>
+<translation id="7714298753782862705">Senkronizasyon tamamlandı. Artık bu pencereyi kapatabilirsiniz.</translation>
+<translation id="7716113567047550378">Lütfen senkronizasyon bitene kadar bu pencereyi kapatmayın.</translation>
+<translation id="5123590959308755060">Cüzdanı yeni bir sekmede kullanmaya devam edin</translation>
 <translation id="7144878232160441200">Tekrar Dene</translation>
 <translation id="9094621390791852268">İşlem ön izlemesi başarısız oldu.</translation>
 <translation id="4982713341035600933">Tahmini bakiye değişimi</translation>
@@ -2063,7 +2078,7 @@
 <translation id="8637805148029768813">Özetleyici özelliği şu an yalnızca seçili makalelerde ve diğer uzun web sayfalarında kullanılır.</translation>
 <translation id="1223498995510244364">Özetle</translation>
 <translation id="7491773233732232424">Leo Hakkında</translation>
-<translation id="5208096220706490232">Brave Leo, internet kullanımınızı geliştiren özel bir YZ akıllı asistandır. Leo'nun kısıtlı erişimle kullanımı ücretsizdir. Brave Leo Premium daha fazla model ve daha yüksek limitler sunar ve abonelere yeni özelliklere erken erişim imkanı sunar. Tüm kullanıcılar için varsayılan model şu anda Mixtral 8x7B'dir. Daha fazla detay için <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/>'ye bakın.</translation>
+<translation id="4885527781814382758">Brave Leo, internet kullanımınızı zenginleştiren özel bir yapay zeka akıllı asistanıdır. Leo'yu sınırlı erişimle kullanmak ücretsizdir. Brave Leo Premium daha fazla model ve daha yüksek limitler sunar ve abonelerine yeni özelliklere erken erişim sağlar. Varsayılan model zaman zaman değişecektir. Daha fazla ayrıntı için <ph name="LINK_BEFORE"/>Brave Yardım Merkezi'ne<ph name="LINK_AFTER"/> göz atın.</translation>
 <translation id="7189603330209995455">Varsayılan olarak, Leo'ya bir soru sorduğunuzda, Brave Leo size yanıt vermek için görüntülemekte olduğunuz web sayfasının içeriğini veya bir sayfada bulunan vurguladığınız herhangi bir metni gönderebilir ve kullanabilir. Yanıtların doğruluğu garanti edilmez ve hatalı, yanlış yönlendiren veya yanlış bilgiler içerebilir. Leo, yanıt kalitesini geliştirmek için Brave Arama'dan edindiği verileri kullanmaktadır. Hassas veya özel bilgileri göndermeyin ve sağlık, finans, kişisel güvenlik veya benzeri konularla ilgili yanıtları değerlendirirken dikkatli olun. Leo'nun seçeneklerini Ayarlar bölümünden istediğiniz zaman değiştirebilirsiniz. Ayarlar ve Leo bölümüne gidin.</translation>
 <translation id="3038772045018370764">Leo, IP adresi gibi, sizinle ilişkilendirilebilecek tanımlayıcı bilgileri toplamaz. YZ modellerini eğitmek için hiçbir veri kullanılmaz ve YZ modelleri (verileri silmeden önce 30 gün boyunca tutan Anthropic dışında) hiçbir kişisel veriyi tutmaz. Daha fazla bilgi için <ph name="LINK_BEFORE"/>gizlilik politikasına<ph name="LINK_AFTER"/> bakın.</translation>
 <translation id="7839853125981164613">Buraya bir istem girin</translation>
@@ -2074,12 +2089,15 @@
 <translation id="2712650703044366764">Bu modelin geçersiz bir uç noktası var. Lütfen yapılandırmanızı kontrol edin ve tekrar deneyin.</translation>
 <translation id="1167803637855350748">Leo'ya bağlanırken bir ağ sorunu yaşandı, bağlantınızı kontrol edip tekrar deneyin.</translation>
 <translation id="1996126325390835277">Premium hızı limitine ulaştınız. Lütfen birkaç saat içinde tekrar deneyin.</translation>
+<translation id="3683964919745779766">Bu model için limite ulaştınız veya krediniz bitti. Lütfen daha sonra tekrar deneyin.</translation>
+<translation id="7692501701960747469">Bu model için yapılandırılan API anahtarı geçersiz. Lütfen yapılandırmanızı kontrol edin ve tekrar deneyin.</translation>
+<translation id="7905602379229309187">Uç nokta şu anda aşırı yüklenmiş durumda. Lütfen daha sonra tekrar deneyin.</translation>
 <translation id="8151638057146502721">Yapılandır</translation>
 <translation id="4177458398826096846">Merhaba, ben Leo. Ben Brave tarafından geliştirilen, tamamen ana makinede bulunan bir YZ asistanıyım. Meta tarafından pek çok kullanım alanında iyi performans vermesi ve uygulanabilir olması için geliştirilen Llama 3.1 8B modeli ile destekleniyorum.<ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Merhaba, ben Leo. Ben Brave tarafından geliştirilen, tamamen ana makinede bulunan bir YZ asistanıyım. Mistral AI tarafından gelişmiş görevleri yerine getirmek üzere tasarlanan Mixtral 8x7B modeli ile destekleniyorum.<ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Merhaba, ben Leo. Ben Brave tarafından geliştirilen, tamamen ana makinede bulunan bir YZ asistanıyım. Anthropic tarafından diyalog ve metin işleme görevlerini yerine getirmesi için tasarlanan Claude Instant modeli ile destekleniyorum.<ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
-<translation id="8583558415545871403">Merhaba, ben Leo. Brave tarafından vekaleten kullanılıyorum ve Anthropic tarafından diyalog ve metin işleme görevlerini yerine getirmesi için tasarlanan Claude 3 Haiku ile destekleniyorum.</translation>
-<translation id="1107977270364670952">Merhaba, ben Leo. Brave tarafından vekaleten kullanılıyorum ve Anthropic tarafından diyalog ve metin işleme görevlerini yerine getirmesi için tasarlanan Claude 3.5 Sonnet ile destekleniyorum.</translation>
+<translation id="2001874998841390450">Merhaba, ben Leo. Konuşma ve metin işleme görevleri için Anthropic'in yarattığı Claude Haiku modelini kullanan bir Brave hizmetiyim. <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
+<translation id="3408745502133272006">Merhaba, ben Leo. Konuşma ve metin işleme görevleri için Anthropic'in yarattığı Claude Sonnet modelini kullanan bir Brave hizmetiyim. <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
 <translation id="6206029817087805290"><ph name="COMPANY_NAME"/> tarafından geliştirilen <ph name="MODEL_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Sohbet</translation>
@@ -2098,6 +2116,9 @@
 <translation id="4165928407303989823">Konudan kopmayın</translation>
 <translation id="2389665228467129817">Daha uzun sohbet edin</translation>
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> $/ay</translation>
+<translation id="9031958221569934724">Yıllık <ph name="PRICE_VALUE"/> $</translation>
+<translation id="1028627582482425924">Bir yıl</translation>
+<translation id="36366199652730057">En uygun fiyat</translation>
 <translation id="5151923271944811339">Ücretsiz modele geç</translation>
 <translation id="5474757891469990756">Leo'nun tüm gücünü Premium ile özgür bırakın:</translation>
 <translation id="3453542753968940696">Farklı yeteneklere sahip güçlü modellere öncelikli erişim.</translation>
@@ -2117,6 +2138,8 @@
 <translation id="9018766373792005944">Geri bildiriminiz neyle alakalı?</translation>
 <translation id="7355096922131918313">Geri bildirimi buraya girin</translation>
 <translation id="3027575440738035995">Leo Premium, daha yüksek yanıt nüansı için genişletilmiş dil modellerine erişim sunmaktadır. <ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="8261506727792406068">Sil</translation>
+<translation id="6574153208133461043">Bu konuşmayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</translation>
 <translation id="7488762544858401571">Düzenlendi</translation>
 <translation id="1406205536570262057">Cevabı düzenle</translation>
 <translation id="2399439821649319175">Yardımcı olmadı</translation>
@@ -2130,6 +2153,7 @@
 <translation id="8171760814579050200">Sohbeti yeniden adlandır</translation>
 <translation id="7754678742055438573">Sohbeti sil</translation>
 <translation id="7494736170250048402">Leo'ya mesaj gönder</translation>
+<translation id="8650874793377330048">Yanıt vermeyi bırak</translation>
 <translation id="8712637175834984815">Anlaşıldı</translation>
 <translation id="1093419424466417703">Sayfa Leo için çok uzun. Konuşmada bazı bağlam ögeleri eksik olabilir. Leo, sayfa içeriklerinin <ph name="PERCENTAGE"/> oranındaki bir kısmını okuyabildi.</translation>
 <translation id="2186990448773134544">Sayfa içeriği Leo için çok uzun olduğundan, içindeki en ilgili bilgiler çıkarılarak düzenlendi.</translation>

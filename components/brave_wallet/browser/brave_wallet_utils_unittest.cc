@@ -497,6 +497,11 @@ TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureDisabled) {
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 TEST(BraveWalletUtilsUnitTest, GetAllUserAssets) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "false"}});
+
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
@@ -526,6 +531,11 @@ TEST(BraveWalletUtilsUnitTest, GetAllUserAssets) {
 }
 
 TEST(BraveWalletUtilsUnitTest, GetUserAsset) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "false"}});
+
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
@@ -599,6 +609,11 @@ TEST(BraveWalletUtilsUnitTest, GetUserAsset) {
 }
 
 TEST(BraveWalletUtilsUnitTest, AddUserAsset) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "false"}});
+
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
@@ -658,6 +673,11 @@ TEST(BraveWalletUtilsUnitTest, AddUserAsset) {
 }
 
 TEST(BraveWalletUtilsUnitTest, EnsureNativeTokenForNetwork) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "false"}});
+
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
@@ -678,6 +698,11 @@ TEST(BraveWalletUtilsUnitTest, EnsureNativeTokenForNetwork) {
 }
 
 TEST(BraveWalletUtilsUnitTest, RemoveUserAsset) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "false"}});
+
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 

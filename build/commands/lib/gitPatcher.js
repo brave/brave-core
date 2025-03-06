@@ -22,7 +22,8 @@ const patchApplyReasons = {
   PATCH_INFO_OUTDATED: 1,
   PATCH_CHANGED: 2,
   PATCH_REMOVED: 3,
-  SRC_CHANGED: 4
+  SRC_CHANGED: 4,
+  SRC_REMOVED: 5,
 }
 
 const patchApplyReasonMessages = [
@@ -30,12 +31,22 @@ const patchApplyReasonMessages = [
   `The corresponding .${extPatchInfo} file was unreadable or not in the correct schema version of ${patchInfoSchemaVersion}.`,
   `The .${extPatch} file was modified since last applied.`,
   `The .${extPatch} file was removed since last applied.`,
-  `The target file was modified since the patch was last applied.`
+  `The target file was modified since the patch was last applied.`,
+  `The target file does not exist.`,
 ]
 
 // Intrepret `--numstat -z` line format
 // https://regex101.com/r/jP1JEP/1
 const regexGitApplyNumStats = /^((\d|-)+\s+){2}/
+
+// Create a reverse lookup object
+const patchApplyReasonsReverse = Object.fromEntries(
+  Object.entries(patchApplyReasons).map(([key, value]) => [value, key])
+);
+
+function getReasonName(value) {
+  return patchApplyReasonsReverse[value] || "UNKNOWN_REASON";
+}
 
 module.exports = class GitPatcher {
   constructor (patchDirPath, repoPath, logProgress = true) {
@@ -160,6 +171,11 @@ module.exports = class GitPatcher {
     // Detect if any of the files the patch applies to have changed
     for (const {path: localPath, checksum} of appliesTo) {
       const fullPath = path.join(this.repoPath, localPath)
+      try {
+        await fs.access(fullPath)
+      } catch (err) {
+        return patchApplyReasons.SRC_REMOVED
+      }
       const currentChecksum = await calculateFileChecksum(fullPath)
       if (currentChecksum !== checksum) {
         return patchApplyReasons.SRC_CHANGED
@@ -177,6 +193,15 @@ module.exports = class GitPatcher {
     const prepOps = []
     this.logProgress(os.EOL + 'Getting patch data...')
     for (const patchData of patchesToApply) {
+      if (patchData.reason === patchApplyReasons.SRC_REMOVED) {
+        // Skip patches that the target file is gone, and flag them as
+        // failures. This is necessary to filter out these patches, so they are
+        // not passed along to `git reset`, as that causes an early bailing out
+        // by git, failing to reset any files listed after.
+        prepOps.push(Promise.resolve(
+            {error: new Error('Target file does not exist'), ...patchData}))
+        continue
+      }
       prepOps.push(
         this.getAppliesTo(patchData.patchPath)
         .then((appliesTo) => ({
@@ -323,3 +348,4 @@ module.exports = class GitPatcher {
 
 module.exports.patchApplyReasons = patchApplyReasons
 module.exports.patchApplyReasonMessages = patchApplyReasonMessages
+module.exports.getReasonName = getReasonName

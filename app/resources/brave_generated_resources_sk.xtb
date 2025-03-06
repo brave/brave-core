@@ -407,6 +407,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3570081523466826008">Inovujte pripojenia na HTTPS</translation>
 <translation id="3357319404342882895">Striktné</translation>
 <translation id="8823559166155093873">Blokovanie súborov cookie</translation>
+<translation id="7093267802941377072">Možnosť „Blokovať všetky súbory cookie“ bola zrušená. Ak sa chcete dozvedieť, ako túto možnosť vynútiť, navštívte <ph name="BEGIN_LINK"/>našu stránku pomoci<ph name="END_LINK"/></translation>
 <translation id="6196640612572343990">Blokovať súbory cookie tretích strán</translation>
 <translation id="5657156137487675418">Povoliť všetky súbory cookies</translation>
 <translation id="6883611015375728278">Zakázať všetky cookies</translation>
@@ -593,6 +594,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="5522403133543437426">Vyhľadávač používaný v adresnom riadku.</translation>
 <translation id="280472502078788655">Vyhľadávač používaný v adresnom riadku pre súkromné okná.</translation>
 <translation id="7232120595886556478">Normálne okno</translation>
+<translation id="6739674350896546324">Vyhľadávač pre súkromné okná</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> je teraz váš predvolený vyhľadávač pre súkromné okná</translation>
 <translation id="6864914031231797928">Povoliť prihlasovanie Google pre rozšírenia</translation>
 <translation id="7878791177459550035">Mediálny router umožňuje v prehliadači funkciu vysielania.</translation>
@@ -733,7 +735,7 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="3213787232304349732">Adresa URL, na ktorej váš obslužný rámec prijíma požiadavky. Ak si nie ste istí, pozrite si dokumentáciu k obslužnému rámcu. Napr. pre Ollama je to vždy http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Niektoré obslužné rámce môžu vyžadovať overovacie údaje, napríklad kľúč API alebo prístupový token. Tieto údaje sa pridajú do hlavičky požiadavky.</translation>
 <translation id="4335128003329183586">Veľkosť kontextu</translation>
-<translation id="8794525422794607973">Maximálny počet tokenov, ktoré môže model spracovať v rámci jednej interakcie. Každý token predstavuje približne 3/4 slova. Väčšia veľkosť kontextu umožňuje modelu spracovať dlhšie konverzácie. Rôzne modely podporujú rôzne maximálne veľkosti kontextu.</translation>
+<translation id="3153779001670804829">Maximálny počet tokenov, ktoré môže model spracovať v rámci jednej interakcie. Väčšia veľkosť kontextu umožňuje modelu spracovať dlhšie konverzácie. Rôzne modely podporujú rôzne maximálne veľkosti kontextu.</translation>
 <translation id="217141195370578385">Brave tieto žiadosti nesprostredkúva, prečítajte si Zásady ochrany osobných údajov vybraného poskytovateľa.</translation>
 <translation id="2645532768679870478">Nelokálne koncové body by mali používať protokol HTTPS na bezpečný prenos údajov.</translation>
 <translation id="8177205483022887785">Zadali ste neplatnú adresu URL. Zadajte platnú adresu URL.</translation>

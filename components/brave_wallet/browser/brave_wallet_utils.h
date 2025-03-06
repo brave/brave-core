@@ -113,6 +113,7 @@ mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
 std::string GenerateRandomHexString();
 
 std::string WalletInternalErrorMessage();
+std::string WalletParsingErrorMessage();
 
 mojom::BlockchainTokenPtr GetBitcoinNativeToken(std::string_view chain_id);
 mojom::BlockchainTokenPtr GetZcashNativeToken(std::string_view chain_id);
