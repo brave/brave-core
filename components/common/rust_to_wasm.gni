@@ -24,6 +24,9 @@ template("rust_to_wasm") {
     inputs = [ wasm_pack_exe ]
     sources = invoker.rust_packages
     inputs += sources
+    if (defined(invoker.inputs)) {
+      inputs += invoker.inputs
+    }
 
     script = "//brave/script/rust_to_wasm.py"
 

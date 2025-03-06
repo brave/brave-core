@@ -1,0 +1,21 @@
+[package]
+name = "opaque-ke-lib"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+# Once opaque-ke uses getrandom v0.3.*, below will be `features = [ "wasm_js" ]`,
+# and we'll also need
+# [target.wasm32-unknown-unknown]
+# rustflags = ['--cfg', 'getrandom_backend="wasm_js"']
+# in .cargo/config.toml.
+
+[dependencies]
+argon2 = { version = "0.5", default-features = false, features = ["alloc"] }
+getrandom = { version = "0.2.15", features = [ "js" ] }
+hex = "0.4"
+opaque-ke = { features = [ "argon2", "std" ], version = "3.0.0" }
+rand = "0.8"
+sha2 = "0.10"
+wasm-bindgen = "=0.2.100" # Must match the wasm-bindgen-cli version under brave/tools/crates!
