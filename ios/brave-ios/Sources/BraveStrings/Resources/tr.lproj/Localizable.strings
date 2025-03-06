@@ -1,5 +1,20 @@
+/* A label shown above a list of icons designed by Brave */
+"altAppIcon.braveIconsHeader" = "Brave Simgeler";
+
+/* The title for the screen that lets the user select a custom app icon */
+"altAppIcon.changeAppIcon" = "Uygulama Simgesini Değiştir";
+
+/* A label shown next to the default Brave app icon */
+"altAppIcon.defaultAppIcon" = "Varsayılan";
+
+/* A title shown if some sort of error occurs while changing the app icon */
+"altAppIcon.errorTitle" = "Uygulama Simgesi Değiştirilemedi";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "BackTitle" = "Geri";
+
+/* Accessibility message e.g. spoken by VoiceOver when page translation becomes available. */
+"BraveTranslate.availableVoiceOverAnnouncement" = "Sayfa Çevirisi mevcut";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Tüm Sekmeleri Kapat";

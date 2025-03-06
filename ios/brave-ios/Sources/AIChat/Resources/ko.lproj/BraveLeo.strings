@@ -137,7 +137,7 @@
 "aichat.infoAboutPageContext" = "페이지 내용에 기반하여 새 답변 만들기";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, Anthropic가 만든 모델인 Claude 3 Haiku 기반으로 구동되어 대화문 및 텍스트 처리 성능이 강력합니다.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "안녕하세요, 저는 레오입니다. 저는 Brave의 프록시를 통해 Anthropic에서 개발한 모델인 Claude Haiku를 사용하여 대화와 텍스트 작업을 처리합니다.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku, Anthropic 제공";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "빛처럼 빠른 채팅";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, Anthropic가 만든 모델인  Claude 3.5 Sonnet 기반으로 구동되어 대화문 및 텍스트 처리 성능이 강력합니다.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "안녕하세요, 저는 레오입니다. 저는 Brave의 프록시를 통해 Anthropic에서 개발한 모델인 Claude Sonnet를 사용하여 대화와 텍스트 작업을 처리합니다.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet, Anthropic 제공";

@@ -41,7 +41,7 @@
 "BlockAdsAndTrackingStandard" = "Standard";
 
 /* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Bloquer les avis « Changer d'app »";
+"blockMobileAnnoyances" = "Blocage des messages promotionnels « Installer l'appli »";
 
 /* Title for the brave player feature */
 "BravePlayer" = "Lecteur Brave";
@@ -65,7 +65,7 @@
 "ContentFiltering" = "Filtrage du contenu";
 
 /* A description of the content filtering page. */
-"ContentFilteringDescription" = "Activez des filtres personnalisés pour bloquer des traceurs et des nuisances spécifiques à votre région ou votre langue";
+"ContentFilteringDescription" = "Active les filtres personnalisés pour bloquer les traqueurs et les nuisances propres à votre région ou à votre langue";
 
 /* Title for the custom filter list add screen found in the navigation bar. */
 "CustomFilterList" = "Liste de filtres personnalisés";
@@ -110,10 +110,10 @@
 "DomainBlockedTitle" = "Domaine bloqué";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "Activer l'API JS de contrôle global de la confidentialité";
+"EnableGPCDescription" = "Active l'API JS du Global Privacy Control";
 
 /* A label of the GPC toggle */
-"EnableGPCLabel" = "Activer le contrôle global de la confidentialité";
+"EnableGPCLabel" = "Activer Global Privacy Control";
 
 /* A title for a section that contains all external filter lists */
 "ExternalFilterLists" = "Listes de filtres externes";
@@ -224,7 +224,7 @@
 "UpdatingLists" = "Mise à jour des listes en cours…";
 
 /* The option the user can select for the type of https upgrading */
-"UpgradeConnectionsToHTTPS" = "Mettre à niveau les connexions vers HTTPS";
+"UpgradeConnectionsToHTTPS" = "Mise à niveau des connexions vers HTTPS";
 
 /* A description shown an a page where the http page was blocked */
 "YourConnectionIsNotPrivate" = "Vous voyez cet avertissement parce que ce site ne prend pas en charge le protocole HTTPS.";
