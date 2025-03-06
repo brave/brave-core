@@ -12,7 +12,6 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.RemoteException;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -703,7 +702,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         mFirstRunFlowSequencer =
                 new BraveFirstRunFlowSequencer(getProfileProviderSupplier()) {
                     @Override
-                    public void onFlowIsKnown(Bundle freProperties) {
+                    public void onFlowIsKnown(boolean isChild) {
                         initializeViews();
                     }
                 };
