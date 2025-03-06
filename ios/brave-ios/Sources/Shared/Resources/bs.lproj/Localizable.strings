@@ -37,14 +37,8 @@
 /* The label text in the Download Failed toast for showing confirmation that the download has failed. */
 "DownloadFailedToastLabelText" = "Preuzimanje neuspješno";
 
-/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
-"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
-
 /* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
 "DownloadMultipleFilesToastDescriptionText" = "Datoteke 1 od %d";
-
-/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
-"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
 
 /* The button to open a new tab with the Downloads home panel */
 "DownloadsButtonTitle" = "Preuzimanje";
@@ -96,6 +90,12 @@
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Skeniraj kôd QR";
+
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "Hvala što podržavate Brave Search tako što klikate privatne oglase. Za razliku od velikih tehnoloških tvrtki mi anonimno mjerimo performanse oglasa kako bismo zaštitili vašu privatnost.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Doznajte više / mogućnosti odjave";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Općenito";

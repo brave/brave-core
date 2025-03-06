@@ -81,6 +81,10 @@ if [ "${TOKEN}" = "" ] ; then
   report_error 1 "TOKEN environment variable must be set to \"api\""
 fi
 
+if [ "${VERSION}" = "" ] ; then
+  report_error 1 "VERSION environment variable must be set"
+fi
+
 crowdin_project_id=33
 crowdin_build_id="null"
 
@@ -124,9 +128,9 @@ else
 fi
 
 echo "Importing translations into Xcode project..."
-for path in translated-xliffs/*.xliff ; do
+for path in translated-xliffs/* ; do
   echo "Importing "$path" ..."
-  (cd ../../ && xcodebuild -importLocalizations -localizationPath "l10n/tools/$path" SWIFT_EMIT_LOC_STRINGS=NO) >>output.log 2>&1
+  (cd ../../ && xcodebuild -importLocalizations -localizationPath "l10n/tools/$path/$VERSION.xliff" SWIFT_EMIT_LOC_STRINGS=NO) >>output.log 2>&1
 done
 if [ $? != 0 ] ; then
   report_error 5 "ERROR: Failed to import translations into Xcode project, please see output.log"

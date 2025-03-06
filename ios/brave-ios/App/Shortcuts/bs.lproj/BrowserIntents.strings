@@ -38,13 +38,7 @@
 "HN8elO" = "Otvaranje mrežnog mjesta povijesti";
 
 /* (No Comment) */
-"iLL70C" = "${websiteURL}";
-
-/* (No Comment) */
 "LHHK1N" = "Ovim se otvara ${websiteURL} u novoj kartici.";
-
-/* (No Comment) */
-"Lr38ve" = "${websiteURL}";
 
 /* (No Comment) */
 "MISOeA" = "Otvaranje iz povijesti";
@@ -71,7 +65,7 @@
 "VgH3NH" = "Otvaranje mrežnog mjesta knjižne oznake";
 
 /* (No Comment) */
-"Wh3wb1" = "Otvaranje mrežnog mjesta";
+"Wh3wb1" = "Otvori mrežno mjesto";
 
 /* (No Comment) */
 "WiB0aJ" = "URL mrežnog mjesta";
@@ -84,9 +78,6 @@
 
 /* (No Comment) */
 "ycaNZf" = "Otvaranje iz knjižnih oznaka";
-
-/* (No Comment) */
-"YCxX7a" = "${websiteURL}";
 
 /* (No Comment) */
 "ZgJKfY" = "Ovim se otvara ${websiteURL} iz knjižnih oznaka.";

@@ -137,7 +137,7 @@
 "aichat.infoAboutPageContext" = "Form svar baseret på sidens indhold";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hej, jeg er Leo. Jeg er fuldmægtig hos Brave og drevet af Claude 3 Haiku, en model skabt af Anthropic til at styre samtale- og tekstbehandlingsopgaver.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hej, jeg er Leo. Jeg er en proxy fra Brave og drevet af Claude Haiku, en model skabt af Anthropic til at styre samtale- og tekstbehandlingsopgaver.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku by Anthropic";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Hurtig chat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Hej, jeg er Leo. Jeg er fuldmægtig hos Brave og drevet af Claude 3.5 Sonnet, en model skabt af Anthropic til at styre samtale- og tekstbehandlingsopgaver.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hej, jeg er Leo. Jeg er en proxy fra Brave og drevet af Claude Sonnet, en model skabt af Anthropic til at styre samtale- og tekstbehandlingsopgaver.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet by Anthropic";

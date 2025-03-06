@@ -4,6 +4,15 @@
 /* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
 "advanceStep2OnboardingButtonTitle" = "Kokeile!";
 
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Poista tämä ominaisuus käytöstä";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "Sivut voidaan kääntää iOS-laitteen tukemille kielille. Sinua saatetaan pyytää määrittämään kielet, jos käytät tätä ominaisuutta ensimmäistä kertaa.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "Sivun käännökset";
+
 /* A button title that when tapped opens Brave Playlist */
 "confirmationActionButtonTitle" = "Vie minut soittolistaan";
 

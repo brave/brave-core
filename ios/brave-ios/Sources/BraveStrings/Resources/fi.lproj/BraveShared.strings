@@ -98,7 +98,7 @@
 "BlockCookieConsentNotices" = "Estä evästeitä koskevat suostumusilmoitukset";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Estää verkkosivustoja tallentamasta aiempia käyntikertojasi koskevia tietoja.";
+"BlockCookiesDescription" = "Estää sivustoja tallentamasta tietoja aiemmista vierailuistasi.\n\"Estä kaikki evästeet\" -vaihtoehto on vanhentunut. Jos haluat oppia ottamaan tämän vaihtoehdon, vieraile [apusivullamme](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Esto-ominaisuuksien valvonta";
@@ -219,6 +219,33 @@
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
+
+/* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
+"BraveTranslate.languageSelectionButtonTitle" = "Valitse kieli";
+
+/* Title for a text element that lets the user know the page was translated successfully. */
+"BraveTranslate.pageTranslatedTitle" = "Käännetty sivu";
+
+/* Title for the search field in the navigation bar for the translate language selection page. The user can search for a language to translate to or from. */
+"BraveTranslate.searchInputTitle" = "Haku";
+
+/* This text is for the settings menu for all Brave-Translate options. */
+"BraveTranslate.settingsMenuTitle" = "Brave-kääntäjä";
+
+/* This text is for the translate settings screen. It's the title of the settings menu. */
+"BraveTranslate.settingsScreenTitle" = "Brave-kääntäjä";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionDescription" = "Kun Brave-kääntäjä on käytössä, se tunnistaa automaattisesti sivusi nykyisen kielen ja näyttää URL-palkissa käännä-painikkeen.";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionTitle" = "Kääntäminen käytössä";
+
+/* The word 'to', is used in the sentenced: Translate [language-a] to [language-b] */
+"BraveTranslate.translateFromToTitle" = "Kohde";
+
+/* This text is used as a placeholder for languages when the language detected on the page is unsupported or unknown. */
+"BraveTranslate.unknownLanguageTitle" = "Tuntematon kieli";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Selaimen lukitus";
@@ -3510,6 +3537,9 @@
 
 /* Button title that when tapped toggles the web page in our out of reader mode */
 "ToggleReaderMode" = "Vaihda lukijatilaa";
+
+/* Title of an action that allows the user to translate the current web-page to another language */
+"TranslatePage" = "Käännä";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Otetaanko hakuehdotukset käyttöön?";
