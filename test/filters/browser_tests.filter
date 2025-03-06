@@ -606,6 +606,7 @@
 
 # These tests fail because we've already implemented similar changes to prevent
 # language fingerprinting, regardless of the feature flag state
+-All/SameOriginReduceAcceptLanguageBrowserTest.*
 -CrossOriginRedirectReduceAcceptLanguageOTBrowserTest.*
 -DisableFeatureReduceAcceptLanguageBrowserTest.*
 -DisableReduceAcceptLanguageOTBrowserTest.*
@@ -669,6 +670,7 @@
 -LocalWebApprovalsEnabled/SupervisedUserIframeFilterTest.*/*
 -NTPTilesForSupervisedUsersTest.DoNotLoadBlockedURL
 -NTPTilesForSupervisedUsersTest.LoadURL
+-PasskeyUpgradeConfirmationBubbleTest.InvokeUi_default
 -PasswordStatusCheckServiceBaseTest.CheckTimeUpdatedAfterRunScheduledInThePast
 -PowerBookmarkBubbleViewBrowserTest.InvokeUi_bookmark_details_on_trackable_product
 -ProfileMenuClickTest_GuestProfile.ProfileMenuClickTest_GuestProfile/*
@@ -695,6 +697,7 @@
 -SigninViewControllerBrowserImplicitSigninTest.NoPrompt
 -SigninViewControllerBrowserTest.SignoutOrReauthWithPrompt_Reauth
 -SigninViewControllerBrowserTest.UpdateAccessPointOfSignInTab
+-SigninViewControllerInteractiveBrowserTest.*
 -SupervisedProfilePickerHideGuestModeTest.DeleteLastSupervisedProfile
 -SupervisedProfilePickerHideGuestModeTest.DeleteSupervisedProfile
 -SupervisedProfilePickerHideGuestModeTest.RegularProfile_GuestModeAvailable
@@ -1151,6 +1154,7 @@
 -All/ProfilePickerCreationFlowEphemeralProfileBrowserTest.ExitDuringSignin/*
 -All/ProfilePickerCreationFlowEphemeralProfileBrowserTest.Signin/*
 -All/SupervisedUserProfileIPHTest.ShowIphWhenCustomizationBubbleIsSkipped/OnSync*
+-BubbleSignInPromoDelegateTest.*
 -DiceBrowserTest.*
 -DiceBrowserTestWithBoundSessionCredentialsEnabled.*
 -DiceBrowserTestWithChromeSigninIPH.SigninRememberedIPH
@@ -1172,6 +1176,7 @@
 -DiceWebSigninInterceptorWithUnoEnabledBrowserTest.OptOutOfAccountStorage
 -FirstRunFlowControllerDiceBrowserTest.SignInAndSync
 -LaunchWebAuthFlowFunctionTest.ProfileShutDown
+
 
 # These tests fail because First Run is disabled and the picker is never shown.
 -FirstRunServiceBrowserTest.*
@@ -1931,9 +1936,11 @@
 -ManagerBrowserTest.TpcdDtGracePeriodEnforced_InValidDtToken
 
 # These tests fail because we override prefs::kSearchSuggestEnabled to false.
+-All/OmniboxSearchAggregatorHTTPErrorTest.HTTPErrorResponse/*
 -All/NavigationPredictorPreconnectClientBrowserTestWithSearch.PreconnectSearchWithFeature/*
 -All/SearchEnginePreconnectorEnabledOnlyBrowserTest.AllowedSearch/*
 -All/SearchEnginePreconnectorNoDelaysBrowserTest.PreconnectOnlyInForeground/*
+-OmniboxSearchAggregatorTest.*
 
 # Marked as consistently failing upstream, see crbug.com/336983096
 -BrowserUserEducationServiceBrowserTest.FeatureConfigurationConsistencyCheck
