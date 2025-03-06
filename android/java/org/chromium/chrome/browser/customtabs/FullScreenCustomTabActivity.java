@@ -15,9 +15,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Browser;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
 
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
@@ -30,6 +35,8 @@ import org.chromium.ui.util.ColorUtils;
 
 /** New Rewards 3.0 custom tab activity */
 public class FullScreenCustomTabActivity extends CustomTabActivity {
+    private static final int CLOSE_BUTTON_MARGIN = 16;
+    private static final int CLOSE_BUTTON_PADDING = 8;
 
     private BaseCustomTabRootUiCoordinator mBaseCustomTabRootUiCoordinator;
     private CustomTabToolbarCoordinator mToolbarCoordinator;
@@ -51,6 +58,31 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
         if (toolbarContainer != null) {
             toolbarContainer.setVisibility(View.GONE);
         }
+
+        FrameLayout.LayoutParams layoutParams =
+                new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.TOP | Gravity.START;
+        layoutParams.setMargins(CLOSE_BUTTON_MARGIN, CLOSE_BUTTON_MARGIN, 0, 0);
+
+        ViewGroup parentView = findViewById(android.R.id.content);
+        ImageView closeImg = new ImageView(FullScreenCustomTabActivity.this);
+        closeImg.setPadding(
+                CLOSE_BUTTON_PADDING,
+                CLOSE_BUTTON_PADDING,
+                CLOSE_BUTTON_PADDING,
+                CLOSE_BUTTON_PADDING);
+        closeImg.setImageResource(R.drawable.ic_close);
+        closeImg.setColorFilter(
+                ContextCompat.getColor(
+                        FullScreenCustomTabActivity.this, R.color.schemes_on_surface_variant),
+                android.graphics.PorterDuff.Mode.SRC_IN);
+        closeImg.setOnClickListener(
+                button -> {
+                    finish();
+                });
+        parentView.addView(closeImg, layoutParams);
     }
 
     public static void showPage(Context context, String url) {
