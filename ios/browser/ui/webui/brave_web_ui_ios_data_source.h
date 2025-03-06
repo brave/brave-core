@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_PUBLIC_BRAVE_WEB_UI_IOS_DATA_SOURCE_H_
-#define BRAVE_IOS_BROWSER_UI_WEBUI_PUBLIC_BRAVE_WEB_UI_IOS_DATA_SOURCE_H_
+#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WEB_UI_IOS_DATA_SOURCE_H_
+#define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WEB_UI_IOS_DATA_SOURCE_H_
 
 #include <map>
 #include <set>
@@ -97,4 +97,4 @@ class BraveWebUIIOSDataSource : public web::URLDataSourceIOSImpl,
   std::set<GURL> frame_ancestors_;
 };
 
-#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_PUBLIC_BRAVE_WEB_UI_IOS_DATA_SOURCE_H_
+#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WEB_UI_IOS_DATA_SOURCE_H_
