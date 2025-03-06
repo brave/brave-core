@@ -11,7 +11,7 @@ struct RateLimitedInfo {
 };
 
 [BraveAdd]
-struct Error {
+struct Error {  // Error struct to propagate error to tab organization UI.
   string message;
   // Extra information used for rate limited error.
   RateLimitedInfo? rate_limited_info;
@@ -19,7 +19,18 @@ struct Error {
 
 [BraveExtend]
 interface PageHandler {
+  // APIs for tab organization feature using Leo.
+  // GetSuggestedTopics get all tabs (HTTPS/HTTP only) in the same profile
+  // (regular only), send them (ID, title, origin) to Leo, and get back a list
+  // of suggested topics for user to focus on.
   GetSuggestedTopics() => (array<string> topics, Error? error);
+  // GetFocusTabs get all tabs (HTTPS/HTTP only) in the same profile (regular
+  // only), send them (ID, title, origin) along with the topic to Leo. Leo will
+  // return a list of tabs that should be focused on, these tabs would be moved
+  // to a newly created window.
   GetFocusTabs(string topic) => (bool window_created, Error? error);
+  // UndoFocusTabs will undo the last focused tabs action.
   UndoFocusTabs() => ();
+  // Open a new tab for purchasing Leo premium.
+  OpenLeoGoPremiumPage();
 };

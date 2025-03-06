@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ui/webui/tab_search/tab_search_ui.h"
 
-#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -19,11 +19,12 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
   Profile* profile = Profile::FromWebUI(web_ui);
   base::Value::Dict update_data;
 
-  update_data.Set("tabOrganizationEnabled",
-                  ai_chat::IsAIChatEnabled(profile->GetPrefs()) &&
-                      ai_chat::features::IsTabFocusEnabled() &&
-                      profile->GetPrefs()->GetBoolean(
-                          ai_chat::prefs::kBraveAIChatTabFocusEnabled));
+  update_data.Set(
+      "tabOrganizationEnabled",
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(profile) &&
+          ai_chat::features::IsTabFocusEnabled() &&
+          profile->GetPrefs()->GetBoolean(
+              ai_chat::prefs::kBraveAIChatTabFocusEnabled));
 
   update_data.Set("tabOrganizationTitle",
                   l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_TITLE));

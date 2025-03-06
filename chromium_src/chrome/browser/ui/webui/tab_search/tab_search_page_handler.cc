@@ -32,15 +32,14 @@ TabSearchPageHandler::TabSearchPageHandler(
 
 TabSearchPageHandler::~TabSearchPageHandler() = default;
 
-ai_chat::EngineConsumer* TabSearchPageHandler::MaybeGetAIEngineForTabFocus() {
+ai_chat::EngineConsumer* TabSearchPageHandler::GetAIEngineForTabFocus() {
   if (!ai_chat_engine_) {
     Profile* profile = Profile::FromWebUI(web_ui_);
     ai_chat::AIChatService* ai_chat_service =
         ai_chat::AIChatServiceFactory::GetForBrowserContext(profile);
-    if (!ai_chat_service) {
-      return nullptr;  // Unsupported context.
-    }
-
+    // Must be available as related UI is only shown if the service is
+    // available.
+    CHECK(ai_chat_service);
     ai_chat_engine_ =
         ai_chat_service->IsPremiumStatus()
             ? ai_chat_service->GetEngineForModel(ai_chat::kClaudeSonnetModelKey)
@@ -91,11 +90,7 @@ tab_search::mojom::ErrorPtr TabSearchPageHandler::GetError(
 
 void TabSearchPageHandler::GetSuggestedTopics(
     GetSuggestedTopicsCallback callback) {
-  auto* engine = MaybeGetAIEngineForTabFocus();
-  if (!engine) {
-    std::move(callback).Run({}, GetError(ai_chat::mojom::APIError::None));
-    return;
-  }
+  auto* engine = GetAIEngineForTabFocus();
 
   std::vector<ai_chat::Tab> tabs = GetTabsForAIEngine();
   engine->GetSuggestedTopics(
@@ -111,21 +106,17 @@ void TabSearchPageHandler::OnGetSuggestedTopics(
     std::move(callback).Run({}, GetError(result.error()));
     return;
   }
+
   std::move(callback).Run(*result, nullptr);
 }
 
 void TabSearchPageHandler::GetFocusTabs(const std::string& topic,
                                         GetFocusTabsCallback callback) {
-  auto* engine = MaybeGetAIEngineForTabFocus();
-  if (!engine) {
-    std::move(callback).Run(false, GetError(ai_chat::mojom::APIError::None));
-    return;
-  }
-
+  auto* engine = GetAIEngineForTabFocus();
   focus_tabs_info_.clear();
 
   std::vector<ai_chat::Tab> tabs = GetTabsForAIEngine();
-  ai_chat_engine_->GetFocusTabs(
+  engine->GetFocusTabs(
       tabs, topic,
       base::BindOnce(&TabSearchPageHandler::OnGetFocusTabs,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -220,4 +211,14 @@ void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
   }
 
   std::move(callback).Run();
+}
+
+void TabSearchPageHandler::OpenLeoGoPremiumPage() {
+  Browser* browser = chrome::FindLastActive();
+  NavigateParams params(
+      browser,
+      GURL("https://account.brave.com/account/?intent=checkout&product=leo"),
+      ui::PageTransition::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  Navigate(&params);
 }

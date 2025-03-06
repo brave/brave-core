@@ -12,6 +12,7 @@ export interface BraveTabSearchApiProxy extends TabSearchApiProxy {
   getSuggestedTopics(): Promise<{topics: string[], error: Error | null }>;
   getFocusTabs(topic: string): Promise<{windowCreated: boolean, error: Error | null }>;
   undoFocusTabs(): Promise<void>;
+  openLeoGoPremiumPage(): void;
 }
 
 export class BraveTabSearchApiProxyImpl extends TabSearchApiProxyImpl implements BraveTabSearchApiProxy {
@@ -25,6 +26,10 @@ export class BraveTabSearchApiProxyImpl extends TabSearchApiProxyImpl implements
 
   undoFocusTabs() {
     return this.handler.undoFocusTabs();
+  }
+
+  openLeoGoPremiumPage() {
+    this.handler.openLeoGoPremiumPage();
   }
 }
 

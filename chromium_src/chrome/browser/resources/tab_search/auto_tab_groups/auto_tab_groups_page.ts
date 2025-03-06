@@ -201,6 +201,10 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     this.apiProxy_.openHelpPage();
   }
 
+  protected onGoPremiumClicked_() {
+    this.apiProxy_.openLeoGoPremiumPage();
+  }
+
   override focus() {
     if (this.showBackButton) {
       const backButton = this.shadowRoot!.querySelector('cr-icon-button')!;

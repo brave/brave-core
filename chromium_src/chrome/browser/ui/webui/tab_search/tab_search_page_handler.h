@@ -31,6 +31,9 @@ enum class APIError;
 }  // namespace mojom
 }  // namespace ai_chat
 
+// Overrides TabSearchPageHandler to provide Brave-specific functionality.
+// See tab_search.mojom in chromium_src for our extended interface. Currently
+// it provides APIs needed for our tab organization feature using Leo.
 class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
  public:
   // Used to store info for undo focus tabs.
@@ -54,6 +57,7 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
   void GetFocusTabs(const std::string& topic,
                     GetFocusTabsCallback callback) override;
   void UndoFocusTabs(UndoFocusTabsCallback callback) override;
+  void OpenLeoGoPremiumPage() override;
 
   void SetAIChatEngineForTesting(
       std::unique_ptr<ai_chat::EngineConsumer> ai_chat_engine) {
@@ -78,11 +82,15 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
                                            ai_chat::mojom::APIError> result);
   tab_search::mojom::ErrorPtr GetError(ai_chat::mojom::APIError error);
 
-  ai_chat::EngineConsumer* MaybeGetAIEngineForTabFocus();
+  ai_chat::EngineConsumer* GetAIEngineForTabFocus();
   std::vector<ai_chat::Tab> GetTabsForAIEngine();
 
+  // Map from session id to the list of tab info for undo last get focus tabs
+  // action (i.e. move tabs from the new window back to their original
+  // positions).
   base::flat_map<SessionID, std::vector<TabInfo>> focus_tabs_info_;
 
+  // The AI chat engine to interact with Leo server.
   std::unique_ptr<ai_chat::EngineConsumer> ai_chat_engine_;
 
   base::WeakPtrFactory<TabSearchPageHandler> weak_ptr_factory_{this};
