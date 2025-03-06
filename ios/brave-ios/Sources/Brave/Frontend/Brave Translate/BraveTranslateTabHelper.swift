@@ -413,6 +413,21 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
     return (data, response)
   }
 
+  // MARK: - TabObserver
+
+  func tabDidUpdateURL(_ tab: Tab) {
+    url = tab.url
+    canShowToast = false
+    currentLanguageInfo.currentLanguage = .init(identifier: Locale.current.identifier)
+    currentLanguageInfo.pageLanguage = nil
+    translationTask = nil
+
+    if let delegate = self.delegate {
+      delegate.updateTranslateURLBar(tab: tab, state: .unavailable)
+      BraveTranslateScriptHandler.checkTranslate(tab: tab)
+    }
+  }
+
   // MARK: - Private
 
   @MainActor
@@ -647,21 +662,6 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
     }
 
     return .errorMax
-  }
-
-  // MARK: - TabObserver
-
-  func tabDidUpdateURL(_ tab: Tab) {
-self.url = url
-self.canShowToast = false
-self.currentLanguageInfo.currentLanguage = .init(identifier: Locale.current.identifier)
-self.currentLanguageInfo.pageLanguage = nil
-self.translationTask = nil
-
-if let tab = self.tab, let delegate = self.delegate {
-delegate.updateTranslateURLBar(tab: tab, state: .unavailable)
-BraveTranslateScriptHandler.checkTranslate(tab: tab)
-}
   }
 }
 
