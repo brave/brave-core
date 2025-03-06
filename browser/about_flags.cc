@@ -536,6 +536,13 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           FEATURE_VALUE_TYPE(features::kBraveNtpSearchWidget),                 \
       },                                                                       \
       {                                                                        \
+          "brave-ntp-refresh-enabled",                                         \
+          "New Tab Page refresh",                                              \
+          "Enables the refreshed version of the New Tab Page",                 \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(features::kBraveNewTabPageRefreshEnabled),        \
+      },                                                                       \
+      {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \
           "Enable CNAME uncloaking",                                           \
           "Take DNS CNAME records into account when making network request "   \

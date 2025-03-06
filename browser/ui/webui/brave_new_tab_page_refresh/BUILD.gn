@@ -1,0 +1,37 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+assert(!is_android)
+
+mojom("mojom") {
+  sources = [ "brave_new_tab_page.mojom" ]
+}
+
+source_set("brave_new_tab_page_refresh") {
+  sources = [
+    "brave_new_tab_page_refresh_handler.cc",
+    "brave_new_tab_page_refresh_handler.h",
+    "brave_new_tab_page_ui.cc",
+    "brave_new_tab_page_ui.h",
+  ]
+
+  deps = [
+    ":mojom",
+    "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
+    "//brave/components/l10n/common",
+    "//brave/components/resources:static_resources",
+    "//brave/components/resources:strings",
+    "//chrome/app:generated_resources",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/themes",
+    "//chrome/browser/ui/webui:webui_util",
+    "//components/strings:components_strings",
+    "//ui/base",
+    "//ui/webui",
+  ]
+}
