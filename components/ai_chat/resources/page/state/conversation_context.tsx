@@ -26,7 +26,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   historyInitialized: boolean
   conversationUuid?: string
   conversationHistory: Mojom.ConversationTurn[]
-  associatedContentInfo?: Mojom.AssociatedContent
+  associatedContentInfo: Mojom.AssociatedContent[]
   allModels: Mojom.Model[]
   currentModel?: Mojom.Model
   suggestedQuestions: string[]
@@ -77,6 +77,7 @@ const defaultContext: ConversationContext = {
   conversationHistory: [],
   allModels: [],
   suggestedQuestions: [],
+  associatedContentInfo: [],
   isGenerating: false,
   suggestionStatus: Mojom.SuggestionGenerationStatus.None,
   apiHasError: false,
@@ -276,7 +277,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
     id = callbackRouter.onAssociatedContentInfoChanged.addListener(
       (
-        associatedContentInfo: Mojom.AssociatedContent,
+        associatedContentInfo: Mojom.AssociatedContent[],
         shouldSendPageContents: boolean
       ) => {
         setPartialContext({

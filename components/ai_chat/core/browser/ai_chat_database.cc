@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <map>
+#include <numeric>
 #include <optional>
 #include <string>
 #include <utility>
@@ -245,20 +246,22 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
 
     if (statement.GetColumnType(index) != sql::ColumnType::kNull) {
       DVLOG(1) << __func__ << " got associated content";
-      conversation->associated_content = mojom::AssociatedContent::New();
-      conversation->associated_content->uuid = statement.ColumnString(index++);
-      conversation->associated_content->title =
+      auto associated_content = mojom::AssociatedContent::New();
+      associated_content->uuid = statement.ColumnString(index++);
+      associated_content->title =
           DecryptOptionalColumnToString(statement, index++).value_or("");
       auto url_raw = DecryptOptionalColumnToString(statement, index++);
       if (url_raw.has_value()) {
-        conversation->associated_content->url = GURL(url_raw.value());
+        associated_content->url = GURL(url_raw.value());
       }
-      conversation->associated_content->content_type =
+      associated_content->content_type =
           static_cast<mojom::ContentType>(statement.ColumnInt(index++));
-      conversation->associated_content->content_used_percentage =
+      associated_content->content_used_percentage =
           statement.ColumnInt(index++);
-      conversation->associated_content->is_content_refined =
-          statement.ColumnBool(index++);
+      associated_content->is_content_refined = statement.ColumnBool(index++);
+
+      // TODO(fallaciousreasoning): Load them all!
+      conversation->associated_content.push_back(std::move(associated_content));
     }
   }
 
@@ -498,10 +501,15 @@ bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
     return false;
   }
 
-  if (conversation->associated_content) {
+  if (!conversation->associated_content.empty()) {
     DVLOG(2) << "Adding associated content for conversation "
-             << conversation->uuid << " with url "
-             << conversation->associated_content->url.spec();
+             << conversation->uuid << " with urls "
+             << std::accumulate(conversation->associated_content.begin(),
+                                conversation->associated_content.end(),
+                                std::string(),
+                                [](const auto& a, const auto& b) {
+                                  return a + b->url.spec() + ", ";
+                                });
     if (!AddOrUpdateAssociatedContent(
             conversation->uuid, std::move(conversation->associated_content),
             contents)) {
@@ -524,7 +532,7 @@ bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
 
 bool AIChatDatabase::AddOrUpdateAssociatedContent(
     std::string_view conversation_uuid,
-    mojom::AssociatedContentPtr associated_content,
+    std::vector<mojom::AssociatedContentPtr> associated_content,
     std::optional<std::string> contents) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
@@ -533,7 +541,10 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
 
   // TODO(petemill): handle multiple associated content per conversation
   CHECK(!conversation_uuid.empty());
-  CHECK(associated_content);
+  CHECK(!associated_content.empty());
+
+  // TODO(fallaciousreasoning): Save them all!
+  auto& content = associated_content[0];
 
   // Check if we already have persisted this content
   static constexpr char kSelectExistingAssociatedContentId[] =
@@ -543,12 +554,12 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
       SQL_FROM_HERE, kSelectExistingAssociatedContentId));
   CHECK(select_statement.is_valid());
   select_statement.BindString(0, conversation_uuid);
-  select_statement.BindString(1, associated_content->uuid);
+  select_statement.BindString(1, content->uuid);
 
   sql::Statement statement;
   if (select_statement.Step()) {
     DVLOG(4) << "Updating associated content for conversation "
-             << conversation_uuid << " with id " << associated_content->uuid;
+             << conversation_uuid << " with id " << content->uuid;
     static constexpr char kUpdateAssociatedContentQuery[] =
         "UPDATE associated_content"
         " SET title = ?,"
@@ -571,15 +582,13 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
   }
   CHECK(statement.is_valid());
   int index = 0;
-  BindAndEncryptOptionalString(statement, index++, associated_content->title);
-  BindAndEncryptOptionalString(statement, index++,
-                               associated_content->url.spec());
-  statement.BindInt(index++,
-                    base::to_underlying(associated_content->content_type));
+  BindAndEncryptOptionalString(statement, index++, content->title);
+  BindAndEncryptOptionalString(statement, index++, content->url.spec());
+  statement.BindInt(index++, base::to_underlying(content->content_type));
   BindAndEncryptOptionalString(statement, index++, contents);
-  statement.BindInt(index++, associated_content->content_used_percentage);
-  statement.BindBool(index++, associated_content->is_content_refined);
-  statement.BindString(index++, associated_content->uuid);
+  statement.BindInt(index++, content->content_used_percentage);
+  statement.BindBool(index++, content->is_content_refined);
+  statement.BindString(index++, content->uuid);
   statement.BindString(index, conversation_uuid);
 
   if (!statement.Run()) {

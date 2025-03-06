@@ -86,6 +86,14 @@ bool IsConversationUpdatedTimeWithinRange(
            conversation->updated_time <= end_time));
 }
 
+std::vector<mojom::AssociatedContentPtr> CloneAssociatedContent(
+    const std::vector<mojom::AssociatedContentPtr>& associated_content) {
+  std::vector<mojom::AssociatedContentPtr> cloned_content;
+  for (const auto& content : associated_content) {
+    cloned_content.push_back(content->Clone());
+  }
+  return cloned_content;
+}
 }  // namespace
 
 AIChatService::AIChatService(
@@ -159,7 +167,8 @@ ConversationHandler* AIChatService::CreateConversation() {
   // Create the conversation metadata
   {
     mojom::ConversationPtr conversation = mojom::Conversation::New(
-        conversation_uuid, "", base::Time::Now(), false, std::nullopt, nullptr);
+        conversation_uuid, "", base::Time::Now(), false, std::nullopt,
+        std::vector<mojom::AssociatedContentPtr>());
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =
@@ -787,12 +796,12 @@ void AIChatService::HandleNewEntry(
                   conversation->model_key, std::nullopt);
 
     if (associated_content_value.has_value() &&
-        conversation->associated_content) {
+        !conversation->associated_content.empty()) {
       ai_chat_db_
           .AsyncCall(
               base::IgnoreResult(&AIChatDatabase::AddOrUpdateAssociatedContent))
           .WithArgs(conversation->uuid,
-                    conversation->associated_content->Clone(),
+                    CloneAssociatedContent(conversation->associated_content),
                     std::optional<std::string>(associated_content_value));
     }
   }

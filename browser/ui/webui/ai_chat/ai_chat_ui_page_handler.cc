@@ -403,9 +403,11 @@ void AIChatUIPageHandler::GetFaviconImageData(
     return;
   }
 
-  conversation->GetAssociatedContentInfo(base::BindOnce(
-      &AIChatUIPageHandler::GetFaviconImageDataForAssociatedContent,
-      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  // TODO(fallaciousreasoning): Remove this (see https://github.com/brave/brave-core/pull/27936)
+  // conversation->GetAssociatedContentInfo(base::BindOnce(
+  //     &AIChatUIPageHandler::GetFaviconImageDataForAssociatedContent,
+  //     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  std::move(callback).Run(std::nullopt);
 }
 
 void AIChatUIPageHandler::BindParentUIFrameFromChildFrame(
