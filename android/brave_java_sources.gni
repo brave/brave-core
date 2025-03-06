@@ -236,6 +236,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/local_database/TopSiteTable.java",
   "../../brave/android/java/org/chromium/chrome/browser/media/BravePictureInPictureActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/media/BraveFullscreenVideoPictureInPictureController.java",
+  "../../brave/android/java/org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerCompat.java",
+  "../../brave/android/java/org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerLegacy.java",
   "../../brave/android/java/org/chromium/chrome/browser/media/ui/BraveMediaNotificationControllerDelegate.java",
   "../../brave/android/java/org/chromium/chrome/browser/media/ui/BraveMediaSessionTabHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsConnectionErrorHandler.java",
