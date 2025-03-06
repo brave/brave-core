@@ -218,6 +218,7 @@
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
+-AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeResetWhenSignedOut
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeSignedIn
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeTransportMode
