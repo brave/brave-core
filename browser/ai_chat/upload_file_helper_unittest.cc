@@ -129,7 +129,7 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   auto sample_result = UploadImageSync();
   EXPECT_TRUE(sample_result);
   EXPECT_EQ(sample_result->filename, "sample_png.png");
-  EXPECT_EQ(sample_result->filesize, static_cast<int64_t>(sizeof(kSamplePng)));
+  EXPECT_EQ(sample_result->filesize, sample_result->image_data.size());
   auto encoded_bitmap = gfx::PNGCodec::Decode(sample_result->image_data);
   EXPECT_TRUE(gfx::test::AreBitmapsClose(sample_bitmap, encoded_bitmap, 1));
   // Check dimensions are the same.
@@ -146,8 +146,8 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   auto large_result = UploadImageSync();
   EXPECT_TRUE(large_result);
   EXPECT_EQ(large_result->filename, "large_png.png");
-  EXPECT_EQ(large_result->filesize,
-            static_cast<int64_t>(large_png_bytes->size()));
+  EXPECT_EQ(large_result->filesize, large_result->image_data.size());
+  EXPECT_LE(large_result->filesize, large_png_bytes->size());
   encoded_bitmap = gfx::PNGCodec::Decode(large_result->image_data);
   EXPECT_EQ(1024, encoded_bitmap.width());
   EXPECT_EQ(768, encoded_bitmap.height());

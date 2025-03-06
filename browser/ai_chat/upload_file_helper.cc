@@ -138,11 +138,10 @@ void UploadFileHelper::FileSelected(const ui::SelectedFileInfo& file,
   profile_->set_last_selected_directory(file.path().DirName());
   auto read_image = base::BindOnce(
       [](const ui::SelectedFileInfo& info)
-          -> std::tuple<std::optional<std::vector<uint8_t>>, std::string,
-                        std::optional<int64_t>> {
-        return std::make_tuple(ai_chat::ReadFileToBytes(info.path()),
-                               base::FilePath(info.display_name).AsUTF8Unsafe(),
-                               base::GetFileSize(info.path()));
+          -> std::tuple<std::optional<std::vector<uint8_t>>, std::string> {
+        return std::make_tuple(
+            ai_chat::ReadFileToBytes(info.path()),
+            base::FilePath(info.display_name).AsUTF8Unsafe());
       },
       file);
   auto on_image_read = base::BindOnce(&UploadFileHelper::OnImageRead,
@@ -161,19 +160,16 @@ void UploadFileHelper::FileSelectionCanceled() {
 }
 
 void UploadFileHelper::OnImageRead(
-    std::tuple<std::optional<std::vector<uint8_t>>,
-               std::string,
-               std::optional<int64_t>> result) {
+    std::tuple<std::optional<std::vector<uint8_t>>, std::string> result) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto image_data = std::get<0>(result);
-  auto filesize = std::get<2>(result);
-  if (!image_data || !filesize) {
+  if (!image_data) {
     std::move(upload_image_callback_).Run(nullptr);
     return;
   }
-  auto on_image_sanitized = base::BindOnce(&UploadFileHelper::OnImageSanitized,
-                                           weak_ptr_factory_.GetWeakPtr(),
-                                           std::get<1>(result), *filesize);
+  auto on_image_sanitized =
+      base::BindOnce(&UploadFileHelper::OnImageSanitized,
+                     weak_ptr_factory_.GetWeakPtr(), std::get<1>(result));
   data_decoder::DecodeImage(GetDataDecoder(), *image_data,
                             data_decoder::mojom::ImageCodec::kDefault, true,
                             data_decoder::kDefaultMaxSizeInBytes, gfx::Size(),
@@ -181,7 +177,6 @@ void UploadFileHelper::OnImageRead(
 }
 
 void UploadFileHelper::OnImageSanitized(std::string filename,
-                                        int64_t filesize,
                                         const SkBitmap& decoded_bitmap) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (decoded_bitmap.drawsNothing()) {
@@ -194,9 +189,9 @@ void UploadFileHelper::OnImageSanitized(std::string filename,
                                                  false);
       },
       decoded_bitmap);
-  auto on_image_encoded = base::BindOnce(&UploadFileHelper::OnImageEncoded,
-                                         weak_ptr_factory_.GetWeakPtr(),
-                                         std::move(filename), filesize);
+  auto on_image_encoded =
+      base::BindOnce(&UploadFileHelper::OnImageEncoded,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(filename));
 
   base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
                                                std::move(encode_image),
@@ -205,13 +200,12 @@ void UploadFileHelper::OnImageSanitized(std::string filename,
 
 void UploadFileHelper::OnImageEncoded(
     std::string filename,
-    int64_t filesize,
     std::optional<std::vector<uint8_t>> output) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   mojom::UploadedImagePtr uploaded_image;
   if (output) {
     uploaded_image =
-        mojom::UploadedImage::New(std::move(filename), filesize, *output);
+        mojom::UploadedImage::New(std::move(filename), output->size(), *output);
   }
   std::move(upload_image_callback_).Run(std::move(uploaded_image));
 }

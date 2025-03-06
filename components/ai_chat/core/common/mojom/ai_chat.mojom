@@ -186,7 +186,7 @@ struct ConversationTitleEvent {
 
 struct UploadedImage {
   string filename;
-  int64 filesize;
+  uint32 filesize;
   array<uint8> image_data;
 };
 

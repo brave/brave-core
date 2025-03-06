@@ -333,7 +333,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
     uploadedImages : [
-      { filename: 'lion.png', filesize: BigInt('128'),
+      { filename: 'lion.png', filesize: 128,
         imageData: Array.from(new Uint8Array(128)) }
     ],
     fromBraveSearchSERP: false

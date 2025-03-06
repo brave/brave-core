@@ -40,14 +40,10 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener {
   void FileSelected(const ui::SelectedFileInfo& file, int index) override;
   void FileSelectionCanceled() override;
 
-  void OnImageRead(std::tuple<std::optional<std::vector<uint8_t>>,
-                              std::string,
-                              std::optional<int64_t>> result);
-  void OnImageSanitized(std::string filename,
-                        int64_t filesize,
-                        const SkBitmap& decoded_bitmap);
+  void OnImageRead(
+      std::tuple<std::optional<std::vector<uint8_t>>, std::string> result);
+  void OnImageSanitized(std::string filename, const SkBitmap& decoded_bitmap);
   void OnImageEncoded(std::string filename,
-                      int64_t filesize,
                       std::optional<std::vector<uint8_t>> output);
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;
