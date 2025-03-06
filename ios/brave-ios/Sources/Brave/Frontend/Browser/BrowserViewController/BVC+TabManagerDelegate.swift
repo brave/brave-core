@@ -190,6 +190,7 @@ extension BrowserViewController: TabManagerDelegate {
       updateToolbarUsingTabManager(tabManager)
     }
     tab.tabDelegate = self
+    tab.addObserver(self)
     tab.walletKeyringService = BraveWallet.KeyringServiceFactory.get(privateMode: tab.isPrivate)
     updateTabsBarVisibility()
   }
@@ -204,6 +205,7 @@ extension BrowserViewController: TabManagerDelegate {
     // so we don't expcitly unset it.
     topToolbar.leaveOverlayMode(didCancel: true)
     updateTabsBarVisibility()
+    tab.removeObserver(self)
 
     if !privateBrowsingManager.isPrivateBrowsing {
       rewards.reportTabClosed(tabId: Int(tab.rewardsId))

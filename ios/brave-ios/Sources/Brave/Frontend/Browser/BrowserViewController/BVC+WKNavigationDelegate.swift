@@ -340,18 +340,6 @@ extension BrowserViewController: WKNavigationDelegate {
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.url
 
-    // Server Trust and URL is also updated in didCommit
-    // However, WebKit does NOT trigger the `serverTrust` observer when the URL changes, but the trust has not.
-    // WebKit also does NOT trigger the `serverTrust` observer when the page is actually insecure (non-https).
-    // So manually trigger it with the current trust.
-
-    observeValue(
-      forKeyPath: KVOConstants.serverTrust.keyPath,
-      of: webView,
-      change: [.newKey: webView.serverTrust as Any, .kindKey: 1],
-      context: nil
-    )
-
     self.tabDidCommitWebViewNavigation(tab)
   }
 
@@ -461,7 +449,7 @@ extension BrowserViewController: WKUIDelegate {
     // the request here manually leads to incorrect results!!
     let newTab = tabManager.addPopupForParentTab(parentTab, configuration: configuration)
 
-    newTab.url = URL(string: "about:blank")
+    newTab.setVirtualURL(URL(string: "about:blank"))
 
     toolbarVisibilityViewModel.toolbarState = .expanded
 

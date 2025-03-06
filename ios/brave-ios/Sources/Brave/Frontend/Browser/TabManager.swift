@@ -367,8 +367,7 @@ class TabManager: NSObject {
       let webView = selectedTab.webView,
       webView.url == nil
     {
-
-      selectedTab.url = selectedTab.url ?? TabManager.ntpInteralURL
+      selectedTab.setVirtualURL(selectedTab.url ?? TabManager.ntpInteralURL)
       restoreTab(selectedTab)
       Logger.module.error("Force Restored a Zombie Tab?!")
     }
@@ -497,7 +496,7 @@ class TabManager: NSObject {
         isPrivate: isPrivate
       )
       tab.lastTitle = url.absoluteDisplayString
-      tab.url = url
+      tab.setVirtualURL(url)
       tab.favicon = Favicon.default
       Task { @MainActor in
         if let icon = await FaviconFetcher.getIconFromCache(for: url) {
@@ -602,7 +601,6 @@ class TabManager: NSObject {
     isPopup: Bool = false
   ) {
     assert(Thread.isMainThread)
-
     var request = request
     let isPrivate = tab.type == .private
     let isPersistentTab =
@@ -649,10 +647,10 @@ class TabManager: NSObject {
 
     if let request = request {
       tab.loadRequest(request)
-      tab.url = request.url
+      tab.setVirtualURL(request.url)
     } else if !isPopup {
       tab.loadRequest(PrivilegedRequest(url: TabManager.ntpInteralURL) as URLRequest)
-      tab.url = TabManager.ntpInteralURL
+      tab.setVirtualURL(TabManager.ntpInteralURL)
     }
 
     // Ignore on restore.
@@ -726,7 +724,7 @@ class TabManager: NSObject {
     SessionTab.updateAll(
       tabs: tabs.compactMap({
         if let sessionData = $0.webView?.sessionData {
-          return ($0.id, sessionData, $0.title, $0.url ?? TabManager.ntpInteralURL)
+          return ($0.id, sessionData, $0.title ?? "", $0.url ?? TabManager.ntpInteralURL)
         }
         return nil
       })
@@ -742,7 +740,7 @@ class TabManager: NSObject {
     SessionTab.update(
       tabId: tab.id,
       interactionState: tab.webView?.sessionData ?? Data(),
-      title: tab.title,
+      title: tab.title ?? "",
       url: tab.url ?? TabManager.ntpInteralURL
     )
     if saveOrder {
