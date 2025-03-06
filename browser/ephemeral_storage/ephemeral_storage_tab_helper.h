@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "base/containers/flat_set.h"
 #include "base/memory/weak_ptr.h"
 #include "base/unguessable_token.h"
 #include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
@@ -45,10 +46,18 @@ class EphemeralStorageTabHelper
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
 
   // WebContentsObserver
+  void DidStartNavigation(
+      content::NavigationHandle* navigation_handle) override;
+  void DidRedirectNavigation(
+      content::NavigationHandle* navigation_handle) override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
   void WebContentsDestroyed() override;
 
+  void CreateProvisionalTLDEphemeralLifetime(
+      content::NavigationHandle* navigation_handle);
   void CreateEphemeralStorageAreasForDomainAndURL(const std::string& new_domain,
                                                   const GURL& new_url);
 
@@ -57,6 +66,8 @@ class EphemeralStorageTabHelper
   const base::raw_ptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
   scoped_refptr<content::SessionStorageNamespace> session_storage_namespace_;
+  base::flat_set<scoped_refptr<TLDEphemeralLifetime>>
+      provisional_tld_ephemeral_lifetimes_;
   scoped_refptr<TLDEphemeralLifetime> tld_ephemeral_lifetime_;
 
   base::WeakPtrFactory<EphemeralStorageTabHelper> weak_factory_{this};
