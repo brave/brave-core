@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index 65490bf6514e2ab2e8aa28b9c28d6310b82d1341..42fc2883b01ba6871d96c603a29b9b91466fa9c3 100644
+index 65490bf6514e2ab2e8aa28b9c28d6310b82d1341..224c65b657f1c3813402faf0031f26ed2dfb5336 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 @@ -113,6 +113,7 @@ public abstract class FullscreenHtmlApiHandlerBase
@@ -18,11 +18,3 @@ index 65490bf6514e2ab2e8aa28b9c28d6310b82d1341..42fc2883b01ba6871d96c603a29b9b91
                          // Clean up any fullscreen state that might impact other tabs.
                          exitPersistentFullscreenMode();
                      }
-@@ -443,6 +445,7 @@ public abstract class FullscreenHtmlApiHandlerBase
- 
-     @Override
-     public void exitPersistentFullscreenMode() {
-+        if (mActivity.isInPictureInPictureMode() && !mTabHiddenByChangedTabs) return;
-         if (getPersistentFullscreenMode()) {
-             getToast().onExitPersistentFullscreen();
-             mPersistentModeSupplier.set(false);
