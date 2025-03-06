@@ -415,17 +415,19 @@ class SettingsViewController: TableViewController {
       )
     )
 
-    section.rows.append(
-      Row(
-        text: Strings.BraveTranslate.settingsMenuTitle,
-        selection: { [unowned self] in
-          let translateSettings = UIHostingController(rootView: BraveTranslateSettingsView())
-          self.navigationController?.pushViewController(translateSettings, animated: true)
-        },
-        image: UIImage(braveSystemNamed: "leo.product.translate"),
-        accessory: .disclosureIndicator
+    if FeatureList.kBraveTranslateEnabled.enabled {
+      section.rows.append(
+        Row(
+          text: Strings.BraveTranslate.settingsMenuTitle,
+          selection: { [unowned self] in
+            let translateSettings = UIHostingController(rootView: BraveTranslateSettingsView())
+            self.navigationController?.pushViewController(translateSettings, animated: true)
+          },
+          image: UIImage(braveSystemNamed: "leo.product.translate"),
+          accessory: .disclosureIndicator
+        )
       )
-    )
+    }
 
     return section
   }
