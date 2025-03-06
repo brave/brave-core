@@ -11,12 +11,10 @@ import android.content.Intent;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.annotation.MainThread;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import org.chromium.base.Log;
-import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
@@ -194,9 +192,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         }
     }
 
-    @MainThread
     private void processPendingDappsRequest() {
-        ThreadUtils.assertOnUiThread();
         mFragment = null;
         if (mActivityType == ActivityType.SIGN_MESSAGE) {
             mFragment = new SignMessageFragment();
