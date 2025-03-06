@@ -562,6 +562,13 @@
 -PredictionBasedPermissionUiSelectorTest.OnlyPromptsForCurrentTypeAreCounted
 -PredictionBasedPermissionUiSelectorTest.RequestsWithFewPromptsAreSent
 
+# These tests are disabled because we don't show the default browser prompt item
+# in the Hamburger menu
+-AppMenuModelTest.DefaultBrowserPrompt
+-DefaultBrowserPromptManagerTest.AppMenuItemHiddenOnPromptAccept
+-DefaultBrowserPromptManagerTest.AppMenuItemPersistsOnPromptDismissed
+-DefaultBrowserPromptManagerTest.ShowsAppMenuItem
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
