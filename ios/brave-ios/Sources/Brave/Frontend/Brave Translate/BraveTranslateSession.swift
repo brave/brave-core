@@ -3,10 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import SwiftUI
 import Translation
 import os.log
+
+// If FeatureList.kBraveAppleTranslateEnabled is true, Apple Translate will be used
+// If FeatureList.kBraveAppleTranslateEnabled is false, Brave Translate will be used
+// Apple Translate is causing a lot of issues so it's disabled for now
 
 class BraveTranslateSession {
   struct RequestMessage: Codable {
@@ -26,7 +31,7 @@ class BraveTranslateSession {
     from source: Locale.Language,
     to target: Locale.Language
   ) async -> Bool {
-    if #available(iOS 18.0, *) {
+    if #available(iOS 18.0, *), FeatureList.kBraveAppleTranslateEnabled.enabled {
       #if !targetEnvironment(simulator)
       let availability = LanguageAvailability()
       let status = await availability.status(from: source, to: target)
@@ -66,6 +71,7 @@ class BraveTranslateSession {
 }
 
 struct BraveTranslateContainerView: View {
+
   var onTranslationSessionUpdated: ((BraveTranslateSession?) async -> Void)?
 
   @ObservedObject
@@ -74,7 +80,7 @@ struct BraveTranslateContainerView: View {
   var body: some View {
     Color.clear
       .osAvailabilityModifiers({ view in
-        if #available(iOS 18.0, *) {
+        if #available(iOS 18.0, *), FeatureList.kBraveAppleTranslateEnabled.enabled {
           #if !targetEnvironment(simulator)
           view
             .translationTask(
@@ -85,7 +91,7 @@ struct BraveTranslateContainerView: View {
                   await onTranslationSessionUpdated?(BraveTranslateSessionApple(session: session))
                 } catch {
                   Logger.module.error("Translate Session Unavailable: \(error)")
-                  await onTranslationSessionUpdated?(nil)
+                  await onTranslationSessionUpdated?(BraveTranslateSessionApple(session: session))
                 }
               }
             )
