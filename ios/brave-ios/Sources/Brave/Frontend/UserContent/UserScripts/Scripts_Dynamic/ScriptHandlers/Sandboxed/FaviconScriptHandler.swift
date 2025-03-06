@@ -55,9 +55,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
       tab.favicon = await FaviconFetcher.getIconFromCache(for: url) ?? Favicon.default
 
       // If this is an internal page, we don't fetch favicons for such pages from Brave-Core
-      guard !InternalURL.isValid(url: url),
-        !(InternalURL(url)?.isSessionRestore ?? false)
-      else {
+      guard !InternalURL.isValid(url: url) else {
         return
       }
 

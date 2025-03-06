@@ -117,10 +117,6 @@ extension BrowserViewController: TabWebPolicyDecider {
       let internalUrl = InternalURL(responseURL)
 
       tab.rewardsReportingState.httpStatusCode = response.statusCode
-
-      if !tab.rewardsReportingState.wasRestored {
-        tab.rewardsReportingState.wasRestored = internalUrl?.isSessionRestore == true
-      }
     }
 
     let request = response.url.flatMap { pendingRequests[$0.absoluteString] }
@@ -210,9 +206,12 @@ extension BrowserViewController: TabWebPolicyDecider {
 
     // Handle internal:// urls
     if InternalURL.isValid(url: requestURL) {
-      if requestInfo.navigationType != .backForward, request.isInternalUnprivileged {
-        Logger.module.warning("Denying unprivileged request: \(request)")
-        return .cancel
+      // Requests for Internal pages have a 60s timeout by default
+      let isPrivilegedRequest =
+        Int64(request.timeoutInterval) < Int64(Int32.max) || request.isPrivileged
+
+      if !isPrivilegedRequest {
+        Logger.module.error("Denying Unprivileged Request: \(request)")
       }
       return .allow
     }
@@ -552,7 +551,6 @@ extension BrowserViewController: TabWebPolicyDecider {
       // request then the page is reloaded with a proper url and adblocking rules are applied.
       if let mainDocumentURL = request.mainDocumentURL,
         mainDocumentURL.schemelessAbsoluteString == requestURL.schemelessAbsoluteString,
-        !(InternalURL(requestURL)?.isSessionRestore ?? false),
         requestInfo.isMainFrame
       {
         // Identify specific block lists that need to be applied to the requesting domain

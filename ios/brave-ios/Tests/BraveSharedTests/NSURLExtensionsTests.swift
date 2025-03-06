@@ -310,7 +310,6 @@ class NSURLExtensionsTests: XCTestCase {
     ]
     let badurls = [
       "http://google.com",
-      "http://localhost:6571/sessionrestore.html",
       "http://localhost:6571/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com",
       "http://localhost:6571/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com/about/home/%23panel%3D1",
     ]
@@ -338,7 +337,6 @@ class NSURLExtensionsTests: XCTestCase {
     ]
     let badurls = [
       "http://google.com",
-      "http://localhost:6571/sessionrestore.html",
       "http://localhost:6571/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com",
       "http://localhost:6571/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com/about/home/%23panel%3D1",
     ]
@@ -367,7 +365,6 @@ class NSURLExtensionsTests: XCTestCase {
     ]
     let badurls = [
       "http://google.com",
-      "http://localhost:6571/sessionrestore.html",
       "http://localhost:6571/about/home/#panel=0",
     ]
 
@@ -403,7 +400,6 @@ class NSURLExtensionsTests: XCTestCase {
     ]
     let badurls = [
       "http://google.com",
-      "http://localhost:6571/sessionrestore.html",
       "http://localhost:6571/about/home/#panel=0",
       "http://localhost:6571/\(InternalURL.Path.errorpage.rawValue)/error.html",
     ]
@@ -449,7 +445,6 @@ class NSURLExtensionsTests: XCTestCase {
     ]
     let badurls = [
       "blah://google.com",
-      "hax://localhost:6571/sessionrestore.html",
       "leet://codes.com",
       "data:text/html;base64,SGVsbG8gV29ybGQhCg==",
     ]
@@ -461,7 +456,6 @@ class NSURLExtensionsTests: XCTestCase {
   func testIsLocalUtility() {
     let goodurls = [
       "http://localhost:6571/reader-mode/page",
-      "http://LOCALhost:6571/\(InternalURL.Path.sessionrestore)/sessionrestore.html",
       "http://127.0.0.1:6571/\(InternalURL.Path.errorpage)/error.html",
     ]
     let badurls = [
@@ -477,10 +471,7 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testisLocal() {
     let goodurls = [
-      "http://localhost:6571/reader-mode/page",
-      "http://LOCALhost:6571/sessionrestore.html",
-      "http://127.0.0.1:6571/sessionrestore.html",
-      "http://:6571/sessionrestore.html",
+      "http://localhost:6571/reader-mode/page"
 
     ]
     let badurls = [
@@ -495,10 +486,7 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testisWebPage() {
     let goodurls = [
-      "http://localhost:6571/reader-mode/page",
-      "https://127.0.0.1:6571/sessionrestore.html",
-      "data://:6571/sessionrestore.html",
-
+      "http://localhost:6571/reader-mode/page"
     ]
     let badurls = [
       "about://google.com",
@@ -766,14 +754,6 @@ class NSURLExtensionsTests: XCTestCase {
         "blob://02C00302-CE62-4DAE-AD70-FDEE19594856",
       URL(string: "file:///Users/brave/documents/foo.txt"): "file://foo.txt",
       URL(string: "file://http://brave.com/foo.txt"): "file://foo.txt",
-      URL(
-        string:
-          "\(InternalURL.baseUrl)/\(InternalURL.Path.sessionrestore.rawValue)?url=http%3A%2F%2Fbrave.com%2Ffoo"
-      ): "http://brave.com/foo",
-      URL(
-        string:
-          "\(InternalURL.baseUrl)/\(InternalURL.Path.sessionrestore.rawValue)?url=blob:https://brave.com/66823669-a00d-4c54-b1d6-f86df100b876"
-      ): "blob:https://brave.com/66823669-a00d-4c54-b1d6-f86df100b876",
     ]
 
     urlMap.forEach {

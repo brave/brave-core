@@ -1622,9 +1622,7 @@ public class BrowserViewController: UIViewController {
 
       if isAboutHomeURL {
         showNewTabPageController()
-      } else if !url.absoluteString.hasPrefix(
-        "\(InternalURL.baseUrl)/\(SessionRestoreHandler.path)"
-      ) {
+      } else {
         hideActiveNewTabPageController(url.isInternalURL(for: .readermode))
       }
     } else if isAboutHomeURL {
@@ -2406,7 +2404,6 @@ extension BrowserViewController: TabDelegate {
     var injectedScripts: [TabContentScript] = [
       ReaderModeScriptHandler(),
       ErrorPageHelper(certStore: profile.certStore),
-      SessionRestoreScriptHandler(),
       BlockedDomainScriptHandler(),
       HTTPBlockedScriptHandler(tabManager: tabManager),
       PrintScriptHandler(browserController: self),
@@ -2473,8 +2470,6 @@ extension BrowserViewController: TabDelegate {
 
     (tab.getContentScript(name: ReaderModeScriptHandler.scriptName) as? ReaderModeScriptHandler)?
       .delegate = self
-    (tab.getContentScript(name: SessionRestoreScriptHandler.scriptName)
-      as? SessionRestoreScriptHandler)?.delegate = self
     (tab.getContentScript(name: PlaylistScriptHandler.scriptName) as? PlaylistScriptHandler)?
       .delegate = self
     (tab.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName)
@@ -2775,16 +2770,6 @@ extension BrowserViewController: UIAdaptivePresentationControllerDelegate {
   public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
     // need to update tab bar visibility after user dismiss the `ChromeWebViewController`
     updateTabsBarVisibility()
-  }
-}
-
-extension BrowserViewController: SessionRestoreScriptHandlerDelegate {
-  func sessionRestore(_ handler: SessionRestoreScriptHandler, didRestoreSessionForTab tab: Tab) {
-    tab.restoring = false
-
-    if let tab = tabManager.selectedTab {
-      updateUIForReaderHomeStateForTab(tab)
-    }
   }
 }
 

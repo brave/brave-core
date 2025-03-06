@@ -122,8 +122,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
       return result
     }
 
-    // Fallback case when the error url is nested, this happens when restoring an error url, it will be inside a 'sessionrestore' url.
-    // TODO: Investigate if we can restore directly as an error url and avoid the 'sessionrestore?url=' wrapping.
+    // Fallback case when the error url is nested, this happens when restoring an error url.
     if let internalUrl = InternalURL(url), let url = internalUrl.extractedUrlParam {
       return getCerts(url)
     }

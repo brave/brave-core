@@ -385,7 +385,6 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
 
       if let mainDocumentURL = navigationAction.request.mainDocumentURL,
         mainDocumentURL.schemelessAbsoluteString == url.schemelessAbsoluteString,
-        !(InternalURL(url)?.isSessionRestore ?? false),
         navigationAction.sourceFrame.isMainFrame
           || navigationAction.targetFrame?.isMainFrame == true
       {

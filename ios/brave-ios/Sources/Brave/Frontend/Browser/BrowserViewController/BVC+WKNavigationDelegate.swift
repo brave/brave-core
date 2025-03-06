@@ -409,14 +409,6 @@ extension BrowserViewController: WKNavigationDelegate {
       if tab == self.tabManager.selectedTab {
         self.topToolbar.hideProgressBar()
       }
-
-      // If the local web server isn't working for some reason (Brave cellular data is
-      // disabled in settings, for example), we'll fail to load the session restore URL.
-      // We rely on loading that page to get the restore callback to reset the restoring
-      // flag, so if we fail to load that page, reset it here.
-      if InternalURL(url)?.aboutComponent == "sessionrestore" {
-        tab.restoring = false
-      }
     }
   }
 }
