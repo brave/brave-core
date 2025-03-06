@@ -12,7 +12,8 @@
 # to have FOLDERID_OneDrive entry in the registry making this test fail.
 -PathServiceTest.Get
 
--EnterpriseReportingPrivateGetContextInfoOSFirewallTest.*
+# Tests below this point have not been diagnosed or had issues created yet.
+-EnterpriseReportingPrivateG\etContextInfoOSFirewallTest.*
 -ExtensionServiceTest.*
 -LayoutProviderTest.*
 -PlatformStateStoreWinTest.*
