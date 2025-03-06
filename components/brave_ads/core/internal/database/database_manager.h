@@ -54,6 +54,10 @@ class DatabaseManager final {
   void CreateOrOpenCallback(
       ResultCallback callback,
       mojom::DBTransactionResultInfoPtr mojom_db_transaction_result);
+  void OnRunTransactionCallback(
+      RunDBTransactionCallback callback,
+      mojom::DBTransactionResultInfoPtr mojom_db_transaction_result);
+  void OnShutdownCallback(ShutdownCallback callback, bool success);
 
   // Create the database from scratch.
   void Create(ResultCallback callback) const;
