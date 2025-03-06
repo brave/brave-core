@@ -32,6 +32,8 @@ class Database final {
       mojom::DBTransactionInfoPtr mojom_db_transaction,
       uint64_t trace_id);
 
+  void Poison();
+
  private:
   mojom::DBTransactionResultInfo::StatusCode RunActions(
       const mojom::DBTransactionInfoPtr& mojom_db_transaction,
