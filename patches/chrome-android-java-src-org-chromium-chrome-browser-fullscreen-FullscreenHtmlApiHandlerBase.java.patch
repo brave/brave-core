@@ -6,7 +6,7 @@ index 65490bf6514e2ab2e8aa28b9c28d6310b82d1341..224c65b657f1c3813402faf0031f26ed
      @Nullable private Tab mTab;
  
      private boolean mNotifyOnNextExit;
-+    private boolean mTabHiddenByChangedTabs;
++    protected boolean mTabHiddenByChangedTabs;
  
      // Current ContentView. Updates when active tab is switched or WebContents is swapped
      // in the current Tab.
