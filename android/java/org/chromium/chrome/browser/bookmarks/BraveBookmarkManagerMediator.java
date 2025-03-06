@@ -77,7 +77,8 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
             SnackbarManager snackbarManager,
             BooleanSupplier canShowSigninPromo,
             Consumer<OnScrollListener> onScrollListenerConsumer,
-            BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager) {
+            BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager,
+            BookmarkManagerOpener bookmarkManagerOpener) {
         super(
                 activity,
                 lifecycleOwner,
@@ -100,7 +101,8 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
                 snackbarManager,
                 canShowSigninPromo,
                 onScrollListenerConsumer,
-                bookmarkMoveSnackbarManager);
+                bookmarkMoveSnackbarManager,
+                bookmarkManagerOpener);
     }
 
     public void setWindow(ActivityWindowAndroid window) {

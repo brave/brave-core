@@ -32,7 +32,8 @@ public class BraveBookmarkUtils extends BookmarkUtils {
             Activity activity,
             @BookmarkType int bookmarkType,
             Callback<BookmarkId> callback,
-            boolean fromExplicitTrackUi) {
+            boolean fromExplicitTrackUi,
+            BookmarkManagerOpener bookmarkManagerOpener) {
         assert bookmarkModel.isBookmarkModelLoaded();
         if (existingBookmarkItem != null) {
             bookmarkModel.deleteBookmark(existingBookmarkItem.getId());
@@ -48,7 +49,8 @@ public class BraveBookmarkUtils extends BookmarkUtils {
                 activity,
                 bookmarkType,
                 callback,
-                fromExplicitTrackUi);
+                fromExplicitTrackUi,
+                bookmarkManagerOpener);
     }
 
     public static void showBookmarkImportExportDialog(
