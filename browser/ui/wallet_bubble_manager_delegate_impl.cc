@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/wallet_bubble_focus_observer.h"
@@ -90,29 +89,27 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     CHECK(contents_wrapper);
     auto bubble_view = std::make_unique<WalletWebUIBubbleDialogView>(
         anchor_view_, contents_wrapper, anchor, arrow);
-    auto bubble_view_weak_ptr = bubble_view->GetWeakPtr();
-    bubble_view_ = bubble_view_weak_ptr.get();
+    bubble_view_ = bubble_view->GetWeakPtr();
     views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
 
     brave_observer_ =
-        WalletBubbleFocusObserver::CreateForView(bubble_view_, browser_);
-    web_ui_contents_for_testing_ = bubble_view_->web_view()->GetWebContents();
+        WalletBubbleFocusObserver::CreateForView(bubble_view_.get(), browser_);
     // Checking if we create WalletPanelUI instance of WebUI and
     // extracting WebUIContentsWrapper class to pass real browser delegate
     // into it to redirect popups to be opened as separate windows.
     // Set a callback to be possible to activate/deactivate wallet panel from
     // typescript side
     if (!contents_wrapper->web_contents()) {
-      return bubble_view_weak_ptr;
+      return bubble_view_;
     }
     content::WebUI* const webui = contents_wrapper->web_contents()->GetWebUI();
     if (!webui || !webui->GetController()) {
-      return bubble_view_weak_ptr;
+      return bubble_view_;
     }
     WalletPanelUI* wallet_panel =
         webui->GetController()->template GetAs<WalletPanelUI>();
     if (!wallet_panel || !browser_ || !browser_->AsWeakPtr()) {
-      return bubble_view_weak_ptr;
+      return bubble_view_;
     }
     // Set Browser delegate to redirect popups to be opened as Popup window
     contents_wrapper->SetWebContentsAddNewContentsDelegate(
@@ -126,24 +123,27 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
         base::BindRepeating(&WalletWebUIBubbleManager::SetCloseOnDeactivate,
                             weak_factory_.GetWeakPtr()));
 
-    return bubble_view_weak_ptr;
+    return bubble_view_;
   }
 
   void CloseOpenedPopups() {
     auto* contents_wrapper = cached_contents_wrapper();
-    if (!contents_wrapper)
+    if (!contents_wrapper) {
       return;
+    }
     brave_observer_.reset();
     for (auto tab_id : contents_wrapper->popup_ids()) {
       Browser* popup_browser = nullptr;
       content::WebContents* popup_contents =
           brave_wallet::GetWebContentsFromTabId(&popup_browser, tab_id);
-      if (!popup_contents || !popup_browser)
+      if (!popup_contents || !popup_browser) {
         continue;
+      }
       base::WeakPtr<content::WebContentsDelegate> delegate =
           popup_browser->AsWeakPtr();
-      if (!delegate)
+      if (!delegate) {
         continue;
+      }
       delegate->CloseContents(popup_contents);
     }
     contents_wrapper->ClearPopupIds();
@@ -162,22 +162,24 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
   void SetCloseOnDeactivate(bool close) {
     if (bubble_view_) {
       bubble_view_->set_close_on_deactivate(close);
-      if (brave_observer_)
+      if (brave_observer_) {
         brave_observer_->UpdateBubbleDeactivationState(close);
+      }
     }
   }
 
   content::WebContents* GetWebContentsForTesting() {
-    return web_ui_contents_for_testing_;
+    if (!bubble_view_) {
+      return nullptr;
+    }
+    return bubble_view_->web_view()->GetWebContents();
   }
 
  private:
   const raw_ptr<Browser> browser_;
   const raw_ptr<views::View> anchor_view_;
   std::unique_ptr<WalletBubbleFocusObserver> brave_observer_;
-  raw_ptr<WebUIBubbleDialogView, DanglingUntriaged> bubble_view_ = nullptr;
-  raw_ptr<content::WebContents, DanglingUntriaged>
-      web_ui_contents_for_testing_ = nullptr;
+  base::WeakPtr<WebUIBubbleDialogView> bubble_view_ = nullptr;
   base::WeakPtrFactory<WalletWebUIBubbleManager> weak_factory_{this};
 };
 
