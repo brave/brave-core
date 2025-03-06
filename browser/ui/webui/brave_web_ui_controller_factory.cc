@@ -126,7 +126,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
                  profile->GetPrefs(),
                  brave_rewards::IsSupportedOptions::kSkipRegionCheck)) {
     if (base::FeatureList::IsEnabled(
-            brave_rewards::features::kNewRewardsUIFeature)) {
+            brave_rewards::features::kNewRewardsUIFeature) &&
+        brave_rewards::IsSupportedForProfile(profile)) {
       return new brave_rewards::RewardsPageUI(web_ui, url.host());
     }
     return new BraveRewardsPageUI(web_ui, url.host());
