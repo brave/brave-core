@@ -1,5 +1,20 @@
+/* A label shown above a list of icons designed by Brave */
+"altAppIcon.braveIconsHeader" = "Icônes Brave";
+
+/* The title for the screen that lets the user select a custom app icon */
+"altAppIcon.changeAppIcon" = "Changer l'icône de l'application";
+
+/* A label shown next to the default Brave app icon */
+"altAppIcon.defaultAppIcon" = "Par défaut";
+
+/* A title shown if some sort of error occurs while changing the app icon */
+"altAppIcon.errorTitle" = "Impossible de changer l'icône de l'application";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "BackTitle" = "Retour";
+
+/* Accessibility message e.g. spoken by VoiceOver when page translation becomes available. */
+"BraveTranslate.availableVoiceOverAnnouncement" = "Traduction de la page disponible";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Fermer tous les onglets";
@@ -8,13 +23,13 @@
 "CloseTabFromTabTrayKeyCodeTitle" = "Fermer l'onglet sélectionné";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"CloseTabTitle" = "Testing Close Tab 2 for French";
+"CloseTabTitle" = "Fermer l'onglet";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ForwardTitle" = "Avancer";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "Testing New Private Tab 4 for French";
+"NewPrivateTabTitle" = "Nouvel onglet de navigation privée";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nouvel onglet";
@@ -62,7 +77,7 @@
 "ShowPreviousTabTitle" = "Afficher l'onglet précédent";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
-"showShieldsTitle" = "Ouvrir Brave Shields";
+"showShieldsTitle" = "Ouvrir le panneau des boucliers Brave";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Afficher tous les onglets";

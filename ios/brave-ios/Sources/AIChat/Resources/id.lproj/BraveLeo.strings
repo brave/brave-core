@@ -137,7 +137,7 @@
 "aichat.infoAboutPageContext" = "Bentuk jawaban berdasarkan konten halaman";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hai, saya Leo. Saya diproksikan oleh Brave dan didukung oleh Claude 3 Haiku, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hai, saya Leo. Saya mewakili Brave dan didukung oleh Claude Haiku, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Haiku Claude oleh Anthropic";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Obrolan secepat kilat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Hai, saya Leo. Saya diwakili oleh Brave dan didukung Claude 3.5 Sonnet, sebuah model yang dibuat oleh Anthropic untuk mendukung tugas-tugas percakapan dan pemrosesan teks.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hai, saya Leo. Saya mewakili Brave dan didukung oleh Claude Sonnet, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Soneta Claude oleh Anthropic";

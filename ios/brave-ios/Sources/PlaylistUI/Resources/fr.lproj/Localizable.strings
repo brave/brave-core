@@ -59,7 +59,7 @@
 "playlist.createNewPlaylistButtonTitle" = "Créer";
 
 /* A button title that when tapped will allow the user to delete the selected item. */
-"playlist.deleteItem" = "Testing Delete 1 for French";
+"playlist.deleteItem" = "Supprimer";
 
 /* A menu button that when tapped will present a confirmation dialog to delete a playlist and all its contents */
 "playlist.deletePlaylist" = "Supprimer la playlist";
@@ -122,7 +122,7 @@
 "playlist.noSearchResultsFoundTitle" = "Aucun résultat trouvé";
 
 /* A button title that will open the selected item in a new private tab. */
-"playlist.openInNewPrivateTab" = "Testing Open In New Private Tab 1 for French";
+"playlist.openInNewPrivateTab" = "Ouvrir dans un nouvel onglet de navigation privée";
 
 /* A button title that will open the selected item in a new tab. */
 "playlist.openInNewTab" = "Ouvrir dans un nouvel onglet";

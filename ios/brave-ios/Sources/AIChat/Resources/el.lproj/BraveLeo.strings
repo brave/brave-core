@@ -137,7 +137,7 @@
 "aichat.infoAboutPageContext" = "Διαμόρφωση απαντήσεων με βάση τα περιεχόμενα της σελίδας";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Γεια σας, είναι ο Leo. Με προσφέρει το Brave και αξιοποιώ το Claude 3 Haiku, ένα μοντέλο που δημιουργήθηκε από την Anthropic για την ενίσχυση των εργασιών επεξεργασίας συζητήσεων και μηνυμάτων κειμένου.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Γεια, είμαι το Leo. Παρέχομαι μέσω της Brave και με την υποστήριξη του Claude Haiku, ενός μοντέλου που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku από Anthropic";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Ταχύτατη συζήτηση";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Γεια σας, είμαι ο Leo. Με προσφέρει το Brave και αξιοποιώ το Claude 3.5 Sonnet, ένα μοντέλο που δημιουργήθηκε από την Anthropic για την ενίσχυση των εργασιών επεξεργασίας συζητήσεων και μηνυμάτων κειμένου.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Γεια, είμαι ο Leo. Με προσφέρει το Brave και αξιοποιώ το Claude  Sonnet, ένα μοντέλο που δημιουργήθηκε από την Anthropic για την ενίσχυση των εργασιών επεξεργασίας συζητήσεων και μηνυμάτων κειμένου.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet από Anthropic";

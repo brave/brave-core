@@ -137,7 +137,7 @@
 "aichat.infoAboutPageContext" = "Ответы формируются на основе содержимого страницы";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Здравствуйте! Я Leo — чат-бот на основе модели Claude 3 Haiku компании Anthropic. Я использую прокси-сервер Brave. Вы можете общаться со мной в чате и получать помощь с задачами, связанными с текстами.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Привет, я Лео. Я использую прокси-сервер Brave и работаю на основе Claude Haiku, модели, созданной Anthropic для решения задач по обработке разговоров и текстов.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku от Anthropic";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Сверхбыстрый чат";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Здравствуйте! Я Leo — чат-бот на основе модели Claude 3.5 Sonnet компании Anthropic. Я использую прокси-сервер Brave и помогаю писать и обрабатывать тексты.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Привет, я Лео. Я использую прокси-сервер Brave и работаю на основе Claude Sonnet модели, созданной Anthropic для решения задач по обработке разговоров и текстов.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet от Anthropic";

@@ -42,10 +42,11 @@ You can check if all translation is finished on Crowdin Dev Portal. Once it is f
 
 ```
 cd l10n/
-TOKEN=<token> ./pull-translations-from-crowdin.sh
+TOKEN=<token> VERSION=<release_version> ./pull-translations-from-crowdin.sh
 ```
 
 If there any issues downloading from Crowdin or importing strings to the project then these issues are logged to ```output.log```
+The `VERSION` is in the format of `version_number`. For example: `1_75_0`.
 
 ### Note
 
