@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.bookmarks;
 
-import android.content.ComponentName;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -26,7 +25,7 @@ public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator 
             @NonNull Profile profile,
             @NonNull BookmarkUiPrefs bookmarkUiPrefs,
             @NonNull BookmarkOpener bookmarkOpener,
-            @Nullable ComponentName openBookmarkComponentName) {
+            @Nullable BookmarkManagerOpener bookmarkManagerOpener) {
         super(
                 context,
                 isDialogUi,
@@ -34,7 +33,7 @@ public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator 
                 profile,
                 bookmarkUiPrefs,
                 bookmarkOpener,
-                openBookmarkComponentName);
+                bookmarkManagerOpener);
     }
 
     public void setWindow(ActivityWindowAndroid window) {
