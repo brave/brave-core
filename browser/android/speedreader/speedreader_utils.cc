@@ -7,9 +7,9 @@
 #include "base/logging.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/build/android/jni_headers/BraveSpeedReaderUtils_jni.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
+#include "chrome/android/chrome_jni_headers/BraveSpeedReaderUtils_jni.h"
 #include "chrome/browser/android/tab_android.h"
 #include "content/public/browser/web_contents.h"
 

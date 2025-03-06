@@ -11,16 +11,13 @@
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "base/json/json_writer.h"
-
-#include "brave/build/android/jni_headers/BraveSyncDevices_jni.h"
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
-
+#include "chrome/android/chrome_jni_headers/BraveSyncDevices_jni.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/sync_service_factory.h"
-
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"

@@ -10,7 +10,7 @@
 #include "brave/browser/android/safe_browsing/buildflags.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
-#include "brave/build/android/jni_headers/BraveActivity_jni.h"
+#include "chrome/android/chrome_jni_headers/BraveActivity_jni.h"
 
 namespace chrome {
 namespace android {
