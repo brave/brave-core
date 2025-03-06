@@ -60,13 +60,13 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   handleActionTypeClick: (actionType: Mojom.ActionType) => void
   setIsToolsMenuOpen: (isOpen: boolean) => void
   handleVoiceRecognition?: () => void
-  uploadImage: () => void
-  removeImage: (index: number) => void
   conversationHandler?: Mojom.ConversationHandlerRemote
 
   showAttachments: boolean
   setShowAttachments: (show: boolean) => void
-  imgData: Mojom.UploadedImage[] | null
+  uploadImage: () => void
+  removeImage: (index: number) => void
+  pendingMessageImages: Mojom.UploadedImage[] | null
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -110,9 +110,9 @@ const defaultContext: ConversationContext = {
   setShowAttachments: () => { },
   uploadImage: () => { },
   removeImage: () => { },
+  pendingMessageImages: null,
   ...defaultSendFeedbackState,
-  ...defaultCharCountContext,
-  imgData: null
+  ...defaultCharCountContext
 }
 
 export function useCharCountInfo(inputText: string) {
@@ -455,13 +455,14 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         context.selectedActionType
       )
     } else {
-      conversationHandler.submitHumanConversationEntry(context.inputText,
-                                                       context.imgData)
+      conversationHandler.submitHumanConversationEntry(
+        context.inputText,
+        context.pendingMessageImages)
     }
 
     setPartialContext({
       inputText: '',
-      imgData: null
+      pendingMessageImages: null
     })
     resetSelectedActionType()
   }
@@ -511,16 +512,16 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       return
     }
     // For now we only allow uploading 1 image per conversation.
-    if (context.imgData) {
+    if (context.pendingMessageImages) {
       setPartialContext({
-        imgData: null
+        pendingMessageImages: null
       })
     }
     aiChatContext.uiHandler?.uploadImage(context.conversationUuid)
     .then(({uploadedImage}) => {
       if (uploadedImage) {
         setPartialContext({
-          imgData: [uploadedImage]
+          pendingMessageImages: [uploadedImage]
         })
       }
     })
@@ -528,7 +529,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   const removeImage = (index: number) => {
     setPartialContext({
-      imgData: null
+      pendingMessageImages: null
     })
   }
 

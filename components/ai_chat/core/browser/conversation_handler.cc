@@ -664,7 +664,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
                                      ? model_service_->GetDefaultModelKey()
                                      : metadata_->model_key.value());
     if (!current_model->vision_support) {
-      ChangeModel("chat-vision-basic");
+      ChangeModel(features::kAIModelsVisionDefaultKey.Get());
     }
   }
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(

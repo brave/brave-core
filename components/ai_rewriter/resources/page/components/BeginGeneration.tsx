@@ -57,7 +57,7 @@ export default function BeginGeneration() {
           removeImage: () => {},
           uploadImage: () => {},
           conversationHistory: [],
-          imgData: null
+          pendingMessageImages: null
         }} />
     </FiltersContainer>
     <NoContent />

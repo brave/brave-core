@@ -413,18 +413,18 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
     }
 
     // Uploaded images
-    sql::Statement uploaded_image_statement(
-        GetDB().GetUniqueStatement("SELECT filename, filesize, image_data"
-                                   " FROM conversation_entry_uploaded_images"
+    sql::Statement uploaded_file_statement(
+        GetDB().GetUniqueStatement("SELECT filename, filesize, data"
+                                   " FROM conversation_entry_uploaded_files"
                                    " WHERE conversation_entry_uuid=?"
-                                   " ORDER BY image_order ASC"));
-    uploaded_image_statement.BindString(0, entry_uuid);
+                                   " ORDER BY file_order ASC"));
+    uploaded_file_statement.BindString(0, entry_uuid);
 
-    while (uploaded_image_statement.Step()) {
-      auto filename = DecryptColumnToString(uploaded_image_statement, 0);
-      int64_t filesize = uploaded_image_statement.ColumnInt64(1);
+    while (uploaded_file_statement.Step()) {
+      auto filename = DecryptColumnToString(uploaded_file_statement, 0);
+      int64_t filesize = uploaded_file_statement.ColumnInt64(1);
       auto decrypted_image_str =
-          DecryptColumnToString(uploaded_image_statement, 2);
+          DecryptColumnToString(uploaded_file_statement, 2);
       base::span<const uint8_t> image_bytes =
           base::as_byte_span(decrypted_image_str);
       std::vector<uint8_t> image_data(image_bytes.begin(), image_bytes.end());
@@ -800,25 +800,26 @@ bool AIChatDatabase::AddConversationEntry(
     for (size_t i = 0; i < entry->uploaded_images->size(); ++i) {
       const mojom::UploadedImagePtr& uploaded_image =
           entry->uploaded_images->at(i);
-      sql::Statement image_statement(GetDB().GetCachedStatement(
+      sql::Statement uploaded_file_statement(GetDB().GetCachedStatement(
           SQL_FROM_HERE,
-          "INSERT INTO conversation_entry_uploaded_images"
-          "(image_order, filename, filesize, image_data,"
+          "INSERT INTO conversation_entry_uploaded_files"
+          "(file_order, filename, filesize, data,"
           " conversation_entry_uuid)"
           " VALUES(?, ?, ?, ?, ?)"));
-      CHECK(image_statement.is_valid());
-      image_statement.BindInt(0, static_cast<int>(i));
-      if (!BindAndEncryptString(image_statement, 1, uploaded_image->filename)) {
+      CHECK(uploaded_file_statement.is_valid());
+      uploaded_file_statement.BindInt(0, static_cast<int>(i));
+      if (!BindAndEncryptString(uploaded_file_statement, 1,
+                                uploaded_image->filename)) {
         return false;
       }
-      image_statement.BindInt64(2, uploaded_image->filesize);
+      uploaded_file_statement.BindInt64(2, uploaded_image->filesize);
       if (!BindAndEncryptString(
-              image_statement, 3,
+              uploaded_file_statement, 3,
               base::as_string_view(base::span(uploaded_image->image_data)))) {
         return false;
       }
-      image_statement.BindString(4, entry->uuid.value());
-      image_statement.Run();
+      uploaded_file_statement.BindString(4, entry->uuid.value());
+      uploaded_file_statement.Run();
     }
   }
 
@@ -921,11 +922,11 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
       return false;
     }
 
-    static constexpr char kDeleteUploadedImagesQuery[] =
-        "DELETE FROM conversation_entry_uploaded_images "
+    static constexpr char kDeleteUploadedFilesQuery[] =
+        "DELETE FROM conversation_entry_uploaded_files "
         " WHERE conversation_entry_uuid=?";
     sql::Statement delete_uploaded_images_statement(
-        GetDB().GetUniqueStatement(kDeleteUploadedImagesQuery));
+        GetDB().GetUniqueStatement(kDeleteUploadedFilesQuery));
     CHECK(delete_uploaded_images_statement.is_valid());
     delete_uploaded_images_statement.BindString(0, conversation_entry_uuid);
     if (!delete_uploaded_images_statement.Run()) {
@@ -1039,17 +1040,17 @@ bool AIChatDatabase::DeleteConversationEntry(
     }
   }
 
-  // Delete from conversation_entry_uploaded_images
+  // Delete from conversation_entry_uploaded_files
   {
     static constexpr char kQuery[] =
-        "DELETE FROM conversation_entry_uploaded_images WHERE "
+        "DELETE FROM conversation_entry_uploaded_files WHERE "
         "conversation_entry_uuid=?";
     sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
     CHECK(delete_statement.is_valid());
     delete_statement.BindString(0, conversation_entry_uuid);
     if (!delete_statement.Run()) {
       DLOG(ERROR) << "Failed to delete from "
-                     "conversation_entry_uploaded_images for conversation "
+                     "conversation_entry_uploaded_files for conversation "
                      "entry uuid: "
                   << conversation_entry_uuid;
       return false;
@@ -1302,19 +1303,19 @@ bool AIChatDatabase::CreateSchema() {
     return false;
   }
 
-  static constexpr char kCreateUploadedImagesTableQuery[] =
-      "CREATE TABLE IF NOT EXISTS conversation_entry_uploaded_images("
+  static constexpr char kCreateUploadedFilesTableQuery[] =
+      "CREATE TABLE IF NOT EXISTS conversation_entry_uploaded_files("
       "conversation_entry_uuid INTEGER NOT NULL,"
-      "image_order INTEGER NOT NULL,"
+      "file_order INTEGER NOT NULL,"
       // encrypted filename
       "filename BLOB NOT NULL,"
       "filesize INTEGER NOT NULL,"
-      // encrypted image data
-      "image_data BLOB NOT NULL,"
-      "PRIMARY KEY(conversation_entry_uuid, image_order)"
+      // encrypted file byte data
+      "data BLOB NOT NULL,"
+      "PRIMARY KEY(conversation_entry_uuid, file_order)"
       ")";
-  CHECK(GetDB().IsSQLValid(kCreateUploadedImagesTableQuery));
-  if (!GetDB().Execute(kCreateUploadedImagesTableQuery)) {
+  CHECK(GetDB().IsSQLValid(kCreateUploadedFilesTableQuery));
+  if (!GetDB().Execute(kCreateUploadedFilesTableQuery)) {
     return false;
   }
 

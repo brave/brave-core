@@ -21,6 +21,8 @@ const base::FeatureParam<std::string> kAIModelsDefaultKey{
     &kAIChat, "default_model", "chat-leo-expanded"};
 const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey{
     &kAIChat, "default_premium_model", "chat-leo-expanded"};
+const base::FeatureParam<std::string> kAIModelsVisionDefaultKey{
+    &kAIChat, "default_vision_model", "chat-vision-basic"};
 const base::FeatureParam<bool> kFreemiumAvailable(&kAIChat,
                                                   "is_freemium_available",
                                                   true);

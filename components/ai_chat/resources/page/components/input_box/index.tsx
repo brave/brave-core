@@ -32,7 +32,7 @@ type Props = Pick<
   | 'isGenerating'
   | 'handleStopGenerating'
   | 'uploadImage'
-  | 'imgData'
+  | 'pendingMessageImages'
   | 'removeImage'
   | 'conversationHistory'
 > &
@@ -103,9 +103,9 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      {props.context.imgData && (
+      {props.context.pendingMessageImages && (
         <div className={styles.attachmentWrapper}>
-          {props.context.imgData.map((img, i) =>
+          {props.context.pendingMessageImages.map((img, i) =>
             <UploadedImgItem
               key={img.filename}
               uploadedImage={img}

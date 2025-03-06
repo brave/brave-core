@@ -172,7 +172,7 @@ function ConversationEntries() {
                             </div>
                           )}
                         </div>
-                        {latestTurn.uploadedImages?.length &&
+                        {!!latestTurn.uploadedImages?.length &&
                           latestTurn.uploadedImages.map((img) => (
                             <UploadedImgItem
                               key={img.filename}
