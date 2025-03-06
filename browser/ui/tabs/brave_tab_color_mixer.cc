@@ -62,7 +62,7 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBraveSplitViewUrl] = {nala::kColorTextTertiary};
   mixer[kColorBraveSplitViewMenuButtonBorder] = {nala::kColorDividerSubtle};
   mixer[kColorBraveSplitViewActiveWebViewBorder] = {
-      nala::kColorIconInteractive};
+      nala::kColorPrimitiveBrandsRorange1};
   mixer[kColorBraveSplitViewMenuButtonBackground] = {
       nala::kColorContainerBackground};
   mixer[kColorBraveSplitViewMenuButtonIcon] = {nala::kColorIconInteractive};
@@ -74,7 +74,8 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBraveSharedPinnedTabDummyViewTitle] = {nala::kColorTextPrimary};
   mixer[kColorBraveSharedPinnedTabDummyViewBackground] = {
       nala::kColorContainerBackground};
-  mixer[kColorBraveSplitViewInactiveWebViewBorder] = {kColorToolbar};
+  mixer[kColorBraveSplitViewInactiveWebViewBorder] = {
+      nala::kColorDesktopbrowserToolbarButtonOutline};
 }
 
 void AddBraveTabPrivateThemeColorMixer(ui::ColorProvider* provider,

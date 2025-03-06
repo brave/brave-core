@@ -1063,8 +1063,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
   ASSERT_TRUE(toolbar && secondary_toolbar);
   auto* secondary_location_bar_widget =
       browser_view->split_view()->secondary_location_bar_widget_.get();
-  auto* secondary_contents_web_view =
-      browser_view->split_view()->secondary_contents_web_view();
+  auto* secondary_contents_container =
+      browser_view->split_view()->secondary_contents_container();
 
   // No toolbars.
   EXPECT_FALSE(toolbar->GetVisible());
@@ -1078,15 +1078,25 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
   WaitToolbarVisibility(toolbar, true);
   WaitToolbarVisibility(secondary_toolbar, false);
 
+  const auto get_target_secondary_location_bar_origin =
+      [&secondary_contents_container]() {
+        gfx::Point target_secondary_location_bar_origin =
+            secondary_contents_container->GetLocalBounds().origin();
+        target_secondary_location_bar_origin =
+            views::View::ConvertPointToScreen(
+                secondary_contents_container,
+                target_secondary_location_bar_origin);
+        target_secondary_location_bar_origin.Offset(
+            SplitView::kInactiveBorderThickness,
+            SplitView::kInactiveBorderThickness);
+        return target_secondary_location_bar_origin;
+      };
+
   // Change the active tab.
   browser()->tab_strip_model()->ActivateTabAt(1);
   WaitToolbarVisibility(toolbar, false);
   WaitToolbarVisibility(secondary_toolbar, true);
-
-  gfx::Point secondary_web_view_origin;
-  secondary_web_view_origin = views::View::ConvertPointToScreen(
-      secondary_contents_web_view, secondary_web_view_origin);
-  EXPECT_EQ(secondary_web_view_origin,
+  EXPECT_EQ(get_target_secondary_location_bar_origin(),
             secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
 
   // Load a distillabe page in second tab.
@@ -1098,7 +1108,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
   // Check secondary location bar position when changing active tab
   // between non split view tab and split view tab.
   // Secondary location bar should have same origin with secondary
-  // web view. Otherwise, it could overlap with speedreader toolbar.
+  // contents container.
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   WaitToolbarVisibility(toolbar, false);
   WaitToolbarVisibility(secondary_toolbar, false);
@@ -1106,11 +1116,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
   browser()->tab_strip_model()->ActivateTabAt(0);
   WaitToolbarVisibility(toolbar, true);
   WaitToolbarVisibility(secondary_toolbar, true);
-  secondary_web_view_origin =
-      secondary_contents_web_view->GetLocalBounds().origin();
-  secondary_web_view_origin = views::View::ConvertPointToScreen(
-      secondary_contents_web_view, secondary_web_view_origin);
-  EXPECT_EQ(secondary_web_view_origin,
+  EXPECT_EQ(get_target_secondary_location_bar_origin(),
             secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
 
   browser()->tab_strip_model()->ActivateTabAt(2);
@@ -1120,11 +1126,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
   browser()->tab_strip_model()->ActivateTabAt(0);
   WaitToolbarVisibility(toolbar, true);
   WaitToolbarVisibility(secondary_toolbar, true);
-  secondary_web_view_origin =
-      secondary_contents_web_view->GetLocalBounds().origin();
-  secondary_web_view_origin = views::View::ConvertPointToScreen(
-      secondary_contents_web_view, secondary_web_view_origin);
-  EXPECT_EQ(secondary_web_view_origin,
+  EXPECT_EQ(get_target_secondary_location_bar_origin(),
             secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
 
   // Second tab is active. Show original content.

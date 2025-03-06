@@ -29,6 +29,7 @@
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/controls/resize_area.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/widget/widget.h"
@@ -42,7 +43,7 @@ class MenuButtonDelegate : public views::WidgetDelegateView,
  public:
   explicit MenuButtonDelegate(Browser* browser) {
     SetLayoutManager(std::make_unique<views::FillLayout>());
-    constexpr auto kCornerRadius = 8;
+    constexpr auto kCornerRadius = 4;
     constexpr auto kBorderThickness = 1;
     SetBackground(views::CreateThemedRoundedRectBackground(
         kColorBraveSplitViewMenuButtonBackground, kCornerRadius,
@@ -63,6 +64,8 @@ class MenuButtonDelegate : public views::WidgetDelegateView,
     for (auto state : views::Button::kButtonStates) {
       image_button->SetImageModel(state, image_model);
     }
+    views::InstallRoundRectHighlightPathGenerator(image_button, gfx::Insets(),
+                                                  kCornerRadius);
 
     image_button->SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
     image_button->SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
@@ -113,7 +116,7 @@ class MenuButtonDelegate : public views::WidgetDelegateView,
     gfx::Transform transform;
     transform.Translate(width() / 2, height() / 2);
     transform.Scale(gfx::Tween::DoubleValueBetween(
-                        background_animation_.GetCurrentValue(), 0.4, 1),
+                        background_animation_.GetCurrentValue(), 0.57, 1),
                     1);
     transform.Translate(-width() / 2, -height() / 2);
     canvas->Transform(transform);

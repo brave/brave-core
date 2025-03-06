@@ -25,9 +25,11 @@
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/webview/webview.h"
+#include "ui/views/painter.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
@@ -105,7 +107,11 @@ SplitView::SplitView(Browser& browser,
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   secondary_reader_mode_toolbar_ = secondary_contents_container_->AddChildView(
-      std::make_unique<ReaderModeToolbarView>(base::to_address(browser_)));
+      std::make_unique<ReaderModeToolbarView>(
+          browser_->profile(),
+          BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+              base::to_address(browser_))));
+
   secondary_reader_mode_toolbar_->SetDelegate(this);
 
   secondary_contents_container_->SetLayoutManager(
@@ -125,6 +131,12 @@ SplitView::SplitView(Browser& browser,
 }
 
 SplitView::~SplitView() = default;
+
+bool SplitView::IsSplitViewActive() const {
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
+  return split_view_browser_data->GetTile(GetActiveTabHandle()).has_value();
+}
 
 void SplitView::WillChangeActiveWebContents(
     BrowserViewKey,
@@ -217,11 +229,6 @@ void SplitView::SetSecondaryContentsResizingStrategy(
       ->SetContentsResizingStrategy(strategy);
 }
 
-void SplitView::OnThemeChanged() {
-  View::OnThemeChanged();
-  UpdateContentsWebViewBorder();
-}
-
 void SplitView::Layout(PassKey key) {
   LayoutSuperclass<views::View>(this);
 
@@ -254,6 +261,11 @@ void SplitView::OnTileTabs(const TabTile& tile) {
     return;
   }
 
+  // Update separator visibility first before starting split view layout
+  // to give their final position.
+  static_cast<BraveBrowserView*>(browser_->window())
+      ->UpdateContentsSeparatorVisibility();
+
   UpdateContentsWebViewVisual();
 }
 
@@ -261,6 +273,11 @@ void SplitView::OnDidBreakTile(const TabTile& tile) {
   if (!IsActiveWebContentsTiled(tile)) {
     return;
   }
+
+  // Update separator visibility first before starting split view layout
+  // to give their final position.
+  static_cast<BraveBrowserView*>(browser_->window())
+      ->UpdateContentsSeparatorVisibility();
 
   UpdateContentsWebViewVisual();
 }
@@ -367,32 +384,47 @@ void SplitView::UpdateContentsWebViewBorder() {
     return;
   }
 
+  auto* cp = GetColorProvider();
+  if (!cp) {
+    return;
+  }
+
   DCHECK(split_view_browser_data);
 
   if (split_view_browser_data->GetTile(GetActiveTabHandle())) {
-    auto create_border = [this](SkColor color) {
-      constexpr int kBorderThickness = 2;
-      return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
-                 base::to_address(browser_))
-                 ? views::CreateRoundedRectBorder(
-                       kBorderThickness,
-                       BraveContentsViewUtil::kBorderRadius +
-                           kBorderThickness / 2,
-                       color)
-                 : views::CreateSolidBorder(kBorderThickness, color);
-    };
+    const auto kRadius =
+        BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+            base::to_address(browser_))
+            ? BraveContentsViewUtil::kBorderRadius + kBorderThickness
+            : 0;
+    // Use same color for active focus border.
+    contents_container_->SetBorder(views::CreateThemedRoundedRectBorder(
+        kBorderThickness, kRadius, kColorBraveSplitViewActiveWebViewBorder));
 
-    if (auto* cp = GetColorProvider()) {
-      contents_web_view_->SetBorder(
-          create_border(cp->GetColor(nala::kColorPrimitivePrimary70)));
+    BraveContentsLayoutManager::GetLayoutManagerForView(contents_container_)
+        ->SetWebContentsBorderInsets(gfx::Insets(kBorderThickness));
 
-      secondary_contents_web_view_->SetBorder(create_border(
-          cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder)));
-    }
+    secondary_contents_container_->SetBorder(views::CreateBorderPainter(
+        views::Painter::CreateRoundRectWith1PxBorderPainter(
+            cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder),
+            cp->GetColor(kColorToolbar), kRadius, SkBlendMode::kSrc,
+            /*anti_alias*/ true,
+            /*should_border_scale*/ true),
+        gfx::Insets(kBorderThickness)));
+    BraveContentsLayoutManager::GetLayoutManagerForView(
+        secondary_contents_container_)
+        ->SetWebContentsBorderInsets(gfx::Insets(kBorderThickness));
   } else {
-    contents_web_view_->SetBorder(nullptr);
-    secondary_contents_web_view_->SetBorder(nullptr);
+    contents_container_->SetBorder(nullptr);
+    BraveContentsLayoutManager::GetLayoutManagerForView(contents_container_)
+        ->SetWebContentsBorderInsets({});
+
+    secondary_contents_container_->SetBorder(nullptr);
+    BraveContentsLayoutManager::GetLayoutManagerForView(
+        secondary_contents_container_)
+        ->SetWebContentsBorderInsets({});
   }
+  SchedulePaint();
 }
 
 void SplitView::UpdateSecondaryContentsWebViewVisibility() {
@@ -462,6 +494,7 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
 }
 
 void SplitView::UpdateCornerRadius(const gfx::RoundedCornersF& corners) {
+  secondary_contents_web_view_->layer()->SetRoundedCornerRadius(corners);
   secondary_contents_web_view_->holder()->SetCornerRadii(corners);
   secondary_devtools_web_view_->holder()->SetCornerRadii(corners);
 }
@@ -521,15 +554,6 @@ void SplitView::UpdateSecondaryReaderModeToolbar() {
   }
 }
 #endif
-
-gfx::Point SplitView::GetSplitViewLocationBarOffset() const {
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  if (secondary_reader_mode_toolbar_->GetVisible()) {
-    return {0, secondary_reader_mode_toolbar_->GetPreferredSize().height()};
-  }
-#endif
-  return {};
-}
 
 void SplitView::UpdateSecondaryDevtoolsLayoutAndVisibility() {
   DevToolsContentsResizingStrategy strategy;

@@ -160,7 +160,7 @@ void SplitViewLocationBar::OnPaintBorder(gfx::Canvas* canvas) {
   flags.setColor(cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder));
   flags.setAntiAlias(true);
   flags.setStyle(cc::PaintFlags::kStroke_Style);
-  flags.setStrokeWidth(2);
+  flags.setStrokeWidth(SplitView::kInactiveBorderThickness);
   canvas->DrawPath(path, flags);
 }
 
@@ -214,10 +214,11 @@ void SplitViewLocationBar::UpdateBounds() {
     return;
   }
 
-  gfx::Point point;
-  if (split_view_) {
-    point = split_view_->GetSplitViewLocationBarOffset();
-  }
+  // Inactive splitview tab's border is 2px.
+  // Outer 1px border color is same color with toolbar and inner border's color
+  // is inactive border color. locate this mini urlbar to inner border's origin.
+  gfx::Point point(SplitView::kInactiveBorderThickness,
+                   SplitView::kInactiveBorderThickness);
   views::View::ConvertPointToWidget(view, &point);
 
   auto* widget = GetWidget();
