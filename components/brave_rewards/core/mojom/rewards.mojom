@@ -382,5 +382,6 @@ struct UICardItem {
 
 struct UICard {
   string name;
+  string title;
   array<UICardItem> items;
 };

@@ -136,6 +136,7 @@ export interface UICardItem {
 
 export interface UICard {
   name: string
+  title: string
   items: UICardItem[]
 }
 

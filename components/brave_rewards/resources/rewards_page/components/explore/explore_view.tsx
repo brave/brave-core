@@ -12,6 +12,7 @@ import { useBreakpoint } from '../../lib/breakpoint'
 import { BatUtilityCard } from './bat_utility_card'
 import { CommunityCard } from './community_card'
 import { MerchStoreCard } from './merch_store_card'
+import { PartnerPromoCard } from './partner_promo_card'
 
 import { style } from './explore_view.style'
 
@@ -36,10 +37,11 @@ export function ExploreView() {
         <h3>{getString('navigationExploreLabel')}</h3>
         <div className='columns'>
           <div>
+            <PartnerPromoCard />
             <MerchStoreCard />
-            <BatUtilityCard />
           </div>
           <div>
+            <BatUtilityCard />
             <CommunityCard />
           </div>
         </div>
@@ -50,6 +52,7 @@ export function ExploreView() {
   return (
     <div {...style}>
       <h3>{getString('navigationExploreLabel')}</h3>
+      <PartnerPromoCard />
       <MerchStoreCard />
       <BatUtilityCard />
       <CommunityCard />
