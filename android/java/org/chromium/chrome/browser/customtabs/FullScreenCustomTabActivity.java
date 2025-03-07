@@ -214,6 +214,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         () -> mTabController,
                         () -> mMinimizationManagerHolder.getMinimizationManager(),
                         () -> mCustomTabFeatureOverridesManager,
+                        () -> getCustomTabActivityNavigationController().openCurrentUrlInBrowser(),
                         getEdgeToEdgeManager());
         return mBaseCustomTabRootUiCoordinator;
     }
