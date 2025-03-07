@@ -29,6 +29,13 @@ using TabDragControllerBrave = TabDragController;
     return {};                        \
   }                                   \
   virtual views::Widget* GetAttachedBrowserWidget
+
+#define CalculateWindowDragOffset      \
+  CalculateWindowDragOffset_Unused() { \
+    return {};                         \
+  }                                    \
+  virtual gfx::Vector2d CalculateWindowDragOffset
+
 #define GetLocalProcessWindow virtual GetLocalProcessWindow
 #define DetachAndAttachToNewContext virtual DetachAndAttachToNewContext
 #define ContinueDragging virtual ContinueDragging
@@ -38,6 +45,7 @@ using TabDragControllerBrave = TabDragController;
 #undef ContinueDragging
 #undef DetachAndAttachToNewContext
 #undef GetLocalProcessWindow
+#undef CalculateWindowDragOffset
 #undef GetAttachedBrowserWidget
 #undef TabDragController
 #undef InitDragData
