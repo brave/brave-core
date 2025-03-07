@@ -8,10 +8,9 @@ import styled from 'styled-components'
 
 // Common components
 import { SettingsText } from '../../../components/default'
+import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
-
-// Assets
-import { SponsoredImageInfoIcon } from './icons/sponsoredImageInfo'
+import Tooltip from '@brave/leo/react/tooltip'
 
 // Utilities
 import { getLocale } from '../../../../common/locale'
@@ -41,66 +40,34 @@ const ControlsContainer = styled.span`
   align-items: center;
 `
 
-const InfoIcon = styled.span`
-  position: relative;
-  margin: 0px 18px;
+const InfoTooltip = styled(Tooltip)`
+  --leo-tooltip-padding: 0px;
+  --leo-tooltip-background: var(--background1);
+  --leo-tooltip-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
+  margin-right: 18px;
 
-  > .icon {
-    height: 17px;
-    width: auto;
-    vertical-align: middle;
-  }
-
-  .tooltip {
-    position: absolute;
-    bottom: 100%;
-    inset-inline-start: -200px;
+  > div {
     width: 264px;
-    padding-bottom: 12px;
-    display: none;
+    border-radius: 6px;
+    padding: 24px;
   }
 
-  &:hover .tooltip {
-    display: initial;
+  div {
+    letter-spacing: 0.01em;
+    font-family: var(--brave-font-family-non-serif);
   }
-
-  &:focus .tooltip {
-    display: initial;
-  }
-
-  &:focus {
-    outline-style: solid;
-    outline-color: ${p => p.theme.color.brandBrave};
-    outline-width: 1px;
-  }
+}
 `
 
-const InfoIconTooltip = styled.div`
-  position: relative;
-  background: var(--background1);
-  box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
-  border-radius: 6px;
-  font-family: var(--brave-font-family-non-serif);
-  letter-spacing: 0.01em;
-  padding: 24px;
-
-  &:before {
-    content: '';
-    position: absolute;
-    bottom: -7px;
-    inset-inline-start: 201px;
-    background: inherit;
-    height: 15px;
-    width: 15px;
-    transform: rotate(45deg);
-  }
+const InfoIcon = styled(Icon)`
+  --leo-icon-size: 17px;
 `
 
 const InfoIconTooltipTitle = styled.div`
   font-weight: 600;
   font-size: 14px;
   line-height: 24px;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 `
 
 const InfoIconTooltipBody = styled.div`
@@ -207,21 +174,19 @@ export default function SponsoredImageToggle (
         <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
         <ControlsContainer>
           {showInfoIcon &&
-            <InfoIcon title='' tabIndex={0}>
-              {SponsoredImageInfoIcon}
-              <div className='tooltip'>
-                <InfoIconTooltip>
-                  <InfoIconTooltipTitle>
-                    {checked
-                      ? getLocale('sponsoredImageEarningTitle')
-                      : getLocale('sponsoredImageNotEarningTitle')}
-                  </InfoIconTooltipTitle>
-                  <InfoIconTooltipBody>
-                    {getInfoTooltipText(checked, rewardsEnabled)}
-                  </InfoIconTooltipBody>
-                </InfoIconTooltip>
+            <InfoTooltip mode='default' positionStrategy='fixed' tabIndex={0}>
+              <InfoIcon name='info-outline' />
+              <div slot="content">
+                <InfoIconTooltipTitle>
+                  {checked
+                    ? getLocale('sponsoredImageEarningTitle')
+                    : getLocale('sponsoredImageNotEarningTitle')}
+                </InfoIconTooltipTitle>
+                <InfoIconTooltipBody>
+                  {getInfoTooltipText(checked, rewardsEnabled)}
+                </InfoIconTooltipBody>
               </div>
-            </InfoIcon>
+            </InfoTooltip>
           }
           <Toggle onChange={onChange} checked={checked} disabled={disabled}
             size='small' />
