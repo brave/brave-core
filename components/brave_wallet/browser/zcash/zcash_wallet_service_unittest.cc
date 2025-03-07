@@ -40,6 +40,7 @@
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_auto_sync_manager.h"
 #endif
 
 using testing::_;
@@ -225,6 +226,11 @@ class ZCashWalletServiceUnitTest : public testing::Test {
   base::FilePath& db_path() { return db_path_; }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
+  std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashAutoSyncManager>>&
+  auto_sync_managers() {
+    return zcash_wallet_service_->auto_sync_managers_;
+  }
+
   base::SequenceBound<OrchardSyncState>& sync_state() {
     return zcash_wallet_service_->sync_state_;
   }
@@ -959,6 +965,62 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType) {
 
 #if BUILDFLAG(ENABLE_ORCHARD)
 
+TEST_F(ZCashWalletServiceUnitTest, AutoSync) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
+  keyring_service()->Reset();
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
+  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                              mojom::KeyringId::kZCashMainnet,
+                                              mojom::AccountKind::kDerived, 0);
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(
+          ::testing::Invoke([&](const std::string& chain_id,
+                                ZCashRpc::GetLatestBlockCallback callback) {
+            auto response =
+                zcash::mojom::BlockID::New(100000u, std::vector<uint8_t>());
+            std::move(callback).Run(std::move(response));
+          }));
+
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
+              ZCashRpc::GetTreeStateCallback callback) {
+            EXPECT_EQ(block_id->height, 100000u - kChainReorgBlockDelta);
+            auto tree_state = zcash::mojom::TreeState::New(
+                "main" /* network */,
+                100000u - kChainReorgBlockDelta /* height */,
+                "hexhexhex2" /* hash */, 123 /* time */, "" /* sapling tree */,
+                "" /* orchard tree */);
+            std::move(callback).Run(std::move(tree_state));
+          }));
+
+  EXPECT_FALSE(auto_sync_managers().contains(account_id_1));
+  {
+    base::MockCallback<ZCashWalletService::MakeAccountShieldedCallback>
+        make_account_shielded_callback;
+    EXPECT_CALL(make_account_shielded_callback, Run(Eq(std::nullopt)));
+
+    zcash_wallet_service_->MakeAccountShielded(
+        account_id_1.Clone(), 0, make_account_shielded_callback.Get());
+    task_environment_.RunUntilIdle();
+  }
+
+  keyring_service()->Lock();
+  task_environment_.RunUntilIdle();
+  EXPECT_FALSE(auto_sync_managers().contains(account_id_1));
+  keyring_service()->Unlock(kTestWalletPassword, base::DoNothing());
+  task_environment_.RunUntilIdle();
+  EXPECT_TRUE(auto_sync_managers().contains(account_id_1));
+  EXPECT_TRUE(auto_sync_managers()[account_id_1.Clone()]->IsStarted());
+}
+
 TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
@@ -1121,6 +1183,8 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
     zcash_wallet_service_->GetZCashAccountInfo(
         account_id_1.Clone(), get_zcash_account_info_callback.Get());
     task_environment_.RunUntilIdle();
+    EXPECT_TRUE(auto_sync_managers().contains(account_id_1));
+    EXPECT_TRUE(auto_sync_managers()[account_id_1.Clone()]->IsStarted());
   }
 
   {
@@ -1134,6 +1198,7 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
     zcash_wallet_service_->GetZCashAccountInfo(
         account_id_2.Clone(), get_zcash_account_info_callback.Get());
     task_environment_.RunUntilIdle();
+    EXPECT_FALSE(auto_sync_managers().contains(account_id_2));
   }
 }
 

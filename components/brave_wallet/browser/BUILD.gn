@@ -327,6 +327,8 @@ static_library("browser") {
 
   if (enable_orchard) {
     sources += [
+      "zcash/zcash_auto_sync_manager.cc",
+      "zcash/zcash_auto_sync_manager.h",
       "zcash/zcash_blocks_batch_scan_task.cc",
       "zcash/zcash_blocks_batch_scan_task.h",
       "zcash/zcash_create_orchard_to_orchard_transaction_task.cc",
