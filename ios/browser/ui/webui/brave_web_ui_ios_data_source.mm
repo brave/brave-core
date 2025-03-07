@@ -16,6 +16,7 @@
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "ios/web/public/web_client.h"
+#include "ios/web/public/webui/url_data_source_ios.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
 #include "ui/base/webui/jstemplate_builder.h"
 #include "ui/base/webui/resource_path.h"
@@ -27,11 +28,11 @@ web::WebUIIOSDataSource* BraveWebUIIOSDataSource::Create(
   return new BraveWebUIIOSDataSource(source_name);
 }
 
-class BraveWebUIIOSDataSource::InternalDataSource
+class BraveWebUIIOSDataSource::BraveInternalDataSource
     : public BraveURLDataSourceIOS {
  public:
-  InternalDataSource(BraveWebUIIOSDataSource* parent) : parent_(parent) {}
-  ~InternalDataSource() override {}
+  BraveInternalDataSource(BraveWebUIIOSDataSource* parent) : parent_(parent) {}
+  ~BraveInternalDataSource() override {}
 
   std::string GetSource() const override { return parent_->GetSource(); }
 
@@ -96,134 +97,25 @@ class BraveWebUIIOSDataSource::InternalDataSource
 // WebUIIOSDataSource implementation:
 
 BraveWebUIIOSDataSource::BraveWebUIIOSDataSource(const std::string& source_name)
-    : URLDataSourceIOSImpl(source_name, new InternalDataSource(this)),
-      default_resource_(-1),
-      use_strings_js_(false),
-      deny_xframe_options_(true),
-      load_time_data_defaults_added_(false),
-      replace_existing_source_(true),
-      should_replace_i18n_in_js_(false) {
+    : web::WebUIIOSDataSourceImpl(source_name,
+                                  new BraveInternalDataSource(this)) {
   CHECK(!source_name.ends_with("://"));
 }
 
 BraveWebUIIOSDataSource::~BraveWebUIIOSDataSource() = default;
 
-void BraveWebUIIOSDataSource::AddString(const std::string& name,
-                                        const std::u16string& value) {
-  localized_strings_.Set(name, value);
-  replacements_[name] = base::UTF16ToUTF8(value);
-}
-
-void BraveWebUIIOSDataSource::AddString(const std::string& name,
-                                        const std::string& value) {
-  localized_strings_.Set(name, value);
-  replacements_[name] = value;
-}
-
-void BraveWebUIIOSDataSource::AddLocalizedString(const std::string& name,
-                                                 int ids) {
-  localized_strings_.Set(name, web::GetWebClient()->GetLocalizedString(ids));
-  replacements_[name] =
-      base::UTF16ToUTF8(web::GetWebClient()->GetLocalizedString(ids));
-}
-
-void BraveWebUIIOSDataSource::AddLocalizedStrings(
-    const base::Value::Dict& localized_strings) {
-  localized_strings_.Merge(localized_strings.Clone());
-  ui::TemplateReplacementsFromDictionaryValue(localized_strings,
-                                              &replacements_);
-}
-
-void BraveWebUIIOSDataSource::AddLocalizedStrings(
-    base::span<const webui::LocalizedString> strings) {
-  for (const auto& str : strings) {
-    AddLocalizedString(str.name, str.id);
-  }
-}
-
-void BraveWebUIIOSDataSource::AddBoolean(const std::string& name, bool value) {
-  localized_strings_.Set(name, value);
-}
-
-void BraveWebUIIOSDataSource::UseStringsJs() {
-  use_strings_js_ = true;
-}
-
-void BraveWebUIIOSDataSource::EnableReplaceI18nInJS() {
-  should_replace_i18n_in_js_ = true;
-}
-
-bool BraveWebUIIOSDataSource::ShouldReplaceI18nInJS() const {
-  return should_replace_i18n_in_js_;
-}
-
-void BraveWebUIIOSDataSource::AddResourcePath(const std::string& path,
-                                              int resource_id) {
-  path_to_idr_map_[path] = resource_id;
-}
-
-void BraveWebUIIOSDataSource::AddResourcePaths(
-    base::span<const webui::ResourcePath> paths) {
-  for (const auto& path : paths) {
-    AddResourcePath(path.path, path.id);
-  }
-}
-
-void BraveWebUIIOSDataSource::SetDefaultResource(int resource_id) {
-  default_resource_ = resource_id;
-}
-
-void BraveWebUIIOSDataSource::DisableDenyXFrameOptions() {
-  deny_xframe_options_ = false;
-}
-
-const ui::TemplateReplacements* BraveWebUIIOSDataSource::GetReplacements()
-    const {
-  return &replacements_;
-}
-
-// URLDataSourceIOS implementation:
-
-std::string BraveWebUIIOSDataSource::GetSource() const {
-  return base::StrCat({kChromeUIScheme, url::kStandardSchemeSeparator});
-}
-
-void BraveWebUIIOSDataSource::StartDataRequest(
-    const std::string& path,
-    web::URLDataSourceIOS::GotDataCallback callback) {
-  EnsureLoadTimeDataDefaultsAdded();
-
-  if (use_strings_js_) {
-    bool from_js_module = path == "strings.m.js";
-    if (from_js_module || path == "strings.js") {
-      SendLocalizedStringsAsJSON(std::move(callback), from_js_module);
-      return;
-    }
-  }
-
-  int resource_id = PathToIdrOrDefault(path);
-  DCHECK_NE(resource_id, -1);
-  scoped_refptr<base::RefCountedMemory> response(
-      web::GetWebClient()->GetDataResourceBytes(resource_id));
-  std::move(callback).Run(response);
-}
-
 std::string BraveWebUIIOSDataSource::GetMimeType(
     const std::string& path) const {
-  if (base::EndsWith(path, ".png", base::CompareCase::INSENSITIVE_ASCII)) {
-    return "image/png";
-  }
-
-  if (base::EndsWith(path, ".gif", base::CompareCase::INSENSITIVE_ASCII)) {
-    return "image/gif";
-  }
-
-  if (base::EndsWith(path, ".jpg", base::CompareCase::INSENSITIVE_ASCII)) {
-    return "image/jpg";
+  if (base::EndsWith(path, ".css", base::CompareCase::INSENSITIVE_ASCII)) {
+    return "text/css";
   }
 
   if (base::EndsWith(path, ".js", base::CompareCase::INSENSITIVE_ASCII)) {
     return "application/javascript";
+  }
+
+  if (base::EndsWith(path, ".ts", base::CompareCase::INSENSITIVE_ASCII)) {
+    return "application/typescript";
   }
 
   if (base::EndsWith(path, ".json", base::CompareCase::INSENSITIVE_ASCII)) {
@@ -234,56 +126,47 @@ std::string BraveWebUIIOSDataSource::GetMimeType(
     return "application/pdf";
   }
 
-  if (base::EndsWith(path, ".css", base::CompareCase::INSENSITIVE_ASCII)) {
-    return "text/css";
-  }
-
   if (base::EndsWith(path, ".svg", base::CompareCase::INSENSITIVE_ASCII)) {
     return "image/svg+xml";
+  }
+
+  if (base::EndsWith(path, ".jpg", base::CompareCase::INSENSITIVE_ASCII)) {
+    return "image/jpg";
+  }
+
+  if (base::EndsWith(path, ".png", base::CompareCase::INSENSITIVE_ASCII)) {
+    return "image/png";
+  }
+
+  if (base::EndsWith(path, ".gif", base::CompareCase::INSENSITIVE_ASCII)) {
+    return "image/gif";
+  }
+
+  if (base::EndsWith(path, ".mp4", base::CompareCase::INSENSITIVE_ASCII)) {
+    return "video/mp4";
+  }
+
+  if (base::EndsWith(path, ".mp4", base::CompareCase::INSENSITIVE_ASCII)) {
+    return "video/mp4";
+  }
+
+  if (base::EndsWith(path, ".wasm", base::CompareCase::INSENSITIVE_ASCII)) {
+    return "application/wasm";
+  }
+
+  if (base::EndsWith(path, ".woff2", base::CompareCase::INSENSITIVE_ASCII)) {
+    return "application/font-woff2";
   }
 
   return "text/html";
 }
 
-bool BraveWebUIIOSDataSource::ShouldReplaceExistingSource() const {
-  return replace_existing_source_;
-}
-
-bool BraveWebUIIOSDataSource::ShouldDenyXFrameOptions() const {
-  return deny_xframe_options_;
-}
-
-bool BraveWebUIIOSDataSource::ShouldServiceRequest(const GURL& url) const {
-  return web::GetWebClient()->IsAppSpecificURL(url);
-}
-
-void BraveWebUIIOSDataSource::EnsureLoadTimeDataDefaultsAdded() {
-  if (load_time_data_defaults_added_) {
-    return;
-  }
-
-  load_time_data_defaults_added_ = true;
-  base::Value::Dict defaults;
-  webui::SetLoadTimeDataDefaults(web::GetWebClient()->GetApplicationLocale(),
-                                 &defaults);
-  AddLocalizedStrings(defaults);
-}
-
-void BraveWebUIIOSDataSource::SendLocalizedStringsAsJSON(
-    web::URLDataSourceIOS::GotDataCallback callback,
-    bool from_js_module) {
-  std::string template_data;
-  webui::AppendJsonJS(localized_strings_, &template_data, from_js_module);
-  std::move(callback).Run(
-      base::MakeRefCounted<base::RefCountedString>(std::move(template_data)));
-}
-
-int BraveWebUIIOSDataSource::PathToIdrOrDefault(const std::string& path) const {
-  auto it = path_to_idr_map_.find(path);
-  return it == path_to_idr_map_.end() ? default_resource_ : it->second;
-}
-
 // Brave CSP's & Security implementation:
+
+void BraveWebUIIOSDataSource::SetSupportedScheme(std::string_view scheme) {
+  CHECK(!supported_scheme_.has_value());
+  supported_scheme_ = scheme;
+}
 
 void BraveWebUIIOSDataSource::OverrideContentSecurityPolicy(
     network::mojom::CSPDirectiveName directive,
@@ -294,7 +177,8 @@ void BraveWebUIIOSDataSource::OverrideContentSecurityPolicy(
 void BraveWebUIIOSDataSource::AddFrameAncestor(const GURL& frame_ancestor) {
   // Do not allow a wildcard to be a frame ancestor or it will allow any website
   // to embed the WebUI.
-  CHECK(frame_ancestor.SchemeIs(kChromeUIScheme));
+  CHECK(frame_ancestor.SchemeIs(kChromeUIScheme) ||
+        frame_ancestor.SchemeIs(kChromeUIUntrustedScheme));
   frame_ancestors_.insert(frame_ancestor);
 }
 
