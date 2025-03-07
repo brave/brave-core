@@ -77,7 +77,7 @@ class ModelListSection extends ModelListSectionBase {
     const isEditing = this.isEditingModelIndex_ !== null
 
     // Since model-config-ui is conditionally rendered, we use this.$$ API to access the element
-    const modelConfigElement = this.$$('#model-config-ui') as any
+    const modelConfigElement: any = this.$$('#model-config-ui')
 
     if (!e.detail.modelConfig.options.customModelOptions) {
       console.error('Custom model options are missing')
