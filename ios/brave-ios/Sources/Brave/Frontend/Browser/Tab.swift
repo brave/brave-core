@@ -906,6 +906,7 @@ class Tab: NSObject {
       _walletEthProvider,
       _walletSolProvider,
       _walletKeyringService,
+      _braveUserAgentService,
     ]
 
     DispatchQueue.main.async {
