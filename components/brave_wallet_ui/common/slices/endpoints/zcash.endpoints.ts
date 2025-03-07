@@ -191,7 +191,7 @@ export const zcashEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['ZcashChainTipStatus', 'IsSyncInProgress']
+      invalidatesTags: ['ZcashChainTipStatus', 'IsSyncInProgress', 'TokenBalances']
     }),
 
     getIsSyncInProgress: query<boolean, BraveWallet.AccountId>({
