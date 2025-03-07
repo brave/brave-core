@@ -226,7 +226,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &permissions::features::kPermissionOnDeviceNotificationPredictions,
       &permissions::features::kPermissionPredictionsV2,
-      &permissions::features::kPermissionPredictionsV3,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &plus_addresses::features::kPlusAddressesEnabled,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
