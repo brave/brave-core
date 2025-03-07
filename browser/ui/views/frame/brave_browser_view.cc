@@ -243,8 +243,9 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
-          devtools_web_view(), contents_web_view(), contents_scrim_view(),
-          border_view, watermark_view_.get(), reader_mode_toolbar_));
+          devtools_web_view(), contents_web_view(), lens_overlay_view_,
+          contents_scrim_view(), border_view, watermark_view_.get(),
+          reader_mode_toolbar_));
 #endif
 
   if (use_rounded_corners) {
