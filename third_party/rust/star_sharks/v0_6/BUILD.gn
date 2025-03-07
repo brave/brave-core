@@ -26,6 +26,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "star-sharks"
   cargo_pkg_description =
       "Shamir's Secret Sharing library for the STAR protocol"
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
