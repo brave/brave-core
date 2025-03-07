@@ -113,7 +113,6 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   GetSearchProvidersUsingKeywordResult(
       result.GetValue(), nullptr,
       &search_engines_test_environment_.pref_service(),
-      &search_engines_test_environment_.search_engine_choice_service(),
       search_engines_test_environment_.prepopulate_data_resolver(),
       &template_urls, default_turl.get(), SearchTermsData(),
       updated_keywords_metadata, nullptr);
@@ -149,7 +148,6 @@ TEST_F(BraveTemplateURLServiceUtilTest,
   GetSearchProvidersUsingKeywordResult(
       result.GetValue(), nullptr,
       &search_engines_test_environment_.pref_service(),
-      &search_engines_test_environment_.search_engine_choice_service(),
       search_engines_test_environment_.prepopulate_data_resolver(),
       &template_urls, default_turl.get(), SearchTermsData(),
       updated_keywords_metadata, nullptr);
