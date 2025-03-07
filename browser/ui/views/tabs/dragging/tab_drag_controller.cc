@@ -119,6 +119,23 @@ gfx::Point TabDragController::GetAttachedDragPoint(
   return {x, y};
 }
 
+gfx::Vector2d TabDragController::CalculateWindowDragOffset() {
+  gfx::Vector2d offset = TabDragControllerChromium::CalculateWindowDragOffset();
+  if (!is_showing_vertical_tabs_) {
+    return offset;
+  }
+
+  // Re-calculate offset as above result is based on vertical tab widget.
+  // Convert it based on browser window widget(top level widget).
+  gfx::Point new_offset(offset.x(), offset.y());
+  views::View::ConvertPointFromWidget(attached_context_, &new_offset);
+  views::View::ConvertPointToScreen(attached_context_, &new_offset);
+  views::View::ConvertPointFromScreen(
+      attached_context_->GetWidget()->GetTopLevelWidget()->GetRootView(),
+      &new_offset);
+  return new_offset.OffsetFromOrigin();
+}
+
 void TabDragController::MoveAttached(const gfx::Point& point_in_screen,
                                      bool just_attached) {
   TabDragControllerChromium::MoveAttached(point_in_screen, just_attached);
