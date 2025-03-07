@@ -81,6 +81,7 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
             @NonNull Supplier<CustomTabActivityTabController> tabController,
             @NonNull Supplier<CustomTabMinimizeDelegate> minimizeDelegateSupplier,
             @NonNull Supplier<CustomTabFeatureOverridesManager> featureOverridesManagerSupplier,
+            @NonNull Runnable openInBrowserRunnable,
             @NonNull EdgeToEdgeManager edgeToEdgeManager) {
         super(
                 activity,
@@ -117,6 +118,7 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
                 tabController,
                 minimizeDelegateSupplier,
                 featureOverridesManagerSupplier,
+                openInBrowserRunnable,
                 edgeToEdgeManager);
     }
 
