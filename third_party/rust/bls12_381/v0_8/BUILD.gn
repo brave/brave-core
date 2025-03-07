@@ -43,6 +43,7 @@ cargo_crate("lib") {
       "Sean Bowe <ewillbefull@gmail.com>, Jack Grigg <thestr4d@gmail.com>"
   cargo_pkg_name = "bls12_381"
   cargo_pkg_description = "Implementation of the BLS12-381 pairing-friendly elliptic curve construction"
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]

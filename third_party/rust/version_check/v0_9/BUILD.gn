@@ -28,6 +28,7 @@ cargo_crate("buildrs_support") {
   cargo_pkg_name = "version_check"
   cargo_pkg_description =
       "Tiny crate to check the version of the installed/running rustc."
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]

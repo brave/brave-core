@@ -26,6 +26,7 @@ cargo_crate("lib") {
       "Sean Bowe <ewillbefull@gmail.com>, Jack Grigg <thestr4d@gmail.com>"
   cargo_pkg_name = "ff_derive"
   cargo_pkg_description = "Procedural macro library used to build custom prime field implementations"
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]

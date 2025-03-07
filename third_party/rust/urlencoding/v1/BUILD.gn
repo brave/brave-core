@@ -27,6 +27,7 @@ cargo_crate("lib") {
       "Kornel <kornel@geekhood.net>, Bertram Truong <b@bertramtruong.com>"
   cargo_pkg_name = "urlencoding"
   cargo_pkg_description = "A Rust library for doing URL percentage encoding."
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
