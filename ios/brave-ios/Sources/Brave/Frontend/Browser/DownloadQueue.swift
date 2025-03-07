@@ -20,7 +20,6 @@ class Download: NSObject {
   fileprivate(set) var filename: String
   fileprivate(set) var mimeType: String
   fileprivate(set) var originalURL: URL?
-  fileprivate(set) var response: URLResponse
   fileprivate(set) var destinationURL: URL?
 
   fileprivate(set) var isStarted: Bool = false
@@ -31,12 +30,10 @@ class Download: NSObject {
 
   init(
     suggestedFilename: String,
-    originalURL: URL?,
-    response: URLResponse
+    originalURL: URL?
   ) {
     self.filename = suggestedFilename
     self.originalURL = originalURL
-    self.response = response
     self.mimeType = "application/octet-stream"
 
     self.bytesDownloaded = 0
@@ -221,9 +218,13 @@ class WebKitDownload: Download {
 
     super.init(
       suggestedFilename: suggestedFileName,
-      originalURL: download.originalRequest?.url,
-      response: response
+      originalURL: download.originalRequest?.url
     )
+
+    if let mimeType = response.mimeType {
+      self.mimeType = mimeType
+    }
+    self.originalURL = download.originalRequest?.url
 
     self.bytesDownloaded = download.progress.completedUnitCount
     self.totalBytesExpected = download.progress.totalUnitCount

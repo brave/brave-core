@@ -38,24 +38,25 @@ extension String {
 
 class OpenPassBookHelper: NSObject {
   private let mimeType: String
-  fileprivate var url: URL
+  fileprivate var passURL: URL
 
   fileprivate let browserViewController: BrowserViewController
 
   required init?(
     request: URLRequest?,
-    response: URLResponse,
+    mimeType: String?,
+    passURL: URL?,
     canShowInWebView: Bool,
     forceDownload: Bool,
     browserViewController: BrowserViewController
   ) {
-    guard let mimeType = response.mimeType,
+    guard let mimeType,
       [MIMEType.passbook, MIMEType.passbookBundle].contains(mimeType.lowercased()),
       PKAddPassesViewController.canAddPasses(),
-      let responseURL = response.url, !forceDownload
+      let passURL, !forceDownload
     else { return nil }
     self.mimeType = mimeType
-    self.url = responseURL
+    self.passURL = passURL
     self.browserViewController = browserViewController
     super.init()
   }
@@ -85,7 +86,7 @@ class OpenPassBookHelper: NSObject {
 
   private func parsePasses() async throws -> [PKPass] {
     if mimeType == MIMEType.passbookBundle {
-      let url = try await ZipImporter.unzip(path: url)
+      let url = try await ZipImporter.unzip(path: passURL)
       do {
         let files = await enumerateFiles(in: url, withExtensions: ["pkpass", "pkpasses"])
         let result = try files.map { try PKPass(data: Data(contentsOf: $0)) }
@@ -97,7 +98,7 @@ class OpenPassBookHelper: NSObject {
       }
     }
 
-    let passData = try Data(contentsOf: url)
+    let passData = try Data(contentsOf: passURL)
     return try [PKPass(data: passData)]
   }
 

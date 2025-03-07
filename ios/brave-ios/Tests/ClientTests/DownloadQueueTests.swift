@@ -200,7 +200,7 @@ private func makeSUT() -> (sut: DownloadQueue, delegate: DownloadQueueDelegateSp
 
 extension Download {
   convenience override init() {
-    self.init(suggestedFilename: "", originalURL: nil, response: .init())
+    self.init(suggestedFilename: "", originalURL: nil)
   }
 }
 
@@ -214,7 +214,7 @@ private class DownloadSpy: Download {
   var receivedMessages: [Message] = []
 
   init() {
-    super.init(suggestedFilename: "", originalURL: nil, response: .init())
+    super.init(suggestedFilename: "", originalURL: nil)
   }
 
   override func resume() {
