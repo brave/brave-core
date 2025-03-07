@@ -52,6 +52,8 @@ inline constexpr char kDailyUptimeSumPrefName[] =
     "brave.misc_metrics.uptime_sum";
 inline constexpr char kDailyUptimeFrameStartTimePrefName[] =
     "brave.misc_metrics.uptime_frame_start_time_v2";
+inline constexpr char kWeeklyUptimeStoragePrefName[] =
+    "brave.misc_metrics.weekly_uptime_storage";
 
 inline constexpr char kMiscMetricsTabSwitcherNewTabsStorage[] =
     "brave.misc_metrics.tab_switcher_new_tabs_storage";
