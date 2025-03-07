@@ -64,6 +64,7 @@ cargo_crate("lib") {
       "ChainSafe Systems <info@chainsafe.io>, Protocol Labs, Filecoin Core Devs"
   cargo_pkg_name = "fvm_shared"
   cargo_pkg_description = "Filecoin Virtual Machine shared types and functions"
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
