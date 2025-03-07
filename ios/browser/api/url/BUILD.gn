@@ -26,6 +26,7 @@ source_set("url") {
     "//components/url_formatter",
     "//components/url_formatter/spoof_checks/top_domains:common",
     "//components/url_formatter/spoof_checks/top_domains:generate_top_domains_trie",
+    "//ios/web/util",
     "//net",
     "//url",
   ]

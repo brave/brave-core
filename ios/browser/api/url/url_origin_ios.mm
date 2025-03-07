@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/url/url_origin_ios.h"
 
 #include "base/strings/sys_string_conversions.h"
+#include "ios/web/util/wk_security_origin_util.h"
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -106,6 +107,14 @@
 
 - (bool)isCanonicalDomain:(NSString*)canonicalDomain {
   return origin->DomainIs(base::SysNSStringToUTF8(canonicalDomain));
+}
+
+@end
+
+@implementation URLOriginIOS (WebKit)
+
+- (instancetype)initWithWKSecurityOrigin:(WKSecurityOrigin*)securityOrigin {
+  return [self initWithOrigin:web::OriginWithWKSecurityOrigin(securityOrigin)];
 }
 
 @end

@@ -7,6 +7,7 @@
 #define BRAVE_IOS_BROWSER_API_URL_URL_ORIGIN_IOS_H_
 
 #import <Foundation/Foundation.h>
+#import <WebKit/WebKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -103,6 +104,13 @@ NS_SWIFT_NAME(URLOrigin)
 
 /// Same as GURL::DomainIs. If |this| origin is opaque, then returns false.
 - (bool)isCanonicalDomain:(NSString*)canonicalDomain;
+
+@end
+
+@interface URLOriginIOS (WebKit)
+
+/// Creates a URLOrigin given a WebKit provided WKSecurityOrigin
+- (instancetype)initWithWKSecurityOrigin:(WKSecurityOrigin*)securityOrigin;
 
 @end
 
