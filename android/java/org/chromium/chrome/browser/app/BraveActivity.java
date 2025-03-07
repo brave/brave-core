@@ -1035,25 +1035,13 @@ public abstract class BraveActivity extends ChromeActivity
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 () -> {
-                    // Only attempt removal if we haven't done it before
-                    boolean shouldRemoveDb =
-                            ChromeSharedPreferences.getInstance()
-                                    .readBoolean(BravePreferenceKeys.PLAYLIST_DB_REMOVAL, true);
+                    // Get path to playlist database
+                    File playlistDatabasePath =
+                            ContextUtils.getApplicationContext().getDatabasePath(PLAYLIST_DB_NAME);
 
-                    if (shouldRemoveDb) {
-                        // Get path to playlist database
-                        File playlistDatabasePath =
-                                ContextUtils.getApplicationContext()
-                                        .getDatabasePath(PLAYLIST_DB_NAME);
-
-                        // Delete the database file if it exists
-                        if (playlistDatabasePath.exists()) {
-                            ContextUtils.getApplicationContext().deleteDatabase(PLAYLIST_DB_NAME);
-                        }
-
-                        // Mark database removal as completed
-                        ChromeSharedPreferences.getInstance()
-                                .writeBoolean(BravePreferenceKeys.PLAYLIST_DB_REMOVAL, false);
+                    // Delete the database file if it exists
+                    if (playlistDatabasePath.exists()) {
+                        ContextUtils.getApplicationContext().deleteDatabase(PLAYLIST_DB_NAME);
                     }
                 });
 
