@@ -6,9 +6,9 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 
 #include "base/android/jni_android.h"
-#include "brave/build/android/jni_headers/BraveWalletServiceFactory_jni.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "chrome/android/chrome_jni_headers/BraveWalletServiceFactory_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 

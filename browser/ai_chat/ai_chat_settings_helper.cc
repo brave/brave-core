@@ -27,7 +27,7 @@
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/build/android/jni_headers/BraveLeoMojomHelper_jni.h"
+#include "chrome/android/chrome_jni_headers/BraveLeoMojomHelper_jni.h"
 #include "content/public/browser/android/browser_context_handle.h"
 #endif
 

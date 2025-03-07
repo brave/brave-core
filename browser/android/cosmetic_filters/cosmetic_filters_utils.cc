@@ -6,7 +6,7 @@
 #include "brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h"
 
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
-#include "brave/build/android/jni_headers/BraveCosmeticFiltersUtils_jni.h"
+#include "chrome/android/chrome_jni_headers/BraveCosmeticFiltersUtils_jni.h"
 #include "chrome/browser/android/tab_android.h"
 
 namespace cosmetic_filters {

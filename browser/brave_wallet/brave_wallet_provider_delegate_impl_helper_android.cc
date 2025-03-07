@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
+
 #include "base/android/callback_android.h"
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "base/notreached.h"
-#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/build/android/jni_headers/BraveWalletProviderDelegateImplHelper_jni.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "chrome/android/chrome_jni_headers/BraveWalletProviderDelegateImplHelper_jni.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 

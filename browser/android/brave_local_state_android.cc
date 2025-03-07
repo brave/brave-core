@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/build/android/jni_headers/BraveLocalState_jni.h"
+#include "chrome/android/chrome_jni_headers/BraveLocalState_jni.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_service.h"
 

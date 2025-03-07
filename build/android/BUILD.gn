@@ -206,44 +206,18 @@ brave_xml_preprocessor("brave_java_xml_preprocess_resources") {
 
 generate_jni("jni_headers") {
   sources = [
-    "//brave/android/java/org/chromium/chrome/browser/BraveFeatureUtil.java",
-    "//brave/android/java/org/chromium/chrome/browser/BraveLocalState.java",
-    "//brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
-    "//brave/android/java/org/chromium/chrome/browser/BraveRewardsNativeWorker.java",
-    "//brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
-    "//brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
-    "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoMojomHelper.java",
     "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoSettingsLauncherHelper.java",
-    "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoUtils.java",
-    "//brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsControllerFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/cosmetic_filters/BraveCosmeticFiltersUtils.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioServiceFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BlockchainRegistryFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletProviderDelegateImplHelper.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletServiceFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapServiceFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/dapps/ConnectAccountFragment.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveDappPermissionPromptDialog.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletDataFilesInstallerUtil.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletNativeUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/day_zero/DayZeroHelper.java",
     "//brave/android/java/org/chromium/chrome/browser/informers/BraveSyncAccountDeletedInformer.java",
-    "//brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/channels/BraveSiteChannelsManagerBridge.java",
-    "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
-    "//brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
     "//brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
-    "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
-    "//brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/shields/UrlSanitizerServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
-    "//brave/android/java/org/chromium/chrome/browser/speedreader/BraveSpeedReaderUtils.java",
-    "//brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
     "//brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
-    "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
-    "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnServiceFactoryAndroid.java",
-    "//brave/android/java/org/chromium/chrome/browser/webcompat_reporter/WebcompatReporterServiceFactory.java",
   ]
 
-  public_deps = [ "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers" ]
+  public_deps = [
+    "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers",
+    "//chrome/android:chrome_jni_headers",
+  ]
 }

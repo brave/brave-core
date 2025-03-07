@@ -8,10 +8,10 @@
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "base/version.h"
-#include "brave/build/android/jni_headers/BlockchainRegistryFactory_jni.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "chrome/android/chrome_jni_headers/BlockchainRegistryFactory_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 

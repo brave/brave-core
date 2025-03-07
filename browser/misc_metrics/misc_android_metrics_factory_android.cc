@@ -8,7 +8,7 @@
 #include "brave/browser/misc_metrics/misc_android_metrics.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
-#include "brave/build/android/jni_headers/MiscAndroidMetricsFactory_jni.h"
+#include "chrome/android/chrome_jni_headers/MiscAndroidMetricsFactory_jni.h"
 #include "chrome/browser/profiles/profile.h"
 
 namespace chrome {
