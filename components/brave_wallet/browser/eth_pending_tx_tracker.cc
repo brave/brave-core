@@ -9,7 +9,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -119,7 +118,7 @@ bool EthPendingTxTracker::ShouldTxDropped(const EthTxMeta& meta) {
   const std::string& chain_id = meta.chain_id();
   auto network_nonce_map_per_chain_id = network_nonce_map_.find(address);
   if (network_nonce_map_per_chain_id == network_nonce_map_.end() ||
-      !base::Contains(network_nonce_map_per_chain_id->second, chain_id)) {
+      !network_nonce_map_per_chain_id->second.contains(chain_id)) {
     json_rpc_service_->GetEthTransactionCount(
         chain_id, address,
         base::BindOnce(&EthPendingTxTracker::OnGetNetworkNonce,
@@ -135,17 +134,15 @@ bool EthPendingTxTracker::ShouldTxDropped(const EthTxMeta& meta) {
     }
   }
 
-  const std::string tx_hash = meta.tx_hash();
-  if (!base::Contains(dropped_blocks_counter_, tx_hash)) {
-    dropped_blocks_counter_[tx_hash] = 0;
-  }
-  if (dropped_blocks_counter_[tx_hash] >= 3) {
-    dropped_blocks_counter_.erase(tx_hash);
+  auto [it, inserted] = dropped_blocks_counter_.try_emplace(meta.tx_hash(), 0);
+  uint8_t& count = it->second;
+
+  if (count >= 3) {
+    dropped_blocks_counter_.erase(it);
     return true;
   }
 
-  dropped_blocks_counter_[tx_hash] = dropped_blocks_counter_[tx_hash] + 1;
-
+  ++count;
   return false;
 }
 

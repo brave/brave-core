@@ -1003,14 +1003,14 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
     }
     AddSuggestToken(std::move(token), std::move(callback), std::move(id));
   } else if (method == kRequestPermissionsMethod) {
-    std::vector<std::string> restricted_methods;
-    if (!ParseRequestPermissionsParams(normalized_json_request,
-                                       &restricted_methods)) {
+    std::optional<base::flat_set<std::string>> restricted_methods =
+        ParseRequestPermissionsParams(normalized_json_request);
+    if (!restricted_methods) {
       SendErrorOnRequest(error, error_message, std::move(callback),
                          std::move(id));
       return;
     }
-    if (!base::Contains(restricted_methods, "eth_accounts")) {
+    if (!restricted_methods->contains("eth_accounts")) {
       SendErrorOnRequest(error, error_message, std::move(callback),
                          std::move(id));
       return;
