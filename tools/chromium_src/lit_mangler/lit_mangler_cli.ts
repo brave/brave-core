@@ -67,11 +67,4 @@ commander
         write(output)
     })
 
-commander
-    .command('typecheck')
-    .arguments('<files...>')
-    .action((files: string[]) => {
-        runTypecheck(files)
-    })
-
 commander.parse(process.argv)
