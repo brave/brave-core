@@ -288,5 +288,4 @@ TEST(FeatureDefaultsTest, DefaultFeatureParameters) {
   EXPECT_EQ(features::kLocationProviderManagerParam.default_value,
             device::mojom::LocationProviderManagerMode::kPlatformOnly);
 #endif
-  EXPECT_FALSE(features::kShowDefaultBrowserAppMenuItem.default_value);
 }
