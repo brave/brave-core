@@ -164,7 +164,9 @@ import os.log
   let ruleStore: WKContentRuleListStore
   /// We cached the rule lists so that we can return them quicker if we need to
   private var cachedRuleLists: [String: CompileResult]
-  /// The available known versions of the compiled block lists
+  /// The available known versions of the compiled block lists.
+  /// key is the list identifier, value is the version in either
+  /// version (`1.0.123`) or date (`2025-03-07T10:00:00Z`) format.
   private let versions: Preferences.Option<[String: String]>
 
   init(
@@ -457,12 +459,17 @@ import os.log
       // If the file wasn't modified, make sure we have something compiled.
       // We should, but this can be false during upgrades if the identifier changed for some reason.
       if await hasRuleList(for: type, mode: mode) {
-        if let existingVersion = versions.value[identifier], existingVersion < version {
-          return true
+        if let existingVersion = versions.value[identifier] {
+          // if existing version older than newer version, consider it `missing` so we recompile
+          // version are either in versioning format `1.0.234` / `1.0.2345`,
+          // or as dates, `2025-03-07T10:00:00Z` / `2025-03-07T14:50:38Z`
+          return version.compare(existingVersion, options: .numeric) == .orderedDescending
         } else {
-          return false
+          // existing version unavailable, consider it `missing` so we recompile.
+          return true
         }
       } else {
+        // no rule list, consider it `missing` so we recompile.
         return true
       }
     }
