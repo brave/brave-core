@@ -14,10 +14,12 @@ something like:
 3. Update patches from Chromium [from] to [to].
 4. Updated strings for Chromium [to].
 
-The process is started by providing a base branch in Brave to be used as the
-starting point for the base Chromium version, and a target version to be used.
+The process is started by providing a target version to upgrade to. The tool
+uses the current upstream branch for the current branch as the base version,
+although that can be overriden with `--previous`.
 
-- tools/cr/upgrade.py --previous=origin/master --to=135.0.7037.1
+  git checkout -b cr135 origin/master
+  tools/cr/upgrade.py --to=135.0.7037.1
 
 The workflow with this script:
 
@@ -86,6 +88,12 @@ def _git_commit(message):
     commit = _run_git('log', '-1', '--pretty=oneline', '--abbrev-commit')
     print(f'Done: {commit}')
 
+
+def _get_current_branch_upstream_name():
+    """Retrieves the name of the current branch's upstream.
+    """
+    return _run_git('rev-parse', '--abbrev-ref', '--symbolic-full-name',
+                    '@{upstream}')
 
 def _load_package_file(branch):
     """Retrieves the json content of package.json for a given revision
@@ -415,9 +423,23 @@ class Upgrade:
   """
 
     def __init__(self, base_branch, target_version):
+        # The base branch used to fetch the base version from. Defaults to the
+        # upstream branch of the current branch if none specified.
         self.base_branch = base_branch
+        if self.base_branch is None or self.base_branch == '':
+            self.base_branch = _get_current_branch_upstream_name()
+        if self.base_branch is None or self.base_branch == '':
+            raise Exception(
+                'Cannot determine the upstream. Provide a --previous argument '
+                'value or set an upstream branch.')
+
+        # The target version that is being upgraded to.
         self.target_version = target_version
-        self.base_version = _get_chromium_version_from_git(base_branch)
+
+        # The base chromium version from the upstream/previous branch
+        self.base_version = _get_chromium_version_from_git(self.base_branch)
+
+        # The current chromium version in the current branch
         self.working_version = _get_chromium_version_from_git('HEAD')
 
     def _update_package_version(self):
@@ -625,11 +647,13 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter)
 
     parser.add_argument('--previous',
-                        help='The previous version to be shown as base.',
-                        required=True)
-    parser.add_argument('--to',
-                        help='The version being upgraded to.',
-                        required=True)
+                        help='The previous version to be shown as base.')
+    parser.add_argument(
+        '--to',
+        help=
+        'The branch used as the base version. In the absence of this argument,'
+        ' defaults to the current upstream branch.',
+        required=True)
     parser.add_argument(
         '--continue',
         action='store_true',
@@ -657,7 +681,6 @@ def main():
         dest='update_patches_only')
 
     args = parser.parse_args()
-
     upgrade = Upgrade(args.previous, args.to)
 
     if args.update_patches_only:
