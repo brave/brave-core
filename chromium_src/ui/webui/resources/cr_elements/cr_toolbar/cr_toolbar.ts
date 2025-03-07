@@ -170,7 +170,7 @@ export class CrToolbarElement extends CrLitElement {
       // Wait for next animation frame in case dom-if has not applied yet and
       // added the menu button.
       const menuButton =
-        this.shadowRoot!.querySelector<HTMLElement>('#menuButton');
+          this.shadowRoot.querySelector<HTMLElement>('#menuButton');
       if (menuButton) {
         menuButton.focus();
       }
@@ -179,8 +179,8 @@ export class CrToolbarElement extends CrLitElement {
 
   /** @return {boolean} */
   isMenuFocused() {
-    return !!this.shadowRoot!.activeElement &&
-      this.shadowRoot!.activeElement.id === 'menuButton';
+    return !!this.shadowRoot.activeElement &&
+        this.shadowRoot.activeElement.id === 'menuButton';
   }
 
   /**
@@ -218,7 +218,7 @@ export class CrToolbarElement extends CrLitElement {
   initSlotFilledDetection() {
     // Style the 'extra items' slot only if it contains
     // content.
-    const toolbarExtraElement = this.shadowRoot!.querySelector('.toolbar-extra')
+    const toolbarExtraElement = this.shadowRoot.querySelector('.toolbar-extra')
     if (!toolbarExtraElement) {
       console.error('Could not find "toolbar-extra" element')
       return

@@ -242,8 +242,10 @@ export class AutoTabGroupsPageElement extends CrLitElement {
 
   override focus() {
     if (this.showBackButton) {
-      const backButton = this.shadowRoot!.querySelector('cr-icon-button')!
-      backButton.focus()
+      const backButton = this.shadowRoot.querySelector('cr-icon-button')!
+      if (backButton) {
+        backButton.focus()
+      }
     } else {
       super.focus()
     }
