@@ -4,9 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/misc_metrics/misc_android_metrics.h"
+
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
-#include "brave/browser/misc_metrics/uptime_monitor.h"
+#include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #include "brave/components/misc_metrics/tab_metrics.h"
