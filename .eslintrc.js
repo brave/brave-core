@@ -13,6 +13,7 @@ module.exports = {
     'ui/webui/resources/*',
     '*.js',
     '*.d.ts',
+    'tools/chromium_src/lit_mangler/*.ts',
     '!components/playlist/resources/media_detector/*.js' /* allow js scripts which will be bundled into playlist */
   ],
   'env': {

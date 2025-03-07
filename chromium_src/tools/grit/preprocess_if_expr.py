@@ -9,7 +9,7 @@ import os
 import shutil
 import json
 
-from brave_chromium_utils import get_chromium_src_override, get_webui_overriden_file_name, get_webui_overridden_but_referenced_files, get_src_dir
+from brave_chromium_utils import get_chromium_src_override, get_webui_overriden_file_name, get_webui_overridden_but_referenced_files, get_src_dir, wspath
 
 
 def purge_overrides(out_folder, in_files):
@@ -46,13 +46,12 @@ def maybe_keep_upstream_version(override_in_folder, out_folder, override_file):
 
 def run_mangler(mangler_file, preprocess_file):
     """Runs the mangler on the given file"""
-    import subprocess
     import brave_node
 
     tsx = brave_node.PathInNodeModules('tsx', 'dist', 'cli.mjs')
-    ts_config = os.path.join(get_src_dir(), 'brave', 'tsconfig-mangle.json')
-    lit_mangler = os.path.join(get_src_dir(), 'brave', 'tools', 'chromium_src',
-                               'lit_mangler', 'lit_mangler_cli.ts')
+    ts_config = wspath("//brave/tsconfig-mangle.json")
+    lit_mangler = wspath(
+        "//brave/tools/chromium_src/lit_mangler/lit_mangler_cli.ts")
 
     # Note: We read from and write to the preprocess file - this way any
     # preprocessing that upstream does will be mangled.
