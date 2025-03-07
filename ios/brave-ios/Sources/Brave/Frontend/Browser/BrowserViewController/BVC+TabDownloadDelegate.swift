@@ -11,7 +11,7 @@ import Shared
 import UniformTypeIdentifiers
 import WebKit
 
-protocol TabDownloadDelegate {
+protocol TabDownloadDelegate: AnyObject {
   func tab(_ tab: Tab, didCreateDownload download: Download)
   func tab(_ tab: Tab, didFinishDownload download: Download, error: Error?)
 }
@@ -44,10 +44,10 @@ extension BrowserViewController: TabDownloadDelegate {
     ]
 
     // SFSafariViewController only supports http/https links
-    if let url = download.response.url,
+    if let url = download.originalURL,
       url.isWebPage(includeDataURIs: false),
       tab === tabManager.selectedTab,
-      let mimeType = download.response.mimeType.flatMap({ UTType(mimeType: $0) }),
+      let mimeType = UTType(mimeType: download.mimeType),
       mimeTypesThatRequireSFSafariViewControllerHandling.contains(mimeType),
       let (alertTitle, alertMessage) = mimeTypesThatRequireSFSafariViewControllerHandlingTexts[
         mimeType
@@ -78,18 +78,14 @@ extension BrowserViewController: TabDownloadDelegate {
 
     Task {
       let suggestedFilename = download.filename
-      let response = download.response
-      if let httpResponse = response as? HTTPURLResponse {
-        if ![MIMEType.passbook, MIMEType.passbookBundle].contains(httpResponse.mimeType) {
-          let shouldDownload = await downloadAlert(
-            for: download,
-            tab: tab,
-            response: response,
-            suggestedFileName: suggestedFilename
-          )
-          if !shouldDownload {
-            return
-          }
+      if ![MIMEType.passbook, MIMEType.passbookBundle].contains(download.mimeType) {
+        let shouldDownload = await downloadAlert(
+          for: download,
+          tab: tab,
+          suggestedFileName: suggestedFilename
+        )
+        if !shouldDownload {
+          return
         }
       }
 
@@ -129,20 +125,12 @@ extension BrowserViewController: TabDownloadDelegate {
       return
     }
 
-    let response = URLResponse(
-      url: destinationURL,
-      mimeType: download.response.mimeType,
-      expectedContentLength: Int(download.response.expectedContentLength),
-      textEncodingName: download.response.textEncodingName
-    )
-
-    if [MIMEType.passbook, MIMEType.passbookBundle].contains(
-      download.response.mimeType
-    ) {
+    if [MIMEType.passbook, MIMEType.passbookBundle].contains(download.mimeType) {
       downloadQueue.download(download, didFinishDownloadingTo: destinationURL)
       if let passbookHelper = OpenPassBookHelper(
         request: nil,
-        response: response,
+        mimeType: download.mimeType,
+        passURL: download.destinationURL,
         canShowInWebView: false,
         forceDownload: false,
         browserViewController: self
@@ -195,7 +183,7 @@ extension BrowserViewController: TabDownloadDelegate {
   private func downloadAlert(
     for download: Download,
     tab: Tab,
-    response: URLResponse,
+
     suggestedFileName: String
   ) async -> Bool {
     // Only download if there is a valid host
@@ -210,8 +198,7 @@ extension BrowserViewController: TabDownloadDelegate {
     }
 
     let filename = Download.stripUnicode(fromFilename: suggestedFileName)
-    let totalBytesExpected =
-      response.expectedContentLength > 0 ? response.expectedContentLength : nil
+    let totalBytesExpected = download.totalBytesExpected
 
     let expectedSize =
       totalBytesExpected != nil
