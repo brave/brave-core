@@ -51,6 +51,7 @@
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
+#include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
 #include "brave/ios/browser/web/brave_web_client.h"
 #import "build/blink_buildflags.h"
@@ -531,7 +532,14 @@ static bool CustomLogHandler(int severity,
 
 - (BraveUserAgentService*)braveUserAgentService {
   if (!_braveUserAgentService) {
-    _braveUserAgentService = [[BraveUserAgentService alloc] init];
+    brave_user_agent::BraveUserAgentService* service =
+        static_cast<BraveApplicationContextImpl*>(GetApplicationContext())
+            ->brave_user_agent_service();
+    if (!service) {
+      return nullptr;
+    }
+    _braveUserAgentService =
+        [[BraveUserAgentService alloc] initWithBraveUserAgentService:service];
   }
   return _braveUserAgentService;
 }

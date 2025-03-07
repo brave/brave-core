@@ -22,10 +22,6 @@ namespace https_upgrade_exceptions {
 class HttpsUpgradeExceptionsService;
 }
 
-namespace brave_user_agent {
-class BraveUserAgentService;
-}
-
 namespace debounce {
 class DebounceComponentInstaller;
 }
@@ -67,7 +63,6 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) LocalDataFilesObserver {
   friend class brave::URLSanitizerComponentInstaller;
   friend class localhost_permission::LocalhostPermissionComponent;
   friend class https_upgrade_exceptions::HttpsUpgradeExceptionsService;
-  friend class brave_user_agent::BraveUserAgentService;
   friend class debounce::DebounceComponentInstaller;
   friend class request_otr::RequestOTRComponentInstallerPolicy;
   friend class webcompat::WebcompatExceptionsService;

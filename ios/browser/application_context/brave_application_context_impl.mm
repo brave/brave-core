@@ -101,9 +101,15 @@ BraveApplicationContextImpl::https_upgrade_exceptions_service() {
 
 brave_user_agent::BraveUserAgentService*
 BraveApplicationContextImpl::brave_user_agent_service() {
+  if (!base::FeatureList::IsEnabled(
+          brave_user_agent::features::kUseBraveUserAgent)) {
+    return nullptr;
+  }
   if (!brave_user_agent_service_) {
-    brave_user_agent_service_ = brave_user_agent::BraveUserAgentServiceFactory(
-        local_data_files_service());
+    component_updater::ComponentUpdateService* cus =
+        GetApplicationContext()->GetComponentUpdateService();
+    brave_user_agent_service_ =
+        std::make_unique<brave_user_agent::BraveUserAgentService>(cus);
   }
   return brave_user_agent_service_.get();
 }

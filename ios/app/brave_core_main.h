@@ -72,7 +72,8 @@ OBJC_EXPORT
 @property(nonatomic, readonly)
     HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
 
-@property(nonatomic, readonly) BraveUserAgentService* braveUserAgentService;
+@property(nonatomic, readonly, nullable)
+    BraveUserAgentService* braveUserAgentService;
 
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///
