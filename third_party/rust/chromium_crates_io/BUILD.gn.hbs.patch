@@ -1,5 +1,5 @@
 diff --git a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
-index b8f394259a4..1d1482a67e6 100644
+index b8f394259a4..25091c2eb4c 100644
 --- a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs
 +++ b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
 @@ -54,14 +54,14 @@ cargo_crate("{{this.name}}") {
@@ -45,24 +45,10 @@ index b8f394259a4..1d1482a67e6 100644
      {{/each}}
      ]
    }
-@@ -120,26 +120,33 @@ cargo_crate("{{this.name}}") {
+@@ -120,6 +120,16 @@ cargo_crate("{{this.name}}") {
    ]
    {{/with}}
    {{/if}}
--  {{#with extra_kv.configs_to_remove}}
--  {{#each this}}
--    library_configs -= [ "{{this}}" ]
--    executable_configs -= [ "{{this}}" ]
--    proc_macro_configs -= [ "{{this}}" ]
--  {{/each}}
--  {{/with}}
--  {{#with extra_kv.configs_to_add}}
--  {{#each this}}
--    library_configs += [ "{{this}}" ]
--    executable_configs += [ "{{this}}" ]
--    proc_macro_configs += [ "{{this}}" ]
--  {{/each}}
--  {{/with}}
 +  {{#if (or rustenv extra_kv.rustenv)}}
 +  rustenv = [
 +    {{#each rustenv}}
@@ -73,6 +59,11 @@ index b8f394259a4..1d1482a67e6 100644
 +    {{/each}}
 +  ]
 +  {{/if}}
+   {{#with extra_kv.configs_to_remove}}
+   {{#each this}}
+     library_configs -= [ "{{this}}" ]
+@@ -136,10 +146,21 @@ cargo_crate("{{this.name}}") {
+   {{/with}}
    rustflags = [
      "--cap-lints=allow",  # Suppress all warnings in crates.io crates
 +  {{#if (or rustflags extra_kv.rustflags)}}
@@ -93,7 +84,7 @@ index b8f394259a4..1d1482a67e6 100644
    {{#if native_libs}}
    native_libs = [
    {{#each native_libs}}
-@@ -148,20 +155,6 @@ cargo_crate("{{this.name}}") {
+@@ -148,20 +169,6 @@ cargo_crate("{{this.name}}") {
    ]
    {{/if}}
    {{/with}}
