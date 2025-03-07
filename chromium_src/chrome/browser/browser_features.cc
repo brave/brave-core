@@ -21,7 +21,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if !BUILDFLAG(IS_ANDROID)
     {kReportPakFileIntegrity, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif  // BUILDFLAG(IS_ANDROID)
-    {kSupportSearchSuggestionForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features

@@ -88,7 +88,7 @@ SharedPinnedTabDummyViewViews::SharedPinnedTabDummyViewViews(
                             .DeriveWithSizeDelta(kTitleFontSize -
                                                  gfx::FontList().GetFontSize())
                             .DeriveWithWeight(gfx::Font::Weight::SEMIBOLD))
-                    .SetEnabledColorId(kColorBraveSharedPinnedTabDummyViewTitle)
+                    .SetEnabledColor(kColorBraveSharedPinnedTabDummyViewTitle)
                     .SetProperty(views::kMarginsKey, gfx::Insets().set_top(40)))
       .AddChild(
           views::Builder<views::Label>()
@@ -97,7 +97,7 @@ SharedPinnedTabDummyViewViews::SharedPinnedTabDummyViewViews(
                   IDS_SHARED_PINNED_TABS_DUMMY_TAB_VIEW_DESCRIPTION))
               .SetFontList(gfx::FontList().DeriveWithSizeDelta(
                   kDescriptionFontSize - gfx::FontList().GetFontSize()))
-              .SetEnabledColorId(kColorBraveSharedPinnedTabDummyViewDescription)
+              .SetEnabledColor(kColorBraveSharedPinnedTabDummyViewDescription)
               .SetProperty(views::kMarginsKey, gfx::Insets().set_top(8)))
       .BuildChildren();
 

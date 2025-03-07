@@ -51,11 +51,13 @@ static_library("misc_metrics_impl") {
       "//brave/browser/misc_metrics/extension_metrics.h",
       "//brave/browser/misc_metrics/theme_metrics.cc",
       "//brave/browser/misc_metrics/theme_metrics.h",
+      "//brave/browser/misc_metrics/usage_clock.h",
       "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
       "//brave/browser/misc_metrics/vertical_tab_metrics.h",
     ]
     deps += [
       "//brave/browser/themes",
+      "//chrome/browser/metrics/desktop_session_duration:desktop_session_duration",
       "//chrome/browser/themes",
       "//chrome/browser/ui/tabs:tab_strip",
       "//extensions/browser",
@@ -95,10 +97,12 @@ source_set("unit_tests") {
     sources += [
       "extension_metrics_unittest.cc",
       "theme_metrics_unittest.cc",
+      "usage_clock_unittest.cc",
     ]
 
     deps += [
       "//brave/browser/themes",
+      "//chrome/browser/metrics/desktop_session_duration:desktop_session_duration",
       "//chrome/browser/themes",
     ]
   }

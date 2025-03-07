@@ -21,8 +21,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAttributionReportingInBrowserMigration,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kBackgroundResourceFetch, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kBiddingAndScoringDebugReportingAPI, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kBrowsingTopics, base::FEATURE_DISABLED_BY_DEFAULT},
     {kControlledFrame, base::FEATURE_DISABLED_BY_DEFAULT},
     {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFencedFrames, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -30,7 +28,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kFledgeBiddingAndAuctionServer, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeConsiderKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFledgeEnforceKAnonymity, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kInterestGroupStorage, base::FEATURE_DISABLED_BY_DEFAULT},
     {kParakeet, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivateAggregationApi, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -38,7 +35,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     // Ephemeral Storage can switch cookie storage backend at runtime, so we
     // can't use it.
     {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
-    {kSharedStorageAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

@@ -97,8 +97,8 @@ PromotionButtonView::PromotionButtonView() {
 PromotionButtonView::~PromotionButtonView() = default;
 
 void PromotionButtonView::UpdateTargetProviderImage(const gfx::Image& image) {
-  target_provider_image_->SetImage(
-      gfx::ResizedImage(image, {kIconSize, kIconSize}).AsImageSkia());
+  target_provider_image_->SetImage(ui::ImageModel::FromImageSkia(
+      gfx::ResizedImage(image, {kIconSize, kIconSize}).AsImageSkia()));
 }
 
 void PromotionButtonView::AnimateExpand() {
@@ -194,7 +194,7 @@ void PromotionButtonView::AddChildViews() {
       custom_font));
   button_label->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
   button_label->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
-  button_label->SetEnabledColorId(kColorSearchConversionButtonText);
+  button_label->SetEnabledColor(kColorSearchConversionButtonText);
   button_label->SetBackgroundColor(SK_ColorTRANSPARENT);
 
   auto set_image = [](views::ImageButton* close_button,

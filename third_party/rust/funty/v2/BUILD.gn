@@ -24,6 +24,7 @@ cargo_crate("lib") {
   cargo_pkg_authors = "myrrlyn <self@myrrlyn.dev>"
   cargo_pkg_name = "funty"
   cargo_pkg_description = "Trait generalization over the primitive types"
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]

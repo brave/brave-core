@@ -351,4 +351,5 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   SetDownloadConfirmReturn(true);
   chrome::CloseWindow(brave_browser);
   EXPECT_TRUE(closing_confirm_dialog_created_);
+  WaitTillConfirmDialogClosed();
 }

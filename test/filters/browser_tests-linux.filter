@@ -25,6 +25,10 @@
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/0
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 
+# This test runs fine when run individually, but times out when run with test
+# launcher.
+-PageDiscardingHelperBrowserTest.DiscardedTabEligibleForSuccessiveDiscards/RetainedWebContents
+
 # This test fails on Linux only due to the UI it shows being off-screen. Have
 # not investigated the cause.
 -Mv2DeprecationDisabledDialogBrowserTest.InvokeUi

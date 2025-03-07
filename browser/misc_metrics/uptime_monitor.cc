@@ -11,7 +11,7 @@
 #include "components/prefs/pref_service.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/resource_coordinator/usage_clock.h"
+#include "brave/browser/misc_metrics/usage_clock.h"
 #endif
 
 namespace misc_metrics {
@@ -42,7 +42,7 @@ void UptimeMonitor::Init() {
   }
   RecordP3A();
 #if !BUILDFLAG(IS_ANDROID)
-  usage_clock_ = std::make_unique<resource_coordinator::UsageClock>();
+  usage_clock_ = std::make_unique<UsageClock>();
   timer_.Start(
       FROM_HERE, kUsageTimeQueryInterval,
       base::BindRepeating(&UptimeMonitor::RecordUsage, base::Unretained(this)));
