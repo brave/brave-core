@@ -3,41 +3,42 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/misc_metrics/uptime_monitor_impl.h"
+
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/browser/misc_metrics/uptime_monitor.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace misc_metrics {
 
-class UptimeMonitorUnitTest : public testing::Test {
+class UptimeMonitorImplUnitTest : public testing::Test {
  public:
-  UptimeMonitorUnitTest()
+  UptimeMonitorImplUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
-    misc_metrics::UptimeMonitor::RegisterPrefs(local_state_.registry());
+    misc_metrics::UptimeMonitorImpl::RegisterPrefs(local_state_.registry());
 
     ResetMonitor();
   }
 
  protected:
   void ResetMonitor() {
-    usage_monitor_ = std::make_unique<UptimeMonitor>(&local_state_);
+    usage_monitor_ = std::make_unique<UptimeMonitorImpl>(&local_state_);
     usage_monitor_->Init();
   }
 
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
   base::HistogramTester histogram_tester_;
-  std::unique_ptr<UptimeMonitor> usage_monitor_;
+  std::unique_ptr<UptimeMonitorImpl> usage_monitor_;
 };
 
 #if BUILDFLAG(IS_ANDROID)
-TEST_F(UptimeMonitorUnitTest, ReportUsageDuration) {
+TEST_F(UptimeMonitorImplUnitTest, ReportUsageDuration) {
   histogram_tester_.ExpectTotalCount(kBrowserOpenTimeHistogramName, 0);
 
   usage_monitor_->ReportUsageDuration(base::Minutes(15));
