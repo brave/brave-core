@@ -45,6 +45,7 @@ cargo_crate("lib") {
       "Hiroki Kumamoto <kumabook@live.jp>, Mark Pritchard <mpritcha@gmail.com>"
   cargo_pkg_name = "feed-rs"
   cargo_pkg_description = "A unified feed parser that handles Atom, RSS 2.0, RSS 1.0, RSS 0.x and JSON Feed"
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
