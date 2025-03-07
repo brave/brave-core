@@ -6,6 +6,7 @@
 #include "brave/browser/browsing_data/brave_browsing_data_remover_delegate.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/test/bind.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
@@ -15,6 +16,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browsing_data_filter_builder.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -111,4 +113,44 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsKeepDefaults) {
 
   EXPECT_EQ(brave_shields::DomainBlockingType::kAggressive,
             brave_shields::GetDomainBlockingType(map(), GURL()));
+}
+
+TEST_F(BraveBrowsingDataRemoverDelegateTest, FingerpintV2ClearBalancedPattern) {
+  // Simulate sync updates pref directly.
+  base::Value::Dict value;
+  value.Set("expiration", "0");
+  value.Set("last_modified", "13304670271801570");
+  value.Set("setting", CONTENT_SETTING_BLOCK);
+  base::Value::Dict update;
+  update.Set("*,https://balanced/*", std::move(value));
+
+  profile()->GetPrefs()->SetDict(
+      "profile.content_settings.exceptions.fingerprintingV2",
+      std::move(update));
+
+  EXPECT_EQ(
+      CONTENT_SETTING_BLOCK,
+      map()->GetContentSetting(GURL(), GURL("https://balanced/"),
+                               ContentSettingsType::BRAVE_FINGERPRINTING_V2));
+
+  auto filter_builder = content::BrowsingDataFilterBuilder::Create(
+      content::BrowsingDataFilterBuilder::Mode::kPreserve);
+  base::RunLoop run_loop;
+  profile()->GetBrowsingDataRemoverDelegate()->RemoveEmbedderData(
+      /*delete_begin=*/base::Time::Min(),
+      /*delete_end=*/base::Time::Max(),
+      /*remove_mask=*/
+      chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS,
+      filter_builder.get(),
+      /*origin_type_mask=*/1,
+      base::BindLambdaForTesting([&run_loop](uint64_t failed_data_types) {
+        EXPECT_EQ(failed_data_types, 0U);
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+
+  EXPECT_EQ(
+      CONTENT_SETTING_ASK,  // The default value for BRAVE_FINGERPRINTING_V2
+      map()->GetContentSetting(GURL(), GURL("https://balanced/"),
+                               ContentSettingsType::BRAVE_FINGERPRINTING_V2));
 }

@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
@@ -26,6 +27,8 @@
 
 namespace {
 
+// TODO(boocmp): Remove this in
+// https://github.com/brave/brave-browser/issues/44327.
 class ContentSettingsDefaultsKeeper {
  public:
   explicit ContentSettingsDefaultsKeeper(Profile* profile) : profile_(profile) {
@@ -50,14 +53,45 @@ class ContentSettingsDefaultsKeeper {
     auto* map = HostContentSettingsMapFactory::GetForProfile(profile_);
     for (auto&& [content_type, settings] : defaults_) {
       for (auto&& setting : settings) {
-        map->SetWebsiteSettingCustomScope(
-            setting.primary_pattern, setting.secondary_pattern, content_type,
-            std::move(setting.setting_value));
+        RestoreSetting(map, content_type, std::move(setting));
       }
     }
   }
 
  private:
+  static const ContentSettingsPattern& BalancedPattern() {
+    static const base::NoDestructor<ContentSettingsPattern> kPattern(
+        ContentSettingsPattern::FromString("https://balanced/*"));
+    return *kPattern;
+  }
+
+  void RestoreSetting(HostContentSettingsMap* map,
+                      ContentSettingsType content_type,
+                      ContentSettingPatternSource setting) {
+    if (content_type == ContentSettingsType::BRAVE_FINGERPRINTING_V2 &&
+        setting.secondary_pattern == BalancedPattern()) {
+      // Special case:
+      // "Balanced" patterns should be replaced with `[url, *] -> ASK`,
+      // as outlined in
+      // `BravePrefProvider::MigrateFingerprintingSettingsToOriginScoped`.
+      // However, the migration process begins before Sync is performed, and
+      // Sync restores the `balanced` values. If a `[*, balanced]` rule has been
+      // restored, attempting to keep it results in a `NOTREACHED` error,
+      // as there are no providers capable of consuming such patterns when the
+      // value is not the default. Setting the default value also notifies Sync
+      // to update the value and clear unwanted state.
+      // This code should be removed in
+      // https://github.com/brave/brave-browser/issues/44327.
+      map->SetWebsiteSettingCustomScope(
+          setting.primary_pattern, setting.secondary_pattern,
+          ContentSettingsType::BRAVE_FINGERPRINTING_V2, base::Value(), {});
+    } else {
+      map->SetWebsiteSettingCustomScope(setting.primary_pattern,
+                                        setting.secondary_pattern, content_type,
+                                        std::move(setting.setting_value));
+    }
+  }
+
   raw_ptr<Profile> profile_ = nullptr;
   base::flat_map<ContentSettingsType, std::vector<ContentSettingPatternSource>>
       defaults_;
