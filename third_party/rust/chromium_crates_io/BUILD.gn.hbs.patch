@@ -1,8 +1,8 @@
 diff --git a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
-index c52a7b360b8..1820b6664bc 100644
+index b8f394259a4..1d1482a67e6 100644
 --- a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs
 +++ b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
-@@ -53,14 +53,14 @@ cargo_crate("{{this.name}}") {
+@@ -54,14 +54,14 @@ cargo_crate("{{this.name}}") {
      ":lib",
      {{/if}}
      {{#each this.packages}}
@@ -19,7 +19,7 @@ index c52a7b360b8..1820b6664bc 100644
        {{/each}}
      ]
    }
-@@ -69,7 +69,7 @@ cargo_crate("{{this.name}}") {
+@@ -70,7 +70,7 @@ cargo_crate("{{this.name}}") {
    {{#if aliased_deps}}
    aliased_deps = {
      {{#each aliased_deps}}
@@ -28,7 +28,7 @@ index c52a7b360b8..1820b6664bc 100644
      {{/each}}
    }
    {{/if}}
-@@ -77,14 +77,14 @@ cargo_crate("{{this.name}}") {
+@@ -78,14 +78,14 @@ cargo_crate("{{this.name}}") {
    {{#if @first}}
    build_deps = [
      {{#each this.packages}}
@@ -45,7 +45,7 @@ index c52a7b360b8..1820b6664bc 100644
      {{/each}}
      ]
    }
-@@ -119,19 +119,33 @@ cargo_crate("{{this.name}}") {
+@@ -120,26 +120,33 @@ cargo_crate("{{this.name}}") {
    ]
    {{/with}}
    {{/if}}
@@ -54,6 +54,13 @@ index c52a7b360b8..1820b6664bc 100644
 -    library_configs -= [ "{{this}}" ]
 -    executable_configs -= [ "{{this}}" ]
 -    proc_macro_configs -= [ "{{this}}" ]
+-  {{/each}}
+-  {{/with}}
+-  {{#with extra_kv.configs_to_add}}
+-  {{#each this}}
+-    library_configs += [ "{{this}}" ]
+-    executable_configs += [ "{{this}}" ]
+-    proc_macro_configs += [ "{{this}}" ]
 -  {{/each}}
 -  {{/with}}
 +  {{#if (or rustenv extra_kv.rustenv)}}
@@ -86,7 +93,7 @@ index c52a7b360b8..1820b6664bc 100644
    {{#if native_libs}}
    native_libs = [
    {{#each native_libs}}
-@@ -140,20 +154,6 @@ cargo_crate("{{this.name}}") {
+@@ -148,20 +155,6 @@ cargo_crate("{{this.name}}") {
    ]
    {{/if}}
    {{/with}}
