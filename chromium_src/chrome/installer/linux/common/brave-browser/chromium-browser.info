@@ -32,3 +32,5 @@ MAINTMAIL="support@brave.com"
 PRODUCTURL="https://brave.com/"
 VERSION=$(cat $OUTPUTDIR/version | tr -d 'v,')
 VERSIONFULL=$VERSION
+
+RDN="com.brave.Browser"
