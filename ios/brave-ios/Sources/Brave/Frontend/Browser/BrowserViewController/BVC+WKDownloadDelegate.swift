@@ -21,7 +21,6 @@ extension BrowserViewController: WKDownloadDelegate {
       response: response,
       suggestedFileName: suggestedFilename,
       download: download,
-      downloadQueue: downloadQueue,
       downloadDecisionHandler: completionHandler
     )
 

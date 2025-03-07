@@ -10,7 +10,7 @@ private let downloadOperationQueue = OperationQueue()
 
 protocol DownloadDelegate {
   func download(_ download: Download, didCompleteWithError error: Error?)
-  func download(_ download: Download, didDownloadBytes bytesDownloaded: Int64)
+  func downloadDidUpgradeProgress(_ download: Download)
   func download(_ download: Download, didFinishDownloadingTo location: URL)
 }
 
@@ -30,11 +30,12 @@ class Download: NSObject {
 
   init(
     suggestedFilename: String,
-    originalURL: URL?
+    originalURL: URL?,
+    mimeType: String? = nil
   ) {
     self.filename = suggestedFilename
     self.originalURL = originalURL
-    self.mimeType = "application/octet-stream"
+    self.mimeType = mimeType ?? "application/octet-stream"
 
     self.bytesDownloaded = 0
 
@@ -170,8 +171,9 @@ extension DownloadQueue: DownloadDelegate {
     }
   }
 
-  func download(_ download: Download, didDownloadBytes bytesDownloaded: Int64) {
-    combinedBytesDownloaded += bytesDownloaded
+  func downloadDidUpgradeProgress(_ download: Download) {
+    combinedBytesDownloaded = downloads.reduce(into: 0) { $0 += $1.bytesDownloaded }
+    combinedTotalBytesExpected = downloads.reduce(into: 0) { $0 += ($1.totalBytesExpected ?? 0) }
     delegate?.downloadQueue(
       self,
       didDownloadCombinedBytes: combinedBytesDownloaded,
@@ -200,7 +202,6 @@ class WebKitDownload: Download {
 
   private weak var webView: WKWebView?
   private var downloadResumeData: Data?
-  private weak var downloadQueue: DownloadQueue?
   private var completedUnitCountObserver: NSKeyValueObservation?
   private var downloadDecisionHandler: ((URL?) -> Void)?
 
@@ -208,22 +209,18 @@ class WebKitDownload: Download {
     response: URLResponse,
     suggestedFileName: String,
     download: WKDownload,
-    downloadQueue: DownloadQueue,
     downloadDecisionHandler: @escaping (URL?) -> Void
   ) {
     self.download = download
     self.webView = download.webView
-    self.downloadQueue = downloadQueue
     self.downloadDecisionHandler = downloadDecisionHandler
 
     super.init(
       suggestedFilename: suggestedFileName,
-      originalURL: download.originalRequest?.url
+      originalURL: download.originalRequest?.url,
+      mimeType: response.mimeType
     )
 
-    if let mimeType = response.mimeType {
-      self.mimeType = mimeType
-    }
     self.originalURL = download.originalRequest?.url
 
     self.bytesDownloaded = download.progress.completedUnitCount
@@ -236,14 +233,7 @@ class WebKitDownload: Download {
 
         self.bytesDownloaded = progress.completedUnitCount
         self.totalBytesExpected = progress.totalUnitCount
-
-        guard let downloadQueue = self.downloadQueue else { return }
-
-        downloadQueue.delegate?.downloadQueue(
-          downloadQueue,
-          didDownloadCombinedBytes: self.bytesDownloaded,
-          combinedTotalBytesExpected: self.totalBytesExpected
-        )
+        self.delegate?.downloadDidUpgradeProgress(self)
       }
     )
   }
@@ -291,7 +281,7 @@ class WebKitDownload: Download {
           self.download = download
           self.bytesDownloaded = download.progress.completedUnitCount
           self.totalBytesExpected = download.progress.totalUnitCount
-          self.downloadQueue?.enqueue(self)
+          self.delegate?.downloadDidUpgradeProgress(self)
         }
       )
     }
