@@ -36,12 +36,6 @@ OrchardNoteWitness CreateWitness(const std::vector<std::string>& path,
   return result;
 }
 
-OrchardCommitment CreateCommitment(OrchardCommitmentValue value,
-                                   bool marked,
-                                   std::optional<uint32_t> checkpoint_id) {
-  return OrchardCommitment{std::move(value), marked, checkpoint_id};
-}
-
 }  // namespace
 
 class OrchardSyncStateTest : public testing::Test {
@@ -302,6 +296,167 @@ TEST_F(OrchardSyncStateTest, MaxCheckpoint) {
   EXPECT_EQ(3u, storage().MaxCheckpointId(account_id()).value().value());
 }
 
+TEST_F(OrchardSyncStateTest, GetSpendableNotes_NoRegisteredAccount) {
+  OrchardAddrRawPart internal_addr;
+  internal_addr.fill(3);
+  auto get_spendable_notes_result =
+      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+  EXPECT_TRUE(get_spendable_notes_result.has_value());
+  EXPECT_FALSE(get_spendable_notes_result.value().has_value());
+}
+
+TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_And_Anchor) {
+  EXPECT_TRUE(sync_state()->RegisterAccount(account_id(), 0u).has_value());
+
+  OrchardAddrRawPart internal_addr;
+  internal_addr.fill(3);
+
+  {
+    std::vector<OrchardCommitment> commitments;
+    std::vector<OrchardNote> notes;
+    for (uint32_t i = 1000; i < 1050; i++) {
+      OrchardNote note;
+      note.amount = 10;
+      note.block_id = i;
+      note.addr.fill(2);
+      note.nullifier.fill(i - 1000u);
+      notes.push_back(note);
+      if (i == 1025) {
+        commitments.push_back(
+            CreateCommitment(CreateMockCommitmentValue(i, 2), true, i));
+      } else {
+        commitments.push_back(CreateCommitment(CreateMockCommitmentValue(i, 2),
+                                               true, std::nullopt));
+      }
+    }
+
+    auto result = CreateResultForTesting(OrchardTreeState(),
+                                         std::move(commitments), 1049, "1049");
+    result.discovered_notes = notes;
+
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              sync_state()
+                  ->ApplyScanResults(account_id(), std::move(result))
+                  .value());
+  }
+
+  auto get_spendable_notes_result =
+      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+  EXPECT_TRUE(get_spendable_notes_result.has_value());
+  EXPECT_TRUE(get_spendable_notes_result.value().has_value());
+  EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 26u);
+  EXPECT_EQ(get_spendable_notes_result.value()->all_notes.size(), 50u);
+}
+
+TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_External) {
+  EXPECT_TRUE(sync_state()->RegisterAccount(account_id(), 0u).has_value());
+
+  OrchardAddrRawPart internal_addr;
+  internal_addr.fill(3);
+
+  {
+    std::vector<OrchardCommitment> commitments;
+    std::vector<OrchardNote> notes;
+    for (uint32_t i = 1000; i < 1050; i++) {
+      OrchardNote note;
+      note.amount = 10;
+      note.block_id = i;
+      note.addr.fill(2);
+      note.nullifier.fill(i - 1000u);
+      notes.push_back(note);
+      commitments.push_back(
+          CreateCommitment(CreateMockCommitmentValue(i, 2), true, i));
+    }
+
+    auto result = CreateResultForTesting(OrchardTreeState(),
+                                         std::move(commitments), 1049, "1049");
+    result.discovered_notes = notes;
+
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              sync_state()
+                  ->ApplyScanResults(account_id(), std::move(result))
+                  .value());
+  }
+
+  auto get_spendable_notes_result =
+      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+  EXPECT_TRUE(get_spendable_notes_result.has_value());
+  EXPECT_TRUE(get_spendable_notes_result.value().has_value());
+  EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 40u);
+  EXPECT_EQ(get_spendable_notes_result.value()->all_notes.size(), 50u);
+}
+
+TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_Internal) {
+  EXPECT_TRUE(sync_state()->RegisterAccount(account_id(), 0u).has_value());
+
+  OrchardAddrRawPart internal_addr;
+  internal_addr.fill(2);
+
+  {
+    std::vector<OrchardCommitment> commitments;
+    std::vector<OrchardNote> notes;
+    for (uint32_t i = 1000; i < 1050; i++) {
+      OrchardNote note;
+      note.amount = 10;
+      note.block_id = i;
+      note.addr.fill(2);
+      note.nullifier.fill(i - 1000u);
+      notes.push_back(note);
+      commitments.push_back(
+          CreateCommitment(CreateMockCommitmentValue(i, 2), true, i));
+    }
+
+    auto result = CreateResultForTesting(OrchardTreeState(),
+                                         std::move(commitments), 1049, "1049");
+    result.discovered_notes = notes;
+
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              sync_state()
+                  ->ApplyScanResults(account_id(), std::move(result))
+                  .value());
+  }
+
+  auto get_spendable_notes_result =
+      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+  EXPECT_TRUE(get_spendable_notes_result.has_value());
+  EXPECT_TRUE(get_spendable_notes_result.value().has_value());
+  EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 46u);
+  EXPECT_EQ(get_spendable_notes_result.value()->all_notes.size(), 50u);
+}
+
+TEST_F(OrchardSyncStateTest, GetSpendableNotes_NoAnchor) {
+  EXPECT_TRUE(sync_state()->RegisterAccount(account_id(), 0u).has_value());
+
+  OrchardAddrRawPart internal_addr;
+  internal_addr.fill(3);
+
+  {
+    auto result = CreateResultForTesting(
+        OrchardTreeState(), std::vector<OrchardCommitment>(), 1000, "1000");
+    for (uint32_t i = 1000; i < 1050; i++) {
+      OrchardNote note;
+      note.amount = 10;
+      note.block_id = i;
+      note.addr.fill(2);
+      note.nullifier.fill(i - 1000u);
+      result.discovered_notes.push_back(note);
+    }
+
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              sync_state()
+                  ->ApplyScanResults(account_id(), std::move(result))
+                  .value());
+  }
+
+  auto get_spendable_notes_result =
+      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+  EXPECT_TRUE(get_spendable_notes_result.has_value());
+  EXPECT_TRUE(get_spendable_notes_result.value().has_value());
+  // Since no checkpoints were added we drop all notes we have.
+  EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 0u);
+  EXPECT_EQ(get_spendable_notes_result.value()->all_notes.size(), 50u);
+}
+
 TEST_F(OrchardSyncStateTest, NoWitnessOnNonMarked) {
   std::vector<OrchardCommitment> commitments;
 
@@ -369,6 +524,8 @@ TEST_F(OrchardSyncStateTest, NoWitnessOnWrongCheckpoint) {
 }
 
 TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
+  EXPECT_TRUE(sync_state()->RegisterAccount(account_id(), 0u).has_value());
+
   {
     std::vector<OrchardCommitment> commitments;
 
@@ -417,9 +574,15 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
                   .value());
   }
 
-  EXPECT_EQ(1u, sync_state()->GetSpendableNotes(account_id()).value().size());
-  EXPECT_EQ(2u,
-            sync_state()->GetSpendableNotes(account_id()).value()[0].block_id);
+  EXPECT_EQ(1u, sync_state()
+                    ->GetSpendableNotes(account_id(), {})
+                    .value()
+                    ->all_notes.size());
+  EXPECT_EQ(2u, sync_state()
+                    ->GetSpendableNotes(account_id(), {})
+                    .value()
+                    ->all_notes[0]
+                    .block_id);
 
   OrchardInput input;
   input.note.orchard_commitment_tree_position = 2;
@@ -429,9 +592,15 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
   EXPECT_EQ(OrchardStorage::Result::kSuccess,
             sync_state()->Rewind(account_id(), 1, "1").value());
 
-  EXPECT_EQ(1u, sync_state()->GetSpendableNotes(account_id()).value().size());
-  EXPECT_EQ(1u,
-            sync_state()->GetSpendableNotes(account_id()).value()[0].block_id);
+  EXPECT_EQ(1u, sync_state()
+                    ->GetSpendableNotes(account_id(), {})
+                    .value()
+                    ->all_notes.size());
+  EXPECT_EQ(1u, sync_state()
+                    ->GetSpendableNotes(account_id(), {})
+                    .value()
+                    ->all_notes[0]
+                    .block_id);
 
   {
     OrchardTreeState tree_state;
@@ -467,11 +636,20 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
                   .value());
   }
 
-  EXPECT_EQ(2u, sync_state()->GetSpendableNotes(account_id()).value().size());
-  EXPECT_EQ(1u,
-            sync_state()->GetSpendableNotes(account_id()).value()[0].block_id);
-  EXPECT_EQ(2u,
-            sync_state()->GetSpendableNotes(account_id()).value()[1].block_id);
+  EXPECT_EQ(2u, sync_state()
+                    ->GetSpendableNotes(account_id(), {})
+                    .value()
+                    ->all_notes.size());
+  EXPECT_EQ(1u, sync_state()
+                    ->GetSpendableNotes(account_id(), {})
+                    .value()
+                    ->all_notes[0]
+                    .block_id);
+  EXPECT_EQ(2u, sync_state()
+                    ->GetSpendableNotes(account_id(), {})
+                    .value()
+                    ->all_notes[1]
+                    .block_id);
 
   auto actual_witness =
       sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 2);
@@ -480,6 +658,8 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
 }
 
 TEST_F(OrchardSyncStateTest, Rewind) {
+  EXPECT_TRUE(sync_state()->RegisterAccount(account_id(), 0u).has_value());
+
   {
     std::vector<OrchardCommitment> commitments;
 
@@ -535,11 +715,17 @@ TEST_F(OrchardSyncStateTest, Rewind) {
                   .value());
   }
 
-  EXPECT_EQ(1u, sync_state()->GetSpendableNotes(account_id()).value().size());
+  EXPECT_EQ(1u, sync_state()
+                    ->GetSpendableNotes(account_id(), {})
+                    .value()
+                    ->all_notes.size());
   EXPECT_EQ(OrchardStorage::Result::kSuccess,
             sync_state()->Rewind(account_id(), 2, "2").value());
   // Nullifier was deleted so we should have 2 spendable notes now.
-  EXPECT_EQ(2u, sync_state()->GetSpendableNotes(account_id()).value().size());
+  EXPECT_EQ(2u, sync_state()
+                    ->GetSpendableNotes(account_id(), {})
+                    .value()
+                    ->all_notes.size());
 
   {
     std::vector<OrchardCommitment> commitments;

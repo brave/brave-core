@@ -1643,6 +1643,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_OUT_OF_SYNC_BLOCKS_BEHIND_TITLE},
     {"braveWalletOutOfSyncDescription",
      IDS_BRAVE_WALLET_OUT_OF_SYNC_DESCRIPTION},
+    {"braveWalletZCashPendingBalanceTitle",
+     IDS_BRAVE_WALLET_ZCASH_PENDING_BALANCE_TITLE},
     {"braveWalletSyncAccountButton", IDS_BRAVE_WALLET_SYNC_ACCOUNT_BUTTON},
     {"braveWalletSyncAccountName", IDS_BRAVE_WALLET_SYNC_ACCOUNT_NAME},
     {"braveWalletInitializing", IDS_BRAVE_WALLET_INITIALIZING},

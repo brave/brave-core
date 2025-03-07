@@ -11,6 +11,7 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/task/thread_pool.h"
+#include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
@@ -108,12 +109,6 @@ class MockZCashShieldSyncServiceObserver
       this};
 };
 
-OrchardCommitment CreateCommitment(OrchardCommitmentValue value,
-                                   bool marked,
-                                   std::optional<uint32_t> checkpoint_id) {
-  return OrchardCommitment{std::move(value), marked, checkpoint_id};
-}
-
 }  // namespace
 
 class ZCashShieldSyncServiceTest : public testing::Test {
@@ -130,7 +125,8 @@ class ZCashShieldSyncServiceTest : public testing::Test {
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     sync_state_.emplace(
-        base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
+        base::SequencedTaskRunner::GetCurrentDefault(),
+        // base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
         db_path.AppendASCII("orchard.db"));
 
     observer_ = std::make_unique<MockZCashShieldSyncServiceObserver>();
@@ -153,8 +149,8 @@ class ZCashShieldSyncServiceTest : public testing::Test {
 
     sync_service_ = std::make_unique<ZCashShieldSyncService>(
         zcash_wallet_service(),
-        ZCashActionContext(zcash_rpc_, sync_state_, zcash_account_,
-                           mojom::kZCashMainnet),
+        ZCashActionContext(zcash_rpc_, OrchardAddrRawPart(), sync_state_,
+                           zcash_account_, mojom::kZCashMainnet),
         account_birthday, fvk, observer_->GetWeakPtr());
 
     // Ensure previous OrchardStorage is destroyed on background thread
@@ -444,7 +440,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
                                ZCashRpc::GetLatestBlockCallback callback) {
             // New chain tip below previous one.
             std::move(callback).Run(zcash::mojom::BlockID::New(
-                kNu5BlockUpdate + 1010u, std::vector<uint8_t>({})));
+                kNu5BlockUpdate + 1030u, std::vector<uint8_t>({})));
           }));
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
@@ -464,25 +460,33 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
                                 OrchardBlockScanner::ErrorCode>)> callback) {
+            std::vector<OrchardCommitment> commitments;
             auto account_id = MakeIndexBasedAccountId(
                 mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
                 mojom::AccountKind::kDerived, 0);
-            OrchardBlockScanner::Result result = CreateResultForTesting(
-                std::move(tree_state), std::vector<OrchardCommitment>(),
-                blocks.back()->height, ToHex(blocks.back()->hash));
+            std::vector<OrchardNote> discovered_notes;
+            std::vector<OrchardNoteSpend> found_spends;
             for (const auto& block : blocks) {
               // Add a new note on height 900
               if (block->height == kNu5BlockUpdate + 1005u) {
-                result.discovered_notes.push_back(
+                discovered_notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 10));
               }
 
               // Add a nullifier for previous note
               if (block->height == kNu5BlockUpdate + 1010u) {
-                result.found_spends.push_back(OrchardNoteSpend{
+                found_spends.push_back(OrchardNoteSpend{
                     block->height, GenerateMockNullifier(account_id, 5)});
               }
+              commitments.push_back(
+                  CreateCommitment(CreateMockCommitmentValue(2, block->height),
+                                   false, block->height));
             }
+            OrchardBlockScanner::Result result = CreateResultForTesting(
+                std::move(tree_state), std::move(commitments),
+                blocks.back()->height, ToHex(blocks.back()->hash));
+            result.discovered_notes = discovered_notes;
+            result.found_spends = found_spends;
             std::move(callback).Run(std::move(result));
           })));
 
@@ -492,6 +496,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
+    EXPECT_TRUE(sync_status);
     EXPECT_EQ(sync_status->spendable_balance, 160u);
   }
   testing::Mock::VerifyAndClearExpectations(&zcash_wallet_service());

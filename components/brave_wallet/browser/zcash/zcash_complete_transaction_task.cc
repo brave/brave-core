@@ -23,9 +23,6 @@ namespace brave_wallet {
 namespace {
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-// https://github.com/zcash/librustzcash/blob/2ec38bae002c4763ecda3ac9371e3e367b383fcc/zcash_client_backend/CHANGELOG.md?plain=1#L1264
-constexpr size_t kMinConfirmations = 10;
-
 std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager,
     std::array<uint8_t, kZCashDigestSize> sighash) {
@@ -79,8 +76,9 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
 
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (!transaction_.orchard_part().outputs.empty()) {
-    if (!anchor_block_height_) {
-      GetMaxCheckpointedHeight();
+    if (!transaction_.orchard_part().anchor_block_height.has_value()) {
+      error_ = "Anchor not selected";
+      ScheduleWorkOnTask();
       return;
     }
 
@@ -167,34 +165,6 @@ void ZCashCompleteTransactionTask::OnGetLatestBlockHeight(
 }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-
-void ZCashCompleteTransactionTask::GetMaxCheckpointedHeight() {
-  CHECK(chain_tip_height_);
-  if (transaction_.orchard_part().inputs.empty()) {
-    anchor_block_height_ = chain_tip_height_;
-    ScheduleWorkOnTask();
-    return;
-  }
-  context_.sync_state->AsyncCall(&OrchardSyncState::GetMaxCheckpointedHeight)
-      .WithArgs(context_.account_id.Clone(), chain_tip_height_.value(),
-                kMinConfirmations)
-      .Then(base::BindOnce(
-          &ZCashCompleteTransactionTask::OnGetMaxCheckpointedHeight,
-          weak_ptr_factory_.GetWeakPtr()));
-}
-
-void ZCashCompleteTransactionTask::OnGetMaxCheckpointedHeight(
-    base::expected<std::optional<uint32_t>, OrchardStorage::Error> result) {
-  if (!result.has_value() || !result.value()) {
-    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
-    ScheduleWorkOnTask();
-    return;
-  }
-
-  anchor_block_height_ = *result;
-  ScheduleWorkOnTask();
-}
-
 void ZCashCompleteTransactionTask::CalculateWitness() {
   if (transaction_.orchard_part().inputs.empty()) {
     witness_inputs_ = std::vector<OrchardInput>();
@@ -205,7 +175,7 @@ void ZCashCompleteTransactionTask::CalculateWitness() {
   context_.sync_state
       ->AsyncCall(&OrchardSyncState::CalculateWitnessForCheckpoint)
       .WithArgs(context_.account_id.Clone(), transaction_.orchard_part().inputs,
-                anchor_block_height_.value())
+                transaction_.orchard_part().anchor_block_height.value())
       .Then(base::BindOnce(
           &ZCashCompleteTransactionTask::OnWitnessCalulcateResult,
           weak_ptr_factory_.GetWeakPtr()));
@@ -227,8 +197,9 @@ void ZCashCompleteTransactionTask::OnWitnessCalulcateResult(
 void ZCashCompleteTransactionTask::GetTreeState() {
   context_.zcash_rpc->GetTreeState(
       context_.chain_id,
-      zcash::mojom::BlockID::New(anchor_block_height_.value(),
-                                 std::vector<uint8_t>({})),
+      zcash::mojom::BlockID::New(
+          transaction_.orchard_part().anchor_block_height.value(),
+          std::vector<uint8_t>({})),
       base::BindOnce(&ZCashCompleteTransactionTask::OnGetTreeState,
                      weak_ptr_factory_.GetWeakPtr()));
 }

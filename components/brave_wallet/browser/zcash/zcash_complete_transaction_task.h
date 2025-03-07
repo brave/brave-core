@@ -50,10 +50,6 @@ class ZCashCompleteTransactionTask {
       base::expected<zcash::mojom::BlockIDPtr, std::string> result);
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-  void GetMaxCheckpointedHeight();
-  void OnGetMaxCheckpointedHeight(
-      base::expected<std::optional<uint32_t>, OrchardStorage::Error> result);
-
   void CalculateWitness();
   void OnWitnessCalulcateResult(
       base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result);
@@ -81,7 +77,6 @@ class ZCashCompleteTransactionTask {
 
 #if BUILDFLAG(ENABLE_ORCHARD)
   std::optional<std::vector<OrchardInput>> witness_inputs_;
-  std::optional<uint32_t> anchor_block_height_;
   std::optional<zcash::mojom::TreeStatePtr> anchor_tree_state_;
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 

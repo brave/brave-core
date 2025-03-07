@@ -289,6 +289,11 @@ base::Value::Dict ZCashTransaction::ToValue() const {
     orchard_outputs_value.Append(orchard_output.ToValue());
   }
 
+  if (orchard_part_.anchor_block_height) {
+    dict.Set("anchor_block_height",
+             base::NumberToString(orchard_part_.anchor_block_height.value()));
+  }
+
   dict.Set("locktime", base::NumberToString(locktime_));
   dict.Set("to", to_);
   dict.Set("amount", base::NumberToString(amount_));
@@ -368,6 +373,16 @@ std::optional<ZCashTransaction> ZCashTransaction::FromValue(
         return std::nullopt;
       }
       result.orchard_part_.outputs.push_back(std::move(*output_opt));
+    }
+  }
+
+  auto* anchor = value.Find("anchor_block_height");
+  if (anchor) {
+    uint32_t anchor_block_height = 0;
+    if (ReadUint32StringTo(value, "anchor_block_height", anchor_block_height)) {
+      result.orchard_part().anchor_block_height = anchor_block_height;
+    } else {
+      return std::nullopt;
     }
   }
 

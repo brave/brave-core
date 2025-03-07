@@ -87,7 +87,8 @@ export function createWalletApiBase() {
       'ZCashAccountInfo',
       'IsShieldingAvailable',
       'IsSyncInProgress',
-      'ZcashChainTipStatus'
+      'ZcashChainTipStatus',
+      'ZCashBalance'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

@@ -33,4 +33,10 @@ OrchardCommitmentValue CreateMockCommitmentValue(uint32_t position,
   return orchard::CreateMockCommitmentValue(position, rseed);
 }
 
+OrchardCommitment CreateCommitment(OrchardCommitmentValue value,
+                                   bool marked,
+                                   std::optional<uint32_t> checkpoint_id) {
+  return OrchardCommitment{std::move(value), marked, checkpoint_id};
+}
+
 }  // namespace brave_wallet
