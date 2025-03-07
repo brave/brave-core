@@ -158,6 +158,7 @@ class SplitView : public views::View,
   raw_ptr<views::WebView> secondary_devtools_web_view_ = nullptr;
   raw_ptr<ContentsWebView> secondary_contents_web_view_ = nullptr;
   raw_ptr<ScrimView> secondary_contents_scrim_view_ = nullptr;
+  raw_ptr<views::View> secondary_lens_overlay_view_ = nullptr;
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   raw_ptr<ReaderModeToolbarView> secondary_reader_mode_toolbar_ = nullptr;
