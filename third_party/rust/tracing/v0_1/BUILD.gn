@@ -33,6 +33,7 @@ cargo_crate("lib") {
       "Eliza Weisman <eliza@buoyant.io>, Tokio Contributors <team@tokio.rs>"
   cargo_pkg_name = "tracing"
   cargo_pkg_description = "Application-level tracing for Rust."
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]

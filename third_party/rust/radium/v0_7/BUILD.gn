@@ -27,6 +27,7 @@ cargo_crate("lib") {
       "Nika Layzell <nika@thelayzells.com>, myrrlyn <self@myrrlyn.dev>"
   cargo_pkg_name = "radium"
   cargo_pkg_description = "Portable interfaces for maybe-atomic types"
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
