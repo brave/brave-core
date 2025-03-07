@@ -3,23 +3,41 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Version upgrade command line tool.
+"""**Version upgrade command line tool.**
+
+```
+⠀⠀⠀⠀⠀⢀⣴⣶⣶⣶⣶⣶⣶⣶⣶⣦⡀⠀⠀⠀⠀⠀
+⠀⣀⣤⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⣤⣀⠀                              🚀
+⣾⣿⣿⣿⣿⡿⠛⠻⠿⠋⠁⠈⠙⠛⠛⠛⢿⣿⣿⣿⣿⣷                         .
+⢈⣿⣿⣿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣿⣿⣿⡁                     .
+⣿⣿⣟⠁⠀⠴⣿⣿⣿⡄⠀⠀⢠⣿⣿⣿⠦⠀⠈⣻⣿⣿                .
+⣿⣿⣿⣧⡀⠀⠀⠀⣽⠇⠀⠀⠸⣯⠀⠀⠀⢀⣴⣿⣿⣿             .
+⠸⣿⣿⣿⣿⣄⠀⢼⣯⣀⠀⠀⣀⣽⡧⠀⢠⣾⣿⣿⣿⠇          .
+⠀⣿⣿⣿⣿⡟⠀⠀⠉⢻⣿⣿⡟⠉⠀⠀⢹⣿⣿⣿⣿⠀        .
+⠀⢹⣿⣿⣿⣧⣀⣀⣤⣾⣿⣿⣷⣤⣀⣀⣴⣿⣿⣿⡏⠀      .
+⠀⠈⣿⣿⣿⣿⣿⣿⣿⠛⠋⠙⠛⣿⣿⣿⣿⣿⣿⣿⠁⠀     .
+⠀⠀⠸⣿⣿⣿⣿⣿⣿⣷⣤⣠⣾⣿⣿⣿⣿⣿⣿⠇⠀⠀    .
+⠀⠀⠀⠀⠙⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠋⠀⠀⠀⠀   .
+⠀⠀⠀⠀⠀⠀⠀⠙⠻⣿⣿⣿⣿⠟⠋⠀⠀⠀⠀⠀⠀⠀💥
+```
 
 This tool is used to upgrade Brave to a desired version of Chromium. The goal
 is to produce a set of patches for the new chromium base version, that looks
 something like:
 
-1. Update from Chromium [from] to [to].
-2. Conflict-resolved patches from Chromium [from] to [to].
-3. Update patches from Chromium [from] to [to].
-4. Updated strings for Chromium [to].
+ * Update from Chromium [from] to [to].
+ * Conflict-resolved patches from Chromium [from] to [to].
+ * Update patches from Chromium [from] to [to].
+ * Updated strings for Chromium [to].
 
 The process is started by providing a target version to upgrade to. The tool
 uses the current upstream branch for the current branch as the base version,
 although that can be overriden with `--previous`.
 
-  git checkout -b cr135 origin/master
-  tools/cr/upgrade.py --to=135.0.7037.1
+```sh
+git checkout -b cr135 origin/master
+tools/cr/upgrade.py --to=135.0.7037.1
+```
 
 The workflow with this script:
 
@@ -35,7 +53,7 @@ The workflow with this script:
     asked to commit the deleted patches manually, preserving the history of why
     they are deleted.
 5. Having resolved all conflicts, the tool will be run again with the same
-   arguments, and with the added --continue flag.
+   arguments, and with the added `--continue` flag.
 6. This tool will then continue from the point where it stopped, staging all
    patches that were applied, and committing them as conflict-resolved patches.
 7. This tool will then continue to update the patches, and rebase the strings
@@ -44,9 +62,9 @@ The workflow with this script:
 Steps 3-7 may end up being skipped altogether if no failures take place, or in
 part if resolution is possible without manual intervention.
 
-Additionally, this tool can be run with the --update-patches-only flag. This is
-useful to generate the "Update patches" and "Updated strings" commits on their
-own when rebasing branches, regenerating these files as desired.
+Additionally, this tool can be run with the `--update-patches-only` flag. This
+is useful to generate the "Update patches" and "Updated strings" commits on
+their own when rebasing branches, regenerating these files as desired.
 """
 
 import argparse
@@ -54,8 +72,23 @@ from datetime import datetime
 import json
 from pathlib import Path
 import re
+from rich.console import Console
+from rich.markdown import Markdown
 import subprocess
 import sys
+
+
+class RichHelpFormatter(argparse.RawDescriptionHelpFormatter):
+
+    def __init__(self, prog):
+        super().__init__(prog)
+        self.console = Console()
+
+    def format_help(self):
+        self.console.print(Markdown(__doc__))
+        self.console.print('')
+        print(super().format_help())
+        return ""
 
 # This file is updated whenever the version number is updated in package.json
 PINSLIST_TIMESTAMP_FILE = 'chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc'
@@ -642,9 +675,8 @@ class Upgrade:
 
 def main():
     parser = argparse.ArgumentParser(
-        description=__doc__,
         # Custom formatter to preserve line breaks in the docstring
-        formatter_class=argparse.RawDescriptionHelpFormatter)
+        formatter_class=RichHelpFormatter)
 
     parser.add_argument('--previous',
                         help='The previous version to be shown as base.')
