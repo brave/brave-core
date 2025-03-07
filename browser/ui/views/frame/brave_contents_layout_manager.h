@@ -14,6 +14,7 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
 
   BraveContentsLayoutManager(views::View* devtools_view,
                              views::View* contents_view,
+                             views::View* lens_overlay_view,
                              views::View* scrim_view,
                              views::View* border_view,
                              views::View* watermark_view,
