@@ -37,9 +37,11 @@
 // StackAtTop() should be called vertical tab widget's top level widget.
 // This also works in horizontal tab mode because it's already top level window.
 #define StackAtTop GetTopLevelWidget()->StackAtTop
+#define GetWindowBoundsInScreen GetTopLevelWidget()->GetWindowBoundsInScreen
 
 #include "src/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.cc"
 
+#undef GetWindowBoundsInScreen
 #undef StackAtTop
 #undef GetHorizontalDragThreshold
 #undef GetBrowserViewForNativeWindow
