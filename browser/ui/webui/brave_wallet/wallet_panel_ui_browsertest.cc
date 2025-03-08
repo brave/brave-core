@@ -22,7 +22,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -140,26 +139,22 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
 
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
 
-    auto* profile = browser()->profile();
-
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
 
-    brave_wallet_service_ =
-        BraveWalletServiceFactory::GetServiceForContext(profile);
-
-    brave_wallet_service_->json_rpc_service()->SetAPIRequestHelperForTesting(
+    brave_wallet_service()->json_rpc_service()->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
 
-    AssetRatioServiceFactory::GetServiceForContext(profile)
+    AssetRatioServiceFactory::GetServiceForContext(browser()->profile())
         ->EnableDummyPricesForTesting();
 
-    brave_wallet_service_->keyring_service()->CreateWallet("password_123",
-                                                           base::DoNothing());
+    brave_wallet_service()->keyring_service()->CreateWallet("password_123",
+                                                            base::DoNothing());
 
     SetEthChainIdInterceptor(
-        {GURL(kSomeEndpoint), brave_wallet_service_->network_manager()
+        {GURL(kSomeEndpoint), brave_wallet_service()
+                                  ->network_manager()
                                   ->GetKnownChain(mojom::kNeonEVMMainnetChainId,
                                                   mojom::CoinType::ETH)
                                   ->rpc_endpoints.front()},
@@ -173,7 +168,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
         browser(), GURL(kBraveUIWalletPanelURL),
         WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-    wallet_ = browser()->tab_strip_model()->GetActiveWebContents();
+    wallet_index_ = browser()->tab_strip_model()->active_index();
   }
 
   void CreateSettingsTab() {
@@ -181,10 +176,10 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
         browser(), GURL(std::string(kWalletSettingsURL) + "/networks"),
         WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-    settings_ = browser()->tab_strip_model()->GetActiveWebContents();
+    settings_index_ = browser()->tab_strip_model()->active_index();
     // Overriding native confirmation dialog so it always confirms.
     EXPECT_TRUE(
-        EvalJs(settings_, "window.confirm = () => true").value.is_none());
+        EvalJs(settings(), "window.confirm = () => true").value.is_none());
   }
 
   void ActivateSettingsTab() {
@@ -198,7 +193,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   }
 
   WalletPanelUI* GetWebUIController() {
-    return wallet_->GetWebUI()->GetController()->GetAs<WalletPanelUI>();
+    return wallet()->GetWebUI()->GetController()->GetAs<WalletPanelUI>();
   }
 
   void SetEthChainIdInterceptor(const std::vector<GURL>& network_urls,
@@ -241,18 +236,21 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  content::WebContents* wallet() { return wallet_; }
-  content::WebContents* settings() { return settings_; }
+  content::WebContents* wallet() {
+    return browser()->tab_strip_model()->GetWebContentsAt(wallet_index_);
+  }
+  content::WebContents* settings() {
+    return browser()->tab_strip_model()->GetWebContentsAt(settings_index_);
+  }
 
-  brave_wallet::BraveWalletService* brave_wallet_service() {
-    return brave_wallet_service_;
+  BraveWalletService* brave_wallet_service() {
+    return BraveWalletServiceFactory::GetServiceForContext(
+        browser()->profile());
   }
 
  private:
-  raw_ptr<content::WebContents, DanglingUntriaged> wallet_ = nullptr;
-  raw_ptr<content::WebContents, DanglingUntriaged> settings_ = nullptr;
-  raw_ptr<brave_wallet::BraveWalletService, DanglingUntriaged>
-      brave_wallet_service_ = nullptr;
+  int wallet_index_ = 0;
+  int settings_index_ = 0;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };

@@ -5,14 +5,12 @@
 
 #include "brave/browser/ui/views/toolbar/wallet_button_notification_source.h"
 
-#include <utility>
-
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 
-namespace brave {
+namespace brave_wallet {
 
 WalletButtonNotificationSource::WalletButtonNotificationSource(
     Profile* profile,
@@ -32,7 +30,7 @@ void WalletButtonNotificationSource::EnsureTxServiceConnected() {
     return;
   }
   auto* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile_);
+      BraveWalletServiceFactory::GetServiceForContext(profile_);
   if (!brave_wallet_service) {
     return;
   }
@@ -49,7 +47,7 @@ void WalletButtonNotificationSource::EnsureKeyringServiceConnected() {
   }
 
   auto* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile_);
+      BraveWalletServiceFactory::GetServiceForContext(profile_);
   if (!brave_wallet_service) {
     return;
   }
@@ -82,12 +80,12 @@ void WalletButtonNotificationSource::CheckTxStatus() {
 }
 
 void WalletButtonNotificationSource::OnTransactionStatusChanged(
-    brave_wallet::mojom::TransactionInfoPtr tx_info) {
+    mojom::TransactionInfoPtr tx_info) {
   CheckTxStatus();
 }
 
 void WalletButtonNotificationSource::OnNewUnapprovedTx(
-    brave_wallet::mojom::TransactionInfoPtr tx_info) {
+    mojom::TransactionInfoPtr tx_info) {
   CheckTxStatus();
 }
 
@@ -116,4 +114,4 @@ void WalletButtonNotificationSource::NotifyObservers() {
   callback_.Run(show_suggestion_badge, pending_tx_count_);
 }
 
-}  // namespace brave
+}  // namespace brave_wallet

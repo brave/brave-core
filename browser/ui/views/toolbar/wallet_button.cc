@@ -5,7 +5,8 @@
 
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 
-#include <vector>
+#include <algorithm>
+#include <utility>
 
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
@@ -143,7 +144,7 @@ WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
   SetButtonController(std::move(menu_button_controller));
 
   notification_source_ =
-      std::make_unique<brave::WalletButtonNotificationSource>(
+      std::make_unique<brave_wallet::WalletButtonNotificationSource>(
           profile, base::BindRepeating(&WalletButton::OnNotificationUpdate,
                                        weak_ptr_factory_.GetWeakPtr()));
 }

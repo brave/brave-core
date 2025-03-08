@@ -26,7 +26,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave {
+namespace brave_wallet {
 
 class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
  public:
@@ -35,15 +35,8 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    auto* wallet_service =
-        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-            browser()->profile());
-    network_manager_ = wallet_service->network_manager();
-    json_rpc_service_ = wallet_service->json_rpc_service();
-    json_rpc_service_->SetGasPriceForTesting("0x123");
-    keyring_service_ = wallet_service->keyring_service();
-    tx_service_ = wallet_service->tx_service();
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+    json_rpc_service()->SetGasPriceForTesting("0x123");
+    WaitForTxStorageDelegateInitialized(tx_service()->GetDelegateForTesting());
 
     StartRPCServer(
         base::BindRepeating(&WalletButtonNotificationSourceTest::HandleRequest,
@@ -52,12 +45,27 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
 
   ~WalletButtonNotificationSourceTest() override = default;
 
-  brave_wallet::NetworkManager* network_manager() { return network_manager_; }
-  brave_wallet::TxService* tx_service() { return tx_service_; }
-  brave_wallet::KeyringService* keyring_service() { return keyring_service_; }
+  BraveWalletService* brave_wallet_service() {
+    return BraveWalletServiceFactory::GetServiceForContext(
+        browser()->profile());
+  }
+
+  NetworkManager* network_manager() {
+    return brave_wallet_service()->network_manager();
+  }
+
+  KeyringService* keyring_service() {
+    return brave_wallet_service()->keyring_service();
+  }
+
+  JsonRpcService* json_rpc_service() {
+    return brave_wallet_service()->json_rpc_service();
+  }
+
+  TxService* tx_service() { return brave_wallet_service()->tx_service(); }
 
   brave_wallet::AccountUtils GetAccountUtils() {
-    return brave_wallet::AccountUtils(keyring_service_);
+    return brave_wallet::AccountUtils(keyring_service());
   }
 
   void CreateWallet() {
@@ -174,11 +182,11 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
 
     // Update rpc url for kLocalhostChainId
     brave_wallet::mojom::NetworkInfoPtr chain;
-    json_rpc_service_->SetNetwork(brave_wallet::mojom::kLocalhostChainId,
-                                  brave_wallet::mojom::CoinType::SOL,
-                                  std::nullopt);
+    json_rpc_service()->SetNetwork(brave_wallet::mojom::kLocalhostChainId,
+                                   brave_wallet::mojom::CoinType::SOL,
+                                   std::nullopt);
     base::RunLoop run_loop;
-    json_rpc_service_->GetNetwork(
+    json_rpc_service()->GetNetwork(
         brave_wallet::mojom::CoinType::SOL, std::nullopt,
         base::BindLambdaForTesting(
             [&](brave_wallet::mojom::NetworkInfoPtr info) {
@@ -189,7 +197,7 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
     base::RunLoop run_loop1;
     chain->rpc_endpoints =
         std::vector<GURL>({https_server_for_rpc()->base_url()});
-    json_rpc_service_->AddChain(
+    json_rpc_service()->AddChain(
         std::move(chain),
         base::BindLambdaForTesting([&](const std::string& chain_id,
                                        brave_wallet::mojom::ProviderError error,
@@ -207,11 +215,6 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
   }
 
  private:
-  raw_ptr<brave_wallet::NetworkManager, DanglingUntriaged> network_manager_;
-  raw_ptr<brave_wallet::KeyringService, DanglingUntriaged> keyring_service_;
-  raw_ptr<brave_wallet::TxService, DanglingUntriaged> tx_service_;
-  raw_ptr<brave_wallet::JsonRpcService, DanglingUntriaged> json_rpc_service_ =
-      nullptr;
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
 };
 
@@ -611,4 +614,4 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   }
 }
 
-}  // namespace brave
+}  // namespace brave_wallet

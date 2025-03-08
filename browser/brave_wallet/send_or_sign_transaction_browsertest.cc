@@ -184,15 +184,9 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     https_server_for_files()->ServeFilesFromDirectory(test_data_dir);
     ASSERT_TRUE(https_server_for_files()->Start());
 
-    auto* wallet_service =
-        BraveWalletServiceFactory::GetServiceForContext(browser()->profile());
-    network_manager_ = wallet_service->network_manager();
-    json_rpc_service_ = wallet_service->json_rpc_service();
-    json_rpc_service_->SetSkipEthChainIdValidationForTesting(true);
-    keyring_service_ = wallet_service->keyring_service();
-    tx_service_ = wallet_service->tx_service();
+    json_rpc_service()->SetSkipEthChainIdValidationForTesting(true);
 
-    tx_service_->AddObserver(observer()->GetReceiver());
+    tx_service()->AddObserver(observer()->GetReceiver());
 
     StartRPCServer(base::BindRepeating(&HandleRequest));
   }
@@ -209,6 +203,25 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  BraveWalletService* brave_wallet_service() {
+    return BraveWalletServiceFactory::GetServiceForContext(
+        browser()->profile());
+  }
+
+  KeyringService* keyring_service() {
+    return brave_wallet_service()->keyring_service();
+  }
+
+  NetworkManager* network_manager() {
+    return brave_wallet_service()->network_manager();
+  }
+
+  JsonRpcService* json_rpc_service() {
+    return brave_wallet_service()->json_rpc_service();
+  }
+
+  TxService* tx_service() { return brave_wallet_service()->tx_service(); }
+
   HostContentSettingsMap* host_content_settings_map() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
@@ -222,17 +235,17 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   TestTxServiceObserver* observer() { return &observer_; }
 
   void RestoreWallet() {
-    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
+    ASSERT_TRUE(keyring_service()->RestoreWalletSync(
         kMnemonicDripCaution, kTestWalletPassword, false));
 
     default_account_ =
-        keyring_service_->GetAllAccountsSync()->accounts[0]->Clone();
+        keyring_service()->GetAllAccountsSync()->accounts[0]->Clone();
     EXPECT_EQ(base::ToLowerASCII(default_account_->address),
               "0x084dcb94038af1715963f149079ce011c4b22961");
   }
 
   void LockWallet() {
-    keyring_service_->Lock();
+    keyring_service()->Lock();
     // Needed so KeyringServiceObserver::Locked handler can be hit
     // which the provider object listens to for the accountsChanged event.
     base::RunLoop().RunUntilIdle();
@@ -240,11 +253,11 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   void UnlockWallet() {
     base::RunLoop run_loop;
-    keyring_service_->Unlock(kTestWalletPassword,
-                             base::BindLambdaForTesting([&](bool success) {
-                               ASSERT_TRUE(success);
-                               run_loop.Quit();
-                             }));
+    keyring_service()->Unlock(kTestWalletPassword,
+                              base::BindLambdaForTesting([&](bool success) {
+                                ASSERT_TRUE(success);
+                                run_loop.Quit();
+                              }));
     run_loop.Run();
     // Needed so KeyringServiceObserver::Unlocked handler can be hit
     // which the provider object listens to for the accountsChanged event.
@@ -252,13 +265,13 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   mojom::AccountInfoPtr AddAccount(const std::string& account_name) {
-    return keyring_service_->AddAccountSync(
+    return keyring_service()->AddAccountSync(
         mojom::CoinType::ETH, mojom::kDefaultKeyringId, account_name);
   }
 
   void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
     base::RunLoop run_loop;
-    keyring_service_->SetSelectedAccount(
+    keyring_service()->SetSelectedAccount(
         account_id.Clone(), base::BindLambdaForTesting([&](bool success) {
           ASSERT_TRUE(success);
           run_loop.Quit();
@@ -272,7 +285,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     chain.rpc_endpoints =
         std::vector<GURL>({https_server_for_rpc()->base_url()});
     auto error_message =
-        json_rpc_service_->AddEthereumChainForOrigin(chain.Clone(), origin);
+        json_rpc_service()->AddEthereumChainForOrigin(chain.Clone(), origin);
     if (!error_message.empty()) {
       return;
     }
@@ -281,11 +294,11 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     base::RunLoop run_loop_chain_request_completed;
     auto observer = std::make_unique<TestJsonRpcServiceObserver>(
         run_loop_chain_request_completed.QuitClosure());
-    json_rpc_service_->AddObserver(observer->GetReceiver());
+    json_rpc_service()->AddObserver(observer->GetReceiver());
     mojo::PendingRemote<mojom::JsonRpcServiceObserver> receiver;
     mojo::MakeSelfOwnedReceiver(std::move(observer),
                                 receiver.InitWithNewPipeAndPassReceiver());
-    json_rpc_service_->AddEthereumChainRequestCompleted(chain_id, true);
+    json_rpc_service()->AddEthereumChainRequestCompleted(chain_id, true);
     run_loop_chain_request_completed.Run();
   }
 
@@ -336,7 +349,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   void ApproveTransaction(const std::string& chain_id,
                           const std::string& tx_meta_id) {
     base::RunLoop run_loop;
-    tx_service_->ApproveTransaction(
+    tx_service()->ApproveTransaction(
         mojom::CoinType::ETH, chain_id, tx_meta_id,
         base::BindLambdaForTesting([&](bool success,
                                        mojom::ProviderErrorUnionPtr error_union,
@@ -354,7 +367,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   void RejectTransaction(const std::string& chain_id,
                          const std::string& tx_meta_id) {
     base::RunLoop run_loop;
-    tx_service_->RejectTransaction(
+    tx_service()->RejectTransaction(
         mojom::CoinType::ETH, chain_id, tx_meta_id,
         base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
@@ -500,7 +513,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
       const std::string& chain_id) {
     std::vector<mojom::TransactionInfoPtr> transaction_infos;
     base::RunLoop run_loop;
-    tx_service_->GetAllTransactionInfo(
+    tx_service()->GetAllTransactionInfo(
         mojom::CoinType::ETH, chain_id, default_account()->account_id.Clone(),
         base::BindLambdaForTesting(
             [&](std::vector<mojom::TransactionInfoPtr> v) {
@@ -540,9 +553,9 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
                             bool skip_rpc_url_override = false) {
     mojom::NetworkInfoPtr chain;
     ASSERT_TRUE(
-        json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH, origin));
+        json_rpc_service()->SetNetwork(chain_id, mojom::CoinType::ETH, origin));
     base::RunLoop run_loop;
-    json_rpc_service_->GetNetwork(
+    json_rpc_service()->GetNetwork(
         mojom::CoinType::ETH, origin,
         base::BindLambdaForTesting([&](mojom::NetworkInfoPtr info) {
           chain = info.Clone();
@@ -554,7 +567,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
       browser()->profile()->GetPrefs()->ClearPref(kBraveWalletCustomNetworks);
       chain->rpc_endpoints =
           std::vector<GURL>({https_server_for_rpc()->base_url()});
-      json_rpc_service_->AddChain(
+      json_rpc_service()->AddChain(
           std::move(chain),
           base::BindLambdaForTesting([&](const std::string& chain_id_out,
                                          mojom::ProviderError error,
@@ -571,9 +584,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   std::string chain_id(const std::optional<::url::Origin>& origin) {
-    return json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH, origin);
+    return json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, origin);
   }
-  NetworkManager* network_manager() { return network_manager_.get(); }
 
  protected:
   mojom::AccountInfoPtr default_account_;
@@ -584,10 +596,6 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_for_files_;
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
-  raw_ptr<NetworkManager, DanglingUntriaged> network_manager_ = nullptr;
-  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_ = nullptr;
-  raw_ptr<TxService, DanglingUntriaged> tx_service_ = nullptr;
-  raw_ptr<JsonRpcService, DanglingUntriaged> json_rpc_service_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,

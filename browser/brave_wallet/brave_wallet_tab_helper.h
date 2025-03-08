@@ -14,7 +14,9 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/gtest_prod_util.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "mojo/public/cpp/bindings/unique_receiver_set.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -33,6 +35,14 @@ class BraveWalletTabHelper
  public:
   explicit BraveWalletTabHelper(content::WebContents* web_contents);
   ~BraveWalletTabHelper() override;
+
+  static void BindEthereumProvider(
+      content::RenderFrameHost* const frame_host,
+      mojo::PendingReceiver<mojom::EthereumProvider> receiver);
+
+  static void BindSolanaProvider(
+      content::RenderFrameHost* const frame_host,
+      mojo::PendingReceiver<mojom::SolanaProvider> receiver);
 
   void AddSolanaConnectedAccount(const content::GlobalRenderFrameHostId& id,
                                  const std::string& account);
@@ -88,6 +98,9 @@ class BraveWalletTabHelper
   GURL GetApproveBubbleURL();
   std::unique_ptr<WalletBubbleManagerDelegate> wallet_bubble_manager_delegate_;
 #endif
+
+  mojo::UniqueReceiverSet<mojom::EthereumProvider> ethereum_provider_receivers_;
+  mojo::UniqueReceiverSet<mojom::SolanaProvider> solana_provider_receivers_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

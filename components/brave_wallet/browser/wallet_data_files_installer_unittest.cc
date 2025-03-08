@@ -110,7 +110,6 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
         shared_url_loader_factory_,
         std::make_unique<MockBraveWalletServiceDelegateImpl>(), &prefs_,
         &local_state_);
-    keyring_service_ = brave_wallet_service_->keyring_service();
 
     cus_ = std::make_unique<component_updater::MockComponentUpdateService>();
     installer().SetDelegate(
@@ -144,9 +143,13 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
                                 coingecko_ids_map_json));
   }
 
+  KeyringService* keyring_service() {
+    return brave_wallet_service_->keyring_service();
+  }
+
   void CreateWallet() {
     base::RunLoop run_loop;
-    keyring_service_->CreateWallet(
+    keyring_service()->CreateWallet(
         kTestWalletPassword,
         base::BindLambdaForTesting(
             [&run_loop](const std::optional<std::string>& mnemonic) {
@@ -159,7 +162,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
 
   void RestoreWallet() {
     base::RunLoop run_loop;
-    keyring_service_->RestoreWallet(
+    keyring_service()->RestoreWallet(
         kMnemonicDivideCruise, kTestWalletPassword, false,
         base::BindLambdaForTesting([&](bool success) {
           ASSERT_TRUE(success);
@@ -230,7 +233,6 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
-  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<component_updater::MockComponentUpdateService> cus_;
   base::FilePath install_dir_;
