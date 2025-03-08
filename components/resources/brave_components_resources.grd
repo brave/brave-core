@@ -109,7 +109,6 @@
       <if expr="is_android">
         <part file="../new_tab_takeover/new_tab_takeover_resources.grdp" />
       </if>
-      <part file="../email_aliases/browser/resources/email_aliases.grdp" />
       <if expr="not is_android">
         <part file="../email_aliases/browser/resources/email_aliases.grdp" />
       </if>
