@@ -26,6 +26,7 @@
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "components/favicon/core/favicon_service.h"
@@ -171,6 +172,17 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {
 #if BUILDFLAG(IS_ANDROID)
   ai_chat::HandleShowSoftKeyboard(owner_web_contents_.get());
 #endif
+}
+
+void AIChatUIPageHandler::UploadImage(const std::string& conversation_uuid,
+                                      UploadImageCallback callback) {
+  if (!upload_file_helper_) {
+    upload_file_helper_ =
+        std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
+  }
+  upload_file_helper_->UploadImage(
+      std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
+      std::move(callback));
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {

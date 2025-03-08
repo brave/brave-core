@@ -205,7 +205,8 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
           base::Uuid::GenerateRandomV4().AsLowercaseString(),
           mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
           "edited query 1", std::nullopt, std::nullopt, std::nullopt,
-          base::Time::Now() + base::Minutes(121), std::nullopt, false));
+          base::Time::Now() + base::Minutes(121), std::nullopt, std::nullopt,
+          false));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -221,7 +222,8 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
           base::Uuid::GenerateRandomV4().AsLowercaseString(),
           mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
           "edited query 2", std::nullopt, std::nullopt, std::nullopt,
-          base::Time::Now() + base::Minutes(122), std::nullopt, false));
+          base::Time::Now() + base::Minutes(122), std::nullopt, std::nullopt,
+          false));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -355,6 +357,41 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent_Invalid) {
       db_->GetConversationData(uuid);
   ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
                                   history);
+}
+
+TEST_P(AIChatDatabaseTest, UploadImage) {
+  constexpr char kUUID[] = "upload_image_uuid";
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      kUUID, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
+      nullptr);
+  auto history = CreateSampleChatHistory(2u, 0, 3u);
+
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
+                                   history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(kUUID, history[1]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(kUUID, history[2]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(kUUID, history[3]->Clone()));
+  mojom::ConversationArchivePtr conversation_data =
+      db_->GetConversationData(kUUID);
+  ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
+                                  history);
+
+  ASSERT_EQ(conversation_data->entries.size(), 4u);
+  // Delete last pair of history
+  EXPECT_TRUE(db_->DeleteConversationEntry(
+      conversation_data->entries[3]->uuid.value()));
+  EXPECT_TRUE(db_->DeleteConversationEntry(
+      conversation_data->entries[2]->uuid.value()));
+
+  history.erase(history.end() - 2, history.end());
+  mojom::ConversationArchivePtr conversation_data2 =
+      db_->GetConversationData(kUUID);
+  ExpectConversationHistoryEquals(FROM_HERE, conversation_data2->entries,
+                                  history);
+
+  // Delete the whole conversation contains uploaded image
+  EXPECT_TRUE(db_->DeleteConversation(kUUID));
+  EXPECT_EQ(db_->GetAllConversations().size(), 0u);
 }
 
 TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {

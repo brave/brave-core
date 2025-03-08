@@ -11,6 +11,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/containers/checked_iterators.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
@@ -22,11 +23,14 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -34,6 +38,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
+using base::test::ParseJsonDict;
 using ::testing::_;
 using ::testing::Sequence;
 
@@ -255,6 +260,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       std::nullopt,                    // No events
       base::Time::Now(),               // Current time
       std::nullopt,                    // No message edits
+      std::nullopt,                    // No uploaded images
       false                            // Not from Brave SERP
       ));
 
@@ -310,12 +316,13 @@ TEST_F(EngineConsumerOAIUnitTest,
       std::nullopt, mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, human_input,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, false));
+      std::nullopt, std::nullopt, false));
 
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, assistant_input, std::nullopt /* prompt */,
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, false));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      false));
 
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
@@ -422,7 +429,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "", std::nullopt /* prompt */, std::nullopt,
       std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, false);
+      std::nullopt, std::nullopt, false);
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("Me")));
   history.push_back(std::move(entry));
@@ -436,6 +443,58 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
             run_loop->Quit();
           }));
   run_loop->Run();
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
+  EngineConsumer::ConversationHistory history;
+  auto* client = GetClient();
+  auto uploaded_images = CreateSampleUploadedImages(3);
+  constexpr char kTestPrompt[] = "Tell the user what is in the image?";
+  constexpr char kAssistantResponse[] = "It's a lion!";
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce(
+          [kTestPrompt, kAssistantResponse, &uploaded_images](
+              const mojom::CustomModelOptions, base::Value::List messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback) {
+            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+            constexpr char kJsonTemplate[] = R"({
+                 "content": [ {
+                    "text": "These images are uploaded by the users",
+                    "type": "text"
+                 }, {
+                    "image_url": {
+                       "url": "data:image/png;base64,$1"
+                    },
+                    "type": "image_url"
+                 } ],
+                 "role": "user"
+                }
+            )";
+            const std::string json_str = base::ReplaceStringPlaceholders(
+                kJsonTemplate,
+                {base::Base64Encode(uploaded_images[0]->image_data)}, nullptr);
+            auto expected_dict = ParseJsonDict(json_str);
+
+            EXPECT_EQ(messages[1].GetDict(), expected_dict);
+
+            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[2].GetDict().Find("content"), kTestPrompt);
+
+            std::move(completed_callback)
+                .Run(EngineConsumer::GenerationResult(kAssistantResponse));
+          });
+
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "What is this image?", kTestPrompt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, Clone(uploaded_images), false));
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+  engine_->GenerateAssistantResponse(false, "", history, "", base::DoNothing(),
+                                     future.GetCallback());
+  EXPECT_STREQ(future.Take()->c_str(), kAssistantResponse);
   testing::Mock::VerifyAndClearExpectations(client);
 }
 

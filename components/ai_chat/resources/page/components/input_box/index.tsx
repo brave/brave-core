@@ -12,6 +12,8 @@ import ActionTypeLabel from '../../../common/components/action_type_label'
 import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
+import AttachmentButtonMenu from '../attachment_button_menu'
+import UploadedImgItem from '../uploaded_img_item'
 
 type Props = Pick<
   ConversationContext,
@@ -29,11 +31,12 @@ type Props = Pick<
   | 'handleVoiceRecognition'
   | 'isGenerating'
   | 'handleStopGenerating'
+  | 'uploadImage'
+  | 'pendingMessageImages'
+  | 'removeImage'
+  | 'conversationHistory'
 > &
-  Pick<
-    AIChatContext,
-    'isMobile' | 'hasAcceptedAgreement'
-  >
+  Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
 interface InputBoxProps {
   context: Props
@@ -100,6 +103,17 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
+      {props.context.pendingMessageImages && (
+        <div className={styles.attachmentWrapper}>
+          {props.context.pendingMessageImages.map((img, i) =>
+            <UploadedImgItem
+              key={img.filename}
+              uploadedImage={img}
+              removeImage={() => props.context.removeImage(i)}
+            />
+          )}
+        </div>
+      )}
       <div
         className={styles.growWrap}
         data-replicated-value={props.context.inputText}
@@ -132,8 +146,12 @@ function InputBox(props: InputBoxProps) {
           <Button
             fab
             kind='plain-faint'
-            onClick={() =>
-              props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+            onClick={(e) =>
+              {
+                e.preventDefault()
+                e.stopPropagation()
+                props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+              }
             }
             title={getLocale('toolsMenuButtonLabel')}
           >
@@ -155,6 +173,10 @@ function InputBox(props: InputBoxProps) {
               <Icon name='microphone' />
             </Button>
           )}
+          <AttachmentButtonMenu
+            uploadImage={props.context.uploadImage}
+            conversationHistory={props.context.conversationHistory}
+          />
         </div>
         <div>
           {props.context.isGenerating ? (

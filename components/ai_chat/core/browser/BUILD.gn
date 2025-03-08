@@ -159,6 +159,7 @@ if (!is_ios) {
       "//base/test:test_support",
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common",
+      "//brave/components/ai_chat/core/common:test_support",
       "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/api_request_helper",
       "//brave/components/brave_component_updater/browser:test_support",
@@ -200,6 +201,7 @@ source_set("test_support") {
 
   deps = [
     "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common:test_support",
     "//brave/components/ai_chat/core/common/mojom",
     "//services/network/public/cpp",
     "//testing/gmock",

@@ -11,6 +11,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
@@ -19,6 +20,7 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
@@ -26,6 +28,7 @@
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -218,16 +221,18 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Which show is this catchphrase from?", std::nullopt /* prompt */,
-      "I have spoken.", std::nullopt, base::Time::Now(), std::nullopt, false));
+      "I have spoken.", std::nullopt, base::Time::Now(), std::nullopt,
+      std::nullopt, false));
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "The Mandalorian.",
       std::nullopt /* prompt */, std::nullopt, std::nullopt, base::Time::Now(),
-      std::nullopt, false));
+      std::nullopt, std::nullopt, false));
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::RESPONSE,
       "Is it related to a broader series?", std::nullopt /* prompt */,
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, false));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      false));
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "This is my page. I have spoken."},
     {"role": "user", "type": "pageExcerpt", "content": "I have spoken."},
@@ -295,7 +300,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Which show is 'This is the way' from?", std::nullopt /* prompt */,
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, false));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      false));
 
   std::vector<mojom::ConversationEntryEventPtr> events;
   auto search_event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
@@ -316,18 +322,19 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "The Mandalorian.",
       std::nullopt /* prompt */, std::nullopt, std::move(modified_events),
-      base::Time::Now(), std::nullopt, false);
+      base::Time::Now(), std::nullopt, std::nullopt, false);
   std::vector<mojom::ConversationTurnPtr> edits;
   edits.push_back(std::move(edit));
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "Mandalorian.", std::nullopt /* prompt */,
       std::nullopt, std::move(events), base::Time::Now(), std::move(edits),
-      false));
+      std::nullopt, false));
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Is it related to a broader series?", std::nullopt /* prompt */,
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, false));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      false));
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "I have spoken."},
     {"role": "user", "type": "chatMessage",
@@ -381,7 +388,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_EarlyReturn) {
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "", std::nullopt /* prompt */, std::nullopt,
       std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, false);
+      std::nullopt, std::nullopt, false);
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("Me")));
   history.push_back(std::move(entry));
@@ -427,6 +434,44 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
+  auto uploaded_images = CreateSampleUploadedImages(3);
+  constexpr char kTestPrompt[] = "Tell the user what is in the image?";
+  constexpr char kAssistantResponse[] = "It's a lion!";
+  auto* mock_api_client = GetMockConversationAPIClient();
+  base::RunLoop run_loop;
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        // Only support one image for now.
+        ASSERT_EQ(conversation.size(), 2u);
+        EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(
+            conversation[0].content,
+            base::StrCat({"data:image/png;base64,",
+                          base::Base64Encode(uploaded_images[0]->image_data)}));
+        EXPECT_EQ(conversation[0].type, ConversationAPIClient::UploadImage);
+        EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[1].content, kTestPrompt);
+        EXPECT_EQ(conversation[1].type, ConversationAPIClient::ChatMessage);
+        std::move(callback).Run(kAssistantResponse);
+      });
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "What is this image?", kTestPrompt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, Clone(uploaded_images), false));
+
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
+  engine_->GenerateAssistantResponse(false, "", history, "", base::DoNothing(),
+                                     future.GetCallback());
+  EXPECT_STREQ(future.Take()->c_str(), kAssistantResponse);
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 

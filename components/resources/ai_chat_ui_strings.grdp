@@ -87,6 +87,9 @@
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_SONNET" desc="AI Chat intro message for the Claude Sonnet model">
     Hi, I'm Leo. I'm proxied by Brave and powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_VISION_BASIC" desc="AI Chat intro message for the default vision model">
+    Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama Vision, a model created by Meta to be performant and applicable to many use cases. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+  </message>
   <message name="IDS_CHAT_UI_MODEL_NAME_SYNTAX" desc="Sentence structure for model name">
     <ph name="MODEL_NAME">$1<ex>llama2-13b</ex></ph> by <ph name="COMPANY_NAME">$2<ex>Meta</ex></ph>
   </message>
@@ -384,6 +387,9 @@
   <message name="IDS_CHAT_UI_CHAT_QWEN_SUBTITLE" desc="A description for qwen model">
       General purpose chat, coding, and more
   </message>
+  <message name="IDS_CHAT_UI_CHAT_VISION_BASIC_SUBTITLE" desc="A description for llama vision model">
+    General purpose vision
+  </message>
   <message name="IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL" desc="A label for leo settings tooltip">
     Leo settings
   </message>
@@ -494,6 +500,18 @@
   </message>
   <message name="IDS_AI_CHAT_LEO_TOOLS_BUTTON_LABEL" desc="The button label for Leo's slash tools">
     Leo tools
+  </message>
+  <message name="IDS_AI_CHAT_LEO_ATTACHMENT_MENU_BUTTON_LABEL" desc="The button label for Leo's attachment menu">
+    Attachment
+  </message>
+  <message name="IDS_AI_CHAT_UPLOAD_FILE_BUTTON_LABEL" desc="The button label for upload file">
+    Upload file...
+  </message>
+  <message name="IDS_AI_CHAT_SCREENSHOT_BUTTON_LABEL" desc="The button label for screenshot">
+    Screenshot
+  </message>
+  <message name="IDS_AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL" desc="The button label for current tab contents">
+    Current tab contents
   </message>
   <message name="IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL" desc="The button label for Leo's microphone feature">
     Use microphone

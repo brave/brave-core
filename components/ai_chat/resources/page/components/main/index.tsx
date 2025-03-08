@@ -332,13 +332,12 @@ function Main() {
               <PageContextToggle />
             </div>
           )}
-          <ToolsButtonMenu {...conversationContext}>
-            <InputBox
-              conversationStarted={isVisible}
-              context={{ ...conversationContext, ...aiChatContext }}
-              maybeShowSoftKeyboard={maybeShowSoftKeyboard}
-            />
-          </ToolsButtonMenu>
+          <ToolsButtonMenu {...conversationContext} />
+          <InputBox
+            conversationStarted={isVisible}
+            context={{ ...conversationContext, ...aiChatContext }}
+            maybeShowSoftKeyboard={maybeShowSoftKeyboard}
+          />
         </div>
         <DeleteConversationModal />
       </div>

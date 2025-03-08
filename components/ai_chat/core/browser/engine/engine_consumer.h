@@ -91,6 +91,8 @@ class EngineConsumer {
     max_associated_content_length_ = max_associated_content_length;
   }
 
+  static std::string GetImageDataURL(base::span<uint8_t> image_data);
+
  protected:
   // Check if we should call GenerationCompletedCallback early based on the
   // conversation history. Ex. empty history, or if the last entry is not a

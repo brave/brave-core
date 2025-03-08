@@ -118,6 +118,19 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   }
   // history
   for (const auto& message : conversation_history) {
+    if (message->uploaded_images) {
+      size_t counter = 0;
+      for (const auto& uploaded_image : message->uploaded_images.value()) {
+        // Only send the first uploaded_image becasue llama-vision seems to take
+        // the last one if there are multiple images
+        if (counter++ > 0) {
+          break;
+        }
+        conversation.push_back({mojom::CharacterType::HUMAN,
+                                ConversationEventType::UploadImage,
+                                GetImageDataURL(uploaded_image->image_data)});
+      }
+    }
     if (message->selected_text.has_value() &&
         !message->selected_text->empty()) {
       conversation.push_back({mojom::CharacterType::HUMAN,

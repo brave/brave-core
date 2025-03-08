@@ -22,6 +22,8 @@ export interface CharCountContext {
   inputTextCharCountDisplay: string
 }
 
+export type UploadedImageData = Mojom.UploadedImage
+
 export type ConversationContext = SendFeedbackState & CharCountContext & {
   historyInitialized: boolean
   conversationUuid?: string
@@ -62,6 +64,9 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
 
   showAttachments: boolean
   setShowAttachments: (show: boolean) => void
+  uploadImage: () => void
+  removeImage: (index: number) => void
+  pendingMessageImages: Mojom.UploadedImage[] | null
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -103,6 +108,9 @@ const defaultContext: ConversationContext = {
   setIsToolsMenuOpen: () => { },
   showAttachments: false,
   setShowAttachments: () => { },
+  uploadImage: () => { },
+  removeImage: () => { },
+  pendingMessageImages: null,
   ...defaultSendFeedbackState,
   ...defaultCharCountContext
 }
@@ -447,11 +455,14 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         context.selectedActionType
       )
     } else {
-      conversationHandler.submitHumanConversationEntry(context.inputText)
+      conversationHandler.submitHumanConversationEntry(
+        context.inputText,
+        context.pendingMessageImages)
     }
 
     setPartialContext({
-      inputText: ''
+      inputText: '',
+      pendingMessageImages: null
     })
     resetSelectedActionType()
   }
@@ -495,6 +506,33 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.uiHandler?.handleVoiceRecognition(context.conversationUuid)
   }
 
+  const uploadImage = () => {
+    if (!context.conversationUuid) {
+      console.error('No conversationUuid found')
+      return
+    }
+    // For now we only allow uploading 1 image per conversation.
+    if (context.pendingMessageImages) {
+      setPartialContext({
+        pendingMessageImages: null
+      })
+    }
+    aiChatContext.uiHandler?.uploadImage(context.conversationUuid)
+    .then(({uploadedImage}) => {
+      if (uploadedImage) {
+        setPartialContext({
+          pendingMessageImages: [uploadedImage]
+        })
+      }
+    })
+  }
+
+  const removeImage = (index: number) => {
+    setPartialContext({
+      pendingMessageImages: null
+    })
+  }
+
   const store: ConversationContext = {
     ...context,
     ...sendFeedbackState,
@@ -523,6 +561,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     switchToBasicModel,
     setIsToolsMenuOpen: (isToolsMenuOpen) => setPartialContext({ isToolsMenuOpen }),
     handleVoiceRecognition,
+    uploadImage,
+    removeImage,
     conversationHandler
   }
 

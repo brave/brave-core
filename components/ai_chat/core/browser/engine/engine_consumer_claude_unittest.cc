@@ -77,12 +77,13 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
       std::nullopt, mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       "Which show is this catchphrase from?", std::nullopt /* prompt */,
-      "I have spoken.", std::nullopt, base::Time::Now(), std::nullopt, false));
+      "I have spoken.", std::nullopt, base::Time::Now(), std::nullopt,
+      std::nullopt, false));
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "The Mandalorian.",
       std::nullopt /* prompt */, std::nullopt, std::nullopt, base::Time::Now(),
-      std::nullopt, false));
+      std::nullopt, std::nullopt, false));
   auto* mock_remote_completion_client = GetMockRemoteCompletionClient();
   std::string prompt_before_time_and_date =
       "\n\nHuman: Here is the text of a web page in <page> tags:\n<page>\nThis "
@@ -254,7 +255,7 @@ TEST_F(EngineConsumerClaudeUnitTest, GenerateAssistantResponseEarlyReturn) {
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "", std::nullopt /* prompt */, std::nullopt,
       std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, false);
+      std::nullopt, std::nullopt, false);
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("Me")));
   history.push_back(std::move(entry));
