@@ -119,9 +119,9 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
 
   // Verify count and order.
   // Default prepopulated engines order is :br, :g, :d, :q, :b, :sp
-  TestDefaultOrder(template_urls,
-                   {":br", ":g", ":d", ":q", ":b", ":sp", ":ya", "random1",
-                    "random2", "@bookmarks", "@history", "@tabs", "@gemini"});
+  TestDefaultOrder(template_urls, {":br", ":g", ":d", ":q", ":b", ":sp", ":ya",
+                                   "random1", "random2", "@bookmarks",
+                                   "@history", "@tabs", "@gemini", "@page"});
 }
 
 TEST_F(BraveTemplateURLServiceUtilTest,
@@ -156,5 +156,5 @@ TEST_F(BraveTemplateURLServiceUtilTest,
   // Prepopulated engines order for DE is :br, :d, :q, :g, :sp, :e
   TestDefaultOrder(template_urls,
                    {":br", ":d", ":q", ":g", ":b", ":sp", ":e", ":ya",
-                    "@bookmarks", "@history", "@tabs", "@gemini"});
+                    "@bookmarks", "@history", "@tabs", "@gemini", "@page"});
 }
