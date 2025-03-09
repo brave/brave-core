@@ -10,7 +10,7 @@
 # included in the app bundle.
 def extend_allowlisted_non_base_services(allowlisted_non_base_services):
     allowlisted_non_base_services.add(
-        'com.brave.playlist.playback_service.VideoPlaybackService')
+        'org.chromium.chrome.browser.playlist.playback_service.VideoPlaybackService')
     # This service is used by the `androidx_room_room_runtime_java` library that is a dependency of `com_brave_playlist_java`.
     # This dependency will be removed in the context of this issue https://github.com/brave/brave-browser/issues/42382
     allowlisted_non_base_services.add(
