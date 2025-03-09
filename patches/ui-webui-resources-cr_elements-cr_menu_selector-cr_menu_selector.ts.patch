@@ -1,0 +1,12 @@
+diff --git a/ui/webui/resources/cr_elements/cr_menu_selector/cr_menu_selector.ts b/ui/webui/resources/cr_elements/cr_menu_selector/cr_menu_selector.ts
+index 0a83b8041b8201c95442e680c77555d4c11bc06a..4381244bf7f932904aa9533757ba3df63d83baf1 100644
+--- a/ui/webui/resources/cr_elements/cr_menu_selector/cr_menu_selector.ts
++++ b/ui/webui/resources/cr_elements/cr_menu_selector/cr_menu_selector.ts
+@@ -73,6 +73,7 @@ export class CrMenuSelector extends CrMenuSelectorBase {
+   private onKeydown_(event: KeyboardEvent) {
+     const items = this.getAllFocusableItems_();
+     assert(items.length >= 1);
++    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+     const currentFocusedIndex =
+         items.indexOf(this.querySelector<HTMLElement>(':focus')!);
+ 
