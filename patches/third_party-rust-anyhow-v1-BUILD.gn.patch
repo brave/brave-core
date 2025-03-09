@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/anyhow/v1/BUILD.gn b/third_party/rust/anyhow/v1/BUILD.gn
-index 7e28cc89cce75ca0e193471dd81548b490302542..9eced79d500e54c5f9e9225267668129707c2904 100644
+index ae584ed6d573ec16e4929c3b0c4603e3de7244be..e5e4ef537c6d4c44d118cd51729ac6fe4a51aea3 100644
 --- a/third_party/rust/anyhow/v1/BUILD.gn
 +++ b/third_party/rust/anyhow/v1/BUILD.gn
 @@ -52,5 +52,4 @@ cargo_crate("lib") {

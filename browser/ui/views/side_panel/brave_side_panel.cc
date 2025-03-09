@@ -40,8 +40,7 @@ class ContentParentView : public views::View {
  public:
   ContentParentView() {
     SetUseDefaultFillLayout(true);
-    SetBackground(
-        views::CreateThemedSolidBackground(kColorSidePanelBackground));
+    SetBackground(views::CreateSolidBackground(kColorSidePanelBackground));
     SetProperty(
         views::kFlexBehaviorKey,
         views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
@@ -77,7 +76,7 @@ BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
           browser_view_->browser())) {
     shadow_ = BraveContentsViewUtil::CreateShadow(this);
     SetBackground(
-        views::CreateThemedSolidBackground(kColorSidebarPanelHeaderBackground));
+        views::CreateSolidBackground(kColorSidebarPanelHeaderBackground));
   }
 
   content_parent_view_ = AddChildView(std::make_unique<ContentParentView>());

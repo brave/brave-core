@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index cd49d6f7fb99f7712579cba28d64f73a95bf7f92..ec05d2115f6e63d625e98613abc055264f64bfe2 100644
+index 7874c58d04015cfb0e1b3f955008ba4ebe57bb78..a369fa0c67e4c26b2d00e405cda953c32d623baa 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -60,6 +60,7 @@ if (build_with_internal_optimization_guide) {
+@@ -59,6 +59,7 @@ if (build_with_internal_optimization_guide) {
        [ "$root_out_dir/liboptimization_guide_internal.so" ]
  }
  
@@ -10,7 +10,7 @@ index cd49d6f7fb99f7712579cba28d64f73a95bf7f92..ec05d2115f6e63d625e98613abc05526
  packaging_files_binaries = packaging_files_executables + packaging_files_shlibs
  
  # TODO(mmoss) Any convenient way to get all the relevant build files?
-@@ -160,6 +161,7 @@ action("merge_rpm_dependencies") {
+@@ -159,6 +160,7 @@ action("merge_rpm_dependencies") {
  strip_binary("strip_chrome_binary") {
    binary_input = "$root_out_dir/chrome"
    deps = [ "//chrome" ]
@@ -18,7 +18,7 @@ index cd49d6f7fb99f7712579cba28d64f73a95bf7f92..ec05d2115f6e63d625e98613abc05526
  }
  
  strip_binary("strip_chrome_crashpad_handler") {
-@@ -175,6 +177,7 @@ strip_binary("strip_chrome_management_service") {
+@@ -174,6 +176,7 @@ strip_binary("strip_chrome_management_service") {
  strip_binary("strip_chrome_sandbox") {
    binary_input = "$root_out_dir/chrome_sandbox"
    deps = [ "//sandbox/linux:chrome_sandbox" ]
@@ -26,7 +26,7 @@ index cd49d6f7fb99f7712579cba28d64f73a95bf7f92..ec05d2115f6e63d625e98613abc05526
  }
  
  strip_binary("strip_libEGL_shlib") {
-@@ -262,6 +265,7 @@ copy("common_packaging_files") {
+@@ -261,6 +264,7 @@ copy("common_packaging_files") {
    }
  
    sources += [ "//buildtools/third_party/eu-strip/bin/eu-strip" ]
@@ -34,7 +34,7 @@ index cd49d6f7fb99f7712579cba28d64f73a95bf7f92..ec05d2115f6e63d625e98613abc05526
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
  }
-@@ -374,6 +378,7 @@ group("installer_deps") {
+@@ -373,6 +377,7 @@ group("installer_deps") {
      "//third_party/angle:libEGL",
      "//third_party/angle:libGLESv2",
    ]
@@ -42,7 +42,7 @@ index cd49d6f7fb99f7712579cba28d64f73a95bf7f92..ec05d2115f6e63d625e98613abc05526
    if (bundle_widevine_cdm) {
      public_deps += [ "//third_party/widevine/cdm" ]
    }
-@@ -420,6 +425,9 @@ group("installer_deps") {
+@@ -419,6 +424,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -52,7 +52,7 @@ index cd49d6f7fb99f7712579cba28d64f73a95bf7f92..ec05d2115f6e63d625e98613abc05526
  
    if (is_chrome_branded) {
      package = "google-chrome"
-@@ -552,3 +560,6 @@ linux_package("unstable") {
+@@ -551,3 +559,6 @@ linux_package("unstable") {
  linux_package("canary") {
    channel = "canary"
  }

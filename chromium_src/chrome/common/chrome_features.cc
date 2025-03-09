@@ -13,7 +13,9 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kChromeStructuredMetrics, base::FEATURE_DISABLED_BY_DEFAULT},
+#if BUILDFLAG(ENABLE_GLIC)
     {kGlic, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
     {kHttpsFirstBalancedMode, base::FEATURE_DISABLED_BY_DEFAULT},
     {kKAnonymityService, base::FEATURE_DISABLED_BY_DEFAULT},
     {kKAnonymityServiceOHTTPRequests, base::FEATURE_DISABLED_BY_DEFAULT},

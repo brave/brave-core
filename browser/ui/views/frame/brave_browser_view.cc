@@ -128,7 +128,7 @@ class SidebarSeparator : public views::View {
  public:
   SidebarSeparator() {
     SetBackground(
-        views::CreateThemedSolidBackground(kColorBraveVerticalTabSeparator));
+        views::CreateSolidBackground(kColorBraveVerticalTabSeparator));
   }
 };
 BEGIN_METADATA(SidebarSeparator)
@@ -140,7 +140,7 @@ class ContentsBackground : public views::View {
   METADATA_HEADER(ContentsBackground, views::View)
  public:
   ContentsBackground() {
-    SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
+    SetBackground(views::CreateSolidBackground(kColorToolbar));
     SetEnabled(false);
   }
 };
@@ -243,8 +243,9 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
-          devtools_web_view(), contents_web_view(), contents_scrim_view(),
-          border_view, watermark_view_.get(), reader_mode_toolbar_));
+          devtools_web_view(), contents_web_view(), lens_overlay_view_,
+          contents_scrim_view(), border_view, watermark_view_.get(),
+          reader_mode_toolbar_));
 #endif
 
   if (use_rounded_corners) {
