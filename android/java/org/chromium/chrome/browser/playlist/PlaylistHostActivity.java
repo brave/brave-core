@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.playlist;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -16,8 +15,6 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.task.PostTask;
-import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.init.ActivityProfileProvider;
@@ -25,10 +22,7 @@ import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
 import org.chromium.chrome.browser.playlist.fragment.AllPlaylistFragment;
 import org.chromium.chrome.browser.playlist.fragment.PlaylistFragment;
-import org.chromium.chrome.browser.playlist.hls_content.HlsService;
-import org.chromium.chrome.browser.playlist.hls_content.HlsServiceImpl;
 import org.chromium.chrome.browser.playlist.listener.PlaylistOptionsListener;
-import org.chromium.chrome.browser.playlist.local_database.PlaylistRepository;
 import org.chromium.chrome.browser.playlist.model.HlsContentProgressModel;
 import org.chromium.chrome.browser.playlist.model.MoveOrCopyModel;
 import org.chromium.chrome.browser.playlist.model.PlaylistItemModel;
@@ -178,7 +172,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                 return;
                             }
                             for (PlaylistItemModel playlistItem : playlistItems.getItems()) {
-                                deleteHLSContent(playlistItem.getId());
                                 mPlaylistService.removeItemFromPlaylist(
                                         playlistItems.getId(), playlistItem.getId());
                             }
@@ -282,7 +275,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                         playlistItemOption.getPlaylistItemModel().getPageSource());
                             } else if (option
                                     == PlaylistModel.PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
-                                deleteHLSContent(playlistItemOption.getPlaylistItemModel().getId());
                                 mPlaylistService.removeItemFromPlaylist(
                                         playlistItemOption.getPlaylistId(),
                                         playlistItemOption.getPlaylistItemModel().getId());
@@ -462,25 +454,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         playlistItem.cached,
                         false);
         mPlaylistViewModel.updatePlaylistItem(playlistItemModel);
-    }
-
-    private void deleteHLSContent(String playlistItemId) {
-        PostTask.postTask(
-                TaskTraits.BEST_EFFORT_MAY_BLOCK,
-                () -> {
-                    PlaylistRepository playlistRepository =
-                            new PlaylistRepository(PlaylistHostActivity.this);
-                    if (playlistRepository != null
-                            && playlistRepository.isHlsContentQueueModelExists(playlistItemId)) {
-                        playlistRepository.deleteHlsContentQueueModel(playlistItemId);
-                    }
-                    if (HlsServiceImpl.currentDownloadingPlaylistItemId.equals(playlistItemId)) {
-                        HlsServiceImpl.currentDownloadingPlaylistItemId = "";
-                        mPlaylistService.cancelQuery(playlistItemId);
-                        stopService(new Intent(PlaylistHostActivity.this, HlsService.class));
-                        PlaylistUtils.checkAndStartHlsDownload(PlaylistHostActivity.this);
-                    }
-                });
     }
 
     @Override
