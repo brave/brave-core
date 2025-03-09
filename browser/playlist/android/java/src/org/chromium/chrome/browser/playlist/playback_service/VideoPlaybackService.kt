@@ -25,7 +25,6 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
-import org.chromium.chrome.browser.playlist.local_database.PlaylistRepository
 import org.chromium.chrome.browser.playlist.model.LastPlayedPositionModel
 import org.chromium.chrome.browser.playlist.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.util.ConstantUtils
@@ -48,10 +47,6 @@ class VideoPlaybackService : MediaLibraryService(),
     MediaLibraryService.MediaLibrarySession.Callback, Player.Listener {
     private lateinit var mMediaLibrarySession: MediaLibrarySession
     private val mScope = CoroutineScope(Job() + Dispatchers.IO)
-
-    private val mPlaylistRepository: PlaylistRepository by lazy {
-        PlaylistRepository(applicationContext)
-    }
 
     companion object {
         private lateinit var mPlayer: ExoPlayer
@@ -223,8 +218,7 @@ class VideoPlaybackService : MediaLibraryService(),
         mScope.launch {
             if (PlaylistPreferenceUtils.defaultPrefs(applicationContext).rememberFilePlaybackPosition) {
                 mediaItem.mediaId.let {
-                    val lastPlayedPositionModel = LastPlayedPositionModel(it, currentPosition)
-                    mPlaylistRepository.insertLastPlayedPosition(lastPlayedPositionModel)
+                    
                 }
             }
         }
