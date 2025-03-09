@@ -104,7 +104,7 @@ export const ControlBox = styled.div`
 `
 
 export const ShieldsIcon = styled.i<ShieldsIconProps>`
-  --fill-color: #5E6175;
+  --fill-color: #4541EE;
   width: 100%;
   height: auto;
   grid-column: 1;
