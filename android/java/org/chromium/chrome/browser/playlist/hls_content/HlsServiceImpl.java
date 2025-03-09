@@ -20,7 +20,6 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
-import org.chromium.chrome.browser.playlist.local_database.PlaylistRepository;
 import org.chromium.chrome.browser.playlist.model.HlsContentProgressModel;
 import org.chromium.chrome.browser.playlist.model.HlsContentQueueModel;
 import org.chromium.chrome.browser.playlist.model.PlaylistItemModel;
@@ -70,12 +69,7 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 () -> {
-                    PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
-                    if (playlistRepository == null) {
-                        return;
-                    }
-                    HlsContentQueueModel hlsContentQueueModel =
-                            playlistRepository.getFirstHlsContentQueueModel();
+                    HlsContentQueueModel hlsContentQueueModel = null;
                     if (hlsContentQueueModel == null || mPlaylistService == null) {
                         return;
                     }
@@ -83,13 +77,6 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                     mPlaylistService.getPlaylistItem(
                             playlistItemId,
                             playlistItem -> {
-                                if (playlistItem == null) {
-                                    PostTask.postTask(
-                                            TaskTraits.USER_VISIBLE_MAY_BLOCK,
-                                            () -> {
-                                                removeContentAndStartNextDownload(playlistItemId);
-                                            });
-                                }
                                 currentDownloadingPlaylistItemId = playlistItemId;
                                 HlsUtils.getManifestFile(
                                         mContext,
@@ -152,9 +139,6 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                                                                             addNewPlaylistItemModel(
                                                                                     playlistItem
                                                                                             .id);
-                                                                            removeContentAndStartNextDownload(
-                                                                                    playlistItem
-                                                                                            .id);
                                                                         });
                                                             }
                                                         });
@@ -162,20 +146,6 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                                         });
                             });
                 });
-    }
-
-    private void removeContentAndStartNextDownload(String playlistItemId) {
-        PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
-        if (playlistRepository == null) {
-            return;
-        }
-        playlistRepository.deleteHlsContentQueueModel(playlistItemId);
-        currentDownloadingPlaylistItemId = "";
-        if (playlistRepository.getFirstHlsContentQueueModel() != null) {
-            startHlsContentFromQueue();
-        } else {
-            getService().stopSelf();
-        }
     }
 
     private void addNewPlaylistItemModel(String playlistItemId) {

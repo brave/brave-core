@@ -18,7 +18,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.chromium.chrome.browser.playlist.R
 import org.chromium.chrome.browser.playlist.activity.PlaylistMenuOnboardingActivity
-import org.chromium.chrome.browser.playlist.local_database.PlaylistRepository
 import org.chromium.chrome.browser.playlist.model.HlsContentProgressModel
 import org.chromium.chrome.browser.playlist.model.MoveOrCopyModel
 import org.chromium.chrome.browser.playlist.model.PlaylistItemModel
@@ -137,11 +136,9 @@ object PlaylistUtils {
     @JvmStatic
     fun checkAndStartHlsDownload(context: Context) {
         try {
-            val playlistRepository = PlaylistRepository(context)
             val hlsServiceClass =
                 Class.forName("org.chromium.chrome.browser.playlist.hls_content.HlsService")
-            if (playlistRepository.getAllHlsContentQueueModel()
-                    ?.isNotEmpty() == true && !isServiceRunning(
+            if (!isServiceRunning(
                     context, hlsServiceClass
                 )
             ) {

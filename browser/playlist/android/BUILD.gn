@@ -37,9 +37,6 @@ android_library("java") {
     "java/src/org/chromium/chrome/browser/playlist/listener/PlaylistOnboardingActionClickListener.kt",
     "java/src/org/chromium/chrome/browser/playlist/listener/PlaylistOptionsListener.kt",
     "java/src/org/chromium/chrome/browser/playlist/listener/StartDragListener.kt",
-    "java/src/org/chromium/chrome/browser/playlist/local_database/PlaylistDatabase.kt",
-    "java/src/org/chromium/chrome/browser/playlist/local_database/PlaylistItemModelDao.kt",
-    "java/src/org/chromium/chrome/browser/playlist/local_database/PlaylistRepository.kt",
     "java/src/org/chromium/chrome/browser/playlist/model/CreatePlaylistModel.kt",
     "java/src/org/chromium/chrome/browser/playlist/model/HlsContentProgressModel.kt",
     "java/src/org/chromium/chrome/browser/playlist/model/HlsContentQueueModel.kt",
@@ -75,7 +72,6 @@ android_library("java") {
   deps = [
     ":java_resources",
     "//brave/third_party/android_deps:androidx_media3_media3_exoplayer_hls_java",
-    "//brave/third_party/android_deps:androidx_room_room_runtime_java",
     "//brave/third_party/android_deps:com_github_bumptech_glide_java",
     "//brave/third_party/android_deps:com_google_code_gson_gson_java",
     "//third_party/android_deps:google_play_services_cast_framework_java",
