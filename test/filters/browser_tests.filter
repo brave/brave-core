@@ -178,8 +178,6 @@
 -SerialBlocklistTest.*
 -SerialTest.*
 -WebAppFileHandlingBrowserTest.*
--WebBluetoothPolicyTest.*
--WebBluetoothTest.*
 -WebViewUsbTest.*
 -WithOverrideParams/ReferrerOverrideTest.CrossOriginDowngradeNavigation/ParamCapReferrerToOriginOnCrossOrigin
 
@@ -2766,6 +2764,9 @@
 -WebAppTabStripBrowserTest.ReparentingPinsHomeTab
 -WebAppTabStripBrowserTest.TabbedModeMediaCSS
 -WebAppTabStripLinkCapturingBrowserTest.*
+-WebBluetoothPolicyTest.*
+-WebBluetoothTest.*
+-WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothIdsUsedInWebBluetoothScanning
 -WebNavigationApiBackForwardCacheTest.*
 -WebRtcDesktopCaptureBrowserTest.*
 -WebrtcLoggingPrivateApiBrowserTest.*
