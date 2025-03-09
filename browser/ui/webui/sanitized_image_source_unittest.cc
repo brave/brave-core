@@ -48,11 +48,12 @@ class SanitizedImageSourceTest : public testing::Test {
             &profile_,
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &test_url_loader_factory_),
-            std::make_unique<SanitizedImageSource::DataDecoderDelegate>(),
-            "pcdn.brave.com") {}
+            std::make_unique<SanitizedImageSource::DataDecoderDelegate>()) {
+    source_.set_pcdn_domain_for_testing("pcdn.brave.com");
+  }
   ~SanitizedImageSourceTest() override = default;
 
-  scoped_refptr<base::RefCountedMemory> Decode(GURL url, std::string filename) {
+  scoped_refptr<base::RefCountedMemory> Decode(const GURL& url, const std::string& filename) {
     std::string data = LoadTestFile(filename);
     GURL image_url = GURL("chrome://image/?" + url.spec());
     test_url_loader_factory_.AddResponse(url.spec(), std::move(data));

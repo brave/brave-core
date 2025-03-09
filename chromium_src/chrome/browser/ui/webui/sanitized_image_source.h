@@ -27,22 +27,12 @@ using SanitizedImageSource_BraveImpl = SanitizedImageSource;
 
 class SanitizedImageSource : public SanitizedImageSource_Chromium {
  public:
-  explicit SanitizedImageSource(Profile* profile);
-
-  // For upstream tests
-  SanitizedImageSource(
-      Profile* profile,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      std::unique_ptr<DataDecoderDelegate> delegate);
-
-  // For Brave tests.
-  SanitizedImageSource(
-      Profile* profile,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      std::unique_ptr<DataDecoderDelegate> delegate,
-      std::string pcdn_domain);
-
+  using SanitizedImageSource_Chromium::SanitizedImageSource_Chromium;
   ~SanitizedImageSource() override;
+
+  void set_pcdn_domain_for_testing(std::string pcdn_domain) {
+    pcdn_domain_ = std::move(pcdn_domain);
+  }
 
  private:
   void OnImageLoaded(std::unique_ptr<network::SimpleURLLoader> loader,

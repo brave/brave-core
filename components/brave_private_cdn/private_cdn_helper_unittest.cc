@@ -16,8 +16,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 TEST(BravePrivateCdnHelper, RemovePadding) {
-  auto* helper = brave::PrivateCdnHelper::GetInstance();
-
   using std::string_literals::operator""s;
 
   std::string invalid_inputs[]{
@@ -33,7 +31,7 @@ TEST(BravePrivateCdnHelper, RemovePadding) {
 
   for (auto& invalid_input : invalid_inputs) {
     std::string_view padded_string(invalid_input);
-    EXPECT_FALSE(helper->RemovePadding(&padded_string));
+    EXPECT_FALSE(brave::private_cdn::RemovePadding(&padded_string));
   }
 
   std::string inputs[] = {
@@ -75,13 +73,13 @@ TEST(BravePrivateCdnHelper, RemovePadding) {
       "P"s,
   };
 
-  constexpr size_t input_count = sizeof(inputs) / sizeof(std::string);
-  static_assert(input_count == sizeof(outputs) / sizeof(std::string),
+  constexpr size_t kInputCount = sizeof(inputs) / sizeof(std::string);
+  static_assert(kInputCount == sizeof(outputs) / sizeof(std::string),
                 "Inputs and outputs must have the same number of elements.");
 
-  for (size_t i = 0; i < input_count; i++) {
+  for (size_t i = 0; i < kInputCount; i++) {
     std::string_view padded_string(inputs[i]);
-    EXPECT_TRUE(helper->RemovePadding(&padded_string));
+    EXPECT_TRUE(brave::private_cdn::RemovePadding(&padded_string));
     EXPECT_EQ(padded_string, outputs[i]);
   }
 }

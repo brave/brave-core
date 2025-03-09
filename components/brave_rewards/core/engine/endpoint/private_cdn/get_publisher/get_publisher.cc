@@ -184,7 +184,7 @@ mojom::Result GetPublisher::ParseBody(const std::string& body,
   }
 
   std::string_view body_payload(body.data(), body.size());
-  if (!brave::PrivateCdnHelper::GetInstance()->RemovePadding(&body_payload)) {
+  if (!brave::private_cdn::RemovePadding(&body_payload)) {
     engine_->LogError(FROM_HERE)
         << "Publisher data response has invalid padding";
     return mojom::Result::FAILED;

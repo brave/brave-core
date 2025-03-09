@@ -19,29 +19,6 @@
 
 #undef SanitizedImageSource
 
-SanitizedImageSource::SanitizedImageSource(Profile* profile)
-    : SanitizedImageSource_Chromium(profile),
-      pcdn_domain_(brave_domains::GetServicesDomain("pcdn")) {}
-
-SanitizedImageSource::SanitizedImageSource(
-    Profile* profile,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    std::unique_ptr<DataDecoderDelegate> delegate)
-    : SanitizedImageSource_Chromium(profile,
-                                    url_loader_factory,
-                                    std::move(delegate)),
-      pcdn_domain_(brave_domains::GetServicesDomain("pcdn")) {}
-
-SanitizedImageSource::SanitizedImageSource(
-    Profile* profile,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    std::unique_ptr<DataDecoderDelegate> delegate,
-    std::string pcdn_domain)
-    : SanitizedImageSource_Chromium(profile,
-                                    url_loader_factory,
-                                    std::move(delegate)),
-      pcdn_domain_(std::move(pcdn_domain)) {}
-
 SanitizedImageSource::~SanitizedImageSource() = default;
 
 void SanitizedImageSource::OnImageLoaded(
@@ -49,15 +26,16 @@ void SanitizedImageSource::OnImageLoaded(
     RequestAttributes request_attributes,
     content::URLDataSource::GotDataCallback callback,
     std::unique_ptr<std::string> body) {
-  if (loader->NetError() != net::OK || !body) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  if (request_attributes.image_url.host_piece() == pcdn_domain_ &&
+  if (loader->NetError() == net::OK && body &&
+      request_attributes.image_url.host_piece() == pcdn_domain_ &&
       request_attributes.image_url.path_piece().ends_with(".pad")) {
+    // Lazily initialize the pcdn domain
+    if (pcdn_domain_.empty()) {
+      pcdn_domain_ = brave_domains::GetServicesDomain("pcdn");
+    }
+
     std::string_view body_payload(body->data(), body->size());
-    if (!brave::PrivateCdnHelper::GetInstance()->RemovePadding(&body_payload)) {
+    if (!brave::private_cdn::RemovePadding(&body_payload)) {
       std::move(callback).Run(nullptr);
       return;
     }
