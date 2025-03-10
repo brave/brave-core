@@ -93,9 +93,9 @@ export function ContributeModal (props: Props) {
   }
 
   return (
-    <div className={viewType} {...backgroundStyle}>
+    <div className={viewType} data-css-scope={backgroundStyle.scope}>
       <Modal onEscape={props.onClose}>
-        <div {...style}>
+        <div data-css-scope={style.scope}>
           {renderHeader()}
           {renderContent()}
         </div>

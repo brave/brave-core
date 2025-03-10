@@ -29,7 +29,7 @@ export function WdpOptInModal(props: Props) {
 
   return (
     <Modal className='wdp-opt-in-modal'>
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <div className='graphic' />
         <h3>{getString('wdpOptInTitle')}</h3>
         <p>{getString('wdpOptInText')}</p>

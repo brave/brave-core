@@ -27,7 +27,7 @@ export function RewardsPage() {
   return (
     <LocaleContext.Provider value={model}>
       <AppModelContext.Provider value={model}>
-        <div {...style}>
+        <div data-css-scope={style.scope}>
           <App />
         </div>
       </AppModelContext.Provider>

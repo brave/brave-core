@@ -255,7 +255,7 @@ export function ConnectAccount() {
   }
 
   return (
-    <div {...style}>
+    <div data-css-scope={style.scope}>
       <div className='brave-rewards-logo' />
       <nav>
         <Button kind='outline' size='small' fab onClick={onBack}>

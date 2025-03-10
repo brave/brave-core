@@ -61,7 +61,7 @@ export function OnboardingErrorModal(props: Props) {
   return (
     <Modal onEscape={props.onClose}>
       <Modal.Header onClose={props.onClose} />
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <div className='icon'>
           <Icon name='warning-circle-filled' />
         </div>

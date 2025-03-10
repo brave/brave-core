@@ -70,7 +70,7 @@ export function EarningCard() {
 
   function renderLimited() {
     return (
-      <div className='content-card' {...style}>
+      <div className='content-card' data-css-scope={style.scope}>
         <div className='counter'>
           <img alt='BAT' src={batCoinGray} />
           <div className='counter-text'>
@@ -175,7 +175,7 @@ export function EarningCard() {
 
   function renderConnected() {
     return (
-      <div className='content-card' {...style}>
+      <div className='content-card' data-css-scope={style.scope}>
         <PayoutStatusView />
         <div className='counter'>
           <img alt='BAT' src={batCoinColor} />

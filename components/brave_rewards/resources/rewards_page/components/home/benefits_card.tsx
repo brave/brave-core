@@ -17,7 +17,7 @@ export function BenefitsCard() {
   const { getString } = useLocaleContext()
 
   return (
-    <div className='content-card' {...style}>
+    <div className='content-card' data-css-scope={style.scope}>
       <h4>{getString('benefitsTitle')}</h4>
       <section>
         <NewTabLink className='store' href={urls.braveStoreURL}>

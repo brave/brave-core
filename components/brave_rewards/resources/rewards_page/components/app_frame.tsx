@@ -158,7 +158,7 @@ function PanelFrame(props: Props) {
   }
 
   return (
-    <div className='panel-frame' {...style}>
+    <div className='panel-frame' data-css-scope={style.scope}>
       <header className={isScrolled ? 'overlapped' : ''}>
         {
           embedder.platform === 'desktop' && embedder.isBubble &&
@@ -182,7 +182,7 @@ function PanelFrame(props: Props) {
 function PageFrame(props: Props) {
   const { getString } = useLocaleContext()
   return (
-    <div className='page-frame' {...style}>
+    <div className='page-frame' data-css-scope={style.scope}>
       <div className='sidebar'>
         <header>
           <div className='brave-rewards-logo' />

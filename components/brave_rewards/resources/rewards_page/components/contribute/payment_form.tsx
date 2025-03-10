@@ -152,7 +152,7 @@ export function PaymentForm(props: Props) {
     const providerName = getExternalWalletProviderName(provider)
     const { web3URL } = creator.banner
     return (
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         {renderBalance()}
         <div className='reconnect'>
           <Icon name='warning-triangle-filled' />
@@ -201,7 +201,7 @@ export function PaymentForm(props: Props) {
   }
 
   return (
-    <div {...style}>
+    <div data-css-scope={style.scope}>
       {renderBalance()}
       <div>
         <div className='form-header'>

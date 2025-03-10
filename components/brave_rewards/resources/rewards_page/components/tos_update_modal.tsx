@@ -34,7 +34,7 @@ export function TosUpdateModal(props: Props) {
   return (
     <Modal>
       <Modal.Header title={getString('tosUpdateRequiredTitle')} />
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <div>
           {
             formatMessage(getString('tosUpdateRequiredText'), {

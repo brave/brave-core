@@ -91,7 +91,7 @@ export function Modal(props: ModalProps) {
       ref={onDialogElement}
       className={props.className}
       onKeyDown={onKeyDown}
-      {...modalStyle}
+      data-css-scope={modalStyle.scope}
     >
       {props.children}
     </dialog>
@@ -106,7 +106,7 @@ interface ModalHeaderProps {
 
 function ModalHeader(props: ModalHeaderProps) {
   return (
-    <div {...headerStyle}>
+    <div data-css-scope={headerStyle.scope}>
       <div className='title'>{props.title || <>&nbsp;</>}</div>
       <div className='close'>
         {
@@ -134,7 +134,7 @@ interface ModalActionsProps {
 
 function ModalActions(props: ModalActionsProps) {
   return (
-    <div {...actionsStyle}>
+    <div data-css-scope={actionsStyle.scope}>
       {
         props.actions.map((action) => {
           let classNames: string[] = []

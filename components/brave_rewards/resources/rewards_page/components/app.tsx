@@ -215,7 +215,7 @@ export function App() {
   }
 
   return (
-    <div className={getClassNames()} ref={onMount} {...style}>
+    <div className={getClassNames()} ref={onMount} data-css-scope={style.scope}>
       <AppErrorBoundary>
         {renderContent()}
       </AppErrorBoundary>

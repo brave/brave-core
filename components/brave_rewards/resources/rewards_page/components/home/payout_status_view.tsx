@@ -63,7 +63,7 @@ export function PayoutStatusView() {
 
   if (payoutStatus === 'complete') {
     return (
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <Icon name='info-filled' />
         <div>
           {formatMessage(getString('payoutCompletedText'), [getPayoutMonth()])}
@@ -80,7 +80,7 @@ export function PayoutStatusView() {
 
   if (payoutStatus === 'processing') {
     return (
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <Icon name='info-filled' />
         <div>
           {
@@ -101,7 +101,7 @@ export function PayoutStatusView() {
   const estimatedPendingDays = getDaysUntilPayout(adsInfo.nextPaymentDate)
   if (estimatedPendingDays) {
     return (
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <Icon name='info-filled' />
         <div>
           {

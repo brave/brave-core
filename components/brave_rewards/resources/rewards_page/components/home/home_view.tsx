@@ -24,7 +24,7 @@ export function HomeView() {
 
   if (viewType === 'double' && externalWallet) {
     return (
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <ContributeCard />
         <EarningCard />
         <div className='columns'>
@@ -41,7 +41,7 @@ export function HomeView() {
   }
 
   return (
-    <div {...style}>
+    <div data-css-scope={style.scope}>
       <ContributeCard />
       <EarningCard />
       <PayoutAccountCard />

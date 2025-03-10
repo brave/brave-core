@@ -13,6 +13,6 @@ interface Props {
 
 export function TextSkeleton(props: Props) {
   return (
-    <span {...style}>{'\u2002'.repeat(props.length)}</span>
+    <span data-css-scope={style.scope}>{'\u2002'.repeat(props.length)}</span>
   )
 }

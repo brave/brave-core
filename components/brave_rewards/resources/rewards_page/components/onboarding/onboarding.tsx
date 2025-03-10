@@ -93,7 +93,7 @@ export function Onboarding(props: Props) {
   }
 
   return (
-    <div className='onboarding' {...style}>
+    <div className='onboarding' data-css-scope={style.scope}>
       <div className='brave-rewards-logo' />
       <div className='bat-image'>
         <img alt='BAT' src={batCoinImage} />
