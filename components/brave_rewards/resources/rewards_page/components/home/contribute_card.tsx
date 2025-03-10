@@ -79,6 +79,7 @@ export function ContributeCard() {
         <Button
           kind={externalWallet ? 'filled' : 'outline'}
           onClick={onContributeClick}
+          className='contribute-button'
         >
           {getString('contributeButtonLabel')}
         </Button>
