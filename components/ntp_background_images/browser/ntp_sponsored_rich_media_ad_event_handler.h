@@ -38,18 +38,15 @@ class NTPSponsoredRichMediaAdEventHandler
                 pending_receiver);
 
   // mojom::SponsoredRichMediaAdEventHandler:
-  void ReportRichMediaAdEvent(
+  void MaybeReportRichMediaAdEvent(
       const std::string& placement_id,
+      const std::string& campaign_id,
       const std::string& creative_instance_id,
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) override;
 
  private:
   void MaybeTriggerNewTabPageAdEvent(
       const std::string& placement_id,
-      const std::string& creative_instance_id,
-      brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type);
-
-  void MaybeRecordNewTabPageAdEvent(
       const std::string& creative_instance_id,
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type);
 

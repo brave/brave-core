@@ -167,13 +167,13 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
     const std::string& creative_instance_id,
     const std::string& campaign_id) {
   if (ntp_p3a_helper_) {
-    // Report P3A viewed impression ad event if Brave Rewards are disabled.
+    // TODO(tmancey): Only send P3A events if campaign.fallback_to_p3a is true.
     ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
+  } else {
+    MaybeTriggerNewTabPageAdEvent(
+        wallpaper_id, creative_instance_id,
+        brave_ads::mojom::NewTabPageAdEventType::kViewedImpression);
   }
-
-  MaybeTriggerNewTabPageAdEvent(
-      wallpaper_id, creative_instance_id,
-      brave_ads::mojom::NewTabPageAdEventType::kViewedImpression);
 
   branded_new_tab_count_state_->AddDelta(1);
   UpdateP3AValues();
@@ -539,15 +539,15 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
     const std::string& /*destination_url*/,
     const std::string& wallpaper_id) {
   if (ntp_p3a_helper_) {
-    // Report P3A clicked ad event to if Brave Rewards are disabled.
+    // TODO(tmancey): Only send P3A events if campaign.fallback_to_p3a is true.
     ntp_p3a_helper_->RecordNewTabPageAdEvent(
         brave_ads::mojom::NewTabPageAdEventType::kClicked,
         creative_instance_id);
+  } else {
+    MaybeTriggerNewTabPageAdEvent(
+        wallpaper_id, creative_instance_id,
+        brave_ads::mojom::NewTabPageAdEventType::kClicked);
   }
-
-  MaybeTriggerNewTabPageAdEvent(
-      wallpaper_id, creative_instance_id,
-      brave_ads::mojom::NewTabPageAdEventType::kClicked);
 }
 
 void ViewCounterService::MaybeTriggerNewTabPageAdEvent(

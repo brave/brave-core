@@ -32,8 +32,9 @@ export default function App(props: React.PropsWithChildren) {
 
       const sponsoredRichMediaBackgroundInfo: SponsoredRichMediaBackgroundInfo = {
         url: response.url.url,
-        creativeInstanceId: response.creativeInstanceId,
         placementId: response.placementId,
+        campaignId: response.campaignId,
+        creativeInstanceId: response.creativeInstanceId,
         targetUrl: response.targetUrl.url
       }
       setSponsoredRichMediaBackgroundInfo(sponsoredRichMediaBackgroundInfo)
@@ -69,9 +70,10 @@ export default function App(props: React.PropsWithChildren) {
           richMediaHasLoaded={richMediaHasLoaded}
           onLoaded={() => setRichMediaHasLoaded(true)}
           onEventReported={(adEventType) => {
-            sponsoredRichMediaAdEventHandler.reportRichMediaAdEvent(
-              sponsoredRichMediaBackgroundInfo.creativeInstanceId,
+            sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
               sponsoredRichMediaBackgroundInfo.placementId,
+              sponsoredRichMediaAdEventHandler.campaignId,
+              sponsoredRichMediaBackgroundInfo.creativeInstanceId,
               adEventType
             );
 

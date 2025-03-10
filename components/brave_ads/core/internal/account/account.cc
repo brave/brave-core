@@ -98,17 +98,14 @@ void Account::DepositWithUserData(
     return;
   }
 
-  const std::unique_ptr<DepositInterface> deposit =
-      DepositsFactory::Build(mojom_confirmation_type);
-  if (!deposit) {
-    return;
+  if (const std::unique_ptr<DepositInterface> deposit =
+          DepositsFactory::Build(mojom_confirmation_type)) {
+    deposit->GetValue(
+        creative_instance_id,
+        base::BindOnce(&Account::DepositCallback, weak_factory_.GetWeakPtr(),
+                       creative_instance_id, segment, mojom_ad_type,
+                       mojom_confirmation_type, std::move(user_data)));
   }
-
-  deposit->GetValue(
-      creative_instance_id,
-      base::BindOnce(&Account::DepositCallback, weak_factory_.GetWeakPtr(),
-                     creative_instance_id, segment, mojom_ad_type,
-                     mojom_confirmation_type, std::move(user_data)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

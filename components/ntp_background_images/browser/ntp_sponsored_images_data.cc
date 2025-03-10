@@ -219,6 +219,12 @@ std::optional<Campaign> NTPSponsoredImagesData::ParseCampaign(
   }
   campaign.campaign_id = *campaign_id;
 
+  if (const std::string* const metrics = dict.FindString(kCampaignMetricsKey)) {
+    // Metrics (optional, if not provided, the default is to send
+    // confirmations).
+    campaign.fallback_to_p3a = *metrics == "p3a";
+  }
+
   const base::Value::List* const creative_sets =
       dict.FindList(kCreativeSetsKey);
   if (!creative_sets) {

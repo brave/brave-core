@@ -43,6 +43,7 @@ declare namespace NewTab {
     type: string
     wallpaperImageUrl: string
     isSponsored: boolean
+    campaignId: string
     creativeInstanceId: string
     wallpaperId: string
     logo: BrandedWallpaperLogo
