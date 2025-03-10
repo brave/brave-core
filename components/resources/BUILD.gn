@@ -151,9 +151,15 @@ repack("resources") {
 
   if (!is_android && !is_ios) {
     deps += [
+      "//brave/browser/resources/settings/email_aliases_page:generated_resources",
       "//brave/browser/resources/settings/shortcuts_page:generated_resources",
+      "//brave/components/email_aliases/browser/resources:generated_resources",
     ]
-    sources += [ "$root_gen_dir/brave/browser/resources/settings/shortcuts_page/commands_generated.pak" ]
+    sources += [
+      "$root_gen_dir/brave/browser/resources/settings/email_aliases_page/email_aliases_generated.pak",
+      "$root_gen_dir/brave/browser/resources/settings/shortcuts_page/commands_generated.pak",
+      "$root_gen_dir/brave/components/email_aliases/browser/resources/email_aliases_bubble_generated.pak",
+    ]
   }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"
