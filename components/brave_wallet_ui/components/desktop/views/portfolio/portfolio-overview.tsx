@@ -160,7 +160,7 @@ export const PortfolioOverview = () => {
   )
   const [hidePortfolioGraph] = useSyncedLocalStorage(
     LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
-    false
+    true
   )
 
   // queries
@@ -340,7 +340,8 @@ export const PortfolioOverview = () => {
     !isCollectionView &&
       visibleTokensForFilteredChains.length &&
       tokenBalancesRegistry &&
-      defaultFiat
+      defaultFiat &&
+      !hidePortfolioGraph
       ? {
           tokens: visibleTokensForFilteredChains,
           timeframe: selectedTimeframe,
@@ -546,38 +547,42 @@ export const PortfolioOverview = () => {
                     />
                   </Column>
                 )}
-                <Row
-                  alignItems='center'
-                  justifyContent='center'
-                  width='unset'
-                >
-                  {fiatValueChange !== '' ? (
-                    <>
-                      <FiatChange isDown={isPortfolioDown}>
-                        {hidePortfolioBalances
-                          ? '*****'
-                          : `${isPortfolioDown ? '' : '+'}${fiatValueChange}`}
-                      </FiatChange>
-                      <PercentBubble isDown={isPortfolioDown}>
-                        {hidePortfolioBalances
-                          ? '*****'
-                          : `${isPortfolioDown ? '' : '+'}${percentageChange}%`}
-                      </PercentBubble>
-                    </>
-                  ) : (
-                    <>
-                      <LoadingSkeleton
-                        width={55}
-                        height={24}
-                      />
-                      <HorizontalSpace space='8px' />
-                      <LoadingSkeleton
-                        width={55}
-                        height={24}
-                      />
-                    </>
-                  )}
-                </Row>
+                {!hidePortfolioGraph && (
+                  <Row
+                    alignItems='center'
+                    justifyContent='center'
+                    width='unset'
+                  >
+                    {fiatValueChange !== '' ? (
+                      <>
+                        <FiatChange isDown={isPortfolioDown}>
+                          {hidePortfolioBalances
+                            ? '*****'
+                            : `${isPortfolioDown ? '' : '+'}${fiatValueChange}`}
+                        </FiatChange>
+                        <PercentBubble isDown={isPortfolioDown}>
+                          {hidePortfolioBalances
+                            ? '*****'
+                            : `${
+                                isPortfolioDown ? '' : '+'
+                              }${percentageChange}%`}
+                        </PercentBubble>
+                      </>
+                    ) : (
+                      <>
+                        <LoadingSkeleton
+                          width={55}
+                          height={24}
+                        />
+                        <HorizontalSpace space='8px' />
+                        <LoadingSkeleton
+                          width={55}
+                          height={24}
+                        />
+                      </>
+                    )}
+                  </Row>
+                )}
               </BalanceAndChangeWrapper>
               <BuySendSwapDepositNav />
             </BalanceAndButtonsWrapper>
