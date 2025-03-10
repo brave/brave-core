@@ -23,9 +23,9 @@ bool RemovePaymentToken(const PaymentTokenInfo& payment_token);
 void RemovePaymentTokens(const PaymentTokenList& payment_tokens);
 void RemoveAllPaymentTokens();
 
-bool PaymentTokenExists(const PaymentTokenInfo& payment_token);
+[[nodiscard]] bool PaymentTokenExists(const PaymentTokenInfo& payment_token);
 
-bool PaymentTokensIsEmpty();
+[[nodiscard]] bool PaymentTokensIsEmpty();
 
 size_t PaymentTokenCount();
 

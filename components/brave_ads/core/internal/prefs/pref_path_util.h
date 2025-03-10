@@ -10,15 +10,20 @@
 
 namespace brave_ads {
 
-bool DoesMatchUserHasJoinedBraveRewardsPrefPath(const std::string& path);
+[[nodiscard]] bool DoesMatchUserHasJoinedBraveRewardsPrefPath(
+    const std::string& path);
 
-bool DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(const std::string& path);
+[[nodiscard]] bool DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(
+    const std::string& path);
 
-bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(const std::string& path);
+[[nodiscard]] bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(
+    const std::string& path);
 
-bool DoesMatchUserHasOptedInToNotificationAdsPrefPath(const std::string& path);
+[[nodiscard]] bool DoesMatchUserHasOptedInToNotificationAdsPrefPath(
+    const std::string& path);
 
-bool DoesMatchUserHasOptedInToSearchResultAdsPrefPath(const std::string& path);
+[[nodiscard]] bool DoesMatchUserHasOptedInToSearchResultAdsPrefPath(
+    const std::string& path);
 
 }  // namespace brave_ads
 

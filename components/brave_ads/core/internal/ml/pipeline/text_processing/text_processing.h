@@ -39,8 +39,10 @@ class TextProcessing final {
 
   ~TextProcessing();
 
-  bool IsInitialized() const { return is_initialized_; }
-  bool IsNeuralPipline() const { return neural_model_.has_value(); }
+  [[nodiscard]] bool IsInitialized() const { return is_initialized_; }
+  [[nodiscard]] bool IsNeuralPipline() const {
+    return neural_model_.has_value();
+  }
 
   base::expected<bool, std::string> LoadPipeline(base::File file);
   void SetPipeline(PipelineInfo pipeline);

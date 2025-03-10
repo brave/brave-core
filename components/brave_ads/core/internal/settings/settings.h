@@ -8,16 +8,16 @@
 
 namespace brave_ads {
 
-bool UserHasJoinedBraveRewards();
+[[nodiscard]] bool UserHasJoinedBraveRewards();
 
-bool UserHasOptedInToBraveNewsAds();
+[[nodiscard]] bool UserHasOptedInToBraveNewsAds();
 
-bool UserHasOptedInToNewTabPageAds();
+[[nodiscard]] bool UserHasOptedInToNewTabPageAds();
 
-bool UserHasOptedInToNotificationAds();
+[[nodiscard]] bool UserHasOptedInToNotificationAds();
 int GetMaximumNotificationAdsPerHour();
 
-bool UserHasOptedInToSearchResultAds();
+[[nodiscard]] bool UserHasOptedInToSearchResultAds();
 
 }  // namespace brave_ads
 

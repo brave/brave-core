@@ -35,9 +35,9 @@ SegmentList GetSegments(const T& creative_ads) {
 std::string GetParentSegment(const std::string& segment);
 SegmentList GetParentSegments(const SegmentList& segments);
 
-bool HasChildSegment(const std::string& segment);
+[[nodiscard]] bool HasChildSegment(const std::string& segment);
 
-bool ShouldFilterSegment(const std::string& segment);
+[[nodiscard]] bool ShouldFilterSegment(const std::string& segment);
 
 }  // namespace brave_ads
 

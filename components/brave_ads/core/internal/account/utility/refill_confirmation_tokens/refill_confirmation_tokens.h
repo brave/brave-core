@@ -45,7 +45,7 @@ class RefillConfirmationTokens final {
 
   void GenerateTokens();
 
-  bool ShouldRequestSignedTokens() const;
+  [[nodiscard]] bool ShouldRequestSignedTokens() const;
   void RequestSignedTokens();
   void RequestSignedTokensCallback(
       const mojom::UrlResponseInfo& mojom_url_response);

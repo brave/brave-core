@@ -39,7 +39,7 @@ class Account final : public AdsClientNotifierObserver,
   void AddObserver(AccountObserver* observer);
   void RemoveObserver(AccountObserver* observer);
 
-  bool IsUserRewardsSupported() const { return !!user_rewards_; }
+  [[nodiscard]] bool IsUserRewardsSupported() const { return !!user_rewards_; }
 
   void SetWallet(const std::string& payment_id,
                  const std::string& recovery_seed_base64);

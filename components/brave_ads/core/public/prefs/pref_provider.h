@@ -33,11 +33,13 @@ class PrefProvider : public PrefProviderInterface {
   // PrefProviderInterface:
   std::optional<base::Value> GetProfilePref(
       const std::string& pref_path) const override;
-  bool HasProfilePrefPath(const std::string& pref_path) const override;
+  [[nodiscard]] bool HasProfilePrefPath(
+      const std::string& pref_path) const override;
 
   std::optional<base::Value> GetLocalStatePref(
       const std::string& pref_path) const override;
-  bool HasLocalStatePrefPath(const std::string& pref_path) const override;
+  [[nodiscard]] bool HasLocalStatePrefPath(
+      const std::string& pref_path) const override;
 
   std::optional<base::Value> GetVirtualPref(
       const std::string& pref_path) const override;

@@ -13,7 +13,7 @@ class TimeDelta;
 
 namespace brave_ads {
 
-bool ShouldServeAdsAtRegularIntervals();
+[[nodiscard]] bool ShouldServeAdsAtRegularIntervals();
 
 void SetServeAdAt(base::Time serve_ad_at);
 base::Time ServeAdAt();

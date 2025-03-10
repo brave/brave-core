@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool HasNetworkConnectionPermission();
+[[nodiscard]] bool HasNetworkConnectionPermission();
 
 }  // namespace brave_ads
 

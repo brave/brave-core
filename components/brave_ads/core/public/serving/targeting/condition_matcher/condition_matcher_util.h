@@ -195,8 +195,9 @@ class PrefProviderInterface;
 // malformed condition matchers will be logged to the console, they are not
 // logged to the Rewards log.
 
-bool MatchConditions(const PrefProviderInterface* pref_provider,
-                     const ConditionMatcherMap& condition_matchers);
+[[nodiscard]] bool MatchConditions(
+    const PrefProviderInterface* pref_provider,
+    const ConditionMatcherMap& condition_matchers);
 
 }  // namespace brave_ads
 
