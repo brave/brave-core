@@ -1,27 +1,38 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import BraveCore
 import CertificateUtilities
-import Data
 import Foundation
-import Preferences
-import Shared
+import OSLog
+import Storage
 import WebKit
-import os.log
 
-extension BrowserViewController: WKNavigationDelegate {
-  public func webView(
+class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
+  weak var tab: Tab?
+  var certStore: CertStore?
+
+  private var downloadHandlers: Set<TabWKDownloadHandler> = []
+
+  init(tab: Tab) {
+    self.tab = tab
+  }
+
+  private var shouldDownloadNavigationResponse: Bool = false
+
+  func webView(
     _ webView: WKWebView,
     didStartProvisionalNavigation navigation: WKNavigation
   ) {
-    guard let tab = tabManager[webView] else { return }
-    self.tabDidStartWebViewNavigation(tab)
+    guard let tab else { return }
+    tab.navigationDelegate?.tabDidStartWebViewNavigation(tab)
   }
 
   private func defaultAllowPolicy(for tab: Tab, request: URLRequest) -> WKNavigationActionPolicy {
-    if self.tab(tab, shouldBlockUniversalLinksForRequest: request) {
+    if let delegate = tab.webDelegate,
+      delegate.tab(tab, shouldBlockUniversalLinksForRequest: request)
+    {
       // Stop Brave from opening universal links by using the private enum value
       // `_WKNavigationActionPolicyAllowWithoutTryingAppLink` which is defined here:
       // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/Cocoa/WKNavigationDelegatePrivate.h#L62
@@ -33,12 +44,12 @@ extension BrowserViewController: WKNavigationDelegate {
   }
 
   @MainActor
-  public func webView(
+  func webView(
     _ webView: WKWebView,
     decidePolicyFor navigationAction: WKNavigationAction,
     preferences: WKWebpagePreferences
   ) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
-    guard let tab = tabManager[webView],
+    guard let tab,
       let requestURL = navigationAction.request.url
     else {
       return (.cancel, preferences)
@@ -74,16 +85,17 @@ extension BrowserViewController: WKNavigationDelegate {
       navigationAction.responds(to: Selector(("_syntheticClickType")))
       && navigationAction.value(forKey: "syntheticClickType") as? Int == 0
 
-    let policy = await self.tab(
-      tab,
-      shouldAllowRequest: navigationAction.request,
-      requestInfo: .init(
-        navigationType: navigationType,
-        isMainFrame: isMainFrame,
-        isNewWindow: navigationAction.targetFrame == nil,
-        isUserInitiated: !isSyntheticClick
-      )
-    )
+    let policy =
+      await tab.policyDecider?.tab(
+        tab,
+        shouldAllowRequest: navigationAction.request,
+        requestInfo: .init(
+          navigationType: navigationType,
+          isMainFrame: isMainFrame,
+          isNewWindow: navigationAction.targetFrame == nil,
+          isUserInitiated: !isSyntheticClick
+        )
+      ) ?? .allow
 
     if policy == .cancel {
       return (.cancel, preferences)
@@ -98,7 +110,9 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       // Handle blocking JS
-      if self.tab(tab, shouldBlockJavaScriptForRequest: navigationAction.request) {
+      if let delegate = tab.webDelegate,
+        delegate.tab(tab, shouldBlockJavaScriptForRequest: navigationAction.request)
+      {
         // Due to a bug in iOS WKWebpagePreferences.allowsContentJavaScript does NOT work!
         // https://github.com/brave/brave-ios/issues/8585
         //
@@ -120,11 +134,11 @@ extension BrowserViewController: WKNavigationDelegate {
   }
 
   @MainActor
-  public func webView(
+  func webView(
     _ webView: WKWebView,
     decidePolicyFor navigationResponse: WKNavigationResponse
   ) async -> WKNavigationResponsePolicy {
-    guard let tab = tabManager[webView] else { return .cancel }
+    guard let tab else { return .cancel }
     let response = navigationResponse.response
 
     let shouldRenderResponse: Bool = {
@@ -144,18 +158,19 @@ extension BrowserViewController: WKNavigationDelegate {
     }()
 
     if shouldRenderResponse {
-      let decision: WebPolicyDecision = await self.tab(
-        tab,
-        shouldAllowResponse: navigationResponse.response,
-        responseInfo: .init(isForMainFrame: navigationResponse.isForMainFrame)
-      )
+      let decision: WebPolicyDecision =
+        await tab.policyDecider?.tab(
+          tab,
+          shouldAllowResponse: navigationResponse.response,
+          responseInfo: .init(isForMainFrame: navigationResponse.isForMainFrame)
+        ) ?? .allow
       return decision == .cancel ? .cancel : .allow
     }
 
     return .download
   }
 
-  public func webView(
+  func webView(
     _ webView: WKWebView,
     navigationAction: WKNavigationAction,
     didBecome download: WKDownload
@@ -165,16 +180,33 @@ extension BrowserViewController: WKNavigationDelegate {
     )
   }
 
-  public func webView(
+  func webView(
     _ webView: WKWebView,
     navigationResponse: WKNavigationResponse,
     didBecome download: WKDownload
   ) {
-    download.delegate = self
+    var handler: TabWKDownloadHandler?
+    handler = TabWKDownloadHandler(
+      didCreateDownload: { [weak tab] download in
+        guard let tab else { return }
+        tab.downloadDelegate?.tab(tab, didCreateDownload: download)
+      },
+      didFinishDownload: { [weak self, weak handler] download, error in
+        guard let self else { return }
+        if let handler {
+          downloadHandlers.remove(handler)
+        }
+        if let tab = self.tab, let downloadDelegate = tab.downloadDelegate {
+          downloadDelegate.tab(tab, didFinishDownload: download, error: error)
+        }
+      }
+    )
+    download.delegate = handler
+    downloadHandlers.insert(handler!)
   }
 
   @MainActor
-  public func webView(
+  func webView(
     _ webView: WKWebView,
     respondTo challenge: URLAuthenticationChallenge
   ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
@@ -191,7 +223,7 @@ extension BrowserViewController: WKNavigationDelegate {
         return (SecTrustCopyCertificateChain(trust) as? [SecCertificate])?.first
       }.value
 
-      if let cert = cert, profile.certStore.containsCertificate(cert, forOrigin: origin) {
+      if let cert = cert, let certStore, certStore.containsCertificate(cert, forOrigin: origin) {
         return (.useCredential, URLCredential(trust: trust))
       }
     }
@@ -243,7 +275,7 @@ extension BrowserViewController: WKNavigationDelegate {
         )
 
         // Handle the error later in `didFailProvisionalNavigation`
-        tabManager[webView]?.sslPinningError = error
+        tab?.sslPinningError = error
 
         return (.cancelAuthenticationChallenge, nil)
       }
@@ -258,12 +290,12 @@ extension BrowserViewController: WKNavigationDelegate {
       protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic
         || protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest
         || protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
-      let tab = tabManager[webView]
+      let tab
     else {
       return (.performDefaultHandling, nil)
     }
 
-    let resolvedCredential = await self.tab(
+    let resolvedCredential = await tab.webDelegate?.tab(
       tab,
       didRequestHTTPAuthFor: protectionSpace,
       proposedCredential: credential,
@@ -277,35 +309,35 @@ extension BrowserViewController: WKNavigationDelegate {
     }
   }
 
-  public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-    guard let tab = tabManager[webView] else { return }
+  func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+    guard let tab else { return }
 
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.url
 
-    self.tabDidCommitWebViewNavigation(tab)
+    tab.navigationDelegate?.tabDidCommitWebViewNavigation(tab)
   }
 
-  public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    guard let tab = tabManager[webView] else { return }
-    self.tabDidFinishWebViewNavigation(tab)
+  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    guard let tab else { return }
+    tab.navigationDelegate?.tabDidFinishWebViewNavigation(tab)
   }
 
-  public func webView(
+  func webView(
     _ webView: WKWebView,
     didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!
   ) {
-    guard let tab = tabManager[webView], let url = webView.url else { return }
+    guard let tab, let url = webView.url else { return }
     tab.redirectChain.append(url)
   }
 
   /// Invoked when an error occurs while starting to load data for the main frame.
-  public func webView(
+  func webView(
     _ webView: WKWebView,
     didFailProvisionalNavigation navigation: WKNavigation!,
     withError error: Error
   ) {
-    guard let tab = tabManager[webView] else { return }
+    guard let tab else { return }
 
     var error = error as NSError
     if error.domain == "WebKitErrorDomain" {
@@ -323,7 +355,9 @@ extension BrowserViewController: WKNavigationDelegate {
       }
     }
 
-    if self.tab(tab, didFailWebViewNavigationWithError: error) {
+    if let navigationDelegate = tab.navigationDelegate,
+      navigationDelegate.tab(tab, didFailWebViewNavigationWithError: error)
+    {
       // Handled in shared code
       return
     }
@@ -333,175 +367,8 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-      ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
+      ErrorPageHelper(certStore: certStore).loadPage(error, forUrl: url, inWebView: webView)
     }
-  }
-}
-
-// MARK: WKUIDelegate
-
-extension BrowserViewController: WKUIDelegate {
-  public func webView(
-    _ webView: WKWebView,
-    createWebViewWith configuration: WKWebViewConfiguration,
-    for navigationAction: WKNavigationAction,
-    windowFeatures: WKWindowFeatures
-  ) -> WKWebView? {
-    guard let tab = tabManager[webView],
-      let childTab = self.tab(
-        tab,
-        createNewTabWithRequest: navigationAction.request,
-        configuration: configuration
-      )
-    else { return nil }
-    return childTab.webView
-  }
-
-  public func webViewDidClose(_ webView: WKWebView) {
-    guard let tab = tabManager[webView] else { return }
-    self.tabWebViewDidClose(tab)
-  }
-
-  public func webView(
-    _ webView: WKWebView,
-    requestMediaCapturePermissionFor origin: WKSecurityOrigin,
-    initiatedByFrame frame: WKFrameInfo,
-    type: WKMediaCaptureType,
-    decisionHandler: @escaping (WKPermissionDecision) -> Void
-  ) {
-    guard let tab = tabManager[webView], let captureType = WebMediaCaptureType(type) else {
-      decisionHandler(.deny)
-      return
-    }
-
-    if frame.securityOrigin.protocol.isEmpty || frame.securityOrigin.host.isEmpty {
-      decisionHandler(.deny)
-      return
-    }
-
-    let requestMediaPermissions: () -> Void = {
-      Task {
-        let permission = await self.tab(tab, requestMediaCapturePermissionsFor: captureType)
-        decisionHandler(.init(permission))
-      }
-    }
-
-    if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen {
-      webView.closeAllMediaPresentations {
-        requestMediaPermissions()
-      }
-    } else {
-      requestMediaPermissions()
-    }
-  }
-
-  public func webView(
-    _ webView: WKWebView,
-    runJavaScriptAlertPanelWithMessage message: String,
-    initiatedByFrame frame: WKFrameInfo,
-    completionHandler: @escaping () -> Void
-  ) {
-    guard let tab = tabManager[webView], let url = frame.origin?.url else {
-      completionHandler()
-      return
-    }
-    Task {
-      await self.tab(tab, runJavaScriptAlertPanelWithMessage: message, pageURL: url)
-      completionHandler()
-    }
-  }
-
-  public func webView(
-    _ webView: WKWebView,
-    runJavaScriptConfirmPanelWithMessage message: String,
-    initiatedByFrame frame: WKFrameInfo,
-    completionHandler: @escaping (Bool) -> Void
-  ) {
-    guard let tab = tabManager[webView], let url = frame.origin?.url else {
-      completionHandler(false)
-      return
-    }
-    Task {
-      let result = await self.tab(tab, runJavaScriptConfirmPanelWithMessage: message, pageURL: url)
-      completionHandler(result)
-    }
-  }
-
-  public func webView(
-    _ webView: WKWebView,
-    runJavaScriptTextInputPanelWithPrompt prompt: String,
-    defaultText: String?,
-    initiatedByFrame frame: WKFrameInfo,
-    completionHandler: @escaping (String?) -> Void
-  ) {
-    guard let tab = tabManager[webView], let url = frame.origin?.url else {
-      completionHandler(nil)
-      return
-    }
-    Task {
-      let result = await self.tab(
-        tab,
-        runJavaScriptConfirmPanelWithPrompt: prompt,
-        defaultText: defaultText,
-        pageURL: url
-      )
-      completionHandler(result)
-    }
-  }
-
-  @MainActor public func webView(
-    _ webView: WKWebView,
-    contextMenuConfigurationFor elementInfo: WKContextMenuElementInfo
-  ) async -> UIContextMenuConfiguration? {
-    guard let tab = tabManager[webView] else { return nil }
-    return await self.tab(
-      tab,
-      contextMenuConfigurationForLinkURL: elementInfo.linkURL
-    )
-  }
-
-  public func webView(
-    _ webView: WKWebView,
-    contextMenuForElement elementInfo: WKContextMenuElementInfo,
-    willCommitWithAnimator animator: UIContextMenuInteractionCommitAnimating
-  ) {
-    guard let url = elementInfo.linkURL else { return }
-    webView.load(URLRequest(url: url))
-  }
-}
-
-extension WebMediaCaptureType {
-  init?(_ captureType: WKMediaCaptureType) {
-    switch captureType {
-    case .camera:
-      self = .camera
-    case .microphone:
-      self = .microphone
-    case .cameraAndMicrophone:
-      self = .cameraAndMicrophone
-    @unknown default:
-      return nil
-    }
-  }
-}
-
-extension WKPermissionDecision {
-  init(_ permission: WebPermissionDecision) {
-    switch permission {
-    case .prompt:
-      self = .prompt
-    case .grant:
-      self = .grant
-    case .deny:
-      self = .deny
-    }
-  }
-}
-
-extension WKFrameInfo {
-  fileprivate var origin: URLOrigin? {
-    let origin = URLOrigin(wkSecurityOrigin: securityOrigin)
-    return !origin.isOpaque ? origin : nil
   }
 }
 
