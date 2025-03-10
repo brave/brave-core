@@ -11,8 +11,8 @@ protocol TabObserver: AnyObject {
   func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar)
   /// Triggered when "Search with Brave" is selected on selected web text
   func tab(_ tab: Tab, didSelectSearchWithBraveFor selectedText: String)
-  func tab(_ tab: Tab, didCreateWebView webView: WKWebView)
-  func tab(_ tab: Tab, willDeleteWebView webView: WKWebView)
+  func tab(_ tab: Tab, didCreateWebView webView: UIView)
+  func tab(_ tab: Tab, willDeleteWebView webView: UIView)
 
   func tabDidUpdateURL(_ tab: Tab)
   func tabDidChangeTitle(_ tab: Tab)
@@ -22,14 +22,21 @@ protocol TabObserver: AnyObject {
   func tabDidChangeVisibleSecurityState(_ tab: Tab)
   func tabDidChangeBackForwardState(_ tab: Tab)
   func tabDidChangeSampledPageTopColor(_ tab: Tab)
+
+  /// Called when the Tab is about to deinit, use this to remove any observers/policy deciders added
+  /// to the Tab.
+  ///
+  /// - warning: The supplied `tab` will nil immediately after execution, therefore you cannot
+  ///            capture this tab in escaping closures
+  func tabWillBeDestroyed(_ tab: Tab)
 }
 
 extension TabObserver {
   func tab(_ tab: Tab, didAddSnackbar bar: SnackBar) {}
   func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar) {}
   func tab(_ tab: Tab, didSelectSearchWithBraveFor selectedText: String) {}
-  func tab(_ tab: Tab, didCreateWebView webView: WKWebView) {}
-  func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {}
+  func tab(_ tab: Tab, didCreateWebView webView: UIView) {}
+  func tab(_ tab: Tab, willDeleteWebView webView: UIView) {}
 
   func tabDidUpdateURL(_ tab: Tab) {}
   func tabDidChangeTitle(_ tab: Tab) {}
@@ -39,6 +46,7 @@ extension TabObserver {
   func tabDidChangeVisibleSecurityState(_ tab: Tab) {}
   func tabDidChangeBackForwardState(_ tab: Tab) {}
   func tabDidChangeSampledPageTopColor(_ tab: Tab) {}
+  func tabWillBeDestroyed(_ tab: Tab) {}
 }
 
 class AnyTabObserver: TabObserver, Hashable {
@@ -46,8 +54,8 @@ class AnyTabObserver: TabObserver, Hashable {
   private let _tabDidAddSnackbar: (Tab, SnackBar) -> Void
   private let _tabDidRemoveSnackbar: (Tab, SnackBar) -> Void
   private let _tabDidSelectSearchWithBraveFor: (Tab, String) -> Void
-  private let _tabDidCreateWebView: (Tab, WKWebView) -> Void
-  private let _tabWillDeleteWebView: (Tab, WKWebView) -> Void
+  private let _tabDidCreateWebView: (Tab, UIView) -> Void
+  private let _tabWillDeleteWebView: (Tab, UIView) -> Void
 
   private let _tabDidUpdateURL: (Tab) -> Void
   private let _tabDidChangeTitle: (Tab) -> Void
@@ -57,6 +65,7 @@ class AnyTabObserver: TabObserver, Hashable {
   private let _tabDidChangeVisibleSecurityState: (Tab) -> Void
   private let _tabDidChangeBackForwardState: (Tab) -> Void
   private let _tabDidChangeSampledPageTopColor: (Tab) -> Void
+  private let _tabWillBeDestroyed: (Tab) -> Void
 
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
@@ -88,6 +97,7 @@ class AnyTabObserver: TabObserver, Hashable {
     _tabDidChangeSampledPageTopColor = { [weak observer] in
       observer?.tabDidChangeSampledPageTopColor($0)
     }
+    _tabWillBeDestroyed = { [weak observer] in observer?.tabWillBeDestroyed($0) }
   }
 
   func tab(_ tab: Tab, didAddSnackbar bar: SnackBar) {
@@ -99,10 +109,10 @@ class AnyTabObserver: TabObserver, Hashable {
   func tab(_ tab: Tab, didSelectSearchWithBraveFor selectedText: String) {
     _tabDidSelectSearchWithBraveFor(tab, selectedText)
   }
-  func tab(_ tab: Tab, didCreateWebView webView: WKWebView) {
+  func tab(_ tab: Tab, didCreateWebView webView: UIView) {
     _tabDidCreateWebView(tab, webView)
   }
-  func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
+  func tab(_ tab: Tab, willDeleteWebView webView: UIView) {
     _tabWillDeleteWebView(tab, webView)
   }
   func tabDidUpdateURL(_ tab: Tab) {
@@ -128,5 +138,8 @@ class AnyTabObserver: TabObserver, Hashable {
   }
   func tabDidChangeSampledPageTopColor(_ tab: Tab) {
     _tabDidChangeSampledPageTopColor(tab)
+  }
+  func tabWillBeDestroyed(_ tab: Tab) {
+    _tabWillBeDestroyed(tab)
   }
 }

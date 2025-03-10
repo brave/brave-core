@@ -108,4 +108,8 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
       asFunction: true
     )
   }
+
+  func tabWillBeDestroyed(_ tab: Tab) {
+    tab.removeObserver(self)
+  }
 }

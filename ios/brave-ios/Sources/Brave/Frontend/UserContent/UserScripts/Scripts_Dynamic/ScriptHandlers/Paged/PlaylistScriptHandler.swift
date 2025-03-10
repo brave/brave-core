@@ -223,6 +223,10 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
 
     delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
   }
+
+  func tabWillBeDestroyed(_ tab: Tab) {
+    tab.removeObserver(self)
+  }
 }
 
 extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
