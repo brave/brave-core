@@ -19,9 +19,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #endif
     {kSideBySide, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
-#if !defined(ANDROID)
-    {kToolbarPinning, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
 }});
 
 const base::FeatureParam<bool> kShowDefaultBrowserAppMenuItem{
