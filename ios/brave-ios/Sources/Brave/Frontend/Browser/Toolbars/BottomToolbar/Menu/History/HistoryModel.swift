@@ -59,6 +59,7 @@ class HistoryModel: NSObject, ObservableObject {
   private var listener: HistoryServiceListener?
   private let maxFetchCount: UInt = 200
   private var currentSearchQuery: String?
+  private var historyCancellable: HistoryCancellable?
 
   @Published
   var isHistoryServiceLoaded = false
@@ -130,8 +131,19 @@ class HistoryModel: NSObject, ObservableObject {
         duplicateHandling: (query ?? "").isEmpty ? .removePerDay : .removeAll
       )
 
-      await api?.search(withQuery: query, options: options).forEach {
-        [weak self] historyItem in
+      let historyItems = await withCheckedContinuation { continuation in
+        self.historyCancellable = api?.search(
+          withQuery: query,
+          options: options,
+          completion: {
+            continuation.resume(returning: $0)
+          }
+        )
+      }
+
+      try Task.checkCancellation()
+
+      historyItems.forEach { [weak self] historyItem in
         guard let self = self else {
           return
         }

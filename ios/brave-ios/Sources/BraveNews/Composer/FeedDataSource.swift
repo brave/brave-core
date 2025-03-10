@@ -947,7 +947,12 @@ public class FeedDataSource: ObservableObject {
         maxCount: 200,
         duplicateHandling: .removePerDay
       )
-      historyAPI.search(withQuery: "", options: options) { historyNodeList in
+
+      var historyCancellable: HistoryCancellable?
+      _ = historyCancellable
+      historyCancellable = historyAPI.search(withQuery: "", options: options) {
+        historyNodeList in
+        historyCancellable = nil
         completion(historyNodeList)
       }
     } else {
