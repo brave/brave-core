@@ -21,43 +21,47 @@
 ⠀⠀⠀⠀⠀⠀⠀⠙⠻⣿⣿⣿⣿⠟⠋⠀⠀⠀⠀⠀⠀⠀💥
 ```
 
-This tool is used to upgrade Brave to a desired version of Chromium. The goal
-is to produce a set of patches for the new chromium base version, that looks
-something like:
+This tool is used to upgrade Brave to a newer Chromium base version, resulting
+in some or all of the following changes being produced:
 
  * Update from Chromium [from] to [to].
  * Conflict-resolved patches from Chromium [from] to [to].
  * Update patches from Chromium [from] to [to].
  * Updated strings for Chromium [to].
 
-The process is started by providing a target version to upgrade to. The tool
-uses the current upstream branch for the current branch as the base version,
-although that can be overriden with `--previous`.
+To start it off, provide a `--to` target version, and a base branch to be used,
+either by providing a `--previous` argument, or by having an upstream branch to
+to your current branch.
 
 ```sh
-git checkout -b cr135 origin/master
+tools/cr/upgrade.py --to=135.0.7037.1 --previous=origin/master
+```
+
+Using upstream:
+
+```sh
+git branch --set-upstream-to=origin/master
 tools/cr/upgrade.py --to=135.0.7037.1
 ```
 
-The workflow with this script:
+The following steps will take place:
 
-1. The first commit will be created where package.json is updated, and so is
-   the pinslist timestamp source.
-2. The repository will be initialised with the newer version of Chromium,
-   followed where all patches will be applied on the newer version.
-3. Any patches that fail to apply will be reattempted with the --3way option.
-4. If any patches still fail to apply, the process will stop, and the user will
-   be asked to resolve the conflicts manually for the files that cannot be
-   resolved. In such a case, the run will stop.
-5. If any patches are deleted, the process will be stopped and the user will be
-    asked to commit the deleted patches manually, preserving the history of why
-    they are deleted.
-5. Having resolved all conflicts, the tool will be run again with the same
-   arguments, and with the added `--continue` flag.
-6. This tool will then continue from the point where it stopped, staging all
-   patches that were applied, and committing them as conflict-resolved patches.
-7. This tool will then continue to update the patches, and rebase the strings
-   for the new version of Chromium.
+1. A "Update from Chromium [from] to [to]" commit will be created. This commit
+   contains changes to `package.json` and to the pinlist timestamp file.
+2. `npm run init` will be run with the newer version.
+3. For any patches that fail to apply during `init`, there will be another
+   attempt to apply them using `--3way`.
+4. If any patches still fail to apply, the process will stop. A summary of
+   files with conflicts will be provided for resolution.
+5. Deleted patches will also cause the  tool to stop. The user is expected to
+   provide separate commits for deleted patches, explaining the reason.
+6. Having resolved all conflicts. Restart the tool with the same arguments as
+   before, but with the `--continue` flag.
+7. This tool will then continue from the point where it stopped, updating all
+   patches, staging all patches that were applied, and committing them as
+   "Conflict-resolved patches from Chromium [from] to [to]".
+8. "Update patches from Chromium [from] to [to]" will be committed.
+9. "Updated strings for Chromium [to]" will be committed.
 
 Steps 3-7 may end up being skipped altogether if no failures take place, or in
 part if resolution is possible without manual intervention.
@@ -77,16 +81,18 @@ from rich.markdown import Markdown
 import subprocess
 import sys
 
+console = Console()
+error_console = Console(stderr=True, style="bold red")
 
 class RichHelpFormatter(argparse.RawDescriptionHelpFormatter):
-
+    """A custom formatter that allows for markdown in `--help`.
+    """
     def __init__(self, prog):
         super().__init__(prog)
-        self.console = Console()
 
     def format_help(self):
-        self.console.print(Markdown(__doc__))
-        self.console.print('')
+        console.print(Markdown(__doc__))
+        console.print('')
         print(super().format_help())
         return ""
 
@@ -96,37 +102,90 @@ VERSION_UPGRADE_FILE = '.version_upgrade'
 PACKAGE_FILE = 'package.json'
 
 
-def _run_git(*cmd):
-    """Runs a git command on the current repository.
-
-  This function returns a proper utf8 string in success, otherwise it allows
-  the exception thrown by subprocess through.
-
-  e.g:
-    _run_git('add', '-u', '*.patch')
-  """
-    cmd = ['git'] + list(cmd)
-    return subprocess.check_output(cmd).strip().decode('utf-8')
-
-
-def _git_commit(message):
-    """Commits the current staged changes.
-
-    This function also prints the commit hash/message to the user.
-    Args:
-      message:
-        The message to be used for the commit.
+class Terminal:
+    """A class that holds the application data and methods.
     """
-    _run_git('commit', '-m', message)
-    commit = _run_git('log', '-1', '--pretty=oneline', '--abbrev-commit')
-    print(f'Done: {commit}')
+
+    def __init__(self):
+        self.status = None
+        self.starting_status_message = ''
+
+    def set_status_object(self, status):
+        """Preserves the status object for updates.
+
+    This function is used to preserve the status object for updates, so that
+    the status can be updated with the initial status message.
+    """
+        self.status = status
+        self.starting_status_message = status.status
+
+    def run(self, cmd):
+        """Runs a command on the terminal.
+        """
+        if self.status is not None:
+            self.status.update(
+                f'{self.starting_status_message} [bold cyan]({" ".join(cmd)})')
+        return subprocess.run(cmd, capture_output=True, text=True, check=True)
+
+    def run_git(self, *cmd):
+        """Runs a git command on the current repository.
+
+    This function returns a proper utf8 string in success, otherwise it allows
+    the exception thrown by subprocess through.
+
+    e.g:
+        self.run_git('add', '-u', '*.patch')
+    """
+        cmd = ['git'] + list(cmd)
+        return self.run(cmd).stdout.strip()
+
+    def log_task(self, message):
+        """Logs a task to the console using common decorators
+        """
+        console.log(f'[bold red]*[/] {message}')
+
+    def git_commit(self, message):
+        """Commits the current staged changes.
+
+        This function also prints the commit hash/message to the user.
+        Args:
+        message:
+            The message to be used for the commit.
+        """
+        if _has_staged_changed() is False:
+            # Nothing to commit
+            return
+
+        self.run_git('commit', '-m', message)
+        commit = self.run_git('log', '-1', '--pretty=oneline',
+                              '--abbrev-commit')
+        self.log_task(f'[bold]✔️ [/] [italic]{commit}')
+
+    def run_npm_command(self, *cmd):
+        """Runs an npm build command.
+
+      This function will run 'npm run' commands appended by any extra arguments are
+      passed into it.
+
+      e.g:
+          self.run_npm_command('init')
+      """
+        cmd = ['npm', 'run'] + list(cmd)
+        return self.run(cmd)
+
+
+terminal = Terminal()
+
+
+def _has_staged_changed():
+    return terminal.run_git('diff', '--cached', '--stat') != ''
 
 
 def _get_current_branch_upstream_name():
     """Retrieves the name of the current branch's upstream.
     """
-    return _run_git('rev-parse', '--abbrev-ref', '--symbolic-full-name',
-                    '@{upstream}')
+    return terminal.run_git('rev-parse', '--abbrev-ref',
+                            '--symbolic-full-name', '@{upstream}')
 
 def _load_package_file(branch):
     """Retrieves the json content of package.json for a given revision
@@ -135,29 +194,8 @@ def _load_package_file(branch):
     branch:
       A branch or hash to load the file from.
   """
-    package = _run_git('show', f'{branch}:{PACKAGE_FILE}')
+    package = terminal.run_git('show', f'{branch}:{PACKAGE_FILE}')
     return json.loads(package)
-
-
-def _run_npm_command(*cmd):
-    """Runs an npm build command.
-
-  This function will run 'npm run' commands appended by any extra arguments are
-  passed into it.
-
-  e.g:
-    _run_npm_command('init')
-  """
-    cmd = ['npm', 'run'] + list(cmd)
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, bufsize=-1)
-    while True:
-        line = process.stdout.readline()
-        if not line:
-            break
-        print(line.decode('utf-8').rstrip())
-
-    return process.wait() == 0
-
 
 def _update_pinslist_timestamp():
     """Updates the pinslist timestamp in the input_file_parsers.cc file for the
@@ -192,7 +230,7 @@ def _update_pinslist_timestamp():
     with open(PINSLIST_TIMESTAMP_FILE, "w", encoding="utf-8") as file:
         file.write(updated_content)
 
-    updated = _run_git('diff', PINSLIST_TIMESTAMP_FILE)
+    updated = terminal.run_git('diff', PINSLIST_TIMESTAMP_FILE)
     if updated == '':
         raise Exception('Pinslist timestamp failed to update.')
 
@@ -202,20 +240,17 @@ def _get_apply_patches_list():
     `npm run apply_patches`
     """
 
-    process = subprocess.run([
-        'npm', 'run', 'apply_patches', '--', '--print-patch-failures-in-json'
-    ],
-                             capture_output=True,
-                             text=True,
-                             check=False)
+    try:
+        terminal.run_npm_command('apply_patches', '--',
+                                 '--print-patch-failures-in-json')
+    except subprocess.CalledProcessError as e:
+        # This is a regex to match the json output of the patches that failed to apply.
+        match = re.search(r'\[\s*{.*?}\s*\]', e.stdout, re.DOTALL)
+        if match is None:
+            return None
+        return json.loads(match.group(0))
 
-    # This is a regex to match the json output of the patches that failed to apply.
-    match = re.search(r'\[\s*{.*?}\s*\]', process.stdout, re.DOTALL)
-    if match is None:
-        print('No patches to apply')
-        return None
-
-    return json.loads(match.group(0))
+    return None
 
 
 def get_subdirs_after_patches(path: str) -> str:
@@ -236,7 +271,7 @@ class GitStatus:
     """
 
     def __init__(self):
-        self.status = _run_git('status', '--short')
+        self.git_status = terminal.run_git('status', '--short')
 
         # a list of all deleted files, regardless of their staged status.
         self.deleted = []
@@ -244,7 +279,7 @@ class GitStatus:
         # a list of all modified files, regardless of their staged status.
         self.modified = []
 
-        for line in self.status.splitlines():
+        for line in self.git_status.splitlines():
             [status, path] = line.lstrip().split(' ', 1)
             if status == 'D':
                 self.deleted.append(path)
@@ -278,6 +313,10 @@ class PatchFailureResolver:
         # repository.
         self.patch_files = {}
 
+        # This is a flat of list of patches that cannot be applied due to their
+        # source file being deleted.
+        self.patches_to_deleted_files = []
+
         # A list of files that require manual conflict resolution before continuing.
         self.files_with_conflicts = []
 
@@ -295,8 +334,6 @@ class PatchFailureResolver:
 
         A list of the patches applied will be produced as well.
         """
-        print('Applying conflicting patches:')
-
         # the raw list of patches that failed to apply.
         patch_failures = _get_apply_patches_list()
         if patch_failures is None:
@@ -305,20 +342,33 @@ class PatchFailureResolver:
 
         for patch in patch_failures:
             patch_name = patch['patchPath']
-            print(patch_name)
 
             if patch.get('reason', '') == 'SRC_REMOVED':
                 # Skip patches that can't apply as the source is gone.
-                print(
-                    f'Skipping patch deleted due to repo source deletion: {patch_name}'
-                )
+                self.patches_to_deleted_files.append(patch_name)
                 continue
 
             # Grouping patch files by their repositories, so to allow us to iterate
             # through them, applying them in their repo paths.
             subdir = get_subdirs_after_patches(patch_name)
             self.patch_files.setdefault(subdir, []).append(patch_name)
-        print('...')
+
+        if len(self.patches_to_deleted_files) > 0:
+            # Patches that cannot apply anymore and need to be deleted
+            # manually.
+            terminal.log_task('[bold]Patch files set to be deleted:\n[/]' +
+                              '\n'.join(
+                                  f'    * {file}'
+                                  for file in self.patches_to_deleted_files))
+
+        patches_to_apply = [
+            patch for patch_list in self.patch_files.values()
+            for patch in patch_list
+        ]
+        if len(patches_to_apply) > 0:
+            terminal.log_task(
+                '[bold]Reapplying patch files with --3way:\n[/]' +
+                '\n'.join(f'    * {file}' for file in patches_to_apply))
 
         for subdir, patches in self.patch_files.items():
             repo_path = f'../{subdir}'
@@ -331,23 +381,26 @@ class PatchFailureResolver:
             ]
             cmd += [f'{patch_relative_path}brave/{patch}' for patch in patches]
 
-            process = subprocess.run(cmd,
-                                     capture_output=True,
-                                     text=True,
-                                     check=False)
-            self.files_with_conflicts += [
-                line.lstrip("U ") for line in process.stderr.splitlines()
-                if line.startswith('U ')
-            ]
+            try:
+                terminal.run(cmd)
+            except subprocess.CalledProcessError as e:
+                # If the process fails, we need to collect the files that
+                # failed to apply for manual conflict resolution.
+                self.files_with_conflicts += [
+                    line.lstrip("U ") for line in e.stderr.splitlines()
+                    if line.startswith('U ')
+                ]
 
         for subdir, patches in self.patch_files.items():
             # Resetting any staged states from apply patches as that can cause
             # issues when generating patches.
-            _run_git('-C', f'../{subdir}', 'reset', 'HEAD')
+            terminal.run_git('-C', f'../{subdir}', 'reset', 'HEAD')
 
         if len(self.files_with_conflicts) > 0:
-            print('Fix conflicts for the following files:')
-            print(' '.join(self.files_with_conflicts))
+            terminal.log_task(
+                '[bold]Manually resolve conflicts for these files:\n[/]' +
+                '\n'.join(f'    * {file}'
+                          for file in self.files_with_conflicts))
 
         # A continuation file is created in case `--continue` is still required
         # for some reason (e.g. manual conflict resolution, patches being
@@ -356,6 +409,7 @@ class PatchFailureResolver:
         continuation_file['version'] = self.target_version
         continuation_file['patches'] = self.patch_files
         continuation_file['conflicts'] = self.files_with_conflicts
+        continuation_file['deleted'] = self.patches_to_deleted_files
 
         # Saving the patch file list to be able to revisit it later in JSON format.
         with open(VERSION_UPGRADE_FILE, 'w') as file:
@@ -379,8 +433,8 @@ class PatchFailureResolver:
                     # Skip deleted files.
                     continue
 
-                # TODO: `_run_git` should be able to take an array.
-                _run_git('add', patch)
+                # TODO: `terminal.run_git` should be able to take an array.
+                terminal.run_git('add', patch)
 
     def load_continuation_file(self):
         continuation_file = {}
@@ -443,10 +497,6 @@ def _is_upgrading(target_version, working_version):
     return False
 
 
-def has_staged_changed():
-    return _run_git('diff', '--cached', '--stat') != ''
-
-
 class Upgrade:
     """The upgrade process, holding the data related to the upgrade.
 
@@ -487,12 +537,12 @@ class Upgrade:
         with open(PACKAGE_FILE, "w") as package_file:
             json.dump(package, package_file, indent=2)
 
-        _run_git('add', PACKAGE_FILE)
+        terminal.run_git('add', PACKAGE_FILE)
 
         # Pinlist timestamp update occurs with the package version update.
         _update_pinslist_timestamp()
-        _run_git('add', PINSLIST_TIMESTAMP_FILE)
-        _git_commit(
+        terminal.run_git('add', PINSLIST_TIMESTAMP_FILE)
+        terminal.git_commit(
             f'Update from Chromium {self.base_version} to Chromium {self.target_version}.'
         )
 
@@ -503,12 +553,9 @@ class Upgrade:
     all patches that might have been changed or deleted. Untracked patches are
     excluded from addition at this stage.
     """
-        _run_git('add', '-u', '*.patch')
+        terminal.run_git('add', '-u', '*.patch')
 
-        if has_staged_changed() is False:
-            # Nothing to commit
-            return
-        _git_commit(
+        terminal.git_commit(
             f'Update patches from Chromium {self.base_version} to Chromium {self.target_version}.'
         )
 
@@ -518,15 +565,12 @@ class Upgrade:
     This function stages, and commits, all changed, updated, or deleted files
     resulting from running npm run chromium_rebase_l10n.
     """
-        _run_git('add', '*.grd', '*.grdp', '*.xtb')
-        if has_staged_changed() is False:
-            # Nothing to commit
-            return
-
-        _git_commit(f'Updated strings for Chromium {self.target_version}.')
+        terminal.run_git('add', '*.grd', '*.grdp', '*.xtb')
+        terminal.git_commit(
+            f'Updated strings for Chromium {self.target_version}.')
 
     def _save_conflict_resolved_patches(self):
-        _git_commit(
+        terminal.git_commit(
             f'Conflict-resolved patches from Chromium {self.base_version} to Chromium {self.target_version}.'
         )
 
@@ -541,21 +585,18 @@ class Upgrade:
         return:
           Returns True if no deleted patches are found, and False otherwise.
         """
-        if _run_npm_command('update_patches') is not True:
-            raise Exception(
-                'Failures found when running npm run update_patches')
+        terminal.run_npm_command('update_patches')
 
         status = GitStatus()
         if status.has_deleted_patch_files() is True:
-            print(
+            error_console.log(
                 'Deleted patches detected. These should be committed as their own changes:\n'
-                + '\n'.join(status.deleted),
-                file=sys.stderr)
+                + '\n'.join(status.deleted))
             return False
 
         return True
 
-    def run(self, is_continuation, no_conflict_continuation):
+    def _run_internal(self, is_continuation, no_conflict_continuation):
         """Run the upgrade process
 
     This is the main method used to carry out the whole update process.
@@ -572,52 +613,55 @@ class Upgrade:
         override_continuation = is_continuation
         if is_continuation is not True:
             if self.target_version == self.working_version:
-                print(
-                    f"It looks like upgrading to {self.target_version} has already started.",
-                    file=sys.stderr)
+                error_console.log(
+                    f"It looks like upgrading to {self.target_version} has already started."
+                )
                 return False
 
             if _is_upgrading(self.target_version,
                              self.working_version) is not True:
-                print(
-                    f'Cannot upgrade version from {self.target_version} to {self.working_version}',
-                    file=sys.stderr)
+                error_console.log(
+                    f'Cannot upgrade version from {self.target_version} to {self.working_version}'
+                )
                 return False
 
             self._update_package_version()
 
-            process = subprocess.run(['npm', 'run', 'init'],
-                                     capture_output=True,
-                                     text=True,
-                                     check=False)
-            if process.returncode != 0 and 'Exiting as not all patches were successful!' in process.stderr.splitlines(
-            )[-1]:
-                resolver = PatchFailureResolver(self.target_version)
-                resolver.apply_patches_3way()
-                if resolver.requires_conflict_resolution() is True:
-                    # Manual resolution required.
-                    return False
+            try:
+                terminal.run_npm_command('init')
 
-                if self._run_update_patches_with_no_deletions() is not True:
-                    return False
-
-                resolver.stage_all_patches()
-                self._save_conflict_resolved_patches()
-
-                # With all conflicts resolved, it is necessary to close the
-                # upgrade with all the same steps produced when running an
-                # upgrade continuation, as recovering from a conflict-
-                # resolution failure.
-                override_continuation = True
-            elif process.returncode != 0:
-                print(process.stderr, file=sys.stderr)
-                print('Failures found when running npm run init',
-                      file=sys.stderr)
-                return False
-            else:
                 # When no conflicts come back, we can proceed with the
                 # update_patches.
                 if self._run_update_patches_with_no_deletions() is not True:
+                    return False
+            except subprocess.CalledProcessError as e:
+                if e.returncode != 0 and 'Exiting as not all patches were successful!' in e.stderr.splitlines(
+                )[-1]:
+                    resolver = PatchFailureResolver(self.target_version)
+                    resolver.apply_patches_3way()
+                    if resolver.requires_conflict_resolution() is True:
+                        # Manual resolution required.
+                        console.log(
+                            '👋 (Once all conflicts are resolved ready, rerun this tool with [bold cyan]--continue[/])'
+                        )
+                        return False
+
+                    if self._run_update_patches_with_no_deletions(
+                    ) is not True:
+                        return False
+
+                    resolver.stage_all_patches()
+                    self._save_conflict_resolved_patches()
+
+                    # With all conflicts resolved, it is necessary to close the
+                    # upgrade with all the same steps produced when running an
+                    # upgrade continuation, as recovering from a conflict-
+                    # resolution failure.
+                    override_continuation = True
+                elif e.returncode != 0:
+                    error_console.log(
+                        f'Failures found when running npm run init\n{e.stderr}'
+                    )
                     return False
         elif is_continuation is True and no_conflict_continuation is False:
             # This is when a continuation follows conflict resolution. The
@@ -631,10 +675,10 @@ class Upgrade:
 
             resolver.stage_all_patches(ignore_deleted_files=True)
 
-            if has_staged_changed() is False:
-                print(
-                    'Nothing has been staged to commit conflict-resolved patches.',
-                    file=sys.stderr)
+            if _has_staged_changed() is False:
+                error_console.log(
+                    'Nothing has been staged to commit conflict-resolved patches.'
+                )
                 return False
 
             self._save_conflict_resolved_patches()
@@ -642,36 +686,40 @@ class Upgrade:
         self._save_updated_patches()
         if is_continuation is True or override_continuation is True:
             # Run init again to make sure nothing is missing after updating patches.
-            if _run_npm_command('init') is not True:
-                print(
-                    'Failures found when running npm run init after committing patches.',
-                    file=sys.stderr)
-                return False
+            terminal.run_npm_command('init')
 
-        if _run_npm_command('chromium_rebase_l10n') is not True:
-            print('Failures found when running npm run chromium_rebase_l10n',
-                  file=sys.stderr)
-            return False
+        terminal.run_npm_command('chromium_rebase_l10n')
         self._save_rebased_l10n()
 
         return True
 
-    def generate_patches(self):
-        if _run_npm_command('init') is not True:
-            raise Exception(
-                'Failures found when running npm run init after committing patches.'
+    def run(self, is_continuation, no_conflict_continuation):
+        """Run the upgrade process
+
+    Check `_run_internal` for details.
+
+    Return:
+      Return True if completed entirely, and False otherwise.
+    """
+        with console.status(
+                "[bold green]Upgrading Chromium base version") as status:
+            terminal.set_status_object(status)
+            terminal.log_task(
+                f'Review: https://chromium.googlesource.com/chromium/src/+log/{self.base_version}..{self.target_version}?pretty=fuller&n=10000'
             )
+            return self._run_internal(is_continuation,
+                                      no_conflict_continuation)
 
-        if _run_npm_command('update_patches') is not True:
-            raise Exception(
-                'Failures found when running npm run update_patches')
-        self._save_updated_patches()
-
-        if _run_npm_command('chromium_rebase_l10n') is not True:
-            raise Exception(
-                'Failures found when running npm run chromium_rebase_l10n')
-        self._save_rebased_l10n()
-
+    def generate_patches(self):
+        with console.status(
+                "[bold green]Working to update patches and strings..."
+        ) as status:
+            terminal.set_status_object(status)
+            terminal.run_npm_command('init')
+            terminal.run_npm_command('update_patches')
+            self._save_updated_patches()
+            terminal.run_npm_command('chromium_rebase_l10n')
+            self._save_rebased_l10n()
 
 def main():
     parser = argparse.ArgumentParser(
@@ -715,10 +763,13 @@ def main():
     args = parser.parse_args()
     upgrade = Upgrade(args.previous, args.to)
 
+    console.log('🚀')
     if args.update_patches_only:
         upgrade.generate_patches()
     elif upgrade.run(args.is_continuation, args.no_conflict) is False:
         return 1
+
+    console.log('[bold]💥 Done!')
 
     return 0
 
