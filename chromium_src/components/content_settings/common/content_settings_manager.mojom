@@ -5,6 +5,7 @@
 
 module content_settings.mojom;
 
+import "brave/components/brave_shields/core/common/shields_settings.mojom";
 import "services/network/public/mojom/site_for_cookies.mojom";
 import "url/mojom/origin.mojom";
 import "third_party/blink/public/mojom/tokens/tokens.mojom";
@@ -17,4 +18,8 @@ interface ContentSettingsManager {
       url.mojom.Origin origin,
       network.mojom.SiteForCookies site_for_cookies,
       url.mojom.Origin top_frame_origin) => (url.mojom.Origin? storage_origin);
+
+  [Sync]
+  GetBraveShieldsSettings(
+      blink.mojom.LocalFrameToken frame_token) => (brave_shields.mojom.ShieldsSettings shields_settings);
 };
