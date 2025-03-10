@@ -347,6 +347,7 @@ export const {
   useSpeedupTransactionMutation,
   useStartShieldSyncMutation,
   useStopShieldSyncMutation,
+  useClearChainTipStatusCacheMutation,
   useTransactionStatusChangedMutation,
   useUnapprovedTxUpdatedMutation,
   useUnlockWalletMutation,
