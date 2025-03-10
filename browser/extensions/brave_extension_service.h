@@ -20,6 +20,7 @@ class BraveExtensionService : public ExtensionService {
                         const base::FilePath& unpacked_install_directory,
                         ExtensionPrefs* extension_prefs,
                         Blocklist* blocklist,
+                        ExtensionErrorController* error_controller,
                         bool autoupdate_enabled,
                         bool extensions_enabled,
                         base::OneShotEvent* ready);
