@@ -5,6 +5,10 @@
 
 import * as React from 'react'
 
+import { LocaleContext } from '../components/context/locale_context'
+import { AppModelContext } from '../components/context/app_model_context'
+import { createAppModel } from './sb_app_model'
+import { createLocale } from './sb_locale'
 import { App } from '../components/app'
 
 export default {
@@ -13,8 +17,12 @@ export default {
 
 export function NTPRefresh() {
   return (
-    <div style={{ position: 'absolute', inset: 0 }}>
-      <App />
-    </div>
+    <LocaleContext locale={createLocale()}>
+      <AppModelContext model={createAppModel()}>
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <App />
+        </div>
+      </AppModelContext>
+    </LocaleContext>
   )
 }

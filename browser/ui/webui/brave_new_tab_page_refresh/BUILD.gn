@@ -13,6 +13,8 @@ mojom("mojom") {
 
 source_set("brave_new_tab_page_refresh") {
   sources = [
+    "brave_new_tab_page_data_source.cc",
+    "brave_new_tab_page_data_source.h",
     "brave_new_tab_page_refresh_handler.cc",
     "brave_new_tab_page_refresh_handler.h",
     "brave_new_tab_page_ui.cc",
