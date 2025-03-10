@@ -26,9 +26,10 @@ void NTPSponsoredRichMediaAdEventHandler::Bind(
   receiver_.Bind(std::move(pending_receiver));
 }
 
-void NTPSponsoredRichMediaAdEventHandler::ReportRichMediaAdEvent(
+void NTPSponsoredRichMediaAdEventHandler::MaybeReportRichMediaAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
+    bool should_metrics_fallback_to_p3a,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
   switch (mojom_ad_event_type) {
     case brave_ads::mojom::NewTabPageAdEventType::kClicked:
@@ -36,9 +37,8 @@ void NTPSponsoredRichMediaAdEventHandler::ReportRichMediaAdEvent(
     case brave_ads::mojom::NewTabPageAdEventType::kMediaPlay:
     case brave_ads::mojom::NewTabPageAdEventType::kMedia25:
     case brave_ads::mojom::NewTabPageAdEventType::kMedia100: {
-      MaybeRecordNewTabPageAdEvent(creative_instance_id, mojom_ad_event_type);
-
       MaybeTriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                    should_metrics_fallback_to_p3a,
                                     mojom_ad_event_type);
 
       break;
@@ -55,25 +55,19 @@ void NTPSponsoredRichMediaAdEventHandler::ReportRichMediaAdEvent(
 void NTPSponsoredRichMediaAdEventHandler::MaybeTriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
+    bool should_metrics_fallback_to_p3a,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
-  if (!ads_service_) {
-    return;
+  if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
+    ntp_p3a_helper_->RecordNewTabPageAdEvent(mojom_ad_event_type,
+                                             creative_instance_id);
   }
 
-  ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                         mojom_ad_event_type,
-                                         /*intentional*/ base::DoNothing());
-}
-
-void NTPSponsoredRichMediaAdEventHandler::MaybeRecordNewTabPageAdEvent(
-    const std::string& creative_instance_id,
-    brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
-  if (!ntp_p3a_helper_) {
-    return;
+  if (ads_service_) {
+    // Ads service will handle the case when we should fallback to P3A.
+    ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                           mojom_ad_event_type,
+                                           /*intentional*/ base::DoNothing());
   }
-
-  ntp_p3a_helper_->RecordNewTabPageAdEvent(mojom_ad_event_type,
-                                           creative_instance_id);
 }
 
 }  // namespace ntp_background_images
