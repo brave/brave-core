@@ -466,8 +466,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                         account.accountId.uniqueKey === fromAccountId?.uniqueKey
                       }
                       accountAlias={
-                        fevmTranslatedAddresses?.get(account.accountId.address)
-                          ?.fvmAddress
+                        fevmTranslatedAddresses?.[account.accountId.address]
                       }
                     />
                   ))}
@@ -551,9 +550,7 @@ function getAddressMessageInfo({
   coinType
 }: {
   showFilecoinFEVMWarning: boolean
-  fevmTranslatedAddresses:
-    | Map<string, { address: string; fvmAddress: string }>
-    | undefined
+  fevmTranslatedAddresses: Record<string, string> | undefined
   toAddressOrUrl: string
   messageId: AddressMessageInfoIds | undefined
   coinType: BraveWallet.CoinType | undefined
@@ -561,7 +558,7 @@ function getAddressMessageInfo({
   if (showFilecoinFEVMWarning) {
     return {
       ...FEVMAddressConvertionMessage,
-      placeholder: fevmTranslatedAddresses?.get(toAddressOrUrl)?.fvmAddress
+      placeholder: fevmTranslatedAddresses?.[toAddressOrUrl]
     }
   }
   if (
