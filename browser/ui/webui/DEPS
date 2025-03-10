@@ -6,6 +6,7 @@ include_rules += [
   "+brave/components/brave_shields/core/browser",
   "+brave/components/brave_ads/core/browser/service",
   "+brave/components/brave_ads/core/mojom",
+  "+brave/components/brave_private_cdn",
   "+brave/components/brave_rewards/resources",
   "+brave/components/ntp_background_images/common",
   "+brave/components/version_info",
