@@ -11,7 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
@@ -174,7 +173,7 @@ void AdBlockEngine::UseResources(const std::string& resources) {
 
 bool AdBlockEngine::TagExists(const std::string& tag) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return base::Contains(tags_, tag);
+  return tags_.contains(tag);
 }
 
 base::Value::Dict AdBlockEngine::GetDebugInfo() {

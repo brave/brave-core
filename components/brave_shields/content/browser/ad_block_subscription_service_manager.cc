@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/base64url.h"
-#include "base/containers/contains.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_value_converter.h"
@@ -229,7 +228,7 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
     const GURL& sub_url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (base::Contains(subscription_filters_providers_, sub_url)) {
+  if (subscription_filters_providers_.contains(sub_url)) {
     return;
   }
 

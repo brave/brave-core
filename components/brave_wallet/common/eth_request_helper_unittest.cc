@@ -19,10 +19,12 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJsonDict;
 using base::test::ParseJsonList;
+using ::testing::Optional;
 
 namespace brave_wallet {
 
@@ -1121,8 +1123,8 @@ TEST(EthResponseHelperUnitTest, ParseRequestPermissionsParams) {
           "eth_accounts": {},
         }]
       })";
-  EXPECT_TRUE(ParseRequestPermissionsParams(json, &restricted_methods));
-  EXPECT_EQ(restricted_methods, (std::vector<std::string>{"eth_accounts"}));
+  EXPECT_THAT(ParseRequestPermissionsParams(json),
+              Optional(base::flat_set<std::string>{"eth_accounts"}));
 
   json =
       R"({
@@ -1132,29 +1134,25 @@ TEST(EthResponseHelperUnitTest, ParseRequestPermissionsParams) {
           "eth_someFutureMethod": {}
         }]
       })";
-  EXPECT_TRUE(ParseRequestPermissionsParams(json, &restricted_methods));
-  EXPECT_EQ(restricted_methods,
-            (std::vector<std::string>{"eth_accounts", "eth_someFutureMethod"}));
+  EXPECT_THAT(ParseRequestPermissionsParams(json),
+              Optional(base::flat_set<std::string>{"eth_accounts",
+                                                   "eth_someFutureMethod"}));
 
   json =
       R"({
         "method": "wallet_requestPermissions",
         "params": [{}]
       })";
-  EXPECT_TRUE(ParseRequestPermissionsParams(json, &restricted_methods));
-  EXPECT_EQ(restricted_methods, (std::vector<std::string>()));
+  EXPECT_THAT(ParseRequestPermissionsParams(json),
+              Optional(base::flat_set<std::string>()));
 
-  EXPECT_FALSE(ParseRequestPermissionsParams(json, nullptr));
-  EXPECT_FALSE(ParseRequestPermissionsParams("", &restricted_methods));
-  EXPECT_FALSE(ParseRequestPermissionsParams("\"42\"", &restricted_methods));
-  EXPECT_FALSE(ParseRequestPermissionsParams("{}", &restricted_methods));
-  EXPECT_FALSE(ParseRequestPermissionsParams("[]", &restricted_methods));
-  EXPECT_FALSE(
-      ParseRequestPermissionsParams("{ params: 5 }", &restricted_methods));
-  EXPECT_FALSE(
-      ParseRequestPermissionsParams("{ params: [5] }", &restricted_methods));
-  EXPECT_FALSE(
-      ParseRequestPermissionsParams("{ params: [] }", &restricted_methods));
+  EXPECT_FALSE(ParseRequestPermissionsParams(""));
+  EXPECT_FALSE(ParseRequestPermissionsParams("\"42\""));
+  EXPECT_FALSE(ParseRequestPermissionsParams("{}"));
+  EXPECT_FALSE(ParseRequestPermissionsParams("[]"));
+  EXPECT_FALSE(ParseRequestPermissionsParams("{ params: 5 }"));
+  EXPECT_FALSE(ParseRequestPermissionsParams("{ params: [5] }"));
+  EXPECT_FALSE(ParseRequestPermissionsParams("{ params: [] }"));
 }
 
 TEST(EthResponseHelperUnitTest, ParseEthSendRawTransaction) {

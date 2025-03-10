@@ -520,7 +520,7 @@ void BlockchainRegistry::GetCoingeckoId(const std::string& chain_id,
 }
 
 bool BlockchainRegistry::IsOfacAddress(const std::string& address) {
-  return base::Contains(ofac_addresses_, base::ToLowerASCII(address));
+  return ofac_addresses_.contains(base::ToLowerASCII(address));
 }
 
 void BlockchainRegistry::ParseLists(const base::FilePath& install_dir,
