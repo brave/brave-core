@@ -62,8 +62,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
     })");
 
   std::vector<brave_wallet::mojom::AssetPricePtr> prices;
-  ASSERT_TRUE(ParseAssetPrice(ParseJson(json), {"bat", "link"}, {"btc", "usd"},
-                              &prices));
+  ASSERT_TRUE(ParseAssetPrice(ParseJson(json), {"bat", "link", "eth"},
+                              {"btc", "usd"}, &prices));
   ASSERT_EQ(prices.size(), 4UL);
   EXPECT_EQ(prices[0]->from_asset, "bat");
   EXPECT_EQ(prices[0]->to_asset, "btc");
@@ -85,11 +85,18 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
   EXPECT_EQ(prices[3]->price, "83.77");
   EXPECT_EQ(prices[3]->asset_timeframe_change, "1.7646208048244043");
 
-  // Unexpected json for inputs
-  EXPECT_FALSE(ParseAssetPrice(ParseJson(json), {"A1", "A2", "A3"},
-                               {"B1", "B2", "B3"}, &prices));
-  EXPECT_FALSE(ParseAssetPrice(ParseJson(json), {"A1"}, {"B1", "B2"}, &prices));
-  EXPECT_FALSE(ParseAssetPrice(ParseJson(json), {"A1", "A2"}, {"B1"}, &prices));
+  // Missing from_asset in payload
+  prices.clear();
+  EXPECT_TRUE(ParseAssetPrice(ParseJson(json), {"A1", "A2", "A3"},
+                              {"B1", "B2", "B3"}, &prices));
+  EXPECT_EQ(prices.size(), 0UL);
+  prices.clear();
+  EXPECT_TRUE(ParseAssetPrice(ParseJson(json), {"A1"}, {"B1", "B2"}, &prices));
+  EXPECT_EQ(prices.size(), 0UL);
+  prices.clear();
+  EXPECT_TRUE(ParseAssetPrice(ParseJson(json), {"A1", "A2"}, {"B1"}, &prices));
+  EXPECT_EQ(prices.size(), 0UL);
+  prices.clear();
 
   // Invalid json input
   EXPECT_FALSE(

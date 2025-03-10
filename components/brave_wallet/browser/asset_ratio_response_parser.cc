@@ -80,7 +80,7 @@ bool ParseAssetPrice(const base::Value& json_value,
   for (const std::string& from_asset : from_assets) {
     const auto* from_asset_dict = payload->FindDictByDottedPath(from_asset);
     if (!from_asset_dict) {
-      return false;
+      continue;
     }
 
     for (const std::string& to_asset : to_assets) {
