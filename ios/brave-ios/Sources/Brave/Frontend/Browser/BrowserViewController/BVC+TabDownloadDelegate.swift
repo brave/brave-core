@@ -183,7 +183,6 @@ extension BrowserViewController: TabDownloadDelegate {
   private func downloadAlert(
     for download: Download,
     tab: Tab,
-
     suggestedFileName: String
   ) async -> Bool {
     // Only download if there is a valid host
