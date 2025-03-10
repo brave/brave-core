@@ -45,7 +45,7 @@ extension CustomEngineViewController {
   }
 
   func downloadOpenSearchXML(_ url: URL, referenceURL: String, title: String, iconImage: UIImage) {
-    changeAddEditButton(for: .loading)
+    doneButtonStatus = .loading
     view.endEditing(true)
 
     NetworkManager().downloadResource(with: url) { [weak self] response in
@@ -65,7 +65,7 @@ extension CustomEngineViewController {
             let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
 
             self.present(alert, animated: true) {
-              self.changeAddEditButton(for: .disabled)
+              self.doneButtonStatus = .disabled
             }
           }
         }
@@ -74,7 +74,7 @@ extension CustomEngineViewController {
 
         let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
         self.present(alert, animated: true) {
-          self.changeAddEditButton(for: .disabled)
+          self.doneButtonStatus = .disabled
         }
       }
     }
@@ -86,18 +86,19 @@ extension CustomEngineViewController {
       guard let self = self else { return }
 
       if alertAction.style == .cancel {
-        self.changeAddEditButton(for: .enabled)
+        self.doneButtonStatus = .enabled
         return
       }
 
       Task { @MainActor in
         do {
           try await self.profile.searchEngines.addSearchEngine(engine)
+          self.onAddSucceed?()
           self.cancel()
         } catch {
           self.handleError(error: SearchEngineError.failedToSave)
 
-          self.changeAddEditButton(for: .disabled)
+          self.doneButtonStatus = .disabled
         }
       }
     }
@@ -112,7 +113,7 @@ extension CustomEngineViewController {
 
   func checkSupportAutoAddSearchEngine() {
     guard let openSearchEngine = openSearchReference else {
-      changeAddEditButton(for: .disabled)
+      doneButtonStatus = .disabled
       checkManualAddExists()
       faviconImage = nil
 
@@ -130,10 +131,10 @@ extension CustomEngineViewController {
     })
 
     if searchEngineExists {
-      changeAddEditButton(for: .disabled)
+      doneButtonStatus = .disabled
       checkManualAddExists()
     } else {
-      changeAddEditButton(for: .enabled)
+      doneButtonStatus = .enabled
       isAutoAddEnabled = true
     }
   }
@@ -144,7 +145,7 @@ extension CustomEngineViewController {
       return
     }
 
-    changeAddEditButton(for: .disabled)
+    doneButtonStatus = .disabled
 
     dataTask = URLSession.shared.dataTask(with: host) { [weak self] data, _, error in
       guard let data = data, error == nil else {
@@ -173,7 +174,7 @@ extension CustomEngineViewController {
       do {
         let icon = try await FaviconFetcher.loadIcon(
           url: url,
-          persistent: !privateBrowsingManager.isPrivateBrowsing
+          persistent: !isPrivateBrowsing
         )
         self.faviconImage = icon.image ?? Favicon.defaultImage
       } catch {
