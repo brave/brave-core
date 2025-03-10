@@ -76,7 +76,9 @@ void SidebarShowOptionsEventDetectWidget::SetSidebarOnLeft(
 std::unique_ptr<views::Widget>
 SidebarShowOptionsEventDetectWidget::CreateWidget(Delegate& delegate) {
   std::unique_ptr<views::Widget> widget(new views::Widget);
-  views::Widget::InitParams params(views::Widget::InitParams::TYPE_CONTROL);
+  views::Widget::InitParams params(
+      views::Widget::InitParams::NATIVE_WIDGET_OWNS_WIDGET,
+      views::Widget::InitParams::TYPE_CONTROL);
   params.delegate = this;
   params.name = "SidebarEventDetectWidget";
   params.ownership = views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET;
