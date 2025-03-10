@@ -707,8 +707,8 @@ class NewTabPage extends React.Component<Props, State> {
                 }
 
                 getNTPBrowserAPI().sponsoredRichMediaAdEventHandler.reportRichMediaAdEvent(
-                  this.sponsoredRichMediaBackgroundInfo.creativeInstanceId,
                   this.sponsoredRichMediaBackgroundInfo.placementId,
+                  this.sponsoredRichMediaBackgroundInfo.creativeInstanceId,
                   adEventType)
 
                 if (adEventType === BraveAds.NewTabPageAdEventType.kClicked) {
