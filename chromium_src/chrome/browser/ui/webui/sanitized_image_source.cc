@@ -25,15 +25,14 @@ void SanitizedImageSource::OnImageLoaded(
     std::unique_ptr<network::SimpleURLLoader> loader,
     RequestAttributes request_attributes,
     content::URLDataSource::GotDataCallback callback,
-    std::unique_ptr<std::string> body) {
+    std::unique_ptr<std::string> body) {  // Lazily initialize the pcdn domain
+  if (pcdn_domain_.empty()) {
+    pcdn_domain_ = brave_domains::GetServicesDomain("pcdn");
+  }
+
   if (loader->NetError() == net::OK && body &&
       request_attributes.image_url.host_piece() == pcdn_domain_ &&
       request_attributes.image_url.path_piece().ends_with(".pad")) {
-    // Lazily initialize the pcdn domain
-    if (pcdn_domain_.empty()) {
-      pcdn_domain_ = brave_domains::GetServicesDomain("pcdn");
-    }
-
     std::string_view body_payload(body->data(), body->size());
     if (!brave::private_cdn::RemovePadding(&body_payload)) {
       std::move(callback).Run(nullptr);

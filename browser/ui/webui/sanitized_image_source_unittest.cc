@@ -30,7 +30,7 @@ constexpr char kValidImage[] = "ad_banner.png";
 constexpr char kPaddedImage[] = "padded.png.pad";
 constexpr char kInvalidImage[] = "normal.js";
 
-const std::string LoadTestFile(const std::string& name) {
+std::string LoadTestFile(const std::string& name) {
   base::FilePath path = base::PathService::CheckedGet(brave::DIR_TEST_DATA);
   path = path.AppendASCII(name);
 
@@ -53,7 +53,8 @@ class SanitizedImageSourceTest : public testing::Test {
   }
   ~SanitizedImageSourceTest() override = default;
 
-  scoped_refptr<base::RefCountedMemory> Decode(const GURL& url, const std::string& filename) {
+  scoped_refptr<base::RefCountedMemory> Decode(const GURL& url,
+                                               const std::string& filename) {
     std::string data = LoadTestFile(filename);
     GURL image_url = GURL("chrome://image/?" + url.spec());
     test_url_loader_factory_.AddResponse(url.spec(), std::move(data));
