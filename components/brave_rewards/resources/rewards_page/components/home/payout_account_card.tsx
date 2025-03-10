@@ -158,7 +158,7 @@ export function PayoutAccountCard() {
   }
 
   return (
-    <div className='content-card' {...style}>
+    <div className='content-card' data-css-scope={style.scope}>
       <h4>
         {
           externalWallet.authenticated ?

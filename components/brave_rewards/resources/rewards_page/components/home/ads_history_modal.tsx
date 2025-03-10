@@ -170,7 +170,7 @@ export function AdsHistoryModal(props: Props) {
         title={getString('adsHistoryTitle')}
         onClose={props.onClose}
       />
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         {renderHistory()}
       </div>
     </Modal>

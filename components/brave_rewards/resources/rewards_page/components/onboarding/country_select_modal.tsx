@@ -36,7 +36,7 @@ export function CountrySelectModal(props: Props) {
       onEscape={props.loading ? undefined : props.onClose}
     >
       <Modal.Header onClose={props.onClose} closeDisabled={props.loading} />
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <div className='graphic' />
         <div className='title'>
           {getString('countrySelectTitle')}

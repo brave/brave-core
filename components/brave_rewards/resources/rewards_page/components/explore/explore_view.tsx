@@ -23,7 +23,7 @@ export function ExploreView() {
 
   if (!cards) {
     return (
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <div className='loading'>
           <ProgressRing />
         </div>
@@ -33,7 +33,7 @@ export function ExploreView() {
 
   if (viewType === 'double') {
     return (
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <h3>{getString('navigationExploreLabel')}</h3>
         <div className='columns'>
           <div>
@@ -50,7 +50,7 @@ export function ExploreView() {
   }
 
   return (
-    <div {...style}>
+    <div data-css-scope={style.scope}>
       <h3>{getString('navigationExploreLabel')}</h3>
       <PartnerPromoCard />
       <MerchStoreCard />

@@ -65,7 +65,7 @@ export function PaymentSelection(props: Props) {
 
   if (!web3URL && !matchingProvider) {
     return (
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <div className='text'>
           <Icon name='hand-coins' />
           <div>
@@ -99,7 +99,7 @@ export function PaymentSelection(props: Props) {
   }
 
   return (
-    <div {...style}>
+    <div data-css-scope={style.scope}>
       <div className='text'>
         <Icon name='hand-coins' />
         <div>{getString('contributeChooseMethodText')}</div>

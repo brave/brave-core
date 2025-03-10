@@ -22,7 +22,7 @@ interface Props {
 export function AppError(props: Props) {
   const { getString } = useLocaleContext()
   return (
-    <div {...style}>
+    <div data-css-scope={style.scope}>
       <div className='image'>
         <Icon name='warning-circle-outline' />
       </div>

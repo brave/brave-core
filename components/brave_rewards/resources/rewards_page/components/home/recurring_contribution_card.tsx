@@ -120,7 +120,7 @@ export function RecurringContributionCard() {
   }
 
   return (
-    <div className='content-card' {...style}>
+    <div className='content-card' data-css-scope={style.scope}>
       <h4>{getString('recurringTitle')}</h4>
       <section>
         {renderList()}

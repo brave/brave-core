@@ -18,7 +18,7 @@ interface Props {
 export function TransferError(props: Readonly<Props>) {
   const { getString } = useLocaleContext()
   return (
-    <div {...style}>
+    <div data-css-scope={style.scope}>
       <div className='message'>
         <Icon name='warning-circle-filled' />
         <h3>{getString('contributeErrorTitle')}</h3>

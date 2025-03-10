@@ -251,7 +251,7 @@ export function AuthorizationModal() {
   if (!result) {
     return (
       <Modal>
-        <div {...style}>
+        <div data-css-scope={style.scope}>
           <div className='processing'>
             <ProgressRing />
             {getString('authorizeProcessingText')}
@@ -267,7 +267,7 @@ export function AuthorizationModal() {
         title={getString('authorizeErrorTitle')}
         onClose={onClose}
       />
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <div className='status-icon'>
           <Icon name='warning-triangle-filled' />
         </div>
