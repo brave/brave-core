@@ -7,7 +7,7 @@
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/brave_rewards/rewards_prefs_util.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
-#include "brave/browser/misc_metrics/uptime_monitor.h"
+#include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -219,7 +219,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   brave_vpn::MigrateLocalStatePrefs(local_state);
 #endif
 
-  misc_metrics::UptimeMonitor::MigrateObsoletePrefs(local_state);
+  misc_metrics::UptimeMonitorImpl::MigrateObsoletePrefs(local_state);
   brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);
   brave_stats::MigrateObsoleteLocalStatePrefs(local_state);
   p3a::StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(local_state);
