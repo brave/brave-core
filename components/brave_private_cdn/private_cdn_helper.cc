@@ -8,18 +8,11 @@
 #include <string_view>
 
 #include "base/containers/span.h"
-#include "base/no_destructor.h"
 #include "base/numerics/byte_conversions.h"
 
-namespace brave {
+namespace brave::private_cdn {
 
-// static
-PrivateCdnHelper* PrivateCdnHelper::GetInstance() {
-  static base::NoDestructor<PrivateCdnHelper> instance;
-  return instance.get();
-}
-
-bool PrivateCdnHelper::RemovePadding(std::string_view* padded_string) const {
+bool RemovePadding(std::string_view* padded_string) {
   if (!padded_string) {
     return false;
   }
@@ -43,8 +36,4 @@ bool PrivateCdnHelper::RemovePadding(std::string_view* padded_string) const {
   return true;
 }
 
-PrivateCdnHelper::PrivateCdnHelper() = default;
-
-PrivateCdnHelper::~PrivateCdnHelper() = default;
-
-}  // namespace brave
+}  // namespace brave::private_cdn

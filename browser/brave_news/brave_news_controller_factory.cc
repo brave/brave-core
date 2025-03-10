@@ -48,7 +48,6 @@ BraveNewsControllerFactory::BraveNewsControllerFactory()
           "BraveNewsControllerFactory",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(brave_ads::AdsServiceFactory::GetInstance());
-  DependsOn(FaviconServiceFactory::GetInstance());
   DependsOn(HistoryServiceFactory::GetInstance());
   DependsOn(HostContentSettingsMapFactory::GetInstance());
 }
@@ -69,15 +68,13 @@ BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
   if (!profile) {
     return nullptr;
   }
-  auto* favicon_service = FaviconServiceFactory::GetForProfile(
-      profile, ServiceAccessType::EXPLICIT_ACCESS);
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile);
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(profile);
   return std::make_unique<BraveNewsController>(
-      profile->GetPrefs(), favicon_service, ads_service, history_service,
+      profile->GetPrefs(), ads_service, history_service,
       profile->GetURLLoaderFactory(),
       std::make_unique<DirectFeedFetcherDelegateImpl>(
           host_content_settings_map));
