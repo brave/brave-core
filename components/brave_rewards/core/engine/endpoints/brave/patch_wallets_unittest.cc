@@ -10,9 +10,9 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/engine/endpoints/request_for.h"
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -37,7 +37,7 @@ class RewardsPatchWalletsTest
       public WithParamInterface<PatchWalletsParamType> {
  protected:
   void SetUp() override {
-    engine().SetState<std::string>(state::kWalletBrave, R"(
+    engine().Get<RewardsPrefs>().SetString(prefs::kWalletBrave, R"(
         {
           "payment_id": "fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
           "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="

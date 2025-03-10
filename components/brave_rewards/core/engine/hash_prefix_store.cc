@@ -189,4 +189,15 @@ bool HashPrefixStore::ContainsPrefix(const std::string& value) {
       HashPrefixIterator(prefixes_, prefix_count, prefix_size_), hash);
 }
 
+void HashPrefixStore::UpdatePrefixes(mojom::HashPrefixDataPtr prefix_data,
+                                     UpdatePrefixesCallback callback) {
+  std::move(callback).Run(
+      UpdatePrefixes(prefix_data->prefixes, prefix_data->prefix_size));
+}
+
+void HashPrefixStore::ContainsPrefix(const std::string& value,
+                                     ContainsPrefixCallback callback) {
+  std::move(callback).Run(ContainsPrefix(value));
+}
+
 }  // namespace brave_rewards::internal

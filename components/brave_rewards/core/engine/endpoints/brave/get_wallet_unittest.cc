@@ -10,9 +10,9 @@
 
 #include "brave/components/brave_rewards/core/engine/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=*GetWalletTest*
@@ -28,7 +28,8 @@ class GetWalletTest : public RewardsEngineTest {
           "payment_id": "fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
           "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
         })";
-    engine().SetState(state::kWalletBrave, std::move(json));
+    engine().Get<RewardsPrefs>().SetString(prefs::kWalletBrave,
+                                           std::move(json));
   }
 
   GetWallet::Result SendRequest(mojom::UrlResponsePtr response) {
