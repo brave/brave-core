@@ -11,7 +11,6 @@
 #include <string_view>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
@@ -126,11 +125,10 @@ bool IsUserInDefaultEnabledLocale() {
   // certain languages and locales on browser startup.
   const std::string language_code =
       brave_l10n::GetDefaultISOLanguageCodeString();
-  return (base::Contains(kEnabledLanguages, language_code) ||
-          base::Contains(
-              kEnabledLocales,
-              base::StrCat({language_code, "_",
-                            brave_l10n::GetDefaultISOCountryCodeString()})));
+  return (
+      kEnabledLanguages.contains(language_code) ||
+      kEnabledLocales.contains(base::StrCat(
+          {language_code, "_", brave_l10n::GetDefaultISOCountryCodeString()})));
 }
 
 }  // namespace brave_news

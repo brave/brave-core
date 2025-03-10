@@ -16,6 +16,7 @@
 
 #include "base/barrier_closure.h"
 #include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
@@ -86,9 +87,9 @@ constexpr char pref_prefix[] = "brave.rewards";
 constexpr base::TimeDelta kP3AMonthlyReportingPeriod = base::Days(30);
 constexpr base::TimeDelta kP3ATipReportDelay = base::Seconds(30);
 constexpr base::TimeDelta kP3ADailyReportInterval = base::Days(1);
-const std::set<std::string> kBitflyerCountries = {
+constexpr auto kBitflyerCountries = base::MakeFixedFlatSet<std::string_view>({
     "JP"  // ID: 19024
-};
+});
 
 bool DeleteFilesOnFileTaskRunner(
     const std::vector<base::FilePath>& file_paths) {
@@ -577,7 +578,7 @@ void RewardsServiceImpl::GetAvailableCountries(
       auto countries = kISOCountries;
       auto to_remove =
           std::ranges::remove_if(countries, [](const std::string& country) {
-            return base::Contains(kBitflyerCountries, country);
+            return kBitflyerCountries.contains(country);
           });
       countries.erase(to_remove.begin(), to_remove.end());
       return countries;
@@ -2247,7 +2248,7 @@ base::WeakPtr<RewardsServiceImpl> RewardsServiceImpl::AsWeakPtr() {
 }
 
 bool RewardsServiceImpl::IsBitFlyerCountry() const {
-  return base::Contains(kBitflyerCountries, GetCountryCode());
+  return kBitflyerCountries.contains(GetCountryCode());
 }
 
 bool RewardsServiceImpl::IsValidWalletType(

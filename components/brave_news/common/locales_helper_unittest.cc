@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -52,8 +51,8 @@ TEST(BraveNewsLocalesHelperTest, NoDuplicatesInAllLocales) {
 TEST(BraveNewsLocalesHelperTest, GetMinimalLocalesSetUsesChannelLocales) {
   auto locales = GetMinimalLocalesSet({"en_US", "ja_JP"}, {});
   EXPECT_EQ(2u, locales.size());
-  EXPECT_TRUE(base::Contains(locales, "en_US"));
-  EXPECT_TRUE(base::Contains(locales, "ja_JP"));
+  EXPECT_TRUE(locales.contains("en_US"));
+  EXPECT_TRUE(locales.contains("ja_JP"));
 }
 
 TEST(BraveNewsLocalesHelperTest,
@@ -67,7 +66,7 @@ TEST(BraveNewsLocalesHelperTest,
                                           }});
   auto locales = GetMinimalLocalesSet({"en_NZ"}, publishers);
   EXPECT_EQ(1u, locales.size());
-  EXPECT_TRUE(base::Contains(locales, "en_NZ"));
+  EXPECT_TRUE(locales.contains("en_NZ"));
 }
 
 TEST(BraveNewsLocalesHelperTest, AllRegionsAreCovered) {
@@ -85,10 +84,10 @@ TEST(BraveNewsLocalesHelperTest, AllRegionsAreCovered) {
                                           }});
   auto locales = GetMinimalLocalesSet({}, publishers);
   EXPECT_EQ(4u, locales.size());
-  EXPECT_TRUE(base::Contains(locales, "en_NZ"));
-  EXPECT_TRUE(base::Contains(locales, "en_AU"));
-  EXPECT_TRUE(base::Contains(locales, "en_UK"));
-  EXPECT_TRUE(base::Contains(locales, "en_US"));
+  EXPECT_TRUE(locales.contains("en_NZ"));
+  EXPECT_TRUE(locales.contains("en_AU"));
+  EXPECT_TRUE(locales.contains("en_UK"));
+  EXPECT_TRUE(locales.contains("en_US"));
 }
 
 TEST(BraveNewsLocalesHelperTest, MostCommonPublisherIsPickedFirstSingleGroup) {
@@ -112,7 +111,7 @@ TEST(BraveNewsLocalesHelperTest, MostCommonPublisherIsPickedFirstSingleGroup) {
                                           }});
   auto locales = GetMinimalLocalesSet({}, publishers);
   EXPECT_EQ(1u, locales.size());
-  EXPECT_TRUE(base::Contains(locales, "en_NZ"));
+  EXPECT_TRUE(locales.contains("en_NZ"));
 }
 
 TEST(BraveNewsLocalesHelperTest, MostCommonPublisherIsPickedFirst) {
@@ -142,10 +141,10 @@ TEST(BraveNewsLocalesHelperTest, MostCommonPublisherIsPickedFirst) {
                                           {"ja_JP"}});
   auto locales = GetMinimalLocalesSet({}, publishers);
   EXPECT_EQ(4u, locales.size());
-  EXPECT_TRUE(base::Contains(locales, "en_NZ"));
-  EXPECT_TRUE(base::Contains(locales, "es_AR"));
-  EXPECT_TRUE(base::Contains(locales, "pt_PT"));
-  EXPECT_TRUE(base::Contains(locales, "ja_JP"));
+  EXPECT_TRUE(locales.contains("en_NZ"));
+  EXPECT_TRUE(locales.contains("es_AR"));
+  EXPECT_TRUE(locales.contains("pt_PT"));
+  EXPECT_TRUE(locales.contains("ja_JP"));
 }
 
 TEST(BraveNewsLocalesHelperTest, OnlyEnabledPublishersAreConsidered) {
@@ -161,8 +160,8 @@ TEST(BraveNewsLocalesHelperTest, OnlyEnabledPublishersAreConsidered) {
 
   auto locales = GetMinimalLocalesSet({}, publishers);
   EXPECT_EQ(2u, locales.size());
-  EXPECT_TRUE(base::Contains(locales, "en_NZ"));
-  EXPECT_TRUE(base::Contains(locales, "en_UK"));
+  EXPECT_TRUE(locales.contains("en_NZ"));
+  EXPECT_TRUE(locales.contains("en_UK"));
 }
 
 TEST(BraveNewsLocalesHelperTest, NonEnabledPublishersDontAffectInclusions) {
@@ -178,7 +177,7 @@ TEST(BraveNewsLocalesHelperTest, NonEnabledPublishersDontAffectInclusions) {
 
   auto locales = GetMinimalLocalesSet({}, publishers);
   EXPECT_EQ(1u, locales.size());
-  EXPECT_TRUE(base::Contains(locales, "en_NZ"));
+  EXPECT_TRUE(locales.contains("en_NZ"));
 }
 
 }  // namespace brave_news

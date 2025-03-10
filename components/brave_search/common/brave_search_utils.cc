@@ -38,8 +38,7 @@ bool IsAllowedHost(const GURL& url) {
   if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
     return false;
   }
-  std::string host = url.host();
-  return base::Contains(kVettedHosts, host);
+  return kVettedHosts.contains(url.host_piece());
 }
 
 bool IsDefaultAPIEnabled() {
