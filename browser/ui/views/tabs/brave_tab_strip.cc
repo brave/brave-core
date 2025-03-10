@@ -428,6 +428,10 @@ void BraveTabStrip::UpdateTabContainer() {
     // In order to update shadow state, call ActiveStateChanged().
     tab_at(active_index.value())->ActiveStateChanged();
   }
+
+  // Called only at startup or vertical tab mode changed.
+  // To make initial tabs layout properly.
+  DeprecatedLayoutImmediately();
 }
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
