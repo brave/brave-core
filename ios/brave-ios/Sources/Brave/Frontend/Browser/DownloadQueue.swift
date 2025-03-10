@@ -223,8 +223,8 @@ class WebKitDownload: Download {
 
     self.originalURL = download.originalRequest?.url
 
-    self.bytesDownloaded = download.progress.completedUnitCount
-    self.totalBytesExpected = download.progress.totalUnitCount
+    self.totalBytesExpected =
+      response.expectedContentLength > 0 ? response.expectedContentLength : nil
 
     completedUnitCountObserver = download.progress.observe(
       \.completedUnitCount,
