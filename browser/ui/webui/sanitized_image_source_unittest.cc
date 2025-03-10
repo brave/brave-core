@@ -30,7 +30,7 @@ constexpr char kValidImage[] = "ad_banner.png";
 constexpr char kPaddedImage[] = "padded.png.pad";
 constexpr char kInvalidImage[] = "normal.js";
 
-const std::string LoadTestFile(const std::string& name) {
+std::string LoadTestFile(const std::string& name) {
   base::FilePath path = base::PathService::CheckedGet(brave::DIR_TEST_DATA);
   path = path.AppendASCII(name);
 
