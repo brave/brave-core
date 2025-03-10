@@ -446,7 +446,8 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
       // Check if this response should be handed off to Passbook.
       if OpenPassBookHelper(
         request: request,
-        response: response,
+        mimeType: response.mimeType,
+        passURL: response.url,
         canShowInWebView: false,
         forceDownload: false,
         browserViewController: browserController

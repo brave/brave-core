@@ -10,7 +10,7 @@ private let downloadOperationQueue = OperationQueue()
 
 protocol DownloadDelegate {
   func download(_ download: Download, didCompleteWithError error: Error?)
-  func download(_ download: Download, didDownloadBytes bytesDownloaded: Int64)
+  func downloadDidUpgradeProgress(_ download: Download)
   func download(_ download: Download, didFinishDownloadingTo location: URL)
 }
 
@@ -19,26 +19,42 @@ class Download: NSObject {
 
   fileprivate(set) var filename: String
   fileprivate(set) var mimeType: String
+  fileprivate(set) var originalURL: URL?
+  fileprivate(set) var destinationURL: URL?
 
+  fileprivate(set) var isStarted: Bool = false
   fileprivate(set) var isComplete = false
 
   fileprivate(set) var totalBytesExpected: Int64?
   fileprivate(set) var bytesDownloaded: Int64
 
-  override init() {
-    self.filename = "unknown"
-    self.mimeType = "application/octet-stream"
+  init(
+    suggestedFilename: String,
+    originalURL: URL?,
+    mimeType: String? = nil
+  ) {
+    self.filename = suggestedFilename
+    self.originalURL = originalURL
+    self.mimeType = mimeType ?? "application/octet-stream"
 
     self.bytesDownloaded = 0
 
     super.init()
   }
 
+  func startDownloadToLocalFileAtPath(_ path: String) {
+    if isStarted {
+      return
+    }
+    isStarted = true
+    let destination = URL(fileURLWithPath: path)
+    self.destinationURL = destination
+  }
   func cancel() {}
   func pause() {}
   func resume() {}
 
-  func uniqueDownloadPathForFilename(_ filename: String) async throws -> URL {
+  static func uniqueDownloadPathForFilename(_ filename: String) async throws -> URL {
     let downloadsPath = try await AsyncFileManager.default.downloadsPath()
     let basePath = downloadsPath.appending(path: filename)
     let fileExtension = basePath.pathExtension
@@ -58,21 +74,6 @@ class Download: NSObject {
 
     return proposedPath
   }
-}
-
-class HTTPDownload: Download {
-  let preflightResponse: URLResponse
-  let request: URLRequest
-
-  var state: URLSessionTask.State {
-    return task?.state ?? .suspended
-  }
-
-  fileprivate(set) var session: URLSession?
-  fileprivate(set) var task: URLSessionDownloadTask?
-  fileprivate(set) var cookieStore: WKHTTPCookieStore
-
-  private var resumeData: Data?
 
   // Used to avoid name spoofing using Unicode RTL char to change file extension
   public static func stripUnicode(fromFilename string: String) -> String {
@@ -81,109 +82,6 @@ class HTTPDownload: Download {
       .union(.controlCharacters)
       .union(.illegalCharacters)
     return string.components(separatedBy: validFilenameSet).joined()
-  }
-
-  init(cookieStore: WKHTTPCookieStore, preflightResponse: URLResponse, request: URLRequest) {
-    self.cookieStore = cookieStore
-    self.preflightResponse = preflightResponse
-    self.request = request
-
-    super.init()
-
-    if let filename = preflightResponse.suggestedFilename {
-      self.filename = HTTPDownload.stripUnicode(fromFilename: filename)
-    }
-
-    if let mimeType = preflightResponse.mimeType {
-      self.mimeType = mimeType
-    }
-
-    self.totalBytesExpected =
-      preflightResponse.expectedContentLength > 0 ? preflightResponse.expectedContentLength : nil
-
-    self.session = URLSession(
-      configuration: .ephemeral,
-      delegate: self,
-      delegateQueue: downloadOperationQueue
-    )
-    self.task = session?.downloadTask(with: request)
-  }
-
-  override func cancel() {
-    task?.cancel()
-  }
-
-  override func pause() {
-    task?.cancel(byProducingResumeData: { resumeData in
-      self.resumeData = resumeData
-    })
-  }
-
-  override func resume() {
-    cookieStore.getAllCookies { [self] cookies in
-      cookies.forEach { cookie in
-        session?.configuration.httpCookieStorage?.setCookie(cookie)
-      }
-
-      guard let resumeData = self.resumeData else {
-        self.task?.resume()
-        return
-      }
-      self.task = session?.downloadTask(withResumeData: resumeData)
-      self.task?.resume()
-    }
-  }
-}
-
-extension HTTPDownload: URLSessionTaskDelegate, URLSessionDownloadDelegate {
-  func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-    // Don't bubble up cancellation as an error if the
-    // error is `.cancelled` and we have resume data.
-    if let urlError = error as? URLError,
-      urlError.code == .cancelled,
-      resumeData != nil
-    {
-      return
-    }
-
-    delegate?.download(self, didCompleteWithError: error)
-  }
-
-  func urlSession(
-    _ session: URLSession,
-    downloadTask: URLSessionDownloadTask,
-    didWriteData bytesWritten: Int64,
-    totalBytesWritten: Int64,
-    totalBytesExpectedToWrite: Int64
-  ) {
-    bytesDownloaded = totalBytesWritten
-    totalBytesExpected = totalBytesExpectedToWrite
-
-    delegate?.download(self, didDownloadBytes: bytesWritten)
-  }
-
-  func urlSession(
-    _ session: URLSession,
-    downloadTask: URLSessionDownloadTask,
-    didFinishDownloadingTo location: URL
-  ) {
-    // This method will delete the downloaded file immediately after this delegate method returns
-    // so we must synchonously move the file to a temporary directory first before processing it
-    // on a different thread since the Task will execute after this method returns
-    let temporaryLocation = FileManager.default.temporaryDirectory
-      .appending(component: "\(filename)-\(location.lastPathComponent)")
-    try? FileManager.default.moveItem(at: location, to: temporaryLocation)
-    Task {
-      do {
-        let downloadsPath = try await AsyncFileManager.default.downloadsPath()
-        let destination = try await URL.uniqueFileName(filename, in: downloadsPath)
-        try await AsyncFileManager.default.moveItem(at: temporaryLocation, to: destination)
-        isComplete = true
-        delegate?.download(self, didFinishDownloadingTo: destination)
-      } catch {
-        delegate?.download(self, didCompleteWithError: error)
-      }
-    }
   }
 }
 
@@ -273,8 +171,9 @@ extension DownloadQueue: DownloadDelegate {
     }
   }
 
-  func download(_ download: Download, didDownloadBytes bytesDownloaded: Int64) {
-    combinedBytesDownloaded += bytesDownloaded
+  func downloadDidUpgradeProgress(_ download: Download) {
+    combinedBytesDownloaded = downloads.reduce(into: 0) { $0 += $1.bytesDownloaded }
+    combinedTotalBytesExpected = downloads.reduce(into: 0) { $0 += ($1.totalBytesExpected ?? 0) }
     delegate?.downloadQueue(
       self,
       didDownloadCombinedBytes: combinedBytesDownloaded,
@@ -299,34 +198,33 @@ extension DownloadQueue: DownloadDelegate {
 }
 
 class WebKitDownload: Download {
-  let fileURL: URL
-  let response: URLResponse
-  let suggestedFileName: String
   weak var download: WKDownload?
 
   private weak var webView: WKWebView?
   private var downloadResumeData: Data?
-  private weak var downloadQueue: DownloadQueue?
   private var completedUnitCountObserver: NSKeyValueObservation?
+  private var downloadDecisionHandler: ((URL?) -> Void)?
 
   init(
-    fileURL: URL,
     response: URLResponse,
     suggestedFileName: String,
     download: WKDownload,
-    downloadQueue: DownloadQueue
+    downloadDecisionHandler: @escaping (URL?) -> Void
   ) {
-    self.fileURL = fileURL
-    self.response = response
-    self.suggestedFileName = suggestedFileName
     self.download = download
     self.webView = download.webView
-    self.downloadQueue = downloadQueue
-    super.init()
+    self.downloadDecisionHandler = downloadDecisionHandler
 
-    self.filename = suggestedFileName
-    self.bytesDownloaded = download.progress.completedUnitCount
-    self.totalBytesExpected = download.progress.totalUnitCount
+    super.init(
+      suggestedFilename: suggestedFileName,
+      originalURL: download.originalRequest?.url,
+      mimeType: response.mimeType
+    )
+
+    self.originalURL = download.originalRequest?.url
+
+    self.totalBytesExpected =
+      response.expectedContentLength > 0 ? response.expectedContentLength : nil
 
     completedUnitCountObserver = download.progress.observe(
       \.completedUnitCount,
@@ -335,19 +233,31 @@ class WebKitDownload: Download {
 
         self.bytesDownloaded = progress.completedUnitCount
         self.totalBytesExpected = progress.totalUnitCount
-
-        guard let downloadQueue = self.downloadQueue else { return }
-
-        downloadQueue.delegate?.downloadQueue(
-          downloadQueue,
-          didDownloadCombinedBytes: self.bytesDownloaded,
-          combinedTotalBytesExpected: self.totalBytesExpected
-        )
+        self.delegate?.downloadDidUpgradeProgress(self)
       }
     )
   }
 
+  override func startDownloadToLocalFileAtPath(_ path: String) {
+    super.startDownloadToLocalFileAtPath(path)
+    downloadDecisionHandler?(destinationURL)
+    downloadDecisionHandler = nil
+  }
+
+  deinit {
+    if !isStarted {
+      downloadDecisionHandler?(nil)
+      downloadDecisionHandler = nil
+      return
+    }
+  }
+
   override func cancel() {
+    if !isStarted {
+      downloadDecisionHandler?(nil)
+      downloadDecisionHandler = nil
+      return
+    }
     download?.cancel({ [weak self] data in
       guard let self = self else { return }
       if let data = data {
@@ -371,7 +281,7 @@ class WebKitDownload: Download {
           self.download = download
           self.bytesDownloaded = download.progress.completedUnitCount
           self.totalBytesExpected = download.progress.totalUnitCount
-          self.downloadQueue?.enqueue(self)
+          self.delegate?.downloadDidUpgradeProgress(self)
         }
       )
     }
