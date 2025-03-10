@@ -219,19 +219,15 @@ ViewCounterService::GetNextWallpaperForDisplay() {
 
 std::optional<base::Value::Dict>
 ViewCounterService::GetCurrentWallpaperForDisplay() {
-  if (!ShouldShowSponsoredImages()) {
-    return GetCurrentWallpaper();
+  if (ShouldShowSponsoredImages()) {
+    if (std::optional<base::Value::Dict> dict = GetCurrentBrandedWallpaper()) {
+      current_wallpaper_ = dict->Clone();
+      return dict;
+    }
   }
 
-  if (std::optional<base::Value::Dict> branded_wallpaper =
-          GetCurrentBrandedWallpaper()) {
-    current_wallpaper_ = branded_wallpaper->Clone();
-    return branded_wallpaper;
-  }
-
-  // The retrieval of `branded_wallpaper` failed due to frequency capping. In
-  // such instances, we need to ensure the next wallpaper is displayed because
-  // it would not have been incremented during the last `RegisterPageView` call.
+  // If a sponsored image should not be displayed, fallback to the next
+  // wallpaper.
   return GetNextWallpaperForDisplay();
 }
 
@@ -268,14 +264,11 @@ ViewCounterService::GetCurrentBrandedWallpaper() {
     return std::nullopt;
   }
 
-  const bool should_frequency_cap_ads =
-      prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
-
-  if (should_frequency_cap_ads && !images_data->IsSuperReferral()) {
-    return GetCurrentBrandedWallpaperFromAdInfo();
+  if (images_data->IsSuperReferral()) {
+    return GetNextBrandedWallpaperWhichMatchesConditions();
   }
 
-  return GetNextBrandedWallpaperWhichMatchesConditions();
+  return GetCurrentBrandedWallpaperFromAdInfo();
 }
 
 void ViewCounterService::GetCurrentBrandedWallpaper(
@@ -664,8 +657,7 @@ std::string ViewCounterService::GetSuperReferralCode() const {
 
 void ViewCounterService::MaybePrefetchNewTabPageAd() {
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
-  if (!ads_service_ || !CanShowSponsoredImages() ||
-      !prefs_->GetBoolean(brave_rewards::prefs::kEnabled) || !images_data ||
+  if (!ads_service_ || !CanShowSponsoredImages() || !images_data ||
       images_data->IsSuperReferral()) {
     return;
   }

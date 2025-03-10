@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
@@ -61,12 +60,7 @@ NewTabPageAdHandler::~NewTabPageAdHandler() = default;
 
 void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
   if (!UserHasOptedInToNewTabPageAds()) {
-    return std::move(callback).Run(/*ad=*/std::nullopt);
-  }
-
-  if (!UserHasJoinedBraveRewards() &&
-      !ShouldAlwaysTriggerNewTabPageAdEvents()) {
-    // No-op if we should not trigger events for non-Rewards users.
+    // No-op if the user has not opted into new tab page ads.
     return std::move(callback).Run(/*ad=*/std::nullopt);
   }
 
@@ -87,26 +81,8 @@ void NewTabPageAdHandler::TriggerEvent(
   }
 
   if (!UserHasOptedInToNewTabPageAds()) {
+    // No-op if the user has not opted into new tab page ads.
     return std::move(callback).Run(/*success=*/false);
-  }
-
-  if (!UserHasJoinedBraveRewards() &&
-      !ShouldAlwaysTriggerNewTabPageAdEvents()) {
-    // No-op if we should not trigger events for non-Rewards users.
-    return std::move(callback).Run(/*success=*/false);
-  }
-
-  if (!UserHasJoinedBraveRewards() &&
-      mojom_ad_event_type == mojom::NewTabPageAdEventType::kViewedImpression) {
-    // `MaybeServe` will trigger a `kServedImpression` event if the user has
-    // joined Brave Rewards; otherwise, we need to trigger a `kServedImpression`
-    // event when triggering a `kViewedImpression` event for non-Rewards users.
-    return event_handler_.FireEvent(
-        placement_id, creative_instance_id,
-        mojom::NewTabPageAdEventType::kServedImpression,
-        base::BindOnce(&NewTabPageAdHandler::TriggerServedEventCallback,
-                       weak_factory_.GetWeakPtr(), creative_instance_id,
-                       std::move(callback)));
   }
 
   event_handler_.FireEvent(

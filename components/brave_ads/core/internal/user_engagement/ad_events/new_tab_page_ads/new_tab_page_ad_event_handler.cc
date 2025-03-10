@@ -11,8 +11,8 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 
 namespace brave_ads {
@@ -39,6 +39,12 @@ void NewTabPageAdEventHandler::FireEvent(
     BLOG(1,
          "Failed to fire new tab page ad event due to an invalid creative "
          "instance id");
+    return FailedToFireEvent(placement_id, creative_instance_id,
+                             mojom_ad_event_type, std::move(callback));
+  }
+
+  if (!IsAllowedToFireAdEvent()) {
+    BLOG(1, "New tab page ad: Not allowed to fire event");
     return FailedToFireEvent(placement_id, creative_instance_id,
                              mojom_ad_event_type, std::move(callback));
   }
@@ -94,19 +100,7 @@ void NewTabPageAdEventHandler::GetAdEventsCallback(
                              mojom_ad_event_type, std::move(callback));
   }
 
-  if (!WasAdServed(ad, ad_events, mojom_ad_event_type)) {
-    BLOG(1,
-         "New tab page ad: Not allowed because an ad was not served for "
-         "placement id "
-             << ad.placement_id);
-    return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
-                             mojom_ad_event_type, std::move(callback));
-  }
-
-  if (ShouldDeduplicateAdEvent(ad, ad_events, mojom_ad_event_type)) {
-    BLOG(1, "New tab page ad: Not allowed as deduplicated "
-                << mojom_ad_event_type << " event for placement id "
-                << ad.placement_id);
+  if (!ShouldFireAdEvent(ad, ad_events, mojom_ad_event_type)) {
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
                              mojom_ad_event_type, std::move(callback));
   }
