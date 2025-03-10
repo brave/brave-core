@@ -44,7 +44,7 @@ import {
 } from '../../../../common/slices/api.slice.extra'
 
 // Constants
-import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
+import { querySubscriptionOptions5m } from '../../../../common/slices/constants'
 
 // Utils
 import Amount from '../../../../utils/amount'
@@ -168,7 +168,7 @@ export const useBuy = () => {
             toCurrency: selectedCurrency?.currencyCode || defaultFiatCurrency
           }
         : skipToken,
-      querySubscriptionOptions60s
+      querySubscriptionOptions5m
     )
 
   const selectedAsset = useMemo(() => {

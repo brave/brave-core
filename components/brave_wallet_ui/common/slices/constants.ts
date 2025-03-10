@@ -14,6 +14,12 @@ export const querySubscriptionOptions60s = {
   refetchOnMountOrArgChange: 60 * s,
   refetchOnReconnect: true
 }
+export const querySubscriptionOptions5m = {
+  refetchOnFocus: true,
+  pollingInterval: 300 * s,
+  refetchOnMountOrArgChange: 300 * s,
+  refetchOnReconnect: true
+}
 export const defaultQuerySubscriptionOptions = {
   refetchOnFocus: true,
   pollingInterval: 15 * s,
