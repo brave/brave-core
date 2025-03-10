@@ -1,5 +1,5 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index da6b76717d7b7b7b0d13f89f1785281dd4d915a6..2883a9888e33f7e09c2351a0df9b79b573ec9541 100644
+index 998d8906b6bd33f48199dc5a67bbd149742eb561..3b8422d9ccabfc7669ea5a1cd2e482f8c2e18417 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
 @@ -4495,6 +4495,7 @@ if (is_android) {
@@ -10,7 +10,7 @@ index da6b76717d7b7b7b0d13f89f1785281dd4d915a6..2883a9888e33f7e09c2351a0df9b79b5
  
      if (use_clang_profiling) {
        sources += [
-@@ -5027,6 +5028,7 @@ if (is_android) {
+@@ -5032,6 +5033,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/shared_preferences/SharedPreferencesManager.java",
        "android/java/src/org/chromium/base/shared_preferences/StrictPreferenceKeyChecker.java",
      ]

@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/rpm/chrome.spec.template b/chrome/installer/linux/rpm/chrome.spec.template
-index e968b5fd711d61ce2bc723eacc04a1a504e4e0e0..8c1971be4e32fb89709a4c2a7448f5ed1ebd06c7 100644
+index 658a6edb3924c6009ed4fb1ec5f609e7d69e04fe..50d3d7a8ae6f3263efab8411764416283c20c42a 100644
 --- a/chrome/installer/linux/rpm/chrome.spec.template
 +++ b/chrome/installer/linux/rpm/chrome.spec.template
-@@ -128,7 +128,8 @@ if [ ! -e "$DEFAULTS_FILE" ]; then
+@@ -129,7 +129,8 @@ if [ ! -e "$DEFAULTS_FILE" ]; then
    echo 'repo_add_once="true"' > "$DEFAULTS_FILE"
  fi
  
