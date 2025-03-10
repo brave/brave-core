@@ -68,13 +68,14 @@ TEST_F(
   EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kPromotedContentAd));
 }
 
-TEST_F(BraveAdsSiteVisitUtilTest, AllowNewTabPageAdPageLand) {
+TEST_F(BraveAdsSiteVisitUtilTest,
+       AllowNewTabPageAdPageLandIfRewardsUserAndOptedInToNewTabPageAds) {
   // Act & Assert
   EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kNewTabPageAd));
 }
 
 TEST_F(BraveAdsSiteVisitUtilTest,
-       DoNotAllowNewTabPageAdPageLandIfOptedOutOfNewTabPageAds) {
+       DoNotAllowNewTabPageAdPageLandIfRewardsUserAndOptedOutOfNewTabPageAds) {
   // Arrange
   test::OptOutOfNewTabPageAds();
 
@@ -82,8 +83,9 @@ TEST_F(BraveAdsSiteVisitUtilTest,
   EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kNewTabPageAd));
 }
 
-TEST_F(BraveAdsSiteVisitUtilTest,
-       DoNotAllowNewTabPageAdPageLandForNonRewardsUser) {
+TEST_F(
+    BraveAdsSiteVisitUtilTest,
+    DoNotAllowNewTabPageAdPageLandIfNonRewardsUserAndOptedInToNewTabPageAds) {
   // Arrange
   test::DisableBraveRewards();
 
@@ -93,12 +95,10 @@ TEST_F(BraveAdsSiteVisitUtilTest,
 
 TEST_F(
     BraveAdsSiteVisitUtilTest,
-    DoNotAllowNewTabPageAdPageLandForNonRewardsUserIfShouldAlwaysTriggerNewTabPageAdEvents) {
+    DoNotAllowNewTabPageAdPageLandIfNonRewardsUserAndOptedOutOfNewTabPageAds) {
   // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(
-      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
-
   test::DisableBraveRewards();
+  test::OptOutOfNewTabPageAds();
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kNewTabPageAd));

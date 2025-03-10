@@ -31,11 +31,9 @@ bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event) {
 
     case mojom::AdType::kNewTabPageAd: {
       // Only if:
-      // - The user has opted into new tab page ads and has either joined Brave
-      //   Rewards or new tab page ad events should always be triggered.
-      return UserHasOptedInToNewTabPageAds() &&
-             (UserHasJoinedBraveRewards() ||
-              ShouldAlwaysTriggerNewTabPageAdEvents());
+      // - The user has opted into new tab page ads and has joined Brave
+      //   Rewards.
+      return UserHasOptedInToNewTabPageAds() && UserHasJoinedBraveRewards();
     }
 
     case mojom::AdType::kNotificationAd: {

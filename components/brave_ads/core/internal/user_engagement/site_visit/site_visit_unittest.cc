@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 #include "net/http/http_status_code.h"
 #include "url/gurl.h"
@@ -217,29 +216,7 @@ TEST_F(BraveAdsSiteVisitTest,
   FastForwardClockBy(kPageLandAfter.Get());
 }
 
-TEST_F(
-    BraveAdsSiteVisitTest,
-    DoNotLandOnNewTabPageAdPageForNonRewardsUserIfShouldAlwaysTriggerNewTabPageAdEvents) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(
-      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
-
-  test::DisableBraveRewards();
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
-                                  /*should_generate_random_uuids=*/true);
-  SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")},
-                     net::HTTP_OK);
-
-  // Act & Assert
-  EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
-  FastForwardClockBy(kPageLandAfter.Get());
-}
-
-TEST_F(
-    BraveAdsSiteVisitTest,
-    DoNotLandOnNewTabPageAdPageForNonRewardsUserIfShouldNotAlwaysTriggerNewTabPageAdEvents) {
+TEST_F(BraveAdsSiteVisitTest, DoNotLandOnNewTabPageAdPageForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
