@@ -22,6 +22,7 @@ static_library("core") {
     "pref_registry.h",
     "publisher_utils.cc",
     "publisher_utils.h",
+    "remote_worker.h",
     "rewards_flags.cc",
     "rewards_flags.h",
     "rewards_util.cc",
