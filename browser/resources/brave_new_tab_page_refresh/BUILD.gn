@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
 
 assert(!is_android)
 
@@ -14,7 +15,13 @@ transpile_web_ui("resources") {
       ] ]
   resource_name = "brave_new_tab_page_refresh"
   output_module = true
-  deps = [ "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom_js" ]
+  deps = [
+    "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom_js",
+    "//brave/components/brave_ads/core/mojom:mojom_js",
+    "//brave/components/brave_rewards/core/mojom:webui_js",
+    "//brave/components/brave_vpn/common/mojom:mojom_js",
+    "//brave/components/ntp_background_images/browser/mojom:mojom_js",
+  ]
 }
 
 pack_web_resources("generated_resources") {
