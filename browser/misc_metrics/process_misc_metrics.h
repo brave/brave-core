@@ -23,6 +23,7 @@ namespace misc_metrics {
 class MenuMetrics;
 class NewTabMetrics;
 class VerticalTabMetrics;
+class SplitViewMetrics;
 #else
 class PrivacyHubMetrics;
 class TabMetrics;
@@ -44,6 +45,7 @@ class ProcessMiscMetrics {
   MenuMetrics* menu_metrics();
   NewTabMetrics* new_tab_metrics();
   VerticalTabMetrics* vertical_tab_metrics();
+  SplitViewMetrics* split_view_metrics();
 #else
   PrivacyHubMetrics* privacy_hub_metrics();
   TabMetrics* tab_metrics();
@@ -56,6 +58,7 @@ class ProcessMiscMetrics {
   std::unique_ptr<MenuMetrics> menu_metrics_;
   std::unique_ptr<NewTabMetrics> new_tab_metrics_;
   std::unique_ptr<VerticalTabMetrics> vertical_tab_metrics_;
+  std::unique_ptr<SplitViewMetrics> split_view_metrics_;
 #else
   std::unique_ptr<PrivacyHubMetrics> privacy_hub_metrics_;
   std::unique_ptr<TabMetrics> tab_metrics_;

@@ -14,6 +14,7 @@
 #include "brave/browser/misc_metrics/vertical_tab_metrics.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
+#include "brave/components/misc_metrics/split_view_metrics.h"
 #else
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #include "brave/components/misc_metrics/tab_metrics.h"
@@ -26,6 +27,7 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state) {
   menu_metrics_ = std::make_unique<MenuMetrics>(local_state);
   new_tab_metrics_ = std::make_unique<NewTabMetrics>(local_state);
   vertical_tab_metrics_ = std::make_unique<VerticalTabMetrics>(local_state);
+  split_view_metrics_ = std::make_unique<SplitViewMetrics>(local_state);
 #else
   privacy_hub_metrics_ =
       std::make_unique<misc_metrics::PrivacyHubMetrics>(local_state);
@@ -50,6 +52,10 @@ NewTabMetrics* ProcessMiscMetrics::new_tab_metrics() {
 VerticalTabMetrics* ProcessMiscMetrics::vertical_tab_metrics() {
   return vertical_tab_metrics_.get();
 }
+
+SplitViewMetrics* ProcessMiscMetrics::split_view_metrics() {
+  return split_view_metrics_.get();
+}
 #else
 PrivacyHubMetrics* ProcessMiscMetrics::privacy_hub_metrics() {
   return privacy_hub_metrics_.get();
@@ -73,6 +79,7 @@ void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   MenuMetrics::RegisterPrefs(registry);
   NewTabMetrics::RegisterPrefs(registry);
   VerticalTabMetrics::RegisterPrefs(registry);
+  SplitViewMetrics::RegisterPrefs(registry);
 #else
   PrivacyHubMetrics::RegisterPrefs(registry);
   TabMetrics::RegisterPrefs(registry);
