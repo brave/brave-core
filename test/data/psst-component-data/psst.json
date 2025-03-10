@@ -1,12 +1,26 @@
 [
     {
+        "name": "a",
         "include": [
             "https://a.com/*"
         ],
         "exclude": [
         ],
         "version": 1,
-        "test_script": "a/test.js",
-        "policy_script": "a/policy.js"
+        "user_script": "user.js",
+        "test_script": "test.js",
+        "policy_script": "policy.js"
+    },
+    {
+        "name": "rule_with_wrong_script_path",
+        "include": [
+            "https://url.com/*"
+        ],
+        "exclude": [
+        ],
+        "version": 1,
+        "user_script": "user.js",
+        "test_script": "test.js",
+        "policy_script": "policy.js"
     }
 ]

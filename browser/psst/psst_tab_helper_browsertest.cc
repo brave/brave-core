@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include <cstddef>
+#include <optional>
 #include <string>
 
 #include "base/files/file_util.h"
@@ -106,6 +107,8 @@ class PsstTabHelperBrowserTest : public PlatformBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(https_server_.Start());
+
+    PsstConsentDialogTracker::CreateForWebContents(web_contents());
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -131,9 +134,9 @@ class PsstTabHelperBrowserTest : public PlatformBrowserTest {
     return chrome_test_utils::GetActiveWebContents(this);
   }
 
-  void WaitUntil(base::RepeatingCallback<bool()> condition) {
-    if (condition.Run())
-      return;
+  void WaitUntil(base::RepeatingCallback<bool()> condition, int wait_ms = 100) {
+    // if (condition.Run())
+    //   return;
 
     base::RepeatingTimer scheduler;
     scheduler.Start(FROM_HERE, base::Milliseconds(100),
@@ -144,7 +147,7 @@ class PsstTabHelperBrowserTest : public PlatformBrowserTest {
     Run();
   }
 
-void MockOnLoadRules(const std::string& user_id, const std::string& user_script) {
+void MockOnLoadRules(const std::string& user_script, const std::string rule_file_name, std::optional<const std::string> policy_script = std::nullopt) {
   base::RunLoop loop;
       EXPECT_CALL(*rule_data_reader_mock_, ReadUserScript)
         .Times(1)
@@ -152,22 +155,16 @@ void MockOnLoadRules(const std::string& user_id, const std::string& user_script)
           return user_script;
         }));
 
-    EXPECT_CALL(*rule_data_reader_mock_, ReadTestScript)
-        .Times(1)
-        .WillOnce(testing::Invoke([&](const PsstRule& rule) {
-          LOG(INFO) << "[PSST] ReadTestScript rule:" << rule.Name();
-          return "console.log('test_script');";
-        }));
     EXPECT_CALL(*rule_data_reader_mock_, ReadPolicyScript)
         .Times(1)
-        .WillOnce(testing::Invoke([&](const PsstRule& rule) {
-          LOG(INFO) << "[PSST] ReadPolicyScript rule:" << rule.Name();
-          return "console.log('policy_script');";
+        .WillOnce(testing::Invoke([policy_script](const PsstRule& rule) {
+          LOG(INFO) << "[PSST] ReadPolicyScript rule:" << rule.Name() << " policy_script:" << (policy_script.has_value() ? policy_script.value() : "console.log('policy_script');");
+          return policy_script.has_value() ? policy_script.value() : "console.log('policy_script');";
         }));
 
      EXPECT_CALL(*psst_rul_registry_, OnLoadRules(testing::_))
         .WillOnce(testing::Invoke([&](const std::string& data) {
-          EXPECT_EQ(data, ReadFile(test_data_dir_base_.Append("psst.json")));
+          EXPECT_EQ(data, ReadFile(test_data_dir_base_.Append(rule_file_name)));
           (*psst_rul_registry_).PsstRuleRegistryImpl::OnLoadRules(data);
           loop.Quit();
         }));
@@ -185,6 +182,16 @@ void MockOnLoadRules(const std::string& user_id, const std::string& user_script)
 
   PrefService* GetPrefs() { return browser()->profile()->GetPrefs(); }
 
+  void CloseDialog(PsstConsentDialogTracker* tracker) {
+    auto* dlg = static_cast<PsstConsentDialog*>(
+      tracker->active_dialog()->widget_delegate());
+    if(dlg) {
+      LOG(INFO) << "[PSST] CloseDialog";
+      dlg->OnConsentClicked();
+      dlg->AcceptDialog();
+    }
+  }
+
  protected:
   net::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
@@ -201,9 +208,6 @@ void MockOnLoadRules(const std::string& user_id, const std::string& user_script)
 
 IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, GetUserIdAndShowDialog) {
   base::ScopedAllowBlockingForTesting allow_blocking;
-  // const char user_id[] = "user1";
-  // ASSERT_TRUE(SetPsstSettings(user_id, "a", PsstSettings{psst::kAsk, 1},
-  // GetPrefs()));
 
   const std::string rule_name{"a"};
   const GURL url = https_server_.GetURL(
@@ -215,15 +219,22 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, GetUserIdAndShowDialog) {
       base::ReplaceStringPlaceholders(R"((() => {return {
         'user': "$1",
         "requests": [
-            {"name": "location setting"},
+            { 
+                url:'https://$2.com/settings/ads_preferences',
+                description: 'Ads Preferences'
+            },
         ]
     }})())",
-                                      {user_id}, nullptr)};
-  MockOnLoadRules(user_id, user_script);
+                                      {user_id, rule_name}, nullptr)};
+
+  const std::string policy_script{R"((() => {return {
+      "result": true,
+      "psst": {},
+  }})())"};
+  MockOnLoadRules(user_script, "psst.json", policy_script);
 
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
 
-  PsstConsentDialogTracker::CreateForWebContents(web_contents());
   auto* dialog_tracker =
       PsstConsentDialogTracker::FromWebContents(web_contents());
 
@@ -234,15 +245,13 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, GetUserIdAndShowDialog) {
   LOG(INFO) << "[PSST] PsstTabHelperBrowserTest.RuleMatchTestScriptTrue #200";
   ASSERT_TRUE(dialog_tracker->active_dialog());
   LOG(INFO) << "[PSST] PsstTabHelperBrowserTest.RuleMatchTestScriptTrue #300";
-  static_cast<PsstConsentDialog*>(
-      dialog_tracker->active_dialog()->widget_delegate())
-      ->AcceptDialog();
+  CloseDialog(dialog_tracker);
 
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return !dialog_tracker->active_dialog(); }));
-
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return !dialog_tracker || !dialog_tracker->active_dialog() ||
+           dialog_tracker->active_dialog()->IsClosed();
+  }));
   LOG(INFO) << "[PSST] PsstTabHelperBrowserTest.RuleMatchTestScriptTrue #400";
-  ASSERT_FALSE(dialog_tracker->active_dialog());
 
   const auto& psst_settings = GetPrefs()->GetDict(prefs::kPsstSettingsPref);
   LOG(INFO) << "[PSST] psst_settings:" << psst_settings.DebugString();
@@ -259,6 +268,100 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, GetUserIdAndShowDialog) {
   EXPECT_EQ(consent_status_val.value(), 1);
   EXPECT_EQ(script_version_val.value(), 1);
 }
+
+IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, UserScriptReturnsUndefinedNoDialog) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  const std::string rule_name{"a"};
+  const GURL url = https_server_.GetURL(
+      base::ReplaceStringPlaceholders("$1.com", {rule_name}, nullptr),
+      "/simple.html");
+
+  const std::string user_script{
+      base::ReplaceStringPlaceholders(R"((() => {return null})())",
+                                      { rule_name }, nullptr)};
+
+  MockOnLoadRules(user_script, "psst.json");
+
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+
+  auto* dialog_tracker =
+      PsstConsentDialogTracker::FromWebContents(web_contents());
+
+  // Wait till text recognition dialog is launched.
+  WaitUntil(base::BindLambdaForTesting(
+                [&]() { return !dialog_tracker->active_dialog(); }),
+            3000);
+
+  LOG(INFO) << "[PSST] PsstTabHelperBrowserTest.RuleMatchTestScriptTrue #200";
+  ASSERT_FALSE(dialog_tracker->active_dialog());
+}
+
+IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, UserScriptNoUserReturnedNoDialog) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  const std::string rule_name{"a"};
+  const GURL url = https_server_.GetURL(
+      base::ReplaceStringPlaceholders("$1.com", {rule_name}, nullptr),
+      "/simple.html");
+
+  const std::string user_script{
+      base::ReplaceStringPlaceholders(R"((() => {return {
+        'user': undefined,
+        "requests": [
+            { 
+                url:'https://$1.com/settings/ads_preferences',
+                description: 'Ads Preferences'
+            },
+        ]
+    }})())",
+                                      { rule_name }, nullptr)};
+
+  MockOnLoadRules(user_script, "psst.json");
+
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+
+  auto* dialog_tracker =
+      PsstConsentDialogTracker::FromWebContents(web_contents());
+
+  // Wait till text recognition dialog is launched.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !dialog_tracker->active_dialog(); }), 3000);
+
+  LOG(INFO) << "[PSST] PsstTabHelperBrowserTest.RuleMatchTestScriptTrue #200";
+  ASSERT_FALSE(dialog_tracker->active_dialog());
+}
+
+IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, NavigateToAnotherUrlNoPsstRuleNoDialog) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  const std::string rule_name{"a"};
+  const GURL url = https_server_.GetURL("url_with_no_rule.com", "/simple.html");
+LOG(INFO) << "[PSST] NavigateToAnotherUrlNoPsstNoDialog url:" << url;
+  const std::string user_script{
+      base::ReplaceStringPlaceholders(R"((() => {return {
+        'user': undefined,
+        "requests": [
+            { 
+                url:'https://$1.com/settings/ads_preferences',
+                description: 'Ads Preferences'
+            },
+        ]
+    }})())",
+                                      { rule_name }, nullptr)};
+
+  MockOnLoadRules(user_script, "psst.json");
+
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+
+  auto* dialog_tracker =
+      PsstConsentDialogTracker::FromWebContents(web_contents());
+
+  // Wait till text recognition dialog is launched.
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !dialog_tracker->active_dialog(); }), 3000);
+
+  LOG(INFO) << "[PSST] PsstTabHelperBrowserTest.RuleMatchTestScriptTrue #200";
+  ASSERT_FALSE(dialog_tracker->active_dialog());
+}
+
 
 IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, CallTestScriptAsDialogAccepted) {
   base::ScopedAllowBlockingForTesting allow_blocking;

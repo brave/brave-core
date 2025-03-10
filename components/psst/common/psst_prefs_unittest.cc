@@ -35,6 +35,10 @@ TEST_F(PsstPrefsUnitTest, TestPsstSettings) {
   EXPECT_EQ(settings->consent_status, kAsk);
   EXPECT_EQ(settings->script_version, 1);
 
+  EXPECT_FALSE(psst::GetPsstSettings("unknown_user", "twitter", prefs));
+
+  EXPECT_FALSE(psst::GetPsstSettings("user1", "unknown_name", prefs));
+
   settings = psst::GetPsstSettings("user2", "twitter", prefs);
   EXPECT_TRUE(settings.has_value());
   EXPECT_EQ(settings->consent_status, kAllow);

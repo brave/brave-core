@@ -6,12 +6,10 @@
 #ifndef BRAVE_COMPONENTS_PSST_BROWSER_CORE_MATCHED_RULE_H_
 #define BRAVE_COMPONENTS_PSST_BROWSER_CORE_MATCHED_RULE_H_
 
-#include <memory>
 #include <optional>
 #include <string>
 
 #include "base/component_export.h"
-#include "base/files/file_path.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 
 namespace psst {
@@ -25,7 +23,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRule {
 
   // Getters.
   const std::string& UserScript() const { return user_script_; }
-  const std::string& TestScript() const { return test_script_; }
   const std::string& PolicyScript() const { return policy_script_; }
   int Version() const { return version_; }
   const std::string& Name() const { return name_; }
@@ -35,13 +32,11 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRule {
   friend class RuleDataReaderUnitTest;
   MatchedRule(const std::string& name,
               const std::string& user_script,
-              const std::string& test_script,
               const std::string& policy_script,
               int version);
 
   const std::string name_;
   const std::string user_script_;
-  const std::string test_script_;
   const std::string policy_script_;
   int version_;
 };

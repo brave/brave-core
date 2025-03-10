@@ -41,10 +41,11 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
     virtual ~Delegate() = default;
     virtual void ShowPsstConsentDialog(content::WebContents* contents,
                                        bool prompt_for_new_version,
-                                       const std::string& list_of_changes,
+                                       const base::Value::List requests,
                                        base::OnceClosure yes_cb,
                                        base::OnceClosure no_cb) = 0;
     virtual void SetProgressValue(content::WebContents* contents, const double value) = 0;
+    virtual void SetRequestDone(content::WebContents* contents, const std::string& url) = 0;
     virtual void Close(content::WebContents* contents) = 0;
   };
 
@@ -85,7 +86,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
       std::optional<base::Value> params,
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       PsstConsentStatus status);
-  void OnTestScriptResult(
+  void OnPolicyScriptResult(
       const std::string& user_id,
       const MatchedRule& rule,
       const content::GlobalRenderFrameHostId& render_frame_host_id,

@@ -18,12 +18,10 @@ namespace psst {
 
 MatchedRule::MatchedRule(const std::string& name,
                          const std::string& user_script,
-                         const std::string& test_script,
                          const std::string& policy_script,
                          int version)
     : name_(name),
       user_script_(user_script),
-      test_script_(test_script),
       policy_script_(policy_script),
       version_(version) {}
 
@@ -45,15 +43,14 @@ std::optional<MatchedRule> MatchedRuleFactory::Create(const PsstRule& rule) {
   }
 
   auto user_script = rule_reader_->ReadUserScript(rule);
-  auto test_script = rule_reader_->ReadTestScript(rule);
   auto policy_script = rule_reader_->ReadPolicyScript(rule);
 
-  if (!user_script || !test_script || !policy_script) {
+  if (!user_script || !policy_script) {
     return std::nullopt;
   }
 
-  return MatchedRule(name_, user_script.value(), test_script.value(),
-                     policy_script.value(), version_);
+  return MatchedRule(name_, user_script.value(), policy_script.value(),
+                     version_);
 }
 
 }  // namespace psst

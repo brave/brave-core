@@ -14,13 +14,17 @@ PsstConsentTabHelperDelegateImpl::~PsstConsentTabHelperDelegateImpl() = default;
 void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
     content::WebContents* contents,
     bool prompt_for_new_version,
-    const std::string& list_of_changes,
+    base::Value::List requests,
     base::OnceClosure yes_cb,
     base::OnceClosure no_cb) {
   NOTIMPLEMENTED();
 }
 
-void PsstConsentTabHelperDelegateImpl::SetProgressValue(content::WebContents* contents, const double value) override {
+void PsstConsentTabHelperDelegateImpl::SetProgressValue(content::WebContents* contents, const double value) {
+  NOTIMPLEMENTED();
+}
+
+void PsstConsentTabHelperDelegateImpl::SetRequestDone(content::WebContents* contents, const std::string& url) {
   NOTIMPLEMENTED();
 }
 

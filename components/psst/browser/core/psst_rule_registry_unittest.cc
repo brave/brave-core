@@ -47,10 +47,6 @@ class MockRuleDataReader : public RuleDataReader {
               (const PsstRule& rule),
               (override, const));
   MOCK_METHOD(std::optional<std::string>,
-              ReadTestScript,
-              (const PsstRule& rule),
-              (override, const));
-  MOCK_METHOD(std::optional<std::string>,
               ReadPolicyScript,
               (const PsstRule& rule),
               (override, const));
@@ -105,7 +101,6 @@ class PsstRuleRegistryUnitTest : public testing::Test {
   }
 
   void TestMatchedRuleLoading(const GURL& url, std::optional<std::string> user_script,
-                          std::optional<std::string> test_script,
                           std::optional<std::string> policy_script,
                           OnRuleMatchedCallback on_rule_matched_callback) {
  {
@@ -116,11 +111,6 @@ class PsstRuleRegistryUnitTest : public testing::Test {
           return user_script;
         }));
 
-    EXPECT_CALL(*GetMockRuleDataReader(), ReadTestScript)
-        .Times(1)
-        .WillOnce(testing::Invoke([&](const PsstRule& rule) {
-          return test_script;
-        }));
     EXPECT_CALL(*GetMockRuleDataReader(), ReadPolicyScript)
         .Times(1)
         .WillOnce(testing::Invoke([&](const PsstRule& rule) {
@@ -158,8 +148,7 @@ class PsstRuleRegistryUnitTest : public testing::Test {
 
 TEST_F(PsstRuleRegistryUnitTest, SimpleLoadRules) {
   TestMatchedRuleLoading(
-      GURL("https://a.com"), "It is user script", "It is test script",
-      "It is policy script",
+      GURL("https://a.com"), "It is user script", "It is policy script",
       base::BindRepeating([](const std::optional<MatchedRule>& matched_rule) {
         ASSERT_TRUE(matched_rule);
         EXPECT_EQ(matched_rule->Name(), "a");
@@ -168,7 +157,7 @@ TEST_F(PsstRuleRegistryUnitTest, SimpleLoadRules) {
 
 TEST_F(PsstRuleRegistryUnitTest, NoRulesLoaded) {
   TestMatchedRuleLoading(
-      GURL("https://url.com"), std::nullopt, std::nullopt,
+      GURL("https://url.com"), std::nullopt,
       std::nullopt,
       base::BindRepeating([](const std::optional<MatchedRule>& matched_rule) {
         ASSERT_FALSE(matched_rule);

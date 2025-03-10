@@ -29,7 +29,7 @@ PsstConsentDialog* GetDelegate(content::WebContents* contents) {
 void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
     content::WebContents* contents,
     bool prompt_for_new_version,
-    const std::string& list_of_changes,
+    base::Value::List requests,
     base::OnceClosure yes_cb,
     base::OnceClosure no_cb) {
   PsstConsentDialogTracker::CreateForWebContents(contents);
@@ -39,7 +39,7 @@ void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
   }
 
   auto* new_dialog = constrained_window::ShowWebModalDialogViews(
-new PsstConsentDialog(prompt_for_new_version, list_of_changes,
+new PsstConsentDialog(prompt_for_new_version, std::move(requests),
                             std::move(yes_cb), std::move(no_cb)),
       contents);
   dialog_tracker->SetActiveDialog(new_dialog);
@@ -56,14 +56,23 @@ void PsstConsentTabHelperDelegateImpl::SetProgressValue(content::WebContents* co
   delegate->SetProgressValue(std::move(value));
 }
 
+void PsstConsentTabHelperDelegateImpl::SetRequestDone(content::WebContents* contents, const std::string& url) {
+  auto* delegate = GetDelegate(contents);
+  if(!delegate) {
+    return;
+  }
+
+  delegate->SetRequestDone(url);
+}
+
 void PsstConsentTabHelperDelegateImpl::Close(content::WebContents* contents) {
   LOG(INFO) << "[PSST] PsstConsentTabHelperDelegateImpl::Close #100";
   auto* delegate = GetDelegate(contents);
-  if(!delegate) {
+  if(!delegate || !delegate->GetWidget()) {
     LOG(INFO) << "[PSST] PsstConsentTabHelperDelegateImpl::Close #200";
     return;
   }
-  LOG(INFO) << "[PSST] PsstConsentTabHelperDelegateImpl::Close #300";
   delegate->GetWidget()->CloseWithReason(
       views::Widget::ClosedReason::kCancelButtonClicked);
+  LOG(INFO) << "[PSST] PsstConsentTabHelperDelegateImpl::Close #300";
 }

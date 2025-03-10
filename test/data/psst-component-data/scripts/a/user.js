@@ -4,8 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 (() => {
+  const getUserId = () => {
+    return "user1"
+  }
   return new Promise((resolve) => {
     document.title = 'user-';
-    resolve("foo")
+    resolve({
+      "user": getUserId(),
+      "requests": [
+        {"name": "privacy setting #1"},
+        {"name": "privacy setting #2"},
+      ]
+    })
   })
 })();

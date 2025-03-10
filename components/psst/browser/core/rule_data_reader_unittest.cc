@@ -47,7 +47,7 @@ class RuleDataReaderUnitTest : public testing::Test {
   base::FilePath GetBasePath() { return test_data_dir_base_; }
 
   MatchedRule GetMatchedRule() {
-    return MatchedRule("a", "user.js", "test.js", "policy.js", 1);
+    return MatchedRule("a", "user.js", "policy.js", 1);
   }
 
   PsstRule& GetBasicRule() { return (*psst_rules_)[0]; }
@@ -66,11 +66,6 @@ TEST_F(RuleDataReaderUnitTest, LoadComponentScripts) {
   ASSERT_TRUE(user_script);
   ASSERT_FALSE(user_script->empty());
   EXPECT_EQ(*user_script, ReadFile(scripts_path.Append("user.js")));
-
-  auto test_script = crr.ReadTestScript(GetBasicRule());
-  ASSERT_TRUE(test_script);
-  ASSERT_FALSE(test_script->empty());
-  EXPECT_EQ(*test_script, ReadFile(scripts_path.Append("test.js")));
 
   auto policy_script = crr.ReadPolicyScript(GetBasicRule());
   ASSERT_TRUE(policy_script);

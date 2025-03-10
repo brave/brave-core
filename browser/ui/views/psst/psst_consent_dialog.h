@@ -7,19 +7,22 @@
 #define BRAVE_BROWSER_UI_VIEWS_PSST_PSST_CONSENT_DIALOG_H_
 
 #include <string>
-#include "base/values.h"
 
+#include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
+#include "base/values.h"
+#include "ui/views/controls/button/button.h"
+#include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/progress_bar.h"
 #include "ui/views/window/dialog_delegate.h"
 
 class PsstConsentDialog : public views::DialogDelegateView {
  public:
   PsstConsentDialog(bool prompt_for_new_version,
-                    const std::string& list_of_changes,
-                    base::OnceClosure yes_callback,
-                    base::OnceClosure no_callback);
+                    base::Value::List requests,
+                    base::OnceClosure consent_callback,
+                    base::OnceClosure cancel_callback);
   ~PsstConsentDialog() override;
 
   // views::DialogDelegateView:
@@ -29,9 +32,18 @@ class PsstConsentDialog : public views::DialogDelegateView {
 
   void SetProgressValue(const double value);
 
+  void SetRequestDone(const std::string& url);
+
+  void OnConsentClicked();
+
  private:
   void DisableAdBlockForSite();
+
+  base::OnceClosure consent_callback_;
+  raw_ptr<views::Button> no_button_{nullptr};
+  raw_ptr<views::Button> ok_button_{nullptr};
   raw_ptr<views::ProgressBar> progress_bar_{nullptr};
+  base::flat_map<std::string, raw_ptr<views::Checkbox>> task_checked_list_;
   base::WeakPtrFactory<PsstConsentDialog> weak_factory_{this};
 };
 
