@@ -1,0 +1,20 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
+index 65490bf6514e2ab2e8aa28b9c28d6310b82d1341..224c65b657f1c3813402faf0031f26ed2dfb5336 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
+@@ -113,6 +113,7 @@ public abstract class FullscreenHtmlApiHandlerBase
+     @Nullable private Tab mTab;
+ 
+     private boolean mNotifyOnNextExit;
++    protected boolean mTabHiddenByChangedTabs;
+ 
+     // Current ContentView. Updates when active tab is switched or WebContents is swapped
+     // in the current Tab.
+@@ -275,6 +276,7 @@ public abstract class FullscreenHtmlApiHandlerBase
+ 
+                     @Override
+                     public void onHidden(Tab tab, @TabHidingType int reason) {
++                        mTabHiddenByChangedTabs = reason == TabHidingType.CHANGED_TABS;
+                         // Clean up any fullscreen state that might impact other tabs.
+                         exitPersistentFullscreenMode();
+                     }
