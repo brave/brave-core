@@ -175,20 +175,24 @@ void ViewCounterService::OnContentSettingChanged(
 }
 
 void ViewCounterService::BrandedWallpaperWillBeDisplayed(
-    const std::string& wallpaper_id,
+    const std::string& placement_id,
+    const std::string& campaign_id,
     const std::string& creative_instance_id,
-    const std::string& campaign_id) {
-  if (ntp_p3a_helper_) {
-    // Report P3A viewed impression ad event if Brave Rewards are disabled.
-    ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
+    bool should_metrics_fallback_to_p3a) {
+  if (should_metrics_fallback_to_p3a) {
+    if (ntp_p3a_helper_) {
+      ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
+    }
+
+    branded_new_tab_count_state_->AddDelta(1);
+    UpdateP3AValues();
   }
 
+  // Ads service will handle the case when we should fallback to P3A and no-op
+  // if the campaign should report using P3A.
   MaybeTriggerNewTabPageAdEvent(
-      wallpaper_id, creative_instance_id,
+      placement_id, creative_instance_id,
       brave_ads::mojom::NewTabPageAdEventType::kViewedImpression);
-
-  branded_new_tab_count_state_->AddDelta(1);
-  UpdateP3AValues();
 }
 
 NTPSponsoredImagesData* ViewCounterService::GetSponsoredImagesData() const {
@@ -284,6 +288,7 @@ void ViewCounterService::GetCurrentBrandedWallpaper(
     std::move(callback).Run(/*url=*/std::nullopt,
                             /*placement_id=*/std::nullopt,
                             /*creative_instance_id=*/std::nullopt,
+                            /*should_metrics_fallback_to_p3a=*/false,
                             /*target_url=*/std::nullopt);
   };
 
@@ -310,6 +315,10 @@ void ViewCounterService::GetCurrentBrandedWallpaper(
     return failed();
   }
 
+  const bool should_metrics_fallback_to_p3a =
+      current_wallpaper_->FindBool(ntp_background_images::kCampaignMetricsKey)
+          .value_or(false);
+
   const std::string* const target_url =
       current_wallpaper_->FindStringByDottedPath(
           ntp_background_images::kLogoDestinationURLPath);
@@ -318,7 +327,7 @@ void ViewCounterService::GetCurrentBrandedWallpaper(
   }
 
   std::move(callback).Run(GURL(*url), *placement_id, *creative_instance_id,
-                          GURL(*target_url));
+                          should_metrics_fallback_to_p3a, GURL(*target_url));
 }
 
 std::optional<brave_ads::ConditionMatcherMap>
@@ -547,18 +556,20 @@ void ViewCounterService::RegisterPageView() {
 }
 
 void ViewCounterService::BrandedWallpaperLogoClicked(
+    const std::string& placement_id,
     const std::string& creative_instance_id,
-    const std::string& /*destination_url*/,
-    const std::string& wallpaper_id) {
-  if (ntp_p3a_helper_) {
-    // Report P3A clicked ad event to if Brave Rewards are disabled.
+    const std::string& /*target_url*/,
+    bool should_metrics_fallback_to_p3a) {
+  if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
     ntp_p3a_helper_->RecordNewTabPageAdEvent(
         brave_ads::mojom::NewTabPageAdEventType::kClicked,
         creative_instance_id);
   }
 
+  // Ads service will handle the case when we should fallback to P3A and no-op
+  // if the campaign should report using P3A.
   MaybeTriggerNewTabPageAdEvent(
-      wallpaper_id, creative_instance_id,
+      placement_id, creative_instance_id,
       brave_ads::mojom::NewTabPageAdEventType::kClicked);
 }
 

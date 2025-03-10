@@ -7,9 +7,10 @@ import brandingImageUrl from '../../../../img/newtab/dummy-branded-wallpaper/log
 
 const dummyWallpaper: NewTab.BrandedWallpaper = {
   type: 'image',
-  isSponsored: true,
   wallpaperImageUrl,
+  isSponsored: true,
   creativeInstanceId: '12345abcde',
+  shouldMetricsFallbackToP3a: false,
   wallpaperId: 'abcde12345',
   logo: {
     image: brandingImageUrl,

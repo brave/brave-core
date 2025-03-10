@@ -36,6 +36,7 @@ struct SponsoredImageBackground {
   string campaign_id;
   string image_url;
   SponsoredImageLogo? logo;
+  bool should_metrics_fallback_to_p3a;
 };
 
 struct SearchEngineInfo {
@@ -102,9 +103,10 @@ interface NewTabPageHandler {
   RemoveCustomBackground(string background_url) => ();
 
   // Notifies the browser that the user has clicked the sponsored image logo.
-  NotifySponsoredImageLogoClicked(string creative_instance_id,
+  NotifySponsoredImageLogoClicked(string wallpaper_id,
+                                  string creative_instance_id,
                                   string destination_url,
-                                  string wallpaper_id) => ();
+                                  bool should_metrics_fallback_to_p3a) => ();
 
   // Gets or sets whether the search box is displayed on the NTP.
   GetShowSearchBox() => (bool show_search_box);

@@ -29,6 +29,9 @@
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
@@ -438,51 +441,38 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
 }
 
 TEST_F(BraveAdsAccountTest,
-       DoNotAddTransactionWhenDepositingCashForNonRewardsUser) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
-  database::SaveCreativeNotificationAds({creative_ad});
-
-  // Act
-  EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit).Times(0);
-  EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
-  GetAccount().Deposit(test::kCreativeInstanceId, test::kSegment,
-                       mojom::AdType::kSearchResultAd,
-                       mojom::ConfirmationType::kViewedImpression);
-
-  // Assert
-  base::MockCallback<database::table::GetTransactionsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true, /*transactions=*/::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  const database::table::Transactions database_table;
-  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
-                                 /*to_time=*/test::DistantFuture(),
-                                 callback.Get());
-  run_loop.Run();
-}
-
-TEST_F(BraveAdsAccountTest,
        DoNotAddTransactionWhenDepositingNonCashForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
-  const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
-  database::SaveCreativeNotificationAds({creative_ad});
+  const CreativeNewTabPageAdInfo creative_ad =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*should_generate_random_uuids=*/false);
+  database::SaveCreativeNewTabPageAds({creative_ad});
 
   // Act
-  EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit).Times(0);
+  base::RunLoop on_did_process_deposit_run_loop;
+  EXPECT_CALL(account_observer_mock_,
+              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
+                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
+                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+                  mojom::AdType::kNewTabPageAd,
+                  mojom::ConfirmationType::kViewedImpression,
+                  /*reconciled_at*/ std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(
+          on_did_process_deposit_run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
+
+  base::RunLoop on_ad_rewards_did_change_run_loop;
+  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange)
+      .WillOnce(base::test::RunOnceClosure(
+          on_ad_rewards_did_change_run_loop.QuitClosure()));
+
   GetAccount().Deposit(test::kCreativeInstanceId, test::kSegment,
                        mojom::AdType::kNewTabPageAd,
-                       mojom::ConfirmationType::kClicked);
+                       mojom::ConfirmationType::kViewedImpression);
+  on_did_process_deposit_run_loop.Run();
+  on_ad_rewards_did_change_run_loop.Run();
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;
