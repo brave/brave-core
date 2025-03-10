@@ -32,11 +32,11 @@ class PaymentTokens final {
   void RemoveTokens(const PaymentTokenList& payment_tokens);
   void RemoveAllTokens();
 
-  bool TokenExists(const PaymentTokenInfo& payment_token);
+  [[nodiscard]] bool TokenExists(const PaymentTokenInfo& payment_token);
 
   size_t Count() const;
 
-  bool IsEmpty() const;
+  [[nodiscard]] bool IsEmpty() const;
 
  private:
   PaymentTokenList payment_tokens_;

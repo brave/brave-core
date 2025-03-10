@@ -54,9 +54,9 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
   void MaybeServeAdAtNextRegularInterval();
 
  private:
-  bool IsSupported() const { return !!eligible_ads_; }
+  [[nodiscard]] bool IsSupported() const { return !!eligible_ads_; }
 
-  bool CanServeAd(const AdEventList& ad_events) const;
+  [[nodiscard]] bool CanServeAd(const AdEventList& ad_events) const;
 
   void GetAdEvents();
   void GetAdEventsCallback(bool success, const AdEventList& ad_events);

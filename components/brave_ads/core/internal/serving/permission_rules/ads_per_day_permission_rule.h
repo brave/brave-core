@@ -15,7 +15,9 @@ class Time;
 
 namespace brave_ads {
 
-bool HasAdsPerDayPermission(const std::vector<base::Time>& history, size_t cap);
+[[nodiscard]] bool HasAdsPerDayPermission(
+    const std::vector<base::Time>& history,
+    size_t cap);
 
 }  // namespace brave_ads
 

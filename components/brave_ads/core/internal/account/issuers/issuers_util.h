@@ -15,10 +15,10 @@ struct IssuersInfo;
 void SetIssuers(const IssuersInfo& issuers);
 std::optional<IssuersInfo> GetIssuers();
 
-bool IsIssuersValid(const IssuersInfo& issuers);
+[[nodiscard]] bool IsIssuersValid(const IssuersInfo& issuers);
 
-bool HasIssuers();
-bool HasIssuersChanged(const IssuersInfo& other);
+[[nodiscard]] bool HasIssuers();
+[[nodiscard]] bool HasIssuersChanged(const IssuersInfo& other);
 
 }  // namespace brave_ads
 

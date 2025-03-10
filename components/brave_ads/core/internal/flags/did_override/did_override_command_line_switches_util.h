@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool DidOverrideCommandLineSwitches();
+[[nodiscard]] bool DidOverrideCommandLineSwitches();
 
 }  // namespace brave_ads
 

@@ -12,10 +12,11 @@
 
 namespace brave_ads {
 
-bool ShouldRemindUser();
+[[nodiscard]] bool ShouldRemindUser();
 
-bool DidUserClickTheSameAdMultipleTimes(const std::string& creative_instance_id,
-                                        const AdHistoryList& ad_history);
+[[nodiscard]] bool DidUserClickTheSameAdMultipleTimes(
+    const std::string& creative_instance_id,
+    const AdHistoryList& ad_history);
 
 void RemindUserTheyDoNotNeedToClickToEarnRewards();
 

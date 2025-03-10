@@ -43,7 +43,7 @@ class Timer final {
                               base::OnceClosure user_task);
 
   // Returns `true` if the timer is running (i.e., not stopped).
-  bool IsRunning() const;
+  [[nodiscard]] bool IsRunning() const;
 
   // Call this method to stop the timer. It is a no-op if the timer is not
   // running. Returns `true` if the timer was stopped, otherwise returns

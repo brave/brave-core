@@ -20,7 +20,7 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesRequireResourceForNewTabPageAds() {
+[[nodiscard]] bool DoesRequireResourceForNewTabPageAds() {
   // Require resource only if:
   // - The user has opted into new tab page ads and has either joined Brave
   //   Rewards or new tab page ad events should always be triggered.
@@ -29,7 +29,7 @@ bool DoesRequireResourceForNewTabPageAds() {
           ShouldAlwaysTriggerNewTabPageAdEvents());
 }
 
-bool DoesRequireResource() {
+[[nodiscard]] bool DoesRequireResource() {
   // Require resource only if:
   // - The user has opted into Brave News ads.
   // - The user has opted into new tab page ads and has either joined Brave
