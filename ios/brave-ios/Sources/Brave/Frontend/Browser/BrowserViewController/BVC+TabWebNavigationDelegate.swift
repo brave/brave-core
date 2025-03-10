@@ -208,7 +208,7 @@ extension BrowserViewController: TabWebNavigationDelegate {
   }
 
   func tab(_ tab: Tab, didFailWebViewNavigationWithError error: Error) -> Bool {
-    let error = error as NSError
+    var error = error as NSError
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
       // load cancelled / user stopped load. Cancel https upgrade fallback timer.
       tab.upgradedHTTPSRequest = nil
@@ -220,6 +220,20 @@ extension BrowserViewController: TabWebNavigationDelegate {
         updateWebViewPageZoom(tab: tab)
       }
       return true
+    }
+
+    if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
+      // Check for invalid upgrade to https
+      if url.scheme == "https",  // verify failing url was https
+        let response = handleInvalidHTTPSUpgrade(
+          tab: tab,
+          responseURL: url
+        )
+      {
+        // load original or strict mode interstitial
+        tab.loadRequest(response)
+        return true
+      }
     }
 
     return false
