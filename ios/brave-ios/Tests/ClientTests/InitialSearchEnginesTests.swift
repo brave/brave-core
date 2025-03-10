@@ -14,7 +14,7 @@ class InitialSearchEnginesTests: XCTestCase {
 
   override class func setUp() {
     super.setUp()
-    Preferences.Search.shouldExcludeYahooJPSearchEngine.reset()
+    Preferences.Search.shouldOverrideDSEForJapanRegion.reset()
   }
 
   func testDefaultValues() throws {
