@@ -915,7 +915,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   tab_model()->ActivateTabAt(1);
   EXPECT_FALSE(panel_ui->IsSidePanelShowing());
 
-  // Open global panel when active tab indext is 1.
+  // Open global panel when active tab index is 1.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   WaitUntil(base::BindLambdaForTesting([&]() {
     return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
