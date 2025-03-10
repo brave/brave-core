@@ -24,7 +24,7 @@ extension BrowserViewController: TabObserver {
       // didCommit is called and it will cause url bar be empty in that period
       // To fix this when tab display url is empty, webview url is used
       if tab === tabManager.selectedTab, tab.url?.displayURL == nil {
-        if let url = tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
+        if let url = tab.visibleURL, !url.isLocal, !InternalURL.isValid(url: url) {
           updateToolbarCurrentURL(url.displayURL)
         }
       } else if tab === tabManager.selectedTab, tab.url?.displayURL?.scheme == "about",
@@ -55,7 +55,7 @@ extension BrowserViewController: TabObserver {
 
     // Update the estimated progress when the URL changes. Estimated progress may update to 0.1 when the url
     // is still an internal URL even though a request may be pending for a web page.
-    if tab === tabManager.selectedTab, let url = tab.url,
+    if tab === tabManager.selectedTab, let url = tab.visibleURL,
       !InternalURL.isValid(url: url), tab.estimatedProgress > 0
     {
       topToolbar.updateProgressBar(Float(tab.estimatedProgress))
@@ -71,7 +71,7 @@ extension BrowserViewController: TabObserver {
 
   func tabDidChangeLoadProgress(_ tab: Tab) {
     guard tab === tabManager.selectedTab else { return }
-    if let url = tab.url, !InternalURL.isValid(url: url) {
+    if let url = tab.visibleURL, !InternalURL.isValid(url: url) {
       topToolbar.updateProgressBar(Float(tab.estimatedProgress))
     } else {
       topToolbar.hideProgressBar()
