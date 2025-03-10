@@ -17,7 +17,7 @@ interface Props {
 export function Success(props: Props) {
   const { getString } = useLocaleContext()
   return (
-    <div {...style}>
+    <div className='contribution-success' {...style}>
       <div className='message'>
         <div className='title'>{getString('contributeSuccessTitle')}</div>
         <h4>{getString('contributeSuccessText')}</h4>

@@ -8,9 +8,13 @@
 #include <string>
 #include <utility>
 
+#include "base/base64.h"
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -18,6 +22,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/components/brave_rewards/content/rewards_service_impl.h"
+#include "brave/components/brave_rewards/core/engine/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
@@ -26,6 +31,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/test/browser_test.h"
@@ -57,11 +63,38 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
     return *prefs;
   }
 
+  std::optional<std::string> EncryptPrefString(const std::string& value) {
+    std::string encrypted;
+    if (!OSCrypt::EncryptString(value, &encrypted)) {
+      return {};
+    }
+    return base::Base64Encode(encrypted);
+  }
+
   RewardsServiceImpl& GetRewardsService() {
     auto* rewards_service = static_cast<RewardsServiceImpl*>(
         RewardsServiceFactory::GetForProfile(browser()->profile()));
     CHECK(rewards_service);
     return *rewards_service;
+  }
+
+  static std::string BuildPublisherChannelResponse(
+      const std::string& channel_id) {
+    publishers_pb::ChannelResponseList message;
+    auto* channel = message.add_channel_responses();
+    channel->set_channel_identifier(channel_id);
+    auto* uphold_wallet = channel->add_wallets()->mutable_uphold_wallet();
+    uphold_wallet->set_wallet_state(publishers_pb::UPHOLD_ACCOUNT_KYC);
+    uphold_wallet->set_address("address1");
+    std::string out;
+    message.SerializeToString(&out);
+
+    // Add padded header.
+    uint32_t length = out.length();
+    out.insert(0, 4, ' ');
+    base::as_writable_byte_span(out).first<4u>().copy_from(
+        base::numerics::U32ToBigEndian(length));
+    return out;
   }
 
   void LoadScript(const std::string& filename) {
@@ -130,6 +163,23 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
         })");
 
     prefs.SetDict(prefs::kParameters, std::move(params));
+  }
+
+  void GivenUserIsConnected() {
+    base::Value::Dict wallet;
+    wallet.Set("token", "token");
+    wallet.Set("address", "abe5f454-fedd-4ea9-9203-470ae7315bb3");
+    wallet.Set("status", static_cast<int>(mojom::WalletStatus::kConnected));
+    wallet.Set("user_name", "Brave Test");
+
+    std::string json;
+    base::JSONWriter::Write(wallet, &json);
+    auto encrypted = EncryptPrefString(json);
+    ASSERT_TRUE(encrypted);
+
+    auto& prefs = GetPrefs();
+    prefs.SetString(prefs::kExternalWalletType, "uphold");
+    prefs.SetString(prefs::kWalletUphold, *encrypted);
   }
 
   void StartRewardsEngine() {
@@ -208,6 +258,19 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
+  void SavePublisherInfo(const std::string& id) {
+    auto publisher = mojom::PublisherInfo::New();
+    publisher->id = id;
+    publisher->name = id;
+    publisher->url = id;
+    publisher->status = mojom::PublisherStatus::UPHOLD_VERIFIED;
+    base::RunLoop run_loop;
+    GetRewardsService().SavePublisherInfo(
+        0, std::move(publisher),
+        base::BindLambdaForTesting([&](mojom::Result) { run_loop.Quit(); }));
+    run_loop.Run();
+  }
+
  private:
   std::string GetMethodString(int32_t method) {
     return RewardsServiceImpl::UrlMethodToRequestType(
@@ -267,6 +330,7 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewards) {
 
   // Finally, perform any desired assertions on browser/profile state.
   ASSERT_FALSE(GetPrefs().GetString(prefs::kWalletBrave).empty());
+  ASSERT_EQ(GetPrefs().GetString(prefs::kDeclaredGeo), "US");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewardsFromPanel) {
@@ -344,6 +408,43 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, ConnectAccount) {
 
   NavigateToRewardsPage("/uphold/authorization/?code=123456&state=" + state);
   LoadScript("connect_account_auth_test.js");
+  RunTests();
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, SendContribution) {
+  SetRequestHandler(base::BindLambdaForTesting(
+      [](const GURL& url, const std::string& method) -> RequestHandlerResult {
+        std::string card_path =
+            "/v0/me/cards/abe5f454-fedd-4ea9-9203-470ae7315bb3";
+        if (url.path_piece() == card_path && method == "GET") {
+          return std::pair{200, R"({ "available": "30.0" })"};
+        }
+        if (url.path_piece() == "/publishers/prefixes/a379" &&
+            method == "GET") {
+          return std::pair{200, BuildPublisherChannelResponse("example.com")};
+        }
+        std::string transactions_path =
+            "/v0/me/cards/abe5f454-fedd-4ea9-9203-470ae7315bb3/transactions";
+        if (url.path_piece() == transactions_path && method == "POST") {
+          return std::pair{200, R"({
+              "id": "ba1ba438-49a8-4618-8c0b-099b69afc722"
+            })"};
+        }
+        std::string commit_path =
+            "/v0/me/cards/abe5f454-fedd-4ea9-9203-470ae7315bb3/transactions/"
+            "ba1ba438-49a8-4618-8c0b-099b69afc722/commit";
+        if (url.path_piece() == commit_path && method == "POST") {
+          return std::pair{200, R"({ "status": "completed" })"};
+        }
+        return std::nullopt;
+      }));
+
+  GivenRewardsIsEnabled();
+  GivenUserIsConnected();
+  StartRewardsEngine();
+  SavePublisherInfo("example.com");
+  NavigateToRewardsPage("/?creator=example.com");
+  LoadScript("send_contribution_test.js");
   RunTests();
 }
 

@@ -265,6 +265,7 @@ export function PaymentForm(props: Props) {
       </div>
       <div className='actions'>
         <Button
+          className='send-button'
           isDisabled={isSendDisabled()}
           onClick={() => props.onSend(sendValue, isRecurring)}
         >
