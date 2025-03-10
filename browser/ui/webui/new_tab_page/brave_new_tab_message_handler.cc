@@ -461,17 +461,17 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
         arg.FindString(ntp_background_images::kCreativeInstanceIDKey);
     auto* destination_url = arg.FindStringByDottedPath(
         ntp_background_images::kLogoDestinationURLPath);
-    auto* wallpaper_id =
+    auto* placement_id =
         arg.FindStringByDottedPath(ntp_background_images::kWallpaperIDKey);
 
     DCHECK(creative_instance_id);
     DCHECK(destination_url);
-    DCHECK(wallpaper_id);
+    DCHECK(placement_id);
 
     service->BrandedWallpaperLogoClicked(
+        placement_id ? *placement_id : "",
         creative_instance_id ? *creative_instance_id : "",
-        destination_url ? *destination_url : "",
-        wallpaper_id ? *wallpaper_id : "");
+        destination_url ? *destination_url : "");
   }
 }
 
@@ -518,14 +518,17 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
 
   const std::string* creative_instance_id =
       data->FindString(ntp_background_images::kCreativeInstanceIDKey);
-  const std::string* wallpaper_id =
+  const std::string* placement_id =
       data->FindString(ntp_background_images::kWallpaperIDKey);
   const std::string* campaign_id =
       data->FindString(ntp_background_images::kCampaignIdKey);
+  const bool should_metrics_fallback_to_p3a =
+      data->FindBool(ntp_background_images::kCampaignMetricsKey)
+          .value_or(false);
   service->BrandedWallpaperWillBeDisplayed(
-      wallpaper_id ? *wallpaper_id : "",
+      placement_id ? *placement_id : "", campaign_id ? *campaign_id : "",
       creative_instance_id ? *creative_instance_id : "",
-      campaign_id ? *campaign_id : "");
+      should_metrics_fallback_to_p3a);
 
   constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
   wallpaper.Set(kBrandedWallpaperKey, std::move(*data));

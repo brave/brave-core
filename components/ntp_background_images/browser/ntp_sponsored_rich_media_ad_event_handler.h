@@ -40,14 +40,15 @@ class NTPSponsoredRichMediaAdEventHandler
   // mojom::SponsoredRichMediaAdEventHandler:
   void MaybeReportRichMediaAdEvent(
       const std::string& placement_id,
-      const std::string& campaign_id,
       const std::string& creative_instance_id,
+      bool should_metrics_fallback_to_p3a,
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) override;
 
  private:
   void MaybeTriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
+      bool should_metrics_fallback_to_p3a,
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type);
 
   const raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // Not owned.

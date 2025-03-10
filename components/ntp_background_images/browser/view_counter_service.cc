@@ -163,15 +163,17 @@ void ViewCounterService::OnContentSettingChanged(
 }
 
 void ViewCounterService::BrandedWallpaperWillBeDisplayed(
-    const std::string& wallpaper_id,
+    const std::string& placement_id,
+    const std::string& campaign_id,
     const std::string& creative_instance_id,
-    const std::string& campaign_id) {
-  if (ntp_p3a_helper_) {
-    // TODO(tmancey): Only send P3A events if campaign.fallback_to_p3a is true.
-    ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
+    bool should_metrics_fallback_to_p3a) {
+  if (should_metrics_fallback_to_p3a) {
+    if (ntp_p3a_helper_) {
+      ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
+    }
   } else {
     MaybeTriggerNewTabPageAdEvent(
-        wallpaper_id, creative_instance_id,
+        placement_id, creative_instance_id,
         brave_ads::mojom::NewTabPageAdEventType::kViewedImpression);
   }
 
@@ -532,9 +534,9 @@ void ViewCounterService::RegisterPageView() {
 }
 
 void ViewCounterService::BrandedWallpaperLogoClicked(
+    const std::string& placement_id,
     const std::string& creative_instance_id,
-    const std::string& /*destination_url*/,
-    const std::string& wallpaper_id) {
+    const std::string& /*destination_url*/) {
   if (ntp_p3a_helper_) {
     // TODO(tmancey): Only send P3A events if campaign.fallback_to_p3a is true.
     ntp_p3a_helper_->RecordNewTabPageAdEvent(
@@ -542,7 +544,7 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
         creative_instance_id);
   } else {
     MaybeTriggerNewTabPageAdEvent(
-        wallpaper_id, creative_instance_id,
+        placement_id, creative_instance_id,
         brave_ads::mojom::NewTabPageAdEventType::kClicked);
   }
 }

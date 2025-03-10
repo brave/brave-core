@@ -83,9 +83,9 @@ class ViewCounterService : public KeyedService,
   // opted-in or data is available.
   void RegisterPageView();
 
-  void BrandedWallpaperLogoClicked(const std::string& creative_instance_id,
-                                   const std::string& destination_url,
-                                   const std::string& wallpaper_id);
+  void BrandedWallpaperLogoClicked(const std::string& placement_id,
+                                   const std::string& creative_instance_id,
+                                   const std::string& destination_url);
 
   void MaybeTriggerNewTabPageAdEvent(
       const std::string& placement_id,
@@ -114,9 +114,10 @@ class ViewCounterService : public KeyedService,
   std::string GetSuperReferralThemeName() const;
   std::string GetSuperReferralCode() const;
 
-  void BrandedWallpaperWillBeDisplayed(const std::string& wallpaper_id,
+  void BrandedWallpaperWillBeDisplayed(const std::string& placement_id,
+                                       const std::string& campaign_id,
                                        const std::string& creative_instance_id,
-                                       const std::string& campaign_id);
+                                       bool should_metrics_fallback_to_p3a);
   NTPSponsoredImagesData* GetSponsoredImagesData() const;
 
   void InitializeWebUIDataSource(content::WebUIDataSource* html_source);

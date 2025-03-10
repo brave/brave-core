@@ -118,8 +118,8 @@ function GetSponsoredRichMediaBackground(props: Props): SponsoredRichMediaBackgr
   return shouldShowRichMediaBackground ? {
     url: wallpaperData.wallpaperImageUrl,
     placementId: wallpaperData.wallpaperId,
-    campaignId: wallpaperData.campaignId,
     creativeInstanceId: wallpaperData.creativeInstanceId,
+    shouldMetricsFallbackToP3a: wallpaperData.shouldMetricsFallbackToP3a,
     targetUrl: wallpaperData.logo.destinationUrl
   } : undefined
 }
@@ -709,8 +709,8 @@ class NewTabPage extends React.Component<Props, State> {
 
                 getNTPBrowserAPI().sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
                   this.sponsoredRichMediaBackgroundInfo.placementId,
-                  this.sponsoredRichMediaBackgroundInfo.campaignId,
                   this.sponsoredRichMediaBackgroundInfo.creativeInstanceId,
+                  this.sponsoredRichMediaBackgroundInfo.shouldMetricsFallbackToP3a,
                   adEventType)
 
                 if (adEventType === BraveAds.NewTabPageAdEventType.kClicked) {

@@ -117,7 +117,7 @@ struct Campaign {
   [[nodiscard]] bool IsValid() const;
 
   std::string campaign_id;
-  bool fallback_to_p3a = false;
+  bool should_metrics_fallback_to_p3a = false;
   std::vector<Creative> creatives;
 };
 
@@ -142,6 +142,7 @@ struct NTPSponsoredImagesData {
                       const base::FilePath& installed_dir);
   std::optional<Campaign> ParseCampaign(const base::Value::Dict& dict,
                                         const base::FilePath& installed_dir);
+  const Campaign& GetCampaign(size_t campaign_index) const;
 
   void ParseSuperReferrals(const base::Value::Dict& dict,
                            const base::FilePath& installed_dir);

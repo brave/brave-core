@@ -129,9 +129,9 @@ void NTPBackgroundImagesBridge::WallpaperLogoClicked(
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (view_counter_service_) {
     view_counter_service_->BrandedWallpaperLogoClicked(
+        base::android::ConvertJavaStringToUTF8(env, jwallpaperId),
         base::android::ConvertJavaStringToUTF8(env, jcreativeInstanceId),
-        base::android::ConvertJavaStringToUTF8(env, jdestinationUrl),
-        base::android::ConvertJavaStringToUTF8(env, jwallpaperId));
+        base::android::ConvertJavaStringToUTF8(env, jdestinationUrl));
   }
 }
 
@@ -174,7 +174,7 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
   auto* creative_instance_id =
       data.FindString(ntp_background_images::kCreativeInstanceIDKey);
   auto* campaign_id = data.FindString(ntp_background_images::kCampaignIdKey);
-  const std::string* wallpaper_id =
+  const std::string* placement_id =
       data.FindString(ntp_background_images::kWallpaperIDKey);
 
   bool is_rich_media = false;
@@ -184,10 +184,14 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
                     ntp_background_images::kRichMediaWallpaperType;
   }
 
+  const bool should_metrics_fallback_to_p3a =
+      data->FindBool(ntp_background_images::kCampaignMetricsKey)
+          .value_or(false);
+
   view_counter_service_->BrandedWallpaperWillBeDisplayed(
-      wallpaper_id ? *wallpaper_id : "",
+      placement_id ? *placement_id : "", campaign_id ? *campaign_id : "",
       creative_instance_id ? *creative_instance_id : "",
-      campaign_id ? *campaign_id : "");
+      should_metrics_fallback_to_p3a);
 
   return Java_NTPBackgroundImagesBridge_createBrandedWallpaper(
       env, ConvertUTF8ToJavaString(env, *image_path), focal_point_x,
@@ -197,7 +201,7 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
       ConvertUTF8ToJavaString(env, *theme_name), is_sponsored,
       ConvertUTF8ToJavaString(
           env, creative_instance_id ? *creative_instance_id : ""),
-      ConvertUTF8ToJavaString(env, wallpaper_id ? *wallpaper_id : ""),
+      ConvertUTF8ToJavaString(env, placement_id ? *placement_id : ""),
       is_rich_media);
 }
 

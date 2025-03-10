@@ -5,6 +5,8 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 
+#include <utility>
+
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
@@ -28,8 +30,8 @@ void NTPSponsoredRichMediaAdEventHandler::Bind(
 
 void NTPSponsoredRichMediaAdEventHandler::MaybeReportRichMediaAdEvent(
     const std::string& placement_id,
-    const std::string& campaign_id,
     const std::string& creative_instance_id,
+    bool should_metrics_fallback_to_p3a,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
   switch (mojom_ad_event_type) {
     case brave_ads::mojom::NewTabPageAdEventType::kClicked:
@@ -38,6 +40,7 @@ void NTPSponsoredRichMediaAdEventHandler::MaybeReportRichMediaAdEvent(
     case brave_ads::mojom::NewTabPageAdEventType::kMedia25:
     case brave_ads::mojom::NewTabPageAdEventType::kMedia100: {
       MaybeTriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                    should_metrics_fallback_to_p3a,
                                     mojom_ad_event_type);
 
       break;
@@ -54,11 +57,13 @@ void NTPSponsoredRichMediaAdEventHandler::MaybeReportRichMediaAdEvent(
 void NTPSponsoredRichMediaAdEventHandler::MaybeTriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
+    bool should_metrics_fallback_to_p3a,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
-  if (ntp_p3a_helper_) {
-    // TODO(tmancey): Only send P3A events if campaign.fallback_to_p3a is true.
-    ntp_p3a_helper_->RecordNewTabPageAdEvent(mojom_ad_event_type,
-                                             creative_instance_id);
+  if (should_metrics_fallback_to_p3a) {
+    if (ntp_p3a_helper_) {
+      ntp_p3a_helper_->RecordNewTabPageAdEvent(mojom_ad_event_type,
+                                               creative_instance_id);
+    }
   } else {
     if (ads_service_) {
       ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
