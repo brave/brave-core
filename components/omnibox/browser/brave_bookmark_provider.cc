@@ -8,6 +8,7 @@
 #include "base/containers/contains.h"
 #include "brave/components/omnibox/browser/brave_history_quick_provider.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+#include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/bookmark_provider.h"
 #include "components/omnibox/browser/omnibox_view.h"
 #include "components/prefs/pref_service.h"
@@ -43,20 +44,14 @@ void BraveBookmarkProvider::Start(const AutocompleteInput& input,
     auto bump_match =
         base::Contains(lower_contents, lower_text) ||
         base::Contains(base::ToLowerASCII(match.description), lower_text);
-    match.allowed_to_be_default_match = bump_match;
     if (!bump_match) {
       continue;
     }
 
+    match.SetAllowedToBeDefault(input);
+
     modified = true;
     match.relevance += kContainsQueryBump;
-
-    // Note: By default the BookmarkProvider will fill the URL from the
-    // bookmark. This is fine upstream as they don't allow bookmarks to be the
-    // default match (it breaks the user editing the input when its default).
-    // We set |fill_into_edit| to the input text so what the user typed is not
-    // modified.
-    match.fill_into_edit = input.text();
   }
 
   // If we modified any matches, notify listeners so the UI updates.
