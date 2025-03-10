@@ -9,7 +9,7 @@ namespace brave_ads {
 
 BASE_FEATURE(kShouldAlwaysRunBraveAdsServiceFeature,
              "ShouldAlwaysRunBraveAdsService",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool ShouldAlwaysRunService() {
   return base::FeatureList::IsEnabled(kShouldAlwaysRunBraveAdsServiceFeature);

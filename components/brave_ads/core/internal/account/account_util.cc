@@ -28,10 +28,12 @@ bool IsAllowedToDeposit(mojom::AdType mojom_ad_type,
     }
 
     case mojom::AdType::kNewTabPageAd: {
-      // Only allow deposits for non-Rewards users if
-      // brave://flags/#brave-ads-should-always-trigger-new-tab-page-ad-events
-      // is enabled.
-      return ShouldAlwaysTriggerNewTabPageAdEvents();
+      // Only allow viewed impession and clicked deposits for non-Rewards users
+      // who have opted into new tab page ads.
+      return UserHasOptedInToNewTabPageAds() &&
+             (mojom_confirmation_type ==
+                  mojom::ConfirmationType::kViewedImpression ||
+              mojom_confirmation_type == mojom::ConfirmationType::kClicked);
     }
 
     case mojom::AdType::kNotificationAd: {

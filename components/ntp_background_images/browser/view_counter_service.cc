@@ -252,14 +252,11 @@ ViewCounterService::GetCurrentBrandedWallpaper() {
     return std::nullopt;
   }
 
-  const bool should_frequency_cap_ads =
-      prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
-
-  if (should_frequency_cap_ads && !images_data->IsSuperReferral()) {
-    return GetCurrentBrandedWallpaperFromAdInfo();
+  if (images_data->IsSuperReferral()) {
+    return GetNextBrandedWallpaperWhichMatchesConditions();
   }
 
-  return GetNextBrandedWallpaperWhichMatchesConditions();
+  return GetCurrentBrandedWallpaperFromAdInfo();
 }
 
 void ViewCounterService::GetCurrentBrandedWallpaper(
@@ -641,8 +638,7 @@ std::string ViewCounterService::GetSuperReferralCode() const {
 
 void ViewCounterService::MaybePrefetchNewTabPageAd() {
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
-  if (!ads_service_ || !CanShowSponsoredImages() ||
-      !prefs_->GetBoolean(brave_rewards::prefs::kEnabled) || !images_data ||
+  if (!ads_service_ || !CanShowSponsoredImages() || !images_data ||
       images_data->IsSuperReferral()) {
     return;
   }
