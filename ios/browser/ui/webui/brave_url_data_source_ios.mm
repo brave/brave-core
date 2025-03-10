@@ -9,20 +9,6 @@
 #include "base/strings/strcat.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 
-namespace {
-
-// A chrome-untrusted data source's name starts with chrome-untrusted://.
-bool IsChromeUntrustedDataSource(const web::URLDataSourceIOS* source) {
-  static const base::NoDestructor<std::string> kChromeUntrustedSourceNamePrefix(
-      base::StrCat({kChromeUIUntrustedScheme, url::kStandardSchemeSeparator}));
-
-  return base::StartsWith(source->GetSource(),
-                          *kChromeUntrustedSourceNamePrefix,
-                          base::CompareCase::SENSITIVE);
-}
-
-}  // namespace
-
 BraveURLDataSourceIOS::BraveURLDataSourceIOS() {}
 BraveURLDataSourceIOS::~BraveURLDataSourceIOS() = default;
 
@@ -80,20 +66,21 @@ std::string BraveURLDataSourceIOS::GetContentSecurityPolicyFrameSrc() const {
 
 std::string BraveURLDataSourceIOS::GetContentSecurityPolicy(
     network::mojom::CSPDirectiveName directive) const {
+  bool is_untrusted = GURL(GetSource()).SchemeIs(kChromeUIUntrustedScheme);
+
   // Default policies matching Chromium Desktop
   // content/public/browser/url_data_source.cc
   switch (directive) {
     case network::mojom::CSPDirectiveName::ChildSrc:
       return "child-src 'none';";
     case network::mojom::CSPDirectiveName::DefaultSrc:
-      return IsChromeUntrustedDataSource(this) ? "default-src 'self';"
-                                               : std::string();
+      return is_untrusted ? "default-src 'self';" : std::string();
     case network::mojom::CSPDirectiveName::ObjectSrc:
       return "object-src 'none';";
     case network::mojom::CSPDirectiveName::ScriptSrc:
       // Note: Do not add 'unsafe-eval' here. Instead override CSP for the
       // specific pages that need it, see context http://crbug.com/525224.
-      return IsChromeUntrustedDataSource(this)
+      return is_untrusted
                  ? base::StrCat({"script-src", kChromeUIUntrustedScheme,
                                  url::kStandardSchemeSeparator,
                                  "resources 'self';"})
@@ -105,11 +92,9 @@ std::string BraveURLDataSourceIOS::GetContentSecurityPolicy(
     case network::mojom::CSPDirectiveName::TrustedTypes:
       return "trusted-types;";
     case network::mojom::CSPDirectiveName::BaseURI:
-      return IsChromeUntrustedDataSource(this) ? "base-uri 'none';"
-                                               : std::string();
+      return is_untrusted ? "base-uri 'none';" : std::string();
     case network::mojom::CSPDirectiveName::FormAction:
-      return IsChromeUntrustedDataSource(this) ? "form-action 'none';"
-                                               : std::string();
+      return is_untrusted ? "form-action 'none';" : std::string();
     case network::mojom::CSPDirectiveName::BlockAllMixedContent:
     case network::mojom::CSPDirectiveName::ConnectSrc:
     case network::mojom::CSPDirectiveName::FencedFrameSrc:
