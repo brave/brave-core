@@ -17,7 +17,7 @@
       position) {                                                         \
     window_->SetMediaPosition(position);                                  \
   } else {                                                                \
-    window_->SetMediaPosition(media_position_);                           \
+    window_->SetMediaPosition(effective_media_position);                  \
   }
 
 // Update seeker enabled state whenever actions are updated.
