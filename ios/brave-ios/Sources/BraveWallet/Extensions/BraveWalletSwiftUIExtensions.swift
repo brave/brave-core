@@ -38,6 +38,7 @@ public enum AssetImageName: String {
   case solana = "sol-asset-icon"
   case filecoin = "filecoin-asset-icon"
   case bitcoin = "bitcoin-asset-icon"
+  case zcash = "zcash-asset-icon"
   case polygon = "matic"
   case binance = "bnb-asset-icon"
   case celo = "celo"
@@ -45,6 +46,8 @@ public enum AssetImageName: String {
   case fantom = "fantom"
   case aurora = "aurora"
   case optimism = "optimism"
+  case base = "base"
+  case neon = "neon"
 }
 
 extension BraveWallet.NetworkInfo: Identifiable {
@@ -127,6 +130,10 @@ extension BraveWallet.NetworkInfo: Identifiable {
       || chainId.caseInsensitiveCompare(BraveWallet.BitcoinTestnet) == .orderedSame
     {
       return AssetImageName.bitcoin.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.ZCashMainnet) == .orderedSame
+      || chainId.caseInsensitiveCompare(BraveWallet.ZCashTestnet) == .orderedSame
+    {
+      return AssetImageName.zcash.rawValue
     } else if chainId.caseInsensitiveCompare(BraveWallet.PolygonMainnetChainId) == .orderedSame {
       return AssetImageName.polygon.rawValue
     } else if chainId.caseInsensitiveCompare(BraveWallet.BnbSmartChainMainnetChainId)
@@ -143,6 +150,10 @@ extension BraveWallet.NetworkInfo: Identifiable {
       return AssetImageName.aurora.rawValue
     } else if chainId.caseInsensitiveCompare(BraveWallet.OptimismMainnetChainId) == .orderedSame {
       return AssetImageName.optimism.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.BaseMainnetChainId) == .orderedSame {
+      return AssetImageName.base.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.NeonEvmMainnetChainId) == .orderedSame {
+      return AssetImageName.neon.rawValue
     } else {
       return nil
     }
@@ -157,6 +168,8 @@ extension BraveWallet.NetworkInfo: Identifiable {
       return AssetImageName.filecoin.rawValue
     } else if symbol.caseInsensitiveCompare("BTC") == .orderedSame {
       return AssetImageName.bitcoin.rawValue
+    } else if symbol.caseInsensitiveCompare("ZEC") == .orderedSame {
+      return AssetImageName.zcash.rawValue
     }
     return nil
   }

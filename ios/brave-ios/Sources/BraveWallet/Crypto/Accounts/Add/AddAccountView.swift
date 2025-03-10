@@ -176,7 +176,9 @@ struct AddAccountView: View {
       if isJSONImported {
         originPasswordSection
       }
-      privateKeySection
+      if selectedCoin != .zec && preSelectedCoin != .zec {
+        privateKeySection
+      }
     }
     .listStyle(.insetGrouped)
     .scrollContentBackground(.hidden)
@@ -277,7 +279,7 @@ struct AddAccountView: View {
       }
     }
     .onChange(of: selectedCoin) { coin in
-      if coin == .fil || coin == .btc {
+      if coin == .fil || coin == .btc || coin == .zec {
         accountNetwork = selectedCoinNetworks.first(where: { $0.coin == coin }) ?? .init()
       }
     }
@@ -425,6 +427,10 @@ struct AddAccountView: View {
       return true
     } else if (selectedCoin == .btc || preSelectedCoin == .btc)
       && Preferences.Wallet.isBitcoinTestnetEnabled.value
+    {
+      return true
+    } else if (selectedCoin == .zec || preSelectedCoin == .zec)
+      && Preferences.Wallet.isZcashTestnetEnabled.value
     {
       return true
     }
