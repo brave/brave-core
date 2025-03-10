@@ -70,8 +70,8 @@ export default function App(props: React.PropsWithChildren) {
           onLoaded={() => setRichMediaHasLoaded(true)}
           onEventReported={(adEventType) => {
             sponsoredRichMediaAdEventHandler.reportRichMediaAdEvent(
-              sponsoredRichMediaBackgroundInfo.creativeInstanceId,
               sponsoredRichMediaBackgroundInfo.placementId,
+              sponsoredRichMediaBackgroundInfo.creativeInstanceId,
               adEventType
             );
 
