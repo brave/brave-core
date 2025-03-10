@@ -1,0 +1,162 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
+
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "base/base64.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "components/component_updater/component_installer.h"
+#include "components/component_updater/component_updater_service.h"
+#include "crypto/sha2.h"
+
+using brave_component_updater::BraveOnDemandUpdater;
+
+namespace brave_user_agent {
+
+namespace {
+
+class BraveUserAgentComponentInstallerPolicy
+    : public component_updater::ComponentInstallerPolicy {
+ public:
+  explicit BraveUserAgentComponentInstallerPolicy(
+      const std::string& component_public_key,
+      const std::string& component_id,
+      const std::string& component_name,
+      OnComponentReadyCallback callback);
+  ~BraveUserAgentComponentInstallerPolicy() override;
+
+  BraveUserAgentComponentInstallerPolicy(
+      const BraveUserAgentComponentInstallerPolicy&) = delete;
+  BraveUserAgentComponentInstallerPolicy& operator=(
+      const BraveUserAgentComponentInstallerPolicy&) = delete;
+
+  // component_updater::ComponentInstallerPolicy
+  bool SupportsGroupPolicyEnabledComponentUpdates() const override;
+  bool RequiresNetworkEncryption() const override;
+  update_client::CrxInstaller::Result OnCustomInstall(
+      const base::Value::Dict& manifest,
+      const base::FilePath& install_dir) override;
+  void OnCustomUninstall() override;
+  bool VerifyInstallation(const base::Value::Dict& manifest,
+                          const base::FilePath& install_dir) const override;
+  void ComponentReady(const base::Version& version,
+                      const base::FilePath& path,
+                      base::Value::Dict manifest) override;
+  base::FilePath GetRelativeInstallDir() const override;
+  void GetHash(std::vector<uint8_t>* hash) const override;
+  std::string GetName() const override;
+  update_client::InstallerAttributes GetInstallerAttributes() const override;
+  bool IsBraveComponent() const override;
+
+ private:
+  const std::string component_id_;
+  const std::string component_name_;
+  OnComponentReadyCallback ready_callback_;
+  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
+};
+
+BraveUserAgentComponentInstallerPolicy::BraveUserAgentComponentInstallerPolicy(
+    const std::string& component_public_key,
+    const std::string& component_id,
+    const std::string& component_name,
+    OnComponentReadyCallback callback)
+    : component_id_(component_id),
+      component_name_(component_name),
+      ready_callback_(callback) {
+  // Generate hash from public key.
+  std::string decoded_public_key;
+  base::Base64Decode(component_public_key, &decoded_public_key);
+  crypto::SHA256HashString(decoded_public_key, component_hash_.data(),
+                           component_hash_.size());
+}
+
+BraveUserAgentComponentInstallerPolicy::
+    ~BraveUserAgentComponentInstallerPolicy() = default;
+
+bool BraveUserAgentComponentInstallerPolicy::
+    SupportsGroupPolicyEnabledComponentUpdates() const {
+  return true;
+}
+
+bool BraveUserAgentComponentInstallerPolicy::RequiresNetworkEncryption() const {
+  return false;
+}
+
+update_client::CrxInstaller::Result
+BraveUserAgentComponentInstallerPolicy::OnCustomInstall(
+    const base::Value::Dict& manifest,
+    const base::FilePath& install_dir) {
+  return update_client::CrxInstaller::Result(0);
+}
+
+void BraveUserAgentComponentInstallerPolicy::OnCustomUninstall() {}
+
+void BraveUserAgentComponentInstallerPolicy::ComponentReady(
+    const base::Version& version,
+    const base::FilePath& path,
+    base::Value::Dict manifest) {
+  ready_callback_.Run(path);
+}
+
+bool BraveUserAgentComponentInstallerPolicy::VerifyInstallation(
+    const base::Value::Dict& manifest,
+    const base::FilePath& install_dir) const {
+  return true;
+}
+
+base::FilePath BraveUserAgentComponentInstallerPolicy::GetRelativeInstallDir()
+    const {
+  return base::FilePath::FromUTF8Unsafe(component_id_);
+}
+
+void BraveUserAgentComponentInstallerPolicy::GetHash(
+    std::vector<uint8_t>* hash) const {
+  hash->assign(component_hash_.begin(), component_hash_.end());
+}
+
+std::string BraveUserAgentComponentInstallerPolicy::GetName() const {
+  return component_name_;
+}
+
+update_client::InstallerAttributes
+BraveUserAgentComponentInstallerPolicy::GetInstallerAttributes() const {
+  return update_client::InstallerAttributes();
+}
+
+bool BraveUserAgentComponentInstallerPolicy::IsBraveComponent() const {
+  return true;
+}
+
+void OnRegistered(const std::string& component_id) {
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->EnsureInstalled(
+      kBraveUserAgentServiceComponentId);
+}
+
+}  // namespace
+
+void RegisterBraveUserAgentComponent(
+    component_updater::ComponentUpdateService* cus,
+    OnComponentReadyCallback callback) {
+  // In test, |cus| could be nullptr.
+  if (!cus) {
+    return;
+  }
+
+  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
+      std::make_unique<BraveUserAgentComponentInstallerPolicy>(
+          kBraveUserAgentServiceComponentBase64PublicKey,
+          kBraveUserAgentServiceComponentId,
+          kBraveUserAgentServiceComponentName, callback));
+  installer->Register(
+      cus, base::BindOnce(&OnRegistered, kBraveUserAgentServiceComponentId));
+}
+
+}  // namespace brave_user_agent

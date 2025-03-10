@@ -10,6 +10,7 @@
 #include <string>
 
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_user_agent/browser/brave_user_agent_service.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
@@ -45,6 +46,7 @@ class BraveApplicationContextImpl : public ApplicationContextImpl {
   debounce::DebounceComponentInstaller* debounce_component_installer();
   https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service();
+  brave_user_agent::BraveUserAgentService* brave_user_agent_service();
 
   // Start any services that we may need later
   void StartBraveServices();
@@ -64,6 +66,8 @@ class BraveApplicationContextImpl : public ApplicationContextImpl {
       debounce_component_installer_;
   std::unique_ptr<https_upgrade_exceptions::HttpsUpgradeExceptionsService>
       https_upgrade_exceptions_service_;
+  std::unique_ptr<brave_user_agent::BraveUserAgentService>
+      brave_user_agent_service_;
 };
 
 #endif  // BRAVE_IOS_BROWSER_APPLICATION_CONTEXT_BRAVE_APPLICATION_CONTEXT_IMPL_H_
