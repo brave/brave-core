@@ -7,15 +7,18 @@
 
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_ads/core/internal/account/utility/tokens_constants.h"
 
 namespace brave_ads {
+
+namespace {
+constexpr int kConfirmationServerVersion = 4;
+}  // namespace
 
 std::string BuildCreateNonRewardConfirmationUrlPath(
     const std::string& transaction_id) {
   CHECK(!transaction_id.empty());
 
-  return base::StringPrintf("/v%d/confirmation/%s", kTokensServerVersion,
+  return base::StringPrintf("/v%d/confirmation/%s", kConfirmationServerVersion,
                             transaction_id.c_str());
 }
 
