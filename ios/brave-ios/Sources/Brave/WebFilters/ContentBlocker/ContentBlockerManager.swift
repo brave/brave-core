@@ -624,6 +624,16 @@ import os.log
   }
 }
 
+#if DEBUG
+extension ContentBlockerManager {
+  /// Assigns the given value to `cachedRuleLists` for testing with the `hasRuleList` functionality
+  /// NOTE: This should only be used in unit testing.
+  func setTestingCachedRuleLists(_ ruleLists: [String: CompileResult]) {
+    self.cachedRuleLists = ruleLists
+  }
+}
+#endif
+
 extension ShieldLevel {
   var preferredBlockingModes: Set<ContentBlockerManager.BlockingMode> {
     if isAggressive {
