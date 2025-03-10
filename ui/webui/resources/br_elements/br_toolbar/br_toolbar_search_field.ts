@@ -90,7 +90,7 @@ export class BrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
     this.showingSearch = this.hasSearchText || this.isSearchFocused()
   }
 
-  async focus_() {
+  focus_() {
     this.getSearchInput().focus()
   }
 

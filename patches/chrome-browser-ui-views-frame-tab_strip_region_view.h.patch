@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/tab_strip_region_view.h b/chrome/browser/ui/views/frame/tab_strip_region_view.h
-index 62662c70ae6d83be51bc9a6ade27d8b240e80d78..f5cbd6940b255b71b789680d60f925e7c1e31b14 100644
+index bca3cc6c4fd27b5c1264778ff38f8dd43ac32ff1..9d4bbaf888b474705b581f977acb0cb7b9a2a638 100644
 --- a/chrome/browser/ui/views/frame/tab_strip_region_view.h
 +++ b/chrome/browser/ui/views/frame/tab_strip_region_view.h
 @@ -29,7 +29,7 @@ class TabSearchPositionMetricsLogger;

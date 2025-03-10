@@ -115,36 +115,38 @@ public class TabUtils {
             deleteMenuItem.setVisible(false);
         }
 
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                BraveActivity activity = null;
-                try {
-                    activity = BraveActivity.getBraveActivity();
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "showBookmarkTabPopupMenu popup click " + e);
-                }
-                if (currentTab == null || activity == null) {
-                    return false;
-                }
+        popup.setOnMenuItemClickListener(
+                new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id = item.getItemId();
+                        BraveActivity activity = null;
+                        try {
+                            activity = BraveActivity.getBraveActivity();
+                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                            Log.e(TAG, "showBookmarkTabPopupMenu popup click " + e);
+                        }
+                        if (currentTab == null || activity == null) {
+                            return false;
+                        }
 
-                if (id == R.id.add_bookmark || id == R.id.delete_bookmark) {
-                    activity.addOrEditBookmark(currentTab);
-                    return true;
-                } else if (id == R.id.edit_bookmark && bridge != null) {
-                    BookmarkId bookmarkId = bridge.getUserBookmarkIdForTab(currentTab);
-                    if (bookmarkId != null) {
-                        BookmarkUtils.startEditActivity(activity, bookmarkId);
-                        return true;
+                        if (id == R.id.add_bookmark || id == R.id.delete_bookmark) {
+                            activity.addOrEditBookmark(currentTab);
+                            return true;
+                        } else if (id == R.id.edit_bookmark && bridge != null) {
+                            BookmarkId bookmarkId = bridge.getUserBookmarkIdForTab(currentTab);
+                            if (bookmarkId != null) {
+                                BookmarkUtils.startEditActivity(
+                                        activity, currentTab.getProfile(), bookmarkId);
+                                return true;
+                            }
+                        } else if (id == R.id.view_bookmarks) {
+                            activity.showBookmarkManager(currentTab.getProfile());
+                            return true;
+                        }
+                        return false;
                     }
-                } else if (id == R.id.view_bookmarks) {
-                    BookmarkUtils.showBookmarkManager(activity, currentTab.isIncognito());
-                    return true;
-                }
-                return false;
-            }
-        });
+                });
 
         popup.show();
     }

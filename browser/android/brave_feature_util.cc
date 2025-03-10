@@ -10,8 +10,8 @@
 #include "chrome/android/chrome_jni_headers/BraveFeatureUtil_jni.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/browser_process.h"
-#include "components/flags_ui/feature_entry.h"
-#include "components/flags_ui/pref_service_flags_storage.h"
+#include "components/webui/flags/feature_entry.h"
+#include "components/webui/flags/pref_service_flags_storage.h"
 
 namespace chrome {
 namespace android {

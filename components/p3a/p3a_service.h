@@ -96,7 +96,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
 
   // Invoked by callbacks registered by our service. Since these callbacks
   // can fire on any thread, this method reposts everything to UI thread.
-  void OnHistogramChanged(const char* histogram_name,
+  void OnHistogramChanged(std::string_view histogram_name,
                           uint64_t name_hash,
                           base::HistogramBase::Sample32 sample);
 
@@ -119,7 +119,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
 
   void OnP3AEnabledChanged();
 
-  void OnHistogramChangedOnUI(const char* histogram_name,
+  void OnHistogramChangedOnUI(std::string_view histogram_name,
                               base::HistogramBase::Sample32 sample,
                               size_t bucket);
 
