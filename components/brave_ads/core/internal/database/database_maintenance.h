@@ -9,6 +9,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace base {
 class TimeDelta;
@@ -16,7 +17,8 @@ class TimeDelta;
 
 namespace brave_ads::database {
 
-class Maintenance final : public DatabaseManagerObserver {
+class Maintenance final : public AdsClientNotifierObserver,
+                          public DatabaseManagerObserver {
  public:
   Maintenance();
 
@@ -31,6 +33,9 @@ class Maintenance final : public DatabaseManagerObserver {
 
   // DatabaseManagerObserver:
   void OnDatabaseIsReady() override;
+
+  // AdsClientNotifierObserver:
+  void OnNotifyPrefDidChange(const std::string& path) override;
 
   Timer timer_;
 

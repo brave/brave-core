@@ -15,6 +15,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table_util.h"
 
 namespace brave_ads::database {
@@ -26,6 +28,19 @@ constexpr base::TimeDelta kRecurringInterval = base::Days(1);
 
 void RunOnce() {
   PurgeAllOrphanedAdEvents();
+}
+
+void MaybePurgeNewTabPageAdEvents() {
+  if (!UserHasOptedInToNewTabPageAds()) {
+    PurgeAdEventsForType(mojom::AdType::kNewTabPageAd);
+  }
+}
+
+void MaybePurgeBraveNewsAdEvents() {
+  if (!UserHasOptedInToBraveNewsAds()) {
+    PurgeAdEventsForType(mojom::AdType::kInlineContentAd);
+    PurgeAdEventsForType(mojom::AdType::kPromotedContentAd);
+  }
 }
 
 }  // namespace
@@ -50,6 +65,8 @@ void Maintenance::RepeatedlyScheduleAfter(base::TimeDelta after) {
 }
 
 void Maintenance::RepeatedlyScheduleAfterCallback() {
+  RunOnce();
+
   PurgeExpiredAdEvents();
   PurgeExpiredAdHistory();
   PurgeExpiredCreativeSetConversions();
@@ -60,9 +77,15 @@ void Maintenance::RepeatedlyScheduleAfterCallback() {
 }
 
 void Maintenance::OnDatabaseIsReady() {
-  RunOnce();
-
   RepeatedlyScheduleAfter(kInitialDelay);
+}
+
+void Maintenance::OnNotifyPrefDidChange(const std::string& path) {
+  if (DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path)) {
+    MaybePurgeNewTabPageAdEvents();
+  } else if (DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path)) {
+    MaybePurgeBraveNewsAdEvents();
+  }
 }
 
 }  // namespace brave_ads::database
