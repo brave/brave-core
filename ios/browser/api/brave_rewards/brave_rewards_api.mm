@@ -9,24 +9,22 @@
 
 #include <optional>
 
-#include "base/base64.h"
 #include "base/containers/flat_map.h"
 #include "base/ios/ios_util.h"
 #include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
-#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
-#include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/hash_prefix_store.h"
 #include "brave/components/brave_rewards/core/engine/rewards_database.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_rewards/core/remote_worker.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #import "brave/ios/browser/api/brave_rewards/rewards.mojom.objc+private.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_client_bridge.h"
@@ -35,6 +33,10 @@
 #import "brave/ios/browser/api/brave_rewards/rewards_observer.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #include "components/os_crypt/sync/os_crypt.h"
+#include "components/prefs/pref_service.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -43,36 +45,57 @@
 #error "This file requires ARC support."
 #endif
 
-using brave_rewards::internal::HashPrefixStore;
+namespace {
 
-namespace brave_rewards::internal {
+using brave_rewards::RemoteWorker;
+using brave_rewards::mojom::RewardsEngineClient;
 
-template <typename T>
-struct task_deleter {
- private:
-  scoped_refptr<base::TaskRunner> task_runner;
-
+class RewardsDatabaseWorker
+    : public RemoteWorker<brave_rewards::mojom::RewardsDatabase> {
  public:
-  task_deleter()
-      : task_runner(base::SequencedTaskRunner::GetCurrentDefault()) {}
-  ~task_deleter() = default;
+  RewardsDatabaseWorker() : RemoteWorker(CreateTaskRunner()) {}
+  ~RewardsDatabaseWorker() = default;
 
-  void operator()(T* ptr) const {
-    if (base::SequencedTaskRunner::GetCurrentDefault() != task_runner) {
-      task_runner->PostTask(FROM_HERE,
-                            base::BindOnce([](T* ptr) { delete ptr; }, ptr));
-    } else {
-      delete ptr;
-    }
+ private:
+  static scoped_refptr<base::SequencedTaskRunner> CreateTaskRunner() {
+    return base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   }
 };
 
-template <typename T, typename... Args>
-std::unique_ptr<T, task_deleter<T>> make_task_ptr(Args&&... args) {
-  return {new T(std::forward<Args>(args)...), task_deleter<T>()};
-}
+class HashPrefixStoreWorker
+    : public RemoteWorker<brave_rewards::mojom::HashPrefixStore> {
+ public:
+  HashPrefixStoreWorker() : RemoteWorker(CreateTaskRunner()) {}
+  ~HashPrefixStoreWorker() = default;
 
-}  // namespace brave_rewards::internal
+ private:
+  static scoped_refptr<base::SequencedTaskRunner> CreateTaskRunner() {
+    return base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+  }
+};
+
+class RewardsEngineWorker
+    : public RemoteWorker<brave_rewards::mojom::RewardsEngine> {
+ public:
+  RewardsEngineWorker() : RemoteWorker(CreateTaskRunner()) {}
+  ~RewardsEngineWorker() = default;
+
+ private:
+  static scoped_refptr<base::SequencedTaskRunner> CreateTaskRunner() {
+    // The `WithBaseSyncPrimitives` flag is required due to the usage of [Sync]
+    // interface method calls by the Rewards engine.
+    return base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::WithBaseSyncPrimitives(),
+         base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+  }
+};
+
+}  // namespace
 
 #define LLOG(verbose_level, format, ...)                  \
   [self log:(__FILE__)                                    \
@@ -84,32 +107,14 @@ NSString* const BraveRewardsErrorDomain = @"BraveRewardsErrorDomain";
 NSNotificationName const BraveRewardsNotificationAdded =
     @"BATBraveRewardsNotificationAdded";
 
-BraveGeneralRewardsNotificationID const
-    BATBraveGeneralRewardsNotificationIDWalletDisconnected =
-        @"wallet_disconnected";
-
-static NSString* const kContributionQueueAutoincrementID =
-    @"BATContributionQueueAutoincrementID";
-
-static NSString* const kExternalWalletsPrefKey = @"external_wallets";
-static NSString* const kTransferFeesPrefKey = @"transfer_fees";
-
 /// ---
 
 @interface BraveRewardsAPI () <RewardsClientBridge> {
-  // DO NOT ACCESS DIRECTLY, use `postEngineTask` or ensure you are accessing
-  // _engine from a task posted in `_engineTaskRunner`
-  std::unique_ptr<brave_rewards::internal::RewardsEngine,
-                  brave_rewards::internal::task_deleter<
-                      brave_rewards::internal::RewardsEngine>>
-      _engine;
-  std::unique_ptr<RewardsClientIOS,
-                  brave_rewards::internal::task_deleter<RewardsClientIOS>>
-      _rewardsClient;
-  base::SequenceBound<brave_rewards::internal::RewardsDatabase> rewardsDatabase;
-  base::SequenceBound<HashPrefixStore> _creatorPrefixStore;
-  scoped_refptr<base::SequencedTaskRunner> databaseQueue;
-  scoped_refptr<base::SequencedTaskRunner> _engineTaskRunner;
+  scoped_refptr<base::SequencedTaskRunner> _taskRunner;
+  std::unique_ptr<RewardsClientIOS> _rewardsClient;
+  RewardsEngineWorker _rewardsEngine;
+  RewardsDatabaseWorker _rewardsDatabase;
+  HashPrefixStoreWorker _creatorPrefixStore;
 }
 
 @property(nonatomic, copy) NSString* storagePath;
@@ -118,7 +123,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 @property(nonatomic) dispatch_queue_t fileWriteThread;
 @property(nonatomic) NSMutableDictionary<NSString*, NSString*>* state;
 @property(nonatomic) BraveCommonOperations* commonOps;
-@property(nonatomic) NSMutableDictionary<NSString*, __kindof NSObject*>* prefs;
+@property(nonatomic) PrefService* profilePrefService;
 
 @property(nonatomic) NSHashTable<RewardsObserver*>* observers;
 
@@ -137,16 +142,15 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
 - (instancetype)initWithStateStoragePath:(NSString*)path {
   if ((self = [super init])) {
-    _engineTaskRunner = base::ThreadPool::CreateSingleThreadTaskRunner(
-        {base::MayBlock(), base::WithBaseSyncPrimitives(),
-         base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
-        base::SingleThreadTaskRunnerThreadMode::DEDICATED);
+    _taskRunner = base::SequencedTaskRunner::GetCurrentDefault();
 
     self.storagePath = path;
     self.commonOps =
         [[BraveCommonOperations alloc] initWithStoragePath:path
-                                                taskRunner:_engineTaskRunner];
+                                                taskRunner:_taskRunner];
+    [self initProfilePrefService];
+    [self maybeMigrateProfilePrefs];
+
     self.state = [[NSMutableDictionary alloc]
                      initWithContentsOfFile:self.randomStatePath]
                      ?: [[NSMutableDictionary alloc] init];
@@ -154,42 +158,17 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
         dispatch_queue_create("com.rewards.file-write", DISPATCH_QUEUE_SERIAL);
     self.observers = [NSHashTable weakObjectsHashTable];
 
-    self.prefs =
-        [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
-    if (!self.prefs) {
-      self.prefs = [[NSMutableDictionary alloc] init];
-    }
+    _rewardsClient = std::make_unique<RewardsClientIOS>(self);
 
-    NSString* walletProviderRegionsKey = @"parameters.wallet_provider_regions";
-    if (!self.prefs[walletProviderRegionsKey] ||
-        ![self.prefs[walletProviderRegionsKey] isKindOfClass:NSString.class]) {
-      self.prefs[walletProviderRegionsKey] = @"{}";
-    }
+    _rewardsEngine.BindRemote<brave_rewards::internal::RewardsEngine>(
+        _rewardsClient->MakeRemote(),
+        [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()]);
 
-    databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
-        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+    _rewardsDatabase.BindRemote<brave_rewards::internal::RewardsDatabase>(
+        base::FilePath(base::SysNSStringToUTF8([self rewardsDatabasePath])));
 
-    const auto* dbPath = [self rewardsDatabasePath].UTF8String;
-
-    rewardsDatabase =
-        base::SequenceBound<brave_rewards::internal::RewardsDatabase>(
-            databaseQueue, base::FilePath(dbPath));
-
-    _creatorPrefixStore = base::SequenceBound<HashPrefixStore>(
-        databaseQueue,
+    _creatorPrefixStore.BindRemote<brave_rewards::internal::HashPrefixStore>(
         base::FilePath(base::SysNSStringToUTF8([self creatorPrefixStorePath])));
-
-    _engineTaskRunner->PostTask(
-        FROM_HERE, base::BindOnce(^{
-          self->_rewardsClient =
-              brave_rewards::internal::make_task_ptr<RewardsClientIOS>(self);
-          auto options = [self
-              handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
-          self->_engine = brave_rewards::internal::make_task_ptr<
-              brave_rewards::internal::RewardsEngine>(
-              self->_rewardsClient->MakeRemote(), std::move(options));
-        }));
   }
   return self;
 }
@@ -226,11 +205,13 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   return options;
 }
 
-- (void)postEngineTask:(void (^)(brave_rewards::internal::RewardsEngine*))task {
-  _engineTaskRunner->PostTask(FROM_HERE, base::BindOnce(^{
-                                CHECK(self->_engine != nullptr);
-                                task(self->_engine.get());
-                              }));
+- (void)postTask:(void (^)())task {
+  auto __weak weakSelf = self;
+  _taskRunner->PostTask(FROM_HERE, base::BindOnce(^{
+                          if (weakSelf) {
+                            task();
+                          }
+                        }));
 }
 
 - (void)initializeRewardsService:(nullable void (^)())completion {
@@ -239,34 +220,31 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }
   self.initializing = YES;
 
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->Initialize(base::BindOnce(^(brave_rewards::mojom::Result result) {
-      self.initialized =
-          (result == brave_rewards::mojom::Result::OK ||
-           result == brave_rewards::mojom::Result::NO_LEGACY_STATE ||
-           result == brave_rewards::mojom::Result::NO_PUBLISHER_STATE);
-      self.initializing = NO;
-      if (self.initialized) {
-        [self getRewardsParameters:nil];
-        [self fetchBalance:nil];
-      } else {
-        LLOG(0, @"Rewards Initialization Failed with error: %d",
-             base::to_underlying(result));
-      }
-      self.initializationResult = static_cast<BraveRewardsResult>(result);
-      if (completion) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-          completion();
-        });
-      }
-      dispatch_async(dispatch_get_main_queue(), ^{
-        for (RewardsObserver* observer in [self.observers copy]) {
-          if (observer.walletInitalized) {
-            observer.walletInitalized(self.initializationResult);
+  [self postTask:^{
+    self->_rewardsEngine->Initialize(
+        base::BindOnce(^(brave_rewards::mojom::Result result) {
+          self.initialized =
+              (result == brave_rewards::mojom::Result::OK ||
+               result == brave_rewards::mojom::Result::NO_LEGACY_STATE ||
+               result == brave_rewards::mojom::Result::NO_PUBLISHER_STATE);
+          self.initializing = NO;
+          if (self.initialized) {
+            [self getRewardsParameters:nil];
+            [self fetchBalance:nil];
+          } else {
+            LLOG(0, @"Rewards Initialization Failed with error: %d",
+                 base::to_underlying(result));
           }
-        }
-      });
-    }));
+          self.initializationResult = static_cast<BraveRewardsResult>(result);
+          if (completion) {
+            completion();
+          }
+          for (RewardsObserver* observer in [self.observers copy]) {
+            if (observer.walletInitalized) {
+              observer.walletInitalized(self.initializationResult);
+            }
+          }
+        }));
   }];
 }
 
@@ -285,31 +263,18 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   [NSFileManager.defaultManager
       removeItemAtPath:[dbPath stringByAppendingString:@"-journal"]
                  error:nil];
-  rewardsDatabase =
-      base::SequenceBound<brave_rewards::internal::RewardsDatabase>(
-          databaseQueue, base::FilePath(base::SysNSStringToUTF8(dbPath)));
+  _rewardsDatabase.BindRemote<brave_rewards::internal::RewardsDatabase>(
+      base::FilePath(base::SysNSStringToUTF8(dbPath)));
 
   const auto prefixPath = [self creatorPrefixStorePath];
   [NSFileManager.defaultManager removeItemAtPath:prefixPath error:nil];
-  _creatorPrefixStore = base::SequenceBound<HashPrefixStore>(
-      databaseQueue, base::FilePath(base::SysNSStringToUTF8(prefixPath)));
+  _creatorPrefixStore.BindRemote<brave_rewards::internal::HashPrefixStore>(
+      base::FilePath(base::SysNSStringToUTF8(prefixPath)));
 }
 
 - (NSString*)randomStatePath {
   return
       [self.storagePath stringByAppendingPathComponent:@"random_state.plist"];
-}
-
-- (NSString*)prefsPath {
-  return [self.storagePath stringByAppendingPathComponent:@"ledger_pref.plist"];
-}
-
-- (void)savePrefs {
-  NSDictionary* prefs = [self.prefs copy];
-  NSString* path = [[self prefsPath] copy];
-  dispatch_async(self.fileWriteThread, ^{
-    [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:nil];
-  });
 }
 
 #pragma mark - Observers
@@ -325,7 +290,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 #pragma mark - Wallet
 
 - (void)createWallet:(void (^)(NSError* _Nullable))completion {
-  const auto __weak weakSelf = self;
   // Results that can come from CreateRewardsWallet():
   //   - OK: Good to go
   //   - ERROR: Already initialized
@@ -333,15 +297,10 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   //   malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->CreateRewardsWallet(
+  [self postTask:^{
+    self->_rewardsEngine->CreateRewardsWallet(
         "", base::BindOnce(^(
                 brave_rewards::mojom::CreateRewardsWalletResult create_result) {
-          const auto strongSelf = weakSelf;
-          if (!strongSelf) {
-            return;
-          }
-
           brave_rewards::mojom::Result result =
               create_result ==
                       brave_rewards::mojom::CreateRewardsWalletResult::kSuccess
@@ -374,44 +333,40 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                                     userInfo:userInfo];
           }
 
-          strongSelf.initializingWallet = NO;
+          self.initializingWallet = NO;
 
-          dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion) {
-              completion(error);
-            }
+          if (completion) {
+            completion(error);
+          }
 
-            for (RewardsObserver* observer in [strongSelf.observers copy]) {
-              if (observer.walletInitalized) {
-                observer.walletInitalized(
-                    static_cast<BraveRewardsResult>(result));
-              }
+          for (RewardsObserver* observer in [self.observers copy]) {
+            if (observer.walletInitalized) {
+              observer.walletInitalized(
+                  static_cast<BraveRewardsResult>(result));
             }
-          });
+          }
         }));
   }];
 }
 
 - (void)currentWalletInfo:
     (void (^)(BraveRewardsRewardsWallet* _Nullable wallet))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->GetRewardsWallet(
+  [self postTask:^{
+    self->_rewardsEngine->GetRewardsWallet(
         base::BindOnce(^(brave_rewards::mojom::RewardsWalletPtr wallet) {
           const auto bridgedWallet = wallet.get() != nullptr
                                          ? [[BraveRewardsRewardsWallet alloc]
                                                initWithRewardsWallet:*wallet]
                                          : nil;
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(bridgedWallet);
-          });
+          completion(bridgedWallet);
         }));
   }];
 }
 
 - (void)getRewardsParameters:
     (void (^)(BraveRewardsRewardsParameters* _Nullable))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->GetRewardsParameters(
+  [self postTask:^{
+    self->_rewardsEngine->GetRewardsParameters(
         base::BindOnce(^(brave_rewards::mojom::RewardsParametersPtr info) {
           if (info) {
             self.rewardsParameters = [[BraveRewardsRewardsParameters alloc]
@@ -419,52 +374,26 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
           } else {
             self.rewardsParameters = nil;
           }
-          const auto __weak weakSelf = self;
-          dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion) {
-              completion(weakSelf.rewardsParameters);
-            }
-          });
+          if (completion) {
+            completion(self.rewardsParameters);
+          }
         }));
   }];
 }
 
 - (void)fetchBalance:(void (^)(BraveRewardsBalance* _Nullable))completion {
-  const auto __weak weakSelf = self;
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->FetchBalance(
+  [self postTask:^{
+    self->_rewardsEngine->FetchBalance(
         base::BindOnce(^(brave_rewards::mojom::BalancePtr balance) {
-          const auto strongSelf = weakSelf;
           if (balance) {
-            strongSelf.balance = [[BraveRewardsBalance alloc]
+            self.balance = [[BraveRewardsBalance alloc]
                 initWithBalancePtr:std::move(balance)];
           }
-          dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion) {
-              completion(strongSelf.balance);
-            }
-          });
+          if (completion) {
+            completion(self.balance);
+          }
         }));
   }];
-}
-
-- (void)legacyWallet:
-    (brave_rewards::mojom::RewardsEngineClient::GetLegacyWalletCallback)
-        callback {
-  NSDictionary* externalWallets =
-      self.prefs[kExternalWalletsPrefKey] ?: [[NSDictionary alloc] init];
-  std::string wallet;
-  NSData* data = [NSJSONSerialization dataWithJSONObject:externalWallets
-                                                 options:0
-                                                   error:nil];
-  if (data != nil) {
-    NSString* dataString = [[NSString alloc] initWithData:data
-                                                 encoding:NSUTF8StringEncoding];
-    if (dataString != nil) {
-      wallet = base::SysNSStringToUTF8(dataString);
-    }
-  }
-  std::move(callback).Run(wallet);
 }
 
 #pragma mark - Publishers
@@ -475,11 +404,11 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                        completion:
                            (void (^)(NSArray<BraveRewardsPublisherInfo*>*))
                                completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
+  [self postTask:^{
     auto cppFilter = filter ? filter.cppObjPtr
                             : brave_rewards::mojom::ActivityInfoFilter::New();
     if (filter.excluded == BraveRewardsExcludeFilterFilterExcluded) {
-      engine->GetExcludedList(base::BindOnce(
+      self->_rewardsEngine->GetExcludedList(base::BindOnce(
           ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
             const auto publishers = NSArrayFromVector(
                 &list, ^BraveRewardsPublisherInfo*(
@@ -487,12 +416,10 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                   return [[BraveRewardsPublisherInfo alloc]
                       initWithPublisherInfo:*info];
                 });
-            dispatch_async(dispatch_get_main_queue(), ^{
-              completion(publishers);
-            });
+            completion(publishers);
           }));
     } else {
-      engine->GetActivityInfoList(
+      self->_rewardsEngine->GetActivityInfoList(
           start, limit, std::move(cppFilter),
           base::BindOnce(
               ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
@@ -502,9 +429,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                       return [[BraveRewardsPublisherInfo alloc]
                           initWithPublisherInfo:*info];
                     });
-                dispatch_async(dispatch_get_main_queue(), ^{
-                  completion(publishers);
-                });
+                completion(publishers);
               }));
     }
   }];
@@ -514,7 +439,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                            faviconURL:(nullable NSURL*)faviconURL
                         publisherBlob:(nullable NSString*)publisherBlob
                                 tabId:(uint64_t)tabId {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
+  [self postTask:^{
     if (!URL.absoluteString) {
       return;
     }
@@ -550,7 +475,8 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
       blob = base::SysNSStringToUTF8(publisherBlob);
     }
 
-    engine->GetPublisherActivityFromUrl(tabId, std::move(visitData), blob);
+    self->_rewardsEngine->GetPublisherActivityFromUrl(
+        tabId, std::move(visitData), blob);
   }];
 }
 
@@ -561,13 +487,11 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
     completion(BraveRewardsPublisherStatusNotVerified);
     return;
   }
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->RefreshPublisher(
+  [self postTask:^{
+    self->_rewardsEngine->RefreshPublisher(
         base::SysNSStringToUTF8(publisherId),
         base::BindOnce(^(brave_rewards::mojom::PublisherStatus status) {
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(static_cast<BraveRewardsPublisherStatus>(status));
-          });
+          completion(static_cast<BraveRewardsPublisherStatus>(status));
         }));
   }];
 }
@@ -576,8 +500,8 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
 - (void)listRecurringTips:
     (void (^)(NSArray<BraveRewardsPublisherInfo*>*))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->GetRecurringTips(base::BindOnce(
+  [self postTask:^{
+    self->_rewardsEngine->GetRecurringTips(base::BindOnce(
         ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
           const auto publishers = NSArrayFromVector(
               &list, ^BraveRewardsPublisherInfo*(
@@ -585,20 +509,15 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                 return [[BraveRewardsPublisherInfo alloc]
                     initWithPublisherInfo:*info];
               });
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(publishers);
-          });
+          completion(publishers);
         }));
   }];
 }
 
 - (void)removeRecurringTipForPublisherWithId:(NSString*)publisherId {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->RemoveRecurringTip(
-        base::SysNSStringToUTF8(publisherId),
-        base::BindOnce(^(brave_rewards::mojom::Result result){
-            // Not Used
-        }));
+  [self postTask:^{
+    self->_rewardsEngine->RemoveRecurringTip(
+        base::SysNSStringToUTF8(publisherId), base::DoNothing());
   }];
 }
 
@@ -617,16 +536,14 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
 - (void)rewardsInternalInfo:
     (void (^)(BraveRewardsRewardsInternalsInfo* _Nullable info))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->GetRewardsInternalsInfo(
+  [self postTask:^{
+    self->_rewardsEngine->GetRewardsInternalsInfo(
         base::BindOnce(^(brave_rewards::mojom::RewardsInternalsInfoPtr info) {
           auto bridgedInfo = info.get() != nullptr
                                  ? [[BraveRewardsRewardsInternalsInfo alloc]
                                        initWithRewardsInternalsInfo:*info.get()]
                                  : nil;
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(bridgedInfo);
-          });
+          completion(bridgedInfo);
         }));
   }];
 }
@@ -634,8 +551,8 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 - (void)allContributions:
     (void (^)(NSArray<BraveRewardsContributionInfo*>* contributions))
         completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->GetAllContributions(base::BindOnce(
+  [self postTask:^{
+    self->_rewardsEngine->GetAllContributions(base::BindOnce(
         ^(std::vector<brave_rewards::mojom::ContributionInfoPtr> list) {
           const auto convetedList = NSArrayFromVector(
               &list, ^BraveRewardsContributionInfo*(
@@ -643,9 +560,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                 return [[BraveRewardsContributionInfo alloc]
                     initWithContributionInfo:*info];
               });
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(convetedList);
-          });
+          completion(convetedList);
         }));
   }];
 }
@@ -653,245 +568,98 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 #pragma mark - Preferences
 
 - (void)setMinimumVisitDuration:(int)minimumVisitDuration {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->SetPublisherMinVisitTime(minimumVisitDuration);
+  [self postTask:^{
+    self->_rewardsEngine->SetPublisherMinVisitTime(minimumVisitDuration);
   }];
 }
 
 - (void)setMinimumNumberOfVisits:(int)minimumNumberOfVisits {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->SetPublisherMinVisits(minimumNumberOfVisits);
+  [self postTask:^{
+    self->_rewardsEngine->SetPublisherMinVisits(minimumNumberOfVisits);
   }];
 }
 
-- (void)setBooleanState:(const std::string&)name
-                  value:(bool)value
-               callback:(brave_rewards::mojom::RewardsEngineClient::
-                             SetBooleanStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = [NSNumber numberWithBool:value];
-  [self savePrefs];
+- (void)setUserPreferenceValue:(const std::string&)path
+                         value:(base::Value)value
+                      callback:
+                          (RewardsEngineClient::SetUserPreferenceValueCallback)
+                              callback {
+  self.profilePrefService->Set(path, std::move(value));
   std::move(callback).Run();
 }
 
-- (void)
-    booleanState:(const std::string&)name
-        callback:
-            (brave_rewards::mojom::RewardsEngineClient::GetBooleanStateCallback)
-                callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  if (![self.prefs objectForKey:key]) {
-    std::move(callback).Run(false);
-    return;
-  }
-  std::move(callback).Run([self.prefs[key] boolValue]);
+- (void)userPreferenceValue:(const std::string&)path
+                   callback:
+                       (RewardsEngineClient::GetUserPreferenceValueCallback)
+                           callback {
+  std::move(callback).Run(self.profilePrefService->GetValue(path).Clone());
 }
 
-- (void)setIntegerState:(const std::string&)name
-                  value:(int32_t)value
-               callback:(brave_rewards::mojom::RewardsEngineClient::
-                             SetIntegerStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = [NSNumber numberWithInt:value];
-  [self savePrefs];
+- (void)
+    clearUserPreferenceValue:(const std::string&)path
+                    callback:
+                        (RewardsEngineClient::ClearUserPreferenceValueCallback)
+                            callback {
+  self.profilePrefService->ClearPref(path);
   std::move(callback).Run();
 }
 
-- (void)
-    integerState:(const std::string&)name
-        callback:
-            (brave_rewards::mojom::RewardsEngineClient::GetIntegerStateCallback)
-                callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  std::move(callback).Run([self.prefs[key] intValue]);
+- (void)initProfilePrefService {
+  std::vector<ProfileIOS*> profiles =
+      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+  CHECK(!profiles.empty());
+  _profilePrefService = profiles.front()->GetPrefs();
+  CHECK(_profilePrefService);
 }
 
-- (void)setDoubleState:(const std::string&)name
-                 value:(double)value
-              callback:(brave_rewards::mojom::RewardsEngineClient::
-                            SetDoubleStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = [NSNumber numberWithDouble:value];
-  [self savePrefs];
-  std::move(callback).Run();
-}
-
-- (void)
-    doubleState:(const std::string&)name
-       callback:
-           (brave_rewards::mojom::RewardsEngineClient::GetDoubleStateCallback)
-               callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  std::move(callback).Run([self.prefs[key] doubleValue]);
-}
-
-- (void)setStringState:(const std::string&)name
-                 value:(const std::string&)value
-              callback:(brave_rewards::mojom::RewardsEngineClient::
-                            SetStringStateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = base::SysUTF8ToNSString(value);
-  [self savePrefs];
-  std::move(callback).Run();
-}
-
-- (void)
-    stringState:(const std::string&)name
-       callback:
-           (brave_rewards::mojom::RewardsEngineClient::GetStringStateCallback)
-               callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  const auto value = (NSString*)self.prefs[key];
-  if (!value) {
-    std::move(callback).Run("");
-    return;
-  }
-  std::move(callback).Run(base::SysNSStringToUTF8(value));
-}
-
-- (void)
-    setInt64State:(const std::string&)name
-            value:(int64_t)value
-         callback:
-             (brave_rewards::mojom::RewardsEngineClient::SetInt64StateCallback)
-                 callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = [NSNumber numberWithLongLong:value];
-  [self savePrefs];
-  std::move(callback).Run();
-}
-
-- (void)int64State:(const std::string&)name
-          callback:
-              (brave_rewards::mojom::RewardsEngineClient::GetInt64StateCallback)
-                  callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  std::move(callback).Run([self.prefs[key] longLongValue]);
-}
-
-- (void)setUint64State:(const std::string&)name
-                 value:(uint64_t)value
-              callback:(brave_rewards::mojom::RewardsEngineClient::
-                            SetUint64StateCallback)callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = [NSNumber numberWithUnsignedLongLong:value];
-  [self savePrefs];
-  std::move(callback).Run();
-}
-
-- (void)
-    uint64State:(const std::string&)name
-       callback:
-           (brave_rewards::mojom::RewardsEngineClient::GetUint64StateCallback)
-               callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  std::move(callback).Run([self.prefs[key] unsignedLongLongValue]);
-}
-
-- (void)
-    setValueState:(const std::string&)name
-            value:(base::Value)value
-         callback:
-             (brave_rewards::mojom::RewardsEngineClient::SetValueStateCallback)
-                 callback {
-  std::string json;
-  if (base::JSONWriter::Write(value, &json)) {
-    const auto key = base::SysUTF8ToNSString(name);
-    self.prefs[key] = base::SysUTF8ToNSString(json);
-    [self savePrefs];
-  }
-  std::move(callback).Run();
-}
-
-- (void)valueState:(const std::string&)name
-          callback:
-              (brave_rewards::mojom::RewardsEngineClient::GetValueStateCallback)
-                  callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  const auto json = (NSString*)self.prefs[key];
-  if (!json) {
-    std::move(callback).Run(base::Value());
+- (void)maybeMigrateProfilePrefs {
+  // Migrates "leger_pref.plist" data into PrefService preferences.
+  NSString* legacyProfilePrefsPath =
+      [self.storagePath stringByAppendingPathComponent:@"ledger_pref.plist"];
+  NSDictionary* legacyProfilePrefs = [[NSMutableDictionary alloc]
+      initWithContentsOfFile:legacyProfilePrefsPath];
+  if (!legacyProfilePrefs) {
     return;
   }
 
-  auto value = base::JSONReader::Read(base::SysNSStringToUTF8(json));
-  if (!value) {
-    std::move(callback).Run(base::Value());
-    return;
+  LLOG(1, @"Migrating profile prefs");
+  CHECK(self.profilePrefService);
+
+  if ([legacyProfilePrefs objectForKey:@"wallets.brave"]) {
+    auto json = (NSString*)legacyProfilePrefs[@"wallets.brave"];
+    if (json) {
+      if (auto value = base::JSONReader::Read(base::SysNSStringToUTF8(json))) {
+        self.profilePrefService->Set(brave_rewards::prefs::kWalletBrave,
+                                     std::move(*value));
+      }
+    }
   }
 
-  std::move(callback).Run(std::move(*value));
-}
+  if ([legacyProfilePrefs objectForKey:@"creation_stamp"]) {
+    auto value = [legacyProfilePrefs[@"creation_stamp"] unsignedLongLongValue];
+    self.profilePrefService->SetUint64(brave_rewards::prefs::kCreationStamp,
+                                       value);
+  }
 
-- (void)
-    setTimeState:(const std::string&)name
-           value:(base::Time)value
-        callback:
-            (brave_rewards::mojom::RewardsEngineClient::SetTimeStateCallback)
-                callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = @(value.InSecondsFSinceUnixEpoch());
-  [self savePrefs];
-  std::move(callback).Run();
-}
+  if ([legacyProfilePrefs objectForKey:@"publisher_prefix_list_stamp"]) {
+    auto value = [legacyProfilePrefs[@"publisher_prefix_list_stamp"]
+        unsignedLongLongValue];
+    self.profilePrefService->SetUint64(
+        brave_rewards::prefs::kServerPublisherListStamp, value);
+  }
 
-- (void)timeState:(const std::string&)name
-         callback:
-             (brave_rewards::mojom::RewardsEngineClient::GetTimeStateCallback)
-                 callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  std::move(callback).Run(
-      base::Time::FromSecondsSinceUnixEpoch([self.prefs[key] doubleValue]));
-}
-
-- (void)clearState:(const std::string&)name
-          callback:
-              (brave_rewards::mojom::RewardsEngineClient::ClearStateCallback)
-                  callback {
-  const auto key = base::SysUTF8ToNSString(name);
-  [self.prefs removeObjectForKey:key];
-  [self savePrefs];
-  std::move(callback).Run();
-}
-
-- (void)getClientCountryCode:
-    (brave_rewards::mojom::RewardsEngineClient::GetClientCountryCodeCallback)
-        callback {
-  std::move(callback).Run("");
+  NSError* error = nil;
+  [[NSFileManager defaultManager] removeItemAtPath:legacyProfilePrefsPath
+                                             error:&error];
+  if (error) {
+    LLOG(0, @"Failed to remove legacy prefs: %@", error);
+  }
 }
 
 #pragma mark - Notifications
 
 - (void)clearAllNotifications {
   // Not used on iOS
-}
-
-#pragma mark - State
-
-- (void)loadLegacyState:
-    (brave_rewards::mojom::RewardsEngineClient::LoadLegacyStateCallback)
-        callback {
-  const auto contents =
-      [self.commonOps loadContentsFromFileWithName:"ledger_state.json"];
-  if (contents.length() > 0) {
-    std::move(callback).Run(brave_rewards::mojom::Result::OK, contents);
-  } else {
-    std::move(callback).Run(brave_rewards::mojom::Result::NO_LEGACY_STATE,
-                            contents);
-  }
-}
-
-- (void)loadPublisherState:
-    (brave_rewards::mojom::RewardsEngineClient::LoadPublisherStateCallback)
-        callback {
-  const auto contents =
-      [self.commonOps loadContentsFromFileWithName:"publisher_state.json"];
-  if (contents.length() > 0) {
-    std::move(callback).Run(brave_rewards::mojom::Result::OK, contents);
-  } else {
-    std::move(callback).Run(brave_rewards::mojom::Result::NO_PUBLISHER_STATE,
-                            contents);
-  }
 }
 
 #pragma mark - Network
@@ -906,8 +674,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 }
 
 - (void)loadUrl:(brave_rewards::mojom::UrlRequestPtr)request
-       callback:(brave_rewards::mojom::RewardsEngineClient::LoadURLCallback)
-                    callback {
+       callback:(RewardsEngineClient::LoadURLCallback)callback {
   std::map<brave_rewards::mojom::UrlMethod, std::string> methodMap{
       {brave_rewards::mojom::UrlMethod::GET, "GET"},
       {brave_rewards::mojom::UrlMethod::POST, "POST"},
@@ -951,12 +718,9 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
             }];
 }
 
-- (void)
-    fetchFavIcon:(const std::string&)url
-      faviconKey:(const std::string&)faviconKey
-        callback:
-            (brave_rewards::mojom::RewardsEngineClient::FetchFavIconCallback)
-                callback {
+- (void)fetchFavIcon:(const std::string&)url
+          faviconKey:(const std::string&)faviconKey
+            callback:(RewardsEngineClient::FetchFavIconCallback)callback {
   std::move(callback).Run(NO, std::string());
 }
 
@@ -1007,17 +771,9 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
 - (void)showNotification:(const std::string&)type
                     args:(std::vector<std::string>)args
-                callback:(brave_rewards::mojom::RewardsEngineClient::
-                              ShowNotificationCallback)callback {
+                callback:
+                    (RewardsEngineClient::ShowNotificationCallback)callback {
   // Not used on iOS
-}
-
-- (void)clientInfo:
-    (brave_rewards::mojom::RewardsEngineClient::GetClientInfoCallback)callback {
-  auto info = brave_rewards::mojom::ClientInfo::New();
-  info->os = brave_rewards::mojom::OperatingSystem::UNDEFINED;
-  info->platform = brave_rewards::mojom::Platform::IOS;
-  std::move(callback).Run(std::move(info));
 }
 
 - (void)reconcileStampReset {
@@ -1025,56 +781,39 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 }
 
 - (void)runDbTransaction:(brave_rewards::mojom::DBTransactionPtr)transaction
-                callback:(brave_rewards::mojom::RewardsEngineClient::
-                              RunDBTransactionCallback)callback {
-  __weak BraveRewardsAPI* weakSelf = self;
-  DCHECK(rewardsDatabase);
-  rewardsDatabase
-      .AsyncCall(&brave_rewards::internal::RewardsDatabase::RunTransaction)
-      .WithArgs(std::move(transaction))
-      .Then(base::BindOnce(
-          ^(brave_rewards::internal::RunDBTransactionCallback completion,
-            brave_rewards::mojom::DBCommandResponsePtr response) {
-            if (weakSelf) {
-              std::move(completion).Run(std::move(response));
-            }
-          },
-          std::move(callback)));
+                callback:
+                    (RewardsEngineClient::RunDBTransactionCallback)callback {
+  _rewardsDatabase->RunDBTransaction(std::move(transaction),
+                                     std::move(callback));
 }
 
-- (void)updateCreatorPrefixStore:
-            (brave_rewards::mojom::HashPrefixDataPtr)prefix_data
-                        callback:
-                            (brave_rewards::mojom::RewardsEngineClient::
-                                 UpdateCreatorPrefixStoreCallback)callback {
-  _creatorPrefixStore.AsyncCall(&HashPrefixStore::UpdatePrefixes)
-      .WithArgs(std::move(prefix_data->prefixes), prefix_data->prefix_size)
-      .Then(std::move(callback));
+- (void)
+    updateCreatorPrefixStore:
+        (brave_rewards::mojom::HashPrefixDataPtr)prefix_data
+                    callback:
+                        (RewardsEngineClient::UpdateCreatorPrefixStoreCallback)
+                            callback {
+  _creatorPrefixStore->UpdatePrefixes(std::move(prefix_data),
+                                      std::move(callback));
 }
 
 - (void)creatorPrefixStoreContains:(const std::string&)value
                           callback:
-                              (brave_rewards::mojom::RewardsEngineClient::
+                              (RewardsEngineClient::
                                    CreatorPrefixStoreContainsCallback)callback {
-  _creatorPrefixStore.AsyncCall(&HashPrefixStore::ContainsPrefix)
-      .WithArgs(value)
-      .Then(std::move(callback));
+  _creatorPrefixStore->ContainsPrefix(value, std::move(callback));
 }
 
 - (void)walletDisconnected:(const std::string&)wallet_type {
   // Not used on iOS
 }
 
-- (void)deleteLog:
-    (brave_rewards::mojom::RewardsEngineClient::DeleteLogCallback)callback {
+- (void)deleteLog:(RewardsEngineClient::DeleteLogCallback)callback {
   std::move(callback).Run(brave_rewards::mojom::Result::OK);
 }
 
-- (void)
-    encryptString:(const std::string&)value
-         callback:
-             (brave_rewards::mojom::RewardsEngineClient::EncryptStringCallback)
-                 callback {
+- (void)encryptString:(const std::string&)value
+             callback:(RewardsEngineClient::EncryptStringCallback)callback {
   std::string encrypted_value;
   if (!OSCrypt::EncryptString(value, &encrypted_value)) {
     std::move(callback).Run(std::nullopt);
@@ -1083,11 +822,8 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   std::move(callback).Run(std::make_optional(encrypted_value));
 }
 
-- (void)
-    decryptString:(const std::string&)value
-         callback:
-             (brave_rewards::mojom::RewardsEngineClient::DecryptStringCallback)
-                 callback {
+- (void)decryptString:(const std::string&)value
+             callback:(RewardsEngineClient::DecryptStringCallback)callback {
   std::string decrypted_value;
   if (!OSCrypt::DecryptString(value, &decrypted_value)) {
     std::move(callback).Run(std::nullopt);

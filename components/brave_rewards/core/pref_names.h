@@ -24,7 +24,7 @@ inline constexpr char kShowButton[] =
     "brave.show_brave_rewards_button";  // DEPRECATED
 inline constexpr char kShowLocationBarButton[] =
     "brave.rewards.show_brave_rewards_button_in_location_bar";
-inline constexpr char kEnabled[] = "brave.rewards.enabled";  // DEPRECATED
+inline constexpr char kEnabled[] = "brave.rewards.enabled";
 inline constexpr char kDeclaredGeo[] = "brave.rewards.declared_geo";
 inline constexpr char kNotifications[] = "brave.rewards.notifications";
 inline constexpr char kNotificationTimerInterval[] =

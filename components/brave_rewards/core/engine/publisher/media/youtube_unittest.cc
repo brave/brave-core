@@ -9,7 +9,7 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_rewards/core/engine/constants.h"
-#include "brave/components/brave_rewards/core/engine/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/engine/publisher/static_values.h"
 #include "brave/components/brave_rewards/core/engine/rewards_callbacks.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
