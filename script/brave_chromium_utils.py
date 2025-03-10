@@ -11,6 +11,13 @@ import sys
 from typing import Any, Dict, Optional
 
 
+def get_additional_extensions():
+    """Additional extensions which can be appended to the name of the file."""
+    return [
+        '.lit_mangler.ts',
+    ]
+
+
 @functools.lru_cache(maxsize=None)
 def get_src_dir() -> str:
     """Searches for src/ dir which includes brave/ dir."""
@@ -54,7 +61,14 @@ def get_chromium_src_override(path: str) -> str:
     src_dir = get_src_dir()
     assert path.startswith(src_dir), (path, src_dir)
     src_path = path[len(src_dir) + 1:]
-    return wspath(f'//brave/chromium_src/{src_path}')
+    override_path = wspath(f'//brave/chromium_src/{src_path}')
+    if not os.path.exists(override_path):
+        for override_extension in get_additional_extensions():
+            alt_path = override_path + override_extension
+            if os.path.exists(alt_path):
+                override_path = alt_path
+                break
+    return override_path
 
 
 def to_wspath(path: str) -> str:
