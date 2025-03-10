@@ -20,9 +20,9 @@ namespace brave_ads {
 namespace {
 
 constexpr char kExpectedUrl[] =
-    R"(https://anonymous.ads.bravesoftware.com/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a)";
+    R"(https://anonymous.ads.bravesoftware.com/v4/confirmation/8b742869-6e4a-490c-ac31-31b49130098a)";
 constexpr char kExpectedUrlRequestContent[] =
-    R"({"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})";
+    R"({"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","type":"view"})";
 
 }  // namespace
 

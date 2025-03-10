@@ -22,14 +22,14 @@ bool ShouldFireAdEvent(const NewTabPageAdInfo& ad,
                        mojom::NewTabPageAdEventType mojom_ad_event_type) {
   if (!WasAdServed(ad, ad_events, mojom_ad_event_type)) {
     BLOG(1,
-         "Search result ad: Not allowed because an ad was not served for "
+         "New tab page ad: Not allowed because an ad was not served for "
          "placement id "
              << ad.placement_id);
     return false;
   }
 
   if (ShouldDeduplicateAdEvent(ad, ad_events, mojom_ad_event_type)) {
-    BLOG(1, "Search result ad: Not allowed as deduplicated "
+    BLOG(1, "New tab page ad: Not allowed as deduplicated "
                 << mojom_ad_event_type << " event for placement id "
                 << ad.placement_id);
     return false;
