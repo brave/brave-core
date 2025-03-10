@@ -324,7 +324,7 @@ class PatchFailureResolver:
         # continuation mode.
         self.target_version = target_version
 
-    def apply_patches_3way(self):
+    def apply_patches_3way(self, launch_vscode=False):
         """Applies patches that have failed using the --3way option to allow for
         manual conflict resolution.
 
@@ -371,9 +371,9 @@ class PatchFailureResolver:
                 '\n'.join(f'    * {file}' for file in patches_to_apply))
 
         for subdir, patches in self.patch_files.items():
-            repo_path = f'../{subdir}'
-            patch_relative_path = "../" * repo_path.count(
-                '/') if repo_path != '../' else ''
+            repo_path = f'../{subdir}{' ' if subdir == "" else ' / '}'
+            patch_relative_path = "../" * (repo_path.count('/') -
+                                           1) if repo_path != '../' else ''
 
             cmd = [
                 'git', '-C', f'../{subdir}', 'apply', '--3way',
@@ -387,8 +387,8 @@ class PatchFailureResolver:
                 # If the process fails, we need to collect the files that
                 # failed to apply for manual conflict resolution.
                 self.files_with_conflicts += [
-                    line.lstrip("U ") for line in e.stderr.splitlines()
-                    if line.startswith('U ')
+                    f'{repo_path}{line.lstrip("U ")}'
+                    for line in e.stderr.splitlines() if line.startswith('U ')
                 ]
 
         for subdir, patches in self.patch_files.items():
@@ -401,6 +401,9 @@ class PatchFailureResolver:
                 '[bold]Manually resolve conflicts for these files:\n[/]' +
                 '\n'.join(f'    * {file}'
                           for file in self.files_with_conflicts))
+
+            if launch_vscode:
+                terminal.run(['code', *self.files_with_conflicts])
 
         # A continuation file is created in case `--continue` is still required
         # for some reason (e.g. manual conflict resolution, patches being
@@ -596,7 +599,8 @@ class Upgrade:
 
         return True
 
-    def _run_internal(self, is_continuation, no_conflict_continuation):
+    def _run_internal(self, is_continuation, no_conflict_continuation,
+                      launch_vscode):
         """Run the upgrade process
 
     This is the main method used to carry out the whole update process.
@@ -638,7 +642,7 @@ class Upgrade:
                 if e.returncode != 0 and 'Exiting as not all patches were successful!' in e.stderr.splitlines(
                 )[-1]:
                     resolver = PatchFailureResolver(self.target_version)
-                    resolver.apply_patches_3way()
+                    resolver.apply_patches_3way(launch_vscode)
                     if resolver.requires_conflict_resolution() is True:
                         # Manual resolution required.
                         console.log(
@@ -693,7 +697,10 @@ class Upgrade:
 
         return True
 
-    def run(self, is_continuation, no_conflict_continuation):
+    def run(self,
+            is_continuation,
+            no_conflict_continuation,
+            launch_vscode=False):
         """Run the upgrade process
 
     Check `_run_internal` for details.
@@ -708,7 +715,7 @@ class Upgrade:
                 f'Review: https://chromium.googlesource.com/chromium/src/+log/{self.base_version}..{self.target_version}?pretty=fuller&n=10000'
             )
             return self._run_internal(is_continuation,
-                                      no_conflict_continuation)
+                                      no_conflict_continuation, launch_vscode)
 
     def generate_patches(self):
         with console.status(
@@ -755,10 +762,15 @@ def main():
     parser.add_argument(
         '--update-patches-only',
         action='store_true',
-        help=
-        'Pass this flag to have udpate patches/update string changes created at '
-        'on their own.',
+        help='Regenerates the "Update patches" and "Updated strings" commits for'
+        'current version.',
         dest='update_patches_only')
+
+    parser.add_argument(
+        '--vscode',
+        action='store_true',
+        help=
+        'Launches vscode with the files that need manual conflict resolution.')
 
     args = parser.parse_args()
     upgrade = Upgrade(args.previous, args.to)
@@ -766,7 +778,8 @@ def main():
     console.log('🚀')
     if args.update_patches_only:
         upgrade.generate_patches()
-    elif upgrade.run(args.is_continuation, args.no_conflict) is False:
+    elif upgrade.run(args.is_continuation, args.no_conflict,
+                     args.vscode) is False:
         return 1
 
     console.log('[bold]💥 Done!')
