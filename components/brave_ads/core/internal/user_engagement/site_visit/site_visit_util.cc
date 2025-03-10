@@ -29,7 +29,7 @@ bool IsAllowedToLandOnPage(mojom::AdType mojom_ad_type) {
       // Only if:
       // - The user has opted into new tab page ads and has joined Brave
       //   Rewards.
-      return UserHasJoinedBraveRewards() && UserHasOptedInToNewTabPageAds();
+      return UserHasOptedInToNewTabPageAds() && UserHasJoinedBraveRewards();
     }
 
     case mojom::AdType::kNotificationAd: {
