@@ -1020,15 +1020,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_MENU_SET_DEFAULT_BROWSER" desc="Title for set default browser menu item">
         Set as Default Browser
       </message>
-      <message name="IDS_BRAVE_SET_DEFAULT_BROWSER_DIALOG_TEXT" desc="Dialog for setting default browser">
-        Select Brave Browser and tap 'Always'
-      </message>
-      <message name="IDS_BRAVE_ALREADY_SET_AS_DEFAULT_BROWSER" desc="Toast message for those whom have already set Brave as default browser">
-        Brave is already set as your default browser.
-      </message>
-      <message name="IDS_BRAVE_DEFAULT_BROWSER_GO_TO_SETTINGS" desc="Toast message for those without 7.0 to go to settings to change default browser">
-        You've already set a default browser. You may change the default browser in your app settings.
-      </message>
       <message name="IDS_SCAN_QR_CODE" desc="Title for scan qr code dialog from addressbar">
         Scan QR Code
       </message>
@@ -1828,9 +1819,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_START_BROWSING_TO_SEE" desc="Brave stats empty text">
         Start browsing to see privacy reporting
-      </message>
-      <message name="IDS_SET_BRAVE_AS_YOUR" desc="Deafult browser notification text">
-        Set Brave as your default browser for private and secure browsing.
       </message>
       <message name="IDS_ALLOWS_BRAVE_TO_SHOW" desc="Brave stats pref summary text">
         Allows Brave to show your privacy statistics

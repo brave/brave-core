@@ -788,7 +788,6 @@ brave_java_resources = [
   "java/res/layout/brave_rewards_tippingpanel_bottomsheet.xml",
   "java/res/layout/brave_rewards_tippingpanel_fragment.xml",
   "java/res/layout/brave_rewards_tippingpanel_fragment_base.xml",
-  "java/res/layout/brave_set_default_browser_dialog.xml",
   "java/res/layout/brave_shields_main_layout.xml",
   "java/res/layout/brave_shields_option_layout.xml",
   "java/res/layout/brave_shields_secondary_layout.xml",

@@ -252,7 +252,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private void setDefaultBrowserAndProceedToNextStep() {
-        BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
+        BraveSetDefaultBrowserUtils.setDefaultBrowser(this, true);
         if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
             nextOnboardingStep();
         }
@@ -573,7 +573,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK
                 && requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE) {
-            BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
+            // We don't need to anything with the result here.
         }
         if (isActivityFinishingOrDestroyed()) return;
         nextOnboardingStep();
