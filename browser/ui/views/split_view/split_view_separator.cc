@@ -229,6 +229,7 @@ void SplitViewSeparator::CreateMenuButton() {
 
   menu_button_widget_ = new views::Widget();
   views::Widget::InitParams params(
+      views::Widget::InitParams::NATIVE_WIDGET_OWNS_WIDGET,
       views::Widget::InitParams::Type::TYPE_CONTROL);
   params.delegate = new MenuButtonDelegate(browser_);
   params.parent = GetWidget()->GetNativeView();
