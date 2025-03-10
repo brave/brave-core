@@ -22,6 +22,7 @@ import shutil
 import sys
 import os
 import tempfile
+from typing import List, Optional
 
 import components.android_tools as android_tools
 import components.perf_config as perf_config
@@ -68,32 +69,6 @@ def load_config(config: str, options: CommonOptions) -> dict:
   with open(config_path, 'r', encoding='utf-8') as config_file:
     return json5.load(config_file)
 
-
-def _RunUpdateProfile(config: perf_config.PerfConfig,
-                      options: CommonOptions) -> int:
-  if len(config.runners) != 1:
-    raise RuntimeError('Only one configuration should be specified.')
-  options.do_report = False
-  config.runners[0].profile_rebase = perf_config.ProfileRebaseType.NONE
-  config.benchmarks = [
-      perf_config.BenchmarkConfig({
-          'name': 'brave_utils.online',
-          'pageset-repeat': 3,
-          'stories': ['UpdateProfile'],
-          'stories_exclude': [],
-      })
-  ]
-
-  configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
-      options.targets, config.runners[0])
-  assert len(configurations) == 1
-  profile_tools.CleanupBrowserComponents(configurations[0], options)
-  if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,
-                                            options):
-    return 1
-
-  profile_tools.MakeUpdatedProfileArchive(configurations[0], options)
-  return 0
 
 def main():
   parser = argparse.ArgumentParser(
@@ -147,7 +122,14 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
         config.runners, config.benchmarks, options) else 1
 
   if options.mode == PerfMode.UPDATE_PROFILE:
-    return _RunUpdateProfile(config, options)
+    if options.chromium:
+      return 0  # A build with !options.chromium will update the both profiles
+    options.chromium = True
+    chromium_config = perf_config.PerfConfig(load_config(args.config, options))
+    options.chromium = False
+    brave_config = perf_config.PerfConfig(load_config(args.config, options))
+    return 0 if profile_tools.RunUpdateProfile(brave_config, chromium_config,
+                                               options) else 1
 
   if options.mode == PerfMode.RECORD_WPR:
     return 0 if wpr_utils.record_wpr(config, options) else 1
