@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,32 +21,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import org.chromium.base.BravePreferenceKeys;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragment {
-    private static final String IS_FROM_MENU = "is_from_menu";
-
-    private boolean isFromMenu;
-
-    public static SetDefaultBrowserBottomSheetFragment newInstance(boolean isFromMenu) {
-        final SetDefaultBrowserBottomSheetFragment fragment =
-                new SetDefaultBrowserBottomSheetFragment();
-        final Bundle args = new Bundle();
-        args.putBoolean(IS_FROM_MENU, isFromMenu);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NORMAL, R.style.AppSetDefaultBottomSheetDialogTheme);
-
-        if (getArguments() != null) {
-            isFromMenu = getArguments().getBoolean(IS_FROM_MENU);
-        }
     }
 
     @Override
@@ -67,43 +47,16 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (getActivity() != null) {
-                            BraveSetDefaultBrowserUtils.setDefaultBrowser(getActivity());
-                        }
+                        BraveSetDefaultBrowserUtils.openDefaultAppsSettings(getActivity());
                         dismiss();
                     }
                 });
-
-        CheckBox dontAskCheckBox = view.findViewById(R.id.checkbox_dont_ask);
-
-        int braveDefaultModalCount =
-                ChromeSharedPreferences.getInstance()
-                        .readInt(BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
-
-        if (braveDefaultModalCount > 2 && !isFromMenu) {
-            dontAskCheckBox.setVisibility(View.VISIBLE);
-        } else {
-            dontAskCheckBox.setVisibility(View.GONE);
-        }
-
-        dontAskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                nextButton.setEnabled(false);
-                nextButton.setBackgroundResource(R.drawable.set_default_rounded_button_disabled);
-            } else {
-                nextButton.setEnabled(true);
-                nextButton.setBackgroundResource(R.drawable.orange_rounded_button);
-            }
-        });
 
         Button cancelButton = view.findViewById(R.id.btn_cancel);
         cancelButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (dontAskCheckBox.isChecked()) {
-                            BraveSetDefaultBrowserUtils.setBraveDefaultDontAsk();
-                        }
                         dismiss();
                     }
                 });
