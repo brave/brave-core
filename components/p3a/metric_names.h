@@ -57,6 +57,9 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Core.FirstPageLoadTime", MetricConfig{.ephemeral = true}},
     {"Brave.Core.IsDefault", MetricConfig{.attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kDateOfActivation, MetricAttribute::kSubregion, MetricAttribute::kVersion}}},
     {"Brave.Core.NumberOfExtensions", {}},
+    {"Brave.Core.PagesLoaded.NonRewards", {}},
+    {"Brave.Core.PagesLoaded.Rewards", {}},
+    {"Brave.Core.PagesLoaded.RewardsWallet", {}},
     {"Brave.Core.PagesReloaded", {}},
     {"Brave.Core.TabCount", {}},
     {"Brave.Core.WeeklyUsage", {}},
@@ -74,7 +77,9 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.NTP.CustomizeUsageStatus.2", {}},
     {"Brave.NTP.NewTabsCreated.3", {}},
     {"Brave.NTP.SponsoredMediaType", {}},
-    {"Brave.Omnibox.SearchCount.3", {}},
+    {"Brave.Omnibox.SearchCount.NonRewards", {}},
+    {"Brave.Omnibox.SearchCount.Rewards", {}},
+    {"Brave.Omnibox.SearchCount.RewardsWallet", {}},
 
     // P2A
     // Ad Impressions
