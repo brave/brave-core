@@ -23,7 +23,7 @@ interface GetFVMAddressArg {
   addresses: string[]
 }
 
-type GetFVMAddressResult = Map<string, { address: string; fvmAddress: string }>
+type GetFVMAddressResult = Record<string, string>
 
 type GetZCashTransactionTypeResult = {
   txType: BraveWallet.ZCashTxType,
