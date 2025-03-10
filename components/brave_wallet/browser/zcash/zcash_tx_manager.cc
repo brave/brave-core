@@ -56,7 +56,7 @@ void ZCashTxManager::AddUnapprovedTransaction(
     AddUnapprovedTransactionCallback callback) {
   const auto& zec_tx_data = tx_data_union->get_zec_tx_data();
   auto tx_result = zcash_wallet_service_->GetTransactionType(
-      chain_id == mojom::kZCashTestnet, zec_tx_data->use_shielded_pool,
+      from, chain_id == mojom::kZCashTestnet, zec_tx_data->use_shielded_pool,
       zec_tx_data->to);
   if (!tx_result.has_value()) {
     std::move(callback).Run(false, "", "");
@@ -77,7 +77,8 @@ void ZCashTxManager::AddUnapprovedTransaction(
                          weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
                          origin, std::move(callback)));
       return;
-    } else if (tx_result.value() == mojom::ZCashTxType::kTransparentToOrchard) {
+    } else if (tx_result.value() == mojom::ZCashTxType::kTransparentToOrchard ||
+               tx_result.value() == mojom::ZCashTxType::kShielding) {
       zcash_wallet_service_->CreateTransparentToOrchardTransaction(
           chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount, memo,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,

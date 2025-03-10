@@ -89,8 +89,10 @@ export const TransactionIntent = (props: Props) => {
     txCoinType === BraveWallet.CoinType.ZEC &&
       transactionNetwork &&
       transactionsToken &&
+      txAccount &&
       txToAddress
       ? {
+          accountId: txAccount.accountId,
           testnet: transactionNetwork.chainId === BraveWallet.Z_CASH_TESTNET,
           use_shielded_pool: transactionsToken.isShielded,
           address: txToAddress
@@ -100,7 +102,7 @@ export const TransactionIntent = (props: Props) => {
 
   const isShieldingFunds =
     getZCashTransactionTypeResult.txType ===
-    BraveWallet.ZCashTxType.kTransparentToOrchard
+    BraveWallet.ZCashTxType.kShielding
 
   // Custom Hooks
   const onClickViewOnBlockExplorer = useExplorer(transactionNetwork)

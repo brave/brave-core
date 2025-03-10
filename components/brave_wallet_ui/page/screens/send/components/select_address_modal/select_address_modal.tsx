@@ -266,8 +266,10 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         error: BraveWallet.ZCashAddressError.kNoError
       }
     } = useGetZCashTransactionTypeQuery(
-      fromAccountId?.coin === BraveWallet.CoinType.ZEC && trimmedSearchValue
+      fromAccountId &&
+      fromAccountId.coin === BraveWallet.CoinType.ZEC && trimmedSearchValue
         ? {
+            accountId: fromAccountId,
             testnet: selectedNetwork?.chainId === BraveWallet.Z_CASH_TESTNET,
             use_shielded_pool: selectedAsset?.isShielded || false,
             address: trimmedSearchValue
