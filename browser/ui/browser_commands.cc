@@ -20,6 +20,7 @@
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_screenshots/brave_screenshots_tab_feature.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
@@ -28,6 +29,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/public/tab_features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -1160,6 +1162,34 @@ void SwapTabsInTile(Browser* browser) {
   model->MoveWebContentsAt(model->GetIndexOfTab(tile.second.Get()),
                            model->GetIndexOfTab(tile.first.Get()),
                            /*select_after_move*/ false);
+}
+
+void TakeScreenshot(Browser* browser, int command_id) {
+  content::WebContents* web_contents =
+      browser->tab_strip_model()->GetActiveWebContents();
+
+  using brave_screenshots::ScreenshotType;
+
+  ScreenshotType type;
+
+  switch (command_id) {
+    case IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD:
+      type = ScreenshotType::kSelection;
+      break;
+    case IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD:
+      type = ScreenshotType::kViewport;
+      break;
+    case IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD:
+      type = ScreenshotType::kFullPage;
+      break;
+    default:
+      NOTREACHED();
+  }
+
+  tabs::TabInterface::GetFromContents(web_contents)
+      ->GetTabFeatures()
+      ->brave_screenshots_tab_feature()
+      ->StartScreenshot(browser, type);
 }
 
 }  // namespace brave
