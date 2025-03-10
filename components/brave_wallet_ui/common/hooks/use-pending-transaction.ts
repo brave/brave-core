@@ -513,8 +513,10 @@ export const usePendingTransactions = () => {
   } = useGetZCashTransactionTypeQuery(
     transactionsNetwork?.coin === BraveWallet.CoinType.ZEC &&
       txToken &&
+      txAccount &&
       transactionDetails?.recipient
       ? {
+          accountId: txAccount.accountId,
           testnet: transactionsNetwork.chainId === BraveWallet.Z_CASH_TESTNET,
           use_shielded_pool: txToken.isShielded,
           address: transactionDetails.recipient
@@ -527,7 +529,7 @@ export const usePendingTransactions = () => {
   const toOrb = useAddressOrb(transactionDetails?.recipient, { scale: 10 })
   const isShieldingFunds =
     getZCashTransactionTypeResult.txType ===
-    BraveWallet.ZCashTxType.kTransparentToOrchard
+    BraveWallet.ZCashTxType.kShielding
 
   const transactionTitle = React.useMemo(
     (): string =>
