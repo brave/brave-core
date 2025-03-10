@@ -32,6 +32,7 @@ class BraveUserAgentService {
  private:
   void OnComponentReady(const base::FilePath&);
   void OnExceptionalDomainsLoaded(const std::string& contents);
+
   base::FilePath component_path_;
   std::set<std::string> exceptional_domains_;
   bool is_ready_ = false;

@@ -41,9 +41,7 @@ void BraveUserAgentService::OnExceptionalDomainsLoaded(
   }
   std::vector<std::string> lines = base::SplitString(
       contents, "\n", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  for (auto&& line : lines) {
-    exceptional_domains_.insert(std::move(line));
-  }
+  exceptional_domains_.insert(lines.begin(), lines.end());
   is_ready_ = true;
   return;
 }
