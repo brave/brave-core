@@ -34,6 +34,7 @@
 namespace brave_wallet {
 
 class OrchardSyncState;
+class ZCashAutoSyncManager;
 class ZCashCreateOrchardToOrchardTransactionTask;
 class ZCashCreateTransparentToOrchardTransactionTask;
 class ZCashCreateTransparentTransactionTask;
@@ -204,8 +205,9 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   friend class ZCashShieldSyncService;
   friend class ZCashTxManager;
 
-  friend class ZCashWalletServiceUnitTest;
+  friend class ZCashAutoSyncManagerTest;
   friend class ZCashShieldSyncServiceTest;
+  friend class ZCashWalletServiceUnitTest;
 
   /*KeyringServiceObserverBase*/
   void Unlocked() override;
@@ -256,6 +258,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                                base::expected<ZCashTransaction, std::string>);
 
 #if BUILDFLAG(ENABLE_ORCHARD)
+  void MaybeInitAutoSyncManagers();
   virtual void CreateTransactionTaskDone(
       ZCashCreateTransparentToOrchardTransactionTask* task);
   virtual void CreateTransactionTaskDone(
@@ -348,6 +351,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       create_shielded_transaction_tasks_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashShieldSyncService>>
       shield_sync_services_;
+  std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashAutoSyncManager>>
+      auto_sync_managers_;
   std::list<std::unique_ptr<ZCashGetZCashChainTipStatusTask>>
       get_zcash_chain_tip_status_tasks_;
 #endif

@@ -28,6 +28,7 @@
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(ENABLE_ORCHARD)
+#include "brave/components/brave_wallet/browser/zcash/zcash_auto_sync_manager.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_orchard_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_to_orchard_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_get_zcash_chain_tip_status_task.h"
@@ -610,6 +611,40 @@ void ZCashWalletService::ResetSyncState(mojom::AccountIdPtr account_id,
 }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
+void ZCashWalletService::MaybeInitAutoSyncManagers() {
+  if (!IsZCashShieldedTransactionsEnabled()) {
+    return;
+  }
+  if (keyring_service_->IsLockedSync()) {
+    return;
+  }
+  const auto& accounts = keyring_service_->GetAllAccountInfos();
+  for (const auto& account : accounts) {
+    if (account->account_id->coin != mojom::CoinType::ZEC) {
+      continue;
+    }
+
+    if (!IsZCashMainnetKeyring(account->account_id->keyring_id)) {
+      continue;
+    }
+
+    auto account_info =
+        keyring_service_->GetZCashAccountInfo(account->account_id);
+    if (!account_info || !account_info->account_shield_birthday) {
+      continue;
+    }
+
+    if (auto_sync_managers_.contains(account->account_id)) {
+      continue;
+    }
+
+    auto async_manager = std::make_unique<ZCashAutoSyncManager>(
+        *this, CreateActionContext(account->account_id, mojom::kZCashMainnet));
+    async_manager->Start();
+    auto_sync_managers_[account->account_id.Clone()] = std::move(async_manager);
+  }
+}
+
 void ZCashWalletService::CreateShieldAllTransaction(
     const std::string& chain_id,
     mojom::AccountIdPtr account_id,
@@ -775,6 +810,9 @@ void ZCashWalletService::OnGetTreeStateForAccountBirthday(
   keyring_service_->SetZCashAccountBirthday(
       account_id, mojom::ZCashAccountShieldBirthday::New((*result)->height,
                                                          (*result)->hash));
+
+  MaybeInitAutoSyncManagers();
+
   std::move(callback).Run(std::nullopt);
 }
 
@@ -918,10 +956,15 @@ void ZCashWalletService::Unlocked() {
       RunDiscovery(account->account_id.Clone(), base::DoNothing());
     }
   }
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+  MaybeInitAutoSyncManagers();
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 }
 
 void ZCashWalletService::Locked() {
 #if BUILDFLAG(ENABLE_ORCHARD)
+  auto_sync_managers_.clear();
   shield_sync_services_.clear();
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 }
