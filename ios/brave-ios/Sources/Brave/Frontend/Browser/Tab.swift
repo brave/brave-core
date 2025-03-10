@@ -320,6 +320,14 @@ class Tab: NSObject {
   /// The previous url that was set before `comittedURL` was set again
   private(set) var previousComittedURL: URL?
 
+  /// The URL that is loaded by the web view, but has not committed yet
+  var visibleURL: URL? {
+    if let webView {
+      return webView.url
+    }
+    return url
+  }
+
   private(set) var url: URL? {
     didSet {
       if let _url = url, let internalUrl = InternalURL(_url), internalUrl.isAuthorized {
@@ -598,10 +606,7 @@ class Tab: NSObject {
       url = newURL
       notifyObservers = true
     } else {
-      // If navigation will start from NTP, tab display url will be nil until
-      // didCommit is called and it will cause url bar be empty in that period
-      // To fix this when tab display url is empty, webview url is used
-      if isTabVisible() || url?.displayURL?.scheme == "about", !loading {
+      if isTabVisible(), url?.displayURL != nil, url?.displayURL?.scheme == "about", !loading {
         if let newURL {
           url = newURL
           notifyObservers = true
