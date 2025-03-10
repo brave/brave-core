@@ -47,6 +47,9 @@
   return YES;
 }
 
+- (void)earlyInit {
+}
+
 - (void)start {
 }
 

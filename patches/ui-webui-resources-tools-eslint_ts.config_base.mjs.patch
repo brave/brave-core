@@ -1,0 +1,11 @@
+diff --git a/ui/webui/resources/tools/eslint_ts.config_base.mjs b/ui/webui/resources/tools/eslint_ts.config_base.mjs
+index ff606c6d9e59cda94e0efc5025b1ad3c702ae24d..365cb1b668213471cb27c2a5108859a5ed46916c 100644
+--- a/ui/webui/resources/tools/eslint_ts.config_base.mjs
++++ b/ui/webui/resources/tools/eslint_ts.config_base.mjs
+@@ -27,6 +27,5 @@ export default {
+   rules: {
+     'require-await': 'off',
+     '@typescript-eslint/require-await' : 'error',
+-    '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+   },
+ };
