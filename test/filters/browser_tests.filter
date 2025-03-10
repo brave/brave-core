@@ -1569,10 +1569,6 @@
 -NewTabPageUtilDisableFlagBrowserTest.DisableDriveByFlag
 -NewTabPageUtilEnableFlagBrowserTest.EnableDriveByFlag
 
-# These tests fail because we don't support the search companion.
--CompanionPage*
--SidePanelCompanion2BrowserEnabledTest.FeatureEnabled
-
 # These tests fail because we provide our own override of the side panel which
 # does not enable this feature
 -All/LensOverlayControllerBrowserPDFContextualizationTest.Histograms/*
@@ -1983,7 +1979,14 @@
 # exited. See SidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange().
 -ExtensionSidePanelBrowserTest.CloseSidePanelButtonVisibleWhenExtensionsSidePanelOpen
 
-# These test fail because kToolbarPinning is disabled
+# These tests crash because ToolbarView tries to access
+# |pinned_toolbar_actions_container_| (typically from
+# ToolbarView::GetAnchorView(), but sometimes elsewhere). But we made that
+# container null as we don't want the panel pin button container. In production,
+# this crash doesn't happen because that code path is only effective if
+# features::IsToolbarPinningEnabled(). That feature is disabled by default.
+-BrowserActionsBrowserTest.ShowAddressesBubbleOrPage
+-BrowserActionsBrowserTest.ShowPaymentsBubbleOrPage
 -BrowserCommandControllerBrowserTestToolbarPinningOnly.ShowTranslateStatusFrenchPage
 -CastBrowserControllerTest.PausedIcon
 -CastBrowserControllerTest.UpdateIssues
@@ -2009,10 +2012,12 @@
 -DownloadToolbarUIControllerBrowserTest.ShowHide
 -PinnedToolbarActionsContainerBrowserTest.*
 -SendTabToSelfBubbleTest.BubbleTriggersCorrectlyWhenPinned
+-SendTabToSelfBubbleTest.InvokeUi_ShowDeviceList
+-SendTabToSelfBubbleTest.InvokeUi_ShowNoTargetDevicePromo
+-SendTabToSelfBubbleTest.InvokeUi_ShowSigninPromo
 -SendTabToSelfToolbarIconControllerTest.DisplayNewEntry
 -SendTabToSelfToolbarIconControllerTest.ReplaceExistingEntry
--SendTabToSelfToolbarIconControllerTest.StorePendingNewEntryFromIncognitoBrowser
--SendTabToSelfToolbarIconControllerTest.StorePendingNewEntryFromWebApp
+-SendTabToSelfToolbarIconControllerTest.StorePendingNewEntry*
 
 # These tests fail because we stub captions::IsLiveCaptionFeatureSuppported to
 # always return false
@@ -2184,7 +2189,6 @@
 -CredentialManagerBrowserTest.*
 -CriticalClientHintsBrowserTest.*
 -CrossProfileDebuggerApiTest.GetTargets
--CustomizeChromeSidePanelBrowserTest.*
 -DataSaverBrowserTest.*
 -DataSaverWebAPIsBrowserTest.*
 -DebuggerApiTest.*
@@ -2422,7 +2426,6 @@
 -PageInfoBubbleViewAboutThisSiteBrowserTest.*
 -PageInfoBubbleViewAboutThisSiteDialogBrowserTest.*
 -PageInfoBubbleViewAboutThisSiteDisabledBrowserTest.*
--PageInfoBubbleViewAboutThisSiteWithoutSidePanelBrowserTest.*
 -PageInfoBubbleViewIsolatedWebAppBrowserTest.InvokeUi_AppNameIsDisplayedInsteadOfOriginForIsolatedWebApps_REV2
 -PageInfoBubbleViewSyncBrowserTest.*
 -PageLoadMetricsBrowserTest.*
