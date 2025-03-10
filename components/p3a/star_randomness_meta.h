@@ -19,7 +19,7 @@
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
-#include "net/base/hash_value.h"
+#include "brave/components/p3a/star_url_loader_network_service_observer.h"
 
 class PrefService;
 class PrefRegistrySimple;
@@ -87,15 +87,12 @@ class StarRandomnessMeta {
   static void RegisterPrefsForMigration(PrefRegistrySimple* registry);
   static void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
-  bool VerifyRandomnessCert(network::SimpleURLLoader* url_loader);
-
   void RequestServerInfo(MetricLogType log_type);
 
   RandomnessServerInfo* GetCachedRandomnessServerInfo(MetricLogType log_type);
+  StarURLLoaderNetworkServiceObserver* GetURLLoaderNetworkServiceObserver();
 
  private:
-  bool ShouldAttestEnclave();
-
   void AttestServer(bool make_info_request_after);
 
   void HandleServerInfoResponse(MetricLogType log_type,
@@ -118,8 +115,17 @@ class StarRandomnessMeta {
 
   const raw_ptr<const P3AConfig> config_;
 
-  std::optional<net::HashValue> approved_cert_fp_;
   bool attestation_pending_ = false;
+
+  // Allows all self-signed certificates for the purpose of
+  // attestation of the randomness server.
+  std::unique_ptr<StarURLLoaderNetworkServiceObserver>
+      attestation_network_service_observer_;
+  // Allows self-signed certificates with an approved fingerprint;
+  // used for all other randomness server requests to ensure that
+  // communication is confidential between the client and enclave.
+  std::unique_ptr<StarURLLoaderNetworkServiceObserver>
+      normal_network_service_observer_;
 
   base::WeakPtrFactory<StarRandomnessMeta> weak_ptr_factory_{this};
 };

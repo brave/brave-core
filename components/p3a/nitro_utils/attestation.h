@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/functional/callback.h"
+#include "brave/components/p3a/star_url_loader_network_service_observer.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
@@ -25,6 +26,8 @@ namespace nitro_utils {
 void RequestAndVerifyAttestationDocument(
     const GURL& attestation_url,
     network::mojom::URLLoaderFactory* url_loader_factory,
+    p3a::StarURLLoaderNetworkServiceObserver*
+        attestation_network_service_observer,
     base::OnceCallback<void(scoped_refptr<net::X509Certificate>)>
         result_callback);
 
