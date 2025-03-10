@@ -729,9 +729,6 @@ Brave is unable to recover your settings.
       <message name="IDS_BLOCK_DOWNLOAD_REASON_DANGEROUS_COOKIE_THEFT" desc="On the chrome://downloads page, the description shown for a blocked file that is dangerous because of cookie theft.">
         Brave blocked this download because the file can harm your personal and social network accounts
       </message>
-      <message name="IDS_BLOCK_DOWNLOAD_REASON_DANGEROUS_COOKIE_THEFT_AND_ACCOUNT" desc="On the chrome://downloads page, the description with account info shown for a blocked file that is dangerous because of cookie theft.">
-        Brave blocked this download because the file can harm your personal and social network accounts, including <ph name="USER_EMAIL">$1<ex>john@google.com</ex></ph>
-      </message>
       <message name="IDS_BLOCK_DOWNLOAD_REASON_UNCOMMON" desc="On the chrome://downloads page, the description shown for a blocked file that is uncommon.">
         Brave blocked this download because the file isn't commonly downloaded and it may be dangerous
       </message>
@@ -865,6 +862,9 @@ Brave is unable to recover your settings.
       </message>
       <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_IN_CHROME" desc="The label to indicate that a shortcut will be triggerable only from within the Brave application.">
         In Brave
+      </message>
+      <message name="IDS_PENDING_CHANGE_WARNING" desc="The message shown to users when an extension setting change will ba applied after Brave restarts.">
+        Changes to this setting will be applied once Brave restarts.
       </message>
 
       <if expr="enable_extensions">
