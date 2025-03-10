@@ -415,6 +415,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     })
   }
 
+  React.useEffect(() => {
+    try {
+      getAPI().metrics.onQuickActionStatusChange(!!context.selectedActionType)
+    } catch (e) {}
+  }, [context.selectedActionType])
+
   const handleActionTypeClick = (actionType: Mojom.ActionType) => {
     setPartialContext({
       selectedActionType: actionType
@@ -459,6 +465,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       // Submitting a conversation entry manually, after opt-in,
       // means the storage notice can be dismissed.
       aiChatContext.dismissStorageNotice()
+    }
+
+    if (aiChatContext.isStandalone) {
+      getAPI().metrics.onSendingPromptWithFullPage()
     }
 
     if (context.selectedActionType) {

@@ -1799,6 +1799,18 @@ void ConversationHandler::OnStateForConversationEntriesChanged() {
   }
 }
 
+size_t ConversationHandler::GetConversationHistorySize() {
+  return GetConversationHistory().size();
+}
+
+bool ConversationHandler::should_send_page_contents() const {
+  return should_send_page_contents_;
+}
+
+mojom::APIError ConversationHandler::current_error() const {
+  return current_error_;
+}
+
 }  // namespace ai_chat
 
 #undef STARTER_PROMPT

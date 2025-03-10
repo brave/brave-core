@@ -352,6 +352,9 @@ interface Service {
       string conversation_uuid,
       pending_receiver<ConversationHandler> conversation,
       pending_remote<ConversationUI> conversation_ui);
+
+  // Bind metrics interface
+  BindMetrics(pending_receiver<Metrics> metrics);
 };
 
 interface ServiceObserver {
@@ -552,6 +555,14 @@ interface ConversationUI {
   OnAssociatedContentInfoChanged(AssociatedContent? associated_content, bool should_send_page_contents);
   OnFaviconImageDataChanged();
   OnConversationDeleted();
+};
+
+interface Metrics {
+  // Notify metrics service that a full page prompt is being sent
+  OnSendingPromptWithFullPage();
+
+  // Notify metrics service if a quick action is being used
+  OnQuickActionStatusChange(bool is_enabled);
 };
 
 [EnableIf=is_android]
