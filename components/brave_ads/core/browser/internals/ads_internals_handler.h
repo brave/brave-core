@@ -43,7 +43,7 @@ class AdsInternalsHandler : public bat_ads::mojom::AdsInternals {
       mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage> page) override;
 
   void GetInternalsCallback(GetAdsInternalsCallback callback,
-                            std::optional<base::Value::List> value);
+                            std::optional<base::Value::Dict> value);
 
   void OnPrefChanged(const std::string& path);
   void UpdateBraveRewardsEnabled();
