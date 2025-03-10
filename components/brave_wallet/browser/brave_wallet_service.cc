@@ -620,6 +620,65 @@ BraveWalletService::GetNetworkForSelectedAccountOnActiveOriginSync() {
                                            delegate_->GetActiveOrigin());
 }
 
+mojom::NetworkInfoPtr BraveWalletService::GetNetworkForAccountOnOriginSync(
+    const url::Origin& origin,
+    const mojom::AccountIdPtr& account) {
+  if (!CoinSupportsDapps(account->coin)) {
+    return nullptr;
+  }
+
+  if (!HasPermissionSync(origin, account)) {
+    return nullptr;
+  }
+
+  return json_rpc_service_->GetNetworkSync(account->coin, origin);
+}
+
+bool BraveWalletService::SetNetworkForAccountOnOriginSync(
+    url::Origin& origin,
+    const mojom::AccountIdPtr& account,
+    const std::string& chain_id) {
+  if (!CoinSupportsDapps(account->coin)) {
+    return false;
+  }
+
+  if (!AccountMatchesCoinAndChain(*account, account->coin, chain_id)) {
+    return false;
+  }
+
+  if (!HasPermissionSync(origin, account)) {
+    return false;
+  }
+
+  return json_rpc_service_->SetNetwork(chain_id, account->coin, origin);
+}
+
+void BraveWalletService::GetNetworkForAccountOnActiveOrigin(
+    mojom::AccountIdPtr account,
+    GetNetworkForAccountOnActiveOriginCallback callback) {
+  auto origin = delegate_->GetActiveOrigin();
+  if (!origin) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  std::move(callback).Run(
+      GetNetworkForAccountOnOriginSync(origin.value(), account));
+}
+
+void BraveWalletService::SetNetworkForAccountOnActiveOrigin(
+    mojom::AccountIdPtr account,
+    const std::string& chain_id,
+    SetNetworkForAccountOnActiveOriginCallback callback) {
+  auto origin = delegate_->GetActiveOrigin();
+  if (!origin) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  SetNetworkForAccountOnOriginSync(origin.value(), account, chain_id);
+}
+
 void BraveWalletService::SetNetworkForSelectedAccountOnActiveOrigin(
     const std::string& chain_id,
     SetNetworkForSelectedAccountOnActiveOriginCallback callback) {
@@ -692,6 +751,34 @@ void BraveWalletService::OnBraveWalletNftDiscoveryEnabled() {
   }
 }
 
+std::pair<bool, std::vector<mojom::AccountIdPtr>>
+BraveWalletService::HasPermissionSync(
+    const url::Origin& origin,
+    const std::vector<mojom::AccountIdPtr>& accounts) {
+  std::vector<mojom::AccountIdPtr> result;
+  for (auto& account_id : accounts) {
+    if (delegate_->HasPermission(account_id->coin, origin,
+                                 account_id->address)) {
+      result.push_back(account_id->Clone());
+    }
+  }
+  return std::pair<bool, std::vector<mojom::AccountIdPtr>>(true,
+                                                           std::move(result));
+}
+
+bool BraveWalletService::HasPermissionSync(const url::Origin& origin,
+                                           const mojom::AccountIdPtr& account) {
+  auto params = std::vector<mojom::AccountIdPtr>();
+  params.push_back(account.Clone());
+  auto has_permission_result = HasPermissionSync(origin, std::move(params));
+  if (!has_permission_result.first ||
+      has_permission_result.second.size() != 1 ||
+      has_permission_result.second[0]->unique_key != account->unique_key) {
+    return false;
+  }
+  return true;
+}
+
 void BraveWalletService::HasPermission(
     std::vector<mojom::AccountIdPtr> accounts,
     HasPermissionCallback callback) {
@@ -700,15 +787,9 @@ void BraveWalletService::HasPermission(
     std::move(callback).Run(false, {});
     return;
   }
-
-  std::vector<mojom::AccountIdPtr> result;
-  for (auto& account_id : accounts) {
-    if (delegate_->HasPermission(account_id->coin, *origin,
-                                 account_id->address)) {
-      result.push_back(account_id->Clone());
-    }
-  }
-  std::move(callback).Run(true, std::move(result));
+  auto has_permission_result = HasPermissionSync(origin.value(), accounts);
+  std::move(callback).Run(has_permission_result.first,
+                          std::move(has_permission_result.second));
 }
 
 void BraveWalletService::ResetPermission(mojom::AccountIdPtr account_id,
