@@ -2369,9 +2369,6 @@ public class BrowserViewController: UIViewController {
           // Saving Tab.
           tabManager.saveTab(tab)
         }
-
-        // Fire the Brave Translate check.
-        BraveTranslateScriptHandler.checkTranslate(tab: tab)
       }
 
       TabEvent.post(.didChangeURL(url), for: tab)
@@ -2660,9 +2657,6 @@ extension BrowserViewController: TabDelegate {
 
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
-
-      BraveTranslateScriptLanguageDetectionHandler(),
-      BraveTranslateScriptHandler(),
     ]
 
     #if canImport(BraveTalk)
@@ -2684,6 +2678,13 @@ extension BrowserViewController: TabDelegate {
         SolanaProviderScriptHandler(),
         BraveSearchResultAdScriptHandler(),
       ]
+    }
+
+    if FeatureList.kBraveTranslateEnabled.enabled {
+      injectedScripts.append(contentsOf: [
+        BraveTranslateScriptLanguageDetectionHandler(),
+        BraveTranslateScriptHandler(),
+      ])
     }
 
     // XXX: Bug 1390200 - Disable NSUserActivity/CoreSpotlight temporarily

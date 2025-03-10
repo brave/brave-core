@@ -11,14 +11,16 @@ import WebKit
 import os.log
 
 protocol BraveTranslateScriptHandlerDelegate: NSObject {
-  func updateTranslateURLBar(tab: Tab?, state: TranslateURLBarButton.TranslateState)
-  func canShowTranslateOnboarding(tab: Tab?) -> Bool
-  func showTranslateOnboarding(tab: Tab?, completion: @escaping (_ translateEnabled: Bool?) -> Void)
-  func presentToast(tab: Tab?, languageInfo: BraveTranslateLanguageInfo)
+  func updateTranslateURLBar(tab: Tab, state: TranslateURLBarButton.TranslateState)
+  func canShowTranslateOnboarding(tab: Tab) -> Bool
+  func showTranslateOnboarding(tab: Tab, completion: @escaping (_ translateEnabled: Bool?) -> Void)
+  func presentTranslateToast(tab: Tab, languageInfo: BraveTranslateLanguageInfo)
+  func presentTranslateError(tab: Tab)
 }
 
 class BraveTranslateScriptHandler: NSObject, TabContentScript {
-  private static var elementScriptTask: Task<String, Error> = downloadElementScript()
+  private static var elementScript: String?
+  private var tasks = [UUID: Task<Void, Error>]()
 
   static let namespace = "translate_\(uniqueID)"
   static let scriptName = "BraveTranslateScript"
@@ -49,12 +51,16 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     )
   }()
 
+  deinit {
+    tasks.values.forEach({ $0.cancel() })
+  }
+
   static func checkTranslate(tab: Tab) {
     tab.webView?.evaluateSafeJavaScript(
       functionName:
         """
         try {
-          window.__firefox__.\(namespace).checkTranslate();
+          window.__firefox__.\(namespace).detectLanguage();
         } catch(error) {
           // Page & Script not loaded yet
         }
@@ -70,7 +76,6 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     // Setup
-
     let isReaderMode = tab.url?.isInternalURL(for: .readermode) == true
     if tab.lastKnownSecureContentState != .secure && !isReaderMode {
       Logger.module.debug("Translation Disabled - Insecure Page")
@@ -92,27 +97,46 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     }
 
     // Processing
-    Task {
+    let taskId = UUID()
+    let task = Task { [weak self, weak tab] in
+      guard let self = self, let tab = tab else {
+        replyHandler(nil, BraveTranslateError.otherError.rawValue)
+        return
+      }
+
+      defer {
+        self.tasks.removeValue(forKey: taskId)
+      }
+
       let (result, error) = try await processScriptMessage(for: tab, command: command, body: body)
       replyHandler(result, error)
     }
+
+    tasks[taskId] = task
   }
 
   private func processScriptMessage(
-    for tab: Tab?,
+    for tab: Tab,
     command: String,
     body: [String: Any]
   ) async throws -> (Any?, String?) {
     if command == "load_brave_translate_script" {
       if Preferences.Translate.translateEnabled.value == true {
-        let script = try await BraveTranslateScriptHandler.elementScriptTask.value
-        return (script, nil)
+        if let script = Self.elementScript {
+          return (script, nil)
+        }
+
+        Self.elementScript = try await downloadElementScript()
+        return (Self.elementScript, nil)
       }
+
+      try await tab.translateHelper?.setupOnboarding()
       return (nil, BraveTranslateError.translateDisabled.rawValue)
     }
 
     if command == "ready" {
-      try await tab?.translateHelper?.setupTranslate()
+      // Translate is ready
+      try await tab.translateHelper?.beginSetup()
       return (nil, nil)
     }
 
@@ -123,7 +147,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
           from: JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
         )
 
-        guard let tab = tab, let translateHelper = tab.translateHelper
+        guard let translateHelper = tab.translateHelper
         else {
           return (nil, BraveTranslateError.otherError.rawValue)
         }
@@ -153,7 +177,20 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     }
 
     if command == "status" {
-      Logger.module.debug("[Brave Translate] - Status: \(body["errorCode"] as? Int ?? 0)")
+      guard let translateHelper = tab.translateHelper else {
+        Logger.module.debug("[Brave Translate] - Status: \(body)")
+        return (nil, nil)
+      }
+
+      if let errorCode = body["errorCode"] as? Int,
+        let status = BraveTranslateTabHelper.TranslateError(rawValue: errorCode)
+      {
+        Logger.module.debug("[Brave Translate] - Status: \(String(describing: status))")
+        await translateHelper.setTranslationStatus(status: status)
+      } else {
+        Logger.module.debug("[Brave Translate] - Status: \(body)")
+        await translateHelper.setTranslationStatus(status: .unexpectedScriptError)
+      }
     }
 
     return (nil, nil)
@@ -161,27 +198,25 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 
   // MARK: - Private
 
-  private static func downloadElementScript() -> Task<String, Error> {
-    return Task {
-      var urlRequest = URLRequest(
-        url: URL(string: "https://translate.brave.com/static/v1/element.js")!
-      )
-      urlRequest.httpMethod = "GET"
+  private func downloadElementScript() async throws -> String {
+    var urlRequest = URLRequest(
+      url: URL(string: "https://translate.brave.com/static/v1/element.js")!
+    )
+    urlRequest.httpMethod = "GET"
 
-      let session = URLSession(configuration: .ephemeral)
-      defer { session.finishTasksAndInvalidate() }
-      let (data, response) = try await session.data(for: urlRequest)
+    let session = URLSession(configuration: .ephemeral)
+    defer { session.finishTasksAndInvalidate() }
+    let (data, response) = try await session.data(for: urlRequest)
 
-      guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-        throw BraveTranslateError.invalidTranslationResponse
-      }
-
-      guard let script = String(data: data, encoding: .utf8) else {
-        throw BraveTranslateError.invalidTranslationResponse
-      }
-
-      return script
+    guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+      throw BraveTranslateError.invalidTranslationResponse
     }
+
+    guard let script = String(data: data, encoding: .utf8) else {
+      throw BraveTranslateError.invalidTranslationResponse
+    }
+
+    return script
   }
 }
 
@@ -206,9 +241,7 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
       return
     }
 
-    guard
-      let translateHelper = tab.translateHelper
-    else {
+    guard let translateHelper = tab.translateHelper else {
       return
     }
 
@@ -219,14 +252,22 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
       )
 
       if message.hasNoTranslate {
-        translateHelper.currentLanguageInfo.pageLanguage =
-          translateHelper.currentLanguageInfo.currentLanguage
+        translateHelper.currentLanguageInfo.pageLanguage = nil
       } else {
         translateHelper.currentLanguageInfo.pageLanguage =
           !message.htmlLang.isEmpty ? Locale.Language(identifier: message.htmlLang) : nil
       }
 
-      replyHandler(nil, nil)
+      if translateHelper.currentLanguageInfo.currentLanguage
+        == translateHelper.currentLanguageInfo.pageLanguage
+      {
+        translateHelper.currentLanguageInfo.pageLanguage = nil
+      }
+
+      Task { [weak translateHelper] in
+        try await translateHelper?.finishSetup()
+        replyHandler(nil, nil)
+      }
     } catch {
       Logger.module.error("Brave Translate Language Detection Error: \(error)")
       replyHandler(nil, "Translation Language Detection Error")
