@@ -20,6 +20,7 @@ BraveExtensionService::BraveExtensionService(
     const base::FilePath& unpacked_install_directory,
     ExtensionPrefs* extension_prefs,
     Blocklist* blocklist,
+    ExtensionErrorController* error_controller,
     bool autoupdate_enabled,
     bool extensions_enabled,
     base::OneShotEvent* ready)
@@ -29,6 +30,7 @@ BraveExtensionService::BraveExtensionService(
                        unpacked_install_directory,
                        extension_prefs,
                        blocklist,
+                       error_controller,
                        autoupdate_enabled,
                        extensions_enabled,
                        ready) {}
