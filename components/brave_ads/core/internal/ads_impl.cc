@@ -28,6 +28,9 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/legacy_migration.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
@@ -119,20 +122,65 @@ void AdsImpl::GetActiveCallback(
     return std::move(callback).Run({});
   }
 
-  base::Value::List list;
-  list.reserve(creative_set_conversions.size());
+  database::table::AdEvents database_table;
+  database_table.GetUnexpired(
+      base::BindOnce(&AdsImpl::GetAdEventsCallback, weak_factory_.GetWeakPtr(),
+                     std::move(callback), creative_set_conversions));
+}
+
+void AdsImpl::GetAdEventsCallback(
+    GetInternalsCallback callback,
+    const CreativeSetConversionList& creative_set_conversions,
+    bool success,
+    const AdEventList& ad_events) {
+  if (!success) {
+    BLOG(0, "Failed to get ad events");
+    return std::move(callback).Run({});
+  }
+
+  base::Value::List creative_set_conversion_list;
+  creative_set_conversion_list.reserve(creative_set_conversions.size());
   for (const auto& creative_set_conversion : creative_set_conversions) {
     if (!creative_set_conversion.IsValid()) {
       continue;
     }
 
-    list.Append(base::Value::Dict()
-                    .Set("URL Pattern", creative_set_conversion.url_pattern)
-                    .Set("Expires At", creative_set_conversion.expire_at
-                                           ->InSecondsFSinceUnixEpoch()));
+    creative_set_conversion_list.Append(
+        base::Value::Dict()
+            .Set("URL Pattern", creative_set_conversion.url_pattern)
+            .Set(
+                "Expires At",
+                creative_set_conversion.expire_at->InSecondsFSinceUnixEpoch()));
   }
 
-  std::move(callback).Run(std::move(list));
+  base::Value::List ad_event_list;
+  for (const auto& ad_event : ad_events) {
+    if (!ad_event.IsValid()) {
+      continue;
+    }
+
+    if (ad_event.confirmation_type ==
+        mojom::ConfirmationType::kServedImpression) {
+      // Skip served impressions.
+      continue;
+    }
+
+    // TODO(tmancey): Add `expire_at` to AdEventInfo.
+    ad_event_list.Append(
+        base::Value::Dict()
+            .Set("Placement Id", ad_event.placement_id)
+            .Set("Ad Type", ToString(ad_event.type))
+            .Set("Confirmation Type", ToString(ad_event.confirmation_type))
+            .Set("Expires At",
+                 ad_event.created_at->InSecondsFSinceUnixEpoch()));
+  }
+
+  base::Value::Dict dict = base::Value::Dict()
+                               .Set("creativeSetConversions",
+                                    std::move(creative_set_conversion_list))
+                               .Set("adEvents", std::move(ad_event_list));
+
+  std::move(callback).Run(std::move(dict));
 }
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {

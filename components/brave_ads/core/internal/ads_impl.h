@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/functional/once_closure_task_queue.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -156,11 +157,16 @@ class AdsImpl final : public Ads {
       GetInternalsCallback callback,
       bool success,
       const CreativeSetConversionList& creative_set_conversions);
+  void GetAdEventsCallback(
+      GetInternalsCallback callback,
+      const CreativeSetConversionList& creative_set_conversions,
+      bool success,
+      const AdEventList& ad_events);
 
   bool is_initialized_ = false;
 
-  // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate global
-  // state.
+  // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate
+  // global state.
   GlobalState global_state_;
 
   OnceClosureTaskQueue task_queue_;
