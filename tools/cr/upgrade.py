@@ -371,7 +371,7 @@ class PatchFailureResolver:
                 '\n'.join(f'    * {file}' for file in patches_to_apply))
 
         for subdir, patches in self.patch_files.items():
-            repo_path = f'../{subdir}{' ' if subdir == "" else ' / '}'
+            repo_path = f'../{subdir}{"" if subdir == "" else "/"}'
             patch_relative_path = "../" * (repo_path.count('/') -
                                            1) if repo_path != '../' else ''
 
