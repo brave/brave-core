@@ -16,8 +16,8 @@ class FrequencyQuery {
   private let bookmarkManager: BookmarkManager
   private let tabManager: TabManager
 
-  private let frequencyQueue = DispatchQueue(label: "frequency-query-queue")
-  private var task: DispatchWorkItem?
+  private var task: Task<Void, Error>?
+  private var historyCancellable: HistoryCancellable?
 
   init(historyAPI: BraveHistoryAPI, bookmarkManager: BookmarkManager, tabManager: TabManager) {
     self.historyAPI = historyAPI
@@ -27,94 +27,98 @@ class FrequencyQuery {
 
   deinit {
     task?.cancel()
+    historyCancellable = nil
+  }
+
+  @MainActor
+  private func fetchOpenTabs(containing query: String) async -> [Site] {
+    let startTime = Date()
+    let openTabSites = try? fetchSitesFromTabs(tabManager.tabsForCurrentMode(for: query))
+    return openTabSites ?? []
+  }
+
+  @MainActor
+  private func fetchBookmarks(containing query: String) async -> [Site] {
+    return await withCheckedContinuation { continuation in
+      self.bookmarkManager.byFrequency(query: query) { [weak self] sites in
+        guard let self = self, let task = self.task, !task.isCancelled else {
+          continuation.resume(returning: [])
+          return
+        }
+
+        continuation.resume(
+          returning: sites.map {
+            Site(url: $0.url ?? "", title: $0.title ?? "", siteType: .bookmark)
+          }
+        )
+      }
+    }
+  }
+
+  @MainActor
+  private func fetchHistories(containing query: String) async -> [Site] {
+    return await withCheckedContinuation { continuation in
+      self.historyCancellable = self.historyAPI.byFrequency(query: query) { [weak self] sites in
+        guard let self = self, let task = self.task, !task.isCancelled else {
+          continuation.resume(returning: [])
+          return
+        }
+
+        continuation.resume(
+          returning: sites.map {
+            Site(url: $0.url.absoluteString, title: $0.title ?? "", siteType: .history)
+          }
+        )
+      }
+    }
   }
 
   public func sitesByFrequency(containing query: String, completion: @escaping (Set<Site>) -> Void)
   {
     task?.cancel()
+    historyCancellable = nil
 
-    task = DispatchWorkItem {
-      // brave-core fetch can be slow over 200ms per call,
-      // a cancellable serial queue is used for it.
-      DispatchQueue.main.async { [weak self] in
-        guard let self = self, let task = self.task, !task.isCancelled else {
-          return
-        }
+    task = Task.delayed(bySeconds: 0.5) { @MainActor [weak self] in
+      guard let self = self else { return }
 
-        // Tab Fetch
-        let fetchedTabs = self.tabManager.tabsForCurrentMode(for: query)
-        let openTabSites = self.fetchSitesFromTabs(fetchedTabs)
+      try Task.checkCancellation()
 
-        let group = DispatchGroup()
-        group.enter()
+      let fetches = await [
+        self.fetchOpenTabs(containing: query),
+        self.fetchBookmarks(containing: query),
+        self.fetchHistories(containing: query),
+      ]
 
-        // Bookmarks Fetch
-        var bookmarkSites = [Site]()
-        self.bookmarkManager.byFrequency(query: query) { sites in
-          bookmarkSites = sites.map {
-            Site(url: $0.url ?? "", title: $0.title ?? "", siteType: .bookmark)
-          }
-          group.leave()
-        }
+      try Task.checkCancellation()
+      self.task = nil
+      self.historyCancellable = nil
 
-        group.enter()
-
-        // History Fetch
-        var historySites = [Site]()
-        self.historyAPI.byFrequency(query: query) { historyList in
-          historySites = historyList.map {
-            Site(url: $0.url.absoluteString, title: $0.title ?? "", siteType: .history)
-          }
-          group.leave()
-        }
-
-        group.notify(queue: .main) {
-          self.task = nil
-          completion(Set<Site>(openTabSites + bookmarkSites + historySites))
-        }
-      }
-    }
-
-    if let task = self.task {
-      frequencyQueue.async(execute: task)
+      completion(Set(fetches.flatMap { $0 }))
     }
   }
 
-  private func fetchSitesFromTabs(_ tabs: [Tab]) -> [Site] {
+  private func fetchSitesFromTabs(_ tabs: [Tab]) throws -> [Site] {
     var tabList = [Site]()
+    tabList.reserveCapacity(tabs.count)
+
+    guard let selectedTab = tabManager.selectedTab else {
+      return []
+    }
 
     for tab in tabs {
-      if tab.isPrivate {
-        if let url = tab.url, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
-          if let selectedTabID = tabManager.selectedTab?.id, selectedTabID == tab.id {
-            continue
-          }
-
-          tabList.append(
-            Site(
-              url: url.absoluteString,
-              title: tab.displayTitle,
-              siteType: .tab,
-              tabID: tab.id.uuidString
-            )
-          )
+      if let url = tab.url, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
+        if selectedTab.id == tab.id {
+          continue
         }
-      } else {
-        let tabURL = tab.url ?? SessionTab.from(tabId: tab.id)?.url
-        if let url = tabURL, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
-          if let selectedTabID = tabManager.selectedTab?.id, selectedTabID == tab.id {
-            continue
-          }
 
-          tabList.append(
-            Site(
-              url: url.absoluteString,
-              title: tab.displayTitle,
-              siteType: .tab,
-              tabID: tab.id.uuidString
-            )
+        tabList.append(
+          Site(
+            url: url.absoluteString,
+            title: tab.displayTitle,
+            siteType: .tab,
+            tabID: tab.id.uuidString
           )
-        }
+        )
       }
     }
 
