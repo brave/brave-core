@@ -11,6 +11,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
+#include "brave/components/speedreader/speedreader_metrics.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -45,11 +46,13 @@ class SpeedreaderService : public KeyedService {
     ~Observer() override = default;
   };
 
-  SpeedreaderService(content::BrowserContext* browser_context,
+  SpeedreaderService(PrefService* local_state,
+                     content::BrowserContext* browser_context,
                      HostContentSettingsMap* content_rules);
   ~SpeedreaderService() override;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -92,6 +95,8 @@ class SpeedreaderService : public KeyedService {
   std::string GetFontFamilyName() const;
   std::string GetColumnWidth() const;
 
+  SpeedreaderMetrics* metrics() { return &metrics_; }
+
   SpeedreaderService(const SpeedreaderService&) = delete;
   SpeedreaderService& operator=(const SpeedreaderService&) = delete;
 
@@ -100,6 +105,7 @@ class SpeedreaderService : public KeyedService {
   raw_ptr<HostContentSettingsMap> content_rules_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
   base::ObserverList<Observer> observers_;
+  SpeedreaderMetrics metrics_;
 };
 
 }  // namespace speedreader
