@@ -18,6 +18,14 @@ Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
     "getPageLanguage": (function() {
       return document.documentElement.lang;
     }),
+    "getMetaContentByHttpEquiv": (function(httpEquiv) {
+      for (const metaTag of document.getElementsByTagName('meta')) {
+        if (metaTag.httpEquiv && metaTag.httpEquiv.toLowerCase() === httpEquiv) {
+          return metaTag.content;
+        }
+      }
+      return "";
+    }),
     "getRawPageSource": (function() {
       return document.documentElement.outerText;
     }),
@@ -37,18 +45,13 @@ Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
       let pageLanguage = document.documentElement.lang
       return userLanguage == pageLanguage;
     }),
-    "checkTranslate": (function() {
-      try {
-        if ((cr.googleTranslate.libReady || cr.googleTranslate.finished) &&
-            !cr.googleTranslate.readyCallback &&
-            !window.__firefox__.$<brave_translate_script>.isSameLanguage()) {
-          window.webkit.messageHandlers["$<message_handler>"].postMessage({
-            "command": "ready"
-          });
-        }
-      } catch (error) {
-        cr.googleTranslate.onTranslateElementError(error);
-      }
+    "detectLanguage": (function() {
+      window.webkit.messageHandlers["LanguageDetectionTextCaptured"].postMessage({
+        "hasNoTranslate": window.__firefox__.$<brave_translate_script>.hasNoTranslate(),
+        "htmlLang": window.__firefox__.$<brave_translate_script>.getPageLanguage(),
+        "httpContentLanguage": window.__firefox__.$<brave_translate_script>.getMetaContentByHttpEquiv(),
+        "frameId": __gCrWeb && __gCrWeb.message && __gCrWeb.message.getFrameId ? __gCrWeb.message.getFrameId() : "",
+      });
     }),
     "loadTranslateScript": (function() {
       return new Promise((resolve, reject) => {
@@ -59,32 +62,26 @@ Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
         window.webkit.messageHandlers["$<message_handler>"].postMessage({
           "command": "load_brave_translate_script"
         }).then((script) => {
-          try {
-            cr.googleTranslate.readyCallback = () => {
-              cr.googleTranslate.readyCallback = null;
-              resolve();
-            }
-            
-            new Function(script).call(window /*this*/);
-            window.__firefox__.$<brave_translate_script>.translateScriptLoaded = true;
-            
-            if ((cr.googleTranslate.libReady || cr.googleTranslate.finished) && cr.googleTranslate.readyCallback) {
-              cr.googleTranslate.readyCallback = null;
-              resolve();
-            }
-            
-            setTimeout(() => {
-              if (cr.googleTranslate.readyCallback) {
-                cr.googleTranslate.readyCallback = null;
-                resolve();
-              }
-            }, 3000);
-          } catch (error) {
-            cr.googleTranslate.onTranslateElementError(error);
-            reject(error);
+          cr.googleTranslate.readyCallback = () => {
+            cr.googleTranslate.readyCallback = null;
+            resolve();
           }
+          
+          new Function(script).call(window /*this*/);
+          window.__firefox__.$<brave_translate_script>.translateScriptLoaded = true;
+          
+          if ((cr.googleTranslate.libReady || cr.googleTranslate.finished) && cr.googleTranslate.readyCallback) {
+            cr.googleTranslate.readyCallback = null;
+            resolve();
+          }
+          
+          setTimeout(() => {
+            if (cr.googleTranslate.readyCallback) {
+              cr.googleTranslate.readyCallback = null;
+              resolve();
+            }
+          }, 3000);
         }).catch((error) => {
-          cr.googleTranslate.onTranslateElementError(error);
           reject(error);
         });
       });
@@ -249,7 +246,7 @@ try {
             });
             
             Object.defineProperties(this, {
-              statusText: { value: "OK" }
+              statusText: { value: result.value.statusCode == 200 ? "OK" : "BAD REQUEST" }
             });
             
             Object.defineProperties(this, {
@@ -344,4 +341,16 @@ try {
 
 
 // Brave Translate
-window.__firefox__.$<brave_translate_script>.loadTranslateScript();
+window.__firefox__.$<brave_translate_script>.loadTranslateScript().catch((error) => {
+  if (error !== "translateDisabled") {
+    cr.googleTranslate.onTranslateElementError(error);
+  }
+})
+
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) {
+    setTimeout(() => {
+      window.__firefox__.$<brave_translate_script>.detectLanguage();
+    }, 1000);
+  }
+});

@@ -26,3 +26,11 @@ source_set("translate") {
 
   frameworks = [ "Foundation.framework" ]
 }
+
+source_set("features") {
+  sources = [
+    "features.h",
+    "features.mm",
+  ]
+  deps = [ "//base" ]
+}
