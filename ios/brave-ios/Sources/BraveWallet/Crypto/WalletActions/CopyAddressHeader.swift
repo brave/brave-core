@@ -13,30 +13,33 @@ import SwiftUI
 /// is populated, allowing copy of `nextReceiveAddress`.
 struct CopyAddressHeader: View {
 
+  enum AccountInfo {
+    case regular(_ accountInfo: BraveWallet.AccountInfo)
+    case btc(_ accountInfo: BraveWallet.BitcoinAccountInfo)
+    case zec(_ accountInfo: BraveWallet.ZCashAccountInfo)
+  }
   let displayText: String
-  let account: BraveWallet.AccountInfo
-  let btcAccountInfo: BraveWallet.BitcoinAccountInfo?
+  let accountInfo: AccountInfo
 
   init(
     displayText: String,
-    account: BraveWallet.AccountInfo,
-    btcAccountInfo: BraveWallet.BitcoinAccountInfo?
+    accountInfo: AccountInfo
   ) {
     self.displayText = displayText
-    self.account = account
-    self.btcAccountInfo = btcAccountInfo
+    self.accountInfo = accountInfo
   }
 
   var body: some View {
     HStack {
       Text(displayText)
       Spacer()
-      if account.coin == .btc {
-        if let btcAccountInfo {
-          addressMenu(for: btcAccountInfo.nextReceiveAddress.addressString)
-        }
-      } else {
-        addressMenu(for: account.address)
+      switch accountInfo {
+      case .regular(let accountInfo):
+        addressMenu(for: accountInfo.address)
+      case .btc(let btcAccountInfo):
+        addressMenu(for: btcAccountInfo.nextReceiveAddress.addressString)
+      case .zec(let zecAccountInfo):
+        addressMenu(for: zecAccountInfo.nextTransparentReceiveAddress.addressString)
       }
     }
   }

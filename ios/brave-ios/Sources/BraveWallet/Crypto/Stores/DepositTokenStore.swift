@@ -30,6 +30,7 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
   private var allTokens: [BraveWallet.BlockchainToken] = []
   private let assetManager: WalletUserAssetManagerType
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let zcashWalletService: BraveWalletZCashWalletService
   private var keyringServiceObserver: KeyringServiceObserver?
   private var walletServiceObserver: WalletServiceObserver?
 
@@ -38,6 +39,7 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
   @Published var allAccounts: [BraveWallet.AccountInfo] = []
   @Published var allNetworks: [BraveWallet.NetworkInfo] = []
   @Published var bitcoinAccounts: [String: BraveWallet.BitcoinAccountInfo] = [:]
+  @Published var zcashAccounts: [String: BraveWallet.ZCashAccountInfo] = [:]
 
   var isObserving: Bool {
     walletServiceObserver != nil && keyringServiceObserver != nil
@@ -51,7 +53,8 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
     prefilledToken: BraveWallet.BlockchainToken?,
     prefilledAccount: BraveWallet.AccountInfo?,
     userAssetManager: WalletUserAssetManagerType,
-    bitcoinWalletService: BraveWalletBitcoinWalletService
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
+    zcashWalletService: BraveWalletZCashWalletService
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
@@ -61,6 +64,7 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
     self.prefilledAccount = prefilledAccount
     self.assetManager = userAssetManager
     self.bitcoinWalletService = bitcoinWalletService
+    self.zcashWalletService = zcashWalletService
 
     self.setupObservers()
   }
@@ -103,14 +107,23 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
       self.networkFilters = allNetworks.map {
         .init(isSelected: true, model: $0)
       }
-      if let prefilledAccount, prefilledAccount.coin == .btc {
-        self.bitcoinAccounts = await bitcoinWalletService.fetchBitcoinAccountInfo(accounts: [
-          prefilledAccount
-        ])
+      if let prefilledAccount {
+        if prefilledAccount.coin == .btc {
+          self.bitcoinAccounts = await bitcoinWalletService.fetchBitcoinAccountInfo(
+            accounts: [prefilledAccount]
+          )
+        } else if prefilledAccount.coin == .zec {
+          self.zcashAccounts = await zcashWalletService.fetchZcashAccountInfo(
+            accounts: [prefilledAccount]
+          )
+        }
       } else {
         self.allAccounts = await keyringService.allAccounts().accounts
         self.bitcoinAccounts = await bitcoinWalletService.fetchBitcoinAccountInfo(
           accounts: allAccounts.filter({ $0.coin == .btc })
+        )
+        self.zcashAccounts = await zcashWalletService.fetchZcashAccountInfo(
+          accounts: allAccounts.filter({ $0.coin == .zec })
         )
       }
       self.allNetworks = await rpcService.allNetworksForSupportedCoins()

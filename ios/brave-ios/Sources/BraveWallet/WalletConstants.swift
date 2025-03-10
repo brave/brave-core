@@ -75,6 +75,7 @@ public struct WalletConstants {
     BraveWallet.FilecoinTestnet,
     BraveWallet.FilecoinEthereumTestnetChainId,
     BraveWallet.BitcoinTestnet,
+    BraveWallet.ZCashTestnet,
   ]
 
   /// Primary network chain ids
@@ -83,6 +84,7 @@ public struct WalletConstants {
     BraveWallet.MainnetChainId,
     BraveWallet.FilecoinMainnet,
     BraveWallet.BitcoinMainnet,
+    BraveWallet.ZCashMainnet,
   ]
 
   public enum SupportedCoinTypesMode {
@@ -100,28 +102,32 @@ public struct WalletConstants {
   public static func supportedCoinTypes(
     _ mode: SupportedCoinTypesMode = .general
   ) -> OrderedSet<BraveWallet.CoinType> {
+    var result = OrderedSet<BraveWallet.CoinType>()
     switch mode {
     case .general:
       #if DEBUG
-      // Only enable .btc for unit tests.
+      // Only enable .btc and .zec for unit tests.
       // Local Debug build need to
       // 1. Remove this check
       // 2. Enable bitcoin feature via build argument
       if isUnitTesting {
-        return [.eth, .sol, .fil, .btc]
+        result = [.eth, .sol, .fil, .btc, .zec]
       }
       #endif
-      // Any non-debug build will check bitcoin feature flag from core
+      // Any non-debug build will check bitcoin & zcash feature flag from core
       // TF public build can use BraveCore Switches in Browser Settings,
       // Debug section in order to enable Bitcoin.
+      result = [.eth, .sol, .fil]
       if FeatureList.kBraveWalletBitcoinFeature.enabled {
-        return [.eth, .sol, .fil, .btc]
-      } else {
-        return [.eth, .sol, .fil]
+        result.append(.btc)
+      }
+      if FeatureList.kBraveWalletZCashFeature.enabled {
+        result.append(.zec)
       }
     case .dapps:
       return [.eth, .sol]
     }
+    return result
   }
 
   /// All of currently supported `OnRampProvider`s.

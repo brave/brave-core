@@ -565,7 +565,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
         network: chainId
       )
     case .zec:
-      // ZCash not supported on iOS yet, including account import
+      // no import for Zcash
       return nil
     default:
       return nil

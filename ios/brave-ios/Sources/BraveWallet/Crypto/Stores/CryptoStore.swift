@@ -124,6 +124,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   private let ipfsApi: IpfsAPI
   private let walletP3A: BraveWalletBraveWalletP3A
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let zcashWalletService: BraveWalletZCashWalletService
   private let userAssetManager: WalletUserAssetManager
   private var isUpdatingUserAssets: Bool = false
   private var autoDiscoveredAssets: [BraveWallet.BlockchainToken] = []
@@ -146,6 +147,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     ipfsApi: IpfsAPI,
     walletP3A: BraveWalletBraveWalletP3A,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
+    zcashWalletService: BraveWalletZCashWalletService,
     origin: URLOrigin? = nil
   ) {
     self.keyringService = keyringService
@@ -160,6 +162,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     self.ipfsApi = ipfsApi
     self.walletP3A = walletP3A
     self.bitcoinWalletService = bitcoinWalletService
+    self.zcashWalletService = zcashWalletService
     self.userAssetManager = WalletUserAssetManager(
       keyringService: keyringService,
       rpcService: rpcService,
@@ -414,6 +417,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       walletService: walletService,
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: prefilledToken
     )
     buyTokenStore = store
@@ -435,6 +439,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: prefilledToken,
       ipfsApi: ipfsApi,
       userAssetManager: userAssetManager
@@ -483,7 +488,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       prefilledToken: prefilledToken,
       prefilledAccount: prefilledAccount,
       userAssetManager: userAssetManager,
-      bitcoinWalletService: bitcoinWalletService
+      bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService
     )
     depositTokenStore = store
     return store

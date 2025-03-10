@@ -79,7 +79,7 @@ struct AccountDetailsView: View {
             )
           }
         )
-        if account.coin != .btc {
+        if account.supportsAccountExport {
           Section {
             NavigationLink(
               destination: AccountPrivateKeyView(keyringStore: keyringStore, account: account)
