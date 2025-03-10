@@ -139,9 +139,11 @@ void NewTabPageHandler::NotifySponsoredImageLogoClicked(
     const std::string& creative_instance_id,
     const std::string& destination_url,
     const std::string& wallpaper_id,
+    bool should_metrics_fallback_to_p3a,
     NotifySponsoredImageLogoClickedCallback callback) {
   background_facade_->NotifySponsoredImageLogoClicked(
-      creative_instance_id, destination_url, wallpaper_id);
+      creative_instance_id, destination_url, wallpaper_id,
+      should_metrics_fallback_to_p3a);
   std::move(callback).Run();
 }
 

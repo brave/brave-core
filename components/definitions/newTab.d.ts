@@ -44,6 +44,7 @@ declare namespace NewTab {
     wallpaperImageUrl: string
     isSponsored: boolean
     creativeInstanceId: string
+    shouldMetricsFallbackToP3a: boolean
     wallpaperId: string
     logo: BrandedWallpaperLogo
   }

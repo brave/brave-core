@@ -34,6 +34,7 @@ export interface SponsoredImageBackground {
   creativeInstanceId: string
   campaignId: string
   wallpaperId: string
+  shouldMetricsFallbackToP3a: boolean
   logo: SponsoredImageLogo | null
 }
 

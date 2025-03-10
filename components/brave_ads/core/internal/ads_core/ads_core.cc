@@ -35,4 +35,16 @@ Reactions& AdsCore::GetReactions() {
   return reactions_;
 }
 
+void AdsCore::SetCreativeInstanceIdsToFallbackToP3a(
+    const base::flat_set<std::string>& creative_instance_ids) {
+  should_metrics_fallback_to_p3a_.clear();
+  should_metrics_fallback_to_p3a_.insert(creative_instance_ids.cbegin(),
+                                         creative_instance_ids.cend());
+}
+
+bool AdsCore::ShouldCreativeInstanceIdFallbackToP3A(
+    const std::string& creative_instance_id) const {
+  return should_metrics_fallback_to_p3a_.contains(creative_instance_id);
+}
+
 }  // namespace brave_ads
