@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/semver/v1/BUILD.gn b/third_party/rust/semver/v1/BUILD.gn
-index 552529762b59721fb8e6bdce42d068747a506c1b..c1f72d86c89e16b5589621aa3ba8b73029c9c572 100644
+index 3ab1b01b0ae215835fff1a1bcab64dc7d3e28d74..4a277864adedab818112f241b896da846d5210a3 100644
 --- a/third_party/rust/semver/v1/BUILD.gn
 +++ b/third_party/rust/semver/v1/BUILD.gn
 @@ -54,5 +54,4 @@ cargo_crate("lib") {

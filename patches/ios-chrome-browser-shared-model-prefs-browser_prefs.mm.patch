@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index bca82ec9a7e9e1b29468db32c234641d391b3add..d08987e2d89ca92edf3f5e81b99b08b87b405165 100644
+index 148a8eae9634e93e33233235a2a9db9a093a2b5a..882567dbda2c64cf4ba901470bdc8862d12b901e 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -651,6 +651,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -652,6 +652,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
    // Deprecated 03/2025, migrated to profile pref.
    registry->RegisterIntegerPref(prefs::kInactiveTabsTimeThreshold, 0);
@@ -10,7 +10,7 @@ index bca82ec9a7e9e1b29468db32c234641d391b3add..d08987e2d89ca92edf3f5e81b99b08b8
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1023,6 +1024,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1025,6 +1026,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
  
    // Deprecated 12/2024.
    registry->RegisterBooleanPref(kPageContentCollectionEnabled, false);
