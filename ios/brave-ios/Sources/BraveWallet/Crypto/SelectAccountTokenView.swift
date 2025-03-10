@@ -138,11 +138,22 @@ struct SelectAccountTokenView: View {
         },
         header: {
           WalletListHeaderView {
-            CopyAddressHeader(
-              displayText: accountSection.account.accountNameDisplay,
-              account: accountSection.account,
-              btcAccountInfo: accountSection.bitcoinAccountInfo
-            )
+            if let btcAccountInfo = accountSection.bitcoinAccountInfo {
+              CopyAddressHeader(
+                displayText: accountSection.account.accountNameDisplay,
+                accountInfo: .btc(btcAccountInfo)
+              )
+            } else if let zecAccountInfo = accountSection.zcashAccountInfo {
+              CopyAddressHeader(
+                displayText: accountSection.account.accountNameDisplay,
+                accountInfo: .zec(zecAccountInfo)
+              )
+            } else {
+              CopyAddressHeader(
+                displayText: accountSection.account.accountNameDisplay,
+                accountInfo: .regular(accountSection.account)
+              )
+            }
           }
         }
       )
