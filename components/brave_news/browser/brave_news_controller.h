@@ -99,15 +99,12 @@ class BraveNewsController
   void GetFeedV2(GetFeedV2Callback callback) override;
   void GetSignals(GetSignalsCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
-  void AddPublishersListener(
-      mojo::PendingRemote<mojom::PublishersListener> listener) override;
   void GetSuggestedPublisherIds(
       GetSuggestedPublisherIdsCallback callback) override;
+  void RefreshSuggestedPublisherIds() override;
   void FindFeeds(const GURL& possible_feed_or_site_url,
                  FindFeedsCallback callback) override;
   void GetChannels(GetChannelsCallback callback) override;
-  void AddChannelsListener(
-      mojo::PendingRemote<mojom::ChannelsListener> listener) override;
   void SetChannelSubscribed(const std::string& locale,
                             const std::string& channel_id,
                             bool subscribed,
@@ -129,8 +126,6 @@ class BraveNewsController
       mojo::PendingRemote<mojom::FeedListener> listener) override;
   void SetConfiguration(mojom::ConfigurationPtr configuration,
                         SetConfigurationCallback callback) override;
-  void AddConfigurationListener(
-      mojo::PendingRemote<mojom::ConfigurationListener> listener) override;
   void GetDisplayAd(GetDisplayAdCallback callback) override;
   void OnInteractionSessionStarted() override;
 
@@ -146,6 +141,8 @@ class BraveNewsController
                         const std::string& creative_instance_id) override;
   void OnDisplayAdView(const std::string& item_id,
                        const std::string& creative_instance_id) override;
+
+  void AddListener(mojo::PendingRemote<mojom::Listener> listener) override;
 
   // mojom::BraveNewsInternals
   void GetVisitedSites(GetVisitedSitesCallback callback) override;
@@ -171,9 +168,9 @@ class BraveNewsController
                                SubscribeToNewDirectFeedCallback callback,
                                bool is_valid,
                                const std::string& feed_title);
+  void GetState(BraveNewsEngine::GetStateCallback callback);
 
-  void NotifyPublishersChanged(mojom::PublishersEventPtr event);
-  void NotifyChannelsChanged(mojom::ChannelsEventPtr event);
+  void NotifyChanged(base::Value change);
   void NotifyFeedChanged(const std::string& hash);
 
   BackgroundHistoryQuerier MakeHistoryQuerier();
@@ -215,10 +212,8 @@ class BraveNewsController
       prefs_observation_{this};
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
   mojo::ReceiverSet<mojom::BraveNewsInternals> internals_receivers_;
-  mojo::RemoteSet<mojom::PublishersListener> publishers_listeners_;
-  mojo::RemoteSet<mojom::ChannelsListener> channels_listeners_;
+  mojo::RemoteSet<mojom::Listener> listeners_;
   mojo::RemoteSet<mojom::FeedListener> feed_listeners_;
-  mojo::RemoteSet<mojom::ConfigurationListener> configuration_listeners_;
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_{this};
 };
 
