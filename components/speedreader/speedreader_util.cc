@@ -198,6 +198,8 @@ void DistillPage(const GURL& url,
     return;
   }
 
+  speedreader_service->metrics()->RecordPageView();
+
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::TaskPriority::USER_BLOCKING, base::MayBlock()},
       base::BindOnce(distill, url, std::move(body), std::move(rewriter)),
