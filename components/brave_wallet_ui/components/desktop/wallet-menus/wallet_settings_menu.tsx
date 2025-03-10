@@ -70,7 +70,7 @@ export const WalletSettingsMenu = (props: Props) => {
   )
   const [hidePortfolioGraph, setHidePortfolioGraph] = useSyncedLocalStorage(
     LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
-    false
+    true
   )
 
   // queries
