@@ -19,7 +19,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/sequence_checker.h"
-#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/values.h"
@@ -28,6 +27,7 @@
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_database.mojom.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_engine.mojom.h"
+#include "brave/components/brave_rewards/core/remote_worker.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -59,12 +59,6 @@ class BraveWalletService;
 namespace brave_rewards {
 
 class RewardsFlagBrowserTest;
-
-namespace internal {
-class HashPrefixStore;
-class RewardsDatabase;
-}  // namespace internal
-
 class RewardsNotificationServiceImpl;
 
 using GetDebugCallback = base::OnceCallback<void(bool)>;
@@ -476,9 +470,6 @@ class RewardsServiceImpl final : public RewardsService,
                           const mojom::Result result,
                           mojom::BalanceReportInfoPtr report);
 
-  void OnRunDBTransaction(RunDBTransactionCallback callback,
-                          mojom::DBCommandResponsePtr response);
-
   void OnFilesDeletedForCompleteReset(SuccessCallback callback,
                                       const bool success);
 
@@ -515,8 +506,8 @@ class RewardsServiceImpl final : public RewardsService,
   const base::FilePath creator_prefix_store_path_;
 
   std::unique_ptr<DiagnosticLog> diagnostic_log_;
-  base::SequenceBound<internal::RewardsDatabase> rewards_database_;
-  base::SequenceBound<internal::HashPrefixStore> creator_prefix_store_;
+  RemoteWorker<mojom::RewardsDatabase> rewards_database_;
+  RemoteWorker<mojom::HashPrefixStore> creator_prefix_store_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   std::unique_ptr<RewardsServiceObserver> extension_observer_;
 
