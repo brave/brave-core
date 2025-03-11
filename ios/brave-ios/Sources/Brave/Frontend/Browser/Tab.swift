@@ -1354,7 +1354,7 @@ class TabWebView: WKWebView, MenuHelperInterface {
 
   fileprivate var didSelectSearchWithBrave: ((String) -> Void)?
 
-  init(
+  fileprivate init(
     frame: CGRect,
     configuration: WKWebViewConfiguration = WKWebViewConfiguration(),
     isPrivate: Bool = true
