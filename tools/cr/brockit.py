@@ -82,7 +82,7 @@ tools/cr/brockit.py --to=135.0.7037.1 --with-github
 ```
 
 This will attempt to create/update the github issue for the run as part of
-the whole process. Another option is to use `--github_issue_only` to have these
+the whole process. Another option is to use `--github-issue-only` to have these
 GitHub run as a standalone.
 """
 
@@ -90,6 +90,7 @@ import argparse
 from datetime import datetime
 import json
 from pathlib import Path
+import platform
 import re
 from rich.console import Console
 from rich.markdown import Markdown
@@ -135,7 +136,7 @@ MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 # The with the log of changes between two versions.
 GOOGLESOURCE_LINK = 'https://chromium.googlesource.com/chromium/src/+log/{from_version}..{to_version}?pretty=fuller&n=10000'
 
-# A decorator to be shown for messages that the use should address before
+# A decorator to be shown for messages that the user should address before
 # continuing.
 ACTION_NEEDED_DECORATOR = '[bold yellow](action needed)[/]'
 
@@ -162,7 +163,20 @@ class Terminal:
         if self.status is not None:
             self.status.update(
                 f'{self.starting_status_message} [bold cyan]({" ".join(cmd)})')
-        return subprocess.run(cmd, capture_output=True, text=True, check=True)
+
+        kwargs = {
+            'capture_output': True,
+            'text': True,
+            'check': True,
+        }
+
+        if platform.system() == 'Windows':
+            # It is necessary to pass `shell=True` on Windows, otherwise the
+            # process handle is entirely orphan and can't resolve things like
+            # `npm`.
+            kwargs['shell'] = True
+
+        return subprocess.run(cmd, **kwargs)
 
     def run_git(self, *cmd):
         """Runs a git command on the current repository.
