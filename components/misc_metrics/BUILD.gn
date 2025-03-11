@@ -20,6 +20,8 @@ static_library("misc_metrics") {
     "pref_names.h",
     "privacy_hub_metrics.cc",
     "privacy_hub_metrics.h",
+    "split_view_metrics.cc",
+    "split_view_metrics.h",
     "tab_metrics.cc",
     "tab_metrics.h",
   ]
@@ -55,6 +57,7 @@ source_set("unit_tests") {
     "menu_metrics_unittest.cc",
     "new_tab_metrics_unittest.cc",
     "privacy_hub_metrics_unittest.cc",
+    "split_view_metrics_unittest.cc",
     "tab_metrics_unittest.cc",
   ]
 

@@ -11,9 +11,12 @@
 #include "base/containers/contains.h"
 #include "base/functional/callback_helpers.h"
 #include "base/notreached.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
+#include "brave/components/misc_metrics/split_view_metrics.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 
 SplitViewBrowserData::SplitViewBrowserData(Browser* browser)
@@ -36,6 +39,11 @@ void SplitViewBrowserData::TileTabs(const TabTile& tile) {
   auto& model = tab_strip_model_adapter_.tab_strip_model();
   CHECK_LT(model.GetIndexOfTab(tile.first.Get()),
            model.GetIndexOfTab(tile.second.Get()));
+
+  auto* process_misc_metrics = g_brave_browser_process->process_misc_metrics();
+  if (process_misc_metrics) {
+    process_misc_metrics->split_view_metrics()->ReportSplitViewUsage();
+  }
 
   tiles_.push_back(tile);
 
