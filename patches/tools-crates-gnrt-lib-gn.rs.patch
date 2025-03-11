@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/lib/gn.rs b/tools/crates/gnrt/lib/gn.rs
-index 101360d5e04515b12674023a88d173942769ecc5..0bcb3523f56a19ce25b333aee7517f10e1165caf 100644
+index 058cebdb525bc170503bb439e88758a65b586933..0bcb3523f56a19ce25b333aee7517f10e1165caf 100644
 --- a/tools/crates/gnrt/lib/gn.rs
 +++ b/tools/crates/gnrt/lib/gn.rs
 @@ -201,8 +201,9 @@ pub fn build_rule_from_dep(
@@ -40,14 +40,3 @@ index 101360d5e04515b12674023a88d173942769ecc5..0bcb3523f56a19ce25b333aee7517f10
          ("fuchsia", "is_fuchsia"),
          ("ios", "is_ios"),
          ("linux", "is_linux || is_chromeos"),
-@@ -722,6 +729,10 @@ fn target_vendor_to_condition(target_vendor: &str) -> Condition {
-         return Condition::AlwaysFalse;
-     }
- 
-+    if target_vendor == "apple" {
-+        return Condition::Expr("is_apple".to_string());
-+    }
-+
-     Condition::Unsupported(format!("unknown `target_vendor` name: `{target_vendor}`"))
- }
- 
