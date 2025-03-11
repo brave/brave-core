@@ -1164,32 +1164,32 @@ void SwapTabsInTile(Browser* browser) {
                            /*select_after_move*/ false);
 }
 
-void TakeScreenshot(Browser* browser, int command_id) {
-  content::WebContents* web_contents =
-      browser->tab_strip_model()->GetActiveWebContents();
+void TakeScreenshot(base::WeakPtr<content::WebContents> web_contents,
+                    int command_id) {
+  if (!web_contents.get()) {
+    return;
+  }
 
-  using brave_screenshots::ScreenshotType;
-
-  ScreenshotType type;
+  brave_screenshots::ScreenshotType type;
 
   switch (command_id) {
     case IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD:
-      type = ScreenshotType::kSelection;
+      type = brave_screenshots::ScreenshotType::kSelection;
       break;
     case IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD:
-      type = ScreenshotType::kViewport;
+      type = brave_screenshots::ScreenshotType::kViewport;
       break;
     case IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD:
-      type = ScreenshotType::kFullPage;
+      type = brave_screenshots::ScreenshotType::kFullPage;
       break;
     default:
       NOTREACHED();
   }
 
-  tabs::TabInterface::GetFromContents(web_contents)
+  tabs::TabInterface::GetFromContents(web_contents.get())
       ->GetTabFeatures()
       ->brave_screenshots_tab_feature()
-      ->StartScreenshot(browser, type);
+      ->StartScreenshot(web_contents, type);
 }
 
 }  // namespace brave

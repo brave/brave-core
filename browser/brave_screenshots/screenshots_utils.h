@@ -8,7 +8,6 @@
 
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
-#include "chrome/browser/ui/browser.h"
 
 namespace brave_screenshots::utils {
 
@@ -20,7 +19,7 @@ void CopyImageToClipboard(const image_editor::ScreenshotCaptureResult& result);
 
 void DisplayScreenshotBubble(
     const image_editor::ScreenshotCaptureResult& result,
-    base::WeakPtr<Browser> browser);
+    base::WeakPtr<content::WebContents> web_contents);
 
 }  // namespace brave_screenshots::utils
 

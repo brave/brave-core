@@ -5,9 +5,8 @@
 
 #include "brave/browser/brave_screenshots/screenshots_utils.h"
 
+#include "brave/browser/ui/brave_browser_window.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 
 namespace brave_screenshots::utils {
@@ -28,17 +27,17 @@ void CopyImageToClipboard(const ScreenshotCaptureResult& result) {
 }
 
 void DisplayScreenshotBubble(const ScreenshotCaptureResult& result,
-                             base::WeakPtr<Browser> browser) {
+                             base::WeakPtr<content::WebContents> web_contents) {
   DVLOG(2) << __func__;
-  if (!browser || result.image.IsEmpty()) {
+  if (!web_contents.get() || result.image.IsEmpty()) {
     DVLOG(2) << "Browser is null or image is empty";
     return;
   }
 
   DVLOG(2) << "Displaying screenshot bubble";
   // Leverage the screenshot bubble to show the user the screenshot
-  browser->window()->ShowScreenshotCapturedBubble(
-      browser->tab_strip_model()->GetActiveWebContents(), result.image);
+  BrowserWindow::FindBrowserWindowWithWebContents(web_contents.get())
+      ->ShowScreenshotCapturedBubble(web_contents.get(), result.image);
 }
 
 }  // namespace brave_screenshots::utils
