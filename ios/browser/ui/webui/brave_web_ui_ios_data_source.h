@@ -14,11 +14,6 @@
 #include "ios/web/webui/web_ui_ios_data_source_impl.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 
-namespace webui {
-struct LocalizedString;
-struct ResourcePath;
-}  // namespace webui
-
 class BraveWebUIIOSDataSource : public web::WebUIIOSDataSourceImpl {
  public:
   static web::WebUIIOSDataSource* Create(const std::string& source_name);
