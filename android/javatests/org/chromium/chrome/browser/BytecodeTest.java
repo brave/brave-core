@@ -107,6 +107,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdow
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
+import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
@@ -547,7 +548,8 @@ public class BytecodeTest {
                         int.class,
                         Callback.class,
                         boolean.class,
-                        BookmarkManagerOpener.class));
+                        BookmarkManagerOpener.class,
+                        PriceDropNotificationManager.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/permissions/PermissionDialogModelFactory",
@@ -1617,7 +1619,8 @@ public class BytecodeTest {
                         Profile.class,
                         BookmarkUiPrefs.class,
                         BookmarkOpener.class,
-                        BookmarkManagerOpener.class));
+                        BookmarkManagerOpener.class,
+                        PriceDropNotificationManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
@@ -1644,7 +1647,8 @@ public class BytecodeTest {
                         BooleanSupplier.class,
                         Consumer.class,
                         BookmarkMoveSnackbarManager.class,
-                        BookmarkManagerOpener.class));
+                        BookmarkManagerOpener.class,
+                        PriceDropNotificationManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
