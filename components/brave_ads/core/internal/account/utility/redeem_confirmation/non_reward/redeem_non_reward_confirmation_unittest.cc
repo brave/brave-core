@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate_mock.h"
-#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
@@ -42,7 +41,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
   // Arrange
   const test::URLResponseMap url_responses = {
       {BuildCreateNonRewardConfirmationUrlPath(test::kTransactionId),
-       {{net::kHttpImATeapot,
+       {{net::HTTP_NO_CONTENT,
          test::BuildCreateNonRewardConfirmationUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
