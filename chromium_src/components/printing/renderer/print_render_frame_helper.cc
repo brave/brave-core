@@ -26,13 +26,13 @@ void PrintRenderFrameHelper::SetPrintPreviewUI(
 }
 
 void PrintRenderFrameHelper::InitiatePrintPreview(
-#if BUILDFLAG(IS_CHROMEOS_ASH)
+#if BUILDFLAG(IS_CHROMEOS)
     mojo::PendingAssociatedRemote<mojom::PrintRenderer> print_renderer,
 #endif
     bool has_selection) {
   if (!is_print_preview_extraction_) {
     PrintRenderFrameHelper_ChromiumImpl::InitiatePrintPreview(
-#if BUILDFLAG(IS_CHROMEOS_ASH)
+#if BUILDFLAG(IS_CHROMEOS)
         std::move(print_renderer),
 #endif
         has_selection);
