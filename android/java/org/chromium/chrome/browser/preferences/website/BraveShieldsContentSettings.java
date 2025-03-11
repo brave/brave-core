@@ -91,8 +91,8 @@ public class BraveShieldsContentSettings {
         BraveShieldsContentSettingsJni.get().resetCosmeticFilter(url);
     }
 
-    public static boolean isBlockedElementsAvailable(String url) {
-        return BraveShieldsContentSettingsJni.get().isBlockedElementsAvailable(url);
+    public static boolean areBlockedElementsAvailable(String url) {
+        return BraveShieldsContentSettingsJni.get().areBlockedElementsAvailable(url);
     }
 
     public static void setShields(
@@ -301,6 +301,6 @@ public class BraveShieldsContentSettings {
 
         void resetCosmeticFilter(String url);
 
-        boolean isBlockedElementsAvailable(String url);
+        boolean areBlockedElementsAvailable(String url);
     }
 }

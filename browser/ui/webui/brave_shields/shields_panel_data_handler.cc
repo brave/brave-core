@@ -184,10 +184,10 @@ void ShieldsPanelDataHandler::OpenWebCompatWindow() {
       webcompat_reporter::UISource::kShieldsPanel);
 }
 
-void ShieldsPanelDataHandler::IsBlockedElementsAvailable(
-    IsBlockedElementsAvailableCallback callback) {
+void ShieldsPanelDataHandler::AreBlockedElementsAvailable(
+    AreBlockedElementsAvailableCallback callback) {
   std::move(callback).Run(
-      g_brave_browser_process->ad_block_service()->IsBlockedElementsAvailable(
+      g_brave_browser_process->ad_block_service()->AreBlockedElementsAvailable(
           active_shields_data_controller_->web_contents()->GetURL().host()));
 }
 
