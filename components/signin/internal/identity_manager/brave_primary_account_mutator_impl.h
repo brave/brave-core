@@ -18,10 +18,8 @@ class BravePrimaryAccountMutatorImpl : public PrimaryAccountMutatorImpl {
                                  SigninClient* signin_client);
   ~BravePrimaryAccountMutatorImpl() override;
 
-#if !BUILDFLAG(IS_CHROMEOS_ASH)
   bool ClearPrimaryAccount(
       signin_metrics::ProfileSignout source_metric) override;
-#endif
 };
 
 }  //  namespace signin
