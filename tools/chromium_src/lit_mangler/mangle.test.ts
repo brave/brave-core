@@ -6,7 +6,7 @@
 import fs from 'fs'
 import path from 'path'
 import * as diff from 'diff'
-import config from '../../../build/commands/lib/config.js'
+import {genPath, outputPath} from '../../../build/commands/lib/guessConfig'
 
 // Note: Headers are stripped during preprocess, we're not interested in them
 // showing up in the snapshot.
@@ -39,12 +39,12 @@ describe('mangled files should have up to date snapshots', () => {
                 .replace('chromium_src/', '')
             const baseName = path.basename(manglerPath)
 
-            const mangledPath = path.relative(root, path.join(config.outputDir, 'gen', manglerPath.replace(baseName, 'preprocessed/' + baseName)))
+            const mangledPath = path.relative(root, path.join(genPath, manglerPath.replace(baseName, 'preprocessed/' + baseName)))
             const originalPath = path.join('..', manglerPath)
 
             const mangledText = fs.readFileSync(mangledPath, 'utf8')
             const originalText = fs.readFileSync(originalPath, 'utf8').substring(header.length)
-            const linesDiff = diff.createTwoFilesPatch(originalPath, path.relative(config.outputDir, mangledPath), originalText, mangledText)
+            const linesDiff = diff.createTwoFilesPatch(originalPath, path.relative(outputPath, mangledPath), originalText, mangledText)
             expect(linesDiff).toMatchSnapshot()
         });
     }

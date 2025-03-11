@@ -44,7 +44,7 @@ def maybe_keep_upstream_version(override_in_folder, out_folder, override_file):
     return None
 
 
-def run_mangler(mangler_file, preprocess_file):
+def run_mangler(out_folder, mangler_file, preprocess_file):
     """Runs the mangler on the given file"""
     import brave_node
 
@@ -57,7 +57,8 @@ def run_mangler(mangler_file, preprocess_file):
     # preprocessing that upstream does will be mangled.
     brave_node.RunNode([
         tsx, '--tsconfig', ts_config, lit_mangler, 'mangle', '--typecheck',
-        '-m', mangler_file, '-i', preprocess_file, '-o', preprocess_file
+        '-m', mangler_file, '-i', preprocess_file, '-o', preprocess_file, '-g',
+        out_folder
     ])
 
 
@@ -114,7 +115,8 @@ def main(original_function, argv):
 
         # Run the manglers - this doesn't need to happen in the second call to main because we don't depend on anything there.
         for upstream_file, lit_mangler_file in lit_mangler_files:
-            run_mangler(os.path.join(override_root_folder, lit_mangler_file),
+            run_mangler(out_folder,
+                        os.path.join(override_root_folder, lit_mangler_file),
                         os.path.join(out_folder, upstream_file))
 
         if len(overrides) == 0:
