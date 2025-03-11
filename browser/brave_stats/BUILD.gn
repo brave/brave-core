@@ -10,3 +10,81 @@ buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [ "BRAVE_USAGE_SERVER=\"$brave_stats_updater_url\"" ]
 }
+
+source_set("brave_stats") {
+  sources = [
+    "//brave/browser/brave_stats/brave_stats_updater.cc",
+    "//brave/browser/brave_stats/brave_stats_updater.h",
+    "//brave/browser/brave_stats/brave_stats_updater_params.cc",
+    "//brave/browser/brave_stats/brave_stats_updater_params.h",
+    "//brave/browser/brave_stats/features.cc",
+    "//brave/browser/brave_stats/features.h",
+    "//brave/browser/brave_stats/first_run_util.cc",
+    "//brave/browser/brave_stats/first_run_util.h",
+    "//brave/browser/brave_stats/switches.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/browser/brave_stats:buildflags",
+    "//brave/common",
+    "//brave/components/brave_ads/core",
+    "//brave/components/brave_referrals/common",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/constants",
+    "//brave/components/misc_metrics",
+    "//brave/components/rpill/common",
+    "//brave/components/version_info",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/headless",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/common",
+    "//components/prefs",
+    "//net",
+    "//services/network/public/cpp",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "//brave/browser/brave_stats/brave_stats_updater_browsertest.cc" ]
+
+  deps = [
+    "//brave/browser/brave_stats",
+    "//brave/components/brave_referrals/browser",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "//brave/browser/brave_stats/brave_stats_updater_unittest.cc",
+    "//brave/browser/brave_stats/first_run_util_unittest.cc",
+  ]
+
+  deps = [
+    "//brave/browser/brave_ads",
+    "//brave/browser/brave_stats",
+    "//brave/components/brave_ads/core",
+    "//brave/components/brave_referrals/browser",
+    "//brave/components/brave_rewards/content",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/misc_metrics",
+    "//chrome/browser",
+    "//chrome/browser/prefs",
+    "//chrome/test:test_support",
+    "//components/prefs",
+  ]
+}
