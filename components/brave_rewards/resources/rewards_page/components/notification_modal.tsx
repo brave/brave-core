@@ -112,7 +112,7 @@ export function NotificationModal(props: Props) {
 
   return (
     <Modal onEscape={dismiss}>
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <Modal.Header onClose={dismiss} />
         <View
           notification={props.notification}

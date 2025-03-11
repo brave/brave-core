@@ -120,7 +120,7 @@ export function AdsSettingsModal(props: Props) {
         title={getString('adsSettingsTitle')}
         onClose={props.onClose}
       />
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         {
           externalWallet &&
             <p className='description'>

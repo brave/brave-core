@@ -14,6 +14,10 @@ class ScopedCSSAttribute {
     this[scopeAttributeName] = scopeName
   }
 
+  get scope() {
+    return this[scopeAttributeName]
+  }
+
   get selector() {
     return `[${scopeAttributeName}=${CSS.escape(this[scopeAttributeName])}]`
   }

@@ -13,7 +13,7 @@ import { style } from './sending.style'
 export function Sending() {
   const { getString } = useLocaleContext()
   return (
-    <div {...style}>
+    <div data-css-scope={style.scope}>
       <ProgressRing />
       <h3>{getString('contributeSendingText')}</h3>
     </div>

@@ -20,7 +20,7 @@ export function SelfCustodyInviteModal(props: Props) {
 
   return (
     <Modal onEscape={props.onDismiss}>
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <Modal.Header onClose={props.onDismiss} />
         <h4>{getString('selfCustodyInviteTitle')}</h4>
         <div>{getString('selfCustodyInviteText')}</div>

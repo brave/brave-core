@@ -62,7 +62,7 @@ export function ContributeCard() {
   }
 
   return (
-    <div className='content-card' {...style}>
+    <div className='content-card' data-css-scope={style.scope}>
       <section>
         <div className='icon'>
           <img src={getCreatorIconSrc(site)} alt='Site icon' />

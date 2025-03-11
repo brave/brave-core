@@ -30,7 +30,7 @@ export function ResetModal(props: Props) {
         title={getString('resetRewardsTitle')}
         onClose={props.onClose}
       />
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <div className='message-icon'>
           <Icon name='warning-triangle-filled' />
         </div>

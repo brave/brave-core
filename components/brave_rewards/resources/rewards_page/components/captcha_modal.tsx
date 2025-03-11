@@ -122,7 +122,7 @@ export function CaptchaModal(props: Props) {
 
   return (
     <Modal onEscape={props.onClose}>
-      <div {...style}>
+      <div data-css-scope={style.scope}>
         <Modal.Header onClose={props.onClose} />
         {renderContent()}
       </div>
