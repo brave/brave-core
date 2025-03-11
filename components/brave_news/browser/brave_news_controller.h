@@ -23,6 +23,7 @@
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
+#include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -109,6 +110,8 @@ class BraveNewsController
       const GURL& feed_url,
       SubscribeToNewDirectFeedCallback callback) override;
   void RemoveDirectFeed(const std::string& publisher_id) override;
+  void GetImageData(const GURL& padded_image_url,
+                    GetImageDataCallback callback) override;
   void SetPublisherPref(const std::string& publisher_id,
                         mojom::UserEnabled new_status) override;
   void ClearPrefs() override;
@@ -168,6 +171,13 @@ class BraveNewsController
   BackgroundHistoryQuerier MakeHistoryQuerier();
 
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
+
+#if BUILDFLAG(IS_ANDROID)
+  // Note: This is only used by Android, to load padded images from the Private
+  // CDN.
+  brave_private_cdn::PrivateCDNRequestHelper private_cdn_request_helper_;
+#endif
+
   raw_ptr<history::HistoryService> history_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 

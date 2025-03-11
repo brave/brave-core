@@ -22,6 +22,7 @@
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notreached.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/task/sequenced_task_runner.h"
@@ -42,6 +43,7 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
+#include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -101,6 +103,10 @@ BraveNewsController::BraveNewsController(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
     : ads_service_(ads_service),
+#if BUILDFLAG(IS_ANDROID)
+      private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
+                                  url_loader_factory),
+#endif
       history_service_(history_service),
       url_loader_factory_(url_loader_factory),
       direct_feed_fetcher_delegate_(std::move(direct_feed_fetcher_delegate)),
@@ -435,6 +441,60 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
     event->removed.push_back(publisher_id);
     receiver->Changed(std::move(event));
   }
+}
+
+void BraveNewsController::GetImageData(const GURL& padded_image_url,
+                                       GetImageDataCallback callback) {
+#if BUILDFLAG(IS_ANDROID)
+  VLOG(2) << __FUNCTION__ << " " << padded_image_url.spec();
+  // Validate
+  if (!padded_image_url.is_valid()) {
+    std::optional<std::vector<uint8_t>> args;
+    std::move(callback).Run(std::move(args));
+    return;
+  }
+  // Use file ending to determine if response
+  // will contain (Brave's PrivateCDN) padding or
+  // be a direct image
+  const auto file_name = padded_image_url.path();
+  const std::string ending = ".pad";
+  if (file_name.length() >= file_name.max_size() - 1 ||
+      file_name.length() <= ending.length()) {
+    std::optional<std::vector<uint8_t>> args;
+    std::move(callback).Run(std::move(args));
+    return;
+  }
+  const bool is_padded =
+      (file_name.compare(file_name.length() - ending.length(), ending.length(),
+                         ending) == 0);
+  VLOG(3) << "is padded: " << is_padded;
+  // Make the request
+  private_cdn_request_helper_.DownloadToString(
+      padded_image_url,
+      base::BindOnce(
+          [](GetImageDataCallback callback, const bool is_padded,
+             const int response_code, const std::string& body) {
+            // Handle the response
+            VLOG(3) << "getimagedata response code: " << response_code;
+            // Attempt to remove byte padding if applicable
+            std::string_view body_payload(body.data(), body.size());
+            if (response_code < 200 || response_code >= 300 ||
+                (is_padded &&
+                 !brave::private_cdn::RemovePadding(&body_payload))) {
+              // Byte padding removal failed
+              std::move(callback).Run(std::nullopt);
+              return;
+            }
+            // Download (and optional unpadding) was successful,
+            // uint8Array will be easier to move over mojom.
+            std::vector<uint8_t> image_bytes(body_payload.begin(),
+                                             body_payload.end());
+            std::move(callback).Run(image_bytes);
+          },
+          std::move(callback), is_padded));
+#else
+  NOTREACHED();
+#endif
 }
 
 void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
