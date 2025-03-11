@@ -54,6 +54,7 @@
 #include "content/common/features.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/dips_utils.h"
+#include "content/browser/interest_group/interest_group_features.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "media/base/media_switches.h"
 #include "net/base/features.h"
@@ -145,6 +146,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kDevToolsPrivacyUI,
       &features::kDigitalGoodsApi,
       &features::kFedCm,
+      &features::kFledgeBiddingAndAuctionNonceSupport,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &features::kFewerUpdateConfirmations,
       &features::kShortcutsNotApps,
