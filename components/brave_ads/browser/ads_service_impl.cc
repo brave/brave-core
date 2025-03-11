@@ -408,6 +408,8 @@ void AdsServiceImpl::BatAdsServiceCreatedCallback(size_t current_start_number) {
 
   SetFlags();
 
+  SetContentSettings();
+
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&EnsureBaseDirectoryExistsOnFileTaskRunner,
