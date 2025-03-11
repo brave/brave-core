@@ -537,7 +537,7 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
                             bool minimal_changes) {
   matches_.clear();
   auto* prefs = client_->GetPrefs();
-  if (!prefs || !prefs->GetBoolean(omnibox::kTopSiteSuggestionsEnabled)) {
+  if (!prefs || !prefs->GetBoolean(omnibox::kTopSuggestionsEnabled)) {
     return;
   }
 

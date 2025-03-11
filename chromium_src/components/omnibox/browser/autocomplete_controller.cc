@@ -18,6 +18,7 @@
 #include "brave/components/omnibox/browser/brave_history_quick_provider.h"
 #include "brave/components/omnibox/browser/brave_history_url_provider.h"
 #include "brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.h"
+#include "brave/components/omnibox/browser/brave_on_device_head_provider.h"
 #include "brave/components/omnibox/browser/brave_search_provider.h"
 #include "brave/components/omnibox/browser/brave_shortcuts_provider.h"
 #include "brave/components/omnibox/browser/leo_provider.h"
@@ -94,6 +95,7 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
 #define LocalHistoryZeroSuggestProvider BraveLocalHistoryZeroSuggestProvider
 #define BookmarkProvider BraveBookmarkProvider
 #define ShortcutsProvider BraveShortcutsProvider
+#define OnDeviceHeadProvider BraveOnDeviceHeadProvider
 #define BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER         \
   MaybeAddCommanderProvider(providers_, this);                        \
   MaybeAddLeoProvider(providers_, this);                              \
@@ -114,6 +116,7 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
 
 #undef BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT
 #undef BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER
+#undef OnDeviceHeadProvider
 #undef ShortcutsProvider
 #undef BookmarkProvider
 #undef LocalHistoryZeroSuggestProvider
