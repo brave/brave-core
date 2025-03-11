@@ -12,8 +12,10 @@ crate-type = ["cdylib"]
 # in .cargo/config.toml.
 
 [dependencies]
+argon2 = { version = "0.5", default-features = false, features = ["alloc"] }
 getrandom = { version = "0.2.15", features = [ "js" ] }
-opaque-ke = "3.0"
+hex = "0.4"
+opaque-ke = { features = [ "argon2", "std" ], version = "3.0.0" }
 rand = "0.8"
 sha2 = "0.10"
 wasm-bindgen = "=0.2.100" # Must match the wasm-bindgen-cli version under brave/tools/crates!

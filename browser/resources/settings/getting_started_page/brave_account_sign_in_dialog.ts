@@ -9,6 +9,9 @@ import { getCss } from './brave_account_sign_in_dialog.css.js'
 import { getHtml } from './brave_account_sign_in_dialog.html.js'
 import { isEmailValid } from './brave_account_common.js'
 
+// @ts-ignore
+import { Login } from 'chrome://resources/brave/opaque_ke.bundle.js'
+
 export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
   static get is() {
     return 'settings-brave-account-sign-in-dialog'
@@ -42,6 +45,7 @@ export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
   protected email: string = ''
   protected isEmailValid: boolean = false
   protected isPasswordValid: boolean = false
+  protected login = new Login()
 }
 
 declare global {
