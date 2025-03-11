@@ -1,0 +1,26 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+namespace rewards.flat;
+
+// A structure to store a set of prefixes.
+// Each prefix is considered as the first 2 bytes (are used as index) + suffix.
+// Prefixes are stored as a collection where the first 2 bytes are used as an
+// index into the 'offsets' array (size 256*256 for all possible 2-byte values).
+// Each offset points to the position in 'all_suffixes' where the suffixes
+// for that prefix index begin.
+// Suffixes are stored contiguously for efficient binary search lookup.
+//
+// Memory usage = Header + 256 *256 * 4 (256KB) + N * (prefix_size - 2).
+
+table PrefixStorage {
+  magic: uint32;
+  prefix_size: uint32; // 4..32
+
+  offsets: [uint32]; // size = 256 * 256
+  all_suffixes: [ubyte]; // size = N * (prefix_size - 2)
+}
+
+root_type PrefixStorage;

@@ -8,7 +8,6 @@
 
 #include <memory>
 #include <string>
-#include <string_view>
 
 #include "base/files/file_path.h"
 #include "base/files/memory_mapped_file.h"
@@ -18,6 +17,7 @@ namespace brave_rewards::internal {
 
 // Responsible for storage and retrieval of a sorted hash prefix list. The
 // operations of this class will block the current thread on IO.
+// See flat/prefix_storage.fbs for the format of the hash prefix file.
 class HashPrefixStore {
  public:
   explicit HashPrefixStore(base::FilePath path);
@@ -41,9 +41,8 @@ class HashPrefixStore {
 
  private:
   const base::FilePath file_path_;
+
   std::unique_ptr<base::MemoryMappedFile> mapped_file_;
-  std::string_view prefixes_;
-  size_t prefix_size_ = 0;
   bool open_called_ = false;
 
   SEQUENCE_CHECKER(sequence_checker_);

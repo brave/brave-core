@@ -16,13 +16,34 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/numerics/byte_conversions.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/core/engine/publisher/flat/prefix_storage_generated.h"
 #include "crypto/sha2.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/flatbuffers/src/include/flatbuffers/flatbuffer_builder.h"
 
 namespace brave_rewards::internal {
 
+namespace {
+struct TestBuilder {
+  void WriteToFile(const base::FilePath& path) {
+    flatbuffers::FlatBufferBuilder builder;
+    auto flat_offsets = builder.CreateVector(offsets);
+    auto flat_suffixes = builder.CreateVector(suffixes);
+    auto prefix_storage = rewards::flat::CreatePrefixStorage(
+        builder, magic, prefix_size, flat_offsets, flat_suffixes);
+    builder.Finish(prefix_storage);
+
+    base::WriteFile(base::FilePath(path), builder.GetBufferSpan());
+  }
+
+  std::vector<uint32_t> offsets = std::vector<uint32_t>(256u * 256u, 0);
+  std::vector<uint8_t> suffixes = {1, 1, 1, 1};
+  uint32_t magic = 0xBEEF0001;
+  uint32_t prefix_size = 4;
+};
+
+}  // namespace
 class RewardsHashPrefixStoreTest : public testing::Test {
  public:
   void SetUp() override {
@@ -90,50 +111,60 @@ TEST_F(RewardsHashPrefixStoreTest, InvalidFileHeader) {
   EXPECT_FALSE(store.ContainsPrefix("test-value"));
 }
 
-TEST_F(RewardsHashPrefixStoreTest, InvalidFileVersion) {
-  auto header = MakeFileHeader(2, 4, 0);
-  base::WriteFile(store_path_, base::as_byte_span(header));
+TEST_F(RewardsHashPrefixStoreTest, InvalidMagic) {
+  TestBuilder builder;
+  builder.magic = 0xBAD;
+  builder.WriteToFile(store_path_);
+
   HashPrefixStore store(store_path_);
   EXPECT_FALSE(store.Open());
 }
 
 TEST_F(RewardsHashPrefixStoreTest, InvalidPrefixSize) {
-  auto header = MakeFileHeader(1, 1024, 0);
-  base::WriteFile(store_path_, base::as_byte_span(header));
+  TestBuilder builder;
+  builder.prefix_size = 1024;
+  builder.WriteToFile(store_path_);
+
   HashPrefixStore store(store_path_);
   EXPECT_FALSE(store.Open());
 }
 
-TEST_F(RewardsHashPrefixStoreTest, InvalidPrefixCount) {
-  auto header = MakeFileHeader(1, 4, 1);
-  auto content = std::string(base::as_string_view(header)) + "?";
-  base::WriteFile(store_path_, content);
+TEST_F(RewardsHashPrefixStoreTest, InvalidOffsetsSize) {
+  TestBuilder builder;
+  builder.offsets.resize(256u * 256u + 1);
+  builder.WriteToFile(store_path_);
+
   HashPrefixStore store(store_path_);
   EXPECT_FALSE(store.Open());
 }
 
-TEST_F(RewardsHashPrefixStoreTest, WrongPrefixCount) {
-  auto header = MakeFileHeader(1, 4, 0);
-  auto content = std::string(base::as_string_view(header)) + "????";
-  base::WriteFile(store_path_, content);
+TEST_F(RewardsHashPrefixStoreTest, BadSuffixesSize) {
+  TestBuilder builder;
+  builder.suffixes.resize(5);
+  builder.WriteToFile(store_path_);
+
   HashPrefixStore store(store_path_);
   EXPECT_FALSE(store.Open());
 }
 
-TEST_F(RewardsHashPrefixStoreTest, InvalidDataLength) {
-  auto header = MakeFileHeader(1, 4, 0);
-  auto content = std::string(base::as_string_view(header)) + "?";
-  base::WriteFile(store_path_, content);
-  HashPrefixStore store(store_path_);
-  EXPECT_FALSE(store.Open());
-}
+TEST_F(RewardsHashPrefixStoreTest, OverflowOffsets) {
+  TestBuilder builder;
+  std::fill(builder.offsets.begin(), builder.offsets.end(), 0xFFFF);
 
-TEST_F(RewardsHashPrefixStoreTest, ZeroPrefixes) {
-  auto header = MakeFileHeader(1, 4, 0);
-  base::WriteFile(store_path_, base::as_byte_span(header));
+  builder.WriteToFile(store_path_);
+
   HashPrefixStore store(store_path_);
   EXPECT_TRUE(store.Open());
   EXPECT_FALSE(store.ContainsPrefix("test-value"));
+}
+
+TEST_F(RewardsHashPrefixStoreTest, ZeroPrefixes) {
+  TestBuilder builder;
+  builder.suffixes.resize(0);
+  builder.WriteToFile(store_path_);
+
+  HashPrefixStore store(store_path_);
+  EXPECT_FALSE(store.Open());
 }
 
 TEST_F(RewardsHashPrefixStoreTest, WithPrefixes) {
@@ -141,10 +172,16 @@ TEST_F(RewardsHashPrefixStoreTest, WithPrefixes) {
 
   size_t prefix_size = 4;
 
+  // Strings with SHA256 hash starting with "\xFF\xFF" (the last index).
+  const std::string special1 = "xX6iZh5g2Asrm6OB";
+  const std::string special2 = "Rhk7INooywKNNttX";
+  ASSERT_EQ(crypto::SHA256HashString(special1).substr(0, 2), "\xFF\xFF");
+  ASSERT_EQ(crypto::SHA256HashString(special2).substr(0, 2), "\xFF\xFF");
+
   std::string data = MakePrefixString(
       prefix_size, {"test-value-1", "test-value-2", "test-value-3",
                     "test-value-4", "test-value-5", "test-value-6",
-                    "test-value-7", "test-value-8", "test-value-9"});
+                    "test-value-7", "test-value-8", "test-value-9", special1});
 
   bool updated = store.UpdatePrefixes(data, prefix_size);
 
@@ -152,7 +189,9 @@ TEST_F(RewardsHashPrefixStoreTest, WithPrefixes) {
   EXPECT_TRUE(store.ContainsPrefix("test-value-4"));
   EXPECT_TRUE(store.ContainsPrefix("test-value-1"));
   EXPECT_TRUE(store.ContainsPrefix("test-value-9"));
+  EXPECT_TRUE(store.ContainsPrefix(special1));
   EXPECT_FALSE(store.ContainsPrefix("test-value-0"));
+  EXPECT_FALSE(store.ContainsPrefix(special2));
 
   data = MakePrefixString(prefix_size, {"test-value-10"});
   updated = store.UpdatePrefixes(data, prefix_size);
@@ -160,6 +199,7 @@ TEST_F(RewardsHashPrefixStoreTest, WithPrefixes) {
   EXPECT_TRUE(updated);
   EXPECT_TRUE(store.ContainsPrefix("test-value-10"));
   EXPECT_FALSE(store.ContainsPrefix("test-value-1"));
+  EXPECT_FALSE(store.ContainsPrefix(special1));
 }
 
 TEST_F(RewardsHashPrefixStoreTest, UpdateEmpty) {

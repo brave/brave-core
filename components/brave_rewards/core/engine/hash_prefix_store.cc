@@ -6,37 +6,36 @@
 #include "brave/components/brave_rewards/core/engine/hash_prefix_store.h"
 
 #include <algorithm>
+#include <cstdint>
+#include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/containers/span.h"
-#include "base/containers/span_reader.h"
 #include "base/files/file.h"
-#include "base/memory/raw_span.h"
-#include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_rewards/core/engine/hash_prefix_iterator.h"
+#include "brave/components/brave_rewards/core/engine/publisher/flat/prefix_storage_generated.h"
 #include "crypto/sha2.h"
+#include "third_party/flatbuffers/src/include/flatbuffers/flatbuffer_builder.h"
+#include "third_party/flatbuffers/src/include/flatbuffers/vector.h"
+#include "third_party/flatbuffers/src/include/flatbuffers/verifier.h"
 
 namespace brave_rewards::internal {
 
 namespace {
 
-constexpr uint32_t kFileVersion = 1;
+constexpr uint32_t kFlatStorageMagic = 0xBEEF0001;
+constexpr size_t kOffsetsSize = 256 * 256;
+
 constexpr uint32_t kMinPrefixSize = 4;
 constexpr uint32_t kMaxPrefixSize = 32;
-
-struct FileParts {
-  uint32_t version = 0;
-  uint32_t prefix_size = 0;
-  uint64_t prefix_count = 0;
-  base::raw_span<const uint8_t> prefixes;
-};
 
 bool IsValidPrefixSize(size_t prefix_size) {
   return prefix_size >= kMinPrefixSize && prefix_size <= kMaxPrefixSize;
 }
 
 std::optional<size_t> GetPrefixCount(size_t byte_length, size_t prefix_size) {
-  if (prefix_size == 0) {
+  if (!IsValidPrefixSize(prefix_size)) {
     return std::nullopt;
   }
   if (byte_length % prefix_size != 0) {
@@ -45,37 +44,12 @@ std::optional<size_t> GetPrefixCount(size_t byte_length, size_t prefix_size) {
   return byte_length / prefix_size;
 }
 
-bool IsValidFile(const FileParts& parts) {
-  if (parts.version != kFileVersion) {
-    return false;
-  }
-  if (!IsValidPrefixSize(parts.prefix_size)) {
-    return false;
-  }
-  auto count = GetPrefixCount(parts.prefixes.size(), parts.prefix_size);
-  if (!count || count.value() != parts.prefix_count) {
-    return false;
-  }
-  return true;
-}
-
-std::optional<FileParts> ParseFile(base::span<const uint8_t> bytes) {
-  FileParts parts;
-  base::SpanReader reader(bytes);
-  if (!reader.ReadU32LittleEndian(parts.version)) {
-    return std::nullopt;
-  }
-  if (!reader.ReadU32LittleEndian(parts.prefix_size)) {
-    return std::nullopt;
-  }
-  if (!reader.ReadU64LittleEndian(parts.prefix_count)) {
-    return std::nullopt;
-  }
-  parts.prefixes = reader.remaining_span();
-  if (!IsValidFile(parts)) {
-    return std::nullopt;
-  }
-  return parts;
+std::pair<uint16_t, std::string_view> GetIndexAndSuffix(
+    const std::string_view& hash) {
+  CHECK(hash.size() >= 2);
+  const uint16_t first_bytes =
+      256u * static_cast<uint8_t>(hash[0]) + static_cast<uint8_t>(hash[1]);
+  return std::make_pair(first_bytes, hash.substr(2));
 }
 
 }  // namespace
@@ -102,22 +76,34 @@ bool HashPrefixStore::Open() {
     return false;
   }
 
-  auto parts = ParseFile(mapped_file->bytes());
-  if (!parts) {
+  const auto bytes = mapped_file->bytes();
+
+  auto verifier = flatbuffers::Verifier(bytes.data(), bytes.size());
+  if (!rewards::flat::VerifyPrefixStorageBuffer(verifier)) {
+    return false;
+  }
+
+  const auto* storage = rewards::flat::GetPrefixStorage(bytes.data());
+  if (!storage || storage->magic() != kFlatStorageMagic ||
+      !IsValidPrefixSize(storage->prefix_size())) {
+    return false;
+  }
+
+  if (!storage->offsets() || storage->offsets()->size() != kOffsetsSize) {
+    return false;
+  }
+
+  if (!storage->all_suffixes() || storage->all_suffixes()->size() == 0 ||
+      storage->all_suffixes()->size() % (storage->prefix_size() - 2) != 0) {
     return false;
   }
 
   mapped_file_ = std::move(mapped_file);
-  prefixes_ = base::as_string_view(parts->prefixes);
-  prefix_size_ = parts->prefix_size;
-
   return true;
 }
 
 void HashPrefixStore::Close() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  prefixes_ = {};
-  prefix_size_ = 0;
   open_called_ = false;
   mapped_file_.reset();
 }
@@ -128,14 +114,46 @@ bool HashPrefixStore::UpdatePrefixes(const std::string& prefixes,
 
   Close();
 
-  if (!IsValidPrefixSize(prefix_size)) {
-    return false;
-  }
-
   auto prefix_count = GetPrefixCount(prefixes.length(), prefix_size);
   if (!prefix_count) {
     return false;
   }
+
+  flatbuffers::FlatBufferBuilder builder;
+
+  std::vector<std::vector<char>> suffix_arrays(kOffsetsSize);
+  std::array<uint32_t, kOffsetsSize> offsets = {};
+
+  const std::string_view prefixes_view(prefixes);
+
+  for (size_t i = 0; i < prefix_count.value(); i++) {
+    const auto prefix = prefixes_view.substr(i * prefix_size, prefix_size);
+    const auto [index, suffix] = GetIndexAndSuffix(prefix);
+    suffix_arrays[index].insert(suffix_arrays[index].end(), suffix.begin(),
+                                suffix.end());
+  }
+
+  // Put all suffixes into a single vector and calculate the offsets.
+  std::vector<char> all_suffixes_data;
+  uint32_t current_offset = 0;
+
+  for (size_t i = 0; i < suffix_arrays.size(); i++) {
+    offsets[i] = current_offset;
+    const auto& array = suffix_arrays[i];
+    all_suffixes_data.insert(all_suffixes_data.end(), array.begin(),
+                             array.end());
+    current_offset += array.size();
+  }
+
+  // Serialize the vectors and the main table.
+  auto flat_offsets = builder.CreateVector(offsets.data(), offsets.size());
+  auto all_suffixes = builder.CreateVector(
+      reinterpret_cast<const uint8_t*>(all_suffixes_data.data()),
+      all_suffixes_data.size());
+  auto prefix_storage = rewards::flat::CreatePrefixStorage(
+      builder, kFlatStorageMagic, prefix_size, flat_offsets, all_suffixes);
+
+  builder.Finish(prefix_storage);
 
   base::File file;
   file.Initialize(file_path_,
@@ -144,29 +162,11 @@ bool HashPrefixStore::UpdatePrefixes(const std::string& prefixes,
     return false;
   }
 
-  auto encoded_version = base::U32ToLittleEndian(kFileVersion);
-  if (!file.WriteAtCurrentPosAndCheck(base::as_byte_span(encoded_version))) {
-    return false;
-  }
-
-  auto encoded_size =
-      base::U32ToLittleEndian(base::checked_cast<uint32_t>(prefix_size));
-  if (!file.WriteAtCurrentPosAndCheck(base::as_byte_span(encoded_size))) {
-    return false;
-  }
-
-  auto encoded_count = base::U64ToLittleEndian(
-      base::checked_cast<uint64_t>(prefix_count.value()));
-  if (!file.WriteAtCurrentPosAndCheck(base::as_byte_span(encoded_count))) {
-    return false;
-  }
-
-  if (!file.WriteAtCurrentPosAndCheck(base::as_byte_span(prefixes))) {
-    return false;
-  }
+  const bool success =
+      file.WriteAtCurrentPos(builder.GetBufferSpan()) == builder.GetSize();
 
   file.Close();
-  return true;
+  return success;
 }
 
 bool HashPrefixStore::ContainsPrefix(const std::string& value) {
@@ -175,18 +175,47 @@ bool HashPrefixStore::ContainsPrefix(const std::string& value) {
     Open();
   }
 
-  if (prefix_size_ == 0) {
+  if (!mapped_file_) {
     return false;
   }
 
-  std::string hash = crypto::SHA256HashString(value);
-  hash.resize(prefix_size_);
+  const auto* storage = rewards::flat::GetPrefixStorage(mapped_file_->data());
 
-  size_t prefix_count = prefixes_.length() / prefix_size_;
+  // Already validated in Open().
+  CHECK(storage);
+  CHECK(storage->offsets());
+  CHECK(storage->all_suffixes());
 
-  return std::binary_search(
-      HashPrefixIterator(prefixes_, 0, prefix_size_),
-      HashPrefixIterator(prefixes_, prefix_count, prefix_size_), hash);
+  const auto offsets = flatbuffers::make_span(storage->offsets());
+  const auto all_suffixes = flatbuffers::make_span(storage->all_suffixes());
+
+  const auto prefix_size = storage->prefix_size();
+  const size_t suffix_size = prefix_size - 2;
+
+  auto hash = crypto::SHA256HashString(value);
+  hash.resize(prefix_size);
+
+  const auto [index, suffix] = GetIndexAndSuffix(hash);
+
+  if (index >= offsets.size()) {
+    return false;
+  }
+
+  // Get the range to lookup this prefix in the all_suffixes array.
+  const uint32_t start_idx = offsets[index];
+  const uint32_t end_idx =
+      (index < offsets.size() - 1) ? offsets[index + 1] : all_suffixes.size();
+
+  if (start_idx >= end_idx || start_idx >= all_suffixes.size() ||
+      end_idx > all_suffixes.size()) {
+    return false;
+  }
+
+  const auto* data = reinterpret_cast<const char*>(all_suffixes.data());
+  HashPrefixIterator begin(data, start_idx / suffix_size, suffix_size);
+  HashPrefixIterator end(data, end_idx / suffix_size, suffix_size);
+
+  return std::binary_search(begin, end, suffix);
 }
 
 }  // namespace brave_rewards::internal
