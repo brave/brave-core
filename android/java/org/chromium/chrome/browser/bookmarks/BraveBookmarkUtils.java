@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.Callback;
 import org.chromium.base.Log;
+import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkItem;
@@ -33,7 +34,8 @@ public class BraveBookmarkUtils extends BookmarkUtils {
             @BookmarkType int bookmarkType,
             Callback<BookmarkId> callback,
             boolean fromExplicitTrackUi,
-            BookmarkManagerOpener bookmarkManagerOpener) {
+            BookmarkManagerOpener bookmarkManagerOpener,
+            PriceDropNotificationManager priceDropNotificationManager) {
         assert bookmarkModel.isBookmarkModelLoaded();
         if (existingBookmarkItem != null) {
             bookmarkModel.deleteBookmark(existingBookmarkItem.getId());
@@ -50,7 +52,8 @@ public class BraveBookmarkUtils extends BookmarkUtils {
                 bookmarkType,
                 callback,
                 fromExplicitTrackUi,
-                bookmarkManagerOpener);
+                bookmarkManagerOpener,
+                priceDropNotificationManager);
     }
 
     public static void showBookmarkImportExportDialog(
