@@ -136,11 +136,13 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       DiscoverNextUnusedAddressCallback callback);
 
   base::expected<mojom::ZCashTxType, mojom::ZCashAddressError>
-  GetTransactionType(bool testnet,
+  GetTransactionType(const mojom::AccountIdPtr& account_id,
+                     bool testnet,
                      bool use_shielded_pool,
                      const std::string& addr);
 
-  void GetTransactionType(bool testnet,
+  void GetTransactionType(mojom::AccountIdPtr account_id,
+                          bool testnet,
                           bool use_shielded_pool,
                           const std::string& addr,
                           GetTransactionTypeCallback callback) override;

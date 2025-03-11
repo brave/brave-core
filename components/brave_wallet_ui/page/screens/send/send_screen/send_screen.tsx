@@ -162,9 +162,10 @@ export const SendScreen = React.memo((props: Props) => {
   const {
     data : getZCashTransactionTypeResult = { txType : null, error : null }
   } = useGetZCashTransactionTypeQuery(
-    networkFromParams?.coin === BraveWallet.CoinType.ZEC &&
+    networkFromParams?.coin === BraveWallet.CoinType.ZEC && accountFromParams &&
       toAddressOrUrl
       ? {
+          accountId: accountFromParams.accountId,
           testnet: networkFromParams.chainId === BraveWallet.Z_CASH_TESTNET,
           use_shielded_pool: query.get('isShielded') === 'true',
           address: toAddressOrUrl,
@@ -222,7 +223,7 @@ export const SendScreen = React.memo((props: Props) => {
   const isAccountSyncing = useIsAccountSyncing(accountFromParams?.accountId)
   const isShieldingFunds =
     getZCashTransactionTypeResult.txType ===
-    BraveWallet.ZCashTxType.kTransparentToOrchard
+    BraveWallet.ZCashTxType.kShielding
 
   // memos & computed
   const sendAmountValidationError: AmountValidationErrorType | undefined =

@@ -1897,7 +1897,9 @@ enum ZCashTxType {
   kTransparentToTransparent = 1,
   kTransparentToOrchard = 2,
   kOrchardToOrchard = 3,
-  kOrchardToTransparent = 4
+  kOrchardToTransparent = 4,
+  // Internal transfer to the account's shielded address
+  kShielding = 5,
 };
 
 enum ZCashAddressError {
@@ -1958,7 +1960,10 @@ interface ZCashWalletService {
       (ZCashAccountInfo? account_info);
   ShieldAllFunds(string network_id, AccountId account_id) =>
       (string? tx_id, string? error_message);
-  GetTransactionType(bool testnet, bool use_shielded_pool, string recipient) =>
+  GetTransactionType(AccountId account_id,
+                     bool testnet,
+                     bool use_shielded_pool,
+                     string recipient) =>
       (ZCashTxType tx_type, ZCashAddressError error);
 
   AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
