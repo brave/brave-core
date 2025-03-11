@@ -109,6 +109,7 @@ class Tab: NSObject {
   private var webViewObservations: [AnyCancellable] = []
 
   private var observers: Set<AnyTabObserver> = .init()
+  private var policyDeciders: Set<AnyTabWebPolicyDecider> = .init()
 
   // WebKit handlers
   private var navigationHandler: TabWKNavigationHandler?
@@ -116,9 +117,19 @@ class Tab: NSObject {
 
   var certStore: CertStore?
   weak var navigationDelegate: TabWebNavigationDelegate?
-  weak var policyDecider: TabWebPolicyDecider?
   weak var webDelegate: TabWebDelegate?
   weak var downloadDelegate: TabDownloadDelegate?
+
+  func addPolicyDecider(_ policyDecider: some TabWebPolicyDecider) {
+    policyDeciders.insert(.init(policyDecider))
+  }
+
+  func removePolicyDecider(_ policyDecider: some TabWebPolicyDecider) {
+    if let policyDecider = policyDeciders.first(where: { $0.id == ObjectIdentifier(policyDecider) })
+    {
+      policyDeciders.remove(policyDecider)
+    }
+  }
 
   func addObserver(_ observer: some TabObserver) {
     observers.insert(.init(observer))
@@ -1281,6 +1292,61 @@ class Tab: NSObject {
   func addTabInfoToSyncedSessions(url: URL, displayTitle: String) {
     syncTab?.setURL(url)
     syncTab?.setTitle(displayTitle)
+  }
+
+  private func resolvedPolicyDecision(
+    for policyDeciders: Set<AnyTabWebPolicyDecider>,
+    task: @escaping (AnyTabWebPolicyDecider) async -> WebPolicyDecision
+  ) async -> WebPolicyDecision {
+    let result = await withTaskGroup(of: WebPolicyDecision.self, returning: WebPolicyDecision.self)
+    { group in
+      for policyDecider in policyDeciders {
+        group.addTask { @MainActor in
+          if Task.isCancelled {
+            return .cancel
+          }
+          let decision = await task(policyDecider)
+          if decision == .cancel {
+            return .cancel
+          }
+          return .allow
+        }
+      }
+      for await result in group {
+        if result == .cancel {
+          group.cancelAll()
+          return .cancel
+        }
+      }
+      return .allow
+    }
+    return result
+  }
+
+  func shouldAllowRequest(
+    _ request: URLRequest,
+    requestInfo: WebRequestInfo
+  ) async -> WebPolicyDecision {
+    return await resolvedPolicyDecision(for: policyDeciders) { policyDecider in
+      await policyDecider.tab(
+        self,
+        shouldAllowRequest: request,
+        requestInfo: requestInfo
+      )
+    }
+  }
+
+  func shouldAllowResponse(
+    _ response: URLResponse,
+    responseInfo: WebResponseInfo
+  ) async -> WebPolicyDecision {
+    return await resolvedPolicyDecision(for: policyDeciders) { policyDecider in
+      await policyDecider.tab(
+        self,
+        shouldAllowResponse: response,
+        responseInfo: responseInfo
+      )
+    }
   }
 }
 

@@ -86,16 +86,15 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
       && navigationAction.value(forKey: "syntheticClickType") as? Int == 0
 
     let policy =
-      await tab.policyDecider?.tab(
-        tab,
-        shouldAllowRequest: navigationAction.request,
+      await tab.shouldAllowRequest(
+        navigationAction.request,
         requestInfo: .init(
           navigationType: navigationType,
           isMainFrame: isMainFrame,
           isNewWindow: navigationAction.targetFrame == nil,
           isUserInitiated: !isSyntheticClick
         )
-      ) ?? .allow
+      )
 
     if policy == .cancel {
       return (.cancel, preferences)
@@ -158,12 +157,10 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
     }()
 
     if shouldRenderResponse {
-      let decision: WebPolicyDecision =
-        await tab.policyDecider?.tab(
-          tab,
-          shouldAllowResponse: navigationResponse.response,
-          responseInfo: .init(isForMainFrame: navigationResponse.isForMainFrame)
-        ) ?? .allow
+      let decision: WebPolicyDecision = await tab.shouldAllowResponse(
+        navigationResponse.response,
+        responseInfo: .init(isForMainFrame: navigationResponse.isForMainFrame)
+      )
       return decision == .cancel ? .cancel : .allow
     }
 

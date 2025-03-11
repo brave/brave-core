@@ -50,6 +50,47 @@ extension TabWebPolicyDecider {
   }
 }
 
+class AnyTabWebPolicyDecider: TabWebPolicyDecider, Hashable {
+  var id: ObjectIdentifier
+
+  private let _shouldAllowRequest: (Tab, URLRequest, WebRequestInfo) async -> WebPolicyDecision
+  private let _shouldAllowResponse: (Tab, URLResponse, WebResponseInfo) async -> WebPolicyDecision
+
+  init(_ policyDecider: some TabWebPolicyDecider) {
+    id = ObjectIdentifier(policyDecider)
+    _shouldAllowRequest = { [weak policyDecider] in
+      await policyDecider?.tab($0, shouldAllowRequest: $1, requestInfo: $2) ?? .allow
+    }
+    _shouldAllowResponse = { [weak policyDecider] in
+      await policyDecider?.tab($0, shouldAllowResponse: $1, responseInfo: $2) ?? .allow
+    }
+  }
+
+  func tab(
+    _ tab: Tab,
+    shouldAllowRequest request: URLRequest,
+    requestInfo: WebRequestInfo
+  ) async -> WebPolicyDecision {
+    return await _shouldAllowRequest(tab, request, requestInfo)
+  }
+
+  func tab(
+    _ tab: Tab,
+    shouldAllowResponse response: URLResponse,
+    responseInfo: WebResponseInfo
+  ) async -> WebPolicyDecision {
+    return await _shouldAllowResponse(tab, response, responseInfo)
+  }
+
+  static func == (lhs: AnyTabWebPolicyDecider, rhs: AnyTabWebPolicyDecider) -> Bool {
+    lhs.id == rhs.id
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+}
+
 /// The policy to pass back to a policy decider
 enum WebPolicyDecision {
   case allow
