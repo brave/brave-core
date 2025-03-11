@@ -882,7 +882,7 @@ Config.prototype.update = function (options) {
     }
   }
 
-  if (options.target_environment) {
+  if (this.targetOS === 'ios' && options.target_environment) {
     this.targetEnvironment = options.target_environment
   }
 
