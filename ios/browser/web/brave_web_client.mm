@@ -30,8 +30,9 @@ BraveWebClient::BraveWebClient() {}
 
 BraveWebClient::~BraveWebClient() {}
 
-void BraveWebClient::SetLegacyUserAgent(const std::string& user_agent) {
-  legacy_user_agent_ = user_agent;
+std::unique_ptr<web::WebMainParts> BraveWebClient::CreateWebMainParts() {
+  return std::make_unique<BraveWebMainParts>(
+      *base::CommandLine::ForCurrentProcess());
 }
 
 std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
@@ -39,13 +40,6 @@ std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
     return legacy_user_agent_;
   }
   return ChromeWebClient::GetUserAgent(type);
-}
-
-// WebClient implementation
-
-std::unique_ptr<web::WebMainParts> BraveWebClient::CreateWebMainParts() {
-  return std::make_unique<BraveWebMainParts>(
-      *base::CommandLine::ForCurrentProcess());
 }
 
 void BraveWebClient::AddAdditionalSchemes(Schemes* schemes) const {
@@ -66,6 +60,15 @@ bool BraveWebClient::IsAppSpecificURL(const GURL& url) const {
          url.SchemeIs(kChromeUIUntrustedScheme) || url.SchemeIs("internal");
 }
 
+bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
+  if (url->SchemeIs(kBraveUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(kChromeUIScheme);
+    *url = url->ReplaceComponents(replacements);
+  }
+  return false;
+}
+
 std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     web::BrowserState* browser_state) const {
   // Add any JavaScriptFeature's from Chromium or Brave as needed
@@ -74,6 +77,12 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
       security_interstitials::IOSSecurityInterstitialJavaScriptFeature::
           GetInstance());
   return features;
+}
+
+void BraveWebClient::PostBrowserURLRewriterCreation(
+    web::BrowserURLRewriter* rewriter) {
+  rewriter->AddURLRewriter(&WillHandleBraveURLRedirect);
+  ChromeWebClient::PostBrowserURLRewriterCreation(rewriter);
 }
 
 bool BraveWebClient::EnableLongPressUIContextMenu() const {
@@ -85,17 +94,6 @@ bool BraveWebClient::EnableWebInspector(
   return CWVWebView.webInspectorEnabled;
 }
 
-bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
-  if (url->SchemeIs(kBraveUIScheme)) {
-    GURL::Replacements replacements;
-    replacements.SetSchemeStr(kChromeUIScheme);
-    *url = url->ReplaceComponents(replacements);
-  }
-  return false;
-}
-
-void BraveWebClient::PostBrowserURLRewriterCreation(
-    web::BrowserURLRewriter* rewriter) {
-  rewriter->AddURLRewriter(&WillHandleBraveURLRedirect);
-  ChromeWebClient::PostBrowserURLRewriterCreation(rewriter);
+void BraveWebClient::SetLegacyUserAgent(const std::string& user_agent) {
+  legacy_user_agent_ = user_agent;
 }
