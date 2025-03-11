@@ -410,7 +410,8 @@ void ZCashWalletService::AddObserver(
 }
 
 base::expected<mojom::ZCashTxType, mojom::ZCashAddressError>
-ZCashWalletService::GetTransactionType(bool testnet,
+ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
+                                       bool testnet,
                                        bool use_shielded_pool,
                                        const std::string& addr) {
 #if BUILDFLAG(ENABLE_ORCHARD)
@@ -424,6 +425,10 @@ ZCashWalletService::GetTransactionType(bool testnet,
     }
 
     if (ValidateOrchardRecipientAddress(testnet, addr).has_value()) {
+      auto account_info = keyring_service_->GetZCashAccountInfo(account_id);
+      if (account_info && account_info->orchard_internal_address == addr) {
+        return base::ok(mojom::ZCashTxType::kShielding);
+      }
       return base::ok(mojom::ZCashTxType::kTransparentToOrchard);
     }
   }
@@ -437,11 +442,13 @@ ZCashWalletService::GetTransactionType(bool testnet,
 }
 
 void ZCashWalletService::GetTransactionType(
+    mojom::AccountIdPtr account_id,
     bool testnet,
     bool use_shielded_pool,
     const std::string& addr,
     GetTransactionTypeCallback callback) {
-  auto result = GetTransactionType(testnet, use_shielded_pool, addr);
+  auto result =
+      GetTransactionType(account_id, testnet, use_shielded_pool, addr);
   if (result.has_value()) {
     std::move(callback).Run(result.value(), mojom::ZCashAddressError::kNoError);
   } else {
