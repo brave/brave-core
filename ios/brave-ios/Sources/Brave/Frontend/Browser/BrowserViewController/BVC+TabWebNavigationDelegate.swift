@@ -8,6 +8,7 @@ import BraveWallet
 import Foundation
 import OSLog
 import Preferences
+import Shared
 
 /// A protocol that tells an object about web navigation related events happening
 ///
@@ -216,7 +217,11 @@ extension BrowserViewController: TabWebNavigationDelegate {
       tab.upgradeHTTPSTimeoutTimer = nil
 
       if tab === tabManager.selectedTab {
-        updateToolbarCurrentURL(tab.url?.displayURL)
+        if let displayURL = tab.url?.displayURL {
+          updateToolbarCurrentURL(displayURL)
+        } else if let url = tab.visibleURL, !url.isLocal, !InternalURL.isValid(url: url) {
+          updateToolbarCurrentURL(url.displayURL)
+        }
         updateWebViewPageZoom(tab: tab)
       }
       return true
