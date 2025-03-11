@@ -337,11 +337,17 @@ void BraveTabStrip::UpdateTabContainer() {
       added_tabs.emplace_back(
           tab->parent()->RemoveChildViewT(tab), i,
           tab->data().pinned ? TabPinned::kPinned : TabPinned::kUnpinned);
+    }
+    tab_container_->AddTabs(std::move(added_tabs));
+
+    // This could be called if new window is created by detaching a tab.
+    // During the dragging, drag context should include all detached tabs.
+    for (int i = 0; i < model->count(); i++) {
+      auto* tab = tab_container_->GetTabAtModelIndex(i);
       if (tab->dragging()) {
         GetDragContext()->AddChildView(tab);
       }
     }
-    tab_container_->AddTabs(std::move(added_tabs));
 
     auto* group_model = model->group_model();
     for (auto group_id : group_model->ListTabGroups()) {
