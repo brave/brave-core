@@ -385,10 +385,10 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerCompat")); // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerCompat")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerLegacy")); // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerLegacy")); // presubmit: ignore-long-line
     }
 
     @Test
@@ -1085,6 +1085,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController", // presubmit: ignore-long-line
                         "dismissActivityIfNeeded",
                         MethodModifier.REGULAR,
+                        void.class,
                         Activity.class,
                         int.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
@@ -2217,7 +2218,7 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
                         "mCustomTabFeatureOverridesManager"));
-        Assert.assertTrue(
+        Assert.assertFalse(
                 fieldExists(
                         "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController", // presubmit: ignore-long-line
                         "mDismissPending"));
