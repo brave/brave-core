@@ -37,10 +37,6 @@
 #include "extensions/common/manifest_url_handlers.h"
 #include "net/base/backoff_entry.h"
 
-#if BUILDFLAG(IS_CHROMEOS_ASH)
-#include "chrome/browser/extensions/extension_assets_manager_chromeos.h"
-#endif
-
 // All above headers copied from original chrome_content_verifier_delegate.cc
 // are included to prevent below GOOGLE_CHROME_BUILD affect them.
 
