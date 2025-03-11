@@ -28,7 +28,6 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
@@ -179,10 +178,10 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessMultipleConfirmations) {
 
   const test::URLResponseMap url_responses = {
       {BuildCreateNonRewardConfirmationUrlPath(confirmation_1->transaction_id),
-       {{net::kHttpImATeapot,
+       {{net::HTTP_NO_CONTENT,
          test::BuildCreateNonRewardConfirmationUrlResponseBody()}}},
       {BuildCreateNonRewardConfirmationUrlPath(confirmation_2->transaction_id),
-       {{net::kHttpImATeapot,
+       {{net::HTTP_NO_CONTENT,
          test::BuildCreateNonRewardConfirmationUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
