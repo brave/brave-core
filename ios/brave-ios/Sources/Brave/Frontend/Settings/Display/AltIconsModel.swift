@@ -21,6 +21,8 @@ struct AltIcon: Identifiable {
   static let holo = AltIcon(assetName: "holo", displayName: "Holo")
   static let neon = AltIcon(assetName: "neon", displayName: "Neon")
   static let netscape = AltIcon(assetName: "netscape", displayName: "Netscape")
+  static let popart = AltIcon(assetName: "popart", displayName: "PopArt")
+  static let popartDark = AltIcon(assetName: "popart-dark", displayName: "PopArt Dark")
   static let supernova = AltIcon(assetName: "supernova", displayName: "Supernova")
   static let terminal = AltIcon(assetName: "terminal", displayName: "Terminal")
   static let windows = AltIcon(assetName: "windows", displayName: "Windows")
@@ -33,6 +35,8 @@ struct AltIcon: Identifiable {
     .holo,
     .neon,
     .netscape,
+    .popart,
+    .popartDark,
     .supernova,
     .terminal,
     .windows,
