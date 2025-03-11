@@ -19,7 +19,8 @@ namespace {
 // Some screenshots may need to be clipped to avoid the GPU limit.
 // See https://crbug.com/1260828. When this happens, we may wish to notify the
 // user that only a portion of their page could be captured.
-void DisplayScreenshotClippedNotification(base::WeakPtr<Browser> browser) {
+void DisplayScreenshotClippedNotification(
+    base::WeakPtr<content::WebContents> web_contents) {
   // Issue: https://github.com/brave/brave-browser/issues/43369
   NOTIMPLEMENTED();
 }
@@ -35,14 +36,14 @@ BraveScreenshotsTabFeature::~BraveScreenshotsTabFeature() {
   DVLOG(1) << "BraveScreenshotsTabFeature destroyed";
 }
 
-void BraveScreenshotsTabFeature::StartScreenshot(Browser* browser,
-                                                 ScreenshotType type) {
+void BraveScreenshotsTabFeature::StartScreenshot(
+    base::WeakPtr<content::WebContents> web_contents,
+    ScreenshotType type) {
   DVLOG(1) << "Called StartScreenshot";
-  CHECK(browser);
+  CHECK(web_contents.get());
 
-  browser_ = browser->AsWeakPtr();
-  web_contents_ =
-      browser_->tab_strip_model()->GetActiveWebContents()->GetWeakPtr();
+  // Store the WebContents for later use
+  web_contents_ = web_contents;
 
   // We've determined the appropriate strategy to use
   strategy_ = CreateStrategy(type);
@@ -84,12 +85,12 @@ void BraveScreenshotsTabFeature::OnCaptureComplete(
   }
 
   if (strategy_->DidClipScreenshot()) {
-    DisplayScreenshotClippedNotification(browser_);
+    DisplayScreenshotClippedNotification(web_contents_);
   }
 
-  if (browser_) {
+  if (web_contents_.get()) {
     utils::CopyImageToClipboard(result);
-    utils::DisplayScreenshotBubble(result, browser_);
+    utils::DisplayScreenshotBubble(result, web_contents_);
   }
 }
 

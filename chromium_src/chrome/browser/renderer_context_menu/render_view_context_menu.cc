@@ -508,7 +508,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD:
     case IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD:
     case IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD:
-      brave::TakeScreenshot(GetBrowser(), id);
+      brave::TakeScreenshot(source_web_contents_->GetWeakPtr(), id);
       break;
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
