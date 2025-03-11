@@ -17,7 +17,6 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -49,12 +48,10 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(context);
   auto* bookmark_model = BookmarkModelFactory::GetForBrowserContext(context);
-  auto* template_url_service =
-      TemplateURLServiceFactory::GetForProfile(profile);
   if (history_service && host_content_settings_map) {
     page_metrics_ = std::make_unique<PageMetrics>(
-        local_state, host_content_settings_map, history_service, bookmark_model,
-        template_url_service,
+        local_state, profile_prefs_, host_content_settings_map, history_service,
+        bookmark_model,
         base::BindRepeating(&brave_stats::GetFirstRunTime,
                             base::Unretained(local_state)));
   }

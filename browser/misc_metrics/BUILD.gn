@@ -80,6 +80,7 @@ source_set("unit_tests") {
     "//brave/browser",
     "//brave/browser/misc_metrics",
     "//brave/browser/misc_metrics:misc_metrics_impl",
+    "//brave/components/brave_rewards/core",
     "//brave/components/misc_metrics",
     "//chrome/browser",
     "//chrome/browser/content_settings:content_settings_factory",
