@@ -39,7 +39,6 @@ class LinkPreviewViewController: UIViewController {
     ).then {
       $0.tabDelegate = browserController
       $0.createWebview()
-      $0.navigationDelegate = browserController
       $0.addPolicyDecider(browserController)
       $0.webDelegate = browserController
       $0.downloadDelegate = browserController

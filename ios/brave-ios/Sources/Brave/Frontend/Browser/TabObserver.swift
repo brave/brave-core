@@ -14,6 +14,11 @@ protocol TabObserver: AnyObject {
   func tab(_ tab: Tab, didCreateWebView webView: UIView)
   func tab(_ tab: Tab, willDeleteWebView webView: UIView)
 
+  func tabDidStartNavigation(_ tab: Tab)
+  func tabDidCommitNavigation(_ tab: Tab)
+  func tabDidFinishNavigation(_ tab: Tab)
+  func tab(_ tab: Tab, didFailNavigationWithError error: Error)
+
   func tabDidUpdateURL(_ tab: Tab)
   func tabDidChangeTitle(_ tab: Tab)
   func tabDidStartLoading(_ tab: Tab)
@@ -38,6 +43,11 @@ extension TabObserver {
   func tab(_ tab: Tab, didCreateWebView webView: UIView) {}
   func tab(_ tab: Tab, willDeleteWebView webView: UIView) {}
 
+  func tabDidStartNavigation(_ tab: Tab) {}
+  func tabDidCommitNavigation(_ tab: Tab) {}
+  func tabDidFinishNavigation(_ tab: Tab) {}
+  func tab(_ tab: Tab, didFailNavigationWithError error: Error) {}
+
   func tabDidUpdateURL(_ tab: Tab) {}
   func tabDidChangeTitle(_ tab: Tab) {}
   func tabDidStartLoading(_ tab: Tab) {}
@@ -56,6 +66,11 @@ class AnyTabObserver: TabObserver, Hashable {
   private let _tabDidSelectSearchWithBraveFor: (Tab, String) -> Void
   private let _tabDidCreateWebView: (Tab, UIView) -> Void
   private let _tabWillDeleteWebView: (Tab, UIView) -> Void
+
+  private let _tabDidStartNavigation: (Tab) -> Void
+  private let _tabDidCommitNavigation: (Tab) -> Void
+  private let _tabDidFinishNavigation: (Tab) -> Void
+  private let _tabDidFailNavigationWithError: (Tab, Error) -> Void
 
   private let _tabDidUpdateURL: (Tab) -> Void
   private let _tabDidChangeTitle: (Tab) -> Void
@@ -84,6 +99,12 @@ class AnyTabObserver: TabObserver, Hashable {
     }
     _tabDidCreateWebView = { [weak observer] in observer?.tab($0, didCreateWebView: $1) }
     _tabWillDeleteWebView = { [weak observer] in observer?.tab($0, willDeleteWebView: $1) }
+    _tabDidStartNavigation = { [weak observer] in observer?.tabDidStartNavigation($0) }
+    _tabDidCommitNavigation = { [weak observer] in observer?.tabDidCommitNavigation($0) }
+    _tabDidFinishNavigation = { [weak observer] in observer?.tabDidFinishNavigation($0) }
+    _tabDidFailNavigationWithError = { [weak observer] in
+      observer?.tab($0, didFailNavigationWithError: $1)
+    }
     _tabDidUpdateURL = { [weak observer] in observer?.tabDidUpdateURL($0) }
     _tabDidChangeTitle = { [weak observer] in observer?.tabDidChangeTitle($0) }
     _tabDidStartLoading = { [weak observer] in observer?.tabDidStartLoading($0) }
@@ -114,6 +135,18 @@ class AnyTabObserver: TabObserver, Hashable {
   }
   func tab(_ tab: Tab, willDeleteWebView webView: UIView) {
     _tabWillDeleteWebView(tab, webView)
+  }
+  func tabDidStartNavigation(_ tab: Tab) {
+    _tabDidStartNavigation(tab)
+  }
+  func tabDidCommitNavigation(_ tab: Tab) {
+    _tabDidCommitNavigation(tab)
+  }
+  func tabDidFinishNavigation(_ tab: Tab) {
+    _tabDidFinishNavigation(tab)
+  }
+  func tab(_ tab: Tab, didFailNavigationWithError error: Error) {
+    _tabDidFailNavigationWithError(tab, error)
   }
   func tabDidUpdateURL(_ tab: Tab) {
     _tabDidUpdateURL(tab)

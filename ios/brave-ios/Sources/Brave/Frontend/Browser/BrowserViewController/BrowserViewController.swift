@@ -2481,7 +2481,7 @@ extension BrowserViewController: TabDelegate {
 
   func tab(_ tab: Tab, willDeleteWebView webView: UIView) {
     tab.cancelQueuedAlerts()
-    if let scrollView = tab.webScrollView {
+    if let scrollView = tab.webView?.scrollView {
       toolbarVisibilityViewModel.endScrollViewObservation(scrollView)
     }
     webView.removeFromSuperview()

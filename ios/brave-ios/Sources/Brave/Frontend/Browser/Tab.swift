@@ -116,7 +116,6 @@ class Tab: NSObject {
   private var uiHandler: TabWKUIHandler?
 
   var certStore: CertStore?
-  weak var navigationDelegate: TabWebNavigationDelegate?
   weak var webDelegate: TabWebDelegate?
   weak var downloadDelegate: TabDownloadDelegate?
 
@@ -1346,6 +1345,30 @@ class Tab: NSObject {
         shouldAllowResponse: response,
         responseInfo: responseInfo
       )
+    }
+  }
+
+  func didStartNavigation() {
+    observers.forEach {
+      $0.tabDidStartNavigation(self)
+    }
+  }
+
+  func didCommitNavigation() {
+    observers.forEach {
+      $0.tabDidCommitNavigation(self)
+    }
+  }
+
+  func didFinishNavigation() {
+    observers.forEach {
+      $0.tabDidFinishNavigation(self)
+    }
+  }
+
+  func didFailNavigation(with error: Error) {
+    observers.forEach {
+      $0.tab(self, didFailNavigationWithError: error)
     }
   }
 }

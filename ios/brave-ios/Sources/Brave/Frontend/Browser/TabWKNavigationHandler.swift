@@ -25,8 +25,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
     _ webView: WKWebView,
     didStartProvisionalNavigation navigation: WKNavigation
   ) {
-    guard let tab else { return }
-    tab.navigationDelegate?.tabDidStartWebViewNavigation(tab)
+    tab?.didStartNavigation()
   }
 
   private func defaultAllowPolicy(for tab: Tab, request: URLRequest) -> WKNavigationActionPolicy {
@@ -312,12 +311,11 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.url
 
-    tab.navigationDelegate?.tabDidCommitWebViewNavigation(tab)
+    tab.didCommitNavigation()
   }
 
   func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    guard let tab else { return }
-    tab.navigationDelegate?.tabDidFinishWebViewNavigation(tab)
+    tab?.didFinishNavigation()
   }
 
   func webView(
@@ -352,10 +350,20 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
       }
     }
 
-    if let navigationDelegate = tab.navigationDelegate,
-      navigationDelegate.tab(tab, didFailWebViewNavigationWithError: error)
+    let upgradedHTTPSRequest = tab.upgradedHTTPSRequest
+
+    tab.didFailNavigation(with: error)
+
+    if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
+      // Cancelled request, simply move on
+      return
+    }
+
+    if let responseURL = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL,
+      responseURL.scheme == "https", let originalRequest = upgradedHTTPSRequest,
+      let originalURL = originalRequest.url, responseURL.baseDomain == originalURL.baseDomain
     {
-      // Handled in shared code
+      // HTTPS upgrade, no error page to show
       return
     }
 
