@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_STATS_FEATURES_H_
-#define BRAVE_BROWSER_BRAVE_STATS_FEATURES_H_
+#ifndef BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_FEATURES_H_
+#define BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_FEATURES_H_
 
 #include "base/feature_list.h"
 
@@ -19,4 +19,4 @@ bool IsHeadlessClientRefcodeEnabled();
 }  // namespace features
 }  // namespace brave_stats
 
-#endif  // BRAVE_BROWSER_BRAVE_STATS_FEATURES_H_
+#endif  // BRAVE_BROWSER_BRAVE_STATS_BRAVE_STATS_FEATURES_H_
