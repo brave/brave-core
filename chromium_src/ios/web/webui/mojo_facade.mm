@@ -22,22 +22,14 @@ bool MojoFacade::IsWebUIMessageAllowedForFrame(WKFrameInfo* frame,
     const std::string* interface_name = args.FindString("interfaceName");
     CHECK(interface_name);
 
-    // Check if the requested interface is registered
-    bool can_bind_interface =
-        web_state_->GetInterfaceBinderForMainFrame()->HasUntrustedInterface(
+    // Check if the requested interface is registered for this origin
+    bool is_allowed =
+        web_state_->GetInterfaceBinderForMainFrame()->IsAllowedForOrigin(
             origin, *interface_name);
 
-    if (can_bind_interface) {
-      std::optional<int> pipe_id = args.FindInt("requestHandle");
-      CHECK(pipe_id.has_value());
-
-      mojo::ScopedMessagePipeHandle pipe = TakePipeFromId(*pipe_id);
-      CHECK(pipe.is_valid());
-      web_state_->GetInterfaceBinderForMainFrame()->BindUntrustedInterface(
-          origin,
-          mojo::GenericPendingReceiver(*interface_name, std::move(pipe)));
-
-      // Set the prompt to invalid, so that HandleMojoMessage will do nothing.
+    // If the interface is not allowed, set the prompt to invalid.
+    // HandleMojoMessage will not bind it.
+    if (!is_allowed) {
       *prompt = @"{\"name\":\"Mojo.invalidInterface\",\"args\":{}}";
     }
   }
