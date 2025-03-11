@@ -6,27 +6,30 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_PUBLIC_WEB_STATE_H_
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_PUBLIC_WEB_STATE_H_
 
+#include <string_view>
+
 #define callbacks_                                                           \
   callbacks_;                                                                \
                                                                              \
  public:                                                                     \
   template <typename Interface>                                              \
   void AddUntrustedInterface(                                                \
-      const GURL& url,                                                       \
+      std::string_view host,                                                 \
       base::RepeatingCallback<void(mojo::PendingReceiver<Interface>)>        \
           callback) {                                                        \
-    CHECK(!url.is_empty());                                                  \
-    untrusted_callbacks_[url].emplace(                                       \
-        std::string(Interface::Name_),                                       \
+    CHECK(!host.empty());                                                    \
+    untrusted_callbacks_.emplace(std::string(host), Interface::Name_);       \
+                                                                             \
+    AddInterface(                                                            \
+        Interface::Name_,                                                    \
         base::BindRepeating(&WrapCallback<Interface>, std::move(callback))); \
   }                                                                          \
-  bool HasUntrustedInterface(const GURL& url,                                \
-                             const std::string& interface_name);             \
-  void BindUntrustedInterface(const GURL& url,                               \
-                              mojo::GenericPendingReceiver receiver);        \
+                                                                             \
+  bool IsAllowedForOrigin(const GURL& origin,                                \
+                          std::string_view interface_name);                  \
                                                                              \
  private:                                                                    \
-  std::map<GURL, std::map<std::string, Callback>> untrusted_callbacks_
+  std::map<std::string, std::string, std::less<>> untrusted_callbacks_
 
 #include "src/ios/web/public/web_state.h"  // IWYU pragma: export
 
