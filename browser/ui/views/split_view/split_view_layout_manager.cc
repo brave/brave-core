@@ -19,6 +19,12 @@ int ClampSplitViewSizeDelta(const views::View* contents_view, int size_delta) {
        SplitViewLayoutManager::kSpacingBetweenContentsWebViews) /
       2;
 
+  if (half_size < kMinWidth) {
+    // in this case |kMinWidth - half_size| > |half_size - kMinWidth| and
+    // std::clamp is UB.
+    return 0;
+  }
+
   return std::clamp(size_delta, /*min*/ kMinWidth - half_size,
                     /*max*/ half_size - kMinWidth);
 }
