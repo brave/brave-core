@@ -8,11 +8,9 @@ import { load, write } from './lit_mangler'
 import childProcess from 'child_process'
 import path from 'path'
 import fs from 'fs'
-import config from '../../../build/commands/lib/config.js'
 
 const baseDir = path.join(__dirname, '../../../')
 const tsConfigPath = path.join(baseDir, 'tsconfig-mangle.json')
-const genDir = path.join(config.outputDir, 'gen')
 
 /**
  * Unfortunately tsc doesn't support passing in a path map for a single file
@@ -21,7 +19,7 @@ const genDir = path.join(config.outputDir, 'gen')
  * @param file The file to generate the tsconfig for
  * @returns The path to the generated tsconfig
  */
-const getTsConfigForFiles = (files: string[]) => {
+const getTsConfigForFiles = (genDir: string, files: string[]) => {
     const tsConfig = JSON.parse(fs.readFileSync(tsConfigPath, 'utf8'))
 
     // Override the include path to only include the lit_mangler and the file
@@ -42,8 +40,8 @@ const getTsConfigForFiles = (files: string[]) => {
     return tempTsConfigPath
 }
 
-const runTypecheck = (files: string[]) => {
-    const result = childProcess.spawnSync('tsc', ['-p', getTsConfigForFiles(files)])
+const runTypecheck = (genDir: string, files: string[]) => {
+    const result = childProcess.spawnSync('tsc', ['-p', getTsConfigForFiles(genDir, files)])
     if (result.status !== 0) {
         console.error('Typechecking failed:\n', result.stdout?.toString())
         process.exit(1)
@@ -55,12 +53,13 @@ commander
     .option('-m, --mangler <file>', 'The file with containing the mangler instructions')
     .option('-i, --input <file>', 'The file to mangle')
     .option('-o, --output <file>', 'Where to output the mangled file')
+    .option('-g, --gen-dir <folder>', 'The folder for generated files')
     .option('-t, --typecheck', 'Run typechecking before mangling')
-    .action(async ({ mangler, input, output, typecheck }: { mangler: string, input: string, output: string, typecheck: boolean }) => {
+    .action(async ({ mangler, input, output, typecheck, genDir }: { mangler: string, input: string, output: string, typecheck: boolean, genDir: string }) => {
         load(input)
 
         if (typecheck) {
-            runTypecheck([mangler])
+            runTypecheck(genDir, [mangler])
         }
 
         await import(mangler)

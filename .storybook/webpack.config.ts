@@ -6,60 +6,12 @@
 import path from 'path'
 import webpack from 'webpack'
 import fs from 'fs'
-import config from '../build/commands/lib/config'
 import genTsConfig from '../build/commands/lib/genTsConfig'
 import { fallback, provideNodeGlobals } from '../components/webpack/polyfill'
 import { forkTsChecker } from './options'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import generatePathMap from '../components/webpack/path-map'
-
-const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
-const extraArchitectures = ['arm64', 'x86']
-
-// Choose which brave-core build directory to look for pre-compiled
-// resource dependencies:
-// 1. Default for local builds for the actual platform / architecture
-// 2. platform / architecture overriden by environment variables
-// 3. most recently built - this caters to the common scenario when a
-// non-standard target has been built but no arguments are provided to storybook.
-
-// This uses environment variables as there is currently no way to pass custom
-// arguments to the |storybook build| cli.
-config.update({
-  target_arch: process.env.TARGET_ARCH,
-  target_os: process.env.TARGET_OS,
-  target_environment: process.env.TARGET_ENVIRONMENT,
-  target: process.env.TARGET,
-  build_config: process.env.BUILD_CONFIG
-})
-
-let outputPath = config.outputDir
-
-function getBuildOutputPathList() {
-  return buildConfigs.flatMap((config) => [
-    path.resolve(__dirname, `../../out/${config}`),
-    ...extraArchitectures.map((arch) =>
-      path.resolve(
-        __dirname,
-        `../../out/${config}_${arch}`
-      )
-    )
-  ])
-}
-
-if (fs.existsSync(outputPath)) {
-  console.log('Assuming precompiled dependencies can be found at the existing path found from brave-core configuration: ' + outputPath)
-} else {
-  const outDirectories = getBuildOutputPathList()
-    .filter(a => fs.existsSync(a))
-    .sort((a, b) => fs.statSync(b).mtime.getTime() - fs.statSync(a).mtime.getTime())
-  if (!outDirectories.length) {
-    throw new Error('Cannot find any brave-core build output directories. Have you run a brave-core build yet with the specified (or default) configuration?')
-  }
-  outputPath = outDirectories[0]
-}
-
-const genPath = path.join(outputPath, 'gen')
+import { genPath } from '../build/commands/lib/guessConfig'
 
 if (!fs.existsSync(genPath)) {
   throw new Error("Failed to find build output 'gen' folder! Have you run a brave-core build yet with the specified (or default) configuration?")

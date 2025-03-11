@@ -4,7 +4,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/extensions/detail_view.html.ts
 +++ gen/chrome/browser/resources/extensions/preprocessed/detail_view.html.ts
-@@ -342,14 +342,12 @@
+@@ -351,16 +351,13 @@
                @change=\\"\${this.onPinnedToToolbarChange_}\\">
              <span>$i18n{itemPinToToolbar}</span>
            </extensions-toggle-row>\` : ''}
@@ -16,10 +16,13 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
              <div>
                <div>$i18n{itemAllowIncognito}</div>
 -              <div class=\\"section-content\\">$i18n{incognitoInfoWarning}</div>
+-              <div class=\\"section-content\\" id=\\"allow-incognito-warning\\"
+-                  ?hidden=\\"\${!this.data.incognitoAccessPendingChange}\\">
 +              <div class=\\"section-content\\">$i18n{privateInfoWarning}<span ?hidden=\\"\${!this.data.incognitoAccess.isActive}\\"> $i18n{spanningInfoWarning}</span><span> $i18n{privateAndTorInfoWarning}</span></div>
++              <div class=\\"section-content\\" id=\\"allow-incognito-warning\\" ?hidden=\\"\${!this.data.incognitoAccessPendingChange}\\">
+                 $i18n{pendingChangeWarning}
+               </div>
              </div>
            </extensions-toggle-row>\` : ''}
-         \${this.data.fileAccess.isEnabled ? html\`
-           <extensions-toggle-row id=\\"allow-on-file-urls\\"
 "
 `;
