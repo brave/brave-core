@@ -4,10 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { ManagePage, EmailAliasModal } from '../../../../../../../browser/resources/settings/email_aliases_page/email_aliases'
-import { AccountState, Alias, MappingService, ViewMode } from '../../../../../../../browser/resources/settings/email_aliases_page/types'
+import { ManagePage } from '../../../../../../../browser/resources/settings/email_aliases_page/email_aliases'
+import { EmailAliasModal } from '../../../../../../../browser/resources/settings/email_aliases_page/content/email_aliases_modal'
+import { Alias, MappingService } from '../../../../../../../browser/resources/settings/email_aliases_page/content/types'
 
 import { provideStrings } from '../../../../../../../.storybook/locale'
+
+type AccountState = 'NoAccount' | 'AccountReady' | 'AwaitingAccount'
 
 provideStrings({
   emailAliasesShortDescription: 'Email Aliases',
@@ -27,6 +30,7 @@ provideStrings({
   emailAliasesCreateAliasTitle: 'Create a new alias email',
   emailAliasesCreateAliasLabel: 'New alias',
   emailAliasesRefreshButtonTitle: 'Suggest another email alias',
+  emailAliasesGeneratingNewAlias: 'Generating new alias...',
   emailAliasesNoteLabel: 'Note',
   emailAliasesEditNotePlaceholder: 'Enter a note for your address (optional)',
   emailAliasesCancelButton: 'Cancel',
@@ -42,8 +46,7 @@ provideStrings({
   emailAliasesEmailAddressPlaceholder: 'Email address',
   emailAliasesLoginEmailOnTheWay: 'A login email is on the way to $1',
   emailAliasesClickOnSecureLogin: 'Click on the secure login link in the email to access your account.',
-  emailAliasesDontSeeEmail: 'Don\'t see the email? Check your spam folder or',
-  emailAliasesTryAgain: 'try again.',
+  emailAliasesDontSeeEmail: 'Don\'t see the email? Check your spam folder or $1try again$2.',
   emailAliasesBubbleDescription: 'Create a random email address that forwards to your inbox while keeping your personal email private.',
   emailAliasesBubbleLimitReached: 'You have reached the limit of 5 free email aliases. Click "Manage" to re-use or delete an alias.',
 })
@@ -53,7 +56,7 @@ export default {
 }
 
 const demoData = {
-  email: 'aruiz@brave.com',
+  email: 'username@brave.com',
   aliases: [
     {
       email: 'horse.radish.record57@bravealias.com',
@@ -74,9 +77,11 @@ const demoData = {
 class MockMappingService implements MappingService {
   accountEmail_: string
   aliases_ : Map<string, Alias>
-  accountState_ : AccountState = AccountState.NoAccount
+  accountState_ : AccountState
   accountRequestId_ : number
-  constructor() {
+  constructor(accountState: AccountState, accountEmail: string) {
+    this.accountState_ = accountState
+    this.accountEmail_ = accountEmail
     this.aliases_ = new Map<string, Alias>();
     for (const alias of demoData.aliases) {
       this.aliases_.set(alias.email, alias)
@@ -98,7 +103,6 @@ class MockMappingService implements MappingService {
   }
 
   async deleteAlias (email: string): Promise<void> {
-    console.log("attempting to delete!!!")
     this.aliases_.delete(email)
   }
 
@@ -107,6 +111,7 @@ class MockMappingService implements MappingService {
     do {
       generated = "mock-" + Math.random().toString().slice(2,6) + "@bravealias.com"
     } while (this.aliases_.has(generated))
+    await new Promise(resolve => setTimeout(resolve, 1000))
     return generated
   }
 
@@ -115,31 +120,27 @@ class MockMappingService implements MappingService {
   }
 
   async requestAccount (accountEmail: string): Promise<void> {
-    this.accountState_ = AccountState.AwaitingAccount
+    this.accountState_ = 'AwaitingAccount'
     this.accountRequestId_ = window.setTimeout(() => {
       this.accountEmail_ = accountEmail
-      this.accountState_ = AccountState.AccountReady
+      this.accountState_ = 'AccountReady'
     }, 5000);
   }
 
-  async getAccountState (): Promise<AccountState> {
-    return this.accountState_
-  }
-
   async onAccountReady (): Promise<boolean> {
-    while (this.accountState_ === AccountState.AwaitingAccount) {
+    while (this.accountState_ === 'AwaitingAccount') {
       await new Promise(resolve => setTimeout(resolve, 250));
     }
-    return this.accountState_ === AccountState.AccountReady
+    return this.accountState_ === 'AccountReady'
   }
 
   async cancelAccountRequest (): Promise<void> {
-    this.accountState_ = AccountState.NoAccount
+    this.accountState_ = 'NoAccount'
     window.clearTimeout(this.accountRequestId_)
   }
 
   async logout (): Promise<void> {
-    this.accountState_ = AccountState.NoAccount
+    this.accountState_ = 'NoAccount'
   }
 
   async closeBubble (): Promise<void> {
@@ -155,23 +156,30 @@ class MockMappingService implements MappingService {
   }
 }
 
-const mockMappingServiceSingleton = new MockMappingService()
+const mockMappingServiceNoAccountInstance = new MockMappingService('NoAccount', '')
+const mockMappingServiceAccountReadyInstance = new MockMappingService('AccountReady', demoData.email)
+
+export const SignInPage = () => {
+  return (
+    <ManagePage mappingService={mockMappingServiceNoAccountInstance}></ManagePage>
+  )
+}
 
 export const SettingsPage = () => {
   return (
-    <ManagePage mappingService={mockMappingServiceSingleton}></ManagePage>
+    <ManagePage mappingService={mockMappingServiceAccountReadyInstance}></ManagePage>
   )
 }
 
 export const Bubble = () => {
   return (
     <EmailAliasModal
-      returnToMain={() => {}}
-      viewState={{ mode: ViewMode.Create }}
+      onReturnToMain={() => {}}
+      viewState={{ mode: 'Create' }}
       email={demoData.email}
       bubble={true}
-      mode={ViewMode.Create}
-      mappingService={mockMappingServiceSingleton}
+      mode={'Create'}
+      mappingService={mockMappingServiceAccountReadyInstance}
     />
   )
 }

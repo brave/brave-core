@@ -257,6 +257,7 @@ leo_icons = [
   "list-bullet-default.svg",
   "list-checks.svg",
   "list-settings.svg",
+  "loading-spinner.svg",
   "location-off.svg",
   "location-on.svg",
   "lock-open.svg",

@@ -28,7 +28,7 @@ RegisterPolymerTemplateModifications({
             start-icon="email-shield"
             label="${loadTimeData.getString('emailAliasesLabel')}"
             on-click="onEmailAliasesClicked_"
-            role-description="$i18n{subpageArrowRoleDescription}"></cr-link-row>
+            role-description="${loadTimeData.getString('subpageArrowRoleDescription')}"></cr-link-row>
       `, parentManagerButton)
     }
     templateContent.appendChild(html`
@@ -48,7 +48,7 @@ RegisterPolymerTemplateModifications({
         <settings-subpage
             associated-control="[[$$('#paymentManagerButton')]]"
             page-title="${loadTimeData.getString('emailAliasesLabel')}"
-            learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}">
+            learn-more-url="${loadTimeData.getString('addressesAndPaymentMethodsLearnMoreURL')}">
           <settings-email-aliases-page id="emailAliasesSection" prefs="{{prefs}}" />
         </settings-subpage>
       </template>

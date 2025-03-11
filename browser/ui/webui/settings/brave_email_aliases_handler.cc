@@ -31,16 +31,16 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 
-#define MAX_RESPONSE_LENGTH 32768
+constexpr int kMaxResponseLength = 32768;
 
 const char kAccountsServiceRequestURL[] =
     "https://accounts.bsg.bravesoftware.com/v2/verify/init";
 const char kAccountsServiceVerifyURL[] =
     "https://accounts.bsg.bravesoftware.com/v2/verify/result";
 const char kMappingServiceManageURL[] =
-    "https://aliases.bsg.bravesoftware.com/manage";
+    "https://aliases.bravesoftware.com/manage";
 const char kMappingServiceGenerateURL[] =
-    "https://aliases.bsg.bravesoftware.com/generate";
+    "https://aliases.bravesoftware.com/generate";
 const char kBraveApiKey[] = "px6zQ7rIMGaS8FE6cmpUp45WQTFJYXgo7ZlBhrFK";
 
 const net::NetworkTrafficAnnotationTag traffic_annotation =
@@ -190,7 +190,7 @@ void BraveEmailAliasesHandler::ApiFetch(
   }
   simple_url_loader_->DownloadToString(
       GetProfile()->GetURLLoaderFactory().get(),
-      std::move(download_to_string_callback), MAX_RESPONSE_LENGTH);
+      std::move(download_to_string_callback), kMaxResponseLength);
 }
 
 void BraveEmailAliasesHandler::GenerateAlias(const base::Value::List& args) {
@@ -229,6 +229,7 @@ void BraveEmailAliasesHandler::GetAliases(const base::Value::List& args) {
 void BraveEmailAliasesHandler::OnGetAliasesResponse(
     const std::string& callback_id,
     std::optional<std::string> response_body) {
+  AllowJavascript();
   if (!response_body) {
     RejectJavascriptCallback(base::Value(callback_id),
                              base::Value("no response body"));

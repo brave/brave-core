@@ -5,7 +5,7 @@
 
 import("//brave/build/config.gni")
 
-source_set("browser") {
+source_set("prefs") {
   sources = [
     "email_aliases_prefs.cc",
     "email_aliases_prefs.h",

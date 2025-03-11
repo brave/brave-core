@@ -61,6 +61,9 @@ brave_settings_web_component_files = [
 ]
 
 brave_settings_non_web_component_files = [
+  "email_aliases_page/email_aliases_page.ts",
+  "email_aliases_page/content/remote_mapping_service.ts",
+  "email_aliases_page/content/types.ts",
   "brave_appearance_page/brave_appearance_browser_proxy.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
@@ -134,9 +137,6 @@ brave_settings_non_web_component_files = [
   "getting_started_page/brave_account_row.ts",
   "getting_started_page/brave_account_sign_in_dialog.html.ts",
   "getting_started_page/brave_account_sign_in_dialog.ts",
-  "email_aliases_page/email_aliases_page.ts",
-  "email_aliases_page/remote_mapping_service.ts",
-  "email_aliases_page/types.ts",
   "shortcuts_page/shortcuts_page.ts",
 ]
 

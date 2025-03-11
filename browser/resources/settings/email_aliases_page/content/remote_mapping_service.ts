@@ -3,12 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { AccountState, Alias, MappingService } from './types'
-import { sendWithPromise} from 'chrome://resources/js/cr.js';
+import { Alias, MappingService } from './types'
+import { sendWithPromise } from 'chrome://resources/js/cr.js';
 
 export class RemoteMappingService implements MappingService {
   private pending_cancellation_ = false
-
   async getAccountEmail (): Promise<string | undefined> {
     return sendWithPromise('email_aliases.getAccountEmail')
   }
@@ -17,9 +16,6 @@ export class RemoteMappingService implements MappingService {
   }
   async requestAccount (accountEmail: string): Promise<void> {
     await sendWithPromise('email_aliases.requestAccount', accountEmail)
-  }
-  async getAccountState (): Promise<AccountState> {
-    throw new Error('Method not implemented.');
   }
   async getAliases (): Promise<Alias[]> {
     const result = await sendWithPromise('email_aliases.getAliases')

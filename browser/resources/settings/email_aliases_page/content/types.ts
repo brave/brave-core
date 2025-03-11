@@ -3,10 +3,26 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+export const MAX_ALIASES = 5
+
 export type Alias = {
   email: string,
   note?: string,
   domains?: string[]
+}
+
+export type ViewMode =
+  | 'Startup'
+  | 'Main'
+  | 'Create'
+  | 'Edit'
+  | 'Delete'
+  | 'SignUp'
+  | 'AwaitingAuthorization'
+
+export type ViewState = {
+  mode: ViewMode,
+  alias?: Alias
 }
 
 export interface MappingService {
@@ -17,27 +33,10 @@ export interface MappingService {
   generateAlias(): Promise<string>
   getAccountEmail (): Promise<string | undefined>
   requestAccount (accountEmail: string): Promise<void>
-  getAccountState (): Promise<AccountState>
   onAccountReady (): Promise<boolean>
   cancelAccountRequest (): Promise<void>
   logout (): Promise<void>
   closeBubble (): Promise<void>
   fillField(fieldValue: string): Promise<void>
   showSettingsPage(): Promise<void>
-}
-
-export enum ViewMode {
-  Startup,
-  Main,
-  Create,
-  Edit,
-  Delete,
-  SignUp,
-  AwaitingAuthorization
-}
-
-export enum AccountState {
-  NoAccount,
-  AwaitingAccount,
-  AccountReady
 }

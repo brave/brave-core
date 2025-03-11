@@ -394,6 +394,9 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_REFRESH_BUTTON_TITLE" desc="The title for the refresh button">
     Suggest another email alias
   </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_GENERATING_NEW_ALIAS" desc="The label for the generating new alias">
+    Generating new alias...
+  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_NOTE_LABEL" desc="The label for the note">
     Note
   </message>
@@ -440,10 +443,7 @@
     Click on the secure login link in the email to access your account.
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_DONT_SEE_EMAIL" desc="The label for the don't see email">
-    Don't see the email? Check your spam folder or
-  </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_TRY_AGAIN" desc="The label for the try again">
-    try again.
+    Don't see the email? Check your spam folder or <ph name="BEGIN_LINK">$1</ph>try again<ph name="END_LINK">$2</ph>.
   </message>
 
   <!-- Settings / New tab page -->

@@ -9,6 +9,8 @@
 #include <string>
 #include <utility>
 
+#include "base/feature_list.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_email_aliases_handler.h"
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
@@ -89,14 +91,13 @@ EmailAliasesBubbleUI::EmailAliasesBubbleUI(content::WebUI* web_ui)
                                              IDR_EMAIL_ALIASES_BUBBLE_HTML);
   web_ui->AddMessageHandler(std::make_unique<BraveEmailAliasesHandler>());
   settings::BraveAddEmailAliasesStrings(source);
-  DCHECK(source);
 }
 
 EmailAliasesBubbleUI::~EmailAliasesBubbleUI() = default;
 
 bool EmailAliasesBubbleUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return true;
+  return base::FeatureList::IsEnabled(features::kBraveEmailAliases);
 }
 
 bool EmailAliasesBubbleUIConfig::ShouldAutoResizeHost() {
