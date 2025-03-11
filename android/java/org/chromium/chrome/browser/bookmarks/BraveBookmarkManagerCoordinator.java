@@ -10,6 +10,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.ui.base.ActivityWindowAndroid;
@@ -25,7 +26,8 @@ public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator 
             @NonNull Profile profile,
             @NonNull BookmarkUiPrefs bookmarkUiPrefs,
             @NonNull BookmarkOpener bookmarkOpener,
-            @Nullable BookmarkManagerOpener bookmarkManagerOpener) {
+            @Nullable BookmarkManagerOpener bookmarkManagerOpener,
+            @NonNull PriceDropNotificationManager priceDropNotificationManager) {
         super(
                 context,
                 isDialogUi,
@@ -33,7 +35,8 @@ public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator 
                 profile,
                 bookmarkUiPrefs,
                 bookmarkOpener,
-                bookmarkManagerOpener);
+                bookmarkManagerOpener,
+                priceDropNotificationManager);
     }
 
     public void setWindow(ActivityWindowAndroid window) {
