@@ -1,5 +1,5 @@
 diff --git a/net/socket/socks5_client_socket.cc b/net/socket/socks5_client_socket.cc
-index a908a11fa618d1258dc2f4dc8e733c1a3c7f99ff..adb78aa25e5915bce393d247bdf6f5f018310379 100644
+index a908a11fa618d1258dc2f4dc8e733c1a3c7f99ff..1a41af1958efff7250e74fd30f0a03fbadf8d37f 100644
 --- a/net/socket/socks5_client_socket.cc
 +++ b/net/socket/socks5_client_socket.cc
 @@ -224,6 +224,9 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
@@ -12,36 +12,21 @@ index a908a11fa618d1258dc2f4dc8e733c1a3c7f99ff..adb78aa25e5915bce393d247bdf6f5f0
        case STATE_HANDSHAKE_WRITE:
          DCHECK_EQ(OK, rv);
          net_log_.BeginEvent(NetLogEventType::SOCKS5_HANDSHAKE_WRITE);
-@@ -248,12 +251,9 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
-         NOTREACHED() << "bad state";
-     }
-   } while (rv != ERR_IO_PENDING && next_state_ != STATE_NONE);
--  return rv;
-+  return rv;  
- }
- 
--static constexpr std::array<uint8_t, 3> kSOCKS5GreetWriteData{
--    0x05, 0x01, 0x00};  // no authentication
--
- int SOCKS5ClientSocket::DoGreetWrite() {
-   // Since we only have 1 byte to send the hostname length in, if the
-   // URL has a hostname longer than 255 characters we can't send it.
-@@ -263,8 +263,13 @@ int SOCKS5ClientSocket::DoGreetWrite() {
+@@ -263,8 +266,11 @@ int SOCKS5ClientSocket::DoGreetWrite() {
    }
  
    if (!write_buf_) {
-+    const char greeting[] = {
-+      0x05,			// SOCKS version
-+      0x01,			// number of authentication methods
-+      static_cast<char>(auth_method()),
-+    };
-     auto greet_buffer =
+-    auto greet_buffer =
 -        base::MakeRefCounted<WrappedIOBuffer>(kSOCKS5GreetWriteData);
-+        base::MakeRefCounted<WrappedIOBuffer>(greeting);
++    static_assert(kSOCKS5GreetWriteData.size() == 3u);
++    std::string greeting(kSOCKS5GreetWriteData.begin(), kSOCKS5GreetWriteData.end());
++    // Set authentication method.
++    greeting.back() = static_cast<char>(auth_method());
++    auto greet_buffer = base::MakeRefCounted<StringIOBuffer>(std::move(greeting));
      write_buf_ = base::MakeRefCounted<DrainableIOBuffer>(
          std::move(greet_buffer), greet_buffer->size());
    }
-@@ -323,14 +328,14 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
+@@ -323,14 +329,14 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
                                     "version", read_data[0]);
      return ERR_SOCKS_CONNECTION_FAILED;
    }
