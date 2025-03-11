@@ -18,8 +18,6 @@ namespace image_editor {
 struct ScreenshotCaptureResult;
 }  // namespace image_editor
 
-class Browser;
-
 namespace brave_screenshots {
 
 class BraveScreenshotStrategy;
@@ -38,12 +36,12 @@ class BraveScreenshotsTabFeature {
       delete;
   ~BraveScreenshotsTabFeature();
 
-  void StartScreenshot(Browser* browser, ScreenshotType type);
+  void StartScreenshot(base::WeakPtr<content::WebContents> web_contents,
+                       ScreenshotType type);
 
  private:
   void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
   std::unique_ptr<BraveScreenshotStrategy> CreateStrategy(ScreenshotType type);
-  base::WeakPtr<Browser> browser_ = nullptr;
   std::unique_ptr<BraveScreenshotStrategy> strategy_ = nullptr;
   base::WeakPtr<content::WebContents> web_contents_ = nullptr;
   base::WeakPtrFactory<BraveScreenshotsTabFeature> weak_factory_{this};
