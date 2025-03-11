@@ -12,16 +12,12 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/reload_type.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_pages.h"
-#include "chrome/browser/themes/theme_service.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_provider.h"
 #else
@@ -91,9 +87,9 @@ void CosmeticFiltersTabHelper::AddSiteCosmeticFilter(
 
 void CosmeticFiltersTabHelper::ManageCustomFilters() {
 #if !BUILDFLAG(IS_ANDROID)
-  Browser* browser = chrome::FindBrowserWithTab(&GetWebContents());
-  if (browser) {
-    brave::ShowBraveAdblock(browser);
+  if (auto* profile =
+          Profile::FromBrowserContext(GetWebContents().GetBrowserContext())) {
+    brave::ShowBraveAdblock(profile);
   }
 #else   // !BUILDFLAG(IS_ANDROID)
   ShowCustomFilterSettings();

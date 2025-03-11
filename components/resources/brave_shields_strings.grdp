@@ -50,7 +50,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_SHOW_ALL_BLOCKED_ELEMENTS" desc="Button that shows all blocked elements">
-    Show all blocked elements
+    Clear all blocked elements
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_MANAGED" desc="A description to explain the settings managed by organization.">
