@@ -11,7 +11,7 @@
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_stats/features.h"
+#include "brave/browser/brave_stats/brave_stats_features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
