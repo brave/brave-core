@@ -11,6 +11,7 @@ import { LocaleContext } from './components/context/locale_context'
 import { createLocale } from './webui/webui_locale'
 import { AppModelContext } from './components/context/app_model_context'
 import { createAppModel } from './webui/webui_app_model'
+import { App } from './components/app'
 
 setIconBasePath('chrome://resources/brave-icons')
 
@@ -23,7 +24,7 @@ Object.assign(self, {
 createRoot(document.getElementById('root')!).render(
   <LocaleContext locale={createLocale()}>
     <AppModelContext model={appModel}>
-      <main></main>
+      <App />
     </AppModelContext>
   </LocaleContext>
 )
