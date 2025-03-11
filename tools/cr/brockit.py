@@ -3,7 +3,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""**Version upgrade command line tool.**
+"""**🚀Brockit! Guide**
 
 ```
 ⠀⠀⠀⠀⠀⢀⣴⣶⣶⣶⣶⣶⣶⣶⣶⣦⡀⠀⠀⠀⠀⠀
@@ -21,8 +21,9 @@
 ⠀⠀⠀⠀⠀⠀⠀⠙⠻⣿⣿⣿⣿⠟⠋⠀⠀⠀⠀⠀⠀⠀💥
 ```
 
-This tool is used to upgrade Brave to a newer Chromium base version, resulting
-in some or all of the following changes being produced:
+This is *🚀Brockit!* (Brave Rocket? Brave Rock it? Broke it?): a tool to help
+upgrade Brave to a newer Chromium base version. The main goal is to produce
+use it to commit the following changes:
 
  * Update from Chromium [from] to [to].
  * Conflict-resolved patches from Chromium [from] to [to].
@@ -34,49 +35,50 @@ either by providing a `--previous` argument, or by having an upstream branch to
 to your current branch.
 
 ```sh
-tools/cr/upgrade.py --to=135.0.7037.1 --previous=origin/master
+tools/cr/brockit.py --to=135.0.7037.1 --previous=origin/master
 ```
 
 Using upstream:
 
 ```sh
 git branch --set-upstream-to=origin/master
-tools/cr/upgrade.py --to=135.0.7037.1
+tools/cr/brockit.py --to=135.0.7037.1
 ```
 
 The following steps will take place:
 
-1. A "Update from Chromium [from] to [to]" commit will be created. This commit
+1. A *Update from Chromium [from] to [to]* commit will be created. This commit
    contains changes to `package.json` and to the pinlist timestamp file.
 2. `npm run init` will be run with the newer version.
 3. For any patches that fail to apply during `init`, there will be another
    attempt to apply them using `--3way`.
 4. If any patches still fail to apply, the process will stop. A summary of
    files with conflicts will be provided for resolution.
-5. Deleted patches will also cause the  tool to stop. The user is expected to
-   provide separate commits for deleted patches, explaining the reason.
-6. Having resolved all conflicts. Restart the tool with the same arguments as
-   before, but with the `--continue` flag.
-7. This tool will then continue from the point where it stopped, updating all
-   patches, staging all patches that were applied, and committing them as
-   "Conflict-resolved patches from Chromium [from] to [to]".
-8. "Update patches from Chromium [from] to [to]" will be committed.
-9. "Updated strings for Chromium [to]" will be committed.
+5. Deleted patches will also cause the  *🚀Brockit!* to stop . The user is
+   expected to provide separate commits for deleted patches, explaining the
+   reason.
+6. Having resolved all conflicts. Restart *🚀Brockit!* with the same arguments
+   as before, but add `--continue` as well.
+7. *🚀Brockit!* will pick up from where it stopped, possibly running
+  `npm run update_patches`, staging all patches, and committing the under
+  *Conflict-resolved patches from Chromium [from] to [to].*
+8. *Update patches from Chromium [from] to [to]* will be committed.
+9. *Updated strings for Chromium [to]* will be committed.
 
 Steps 3-7 may end up being skipped altogether if no failures take place, or in
 part if resolution is possible without manual intervention.
 
-Additionally, this tool can be run with the `--update-patches-only` flag. This
+Additionally, *🚀Brockit!* can be run with the `--update-patches-only` flag. This
 is useful to generate the "Update patches" and "Updated strings" commits on
 their own when rebasing branches, regenerating these files as desired.
 
 **Github support**
 
 Upgrade runs can also be accompanied by github tasks, by passing
-`--with-github` when running the this tool.
+`--with-github` when running *🚀Brockit!*.
 
 ```sh
-tools/cr/upgrade.py --to=135.0.7037.1 --with-github
+tools/cr/brockit.py --to=135.0.7037.1 --with-github
 ```
 
 This will attempt to create/update the github issue for the run as part of
@@ -793,7 +795,7 @@ class Upgrade:
                     if resolver.requires_conflict_resolution() is True:
                         # Manual resolution required.
                         console.log(
-                            '👋 (Once all conflicts are resolved ready, rerun this tool with [bold cyan]--continue[/])'
+                            '👋 (Once all conflicts are resolved ready, rerun *🚀Brockit!* with [bold cyan]--continue[/])'
                         )
                         return False
 
@@ -962,7 +964,7 @@ def main():
     args = parser.parse_args()
     upgrade = Upgrade(args.previous, args.to)
 
-    console.log('🚀')
+    console.log('[italic]🚀 Brockit!')
     if args.update_patches_only:
         upgrade.generate_patches()
     elif args.github_issue_only:
