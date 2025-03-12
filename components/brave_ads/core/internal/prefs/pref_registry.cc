@@ -48,6 +48,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
   registry->RegisterListPref(prefs::kSaveAds);
   registry->RegisterListPref(prefs::kMarkedAsInappropriate);
 
+  registry->RegisterBooleanPref(prefs::kHasMigratedState, false);
   registry->RegisterBooleanPref(prefs::kHasMigratedClientState, false);
   registry->RegisterBooleanPref(prefs::kHasMigratedConfirmationState, false);
 
