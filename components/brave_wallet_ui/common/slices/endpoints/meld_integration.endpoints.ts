@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import { mapLimit } from 'async'
 
 // Types
 import {
@@ -104,7 +105,8 @@ export const meldIntegrationEndpoints = ({
     getMeldCryptoCurrencies: query<MeldCryptoCurrency[], void>({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
-          const { meldIntegrationService } = baseQuery(undefined).data
+          const { meldIntegrationService, blockchainRegistry } =
+            baseQuery(undefined).data
 
           // get all crypto currencies
           const filter: MeldFilter = {
@@ -119,12 +121,34 @@ export const meldIntegrationEndpoints = ({
           const { fiatCurrencies: cryptoCurrencies, error } =
             await meldIntegrationService.getCryptoCurrencies(filter)
 
-          const tokenList = cryptoCurrencies?.map((token) => {
-            return {
-              ...token,
-              chainId: getMeldTokensChainId(token)
+          const tokenList = await mapLimit(
+            cryptoCurrencies || [],
+            1,
+            async function (token: MeldCryptoCurrency) {
+              const chainId = getMeldTokensChainId(token)
+              if (chainId && token.contractAddress) {
+                const { coingeckoId } = await blockchainRegistry.getCoingeckoId(
+                  chainId,
+                  token.contractAddress
+                )
+                if (coingeckoId) {
+                  return {
+                    ...token,
+                    chainId: chainId,
+                    coingeckoId: coingeckoId
+                  }
+                }
+                return {
+                  ...token,
+                  chainId: chainId
+                }
+              }
+              return {
+                ...token,
+                chainId: chainId
+              }
             }
-          })
+          )
 
           if (error) {
             return handleEndpointError(

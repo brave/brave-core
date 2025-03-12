@@ -14,6 +14,9 @@ export const getAssetSymbol = (asset: MeldCryptoCurrency) => {
 }
 
 export const getAssetPriceId = (asset: MeldCryptoCurrency) => {
+  if (asset.coingeckoId) {
+    return asset.coingeckoId
+  }
   const isEthereumNetwork =
     asset.chainId?.toLowerCase() === BraveWallet.MAINNET_CHAIN_ID.toLowerCase()
   if (isEthereumNetwork && asset.contractAddress) {

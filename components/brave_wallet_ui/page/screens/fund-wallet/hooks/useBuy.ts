@@ -44,7 +44,7 @@ import {
 } from '../../../../common/slices/api.slice.extra'
 
 // Constants
-import { querySubscriptionOptions5m } from '../../../../common/slices/constants'
+import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
 
 // Utils
 import Amount from '../../../../utils/amount'
@@ -156,21 +156,6 @@ export const useBuy = () => {
     )
 
   // Memos and Queries
-  const tokenPriceIds: string[] = useMemo(() => {
-    return meldSupportedBuyAssets?.map((asset) => getAssetPriceId(asset)) ?? []
-  }, [meldSupportedBuyAssets])
-
-  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
-    useGetTokenSpotPricesQuery(
-      tokenPriceIds.length > 0
-        ? {
-            ids: tokenPriceIds,
-            toCurrency: selectedCurrency?.currencyCode || defaultFiatCurrency
-          }
-        : skipToken,
-      querySubscriptionOptions5m
-    )
-
   const selectedAsset = useMemo(() => {
     if (!currencyCode || !meldSupportedBuyAssets || !chainId) {
       return DEFAULT_ASSET
@@ -183,6 +168,16 @@ export const useBuy = () => {
       ) ?? DEFAULT_ASSET
     )
   }, [meldSupportedBuyAssets, currencyCode, chainId])
+
+  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+    selectedAsset
+      ? {
+          ids: [getAssetPriceId(selectedAsset)],
+          toCurrency: selectedCurrency?.currencyCode || defaultFiatCurrency
+        }
+      : skipToken,
+    querySubscriptionOptions60s
+  )
 
   const selectedAccount = useMemo(() => {
     if (!accountFromParams) {
@@ -562,9 +557,7 @@ export const useBuy = () => {
     selectedAccount,
     amount,
     isLoadingAssets,
-    isLoadingSpotPrices,
     formattedCryptoEstimate,
-    spotPriceRegistry,
     fiatCurrencies,
     cryptoCurrencies: meldSupportedBuyAssets,
     countries,
