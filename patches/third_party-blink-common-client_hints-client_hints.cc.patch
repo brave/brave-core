@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/client_hints/client_hints.cc b/third_party/blink/common/client_hints/client_hints.cc
-index d55147ee204bf2277b5aa0ff9464a32405b3efd9..e282c22dcb90af199f1031e612c55fe053c7146d 100644
+index ab8af78c7a48343250a25a7104b20d95181c1967..6bb2ec35dc5f51b0b784a8a1802f07a2fc227796 100644
 --- a/third_party/blink/common/client_hints/client_hints.cc
 +++ b/third_party/blink/common/client_hints/client_hints.cc
 @@ -21,6 +21,7 @@

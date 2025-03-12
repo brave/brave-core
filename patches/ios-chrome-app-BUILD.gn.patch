@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/app/BUILD.gn b/ios/chrome/app/BUILD.gn
-index 30951269d9841d3677968cb2f37a80abf66e3038..0b8074f69ca64dfd9c93ca7d7853f1b6a33d8dec 100644
+index 173a3804116115afff279282d90efbffa125dc81..d3370c13e17f353799f4d10972fbf5bd1528e0ce 100644
 --- a/ios/chrome/app/BUILD.gn
 +++ b/ios/chrome/app/BUILD.gn
 @@ -805,8 +805,7 @@ chrome_app("chrome") {

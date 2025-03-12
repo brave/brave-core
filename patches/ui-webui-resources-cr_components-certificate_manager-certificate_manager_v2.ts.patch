@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/cr_components/certificate_manager/certificate_manager_v2.ts b/ui/webui/resources/cr_components/certificate_manager/certificate_manager_v2.ts
-index 34fe93991718dead5d7977ac3a5e3061f7367c0b..a94965804ead9def4861afa4f25670ef0c9bfc05 100644
+index 70af51e7bf5253374daaa5b2cba2d04840be0863..a65516221240596f953c2e96f9468f1bd6bbea7f 100644
 --- a/ui/webui/resources/cr_components/certificate_manager/certificate_manager_v2.ts
 +++ b/ui/webui/resources/cr_components/certificate_manager/certificate_manager_v2.ts
-@@ -526,5 +526,5 @@ declare global {
+@@ -533,5 +533,5 @@ declare global {
    }
  }
  
