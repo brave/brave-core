@@ -134,7 +134,7 @@ bool HashPrefixStore::UpdatePrefixes(const std::string& prefixes,
   }
 
   // Put all suffixes into a single vector and calculate the offsets.
-  std::vector<char> all_suffixes_data;
+  std::vector<uint8_t> all_suffixes_data;
   uint32_t current_offset = 0;
 
   for (size_t i = 0; i < suffix_arrays.size(); i++) {
@@ -147,9 +147,7 @@ bool HashPrefixStore::UpdatePrefixes(const std::string& prefixes,
 
   // Serialize the vectors and the main table.
   auto flat_offsets = builder.CreateVector(offsets.data(), offsets.size());
-  auto all_suffixes = builder.CreateVector(
-      reinterpret_cast<const uint8_t*>(all_suffixes_data.data()),
-      all_suffixes_data.size());
+  auto all_suffixes = builder.CreateVector(all_suffixes_data);
   auto prefix_storage = rewards::flat::CreatePrefixStorage(
       builder, kFlatStorageMagic, prefix_size, flat_offsets, all_suffixes);
 
@@ -187,7 +185,8 @@ bool HashPrefixStore::ContainsPrefix(const std::string& value) {
   CHECK(storage->all_suffixes());
 
   const auto offsets = flatbuffers::make_span(storage->offsets());
-  const auto all_suffixes = flatbuffers::make_span(storage->all_suffixes());
+  const auto all_suffixes =
+      flatbuffers::make_bytes_span(*storage->all_suffixes());
 
   const auto prefix_size = storage->prefix_size();
   const size_t suffix_size = prefix_size - 2;
@@ -211,7 +210,10 @@ bool HashPrefixStore::ContainsPrefix(const std::string& value) {
     return false;
   }
 
-  const auto* data = reinterpret_cast<const char*>(all_suffixes.data());
+  static_assert(std::is_same_v<const uint8_t*, decltype(all_suffixes.data())>);
+  std::string_view data(reinterpret_cast<const char*>(all_suffixes.data()),
+                        all_suffixes.size());
+
   HashPrefixIterator begin(data, start_idx / suffix_size, suffix_size);
   HashPrefixIterator end(data, end_idx / suffix_size, suffix_size);
 
