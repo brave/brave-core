@@ -17,8 +17,9 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_pages.h"
-#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "ui/color/color_provider.h"
 #else
 #include "brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h"
@@ -87,10 +88,17 @@ void CosmeticFiltersTabHelper::AddSiteCosmeticFilter(
 
 void CosmeticFiltersTabHelper::ManageCustomFilters() {
 #if !BUILDFLAG(IS_ANDROID)
-  if (auto* profile =
-          Profile::FromBrowserContext(GetWebContents().GetBrowserContext())) {
-    brave::ShowBraveAdblock(profile);
+  auto* tab_interface =
+      tabs::TabInterface::MaybeGetFromContents(&GetWebContents());
+  if (!tab_interface) {
+    return;
   }
+  auto* browser_window_interface = tab_interface->GetBrowserWindowInterface();
+  if (!browser_window_interface) {
+    return;
+  }
+  brave::ShowBraveAdblock(
+      browser_window_interface->GetBrowserForMigrationOnly());
 #else   // !BUILDFLAG(IS_ANDROID)
   ShowCustomFilterSettings();
 #endif  // !BUILDFLAG(IS_ANDROID)

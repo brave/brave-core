@@ -35,13 +35,13 @@ function MainPanel () {
     await getPanelBrowserAPI().dataHandler.openWebCompatWindow()
   }
 
-  const [areBlockedElements,
-    setAreBlockedElements] = React.useState(false);
+  const [areAnyBlockedElementsPresent,
+    setAreAnyBlockedElementsPresent] = React.useState(false);
   React.useEffect(() => {
     const getBlockedElementsAvailability = () => {
-       getPanelBrowserAPI().dataHandler.areBlockedElements()
+       getPanelBrowserAPI().dataHandler.areAnyBlockedElementsPresent()
         .then((data) => {
-          setAreBlockedElements(data.isAvailable)
+          setAreAnyBlockedElementsPresent(data.isAvailable)
         })
     };
 
@@ -57,7 +57,7 @@ function MainPanel () {
 
   const handleResetBlockedElements = async () => {
     await getPanelBrowserAPI().dataHandler.resetBlockedElements()
-    setAreBlockedElements(false)
+    setAreAnyBlockedElementsPresent(false)
   }
 
   const handleLearnMoreClick = () => {
@@ -196,7 +196,7 @@ function MainPanel () {
         </AdvancedControlsContentScroller>
       }
       {
-        areBlockedElements &&
+        areAnyBlockedElementsPresent &&
         <S.GlobalDefaultsButton
           type="button"
           onClick={handleResetBlockedElements}

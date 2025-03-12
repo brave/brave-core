@@ -24,8 +24,8 @@ void ShowBraveRewards(Browser* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(kRewardsPageURL));
 }
 
-void ShowBraveAdblock(Profile* profile) {
-  ShowSingletonTabOverwritingNTP(profile, GURL(kBraveUIAdblockURL));
+void ShowBraveAdblock(Browser* browser) {
+  ShowSingletonTabOverwritingNTP(browser, GURL(kBraveUIAdblockURL));
 }
 
 void ShowSync(Browser* browser) {

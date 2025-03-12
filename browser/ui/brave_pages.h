@@ -9,11 +9,10 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 
 class Browser;
-class Profile;
 
 namespace brave {
 
-void ShowBraveAdblock(Profile* profile);
+void ShowBraveAdblock(Browser* browser);
 void ShowWebcompatReporter(Browser* browser);
 void ShowBraveRewards(Browser* browser);
 void ShowBraveWallet(Browser* browser);

@@ -53,13 +53,13 @@ interface DataHandler {
     content_settings.mojom.ContentSettingsType webcompat_settings_type,
     bool enable);
 
-  // Unblocks any elements blocked (by the Element blocker feature)
+  // Unblocks every element blocked (by the Element blocker feature)
   // on the current page
   ResetBlockedElements();
 
-  // Checks is there any elements blocked (by Element blocker feature)
+  // Checks is there any element blocked (by Element blocker feature)
   // on the current page
-  AreBlockedElements() => (bool is_available);
+  AreAnyBlockedElementsPresent() => (bool is_available);
 };
 
 struct SiteBlockInfo {
