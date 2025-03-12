@@ -7,9 +7,9 @@
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_UTIL_H_
 
 #include <string>
+#include <variant>
 
 #include "base/functional/callback_forward.h"
-#include "third_party/abseil-cpp/absl/types/variant.h"
 #include "url/gurl.h"
 
 namespace speedreader {
@@ -25,7 +25,7 @@ enum class DistillationResult : int {
 
 namespace DistillStates {
 
-using None = absl::monostate;
+using None = std::monostate;
 
 struct DistillReverting;
 
@@ -71,11 +71,11 @@ struct DistillReverting : ViewOriginal {
   DistillReverting(const Distilled& state, Reason reason);
 };
 
-using State = absl::variant<DistillStates::None,
-                            DistillStates::ViewOriginal,
-                            DistillStates::Distilling,
-                            DistillStates::Distilled,
-                            DistillStates::DistillReverting>;
+using State = std::variant<DistillStates::None,
+                           DistillStates::ViewOriginal,
+                           DistillStates::Distilling,
+                           DistillStates::Distilled,
+                           DistillStates::DistillReverting>;
 
 bool IsViewOriginal(const State& state);
 bool IsDistilling(const State& state);

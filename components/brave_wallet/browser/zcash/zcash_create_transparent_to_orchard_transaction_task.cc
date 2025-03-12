@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_to_orchard_transaction_task.h"
 
+#include <variant>
+
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -17,7 +19,7 @@ namespace brave_wallet {
 
 ZCashCreateTransparentToOrchardTransactionTask::
     ZCashCreateTransparentToOrchardTransactionTask(
-        absl::variant<
+        std::variant<
             base::PassKey<
                 class ZCashCreateTransparentToOrchardTransactionTaskTest>,
             base::PassKey<ZCashWalletService>> pass_key,

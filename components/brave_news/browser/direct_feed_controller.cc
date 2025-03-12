@@ -9,6 +9,7 @@
 #include <iterator>
 #include <string>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/barrier_callback.h"
@@ -17,7 +18,6 @@
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/html_parsing.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "third_party/abseil-cpp/absl/types/variant.h"
 #include "url/gurl.h"
 
 namespace brave_news {
@@ -81,7 +81,7 @@ void DirectFeedController::FindFeedsImpl(
 void DirectFeedController::OnFindFeedsImplDownloadedFeed(
     const GURL& feed_url,
     DirectFeedResponse response) {
-  if (auto* feed = absl::get_if<DirectFeedResult>(&response.result)) {
+  if (auto* feed = std::get_if<DirectFeedResult>(&response.result)) {
     std::vector<mojom::FeedSearchResultItemPtr> results;
 
     auto feed_result = mojom::FeedSearchResultItem::New();
@@ -95,7 +95,7 @@ void DirectFeedController::OnFindFeedsImplDownloadedFeed(
   if (!response.mime_type.empty() &&
       response.mime_type.find("html") != std::string::npos) {
     auto& body_content =
-        absl::get<DirectFeedError>(response.result).body_content;
+        std::get<DirectFeedError>(response.result).body_content;
     VLOG(1) << "Had html type";
     // Get feed links from doc
     auto feed_urls = GetFeedURLsFromHTMLDocument(response.charset, body_content,
@@ -105,7 +105,7 @@ void DirectFeedController::OnFindFeedsImplDownloadedFeed(
            std::vector<DirectFeedResponse> responses) {
           std::vector<mojom::FeedSearchResultItemPtr> results;
           for (const auto& response : responses) {
-            if (auto* feed = absl::get_if<DirectFeedResult>(&response.result)) {
+            if (auto* feed = std::get_if<DirectFeedResult>(&response.result)) {
               if (feed->title.empty()) {
                 continue;
               }
@@ -186,7 +186,7 @@ void DirectFeedController::VerifyFeedUrl(const GURL& feed_url,
             // Handle response
             std::string title = "";
             bool success = false;
-            if (auto* feed = absl::get_if<DirectFeedResult>(&response.result)) {
+            if (auto* feed = std::get_if<DirectFeedResult>(&response.result)) {
               title = feed->title.c_str();
               success = true;
             }

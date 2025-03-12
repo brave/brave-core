@@ -13,10 +13,10 @@
 
 #include <memory>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/functional/callback.h"
-#include "third_party/abseil-cpp/absl/types/variant.h"
 #include "ui/gfx/range/range.h"
 
 class Browser;
@@ -93,7 +93,7 @@ struct CommandItem {
   // If this command is a one-shot, executes the command. If this command is
   // composite, provides the prompt text sent to the user, and a
   // CompositeCommandProvider to handle additional user input.
-  absl::variant<base::OnceClosure, CompositeCommand> command;
+  std::variant<base::OnceClosure, CompositeCommand> command;
   // How relevant the item is to user input. Expected range is (0,1], with 1
   // indicating a perfect match (in the absence of other criteria, this boils
   // down to an exact string match).
