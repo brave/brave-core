@@ -95,8 +95,9 @@ TabDragController::Liveness TabDragController::Init(
   }
 
   // Adjust coordinate for vertical mode.
-  const int x = mouse_offset.x() - GetXCoordinateAdjustmentForMultiSelectedTabs(
-                                       dragging_views, source_view_index_);
+  const int x =
+      mouse_offset.x() - GetXCoordinateAdjustmentForMultiSelectedTabs(
+                             dragging_views, drag_data_.source_view_index_);
   source_view_offset = mouse_offset.y();
   start_point_in_screen_ = gfx::Point(x, source_view_offset);
   views::View::ConvertPointToScreen(source_view, &start_point_in_screen_);
@@ -115,7 +116,9 @@ gfx::Point TabDragController::GetAttachedDragPoint(
 
   gfx::Point tab_loc(point_in_screen);
   views::View::ConvertPointFromScreen(attached_context_, &tab_loc);
-  const int x = drag_data_.front().pinned ? tab_loc.x() - mouse_offset_.x() : 0;
+  const int x = drag_data_.tab_drag_data_.front().pinned
+                    ? tab_loc.x() - mouse_offset_.x()
+                    : 0;
   const int y = tab_loc.y() - mouse_offset_.y();
   return {x, y};
 }
@@ -202,8 +205,8 @@ void TabDragController::DetachAndAttachToNewContext(
     std::vector<tabs::TabHandle> tabs;
     auto* tab_strip_model = browser->tab_strip_model();
     DCHECK_EQ(tab_strip_model, attached_context_->GetTabStripModel());
-    auto drag_data =
-        base::span(drag_data_).subspan(static_cast<size_t>(first_tab_index()));
+    auto drag_data = base::span(drag_data_.tab_drag_data_)
+                         .subspan(static_cast<size_t>(first_tab_index()));
     for (const auto& data : drag_data) {
       tabs.push_back(tab_strip_model
                          ->GetTabAtIndex(tab_strip_model->GetIndexOfWebContents(
@@ -262,13 +265,13 @@ void TabDragController::DetachAndAttachToNewContext(
   attached_context_->ForceLayout();
 
   std::vector<raw_ptr<TabSlotView, VectorExperimental>> views(
-      drag_data_.size());
-  for (size_t i = 0; i < drag_data_.size(); ++i) {
-    views[i] = drag_data_[i].attached_view.get();
+      drag_data_.tab_drag_data_.size());
+  for (size_t i = 0; i < drag_data_.tab_drag_data_.size(); ++i) {
+    views[i] = drag_data_.tab_drag_data_[i].attached_view.get();
   }
 
   attached_context_->LayoutDraggedViewsAt(
-      std::move(views), source_view_drag_data()->attached_view,
+      std::move(views), drag_data_.source_view_drag_data()->attached_view,
       GetCursorScreenPoint(), initial_move_);
 
   if (old_split_view_browser_data) {

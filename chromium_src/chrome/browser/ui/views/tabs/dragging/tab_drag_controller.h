@@ -18,6 +18,7 @@ using TabDragControllerBrave = TabDragController;
   Unused_GetAttachedDragPoint() { \
     return {};                    \
   }                               \
+  friend TabDragControllerBrave;  \
   virtual gfx::Point GetAttachedDragPoint
 
 #define InitDragData             \
