@@ -133,10 +133,156 @@ class ContentBlockerManagerTests: XCTestCase {
     XCTAssertNil(result)
   }
 
-  @MainActor private func makeManager() -> ContentBlockerManager {
+  @MainActor private func makeManager(
+    userDefaults: UserDefaults? = UserDefaults(suiteName: "tests")
+  ) -> ContentBlockerManager {
     return ContentBlockerManager(
       ruleStore: ruleStore,
-      container: UserDefaults(suiteName: "tests") ?? .standard
+      container: userDefaults ?? .standard
     )
+  }
+
+  @MainActor func testMissingModesFilterListGroup() async {
+    let blocklistTypeStandard: ContentBlockerManager.BlocklistType = .engineGroup(
+      id: "standard",
+      engineType: .standard
+    )
+    let blocklistTypeStandardAggressive: ContentBlockerManager.BlocklistType = .engineGroup(
+      id: "standard",
+      engineType: .aggressive
+    )
+    // assign mock existing versions to our UserDefaults test suite
+    let existingVersion = "2025-03-07T18:43:06Z,1.0.71"
+    let existingVersions: [String: String] = [
+      blocklistTypeStandard.makeIdentifier(for: .standard): existingVersion,
+      blocklistTypeStandardAggressive.makeIdentifier(for: .aggressive): existingVersion,
+    ]
+    let userDefaults = UserDefaults(suiteName: "tests")
+    userDefaults?.set(existingVersions, forKey: "content-blocker.versions")
+
+    let contentBlockerManager = makeManager(userDefaults: userDefaults)
+
+    // assign mock cached rule lists (required so we can compare versions)
+    let cachedList: ContentBlockerManager.CompileResult = .success(WKContentRuleList())
+    contentBlockerManager.setTestingCachedRuleLists([
+      blocklistTypeStandard.makeIdentifier(for: .standard): cachedList,
+      blocklistTypeStandardAggressive.makeIdentifier(for: .aggressive): cachedList,
+    ])
+
+    // Test no updates needed (no missing modes)
+    let missingModesStandard = await contentBlockerManager.missingModes(
+      for: blocklistTypeStandard,
+      version: existingVersion
+    )
+    XCTAssertTrue(missingModesStandard.isEmpty)
+    let missingModesAggressive = await contentBlockerManager.missingModes(
+      for: blocklistTypeStandardAggressive,
+      version: existingVersion
+    )
+    XCTAssertTrue(missingModesAggressive.isEmpty)
+
+    // Test update needed (>0 missing modes)
+    let newVersion = "2025-03-07T18:43:06Z,1.0.72"
+    XCTAssertNotEqual(existingVersion, newVersion)
+    let missingModesStandard2 = await contentBlockerManager.missingModes(
+      for: blocklistTypeStandard,
+      version: newVersion
+    )
+    XCTAssertFalse(missingModesStandard2.isEmpty)
+    let missingModesAggressive2 = await contentBlockerManager.missingModes(
+      for: blocklistTypeStandardAggressive,
+      version: newVersion
+    )
+    XCTAssertFalse(missingModesAggressive2.isEmpty)
+
+    let newVersionDate = "2025-03-08T18:43:06Z,1.0.71"
+    XCTAssertNotEqual(existingVersion, newVersionDate)
+    let missingModesStandard3 = await contentBlockerManager.missingModes(
+      for: blocklistTypeStandard,
+      version: newVersionDate
+    )
+    XCTAssertFalse(missingModesStandard3.isEmpty)
+    let missingModesAggressive3 = await contentBlockerManager.missingModes(
+      for: blocklistTypeStandardAggressive,
+      version: newVersionDate
+    )
+    XCTAssertFalse(missingModesAggressive3.isEmpty)
+  }
+
+  @MainActor func testMissingModesFilterListComponent() async {
+    let blocklistTypeFilterListAggressive: ContentBlockerManager.BlocklistType = .engineSource(
+      .filterList(componentId: "cdbbhgbmjhfnhnmgeddbliobbofkgdhe"),
+      engineType: .aggressive
+    )
+    let existingVersion = "1.0.7341"
+    let existingVersions: [String: String] = [
+      blocklistTypeFilterListAggressive.makeIdentifier(for: .aggressive): existingVersion
+    ]
+    let userDefaults = UserDefaults(suiteName: "tests")
+    userDefaults?.set(existingVersions, forKey: "content-blocker.versions")
+    let contentBlockerManager = makeManager(userDefaults: userDefaults)
+
+    contentBlockerManager.setTestingCachedRuleLists([
+      blocklistTypeFilterListAggressive.makeIdentifier(for: .aggressive): .success(
+        WKContentRuleList()
+      )
+    ])
+
+    // Test no updates needed
+    let missingModes = await contentBlockerManager.missingModes(
+      for: blocklistTypeFilterListAggressive,
+      version: existingVersion
+    )
+    XCTAssertTrue(missingModes.isEmpty)
+
+    // Test update needed (>0 missing modes)
+    let newVersion = "1.0.7342"
+    XCTAssertNotEqual(existingVersion, newVersion)
+    let missingModesStandard2 = await contentBlockerManager.missingModes(
+      for: blocklistTypeFilterListAggressive,
+      version: newVersion
+    )
+    XCTAssertFalse(missingModesStandard2.isEmpty)
+
+    // extra digit over `existingVersion`. This would fail regular string
+    // comparison (`existing < newVersion`), but not if we use `.numeric` compare.
+    let newVersionExtraDigit = "1.0.12345"
+    XCTAssertNotEqual(existingVersion, newVersionExtraDigit)
+    let missingModesStandard3 = await contentBlockerManager.missingModes(
+      for: blocklistTypeFilterListAggressive,
+      version: newVersionExtraDigit
+    )
+    XCTAssertFalse(missingModesStandard3.isEmpty)
+  }
+
+  @MainActor func testMissingModesGeneric() async {
+    let blocklistTypeGenericTrackers: ContentBlockerManager.BlocklistType = .generic(.blockTrackers)
+    let existingVersion = "2025-01-23T19:55:25Z"
+    let existingVersions: [String: String] = [
+      blocklistTypeGenericTrackers.makeIdentifier(for: .general): existingVersion
+    ]
+    let userDefaults = UserDefaults(suiteName: "tests")
+    userDefaults?.set(existingVersions, forKey: "content-blocker.versions")
+    let contentBlockerManager = makeManager(userDefaults: userDefaults)
+
+    contentBlockerManager.setTestingCachedRuleLists([
+      blocklistTypeGenericTrackers.makeIdentifier(for: .general): .success(WKContentRuleList())
+    ])
+
+    // Test no updates needed (no missing modes)
+    let missingModes = await contentBlockerManager.missingModes(
+      for: blocklistTypeGenericTrackers,
+      version: existingVersion
+    )
+    XCTAssertTrue(missingModes.isEmpty)
+
+    // Test update needed (>0 missing modes)
+    let newVersionDate = "2025-02-23T19:55:25Z"
+    XCTAssertNotEqual(existingVersion, newVersionDate)
+    let missingModesStandard3 = await contentBlockerManager.missingModes(
+      for: blocklistTypeGenericTrackers,
+      version: newVersionDate
+    )
+    XCTAssertFalse(missingModesStandard3.isEmpty)
   }
 }
