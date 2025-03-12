@@ -137,5 +137,14 @@ TEST_F(BraveBookmarkProviderTest, ExactTitleMatchBumpsRelevance) {
   EXPECT_EQ(provider_->matches()[1].description, u"Hellow");
   EXPECT_TRUE(provider_->matches()[1].allowed_to_be_default_match);
 
-  EXPECT_GT(provider_->matches()[0].relevance, provider_->matches()[1].relevance);
+  EXPECT_GT(provider_->matches()[0].relevance,
+            provider_->matches()[1].relevance);
+}
+
+TEST_F(BraveBookmarkProviderTest, TitleOnlyMatchSetsURL) {
+  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
+  provider_->Start(CreateAutocompleteInput("Hello"), true);
+  EXPECT_EQ(provider_->matches().size(), 1u);
+  EXPECT_TRUE(provider_->matches()[0].allowed_to_be_default_match);
+  EXPECT_EQ(provider_->matches()[0].contents, u"example.com");
 }
