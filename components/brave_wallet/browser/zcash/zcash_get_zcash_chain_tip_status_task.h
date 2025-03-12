@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_GET_ZCASH_CHAIN_TIP_STATUS_TASK_H_
 
 #include <string>
+#include <variant>
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_action_context.h"
@@ -23,8 +24,8 @@ class ZCashGetZCashChainTipStatusTask {
       base::expected<mojom::ZCashChainTipStatusPtr, std::string>)>;
 
   ZCashGetZCashChainTipStatusTask(
-      absl::variant<base::PassKey<ZCashWalletService>,
-                    base::PassKey<class ZCashGetChainTipStatusTaskTest>>
+      std::variant<base::PassKey<ZCashWalletService>,
+                   base::PassKey<class ZCashGetChainTipStatusTaskTest>>
           pass_key,
       ZCashWalletService& zcash_wallet_service,
       ZCashActionContext context,

@@ -6,12 +6,13 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_get_zcash_chain_tip_status_task.h"
 
 #include <utility>
+#include <variant>
 
 namespace brave_wallet {
 
 ZCashGetZCashChainTipStatusTask::ZCashGetZCashChainTipStatusTask(
-    absl::variant<base::PassKey<ZCashWalletService>,
-                  base::PassKey<class ZCashGetChainTipStatusTaskTest>> pass_key,
+    std::variant<base::PassKey<ZCashWalletService>,
+                 base::PassKey<class ZCashGetChainTipStatusTaskTest>> pass_key,
     ZCashWalletService& zcash_wallet_service,
     ZCashActionContext context,
     ZCashGetZCashChainTipStatusTaskCallback callback)
