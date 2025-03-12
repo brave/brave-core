@@ -18,7 +18,7 @@ public class BraveTemplateUrlServiceClassAdapter extends BraveClassVisitor {
 
         redirectConstructor(sTemplateUrlServiceClassName, sBraveTemplateUrlServiceClassName);
 
-        deleteField(sBraveTemplateUrlServiceClassName, "mNativeTemplateUrlServiceAndroid");
-        makeProtectedField(sTemplateUrlServiceClassName, "mNativeTemplateUrlServiceAndroid");
+        // deleteField(sBraveTemplateUrlServiceClassName, "mNativeTemplateUrlServiceAndroid");
+        // makeProtectedField(sTemplateUrlServiceClassName, "mNativeTemplateUrlServiceAndroid");
     }
 }
