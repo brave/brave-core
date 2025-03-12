@@ -91,13 +91,6 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
         return new ApproveTxBottomSheetDialogFragment(transactionInfos, txInfo, listener);
     }
 
-    @NonNull
-    public static ApproveTxBottomSheetDialogFragment newInstance(TransactionInfo txInfo) {
-        List<TransactionInfo> infos = new ArrayList<>();
-        infos.add(txInfo);
-        return newInstance(infos, txInfo, null);
-    }
-
     private ApproveTxBottomSheetDialogFragment(
             List<TransactionInfo> transactionInfos,
             TransactionInfo txInfo,
