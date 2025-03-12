@@ -24,6 +24,12 @@
       </if>
     <if expr="not use_titlecase">
       </if>
+  <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_X_WINDOWS_BUTTON" desc="The text of the button offering to close all Private windows.">
+    {0, plural,
+      =1 {Close Private}
+      other {Close Private (# windows)}
+    }
+  </message>
   <if expr="not use_titlecase">
     </if>
   <if expr="use_titlecase">

@@ -275,9 +275,6 @@
   <message name="IDS_SETTINGS_CHANGE_HOME_PAGE" desc="Label of the control to change the home page.">
     Change
   </message>
-  <message name="IDS_SETTINGS_WEB_STORE" desc="Sub-label about choosing something from the Web Store.">
-    Open Web Store
-  </message>
   <if expr="is_macosx">
     <message name="IDS_SETTINGS_TABS_TO_LINKS_PREF" desc="The documentation string of the 'Tabs to Links' preference">
       Pressing Tab on a webpage highlights links, as well as form fields
@@ -2471,6 +2468,9 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_DEFAULT_BEHAVIOR_DESC" desc="Description for the site settings notifications content setting default behavior.">
     Sites automatically follow this setting when you visit them. Sites usually send notifications to let you know about breaking news or chat messages.
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_DESC" desc="Description for the site settings notifications content setting.">
+    Sites usually send notifications to let you know about breaking news or chat messages.
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_CUSTOMIZED_BEHAVIORS" desc="Label for the site settings exceptions.">
     Customized behaviors
   </message>
@@ -2884,6 +2884,9 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_PERMISSION_LOUD" desc="Label for the loud version of the permission prompt.">
    Expand all requests
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PERMISSION_TITLE" desc="Title for permission prompt request how-to-show chooser.">
+   How to show requests
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_BLOCKED" desc="Label for the blocked option of the notifications content setting.">
     Don't allow sites to send notifications
@@ -3640,37 +3643,37 @@
   </message>
   <!-- Site Settings - Storage Access Page -->
   <message name="IDS_SETTINGS_STORAGE_ACCESS_DESCRIPTION" desc="The body description on the Embedded content settings page.">
-    Sites you visit can embed content from other sites, for example images, ads, and text. These other sites can ask for permission to use info they've saved about you as you browse the site.
+    Sites you visit can embed content from other sites, for example images, ads, and text. These other sites can ask for permission to use information they've saved about you as you browse the site.
   </message>
-  <message name="IDS_SETTINGS_STORAGE_ACCESS_ALLOWED" desc="One of two radio buttons on the Embedded content settings page. If a user chooses this option, they're allowing a new permission prompt that may get shown as the user browses sites. In the description below, “Google Docs” is just used as an example. 1) “use info” means retrieve existing info and save additional info. 2) “they've' saved about you”: Google Docs can only prompt the user for permission on www.myfavoritesite.com if the user has previously used Google Docs.">
-    Sites can ask to use info they've saved about you
+  <message name="IDS_SETTINGS_STORAGE_ACCESS_ALLOWED" desc="One of two radio buttons on the Embedded content settings page. If a user chooses this option, they're allowing a new permission prompt that may get shown as the user browses sites. In the description below, “Google Docs” is just used as an example. 1) “use information” means retrieve existing info and save additional info. 2) “they've' saved about you”: Google Docs can only prompt the user for permission on www.myfavoritesite.com if the user has previously used Google Docs.">
+    Sites can ask to use information they've saved about you
   </message>
-  <message name="IDS_SETTINGS_STORAGE_ACCESS_BLOCKED" desc="The second of two radio buttons on the Embedded content settings page. If a user chooses this option, they're not allowing a new permission prompt that may get shown as the user browses sites. In the description below, “www.myfavoritesite.com” and “Google Docs” are just used as examples. 1) “use info” means retrieve existing info and save additional info. 2) “they've' saved about you”: Google Docs can only prompt the user for permission on www.myfavoritesite.com if the user has previously used Google Docs.">
-    Sites are blocked from asking you to use info they've saved about you
+  <message name="IDS_SETTINGS_STORAGE_ACCESS_BLOCKED" desc="The second of two radio buttons on the Embedded content settings page. If a user chooses this option, they're not allowing a new permission prompt that may get shown as the user browses sites. In the description below, “www.myfavoritesite.com” and “Google Docs” are just used as examples. 1) “use information” means retrieve existing info and save additional info. 2) “they've' saved about you”: Google Docs can only prompt the user for permission on www.myfavoritesite.com if the user has previously used Google Docs.">
+    Sites are blocked from asking you to use information they've saved about you
   </message>
   <message name="IDS_SETTINGS_STORAGE_ACCESS_ALLOWED_EXCEPTIONS" desc="A sub title on the Embedded content settings page. When a user grants a site permission, that site appears in this list of sites.">
-    Allowed to use info they've saved about you
+    Allowed to use information they've saved about you
   </message>
   <message name="IDS_SETTINGS_STORAGE_ACCESS_BLOCKED_EXCEPTIONS" desc="A sub title on the Embedded content settings page. When a user denies a site permission, that site appears in this list of sites.">
-    Not allowed to use info they've saved about you
+    Not allowed to use information they've saved about you
   </message>
   <message name="IDS_SETTINGS_STORAGE_ACCESS_RESET_ALL" desc="Label for the trashcan button to reset the permission for allowing or blocking a website to access its unpartitioned cookies while embedded in all other sites.">
     Remove <ph name="SITE">$1<ex>google.com</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_STORAGE_ACCESS_RESET_SITE" desc="Label for the trashcan button to reset the permission for allowing or blocking a website (embedded.com) to “use their info“ while on another website (top-level.com).">
+  <message name="IDS_SETTINGS_STORAGE_ACCESS_RESET_SITE" desc="Label for the trashcan button to reset the permission for allowing or blocking a website (embedded.com) to “use their information“ while on another website (top-level.com).">
     Remove <ph name="EMBEDDED_SITE">$1<ex>embedding.com</ex></ph> from <ph name="SITE">$2<ex>top-level.com</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_STORAGE_ACCESS_OPEN_EXPAND" desc="Label for an expand button to open a collapse row with the websites an origin website (top-level.com) is allowed or blocked to “use their info“ on">
+  <message name="IDS_SETTINGS_STORAGE_ACCESS_OPEN_EXPAND" desc="Label for an expand button to open a collapse row with the websites an origin website (top-level.com) is allowed or blocked to “use their information“ on">
     Show sites
   </message>
-  <message name="IDS_SETTINGS_STORAGE_ACCESS_CLOSE_EXPAND" desc="Label for an expand button to close a collapse row with the websites an origin website (top-level.com) is allowed or blocked to “use their info“ on.">
+  <message name="IDS_SETTINGS_STORAGE_ACCESS_CLOSE_EXPAND" desc="Label for an expand button to close a collapse row with the websites an origin website (top-level.com) is allowed or blocked to “use their information“ on.">
     Show less
   </message>
-  <message name="IDS_SETTINGS_STORAGE_ACCESS_ALLOWED_SITE_LABEL" desc="Text after a url (e.g. google.com) that explains that a webite is allowed to “use their info“ on one or more sites that follow this text. Previously, the user 1) visited a site, such as www.myfavoritesite.com 2)  www.myfavoritesite.com embeds content and services, such as Google Docs. 3) Google Docs prompted the user for permission to use data Google Docs has previously saved related to the user. 4) The user says yes. 5) Later in settings, the user sees the site exception with this text and can revoke its access.">
-    can use your info as you browse
+  <message name="IDS_SETTINGS_STORAGE_ACCESS_ALLOWED_SITE_LABEL" desc="Text after a url (e.g. google.com) that explains that a webite is allowed to “use their information“ on one or more sites that follow this text. Previously, the user 1) visited a site, such as www.myfavoritesite.com 2)  www.myfavoritesite.com embeds content and services, such as Google Docs. 3) Google Docs prompted the user for permission to use data Google Docs has previously saved related to the user. 4) The user says yes. 5) Later in settings, the user sees the site exception with this text and can revoke its access.">
+    can use your information as you browse
   </message>
-  <message name="IDS_SETTINGS_STORAGE_ACCESS_BLOCKED_SITE_LABEL" desc="Text after a url (e.g. google.com) that explains that a webite is not allowed to “use their info“ on one or more sites that follow this text. Previously, the user 1) visited a site, such as www.myfavoritesite.com 2)  www.myfavoritesite.com embeds content and services, such as Google Docs. 3) Google Docs prompted the user for permission to use data Google Docs has previously saved related to the user. 4) The user says yes. 5) Later in settings, the user sees the site exception with this text and can unblock the site.">
-    is blocked from using your info on
+  <message name="IDS_SETTINGS_STORAGE_ACCESS_BLOCKED_SITE_LABEL" desc="Text after a url (e.g. google.com) that explains that a webite is not allowed to “use their information“ on one or more sites that follow this text. Previously, the user 1) visited a site, such as www.myfavoritesite.com 2)  www.myfavoritesite.com embeds content and services, such as Google Docs. 3) Google Docs prompted the user for permission to use data Google Docs has previously saved related to the user. 4) The user says yes. 5) Later in settings, the user sees the site exception with this text and can unblock the site.">
+    is blocked from using your information on
   </message>
 
   <message name="IDS_SETTINGS_NO_BLUETOOTH_DEVICES_FOUND" desc="Explanation for not showing Bluetooth devices in site settings.">
@@ -4565,14 +4568,6 @@
   </message>
   <message name="IDS_SETTINGS_TAB_ORGANIZER_CONSIDER_DATA" desc="This is a bullet point in the ‘Things to consider’ column, which describes things users should consider about a feature. This string explains that AI features will send data to Brave servers in order to provide the feature’s respective benefit. The tone should be informative.">
     When you use organize tabs, the titles and URLs of your open tabs are sent to Brave to generate suggested tab groups
-  </message>
-
-  <!-- Experimental settings - Wallpaper Search -->
-  <message name="IDS_SETTINGS_EXPERIMENTAL_ADVANCED_FEATURE3_LABEL" desc="The primary description for the create themes with AI feature.">
-    Create themes with AI
-  </message>
-  <message name="IDS_SETTINGS_AI_THEMES_SUB_LABEL" desc="This string is the subheading of a setting for ‘Create themes with AI’. This subheading summarizes the user benefit of the Create Themes feature. This is an AI (artificial intelligence) feature that helps users create their own custom Brave themes/wallpapers by letting users select from a list of options. The tone should be motivating.">
-    Helps you design custom themes for Brave
   </message>
 
   <!-- Experimental settings - Compare -->
