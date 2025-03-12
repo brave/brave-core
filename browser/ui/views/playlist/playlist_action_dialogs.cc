@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <string>
 #include <utility>
+#include <variant>
 
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -487,7 +488,7 @@ PlaylistMoveDialog::PlaylistMoveDialog(PassKey, MoveParam param)
     : PlaylistMoveDialog(std::move(param)) {}
 
 PlaylistMoveDialog::PlaylistMoveDialog(
-    absl::variant<raw_ptr<playlist::PlaylistTabHelper>, MoveParam> source)
+    std::variant<raw_ptr<playlist::PlaylistTabHelper>, MoveParam> source)
     : source_(std::move(source)) {
   thumbnail_provider_ =
       is_from_tab_helper()
