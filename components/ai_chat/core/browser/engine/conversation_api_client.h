@@ -64,6 +64,9 @@ class ConversationAPIClient {
     RequestRewrite,
     SuggestedActions,
     UploadImage,
+    GetSuggestedTopicsForFocusTabs,
+    DedupeTopics,
+    GetFocusTabsForTopic,
     // TODO(petemill):
     // - Search in-progress?
     // - Sources?
@@ -76,6 +79,7 @@ class ConversationAPIClient {
     mojom::CharacterType role;
     ConversationEventType type;
     std::string content;
+    std::string topic;  // Used in GetFocusTabsForTopic event.
   };
 
   ConversationAPIClient(

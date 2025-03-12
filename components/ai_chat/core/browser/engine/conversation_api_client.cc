@@ -200,6 +200,10 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::RequestSuggestedActions,
             "requestSuggestedActions"},
            {ConversationEventType::SuggestedActions, "suggestedActions"},
+           {ConversationEventType::GetSuggestedTopicsForFocusTabs,
+            "suggestFocusTopics"},
+           {ConversationEventType::DedupeTopics, "dedupeFocusTopics"},
+           {ConversationEventType::GetFocusTabsForTopic, "classifyTabs"},
            {ConversationEventType::UploadImage, "uploadImage"}});
 
   base::Value::List events;
@@ -217,6 +221,11 @@ base::Value::List ConversationEventsToList(
     event_dict.Set("type", type_it->second);
 
     event_dict.Set("content", event.content);
+
+    if (event.type == ConversationEventType::GetFocusTabsForTopic) {
+      event_dict.Set("topic", event.topic);
+    }
+
     events.Append(std::move(event_dict));
   }
   return events;

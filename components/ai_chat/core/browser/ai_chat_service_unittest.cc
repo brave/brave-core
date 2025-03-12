@@ -32,6 +32,7 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
@@ -327,6 +328,22 @@ class AIChatServiceUnitTest : public testing::Test,
   void EmulateUserOptedIn() { ::ai_chat::SetUserOptedIn(&prefs_, true); }
 
   void EmulateUserOptedOut() { ::ai_chat::SetUserOptedIn(&prefs_, false); }
+
+  void TestGetEngineForTabOrganization(const std::string& expected_model_name,
+                                       mojom::PremiumStatus premium_status) {
+    auto* cred_manager = static_cast<MockAIChatCredentialManager*>(
+        ai_chat_service_->GetCredentialManagerForTesting());
+    EXPECT_CALL(*cred_manager, GetPremiumStatus(_))
+        .WillOnce([&](mojom::Service::GetPremiumStatusCallback callback) {
+          mojom::PremiumInfoPtr premium_info = mojom::PremiumInfo::New();
+          std::move(callback).Run(premium_status, std::move(premium_info));
+        });
+    ai_chat_service_->GetEngineForTabOrganization(base::DoNothing());
+    EXPECT_EQ(
+        ai_chat_service_->GetTabOrganizationEngineForTesting()->GetModelName(),
+        expected_model_name);
+    testing::Mock::VerifyAndClearExpectations(cred_manager);
+  }
 
  protected:
   base::test::TaskEnvironment task_environment_;
@@ -873,6 +890,15 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
         }));
     run_loop_2.Run();
   }
+}
+
+TEST_P(AIChatServiceUnitTest, GetEngineForTabOrganization) {
+  TestGetEngineForTabOrganization(kClaudeHaikuModelName,
+                                  mojom::PremiumStatus::Inactive);
+  TestGetEngineForTabOrganization(kClaudeSonnetModelName,
+                                  mojom::PremiumStatus::Active);
+  TestGetEngineForTabOrganization(kClaudeHaikuModelName,
+                                  mojom::PremiumStatus::Inactive);
 }
 
 }  // namespace ai_chat

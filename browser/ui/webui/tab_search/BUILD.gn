@@ -1,0 +1,30 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Curerntly this target is desktop only because chromium's
+# tab_search_page_handler is desktop only.
+assert(!is_android)
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "tab_search_page_handler_browsertest.cc" ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ai_chat",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/browser:test_support",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui:browser_navigator_params_headers",
+    "//chrome/test",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+    "//ui/base",
+  ]
+}

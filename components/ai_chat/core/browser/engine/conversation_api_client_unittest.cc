@@ -64,6 +64,44 @@ using Ticket = api_request_helper::APIRequestHelper::Ticket;
 
 namespace ai_chat {
 
+namespace {
+
+const std::pair<std::vector<ConversationAPIClient::ConversationEvent>,
+                std::string>&
+GetMockEventsAndExpectedEventsBody() {
+  static base::NoDestructor<std::pair<
+      std::vector<ConversationAPIClient::ConversationEvent>, std::string>>
+      mock_events_and_expected_events_body{
+          std::vector<ConversationAPIClient::ConversationEvent>{
+              {mojom::CharacterType::HUMAN, ConversationAPIClient::PageText,
+               "This is a page about The Mandalorian."},
+              {mojom::CharacterType::HUMAN, ConversationAPIClient::PageExcerpt,
+               "The Mandalorian"},
+              {mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage,
+               "Est-ce lié à une série plus large?"},
+              {mojom::CharacterType::HUMAN,
+               ConversationAPIClient::GetSuggestedTopicsForFocusTabs,
+               "GetSuggestedTopicsForFocusTabs"},
+              {mojom::CharacterType::HUMAN, ConversationAPIClient::DedupeTopics,
+               "DedupeTopics"},
+              {mojom::CharacterType::HUMAN,
+               ConversationAPIClient::GetFocusTabsForTopic,
+               "GetFocusTabsForTopics", "C++"},
+          },
+          R"([
+      {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
+      {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
+      {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"},
+      {"role": "user", "type": "suggestFocusTopics", "content": "GetSuggestedTopicsForFocusTabs"},
+      {"role": "user", "type": "dedupeFocusTopics", "content": "DedupeTopics"},
+      {"role": "user", "type": "classifyTabs", "content": "GetFocusTabsForTopics", "topic": "C++"}
+    ])"};
+
+  return *mock_events_and_expected_events_body;
+}
+
+}  // namespace
+
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
 
 class MockCallbacks {
@@ -198,18 +236,10 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
   //  - ConversationEvent is correctly formatted into JSON
   //  - completion response is parsed and passed through to the callbacks
   std::string expected_crediential = "unit_test_credential";
-  std::vector<ConversationAPIClient::ConversationEvent> events = {
-      {mojom::CharacterType::HUMAN, ConversationAPIClient::PageText,
-       "This is a page about The Mandalorian."},
-      {mojom::CharacterType::HUMAN, ConversationAPIClient::PageExcerpt,
-       "The Mandalorian"},
-      {mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage,
-       "Est-ce lié à une série plus large?"}};
-  std::string expected_events_body = R"([
-    {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
-    {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
-    {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"}
-  ])";
+  const std::vector<ConversationAPIClient::ConversationEvent>& events =
+      GetMockEventsAndExpectedEventsBody().first;
+  const std::string& expected_events_body =
+      GetMockEventsAndExpectedEventsBody().second;
   std::string expected_system_language = "en_KY";
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
       expected_system_language);
@@ -406,18 +436,10 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
   //  - ConversationEvent is correctly formatted into JSON
   //  - completion response is parsed and passed through to the callbacks
   std::string expected_crediential = "unit_test_credential";
-  std::vector<ConversationAPIClient::ConversationEvent> events = {
-      {mojom::CharacterType::HUMAN, ConversationAPIClient::PageText,
-       "This is a page about The Mandalorian."},
-      {mojom::CharacterType::HUMAN, ConversationAPIClient::PageExcerpt,
-       "The Mandalorian"},
-      {mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage,
-       "Est-ce lié à une série plus large?"}};
-  std::string expected_events_body = R"([
-    {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
-    {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
-    {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"}
-  ])";
+  const std::vector<ConversationAPIClient::ConversationEvent>& events =
+      GetMockEventsAndExpectedEventsBody().first;
+  const std::string& expected_events_body =
+      GetMockEventsAndExpectedEventsBody().second;
   std::string expected_system_language = "en_KY";
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
       expected_system_language);

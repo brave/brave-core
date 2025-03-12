@@ -49,4 +49,8 @@ bool EngineConsumer::CanPerformCompletionRequest(
   return true;
 }
 
+const std::string& EngineConsumer::GetModelName() const {
+  return model_name_;
+}
+
 }  // namespace ai_chat

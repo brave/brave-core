@@ -1523,6 +1523,12 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_DESC" desc="The description for settings option to show Leo in context menu">
     Leo will appear in the context menu when you right-click on a website. This will send context from the current web page to Leo.
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_LABEL" desc="The text for settings option to enable tab focus mode">
+    Tab Focus Mode
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_DESC" desc="The description for settings option to enable tab focus mode">
+    Enable tab organization in Tab Search page. When opened, this will automatically send the titles and origins of all non-private tabs to Leo to classify them. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL" desc="The text for settings option">
     Show suggested prompts in the conversation
   </message>
@@ -1549,6 +1555,15 @@ Leo AI. This action can't be undone.
   </message>
   <message name="IDS_SETTINGS_AI_CHAT_CLEAR_HISTORY_DATA_SUBLABEL" desc="Label description for checkbox to select AI assistant conversations for deletion when deleting browser data">
     Chat history
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_LABEL" desc="Label for the about Leo assistant section">
+    About Leo AI
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_DESC_1" desc="Description for the about Leo assistant section">
+    Brave Leo provides privacy-first AI chat and other AI-powered interfaces in the browser. Leo never learns from your data or uses it for model training. All requests are proxied through an anonymizing server.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_DESC_2" desc="Description for learning more about Leo privacy policy">
+    Read more about how Brave protects your use of AI in Leo's privacy policy. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_MODEL_SELECTION_LABEL" desc="Label for selecting default model">
     Default model for new conversations

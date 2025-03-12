@@ -53,8 +53,6 @@ constexpr char kURLLearnMoreAboutStorage[] =
     "32663367857549-How-do-I-use-Chat-History-in-Brave-Leo";
 
 #if !BUILDFLAG(IS_ANDROID)
-constexpr char kURLGoPremium[] =
-    "https://account.brave.com/account/?intent=checkout&product=leo";
 constexpr char kURLManagePremium[] = "https://account.brave.com/";
 #endif
 }  // namespace
@@ -251,7 +249,7 @@ void AIChatUIPageHandler::OpenStorageSupportUrl() {
 
 void AIChatUIPageHandler::GoPremium() {
 #if !BUILDFLAG(IS_ANDROID)
-  OpenURL(GURL(kURLGoPremium));
+  OpenURL(GURL(kLeoGoPremiumUrl));
 #else
   auto* contents_to_navigate = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()

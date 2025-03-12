@@ -34,6 +34,14 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     text-transform: uppercase;
   }
 
+  .header {
+    padding: var(--leo-spacing-2xl);
+  }
+
+  .main-header {
+    font: var(--leo-font-heading-h4);
+  }
+
   leo-dropdown {
     min-width: 240px;
   }
@@ -42,6 +50,17 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     padding: var(--leo-spacing-m);
   }
 </style>
+
+<div class="settings-box header">
+  <div class="flex">
+    <div class="main-header">$i18n{braveLeoAssistantAboutLeoLabel}</div>
+    <div class="label secondary">
+      <p>$i18n{braveLeoAssistantAboutLeoDesc1}</p>
+      <p>$i18nRaw{braveLeoAssistantAboutLeoDesc2}</p>
+    </div>
+  </div>
+</div>
+
 <settings-toggle-button class="cr-row hr"
   pref="[[itemPref_(leoAssistantShowOnToolbarPref_)]]"
   label="$i18n{braveLeoAssistantShowIconOnToolbarLabel}"
@@ -51,6 +70,12 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   pref="{{prefs.brave.ai_chat.context_menu_enabled}}"
   label="$i18n{braveLeoAssistantShowInContextMenuLabel}"
   sub-label="$i18n{braveLeoAssistantShowInContextMenuDesc}">
+</settings-toggle-button>
+<settings-toggle-button class="cr-row hr"
+  pref="{{prefs.brave.ai_chat.tab_organization_enabled}}"
+  label="$i18n{braveLeoAssistantTabOrganizationLabel}"
+  sub-label-with-link="$i18n{braveLeoAssistantTabOrganizationDesc}"
+  on-sub-label-link-clicked="openTabOrganizationLearnMore_">
 </settings-toggle-button>
 <div class="settings-box">
   <div class="flex cr-padded-text">

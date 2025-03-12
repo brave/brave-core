@@ -34,6 +34,9 @@ inline constexpr char kLeoModelSupportUrl[] =
     "https://support.brave.com/hc/en-us/articles/26727364100493-"
     "What-are-the-differences-between-Leo-s-AI-Models";
 
+inline constexpr char kLeoGoPremiumUrl[] =
+    "https://account.brave.com/account/?intent=checkout&product=leo";
+
 // Upon registering a custom model, users have the ability to explicitly
 // provide a context size (in tokens). When present, we'll use this value to
 // determine the max associated content length (in chars). We will assume 4
@@ -44,6 +47,15 @@ inline constexpr size_t kDefaultCharsPerToken = 4;
 inline constexpr float kMaxContentLengthThreshold = 0.6f;
 inline constexpr size_t kReservedTokensForPrompt = 300;
 inline constexpr size_t kReservedTokensForMaxNewTokens = 400;
+
+// Model key for Claude Haiku model.
+inline constexpr char kClaudeHaikuModelKey[] = "chat-claude-haiku";
+// Model key for Claude Sonnet model.
+inline constexpr char kClaudeSonnetModelKey[] = "chat-claude-sonnet";
+// Model name to send to the server for Claude Haiku model.
+inline constexpr char kClaudeHaikuModelName[] = "claude-3-haiku";
+// Model name to send to the server for Claude Sonnet model.
+inline constexpr char kClaudeSonnetModelName[] = "claude-3-sonnet";
 
 }  // namespace ai_chat
 

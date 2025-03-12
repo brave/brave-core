@@ -13,10 +13,7 @@
 
 namespace ai_chat::features {
 
-BASE_FEATURE(kAIChat,
-             "AIChat",
-             base::FEATURE_ENABLED_BY_DEFAULT
-);
+BASE_FEATURE(kAIChat, "AIChat", base::FEATURE_ENABLED_BY_DEFAULT);
 const base::FeatureParam<std::string> kAIModelsDefaultKey{
     &kAIChat, "default_model", "chat-leo-expanded"};
 const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey{
@@ -98,6 +95,14 @@ BASE_FEATURE(kPageContextEnabledInitially,
 
 bool IsPageContextEnabledInitially() {
   return base::FeatureList::IsEnabled(features::kPageContextEnabledInitially);
+}
+
+BASE_FEATURE(kTabOrganization,
+             "BraveTabOrganization",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+bool IsTabOrganizationEnabled() {
+  return base::FeatureList::IsEnabled(features::kTabOrganization);
 }
 
 }  // namespace ai_chat::features

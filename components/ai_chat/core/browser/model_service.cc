@@ -121,7 +121,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
     {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Anthropic";
-      options->name = "claude-3-haiku";
+      options->name = kClaudeHaikuModelName;
       options->category = mojom::ModelCategory::CHAT;
       options->access = kFreemiumAccess;
       options->engine_type =
@@ -131,7 +131,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->long_conversation_warning_character_limit = 320000;
 
       auto model = mojom::Model::New();
-      model->key = "chat-claude-haiku";
+      model->key = kClaudeHaikuModelKey;
       model->display_name = "Claude Haiku";
       model->vision_support = false;
       model->options =
@@ -143,7 +143,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
     {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Anthropic";
-      options->name = "claude-3-sonnet";
+      options->name = kClaudeSonnetModelName;
       options->category = mojom::ModelCategory::CHAT;
       options->access = mojom::ModelAccess::PREMIUM;
       options->engine_type =
@@ -153,7 +153,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->long_conversation_warning_character_limit = 320000;
 
       auto model = mojom::Model::New();
-      model->key = "chat-claude-sonnet";
+      model->key = kClaudeSonnetModelKey;
       model->display_name = "Claude Sonnet";
       model->vision_support = true;
       model->options =
@@ -314,7 +314,7 @@ ModelService::ModelService(PrefService* prefs_service)
     // First set to an equivalent model that is available to all users. When
     // we are told about premium status, we can switch to the premium
     // equivalent.
-    SetDefaultModelKey("chat-claude-haiku");
+    SetDefaultModelKey(kClaudeHaikuModelKey);
     is_migrating_claude_instant_ = true;
   }
 }

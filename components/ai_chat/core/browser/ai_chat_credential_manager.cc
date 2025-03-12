@@ -61,6 +61,13 @@ void AIChatCredentialManager::GetPremiumStatus(
   base::Time now = base::Time::Now();
   // First check for a valid credential in the cache.
   bool credential_in_cache = false;
+
+  // |pref_service_| can be null in tests.
+  if (!prefs_service_) {
+    std::move(callback).Run(mojom::PremiumStatus::Inactive, nullptr);
+    return;
+  }
+
   const auto& cached_creds_dict =
       prefs_service_->GetDict(prefs::kBraveChatPremiumCredentialCache);
   for (const auto [credential, expires_at_value] : cached_creds_dict) {

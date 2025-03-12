@@ -171,6 +171,7 @@ EngineConsumerClaudeRemote::EngineConsumerClaudeRemote(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager) {
   DCHECK(!model_options.name.empty());
+  model_name_ = model_options.name;
   base::flat_set<std::string_view> stop_sequences(kStopSequences.begin(),
                                                   kStopSequences.end());
   api_ = std::make_unique<RemoteCompletionClient>(
@@ -299,6 +300,18 @@ void EngineConsumerClaudeRemote::SanitizeInput(std::string& input) {
   base::ReplaceSubstringsAfterOffset(&input, 0, "</question>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "<excerpt>", "");
   base::ReplaceSubstringsAfterOffset(&input, 0, "</excerpt>", "");
+}
+
+void EngineConsumerClaudeRemote::GetSuggestedTopics(
+    const std::vector<Tab>& tabs,
+    GetSuggestedTopicsCallback callback) {
+  std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+}
+
+void EngineConsumerClaudeRemote::GetFocusTabs(const std::vector<Tab>& tabs,
+                                              const std::string& topic,
+                                              GetFocusTabsCallback callback) {
+  std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
 }
 
 }  // namespace ai_chat
