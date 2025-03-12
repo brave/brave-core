@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 import android.widget.GridLayout;
 
 /** The most visited tiles layout. */
-public class BraveMostVisitedTilesLayoutBase extends GridLayout {
+public class BraveMostVisitedTilesLayoutBase extends TilesLinearLayout {
     private static int FIXED_COLUMNS_COUNT = 4;
 
     private boolean mUseFixedLayout;
