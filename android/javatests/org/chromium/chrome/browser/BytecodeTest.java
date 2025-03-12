@@ -2388,6 +2388,10 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesLayoutBase"));
         Assert.assertTrue(
                 checkSuperName(
+                        "org/chromium/chrome/browser/suggestions/tile/TilesLinearLayout",
+                        "android/widget/GridLayout"));
+        Assert.assertTrue(
+                checkSuperName(
                         "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                         "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessorBase"));
         Assert.assertTrue(
