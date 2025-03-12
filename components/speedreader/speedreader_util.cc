@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <utility>
+#include <variant>
 
 #include "base/metrics/histogram_macros.h"
 #include "base/task/task_traits.h"
@@ -47,49 +48,49 @@ DistillReverting::DistillReverting(const Distilled& state,
     : ViewOriginal(reason, state.reason == Distilled::Reason::kAutomatic) {}
 
 bool IsViewOriginal(const State& state) {
-  return absl::holds_alternative<ViewOriginal>(state);
+  return std::holds_alternative<ViewOriginal>(state);
 }
 
 bool IsDistilling(const State& state) {
-  return absl::holds_alternative<Distilling>(state);
+  return std::holds_alternative<Distilling>(state);
 }
 
 bool IsDistilled(const State& state) {
-  return absl::holds_alternative<Distilled>(state);
+  return std::holds_alternative<Distilled>(state);
 }
 
 bool IsDistillReverting(const State& state) {
-  return absl::holds_alternative<DistillReverting>(state);
+  return std::holds_alternative<DistillReverting>(state);
 }
 
 bool IsNotDistillable(const State& state) {
   return IsViewOriginal(state) &&
-         absl::get<DistillStates::ViewOriginal>(state).reason ==
+         std::get<DistillStates::ViewOriginal>(state).reason ==
              DistillStates::ViewOriginal::Reason::kNotDistillable;
 }
 
 bool IsDistillable(const State& state) {
   return IsViewOriginal(state) &&
-         absl::get<DistillStates::ViewOriginal>(state).reason !=
+         std::get<DistillStates::ViewOriginal>(state).reason !=
              DistillStates::ViewOriginal::Reason::kNotDistillable;
 }
 
 bool IsDistilledAutomatically(const State& state) {
-  if (const auto* d = absl::get_if<Distilled>(&state)) {
+  if (const auto* d = std::get_if<Distilled>(&state)) {
     return d->reason == Distilled::Reason::kAutomatic;
   }
   return false;
 }
 
 bool Transit(State& state, const State& desired) {
-  if (absl::holds_alternative<None>(state)) {
+  if (std::holds_alternative<None>(state)) {
     state = desired;
     return false;
   }
 
   if (IsViewOriginal(state)) {
     if (IsDistillReverting(desired)) {
-      state = ViewOriginal(absl::get<DistillReverting>(desired));
+      state = ViewOriginal(std::get<DistillReverting>(desired));
       return false;
     }
     if (IsDistilling(desired)) {
@@ -97,7 +98,7 @@ bool Transit(State& state, const State& desired) {
       return true;
     }
     if (IsDistilled(desired)) {
-      state = Distilling(absl::get<Distilled>(desired));
+      state = Distilling(std::get<Distilled>(desired));
       return true;
     }
     DCHECK(IsViewOriginal(desired));
@@ -107,19 +108,19 @@ bool Transit(State& state, const State& desired) {
 
   if (IsDistillReverting(state)) {
     if (IsViewOriginal(desired)) {
-      state = ViewOriginal(absl::get<DistillReverting>(state));
+      state = ViewOriginal(std::get<DistillReverting>(state));
       return false;
     }
   }
 
   if (IsDistilling(state)) {
     if (IsDistilled(desired)) {
-      const auto& d = absl::get<Distilled>(desired);
+      const auto& d = std::get<Distilled>(desired);
       if (d.result == DistillationResult::kFail) {
         state = ViewOriginal(ViewOriginal::Reason::kError, false);
         return false;
       }
-      state = Distilled(absl::get<Distilling>(state), d.result);
+      state = Distilled(std::get<Distilling>(state), d.result);
       return false;
     }
     if (IsDistillReverting(desired) || IsDistilling(desired) ||
@@ -136,8 +137,8 @@ bool Transit(State& state, const State& desired) {
     }
     if (IsViewOriginal(desired)) {
       state = DistillReverting(
-          absl::get<ViewOriginal>(desired).reason,
-          absl::get<Distilled>(state).reason == Distilled::Reason::kAutomatic);
+          std::get<ViewOriginal>(desired).reason,
+          std::get<Distilled>(state).reason == Distilled::Reason::kAutomatic);
       return true;
     }
     if (IsDistilled(desired) || IsDistilling(desired)) {
