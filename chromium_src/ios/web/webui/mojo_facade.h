@@ -10,10 +10,9 @@
 
 #include "url/gurl.h"
 
-#define HandleMojoMessage                                                    \
-  Dummy();                                                                   \
-  bool IsWebUIMessageAllowedForFrame(WKFrameInfo* frame, const GURL& origin, \
-                                     NSString** prompt);                     \
+#define HandleMojoMessage                                                   \
+  Dummy();                                                                  \
+  bool IsWebUIMessageAllowedForFrame(const GURL& origin, NSString* prompt); \
   std::string HandleMojoMessage
 
 #include "src/ios/web/webui/mojo_facade.h"  // IWYU pragma: export

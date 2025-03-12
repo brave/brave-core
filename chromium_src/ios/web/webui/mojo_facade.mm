@@ -6,14 +6,13 @@
 #include "src/ios/web/webui/mojo_facade.mm"
 
 namespace web {
-bool MojoFacade::IsWebUIMessageAllowedForFrame(WKFrameInfo* frame,
-                                               const GURL& origin,
-                                               NSString** prompt) {
+bool MojoFacade::IsWebUIMessageAllowedForFrame(const GURL& origin,
+                                               NSString* prompt) {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  CHECK(prompt && *prompt);
+  CHECK(prompt);
 
   auto name_and_args =
-      GetMessageNameAndArguments(base::SysNSStringToUTF8(*prompt));
+      GetMessageNameAndArguments(base::SysNSStringToUTF8(prompt));
 
   // If the scheme is untrusted
   if (name_and_args.name == "Mojo.bindInterface" &&
@@ -23,17 +22,12 @@ bool MojoFacade::IsWebUIMessageAllowedForFrame(WKFrameInfo* frame,
     CHECK(interface_name);
 
     // Check if the requested interface is registered for this origin
-    bool is_allowed =
-        web_state_->GetInterfaceBinderForMainFrame()->IsAllowedForOrigin(
-            origin, *interface_name);
-
-    // If the interface is not allowed, set the prompt to invalid.
-    // HandleMojoMessage will not bind it.
-    if (!is_allowed) {
-      *prompt = @"{\"name\":\"Mojo.invalidInterface\",\"args\":{}}";
-    }
+    return web_state_->GetInterfaceBinderForMainFrame()->IsAllowedForOrigin(
+        origin, *interface_name);
   }
 
+  // The interface is not requested from an "untrusted" origin,
+  // so let the normal code-flow handle it
   return true;
 }
 
