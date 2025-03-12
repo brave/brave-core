@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "url/origin.h"
+
 namespace ai_chat {
 
 struct SearchQuerySummary {
@@ -15,6 +17,19 @@ struct SearchQuerySummary {
   std::string summary;
 
   bool operator==(const SearchQuerySummary& other) const = default;
+};
+
+struct Tab {
+  std::string id;
+  std::string title;
+  url::Origin origin;
+
+  Tab(const std::string& id,
+      const std::string& title,
+      const url::Origin& origin)
+      : id(id), title(title), origin(origin) {}
+
+  bool operator==(const Tab& other) const = default;
 };
 
 }  // namespace ai_chat

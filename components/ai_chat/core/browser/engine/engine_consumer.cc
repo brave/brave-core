@@ -49,4 +49,17 @@ bool EngineConsumer::CanPerformCompletionRequest(
   return true;
 }
 
+void EngineConsumer::GetSuggestedTopics(const std::vector<Tab>& tabs,
+                                        GetSuggestedTopicsCallback callback) {
+  NOTIMPLEMENTED();
+  std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+}
+
+void EngineConsumer::GetFocusTabs(const std::vector<Tab>& tabs,
+                                  const std::string& topic,
+                                  GetFocusTabsCallback callback) {
+  NOTIMPLEMENTED();
+  std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+}
+
 }  // namespace ai_chat

@@ -17,6 +17,7 @@ enum CharacterType {
 
 enum APIError {
   None,
+  InternalError,
   ConnectionIssue,
   RateLimitReached,
   ContextLimitReached,
