@@ -945,3 +945,5 @@
 -keep class org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerLegacy {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.suggestions.tile.TilesLinearLayout { *; }
