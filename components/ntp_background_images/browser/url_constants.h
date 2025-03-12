@@ -28,10 +28,6 @@ inline constexpr char kLogoKey[] = "logo";
 inline constexpr char kCampaignIdKey[] = "campaignId";
 inline constexpr char kCampaignMetricsKey[] = "metrics";
 
-inline constexpr char kWallpaperConditionMatchersKey[] = "conditionMatchers";
-inline constexpr char kWallpaperConditionMatcherPrefPathKey[] = "prefPath";
-inline constexpr char kWallpaperConditionMatcherKey[] = "condition";
-
 inline constexpr char kImagesKey[] = "images";
 inline constexpr char kIsBackgroundKey[] = "isBackground";
 inline constexpr char kImageSourceKey[] = "source";

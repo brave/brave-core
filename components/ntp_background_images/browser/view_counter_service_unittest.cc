@@ -651,7 +651,6 @@ TEST_F(ViewCounterServiceTest, GetNewTabTakeoverWallpaperForRewardsUser) {
   EXPECT_EQ(base::test::ParseJsonDict(R"JSON(
       {
         "campaignId": "fb7ee174-5430-4fb9-8e97-29bf14e8d828",
-        "conditionMatchers": [],
         "creativeInstanceId": "c0d61af3-3b85-4af4-a3cc-cf1b3dd40e70",
         "isBackground": false,
         "isSponsored": true,
