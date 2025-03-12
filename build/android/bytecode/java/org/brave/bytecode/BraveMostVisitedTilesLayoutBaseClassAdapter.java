@@ -18,5 +18,14 @@ public class BraveMostVisitedTilesLayoutBaseClassAdapter extends BraveClassVisit
 
         changeSuperName(
                 sMostVisitedTilesLayoutClassName, sBraveMostVisitedTilesLayoutBaseClassName);
+
+        changeSuperName(
+                "org/chromium/chrome/browser/suggestions/tile/TilesLinearLayout",
+                "android/widget/GridLayout");
+
+        deleteMethod(sBraveMostVisitedTilesLayoutBaseClassName, "getColumnCount");
+        deleteMethod(sBraveMostVisitedTilesLayoutBaseClassName, "setColumnCount");
+        deleteMethod(sBraveMostVisitedTilesLayoutBaseClassName, "getRowCount");
+        deleteMethod(sBraveMostVisitedTilesLayoutBaseClassName, "setRowCount");
     }
 }

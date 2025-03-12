@@ -970,3 +970,5 @@
 -keep class org.chromium.chrome.browser.quickactionsearchwidget.BraveQuickActionSearchWidgetProvider {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.suggestions.tile.TilesLinearLayout { *; }
