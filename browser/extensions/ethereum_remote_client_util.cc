@@ -32,32 +32,20 @@ bool HasInfuraProjectID() {
     return true;
   }
 
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  bool has_project_id = env->HasVar("BRAVE_INFURA_PROJECT_ID");
-
-  return has_project_id;
+  auto env = base::Environment::Create();
+  return env->HasVar("BRAVE_INFURA_PROJECT_ID");
 }
 
 std::string GetInfuraProjectID() {
-  std::string project_id(BUILDFLAG(BRAVE_INFURA_PROJECT_ID));
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-
-  if (env->HasVar("BRAVE_INFURA_PROJECT_ID")) {
-    env->GetVar("BRAVE_INFURA_PROJECT_ID", &project_id);
-  }
-
-  return project_id;
+  auto env = base::Environment::Create();
+  return env->GetVar("BRAVE_INFURA_PROJECT_ID")
+      .value_or(BUILDFLAG(BRAVE_INFURA_PROJECT_ID));
 }
 
 std::string GetBraveKey() {
-  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-
-  if (env->HasVar("BRAVE_SERVICES_KEY")) {
-    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
-  }
-
-  return brave_key;
+  auto env = base::Environment::Create();
+  return env->GetVar("BRAVE_SERVICES_KEY")
+      .value_or(BUILDFLAG(BRAVE_SERVICES_KEY));
 }
 
 }  // namespace extensions

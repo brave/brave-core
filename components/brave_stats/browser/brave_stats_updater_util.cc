@@ -121,12 +121,9 @@ base::Time GetYMDAsDate(std::string_view ymd) {
 }
 
 std::string GetAPIKey() {
-  std::string api_key = BUILDFLAG(BRAVE_STATS_API_KEY);
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  if (env->HasVar("BRAVE_STATS_API_KEY"))
-    env->GetVar("BRAVE_STATS_API_KEY", &api_key);
-
-  return api_key;
+  auto env = base::Environment::Create();
+  return env->GetVar("BRAVE_STATS_API_KEY")
+      .value_or(BUILDFLAG(BRAVE_STATS_API_KEY));
 }
 
 // This is a helper method for dealing with timestamps set by other services in

@@ -128,9 +128,9 @@ std::string ReadPromoCode(const base::FilePath& promo_code_file) {
 }
 
 std::string BuildReferralEndpoint(const std::string& path) {
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string referral_server;
-  env->GetVar("BRAVE_REFERRALS_SERVER", &referral_server);
+  auto env = base::Environment::Create();
+  std::string referral_server =
+      env->GetVar("BRAVE_REFERRALS_SERVER").value_or(std::string());
   if (referral_server.empty()) {
     auto referral_domain = brave_domains::GetServicesDomain("usage-ping");
     referral_server = base::StrCat(
@@ -401,9 +401,9 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
   // Only check for referral finalization after 30 days have elapsed
   // since first run.
   uint64_t check_time = 30 * 24 * 60 * 60;
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string check_time_str;
-  env->GetVar("BRAVE_REFERRALS_CHECK_TIME", &check_time_str);
+  auto env = base::Environment::Create();
+  std::string check_time_str =
+      env->GetVar("BRAVE_REFERRALS_CHECK_TIME").value_or(std::string());
   if (!check_time_str.empty())
     base::StringToUint64(check_time_str, &check_time);
 
@@ -435,9 +435,9 @@ void BraveReferralsService::MaybeDeletePromoCodePref() const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   uint64_t delete_time = 90 * 24 * 60 * 60;
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string delete_time_str;
-  env->GetVar("BRAVE_REFERRALS_DELETE_TIME", &delete_time_str);
+  auto env = base::Environment::Create();
+  std::string delete_time_str =
+      env->GetVar("BRAVE_REFERRALS_DELETE_TIME").value_or(std::string());
   if (!delete_time_str.empty())
     base::StringToUint64(delete_time_str, &delete_time);
 
