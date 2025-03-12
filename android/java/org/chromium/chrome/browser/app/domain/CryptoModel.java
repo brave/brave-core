@@ -233,8 +233,7 @@ public class CryptoModel {
     }
 
     public void isNftDiscoveryEnabled(Callback1<Boolean> callback) {
-        mBraveWalletService.getNftDiscoveryEnabled(
-                isNftDiscoveryEnabled -> { callback.call(isNftDiscoveryEnabled); });
+        mBraveWalletService.getNftDiscoveryEnabled(callback::call);
     }
 
     /*

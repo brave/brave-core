@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
@@ -21,6 +22,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
@@ -29,6 +31,8 @@ import java.util.Set;
 
 /** Onboarding fragment for Brave Wallet which shows the spinner while wallet is created/restored */
 public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragment {
+
+    private static final String TAG = "CreatingWalletFrag";
 
     private static final int NEXT_PAGE_DELAY_MS = 700;
     private static final String OVERRIDE_PREVIOUS_WALLET_ARG = "overridePreviousWallet";
@@ -92,6 +96,15 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
         }
     }
 
+    private void setupWalletModel() {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.setupWalletModel();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "setupWalletModel", e);
+        }
+    }
+
     private void restoreWallet(@NonNull final KeyringModel keyringModel) {
         JsonRpcService jsonRpcService = getJsonRpcService();
         KeyringService keyringService = getKeyringService();
@@ -113,6 +126,7 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
                                 keyringService.notifyWalletBackupComplete();
                             }
                             Utils.setCryptoOnboarding(false);
+                            setupWalletModel();
                             goToNextPage();
                         } else {
                             Toast.makeText(
@@ -144,6 +158,7 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
                         }
 
                         Utils.setCryptoOnboarding(false);
+                        setupWalletModel();
                         goToNextPage();
                     });
         }
