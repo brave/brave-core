@@ -10,7 +10,7 @@
 
 #define IsAppSpecificURL(URL) \
   IsAppSpecificURL(URL) &&    \
-      self.mojoFacade->IsWebUIMessageAllowedForFrame(frame, origin, &prompt)
+      self.mojoFacade->IsWebUIMessageAllowedForFrame(origin, prompt)
 
 #include "src/ios/web/web_state/ui/crw_wk_ui_handler.mm"
 
