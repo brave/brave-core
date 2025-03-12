@@ -16,6 +16,7 @@ public class BraveTemplateUrlService extends TemplateUrlService {
 
     public BraveTemplateUrlService(long nativeTemplateUrlServiceAndroid) {
         super(nativeTemplateUrlServiceAndroid);
+        mNativeTemplateUrlServiceAndroid = nativeTemplateUrlServiceAndroid;
         Log.e(
                 "brave_search",
                 "BraveTemplateUrlService : nativeTemplateUrlServiceAndroid : "
@@ -23,7 +24,7 @@ public class BraveTemplateUrlService extends TemplateUrlService {
     }
 
     public boolean addSearchEngine(String title, String keyword, String url) {
-        Log.e("brave_search", "addSearchEngine");
+        Log.e("brave_search", "addSearchEngine : " + mNativeTemplateUrlServiceAndroid);
         return BraveTemplateUrlServiceJni.get()
                 .addSearchEngine(mNativeTemplateUrlServiceAndroid, title, keyword, url);
     }
