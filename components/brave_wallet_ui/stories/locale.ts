@@ -1543,6 +1543,7 @@ provideStrings({
   braveWalletZCashPendingBalanceTitle:
     'Pending balance (more confirmations required): $1',
   braveWalletSyncAccountButton: 'Sync account',
+  braveWalletSyncAccountButtonInProgress: 'Syncing...',
   braveWalletSyncAccountName: 'Sync $1',
   braveWalletInitializing: 'Initializing...',
   braveWalletProcessingBlock: 'Processing block:',
