@@ -27,6 +27,7 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
+#include "brave/components/brave_ads/core/internal/legacy_migration/legacy_migration.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
@@ -395,6 +396,18 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
                                            bool success) {
   if (!success) {
     BLOG(0, "Failed to create or open database");
+    return FailedToInitialize(std::move(callback));
+  }
+
+  MigrateState(base::BindOnce(&AdsImpl::MigrateStateCallback,
+                              weak_factory_.GetWeakPtr(),
+                              std::move(mojom_wallet), std::move(callback)));
+}
+
+void AdsImpl::MigrateStateCallback(mojom::WalletInfoPtr mojom_wallet,
+                                   InitializeCallback callback,
+                                   bool success) {
+  if (!success) {
     return FailedToInitialize(std::move(callback));
   }
 
