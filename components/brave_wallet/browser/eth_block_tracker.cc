@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -22,13 +21,14 @@ EthBlockTracker::~EthBlockTracker() = default;
 
 void EthBlockTracker::Start(const std::string& chain_id,
                             base::TimeDelta interval) {
-  if (!base::Contains(timers_, chain_id)) {
-    timers_[chain_id] = std::make_unique<base::RepeatingTimer>();
+  auto& timer = timers_[chain_id];
+  if (!timer) {
+    timer = std::make_unique<base::RepeatingTimer>();
   }
-  timers_[chain_id]->Start(
-      FROM_HERE, interval,
-      base::BindRepeating(&EthBlockTracker::GetBlockNumber,
-                          weak_factory_.GetWeakPtr(), chain_id));
+
+  timer->Start(FROM_HERE, interval,
+               base::BindRepeating(&EthBlockTracker::GetBlockNumber,
+                                   weak_factory_.GetWeakPtr(), chain_id));
 }
 
 void EthBlockTracker::AddObserver(EthBlockTracker::Observer* observer) {
@@ -40,10 +40,11 @@ void EthBlockTracker::RemoveObserver(EthBlockTracker::Observer* observer) {
 }
 
 uint256_t EthBlockTracker::GetCurrentBlock(const std::string& chain_id) const {
-  if (!base::Contains(current_block_map_, chain_id)) {
+  auto it = current_block_map_.find(chain_id);
+  if (it == current_block_map_.end()) {
     return 0;
   }
-  return current_block_map_.at(chain_id);
+  return it->second;
 }
 
 void EthBlockTracker::CheckForLatestBlock(
