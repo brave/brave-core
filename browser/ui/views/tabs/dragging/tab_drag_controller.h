@@ -45,8 +45,6 @@ class TabDragController : public TabDragControllerChromium {
   [[nodiscard]] Liveness ContinueDragging(
       const gfx::Point& point_in_screen) override;
 
-  void InitDragData(TabSlotView* view, TabDragData* drag_data) override;
-
  private:
   gfx::Vector2d GetVerticalTabStripWidgetOffset();
 
