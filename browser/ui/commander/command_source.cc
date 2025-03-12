@@ -10,6 +10,8 @@
 
 #include "brave/browser/ui/commander/command_source.h"
 
+#include <variant>
+
 namespace commander {
 
 CommandItem::CommandItem() = default;
@@ -22,7 +24,7 @@ CommandItem::CommandItem(CommandItem&& other) = default;
 CommandItem& CommandItem::operator=(CommandItem&& other) = default;
 
 CommandItem::Type CommandItem::GetType() {
-  if (absl::get_if<CompositeCommand>(&command)) {
+  if (std::get_if<CompositeCommand>(&command)) {
     return kComposite;
   }
   return kOneShot;

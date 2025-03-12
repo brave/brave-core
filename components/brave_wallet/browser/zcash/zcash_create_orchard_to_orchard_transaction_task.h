@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_ORCHARD_TO_ORCHARD_TRANSACTION_TASK_H_
 
 #include <string>
+#include <variant>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
@@ -24,7 +25,7 @@ class ZCashCreateOrchardToOrchardTransactionTask {
       ZCashWalletService::CreateTransactionCallback;
 
   ZCashCreateOrchardToOrchardTransactionTask(
-      absl::variant<
+      std::variant<
           base::PassKey<class ZCashCreateOrchardToOrchardTransactionTaskTest>,
           base::PassKey<ZCashWalletService>> pass_key,
       ZCashWalletService& zcash_wallet_service,

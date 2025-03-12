@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_DECODED_BLOCKS_BUNDLE_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_DECODED_BLOCKS_BUNDLE_IMPL_H_
 
+#include <variant>
 #include <vector>
 
 #include "base/types/pass_key.h"
@@ -20,8 +21,8 @@ class OrchardDecodedBlocksBundleImpl : public OrchardDecodedBlocksBundle {
  public:
   ~OrchardDecodedBlocksBundleImpl() override;
   OrchardDecodedBlocksBundleImpl(
-      absl::variant<base::PassKey<class OrchardBlockDecoder>,
-                    base::PassKey<class TestingDecodedBundleBuilderImpl>>,
+      std::variant<base::PassKey<class OrchardBlockDecoder>,
+                   base::PassKey<class TestingDecodedBundleBuilderImpl>>,
       ::rust::Box<CxxOrchardDecodedBlocksBundle>);
 
   std::optional<std::vector<::brave_wallet::OrchardNote>> GetDiscoveredNotes()

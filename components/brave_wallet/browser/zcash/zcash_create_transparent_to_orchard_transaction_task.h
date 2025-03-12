@@ -10,6 +10,7 @@
 #include <set>
 #include <string>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
@@ -27,7 +28,7 @@ namespace brave_wallet {
 class ZCashCreateTransparentToOrchardTransactionTask {
  public:
   ZCashCreateTransparentToOrchardTransactionTask(
-      absl::variant<
+      std::variant<
           base::PassKey<
               class ZCashCreateTransparentToOrchardTransactionTaskTest>,
           base::PassKey<ZCashWalletService>> pass_key,

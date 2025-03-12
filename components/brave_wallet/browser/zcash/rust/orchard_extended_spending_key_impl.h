@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_EXTENDED_SPENDING_KEY_IMPL_H_
 
 #include <memory>
+#include <variant>
 
 #include "base/types/pass_key.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
@@ -20,8 +21,8 @@ namespace brave_wallet::orchard {
 class OrchardExtendedSpendingKeyImpl : public OrchardExtendedSpendingKey {
  public:
   OrchardExtendedSpendingKeyImpl(
-      absl::variant<base::PassKey<class OrchardExtendedSpendingKey>,
-                    base::PassKey<class OrchardExtendedSpendingKeyImpl>>,
+      std::variant<base::PassKey<class OrchardExtendedSpendingKey>,
+                   base::PassKey<class OrchardExtendedSpendingKeyImpl>>,
       rust::Box<CxxOrchardExtendedSpendingKey>);
   OrchardExtendedSpendingKeyImpl(const OrchardExtendedSpendingKeyImpl&) =
       delete;

@@ -12,6 +12,7 @@
 #include <tuple>
 #include <unordered_set>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/barrier_callback.h"
@@ -170,7 +171,7 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(
               result.key = publisher_id;
 
               if (auto* feed =
-                      absl::get_if<DirectFeedResult>(&response.result)) {
+                      std::get_if<DirectFeedResult>(&response.result)) {
                 std::ranges::transform(
                     feed->articles, std::back_inserter(result.items),
                     [](auto& article) {

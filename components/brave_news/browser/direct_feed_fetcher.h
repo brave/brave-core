@@ -9,6 +9,7 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <variant>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
@@ -16,7 +17,6 @@
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "third_party/abseil-cpp/absl/types/variant.h"
 #include "url/gurl.h"
 
 namespace brave_news {
@@ -49,7 +49,7 @@ struct DirectFeedResponse {
   std::string charset;
 
   // If success, this will be |FeedData|, otherwise an error.
-  absl::variant<DirectFeedResult, DirectFeedError> result;
+  std::variant<DirectFeedResult, DirectFeedError> result;
 
   DirectFeedResponse();
   ~DirectFeedResponse();
@@ -116,7 +116,7 @@ class DirectFeedFetcher {
       const std::unique_ptr<std::string> response_body);
   void OnParsedFeedData(DownloadFeedCallback callback,
                         DirectFeedResponse result,
-                        absl::variant<DirectFeedResult, DirectFeedError> data);
+                        std::variant<DirectFeedResult, DirectFeedError> data);
 
   SimpleURLLoaderList url_loaders_;
 

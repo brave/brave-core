@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <utility>
+#include <variant>
 
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -14,8 +15,8 @@
 namespace brave_wallet::orchard {
 
 OrchardDecodedBlocksBundleImpl::OrchardDecodedBlocksBundleImpl(
-    absl::variant<base::PassKey<class OrchardBlockDecoder>,
-                  base::PassKey<class TestingDecodedBundleBuilderImpl>>,
+    std::variant<base::PassKey<class OrchardBlockDecoder>,
+                 base::PassKey<class TestingDecodedBundleBuilderImpl>>,
     rust::Box<CxxOrchardDecodedBlocksBundle> cxx_orchard_decoded_blocks_bundle)
     : cxx_orchard_decoded_blocks_bundle_(
           std::move(cxx_orchard_decoded_blocks_bundle)) {}

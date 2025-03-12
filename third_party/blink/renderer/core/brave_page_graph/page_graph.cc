@@ -19,6 +19,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/base64.h"
@@ -1209,13 +1210,13 @@ NodeHTML* PageGraph::GetHTMLNode(const DOMNodeId node_id) const {
 }
 
 NodeHTMLElement* PageGraph::GetHTMLElementNode(
-    absl::variant<blink::DOMNodeId, blink::Node*> node_var) {
+    std::variant<blink::DOMNodeId, blink::Node*> node_var) {
   blink::DOMNodeId node_id;
   blink::Node* node = nullptr;
-  if (absl::holds_alternative<blink::DOMNodeId>(node_var)) {
-    node_id = absl::get<blink::DOMNodeId>(node_var);
+  if (std::holds_alternative<blink::DOMNodeId>(node_var)) {
+    node_id = std::get<blink::DOMNodeId>(node_var);
   } else {
-    node = absl::get<blink::Node*>(node_var);
+    node = std::get<blink::Node*>(node_var);
     node_id = blink::DOMNodeIds::IdForNode(node);
   }
 
@@ -1233,7 +1234,7 @@ NodeHTMLElement* PageGraph::GetHTMLElementNode(
   // because the node is not fully constructed yet, we need to register it
   // preemptively at this point.
   if (!node) {
-    DCHECK(absl::holds_alternative<blink::DOMNodeId>(node_var));
+    DCHECK(std::holds_alternative<blink::DOMNodeId>(node_var));
     node = blink::DOMNodeIds::NodeForId(node_id);
     CHECK(node);
   }

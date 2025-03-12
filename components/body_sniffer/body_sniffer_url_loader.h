@@ -10,6 +10,7 @@
 #include <optional>
 #include <string>
 #include <tuple>
+#include <variant>
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
@@ -25,7 +26,6 @@
 #include "services/network/public/mojom/early_hints.mojom-forward.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/variant.h"
 #include "url/gurl.h"
 
 namespace net {
@@ -115,7 +115,7 @@ class BodySnifferThrottle;
 
 using BodyHandlersPtr = std::vector<std::unique_ptr<BodyHandler>>;
 using BodyProducerPtr = std::unique_ptr<BodyProducer>;
-using Handler = absl::variant<BodyProducerPtr, BodyHandlersPtr>;
+using Handler = std::variant<BodyProducerPtr, BodyHandlersPtr>;
 
 // When created with BodyHandlersPtr the BodySnifferURLLoader continuously
 // receives the content of the page and passes every chunk to handlers. If all
