@@ -9,7 +9,6 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from '../../../../../brave_news/browser/resources/shared/Context'
 import { channelIcons as ChannelIcons } from '../../../../../brave_news/browser/resources/shared/Icons'
-import { useLazyFavicon } from '../../../../../brave_news/browser/resources/shared/useUnpaddedImageUrl'
 import { getTranslatedChannelName } from '../../../../../brave_news/browser/resources/shared/channel'
 
 interface Props {
@@ -66,14 +65,17 @@ const ChannelNameText = styled(Text)`
 `
 
 function FavIcon (props: { publisherId: string }) {
-  const { url, setElementRef } = useLazyFavicon(props.publisherId, {
-    rootElement: document.getElementById('brave-news-configure'),
-    rootMargin: '200px 0px 200px 0px'
-  })
+  const publisher = usePublisher(props.publisherId)
+  const faviconUrl = publisher.faviconUrl?.url
   const [error, setError] = React.useState(false)
+
+  React.useEffect(() => {
+    setError(false)
+  }, [faviconUrl])
+
   return (
-    <FavIconContainer ref={setElementRef}>
-      {url && !error && <img src={url} onError={() => setError(true)} />}
+    <FavIconContainer>
+      {faviconUrl && !error && <img loading='lazy' src={`chrome://image?url=${encodeURIComponent(faviconUrl)}`} onError={() => setError(true)} />}
     </FavIconContainer>
   )
 }

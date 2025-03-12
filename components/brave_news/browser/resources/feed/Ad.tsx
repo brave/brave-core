@@ -12,7 +12,6 @@ import { DisplayAd, FeedV2Ad } from 'gen/brave/components/brave_news/common/brav
 import * as React from 'react';
 import styled from 'styled-components';
 import getBraveNewsController from '../shared/api';
-import { useUnpaddedImageUrl } from '../shared/useUnpaddedImageUrl';
 import { MetaInfoContainer } from './ArticleMetaRow';
 import Card, { LargeImage, Title, braveNewsCardClickHandler } from './Card';
 import { useBraveNews } from '../shared/Context';
@@ -76,7 +75,7 @@ const adTargetUrlAllowedSchemes = ['https:', 'chrome:', 'brave:']
 
 export default function Advert(props: Props) {
   const [advert, setAdvert] = React.useState<DisplayAd | null | undefined>(undefined)
-  const imageUrl = useUnpaddedImageUrl(advert?.image.paddedImageUrl?.url ?? advert?.image.imageUrl?.url)
+  const imageUrl = `chrome://image?url=${encodeURIComponent(advert?.image.paddedImageUrl?.url ?? advert?.image.imageUrl?.url ?? '')}`
   const { openArticlesInNewTab } = useBraveNews()
 
   const onDisplayAdViewed = React.useCallback(() => {
@@ -116,7 +115,7 @@ export default function Advert(props: Props) {
   }
 
   return <Container ref={setAdEl} onClick={onDisplayAdVisited}>
-    <AdImage src={imageUrl} />
+    <AdImage loading='eager' src={imageUrl} />
     <MetaInfoContainer>
       <BatAdLabel onClick={e => e.stopPropagation()} target={openArticlesInNewTab ? '_blank' : undefined} href="chrome://rewards">{getLocale('braveNewsAdvertBadge')}</BatAdLabel>
       •

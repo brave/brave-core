@@ -22,6 +22,7 @@
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notreached.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/task/sequenced_task_runner.h"
@@ -29,7 +30,6 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
@@ -44,9 +44,6 @@
 #include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
-#include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
-#include "components/favicon/core/favicon_service.h"
-#include "components/favicon_base/favicon_types.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -60,10 +57,6 @@
 
 namespace brave_news {
 namespace {
-
-// The favicon size we desire. The favicons are rendered at 24x24 pixels but
-// they look quite a bit nicer if we get a 48x48 pixel icon and downscale it.
-constexpr uint32_t kDesiredFaviconSizePixels = 48;
 
 // Creates a ChangeEvent from a lookup of all possible items and a diff.
 template <class MojomType, class EventType>
@@ -105,16 +98,15 @@ mojo::StructPtr<EventType> CreateChangeEvent(
 
 BraveNewsController::BraveNewsController(
     PrefService* prefs,
-    favicon::FaviconService* favicon_service,
     brave_ads::AdsService* ads_service,
     history::HistoryService* history_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
-    : favicon_service_(favicon_service),
-      ads_service_(ads_service),
-      api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+    : ads_service_(ads_service),
+#if BUILDFLAG(IS_ANDROID)
       private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
                                   url_loader_factory),
+#endif
       history_service_(history_service),
       url_loader_factory_(url_loader_factory),
       direct_feed_fetcher_delegate_(std::move(direct_feed_fetcher_delegate)),
@@ -453,6 +445,7 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
 
 void BraveNewsController::GetImageData(const GURL& padded_image_url,
                                        GetImageDataCallback callback) {
+#if BUILDFLAG(IS_ANDROID)
   VLOG(2) << __FUNCTION__ << " " << padded_image_url.spec();
   // Validate
   if (!padded_image_url.is_valid()) {
@@ -487,8 +480,7 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
             std::string_view body_payload(body.data(), body.size());
             if (response_code < 200 || response_code >= 300 ||
                 (is_padded &&
-                 !brave::PrivateCdnHelper::GetInstance()->RemovePadding(
-                     &body_payload))) {
+                 !brave::private_cdn::RemovePadding(&body_payload))) {
               // Byte padding removal failed
               std::move(callback).Run(std::nullopt);
               return;
@@ -500,53 +492,9 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
             std::move(callback).Run(image_bytes);
           },
           std::move(callback), is_padded));
-}
-
-void BraveNewsController::GetFavIconData(const std::string& publisher_id,
-                                         GetFavIconDataCallback callback) {
-  DVLOG(1) << __FUNCTION__;
-  GetPublishers(base::BindOnce(
-      [](BraveNewsController* controller, const std::string& publisher_id,
-         GetFavIconDataCallback callback, Publishers publishers) {
-        // If the publisher doesn't exist, there's nothing we can do.
-        const auto& it = publishers.find(publisher_id);
-        if (it == publishers.end()) {
-          std::move(callback).Run(std::nullopt);
-          return;
-        }
-
-        // If we have a FavIcon url, use that.
-        const auto& publisher = it->second;
-        if (publisher->favicon_url) {
-          controller->GetImageData(publisher->favicon_url.value(),
-                                   std::move(callback));
-          return;
-        }
-
-        auto source_url = publisher->site_url.is_valid()
-                              ? publisher->site_url
-                              : publisher->feed_source;
-        favicon_base::IconTypeSet icon_types{
-            favicon_base::IconType::kFavicon,
-            favicon_base::IconType::kTouchIcon};
-        controller->favicon_service_->GetRawFaviconForPageURL(
-            source_url, icon_types, kDesiredFaviconSizePixels, true,
-            base::BindOnce(
-                [](GetFavIconDataCallback callback,
-                   const favicon_base::FaviconRawBitmapResult& result) {
-                  if (!result.is_valid()) {
-                    std::move(callback).Run(std::nullopt);
-                    return;
-                  }
-
-                  std::vector<uint8_t> bytes_vec(result.bitmap_data->begin(),
-                                                 result.bitmap_data->end());
-                  std::move(callback).Run(std::move(bytes_vec));
-                },
-                std::move(callback)),
-            &controller->task_tracker_);
-      },
-      base::Unretained(this), publisher_id, std::move(callback)));
+#else
+  NOTREACHED();
+#endif
 }
 
 void BraveNewsController::SetPublisherPref(const std::string& publisher_id,

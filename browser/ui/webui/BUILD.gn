@@ -31,16 +31,23 @@ source_set("browser_tests") {
   }
 }
 
-if (enable_sparkle) {
-  source_set("unit_tests") {
-    testonly = true
-    sources = [ "help/brave_version_updater_mac_unittest.mm" ]
-    deps = [
-      "//base",
-      "//base/test:test_support",
-      "//brave/browser:mac_features",
-      "//chrome/browser/ui",
-      "//testing/gtest",
-    ]
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "sanitized_image_source_unittest.cc" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//services/data_decoder/public/cpp:test_support",
+    "//services/network:test_support",
+    "//testing/gtest",
+  ]
+
+  if (enable_sparkle) {
+    sources += [ "help/brave_version_updater_mac_unittest.mm" ]
+    deps += [ "//brave/browser:mac_features" ]
   }
 }

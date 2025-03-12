@@ -11,7 +11,6 @@ import { getCardColor } from '../../../../brave_new_tab_ui/components/default/br
 import { usePublisher, usePublisherFollowed } from './Context'
 import FollowButton from './FollowButton'
 import getBraveNewsController from './api'
-import { useLazyUnpaddedImageUrl } from './useUnpaddedImageUrl'
 
 interface CardProps {
   backgroundColor?: string
@@ -70,15 +69,11 @@ export default function PublisherCard(props: {
   const { followed, setFollowed } = usePublisherFollowed(props.publisherId)
 
   const backgroundColor = publisher?.backgroundColor || getCardColor(publisher?.feedSource?.url || publisher?.publisherId)
-  const { url: coverUrl, setElementRef } = useLazyUnpaddedImageUrl(publisher?.coverUrl?.url, {
-    rootElement: document.getElementById('brave-news-configure'),
-    rootMargin: '0px 0px 200px 0px',
-    useCache: true
-  })
+  const coverUrl = publisher?.coverUrl?.url
 
-  return <Flex direction="column" gap={8} ref={setElementRef}>
+  return <Flex direction="column" gap={8}>
     <Card backgroundColor={backgroundColor} data-feed-card-is-followed={followed}>
-      {coverUrl && <CoverImage backgroundImage={coverUrl} />}
+      {coverUrl && <CoverImage backgroundImage={`chrome://image?url=${encodeURIComponent(coverUrl)}`} />}
       <StyledFollowButton fab size='tiny' following={followed} onClick={() => setFollowed(!followed)} />
     </Card>
     <Name>

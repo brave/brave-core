@@ -8,29 +8,10 @@
 
 #include <string_view>
 
-namespace base {
-template <typename T>
-class NoDestructor;
-}  // namespace base
+namespace brave::private_cdn {
 
-namespace brave {
+bool RemovePadding(std::string_view* padded_string);
 
-class PrivateCdnHelper final {
- public:
-  PrivateCdnHelper(const PrivateCdnHelper&) = delete;
-  PrivateCdnHelper& operator=(const PrivateCdnHelper&) = delete;
-
-  static PrivateCdnHelper* GetInstance();
-
-  bool RemovePadding(std::string_view* padded_string) const;
-
- private:
-  friend base::NoDestructor<PrivateCdnHelper>;
-
-  PrivateCdnHelper();
-  ~PrivateCdnHelper();
-};
-
-}  // namespace brave
+}  // namespace brave::private_cdn
 
 #endif  // BRAVE_COMPONENTS_BRAVE_PRIVATE_CDN_PRIVATE_CDN_HELPER_H_

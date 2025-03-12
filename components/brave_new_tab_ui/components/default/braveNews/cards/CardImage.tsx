@@ -6,7 +6,6 @@
 import * as React from 'react'
 import * as Card from '../cardSizes'
 import * as BraveNews from '../../../../../brave_news/browser/resources/shared/api'
-import { useUnpaddedImageUrl } from '../../../../../brave_news/browser/resources/shared/useUnpaddedImageUrl'
 
 type Props = {
   imageUrl?: string
@@ -16,27 +15,28 @@ type Props = {
 }
 
 export default function CardImage(props: Props) {
-  const unpaddedUrl = useUnpaddedImageUrl(props.imageUrl, props.onLoaded)
+  const imageUrl = `chrome://image?url=${encodeURIComponent(props.imageUrl ?? '')}`
   const [isImageLoaded, setIsImageLoaded] = React.useState(false)
   React.useEffect(() => {
-    if (unpaddedUrl) {
+    if (imageUrl) {
       const img = new Image()
       let shouldCancel = false
       img.addEventListener('load', () => {
         if (!shouldCancel) {
           setIsImageLoaded(true)
+          props.onLoaded?.()
         }
       })
-      img.src = unpaddedUrl
+      img.src = imageUrl
       return () => { shouldCancel = true }
     }
 
     return () => { }
-  }, [unpaddedUrl])
+  }, [imageUrl])
   const Frame = props.list ? Card.ListImageFrame : Card.ImageFrame
   return (
     <Frame data-source={props.imageUrl} isImageLoaded={isImageLoaded}>
-      <Card.Image isPromoted={props.isPromoted} src={unpaddedUrl} />
+      <Card.Image isPromoted={props.isPromoted} src={imageUrl} />
     </Frame>
   )
 }
