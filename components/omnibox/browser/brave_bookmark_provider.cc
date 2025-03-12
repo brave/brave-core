@@ -30,6 +30,9 @@ void BraveBookmarkProvider::Start(const AutocompleteInput& input,
   // We need to bump the relevance of the bookmark if we ever want it to rank
   // high enough to be the default match.
   constexpr int kContainsQueryBump = 350;
+  // Note: This is in addition to the kContainsQueryBump.
+  constexpr int kExactTitleBump = 200;
+
   bool modified = false;
 
   auto lower_text = base::ToLowerASCII(input.text());
@@ -40,12 +43,38 @@ void BraveBookmarkProvider::Start(const AutocompleteInput& input,
 
     // We only allow the bookmark to be the default match if the input is
     // literally contained in the title or URL.
-    auto lower_contents = base::ToLowerASCII(match.contents);
+    auto lower_description = base::ToLowerASCII(match.description);
     auto bump_match =
-        base::Contains(lower_contents, lower_text) ||
-        base::Contains(base::ToLowerASCII(match.description), lower_text);
+        base::Contains(base::ToLowerASCII(match.contents), lower_text) ||
+        base::Contains(lower_description, lower_text);
     if (!bump_match) {
       continue;
+    }
+
+    // By default |contents| is the folder the bookmark is in if there are no
+    // matches in the URL. Instead, we want to should show the URL that will be
+    // opened so the user knows what will happen when they select the result.
+    // Note: Bookmark paths are prefixed with a "/" to indicate they are
+    // relative to the bookmark root.
+    if (match.contents.starts_with(u"/")) {
+      // This is the same formatting used on Bookmark URLs normally.
+      match.contents = url_formatter::FormatUrl(
+          match.destination_url,
+          url_formatter::kFormatUrlOmitHTTPS |
+              url_formatter::kFormatUrlOmitDefaults |
+              url_formatter::kFormatUrlOmitTrivialSubdomains,
+          base::UnescapeRule::SPACES, nullptr, nullptr, nullptr);
+      // In this scenario we're matching the title, so its okay to display no
+      // matches on the URL.
+      match.contents_class = {
+          ACMatchClassification(0, ACMatchClassification::URL)};
+    }
+
+    // Additional bump if the title is an exact match - this helps people with
+    // short bookmark titles for jumping to pages (like "sa" for
+    // "chrome://settings/appearance")
+    if (lower_description == lower_text) {
+      match.relevance += kExactTitleBump;
     }
 
     match.SetAllowedToBeDefault(input);
