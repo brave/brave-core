@@ -14,7 +14,7 @@
 namespace chrome {
 
 bool GetDefaultUserDataDirectory(base::FilePath* result) {
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  auto env = base::Environment::Create();
   base::FilePath config_dir;
   std::string chrome_config_home_str;
   config_dir =

@@ -56,11 +56,8 @@ class RedirectCC {
         .Append(UTF8ToFilePathString(BUILDFLAG(REAL_REWRAPPER)))
         .value();
 #else   // defined(REDIRECT_CC_AS_REWRAPPER)
-    std::string cc_wrapper;
-    std::unique_ptr<base::Environment> env(base::Environment::Create());
-    if (env->HasVar("CC_WRAPPER")) {
-      CHECK(env->GetVar("CC_WRAPPER", &cc_wrapper));
-    }
+    auto env = base::Environment::Create();
+    std::string cc_wrapper = env->GetVar("CC_WRAPPER").value_or(std::string());
 
     if (!cc_wrapper.empty()) {
       *first_compiler_arg_idx = 1;
