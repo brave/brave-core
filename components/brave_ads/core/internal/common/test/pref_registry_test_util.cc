@@ -61,6 +61,7 @@ void RegisterProfilePrefs() {
   RegisterProfileListPref(prefs::kSaveAds);
   RegisterProfileListPref(prefs::kMarkedAsInappropriate);
 
+  RegisterProfileBooleanPref(prefs::kHasMigratedState, true);
   RegisterProfileBooleanPref(prefs::kHasMigratedClientState, true);
   RegisterProfileBooleanPref(prefs::kHasMigratedConfirmationState, true);
 

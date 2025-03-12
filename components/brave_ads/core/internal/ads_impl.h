@@ -128,6 +128,11 @@ class AdsImpl final : public Ads {
   void CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
                                     InitializeCallback callback,
                                     bool success);
+
+  void MigrateStateCallback(mojom::WalletInfoPtr mojom_wallet,
+                            InitializeCallback callback,
+                            bool success);
+
   void FailedToInitialize(InitializeCallback callback);
   void SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
                                InitializeCallback callback);
