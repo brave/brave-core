@@ -11,8 +11,8 @@ import android.util.AttributeSet;
 import android.widget.GridLayout;
 
 /** The most visited tiles layout. */
-public class BraveMostVisitedTilesLayoutBase extends GridLayout {
-    private static int FIXED_COLUMNS_COUNT = 4;
+public class BraveMostVisitedTilesLayoutBase extends TilesLinearLayout {
+    private static final int FIXED_COLUMNS_COUNT = 4;
 
     private boolean mUseFixedLayout;
 
@@ -53,5 +53,24 @@ public class BraveMostVisitedTilesLayoutBase extends GridLayout {
         }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    // The methods to be removed with bytecode
+    int getColumnCount() {
+        assert false;
+        return 0;
+    }
+
+    void setColumnCount(int columnCount) {
+        assert false;
+    }
+
+    int getRowCount() {
+        assert false;
+        return 0;
+    }
+
+    void setRowCount(int rowCount) {
+        assert false;
     }
 }
