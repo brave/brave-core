@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "brave/browser/ui/views/playlist/selectable_list_view.h"
@@ -127,7 +128,7 @@ class PlaylistMoveDialog : public PlaylistActionDialog,
   };
 
   explicit PlaylistMoveDialog(
-      absl::variant<raw_ptr<playlist::PlaylistTabHelper>, MoveParam> source);
+      std::variant<raw_ptr<playlist::PlaylistTabHelper>, MoveParam> source);
 
   void OnNewPlaylistPressed(const ui::Event& event);
   void OnBackPressed(const ui::Event& event);
@@ -141,15 +142,15 @@ class PlaylistMoveDialog : public PlaylistActionDialog,
   void OnCreatePlaylistAndMove();
 
   bool is_from_tab_helper() const {
-    return absl::holds_alternative<raw_ptr<playlist::PlaylistTabHelper>>(
+    return std::holds_alternative<raw_ptr<playlist::PlaylistTabHelper>>(
         source_);
   }
   raw_ptr<playlist::PlaylistTabHelper> get_tab_helper() {
-    return absl::get<raw_ptr<playlist::PlaylistTabHelper>>(source_);
+    return std::get<raw_ptr<playlist::PlaylistTabHelper>>(source_);
   }
-  MoveParam& get_move_param() { return absl::get<MoveParam>(source_); }
+  MoveParam& get_move_param() { return std::get<MoveParam>(source_); }
 
-  absl::variant<raw_ptr<playlist::PlaylistTabHelper>, MoveParam> source_;
+  std::variant<raw_ptr<playlist::PlaylistTabHelper>, MoveParam> source_;
 
   Mode mode_ = Mode::kChoose;
 

@@ -32,6 +32,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <variant>
 
 #include "base/compiler_specific.h"
 #include "net/base/io_buffer.h"
@@ -45,13 +46,13 @@ constexpr size_t kSOCKSAuthUsernamePasswordResponseLen = 2;
 
 HostPortPair ToLegacyDestinationEndpoint(
     const TransportSocketParams::Endpoint& endpoint) {
-  if (absl::holds_alternative<url::SchemeHostPort>(endpoint)) {
+  if (std::holds_alternative<url::SchemeHostPort>(endpoint)) {
     return HostPortPair::FromSchemeHostPort(
-        absl::get<url::SchemeHostPort>(endpoint));
+        std::get<url::SchemeHostPort>(endpoint));
   }
 
-  DCHECK(absl::holds_alternative<HostPortPair>(endpoint));
-  return absl::get<HostPortPair>(endpoint);
+  DCHECK(std::holds_alternative<HostPortPair>(endpoint));
+  return std::get<HostPortPair>(endpoint);
 }
 
 }  // namespace

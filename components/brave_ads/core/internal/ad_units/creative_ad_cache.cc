@@ -14,7 +14,7 @@ namespace brave_ads {
 namespace {
 
 bool IsValid(const CreativeAdVariant& creative_ad_variant) {
-  return absl::visit(
+  return std::visit(
       base::Overloaded{
           [](const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad)
               -> bool { return !!mojom_creative_ad; }},
@@ -23,7 +23,7 @@ bool IsValid(const CreativeAdVariant& creative_ad_variant) {
 
 std::optional<CreativeAdVariant> Clone(
     const CreativeAdVariant& creative_ad_variant) {
-  return absl::visit(
+  return std::visit(
       base::Overloaded{
           [](const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad)
               -> std::optional<CreativeAdVariant> {

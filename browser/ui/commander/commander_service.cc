@@ -12,6 +12,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/functional/bind.h"
@@ -95,11 +96,11 @@ void CommanderService::SelectCommand(uint32_t command_index,
   ranker_.Visit(*item);
 
   if (item->GetType() == CommandItem::Type::kOneShot) {
-    std::move(absl::get<base::OnceClosure>(item->command)).Run();
+    std::move(std::get<base::OnceClosure>(item->command)).Run();
     Hide();
   } else {
     auto composite_command =
-        absl::get<CommandItem::CompositeCommand>(item->command);
+        std::get<CommandItem::CompositeCommand>(item->command);
     std::tie(prompt_, composite_command_provider_) = composite_command;
     Show();
   }

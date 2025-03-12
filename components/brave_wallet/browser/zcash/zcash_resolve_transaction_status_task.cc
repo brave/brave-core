@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_resolve_transaction_status_task.h"
 
 #include <utility>
+#include <variant>
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
 
@@ -21,8 +22,8 @@ using ResolveTransactionStatusResult =
 }  // namespace
 
 ZCashResolveTransactionStatusTask::ZCashResolveTransactionStatusTask(
-    absl::variant<base::PassKey<ZCashWalletService>,
-                  base::PassKey<class ZCashResolveTransactionStatusTaskTest>>
+    std::variant<base::PassKey<ZCashWalletService>,
+                 base::PassKey<class ZCashResolveTransactionStatusTaskTest>>
         pass_key,
     ZCashActionContext context,
     ZCashWalletService& zcash_wallet_service,
