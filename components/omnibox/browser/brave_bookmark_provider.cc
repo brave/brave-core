@@ -30,6 +30,9 @@ void BraveBookmarkProvider::Start(const AutocompleteInput& input,
   // We need to bump the relevance of the bookmark if we ever want it to rank
   // high enough to be the default match.
   constexpr int kContainsQueryBump = 350;
+  // Note: This is in addition to the kContainsQueryBump.
+  constexpr int kExactTitleBump = 200;
+
   bool modified = false;
 
   auto lower_text = base::ToLowerASCII(input.text());
@@ -40,12 +43,18 @@ void BraveBookmarkProvider::Start(const AutocompleteInput& input,
 
     // We only allow the bookmark to be the default match if the input is
     // literally contained in the title or URL.
-    auto lower_contents = base::ToLowerASCII(match.contents);
+    auto lower_description = base::ToLowerASCII(match.description);
     auto bump_match =
-        base::Contains(lower_contents, lower_text) ||
-        base::Contains(base::ToLowerASCII(match.description), lower_text);
+        base::Contains(base::ToLowerASCII(match.contents), lower_text) ||
+        base::Contains(lower_description, lower_text);
     if (!bump_match) {
       continue;
+    }
+
+    // Additional bump if the title is an exact match - this helps people with
+    // short bookmark titles for jumping to pages (like "sa" for "chrome://settings/appearance")
+    if (lower_description == lower_text) {
+      match.relevance += kExactTitleBump;
     }
 
     match.SetAllowedToBeDefault(input);
