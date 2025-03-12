@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index 4346d839d19645ac6d065871b8115254338e1cfe..2471911c507abe47462544a4ebe18cdb70858ec5 100644
+index 7ff9c919f14d277efb1fedd9adc59ce116907306..ebf3ed54d9371defe916dc394556d511bc32f785 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -127,6 +127,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -126,6 +126,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    TabStyle::TabSelectionState GetSelectionState() const;
  
   private:
@@ -10,7 +10,7 @@ index 4346d839d19645ac6d065871b8115254338e1cfe..2471911c507abe47462544a4ebe18cdb
    // Gets the bounds for the leading and trailing separators for a tab.
    TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const;
  
-@@ -350,6 +351,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
+@@ -364,6 +365,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
      extension_corner_radius -= 0.5f * stroke_adjustment;
    }
    const bool compact_left_to_bottom = ShouldCompactLeadingEdge(path_type);
@@ -18,7 +18,7 @@ index 4346d839d19645ac6d065871b8115254338e1cfe..2471911c507abe47462544a4ebe18cdb
  
    SkPath path;
  
-@@ -1032,14 +1034,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -1044,14 +1046,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  
@@ -38,4 +38,4 @@ index 4346d839d19645ac6d065871b8115254338e1cfe..2471911c507abe47462544a4ebe18cdb
 +                        separator_radius, flags);
  }
  
- const Tab* TabStyleViewsImpl::GetAdjacentSplitTab(const Tab* tab) const {
+ bool TabStyleViewsImpl::IsLeftmostSplitTab(const Tab* tab) const {
