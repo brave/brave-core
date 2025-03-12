@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <optional>
 #include <utility>
+#include <variant>
 
 #include "base/functional/overloaded.h"
 #include "base/json/json_reader.h"
@@ -297,11 +298,11 @@ mojom::ExternalWalletPtr EnsureValidTransition(RewardsEngine& engine,
 
 mojom::ExternalWalletPtr TransitionWallet(
     RewardsEngine& engine,
-    absl::variant<mojom::ExternalWalletPtr, std::string> wallet_info,
+    std::variant<mojom::ExternalWalletPtr, std::string> wallet_info,
     mojom::WalletStatus to) {
   std::optional<mojom::WalletStatus> from;
 
-  auto wallet = absl::visit(
+  auto wallet = std::visit(
       base::Overloaded{
           [&](const std::string& wallet_type) -> mojom::ExternalWalletPtr {
             auto wallet = GetWallet(engine, wallet_type);

@@ -3,16 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "src/net/socket/socks5_client_socket.cc"
+#include "net/socket/socks5_client_socket.h"
 
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
+#include <variant>
 
 #include "base/compiler_specific.h"
 #include "net/base/io_buffer.h"
-#include "net/socket/socks5_client_socket.h"
+
+#include "src/net/socket/socks5_client_socket.cc"
 
 namespace net {
 
@@ -22,13 +24,13 @@ constexpr size_t kSOCKSAuthUsernamePasswordResponseLen = 2;
 
 HostPortPair ToLegacyDestinationEndpoint(
     const TransportSocketParams::Endpoint& endpoint) {
-  if (absl::holds_alternative<url::SchemeHostPort>(endpoint)) {
+  if (std::holds_alternative<url::SchemeHostPort>(endpoint)) {
     return HostPortPair::FromSchemeHostPort(
-        absl::get<url::SchemeHostPort>(endpoint));
+        std::get<url::SchemeHostPort>(endpoint));
   }
 
-  DCHECK(absl::holds_alternative<HostPortPair>(endpoint));
-  return absl::get<HostPortPair>(endpoint);
+  DCHECK(std::holds_alternative<HostPortPair>(endpoint));
+  return std::get<HostPortPair>(endpoint);
 }
 
 }  // namespace
