@@ -10,6 +10,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <variant>
 
 #include "base/containers/span_or_size.h"
 #include "base/time/time.h"
@@ -18,7 +19,6 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/scripts/script_tracker.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
-#include "third_party/abseil-cpp/absl/types/variant.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
@@ -300,7 +300,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
 
   NodeHTML* GetHTMLNode(const blink::DOMNodeId node_id) const;
   NodeHTMLElement* GetHTMLElementNode(
-      absl::variant<blink::DOMNodeId, blink::Node*> node_var);
+      std::variant<blink::DOMNodeId, blink::Node*> node_var);
   NodeHTMLText* GetHTMLTextNode(const blink::DOMNodeId node_id) const;
   bool RegisterCurrentlyConstructedNode(blink::Node* node);
 
