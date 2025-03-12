@@ -1517,6 +1517,12 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_DESC" desc="The description for settings option to show Leo in context menu">
     Leo will appear in the context menu when you right-click on a website. This will send context from the current web page to Leo.
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_LABEL" desc="The text for settings option to enable tab organization">
+    Enable tab organization with Leo
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_DESC" desc="The description for settings option to enable tab organization">
+    Enable tab organization in Tab Search page. When opened, this will automatically send the titles and domains of all non-private tabs to Leo to classify them using Anthropic's Claude Haiku or Claude Sonnet model. This data is subject to the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Leo privacy policy<ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL" desc="The text for settings option">
     Show suggested prompts in the conversation
   </message>

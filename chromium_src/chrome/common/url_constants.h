@@ -458,7 +458,7 @@ inline constexpr char kWallpaperSearchLearnMorePageManagedURL[] =
 
 // The URL for the "Learn more" page for Tab Organization.
 inline constexpr char kTabOrganizationLearnMorePageURL[] =
-    "https://support.brave.com/";
+    "https://github.com/brave/brave-browser/wiki/Brave-Leo";
 
 // The URL for the "Learn more" page for Tab Organization for managed users.
 inline constexpr char kTabOrganizationLearnMorePageManagedURL[] =

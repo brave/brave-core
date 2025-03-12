@@ -91,6 +91,7 @@ const iconMap: { [key: string]: string } = {
     'cr:print': 'print',
     'settings:download': 'download',
     'settings:performance': 'cpu-chip',
+    'tab-search:auto-tab-groups': 'product-brave-leo',  // tab organization
 }
 
 injectStyle(CrIconElement, css`:host {
