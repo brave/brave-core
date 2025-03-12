@@ -171,9 +171,8 @@ void JNI_BraveShieldsContentSettings_ResetCosmeticFilter(
 jboolean JNI_BraveShieldsContentSettings_AreBlockedElements(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& url) {
-  return g_brave_browser_process->ad_block_service()
-      ->AreBlockedElements(
-          GURL(base::android::ConvertJavaStringToUTF8(env, url)).host());
+  return g_brave_browser_process->ad_block_service()->AreBlockedElements(
+      GURL(base::android::ConvertJavaStringToUTF8(env, url)).host());
 }
 
 base::android::ScopedJavaLocalRef<jstring>
