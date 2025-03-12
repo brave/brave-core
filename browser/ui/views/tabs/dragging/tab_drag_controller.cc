@@ -340,21 +340,3 @@ gfx::Vector2d TabDragController::GetVerticalTabStripWidgetOffset() {
 
   return browser_widget_bounds.origin() - tabstrip_widget_bounds.origin();
 }
-
-void TabDragController::InitDragData(TabSlotView* view,
-                                     TabDragData* drag_data) {
-  // This seems to be a bug from upstream. If the `view` is a group header,
-  // there can't be contents or pinned state which are bound to this `view`.
-  if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTabGroupHeader) {
-    std::optional<tab_groups::TabGroupId> tab_group_id = view->group();
-    DCHECK(tab_group_id.has_value());
-    drag_data->tab_group_data = TabDragData::TabGroupData{
-        tab_group_id.value(), *source_context_->GetTabStripModel()
-                                   ->group_model()
-                                   ->GetTabGroup(tab_group_id.value())
-                                   ->visual_data()};
-    return;
-  }
-
-  TabDragControllerChromium::InitDragData(view, drag_data);
-}
