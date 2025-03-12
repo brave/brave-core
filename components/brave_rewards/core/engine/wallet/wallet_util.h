@@ -8,9 +8,9 @@
 
 #include <set>
 #include <string>
+#include <variant>
 
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
-#include "third_party/abseil-cpp/absl/types/variant.h"
 
 namespace brave_rewards::internal {
 class RewardsEngine;
@@ -28,7 +28,7 @@ bool SetWallet(RewardsEngine& engine, mojom::ExternalWalletPtr);
 
 mojom::ExternalWalletPtr TransitionWallet(
     RewardsEngine& engine,
-    absl::variant<mojom::ExternalWalletPtr, std::string> wallet_info,
+    std::variant<mojom::ExternalWalletPtr, std::string> wallet_info,
     mojom::WalletStatus to);
 
 mojom::ExternalWalletPtr MaybeCreateWallet(RewardsEngine& engine,
