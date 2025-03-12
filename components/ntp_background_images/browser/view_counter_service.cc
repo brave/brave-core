@@ -265,7 +265,7 @@ ViewCounterService::GetCurrentBrandedWallpaper() {
   }
 
   if (images_data->IsSuperReferral()) {
-    return GetNextBrandedWallpaperWhichMatchesConditions();
+    return GetCurrentBrandedWallpaperFromModel();
   }
 
   return GetCurrentBrandedWallpaperFromAdInfo();
@@ -321,87 +321,6 @@ void ViewCounterService::GetCurrentBrandedWallpaper(
 
   std::move(callback).Run(GURL(*url), *placement_id, *creative_instance_id,
                           should_metrics_fallback_to_p3a, GURL(*target_url));
-}
-
-std::optional<brave_ads::ConditionMatcherMap>
-ViewCounterService::GetConditionMatchers(const base::Value::Dict& dict) {
-  const base::Value::List* const list =
-      dict.FindList(kWallpaperConditionMatchersKey);
-  if (!list || list->empty()) {
-    return std::nullopt;
-  }
-
-  brave_ads::ConditionMatcherMap condition_matchers;
-
-  for (const auto& value : *list) {
-    const base::Value::Dict* condition_matcher_dict = value.GetIfDict();
-    if (!condition_matcher_dict) {
-      continue;
-    }
-
-    const std::string* const pref_path = condition_matcher_dict->FindString(
-        kWallpaperConditionMatcherPrefPathKey);
-    if (!pref_path) {
-      continue;
-    }
-
-    const std::string* const condition =
-        condition_matcher_dict->FindString(kWallpaperConditionMatcherKey);
-    if (!condition) {
-      continue;
-    }
-
-    condition_matchers.insert({*pref_path, *condition});
-  }
-
-  return condition_matchers;
-}
-
-std::optional<base::Value::Dict>
-ViewCounterService::GetNextBrandedWallpaperWhichMatchesConditions() {
-  const auto initial_branded_wallpaper_index =
-      model_.GetCurrentBrandedImageIndex();
-
-  base::Value::Dict virtual_prefs;
-  if (ads_service_) {
-    if (brave_ads::AdsService::Delegate* const delegate =
-            ads_service_->delegate()) {
-      virtual_prefs = delegate->GetVirtualPrefs();
-    }
-  }
-  const brave_ads::PrefProvider pref_provider(prefs_, local_state_prefs_,
-                                              std::move(virtual_prefs));
-
-  do {
-    std::optional<base::Value::Dict> branded_wallpaper =
-        GetCurrentBrandedWallpaperFromModel();
-    if (!branded_wallpaper) {
-      // Branded wallpaper is unavailable, so it cannot be displayed.
-      return std::nullopt;
-    }
-
-    const std::optional<brave_ads::ConditionMatcherMap> condition_matchers =
-        GetConditionMatchers(*branded_wallpaper);
-    if (!condition_matchers) {
-      // No condition matchers, so we can return the branded wallpaper.
-      return branded_wallpaper;
-    }
-
-    if (brave_ads::MatchConditions(&pref_provider, *condition_matchers)) {
-      // The branded wallpaper matches the conditions, so we can return it.
-      return branded_wallpaper;
-    }
-
-    // The branded wallpaper does not match the conditions, so we need to try
-    // the next one. This will loop until we've tried all the branded
-    // wallpapers.
-    model_.NextBrandedImage();
-  } while (model_.GetCurrentBrandedImageIndex() !=
-           initial_branded_wallpaper_index);
-
-  // We've looped through all the branded images and none of them matched the
-  // conditions, so we cannot display a branded wallpaper.
-  return std::nullopt;
 }
 
 std::optional<base::Value::Dict>
