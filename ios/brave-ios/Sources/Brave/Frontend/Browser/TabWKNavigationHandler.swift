@@ -370,6 +370,13 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
       ErrorPageHelper(certStore: certStore).loadPage(error, forUrl: url, inWebView: webView)
     }
   }
+
+  func webView(
+    _ webView: WKWebView,
+    shouldAllowDeprecatedTLSFor challenge: URLAuthenticationChallenge
+  ) async -> Bool {
+    return false
+  }
 }
 
 extension WKNavigationType: @retroactive CustomDebugStringConvertible {
