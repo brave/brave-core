@@ -543,54 +543,12 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackground(
     return std::nullopt;
   }
 
-  if (VLOG_IS_ON(0)) {
-    if (!AdInfoMatchesSponsoredImage(ad_info, campaign_index, creative_index)) {
-      VLOG(0) << "Served creative info does not fully match with NTP "
-                 "sponsored images metadata. Campaign id: "
-              << ad_info.campaign_id
-              << ". Creative instance id: " << ad_info.creative_instance_id;
-    }
-  }
-
   std::optional<base::Value::Dict> dict =
       GetBackgroundAt(campaign_index, creative_index);
   if (dict) {
     dict->Set(kWallpaperIDKey, ad_info.placement_id);
   }
   return dict;
-}
-
-bool NTPSponsoredImagesData::AdInfoMatchesSponsoredImage(
-    const brave_ads::NewTabPageAdInfo& ad_info,
-    size_t campaign_index,
-    size_t creative_index) const {
-  DCHECK(campaign_index < campaigns.size() &&
-         creative_index < campaigns[campaign_index].creatives.size());
-
-  const Campaign& campaign = campaigns[campaign_index];
-
-  if (ad_info.campaign_id != campaign.campaign_id) {
-    return false;
-  }
-
-  const Creative& creative = campaign.creatives[creative_index];
-  if (ad_info.creative_instance_id != creative.creative_instance_id) {
-    return false;
-  }
-
-  if (ad_info.target_url != GURL(creative.logo.destination_url)) {
-    return false;
-  }
-
-  if (ad_info.alt != creative.logo.alt_text) {
-    return false;
-  }
-
-  if (ad_info.company_name != creative.logo.company_name) {
-    return false;
-  }
-
-  return true;
 }
 
 }  // namespace ntp_background_images
