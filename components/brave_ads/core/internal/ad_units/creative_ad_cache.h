@@ -11,15 +11,15 @@
 #include <optional>
 #include <string>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "third_party/abseil-cpp/absl/types/variant.h"
 
 namespace brave_ads {
 
-using CreativeAdVariant = absl::variant<mojom::CreativeSearchResultAdInfoPtr>;
+using CreativeAdVariant = std::variant<mojom::CreativeSearchResultAdInfoPtr>;
 using CreativeAdVariantMap =
     std::map</*placement_id*/ std::string, CreativeAdVariant>;
 
@@ -53,11 +53,11 @@ class CreativeAdCache final : public TabManagerObserver {
       return std::nullopt;
     }
 
-    if (!absl::holds_alternative<T>(*creative_ad_variant)) {
+    if (!std::holds_alternative<T>(*creative_ad_variant)) {
       return std::nullopt;
     }
 
-    return std::move(absl::get<T>(*creative_ad_variant));
+    return std::move(std::get<T>(*creative_ad_variant));
   }
 
  private:
