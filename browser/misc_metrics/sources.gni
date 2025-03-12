@@ -22,6 +22,13 @@ brave_browser_misc_metrics_deps = [
   "//content/public/browser",
 ]
 
+if (!is_android) {
+  brave_browser_misc_metrics_sources += [
+    "//brave/browser/misc_metrics/profile_new_tab_metrics.cc",
+    "//brave/browser/misc_metrics/profile_new_tab_metrics.h",
+  ]
+}
+
 brave_browser_misc_metrics_android_sources = [
   "//brave/browser/misc_metrics/misc_android_metrics.cc",
   "//brave/browser/misc_metrics/misc_android_metrics_factory_android.cc",
