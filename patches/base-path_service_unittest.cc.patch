@@ -1,0 +1,12 @@
+diff --git a/base/path_service_unittest.cc b/base/path_service_unittest.cc
+index 48adf091087bcc12a338c8971fb652471d953939..26c1e9024b7969b1e77823a8e2a41bd61361f51d 100644
+--- a/base/path_service_unittest.cc
++++ b/base/path_service_unittest.cc
+@@ -149,6 +149,7 @@ TEST_F(PathServiceTest, Get) {
+   }
+ #if BUILDFLAG(IS_WIN)
+   for (int key = PATH_WIN_START + 1; key < PATH_WIN_END; ++key) {
++    BRAVE_PATH_SERVICE_TEST_GET
+     if (key == DIR_SYSTEM_TEMP) {
+       EXPECT_PRED1(::IsUserAnAdmin() ? &ReturnsValidPath : &ReturnsInvalidPath,
+                    key);
