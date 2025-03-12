@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
-index 6cacad19cc3b30fc22b972aa65c6fb9c26beb373..e8ccc91db0e1963b0fdf0cc1851f36d1a2ceaaae 100644
+index a7927718d2554dd6188baeae0d33ca60dc51e3ca..5d6d6793e6efc29e9dca5a7275c0c88204b57ad0 100644
 --- a/components/content_settings/core/common/cookie_settings_base.cc
 +++ b/components/content_settings/core/common/cookie_settings_base.cc
-@@ -573,6 +573,7 @@ CookieSettingsBase::DecideAccess(const GURL& url,
+@@ -582,6 +582,7 @@ CookieSettingsBase::DecideAccess(const GURL& url,
      return BlockAllCookies{};
    }
  
@@ -10,7 +10,7 @@ index 6cacad19cc3b30fc22b972aa65c6fb9c26beb373..e8ccc91db0e1963b0fdf0cc1851f36d1
    if (!is_third_party_request) {
      return AllowAllCookies{ThirdPartyCookieAllowMechanism::kNone};
    }
-@@ -752,6 +753,7 @@ CookieSettingsBase::GetCookieSettingInternal(
+@@ -762,6 +763,7 @@ CookieSettingsBase::GetCookieSettingInternal(
    if (absl::holds_alternative<AllowPartitionedCookies>(choice)) {
      CHECK(is_third_party_request, base::NotFatalUntil::M128);
      CHECK(block_third_party_cookies, base::NotFatalUntil::M128);
