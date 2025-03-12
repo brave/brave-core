@@ -93,6 +93,7 @@ from pathlib import Path
 import re
 from rich.console import Console
 from rich.markdown import Markdown
+from rich.padding import Padding
 import subprocess
 import sys
 
@@ -133,6 +134,10 @@ MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 
 # The with the log of changes between two versions.
 GOOGLESOURCE_LINK = 'https://chromium.googlesource.com/chromium/src/+log/{from_version}..{to_version}?pretty=fuller&n=10000'
+
+# A decorator to be shown for messages that the use should address before
+# continuing.
+ACTION_NEEDED_DECORATOR = '[bold yellow](action needed)[/]'
 
 class Terminal:
     """A class that holds the application data and methods.
@@ -274,7 +279,7 @@ def _is_gh_cli_logged_in():
         result = terminal.run(['gh', 'auth', 'status']).stdout.strip()
         if 'Logged in to github.com account' in result:
             return True
-    except subprocess.CalledProcessError as e:
+    except subprocess.CalledProcessError:
         return False
 
     return False
@@ -295,19 +300,6 @@ def _get_apply_patches_list():
         return json.loads(match.group(0))
 
     return None
-
-
-def get_subdirs_after_patches(path: str) -> str:
-    """Extracts the subdirectories after 'patches', which relates to where a
-    patch file should be applied.
-    """
-    parts = Path(path).parts
-    if "patches" not in parts:
-        raise Exception('Apply patches failed to provide a list of patches.')
-
-    idx = parts.index("patches") + 1
-    result = '/'.join(parts[idx:-1])  # Exclude the filename
-    return result
 
 
 class GitStatus:
@@ -395,6 +387,22 @@ class PatchFailureResolver:
             raise Exception(
                 'Apply patches failed to provide a list of patches.')
 
+        def get_subdirs_after_patches(path: str) -> str:
+            """Extracts the subdirectories after 'patches'.
+
+            The result is something like
+              'patches/build-android-gyp-dex.py.patch' -> ''
+              'patches/third_party/test/foo.patch' -> 'third_party/test'
+            """
+            parts = Path(path).parts
+            if "patches" not in parts:
+                raise Exception(
+                    'Apply patches failed to provide a list of patches.')
+
+            idx = parts.index("patches") + 1
+            result = '/'.join(parts[idx:-1])  # Exclude the filename
+            return result
+
         for patch in patch_failures:
             patch_name = patch['patchPath']
 
@@ -417,10 +425,26 @@ class PatchFailureResolver:
                 '[bold]Reapplying patch files with --3way:\n[/]' +
                 '\n'.join(f'    * {file}' for file in patches_to_apply))
 
+        def get_repo_path_from_subdir(subdir):
+            """Returns relative repo path for a given patch subdir.
+
+                The result is something like
+                '' -> '../'
+                'third_party/test' -> '../third_party/test'
+            """
+            return f'../{subdir}{"" if subdir == "" else "/"}'
+
+        def get_patch_relative_path_from_repo(repo_path):
+            """Returns the relative path to the patch file from the repo.
+                '../' -> ''
+                '../third_party/test' -> '../../'
+            """
+            return "../" * (repo_path.count('/') -
+                            1) if repo_path != '../' else ''
+
         for subdir, patches in self.patch_files.items():
-            repo_path = f'../{subdir}{"" if subdir == "" else "/"}'
-            patch_relative_path = "../" * (repo_path.count('/') -
-                                           1) if repo_path != '../' else ''
+            repo_path = get_repo_path_from_subdir(subdir)
+            patch_relative_path = get_patch_relative_path_from_repo(repo_path)
 
             cmd = [
                 'git', '-C', f'../{subdir}', 'apply', '--3way',
@@ -444,18 +468,105 @@ class PatchFailureResolver:
             terminal.run_git('-C', f'../{subdir}', 'reset', 'HEAD')
 
         if len(self.patches_to_deleted_files) > 0:
-            # Patches that cannot apply anymore and need to be deleted
-            # manually.
-            terminal.log_task('[bold]Patch files set to be deleted:\n[/]' +
-                              '\n'.join(
-                                  f'    * {file}'
-                                  for file in self.patches_to_deleted_files))
+            # The goal in this this section is print a report for listing every
+            # patch that cannot apply anymore because the source file is gone,
+            # fetching from git the commit and the reason why exactly the file
+            # is not there anymore (e.g. renamed, deleted).
+
+            terminal.log_task(
+                f'[bold]Files that cannot be patched anymore {ACTION_NEEDED_DECORATOR}:[/]'
+            )
+
+            # This set will hold the information about the deleted patches
+            # in a way that they can be grouped around the chang that caused
+            # their removal.
+            deletion_report = {}
+
+            for patch_name in self.patches_to_deleted_files:
+                subdir = get_subdirs_after_patches(patch_name)
+                patch_relative_path = get_patch_relative_path_from_repo(
+                    get_repo_path_from_subdir(subdir))
+
+                try:
+                    # Calling `git apply` with `--check` to have git tell us
+                    # the exact name of the file that the patch is meant for.
+                    #
+                    # The failure output should looks something like:
+                    #   error: base/some_file.cc: No such file or directory
+                    terminal.run_git(
+                        '-C', f'../{subdir}', 'apply', '--check',
+                        f'{patch_relative_path}brave/{patch_name}')
+                except subprocess.CalledProcessError as e:
+                    [status, file, reason] = e.stderr.lstrip().split(':', 2)
+
+                    # The command is expeted to fail, but the reason should be
+                    # that the source for the patch is deleted. Any other
+                    # types of failures should be reported.
+                    if status != 'error' or 'No such file or directory' not in reason:
+                        raise e
+
+                    file = file.strip()
+                    # This command fetches the last commit where the file path
+                    # was mentioned, which is the culprit.
+                    commit = terminal.run_git('-C', f'../{subdir}', 'log',
+                                              '-1', '--pretty=%h', '--',
+                                              file).strip()
+                    if commit not in deletion_report:
+                        deletion_report[commit] = {}
+                        deletion_report[commit]['files'] = []
+
+                        # Running `git show --name-status` to get more details
+                        # about the culprit.
+                        # Not very sure why, but by passing `--no-commit-id` the
+                        # output looks something like this:
+                        #
+                        # M       chrome/VERSION
+                        # commit 17bb6c858e818e81744de42ed292b7060bc341e5
+                        # Author: Chrome Release Bot (LUCI)
+                        # Date:   Wed Feb 26 10:17:33 2025 -0800
+                        #
+                        #     Incrementing VERSION to 134.0.6998.45
+                        #
+                        #     Change-Id: I6e995e1d7aed40e553d3f51e98fb773cd75
+                        #
+                        # So the output is read and split from the moment a
+                        # a line starts with `commit`.
+                        change = terminal.run_git('-C', f'../{subdir}', 'show',
+                                                  '--name-status',
+                                                  '--no-commit-id', commit)
+                        sections = re.split(r'(?=^commit\s)',
+                                            change,
+                                            flags=re.MULTILINE)
+
+                        deletion_report[commit]['summary'] = sections[1]
+                        deletion_report[commit]['status'] = sections[0]
+
+                    status = deletion_report[commit]['status']
+                    status_datails = next(
+                        (s for s in status.splitlines() if file in s),
+                        None).split()
+
+                    if status_datails[0] == 'D':
+                        deletion_report[commit]['files'].append(
+                            f'{file} [red bold](deleted)')
+                    elif status_datails[0].startswith('R'):
+                        file = status_datails[2]
+                        deletion_report[commit]['files'].append(
+                            f'{file}\n    ([yellow bold]renamed to[/] {status_datails[2]})'
+                        )
+
+            for commit, entry in deletion_report.items():
+                for file in entry['files']:
+                    console.log(Padding(f'* {file}', (0, 4)))
+
+                summary = entry['summary']
+                console.log(Padding(f'{summary}\n', (0, 8), style="dim"))
 
         if len(self.files_with_conflicts) > 0:
             terminal.log_task(
-                '[bold]Manually resolve conflicts for these files:\n[/]' +
-                '\n'.join(f'    * {file}'
-                          for file in self.files_with_conflicts))
+                f'[bold]Manually resolve conflicts for {ACTION_NEEDED_DECORATOR}:[/]\n'
+                + '\n'.join(f'    * {file}'
+                            for file in self.files_with_conflicts))
 
             if launch_vscode:
                 terminal.run(['code', *self.files_with_conflicts])
@@ -669,7 +780,7 @@ class Upgrade:
                 'Deleted patches detected. These should be committed as their '
                 'own changes:\n' + '\n'.join(status.deleted))
             return False
-        elif status.has_untracked_patch_files() is True:
+        if status.has_untracked_patch_files() is True:
             error_console.log(
                 'Untracked patch files detected. These should be committed as '
                 'their own changes:\n' + '\n'.join(status.untracked))
@@ -795,7 +906,7 @@ class Upgrade:
                     if resolver.requires_conflict_resolution() is True:
                         # Manual resolution required.
                         console.log(
-                            '👋 (Once all conflicts are resolved ready, rerun *🚀Brockit!* with [bold cyan]--continue[/])'
+                            f'👋 (Address all sections with {ACTION_NEEDED_DECORATOR} above, and then rerun [italic]🚀Brockit![italic] with [bold cyan]--continue[/])'
                         )
                         return False
 
