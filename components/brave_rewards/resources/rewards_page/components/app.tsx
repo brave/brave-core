@@ -17,6 +17,7 @@ import { ExploreView } from './explore/explore_view'
 import { Onboarding } from './onboarding/onboarding'
 import { OnboardingSuccessModal } from './onboarding/onboarding_success_modal'
 import { ConnectAccount } from './connect_account'
+import { UnsupportedRegionView } from './unsupported_region_view'
 import { AuthorizationModal } from './authorization_modal'
 import { CaptchaModal } from './captcha_modal'
 import { ContributeModal } from './contribute/contribute_modal'
@@ -36,6 +37,7 @@ export function App() {
 
   const [
     loading,
+    isUnsupportedRegion,
     embedder,
     paymentId,
     tosUpdateRequired,
@@ -43,6 +45,7 @@ export function App() {
     notifications,
   ] = useAppState((state) => [
     state.loading,
+    state.isUnsupportedRegion,
     state.embedder,
     state.paymentId,
     state.tosUpdateRequired,
@@ -185,6 +188,10 @@ export function App() {
           <ProgressRing />
         </div>
       )
+    }
+
+    if (isUnsupportedRegion) {
+      return <UnsupportedRegionView />
     }
 
     if (!paymentId) {
