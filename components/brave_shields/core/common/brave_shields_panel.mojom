@@ -59,7 +59,7 @@ interface DataHandler {
 
   // Checks is there any elements blocked (by Element blocker feature)
   // on the current page
-  AreBlockedElementsAvailable() => (bool is_available);
+  AreBlockedElements() => (bool is_available);
 };
 
 struct SiteBlockInfo {

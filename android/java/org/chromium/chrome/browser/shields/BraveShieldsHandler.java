@@ -1035,7 +1035,7 @@ public class BraveShieldsHandler
             siteBrokenWarningText.setVisibility(View.VISIBLE);
             mToggleLayout.setVisibility(View.VISIBLE);
             mThirdLayout.setVisibility(
-                    BraveShieldsContentSettings.areBlockedElementsAvailable(mUrlSpec)
+                    BraveShieldsContentSettings.areBlockedElements(mUrlSpec)
                             ? View.VISIBLE
                             : View.GONE);
 

@@ -60,7 +60,7 @@ void AdBlockCustomFiltersProvider::AddUserCosmeticFilter(
   UpdateCustomFilters(custom_filters + '\n' + filter);
 }
 
-bool AdBlockCustomFiltersProvider::AreBlockedElementsAvailable(
+bool AdBlockCustomFiltersProvider::AreBlockedElements(
     const std::string& host) {
   if (host.empty()) {
     return false;
