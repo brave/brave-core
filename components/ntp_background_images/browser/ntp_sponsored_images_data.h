@@ -151,10 +151,6 @@ struct NTPSponsoredImagesData {
 
   bool IsSuperReferral() const;
 
-  bool AdInfoMatchesSponsoredImage(const brave_ads::NewTabPageAdInfo& ad_info,
-                                   size_t campaign_index,
-                                   size_t creative_index) const;
-
   std::string url_prefix;
 
   std::vector<Campaign> campaigns;

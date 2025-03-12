@@ -356,13 +356,6 @@ class ViewCounterServiceTest : public testing::Test {
     return view_counter_service_->GetCurrentWallpaperForDisplay();
   }
 
-  bool AdInfoMatchesSponsoredImage(const brave_ads::NewTabPageAdInfo& ad,
-                                   size_t campaign_index,
-                                   size_t creative_index) {
-    return background_images_service_->sponsored_images_data_
-        ->AdInfoMatchesSponsoredImage(ad, campaign_index, creative_index);
-  }
-
  protected:
   base::test::TaskEnvironment task_environment_;
 
@@ -638,8 +631,6 @@ TEST_F(ViewCounterServiceTest, GetNewTabTakeoverWallpaperForRewardsUser) {
   MockImagesData();
 
   brave_ads::NewTabPageAdInfo ad = CreateNewTabPageAdInfo();
-  EXPECT_TRUE(AdInfoMatchesSponsoredImage(ad, /*campaign_index=*/0,
-                                          /*creative_index=*/1));
 
   const ::testing::InSequence s;
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
@@ -749,8 +740,6 @@ TEST_F(ViewCounterServiceTest, WrongSponsoredImageAdServedForRewardsUser) {
 
   brave_ads::NewTabPageAdInfo ad = CreateNewTabPageAdInfo();
   ad.creative_instance_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-  EXPECT_FALSE(AdInfoMatchesSponsoredImage(ad, /*campaign_index=*/0,
-                                           /*creative_index=*/1));
 
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
       .Times(GetInitialCountToBrandedWallpaper());
