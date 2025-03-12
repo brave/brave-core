@@ -12,7 +12,6 @@
 
 #include "base/files/file_path.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 #include "url/gurl.h"
@@ -94,7 +93,6 @@ struct Creative {
   GURL url;
   base::FilePath file_path;
   gfx::Point focal_point;
-  brave_ads::ConditionMatcherMap condition_matchers;
   std::string background_color;
 
   std::string creative_instance_id;

@@ -5,8 +5,6 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 
-#include <utility>
-
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/stringprintf.h"
@@ -32,9 +30,6 @@ constexpr char kCreativeInstanceIdKey[] = "creativeInstanceId";
 constexpr char kCreativeCompanyNameKey[] = "companyName";
 constexpr char kCreativeAltKey[] = "alt";
 constexpr char kCreativeTargetUrlKey[] = "targetUrl";
-constexpr char kCreativeConditionMatchersKey[] = "conditionMatchers";
-constexpr char kCreativeConditionMatcherConditionKey[] = "condition";
-constexpr char kCreativeConditionMatcherPrefPathKey[] = "prefPath";
 constexpr char kWallpaperKey[] = "wallpaper";
 constexpr char kImageWallpaperRelativeUrlKey[] = "relativeUrl";
 constexpr char kImageWallpaperFocalPointXKey[] = "focalPoint.x";
@@ -298,39 +293,6 @@ std::optional<Campaign> NTPSponsoredImagesData::ParseCampaign(
         continue;
       }
 
-      // Condition matchers.
-      const base::Value::List* const condition_matchers =
-          creative_dict->FindList(kCreativeConditionMatchersKey);
-      if (condition_matchers) {
-        // Condition matchers are optional.
-        for (const auto& condition_matcher_value : *condition_matchers) {
-          const base::Value::Dict* const condition_matcher_dict =
-              condition_matcher_value.GetIfDict();
-          if (!condition_matcher_dict) {
-            // Invalid condition matcher.
-            continue;
-          }
-
-          const std::string* const condition =
-              condition_matcher_dict->FindString(
-                  kCreativeConditionMatcherConditionKey);
-          if (!condition) {
-            // Condition is required.
-            continue;
-          }
-
-          const std::string* const pref_path =
-              condition_matcher_dict->FindString(
-                  kCreativeConditionMatcherPrefPathKey);
-          if (!pref_path) {
-            // Pref path is required.
-            continue;
-          }
-
-          creative.condition_matchers.emplace(*pref_path, *condition);
-        }
-      }
-
       // Wallpaper.
       const base::Value::Dict* const wallpaper_dict =
           creative_dict->FindDict(kWallpaperKey);
@@ -517,15 +479,6 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
 
   const Campaign& campaign = campaigns[campaign_index];
 
-  base::Value::List condition_matchers;
-  for (const auto& [pref_path, condition] :
-       campaign.creatives[creative_index].condition_matchers) {
-    condition_matchers.Append(
-        base::Value::Dict()
-            .Set(kWallpaperConditionMatcherPrefPathKey, pref_path)
-            .Set(kWallpaperConditionMatcherKey, condition));
-  }
-
   const Logo& logo = campaign.creatives[creative_index].logo;
 
   base::Value::Dict data =
@@ -546,7 +499,6 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
                campaign.creatives[creative_index].focal_point.x())
           .Set(kWallpaperFocalPointYKey,
                campaign.creatives[creative_index].focal_point.y())
-          .Set(kWallpaperConditionMatchersKey, std::move(condition_matchers))
           .Set(kLogoKey, base::Value::Dict()
                              .Set(kImageKey, logo.image_url)
                              .Set(kImagePathKey, logo.image_file.AsUTF8Unsafe())

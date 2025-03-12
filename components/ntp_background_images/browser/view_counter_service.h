@@ -19,7 +19,6 @@
 #include "base/timer/wall_clock_timer.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
@@ -103,10 +102,6 @@ class ViewCounterService : public KeyedService,
                const std::optional<std::string>& placement_id,
                const std::optional<std::string>& creative_instance_id,
                const std::optional<GURL>& target_url)> callback) const;
-  std::optional<brave_ads::ConditionMatcherMap> GetConditionMatchers(
-      const base::Value::Dict& dict);
-  std::optional<base::Value::Dict>
-  GetNextBrandedWallpaperWhichMatchesConditions();
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromAdInfo() const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromModel() const;
   std::vector<TopSite> GetTopSitesData() const;
