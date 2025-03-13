@@ -19,7 +19,7 @@ import { style } from './explore_view.style'
 export function ExploreView() {
   const { getString } = useLocaleContext()
   const viewType = useBreakpoint()
-  const [cards] = useAppState((state) => [state.cards])
+  const cards = useAppState((state) => state.cards)
 
   if (!cards) {
     return (

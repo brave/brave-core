@@ -25,10 +25,8 @@ export function PaymentSelection(props: Props) {
   const { getString } = useLocaleContext()
   const tabOpener = React.useContext(TabOpenerContext)
 
-  const [creator, externalWallet] = useAppState((state) => [
-    state.currentCreator,
-    state.externalWallet
-  ])
+  const creator = useAppState((state) => state.currentCreator)
+  const externalWallet = useAppState((state) => state.externalWallet)
 
   if (!creator) {
     return null

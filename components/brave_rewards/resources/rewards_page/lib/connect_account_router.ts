@@ -13,7 +13,7 @@ import * as urls from '../../shared/lib/rewards_urls'
 export function useConnectAccountRouter() {
   const model = React.useContext(AppModelContext)
   const router = React.useContext(RouterContext)
-  const [isBubble] = useAppState((state) => [state.embedder.isBubble])
+  const isBubble = useAppState((state) => state.embedder.isBubble)
 
   return () => {
     if (isBubble) {

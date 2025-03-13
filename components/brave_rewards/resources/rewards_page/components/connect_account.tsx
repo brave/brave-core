@@ -36,17 +36,11 @@ export function ConnectAccount() {
   const router = React.useContext(RouterContext)
   const { getString } = useLocaleContext()
 
-  let [
-    countryCode,
-    regions,
-    providers,
-    externalWallet
-  ] = useAppState((state) => [
-    state.countryCode,
-    state.rewardsParameters?.walletProviderRegions ?? null,
-    state.externalWalletProviders,
-    state.externalWallet
-  ])
+  const countryCode = useAppState((state) => state.countryCode)
+  const regions = useAppState(
+      (state) => state.rewardsParameters?.walletProviderRegions ?? null)
+  let providers = useAppState((state) => state.externalWalletProviders)
+  const externalWallet = useAppState((state) => state.externalWallet)
 
   const [loadingState, setLoadingState] = React.useState<LoadingState>('')
   const [selectedProvider, setSelectedProvider] =

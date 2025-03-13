@@ -48,7 +48,7 @@ function Action(props: NotificationActionViewProps) {
   const { getString } = useLocaleContext()
   const model = React.useContext(AppModelContext)
   const tabOpener = React.useContext(TabOpenerContext)
-  const [externalWallet] = useAppState((state) => [state.externalWallet])
+  const externalWallet = useAppState((state) => state.externalWallet)
 
   function onActionClick () {
     model.clearNotification(props.notification.id)
@@ -76,7 +76,7 @@ function Action(props: NotificationActionViewProps) {
 }
 
 function useAutoDismissCheck(notification: Notification) {
-  const [externalWallet] = useAppState((state) => [state.externalWallet])
+  const externalWallet = useAppState((state) => state.externalWallet)
 
   // Auto-dismiss "disconnected" notifications if the user is now connected.
   if (notification.type === 'external-wallet-disconnected' &&

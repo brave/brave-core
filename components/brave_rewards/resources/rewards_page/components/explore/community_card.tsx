@@ -10,7 +10,7 @@ import { CardItemView } from './card_item_view'
 
 export function CommunityCard() {
   const { getString } = useLocaleContext()
-  const [cards] = useAppState((state) => [state.cards])
+  const cards = useAppState((state) => state.cards)
 
   if (!cards) {
     return null

@@ -32,11 +32,9 @@ export function RecurringContributionCard() {
   const { getString } = useLocaleContext()
   const model = React.useContext(AppModelContext)
 
-  const [externalWallet, contributions, parameters] = useAppState((state) => [
-    state.externalWallet,
-    state.recurringContributions,
-    state.rewardsParameters
-  ])
+  const externalWallet = useAppState((state) => state.externalWallet)
+  const contributions = useAppState((state) => state.recurringContributions)
+  const parameters = useAppState((state) => state.rewardsParameters)
 
   const [showAll, setShowAll] = React.useState(false)
 

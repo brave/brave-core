@@ -20,10 +20,9 @@ export function ContributeCard() {
   const { getString } = useLocaleContext()
   const tabOpener = React.useContext(TabOpenerContext)
   const eventHub = React.useContext(EventHubContext)
-  const [creator, externalWallet] = useAppState((state) => [
-    state.currentCreator,
-    state.externalWallet
-  ])
+
+  const creator = useAppState((state) => state.currentCreator)
+  const externalWallet = useAppState((state) => state.externalWallet)
 
   if (!creator) {
     return null

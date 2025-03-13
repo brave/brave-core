@@ -25,11 +25,9 @@ export function EarningCard() {
   const connectAccount = useConnectAccountRouter()
   const { getString } = useLocaleContext()
 
-  const [externalWallet, adsInfo, isBubble] = useAppState((state) => [
-    state.externalWallet,
-    state.adsInfo,
-    state.embedder.isBubble
-  ])
+  const externalWallet = useAppState((state) => state.externalWallet)
+  const adsInfo = useAppState((state) => state.adsInfo)
+  const isBubble = useAppState((state) => state.embedder.isBubble)
 
   const [showAdDetails, setShowAdDetails] = React.useState(!isBubble)
   const [showAdsSettingsModal, setShowAdsSettingsModal] = React.useState(false)

@@ -43,11 +43,9 @@ function getPayoutMonth() {
 export function PayoutStatusView() {
   const { getString } = useLocaleContext()
 
-  const [parameters, adsInfo, externalWallet] = useAppState((state) => [
-    state.rewardsParameters,
-    state.adsInfo,
-    state.externalWallet
-  ])
+  const parameters = useAppState((state) => state.rewardsParameters)
+  const adsInfo = useAppState((state) => state.adsInfo)
+  const externalWallet = useAppState((state) => state.externalWallet)
 
   if (!parameters || !adsInfo || !externalWallet) {
     return null

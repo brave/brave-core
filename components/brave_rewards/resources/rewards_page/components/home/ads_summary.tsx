@@ -14,7 +14,7 @@ import { style } from './ads_summary.style'
 
 export function AdsSummary() {
   const { getString } = useLocaleContext()
-  const [adsInfo] = useAppState((state) => [state.adsInfo])
+  const adsInfo = useAppState((state) => state.adsInfo)
 
   function renderRow(text: string, adType: AdType) {
     if (!adsInfo) {

@@ -30,10 +30,8 @@ interface Props {
 export function ContributeModal (props: Props) {
   const model = React.useContext(AppModelContext)
 
-  const [creator, externalWallet] = useAppState((state) => [
-    state.currentCreator,
-    state.externalWallet
-  ])
+  const creator = useAppState((state) => state.currentCreator)
+  const externalWallet = useAppState((state) => state.externalWallet)
 
   const [viewType, setViewType] = React.useState<ViewType>(() => {
     if (creator && externalWallet) {
