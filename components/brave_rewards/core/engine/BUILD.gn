@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//third_party/flatbuffers/flatbuffer.gni")
 import("//third_party/protobuf/proto_library.gni")
 
 import("//brave/components/brave_rewards/core/engine/config.gni")
@@ -90,6 +91,10 @@ proto_library("publishers_proto") {
     "publisher/protos/channel_response.proto",
     "publisher/protos/publisher_prefix_list.proto",
   ]
+}
+
+flatbuffer("publishers_flatbuffers") {
+  sources = [ "publisher/flat/prefix_storage.fbs" ]
 }
 
 static_library("engine") {
@@ -444,6 +449,7 @@ static_library("engine") {
   ]
 
   deps = [
+    ":publishers_flatbuffers",
     ":publishers_proto",
     "//base",
     "//brave/components/brave_private_cdn",
@@ -460,6 +466,7 @@ static_library("engine") {
     "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
     "//third_party/brotli:dec",
+    "//third_party/flatbuffers:flatbuffers",
     "//third_party/protobuf:protobuf_lite",
     "//third_party/re2",
     "//url",
