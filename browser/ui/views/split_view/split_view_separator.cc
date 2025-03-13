@@ -48,7 +48,7 @@ class MenuButtonDelegate : public views::WidgetDelegateView,
     SetBackground(views::CreateRoundedRectBackground(
         kColorBraveSplitViewMenuButtonBackground, kCornerRadius,
         /*for_border_thickness*/ kBorderThickness));
-    SetBorder(views::CreateThemedRoundedRectBorder(
+    SetBorder(views::CreateRoundedRectBorder(
         /*thickness*/ kBorderThickness, kCornerRadius,
         kColorBraveSplitViewMenuButtonBorder));
 
