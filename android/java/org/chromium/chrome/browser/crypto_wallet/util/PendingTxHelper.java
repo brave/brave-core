@@ -11,7 +11,6 @@ import androidx.lifecycle.MutableLiveData;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
-import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.browser.crypto_wallet.observers.TxServiceObserverImpl;
 import org.chromium.chrome.browser.crypto_wallet.observers.TxServiceObserverImpl.TxServiceObserverImplDelegate;
@@ -27,9 +26,8 @@ import java.util.Map;
 public class PendingTxHelper implements TxServiceObserverImplDelegate {
     private TxService mTxService;
     private AccountInfo[] mAccountInfos;
-    private HashMap<String, TransactionInfo[]> mTxInfos;
-    private boolean mReturnAll;
-    private String mFilterByContractAddress;
+    private final HashMap<String, TransactionInfo[]> mTxInfos;
+    private final boolean mReturnAll;
     private final List<TransactionInfo> mTransactionInfos;
     private final List<TransactionCacheRecord> mCacheTransactionInfos;
     private boolean isFetchingTx;
@@ -43,7 +41,11 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
     public LiveData<Boolean> mHasNoPendingTxAfterProcessing;
     private TxServiceObserverImpl mTxServiceObserver;
 
-    public PendingTxHelper(TxService txService, AccountInfo[] accountInfos, boolean returnAll) {
+    public PendingTxHelper(
+            TxService txService,
+            AccountInfo[] accountInfos,
+            boolean returnAll,
+            boolean shouldObserveTxUpdates) {
         assert txService != null;
         mTxService = txService;
         mAccountInfos = accountInfos;
@@ -60,14 +62,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
         mTransactionInfoLd = _mTransactionInfos;
         mSelectedPendingRequest = _mSelectedPendingRequest;
         mHasNoPendingTxAfterProcessing = _mHasNoPendingTxAfterProcessing;
-    }
 
-    public PendingTxHelper(
-            TxService txService,
-            AccountInfo[] accountInfos,
-            boolean returnAll,
-            boolean shouldObserveTxUpdates) {
-        this(txService, accountInfos, returnAll);
         if (shouldObserveTxUpdates) {
             mTxServiceObserver = new TxServiceObserverImpl(this);
             txService.addObserver(mTxServiceObserver);
@@ -86,7 +81,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
         return mTxInfos;
     }
 
-    public void fetchTransactions(Runnable runWhenDone) {
+    public void fetchTransactions() {
         isFetchingTx = true;
         mTransactionInfos.clear();
         mCacheTransactionInfos.clear();
@@ -96,7 +91,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
         AsyncUtils.MultiResponseHandler allTxMultiResponse =
                 new AsyncUtils.MultiResponseHandler(mAccountInfos.length);
         ArrayList<AsyncUtils.GetAllTransactionInfoResponseContext> allTxContexts =
-                new ArrayList<AsyncUtils.GetAllTransactionInfoResponseContext>();
+                new ArrayList<>();
         for (AccountInfo accountInfo : mAccountInfos) {
             AsyncUtils.GetAllTransactionInfoResponseContext allTxContext =
                     new AsyncUtils.GetAllTransactionInfoResponseContext(
@@ -109,23 +104,13 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                 () -> {
                     for (AsyncUtils.GetAllTransactionInfoResponseContext allTxContext :
                             allTxContexts) {
-                        ArrayList<TransactionInfo> newValue = new ArrayList<TransactionInfo>();
+                        ArrayList<TransactionInfo> newValue = new ArrayList<>();
                         for (TransactionInfo txInfo : allTxContext.txInfos) {
                             if (mReturnAll || txInfo.txStatus == TransactionStatus.UNAPPROVED) {
-                                if (mFilterByContractAddress == null) {
-                                    // Don't filter by contract
-                                    newValue.add(txInfo);
-                                } else if (txInfo.txType != TransactionType.ERC20_APPROVE
-                                        && txInfo.txType != TransactionType.ERC20_TRANSFER
-                                        && txInfo.txType != TransactionType.ERC721_TRANSFER_FROM
-                                        && txInfo.txType
-                                                != TransactionType.ERC721_SAFE_TRANSFER_FROM) {
-                                    // TODO: Filter by ETH only
-                                    newValue.add(txInfo);
-                                }
+                                newValue.add(txInfo);
                             }
                         }
-                        Collections.sort(newValue, sortByDateComparator);
+                        newValue.sort(sortByDateComparator);
                         TransactionInfo[] newArray = new TransactionInfo[newValue.size()];
                         newArray = newValue.toArray(newArray);
                         TransactionInfo[] value = mTxInfos.get(allTxContext.name);
@@ -140,9 +125,6 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                     }
                     isFetchingTx = false;
                     updateTransactionList();
-                    if (runWhenDone != null) {
-                        runWhenDone.run();
-                    }
                 });
     }
 
@@ -163,17 +145,17 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
 
     public void setAccountInfos(AccountInfo[] accountInfos) {
         this.mAccountInfos = accountInfos;
-        fetchTransactions(null);
+        fetchTransactions();
     }
 
     public void setAccountInfos(List<AccountInfo> accountInfos) {
         this.mAccountInfos = accountInfos.toArray(new AccountInfo[0]);
-        fetchTransactions(null);
+        fetchTransactions();
     }
 
     @Override
     public void onNewUnapprovedTx(TransactionInfo txInfo) {
-        fetchTransactions(null);
+        fetchTransactions();
     }
 
     @Override
@@ -201,7 +183,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
             Collections.addAll(mTransactionInfos, transactionInfoArr);
         }
         processCachedTx();
-        Collections.sort(mTransactionInfos, sortByDateComparator);
+        mTransactionInfos.sort(sortByDateComparator);
         _mTransactionInfos.postValue(mTransactionInfos);
         updatePending(mTransactionInfos);
         postTxUpdates();
@@ -228,7 +210,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
 
     private void updateTransactionList(TransactionInfo txInfo, TxActionType txActionType) {
         if (txActionType == TxActionType.NEW_UNAPPROVED_TRANSACTION) {
-            if (mTransactionInfos.size() == 0) {
+            if (mTransactionInfos.isEmpty()) {
                 _mSelectedPendingRequest.postValue(txInfo);
             }
             mTransactionInfos.add(txInfo);
@@ -258,7 +240,7 @@ public class PendingTxHelper implements TxServiceObserverImplDelegate {
                 }
                 mTransactionInfos.clear();
                 mTransactionInfos.addAll(newTransactionInfos);
-                Collections.sort(mTransactionInfos, sortByDateComparator);
+                mTransactionInfos.sort(sortByDateComparator);
                 if (((_mSelectedPendingRequest.getValue() != null
                                 && _mSelectedPendingRequest.getValue().id.equals(txInfo.id))
                         || _mSelectedPendingRequest.getValue() == null)) {
