@@ -188,24 +188,18 @@ extension BrowserViewController: TabWebPolicyDecider {
     // First special case are some schemes that are about Calling. We prompt the user to confirm this action. This
     // gives us the exact same behaviour as Safari.
     // tel:, facetime:, facetime-audio:, already has its own native alert displayed by the OS!
-    if ["sms", "mailto"].contains(requestURL.scheme) {
+    if ["sms", "mailto", "tel", "facetime", "facetime-audio"].contains(requestURL.scheme) {
+      // "tel", "facetime", "facetime-audio"
+      // can technically be handled by the OS, however `UIApplication.shared.open` cannot be dismissed
+      // It also doesn't wait until the user chooses an option. So if the navigation changes while the system popup is shown,
+      // this can cause a URL-Bar Spoof. We MUST always show our own popup no matter what!
+
       let shouldOpen = await handleExternalURL(
         requestURL,
         tab: tab,
         requestInfo: requestInfo
       )
       return (shouldOpen ? .allow : .cancel)
-    }
-
-    // Let the system's prompt handle these. We can't let these cases fall-through, as the last check in this file will
-    // assume it's an external app prompt
-    if ["tel", "facetime", "facetime-audio"].contains(requestURL.scheme) {
-      let shouldOpen = await withCheckedContinuation { continuation in
-        UIApplication.shared.open(requestURL, options: [:]) { didOpen in
-          continuation.resume(returning: didOpen)
-        }
-      }
-      return shouldOpen ? .allow : .cancel
     }
 
     // Second special case are a set of URLs that look like regular http links, but should be handed over to iOS
