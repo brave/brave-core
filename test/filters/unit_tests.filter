@@ -15,7 +15,6 @@
 
 # This test fails because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
--All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_*
 -ChromeAutofillAiClientTest.EligibilityOf*
 -TabOrganizationServiceTest.*
 
@@ -244,7 +243,6 @@
 -ExtensionInstalledBubbleModelTransportModeTest.ShowSigninPromo_NonExtensionsExplicitSignin
 -ExtensionSyncServiceTransportModeTest.AccountExtensionTypeChangesWithSync
 -ExtensionSyncServiceTransportModeTest.OnlySyncAccountExtensions
--GlicProfileManagerTest.ProfileForLaunch_BasedOnActivationOrder
 -ManagePasswordsUIControllerWithBrowserTestExplicitBrowserSignin.MovePasswordUponSigninWithExistingAccount
 -PeopleHandlerDiceTest.StoredAccountsList
 -PeopleHandlerDiceUnifiedConsentTest.StoredAccountsList
@@ -533,17 +531,6 @@
 # These tests fail because our privacy policy URL doesn't match upstream's URL.
 -PrivacyPolicyURLTests/PrivacyPolicyURLTests.ValidatingURL/*
 
-# These tests fail because we disable Glic feature.
--GlicButtonControllerTest.*
--GlicEnablingTest.EnabledForProfileTest
--GlicMetricsFeaturesEnabledTest.*
--GlicMetricsTest.*
--TabStripActionContainerTest.GlicButtonDrawing
--TabStripActionContainerTest.GlicButtonUnsupportedProfile
--TabStripActionContainerTest.GlicButtonUpdateLabel
--TabStripActionContainerTest.OrdersButtonsCorrectly
--TabStripActionContainerTest.OrdersButtonsCorrectlyWithProduct
-
 # These tests fail because we disable contextual cueing service.
 -ContextualCueingHelperTest.*
 
@@ -624,7 +611,6 @@
 -FullStreamUIPolicyTest.*
 -GCMProfileServiceTest.*
 -GetUserPopulationForProfileTest.PopulatesPopulation
--GlicStatusIconTest.ExecuteCommand
 -HostContentSettingsMapTest.IncognitoInheritSaaAndRenew
 -HostContentSettingsMapTest.IncognitoPartialInheritDefault
 -HostContentSettingsMapTest.IncognitoPartialInheritPref

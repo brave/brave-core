@@ -109,9 +109,6 @@
 #include "brave/browser/ui/views/wayback_machine_bubble_view.h"
 #endif
 
-#if BUILDFLAG(ENABLE_GLIC)
-#include "chrome/browser/glic/glic_border_view.h"
-#endif
 namespace {
 
 std::optional<bool> g_download_confirm_return_allow_for_testing;
@@ -236,15 +233,10 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
       contents_container_->AddChildView(std::make_unique<ReaderModeToolbarView>(
           browser_->profile(), use_rounded_corners));
 
-  views::View* border_view = nullptr;
-#if BUILDFLAG(ENABLE_GLIC)
-  border_view = glic_border();
-#endif
-
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
           devtools_web_view(), contents_web_view(), contents_scrim_view(),
-          border_view, watermark_view_.get(), reader_mode_toolbar_));
+          nullptr, watermark_view_.get(), reader_mode_toolbar_));
 #endif
 
   if (use_rounded_corners) {

@@ -661,9 +661,6 @@
 -EnclaveAuthenticatorWithPinBrowserTest.*
 -EnclaveAuthenticatorWithTimeout.*
 -FedCmAccountSelectionViewBrowserTest.*
--GlicBrowserTest.PausedProfileIsNotReady
--GlicPolicyDisabledTest.*
--GlicPolicyTest.*
 -GPMPasskeysAuthenticatorDialogTest.InvokeUi*
 -HybridLinkingEnabled/HybridParamEnclaveAuthenticatorWithoutPinBrowserTest.MultipleDeclinedBootstrappings/*
 -Incognito/EnclaveAuthenticatorIncognitoBrowserTest.MultipleDeclinedBootstrappings/*
@@ -723,7 +720,6 @@
 -SupervisedUserURLFilterTest.DontShowInterstitialTwice
 -SupervisedUserURLFilterTest.GoBackOnDontProceed
 -SupervisedUserURLFilterTest.RecordBlockedContentUkm
--SystemMenuModelBuilderGlicTest.TogglePinning
 -TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldBindAddRecoveryMethodApiInMainFrame
 -TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldNotBindEncryptionKeysApiInPrerendering
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAborted/*
@@ -1691,7 +1687,6 @@
 # These tests fail because we disable features::kDestroyProfileOnBrowserClose
 -DestroyProfileOnBrowserClose/ProfileHelperTestWithDestroyProfile.*
 -DestroyProfileOnBrowserClose/ProfileManagerBrowserTest.*
--ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithProfileNotLoaded
 -WebAppProfileDeletionTest_WebContentsGracefulShutdown.DataRetrieverWebAppInfoFetching
 -WebAppProfileDeletionTest_WebContentsGracefulShutdown.IconDownloading
 -WebAppProfileDeletionTest_WebContentsGracefulShutdown.UrlLoading
@@ -2059,11 +2054,6 @@
 # prevent installation of the screen ai library
 -All/OpticalCharacterRecognizerTest.PerformOCR_Simple/OCR_Enabled_Library_Available
 -MainContentExtractionTest.RequestWithContent
-
-# These tests fail because we disable Glic feature.
--GlicBackgroundModeManagerBrowserTest.*
--GuestUtilBrowserTest.OnGuestAdded_Glic
--GuestUtilBrowserTest.OnGuestAdded_NonGlic
 
 # These tests fail because we disable kSideBySide
 -MultiContentsViewBrowserTest.*
