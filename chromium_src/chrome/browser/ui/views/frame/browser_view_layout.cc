@@ -16,13 +16,8 @@
   SupportsWindowFeature(FEATURE) && (FEATURE != Browser::FEATURE_TABSTRIP || \
                                      delegate_->ShouldDrawTabStrip());
 
-#define BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST \
-  if (dst->GetWidget() != src->GetWidget()) {        \
-    return false;                                    \
-  }
 
 #include "src/chrome/browser/ui/views/frame/browser_view_layout.cc"
-#undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
 #undef SupportsWindowFeature
 
 void BrowserViewLayout::NotifyDialogPositionRequiresUpdate() {
