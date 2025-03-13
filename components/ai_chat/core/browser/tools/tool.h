@@ -21,8 +21,9 @@ class ConversationHandler;
 // Base class for Tools that are exposed to the Assistant
 class Tool {
  public:
-
   // output_json, delay in milliseconds
+  // TODO: out should be a typed content block, e.g. string, { type: "text",
+  // text: "..." }, { type: "image_url", ... }, etc.
   using UseToolCallback =
       base::OnceCallback<void(std::optional<std::string_view> out, int delay)>;
 
@@ -43,6 +44,10 @@ class Tool {
 
   // If the tool accepts parameters, they should be defined in JSON Schema
   // format.
+  // TODO(petemill): Use base::Value::Dict to avoid JSON parsing in api
+  // clients. Provide a util for the majority of cases which use a list of
+  // properties, e.g. `return GetFunctionPropertiesSchema({"property1", "type1",
+  // "description1"}, {"property2", "type2", "description2"});`.
   virtual std::optional<std::string> GetInputSchemaJson() const;
 
   // A list of properties contained within GetInputSchemaJson that are required
@@ -59,7 +64,7 @@ class Tool {
   virtual bool RequiresUserInteractionBeforeHandling() const;
 
   // Parameters this tool provides when being defined for the Assistant
-  virtual std::optional<base::Value> extra_params() const;
+  virtual std::optional<base::Value::Dict> extra_params() const;
 
   // Implementers should handle tool execution unless it is a built-in
   // tool handled directly by the ConversationHandler.

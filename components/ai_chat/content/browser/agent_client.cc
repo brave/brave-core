@@ -19,8 +19,7 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
 #include "brave/components/ai_chat/content/browser/build_devtools_key_event_params.h"
-// #include "chrome/browser/ui/browser.h"
-// #include "chrome/browser/ui/browser_window.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/render_widget_host.h"
@@ -28,6 +27,7 @@
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkPngDecoder.h"
 #include "include/core/SkBitmap.h"
+#include "third_party/blink/public/common/input/web_mouse_wheel_event.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkData.h"
@@ -89,41 +89,6 @@ std::string base64PngToBase64Webp(const std::string& base64_input) {
     return std::string();
   }
 
-  // Experiment with adding border to image to simulate window border (doesn't
-  // seem neccessary anymore).
-  // SkCanvas canvas(bitmap, SkSurfaceProps{});
-
-  // SkPaint paint;
-  // paint.setStyle(SkPaint::kStroke_Style);
-  // paint.setColor(border_color);
-  // paint.setStrokeWidth(border_size);  // e.g. 2px for the border line
-
-  // SkRect border_rect =
-  //     SkRect::MakeXYWH(static_cast<SkScalar>(0), static_cast<SkScalar>(0),
-  //                      static_cast<SkScalar>(bitmap.width()),
-  //                      static_cast<SkScalar>(bitmap.height()));
-  // canvas.drawRect(border_rect, paint);
-
-  // Experiment with PNG encoding (too big):
-  // SkPixmap pixmap;
-  // if (!bitmap.peekPixels(&pixmap)) {
-  //   LOG(ERROR) << "Failed to peekPixels";
-  //   return std::string();
-  // }
-
-  // SkDynamicMemoryWStream wstream;
-  // SkPngEncoder::Options png_options;
-  // png_options.fFilterFlags = SkPngEncoder::FilterFlag::kNone;
-  // png_options.fZLibLevel   = 9;  // compression level
-
-  // if (!SkPngEncoder::Encode(&wstream, pixmap, png_options)) {
-  //   // Handle error
-  //   LOG(ERROR) << "Failed to encode PNG";
-  //   return std::string();
-  // }
-
-  // sk_sp<SkData> encoded = wstream.detachAsData();
-
   auto encoded = gfx::WebpCodec::Encode(bitmap, 75);
   if (!encoded.has_value()) {
     LOG(ERROR) << "Failed to encode WebP";
@@ -135,6 +100,63 @@ std::string base64PngToBase64Webp(const std::string& base64_input) {
 
   return base::Base64Encode(encoded_png_str);
 }
+
+
+void ScrollActiveElement(content::WebContents* web_contents, gfx::Point position, int delta_x, int delta_y) {
+  if (!web_contents)
+    return;
+
+  std::string script =
+      base::StringPrintf(R"JS((function() {
+    let target = document.elementFromPoint(%d, %d);
+    if (!target) { return }
+
+    while (target && target !== document.body &&
+        target !== document.documentElement &&
+        target.scrollHeight <= target.clientHeight) {
+      target = target.parentElement
+    }
+    if (target) {
+      target.scrollBy(%d, %d)
+    }
+  })())JS",
+                         position.x(), position.y(), delta_x, delta_y);
+
+  web_contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+      base::ASCIIToUTF16(script), base::NullCallback(),
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+
+  // auto* host = web_contents->GetRenderWidgetHostView()->GetRenderWidgetHost();
+  // if (!host)
+  //   return;
+
+  // blink::WebMouseWheelEvent wheel_event;
+  // wheel_event.SetType(blink::WebInputEvent::Type::kMouseWheel);
+  // wheel_event.delta_x = -delta_x;
+  // wheel_event.delta_y = -delta_y;
+  // if (wheel_event.delta_x != 0.0f) {
+  //   wheel_event.wheel_ticks_x = wheel_event.delta_x > 0.0f ? 1.0f : -1.0f;
+  // }
+  // if (wheel_event.delta_y != 0.0f) {
+  //   wheel_event.wheel_ticks_y = wheel_event.delta_y > 0.0f ? 1.0f : -1.0f;
+  // }
+  // wheel_event.phase = blink::WebMouseWheelEvent::kPhaseBegan;
+  // wheel_event.delta_units = ui::ScrollGranularity::kScrollByPrecisePixel;
+  // wheel_event.dispatch_type = blink::WebInputEvent::DispatchType::kBlocking;
+  // wheel_event.SetPositionInWidget(position.x(), position.y());
+  // wheel_event.SetPositionInScreen(wheel_event.PositionInWidget());
+
+  // wheel_event.phase = blink::WebMouseWheelEvent::kPhaseBegan;
+  // host->ForwardWheelEvent(wheel_event);
+
+  // wheel_event.phase = blink::WebMouseWheelEvent::kPhaseChanged;
+  // host->ForwardWheelEvent(wheel_event);
+
+  // wheel_event.phase = blink::WebMouseWheelEvent::kPhaseEnded;
+  // host->ForwardWheelEvent(wheel_event);
+
+}
+
 }  // namespace
 
 AgentClient::AgentClient(content::WebContents* web_contents)
@@ -154,17 +176,15 @@ std::string_view AgentClient::description() const {
 }
 
 std::string_view AgentClient::type() const {
-  return "computer_20241022";
+  return "computer_20250124";
 }
 
-std::optional<std::string> AgentClient::GetInputSchemaJson() const {
-  auto schema = R"({
-          "display_width_px": )" +
-                base::ToString(kForcedWidth) + R"(,
-          "display_height_px": )" +
-                base::ToString(kForcedHeight) + R"(
-    })";
-  return schema;
+std::optional<base::Value::Dict> AgentClient::extra_params() const {
+  base::Value::Dict dict;
+  dict.Set("display_width_px", (int)kForcedWidth);
+  dict.Set("display_height_px", (int)kForcedHeight);
+  // dict.Set("display_number", 1);
+  return dict;
 }
 
 void AgentClient::UseTool(
@@ -248,20 +268,31 @@ void AgentClient::UseTool(
         base::BindOnce(std::move(message_callback),
                        1000));  // match mouse cursor animation duration
   } else if (*action == "left_click") {
+    auto* coordinates = input.FindList("coordinate");
+    if (!coordinates || coordinates->size() != 2) {
+      DLOG(ERROR) << "Invalid coordinates: " << input_json;
+      std::move(callback).Run(std::nullopt, 0);
+      return;
+    }
+
+    mouse_position_ =
+        gfx::Point((*coordinates)[0].GetInt(), (*coordinates)[1].GetInt());
+
+    cursor_overlay_->MoveCursorTo(mouse_position_.x(), mouse_position_.y());
+
     do_action = base::BindOnce(
         [](AgentClient* instance, MessageCallback callback) {
-          instance->Execute(
-              "Input.dispatchMouseEvent",
-              R"({
+          instance->Execute("Input.dispatchMouseEvent",
+                            R"({
         "type": "mousePressed",
         "x": )" + base::ToString(instance->mouse_position_.x()) +
-                  R"(,
+                                R"(,
         "y": )" + base::ToString(instance->mouse_position_.y()) +
-                  R"(,
+                                R"(,
         "button": "left",
         "clickCount": 1
       })",
-              base::DoNothing());
+                            base::DoNothing());
 
           instance->Execute(
               "Input.dispatchMouseEvent",
@@ -291,10 +322,7 @@ void AgentClient::UseTool(
                   },
                   base::Unretained(instance), std::move(callback)));
         },
-        base::Unretained(this),
-        base::BindOnce(
-            std::move(message_callback),
-            0));
+        base::Unretained(this), base::BindOnce(std::move(message_callback), 0));
   } else if (*action == "key") {
     auto* key = input.FindString("text");
     if (!key) {
@@ -340,44 +368,94 @@ void AgentClient::UseTool(
               base::BindOnce(
                   [](MessageCallback callback, MessageResult result) {
                     std::move(callback).Run(
-                        base::ok("{ \"status\": \"success\" }"));
+                        base::ok("{ \"type\": \"text\", \"status\": \"success\" }"));
                   },
                   std::move(callback)));
         },
         base::Unretained(this), *key,
         base::BindOnce(std::move(message_callback), 2000));
-  } else {
+  } else if (*action == "scroll") {
+    std::string* direction = input.FindString("scroll_direction");
+    if (!direction) {
+      DLOG(ERROR) << "No scroll_direction found in input_json: " << input_json;
+      std::move(callback).Run(std::nullopt, 0);
+      return;
+    }
+    std::optional<int> scroll_amount = input.FindInt("scroll_amount");
+    if (!scroll_amount) {
+      DLOG(ERROR) << "No scroll_amount found in input_json: " << input_json;
+      std::move(callback).Run(std::nullopt, 0);
+      return;
+    }
+
+    // Calculate delta_x and delta_y. Assume a "click" is 16px
+    scroll_amount = *scroll_amount * 16;
+    int delta_x = 0;
+    int delta_y = 0;
+    if (*direction == "down") {
+      delta_y = *scroll_amount;
+    } else if (*direction == "up") {
+      delta_y = -(*scroll_amount);
+    } else if (*direction == "right") {
+      delta_x = *scroll_amount;
+    } else if (*direction == "left") {
+      delta_x = -(*scroll_amount);
+    } else {
+      DLOG(ERROR) << "Invalid scroll_direction: " << *direction;
+      std::move(callback).Run(std::nullopt, 0);
+      return;
+    }
+
+    auto* coordinates = input.FindList("coordinate");
+    if (!coordinates || coordinates->size() != 2) {
+      DLOG(ERROR) << "Invalid coordinates: " << input_json;
+      std::move(callback).Run(std::nullopt, 0);
+      return;
+    }
+
+    mouse_position_ =
+        gfx::Point((*coordinates)[0].GetInt(), (*coordinates)[1].GetInt());
+
+    cursor_overlay_->MoveCursorTo(mouse_position_.x(), mouse_position_.y());
+    ScrollActiveElement(devtools_agent_host_->GetWebContents(), mouse_position_,
+                        delta_x, delta_y);
+    do_action =
+        base::BindOnce(&AgentClient::CaptureScreenshot, base::Unretained(this),
+                       base::BindOnce(std::move(message_callback), 100));
+   } else {
     DLOG(ERROR) << "Unknown action: " << action;
     std::move(callback).Run(std::nullopt, 0);
     return;
   }
 
-  if (!has_overriden_metrics_) {
-    has_overriden_metrics_ = true;
-    // We must set the viewport size and scale first
-    Execute("Emulation.setDeviceMetricsOverride",
-            R"({
+  if (!do_action.is_null()) {
+    if (!has_overriden_metrics_) {
+      has_overriden_metrics_ = true;
+      // We must set the viewport size and scale first
+      Execute("Emulation.setDeviceMetricsOverride",
+              R"({
       "width": )" +
-                base::ToString(kForcedWidth) + R"(,
+                  base::ToString(kForcedWidth) + R"(,
       "height": )" +
-                base::ToString(kForcedHeight) + R"(,
+                  base::ToString(kForcedHeight) + R"(,
       "deviceScaleFactor": 1,
       "mobile": false
     })",
-            base::BindOnce(
-                [](base::OnceCallback<void()> do_action,
-                  MessageResult device_metrics_result) {
-                  std::move(do_action).Run();
-                },
-                std::move(do_action)));
-  } else {
-    Execute("Page.bringToFront", "{}",
-            base::BindOnce(
-                [](base::OnceCallback<void()> do_action,
-                   MessageResult device_metrics_result) {
-                  std::move(do_action).Run();
-                },
-                std::move(do_action)));
+              base::BindOnce(
+                  [](base::OnceCallback<void()> do_action,
+                     MessageResult device_metrics_result) {
+                    std::move(do_action).Run();
+                  },
+                  std::move(do_action)));
+    } else {
+      Execute("Page.bringToFront", "{}",
+              base::BindOnce(
+                  [](base::OnceCallback<void()> do_action,
+                     MessageResult device_metrics_result) {
+                    std::move(do_action).Run();
+                  },
+                  std::move(do_action)));
+    }
   }
 }
 
@@ -433,8 +511,8 @@ void AgentClient::CaptureScreenshot(MessageCallback callback) {
                 // what the assistant expects after trial and error:
                 auto response = R"([{
                   "type": "image_url",
-                  "image_url": "data:image/webp;base64,)" +
-                                new_image + R"("
+                  "image_url": { "url": "data:image/webp;base64,)" +
+                                new_image + R"(" }
                 }])";
 
                 std::move(callback).Run(base::ok(response));
@@ -471,7 +549,7 @@ void AgentClient::Execute(std::string_view method,
 
   devtools_agent_host_->AttachClient(this);
   devtools_agent_host_->DispatchProtocolMessage(
-      this, base::as_bytes(base::make_span(json_command)));
+      this, base::as_bytes(base::span(json_command)));
 }
 
 void AgentClient::DispatchProtocolMessage(

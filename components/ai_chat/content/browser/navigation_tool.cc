@@ -74,9 +74,9 @@ void NavigationTool::UseTool(
                                          content::Referrer(),
                                          ui::PAGE_TRANSITION_FROM_API,
                                          std::string());
-  std::move(callback).Run(R"({
-    "status": "navigated"
-  })", 4000); // Allow time for the navigation to at least partially complete
+  std::move(callback).Run(
+      R"([{ "type": "text", "text": "navigation successful" }])",
+      4000);  // Allow time for the navigation to at least partially complete
 }
 
 }  // namespace ai_chat

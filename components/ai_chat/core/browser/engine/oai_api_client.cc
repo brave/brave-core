@@ -105,6 +105,8 @@ std::string CreateJSONRequestBody(
             }
             function_dict.Set("required", std::move(required_properties));
           }
+        } else if (tool->extra_params()) {
+          function_dict.Set("parameters", tool->extra_params().value());
         }
 
         tool_dict.Set("function", std::move(function_dict));
