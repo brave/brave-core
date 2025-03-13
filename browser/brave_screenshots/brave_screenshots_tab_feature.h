@@ -37,6 +37,7 @@ class BraveScreenshotsTabFeature {
   ~BraveScreenshotsTabFeature();
 
   void StartScreenshot(ScreenshotType type);
+  bool IsScreenshotInProgress() const;
 
  private:
   void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
