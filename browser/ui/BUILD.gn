@@ -659,6 +659,8 @@ source_set("ui") {
     }
 
     if (enable_brave_vpn) {
+      deps += [ "//brave/browser/ui/brave_vpn" ]
+
       if (is_win) {
         sources += [
           "views/brave_vpn/brave_vpn_dns_settings_notificiation_dialog_view.cc",
@@ -673,11 +675,7 @@ source_set("ui") {
 
         deps += [ "//brave/browser/brave_vpn/win:wireguard_utils" ]
       }
-
-      sources += [
-        "brave_vpn/brave_vpn_controller.cc",
-        "brave_vpn/brave_vpn_controller.h",
-      ]
+      sources += [ "brave_vpn/brave_vpn_controller.cc" ]
     }
 
     if (use_aura) {
