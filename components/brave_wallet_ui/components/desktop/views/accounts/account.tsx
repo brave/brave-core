@@ -108,6 +108,7 @@ import { ZCashSyncModal } from '../../popup-modals/zcash_sync_modal/zcash_sync_m
 import { AccountDetailsOptions } from '../../../../options/nav-options'
 
 // Hooks
+import useInterval from '../../../../common/hooks/interval'
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
 import {
   useGetDefaultFiatCurrencyQuery,
@@ -119,7 +120,8 @@ import {
   useGetChainTipStatusQuery,
   useGetZCashAccountInfoQuery,
   useStopShieldSyncMutation,
-  useGetZCashBalanceQuery
+  useGetZCashBalanceQuery,
+  useClearChainTipStatusCacheMutation,
 } from '../../../../common/slices/api.slice'
 import {
   querySubscriptionOptions60s //
@@ -219,6 +221,16 @@ export const Account = () => {
   const { data: chainTipStatus } = useGetChainTipStatusQuery(
     isShieldedAccount && selectedAccount ? selectedAccount.accountId : skipToken
   )
+
+  const [clearChainTipStatusCache] = useClearChainTipStatusCacheMutation()
+
+  const retryChainTipStatus = React.useCallback(async () => {
+    await clearChainTipStatusCache()
+  }, [
+    clearChainTipStatusCache
+  ])
+
+  useInterval(retryChainTipStatus, 60000, 60000)
 
   const { data: zcashBalance } =
     useGetZCashBalanceQuery(isShieldedAccount && selectedAccount ? {
