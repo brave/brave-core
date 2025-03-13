@@ -12,37 +12,37 @@ cargo_crate("lib") {
   crate_name = "adblock"
   epoch = "0.9"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/blocker.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/content_blocking.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/cosmetic_filter_cache.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/data_format/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/data_format/utils.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/data_format/v0.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/engine.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/filters/cosmetic.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/filters/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/filters/network.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/lists.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/optimizer.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/regex_manager.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/request.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/resources/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/resources/resource_assembler.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/resources/resource_storage.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/url_parser/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/url_parser/parser.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/url_parser/parser_full.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/url_parser/parser_regex.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.5-brave-core/src/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/blocker.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/content_blocking.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/cosmetic_filter_cache.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/data_format/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/data_format/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/data_format/v0.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/engine.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/filters/cosmetic.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/filters/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/filters/network.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/lists.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/optimizer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/regex_manager.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/request.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/resources/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/resources/resource_assembler.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/resources/resource_storage.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/url_parser/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/url_parser/parser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/url_parser/parser_full.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/url_parser/parser_regex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.6-brave-core/src/utils.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.9.5-brave-core"
+  cargo_pkg_version = "0.9.6-brave-core"
   cargo_pkg_authors = "Anton Lazarev <alazarev@brave.com>, Andrius Aucinas"
   cargo_pkg_name = "adblock"
   cargo_pkg_description = "Native Rust module for Adblock Plus syntax (e.g. EasyList, EasyPrivacy) filter parsing and matching."
@@ -54,7 +54,7 @@ cargo_crate("lib") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//brave/third_party/rust/base64/v0_13:lib",
+    "//brave/third_party/rust/base64/v0_22:lib",
     "//brave/third_party/rust/bitflags/v1:lib",
     "//brave/third_party/rust/cssparser/v0_29:lib",
     "//brave/third_party/rust/idna/v0_2:lib",

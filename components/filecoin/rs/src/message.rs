@@ -61,7 +61,7 @@ pub mod tokenamount {
 }
 
 pub mod rawbytes {
-    use base64::{decode, encode};
+    use base64::prelude::*;
     use fvm_ipld_encoding::RawBytes;
     use serde::{de, Deserialize, Deserializer, Serializer};
 
@@ -69,7 +69,7 @@ pub mod rawbytes {
     where
         S: Serializer,
     {
-        let s = encode(raw.bytes());
+        let s = BASE64_STANDARD.encode(raw.bytes());
         serializer.serialize_str(&s)
     }
 
@@ -78,7 +78,7 @@ pub mod rawbytes {
         D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
-        let raw = decode(s).map_err(de::Error::custom)?;
+        let raw = BASE64_STANDARD.decode(s).map_err(de::Error::custom)?;
         Ok(RawBytes::new(raw))
     }
 }

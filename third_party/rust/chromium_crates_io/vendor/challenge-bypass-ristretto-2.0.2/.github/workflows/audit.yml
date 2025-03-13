@@ -1,0 +1,17 @@
+name: Cargo audit
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  security_audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions-rs/audit-check@35b7b53b1e25b55642157ac01b4adceb5b9ebef3 # v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

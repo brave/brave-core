@@ -4,7 +4,7 @@ version = 4
 
 [[package]]
 name = "adblock"
-version = "0.9.5-brave-core"
+version = "0.9.6-brave-core"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "base64",
@@ -47,7 +47,7 @@ dependencies = [
 
 [[package]]
 name = "adss"
-version = "0.2.2"
+version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "rand 0.8.5",
@@ -139,8 +139,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "base64"
-version = "0.13.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+version = "0.22.1"
 
 [[package]]
 name = "bech32"
@@ -184,6 +183,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "funty",
  "radium",
+ "serde",
  "tap",
  "wyz",
 ]
@@ -329,11 +329,10 @@ dependencies = [
 
 [[package]]
 name = "challenge-bypass-ristretto"
-version = "2.0.0"
+version = "2.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "base64",
- "crypto-mac 0.11.0",
  "curve25519-dalek",
  "digest 0.10.7",
  "hmac 0.12.1",
@@ -1241,7 +1240,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "libsecp256k1"
-version = "0.7.1"
+version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "arrayref",
@@ -1752,7 +1751,7 @@ dependencies = [
 
 [[package]]
 name = "ppoprf"
-version = "0.3.1"
+version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "base64",
@@ -2264,7 +2263,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "sta-rs"
-version = "0.3.0"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "adss",
@@ -2282,7 +2281,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "star-constellation"
-version = "0.2.3"
+version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bincode",
@@ -2336,7 +2335,7 @@ dependencies = [
 
 [[package]]
 name = "strobe-rs"
-version = "0.8.1"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 1.3.2",
@@ -2782,7 +2781,3 @@ dependencies = [
  "memuse",
  "subtle",
 ]
-
-[[patch.unused]]
-name = "base64"
-version = "0.22.1"

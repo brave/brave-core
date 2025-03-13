@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 use crate::message::MessageAPI;
+use base64::prelude::*;
 use blake2b_simd::Params;
 use bls_signatures::Serialize;
 use core::{array::TryFromSliceError, num::ParseIntError};
@@ -138,7 +139,7 @@ pub fn transaction_sign(is_mainnet: bool, transaction: &str, private_key: &[u8])
     if let Ok(message_user_api) = message_user_api {
         let raw_signature = transaction_sign_raw(&message_user_api, &sk);
         if let Ok(raw_signature) = raw_signature {
-            return base64::encode(raw_signature.bytes());
+            return BASE64_STANDARD.encode(raw_signature.bytes());
         }
     }
     // Empty string is returned as an error cause this code is executed from cxx
