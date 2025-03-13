@@ -25,22 +25,15 @@ import {
 } from '../../../../../common/slices/api.slice'
 
 // Types
-import {
-  BraveWallet,
-  MeldCryptoCurrency,
-  MeldFiatCurrency,
-  SpotPriceRegistry
-} from '../../../../../constants/types'
+import { BraveWallet, MeldCryptoCurrency } from '../../../../../constants/types'
 
 // Utils
 import {
   getAssetSymbol,
-  getTokenPriceFromRegistry,
   getAssetIdKey,
   getMeldTokensCoinType
 } from '../../../../../utils/meld_utils'
 import { getLocale } from '../../../../../../common/locale'
-import Amount from '../../../../../utils/amount'
 
 // Components
 import {
@@ -62,7 +55,6 @@ import {
   AssetImage,
   AssetName,
   AssetNetwork,
-  AssetPrice,
   Loader,
   AutoSizerStyle,
   SearchAndNetworkFilterRow
@@ -79,10 +71,7 @@ import {
 interface SelectAssetProps extends DialogProps {
   assets: MeldCryptoCurrency[]
   isLoadingAssets: boolean
-  isLoadingSpotPrices: boolean
   selectedAsset?: MeldCryptoCurrency
-  selectedFiatCurrency?: MeldFiatCurrency
-  spotPriceRegistry?: SpotPriceRegistry
   isOpen: boolean
   onClose: () => void
   onSelectAsset: (asset: MeldCryptoCurrency) => void
@@ -93,9 +82,6 @@ interface AssetListItemProps {
   style: React.CSSProperties
   setSize: (index: number, size: number) => void
   asset: MeldCryptoCurrency
-  isLoadingPrices: boolean
-  assetPrice?: BraveWallet.AssetPrice
-  fiatCurrencyCode?: string
   onSelect: (currency: MeldCryptoCurrency) => void
   network?: BraveWallet.NetworkInfo
 }
@@ -107,9 +93,6 @@ export const AssetListItem = ({
   style,
   setSize,
   asset,
-  isLoadingPrices,
-  assetPrice,
-  fiatCurrencyCode,
   onSelect,
   network
 }: AssetListItemProps) => {
@@ -123,9 +106,6 @@ export const AssetListItem = ({
           .replace('$1', assetSymbol ?? '')
           .replace('$2', chainName ?? '')
       : chainName
-  const formattedPrice = assetPrice
-    ? new Amount(assetPrice.price).formatAsFiat(fiatCurrencyCode ?? '', 4)
-    : ''
 
   // Methods
   const handleSetSize = React.useCallback(
@@ -162,16 +142,6 @@ export const AssetListItem = ({
             <AssetNetwork>{networkDescription}</AssetNetwork>
           </Column>
         </Row>
-        <Row
-          justifyContent='flex-end'
-          gap='16px'
-        >
-          {isLoadingPrices ? (
-            <Loader />
-          ) : (
-            <AssetPrice>{formattedPrice}</AssetPrice>
-          )}
-        </Row>
       </ContainerButton>
     </div>
   )
@@ -182,9 +152,6 @@ export const SelectAsset = (props: SelectAssetProps) => {
     assets,
     selectedAsset,
     isLoadingAssets,
-    isLoadingSpotPrices,
-    selectedFiatCurrency,
-    spotPriceRegistry,
     onSelectAsset,
     isOpen,
     onClose,
@@ -330,11 +297,10 @@ export const SelectAsset = (props: SelectAssetProps) => {
           ) : (
             <>
               <Row
-                justifyContent='space-between'
+                justifyContent='flex-start'
                 padding='16px'
               >
                 <ListTitle>{getLocale('braveWalletAsset')}</ListTitle>
-                <ListTitle>~ {getLocale('braveWalletPrice')}</ListTitle>
               </Row>
               <AutoSizer style={AutoSizerStyle}>
                 {function ({
@@ -360,16 +326,6 @@ export const SelectAsset = (props: SelectAssetProps) => {
                           setSize={setSize}
                           asset={data[index]}
                           network={getAssetsNetwork(data[index])}
-                          isLoadingPrices={isLoadingSpotPrices}
-                          assetPrice={
-                            spotPriceRegistry
-                              ? getTokenPriceFromRegistry(
-                                  spotPriceRegistry,
-                                  data[index]
-                                )
-                              : undefined
-                          }
-                          fiatCurrencyCode={selectedFiatCurrency?.currencyCode}
                           onSelect={onSelectAsset}
                         />
                       )}
@@ -386,16 +342,13 @@ export const SelectAsset = (props: SelectAssetProps) => {
     getAssetsNetwork,
     getSize,
     isLoadingAssets,
-    isLoadingSpotPrices,
     networks,
     onSelectAsset,
     onSelectNetwork,
     searchResults,
     searchText,
-    selectedFiatCurrency,
     selectedNetworkFilter,
     setSize,
-    spotPriceRegistry,
     updateSearchValue
   ])
 
