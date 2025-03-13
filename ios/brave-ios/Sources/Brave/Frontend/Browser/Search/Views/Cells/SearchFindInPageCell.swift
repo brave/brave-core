@@ -42,7 +42,7 @@ class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
     }
 
     searchImageView.snp.makeConstraints {
-      $0.width.height.equalTo(20.0)
+      $0.size.equalTo(20)
     }
   }
 

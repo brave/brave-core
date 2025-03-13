@@ -159,7 +159,7 @@ var package = Package(
     ),
     .target(
       name: "Storage",
-      dependencies: ["Shared", "DesignSystem"],
+      dependencies: ["Shared"],
       plugins: ["LoggerPlugin"]
     ),
     .target(
