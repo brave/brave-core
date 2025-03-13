@@ -28,7 +28,6 @@ public class Migration {
     Preferences.migrateHTTPSUpgradeLevel()
     Preferences.migrateBackgroundSponsoredImages()
     Preferences.migrateBookmarksButtonInToolbar()
-    Preferences.migrateTranslateEnabled()
 
     if Preferences.General.isFirstLaunch.value {
       if UIDevice.current.userInterfaceIdiom == .phone {
@@ -261,11 +260,6 @@ extension Preferences {
       key: "migration.bookmarks-button-in-toolbar",
       default: false
     )
-
-    static let migratedTranslateEnabledCompleted = Option<Bool>(
-      key: "migration.translate-enabled-completed",
-      default: false
-    )
   }
 
   /// Migrate a given key from `Prefs` into a specific option
@@ -430,12 +424,6 @@ extension Preferences {
     }
 
     Migration.migratedBookmarksButtonInToolbar.value = true
-  }
-
-  fileprivate class func migrateTranslateEnabled() {
-    guard !Migration.migratedTranslateEnabledCompleted.value else { return }
-    Preferences.Translate.translateEnabled.value = true
-    Migration.migratedTranslateEnabledCompleted.value = true
   }
 }
 
