@@ -31,6 +31,11 @@
 #define BookmarkBarView BraveBookmarkBarView
 #define UpdateExclusiveAccessBubble UpdateExclusiveAccessBubble_ChromiumImpl
 
+#define BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST \
+  if (dst->GetWidget() != src->GetWidget()) {        \
+    return false;                                    \
+  }
+
 #include "src/chrome/browser/ui/views/frame/browser_view.cc"
 
 #undef UpdateExclusiveAccessBubble
@@ -41,6 +46,7 @@
 #undef ToolbarView
 #undef BrowserViewLayout
 #undef InfoBarContainerView
+#undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
 
 views::View* BrowserView::GetContentsContainerForLayoutManager() {
   return contents_container();
