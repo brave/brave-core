@@ -70,12 +70,17 @@ BraveScreenshotsTabFeature::CreateStrategy(ScreenshotType type) {
   }
 }
 
+bool BraveScreenshotsTabFeature::IsScreenshotInProgress() const {
+  return strategy_ != nullptr;
+}
+
 void BraveScreenshotsTabFeature::OnCaptureComplete(
     const image_editor::ScreenshotCaptureResult& result) {
   DVLOG(2) << __func__;
 
   if (result.image.IsEmpty()) {
     DVLOG(2) << "Screenshot capture failed";
+    strategy_.reset();
     return;
   }
 
@@ -85,6 +90,8 @@ void BraveScreenshotsTabFeature::OnCaptureComplete(
 
   utils::CopyImageToClipboard(result);
   utils::DisplayScreenshotBubble(result, web_contents_->GetWeakPtr());
+
+  strategy_.reset();
 }
 
 }  // namespace brave_screenshots
