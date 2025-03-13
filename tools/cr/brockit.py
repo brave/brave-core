@@ -91,15 +91,16 @@ from datetime import datetime
 import json
 from pathlib import Path
 import platform
+import logging
 import re
 from rich.console import Console
+from rich.logging import RichHandler
 from rich.markdown import Markdown
 from rich.padding import Padding
 import subprocess
 import sys
 
 console = Console()
-error_console = Console(stderr=True, style="bold red")
 
 class RichHelpFormatter(argparse.RawDescriptionHelpFormatter):
     """A custom formatter that allows for markdown in `--help`.
@@ -117,6 +118,7 @@ class RichHelpFormatter(argparse.RawDescriptionHelpFormatter):
 PINSLIST_TIMESTAMP_FILE = 'chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc'
 VERSION_UPGRADE_FILE = '.version_upgrade'
 PACKAGE_FILE = 'package.json'
+CHROMIUM_VERSION_FILE = 'chrome/VERSION'
 
 # The text for the body used on a GitHub issue for a version bump.
 MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
@@ -160,23 +162,35 @@ class Terminal:
     def run(self, cmd):
         """Runs a command on the terminal.
         """
+
+        def truncate_on_max_length(message):
+            # Truncate at the first newline if it exists
+            if '\n' in message:
+                message = message.split('\n')[0] + '...'
+            # Truncate at max_length if the message is still too long
+            max_length = console.size.width - 40
+            if len(message) > max_length:
+                message = message[:max_length - 3] + '...'
+            return message
+
         if self.status is not None:
             self.status.update(
-                f'{self.starting_status_message} [bold cyan]({" ".join(cmd)})')
+                f'[bold green]{self.starting_status_message}[/] [bold cyan]({truncate_on_max_length(" ".join(cmd))})[/]'
+            )
+        logging.debug('λ %s', ' '.join(cmd))
 
-        kwargs = {
-            'capture_output': True,
-            'text': True,
-            'check': True,
-        }
-
-        if platform.system() == 'Windows':
+        try:
             # It is necessary to pass `shell=True` on Windows, otherwise the
             # process handle is entirely orphan and can't resolve things like
             # `npm`.
-            kwargs['shell'] = True
-
-        return subprocess.run(cmd, **kwargs)
+            return subprocess.run(cmd,
+                                  capture_output=True,
+                                  text=True,
+                                  check=True,
+                                  shell=platform.system() == 'Windows')
+        except subprocess.CalledProcessError as e:
+            logging.debug('❯ %s', e.stderr.strip())
+            raise e
 
     def run_git(self, *cmd):
         """Runs a git command on the current repository.
@@ -215,8 +229,8 @@ class Terminal:
     def run_npm_command(self, *cmd):
         """Runs an npm build command.
 
-      This function will run 'npm run' commands appended by any extra arguments are
-      passed into it.
+      This function will run 'npm run' commands appended by any extra arguments
+      are passed into it.
 
       e.g:
           self.run_npm_command('init')
@@ -224,8 +238,23 @@ class Terminal:
         cmd = ['npm', 'run'] + list(cmd)
         return self.run(cmd)
 
-
 terminal = Terminal()
+
+
+class IncendiaryErrorHandler(RichHandler):
+    """ A custom handler that adds emojis to error messages.
+    """
+
+    def emit(self, record: logging.LogRecord) -> None:
+        if record.levelno == logging.ERROR:
+            record.msg = f"🔥🔥 {record.getMessage()}"
+        elif record.levelno == logging.DEBUG:
+            # Debug messages should be printed as normal logs, otherwise the
+            # formatting goes all over the place with the status bar.
+            console.log(f'[dim]{record.getMessage()}[/]', _stack_offset=8)
+            return
+
+        super().emit(record)
 
 
 def _has_staged_changed():
@@ -235,8 +264,15 @@ def _has_staged_changed():
 def _get_current_branch_upstream_name():
     """Retrieves the name of the current branch's upstream.
     """
-    return terminal.run_git('rev-parse', '--abbrev-ref',
-                            '--symbolic-full-name', '@{upstream}')
+    try:
+        return terminal.run_git('rev-parse', '--abbrev-ref',
+                                '--symbolic-full-name', '@{upstream}')
+    except subprocess.CalledProcessError:
+        logging.error(
+            'Could not determine the upstream branch. Please provide a '
+            '[bold cyan]--previous[/] argument or set an upstream branch to '
+            'your current branch.')
+        sys.exit(1)
 
 def _load_package_file(branch):
     """Retrieves the json content of package.json for a given revision
@@ -307,7 +343,8 @@ def _get_apply_patches_list():
         terminal.run_npm_command('apply_patches', '--',
                                  '--print-patch-failures-in-json')
     except subprocess.CalledProcessError as e:
-        # This is a regex to match the json output of the patches that failed to apply.
+        # This is a regex to match the json output of the patches that failed
+        # to apply.
         match = re.search(r'\[\s*{.*?}\s*\]', e.stdout, re.DOTALL)
         if match is None:
             return None
@@ -378,6 +415,9 @@ class PatchFailureResolver:
         # A list of files that require manual conflict resolution before continuing.
         self.files_with_conflicts = []
 
+        # These are patches that fail entirely when running apply with `--3way`.
+        self.broken_patches = []
+
         # The target version aimed by the patches. This is used to validate the
         # continuation mode.
         self.target_version = target_version
@@ -397,6 +437,7 @@ class PatchFailureResolver:
         """
         # the raw list of patches that failed to apply.
         patch_failures = _get_apply_patches_list()
+        logging.debug(patch_failures)
         if patch_failures is None:
             raise Exception(
                 'Apply patches failed to provide a list of patches.')
@@ -464,24 +505,45 @@ class PatchFailureResolver:
                 'git', '-C', f'../{subdir}', 'apply', '--3way',
                 '--ignore-space-change', '--ignore-whitespace'
             ]
-            cmd += [f'{patch_relative_path}brave/{patch}' for patch in patches]
 
-            try:
-                terminal.run(cmd)
-            except subprocess.CalledProcessError as e:
-                # If the process fails, we need to collect the files that
-                # failed to apply for manual conflict resolution.
-                self.files_with_conflicts += [
-                    f'{repo_path}{line.lstrip("U ")}'
-                    for line in e.stderr.splitlines() if line.startswith('U ')
-                ]
+            all_output = []
+            for patch in patches:
+                # Each patch is run individually as a broken patch can stop a
+                # git run for all subsequent patches.
+
+                try:
+                    terminal.run(cmd + [f'{patch_relative_path}brave/{patch}'])
+                except subprocess.CalledProcessError as e:
+                    # If the process fails, we need to collect the files that
+                    # failed to apply for manual conflict resolution.
+                    if 'does not exist in index' in e.stderr:
+                        # This type of detection could occur in certain cases
+                        # when `npm run init` or `sync` were not run for the
+                        # working branch. It may be useful to warn.
+                        self.patches_to_deleted_files.append(patch)
+                        logging.warning(
+                            'Patch with missing file detected during --3way '
+                            'apply, which may indicate a bad sync state before'
+                            ' starting to upgrade. %s', patch)
+                    elif e.stderr.startswith('error:'):
+                        self.broken_patches.append(patch)
+
+                    all_output += e.stderr.strip().splitlines()
+
+            # Checking for " U" which means conflicts were added.
+            self.files_with_conflicts += [
+                f'{repo_path}{line.lstrip("U ")}' for line in all_output
+                if line.startswith('U ')
+            ]
 
         for subdir, patches in self.patch_files.items():
             # Resetting any staged states from apply patches as that can cause
             # issues when generating patches.
             terminal.run_git('-C', f'../{subdir}', 'reset', 'HEAD')
 
+        vscode_args = ['code']
         if len(self.patches_to_deleted_files) > 0:
+            vscode_args += self.patches_to_deleted_files
             # The goal in this this section is print a report for listing every
             # patch that cannot apply anymore because the source file is gone,
             # fetching from git the commit and the reason why exactly the file
@@ -569,21 +631,34 @@ class PatchFailureResolver:
                             f'{file}\n    ([yellow bold]renamed to[/] {status_datails[2]})'
                         )
 
+
             for commit, entry in deletion_report.items():
                 for file in entry['files']:
-                    console.log(Padding(f'* {file}', (0, 4)))
+                    console.log(Padding(f'✘ {file}', (0, 4)))
 
                 summary = entry['summary']
                 console.log(Padding(f'{summary}\n', (0, 8), style="dim"))
 
+        if len(self.broken_patches) > 0:
+            terminal.log_task(
+                f'[bold]Broken patches that fail to apply entirely {ACTION_NEEDED_DECORATOR}:[/]'
+            )
+            for patch in self.broken_patches:
+                file = next((entry.get('path') for entry in patch_failures
+                             if entry.get('patchPath', '') in patch), None)
+                if file is None:
+                    console.log(Padding(f'✘ {patch}', (0, 4)))
+                else:
+                    console.log(Padding(f'✘ {patch} ➜ {file}', (0, 4)))
+                    vscode_args += [patch, file]
+
         if len(self.files_with_conflicts) > 0:
+            vscode_args += self.files_with_conflicts
             terminal.log_task(
                 f'[bold]Manually resolve conflicts for {ACTION_NEEDED_DECORATOR}:[/]\n'
-                + '\n'.join(f'    * {file}'
+                + '\n'.join(f'    ✘ {file}'
                             for file in self.files_with_conflicts))
 
-            if launch_vscode:
-                terminal.run(['code', *self.files_with_conflicts])
 
         # A continuation file is created in case `--continue` is still required
         # for some reason (e.g. manual conflict resolution, patches being
@@ -599,9 +674,12 @@ class PatchFailureResolver:
         with open(VERSION_UPGRADE_FILE, 'w') as file:
             json.dump(continuation_file, file)
 
+        if launch_vscode:
+            terminal.run(vscode_args)
+
     def requires_conflict_resolution(self):
         return len(self.files_with_conflicts) > 0 or len(
-            self.patches_to_deleted_files) > 0
+            self.patches_to_deleted_files) > 0 or len(self.broken_patches) > 0
 
     def stage_all_patches(self, ignore_deleted_files=False):
         """Stages all patches that were applied, so they can be committed as
@@ -696,6 +774,22 @@ def _is_upgrading_major(target_version, from_version):
 
     return to_version[0] > in_version[0]
 
+
+def _read_chromium_version_file():
+    """Retrieves the Chromium version from the VERSION file.
+
+    This function reads directly from git, as VERSION gets patched during
+    `apply_patches`.
+    """
+    version_parts = {}
+    file = terminal.run_git('-C', '../', 'show',
+                            f'HEAD:{CHROMIUM_VERSION_FILE}')
+    for line in file.splitlines():
+        key, value = line.strip().split('=')
+        version_parts[key] = value
+    return '{MAJOR}.{MINOR}.{BUILD}.{PATCH}'.format(**version_parts)
+
+
 class Upgrade:
     """The upgrade process, holding the data related to the upgrade.
 
@@ -710,10 +804,6 @@ class Upgrade:
         self.base_branch = base_branch
         if self.base_branch is None or self.base_branch == '':
             self.base_branch = _get_current_branch_upstream_name()
-        if self.base_branch is None or self.base_branch == '':
-            raise Exception(
-                'Cannot determine the upstream. Provide a --previous argument '
-                'value or set an upstream branch.')
 
         # The target version that is being upgraded to.
         self.target_version = target_version
@@ -725,6 +815,9 @@ class Upgrade:
         # from. This value is either retrieved from git, or from a continuation
         # file.
         self.working_version = None
+
+        # The version currently set in the VERSION file.
+        self.chromium_src_version = _read_chromium_version_file()
 
     def _update_package_version(self):
         """Creates the change upgrading the Chromium version
@@ -790,12 +883,12 @@ class Upgrade:
 
         status = GitStatus()
         if status.has_deleted_patch_files() is True:
-            error_console.log(
+            logging.error(
                 'Deleted patches detected. These should be committed as their '
                 'own changes:\n' + '\n'.join(status.deleted))
             return False
         if status.has_untracked_patch_files() is True:
-            error_console.log(
+            logging.error(
                 'Untracked patch files detected. These should be committed as '
                 'their own changes:\n' + '\n'.join(status.untracked))
             return False
@@ -842,16 +935,15 @@ class Upgrade:
             pattern = r"https://chromium\.googlesource\.com/chromium/src/\+log/[^\s]+"
             body = re.sub(pattern, link, issue['body'])
             if body == issue['body']:
-                console.log(
-                    f'A Github issue with the title "{title}" is already created and up-to-date.'
-                )
+                terminal.log_task(
+                    f'Github issue already up-to-date {issue["url"]}.')
             else:
                 terminal.run([
                     'gh', 'issue', 'edit',
                     str(issue['number']), '--repo', 'brave/brave-browser',
                     '--body', f'{body}'
                 ])
-                terminal.log_task(f'GitHub issue udpated {str(issue["url"])}.')
+                terminal.log_task(f'GitHub issue udpated {issue["url"]}.')
             return
 
         body = MINOR_VERSION_BUMP_ISSUE_TEMPLATE.format(googlesource_link=link)
@@ -884,22 +976,21 @@ class Upgrade:
 
         if with_github is True and _is_gh_cli_logged_in() is False:
             # Fail early if gh cli is not logged in.
-            error_console.log('GitHub CLI is not logged in.')
+            logging.error('GitHub CLI is not logged in.')
             return False
 
         override_continuation = is_continuation
         if is_continuation is not True:
             if self.target_version == self.working_version:
-                error_console.log(
-                    f"It looks like upgrading to {self.target_version} has already started."
-                )
+                logging.error(
+                    "It looks like upgrading to %s has already started.",
+                    self.target_version)
                 return False
 
             if _is_upgrading(self.target_version,
                              self.working_version) is not True:
-                error_console.log(
-                    f'Cannot upgrade version from {self.target_version} to {self.working_version}'
-                )
+                logging.error('Cannot upgrade version from %s to %s',
+                              self.target_version, self.working_version)
                 return False
 
             self._update_package_version()
@@ -912,6 +1003,12 @@ class Upgrade:
                 if self._run_update_patches_with_no_deletions() is not True:
                     return False
             except subprocess.CalledProcessError as e:
+                if 'There were some failures during git reset of specific repo paths' in e.stderr:
+                    logging.warning(
+                        '[bold cyan]npm run init[/] is failing to reset some'
+                        ' paths. This could be happening because of a bad sync'
+                        'state before starting the upgrade.')
+
                 if e.returncode != 0 and 'Exiting as not all patches were successful!' in e.stderr.splitlines(
                 )[-1]:
                     resolver = PatchFailureResolver(self.target_version,
@@ -920,7 +1017,7 @@ class Upgrade:
                     if resolver.requires_conflict_resolution() is True:
                         # Manual resolution required.
                         console.log(
-                            f'👋 (Address all sections with {ACTION_NEEDED_DECORATOR} above, and then rerun [italic]🚀Brockit![italic] with [bold cyan]--continue[/])'
+                            f'👋 (Address all sections with {ACTION_NEEDED_DECORATOR} above, and then rerun [italic]🚀Brockit![/] with [bold cyan]--continue[/])'
                         )
                         return False
 
@@ -937,9 +1034,9 @@ class Upgrade:
                     # resolution failure.
                     override_continuation = True
                 elif e.returncode != 0:
-                    error_console.log(
-                        f'Failures found when running npm run init\n{e.stderr}'
-                    )
+                    logging.error(
+                        'Failures found when running npm run init\n%s',
+                        e.stderr)
                     return False
         elif is_continuation is True and no_conflict_continuation is False:
             # This is when a continuation follows conflict resolution. The
@@ -954,7 +1051,7 @@ class Upgrade:
             resolver.stage_all_patches(ignore_deleted_files=True)
 
             if _has_staged_changed() is False:
-                error_console.log(
+                logging.error(
                     'Nothing has been staged to commit conflict-resolved patches.'
                 )
                 return False
@@ -986,8 +1083,7 @@ class Upgrade:
     Return:
       Return True if completed entirely, and False otherwise.
     """
-        with console.status(
-                "[bold green]Upgrading Chromium base version") as status:
+        with console.status("Upgrading Chromium base version") as status:
             terminal.set_status_object(status)
 
             if is_continuation is True:
@@ -995,15 +1091,36 @@ class Upgrade:
                 resolver = PatchFailureResolver(self.target_version)
                 resolver.load_continuation_file()
                 self.working_version = resolver.working_version
+
+                if self.target_version != self.chromium_src_version:
+                    logging.error(
+                        'To run with [bold cyan]--continue[/] the Chromium version has to '
+                        'be in Sync with Brave. Brave %s ➜ Chromium %s',
+                        self.target_version, self.chromium_src_version)
+                    return False
             else:
                 self.working_version = _get_chromium_version_from_git('HEAD')
 
+                if self.working_version != self.chromium_src_version and self.target_version != self.chromium_src_version:
+                    logging.error(
+                        'Chrommium seems to be synced to a version entirely '
+                        'unrelated. Brave %s ➜ Chromium %s',
+                        self.working_version, self.chromium_src_version)
+                    return False
+                if self.working_version != self.chromium_src_version:
+                    logging.warning(
+                        'Chromium is checked out with the target version. '
+                        'Brave %s ➜ Chromium %s', self.working_version,
+                        self.chromium_src_version)
+
             if self.working_version != self.base_version:
                 terminal.log_task(
-                    f'Chromium changes since last branch upgrade: {GOOGLESOURCE_LINK.format(from_version=self.working_version, to_version=self.target_version)}'
+                    'Chromium changes since last branch upgrade: '
+                    f'{GOOGLESOURCE_LINK.format(from_version=self.working_version, to_version=self.target_version)}'
                 )
             terminal.log_task(
-                f'All Chromium changes: {GOOGLESOURCE_LINK.format(from_version=self.base_version, to_version=self.target_version)}'
+                'All Chromium changes: '
+                f'{GOOGLESOURCE_LINK.format(from_version=self.base_version, to_version=self.target_version)}'
             )
 
             return self._run_internal(is_continuation,
@@ -1012,8 +1129,7 @@ class Upgrade:
 
     def generate_patches(self):
         with console.status(
-                "[bold green]Working to update patches and strings..."
-        ) as status:
+                "Working to update patches and strings...") as status:
             terminal.set_status_object(status)
             terminal.run_npm_command('init')
             terminal.run_npm_command('update_patches')
@@ -1022,12 +1138,11 @@ class Upgrade:
             self._save_rebased_l10n()
 
     def run_github_issue_only(self):
-        with console.status(
-                "[bold green]Creating/Updating GitHub issue...") as status:
+        with console.status("Creating/Updating GitHub issue...") as status:
             terminal.set_status_object(status)
             if _is_gh_cli_logged_in() is False:
-                error_console.log('GitHub CLI is not logged in.')
-                return
+                logging.error('GitHub CLI is not logged in.')
+                sys.exit(1)
 
             self.create_or_updade_issue_with_gh()
 
@@ -1085,8 +1200,17 @@ def main():
         action='store_true',
         help=
         'Launches vscode with the files that need manual conflict resolution.')
+    parser.add_argument(
+        '--verbose',
+        action='store_true',
+        help='Produces verbose logs (full command lines being executed, etc).')
 
     args = parser.parse_args()
+    logging.basicConfig(
+        level=logging.DEBUG if args.verbose else logging.INFO,
+        format='%(message)s',
+        handlers=[IncendiaryErrorHandler(markup=True, rich_tracebacks=True)])
+
     upgrade = Upgrade(args.previous, args.to)
 
     console.log('[italic]🚀 Brockit!')
