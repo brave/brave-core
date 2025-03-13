@@ -6,20 +6,37 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_
 
-class BraveVPNController;
-
-#define InitPostBrowserViewConstruction                                    \
-  InitPostBrowserViewConstruction_ChromiumImpl(BrowserView* browser_view); \
-  BraveVPNController* GetBraveVPNController();                             \
-                                                                           \
- private:                                                                  \
-  std::unique_ptr<BraveVPNController> brave_vpn_controller_;               \
-                                                                           \
- public:                                                                   \
-  void InitPostBrowserViewConstruction
+#define BrowserWindowFeatures BrowserWindowFeatures_ChromiumImpl
+#define InitPostBrowserViewConstruction virtual InitPostBrowserViewConstruction
 
 #include "src/chrome/browser/ui/browser_window/public/browser_window_features.h"  // IWYU pragma: export
 
 #undef InitPostBrowserViewConstruction
+#undef BrowserWindowFeatures
+
+class BraveVPNController;
+
+class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
+ public:
+  static std::unique_ptr<BrowserWindowFeatures> CreateBrowserWindowFeatures();
+  ~BrowserWindowFeatures() override;
+
+  // Call this method to stub out BrowserWindowFeatures for tests.
+  using BrowserWindowFeaturesFactory =
+      base::RepeatingCallback<std::unique_ptr<BrowserWindowFeatures>()>;
+  static void ReplaceBrowserWindowFeaturesForTesting(
+      BrowserWindowFeaturesFactory factory);
+
+  // BrowserWindowFeatures_ChromiumImpl:
+  void InitPostBrowserViewConstruction(BrowserView* browser_view) override;
+
+  BraveVPNController* GetBraveVPNController();
+
+ protected:
+  BrowserWindowFeatures();
+
+ private:
+  std::unique_ptr<BraveVPNController> brave_vpn_controller_;
+};
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_
