@@ -12,25 +12,32 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
+#include "brave/components/brave_user_agent/common/features.h"
 
 constexpr char kBraveUserAgentExceptionsFile[] = "brave-checks.txt";
 
 namespace brave_user_agent {
 
-BraveUserAgentService::BraveUserAgentService(
-    component_updater::ComponentUpdateService* cus)
-    : component_update_service_(cus) {
-  // Can be nullptr in unit tests
-  if (cus) {
-    RegisterBraveUserAgentComponent(
-        cus, base::BindRepeating(&BraveUserAgentService::OnComponentReady,
-                                 weak_factory_.GetWeakPtr()));
+// static
+BraveUserAgentService* BraveUserAgentService::GetInstance() {
+  // Check if feature flag is enabled.
+  if (!base::FeatureList::IsEnabled(
+          brave_user_agent::features::kUseBraveUserAgent)) {
+    return nullptr;
   }
+  return base::Singleton<BraveUserAgentService>::get();
+}
+
+BraveUserAgentService::BraveUserAgentService() = default;
+
+BraveUserAgentService::~BraveUserAgentService() {
+  exceptional_domains_.clear();
 }
 
 void BraveUserAgentService::OnExceptionalDomainsLoaded(
@@ -66,10 +73,6 @@ bool BraveUserAgentService::CanShowBrave(const GURL& url) {
   }
   // Show Brave only if the domain is not on the exceptions list.
   return !base::Contains(exceptional_domains_, url.host());
-}
-
-BraveUserAgentService::~BraveUserAgentService() {
-  exceptional_domains_.clear();
 }
 
 }  // namespace brave_user_agent

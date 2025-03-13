@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_USER_AGENT_BROWSER_BRAVE_USER_AGENT_COMPONENT_INSTALLER_H_
 
 #include "base/files/file_path.h"
-#include "base/functional/callback.h"
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -28,12 +27,9 @@ inline constexpr char kBraveUserAgentServiceComponentBase64PublicKey[] =
     "xPc2QAJxCPk4AMVZ3bi0N0GjVwyrdPHiuPttniF83fxpjGQG2aZFDfRv8IkX0VJ9pYXkIcZac1"
     "Gpo8vsnG7fHSm6NN/g7LdJuG7NMRUFM6dzgK1HwWyEwIDAQAB";
 
-using OnComponentReadyCallback =
-    base::RepeatingCallback<void(const base::FilePath& install_path)>;
-
+// Registers the BraveUserAgent component with the component updater.
 void RegisterBraveUserAgentComponent(
-    component_updater::ComponentUpdateService* cus,
-    OnComponentReadyCallback callback);
+    component_updater::ComponentUpdateService* cus);
 
 }  // namespace brave_user_agent
 

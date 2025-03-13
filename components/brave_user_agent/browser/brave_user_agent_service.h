@@ -11,7 +11,8 @@
 #include <string>
 
 #include "base/files/file_path.h"
-#include "base/functional/callback.h"
+#include "base/memory/singleton.h"
+#include "base/memory/weak_ptr.h"
 #include "url/gurl.h"
 
 namespace component_updater {
@@ -22,15 +23,17 @@ namespace brave_user_agent {
 
 class BraveUserAgentService {
  public:
-  explicit BraveUserAgentService(
-      component_updater::ComponentUpdateService* cus);
-
-  bool CanShowBrave(const GURL& url);
+  BraveUserAgentService(const BraveUserAgentService&) = delete;
+  BraveUserAgentService& operator=(const BraveUserAgentService&) = delete;
   ~BraveUserAgentService();
+  static BraveUserAgentService* GetInstance();  // singleton
+
+  void OnComponentReady(const base::FilePath&);
+  bool CanShowBrave(const GURL& url);
   void SetIsReadyForTesting() { is_ready_ = true; }
 
  private:
-  void OnComponentReady(const base::FilePath&);
+  BraveUserAgentService();
   void OnExceptionalDomainsLoaded(const std::string& contents);
 
   base::FilePath component_path_;
@@ -38,6 +41,8 @@ class BraveUserAgentService {
   bool is_ready_ = false;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
   base::WeakPtrFactory<BraveUserAgentService> weak_factory_{this};
+
+  friend struct base::DefaultSingletonTraits<BraveUserAgentService>;
 };
 
 }  // namespace brave_user_agent
