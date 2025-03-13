@@ -178,9 +178,6 @@ if (target_cpu == "x64") {
 [crate.curve25519-dalek-derive]
 extra_input_roots = [ "../README.md" ]
 
-[crate.deranged]
-license_files = ['LICENSE-Apache']
-
 [crate.dtoa-short]
 license_files = ['LICENSE']
 
@@ -281,9 +278,6 @@ if (epoch != "0.2") {
 }
 ''' }
 
-[crate.num-conv]
-license_files = ['LICENSE-Apache']
-
 [crate.num-traits]
 extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] }
 
@@ -293,9 +287,6 @@ if (epoch == "0.11") {
   output_name = "phf_macros_v0_11"
 }
 ''' }
-
-[crate.powerfmt]
-license_files = ['LICENSE-Apache']
 
 [crate.poly1305]
 extra_kv = { raw_gn = '''
@@ -371,15 +362,6 @@ if (epoch == "2") {
   output_name = "thiserror_impl_v2"
 }
 ''' }
-
-[crate.time]
-license_files = ['LICENSE-Apache']
-
-[crate.time-core]
-license_files = ['LICENSE-Apache']
-
-[crate.time-macros]
-license_files = ['LICENSE-Apache']
 
 [crate.typenum]
 extra_build_script_src_roots = [ "../build" ]

@@ -15,9 +15,6 @@ use std::collections::HashSet;
 use std::default::Default;
 use std::io::Read;
 use thiserror::Error;
-use time::format_description::well_known::Rfc3339;
-use time::macros::format_description;
-use time::OffsetDateTime;
 use url::Url;
 use util::StringUtils;
 
@@ -82,7 +79,6 @@ pub struct Meta {
     pub author: Option<String>,
     pub description: Option<String>,
     pub charset: Option<Handle>,
-    pub last_modified: Option<OffsetDateTime>,
     pub preserved_elements: Vec<Handle>,
 }
 
@@ -102,14 +98,13 @@ impl Meta {
             (Some(_), Some(y)) => Some(y),
         };
         self.charset = self.charset.or(other.charset);
-        self.last_modified = self.last_modified.or(other.last_modified);
         self.preserved_elements.extend(other.preserved_elements);
         self
     }
 }
 
 /// This function searches the DOM for <meta> tags and JSON-LD data.
-/// It looks for the title, author, time modified, and charset
+/// It looks for the title, author, and charset
 /// of the article.
 /// The preference of data sources is as follows:
 ///     (1) JSON-LD
@@ -373,7 +368,7 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         }
 
         // Vertical split
-        if meta.author.is_some() || meta.last_modified.is_some() {
+        if meta.author.is_some() {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
             dom.append(&meta_area, NodeOrText::AppendNode(splitter));
         }
@@ -386,17 +381,6 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             let author =
                 dom::create_element_simple(dom, "p", "author", Some(&format!("By {}", text)));
             dom.append(&metadata_parent, NodeOrText::AppendNode(author));
-        }
-
-        // Add in last modified datetime
-        if let Some(ref last_modified) = meta.last_modified {
-            let format = format_description!(
-                "[month repr:short] [day], [year] [hour repr:12]:[minute] [period]"
-            );
-            if let Some(formatted) = last_modified.format(format).ok() {
-                let modified = dom::create_element_simple(dom, "p", "date", Some(&formatted));
-                dom.append(&metadata_parent, NodeOrText::AppendNode(modified));
-            }
         }
 
         // Add 'read time'
@@ -417,7 +401,6 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         if !meta.title.is_empty()
             || meta.description.is_some()
             || meta.author.is_some()
-            || meta.last_modified.is_some()
         {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
             dom.append(&meta_area, NodeOrText::AppendNode(splitter));
@@ -582,13 +565,6 @@ fn try_parse_untyped_jsonld(content: &str, meta: &mut Meta) -> Result<(), JsonLd
             // Get article description
             if let Some(description) = o.get("description").and_then(from_json_string) {
                 meta.description = Some(description);
-            }
-
-            // Get article modified date
-            if let Some(timestamp) =
-                o.get("dateModified").or_else(|| o.get("datePublished")).and_then(from_json_string)
-            {
-                meta.last_modified = OffsetDateTime::parse(&timestamp, &Rfc3339).ok();
             }
         }
 
@@ -1223,6 +1199,5 @@ mod tests {
             "An inquest into Eloise Parry's death has been adjourned until July.",
             meta.description.expect("No description extracted")
         );
-        assert!(meta.last_modified.is_some(), "Could not parse dateModified field");
     }
 }
