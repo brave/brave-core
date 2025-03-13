@@ -170,8 +170,18 @@ public class CarPlayController {
         player.play()
       }
     }
-    if interface.topTemplate != CPNowPlayingTemplate.shared {
-      interface.pushTemplate(CPNowPlayingTemplate.shared, animated: true, completion: nil)
+    let nowPlaying = CPNowPlayingTemplate.shared
+    if interface.topTemplate != nowPlaying {
+      let shuffleButton = CPNowPlayingShuffleButton { [weak self] _ in
+        self?.player.isShuffleEnabled.toggle()
+      }
+      shuffleButton.isSelected = player.isShuffleEnabled
+      let repeatButton = CPNowPlayingRepeatButton { [weak self] _ in
+        self?.player.repeatMode.cycle()
+      }
+      repeatButton.isSelected = player.repeatMode != .none
+      nowPlaying.updateNowPlayingButtons([shuffleButton, repeatButton])
+      interface.pushTemplate(nowPlaying, animated: true, completion: nil)
     }
   }
 
