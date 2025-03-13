@@ -1,0 +1,84 @@
+error: unsupported on types with type parameters
+  --> tests/ui-msrv/union.rs:33:10
+   |
+33 | #[derive(IntoBytes)]
+   |          ^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must be #[repr(C)], #[repr(packed)], or #[repr(transparent)]
+  --> tests/ui-msrv/union.rs:47:10
+   |
+47 | #[derive(IntoBytes)]
+   |          ^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must be #[repr(C)], #[repr(packed)], or #[repr(transparent)]
+  --> tests/ui-msrv/union.rs:53:10
+   |
+53 | #[derive(IntoBytes)]
+   |          ^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: cannot derive `Unaligned` on type with alignment greater than 1
+  --> tests/ui-msrv/union.rs:64:11
+   |
+64 | #[repr(C, align(2))]
+   |           ^^^^^
+
+error: this conflicts with another representation hint
+  --> tests/ui-msrv/union.rs:80:16
+   |
+80 | #[repr(packed, align(2))]
+   |                ^^^^^
+
+error: this conflicts with another representation hint
+  --> tests/ui-msrv/union.rs:86:18
+   |
+86 | #[repr(align(1), align(2))]
+   |                  ^^^^^
+
+error: this conflicts with another representation hint
+  --> tests/ui-msrv/union.rs:92:18
+   |
+92 | #[repr(align(2), align(4))]
+   |                  ^^^^^
+
+error: must have #[repr(C)], #[repr(transparent)], or #[repr(packed)] attribute in order to guarantee this type's alignment
+  --> tests/ui-msrv/union.rs:97:10
+   |
+97 | #[derive(Unaligned)]
+   |          ^^^^^^^^^
+   |
+   = note: this error originates in the derive macro `Unaligned` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: must have #[repr(C)], #[repr(transparent)], or #[repr(packed)] attribute in order to guarantee this type's alignment
+   --> tests/ui-msrv/union.rs:103:10
+    |
+103 | #[derive(Unaligned)]
+    |          ^^^^^^^^^
+    |
+    = note: this error originates in the derive macro `Unaligned` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `UnsafeCell<()>: zerocopy::Immutable` is not satisfied
+  --> tests/ui-msrv/union.rs:24:10
+   |
+24 | #[derive(Immutable)]
+   |          ^^^^^^^^^ the trait `zerocopy::Immutable` is not implemented for `UnsafeCell<()>`
+   |
+   = note: required because of the requirements on the impl of `zerocopy::Immutable` for `ManuallyDrop<UnsafeCell<()>>`
+   = help: see issue #48214
+   = note: this error originates in the derive macro `Immutable` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `(): PaddingFree<IntoBytes2, true>` is not satisfied
+  --> tests/ui-msrv/union.rs:39:10
+   |
+39 | #[derive(IntoBytes)]
+   |          ^^^^^^^^^ the trait `PaddingFree<IntoBytes2, true>` is not implemented for `()`
+   |
+   = help: the following implementations were found:
+             <() as PaddingFree<T, false>>
+   = help: see issue #48214
+   = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
