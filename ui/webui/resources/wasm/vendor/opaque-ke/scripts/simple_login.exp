@@ -1,0 +1,87 @@
+#!/bin/expect -f
+
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+#
+# This source code is dual-licensed under either the MIT license found in the
+# LICENSE-MIT file in the root directory of this source tree or the Apache
+# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
+# of this source tree. You may select, at your option, one of the above-listed licenses.
+
+set timeout 1
+spawn cargo run --example simple_login --features argon2
+match_max 100000
+sleep 1
+expect "*
+\r
+Currently registered usernames: \\\[\\\]\r
+\r
+Enter an option (1 or 2):\r
+1) Register a user\r
+2) Login as a user\r
+\r
+"
+sleep .1
+send -- "1\r"
+expect "Username: \r"
+send -- "foo\r"
+expect "Password: \r"
+send -- "bar\r"
+expect "*
+\r
+Currently registered usernames: \\\[\"foo\"\\\]\r
+\r
+Enter an option (1 or 2):\r
+1) Register a user\r
+2) Login as a user\r
+\r
+"
+sleep .1
+send -- "2\r"
+expect "Username: \r"
+send -- "baz\r"
+expect "Password: \r"
+send -- "quux\r"
+expect "*Error: Could not find username registered\r
+\r
+Currently registered usernames: \\\[\"foo\"\\\]\r
+\r
+Enter an option (1 or 2):\r
+1) Register a user\r
+2) Login as a user\r
+\r
+"
+sleep .1
+send -- "2\r"
+expect "Username: \r"
+send -- "foo\r"
+expect "Password: \r"
+send -- "baz\r"
+expect "*Incorrect password, please try again.\r
+\r
+Currently registered usernames: \\\[\"foo\"\\\]\r
+\r
+Enter an option (1 or 2):\r
+1) Register a user\r
+2) Login as a user\r
+\r
+"
+sleep .1
+send -- "2\r"
+expect "Username: \r"
+send -- "foo\r"
+expect "Password: \r"
+send -- "bar\r"
+expect "*
+\r
+*Login success!\r
+\r
+Currently registered usernames: \\\[\"foo\"\\\]\r
+\r
+Enter an option (1 or 2):\r
+1) Register a user\r
+2) Login as a user\r
+\r
+"
+sleep .1
+send -- ""
+expect eof
