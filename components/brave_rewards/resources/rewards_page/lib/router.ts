@@ -49,6 +49,10 @@ export const RouterContext = React.createContext<Router>(new Router({
   replace: (route) => history.replaceState(null, '', route)
 }))
 
+export function useRouter() {
+  return React.useContext(RouterContext)
+}
+
 // Returns the current page "route" (basically, a normalized pathname). The
 // provided `onRouteUpdated` callback will be called when the route changes.
 export function useRoute(
