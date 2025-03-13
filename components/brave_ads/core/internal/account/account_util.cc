@@ -36,12 +36,9 @@ bool IsAllowedToDeposit(const std::string& creative_instance_id,
     }
 
     case mojom::AdType::kNewTabPageAd: {
-      // Only allow viewed impession and clicked deposits for non-Rewards users
-      // who have opted into new tab page ads.
-      return UserHasOptedInToNewTabPageAds() &&
-             (mojom_confirmation_type ==
-                  mojom::ConfirmationType::kViewedImpression ||
-              mojom_confirmation_type == mojom::ConfirmationType::kClicked);
+      // Only allow deposits for non-Rewards users who have opted into new tab
+      // page ads.
+      return UserHasOptedInToNewTabPageAds();
     }
 
     case mojom::AdType::kNotificationAd: {

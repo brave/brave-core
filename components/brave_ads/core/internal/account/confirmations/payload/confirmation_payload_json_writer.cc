@@ -21,7 +21,6 @@ namespace {
 constexpr char kTransactionIdKey[] = "transactionId";
 constexpr char kCreativeInstanceIdKey[] = "creativeInstanceId";
 constexpr char kTypeKey[] = "type";
-constexpr char kFirstTimeKey[] = "firstTime";
 
 }  // namespace
 

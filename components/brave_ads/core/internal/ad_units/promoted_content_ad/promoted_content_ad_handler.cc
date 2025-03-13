@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/check.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -105,8 +105,8 @@ void PromotedContentAdHandler::OnDidFirePromotedContentAdViewedEvent(
   AdHistoryManager::GetInstance().Add(
       ad, mojom::ConfirmationType::kViewedImpression);
 
-  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       mojom::ConfirmationType::kViewedImpression);
+  Deposit(ad.type, mojom::ConfirmationType::kViewedImpression, ad.campaign_id,
+          ad.creative_instance_id, ad.segment);
 }
 
 void PromotedContentAdHandler::OnDidFirePromotedContentAdClickedEvent(
@@ -119,8 +119,8 @@ void PromotedContentAdHandler::OnDidFirePromotedContentAdClickedEvent(
 
   AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
 
-  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       mojom::ConfirmationType::kClicked);
+  Deposit(ad.type, mojom::ConfirmationType::kClicked, ad.campaign_id,
+          ad.creative_instance_id, ad.segment);
 }
 
 }  // namespace brave_ads

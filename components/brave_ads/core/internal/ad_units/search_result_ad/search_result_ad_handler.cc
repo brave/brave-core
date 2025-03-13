@@ -11,8 +11,8 @@
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
-#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -176,8 +176,8 @@ void SearchResultAdHandler::OnDidFireSearchResultAdViewedEvent(
   AdHistoryManager::GetInstance().Add(
       ad, mojom::ConfirmationType::kViewedImpression);
 
-  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       mojom::ConfirmationType::kViewedImpression);
+  Deposit(ad.type, mojom::ConfirmationType::kViewedImpression, ad.campaign_id,
+          ad.creative_instance_id, ad.segment);
 }
 
 void SearchResultAdHandler::OnDidFireSearchResultAdClickedEvent(
@@ -190,8 +190,8 @@ void SearchResultAdHandler::OnDidFireSearchResultAdClickedEvent(
 
   AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
 
-  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       mojom::ConfirmationType::kClicked);
+  Deposit(ad.type, mojom::ConfirmationType::kClicked, ad.campaign_id,
+          ad.creative_instance_id, ad.segment);
 }
 
 }  // namespace brave_ads

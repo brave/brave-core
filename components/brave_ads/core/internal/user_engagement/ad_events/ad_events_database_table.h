@@ -21,12 +21,23 @@ class TimeDelta;
 
 namespace brave_ads::database::table {
 
+using IsFirstTimeCallback =
+    base::OnceCallback<void(bool success, bool is_first_time)>;
+
 using GetAdEventsCallback =
     base::OnceCallback<void(bool success, const AdEventList& ad_events)>;
 
 class AdEvents final : public TableInterface {
  public:
   void RecordEvent(const AdEventInfo& ad_event, ResultCallback callback);
+
+  // Should be called after recording the ad event. The callback takes two
+  // arguments - `success` is set to `true` if successful otherwise `false`.
+  // `is_first_time` is set to `true` if the ad event has only one entry
+  // otherwise `false`.
+  void IsFirstTime(const std::string& campaign_id,
+                   mojom::ConfirmationType confirmation_type,
+                   IsFirstTimeCallback callback) const;
 
   void GetAll(GetAdEventsCallback callback) const;
 
