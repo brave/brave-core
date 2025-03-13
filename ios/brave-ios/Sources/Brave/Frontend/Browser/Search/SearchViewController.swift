@@ -62,6 +62,25 @@ public class SearchViewController: UIViewController, LoaderListener {
     static let separatorSize = CGSize(width: 1.0, height: 20.0)
   }
 
+  // MARK: ReuseIdentifier
+
+  private struct SupplementaryViewReuseIdentifier {
+    static let inYourDeviceSectionFooterIdentifer =
+      "in_your_device_footer"
+    static let searchHeaderIdentifier = "search_header"
+  }
+
+  private struct CollectionViewCellReuseIdentifier {
+    static let searchOptinSeparatorCellIdentifier = "search_optin_separator"
+  }
+
+  // MARK: NSCollectionLayoutDecorationItemElementKind
+
+  private struct CollectionLayoutDecorationItemElementKind {
+    static let backgroundWithHeader = "background_with_header"
+    static let backgroundPlain = "background_plain"
+  }
+
   // MARK: Properties
 
   // UI Properties
@@ -125,11 +144,7 @@ public class SearchViewController: UIViewController, LoaderListener {
   )
 
   weak var searchDelegate: SearchViewControllerDelegate?
-  var profile: Profile! {
-    didSet {
-      collectionView.reloadData()
-    }
-  }
+
   var isUsingBottomBar: Bool = false {
     didSet {
       layoutSearchEngineScrollView()
@@ -139,6 +154,18 @@ public class SearchViewController: UIViewController, LoaderListener {
   let dataSource: SearchSuggestionDataSource
   public static var userAgent: String?
   private var browserColors: any BrowserColors
+  private var allSiteData = [Site]()
+  private var showAllSiteData: Bool = false
+  private var availableSiteData: [Site] {
+    if showAllSiteData {
+      return allSiteData
+    } else {
+      return Array(allSiteData.prefix(5))
+    }
+  }
+  private var isSiteDataShowMoreAvailable: Bool {
+    availableSiteData.count < allSiteData.count
+  }
 
   private var availableSections: [SearchSuggestionDataSource.SearchListSection] {
     var result = [SearchSuggestionDataSource.SearchListSection]()
@@ -162,7 +189,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     } else if Preferences.Privacy.privateBrowsingOnly.value
       && dataSource.searchEngines?.shouldShowSearchSuggestions == false
     {
-    } else if !dataSource.siteData.isEmpty {
+    } else if !availableSiteData.isEmpty {
       result.append(.openTabsAndHistoryAndBookmarks)
     }
 
@@ -217,12 +244,12 @@ public class SearchViewController: UIViewController, LoaderListener {
       $0.register(
         SearchSectionHeaderView.self,
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-        withReuseIdentifier: "search_header"
+        withReuseIdentifier: SupplementaryViewReuseIdentifier.searchHeaderIdentifier
       )
       $0.register(
         FavoritesRecentSearchFooterView.self,
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-        withReuseIdentifier: "in_your_device_footer"
+        withReuseIdentifier: SupplementaryViewReuseIdentifier.inYourDeviceSectionFooterIdentifer
       )
       $0.alwaysBounceVertical = true
       $0.backgroundColor = .clear
@@ -498,7 +525,7 @@ public class SearchViewController: UIViewController, LoaderListener {
   }
 
   public func loader(dataLoaded data: [Site]) {
-    dataSource.siteData = data
+    allSiteData = data
     collectionView.reloadData()
   }
 
@@ -561,20 +588,20 @@ public class SearchViewController: UIViewController, LoaderListener {
       supplementaryItems.append(headerItem)
 
       let backgroundItem = NSCollectionLayoutDecorationItem.background(
-        elementKind: "background_with_header"
+        elementKind: CollectionLayoutDecorationItemElementKind.backgroundWithHeader
       )
       backgroundItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
       section.decorationItems = [backgroundItem]
     } else {
       let backgroundItem = NSCollectionLayoutDecorationItem.background(
-        elementKind: "background_plain"
+        elementKind: CollectionLayoutDecorationItemElementKind.backgroundPlain
       )
       backgroundItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
       section.decorationItems = [backgroundItem]
     }
 
     if footerEnabled {
-      if dataSource.isSiteDataShowMoreAvailable {
+      if isSiteDataShowMoreAvailable {
         let footerItemSize = NSCollectionLayoutSize(
           widthDimension: .fractionalWidth(1),
           heightDimension: .estimated(30)
@@ -626,7 +653,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     section.contentInsets = .init(top: 0, leading: 12, bottom: 0, trailing: 12)
 
     let backgroundItem = NSCollectionLayoutDecorationItem.background(
-      elementKind: "background_plain"
+      elementKind: CollectionLayoutDecorationItemElementKind.backgroundPlain
     )
     backgroundItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
     section.decorationItems = [backgroundItem]
@@ -650,7 +677,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     section.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
 
     let backgroundItem = NSCollectionLayoutDecorationItem.background(
-      elementKind: "background_plain"
+      elementKind: CollectionLayoutDecorationItemElementKind.backgroundPlain
     )
     backgroundItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
     section.decorationItems = [backgroundItem]
@@ -690,7 +717,7 @@ public class SearchViewController: UIViewController, LoaderListener {
   }
 
   @objc func onShowMorePressed() {
-    dataSource.siteDataFetchLimit = 0
+    showAllSiteData = true
     collectionView.reloadData()
   }
 
@@ -744,7 +771,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
       return !dataSource.searchQuery.looksLikeAURL()
         && !dataSource.tabType.isPrivate ? searchSuggestionsCount + 1 : 1  // + 1 for quickBar
     case .openTabsAndHistoryAndBookmarks:
-      return dataSource.siteData.count
+      return availableSiteData.count
     case .findInPage:
       return 1
     case .braveSearchPromotion:
@@ -767,7 +794,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         return cell
       } else if indexPath.row == 1 {
         let cell = collectionView.dequeueReusableCell(
-          withReuseIdentifier: "search_optin_separator",
+          withReuseIdentifier: CollectionViewCellReuseIdentifier.searchOptinSeparatorCellIdentifier,
           for: indexPath
         )
         cell.backgroundColor = UIColor(braveSystemName: .dividerSubtle)
@@ -777,6 +804,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchActionsCell
         cell.do {
           $0.layer.cornerRadius = 12
+          $0.layer.cornerCurve = .continuous
           $0.titleLabel.text = Strings.recentSearchSuggestionsTitle
           $0.subtitleLabel.text = Strings.searchSuggestionsSubtitle
           $0.imageView.image = UIImage(named: "search-suggestion-opt-in", in: .module, with: nil)
@@ -859,7 +887,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
       return cell
     case .openTabsAndHistoryAndBookmarks:
       let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchOnYourDeviceCell
-      let site = dataSource.siteData[indexPath.row]
+      let site = availableSiteData[indexPath.row]
       cell.setSite(site, isPrivateBrowsing: dataSource.tabType.isPrivate)
 
       return cell
@@ -878,7 +906,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         collectionView
         .dequeueReusableSupplementaryView(
           ofKind: kind,
-          withReuseIdentifier: "search_header",
+          withReuseIdentifier: SupplementaryViewReuseIdentifier.searchHeaderIdentifier,
           for: indexPath
         ) as? SearchSectionHeaderView
       {
@@ -897,7 +925,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         collectionView
         .dequeueReusableSupplementaryView(
           ofKind: kind,
-          withReuseIdentifier: "in_your_device_footer",
+          withReuseIdentifier: SupplementaryViewReuseIdentifier.inYourDeviceSectionFooterIdentifer,
           for: indexPath
         )
       let tapGesture = UITapGestureRecognizer(
@@ -913,7 +941,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
       collectionView
       .dequeueReusableSupplementaryView(
         ofKind: kind,
-        withReuseIdentifier: "search_header",
+        withReuseIdentifier: SupplementaryViewReuseIdentifier.searchHeaderIdentifier,
         for: indexPath
       )
   }
@@ -959,7 +987,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
       let localSearchQuery = dataSource.searchQuery.lowercased()
       searchDelegate?.searchViewController(self, shouldFindInPage: localSearchQuery)
     case .openTabsAndHistoryAndBookmarks:
-      let site = dataSource.siteData[indexPath.row]
+      let site = availableSiteData[indexPath.row]
       if let url = URL(string: site.url) {
         if site.siteType == .tab {
           var tabId: UUID?

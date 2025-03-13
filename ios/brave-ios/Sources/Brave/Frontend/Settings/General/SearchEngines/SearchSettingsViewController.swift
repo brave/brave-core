@@ -231,7 +231,7 @@ class SearchSettingsViewController: UITableViewController {
     let navVC = UINavigationController(
       rootViewController: customEngineViewController
     ).then {
-      $0.sheetPresentationController?.detents = [.large()]
+      $0.modalPresentationStyle = .pageSheet
       $0.sheetPresentationController?.prefersGrabberVisible = true
     }
 
