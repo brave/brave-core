@@ -80,9 +80,7 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
     selectedAccount,
     amount,
     isLoadingAssets,
-    isLoadingSpotPrices,
     formattedCryptoEstimate,
-    spotPriceRegistry,
     fiatCurrencies,
     accounts,
     cryptoCurrencies,
@@ -361,10 +359,7 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
         isOpen={isAssetDialogOpen}
         assets={cryptoCurrencies || []}
         selectedAsset={selectedAsset}
-        spotPriceRegistry={spotPriceRegistry}
-        selectedFiatCurrency={selectedCurrency}
         isLoadingAssets={isLoadingAssets}
-        isLoadingSpotPrices={isLoadingSpotPrices}
         onSelectAsset={(asset) => {
           onSelectToken(asset)
           setIsAssetDialogOpen(false)
