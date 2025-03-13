@@ -2530,6 +2530,17 @@ interface BraveWalletService {
   GetNetworkForSelectedAccountOnActiveOrigin() => (NetworkInfo? network);
   SetNetworkForSelectedAccountOnActiveOrigin(string chain_id) => (bool success);
 
+  // At this time only coin will be used to manage chain id setting,
+  // so any account can be used.
+  // But in the future we are going to make unique relation
+  // between origin, account and chain.
+  // GetNetworkForSelectedAccountOnActiveOrigin and
+  // SetNetworkForSelectedAccountOnActiveOrigin will be deprecated.
+  GetNetworkForAccountOnActiveOrigin(AccountId account)
+    => (NetworkInfo? network);
+  SetNetworkForAccountOnActiveOrigin(AccountId account, string chain_id)
+    => (bool success);
+
   // Filters accounts with permissions on active origin.
   HasPermission(array<AccountId> accounts)
     => (bool success, array<AccountId> accounts_with_permission);
