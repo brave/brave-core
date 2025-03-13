@@ -13,7 +13,10 @@ import "url/mojom/url.mojom";
 
 enum CharacterType {
   HUMAN,
-  ASSISTANT
+  ASSISTANT,
+
+  // Only for API tool use events, not for UI or storage
+  TOOL
 };
 
 enum APIError {
@@ -201,6 +204,8 @@ struct ToolUseEvent {
   string tool_id;
   ToolType? tool_type;
   string input_json;
+  // TODO(petemill): array of structured text/image(/audio) content that
+  // can be reconsstructed in to each API's tool use type.
   string? output_json;
 };
 

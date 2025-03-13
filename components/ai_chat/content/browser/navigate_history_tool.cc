@@ -68,14 +68,19 @@ void NavigateHistoryTool::UseTool(
   auto is_back = input_value->FindBool("back");
   if (!is_back.has_value()) {
     LOG(ERROR) << "Missing required property 'back' in " << input_json;
-    std::move(callback).Run(R"({ "status": "'back' property missing" })", 0);
+    std::move(callback).Run(R"({
+      "type": "text",
+      "text": "Error - 'back' property missing"
+    })",
+                            0);
     return;
   }
 
   // Navigate the web contents to the new URL
   web_contents_->GetController().GoToOffset(is_back.value() ? -1 : 1);
   std::move(callback).Run(R"({
-    "status": "navigated"
+    "type": "text",
+    "text": "success - navigated"
   })", 2000); // Allow time for the navigation to at least partially complete
 }
 

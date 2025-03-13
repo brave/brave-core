@@ -121,11 +121,11 @@ export function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boo
         toolText = <>{input?.action}</>
       }
     }
-    if (output?.[0]?.image_url) {
+    if (output?.[0]?.image_url?.url) {
       toolText = (
         <Tooltip>
           {toolText}
-          <div slot='content'><div><img className={styles.screenshotPreview} src={output?.[0]?.image_url} /></div></div>
+          <div slot='content'><div><img className={styles.screenshotPreview} src={output?.[0]?.image_url?.url} /></div></div>
         </Tooltip>
       )
     }

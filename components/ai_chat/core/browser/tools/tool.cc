@@ -34,7 +34,7 @@ bool Tool::RequiresUserInteractionBeforeHandling() const {
   return false;
 }
 
-std::optional<base::Value> Tool::extra_params() const {
+std::optional<base::Value::Dict> Tool::extra_params() const {
   return std::nullopt;
 }
 
