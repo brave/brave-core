@@ -130,6 +130,7 @@ public class BraveClassAdapter {
         chain = new BraveFullscreenVideoPictureInPictureControllerClassAdapter(chain);
         chain = new BraveFullscreenHtmlApiHandlerCompatClassAdapter(chain);
         chain = new BraveFullscreenHtmlApiHandlerLegacyClassAdapter(chain);
+        chain = new BraveFullscreenHtmlApiHandlerBaseClassAdapter(chain);
         return chain;
     }
 }

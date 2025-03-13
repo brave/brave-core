@@ -223,6 +223,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/firstrun/BraveFirstRunFlowSequencer.java",
   "../../brave/android/java/org/chromium/chrome/browser/firstrun/BraveFreIntentCreator.java",
   "../../brave/android/java/org/chromium/chrome/browser/firstrun/WelcomeOnboardingActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerCompat.java",
   "../../brave/android/java/org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerLegacy.java",
   "../../brave/android/java/org/chromium/chrome/browser/homepage/BraveHomepageManager.java",

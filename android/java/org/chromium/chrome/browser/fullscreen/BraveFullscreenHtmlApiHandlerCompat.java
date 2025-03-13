@@ -29,7 +29,8 @@ public class BraveFullscreenHtmlApiHandlerCompat extends FullscreenHtmlApiHandle
 
     @Override
     public void exitPersistentFullscreenMode() {
-        if (!mActivity.isInPictureInPictureMode() || mTabHiddenByChangedTabs) {
+        if (!mActivity.isInPictureInPictureMode()
+                || BraveFullscreenHtmlApiHandlerBase.class.cast(this).mTabHiddenByChangedTabs) {
             super.exitPersistentFullscreenMode();
         }
     }
