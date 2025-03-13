@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index e5e4877a45971b773704a139a88dede0efc31eff..d270c3209582896a27c478f0fd691ad4d9318356 100644
+index 9653ab45f6aa1e5be12c5c9e2b71bbdaac82d50d..ab1bcb63b2a999fc57433fb514d63b94a2e35562 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -248,6 +248,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
-     // POINTER_LOCK has been deprecated.
-     {ContentSettingsType::POINTER_LOCK, nullptr},
+@@ -250,6 +250,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
      {ContentSettingsType::REVOKED_DISRUPTIVE_NOTIFICATION_PERMISSIONS, nullptr},
+     // TODO(crbug.com/400455013): Implement UI for LNA permission.
+     {ContentSettingsType::LOCAL_NETWORK_ACCESS, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  });
  
  static_assert(
-@@ -508,6 +509,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -510,6 +511,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -18,7 +18,7 @@ index e5e4877a45971b773704a139a88dede0efc31eff..d270c3209582896a27c478f0fd691ad4
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -522,6 +524,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -524,6 +526,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
