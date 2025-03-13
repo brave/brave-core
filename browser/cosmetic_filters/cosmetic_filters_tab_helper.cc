@@ -11,17 +11,15 @@
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "content/public/browser/reload_type.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_pages.h"
-#include "chrome/browser/themes/theme_service.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "ui/color/color_provider.h"
 #else
 #include "brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h"
@@ -88,12 +86,22 @@ void CosmeticFiltersTabHelper::AddSiteCosmeticFilter(
   }
 }
 
-void CosmeticFiltersTabHelper::ResetCosmeticFilterForCurrentHost() {
-  const auto* sender_rfh = receivers_.GetCurrentTargetFrame();
-  CHECK(sender_rfh);
-  g_brave_browser_process->ad_block_service()->ResetCosmeticFilter(
-      sender_rfh->GetLastCommittedOrigin().host());
-  GetWebContents().GetController().Reload(content::ReloadType::NORMAL, true);
+void CosmeticFiltersTabHelper::ManageCustomFilters() {
+#if !BUILDFLAG(IS_ANDROID)
+  auto* tab_interface =
+      tabs::TabInterface::MaybeGetFromContents(&GetWebContents());
+  if (!tab_interface) {
+    return;
+  }
+  auto* browser_window_interface = tab_interface->GetBrowserWindowInterface();
+  if (!browser_window_interface) {
+    return;
+  }
+  brave::ShowBraveAdblock(
+      browser_window_interface->GetBrowserForMigrationOnly());
+#else   // !BUILDFLAG(IS_ANDROID)
+  ShowCustomFilterSettings();
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 void CosmeticFiltersTabHelper::GetElementPickerThemeInfo(

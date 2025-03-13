@@ -9,6 +9,8 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/android/chrome_jni_headers/BraveShieldsContentSettings_jni.h"
 #include "chrome/browser/browser_process.h"
@@ -157,6 +159,21 @@ void JNI_BraveShieldsContentSettings_SetCosmeticFilteringControlType(
       GURL(base::android::ConvertJavaStringToUTF8(env, url)),
       g_browser_process->local_state(),
       Profile::FromJavaObject(j_profile)->GetPrefs());
+}
+
+void JNI_BraveShieldsContentSettings_ResetCosmeticFilter(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& url) {
+  g_brave_browser_process->ad_block_service()->ResetCosmeticFilter(
+      GURL(base::android::ConvertJavaStringToUTF8(env, url)).host());
+}
+
+jboolean JNI_BraveShieldsContentSettings_AreAnyBlockedElementsPresent(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& url) {
+  return g_brave_browser_process->ad_block_service()
+      ->AreAnyBlockedElementsPresent(
+          GURL(base::android::ConvertJavaStringToUTF8(env, url)).host());
 }
 
 base::android::ScopedJavaLocalRef<jstring>

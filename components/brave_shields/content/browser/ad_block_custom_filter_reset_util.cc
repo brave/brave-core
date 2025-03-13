@@ -53,4 +53,22 @@ std::optional<std::string> ResetCustomFiltersForHost(
   return result;
 }
 
+bool IsCustomFiltersAvailable(const std::string& host,
+                              const std::string& custom_filters) {
+  if (host.empty() || custom_filters.empty()) {
+    return false;
+  }
+
+  const auto starts_with_str = base::StrCat({host, "##"});
+  base::StringTokenizer tokenizer(custom_filters, "\n");
+  while (tokenizer.GetNext()) {
+    const std::string token{
+        base::TrimWhitespaceASCII(tokenizer.token(), base::TRIM_ALL)};
+    if (token.starts_with(starts_with_str) && !IsInAllowList(token)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 }  // namespace brave_shields

@@ -32,6 +32,8 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
 
   void AddUserCosmeticFilter(const std::string& filter);
   void CreateSiteExemption(const std::string& host);
+
+  bool AreAnyBlockedElementsPresent(const std::string& host);
   void ResetCosmeticFilter(const std::string& host);
 
   std::string GetCustomFilters();

@@ -25,6 +25,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveShieldsGlobalSettingsTitle",
      IDS_BRAVE_SHIELDS_GLOBAL_SETTINGS_TITLE},
     {"braveShieldsChangeDefaults", IDS_BRAVE_SHIELDS_CHANGE_DEFAULTS},
+    {"braveShieldsShowAllBlockedElems",
+     IDS_BRAVE_SHIELDS_SHOW_ALL_BLOCKED_ELEMENTS},
     {"braveShieldsCustomizeAdblockLists",
      IDS_BRAVE_SHIELDS_CUSTOMIZE_ADBLOCK_LISTS},
     {"braveShieldsConnectionsUpgraded", IDS_BRAVE_SHIELDS_CONNECTIONS_UPGRADED},

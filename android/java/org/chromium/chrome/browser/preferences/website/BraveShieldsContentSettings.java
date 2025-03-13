@@ -87,6 +87,14 @@ public class BraveShieldsContentSettings {
         mNativeBraveShieldsContentSettings = 0;
     }
 
+    public static void resetCosmeticFilter(String url) {
+        BraveShieldsContentSettingsJni.get().resetCosmeticFilter(url);
+    }
+
+    public static boolean areAnyBlockedElementsPresent(String url) {
+        return BraveShieldsContentSettingsJni.get().areAnyBlockedElementsPresent(url);
+    }
+
     public static void setShields(
             Profile profile,
             String host,
@@ -288,6 +296,11 @@ public class BraveShieldsContentSettings {
         boolean getForgetFirstPartyStorageEnabled(String url, Profile profile);
 
         void setCosmeticFilteringControlType(String type, String url, Profile profile);
+
         String getCosmeticFilteringControlType(String url, Profile profile);
+
+        void resetCosmeticFilter(String url);
+
+        boolean areAnyBlockedElementsPresent(String url);
     }
 }

@@ -52,6 +52,14 @@ interface DataHandler {
   SetWebcompatEnabled(
     content_settings.mojom.ContentSettingsType webcompat_settings_type,
     bool enable);
+
+  // Unblocks every element blocked (by the Element blocker feature)
+  // on the current page
+  ResetBlockedElements();
+
+  // Checks is there any element blocked (by Element blocker feature)
+  // on the current page
+  AreAnyBlockedElementsPresent() => (bool is_available);
 };
 
 struct SiteBlockInfo {

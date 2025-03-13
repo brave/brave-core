@@ -1700,6 +1700,9 @@ Are you sure you want to do this?
       <message name="IDS_ADVANCED_CONTROLS" desc="Title for toggle section.">
         Advanced controls
       </message>
+      <message name="IDS_SHOW_ALL_BLOCKED_ELEMENTS" desc="Text for show all block elements button.">
+        Clear all blocked elements
+      </message>
       <message name="IDS_UPDATE_NOTIFICATION_TITLE" desc="Title of notification on application update.">
         Save Data Online
       </message>

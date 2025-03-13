@@ -111,6 +111,7 @@ public class BraveShieldsHandler
     private View mAnchorView;
     private LinearLayout mMainLayout;
     private LinearLayout mSecondaryLayout;
+    private LinearLayout mThirdLayout;
     private LinearLayout mAboutLayout;
     private LinearLayout mToggleLayout;
     private LinearLayout mThankYouLayout;
@@ -449,6 +450,7 @@ public class BraveShieldsHandler
     private void initViews() {
         mMainLayout = mPopupView.findViewById(R.id.main_layout);
         mSecondaryLayout = mPopupView.findViewById(R.id.brave_shields_secondary_layout_id);
+        mThirdLayout = mPopupView.findViewById(R.id.brave_shields_third_layout_id);
         mAboutLayout = mPopupView.findViewById(R.id.brave_shields_about_layout_id);
         mToggleLayout = mPopupView.findViewById(R.id.brave_shields_toggle_layout_id);
         mSiteBlockCounterText = mPopupView.findViewById(R.id.site_block_count_text);
@@ -504,12 +506,24 @@ public class BraveShieldsHandler
         });
 
         mToggleIcon.setColorFilter(mContext.getColor(R.color.shield_toggle_button_tint));
-        mToggleLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setToggleView(!mSecondaryLayout.isShown());
-            }
-        });
+        mToggleLayout.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setToggleView(!mSecondaryLayout.isShown());
+                    }
+                });
+        mThirdLayout.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        BraveShieldsContentSettings.resetCosmeticFilter(mUrlSpec);
+                        hideBraveShieldsMenu();
+
+                        Tab currentActiveTab = mIconFetcher.getTab();
+                        currentActiveTab.reload();
+                    }
+                });
 
         ImageView mPrivacyReportIcon = mPrivacyReportLayout.findViewById(R.id.toggle_favicon);
         mPrivacyReportIcon.setImageResource(R.drawable.ic_arrow_forward);
@@ -1020,6 +1034,10 @@ public class BraveShieldsHandler
             mSiteBlockLayout.setVisibility(View.VISIBLE);
             siteBrokenWarningText.setVisibility(View.VISIBLE);
             mToggleLayout.setVisibility(View.VISIBLE);
+            mThirdLayout.setVisibility(
+                    BraveShieldsContentSettings.areAnyBlockedElementsPresent(mUrlSpec)
+                            ? View.VISIBLE
+                            : View.GONE);
 
             String mUpText = mContext.getResources().getString(R.string.up);
             SpannableString mSpanString = new SpannableString(mBraveShieldsText + " " + mUpText);
@@ -1032,6 +1050,7 @@ public class BraveShieldsHandler
             mSiteBlockLayout.setVisibility(View.GONE);
             siteBrokenWarningText.setVisibility(View.GONE);
             mToggleLayout.setVisibility(View.GONE);
+            mThirdLayout.setVisibility(View.GONE);
             setToggleView(false);
 
             String mDownText = mContext.getResources().getString(R.string.down);

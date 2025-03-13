@@ -54,6 +54,9 @@ class ShieldsPanelDataHandler
   void BlockAllowedScripts(const std::vector<std::string>& origins) override;
   void SetWebcompatEnabled(ContentSettingsType webcompat_settings_type,
                            bool enabled) override;
+  void ResetBlockedElements() override;
+  void AreAnyBlockedElementsPresent(
+      AreAnyBlockedElementsPresentCallback callback) override;
 
  private:
   void UpdateSiteBlockInfo();

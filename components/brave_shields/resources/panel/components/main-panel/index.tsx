@@ -35,6 +35,31 @@ function MainPanel () {
     await getPanelBrowserAPI().dataHandler.openWebCompatWindow()
   }
 
+  const [areAnyBlockedElementsPresent,
+    setAreAnyBlockedElementsPresent] = React.useState(false);
+  React.useEffect(() => {
+    const getBlockedElementsAvailability = () => {
+       getPanelBrowserAPI().dataHandler.areAnyBlockedElementsPresent()
+        .then((data) => {
+          setAreAnyBlockedElementsPresent(data.isAvailable)
+        })
+    };
+
+    document.addEventListener('visibilitychange',
+      getBlockedElementsAvailability)
+    getBlockedElementsAvailability()
+
+    return () => {
+      document.removeEventListener('visibilitychange',
+        getBlockedElementsAvailability)
+    }
+  }, []);
+
+  const handleResetBlockedElements = async () => {
+    await getPanelBrowserAPI().dataHandler.resetBlockedElements()
+    setAreAnyBlockedElementsPresent(false)
+  }
+
   const handleLearnMoreClick = () => {
     chrome.tabs.create({ url: 'https://brave.com/privacy-features/', active: true })
   }
@@ -169,6 +194,15 @@ function MainPanel () {
         >
           <AdvancedControlsContent />
         </AdvancedControlsContentScroller>
+      }
+      {
+        areAnyBlockedElementsPresent &&
+        <S.GlobalDefaultsButton
+          type="button"
+          onClick={handleResetBlockedElements}
+        >
+          <span>{getLocale('braveShieldsShowAllBlockedElems')}</span>
+        </S.GlobalDefaultsButton>
       }
     </S.Box>
   )
