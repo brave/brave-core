@@ -216,7 +216,17 @@ base::Value::List ConversationEventsToList(
     CHECK(type_it != kTypeMap->end());
     event_dict.Set("type", type_it->second);
 
-    event_dict.Set("content", event.content);
+    if (event.content.empty()) {
+      event_dict.Set("content", "");
+    } else if (event.content.size() == 1) {
+      event_dict.Set("content", event.content.front());
+    } else {
+      base::Value::List content_list;
+      for (const auto& content : event.content) {
+        content_list.Append(content);
+      }
+      event_dict.Set("content", std::move(content_list));
+    }
     events.Append(std::move(event_dict));
   }
   return events;
@@ -250,6 +260,19 @@ GURL GetEndpointUrl(bool premium, const std::string& path) {
 }
 
 }  // namespace
+
+ConversationAPIClient::ConversationEvent::ConversationEvent(
+    mojom::CharacterType role,
+    ConversationEventType type,
+    const std::vector<std::string>& content)
+    : role(role), type(type), content(content) {}
+ConversationAPIClient::ConversationEvent::ConversationEvent() = default;
+ConversationAPIClient::ConversationEvent::~ConversationEvent() = default;
+ConversationAPIClient::ConversationEvent::ConversationEvent(
+    const ConversationEvent&) = default;
+ConversationAPIClient::ConversationEvent&
+ConversationAPIClient::ConversationEvent::operator=(const ConversationEvent&) =
+    default;
 
 ConversationAPIClient::ConversationAPIClient(
     const std::string& model_name,
