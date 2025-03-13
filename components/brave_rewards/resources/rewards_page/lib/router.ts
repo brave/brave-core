@@ -44,7 +44,7 @@ export class Router {
 }
 
 export const RouterContext = React.createContext<Router>(new Router({
-  get: () => location.pathname.toLocaleLowerCase().replace(/\/$/, ''),
+  get: () => location.pathname.toLocaleLowerCase().replace(/\/$/, '') || '/',
   set: (route) => history.pushState(null, '', route),
   replace: (route) => history.replaceState(null, '', route)
 }))
