@@ -178,17 +178,6 @@ export function App() {
     return null
   }
 
-  function renderMainView() {
-    switch (route) {
-      case routes.creators:
-        return <></>
-      case routes.explore:
-        return <ExploreView />
-      default:
-        return <HomeView />
-    }
-  }
-
   function renderContent() {
     if (loading) {
       return (
@@ -213,7 +202,12 @@ export function App() {
     return (
       <>
         <AppFrame>
-          {renderMainView()}
+          <div data-app-route={routes.home}>
+            <HomeView />
+          </div>
+          <div data-app-route={routes.explore}>
+            <ExploreView />
+          </div>
         </AppFrame>
         {renderModal()}
       </>
