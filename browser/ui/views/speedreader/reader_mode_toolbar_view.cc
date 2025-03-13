@@ -77,8 +77,8 @@ ReaderModeToolbarView::ReaderModeToolbarView(
     SetBackground(
         views::CreateRoundedRectBackground(kColorToolbar, kRoundedCorners));
   } else {
-    SetBorder(views::CreateThemedSolidSidedBorder(
-        gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
+    SetBorder(views::CreateSolidSidedBorder(gfx::Insets::TLBR(0, 0, 1, 0),
+                                            kColorToolbarContentAreaSeparator));
     SetBackground(views::CreateSolidBackground(kColorToolbar));
   }
 }
