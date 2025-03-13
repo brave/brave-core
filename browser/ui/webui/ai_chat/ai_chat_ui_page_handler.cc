@@ -172,8 +172,7 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {
 #endif
 }
 
-void AIChatUIPageHandler::UploadImage(const std::string& conversation_uuid,
-                                      UploadImageCallback callback) {
+void AIChatUIPageHandler::UploadImage(UploadImageCallback callback) {
   if (!upload_file_helper_) {
     upload_file_helper_ =
         std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);

@@ -15,12 +15,9 @@ import { getLocale } from '$web-common/locale'
 // Styles
 import styles from './style.module.scss'
 
-type Props = Pick<ConversationContext, 'uploadImage' | 'conversationHistory'>
+type Props = Pick<ConversationContext, 'uploadImage'>
 
 export default function AttachmentButtonMenu(props: Props) {
-  const isMenuDisabled = props.conversationHistory.some(
-    (turn) => turn.uploadedImages
-  )
   return (
     <>
       <ButtonMenu>
@@ -29,7 +26,6 @@ export default function AttachmentButtonMenu(props: Props) {
             fab
             kind='plain-faint'
             title={getLocale('attachmentMenuButtonLabel')}
-            isDisabled={isMenuDisabled}
           >
             <Icon name='attachment' />
           </Button>
