@@ -345,6 +345,7 @@ Config.prototype.buildArgs = function () {
     ffmpeg_branding: "Chrome",
     branding_path_component: "brave",
     branding_path_product: "brave",
+    enable_glic: false,
     enable_nacl: false,
     enable_widevine: true,
     // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
@@ -700,6 +701,7 @@ Config.prototype.buildArgs = function () {
     delete args.ffmpeg_branding
     delete args.branding_path_component
     delete args.branding_path_product
+    delete args.enable_glic
     delete args.enable_nacl
     delete args.enable_widevine
     delete args.enable_hangout_services_extension
