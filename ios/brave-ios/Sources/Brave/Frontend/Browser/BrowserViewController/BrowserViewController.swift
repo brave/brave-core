@@ -3106,7 +3106,7 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.Translate.translateEnabled.key:
       tabManager.selectedTab?.translationState = .unavailable
       tabManager.selectedTab?.setScripts(scripts: [
-        .braveTranslate: Preferences.Translate.translateEnabled.value != false
+        .braveTranslate: Preferences.Translate.translateEnabled.value
       ])
       // Only reload the tab if the setting was changed from the settings controller
       if presentedViewController is SettingsNavigationController {

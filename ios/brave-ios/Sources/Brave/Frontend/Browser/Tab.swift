@@ -625,7 +625,7 @@ class Tab: NSObject {
         .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
         .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
         .nightMode: Preferences.General.nightModeEnabled.value,
-        .braveTranslate: Preferences.Translate.translateEnabled.value != false,
+        .braveTranslate: Preferences.Translate.translateEnabled.value,
       ]
 
       userScripts = Set(scriptPreferences.filter({ $0.value }).map({ $0.key }))
