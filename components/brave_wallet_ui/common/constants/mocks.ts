@@ -17,9 +17,9 @@ import type { TokenBalancesRegistry } from '../slices/entities/token-balance.ent
 
 // images
 import {
-  ETHIconUrl,
-  FILECOINIconUrl,
-  SOLIconUrl
+  ETHIcon,
+  FILECOINIcon,
+  SOLIcon
 } from '../../assets/network_token_icons/network_token_icons'
 
 // utils
@@ -107,7 +107,7 @@ export const mockNetwork: BraveWallet.NetworkInfo = {
   symbol: 'ETH',
   symbolName: 'Ethereum',
   decimals: 18,
-  iconUrls: [ETHIconUrl],
+  iconUrls: [ETHIcon],
   coin: BraveWallet.CoinType.ETH,
   supportedKeyrings: [BraveWallet.KeyringId.kDefault]
 }
@@ -121,7 +121,7 @@ export const mockFilecoinEVMMMainnetNetwork: BraveWallet.NetworkInfo = {
   symbol: 'FIL',
   symbolName: 'Filcoin',
   decimals: 18,
-  iconUrls: [FILECOINIconUrl],
+  iconUrls: [FILECOINIcon],
   coin: BraveWallet.CoinType.ETH,
   supportedKeyrings: [BraveWallet.KeyringId.kDefault]
 }
@@ -135,7 +135,7 @@ export const mockFilecoinEVMMTestnetNetwork: BraveWallet.NetworkInfo = {
   symbol: 'FIL',
   symbolName: 'Filcoin',
   decimals: 18,
-  iconUrls: [FILECOINIconUrl],
+  iconUrls: [FILECOINIcon],
   coin: BraveWallet.CoinType.ETH,
   supportedKeyrings: [BraveWallet.KeyringId.kDefault]
 }
@@ -149,7 +149,7 @@ export const mockFilecoinMainnetNetwork: BraveWallet.NetworkInfo = {
   symbol: 'FIL',
   symbolName: 'Filecoin',
   decimals: 18,
-  iconUrls: [FILECOINIconUrl],
+  iconUrls: [FILECOINIcon],
   coin: BraveWallet.CoinType.FIL,
   supportedKeyrings: [BraveWallet.KeyringId.kFilecoin]
 }
@@ -163,7 +163,7 @@ export const mockFilecoinTestnetNetwork: BraveWallet.NetworkInfo = {
   symbol: 'FIL',
   symbolName: 'Filecoin',
   decimals: 18,
-  iconUrls: [FILECOINIconUrl],
+  iconUrls: [FILECOINIcon],
   coin: BraveWallet.CoinType.FIL,
   supportedKeyrings: [BraveWallet.KeyringId.kFilecoinTestnet]
 }
@@ -177,7 +177,7 @@ export const mockSolanaMainnetNetwork: BraveWallet.NetworkInfo = {
   symbol: 'SOL',
   symbolName: 'Solana',
   decimals: 9,
-  iconUrls: [SOLIconUrl],
+  iconUrls: [SOLIcon],
   coin: BraveWallet.CoinType.SOL,
   supportedKeyrings: [BraveWallet.KeyringId.kSolana]
 }
@@ -191,7 +191,7 @@ export const mockSolanaTestnetNetwork: BraveWallet.NetworkInfo = {
   symbol: 'SOL',
   symbolName: 'Solana',
   decimals: 9,
-  iconUrls: [SOLIconUrl],
+  iconUrls: [SOLIcon],
   coin: BraveWallet.CoinType.SOL,
   supportedKeyrings: [BraveWallet.KeyringId.kSolana]
 }
