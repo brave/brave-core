@@ -933,6 +933,10 @@
 
 -keep class org.chromium.chrome.browser.media.BraveFullscreenVideoPictureInPictureController
 
+-keep class org.chromium.chrome.browser.fullscreen.FullscreenHtmlApiHandlerBase
+
+-keep class org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerBase
+
 -keep class org.chromium.chrome.browser.fullscreen.FullscreenHtmlApiHandlerCompat {
     public <init>(...);
 }

@@ -389,6 +389,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerLegacy")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase")); // presubmit: ignore-long-line
     }
 
     @Test
@@ -2371,6 +2374,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/media/BraveFullscreenVideoPictureInPictureController")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase",
+                        "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerBase")); // presubmit: ignore-long-line
     }
 
     @Test
