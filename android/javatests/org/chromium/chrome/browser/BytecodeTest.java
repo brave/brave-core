@@ -1101,6 +1101,27 @@ public class BytecodeTest {
 
     @Test
     @SmallTest
+    public void testInnerClassConstructorsExistAndMatch() throws Exception {
+        Assert.assertTrue(
+                innerClassesConstructorsMatch(
+                        "org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources", // presubmit: ignore-long-line
+                        "ResourceItem",
+                        "org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
+                        "ResourceItem",
+                        int.class,
+                        int.class,
+                        Integer.class,
+                        Integer.class,
+                        int.class,
+                        int.class,
+                        int.class,
+                        int.class,
+                        int.class,
+                        int.class));
+    }
+
+    @Test
+    @SmallTest
     public void testConstructorsExistAndMatch() throws Exception {
         Assert.assertTrue(
                 constructorsMatch(
@@ -2525,16 +2546,50 @@ public class BytecodeTest {
         }
     }
 
+    private Class getInnerClass(Class parentClass, String innerClassName) {
+        String innerClassPath = parentClass.getName() + "$" + innerClassName;
+        for (Class<?> innerClass : parentClass.getDeclaredClasses()) {
+            if (innerClass.getName().equals(innerClassPath)) {
+                return innerClass;
+            }
+        }
+        return null;
+    }
+
+    private boolean innerClassesConstructorsMatch(
+            String class1Name,
+            String innerClass1Name,
+            String class2Name,
+            String innerClass2Name,
+            Class<?>... parameterTypes) {
+        Class class1 = getClassForPath(class1Name);
+        Class class2 = getClassForPath(class2Name);
+        if (class1 == null || class2 == null) {
+            return false;
+        }
+        Class innerClass1 = getInnerClass(class1, innerClass1Name);
+        Class innerClass2 = getInnerClass(class2, innerClass2Name);
+        if (innerClass1 == null || innerClass2 == null) {
+            return false;
+        }
+        return constructorsMatchImpl(innerClass1, innerClass2, parameterTypes);
+    }
+
     private boolean constructorsMatch(
             String class1Name, String class2Name, Class<?>... parameterTypes) {
-        Class c1 = getClassForPath(class1Name);
-        Class c2 = getClassForPath(class2Name);
-        if (c1 == null || c2 == null) {
+        Class class1 = getClassForPath(class1Name);
+        Class class2 = getClassForPath(class2Name);
+
+        return constructorsMatchImpl(class1, class2, parameterTypes);
+    }
+
+    private boolean constructorsMatchImpl(Class class1, Class class2, Class<?>... parameterTypes) {
+        if (class1 == null || class2 == null) {
             return false;
         }
         try {
-            Constructor ctor1 = c1.getDeclaredConstructor(parameterTypes);
-            Constructor ctor2 = c2.getDeclaredConstructor(parameterTypes);
+            Constructor ctor1 = class1.getDeclaredConstructor(parameterTypes);
+            Constructor ctor2 = class2.getDeclaredConstructor(parameterTypes);
             if (ctor1 != null && ctor2 != null) {
                 return true;
             }
