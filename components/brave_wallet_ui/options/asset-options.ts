@@ -21,24 +21,24 @@ import {
   FtmIcon,
   NeonIcon,
   OpIcon,
-  AVAXIconUrl,
-  BNBIconUrl,
-  BTCIconUrl,
-  ETHIconUrl,
-  FILECOINIconUrl,
-  MATICIconUrl,
-  SOLIconUrl,
-  ZECIconUrl,
-  CardanoIconUrl
+  AVAXIcon,
+  BNBIcon,
+  BTCIcon,
+  ETHIcon,
+  FILECOINIcon,
+  MATICIcon,
+  SOLIcon,
+  ZECIcon,
+  CardanoIcon
 } from '../assets/network_token_icons/network_token_icons'
 
 export const getNetworkLogo = (chainId: string, symbol: string): string => {
   if (chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID) return AuroraIcon
   if (chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID) return OpIcon
-  if (chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID) return MATICIconUrl
+  if (chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID) return MATICIcon
   if (chainId === BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID)
-    return BNBIconUrl
-  if (chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) return AVAXIconUrl
+    return BNBIcon
+  if (chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID) return AVAXIcon
   if (chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID) return FtmIcon
   if (chainId === BraveWallet.CELO_MAINNET_CHAIN_ID) return CeloIcon
   if (chainId === BraveWallet.ARBITRUM_MAINNET_CHAIN_ID) return ArbIcon
@@ -49,17 +49,17 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
 
   switch (symbol.toUpperCase()) {
     case 'SOL':
-      return SOLIconUrl
+      return SOLIcon
     case 'ETH':
-      return ETHIconUrl
+      return ETHIcon
     case 'FIL':
-      return FILECOINIconUrl
+      return FILECOINIcon
     case 'BTC':
-      return BTCIconUrl
+      return BTCIcon
     case 'ZEC':
-      return ZECIconUrl
+      return ZECIcon
     case 'ADA':
-      return CardanoIconUrl
+      return CardanoIcon
   }
 
   return ''
