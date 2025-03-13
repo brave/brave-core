@@ -45,17 +45,10 @@ export function PaymentForm(props: Props) {
   const model = React.useContext(AppModelContext)
   const tabOpener = React.useContext(TabOpenerContext)
 
-  const [
-    creator,
-    externalWallet,
-    parameters,
-    balance
-  ] = useAppState((state) => [
-    state.currentCreator,
-    state.externalWallet,
-    state.rewardsParameters,
-    state.balance
-  ])
+  const creator = useAppState((state) => state.currentCreator)
+  const externalWallet = useAppState((state) => state.externalWallet)
+  const parameters = useAppState((state) => state.rewardsParameters)
+  const balance = useAppState((state) => state.balance)
 
   const [selectedOption, setSelectedOption] = React.useState(0)
   const [customAmountText, setCustomAmountText] = React.useState('')

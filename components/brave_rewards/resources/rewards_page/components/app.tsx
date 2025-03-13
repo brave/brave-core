@@ -35,23 +35,13 @@ export function App() {
   const model = React.useContext(AppModelContext)
   const eventHub = React.useContext(EventHubContext)
 
-  const [
-    loading,
-    isUnsupportedRegion,
-    embedder,
-    paymentId,
-    tosUpdateRequired,
-    captchaInfo,
-    notifications,
-  ] = useAppState((state) => [
-    state.loading,
-    state.isUnsupportedRegion,
-    state.embedder,
-    state.paymentId,
-    state.tosUpdateRequired,
-    state.captchaInfo,
-    state.notifications
-  ])
+  const loading = useAppState((state) => state.loading)
+  const isUnsupportedRegion = useAppState((state) => state.isUnsupportedRegion)
+  const embedder = useAppState((state) => state.embedder)
+  const paymentId = useAppState((state) => state.paymentId)
+  const tosUpdateRequired = useAppState((state) => state.tosUpdateRequired)
+  const captchaInfo = useAppState((state) => state.captchaInfo)
+  const notifications = useAppState((state) => state.notifications)
 
   const viewType = useBreakpoint()
 

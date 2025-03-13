@@ -9,7 +9,7 @@ import { useAppState } from '../../lib/app_model_context'
 import { CardItemView } from './card_item_view'
 
 export function PartnerPromoCard() {
-  const [cards] = useAppState((state) => [state.cards])
+  const cards = useAppState((state) => state.cards)
 
   if (!cards) {
     return null

@@ -17,10 +17,8 @@ import { style } from './home_view.style'
 
 export function HomeView() {
   const viewType = useBreakpoint()
-  const [externalWallet, embedder] = useAppState((state) => [
-    state.externalWallet,
-    state.embedder
-  ])
+  const externalWallet = useAppState((state) => state.externalWallet)
+  const embedder = useAppState((state) => state.embedder)
 
   if (viewType === 'double' && externalWallet) {
     return (

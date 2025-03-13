@@ -15,7 +15,7 @@ import * as urls from '../../../shared/lib/rewards_urls'
 
 export function MerchStoreCard() {
   const { getString } = useLocaleContext()
-  const [cards] = useAppState((state) => [state.cards])
+  const cards = useAppState((state) => state.cards)
 
   if (!cards) {
     return null
