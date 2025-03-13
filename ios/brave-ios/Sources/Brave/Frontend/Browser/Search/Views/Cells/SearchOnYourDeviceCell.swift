@@ -4,9 +4,25 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
+import DesignSystem
 import Shared
 import Storage
 import UIKit
+
+extension Site.SiteType {
+  var icon: UIImage? {
+    switch self {
+    case .history:
+      return UIImage(braveSystemNamed: "leo.history")
+    case .bookmark:
+      return UIImage(braveSystemNamed: "leo.browser.bookmark-normal")
+    case .tab:
+      return UIImage(braveSystemNamed: "leo.browser.mobile-tabs")
+    default:
+      return nil
+    }
+  }
+}
 
 class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
 
@@ -25,6 +41,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
 
   private let imageContainerView = UIView().then {
     $0.layer.cornerRadius = 8.0
+    $0.layer.cornerCurve = .continuous
     $0.backgroundColor = UIColor(braveSystemName: .containerHighlight)
   }
   private let imageView = UIImageView().then {
@@ -127,6 +144,8 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
       titleLabel.text = site.title
       subtitleLabel.text = site.url
     }
-    badgeImageView.image = site.siteType.icon!.template
+    if let badgeImage = site.siteType.icon?.template {
+      badgeImageView.image = badgeImage
+    }
   }
 }

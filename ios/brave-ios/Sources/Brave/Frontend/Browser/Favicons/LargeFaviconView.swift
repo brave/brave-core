@@ -15,30 +15,27 @@ struct FaviconUX {
 }
 
 struct FaviconConfiguration {
-  let faviconBorderColor: UIColor
-  let faviconBorderWidth: CGFloat
+  let borderColor: UIColor
+  let borderWidth: CGFloat
 
   static let defaultConfig = FaviconConfiguration(
-    faviconBorderColor: FaviconUX.faviconBorderColor,
-    faviconBorderWidth: FaviconUX.faviconBorderWidth
+    borderColor: FaviconUX.faviconBorderColor,
+    borderWidth: FaviconUX.faviconBorderWidth
   )
 }
 
 /// Displays a large favicon given some favorite
 class LargeFaviconView: UIView {
-  let config: FaviconConfiguration?
-
   init(
     config: FaviconConfiguration? = nil
   ) {
-    self.config = config
     super.init(frame: .zero)
 
     layer.cornerRadius = 8
     layer.cornerCurve = .continuous
-    if let config = self.config {
-      layer.borderColor = config.faviconBorderColor.cgColor
-      layer.borderWidth = config.faviconBorderWidth
+    if let config {
+      layer.borderColor = config.borderColor.cgColor
+      layer.borderWidth = config.borderWidth
     }
     clipsToBounds = true
     layoutMargins = .zero

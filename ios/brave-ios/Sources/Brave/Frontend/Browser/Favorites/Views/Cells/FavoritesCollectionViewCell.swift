@@ -13,6 +13,7 @@ class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable 
   let imageContainer = UIView().then {
     $0.layer.cornerRadius = 12.0
     $0.layer.borderWidth = 0.5
+    $0.layer.cornerCurve = .continuous
     $0.layer.borderColor = UIColor(braveSystemName: .dividerSubtle).cgColor
   }
 
@@ -73,11 +74,6 @@ class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable 
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  deinit {
-    NotificationCenter.default.removeObserver(self, name: .thumbnailEditOn, object: nil)
-    NotificationCenter.default.removeObserver(self, name: .thumbnailEditOff, object: nil)
   }
 }
 
