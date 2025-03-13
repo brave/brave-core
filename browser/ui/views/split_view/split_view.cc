@@ -413,7 +413,7 @@ void SplitView::UpdateContentsWebViewBorder() {
             ? BraveContentsViewUtil::kBorderRadius + kBorderThickness
             : 0;
     // Use same color for active focus border.
-    contents_container_->SetBorder(views::CreateThemedRoundedRectBorder(
+    contents_container_->SetBorder(views::CreateRoundedRectBorder(
         kBorderThickness, kRadius, kColorBraveSplitViewActiveWebViewBorder));
 
     BraveContentsLayoutManager::GetLayoutManagerForView(contents_container_)
