@@ -8,7 +8,7 @@
 "ActionTitles.leoAIChat" = "Chat IA";
 
 /* A button title shown on the menu that presents the Brave Playlist feature */
-"ActionTitles.playlist" = "Lista de reproducción";
+"ActionTitles.playlist" = "Playlist";
 
 /* A button title shown on the menu that when tapped lets the user print the page they're viewing */
 "ActionTitles.print" = "Imprimir";

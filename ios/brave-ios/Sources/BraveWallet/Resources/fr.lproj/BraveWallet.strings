@@ -608,7 +608,7 @@
 "wallet.defaultTestnetAccountName" = "Compte Testnet %1$@ %2$lld";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
-"wallet.delete" = "Testing Delete 1 for French";
+"wallet.delete" = "Supprimer";
 
 /* As in depsit some crypto coins to a specific wallet address. */
 "wallet.deposit" = "Déposer";

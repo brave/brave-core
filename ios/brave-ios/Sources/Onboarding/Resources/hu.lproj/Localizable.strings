@@ -4,6 +4,15 @@
 /* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
 "advanceStep2OnboardingButtonTitle" = "Próbálja ki!";
 
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Ennek a funkciónak a kikapcsolása";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "Az oldalak lefordíthatók az iOS-eszköz által támogatott nyelvekre. Előfordulhat, hogy be kell állítania a nyelveket, ha először használja ezt a funkciót.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "Oldal lefordítása";
+
 /* A button title that when tapped opens Brave Playlist */
 "confirmationActionButtonTitle" = "Ugrás a Lejátszási listámhoz";
 
