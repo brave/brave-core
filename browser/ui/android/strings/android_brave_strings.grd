@@ -4125,7 +4125,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Show Safe Browsing errors
     </message>
     <message name="IDS_INCOGNITO_SCREENSHOT_TITLE" desc="A title to show incognito screenshot">
-      Private tab Screenshot
+      Private tab screenshots
     </message>
     <message name="IDS_INCOGNITO_SCREENSHOT_SUMMARY" desc="A summary to show incognito screenshot">
       Enables Private tab screenshots.
