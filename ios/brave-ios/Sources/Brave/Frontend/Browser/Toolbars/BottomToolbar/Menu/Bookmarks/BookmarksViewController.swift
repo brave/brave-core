@@ -267,15 +267,17 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     let alert = AlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     alert.popoverPresentationController?.barButtonItem = sender
     let importAction = UIAlertAction(title: Strings.bookmarksImportAction, style: .default) {
-      [unowned self] _ in
+      [weak self] _ in
+      guard let self = self else { return }
       let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.html, .zip])
       vc.delegate = self
       self.present(vc, animated: true)
     }
 
     let exportAction = UIAlertAction(title: Strings.bookmarksExportAction, style: .default) {
-      [unowned self] _ in
+      [weak self] _ in
       Task {
+        guard let self = self else { return }
         let fileUrl = FileManager.default.temporaryDirectory
           .appendingPathComponent("Bookmarks")
           .appendingPathExtension("html")
