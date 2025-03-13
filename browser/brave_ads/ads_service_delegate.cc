@@ -200,8 +200,9 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
 #endif
 }
 
-void AdsServiceDelegate::InitNotificationHelper() {
-  NotificationHelper::GetInstance()->InitForProfile(&*profile_);
+void AdsServiceDelegate::InitNotificationHelper(base::OnceClosure callback) {
+  NotificationHelper::GetInstance()->InitForProfile(&*profile_,
+                                                    std::move(callback));
 }
 
 bool AdsServiceDelegate::
