@@ -98,7 +98,7 @@
 "BlockCookieConsentNotices" = "บล็อกการแจ้งเตือนความยินยอมในการจัดเก็บคุกกี้";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "ป้องกันเว็บไซต์จากการเก็บข้อมูลเกี่ยวกับการเยี่ยมชมเว็บก่อนหน้านี้ของคุณ";
+"BlockCookiesDescription" = "ป้องกันเว็บไซต์จากการเก็บข้อมูลเกี่ยวกับการเยี่ยมชมครั้งก่อนของคุณ\nตัวเลือก \"บล็อกคุกกี้ทั้งหมด\" ถูกยกเลิกแล้ว สำหรับข้อมูลเกี่ยวกับวิธีเปิดใช้งานตัวเลือกนี้ให้ไปที่ [หน้าช่วยเหลือ](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "การบล็อกตัวติดตาม";
@@ -219,6 +219,33 @@
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
+
+/* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
+"BraveTranslate.languageSelectionButtonTitle" = "เลือกภาษา";
+
+/* Title for a text element that lets the user know the page was translated successfully. */
+"BraveTranslate.pageTranslatedTitle" = "หน้าที่แปลแล้ว";
+
+/* Title for the search field in the navigation bar for the translate language selection page. The user can search for a language to translate to or from. */
+"BraveTranslate.searchInputTitle" = "ค้นหา";
+
+/* This text is for the settings menu for all Brave-Translate options. */
+"BraveTranslate.settingsMenuTitle" = "Brave Translate";
+
+/* This text is for the translate settings screen. It's the title of the settings menu. */
+"BraveTranslate.settingsScreenTitle" = "Brave Translate";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionDescription" = "เมื่อเปิดใช้งาน Brave Translate จะตรวจจับภาษาปัจจุบันของหน้าเว็บของคุณโดยอัตโนมัติ และแสดงปุ่มแปลในแถบ URL";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionTitle" = "เปิดใช้งานการแปล";
+
+/* The word 'to', is used in the sentenced: Translate [language-a] to [language-b] */
+"BraveTranslate.translateFromToTitle" = "ถึง";
+
+/* This text is used as a placeholder for languages when the language detected on the page is unsupported or unknown. */
+"BraveTranslate.unknownLanguageTitle" = "ภาษาที่ไม่รู้จัก";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "ล็อกเบราว์เซอร์";
@@ -3510,6 +3537,9 @@
 
 /* Button title that when tapped toggles the web page in our out of reader mode */
 "ToggleReaderMode" = "สลับเป็นโหมดผู้อ่าน";
+
+/* Title of an action that allows the user to translate the current web-page to another language */
+"TranslatePage" = "แปล";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "ต้องการเปิดคำแนะนำในการค้นหาหรือไม่";

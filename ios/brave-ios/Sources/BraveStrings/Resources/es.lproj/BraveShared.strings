@@ -98,7 +98,7 @@
 "BlockCookieConsentNotices" = "Bloquear avisos de consentimiento de cookies";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Impide que los sitios web almacenen información sobre lo que has visitado con anterioridad.";
+"BlockCookiesDescription" = "Evita que los sitios web almacenen información sobre tus visitas anteriores.\nLa opción \"Bloquear todas las cookies\" ha quedado obsoleta. Para saber cómo forzar la activación de esta opción, visita [nuestra página de ayuda](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitor de bloqueo";
@@ -219,6 +219,33 @@
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Videollamadas Brave";
+
+/* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
+"BraveTranslate.languageSelectionButtonTitle" = "Seleccionar idioma";
+
+/* Title for a text element that lets the user know the page was translated successfully. */
+"BraveTranslate.pageTranslatedTitle" = "Página traducida";
+
+/* Title for the search field in the navigation bar for the translate language selection page. The user can search for a language to translate to or from. */
+"BraveTranslate.searchInputTitle" = "Búsqueda";
+
+/* This text is for the settings menu for all Brave-Translate options. */
+"BraveTranslate.settingsMenuTitle" = "Traductor de Google";
+
+/* This text is for the translate settings screen. It's the title of the settings menu. */
+"BraveTranslate.settingsScreenTitle" = "Traductor de Google";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionDescription" = "Cuando esté activado, Traductor de Brave detectará automáticamente el idioma actual de tu página y mostrará un botón de traducción en la barra de URL.";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionTitle" = "Traducir activado";
+
+/* The word 'to', is used in the sentenced: Translate [language-a] to [language-b] */
+"BraveTranslate.translateFromToTitle" = "Para";
+
+/* This text is used as a placeholder for languages when the language detected on the page is unsupported or unknown. */
+"BraveTranslate.unknownLanguageTitle" = "Idioma desconocido";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Browser Lock";
@@ -1349,7 +1376,7 @@
 "optionsMenu.bravePlaylistItemDescription" = "Guarda una playlist de vídeos/transmisiones sin conexión";
 
 /* Brave News Item Menu title */
-"optionsMenu.bravePlaylistItemTitle" = "Lista de reproducción";
+"optionsMenu.bravePlaylistItemTitle" = "Playlist";
 
 /* The subtitle description of menu item Brave Talk */
 "optionsMenu.braveTalkItemDescription" = "Videollamadas privadas directamente en tu navegador";
@@ -1601,10 +1628,10 @@
 "playList.playListSectionTitle" = "Playlists";
 
 /* Title Playlist (used for back button, and playlist settings) */
-"playList.playListSettingTitle" = "Lista de reproducción";
+"playList.playListSettingTitle" = "Playlist";
 
 /* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "Esta carpeta ya está en tu lista de reproducción de Brave";
+"playList.playlistSharedFolderAlreadyExistsBody" = "Esta carpeta ya está en tu playlist de Brave";
 
 /* Title for the error message that shows when a playlist folder already exists */
 "playList.playlistSharedFolderAlreadyExistsTitle" = "Lo sentimos";
@@ -1664,7 +1691,7 @@
 "playList.savingForOfflineLabelTitle" = "Guardando para sin conexión...";
 
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyDescription" = "Sincroniza todas las carpetas de tu lista de reproducción automáticamente";
+"playList.sharedFolderSyncAutomaticallyDescription" = "Sincroniza todas las carpetas de tu playlist automáticamente";
 
 /* Title of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyTitle" = "Sincronizar las carpetas de Playlist automáticamente";
@@ -2753,13 +2780,13 @@
 "shortcuts.activityTypeOpenHistoryListTitle" = "Abrir el historial del navegador de Brave";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenPlaylistDescription" = "Empieza a reproducir los vídeos de la lista de reproducción";
+"shortcuts.activityTypeOpenPlaylistDescription" = "Empieza a reproducir los vídeos en Playlist";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Abrir lista de reproducción";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenPlaylistTitle" = "Abrir lista de reproducción";
+"shortcuts.activityTypeOpenPlaylistTitle" = "Abrir Playlist";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenSyncedTabsDescription" = "Abrir las pestañas de Brave abiertas en otros dispositivos";
@@ -2834,7 +2861,7 @@
 "shortcuts.shortcutSettingsOpenPlaylistDescription" = "Utiliza los accesos directos para abrir Playlist con el asistente de voz Siri";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Abrir lista de reproducción";
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Abrir Playlist";
 
 /* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Utiliza los accesos directos para abrir las pestañas de otros dispositivos con el asistente de voz Siri";
@@ -3245,7 +3272,7 @@
 "tabToolbarNotSecureTitle" = "No es seguro";
 
 /* Accessibility Label for the tab toolbar Playlist button */
-"TabToolbarPlaylistButtonAccessibilityLabel" = "Lista de reproducción";
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Vista de lectura";
@@ -3510,6 +3537,9 @@
 
 /* Button title that when tapped toggles the web page in our out of reader mode */
 "ToggleReaderMode" = "Activar/desactivar modo de lectura";
+
+/* Title of an action that allows the user to translate the current web-page to another language */
+"TranslatePage" = "Traducir";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "¿Activar las sugerencias de búsqueda?";

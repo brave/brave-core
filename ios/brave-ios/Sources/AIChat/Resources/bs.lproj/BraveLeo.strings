@@ -31,7 +31,7 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
 
-/* The title for the button that allows the user to view the AppStore Receipt */
+/* The title for the button that allows the user to view the App Store Receipt */
 "aichat.advancedSettingsViewReceiptTitle" = "Pregledajte račun App Storea";
 
 /* The subtitle for the error showing there is an error from App Store */
@@ -131,22 +131,16 @@
 "aichat.feedbackViewMainTitle" = "Davanje povratnih informacija o umjetnoj inteligenciji (AI) preglednika Brave";
 
 /* The button title for opening paywall screen */
-"aichat.goPremiumButtonTitle" = "Pretplati se na Premium";
+"aichat.goPremiumButtonTitle" = "Pretplatite se na Premium";
 
 /* Description about answers are changing with page context */
 "aichat.infoAboutPageContext" = "Oblikujte odgovore na osnovi sadržaja stranice";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Pozdrav, ja sam Leo. Dostupan sam u sklopu preglednika Brave i pokreće me model Claude 3 Haiku društva Anthropic stvoren za zadatke obavljanja razgovora i obrađivanja teksta.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku stvaratelja Anthropic";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Iznimno brzo čavrljanje";
-
-/* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Bok, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude 3.5 Sonnet, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet stvaratelja Anthropic";
@@ -177,9 +171,6 @@
 
 /* The title for intro message */
 "aichat.introMessageTitle" = "Čavrljanje";
-
-/* The name of the AI-Assistant that's responsing to the user */
-"aichat.leoAssistantNameTitle" = "Leo";
 
 /* The default title displayed above a code block when the language of the code is not known. */
 "aichat.leoCodeExampleDefaultTitle" = "Primjer koda";
@@ -236,7 +227,7 @@
 "aichat.networkErrorViewTitle" = "Pojavio se mrežni problem pri povezivanju s pomoćnikom Leo. Provjerite svoju vezu i pokušajte ponovno.";
 
 /* The title for button that starts a new chat */
-"aichat.newChatActionTitle" = "Novo čavrljanje";
+"aichat.newChatActionTitle" = "Novi razgovor";
 
 /* The text which will be used to indicate period of payments like 10 / month */
 "aichat.paywallMonthlyPriceDividend" = "mjesec";
@@ -295,9 +286,6 @@
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Istražite različite modele umjetne inteligencije";
 
-/* The title for paywall view */
-"aichat.paywallViewTitle" = "Leo Premium";
-
 /* The text which will be used to indicate period of payments like 150 / year */
 "aichat.paywallYearlyPriceDividend" = "godina";
 
@@ -306,12 +294,6 @@
 
 /* Title indicating yearly subscription */
 "aichat.paywallYearlySubscriptionTitle" = "Jedna godina";
-
-/* The title of the badge where a model which can be used limited */
-"aichat.premiumModelStatusTitle" = "Premium";
-
-/* Title shown next to Leo in navigation bar when user has premium subcription */
-"aichat.premiumNavigationBarBadgeTitle" = "Premium";
 
 /* Title showing premium subscription - not determined monthly por yearly */
 "aichat.premiumSubscriptionTitle" = "Pretplata Premium";

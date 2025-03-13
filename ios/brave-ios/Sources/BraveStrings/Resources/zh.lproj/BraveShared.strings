@@ -98,7 +98,7 @@
 "BlockCookieConsentNotices" = "阻止 Cookie 同意通知";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "禁止網站儲存您的造訪記錄相關資訊。";
+"BlockCookiesDescription" = "防止网站储存您之前访问的信息。\n“阻止所有 cookie”选项已被弃用。如要了解如何强制启用该选项，请访问[我们的帮助页面](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "正在拦截监视器";
@@ -219,6 +219,33 @@
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave 通话";
+
+/* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
+"BraveTranslate.languageSelectionButtonTitle" = "选择语言";
+
+/* Title for a text element that lets the user know the page was translated successfully. */
+"BraveTranslate.pageTranslatedTitle" = "页面已翻译";
+
+/* Title for the search field in the navigation bar for the translate language selection page. The user can search for a language to translate to or from. */
+"BraveTranslate.searchInputTitle" = "搜尋";
+
+/* This text is for the settings menu for all Brave-Translate options. */
+"BraveTranslate.settingsMenuTitle" = "Brave 翻译";
+
+/* This text is for the translate settings screen. It's the title of the settings menu. */
+"BraveTranslate.settingsScreenTitle" = "Brave 翻译";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionDescription" = "启用后，Brave 翻译会自动检测页面的当前语言，并在 URL 栏中显示翻译按钮。";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionTitle" = "翻译已启用";
+
+/* The word 'to', is used in the sentenced: Translate [language-a] to [language-b] */
+"BraveTranslate.translateFromToTitle" = "至";
+
+/* This text is used as a placeholder for languages when the language detected on the page is unsupported or unknown. */
+"BraveTranslate.unknownLanguageTitle" = "未知语言";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "瀏覽器鎖定";
@@ -3510,6 +3537,9 @@
 
 /* Button title that when tapped toggles the web page in our out of reader mode */
 "ToggleReaderMode" = "切换阅读器模式";
+
+/* Title of an action that allows the user to translate the current web-page to another language */
+"TranslatePage" = "翻译";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "开启搜索建议功能？";

@@ -98,7 +98,7 @@
 "BlockCookieConsentNotices" = "Chặn thông báo chấp thuận cookie";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Ngăn các trang web lưu trữ thông tin về những lần truy cập trước của bạn.";
+"BlockCookiesDescription" = "Ngăn các trang web lưu trữ thông tin về các lần truy cập trước của bạn.\nTùy chọn \"Chặn tất cả Cookie\" đã bị loại bỏ. Để tìm hiểu cách bắt buộc bật tùy chọn này, hãy truy cập [trang trợ giúp của chúng tôi](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Màn hình chặn";
@@ -219,6 +219,33 @@
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Trò chuyện Brave";
+
+/* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
+"BraveTranslate.languageSelectionButtonTitle" = "Chọn ngôn ngữ";
+
+/* Title for a text element that lets the user know the page was translated successfully. */
+"BraveTranslate.pageTranslatedTitle" = "Trang đã được dịch";
+
+/* Title for the search field in the navigation bar for the translate language selection page. The user can search for a language to translate to or from. */
+"BraveTranslate.searchInputTitle" = "Tìm kiếm";
+
+/* This text is for the settings menu for all Brave-Translate options. */
+"BraveTranslate.settingsMenuTitle" = "Brave Dịch";
+
+/* This text is for the translate settings screen. It's the title of the settings menu. */
+"BraveTranslate.settingsScreenTitle" = "Brave Dịch";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionDescription" = "Khi được bật, Brave Dịch sẽ tự động phát hiện ngôn ngữ hiện tại của trang và hiển thị nút dịch trên thanh URL.";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionTitle" = "Đã bật Dịch";
+
+/* The word 'to', is used in the sentenced: Translate [language-a] to [language-b] */
+"BraveTranslate.translateFromToTitle" = "Đến";
+
+/* This text is used as a placeholder for languages when the language detected on the page is unsupported or unknown. */
+"BraveTranslate.unknownLanguageTitle" = "Ngôn ngữ không xác định";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Khóa trình duyệt";
@@ -3510,6 +3537,9 @@
 
 /* Button title that when tapped toggles the web page in our out of reader mode */
 "ToggleReaderMode" = "Bật chế độ Đọc";
+
+/* Title of an action that allows the user to translate the current web-page to another language */
+"TranslatePage" = "Dịch";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Bật gợi ý tìm kiếm?";

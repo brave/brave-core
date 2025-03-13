@@ -137,7 +137,7 @@
 "aichat.infoAboutPageContext" = "Les respostes s'ajusten en funció del contingut de la pàgina";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude 3 Haiku, un model creat per Anthropic per permetre tasques de conversa i de processament de textos.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude Haiku, un model creat per Anthropic per permetre tasques de conversa i de processament de textos.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku d'Anthropic";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Xat extremadament ràpid";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude 3.5 Sonnet, un model creat per Anthropic per permetre tasques de conversa i de processament de textos.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude Sonnet, un model creat per Anthropic per permetre tasques de conversa i de processament de textos.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet d'Anthropic";

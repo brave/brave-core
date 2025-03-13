@@ -137,7 +137,7 @@
 "aichat.infoAboutPageContext" = "Định hình câu trả lời dựa trên nội dung của trang";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude 3 Haiku, một mô hình do Anthropic tạo ra để hỗ trợ các tác vụ xử lý văn bản và đàm thoại.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Xin chào, tôi là Leo. Tôi được cung cấp bởi Brave, dựa trên Claude Haiku, một mô hình do Anthropic tạo ra để hỗ trợ các tác vụ xử lý văn bản và đàm thoại.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku của Anthropic";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Trò chuyện nhanh như chớp";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude 3.5 Sonnet, một mô hình do Anthropic tạo ra để hỗ trợ các tác vụ xử lý văn bản và đàm thoại.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Xin chào, tôi là Leo. Tôi được cung cấp bởi Brave, dựa trên Claude Sonnet, một mô hình do Anthropic tạo ra để hỗ trợ các tác vụ xử lý văn bản và đàm thoại.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet của Anthropic";

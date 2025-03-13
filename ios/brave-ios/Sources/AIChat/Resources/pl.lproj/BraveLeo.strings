@@ -137,7 +137,7 @@
 "aichat.infoAboutPageContext" = "Formułuj odpowiedzi na podstawie zawartości strony";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Cześć, nazywam się Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude 3 Haiku opracowanego przez Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Cześć, nazywam się Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Haiku opracowanego przez Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu.";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku od Anthropic";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Nieprawdopodobnie szybki czat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Cześć, nazywam się Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude 3.5 Sonnet opracowanego przez Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Cześć, nazywam się Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Sonnet opracowanego przez Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet od Anthropic";

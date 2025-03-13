@@ -137,7 +137,7 @@
 "aichat.infoAboutPageContext" = "กำหนดคำตอบโดยอิงตามเนื้อหาของหน้า";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "สวัสดี ผมชื่อ Leo ผมเป็นตัวแทนของ Brave และทำงานด้วย Claude 3 Haiku ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ";
+"aichat.introMessageClaudeHaikuMessageDescription" = "สวัสดี ผมชื่อ Leo ผมเป็นตัวแทนของ Brave และทำงานด้วย Claude Haiku ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ";
 
 /* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku โดย Anthropic";
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "การแชทที่รวดเร็วดุจสายฟ้า";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "สวัสดี ผมชื่อ Leo ผมเป็นตัวแทนของ Brave และทำงานด้วย Claude 3.5 Sonnet ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ";
+"aichat.introMessageClaudeSonnetMessageDescription" = "สวัสดี ผมชื่อ Leo ผมเป็นตัวแทนของ Brave และทำงานด้วย Claude Sonnet ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet โดย Anthropic";

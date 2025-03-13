@@ -98,7 +98,7 @@
 "BlockCookieConsentNotices" = "Блокировка уведомлений о согласии на использование файлов cookie";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Блокирует сохранение на сайтах информации о ваших предыдущих посещениях.";
+"BlockCookiesDescription" = "Запрещает сайтам сохранять информацию о ваших предыдущих визитах.\nОпция \"Блокировать все файлы куки\" была упразднена. Чтобы узнать, как принудительно включить эту опцию, посетите [нашу страницу помощи](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = " Статистика блокировок";
@@ -219,6 +219,33 @@
 
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Разговоры";
+
+/* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
+"BraveTranslate.languageSelectionButtonTitle" = "Выбрать язык";
+
+/* Title for a text element that lets the user know the page was translated successfully. */
+"BraveTranslate.pageTranslatedTitle" = "Страница переведена";
+
+/* Title for the search field in the navigation bar for the translate language selection page. The user can search for a language to translate to or from. */
+"BraveTranslate.searchInputTitle" = "Поиск";
+
+/* This text is for the settings menu for all Brave-Translate options. */
+"BraveTranslate.settingsMenuTitle" = "Brave Перевод";
+
+/* This text is for the translate settings screen. It's the title of the settings menu. */
+"BraveTranslate.settingsScreenTitle" = "Brave Перевод";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionDescription" = "Когда эта опция включена, Brave Перевод автоматически определит текущий язык вашей страницы и отобразит кнопку перевода в адресной строке.";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionTitle" = "Перевод включен";
+
+/* The word 'to', is used in the sentenced: Translate [language-a] to [language-b] */
+"BraveTranslate.translateFromToTitle" = "Куда:";
+
+/* This text is used as a placeholder for languages when the language detected on the page is unsupported or unknown. */
+"BraveTranslate.unknownLanguageTitle" = "Неизвестный язык";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Блокировка браузера";
@@ -3510,6 +3537,9 @@
 
 /* Button title that when tapped toggles the web page in our out of reader mode */
 "ToggleReaderMode" = "Вкл/выкл режим чтения";
+
+/* Title of an action that allows the user to translate the current web-page to another language */
+"TranslatePage" = "Перевод";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Включить подсказки при поиске?";
