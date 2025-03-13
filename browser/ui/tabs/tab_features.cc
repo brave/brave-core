@@ -51,7 +51,8 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
   // Brave Screenshots (via Context Menu and Commander)
   if (brave_screenshots::features::IsBraveScreenshotsEnabled()) {
     brave_screenshots_tab_feature_ =
-        std::make_unique<brave_screenshots::BraveScreenshotsTabFeature>();
+        std::make_unique<brave_screenshots::BraveScreenshotsTabFeature>(
+            tab.GetContents());
   }
 
   // Expect upstream's Init to create the registry.

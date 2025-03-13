@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/brave_screenshots/buildflags/buildflags.gni")
+
 assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 
 # Note: Target names in this file should match those upstream where possible.
@@ -22,12 +24,17 @@ if (!is_android) {
     deps = [
       ":tabs_public",
       "//brave/browser/ai_chat",
-      "//brave/browser/brave_screenshots",
-      "//brave/browser/brave_screenshots:features",
       "//brave/browser/ui/side_panel",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/tabs:impl",
     ]
+
+    if (enable_brave_screenshots) {
+      deps += [
+        "//brave/browser/brave_screenshots",
+        "//brave/browser/brave_screenshots:features",
+      ]
+    }
   }
 }
 

@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_screenshots/strategies/fullpage_strategy.h"
 
+#include <algorithm>
 #include <string>
 #include <utility>
 
@@ -13,6 +14,7 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/values.h"
+#include "brave/browser/brave_screenshots/screenshots_utils.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
 #include "content/public/browser/devtools_agent_host.h"
 #include "content/public/browser/devtools_agent_host_client.h"
@@ -20,7 +22,9 @@
 #include "ui/gfx/image/image.h"
 
 namespace {
-constexpr int kMaxDimensions = 16384;  // 16k limit for GPU textures
+// Defines the max length in pixels for the width/height of the screenshot.
+// Corresponds to the 16k limit for GPU textures.
+constexpr int kMaxSize = 16384;
 }  // namespace
 
 namespace brave_screenshots {
@@ -58,16 +62,14 @@ void FullPageStrategy::RequestPageLayoutMetrics() {
 // Response arrives in DispatchProtocolMessage
 void FullPageStrategy::OnLayoutMetricsReceived(int width, int height) {
   // Maybe clip dimensions
-  if (width > kMaxDimensions) {
-    DVLOG(3) << "Clipping screenshot width to " << kMaxDimensions;
-    width = kMaxDimensions;
-    screenshot_was_clipped_ = true;
+  if (width > kMaxSize) {
+    DVLOG(3) << "Clipping screenshot width to " << kMaxSize;
+    width = kMaxSize;
   }
 
-  if (height > kMaxDimensions) {
-    DVLOG(3) << "Clipping screenshot height to " << kMaxDimensions;
-    height = kMaxDimensions;
-    screenshot_was_clipped_ = true;
+  if (height > kMaxSize) {
+    DVLOG(3) << "Clipping screenshot height to " << kMaxSize;
+    height = kMaxSize;
   }
 
   // Check for invalid dimensions
@@ -99,9 +101,15 @@ void FullPageStrategy::RequestFullPageScreenshot(int width, int height) {
   clip.Set("height", height);
   clip.Set("scale", 1);
 
+  // The "clip" property appears to have no effect when `fromSurface` is `true`
+  // (the default). Changing this to `false` would create even more work for us.
+  // As a result, the screenshot produced by the DevTools Protocol is likely to
+  // exceeed our GPU texture limit. As such, we will crop the image if needed
+  // after it is captured.
   base::Value::Dict params;
-  params.Set("captureBeyondViewport", true);
   params.Set("clip", std::move(clip));
+  params.Set("captureBeyondViewport", true);
+  DVLOG(2) << "Page.captureScreenshot params: " << params.DebugString();
 
   SendDevToolsCommand("Page.captureScreenshot", std::move(params), next_id_++);
 }
@@ -154,18 +162,27 @@ void FullPageStrategy::DispatchProtocolMessage(
   // https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-captureScreenshot
   const std::string* encoded_png =
       parsed->GetDict().FindStringByDottedPath("result.data");
-  if (encoded_png) {
-    DVLOG(2) << "Screenshot captured";
 
+  if (encoded_png) {
     std::string decoded_png;
     image_editor::ScreenshotCaptureResult result;
 
-    DVLOG(2) << "Decoding PNG";
+    DVLOG(2) << "Decoding Screenshot";
     base::Base64Decode(*encoded_png, &decoded_png);
-
-    DVLOG(2) << "Creating image from PNG";
     result.image = gfx::Image::CreateFrom1xPNGBytes(
         base::as_bytes(base::span(decoded_png)));
+
+    // Crop the image if needed. No edge should exceed kMaxSize. This shouldn't
+    // be necessary, but the DevTools Protocol will only enforce the clip values
+    // when passing fromSurface=false. That approach, however, would require us
+    // to manually resize (and subsequently restore) the viewport.
+    if (result.image.Width() > kMaxSize || result.image.Height() > kMaxSize) {
+      int width = std::min(result.image.Width(), kMaxSize);
+      int height = std::min(result.image.Height(), kMaxSize);
+      utils::CropImage(result.image, gfx::Rect(0, 0, width, height));
+      DVLOG(2) << "Cropped image to " << result.image.Size().ToString();
+      screenshot_was_clipped_ = true;
+    }
 
     RunCallback(result);
     return;

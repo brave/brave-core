@@ -128,8 +128,7 @@ void BreakTiles(Browser* browser, const std::vector<int>& indices = {});
 bool IsTabsTiled(Browser* browser, const std::vector<int>& indices = {});
 bool CanTileTabs(Browser* browser, const std::vector<int>& indices = {});
 void SwapTabsInTile(Browser* browser);
-void TakeScreenshot(base::WeakPtr<content::WebContents> web_contents,
-                    int command_id);
+void TakeScreenshot(content::WebContents* web_contents, int command_id);
 
 }  // namespace brave
 

@@ -15,6 +15,7 @@ source_set("strategies") {
   ]
 
   deps = [
+    "//brave/browser/brave_screenshots:utils",
     "//chrome/browser/image_editor",
     "//chrome/browser/ui",
   ]

@@ -33,7 +33,7 @@ source_set("brave_screenshots_impl") {
   deps = [
     ":brave_screenshots",
     ":utils",
-    "./strategies",
+    "strategies",
     "//chrome/browser/image_editor",
     "//chrome/browser/ui",
   ]

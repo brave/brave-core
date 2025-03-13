@@ -30,20 +30,19 @@ enum ScreenshotType {
 
 class BraveScreenshotsTabFeature {
  public:
-  BraveScreenshotsTabFeature();
+  explicit BraveScreenshotsTabFeature(content::WebContents* web_contents);
   BraveScreenshotsTabFeature(const BraveScreenshotsTabFeature&) = delete;
   BraveScreenshotsTabFeature& operator=(const BraveScreenshotsTabFeature&) =
       delete;
   ~BraveScreenshotsTabFeature();
 
-  void StartScreenshot(base::WeakPtr<content::WebContents> web_contents,
-                       ScreenshotType type);
+  void StartScreenshot(ScreenshotType type);
 
  private:
   void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
   std::unique_ptr<BraveScreenshotStrategy> CreateStrategy(ScreenshotType type);
   std::unique_ptr<BraveScreenshotStrategy> strategy_ = nullptr;
-  base::WeakPtr<content::WebContents> web_contents_ = nullptr;
+  raw_ptr<content::WebContents> web_contents_ = nullptr;
   base::WeakPtrFactory<BraveScreenshotsTabFeature> weak_factory_{this};
 
 };  // class BraveScreenshotsTabFeature

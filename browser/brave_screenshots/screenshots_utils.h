@@ -9,6 +9,10 @@
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
 
+namespace gfx {
+class Image;
+}  // namespace gfx
+
 namespace brave_screenshots::utils {
 
 // While the image will be written to the clipboard, depending on its size it
@@ -16,6 +20,10 @@ namespace brave_screenshots::utils {
 // (reportedly) 4MB. Larger screenshots will be written to the clipboard, but
 // will not be displayed in the clipboard history.
 void CopyImageToClipboard(const image_editor::ScreenshotCaptureResult& result);
+
+// Overwrites |image| with a cropped version of itself, using |rect| as the
+// bounds.
+void CropImage(gfx::Image& image, const gfx::Rect& rect);
 
 void DisplayScreenshotBubble(
     const image_editor::ScreenshotCaptureResult& result,
