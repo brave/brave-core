@@ -241,7 +241,7 @@ class ShortcutBox : public views::View {
     shortcut_part->SetFontList(shortcut_font.DeriveWithSizeDelta(
         kFontSize - shortcut_font.GetFontSize()));
     shortcut_part->SetEnabledColor(kColorBraveVerticalTabNTBShortcutTextColor);
-    shortcut_part->SetBorder(views::CreateThemedRoundedRectBorder(
+    shortcut_part->SetBorder(views::CreateRoundedRectBorder(
         /*thickness*/ 1, /*radius*/ 4, kColorBraveVerticalTabSeparator));
 
     // Give padding and set minimum to width.
