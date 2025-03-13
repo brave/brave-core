@@ -14,11 +14,13 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/json/string_escape.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/to_string.h"
 #include "base/types/expected.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
 #include "brave/components/ai_chat/content/browser/build_devtools_key_event_params.h"
+#include "brave/components/ai_chat/content/browser/dom_nodes_xml_string.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/render_view_host.h"
@@ -190,6 +192,7 @@ std::optional<base::Value::Dict> AgentClient::extra_params() const {
 void AgentClient::UseTool(
     const std::string& input_json,
     Tool::UseToolCallback callback) {
+      GetDomTree();
   DVLOG(4) << __func__ << " input_json = " << input_json;
   auto json_message = base::JSONReader::Read(input_json);
   if (!json_message || !json_message->is_dict()) {
@@ -468,6 +471,18 @@ void AgentClient::OnMessageForToolUseComplete(
     return;
   }
   std::move(tool_use_callback).Run(result.value(), delay_ms);
+}
+
+void AgentClient::GetDomTree() {
+  devtools_agent_host_->GetWebContents()->RequestAXTreeSnapshot(
+      base::BindOnce(&AgentClient::OnAXTreeSnapshot, weak_factory_.GetWeakPtr()),
+      ui::AXMode::kWebContents | ui::AXMode::kScreenReader | ui::AXMode::kLabelImages,
+      /* max_nodes= */ 9000, /* timeout= */ base::Seconds(2),
+      content::WebContents::AXTreeSnapshotPolicy::kSameOriginDirectDescendants);
+}
+
+void AgentClient::OnAXTreeSnapshot(ui::AXTreeUpdate& tree) {
+  GetDomNodesXmlString(tree);
 }
 
 void AgentClient::CaptureScreenshot(MessageCallback callback) {
