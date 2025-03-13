@@ -49,6 +49,8 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
+import org.chromium.chrome.browser.BraveFeatureUtil;
+import org.chromium.chrome.browser.BraveRelaunchUtils;
 
 /** Fragment to keep track of the all the brave privacy related preferences. */
 public class BravePrivacySettings extends PrivacySettings implements ConnectionErrorHandler {
@@ -67,6 +69,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_PRIVACY_SANDBOX = "privacy_sandbox";
     private static final String PREF_HTTPS_FIRST_MODE_LEGACY = "https_first_mode_legacy";
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
+    private static final String PREF_INCOGNITO_SCREENSHOT = "incognito_screenshot";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
     private static final String PREF_FINGERPRINT_LANGUAGE = "fingerprint_language";
@@ -152,6 +155,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         PREF_APP_LINKS,
         PREF_WEBRTC_POLICY,
         PREF_SAFE_BROWSING,
+        PREF_INCOGNITO_SCREENSHOT,
         PREF_INCOGNITO_LOCK,
         PREF_CAN_MAKE_PAYMENT,
         PREF_UNSTOPPABLE_DOMAINS,
@@ -204,6 +208,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mSocialBlockingTwitter;
     private ChromeSwitchPreference mSocialBlockingLinkedin;
     private ChromeSwitchPreference mAppLinks;
+    private ChromeSwitchPreference mIncognitoScreenshot;
     private ChromeBasePreference mWebrtcPolicy;
     private ChromeSwitchPreference mClearBrowsingDataOnExit;
     private Preference mUstoppableDomains;
@@ -411,10 +416,12 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
         mAppLinks = (ChromeSwitchPreference) findPreference(PREF_APP_LINKS);
         mAppLinks.setOnPreferenceChangeListener(this);
-
         boolean isAppLinksAllowed =
                 ChromeSharedPreferences.getInstance().readBoolean(PREF_APP_LINKS, true);
         mAppLinks.setChecked(isAppLinksAllowed);
+
+        mIncognitoScreenshot = (ChromeSwitchPreference) findPreference(PREF_INCOGNITO_SCREENSHOT);
+        mIncognitoScreenshot.setOnPreferenceChangeListener(this);
 
         mWebrtcPolicy = (ChromeBasePreference) findPreference(PREF_WEBRTC_POLICY);
 
@@ -623,6 +630,10 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             sharedPreferencesEditor.putBoolean(PREF_APP_LINKS, (boolean) newValue);
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePrivacySettings.PREF_APP_LINKS_RESET, false);
+        } else if (PREF_INCOGNITO_SCREENSHOT.equals(key)) {
+            BraveFeatureUtil.enableFeature(
+                    BraveFeatureList.BRAVE_INCOGNITO_SCREENSHOT, (boolean) newValue, false);
+                BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_BLOCK_TRACKERS_ADS.equals(key)) {
             if (newValue instanceof String) {
                 final String newStringValue = String.valueOf(newValue);
