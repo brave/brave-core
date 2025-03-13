@@ -18,6 +18,10 @@
 #error "This file requires ARC support."
 #endif
 
+static_assert(static_cast<NSInteger>(syncer::UserSelectableType::kCookies) ==
+                  static_cast<NSInteger>(syncer::UserSelectableType::kLastType),
+              "syncer::UserSelectableType has changed in a Chromium update");
+
 namespace brave {
 namespace ios {
 std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
@@ -39,7 +43,17 @@ std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
         {syncer::UserSelectableType::kApps, BraveSyncUserSelectableTypes_APPS},
         {syncer::UserSelectableType::kReadingList,
          BraveSyncUserSelectableTypes_READING_LIST},
-        {syncer::UserSelectableType::kTabs, BraveSyncUserSelectableTypes_TABS}};
+        {syncer::UserSelectableType::kTabs, BraveSyncUserSelectableTypes_TABS},
+        {syncer::UserSelectableType::kSavedTabGroups,
+         BraveSyncUserSelectableTypes_SAVED_TAB_GROUPS},
+        {syncer::UserSelectableType::kPayments,
+         BraveSyncUserSelectableTypes_PAYMENTS},
+        {syncer::UserSelectableType::kSharedTabGroupData,
+         BraveSyncUserSelectableTypes_SHARED_TAB_GROUP_DATA},
+        {syncer::UserSelectableType::kProductComparison,
+         BraveSyncUserSelectableTypes_PRODUCT_COMPARISON},
+        {syncer::UserSelectableType::kCookies,
+         BraveSyncUserSelectableTypes_COOKIES}};
 
 syncer::UserSelectableTypeSet user_types_from_options(
     BraveSyncUserSelectableTypes options) {
