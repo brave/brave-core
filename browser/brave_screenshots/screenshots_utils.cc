@@ -8,6 +8,7 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/gfx/image/image_skia_operations.h"
 
 namespace brave_screenshots::utils {
 
@@ -24,6 +25,12 @@ void CopyImageToClipboard(const ScreenshotCaptureResult& result) {
   // Copy the image to the user's clipboard
   ui::ScopedClipboardWriter(ui::ClipboardBuffer::kCopyPaste)
       .WriteImage(*result.image.ToSkBitmap());
+}
+
+void CropImage(gfx::Image& image, const gfx::Rect& rect) {
+  gfx::ImageSkia cropped =
+      gfx::ImageSkiaOperations::ExtractSubset(image.AsImageSkia(), rect);
+  image = gfx::Image(cropped);
 }
 
 void DisplayScreenshotBubble(const ScreenshotCaptureResult& result,

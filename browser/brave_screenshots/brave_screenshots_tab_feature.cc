@@ -11,7 +11,6 @@
 #include "brave/browser/brave_screenshots/strategies/selection_strategy.h"
 #include "brave/browser/brave_screenshots/strategies/viewport_strategy.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
-#include "chrome/browser/ui/browser.h"
 #include "content/public/browser/web_contents.h"
 
 namespace {
@@ -28,7 +27,9 @@ void DisplayScreenshotClippedNotification(
 }  // namespace
 namespace brave_screenshots {
 
-BraveScreenshotsTabFeature::BraveScreenshotsTabFeature() {
+BraveScreenshotsTabFeature::BraveScreenshotsTabFeature(
+    content::WebContents* web_contents)
+    : web_contents_(web_contents) {
   DVLOG(1) << "BraveScreenshotsTabFeature created";
 }
 
@@ -36,14 +37,8 @@ BraveScreenshotsTabFeature::~BraveScreenshotsTabFeature() {
   DVLOG(1) << "BraveScreenshotsTabFeature destroyed";
 }
 
-void BraveScreenshotsTabFeature::StartScreenshot(
-    base::WeakPtr<content::WebContents> web_contents,
-    ScreenshotType type) {
+void BraveScreenshotsTabFeature::StartScreenshot(ScreenshotType type) {
   DVLOG(1) << "Called StartScreenshot";
-  CHECK(web_contents.get());
-
-  // Store the WebContents for later use
-  web_contents_ = web_contents;
 
   // We've determined the appropriate strategy to use
   strategy_ = CreateStrategy(type);
@@ -51,7 +46,7 @@ void BraveScreenshotsTabFeature::StartScreenshot(
   DVLOG(2) << "Starting capture";
 
   strategy_->Capture(
-      web_contents_.get(),
+      web_contents_,
       base::BindOnce(&BraveScreenshotsTabFeature::OnCaptureComplete,
                      weak_factory_.GetWeakPtr()));
 }
@@ -65,11 +60,11 @@ BraveScreenshotsTabFeature::CreateStrategy(ScreenshotType type) {
     case ScreenshotType::kSelection:
       // Based on image_editor::ScreenshotFlow, which requires a WebContents
       DVLOG(3) << "Creating SelectionStrategy";
-      return std::make_unique<SelectionStrategy>(web_contents_.get());
+      return std::make_unique<SelectionStrategy>(web_contents_);
     case ScreenshotType::kViewport:
       // Based on image_editor::ScreenshotFlow, which requires a WebContents
       DVLOG(3) << "Creating ViewportStrategy";
-      return std::make_unique<ViewportStrategy>(web_contents_.get());
+      return std::make_unique<ViewportStrategy>(web_contents_);
     default:
       NOTREACHED();
   }
@@ -85,13 +80,11 @@ void BraveScreenshotsTabFeature::OnCaptureComplete(
   }
 
   if (strategy_->DidClipScreenshot()) {
-    DisplayScreenshotClippedNotification(web_contents_);
+    DisplayScreenshotClippedNotification(web_contents_->GetWeakPtr());
   }
 
-  if (web_contents_.get()) {
-    utils::CopyImageToClipboard(result);
-    utils::DisplayScreenshotBubble(result, web_contents_);
-  }
+  utils::CopyImageToClipboard(result);
+  utils::DisplayScreenshotBubble(result, web_contents_->GetWeakPtr());
 }
 
 }  // namespace brave_screenshots
