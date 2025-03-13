@@ -12,6 +12,7 @@
 #include "content/public/browser/devtools_agent_host_client.h"
 #include "content/public/browser/web_contents.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
+#include "ui/accessibility/ax_tree_update.h"
 
 namespace ai_chat {
 
@@ -37,6 +38,8 @@ class AgentClient : public Tool, public content::DevToolsAgentHostClient {
       base::OnceCallback<void(MessageResult)>;
 
  private:
+  void GetDomTree();
+  void OnAXTreeSnapshot(ui::AXTreeUpdate& tree);
   void CaptureScreenshot(MessageCallback callback);
   void TypeText(std::string_view text, MessageCallback callback);
 
@@ -62,6 +65,8 @@ class AgentClient : public Tool, public content::DevToolsAgentHostClient {
   std::map<int, MessageCallback> message_callbacks_;
   scoped_refptr<content::DevToolsAgentHost> devtools_agent_host_;
   bool has_overriden_metrics_ = false;
+
+  base::WeakPtrFactory<AgentClient> weak_factory_{this};
 };
 
 }  // namespace ai_chat
