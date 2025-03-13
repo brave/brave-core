@@ -71,7 +71,7 @@ SharedPinnedTabDummyViewViews::SharedPinnedTabDummyViewViews(
 
   views::Builder<SharedPinnedTabDummyViewViews>(this)
       .AddChild(views::Builder<views::View>()
-                    .SetBorder(views::CreateThemedRoundedRectBorder(
+                    .SetBorder(views::CreateRoundedRectBorder(
                         kThumbnailBorderThickness, kThumbnailRadius,
                         kColorBraveSharedPinnedTabDummyViewThumbnailBorder))
                     .SetPreferredSize(kThumbnailSize)
