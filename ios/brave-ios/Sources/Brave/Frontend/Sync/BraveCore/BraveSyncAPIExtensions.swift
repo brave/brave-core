@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Foundation
 import Preferences
 import Shared
@@ -115,6 +116,46 @@ extension BraveSyncAPI {
     if Preferences.Chromium.syncOpenTabsEnabled.value {
       syncProfileService.userSelectedTypes.update(with: .TABS)
     }
+  }
+
+  @MainActor
+  func setupDeviceRestorationTracking() async throws {
+    guard
+      var fileURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first?
+        .appendingPathComponent("restore_check.dat")
+    else {
+      return
+    }
+
+    if await AsyncFileManager.default.fileExists(atPath: fileURL.path) {
+      // File exists, no restore has occurred
+      return
+    }
+
+    let createTokenFile: () async throws -> Void = {
+      await AsyncFileManager.default.createUTF8File(
+        atPath: fileURL.path,
+        contents: UUID().uuidString
+      )
+
+      Preferences.Chromium.hasSyncDeviceRestorationToken.value = true
+
+      var resourceValues = URLResourceValues()
+      resourceValues.isExcludedFromBackup = true
+      try fileURL.setResourceValues(resourceValues)
+    }
+
+    if !Preferences.Chromium.hasSyncDeviceRestorationToken.value {
+      // First time, update the token
+      try await createTokenFile()
+      return
+    }
+
+    // Restore has happened
+    try await createTokenFile()
+
+    // Reset sync chain
+    resetSyncChain()
   }
 
   /// Method to add observer for SyncService for onStateChanged and onSyncShutdown
