@@ -33,20 +33,6 @@ class SearchSuggestionDataSource {
   let tabType: TabType
   let maxSearchSuggestions = 5
   var suggestions = [String]()
-  var siteData: [Site] {
-    set {
-      _siteData = newValue
-    }
-    get {
-      if siteDataFetchLimit == 0 {
-        return _siteData
-      } else {
-        return Array(_siteData.prefix(siteDataFetchLimit))
-      }
-    }
-  }
-  var siteDataFetchLimit = 5
-  private var _siteData = [Site]()
   private let maxPeriodBraveSearchPromotion = 15
   private var suggestClient: SearchSuggestClient?
 
@@ -115,17 +101,11 @@ class SearchSuggestionDataSource {
     return true
   }
 
-  var isSiteDataShowMoreAvailable: Bool {
-    guard siteDataFetchLimit != 0 else { return false }
-    return siteDataFetchLimit < _siteData.count
-  }
-
   // MARK: - Initialization
 
   init(forTabType tabType: TabType, searchEngines: SearchEngines?) {
     self.tabType = tabType
     self.searchEngines = searchEngines
-    self.siteData = []
   }
 
   func querySuggestClient() {

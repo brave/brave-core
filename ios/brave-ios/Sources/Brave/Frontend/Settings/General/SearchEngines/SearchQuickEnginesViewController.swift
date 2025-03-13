@@ -86,6 +86,10 @@ class SearchQuickEnginesViewController: UITableViewController {
       )
     ]
 
+    editButton.accessibilityLabel = Strings.editQuickSearchEnginesAccessibilityTitle
+    addButton.accessibilityLabel =
+      Strings.CustomSearchEngine.addCustomSearchEngineAccessibilityTitle
+
     let footer = SettingsTableSectionHeaderFooterView(
       frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight)
     )
@@ -187,7 +191,7 @@ class SearchQuickEnginesViewController: UITableViewController {
           tableView.reloadData()
           delegate?.searchQuickEnginesUpdated()
         } catch {
-          Logger.module.error("Search Engine Error while deleting")
+          Logger.module.error("Search Engine Error while deleting: \(error)")
         }
       }
     }
@@ -230,6 +234,8 @@ extension SearchQuickEnginesViewController {
     setEditing(!isEditing, animated: true)
     editButton.image = isEditing ? nil : UIImage(systemName: "slider.horizontal.3")
     editButton.title = isEditing ? Strings.done : nil
+    editButton.accessibilityLabel =
+      isEditing ? Strings.done : Strings.editQuickSearchEnginesAccessibilityTitle
   }
 
   @objc func onAddButton() {
@@ -242,7 +248,7 @@ extension SearchQuickEnginesViewController {
       self?.delegate?.searchQuickEnginesUpdated()
     }
     let navVC = UINavigationController(rootViewController: addCustomSearchEngineVC)
-    navVC.sheetPresentationController?.detents = [.large()]
+    navVC.modalPresentationStyle = .pageSheet
     navVC.sheetPresentationController?.prefersGrabberVisible = true
     self.present(navVC, animated: true)
   }

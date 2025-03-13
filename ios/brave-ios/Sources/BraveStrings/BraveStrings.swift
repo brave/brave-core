@@ -1015,7 +1015,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Find the ",
-    comment: "Find the `searcg query`"
+    comment: "Find the `search query`"
   )
 }
 
@@ -1814,6 +1814,13 @@ extension Strings {
       value: "Enter search engine name",
       comment: "A placeholder in the text filed for user to input the custom search engine name."
     )
+    public static let addCustomSearchEngineAccessibilityTitle = NSLocalizedString(
+      "customSearchEngine.addCustomSearchEngineAccessibilityTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Add a custom search engine",
+      comment: "Accessibility Title for the button that adds a new custom search engine to the browser."
+    )
   }
 }
 
@@ -2513,6 +2520,13 @@ extension Strings {
     bundle: .module,
     value: "Quick-Search Engines",
     comment: "Title for quick-search engines settings section."
+  )
+  public static let editQuickSearchEnginesAccessibilityTitle = NSLocalizedString(
+    "EditQuickSearchEnginesAccessibilityTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Edit quick-search engines",
+    comment: "Accessibility Title for the button that edits the quick-search engines list."
   )
   public static let customSearchEngines = NSLocalizedString(
     "CustomSearchEngines",
@@ -8428,7 +8442,7 @@ extension Strings {
     comment: "Search suggestions optin subtitle when prompting to turn on suggestions"
   )
   public static let searchQuickBarPrefix = NSLocalizedString(
-    "searchSuggestionsSubtitle",
+    "searchQuickBarPrefix",
     tableName: "BraveShared",
     bundle: .module,
     value: "Search \"%@\"",

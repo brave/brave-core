@@ -154,15 +154,6 @@ class CustomEngineViewController: UIViewController {
       )
     }
 
-    setup()
-    doLayout()
-
-    doneButtonStatus = customEngineActionType == .add ? .enabled : .disabled
-  }
-
-  // MARK: Internal
-
-  private func setup() {
     tableView.do {
       $0.register(CustomEngineURLInputTableViewCell.self)
       $0.register(CustomEngineTitleInputTableViewCell.self)
@@ -171,12 +162,27 @@ class CustomEngineViewController: UIViewController {
       $0.dataSource = self
       $0.delegate = self
     }
+
+    setTheme()
+    doLayout()
+
+    doneButtonStatus = customEngineActionType == .add ? .enabled : .disabled
   }
 
-  private func doLayout() {
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    setTheme()
+  }
+
+  // MARK: Internal
+
+  private func setTheme() {
     view.backgroundColor =
       traitCollection.userInterfaceStyle == .dark
       ? .secondarySystemGroupedBackground : .systemGroupedBackground
+  }
+
+  private func doLayout() {
     view.addSubview(titleLabel)
     view.addSubview(tableView)
 

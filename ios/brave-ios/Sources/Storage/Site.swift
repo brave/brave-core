@@ -2,7 +2,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import DesignSystem
 import Shared
 import UIKit
 
@@ -19,19 +18,6 @@ public func == <T>(lhs: T, rhs: T) -> Bool where T: Identifiable {
 open class Site: Identifiable, Hashable {
   public enum SiteType {
     case unknown, bookmark, history, tab
-
-    public var icon: UIImage? {
-      switch self {
-      case .history:
-        return UIImage(braveSystemNamed: "leo.history")
-      case .bookmark:
-        return UIImage(braveSystemNamed: "leo.browser.bookmark-normal")
-      case .tab:
-        return UIImage(braveSystemNamed: "leo.browser.mobile-tabs")
-      default:
-        return nil
-      }
-    }
   }
 
   open var id: Int?

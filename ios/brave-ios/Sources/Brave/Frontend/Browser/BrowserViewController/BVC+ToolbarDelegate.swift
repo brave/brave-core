@@ -735,7 +735,6 @@ extension BrowserViewController: TopToolbarDelegate {
     guard let searchController = searchController else { return }
     searchController.setupSearchEngineList()
     searchController.searchDelegate = self
-    searchController.profile = self.profile
 
     searchLoader = SearchLoader(
       historyAPI: braveCore.historyAPI,
