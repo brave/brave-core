@@ -29,3 +29,4 @@ export const adsLearnMoreURL = 'https://support.brave.com/hc/en-us/articles/3600
 export const braveSearchURL = 'https://search.brave.com'
 export const braveStoreURL = 'https://store.brave.com'
 export const wdpLearnMoreURL = 'https://brave.com/privacy/browser/#web-discovery-project'
+export const rewardsUnavailableURL = 'https://support.brave.com/hc/en-us/articles/9053832354957'

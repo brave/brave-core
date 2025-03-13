@@ -191,6 +191,10 @@ export type StringKey =
   'tosUpdateRequiredText' |
   'tosUpdateRequiredTitle' |
   'unconnectedAdsViewedText' |
+  'unsupportedRegionText1' |
+  'unsupportedRegionText2' |
+  'unsupportedRegionText3' |
+  'unsupportedRegionTitle' |
   'viewStoreLink' |
   'wdpCheckboxLabel' |
   'wdpOptInText' |

@@ -11,7 +11,7 @@ import {
   externalWalletProviderFromString
 } from '../../shared/lib/external_wallet'
 
-import { AppModel } from '../lib/app_model'
+import { AppModel, defaultModel } from '../lib/app_model'
 import { AppState, Notification, defaultState } from '../lib/app_state'
 import { RewardsPageProxy } from './rewards_page_proxy'
 import { createStateManager } from '../../shared/lib/state_manager'
@@ -49,7 +49,30 @@ function parseCreatorPlatform(value: string) {
   return ''
 }
 
+function openTab(url: string) {
+  window.open(url, '__blank', 'noopener noreferrer')
+}
+
+function createModelForUnsupportedRegion(): AppModel {
+  const stateManager = createStateManager<AppState>(defaultState())
+  stateManager.update({
+    loading: false,
+    isUnsupportedRegion: true
+  })
+  return {
+    ...defaultModel(),
+    getState: stateManager.getState,
+    addListener: stateManager.addListener,
+    openTab,
+    getString(key) { return loadTimeData.getString(key) }
+  }
+}
+
 export function createModel(): AppModel {
+  if (loadTimeData.getBoolean('isUnsupportedRegion')) {
+    return createModelForUnsupportedRegion()
+  }
+
   const searchParams = new URLSearchParams(location.search)
   const browserProxy = RewardsPageProxy.getInstance()
   const pageHandler = browserProxy.handler
@@ -336,9 +359,9 @@ export function createModel(): AppModel {
     openTab(url) {
       if (isBubble) {
         pageHandler.openTab(url)
-        return
+      } else {
+        openTab(url)
       }
-      window.open(url, '_blank', 'noopener,noreferrer')
     },
 
     getString(key) {

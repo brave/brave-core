@@ -143,6 +143,7 @@ export interface UICard {
 export interface AppState {
   loading: boolean
   openTime: number
+  isUnsupportedRegion: boolean
   embedder: EmbedderInfo
   paymentId: string
   countryCode: string
@@ -164,6 +165,7 @@ export function defaultState(): AppState {
   return {
     loading: true,
     openTime: Date.now(),
+    isUnsupportedRegion: false,
     embedder: {
       isBubble: false,
       isAutoResizeBubble: false,
