@@ -60,9 +60,12 @@ template("rust_to_wasm") {
       "--out-name",
       "index",
       "--",
+      "--config",
+      rebase_path("//{{source_root_relative_dir}}/.cargo/config.toml"),
       "--target-dir",
       rebase_path(
           "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/target"),
+      "--frozen",
     ]
 
     # common output files for all the wasm-pack targets

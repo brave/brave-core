@@ -66,3 +66,4 @@ test/data/tor/tor_control/*_win/controlport   text eol=crlf
 # cargo calculates the checksums based on the line endings of the vendored deps,
 # and not based on what we have set for the different file types above.
 tools/crates/vendor/** -text
+ui/webui/resources/wasm/vendor/** -text

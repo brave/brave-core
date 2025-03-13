@@ -1,5 +1,6 @@
 [package]
-name = "opaque-ke-lib"
+name = "opaque_ke"
+version = "0.1.0"
 edition = "2021"
 
 [lib]
