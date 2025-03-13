@@ -66,7 +66,7 @@ class TiledItemsView : public views::BoxLayoutView {
     DCHECK_GE(items.size(), 1u);
 
     SetPreferredSize(gfx::Size(464, 72));
-    SetBorder(views::CreateThemedRoundedRectBorder(
+    SetBorder(views::CreateRoundedRectBorder(
         /*thickness=*/1, kCornerRadius, kColorBravePlaylistListBorder));
     SetInsideBorderInsets(gfx::Insets(8));
     SetBetweenChildSpacing(16);
@@ -367,7 +367,7 @@ PlaylistNewPlaylistDialog::PlaylistNewPlaylistDialog(
         std::make_unique<views::ScrollView>());
     scroll_view->ClipHeightTo(/*min_height=*/0, /*max_height=*/224);
     scroll_view->SetDrawOverflowIndicator(false);
-    scroll_view->SetBorder(views::CreateThemedRoundedRectBorder(
+    scroll_view->SetBorder(views::CreateRoundedRectBorder(
         /*thickness=*/1,
         /*corner_radius=*/4.f, kColorBravePlaylistListBorder));
 
@@ -557,7 +557,7 @@ void PlaylistMoveDialog::EnterChoosePlaylistMode() {
       contents_container_->AddChildView(std::make_unique<views::ScrollView>());
   scroll_view->ClipHeightTo(/*min_height=*/0, /*max_height=*/224);
   scroll_view->SetDrawOverflowIndicator(false);
-  scroll_view->SetBorder(views::CreateThemedRoundedRectBorder(
+  scroll_view->SetBorder(views::CreateRoundedRectBorder(
       /*thickness=*/1,
       /*corner_radius=*/4.f, kColorBravePlaylistListBorder));
   list_view_ =
