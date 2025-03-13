@@ -42,6 +42,7 @@ interface Props {
   onReject: () => void
   onConfirm: (() => Promise<void>) | (() => void)
   isAccountSyncing?: boolean
+  isShieldingFunds?: boolean
 }
 
 type Warning = Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>
@@ -58,7 +59,8 @@ export function PendingTransactionActionsFooter({
   insufficientFundsError,
   onReject,
   onConfirm,
-  isAccountSyncing
+  isAccountSyncing,
+  isShieldingFunds
 }: Props) {
   // state
   const [isWarningDismissed, setIsWarningDismissed] = React.useState(false)
@@ -128,6 +130,8 @@ export function PendingTransactionActionsFooter({
         >
           {isAccountSyncing
             ? getLocale('braveWalletSyncing')
+            : isShieldingFunds
+            ? getLocale('braveWalletShieldZEC')
             : getLocale('braveWalletAllowSpendConfirmButton')}
         </LeoSquaredButton>
       ),
@@ -148,7 +152,8 @@ export function PendingTransactionActionsFooter({
     isConfirmButtonDisabled,
     transactionConfirmed,
     onReject,
-    isAccountSyncing
+    isAccountSyncing,
+    isShieldingFunds
   ])
 
   // computed

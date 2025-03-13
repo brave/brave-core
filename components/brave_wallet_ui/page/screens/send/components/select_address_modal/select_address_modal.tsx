@@ -8,6 +8,12 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 
+// Selectors
+import {
+  useSafeWalletSelector //
+} from '../../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../../common/selectors'
+
 // Types
 import {
   BraveWallet,
@@ -29,6 +35,7 @@ import {
   useGetEthAddressChecksumQuery,
   useGetFVMAddressQuery,
   useGetIsBase58EncodedSolPubkeyQuery,
+  useGetZCashAccountInfoQuery,
   useGetZCashTransactionTypeQuery
 } from '../../../../../common/slices/api.slice'
 
@@ -259,8 +266,10 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         error: BraveWallet.ZCashAddressError.kNoError
       }
     } = useGetZCashTransactionTypeQuery(
-      fromAccountId?.coin === BraveWallet.CoinType.ZEC && trimmedSearchValue
+      fromAccountId &&
+      fromAccountId.coin === BraveWallet.CoinType.ZEC && trimmedSearchValue
         ? {
+            accountId: fromAccountId,
             testnet: selectedNetwork?.chainId === BraveWallet.Z_CASH_TESTNET,
             use_shielded_pool: selectedAsset?.isShielded || false,
             address: trimmedSearchValue
@@ -330,7 +339,13 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
 
     // Methods
     const onSelectAccount = React.useCallback(
-      async (account: BraveWallet.AccountInfo) => {
+      async (account: BraveWallet.AccountInfo, shieldedAddress?: string) => {
+        if (shieldedAddress) {
+          setToAddressOrUrl(shieldedAddress)
+          setResolvedDomainAddress('')
+          onClose()
+          return
+        }
         if (
           account.accountId.coin === BraveWallet.CoinType.BTC ||
           account.accountId.coin === BraveWallet.CoinType.ZEC
@@ -458,13 +473,12 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                     </LabelText>
                   </Row>
                   {filteredAccounts.map((account) => (
-                    <AccountListItem
+                    <AccountGroupItem
                       key={account.accountId.uniqueKey}
                       account={account}
-                      onClick={() => onSelectAccount(account)}
-                      isSelected={
-                        account.accountId.uniqueKey === fromAccountId?.uniqueKey
-                      }
+                      onSelectAccount={onSelectAccount}
+                      fromAccountId={fromAccountId}
+                      selectedAsset={selectedAsset}
                       accountAlias={
                         fevmTranslatedAddresses?.[account.accountId.address]
                       }
@@ -541,6 +555,88 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
     )
   }
 )
+
+interface AccountsListProps {
+  account: BraveWallet.AccountInfo
+  onSelectAccount: (
+    account: BraveWallet.AccountInfo,
+    shieldedAddress?: string
+  ) => void
+  selectedAsset?: BraveWallet.BlockchainToken
+  fromAccountId?: BraveWallet.AccountId
+  accountAlias?: string
+}
+
+export const AccountGroupItem = (props: AccountsListProps) => {
+  const {
+    account,
+    onSelectAccount,
+    selectedAsset,
+    fromAccountId,
+    accountAlias
+  } = props
+
+  // Selectors
+  const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashShieldedTransactionsEnabled
+  )
+
+  // Queries
+  const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
+    isZCashShieldedTransactionsEnabled &&
+      account.accountId.coin === BraveWallet.CoinType.ZEC
+      ? account.accountId
+      : skipToken
+  )
+
+  // Computed
+  const isShieldedAccount =
+    isZCashShieldedTransactionsEnabled &&
+    !!zcashAccountInfo &&
+    !!zcashAccountInfo.accountShieldBirthday
+
+  return (
+    <>
+      <AccountListItem
+        account={account}
+        onClick={() => onSelectAccount(account)}
+        isDisabled={
+          !!selectedAsset?.isShielded ||
+          account.accountId.uniqueKey === fromAccountId?.uniqueKey
+        }
+        isSelected={account.accountId.uniqueKey === fromAccountId?.uniqueKey}
+        addressOverride={
+          account.accountId.coin === BraveWallet.CoinType.ZEC &&
+          zcashAccountInfo
+            ? zcashAccountInfo.nextTransparentReceiveAddress.addressString
+            : undefined
+        }
+        accountAlias={accountAlias}
+      />
+      {zcashAccountInfo && isShieldedAccount && (
+        <AccountListItem
+          account={account}
+          onClick={() =>
+            onSelectAccount(account, zcashAccountInfo.orchardInternalAddress)
+          }
+          isDisabled={!!selectedAsset?.isShielded}
+          isSelected={
+            !!selectedAsset?.isShielded &&
+            account.accountId.uniqueKey === fromAccountId?.uniqueKey
+          }
+          isShielded={true}
+          addressOverride={
+            account.accountId.coin === BraveWallet.CoinType.ZEC &&
+            zcashAccountInfo
+              ? zcashAccountInfo.orchardInternalAddress
+              : undefined
+          }
+          accountAlias={undefined}
+        />
+      )}
+    </>
+  )
+}
 
 function getAddressMessageInfo({
   fevmTranslatedAddresses,

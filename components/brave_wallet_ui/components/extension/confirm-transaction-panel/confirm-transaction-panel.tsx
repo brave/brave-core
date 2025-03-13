@@ -143,7 +143,8 @@ export const ConfirmTransactionPanel = ({
     rejectAllTransactions,
     isConfirmButtonDisabled,
     isSolanaDappTransaction,
-    isAccountSyncing
+    isAccountSyncing,
+    isShieldingFunds
   } = usePendingTransactions()
 
   // queries
@@ -420,7 +421,9 @@ export const ConfirmTransactionPanel = ({
                   {getLocale('braveWalletSystemProgramAssignWarningTitle')}
                 </WarningTitle>
                 <WarningText>
-                  {getLocale('braveWalletSystemProgramAssignWarningDescription')}
+                  {getLocale(
+                    'braveWalletSystemProgramAssignWarningDescription'
+                  )}
                 </WarningText>
               </WarningBoxTitleRow>
             </WarningBox>
@@ -507,6 +510,7 @@ export const ConfirmTransactionPanel = ({
           isWarningCollapsed={isWarningCollapsed}
           setIsWarningCollapsed={setIsWarningCollapsed}
           isAccountSyncing={isAccountSyncing}
+          isShieldingFunds={isShieldingFunds}
         />
       </Column>
       {showSimulationNotSupportedMessage && (
