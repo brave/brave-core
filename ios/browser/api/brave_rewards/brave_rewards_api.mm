@@ -656,10 +656,8 @@ NSNotificationName const BraveRewardsNotificationAdded =
   if ([legacyProfilePrefs objectForKey:@"wallets.brave"]) {
     auto json = (NSString*)legacyProfilePrefs[@"wallets.brave"];
     if (json) {
-      if (auto value = base::JSONReader::Read(base::SysNSStringToUTF8(json))) {
-        self.profilePrefService->Set(brave_rewards::prefs::kWalletBrave,
-                                     std::move(*value));
-      }
+      self.profilePrefService->SetString(brave_rewards::prefs::kWalletBrave,
+                                         base::SysNSStringToUTF8(json));
     }
   }
 
