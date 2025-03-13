@@ -720,6 +720,16 @@ void BraveRenderViewContextMenu::MaybeBuildBraveScreenshotsMenu() {
       IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD,
       IDS_IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD);
 
+  // If we're already screenshotting, disable these options
+  if (tabs::TabInterface::GetFromContents(source_web_contents_)
+          ->GetTabFeatures()
+          ->brave_screenshots_tab_feature()
+          ->IsScreenshotInProgress()) {
+    brave_screenshots_submenu_model_.SetEnabledAt(0, false);
+    brave_screenshots_submenu_model_.SetEnabledAt(1, false);
+    brave_screenshots_submenu_model_.SetEnabledAt(2, false);
+  }
+
   // Preferably insert the screenshots submenu after the inspect element
   std::optional<size_t> inspect_index =
       menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
