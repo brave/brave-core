@@ -1052,10 +1052,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.privacyPolicy,
           selection: { [unowned self] in
-            // Show privacy policy
-            let privacy = SettingsContentViewController().then { $0.url = .brave.privacy }
-            privacy.navigationItem.title = Strings.privacyPolicy
-            self.navigationController?.pushViewController(privacy, animated: true)
+            settingsDelegate?.settingsOpenURLInNewTab(.brave.privacy)
           },
           accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self
@@ -1063,10 +1060,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.termsOfUse,
           selection: { [unowned self] in
-            // Show terms of use
-            let toc = SettingsContentViewController().then { $0.url = .brave.termsOfUse }
-            toc.navigationItem.title = Strings.termsOfUse
-            self.navigationController?.pushViewController(toc, animated: true)
+            settingsDelegate?.settingsOpenURLInNewTab(.brave.termsOfUse)
           },
           accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self
@@ -1074,10 +1068,9 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.settingsLicenses,
           selection: { [unowned self] in
-            let licenses = SettingsContentViewController().then {
-              $0.url = URL(string: "\(InternalURL.baseUrl)/\(AboutLicenseHandler.path)")
+            if let url = URL(string: "\(InternalURL.baseUrl)/\(AboutLicenseHandler.path)") {
+              settingsDelegate?.settingsOpenURLInNewTab(url)
             }
-            self.navigationController?.pushViewController(licenses, animated: true)
           },
           accessory: .disclosureIndicator
         ),
