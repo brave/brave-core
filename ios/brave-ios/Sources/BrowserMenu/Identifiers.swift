@@ -195,7 +195,7 @@ extension Action.Identifier {
     id: "TranslatePage",
     title: Strings.ActionTitles.translate,
     braveSystemImage: "leo.product.translate",
-    defaultRank: 1401,
+    defaultRank: 1450,
     defaultVisibility: .hidden
   )
   public static let findInPage: Self = .init(
