@@ -7,8 +7,7 @@ import * as React from 'react'
 
 // Mock Data
 import {
-  mockMeldCryptoCurrencies,
-  mockMeldFiatCurrencies
+  mockMeldCryptoCurrencies
 } from '../../../../../common/constants/mocks'
 
 // Types
@@ -33,9 +32,7 @@ export const _SelectAsset = () => {
         onClose={() => alert('Close was clicked.')}
         assets={mockMeldCryptoCurrencies}
         isLoadingAssets={false}
-        isLoadingSpotPrices={false}
         selectedAsset={selectedCurrency}
-        selectedFiatCurrency={mockMeldFiatCurrencies[0]}
         onSelectAsset={(asset) => setSelectedCurrency(asset)}
       />
     </WalletPageStory>
