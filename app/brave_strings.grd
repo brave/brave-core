@@ -354,8 +354,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_TASK_MANAGER_CLEAR_SEARCH_BUTTON_ACCESSIBILITY_NAME" desc="The accessibility name for the clear button accompanying the task manager search bar input.">
         Clear search
       </message>
-      <message name="IDS_TASK_MANAGER_KILL_ACCESSIBILITY_NAME" desc="The accessibility description for the End Process button in the Task Manager window" translateable="false">
-        Ends the highlighted process.
+      <message name="IDS_TASK_MANAGER_KILL_ACCESSIBILITY_NAME" desc="The accessibility description for the End Task button in the Task Manager window">
+        Ends the highlighted task.
       </message>
       <message name="IDS_TASK_MANAGER_CATEGORY_TABS_AND_EXTENSIONS_NAME" desc="The title of the 'Tabs and Extensions' filter category." translateable="false">
         Tabs &amp; Extensions
@@ -729,9 +729,6 @@ Brave is unable to recover your settings.
       <message name="IDS_BLOCK_DOWNLOAD_REASON_DANGEROUS_COOKIE_THEFT" desc="On the chrome://downloads page, the description shown for a blocked file that is dangerous because of cookie theft.">
         Brave blocked this download because the file can harm your personal and social network accounts
       </message>
-      <message name="IDS_BLOCK_DOWNLOAD_REASON_DANGEROUS_COOKIE_THEFT_AND_ACCOUNT" desc="On the chrome://downloads page, the description with account info shown for a blocked file that is dangerous because of cookie theft.">
-        Brave blocked this download because the file can harm your personal and social network accounts, including <ph name="USER_EMAIL">$1<ex>john@google.com</ex></ph>
-      </message>
       <message name="IDS_BLOCK_DOWNLOAD_REASON_UNCOMMON" desc="On the chrome://downloads page, the description shown for a blocked file that is uncommon.">
         Brave blocked this download because the file isn't commonly downloaded and it may be dangerous
       </message>
@@ -865,6 +862,9 @@ Brave is unable to recover your settings.
       </message>
       <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_IN_CHROME" desc="The label to indicate that a shortcut will be triggerable only from within the Brave application.">
         In Brave
+      </message>
+      <message name="IDS_PENDING_CHANGE_WARNING" desc="The message shown to users when an extension setting change will ba applied after Brave restarts.">
+        Changes to this setting will be applied once Brave restarts.
       </message>
 
       <if expr="enable_extensions">
@@ -2358,7 +2358,7 @@ Brave is unable to recover your settings.
       <!-- UNO Promo strings for extensions -->
       <if expr="enable_extensions">
         <message name="IDS_EXTENSION_INSTALLED_PROMO_EXPLICIT_SIGNIN_MESSAGE" desc="Text of the promo displayed at the bottom of the extension installed bubble asking the user to enable UNO.">
-          To get your extensions and more on all your computers, sign in to Brave
+          To get this extension and more on all your computers, sign in to Brave
         </message>
       </if>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">

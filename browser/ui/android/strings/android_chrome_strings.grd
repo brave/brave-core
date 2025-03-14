@@ -215,6 +215,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PREFS_SECTION_ADVANCED" desc="Title of &quot;Advanced&quot; section of preferences. [CHAR_LIMIT=32]">
         Advanced
       </message>
+      <message name="IDS_PREFS_NEW_LABEL" desc="The label displayed next to the title of newly added preferences.">
+        <ph name="PREF_TITLE">%1$s</ph>  <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      </message>
 
       <!-- Notification channels -->
       <message name="IDS_NOTIFICATION_CATEGORY_GROUP_GENERAL" desc="Subheading for &quot;General&quot; section of a list of notification categories. [CHAR_LIMIT=32]">
@@ -454,8 +457,8 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
 
       <!-- Address bar settings -->
-      <message name="IDS_ADDRESS_BAR_SETTINGS" desc="Title for Address Bar settings. The NEW label is displayed until the user clicks on this menu item at least twice. [CHAR_LIMIT=32]">
-        Address bar  <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      <message name="IDS_ADDRESS_BAR_SETTINGS" desc="Title for Address Bar settings. [CHAR_LIMIT=32]">
+        Address bar
       </message>
 
       <message name="IDS_ADDRESS_BAR_SETTINGS_CURRENTLY_ON_TOP" desc="Description for Address Bar Settings image when the address bar is top-anchored.">
@@ -901,13 +904,13 @@ For more settings that use data to improve your Brave experience, go to <ph name
         Got it
       </message>
       <message name="IDS_PWM_DISABLED_UPDATE_DIALOG_DESCRIPTION" desc="Description text for the dialog shown to users without saved passwords for whom the password manager is unavailble because the Google Play services version installed is outdated.">
-        To start saving and using passwords with Brave Password Manager, update Google Play services.
+        To start saving and using passwords with Brave Password Manager, update Google Play services
       </message>
       <message name="IDS_PWM_DISABLED_UPDATE_DIALOG_CANCEL" desc="Button used to dimsiss the dialog shown to users without saved passwords who need to update Google Play services to regain access to the password manager.">
        Cancel
       </message>
       <message name="IDS_KEEP_ACCESS_TO_YOUR_PASSWORDS_DIALOG_TITLE" desc="Title for a dialog shown to users when they have unmigrated passwords left over in Brave after Brave's storage has been deprecated">
-        Keep access to you passwords
+        Keep access to your passwords
       </message>
       <message name="IDS_CSV_DOWNLOAD_DIALOG_WITH_GMS_PARAGRAPH1" desc="First paragraph of the description in the dialog shown to users when they have unmigrated passwords left over in Brave after Brave's storage has been deprecated. This text is shown to users who have Google Play Services on the device.">
         To keep access to your passwords, export them now, update Google Play Services, and then import them back to Brave Password Manager. <ph name="BEGIN_LINK">&lt;link&gt;</ph>See full instructions<ph name="END_LINK">&lt;/link&gt;</ph>.
@@ -2488,15 +2491,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SIGN_OUT_UNSAVED_DATA_PRIMARY_BUTTON" desc="Button title of a dialog shown to users when they sign out of Brave but Brave hasn't synced some data yet, which is parmanently deleted if the user proceeds by pressing this button">
         Delete and sign out
       </message>
-      <message name="IDS_SIGN_IN_GETTING_ACCOUNT_MANAGEMENT_POLICY" desc="Title of progress bar dialog for getting management policy">
-        Contacting Brave. This may take a minute…
-      </message>
-      <message name="IDS_SIGN_IN_TIMEOUT_TITLE" desc="Title of sign in timeout alert dialog">
-        Can’t sign in
-      </message>
-      <message name="IDS_SIGN_IN_TIMEOUT_MESSAGE" desc="Message of sign in timeout alert dialog">
-        Brave took too long to respond
-      </message>
 
       <!-- Sync strings -->
       <message name="IDS_SIGN_IN_MANAGED_ACCOUNT" desc="Title for prompts to sign in to managed accounts">
@@ -2796,11 +2790,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_PASSWORD_SYNC_ERROR_SUMMARY" desc="Short message shown in various UIs (e.g. Sync Error Card body) to inform that passwords can't be synced (due to missing trusted vault keys). [CHAR_LIMIT=32]">
         Password sync isn't working
       </message>
-      <message name="IDS_PASSWORD_SYNC_TRUSTED_VAULT_ERROR_TITLE_1" desc="Short message shown in various UIs (e.g. Sync Error Card body) to inform that passwords stored in the user's Brave sync chain can't be synced to the device (due to missing trusted vault keys). The message prompts the user to fix this issue.">
-        Get access to all your passwords
-      </message>
-      <message name="IDS_PASSWORD_SYNC_TRUSTED_VAULT_ERROR_TITLE_2" desc="Short message shown in various UIs (e.g. Sync Error Card body) to inform that passwords stored in the user's Brave sync chain can't be synced to the device (due to missing trusted vault keys).">
-        Some of your passwords aren’t available on this device
+      <message name="IDS_PASSWORD_SYNC_TRUSTED_VAULT_ERROR_TITLE" desc="Short message shown in various UIs (e.g. Sync Error Card body) to inform that passwords stored in the user's Brave sync chain can't be synced to the device (due to missing trusted vault keys). The message prompts the user to fix this issue.">
+        Get all your passwords
       </message>
       <message name="IDS_SYNC_SETTINGS_NOT_CONFIRMED_TITLE" desc="Title of the error message shown when sync setup was not complete. [CHAR_LIMIT=60]">
         Initial sync setup not finished
@@ -2823,11 +2814,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_HINT_SYNC_RETRIEVE_KEYS_FOR_PASSWORDS" desc="Hint message to resolve sync encryption error, required to resume syncing passwords.">
         To sync your passwords, verify it's you
       </message>
-      <message name="IDS_PASSWORD_SYNC_TRUSTED_VAULT_ERROR_HINT_1" desc="Hint message that explains a sync error: Passwords stored in the user's Brave sync chain can't be synced to the device (due to missing trusted vault keys).">
-         Verify it’s you to make sure you can access all your passwords on this device
-      </message>
-      <message name="IDS_PASSWORD_SYNC_TRUSTED_VAULT_ERROR_HINT_2" desc="Hint message to resolve sync encryption error, required to resume syncing passwords.">
-        Verify it’s you to access passwords in your Brave sync chain
+      <message name="IDS_PASSWORD_SYNC_TRUSTED_VAULT_ERROR_HINT" desc="Hint message that explains a sync error: Passwords stored in the user's Brave sync chain can't be synced to the device (due to missing trusted vault keys).">
+         Verify it’s you to get all your passwords on this device
       </message>
       <message name="IDS_HINT_PASSPHRASE_REQUIRED" desc="Hint message to resolve passphrase required error.">
         To start sync, enter your passphrase
@@ -2918,7 +2906,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_IDENTITY_ERROR_CARD_BUTTON_VERIFY" desc="Button label for all errors requiring re-auth (auth error, degreaded recoverability, encryption error). Also used for error message and notification title.">
         Verify it’s you
       </message>
-
+      <message name="IDS_IDENTITY_ERROR_CARD_BUTTON_OKAY" desc="Button label for the message shown in the Sync Error Card (due to missing trusted vault keys) for confirming that a user wants to get all their passwords on their device.">
+        Okay
+      </message>
       <!-- Identity error message and notification strings -->
       <message name="IDS_IDENTITY_ERROR_MESSAGE_BODY" desc="Error message/notification to resolve passphrase required error, sync encryption error, auth error, outdated client error.">
         Keep using the Brave data in your Brave sync chain
@@ -3706,9 +3696,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Account Signin Strings -->
-      <message name="IDS_SIGNIN_ADD_ACCOUNT" desc="Text for adding another Brave sync chain">
-        Add account
-      </message>
       <message name="IDS_SIGNIN_ADD_ACCOUNT_TO_DEVICE" desc="Text for adding another Brave sync chain to device in the web sign-in flow and account picker dialog, users will be asked to add an account to his device when this text is tapped">
         Add account to device
       </message>
@@ -3754,23 +3741,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Strings for Streamlined Signin and Unified Consent. -->
-      <message name="IDS_SIGNIN_TITLE" desc="Title for the screen that asks users to sign-in and turn on Sync. [CHAR_LIMIT=27]">
-        Turn on sync?
-      </message>
       <message name="IDS_HISTORY_SYNC_TITLE" desc="Title of a page that asks users to start syncing their tabs and browsing history, so they can get back to sites they visited more quickly without having to type them, for example by seeing these sites suggested in the Omnibox.">
         Save time, type less
       </message>
       <message name="IDS_HISTORY_SYNC_SUBTITLE" desc="Text of a page that asks users to start syncing their tabs and browsing history, so they can get back to sites they visited more quickly without having to type them, for example by seeing these sites suggested in the Omnibox.">
         To quickly get back to sites you’ve visited, sync your tabs and history
-      </message>
-      <message name="IDS_SIGNIN_SYNC_TITLE_WITHOUT_PASSWORDS" desc="Same as IDS_SIGNIN_SYNC_TITLE but without mentioning passwords. Title of Sync feature for the screen that asks users to sign-in and turn on Sync.">
-        Sync your bookmarks, history &amp; more on all devices
-      </message>
-      <message name="IDS_SIGNIN_SYNC_DESCRIPTION" desc="Description of Sync feature for the screen that asks users to sign-in and turn on Sync.">
-        Brave may use your history to personalize Search and other Brave services
-      </message>
-      <message name="IDS_SIGNIN_DETAILS_DESCRIPTION" desc="Message with a link to customize Sync settings. Shown on the screen that asks the user to turn on Sync.">
-        You can always choose what to sync in <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>settings<ph name="END_LINK1">&lt;/LINK1&gt;</ph>.
       </message>
       <message name="IDS_HISTORY_SYNC_FOOTER_WITH_EMAIL" desc="Small text above the main button on a page that asks users to start syncing their tabs and browsing history. The first sentence reminds the user that they're signed in with a certain account. The second sentence is meant to reassure users that they can always change their mind and opt out again. The third sentence explains how history data may be used to personalise the user's experience in other services. The tone should be friendly and reassuring.">
         You are signed in as <ph name="EMAIL">%1$s<ex>jane.doe@example.com</ex></ph>. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
@@ -3782,12 +3757,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Yes, I’m in
       </message>
       <message name="IDS_HISTORY_SYNC_SECONDARY_ACTION" desc="Text for the decline button on the history sync screen that asks users to start syncing their tabs and browsing history. By clicking this button users decline to turn on history sync and dismiss the screen. [CHAR_LIMIT=20]">
-        No thanks
-      </message>
-      <message name="IDS_SIGNIN_ACCEPT_BUTTON" desc="Text for the confirmation button in the sign-in screen. By clicking this button users signs in and turns on Sync. [CHAR_LIMIT=20]">
-        Yes, I'm in
-      </message>
-      <message name="IDS_SIGNIN_SYNC_DECLINE_BUTTON" desc="Text for the decline button in the sign-in and sync screen. By clicking this button the user refuses to sign in and turn on Sync. [CHAR_LIMIT=20]" meaning="This text means that the user refuses to sign in and turn on sync by clicking on this button.">
         No thanks
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_DIALOG_TITLE" desc="The title for the dialog that shows the list of accounts on the device and asks the user to select one of these accounts. [CHAR_LIMIT=27]">
@@ -4226,6 +4195,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_NEW_TAB_IPH" desc="An in-product-help message for the new tab button.">
         Quickly open a new tab. To edit this shortcut, touch and hold.
+      </message>
+      <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_OPEN_IN_BROWSER_IPH" desc="An in-product-help message for the open in browser button.">
+        Quickly open in browser. To edit this shortcut, touch and hold.
       </message>
         <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_SHARE_IPH" desc="An in-product-help message for the share button.">
         Quickly share this page. To edit this shortcut, touch and hold.
@@ -5354,6 +5326,20 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Get help<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
 
+      <!-- WebSerial port chooser strings -->
+      <message name="IDS_SERIAL_CHOOSER_DIALOG_PROMPT" desc="The label that is used to introduce serial port chooser details to the user in a popup.">
+        <ph name="SITE">%1$s<ex>https://www.google.com</ex></ph> wants to connect to a serial port
+      </message>
+      <message name="IDS_SERIAL_CHOOSER_DIALOG_NO_DEVICES_FOUND_PROMPT" desc="The label shown to the user to inform them that no serial ports were found matching the requirements that the application provided.">
+        No compatible devices found
+      </message>
+      <message name="IDS_SERIAL_CHOOSER_DIALOG_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the serial port chooser popup and allows the requesting site access to the selected port.">
+        Connect
+      </message>
+      <message name="IDS_SERIAL_CHOOSER_DIALOG_FOOTNOTE_TEXT" desc="This text is shown at the bottom of the serial chooser dialog with a link to part of its text.">
+        <ph name="BEGIN_LINK">&lt;link&gt;</ph>Get help<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+
       <!-- Special locale UI strings -->
       <message name="IDS_SEARCH_WITH_SOGOU" desc="Text telling the user that the search engine will be switched to Sogou.">
         Search with Sogou
@@ -5838,38 +5824,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
 
       <message name="IDS_STACK_UNWINDER_MODULE_TITLE" desc="Text shown when the stack unwinder module is referenced in install start, success,               failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to               'Installing Stack Unwinder for Brave…').">
         Stack Unwinder
-      </message>
-
-      <message name="IDS_CABLEV2_PAASK_TITLE" desc="The title of an entry in settings for controlling how a phone can be used as a security key. A security key is typically a physical USB peripheral used to secure accounts. In this case, the user's phone can act as a security key.">
-        Phone as a security key
-      </message>
-
-      <message name="IDS_CABLEV2_PAASK_BODY" desc="The subheading of an entry in settings for controlling how a phone can be used as a security key. A security key is typically a physical USB peripheral used to secure accounts. In this case, the user's phone can act as a security key. 'Devices' here means phones, laptops, and desktops that the user uses Brave on.">
-        Control which devices can sign in by using this device as a security key.
-      </message>
-
-      <message name="IDS_CABLEV2_YOUR_DEVICES" desc="A section title on a screen discussing the different devices that can use a phone as a security key. 'Devices' here means phones, laptops, and desktops that the user uses Brave on.">
-        Your devices
-      </message>
-
-      <message name="IDS_CABLEV2_YOUR_DEVICES_BODY" desc="Text that appears under the title 'Your devices'. 'Devices' here means phones, laptops, and desktops that the user uses Brave on. Users can sign into a Brave account in Brave on these devices and this message explains that such devices can use this phone as a security key. A security key is typically a physical USB peripheral used to secure accounts. In this case, the user's phone can act as a security key.">
-        When you’re signed into the same Brave sync chain, other devices can use this phone as a security key.
-      </message>
-
-      <message name="IDS_CABLEV2_LINKED_DEVICES" desc="A section title on a screen discussing the different devices that can use a phone as a security key. The section above this discusses how devices (e.g. phones, laptops, and desktops) on which Brave is signed into the same Brave account can automatically use this phone as a security key. This section is about devices that the user has scanned QR codes from in order to allow them to use this phone as a security key. The word 'linked' here was chosen to be distinct from 'paired' as in 'Bluetooth pairing'. This technology does use Bluetooth, but we did not want to overload the term 'pairing'. However, the word 'pairing' does have the correct meaning.">
-        Linked devices
-      </message>
-
-      <message name="IDS_CABLEV2_LINKED_DEVICES_BODY" desc="Text that appears under the title 'Linked devices'. This section is about devices that the user has scanned QR codes from in order to allow them to use this phone as a security key. The word 'link' here was chosen to be distinct from 'pair' as in 'Bluetooth pairing'. This technology does use Bluetooth, but we did not want to overload the term 'pairing'. However, the word 'pair' does have the correct meaning. A security key is typically a physical USB peripheral used to secure accounts. In this case, the user's phone can act as a security key.">
-        When you link another device with a QR code, it can use this phone as a security key. If you remove it, you’ll have to scan a QR code to link it again.
-      </message>
-
-      <message name="IDS_CABLEV2_UNLINK_BUTTON" desc="The text on a button that, when pressed, revokes the access of all devices that could previously use this phone as a security key. The work 'linked' should match up with the translation of message IDS_CABLEV2_LINKED_DEVICES.">
-        Remove all linked devices
-      </message>
-
-      <message name="IDS_CABLEV2_UNLINK_CONFIRMATION" desc="The text in a toast that appears after clicking a button labeled 'Remove all linked devices' (IDS_CABLEV2_UNLINK_BUTTON). A 'toast' is a bubble that appears, briefly, near the bottom of the screen. (Unfortunately I was unable to capture it in the screenshot.)">
-        Removed
       </message>
 
       <!-- QR Code -->
@@ -6818,6 +6772,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_COLLABORATION_CANCEL" desc="The label for buttons that cancel any dialogs in data sharing.">
         Cancel
       </message>
+      <message name="IDS_COLLABORATION_LOADING_BUTTON" desc="Accessibility string that describes the loading animation on a button after it is clicked when processing a request.">
+        Loading
+      </message>
       <!-- Misc -->
 
       <message name="IDS_SHARED_IMAGE_TILES_COUNT" desc="The count string for number of tiles that overflows from shared image tiles. |COUNT_NUMBER| will be a number between 1 and 99 (it will be 1-2 digits at most). [CHAR_LIMIT=3]">
@@ -6837,12 +6794,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_DATA_SHARING_INVITATION_DIALOG_ACCEPT" desc="The positive button text of the dialog shown when a user has received a tab group invitation.">
         Accept
-      </message>
-      <message name="IDS_DATA_SHARING_INVITATION_FAILURE_TITLE" desc="The title of the dialog shown when a share invitation link fails">
-        The invite link couldn’t be opened
-      </message>
-      <message name="IDS_DATA_SHARING_INVITATION_FAILURE_DESCRIPTION" desc="The body text the dialog shown when a share invitation link fails">
-        You can contact the sender to ask for a new link.
       </message>
       <message name="IDS_DATA_SHARING_INVITATION_FAILURE_BUTTON" desc="The positive button text of the dialog shown when a share invitation link fails.">
         Got it
