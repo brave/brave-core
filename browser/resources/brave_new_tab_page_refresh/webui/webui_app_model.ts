@@ -5,7 +5,12 @@
 
 import { createStore } from '../lib/store'
 import { AppModel, defaultState } from '../models/app_model'
+import { initializeNewTab } from './webui_new_tab'
 import { initializeBackgrounds } from './webui_backgrounds'
+import { initializeRewards } from './webui_rewards'
+import { initializeSearch } from './webui_search'
+import { initializeTopSites } from './webui_top_sites'
+import { initializeVPN } from './webui_vpn'
 
 export function createAppModel(): AppModel {
   const store = createStore(defaultState())
@@ -14,6 +19,11 @@ export function createAppModel(): AppModel {
     getState: store.getState,
     addListener: store.addListener,
 
-    ...initializeBackgrounds(store)
+    ...initializeNewTab(store),
+    ...initializeBackgrounds(store),
+    ...initializeRewards(store),
+    ...initializeSearch(store),
+    ...initializeTopSites(store),
+    ...initializeVPN(store)
   }
 }
