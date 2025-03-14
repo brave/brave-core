@@ -48,7 +48,7 @@ bool EngineConsumer::CanPerformCompletionRequest(
     // If we don't have a human entry to submit then we might have
     // tool use responses to submit and continue the assistant response with.
     if (last_turn->events.has_value() && !last_turn->events->empty()) {
-      if (base::ranges::any_of(
+      if (std::ranges::any_of(
               *last_turn->events,
               [](const mojom::ConversationEntryEventPtr& event) {
                 return event->is_tool_use_event() &&

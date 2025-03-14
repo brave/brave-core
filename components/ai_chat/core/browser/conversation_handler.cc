@@ -809,8 +809,9 @@ void ConversationHandler::SubmitHumanConversationEntry(
     if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
         last_entry->events && !last_entry->events->empty()) {
       // Delete any event that is_tool_use_event and has no output
-      last_entry->events->erase(
-          base::ranges::remove_if(last_entry->events.value(),
+      last_entry->events.value().erase(
+          std::remove_if(last_entry->events.value().begin(),
+                                 last_entry->events.value().end(),
                          [](const auto& event) {
                            return event->is_tool_use_event() &&
                                   event->get_tool_use_event()->output_json ==
@@ -1059,7 +1060,7 @@ void ConversationHandler::RespondToToolUseRequest(const std::string& tool_id,
   LOG(ERROR) << __func__;
   // Get tool
   Tool* tool = nullptr;
-  auto tool_it = base::ranges::find_if(
+  auto tool_it = std::ranges::find_if(
       tools_, [&tool_use](const std::unique_ptr<Tool>& tool) {
         return tool->name() == tool_use->tool_name;
       });
@@ -1070,7 +1071,7 @@ void ConversationHandler::RespondToToolUseRequest(const std::string& tool_id,
     if (associated_content_delegate_) {
       auto content_tools = associated_content_delegate_->GetTools();
       auto a_tool_it =
-          base::ranges::find_if(content_tools,
+          std::ranges::find_if(content_tools,
                                 [&tool_use](const Tool* tool) {
                                   LOG(ERROR) << __func__ << ": " << tool->name() << ", " << tool_use->tool_name;
                                   return tool->name() == tool_use->tool_name;
@@ -1109,7 +1110,7 @@ void ConversationHandler::OnToolUseComplete(
   OnHistoryUpdate();
   // Only perform generation if there are no pending tools left to run from
   // the last entry
-  if (base::ranges::all_of(
+  if (std::ranges::all_of(
           *chat_history_.back()->events,
           [](const mojom::ConversationEntryEventPtr& event) {
             return !event->is_tool_use_event() ||
