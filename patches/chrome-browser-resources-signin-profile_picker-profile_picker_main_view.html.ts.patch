@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
-index 9130ae3712b6f4a0934077b3ae652d5d2da2bff5..216df04e561aa212b7b1b2ef174633109b050c04 100644
+index 9130ae3712b6f4a0934077b3ae652d5d2da2bff5..62a53667b66b871f1b4bd1cb6047be091d17b899 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
 @@ -34,7 +34,7 @@ ${function() {
@@ -11,3 +11,11 @@ index 9130ae3712b6f4a0934077b3ae652d5d2da2bff5..216df04e561aa212b7b1b2ef17463310
            @click="${this.onAddProfileClick_}"
            ?hidden="${!this.profileCreationAllowed_}"
            aria-labelledby="addProfileButtonLabel">
+@@ -48,7 +48,6 @@ ${function() {
+   </div>
+   <div id="footer-text" class="subtitle"
+       ?hidden="${this.shouldHideFooterText_()}">
+-    $i18nRaw{glicAddProfileHelper}
+   </div>
+ </div>
+ <div class="footer">
