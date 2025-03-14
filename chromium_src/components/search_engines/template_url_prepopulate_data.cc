@@ -29,8 +29,8 @@ namespace TemplateURLPrepopulateData {
 // `GetPrepopulatedEngines` where there's an expectation for the use of the
 // default value of the last arguent.
 std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines_Unused(
-    PrefService* prefs,
-    search_engines::SearchEngineChoiceService* search_engine_choice_service);
+    PrefService& prefs,
+    CountryID country_id);
 
 }  // namespace TemplateURLPrepopulateData
 
@@ -789,8 +789,8 @@ int GetDataVersion(PrefService* prefs) {
 // Redefines function with the same name in Chromium. Modifies the function to
 // get search engines defined by Brave.
 std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
-    PrefService* prefs,
-    search_engines::SearchEngineChoiceService* search_engine_choice_service) {
+    PrefService& prefs,
+    CountryID country_id) {
   // If there is a set of search engines in the preferences file, it overrides
   // the built-in set.
   std::vector<std::unique_ptr<TemplateURLData>> t_urls =
@@ -800,15 +800,11 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
   }
 
   int version = kBraveCurrentDataVersion;
-  if (prefs && prefs->HasPrefPath(prefs::kBraveDefaultSearchVersion)) {
-    version = prefs->GetInteger(prefs::kBraveDefaultSearchVersion);
+  if (prefs.HasPrefPath(prefs::kBraveDefaultSearchVersion)) {
+    version = prefs.GetInteger(prefs::kBraveDefaultSearchVersion);
   }
 
-  return GetBravePrepopulatedEnginesForCountryID(
-      search_engine_choice_service
-          ? search_engine_choice_service->GetCountryId()
-          : country_codes::GetCountryIDFromPrefs(prefs),
-      version);
+  return GetBravePrepopulatedEnginesForCountryID(country_id, version);
 }
 
 // Redefines function with the same name in Chromium. Modifies the function to
@@ -830,23 +826,19 @@ std::vector<std::unique_ptr<TemplateURLData>> GetLocalPrepopulatedEngines(
 // Chromium picks Google (if on the list, otherwise the first prepopulated on
 // the list). We should return the default engine by country, or Brave.
 std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
-    PrefService* prefs,
-    search_engines::SearchEngineChoiceService* search_engine_choice_service) {
+    PrefService& prefs,
+    CountryID country_id) {
   std::vector<std::unique_ptr<TemplateURLData>> prepopulated_engines =
-      GetPrepopulatedEngines(prefs, search_engine_choice_service);
+      GetPrepopulatedEngines(prefs, country_id);
   if (prepopulated_engines.empty()) {
     return nullptr;
   }
 
   // Get the default engine (overridable by country) for this version
   int version = kBraveCurrentDataVersion;
-  if (prefs && prefs->HasPrefPath(prefs::kBraveDefaultSearchVersion)) {
-    version = prefs->GetInteger(prefs::kBraveDefaultSearchVersion);
+  if (prefs.HasPrefPath(prefs::kBraveDefaultSearchVersion)) {
+    version = prefs.GetInteger(prefs::kBraveDefaultSearchVersion);
   }
-
-  int country_id = search_engine_choice_service
-                       ? search_engine_choice_service->GetCountryId()
-                       : country_codes::GetCountryIDFromPrefs(prefs);
 
   BravePrepopulatedEngineID default_id =
       GetDefaultSearchEngine(country_id, version);
@@ -870,12 +862,11 @@ std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
   return std::move(prepopulated_engines[0]);
 }
 
-std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(
-    PrefService* prefs,
-    search_engines::SearchEngineChoiceService* search_engine_choice_service,
-    int prepopulated_id) {
-  auto engines = TemplateURLPrepopulateData::GetPrepopulatedEngines(
-      prefs, search_engine_choice_service);
+std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(PrefService& prefs,
+                                                       CountryID country_id,
+                                                       int prepopulated_id) {
+  auto engines =
+      TemplateURLPrepopulateData::GetPrepopulatedEngines(prefs, country_id);
   for (auto& engine : engines) {
     if (engine->prepopulate_id == prepopulated_id) {
       return std::move(engine);

@@ -1,0 +1,49 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./folder_node-chromium.css.js
+ * #scheme=relative
+ * #include=folder-node-chromium
+ * #css_wrapper_metadata_end */
+
+.cr-nav-menu-item {
+    border-end-end-radius: 0px !important;
+    border-start-end-radius: 0px !important;
+    box-sizing: content-box !important;
+}
+
+.cr-nav-menu-item:hover {
+    background: transparent !important;
+}
+
+.cr-nav-menu-item[selected] {
+    --iron-icon-fill-color: var(--cr-link-color) !important;
+    color: var(--cr-link-color) !important;
+    background: transparent !important;
+}
+
+.cr-nav-menu-item.drag-on {
+    color: var(--cr-link-color) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+
+    .cr-nav-menu-item[selected] #arrow,
+    .cr-nav-menu-item.drag-on #arrow {
+        --cr-icon-button-fill-color: var(--cr-link-color) !important;
+    }
+
+    .cr-nav-menu-item.drag-on {
+        --iron-icon-fill-color: var(--cr-link-color) !important;
+        background: transparent !important;
+        color: var(--cr-link-color) !important;
+    }
+}
+
+.cr-nav-menu-item cr-ripple {
+    display: none !important;
+}

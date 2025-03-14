@@ -85,8 +85,8 @@ void BraveProfileMenuView::BuildFeatureButtons() {
   } else {
     if (window_count > 1) {
       AddFeatureButton(
-          l10n_util::GetPluralStringFUTF16(IDS_PROFILES_CLOSE_X_WINDOWS_BUTTON,
-                                           window_count),
+          l10n_util::GetPluralStringFUTF16(
+              IDS_PROFILE_MENU_CLOSE_PROFILE_X_WINDOWS_BUTTON, window_count),
           base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
                               base::Unretained(this)),
           vector_icons::kCloseIcon);

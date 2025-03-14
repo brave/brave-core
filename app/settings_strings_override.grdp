@@ -47,9 +47,6 @@
   <message name="IDS_SETTINGS_AUTO_PIN_NEW_TAB_GROUPS" desc="Label for the checkbox which enables or disables auto pin new tab groups.">
     Automatically pin new tab groups created on any device to the bookmarks
   </message>
-  <message name="IDS_SETTINGS_WEB_STORE" desc="Sub-label about choosing something from the Web Store.">
-    Open Web Store
-  </message>
   <if expr="is_macosx">
     </if>
 

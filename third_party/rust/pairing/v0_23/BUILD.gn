@@ -23,6 +23,7 @@ cargo_crate("lib") {
       "Sean Bowe <ewillbefull@gmail.com>, Jack Grigg <jack@z.cash>"
   cargo_pkg_name = "pairing"
   cargo_pkg_description = "Pairing-friendly elliptic curve library"
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]

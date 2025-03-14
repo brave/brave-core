@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/lib/gn.rs b/tools/crates/gnrt/lib/gn.rs
-index 30204a678f8b6bb8ebf883fec992c1269e1e8b17..7a8da3ef040b0c69f38098dd87a912961abb316f 100644
+index 06ca0a9e6b6a144615bb158bda56ad8b2b516b6b..981b57207f2fbfabe1c56e8b81bc0ccbc2870ce2 100644
 --- a/tools/crates/gnrt/lib/gn.rs
 +++ b/tools/crates/gnrt/lib/gn.rs
 @@ -202,8 +202,9 @@ pub fn build_rule_from_dep(
@@ -13,7 +13,7 @@ index 30204a678f8b6bb8ebf883fec992c1269e1e8b17..7a8da3ef040b0c69f38098dd87a91296
              }
          }
          aliases.sort_unstable();
-@@ -536,6 +537,7 @@ fn target_os_to_condition(target_os: &str) -> &'static str {
+@@ -537,6 +538,7 @@ fn target_os_to_condition(target_os: &str) -> &'static str {
      for (t, c) in &[
          ("android", "is_android"),
          ("darwin", "is_mac"),

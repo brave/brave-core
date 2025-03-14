@@ -956,7 +956,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
 // TODO(sko) On Linux test environment, the test doesn't work well
 // TODO(sko) On Windows CI, SendMouse() doesn't work.
 // TODO(sko) As of Dec, 2023 this test is flaky on Mac CI.
+#if BUILDFLAG(IS_WIN)
+#define MAYBE_DragTabToDetach DragTabToDetach
+#else
 #define MAYBE_DragTabToDetach DISABLED_DragTabToDetach
+#endif
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                        MAYBE_DragTabToDetach) {
@@ -979,8 +983,16 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                           std::ranges::count_if(*browser_list, [&](Browser* b) {
                             return b->profile() == browser()->profile();
                           }));
-                ReleaseMouse();
                 auto* new_browser = browser_list->GetLastActive();
+                auto* browser_view =
+                    BrowserView::GetBrowserViewForBrowser(new_browser);
+                auto* tab = browser_view->tabstrip()->tab_at(0);
+                ASSERT_TRUE(tab);
+                // During the tab detaching, mouse should be over the dragged
+                // tab.
+                EXPECT_TRUE(tab->IsMouseHovered());
+                EXPECT_TRUE(tab->dragging());
+                ReleaseMouse();
                 new_browser->window()->Close();
               }));
 }

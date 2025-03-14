@@ -1,11 +1,11 @@
 diff --git a/chrome/common/extensions/api/developer_private.idl b/chrome/common/extensions/api/developer_private.idl
-index d65deafb7913578b1955013ba8bfa8d8b02957df..8536ed9bcdebd3f38e1b40fd3ab9e60075a33e18 100644
+index 28ffe3b9b74aa78a95cfdac4d202fc250918d702..38221251f0f8784f44a9881778286daa0c355b13 100644
 --- a/chrome/common/extensions/api/developer_private.idl
 +++ b/chrome/common/extensions/api/developer_private.idl
-@@ -256,6 +256,7 @@ namespace developerPrivate {
-     DOMString iconUrl;
+@@ -258,6 +258,7 @@ namespace developerPrivate {
      DOMString id;
      AccessModifier incognitoAccess;
+     AccessModifier userScriptsAccess;
 +    boolean isSplitMode;
      DOMString[] installWarnings;
      boolean isCommandRegistrationHandledExternally;

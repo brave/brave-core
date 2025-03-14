@@ -14,6 +14,7 @@
 #include "components/regional_capabilities/regional_capabilities_test_utils.h"
 #include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
+#include "components/search_engines/search_engines_test_environment.h"
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
@@ -46,24 +47,10 @@ std::unique_ptr<TemplateURLData> CreatePrepopulateTemplateURLData(
 
 class BraveTemplateURLServiceUtilTest : public testing::Test {
  public:
-  BraveTemplateURLServiceUtilTest()
-      : regional_capabilities_service_(
-            regional_capabilities::CreateServiceWithFakeClient(prefs_)),
-        search_engine_choice_service_(
-            prefs_,
-            &local_state_,
-            *regional_capabilities_service_,
-            /*is_profile_eligible_for_dse_guest_propagation=*/false) {}
-  void SetUp() override {
-    TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
-  }
+  BraveTemplateURLServiceUtilTest() = default;
 
  protected:
-  sync_preferences::TestingPrefServiceSyncable prefs_;
-  TestingPrefServiceSimple local_state_;
-  std::unique_ptr<regional_capabilities::RegionalCapabilitiesService>
-      regional_capabilities_service_;
-  search_engines::SearchEngineChoiceService search_engine_choice_service_;
+  search_engines::SearchEnginesTestEnvironment search_engines_test_environment_;
 };
 
 void TestDefaultOrder(const TemplateURL::OwnedTemplateURLVector& template_urls,
@@ -98,8 +85,9 @@ WDKeywordsResult InitKeywordResult(
     sync_preferences::TestingPrefServiceSyncable* prefs,
     const std::vector<TemplateURLData>& local_turls) {
   WDKeywordsResult kwResult;
-  kwResult.metadata.builtin_keyword_data_version =
-      TemplateURLPrepopulateData::GetDataVersion(prefs);
+  // Set builtin metadata version to 0 so that the prepopulated engines are
+  // merged into the results (see ComputeMergeEnginesRequirements).
+  kwResult.metadata.builtin_keyword_data_version = 0;
   kwResult.keywords = local_turls;
   return kwResult;
 }
@@ -114,22 +102,27 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   local_turls.push_back(*CreatePrepopulateTemplateURLData(1004, "random2", 8));
 
   // Prepare call arguments
-  WDResult<WDKeywordsResult> result(KEYWORDS_RESULT,
-                                    InitKeywordResult(&prefs_, local_turls));
+  WDResult<WDKeywordsResult> result(
+      KEYWORDS_RESULT,
+      InitKeywordResult(&search_engines_test_environment_.pref_service(),
+                        local_turls));
 
   TemplateURL::OwnedTemplateURLVector template_urls;
   WDKeywordsResult::Metadata updated_keywords_metadata;
 
-  prefs_.SetInteger(kCountryIDAtInstall, 'U' << 8 | 'S');
   GetSearchProvidersUsingKeywordResult(
-      result.GetValue(), nullptr, &prefs_, &search_engine_choice_service_,
+      result.GetValue(), nullptr,
+      &search_engines_test_environment_.pref_service(),
+      &search_engines_test_environment_.search_engine_choice_service(),
+      search_engines_test_environment_.prepopulate_data_resolver(),
       &template_urls, default_turl.get(), SearchTermsData(),
       updated_keywords_metadata, nullptr);
 
   // Verify count and order.
+  // Default prepopulated engines order is :br, :g, :d, :q, :b, :sp
   TestDefaultOrder(template_urls,
-                   {":g", ":d", ":q", ":b", ":sp", ":ya", "random1", "random2",
-                    "@bookmarks", "@history", "@tabs", "@gemini"});
+                   {":br", ":g", ":d", ":q", ":b", ":sp", ":ya", "random1",
+                    "random2", "@bookmarks", "@history", "@tabs", "@gemini"});
 }
 
 TEST_F(BraveTemplateURLServiceUtilTest,
@@ -143,19 +136,26 @@ TEST_F(BraveTemplateURLServiceUtilTest,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE;
 
   // Prepare call arguments
-  WDResult<WDKeywordsResult> result(KEYWORDS_RESULT,
-                                    InitKeywordResult(&prefs_, local_turls));
+  WDResult<WDKeywordsResult> result(
+      KEYWORDS_RESULT,
+      InitKeywordResult(&search_engines_test_environment_.pref_service(),
+                        local_turls));
   TemplateURL::OwnedTemplateURLVector template_urls;
   WDKeywordsResult::Metadata updated_keywords_metadata;
 
   // Check Germany.
-  prefs_.SetInteger(kCountryIDAtInstall, 'D' << 8 | 'E');
+  search_engines_test_environment_.pref_service().SetInteger(
+      kCountryIDAtInstall, 'D' << 8 | 'E');
   GetSearchProvidersUsingKeywordResult(
-      result.GetValue(), nullptr, &prefs_, &search_engine_choice_service_,
+      result.GetValue(), nullptr,
+      &search_engines_test_environment_.pref_service(),
+      &search_engines_test_environment_.search_engine_choice_service(),
+      search_engines_test_environment_.prepopulate_data_resolver(),
       &template_urls, default_turl.get(), SearchTermsData(),
       updated_keywords_metadata, nullptr);
 
   // Verify count and order.
+  // Prepopulated engines order for DE is :br, :d, :q, :g, :sp, :e
   TestDefaultOrder(template_urls,
                    {":br", ":d", ":q", ":g", ":b", ":sp", ":e", ":ya",
                     "@bookmarks", "@history", "@tabs", "@gemini"});

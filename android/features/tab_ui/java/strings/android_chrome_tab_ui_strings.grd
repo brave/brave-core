@@ -335,7 +335,7 @@
       </message>
 
       <!-- Tab Grid Dialog strings -->
-      <message name="IDS_TAB_GRID_DIALOG_REMOVE_FROM_GROUP" desc="This text shows on the ungroup bar in TabGridDialog. When user drags a tab and drops it on the ungroup bar, this tab will be moved out of the group.">
+      <message name="IDS_REMOVE_TAB_FROM_GROUP" desc="Content description for an action which removes a tab from its group.">
         Remove from group
       </message>
       <message name="IDS_TAB_GRID_DIALOG_TOOLBAR_EDIT_GROUP_NAME" desc="This text shows in the TabGridDialog toolbar menu as one menu item. When user selects this item, the group name field will be focused and the keyboard will show for users to edit the group name.">
@@ -351,7 +351,7 @@
         Close group
       </message>
       <message name="IDS_TAB_GRID_DIALOG_TOOLBAR_MANAGE_SHARING" desc="This text shows in the TabGridDialog toolbar menu as one menu item. When user selects this item, the manage sharing UI is shown.">
-        Manage sharing
+        Manage access
       </message>
       <message name="IDS_TAB_GRID_DIALOG_TOOLBAR_RECENT_ACTIVITY" desc="This text shows in the TabGridDialog toolbar menu as one menu item. When user selects this item, the recent activity UI is shown.">
         Recent activity
@@ -726,6 +726,45 @@
           other {Created <ph name="NUM_YEARS_MANY">%d<ex>2</ex></ph> years ago}
         }
       </message>
+      <message name="IDS_TAB_GROUPS_UPDATED_AGO_NOW" desc="A subtitle on a row for a tab group. Explains the group was updated less than a minute ago.">
+        Updated just now
+      </message>
+      <message name="IDS_TAB_GROUPS_UPDATED_AGO_MINUTES" desc="A subtitle on a row for a tab group. Explains how many minutes ago the group was updated.">
+        {NUM_MINS, plural,
+          =1 {Updated <ph name="NUM_MINS_ONE">%d<ex>1</ex></ph> minute ago}
+          other {Updated <ph name="NUM_MINS_MANY">%d<ex>2</ex></ph> minutes ago}
+        }
+      </message>
+      <message name="IDS_TAB_GROUPS_UPDATED_AGO_HOURS" desc="A subtitle on a row for a tab group. Explains how many hours ago the group was updated.">
+        {NUM_HOURS, plural,
+          =1 {Updated <ph name="NUM_HOURS_ONE">%d<ex>1</ex></ph> hour ago}
+          other {Updated <ph name="NUM_HOURS_MANY">%d<ex>2</ex></ph> hours ago}
+        }
+      </message>
+      <message name="IDS_TAB_GROUPS_UPDATED_AGO_DAYS" desc="A subtitle on a row for a tab group. Explains how many days ago the group was updated.">
+        {NUM_DAYS, plural,
+          =1 {Updated <ph name="NUM_DAYS_ONE">%d<ex>1</ex></ph> day ago}
+          other {Updated <ph name="NUM_DAYS_MANY">%d<ex>2</ex></ph> days ago}
+        }
+      </message>
+      <message name="IDS_TAB_GROUPS_UPDATED_AGO_WEEKS" desc="A subtitle on a row for a tab group. Explains how many weeks ago the group was updated.">
+        {NUM_WEEKS, plural,
+          =1 {Updated <ph name="NUM_WEEKS_ONE">%d<ex>1</ex></ph> week ago}
+          other {Updated <ph name="NUM_WEEKS_MANY">%d<ex>2</ex></ph> weeks ago}
+        }
+      </message>
+      <message name="IDS_TAB_GROUPS_UPDATED_AGO_MONTHS" desc="A subtitle on a row for a tab group. Explains how many months ago the group was updated.">
+              {NUM_MONTHS, plural,
+                =1 {Updated <ph name="NUM_MONTHS_ONE">%d<ex>1</ex></ph> month ago}
+                other {Updated <ph name="NUM_MONTHS_MANY">%d<ex>2</ex></ph> months ago}
+              }
+            </message>
+      <message name="IDS_TAB_GROUPS_UPDATED_AGO_YEARS" desc="A subtitle on a row for a tab group. Explains how many years ago the group was updated.">
+        {NUM_MONTHS, plural,
+          =1 {Updated <ph name="NUM_YEARS_ONE">%d<ex>1</ex></ph> year ago}
+          other {Updated <ph name="NUM_YEARS_MANY">%d<ex>2</ex></ph> years ago}
+        }
+      </message>
       <message name="IDS_PLUS_HIDDEN_TAB_COUNT" desc="A string to show how many other tabs are contained in a tab group who's favicons are not shown. [CHAR_LIMIT=5]">
         +<ph name="HIDDEN_TABS_COUNT">%1$s<ex>3</ex></ph>
       </message>
@@ -989,11 +1028,45 @@ If you delete it, everyone will immediately lose access to the "<ph name="TITLE_
       </message>
 
       <!-- Tab Group Removed Message Strings -->
-      <message name="IDS_TAB_GROUP_REMOVED_MESSAGE_CARD_DESCRIPTION" desc="Description text on the message card which is shown when user is no longer a part of the tab group. [CHAR_LIMIT=40]">
-        <ph name="TAB_GROUP_NAME">%1$s<ex>Vacation</ex></ph> tab group no longer available
+      <message name="IDS_ONE_TAB_GROUP_REMOVED_MESSAGE_CARD_DESCRIPTION" desc="Description text on the message card which is shown when user is no longer a part of one tab group. [CHAR_LIMIT=40]">
+        "<ph name="TAB_GROUP_NAME">%1$s<ex>Vacation</ex></ph>" tab group no longer available
       </message>
+      <message name="IDS_TWO_TAB_GROUPS_REMOVED_MESSAGE_CARD_DESCRIPTION" desc="Description text on the message card which is shown when user is no longer a part of two tab groups. [CHAR_LIMIT=60]">
+         "<ph name="TAB_GROUP_NAME_1">%1$s<ex>Travel</ex></ph>" and "<ph name="TAB_GROUP_NAME_2">%2$s<ex>Vacation</ex></ph>" tab groups no longer available
+      </message>
+      <message name="IDS_GENERIC_TAB_GROUPS_REMOVED_MESSAGE_CARD_DESCRIPTION" desc="Generic description text on the message card which is shown when user is no longer a part of 1 or more tab groups. [CHAR_LIMIT=40]">
+          {TAB_GROUPS_COUNT, plural,
+            =1 {<ph name="TAB_GROUPS_COUNT_ONE">%1$d<ex>1</ex></ph> tab group no longer available}
+            other {<ph name="TAB_GROUPS_COUNT_MANY">%1$d<ex>5</ex></ph> tab groups no longer available}
+          }
+       </message>
       <message name="IDS_ACCESSIBILITY_TAB_GROUP_REMOVED_DISMISS_BUTTON" desc="The accessibility text to read when the 'X' button on the tab removed message card is focused">
         Dismiss the card.
+      </message>
+
+      <!-- Tab context menu (for individual tabs) -->
+      <message name="IDS_ADD_TAB_TO_GROUP" desc="Content description for an action which adds a tab to a group.">
+        Add to group
+      </message>
+
+      <!-- Tab Group List Bottom Sheet -->
+      <message name="IDS_TAB_GROUP_LIST_BOTTOM_SHEET_TITLE" desc="Title text for a bottom sheet which is used to add a tab to a tab group.">
+        Add to
+      </message>
+      <message name="IDS_CREATE_NEW_GROUP_ROW_TITLE" desc="Description text for an option in a bottom sheet to create a new tab group.">
+        New tab group
+      </message>
+      <message name="IDS_TAB_GROUP_LIST_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="The content description for the bottom sheet containing a list of tab groups.">
+        Select tab group
+      </message>
+      <message name="IDS_TAB_GROUP_LIST_BOTTOM_SHEET_HALF_HEIGHT" desc="The content description for the bottom sheet containing a list of tab groups, when opened at half height.">
+        Tab group list, opened at half height
+      </message>
+      <message name="IDS_TAB_GROUP_LIST_BOTTOM_SHEET_FULL_HEIGHT" desc="The content description for the bottom sheet containing a list of tab groups, when opened at full height.">
+        Tab group list, opened at full height
+      </message>
+      <message name="IDS_TAB_GROUP_LIST_BOTTOM_SHEET_CLOSED" desc="The accessibility announcement made when the bottom sheet containing a list of tab groups is closed.">
+        Tab group list closed
       </message>
     </messages>
   </release>

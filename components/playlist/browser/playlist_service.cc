@@ -37,10 +37,10 @@
 namespace playlist {
 namespace {
 
-constexpr base::FilePath::StringPieceType kBaseDirName =
+constexpr base::FilePath::StringViewType kBaseDirName =
     FILE_PATH_LITERAL("playlist");
 
-constexpr base::FilePath::StringPieceType kThumbnailFileName =
+constexpr base::FilePath::StringViewType kThumbnailFileName =
     FILE_PATH_LITERAL("thumbnail");
 
 std::vector<base::FilePath> GetOrphanedPaths(
