@@ -23,16 +23,7 @@
 
 WorkerContentSettingsClient_BraveImpl::WorkerContentSettingsClient_BraveImpl(
     content::RenderFrame* render_frame)
-    : WorkerContentSettingsClient_ChromiumImpl(render_frame) {
-  content_settings::ContentSettingsAgentImpl* agent =
-      content_settings::ContentSettingsAgentImpl::Get(render_frame);
-
-  if (const auto& shields_settings =
-          static_cast<content_settings::BraveContentSettingsAgentImpl*>(agent)
-              ->shields_settings()) {
-    shields_settings_ = shields_settings->Clone();
-  }
-}
+    : WorkerContentSettingsClient_ChromiumImpl(render_frame) {}
 
 WorkerContentSettingsClient_BraveImpl::
     ~WorkerContentSettingsClient_BraveImpl() = default;
@@ -57,6 +48,8 @@ WorkerContentSettingsClient_BraveImpl::GetBraveShieldsSettings(
   if (!primary_url.SchemeIsHTTPOrHTTPS()) {
     return brave_shields::mojom::ShieldsSettings::New();
   }
+
+  EnsureShieldsSettings();
 
   brave_shields::mojom::FarblingLevel farbling_level =
       shields_settings_ ? shields_settings_->farbling_level
@@ -130,6 +123,17 @@ WorkerContentSettingsClient_BraveImpl::GetEphemeralStorageOriginSync() {
       optional_ephemeral_storage_origin
           ? blink::WebSecurityOrigin(*optional_ephemeral_storage_origin)
           : blink::WebSecurityOrigin());
+}
+
+void WorkerContentSettingsClient_BraveImpl::EnsureShieldsSettings() {
+  if (!shields_settings_) {
+    EnsureContentSettingsManager();
+
+    if (!content_settings_manager_->GetBraveShieldsSettings(
+            frame_token_, &shields_settings_)) {
+      shields_settings_ = brave_shields::mojom::ShieldsSettings::New();
+    }
+  }
 }
 
 bool WorkerContentSettingsClient_BraveImpl::HasContentSettingsRules() const {
