@@ -14,8 +14,53 @@ struct FaviconUX {
   static let faviconBorderWidth = 1.0 / UIScreen.main.scale
 }
 
+struct FaviconConfiguration {
+  let borderColor: UIColor
+  let borderWidth: CGFloat
+
+  static let defaultConfig = FaviconConfiguration(
+    borderColor: FaviconUX.faviconBorderColor,
+    borderWidth: FaviconUX.faviconBorderWidth
+  )
+}
+
 /// Displays a large favicon given some favorite
 class LargeFaviconView: UIView {
+  init(
+    config: FaviconConfiguration? = nil
+  ) {
+    super.init(frame: .zero)
+
+    layer.cornerRadius = 8
+    layer.cornerCurve = .continuous
+    if let config {
+      layer.borderColor = config.borderColor.cgColor
+      layer.borderWidth = config.borderWidth
+    }
+    clipsToBounds = true
+    layoutMargins = .zero
+
+    addSubview(backgroundView)
+    addSubview(monogramFallbackLabel)
+    addSubview(imageView)
+
+    backgroundView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+
+    imageView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    monogramFallbackLabel.snp.makeConstraints {
+      $0.center.equalTo(self)
+    }
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+
   func loadFavicon(
     siteURL: URL,
     isPrivateBrowsing: Bool,
@@ -99,38 +144,5 @@ class LargeFaviconView: UIView {
 
   private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .regular)).then {
     $0.isHidden = true
-  }
-
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-
-    layer.cornerRadius = 8
-    layer.cornerCurve = .continuous
-
-    clipsToBounds = true
-    layer.borderColor = FaviconUX.faviconBorderColor.cgColor
-    layer.borderWidth = FaviconUX.faviconBorderWidth
-
-    layoutMargins = .zero
-
-    addSubview(backgroundView)
-    addSubview(monogramFallbackLabel)
-    addSubview(imageView)
-
-    backgroundView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-
-    imageView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
-    }
-    monogramFallbackLabel.snp.makeConstraints {
-      $0.center.equalTo(self)
-    }
-  }
-
-  @available(*, unavailable)
-  required init(coder: NSCoder) {
-    fatalError()
   }
 }
