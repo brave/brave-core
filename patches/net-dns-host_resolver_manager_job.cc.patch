@@ -1,8 +1,8 @@
 diff --git a/net/dns/host_resolver_manager_job.cc b/net/dns/host_resolver_manager_job.cc
-index 927780d191468eabc1c66b64dea194784f56232c..212e66109611623c760ba5ee264aba9993f4ee7b 100644
+index 70afe1d04eb8cbe448305a014f377ac2d3ba49c5..b259bd36fd872d836cab7664078daa60a51023a5 100644
 --- a/net/dns/host_resolver_manager_job.cc
 +++ b/net/dns/host_resolver_manager_job.cc
-@@ -1067,6 +1067,7 @@ void HostResolverManager::Job::CompleteRequests(
+@@ -1071,6 +1071,7 @@ void HostResolverManager::Job::CompleteRequests(
    }
  
    RecordJobHistograms(results, task_type);

@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/lib/gn.rs b/tools/crates/gnrt/lib/gn.rs
-index 058cebdb525bc170503bb439e88758a65b586933..0bcb3523f56a19ce25b333aee7517f10e1165caf 100644
+index f744a1b5fba0484fb8fb1ae4dc15e125bef8b8f0..7935cd4c725a5578bc52536b5c07d17af34d0293 100644
 --- a/tools/crates/gnrt/lib/gn.rs
 +++ b/tools/crates/gnrt/lib/gn.rs
 @@ -201,8 +201,9 @@ pub fn build_rule_from_dep(
@@ -13,7 +13,7 @@ index 058cebdb525bc170503bb439e88758a65b586933..0bcb3523f56a19ce25b333aee7517f10
              }
          }
          aliases.sort_unstable();
-@@ -575,6 +576,7 @@ fn cfg_to_condition(cfg: &cargo_platform::Cfg) -> Condition {
+@@ -590,6 +591,7 @@ fn cfg_to_condition(cfg: &cargo_platform::Cfg) -> Condition {
              "target_family" => target_family_to_condition(value),
              "target_os" => target_os_to_condition(value),
              "target_vendor" => target_vendor_to_condition(value),
@@ -21,7 +21,7 @@ index 058cebdb525bc170503bb439e88758a65b586933..0bcb3523f56a19ce25b333aee7517f10
              _ => Condition::Unsupported(format!("Unknown key `{key}` in `{cfg}`")),
          },
      }
-@@ -593,6 +595,10 @@ fn cfg_name_to_condition(name: &str) -> Condition {
+@@ -608,6 +610,10 @@ fn cfg_name_to_condition(name: &str) -> Condition {
          return Condition::AlwaysFalse;
      }
  
@@ -32,7 +32,7 @@ index 058cebdb525bc170503bb439e88758a65b586933..0bcb3523f56a19ce25b333aee7517f10
      Condition::Unsupported(format!("unknown option name: `#[cfg({name})]`"))
  }
  
-@@ -697,6 +703,7 @@ fn target_os_to_condition(target_os: &str) -> Condition {
+@@ -712,6 +718,7 @@ fn target_os_to_condition(target_os: &str) -> Condition {
      for (t, c) in &[
          ("android", "is_android"),
          ("darwin", "is_mac"),

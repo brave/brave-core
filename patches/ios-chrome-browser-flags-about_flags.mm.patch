@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index fb39eb7816cf978c091ea392a9243fac86cf87fe..b5c35952e4c6d15bf7d5b76b94a9a27cb37bab32 100644
+index 9c78315a16eaf86fa2a4bfa7a9fd5fb822388ca8..78c9ccef18df06b943f7767fd9651c56723e8f14 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1376,6 +1376,7 @@ const FeatureEntry::FeatureVariation kBestFeaturesScreenInFirstRunVariations[] =
+@@ -1416,6 +1416,7 @@ const FeatureEntry::FeatureVariation kIOSOneTapMiniMapRestrictionsVariations[] =
  //
  // When adding a new choice, add it to the end of the list.
  const flags_ui::FeatureEntry kFeatureEntries[] = {
