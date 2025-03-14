@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import SearchResult from './SearchResult'
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background'
 import { omniboxController, search, useSearchContext } from './SearchContext'
-import { braveSearchHost } from './config'
+import { defaultSearchHost } from './config'
 import { stringToMojoString16 } from 'gen/ui/webui/resources/tsc/js/mojo_type_util';
 import { handleOpenURLClick, validateScheme } from '$web-common/SecureLink';
 import MaybePromptEnableSuggestions from './MaybePromptEnableSuggestions';
@@ -160,7 +160,9 @@ export default function SearchResults() {
 
       const match = matches[selectedMatch!]
       if (!match) {
-        getNTPBrowserAPI().pageHandler.searchWhatYouTyped(searchEngine?.host ?? braveSearchHost, query, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey);
+        getNTPBrowserAPI().pageHandler.searchWhatYouTyped(
+          searchEngine?.host ?? defaultSearchHost, query, e.altKey, e.ctrlKey,
+          e.metaKey, e.shiftKey);
         return;
       }
 
