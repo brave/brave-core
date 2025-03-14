@@ -4124,11 +4124,11 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SAFEBROWSING_ERRORS_PREF" desc="A preferences to show Safe Browsing errors">
       Show Safe Browsing errors
     </message>
-    <message name="IDS_INCOGNITO_SCREENSHOT_TITLE" desc="A title to show incognito screenshot">
-      Private tab screenshots
+    <message name="IDS_PRIVATE_TAB_SCREENSHOT_TITLE" desc="A title to show private tab screenshot">
+      Allow screenshots in private tabs
     </message>
-    <message name="IDS_INCOGNITO_SCREENSHOT_SUMMARY" desc="A summary to show incognito screenshot">
-      Enables Private tab screenshots.
+    <message name="IDS_PRIVATE_TAB_SCREENSHOT_SUMMARY" desc="A summary to show private tab screenshot">
+      If allowed, private tabs will also be visible when multiple apps are open.
     </message>
   </messages>
   </release>
