@@ -69,6 +69,7 @@ include_rules += [
 specific_include_rules = {
   ".*test\.cc": [
     "+chrome/test/base",
+    "+content/browser",
     "+content/public/test",
   ],
   "feature_defaults_unittest\.cc": [

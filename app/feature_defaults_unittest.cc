@@ -51,6 +51,7 @@
 #include "components/sync/base/features.h"
 #include "components/user_education/common/user_education_features.h"
 #include "components/webapps/browser/features.h"
+#include "content/browser/interest_group/interest_group_features.h"
 #include "content/common/features.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/dips_utils.h"
@@ -145,6 +146,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kDevToolsPrivacyUI,
       &features::kDigitalGoodsApi,
       &features::kFedCm,
+      &features::kFledgeBiddingAndAuctionNonceSupport,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &features::kFewerUpdateConfirmations,
       &features::kShortcutsNotApps,
