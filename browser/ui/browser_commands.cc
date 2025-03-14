@@ -253,7 +253,7 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 
 void ShowBraveVPNBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  browser->GetFeatures().GetBraveVPNController()->ShowBraveVPNBubble();
+  browser->GetFeatures().brave_vpn_controller()->ShowBraveVPNBubble();
 #endif
 }
 

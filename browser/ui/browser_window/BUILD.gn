@@ -5,6 +5,16 @@
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
+# Don't include this target. Use //chrome/browser/ui/browser_window
+# instead as it includes our additions.
+source_set("browser_window") {
+  visibility = [ "//chrome/browser/ui/browser_window" ]
+
+  sources = [ "public/browser_window_features.h" ]
+
+  public_deps = [ "//base" ]
+}
+
 source_set("impl") {
   visibility = [ "//chrome/browser/ui/browser_window:impl" ]
 

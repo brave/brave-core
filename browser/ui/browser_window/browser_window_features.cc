@@ -14,6 +14,11 @@
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
 #endif
 
+#if !BUILDFLAG(ENABLE_BRAVE_VPN)
+// Use stub class to avoid incomplete type build error.
+class BraveVPNController {};
+#endif
+
 namespace {
 
 // This is the generic entry point for test code to stub out browser window
@@ -47,6 +52,14 @@ void BrowserWindowFeatures::ReplaceBrowserWindowFeaturesForTesting(
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
 BrowserWindowFeatures::~BrowserWindowFeatures() = default;
 
+BraveVPNController* BrowserWindowFeatures::brave_vpn_controller() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  return brave_vpn_controller_.get();
+#else
+  NOTREACHED();
+#endif
+}
+
 void BrowserWindowFeatures::InitPostBrowserViewConstruction(
     BrowserView* browser_view) {
   BrowserWindowFeatures_ChromiumImpl::InitPostBrowserViewConstruction(
@@ -56,9 +69,3 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
   brave_vpn_controller_ = std::make_unique<BraveVPNController>(browser_view);
 #endif
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-BraveVPNController* BrowserWindowFeatures::GetBraveVPNController() {
-  return brave_vpn_controller_.get();
-}
-#endif
