@@ -11,7 +11,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import EnginePicker from './EnginePicker';
 import { useSearchContext } from './SearchContext';
-import { defaultSearchHost, searchBoxRadius } from './config';
+import { braveSearchHost, searchBoxRadius } from './config';
 
 const searchBoxClass = 'ntp-search-box'
 
@@ -48,7 +48,7 @@ const Container = styled.div`
 
 export default function SearchBox() {
   const { searchEngine, query, setQuery } = useSearchContext()
-  const placeholderText = searchEngine?.host === defaultSearchHost
+  const placeholderText = searchEngine?.host === braveSearchHost
     ? getLocale('searchBravePlaceholder')
     : getLocale('searchNonBravePlaceholder')
   const searchInput = React.useRef<HTMLElement>()

@@ -55,7 +55,7 @@ using ntp_background_images::NTPCustomImagesSource;
 
 namespace {
 
-std::string GetDefaultSearchWidgetHost(PrefService* local_state) {
+std::string GetSearchWidgetDefaultHost(PrefService* local_state) {
   if (brave_l10n::GetCountryCode(local_state) == "JP") {
     return "search.yahoo.co.jp";
   }
@@ -132,7 +132,7 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui,
       "featureFlagSearchWidget",
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
   source->AddString("searchWidgetDefaultHost",
-                    GetDefaultSearchWidgetHost(local_state));
+                    GetSearchWidgetDefaultHost(local_state));
 
   source->AddBoolean("vpnWidgetSupported",
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
