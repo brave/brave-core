@@ -30,6 +30,7 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
   ad_event.creative_instance_id = creative_ad.creative_instance_id;
   ad_event.advertiser_id = creative_ad.advertiser_id;
   ad_event.segment = creative_ad.segment;
+  ad_event.target_url = creative_ad.target_url;
   ad_event.created_at = created_at;
 
   return ad_event;

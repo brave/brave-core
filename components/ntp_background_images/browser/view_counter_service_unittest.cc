@@ -325,7 +325,7 @@ class ViewCounterServiceTest : public testing::Test {
     EXPECT_TRUE(view_counter_service_->CanShowBackgroundImages());
   }
 
-  brave_ads::NewTabPageAdInfo CreateNewTabPageAdInfo() {
+  brave_ads::NewTabPageAdInfo BuildNewTabPageAd() {
     brave_ads::NewTabPageAdInfo ad;
     ad.placement_id = kPlacementdId;
     ad.campaign_id = kCampaignId;
@@ -354,13 +354,6 @@ class ViewCounterServiceTest : public testing::Test {
     }
 
     return view_counter_service_->GetCurrentWallpaperForDisplay();
-  }
-
-  bool AdInfoMatchesSponsoredImage(const brave_ads::NewTabPageAdInfo& ad,
-                                   size_t campaign_index,
-                                   size_t creative_index) {
-    return background_images_service_->sponsored_images_data_
-        ->AdInfoMatchesSponsoredImage(ad, campaign_index, creative_index);
   }
 
  protected:
@@ -637,9 +630,7 @@ TEST_F(ViewCounterServiceTest, GetNewTabTakeoverWallpaperForRewardsUser) {
 
   MockImagesData();
 
-  brave_ads::NewTabPageAdInfo ad = CreateNewTabPageAdInfo();
-  EXPECT_TRUE(AdInfoMatchesSponsoredImage(ad, /*campaign_index=*/0,
-                                          /*creative_index=*/1));
+  const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
 
   const ::testing::InSequence s;
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
@@ -651,7 +642,6 @@ TEST_F(ViewCounterServiceTest, GetNewTabTakeoverWallpaperForRewardsUser) {
   EXPECT_EQ(base::test::ParseJsonDict(R"JSON(
       {
         "campaignId": "fb7ee174-5430-4fb9-8e97-29bf14e8d828",
-        "conditionMatchers": [],
         "creativeInstanceId": "c0d61af3-3b85-4af4-a3cc-cf1b3dd40e70",
         "isBackground": false,
         "isSponsored": true,
@@ -748,10 +738,8 @@ TEST_F(ViewCounterServiceTest, WrongSponsoredImageAdServedForRewardsUser) {
 
   MockImagesData();
 
-  brave_ads::NewTabPageAdInfo ad = CreateNewTabPageAdInfo();
+  brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
   ad.creative_instance_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-  EXPECT_FALSE(AdInfoMatchesSponsoredImage(ad, /*campaign_index=*/0,
-                                           /*creative_index=*/1));
 
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
       .Times(GetInitialCountToBrandedWallpaper());
