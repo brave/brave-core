@@ -11,15 +11,17 @@ struct DefaultBrowserGraphicView: View {
   @Environment(\.colorScheme) private var colorScheme
 
   var body: some View {
-    LottieView(
-      animation: .named(
+    LottieView {
+      try await DotLottieFile.named(
         colorScheme == .dark ? "browser-default-dark" : "browser-default-light",
         bundle: .module,
-        subdirectory: "LottieAssets"
+        subdirectory: Locale.current.language.languageCode == "en"
+          ? "LottieAssets/en" : "LottieAssets"
       )
-    )
+    }
     .resizable()
     .playing(loopMode: .loop)
+    .id(colorScheme)
     .aspectRatio(contentMode: .fit)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
