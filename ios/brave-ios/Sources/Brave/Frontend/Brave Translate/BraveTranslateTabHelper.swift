@@ -428,6 +428,10 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
     }
   }
 
+  func tabWillBeDestroyed(_ tab: Tab) {
+    tab.removeObserver(self)
+  }
+
   // MARK: - Private
 
   @MainActor

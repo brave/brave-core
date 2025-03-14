@@ -191,10 +191,9 @@ extension BrowserViewController: TabManagerDelegate {
     }
     tab.tabDelegate = self
     tab.addObserver(self)
-    tab.navigationDelegate = self
+    tab.addPolicyDecider(self)
     tab.webDelegate = self
     tab.downloadDelegate = self
-    tab.policyDecider = self
     tab.certStore = profile.certStore
 
     tab.walletKeyringService = BraveWallet.KeyringServiceFactory.get(privateMode: tab.isPrivate)
@@ -212,6 +211,7 @@ extension BrowserViewController: TabManagerDelegate {
     topToolbar.leaveOverlayMode(didCancel: true)
     updateTabsBarVisibility()
     tab.removeObserver(self)
+    tab.removePolicyDecider(self)
 
     if !privateBrowsingManager.isPrivateBrowsing {
       rewards.reportTabClosed(tabId: Int(tab.rewardsId))

@@ -2392,7 +2392,7 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
 }
 
 extension BrowserViewController: TabDelegate {
-  func tab(_ tab: Tab, didCreateWebView webView: WKWebView) {
+  func tab(_ tab: Tab, didCreateWebView webView: UIView) {
     webView.frame = webViewContainer.frame
 
     var injectedScripts: [TabContentScript] = [
@@ -2479,9 +2479,11 @@ extension BrowserViewController: TabDelegate {
     tab.translateHelper = BraveTranslateTabHelper(tab: tab, delegate: self)
   }
 
-  func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
+  func tab(_ tab: Tab, willDeleteWebView webView: UIView) {
     tab.cancelQueuedAlerts()
-    toolbarVisibilityViewModel.endScrollViewObservation(webView.scrollView)
+    if let scrollView = tab.webView?.scrollView {
+      toolbarVisibilityViewModel.endScrollViewObservation(scrollView)
+    }
     webView.removeFromSuperview()
   }
 
