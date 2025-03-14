@@ -233,6 +233,7 @@ inline constexpr auto kCollectedSlowHistograms =
     {"Brave.Core.PrimaryLang", MetricConfig{.constellation_only = true}},
     {"Brave.Core.ProfileCount", {}},
     {"Brave.Core.UsageMonthly", {}},
+    {"Brave.Extensions.ManifestV2", {}},
     {"Brave.P3A.TestSlowMetric", {}},
     {"Brave.Playlist.LastUsageTime", {}},
     {"Brave.Rewards.PageViewCount", MetricConfig{.ephemeral = true}},
