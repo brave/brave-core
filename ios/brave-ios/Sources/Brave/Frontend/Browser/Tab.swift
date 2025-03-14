@@ -199,6 +199,7 @@ class Tab: NSObject {
   var sslPinningError: Error?
 
   private let _syncTab: BraveSyncTab?
+  private let _braveUserAgentService: BraveUserAgentService?
   private let _faviconDriver: FaviconDriver?
   private var _walletEthProvider: BraveWalletEthereumProvider?
   private var _walletSolProvider: BraveWalletSolanaProvider?
@@ -210,6 +211,10 @@ class Tab: NSObject {
 
   private weak var syncTab: BraveSyncTab? {
     _syncTab
+  }
+
+  private weak var braveUserAgentService: BraveUserAgentService? {
+    _braveUserAgentService
   }
 
   weak var faviconDriver: FaviconDriver? {
@@ -515,7 +520,8 @@ class Tab: NSObject {
     configuration: WKWebViewConfiguration,
     id: UUID = UUID(),
     type: TabType = .regular,
-    tabGeneratorAPI: BraveTabGeneratorAPI? = nil
+    tabGeneratorAPI: BraveTabGeneratorAPI? = nil,
+    braveUserAgentService: BraveUserAgentService? = nil
   ) {
     self.configuration = configuration
     self.id = id
@@ -525,6 +531,7 @@ class Tab: NSObject {
     rewardsId = UInt32.random(in: 1...UInt32.max)
     nightMode = Preferences.General.nightModeEnabled.value
     _syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
+    _braveUserAgentService = braveUserAgentService
 
     if let syncTab = _syncTab {
       _faviconDriver = FaviconDriver(webState: syncTab.webState).then {
@@ -932,6 +939,7 @@ class Tab: NSObject {
       _walletEthProvider,
       _walletSolProvider,
       _walletKeyringService,
+      _braveUserAgentService,
     ]
 
     DispatchQueue.main.async {
@@ -1154,12 +1162,24 @@ class Tab: NSObject {
       && (webView.bounds.size.width < screenWidth / 2.0)
     {
       let desktopMode = userAgentOverrides[baseDomain] == true
-      webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
+      if isBraveAllowedInUA(for: newURL) {
+        webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
+      } else {
+        webView.customUserAgent = desktopMode ? UserAgent.desktopMasked : UserAgent.mobileMasked
+      }
       return
     }
 
     let desktopMode = userAgentOverrides[baseDomain] ?? UserAgent.shouldUseDesktopMode()
-    webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
+    if isBraveAllowedInUA(for: newURL) {
+      webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
+    } else {
+      webView.customUserAgent = desktopMode ? UserAgent.desktopMasked : UserAgent.mobileMasked
+    }
+  }
+
+  private func isBraveAllowedInUA(for url: URL) -> Bool {
+    braveUserAgentService?.canShowBrave(url) ?? true
   }
 
   func addContentScript(_ helper: TabContentScript, name: String, contentWorld: WKContentWorld) {
