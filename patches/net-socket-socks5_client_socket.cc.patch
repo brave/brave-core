@@ -1,45 +1,38 @@
 diff --git a/net/socket/socks5_client_socket.cc b/net/socket/socks5_client_socket.cc
-index a908a11fa618d1258dc2f4dc8e733c1a3c7f99ff..1a41af1958efff7250e74fd30f0a03fbadf8d37f 100644
+index a908a11fa618d1258dc2f4dc8e733c1a3c7f99ff..19df92b59902376cc94a76fbbff466a8daddd82e 100644
 --- a/net/socket/socks5_client_socket.cc
 +++ b/net/socket/socks5_client_socket.cc
-@@ -224,6 +224,9 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
+@@ -224,6 +224,7 @@ int SOCKS5ClientSocket::DoLoop(int last_io_result) {
          net_log_.EndEventWithNetErrorCode(NetLogEventType::SOCKS5_GREET_READ,
                                            rv);
          break;
-+      case STATE_AUTH:
-+        rv = DoAuth(rv);
-+        break;
++        BRAVE_SOCKS5_CLIENT_SOCKET_DO_LOOP
        case STATE_HANDSHAKE_WRITE:
          DCHECK_EQ(OK, rv);
          net_log_.BeginEvent(NetLogEventType::SOCKS5_HANDSHAKE_WRITE);
-@@ -263,8 +266,11 @@ int SOCKS5ClientSocket::DoGreetWrite() {
+@@ -263,8 +264,7 @@ int SOCKS5ClientSocket::DoGreetWrite() {
    }
  
    if (!write_buf_) {
 -    auto greet_buffer =
 -        base::MakeRefCounted<WrappedIOBuffer>(kSOCKS5GreetWriteData);
-+    static_assert(kSOCKS5GreetWriteData.size() == 3u);
-+    std::string greeting(kSOCKS5GreetWriteData.begin(), kSOCKS5GreetWriteData.end());
-+    // Set authentication method.
-+    greeting.back() = static_cast<char>(auth_method());
-+    auto greet_buffer = base::MakeRefCounted<StringIOBuffer>(std::move(greeting));
++    BRAVE_SOCKS5_CLIENT_SOCKET_DO_GREET_WRITE
      write_buf_ = base::MakeRefCounted<DrainableIOBuffer>(
          std::move(greet_buffer), greet_buffer->size());
    }
-@@ -323,14 +329,14 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
-                                    "version", read_data[0]);
+@@ -324,6 +324,7 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
      return ERR_SOCKS_CONNECTION_FAILED;
    }
--  if (read_data[1] != 0x00) {
-+  if (read_data[1] != auth_method()) {
+   if (read_data[1] != 0x00) {
++  BRAVE_SOCKS5_CLIENT_SOCKET_DO_GREET_READ_COMPLETE_1
      net_log_.AddEventWithIntParams(NetLogEventType::SOCKS_UNEXPECTED_AUTH,
                                     "method", read_data[1]);
      return ERR_SOCKS_CONNECTION_FAILED;
-   }
+@@ -331,6 +332,7 @@ int SOCKS5ClientSocket::DoGreetReadComplete(int result) {
  
    read_buf_.reset();
--  next_state_ = STATE_HANDSHAKE_WRITE;
-+  next_state_ = STATE_AUTH;
+   next_state_ = STATE_HANDSHAKE_WRITE;
++  BRAVE_SOCKS5_CLIENT_SOCKET_DO_GREET_READ_COMPLETE_2
    return OK;
  }
  
