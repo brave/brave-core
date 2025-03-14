@@ -1444,6 +1444,11 @@ extension BrowserViewController: WKUIDelegate {
     type: WKMediaCaptureType,
     decisionHandler: @escaping (WKPermissionDecision) -> Void
   ) {
+    guard shouldDisplayJSAlertForWebView(webView) else {
+      decisionHandler(.deny)
+      return
+    }
+
     if frame.securityOrigin.protocol.isEmpty || frame.securityOrigin.host.isEmpty {
       decisionHandler(.deny)
       return
