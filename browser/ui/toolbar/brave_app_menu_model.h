@@ -62,6 +62,9 @@ class BraveAppMenuModel : public AppMenuModel {
   // History, bookmarks, downloads and extensions.
   void BuildBrowserSection();
 
+  // Insert Email Aliases submenu in autofill and passwords submenu
+  void BuildAutofillSubMenu();
+
   // Insert profile, sidebar, sync and cast entries into existing more tools
   // sub menu.
   void BuildMoreToolsSubMenu();
