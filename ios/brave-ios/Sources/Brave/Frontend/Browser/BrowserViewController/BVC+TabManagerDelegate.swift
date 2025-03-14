@@ -191,6 +191,12 @@ extension BrowserViewController: TabManagerDelegate {
     }
     tab.tabDelegate = self
     tab.addObserver(self)
+    tab.navigationDelegate = self
+    tab.webDelegate = self
+    tab.downloadDelegate = self
+    tab.policyDecider = self
+    tab.certStore = profile.certStore
+
     tab.walletKeyringService = BraveWallet.KeyringServiceFactory.get(privateMode: tab.isPrivate)
     updateTabsBarVisibility()
   }

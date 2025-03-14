@@ -36,7 +36,7 @@ class ReadabilityOperation: Operation {
       let configuration = WKWebViewConfiguration()
       self.tab = Tab(configuration: configuration)
       self.tab.createWebview()
-      self.tab.webView?.navigationDelegate = self
+      self.tab.addObserver(self)
 
       let readerMode = ReaderModeScriptHandler()
       readerMode.delegate = self
@@ -57,6 +57,7 @@ class ReadabilityOperation: Operation {
     }
 
     DispatchQueue.main.async {
+      self.tab.removeObserver(self)
       self.tab = nil
     }
 
@@ -79,33 +80,17 @@ class ReadabilityOperation: Operation {
   }
 }
 
-extension ReadabilityOperation: WKNavigationDelegate {
-  func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+extension ReadabilityOperation: TabObserver {
+  func tab(_ tab: Tab, didFailNavigationWithError error: any Error) {
     result = ReadabilityOperationResult.error(error as NSError)
     semaphore.signal()
   }
 
-  func webView(
-    _ webView: WKWebView,
-    didFailProvisionalNavigation navigation: WKNavigation!,
-    withError error: Error
-  ) {
-    result = ReadabilityOperationResult.error(error as NSError)
-    semaphore.signal()
-  }
-
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    webView.evaluateSafeJavaScript(
+  func tabDidFinishNavigation(_ tab: Tab) {
+    tab.webView?.evaluateSafeJavaScript(
       functionName: "\(readerModeNamespace).checkReadability",
       contentWorld: ReaderModeScriptHandler.scriptSandbox
     )
-  }
-
-  func webView(
-    _ webView: WKWebView,
-    shouldAllowDeprecatedTLSFor challenge: URLAuthenticationChallenge
-  ) async -> Bool {
-    return false
   }
 }
 
