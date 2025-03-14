@@ -42,64 +42,105 @@ struct OnboardingStepView: View {
     }
   }
 
+  private var content: some View {
+    VStack(spacing: layoutStyle == .columnInset ? 40 : 20) {
+      HStack {
+        if layoutStyle.isInset {
+          HStack(spacing: 4) {
+            Image(sharedName: "brave.logo")
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .frame(height: 56)
+              // the logo has some padding in the image itself
+              .padding(.leading, layoutStyle == .columnInset ? -8 : 0)
+            Image(sharedName: "brave.wordmark")
+              .renderingMode(.template)
+              .foregroundStyle(Color(braveSystemName: .neutral70))
+          }
+        } else {
+          BraveAppIcon(
+            size: 48,
+            matchedGeometryInfo: .init(
+              namespace: namespace ?? fallbackNamespace,
+              isSource: !isSplashVisible
+            )
+          )
+        }
+      }
+      .zIndex(2)
+      .frame(maxWidth: .infinity, alignment: layoutStyle == .columnInset ? .leading : .center)
+      VStack(spacing: layoutStyle.isInset && horizontalSizeClass == .regular ? 40 : 28) {
+        AnyView(step.makeTitle())
+          .id(step.id)
+          .frame(maxWidth: .infinity, alignment: layoutStyle == .columnInset ? .leading : .center)
+          .transition(.push(from: .trailing))
+        if layoutStyle == .columnInset {
+          Spacer()
+        } else {
+          AnyView(step.makeGraphic())
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .clipShape(.rect(cornerRadius: 16, style: .continuous))
+            .background(
+              Color(braveSystemName: .iosBrowserBackgroundIos)
+                .shadow(.drop(color: Color(braveSystemName: .elevationPrimary), radius: 0, y: 1))
+                .shadow(
+                  .drop(color: Color(braveSystemName: .elevationSecondary), radius: 4, y: 1)
+                ),
+              in: .rect(cornerRadius: 16, style: .continuous)
+            )
+            .transition(.push(from: .trailing))
+        }
+        AnyView(step.makeActions(continueHandler: {}))
+          // Need to remove the matchedGeometry on the hidden buttons
+          .environment(\.onboardingNamespace, fallbackNamespace)
+          .id(step.id)
+          .buttonStyle(BraveFilledButtonStyle(size: .large))
+          .hidden()
+      }
+      .opacity(isSplashVisible ? 0 : 1)
+      .zIndex(1)
+    }
+    .padding(layoutStyle.isInset && horizontalSizeClass == .regular ? 40 : 20)
+    .clipShape(.rect)
+  }
+
   var body: some View {
     HStack(spacing: 0) {
-      VStack(spacing: layoutStyle == .columnInset ? 40 : 20) {
-        HStack {
-          if layoutStyle.isInset {
-            HStack(spacing: 4) {
-              Image(sharedName: "brave.logo")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 56)
-                // the logo has some padding in the image itself
-                .padding(.leading, layoutStyle == .columnInset ? -8 : 0)
-              Image(sharedName: "brave.wordmark")
-                .renderingMode(.template)
-                .foregroundStyle(Color(braveSystemName: .neutral70))
-            }
+      ViewThatFits(in: .vertical) {
+        content
+        ScrollView {
+          content
+        }
+        .osAvailabilityModifiers { content in
+          if #available(iOS 16.4, *) {
+            content.scrollBounceBehavior(.basedOnSize)
           } else {
-            BraveAppIcon(
-              size: 48,
-              matchedGeometryInfo: .init(
-                namespace: namespace ?? fallbackNamespace,
-                isSource: !isSplashVisible
-              )
+            content
+          }
+        }
+      }
+      .overlay(alignment: .bottom) {
+        AnyView(step.makeActions(continueHandler: onContinue))
+          .id(step.id)
+          .buttonStyle(BraveFilledButtonStyle(size: .large))
+          .padding(layoutStyle.isInset && horizontalSizeClass == .regular ? 40 : 20)
+          .background {
+            let color =
+              layoutStyle.isInset
+              ? Color(braveSystemName: .iosBrowserElevatedIos)
+              : Color(braveSystemName: .iosBrowserChromeBackgroundIos)
+            LinearGradient(
+              stops: [
+                .init(color: color.opacity(0), location: 0),
+                .init(color: color.opacity(1), location: 0.15),
+                .init(color: color.opacity(1), location: 1),
+              ],
+              startPoint: .top,
+              endPoint: .bottom
             )
           }
-        }
-        .zIndex(2)
-        .frame(maxWidth: .infinity, alignment: layoutStyle == .columnInset ? .leading : .center)
-        VStack(spacing: layoutStyle.isInset && horizontalSizeClass == .regular ? 40 : 28) {
-          AnyView(step.makeTitle())
-            .id(step.id)
-            .frame(maxWidth: .infinity, alignment: layoutStyle == .columnInset ? .leading : .center)
-            .transition(.push(from: .trailing))
-          if layoutStyle == .columnInset {
-            Spacer()
-          } else {
-            AnyView(step.makeGraphic())
-              .frame(maxWidth: .infinity, maxHeight: .infinity)
-              .clipShape(.rect(cornerRadius: 16, style: .continuous))
-              .background(
-                Color(braveSystemName: .iosBrowserBackgroundIos)
-                  .shadow(.drop(color: Color(braveSystemName: .elevationPrimary), radius: 0, y: 1))
-                  .shadow(
-                    .drop(color: Color(braveSystemName: .elevationSecondary), radius: 4, y: 1)
-                  ),
-                in: .rect(cornerRadius: 16, style: .continuous)
-              )
-              .transition(.push(from: .trailing))
-          }
-          AnyView(step.makeActions(continueHandler: onContinue))
-            .id(step.id)
-            .buttonStyle(BraveFilledButtonStyle(size: .large))
-        }
-        .opacity(isSplashVisible ? 0 : 1)
-        .zIndex(1)
+          .opacity(isSplashVisible ? 0 : 1)
       }
-      .padding(layoutStyle.isInset && horizontalSizeClass == .regular ? 40 : 20)
-      .clipShape(.rect)
       if layoutStyle == .columnInset {
         AnyView(step.makeGraphic())
           .frame(maxHeight: .infinity)

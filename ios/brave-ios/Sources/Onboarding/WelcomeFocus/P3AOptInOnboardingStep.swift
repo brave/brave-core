@@ -20,6 +20,7 @@ struct P3AOptInGraphicsView: View {
       Image("focus-product-insight", bundle: .module)
         .resizable()
         .aspectRatio(contentMode: .fit)
+        .frame(maxHeight: 250)
       Spacer()
       Toggle(LocalizedStringKey(Strings.FocusOnboarding.p3aToggleTitle), isOn: $isP3AEnabled)
         .padding(24)
