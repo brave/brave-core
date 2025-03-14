@@ -5,6 +5,7 @@
 
 #include "brave/components/web_discovery/browser/hash_detection.h"
 
+#include <algorithm>
 #include <cmath>
 
 #include "brave/components/web_discovery/browser/hash_detection_matrix.h"
@@ -34,30 +35,28 @@ bool IsHashLikely(std::string_view value, double threshold_multiplier) {
 
   double log_prob_sum = 0.0;
   size_t add_count = 0;
-  for (size_t i = 0; i < value.length() - 1; i++) {
-    if (!std::isalnum(value[i])) {
+  for (size_t curr_char_i = 0; curr_char_i < value.length() - 1;
+       curr_char_i++) {
+    if (!std::isalnum(value[curr_char_i])) {
       continue;
     }
-    size_t next_char_i;
-    for (next_char_i = i + 1;
-         next_char_i < value.length() && !std::isalnum(value[next_char_i]);
+    for (size_t next_char_i = curr_char_i + 1; next_char_i < value.length();
          next_char_i++) {
-    }
-    if (!std::isalnum(value[next_char_i])) {
+      if (!std::isalnum(value[next_char_i])) {
+        continue;
+      }
+      // The classifier matrix needs the current and next alphanumeric
+      // characters as input.
+      auto matrix_pos_a = CharToToken(value[curr_char_i]);
+      auto matrix_pos_b = CharToToken(value[next_char_i]);
+
+      log_prob_sum += kClassifierTransitionMatrix[matrix_pos_a][matrix_pos_b];
+      add_count++;
       break;
     }
-    auto matrix_pos_a = CharToToken(value[i]);
-    auto matrix_pos_b = CharToToken(value[next_char_i]);
-
-    log_prob_sum += kClassifierTransitionMatrix[matrix_pos_a][matrix_pos_b];
-    add_count++;
   }
 
-  if (add_count == 0) {
-    return 1.0;
-  }
-
-  double prob = std::exp(log_prob_sum / add_count);
+  double prob = std::exp(log_prob_sum / std::max<size_t>(1, add_count));
   return prob < (threshold_multiplier * kClassifierThreshold);
 }
 
