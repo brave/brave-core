@@ -13,15 +13,17 @@
 
 namespace brave_ads {
 
-bool IsNewNavigation(PageTransitionType type);
+[[nodiscard]] bool IsNewNavigation(PageTransitionType type);
 
-bool DidUseBackOrFowardButtonToTriggerNavigation(PageTransitionType type);
+[[nodiscard]] bool DidUseBackOrFowardButtonToTriggerNavigation(
+    PageTransitionType type);
 
-bool DidUseAddressBarToTriggerNavigation(PageTransitionType type);
+[[nodiscard]] bool DidUseAddressBarToTriggerNavigation(PageTransitionType type);
 
-bool DidNavigateToHomePage(PageTransitionType type);
+[[nodiscard]] bool DidNavigateToHomePage(PageTransitionType type);
 
-bool DidTransitionFromExternalApplication(PageTransitionType type);
+[[nodiscard]] bool DidTransitionFromExternalApplication(
+    PageTransitionType type);
 
 std::optional<UserActivityEventType> ToUserActivityEventType(
     PageTransitionType type);

@@ -14,8 +14,8 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesRespectCap(const AdEventList& ad_events,
-                    const CreativeAdInfo& creative_ad) {
+[[nodiscard]] bool DoesRespectCap(const AdEventList& ad_events,
+                                  const CreativeAdInfo& creative_ad) {
   if (creative_ad.total_max == 0) {
     // Always respect cap if set to 0.
     return true;

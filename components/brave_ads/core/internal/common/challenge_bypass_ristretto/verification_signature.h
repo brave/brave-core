@@ -38,7 +38,7 @@ class VerificationSignature {
   bool operator==(const VerificationSignature&) const;
   bool operator!=(const VerificationSignature&) const;
 
-  bool has_value() const {
+  [[nodiscard]] bool has_value() const {
     return verification_signature_ && verification_signature_.has_value();
   }
 

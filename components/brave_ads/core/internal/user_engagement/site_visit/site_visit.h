@@ -53,7 +53,7 @@ class SiteVisit final : public BrowserManagerObserver,
 
  private:
   // Returns true if the tab is currently landing on a page.
-  bool IsLandingOnPage(int32_t tab_id) const;
+  [[nodiscard]] bool IsLandingOnPage(int32_t tab_id) const;
 
   void MaybeLandOnPage(const TabInfo& tab, int http_status_code);
   void MaybeLandOnPageAfter(const TabInfo& tab,

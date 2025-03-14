@@ -13,7 +13,7 @@ namespace brave_ads {
 
 namespace {
 
-bool IsValid(const CreativeAdVariant& creative_ad_variant) {
+[[nodiscard]] bool IsValid(const CreativeAdVariant& creative_ad_variant) {
   return absl::visit(
       base::Overloaded{
           [](const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad)

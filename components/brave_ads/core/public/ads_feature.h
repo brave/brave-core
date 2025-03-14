@@ -14,27 +14,27 @@ namespace brave_ads {
 // disabled.
 BASE_DECLARE_FEATURE(kShouldAlwaysRunBraveAdsServiceFeature);
 
-bool ShouldAlwaysRunService();
+[[nodiscard]] bool ShouldAlwaysRunService();
 
 // Set to `true` to always trigger new tab page ad events even if Brave Private
 // Ads are disabled. `ShouldAlwaysRunService()` must be set to `true`, otherwise
 // this feature param will be ignored.
 BASE_DECLARE_FEATURE(kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
-bool ShouldAlwaysTriggerNewTabPageAdEvents();
+[[nodiscard]] bool ShouldAlwaysTriggerNewTabPageAdEvents();
 
 // Set to `true` to support search result ads. `ShouldAlwaysRunService()` must
 // be set to `true`, otherwise this feature param will be ignored.
 BASE_DECLARE_FEATURE(kShouldSupportSearchResultAdsFeature);
 
-bool ShouldSupportSearchResultAds();
+[[nodiscard]] bool ShouldSupportSearchResultAds();
 
 // Set to `true` to always trigger search result ad events even if Brave Private
 // Ads are disabled. `ShouldAlwaysRunService()` must be set to `true`, otherwise
 // this feature param will be ignored.
 BASE_DECLARE_FEATURE(kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
 
-bool ShouldAlwaysTriggerSearchResultAdEvents();
+[[nodiscard]] bool ShouldAlwaysTriggerSearchResultAdEvents();
 
 }  // namespace brave_ads
 

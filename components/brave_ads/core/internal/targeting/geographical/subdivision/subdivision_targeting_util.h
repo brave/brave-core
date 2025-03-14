@@ -10,10 +10,11 @@
 
 namespace brave_ads {
 
-bool ShouldTargetSubdivisionCountryCode(const std::string& country_code);
+[[nodiscard]] bool ShouldTargetSubdivisionCountryCode(
+    const std::string& country_code);
 
-bool ShouldTargetSubdivision(const std::string& country_code,
-                             const std::string& subdivision);
+[[nodiscard]] bool ShouldTargetSubdivision(const std::string& country_code,
+                                           const std::string& subdivision);
 
 }  // namespace brave_ads
 

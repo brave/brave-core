@@ -14,12 +14,15 @@ class Time;
 
 namespace brave_ads {
 
-bool DidReconcileTransaction(const TransactionInfo& transaction);
-bool DidReconcileTransactionsPreviousMonth(const TransactionList& transactions);
-bool DidReconcileTransactionsThisMonth(const TransactionList& transactions);
-bool DidReconcileTransactionWithinDateRange(const TransactionInfo& transaction,
-                                            base::Time from_time,
-                                            base::Time to_time);
+[[nodiscard]] bool DidReconcileTransaction(const TransactionInfo& transaction);
+[[nodiscard]] bool DidReconcileTransactionsPreviousMonth(
+    const TransactionList& transactions);
+[[nodiscard]] bool DidReconcileTransactionsThisMonth(
+    const TransactionList& transactions);
+[[nodiscard]] bool DidReconcileTransactionWithinDateRange(
+    const TransactionInfo& transaction,
+    base::Time from_time,
+    base::Time to_time);
 
 }  // namespace brave_ads
 

@@ -34,9 +34,9 @@ void SetCatalogPing(base::TimeDelta ping);
 base::Time GetCatalogLastUpdated();
 void SetCatalogLastUpdated(base::Time last_updated_at);
 
-bool DoesCatalogExist();
-bool HasCatalogChanged(const std::string& catalog_id);
-bool HasCatalogExpired();
+[[nodiscard]] bool DoesCatalogExist();
+[[nodiscard]] bool HasCatalogChanged(const std::string& catalog_id);
+[[nodiscard]] bool HasCatalogExpired();
 
 }  // namespace brave_ads
 

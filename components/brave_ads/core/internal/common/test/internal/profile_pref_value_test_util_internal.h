@@ -18,7 +18,7 @@ base::Value GetDefaultProfilePrefValue(const std::string& path);
 
 void ClearProfilePrefValue(const std::string& path);
 
-bool HasProfilePrefPathValue(const std::string& path);
+[[nodiscard]] bool HasProfilePrefPathValue(const std::string& path);
 
 }  // namespace brave_ads::test
 

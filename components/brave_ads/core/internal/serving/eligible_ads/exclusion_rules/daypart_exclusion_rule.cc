@@ -19,7 +19,7 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
+[[nodiscard]] bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
   if (creative_ad.dayparts.empty()) {
     // Always respect cap if there are no dayparts specified.
     return true;
