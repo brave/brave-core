@@ -3,37 +3,56 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 assert(!is_android)
+assert(enable_custom_background)
 
 mojom("mojom") {
   sources = [ "brave_new_tab_page.mojom" ]
+  deps = []
 }
 
 source_set("brave_new_tab_page_refresh") {
   sources = [
-    "brave_new_tab_page_data_source.cc",
-    "brave_new_tab_page_data_source.h",
-    "brave_new_tab_page_refresh_handler.cc",
-    "brave_new_tab_page_refresh_handler.h",
+    "background_facade.cc",
+    "background_facade.h",
     "brave_new_tab_page_ui.cc",
     "brave_new_tab_page_ui.h",
+    "custom_image_chooser.cc",
+    "custom_image_chooser.h",
+    "new_tab_page_handler.cc",
+    "new_tab_page_handler.h",
+    "new_tab_page_initializer.cc",
+    "new_tab_page_initializer.h",
+    "update_observer.cc",
+    "update_observer.h",
   ]
 
   deps = [
     ":mojom",
+    "//brave/browser:browser_process",
+    "//brave/browser/brave_ads",
+    "//brave/browser/misc_metrics",
+    "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
     "//brave/components/l10n/common",
+    "//brave/components/misc_metrics",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/common",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
     "//chrome/app:generated_resources",
+    "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/themes",
     "//chrome/browser/ui/webui:webui_util",
+    "//components/prefs",
     "//components/strings:components_strings",
     "//ui/base",
+    "//ui/shell_dialogs",
     "//ui/webui",
   ]
 }
