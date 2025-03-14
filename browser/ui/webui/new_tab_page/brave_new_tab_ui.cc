@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/brave_browser_process.h"
@@ -56,10 +57,18 @@ using ntp_background_images::NTPCustomImagesSource;
 namespace {
 
 std::string GetSearchWidgetDefaultHost(PrefService* local_state) {
-  if (brave_l10n::GetCountryCode(local_state) == "JP") {
-    return "search.yahoo.co.jp";
+  constexpr char kBraveSearchHost[] = "search.brave.com";
+  constexpr char kYahooSearchHost[] = "search.yahoo.co.jp";
+  if (!local_state) {
+    CHECK_IS_TEST();
+    return kBraveSearchHost;
   }
-  return "search.brave.com";
+
+  if (brave_l10n::GetCountryCode(local_state) == "JP") {
+    return kYahooSearchHost;
+  }
+
+  return kBraveSearchHost;
 }
 
 }  // namespace
