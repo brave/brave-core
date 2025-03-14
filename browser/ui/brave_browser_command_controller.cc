@@ -12,6 +12,8 @@
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
+#include "brave/browser/brave_screenshots/brave_screenshots_tab_feature.h"
+#include "brave/browser/brave_screenshots/features.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -320,6 +322,16 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
       browser_->is_type_normal()) {
     UpdateCommandForSplitView();
+  }
+
+  if (brave_screenshots::features::IsBraveScreenshotsEnabled()) {
+    UpdateCommandEnabled(IDC_BRAVE_SCREENSHOT_TOOLS, true);
+    UpdateCommandEnabled(IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD,
+                         true);
+    UpdateCommandEnabled(IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD,
+                         true);
+    UpdateCommandEnabled(IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD,
+                         true);
   }
 }
 
@@ -709,6 +721,12 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SWAP_SPLIT_VIEW:
       brave::SwapTabsInTile(&*browser_);
+      break;
+    case IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD:
+    case IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD:
+    case IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD:
+      brave::TakeScreenshot(browser_->tab_strip_model()->GetActiveWebContents(),
+                            id);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
