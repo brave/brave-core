@@ -133,6 +133,12 @@
             android:title="@string/settings_webrtc_policy_label"
             android:persistent="false"/>
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="incognito_screenshot"
+            android:order="25"
+            android:title="@string/private_tab_screenshot_title"
+            android:summary="@string/private_tab_screenshot_summary"
+            android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="close_tabs_on_exit"
             android:order="25"
             defaultValue="false"
