@@ -149,6 +149,11 @@ public class SearchEngines {
   func updateDefaultEngine(_ engine: String, forType type: DefaultEngineType) {
     let originalEngine = defaultEngine(forType: type)
     type.option.value = engine
+    if type == .standard {
+      Preferences.Search.userPickedDSEName.value = engine
+    } else {
+      Preferences.Search.userPickedPrivateDSEName.value = engine
+    }
 
     // The default engine is always enabled.
     guard let newDefaultEngine = defaultEngine(forType: type) else {
@@ -472,6 +477,7 @@ public class SearchEngines {
     case braveSearch = 8
     case naver = 9
     case daum = 10
+    case yahoojp = 11
 
     init(engine: OpenSearchEngine) {
       guard
@@ -493,6 +499,7 @@ public class SearchEngines {
       case .braveSearch: self = .braveSearch
       case .naver: self = .naver
       case .daum: self = .daum
+      case .yahoojp: self = .yahoojp
       }
     }
   }
