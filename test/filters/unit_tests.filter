@@ -88,6 +88,7 @@
 -AIRewriterTest.*
 -AISummarizerTest.*
 -AIWriterTest.*
+-All/AILanguageModelHackyPrototypeTest.Basic/IsModelStreaming*
 -All/AILanguageModelTest.*
 -All/AILanguageModelVisionTest.*
 -ChangeFormSubmissionVerifierTest.*
@@ -551,7 +552,14 @@
 
 # This test fails because we block installation of Probabilistic Reveal Token
 # component installation.
--ProbabilisticRevealTokenComponentInstallerTest.ComponentRegistration
+-ProbabilisticRevealTokenComponentInstallerTest.*
+
+# These tests are disabled because we don't show the default browser prompt item
+# in the Hamburger menu
+-AppMenuModelTest.DefaultBrowserPrompt
+-DefaultBrowserPromptManagerTest.AppMenuItemHiddenOnPromptAccept
+-DefaultBrowserPromptManagerTest.AppMenuItemPersistsOnPromptDismissed
+-DefaultBrowserPromptManagerTest.ShowsAppMenuItem
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -581,7 +589,7 @@
 -ChromeWebContentsViewDelegateViewsTest.*
 -ClearBrowsingDataHandlerUnitTest.*
 -ClickToCallUtilsTest.TelLink*
--CloudBinaryUploadServiceTest.DeepScanESBEnabledEnhancedProtectionMalwareRequestAuthorized/*
+-CloudBinaryUploadServiceTest.DeepScanESBEnabledEnhancedProtectionMalwareRequestAuthorized
 -ConfigParserTest.*
 -CountingPolicyTest.*
 -CWSInfoServiceTest.IgnoresNonCWSExtensions

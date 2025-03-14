@@ -24,7 +24,7 @@ BraveSidePanelViewBase::BraveSidePanelViewBase() {
   // we can set `true` here.
   SidePanelUtil::GetSidePanelContentProxy(this)->SetAvailable(false);
   SetBackground(
-      views::CreateThemedSolidBackground(kColorSidebarPanelHeaderBackground));
+      views::CreateSolidBackground(kColorSidebarPanelHeaderBackground));
 }
 
 BraveSidePanelViewBase::~BraveSidePanelViewBase() = default;

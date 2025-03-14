@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 2038b7aebd65f6973424844ff1971c563294556f..5d4c40455312dea8c60dfab3c1ba03dd510886ad 100755
+index 09c528257d342f0726b63e24207f0e98402e81ab..7417090166b3b7defd282791704d3d6a2480109c 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -22,7 +22,7 @@ gen_changelog() {
@@ -29,7 +29,7 @@ index 2038b7aebd65f6973424844ff1971c563294556f..5d4c40455312dea8c60dfab3c1ba03dd
  }
  
  # Put the package contents in the staging area.
-@@ -86,6 +86,7 @@ stage_install_debian() {
+@@ -90,6 +90,7 @@ stage_install_debian() {
    process_template "${OUTPUTDIR}/installer/debian/postrm" \
      "${STAGEDIR}/DEBIAN/postrm"
    chmod 755 "${STAGEDIR}/DEBIAN/postrm"
@@ -37,7 +37,7 @@ index 2038b7aebd65f6973424844ff1971c563294556f..5d4c40455312dea8c60dfab3c1ba03dd
  }
  
  verify_package() {
-@@ -93,7 +94,7 @@ verify_package() {
+@@ -97,7 +98,7 @@ verify_package() {
    local EXPECTED_DEPENDS="${TMPFILEDIR}/expected_deb_depends"
    local ACTUAL_DEPENDS="${TMPFILEDIR}/actual_deb_depends"
    echo ${DEPENDS} | sed 's/, /\n/g' | LANG=C sort > "${EXPECTED_DEPENDS}"
@@ -46,7 +46,7 @@ index 2038b7aebd65f6973424844ff1971c563294556f..5d4c40455312dea8c60dfab3c1ba03dd
        grep '^ Depends: ' | sed 's/^ Depends: //' | sed 's/, /\n/g' | \
        LANG=C sort > "${ACTUAL_DEPENDS}"
    BAD_DIFF=0
-@@ -119,7 +120,7 @@ do_package() {
+@@ -123,7 +124,7 @@ do_package() {
      gen_control
    fi
    log_cmd fakeroot dpkg-deb -Znone -b "${STAGEDIR}" "${TMPFILEDIR}"
@@ -55,7 +55,7 @@ index 2038b7aebd65f6973424844ff1971c563294556f..5d4c40455312dea8c60dfab3c1ba03dd
    if [ ${IS_OFFICIAL_BUILD} -ne 0 ]; then
      (cd "${TMPFILEDIR}" && ar -x "${TMPFILEDIR}/${PACKAGEFILE}")
      xz -z9 -T0 --lzma2='dict=256MiB' "${TMPFILEDIR}/data.tar"
-@@ -165,8 +166,11 @@ verify_channel() {
+@@ -169,8 +170,11 @@ verify_channel() {
        ;;
      dev|unstable|alpha )
        CHANNEL=unstable
@@ -67,7 +67,7 @@ index 2038b7aebd65f6973424844ff1971c563294556f..5d4c40455312dea8c60dfab3c1ba03dd
      # Canary is released twice a day automatically, so no release notes
      # attached.
      canary )
-@@ -180,6 +184,7 @@ verify_channel() {
+@@ -184,6 +188,7 @@ verify_channel() {
        exit 1
        ;;
    esac
@@ -75,7 +75,7 @@ index 2038b7aebd65f6973424844ff1971c563294556f..5d4c40455312dea8c60dfab3c1ba03dd
  }
  
  process_opts() {
-@@ -258,6 +263,16 @@ else
+@@ -262,6 +267,16 @@ else
  fi
  eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/\1='\2'/" \
    "${OUTPUTDIR}/installer/theme/BRANDING")
@@ -92,7 +92,7 @@ index 2038b7aebd65f6973424844ff1971c563294556f..5d4c40455312dea8c60dfab3c1ba03dd
  
  verify_channel
  
-@@ -269,6 +284,8 @@ export ARCHITECTURE="${ARCHITECTURE}"
+@@ -273,6 +288,8 @@ export ARCHITECTURE="${ARCHITECTURE}"
  DEB_COMMON_DEPS="${OUTPUTDIR}/deb_common.deps"
  COMMON_DEPS=$(sed ':a;N;$!ba;s/\n/, /g' "${DEB_COMMON_DEPS}")
  COMMON_PREDEPS="dpkg (>= 1.14.0)"

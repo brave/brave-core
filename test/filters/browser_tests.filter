@@ -121,6 +121,7 @@
 -All/ContextMenuBrowserTest.ShowToastOnSidePanelContextMenus/LinkPreviewEnabled
 -ReadAnythingAppControllerScreen2xDataCollectionModeTest.*
 -ReadAnythingAppControllerTest.*
+-ReadAnythingAppModelNoInitTest.IsDocs_FalseBeforeTreeInitialization
 -ReadAnythingAppModelTest.*
 -ReadAnythingReadAloudAppModelTest.*
 -SidePanelCoordinatorTest.ReadAnythingSidePanelWidthNotCappedAtTwoThirds
@@ -178,8 +179,6 @@
 -SerialBlocklistTest.*
 -SerialTest.*
 -WebAppFileHandlingBrowserTest.*
--WebBluetoothPolicyTest.*
--WebBluetoothTest.*
 -WebViewUsbTest.*
 -WithOverrideParams/ReferrerOverrideTest.CrossOriginDowngradeNavigation/ParamCapReferrerToOriginOnCrossOrigin
 
@@ -611,7 +610,6 @@
 -DisableFeatureReduceAcceptLanguageBrowserTest.*
 -DisableReduceAcceptLanguageOTBrowserTest.*
 -SameOriginRedirectReduceAcceptLanguageOTBrowserTest.*
--SameOriginReduceAcceptLanguageBrowserTest.EmptyUserAcceptLanguage
 -SameOriginReduceAcceptLanguageDeprecationOTBrowserTest.*
 -SameOriginReduceAcceptLanguageOTBrowserTest.*
 -ThirdPartyReduceAcceptLanguageDeprecationOTBrowserTest.IframeRequests
@@ -648,6 +646,7 @@
 -BookmarkAccountStorageChangeDialogTest.Show
 -BookmarkAccountStorageMoveDialogInteractiveTest.*
 -BookmarkAccountStorageMoveDialogPixelTest.*
+-BubbleSignInPromoDelegateTest.*
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsBlockedByAsyncCheckerForChild
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsNotAccessibleForChild
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
@@ -732,6 +731,9 @@
 -UploadExtensionToAccountDialogBrowserTest.InvokeUi_LongNameExtension
 -UploadExtensionToAccountDialogBrowserTest.InvokeUi_NormalExtension
 -WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate/*
+-WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate_ExcludeListMatch/*
+-WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate_FailsWithSettingDisabled/*
+-WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate_FailsWithoutBootstrappedEnclave/*
 -WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate_FailsWithoutMatchingPassword/*
 -WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate_FailsWithSettingDisabled/*
 
@@ -762,6 +764,7 @@
 -ExtensionManagementApiTestSupervised.ParentBlockedExtensionEnable
 -ExtensionManagementApiTestSupervised.ParentPermissionGrantedForEnable
 -ExtensionManagementApiTestSupervised.ParentPermissionNotGrantedForEnable
+-SupervisedUserParentAccessViewErrorScreenUiTest.ShowAndCloseErrorScreen
 
 # These tests fail because of the following failed DCHECK in web_view_guest.cc:
 # render_frame_host->IsActive() || (content::SiteIsolationPolicy::IsSiteIsolationForGuestsEnabled() && render_frame_host->IsInLifecycleState( RenderFrameHost::LifecycleState::kPendingDeletion))
@@ -796,13 +799,24 @@
 -StorageAccessAPIAutograntsWithFedCMBrowserTest.*
 -StorageAccessAPIAutograntsWithFedCMOriginTrialBrowserTest.*
 -StorageAccessAPIAutograntsWithFedCMOriginTrialKillswitchBrowserTest.*
--StorageAccessAPIBrowserTest.Permission_Denied_WithoutInteraction/*
+-StorageAccessAPIBrowserTest.*
 -StorageAccessAPIForOriginBrowserTest.*
 -StorageAccessAPIForOriginWithFirstPartySetsBrowserTest.*
+-StorageAccessAPIForSiteExtensionBrowserTest.GrantGivesCrossSiteCookieAccess/*
+-StorageAccessAPIStorageBrowserTest.MultiTabTest/*
+-StorageAccessAPIStorageBrowserTest.NestedThirdPartyIFrameStorage/*
+-StorageAccessAPIStorageBrowserTest.ThirdPartyIFrameStorageRequestsAccess/*
+-StorageAccessAPIWindowOpenMainFrameTest.PopinRSAMainFrameTest/*
+-StorageAccessAPIWindowOpenMainFrameTest.PopupRSAMainFrameTest/*
+-StorageAccessAPIWindowOpenSubFrameTest.PopinRSASubFrameTest/*
 -StorageAccessAPIWith3PCEnabledBrowserTest.AllowedByUserBypass
 -StorageAccessAPIWithCHIPSBrowserTest.*
+-StorageAccessAPIWithFirstPartySetsAndImplicitGrantsBrowserTest.*
 -StorageAccessAPIWithFirstPartySetsAndPromptsBrowserTest.Permission_GrantedForServiceDomain/*
+-StorageAccessAPIWithFirstPartySetsBrowserTest.*
+-StorageAccessAPIWithImplicitGrantsBrowserTest.*
 -StorageAccessAPIWithPartitionedCookiesBrowserTest.RequestStorageAccess_CoexistsWithPartitionedCookies
+-StorageAccessAPIWithPromptsBrowserTest.*
 
 # These tests fail because they expect the record of a cookie to go to the
 # "Standard" histogram mode, but instead it goes to the "Block3PC" mode.
@@ -1188,6 +1202,11 @@
 # These tests fail because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
 -All/AvatarToolbarButtonBrowserTestWithExplicitBrowserSignin.*/*
+-All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_MemoryPressure/*
+-All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_NotLaunchProfile/*
+-All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_NotSupportedProfile/*
+-All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_Success/*
+-All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_WillBeDestroyed/*
 -All/ProfileMenuViewSignoutTestWithExplicitBrowserSigninFeature.*/*
 -AvatarToolbarButtonEnterpriseBadgingBrowserTest.GreetingNotShownWhenManagementAccepted
 -AvatarToolbarButtonEnterpriseBadgingBrowserTest.GreetingShownWhenManagementNotAccepted
@@ -1233,6 +1252,14 @@
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninSuccessful
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninWithPatternMatchingShouldFailSigninWithWrongPatternEmail
 -GaiaRemoteConsentFlowParamBrowserTest.*
+-GlicButtonTest.ContextMenuPinned
+-GlicButtonTest.ContextMenuUnpinned
+-GlicButtonTest.UnpinCommand
+-GlicEnablingTest.EnabledForProfileTest
+-GlicProfileManagerBrowserTest.ProfileForLaunch_BasedOnActivationOrder
+-GlicProfileManagerBrowserTest.ProfileForLaunch_WithDetachedGlic
+-GlicProfileManagerBrowserTest.SetActiveGlic_DifferentProfiles
+-GlicProfileManagerBrowserTest.SetActiveGlic_SameProfile
 -GraduatedComposeEnablingBrowserTest.GraduatedCompose
 -IOSPromosUtilsTest.InvokeUi_addresses
 -IOSPromosUtilsTest.InvokeUi_passwords
@@ -1790,6 +1817,7 @@
 
 # These tests fail because we disable features::kControlledFrame
 -ControlledFrameApiTest.*
+-ControlledFrameAvailabilityAdminPolicyTest.VerifyPolicy/*
 -ControlledFrameAvailabilityTest.Verify/*
 -ControlledFrameAvailableChannels/*
 -ControlledFrameContextMenusTest.*
@@ -1884,7 +1912,6 @@
 # These tests fail because we disable kPermissionStorageAccessAPI
 -StorageAccessAPIAutograntsWithFedCMBrowserTest.FedCMGrantsAllowCookieAccess*
 -StorageAccessAPIAutograntsWithFedCMBrowserTest.FedCMGrants_RequiresPermissionPolicy
--StorageAccessAPIBrowserTest.*
 -StorageAccessHeadersBrowserTest.LoadHeader*
 -StorageAccessHeadersBrowserTest.RetryHeader*
 -StorageAccessHeadersBrowserTest.TopFrameRedirectToFirstPartyPage
@@ -2058,6 +2085,10 @@
 # These tests fail because we disable kSideBySide
 -MultiContentsViewBrowserTest.*
 
+# These tests fail because we disable MV2 deprecation and disablement
+-ManifestV2ExperimentManagerBrowserTest.*
+-ManifestV2ExperimentWithLegacyExtensionSupportTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
@@ -2142,6 +2173,7 @@
 -ChromeRenderProcessHostTestWithCommandLine.*
 -ChromeSignInWebViewTest.ClosingChromeSignInShouldNotCrash/InnerWebContents
 -ChromeSignInWebViewTest.NoFindInPageForUnattachedGuest/InnerWebContents
+-ChromeSignInWebViewTest.TestWebRequestOnlyDispatchToEmbedder/InnerWebContents
 -ChromeSitePerProcessTest.*
 -ChromeURLDataManagerTest.*
 -ChromeURLDataManagerWebUITrustedTypesTest.*
@@ -2245,8 +2277,6 @@
 -ExtensionResourceRequestPolicyTest.*
 -ExtensionsActivityLogTest.*
 -ExtensionSettingsUIBrowserTest.*
--ExtensionTabUtilBrowserTest.*
--ExtensionTagsTest.*
 -ExtensionUninstallDialogViewInteractiveBrowserTest.*
 -ExtensionURLRewriteBrowserTest.*
 -ExtensionWebRequestApiTest.*
@@ -2653,14 +2683,6 @@
 -StartupBrowserWithRealWebAppTest.*
 -StartupBrowserWithWebAppTest.*
 -StartupHelperBrowserTest.*
--StorageAccessAPIForSiteExtensionBrowserTest.GrantGivesCrossSiteCookieAccess/*
--StorageAccessAPIStorageBrowserTest.MultiTabTest/*
--StorageAccessAPIStorageBrowserTest.NestedThirdPartyIFrameStorage/*
--StorageAccessAPIStorageBrowserTest.ThirdPartyIFrameStorageRequestsAccess/*
--StorageAccessAPIWithFirstPartySetsAndImplicitGrantsBrowserTest.*
--StorageAccessAPIWithFirstPartySetsBrowserTest.*
--StorageAccessAPIWithImplicitGrantsBrowserTest.*
--StorageAccessAPIWithPromptsBrowserTest.*
 -SubframeTaskBrowserTest.*
 -SyncAwareCounterTest.*
 -SyncEncryptionKeysTabHelperBrowserTest.*
@@ -2742,6 +2764,10 @@
 -WebAppTabStripBrowserTest.ReparentingPinsHomeTab
 -WebAppTabStripBrowserTest.TabbedModeMediaCSS
 -WebAppTabStripLinkCapturingBrowserTest.*
+-WebBluetoothPolicyTest.*
+-WebBluetoothTest.*
+-WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothIdsUsedInWebBluetoothScanning
+-WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothPersistentIds
 -WebNavigationApiBackForwardCacheTest.*
 -WebRtcDesktopCaptureBrowserTest.*
 -WebrtcLoggingPrivateApiBrowserTest.*
