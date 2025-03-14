@@ -236,7 +236,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
           devtools_web_view(), contents_web_view(), contents_scrim_view(),
-          secondary_lens_overlay_view_, nullptr, watermark_view_.get(),
+          lens_overlay_view_, nullptr, watermark_view_.get(),
           reader_mode_toolbar_));
 #endif
 
