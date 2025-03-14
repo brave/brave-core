@@ -106,7 +106,6 @@ ViewCounterService::ViewCounterService(
       background_images_service_(background_images_service),
       ads_service_(ads_service),
       prefs_(prefs),
-      local_state_prefs_(local_state),
       is_supported_locale_(is_supported_locale),
       model_(prefs),
       custom_background_service_(custom_background_service),
@@ -225,7 +224,7 @@ std::optional<base::Value::Dict> ViewCounterService::GetCurrentWallpaper()
   }
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  if (ShouldShowCustomBackground()) {
+  if (ShouldShowCustomBackgroundImages()) {
     if (auto background = custom_background_service_->GetBackground();
         !background.empty()) {
       return background;
@@ -245,7 +244,7 @@ std::optional<base::Value::Dict> ViewCounterService::GetCurrentWallpaper()
 }
 
 std::optional<base::Value::Dict>
-ViewCounterService::GetCurrentBrandedWallpaper() {
+ViewCounterService::GetCurrentBrandedWallpaper() const {
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
   if (!images_data) {
     return std::nullopt;
@@ -255,7 +254,7 @@ ViewCounterService::GetCurrentBrandedWallpaper() {
     return GetCurrentBrandedWallpaperFromModel();
   }
 
-  return GetCurrentBrandedWallpaperFromAdInfo();
+  return GetCurrentBrandedWallpaperFromAdsService();
 }
 
 void ViewCounterService::GetCurrentBrandedWallpaper(
@@ -306,7 +305,7 @@ void ViewCounterService::GetCurrentBrandedWallpaper(
 }
 
 std::optional<base::Value::Dict>
-ViewCounterService::GetCurrentBrandedWallpaperFromAdInfo() const {
+ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
   DCHECK(ads_service_);
 
   const std::optional<brave_ads::NewTabPageAdInfo> ad =
@@ -320,7 +319,8 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdInfo() const {
     return std::nullopt;
   }
 
-  std::optional<base::Value::Dict> background = images_data->GetBackground(*ad);
+  std::optional<base::Value::Dict> background =
+      images_data->MaybeGetBackground(*ad);
   if (!background) {
     ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
                                                  ad->creative_instance_id);
@@ -331,12 +331,10 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdInfo() const {
 
 std::optional<base::Value::Dict>
 ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {
-  size_t current_campaign_index;
-  size_t current_creative_index;
-  std::tie(current_campaign_index, current_creative_index) =
+  const auto [campaign_index, creative_index] =
       model_.GetCurrentBrandedImageIndex();
-  return GetSponsoredImagesData()->GetBackgroundAt(current_campaign_index,
-                                                   current_creative_index);
+  return GetSponsoredImagesData()->MaybeGetBackgroundAt(campaign_index,
+                                                        creative_index);
 }
 
 std::vector<TopSite> ViewCounterService::GetTopSitesData() const {
@@ -481,7 +479,7 @@ bool ViewCounterService::ShouldShowSponsoredImages() const {
   return CanShowSponsoredImages() && model_.ShouldShowSponsoredImages();
 }
 
-bool ViewCounterService::ShouldShowCustomBackground() const {
+bool ViewCounterService::ShouldShowCustomBackgroundImages() const {
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   return custom_background_service_ &&
          custom_background_service_->ShouldShowCustomBackground();
@@ -529,7 +527,7 @@ bool ViewCounterService::CanShowBackgroundImages() const {
 #endif
 
   return !!background_images_service_->GetBackgroundImagesData() ||
-         ShouldShowCustomBackground();
+         ShouldShowCustomBackgroundImages();
 }
 
 bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {

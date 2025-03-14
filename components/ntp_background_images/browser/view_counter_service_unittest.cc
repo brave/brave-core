@@ -325,7 +325,7 @@ class ViewCounterServiceTest : public testing::Test {
     EXPECT_TRUE(view_counter_service_->CanShowBackgroundImages());
   }
 
-  brave_ads::NewTabPageAdInfo CreateNewTabPageAdInfo() {
+  brave_ads::NewTabPageAdInfo BuildNewTabPageAd() {
     brave_ads::NewTabPageAdInfo ad;
     ad.placement_id = kPlacementdId;
     ad.campaign_id = kCampaignId;
@@ -630,7 +630,7 @@ TEST_F(ViewCounterServiceTest, GetNewTabTakeoverWallpaperForRewardsUser) {
 
   MockImagesData();
 
-  brave_ads::NewTabPageAdInfo ad = CreateNewTabPageAdInfo();
+  const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
 
   const ::testing::InSequence s;
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
@@ -738,7 +738,7 @@ TEST_F(ViewCounterServiceTest, WrongSponsoredImageAdServedForRewardsUser) {
 
   MockImagesData();
 
-  brave_ads::NewTabPageAdInfo ad = CreateNewTabPageAdInfo();
+  brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
   ad.creative_instance_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
 
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
