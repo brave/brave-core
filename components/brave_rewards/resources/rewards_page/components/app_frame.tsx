@@ -87,13 +87,10 @@ function MoreMenu(props: { children: React.ReactNode }) {
   const { getString } = useLocaleContext()
   const tabOpener = React.useContext(TabOpenerContext)
   const eventHub = React.useContext(EventHubContext)
-  const isBubble = useAppState((state) => state.embedder.isBubble)
+  const embedder = useAppState((state) => state.embedder)
+  const hideReset = embedder.isBubble && embedder.platform === 'desktop'
 
   function onReset() {
-    if (isBubble) {
-      tabOpener.openTab(urls.resetURL)
-      return
-    }
     eventHub.dispatch('open-modal', 'reset')
   }
 
@@ -111,7 +108,7 @@ function MoreMenu(props: { children: React.ReactNode }) {
         <span>{getString('helpButtonLabel')}</span>
       </leo-menu-item>
       {
-        !isBubble &&
+        !hideReset &&
           <leo-menu-item class='reset' onClick={onReset}>
             <Icon name='history' />
             <span>{getString('resetRewardsButtonLabel')}</span>
@@ -128,6 +125,7 @@ interface Props {
 function PanelFrame(props: Props) {
   const tabOpener = React.useContext(TabOpenerContext)
   const { getString } = useLocaleContext()
+  const embedder = useAppState((state) => state.embedder)
   const [isScrolled, setIsScrolled] = React.useState(false)
 
   function onExpand() {
@@ -146,9 +144,12 @@ function PanelFrame(props: Props) {
   return (
     <div className='panel-frame' {...style}>
       <header className={isScrolled ? 'overlapped' : ''}>
-        <button className='expand-button' onClick={onExpand}>
-          <Icon name='expand' />
-        </button>
+        {
+          embedder.platform === 'desktop' && embedder.isBubble &&
+            <button className='expand-button' onClick={onExpand}>
+              <Icon name='expand' />
+            </button>
+        }
         <h4>{getString('rewardsPageTitle')}</h4>
         <MoreMenu><Icon name='more-vertical' /></MoreMenu>
       </header>
