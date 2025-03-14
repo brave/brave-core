@@ -55,13 +55,6 @@ export const AssetNetwork = styled.span`
   text-overflow: ellipsis;
 `
 
-export const AssetPrice = styled.span`
-  display: flex;
-  color: ${color.text.primary};
-  font: ${font.default.regular};
-  text-transform: uppercase;
-`
-
 export const Loader = styled(ProgressRing)`
   --leo-progressring-size: 22px;
 `

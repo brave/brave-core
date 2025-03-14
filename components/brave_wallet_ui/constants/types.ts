@@ -16,10 +16,10 @@ import {
 // path of generated mojom files.
 export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
+import * as MeldTypes from 'gen/brave/components/brave_wallet/common/meld_integration.mojom.m.js'
 export {
   MeldFiatCurrency,
   MeldFilter,
-  MeldCryptoCurrency,
   MeldCountry,
   MeldCryptoQuote,
   MeldServiceProvider,
@@ -1120,4 +1120,8 @@ export type zcashAddressTypes = 'unified' | 'shielded' | 'transparent'
 export type zcashAddressOptionType = {
   addressType: zcashAddressTypes
   label: string
+}
+
+export type MeldCryptoCurrency = MeldTypes.MeldCryptoCurrency & {
+  coingeckoId?: string
 }
