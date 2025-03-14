@@ -11,10 +11,9 @@
 
 #include "base/test/bind.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
-#include "brave/components/brave_rewards/core/mojom/rewards_engine.mojom-test-utils.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
@@ -55,8 +54,7 @@ TEST_F(RewardsWalletTest, GetWallet) {
 
   // When there is no current wallet information, `GetWallet` returns empty and
   // sets the corrupted flag to false.
-  mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
-      state::kWalletBrave, "");
+  engine().Get<RewardsPrefs>().SetString(prefs::kWalletBrave, "");
   corrupted = true;
   mojom::RewardsWalletPtr wallet = engine().wallet()->GetWallet(&corrupted);
   EXPECT_FALSE(wallet);
@@ -64,20 +62,17 @@ TEST_F(RewardsWalletTest, GetWallet) {
 
   // When there is invalid wallet information, `GetWallet` returns empty, sets
   // the corrupted flag to true, and does not modify prefs.
-  mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
-      state::kWalletBrave, "BAD-DATA");
+  engine().Get<RewardsPrefs>().SetString(prefs::kWalletBrave, "BAD-DATA");
   wallet = engine().wallet()->GetWallet(&corrupted);
   EXPECT_FALSE(wallet);
   EXPECT_TRUE(corrupted);
-  EXPECT_EQ(mojom::RewardsEngineClientAsyncWaiter(&client()).GetStringState(
-                state::kWalletBrave),
+  EXPECT_EQ(engine().Get<RewardsPrefs>().GetString(prefs::kWalletBrave),
             "BAD-DATA");
 }
 
 TEST_F(RewardsWalletTest, CreateWallet) {
   // Create a wallet when there is no current wallet information.
-  mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
-      state::kWalletBrave, "");
+  engine().Get<RewardsPrefs>().SetString(prefs::kWalletBrave, "");
   mojom::CreateRewardsWalletResult result = CreateWalletIfNecessary();
   EXPECT_EQ(result, mojom::CreateRewardsWalletResult::kSuccess);
   mojom::RewardsWalletPtr wallet = engine().wallet()->GetWallet();
@@ -86,8 +81,7 @@ TEST_F(RewardsWalletTest, CreateWallet) {
   EXPECT_TRUE(!wallet->recovery_seed.empty());
 
   // Create a wallet when there is corrupted wallet information.
-  mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
-      state::kWalletBrave, "BAD-DATA");
+  engine().Get<RewardsPrefs>().SetString(prefs::kWalletBrave, "BAD-DATA");
   result = CreateWalletIfNecessary();
   EXPECT_EQ(result, mojom::CreateRewardsWalletResult::kSuccess);
   wallet = engine().wallet()->GetWallet();

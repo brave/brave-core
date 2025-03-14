@@ -15,8 +15,8 @@
 #include "brave/components/brave_rewards/core/engine/database/database.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/logging/event_log_keys.h"
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "brave/components/brave_rewards/core/engine/util/signer.h"
 #include "brave/components/brave_rewards/core/engine/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/engine/wallet/wallet_util.h"
@@ -189,9 +189,11 @@ void SolanaWalletProvider::OnWalletLinked(const std::string& address) {
     return;
   }
 
-  engine().SetState(state::kExternalWalletType, std::string(WalletType()));
-  engine().SetState(state::kAutoContributeEnabled, false);
+  Get<RewardsPrefs>().SetString(prefs::kExternalWalletType, WalletType());
+  Get<RewardsPrefs>().SetBoolean(prefs::kAutoContributeEnabled, false);
+
   client().ExternalWalletConnected();
+
   engine().database()->SaveEventLog(
       log::kWalletVerified,
       WalletType() + std::string("/") + address.substr(0, 5));

@@ -16,14 +16,13 @@
 #include "brave/components/brave_rewards/core/engine/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/initialization_manager.h"
-#include "brave/components/brave_rewards/core/engine/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/engine/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/engine/publisher/media/media.h"
 #include "brave/components/brave_rewards/core/engine/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/engine/state/state.h"
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
+#include "brave/components/brave_rewards/core/engine/publisher/static_values.h"
 #include "brave/components/brave_rewards/core/engine/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "brave/components/brave_rewards/core/engine/util/signer.h"
 #include "brave/components/brave_rewards/core/engine/util/time_util.h"
 #include "brave/components/brave_rewards/core/engine/util/url_loader.h"
@@ -44,7 +43,6 @@ RewardsEngine::RewardsEngine(
       contribution_(std::make_unique<contribution::Contribution>(*this)),
       wallet_(std::make_unique<wallet::Wallet>(*this)),
       database_(std::make_unique<database::Database>(*this)),
-      state_(std::make_unique<state::State>(*this)),
       bitflyer_(std::make_unique<bitflyer::Bitflyer>(*this)),
       gemini_(std::make_unique<gemini::Gemini>(*this)),
       uphold_(std::make_unique<uphold::Uphold>(*this)),
@@ -95,7 +93,7 @@ void RewardsEngine::GetPublisherMinVisitTime(
     return std::move(callback).Run(0);
   }
 
-  std::move(callback).Run(state()->GetPublisherMinVisitTime());
+  std::move(callback).Run(Get<RewardsPrefs>().GetInteger(prefs::kMinVisitTime));
 }
 
 void RewardsEngine::GetPublisherMinVisits(
@@ -104,7 +102,7 @@ void RewardsEngine::GetPublisherMinVisits(
     return std::move(callback).Run(0);
   }
 
-  std::move(callback).Run(state()->GetPublisherMinVisits());
+  std::move(callback).Run(Get<RewardsPrefs>().GetInteger(prefs::kMinVisits));
 }
 
 void RewardsEngine::GetReconcileStamp(GetReconcileStampCallback callback) {
@@ -112,7 +110,7 @@ void RewardsEngine::GetReconcileStamp(GetReconcileStampCallback callback) {
     return std::move(callback).Run(0);
   }
 
-  std::move(callback).Run(state()->GetReconcileStamp());
+  std::move(callback).Run(contribution()->GetReconcileStamp());
 }
 
 void RewardsEngine::SetPublisherExclude(const std::string& publisher_key,
@@ -133,12 +131,17 @@ void RewardsEngine::RestorePublishers(RestorePublishersCallback callback) {
 
 void RewardsEngine::SetPublisherMinVisitTime(int duration_in_seconds) {
   WhenReady([this, duration_in_seconds] {
-    state()->SetPublisherMinVisitTime(duration_in_seconds);
+    Get<RewardsPrefs>().SetInteger(prefs::kMinVisitTime, duration_in_seconds);
+    publisher()->CalcScoreConsts(duration_in_seconds);
+    publisher()->SynopsisNormalizer();
   });
 }
 
 void RewardsEngine::SetPublisherMinVisits(int visits) {
-  WhenReady([this, visits] { state()->SetPublisherMinVisits(visits); });
+  WhenReady([this, visits] {
+    Get<RewardsPrefs>().SetInteger(prefs::kMinVisits, visits);
+    publisher()->SynopsisNormalizer();
+  });
 }
 
 void RewardsEngine::GetBalanceReport(mojom::ActivityMonth month,
@@ -188,7 +191,7 @@ void RewardsEngine::GetCreationStamp(GetCreationStampCallback callback) {
     return std::move(callback).Run(0);
   }
 
-  std::move(callback).Run(state()->GetCreationStamp());
+  std::move(callback).Run(Get<RewardsPrefs>().GetUint64(prefs::kCreationStamp));
 }
 
 void RewardsEngine::GetRewardsInternalsInfo(
@@ -207,7 +210,7 @@ void RewardsEngine::GetRewardsInternalsInfo(
     info->payment_id = rewards_wallet->payment_id;
 
     // Retrieve the boot stamp.
-    info->boot_stamp = state()->GetCreationStamp();
+    info->boot_stamp = Get<RewardsPrefs>().GetUint64(prefs::kCreationStamp);
 
     // Retrieve the key info seed and validate it.
     if (Signer::FromRecoverySeed(rewards_wallet->recovery_seed)) {
@@ -356,7 +359,8 @@ void RewardsEngine::FetchBalance(FetchBalanceCallback callback) {
 void RewardsEngine::GetExternalWallet(GetExternalWalletCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
     mojom::ExternalWalletPtr wallet;
-    auto wallet_type = GetState<std::string>(state::kExternalWalletType);
+    auto wallet_type =
+        Get<RewardsPrefs>().GetString(prefs::kExternalWalletType);
     if (auto* provider = GetExternalWalletProvider(wallet_type)) {
       wallet = provider->GetWallet();
       if (wallet && (wallet->status == mojom::WalletStatus::kNotConnected)) {
@@ -428,26 +432,6 @@ void RewardsEngine::GetRewardsWallet(GetRewardsWalletCallback callback) {
 }
 // mojom::RewardsEngine implementation end
 
-// mojom::RewardsEngineClient helpers begin (in the order of appearance in
-// Mojom)
-std::string RewardsEngine::GetClientCountryCode() {
-  std::string country_code;
-  client_->GetClientCountryCode(&country_code);
-  return country_code;
-}
-
-std::string RewardsEngine::GetLegacyWallet() {
-  std::string wallet;
-  client_->GetLegacyWallet(&wallet);
-  return wallet;
-}
-
-mojom::ClientInfoPtr RewardsEngine::GetClientInfo() {
-  auto info = mojom::ClientInfo::New();
-  client_->GetClientInfo(&info);
-  return info;
-}
-
 RewardsLogStream RewardsEngine::Log(base::Location location) {
   return RewardsLogStream(*client_, location, 1);
 }
@@ -455,21 +439,6 @@ RewardsLogStream RewardsEngine::Log(base::Location location) {
 RewardsLogStream RewardsEngine::LogError(base::Location location) {
   return RewardsLogStream(*client_, location, 0);
 }
-
-std::optional<std::string> RewardsEngine::EncryptString(
-    const std::string& value) {
-  std::optional<std::string> result;
-  client_->EncryptString(value, &result);
-  return result;
-}
-
-std::optional<std::string> RewardsEngine::DecryptString(
-    const std::string& value) {
-  std::optional<std::string> result;
-  client_->DecryptString(value, &result);
-  return result;
-}
-// mojom::RewardsEngineClient helpers end
 
 base::WeakPtr<RewardsEngine> RewardsEngine::GetWeakPtr() {
   return weak_factory_.GetWeakPtr();

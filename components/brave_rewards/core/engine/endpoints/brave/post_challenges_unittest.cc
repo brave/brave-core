@@ -8,9 +8,9 @@
 #include <string>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=RewardsPostChallengesTest*
@@ -24,7 +24,8 @@ class RewardsPostChallengesTest : public RewardsEngineTest {
           "payment_id": "fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
           "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
         })";
-    engine().SetState(state::kWalletBrave, std::move(json));
+    engine().Get<RewardsPrefs>().SetString(prefs::kWalletBrave,
+                                           std::move(json));
   }
 
   PostChallenges::Result SendRequest(mojom::UrlResponsePtr response) {
@@ -44,7 +45,7 @@ class RewardsPostChallengesTest : public RewardsEngineTest {
 };
 
 TEST_F(RewardsPostChallengesTest, UnableToCreateRequest) {
-  engine().SetState(state::kWalletBrave, std::string(""));
+  engine().Get<RewardsPrefs>().SetString(prefs::kWalletBrave, "");
   auto result = SendRequest(mojom::UrlResponse::New());
   EXPECT_EQ(result,
             base::unexpected(PostChallenges::Error::kFailedToCreateRequest));

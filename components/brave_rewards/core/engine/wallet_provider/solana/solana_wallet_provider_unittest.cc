@@ -9,9 +9,9 @@
 #include <tuple>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
+#include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::wallet_provider {
@@ -23,7 +23,8 @@ class RewardsSolanaWalletProviderTest : public RewardsEngineTest {
           "payment_id": "fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
           "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
         })";
-    engine().SetState(state::kWalletBrave, std::move(json));
+    engine().Get<RewardsPrefs>().SetString(prefs::kWalletBrave,
+                                           std::move(json));
     InitializeEngine();
   }
 

@@ -9,7 +9,6 @@
 
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
-#include "brave/components/brave_rewards/core/engine/state/state_keys.h"
 
 namespace brave_rewards::internal::database {
 
