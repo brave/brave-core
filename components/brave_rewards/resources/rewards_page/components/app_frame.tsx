@@ -33,6 +33,18 @@ function getCurrentNavRoute(route: string) {
   return routes.home
 }
 
+function scrollRouteContentIntoView(route: string) {
+  const elem = document.querySelector(`[data-app-route="${route}"]`)
+  if (!(elem instanceof HTMLElement) || !elem.offsetParent) {
+    return
+  }
+  elem.offsetParent.scrollTo({
+    top: elem.offsetTop - 16,
+    left: 0,
+    behavior: 'smooth'
+  })
+}
+
 function NavList() {
   const { getString } = useLocaleContext()
   const current = getCurrentNavRoute(useRoute())
@@ -40,7 +52,11 @@ function NavList() {
 
   function onLinkClick(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault()
-    router.setRoute(event.currentTarget.getAttribute('href') ?? '')
+    const route = event.currentTarget.getAttribute('href')
+    if (route) {
+      router.setRoute(route)
+      scrollRouteContentIntoView(route)
+    }
   }
 
   function renderLink(route: string, icon: string, text: string) {
@@ -195,6 +211,11 @@ function PageFrame(props: Props) {
 
 export function AppFrame(props: Props) {
   const viewType = useBreakpoint()
+  const route = useRoute()
+
+  React.useEffect(() => {
+    scrollRouteContentIntoView(route)
+  }, [])
 
   if (viewType === 'narrow') {
     return <PanelFrame {...props} />

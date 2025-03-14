@@ -49,6 +49,10 @@ export const style = scoped.css`
     }
   }
 
+  h3 {
+    padding: 8px;
+  }
+
   h4 {
     padding: 16px;
     display: flex;

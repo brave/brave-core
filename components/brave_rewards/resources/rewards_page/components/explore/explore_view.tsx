@@ -6,6 +6,7 @@
 import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 
+import { useLocaleContext } from '../../lib/locale_strings'
 import { useAppState } from '../../lib/app_model_context'
 import { useBreakpoint } from '../../lib/breakpoint'
 import { BatUtilityCard } from './bat_utility_card'
@@ -15,6 +16,7 @@ import { MerchStoreCard } from './merch_store_card'
 import { style } from './explore_view.style'
 
 export function ExploreView() {
+  const { getString } = useLocaleContext()
   const viewType = useBreakpoint()
   const [cards] = useAppState((state) => [state.cards])
 
@@ -31,6 +33,7 @@ export function ExploreView() {
   if (viewType === 'double') {
     return (
       <div {...style}>
+        <h3>{getString('navigationExploreLabel')}</h3>
         <div className='columns'>
           <div>
             <MerchStoreCard />
@@ -46,6 +49,7 @@ export function ExploreView() {
 
   return (
     <div {...style}>
+      <h3>{getString('navigationExploreLabel')}</h3>
       <MerchStoreCard />
       <BatUtilityCard />
       <CommunityCard />
