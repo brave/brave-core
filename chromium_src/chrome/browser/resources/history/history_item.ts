@@ -3,23 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { RegisterStyleOverride } from 'chrome://resources/brave/polymer_overriding.js'
-import { html } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {injectStyle} from '//resources/brave/lit_overriding.js'
+import {css} from '//resources/lit/v3_0/lit.rollup.js'
 
-RegisterStyleOverride(
-  'history-item',
-  html`
-    <style>
-      .website-title {
-        font-size: 13px;
-        font-weight: 400;
-      }
+import {HistoryItemElement} from './history_item-chromium.js'
 
-      #menu-button {
-        transform: rotate(90deg) !important;
+injectStyle(HistoryItemElement, css`
+  #progress {
+      --cr-progress-active-color: var(--leo-color-icon-interactive) !important;
+  }
+  @media (prefers-color-scheme: light) {
+      #content:not(.is-active) {
+          /* Color for "filled cards" */
+          background-color: var(--leo-color-container-highlight) !important;
       }
-    </style>
-  `
-)
+  }
+`)
 
 export * from './history_item-chromium.js'
