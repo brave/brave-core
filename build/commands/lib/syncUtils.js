@@ -78,22 +78,34 @@ function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
   const chromiumRef = expectedSyncInfo.chromiumRef
   const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
   const targetSHA = util.runGit(config.srcDir, ['rev-parse', chromiumRef], true)
-  const needsUpdate =
-    targetSHA !== headSHA ||
-    (!headSHA && !targetSHA) ||
-    JSON.stringify(latestSyncInfo) !== JSON.stringify(expectedSyncInfo)
+  let needsUpdate = false
+  let updateReason = ''
+  if (targetSHA !== headSHA) {
+    needsUpdate = true
+    updateReason = 'a different target commit'
+  }
+  if (!headSHA && !targetSHA) {
+    needsUpdate = true
+    updateReason = 'missing commit information'
+  }
+  if (JSON.stringify(latestSyncInfo) !== JSON.stringify(expectedSyncInfo)) {
+    needsUpdate = true
+    updateReason = `differences with the expected sync metadata of: ${
+      JSON.stringify(expectedSyncInfo, null, 4)}`
+  }
+
   if (needsUpdate) {
     const currentRef = util.getGitReadableLocalRef(config.srcDir)
     console.log(
       `Chromium repo ${chalk.blue.bold(
-        'needs sync'
-      )}.\n  target is ${chalk.italic(chromiumRef)} at commit ${
+        `needs sync due to ${chalk.italic(updateReason)}`
+      )}.\n - target is ${chalk.italic(chromiumRef)} at commit ${
         targetSHA || '[missing]'
-      }\n  current commit is ${chalk.italic(
+      }\n - current commit is ${chalk.italic(
         currentRef || '[unknown]'
       )} at commit ${chalk.inverse(
         headSHA || '[missing]'
-      )}\n  latest successful sync is ${JSON.stringify(
+      )}\n - last successful sync metadata is ${JSON.stringify(
         latestSyncInfo,
         null,
         4
