@@ -49,7 +49,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
-    guard let currentTabURL = tab.webView?.url else {
+    guard let currentTabURL = tab.url else {
       assertionFailure("Should have a tab set")
       return
     }

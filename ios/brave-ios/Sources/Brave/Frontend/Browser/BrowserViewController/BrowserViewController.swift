@@ -503,14 +503,13 @@ public class BrowserViewController: UIViewController {
       queue: .main
     ) { [weak self] _ in
       self?.tabManager.allTabs.forEach({
-        guard let url = $0.webView?.url else { return }
+        guard let url = $0.url else { return }
         let zoomLevel =
           self?.privateBrowsingManager.isPrivateBrowsing == true
           ? 1.0
           : Domain.getPersistedDomain(for: url)?.zoom_level?.doubleValue
             ?? Preferences.General.defaultPageZoomLevel.value
-
-        $0.webView?.setValue(zoomLevel, forKey: PageZoomHandler.propertyName)
+        $0.pageZoomLevel = zoomLevel
       })
     }
 
@@ -1212,7 +1211,7 @@ public class BrowserViewController: UIViewController {
 
   override public func becomeFirstResponder() -> Bool {
     // Make the web view the first responder so that it can show the selection menu.
-    return tabManager.selectedTab?.webView?.becomeFirstResponder() ?? false
+    return tabManager.selectedTab?.webContentView?.becomeFirstResponder() ?? false
   }
 
   override public func viewWillAppear(_ animated: Bool) {
@@ -1743,10 +1742,10 @@ public class BrowserViewController: UIViewController {
       // Disable any sort of privileged execution contexts
       // IE: The user must explicitly tap a bookmark they have saved.
       // Block all other contexts such as redirects, downloads, embed, linked, etc..
-      if isUserDefinedURLNavigation, let webView = tab.webView,
+      if isUserDefinedURLNavigation,
         let code = url.bookmarkletCodeComponent
       {
-        webView.evaluateSafeJavaScript(
+        tab.evaluateSafeJavaScript(
           functionName: code,
           contentWorld: .page,
           asFunction: false
@@ -1789,7 +1788,7 @@ public class BrowserViewController: UIViewController {
       as? Web3NameServiceScriptHandler
     scriptHandler?.originalURL = originalURL
 
-    tab.webView?.load(PrivilegedRequest(url: internalUrl) as URLRequest)
+    tab.loadRequest(PrivilegedRequest(url: internalUrl) as URLRequest)
   }
 
   override public func accessibilityPerformEscape() -> Bool {
@@ -1805,17 +1804,15 @@ public class BrowserViewController: UIViewController {
   }
 
   func updateBackForwardActionStatus(for tab: Tab) {
-    guard let webView = tab.webView else { return }
-
-    if let forwardListItem = webView.backForwardList.forwardList.first,
+    if let forwardListItem = tab.backForwardList.forwardList.first,
       forwardListItem.url.isInternalURL(for: .readermode)
     {
       navigationToolbar.updateForwardStatus(false)
     } else {
-      navigationToolbar.updateForwardStatus(webView.canGoForward)
+      navigationToolbar.updateForwardStatus(tab.canGoForward)
     }
 
-    navigationToolbar.updateBackStatus(webView.canGoBack)
+    navigationToolbar.updateBackStatus(tab.canGoBack)
   }
 
   func updateUIForReaderHomeStateForTab(_ tab: Tab) {
@@ -2084,14 +2081,14 @@ public class BrowserViewController: UIViewController {
       let zoomLevel =
         privateBrowsingManager.isPrivateBrowsing
         ? 1.0 : domain?.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
-      tab.webView?.setValue(zoomLevel, forKey: PageZoomHandler.propertyName)
+      tab.pageZoomLevel = zoomLevel
     }
   }
 
   public override var preferredStatusBarStyle: UIStatusBarStyle {
     if isUsingBottomBar, let tab = tabManager.selectedTab,
       tab.url.map(InternalURL.isValid) == false,
-      let color = tab.webView?.sampledPageTopColor
+      let color = tab.sampledPageTopColor
     {
       return color.isLight ? .darkContent : .lightContent
     }
@@ -2102,7 +2099,7 @@ public class BrowserViewController: UIViewController {
     defer { setNeedsStatusBarAppearanceUpdate() }
     guard isUsingBottomBar, let tab = tabManager.selectedTab,
       tab.url.map(InternalURL.isValid) == false,
-      let color = tab.webView?.sampledPageTopColor
+      let color = tab.sampledPageTopColor
     else {
       statusBarOverlay.backgroundColor = privateBrowsingManager.browserColors.chromeBackground
       return
@@ -2113,12 +2110,7 @@ public class BrowserViewController: UIViewController {
   func navigateInTab(tab: Tab) {
     tabManager.expireSnackbars()
 
-    guard let webView = tab.webView else {
-      print("Cannot navigate in tab without a webView")
-      return
-    }
-
-    if let url = webView.url {
+    if let url = tab.url {
       // Whether to show search icon or + icon
       toolbar?.setSearchButtonState(url: url)
 
@@ -2127,7 +2119,7 @@ public class BrowserViewController: UIViewController {
         // because that event will not always fire due to unreliable page caching. This will either let us know that
         // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
         // ignore the result because we are being called back asynchronous when the readermode status changes.
-        webView.evaluateSafeJavaScript(
+        tab.evaluateSafeJavaScript(
           functionName: "\(readerModeNamespace).checkReadability",
           contentWorld: ReaderModeScriptHandler.scriptSandbox
         )
@@ -2161,7 +2153,7 @@ public class BrowserViewController: UIViewController {
       DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
         self.screenshotHelper.takeScreenshot(tab)
       }
-    } else if let webView = tab.webView {
+    } else if let webView = tab.webContentView {
       // Ref #2016: Keyboard auto hides while typing
       // For some reason the web view will steal first responder as soon
       // as its added to the view heirarchy below. This line fixes that...
@@ -2231,8 +2223,7 @@ public class BrowserViewController: UIViewController {
   ) {
     guard
       let tab = tabManager.selectedTab,
-      let webView = tab.webView,
-      !webView.isLoading
+      !tab.loading
     else {
 
       toolbarTopConstraint?.update(offset: 0)
@@ -2481,7 +2472,7 @@ extension BrowserViewController: TabDelegate {
 
   func tab(_ tab: Tab, willDeleteWebView webView: UIView) {
     tab.cancelQueuedAlerts()
-    if let scrollView = tab.webView?.scrollView {
+    if let scrollView = tab.webScrollView {
       toolbarVisibilityViewModel.endScrollViewObservation(scrollView)
     }
     webView.removeFromSuperview()
@@ -2517,14 +2508,6 @@ extension BrowserViewController: TabDelegate {
 
   func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar) {
     removeBar(bar, animated: true)
-  }
-
-  /// Triggered when "Find in Page" is selected on selected text
-  func tab(_ tab: Tab, didSelectFindInPageFor selectedText: String) {
-    if let findInteraction = tab.webView?.findInteraction {
-      findInteraction.searchText = selectedText
-      findInteraction.presentFindNavigator(showingReplace: false)
-    }
   }
 
   /// Triggered when "Search with Brave" is selected on selected web text
@@ -2728,14 +2711,11 @@ extension BrowserViewController: SearchViewControllerDelegate {
     shouldFindInPage query: String
   ) {
     topToolbar.leaveOverlayMode()
-    if let findInteraction = tabManager.selectedTab?.webView?.findInteraction {
-      findInteraction.searchText = query
-      findInteraction.presentFindNavigator(showingReplace: false)
-    }
+    tabManager.selectedTab?.presentFindInteraction(with: query)
   }
 
   func searchViewControllerAllowFindInPage() -> Bool {
-    if let url = tabManager.selectedTab?.webView?.url,
+    if let url = tabManager.selectedTab?.url,
       let internalURL = InternalURL(url),
       internalURL.isAboutHomeURL
     {
@@ -3022,13 +3002,13 @@ extension BrowserViewController: PreferencesObserver {
       recordGlobalFingerprintingShieldsP3A()
     case Preferences.General.defaultPageZoomLevel.key:
       tabManager.allTabs.forEach({
-        guard let url = $0.webView?.url else { return }
+        guard let url = $0.url else { return }
         let zoomLevel =
           $0.isPrivate
           ? 1.0
           : Domain.getPersistedDomain(for: url)?.zoom_level?.doubleValue
             ?? Preferences.General.defaultPageZoomLevel.value
-        $0.webView?.setValue(zoomLevel, forKey: PageZoomHandler.propertyName)
+        $0.pageZoomLevel = zoomLevel
       })
     case Preferences.Privacy.blockAllCookies.key,
       Preferences.Shields.googleSafeBrowsing.key:
@@ -3038,7 +3018,7 @@ extension BrowserViewController: PreferencesObserver {
         self.tabManager.reloadSelectedTab()
         for tab in self.tabManager.allTabs where tab != self.tabManager.selectedTab {
           tab.createWebview()
-          if let url = tab.webView?.url {
+          if let url = tab.url {
             tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
           }
         }
@@ -3260,21 +3240,20 @@ extension BrowserViewController: UIScreenshotServiceDelegate {
     await withCheckedContinuation { continuation in
       guard screenshotService.windowScene != nil,
         presentedViewController == nil,
-        let webView = tabManager.selectedTab?.webView,
-        let url = webView.url,
+        let tab = tabManager.selectedTab,
+        let scrollView = tab.webScrollView,
+        let url = tab.url,
         url.isWebPage()
       else {
         continuation.resume(returning: (nil, 0, .zero))
         return
       }
 
-      var rect = webView.scrollView.frame
-      rect.origin.x = webView.scrollView.contentOffset.x
-      rect.origin.y =
-        webView.scrollView.contentSize.height - rect.height - webView.scrollView.contentOffset.y
+      var rect = scrollView.frame
+      rect.origin.x = scrollView.contentOffset.x
+      rect.origin.y = scrollView.contentSize.height - rect.height - scrollView.contentOffset.y
 
-      webView.createPDF { result in
-
+      tab.createPDF { result in
         switch result {
         case .success(let data):
           continuation.resume(returning: (data, 0, rect))
@@ -3337,14 +3316,14 @@ extension BrowserViewController: BraveVPNInAppPurchaseObserverDelegate {
 extension BrowserViewController {
 
   func displayPageCertificateInfo() {
-    guard let tab = tabManager.selectedTab, let webView = tab.webView else {
+    guard let tab = tabManager.selectedTab else {
       Logger.module.error("Invalid WebView")
       return
     }
 
     let getServerTrustForErrorPage = { () -> SecTrust? in
       do {
-        if let url = webView.url {
+        if let url = tab.url {
           return try ErrorPageHelper.serverTrust(from: url)
         }
       } catch {
@@ -3354,11 +3333,11 @@ extension BrowserViewController {
       return nil
     }
 
-    guard let trust = webView.serverTrust ?? getServerTrustForErrorPage() else {
+    guard let trust = tab.serverTrust ?? getServerTrustForErrorPage() else {
       return
     }
 
-    let host = webView.url?.host
+    let host = tab.url?.host
 
     Task.detached {
       let serverCertificates: [SecCertificate] =
@@ -3391,7 +3370,7 @@ extension BrowserViewController {
 
         await MainActor.run { [errorDescription] in
           // System components sit on top so we want to dismiss it
-          webView.findInteraction?.dismissFindNavigator()
+          tab.dismissFindInteraction()
           let certificateViewController = CertificateViewController(
             certificate: certificate,
             evaluationError: errorDescription

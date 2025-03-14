@@ -671,7 +671,7 @@ extension BrowserViewController {
     // (i.e. appropriate settings are enabled for that redirect rule)
     if let debounceService = DebounceServiceFactory.get(privateMode: tab.isPrivate),
       debounceService.isEnabled,
-      let currentURL = tab.webView?.url,
+      let currentURL = tab.url,
       currentURL.baseDomain != requestURL.baseDomain
     {
       if let redirectURL = debounceService.debounce(requestURL) {
@@ -743,8 +743,8 @@ extension BrowserViewController {
             if let url = modifiedRequest.url,
               let request = handleInvalidHTTPSUpgrade(tab: tab, responseURL: url)
             {
-              tab.webView?.stopLoading()
-              tab.webView?.load(request)
+              tab.stop()
+              tab.loadRequest(request)
             }
           }
         )

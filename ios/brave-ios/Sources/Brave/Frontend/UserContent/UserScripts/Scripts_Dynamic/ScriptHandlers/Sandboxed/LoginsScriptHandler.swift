@@ -217,7 +217,7 @@ class LoginsScriptHandler: TabContentScript {
 
       // Check for current tab has a url to begin with
       // and the frame is not modified
-      guard let currentURL = tab.webView?.url,
+      guard let currentURL = tab.url,
         LoginsScriptHandler.checkIsSameFrame(
           url: currentURL,
           frameScheme: securityOrigin.protocol,
@@ -245,7 +245,7 @@ class LoginsScriptHandler: TabContentScript {
       return
     }
 
-    tab.webView?.evaluateSafeJavaScript(
+    tab.evaluateSafeJavaScript(
       functionName: "window.__firefox__.logins.inject",
       args: [jsonString],
       contentWorld: LoginsScriptHandler.scriptSandbox,
