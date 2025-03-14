@@ -6,20 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_
 
-class BraveVPNController;
-
-#define InitPostBrowserViewConstruction                                    \
-  InitPostBrowserViewConstruction_ChromiumImpl(BrowserView* browser_view); \
-  BraveVPNController* GetBraveVPNController();                             \
-                                                                           \
- private:                                                                  \
-  std::unique_ptr<BraveVPNController> brave_vpn_controller_;               \
-                                                                           \
- public:                                                                   \
-  void InitPostBrowserViewConstruction
+#define BrowserWindowFeatures BrowserWindowFeatures_ChromiumImpl
+#define InitPostBrowserViewConstruction virtual InitPostBrowserViewConstruction
 
 #include "src/chrome/browser/ui/browser_window/public/browser_window_features.h"  // IWYU pragma: export
 
 #undef InitPostBrowserViewConstruction
+#undef BrowserWindowFeatures
+
+#include "brave/browser/ui/browser_window/public/browser_window_features.h"
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_
