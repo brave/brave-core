@@ -19,21 +19,21 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
   private weak var addBookmarksFolderOkAction: UIAlertAction?
 
-  private lazy var editBookmarksButton: UIBarButtonItem? = UIBarButtonItem().then {
+  private lazy var editBookmarksButton = UIBarButtonItem().then {
     $0.image = UIImage(braveSystemNamed: "leo.edit.pencil")
     $0.style = .plain
     $0.target = self
     $0.action = #selector(onEditBookmarksButton)
   }
 
-  private lazy var addFolderButton: UIBarButtonItem? = UIBarButtonItem().then {
+  private lazy var addFolderButton = UIBarButtonItem().then {
     $0.image = UIImage(braveSystemNamed: "leo.folder.new")
     $0.style = .plain
     $0.target = self
     $0.action = #selector(onAddBookmarksFolderButton)
   }
 
-  private lazy var importExportButton: UIBarButtonItem? = UIBarButtonItem().then {
+  private lazy var importExportButton = UIBarButtonItem().then {
     $0.image = UIImage(braveSystemNamed: "leo.share.macos")
     $0.style = .plain
     $0.target = self
@@ -75,8 +75,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   private lazy var noSearchResultOverlayView = EmptyStateOverlayView(
     overlayDetails: EmptyOverlayStateDetails(title: Strings.noSearchResultsfound)
   )
-
-  private var bookmarksExportSuccessful = false
 
   // MARK: Lifecycle
 
@@ -197,7 +195,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   private func updateEditBookmarksButtonStatus() {
     guard let objectsCount = bookmarksFRC?.fetchedObjectsCount else { return }
 
-    editBookmarksButton?.isEnabled = objectsCount != 0
+    editBookmarksButton.isEnabled = objectsCount != 0
     if tableView.isEditing && objectsCount == 0 {
       disableTableEditingMode()
     }
@@ -270,16 +268,21 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     alert.popoverPresentationController?.barButtonItem = sender
     let importAction = UIAlertAction(title: Strings.bookmarksImportAction, style: .default) {
       [weak self] _ in
+      guard let self = self else { return }
       let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.html, .zip])
       vc.delegate = self
-      self?.present(vc, animated: true)
+      self.present(vc, animated: true)
     }
 
     let exportAction = UIAlertAction(title: Strings.bookmarksExportAction, style: .default) {
       [weak self] _ in
-      let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent("Bookmarks")
-        .appendingPathExtension("html")
-      self?.exportBookmarks(to: fileUrl)
+      Task {
+        guard let self = self else { return }
+        let fileUrl = FileManager.default.temporaryDirectory
+          .appendingPathComponent("Bookmarks")
+          .appendingPathExtension("html")
+        await self.exportBookmarks(to: fileUrl)
+      }
     }
 
     let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel)
@@ -363,13 +366,13 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
 
     updateEditBookmarksButton(editMode)
 
-    editBookmarksButton?.isEnabled = bookmarksFRC?.fetchedObjectsCount != 0
-    addFolderButton?.isEnabled = !editMode
+    editBookmarksButton.isEnabled = bookmarksFRC?.fetchedObjectsCount != 0
+    addFolderButton.isEnabled = !editMode
   }
 
   private func updateEditBookmarksButton(_ tableIsEditing: Bool) {
-    self.editBookmarksButton?.title = tableIsEditing ? Strings.done : Strings.edit
-    self.editBookmarksButton?.style = tableIsEditing ? .done : .plain
+    editBookmarksButton.title = tableIsEditing ? Strings.done : Strings.edit
+    editBookmarksButton.style = tableIsEditing ? .done : .plain
   }
 
   private func addFolder(titled title: String) {
@@ -907,57 +910,35 @@ extension BookmarksViewController: UIDocumentPickerDelegate, UIDocumentInteracti
       return
     }
 
-    DispatchQueue.main.async {
-      self.importBookmarks(from: url)
-      self.documentInteractionController = nil
+    Task { @MainActor in
+      await importBookmarks(from: url)
     }
   }
 
   func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-    self.documentInteractionController = nil
+    documentInteractionController = nil
   }
 
   func documentInteractionControllerDidEndPreview(_ controller: UIDocumentInteractionController) {
-    if let url = controller.url {
-      Task {
-        try await AsyncFileManager.default.removeItem(at: url)
-      }
-    }
-    self.documentInteractionController = nil
+    documentInteractionController = nil
+    guard let url = controller.url else { return }
+    Task { try await AsyncFileManager.default.removeItem(at: url) }
   }
 
   func documentInteractionControllerDidDismissOptionsMenu(
     _ controller: UIDocumentInteractionController
   ) {
-    if let url = controller.url {
-      Task {
-        try await AsyncFileManager.default.removeItem(at: url)
-      }
-    }
-    self.documentInteractionController = nil
-
-    if bookmarksExportSuccessful {
-      bookmarksExportSuccessful = false
-
-      let alert = UIAlertController(
-        title: Strings.Sync.bookmarksImportExportPopupTitle,
-        message: Strings.Sync.bookmarksExportPopupSuccessMessage,
-        preferredStyle: .alert
-      )
-      alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
-      self.present(alert, animated: true, completion: nil)
-    }
+    documentInteractionController = nil
+    guard let url = controller.url else { return }
+    Task { try await AsyncFileManager.default.removeItem(at: url) }
   }
 
   func documentInteractionControllerDidDismissOpenInMenu(
     _ controller: UIDocumentInteractionController
   ) {
-    if let url = controller.url {
-      Task {
-        try await AsyncFileManager.default.removeItem(at: url)
-      }
-    }
-    self.documentInteractionController = nil
+    documentInteractionController = nil
+    guard let url = controller.url else { return }
+    Task { try await AsyncFileManager.default.removeItem(at: url) }
   }
 }
 
@@ -965,54 +946,46 @@ extension BookmarksViewController: UIDocumentPickerDelegate, UIDocumentInteracti
 
 extension BookmarksViewController {
 
-  func importBookmarks(from url: URL) {
+  @MainActor
+  func importBookmarks(from url: URL) async {
     isLoading = true
+    let success = await self.importExportUtility.importBookmarks(from: url)
+    isLoading = false
 
-    Task { @MainActor in
-      let success = await self.importExportUtility.importBookmarks(from: url)
-      self.isLoading = false
+    let alert = UIAlertController(
+      title: Strings.Sync.bookmarksImportExportPopupTitle,
+      message: success
+        ? Strings.Sync.bookmarksImportPopupSuccessMessage
+        : Strings.Sync.bookmarksImportPopupFailureMessage,
+      preferredStyle: .alert
+    )
+    alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
+    present(alert, animated: true, completion: nil)
+  }
 
+  @MainActor
+  func exportBookmarks(to url: URL) async {
+    isLoading = true
+    let success = await self.importExportUtility.exportBookmarks(to: url)
+    isLoading = false
+
+    if success {
+      // Controller must be retained otherwise `AirDrop` and other sharing options will fail!
+      documentInteractionController = UIDocumentInteractionController(url: url)
+      guard let vc = documentInteractionController else { return }
+
+      vc.uti = UTType.html.identifier
+      vc.name = "Bookmarks.html"
+      vc.delegate = self
+      vc.presentOptionsMenu(from: importExportButton, animated: true)
+    } else {
       let alert = UIAlertController(
         title: Strings.Sync.bookmarksImportExportPopupTitle,
-        message: success
-          ? Strings.Sync.bookmarksImportPopupSuccessMessage
-          : Strings.Sync.bookmarksImportPopupFailureMessage,
+        message: Strings.Sync.bookmarksExportPopupFailureMessage,
         preferredStyle: .alert
       )
       alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
-      self.present(alert, animated: true, completion: nil)
-    }
-  }
-
-  func exportBookmarks(to url: URL) {
-    isLoading = true
-
-    Task { @MainActor in
-      let success = await self.importExportUtility.exportBookmarks(to: url)
-
-      self.isLoading = false
-
-      if success {
-        self.bookmarksExportSuccessful = true
-
-        // Controller must be retained otherwise `AirDrop` and other sharing options will fail!
-        self.documentInteractionController = UIDocumentInteractionController(url: url)
-        guard let vc = self.documentInteractionController else { return }
-        vc.uti = UTType.html.identifier
-        vc.name = "Bookmarks.html"
-        vc.delegate = self
-
-        guard let importExportButton = self.importExportButton else { return }
-        vc.presentOptionsMenu(from: importExportButton, animated: true)
-      } else {
-        let alert = UIAlertController(
-          title: Strings.Sync.bookmarksImportExportPopupTitle,
-          message: Strings.Sync.bookmarksExportPopupFailureMessage,
-          preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-      }
+      present(alert, animated: true, completion: nil)
     }
   }
 
