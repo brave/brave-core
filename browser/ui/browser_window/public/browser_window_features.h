@@ -11,7 +11,9 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 class BraveVPNController;
+#endif
 
 class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
  public:
@@ -28,7 +30,9 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   void InitPostBrowserViewConstruction(BrowserView* browser_view) override;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  BraveVPNController* GetBraveVPNController();
+  BraveVPNController* brave_vpn_controller() {
+    return brave_vpn_controller_.get();
+  }
 #endif
 
  protected:

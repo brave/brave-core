@@ -42,7 +42,7 @@ void BraveEducationPageDelegateDesktop::OpenRewardsPanel() {
 
 void BraveEducationPageDelegateDesktop::OpenVPNPanel() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  window_interface_->GetFeatures().GetBraveVPNController()->ShowBraveVPNBubble(
+  window_interface_->GetFeatures().brave_vpn_controller()->ShowBraveVPNBubble(
       /* show_select */ false);
 #endif
 }

@@ -56,9 +56,3 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
   brave_vpn_controller_ = std::make_unique<BraveVPNController>(browser_view);
 #endif
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-BraveVPNController* BrowserWindowFeatures::GetBraveVPNController() {
-  return brave_vpn_controller_.get();
-}
-#endif
