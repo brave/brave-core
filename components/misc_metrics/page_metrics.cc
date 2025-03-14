@@ -8,14 +8,13 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/time/time.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
-#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/browsing_data/core/counters/bookmark_counter.h"
@@ -23,7 +22,6 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/template_url_service.h"
 #include "components/security_interstitials/core/https_only_mode_metrics.h"
 #include "components/security_interstitials/core/metrics_helper.h"
 
@@ -36,6 +34,12 @@ constexpr int kDomainsLoadedBuckets[] = {0, 4, 10, 30, 50, 100};
 constexpr int kFailedHTTPSUpgradeBuckets[] = {0, 25, 50, 100, 300, 700};
 constexpr int kBookmarkCountBuckets[] = {0, 5, 20, 100, 500, 1000, 5000, 10000};
 constexpr int kFirstPageLoadTimeBuckets[] = {5, 10, 60, 240, 1440};
+
+constexpr const char* kAllPagesLoadedHistogramNames[] = {
+    kPagesLoadedNonRewardsHistogramName,
+    kPagesLoadedRewardsHistogramName,
+    kPagesLoadedRewardsWalletHistogramName,
+};
 
 constexpr base::TimeDelta kReportInterval = base::Minutes(30);
 constexpr base::TimeDelta kInitReportDelay = base::Seconds(30);
@@ -50,15 +54,15 @@ constexpr size_t kMinDenominatorForFailedHTTPReport = 100;
 using HttpsEvent = security_interstitials::https_only_mode::Event;
 
 PageMetrics::PageMetrics(PrefService* local_state,
+                         PrefService* profile_prefs,
                          HostContentSettingsMap* host_content_settings_map,
                          history::HistoryService* history_service,
                          bookmarks::BookmarkModel* bookmark_model,
-                         TemplateURLService* template_url_service,
                          FirstRunTimeCallback first_run_time_callback)
     : local_state_(local_state),
+      profile_prefs_(profile_prefs),
       host_content_settings_map_(host_content_settings_map),
       history_service_(history_service),
-      template_url_service_(template_url_service),
       first_run_time_callback_(first_run_time_callback) {
   DCHECK(local_state);
   DCHECK(history_service);
@@ -89,6 +93,16 @@ PageMetrics::PageMetrics(PrefService* local_state,
         {}, base::BindRepeating(&PageMetrics::OnBookmarkCountResult,
                                 base::Unretained(this)));
   }
+
+  pref_change_registrar_.Init(profile_prefs_);
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kEnabled,
+      base::BindRepeating(&PageMetrics::ReportPagesLoaded,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kExternalWalletType,
+      base::BindRepeating(&PageMetrics::ReportPagesLoaded,
+                          base::Unretained(this)));
 }
 
 PageMetrics::~PageMetrics() = default;
@@ -195,27 +209,45 @@ void PageMetrics::ReportDomainsLoaded() {
 }
 
 void PageMetrics::ReportPagesLoaded() {
+  if (!pages_loaded_storage_ || !pages_reloaded_storage_) {
+    return;
+  }
   // Stores a global count in local state to
   // capture page loads across all profiles.
   uint64_t pages_loaded_count = pages_loaded_storage_->GetWeeklySum();
   uint64_t pages_reloaded_count = pages_reloaded_storage_->GetWeeklySum();
 
-  bool is_brave_search_default = IsBraveSearchDefault();
-  const auto* pages_loaded_histogram_name =
-      is_brave_search_default ? kPagesLoadedBraveSearchHistogramName
-                              : kPagesLoadedNonBraveSearchHistogramName;
-  const auto* other_pages_loaded_histogram_name =
-      is_brave_search_default ? kPagesLoadedNonBraveSearchHistogramName
-                              : kPagesLoadedBraveSearchHistogramName;
+  // Report based on Rewards status
+  const char* pages_loaded_histogram_name = nullptr;
 
-  p3a_utils::RecordToHistogramBucket(pages_loaded_histogram_name,
-                                     kPagesLoadedBuckets, pages_loaded_count);
-  base::UmaHistogramExactLinear(other_pages_loaded_histogram_name, INT_MAX - 1,
-                                7);
+  if (profile_prefs_->GetBoolean(brave_rewards::prefs::kEnabled)) {
+    const std::string wallet_type =
+        profile_prefs_->GetString(brave_rewards::prefs::kExternalWalletType);
+    if (wallet_type.empty()) {
+      pages_loaded_histogram_name = kPagesLoadedRewardsHistogramName;
+    } else {
+      pages_loaded_histogram_name = kPagesLoadedRewardsWalletHistogramName;
+    }
+  } else {
+    pages_loaded_histogram_name = kPagesLoadedNonRewardsHistogramName;
+  }
+
+  for (const auto* histogram_name : kAllPagesLoadedHistogramNames) {
+    if (pages_loaded_histogram_name == histogram_name) {
+      p3a_utils::RecordToHistogramBucket(histogram_name, kPagesLoadedBuckets,
+                                         pages_loaded_count);
+    } else {
+      base::UmaHistogramExactLinear(histogram_name, INT_MAX - 1, 7);
+    }
+  }
+
+  // Report reloaded pages
   p3a_utils::RecordToHistogramBucket(kPagesReloadedHistogramName,
                                      kPagesLoadedBuckets, pages_reloaded_count);
   VLOG(2) << "PageMetricsService: pages loaded report, loaded count = "
-          << pages_loaded_count << " reloaded count = " << pages_reloaded_count;
+          << pages_loaded_count
+          << " loaded histogram name = " << pages_loaded_histogram_name
+          << " reloaded count = " << pages_reloaded_count;
 }
 
 void PageMetrics::ReportFailedHTTPSUpgrades() {
@@ -335,18 +367,6 @@ void PageMetrics::ReportBookmarkCount() {
 
 void PageMetrics::OnBraveQuery() {
   UMA_HISTOGRAM_BOOLEAN(kSearchBraveDailyHistogramName, true);
-}
-
-bool PageMetrics::IsBraveSearchDefault() {
-  if (template_url_service_) {
-    const TemplateURL* template_url =
-        template_url_service_->GetDefaultSearchProvider();
-    if (template_url) {
-      return template_url->prepopulate_id() ==
-             TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE;
-    }
-  }
-  return false;
 }
 
 }  // namespace misc_metrics
