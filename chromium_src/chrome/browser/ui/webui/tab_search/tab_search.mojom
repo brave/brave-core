@@ -1,0 +1,39 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module tab_search.mojom;
+
+[BraveAdd]
+struct RateLimitedInfo {
+  // Provide premium status for front end to determine if we need to show
+  // premium purchase button.
+  bool is_premium;
+};
+
+[BraveAdd]
+struct Error {  // Error struct to propagate error to tab organization UI.
+  string message;
+  // Extra information used for rate limited error, will be non-null if the
+  // error is rate limited.
+  RateLimitedInfo? rate_limited_info;
+};
+
+[BraveExtend]
+interface PageHandler {
+  // APIs for tab organization feature using Leo.
+  // GetSuggestedTopics get all tabs (HTTPS/HTTP only) in the same profile
+  // (regular only), send them (ID, title, origin) to Leo, and get back a list
+  // of suggested topics for user to focus on.
+  GetSuggestedTopics() => (array<string> topics, Error? error);
+  // GetFocusTabs get all tabs (HTTPS/HTTP only) in the same profile (regular
+  // only), send them (ID, title, origin) along with the topic to Leo. Leo will
+  // return a list of tabs that should be focused on, these tabs would be moved
+  // to a newly created window.
+  GetFocusTabs(string topic) => (bool window_created, Error? error);
+  // UndoFocusTabs will undo the last focused tabs action.
+  UndoFocusTabs() => ();
+  // Open a new tab for purchasing Leo premium.
+  OpenLeoGoPremiumPage();
+};
