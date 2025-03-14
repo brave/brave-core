@@ -114,17 +114,42 @@ public class BraveHubManagerImpl extends HubManagerImpl {
     private void maybeUpdateBottomMarginForContainerView() {
         if (mIsTablet || isToolbarBottomAnchored()) return;
 
-        BraveReflectionUtil.invokeMethod(
-                HubManagerImpl.class, this, "ensureHubCoordinatorIsInitialized");
+        // We want to prevent crash at cr136
+        // which happened at:
+        //      browser.hub.HubToolbarMediator$1.onConfigurationChanged
+        //      browser.hub.HubToolbarMediator.<init>
+        //      browser.hub.HubToolbarCoordinator.<init>
+        //      browser.hub.HubCoordinator.<init>
+        //      browser.hub.HubManagerImpl.ensureHubCoordinatorIsInitialized
+        //      java.lang.reflect.Method.invoke
+        //      base.BraveReflectionUtil.invokeMethod
+        //      browser.hub.BraveHubManagerImpl.maybeUpdateBottomMarginForContainerView
+        // because mPaneManager.getFocusedPaneSupplier().get() was null
+        // We can just wait on the supplier till the object will be ready.
 
-        HubContainerView containerView = getContainerView();
-        LayoutParams params = (LayoutParams) containerView.getLayoutParams();
-        params.bottomMargin =
-                ContextUtils.getAppSharedPreferences()
-                                .getBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true)
-                        ? mBottomToolbarHeight
-                        : 0;
-        containerView.setLayoutParams(params);
+        // If Pane is already set, ObservableSupplier.addSyncObserverAndCallIfNonNull
+        // will call it immediately. removeObserver is also invoked somehow according to the logs.
+        getPaneManager()
+                .getFocusedPaneSupplier()
+                .addSyncObserverAndCallIfNonNull(
+                        (pane_unused) -> {
+                            BraveReflectionUtil.invokeMethod(
+                                    HubManagerImpl.class,
+                                    this,
+                                    "ensureHubCoordinatorIsInitialized");
+
+                            HubContainerView containerView = getContainerView();
+                            LayoutParams params = (LayoutParams) containerView.getLayoutParams();
+                            params.bottomMargin =
+                                    ContextUtils.getAppSharedPreferences()
+                                                    .getBoolean(
+                                                            BravePreferenceKeys
+                                                                    .BRAVE_IS_MENU_FROM_BOTTOM,
+                                                            true)
+                                            ? mBottomToolbarHeight
+                                            : 0;
+                            containerView.setLayoutParams(params);
+                        });
     }
 
     private boolean isToolbarBottomAnchored() {
