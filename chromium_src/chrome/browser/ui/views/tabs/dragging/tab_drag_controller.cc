@@ -13,6 +13,11 @@
 #include "ui/views/widget/root_view.h"
 #include "ui/views/widget/widget.h"
 
+// Prevent unrelated StackAtTop re-define.
+#if BUILDFLAG(IS_OZONE)
+#include "ui/ozone/public/ozone_platform.h"
+#endif
+
 #define TabDragController TabDragControllerChromium
 
 // Wraps function calls so that they can work with a child NativeWindow as well.
@@ -31,8 +36,17 @@
            ? attached_context_->GetHorizontalDragThreshold()  \
            : 0)
 
+// StackAtTop() is called to bring browser window to the front.
+// It's called for TabDragContext()->GetWidget(). In horizontal tab,
+// returned widget is browsr window's widget. But it's vertical tab widget in
+// vertical tab mode. To bring dragged window up in vertical tab mode,
+// StackAtTop() should be called vertical tab widget's top level widget.
+// This also works in horizontal tab mode because it's already top level window.
+#define StackAtTop GetTopLevelWidget()->StackAtTop
+
 #include "src/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.cc"
 
+#undef StackAtTop
 #undef non_client_view
 #undef GetHorizontalDragThreshold
 #undef GetBrowserViewForNativeWindow
