@@ -105,6 +105,13 @@ struct Conversation {
   bool has_content;
   // Model key, if different than default
   string? model_key;
+  // Indicates the total number of tokens for the conversation.
+  // This info is determined by the server side and applies to the whole conversation.
+  uint64 total_tokens;
+  // Indicates the number of tokens that were trimmed from the conversation.
+  // This info is determined by the server side and applies to the whole conversation.
+  // Things that can be trimmed include associated content(s) and server side things like search results.
+  uint64 trimmed_tokens;
 
   AssociatedContent? associated_content;
 };
@@ -180,6 +187,11 @@ struct SelectedLanguageEvent {
   string selected_language;
 };
 
+struct ContentReceiptEvent {
+  uint64 total_tokens;
+  uint64 trimmed_tokens;
+};
+
 struct ConversationTitleEvent {
   string title;
 };
@@ -201,6 +213,7 @@ union ConversationEntryEvent {
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.
   SelectedLanguageEvent selected_language_event;
+  ContentReceiptEvent content_receipt_event;
   ConversationTitleEvent conversation_title_event;
 };
 
@@ -456,6 +469,10 @@ struct ConversationEntriesState {
   // Whether the UI should represent that the user cannot submit new messages
   // or edits to the conversation.
   bool can_submit_user_entries;
+  // Indicates the total number of tokens for the conversation
+  uint64 total_tokens;
+  // Indicates the number of tokens that were trimmed from the conversation
+  uint64 trimmed_tokens;
 };
 
 // Browser-side handler for a Conversation

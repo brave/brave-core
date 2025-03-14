@@ -95,6 +95,9 @@ class ConversationAPIClient {
 
   void ClearAllQueries();
 
+  static mojom::ConversationEntryEventPtr ParseResponseEvent(
+      base::Value::Dict& response_event);
+
  protected:
   std::string CreateJSONRequestBody(
       const std::vector<ConversationEvent>& conversation,

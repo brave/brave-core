@@ -41,11 +41,6 @@ class MockConversationHandlerObserver : public ConversationHandler::Observer {
               (override));
 
   MOCK_METHOD(void,
-              OnConversationEntryUpdated,
-              (ConversationHandler*, mojom::ConversationTurnPtr),
-              (override));
-
-  MOCK_METHOD(void,
               OnClientConnectionChanged,
               (ConversationHandler*),
               (override));
@@ -53,6 +48,11 @@ class MockConversationHandlerObserver : public ConversationHandler::Observer {
   MOCK_METHOD(void,
               OnConversationTitleChanged,
               (const std::string&, const std::string&),
+              (override));
+
+  MOCK_METHOD(void,
+              OnConversationTokenInfoChanged,
+              (const std::string&, uint64_t, uint64_t),
               (override));
 
  private:
