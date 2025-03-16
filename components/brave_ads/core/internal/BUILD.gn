@@ -73,6 +73,8 @@ static_library("internal") {
     "account/deposits/deposit_info.cc",
     "account/deposits/deposit_info.h",
     "account/deposits/deposit_interface.h",
+    "account/deposits/deposit_util.cc",
+    "account/deposits/deposit_util.h",
     "account/deposits/deposits_database_table.cc",
     "account/deposits/deposits_database_table.h",
     "account/deposits/deposits_database_util.cc",

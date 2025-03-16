@@ -181,6 +181,57 @@ void AdEvents::RecordEvent(const AdEventInfo& ad_event,
                  std::move(callback));
 }
 
+void AdEvents::IsFirstTime(const std::string& campaign_id,
+                           mojom::ConfirmationType confirmation_type,
+                           IsFirstTimeCallback callback) const {
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteQueryWithBindings;
+  mojom_db_action->sql = base::ReplaceStringPlaceholders(
+      R"(
+          SELECT
+            CASE
+              WHEN (SELECT COUNT(*)
+                FROM
+                  $1
+                WHERE
+                  campaign_id = '$3'
+                  AND confirmation_type = '$2'
+                LIMIT 2) = 1
+              THEN 1
+              ELSE 0
+            END AS is_first_time;)",
+      {GetTableName(), ToString(confirmation_type), campaign_id}, nullptr);
+  mojom_db_action->bind_column_types = {
+      mojom::DBBindColumnType::kBool  // is_first_time
+  };
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
+
+  auto result_callback = base::BindOnce(
+      [](IsFirstTimeCallback callback,
+         mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
+        if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
+          BLOG(0, "Failed to check if first time");
+          return std::move(callback).Run(/*success=*/false,
+                                         /*is_first_time=*/false);
+        }
+
+        CHECK(mojom_db_transaction_result->rows_union);
+        const auto& mojom_db_rows =
+            mojom_db_transaction_result->rows_union->get_rows();
+        CHECK(!mojom_db_rows.empty());
+
+        const bool is_first_time = ColumnBool(mojom_db_rows.front(), 0);
+
+        return std::move(callback).Run(/*success=*/true, is_first_time);
+      },
+      std::move(callback));
+
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(result_callback));
+}
+
 void AdEvents::GetAll(GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();

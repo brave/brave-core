@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
@@ -156,8 +156,8 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdViewedEvent(
   AdHistoryManager::GetInstance().Add(
       ad, mojom::ConfirmationType::kViewedImpression);
 
-  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       mojom::ConfirmationType::kViewedImpression);
+  Deposit(ad.type, mojom::ConfirmationType::kViewedImpression, ad.campaign_id,
+          ad.creative_instance_id, ad.segment);
 }
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdClickedEvent(
@@ -170,8 +170,8 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdClickedEvent(
 
   AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
 
-  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       mojom::ConfirmationType::kClicked);
+  Deposit(ad.type, mojom::ConfirmationType::kClicked, ad.campaign_id,
+          ad.creative_instance_id, ad.segment);
 }
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdInteractionEvent(
@@ -180,8 +180,8 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdInteractionEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       mojom::ConfirmationType::kInteraction);
+  Deposit(ad.type, mojom::ConfirmationType::kInteraction, ad.campaign_id,
+          ad.creative_instance_id, ad.segment);
 }
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdMediaPlayEvent(
@@ -190,8 +190,8 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdMediaPlayEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       mojom::ConfirmationType::kMediaPlay);
+  Deposit(ad.type, mojom::ConfirmationType::kMediaPlay, ad.campaign_id,
+          ad.creative_instance_id, ad.segment);
 }
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdMedia25Event(
@@ -200,8 +200,8 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdMedia25Event(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       mojom::ConfirmationType::kMedia25);
+  Deposit(ad.type, mojom::ConfirmationType::kMedia25, ad.campaign_id,
+          ad.creative_instance_id, ad.segment);
 }
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdMedia100Event(
@@ -210,8 +210,8 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdMedia100Event(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       mojom::ConfirmationType::kMedia100);
+  Deposit(ad.type, mojom::ConfirmationType::kMedia100, ad.campaign_id,
+          ad.creative_instance_id, ad.segment);
 }
 
 }  // namespace brave_ads
