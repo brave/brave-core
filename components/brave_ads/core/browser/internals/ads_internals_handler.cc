@@ -65,7 +65,7 @@ void AdsInternalsHandler::CreateAdsInternalsPageHandler(
 
 void AdsInternalsHandler::GetInternalsCallback(
     GetAdsInternalsCallback callback,
-    std::optional<base::Value::List> value) {
+    std::optional<base::Value::Dict> value) {
   // `value` can be nullopt when:
   // - bat ads associated remote is not bound
   // - database query fails

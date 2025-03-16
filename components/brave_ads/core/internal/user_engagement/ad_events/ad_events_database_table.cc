@@ -43,6 +43,7 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
       mojom::DBBindColumnType::kString,  // creative_instance_id
       mojom::DBBindColumnType::kString,  // advertiser_id
       mojom::DBBindColumnType::kString,  // segment
+      mojom::DBBindColumnType::kString,  // target_url
       mojom::DBBindColumnType::kTime     // created_at
   };
 }
@@ -70,6 +71,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
     BindColumnString(mojom_db_action, index++, ad_event.creative_instance_id);
     BindColumnString(mojom_db_action, index++, ad_event.advertiser_id);
     BindColumnString(mojom_db_action, index++, ad_event.segment);
+    BindColumnString(mojom_db_action, index++, ad_event.target_url.spec());
     BindColumnTime(mojom_db_action, index++,
                    ad_event.created_at.value_or(base::Time()));
 
@@ -93,7 +95,8 @@ AdEventInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
   ad_event.creative_instance_id = ColumnString(mojom_db_row, 5);
   ad_event.advertiser_id = ColumnString(mojom_db_row, 6);
   ad_event.segment = ColumnString(mojom_db_row, 7);
-  const base::Time created_at = ColumnTime(mojom_db_row, 8);
+  ad_event.target_url = GURL(ColumnString(mojom_db_row, 8));
+  const base::Time created_at = ColumnTime(mojom_db_row, 9);
   if (!created_at.is_null()) {
     ad_event.created_at = created_at;
   }
@@ -166,6 +169,68 @@ void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
                    /*columns=*/{"creative_set_id"});
   CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
                    /*columns=*/{"placement_id"});
+}
+
+void MigrateToV50(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // Create a temporary table:
+  //   - with a new `target_url` column with a default value of
+  //     'https://brave.com/brave-ads/'.
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE ad_events_temp (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        placement_id TEXT NOT NULL,
+        type TEXT,
+        confirmation_type TEXT,
+        campaign_id TEXT NOT NULL,
+        creative_set_id TEXT NOT NULL,
+        creative_instance_id TEXT NOT NULL,
+        advertiser_id TEXT,
+        segment TEXT,
+        target_url TEXT NOT NULL DEFAULT 'https://brave.com/brave-ads/',
+        created_at TIMESTAMP NOT NULL
+      ))");
+
+  // Copy legacy columns to the temporary table, drop the legacy table and
+  // rename the temporary table.
+  const std::vector<std::string> columns = {
+      "placement_id",      "type",
+      "confirmation_type", "campaign_id",
+      "creative_set_id",   "creative_instance_id",
+      "advertiser_id",     "segment",
+      "created_at"};
+
+  CopyTableColumns(mojom_db_transaction, "ad_events", "ad_events_temp", columns,
+                   /*should_drop=*/true);
+
+  RenameTable(mojom_db_transaction, "ad_events_temp", "ad_events");
+
+  // Optimize database query for `GetUnexpired`, and `PurgeExpired` from
+  // schema 35.
+  CreateTableIndex(mojom_db_transaction, "ad_events",
+                   /*columns=*/{"created_at"});
+
+  // Optimize database query for `GetUnexpired`, and `PurgeExpired` from
+  // schema 43.
+  CreateTableIndex(mojom_db_transaction, "ad_events",
+                   /*columns=*/{"creative_set_id"});
+
+  // Optimize database query for `GetUnexpired`, and `PurgeOrphaned` from
+  // schema 43.
+  CreateTableIndex(mojom_db_transaction, "ad_events",
+                   /*columns=*/{"type"});
+
+  // Optimize database query for `PurgeOrphaned`, and `PurgeAllOrphaned` from
+  // schema 43.
+  CreateTableIndex(mojom_db_transaction, "ad_events",
+                   /*columns=*/{"confirmation_type"});
+  CreateTableIndex(mojom_db_transaction, "ad_events",
+                   /*columns=*/{"placement_id"});
+
+  // Optimize database query for `IsFirstTime` from schema 50.
+  CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
+                   /*columns=*/{"campaign_id"});
 }
 
 }  // namespace
@@ -248,6 +313,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
             creative_instance_id,
             advertiser_id,
             segment,
+            target_url,
             created_at
           FROM
             $1)",
@@ -278,6 +344,7 @@ void AdEvents::Get(mojom::AdType mojom_ad_type,
             creative_instance_id,
             advertiser_id,
             segment,
+            target_url,
             created_at
           FROM
             $1
@@ -314,6 +381,7 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
             creative_instance_id,
             advertiser_id,
             segment,
+            target_url,
             created_at
           FROM
             $1
@@ -354,6 +422,7 @@ void AdEvents::GetUnexpired(mojom::AdType mojom_ad_type,
             creative_instance_id,
             advertiser_id,
             segment,
+            target_url,
             created_at
           FROM
             $1
@@ -509,6 +578,7 @@ void AdEvents::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
         creative_instance_id TEXT NOT NULL,
         advertiser_id TEXT,
         segment TEXT,
+        target_url TEXT NOT NULL,
         created_at TIMESTAMP NOT NULL
       ))");
 
@@ -533,6 +603,10 @@ void AdEvents::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
                    /*columns=*/{"confirmation_type"});
   CreateTableIndex(mojom_db_transaction, GetTableName(),
                    /*columns=*/{"placement_id"});
+
+  // Optimize database query for `IsFirstTime` from schema 50.
+  CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
+                   /*columns=*/{"campaign_id"});
 }
 
 void AdEvents::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
@@ -552,6 +626,11 @@ void AdEvents::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
     case 43: {
       MigrateToV43(mojom_db_transaction);
+      break;
+    }
+
+    case 50: {
+      MigrateToV50(mojom_db_transaction);
       break;
     }
 
@@ -597,10 +676,11 @@ std::string AdEvents::BuildInsertSql(
             creative_instance_id,
             advertiser_id,
             segment,
+            target_url,
             created_at
           ) VALUES $2)",
       {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/9, row_count)},
+       BuildBindColumnPlaceholders(/*column_count=*/10, row_count)},
       nullptr);
 }
 

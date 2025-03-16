@@ -12,6 +12,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "url/gurl.h"
 
 namespace brave_ads {
 
@@ -39,6 +40,7 @@ struct AdEventInfo final {
   std::string campaign_id;
   std::string advertiser_id;
   std::string segment;
+  GURL target_url;
   std::optional<base::Time> created_at;
 };
 
