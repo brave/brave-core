@@ -82,6 +82,7 @@ class NTPBackgroundImagesService {
   std::string GetSuperReferralCode() const;
 
   void MaybeCheckForSponsoredComponentUpdate();
+  void ForceSponsoredComponentUpdate();
 
  private:
   friend class NTPSponsoredRichMediaSourceTest;

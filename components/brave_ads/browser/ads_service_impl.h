@@ -61,7 +61,6 @@ class SharedURLLoaderFactory;
 
 namespace brave_ads {
 
-class AdsServiceObserver;
 class AdsTooltipsDelegate;
 class BatAdsServiceFactory;
 class DeviceId;
@@ -136,7 +135,9 @@ class AdsServiceImpl final : public AdsService,
       brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
   void InitializeBatAdsCallback(bool success);
 
-  void NotifyAdsServiceInitialized() const;
+  void NotifyDidInitializeAdsService() const;
+  void NotifyDidShutdownAdsService() const;
+  void NotifyDidClearAdsServiceData() const;
 
   void ClearDataPrefsAndAdsServiceDataAndMaybeRestart(
       ClearDataCallback callback,
@@ -490,8 +491,6 @@ class AdsServiceImpl final : public AdsService,
   base::ScopedObservation<brave_rewards::RewardsService,
                           brave_rewards::RewardsServiceObserver>
       rewards_service_observation_{this};
-
-  base::ObserverList<AdsServiceObserver> observers_;
 
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};

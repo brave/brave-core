@@ -13,7 +13,13 @@ namespace brave_ads {
 class AdsServiceObserver : public base::CheckedObserver {
  public:
   // Invoked when the ads service has initialized.
-  virtual void OnAdsServiceInitialized() {}
+  virtual void OnDidInitializeAdsService() {}
+
+  // Invoked when the ads service has shutdown.
+  virtual void OnDidShutdownAdsService() {}
+
+  // Invoked when the ads service data has been cleared.
+  virtual void OnDidClearAdsServiceData() {}
 };
 
 }  // namespace brave_ads
