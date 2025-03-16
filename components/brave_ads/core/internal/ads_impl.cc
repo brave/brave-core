@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/ads_internals/ads_internals_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
@@ -104,35 +105,7 @@ void AdsImpl::GetInternals(GetInternalsCallback callback) {
                                           std::move(callback)));
   }
 
-  database::table::CreativeSetConversions database_table;
-  database_table.GetActive(base::BindOnce(&AdsImpl::GetActiveCallback,
-                                          weak_factory_.GetWeakPtr(),
-                                          std::move(callback)));
-}
-
-void AdsImpl::GetActiveCallback(
-    GetInternalsCallback callback,
-    bool success,
-    const CreativeSetConversionList& creative_set_conversions) {
-  if (!success) {
-    BLOG(0, "Failed to get creative set conversions");
-    return std::move(callback).Run({});
-  }
-
-  base::Value::List list;
-  list.reserve(creative_set_conversions.size());
-  for (const auto& creative_set_conversion : creative_set_conversions) {
-    if (!creative_set_conversion.IsValid()) {
-      continue;
-    }
-
-    list.Append(base::Value::Dict()
-                    .Set("URL Pattern", creative_set_conversion.url_pattern)
-                    .Set("Expires At", creative_set_conversion.expire_at
-                                           ->InSecondsFSinceUnixEpoch()));
-  }
-
-  std::move(callback).Run(std::move(list));
+  BuildAdsInternals(std::move(callback));
 }
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {

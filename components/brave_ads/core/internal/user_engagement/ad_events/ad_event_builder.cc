@@ -25,6 +25,7 @@ AdEventInfo BuildAdEvent(const AdInfo& ad,
   ad_event.creative_instance_id = ad.creative_instance_id;
   ad_event.advertiser_id = ad.advertiser_id;
   ad_event.segment = ad.segment;
+  ad_event.target_url = ad.target_url;
   ad_event.created_at = created_at;
 
   return ad_event;
