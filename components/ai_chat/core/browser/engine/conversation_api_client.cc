@@ -222,13 +222,31 @@ base::Value::List ConversationEventsToList(
     event_dict.Set("type", type_it->second);
     const std::string* content_string =
         std::get_if<std::string>(&event.content);
+    // Content is either string or array of content blocks (only for tool calls)
+    // Don't set empty content string or array, the API will error.
     if (content_string && !content_string->empty()) {
       event_dict.Set("content", *content_string);
-    } else if (auto* content_list =
-                   std::get_if<base::Value::List>(&event.content)) {
-      event_dict.Set("content", content_list->Clone());
+    } else if (auto* content_blocks =
+                   std::get_if<std::vector<mojom::ContentBlockPtr>>(&event.content)) {
+      base::Value::List content_items;
+      for (const auto& content_block : *content_blocks) {
+        base::Value::Dict content_item;
+        if (content_block->is_image_content_block()) {
+          content_item.Set("type", "image_url");
+          content_item.SetByDottedPath(
+              "image_url.url",
+              content_block->get_image_content_block()->image_url);
+        } else if (content_block->is_text_content_block()) {
+          content_item.Set("type", "text");
+          content_item.Set("text",
+                            content_block->get_text_content_block()->text);
+        } else {
+          NOTREACHED();
+        }
+        content_items.Append(std::move(content_item));
+      }
+      event_dict.Set("content", std::move(content_items));
     }
-    // Don't set empty content string or array, the API will error
 
     if (!event.tool_calls.empty()) {
       event_dict.Set("tool_calls", event.tool_calls.Clone());
@@ -278,7 +296,7 @@ ConversationAPIClient::ConversationEvent::ConversationEvent() = default;
 ConversationAPIClient::ConversationEvent::ConversationEvent(
     mojom::CharacterType role,
     ConversationEventType type,
-    std::variant<std::string, base::Value::List> content)
+    std::variant<std::string, std::vector<mojom::ContentBlockPtr>> content)
     : role(role), type(type), content(std::move(content)) {}
 
 

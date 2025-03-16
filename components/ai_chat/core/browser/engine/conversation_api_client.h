@@ -80,7 +80,7 @@ class ConversationAPIClient {
     // string, or array of dict with entries of:
     // - { type: "text", text: string }
     // - { type: "image_url", image_url: base64url }
-    std::variant<std::string, base::Value::List> content;
+    std::variant<std::string, std::vector<mojom::ContentBlockPtr>> content;
 
     // Optional properties:
     base::Value::List tool_calls;
@@ -89,9 +89,10 @@ class ConversationAPIClient {
     ConversationEvent();
     ~ConversationEvent();
 
-    ConversationEvent(mojom::CharacterType role,
-                      ConversationEventType type,
-                      std::variant<std::string, base::Value::List> content);
+    ConversationEvent(
+        mojom::CharacterType role,
+        ConversationEventType type,
+        std::variant<std::string, std::vector<mojom::ContentBlockPtr>> content);
 
     ConversationEvent(const ConversationEvent&) = delete;
     ConversationEvent& operator=(const ConversationEvent&) = delete;

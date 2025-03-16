@@ -156,34 +156,50 @@ base::Value::List BuildMessages(
         tool_calls.Insert(tool_calls.begin(), base::Value(std::move(tool_call)));
 
         // Tool result
-        if (tool_event->output_json.has_value()) {
+        if (tool_event->output.has_value()) {
           base::Value::Dict tool_result;
           tool_result.Set("role", "tool");
           tool_result.Set("tool_call_id", tool_event->tool_id);
           // Only send the large results (images) in the last X tool result
           // events, otherwise the context gets filled.
-          if (!tool_event->output_json->empty() &&
-              (large_event_count < 2 ||
-               tool_event->output_json.value().size() < 1000)) {
-            if (tool_event->output_json.value().size() >= 1000) {
-              large_event_count++;
+          if (!tool_event->output->empty()) {
+            bool is_large = false;
+            size_t content_size = 0;
+            for (const auto& content : tool_event->output.value()) {
+              base::Value::Dict content_item;
+              if (content->is_image_content_block()) {
+                is_large = true;
+                break;
+              } else if (content->is_text_content_block()) {
+                content_size += content->get_text_content_block()->text.size();
+              }
             }
-            auto possible_content = base::JSONReader::Read(tool_event->output_json.value());
-            if (!possible_content.has_value()) {
-              DLOG(ERROR) << "Failed to parse tool output JSON: "
-                         << tool_event->output_json.value();
-              tool_result.Set("content", tool_event->output_json.value());
-            } else if (possible_content->is_list()) {
-              base::Value::List& list = possible_content.value().GetList();
-              tool_result.Set("content", std::move(list));
-            } else if (possible_content->is_dict()) {
-              base::Value::Dict& list = possible_content.value().GetDict();
-              tool_result.Set("content", std::move(list));
-            } else {
-              tool_result.Set("content", possible_content.value().GetString());
+            if (content_size >= 1000) {
+              is_large = true;
             }
-          } else {
-            tool_result.Set("content", base::Value::List());
+            if (large_event_count < 3 || !is_large) {
+              if (is_large) {
+                large_event_count++;
+              }
+              base::Value::List tool_result_content;
+              for (const auto& content : tool_event->output.value()) {
+                base::Value::Dict content_item;
+                if (content->is_image_content_block()) {
+                  content_item.Set("type", "image_url");
+                  content_item.SetByDottedPath(
+                      "image_url.url",
+                      content->get_image_content_block()->image_url);
+                } else if (content->is_text_content_block()) {
+                  content_item.Set("type", "text");
+                  content_item.Set("text",
+                                   content->get_text_content_block()->text);
+                } else {
+                  NOTREACHED();
+                }
+                tool_result_content.Append(std::move(content_item));
+              }
+              tool_result.Set("content", std::move(tool_result_content));
+            }
           }
           tool_results.Append(std::move(tool_result));
         }

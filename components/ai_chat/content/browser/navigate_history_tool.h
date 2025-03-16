@@ -8,10 +8,11 @@
 
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
 
 namespace ai_chat {
 
-class NavigateHistoryTool : public Tool {
+class NavigateHistoryTool : public Tool, public content::WebContentsObserver {
  public:
   explicit NavigateHistoryTool(content::WebContents* web_contents);
   ~NavigateHistoryTool() override;
@@ -30,8 +31,22 @@ class NavigateHistoryTool : public Tool {
   void UseTool(const std::string& input_json,
                Tool::UseToolCallback callback) override;
 
+  // content::WebContentsObserver:
+  void DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) override;
+  void DidFirstVisuallyNonEmptyPaint() override;
+
  private:
+  void MaybeFinish();
+
   raw_ptr<content::WebContents> web_contents_;
+
+  // Store the pending UseTool request whilst waiting for navigation
+  // to complete
+  Tool::UseToolCallback pending_callback_;
+  // Track if the navigation has completed
+  bool navigation_complete_ = false;
+  bool visually_painted_ = false;
 };
 
 }  // namespace ai_chat

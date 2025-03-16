@@ -199,14 +199,26 @@ struct UploadedImage {
   array<uint8> image_data;
 };
 
+struct ImageContentBlock {
+  // Only base64 encoded data uri is supported at the moment
+  string image_url;
+};
+
+struct TextContentBlock {
+  string text;
+};
+
+union ContentBlock {
+  ImageContentBlock image_content_block;
+  TextContentBlock text_content_block;
+};
+
 struct ToolUseEvent {
   string tool_name;
   string tool_id;
   ToolType? tool_type;
   string input_json;
-  // TODO(petemill): array of structured text/image(/audio) content that
-  // can be reconsstructed in to each API's tool use type.
-  string? output_json;
+  array<ContentBlock>? output;
 };
 
 // Events that occur during a conversation turn (only assistant for now)
@@ -551,7 +563,7 @@ interface UntrustedConversationHandler {
 
   ModifyConversation(uint32 turn_index, string new_text);
 
-  RespondToToolUseRequest(string tool_id, string? output_json);
+  RespondToToolUseRequest(string tool_id, array<ContentBlock>? output_json);
 };
 
 // Untrusted-UI-side handler for a Conversation, responsible for displaying

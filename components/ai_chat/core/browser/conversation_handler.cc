@@ -810,13 +810,13 @@ void ConversationHandler::SubmitHumanConversationEntry(
         last_entry->events && !last_entry->events->empty()) {
       // Delete any event that is_tool_use_event and has no output
       last_entry->events.value().erase(
-          std::remove_if(last_entry->events.value().begin(),
-                                 last_entry->events.value().end(),
-                         [](const auto& event) {
-                           return event->is_tool_use_event() &&
-                                  event->get_tool_use_event()->output_json ==
-                                      std::nullopt;
-                         }),
+          std::remove_if(
+              last_entry->events.value().begin(),
+              last_entry->events.value().end(),
+              [](const auto& event) {
+                return event->is_tool_use_event() &&
+                       !event->get_tool_use_event()->output.has_value();
+              }),
           last_entry->events->end());
     }
   }
@@ -997,7 +997,7 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
       for (auto& event : *last_entry->events) {
         if (event->is_tool_use_event()) {
           auto& tool_use_event = event->get_tool_use_event();
-          if (tool_use_event->output_json != std::nullopt) {
+          if (tool_use_event->output != std::nullopt) {
             // already handled
             continue;
           }
@@ -1028,8 +1028,9 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
   }
 }
 
-void ConversationHandler::RespondToToolUseRequest(const std::string& tool_id,
-                                const std::optional<std::string>& output_json) {
+void ConversationHandler::RespondToToolUseRequest(
+    const std::string& tool_id,
+    std::optional<std::vector<mojom::ContentBlockPtr>> output) {
   auto* tool_use = GetToolUseEventForLastResponse(tool_id);
   if (!tool_use) {
     return;
@@ -1043,9 +1044,9 @@ void ConversationHandler::RespondToToolUseRequest(const std::string& tool_id,
 
   // Some tools are handled by the Tool, some by the UI and some are handled by
   // this class.
-  if (output_json.has_value()) {
+  if (output.has_value()) {
     // Already handled by the UI
-    OnToolUseComplete(tool_id, output_json, 0);
+    OnToolUseComplete(tool_id, std::move(output));
     return;
   }
   else if (tool_use->tool_name == PageContentTool::kName) {
@@ -1071,11 +1072,9 @@ void ConversationHandler::RespondToToolUseRequest(const std::string& tool_id,
     if (associated_content_delegate_) {
       auto content_tools = associated_content_delegate_->GetTools();
       auto a_tool_it =
-          std::ranges::find_if(content_tools,
-                                [&tool_use](const Tool* tool) {
-                                  LOG(ERROR) << __func__ << ": " << tool->name() << ", " << tool_use->tool_name;
-                                  return tool->name() == tool_use->tool_name;
-                                });
+          std::ranges::find_if(content_tools, [&tool_use](const Tool* tool) {
+            return tool->name() == tool_use->tool_name;
+          });
       if (a_tool_it != content_tools.end()) {
         tool = *a_tool_it;
       }
@@ -1093,8 +1092,7 @@ void ConversationHandler::RespondToToolUseRequest(const std::string& tool_id,
 
 void ConversationHandler::OnToolUseComplete(
     const std::string& tool_use_id,
-    std::optional<std::string_view> output_json,
-    int delay_ms) {
+    std::optional<std::vector<mojom::ContentBlockPtr>>&& output) {
   auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
   if (!tool_use) {
     DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
@@ -1102,31 +1100,29 @@ void ConversationHandler::OnToolUseComplete(
   }
 
   // If there's no output, we don't need to send to the assistant
-  if (!output_json) {
+  if (!output) {
+    DLOG(ERROR) << "No output from tool use: " << tool_use->tool_name;
     return;
   }
 
-  tool_use->output_json = output_json.value();
+  DVLOG(0) << "got output for tool: " << tool_use->tool_name;
+
+  tool_use->output = std::move(output);
   OnHistoryUpdate();
   // Only perform generation if there are no pending tools left to run from
-  // the last entry
+  // the last entry.
   if (std::ranges::all_of(
           *chat_history_.back()->events,
           [](const mojom::ConversationEntryEventPtr& event) {
             return !event->is_tool_use_event() ||
-                   event->get_tool_use_event()->output_json.has_value();
+                   event->get_tool_use_event()->output.has_value();
           })) {
     is_request_in_progress_ = true;
     OnAPIRequestInProgressChanged();
     PerformAssistantGeneration("");
   } else {
-    // Still have more tool use requests to handle. Wait for the asked-for delay
-    // and then handle the next tool use request.
-    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-        FROM_HERE,
-        base::BindOnce(&ConversationHandler::MaybeRespondToNextToolUseRequest,
-                       weak_ptr_factory_.GetWeakPtr()),
-        base::Milliseconds(delay_ms));
+    // Still have more tool use requests to handle.
+    MaybeRespondToNextToolUseRequest();
   }
 }
 
@@ -1135,10 +1131,10 @@ void ConversationHandler::OnActiveWebPageContentFetcherResponseReady(
     std::string content,
     bool is_video,
     std::string invalidation_token) {
-  OnToolUseComplete(tool_id, R"({
-    "web_page_content": ")" + content +
-                                 R"(",
-  })", 0);
+  std::optional<std::vector<mojom::ContentBlockPtr>> output;
+  output->push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New(content)));
+  OnToolUseComplete(tool_id, std::move(output));
 }
 
 void ConversationHandler::SubmitSummarizationRequest() {

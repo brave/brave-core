@@ -7,6 +7,7 @@
 
 #include "base/logging.h"
 #include "base/functional/callback.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 namespace ai_chat {
 
@@ -41,8 +42,7 @@ std::optional<base::Value::Dict> Tool::extra_params() const {
 void Tool::UseTool(
       const std::string& input_json,
       Tool::UseToolCallback callback) {
-  DLOG(ERROR) << "UseTool called but not implemented";
-  std::move(callback).Run(std::nullopt, 0);
+  CHECK(false) << "UseTool called but not implemented";
 }
 
 }  // namespace ai_chat

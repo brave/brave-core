@@ -52,7 +52,7 @@ bool EngineConsumer::CanPerformCompletionRequest(
               *last_turn->events,
               [](const mojom::ConversationEntryEventPtr& event) {
                 return event->is_tool_use_event() &&
-                       event->get_tool_use_event()->output_json.has_value();
+                       event->get_tool_use_event()->output.has_value();
               })) {
         return true;
       }

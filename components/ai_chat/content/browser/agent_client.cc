@@ -6,9 +6,9 @@
 #include "brave/components/ai_chat/content/browser/agent_client.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <string>
 
-#include "base/base64.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
@@ -21,24 +21,13 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
 #include "brave/components/ai_chat/content/browser/build_devtools_key_event_params.h"
 #include "brave/components/ai_chat/content/browser/dom_nodes_xml_string.h"
+#include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/public/browser/render_widget_host_view.h"
-#include "content/public/browser/render_view_host.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_widget_host.h"
 #include "content/public/browser/web_contents.h"
-#include "include/codec/SkCodec.h"
-#include "include/codec/SkPngDecoder.h"
-#include "include/core/SkBitmap.h"
-#include "third_party/blink/public/common/input/web_mouse_wheel_event.h"
-#include "third_party/skia/include/core/SkBitmap.h"
-#include "third_party/skia/include/core/SkCanvas.h"
-#include "third_party/skia/include/core/SkData.h"
-#include "third_party/skia/include/core/SkImage.h"
-#include "third_party/skia/include/core/SkImageInfo.h"
-#include "third_party/skia/include/core/SkSurface.h"
-#include "third_party/skia/include/encode/SkPngEncoder.h"
-#include "ui/gfx/codec/png_codec.h"
-#include "ui/gfx/codec/webp_codec.h"
 
 namespace ai_chat {
 
@@ -46,65 +35,7 @@ namespace {
 constexpr size_t kForcedWidth = 1024;
 constexpr size_t kForcedHeight = 768;
 
-std::string base64PngToBase64Webp(const std::string& base64_input) {
-  // 1. Base64-decode into raw bytes
-  std::string decoded_bytes;
-  if (!base::Base64Decode(base64_input, &decoded_bytes)) {
-    // Handle error (return empty or log)
-    return std::string();
-  }
-
-  // 2. Create SkData from the raw bytes
-  sk_sp<SkData> sk_data =
-      SkData::MakeWithCopy(decoded_bytes.data(), decoded_bytes.size());
-  if (!sk_data) {
-    LOG(ERROR) << "Failed to create SkData";
-    // Handle error
-    return std::string();
-  }
-
-  SkCodec::Result decode_result;
-  std::unique_ptr<SkCodec> codec =
-      SkPngDecoder::Decode(sk_data, &decode_result);
-  if (decode_result != SkCodec::Result::kSuccess) {
-    LOG(ERROR) << "Failed to create SkCodec: " << decode_result;
-    return std::string();
-  }
-
-  SkImageInfo image_info = codec->getInfo()
-                               .makeColorType(kN32_SkColorType)
-                               .makeAlphaType(kPremul_SkAlphaType);
-
-  SkBitmap bitmap;
-  if (!bitmap.tryAllocPixels(image_info)) {
-    LOG(ERROR) << "Failed to allocate pixels";
-    // Handle error
-    return std::string();
-  }
-
-  // Actually decode into the bitmap
-  const SkCodec::Result result =
-      codec->getPixels(image_info, bitmap.getPixels(), bitmap.rowBytes());
-  if (result != SkCodec::kSuccess) {
-    // Handle error
-    LOG(ERROR) << "Failed to decode image";
-    return std::string();
-  }
-
-  auto encoded = gfx::WebpCodec::Encode(bitmap, 75);
-  if (!encoded.has_value()) {
-    LOG(ERROR) << "Failed to encode WebP";
-    return std::string();
-  }
-
-  std::string encoded_png_str(reinterpret_cast<const char*>(encoded->data()),
-                              encoded->size());
-
-  return base::Base64Encode(encoded_png_str);
-}
-
-
-void ScrollActiveElement(content::WebContents* web_contents, gfx::Point position, int delta_x, int delta_y) {
+void ScrollAtPoint(content::WebContents* web_contents, gfx::Point position, int delta_x, int delta_y) {
   if (!web_contents)
     return;
 
@@ -127,36 +58,16 @@ void ScrollActiveElement(content::WebContents* web_contents, gfx::Point position
   web_contents->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       base::ASCIIToUTF16(script), base::NullCallback(),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+}
 
-  // auto* host = web_contents->GetRenderWidgetHostView()->GetRenderWidgetHost();
-  // if (!host)
-  //   return;
+std::optional<gfx::Point> ExtractCoordinatesFromMouseAction(const base::Value::Dict& input) {
+  auto* coordinates = input.FindList("coordinate");
+  if (!coordinates || coordinates->size() != 2 || !(*coordinates)[0].is_int() ||
+      !(*coordinates)[1].is_int()) {
+    return std::nullopt;
+  }
 
-  // blink::WebMouseWheelEvent wheel_event;
-  // wheel_event.SetType(blink::WebInputEvent::Type::kMouseWheel);
-  // wheel_event.delta_x = -delta_x;
-  // wheel_event.delta_y = -delta_y;
-  // if (wheel_event.delta_x != 0.0f) {
-  //   wheel_event.wheel_ticks_x = wheel_event.delta_x > 0.0f ? 1.0f : -1.0f;
-  // }
-  // if (wheel_event.delta_y != 0.0f) {
-  //   wheel_event.wheel_ticks_y = wheel_event.delta_y > 0.0f ? 1.0f : -1.0f;
-  // }
-  // wheel_event.phase = blink::WebMouseWheelEvent::kPhaseBegan;
-  // wheel_event.delta_units = ui::ScrollGranularity::kScrollByPrecisePixel;
-  // wheel_event.dispatch_type = blink::WebInputEvent::DispatchType::kBlocking;
-  // wheel_event.SetPositionInWidget(position.x(), position.y());
-  // wheel_event.SetPositionInScreen(wheel_event.PositionInWidget());
-
-  // wheel_event.phase = blink::WebMouseWheelEvent::kPhaseBegan;
-  // host->ForwardWheelEvent(wheel_event);
-
-  // wheel_event.phase = blink::WebMouseWheelEvent::kPhaseChanged;
-  // host->ForwardWheelEvent(wheel_event);
-
-  // wheel_event.phase = blink::WebMouseWheelEvent::kPhaseEnded;
-  // host->ForwardWheelEvent(wheel_event);
-
+  return gfx::Point((*coordinates)[0].GetInt(), (*coordinates)[1].GetInt());
 }
 
 }  // namespace
@@ -196,149 +107,134 @@ void AgentClient::UseTool(
   DVLOG(4) << __func__ << " input_json = " << input_json;
   auto json_message = base::JSONReader::Read(input_json);
   if (!json_message || !json_message->is_dict()) {
-    std::move(callback).Run(std::nullopt, 0);
+    DVLOG(0) << "Failed to parse input JSON: " << input_json;
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error - failed to parse input JSON"));
     return;
   }
   base::Value::Dict& input = json_message->GetDict();
   std::string* action = input.FindString("action");
   if (!action) {
-    DLOG(ERROR) << "No action found in input_json: " << input_json;
-    std::move(callback).Run(std::nullopt, 0);
+    DVLOG(0) << "No action found in input_json: " << input_json;
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error - no action string found"));
     return;
   }
 
   if (*action == "cursor_position") {
-    std::move(callback).Run(R"([{
-      "type": "text",
-        "x": )" + base::ToString(mouse_position_.x()) + R"(,
-        "y": )" + base::ToString(mouse_position_.y()) + R"(,
-      }])", 0);
+    std::move(callback).Run(CreateContentBlocksForText(base::StringPrintf(
+        "x=%d, y=%d", mouse_position_.x(), mouse_position_.y())));
     return;
   }
 
-  devtools_agent_host_->AttachClient(this);
-  if (!cursor_overlay_) {
-    // TODO: use a tab helper to show the cursor so that
-    // the browser can only show it when the tab is active
-    cursor_overlay_ = std::make_unique<AIChatCursorOverlay>(
-        devtools_agent_host_->GetWebContents());
-  }
-  cursor_overlay_->ShowCursor();
-
-  devtools_agent_host_->Activate();
-  devtools_agent_host_->GetWebContents()->Focus();
-
-  auto message_callback =
-      base::BindOnce(&AgentClient::OnMessageForToolUseComplete,
-                     base::Unretained(this), std::move(callback));
-  base::OnceCallback<void()> do_action;
+  PrepareForAgentActions();
 
   if (*action == "screenshot") {
-    do_action =
-        base::BindOnce(&AgentClient::CaptureScreenshot, base::Unretained(this),
-                       base::BindOnce(std::move(message_callback), 100));
+    AgentClient::CaptureScreenshot(std::move(callback));
   } else if (*action == "type") {
-    do_action = base::BindOnce(&AgentClient::TypeText, base::Unretained(this),
-                               input.FindString("text") ? *input.FindString("text")
-                                                        : "",
-                               base::BindOnce(std::move(message_callback), 10));
+    auto* input_text = input.FindString("text");
+    if (!input_text) {
+      DVLOG(0) << "No text found in input_json: " << input_json;
+      std::move(callback).Run(
+          CreateContentBlocksForText("Error - no text string found in input"));
+      return;
+    }
+    AgentClient::TypeText(*input_text, std::move(callback));
   } else if (*action == "mouse_move") {
-    auto* coordinates = input.FindList("coordinate");
-    if (!coordinates || coordinates->size() != 2) {
-      DLOG(ERROR) << "Invalid coordinates: " << input_json;
-      std::move(callback).Run(std::nullopt, 0);
+    auto coordinates = ExtractCoordinatesFromMouseAction(input);
+    if (!coordinates.has_value()) {
+      DVLOG(0) << "Invalid coordinates: " << input_json;
+      std::move(callback).Run(CreateContentBlocksForText(
+          "Error - invalid coordinates found in input"));
       return;
     }
 
-    mouse_position_ =
-        gfx::Point((*coordinates)[0].GetInt(), (*coordinates)[1].GetInt());
-
-    cursor_overlay_->MoveCursorTo(mouse_position_.x(), mouse_position_.y());
-
-    do_action = base::BindOnce(
-        [](AgentClient* instance, MessageCallback callback) {
-          instance->Execute("Input.dispatchMouseEvent",
-                            R"({
-        "type": "mouseMoved",
-        "x": )" + base::ToString(instance->mouse_position_.x()) +
-                                R"(,
-        "y": )" + base::ToString(instance->mouse_position_.y()) +
-                                R"(
-      })",
-                            std::move(callback));
-        },
-        base::Unretained(this),
-        base::BindOnce(std::move(message_callback),
-                       1000));  // match mouse cursor animation duration
+    UpdateMousePosition(coordinates.value());
+    Execute(
+        "Input.dispatchMouseEvent",
+        R"({
+    "type": "mouseMoved",
+    "x": )" +
+            base::ToString(mouse_position_.x()) +
+            R"(,
+    "y": )" +
+            base::ToString(mouse_position_.y()) +
+            R"(
+  })",
+        base::BindOnce(
+            [](Tool::UseToolCallback callback, MessageResult result_raw) {
+              if (!result_raw.has_value()) {
+                std::move(callback).Run(CreateContentBlocksForText(("error")));
+                return;
+              }
+              auto result = base::JSONReader::Read(result_raw.value());
+              if (!result.has_value() || !result->is_dict()) {
+                std::move(callback).Run(CreateContentBlocksForText(("error")));
+                return;
+              }
+              std::move(callback).Run(CreateContentBlocksForText(("success")));
+            },
+            std::move(callback)));
   } else if (*action == "left_click") {
-    auto* coordinates = input.FindList("coordinate");
-    if (!coordinates || coordinates->size() != 2) {
-      DLOG(ERROR) << "Invalid coordinates: " << input_json;
-      std::move(callback).Run(std::nullopt, 0);
+    auto coordinates = ExtractCoordinatesFromMouseAction(input);
+    if (!coordinates.has_value()) {
+      DVLOG(0) << "Invalid coordinates: " << input_json;
+      std::move(callback).Run(CreateContentBlocksForText(
+          "Error - invalid coordinates found in input"));
       return;
     }
 
-    mouse_position_ =
-        gfx::Point((*coordinates)[0].GetInt(), (*coordinates)[1].GetInt());
+    UpdateMousePosition(coordinates.value());
 
-    cursor_overlay_->MoveCursorTo(mouse_position_.x(), mouse_position_.y());
-
-    do_action = base::BindOnce(
-        [](AgentClient* instance, MessageCallback callback) {
+    // TODO: AgentClient::LeftClick
+    auto agent_action = base::BindOnce(
+        [](base::WeakPtr<AgentClient> instance, base::OnceClosure on_done) {
           instance->Execute("Input.dispatchMouseEvent",
                             R"({
-        "type": "mousePressed",
-        "x": )" + base::ToString(instance->mouse_position_.x()) +
-                                R"(,
-        "y": )" + base::ToString(instance->mouse_position_.y()) +
-                                R"(,
-        "button": "left",
-        "clickCount": 1
-      })",
-                            base::DoNothing());
+                    "type": "mousePressed",
+                    "x": )" + base::ToString(instance->mouse_position_.x()) +
+                                            R"(,
+                    "y": )" + base::ToString(instance->mouse_position_.y()) +
+                                            R"(,
+                    "button": "left",
+                    "clickCount": 1
+                  })",
+                                        base::DoNothing());
 
           instance->Execute(
               "Input.dispatchMouseEvent",
               R"({
-        "type": "mouseReleased",
-        "x": )" + base::ToString(instance->mouse_position_.x()) +
-                  R"(,
-        "y": )" + base::ToString(instance->mouse_position_.y()) +
-                  R"(,
-        "button": "left",
-        "clickCount": 1
-      })",
-              base::BindOnce(
-                  [](AgentClient* instance, MessageCallback callback,
-                     MessageResult result) {
-                    base::SequencedTaskRunner::GetCurrentDefault()
-                        ->PostDelayedTask(FROM_HERE,
-                                          base::BindOnce(
-                                              [](AgentClient* instance,
-                                                 MessageCallback callback) {
-                                                instance->CaptureScreenshot(
-                                                    std::move(callback));
-                                              },
-                                              base::Unretained(instance),
-                                              std::move(callback)),
-                                          base::Milliseconds(3000)); // allow time for actions / navigations to happen
-                  },
-                  base::Unretained(instance), std::move(callback)));
+                    "type": "mouseReleased",
+                    "x": )" + base::ToString(instance->mouse_position_.x()) +
+                              R"(,
+                    "y": )" + base::ToString(instance->mouse_position_.y()) +
+                              R"(,
+                    "button": "left",
+                    "clickCount": 1
+                })",
+              base::BindOnce([](base::OnceClosure on_done, MessageResult result) {
+                                std::move(on_done).Run();
+                              }, std::move(on_done)));
         },
-        base::Unretained(this), base::BindOnce(std::move(message_callback), 0));
+        weak_factory_.GetWeakPtr());
+
+    PerformPossiblyNavigatingAction(std::move(agent_action), std::move(callback));
   } else if (*action == "key") {
     auto* key = input.FindString("text");
     if (!key) {
-      DLOG(ERROR) << "No key found in input_json: " << input_json;
-      std::move(callback).Run(std::nullopt, 0);
+      DVLOG(0) << "No key found in input_json: " << input_json;
+      std::move(callback).Run(CreateContentBlocksForText(
+          "error - no key found in input"));
       return;
     }
-    do_action = base::BindOnce(
-        [](AgentClient* instance, const std::string& in_key,
-           MessageCallback callback) {
-            // TODO(petemill): Get an Accelerator via extensions/common/command.cc's ParseImpl and then one of:
-            // devtools_agent_host_->GetWebContents()->GetRenderViewHost()->GetWidget()->ForwardKeyboardEvent(const input::NativeWebKeyboardEvent &key_event)
-            // views::Widget::GetWidgetForNativeView(devtools_agent_host_->GetWebContents()->GetNativeView())->GetContentsView()->AcceleratorPressed({});
+    auto agent_action = base::BindOnce(
+        [](base::WeakPtr<AgentClient> instance, const std::string& in_key,
+           base::OnceClosure on_done) {
+          // TODO(petemill): Get an Accelerator via
+          // extensions/common/command.cc's ParseImpl and then one of:
+          // devtools_agent_host_->GetWebContents()->GetRenderViewHost()->GetWidget()->ForwardKeyboardEvent(const
+          // input::NativeWebKeyboardEvent &key_event)
+          // views::Widget::GetWidgetForNativeView(devtools_agent_host_->GetWebContents()->GetNativeView())->GetContentsView()->AcceleratorPressed({});
           auto params = BuildDevToolsKeyEventParams(in_key);
           //  "nativeVirtualKeyCode": )" +
           //         base::ToString(params.native_virtual_key_code) + R"(,
@@ -369,25 +265,27 @@ void AgentClient::UseTool(
                   base::ToString(params.modifiers) + R"(
                               })",
               base::BindOnce(
-                  [](MessageCallback callback, MessageResult result) {
-                    std::move(callback).Run(
-                        base::ok("{ \"type\": \"text\", \"status\": \"success\" }"));
+                  [](base::OnceClosure on_done, MessageResult result) {
+                    std::move(on_done).Run();
                   },
-                  std::move(callback)));
+                  std::move(on_done)));
         },
-        base::Unretained(this), *key,
-        base::BindOnce(std::move(message_callback), 2000));
+        weak_factory_.GetWeakPtr(), *key);
+    PerformPossiblyNavigatingAction(std::move(agent_action),
+                                    std::move(callback));
   } else if (*action == "scroll") {
     std::string* direction = input.FindString("scroll_direction");
     if (!direction) {
-      DLOG(ERROR) << "No scroll_direction found in input_json: " << input_json;
-      std::move(callback).Run(std::nullopt, 0);
+      DVLOG(0) << "No scroll_direction found in input_json: " << input_json;
+      std::move(callback).Run(CreateContentBlocksForText(
+          "error - no scroll_direction found in input"));
       return;
     }
     std::optional<int> scroll_amount = input.FindInt("scroll_amount");
     if (!scroll_amount) {
-      DLOG(ERROR) << "No scroll_amount found in input_json: " << input_json;
-      std::move(callback).Run(std::nullopt, 0);
+      DVLOG(0) << "No scroll_amount found in input_json: " << input_json;
+      std::move(callback).Run(CreateContentBlocksForText(
+          "error - no scroll_amount found in input"));
       return;
     }
 
@@ -404,73 +302,32 @@ void AgentClient::UseTool(
     } else if (*direction == "left") {
       delta_x = -(*scroll_amount);
     } else {
-      DLOG(ERROR) << "Invalid scroll_direction: " << *direction;
-      std::move(callback).Run(std::nullopt, 0);
+      DVLOG(0) << "Invalid scroll_direction: " << *direction;
+      std::move(callback).Run(CreateContentBlocksForText(
+          "error - invalid scroll_direction found in input"));
       return;
     }
 
-    auto* coordinates = input.FindList("coordinate");
-    if (!coordinates || coordinates->size() != 2) {
-      DLOG(ERROR) << "Invalid coordinates: " << input_json;
-      std::move(callback).Run(std::nullopt, 0);
+    auto coordinates = ExtractCoordinatesFromMouseAction(input);
+    if (!coordinates.has_value()) {
+      DVLOG(0) << "Invalid coordinates: " << input_json;
+      std::move(callback).Run(CreateContentBlocksForText(
+          "error - invalid coordinates found in input"));
       return;
     }
 
-    mouse_position_ =
-        gfx::Point((*coordinates)[0].GetInt(), (*coordinates)[1].GetInt());
+    UpdateMousePosition(coordinates.value());
 
-    cursor_overlay_->MoveCursorTo(mouse_position_.x(), mouse_position_.y());
-    ScrollActiveElement(devtools_agent_host_->GetWebContents(), mouse_position_,
+    ScrollAtPoint(devtools_agent_host_->GetWebContents(), mouse_position_,
                         delta_x, delta_y);
-    do_action =
-        base::BindOnce(&AgentClient::CaptureScreenshot, base::Unretained(this),
-                       base::BindOnce(std::move(message_callback), 100));
+
+    AgentClient::CaptureScreenshot(std::move(callback));
    } else {
-    DLOG(ERROR) << "Unknown action: " << action;
-    std::move(callback).Run(std::nullopt, 0);
+    DVLOG(0) << "Unknown action: " << action;
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error - unknown action found in input"));
     return;
   }
-
-  if (!do_action.is_null()) {
-    if (!has_overriden_metrics_) {
-      has_overriden_metrics_ = true;
-      // We must set the viewport size and scale first
-      Execute("Emulation.setDeviceMetricsOverride",
-              R"({
-      "width": )" +
-                  base::ToString(kForcedWidth) + R"(,
-      "height": )" +
-                  base::ToString(kForcedHeight) + R"(,
-      "deviceScaleFactor": 1,
-      "mobile": false
-    })",
-              base::BindOnce(
-                  [](base::OnceCallback<void()> do_action,
-                     MessageResult device_metrics_result) {
-                    std::move(do_action).Run();
-                  },
-                  std::move(do_action)));
-    } else {
-      Execute("Page.bringToFront", "{}",
-              base::BindOnce(
-                  [](base::OnceCallback<void()> do_action,
-                     MessageResult device_metrics_result) {
-                    std::move(do_action).Run();
-                  },
-                  std::move(do_action)));
-    }
-  }
-}
-
-void AgentClient::OnMessageForToolUseComplete(
-    Tool::UseToolCallback tool_use_callback,
-    int delay_ms,
-    MessageResult result) {
-  if (!result.has_value()) {
-    std::move(tool_use_callback).Run("error", 0);
-    return;
-  }
-  std::move(tool_use_callback).Run(result.value(), delay_ms);
 }
 
 void AgentClient::GetDomTree() {
@@ -485,57 +342,38 @@ void AgentClient::OnAXTreeSnapshot(ui::AXTreeUpdate& tree) {
   GetDomNodesXmlString(tree);
 }
 
-void AgentClient::CaptureScreenshot(MessageCallback callback) {
-  // Capture screenshot
-  // "quality": 70,
-  //           "clip:": {
-  //             "x": 0,
-  //             "y": 0,
-  //             "width": )" +
-  //             base::ToString(kForcedWidth) + R"(,
-  //             "height": )" +
-  //             base::ToString(kForcedHeight) + R"(,
-  //             "scale": 1.0
-  //           }
+void AgentClient::CaptureScreenshot(Tool::UseToolCallback callback) {
   Execute("Page.captureScreenshot",
           R"({
-            "format": "png"
+            "format": "webp",
+            "quality": 75
           })",
           base::BindOnce(
-              [](MessageCallback callback, MessageResult result_raw) {
+              [](Tool::UseToolCallback callback, MessageResult result_raw) {
                 if (!result_raw.has_value()) {
-                  std::move(callback).Run(base::unexpected("error"));
+                  std::move(callback).Run(CreateContentBlocksForText(("error")));
                   return;
                 }
                 auto result = base::JSONReader::Read(result_raw.value());
                 if (!result.has_value() || !result->is_dict()) {
-                  std::move(callback).Run(base::unexpected("error"));
+                  std::move(callback).Run(CreateContentBlocksForText(("error")));
                   return;
                 }
                 base::Value::Dict& result_dict = result->GetDict();
                 std::string* image_data = result_dict.FindString("data");
                 if (!image_data) {
-                  std::move(callback).Run(base::unexpected("error"));
+                  std::move(callback).Run(CreateContentBlocksForText(("error")));
                   return;
                 }
 
-                // Re-encode the image to webp for context length considerations
-                std::string new_image = base64PngToBase64Webp(*image_data);
-
-                // This format is not well documented by Anthropic, but it's
-                // what the assistant expects after trial and error:
-                auto response = R"([{
-                  "type": "image_url",
-                  "image_url": { "url": "data:image/webp;base64,)" +
-                                new_image + R"(" }
-                }])";
-
-                std::move(callback).Run(base::ok(response));
+                std::move(callback).Run(
+                    CreateContentBlocksForImage("data:image/webp;base64," +
+                                                *image_data));
               },
               std::move(callback)));
 }
 
-void AgentClient::TypeText(std::string_view text, MessageCallback callback) {
+void AgentClient::TypeText(std::string_view text, Tool::UseToolCallback callback) {
   std::string escaped;
   base::EscapeJSONString(text, false, &escaped);
   Execute("Input.insertText",
@@ -543,7 +381,20 @@ void AgentClient::TypeText(std::string_view text, MessageCallback callback) {
     "text": ")" + escaped +
               R"("
   })",
-          std::move(callback));
+          base::BindOnce(
+              [](Tool::UseToolCallback callback, MessageResult result) {
+                if (!result.has_value()) {
+                  std::move(callback).Run(CreateContentBlocksForText("There was an error, please try again"));
+                  return;
+                }
+                std::move(callback).Run(CreateContentBlocksForText("success"));
+              },
+              std::move(callback)));
+}
+
+void AgentClient::UpdateMousePosition(const gfx::Point& position) {
+  mouse_position_ = position;
+  cursor_overlay_->MoveCursorTo(mouse_position_.x(), mouse_position_.y());
 }
 
 void AgentClient::Execute(std::string_view method,
@@ -600,7 +451,7 @@ void AgentClient::DispatchProtocolMessage(
   base::Value::Dict* result = message_dict.FindDict("result");
   std::string result_json;
   if (!result || !base::JSONWriter::Write(*result, &result_json)) {
-    std::move(callback).Run(base::ok(""));
+    std::move(callback).Run(base::unexpected(""));
     return;
   }
 
@@ -618,6 +469,93 @@ bool AgentClient::MayAttachToRenderFrameHost(
 }
 bool AgentClient::IsTrusted() {
   return true;
+}
+
+
+void AgentClient::ReadyToCommitNavigation(content::NavigationHandle* navigation_handle) {
+  if (pending_navigation_callback_.is_null()) {
+    return;
+  }
+  pending_navigation_complete_ = false;
+}
+
+void AgentClient::DidFinishNavigation(
+  content::NavigationHandle* navigation_handle) {
+  if (pending_navigation_callback_.is_null()) {
+    return;
+  }
+  pending_navigation_complete_ = true;
+  MaybeFinishPossiblyNavigatingAction();
+}
+
+void AgentClient::DidFirstVisuallyNonEmptyPaint() {
+  if (pending_navigation_callback_.is_null()) {
+    return;
+  }
+  pending_navigation_visually_painted_ = true;
+  MaybeFinishPossiblyNavigatingAction();
+}
+
+void AgentClient::PrepareForAgentActions() {
+  devtools_agent_host_->AttachClient(this);
+  if (!cursor_overlay_) {
+    // TODO: use a tab helper to show the cursor so that
+    // the browser can only show it when the tab is active
+    cursor_overlay_ = std::make_unique<AIChatCursorOverlay>(
+        devtools_agent_host_->GetWebContents());
+  }
+  cursor_overlay_->ShowCursor();
+
+  devtools_agent_host_->Activate();
+  devtools_agent_host_->GetWebContents()->Focus();
+
+  if (!has_overriden_metrics_) {
+    has_overriden_metrics_ = true;
+    // We must set the viewport size and scale first
+    Execute("Emulation.setDeviceMetricsOverride",
+            R"({
+    "width": )" +
+                base::ToString(kForcedWidth) + R"(,
+    "height": )" +
+                base::ToString(kForcedHeight) + R"(,
+    "deviceScaleFactor": 1,
+    "mobile": false
+  })",
+            base::DoNothing());
+  } else {
+    Execute("Page.bringToFront", "{}", base::DoNothing());
+  }
+}
+
+void AgentClient::PerformPossiblyNavigatingAction(
+    base::OnceCallback<void(base::OnceClosure)> action,
+    Tool::UseToolCallback callback) {
+  pending_navigation_callback_ = std::move(callback);
+  pending_navigation_complete_ = std::nullopt;
+  pending_navigation_visually_painted_ = false;
+  // Run the action and when it completes, check if a navigation started
+  std::move(action).Run(base::BindOnce(
+      [](base::OnceClosure delayed_task) {
+        base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+            FROM_HERE, std::move(delayed_task), base::Milliseconds(500));
+      },
+      base::BindOnce(&AgentClient::MaybeFinishPossiblyNavigatingAction,
+                     weak_factory_.GetWeakPtr())));
+}
+
+void AgentClient::MaybeFinishPossiblyNavigatingAction() {
+  // Run the task if a navigation did not start or if it did and it completed
+  if (!pending_navigation_complete_.has_value() ||
+      (pending_navigation_complete_.value() &&
+       pending_navigation_visually_painted_)) {
+    if (pending_navigation_callback_.is_null()) {
+      return;
+    }
+    CaptureScreenshot(std::move(pending_navigation_callback_));
+    pending_navigation_callback_.Reset();
+    pending_navigation_complete_ = std::nullopt;
+    pending_navigation_visually_painted_ = false;
+  }
 }
 
 }  // namespace ai_chat

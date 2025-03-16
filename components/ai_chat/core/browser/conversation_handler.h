@@ -299,7 +299,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   // mojom::UntrustedConversationHandler
   void RespondToToolUseRequest(
       const std::string& tool_id,
-      const std::optional<std::string>& output_json) override;
+      std::optional<std::vector<mojom::ContentBlockPtr>> output_json) override;
 
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.
@@ -447,10 +447,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void OnToolUseComplete(
       const std::string& tool_use_id,
-      std::optional<std::string_view> output_json,
-      // Amount of time to allow for processing of the event's actions until
-      // running the next event, in milliseconds.
-      int delay_ms);
+      std::optional<std::vector<mojom::ContentBlockPtr>>&& output);
 
   void OnActiveWebPageContentFetcherResponseReady(
     const std::string& tool_id,

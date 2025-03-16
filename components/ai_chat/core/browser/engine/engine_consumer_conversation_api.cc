@@ -19,6 +19,7 @@
 #include "base/json/json_reader.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notreached.h"
 #include "base/numerics/clamped_math.h"
 #include "base/strings/string_split.h"
 #include "base/time/time.h"
@@ -180,7 +181,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
         tool_calls.Insert(tool_calls.begin(), base::Value(std::move(tool_call)));
 
         // Tool result
-        if (tool_event->output_json.has_value()) {
+        if (tool_event->output.has_value()) {
           ConversationEvent tool_result;
           tool_result.role = mojom::CharacterType::TOOL;
           tool_result.type = ConversationEventType::ToolUse;
@@ -188,34 +189,33 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
 
           // Only send the large results (e.g. images or xml trees) in the last
           // X tool result events, otherwise the context gets filled.
-          if (!tool_event->output_json->empty() &&
-              (large_event_count < 2 ||
-               tool_event->output_json.value().size() < 1000)) {
-            if (tool_event->output_json.value().size() >= 1000) {
-              large_event_count++;
+          if (!tool_event->output->empty()) {
+            bool is_large = false;
+            size_t content_size = 0;
+            for (const auto& content : tool_event->output.value()) {
+              if (content->is_image_content_block()) {
+                is_large = true;
+                break;
+              } else if (content->is_text_content_block()) {
+                content_size += content->get_text_content_block()->text.size();
+                if (content_size >= 1000) {
+                  is_large = true;
+                  break;
+                }
+              }
             }
-            auto possible_content =
-                base::JSONReader::Read(tool_event->output_json.value());
-            if (!possible_content.has_value()) {
-              DLOG(ERROR) << "Failed to parse tool output JSON: "
-                         << tool_event->output_json.value();
-              tool_result.content =  tool_event->output_json.value();
-            } else if (possible_content->is_list()) {
-              base::Value::List list =
-                  possible_content.value().GetList().Clone();
-              tool_result.content =  std::move(list);
-            } else if (possible_content->is_dict()) {
-              base::Value::List list;
-              auto& content_dict = possible_content.value().GetDict();
-              if (!content_dict.empty()) {
-                list.Append(content_dict.Clone());
+            if (large_event_count < 3 || !is_large) {
+              if (is_large) {
+                large_event_count++;
               }
-              tool_result.content = std::move(list);
+              std::vector<mojom::ContentBlockPtr> tool_result_content;
+              for (const auto& item : tool_event->output.value()) {
+                tool_result_content.push_back(item.Clone());
+              }
+              tool_result.content = std::move(tool_result_content);
             } else {
-              std::string& possible_string = possible_content.value().GetString();
-              if (!possible_string.empty()) {
-                tool_result.content =  possible_content.value().GetString();
-              }
+              tool_result.content =
+                  "[Large result removed to save space for subsequent results]";
             }
           }
           tool_results.emplace_back(std::move(tool_result));

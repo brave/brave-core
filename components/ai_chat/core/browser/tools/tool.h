@@ -13,6 +13,7 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace ai_chat {
 
@@ -21,11 +22,9 @@ class ConversationHandler;
 // Base class for Tools that are exposed to the Assistant
 class Tool {
  public:
-  // output_json, delay in milliseconds
-  // TODO: out should be a typed content block, e.g. string, { type: "text",
-  // text: "..." }, { type: "image_url", ... }, etc.
+  using ToolResult = std::optional<std::vector<mojom::ContentBlockPtr>>;
   using UseToolCallback =
-      base::OnceCallback<void(std::optional<std::string_view> out, int delay)>;
+      base::OnceCallback<void(ToolResult&& output)>;
 
   Tool() = default;
   virtual ~Tool() = default;

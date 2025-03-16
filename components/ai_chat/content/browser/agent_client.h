@@ -11,12 +11,15 @@
 #include "content/public/browser/devtools_agent_host.h"
 #include "content/public/browser/devtools_agent_host_client.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
 #include "ui/accessibility/ax_tree_update.h"
 
 namespace ai_chat {
 
-class AgentClient : public Tool, public content::DevToolsAgentHostClient {
+class AgentClient : public Tool,
+                    public content::DevToolsAgentHostClient,
+                    public content::WebContentsObserver {
  public:
   explicit AgentClient(content::WebContents* web_contents);
   ~AgentClient() override;
@@ -29,8 +32,13 @@ class AgentClient : public Tool, public content::DevToolsAgentHostClient {
   std::string_view type() const override;
   std::optional<base::Value::Dict> extra_params() const override;
   void UseTool(const std::string& input_json,
-               Tool::UseToolCallback callback)
-      override;
+               Tool::UseToolCallback callback) override;
+
+  // content::WebContentsObserver
+  void ReadyToCommitNavigation(content::NavigationHandle* navigation_handle) override;
+  void DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) override;
+  void DidFirstVisuallyNonEmptyPaint() override;
 
   // <message, error>
   using MessageResult = base::expected<std::string_view, std::string_view>;
@@ -40,8 +48,9 @@ class AgentClient : public Tool, public content::DevToolsAgentHostClient {
  private:
   void GetDomTree();
   void OnAXTreeSnapshot(ui::AXTreeUpdate& tree);
-  void CaptureScreenshot(MessageCallback callback);
-  void TypeText(std::string_view text, MessageCallback callback);
+  void CaptureScreenshot(Tool::UseToolCallback callback);
+  void TypeText(std::string_view text, Tool::UseToolCallback callback);
+  void UpdateMousePosition(const gfx::Point& position);
 
   void Execute(std::string_view method, std::string_view params, MessageCallback callback);
 
@@ -53,13 +62,20 @@ class AgentClient : public Tool, public content::DevToolsAgentHostClient {
       content::RenderFrameHost* render_frame_host) override;
   bool IsTrusted() override;
 
-  void OnMessageForToolUseComplete(Tool::UseToolCallback tool_use_callback,
-                                   int delay_ms,
-                                   MessageResult result);
+  void PrepareForAgentActions();
+
+  void PerformPossiblyNavigatingAction(
+      base::OnceCallback<void(base::OnceClosure)> action,
+      Tool::UseToolCallback callback);
+  void MaybeFinishPossiblyNavigatingAction();
 
   gfx::Point mouse_position_;
 
   std::unique_ptr<AIChatCursorOverlay> cursor_overlay_;
+
+  Tool::UseToolCallback pending_navigation_callback_;
+  std::optional<bool> pending_navigation_complete_ = std::nullopt;
+  bool pending_navigation_visually_painted_ = false;
 
   int request_id_ = 1;
   std::map<int, MessageCallback> message_callbacks_;

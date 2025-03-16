@@ -70,19 +70,6 @@ export function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boo
     return input
   }, [toolUse.inputJson])
 
-  const output: any | null = React.useMemo(() => {
-    if (!toolUse.outputJson) {
-      return null
-    }
-    let output
-    try {
-      output = JSON.parse(toolUse.outputJson)
-    } catch (e) {
-      return null
-    }
-    return output
-  }, [toolUse.outputJson])
-
   if (toolUse.toolName === 'active_web_page_content_fetcher') {
     return (
       <div className={styles.toolUseRequest}>Leo is requesting access to page content
@@ -121,11 +108,21 @@ export function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boo
         toolText = <>{input?.action}</>
       }
     }
-    if (output?.[0]?.image_url?.url) {
+
+    // Append any images (e.g. screenshots) in the output as a tooltip
+    const toolResultOutputImageContentBlocks = toolUse.output?.filter(content => !!content.imageContentBlock) ?? []
+
+    if (toolResultOutputImageContentBlocks.length) {
       toolText = (
         <Tooltip>
           {toolText}
-          <div slot='content'><div><img className={styles.screenshotPreview} src={output?.[0]?.image_url?.url} /></div></div>
+          <div slot='content'>
+          {toolResultOutputImageContentBlocks.map((content, i) => (
+            <div key={i}>
+              <img className={styles.screenshotPreview} src={content.imageContentBlock?.imageUrl} />
+            </div>
+          ))}
+          </div>
         </Tooltip>
       )
     }
@@ -140,31 +137,36 @@ export function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boo
   }
 
   if (toolUse.toolName === 'user_choice_tool') {
-    if (toolUse.outputJson) {
+    if (toolUse.output) {
       toolText = (
         <SuggestionButtonRaw
-                onClick={() => {}}
-                isDisabled={true}
-                icon={<Icon className={styles.completedChoiceIcon} name='checkbox-checked' />}
-              >
-                {toolUse.outputJson}
-              </SuggestionButtonRaw>
+          onClick={() => {}}
+          isDisabled={true}
+          icon={<Icon className={styles.completedChoiceIcon} name='checkbox-checked' />}
+        >
+          {toolUse.output[0]?.textContentBlock?.text}
+        </SuggestionButtonRaw>
       )
     } else {
       progressIcon = <Icon name='help-outline' />
-      const isDisabled = toolUse.outputJson !== undefined && toolUse.outputJson !== null
-      if (!isDisabled) {
-        statusIcon= <Icon name='help-outline' />
+
+      const handleChoice = (choice: string) => {
+        context.conversationHandler?.respondToToolUseRequest(toolUse.toolId,
+            [
+              {textContentBlock: { text: choice } } as Mojom.ContentBlock
+            ]
+        )
       }
+
       toolText = (
         <>
           {input?.choices?.map((choice: string, i: number) => (
             <div key={i} className={styles.toolChoice}>
               <SuggestionButtonRaw
-                className={classnames(styles.choice, isDisabled && styles.isDisabled)}
-                onClick={() => context.conversationHandler?.respondToToolUseRequest(toolUse.toolId, choice)}
-                isDisabled={isDisabled}
-                icon={<div className={classnames(styles.choiceNumber, isDisabled && styles.isDisabled)}>{i+1}</div>}
+                className={classnames(styles.choice)}
+                isDisabled={false}
+                onClick={() => handleChoice(choice)}
+                icon={<div className={classnames(styles.choiceNumber)}>{i+1}</div>}
               >
                 {choice}
               </SuggestionButtonRaw>
@@ -175,7 +177,7 @@ export function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boo
     }
   }
 
-  const isComplete = toolUse.outputJson !== undefined && toolUse.outputJson !== null
+  const isComplete = !!toolUse.output
 
 
   return (
