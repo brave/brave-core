@@ -18,6 +18,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kRichAutocompletion, base::FEATURE_DISABLED_BY_DEFAULT},
     {kStarterPackExpansion, base::FEATURE_DISABLED_BY_DEFAULT},
     {kZeroSuggestPrefetching, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kAblateSearchProviderWarmup, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
 
 BASE_FEATURE(kOmniboxTabSwitchByDefault,
