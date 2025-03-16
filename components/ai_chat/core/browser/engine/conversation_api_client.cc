@@ -227,7 +227,8 @@ base::Value::List ConversationEventsToList(
     if (content_string && !content_string->empty()) {
       event_dict.Set("content", *content_string);
     } else if (auto* content_blocks =
-                   std::get_if<std::vector<mojom::ContentBlockPtr>>(&event.content)) {
+                   std::get_if<std::vector<mojom::ContentBlockPtr>>(
+                       &event.content)) {
       base::Value::List content_items;
       for (const auto& content_block : *content_blocks) {
         base::Value::Dict content_item;
@@ -239,7 +240,7 @@ base::Value::List ConversationEventsToList(
         } else if (content_block->is_text_content_block()) {
           content_item.Set("type", "text");
           content_item.Set("text",
-                            content_block->get_text_content_block()->text);
+                           content_block->get_text_content_block()->text);
         } else {
           NOTREACHED();
         }
@@ -298,7 +299,6 @@ ConversationAPIClient::ConversationEvent::ConversationEvent(
     ConversationEventType type,
     std::variant<std::string, std::vector<mojom::ContentBlockPtr>> content)
     : role(role), type(type), content(std::move(content)) {}
-
 
 ConversationAPIClient::ConversationEvent::~ConversationEvent() = default;
 
@@ -366,7 +366,7 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
       base::Value::Dict tool_dict;
 
       bool type_is_funcion = tool->type().empty() || tool->type() == "function";
-      tool_dict.Set("type",  type_is_funcion ? "function" : tool->type());
+      tool_dict.Set("type", type_is_funcion ? "function" : tool->type());
 
       if (type_is_funcion) {
         base::Value::Dict function_dict;

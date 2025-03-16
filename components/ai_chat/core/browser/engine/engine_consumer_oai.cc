@@ -13,9 +13,9 @@
 
 #include "base/containers/adapters.h"
 #include "base/functional/bind.h"
-#include "base/json/json_reader.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
+#include "base/json/json_reader.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
@@ -135,10 +135,11 @@ base::Value::List BuildMessages(
     if (turn->character_type == CharacterType::ASSISTANT &&
         turn->events.has_value() && !turn->events->empty()) {
       base::Value::List tool_calls;
-      std::vector<mojom::ConversationEntryEventPtr>& events = turn->events.value();
+      std::vector<mojom::ConversationEntryEventPtr>& events =
+          turn->events.value();
 
-      for (auto & event : base::Reversed(events)) {
-         if (!event->is_tool_use_event()) {
+      for (auto& event : base::Reversed(events)) {
+        if (!event->is_tool_use_event()) {
           continue;
         }
 
@@ -153,7 +154,8 @@ base::Value::List BuildMessages(
         function.Set("arguments", tool_event->input_json);
         tool_call.Set("function", std::move(function));
 
-        tool_calls.Insert(tool_calls.begin(), base::Value(std::move(tool_call)));
+        tool_calls.Insert(tool_calls.begin(),
+                          base::Value(std::move(tool_call)));
 
         // Tool result
         if (tool_event->output.has_value()) {
@@ -213,9 +215,9 @@ base::Value::List BuildMessages(
         turn->selected_text
             ? base::StrCat(
                   {base::ReplaceStringPlaceholders(
-                      l10n_util::GetStringUTF8(
-                          IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
-                      {*turn->selected_text}, nullptr),
+                       l10n_util::GetStringUTF8(
+                           IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
+                       {*turn->selected_text}, nullptr),
                    "\n\n", EngineConsumer::GetPromptForEntry(turn)})
             : EngineConsumer::GetPromptForEntry(turn));
 
@@ -229,7 +231,7 @@ base::Value::List BuildMessages(
     }
 
     conversation_message_insertion_it = messages.Insert(
-    conversation_message_insertion_it, base::Value(std::move(message)));
+        conversation_message_insertion_it, base::Value(std::move(message)));
   }
 
   return messages;

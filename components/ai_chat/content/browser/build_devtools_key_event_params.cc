@@ -9,9 +9,9 @@
 #include <string_view>
 #include <unordered_map>
 
-#include "ui/events/event_constants.h"
-#include "base/strings/string_util.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
+#include "ui/events/event_constants.h"
 #include "ui/events/keycodes/dom/keycode_converter.h"
 #include "ui/events/keycodes/keyboard_code_conversion.h"
 
@@ -28,7 +28,8 @@ static const std::unordered_map<std::string, ui::KeyboardCode>
         // TODO(petemill): Add more mappings as needed
 };
 
-// Returns a bitmask of ui::EF_* flags (ctrl, alt, shift, meta) based on the prefix tokens.
+// Returns a bitmask of ui::EF_* flags (ctrl, alt, shift, meta) based on the
+// prefix tokens.
 int ParseModifiers(const std::vector<std::string>& tokens) {
   int modifiers = 0;
   for (const auto& token : tokens) {
@@ -46,9 +47,10 @@ int ParseModifiers(const std::vector<std::string>& tokens) {
   return modifiers;
 }
 
-}
+}  // namespace
 
-DevToolsKeyEventParams BuildDevToolsKeyEventParams(std::string_view xdotool_key) {
+DevToolsKeyEventParams BuildDevToolsKeyEventParams(
+    std::string_view xdotool_key) {
   DevToolsKeyEventParams result = {0, 0, "", 0};
 
   // Split on '+' to detect modifiers vs. final key.
@@ -87,13 +89,15 @@ DevToolsKeyEventParams BuildDevToolsKeyEventParams(std::string_view xdotool_key)
       (keyboard_code != ui::VKEY_UNKNOWN)
           ? ui::UsLayoutKeyboardCodeToDomCode(keyboard_code)
           // Last effort
-          : ui::UsLayoutDomKeyToDomCode(ui::KeycodeConverter::KeyStringToDomKey(last_token));
+          : ui::UsLayoutDomKeyToDomCode(
+                ui::KeycodeConverter::KeyStringToDomKey(last_token));
 
   if (dom_code == ui::DomCode::NONE) {
     dom_code = ui::KeycodeConverter::CodeStringToDomCode(last_token);
   }
 
-  // Convert that DomCode into a DOM code string (e.g. "PageDown", "PageUp", etc.).
+  // Convert that DomCode into a DOM code string (e.g. "PageDown", "PageUp",
+  // etc.).
   std::string dom_code_string =
       (dom_code != ui::DomCode::NONE)
           ? ui::KeycodeConverter::DomCodeToCodeString(dom_code)
@@ -103,10 +107,12 @@ DevToolsKeyEventParams BuildDevToolsKeyEventParams(std::string_view xdotool_key)
 
   // Determine the correct native virtual key code (platform-specific).
   // On Windows, we can just cast ui::KeyboardCode to int. On Linux, we
-  // typically use DomCode → native keycode. For simplicity, we show a cross-platform pattern:
-  // On Windows, ui::KeyboardCode maps to the actual Win32 virtual-key code.
+  // typically use DomCode → native keycode. For simplicity, we show a
+  // cross-platform pattern: On Windows, ui::KeyboardCode maps to the actual
+  // Win32 virtual-key code.
   result.windows_native_virtual_key_code = static_cast<int>(keyboard_code);
-  result.native_virtual_key_code = ui::KeycodeConverter::DomCodeToNativeKeycode(dom_code);
+  result.native_virtual_key_code =
+      ui::KeycodeConverter::DomCodeToNativeKeycode(dom_code);
 
   return result;
 }

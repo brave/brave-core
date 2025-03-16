@@ -24,9 +24,9 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
-#include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_widget_host.h"
+#include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/web_contents.h"
 
 namespace ai_chat {
@@ -35,9 +35,13 @@ namespace {
 constexpr size_t kForcedWidth = 1024;
 constexpr size_t kForcedHeight = 768;
 
-void ScrollAtPoint(content::WebContents* web_contents, gfx::Point position, int delta_x, int delta_y) {
-  if (!web_contents)
+void ScrollAtPoint(content::WebContents* web_contents,
+                   gfx::Point position,
+                   int delta_x,
+                   int delta_y) {
+  if (!web_contents) {
     return;
+  }
 
   std::string script =
       base::StringPrintf(R"JS((function() {
@@ -60,7 +64,8 @@ void ScrollAtPoint(content::WebContents* web_contents, gfx::Point position, int 
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
-std::optional<gfx::Point> ExtractCoordinatesFromMouseAction(const base::Value::Dict& input) {
+std::optional<gfx::Point> ExtractCoordinatesFromMouseAction(
+    const base::Value::Dict& input) {
   auto* coordinates = input.FindList("coordinate");
   if (!coordinates || coordinates->size() != 2 || !(*coordinates)[0].is_int() ||
       !(*coordinates)[1].is_int()) {
@@ -100,10 +105,9 @@ std::optional<base::Value::Dict> AgentClient::extra_params() const {
   return dict;
 }
 
-void AgentClient::UseTool(
-    const std::string& input_json,
-    Tool::UseToolCallback callback) {
-      GetDomTree();
+void AgentClient::UseTool(const std::string& input_json,
+                          Tool::UseToolCallback callback) {
+  GetDomTree();
   DVLOG(4) << __func__ << " input_json = " << input_json;
   auto json_message = base::JSONReader::Read(input_json);
   if (!json_message || !json_message->is_dict()) {
@@ -193,38 +197,41 @@ void AgentClient::UseTool(
                             R"({
                     "type": "mousePressed",
                     "x": )" + base::ToString(instance->mouse_position_.x()) +
-                                            R"(,
+                                R"(,
                     "y": )" + base::ToString(instance->mouse_position_.y()) +
-                                            R"(,
+                                R"(,
                     "button": "left",
                     "clickCount": 1
                   })",
-                                        base::DoNothing());
+                            base::DoNothing());
 
-          instance->Execute(
-              "Input.dispatchMouseEvent",
-              R"({
+          instance->Execute("Input.dispatchMouseEvent",
+                            R"({
                     "type": "mouseReleased",
                     "x": )" + base::ToString(instance->mouse_position_.x()) +
-                              R"(,
+                                R"(,
                     "y": )" + base::ToString(instance->mouse_position_.y()) +
-                              R"(,
+                                R"(,
                     "button": "left",
                     "clickCount": 1
                 })",
-              base::BindOnce([](base::OnceClosure on_done, MessageResult result) {
-                                std::move(on_done).Run();
-                              }, std::move(on_done)));
+                            base::BindOnce(
+                                [](base::OnceClosure on_done,
+                                   MessageResult result) {
+                                  std::move(on_done).Run();
+                                },
+                                std::move(on_done)));
         },
         weak_factory_.GetWeakPtr());
 
-    PerformPossiblyNavigatingAction(std::move(agent_action), std::move(callback));
+    PerformPossiblyNavigatingAction(std::move(agent_action),
+                                    std::move(callback));
   } else if (*action == "key") {
     auto* key = input.FindString("text");
     if (!key) {
       DVLOG(0) << "No key found in input_json: " << input_json;
-      std::move(callback).Run(CreateContentBlocksForText(
-          "error - no key found in input"));
+      std::move(callback).Run(
+          CreateContentBlocksForText("error - no key found in input"));
       return;
     }
     auto agent_action = base::BindOnce(
@@ -319,10 +326,10 @@ void AgentClient::UseTool(
     UpdateMousePosition(coordinates.value());
 
     ScrollAtPoint(devtools_agent_host_->GetWebContents(), mouse_position_,
-                        delta_x, delta_y);
+                  delta_x, delta_y);
 
     AgentClient::CaptureScreenshot(std::move(callback));
-   } else {
+  } else {
     DVLOG(0) << "Unknown action: " << action;
     std::move(callback).Run(
         CreateContentBlocksForText("Error - unknown action found in input"));
@@ -332,8 +339,10 @@ void AgentClient::UseTool(
 
 void AgentClient::GetDomTree() {
   devtools_agent_host_->GetWebContents()->RequestAXTreeSnapshot(
-      base::BindOnce(&AgentClient::OnAXTreeSnapshot, weak_factory_.GetWeakPtr()),
-      ui::AXMode::kWebContents | ui::AXMode::kScreenReader | ui::AXMode::kLabelImages,
+      base::BindOnce(&AgentClient::OnAXTreeSnapshot,
+                     weak_factory_.GetWeakPtr()),
+      ui::AXMode::kWebContents | ui::AXMode::kScreenReader |
+          ui::AXMode::kLabelImages,
       /* max_nodes= */ 9000, /* timeout= */ base::Seconds(2),
       content::WebContents::AXTreeSnapshotPolicy::kSameOriginDirectDescendants);
 }
@@ -343,48 +352,51 @@ void AgentClient::OnAXTreeSnapshot(ui::AXTreeUpdate& tree) {
 }
 
 void AgentClient::CaptureScreenshot(Tool::UseToolCallback callback) {
-  Execute("Page.captureScreenshot",
-          R"({
+  Execute(
+      "Page.captureScreenshot",
+      R"({
             "format": "webp",
             "quality": 75
           })",
-          base::BindOnce(
-              [](Tool::UseToolCallback callback, MessageResult result_raw) {
-                if (!result_raw.has_value()) {
-                  std::move(callback).Run(CreateContentBlocksForText(("error")));
-                  return;
-                }
-                auto result = base::JSONReader::Read(result_raw.value());
-                if (!result.has_value() || !result->is_dict()) {
-                  std::move(callback).Run(CreateContentBlocksForText(("error")));
-                  return;
-                }
-                base::Value::Dict& result_dict = result->GetDict();
-                std::string* image_data = result_dict.FindString("data");
-                if (!image_data) {
-                  std::move(callback).Run(CreateContentBlocksForText(("error")));
-                  return;
-                }
+      base::BindOnce(
+          [](Tool::UseToolCallback callback, MessageResult result_raw) {
+            if (!result_raw.has_value()) {
+              std::move(callback).Run(CreateContentBlocksForText(("error")));
+              return;
+            }
+            auto result = base::JSONReader::Read(result_raw.value());
+            if (!result.has_value() || !result->is_dict()) {
+              std::move(callback).Run(CreateContentBlocksForText(("error")));
+              return;
+            }
+            base::Value::Dict& result_dict = result->GetDict();
+            std::string* image_data = result_dict.FindString("data");
+            if (!image_data) {
+              std::move(callback).Run(CreateContentBlocksForText(("error")));
+              return;
+            }
 
-                std::move(callback).Run(
-                    CreateContentBlocksForImage("data:image/webp;base64," +
-                                                *image_data));
-              },
-              std::move(callback)));
+            std::move(callback).Run(CreateContentBlocksForImage(
+                "data:image/webp;base64," + *image_data));
+          },
+          std::move(callback)));
 }
 
-void AgentClient::TypeText(std::string_view text, Tool::UseToolCallback callback) {
+void AgentClient::TypeText(std::string_view text,
+                           Tool::UseToolCallback callback) {
   std::string escaped;
   base::EscapeJSONString(text, false, &escaped);
   Execute("Input.insertText",
           R"({
-    "text": ")" + escaped +
+    "text": ")" +
+              escaped +
               R"("
   })",
           base::BindOnce(
               [](Tool::UseToolCallback callback, MessageResult result) {
                 if (!result.has_value()) {
-                  std::move(callback).Run(CreateContentBlocksForText("There was an error, please try again"));
+                  std::move(callback).Run(CreateContentBlocksForText(
+                      "There was an error, please try again"));
                   return;
                 }
                 std::move(callback).Run(CreateContentBlocksForText("success"));
@@ -471,8 +483,8 @@ bool AgentClient::IsTrusted() {
   return true;
 }
 
-
-void AgentClient::ReadyToCommitNavigation(content::NavigationHandle* navigation_handle) {
+void AgentClient::ReadyToCommitNavigation(
+    content::NavigationHandle* navigation_handle) {
   if (pending_navigation_callback_.is_null()) {
     return;
   }
@@ -480,7 +492,7 @@ void AgentClient::ReadyToCommitNavigation(content::NavigationHandle* navigation_
 }
 
 void AgentClient::DidFinishNavigation(
-  content::NavigationHandle* navigation_handle) {
+    content::NavigationHandle* navigation_handle) {
   if (pending_navigation_callback_.is_null()) {
     return;
   }

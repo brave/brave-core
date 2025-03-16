@@ -19,7 +19,7 @@ class ImageView;
 
 // A View that displays a fake cursor image above a WebContents.
 class AIChatCursorOverlay : public views::View {
-    METADATA_HEADER(AIChatCursorOverlay, views::View)
+  METADATA_HEADER(AIChatCursorOverlay, views::View)
  public:
   // Creates the overlay view and adds it to the same View hierarchy that hosts
   // the given WebContents.

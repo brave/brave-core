@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ai_chat/content/browser/navigation_tool.h"
+
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
@@ -53,9 +54,8 @@ bool NavigationTool::RequiresUserInteractionBeforeHandling() const {
   return false;
 }
 
-void NavigationTool::UseTool(
-    const std::string& input_json,
-    Tool::UseToolCallback callback) {
+void NavigationTool::UseTool(const std::string& input_json,
+                             Tool::UseToolCallback callback) {
   // Fail any pending requests
   if (pending_callback_) {
     std::move(pending_callback_).Run(CreateContentBlocksForText("error"));
@@ -67,7 +67,8 @@ void NavigationTool::UseTool(
 
   if (!input_value) {
     LOG(ERROR) << "Failed to parse input JSON: " << input_json;
-    std::move(callback).Run(CreateContentBlocksForText("Error - unable to parse input JSON"));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error - unable to parse input JSON"));
     return;
   }
 
@@ -82,10 +83,8 @@ void NavigationTool::UseTool(
 
   // Navigate the web contents to the new URL
   GURL url = GURL(*website_url);
-  web_contents_->GetController().LoadURL(url,
-                                         content::Referrer(),
-                                         ui::PAGE_TRANSITION_FROM_API,
-                                         std::string());
+  web_contents_->GetController().LoadURL(
+      url, content::Referrer(), ui::PAGE_TRANSITION_FROM_API, std::string());
   // Wait for navigation and paint
   pending_callback_ = std::move(callback);
   pending_navigation_url_ = url;

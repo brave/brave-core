@@ -60,10 +60,11 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   std::vector<ConversationEvent> conversation;
-  conversation.emplace_back(ConversationEvent(mojom::CharacterType::HUMAN,
-                              ConversationEventType::UserText, text));
-  conversation.emplace_back(ConversationEvent(mojom::CharacterType::HUMAN,
-                    ConversationEventType::RequestRewrite, question));
+  conversation.emplace_back(ConversationEvent(
+      mojom::CharacterType::HUMAN, ConversationEventType::UserText, text));
+  conversation.emplace_back(
+      ConversationEvent(mojom::CharacterType::HUMAN,
+                        ConversationEventType::RequestRewrite, question));
   api_->PerformRequest(std::move(conversation), {}, selected_language,
                        std::move(received_callback),
                        std::move(completed_callback));
@@ -145,9 +146,9 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
           break;
         }
         // Event should be inserted before any subsequent message
-        events_before_message.push_back({mojom::CharacterType::HUMAN,
-                                ConversationEventType::UploadImage,
-                                GetImageDataURL(uploaded_image->image_data)});
+        events_before_message.push_back(
+            {mojom::CharacterType::HUMAN, ConversationEventType::UploadImage,
+             GetImageDataURL(uploaded_image->image_data)});
       }
     }
     ConversationEvent event;
@@ -178,7 +179,8 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
         function.Set("arguments", tool_event->input_json);
         tool_call.Set("function", std::move(function));
 
-        tool_calls.Insert(tool_calls.begin(), base::Value(std::move(tool_call)));
+        tool_calls.Insert(tool_calls.begin(),
+                          base::Value(std::move(tool_call)));
 
         // Tool result
         if (tool_event->output.has_value()) {
@@ -238,7 +240,8 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
 
     // Tool result should be sorted after the message
     if (!tool_results.empty()) {
-      // conversation_message_insertion_it = conversation.insert(conversation_message_insertion_it,
+      // conversation_message_insertion_it =
+      // conversation.insert(conversation_message_insertion_it,
       //   std::make_move_iterator(tool_results.rbegin()),
       //   std::make_move_iterator(tool_results.rend()));
       for (auto& tool_event : tool_results) {
@@ -254,8 +257,9 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
         !message->selected_text->empty()) {
       conversation_message_insertion_it = conversation.insert(
           conversation_message_insertion_it,
-          ConversationEvent(mojom::CharacterType::HUMAN, ConversationEventType::PageExcerpt,
-           message->selected_text.value()));
+          ConversationEvent(mojom::CharacterType::HUMAN,
+                            ConversationEventType::PageExcerpt,
+                            message->selected_text.value()));
     }
 
     // Insert any events before the message

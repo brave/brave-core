@@ -261,7 +261,7 @@ void EngineConsumerClaudeRemote::GenerateAssistantResponse(
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     Tools tools,
-                              std::optional<std::string_view> preferred_tool_name,
+    std::optional<std::string_view> preferred_tool_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {

@@ -120,8 +120,7 @@ class PageContentTool : public Tool {
 class UserChoiceTool : public Tool {
  public:
   // static name
-  inline static const std::string_view kName =
-      "user_choice_tool";
+  inline static const std::string_view kName = "user_choice_tool";
 
   ~UserChoiceTool() override = default;
 
@@ -968,8 +967,8 @@ void ConversationHandler::ModifyConversation(uint32_t turn_index,
 }
 
 mojom::ToolUseEvent* ConversationHandler::GetToolUseEventForLastResponse(
-      std::string_view tool_id) {
-   if (!chat_history_.empty()) {
+    std::string_view tool_id) {
+  if (!chat_history_.empty()) {
     auto& last_entry = chat_history_.back();
     if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
         last_entry->events->size() > 0) {
@@ -1009,7 +1008,8 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
               break;
             }
           }
-          if (!is_handling_tool && associated_content_delegate_ && should_send_page_contents_) {
+          if (!is_handling_tool && associated_content_delegate_ &&
+              should_send_page_contents_) {
             for (auto& tool : associated_content_delegate_->GetTools()) {
               if (tool->name() == tool_use_event->tool_name &&
                   !tool->RequiresUserInteractionBeforeHandling()) {
@@ -1036,8 +1036,8 @@ void ConversationHandler::RespondToToolUseRequest(
     return;
   }
   LOG(ERROR) << __func__;
-  LOG(ERROR) << __func__ << ": " << tool_id << ", " << tool_use->tool_id
-              << ", " << tool_use->tool_name;
+  LOG(ERROR) << __func__ << ": " << tool_id << ", " << tool_use->tool_id << ", "
+             << tool_use->tool_name;
   // Some calls to this function are tools that user is giving
   // permission to use, some are users's giving the answer, and some are to be
   // run immediately after the tool is requested by the assistant.
@@ -1048,8 +1048,7 @@ void ConversationHandler::RespondToToolUseRequest(
     // Already handled by the UI
     OnToolUseComplete(tool_id, std::move(output));
     return;
-  }
-  else if (tool_use->tool_name == PageContentTool::kName) {
+  } else if (tool_use->tool_name == PageContentTool::kName) {
     // Handled by this class
     LOG(ERROR) << __func__;
     GeneratePageContent(base::BindOnce(
@@ -1087,7 +1086,7 @@ void ConversationHandler::RespondToToolUseRequest(
   LOG(ERROR) << __func__ << ": " << tool->name();
   tool->UseTool(tool_use->input_json,
                 base::BindOnce(&ConversationHandler::OnToolUseComplete,
-                                weak_ptr_factory_.GetWeakPtr(), tool_id));
+                               weak_ptr_factory_.GetWeakPtr(), tool_id));
 }
 
 void ConversationHandler::OnToolUseComplete(
@@ -1573,16 +1572,17 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     auto& last_event = entry->events->back();
     auto& tool_use_event = event->get_tool_use_event();
 
-    LOG(ERROR) << __func__ << " Got event for tool use: "
-               << tool_use_event->tool_name
+    LOG(ERROR) << __func__
+               << " Got event for tool use: " << tool_use_event->tool_name
                << " is empty? " << tool_use_event->tool_name.empty()
-                << " with input: " << tool_use_event->input_json
-                << " is last event tool use? " << last_event->is_tool_use_event();
+               << " with input: " << tool_use_event->input_json
+               << " is last event tool use? "
+               << last_event->is_tool_use_event();
 
     if (last_event->is_tool_use_event() && tool_use_event->tool_name.empty()) {
-      last_event->get_tool_use_event()->input_json = base::StrCat(
-          {last_event->get_tool_use_event()->input_json,
-           tool_use_event->input_json});
+      last_event->get_tool_use_event()->input_json =
+          base::StrCat({last_event->get_tool_use_event()->input_json,
+                        tool_use_event->input_json});
       OnHistoryUpdate();
       return;
     }
@@ -1817,8 +1817,9 @@ void ConversationHandler::OnGetRefinedPageContent(
     }
   }
   engine_->GenerateAssistantResponse(
-      is_video, page_content_to_use, chat_history_, selected_language_,
-      {}, std::nullopt, std::move(data_received_callback), std::move(data_completed_callback));
+      is_video, page_content_to_use, chat_history_, selected_language_, {},
+      std::nullopt, std::move(data_received_callback),
+      std::move(data_completed_callback));
 }
 
 void ConversationHandler::OnEngineCompletionDataReceived(
@@ -1866,7 +1867,6 @@ void ConversationHandler::OnEngineCompletionComplete(
   }
 
   MaybeRespondToNextToolUseRequest();
-
 
   OnAPIRequestInProgressChanged();
 }

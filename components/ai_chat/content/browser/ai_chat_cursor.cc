@@ -26,7 +26,7 @@
 #include "ui/views/widget/widget_delegate.h"
 
 namespace {
-  constexpr size_t kIconSize = 40;
+constexpr size_t kIconSize = 40;
 }
 
 AIChatCursorOverlay::AIChatCursorOverlay(content::WebContents* web_contents) {
@@ -36,10 +36,13 @@ AIChatCursorOverlay::AIChatCursorOverlay(content::WebContents* web_contents) {
   // observer to obey the correct layering, to hide and show when active
   // contents changes, and to move to a new window when the webcontents moves.
 
-  // Experiment without layer violation (gets the whole browser window not the content view)
-  // auto* root_view = views::Widget::GetWidgetForNativeView(web_contents->GetNativeView())->GetContentsView();
+  // Experiment without layer violation (gets the whole browser window not the
+  // content view) auto* root_view =
+  // views::Widget::GetWidgetForNativeView(web_contents->GetNativeView())->GetContentsView();
 
-  auto* root_view = chrome::FindBrowserWithTab(web_contents)->GetBrowserView().contents_container();
+  auto* root_view = chrome::FindBrowserWithTab(web_contents)
+                        ->GetBrowserView()
+                        .contents_container();
   DCHECK(root_view);
 
   cursor_image_ = AddChildView(std::make_unique<views::ImageView>());
@@ -70,8 +73,9 @@ AIChatCursorOverlay::AIChatCursorOverlay(content::WebContents* web_contents) {
 }
 
 AIChatCursorOverlay::~AIChatCursorOverlay() {
-  if (parent())
+  if (parent()) {
     parent()->RemoveChildView(this);
+  }
 }
 
 void AIChatCursorOverlay::MoveCursorTo(int x, int y) {
@@ -80,7 +84,8 @@ void AIChatCursorOverlay::MoveCursorTo(int x, int y) {
   // The new position, keeping the same width/height as the current bounds.
   gfx::Rect target_bounds(x, y, start_bounds.width(), start_bounds.height());
 
-  // Scope the animation settings to ensure we only animate once (and can customize easing, etc.).
+  // Scope the animation settings to ensure we only animate once (and can
+  // customize easing, etc.).
   ui::ScopedLayerAnimationSettings settings(layer()->GetAnimator());
   settings.SetTransitionDuration(base::Milliseconds(1000));
   settings.SetTweenType(gfx::Tween::EASE_IN_2);
@@ -89,7 +94,6 @@ void AIChatCursorOverlay::MoveCursorTo(int x, int y) {
   // Trigger the animation by setting new bounds. Chromium will animate from
   // the old layer bounds to these new layer bounds.
   SetBoundsRect(target_bounds);
-
 
   // SetPosition(gfx::Point(x, y));
   LOG(ERROR) << "moving cursor to " << x << ", " << y;

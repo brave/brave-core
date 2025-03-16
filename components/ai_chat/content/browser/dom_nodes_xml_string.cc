@@ -6,24 +6,26 @@
 #include "brave/components/ai_chat/content/browser/dom_nodes_xml_string.h"
 
 #include "base/logging.h"
+#include "ui/accessibility/ax_enum_util.cc"
 #include "ui/accessibility/ax_enums.mojom-shared.h"
 #include "ui/accessibility/ax_mode.h"
+#include "ui/accessibility/ax_node.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/accessibility/ax_role_properties.h"
 #include "ui/accessibility/ax_tree.h"
 #include "ui/accessibility/ax_tree_id.h"
 #include "ui/accessibility/ax_tree_manager.h"
 #include "ui/accessibility/platform/browser_accessibility_manager.h"
-#include "ui/accessibility/ax_node.h"
-#include "ui/accessibility/ax_enum_util.cc"
 
 namespace {
 
 std::string GetRoleString(ax::mojom::Role role) {
-  if (role == ax::mojom::Role::kRootWebArea)
+  if (role == ax::mojom::Role::kRootWebArea) {
     return "root";
-  if (role == ax::mojom::Role::kStaticText)
+  }
+  if (role == ax::mojom::Role::kStaticText) {
     return "text";
+  }
 
   return ui::ToString(role);
 }
@@ -45,27 +47,27 @@ class DomNodesXmlStringSerializer {
   std::string Serialize() {
     xml_ = "<dom-nodes>\n";
 
-  // Find root nodes (nodes with no parents) and process them
-  std::set<int32_t> all_child_ids;
-  for (const auto& node : tree_->nodes) {
-    LOG(ERROR) << "node: " << node.id;
-    for (int32_t child_id : node.child_ids) {
-      all_child_ids.insert(child_id);
+    // Find root nodes (nodes with no parents) and process them
+    std::set<int32_t> all_child_ids;
+    for (const auto& node : tree_->nodes) {
+      LOG(ERROR) << "node: " << node.id;
+      for (int32_t child_id : node.child_ids) {
+        all_child_ids.insert(child_id);
+      }
     }
-  }
 
-  for (const auto& node : tree_->nodes) {
-    if (all_child_ids.find(node.id) == all_child_ids.end()) {
-      // This is a root node
-      BuildXml(node, 1, false);
+    for (const auto& node : tree_->nodes) {
+      if (all_child_ids.find(node.id) == all_child_ids.end()) {
+        // This is a root node
+        BuildXml(node, 1, false);
+      }
     }
+
+    xml_ += "</dom-nodes>";
+
+    LOG(ERROR) << "XML: " << xml_;
+    return xml_;
   }
-
-  xml_ += "</dom-nodes>";
-
-  LOG(ERROR) << "XML: " << xml_;
-  return xml_;
-}
 
  private:
   void BuildXml(const ui::AXNodeData& data, int depth, bool inside_control) {
@@ -102,8 +104,9 @@ class DomNodesXmlStringSerializer {
       if (data.role == ax::mojom::Role::kLink &&
           !data.GetStringAttribute(ax::mojom::StringAttribute::kUrl).empty()) {
         xml_ += " href=\"" +
-              EscapeXml(data.GetStringAttribute(ax::mojom::StringAttribute::kUrl)) +
-              "\"";
+                EscapeXml(
+                    data.GetStringAttribute(ax::mojom::StringAttribute::kUrl)) +
+                "\"";
       }
       xml_ += data.child_ids.empty() ? "/>\n" : ">\n";
     } else {
@@ -115,12 +118,13 @@ class DomNodesXmlStringSerializer {
       for (int32_t child_id : data.child_ids) {
         // Find child node data
         auto child_it = std::find_if(tree_->nodes.begin(), tree_->nodes.end(),
-                                    [child_id](const ui::AXNodeData& node) {
-                                      return node.id == child_id;
-                                    });
+                                     [child_id](const ui::AXNodeData& node) {
+                                       return node.id == child_id;
+                                     });
         if (child_it != tree_->nodes.end()) {
           LOG(ERROR) << "child: " << child_id;
-          BuildXml(*child_it, is_interesting ? depth + 1 : depth, ui::IsControl(data.role));
+          BuildXml(*child_it, is_interesting ? depth + 1 : depth,
+                   ui::IsControl(data.role));
         } else {
           LOG(ERROR) << "Child node not found: " << child_id;
         }

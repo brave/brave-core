@@ -49,12 +49,13 @@ class OAIAPIClient {
   OAIAPIClient& operator=(const OAIAPIClient&) = delete;
   virtual ~OAIAPIClient();
 
-  virtual void PerformRequest(const mojom::CustomModelOptions& model_options,
-                              base::Value::List messages,
-                              EngineConsumer::Tools tools,
-                              std::optional<std::string_view> preferred_tool_name,
-                              GenerationDataCallback data_received_callback,
-                              GenerationCompletedCallback completed_callback);
+  virtual void PerformRequest(
+      const mojom::CustomModelOptions& model_options,
+      base::Value::List messages,
+      EngineConsumer::Tools tools,
+      std::optional<std::string_view> preferred_tool_name,
+      GenerationDataCallback data_received_callback,
+      GenerationCompletedCallback completed_callback);
 
   void ClearAllQueries();
 

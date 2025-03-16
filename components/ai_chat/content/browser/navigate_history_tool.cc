@@ -41,8 +41,8 @@ std::optional<std::string> NavigateHistoryTool::GetInputSchemaJson() const {
       })";
 }
 
-std::optional<std::vector<std::string>> NavigateHistoryTool::required_properties()
-    const {
+std::optional<std::vector<std::string>>
+NavigateHistoryTool::required_properties() const {
   return std::optional<std::vector<std::string>>{{"back"}};
 }
 
@@ -54,9 +54,8 @@ bool NavigateHistoryTool::RequiresUserInteractionBeforeHandling() const {
   return false;
 }
 
-void NavigateHistoryTool::UseTool(
-    const std::string& input_json,
-    Tool::UseToolCallback callback) {
+void NavigateHistoryTool::UseTool(const std::string& input_json,
+                                  Tool::UseToolCallback callback) {
   // Fail any pending requests
   if (pending_callback_) {
     std::move(pending_callback_).Run(CreateContentBlocksForText("error"));

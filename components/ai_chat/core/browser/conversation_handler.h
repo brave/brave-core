@@ -442,18 +442,17 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void MaybeRespondToNextToolUseRequest();
 
-  mojom::ToolUseEvent* GetToolUseEventForLastResponse(
-      std::string_view tool_id);
+  mojom::ToolUseEvent* GetToolUseEventForLastResponse(std::string_view tool_id);
 
   void OnToolUseComplete(
       const std::string& tool_use_id,
       std::optional<std::vector<mojom::ContentBlockPtr>>&& output);
 
   void OnActiveWebPageContentFetcherResponseReady(
-    const std::string& tool_id,
-    std::string content,
-    bool is_video,
-    std::string invalidation_token);
+      const std::string& tool_id,
+      std::string content,
+      bool is_video,
+      std::string invalidation_token);
 
   base::WeakPtr<AssociatedContentDelegate> associated_content_delegate_;
   std::unique_ptr<AssociatedArchiveContent> archive_content_;

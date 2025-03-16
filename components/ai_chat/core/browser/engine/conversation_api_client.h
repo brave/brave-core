@@ -110,12 +110,11 @@ class ConversationAPIClient {
   ConversationAPIClient& operator=(const ConversationAPIClient&) = delete;
   virtual ~ConversationAPIClient();
 
-  virtual void PerformRequest(
-      std::vector<ConversationEvent>&& conversation,
-      EngineConsumer::Tools tools,
-      const std::string& selected_language,
-      GenerationDataCallback data_received_callback,
-      GenerationCompletedCallback completed_callback);
+  virtual void PerformRequest(std::vector<ConversationEvent>&& conversation,
+                              EngineConsumer::Tools tools,
+                              const std::string& selected_language,
+                              GenerationDataCallback data_received_callback,
+                              GenerationCompletedCallback completed_callback);
 
   void ClearAllQueries();
 

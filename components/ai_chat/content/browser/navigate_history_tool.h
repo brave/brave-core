@@ -33,7 +33,7 @@ class NavigateHistoryTool : public Tool, public content::WebContentsObserver {
 
   // content::WebContentsObserver:
   void DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) override;
+      content::NavigationHandle* navigation_handle) override;
   void DidFirstVisuallyNonEmptyPaint() override;
 
  private:

@@ -23,8 +23,7 @@ class ConversationHandler;
 class Tool {
  public:
   using ToolResult = std::optional<std::vector<mojom::ContentBlockPtr>>;
-  using UseToolCallback =
-      base::OnceCallback<void(ToolResult&& output)>;
+  using UseToolCallback = base::OnceCallback<void(ToolResult&& output)>;
 
   Tool() = default;
   virtual ~Tool() = default;

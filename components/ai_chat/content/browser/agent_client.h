@@ -7,12 +7,12 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AGENT_CLIENT_H_
 
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "content/public/browser/devtools_agent_host.h"
 #include "content/public/browser/devtools_agent_host_client.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
 #include "ui/accessibility/ax_tree_update.h"
 
 namespace ai_chat {
@@ -35,15 +35,15 @@ class AgentClient : public Tool,
                Tool::UseToolCallback callback) override;
 
   // content::WebContentsObserver
-  void ReadyToCommitNavigation(content::NavigationHandle* navigation_handle) override;
+  void ReadyToCommitNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) override;
+      content::NavigationHandle* navigation_handle) override;
   void DidFirstVisuallyNonEmptyPaint() override;
 
   // <message, error>
   using MessageResult = base::expected<std::string_view, std::string_view>;
-  using MessageCallback =
-      base::OnceCallback<void(MessageResult)>;
+  using MessageCallback = base::OnceCallback<void(MessageResult)>;
 
  private:
   void GetDomTree();
@@ -52,7 +52,9 @@ class AgentClient : public Tool,
   void TypeText(std::string_view text, Tool::UseToolCallback callback);
   void UpdateMousePosition(const gfx::Point& position);
 
-  void Execute(std::string_view method, std::string_view params, MessageCallback callback);
+  void Execute(std::string_view method,
+               std::string_view params,
+               MessageCallback callback);
 
   // content::DevToolsAgentHostClient
   void DispatchProtocolMessage(content::DevToolsAgentHost* agent_host,
