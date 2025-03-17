@@ -115,6 +115,10 @@ ViewCounterService::ViewCounterService(
   ntp_background_images_service_observation_.Observe(
       background_images_service_);
 
+  if (ads_service_) {
+    ads_service_->AddObserver(this);
+  }
+
   host_content_settings_map_->AddObserver(this);
 
   new_tab_count_state_ =
@@ -150,7 +154,15 @@ ViewCounterService::ViewCounterService(
 }
 
 ViewCounterService::~ViewCounterService() {
+  if (ads_service_) {
+    ads_service_->RemoveObserver(this);
+  }
+
   host_content_settings_map_->RemoveObserver(this);
+}
+
+void ViewCounterService::OnDidClearAdsServiceData() {
+  background_images_service_->ForceSponsoredComponentUpdate();
 }
 
 void ViewCounterService::OnContentSettingChanged(

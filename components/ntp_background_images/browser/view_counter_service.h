@@ -18,6 +18,7 @@
 #include "base/scoped_observation.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -57,7 +58,8 @@ struct TopSite;
 
 class ViewCounterService : public KeyedService,
                            public content_settings::Observer,
-                           public NTPBackgroundImagesService::Observer {
+                           public NTPBackgroundImagesService::Observer,
+                           public brave_ads::AdsServiceObserver {
  public:
   ViewCounterService(HostContentSettingsMap* host_content_settings,
                      NTPBackgroundImagesService* background_images_service,
@@ -169,6 +171,9 @@ class ViewCounterService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, GetCurrentWallpaper);
 
   void OnPreferenceChanged(const std::string& pref_name);
+
+  // brave_ads::AdsServiceObserver:
+  void OnDidClearAdsServiceData() override;
 
   // content_settings::Observer:
   void OnContentSettingChanged(

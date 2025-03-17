@@ -502,16 +502,28 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
 
   CheckIdleStateAfterDelay();
 
+  NotifyDidInitializeAdsService();
+}
+
+void AdsServiceImpl::NotifyDidInitializeAdsService() const {
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyDidInitializeAds();
   }
 
-  NotifyAdsServiceInitialized();
+  for (AdsServiceObserver& observer : observers_) {
+    observer.OnDidInitializeAdsService();
+  }
 }
 
-void AdsServiceImpl::NotifyAdsServiceInitialized() const {
+void AdsServiceImpl::NotifyDidShutdownAdsService() const {
   for (AdsServiceObserver& observer : observers_) {
-    observer.OnAdsServiceInitialized();
+    observer.OnDidShutdownAdsService();
+  }
+}
+
+void AdsServiceImpl::NotifyDidClearAdsServiceData() const {
+  for (AdsServiceObserver& observer : observers_) {
+    observer.OnDidClearAdsServiceData();
   }
 }
 
@@ -575,6 +587,8 @@ void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestartCallback(
     VLOG(0) << "Failed to clear ads data";
   } else {
     VLOG(6) << "Cleared ads data";
+
+    NotifyDidClearAdsServiceData();
   }
 
   std::move(callback).Run(success);
@@ -1179,6 +1193,8 @@ void AdsServiceImpl::ShutdownAdsService() {
 
   if (is_bat_ads_initialized_) {
     VLOG(2) << "Shutdown Bat Ads Service";
+
+    NotifyDidShutdownAdsService();
   }
 
   is_bat_ads_initialized_ = false;

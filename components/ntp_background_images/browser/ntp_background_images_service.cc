@@ -157,6 +157,11 @@ void NTPBackgroundImagesService::MaybeCheckForSponsoredComponentUpdate() {
   }
 }
 
+void NTPBackgroundImagesService::ForceSponsoredComponentUpdate() {
+  sponsored_images_component_id_.reset();
+  RegisterSponsoredImagesComponent();
+}
+
 void NTPBackgroundImagesService::ScheduleNextSponsoredImagesComponentUpdate() {
   const base::Time next_update_check_time =
       base::Time::Now() + features::kSponsoredImagesUpdateCheckAfter.Get();
