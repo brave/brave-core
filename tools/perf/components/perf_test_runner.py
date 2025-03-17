@@ -365,10 +365,9 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
   return runable_configurations
 
 
-def SpawnConfigurationsFromTargetList(target_list: List[str],
-                                      base_configuration: RunnerConfig,
-                                      common_options: CommonOptions
-                                      ) -> List[RunnerConfig]:
+def SpawnConfigurationsFromTargetList(
+    target_list: List[str], base_configuration: RunnerConfig,
+    common_options: CommonOptions) -> List[RunnerConfig]:
   configurations: List[RunnerConfig] = []
   for target_string in target_list:
     config = deepcopy(base_configuration)
