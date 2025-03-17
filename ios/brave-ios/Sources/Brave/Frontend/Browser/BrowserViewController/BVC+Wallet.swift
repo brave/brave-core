@@ -426,7 +426,8 @@ extension Tab: BraveWalletProviderDelegate {
 extension Tab: BraveWalletEventsListener {
   func emitEthereumEvent(_ event: Web3ProviderEvent) {
     guard !isPrivate,
-      Preferences.Wallet.defaultEthWallet.value == Preferences.Wallet.WalletType.brave.rawValue
+      Preferences.Wallet.defaultEthWallet.value == Preferences.Wallet.WalletType.brave.rawValue,
+      isWebViewCreated
     else {
       return
     }
@@ -493,7 +494,7 @@ extension Tab: BraveWalletEventsListener {
         return "undefined"
       }
     }
-    guard let provider = walletEthProvider else {
+    guard isWebViewCreated, let provider = walletEthProvider else {
       return
     }
 
@@ -553,18 +554,20 @@ extension Tab: BraveWalletEventsListener {
 extension Tab: BraveWalletSolanaEventsListener {
   func accountChangedEvent(account: String?) {
     Task {
-      let script: String
-      if let account = account {
-        script =
-          "if (\(UserScriptManager.walletSolanaNameSpace).solanaWeb3) { window.solana.emit('accountChanged', new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(account.htmlEntityEncodedString)')) }"
-      } else {
-        script = "window.solana.emit('accountChanged')"
+      if isWebViewCreated {
+        let script: String
+        if let account = account {
+          script =
+            "if (\(UserScriptManager.walletSolanaNameSpace).solanaWeb3) { window.solana.emit('accountChanged', new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(account.htmlEntityEncodedString)')) }"
+        } else {
+          script = "window.solana.emit('accountChanged')"
+        }
+        await evaluateSafeJavaScript(
+          functionName: script,
+          contentWorld: .page,
+          asFunction: false
+        )
       }
-      await evaluateSafeJavaScript(
-        functionName: script,
-        contentWorld: .page,
-        asFunction: false
-      )
       await updateSolanaProperties()
     }
   }
@@ -574,7 +577,8 @@ extension Tab: BraveWalletSolanaEventsListener {
   }
 
   func emitSolanaEvent(_ event: Web3ProviderEvent) {
-    guard Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue
+    guard isWebViewCreated,
+      Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue
     else {
       return
     }
@@ -593,6 +597,7 @@ extension Tab: BraveWalletSolanaEventsListener {
 
   @MainActor func updateSolanaProperties() async {
     guard Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue,
+      isWebViewCreated,
       let provider = walletSolProvider
     else {
       return
