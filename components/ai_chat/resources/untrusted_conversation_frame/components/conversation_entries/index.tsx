@@ -19,15 +19,8 @@ import LongPageInfo from '../page_context_message/long_page_info'
 import AssistantResponse from '../assistant_response'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
+import { getReasoningText } from './conversation_entries_utils'
 import styles from './style.module.scss'
-
-const getReasoningText = (text: string) => {
-  const startTag = `<think>`
-  const endTag = `</think>`
-  const startTagIndex = text.indexOf(startTag) + startTag.length
-  const endTagIndex = text.indexOf(endTag, startTagIndex)
-  return text.slice(startTagIndex, endTagIndex).trim()
-}
 
 function ConversationEntries() {
   const conversationContext = useUntrustedConversationContext()
