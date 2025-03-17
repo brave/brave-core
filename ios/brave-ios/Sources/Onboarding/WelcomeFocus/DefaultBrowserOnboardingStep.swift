@@ -22,8 +22,6 @@ struct DefaultBrowserGraphicView: View {
     .resizable()
     .playing(loopMode: .loop)
     .id(colorScheme)
-    .aspectRatio(contentMode: .fit)
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
 }
 
