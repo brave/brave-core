@@ -26,6 +26,15 @@ constexpr auto kPopularAdBlockExtensions =
             // AdBlocker Ultimate
             "ohahllgiabjaoigichmmfljhkcfikeof",
         });
+constexpr auto kManifestV2ExtensionIDExceptions =
+    base::MakeFixedFlatSet<std::string_view>(
+        base::sorted_unique,
+        {
+            // PDF Viewer
+            "mhjfbmdgcfjbbpaeojofohoefgiehjai",
+            // Brave
+            "mnojpmjdmbbfmejpflffifhffcmidifd",
+        });
 constexpr base::TimeDelta kReportDebounceTime = base::Seconds(10);
 
 }  // namespace
@@ -40,7 +49,7 @@ ExtensionMetrics::ExtensionMetrics(
   if (extension_registry) {
     observation_.Observe(extension_registry);
   }
-  ScheduleAdBlockMetricReport();
+  ScheduleMetricsReport();
 }
 
 ExtensionMetrics::~ExtensionMetrics() = default;
@@ -58,8 +67,15 @@ void ExtensionMetrics::OnExtensionLoaded(
     const extensions::Extension* extension) {
   if (kPopularAdBlockExtensions.contains(extension->id())) {
     adblock_extensions_loaded_.insert(extension->id());
-    ScheduleAdBlockMetricReport();
   }
+
+  // Check if this is a Manifest V2 extension
+  if (extension->manifest_version() == 2 &&
+      !kManifestV2ExtensionIDExceptions.contains(extension->id())) {
+    manifest_v2_extensions_loaded_.insert(extension->id());
+  }
+
+  ScheduleMetricsReport();
 }
 
 void ExtensionMetrics::OnExtensionUninstalled(
@@ -68,20 +84,27 @@ void ExtensionMetrics::OnExtensionUninstalled(
     extensions::UninstallReason reason) {
   if (kPopularAdBlockExtensions.contains(extension->id())) {
     adblock_extensions_loaded_.erase(extension->id());
-    ScheduleAdBlockMetricReport();
   }
+
+  if (extension->manifest_version() == 2 &&
+      !kManifestV2ExtensionIDExceptions.contains(extension->id())) {
+    manifest_v2_extensions_loaded_.erase(extension->id());
+  }
+
+  ScheduleMetricsReport();
 }
 
-void ExtensionMetrics::ScheduleAdBlockMetricReport() {
+void ExtensionMetrics::ScheduleMetricsReport() {
   report_debounce_timer_.Start(
       FROM_HERE, kReportDebounceTime,
-      base::BindOnce(&ExtensionMetrics::ReportAdBlockMetric,
-                     base::Unretained(this)));
+      base::BindOnce(&ExtensionMetrics::ReportMetrics, base::Unretained(this)));
 }
 
-void ExtensionMetrics::ReportAdBlockMetric() {
+void ExtensionMetrics::ReportMetrics() {
   UMA_HISTOGRAM_BOOLEAN(kAdblockExtensionsHistogramName,
                         !adblock_extensions_loaded_.empty());
+  UMA_HISTOGRAM_BOOLEAN(kManifestV2ExtensionsHistogramName,
+                        !manifest_v2_extensions_loaded_.empty());
 }
 
 }  // namespace misc_metrics
