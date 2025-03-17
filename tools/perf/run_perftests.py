@@ -113,7 +113,7 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
       raise RuntimeError('Only one configuration should be specified.')
 
     configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
-        options.targets, config.runners[0])
+        options.targets, config.runners[0], options)
     return 0 if perf_test_runner.RunConfigurations(
         configurations, config.benchmarks, options) else 1
 

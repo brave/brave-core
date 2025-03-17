@@ -366,7 +366,8 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
 
 
 def SpawnConfigurationsFromTargetList(target_list: List[str],
-                                      base_configuration: RunnerConfig
+                                      base_configuration: RunnerConfig,
+                                      common_options: CommonOptions
                                       ) -> List[RunnerConfig]:
   configurations: List[RunnerConfig] = []
   for target_string in target_list:
@@ -377,6 +378,8 @@ def SpawnConfigurationsFromTargetList(target_list: List[str],
     if not config.version:
       raise RuntimeError(f'Can get the version from target {target_string}')
     config.label = config.version.to_string()
+    if common_options.chromium:
+      config.label += '_chromium'
     configurations.append(config)
   return configurations
 

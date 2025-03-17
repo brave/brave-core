@@ -310,7 +310,7 @@ def _RunUpdateProfileForConfig(config: perf_config.PerfConfig,
   ]
 
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
-      options.targets, config.runners[0])
+      options.targets, config.runners[0], options)
   assert len(configurations) == 1
   PreRebaseCleanup(configurations[0], options)
   if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,
