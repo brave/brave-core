@@ -399,15 +399,13 @@ class SolanaProviderScriptHandler: TabContentScript {
   }
 
   @MainActor private func emitConnectEvent(tab: Tab, publicKey: String) async {
-    if let webView = tab.webView {
-      let script =
-        "window.solana.emit('connect', new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)'))"
-      await webView.evaluateSafeJavaScript(
-        functionName: script,
-        contentWorld: .page,
-        asFunction: false
-      )
-    }
+    let script =
+      "window.solana.emit('connect', new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)'))"
+    await tab.evaluateSafeJavaScript(
+      functionName: script,
+      contentWorld: .page,
+      asFunction: false
+    )
   }
 }
 

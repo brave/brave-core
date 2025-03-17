@@ -339,7 +339,7 @@ class ReaderModeScriptHandler: TabContentScript {
 
   func setStyle(_ style: ReaderModeStyle, in tab: Tab) {
     if state == ReaderModeState.active {
-      tab.webView?.evaluateSafeJavaScript(
+      tab.evaluateSafeJavaScript(
         functionName: "\(readerModeNamespace).setStyle",
         args: [style.encode()],
         contentWorld: Self.scriptSandbox,

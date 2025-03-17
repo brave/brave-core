@@ -14,7 +14,7 @@ class PageZoomHandler: ObservableObject {
     case increment, decrement
   }
 
-  private weak var webView: TabWebView?
+  private weak var tab: Tab?
   let isPrivateBrowsing: Bool
 
   static let steps = [
@@ -27,7 +27,6 @@ class PageZoomHandler: ObservableObject {
   @Published var currentValue: Double = 1.0
 
   required init(tab: Tab?, isPrivateBrowsing: Bool) {
-    self.webView = tab?.webView
     self.isPrivateBrowsing = isPrivateBrowsing
 
     // Private Browsing on Safari iOS always defaults to 100%, and isn't persistently saved.
@@ -36,15 +35,13 @@ class PageZoomHandler: ObservableObject {
       return
     }
 
-    if let webView = webView {
+    if let tab {
       // Fetch the current value for zoom
-      if let url = webView.url, let domain = Domain.getPersistedDomain(for: url) {
+      if let url = tab.url, let domain = Domain.getPersistedDomain(for: url) {
         currentValue =
           domain.zoom_level?.doubleValue ?? Preferences.General.defaultPageZoomLevel.value
       } else {
-        currentValue =
-          webView.value(forKey: Self.propertyName) as? Double
-          ?? Preferences.General.defaultPageZoomLevel.value
+        currentValue = tab.pageZoomLevel
       }
     }
   }
@@ -74,11 +71,8 @@ class PageZoomHandler: ObservableObject {
   }
 
   private func storeChanges() {
-    guard let webView = webView,
-      let url = webView.url
-    else { return }
-
-    webView.setValue(currentValue, forKey: PageZoomHandler.propertyName)
+    guard let tab, let url = tab.url else { return }
+    tab.pageZoomLevel = currentValue
 
     // Do NOT store the changes in the Domain
     if !isPrivateBrowsing {

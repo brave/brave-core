@@ -16,7 +16,7 @@ extension BrowserViewController {
       token: token,
       host: host,
       onEnterCall: { [weak tab] in
-        tab?.webView?.stopLoading()
+        tab?.stop()
       },
       onExitCall: { [weak self] in
         guard let self = self else { return }

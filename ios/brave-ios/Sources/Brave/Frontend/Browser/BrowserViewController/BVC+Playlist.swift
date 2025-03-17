@@ -27,7 +27,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
       ?? Strings.Playlist.defaultPlaylistTitle
 
     return PopoverController(
-      content: PlaylistPopoverView(folderName: folderName) { [weak self] action in
+      content: PlaylistPopoverView(folderName: folderName) { [weak self, weak tab] action in
         guard let self = self,
           let selectedTab = tab,
           let item = selectedTab.playlistItem
@@ -41,8 +41,8 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
           switch action {
           case .openPlaylist:
             DispatchQueue.main.async {
-              if let webView = tab?.webView {
-                PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: item.tagId) {
+              if let tab {
+                PlaylistScriptHandler.getCurrentTime(tab: tab, nodeTag: item.tagId) {
                   [weak self] currentTime in
                   self?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
                 }
@@ -165,8 +165,8 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
             UIImpactFeedbackGenerator(style: .medium).vibrate()
 
             DispatchQueue.main.async {
-              if let webView = tab?.webView {
-                PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: item.tagId) {
+              if let tab {
+                PlaylistScriptHandler.getCurrentTime(tab: tab, nodeTag: item.tagId) {
                   [weak self] currentTime in
                   self?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
                 }
@@ -280,8 +280,8 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
   }
 
   func openPlaylist(tab: Tab?, item: PlaylistInfo?, folderSharingPageUrl: String? = nil) {
-    if let item, let webView = tab?.webView {
-      PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: item.tagId) {
+    if let item, let tab {
+      PlaylistScriptHandler.getCurrentTime(tab: tab, nodeTag: item.tagId) {
         [weak self] currentTime in
         self?.openPlaylist(
           tab: tab,

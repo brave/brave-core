@@ -206,10 +206,9 @@ public class PlaylistCoordinator: NSObject {
 
     if let tab = tab,
       let item = tab.playlistItem,
-      let webView = tab.webView,
       let tag = tab.playlistItem?.tagId
     {
-      PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: tag) {
+      PlaylistScriptHandler.getCurrentTime(tab: tab, nodeTag: tag) {
         [unowned self] currentTime in
         completion(
           self.getPlaylistController(

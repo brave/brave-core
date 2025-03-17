@@ -49,8 +49,8 @@ class BackForwardListViewController: UIViewController, UIGestureRecognizerDelega
 
   var tabManager: TabManager?
   weak var bvc: BrowserViewController?
-  private var currentItem: WKBackForwardListItem?
-  private var backForwardListData = [WKBackForwardListItem]()
+  private var currentItem: BackForwardList.Item?
+  private var backForwardListData = [BackForwardList.Item]()
 
   var tableHeight: CGFloat {
     assert(
@@ -75,7 +75,7 @@ class BackForwardListViewController: UIViewController, UIGestureRecognizerDelega
     return tabManager?.privateBrowsingManager.isPrivateBrowsing ?? false
   }
 
-  init(profile: Profile, backForwardList: WKBackForwardList) {
+  init(profile: Profile, backForwardList: BackForwardList) {
     self.profile = profile
     super.init(nibName: nil, bundle: nil)
 
@@ -104,7 +104,7 @@ class BackForwardListViewController: UIViewController, UIGestureRecognizerDelega
     setupDismissTap()
   }
 
-  func homeAndNormalPagesOnly(_ bfList: WKBackForwardList) {
+  func homeAndNormalPagesOnly(_ bfList: BackForwardList) {
     let items =
       bfList.forwardList.reversed() + [bfList.currentItem].compactMap({ $0 })
       + bfList.backList.reversed()
@@ -122,7 +122,7 @@ class BackForwardListViewController: UIViewController, UIGestureRecognizerDelega
     }
   }
 
-  func loadSites(_ bfList: WKBackForwardList) {
+  func loadSites(_ bfList: BackForwardList) {
     currentItem = bfList.currentItem
     homeAndNormalPagesOnly(bfList)
   }

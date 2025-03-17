@@ -34,7 +34,7 @@ extension BrowserViewController {
 
   @objc private func findInPageKeyCommand() {
     if let tab = tabManager.selectedTab, favoritesController == nil {
-      self.tab(tab, didSelectFindInPageFor: "")
+      tab.presentFindInteraction()
     }
   }
 

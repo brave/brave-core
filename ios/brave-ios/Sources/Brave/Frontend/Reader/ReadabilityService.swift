@@ -87,7 +87,7 @@ extension ReadabilityOperation: TabObserver {
   }
 
   func tabDidFinishNavigation(_ tab: Tab) {
-    tab.webView?.evaluateSafeJavaScript(
+    tab.evaluateSafeJavaScript(
       functionName: "\(readerModeNamespace).checkReadability",
       contentWorld: ReaderModeScriptHandler.scriptSandbox
     )
