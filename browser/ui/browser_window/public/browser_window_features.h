@@ -12,6 +12,10 @@
 
 class BraveVPNController;
 
+// This file doesn't include header file for BrowserWindowFeatures_ChromiumImpl
+// because this file only could be included at the bottom of
+// //chrome/browser/ui/browser_window/public/browser_window_features.h. So we
+// could avoid dependency cycle with //chrome/browser/ui/browser_window.
 class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
  public:
   static std::unique_ptr<BrowserWindowFeatures> CreateBrowserWindowFeatures();

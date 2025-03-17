@@ -1,20 +1,18 @@
 diff --git a/chrome/browser/ui/browser_window/BUILD.gn b/chrome/browser/ui/browser_window/BUILD.gn
-index 22c8048a9d408bb97d81ca9e9e52587547763673..84c9c25712f3d6d42eaf01f39e55c5203dd41504 100644
+index 22c8048a9d408bb97d81ca9e9e52587547763673..c7da9ecbb68b2fb685bf869af8dc511e2f1d01c5 100644
 --- a/chrome/browser/ui/browser_window/BUILD.gn
 +++ b/chrome/browser/ui/browser_window/BUILD.gn
 @@ -21,6 +21,7 @@ source_set("browser_window") {
      "//content/public/browser",
      "//ui/base:types",
    ]
-+  import("//brave/browser/ui/browser_window/sources.gni") sources += brave_browser_ui_browser_window_sources deps=brave_browser_ui_browser_window_deps
++  deps = [ "//brave/browser/ui/browser_window" ]
  }
  
  source_set("impl") {
-@@ -49,6 +50,7 @@ source_set("impl") {
-     "//components/profile_metrics",
-     "//components/saved_tab_groups/public",
-   ]
-+  deps += [ "//brave/browser/ui/browser_window:impl" ]
- 
+@@ -53,4 +54,5 @@ source_set("impl") {
    if (enable_glic) {
      deps += [ "//chrome/browser/glic" ]
+   }
++  deps += [ "//brave/browser/ui/browser_window:impl" ]
+ }
