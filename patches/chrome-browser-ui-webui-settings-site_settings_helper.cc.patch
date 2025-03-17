@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 9653ab45f6aa1e5be12c5c9e2b71bbdaac82d50d..ab1bcb63b2a999fc57433fb514d63b94a2e35562 100644
+index 4edd921f2e284039dc8c027acad09823c6d7ea74..2c6301332d3528c713d8568a7431f5e4a8e70884 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -250,6 +250,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
+@@ -249,6 +249,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
+     // POINTER_LOCK has been deprecated.
+     {ContentSettingsType::POINTER_LOCK, nullptr},
      {ContentSettingsType::REVOKED_DISRUPTIVE_NOTIFICATION_PERMISSIONS, nullptr},
-     // TODO(crbug.com/400455013): Implement UI for LNA permission.
-     {ContentSettingsType::LOCAL_NETWORK_ACCESS, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  });
  
  static_assert(
-@@ -510,6 +511,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -509,6 +510,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -18,7 +18,7 @@ index 9653ab45f6aa1e5be12c5c9e2b71bbdaac82d50d..ab1bcb63b2a999fc57433fb514d63b94
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -524,6 +526,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -523,6 +525,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
@@ -26,7 +26,7 @@ index 9653ab45f6aa1e5be12c5c9e2b71bbdaac82d50d..ab1bcb63b2a999fc57433fb514d63b94
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -698,6 +701,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -702,6 +705,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -34,7 +34,7 @@ index 9653ab45f6aa1e5be12c5c9e2b71bbdaac82d50d..ab1bcb63b2a999fc57433fb514d63b94
      case ProviderType::kWebuiAllowlistProvider:
        return SiteSettingSource::kAllowlist;
      case ProviderType::kPolicyProvider:
-@@ -724,6 +728,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -728,6 +732,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  
  std::string ProviderToDefaultSettingSourceString(const ProviderType provider) {
    switch (provider) {
