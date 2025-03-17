@@ -115,6 +115,7 @@ class BraveBrowserView : public BrowserView,
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
   bool IsInTabDragging() const override;
   views::View* GetContentsContainerForLayoutManager() override;
+  void ReadyToListenFullscreenChanges() override;
 
 #if defined(USE_AURA)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
