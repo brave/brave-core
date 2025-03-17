@@ -8,17 +8,21 @@
 
 #include <string_view>
 
+#include "ios/components/webui/web_ui_url_constants.h"
+#include "url/gurl.h"
+
 #define callbacks_                                                           \
   callbacks_;                                                                \
                                                                              \
  public:                                                                     \
   template <typename Interface>                                              \
   void AddUntrustedInterface(                                                \
-      std::string_view host,                                                 \
+      const GURL& url,                                                       \
       base::RepeatingCallback<void(mojo::PendingReceiver<Interface>)>        \
           callback) {                                                        \
-    CHECK(!host.empty());                                                    \
-    untrusted_callbacks_.emplace(std::string(host), Interface::Name_);       \
+    DCHECK(!url.is_empty() && url.is_valid() &&                              \
+           url.SchemeIs(kChromeUIUntrustedScheme));                          \
+    untrusted_callbacks_.emplace(std::string(url.host()), Interface::Name_); \
                                                                              \
     AddInterface(                                                            \
         Interface::Name_,                                                    \
