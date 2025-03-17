@@ -34,7 +34,6 @@ namespace psst {
 //     "name": "twitter",
 //     "version": 1,
 //     "user_script": "user.js",
-//     "test_script": "test.js",
 //     "policy_script": "policy.js"
 //   }, ...
 // ]
@@ -62,7 +61,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRule {
   // Getters.
   const std::string& Name() const { return name_; }
   const base::FilePath& PolicyScriptPath() const { return policy_script_path_; }
-  const base::FilePath& TestScriptPath() const { return test_script_path_; }
   const base::FilePath& UserScriptPath() const { return user_script_path_; }
   int Version() const { return version_; }
 
@@ -72,7 +70,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRule {
   std::string name_;
   // These are paths (not contents!) relative to the component under scripts/.
   base::FilePath policy_script_path_;
-  base::FilePath test_script_path_;
   base::FilePath user_script_path_;
   // Used for checking if the last inserted script is the latest version.
   int version_;

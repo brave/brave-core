@@ -14,6 +14,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
@@ -861,8 +862,6 @@ source_set("ui") {
     "//brave/components/p3a",
     "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",
-    "//brave/components/psst/browser/core",
-    "//brave/components/psst/common",
     "//brave/components/query_filter",
     "//brave/components/resources:static_resources",
     "//brave/components/services/bat_ads/public/interfaces",
@@ -926,6 +925,13 @@ source_set("ui") {
     "//ui/webui",
     "//url",
   ]
+
+  if (enable_psst) {
+    deps += [
+      "//brave/components/psst/browser/core",
+      "//brave/components/psst/common",
+    ]
+  }
 
   if (enable_brave_vpn) {
     deps += [

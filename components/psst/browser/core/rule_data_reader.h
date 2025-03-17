@@ -19,7 +19,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) RuleDataReader {
   virtual ~RuleDataReader() = default;
 
   virtual std::optional<std::string> ReadUserScript(const PsstRule& rule) const;
-  virtual std::optional<std::string> ReadTestScript(const PsstRule& rule) const;
   virtual std::optional<std::string> ReadPolicyScript(
       const PsstRule& rule) const;
 

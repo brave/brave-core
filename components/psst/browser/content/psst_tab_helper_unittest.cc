@@ -173,7 +173,6 @@ TEST_F(PsstTabHelperUnitTest, NavigateToUrlTriggersUserScript) {
             "name": "$1",
             "version": 1,
             "user_script": "user.js",
-            "test_script": "test.js",
             "policy_script": "policy.js"
         }
       ]

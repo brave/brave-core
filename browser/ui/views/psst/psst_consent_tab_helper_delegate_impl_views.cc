@@ -17,11 +17,13 @@ namespace {
 
 PsstConsentDialog* GetDelegate(content::WebContents* contents) {
   auto* dialog_tracker = PsstConsentDialogTracker::FromWebContents(contents);
-  if(!dialog_tracker) {
+  if (!dialog_tracker || !dialog_tracker->active_dialog() ||
+      !dialog_tracker->active_dialog()->widget_delegate()) {
     return nullptr;
   }
 
-  return static_cast<PsstConsentDialog*>(dialog_tracker->active_dialog()->widget_delegate());
+  return static_cast<PsstConsentDialog*>(
+      dialog_tracker->active_dialog()->widget_delegate());
 }
 
 }  // namespace
@@ -52,7 +54,7 @@ void PsstConsentTabHelperDelegateImpl::SetProgressValue(content::WebContents* co
   if(!delegate) {
     return;
   }
-
+LOG(INFO) << "[PSST] SetProgressValue value:" << value;
   delegate->SetProgressValue(std::move(value));
 }
 
@@ -63,6 +65,15 @@ void PsstConsentTabHelperDelegateImpl::SetRequestDone(content::WebContents* cont
   }
 
   delegate->SetRequestDone(url);
+}
+
+void PsstConsentTabHelperDelegateImpl::SetRequestError(content::WebContents* contents, const std::string& url, const std::string& error) {
+  auto* delegate = GetDelegate(contents);
+  if(!delegate) {
+    return;
+  }
+
+  delegate->SetRequestError(url, error);
 }
 
 void PsstConsentTabHelperDelegateImpl::Close(content::WebContents* contents) {

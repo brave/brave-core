@@ -79,9 +79,6 @@ TEST_F(RuleDataReaderUnitTest, TryToLoadWrongWithComponentScriptPath) {
   auto user_script = crr.ReadUserScript(GetWrongNameRule());
   ASSERT_FALSE(user_script);
 
-  auto test_script = crr.ReadTestScript(GetWrongNameRule());
-  ASSERT_FALSE(test_script);
-
   auto policy_script = crr.ReadPolicyScript(GetWrongNameRule());
   ASSERT_FALSE(policy_script);
 

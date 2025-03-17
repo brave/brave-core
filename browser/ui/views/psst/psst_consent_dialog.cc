@@ -5,8 +5,6 @@
 
 #include "brave/browser/ui/views/psst/psst_consent_dialog.h"
 
-#include <iostream>
-#include <limits>
 #include <memory>
 #include <string>
 #include <utility>
@@ -19,16 +17,12 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/base/models/image_model.h"
 #include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/checkbox.h"
-#include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/progress_bar.h"
-#include "ui/views/controls/scroll_view.h"
 #include "ui/views/layout/box_layout_view.h"
 #include "ui/views/layout/fill_layout.h"
-#include "ui/views/metadata/view_factory.h"
 #include "ui/views/view_class_properties.h"
 
 namespace {
@@ -62,6 +56,7 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
 
   views::Label* header = nullptr;
   views::Label* body = nullptr;
+  views::Label* new_version_label = nullptr;
 
   auto box =
       views::Builder<views::BoxLayoutView>()
@@ -97,7 +92,7 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
       continue;
     }
 
-    views::Checkbox* current_checkbox = nullptr;
+    auto current_status_line = std::make_unique<StatusCheckedLine>();
     auto change_item_box =
         views::Builder<views::BoxLayoutView>()
             .SetOrientation(views::BoxLayout::Orientation::kHorizontal)
@@ -107,10 +102,16 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
     change_item_box.AddChild(views::Builder<views::Checkbox>()
                                  .SetEnabled(false)
                                  .SetText(base::ASCIIToUTF16(*description))
-                                 .CopyAddressTo(&current_checkbox));
+                                 .CopyAddressTo(&current_status_line->check_box));
+    change_item_box.AddChild(views::Builder<views::Label>()
+            .CopyAddressTo(&current_status_line->status_label)
+            .SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT)
+            .SetEnabledColor(SK_ColorRED)
+            .SetProperty(views::kMarginsKey, gfx::Insets().set_left(16)));
+
     box.AddChild(std::move(change_item_box));
 
-    task_checked_list_[*url] = current_checkbox;
+    task_checked_list_[*url] = std::move(current_status_line);
   }
 
   box.AddChild(
@@ -118,13 +119,14 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
           .SetPreferredSize(gfx::Size(50, 10))
           .CopyAddressTo(&progress_bar_)
           .SetValue(0)
-          .SetProperty(views::kMarginsKey, gfx::Insets().set_bottom(16).set_top(32)));
+          .SetProperty(views::kMarginsKey, gfx::Insets().set_bottom(16).set_top(24)));
 
   if (prompt_for_new_version) {
     box.AddChild(
         views::Builder<views::Label>()
             .SetText(l10n_util::GetStringUTF16(
                 IDS_PSST_CONSENT_DIALOG_BODY_NEW_VERSION))
+            .CopyAddressTo(&new_version_label)
             .SetMultiLine(true)
             .SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT));
   }
@@ -134,6 +136,7 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
           .SetOrientation(views::BoxLayout::Orientation::kHorizontal)
           .SetMainAxisAlignment(views::LayoutAlignment::kEnd)
           .SetCrossAxisAlignment(views::BoxLayout::CrossAxisAlignment::kEnd)
+          .SetProperty(views::kMarginsKey, gfx::Insets().set_bottom(16).set_top(16))
           .AddChild(views::Builder<views::MdTextButton>()
                         .SetText(l10n_util::GetStringUTF16(
                             IDS_PSST_CONSENT_DIALOG_CANCEL))
@@ -171,6 +174,13 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
   const auto& body_font_list = body->font_list();
   body->SetFontList(
       body_font_list.DeriveWithSizeDelta(14 - body_font_list.GetFontSize()));
+
+  if (prompt_for_new_version) {
+    CHECK(new_version_label);
+    new_version_label->SetFontList(
+        body_font_list.DeriveWithSizeDelta(14 - body_font_list.GetFontSize()));
+
+  }
 }
 
 PsstConsentDialog::~PsstConsentDialog() = default;
@@ -190,7 +200,7 @@ void PsstConsentDialog::SetProgressValue(const double value) {
   if (!progress_bar_) {
     return;
   }
-
+LOG(INFO) << "[PSST] PsstConsentDialog::SetProgressValue " << (progress_bar_?"OK":"NULL");
   progress_bar_->SetValue(std::move(value));
 }
 
@@ -199,9 +209,28 @@ void PsstConsentDialog::SetRequestDone(const std::string& url) {
     return;
   }
 
-  const auto checkbox_to_mark = task_checked_list_[url];
-  if (checkbox_to_mark) {
+  const auto status_checked_line_to_mark = task_checked_list_[url].get();
+  if (!status_checked_line_to_mark) {
+    return;
+  }
+
+  if(auto checkbox_to_mark = status_checked_line_to_mark->check_box) {
     checkbox_to_mark->SetChecked(true);
+  }
+}
+
+void PsstConsentDialog::SetRequestError(const std::string& url, const std::string& error) {
+  if (!task_checked_list_.contains(url)) {
+    return;
+  }
+
+  const auto status_checked_line_to_mark = task_checked_list_[url].get();
+  if (!status_checked_line_to_mark) {
+    return;
+  }
+
+  if(auto status_label = status_checked_line_to_mark->status_label) {
+    status_label->SetText(base::ASCIIToUTF16(error));
   }
 }
 

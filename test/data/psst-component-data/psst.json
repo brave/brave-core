@@ -8,7 +8,6 @@
         ],
         "version": 1,
         "user_script": "user.js",
-        "test_script": "test.js",
         "policy_script": "policy.js"
     },
     {
@@ -20,7 +19,6 @@
         ],
         "version": 1,
         "user_script": "user.js",
-        "test_script": "test.js",
         "policy_script": "policy.js"
     }
 ]

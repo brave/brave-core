@@ -28,6 +28,9 @@ void PsstConsentTabHelperDelegateImpl::SetRequestDone(content::WebContents* cont
   NOTIMPLEMENTED();
 }
 
+void PsstConsentTabHelperDelegateImpl::SetRequestError(content::WebContents* contents, const std::string& url, const std::string& error) {
+}
+
 void PsstConsentTabHelperDelegateImpl::Close(content::WebContents* contents) {
   NOTIMPLEMENTED();
 }

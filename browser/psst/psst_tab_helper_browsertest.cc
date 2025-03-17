@@ -388,7 +388,6 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, CallTestScriptAsDialogAccepted)
 //             "name": "b",
 //             "version": 1,
 //             "user_script": "user.js",
-//             "test_script": "test.js",
 //             "policy_script": "policy.js"
 //         }
 //       ]
@@ -424,7 +423,6 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, NoMatch) {
             "name" : "c",
             "version": 1,
             "user_script": "user.js",
-            "test_script": "test.js",
             "policy_script": "policy.js"
         }
       ]
@@ -452,7 +450,6 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, UserNotFound) {
             "name": "d",
             "version": 1,
             "user_script": "user.js",
-            "test_script": "test.js",
             "policy_script": "policy.js"
         }
       ]
@@ -479,7 +476,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabHelperBrowserTest, NoInsertIfNoName) {
             "exclude": [
             ],
             "version": 1,
-            "test_script": "test.js",
+            "user_script": "user.js",
             "policy_script": "policy.js"
         }
       ]

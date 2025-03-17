@@ -28,7 +28,6 @@ constexpr char kExclude[] = "exclude";
 const char kName[] = "name";
 constexpr char kVersion[] = "version";
 const char kUserScript[] = "user_script";
-constexpr char kTestScript[] = "test_script";
 constexpr char kPolicyScript[] = "policy_script";
 
 bool GetURLPatternSetFromValue(const base::Value* value,
@@ -65,7 +64,7 @@ PsstRule::PsstRule(const PsstRule& other) {
   exclude_pattern_set_ = other.exclude_pattern_set_.Clone();
   name_ = other.name_;
   user_script_path_ = other.user_script_path_;
-  test_script_path_ = other.test_script_path_;
+//  test_script_path_ = other.test_script_path_;
   policy_script_path_ = other.policy_script_path_;
   version_ = other.version_;
 }
@@ -80,8 +79,8 @@ void PsstRule::RegisterJSONConverter(
   converter->RegisterStringField(kName, &PsstRule::name_);
   converter->RegisterCustomValueField<base::FilePath>(
       kUserScript, &PsstRule::user_script_path_, GetFilePathFromValue);
-  converter->RegisterCustomValueField<base::FilePath>(
-      kTestScript, &PsstRule::test_script_path_, GetFilePathFromValue);
+  // converter->RegisterCustomValueField<base::FilePath>(
+  //     kTestScript, &PsstRule::test_script_path_, GetFilePathFromValue);
   converter->RegisterCustomValueField<base::FilePath>(
       kPolicyScript, &PsstRule::policy_script_path_, GetFilePathFromValue);
   converter->RegisterIntField(kVersion, &PsstRule::version_);
@@ -115,11 +114,13 @@ bool PsstRule::ShouldInsertScript(const GURL& url) const {
   // If URL matches an explicitly excluded pattern, this rule does not
   // apply.
   if (exclude_pattern_set_.MatchesURL(url)) {
+    LOG(INFO) << "[PSST] ShouldInsertScript exclude_pattern_set !!!";
     return false;
   }
   // If URL does not match an explicitly included pattern, this rule does not
   // apply.
   if (!include_pattern_set_.MatchesURL(url)) {
+    LOG(INFO) << "[PSST] ShouldInsertScript !include_pattern_set_ !!!:" << (include_pattern_set_.ToValue().DebugString());
     return false;
   }
 

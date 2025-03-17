@@ -37,13 +37,6 @@ std::optional<std::string> RuleDataReader::ReadUserScript(
   return ReadFile(user_script_path);
 }
 
-std::optional<std::string> RuleDataReader::ReadTestScript(
-    const PsstRule& rule) const {
-  const auto test_script_path = base::FilePath(prefix_)
-                                    .AppendASCII(rule.Name())
-                                    .Append(rule.TestScriptPath());
-  return ReadFile(test_script_path);
-}
 std::optional<std::string> RuleDataReader::ReadPolicyScript(
     const PsstRule& rule) const {
   const auto policy_script_path = base::FilePath(prefix_)

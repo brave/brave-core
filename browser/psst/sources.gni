@@ -3,12 +3,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import("//brave/components/psst/buildflags/buildflags.gni")
+
 brave_browser_psst_sources = []
 brave_browser_psst_deps = []
 
-brave_browser_psst_sources += [
-  "//brave/browser/psst/psst_consent_tab_helper_delegate_impl.cc",
-  "//brave/browser/psst/psst_consent_tab_helper_delegate_impl.h",
-]
+if (enable_psst) {
+  brave_browser_psst_sources += [
+    "//brave/browser/psst/psst_consent_tab_helper_delegate_impl.cc",
+    "//brave/browser/psst/psst_consent_tab_helper_delegate_impl.h",
+  ]
 
-brave_browser_psst_deps += [ "//brave/components/psst/browser/content" ]
+  brave_browser_psst_deps += [ "//brave/components/psst/browser/content" ]
+}

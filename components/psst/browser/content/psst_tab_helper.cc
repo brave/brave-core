@@ -95,10 +95,7 @@ void PsstTabHelper::OnPolicyScriptResult(
     const MatchedRule& rule,
     const content::GlobalRenderFrameHostId& render_frame_host_id,
     base::Value value) {
-LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult value:" << value.DebugString();
-
-  // TODO(ssahib): Update the inserted version for the site & user.
-  // TODO(ssahib): this should be a dictionary.
+  LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult value:" << value.DebugString();
   if (!value.is_dict()) {
     std::cerr << "could not get result for PSST." << std::endl;
     return;
@@ -119,9 +116,13 @@ LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult No psst";
       delegate_->SetRequestDone(web_contents(), *url);
   }
 
-  if(const auto* errors = psst->FindDict("errors"); errors && !errors->empty()) {
-LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult errors:" << errors->DebugString();
-    return;
+  if (const auto* errors = psst->FindDict("errors");
+      errors && !errors->empty()) {
+    LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult errors:"
+              << errors->DebugString();
+    for (const auto [key, val] : *errors) {
+      delegate_->SetRequestError(web_contents(), key, val.GetString());
+    }
   }
 
   LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult #500";
@@ -179,7 +180,7 @@ void PsstTabHelper::OnUserScriptResult(
     return;
   }
 
-  LOG(INFO) << "[PSST] PsstTabHelper::OnUserScriptResult requests:" << requests->DebugString();
+  LOG(INFO) << "[PSST] PsstTabHelper::OnUserScriptResult show_prompt:" << show_prompt << " prompt_for_new_version:" << prompt_for_new_version;
   delegate_->ShowPsstConsentDialog(
       web_contents(), prompt_for_new_version, requests->Clone(),
       base::BindOnce(&PsstTabHelper::OnUserDialogAction,
@@ -217,12 +218,11 @@ void PsstTabHelper::OnUserDialogAction(
 void PsstTabHelper::InsertUserScript(
     const content::GlobalRenderFrameHostId& render_frame_host_id,
     const std::optional<MatchedRule>& rule) {
-  DCHECK(rule);
   if (!rule) {
     return;
   }
 
-  LOG(INFO) << "[PSST] PsstTabHelper::InsertUserScript rule:" << rule->Name() << " version:" << rule->Version() << " user_script:" << rule->UserScript();
+  LOG(INFO) << "[PSST] PsstTabHelper::InsertUserScript rule:" << rule->Name() << " version:" << rule->Version();// << " user_script:" << rule->UserScript();
   InsertScriptInPage(
       render_frame_host_id, world_id_ /*blink::kMainDOMWorldId*/, rule->UserScript(), std::nullopt /* no params */,
       base::BindOnce(&PsstTabHelper::OnUserScriptResult,
@@ -242,7 +242,6 @@ void PsstTabHelper::InsertScriptInPage(
   // Add params as JS preamble to the script.
   std::string script_with_params = GetScriptWithParams(script, std::move(value));
 
-  LOG(INFO) << "[PSST] InsertScriptInPage script_with_params:" << script_with_params << " \r\nscript:" << script;
   // Check if render_frame_host is still valid and if starting rfh is the same.
   if (render_frame_host &&
       render_frame_host_id ==

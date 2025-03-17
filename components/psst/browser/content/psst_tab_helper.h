@@ -46,6 +46,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
                                        base::OnceClosure no_cb) = 0;
     virtual void SetProgressValue(content::WebContents* contents, const double value) = 0;
     virtual void SetRequestDone(content::WebContents* contents, const std::string& url) = 0;
+    virtual void SetRequestError(content::WebContents* contents, const std::string& url, const std::string& error) = 0;
     virtual void Close(content::WebContents* contents) = 0;
   };
 

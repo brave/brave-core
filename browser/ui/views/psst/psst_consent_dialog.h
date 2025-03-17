@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PSST_PSST_CONSENT_DIALOG_H_
 #define BRAVE_BROWSER_UI_VIEWS_PSST_PSST_CONSENT_DIALOG_H_
 
+#include <memory>
 #include <string>
 
 #include "base/containers/flat_map.h"
@@ -19,6 +20,11 @@
 
 class PsstConsentDialog : public views::DialogDelegateView {
  public:
+ struct StatusCheckedLine {
+  raw_ptr<views::Checkbox> check_box{nullptr};
+  raw_ptr<views::Label> status_label{nullptr};
+ };
+
   PsstConsentDialog(bool prompt_for_new_version,
                     base::Value::List requests,
                     base::OnceClosure consent_callback,
@@ -34,6 +40,8 @@ class PsstConsentDialog : public views::DialogDelegateView {
 
   void SetRequestDone(const std::string& url);
 
+  void SetRequestError(const std::string& url, const std::string& error);
+
   void OnConsentClicked();
 
  private:
@@ -43,7 +51,7 @@ class PsstConsentDialog : public views::DialogDelegateView {
   raw_ptr<views::Button> no_button_{nullptr};
   raw_ptr<views::Button> ok_button_{nullptr};
   raw_ptr<views::ProgressBar> progress_bar_{nullptr};
-  base::flat_map<std::string, raw_ptr<views::Checkbox>> task_checked_list_;
+  base::flat_map<std::string, std::unique_ptr<StatusCheckedLine>> task_checked_list_;
   base::WeakPtrFactory<PsstConsentDialog> weak_factory_{this};
 };
 
