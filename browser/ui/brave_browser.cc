@@ -72,6 +72,12 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
       std::make_unique<sidebar::SidebarController>(this, profile());
   sidebar_controller_->SetSidebar(brave_window()->InitSidebar());
 #endif
+
+  // As browser window(BrowserView) is initialized before fullscreen controller
+  // is ready, it's difficult to know when browsr window can listen.
+  // Notify exact timing to do it.
+  CHECK(exclusive_access_manager());
+  brave_window()->ReadyToListenFullscreenChanges();
 }
 
 BraveBrowser::~BraveBrowser() = default;
