@@ -22,6 +22,11 @@ class NodeDOMRoot final : public NodeHTMLElement {
   void SetURL(const String& url) { url_ = url; }
   const String& GetURL() const { return url_; }
 
+  void SetSecurityOrigin(const String& security_origin) {
+    security_origin_ = security_origin;
+  }
+  const String& GetSecurityOrigin() const { return security_origin_; }
+
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
 
@@ -32,6 +37,7 @@ class NodeDOMRoot final : public NodeHTMLElement {
 
  private:
   String url_;
+  String security_origin_;
   const bool is_attached_;
 };
 
