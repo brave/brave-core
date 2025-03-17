@@ -130,6 +130,9 @@ import {
   useBalancesFetcher //
 } from '../../../../common/hooks/use-balances-fetcher'
 import { useExplorer } from '../../../../common/hooks/explorer'
+import {
+  useIsAccountSyncing //
+} from '../../../../common/hooks/use_is_account_syncing'
 
 // Actions
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
@@ -252,11 +255,16 @@ export const Account = () => {
     ? chainTipStatus.chainTip - chainTipStatus.latestScannedBlock
     : 0
 
+  const isAccountSyncing = useIsAccountSyncing(selectedAccount?.accountId)
+
   const showSyncWarning =
     isShieldedAccount &&
     !syncWarningDismissed
 
-  const enableSyncButton = showSyncWarning && blocksBehind > 0
+  const enableSyncButton =
+    !isAccountSyncing &&
+    showSyncWarning &&
+    blocksBehind > 0
 
   // custom hooks & memos
   const scrollIntoView = useScrollIntoView()
@@ -643,7 +651,9 @@ export const Account = () => {
                   name='refresh'
                   slot='icon-before'
                 />
-                {getLocale('braveWalletSyncAccountButton')}
+                {isAccountSyncing ?
+                  getLocale('braveWalletSyncAccountButtonInProgress') :
+                  getLocale('braveWalletSyncAccountButton')}
               </Button>
               <Button
                 size='small'
