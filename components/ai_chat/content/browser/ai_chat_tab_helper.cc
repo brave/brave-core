@@ -39,6 +39,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/strings/grit/components_strings.h"
@@ -135,9 +136,6 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
       page_content_fetcher_delegate_(
           std::make_unique<PageContentFetcher>(web_contents)) {
   previous_page_title_ = web_contents->GetTitle();
-  agent_client_ = std::make_unique<AgentClient>(web_contents);
-  navigation_tool_ = std::make_unique<NavigationTool>(web_contents);
-  navigate_history_tool_ = std::make_unique<NavigateHistoryTool>(web_contents);
 }
 
 AIChatTabHelper::~AIChatTabHelper() = default;
@@ -367,9 +365,27 @@ void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
   }
 }
 
-std::vector<Tool*> AIChatTabHelper::GetTools() {
-  return {agent_client_.get(), navigation_tool_.get(),
-          navigate_history_tool_.get()};
+std::vector<Tool*> AIChatTabHelper::GetTools(
+    mojom::ConversationCapability conversation_capability) {
+  if (conversation_capability == mojom::ConversationCapability::CONTENT_AGENT) {
+    if (!agent_client_) {
+      agent_client_ = std::make_unique<AgentClient>(web_contents());
+    }
+    if (!navigation_tool_) {
+      navigation_tool_ = std::make_unique<NavigationTool>(web_contents());
+    }
+    if (!navigate_history_tool_) {
+      navigate_history_tool_ =
+          std::make_unique<NavigateHistoryTool>(web_contents());
+    }
+    // TODO(petemill): Make agent client
+    // decision here based on e.g. anthropic computer use support in the model
+    // or not since it's either/or wrt web content control.
+    return {agent_client_.get(), navigation_tool_.get(),
+            navigate_history_tool_.get()};
+  }
+  // We don't have any non-agent content-provided Tools
+  return {};
 }
 
 void AIChatTabHelper::MaybeSameDocumentIsNewPage() {

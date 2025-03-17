@@ -17,6 +17,7 @@
 
 namespace ai_chat {
 
+// TODO(petemill): Rename to AnthropicComputerUseTool
 class AgentClient : public Tool,
                     public content::DevToolsAgentHostClient,
                     public content::WebContentsObserver {
@@ -31,6 +32,7 @@ class AgentClient : public Tool,
   std::string_view description() const override;
   std::string_view type() const override;
   std::optional<base::Value::Dict> extra_params() const override;
+  bool IsSupportedByModel(const mojom::Model& model) const override;
   void UseTool(const std::string& input_json,
                Tool::UseToolCallback callback) override;
 

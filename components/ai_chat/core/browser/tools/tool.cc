@@ -31,6 +31,10 @@ bool Tool::IsAgentTool() const {
   return false;
 }
 
+bool Tool::IsSupportedByModel(const mojom::Model& model) const {
+  return true;
+}
+
 bool Tool::RequiresUserInteractionBeforeHandling() const {
   return false;
 }

@@ -28,6 +28,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "net/base/url_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -275,13 +276,9 @@ void AssociatedContentDriver::OnTitleChanged() {
 }
 
 void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
-  if (ai_chat::features::kIsAgentEnabled.Get()) {
-    return;
-  }
-
   // This instance will now be used for different content so existing
   // conversations need to be disassociated.
-  DisassociateWithConversations();
+  DisassociateWithConversations(true);
 
   // Tell the observer how to find the next conversation
   for (auto& observer : observers_) {
@@ -298,12 +295,15 @@ void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
   ConversationHandler::AssociatedContentDelegate::OnNewPage(navigation_id);
 }
 
-void AssociatedContentDriver::DisassociateWithConversations() {
+void AssociatedContentDriver::DisassociateWithConversations(
+    bool non_agent_only /*= false*/) {
   // Iterator might be invalidated by destruction, so copy the items
   std::vector<ConversationHandler*> conversations{
       associated_conversations_.begin(), associated_conversations_.end()};
   for (auto& conversation : conversations) {
-    if (conversation) {
+    if (conversation &&
+        (!non_agent_only || conversation->get_conversation_capability() !=
+                                mojom::ConversationCapability::CONTENT_AGENT)) {
       conversation->OnAssociatedContentDestroyed(cached_text_content_,
                                                  is_video_);
     }

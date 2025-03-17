@@ -75,22 +75,6 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     setConversationAPI(API.bindConversation(selectedConversationId === tabAssociatedChatId
       ? undefined
       : selectedConversationId))
-
-    // The default conversation changes as the associated tab navigates, so
-    // listen for changes.
-    if (selectedConversationId === tabAssociatedChatId) {
-      const onNewDefaultConversationListenerId =
-        getAPI().uiObserver.onNewDefaultConversation.addListener(() => {
-          setConversationAPI(API.bindConversation(undefined))
-        })
-
-      return () => {
-        getAPI().uiObserver.removeListener(onNewDefaultConversationListenerId)
-      }
-    }
-
-    // Satisfy linter
-    return undefined
   }, [selectedConversationId])
 
   // Clean up bindings when not used anymore

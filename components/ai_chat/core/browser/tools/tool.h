@@ -57,6 +57,8 @@ class Tool {
 
   virtual bool IsAgentTool() const;
 
+  virtual bool IsSupportedByModel(const mojom::Model& model) const;
+
   // If this tool requires a user to interact with it before a response will
   // be sent to the Assistant.
   virtual bool RequiresUserInteractionBeforeHandling() const;

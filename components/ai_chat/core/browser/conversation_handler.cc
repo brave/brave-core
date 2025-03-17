@@ -18,6 +18,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/contains.h"
 #include "base/containers/span.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
@@ -49,7 +50,9 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/grit/brave_components_strings.h"
@@ -181,7 +184,8 @@ bool AssociatedContentDelegate::HasOpenAIChatPermission() const {
   return false;
 }
 
-std::vector<Tool*> AssociatedContentDelegate::GetTools() {
+std::vector<Tool*> AssociatedContentDelegate::GetTools(
+    mojom::ConversationCapability conversation_capability) {
   return {};
 }
 
@@ -493,10 +497,7 @@ void ConversationHandler::InitEngine() {
 
   // When the model changes, the content truncation might be different,
   // and the UI needs to know.
-  if (associated_content_delegate_ &&
-      !associated_content_delegate_->GetCachedTextContent().empty()) {
-    OnAssociatedContentInfoChanged();
-  }
+  OnAssociatedContentInfoChanged();
 }
 
 void ConversationHandler::OnAssociatedContentDestroyed(
@@ -507,7 +508,9 @@ void ConversationHandler::OnAssociatedContentDestroyed(
                         ? associated_content_delegate_->GetContentId()
                         : -1;
   DisassociateContentDelegate();
-  if (!chat_history_.empty() && should_send_page_contents_ &&
+  if (!chat_history_.empty() && IsContentAssociationPossible() &&
+      should_send_page_contents_ &&
+      conversation_capability_ == mojom::ConversationCapability::CHAT &&
       metadata_->associated_content) {
     // Get the latest version of article text and
     // associated_content_info_ if this chat has history and was connected to
@@ -616,7 +619,7 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       model_key, std::move(suggestions), suggestion_generation_status_,
       metadata_->associated_content ? metadata_->associated_content->Clone()
                                     : nullptr,
-      should_send_page_contents_, current_error_);
+      should_send_page_contents_, current_error_, conversation_capability_);
 
   std::move(callback).Run(std::move(state));
 }
@@ -685,9 +688,11 @@ void ConversationHandler::SendFeedback(const std::string& category,
       },
       std::move(callback));
 
-  if (!associated_content_delegate_) {
+  if (!IsContentAssociationPossible()) {
     send_hostname = false;
   }
+
+  CHECK(associated_content_delegate_);
 
   const GURL page_url =
       send_hostname ? associated_content_delegate_->GetURL() : GURL();
@@ -736,6 +741,25 @@ void ConversationHandler::ChangeModel(const std::string& model_key) {
 
   // Always call InitEngine, even with a bad key as we need a model
   InitEngine();
+}
+
+void ConversationHandler::ChangeCapability(
+    mojom::ConversationCapability capability) {
+  if (!chat_history_.empty()) {
+    DVLOG(0) << "Cannot change capability after conversation has started";
+    return;
+  }
+
+  if (capability == mojom::ConversationCapability::CONTENT_AGENT &&
+      !GetCurrentModel().supports_tools) {
+    DVLOG(0) << "Current model does not support capability: " << capability;
+    return;
+  }
+
+  DVLOG(0) << __func__ << ": " << capability;
+
+  conversation_capability_ = capability;
+  OnConversationCapabilityChanged();
 }
 
 void ConversationHandler::GetIsRequestInProgress(
@@ -837,10 +861,13 @@ void ConversationHandler::SubmitHumanConversationEntry(
   const bool is_page_associated =
       IsContentAssociationPossible() && should_send_page_contents_;
 
-  if (is_page_associated &&
-      !(features::kIsAgentEnabled.Get() && features::IsAIChatToolsEnabled()) &&
-      (!features::kIsSmartPageContentEnabled.Get() ||
-       !features::IsAIChatToolsEnabled())) {
+  const bool can_fetch_content =
+      is_page_associated &&
+      conversation_capability_ == mojom::ConversationCapability::CHAT &&
+      !(features::kIsSmartPageContentEnabled.Get() &&
+        features::IsAIChatToolsEnabled());
+
+  if (can_fetch_content) {
     // Fetch updated page content before performing generation
     GeneratePageContent(
         base::BindOnce(&ConversationHandler::PerformAssistantGeneration,
@@ -986,43 +1013,81 @@ mojom::ToolUseEvent* ConversationHandler::GetToolUseEventForLastResponse(
   return nullptr;
 }
 
+std::vector<Tool*> ConversationHandler::GetTools() {
+  if (!features::IsAIChatToolsEnabled()) {
+    return {};
+  }
+
+  bool is_content_associated =
+      (IsContentAssociationPossible() &&
+       (should_send_page_contents_ ||
+        conversation_capability_ ==
+            mojom::ConversationCapability::CONTENT_AGENT));
+
+  // If there's no content association, just gather conversation-owned tools
+  // that do not require it.
+  if (!is_content_associated) {
+    std::vector<Tool*> filtered_tools;
+    filtered_tools.reserve(tools_.size());
+    for (const auto& tool : tools_) {
+      if (!tool->IsContentAssociationRequired() &&
+          tool->IsSupportedByModel(GetCurrentModel())) {
+        filtered_tools.push_back(tool.get());
+      }
+    }
+    return filtered_tools;
+  }
+
+  // Combine conversation-owned tools and content tools
+  std::vector<Tool*> all_tools;
+  all_tools.reserve(tools_.size());
+  for (const auto& tool : tools_) {
+    if (tool->IsSupportedByModel(GetCurrentModel())) {
+      all_tools.push_back(tool.get());
+    }
+  }
+
+  auto content_tools =
+      associated_content_delegate_->GetTools(conversation_capability_);
+  for (auto& tool : content_tools) {
+    if (tool->IsSupportedByModel(GetCurrentModel())) {
+      all_tools.push_back(tool);
+    }
+  }
+
+  return all_tools;
+}
+
 void ConversationHandler::MaybeRespondToNextToolUseRequest() {
   // Handle tool use requests that do not require user feedback
-  if (!chat_history_.empty()) {
-    auto& last_entry = chat_history_.back();
-    if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
-        last_entry->events->size() > 0) {
-      bool is_handling_tool = false;
-      for (auto& event : *last_entry->events) {
-        if (event->is_tool_use_event()) {
-          auto& tool_use_event = event->get_tool_use_event();
-          if (tool_use_event->output != std::nullopt) {
-            // already handled
-            continue;
-          }
-          for (auto& tool : tools_) {
-            if (tool->name() == tool_use_event->tool_name &&
-                !tool->RequiresUserInteractionBeforeHandling()) {
-              is_handling_tool = true;
-              RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
-              break;
-            }
-          }
-          if (!is_handling_tool && associated_content_delegate_ &&
-              should_send_page_contents_) {
-            for (auto& tool : associated_content_delegate_->GetTools()) {
-              if (tool->name() == tool_use_event->tool_name &&
-                  !tool->RequiresUserInteractionBeforeHandling()) {
-                is_handling_tool = true;
-                RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
-                break;
-              }
-            }
-          }
-          if (is_handling_tool) {
-            break;
-          }
+  if (chat_history_.empty()) {
+    return;
+  }
+  auto& last_entry = chat_history_.back();
+  if (last_entry->character_type != mojom::CharacterType::ASSISTANT ||
+      last_entry->events->size() == 0) {
+    return;
+  }
+
+  bool is_handling_tool = false;
+
+  for (auto& event : *last_entry->events) {
+    if (event->is_tool_use_event()) {
+      auto& tool_use_event = event->get_tool_use_event();
+      if (tool_use_event->output != std::nullopt) {
+        // already handled
+        continue;
+      }
+      for (auto& tool : GetTools()) {
+        if (tool->name() == tool_use_event->tool_name &&
+            !tool->RequiresUserInteractionBeforeHandling()) {
+          is_handling_tool = true;
+          RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
+          break;
         }
+      }
+      if (is_handling_tool) {
+        break;
       }
     }
   }
@@ -1035,9 +1100,7 @@ void ConversationHandler::RespondToToolUseRequest(
   if (!tool_use) {
     return;
   }
-  LOG(ERROR) << __func__;
-  LOG(ERROR) << __func__ << ": " << tool_id << ", " << tool_use->tool_id << ", "
-             << tool_use->tool_name;
+
   // Some calls to this function are tools that user is giving
   // permission to use, some are users's giving the answer, and some are to be
   // run immediately after the tool is requested by the assistant.
@@ -1057,33 +1120,18 @@ void ConversationHandler::RespondToToolUseRequest(
     return;
   }
   // Handled by the tool itself
-  LOG(ERROR) << __func__;
-  // Get tool
   Tool* tool = nullptr;
-  auto tool_it = std::ranges::find_if(
-      tools_, [&tool_use](const std::unique_ptr<Tool>& tool) {
-        return tool->name() == tool_use->tool_name;
-      });
-  if (tool_it != tools_.end()) {
-    tool = tool_it->get();
+  auto tools = GetTools();
+  auto tool_it = std::ranges::find_if(tools, [&tool_use](const Tool* tool) {
+    return tool->name() == tool_use->tool_name;
+  });
+  if (tool_it != tools.end()) {
+    tool = *tool_it;
   } else {
-    // Check content tools
-    if (associated_content_delegate_) {
-      auto content_tools = associated_content_delegate_->GetTools();
-      auto a_tool_it =
-          std::ranges::find_if(content_tools, [&tool_use](const Tool* tool) {
-            return tool->name() == tool_use->tool_name;
-          });
-      if (a_tool_it != content_tools.end()) {
-        tool = *a_tool_it;
-      }
-    }
-  }
-  if (!tool) {
-    DLOG(ERROR) << "Tool not found: " << tool_use->tool_name;
+    LOG(ERROR) << "Tool called but not found: " << tool_use->tool_name;
     return;
   }
-  LOG(ERROR) << __func__ << ": " << tool->name();
+  DVLOG(0) << __func__ << " calling UseTool for tool: " << tool->name();
   tool->UseTool(tool_use->input_json,
                 base::BindOnce(&ConversationHandler::OnToolUseComplete,
                                weak_ptr_factory_.GetWeakPtr(), tool_id));
@@ -1139,9 +1187,9 @@ void ConversationHandler::OnActiveWebPageContentFetcherResponseReady(
 void ConversationHandler::SubmitSummarizationRequest() {
   // This is a special case for the pre-optin UI which has a specific button
   // to summarize the page if we're associatable with content.
-  DCHECK(IsContentAssociationPossible())
+  CHECK(IsContentAssociationPossible())
       << "This conversation request is not associated with content";
-  DCHECK(should_send_page_contents_)
+  CHECK(should_send_page_contents_)
       << "This conversation request should send page contents";
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
@@ -1458,7 +1506,7 @@ void ConversationHandler::PerformAssistantGeneration(
   if (features::IsPageContentRefineEnabled() &&
       page_content.length() > max_content_length &&
       last_entry->action_type != mojom::ActionType::SUMMARIZE_PAGE &&
-      associated_content_delegate_) {
+      IsContentAssociationPossible() && should_send_page_contents_) {
     DVLOG(2) << "Refining content of length: " << page_content.length();
 
     auto refined_content_callback = base::BindOnce(
@@ -1484,19 +1532,17 @@ void ConversationHandler::PerformAssistantGeneration(
   }
 
   // TODO(petemill): Decide when to send tools
-  std::vector<Tool*> tools;
+  std::vector<Tool*> available_tools = GetTools();
+  std::vector<Tool*> active_tools;
   bool is_sending_page_contents =
-      IsContentAssociationPossible() && should_send_page_contents_;
+      (IsContentAssociationPossible() &&
+       (should_send_page_contents_ ||
+        conversation_capability_ ==
+            mojom::ConversationCapability::CONTENT_AGENT));
 
-  for (const auto& tool : tools_) {
+  for (const auto& tool : available_tools) {
     if (!tool->IsContentAssociationRequired() || is_sending_page_contents) {
-      tools.push_back(tool.get());
-    }
-  }
-
-  if (is_sending_page_contents) {
-    for (const auto& tool : associated_content_delegate_->GetTools()) {
-      tools.push_back(tool);
+      active_tools.push_back(tool);
     }
   }
 
@@ -1506,7 +1552,7 @@ void ConversationHandler::PerformAssistantGeneration(
 
   engine_->GenerateAssistantResponse(
       is_video, page_content, chat_history_, selected_language_,
-      std::move(tools), std::nullopt, std::move(data_received_callback),
+      std::move(active_tools), std::nullopt, std::move(data_received_callback),
       std::move(data_completed_callback));
 }
 
@@ -1744,10 +1790,13 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
 
 void ConversationHandler::GeneratePageContent(GetPageContentCallback callback) {
   VLOG(1) << __func__;
-  DCHECK(should_send_page_contents_);
-  DCHECK(IsContentAssociationPossible())
+  CHECK(should_send_page_contents_);
+  CHECK(IsContentAssociationPossible())
       << "Shouldn't have been asked to generate page text when "
       << "|IsContentAssociationPossible()| is false.";
+  CHECK(conversation_capability_ == mojom::ConversationCapability::CHAT)
+      << "GeneratePageContent is for chat conversations only and does"
+      << " not contain enough data for agent interaction.";
 
   // Make sure user is opted in since this may make a network request
   // for more page content (e.g. video transcript).
@@ -1964,8 +2013,10 @@ void ConversationHandler::OnConversationEntryAdded(
     OnHistoryUpdate();
     return;
   }
+  // Store associated content for archival for chat conversations only
   std::optional<std::string> associated_content_value;
-  if (is_content_different_ && associated_content_delegate_) {
+  if (is_content_different_ && IsContentAssociationPossible() &&
+      conversation_capability_ == mojom::ConversationCapability::CHAT) {
     associated_content_value =
         associated_content_delegate_->GetCachedTextContent();
     is_content_different_ = false;
@@ -1995,7 +2046,9 @@ void ConversationHandler::OnConversationEntryAdded(
 }
 
 int ConversationHandler::GetContentUsedPercentage() {
+  CHECK(IsContentAssociationPossible());
   CHECK(associated_content_delegate_);
+
   auto& model = GetCurrentModel();
   uint32_t max_associated_content_length =
       ModelService::CalcuateMaxAssociatedContentLengthForModel(model);
@@ -2016,12 +2069,24 @@ int ConversationHandler::GetContentUsedPercentage() {
 }
 
 bool ConversationHandler::IsContentAssociationPossible() {
-  return (associated_content_delegate_ != nullptr);
+  // Don't allow content association on disallowed schemes for chat
+  // conversations. Agent conversations can use the Tab but content fetching
+  // on those schemes will be disallowed within the agent's Tools.
+  return (associated_content_delegate_ != nullptr &&
+          (conversation_capability_ != mojom::ConversationCapability::CHAT ||
+           base::Contains(kAllowedContentSchemes,
+                          associated_content_delegate_->GetURL().scheme())));
 }
 
 void ConversationHandler::UpdateAssociatedContentInfo() {
-  // Only modify associated content metadata here
-  if (associated_content_delegate_) {
+  // Only modify associated content metadata here.
+  if (IsContentAssociationPossible()) {
+    if (conversation_capability_ != mojom::ConversationCapability::CHAT) {
+      // TODO(petemill): which associated content metadata for agent
+      // conversations?
+      metadata_->associated_content = nullptr;
+      return;
+    }
     // Note: We don't create a new AssociatedContent object here unless one
     // doesn't exist. If we generate one with a new UUID the deserializer
     // breaks.
@@ -2032,8 +2097,7 @@ void ConversationHandler::UpdateAssociatedContentInfo() {
     }
     metadata_->associated_content->title =
         base::UTF16ToUTF8(associated_content_delegate_->GetTitle());
-    const GURL url = associated_content_delegate_->GetURL();
-    metadata_->associated_content->url = url;
+    metadata_->associated_content->url = associated_content_delegate_->GetURL();
     metadata_->associated_content->content_id =
         associated_content_delegate_->GetContentId();
     metadata_->associated_content->content_used_percentage =
@@ -2123,6 +2187,13 @@ void ConversationHandler::OnAPIRequestInProgressChanged() {
   for (auto& observer : observers_) {
     observer.OnRequestInProgressChanged(this, is_request_in_progress_);
   }
+}
+
+void ConversationHandler::OnConversationCapabilityChanged() {
+  for (auto& client : conversation_ui_handlers_) {
+    client->OnConversationCapabilityChanged(conversation_capability_);
+  }
+  OnAssociatedContentInfoChanged();
 }
 
 void ConversationHandler::OnStateForConversationEntriesChanged() {

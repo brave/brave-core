@@ -27,6 +27,7 @@ export type UploadedImageData = Mojom.UploadedImage
 export type ConversationContext = SendFeedbackState & CharCountContext & {
   historyInitialized: boolean
   conversationUuid?: string
+  conversationCapability: Mojom.ConversationCapability
   conversationHistory: Mojom.ConversationTurn[]
   associatedContentInfo?: Mojom.AssociatedContent
   allModels: Mojom.Model[]
@@ -78,6 +79,7 @@ export const defaultCharCountContext: CharCountContext = {
 const defaultContext: ConversationContext = {
   historyInitialized: false,
   conversationHistory: [],
+  conversationCapability: Mojom.ConversationCapability.CHAT,
   allModels: [],
   suggestedQuestions: [],
   isGenerating: false,
@@ -218,6 +220,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     async function initialize() {
       const { conversationState: {
         conversationUuid,
+        selectedCapability: conversationCapability,
         isRequestInProgress: isGenerating,
         allModels: models,
         currentModelKey,
@@ -229,6 +232,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       } } = await conversationHandler.getState()
       setPartialContext({
         conversationUuid,
+        conversationCapability,
         isGenerating,
         ...getModelContext(currentModelKey, models),
         suggestedQuestions,
@@ -271,6 +275,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     )
     listenerIds.push(id)
 
+    id = callbackRouter.onConversationCapabilityChanged.addListener(
+      (conversationCapability: Mojom.ConversationCapability) =>
+        setPartialContext({
+          conversationCapability
+        }))
+    listenerIds.push(id)
+
     id = callbackRouter.onSuggestedQuestionsChanged.addListener(
       (questions: string[], status: Mojom.SuggestionGenerationStatus) =>
         setPartialContext({
@@ -306,6 +317,25 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       }
     }
   }, [conversationHandler, callbackRouter])
+
+  React.useEffect(() => {
+    // The default conversation changes as the associated tab navigates, so
+    // listen for changes, but don't switch conversations if this is an agent
+    // conversation, so that the conversation can control the tab accross
+    // navigations.
+    if (selectedConversationId === tabAssociatedChatId &&
+        context.conversationCapability === Mojom.ConversationCapability.CHAT) {
+      const onNewDefaultConversationListenerId =
+        getAPI().uiObserver.onNewDefaultConversation.addListener(() => {
+          updateSelectedConversationId(undefined)
+        })
+      return () => {
+        getAPI().uiObserver.removeListener(onNewDefaultConversationListenerId)
+      }
+    }
+    // satisfy linter
+    return undefined
+  }, [selectedConversationId, context.conversationCapability])
 
   // Update the location when the visible conversation changes
   const isVisible = useIsConversationVisible(context.conversationUuid)

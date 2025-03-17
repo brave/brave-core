@@ -22,6 +22,7 @@
 #include "brave/components/ai_chat/content/browser/build_devtools_key_event_params.h"
 #include "brave/components/ai_chat/content/browser/dom_nodes_xml_string.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/public/browser/navigation_controller.h"
@@ -105,8 +106,22 @@ std::optional<base::Value::Dict> AgentClient::extra_params() const {
   return dict;
 }
 
+bool AgentClient::IsSupportedByModel(const mojom::Model& model) const {
+  return model.supports_anthropic_computer_use;
+}
+
 void AgentClient::UseTool(const std::string& input_json,
                           Tool::UseToolCallback callback) {
+  if (!base::Contains(kAllowedContentSchemes,
+                      devtools_agent_host_->GetWebContents()
+                          ->GetLastCommittedURL()
+                          .scheme())) {
+    std::move(callback).Run(CreateContentBlocksForText(
+        "Error - not allowed to run any tools on this page, please navigate to "
+        "an https page first."));
+    return;
+  }
+
   GetDomTree();
   DVLOG(4) << __func__ << " input_json = " << input_json;
   auto json_message = base::JSONReader::Read(input_json);

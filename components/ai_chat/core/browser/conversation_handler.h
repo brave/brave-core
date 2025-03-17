@@ -116,8 +116,11 @@ class ConversationHandler : public mojom::ConversationHandler,
     // Signifies whether the content has permission to open a conversation's UI
     // within the browser.
     virtual bool HasOpenAIChatPermission() const;
-
-    virtual std::vector<Tool*> GetTools();
+    // Implementer can provide a set of tools that the conversation can use
+    // related tot he content. The pointer will not be stored, so the lifetime
+    // can be short or long.
+    virtual std::vector<Tool*> GetTools(
+        mojom::ConversationCapability conversation_capability);
 
     void GetTopSimilarityWithPromptTilContextLimit(
         const std::string& prompt,
@@ -256,6 +259,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetConversationUuid(GetConversationUuidCallback) override;
   void GetModels(GetModelsCallback callback) override;
   void ChangeModel(const std::string& model_key) override;
+  void ChangeCapability(mojom::ConversationCapability capability) override;
   void GetIsRequestInProgress(GetIsRequestInProgressCallback callback) override;
   void SubmitHumanConversationEntry(
       const std::string& input,
@@ -310,6 +314,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   }
 
   std::string get_conversation_uuid() const { return metadata_->uuid; }
+
+  mojom::ConversationCapability get_conversation_capability() const {
+    return conversation_capability_;
+  }
 
   bool should_send_page_contents() const override;
 
@@ -438,7 +446,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
   void OnSelectedLanguageChanged(const std::string& selected_language);
   void OnAPIRequestInProgressChanged();
+  void OnConversationCapabilityChanged();
   void OnStateForConversationEntriesChanged();
+
+  std::vector<Tool*> GetTools();
 
   void MaybeRespondToNextToolUseRequest();
 
@@ -468,14 +479,14 @@ class ConversationHandler : public mojom::ConversationHandler,
   // non-conversation engine requests.
   bool is_request_in_progress_ = false;
 
-  // All tools available to this conversation
-  std::vector<std::unique_ptr<Tool>> tools_;
+  // Current selected capability
+  mojom::ConversationCapability conversation_capability_ =
+      mojom::ConversationCapability::CHAT;
 
-  // TODO(petemill): Tracking whether the UI is open
-  // for a conversation might not be neccessary anymore as there
-  // are no automatic actions that occur anymore now that content
-  // fetching is on-deman.
-  // bool is_conversation_active_ = false;
+  // Tools owned by this conversation. This does not represent all Tools used
+  // by the conversation as some may come from the content, the browser, or the
+  // OS.
+  std::vector<std::unique_ptr<Tool>> tools_;
 
   // Keep track of whether we've generated suggested questions for the current
   // context. We cannot rely on counting the questions in |suggested_questions_|

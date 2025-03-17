@@ -12,7 +12,7 @@
 
 namespace ai_chat {
 
-class NavigationTool : public Tool, content::WebContentsObserver {
+class NavigationTool : public Tool, public content::WebContentsObserver {
  public:
   explicit NavigationTool(content::WebContents* web_contents);
   ~NavigationTool() override;
@@ -42,6 +42,7 @@ class NavigationTool : public Tool, content::WebContentsObserver {
   void MaybeFinish();
 
   raw_ptr<content::WebContents> web_contents_;
+
   // Store the pending UseTool request whilst waiting for navigation
   // to complete
   GURL pending_navigation_url_;

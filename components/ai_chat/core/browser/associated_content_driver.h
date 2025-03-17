@@ -149,7 +149,7 @@ class AssociatedContentDriver
   // Let all conversations using this content know that the content
   // has been destroyed or changed to represent different content (e.g. a
   // navigation).
-  void DisassociateWithConversations();
+  void DisassociateWithConversations(bool non_agent_only = false);
 
   static std::optional<std::vector<SearchQuerySummary>>
   ParseSearchQuerySummaryResponse(const base::Value& value);

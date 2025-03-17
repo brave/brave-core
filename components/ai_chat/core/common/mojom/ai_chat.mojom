@@ -35,6 +35,15 @@ enum ModelEngineType {
   BRAVE_CONVERSATION_API,
 };
 
+enum ConversationCapability {
+  // Regular chatting, can be associated with content or standalone. Does
+  // not span navigations of content.
+  CHAT,
+  // A conversation which has access to control a single WebContent instance,
+  // and remains connected to the content accross navigations.
+  CONTENT_AGENT,
+};
+
 // When adding or modifying category names, associated UI strings must also
 // be provided via ai_chat_ui_strings.grdp and ai_chat/core/constants.cc
 enum ModelCategory {
@@ -333,6 +342,10 @@ struct Model {
   string display_name;
   // whether accept image as input
   bool vision_support;
+  // Model supports tool use
+  bool supports_tools;
+  // Model supports anthropic computer use tools
+  bool supports_anthropic_computer_use;
 };
 
 struct ModelWithSubtitle {
@@ -470,6 +483,7 @@ struct ConversationState {
   AssociatedContent? associated_content;
   bool should_send_content;
   APIError error;
+  ConversationCapability selected_capability;
   // TODO(petemill): include conversation history, once
   // `OnConversationHistoryUpdate` is more intelligent (see TOOD in definition).
 };
@@ -502,6 +516,10 @@ interface ConversationHandler {
 
   // Command to change the model for the Conversation to |model_name|
   ChangeModel(string model_key);
+
+  // Modify the conversation's selected capability. If the current model
+  // does not support the new capability, it will not be set.
+  ChangeCapability(ConversationCapability capability);
 
   GetIsRequestInProgress() => (bool is_request_in_progress);
 
@@ -588,6 +606,8 @@ interface ConversationUI {
   // When the browser changes the model, it will also provide a new list
   // of models.
   OnModelDataChanged(string conversation_model_key, array<Model> all_models);
+  // Any time the conversation capability successfully changes
+  OnConversationCapabilityChanged(ConversationCapability capability);
   // Provides the full list of questions for the active tab in the page's
   // Browser window.
   OnSuggestedQuestionsChanged(

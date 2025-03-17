@@ -524,6 +524,7 @@ type CustomArgs = {
   model: string
   inputText: string
   hasConversation: boolean
+  conversationCapability: keyof typeof Mojom.ConversationCapability
   editingConversationId: string | null
   deletingConversationId: string | null
   visibleConversationListCount: number
@@ -540,6 +541,7 @@ type CustomArgs = {
   suggestionStatus: keyof typeof Mojom.SuggestionGenerationStatus
   isMobile: boolean
   isHistoryEnabled: boolean
+  isAgentFeatureEnabled: boolean
   isStandalone: boolean
   isDefaultConversation: boolean
   shouldShowLongConversationInfo: boolean
@@ -554,6 +556,7 @@ const args: CustomArgs = {
   initialized: true,
   inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
   hasConversation: true,
+  conversationCapability: 'CHAT',
   visibleConversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
   hasAssociatedContent: true,
@@ -572,6 +575,7 @@ const args: CustomArgs = {
   model: MODELS[0].key,
   isMobile: false,
   isHistoryEnabled: true,
+  isAgentFeatureEnabled: true,
   isStandalone: false,
   isDefaultConversation: true,
   shouldShowLongConversationInfo: false,
@@ -589,6 +593,10 @@ const meta: Meta<CustomArgs> = {
   },
   argTypes: {
     ...InferControlsFromArgs(args),
+    conversationCapability: {
+      options: getKeysForMojomEnum(Mojom.ConversationCapability),
+      control: { type: 'select' }
+    },
     currentErrorState: {
       options: getKeysForMojomEnum(Mojom.APIError),
       control: { type: 'select' }
@@ -672,6 +680,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     canShowPremiumPrompt: options.args.canShowPremiumPrompt,
     isMobile: options.args.isMobile,
     isHistoryFeatureEnabled: options.args.isHistoryEnabled,
+    isAgentFeatureEnabled: options.args.isAgentFeatureEnabled,
     isStandalone: options.args.isStandalone,
     allActions: ACTIONS_LIST,
     tabs: [{
@@ -724,6 +733,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     conversationUuid: options.args.isNewConversation
       ? 'new-conversation'
       : CONVERSATIONS[1].uuid,
+    conversationCapability: Mojom.ConversationCapability[options.args.conversationCapability],
     conversationHistory: options.args.hasConversation ? HISTORY : [],
     associatedContentInfo: associatedContent,
     allModels: MODELS,

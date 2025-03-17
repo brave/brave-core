@@ -90,6 +90,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddBoolean("isMobile", kIsMobile);
   source->AddBoolean("isHistoryEnabled",
                      ai_chat::features::IsAIChatHistoryEnabled());
+  source->AddBoolean("isAgentFeatureEnabled",
+                     ai_chat::features::IsAgentConversationCapabilityEnabled());
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(

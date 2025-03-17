@@ -8,6 +8,8 @@ import AlertCenter from '@brave/leo/react/alertCenter'
 import Button from '@brave/leo/react/button'
 import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
+import SegmentedControl from '@brave/leo/react/segmentedControl'
+import SegmentedControlItem from '@brave/leo/react/controlItem'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
@@ -40,6 +42,7 @@ import styles from './style.module.scss'
 import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 import Attachments from '../attachments'
 import { useIsElementSmall } from '../../hooks/useIsElementSmall'
+import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -52,6 +55,13 @@ const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
   Mojom.SuggestionGenerationStatus.CanGenerate,
   Mojom.SuggestionGenerationStatus.IsGenerating
 ])
+
+const CONVERSATION_CAPABILITY_KEYS = getKeysForMojomEnum(Mojom.ConversationCapability)
+
+const CONVERSATION_CAPABILITY_DISPLAY_STRINGS = {
+  [Mojom.ConversationCapability.CHAT]: 'Chat',
+  [Mojom.ConversationCapability.CONTENT_AGENT]: 'Browse'
+}
 
 function Main() {
   const aiChatContext = useAIChat()
@@ -327,6 +337,32 @@ function Main() {
             <Attachments />
           </div>)}
         <div className={styles.input}>
+          {aiChatContext.isAgentFeatureEnabled && conversationContext.historyInitialized && !conversationContext.conversationHistory.length &&
+          <SegmentedControl
+            size='tiny'
+            onChange={(e) => {
+              const keys: string[] = CONVERSATION_CAPABILITY_KEYS
+              if (e.value && keys.includes(e.value)) {
+                const value = e.value as typeof CONVERSATION_CAPABILITY_KEYS[number]
+                const capability: Mojom.ConversationCapability = Mojom.ConversationCapability[value]
+                conversationContext.conversationHandler?.changeCapability(capability)
+              }
+            }}
+            value={CONVERSATION_CAPABILITY_KEYS[conversationContext.conversationCapability]}
+          >
+            <SegmentedControlItem value={CONVERSATION_CAPABILITY_KEYS[Mojom.ConversationCapability.CHAT]}>
+              {CONVERSATION_CAPABILITY_DISPLAY_STRINGS[Mojom.ConversationCapability.CHAT]}
+            </SegmentedControlItem>
+            <SegmentedControlItem value={CONVERSATION_CAPABILITY_KEYS[Mojom.ConversationCapability.CONTENT_AGENT]}>
+              {CONVERSATION_CAPABILITY_DISPLAY_STRINGS[Mojom.ConversationCapability.CONTENT_AGENT]}
+            </SegmentedControlItem>
+          </SegmentedControl>
+          }
+          {aiChatContext.isAgentFeatureEnabled && conversationContext.historyInitialized && !!conversationContext.conversationHistory.length &&
+            <div>
+              {CONVERSATION_CAPABILITY_DISPLAY_STRINGS[conversationContext.conversationCapability]}
+            </div>
+          }
           {showContextToggle && (
             <div className={styles.toggleContainer}>
               <PageContextToggle />

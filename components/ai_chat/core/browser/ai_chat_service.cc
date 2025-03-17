@@ -541,8 +541,9 @@ void AIChatService::MaybeAssociateContentWithConversation(
     int associated_content_id,
     base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
         associated_content) {
-  if (associated_content &&
-      kAllowedContentSchemes.contains(associated_content->GetURL().scheme())) {
+  // We send all content to the conversation, regardless of scheme. The
+  // conversation will determine if it has permission to access the data.
+  if (associated_content) {
     conversation->SetAssociatedContentDelegate(associated_content);
   }
   // Record that this is the latest conversation for this content. Even
