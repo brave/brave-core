@@ -721,10 +721,12 @@ void BraveRenderViewContextMenu::MaybeBuildBraveScreenshotsMenu() {
       IDS_IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD);
 
   // If we're already screenshotting, disable these options
-  if (tabs::TabInterface::GetFromContents(source_web_contents_)
-          ->GetTabFeatures()
-          ->brave_screenshots_tab_feature()
-          ->IsScreenshotInProgress()) {
+  // A tab pointer is not guaranteed, and is likely a nullptr during testing
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(source_web_contents_);
+
+  if (tab && tab->GetTabFeatures()
+                 ->brave_screenshots_tab_feature()
+                 ->IsScreenshotInProgress()) {
     brave_screenshots_submenu_model_.SetEnabledAt(0, false);
     brave_screenshots_submenu_model_.SetEnabledAt(1, false);
     brave_screenshots_submenu_model_.SetEnabledAt(2, false);
