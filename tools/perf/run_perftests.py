@@ -123,7 +123,11 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
 
   if options.mode == PerfMode.UPDATE_PROFILE:
     if options.chromium:
-      return 0  # A build with !options.chromium will update the both profiles
+       # A build with !options.chromium will update the both profiles.
+      # Make an empty artifacts directory to CI errors.
+      os.makedirs(os.path.join(options.working_directory, 'artifacts'),
+                  exist_ok=True)
+      return 0
     options.chromium = True
     chromium_config = perf_config.PerfConfig(load_config(args.config, options))
     options.chromium = False
