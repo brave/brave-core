@@ -377,8 +377,6 @@ def SpawnConfigurationsFromTargetList(
     if not config.version:
       raise RuntimeError(f'Can get the version from target {target_string}')
     config.label = config.version.to_string()
-    if common_options.chromium:
-      config.label += '_chromium'
     configurations.append(config)
   return configurations
 
