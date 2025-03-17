@@ -14,7 +14,11 @@ transpile_web_ui("resources") {
       ] ]
   resource_name = "brave_new_tab_page_refresh"
   output_module = true
-  deps = [ "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom_js" ]
+  deps = [
+    "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom_js",
+    "//brave/components/brave_ads/core/mojom:mojom_js",
+    "//brave/components/ntp_background_images/browser/mojom:mojom_js",
+  ]
 }
 
 pack_web_resources("generated_resources") {

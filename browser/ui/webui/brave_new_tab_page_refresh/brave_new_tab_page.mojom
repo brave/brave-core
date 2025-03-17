@@ -5,8 +5,43 @@
 
 module brave_new_tab_page_refresh.mojom;
 
+struct BraveBackground {
+  string author;
+  string image_url;
+  string link;
+};
+
+enum SelectedBackgroundType {
+  kBrave,
+  kCustom,
+  kSolid,
+  kGradient,
+};
+
+struct SelectedBackground {
+  SelectedBackgroundType type;
+  string value;
+};
+
+struct SponsoredImageLogo {
+  string alt;
+  string destination_url;
+  string image_url;
+};
+
+struct SponsoredImageBackground {
+  string type;
+  string wallpaper_id;
+  string creative_instance_id;
+  string campaign_id;
+  string image_url;
+  SponsoredImageLogo? logo;
+};
+
 // WebUI-side handler for notifications from the browser.
-interface NewTabPage {};
+interface NewTabPage {
+  OnBackgroundsUpdated();
+};
 
 // Browser-side handler for requests from the WebUI page.
 interface NewTabPageHandler {
@@ -14,5 +49,45 @@ interface NewTabPageHandler {
   // Sets the NewTabPage remote interface that will receive notifications from
   // the browser.
   SetNewTabPage(pending_remote<NewTabPage> page);
+
+  // Gets or sets whether the user has enabled background images or colors on
+  // the new tab page.
+  GetBackgroundsEnabled() => (bool enabled);
+  SetBackgroundsEnabled(bool enabled) => ();
+
+  // Gets or sets whether the user has enabled sponsored background images.
+  GetSponsoredImagesEnabled() => (bool enabled);
+  SetSponsoredImagesEnabled(bool enabled) => ();
+
+  // Returns the current collection of Brave background images.
+  GetBraveBackgrounds() => (array<BraveBackground> backgrounds);
+
+  // Returns the list of custom background images supplied by the user.
+  GetCustomBackgrounds() => (array<string> backgrounds);
+
+  // Returns the user-selected or default background.
+  GetSelectedBackground() => (SelectedBackground? background);
+
+  // Returns sponsored image background info, if a sponsored image should be
+  // displayed to the user.
+  GetSponsoredImageBackground() => (SponsoredImageBackground? background);
+
+  // Saves the provided background as the user's selected background.
+  SelectBackground(SelectedBackground background) => ();
+
+  // Displays a file select dialog for selecting custom background images and
+  // returns a value indicating whether any image files were selected. If
+  // images were selected, they are added to the user's profile in the
+  // background.
+  ShowCustomBackgroundChooser() => (bool images_selected);
+
+  // Removes the specified custom image background from the list of available
+  // backgrounds.
+  RemoveCustomBackground(string background_url) => ();
+
+  // Notifies the browser that the user has clicked the sponsored image logo.
+  NotifySponsoredImageLogoClicked(string creative_instance_id,
+                                  string destination_url,
+                                  string wallpaper_id) => ();
 
 };
