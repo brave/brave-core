@@ -543,26 +543,31 @@ extension BrowserViewController {
     alert: inout T,
     completionHandler: @escaping () -> Void
   ) {
+    guard let tabData = tab.browserData else {
+      completionHandler()
+      return
+    }
+
     if origin.isOpaque {
       completionHandler()
       return
     }
 
-    if tab.blockAllAlerts {
+    if tabData.blockAllAlerts {
       suppressJSAlerts(tab: tab)
-      tab.cancelQueuedAlerts()
+      tab.browserData?.cancelQueuedAlerts()
       completionHandler()
       return
     }
 
-    tab.alertShownCount += 1
+    tabData.alertShownCount += 1
     let suppressBlock: JSAlertInfo.SuppressHandler = { [unowned self, weak tab] suppress in
       guard let tab else { return }
       if suppress {
         func suppressDialogues(_: UIAlertAction) {
           self.suppressJSAlerts(tab: tab)
           tab.blockAllAlerts = true
-          tab.cancelQueuedAlerts()
+          tab.browserData?.cancelQueuedAlerts()
           completionHandler()
         }
         // Show confirm alert here.
@@ -606,7 +611,7 @@ extension BrowserViewController {
         completionHandler()
       }
     }
-    alert.suppressHandler = tab.alertShownCount > 1 ? suppressBlock : nil
+    alert.suppressHandler = tabData.alertShownCount > 1 ? suppressBlock : nil
     if tabManager.selectedTab === tab {
       let controller = alert.alertController()
       controller.delegate = self
@@ -614,7 +619,7 @@ extension BrowserViewController {
 
       present(controller, animated: true)
     } else {
-      tab.queueJavascriptAlertPrompt(alert)
+      tab.browserData?.queueJavascriptAlertPrompt(alert)
     }
   }
 

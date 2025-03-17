@@ -54,7 +54,7 @@ class BraveLeoScriptHandler: NSObject, TabContentScript {
 class BraveLeoScriptTabHelper: AIChatWebDelegate {
   weak var tab: Tab?
 
-  init(tab: Tab) {
+  init(tab: Tab?) {
     self.tab = tab
   }
 

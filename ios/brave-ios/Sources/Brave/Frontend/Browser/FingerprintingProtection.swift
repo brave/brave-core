@@ -34,8 +34,9 @@ class FingerprintingProtection: TabContentScript {
     replyHandler: (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
-    let stats = tab.contentBlocker.stats
-    tab.contentBlocker.stats = stats.adding(fingerprintingCount: 1)
+    guard let tabData = tab.browserData else { return }
+    let stats = tabData.contentBlocker.stats
+    tabData.contentBlocker.stats = stats.adding(fingerprintingCount: 1)
     BraveGlobalShieldStats.shared.fpProtection += 1
   }
 }

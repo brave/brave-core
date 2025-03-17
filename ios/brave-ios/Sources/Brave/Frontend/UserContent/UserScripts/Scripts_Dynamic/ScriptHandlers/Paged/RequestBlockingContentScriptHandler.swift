@@ -103,13 +103,16 @@ class RequestBlockingContentScriptHandler: TabContentScript {
           )
         }
 
-        if shouldBlock
-          && !tab.contentBlocker.blockedRequests.contains(where: { $0.requestURL == requestURL })
+        if let tabData = tab.browserData,
+          shouldBlock
+            && !tabData.contentBlocker.blockedRequests.contains(where: {
+              $0.requestURL == requestURL
+            })
         {
           BraveGlobalShieldStats.shared.adblock += 1
-          let stats = tab.contentBlocker.stats
-          tab.contentBlocker.stats = stats.adding(adCount: 1)
-          tab.contentBlocker.blockedRequests.append(
+          let stats = tabData.contentBlocker.stats
+          tab.contentBlocker?.stats = stats.adding(adCount: 1)
+          tab.contentBlocker?.blockedRequests.append(
             .init(
               requestURL: requestURL,
               sourceURL: windowOriginURL,

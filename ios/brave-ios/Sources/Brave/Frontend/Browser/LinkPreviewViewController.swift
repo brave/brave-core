@@ -33,8 +33,7 @@ class LinkPreviewViewController: UIViewController {
 
     currentTab = Tab(
       configuration: parentTab.configuration,
-      type: parentTab.isPrivate ? .private : .regular,
-      tabGeneratorAPI: nil
+      type: parentTab.isPrivate ? .private : .regular
     ).then {
       $0.tabDelegate = browserController
       $0.createWebview()

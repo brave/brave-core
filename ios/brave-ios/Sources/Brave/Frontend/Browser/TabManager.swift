@@ -254,7 +254,7 @@ class TabManager: NSObject {
         if let url = tab.fetchedURL, !tab.type.isPrivate, !url.isLocal,
           !InternalURL.isValid(url: url), !url.isInternalURL(for: .readermode)
         {
-          tab.addTabInfoToSyncedSessions(url: url, displayTitle: tab.displayTitle)
+          tab.browserData?.addTabInfoToSyncedSessions(url: url, displayTitle: tab.displayTitle)
         }
       }
     }
@@ -424,14 +424,6 @@ class TabManager: NSObject {
     _selectedIndex = -1
   }
 
-  func expireSnackbars() {
-    assert(Thread.isMainThread)
-
-    for tab in allTabs {
-      tab.expireSnackbars()
-    }
-  }
-
   @MainActor func addPopupForParentTab(
     _ parentTab: Tab,
     configuration: WKWebViewConfiguration
@@ -439,8 +431,7 @@ class TabManager: NSObject {
     let popup = Tab(
       configuration: configuration,
       id: UUID(),
-      type: parentTab.type,
-      tabGeneratorAPI: tabGeneratorAPI
+      type: parentTab.type
     )
     configureTab(
       popup,
@@ -530,8 +521,7 @@ class TabManager: NSObject {
     let tab = Tab(
       configuration: configuration,
       id: tabId,
-      type: type,
-      tabGeneratorAPI: tabGeneratorAPI
+      type: type
     )
     configureTab(
       tab,
@@ -668,7 +658,7 @@ class TabManager: NSObject {
             return
           }
 
-          tab.resetExternalAlertProperties()
+          tab.browserData?.resetExternalAlertProperties()
           self.preserveScreenshot(for: tab)
           self.saveTab(tab)
         }
@@ -1257,7 +1247,7 @@ class TabManager: NSObject {
 
         tab.lastTitle = savedTab.title
         tab.favicon = Favicon.default
-        tab.setScreenshot(savedTab.screenshot)
+        tab.browserData?.setScreenshot(savedTab.screenshot)
 
         Task { @MainActor in
           tab.favicon = try await FaviconFetcher.loadIcon(
@@ -1265,7 +1255,7 @@ class TabManager: NSObject {
             kind: .smallIcon,
             persistent: !tab.isPrivate
           )
-          tab.setScreenshot(savedTab.screenshot)
+          tab.browserData?.setScreenshot(savedTab.screenshot)
         }
 
         // Do not select the private tab since we always restore to regular mode!
@@ -1283,7 +1273,7 @@ class TabManager: NSObject {
 
         tab.lastTitle = savedTab.title
         tab.favicon = Favicon.default
-        tab.setScreenshot(savedTab.screenshot)
+        tab.browserData?.setScreenshot(savedTab.screenshot)
 
         // Do not select the private tab since we always restore to regular mode!
         if savedTab.isSelected && !savedTab.isPrivate {
@@ -1543,16 +1533,17 @@ extension TabManager: NSFetchedResultsControllerDelegate {
           // iOS does not have `HostContentSettingsMap`, so we must
           // implement `SolanaProviderImpl::OnContentSettingChanged`
           if let selectedSolAccount = allAccounts.solDappSelectedAccount,
-            tab.isSolanaAccountConnected(selectedSolAccount.address),  // currently connected
-            !tab.isAccountAllowed(.sol, account: selectedSolAccount.address)
+            // currently connected
+            tab.browserData?.isSolanaAccountConnected(selectedSolAccount.address) == true,
+            tab.browserData?.isAccountAllowed(.sol, account: selectedSolAccount.address) == false
           {  // user revoked access
             tab.walletSolProvider?.disconnect()
           }
 
           let ethAccountAddressess = allAccounts.accounts.filter { $0.coin == .eth }.map(\.address)
           let allowedEthAccountAddresses =
-            tab.getAllowedAccounts(.eth, accounts: ethAccountAddressess) ?? []
-          tab.accountsChangedEvent(accounts: Array(allowedEthAccountAddresses))
+            tab.browserData?.getAllowedAccounts(.eth, accounts: ethAccountAddressess) ?? []
+          tab.browserData?.accountsChangedEvent(accounts: Array(allowedEthAccountAddresses))
         }
       }
     }

@@ -56,10 +56,10 @@ class ShieldsSettingsViewModel: ObservableObject {
       .fpProtection,
       considerAllShieldsOption: true
     )
-    self.stats = tab.contentBlocker.stats
+    self.stats = tab.contentBlocker?.stats ?? .init()
 
-    tab.contentBlocker.statsDidChange = { [weak self] _ in
-      self?.stats = tab.contentBlocker.stats
+    tab.contentBlocker?.statsDidChange = { [weak self, weak tab] _ in
+      self?.stats = tab?.contentBlocker?.stats ?? .init()
     }
   }
 

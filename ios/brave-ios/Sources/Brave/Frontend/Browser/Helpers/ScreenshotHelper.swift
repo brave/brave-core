@@ -21,24 +21,24 @@ class ScreenshotHelper {
   func takeScreenshot(_ tab: Tab) {
     guard let url = tab.url else {
       Logger.module.error("Tab webView or url is nil")
-      tab.setScreenshot(nil)
+      tab.browserData?.setScreenshot(nil)
       return
     }
 
     if InternalURL(url)?.isAboutHomeURL == true {
       if let homePanel = tabManager?.selectedTab?.newTabPageViewController {
         let screenshot = homePanel.view.screenshot(quality: UIConstants.activeScreenshotQuality)
-        tab.setScreenshot(screenshot)
+        tab.browserData?.setScreenshot(screenshot)
       } else {
-        tab.setScreenshot(nil)
+        tab.browserData?.setScreenshot(nil)
       }
     } else {
       tab.takeSnapshot { [weak tab] image in
         if let image = image {
-          tab?.setScreenshot(image)
+          tab?.browserData?.setScreenshot(image)
         } else {
           Logger.module.error("Cannot snapshot Tab Screenshot - No error description")
-          tab?.setScreenshot(nil)
+          tab?.browserData?.setScreenshot(nil)
         }
       }
     }

@@ -150,10 +150,11 @@ class LoginsScriptHandler: TabContentScript {
     guard let username = login.usernameValue else {
       return
     }
+    let snackBarTabHelper = SnackBarTabHelper.from(tab: tab)
 
     // Remove the existing prompt
     if let existingPrompt = self.snackBar {
-      tab.removeSnackbar(existingPrompt)
+      snackBarTabHelper?.removeSnackbar(existingPrompt)
     }
 
     let promptMessage = String(
@@ -174,7 +175,7 @@ class LoginsScriptHandler: TabContentScript {
         ? Strings.loginsHelperDontUpdateButtonTitle : Strings.loginsHelperDontSaveButtonTitle,
       accessibilityIdentifier: "UpdateLoginPrompt.dontSaveUpdateButton"
     ) { [unowned self] bar in
-      tab.removeSnackbar(bar)
+      snackBarTabHelper?.removeSnackbar(bar)
       self.snackBar = nil
       return
     }
@@ -184,7 +185,7 @@ class LoginsScriptHandler: TabContentScript {
         ? Strings.loginsHelperUpdateButtonTitle : Strings.loginsHelperSaveLoginButtonTitle,
       accessibilityIdentifier: "UpdateLoginPrompt.saveUpdateButton"
     ) { [unowned self] bar in
-      tab.removeSnackbar(bar)
+      snackBarTabHelper?.removeSnackbar(bar)
       self.snackBar = nil
 
       completion()
@@ -194,7 +195,7 @@ class LoginsScriptHandler: TabContentScript {
     snackBar?.addButton(saveORUpdate)
 
     if let bar = snackBar {
-      tab.addSnackbar(bar)
+      snackBarTabHelper?.addSnackbar(bar)
     }
   }
 

@@ -21,14 +21,14 @@ extension BrowserViewController {
   @objc private func goBackKeyCommand() {
     if let tab = tabManager.selectedTab, tab.canGoBack, favoritesController == nil {
       tab.goBack()
-      tab.resetExternalAlertProperties()
+      tab.browserData?.resetExternalAlertProperties()
     }
   }
 
   @objc private func goForwardKeyCommand() {
     if let tab = tabManager.selectedTab, tab.canGoForward {
       tab.goForward()
-      tab.resetExternalAlertProperties()
+      tab.browserData?.resetExternalAlertProperties()
     }
   }
 
