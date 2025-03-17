@@ -465,6 +465,8 @@ TEST_F(AIChatMetricsUnitTest, ChatHistory) {
 TEST_F(AIChatMetricsUnitTest, ChatDuration) {
   ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
 
+  task_environment_.FastForwardBy(base::Seconds(30));
+
   RecordPrompts("chat1", 1);
   task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectUniqueSample(kMaxChatDurationHistogramName, 0, 1);
