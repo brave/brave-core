@@ -1347,7 +1347,6 @@ export const useSwap = () => {
   useEffect(() => {
     // Reset selectedProvider to Auto if no tokens are selected
     if (!fromToken && !toToken) {
-      setSelectingFromOrTo(undefined)
       setFromAmount('')
       setToAmount('')
       reset()
