@@ -189,9 +189,6 @@ public class SearchEngineOnboardingFragment extends Fragment {
                         }
                         if (mSelectedSearchEngine != null) {
                             BraveSearchEngineUtils.setDSEPrefs(mSelectedSearchEngine, mProfile);
-                            BraveSearchEngineUtils.setDSEPrefs(
-                                    mSelectedSearchEngine,
-                                    mProfile.getPrimaryOtrProfile(/* createIfNeeded= */ true));
                         }
                         getActivity().finish();
                     }
