@@ -129,14 +129,16 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     return net::OK;
   }
 
-  if (crlSet_pattern1->MatchesURL(request_url)) {
+  if (crlSet_pattern1->MatchesURL(request_url) &&
+      !widevine_google_dl_pattern->MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("redirector.brave.com");
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (crlSet_pattern2->MatchesURL(request_url)) {
+  if (crlSet_pattern2->MatchesURL(request_url) &&
+      !widevine_gvt1_pattern->MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("redirector.brave.com");
     *new_url = request_url.ReplaceComponents(replacements);
@@ -156,6 +158,7 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
+
   if (gvt1_pattern->MatchesURL(request_url) &&
       !widevine_gvt1_pattern->MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
