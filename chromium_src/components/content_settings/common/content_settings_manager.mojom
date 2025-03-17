@@ -19,6 +19,11 @@ interface ContentSettingsManager {
       network.mojom.SiteForCookies site_for_cookies,
       url.mojom.Origin top_frame_origin) => (url.mojom.Origin? storage_origin);
 
+  // Returns the shields settings for the given frame token. This is required in
+  // some scenarios when ContentSettings are not available in the worker
+  // context. It is unclear why these settings are randomly absent (most likely
+  // Chromium issue needs to be investigated), so this is added to ensure that
+  // shields settings are always available.
   [Sync]
   GetBraveShieldsSettings(
       blink.mojom.LocalFrameToken frame_token) => (brave_shields.mojom.ShieldsSettings shields_settings);
