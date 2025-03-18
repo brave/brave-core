@@ -69,9 +69,10 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
     return ai_chat_engine_.get();
   }
 
-  void SetFocusTabsInfoForTesting(
-      const base::flat_map<SessionID, std::vector<TabInfo>>& focus_tabs_info) {
-    focus_tabs_info_ = focus_tabs_info;
+  void SetOriginalTabsInfoByWindowForTesting(
+      const base::flat_map<SessionID, std::vector<TabInfo>>&
+          original_tabs_info_by_window) {
+    original_tabs_info_by_window_ = original_tabs_info_by_window;
   }
 
  private:
@@ -87,10 +88,11 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
   ai_chat::EngineConsumer* GetAIEngineForTabOrganization();
   std::vector<ai_chat::Tab> GetTabsForAIEngine();
 
-  // Map from session id to the list of tab info for undo last get focus tabs
-  // action (i.e. move tabs from the new window back to their original
-  // positions).
-  base::flat_map<SessionID, std::vector<TabInfo>> focus_tabs_info_;
+  // Map from window ID (session ID serves as a unique window ID here as this is
+  // only used within a single session) to the list of original tab info for
+  // undo last focus tabs action. This is used to move the focus tabs back to
+  // their original positions.
+  base::flat_map<SessionID, std::vector<TabInfo>> original_tabs_info_by_window_;
 
   // The AI chat engine to interact with Leo server.
   std::unique_ptr<ai_chat::EngineConsumer> ai_chat_engine_;

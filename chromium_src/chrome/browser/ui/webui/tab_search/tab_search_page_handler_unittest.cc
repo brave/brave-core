@@ -263,9 +263,9 @@ TEST_F(TabSearchPageHandlerTest, UndoFocusTabs) {
                                                     TabCloseTypes::CLOSE_NONE);
 
   base::flat_map<SessionID, std::vector<TabSearchPageHandler::TabInfo>>
-      undo_info;
+      original_tabs_info;
   // Use browser1's session ID to mock that these tabs were moved from browser1.
-  undo_info[browser1()->session_id()] = {
+  original_tabs_info[browser1()->session_id()] = {
       {tab_id3, 2},
       {tab_id4, 1},
       // Index 5 is bigger than the last index after restored, this can happen
@@ -274,7 +274,7 @@ TEST_F(TabSearchPageHandlerTest, UndoFocusTabs) {
       {tab_id6, 6},
       {100, 5},
   };
-  handler()->SetFocusTabsInfoForTesting(undo_info);
+  handler()->SetOriginalTabsInfoByWindowForTesting(original_tabs_info);
   handler()->UndoFocusTabs(base::BindLambdaForTesting([&]() {
     BrowserList* browser_list = BrowserList::GetInstance();
     Browser* browser1 = browser_list->get(0);

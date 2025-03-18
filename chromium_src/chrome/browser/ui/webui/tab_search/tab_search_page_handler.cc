@@ -144,7 +144,7 @@ void TabSearchPageHandler::OnGetSuggestedTopics(
 void TabSearchPageHandler::GetFocusTabs(const std::string& topic,
                                         GetFocusTabsCallback callback) {
   auto* engine = GetAIEngineForTabOrganization();
-  focus_tabs_info_.clear();
+  original_tabs_info_by_window_.clear();
 
   std::vector<ai_chat::Tab> tabs = GetTabsForAIEngine();
   engine->GetFocusTabs(
@@ -178,7 +178,7 @@ void TabSearchPageHandler::OnGetFocusTabs(
     tab_details_before_move.push_back(*details);
     // Store old window ID (session ID), tab ID, and tab strip index for
     // undo.
-    focus_tabs_info_[details->browser->session_id()].push_back(
+    original_tabs_info_by_window_[details->browser->session_id()].push_back(
         {tab_id, details->GetIndex()});
   }
 
@@ -202,7 +202,7 @@ void TabSearchPageHandler::OnGetFocusTabs(
 }
 
 void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
-  for (auto& iter : focus_tabs_info_) {
+  for (auto& iter : original_tabs_info_by_window_) {
     // Find the browser with the session ID (key).
     Browser* target = nullptr;
     for (Browser* browser : *BrowserList::GetInstance()) {
@@ -241,7 +241,7 @@ void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
     }
   }
 
-  focus_tabs_info_.clear();
+  original_tabs_info_by_window_.clear();
   std::move(callback).Run();
 }
 
