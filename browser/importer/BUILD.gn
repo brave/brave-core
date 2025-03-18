@@ -1,3 +1,8 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//build/config/features.gni")
 
 source_set("importer") {
@@ -14,12 +19,7 @@ source_set("importer") {
 if (!is_android) {
   source_set("unit_tests") {
     testonly = true
-    sources = [
-      "brave_external_process_importer_host_unittest.cc",
-      "extensions_import_helpers_unittest.cc",
-      "test_storage_utils.cc",
-      "test_storage_utils.h",
-    ]
+    sources = [ "brave_external_process_importer_host_unittest.cc" ]
 
     deps = [
       "//base",
