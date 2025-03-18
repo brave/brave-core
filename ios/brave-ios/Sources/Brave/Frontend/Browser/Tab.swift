@@ -201,8 +201,6 @@ class Tab: NSObject {
 
   var sslPinningError: Error?
 
-  var userActivity: NSUserActivity?
-
   private var webView: TabWebView?
   // Should only be used by internal Tab code, will be removed in the future when Tab can live
   // in its own SPM target
