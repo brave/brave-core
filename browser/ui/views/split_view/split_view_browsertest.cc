@@ -16,6 +16,8 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -354,4 +356,34 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewTabPathTest) {
                 GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP) -
                 (brave_tabs::kHorizontalSplitViewTabVerticalSpacing * 2),
             mask_region.getBounds().height());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewFullscreenTest) {
+  brave::NewSplitViewForTab(browser());
+
+  // In split view tile, both contents are visible and have its border.
+  EXPECT_TRUE(browser_view().contents_container()->GetVisible());
+  EXPECT_TRUE(browser_view().contents_container()->GetBorder());
+  EXPECT_TRUE(secondary_contents_container().GetVisible());
+  EXPECT_TRUE(secondary_contents_container().GetBorder());
+
+  // Simulate tab-fullscreen state change.
+  FullscreenController* fullscreen_controller =
+      browser()->exclusive_access_manager()->fullscreen_controller();
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
+  split_view().OnFullscreenStateChanged();
+
+  // In tab full screen, only primary content is visible w/o border.
+  EXPECT_TRUE(browser_view().contents_container()->GetVisible());
+  EXPECT_FALSE(browser_view().contents_container()->GetBorder());
+  EXPECT_FALSE(secondary_contents_container().GetVisible());
+  EXPECT_FALSE(secondary_contents_container().GetBorder());
+
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
+  split_view().OnFullscreenStateChanged();
+
+  EXPECT_TRUE(browser_view().contents_container()->GetVisible());
+  EXPECT_TRUE(browser_view().contents_container()->GetBorder());
+  EXPECT_TRUE(secondary_contents_container().GetVisible());
+  EXPECT_TRUE(secondary_contents_container().GetBorder());
 }
