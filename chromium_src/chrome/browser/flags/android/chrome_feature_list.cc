@@ -48,7 +48,6 @@
     &download::features::kParallelDownloading,                          \
     &preferences::features::kBraveBackgroundVideoPlayback,              \
     &preferences::features::kBravePictureInPictureForYouTubeVideos,     \
-    &brave_rewards::features::kNewRewardsUIFeature,                     \
     &request_otr::features::kBraveRequestOTRTab,                        \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
     &speedreader::kSpeedreaderFeature,                                  \

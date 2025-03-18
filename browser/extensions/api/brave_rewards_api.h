@@ -76,16 +76,6 @@ class BraveRewardsGetPublisherInfoForTabFunction : public ExtensionFunction {
                                brave_rewards::mojom::PublisherInfoPtr info);
 };
 
-class BraveRewardsTipSiteFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.tipSite", UNKNOWN)
-
- protected:
-  ~BraveRewardsTipSiteFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsGetRewardsParametersFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getRewardsParameters", UNKNOWN)

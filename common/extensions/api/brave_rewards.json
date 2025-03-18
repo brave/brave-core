@@ -353,25 +353,6 @@
         "does_not_support_promises": "Requires refactoring"
       },
       {
-        "name": "tipSite",
-        "type": "function",
-        "description": "Allow the user to perform a tip to a tab's site",
-        "parameters": [
-          {
-            "name": "tabID",
-            "type": "integer"
-          },
-          {
-            "name": "publisherKey",
-            "type": "string"
-          },
-          {
-            "name": "entryPoint",
-            "type": "string"
-          }
-        ]
-      },
-      {
         "name": "getRewardsParameters",
         "type": "function",
         "description": "Get default Rewards parameters",

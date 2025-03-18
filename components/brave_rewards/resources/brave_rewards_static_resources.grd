@@ -8,26 +8,9 @@
   </outputs>
   <release seq="1">
     <includes>
-      <!-- WebUI Brave Rewards Page resources -->
-      <if expr="is_android">
-        <then>
-          <include name="IDR_BRAVE_REWARDS_PAGE_HTML" file="page/brave_rewards_page_android.html" type="BINDATA" />
-        </then>
-        <else>
-          <include name="IDR_BRAVE_REWARDS_PAGE_HTML" file="page/brave_rewards_page.html" type="BINDATA" />
-        </else>
-      </if>
-
-      <include name="IDR_BRAVE_REWARDS_FAVICON" file="page/assets/favicon.ico" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_FAVICON" file="rewards_page/assets/favicon.ico" type="BINDATA" />
       <include name="IDR_NEW_BRAVE_REWARDS_PAGE_HTML" file="rewards_page/rewards_page.html" type="BINDATA" />
-
-      <!-- WebUI Brave Rewards Internals resources -->
       <include name="IDR_BRAVE_REWARDS_INTERNALS_HTML" file="rewards_internals/rewards_internals.html" type="BINDATA" />
-
-      <if expr="not is_android">
-        <include name="IDR_BRAVE_REWARDS_PANEL_HTML" file="rewards_panel/index.html" type="BINDATA" />
-        <include name="IDR_TIP_PANEL_HTML" file="tip_panel/tip_panel.html" type="BINDATA" />
-      </if>
     </includes>
   </release>
 </grit>
