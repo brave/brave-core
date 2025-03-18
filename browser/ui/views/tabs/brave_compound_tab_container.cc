@@ -312,11 +312,44 @@ views::SizeBounds BraveCompoundTabContainer::GetAvailableSize(
 
 std::vector<Tab*> BraveCompoundTabContainer::AddTabs(
     std::vector<TabInsertionParams> tabs_params) {
-  std::vector<Tab*> new_tabs =
-      CompoundTabContainer::AddTabs(std::move(tabs_params));
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
-    return new_tabs;
+    return CompoundTabContainer::AddTabs(std::move(tabs_params));
+  }
+
+  // Upstream implementation expects all tabs to be either pinned or unpinned.
+  // It also checks that the index of pinned tabs is <= than NumPinnedTabs(),
+  // which returns 0 and triggers a check. That check doesn't make sense since
+  // if I am adding 2 pinned tabs with model_indexes 0 and 1, when checking
+  // for model_index 1 NumPinnedTabs() would still return 0 as we have not added
+  // the tab with the index 0 yet. So, add tabs ourselves.
+  std::vector<TabInsertionParams> pinned_tabs_params;
+  std::vector<TabInsertionParams> unpinned_tabs_params;
+  for (auto& params : tabs_params) {
+    if (params.pinned == TabPinned::kPinned) {
+      pinned_tabs_params.push_back(std::move(params));
+    } else {
+      unpinned_tabs_params.push_back(std::move(params));
+    }
+  }
+
+  std::vector<Tab*> new_tabs;
+  if (!pinned_tabs_params.empty()) {
+    new_tabs = pinned_tab_container_->AddTabs(std::move(pinned_tabs_params));
+  }
+
+  if (!unpinned_tabs_params.empty()) {
+    for (auto& params : unpinned_tabs_params) {
+      CHECK_GE(params.model_index, NumPinnedTabs());
+      params.model_index -= NumPinnedTabs();
+    }
+    std::vector<Tab*> unpinned_new_tabs =
+        unpinned_tab_container_->AddTabs(std::move(unpinned_tabs_params));
+
+    // Merge pinned and unpinned tabs into the new_tabs vector.
+    new_tabs.insert(new_tabs.end(),
+                    std::make_move_iterator(unpinned_new_tabs.begin()),
+                    std::make_move_iterator(unpinned_new_tabs.end()));
   }
 
   for (auto* new_tab : new_tabs) {
