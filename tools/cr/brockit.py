@@ -87,11 +87,17 @@ GitHub run as a standalone.
 """
 
 import argparse
+from dataclasses import dataclass, field, replace
 from datetime import datetime
+from enum import Enum, auto
+from functools import total_ordering
 import json
-from pathlib import Path
+import itertools
+from pathlib import Path, PurePath
+import pickle
 import platform
 import logging
+import threading
 import re
 from rich.console import Console
 from rich.logging import RichHandler
@@ -99,6 +105,9 @@ from rich.markdown import Markdown
 from rich.padding import Padding
 import subprocess
 import sys
+import time
+from typing import Optional
+from typing import NamedTuple
 
 console = Console()
 
@@ -116,9 +125,22 @@ class RichHelpFormatter(argparse.RawDescriptionHelpFormatter):
 
 # This file is updated whenever the version number is updated in package.json
 PINSLIST_TIMESTAMP_FILE = 'chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc'
-VERSION_UPGRADE_FILE = '.version_upgrade'
+VERSION_UPGRADE_FILE = Path('.version_upgrade')
 PACKAGE_FILE = 'package.json'
 CHROMIUM_VERSION_FILE = 'chrome/VERSION'
+
+# The path to the brave/ directory.
+BRAVE_CORE_PATH = next(brave for brave in PurePath(__file__).parents
+                       if brave.name == 'brave')
+# The path to chromium's src/ directory.
+CHROMIUM_SRC_PATH = BRAVE_CORE_PATH.parent
+
+# Link with the log of changes between two versions.
+GOOGLESOURCE_LINK = 'https://chromium.googlesource.com/chromium/src/+log/{from_version}..{to_version}?pretty=fuller&n=10000'
+
+# A decorator to be shown for messages that the user should address before
+# continuing.
+ACTION_NEEDED_DECORATOR = '[bold yellow](action needed)[/]'
 
 # The text for the body used on a GitHub issue for a version bump.
 MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
@@ -135,20 +157,25 @@ MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 - No specific code changes in Brave (only line number changes in patches)
 """
 
-# The with the log of changes between two versions.
-GOOGLESOURCE_LINK = 'https://chromium.googlesource.com/chromium/src/+log/{from_version}..{to_version}?pretty=fuller&n=10000'
-
-# A decorator to be shown for messages that the user should address before
-# continuing.
-ACTION_NEEDED_DECORATOR = '[bold yellow](action needed)[/]'
-
 class Terminal:
     """A class that holds the application data and methods.
     """
 
     def __init__(self):
+        # The status object to update with the terminal.
         self.status = None
+
+        # The inital part of the status message, used as a prefix for all
+        # updates.
         self.starting_status_message = ''
+
+        # flag indicating if the terminal is running on infra.
+        self.infra_mode = False
+
+    def set_infra_mode(self):
+        """Sets the terminal to run on infra.
+        """
+        self.infra_mode = True
 
     def set_status_object(self, status):
         """Preserves the status object for updates.
@@ -156,6 +183,10 @@ class Terminal:
     This function is used to preserve the status object for updates, so that
     the status can be updated with the initial status message.
     """
+        if self.infra_mode:
+            status.stop()
+            return
+
         self.status = status
         self.starting_status_message = status.status
 
@@ -163,37 +194,78 @@ class Terminal:
         """Runs a command on the terminal.
         """
 
+        # Convert all arguments to strings, to avoid issues with `PurePath`
+        # being passed arguments
+        cmd = [str(x) for x in cmd]
+
         def truncate_on_max_length(message):
             # Truncate at the first newline if it exists
             if '\n' in message:
                 message = message.split('\n')[0] + '...'
             # Truncate at max_length if the message is still too long
-            max_length = console.size.width - 40
+            max_length = console.size.width - len(
+                self.starting_status_message) - 10
             if len(message) > max_length:
                 message = message[:max_length - 3] + '...'
             return message
 
-        if self.status is not None:
+        if self.status is not None and not self.infra_mode:
             self.status.update(
-                f'[bold green]{self.starting_status_message}[/] [bold cyan]({truncate_on_max_length(" ".join(cmd))})[/]'
-            )
+                f'[bold green]{self.starting_status_message}[/] [bold cyan]'
+                f'({truncate_on_max_length(" ".join(cmd))})[/]')
         logging.debug('λ %s', ' '.join(cmd))
+
+        if self.infra_mode:
+            # Start a thread to keep the CI feedback alive while the subprocess
+            # is running.
+            stop_event = threading.Event()
+
+            def keep_alive_ci_feedback():
+                """Keep the CI feedback alive while the subprocess is running.
+                """
+                feedback = [
+                    '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█', '▇', '▆', '▅', '▄',
+                    '▃', '▂'
+                ]
+                starting_time = time.time()
+                printed = False
+                for symbol in itertools.cycle(feedback):
+                    while time.time() - starting_time < 0.5:
+                        if stop_event.is_set():
+                            if printed:
+                                print()
+                            return
+                        time.sleep(0.01)
+
+                    print(f' {symbol}', end='', flush=True)
+                    starting_time = time.time()
+                    printed = True
+
+            # Start subprocess in a thread
+            keep_alive_thread = threading.Thread(target=keep_alive_ci_feedback)
+            keep_alive_thread.start()
 
         try:
             # It is necessary to pass `shell=True` on Windows, otherwise the
             # process handle is entirely orphan and can't resolve things like
             # `npm`.
-            return subprocess.run(cmd,
-                                  capture_output=True,
-                                  text=True,
-                                  check=True,
-                                  shell=platform.system() == 'Windows')
+            result = subprocess.run(cmd,
+                                    capture_output=True,
+                                    text=True,
+                                    check=True,
+                                    shell=platform.system() == 'Windows')
         except subprocess.CalledProcessError as e:
             logging.debug('❯ %s', e.stderr.strip())
             raise e
+        finally:
+            if self.infra_mode:
+                stop_event.set()
+                keep_alive_thread.join()
 
-    def run_git(self, *cmd):
-        """Runs a git command on the current repository.
+        return result
+
+    def run_git(self, *cmd) -> str:
+        """Runs a git command with the arguments provided.
 
     This function returns a proper utf8 string in success, otherwise it allows
     the exception thrown by subprocess through.
@@ -208,23 +280,6 @@ class Terminal:
         """Logs a task to the console using common decorators
         """
         console.log(f'[bold red]*[/] {message}')
-
-    def git_commit(self, message):
-        """Commits the current staged changes.
-
-        This function also prints the commit hash/message to the user.
-        Args:
-        message:
-            The message to be used for the commit.
-        """
-        if _has_staged_changed() is False:
-            # Nothing to commit
-            return
-
-        self.run_git('commit', '-m', message)
-        commit = self.run_git('log', '-1', '--pretty=oneline',
-                              '--abbrev-commit')
-        self.log_task(f'[bold]✔️ [/] [italic]{commit}')
 
     def run_npm_command(self, *cmd):
         """Runs an npm build command.
@@ -247,7 +302,7 @@ class IncendiaryErrorHandler(RichHandler):
 
     def emit(self, record: logging.LogRecord) -> None:
         if record.levelno == logging.ERROR:
-            record.msg = f"🔥🔥 {record.getMessage()}"
+            record.msg = f'¯\\_(ツ)_/¯\n🔥🔥 {record.msg}'
         elif record.levelno == logging.DEBUG:
             # Debug messages should be printed as normal logs, otherwise the
             # formatting goes all over the place with the status bar.
@@ -257,16 +312,13 @@ class IncendiaryErrorHandler(RichHandler):
         super().emit(record)
 
 
-def _has_staged_changed():
-    return terminal.run_git('diff', '--cached', '--stat') != ''
-
-
 def _get_current_branch_upstream_name():
     """Retrieves the name of the current branch's upstream.
     """
     try:
-        return terminal.run_git('rev-parse', '--abbrev-ref',
-                                '--symbolic-full-name', '@{upstream}')
+        return Repository.brave().run_git('rev-parse', '--abbrev-ref',
+                                          '--symbolic-full-name',
+                                          '@{upstream}')
     except subprocess.CalledProcessError:
         logging.error(
             'Could not determine the upstream branch. Please provide a '
@@ -281,7 +333,7 @@ def _load_package_file(branch):
     branch:
       A branch or hash to load the file from.
   """
-    package = terminal.run_git('show', f'{branch}:{PACKAGE_FILE}')
+    package = Repository.brave().run_git('show', f'{branch}:{PACKAGE_FILE}')
     return json.loads(package)
 
 def _update_pinslist_timestamp():
@@ -292,14 +344,16 @@ def _update_pinslist_timestamp():
         with open(PINSLIST_TIMESTAMP_FILE, "r", encoding="utf-8") as file:
             content = file.read()
     except FileNotFoundError:
-        print(f"ERROR: File '{PINSLIST_TIMESTAMP_FILE}' not found. Aborting.")
+        logging.exception("ERROR: File %s not found. Aborting.",
+                          PINSLIST_TIMESTAMP_FILE)
         sys.exit(1)
 
     pattern = r"# Last updated:.*\nPinsListTimestamp\n[0-9]{10}\n"
     match = re.search(pattern, content, flags=re.DOTALL)
     if not match:
-        print('ERROR: Expected pattern for PinsListTimestamp block not found. '
-              'Aborting.')
+        logging.error(
+            'Expected pattern for PinsListTimestamp block not found. '
+            'Aborting.')
         sys.exit(1)
 
     # Update the timestamp
@@ -308,7 +362,8 @@ def _update_pinslist_timestamp():
         '%a %b %d %H:%M:%S %Y')
     updated_content = re.sub(
         pattern,
-        f"# Last updated: {readable_timestamp}\nPinsListTimestamp\n{timestamp}\n",
+        (f'# Last updated: {readable_timestamp}\nPinsListTimestamp\n'
+         f'{timestamp}\n'),
         content,
         flags=re.DOTALL,
     )
@@ -317,9 +372,9 @@ def _update_pinslist_timestamp():
     with open(PINSLIST_TIMESTAMP_FILE, "w", encoding="utf-8") as file:
         file.write(updated_content)
 
-    updated = terminal.run_git('diff', PINSLIST_TIMESTAMP_FILE)
+    updated = Repository.brave().run_git('diff', PINSLIST_TIMESTAMP_FILE)
     if updated == '':
-        raise Exception('Pinslist timestamp failed to update.')
+        raise ValueError('Pinslist timestamp failed to update.')
 
 
 def _is_gh_cli_logged_in():
@@ -358,7 +413,7 @@ class GitStatus:
     """
 
     def __init__(self):
-        self.git_status = terminal.run_git('status', '--short')
+        self.git_status = Repository.brave().run_git('status', '--short')
 
         # a list of all deleted files, regardless of their staged status.
         self.deleted = []
@@ -388,22 +443,520 @@ class GitStatus:
         return any(path.endswith('.patch') for path in self.untracked)
 
 
+@dataclass(frozen=True)
+class Repository:
+    """Repository data class to hold the repository path.
+
+    This class provides helpers around the use of repository paths, such as
+    relative paths to and from the repository, and repository specific git
+    operations.
+    """
+
+    # The repository path. This path is extracted from the subdirectory section
+    # of a patch file, with chromium/src being ''.
+    # e.g. "third_party/search_engines_data/resources"
+    path: PurePath
+
+    @classmethod
+    def chromium(cls) -> "Repository":
+        """Returns the chromium/src repository.
+        """
+        return cls(PurePath(CHROMIUM_SRC_PATH))
+
+    @classmethod
+    def brave(cls) -> "Repository":
+        """Returns the brave/ repository.
+        """
+        return cls(BRAVE_CORE_PATH)
+
+    @property
+    def is_chromium(self) -> bool:
+        """If this repo is chromium/src.
+        """
+        return self.path == CHROMIUM_SRC_PATH
+
+    @property
+    def is_brave(self) -> bool:
+        """If this repo is brave/.
+        """
+        return self.path == BRAVE_CORE_PATH
+
+    def to_brave(self) -> PurePath:
+        """ Returns the path from the repository to brave/.
+        """
+        if self.is_chromium:
+            return BRAVE_CORE_PATH.relative_to(CHROMIUM_SRC_PATH)
+        return PurePath(
+            len(self.path.relative_to(CHROMIUM_SRC_PATH).parts) *
+            '../') / BRAVE_CORE_PATH.relative_to(CHROMIUM_SRC_PATH)
+
+    def from_brave(self) -> PurePath:
+        """ Returns the path from brave/ to the repository.
+        """
+        return PurePath('..') / self.path.relative_to(CHROMIUM_SRC_PATH)
+
+    def run_git(self, *cmd) -> str:
+        """Runs a git command on the repository.
+        """
+        if self.is_brave:
+            return terminal.run_git(*cmd)
+
+        return terminal.run_git('-C', self.from_brave(), *cmd)
+
+    def unstage_all_changes(self):
+        """Unstages all changes in the repository.
+        """
+        self.run_git('reset', 'HEAD')
+
+    def has_staged_changed(self):
+        return self.run_git('diff', '--cached', '--stat') != ''
+
+    def git_commit(self, message):
+        """Commits the current staged changes.
+
+        This function also prints the commit hash/message to the user.
+        Args:
+        message:
+            The message to be used for the commit.
+        """
+        if self.has_staged_changed() is False:
+            # Nothing to commit
+            return
+
+        self.run_git('commit', '-m', message)
+        commit = self.run_git('log', '-1', '--pretty=oneline',
+                              '--abbrev-commit')
+        terminal.log_task(f'[bold]✔️ [/] [italic]{commit}')
+
+
+@dataclass(frozen=True)
+class Patchfile:
+    """Patchfile data class to hold the patchfile path.
+
+    This class provides methods to manage the information regarding individual
+    patches, such as the source file name, the repository, and the status of the
+    patch application, etc.
+    """
+
+    # A patch's path and file name, from `patchPath`.
+    # e.g. "patchPath":"patches/build-android-gyp-dex.py.patch"
+    path: PurePath
+
+    # This field holds the name of the source file as provided by
+    # `update_patches`, which is not a primary source.
+    # e.g. "path":"build/android/gyp/dex.py"
+    provided_source: Optional[str] = field(default=None)
+
+    # This field holds the most reliable resolution to the source file name,
+    # as its value is assigned from a git operation.
+    source_from_git: Optional[str] = field(default=None)
+
+    # The repository the patch file is targeting to patch.
+    repository: Repository = field(init=False)
+
+    def __post_init__(self):
+        object.__setattr__(self, 'repository',
+                           self.get_repository_from_patch_name())
+
+    def get_repository_from_patch_name(self) -> Repository:
+        """Gets the repository for the patch file.
+        """
+        if self.path.suffix != '.patch':
+            raise ValueError(
+                f'Patch file name should end with `.patch`. {self.path}')
+        if self.path.is_absolute() or len(
+                self.path.parents
+        ) < 2 or self.path.parents[-2].stem != "patches":
+            raise ValueError(
+                f'Patch file name should start with `patches/`. {self.path}')
+
+        # Drops `patches/` at the beginning and the filename at the end.
+        return Repository(CHROMIUM_SRC_PATH.joinpath(*self.path.parts[1:-1]))
+
+    class ApplyStatus(Enum):
+        """The result of applying the patch.
+        """
+
+        # The patch was applied successfully.
+        CLEAN = auto()
+
+        # The patch was applied with conflicts.
+        CONFLICT = auto()
+
+        # The patch could not be applied because the source file was deleted.
+        DELETED = auto()
+
+        # The patch failed as broken.
+        BROKEN = auto()
+
+    class ApplyResult(NamedTuple):
+        """The result of applying the patch.
+        """
+        # The status of the patch operation
+        status: "ApplyStatus"
+
+        # A copy of the patch file data, with updated information.
+        patch: Optional["Patchfile"]
+
+    @dataclass
+    class SourceStatus:
+        """The status of the source file in a given commit.
+        """
+
+        # A code for the status of the source file. (e.g 'R', 'M', 'D')
+        status: str
+
+        # The commit details for this source file status.
+        commit_details: str
+
+        # The name the source may have been renamed to.
+        renamed_to: Optional[str] = None
+
+    def source_name_from_patch_naming(self) -> str:
+        """Source file name according to the patch file name.
+
+        This function uses the patch file name to deduce the source file name.
+        This works in general, but it is not the most reliable method to
+        determine the source file name, and it should be used only in cases
+        where git, and `apply_patches` cannot provide the source file name.
+
+        e.g. "patches/build-android-gyp-dex.py.patch" ->
+             "brave/build/android/gyp/dex.py"
+        """
+        return self.path.name[:-len(".patch")].replace('-', '/')
+
+    def source(self) -> PurePath:
+        """The source file name for the patch file.
+
+        Tries to use the most reliable source file name, going from git, to the
+        one provide by `apply_patches`, to finally deducing from the name.
+        """
+        if self.source_from_git is not None:
+            return self.source_from_git
+        if self.provided_source is not None:
+            return self.provided_source
+        return self.source_name_from_patch_naming()
+
+    def source_from_brave(self) -> PurePath:
+        """The source file path relative to the `brave/` directory.
+        """
+        return f'{self.repository.from_brave() / self.source()}'
+
+    def path_from_repo(self) -> PurePath:
+        """The patch path relative to the repository source belongs.
+        """
+        return f'{self.repository.to_brave() / self.path}'
+
+    def apply(self) -> ApplyResult:
+        """Applies the patch file with `git apply --3way`.
+
+        This function applies the patch file with `git apply --3way` to the
+        repository, and it returns the status of the operation.
+
+        Args:
+            repo:
+                The repository to apply the patch to. If not provided, the
+                repository is deduced from the patch file name.
+
+        Returns:
+            The result of the patch application, and an updated patch instance
+            with the source file name, if any is provided by git.
+        """
+
+        try:
+            self.repository.run_git('apply', '--3way', '--ignore-space-change',
+                                    '--ignore-whitespace',
+                                    self.path_from_repo())
+            return self.ApplyResult(self.ApplyStatus.CLEAN, None)
+        except subprocess.CalledProcessError as e:
+            # If the process fails, we need to collect the files that failed to
+            # apply for manual conflict resolution.
+            if 'with conflicts' in e.stderr:
+                # Output in this case should look like:
+                #   Applied patch to 'build/android/gyp/dex.py' with conflicts.
+                #   U build/android/gyp/dex.py
+                # We get the file name from the last line.
+                return self.ApplyResult(
+                    self.ApplyStatus.CONFLICT,
+                    replace(self,
+                            source_from_git=e.stderr.strip().splitlines()
+                            [-1].split()[-1]))
+            if e.stderr.startswith('error:'):
+                [_, reason] = e.stderr.strip().split(': ', 1)
+
+                if 'does not exist in index' in reason:
+                    # This type of detection could occur in certain cases when
+                    # `npm run init` or `sync` were not run for the working
+                    # branch. It may be useful to warn.
+                    #
+                    # It is also of notice that this error can also occur when
+                    # `apply` is run twice for the same patch with conflicts.
+                    logging.warning(
+                        'Patch with missing file detected during --3way apply,'
+                        ' which may indicate a bad sync state before starting '
+                        'to upgrade. %s', self.path)
+                    return self.ApplyResult(
+                        self.ApplyStatus.DELETED,
+                        replace(self, source_from_git=reason.split(': ',
+                                                                   2)[0]))
+                if ('No such file or directory' in reason
+                        and self.path in reason):
+                    # This should never occur as it indicates that the patch
+                    # file itself is missing, which is sign something is wrong
+                    # with path resolution.
+                    raise e
+
+                # All other errors are considered broken patches.
+                if 'patch with only garbage' not in reason:
+                    # Not clear if we could have other reasons for broken
+                    # patches, but it is better to flag it to keep an eye out
+                    # for it.
+                    logging.warning(
+                        'Patch being flagged as broken, but with unexpected '
+                        'reason: %s %s', self.path, reason)
+
+                return self.ApplyResult(self.ApplyStatus.BROKEN, None)
+
+        raise NotImplementedError()
+
+    def fetch_source_from_git(self) -> "Patchfile":
+        """Gets the source file name from git.
+
+        This function uses git to get the source file name for the patch file,
+        but only if such name has not been retrieved yet from git.
+
+        Returns:
+            A patch instance with the source file name from git.
+        """
+
+        if self.source_from_git is not None:
+            return self
+
+        # The command below has an output similar to:
+        # 8	0	base/some_file.cc
+        return replace(self,
+                       source_from_git=self.repository.run_git(
+                           'apply', '--numstat', '-z',
+                           self.path_from_repo()).strip().split()[2][:-1])
+
+    def get_last_commit_for_source(self) -> str:
+        """Gets the last commit where the source file was mentioned.
+
+        This function uses git to get the last commit where the source file was
+        mentioned, which can be used to check details of when a source was
+        deleted, or renamed.
+
+        Returns:
+            The commit hash with the last mention for the source.
+        """
+        return self.repository.run_git('log', '--full-history', '--pretty=%h',
+                                       '-1', '--', self.source())
+
+    def get_source_removal_status(self, commit: str) -> SourceStatus:
+        """Gets the status of the source file in a given commit.
+
+        This function retrieves the details of the source file in a given
+        commit. This is useful to check if a file has been deleted, or
+        renamed.
+
+        Args:
+            commit:
+                The commit hash to check the source file status.
+
+        Returns:
+            The status of the source file in the commit, which also includes
+            the commit description.
+        """
+
+        # Not very sure why, but by passing `--no-commit-id` the
+        # output looks something like this:
+        # M       chrome/VERSION
+        # commit 17bb6c858e818e81744de42ed292b7060bc341e5
+        # Author: Chrome Release Bot (LUCI)
+        # Date:   Wed Feb 26 10:17:33 2025 -0800
+        #
+        #     Incrementing VERSION to 134.0.6998.45
+        #
+        #     Change-Id: I6e995e1d7aed40e553d3f51e98fb773cd75
+        #
+        # So the output is read and split from the moment a line starts with
+        # `commit`.
+        change = self.repository.run_git('show', '--name-status',
+                                         '--no-commit-id', commit)
+        [all_status, commit_details] = re.split(r'(?=^commit\s)',
+                                                change,
+                                                flags=re.MULTILINE)
+
+        # let's look for the line about the source we care about.
+        status_line = next(
+            (s for s in all_status.splitlines() if str(self.source()) in s),
+            None)
+        status_code = status_line[0]
+
+        if status_code == 'D':
+            return self.SourceStatus(status=status_code,
+                                     commit_details=commit_details)
+        if status_code == 'R':
+            # For renames the output looks something like:
+            # R100       base/some_file.cc       base/renamed_to_file.cc
+            return self.SourceStatus(status=status_code,
+                                     commit_details=commit_details,
+                                     renamed_to=status_line.split()[-1])
+
+        # This could change in the future, but for now it only makes sense to
+        # use this function for deleted or renamed files.
+        raise NotImplementedError(f'unreachable: {status_line}')
+
+
+@dataclass(frozen=True)
+class PatchfilesContinuation:
+    """A class to hold the continuation data for patches.
+    """
+
+    # A dictionary of all patches with attempted `--3way`, grouped by
+    # repository.
+    patch_files: dict[Repository, Patchfile] = field(default_factory=dict)
+
+    # A list of patches that cannot be applied due to their source file being
+    # deleted.
+    patches_to_deleted_files: list[Patchfile] = field(default_factory=list)
+
+    # A list of files that require manual conflict resolution before continuing.
+    files_with_conflicts: list[str] = field(default_factory=list)
+
+    # A list of patches that fail entirely when running apply with `--3way`.
+    broken_patches: list[Patchfile] = field(default_factory=list)
+
+
+@total_ordering
+@dataclass(frozen=True)
+class Version:
+    """A class to hold the version information.
+    """
+
+    # The version data in the format of 'MAJOR.MINOR.BUILD.PATCH'
+    value: str
+
+    def __post_init__(self):
+        if len(self.parts) != 4:
+            raise ValueError(
+                'Version required format: MAJOR.MINOR.BUILD.PATCH. '
+                f'version={self.value}')
+
+    def __str__(self):
+        return self.value
+
+    @property
+    def parts(self) -> list[int]:
+        """The version parts as integers.
+        """
+        return tuple(map(int, self.value.split('.')))
+
+    @property
+    def major(self) -> int:
+        """The major version part.
+        """
+        return self.parts[0]
+
+    @classmethod
+    def from_git(cls, branch: str) -> "Version":
+        """Retrieves the version from the git repository.
+        """
+        return cls(
+            _load_package_file(branch).get('config').get('projects').get(
+                'chrome').get('tag'))
+
+    def __eq__(self, other):
+        if not isinstance(other, Version):
+            return NotImplemented
+        return self.parts == other.parts
+
+    def __lt__(self, other):
+        if not isinstance(other, Version):
+            return NotImplemented
+        return self.parts < other.parts
+
+
+@dataclass(frozen=True)
+class ContinuationFile:
+    """A class to hold the continuation data for the upgrade process.
+    """
+
+    # The target version that brockit is aiming to upgrade brave to.
+    target_version: Version
+
+    # The version that was in the branch when the upgrade started (which can be
+    # different from the base version).
+    working_version: Version
+
+    # The continuation data for the patches.
+    patches: Optional[PatchfilesContinuation] = field(default=None)
+
+    @staticmethod
+    def initialise(target_version: Version, working_version: Version):
+        """Initialises the continuation file with the target/working versions.
+        """
+        with open(VERSION_UPGRADE_FILE, 'wb') as file:
+            pickle.dump(
+                ContinuationFile(target_version=target_version,
+                                 working_version=working_version), file)
+
+    @staticmethod
+    def load(target_version: Version,
+             check: bool = True) -> Optional["ContinuationFile"]:
+        """Loads the continuation file.
+        """
+        if VERSION_UPGRADE_FILE.exists() is False:
+            if check:
+                raise FileNotFoundError(
+                    f'File {VERSION_UPGRADE_FILE} does not exist')
+            return None
+
+        with open(VERSION_UPGRADE_FILE, 'rb') as file:
+            continuation = pickle.load(file)
+
+        if continuation.target_version != target_version:
+            if not check:
+                return None
+
+            # This validation is in place for something that shouldn't happen.
+            # If this is being hit, it means some wrong continuation file is in
+            # the tree, and the process should be started all over.
+            raise TypeError(
+                F'Target version in {VERSION_UPGRADE_FILE} does not match the '
+                f'target version. expected: {target_version} '
+                f'vs {continuation.target_version}')
+
+        return continuation
+
+    def save(self):
+        """Saves the continuation file.
+        """
+        with open(VERSION_UPGRADE_FILE, 'wb') as file:
+            pickle.dump(self, file)
+
+    @staticmethod
+    def clear():
+        logging.debug('Clearing the continuation file.')
+        try:
+            Path(VERSION_UPGRADE_FILE).unlink()
+        except FileNotFoundError:
+            pass
+
 class PatchFailureResolver:
     """Assist patch-failure resolutions, applying patches, reseting patches.
 
-  This class provides the set of data and methods to assist patch failure
-  resolution, persisting data across calls, allowing the resolution to occur in
-  two steps.
+    This class provides methods to assist with patch failures, including:
+    - Applying patches with `--3way`.
+    - Resetting patches that have been applied.
+    - Reporting on deleted/renamed source files.
+    - Reporting on broken patches.
 
-  The operations are:
-    * get a list of failed patches
-    * try to apply the patches with --3way option using `apply_patches_3way()`
-    * check if there are files with conflicts to resolve manually
-    * `git reset` all places where patch files were applied
-    * Save a file with the list of patches that were applied if manual resolution is required.
+    This class uses a continuation file to allow for multisession patch
+    resolution.
   """
 
-    def __init__(self, target_version, working_version=None):
+    def __init__(self, continuation: Optional[ContinuationFile] = None):
         # A dictionary that holds a list for all patch files affected, by
         # repository.
         self.patch_files = {}
@@ -412,267 +965,153 @@ class PatchFailureResolver:
         # source file being deleted.
         self.patches_to_deleted_files = []
 
-        # A list of files that require manual conflict resolution before continuing.
+        # A list of files that require manual conflict resolution before
+        # continuing.
         self.files_with_conflicts = []
 
         # These are patches that fail entirely when running apply with `--3way`.
         self.broken_patches = []
 
-        # The target version aimed by the patches. This is used to validate the
-        # continuation mode.
-        self.target_version = target_version
+        if continuation is not None:
+            # Load it from the continuation file.
+            self.patch_files = continuation.patches.patch_files
+            self.patches_to_deleted_files = (
+                continuation.patches.patches_to_deleted_files)
+            self.files_with_conflicts = (
+                continuation.patches.files_with_conflicts)
+            self.broken_patches = continuation.patches.broken_patches
 
-        # The working version from where the upgrade actually started
-        self.working_version = working_version
-
-    def apply_patches_3way(self, launch_vscode=False):
+    def apply_patches_3way(self,
+                           target_version: Version,
+                           launch_vscode: bool = False):
         """Applies patches that have failed using the --3way option to allow for
         manual conflict resolution.
 
-        This method will apply the patches and reset the state of applied patches.
-        Additionally, it will also produce a list of the files that are waiting for
-        conflict resolution.
+        This method will apply the patches and reset the state of applied
+        patches. Additionally, it will also produce a list of the files that
+        are waiting for conflict resolution.
 
         A list of the patches applied will be produced as well.
         """
+        if len(self.patch_files) > 0:
+            raise NotImplementedError(
+                'unreachable: 3way apply should happen only once.')
+
         # the raw list of patches that failed to apply.
         patch_failures = _get_apply_patches_list()
-        logging.debug(patch_failures)
         if patch_failures is None:
-            raise Exception(
+            raise ValueError(
                 'Apply patches failed to provide a list of patches.')
 
-        def get_subdirs_after_patches(path: str) -> str:
-            """Extracts the subdirectories after 'patches'.
+        for entry in patch_failures:
+            patch = Patchfile(path=PurePath(entry['patchPath']),
+                              provided_source=entry.get('path'))
 
-            The result is something like
-              'patches/build-android-gyp-dex.py.patch' -> ''
-              'patches/third_party/test/foo.patch' -> 'third_party/test'
-            """
-            parts = Path(path).parts
-            if "patches" not in parts:
-                raise Exception(
-                    'Apply patches failed to provide a list of patches.')
-
-            idx = parts.index("patches") + 1
-            result = '/'.join(parts[idx:-1])  # Exclude the filename
-            return result
-
-        for patch in patch_failures:
-            patch_name = patch['patchPath']
-
-            if patch.get('reason', '') == 'SRC_REMOVED':
+            if entry['reason'] == 'SRC_REMOVED':
                 # Skip patches that can't apply as the source is gone.
-                self.patches_to_deleted_files.append(patch_name)
+                self.patches_to_deleted_files.append(patch)
                 continue
 
-            # Grouping patch files by their repositories, so to allow us to iterate
-            # through them, applying them in their repo paths.
-            subdir = get_subdirs_after_patches(patch_name)
-            self.patch_files.setdefault(subdir, []).append(patch_name)
+            # Grouping patch files by their repositories, so to allow us to
+            # iterate through them, applying them in their repo paths.
+            self.patch_files.setdefault(patch.repository, []).append(patch)
 
-        patches_to_apply = [
-            patch for patch_list in self.patch_files.values()
-            for patch in patch_list
-        ]
-        if len(patches_to_apply) > 0:
+        if len(self.patch_files):
             terminal.log_task(
                 '[bold]Reapplying patch files with --3way:\n[/]' +
-                '\n'.join(f'    * {file}' for file in patches_to_apply))
-
-        def get_repo_path_from_subdir(subdir):
-            """Returns relative repo path for a given patch subdir.
-
-                The result is something like
-                '' -> '../'
-                'third_party/test' -> '../third_party/test'
-            """
-            return f'../{subdir}{"" if subdir == "" else "/"}'
-
-        def get_patch_relative_path_from_repo(repo_path):
-            """Returns the relative path to the patch file from the repo.
-                '../' -> ''
-                '../third_party/test' -> '../../'
-            """
-            return "../" * (repo_path.count('/') -
-                            1) if repo_path != '../' else ''
-
-        for subdir, patches in self.patch_files.items():
-            repo_path = get_repo_path_from_subdir(subdir)
-            patch_relative_path = get_patch_relative_path_from_repo(repo_path)
-
-            cmd = [
-                'git', '-C', f'../{subdir}', 'apply', '--3way',
-                '--ignore-space-change', '--ignore-whitespace'
-            ]
-
-            all_output = []
-            for patch in patches:
-                # Each patch is run individually as a broken patch can stop a
-                # git run for all subsequent patches.
-
-                try:
-                    terminal.run(cmd + [f'{patch_relative_path}brave/{patch}'])
-                except subprocess.CalledProcessError as e:
-                    # If the process fails, we need to collect the files that
-                    # failed to apply for manual conflict resolution.
-                    if 'does not exist in index' in e.stderr:
-                        # This type of detection could occur in certain cases
-                        # when `npm run init` or `sync` were not run for the
-                        # working branch. It may be useful to warn.
-                        self.patches_to_deleted_files.append(patch)
-                        logging.warning(
-                            'Patch with missing file detected during --3way '
-                            'apply, which may indicate a bad sync state before'
-                            ' starting to upgrade. %s', patch)
-                    elif e.stderr.startswith('error:'):
-                        self.broken_patches.append(patch)
-
-                    all_output += e.stderr.strip().splitlines()
-
-            # Checking for " U" which means conflicts were added.
-            self.files_with_conflicts += [
-                f'{repo_path}{line.lstrip("U ")}' for line in all_output
-                if line.startswith('U ')
-            ]
-
-        for subdir, patches in self.patch_files.items():
-            # Resetting any staged states from apply patches as that can cause
-            # issues when generating patches.
-            terminal.run_git('-C', f'../{subdir}', 'reset', 'HEAD')
+                '\n'.join(f'    * {file}' for file in [
+                    patch.path for patch_list in self.patch_files.values()
+                    for patch in patch_list
+                ]))
 
         vscode_args = ['code']
+        for repo, patches in self.patch_files.items():
+            for patch in patches:
+                apply_result = patch.apply()
+                if apply_result.status == Patchfile.ApplyStatus.CONFLICT:
+                    source = patch.source_from_brave()
+                    self.files_with_conflicts.append(source)
+                elif apply_result.status == Patchfile.ApplyStatus.BROKEN:
+                    self.broken_patches.append(patch)
+                elif apply_result.status == Patchfile.ApplyStatus.DELETED:
+                    self.patches_to_deleted_files.append(patch)
+
+        for repo, patches in self.patch_files.items():
+            # Resetting any staged states from apply patches as that can cause
+            # issues when generating patches.
+            repo.unstage_all_changes()
+
         if len(self.patches_to_deleted_files) > 0:
-            vscode_args += self.patches_to_deleted_files
             # The goal in this this section is print a report for listing every
             # patch that cannot apply anymore because the source file is gone,
             # fetching from git the commit and the reason why exactly the file
             # is not there anymore (e.g. renamed, deleted).
 
-            terminal.log_task(
-                f'[bold]Files that cannot be patched anymore {ACTION_NEEDED_DECORATOR}:[/]'
-            )
+            terminal.log_task('[bold]Files that cannot be patched anymore '
+                              f'{ACTION_NEEDED_DECORATOR}:[/]')
 
             # This set will hold the information about the deleted patches
             # in a way that they can be grouped around the chang that caused
             # their removal.
             deletion_report = {}
 
-            for patch_name in self.patches_to_deleted_files:
-                subdir = get_subdirs_after_patches(patch_name)
-                patch_relative_path = get_patch_relative_path_from_repo(
-                    get_repo_path_from_subdir(subdir))
+            for patch in self.patches_to_deleted_files:
+                # Make sure we have an correct file source for the patch.
+                patch = patch.fetch_source_from_git()
+                # Finding the culptrit commit hash.
+                commit = patch.get_last_commit_for_source()
+                deletion_report.setdefault(
+                    commit,
+                    {})[patch] = patch.get_source_removal_status(commit)
 
-                try:
-                    # Calling `git apply` with `--check` to have git tell us
-                    # the exact name of the file that the patch is meant for.
-                    #
-                    # The failure output should looks something like:
-                    #   error: base/some_file.cc: No such file or directory
-                    terminal.run_git(
-                        '-C', f'../{subdir}', 'apply', '--check',
-                        f'{patch_relative_path}brave/{patch_name}')
-                except subprocess.CalledProcessError as e:
-                    [status, file, reason] = e.stderr.lstrip().split(':', 2)
+            for commit, patches in deletion_report.items():
+                for patch, status in patches.items():
+                    if status.status == 'D':
+                        console.log(
+                            Padding(f'✘ {patch.source()} [red bold](deleted)',
+                                    (0, 4)))
+                        vscode_args.append(patch.path)
+                    elif status.status == 'R':
+                        renamed_to = patch.repository.from_brave(
+                        ) / status.renamed_to
+                        console.log(
+                            Padding(
+                                f'✘ {patch.source_from_brave()}\n    '
+                                f'([yellow bold]renamed to[/] {renamed_to})',
+                                (0, 4)))
+                        vscode_args += [patch.path, renamed_to]
 
-                    # The command is expeted to fail, but the reason should be
-                    # that the source for the patch is deleted. Any other
-                    # types of failures should be reported.
-                    if status != 'error' or 'No such file or directory' not in reason:
-                        raise e
-
-                    file = file.strip()
-                    # This command fetches the last commit where the file path
-                    # was mentioned, which is the culprit.
-                    commit = terminal.run_git('-C', f'../{subdir}', 'log',
-                                              '-1', '--pretty=%h', '--',
-                                              file).strip()
-                    if commit not in deletion_report:
-                        deletion_report[commit] = {}
-                        deletion_report[commit]['files'] = []
-
-                        # Running `git show --name-status` to get more details
-                        # about the culprit.
-                        # Not very sure why, but by passing `--no-commit-id` the
-                        # output looks something like this:
-                        #
-                        # M       chrome/VERSION
-                        # commit 17bb6c858e818e81744de42ed292b7060bc341e5
-                        # Author: Chrome Release Bot (LUCI)
-                        # Date:   Wed Feb 26 10:17:33 2025 -0800
-                        #
-                        #     Incrementing VERSION to 134.0.6998.45
-                        #
-                        #     Change-Id: I6e995e1d7aed40e553d3f51e98fb773cd75
-                        #
-                        # So the output is read and split from the moment a
-                        # a line starts with `commit`.
-                        change = terminal.run_git('-C', f'../{subdir}', 'show',
-                                                  '--name-status',
-                                                  '--no-commit-id', commit)
-                        sections = re.split(r'(?=^commit\s)',
-                                            change,
-                                            flags=re.MULTILINE)
-
-                        deletion_report[commit]['summary'] = sections[1]
-                        deletion_report[commit]['status'] = sections[0]
-
-                    status = deletion_report[commit]['status']
-                    status_datails = next(
-                        (s for s in status.splitlines() if file in s),
-                        None).split()
-
-                    if status_datails[0] == 'D':
-                        deletion_report[commit]['files'].append(
-                            f'{file} [red bold](deleted)')
-                    elif status_datails[0].startswith('R'):
-                        file = status_datails[2]
-                        deletion_report[commit]['files'].append(
-                            f'{file}\n    ([yellow bold]renamed to[/] {status_datails[2]})'
-                        )
-
-
-            for commit, entry in deletion_report.items():
-                for file in entry['files']:
-                    console.log(Padding(f'✘ {file}', (0, 4)))
-
-                summary = entry['summary']
-                console.log(Padding(f'{summary}\n', (0, 8), style="dim"))
+            # Printing the commmit message for the grouped changes.
+            console.log(
+                Padding(f'{next(iter(patches.items()))[1].commit_details}\n',
+                        (0, 8),
+                        style="dim"))
 
         if len(self.broken_patches) > 0:
             terminal.log_task(
-                f'[bold]Broken patches that fail to apply entirely {ACTION_NEEDED_DECORATOR}:[/]'
-            )
+                '[bold]Broken patches that fail to apply entirely '
+                f'{ACTION_NEEDED_DECORATOR}:[/]')
+
             for patch in self.broken_patches:
-                file = next((entry.get('path') for entry in patch_failures
-                             if entry.get('patchPath', '') in patch), None)
-                if file is None:
-                    console.log(Padding(f'✘ {patch}', (0, 4)))
-                else:
-                    console.log(Padding(f'✘ {patch} ➜ {file}', (0, 4)))
-                    vscode_args += [patch, file]
+                source = patch.source_from_brave()
+                console.log(Padding(f'✘ {patch.path} ➜ {source}', (0, 4)))
+                vscode_args += [patch.path, source]
 
         if len(self.files_with_conflicts) > 0:
             vscode_args += self.files_with_conflicts
-            terminal.log_task(
-                f'[bold]Manually resolve conflicts for {ACTION_NEEDED_DECORATOR}:[/]\n'
-                + '\n'.join(f'    ✘ {file}'
-                            for file in self.files_with_conflicts))
+            terminal.log_task(f'[bold]Manually resolve conflicts for '
+                              f'{ACTION_NEEDED_DECORATOR}:[/]\n' +
+                              '\n'.join(f'    ✘ {file}'
+                                        for file in self.files_with_conflicts))
 
-
-        # A continuation file is created in case `--continue` is still required
-        # for some reason (e.g. manual conflict resolution, patches being
-        # deleted).
-        continuation_file = {}
-        continuation_file['target_version'] = self.target_version
-        continuation_file['working_version'] = self.working_version
-        continuation_file['patches'] = self.patch_files
-        continuation_file['conflicts'] = self.files_with_conflicts
-        continuation_file['deleted'] = self.patches_to_deleted_files
-
-        # Saving the patch file list to be able to revisit it later in JSON format.
-        with open(VERSION_UPGRADE_FILE, 'w') as file:
-            json.dump(continuation_file, file)
+        # The continuation file is updated at the end of the process, in case
+        # the process has to be continued later.
+        replace(ContinuationFile.load(target_version=target_version),
+                patches=PatchfilesContinuation(
+                    patch_files=self.patch_files,
+                    patches_to_deleted_files=self.patches_to_deleted_files,
+                    files_with_conflicts=self.files_with_conflicts,
+                    broken_patches=self.broken_patches)).save()
 
         if launch_vscode:
             terminal.run(vscode_args)
@@ -691,89 +1130,12 @@ class PatchFailureResolver:
         """
         for _, patches in self.patch_files.items():
             for patch in patches:
-                if ignore_deleted_files is True and Path(
-                        patch).exists() is False:
+                if (ignore_deleted_files is True
+                        and Path(patch.path).exists() is False):
                     # Skip deleted files.
                     continue
 
-                # TODO: `terminal.run_git` should be able to take an array.
-                terminal.run_git('add', patch)
-
-    def load_continuation_file(self):
-        continuation_file = {}
-        with open(VERSION_UPGRADE_FILE, 'r') as file:
-            continuation_file = json.load(file)
-
-        if continuation_file['target_version'] != self.target_version:
-            # This validation is in place for something that shouldn't happen.
-            # If this is being hit, it means some wrong continuation file is in
-            # the tree, and the process should be started all over.
-            raise Exception(
-                F'Target version in {VERSION_UPGRADE_FILE} does not match the target version.'
-            )
-
-        self.working_version = continuation_file['working_version']
-        self.patch_files = continuation_file['patches']
-        self.files_with_conflicts = continuation_file['conflicts']
-        self.patches_to_deleted_files = continuation_file['deleted']
-
-
-def _get_chromium_version_from_git(branch):
-    """Retrieves the Chromium tag in package.json
-
-  This function will load the package.json file from a given branch, and
-  retrieve the tag Chromium version value in it.
-
-  Args:
-    branch:
-      A branch or hash to load the file from.
-
-  e.g:
-    _get_chromium_version_from_git('HEAD')
-  """
-    return _load_package_file(branch).get('config').get('projects').get(
-        'chrome').get('tag')
-
-
-def _is_upgrading(target_version, from_version):
-    """Checks whether a target version is higher than the working version
-
-  This function is used to prevent a downgrade attempt, or re-applying an
-  upgrade, by informing whether or not the target version is higher.
-
-  Args:
-    target_version:
-      The version being upgraded to.
-    from_version:
-      The current version of the current branch.
-  """
-    to_version = [int(i) for i in target_version.split('.')]
-    in_version = [int(i) for i in from_version.split('.')]
-
-    if len(in_version) != 4 or len(to_version) != 4:
-        return False
-
-    for origin, target in zip(in_version, to_version):
-        if target > origin:
-            return True
-        if target < origin:
-            return False
-
-    return False
-
-
-def _is_upgrading_major(target_version, from_version):
-    """Checks if this is a MAJOR upgrade.
-
-    A major upgrade is different from a minor bump, and this function provides
-    the test for that.
-    """
-
-    to_version = [int(i) for i in target_version.split('.')]
-    in_version = [int(i) for i in from_version.split('.')]
-
-    return to_version[0] > in_version[0]
-
+                Repository.brave().run_git('add', patch.path)
 
 def _read_chromium_version_file():
     """Retrieves the Chromium version from the VERSION file.
@@ -782,12 +1144,12 @@ def _read_chromium_version_file():
     `apply_patches`.
     """
     version_parts = {}
-    file = terminal.run_git('-C', '../', 'show',
-                            f'HEAD:{CHROMIUM_VERSION_FILE}')
+    file = Repository.chromium().run_git('show',
+                                         f'HEAD:{CHROMIUM_VERSION_FILE}')
     for line in file.splitlines():
         key, value = line.strip().split('=')
         version_parts[key] = value
-    return '{MAJOR}.{MINOR}.{BUILD}.{PATCH}'.format(**version_parts)
+    return Version('{MAJOR}.{MINOR}.{BUILD}.{PATCH}'.format(**version_parts))
 
 
 class Upgrade:
@@ -798,7 +1160,7 @@ class Upgrade:
   its completion.
   """
 
-    def __init__(self, base_branch, target_version):
+    def __init__(self, base_branch: str, target_version: Version):
         # The base branch used to fetch the base version from. Defaults to the
         # upstream branch of the current branch if none specified.
         self.base_branch = base_branch
@@ -809,12 +1171,18 @@ class Upgrade:
         self.target_version = target_version
 
         # The base chromium version from the upstream/previous branch
-        self.base_version = _get_chromium_version_from_git(self.base_branch)
+        self.base_version = Version.from_git(self.base_branch)
 
         # The last version the branch was in, that the update is being started
         # from. This value is either retrieved from git, or from a continuation
         # file.
         self.working_version = None
+
+        # Update the working version from the continuation file.
+        continuation = ContinuationFile.load(
+            target_version=self.target_version, check=False)
+        if continuation is not None:
+            self.working_version = continuation.working_version
 
         # The version currently set in the VERSION file.
         self.chromium_src_version = _read_chromium_version_file()
@@ -827,18 +1195,19 @@ class Upgrade:
     the repo
     """
         package = _load_package_file('HEAD')
-        package['config']['projects']['chrome']['tag'] = self.target_version
+        package['config']['projects']['chrome']['tag'] = str(
+            self.target_version)
         with open(PACKAGE_FILE, "w") as package_file:
             json.dump(package, package_file, indent=2)
 
-        terminal.run_git('add', PACKAGE_FILE)
+        Repository.brave().run_git('add', PACKAGE_FILE)
 
         # Pinlist timestamp update occurs with the package version update.
         _update_pinslist_timestamp()
-        terminal.run_git('add', PINSLIST_TIMESTAMP_FILE)
-        terminal.git_commit(
-            f'Update from Chromium {self.base_version} to Chromium {self.target_version}.'
-        )
+        Repository.brave().run_git('add', PINSLIST_TIMESTAMP_FILE)
+        Repository.brave().git_commit(
+            f'Update from Chromium {self.base_version} '
+            f'to Chromium {self.target_version}.')
 
     def _save_updated_patches(self):
         """Creates the updated patches change
@@ -847,11 +1216,11 @@ class Upgrade:
     all patches that might have been changed or deleted. Untracked patches are
     excluded from addition at this stage.
     """
-        terminal.run_git('add', '-u', '*.patch')
+        Repository.brave().run_git('add', '-u', '*.patch')
 
-        terminal.git_commit(
-            f'Update patches from Chromium {self.base_version} to Chromium {self.target_version}.'
-        )
+        Repository.brave().git_commit(
+            f'Update patches from Chromium {self.base_version} '
+            f'to Chromium {self.target_version}.')
 
     def _save_rebased_l10n(self):
         """Creates string rebase change
@@ -859,14 +1228,14 @@ class Upgrade:
     This function stages, and commits, all changed, updated, or deleted files
     resulting from running npm run chromium_rebase_l10n.
     """
-        terminal.run_git('add', '*.grd', '*.grdp', '*.xtb')
-        terminal.git_commit(
+        Repository.brave().run_git('add', '*.grd', '*.grdp', '*.xtb')
+        Repository.brave().git_commit(
             f'Updated strings for Chromium {self.target_version}.')
 
     def _save_conflict_resolved_patches(self):
-        terminal.git_commit(
-            f'Conflict-resolved patches from Chromium {self.base_version} to Chromium {self.target_version}.'
-        )
+        Repository.brave().git_commit(
+            f'Conflict-resolved patches from Chromium {self.base_version} to '
+            f'Chromium {self.target_version}.')
 
     def _run_update_patches_with_no_deletions(self):
         """Runs update_patches and returns if any deleted patches are found.
@@ -904,6 +1273,12 @@ class Upgrade:
 
         return f'https://chromium.googlesource.com/chromium/src/+log/{from_version}..{self.target_version}?pretty=fuller&n=10000'
 
+    def _get_googlesource_diff_link(self, from_version):
+        """Generates a link to the diff of the upgrade.
+        """
+        return GOOGLESOURCE_LINK.format(from_version=from_version,
+                                        to_version=self.target_version)
+
     def create_or_updade_issue_with_gh(self):
         """Creates a github issue for the upgrade.
 
@@ -911,17 +1286,17 @@ class Upgrade:
         """
 
         title = 'Upgrade from Chromium {previous} to Chromium {to}'
-        if _is_upgrading_major(self.target_version, self.base_version):
+        if self.target_version.major > self.base_version.major:
             # For major updates, the issue description doesn't have a precise
             # version number.
-            title = title.format(previous=self.base_version.split('.')[0],
-                                 to=self.target_version.split('.')[0])
+            title = title.format(previous=str(self.base_version.major),
+                                 to=str(self.target_version.major))
         else:
-            title = title.format(previous=self.base_version,
-                                 to=self.target_version)
+            title = title.format(previous=str(self.base_version),
+                                 to=str(self.target_version))
 
-        link = GOOGLESOURCE_LINK.format(from_version=self.base_version,
-                                        to_version=self.target_version)
+        link = self._get_googlesource_diff_link(
+            from_version=str(self.base_version))
 
         results = json.loads(
             terminal.run([
@@ -935,15 +1310,16 @@ class Upgrade:
             pattern = r"https://chromium\.googlesource\.com/chromium/src/\+log/[^\s]+"
             body = re.sub(pattern, link, issue['body'])
             if body == issue['body']:
-                terminal.log_task(
-                    f'Github issue already up-to-date {issue["url"]}.')
+                console.log(
+                    f'A Github issue with the title "{title}" is already '
+                    'created and up-to-date.')
             else:
                 terminal.run([
                     'gh', 'issue', 'edit',
                     str(issue['number']), '--repo', 'brave/brave-browser',
                     '--body', f'{body}'
                 ])
-                terminal.log_task(f'GitHub issue udpated {issue["url"]}.')
+                terminal.log_task(f'GitHub issue udpated {str(issue["url"])}.')
             return
 
         body = MINOR_VERSION_BUMP_ISSUE_TEMPLATE.format(googlesource_link=link)
@@ -987,8 +1363,7 @@ class Upgrade:
                     self.target_version)
                 return False
 
-            if _is_upgrading(self.target_version,
-                             self.working_version) is not True:
+            if self.target_version < self.working_version:
                 logging.error('Cannot upgrade version from %s to %s',
                               self.target_version, self.working_version)
                 return False
@@ -1003,22 +1378,27 @@ class Upgrade:
                 if self._run_update_patches_with_no_deletions() is not True:
                     return False
             except subprocess.CalledProcessError as e:
-                if 'There were some failures during git reset of specific repo paths' in e.stderr:
+                if ('There were some failures during git reset of specific '
+                        'repo paths' in e.stderr):
                     logging.warning(
                         '[bold cyan]npm run init[/] is failing to reset some'
                         ' paths. This could be happening because of a bad sync'
                         'state before starting the upgrade.')
 
-                if e.returncode != 0 and 'Exiting as not all patches were successful!' in e.stderr.splitlines(
-                )[-1]:
-                    resolver = PatchFailureResolver(self.target_version,
-                                                    self.working_version)
-                    resolver.apply_patches_3way(launch_vscode)
+                if (e.returncode != 0
+                        and 'Exiting as not all patches were successful!'
+                        in e.stderr.splitlines()[-1]):
+                    resolver = PatchFailureResolver()
+                    resolver.apply_patches_3way(
+                        target_version=self.target_version,
+                        launch_vscode=launch_vscode)
                     if resolver.requires_conflict_resolution() is True:
                         # Manual resolution required.
                         console.log(
-                            f'👋 (Address all sections with {ACTION_NEEDED_DECORATOR} above, and then rerun [italic]🚀Brockit![/] with [bold cyan]--continue[/])'
-                        )
+                            '👋 (Address all sections with '
+                            f'{ACTION_NEEDED_DECORATOR} above, and then rerun '
+                            '[italic]🚀Brockit![/] with [bold cyan]'
+                            '--continue[/])')
                         return False
 
                     if self._run_update_patches_with_no_deletions(
@@ -1041,8 +1421,8 @@ class Upgrade:
         elif is_continuation is True and no_conflict_continuation is False:
             # This is when a continuation follows conflict resolution. The
             # tries to recover from where it stopped.
-            resolver = PatchFailureResolver(self.target_version)
-            resolver.load_continuation_file()
+            resolver = PatchFailureResolver(
+                ContinuationFile.load(self.target_version))
 
             if resolver.requires_conflict_resolution() is True:
                 if self._run_update_patches_with_no_deletions() is not True:
@@ -1050,17 +1430,21 @@ class Upgrade:
 
             resolver.stage_all_patches(ignore_deleted_files=True)
 
-            if _has_staged_changed() is False:
+            if Repository.brave().has_staged_changed() is False:
                 logging.error(
-                    'Nothing has been staged to commit conflict-resolved patches.'
-                )
+                    'Nothing has been staged to commit conflict-resolved '
+                    'patches.')
                 return False
 
             self._save_conflict_resolved_patches()
+            # This is the end of the continuation process, so we can clear the
+            # continuation file.
+            ContinuationFile.clear()
 
         self._save_updated_patches()
-        if is_continuation is True or override_continuation is True:
-            # Run init again to make sure nothing is missing after updating patches.
+        if (is_continuation is True or override_continuation is True):
+            # Run init again to make sure nothing is missing after updating
+            # patches.
             terminal.run_npm_command('init')
 
         terminal.run_npm_command('chromium_rebase_l10n')
@@ -1087,21 +1471,24 @@ class Upgrade:
             terminal.set_status_object(status)
 
             if is_continuation is True:
-                # Update the working version from the continuation file.
-                resolver = PatchFailureResolver(self.target_version)
-                resolver.load_continuation_file()
-                self.working_version = resolver.working_version
-
                 if self.target_version != self.chromium_src_version:
                     logging.error(
-                        'To run with [bold cyan]--continue[/] the Chromium version has to '
-                        'be in Sync with Brave. Brave %s ➜ Chromium %s',
-                        self.target_version, self.chromium_src_version)
+                        'To run with [bold cyan]--continue[/] the Chromium '
+                        'version has to be in Sync with Brave.'
+                        ' Brave %s ➜ Chromium %s', self.target_version,
+                        self.chromium_src_version)
                     return False
             else:
-                self.working_version = _get_chromium_version_from_git('HEAD')
+                # TODO(cdesouza): This has to be changed at some point for the
+                # file to be created always before anything else.
+                # We start a continuation file alrady, in case we need to stop
+                # at some point in the process.
+                self.working_version = Version.from_git('HEAD')
+                ContinuationFile.initialise(self.target_version,
+                                            self.working_version)
 
-                if self.working_version != self.chromium_src_version and self.target_version != self.chromium_src_version:
+                if (self.working_version != self.chromium_src_version
+                        and self.target_version != self.chromium_src_version):
                     logging.error(
                         'Chrommium seems to be synced to a version entirely '
                         'unrelated. Brave %s ➜ Chromium %s',
@@ -1116,12 +1503,11 @@ class Upgrade:
             if self.working_version != self.base_version:
                 terminal.log_task(
                     'Chromium changes since last branch upgrade: '
-                    f'{GOOGLESOURCE_LINK.format(from_version=self.working_version, to_version=self.target_version)}'
+                    f'{self._get_googlesource_diff_link(self.working_version)}'
                 )
             terminal.log_task(
-                'All Chromium changes: '
-                f'{GOOGLESOURCE_LINK.format(from_version=self.base_version, to_version=self.target_version)}'
-            )
+                f'All Chromium changes: '
+                f'{self._get_googlesource_diff_link(self.base_version)}')
 
             return self._run_internal(is_continuation,
                                       no_conflict_continuation, launch_vscode,
@@ -1164,24 +1550,23 @@ def main():
         action='store_true',
         help=
         'Picks up from manual patch conflict resolution, stages the patches '
-        'previously flagged as with conflict, commits the staged patches as well '
-        'anything that my have been staged manually, and carries on from that '
-        'point onward generating the "Update patches" and "Updated strings" '
-        'changes.',
+        'previously flagged as with conflict, commits the staged patches as '
+        'well anything that my have been staged manually, and carries on from '
+        'that point onward generating the "Update patches" and "Updated '
+        'strings" changes.',
         dest='is_continuation')
     parser.add_argument(
         '--no-conflict-change',
         action='store_true',
-        help=
-        'Indicates that a continuation does not have conflict patches to commit '
-        '(when conflict resolution is committed as its own fix manually with '
-        'specific messages).',
+        help='Indicates that a continuation does not have conflict patches to '
+        'commit (when conflict resolution is committed as its own fix '
+        'manually with specific messages).',
         dest='no_conflict')
     parser.add_argument(
         '--update-patches-only',
         action='store_true',
-        help='Regenerates the "Update patches" and "Updated strings" commits for'
-        'current version.',
+        help='Regenerates the "Update patches" and "Updated strings" commits '
+        'for current version.',
         dest='update_patches_only')
     parser.add_argument(
         '--with-github',
@@ -1192,8 +1577,8 @@ def main():
     parser.add_argument(
         '--github-issue-only',
         action='store_true',
-        help=
-        'Creates or updates the GitHub issue based on the version details provided.',
+        help='Creates or updates the GitHub issue based on the version details '
+        'provided.',
         dest='github_issue_only')
     parser.add_argument(
         '--vscode',
@@ -1204,6 +1589,14 @@ def main():
         '--verbose',
         action='store_true',
         help='Produces verbose logs (full command lines being executed, etc).')
+    parser.add_argument(
+        '--infra-mode',
+        action='store_true',
+        help=
+        'Indicates that the script is being run in the infra environment. This'
+        ' changes the script output, specially providing feedback for the CI '
+        'to be kept alive.',
+        dest='infa_mode')
 
     args = parser.parse_args()
     logging.basicConfig(
@@ -1211,7 +1604,10 @@ def main():
         format='%(message)s',
         handlers=[IncendiaryErrorHandler(markup=True, rich_tracebacks=True)])
 
-    upgrade = Upgrade(args.previous, args.to)
+    if args.infa_mode:
+        terminal.set_infra_mode()
+
+    upgrade = Upgrade(args.previous, Version(args.to))
 
     console.log('[italic]🚀 Brockit!')
     if args.update_patches_only:
