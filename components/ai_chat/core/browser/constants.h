@@ -34,6 +34,9 @@ inline constexpr char kLeoModelSupportUrl[] =
     "https://support.brave.com/hc/en-us/articles/26727364100493-"
     "What-are-the-differences-between-Leo-s-AI-Models";
 
+inline constexpr char kLeoGoPremiumUrl[] =
+    "https://account.brave.com/account/?intent=checkout&product=leo";
+
 // Upon registering a custom model, users have the ability to explicitly
 // provide a context size (in tokens). When present, we'll use this value to
 // determine the max associated content length (in chars). We will assume 4

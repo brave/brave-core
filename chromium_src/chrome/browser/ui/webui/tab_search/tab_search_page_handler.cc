@@ -246,10 +246,9 @@ void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
 }
 
 void TabSearchPageHandler::OpenLeoGoPremiumPage() {
-  NavigateParams params(
-      Profile::FromWebUI(web_ui_),
-      GURL("https://account.brave.com/account/?intent=checkout&product=leo"),
-      ui::PageTransition::PAGE_TRANSITION_LINK);
+  NavigateParams params(Profile::FromWebUI(web_ui_),
+                        GURL(ai_chat::kLeoGoPremiumUrl),
+                        ui::PageTransition::PAGE_TRANSITION_LINK);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   Navigate(&params);
 }
