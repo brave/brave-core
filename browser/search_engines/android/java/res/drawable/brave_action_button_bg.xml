@@ -5,8 +5,8 @@
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="systemfeedback_error_icon">#bf002c</color>
-    <color name="semantic_button_background">#4551D1</color>
-    <color name="schemes_surface_container">#f0f0f4</color>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/semantic_button_background" />
+    <corners android:radius="12dp" />
+</shape>
