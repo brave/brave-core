@@ -3,90 +3,94 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-window.__firefox__ = window.__firefox__ || {};
-
-Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
-  enumerable: false,
-  configurable: false,
-  writable: true,
-  value: {
-    "translateScriptLoaded": false,
-    "useNativeNetworking": true,
-    "getPageSource": (function() {
-      return encodeURIComponent(document.documentElement.outerHTML);
-    }),
-    "getPageLanguage": (function() {
-      return document.documentElement.lang;
-    }),
-    "getMetaContentByHttpEquiv": (function(httpEquiv) {
-      for (const metaTag of document.getElementsByTagName('meta')) {
-        if (metaTag.httpEquiv && metaTag.httpEquiv.toLowerCase() === httpEquiv) {
-          return metaTag.content;
-        }
-      }
-      return "";
-    }),
-    "getRawPageSource": (function() {
-      return document.documentElement.outerText;
-    }),
-    "hasNoTranslate": (function() {
-      for (const metaTag of document.getElementsByTagName('meta')) {
-        if (metaTag.name === 'google') {
-          if (metaTag.content === 'notranslate' ||
-              metaTag.getAttribute('value') === 'notranslate') {
-            return true;
+window.__firefox__.includeOnce("BraveTranslateScript", function($) {
+  var translateScriptLoaded = false;
+  
+  Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
+    enumerable: false,
+    configurable: false,
+    writable: false,
+    value: {
+      "useNativeNetworking": true,
+      "isTranslateScriptLoaded": (function() {
+        return translateScriptLoaded;
+      }),
+      "getPageSource": (function() {
+        return encodeURIComponent(document.documentElement.outerHTML);
+      }),
+      "getPageLanguage": (function() {
+        return document.documentElement.lang;
+      }),
+      "getMetaContentByHttpEquiv": (function(httpEquiv) {
+        for (const metaTag of document.getElementsByTagName('meta')) {
+          if (metaTag.httpEquiv && metaTag.httpEquiv.toLowerCase() === httpEquiv) {
+            return metaTag.content;
           }
         }
-      }
-      return false;
-    }),
-    "isSameLanguage": (function() {
-      let userLanguage = (navigator.language || navigator.userLanguage).split('-')[0];
-      let pageLanguage = document.documentElement.lang
-      return userLanguage == pageLanguage;
-    }),
-    "detectLanguage": (function() {
-      window.webkit.messageHandlers["LanguageDetectionTextCaptured"].postMessage({
-        "hasNoTranslate": window.__firefox__.$<brave_translate_script>.hasNoTranslate(),
-        "htmlLang": window.__firefox__.$<brave_translate_script>.getPageLanguage(),
-        "httpContentLanguage": window.__firefox__.$<brave_translate_script>.getMetaContentByHttpEquiv(),
-        "frameId": __gCrWeb && __gCrWeb.message && __gCrWeb.message.getFrameId ? __gCrWeb.message.getFrameId() : "",
-      });
-    }),
-    "loadTranslateScript": (function() {
-      return new Promise((resolve, reject) => {
-        if (window.__firefox__.$<brave_translate_script>.translateScriptLoaded) {
-          return resolve();
+        return "";
+      }),
+      "getRawPageSource": (function() {
+        return document.documentElement.outerText;
+      }),
+      "hasNoTranslate": (function() {
+        for (const metaTag of document.getElementsByTagName('meta')) {
+          if (metaTag.name === 'google') {
+            if (metaTag.content === 'notranslate' ||
+                metaTag.getAttribute('value') === 'notranslate') {
+              return true;
+            }
+          }
         }
-        
-        window.webkit.messageHandlers["$<message_handler>"].postMessage({
-          "command": "load_brave_translate_script"
-        }).then((script) => {
-          cr.googleTranslate.readyCallback = () => {
-            cr.googleTranslate.readyCallback = null;
-            resolve();
+        return false;
+      }),
+      "isSameLanguage": (function() {
+        let userLanguage = (navigator.language || navigator.userLanguage).split('-')[0];
+        let pageLanguage = document.documentElement.lang
+        return userLanguage == pageLanguage;
+      }),
+      "detectLanguage": (function() {
+        window.webkit.messageHandlers["LanguageDetectionTextCaptured"].postMessage({
+          "hasNoTranslate": window.__firefox__.$<brave_translate_script>.hasNoTranslate(),
+          "htmlLang": window.__firefox__.$<brave_translate_script>.getPageLanguage(),
+          "httpContentLanguage": window.__firefox__.$<brave_translate_script>.getMetaContentByHttpEquiv(),
+          "frameId": __gCrWeb && __gCrWeb.message && __gCrWeb.message.getFrameId ? __gCrWeb.message.getFrameId() : "",
+        });
+      }),
+      "loadTranslateScript": (function() {
+        return new Promise((resolve, reject) => {
+          if (translateScriptLoaded) {
+            return resolve();
           }
           
-          new Function(script).call(window /*this*/);
-          window.__firefox__.$<brave_translate_script>.translateScriptLoaded = true;
-          
-          if ((cr.googleTranslate.libReady || cr.googleTranslate.finished) && cr.googleTranslate.readyCallback) {
-            cr.googleTranslate.readyCallback = null;
-            resolve();
-          }
-          
-          setTimeout(() => {
-            if (cr.googleTranslate.readyCallback) {
+          window.webkit.messageHandlers["$<message_handler>"].postMessage({
+            "command": "load_brave_translate_script"
+          }).then((script) => {
+            cr.googleTranslate.readyCallback = () => {
               cr.googleTranslate.readyCallback = null;
               resolve();
             }
-          }, 3000);
-        }).catch((error) => {
-          reject(error);
+            
+            new Function(script).call(window /*this*/);
+            translateScriptLoaded = true;
+            
+            if ((cr.googleTranslate.libReady || cr.googleTranslate.finished) && cr.googleTranslate.readyCallback) {
+              cr.googleTranslate.readyCallback = null;
+              resolve();
+            }
+            
+            setTimeout(() => {
+              if (cr.googleTranslate.readyCallback) {
+                cr.googleTranslate.readyCallback = null;
+                resolve();
+              }
+            }, 3000);
+          }).catch((error) => {
+            reject(error);
+          });
         });
-      });
-    })
-  }
+      })
+    }
+  });
 });
 
 

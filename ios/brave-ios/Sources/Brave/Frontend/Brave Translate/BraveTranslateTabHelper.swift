@@ -565,7 +565,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       functionName: """
         typeof cr != 'undefined' && typeof cr.googleTranslate != 'undefined' && 
         typeof cr.googleTranslate.translate == 'function' &&
-        window.__firefox__.\(BraveTranslateScriptHandler.namespace).translateScriptLoaded
+        window.__firefox__.\(BraveTranslateScriptHandler.namespace).isTranslateScriptLoaded()
         """,
       contentWorld: BraveTranslateScriptHandler.scriptSandbox,
       asFunction: false
