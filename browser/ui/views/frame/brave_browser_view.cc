@@ -908,6 +908,12 @@ views::View* BraveBrowserView::GetContentsContainerForLayoutManager() {
                      : BrowserView::GetContentsContainerForLayoutManager();
 }
 
+void BraveBrowserView::ReadyToListenFullscreenChanges() {
+  if (split_view_) {
+    split_view_->ListenFullscreenChanges();
+  }
+}
+
 bool BraveBrowserView::IsSidebarVisible() const {
   return sidebar_container_view_ && sidebar_container_view_->IsSidebarVisible();
 }

@@ -16,6 +16,7 @@
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
 #include "chrome/browser/ui/views/frame/scrim_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
@@ -38,6 +39,7 @@ class BraveBrowserView;
 class Browser;
 class ContentsWebView;
 class DevToolsContentsResizingStrategy;
+class FullscreenController;
 class SplitViewLayoutManager;
 class SplitViewLocationBar;
 class SplitViewSeparator;
@@ -48,6 +50,7 @@ class SplitView : public views::View,
                   public ReaderModeToolbarView::Delegate,
 #endif
                   public views::WidgetObserver,
+                  public FullscreenObserver,
                   public SplitViewBrowserDataObserver {
   METADATA_HEADER(SplitView, views::View)
  public:
@@ -64,6 +67,8 @@ class SplitView : public views::View,
 
   // true when active tab is in tile.
   bool IsSplitViewActive() const;
+
+  void ListenFullscreenChanges();
 
   // Called before/after BrowserView::OnActiveTabChanged() as we have some
   // jobs such as reducing flickering while active tab changing. See the
@@ -123,6 +128,9 @@ class SplitView : public views::View,
   void OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
                                             bool visible) override;
 
+  // FullscreenObserver:
+  void OnFullscreenStateChanged() override;
+
  private:
   friend class SplitViewBrowserTest;
   friend class SplitViewLocationBarBrowserTest;
@@ -139,6 +147,7 @@ class SplitView : public views::View,
 
   SplitViewLayoutManager* GetSplitViewLayoutManager();
   const SplitViewLayoutManager* GetSplitViewLayoutManager() const;
+  bool ShouldHideSecondaryContentsByTabFullscreen() const;
 
   raw_ref<Browser> browser_;
 
@@ -163,6 +172,8 @@ class SplitView : public views::View,
       split_view_observation_{this};
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
+  base::ScopedObservation<FullscreenController, FullscreenObserver>
+      fullscreen_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_H_

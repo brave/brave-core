@@ -71,6 +71,7 @@ class BraveBrowserWindow : public BrowserWindow {
 
   // Returns true if all tabs in this window is being dragged.
   virtual bool IsInTabDragging() const;
+  virtual void ReadyToListenFullscreenChanges() {}
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_

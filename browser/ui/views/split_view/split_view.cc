@@ -21,6 +21,8 @@
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
@@ -136,6 +138,11 @@ bool SplitView::IsSplitViewActive() const {
   auto* split_view_browser_data =
       SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   return split_view_browser_data->GetTile(GetActiveTabHandle()).has_value();
+}
+
+void SplitView::ListenFullscreenChanges() {
+  fullscreen_observation_.Observe(
+      browser_->exclusive_access_manager()->fullscreen_controller());
 }
 
 void SplitView::WillChangeActiveWebContents(
@@ -391,7 +398,10 @@ void SplitView::UpdateContentsWebViewBorder() {
 
   DCHECK(split_view_browser_data);
 
-  if (split_view_browser_data->GetTile(GetActiveTabHandle())) {
+  // In tab-fullscreen mode, don't need any border if secondary contents is not
+  // visible as user only can see primary contents.
+  if (split_view_browser_data->GetTile(GetActiveTabHandle()) &&
+      !ShouldHideSecondaryContentsByTabFullscreen()) {
     const auto kRadius =
         BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
             base::to_address(browser_))
@@ -484,6 +494,12 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
     secondary_location_bar_->SetWebContents(nullptr);
     secondary_contents_web_view_->SetWebContents(nullptr);
     secondary_devtools_web_view_->SetWebContents(nullptr);
+    secondary_contents_container_->SetVisible(false);
+  }
+
+  // Hide secondary contents if primary contents initiates its tab-fullscreen.
+  if (secondary_contents_container_->GetVisible() &&
+      ShouldHideSecondaryContentsByTabFullscreen()) {
     secondary_contents_container_->SetVisible(false);
   }
 
@@ -591,6 +607,25 @@ void SplitView::OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
     secondary_contents_scrim_view_->SetVisible(visible);
   }
 #endif
+}
+
+void SplitView::OnFullscreenStateChanged() {
+  // Hide secondary contents when tab fullscreen is initiated by
+  // primary contents.
+  if (!IsSplitViewActive()) {
+    return;
+  }
+
+  UpdateContentsWebViewVisual();
+}
+
+bool SplitView::ShouldHideSecondaryContentsByTabFullscreen() const {
+  auto* exclusive_access_manager = browser_->exclusive_access_manager();
+  if (!exclusive_access_manager) {
+    return false;
+  }
+
+  return exclusive_access_manager->fullscreen_controller()->IsTabFullscreen();
 }
 
 SplitViewLayoutManager* SplitView::GetSplitViewLayoutManager() {
