@@ -28,11 +28,7 @@ mojom("engine") {
 }
 
 mojom("webui") {
-  sources = [
-    "rewards_page.mojom",
-    "rewards_panel.mojom",
-    "rewards_tip_panel.mojom",
-  ]
+  sources = [ "rewards_page.mojom" ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
 

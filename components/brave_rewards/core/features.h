@@ -26,8 +26,6 @@ BASE_DECLARE_FEATURE(kAllowUnsupportedWalletProvidersFeature);
 
 BASE_DECLARE_FEATURE(kAllowSelfCustodyProvidersFeature);
 
-BASE_DECLARE_FEATURE(kNewRewardsUIFeature);
-
 BASE_DECLARE_FEATURE(kAnimatedBackgroundFeature);
 
 BASE_DECLARE_FEATURE(kPlatformCreatorDetectionFeature);
