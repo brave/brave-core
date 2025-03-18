@@ -131,7 +131,7 @@ extension BrowserViewController {
     rewardsObserver.fetchedPanelPublisher = { [weak self] publisher, tabId in
       DispatchQueue.main.async {
         guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab,
-          tab.rewardsId == tabId
+          tab.rewardsId == UInt32(tabId)
         else { return }
         self.publisher = publisher
       }

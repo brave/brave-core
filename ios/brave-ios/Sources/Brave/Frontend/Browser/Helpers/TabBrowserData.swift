@@ -77,6 +77,8 @@ class TabBrowserData: NSObject, TabObserver {
     }
   }
 
+  let rewardsId: UInt32 = .random(in: 1...UInt32.max)
+
   fileprivate(set) var screenshot: UIImage?
   func setScreenshot(_ screenshot: UIImage?) {
     self.screenshot = screenshot

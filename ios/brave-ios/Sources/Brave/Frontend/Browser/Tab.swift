@@ -85,7 +85,6 @@ enum TabSecureContentState: String {
 @dynamicMemberLookup
 class Tab: NSObject {
   let id: UUID
-  let rewardsId: UInt32
 
   var data: TabDataValues {
     get { _data.withLock { $0 } }
@@ -365,7 +364,6 @@ class Tab: NSObject {
     self.type = type
 
     self.favicon = Favicon.default
-    rewardsId = UInt32.random(in: 1...UInt32.max)
     super.init()
 
     self.navigationHandler = TabWKNavigationHandler(tab: self)

@@ -196,7 +196,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.removePolicyDecider(self)
 
     if !privateBrowsingManager.isPrivateBrowsing {
-      rewards.reportTabClosed(tabId: Int(tab.rewardsId))
+      rewards.reportTabClosed(tabId: Int(tab.rewardsId ?? 0))
     }
   }
 

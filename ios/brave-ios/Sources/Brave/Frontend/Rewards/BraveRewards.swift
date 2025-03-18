@@ -213,7 +213,7 @@ public class BraveRewards: PreferencesObserver {
     }
 
     ads.notifyTabDidChange(
-      Int(tab.rewardsId),
+      Int(tab.rewardsId ?? 0),
       redirectChain: tab.redirectChain,
       isNewNavigation: reportingState.isNewNavigation,
       isRestoring: reportingState.wasRestored,
@@ -232,7 +232,7 @@ public class BraveRewards: PreferencesObserver {
     }
 
     ads.notifyTabDidLoad(
-      Int(tab.rewardsId),
+      Int(tab.rewardsId ?? 0),
       httpStatusCode: reportingState.httpStatusCode
     )
   }
@@ -261,7 +261,7 @@ public class BraveRewards: PreferencesObserver {
       return
     }
 
-    let tabId = Int(tab.rewardsId)
+    let tabId = Int(tab.rewardsId ?? 0)
     if isSelected {
       tabRetrieved(tabId, url: url, html: nil)
     }
@@ -279,7 +279,7 @@ public class BraveRewards: PreferencesObserver {
       return
     }
 
-    let tabId = Int(tab.rewardsId)
+    let tabId = Int(tab.rewardsId ?? 0)
 
     tabRetrieved(tabId, url: url, html: htmlContent)
 

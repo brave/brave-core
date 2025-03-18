@@ -88,7 +88,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
           from: url,
           faviconURL: nil,
           publisherBlob: nil,
-          tabId: UInt64(self.browserTab.rewardsId)
+          tabId: UInt64(self.browserTab.rewardsId ?? 0)
         )
       } else {
         self.rewardsView.publisherView.isHidden = true
@@ -127,7 +127,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
         observer.fetchedPanelPublisher = { [weak self] publisher, tabId in
           guard let self = self else { return }
           DispatchQueue.main.async {
-            if tabId == self.browserTab.rewardsId {
+            if UInt32(tabId) == self.browserTab.rewardsId {
               self.publisher = publisher
             }
           }
