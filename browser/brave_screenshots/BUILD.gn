@@ -24,7 +24,10 @@ source_set("utils") {
 source_set("brave_screenshots") {
   sources = [ "brave_screenshots_tab_feature.h" ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//content/public/browser",
+  ]
 }
 
 source_set("brave_screenshots_impl") {

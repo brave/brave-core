@@ -9,10 +9,7 @@
 #include <memory>
 
 #include "base/memory/weak_ptr.h"
-
-namespace content {
-class WebContents;
-}  // namespace content
+#include "content/public/browser/web_contents_observer.h"
 
 namespace image_editor {
 struct ScreenshotCaptureResult;
@@ -28,13 +25,13 @@ enum ScreenshotType {
   kFullPage,
 };
 
-class BraveScreenshotsTabFeature {
+class BraveScreenshotsTabFeature : public content::WebContentsObserver {
  public:
   explicit BraveScreenshotsTabFeature(content::WebContents* web_contents);
   BraveScreenshotsTabFeature(const BraveScreenshotsTabFeature&) = delete;
   BraveScreenshotsTabFeature& operator=(const BraveScreenshotsTabFeature&) =
       delete;
-  ~BraveScreenshotsTabFeature();
+  ~BraveScreenshotsTabFeature() override;
 
   void StartScreenshot(ScreenshotType type);
   bool IsScreenshotInProgress() const;
@@ -42,8 +39,9 @@ class BraveScreenshotsTabFeature {
  private:
   void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
   std::unique_ptr<BraveScreenshotStrategy> CreateStrategy(ScreenshotType type);
+  void WebContentsDestroyed() override;
+
   std::unique_ptr<BraveScreenshotStrategy> strategy_ = nullptr;
-  raw_ptr<content::WebContents> web_contents_ = nullptr;
   base::WeakPtrFactory<BraveScreenshotsTabFeature> weak_factory_{this};
 
 };  // class BraveScreenshotsTabFeature
