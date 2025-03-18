@@ -14,10 +14,8 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
-#include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/components/brave_rewards/content/rewards_p3a.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
-#include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -53,7 +51,6 @@ namespace {
 
 using brave_rewards::RewardsNotificationService;
 using brave_rewards::RewardsPanelCoordinator;
-using brave_rewards::RewardsPanelUI;
 using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
 
@@ -177,14 +174,8 @@ class RewardsActionMenuModel : public ui::SimpleMenuModel,
 std::unique_ptr<WebUIBubbleManager> CreateBubbleManager(
     views::View* anchor_view,
     BrowserWindowInterface* browser_window_interface) {
-  if (base::FeatureList::IsEnabled(
-          brave_rewards::features::kNewRewardsUIFeature)) {
-    return WebUIBubbleManager::Create<brave_rewards::RewardsPageTopUI>(
-        anchor_view, browser_window_interface, GURL(kRewardsPageTopURL),
-        IDS_BRAVE_UI_BRAVE_REWARDS);
-  }
-  return WebUIBubbleManager::Create<brave_rewards::RewardsPanelUI>(
-      anchor_view, browser_window_interface, GURL(kBraveRewardsPanelURL),
+  return WebUIBubbleManager::Create<brave_rewards::RewardsPageTopUI>(
+      anchor_view, browser_window_interface, GURL(kRewardsPageTopURL),
       IDS_BRAVE_UI_BRAVE_REWARDS);
 }
 
@@ -345,8 +336,7 @@ void BraveRewardsActionView::OnPublisherForTabUpdated(
   }
 }
 
-void BraveRewardsActionView::OnRewardsPanelRequested(
-    const brave_rewards::mojom::RewardsPanelArgs& args) {
+void BraveRewardsActionView::OnRewardsPanelRequested() {
   if (!IsPanelOpen()) {
     ToggleRewardsPanel();
   }

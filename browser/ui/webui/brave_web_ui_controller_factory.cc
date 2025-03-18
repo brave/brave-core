@@ -21,10 +21,8 @@
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
-#include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -127,11 +125,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
              brave_rewards::IsSupported(
                  profile->GetPrefs(),
                  brave_rewards::IsSupportedOptions::kSkipRegionCheck)) {
-    if (base::FeatureList::IsEnabled(
-            brave_rewards::features::kNewRewardsUIFeature)) {
-      return new brave_rewards::RewardsPageUI(web_ui, url.host());
-    }
-    return new BraveRewardsPageUI(web_ui, url.host());
+    return new brave_rewards::RewardsPageUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost &&
              brave_rewards::IsSupportedForProfile(profile)) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
