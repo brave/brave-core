@@ -9,6 +9,7 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/ntp_background/custom_background_file_manager.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
@@ -20,6 +21,9 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/ui/tabs/public/tab_interface.h"
+#include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
 
 namespace {
 
@@ -43,6 +47,7 @@ void BraveNewTabPageUI::BindInterface(
   auto* web_contents = web_ui()->GetWebContents();
   auto* profile = Profile::FromWebUI(web_ui());
   auto* prefs = profile->GetPrefs();
+  auto* tab = tabs::TabInterface::GetFromContents(web_contents);
   auto image_chooser =
       std::make_unique<CustomImageChooser>(*web_contents, *profile);
   auto background_facade = std::make_unique<BackgroundFacade>(
@@ -52,7 +57,9 @@ void BraveNewTabPageUI::BindInterface(
 
   page_handler_ = std::make_unique<NewTabPageHandler>(
       std::move(receiver), std::move(image_chooser),
-      std::move(background_facade), *prefs);
+      std::move(background_facade), *tab, *prefs,
+      *TemplateURLServiceFactory::GetForProfile(profile),
+      *g_brave_browser_process->process_misc_metrics()->new_tab_metrics());
 }
 
 void BraveNewTabPageUI::BindInterface(
@@ -72,6 +79,14 @@ void BraveNewTabPageUI::BindInterface(
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
       brave_ads::AdsServiceFactory::GetForProfile(profile),
       std::move(ntp_p3a_helper));
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<searchbox::mojom::PageHandler> receiver) {
+  realbox_handler_ = std::make_unique<RealboxHandler>(
+      std::move(receiver), Profile::FromWebUI(web_ui()),
+      web_ui()->GetWebContents(), /*metrics_reporter=*/nullptr,
+      /*omnibox_controller=*/nullptr);
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewTabPageUI)

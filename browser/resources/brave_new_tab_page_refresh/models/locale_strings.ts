@@ -8,12 +8,24 @@ export type StringKey =
   'braveBackgroundLabel' |
   'customBackgroundLabel' |
   'customBackgroundTitle' |
+  'customizeSearchEnginesLink' |
+  'enabledSearchEnginesLabel' |
   'gradientBackgroundLabel' |
   'gradientBackgroundTitle' |
   'photoCreditsText' |
   'randomizeBackgroundLabel' |
+  'searchAskLeoDescription' |
+  'searchBoxPlaceholderText' |
+  'searchBoxPlaceholderTextBrave' |
+  'searchCustomizeEngineListText' |
+  'searchSettingsTitle' |
+  'searchSuggestionsDismissButtonLabel' |
+  'searchSuggestionsEnableButtonLabel' |
+  'searchSuggestionsPromptText' |
+  'searchSuggestionsPromptTitle' |
   'settingsTitle' |
   'showBackgroundsLabel' |
+  'showSearchBoxLabel' |
   'showSponsoredImagesLabel' |
   'solidBackgroundLabel' |
   'solidBackgroundTitle' |

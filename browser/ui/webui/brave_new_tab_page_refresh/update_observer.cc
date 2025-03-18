@@ -8,12 +8,15 @@
 #include <utility>
 
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
+#include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "chrome/common/pref_names.h"
 
 namespace brave_new_tab_page_refresh {
 
 UpdateObserver::UpdateObserver(PrefService& pref_service) {
   pref_change_registrar_.Init(&pref_service);
+
   AddPrefListener(ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
                   Source::kBackgrounds);
   AddPrefListener(ntp_background_images::prefs::
@@ -22,6 +25,11 @@ UpdateObserver::UpdateObserver(PrefService& pref_service) {
   AddPrefListener(NTPBackgroundPrefs::kPrefName, Source::kBackgrounds);
   AddPrefListener(NTPBackgroundPrefs::kCustomImageListPrefName,
                   Source::kBackgrounds);
+
+  AddPrefListener(brave_search_conversion::prefs::kShowNTPSearchBox,
+                  Source::kSearch);
+  AddPrefListener(prefs::kSearchSuggestEnabled, Source::kSearch);
+  AddPrefListener(brave_search_conversion::prefs::kDismissed, Source::kSearch);
 }
 
 UpdateObserver::~UpdateObserver() = default;

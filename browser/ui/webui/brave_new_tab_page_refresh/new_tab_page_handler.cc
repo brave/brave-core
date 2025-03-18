@@ -7,10 +7,22 @@
 
 #include <utility>
 
+#include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
+#include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/public/tab_interface.h"
+#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/search_engine_type.h"
+#include "components/search_engines/template_url_service.h"
+#include "ui/base/window_open_disposition_utils.h"
+#include "url/gurl.h"
 
 namespace brave_new_tab_page_refresh {
 
@@ -18,12 +30,18 @@ NewTabPageHandler::NewTabPageHandler(
     mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
     std::unique_ptr<CustomImageChooser> custom_image_chooser,
     std::unique_ptr<BackgroundFacade> background_facade,
-    PrefService& pref_service)
+    tabs::TabInterface& tab,
+    PrefService& pref_service,
+    TemplateURLService& template_url_service,
+    misc_metrics::NewTabMetrics& new_tab_metrics)
     : receiver_(this, std::move(receiver)),
       update_observer_(pref_service),
       custom_image_chooser_(std::move(custom_image_chooser)),
       background_facade_(std::move(background_facade)),
-      pref_service_(pref_service) {
+      tab_(tab),
+      pref_service_(pref_service),
+      template_url_service_(template_url_service),
+      new_tab_metrics_(new_tab_metrics) {
   CHECK(custom_image_chooser_);
   CHECK(background_facade_);
 
@@ -122,6 +140,132 @@ void NewTabPageHandler::NotifySponsoredImageLogoClicked(
   std::move(callback).Run();
 }
 
+void NewTabPageHandler::GetShowSearchBox(GetShowSearchBoxCallback callback) {
+  std::move(callback).Run(pref_service_->GetBoolean(
+      brave_search_conversion::prefs::kShowNTPSearchBox));
+}
+
+void NewTabPageHandler::SetShowSearchBox(bool show_search_box,
+                                         SetShowSearchBoxCallback callback) {
+  pref_service_->SetBoolean(brave_search_conversion::prefs::kShowNTPSearchBox,
+                            show_search_box);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetSearchSuggestionsEnabled(
+    GetSearchSuggestionsEnabledCallback callback) {
+  std::move(callback).Run(
+      pref_service_->GetBoolean(prefs::kSearchSuggestEnabled));
+}
+
+void NewTabPageHandler::SetSearchSuggestionsEnabled(
+    bool enabled,
+    SetSearchSuggestionsEnabledCallback callback) {
+  pref_service_->SetBoolean(prefs::kSearchSuggestEnabled, enabled);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetSearchSuggestionsPromptDismissed(
+    GetSearchSuggestionsPromptDismissedCallback callback) {
+  std::move(callback).Run(
+      pref_service_->GetBoolean(brave_search_conversion::prefs::kDismissed));
+}
+
+void NewTabPageHandler::SetSearchSuggestionsPromptDismissed(
+    bool dismissed,
+    SetSearchSuggestionsPromptDismissedCallback callback) {
+  pref_service_->SetBoolean(brave_search_conversion::prefs::kDismissed,
+                            dismissed);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetLastUsedSearchEngine(
+    GetLastUsedSearchEngineCallback callback) {
+  std::move(callback).Run(pref_service_->GetString(
+      brave_search_conversion::prefs::kLastUsedNTPSearchEngine));
+}
+
+void NewTabPageHandler::SetLastUsedSearchEngine(
+    const std::string& engine_host,
+    SetLastUsedSearchEngineCallback callback) {
+  pref_service_->SetString(
+      brave_search_conversion::prefs::kLastUsedNTPSearchEngine, engine_host);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetAvailableSearchEngines(
+    GetAvailableSearchEnginesCallback callback) {
+  std::vector<mojom::SearchEngineInfoPtr> search_engines;
+  for (auto template_url : template_url_service_->GetTemplateURLs()) {
+    if (template_url->GetBuiltinEngineType() !=
+        BuiltinEngineType::KEYWORD_MODE_PREPOPULATED_ENGINE) {
+      continue;
+    }
+    auto search_engine = mojom::SearchEngineInfo::New();
+    search_engine->prepopulate_id = template_url->prepopulate_id();
+    search_engine->host = GURL(template_url->url()).host();
+    if (search_engine->host.empty()) {
+      search_engine->host = "google.com";
+    }
+    search_engine->name = base::UTF16ToUTF8(template_url->short_name());
+    search_engine->keyword = base::UTF16ToUTF8(template_url->keyword());
+    search_engine->favicon_url = template_url->favicon_url().spec();
+    search_engines.push_back(std::move(search_engine));
+  }
+  std::move(callback).Run(std::move(search_engines));
+}
+
+void NewTabPageHandler::OpenSearch(const std::string& query,
+                                   const std::string& engine,
+                                   mojom::EventDetailsPtr details,
+                                   OpenSearchCallback callback) {
+  auto* template_url = template_url_service_->GetTemplateURLForHost(engine);
+  if (!template_url) {
+    std::move(callback).Run();
+    return;
+  }
+
+  GURL search_url = template_url->GenerateSearchURL(
+      template_url_service_->search_terms_data(), base::UTF8ToUTF16(query));
+
+  tab_->GetBrowserWindowInterface()->OpenGURL(
+      search_url,
+      ui::DispositionFromClick(false, details->alt_key, details->ctrl_key,
+                               details->meta_key, details->shift_key));
+
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::OpenURLFromSearch(const std::string& url,
+                                          mojom::EventDetailsPtr details,
+                                          OpenURLFromSearchCallback callback) {
+  tab_->GetBrowserWindowInterface()->OpenGURL(
+      GURL(url),
+      ui::DispositionFromClick(false, details->alt_key, details->ctrl_key,
+                               details->meta_key, details->shift_key));
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::ReportSearchBoxHidden(
+    ReportSearchBoxHiddenCallback callback) {
+  new_tab_metrics_->ReportNTPSearchDefaultEngine(std::nullopt);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::ReportSearchEngineUsage(
+    int64_t engine_prepopulate_id,
+    ReportSearchEngineUsageCallback callback) {
+  new_tab_metrics_->ReportNTPSearchDefaultEngine(engine_prepopulate_id);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::ReportSearchResultUsage(
+    int64_t engine_prepopulate_id,
+    ReportSearchResultUsageCallback callback) {
+  new_tab_metrics_->ReportNTPSearchUsage(engine_prepopulate_id);
+  std::move(callback).Run();
+}
+
 void NewTabPageHandler::OnCustomBackgroundsSelected(
     ShowCustomBackgroundChooserCallback callback,
     std::vector<base::FilePath> paths) {
@@ -143,6 +287,9 @@ void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
   switch (update_source) {
     case UpdateObserver::Source::kBackgrounds:
       page_->OnBackgroundsUpdated();
+      break;
+    case UpdateObserver::Source::kSearch:
+      page_->OnSearchStateUpdated();
       break;
   }
 }

@@ -8,13 +8,16 @@ import Dialog from '@brave/leo/react/dialog'
 import Navigation from '@brave/leo/react/navigation'
 import NavigationItem from '@brave/leo/react/navigationItem'
 
+import { useAppState } from '../context/app_model_context'
 import { BackgroundPanel } from './background_panel'
+import { SearchPanel } from './search_panel'
 import { useLocale } from '../context/locale_context'
 
 import { style } from './settings_modal.style'
 
 export type SettingsView =
-  'background'
+  'background' |
+  'search'
 
 interface Props {
   initialView: SettingsView | null
@@ -25,8 +28,11 @@ interface Props {
 export function SettingsModal(props: Props) {
   const { getString } = useLocale()
 
+  const searchFeatureEnabled =
+      useAppState((state) => state.searchFeatureEnabled)
+
   const [currentView, setCurrentView] =
-    React.useState<SettingsView>(props.initialView || 'background')
+      React.useState<SettingsView>(props.initialView || 'background')
 
   React.useEffect(() => {
     if (props.isOpen) {
@@ -34,19 +40,34 @@ export function SettingsModal(props: Props) {
     }
   }, [props.isOpen, props.initialView])
 
+  function shouldShowView(view: SettingsView) {
+    switch (view) {
+      case 'search': return searchFeatureEnabled
+      default: return true
+    }
+  }
+
   function renderPanel() {
+    if (!shouldShowView(currentView)) {
+      return null
+    }
     switch (currentView) {
       case 'background': return <BackgroundPanel />
+      case 'search': return <SearchPanel />
     }
   }
 
   function getNavItemText(view: SettingsView) {
     switch (view) {
       case 'background': return getString('backgroundSettingsTitle')
+      case 'search': return getString('searchSettingsTitle')
     }
   }
 
   function renderNavItem(view: SettingsView) {
+    if (!shouldShowView(view)) {
+      return null
+    }
     return (
       <NavigationItem
         isCurrent={view === currentView}
@@ -67,6 +88,7 @@ export function SettingsModal(props: Props) {
           <nav>
             <Navigation>
               {renderNavItem('background')}
+              {renderNavItem('search')}
             </Navigation>
           </nav>
           <section>

@@ -12,10 +12,13 @@
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
+#include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
 namespace ntp_background_images {
 class NTPSponsoredRichMediaAdEventHandler;
 }
+
+class RealboxHandler;
 
 // The Web UI controller for the Brave new tab page.
 class BraveNewTabPageUI : public ui::MojoWebUIController {
@@ -32,11 +35,15 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
           ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
           receiver);
 
+  void BindInterface(
+      mojo::PendingReceiver<searchbox::mojom::PageHandler> receiver);
+
  private:
   std::unique_ptr<brave_new_tab_page_refresh::mojom::NewTabPageHandler>
       page_handler_;
   std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
       rich_media_ad_event_handler_;
+  std::unique_ptr<RealboxHandler> realbox_handler_;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
