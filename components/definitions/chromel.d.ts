@@ -92,7 +92,6 @@ declare namespace chrome.braveRewards {
 
   const getPublisherInfoForTab: (tabId: number, callback: (publisher?: RewardsExtension.PublisherInfo) => void) => void
 
-  const tipSite: (tabId: number, publisherKey: string, entryPoint: RewardsExtension.TipDialogEntryPoint) => {}
   const getBalanceReport: (month: number, year: number, callback: (properties: RewardsExtension.BalanceReport) => void) => {}
   const onPublisherData: {
     addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void

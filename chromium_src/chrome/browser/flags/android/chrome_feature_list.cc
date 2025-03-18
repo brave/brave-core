@@ -46,7 +46,6 @@
     &playlist::features::kPlaylist,                                     \
     &download::features::kParallelDownloading,                          \
     &preferences::features::kBraveBackgroundVideoPlayback,              \
-    &brave_rewards::features::kNewRewardsUIFeature,                     \
     &request_otr::features::kBraveRequestOTRTab,                        \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
     &speedreader::kSpeedreaderFeature,                                  \

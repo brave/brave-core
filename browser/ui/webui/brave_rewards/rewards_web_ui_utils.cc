@@ -21,8 +21,6 @@ bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
   if (url.host_piece() != kRewardsPageHost &&
 #if !BUILDFLAG(IS_ANDROID)
       url.host_piece() != kRewardsPageTopHost &&
-      url.host_piece() != kBraveRewardsPanelHost &&
-      url.host_piece() != kBraveTipPanelHost &&
 #endif  // !BUILDFLAG(IS_ANDROID)
       url.host_piece() != kRewardsInternalsHost) {
     return false;
