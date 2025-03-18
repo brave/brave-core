@@ -193,7 +193,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     }
 
     openLeoPrivacyPolicy_() {
-      window.open(loadTimeData.getString('braveLeoAssistanPrivacyPolicyURL'), "_blank", "noopener noreferrer")
+      window.open(loadTimeData.getString('braveLeoAssistantPrivacyPolicyURL'), "_blank", "noopener noreferrer")
     }
 
     private onStorageEnabledChange_(event: Event) {

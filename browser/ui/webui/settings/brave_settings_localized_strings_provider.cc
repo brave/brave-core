@@ -959,7 +959,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                              IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_DESC,
                              kLeoPrivacyPolicyURL));
 
-  html_source->AddString("braveLeoAssistanPrivacyPolicyURL",
+  html_source->AddString("braveLeoAssistantPrivacyPolicyURL",
                          kLeoPrivacyPolicyURL);
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
