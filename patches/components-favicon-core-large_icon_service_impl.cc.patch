@@ -1,0 +1,13 @@
+diff --git a/components/favicon/core/large_icon_service_impl.cc b/components/favicon/core/large_icon_service_impl.cc
+index 18ac105875875a69a6b61ed3cb2e30bf5e9a2549..2c09e5e63ce148d23d9b5e574eb558e4564df809 100644
+--- a/components/favicon/core/large_icon_service_impl.cc
++++ b/components/favicon/core/large_icon_service_impl.cc
+@@ -36,7 +36,7 @@ using NoBigEnoughIconBehavior =
+ 
+ const char kImageFetcherUmaClient[] = "LargeIconService";
+ 
+-const char kGoogleServerV2Url[] = "https://t0.gstatic.com/faviconV2";
++const char kGoogleServerV2Url[] = "https://t0.proxy.brave.com/faviconV2";
+ 
+ // `check_seen` is a legacy parameter which prevents the Google-favicon-server
+ // from crawling a URL as a result of a Google-favicon-server request in order
