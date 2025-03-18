@@ -719,9 +719,11 @@ void ZCashRpc::IsKnownAddress(const std::string& chain_id,
   UrlLoadersList::iterator it = url_loaders_list_.insert(
       url_loaders_list_.begin(), std::move(url_loader));
 
+  auto handler = std::make_unique<IsKnownAddressTxStreamHandler>();
+  // Increase limit since there could be shielded transactions.
+  handler->set_message_data_limit(50 * 1000);
   StreamHandlersList::iterator handler_it = stream_handlers_list_.insert(
-      stream_handlers_list_.begin(),
-      std::make_unique<IsKnownAddressTxStreamHandler>());
+      stream_handlers_list_.begin(), std::move(handler));
   static_cast<IsKnownAddressTxStreamHandler*>(handler_it->get())
       ->set_callback(base::BindOnce(&ZCashRpc::OnGetAddressTxResponse,
                                     weak_ptr_factory_.GetWeakPtr(),
