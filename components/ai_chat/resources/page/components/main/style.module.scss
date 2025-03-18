@@ -6,6 +6,7 @@
 .main {
   --conversation-content-margin: var(--leo-spacing-2xl);
   --conversation-content-max-width: calc(680px + calc(var(--conversation-content-margin) * 2));
+
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -14,16 +15,22 @@
   overflow: hidden;
 }
 
+.attachmentsDialog {
+  --leo-dialog-padding: 0;
+  --leo-dialog-width: 600px;
+
+  & > * {
+    width: min(var(--leo-dialog-width), calc(100vw - var(--leo-spacing-xl)));
+  }
+}
+
 .input {
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: var(--conversation-content-max-width);
   margin: 0 auto;
-  padding: 0
-           var(--leo-spacing-m)
-           var(--leo-spacing-m)
-           var(--leo-spacing-m);
+  padding: 0 var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m);
 }
 
 .siteTitleContainer {
@@ -46,6 +53,7 @@
 
 .attachmentsContainer {
   margin: var(--leo-spacing-m);
+  padding-top: var(--leo-spacing-m);
   align-self: start;
   position: sticky;
   top: 0;
@@ -76,10 +84,7 @@
   // Adjust padding to account for scrollbar width so content lines up with
   // input area which is outside of the scroller.
   padding:
-    0
-    calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2)
-    0
-    calc(var(--conversation-content-margin) + var(--scrollbar-width) / 2);
+    0 calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2) 0 calc(var(--conversation-content-margin) + var(--scrollbar-width) / 2);
 
   // Hide until content is ready
   opacity: 0;
@@ -162,7 +167,8 @@
 }
 
 .alertCenter {
-  --leo-alert-center-width: calc(100% - 32px); /* remove scrollbar space */
+  --leo-alert-center-width: calc(100% - 32px);
+  /* remove scrollbar space */
   position: absolute;
   left: 0;
   z-index: 5;
