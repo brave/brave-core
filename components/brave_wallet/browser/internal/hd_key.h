@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_H_
 
+#include <array>
 #include <memory>
 #include <optional>
 #include <string>
@@ -14,11 +15,11 @@
 #include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
+#include "brave/components/brave_wallet/browser/internal/secp256k1_signature.h"
 #include "crypto/process_bound_string.h"
 
 namespace brave_wallet {
 
-inline constexpr size_t kCompactSignatureSize = 64;
 inline constexpr size_t kSecp256k1PrivateKeySize = 32;
 inline constexpr size_t kSecp256k1ChainCodeSize = 32;
 inline constexpr size_t kSecp256k1PubkeySize = 33;
@@ -27,7 +28,8 @@ inline constexpr size_t kSecp256k1FingerprintSize = 4;
 inline constexpr size_t kSecp256k1SignMsgSize = 32;
 
 using Secp256k1SignMsgSpan = base::span<const uint8_t, kSecp256k1SignMsgSize>;
-using CompactSignatureSpan = base::span<const uint8_t, kCompactSignatureSize>;
+using CompactSignatureSpan =
+    base::span<const uint8_t, kSecp256k1CompactSignatureSize>;
 using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
 
 enum class ExtendedKeyVersion : uint32_t {
@@ -97,9 +99,7 @@ class HDKey {
   // Sign the message using private key. The msg has to be exactly 32 bytes
   // Return 64 bytes ECDSA signature when succeed, otherwise empty vector
   // if recid is not null, recovery id will be filled.
-  std::optional<std::array<uint8_t, kCompactSignatureSize>> SignCompact(
-      Secp256k1SignMsgSpan msg,
-      int* recid);
+  std::optional<Secp256k1Signature> SignCompact(Secp256k1SignMsgSpan msg);
 
   // Sign the message using private key and return it in DER format.
   std::optional<std::vector<uint8_t>> SignDer(Secp256k1SignMsgSpan msg);
@@ -112,10 +112,10 @@ class HDKey {
   // Recover public key from signature and message. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return valid public key when succeed, all zero vector otherwise
-  std::vector<uint8_t> RecoverCompact(bool compressed,
-                                      Secp256k1SignMsgSpan msg,
-                                      CompactSignatureSpan sig,
-                                      int recid);
+  std::optional<std::vector<uint8_t>> RecoverCompact(
+      bool compressed,
+      Secp256k1SignMsgSpan msg,
+      const Secp256k1Signature& sig);
 
   // Key identifier - hash of pubkey.
   // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#key-identifiers

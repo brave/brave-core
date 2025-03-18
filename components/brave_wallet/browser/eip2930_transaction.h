@@ -62,10 +62,6 @@ class Eip2930Transaction : public EthTransaction {
   // accessList, signatureYParity, signatureR, signatureS]))
   std::string GetTransactionHash() const override;
 
-  void ProcessSignature(base::span<const uint8_t> signature,
-                        int recid,
-                        uint256_t chain_id) override;
-
   bool IsSigned() const override;
 
   base::Value::Dict ToValue() const override;
@@ -83,6 +79,8 @@ class Eip2930Transaction : public EthTransaction {
 
   uint256_t chain_id_;
   AccessList access_list_;
+
+  bool VIsRecid() const override;
 
  private:
   std::vector<uint8_t> Serialize() const;

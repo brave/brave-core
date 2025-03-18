@@ -130,23 +130,8 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message)),
             "daf5a779ae972f972197303d7b574746c7ef83eadac0f2791ad23db92e4c8e53");
 
-  int recid;
-  auto signature = *key.SignCompact(message, &recid);
-
-  // invalid
-  tx.ProcessSignature(std::vector<uint8_t>(63), recid, 1);
-  EXPECT_EQ(tx.v_, (uint256_t)0);
-  EXPECT_TRUE(tx.r_.empty());
-  EXPECT_TRUE(tx.s_.empty());
-  EXPECT_FALSE(tx.IsSigned());
-  tx.ProcessSignature(std::vector<uint8_t>(65), recid, 1);
-  EXPECT_FALSE(tx.IsSigned());
-  tx.ProcessSignature(signature, -1, 1);
-  EXPECT_FALSE(tx.IsSigned());
-  tx.ProcessSignature(signature, 4, 1);
-  EXPECT_FALSE(tx.IsSigned());
-
-  tx.ProcessSignature(signature, recid, 1);
+  auto signature = *key.SignCompact(message);
+  tx.ProcessSignature(signature, 1);
   EXPECT_EQ(tx.GetSignedTransaction(),
             "0xf86c098504a817c8008252089435353535353535353535353535353535353535"
             "35880de0b6b3a76400008025a028ef61340bd939bc2195fe537567866003e1a15d"
@@ -169,9 +154,8 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
   auto message1337 = tx.GetHashedMessageToSign(1337);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message1337)),
             "9df81edc908cd622cbbab86525a4588fdcbaf6c88757f39b42b1f8f58fd617c2");
-  recid = 0;
-  auto signature1337 = *key.SignCompact(message1337, &recid);
-  tx.ProcessSignature(signature1337, recid, 1337);
+  auto signature1337 = *key.SignCompact(message1337);
+  tx.ProcessSignature(signature1337, 1337);
   EXPECT_EQ(tx.GetSignedTransaction(),
             "0xf86e098504a817c8008252089435353535353535353535353535353535353535"
             "35880de0b6b3a764000080820a96a011d1f0b9de554ad9e690bb8355507007731b"

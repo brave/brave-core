@@ -5,6 +5,7 @@
 
 use bech32::Error as Bech32Error;
 use bech32::FromBase32;
+use bls_signatures::Serialize;
 use core::fmt;
 use ffi::Bech32DecodeVariant;
 
@@ -54,7 +55,7 @@ macro_rules! impl_error {
 }
 
 #[allow(unsafe_op_in_unsafe_fn)]
-#[cxx::bridge(namespace =  brave_wallet)]
+#[cxx::bridge(namespace = brave_wallet)]
 mod ffi {
     enum Bech32DecodeVariant {
         Bech32,
@@ -75,6 +76,9 @@ mod ffi {
         fn is_ok(self: &Bech32DecodeResult) -> bool;
         fn error_message(self: &Bech32DecodeResult) -> String;
         fn unwrap(self: &Bech32DecodeResult) -> &Bech32DecodeValue;
+
+        fn bls_private_key_to_public_key(private_key: &[u8]) -> Vec<u8>;
+        fn bls_sign_message(private_key: &[u8], message_cid: &[u8]) -> Vec<u8>;
     }
 }
 
@@ -156,4 +160,22 @@ impl Bech32DecodeValue {
     fn variant(self: &Bech32DecodeValue) -> Bech32DecodeVariant {
         self.0.variant.clone()
     }
+}
+
+fn bls_private_key_to_public_key(private_key: &[u8]) -> Vec<u8> {
+    return match bls_signatures::PrivateKey::from_bytes(private_key) {
+        Ok(wrapped_private_key) => {
+            let mut public_key = vec![];
+            wrapped_private_key.public_key().write_bytes(&mut public_key).expect("preallocated");
+            return public_key;
+        }
+        Err(_) => vec![],
+    };
+}
+
+fn bls_sign_message(private_key: &[u8], message_cid: &[u8]) -> Vec<u8> {
+    return match bls_signatures::PrivateKey::from_bytes(private_key) {
+        Ok(sk) => sk.sign(&message_cid).as_bytes().to_vec(),
+        Err(_) => vec![],
+    };
 }

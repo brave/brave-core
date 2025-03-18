@@ -264,6 +264,7 @@ name = "brave_wallet"
 version = "1.0.0"
 dependencies = [
  "bech32",
+ "bls-signatures",
  "curve25519-dalek",
  "cxx",
 ]

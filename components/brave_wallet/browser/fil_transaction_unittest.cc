@@ -6,11 +6,19 @@
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 
 #include "base/base64.h"
-#include "base/json/json_writer.h"
+#include "base/containers/span.h"
+#include "base/containers/span_rust.h"
+#include "base/containers/to_vector.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/rust/lib.rs.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using base::test::ParseJson;
+using base::test::ParseJsonDict;
 
 namespace brave_wallet {
 
@@ -185,7 +193,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
                             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
   auto message_to_sign = transaction->GetMessageToSignJson(from);
   ASSERT_TRUE(message_to_sign);
-  EXPECT_EQ(base::test::ParseJson(*message_to_sign), base::test::ParseJson(R"({
+  EXPECT_EQ(ParseJson(*message_to_sign), ParseJson(R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasLimit": 1,
@@ -200,7 +208,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
   transaction->set_nonce(1);
   message_to_sign = transaction->GetMessageToSignJson(from);
   ASSERT_TRUE(message_to_sign);
-  EXPECT_EQ(base::test::ParseJson(*message_to_sign), base::test::ParseJson(R"({
+  EXPECT_EQ(ParseJson(*message_to_sign), ParseJson(R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasLimit": 1,
@@ -215,17 +223,21 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
 
   std::string private_key_decoded =
       DecodePrivateKey("8VcW07ADswS4BV2cxi5rnIadVsyTDDhY1NfDH19T8Uo=");
-  std::vector<uint8_t> private_key(private_key_decoded.begin(),
-                                   private_key_decoded.end());
-  auto signature = transaction->GetSignedTransaction(from, private_key);
-  ASSERT_TRUE(signature.has_value());
-  auto signature_value = base::test::ParseJsonDict(*signature);
+  auto private_key = *base::as_byte_span(private_key_decoded)
+                          .to_fixed_extent<kSecp256k1PrivateKeySize>();
+  auto hd_key = HDKey::GenerateFromPrivateKey(private_key);
+  auto signed_transaction = transaction->GetSignedTransaction(
+      from,
+      hd_key->SignCompact(Blake2bHash<32>(*transaction->TransactionCid(from)))
+          ->bytes());
+  ASSERT_TRUE(signed_transaction);
+  auto signature_value = ParseJsonDict(*signed_transaction);
   auto* message = signature_value.Find("Message");
   auto* signature_data =
       signature_value.FindStringByDottedPath("Signature.Data");
   EXPECT_TRUE(message);
   EXPECT_TRUE(signature_data);
-  auto message_as_value = base::test::ParseJson(*message_to_sign);
+  auto message_as_value = ParseJson(*message_to_sign);
   EXPECT_EQ(*signature_data,
             "SozNIZGNAvALCWtc38OUhO9wdFl82qESGhjnVVhI6CYNN0gP5qa+hZtyFh+"
             "j9K0wIVVU10ZJPgaV0yM6a+xwKgA=");
@@ -239,6 +251,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
   const std::string from_account =
       "t3uylp7xgte6rpiqhpivxohtzs7okpnq44mnckimwf6mgi6yc4o6f3iyd426u6wzloiig3a4"
       "ocyug4ftz64xza";
+  auto from = FilAddress::FromAddress(from_account);
   const std::string to_account =
       "t3uylp7xgte6rpiqhpivxohtzs7okpnq44mnckimwf6mgi6yc4o6f3iyd426u6wzloiig3a4"
       "ocyug4ftz64xza";
@@ -264,23 +277,23 @@ TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
                                          from_account);
   base::ReplaceFirstSubstringAfterOffset(&expected_message, 0, "{to_account}",
                                          to_account);
-  EXPECT_EQ(base::test::ParseJson(*message_to_sign),
-            base::test::ParseJson(expected_message));
+  EXPECT_EQ(ParseJson(*message_to_sign), ParseJson(expected_message));
   std::string private_key_decoded =
       DecodePrivateKey("7ug8i7Q6xddnBpvjbHe8zm+UekV+EVtOUxpNXr+PpCc=");
-
-  std::vector<uint8_t> private_key(private_key_decoded.begin(),
-                                   private_key_decoded.end());
-  auto signature = transaction->GetSignedTransaction(
-      FilAddress::FromAddress(from_account), private_key);
-  ASSERT_TRUE(signature.has_value());
-  auto signature_value = base::test::ParseJsonDict(*signature);
+  auto private_key =
+      *base::as_byte_span(private_key_decoded).to_fixed_extent<32>();
+  auto signed_transaction = transaction->GetSignedTransaction(
+      from, base::ToVector(bls_sign_message(
+                base::SpanToRustSlice(private_key),
+                base::SpanToRustSlice(*transaction->TransactionCid(from)))));
+  ASSERT_TRUE(signed_transaction);
+  auto signature_value = ParseJsonDict(*signed_transaction);
   auto* message = signature_value.Find("Message");
   auto* signature_data =
       signature_value.FindStringByDottedPath("Signature.Data");
   EXPECT_TRUE(message);
   EXPECT_TRUE(signature_data);
-  auto message_as_value = base::test::ParseJson(*message_to_sign);
+  auto message_as_value = ParseJson(*message_to_sign);
   EXPECT_EQ(
       *signature_data,
       "lsMyTOOAaW9/FxIKupqypmUl1hXLOKrbcJdQs+bHMPNF6aaCu2MaIRQKjS/"
