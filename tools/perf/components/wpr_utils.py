@@ -27,6 +27,7 @@ _UPDATE_HOSTS = [
     'componentupdater.brave.com',
     'optimizationguide-pa.googleapis.com',
     'safebrowsingohttpgateway.googleapis.com',
+    'edgedl.me.gvt1.com',
 ]
 
 # Hosts are related to some browser features (like Rewards).
@@ -37,6 +38,7 @@ _SERVICE_HOSTS = [
     'redirector.brave.com',
     'geo.ads.brave.com',
     'static.ads.brave.com',
+    'mywallet.ads.brave.com',
     'rewards.brave.com',
     'api.rewards.brave.com',
     'grant.rewards.brave.com',
@@ -46,6 +48,8 @@ _SERVICE_HOSTS = [
     'brave-today-cdn.brave.com',
     'update.googleapis.com',
     'content-autofill.googleapis.com',
+    'usage-ping.brave.com',
+    'clients2.google.com',
 ]
 
 
