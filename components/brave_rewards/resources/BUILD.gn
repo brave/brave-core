@@ -16,11 +16,11 @@ pack_web_resources("page_generated_resources") {
 }
 
 pack_web_resources("internals_generated_resources") {
-  resource_name = "brave_rewards_internals"
+  resource_name = "rewards_internals"
   output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
 
   # need webpack and GRD generation first
-  deps = [ "internals" ]
+  deps = [ "rewards_internals" ]
 }
 
 brave_grit("static_resources") {
@@ -42,10 +42,10 @@ repack("resources") {
   ]
 
   sources = [
-    "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_internals_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_page_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_static.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/creator_detection_generated.pak",
+    "$root_gen_dir/brave/components/brave_rewards/resources/rewards_internals_generated.pak",
     "$root_gen_dir/brave/components/brave_rewards/resources/rewards_page_generated.pak",
   ]
 

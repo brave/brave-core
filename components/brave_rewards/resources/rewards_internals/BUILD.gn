@@ -1,19 +1,16 @@
-# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
 
-transpile_web_ui("internals") {
+transpile_web_ui("rewards_internals") {
   entry_points = [ [
-        "brave_rewards_internals",
-        rebase_path("brave_rewards_internals.tsx"),
+        "rewards_internals",
+        rebase_path("rewards_internals.tsx"),
       ] ]
-
-  deps = [ "//brave/components/brave_rewards/core/mojom:mojom_js" ]
-
-  resource_name = "brave_rewards_internals"
-
+  resource_name = "rewards_internals"
   output_module = true
+  deps = [ "//brave/components/brave_rewards/core/mojom:webui_js" ]
 }

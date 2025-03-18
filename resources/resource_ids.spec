@@ -65,7 +65,7 @@
     "includes": [30360],
   },
   # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_internals/brave_rewards_internals.grd": {
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-rewards_internals/rewards_internals.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [30380],
   },

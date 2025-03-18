@@ -43,3 +43,9 @@ export const scoped = {
     return attr
   }
 }
+
+export const global = {
+  css(callsite: TemplateStringsArray, ...values: any[]) {
+    addStyles((scopeID++).toString(36), String.raw(callsite, ...values))
+  }
+}
