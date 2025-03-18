@@ -226,7 +226,9 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
   static let scriptName = "BraveTranslateLanguageDetectionScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "LanguageDetectionTextCaptured"
-  static let scriptSandbox = WKContentWorld.world(name: "BraveTranslateContentWorld")
+  // This sandbox must always be the same world as the translate script
+  // Chromium has them as separate handlers, but in the same injected script, in the same sandbox
+  static let scriptSandbox = BraveTranslateScriptHandler.scriptSandbox
   static let userScript: WKUserScript? = nil
 
   func tab(
