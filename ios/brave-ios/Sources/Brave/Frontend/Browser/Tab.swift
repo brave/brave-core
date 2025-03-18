@@ -230,7 +230,6 @@ class Tab: NSObject {
   var lastExecutedTime: Timestamp?
   fileprivate var lastRequest: URLRequest?
   var isRestoring: Bool = false
-  var pendingScreenshot = false
 
   /// The url set after a successful navigation. This will also set the `url` property.
   ///
@@ -240,12 +239,6 @@ class Tab: NSObject {
     willSet {
       url = newValue
       previousComittedURL = committedURL
-
-      // Clear the current request url and the redirect source url
-      // We don't need these values after the request has been comitted
-      currentRequestURL = nil
-      redirectSourceURL = nil
-      isInternalRedirect = false
     }
     didSet {
       observers.forEach {
@@ -266,21 +259,6 @@ class Tab: NSObject {
       }
     }
   }
-
-  /// This is the url for the current request
-  var currentRequestURL: URL? {
-    willSet {
-      // Lets push the value as a redirect value
-      redirectSourceURL = currentRequestURL
-    }
-  }
-
-  /// This tells us if we internally redirected while navigating (i.e. debounce or query stripping)
-  var isInternalRedirect: Bool = false
-
-  // If the current reqest wasn't comitted and a new one was set
-  // we were redirected and therefore this is set
-  var redirectSourceURL: URL?
 
   /// The previous url that was set before `comittedURL` was set again
   private(set) var previousComittedURL: URL?

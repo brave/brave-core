@@ -66,6 +66,12 @@ extension BrowserViewController: TabObserver {
     tab.upgradeHTTPSTimeoutTimer?.invalidate()
     tab.upgradeHTTPSTimeoutTimer = nil
 
+    // Clear the current request url and the redirect source url
+    // We don't need these values after the request has been comitted
+    tab.currentRequestURL = nil
+    tab.redirectSourceURL = nil
+    tab.isInternalRedirect = false
+
     // Need to evaluate Night mode script injection after url is set inside the Tab
     tab.nightMode = Preferences.General.nightModeEnabled.value
     tab.browserData?.clearSolanaConnectedAccounts()

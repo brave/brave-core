@@ -79,6 +79,7 @@ class TabBrowserData: NSObject, TabObserver {
 
   let rewardsId: UInt32 = .random(in: 1...UInt32.max)
 
+  var pendingScreenshot = false
   fileprivate(set) var screenshot: UIImage?
   func setScreenshot(_ screenshot: UIImage?) {
     self.screenshot = screenshot
@@ -168,6 +169,21 @@ class TabBrowserData: NSObject, TabObserver {
   /// If the upgrade hasn't completed within 3s, it is cancelled
   /// and we fallback to HTTP or cancel the request (strict vs. standard)
   var upgradeHTTPSTimeoutTimer: Timer?
+
+  /// This is the url for the current request
+  var currentRequestURL: URL? {
+    willSet {
+      // Lets push the value as a redirect value
+      redirectSourceURL = currentRequestURL
+    }
+  }
+
+  /// This tells us if we internally redirected while navigating (i.e. debounce or query stripping)
+  var isInternalRedirect: Bool = false
+
+  // If the current reqest wasn't comitted and a new one was set
+  // we were redirected and therefore this is set
+  var redirectSourceURL: URL?
 
   /// The tabs new tab page controller.
   ///

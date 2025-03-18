@@ -710,7 +710,7 @@ extension BrowserViewController {
     if let request = request.stripQueryParams(
       initiatorURL: tab.committedURL,
       redirectSourceURL: tab.redirectSourceURL,
-      isInternalRedirect: tab.isInternalRedirect
+      isInternalRedirect: tab.isInternalRedirect == true
     ) {
       Logger.module.debug(
         "Stripping query params for `\(requestURL.absoluteString)`"

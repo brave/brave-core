@@ -62,7 +62,7 @@ class ScreenshotHelper {
   }
 
   func takePendingScreenshots(_ tabs: [Tab]) {
-    for tab in tabs where tab.pendingScreenshot {
+    for tab in tabs where tab.pendingScreenshot == true {
       tab.pendingScreenshot = false
       takeDelayedScreenshot(tab)
     }
