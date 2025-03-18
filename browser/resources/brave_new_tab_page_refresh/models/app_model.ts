@@ -8,17 +8,25 @@ import {
   BackgroundActions,
   defaultBackgroundState } from './backgrounds'
 
+import {
+  SearchState,
+  SearchActions,
+  defaultSearchState } from './search'
+
 export type AppState =
-  BackgroundState
+  BackgroundState &
+  SearchState
 
 export function defaultState(): AppState {
   return {
-    ...defaultBackgroundState()
+    ...defaultBackgroundState(),
+    ...defaultSearchState()
   }
 }
 
 export type AppActions =
-  BackgroundActions
+  BackgroundActions &
+  SearchActions
 
 export interface AppModel extends AppActions {
   getState: () => AppState

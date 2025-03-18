@@ -8,10 +8,12 @@
 #include <memory>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/strings/strcat.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/resources/brave_new_tab_page_refresh/grit/brave_new_tab_page_refresh_generated_map.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -19,6 +21,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
@@ -55,6 +58,7 @@ void NewTabPageInitializer::Initialize() {
 
   AddFaviconDataSource();
   AddCustomImageDataSource();
+  AddSanitizedImageDataSource();
 
   web_ui_->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   web_ui_->OverrideTitle(
@@ -68,9 +72,9 @@ Profile* NewTabPageInitializer::GetProfile() {
 void NewTabPageInitializer::AddCSPOverrides() {
   source_->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      "img-src chrome://resources chrome://theme chrome://background-wallpaper "
-      "chrome://custom-wallpaper chrome://branded-wallpaper chrome://favicon2 "
-      "blob: data: 'self';");
+      "img-src chrome://image chrome://resources chrome://theme "
+      "chrome://background-wallpaper chrome://custom-wallpaper "
+      "chrome://branded-wallpaper chrome://favicon2 blob: data: 'self';");
 
   source_->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
@@ -87,6 +91,10 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 
   source_->AddString("sponsoredRichMediaBaseUrl",
                      kNTPNewTabTakeoverRichMediaUrl);
+
+  source_->AddBoolean(
+      "ntpSearchFeatureEnabled",
+      base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
 }
 
 void NewTabPageInitializer::AddStrings() {
@@ -95,12 +103,30 @@ void NewTabPageInitializer::AddStrings() {
       {"braveBackgroundLabel", IDS_NEW_TAB_BRAVE_BACKGROUND_LABEL},
       {"customBackgroundLabel", IDS_NEW_TAB_CUSTOM_BACKGROUND_LABEL},
       {"customBackgroundTitle", IDS_NEW_TAB_CUSTOM_BACKGROUND_LABEL},
+      {"customizeSearchEnginesLink", IDS_NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK},
+      {"enabledSearchEnginesLabel", IDS_NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL},
       {"gradientBackgroundLabel", IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL},
       {"gradientBackgroundTitle", IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL},
       {"photoCreditsText", IDS_NEW_TAB_PHOTO_CREDITS_TEXT},
       {"randomizeBackgroundLabel", IDS_NEW_TAB_RANDOMIZE_BACKGROUND_LABEL},
+      {"searchAskLeoDescription", IDS_OMNIBOX_ASK_LEO_DESCRIPTION},
+      {"searchBoxPlaceholderText", IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT},
+      {"searchBoxPlaceholderTextBrave",
+       IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT_BRAVE},
+      {"searchCustomizeEngineListText",
+       IDS_NEW_TAB_SEARCH_CUSTOMIZE_ENGINE_LIST_TEXT},
+      {"searchSettingsTitle", IDS_NEW_TAB_SEARCH_SETTINGS_TITLE},
+      {"searchSuggestionsDismissButtonLabel",
+       IDS_NEW_TAB_SEARCH_SUGGESTIONS_DISMISS_BUTTON_LABEL},
+      {"searchSuggestionsEnableButtonLabel",
+       IDS_NEW_TAB_SEARCH_SUGGESTIONS_ENABLE_BUTTON_LABEL},
+      {"searchSuggestionsPromptText",
+       IDS_NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TEXT},
+      {"searchSuggestionsPromptTitle",
+       IDS_NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TITLE},
       {"settingsTitle", IDS_NEW_TAB_SETTINGS_TITLE},
       {"showBackgroundsLabel", IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL},
+      {"showSearchBoxLabel", IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL},
       {"showSponsoredImagesLabel", IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL},
       {"solidBackgroundLabel", IDS_NEW_TAB_SOLID_BACKGROUND_LABEL},
       {"solidBackgroundTitle", IDS_NEW_TAB_SOLID_BACKGROUND_LABEL},
@@ -126,6 +152,12 @@ void NewTabPageInitializer::AddCustomImageDataSource() {
   auto source = std::make_unique<ntp_background_images::NTPCustomImagesSource>(
       custom_background_service);
   content::URLDataSource::Add(profile, std::move(source));
+}
+
+void NewTabPageInitializer::AddSanitizedImageDataSource() {
+  auto* profile = GetProfile();
+  content::URLDataSource::Add(profile,
+                              std::make_unique<SanitizedImageSource>(profile));
 }
 
 }  // namespace brave_new_tab_page_refresh

@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
+import { SearchBox } from './search/search_box'
 import { Background } from './background/background'
 import { BackgroundCaption } from './background/background_caption'
 import { SettingsModal, SettingsView } from './settings/settings_modal'
@@ -28,6 +29,12 @@ export function App() {
         </button>
       </div>
       <main className='allow-background-pointer-events'>
+        <div className='topsites-container' />
+        <div className='searchbox-container'>
+          <SearchBox
+            onCustomizeSearchEngineList={() => setSettingsView('search')}
+          />
+        </div>
         <div className='spacer allow-background-pointer-events' />
         <div className='background-caption-container'>
           <BackgroundCaption />

@@ -603,9 +603,11 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
       .Add<brave_rewards::mojom::RewardsPageHandler>();
 
 #if !BUILDFLAG(IS_ANDROID)
-  registry.ForWebUI<BraveNewTabPageUI>()
-      .Add<brave_new_tab_page_refresh::mojom::NewTabPageHandler>()
-      .Add<ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>();
+  auto ntp_refresh_registration =
+      registry.ForWebUI<BraveNewTabPageUI>()
+          .Add<brave_new_tab_page_refresh::mojom::NewTabPageHandler>()
+          .Add<
+              ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>();
 
   auto ntp_registration =
       registry.ForWebUI<BraveNewTabUI>()
@@ -619,6 +621,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #endif
 
   if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
+    ntp_refresh_registration.Add<searchbox::mojom::PageHandler>();
     ntp_registration.Add<searchbox::mojom::PageHandler>();
   }
 
