@@ -29,15 +29,12 @@ source_set("browser_tests") {
   # tests to run on Android as well.
   if (!is_android) {
     sources += [
-      "rewards_browsertest.cc",
-      "rewards_contribution_browsertest.cc",
       "rewards_flag_browsertest.cc",
       "rewards_notification_browsertest.cc",
       "rewards_ofac_browsertest.cc",
       "rewards_p3a_browsertest.cc",
       "rewards_page_browsertest.cc",
       "rewards_policy_browsertest.cc",
-      "rewards_publisher_browsertest.cc",
       "util/rewards_browsertest_context_helper.cc",
       "util/rewards_browsertest_context_helper.h",
       "util/rewards_browsertest_context_util.cc",
