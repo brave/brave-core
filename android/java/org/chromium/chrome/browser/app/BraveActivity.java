@@ -1688,9 +1688,6 @@ public abstract class BraveActivity extends ChromeActivity
                             lastUsedRegularProfile, OnboardingPrefManager.YANDEX);
             if (yandexTemplateUrl != null) {
                 BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, lastUsedRegularProfile);
-                BraveSearchEngineUtils.setDSEPrefs(
-                        yandexTemplateUrl,
-                        lastUsedRegularProfile.getPrimaryOtrProfile(/* createIfNeeded= */ true));
             }
         }
     }
