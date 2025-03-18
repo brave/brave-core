@@ -127,8 +127,8 @@ void SequentialUpdateChecker::UpdateResultAvailable(
     // We expect results->list to contain precisely one element. However, in
     // practice during development, it has sometimes happened that the list was
     // empty. A for loop is an easy way to guard against such unexpected cases:
-    for (const auto& result : results->list) {
-      results_.list.push_back(result);
+    for (const auto& result : results->apps) {
+      results_.apps.push_back(result);
     }
   }
 
