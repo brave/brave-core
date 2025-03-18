@@ -5,18 +5,24 @@
 # @generated from third_party/rust/chromium_crates_io/removed_Cargo.toml
 # by tools/crates/gnrt. Do not edit!
 
-# This is an empty crate that has replaced the 'cc' crate, since
+# This is an empty crate that has replaced the 'zerocopy-derive' crate, since
 # it was listed in `resolve.remove_crates` in gnrt_config.toml.
 
 [package]
-name = "cc"
-version = "1.0.83"
+name = "zerocopy-derive"
+version = "0.8.23"
 
 [features]
-"jobserver" = []
-"parallel" = []
 
-[dependencies.libc]
-version = "^0.2.62"
-default_features = false
+[dependencies.proc-macro2]
+version = "^1.0.1"
+default_features = true
+features = []
+[dependencies.quote]
+version = "^1.0.10"
+default_features = true
+features = []
+[dependencies.syn]
+version = "^2.0.46"
+default_features = true
 features = []

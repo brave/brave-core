@@ -1,9 +1,0 @@
-Name: zerocopy-derive
-URL: https://crates.io/crates/zerocopy-derive
-Version: 0.7.35
-License: Apache-2.0
-License File:
-Shipped: yes
-Security Critical: yes
-
-Description: Custom derive for traits from the zerocopy crate

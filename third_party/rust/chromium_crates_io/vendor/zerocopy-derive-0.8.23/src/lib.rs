@@ -5,5 +5,5 @@
 // @generated from third_party/rust/chromium_crates_io/removed_lib.rs
 // by tools/crates/gnrt. Do not edit!
 
-// This is an empty crate that has replaced the 'redox_syscall' crate, since
+// This is an empty crate that has replaced the 'zerocopy-derive' crate, since
 // it was listed in `resolve.remove_crates` in gnrt_config.toml.
