@@ -4,9 +4,14 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
 
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="systemfeedback_error_icon">#bf002c</color>
-    <color name="semantic_button_background">#4551D1</color>
-    <color name="schemes_surface_container">#f0f0f4</color>
-</resources>
+    <solid android:color="@color/schemes_surface_container" />
+
+    <corners
+        android:bottomLeftRadius="28dp"
+        android:bottomRightRadius="28dp"
+        android:topLeftRadius="28dp"
+        android:topRightRadius="28dp" />
+
+</shape>

@@ -6,7 +6,6 @@
 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="systemfeedback_error_icon">#bf002c</color>
-    <color name="semantic_button_background">#4551D1</color>
-    <color name="schemes_surface_container">#f0f0f4</color>
+    <color name="systemfeedback_error_icon">#ff888a</color>
+    <color name="schemes_surface_container">#1f1f23</color>
 </resources>
