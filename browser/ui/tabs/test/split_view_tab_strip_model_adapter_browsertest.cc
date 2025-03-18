@@ -11,7 +11,9 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "content/public/browser/content_browser_client.h"
@@ -33,8 +35,8 @@ class SplitViewTabStripModelAdapterBrowserTest : public InProcessBrowserTest {
     return *SplitViewBrowserData::FromBrowser(browser());
   }
   SplitViewTabStripModelAdapter& adapter() const {
-    return SplitViewBrowserData::FromBrowser(browser())
-        ->tab_strip_model_adapter_;
+    return *SplitViewBrowserData::FromBrowser(browser())
+                ->tab_strip_model_adapter_.get();
   }
 
   std::unique_ptr<content::WebContents> CreateWebContents() {

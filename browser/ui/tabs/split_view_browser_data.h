@@ -15,10 +15,10 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
-#include "chrome/browser/ui/browser_user_data.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 
+class Browser;
+class BrowserWindowInterface;
 class SplitViewTabStripModelAdapter;
 class SplitViewBrowserDataObserver;
 
@@ -39,9 +39,14 @@ struct TabTile {
   }
 };
 
-class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
+class SplitViewBrowserData {
  public:
-  ~SplitViewBrowserData() override;
+  // Don't use this for new code.
+  // Get SplitViewBrowserData via browser features.
+  static SplitViewBrowserData* FromBrowser(const Browser* browser);
+
+  explicit SplitViewBrowserData(BrowserWindowInterface* browser);
+  virtual ~SplitViewBrowserData();
 
   // When calling this, make sure that |tile.first| has a smaller model index
   // than |tile.second| be persistent across the all tab strip model operations.
@@ -87,7 +92,6 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
   void TabsAttachedToNewBrowser(Browser* browser);
 
  private:
-  friend BrowserUserData;
   friend class SplitViewBrowserDataBrowserTest;
   friend class SplitViewTabStripModelAdapterBrowserTest;
 
@@ -97,15 +101,13 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
                            TileTabs_WithAlreadyTiledTabIsError);
   FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserDataBrowserTest, FindTile);
 
-  explicit SplitViewBrowserData(Browser* browser);
-
   std::vector<TabTile>::iterator FindTile(const tabs::TabHandle& tab);
   std::vector<TabTile>::const_iterator FindTile(
       const tabs::TabHandle& tab) const;
 
   void Transfer(SplitViewBrowserData* other, std::vector<TabTile> tiles);
 
-  SplitViewTabStripModelAdapter tab_strip_model_adapter_;
+  std::unique_ptr<SplitViewTabStripModelAdapter> tab_strip_model_adapter_;
 
   std::vector<TabTile> tiles_;
   std::vector<TabTile> tiles_to_be_attached_to_new_window_;
@@ -119,8 +121,6 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
   raw_ptr<TabStripModel> tab_strip_model_for_testing_ = nullptr;
 
   base::WeakPtrFactory<SplitViewBrowserData> weak_ptr_factory_{this};
-
-  BROWSER_USER_DATA_KEY_DECL();
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_SPLIT_VIEW_BROWSER_DATA_H_
