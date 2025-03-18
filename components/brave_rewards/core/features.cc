@@ -35,7 +35,7 @@ BASE_FEATURE(kAllowSelfCustodyProvidersFeature,
 
 BASE_FEATURE(kNewRewardsUIFeature,
              "BraveRewardsNewRewardsUI",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kAnimatedBackgroundFeature,
              "BraveRewardsAnimatedBackground",

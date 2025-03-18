@@ -112,7 +112,7 @@ IN_PROC_BROWSER_TEST_F(BraveEducationPageUIBrowserTest, OpenRewardsOnboarding) {
        command: 'open-rewards-onboarding'})");
 
   auto* new_web_contents = added_observer.GetWebContents();
-  EXPECT_EQ(new_web_contents->GetVisibleURL(), GURL(kBraveRewardsPanelURL));
+  EXPECT_EQ(new_web_contents->GetVisibleURL(), GURL(kRewardsPageTopURL));
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
