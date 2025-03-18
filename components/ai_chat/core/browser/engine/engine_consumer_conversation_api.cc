@@ -340,17 +340,19 @@ void EngineConsumerConversationAPI::GetFocusTabs(
     const std::vector<Tab>& tabs,
     const std::string& topic,
     EngineConsumer::GetFocusTabsCallback callback) {
-  ProcessTabChunks(tabs, ConversationEventType::GetFocusTabsForTopic,
-                   base::BindOnce(
-                       [&](EngineConsumer::GetFocusTabsCallback callback,
-                           std::vector<GenerationResult> results) {
-                         // Merge the results and call callback with tab IDs or
-                         // error.
-                         std::move(callback).Run(
-                             GetStrArrFromTabOrganizationResponses(results));
-                       },
-                       std::move(callback)),
-                   topic);
+  ProcessTabChunks(
+      tabs, ConversationEventType::GetFocusTabsForTopic,
+      base::BindOnce(
+          [](EngineConsumer::GetFocusTabsCallback callback,
+             std::vector<GenerationResult> results) {
+            // Merge the results and call callback with tab IDs or
+            // error.
+            std::move(callback).Run(
+                EngineConsumerConversationAPI::
+                    GetStrArrFromTabOrganizationResponses(results));
+          },
+          std::move(callback)),
+      topic);
 }
 
 }  // namespace ai_chat
