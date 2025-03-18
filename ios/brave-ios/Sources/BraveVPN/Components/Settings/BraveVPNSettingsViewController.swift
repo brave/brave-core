@@ -307,8 +307,8 @@ public class BraveVPNSettingsViewController: TableViewController {
           },
           image: BraveVPN.serverLocation.isoCode?.regionFlagImage
             ?? UIImage(braveSystemNamed: "leo.globe"),
-          accessory: .disclosureIndicator,
-          cellClass: MultilineSubtitleCell.self,
+          accessory: .view(BraveVPNSmartProxyCellView(settingsController: self)),
+          cellClass: BraveVPNSmartProxyCell.self,
           uuid: locationCellId
         ),
         Row(
