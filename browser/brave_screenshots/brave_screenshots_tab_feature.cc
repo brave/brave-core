@@ -29,13 +29,12 @@ namespace brave_screenshots {
 
 BraveScreenshotsTabFeature::BraveScreenshotsTabFeature(
     content::WebContents* web_contents)
-    : web_contents_(web_contents) {
+    : content::WebContentsObserver(web_contents) {
   DVLOG(1) << "BraveScreenshotsTabFeature created";
 }
 
 BraveScreenshotsTabFeature::~BraveScreenshotsTabFeature() {
   DVLOG(1) << "BraveScreenshotsTabFeature destroyed";
-  web_contents_ = nullptr;
 }
 
 void BraveScreenshotsTabFeature::StartScreenshot(ScreenshotType type) {
@@ -47,7 +46,7 @@ void BraveScreenshotsTabFeature::StartScreenshot(ScreenshotType type) {
   DVLOG(2) << "Starting capture";
 
   strategy_->Capture(
-      web_contents_,
+      web_contents(),
       base::BindOnce(&BraveScreenshotsTabFeature::OnCaptureComplete,
                      weak_factory_.GetWeakPtr()));
 }
@@ -61,11 +60,11 @@ BraveScreenshotsTabFeature::CreateStrategy(ScreenshotType type) {
     case ScreenshotType::kSelection:
       // Based on image_editor::ScreenshotFlow, which requires a WebContents
       DVLOG(3) << "Creating SelectionStrategy";
-      return std::make_unique<SelectionStrategy>(web_contents_);
+      return std::make_unique<SelectionStrategy>(web_contents());
     case ScreenshotType::kViewport:
       // Based on image_editor::ScreenshotFlow, which requires a WebContents
       DVLOG(3) << "Creating ViewportStrategy";
-      return std::make_unique<ViewportStrategy>(web_contents_);
+      return std::make_unique<ViewportStrategy>(web_contents());
     default:
       NOTREACHED();
   }
@@ -86,12 +85,17 @@ void BraveScreenshotsTabFeature::OnCaptureComplete(
   }
 
   if (strategy_->DidClipScreenshot()) {
-    DisplayScreenshotClippedNotification(web_contents_->GetWeakPtr());
+    DisplayScreenshotClippedNotification(web_contents()->GetWeakPtr());
   }
 
   utils::CopyImageToClipboard(result);
-  utils::DisplayScreenshotBubble(result, web_contents_->GetWeakPtr());
+  utils::DisplayScreenshotBubble(result, web_contents()->GetWeakPtr());
 
+  strategy_.reset();
+}
+
+void BraveScreenshotsTabFeature::WebContentsDestroyed() {
+  DVLOG(1) << "Associated WebContents Destroyed";
   strategy_.reset();
 }
 
