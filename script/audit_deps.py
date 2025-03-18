@@ -33,9 +33,13 @@ IGNORED_NPM_ADVISORIES = [
 # Use all (sub)paths except these for npm audit.
 NPM_EXCLUDE_PATHS = ['build', os.path.join('node_modules')]
 
-# Only check Cargo.lock for this path.
-CARGO_INCLUDE_PATH = os.path.join('third_party', 'rust', 'chromium_crates_io')
+# Only check Cargo.lock for these paths.
+CARGO_INCLUDE_PATHS = [
+    os.path.join('third_party', 'rust', 'chromium_crates_io'),
+    os.path.join('tools', 'crates'),
+    os.path.join('components', 'skus', 'browser', 'rs', 'wasm')
 
+]
 
 def main():
     """Audit a specified path, or the whole project."""
@@ -63,9 +67,10 @@ def main():
             full_path = os.path.join(dir_path, dir_name)
             errors += audit_path(full_path, args)
 
-    print(f'Auditing (cargo) {CARGO_INCLUDE_PATH}')
-    errors += cargo_audit_deps(
-        os.path.join(args.source_root, CARGO_INCLUDE_PATH), args)
+    for p in CARGO_INCLUDE_PATHS:
+        print(f'Auditing (cargo) {p}')
+        errors += cargo_audit_deps(
+            os.path.join(args.source_root, p), args)
 
     return errors > 0
 
