@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST;
 
-import android.content.Intent;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -44,7 +43,6 @@ import java.util.Map;
 public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         implements TransactionConfirmationListener,
                 AddSwitchChainNetworkFragment.AddSwitchRequestProcessListener {
-    public static final String ACTIVITY_TYPE = "activityType";
     private static final String TAG = "BraveWalletDApps";
     private ApproveTxBottomSheetDialogFragment mApproveTxBottomSheetDialogFragment;
     private PendingTxHelper mPendingTxHelper;
@@ -67,9 +65,9 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         FINISH(12);
 
         private final int mValue;
-        private static Map sMap = new HashMap<>();
+        private static final Map<Integer, ActivityType> sMap = new HashMap<>();
 
-        private ActivityType(int value) {
+        ActivityType(int value) {
             this.mValue = value;
         }
 
@@ -80,7 +78,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         }
 
         public static ActivityType valueOf(int activityType) {
-            return (ActivityType) sMap.get(activityType);
+            return sMap.get(activityType);
         }
 
         public int getValue() {
@@ -95,19 +93,32 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         super.onPreCreate();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        mActivityType =
+                ActivityType.valueOf(
+                        getIntent()
+                                .getIntExtra(
+                                        "activityType",
+                                        ActivityType.ADD_ETHEREUM_CHAIN.getValue()));
     }
 
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_brave_wallet_dapps);
-        Intent intent = getIntent();
-        mActivityType =
-                ActivityType.valueOf(
-                        intent.getIntExtra(
-                                "activityType", ActivityType.ADD_ETHEREUM_CHAIN.getValue()));
+        onInitialLayoutInflationComplete();
+    }
+
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "finishNativeInitialization", e);
+        }
+
+        if (mWalletModel != null) {
             mWalletModel
                     .getDappsModel()
                     .mProcessNextDAppsRequest
@@ -127,17 +138,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                         break;
                                 }
                             });
-
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "triggerLayoutInflation", e);
         }
 
-        onInitialLayoutInflationComplete();
-    }
-
-    @Override
-    public void finishNativeInitialization() {
-        super.finishNativeInitialization();
         processPendingDappsRequest();
     }
 
@@ -251,7 +253,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                                         transactionInfos);
                                             });
                                 });
-                        mPendingTxHelper.fetchTransactions(() -> {});
+                        mPendingTxHelper.fetchTransactions();
                     });
         } else if (mActivityType == ActivityType.ADD_ETHEREUM_CHAIN
                 || mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
