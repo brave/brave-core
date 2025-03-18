@@ -26,6 +26,7 @@
     "presubmit": "node ./build/commands/scripts/commands.js presubmit",
     "format": "node ./build/commands/scripts/commands.js format",
     "mass_rename": "node ./build/commands/scripts/commands.js mass_rename",
+    "docs": "node ./build/commands/scripts/commands.js docs",
     "test": "node ./build/commands/scripts/commands.js test",
     "test:scripts": "cross-env NODE_OPTIONS=--no-experimental-fetch jest build/commands/lib build/commands/scripts",
     "tslint": "npm run eslint",
