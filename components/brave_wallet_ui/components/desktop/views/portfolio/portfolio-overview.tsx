@@ -59,6 +59,7 @@ import {
   getStoredPortfolioTimeframe //
 } from '../../../../utils/local-storage-utils'
 import { makePortfolioAssetRoute } from '../../../../utils/routes-utils'
+import { loadTimeData } from '../../../../../common/loadTimeData'
 
 // Options
 import {
@@ -122,6 +123,8 @@ import {
 } from '../../../../common/slices/entities/blockchain-token.entity'
 
 export const PortfolioOverview = () => {
+  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
+
   // routing
   const history = useHistory()
   const location = useLocation()
@@ -162,6 +165,8 @@ export const PortfolioOverview = () => {
     LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
     true
   )
+
+  const isPortfolioGraphHidden = !isAndroid && hidePortfolioGraph
 
   // queries
   const { data: networks } = useGetVisibleNetworksQuery()
@@ -341,7 +346,7 @@ export const PortfolioOverview = () => {
       visibleTokensForFilteredChains.length &&
       tokenBalancesRegistry &&
       defaultFiat &&
-      !hidePortfolioGraph
+      !isPortfolioGraphHidden
       ? {
           tokens: visibleTokensForFilteredChains,
           timeframe: selectedTimeframe,
@@ -547,7 +552,7 @@ export const PortfolioOverview = () => {
                     />
                   </Column>
                 )}
-                {!hidePortfolioGraph && (
+                {!isPortfolioGraphHidden && (
                   <Row
                     alignItems='center'
                     justifyContent='center'
@@ -586,7 +591,7 @@ export const PortfolioOverview = () => {
               </BalanceAndChangeWrapper>
               <BuySendSwapDepositNav />
             </BalanceAndButtonsWrapper>
-            <ColumnReveal hideContent={hidePortfolioGraph}>
+            <ColumnReveal hideContent={isPortfolioGraphHidden}>
               <PortfolioOverviewChart
                 timeframe={selectedTimeframe}
                 onTimeframeChanged={setSelectedTimeframe}
