@@ -54,44 +54,48 @@ EthereumKeyring::EthereumKeyring(base::span<const uint8_t> seed) {
 // static
 std::optional<std::string> EthereumKeyring::RecoverAddress(
     base::span<const uint8_t> message,
-    base::span<const uint8_t> signature) {
-  // A compact ECDSA signature (recovery id byte + 64 bytes).
-  auto signature_span = signature.to_fixed_extent<kCompactSignatureSize + 1>();
-  if (!signature_span) {
+    base::span<const uint8_t> eth_signature) {
+  if (eth_signature.size() < kSecp256k1CompactSignatureSize + 1) {
     return std::nullopt;
   }
 
-  uint8_t v = signature_span->back();
+  auto [rs_bytes, v_bytes] =
+      eth_signature.split_at<kSecp256k1CompactSignatureSize>();
+
+  if (v_bytes.size() != 1) {
+    return std::nullopt;
+  }
+
+  uint8_t v = v_bytes.front();
   if (v < 27) {
-    VLOG(1) << "v should be >= 27";
     return std::nullopt;
   }
 
   // v = chain_id ? recid + chain_id * 2 + 35 : recid + 27;
   // So recid = v - 27 when chain_id is 0
-  uint8_t recid = v - 27;
+  auto signature = Secp256k1Signature::CreateFromPayload(rs_bytes, v - 27);
+  if (!signature) {
+    return std::nullopt;
+  }
 
   // Public keys (in scripts) are given as 04 <x> <y> where x and y are 32
   // byte big-endian integers representing the coordinates of a point on the
   // curve or in compressed form given as <sign> <x> where <sign> is 0x02 if
   // y is even and 0x03 if y is odd.
   HDKey key;
-  std::vector<uint8_t> public_key =
-      key.RecoverCompact(false, GetMessageHash(message),
-                         signature_span->first<kCompactSignatureSize>(), recid);
-  if (public_key.size() != 65) {
-    VLOG(1) << "public key should be 65 bytes";
+  auto public_key =
+      key.RecoverCompact(false, GetMessageHash(message), *signature);
+  if (!public_key || public_key->size() != 65) {
     return std::nullopt;
   }
 
-  uint8_t first_byte = *public_key.begin();
-  public_key.erase(public_key.begin());
+  uint8_t first_byte = public_key->front();
   if (first_byte != 4) {
-    VLOG(1) << "First byte of public key should be 4";
     return std::nullopt;
   }
 
-  EthAddress addr = EthAddress::FromPublicKey(public_key);
+  EthAddress addr =
+      EthAddress::FromPublicKey(base::span(*public_key).last(64u));
   return addr.ToChecksumAddress();
 }
 
@@ -117,15 +121,16 @@ std::optional<std::vector<uint8_t>> EthereumKeyring::SignMessage(
     base::span(hashed_message).copy_from(message);
   }
 
-  int recid = 0;
-  auto signature = hd_key->SignCompact(hashed_message, &recid);
+  auto signature = hd_key->SignCompact(hashed_message);
   if (!signature) {
     return std::nullopt;
   }
 
+  uint8_t recid = signature->recid();
+  // TODO(apaymyshev): that should support larger chain_ids without overflowing.
   uint8_t v =
       static_cast<uint8_t>(chain_id ? recid + chain_id * 2 + 35 : recid + 27);
-  auto result = base::ToVector(*signature);
+  auto result = base::ToVector(signature->rs_bytes());
   result.push_back(v);
   return result;
 }
@@ -138,13 +143,11 @@ void EthereumKeyring::SignTransaction(const std::string& address,
     return;
   }
 
-  int recid = 0;
-  auto signature =
-      hd_key->SignCompact(tx->GetHashedMessageToSign(chain_id), &recid);
+  auto signature = hd_key->SignCompact(tx->GetHashedMessageToSign(chain_id));
   if (!signature) {
     return;
   }
-  tx->ProcessSignature(*signature, recid, chain_id);
+  tx->ProcessSignature(*signature, chain_id);
 }
 
 std::string EthereumKeyring::GetAddressInternal(const HDKey& hd_key) const {

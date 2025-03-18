@@ -124,11 +124,10 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
 
   HDKey key;
   key.SetPrivateKey(private_key);
-  int recid;
-  auto signature = *key.SignCompact(tx.GetHashedMessageToSign(0), &recid);
+  auto signature = *key.SignCompact(tx.GetHashedMessageToSign(0));
 
   ASSERT_FALSE(tx.IsSigned());
-  tx.ProcessSignature(signature, recid, 0);
+  tx.ProcessSignature(signature, 0);
   ASSERT_TRUE(tx.IsSigned());
   EXPECT_EQ(
       tx.GetSignedTransaction(),

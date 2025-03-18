@@ -44,13 +44,7 @@ EthTransaction::EthTransaction(std::optional<uint256_t> nonce,
       data_(data) {}
 EthTransaction::~EthTransaction() = default;
 
-bool EthTransaction::operator==(const EthTransaction& tx) const {
-  return nonce_ == tx.nonce_ && gas_price_ == tx.gas_price_ &&
-         gas_limit_ == tx.gas_limit_ && to_ == tx.to_ && value_ == tx.value_ &&
-         std::equal(data_.begin(), data_.end(), tx.data_.begin()) &&
-         v_ == tx.v_ && std::equal(r_.begin(), r_.end(), tx.r_.begin()) &&
-         std::equal(s_.begin(), s_.end(), tx.s_.begin()) && type_ == tx.type_;
-}
+bool EthTransaction::operator==(const EthTransaction& tx) const = default;
 
 // static
 std::optional<EthTransaction> EthTransaction::FromTxData(
@@ -227,25 +221,22 @@ bool EthTransaction::ProcessVRS(const std::vector<uint8_t>& v,
 }
 
 // signature and recid will be used to produce v, r, s
-void EthTransaction::ProcessSignature(base::span<const uint8_t> signature,
-                                      int recid,
+void EthTransaction::ProcessSignature(const Secp256k1Signature& signature,
                                       uint256_t chain_id) {
-  if (signature.size() != 64) {
-    LOG(ERROR) << __func__ << ": signature length should be 64 bytes";
-    return;
+  r_ = base::ToVector(signature.rs_bytes().subspan(0u, 32u));
+  s_ = base::ToVector(signature.rs_bytes().subspan(32u, 32u));
+
+  if (VIsRecid()) {
+    // For EIP-1559 and EIP-2930 recovery id is used as is.
+    v_ = signature.recid();
+  } else {
+    // For EIP-155 recovery id is adjusted with chain_id.
+    v_ = chain_id ? static_cast<uint256_t>(signature.recid()) +
+                        (chain_id * static_cast<uint256_t>(2) +
+                         static_cast<uint256_t>(35))
+                  : static_cast<uint256_t>(signature.recid()) +
+                        static_cast<uint256_t>(27);
   }
-  if (recid < 0 || recid > 3) {
-    LOG(ERROR) << __func__ << ": recovery id must be 0, 1, 2 or 3";
-    return;
-  }
-  r_ = std::vector<uint8_t>(signature.begin(),
-                            signature.begin() + signature.size() / 2);
-  s_ = std::vector<uint8_t>(signature.begin() + signature.size() / 2,
-                            signature.end());
-  v_ = chain_id ? static_cast<uint256_t>(recid) +
-                      (chain_id * static_cast<uint256_t>(2) +
-                       static_cast<uint256_t>(35))
-                : static_cast<uint256_t>(recid) + static_cast<uint256_t>(27);
 }
 
 bool EthTransaction::IsSigned() const {
@@ -283,6 +274,10 @@ uint256_t EthTransaction::GetDataFee() const {
     cost += byte == 0 ? kTxDataZeroCostPerByte : kTxDataCostPerByte;
   }
   return cost;
+}
+
+bool EthTransaction::VIsRecid() const {
+  return false;
 }
 
 base::Value EthTransaction::Serialize() const {

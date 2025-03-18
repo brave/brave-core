@@ -196,13 +196,6 @@ std::string Eip2930Transaction::GetTransactionHash() const {
   return ToHex(KeccakHash(Serialize()));
 }
 
-void Eip2930Transaction::ProcessSignature(base::span<const uint8_t> signature,
-                                          int recid,
-                                          uint256_t chain_id) {
-  EthTransaction::ProcessSignature(signature, recid, chain_id_);
-  v_ = recid;
-}
-
 bool Eip2930Transaction::IsSigned() const {
   return r_.size() != 0 && s_.size() != 0;
 }
@@ -223,6 +216,10 @@ uint256_t Eip2930Transaction::GetDataFee() const {
     fee += uint256_t(item.storage_keys.size()) * kAccessListStorageKeyCost;
   }
   return fee;
+}
+
+bool Eip2930Transaction::VIsRecid() const {
+  return true;
 }
 
 std::vector<uint8_t> Eip2930Transaction::Serialize() const {

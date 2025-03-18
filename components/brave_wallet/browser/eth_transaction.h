@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "brave/components/brave_wallet/browser/internal/secp256k1_signature.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -84,8 +85,7 @@ class EthTransaction {
 
   // signature and recid will be used to produce v, r, s
   // Support EIP-155 chain id
-  virtual void ProcessSignature(base::span<const uint8_t> signature,
-                                int recid,
+  virtual void ProcessSignature(const Secp256k1Signature& signature,
                                 uint256_t chain_id);
 
   virtual bool IsSigned() const;
@@ -119,6 +119,8 @@ class EthTransaction {
                  const EthAddress& to,
                  uint256_t value,
                  const std::vector<uint8_t>& data);
+
+  virtual bool VIsRecid() const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthTransactionUnitTest, GetSignedTransactionAndHash);

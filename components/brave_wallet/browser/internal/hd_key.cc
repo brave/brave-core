@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 
+#include <array>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -345,36 +346,22 @@ std::unique_ptr<HDKey> HDKey::DeriveChildFromPath(
   return hd_key;
 }
 
-std::optional<std::array<uint8_t, kCompactSignatureSize>> HDKey::SignCompact(
-    Secp256k1SignMsgSpan msg,
-    int* recid) {
-  std::array<uint8_t, kCompactSignatureSize> sig = {};
-  if (!recid) {
-    secp256k1_ecdsa_signature ecdsa_sig;
-    if (!secp256k1_ecdsa_sign(GetSecp256k1Ctx(), &ecdsa_sig, msg.data(),
-                              private_key_.data(),
-                              secp256k1_nonce_function_rfc6979, nullptr)) {
-      return std::nullopt;
-    }
-
-    if (!secp256k1_ecdsa_signature_serialize_compact(GetSecp256k1Ctx(),
-                                                     sig.data(), &ecdsa_sig)) {
-      return std::nullopt;
-    }
-  } else {
-    secp256k1_ecdsa_recoverable_signature ecdsa_sig;
-    if (!secp256k1_ecdsa_sign_recoverable(
-            GetSecp256k1Ctx(), &ecdsa_sig, msg.data(), private_key_.data(),
-            secp256k1_nonce_function_rfc6979, nullptr)) {
-      return std::nullopt;
-    }
-    if (!secp256k1_ecdsa_recoverable_signature_serialize_compact(
-            GetSecp256k1Ctx(), sig.data(), recid, &ecdsa_sig)) {
-      return std::nullopt;
-    }
+std::optional<Secp256k1Signature> HDKey::SignCompact(Secp256k1SignMsgSpan msg) {
+  secp256k1_ecdsa_recoverable_signature ecdsa_sig;
+  if (!secp256k1_ecdsa_sign_recoverable(
+          GetSecp256k1Ctx(), &ecdsa_sig, msg.data(), private_key_.data(),
+          secp256k1_nonce_function_rfc6979, nullptr)) {
+    return std::nullopt;
   }
 
-  return sig;
+  int recid = 0;
+  std::array<uint8_t, kSecp256k1CompactSignatureSize> rs_bytes;
+  if (!secp256k1_ecdsa_recoverable_signature_serialize_compact(
+          GetSecp256k1Ctx(), rs_bytes.data(), &recid, &ecdsa_sig)) {
+    return std::nullopt;
+  }
+
+  return Secp256k1Signature::CreateFromPayload(rs_bytes, recid);
 }
 
 std::optional<std::vector<uint8_t>> HDKey::SignDer(Secp256k1SignMsgSpan msg) {
@@ -387,7 +374,7 @@ std::optional<std::vector<uint8_t>> HDKey::SignDer(Secp256k1SignMsgSpan msg) {
 
   auto sig_has_low_r = [](const secp256k1_context* ctx,
                           const secp256k1_ecdsa_signature* sig) {
-    uint8_t compact_sig[kCompactSignatureSize] = {};
+    uint8_t compact_sig[kSecp256k1CompactSignatureSize] = {};
     secp256k1_ecdsa_signature_serialize_compact(ctx, compact_sig, sig);
 
     return compact_sig[0] < 0x80;
@@ -458,41 +445,34 @@ std::array<uint8_t, kSecp256k1FingerprintSize> HDKey::GetFingerprint() const {
   return result;
 }
 
-std::vector<uint8_t> HDKey::RecoverCompact(bool compressed,
-                                           Secp256k1SignMsgSpan msg,
-                                           CompactSignatureSpan sig,
-                                           int recid) {
+std::optional<std::vector<uint8_t>> HDKey::RecoverCompact(
+    bool compressed,
+    Secp256k1SignMsgSpan msg,
+    const Secp256k1Signature& sig) {
   size_t public_key_len = compressed ? 33 : 65;
   std::vector<uint8_t> public_key(public_key_len);
-  if (msg.size() != 32 || sig.size() != kCompactSignatureSize) {
-    LOG(ERROR) << __func__ << ": message or signature length is invalid";
-    return public_key;
-  }
-  if (recid < 0 || recid > 3) {
-    LOG(ERROR) << __func__ << ": recovery id must be 0, 1, 2 or 3";
-    return public_key;
-  }
 
   secp256k1_ecdsa_recoverable_signature ecdsa_sig;
   if (!secp256k1_ecdsa_recoverable_signature_parse_compact(
-          GetSecp256k1Ctx(), &ecdsa_sig, sig.data(), recid)) {
+          GetSecp256k1Ctx(), &ecdsa_sig, sig.rs_bytes().data(), sig.recid())) {
     LOG(ERROR)
         << __func__
         << ": secp256k1_ecdsa_recoverable_signature_parse_compact failed";
-    return public_key;
+    return std::nullopt;
   }
 
   secp256k1_pubkey pubkey;
   if (!secp256k1_ecdsa_recover(GetSecp256k1Ctx(), &pubkey, &ecdsa_sig,
                                msg.data())) {
     LOG(ERROR) << __func__ << ": secp256k1_ecdsa_recover failed";
-    return public_key;
+    return std::nullopt;
   }
 
   if (!secp256k1_ec_pubkey_serialize(
           GetSecp256k1Ctx(), public_key.data(), &public_key_len, &pubkey,
           compressed ? SECP256K1_EC_COMPRESSED : SECP256K1_EC_UNCOMPRESSED)) {
     LOG(ERROR) << "secp256k1_ec_pubkey_serialize failed";
+    return std::nullopt;
   }
 
   return public_key;

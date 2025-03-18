@@ -10,6 +10,8 @@ source_set("hd_key_common") {
     "hd_key_common.cc",
     "hd_key_common.h",
   ]
+
+  deps = [ "//base" ]
 }
 
 source_set("hd_key") {
@@ -20,6 +22,8 @@ source_set("hd_key") {
     "hd_key_ed25519.h",
     "hd_key_ed25519_slip23.cc",
     "hd_key_ed25519_slip23.h",
+    "secp256k1_signature.cc",
+    "secp256k1_signature.h",
   ]
 
   visibility = [

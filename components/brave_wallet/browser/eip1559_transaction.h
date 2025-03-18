@@ -97,6 +97,8 @@ class Eip1559Transaction : public Eip2930Transaction {
   // Gas estimation result
   GasEstimation gas_estimation_;
 
+  bool VIsRecid() const override;
+
  private:
   std::vector<uint8_t> Serialize() const;
 };

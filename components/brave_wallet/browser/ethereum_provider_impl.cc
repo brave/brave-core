@@ -463,6 +463,8 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
                                           RequestCallback callback,
                                           base::Value id) {
   bool reject = false;
+  // TODO(apaymyshev): MM supports larger v. Not only one byte as we do.
+  // https://github.com/ethereumjs/ethereumjs-util/blob/f51bfcab9e5505dfed4819ef1336f9fc00a12c3d/src/signature.ts#L110
   // 65 * 2 hex chars per byte + 2 chars for  0x
   if (signature.length() != 132) {
     return RejectInvalidParams(std::move(id), std::move(callback));
