@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import 'chrome://resources/cr_elements/cr_button/cr_button.js'
-import 'chrome://resources/cr_elements/cr_input/cr_input.js'
+import '//resources/cr_elements/cr_button/cr_button.js'
+import '//resources/cr_elements/cr_input/cr_input.js'
 
-import {loadTimeData} from 'chrome://resources/js/load_time_data.js'
-import {CrLitElement} from 'chrome://resources/lit/v3_0/lit.rollup.js'
+import {loadTimeData} from '//resources/js/load_time_data.js'
+import {CrLitElement} from '//resources/lit/v3_0/lit.rollup.js'
 
 import {BraveTabSearchApiProxy, TabSearchApiProxyImpl} from '../tab_search_api_proxy.js'
 import type {TabOrganizationSession} from '../tab_search.mojom-webui.js'
@@ -21,15 +21,15 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   }
 
   protected topics_: string[] = []
-  protected topic: string = ''
-  protected undoTopic_: string = ''
+  protected topic = ''
+  protected undoTopic_ = ''
 
   private apiProxy_: BraveTabSearchApiProxy =
       TabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
 
   private visibilityChangedListener_: () => void
   private elementVisibilityChangedListener_: IntersectionObserver
-  private isElementVisible_: boolean = false
+  private isElementVisible_ = false
 
   static override get properties() {
     return {
@@ -44,11 +44,11 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     }
   }
 
-  availableHeight: number = 0
-  showBackButton: boolean = false
-  isLoadingTopics: boolean = false
-  errorMessage: string = ''
-  needsPremium: boolean = false
+  availableHeight = 0
+  showBackButton = false
+  isLoadingTopics = false
+  errorMessage = ''
+  needsPremium = false
 
   static override get styles() {
     return getCss()
@@ -57,15 +57,11 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   constructor() {
     super()
 
-    this.visibilityChangedListener_ = () => {
-      this.maybeUpdateSuggestedTopics_()
-    }
+    this.visibilityChangedListener_ = this.maybeUpdateSuggestedTopics_
 
     this.elementVisibilityChangedListener_ =
         new IntersectionObserver((entries, _observer) => {
-          entries.forEach(entry => {
-            this.onElementVisibilityChanged_(entry.intersectionRatio > 0)
-          })
+          this.onElementVisibilityChanged_((entries[0]?.intersectionRatio ?? 0) > 0);
         }, {root: document.documentElement})
 
   }
@@ -101,7 +97,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     })
   }
 
-  private maybeUpdateSuggestedTopics_() {
+  private maybeUpdateSuggestedTopics_ = () => {
     // Don't update if it's already loading topics or when it's not visible.
     if (this.isLoadingTopics ||
         document.visibilityState !== 'visible' ||
