@@ -26,6 +26,7 @@ constexpr char kSettingsHostName[] = "settings";
 
 constexpr char kSearchEnginesPath[] = "/searchEngines";
 constexpr char kSearchPath[] = "/search";
+constexpr char kDefaultSearchPath[] = "/search/defaultSearch";
 constexpr char kSearchQuery[] = "search";
 
 }  // namespace
@@ -66,13 +67,16 @@ bool ShouldSupportInternalUrl(const GURL& url) {
     return false;
   }
 
-  if (url.path() == kSearchEnginesPath || url.path() == kSearchPath) {
+  if (url.path() == kSearchEnginesPath || url.path() == kSearchPath ||
+      url.path() == kDefaultSearchPath) {
     if (!url.has_query()) {
-      // Support chrome://settings/searchEngines and chrome://settings/search
-      // paths without a query.
+      // Support chrome://settings/searchEngines,
+      // chrome://settings/searchEngines/defaultSearch and
+      // chrome://settings/search paths without a query.
       return true;
     }
 
+    // Support chrome://settings/search paths with a query.
     return HasSearchQuery(url);
   }
 
