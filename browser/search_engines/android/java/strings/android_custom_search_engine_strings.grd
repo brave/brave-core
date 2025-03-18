@@ -122,6 +122,18 @@
         <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_URL_ERROR" desc="Add custom search engine empty url text">
           URL can't be empty.
         </message>
+        <message name="IDS_DELETE_CUSTOM_SEARCH_ENGINE_TITLE" desc="Delete custom search engine title">
+          Delete custom search engine
+        </message>
+        <message name="IDS_DELETE_CUSTOM_SEARCH_ENGINE_TEXT" desc="Delete custom search engine text">
+          Are you sure you want to delete ”<ph name="SEARCH_ENGINE_NAME">%s</ph>”? This action cannot be undone.
+        </message>
+        <message name="IDS_DELETE_ACTION_TEXT" desc="Delete action text">
+          Delete
+        </message>
+        <message name="IDS_CANCEL_ACTION_TEXT" desc="Cancel action text">
+          Cancel
+        </message>
         <!-- End of Custom search engine strings -->
   </messages>
   </release>

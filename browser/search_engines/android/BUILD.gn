@@ -45,10 +45,14 @@ android_library("java") {
 
 android_resources("java_resources") {
   sources = [
+    "java/res/drawable/alert_dialog_shape.xml",
+    "java/res/drawable/brave_action_button_bg.xml",
     "java/res/drawable/ic_trash.xml",
     "java/res/layout/add_custom_search_engine_preference_layout.xml",
+    "java/res/layout/custom_search_engine_alert_dialog_layout.xml",
     "java/res/layout/custom_search_engine_item.xml",
     "java/res/layout/custom_search_engines_preference_layout.xml",
+    "java/res/values-night/custom_search_engine_colors.xml",
     "java/res/values/custom_search_engine_colors.xml",
   ]
   deps = [ ":java_strings_grd" ]
