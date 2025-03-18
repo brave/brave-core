@@ -35,6 +35,7 @@ BraveScreenshotsTabFeature::BraveScreenshotsTabFeature(
 
 BraveScreenshotsTabFeature::~BraveScreenshotsTabFeature() {
   DVLOG(1) << "BraveScreenshotsTabFeature destroyed";
+  web_contents_ = nullptr;
 }
 
 void BraveScreenshotsTabFeature::StartScreenshot(ScreenshotType type) {
