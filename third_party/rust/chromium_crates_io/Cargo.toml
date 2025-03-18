@@ -109,10 +109,6 @@ package = "anstyle"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/anyhow-1.0.97"
 package = "anyhow"
 
-[patch.crates-io.base64_v0_22]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/base64-0.22.1"
-package = "base64"
-
 [patch.crates-io.bitflags_v2]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-2.9.0"
 package = "bitflags"
@@ -126,11 +122,11 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/cfg-if-1.0.0"
 package = "cfg-if"
 
 [patch.crates-io.clap]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/clap-4.5.31"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/clap-4.5.32"
 package = "clap"
 
 [patch.crates-io.clap_builder]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/clap_builder-4.5.31"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/clap_builder-4.5.32"
 package = "clap_builder"
 
 [patch.crates-io.clap_lex]
@@ -142,19 +138,19 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/codespan-reportin
 package = "codespan-reporting"
 
 [patch.crates-io.cxx_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/cxx-1.0.143"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxx-1.0.146"
 package = "cxx"
 
 [patch.crates-io.cxxbridge-cmd]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.143"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.146"
 package = "cxxbridge-cmd"
 
 [patch.crates-io.cxxbridge-flags_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-flags-1.0.143"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-flags-1.0.146"
 package = "cxxbridge-flags"
 
 [patch.crates-io.cxxbridge-macro_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-macro-1.0.143"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-macro-1.0.146"
 package = "cxxbridge-macro"
 
 [patch.crates-io.foldhash_v0_3]
@@ -178,7 +174,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/lazy_static-1.5.0
 package = "lazy_static"
 
 [patch.crates-io.libc_v0_2]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/libc-0.2.170"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/libc-0.2.171"
 package = "libc"
 
 [patch.crates-io.log_v0_4]
@@ -190,7 +186,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/memchr-2.7.4"
 package = "memchr"
 
 [patch.crates-io.ppv_lite86_v0_2]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/ppv-lite86-0.2.20"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/ppv-lite86-0.2.21"
 package = "ppv-lite86"
 
 [patch.crates-io.proc_macro2_v1]
@@ -198,7 +194,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/proc-macro2-1.0.9
 package = "proc-macro2"
 
 [patch.crates-io.quote_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/quote-1.0.39"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/quote-1.0.40"
 package = "quote"
 
 [patch.crates-io.rand_chacha_v0_3]
@@ -242,7 +238,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/semver-1.0.26"
 package = "semver"
 
 [patch.crates-io.serde_derive_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_derive-1.0.218"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_derive-1.0.219"
 package = "serde_derive"
 
 [patch.crates-io.serde_json_v1]
@@ -250,7 +246,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_json-1.0.14
 package = "serde_json"
 
 [patch.crates-io.serde_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/serde-1.0.218"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde-1.0.219"
 package = "serde"
 
 [patch.crates-io.static_assertions_v0_1]
@@ -262,7 +258,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/strsim-0.11.1"
 package = "strsim"
 
 [patch.crates-io.syn_v2]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-2.0.99"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-2.0.100"
 package = "syn"
 
 [patch.crates-io.termcolor]
@@ -337,12 +333,12 @@ package = "zcash_encoding"
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_primitives"
 package = "zcash_primitives"
 
-[patch.crates-io.zerocopy_v0_7]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/zerocopy-0.7.35"
+[patch.crates-io.zerocopy_v0_8]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/zerocopy-0.8.23"
 package = "zerocopy"
 
-[patch.crates-io.zerocopy_derive_v0_7]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/zerocopy-derive-0.7.35"
+[patch.crates-io.zerocopy_derive_v0_8]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/zerocopy-derive-0.8.23"
 package = "zerocopy-derive"
 
 [patch.crates-io.zcash_client_backend_v0_12]
