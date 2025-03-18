@@ -88,6 +88,11 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
       kWidevineGoogleDlPrefix);
 
+  if (widevine_gvt1_pattern->MatchesURL(request_url) ||
+      widevine_google_dl_pattern->MatchesURL(request_url)) {
+    return net::OK;
+  }
+
   if (geo_pattern->MatchesURL(request_url)) {
     *new_url = GURL(BUILDFLAG(GOOGLEAPIS_URL));
     return net::OK;
@@ -129,16 +134,14 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     return net::OK;
   }
 
-  if (crlSet_pattern1->MatchesURL(request_url) &&
-      !widevine_google_dl_pattern->MatchesURL(request_url)) {
+  if (crlSet_pattern1->MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("redirector.brave.com");
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (crlSet_pattern2->MatchesURL(request_url) &&
-      !widevine_gvt1_pattern->MatchesURL(request_url)) {
+  if (crlSet_pattern2->MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr("redirector.brave.com");
     *new_url = request_url.ReplaceComponents(replacements);
@@ -159,16 +162,14 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     return net::OK;
   }
 
-  if (gvt1_pattern->MatchesURL(request_url) &&
-      !widevine_gvt1_pattern->MatchesURL(request_url)) {
+  if (gvt1_pattern->MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr(kBraveRedirectorProxy);
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
 
-  if (googleDl_pattern->MatchesURL(request_url) &&
-      !widevine_google_dl_pattern->MatchesURL(request_url)) {
+  if (googleDl_pattern->MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
     replacements.SetHostStr(kBraveRedirectorProxy);
     *new_url = request_url.ReplaceComponents(replacements);
