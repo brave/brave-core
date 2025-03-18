@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index b7c03fa573ff1ac0766d4570d47c4d84d6a2266b..5c2db4dbc967c692ac88d3c32b1c8d4665aaa5eb 100644
+index 2f5be98233528436a8a2ecf91aaca42ebb045921..299e03a5c35163eee1fdba0fd93c25065c43b263 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,9 @@
@@ -40,12 +40,17 @@ index b7c03fa573ff1ac0766d4570d47c4d84d6a2266b..5c2db4dbc967c692ac88d3c32b1c8d46
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1451,7 +1457,7 @@
+@@ -1451,11 +1457,11 @@
+     "includes": [9980],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {
+-    "META": {"sizes": {"includes": [250]}},
++    "META": {"sizes": {"includes": [252]}},
      "includes": [9990],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_resources.grd": {
 -    "META": {"sizes": {"includes": [1100]}},
-+    "META": {"sizes": {"includes": [1125]}},
++    "META": {"sizes": {"includes": [1126]}},
      "includes": [10000],
    },
    "weblayer/weblayer_resources.grd": {
