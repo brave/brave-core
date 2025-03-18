@@ -12,8 +12,8 @@ import org.chromium.base.Promise;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskRunner;
 import org.chromium.base.task.TaskTraits;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
@@ -46,7 +46,9 @@ public class MiscAndroidMetricsFactory {
 
         mTaskRunner.execute(
                 () -> {
-                    Profile profile = Utils.getProfile(false); // always use regular profile
+                    Profile profile =
+                            ProfileManager
+                                    .getLastUsedRegularProfile(); // always use regular profile
                     long nativeHandle =
                             MiscAndroidMetricsFactoryJni.get()
                                     .getInterfaceToMiscAndroidMetrics(profile);
