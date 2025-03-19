@@ -32,6 +32,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/metrics/metrics_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -535,6 +536,17 @@ bool ViewCounterService::CanShowSponsoredImages() const {
   // We don't show SI if user disables bg image.
   if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage)) {
     return false;
+  }
+
+  if (images_data->grace_period &&
+      local_state_->HasPrefPath(metrics::prefs::kInstallDate)) {
+    const base::Time installation_date =
+        local_state_->GetTime(metrics::prefs::kInstallDate);
+    if (base::Time::Now() < installation_date + *images_data->grace_period) {
+      // We don't show sponsored images if the user has installed Brave within
+      // the grace period.
+      return false;
+    }
   }
 
   return IsSponsoredImagesWallpaperOptedIn();
