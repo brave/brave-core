@@ -47,7 +47,12 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_NAVER = 67,
   PREPOPULATED_ENGINE_ID_DAUM = 68,
   PREPOPULATED_ENGINE_ID_ECOSIA = 101,
+  PREPOPULATED_ENGINE_ID_STARTPAGE = 112,
   // These engine IDs are not defined in Chromium
+  // When adding a new engine, also add it to kBraveAddedEngines in
+  // chromium_src/components/search_engines/
+  //   brave_template_url_prepopulate_data_unittest.cc, so that we would know if
+  // Chromium adds the same engine in the future.
   BRAVE_PREPOPULATED_ENGINES_START = 500,
   PREPOPULATED_ENGINE_ID_AMAZON = 500,  // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
@@ -62,11 +67,11 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_SEARX,            // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_SEMANTICSCHOLAR,  // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_STACKOVERFLOW,    // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_STARTPAGE,
-  PREPOPULATED_ENGINE_ID_TWITTER,       // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_WIKIPEDIA,     // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_WOLFRAMALPHA,  // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_YOUTUBE,       // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_STARTPAGE_OLD,    // Added to Chromium (2/2025).
+  PREPOPULATED_ENGINE_ID_TWITTER,          // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_WIKIPEDIA,        // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_WOLFRAMALPHA,     // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_YOUTUBE,          // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
 
@@ -117,7 +122,7 @@ extern const PrepopulatedEngine duckduckgo_lite;
 #endif
 extern const PrepopulatedEngine brave_ecosia;
 extern const PrepopulatedEngine qwant;
-extern const PrepopulatedEngine startpage;
+extern const PrepopulatedEngine brave_startpage;
 extern const PrepopulatedEngine brave_yandex;
 extern const PrepopulatedEngine brave_search;
 extern const PrepopulatedEngine brave_search_tor;

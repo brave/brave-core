@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
-index 37aa2d24e7426d7b67c252c173ba5ad133091d15..aa23f3d4b8749d05857209205fe3e72e81190a11 100644
+index e94fd890c954597251a0aee934822e46bfc58222..1cf55a69ff11e733962ed968002975194a4b593c 100644
 --- a/components/permissions/permission_request_manager.cc
 +++ b/components/permissions/permission_request_manager.cc
 @@ -581,6 +581,7 @@ GURL PermissionRequestManager::GetRequestingOrigin() const {

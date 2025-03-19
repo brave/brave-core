@@ -238,6 +238,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     // Setup WebMain
     _webMain = std::make_unique<web::WebMain>(std::move(params));
+    _webMain->Startup();
 
     ProfileIOS* profile = brave::CreateMainProfileIOS();
     [self profileLoaded:profile];

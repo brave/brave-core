@@ -28,7 +28,6 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/ui/bookmarks/bookmark_bubble_sign_in_delegate.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -421,12 +420,8 @@ void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
     anchor_view = bookmark_;
   }
 
-  std::unique_ptr<BubbleSignInPromoDelegate> delegate;
-  delegate =
-      std::make_unique<BookmarkBubbleSignInDelegate>(browser()->profile());
   BookmarkBubbleView::ShowBubble(anchor_view, GetWebContents(), bookmark_,
-                                 std::move(delegate), browser_, url,
-                                 already_bookmarked);
+                                 browser_, url, already_bookmarked);
 }
 
 void BraveToolbarView::ViewHierarchyChanged(

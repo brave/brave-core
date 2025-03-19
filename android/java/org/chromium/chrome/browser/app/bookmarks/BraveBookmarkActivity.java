@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import org.chromium.chrome.browser.bookmarks.BookmarkManagerCoordinator;
 import org.chromium.chrome.browser.bookmarks.BraveBookmarkManagerCoordinator;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
 
@@ -19,14 +20,14 @@ public class BraveBookmarkActivity extends BookmarkActivity {
     private ActivityWindowAndroid mWindowAndroid;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onProfileAvailable(Profile profile) {
+        super.onProfileAvailable(profile);
 
         IntentRequestTracker intentRequestTracker = IntentRequestTracker.createFromActivity(this);
         mWindowAndroid =
                 new ActivityWindowAndroid(
                         this, true, intentRequestTracker, null, /* trackOcclusion= */ false);
-        mWindowAndroid.getIntentRequestTracker().restoreInstanceState(savedInstanceState);
+
         if (mBookmarkManagerCoordinator instanceof BraveBookmarkManagerCoordinator) {
             ((BraveBookmarkManagerCoordinator) mBookmarkManagerCoordinator)
                     .setWindow(mWindowAndroid);

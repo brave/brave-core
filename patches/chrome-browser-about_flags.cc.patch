@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 3f39aa632c6fa52ce9f9a1748a6dc68e9791ed99..4f4e8dbd2516eb49ddb31af25bb2b042d19c2782 100644
+index 2e8ad258a2a5459e061df4a83c0d612d1cbfb310..02a856e86ef4c2d47e126a54b94bb3fd3eb95f6e 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4407,6 +4407,7 @@ const FeatureEntry::FeatureVariation kTabSwitcherColorBlendAnimateVariations[] =
+@@ -4409,6 +4409,7 @@ const FeatureEntry::FeatureVariation
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

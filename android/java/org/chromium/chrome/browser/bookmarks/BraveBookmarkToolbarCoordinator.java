@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.bookmarks;
 import android.content.Context;
 
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
@@ -23,6 +24,7 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
 
     BraveBookmarkToolbarCoordinator(
             Context context,
+            Profile profile,
             SelectableListLayout<BookmarkId> selectableListLayout,
             SelectionDelegate<BookmarkId> selectionDelegate,
             SearchDelegate searchDelegate,
@@ -38,6 +40,7 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
             BooleanSupplier incognitoEnabledSupplier) {
         super(
                 context,
+                profile,
                 selectableListLayout,
                 selectionDelegate,
                 searchDelegate,

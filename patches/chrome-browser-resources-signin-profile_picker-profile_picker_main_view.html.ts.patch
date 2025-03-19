@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
-index 374234197329703c74f324719af39e4d1844b738..478ecd6bba594c104c871342ee22574a49de176f 100644
+index 9130ae3712b6f4a0934077b3ae652d5d2da2bff5..62a53667b66b871f1b4bd1cb6047be091d17b899 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
-@@ -26,7 +26,7 @@ export function getHtml(this: ProfilePickerMainViewElement) {
+@@ -34,7 +34,7 @@ ${function() {
              data-index="${index}">
          </profile-card>
        `)}
@@ -11,3 +11,11 @@ index 374234197329703c74f324719af39e4d1844b738..478ecd6bba594c104c871342ee22574a
            @click="${this.onAddProfileClick_}"
            ?hidden="${!this.profileCreationAllowed_}"
            aria-labelledby="addProfileButtonLabel">
+@@ -48,7 +48,6 @@ ${function() {
+   </div>
+   <div id="footer-text" class="subtitle"
+       ?hidden="${this.shouldHideFooterText_()}">
+-    $i18nRaw{glicAddProfileHelper}
+   </div>
+ </div>
+ <div class="footer">

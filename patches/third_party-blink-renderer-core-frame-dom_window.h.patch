@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/dom_window.h b/third_party/blink/renderer/core/frame/dom_window.h
-index a0898396287a70f5ab4d147cdc354c971ed5d8d1..43b3e92f66a228b0827e942a70690e66a6f8a059 100644
+index d8222f5add05b6730d6452e68c5f68af1b1d2881..18bf0231341c9ef34e533490798c56d5b60c84a9 100644
 --- a/third_party/blink/renderer/core/frame/dom_window.h
 +++ b/third_party/blink/renderer/core/frame/dom_window.h
-@@ -206,6 +206,7 @@ class CORE_EXPORT DOMWindow : public WindowProperties {
+@@ -200,6 +200,7 @@ class CORE_EXPORT DOMWindow : public WindowProperties {
  
    void DisconnectFromFrame() { frame_ = nullptr; }
  

@@ -60,7 +60,7 @@ public class AppearancePreferences extends BravePreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPageTitle.set(getString(R.string.prefs_appearance));
-        SettingsUtils.addPreferencesFromResource(this, R.xml.appearance_preferences);
+        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_appearance_preferences);
         boolean isTablet =
                 DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                         ContextUtils.getApplicationContext());
