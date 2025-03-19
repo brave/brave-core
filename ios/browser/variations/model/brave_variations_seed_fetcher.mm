@@ -23,25 +23,10 @@ base::Time GetLastVariationsSeedFetchTime() {
   return base::Time::FromSecondsSinceUnixEpoch(timestamp);
 }
 
-void SaveFetchTimeOfLatestSeedInLocalState() {
-  ApplicationContext* application_context = GetApplicationContext();
-  if (application_context) {
-    PrefService* local_state = application_context->GetLocalState();
-    if (local_state) {
-      const base::Time seed_fetch_time =
-          variations::VariationsSeedStore::GetLastFetchTimeFromPrefService(
-              local_state);
-      if (!seed_fetch_time.is_null()) {
-        [[NSUserDefaults standardUserDefaults]
-            setDouble:seed_fetch_time.InSecondsFSinceUnixEpoch()
-               forKey:kLastVariationsSeedFetchTimeKey];
-      }
-    }
-  } else {
-    [[NSUserDefaults standardUserDefaults]
-        setDouble:base::Time::Now().InSecondsFSinceUnixEpoch()
-           forKey:kLastVariationsSeedFetchTimeKey];
-  }
+void SaveLastVariationsSeedFetchTime() {
+  [[NSUserDefaults standardUserDefaults]
+      setDouble:base::Time::Now().InSecondsFSinceUnixEpoch()
+         forKey:kLastVariationsSeedFetchTimeKey];
 }
 
 }  // namespace
@@ -115,11 +100,14 @@ void SaveFetchTimeOfLatestSeedInLocalState() {
 }
 
 - (void)fetchSeedSynchronously:(bool)ignoringLastSeedFetch {
-  _semaphore = dispatch_semaphore_create(0);
-
   base::Time lastSeedFetchTime =
       ignoringLastSeedFetch ? base::Time() : GetLastVariationsSeedFetchTime();
   if (lastSeedFetchTime.is_null()) {
+    // Save the last fetch time no matter what
+    // If the fetching fails, the next launch will NOT re-fetch!
+    SaveLastVariationsSeedFetchTime();
+
+    _semaphore = dispatch_semaphore_create(0);
     [super setDelegate:self];
     [super startSeedFetch];
 
@@ -134,11 +122,6 @@ void SaveFetchTimeOfLatestSeedInLocalState() {
 
 - (void)variationsSeedFetcherDidCompleteFetchWithSuccess:(BOOL)success {
   [super setDelegate:nil];
-
-  if (success) {
-    SaveFetchTimeOfLatestSeedInLocalState();
-  }
-
   dispatch_semaphore_signal(_semaphore);
 }
 @end
