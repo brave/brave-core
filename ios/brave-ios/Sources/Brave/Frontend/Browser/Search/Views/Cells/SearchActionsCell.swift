@@ -19,20 +19,12 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
     $0.image = UIImage(named: "recent-search-opt-in", in: .module, with: nil)
   }
 
-  let titleLabel = UILabel().then {
-    $0.textColor = UIColor(braveSystemName: .textPrimary)
-    $0.numberOfLines = 0
-    $0.font = .preferredFont(for: .body, weight: .semibold)
-  }
+  let titleLabel = UILabel()
 
-  let subtitleLabel = UILabel().then {
-    $0.textColor = UIColor(braveSystemName: .textSecondary)
-    $0.numberOfLines = 0
-    $0.font = .preferredFont(for: .body, weight: .regular)
-  }
+  let subtitleLabel = UILabel()
 
-  let primaryButton = UIButton()
-  let secondaryButton = UIButton()
+  let primaryButton = BraveButton(type: .system)
+  let secondaryButton = BraveButton(type: .system)
 
   private let topHStackView = UIStackView().then {
     $0.alignment = .top
@@ -106,13 +98,48 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
   }
 
   private func setTheme() {
+    var sizeCategory = UIApplication.shared.preferredContentSizeCategory
+    if sizeCategory.isAccessibilityCategory {
+      sizeCategory = .medium
+    }
+    let traitCollection = UITraitCollection(preferredContentSizeCategory: sizeCategory)
+
+    titleLabel.do {
+      $0.textColor = UIColor(braveSystemName: .textPrimary)
+      $0.numberOfLines = 0
+
+      let font = UIFont.preferredFont(
+        for: .body,
+        weight: .semibold,
+        traitCollection: traitCollection
+      )
+      $0.font = font
+    }
+
+    subtitleLabel.do {
+      $0.textColor = UIColor(braveSystemName: .textSecondary)
+      $0.numberOfLines = 0
+
+      let font = UIFont.preferredFont(
+        for: .body,
+        weight: .regular,
+        traitCollection: traitCollection
+      )
+      $0.font = font
+    }
+
+    let buttonTitleFont = UIFont.preferredFont(
+      for: .subheadline,
+      weight: .semibold,
+      traitCollection: traitCollection
+    )
     primaryButton.do {
       $0.layer.cornerCurve = .continuous
       $0.layer.cornerRadius = DesignUX.buttonCornerRadius
       $0.layer.borderColor = nil
       $0.layer.borderWidth = 0.0
       $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-      $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)
+      $0.titleLabel?.font = buttonTitleFont
       $0.setTitleColor(
         UIColor(braveSystemName: .schemesOnPrimary),
         for: .normal
@@ -122,8 +149,7 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
 
     secondaryButton.do {
       $0.backgroundColor = .clear
-      $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)
-      $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
+      $0.titleLabel?.font = buttonTitleFont
       $0.setTitleColor(UIColor(braveSystemName: .textInteractive), for: .normal)
       $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
     }

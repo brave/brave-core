@@ -559,6 +559,21 @@ extension Strings {
       comment:
         "The description for the settings to show search suggestions from Leo in url-address bar"
     )
+    public static let advancedSettingsShowInQSEBarTitle = NSLocalizedString(
+      "aichat.advancedSettingsShowInQSEBarTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Show In Quick Search Engines Bar",
+      comment: "The title for the settings to show Leo in Quick Search Engines Bar."
+    )
+    public static let advancedSettingsShowInQSEBarDescription = NSLocalizedString(
+      "aichat.advancedSettingsShowInQSEBarDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Enables a shortcut to launch Leo from the quick search engines bar.",
+      comment:
+        "The description for the settings to show Leo in Quick Search Engines Bar."
+    )
     public static let advancedSettingsDefaultModelTitle = NSLocalizedString(
       "aichat.advancedSettingsDefaultModelTitle",
       tableName: "BraveLeo",

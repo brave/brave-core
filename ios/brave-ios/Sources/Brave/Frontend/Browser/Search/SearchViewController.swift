@@ -257,6 +257,7 @@ public class SearchViewController: UIViewController, LoaderListener {
       $0.dataSource = self
       $0.keyboardDismissMode = .interactive
       $0.addGestureRecognizer(suggestionLongPressGesture)
+      $0.contentInset = .init(top: 8, left: 0, bottom: 8, right: 0)
     }
 
     KeyboardHelper.defaultHelper.addDelegate(self)
@@ -310,7 +311,11 @@ public class SearchViewController: UIViewController, LoaderListener {
   // MARK: Internal
 
   private func setupSearchEngineScrollViewIfNeeded() {
-    guard dataSource.isAIChatAvailable || dataSource.hasQuickSearchEngines else { return }
+    guard dataSource.isAIChatAvailable || dataSource.hasQuickSearchEngines
+    else {
+      layoutCollectionView()
+      return
+    }
 
     view.addSubview(searchEngineScrollView)
     searchEngineScrollView.addSubview(searchEngineScrollViewContent)
@@ -357,7 +362,11 @@ public class SearchViewController: UIViewController, LoaderListener {
     collectionView.snp.remakeConstraints { make in
       make.top.equalTo(view.snp.top)
       make.leading.trailing.equalTo(view)
-      make.bottom.equalTo(searchEngineScrollView.snp.top)
+      if searchEngineScrollView.superview == nil {
+        make.bottom.equalTo(view.safeArea.bottom)
+      } else {
+        make.bottom.equalTo(searchEngineScrollView.snp.top)
+      }
     }
   }
 
@@ -562,17 +571,16 @@ public class SearchViewController: UIViewController, LoaderListener {
   ) -> NSCollectionLayoutSection {
     let itemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .absolute(52)
+      heightDimension: .estimated(52)
     )
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     let groupSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .absolute(52)
+      heightDimension: .estimated(52)
     )
-    item.contentInsets = .init(top: 8, leading: 14, bottom: 8, trailing: 14)
     let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
     let section = NSCollectionLayoutSection(group: group)
-    section.contentInsets = .init(top: 16, leading: 16, bottom: 16, trailing: 16)
+    section.contentInsets = .init(top: 12, leading: 8, bottom: 12, trailing: 8)
 
     var supplementaryItems = [NSCollectionLayoutBoundarySupplementaryItem]()
     if headerEnabled {
@@ -585,6 +593,7 @@ public class SearchViewController: UIViewController, LoaderListener {
         elementKind: UICollectionView.elementKindSectionHeader,
         alignment: .top
       )
+      headerItem.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
       supplementaryItems.append(headerItem)
 
       let backgroundItem = NSCollectionLayoutDecorationItem.background(
@@ -611,6 +620,7 @@ public class SearchViewController: UIViewController, LoaderListener {
           elementKind: UICollectionView.elementKindSectionFooter,
           alignment: .bottom
         )
+        footerItem.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
         supplementaryItems.append(footerItem)
       }
     }
@@ -623,10 +633,9 @@ public class SearchViewController: UIViewController, LoaderListener {
   private func searchSuggestionOptinLayoutSection() -> NSCollectionLayoutSection {
     let quickBarItemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .absolute(52)
+      heightDimension: .estimated(52)
     )
     let quickBarItem = NSCollectionLayoutItem(layoutSize: quickBarItemSize)
-    quickBarItem.contentInsets = .init(top: 16, leading: 16, bottom: 8, trailing: 16)
 
     let separatorItemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
@@ -649,8 +658,9 @@ public class SearchViewController: UIViewController, LoaderListener {
       layoutSize: groupSize,
       subitems: [quickBarItem, separatorItem, optinItem]
     )
+    group.interItemSpacing = .fixed(8)
     let section = NSCollectionLayoutSection(group: group)
-    section.contentInsets = .init(top: 0, leading: 12, bottom: 0, trailing: 12)
+    section.contentInsets = .init(top: 16, leading: 12, bottom: 8, trailing: 12)
 
     let backgroundItem = NSCollectionLayoutDecorationItem.background(
       elementKind: CollectionLayoutDecorationItemElementKind.backgroundPlain
@@ -664,17 +674,16 @@ public class SearchViewController: UIViewController, LoaderListener {
   private func braveSearchPromotionLayoutSection() -> NSCollectionLayoutSection {
     let itemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .fractionalHeight(1)
+      heightDimension: .estimated(1)
     )
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
-    item.contentInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4)
     let groupSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
       heightDimension: .estimated(168)
     )
     let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
     let section = NSCollectionLayoutSection(group: group)
-    section.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+    section.contentInsets = .init(top: 4, leading: 12, bottom: 4, trailing: 12)
 
     let backgroundItem = NSCollectionLayoutDecorationItem.background(
       elementKind: CollectionLayoutDecorationItemElementKind.backgroundPlain
@@ -883,7 +892,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
       return cell
     case .findInPage:
       let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchFindInPageCell
-      cell.setTitle(dataSource.searchQuery)
+      cell.setCellTitle(dataSource.searchQuery)
       return cell
     case .openTabsAndHistoryAndBookmarks:
       let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchOnYourDeviceCell
@@ -1037,7 +1046,7 @@ extension SearchViewController {
       let location = gestureRecognizer.location(in: self.collectionView)
       if let indexPath = collectionView.indexPathForItem(at: location),
         let section = availableSections[safe: indexPath.section],
-        let suggestion = dataSource.suggestions[safe: indexPath.row],
+        let suggestion = dataSource.suggestions[safe: indexPath.row - 1],
         section == .searchSuggestions
       {
         searchDelegate?.searchViewController(self, didLongPressSuggestion: suggestion)
