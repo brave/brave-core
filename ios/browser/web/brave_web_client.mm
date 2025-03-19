@@ -47,13 +47,17 @@ void BraveWebClient::AddAdditionalSchemes(Schemes* schemes) const {
 
   schemes->standard_schemes.push_back(kBraveUIScheme);
   schemes->secure_schemes.push_back(kBraveUIScheme);
+
+  schemes->standard_schemes.push_back(kChromeUIUntrustedScheme);
+  schemes->secure_schemes.push_back(kChromeUIUntrustedScheme);
 }
 
 bool BraveWebClient::IsAppSpecificURL(const GURL& url) const {
   // temporarily add `internal://` scheme handling until those pages can be
   // ported to WebUI
   return ChromeWebClient::IsAppSpecificURL(url) ||
-         url.SchemeIs(kBraveUIScheme) || url.SchemeIs("internal");
+         url.SchemeIs(kBraveUIScheme) ||
+         url.SchemeIs(kChromeUIUntrustedScheme) || url.SchemeIs("internal");
 }
 
 bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
