@@ -512,21 +512,8 @@ function DepositAccount() {
   }, [accountSearchText, accountsForSelectedAssetCoinType])
 
   const depositTitleText: string = React.useMemo(() => {
-    const isNativeAsset =
-      selectedAsset?.coin === BraveWallet.CoinType.ETH &&
-      !selectedAsset?.isErc20 &&
-      !selectedAsset?.isErc721
-    const isFil = selectedAsset?.coin === BraveWallet.CoinType.FIL
     const isSolOrSpl = selectedAsset?.coin === BraveWallet.CoinType.SOL
     const isErc = selectedAsset?.isErc20 || selectedAsset?.isErc721
-
-    // EVM native network (gas) assets & Filecoin
-    if (isNativeAsset || isFil) {
-      return getLocale('braveWalletDepositX').replace(
-        '$1',
-        selectedAsset.symbol
-      )
-    }
 
     // ERC-based tokens
     if (isErc) {
@@ -538,7 +525,10 @@ function DepositAccount() {
       return getLocale('braveWalletDepositSolSplTokens')
     }
 
-    return ''
+    return getLocale('braveWalletDepositX').replace(
+      '$1',
+      selectedAsset?.symbol ?? ''
+    )
   }, [selectedAsset])
 
   // methods
