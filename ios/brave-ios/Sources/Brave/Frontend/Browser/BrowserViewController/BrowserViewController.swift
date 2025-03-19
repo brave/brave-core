@@ -206,6 +206,8 @@ public class BrowserViewController: UIViewController {
   var activeButtonToast: Toast?
   /// An infobar displaying a privacy notice when a search result ad is clicked
   var searchResultAdClickedInfoBar: SearchResultAdClickedInfoBar?
+  /// An infobar displaying a privacy notice when a new tab takeover is viewed
+  var newTabTakeoverInfoBar: NewTabTakeoverInfoBar?
   /// A boolean to determine If AddToListActivity should be added
   var addToPlayListActivityItem: (enabled: Bool, item: PlaylistInfo?)?
   /// A boolean to determine if OpenInPlaylistActivity should be shown
@@ -2862,6 +2864,17 @@ extension BrowserViewController: NewTabPageDelegate {
         arrowDirection: .any
       )
     }
+  }
+
+  func showNewTabTakeoverInfoBarIfNeeded() {
+    if !rewards.ads.shouldShowNewTabTakeoverInfoBar() {
+      return
+    }
+
+    let newTabTakeoverInfoBar = NewTabTakeoverInfoBar(
+      tabManager: self.tabManager
+    )
+    self.show(toast: newTabTakeoverInfoBar, duration: nil)
   }
 }
 

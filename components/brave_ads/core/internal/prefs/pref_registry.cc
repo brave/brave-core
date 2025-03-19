@@ -66,6 +66,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
 
   registry->RegisterBooleanPref(prefs::kShouldShowSearchResultAdClickedInfoBar,
                                 true);
+  registry->RegisterBooleanPref(prefs::kShowNewTabTakeoverInfobar, true);
 }
 
 }  // namespace brave_ads

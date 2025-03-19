@@ -1255,6 +1255,8 @@ public class BraveNewTabPageLayout
         if (mNtpAdapter != null) {
             mNtpAdapter.setNtpImage(ntpImage);
         }
+
+        boolean hasNtpBackground = true;
         if (ntpImage instanceof Wallpaper && ((Wallpaper) ntpImage).isRichMedia()) {
             setupSponsoredBackgroundContent();
         } else if (ntpImage instanceof Wallpaper
@@ -1267,6 +1269,12 @@ public class BraveNewTabPageLayout
                 && mSponsoredTab != null
                 && NTPImageUtil.shouldEnableNTPFeature()) {
             setBackgroundImage(ntpImage);
+        } else {
+            hasNtpBackground = false;
+        }
+
+        if (hasNtpBackground && ntpImage instanceof Wallpaper) {
+            BraveNewTabTakeoverInfobar.maybeCreate(mProfile);
         }
     }
 
