@@ -25,6 +25,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/common/channel_info.h"
+#include "components/regional_capabilities/access/country_access_reason.h"
+#include "components/regional_capabilities/regional_capabilities_service.h"
+#include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_types.h"
@@ -118,18 +121,10 @@ AdsServiceDelegate::AdsServiceDelegate(
         notification_ad_platform_bridge)
     : profile_(profile),
       local_state_(local_state),
-      prepopulate_data_resolver_(
-          *profile_->GetPrefs(),
-          CHECK_DEREF(
-              regional_capabilities::RegionalCapabilitiesServiceFactory::
-                  GetForProfile(&profile))),
-      search_engine_choice_service_(
-          *profile_->GetPrefs(),
-          local_state_,
-          *regional_capabilities::RegionalCapabilitiesServiceFactory::
-              GetForProfile(&profile),
-          prepopulate_data_resolver_,
-          /*is_profile_eligible_for_dse_guest_propagation=*/false),
+      country_id_holder_(
+          regional_capabilities::RegionalCapabilitiesServiceFactory::
+              GetForProfile(&profile)
+                  ->GetCountryId()),
       adaptive_captcha_service_(adaptive_captcha_service),
       notification_ad_platform_bridge_(
           std::move(notification_ad_platform_bridge)) {}
@@ -139,7 +134,11 @@ AdsServiceDelegate::~AdsServiceDelegate() {}
 std::string AdsServiceDelegate::GetDefaultSearchEngineName() {
   const auto template_url_data =
       TemplateURLPrepopulateData::GetPrepopulatedFallbackSearch(
-          *profile_->GetPrefs(), search_engine_choice_service_.GetCountryId());
+          *profile_->GetPrefs(),
+          country_id_holder_.GetRestricted(
+              regional_capabilities::CountryAccessKey(
+                  regional_capabilities::CountryAccessReason::
+                      kTemplateURLPrepopulateDataResolution)));
 
   const std::u16string& default_search_engine_name =
       template_url_data ? template_url_data->short_name() : u"";

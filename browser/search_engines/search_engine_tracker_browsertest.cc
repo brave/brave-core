@@ -15,14 +15,15 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/search_engine_choice/search_engine_choice_service_factory.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "components/country_codes/country_codes.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
-#include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
+#include "components/regional_capabilities/regional_capabilities_country_id.h"
+#include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "content/public/test/browser_test.h"
 #include "extensions/buildflags/buildflags.h"
@@ -66,14 +67,14 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
       TemplateURLServiceFactory::GetForProfile(browser()->profile());
   search_test_utils::WaitForTemplateURLServiceToLoad(service);
 
-  search_engines::SearchEngineChoiceService* search_engine_choice_service =
-      search_engines::SearchEngineChoiceServiceFactory::GetForProfile(
-          browser()->profile());
+  regional_capabilities::CountryIdHolder country_id_holder =
+      regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
+          browser()->profile())
+          ->GetCountryId();
 
   // Check that changing the default engine triggers emitting of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(),
-      search_engine_choice_service->GetCountryId(),
+      *browser()->profile()->GetPrefs(), country_id_holder.GetForTesting(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   TemplateURL ddg_url(*ddg_data);
 
@@ -83,8 +84,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
 
   // Check switching back to original engine.
   auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(),
-      search_engine_choice_service->GetCountryId(),
+      *browser()->profile()->GetPrefs(), country_id_holder.GetForTesting(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   TemplateURL brave_url(*brave_data);
   service->SetUserSelectedDefaultSearchProvider(&brave_url);
@@ -113,14 +113,13 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
       TemplateURLServiceFactory::GetForProfile(browser()->profile());
   search_test_utils::WaitForTemplateURLServiceToLoad(service);
 
-  search_engines::SearchEngineChoiceService* search_engine_choice_service =
-      search_engines::SearchEngineChoiceServiceFactory::GetForProfile(
-          browser()->profile());
-
+  regional_capabilities::CountryIdHolder country_id_holder =
+      regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
+          browser()->profile())
+          ->GetCountryId();
   // Check that changing the default engine triggers emission of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(),
-      search_engine_choice_service->GetCountryId(),
+      *browser()->profile()->GetPrefs(), country_id_holder.GetForTesting(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   TemplateURL ddg_url(*ddg_data);
 
@@ -131,8 +130,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
 
   // Check additional changes.
   auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(),
-      search_engine_choice_service->GetCountryId(),
+      *browser()->profile()->GetPrefs(), country_id_holder.GetForTesting(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   TemplateURL brave_url(*brave_data);
 
@@ -142,8 +140,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
 
   // Check additional changes.
   auto bing_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(),
-      search_engine_choice_service->GetCountryId(),
+      *browser()->profile()->GetPrefs(), country_id_holder.GetForTesting(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
   TemplateURL bing_url(*bing_data);
 

@@ -19,6 +19,7 @@ source_set("brave_ads") {
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
     "//components/prefs",
+    "//components/regional_capabilities:country_id",
     "//components/search_engines",
     "//components/sessions:session_id",
     "//content/public/browser",
@@ -75,6 +76,8 @@ source_set("impl") {
     "//chrome/common:chrome_features",
     "//chrome/common:constants",
     "//components/keyed_service/content",
+    "//components/regional_capabilities",
+    "//components/regional_capabilities:country_access_reason",
     "//ui/gfx",
     "//ui/message_center/public/cpp",
   ]
