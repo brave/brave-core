@@ -3,7 +3,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""**🚀Brockit! Guide**
+"""# 🚀Brockit! Guide
 
 ```
 ⠀⠀⠀⠀⠀⢀⣴⣶⣶⣶⣶⣶⣶⣶⣶⣦⡀⠀⠀⠀⠀⠀
@@ -21,6 +21,8 @@
 ⠀⠀⠀⠀⠀⠀⠀⠙⠻⣿⣿⣿⣿⠟⠋⠀⠀⠀⠀⠀⠀⠀💥
 ```
 
+### `brockit.py lift`
+
 This is *🚀Brockit!* (Brave Rocket? Brave Rock it? Broke it?): a tool to help
 upgrade Brave to a newer Chromium base version. The main goal is to produce
 use it to commit the following changes:
@@ -35,14 +37,14 @@ either by providing a `--previous` argument, or by having an upstream branch to
 to your current branch.
 
 ```sh
-tools/cr/brockit.py --to=135.0.7037.1 --previous=origin/master
+tools/cr/brockit.py lift --to=135.0.7037.1 --previous=origin/master
 ```
 
 Using upstream:
 
 ```sh
 git branch --set-upstream-to=origin/master
-tools/cr/brockit.py --to=135.0.7037.1
+tools/cr/brockit.py lift --to=135.0.7037.1
 ```
 
 The following steps will take place:
@@ -68,22 +70,32 @@ The following steps will take place:
 Steps 3-7 may end up being skipped altogether if no failures take place, or in
 part if resolution is possible without manual intervention.
 
-Additionally, *🚀Brockit!* can be run with the `--update-patches-only` flag. This
-is useful to generate the "Update patches" and "Updated strings" commits on
-their own when rebasing branches, regenerating these files as desired.
+### `brockit.py regen`
 
-**Github support**
-
-Upgrade runs can also be accompanied by github tasks, by passing
-`--with-github` when running *🚀Brockit!*.
+Additionally, *🚀Brockit!* can be run with `regen`. This is useful to generate
+the "Update patches" and "Updated strings" commits on their own when rebasing
+branches, regenerating these files as desired.
 
 ```sh
-tools/cr/brockit.py --to=135.0.7037.1 --with-github
-```
+tools/cr/brockit.py update-version-issue
+````
 
-This will attempt to create/update the github issue for the run as part of
-the whole process. Another option is to use `--github-issue-only` to have these
-GitHub run as a standalone.
+### `brockit.py update-version-issue`
+
+The `lift` command supports the use of `--with-github`, which either creates a
+new GitHub issue or updates an existing one with the details of the run.
+However it is also possible to run this task on standalone as well.
+
+```sh
+tools/cr/brockit.py update-version-issue
+````
+
+### Infra mode
+
+When running on infra, the `--infra-mode` flag should be provided. This will
+suppress all status updates, and rather provide a keep-alive type of feedback
+to make sure that the CI doesn't time out.
+
 """
 
 import argparse
@@ -91,12 +103,13 @@ from dataclasses import dataclass, field, replace
 from datetime import datetime
 from enum import Enum, auto
 from functools import total_ordering
-import json
 import itertools
+import json
+import logging
 from pathlib import Path, PurePath
 import pickle
 import platform
-import logging
+import random
 import threading
 import re
 from rich.console import Console
@@ -110,18 +123,6 @@ from typing import Optional
 from typing import NamedTuple
 
 console = Console()
-
-class RichHelpFormatter(argparse.RawDescriptionHelpFormatter):
-    """A custom formatter that allows for markdown in `--help`.
-    """
-    def __init__(self, prog):
-        super().__init__(prog)
-
-    def format_help(self):
-        console.print(Markdown(__doc__))
-        console.print('')
-        print(super().format_help())
-        return ""
 
 # This file is updated whenever the version number is updated in package.json
 PINSLIST_TIMESTAMP_FILE = 'chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc'
@@ -224,22 +225,21 @@ class Terminal:
                 """Keep the CI feedback alive while the subprocess is running.
                 """
                 feedback = [
-                    '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█', '▇', '▆', '▅', '▄',
-                    '▃', '▂'
+                    '(-_-)', '(⊙_⊙)', '(¬_¬)', '(－‸ლ)', '(◎_◎;)', '(⌐■_■)',
+                    '(•‿•)', '(≖_≖)'
                 ]
                 starting_time = time.time()
-                printed = False
-                for symbol in itertools.cycle(feedback):
-                    while time.time() - starting_time < 0.5:
-                        if stop_event.is_set():
-                            if printed:
-                                print()
-                            return
-                        time.sleep(0.01)
+                while not stop_event.is_set():
+                    if time.time() - starting_time < 40:
+                        time.sleep(0.05)
+                        continue
 
-                    print(f' {symbol}', end='', flush=True)
+                    logging.debug(
+                        '%s\n        >>>> %s',
+                        feedback[random.randint(0,
+                                                len(feedback) - 1)],
+                        " ".join(cmd))
                     starting_time = time.time()
-                    printed = True
 
             # Start subprocess in a thread
             keep_alive_thread = threading.Thread(target=keep_alive_ci_feedback)
@@ -320,11 +320,7 @@ def _get_current_branch_upstream_name():
                                           '--symbolic-full-name',
                                           '@{upstream}')
     except subprocess.CalledProcessError:
-        logging.error(
-            'Could not determine the upstream branch. Please provide a '
-            '[bold cyan]--previous[/] argument or set an upstream branch to '
-            'your current branch.')
-        sys.exit(1)
+        return None
 
 def _load_package_file(branch):
     """Retrieves the json content of package.json for a given revision
@@ -1113,7 +1109,7 @@ class PatchFailureResolver:
                     files_with_conflicts=self.files_with_conflicts,
                     broken_patches=self.broken_patches)).save()
 
-        if launch_vscode:
+        if launch_vscode and len(vscode_args) > 1:
             terminal.run(vscode_args)
 
     def requires_conflict_resolution(self):
@@ -1152,62 +1148,90 @@ def _read_chromium_version_file():
     return Version('{MAJOR}.{MINOR}.{BUILD}.{PATCH}'.format(**version_parts))
 
 
-class Upgrade:
-    """The upgrade process, holding the data related to the upgrade.
+class Task:
+    """ Base class for all tasks in brockit.
 
-  This class produces an object that is reponsible for keeping track of the
-  upgrade process step-by-step. It acquires all the common data necessary for
-  its completion.
-  """
-
-    def __init__(self, base_branch: str, target_version: Version):
-        # The base branch used to fetch the base version from. Defaults to the
-        # upstream branch of the current branch if none specified.
-        self.base_branch = base_branch
-        if self.base_branch is None or self.base_branch == '':
-            self.base_branch = _get_current_branch_upstream_name()
-
-        # The target version that is being upgraded to.
-        self.target_version = target_version
-
-        # The base chromium version from the upstream/previous branch
-        self.base_version = Version.from_git(self.base_branch)
-
-        # The last version the branch was in, that the update is being started
-        # from. This value is either retrieved from git, or from a continuation
-        # file.
-        self.working_version = None
-
-        # Update the working version from the continuation file.
-        continuation = ContinuationFile.load(
-            target_version=self.target_version, check=False)
-        if continuation is not None:
-            self.working_version = continuation.working_version
-
-        # The version currently set in the VERSION file.
-        self.chromium_src_version = _read_chromium_version_file()
-
-    def _update_package_version(self):
-        """Creates the change upgrading the Chromium version
-
-    This is for the creation of the first commit, which means updating
-    package.json to the target version provided, and commiting the change to
-    the repo
+    This class provides a common interface for other tasks to build upon. It
+    provides a run method that will execute the task, and a status_message
+    method that will return a string to be displayed while the task is running.
     """
-        package = _load_package_file('HEAD')
-        package['config']['projects']['chrome']['tag'] = str(
-            self.target_version)
-        with open(PACKAGE_FILE, "w") as package_file:
-            json.dump(package, package_file, indent=2)
 
-        Repository.brave().run_git('add', PACKAGE_FILE)
+    def run(self, *cmd) -> bool:
+        """Runs the task with a status message.
 
-        # Pinlist timestamp update occurs with the package version update.
-        _update_pinslist_timestamp()
-        Repository.brave().run_git('add', PINSLIST_TIMESTAMP_FILE)
-        Repository.brave().git_commit(
-            f'Update from Chromium {self.base_version} '
-            f'to Chromium {self.target_version}.')
+        This function will run the task inside the scope of a status message.
+
+        Args:
+            an open set of argument to be passed along to the derived class's
+            execute method.
+
+        Returns:
+            The result `execute()`. True if sucessful, False otherwise.
+        """
+        console.log('[italic]🚀 Brockit!')
+        with console.status(self.status_message()) as status:
+            terminal.set_status_object(status)
+            result = self.execute(*cmd)
+
+            if result:
+                console.log('[bold]💥 Done!')
+
+        return result
+
+    def status_message(self) -> str:
+        """Returns a status message for the task.
+
+        This function has to be implemented by the derived class.
+        """
+        raise NotImplementedError
+
+    def execute(self) -> bool:
+        """Executes the task.
+
+        This function has to be implemented by the derived class.
+        """
+        raise NotImplementedError
+
+
+class Versioned(Task):
+    """ Base class for all versioned tasks.
+
+    Versioned tasks are tasks that have the concept of a base version and a
+    target version.
+    """
+
+    def __init__(self,
+                 base_branch: str,
+                 target_version: Optional[Version] = None):
+        # The upstream base branch to compare against.
+        self.base_branch = base_branch
+
+        # The version in `package.json` found in that upstream branch.
+        self.base_version = Version.from_git(base_branch)
+
+        # The target of a given upgrade.
+        self.target_version = target_version
+        if self.target_version is None:
+            # When not provided we default for whatever is in the current
+            # branch because that's is possibly what the target version is for
+            # maintainance tasks.
+            self.target_version = Version.from_git('HEAD')
+
+        if self.target_version <= self.base_version:
+            logging.error(
+                'Target version is not higher than base version: '
+                'target=%s, base=%s, using=%s', self.target_version,
+                self.base_version, base_branch)
+            sys.exit(1)
+
+    def execute(self) -> bool:
+        raise NotImplementedError
+
+    def _get_googlesource_diff_link(self, from_version: Version) -> str:
+        """Generates a link to the diff of the upgrade.
+        """
+        return GOOGLESOURCE_LINK.format(from_version=from_version,
+                                        to_version=self.target_version)
 
     def _save_updated_patches(self):
         """Creates the updated patches change
@@ -1231,6 +1255,169 @@ class Upgrade:
         Repository.brave().run_git('add', '*.grd', '*.grdp', '*.xtb')
         Repository.brave().git_commit(
             f'Updated strings for Chromium {self.target_version}.')
+
+
+class Regen(Versioned):
+    """Regenerates patches and strings for the current branch.
+
+    This task is used for cases where the user wants to regenerate patches and
+    strings. The purpose is to produce `Update patches` and `Updated strings`
+    where approrpriate.
+    """
+
+    def status_message(self):
+        return "Updating patches and strings..."
+
+    def execute(self) -> bool:
+        terminal.run_npm_command('init')
+        terminal.run_npm_command('update_patches')
+        self._save_updated_patches()
+        terminal.run_npm_command('chromium_rebase_l10n')
+        self._save_rebased_l10n()
+        return True
+
+
+class GitHubIssue(Versioned):
+    """Creates a GitHub issue for the upgrade.
+
+    This class offers ways to create or update the github issue for the
+    upgrade. Also, as this is its own task, it can be called on its own for
+    maintainance purposes.
+    """
+
+    def status_message(self):
+        return "Creating/Updating GitHub issue for upgrade..."
+
+    def create_or_updade_version_issue(self):
+        """Creates a github issue for the upgrade.
+
+        This function creates/updates the upgrade github issue.
+        """
+
+        title = 'Upgrade from Chromium {previous} to Chromium {to}'
+        if self.target_version.major > self.base_version.major:
+            # For major updates, the issue description doesn't have a precise
+            # version number.
+            title = title.format(previous=str(self.base_version.major),
+                                 to=str(self.target_version.major))
+        else:
+            title = title.format(previous=str(self.base_version),
+                                 to=str(self.target_version))
+
+        link = self._get_googlesource_diff_link(
+            from_version=str(self.base_version))
+
+        results = json.loads(
+            terminal.run([
+                'gh', 'issue', 'list', '--repo', 'brave/brave-browser',
+                '--search', title, '--state', 'open', '--json',
+                'number,title,url,body'
+            ]).stdout.strip())
+        issue = next((entry for entry in results if entry['title'] == title),
+                     None)
+        if issue is not None:
+            pattern = r"https://chromium\.googlesource\.com/chromium/src/\+log/[^\s]+"
+            body = re.sub(pattern, link, issue['body'])
+            if body == issue['body']:
+                console.log(
+                    f'A Github issue with the title "{title}" is already '
+                    f'created and up-to-date. {str(issue["url"])}')
+            else:
+                terminal.run([
+                    'gh', 'issue', 'edit',
+                    str(issue['number']), '--repo', 'brave/brave-browser',
+                    '--body', f'{body}'
+                ])
+                terminal.log_task(f'GitHub issue udpated {str(issue["url"])}.')
+            return
+
+        body = MINOR_VERSION_BUMP_ISSUE_TEMPLATE.format(googlesource_link=link)
+        issue_url = terminal.run([
+            'gh', 'issue', 'create', '--repo', 'brave/brave-browser',
+            '--title', title, '--body', f'{body}', '--label',
+            '"Chromium/upgrade minor"', '--label', '"OS/Android"', '--label',
+            '"OS/Desktop"', '--label', '"QA/Test-Plan-Specified"', '--label',
+            '"QA/Yes"', '--label', '"release-notes/include"', '--assignee',
+            'emerick', '--assignee', 'mkarolin', '--assignee',
+            'cdesouza-chromium'
+        ]).stdout.strip()
+        terminal.log_task(f'GitHub Issue created for this bump: {issue_url}')
+
+    def execute(self) -> bool:
+        if _is_gh_cli_logged_in() is False:
+            logging.error('GitHub CLI is not logged in.')
+            return False
+
+        self.create_or_updade_version_issue()
+        return True
+
+
+class Upgrade(Versioned):
+    """The upgrade process, holding the data related to the upgrade.
+
+  This class produces an object that is reponsible for keeping track of the
+  upgrade process step-by-step. It acquires all the common data necessary for
+  its completion.
+  """
+
+    def __init__(self, base_branch: str, target_version: Version,
+                 is_continuation: bool):
+        super().__init__(base_branch, target_version)
+
+        # Indicates that the upgrade is a continuation from a previous run.
+        self.is_continuation = is_continuation
+
+        # The last version the branch was in, that the update is being started
+        # from
+        self.working_version = None
+        if self.is_continuation:
+            # Loads the working version from the continuation file, because the
+            # current branch has already updated the working version to the
+            # target version.
+            try:
+                continuation = ContinuationFile.load(
+                    target_version=self.target_version)
+            except FileNotFoundError:
+                logging.error(
+                    '%s continuation file does not exist. (Are you sure you '
+                    'meant to pass [bold cyan]--continue[/]?)',
+                    VERSION_UPGRADE_FILE)
+                sys.exit(1)
+            self.working_version = continuation.working_version
+        else:
+            # Initialising the continuation file at this stage, so we can save
+            # the working version.
+            self.working_version = Version.from_git('HEAD')
+            ContinuationFile.initialise(self.target_version,
+                                        self.working_version)
+
+        # The version currently set in the VERSION file.
+        self.chromium_src_version = _read_chromium_version_file()
+
+    def status_message(self):
+        return "Upgrading Chromium base version"
+
+    def _update_package_version(self):
+        """Creates the change upgrading the Chromium version
+
+    This is for the creation of the first commit, which means updating
+    package.json to the target version provided, and commiting the change to
+    the repo
+    """
+        package = _load_package_file('HEAD')
+        package['config']['projects']['chrome']['tag'] = str(
+            self.target_version)
+        with open(PACKAGE_FILE, "w") as package_file:
+            json.dump(package, package_file, indent=2)
+
+        Repository.brave().run_git('add', PACKAGE_FILE)
+
+        # Pinlist timestamp update occurs with the package version update.
+        _update_pinslist_timestamp()
+        Repository.brave().run_git('add', PINSLIST_TIMESTAMP_FILE)
+        Repository.brave().git_commit(
+            f'Update from Chromium {self.base_version} '
+            f'to Chromium {self.target_version}.')
 
     def _save_conflict_resolved_patches(self):
         Repository.brave().git_commit(
@@ -1273,154 +1460,28 @@ class Upgrade:
 
         return f'https://chromium.googlesource.com/chromium/src/+log/{from_version}..{self.target_version}?pretty=fuller&n=10000'
 
-    def _get_googlesource_diff_link(self, from_version):
-        """Generates a link to the diff of the upgrade.
-        """
-        return GOOGLESOURCE_LINK.format(from_version=from_version,
-                                        to_version=self.target_version)
+    def _continue(self, no_conflict_continuation: bool) -> bool:
+        """Continues the upgrade process.
 
-    def create_or_updade_issue_with_gh(self):
-        """Creates a github issue for the upgrade.
+    This function is responsible for continuing the upgrade process. It will
+    pick up from where the process left the last time.
 
-        This function creates/updates the upgrade github issue.
-        """
+    This function handles resumption in a way that the user may have to call
+    brockit with `--continue` multiple times, which will result in this
+    function being called every time.
 
-        title = 'Upgrade from Chromium {previous} to Chromium {to}'
-        if self.target_version.major > self.base_version.major:
-            # For major updates, the issue description doesn't have a precise
-            # version number.
-            title = title.format(previous=str(self.base_version.major),
-                                 to=str(self.target_version.major))
-        else:
-            title = title.format(previous=str(self.base_version),
-                                 to=str(self.target_version))
-
-        link = self._get_googlesource_diff_link(
-            from_version=str(self.base_version))
-
-        results = json.loads(
-            terminal.run([
-                'gh', 'issue', 'list', '--repo', 'brave/brave-browser',
-                '--search', title, '--state', 'open', '--json',
-                'number,title,url,body'
-            ]).stdout.strip())
-        issue = next((entry for entry in results if entry['title'] == title),
-                     None)
-        if issue is not None:
-            pattern = r"https://chromium\.googlesource\.com/chromium/src/\+log/[^\s]+"
-            body = re.sub(pattern, link, issue['body'])
-            if body == issue['body']:
-                console.log(
-                    f'A Github issue with the title "{title}" is already '
-                    'created and up-to-date.')
-            else:
-                terminal.run([
-                    'gh', 'issue', 'edit',
-                    str(issue['number']), '--repo', 'brave/brave-browser',
-                    '--body', f'{body}'
-                ])
-                terminal.log_task(f'GitHub issue udpated {str(issue["url"])}.')
-            return
-
-        body = MINOR_VERSION_BUMP_ISSUE_TEMPLATE.format(googlesource_link=link)
-        issue_url = terminal.run([
-            'gh', 'issue', 'create', '--repo', 'brave/brave-browser',
-            '--title', title, '--body', f'{body}', '--label',
-            '"Chromium/upgrade minor"', '--label', '"OS/Android"', '--label',
-            '"OS/Desktop"', '--label', '"QA/Test-Plan-Specified"', '--label',
-            '"QA/Yes"', '--label', '"release-notes/include"', '--assignee',
-            'emerick', '--assignee', 'mkarolin', '--assignee',
-            'cdesouza-chromium'
-        ]).stdout.strip()
-        terminal.log_task(f'GitHub Issue created for this bump: {issue_url}')
-
-    def _run_internal(self, is_continuation, no_conflict_continuation,
-                      launch_vscode, with_github):
-        """Run the upgrade process
-
-    This is the main method used to carry out the whole update process.
+    Files that are staged are considered as being meant for the
+    `conflict-resolved` change. Deleted files will cause this function to bail
+    out, so the user provide a commit message for the deletion.
 
     Args:
-      is_continuation:
-        Indicates that we are picking up from a resolve-conflict failure.
-      no_conflict_continuation:
-        Indicates a continuation does not produces a conflict-resolved change.
-
-    Return:
-      Return True if completed entirely, and False otherwise.
-    """
-
-        if with_github is True and _is_gh_cli_logged_in() is False:
-            # Fail early if gh cli is not logged in.
-            logging.error('GitHub CLI is not logged in.')
-            return False
-
-        override_continuation = is_continuation
-        if is_continuation is not True:
-            if self.target_version == self.working_version:
-                logging.error(
-                    "It looks like upgrading to %s has already started.",
-                    self.target_version)
-                return False
-
-            if self.target_version < self.working_version:
-                logging.error('Cannot upgrade version from %s to %s',
-                              self.target_version, self.working_version)
-                return False
-
-            self._update_package_version()
-
-            try:
-                terminal.run_npm_command('init')
-
-                # When no conflicts come back, we can proceed with the
-                # update_patches.
-                if self._run_update_patches_with_no_deletions() is not True:
-                    return False
-            except subprocess.CalledProcessError as e:
-                if ('There were some failures during git reset of specific '
-                        'repo paths' in e.stderr):
-                    logging.warning(
-                        '[bold cyan]npm run init[/] is failing to reset some'
-                        ' paths. This could be happening because of a bad sync'
-                        'state before starting the upgrade.')
-
-                if (e.returncode != 0
-                        and 'Exiting as not all patches were successful!'
-                        in e.stderr.splitlines()[-1]):
-                    resolver = PatchFailureResolver()
-                    resolver.apply_patches_3way(
-                        target_version=self.target_version,
-                        launch_vscode=launch_vscode)
-                    if resolver.requires_conflict_resolution() is True:
-                        # Manual resolution required.
-                        console.log(
-                            '👋 (Address all sections with '
-                            f'{ACTION_NEEDED_DECORATOR} above, and then rerun '
-                            '[italic]🚀Brockit![/] with [bold cyan]'
-                            '--continue[/])')
-                        return False
-
-                    if self._run_update_patches_with_no_deletions(
-                    ) is not True:
-                        return False
-
-                    resolver.stage_all_patches()
-                    self._save_conflict_resolved_patches()
-
-                    # With all conflicts resolved, it is necessary to close the
-                    # upgrade with all the same steps produced when running an
-                    # upgrade continuation, as recovering from a conflict-
-                    # resolution failure.
-                    override_continuation = True
-                elif e.returncode != 0:
-                    logging.error(
-                        'Failures found when running npm run init\n%s',
-                        e.stderr)
-                    return False
-        elif is_continuation is True and no_conflict_continuation is False:
-            # This is when a continuation follows conflict resolution. The
-            # tries to recover from where it stopped.
+        no_conflict_continuation:
+            Indicates that a continuation does not produce a conflict-resolved
+            change.
+        """
+        if no_conflict_continuation is not True:
+            # There's no need to try to create a `conflict-resolved` commit if
+            # all changes have already been committed during the run's break.
             resolver = PatchFailureResolver(
                 ContinuationFile.load(self.target_version))
 
@@ -1437,188 +1498,275 @@ class Upgrade:
                 return False
 
             self._save_conflict_resolved_patches()
-            # This is the end of the continuation process, so we can clear the
-            # continuation file.
-            ContinuationFile.clear()
 
         self._save_updated_patches()
-        if (is_continuation is True or override_continuation is True):
-            # Run init again to make sure nothing is missing after updating
-            # patches.
-            terminal.run_npm_command('init')
+        # Run init again to make sure nothing is missing after updating
+        # patches.
+        terminal.run_npm_command('init')
 
         terminal.run_npm_command('chromium_rebase_l10n')
         self._save_rebased_l10n()
 
-        if with_github is True:
-            self.create_or_updade_issue_with_gh()
+        # With the continuation finished there's no need to keep the
+        # continuation file around.
+        ContinuationFile.clear()
 
         return True
 
-    def run(self,
-            is_continuation,
-            no_conflict_continuation,
-            launch_vscode=False,
-            with_github=False):
-        """Run the upgrade process
+    def _start(self, launch_vscode: bool) -> bool:
+        """Starts the upgrade process.
 
-    Check `_run_internal` for details.
+    This function is responsible for starting the upgrade process. It will
+    update the package version, run `npm run init`, and then run
+    `npm run update_patches`. If any patches fail to apply, it will run
+    `npm run apply_patches_3way` to allow for manual conflict resolution.
+
+    For cases where no conflict resolution is required, the process will
+    will continue, concluding the whole four steps of the upgrade process.
+
+    Args:
+        launch_vscode:
+            Indicates if the user wants to launch vscode with the patches that
+            require manual conflict resolution.
 
     Return:
-      Return True if completed entirely, and False otherwise.
-    """
-        with console.status("Upgrading Chromium base version") as status:
-            terminal.set_status_object(status)
+        Returns True if the process was successful, and False otherwise.
+        """
+        if (self.working_version != self.chromium_src_version
+                and self.target_version != self.chromium_src_version):
+            logging.warning(
+                'Chrommium seems to be synced to a version entirely '
+                'unrelated. Brave %s ➜ Chromium %s', self.working_version,
+                self.chromium_src_version)
+        elif self.working_version != self.chromium_src_version:
+            logging.warning(
+                'Chromium is checked out with the target version. '
+                'Brave %s ➜ Chromium %s', self.working_version,
+                self.chromium_src_version)
 
-            if is_continuation is True:
-                if self.target_version != self.chromium_src_version:
-                    logging.error(
-                        'To run with [bold cyan]--continue[/] the Chromium '
-                        'version has to be in Sync with Brave.'
-                        ' Brave %s ➜ Chromium %s', self.target_version,
-                        self.chromium_src_version)
-                    return False
-            else:
-                # TODO(cdesouza): This has to be changed at some point for the
-                # file to be created always before anything else.
-                # We start a continuation file alrady, in case we need to stop
-                # at some point in the process.
-                self.working_version = Version.from_git('HEAD')
-                ContinuationFile.initialise(self.target_version,
-                                            self.working_version)
-
-                if (self.working_version != self.chromium_src_version
-                        and self.target_version != self.chromium_src_version):
-                    logging.error(
-                        'Chrommium seems to be synced to a version entirely '
-                        'unrelated. Brave %s ➜ Chromium %s',
-                        self.working_version, self.chromium_src_version)
-                    return False
-                if self.working_version != self.chromium_src_version:
-                    logging.warning(
-                        'Chromium is checked out with the target version. '
-                        'Brave %s ➜ Chromium %s', self.working_version,
-                        self.chromium_src_version)
-
-            if self.working_version != self.base_version:
-                terminal.log_task(
-                    'Chromium changes since last branch upgrade: '
-                    f'{self._get_googlesource_diff_link(self.working_version)}'
-                )
+        if self.working_version != self.base_version:
             terminal.log_task(
-                f'All Chromium changes: '
-                f'{self._get_googlesource_diff_link(self.base_version)}')
+                'Changes for this bump: '
+                f'{self._get_googlesource_diff_link(self.working_version)}')
+        terminal.log_task(
+            f'Changes since base version: '
+            f'{self._get_googlesource_diff_link(self.base_version)}')
 
-            return self._run_internal(is_continuation,
-                                      no_conflict_continuation, launch_vscode,
-                                      with_github)
+        self._update_package_version()
 
-    def generate_patches(self):
-        with console.status(
-                "Working to update patches and strings...") as status:
-            terminal.set_status_object(status)
+        try:
             terminal.run_npm_command('init')
-            terminal.run_npm_command('update_patches')
-            self._save_updated_patches()
-            terminal.run_npm_command('chromium_rebase_l10n')
-            self._save_rebased_l10n()
 
-    def run_github_issue_only(self):
-        with console.status("Creating/Updating GitHub issue...") as status:
-            terminal.set_status_object(status)
-            if _is_gh_cli_logged_in() is False:
-                logging.error('GitHub CLI is not logged in.')
-                sys.exit(1)
+            # When no conflicts come back, we can proceed with the
+            # update_patches.
+            if self._run_update_patches_with_no_deletions() is not True:
+                return False
+        except subprocess.CalledProcessError as e:
+            if ('There were some failures during git reset of specific '
+                    'repo paths' in e.stderr):
+                logging.warning(
+                    '[bold cyan]npm run init[/] is failing to reset some'
+                    ' paths. This could be happening because of a bad sync'
+                    'state before starting the upgrade.')
 
-            self.create_or_updade_issue_with_gh()
+            if (e.returncode != 0
+                    and 'Exiting as not all patches were successful!'
+                    in e.stderr.splitlines()[-1]):
+                resolver = PatchFailureResolver()
+                resolver.apply_patches_3way(target_version=self.target_version,
+                                            launch_vscode=launch_vscode)
+                if resolver.requires_conflict_resolution() is True:
+                    # Manual resolution required.
+                    console.log(
+                        '👋 (Address all sections with '
+                        f'{ACTION_NEEDED_DECORATOR} above, and then rerun '
+                        '[italic]🚀Brockit![/] with [bold cyan]'
+                        '--continue[/])')
+                    return False
+
+                if self._run_update_patches_with_no_deletions() is not True:
+                    return False
+
+                resolver.stage_all_patches()
+                self._save_conflict_resolved_patches()
+
+                # With all conflicts resolved, it is necessary to close the
+                # upgrade with all the same steps produced when running an
+                # upgrade continuation, as recovering from a conflict-
+                # resolution failure.
+                return self._continue(no_conflict_continuation=True)
+            if e.returncode != 0:
+                logging.error('Failures found when running npm run init\n%s',
+                              e.stderr)
+                return False
+
+        self._save_updated_patches()
+
+        terminal.run_npm_command('chromium_rebase_l10n')
+        self._save_rebased_l10n()
+
+        return True
+
+    # The argument list differs here because that's the way we get args through
+    # Task into the derived methods. Maybe something better can be done here.
+    # pylint: disable=arguments-differ
+    def execute(self, no_conflict_continuation: bool, launch_vscode: bool,
+                with_github: bool) -> bool:
+        """Executes the upgrade process.
+
+    Keep in this function all code that is common to both start and continue.
+
+    Args:
+        no_conflict_continuation:
+            Indicates that a continuation does not produce a conflict-resolved
+            change.
+        launch_vscode:
+            Indicates the user wants to launch vscode with the patches that
+            require manual conflict resolution.
+        with_github:
+            Indicates the user wants to create or update the github issue for
+            the upgrade.
+        """
+        if with_github is True and _is_gh_cli_logged_in() is False:
+            # Fail early if gh cli is not logged in.
+            logging.error('GitHub CLI is not logged in.')
+            return False
+
+        if self.target_version == self.working_version:
+            logging.error(
+                "This branch is already in %s. (Maybe this is a continuation?)",
+                self.target_version)
+            return False
+
+        if self.target_version < self.working_version:
+            logging.error('Cannot upgrade version from %s to %s',
+                          self.target_version, self.working_version)
+            return False
+
+        if self.is_continuation:
+            if self.target_version != self.chromium_src_version:
+                logging.error(
+                    'To run with [bold cyan]--continue[/] the Chromium '
+                    'version has to be in Sync with Brave.'
+                    ' Brave %s ➜ Chromium %s', self.target_version,
+                    self.chromium_src_version)
+                return False
+
+            result = self._continue(
+                no_conflict_continuation=no_conflict_continuation)
+        else:
+            result = self._start(launch_vscode=launch_vscode)
+
+        if result is True and with_github is True:
+            return GitHubIssue(base_branch=self.base_branch,
+                               target_version=self.target_version
+                               ).create_or_updade_version_issue()
+
+        return result
+
 
 def main():
-    parser = argparse.ArgumentParser(
-        # Custom formatter to preserve line breaks in the docstring
-        formatter_class=RichHelpFormatter)
-
-    parser.add_argument('--previous',
-                        help='The previous version to be shown as base.')
-    parser.add_argument(
-        '--to',
-        help=
-        'The branch used as the base version. In the absence of this argument,'
-        ' defaults to the current upstream branch.',
-        required=True)
-    parser.add_argument(
-        '--continue',
-        action='store_true',
-        help=
-        'Picks up from manual patch conflict resolution, stages the patches '
-        'previously flagged as with conflict, commits the staged patches as '
-        'well anything that my have been staged manually, and carries on from '
-        'that point onward generating the "Update patches" and "Updated '
-        'strings" changes.',
-        dest='is_continuation')
-    parser.add_argument(
-        '--no-conflict-change',
-        action='store_true',
-        help='Indicates that a continuation does not have conflict patches to '
-        'commit (when conflict resolution is committed as its own fix '
-        'manually with specific messages).',
-        dest='no_conflict')
-    parser.add_argument(
-        '--update-patches-only',
-        action='store_true',
-        help='Regenerates the "Update patches" and "Updated strings" commits '
-        'for current version.',
-        dest='update_patches_only')
-    parser.add_argument(
-        '--with-github',
-        action='store_true',
-        help='Indicates that GitHub tasks should be carried out as part of the'
-        'of the upgrade run (e.g create/update GitHub issues).',
-        dest='with_github')
-    parser.add_argument(
-        '--github-issue-only',
-        action='store_true',
-        help='Creates or updates the GitHub issue based on the version details '
-        'provided.',
-        dest='github_issue_only')
-    parser.add_argument(
-        '--vscode',
-        action='store_true',
-        help=
-        'Launches vscode with the files that need manual conflict resolution.')
-    parser.add_argument(
+    # This is a global parser with arguments that apply to every function.
+    global_parser = argparse.ArgumentParser(add_help=False)
+    global_parser.add_argument(
         '--verbose',
         action='store_true',
         help='Produces verbose logs (full command lines being executed, etc).')
-    parser.add_argument(
+    global_parser.add_argument(
         '--infra-mode',
         action='store_true',
         help=
-        'Indicates that the script is being run in the infra environment. This'
-        ' changes the script output, specially providing feedback for the CI '
-        'to be kept alive.',
-        dest='infa_mode')
+        ('Indicates that the script is being run in the infra environment. '
+         'This changes the script output, specially providing feedback for the '
+         'CI to be kept alive.'),
+        dest='infra_mode')
 
+    # This is parser that supports the `--previous` argument, for processes
+    # that emit data about target and previous version.
+    base_version_parser = argparse.ArgumentParser(add_help=False)
+    base_version_parser.add_argument(
+        '--previous',
+        help='The previous version to be shown as base. Defaults to the '
+        'current upstream branch.',
+        default=None)
+
+    parser = argparse.ArgumentParser()
+
+    subparsers = parser.add_subparsers(dest='command', required=True)
+    lift_parser = subparsers.add_parser(
+        'lift',
+        parents=[global_parser, base_version_parser],
+        help='Upgrade the chromium base version.')
+    lift_parser.add_argument('--to',
+                             required=True,
+                             help='The branch used as the base version.')
+    lift_parser.add_argument(
+        '--continue',
+        action='store_true',
+        help='Resumes from manual patch conflict resolution.',
+        dest='is_continuation')
+    lift_parser.add_argument(
+        '--with-github',
+        action='store_true',
+        help='Creates or updates the github for this branch.',
+        dest='with_github')
+    lift_parser.add_argument(
+        '--vscode',
+        action='store_true',
+        help=
+        'Launches vscode for manual conflict resolution and similar issues.')
+    lift_parser.add_argument(
+        '--no-conflict-change',
+        action='store_true',
+        help='Indicates that a continuation does not have conflict patches to '
+        'commit any longer.',
+        dest='no_conflict')
+
+    subparsers.add_parser(
+        'regen',
+        parents=[global_parser, base_version_parser],
+        help='Regenerates all patches and strings for the current branch.')
+
+    subparsers.add_parser(
+        'update-version-issue',
+        parents=[global_parser, base_version_parser],
+        help='Creates or updates the GitHub issue for the corrent branch.')
+
+    subparsers.add_parser('reference',
+                          help='Detailed documentation for this tool.')
     args = parser.parse_args()
+
+    def has_verbose():
+        return hasattr(args, 'verbose') and args.verbose
+
     logging.basicConfig(
-        level=logging.DEBUG if args.verbose else logging.INFO,
+        level=logging.DEBUG if has_verbose() else logging.INFO,
         format='%(message)s',
         handlers=[IncendiaryErrorHandler(markup=True, rich_tracebacks=True)])
 
-    if args.infa_mode:
+    if hasattr(args, 'infra_mode') and args.infra_mode:
         terminal.set_infra_mode()
 
-    upgrade = Upgrade(args.previous, Version(args.to))
+    if args.command == 'lift' and args.no_conflict and not args.is_continuation:
+        parser.error('--no-conflict-change can only be used with --continue')
+    if hasattr(args, 'previous') and args.previous is None:
+        args.previous = _get_current_branch_upstream_name()
+        if args.previous is None:
+            parser.error(
+                'Could not determine the previous version. Please provide it '
+                'with --previous, or assign an upstream branch to your '
+                'current branch.')
 
-    console.log('[italic]🚀 Brockit!')
-    if args.update_patches_only:
-        upgrade.generate_patches()
-    elif args.github_issue_only:
-        upgrade.run_github_issue_only()
-    elif upgrade.run(args.is_continuation, args.no_conflict, args.vscode,
-                     args.with_github) is False:
-        return 1
-
-    console.log('[bold]💥 Done!')
+    if args.command == 'lift':
+        return Upgrade(args.previous, Version(args.to),
+                       args.is_continuation).run(args.no_conflict, args.vscode,
+                                                 args.with_github)
+    if args.command == 'regen':
+        return Regen(args.previous).run()
+    if args.command == 'update-version-issue':
+        return GitHubIssue(args.previous).run()
+    if args.command == 'reference':
+        return console.print(Markdown(__doc__))
 
     return 0
 
