@@ -381,6 +381,14 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/media/ui/ChromeMediaNotificationControllerDelegate")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/media/ui/MediaSessionTabHelper"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderDino"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider"));
     }
 
     @Test
