@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -17,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -80,7 +84,22 @@ public class CustomSearchEnginesPreference extends Preference
     }
 
     @Override
-    public void onSearchEngineClick(String searchEngineKeyword) {}
+    public void onSearchEngineClick(String searchEngineKeyword) {
+        Log.e("brave_search", "onSearchEngineClick : " + searchEngineKeyword);
+        if (getContext() instanceof FragmentActivity) {
+            Bundle bundle = new Bundle();
+            bundle.putString("keyword", searchEngineKeyword);
+            AddCustomSearchEnginePreferenceFragment addCustomSearchEnginePreferenceFragment =
+                    new AddCustomSearchEnginePreferenceFragment();
+            addCustomSearchEnginePreferenceFragment.setArguments(bundle);
+            FragmentManager fragmentManager =
+                    ((FragmentActivity) getContext()).getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content, addCustomSearchEnginePreferenceFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+    }
 
     @Override
     public void loadSearchEngineLogo(ImageView logoView, String searchEngineKeyword) {

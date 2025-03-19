@@ -32,7 +32,7 @@ jboolean TemplateUrlServiceAndroid::AddSearchEngine(
   LOG(ERROR) << "brave_search : "
              << "TemplateUrlServiceAndroid::AddSearchEngine";
   const TemplateURL* existing = template_url_service_->GetTemplateURLForKeyword(
-      base::android::ConvertJavaStringToUTF16(env, search_engine_title));
+      base::android::ConvertJavaStringToUTF16(env, search_engine_keyword));
   if (existing) {
     return false;
   }
@@ -47,6 +47,29 @@ jboolean TemplateUrlServiceAndroid::AddSearchEngine(
   TemplateURL* template_url = template_url_service_->Add(
       std::make_unique<TemplateURL>(template_url_data));
   return (template_url != nullptr);
+}
+
+jboolean TemplateUrlServiceAndroid::UpdateSearchEngine(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& existing_keyword,
+    const base::android::JavaParamRef<jstring>& search_engine_title,
+    const base::android::JavaParamRef<jstring>& search_engine_keyword,
+    const base::android::JavaParamRef<jstring>& search_engine_url) {
+  TemplateURL* existing = template_url_service_->GetTemplateURLForKeyword(
+      base::android::ConvertJavaStringToUTF16(env, existing_keyword));
+  if (!existing) {
+    return false;
+  }
+
+  TemplateURLData template_url_data;
+  template_url_data.SetShortName(
+      base::android::ConvertJavaStringToUTF16(env, search_engine_title));
+  template_url_data.SetKeyword(
+      base::android::ConvertJavaStringToUTF16(env, search_engine_keyword));
+  template_url_data.SetURL(
+      base::android::ConvertJavaStringToUTF8(env, search_engine_url));
+  return template_url_service_->Update(existing,
+                                       TemplateURL(template_url_data));
 }
 
 void TemplateUrlServiceAndroid::RemoveSearchEngine(
