@@ -95,6 +95,9 @@
         <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE" desc="Title of the add custom search engine">
           Add Custom Search Engine
         </message>
+        <message name="IDS_EDIT_CUSTOM_SEARCH_ENGINE" desc="Title of the edit custom search engine">
+          Edit Custom Search Engine
+        </message>
         <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TITLE" desc="Add custom search engine title">
           Title
         </message>
@@ -107,7 +110,7 @@
         <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_URL_HINT" desc="Add custom search engine url hint">
           https://
         </message>
-        <message name="IDS_ADD_SEARCH_ENGINE" desc="Add serach engine button text">
+        <message name="IDS_ADD_SEARCH_ENGINE" desc="Add search engine button text">
           Add search engine
         </message>
         <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TEXT1" desc="Add custom search engine text1">
@@ -133,6 +136,9 @@
         </message>
         <message name="IDS_CANCEL_ACTION_TEXT" desc="Cancel action text">
           Cancel
+        </message>
+        <message name="IDS_SAVE_CHANGES_ACTION_TEXT" desc="Save changes action text">
+          Save changes
         </message>
         <!-- End of Custom search engine strings -->
   </messages>

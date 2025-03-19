@@ -29,6 +29,13 @@ public class BraveTemplateUrlService extends TemplateUrlService {
                 .addSearchEngine(mNativeTemplateUrlServiceAndroid, title, keyword, url);
     }
 
+    public boolean updateSearchEngine(
+            String existingKeyword, String title, String keyword, String url) {
+        return BraveTemplateUrlServiceJni.get()
+                .updateSearchEngine(
+                        mNativeTemplateUrlServiceAndroid, existingKeyword, title, keyword, url);
+    }
+
     public void removeSearchEngine(String keyword) {
         Log.e("brave_search", "removeSearchEngine");
         BraveTemplateUrlServiceJni.get()
@@ -39,6 +46,13 @@ public class BraveTemplateUrlService extends TemplateUrlService {
     public interface Natives {
         boolean addSearchEngine(
                 long nativeTemplateUrlServiceAndroid, String title, String keyword, String url);
+
+        boolean updateSearchEngine(
+                long nativeTemplateUrlServiceAndroid,
+                String existingKeyword,
+                String title,
+                String keyword,
+                String url);
 
         void removeSearchEngine(long nativeTemplateUrlServiceAndroid, String keyword);
     }
