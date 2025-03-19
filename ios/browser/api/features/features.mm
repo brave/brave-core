@@ -138,6 +138,11 @@
                                               kBraveAdblockScriptletDebugLogs];
 }
 
++ (Feature*)kBraveAdblockDropSlimList {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kBraveAdblockDropSlimList];
+}
+
 + (Feature*)kBraveDarkModeBlock {
   return [[Feature alloc]
       initWithFeature:&brave_shields::features::kBraveDarkModeBlock];

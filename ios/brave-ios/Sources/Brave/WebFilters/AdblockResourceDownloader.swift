@@ -14,13 +14,24 @@ public actor AdblockResourceDownloader: Sendable {
 
   /// All the different resources this downloader handles
   static let handledResources: [BraveS3Resource] = {
-    return [.slimList]
+    if FeatureList.kBraveAdblockDropSlimList.enabled {
+      // We only download this legacy file if we don't have drop slim list flag enabled
+      // Because we will use the full list
+      return []
+    } else {
+      return [.slimList]
+    }
   }()
 
   /// A list of old resources that need to be deleted so as not to take up the user's disk space
   private static let deprecatedResources: [BraveS3Resource] = {
     // TODO: @JS Add the `adBlockRules` here once slim list is dropped
-    return []
+    if FeatureList.kBraveAdblockDropSlimList.enabled {
+      // We need to delete the legacy file if we have drop slim list flag enabled
+      return [.slimList]
+    } else {
+      return []
+    }
   }()
 
   /// The resource downloader that will be used to download all our resoruces

@@ -583,6 +583,7 @@ extension GroupedAdBlockEngine.Source {
   var contentBlockerSource: GroupedAdBlockEngine.Source {
     switch self {
     case .filterList(let componentId):
+      guard !FeatureList.kBraveAdblockDropSlimList.enabled else { return self }
       // We replace the default filter list with the slim list when we compile content blockers
       return AdblockFilterListCatalogEntry.defaultListComponentID == componentId ? .slimList : self
     case .filterListURL, .filterListText, .slimList:

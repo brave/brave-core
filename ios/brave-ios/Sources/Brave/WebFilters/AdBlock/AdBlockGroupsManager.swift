@@ -707,7 +707,7 @@ extension AdBlockEngineManager.FileInfo {
     for engineType: GroupedAdBlockEngine.EngineType
   ) -> [GroupedAdBlockEngine.Source] {
     var sources: [GroupedAdBlockEngine.Source] = []
-    if engineType == .standard {
+    if engineType == .standard && !FeatureList.kBraveAdblockDropSlimList.enabled {
       // We add this type to the list
       // so the file info can be put it to the appropriate engine manager.
       // But it's never added to an engine because it's never in enabledSources.

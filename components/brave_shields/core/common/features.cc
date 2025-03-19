@@ -51,6 +51,10 @@ BASE_FEATURE(kBraveAdblockMobileNotificationsListDefault,
 // NOTE: this should only be turned on by default in Nightly and Beta.
 BASE_FEATURE(kBraveAdblockExperimentalListDefault,
              base::FEATURE_DISABLED_BY_DEFAULT);
+// When enabled, we will drop slim list and use the full list to create content
+// blockers.
+BASE_FEATURE(kBraveAdblockDropSlimList,
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will block domains listed in the user's selected adblock
 // filters and present a security interstitial with choice to proceed and
 // optionally whitelist the domain.

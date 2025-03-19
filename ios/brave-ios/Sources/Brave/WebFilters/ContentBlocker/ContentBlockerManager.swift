@@ -291,37 +291,15 @@ import os.log
   ) async throws {
     guard !modes.isEmpty else { return }
 
-    let result: ContentBlockingRulesResult
-    let signpostID = Self.signpost.makeSignpostID()
-    let state = Self.signpost.beginInterval(
-      "convertRules",
-      id: signpostID,
-      "\(blocklistType.debugDescription) v\(version)"
+    let clock = ContinuousClock()
+    let start = clock.now
+    let result = try await Task.detached {
+      let filterSet = try String(contentsOf: localFileURL)
+      return try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
+    }.value
+    Self.log.debug(
+      "Converted rules for \(blocklistType.debugDescription) v\(version) (\(clock.now.formatted(since: start)))"
     )
-
-    do {
-      do {
-        result = try await Task.detached {
-          let filterSet = try String(contentsOf: localFileURL)
-          return try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
-        }.value
-        Self.signpost.endInterval("convertRules", state)
-      } catch {
-        Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
-        throw error
-      }
-
-      try await compile(
-        encodedContentRuleList: result.rulesJSON,
-        for: blocklistType,
-        version: version,
-        modes: modes
-      )
-    } catch {
-      Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
-      throw error
-    }
-
     try await compile(
       encodedContentRuleList: result.rulesJSON,
       for: blocklistType,

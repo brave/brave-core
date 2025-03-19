@@ -36,6 +36,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly)
     Feature* kBraveAdblockMobileNotificationsListDefault;
 @property(class, nonatomic, readonly) Feature* kBraveAdblockScriptletDebugLogs;
+@property(class, nonatomic, readonly) Feature* kBraveAdblockDropSlimList;
 @property(class, nonatomic, readonly) Feature* kBraveDarkModeBlock;
 @property(class, nonatomic, readonly) Feature* kBraveDeAMP;
 @property(class, nonatomic, readonly) Feature* kBraveDebounce;

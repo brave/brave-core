@@ -129,6 +129,15 @@
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveIOSDebugAdblock),  \
       },                                                                       \
       {                                                                        \
+          "brave-drop-slim-list",                                              \
+          "Drop 'Slim List'",                                                  \
+          "Enabling this flag will use the full list instead of the slim "     \
+          "list for iOS content blockers (network blocking).",                 \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockDropSlimList),             \
+      },                                                                       \
+      {                                                                        \
           "ios-farble-plugins",                                                \
           "Enable Farbling Plugins",                                           \
           "Enable Farbling plugins when enabled globally / per-domain",        \
