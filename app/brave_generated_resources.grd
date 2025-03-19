@@ -1377,6 +1377,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_PSST_CONSENT_DIALOG_HEADER" desc="A header for a dialog to adjust PSST">
         Psst! Want to try out the new Privacy Site Settings Tool?
       </message>
+      <message name="IDS_PSST_CONSENT_COMPLETE_DIALOG_HEADER" desc="A header for PSST complete dialog">
+        The operation completed
+      </message>
 
       <!-- File select -->
       <message name="IDS_BRAVE_FILE_SELECT_OPEN_TITLE" desc="">
@@ -1418,6 +1421,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_PSST_CONSENT_DIALOG_CANCEL" desc="Cancel button's Text for a dialog to adjust PSST">
         No thanks
+      </message>
+      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_OK" desc="Ok button's Text for PSST complete dialog">
+        Ok
+      </message>
+      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_REPORT" desc="Report button's Text for PSST complete dialog">
+        Report
+      </message>
+      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_APPLIED_LIST_TITLE" desc="The title for list of the applied operations on the complete consent dialog">
+        Applied Operations:
+      </message>
+      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_FAILED_LIST_TITLE" desc="The title for list of the failed operations on the complete consent dialog">
+        Failed operations:
       </message>
 
       <!-- Tab Search -->

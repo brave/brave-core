@@ -16,10 +16,12 @@
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/progress_bar.h"
+#include "ui/views/layout/box_layout_view.h"
 #include "ui/views/window/dialog_delegate.h"
 
 class PsstConsentDialog : public views::DialogDelegateView {
  public:
+ using ConsentDialogCallback = base::OnceCallback<void(const std::vector<std::string>& skipped_checks)>;
  struct StatusCheckedLine {
   raw_ptr<views::Checkbox> check_box{nullptr};
   raw_ptr<views::Label> status_label{nullptr};
@@ -27,7 +29,7 @@ class PsstConsentDialog : public views::DialogDelegateView {
 
   PsstConsentDialog(bool prompt_for_new_version,
                     base::Value::List requests,
-                    base::OnceClosure consent_callback,
+                    ConsentDialogCallback consent_callback,
                     base::OnceClosure cancel_callback);
   ~PsstConsentDialog() override;
 
@@ -42,15 +44,32 @@ class PsstConsentDialog : public views::DialogDelegateView {
 
   void SetRequestError(const std::string& url, const std::string& error);
 
+//  void SetStatusView();
+  void SetCompletedView(const std::vector<std::string>& applied_checks, const std::vector<std::string>& errors);
+
   void OnConsentClicked();
 
  private:
   void DisableAdBlockForSite();
 
-  base::OnceClosure consent_callback_;
+  ConsentDialogCallback consent_callback_;
   raw_ptr<views::Button> no_button_{nullptr};
   raw_ptr<views::Button> ok_button_{nullptr};
   raw_ptr<views::ProgressBar> progress_bar_{nullptr};
+
+//  std::unique_ptr<views::BoxLayoutView> owned_box_status_view_;
+  raw_ptr<views::BoxLayoutView> box_status_view_{nullptr};
+
+//  std::unique_ptr<views::BoxLayoutView> owned_box_complete_view_;
+  raw_ptr<views::BoxLayoutView> box_complete_view_{nullptr};
+  raw_ptr<views::BoxLayoutView> box_complete_buttons_view_{nullptr};
+
+  raw_ptr<views::Label> complete_view_body_applied_title_{nullptr};
+  raw_ptr<views::Label> complete_view_body_applied_{nullptr};
+
+  raw_ptr<views::Label> complete_view_body_failed_title_{nullptr};
+  raw_ptr<views::Label> complete_view_body_failed_{nullptr};
+
   base::flat_map<std::string, std::unique_ptr<StatusCheckedLine>> task_checked_list_;
   base::WeakPtrFactory<PsstConsentDialog> weak_factory_{this};
 };

@@ -24,9 +24,16 @@ enum PsstConsentStatus {
   kBlock    // do not ask user any more
 };
 
-struct PsstSettings {
+struct COMPONENT_EXPORT(PSST_COMMON) PsstSettings {
+  std::vector<std::string> urls_to_skip;
   PsstConsentStatus consent_status;
   int script_version;
+
+  PsstSettings(const PsstConsentStatus consent_status, const int script_version, const std::vector<std::string>& urls_to_skip);
+  PsstSettings(const PsstConsentStatus consent_status, const int script_version);
+  PsstSettings(const PsstSettings& other);
+  PsstSettings(PsstSettings&& other);
+  ~PsstSettings();
 };
 
 // This is a dictionary of PSST settings.

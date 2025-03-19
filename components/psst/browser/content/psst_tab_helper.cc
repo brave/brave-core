@@ -11,6 +11,7 @@
 #include <utility>
 #include <iostream>
 
+#include "base/containers/circular_deque.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
@@ -57,6 +58,26 @@ std::string GetScriptWithParams(const std::string& script,
 
   result.append(script);
   return result;
+}
+
+void RemoveUnselectedUrls(std::optional<base::Value>& params, const std::vector<std::string>& disabled_checks) {
+  LOG(INFO) << "[PSST] OnUserDialogAction before params:" << (params?params->DebugString():"n/a");
+  if (!params || !params->is_dict()) {
+    return;
+  }
+
+  if (auto* requests = params->GetDict().FindList("requests")) {
+    requests->EraseIf([&](const base::Value& v) {
+      const auto& item_dict = v.GetDict();
+      const auto* url = item_dict.FindString("url");
+      return url && std::ranges::any_of(disabled_checks,
+                                        [&](const std::string& value) {
+                                          return *url == value;
+                                        });
+    });
+  }
+  LOG(INFO) << "[PSST] OnUserDialogAction post params:"
+            << (params ? params->DebugString() : "n/a");
 }
 
 }  // namespace
@@ -116,12 +137,17 @@ LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult No psst";
       delegate_->SetRequestDone(web_contents(), *url);
   }
 
+  std::vector<std::string> errors_list;
   if (const auto* errors = psst->FindDict("errors");
       errors && !errors->empty()) {
     LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult errors:"
               << errors->DebugString();
     for (const auto [key, val] : *errors) {
+      if(!val.is_string()){
+        continue;
+      }
       delegate_->SetRequestError(web_contents(), key, val.GetString());
+      errors_list.push_back(val.GetString());
     }
   }
 
@@ -131,8 +157,19 @@ LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult result false";
     return;  
   }
 
-LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult Finished";
-delegate_->Close(web_contents());
+  std::vector<std::string> applied_list;
+  if (const auto* applied = psst->FindList("applied");
+  applied && !applied->empty()) {
+    for (const auto& val : *applied) {
+      if(!val.is_string()){
+        continue;
+      }
+      applied_list.push_back(val.GetString());
+    }
+  }
+
+LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult Finished applied_list.size:" << applied_list.size() << " errors_list.size:" << errors_list.size();
+delegate_->SetCompletedView(web_contents(), applied_list, errors_list);
 }
 
 void PsstTabHelper::OnUserScriptResult(
@@ -170,7 +207,7 @@ void PsstTabHelper::OnUserScriptResult(
     LOG(INFO)
         << "[PSST]  PsstTabHelper::OnUserScriptResult Allow with No Dialog";
     OnUserDialogAction(*user_id, rule, std::move(value), render_frame_host_id,
-                       kAllow);
+                       kAllow, settings_for_site ? settings_for_site->urls_to_skip : std::vector<std::string>());
     return;
   }
 
@@ -184,13 +221,13 @@ void PsstTabHelper::OnUserScriptResult(
   delegate_->ShowPsstConsentDialog(
       web_contents(), prompt_for_new_version, requests->Clone(),
       base::BindOnce(&PsstTabHelper::OnUserDialogAction,
-                      weak_factory_.GetWeakPtr(), *user_id, rule,
-                      std::move(value), render_frame_host_id, kAllow),
+        weak_factory_.GetWeakPtr(), *user_id, rule,
+        std::move(value), render_frame_host_id, kAllow),
       base::BindOnce(&PsstTabHelper::OnUserDialogAction,
                       weak_factory_.GetWeakPtr(), *user_id, rule,
                       std::nullopt /* no params needed */,
                       render_frame_host_id, kBlock)
-                      );
+                     );
   LOG(INFO) << "[PSST] asked for consent" << std::endl;
 }
 
@@ -199,12 +236,16 @@ void PsstTabHelper::OnUserDialogAction(
     const MatchedRule& rule,
     std::optional<base::Value> params,
     const content::GlobalRenderFrameHostId& render_frame_host_id,
-    PsstConsentStatus status) {
+    PsstConsentStatus status,
+    const std::vector<std::string>& disabled_checks) {
+LOG(INFO) << "[PSST] OnUserDialogAction start disabled_checks.size:" << disabled_checks.size();
   if (!SetPsstSettings(user_id, rule.Name(),
-                       PsstSettings{status, rule.Version()}, prefs_)) {
+                       PsstSettings{status, rule.Version(),disabled_checks}, prefs_)) {
     LOG(INFO) << "[PSST] SetPsstSettings failed";
     return;
   }
+  
+  RemoveUnselectedUrls(params, disabled_checks);
 
   // If the user consented to PSST, insert the script.
   if (status == kAllow) {

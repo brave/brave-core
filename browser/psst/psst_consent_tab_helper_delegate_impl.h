@@ -15,6 +15,7 @@
 
 class PsstConsentTabHelperDelegateImpl : public psst::PsstTabHelper::Delegate {
  public:
+  
   PsstConsentTabHelperDelegateImpl();
   ~PsstConsentTabHelperDelegateImpl() override;
 
@@ -22,11 +23,12 @@ class PsstConsentTabHelperDelegateImpl : public psst::PsstTabHelper::Delegate {
   void ShowPsstConsentDialog(content::WebContents* contents,
                              bool prompt_for_new_version,
                              base::Value::List requests,
-                             base::OnceClosure yes_cb,
-                             base::OnceClosure no_cb) override;
+                             ConsentCallback yes_cb,
+                                       ConsentCallback no_cb) override;
   void SetProgressValue(content::WebContents* contents, const double value) override;
   void SetRequestDone(content::WebContents* contents, const std::string& url) override;
   void SetRequestError(content::WebContents* contents, const std::string& url, const std::string& error) override;
+  void SetCompletedView(content::WebContents* contents, const std::vector<std::string>& applied_checks, const std::vector<std::string>& errors) override;
   void Close(content::WebContents* contents) override;
 // private:
 //     raw_ptr<PsstConsentDialog> psst_content_dialog_{nullptr};

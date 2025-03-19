@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include "base/functional/bind.h"
 #include "brave/browser/psst/psst_consent_tab_helper_delegate_impl.h"
 
 #include "base/functional/callback.h"
@@ -26,14 +27,19 @@ PsstConsentDialog* GetDelegate(content::WebContents* contents) {
       dialog_tracker->active_dialog()->widget_delegate());
 }
 
+void OnConsentCallback(psst::PsstTabHelper::Delegate::ConsentCallback cb, const std::vector<std::string>& skipped_checks) {
+LOG(INFO) << "[PSST] OnConsentCallback skipped_checks.size:" << skipped_checks.size() << " cb.is_null:" << cb.is_null();
+std::move(cb).Run(skipped_checks);
+}
+
 }  // namespace
 
 void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
     content::WebContents* contents,
     bool prompt_for_new_version,
     base::Value::List requests,
-    base::OnceClosure yes_cb,
-    base::OnceClosure no_cb) {
+    ConsentCallback yes_cb,
+                                       ConsentCallback no_cb) {
   PsstConsentDialogTracker::CreateForWebContents(contents);
   auto* dialog_tracker = PsstConsentDialogTracker::FromWebContents(contents);
   if(!dialog_tracker) {
@@ -42,7 +48,8 @@ void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
 
   auto* new_dialog = constrained_window::ShowWebModalDialogViews(
 new PsstConsentDialog(prompt_for_new_version, std::move(requests),
-                            std::move(yes_cb), std::move(no_cb)),
+                            base::BindOnce(&OnConsentCallback, std::move(yes_cb)), 
+                            base::BindOnce(&OnConsentCallback, std::move(no_cb), std::vector<std::string>{})),
       contents);
   dialog_tracker->SetActiveDialog(new_dialog);
 
@@ -74,6 +81,15 @@ void PsstConsentTabHelperDelegateImpl::SetRequestError(content::WebContents* con
   }
 
   delegate->SetRequestError(url, error);
+}
+
+void PsstConsentTabHelperDelegateImpl::SetCompletedView(content::WebContents* contents, const std::vector<std::string>& applied_checks, const std::vector<std::string>& errors) {
+  auto* delegate = GetDelegate(contents);
+  if(!delegate) {
+    return;
+  }
+
+  delegate->SetCompletedView(applied_checks, errors);
 }
 
 void PsstConsentTabHelperDelegateImpl::Close(content::WebContents* contents) {

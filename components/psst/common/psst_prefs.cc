@@ -23,6 +23,7 @@ namespace {
 
 inline constexpr char kConsentStatus[] = "consent_status";
 inline constexpr char kScriptVersion[] = "script_version";
+inline constexpr char kUrlsToSkip[] = "urls_to_skip";
 
 }  // namespace
 
@@ -45,6 +46,19 @@ const std::string ConstructPath(const std::string& user_id,
   return base::StringPrintf("%s.%s", name.c_str(), user_id.c_str());
 }
 
+PsstSettings::PsstSettings(const PsstConsentStatus consent_status, const int script_version, const std::vector<std::string>& urls_to_skip)
+:urls_to_skip(urls_to_skip),
+consent_status(consent_status),
+script_version(script_version){}
+
+PsstSettings::PsstSettings(const PsstConsentStatus consent_status, const int script_version)
+:consent_status(consent_status),
+script_version(script_version){}
+
+PsstSettings::PsstSettings(const PsstSettings& other) = default;
+PsstSettings::PsstSettings(PsstSettings&& other) = default;
+PsstSettings::~PsstSettings() = default;
+
 std::optional<PsstSettings> GetPsstSettings(const std::string& user_id,
                                             const std::string& name,
                                             PrefService* prefs) {
@@ -61,13 +75,28 @@ LOG(INFO) << "[PSST] GetPsstSettings path:" << path << " settings_for_site_val:"
   DCHECK(status_int.has_value());
   PsstConsentStatus status = static_cast<PsstConsentStatus>(status_int.value());
   auto script_version = settings_for_site.FindInt(kScriptVersion);
-  return PsstSettings{status, *script_version};
+
+  std::vector<std::string> urls;
+  auto* urls_to_skip = settings_for_site.FindList(kUrlsToSkip);
+  if (urls_to_skip) {
+    for(auto& url : *urls_to_skip) {
+      if(url.is_string()) {
+        urls.push_back(url.GetString());
+      }
+    }
+  }
+  return PsstSettings(status, *script_version, urls);
 }
 
 base::Value::Dict PsstSettingsToDict(const PsstSettings settings) {
+  base::Value::List urls_to_skip;
+  for(const auto& url : settings.urls_to_skip){
+    urls_to_skip.Append(url);
+  }
   return base::Value::Dict()
       .Set(kConsentStatus, settings.consent_status)
-      .Set(kScriptVersion, settings.script_version);
+      .Set(kScriptVersion, settings.script_version)
+      .Set(kUrlsToSkip, std::move(urls_to_skip));
 }
 
 base::Value* SetPsstSettings(const std::string& user_id,

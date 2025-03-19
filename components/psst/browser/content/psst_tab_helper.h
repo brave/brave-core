@@ -37,16 +37,20 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
       public content::WebContentsUserData<PsstTabHelper> {
  public:
   class Delegate {
+
    public:
+   using ConsentCallback = base::OnceCallback<void(const std::vector<std::string>& disabled_checks)>;
+
     virtual ~Delegate() = default;
     virtual void ShowPsstConsentDialog(content::WebContents* contents,
                                        bool prompt_for_new_version,
                                        const base::Value::List requests,
-                                       base::OnceClosure yes_cb,
-                                       base::OnceClosure no_cb) = 0;
+                                       ConsentCallback yes_cb,
+                                       ConsentCallback no_cb) = 0;
     virtual void SetProgressValue(content::WebContents* contents, const double value) = 0;
     virtual void SetRequestDone(content::WebContents* contents, const std::string& url) = 0;
     virtual void SetRequestError(content::WebContents* contents, const std::string& url, const std::string& error) = 0;
+    virtual void SetCompletedView(content::WebContents* contents, const std::vector<std::string>& applied_checks, const std::vector<std::string>& errors) = 0;
     virtual void Close(content::WebContents* contents) = 0;
   };
 
@@ -86,7 +90,8 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
       const MatchedRule& rule,
       std::optional<base::Value> params,
       const content::GlobalRenderFrameHostId& render_frame_host_id,
-      PsstConsentStatus status);
+      PsstConsentStatus status,
+      const std::vector<std::string>& disabled_checks);
   void OnPolicyScriptResult(
       const std::string& user_id,
       const MatchedRule& rule,

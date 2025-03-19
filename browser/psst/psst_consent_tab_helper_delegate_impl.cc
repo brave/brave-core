@@ -15,8 +15,8 @@ void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
     content::WebContents* contents,
     bool prompt_for_new_version,
     base::Value::List requests,
-    base::OnceClosure yes_cb,
-    base::OnceClosure no_cb) {
+    ConsentCallback yes_cb,
+                                       ConsentCallback no_cb) {
   NOTIMPLEMENTED();
 }
 
@@ -29,6 +29,9 @@ void PsstConsentTabHelperDelegateImpl::SetRequestDone(content::WebContents* cont
 }
 
 void PsstConsentTabHelperDelegateImpl::SetRequestError(content::WebContents* contents, const std::string& url, const std::string& error) {
+}
+
+void PsstConsentTabHelperDelegateImpl::SetCompletedView(content::WebContents* contents, const std::vector<std::string>& applied_checks, const std::vector<std::string>& errors) {
 }
 
 void PsstConsentTabHelperDelegateImpl::Close(content::WebContents* contents) {
