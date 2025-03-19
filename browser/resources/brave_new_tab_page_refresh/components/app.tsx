@@ -10,6 +10,7 @@ import { SearchBox } from './search/search_box'
 import { Background } from './background/background'
 import { BackgroundCaption } from './background/background_caption'
 import { SettingsModal, SettingsView } from './settings/settings_modal'
+import { TopSites } from './top_sites/top_sites'
 
 import { style } from './app.style'
 
@@ -29,7 +30,9 @@ export function App() {
         </button>
       </div>
       <main className='allow-background-pointer-events'>
-        <div className='topsites-container' />
+        <div className='topsites-container'>
+          <TopSites />
+        </div>
         <div className='searchbox-container'>
           <SearchBox
             onCustomizeSearchEngineList={() => setSettingsView('search')}

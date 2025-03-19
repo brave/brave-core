@@ -26,6 +26,8 @@ source_set("brave_new_tab_page_refresh") {
     "new_tab_page_handler.h",
     "new_tab_page_initializer.cc",
     "new_tab_page_initializer.h",
+    "top_sites_facade.cc",
+    "top_sites_facade.h",
     "update_observer.cc",
     "update_observer.h",
   ]

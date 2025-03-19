@@ -18,8 +18,10 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_handler.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/tabs/public/tab_interface.h"
@@ -31,6 +33,7 @@ using brave_new_tab_page_refresh::BackgroundFacade;
 using brave_new_tab_page_refresh::CustomImageChooser;
 using brave_new_tab_page_refresh::NewTabPageHandler;
 using brave_new_tab_page_refresh::NewTabPageInitializer;
+using brave_new_tab_page_refresh::TopSitesFacade;
 
 }  // namespace
 
@@ -54,10 +57,12 @@ void BraveNewTabPageUI::BindInterface(
       std::make_unique<CustomBackgroundFileManager>(profile), *prefs,
       g_brave_browser_process->ntp_background_images_service(),
       ntp_background_images::ViewCounterServiceFactory::GetForProfile(profile));
+  auto top_sites_facade = std::make_unique<TopSitesFacade>(
+      ChromeMostVisitedSitesFactory::NewForProfile(profile), *prefs);
 
   page_handler_ = std::make_unique<NewTabPageHandler>(
       std::move(receiver), std::move(image_chooser),
-      std::move(background_facade), *tab, *prefs,
+      std::move(background_facade), std::move(top_sites_facade), *tab, *prefs,
       *TemplateURLServiceFactory::GetForProfile(profile),
       *g_brave_browser_process->process_misc_metrics()->new_tab_metrics());
 }
@@ -79,6 +84,7 @@ void BraveNewTabPageUI::BindInterface(
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
       brave_ads::AdsServiceFactory::GetForProfile(profile),
       std::move(ntp_p3a_helper));
+  rich_media_ad_event_handler_->Bind(std::move(receiver));
 }
 
 void BraveNewTabPageUI::BindInterface(
