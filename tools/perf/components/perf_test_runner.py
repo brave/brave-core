@@ -376,7 +376,8 @@ def SpawnConfigurationsFromTargetList(target_list: List[str],
       config.location = location
     if not config.version:
       raise RuntimeError(f'Can get the version from target {target_string}')
-    config.label = config.version.to_string()
+    if not config.label:
+      config.label = config.version.to_string()
     configurations.append(config)
   return configurations
 
