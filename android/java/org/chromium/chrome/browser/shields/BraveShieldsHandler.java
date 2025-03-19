@@ -57,6 +57,7 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 import org.chromium.components.browser_ui.widget.ChromeDialog;
@@ -963,7 +964,11 @@ public class BraveShieldsHandler
                     }
                 });
 
-        mDialog = new ChromeDialog((Activity) mContext, R.style.ThemeOverlay_BrowserUI_Fullscreen);
+        mDialog =
+                new ChromeDialog(
+                        (Activity) mContext,
+                        R.style.ThemeOverlay_BrowserUI_Fullscreen,
+                        EdgeToEdgeUtils.isEdgeToEdgeEverywhereEnabled());
         mDialog.addContentView(
                 mDialogView,
                 new LinearLayout.LayoutParams(
