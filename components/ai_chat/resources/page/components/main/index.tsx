@@ -6,6 +6,7 @@
 import * as React from 'react'
 import AlertCenter from '@brave/leo/react/alertCenter'
 import Button from '@brave/leo/react/button'
+import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
@@ -38,6 +39,7 @@ import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 import Attachments from '../attachments'
+import { useIsElementSmall } from '../../hooks/useIsElementSmall'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -94,6 +96,7 @@ function Main() {
 
   const headerElement = React.useRef<HTMLDivElement>(null)
   const conversationContentElement = React.useRef<HTMLDivElement>(null)
+  const { isSmall, setElement: setMainElement } = useIsElementSmall()
 
   // Determine which, if any, error message should be displayed
   if (aiChatContext.hasAcceptedAgreement && conversationContext.apiHasError) {
@@ -181,7 +184,7 @@ function Main() {
   }
 
   return (
-    <main className={styles.main}>
+    <main className={styles.main} ref={setMainElement}>
       {isConversationListOpen && !aiChatContext.isStandalone && (
         <div className={styles.conversationsList}>
           <div
@@ -316,9 +319,13 @@ function Main() {
             )}
           </div>
         </div>
-        {showAttachments && <div className={styles.attachmentsContainer}>
-          <Attachments />
-        </div>}
+        {showAttachments && (isSmall ?
+          <Dialog isOpen onClose={() => conversationContext.setShowAttachments(false)} className={styles.attachmentsDialog}>
+            <Attachments />
+          </Dialog>
+          : <div className={styles.attachmentsContainer}>
+            <Attachments />
+          </div>)}
         <div className={styles.input}>
           {showContextToggle && (
             <div className={styles.toggleContainer}>

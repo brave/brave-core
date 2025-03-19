@@ -188,10 +188,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }))
   }
 
-  React.useEffect(() => {
-    context.setShowAttachments(!!aiChatContext.isStandalone && !aiChatContext.visibleConversations.some(c => c.uuid === context.conversationUuid))
-  }, [context.conversationUuid])
-
   const getModelContext = (
     currentModelKey: string,
     allModels: Mojom.Model[]
