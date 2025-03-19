@@ -36,7 +36,7 @@
 #include "ios/chrome/browser/language/model/url_language_histogram_factory.h"
 #include "ios/chrome/browser/metrics/model/google_groups_manager_factory.h"
 #include "ios/chrome/browser/optimization_guide/model/optimization_guide_service_factory.h"
-#include "ios/chrome/browser/page_info/about_this_site_service_factory.h"
+#include "ios/chrome/browser/page_info/model/about_this_site_service_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_account_password_store_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_bulk_leak_check_service_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_password_receiver_service_factory.h"
