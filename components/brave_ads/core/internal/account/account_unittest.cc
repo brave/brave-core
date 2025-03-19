@@ -225,7 +225,7 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
-  base::RunLoop run_loop1;
+  base::RunLoop on_did_process_deposit_run_loop;
   EXPECT_CALL(account_observer_mock_,
               OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
@@ -233,16 +233,20 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
                   mojom::AdType::kNotificationAd,
                   mojom::ConfirmationType::kViewedImpression,
                   /*reconciled_at*/ std::nullopt)))
-      .WillOnce(base::test::RunOnceClosure(run_loop1.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(
+          on_did_process_deposit_run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  base::RunLoop run_loop2;
+
+  base::RunLoop on_ad_rewards_did_change_run_loop;
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange)
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(
+          on_ad_rewards_did_change_run_loop.QuitClosure()));
+
   GetAccount().Deposit(test::kCreativeInstanceId, test::kSegment,
                        mojom::AdType::kNotificationAd,
                        mojom::ConfirmationType::kViewedImpression);
-  run_loop1.Run();
-  run_loop2.Run();
+  on_did_process_deposit_run_loop.Run();
+  on_ad_rewards_did_change_run_loop.Run();
 }
 
 TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
@@ -265,7 +269,7 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
-  base::RunLoop run_loop1;
+  base::RunLoop on_did_process_deposit_run_loop;
   EXPECT_CALL(account_observer_mock_,
               OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
@@ -273,17 +277,21 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
                   mojom::AdType::kNotificationAd,
                   mojom::ConfirmationType::kViewedImpression,
                   /*reconciled_at*/ std::nullopt)))
-      .WillOnce(base::test::RunOnceClosure(run_loop1.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(
+          on_did_process_deposit_run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  base::RunLoop run_loop2;
+
+  base::RunLoop on_ad_rewards_did_change_run_loop;
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange)
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(
+          on_ad_rewards_did_change_run_loop.QuitClosure()));
+
   GetAccount().DepositWithUserData(test::kCreativeInstanceId, test::kSegment,
                                    mojom::AdType::kNotificationAd,
                                    mojom::ConfirmationType::kViewedImpression,
                                    /*user_data=*/{});
-  run_loop1.Run();
-  run_loop2.Run();
+  on_did_process_deposit_run_loop.Run();
+  on_ad_rewards_did_change_run_loop.Run();
 }
 
 TEST_F(BraveAdsAccountTest, DepositForNonCash) {
@@ -291,7 +299,7 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   test::MockTokenGenerator(/*count=*/1);
 
   // Act & Assert
-  base::RunLoop run_loop1;
+  base::RunLoop on_did_process_deposit_run_loop;
   EXPECT_CALL(
       account_observer_mock_,
       OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
@@ -299,16 +307,20 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
           test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
           mojom::AdType::kNotificationAd, mojom::ConfirmationType::kClicked,
           /*reconciled_at*/ std::nullopt)))
-      .WillOnce(base::test::RunOnceClosure(run_loop1.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(
+          on_did_process_deposit_run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  base::RunLoop run_loop2;
+
+  base::RunLoop on_ad_rewards_did_change_run_loop;
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange)
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(
+          on_ad_rewards_did_change_run_loop.QuitClosure()));
+
   GetAccount().Deposit(test::kCreativeInstanceId, test::kSegment,
                        mojom::AdType::kNotificationAd,
                        mojom::ConfirmationType::kClicked);
-  run_loop1.Run();
-  run_loop2.Run();
+  on_did_process_deposit_run_loop.Run();
+  on_ad_rewards_did_change_run_loop.Run();
 }
 
 TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
@@ -316,7 +328,7 @@ TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
   test::MockTokenGenerator(/*count=*/1);
 
   // Act & Assert
-  base::RunLoop run_loop1;
+  base::RunLoop on_did_process_deposit_run_loop;
   EXPECT_CALL(
       account_observer_mock_,
       OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
@@ -324,16 +336,20 @@ TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
           test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
           mojom::AdType::kNotificationAd, mojom::ConfirmationType::kClicked,
           /*reconciled_at*/ std::nullopt)))
-      .WillOnce(base::test::RunOnceClosure(run_loop1.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(
+          on_did_process_deposit_run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  base::RunLoop run_loop2;
+
+  base::RunLoop on_ad_rewards_did_change_run_loop;
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange)
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(
+          on_ad_rewards_did_change_run_loop.QuitClosure()));
+
   GetAccount().DepositWithUserData(
       test::kCreativeInstanceId, test::kSegment, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kClicked, /*user_data=*/{});
-  run_loop1.Run();
-  run_loop2.Run();
+  on_did_process_deposit_run_loop.Run();
+  on_ad_rewards_did_change_run_loop.Run();
 }
 
 TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
@@ -365,7 +381,7 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
-  base::RunLoop run_loop1;
+  base::RunLoop on_did_process_deposit_run_loop;
   EXPECT_CALL(account_observer_mock_,
               OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
@@ -373,29 +389,33 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
                   mojom::AdType::kNotificationAd,
                   mojom::ConfirmationType::kViewedImpression,
                   /*reconciled_at*/ std::nullopt)))
-      .WillOnce(base::test::RunOnceClosure(run_loop1.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(
+          on_did_process_deposit_run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  base::RunLoop run_loop2;
+
+  base::RunLoop on_ad_rewards_did_change_run_loop;
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange)
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(
+          on_ad_rewards_did_change_run_loop.QuitClosure()));
 
   GetAccount().Deposit(test::kCreativeInstanceId, test::kSegment,
                        mojom::AdType::kNotificationAd,
                        mojom::ConfirmationType::kViewedImpression);
-  run_loop1.Run();
-  run_loop2.Run();
+  on_did_process_deposit_run_loop.Run();
+  on_ad_rewards_did_change_run_loop.Run();
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;
-  base::RunLoop run_loop3;
+  base::RunLoop get_transactions_run_loop;
   EXPECT_CALL(callback,
               Run(/*success=*/true, /*transactions=*/::testing::SizeIs(1)))
-      .WillOnce(base::test::RunOnceClosure(run_loop3.QuitClosure()));
+      .WillOnce(
+          base::test::RunOnceClosure(get_transactions_run_loop.QuitClosure()));
   const database::table::Transactions database_table;
   database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
                                  /*to_time=*/test::DistantFuture(),
                                  callback.Get());
-  run_loop3.Run();
+  get_transactions_run_loop.Run();
 }
 
 TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
@@ -407,7 +427,7 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
-  base::RunLoop run_loop1;
+  base::RunLoop on_did_process_deposit_run_loop;
   EXPECT_CALL(
       account_observer_mock_,
       OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
@@ -415,29 +435,33 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
           test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
           mojom::AdType::kNotificationAd, mojom::ConfirmationType::kClicked,
           /*reconciled_at*/ std::nullopt)))
-      .WillOnce(base::test::RunOnceClosure(run_loop1.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(
+          on_did_process_deposit_run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  base::RunLoop run_loop2;
+
+  base::RunLoop on_ad_rewards_did_change_run_loop;
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange)
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(
+          on_ad_rewards_did_change_run_loop.QuitClosure()));
 
   GetAccount().Deposit(test::kCreativeInstanceId, test::kSegment,
                        mojom::AdType::kNotificationAd,
                        mojom::ConfirmationType::kClicked);
-  run_loop1.Run();
-  run_loop2.Run();
+  on_did_process_deposit_run_loop.Run();
+  on_ad_rewards_did_change_run_loop.Run();
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;
-  base::RunLoop run_loop3;
+  base::RunLoop get_transactions_run_loop;
   EXPECT_CALL(callback,
               Run(/*success=*/true, /*transactions=*/::testing::SizeIs(1)))
-      .WillOnce(base::test::RunOnceClosure(run_loop3.QuitClosure()));
+      .WillOnce(
+          base::test::RunOnceClosure(get_transactions_run_loop.QuitClosure()));
   const database::table::Transactions database_table;
   database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
                                  /*to_time=*/test::DistantFuture(),
                                  callback.Get());
-  run_loop3.Run();
+  get_transactions_run_loop.Run();
 }
 
 TEST_F(BraveAdsAccountTest,

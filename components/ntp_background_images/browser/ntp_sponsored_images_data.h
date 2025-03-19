@@ -139,16 +139,18 @@ struct NTPSponsoredImagesData {
 
   void ParseCampaigns(const base::Value::List& list,
                       const base::FilePath& installed_dir);
-  std::optional<Campaign> ParseCampaign(const base::Value::Dict& dict,
-                                        const base::FilePath& installed_dir);
+  std::optional<Campaign> MaybeParseCampaign(
+      const base::Value::Dict& dict,
+      const base::FilePath& installed_dir);
 
   void ParseSuperReferrals(const base::Value::Dict& dict,
                            const base::FilePath& installed_dir);
 
-  std::optional<base::Value::Dict> GetBackgroundAt(size_t campaign_index,
-                                                   size_t creative_index) const;
-  std::optional<base::Value::Dict> GetBackground(
-      const brave_ads::NewTabPageAdInfo& ad_info);
+  std::optional<base::Value::Dict> MaybeGetBackgroundAt(
+      size_t campaign_index,
+      size_t creative_index) const;
+  std::optional<base::Value::Dict> MaybeGetBackground(
+      const brave_ads::NewTabPageAdInfo& ad);
 
   bool IsSuperReferral() const;
 

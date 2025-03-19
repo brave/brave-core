@@ -69,14 +69,14 @@ const App: React.FC = () => {
   const [adEvents, setAdEvents] = React.useState<AdEvent[]>([]);
   const [rewardsEnabled, setRewardsEnabled] = React.useState<boolean>(false);
 
-  pageCallbackRouter.onBraveRewardsEnabledChanged.addListener((enabled: boolean) => {
+  pageCallbackRouter.updateBraveRewardsEnabled.addListener((enabled: boolean) => {
     setRewardsEnabled(enabled);
   })
   API.createAdsInternalsPageHandler(pageCallbackRouter.$.bindNewPipeAndPassRemote());
 
   const getAdsInternals = React.useCallback(async () => {
     try {
-      const adsInternals = await API.getAdsInternals()
+      const adsInternals = await API.getAdsInternals();
       const { conversionUrlPatterns = [], adEvents = [] } = JSON.parse(adsInternals.response);
       setConversionUrlPatterns(conversionUrlPatterns);
       setAdEvents(adEvents);
