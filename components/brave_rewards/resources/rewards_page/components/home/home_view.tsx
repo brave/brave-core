@@ -45,7 +45,7 @@ export function HomeView() {
       <PayoutAccountCard />
       <BenefitsCard />
       {
-        !embedder.isBubble && <>
+        !embedder.isAutoResizeBubble && <>
           <RecurringContributionCard />
         </>
       }
