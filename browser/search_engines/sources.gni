@@ -25,6 +25,8 @@ brave_browser_search_engines_deps = [
   "//url",
 ]
 
+brave_browser_search_engines_visibility = []
+
 if (is_android) {
   brave_browser_search_engines_sources += [
     "//brave/browser/search_engines/brave_search_engine_pref_helper_android.cc",
@@ -62,10 +64,13 @@ if (is_android) {
     "//components/keyed_service/content",
     "//components/pref_registry",
     "//components/prefs",
+    "//components/regional_capabilities:country_access_reason",
     "//components/search_engines",
     "//extensions/buildflags",
     "//url",
   ]
+
+  brave_browser_search_engines_visibility += [ "//chrome/browser" ]
 }
 
 if (enable_extensions) {
