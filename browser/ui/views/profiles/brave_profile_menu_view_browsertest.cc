@@ -90,17 +90,26 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
     ProfileMenuViewBase* menu = profile_menu(browser);
     // Profile image and title container.
     EXPECT_EQ(2u, menu->identity_info_container_->children().size());
-    // Profile image should have 1 child - header and image container.
-    EXPECT_EQ(1u,
-              menu->identity_info_container_->children()[0]->children().size());
-    // Title container should have 1 child - title, which is the profile name.
+    // Profile image has one child in a guest profile and no children in a
+    // regular profile
+    if (browser->profile()->IsGuestSession()) {
+      EXPECT_EQ(
+          1u, menu->identity_info_container_->children()[0]->children().size());
+    } else {
+      EXPECT_EQ(
+          0u, menu->identity_info_container_->children()[0]->children().size());
+    }
+    // Title container should have one child in a guest profile and no children
+    // in a regular profile
     const auto* title_container_view =
         menu->identity_info_container_->children()[1].get();
-    EXPECT_EQ(1u, title_container_view->children().size());
-    if (!browser->profile()->IsGuestSession()) {
-      const auto* title_view = title_container_view->children()[0].get();
-      EXPECT_EQ(GetProfileName(browser->profile()),
-                static_cast<const views::Label*>(title_view)->GetText());
+    if (browser->profile()->IsGuestSession()) {
+      EXPECT_EQ(1u, title_container_view->children().size());
+    } else {
+      EXPECT_EQ(0u, title_container_view->children().size());
+      EXPECT_EQ(
+          GetProfileName(browser->profile()),
+          static_cast<const views::Label*>(title_container_view)->GetText());
     }
   }
 };
