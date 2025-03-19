@@ -18,13 +18,23 @@ namespace brave_ads {
 
 class BraveAdsSiteVisitUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsSiteVisitUtilTest, AllowInlineContentAdPageLand) {
+TEST_F(BraveAdsSiteVisitUtilTest,
+       AllowInlineContentAdPageLandIfRewardsUserAndOptedInToBraveNews) {
   // Act & Assert
   EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kInlineContentAd));
 }
 
 TEST_F(BraveAdsSiteVisitUtilTest,
-       AllowInlineContentAdPageLandForNonRewardsUserIfOptedInToBraveNews) {
+       DoNotAllowInlineContentAdPageLandIfRewardsUserAndOptedOutOfBraveNews) {
+  // Arrange
+  test::OptOutOfBraveNewsAds();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kInlineContentAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest,
+       AllowInlineContentAdPageLandIfNonRewardsUserAndOptedInToBraveNews) {
   // Arrange
   test::DisableBraveRewards();
 
@@ -34,7 +44,7 @@ TEST_F(BraveAdsSiteVisitUtilTest,
 
 TEST_F(
     BraveAdsSiteVisitUtilTest,
-    DoNotAllowInlineContentAdPageLandForNonRewardsUserIfOptedOutOfBraveNews) {
+    DoNotAllowInlineContentAdPageLandIfNonRewardsUserAndOptedOutOfBraveNews) {
   // Arrange
   test::DisableBraveRewards();
   test::OptOutOfBraveNewsAds();
@@ -43,13 +53,23 @@ TEST_F(
   EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kInlineContentAd));
 }
 
-TEST_F(BraveAdsSiteVisitUtilTest, AllowPromotedContentAdPageLand) {
+TEST_F(BraveAdsSiteVisitUtilTest,
+       AllowPromotedContentAdPageLandIfRewardsUserAndOptedInToBraveNews) {
   // Act & Assert
   EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kPromotedContentAd));
 }
 
 TEST_F(BraveAdsSiteVisitUtilTest,
-       AllowPromotedContentAdPageLandForNonRewardsUserIfOptedInToBraveNews) {
+       DoNotAllowPromotedContentAdPageLandIfRewardsUserAndOptedOutOfBraveNews) {
+  // Arrange
+  test::OptOutOfBraveNewsAds();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kPromotedContentAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest,
+       AllowPromotedContentAdPageLandIfNonRewardsUserAndOptedInToBraveNews) {
   // Arrange
   test::DisableBraveRewards();
 
@@ -59,7 +79,7 @@ TEST_F(BraveAdsSiteVisitUtilTest,
 
 TEST_F(
     BraveAdsSiteVisitUtilTest,
-    DoNotAllowPromotedContentAdPageLandForNonRewardsUserIfOptedOutOfBraveNews) {
+    DoNotAllowPromotedContentAdPageLandIfNonRewardsUserAndOptedOutOfBraveNews) {
   // Arrange
   test::DisableBraveRewards();
   test::OptOutOfBraveNewsAds();
@@ -104,13 +124,15 @@ TEST_F(
   EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kNewTabPageAd));
 }
 
-TEST_F(BraveAdsSiteVisitUtilTest, AllowNotificationAdPageLand) {
+TEST_F(BraveAdsSiteVisitUtilTest,
+       AllowNotificationAdPageLandIfRewardsUserAndOptedInToNotificationAds) {
   // Act & Assert
   EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kNotificationAd));
 }
 
-TEST_F(BraveAdsSiteVisitUtilTest,
-       DoNotAllowNotificationAdPageLandIfOptedOutOfNotificationAds) {
+TEST_F(
+    BraveAdsSiteVisitUtilTest,
+    DoNotAllowNotificationAdPageLandIfRewardsUserAndOptedOutOfNotificationAds) {
   // Arrange
   test::OptOutOfNotificationAds();
 
@@ -119,7 +141,7 @@ TEST_F(BraveAdsSiteVisitUtilTest,
 }
 
 TEST_F(BraveAdsSiteVisitUtilTest,
-       DoNotAllowNotificationAdPageLandForNonRewardsUser) {
+       DoNotAllowNotificationAdPageLandIfNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
@@ -127,13 +149,15 @@ TEST_F(BraveAdsSiteVisitUtilTest,
   EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kNotificationAd));
 }
 
-TEST_F(BraveAdsSiteVisitUtilTest, AllowSearchResultAdPageLand) {
+TEST_F(BraveAdsSiteVisitUtilTest,
+       AllowSearchResultAdPageLandIfRewardsUserAndOptedInToSearchResultAds) {
   // Act & Assert
   EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kSearchResultAd));
 }
 
-TEST_F(BraveAdsSiteVisitUtilTest,
-       DoNotAllowSearchResultAdPageLandIfOptedOutOfSearchResultAds) {
+TEST_F(
+    BraveAdsSiteVisitUtilTest,
+    DoNotAllowSearchResultAdPageLandIfRewardsUserAndOptedOutOfSearchResultAds) {
   // Arrange
   test::OptOutOfSearchResultAds();
 
@@ -141,8 +165,9 @@ TEST_F(BraveAdsSiteVisitUtilTest,
   EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kSearchResultAd));
 }
 
-TEST_F(BraveAdsSiteVisitUtilTest,
-       DoNotAllowSearchResultAdPageLandForNonRewardsUser) {
+TEST_F(
+    BraveAdsSiteVisitUtilTest,
+    DoNotAllowSearchResultAdPageLandIfNonRewardsUserAndOptedInToSearchResultAds) {
   // Arrange
   test::DisableBraveRewards();
 
@@ -152,10 +177,10 @@ TEST_F(BraveAdsSiteVisitUtilTest,
 
 TEST_F(
     BraveAdsSiteVisitUtilTest,
-    DoNotAllowSearchResultAdPageLandForNonRewardsUserIfShouldAlwaysTriggerSearchResultAdEvents) {
+    DoNotAllowSearchResultAdPageLandIfNonRewardsUserAndOptedInToSearchResultAdsAndShouldAlwaysTriggerSearchResultAdEvents) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(
-      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
+      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
 
   test::DisableBraveRewards();
 

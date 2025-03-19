@@ -26,7 +26,7 @@ namespace {
 constexpr base::TimeDelta kInitialDelay = base::Minutes(1);
 constexpr base::TimeDelta kRecurringInterval = base::Days(1);
 
-void RunOnce() {
+void RunOnStartup() {
   PurgeAllOrphanedAdEvents();
 }
 
@@ -96,7 +96,7 @@ void Maintenance::OnNotifyPrefDidChange(const std::string& path) {
 }
 
 void Maintenance::OnDatabaseIsReady() {
-  RunOnce();
+  RunOnStartup();
 
   RepeatedlyScheduleAfter(kInitialDelay);
 }

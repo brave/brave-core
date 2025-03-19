@@ -1276,12 +1276,12 @@ void AdsServiceImpl::ClearData(ClearDataCallback callback) {
 
 void AdsServiceImpl::GetInternals(GetInternalsCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
-    return std::move(callback).Run(/*internals*/ std::nullopt);
+    return std::move(callback).Run(/*internals=*/std::nullopt);
   }
 
   bat_ads_associated_remote_->GetInternals(
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
-                                                  /*internals*/ std::nullopt));
+                                                  /*internals=*/std::nullopt));
 }
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {

@@ -62,6 +62,7 @@ struct ReactionInfo {
   AdType mojom_ad_type;
   string creative_instance_id;
   string creative_set_id;
+  string campaign_id;
   string advertiser_id;
   string segment;
 };

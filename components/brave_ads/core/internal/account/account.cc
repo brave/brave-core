@@ -75,15 +75,6 @@ void Account::GetStatement(GetStatementOfAccountsCallback callback) {
   return BuildStatement(std::move(callback));
 }
 
-void Account::Deposit(const std::string& creative_instance_id,
-                      const std::string& segment,
-                      mojom::AdType mojom_ad_type,
-                      mojom::ConfirmationType mojom_confirmation_type) const {
-  DepositWithUserData(creative_instance_id, segment, mojom_ad_type,
-                      mojom_confirmation_type,
-                      /*user_data=*/base::Value::Dict());
-}
-
 void Account::DepositWithUserData(
     const std::string& creative_instance_id,
     const std::string& segment,

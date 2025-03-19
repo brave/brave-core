@@ -46,10 +46,6 @@ class Account final : public AdsClientNotifierObserver,
 
   void GetStatement(GetStatementOfAccountsCallback callback);
 
-  void Deposit(const std::string& creative_instance_id,
-               const std::string& segment,
-               mojom::AdType mojom_ad_type,
-               mojom::ConfirmationType mojom_confirmation_type) const;
   void DepositWithUserData(const std::string& creative_instance_id,
                            const std::string& segment,
                            mojom::AdType mojom_ad_type,

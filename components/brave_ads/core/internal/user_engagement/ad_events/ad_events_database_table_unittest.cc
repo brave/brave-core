@@ -48,11 +48,11 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, RecordEvent) {
 
   // Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  base::RunLoop run_loop2;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event}))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
-  run_loop2.Run();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, IsFirstTime) {
@@ -241,11 +241,11 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
 
   // Act & Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  base::RunLoop run_loop2;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event}))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetUnexpired(callback.Get());
-  run_loop2.Run();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredOnTheCuspOfExpiry) {
@@ -269,11 +269,11 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredOnTheCuspOfExpiry) {
 
   // Act & Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  base::RunLoop run_loop2;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event}))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetUnexpired(callback.Get());
-  run_loop2.Run();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForAdType) {
@@ -315,11 +315,11 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForAdType) {
 
   // Act & Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  base::RunLoop run_loop2;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event_3}))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetUnexpired(mojom::AdType::kNewTabPageAd, callback.Get());
-  run_loop2.Run();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest,
@@ -363,11 +363,11 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
 
   // Act & Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  base::RunLoop run_loop2;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event_1}))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetUnexpired(mojom::AdType::kNotificationAd, callback.Get());
-  run_loop2.Run();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpired) {
@@ -403,11 +403,11 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpired) {
 
   // Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  base::RunLoop run_loop2;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event_2}))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
-  run_loop2.Run();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpiredForNonRewardsUser) {
@@ -445,11 +445,11 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpiredForNonRewardsUser) {
 
   // Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  base::RunLoop run_loop2;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event_2}))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
-  run_loop2.Run();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest,
@@ -487,11 +487,11 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
 
   // Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  base::RunLoop run_loop2;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event}))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
-  run_loop2.Run();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphanedForType) {
@@ -543,15 +543,15 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphanedForType) {
 
   // Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  base::RunLoop run_loop2;
+  base::RunLoop run_loop;
   EXPECT_CALL(
       callback,
       Run(/*success=*/true,
           ::testing::UnorderedElementsAreArray(AdEventList{
               ad_event_1_served, ad_event_1_viewed, ad_event_2_served})))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
-  run_loop2.Run();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphaned) {
@@ -601,15 +601,15 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphaned) {
 
   // Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  base::RunLoop run_loop2;
+  base::RunLoop run_loop;
   EXPECT_CALL(
       callback,
       Run(/*success=*/true,
           ::testing::UnorderedElementsAreArray(AdEventList{
               ad_event_1_served, ad_event_1_viewed, ad_event_3_served})))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
-  run_loop2.Run();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeAllOrphaned) {
@@ -657,13 +657,13 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeAllOrphaned) {
 
   // Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
-  base::RunLoop run_loop2;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             ::testing::UnorderedElementsAreArray(AdEventList{
                                 ad_event_1_served, ad_event_1_viewed})))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
-  run_loop2.Run();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, GetTableName) {
