@@ -11,6 +11,21 @@
 
 namespace brave_ads::database {
 
+void PurgeAdEventsForType(mojom::AdType ad_type) {
+  const database::table::AdEvents database_table;
+  database_table.PurgeForAdType(
+      ad_type, base::BindOnce(
+                   [](mojom::AdType ad_type, bool success) {
+                     if (!success) {
+                       return BLOG(
+                           0, "Failed to purge " << ad_type << " ad events");
+                     }
+
+                     BLOG(3, "Successfully purged " << ad_type << " ad events");
+                   },
+                   ad_type));
+}
+
 void PurgeExpiredAdEvents() {
   const database::table::AdEvents database_table;
   database_table.PurgeExpired(base::BindOnce([](bool success) {
