@@ -10,20 +10,11 @@ import UIKit
 
 class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable {
 
-  let imageContainer = UIView().then {
-    $0.layer.cornerRadius = 12.0
-    $0.layer.borderWidth = 0.5
-    $0.layer.cornerCurve = .continuous
-    $0.layer.borderColor = UIColor(braveSystemName: .dividerSubtle).cgColor
-  }
+  let imageContainer = UIView()
 
   let imageView = LargeFaviconView()
 
-  let textLabel = UILabel().then {
-    $0.font = DynamicFontHelper.defaultHelper.defaultSmallFont
-    $0.textAlignment = .center
-    $0.lineBreakMode = NSLineBreakMode.byTruncatingTail
-  }
+  let textLabel = UILabel()
 
   override var isHighlighted: Bool {
     didSet {
@@ -43,37 +34,74 @@ class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable 
     backgroundColor = .clear
   }
 
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    setTheme()
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
     isAccessibilityElement = true
 
-    contentView.addSubview(imageContainer)
-    contentView.addSubview(textLabel)
-
-    imageContainer.snp.makeConstraints {
-      $0.height.equalTo(imageContainer.snp.width)
-      $0.top.equalToSuperview()
-      $0.leading.trailing.equalToSuperview().inset(4.0)
-    }
-
-    textLabel.snp.makeConstraints {
-      $0.top.equalTo(imageContainer.snp.bottom).offset(8.0)
-      $0.leading.bottom.trailing.equalToSuperview()
-    }
-
-    imageContainer.addSubview(imageView)
-    imageView.snp.makeConstraints {
-      $0.height.equalTo(imageView.snp.width)
-      $0.leading.trailing.equalToSuperview().inset(8)
-      $0.center.equalTo(imageContainer.snp.center)
-    }
+    setTheme()
+    doLayout()
 
     addInteraction(UIPointerInteraction(delegate: self))
   }
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  private func setTheme() {
+    imageContainer.do {
+      $0.layer.cornerRadius = 12.0
+      $0.layer.borderWidth = 0.5
+      $0.layer.cornerCurve = .continuous
+      $0.layer.borderColor = UIColor(braveSystemName: .dividerSubtle).cgColor
+    }
+
+    textLabel.do {
+      $0.textAlignment = .center
+      $0.numberOfLines = 1
+
+      var sizeCategory = UIApplication.shared.preferredContentSizeCategory
+      if sizeCategory.isAccessibilityCategory {
+        sizeCategory = .small
+      }
+      let traitCollection = UITraitCollection(preferredContentSizeCategory: sizeCategory)
+      let font = UIFont.preferredFont(
+        for: .caption2,
+        weight: .regular,
+        traitCollection: traitCollection
+      )
+      $0.font = font
+      $0.lineBreakMode = NSLineBreakMode.byTruncatingTail
+    }
+  }
+
+  private func doLayout() {
+    contentView.addSubview(imageContainer)
+    contentView.addSubview(textLabel)
+
+    imageContainer.snp.makeConstraints {
+      $0.height.equalTo(imageContainer.snp.width)
+      $0.top.equalToSuperview().inset(8)
+      $0.leading.trailing.equalToSuperview().inset(4.0)
+    }
+
+    imageContainer.addSubview(imageView)
+    imageView.snp.makeConstraints {
+      $0.edges.equalToSuperview().inset(8)
+    }
+
+    textLabel.snp.makeConstraints {
+      $0.top.equalTo(imageContainer.snp.bottom).offset(8.0)
+      $0.leading.trailing.equalToSuperview()
+      $0.bottom.equalToSuperview().inset(8)
+    }
   }
 }
 

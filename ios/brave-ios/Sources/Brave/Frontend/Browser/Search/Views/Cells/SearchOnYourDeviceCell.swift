@@ -51,36 +51,42 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
   private let textStackView = UIStackView().then {
     $0.axis = .vertical
     $0.alignment = .leading
-    $0.spacing = 0
+    $0.spacing = 4
     $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
     $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
   }
 
   private let titleLabel = UILabel().then {
-    $0.font = .preferredFont(for: .subheadline, weight: .regular)
-    $0.textColor = UIColor(braveSystemName: .textPrimary)
-    $0.lineBreakMode = .byTruncatingTail
     $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
     $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
   }
 
   private let subtitleLabel = UILabel().then {
-    $0.font = .preferredFont(for: .footnote, weight: .regular)
-    $0.textColor = UIColor(braveSystemName: .textSecondary)
-    $0.lineBreakMode = .byTruncatingTail
     $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
     $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
   }
 
-  private let badgeImageView = UIImageView().then {
-    $0.contentMode = .scaleAspectFit
-    $0.tintColor = UIColor(braveSystemName: .iconSecondary)
+  private let badgeImageView = UIImageView()
+
+  override var isHighlighted: Bool {
+    didSet {
+      UIView.animate(
+        withDuration: 0.25,
+        delay: 0,
+        options: [.beginFromCurrentState],
+        animations: {
+          self.contentView.alpha = self.isHighlighted ? 0.5 : 1.0
+        }
+      )
+    }
   }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
     backgroundColor = .clear
+
+    setTheme()
 
     contentView.addSubview(stackView)
     imageContainerView.addSubview(imageView)
@@ -91,7 +97,8 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     textStackView.addArrangedSubview(subtitleLabel)
 
     stackView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.horizontalEdges.equalToSuperview().inset(20)
+      $0.verticalEdges.equalToSuperview().inset(4)
     }
 
     imageContainerView.snp.makeConstraints {
@@ -99,17 +106,59 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     }
 
     imageView.snp.makeConstraints {
-      $0.width.height.equalTo(20.0)
+      $0.size.equalTo(20.0)
       $0.center.equalToSuperview()
     }
 
     badgeImageView.snp.makeConstraints {
-      $0.width.height.equalTo(20.0)
+      $0.size.equalTo(20.0)
     }
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    setTheme()
+  }
+
+  private func setTheme() {
+    var sizeCategory = UIApplication.shared.preferredContentSizeCategory
+    if sizeCategory.isAccessibilityCategory {
+      sizeCategory = .medium
+    }
+    let traitCollection = UITraitCollection(preferredContentSizeCategory: sizeCategory)
+
+    titleLabel.do {
+      $0.textColor = UIColor(braveSystemName: .textPrimary)
+      $0.lineBreakMode = .byTruncatingTail
+
+      let font = UIFont.preferredFont(
+        for: .subheadline,
+        weight: .regular,
+        traitCollection: traitCollection
+      )
+      $0.font = font
+    }
+
+    subtitleLabel.do {
+      $0.textColor = UIColor(braveSystemName: .textSecondary)
+      $0.lineBreakMode = .byTruncatingTail
+
+      let font = UIFont.preferredFont(
+        for: .footnote,
+        weight: .regular,
+        traitCollection: traitCollection
+      )
+      $0.font = font
+    }
+
+    badgeImageView.do {
+      $0.contentMode = .scaleAspectFit
+      $0.tintColor = UIColor(braveSystemName: .iconSecondary)
+    }
   }
 
   func setSite(_ site: Site, isPrivateBrowsing: Bool) {

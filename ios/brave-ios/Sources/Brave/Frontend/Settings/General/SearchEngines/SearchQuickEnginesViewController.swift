@@ -236,6 +236,7 @@ extension SearchQuickEnginesViewController {
     editButton.title = isEditing ? Strings.done : nil
     editButton.accessibilityLabel =
       isEditing ? Strings.done : Strings.editQuickSearchEnginesAccessibilityTitle
+    addButton.isHidden = isEditing
   }
 
   @objc func onAddButton() {

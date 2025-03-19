@@ -9,6 +9,8 @@ import UIKit
 
 class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
 
+  private var title: String = ""
+
   private let stackView = UIStackView().then {
     $0.spacing = 16.0
     $0.alignment = .center
@@ -17,15 +19,24 @@ class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
   private let searchImageView = UIImageView().then {
     $0.image = UIImage(braveSystemNamed: "leo.window.search")!.template
     $0.contentMode = .scaleAspectFit
-    $0.tintColor = UIColor(braveSystemName: .iconDefault)
   }
 
   private let titleLabel = UILabel().then {
-    $0.font = .preferredFont(for: .subheadline, weight: .regular)
-    $0.textColor = UIColor(braveSystemName: .textPrimary)
-    $0.lineBreakMode = .byTruncatingTail
     $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
     $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+  }
+
+  override var isHighlighted: Bool {
+    didSet {
+      UIView.animate(
+        withDuration: 0.25,
+        delay: 0,
+        options: [.beginFromCurrentState],
+        animations: {
+          self.contentView.alpha = self.isHighlighted ? 0.5 : 1.0
+        }
+      )
+    }
   }
 
   override init(frame: CGRect) {
@@ -33,12 +44,15 @@ class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
 
     backgroundColor = .clear
 
+    setTheme()
+
     contentView.addSubview(stackView)
     stackView.addArrangedSubview(searchImageView)
     stackView.addArrangedSubview(titleLabel)
 
     stackView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.horizontalEdges.equalToSuperview().inset(20)
+      $0.verticalEdges.equalToSuperview().inset(4)
     }
 
     searchImageView.snp.makeConstraints {
@@ -50,11 +64,43 @@ class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func setTitle(_ title: String) {
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    setTheme()
+  }
+
+  private func setTheme() {
+    updateTitleTheme()
+
+    searchImageView.do {
+      $0.tintColor = UIColor(braveSystemName: .iconDefault)
+    }
+  }
+
+  private func updateTitleTheme() {
+    titleLabel.textColor = UIColor(braveSystemName: .textPrimary)
+    titleLabel.lineBreakMode = .byTruncatingTail
+
+    var sizeCategory = UIApplication.shared.preferredContentSizeCategory
+    if sizeCategory.isAccessibilityCategory {
+      sizeCategory = .medium
+    }
+    let traitCollection = UITraitCollection(preferredContentSizeCategory: sizeCategory)
+    let boldFont = UIFont.preferredFont(
+      for: .subheadline,
+      weight: .semibold,
+      traitCollection: traitCollection
+    )
+    let regularFont = UIFont.preferredFont(
+      for: .subheadline,
+      weight: .regular,
+      traitCollection: traitCollection
+    )
+
     let attString = NSMutableAttributedString(
       string: Strings.findInPageFormat,
       attributes: [
-        .font: UIFont.systemFont(ofSize: 15.0, weight: .semibold),
+        .font: boldFont,
         .foregroundColor: UIColor(braveSystemName: .textTertiary),
       ]
     )
@@ -62,11 +108,16 @@ class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
       NSAttributedString(
         string: "\"\(title)\"",
         attributes: [
-          .font: UIFont.systemFont(ofSize: 15.0),
+          .font: regularFont,
           .foregroundColor: UIColor(braveSystemName: .textPrimary),
         ]
       )
     )
     titleLabel.attributedText = attString
+  }
+
+  func setCellTitle(_ title: String) {
+    self.title = title
+    updateTitleTheme()
   }
 }

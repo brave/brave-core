@@ -130,6 +130,7 @@ class FavoritesViewController: UIViewController {
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
         withReuseIdentifier: "recent_search_footer"
       )
+      $0.contentInset = .init(top: 8, left: 0, bottom: 8, right: 0)
     }
 
     favoritesFRC.delegate = self
@@ -182,18 +183,19 @@ class FavoritesViewController: UIViewController {
 
   private func favoritesLayoutSection() -> NSCollectionLayoutSection {
     let itemSize = NSCollectionLayoutSize(
-      widthDimension: .absolute(78),
-      heightDimension: .fractionalHeight(1)
+      widthDimension: .absolute(64),
+      heightDimension: .estimated(78)
     )
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     let groupSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .estimated(98)
+      heightDimension: .estimated(114)
     )
-    item.contentInsets = .init(top: 8, leading: 4, bottom: 8, trailing: 4)
     let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+    group.interItemSpacing = .flexible(8)
+    group.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
     let section = NSCollectionLayoutSection(group: group)
-    section.contentInsets = .init(top: 8, leading: 16, bottom: 8, trailing: 16)
+    section.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
 
     let headerItemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
@@ -204,7 +206,7 @@ class FavoritesViewController: UIViewController {
       elementKind: UICollectionView.elementKindSectionHeader,
       alignment: .top
     )
-    headerItem.contentInsets = .init(top: 0, leading: 12, bottom: 0, trailing: 12)
+    headerItem.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
     section.boundarySupplementaryItems = [headerItem]
 
     let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: "background")
@@ -217,17 +219,16 @@ class FavoritesViewController: UIViewController {
   private func recentSearchesLayoutSection() -> NSCollectionLayoutSection {
     let itemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .absolute(44)
+      heightDimension: .estimated(44)
     )
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     let groupSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .absolute(44)
+      heightDimension: .estimated(44)
     )
-    item.contentInsets = .init(top: 10, leading: 12, bottom: 10, trailing: 12)
     let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
     let section = NSCollectionLayoutSection(group: group)
-    section.contentInsets = .init(top: 16, leading: 16, bottom: 16, trailing: 16)
+    section.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
 
     var supplementaryItems = [NSCollectionLayoutBoundarySupplementaryItem]()
 
@@ -240,7 +241,7 @@ class FavoritesViewController: UIViewController {
       elementKind: UICollectionView.elementKindSectionHeader,
       alignment: .top
     )
-    headerItem.contentInsets = .init(top: 0, leading: 12, bottom: 0, trailing: 12)
+    headerItem.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
     supplementaryItems.append(headerItem)
 
     if let fetchedObjects = recentSearchesFRC.fetchedObjects {
@@ -255,6 +256,7 @@ class FavoritesViewController: UIViewController {
           elementKind: UICollectionView.elementKindSectionFooter,
           alignment: .bottom
         )
+        footerItem.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
         supplementaryItems.append(footerItem)
       }
     }
@@ -270,7 +272,7 @@ class FavoritesViewController: UIViewController {
   private func recentSearchesOptInLayoutSection() -> NSCollectionLayoutSection {
     let itemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
-      heightDimension: .fractionalHeight(1)
+      heightDimension: .estimated(184)
     )
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     let groupSize = NSCollectionLayoutSize(
@@ -308,7 +310,8 @@ class FavoritesViewController: UIViewController {
       $0.edges.equalToSuperview()
     }
     collectionView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.leading.trailing.equalToSuperview()
+      $0.bottom.equalTo(view.safeArea.bottom)
     }
   }
 
@@ -324,6 +327,8 @@ class FavoritesViewController: UIViewController {
       // Drag should be enabled to rearrange favourite
       $0.dragInteractionEnabled = true
       $0.keyboardDismissMode = .interactive
+      $0.alwaysBounceVertical = true
+      $0.showsHorizontalScrollIndicator = false
     }
 
     updateColors()
