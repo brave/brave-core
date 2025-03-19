@@ -155,6 +155,7 @@ extension Action.Identifier {
     .copyCleanLink,
     .sendURL,
     .toggleReaderMode,
+    .translate,
     .findInPage,
     .pageZoom,
     .addFavourites,
@@ -188,6 +189,13 @@ extension Action.Identifier {
     title: Strings.toggleReaderMode,
     braveSystemImage: "leo.product.speedreader",
     defaultRank: 1400,
+    defaultVisibility: .hidden
+  )
+  public static let translate: Self = .init(
+    id: "TranslatePage",
+    title: Strings.ActionTitles.translate,
+    braveSystemImage: "leo.product.translate",
+    defaultRank: 1450,
     defaultVisibility: .hidden
   )
   public static let findInPage: Self = .init(

@@ -2726,7 +2726,7 @@ extension Strings {
     "TranslatePage",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Translate",
+    value: "Translate Page",
     comment: "Title of an action that allows the user to translate the current web-page to another language"
   )
   public static let findInPage = NSLocalizedString(

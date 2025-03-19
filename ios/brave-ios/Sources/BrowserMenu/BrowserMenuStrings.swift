@@ -120,5 +120,12 @@ extension Strings {
       comment:
         "A button title shown on the menu that when tapped presents a Brave VPN paywall"
     )
+    public static let translate = NSLocalizedString(
+      "ActionTitles.translate",
+      bundle: .module,
+      value: "Translate Page",
+      comment:
+        "A button title shown on the menu that translates the page into a different language."
+    )
   }
 }
