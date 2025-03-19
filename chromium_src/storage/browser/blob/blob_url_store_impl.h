@@ -35,11 +35,11 @@ class COMPONENT_EXPORT(STORAGE_BROWSER) BlobURLStoreImpl
       const GURL& url,
       mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
       ResolveAsURLLoaderFactoryCallback callback) override;
-  void ResolveForNavigation(
+  void ResolveAsBlobURLToken(
       const GURL& url,
       mojo::PendingReceiver<blink::mojom::BlobURLToken> token,
       bool is_top_level_navigation,
-      ResolveForNavigationCallback callback) override;
+      ResolveAsBlobURLTokenCallback callback) override;
 
  private:
   bool IsBlobResolvable(const GURL& url) const;
