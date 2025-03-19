@@ -8,25 +8,46 @@ import Shared
 import UIKit
 
 class FavoritesRecentSearchFooterView: UICollectionReusableView {
-  let label = UILabel().then {
-    $0.text = Strings.recentShowMore
-    $0.font = .preferredFont(for: .subheadline, weight: .semibold)
-    $0.textColor = UIColor(braveSystemName: .textInteractive)
-  }
+  let label = UILabel()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
+    setTheme()
+
     addSubview(label)
     label.snp.makeConstraints {
-      $0.top.equalToSuperview()
-      $0.leading.trailing.equalToSuperview().inset(12.0)
-      $0.bottom.equalToSuperview().inset(24.0)
+      $0.top.leading.trailing.equalToSuperview()
+      $0.bottom.equalToSuperview().inset(24)
     }
   }
 
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
+  }
+
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    setTheme()
+  }
+
+  private func setTheme() {
+    label.do {
+      $0.text = Strings.recentShowMore
+      $0.textColor = UIColor(braveSystemName: .textInteractive)
+
+      var sizeCategory = UIApplication.shared.preferredContentSizeCategory
+      if sizeCategory.isAccessibilityCategory {
+        sizeCategory = .large
+      }
+      let traitCollection = UITraitCollection(preferredContentSizeCategory: sizeCategory)
+      let font = UIFont.preferredFont(
+        for: .subheadline,
+        weight: .semibold,
+        traitCollection: traitCollection
+      )
+      $0.font = font
+    }
   }
 }

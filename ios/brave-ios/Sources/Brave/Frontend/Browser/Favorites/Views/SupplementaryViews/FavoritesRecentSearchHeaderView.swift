@@ -10,11 +10,7 @@ import UIKit
 
 class FavoritesRecentSearchHeaderView: UICollectionReusableView {
 
-  private let label = UILabel().then {
-    $0.text = Strings.recentSearchSectionHeaderTitle
-    $0.textColor = UIColor(braveSystemName: .textPrimary)
-    $0.font = .preferredFont(for: .body, weight: .semibold)
-  }
+  private let label = UILabel()
 
   let clearButton = UIButton()
 
@@ -35,19 +31,40 @@ class FavoritesRecentSearchHeaderView: UICollectionReusableView {
   }
 
   private func setTheme() {
+    var sizeCategory = UIApplication.shared.preferredContentSizeCategory
+    if sizeCategory.isAccessibilityCategory {
+      sizeCategory = .large
+    }
+    let traitCollection = UITraitCollection(preferredContentSizeCategory: sizeCategory)
+
+    label.do {
+      $0.text = Strings.recentSearchSectionHeaderTitle
+      $0.textColor = UIColor(braveSystemName: .textPrimary)
+      let font = UIFont.preferredFont(
+        for: .body,
+        weight: .semibold,
+        traitCollection: traitCollection
+      )
+      $0.font = font
+    }
+
     clearButton.do {
       $0.setTitle(Strings.recentSearchClear, for: .normal)
       $0.setTitleColor(UIColor(braveSystemName: .textInteractive), for: .normal)
-      $0.titleLabel?.font = .systemFont(ofSize: 14.0, weight: .semibold)
       $0.backgroundColor = .clear
+      let font = UIFont.preferredFont(
+        for: .subheadline,
+        weight: .semibold,
+        traitCollection: traitCollection
+      )
+      $0.titleLabel?.font = font
     }
   }
 
   private func doLayout() {
     addSubview(hStackView)
     hStackView.snp.makeConstraints {
-      $0.top.bottom.equalToSuperview().inset(12)
-      $0.leading.trailing.equalToSuperview()
+      $0.edges.equalToSuperview()
     }
 
     [label, clearButton].forEach(hStackView.addArrangedSubview(_:))

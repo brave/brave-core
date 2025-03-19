@@ -1014,8 +1014,8 @@ extension Strings {
     "FindInPageFormat",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Find the ",
-    comment: "Find the `search query`"
+    value: "Find ",
+    comment: "Find `search query`"
   )
 }
 
