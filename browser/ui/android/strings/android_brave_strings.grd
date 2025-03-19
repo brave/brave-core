@@ -4091,14 +4091,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PRIVATE_TAB_SCREENSHOT_SUMMARY" desc="A summary to show private tab screenshot">
       If allowed, private tabs will also be visible when multiple apps are open.
     </message>
-
-    <!-- Custom search engines -->
-    <message name="IDS_CUSTOM_SEARCH_ENGINES" desc="Search engines category title for custom search engines">
-      Custom-Search Engines
-    </message>
-    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE" desc="Search engines settings option for add custom search engine">
-      Add Custom Search Engine
-    </message>
   </messages>
   </release>
 </grit>
