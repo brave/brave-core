@@ -104,6 +104,7 @@ export const Dropdown = styled(LeoDropdown).attrs({
   size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal'
 })`
   width: unset;
+  color: ${color.text.primary};
   @media screen and (max-width: ${layoutPanelWidth}px) {
     width: 100%;
     text-overflow: ellipsis;
