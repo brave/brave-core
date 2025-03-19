@@ -17,6 +17,7 @@
 #include "brave/components/brave_sync/buildflags.h"
 #include "brave/components/update_client/buildflags.h"
 #include "brave/components/variations/command_line_utils.h"
+#include "brave/ios/browser/variations/model/brave_variations_seed_fetcher.h"
 #include "components/browser_sync/browser_sync_switches.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/sync/base/command_line_switches.h"
@@ -77,6 +78,9 @@ void BraveMainDelegate::BasicStartupComplete() {
   if (!command_line->HasSwitch(switches::kVModule)) {
     command_line->AppendSwitchASCII(switches::kVModule, "*/brave/*=0");
   }
+
+  // Fetch Variations Seed Early (Requires CommandLine)
+  [[[BraveVariationsSeedFetcher alloc] init] fetchSeedSynchronously];
 
   IOSChromeMainDelegate::BasicStartupComplete();
 }

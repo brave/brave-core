@@ -50,6 +50,7 @@ group("browser") {
     "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/profile/model",
     "//brave/ios/browser/ui/webui",
+    "//brave/ios/browser/variations/model",
     "//brave/ios/browser/web",
     "//ios/chrome/browser/shared/model/prefs",
   ]
