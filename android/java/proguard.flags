@@ -96,3 +96,8 @@
     *** showNotification(...);
     *** createMediaSessionObserver(...);
 }
+
+-keep class org.chromium.chrome.browser.media.FullscreenVideoPictureInPictureController {
+    *** dismissActivityIfNeeded(...);
+}
+

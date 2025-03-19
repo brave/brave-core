@@ -918,3 +918,27 @@
     *** mCustomTabFeatureOverridesManager;
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.media.FullscreenVideoPictureInPictureController {
+    *** mDismissPending;
+}
+
+-keep class org.chromium.chrome.browser.media.BraveFullscreenVideoPictureInPictureController
+
+-keep class org.chromium.chrome.browser.fullscreen.FullscreenHtmlApiHandlerBase
+
+-keep class org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerBase
+
+-keep class org.chromium.chrome.browser.fullscreen.FullscreenHtmlApiHandlerCompat {
+    public <init>(...);
+}
+-keep class org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerCompat {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.fullscreen.FullscreenHtmlApiHandlerLegacy {
+    public <init>(...);
+}
+-keep class org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerLegacy {
+    public <init>(...);
+}
