@@ -68,6 +68,8 @@ inline constexpr char kShouldShowOnboardingNotification[] =
 
 inline constexpr char kShouldShowSearchResultAdClickedInfoBar[] =
     "brave.brave_ads.should_show_search_result_ad_clicked_infobar";
+inline constexpr char kShowNewTabTakeoverInfobar[] =
+    "brave.brave_ads.show_new_tab_takeover_infobar";
 
 // Brave stats prefs.
 inline constexpr char kEnabledForLastProfile[] =

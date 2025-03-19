@@ -5,15 +5,15 @@
 import Shared
 import SwiftUI
 
-class SearchResultAdClickedInfoBar: InfoBar {
-  static let learnMoreOptOutChoicesUrl = "https://search.brave.com/help/conversion-reporting"
+class NewTabTakeoverInfoBar: InfoBar {
+  static let learnMoreOptOutChoicesUrl = "https://brave.com"
 
   init(tabManager: TabManager) {
     super.init(
       tabManager: tabManager,
-      labelText: Strings.searchResultAdClickedInfoBarTitle,
-      linkText: Strings.searchResultAdClickedLearnMoreOptOutChoicesLabel,
-      linkUrl: SearchResultAdClickedInfoBar.learnMoreOptOutChoicesUrl
+      labelText: Strings.newTabTakeoverInfoBarMessage,
+      linkText: Strings.newTabTakeoverInfoBarLearnMoreOptOutChoices,
+      linkUrl: NewTabTakeoverInfoBar.learnMoreOptOutChoicesUrl
     )
   }
 

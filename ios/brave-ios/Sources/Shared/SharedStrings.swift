@@ -354,3 +354,20 @@ extension Strings {
     comment: "The text label of creative search result ad learn more / opt out choices link."
   )
 }
+
+// New tab takeover InfoBar message and learn more link.
+extension Strings {
+  public static let newTabTakeoverInfoBarMessage = NSLocalizedString(
+    "NewTabTakeoverInfoBarMessage",
+    bundle: .module,
+    value: "Sponsored background images support Brave's mission to build an independent, user-first Web. And unlike Big Tech, we measure ad performance anonymously to preserve your privacy.",
+    comment: "The text of new tab takeover infobar message."
+  )
+
+  public static let newTabTakeoverInfoBarLearnMoreOptOutChoices = NSLocalizedString(
+    "newTabTakeoverInfoBarLearnMoreOptOutChoices",
+    bundle: .module,
+    value: "Learn more / opt out choices",
+    comment: "The text of new tab takeover learn more / opt out choices link."
+  )
+}
