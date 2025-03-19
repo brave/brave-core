@@ -64,11 +64,13 @@ inline constexpr auto kAllowedUrlPrefixes = std::to_array<std::string_view>({
     "https://pcdn.brave.com/",
 
     // Brave Rewards production
+    "https://api.rewards.brave.com/v1/cards",
     "https://api.rewards.brave.com/v1/parameters",
     "https://rewards.brave.com/publishers/prefix-list",
     "https://grant.rewards.brave.com/v1/promotions",
 
     // Brave Rewards staging & dev
+    "https://api.rewards.bravesoftware.com/v1/cards",
     "https://api.rewards.bravesoftware.com/v1/parameters",
     "https://rewards-stg.bravesoftware.com/publishers/prefix-list",
     "https://grant.rewards.bravesoftware.com/v1/promotions",
