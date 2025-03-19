@@ -300,10 +300,6 @@ class Tab: NSObject {
 
   var mimeType: String?
 
-  /// When viewing a non-HTML content type in the webview (like a PDF document), this URL will
-  /// point to a tempfile containing the content so it can be shared to external applications.
-  var temporaryDocument: TemporaryDocument?
-
   /// The last title shown by this tab. Used by the tab tray to show titles for zombie tabs.
   var lastTitle: String?
 
