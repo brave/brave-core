@@ -8,6 +8,7 @@
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/stringprintf.h"
+#include "base/time/time_delta_from_string.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
@@ -23,6 +24,7 @@ constexpr int kExpectedSchemaVersion = 2;
 constexpr int kExpectedCampaignVersion = 1;
 
 constexpr char kCampaignVersionKey[] = "version";
+constexpr char kGracePeriodKey[] = "gracePeriod";
 constexpr char kCreativeSetsKey[] = "creativeSets";
 constexpr char kCreativeSetIdKey[] = "creativeSetId";
 constexpr char kCreativesKey[] = "creatives";
@@ -151,6 +153,10 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     url_prefix += kSuperReferralPath;
   } else {
     url_prefix += kSponsoredImagesPath;
+  }
+
+  if (const std::string* const value = dict.FindString(kGracePeriodKey)) {
+    grace_period = base::TimeDeltaFromString(*value);
   }
 
   if (const base::Value::List* campaigns_value = dict.FindList(kCampaignsKey)) {

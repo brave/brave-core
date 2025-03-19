@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
@@ -152,6 +153,8 @@ struct NTPSponsoredImagesData {
   bool IsSuperReferral() const;
 
   std::string url_prefix;
+
+  std::optional<base::TimeDelta> grace_period;
 
   std::vector<Campaign> campaigns;
 
