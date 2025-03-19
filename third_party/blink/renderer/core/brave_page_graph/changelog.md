@@ -3,6 +3,16 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.7.4
+
+Add `security origin` attribute for `NodeDOMRoot` objects, to explicitly
+record the security origin assigned to a frame (previously we had to
+recreate it from the graph structure in
+[`pagegraph-query`](https://github.com/brave-experiments/pagegraph-query)).
+
+Very minor changes to how `NodeDOMRoot` objects are logged, when they're loaded
+with empty URLs.
+
 ## Version 0.7.3
 
 Support for SVG documents (both capturing the structure, and for `<use>`

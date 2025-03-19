@@ -211,6 +211,8 @@ const GraphMLAttrs& GetGraphMLAttrs() {
        new GraphMLAttr(kGraphMLAttrForTypeNode, "script type")},
       {kGraphMLAttrDefSecondaryPattern,
        new GraphMLAttr(kGraphMLAttrForTypeNode, "secondary pattern")},
+      {kGraphMLAttrDefSecurityOrigin,
+       new GraphMLAttr(kGraphMLAttrForTypeNode, "security origin")},
       {kGraphMLAttrDefSize, new GraphMLAttr(kGraphMLAttrForTypeEdge, "size")},
       {kGraphMLAttrDefSource,
        new GraphMLAttr(kGraphMLAttrForTypeNode, "source")},

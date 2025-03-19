@@ -132,6 +132,7 @@ enum GraphMLAttrDef {
   kGraphMLAttrDefScriptPosition,
   kGraphMLAttrDefScriptType,
   kGraphMLAttrDefSecondaryPattern,
+  kGraphMLAttrDefSecurityOrigin,
   kGraphMLAttrDefSource,
   kGraphMLAttrDefStatus,
   kGraphMLAttrDefSuccess,

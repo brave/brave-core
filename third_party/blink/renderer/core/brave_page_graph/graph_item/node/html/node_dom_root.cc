@@ -28,9 +28,13 @@ ItemDesc NodeDOMRoot::GetItemDesc() const {
   StringBuilder ts;
   ts << NodeHTMLElement::GetItemDesc();
   ts << " [is attached: " << is_attached_;
-  if (!url_.empty()) {
-    ts << " url: " << url_;
-  }
+
+  ts << " security origin: ";
+  ts << (security_origin_.empty() ? "<empty>" : security_origin_);
+
+  ts << " url: ";
+  ts << (url_.empty() ? "<empty>" : url_);
+
   ts << "]";
   return ts.ReleaseString();
 }
@@ -40,6 +44,8 @@ void NodeDOMRoot::AddGraphMLAttributes(xmlDocPtr doc,
   NodeHTMLElement::AddGraphMLAttributes(doc, parent_node);
   GraphMLAttrDefForType(kGraphMLAttrDefURL)
       ->AddValueNode(doc, parent_node, url_);
+  GraphMLAttrDefForType(kGraphMLAttrDefSecurityOrigin)
+      ->AddValueNode(doc, parent_node, security_origin_);
   GraphMLAttrDefForType(kGraphMLAttrDefIsFrameAttached)
       ->AddValueNode(doc, parent_node, is_attached_);
 }
