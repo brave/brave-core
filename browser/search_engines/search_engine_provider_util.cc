@@ -17,7 +17,7 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/search_engine_choice/search_engine_choice_service_factory.h"
+#include "chrome/browser/search_engines/template_url_prepopulate_data_resolver_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -25,6 +25,7 @@
 #include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
+#include "components/search_engines/template_url_prepopulate_data_resolver.h"
 #include "components/search_engines/template_url_service.h"
 
 namespace brave {
@@ -38,17 +39,16 @@ constexpr auto kTargetCountriesForEnableSearchSuggestionsByDefault =
 
 void SetBraveAsDefaultPrivateSearchProvider(Profile& profile) {
   auto& prefs = *profile.GetPrefs();
-  search_engines::SearchEngineChoiceService* search_engine_choice_service =
-      search_engines::SearchEngineChoiceServiceFactory::GetForProfile(&profile);
-
-  auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      prefs, search_engine_choice_service->GetCountryId(),
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
-  DCHECK(data);
+  auto* prepopulate_data_resolver =
+      TemplateURLPrepopulateData::ResolverFactory::GetForProfile(&profile);
+  const auto template_url_data =
+      prepopulate_data_resolver->GetPrepopulatedEngine(
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+  DCHECK(template_url_data);
   prefs.SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
-                  data->sync_guid);
+                  template_url_data->sync_guid);
   prefs.SetDict(prefs::kSyncedDefaultPrivateSearchProviderData,
-                TemplateURLDataToDictionary(*data));
+                TemplateURLDataToDictionary(*template_url_data));
 }
 
 void UpdateDefaultPrivateSearchProviderData(Profile& profile) {
