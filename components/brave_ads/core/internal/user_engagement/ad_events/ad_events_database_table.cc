@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
@@ -450,10 +451,13 @@ void AdEvents::GetUnexpired(mojom::AdType mojom_ad_type,
 }
 
 void AdEvents::PurgeExpired(ResultCallback callback) const {
-  const size_t days = UserHasJoinedBraveRewards() ? 90 : 30;
-
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
+
+  size_t days;
+
+  // Non-new tab page ads.
+  days = UserHasJoinedBraveRewards() ? 90 : 30;
   Execute(mojom_db_transaction, R"(
             DELETE FROM
               $1
@@ -464,9 +468,42 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
                 FROM
                   creative_set_conversions
               )
+              AND type != 'new_tab_page_ad'
               AND created_at <= $2)",
           {GetTableName(),
            TimeToSqlValueAsString(base::Time::Now() - base::Days(days))});
+
+  // New tab page ads.
+  days = UserHasJoinedBraveRewards() ? 90 : 2;
+  Execute(mojom_db_transaction, R"(
+            DELETE FROM
+              $1
+            WHERE
+              creative_set_id NOT IN (
+                SELECT
+                  creative_set_id
+                FROM
+                  creative_set_conversions
+              )
+              AND type == 'new_tab_page_ad'
+              AND created_at <= $2)",
+          {GetTableName(),
+           TimeToSqlValueAsString(base::Time::Now() - base::Days(days))});
+
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
+}
+
+void AdEvents::PurgeForAdType(mojom::AdType ad_type,
+                              ResultCallback callback) const {
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
+  Execute(mojom_db_transaction, R"(
+            DELETE FROM
+              $1
+            WHERE
+              type = '$2')",
+          {GetTableName(), ToString(ad_type)});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));

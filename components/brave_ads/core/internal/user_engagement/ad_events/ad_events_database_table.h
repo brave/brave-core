@@ -52,6 +52,8 @@ class AdEvents final : public TableInterface {
 
   void PurgeExpired(ResultCallback callback) const;
 
+  void PurgeForAdType(mojom::AdType ad_type, ResultCallback callback) const;
+
   void PurgeOrphaned(mojom::AdType mojom_ad_type,
                      ResultCallback callback) const;
   void PurgeOrphaned(const std::vector<std::string>& placement_ids,
