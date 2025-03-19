@@ -32,6 +32,7 @@
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
+#include "chrome/browser/extensions/managed_installation_mode.h"
 #endif
 
 namespace extensions {
@@ -58,7 +59,7 @@ BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
   // Make IsInstallationExplicitlyAllowed to be true
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   AccessById(kEthereumRemoteClientExtensionId)->installation_mode =
-      INSTALLATION_RECOMMENDED;
+      ManagedInstallationMode::kRecommended;
 #endif
   Cleanup(profile);
 }
