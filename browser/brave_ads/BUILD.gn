@@ -70,7 +70,7 @@ source_set("impl") {
     "//chrome/browser:primitives",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/regional_capabilities",
+    "//chrome/browser/search_engines",
     "//chrome/browser/ui",
     "//chrome/common:channel_info",
     "//chrome/common:chrome_features",
