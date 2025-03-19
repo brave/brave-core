@@ -16,6 +16,7 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/bookmarks/bookmark_merged_surface_service_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "chrome/browser/bookmarks/bookmark_test_helpers.h"
 #include "chrome/browser/bookmarks/managed_bookmark_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_profile.h"
@@ -55,6 +56,8 @@ class BraveBookmarkContextMenuTest : public testing::Test {
     brave::bookmarks::prefs::RegisterProfilePrefs(prefs_->registry());
 
     bookmarks::test::WaitForBookmarkModelToLoad(model_);
+    WaitForBookmarkMergedSurfaceServiceToLoad(
+        BookmarkMergedSurfaceServiceFactory::GetForProfile(profile_.get()));
   }
 
  protected:
