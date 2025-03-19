@@ -20,12 +20,6 @@
 
 #define TabDragController TabDragControllerChromium
 
-// Wraps function calls so that they can work with a child NativeWindow as well.
-#define non_client_view()                                    \
-  non_client_view()                                          \
-      ? source->GetWidget()->non_client_view()->frame_view() \
-      : source->GetWidget()->GetTopLevelWidget()->non_client_view()
-
 // Remove drag threshold when it's vertical tab strip
 #define GetHorizontalDragThreshold()                          \
   GetHorizontalDragThreshold() -                              \
@@ -43,11 +37,12 @@
 // StackAtTop() should be called vertical tab widget's top level widget.
 // This also works in horizontal tab mode because it's already top level window.
 #define StackAtTop GetTopLevelWidget()->StackAtTop
+#define GetWindowBoundsInScreen GetTopLevelWidget()->GetWindowBoundsInScreen
 
 #include "src/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.cc"
 
+#undef GetWindowBoundsInScreen
 #undef StackAtTop
-#undef non_client_view
 #undef GetHorizontalDragThreshold
 #undef GetBrowserViewForNativeWindow
 #undef TabDragController

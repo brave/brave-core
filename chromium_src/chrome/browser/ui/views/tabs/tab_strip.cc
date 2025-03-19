@@ -22,8 +22,11 @@
 #include "ui/gfx/win/hwnd_util.h"
 #endif
 
-#define AddTab(TAB, MODEL_INDEX, PINNED) \
-  AddTab(std::make_unique<BraveTab>(this), MODEL_INDEX, PINNED)
+// Overrides TabContainer::TabInsertionParams construction in
+// TabStrip::AddTabsAt
+#define param(TAB, MODEL_INDEX, PINNED) \
+  param(std::make_unique<BraveTab>(this), MODEL_INDEX, PINNED)
+
 #define CompoundTabContainer BraveCompoundTabContainer
 #define TabContainerImpl BraveTabContainer
 #define TabHoverCardController BraveTabHoverCardController
@@ -55,7 +58,7 @@
 #undef TabHoverCardController
 #undef CompoundTabContainer
 #undef TabContainerImpl
-#undef AddTab
+#undef param
 
 bool TabStrip::IsTabTiled(const Tab* tab) const {
   return false;

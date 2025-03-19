@@ -310,29 +310,65 @@ views::SizeBounds BraveCompoundTabContainer::GetAvailableSize(
                            /*height=*/views::SizeBound());
 }
 
-Tab* BraveCompoundTabContainer::AddTab(std::unique_ptr<Tab> tab,
-                                       int model_index,
-                                       TabPinned pinned) {
-  auto* new_tab =
-      CompoundTabContainer::AddTab(std::move(tab), model_index, pinned);
+std::vector<Tab*> BraveCompoundTabContainer::AddTabs(
+    std::vector<TabInsertionParams> tabs_params) {
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
-    return new_tab;
+    return CompoundTabContainer::AddTabs(std::move(tabs_params));
   }
 
-  if (pinned == TabPinned::kPinned && !pinned_tab_container_->GetVisible()) {
-    // When the browser was initialized without any pinned tabs, pinned tabs
-    // could be hidden initially by the FlexLayout.
-    pinned_tab_container_->SetVisible(true);
+  // Upstream implementation expects all tabs to be either pinned or unpinned.
+  // It also checks that the index of pinned tabs is <= than NumPinnedTabs(),
+  // which returns 0 and triggers a check. That check doesn't make sense since
+  // if I am adding 2 pinned tabs with model_indexes 0 and 1, when checking
+  // for model_index 1 NumPinnedTabs() would still return 0 as we have not added
+  // the tab with the index 0 yet. So, add tabs ourselves.
+  std::vector<TabInsertionParams> pinned_tabs_params;
+  std::vector<TabInsertionParams> unpinned_tabs_params;
+  for (auto& params : tabs_params) {
+    if (params.pinned == TabPinned::kPinned) {
+      pinned_tabs_params.push_back(std::move(params));
+    } else {
+      unpinned_tabs_params.push_back(std::move(params));
+    }
   }
 
-  if (scroll_view_ && pinned == TabPinned::kUnpinned && new_tab->IsActive()) {
-    ScrollTabToBeVisible(model_index);
+  std::vector<Tab*> new_tabs;
+  if (!pinned_tabs_params.empty()) {
+    new_tabs = pinned_tab_container_->AddTabs(std::move(pinned_tabs_params));
   }
 
+  if (!unpinned_tabs_params.empty()) {
+    for (auto& params : unpinned_tabs_params) {
+      CHECK_GE(params.model_index, NumPinnedTabs());
+      params.model_index -= NumPinnedTabs();
+    }
+    std::vector<Tab*> unpinned_new_tabs =
+        unpinned_tab_container_->AddTabs(std::move(unpinned_tabs_params));
+
+    // Merge pinned and unpinned tabs into the new_tabs vector.
+    new_tabs.insert(new_tabs.end(),
+                    std::make_move_iterator(unpinned_new_tabs.begin()),
+                    std::make_move_iterator(unpinned_new_tabs.end()));
+  }
+
+  for (auto* new_tab : new_tabs) {
+    const auto pinned =
+        new_tab->data().pinned ? TabPinned::kPinned : TabPinned::kUnpinned;
+
+    if (pinned == TabPinned::kPinned && !pinned_tab_container_->GetVisible()) {
+      // When the browser was initialized without any pinned tabs, pinned tabs
+      // could be hidden initially by the FlexLayout.
+      pinned_tab_container_->SetVisible(true);
+    }
+
+    if (scroll_view_ && pinned == TabPinned::kUnpinned && new_tab->IsActive()) {
+      ScrollTabToBeVisible(new_tab);
+    }
+  }
   UpdatePinnedTabContainerBorder();
 
-  return new_tab;
+  return new_tabs;
 }
 
 void BraveCompoundTabContainer::MoveTab(int from_model_index,
@@ -438,7 +474,7 @@ void BraveCompoundTabContainer::SetActiveTab(
     std::optional<size_t> new_active_index) {
   CompoundTabContainer::SetActiveTab(prev_active_index, new_active_index);
   if (new_active_index.has_value()) {
-    ScrollTabToBeVisible(*new_active_index);
+    ScrollTabToBeVisible(GetTabAtModelIndex(*new_active_index));
   }
 }
 
@@ -526,12 +562,12 @@ void BraveCompoundTabContainer::UpdateUnpinnedContainerSize() {
   }
 }
 
-void BraveCompoundTabContainer::ScrollTabToBeVisible(int model_index) {
+void BraveCompoundTabContainer::ScrollTabToBeVisible(Tab* tab) {
+  CHECK(tab);
   if (!scroll_view_) {
     return;
   }
 
-  auto* tab = GetTabAtModelIndex(model_index);
   if (tab->data().pinned) {
     return;
   }

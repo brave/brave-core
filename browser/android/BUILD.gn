@@ -41,11 +41,11 @@ source_set("android_browser_process") {
     "//chrome/common",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/browser:cookie_settings",
-    "//components/flags_ui",
     "//components/ntp_tiles",
     "//components/sync",
     "//components/translate/core/browser",
     "//components/unified_consent",
+    "//components/webui/flags",
     "//url",
   ]
 }
@@ -59,6 +59,7 @@ source_set("tab_features") {
   deps = [
     "//base",
     "//brave/browser/ai_chat",
+    "//chrome/browser/android:tabs_public",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
   ]

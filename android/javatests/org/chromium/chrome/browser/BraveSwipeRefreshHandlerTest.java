@@ -81,7 +81,8 @@ public class BraveSwipeRefreshHandlerTest {
                 null,
                 rootUiCoordinator.getToolbarManager().getTabStripHeightSupplier(),
                 new OneshotSupplierImpl<ModuleRegistry>(),
-                new ObservableSupplierImpl<EdgeToEdgeController>());
+                new ObservableSupplierImpl<EdgeToEdgeController>(),
+                cta.getStartupMetricsTracker());
     }
 
     @Test

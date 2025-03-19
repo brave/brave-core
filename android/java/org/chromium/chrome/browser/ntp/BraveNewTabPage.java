@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.feed.FeedSurfaceProvider;
 import org.chromium.chrome.browser.feed.FeedSwipeRefreshLayout;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
+import org.chromium.chrome.browser.metrics.StartupMetricsTracker;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -74,7 +75,8 @@ public class BraveNewTabPage extends NewTabPage {
             ObservableSupplier<TabContentManager> tabContentManagerSupplier,
             ObservableSupplier<Integer> tabStripHeightSupplier,
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
-            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier) {
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            StartupMetricsTracker startupMetricsTracker) {
         super(
                 activity,
                 browserControlsStateProvider,
@@ -97,7 +99,8 @@ public class BraveNewTabPage extends NewTabPage {
                 tabContentManagerSupplier,
                 tabStripHeightSupplier,
                 moduleRegistrySupplier,
-                edgeToEdgeControllerSupplier);
+                edgeToEdgeControllerSupplier,
+                startupMetricsTracker);
 
         mJankTracker = jankTracker;
 
@@ -134,7 +137,8 @@ public class BraveNewTabPage extends NewTabPage {
             boolean isInNightMode,
             Supplier<ShareDelegate> shareDelegateSupplier,
             String url,
-            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier) {
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            StartupMetricsTracker startupMetricsTracker) {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 

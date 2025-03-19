@@ -113,7 +113,7 @@ are declared in tools/grit/grit_args.gni.
       <if expr="not is_android">
         </if>
 
-      <if expr="enable_extensions">
+      <if expr="enable_extensions_core">
         <part file="extensions_strings_override.grdp" />
       </if>
 
@@ -151,7 +151,7 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="not is_android">
+      <if expr="not is_android or enable_extensions_core">
         <if expr="is_macosx">
           </if>
         <if expr="not is_macosx">
@@ -474,7 +474,7 @@ are declared in tools/grit/grit_args.gni.
       <if expr="enable_extensions">
         </if>
 
-      <if expr="enable_extensions">
+      <if expr="enable_extensions_core">
         <if expr="is_macosx">
           </if>
         <if expr="not is_chromeos and not is_macosx">
@@ -877,7 +877,7 @@ are declared in tools/grit/grit_args.gni.
         <if expr="not is_chromeos">
           </if>
       </if> <if expr="is_chromeos">
-        </if> <if expr="not is_android">
+        </if> <if expr="not is_android or enable_extensions_core">
         <message name="IDS_EXTENSIONS_INSTALL_LOCATION_UNKNOWN" desc="The text explaining the the installation location is unknown.">
           Not from Web Store.
         </message>
@@ -1147,7 +1147,6 @@ are declared in tools/grit/grit_args.gni.
       </if>
     <if expr="not is_android">
       </if>
-
     <if expr="not is_android">
       </if>
 
@@ -1312,6 +1311,9 @@ are declared in tools/grit/grit_args.gni.
     <if expr="is_chromeos">
       </if>
 
+
+  <if expr="is_chromeos">
+      </if>
 
   </messages>
 </release>

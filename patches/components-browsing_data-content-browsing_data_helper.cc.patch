@@ -1,5 +1,5 @@
 diff --git a/components/browsing_data/content/browsing_data_helper.cc b/components/browsing_data/content/browsing_data_helper.cc
-index 85b715a741276fd21c67fd27ec59e764bfe51875..19ef2fbf1a1139c917372f232c5b8d975d25fe70 100644
+index 3ebbaf5de1b328a248ea1c03a6553bf81997d956..a36322f0493dcf4bc74cb6674e5f25a0d1d89802 100644
 --- a/components/browsing_data/content/browsing_data_helper.cc
 +++ b/components/browsing_data/content/browsing_data_helper.cc
 @@ -38,7 +38,7 @@ bool WebsiteSettingsFilterAdapter(

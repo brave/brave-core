@@ -53,7 +53,7 @@ BraveOmniboxViewViews::~BraveOmniboxViewViews() = default;
 std::optional<GURL> BraveOmniboxViewViews::GetURLToCopy() {
   GURL url;
   bool write_url = false;
-  std::u16string selected_text = GetSelectedText();
+  auto selected_text = std::u16string(GetSelectedText());
   model()->AdjustTextForCopy(GetSelectedRange().GetMin(), &selected_text, &url,
                              &write_url);
   if (!write_url) {

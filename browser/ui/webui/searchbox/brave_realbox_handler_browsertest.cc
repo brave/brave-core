@@ -19,7 +19,6 @@
 #include "components/omnibox/browser/omnibox_client.h"
 #include "components/omnibox/browser/omnibox_controller.h"
 #include "components/search_engines/template_url_service.h"
-#include "components/url_formatter/spoof_checks/idna_metrics.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/browser_test.h"

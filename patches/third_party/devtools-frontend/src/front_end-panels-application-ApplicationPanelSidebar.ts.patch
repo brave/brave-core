@@ -1,10 +1,10 @@
 diff --git a/front_end/panels/application/ApplicationPanelSidebar.ts b/front_end/panels/application/ApplicationPanelSidebar.ts
-index fb6a98cebe37a82b163f9659a4b3aa6942e60a5b..79941a941fec2e17e381b83279fb25e94ec17b3c 100644
+index 62d2c45160902282d5910d77a04085ca42fbbe0d..d72a8858c5b33959f459acfeddfe55da7a2d0700 100644
 --- a/front_end/panels/application/ApplicationPanelSidebar.ts
 +++ b/front_end/panels/application/ApplicationPanelSidebar.ts
-@@ -571,6 +571,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
-     // Work-around for crbug.com/1152713: Something is wrong with custom scrollbars and size containment.
-     // @ts-ignore
+@@ -569,6 +569,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
+         new Common.ObjectWrapper.ObjectWrapper<SharedStorageTreeElementDispatcher.EventTypes>();
+ 
      this.contentElement.style.contain = 'layout style';
 +    [this.trustTokensTreeElement, this.interestGroupTreeElement, this.sharedStorageListTreeElement].forEach(e => storageTreeElement.removeChild(e)); [this.backgroundFetchTreeElement, this.backgroundSyncTreeElement, this.periodicBackgroundSyncTreeElement, this.reportingApiTreeElement].forEach(e => backgroundServiceTreeElement.removeChild(e));
    }

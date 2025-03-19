@@ -65,6 +65,20 @@ static_library("misc_metrics_impl") {
   }
 }
 
+if (!is_android) {
+  source_set("usage_clock") {
+    sources = [
+      "//brave/browser/misc_metrics/usage_clock.cc",
+      "//brave/browser/misc_metrics/usage_clock.h",
+    ]
+
+    deps = [
+      "//base",
+      "//chrome/browser/metrics/desktop_session_duration:desktop_session_duration",
+    ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
 
@@ -97,10 +111,13 @@ source_set("unit_tests") {
       "extension_metrics_unittest.cc",
       "profile_new_tab_metrics_unittest.cc",
       "theme_metrics_unittest.cc",
+      "usage_clock_unittest.cc",
     ]
 
     deps += [
+      ":usage_clock",
       "//brave/browser/themes",
+      "//chrome/browser/metrics/desktop_session_duration:desktop_session_duration",
       "//chrome/browser/themes",
     ]
   }

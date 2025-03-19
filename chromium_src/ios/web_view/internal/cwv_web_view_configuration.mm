@@ -21,7 +21,6 @@
 #import "ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #import "ios/web_view/internal/cwv_web_view_internal.h"
 #import "ios/web_view/internal/passwords/web_view_account_password_store_factory.h"
-#import "ios/web_view/internal/web_view_global_state_util.h"
 
 // We completely replace the CWVWebViewConfiguration implementation so that
 // we can nop certain services such as access to CWVWebView specific wrappers

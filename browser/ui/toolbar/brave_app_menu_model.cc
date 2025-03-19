@@ -375,6 +375,13 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
     more_tools_model->RemoveItemAt(*index);
   }
 
+  // Remove upstream's "Customize Chrome" menu item, as we plan to enhance this
+  // feature before exposing it to users
+  if (const auto index = more_tools_model->GetIndexOfCommandId(
+          IDC_SHOW_CUSTOMIZE_CHROME_SIDE_PANEL)) {
+    more_tools_model->RemoveItemAt(*index);
+  }
+
   // Remove upstream's about menu. It's moved into help sub menu.
   if (const auto index = GetIndexOfCommandId(IDC_ABOUT)) {
     RemoveItemAt(*index);

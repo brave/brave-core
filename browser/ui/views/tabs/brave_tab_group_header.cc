@@ -78,7 +78,7 @@ void BraveTabGroupHeader::VisualsChanged() {
   // vertical layout to maintain the group header height.
   if (!title_->GetText().empty()) {
     const gfx::Insets title_chip_insets =
-        group_style_->GetInsetsForHeaderChip(ShouldShowHeaderIcon());
+        group_style_->GetInsetsForHeaderChip();
     title_chip_->SetSize(
         {title_chip_->width(), title_->height() + 2 * title_chip_insets.top()});
     title_->SetY(title_chip_insets.top());
