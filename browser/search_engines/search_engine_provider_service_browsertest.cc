@@ -83,7 +83,7 @@ std::string GetBraveSearchProviderSyncGUID(Profile* profile) {
   search_engines::SearchEngineChoiceService* search_engine_choice_service =
       search_engines::SearchEngineChoiceServiceFactory::GetForProfile(profile);
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      profile->GetPrefs(), search_engine_choice_service,
+      *profile->GetPrefs(), search_engine_choice_service->GetCountryId(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   DCHECK(data);
   return data->sync_guid;
@@ -305,7 +305,7 @@ std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(Profile* profile) {
   // Enforcing that `kTestExtensionPrepopulatedId` is not part of the
   // prepopulated set for the current profile's country.
   for (auto& data : TemplateURLPrepopulateData::GetPrepopulatedEngines(
-           prefs, search_engine_choice_service)) {
+           *prefs, search_engine_choice_service->GetCountryId())) {
     EXPECT_NE(data->prepopulate_id, kTestExtensionPrepopulatedId);
   }
 
@@ -325,7 +325,8 @@ std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(Profile* profile) {
 
   std::unique_ptr<TemplateURLData> prepopulated =
       TemplateURLPrepopulateData::GetPrepopulatedEngineFromFullList(
-          prefs, search_engine_choice_service, kTestExtensionPrepopulatedId);
+          *prefs, search_engine_choice_service->GetCountryId(),
+          kTestExtensionPrepopulatedId);
   CHECK(prepopulated);
   // Values below do not exist in extension manifest and are taken from
   // prepopulated engine with prepopulated_id set in extension manifest.

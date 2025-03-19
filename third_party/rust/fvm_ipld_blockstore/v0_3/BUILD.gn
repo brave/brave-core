@@ -28,6 +28,7 @@ cargo_crate("lib") {
       "ChainSafe Systems <info@chainsafe.io>, Protocol Labs, Filecoin Core Devs"
   cargo_pkg_name = "fvm_ipld_blockstore"
   cargo_pkg_description = "Sharded IPLD Blockstore."
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]

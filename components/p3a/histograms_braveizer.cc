@@ -47,7 +47,7 @@ void HistogramsBraveizer::InitCallbacks() {
     histogram_sample_callbacks_.push_back(
         std::make_unique<
             base::StatisticsRecorder::ScopedHistogramSampleObserver>(
-            std::string(histogram_name),
+            histogram_name,
             base::BindRepeating(&HistogramsBraveizer::DoHistogramBravetization,
                                 this)));
   }
@@ -56,11 +56,10 @@ void HistogramsBraveizer::InitCallbacks() {
 // TODO(iefremov): Replace a bunch of 'if's with something more elegant.
 // Records the given sample using the proper Brave way.
 void HistogramsBraveizer::DoHistogramBravetization(
-    const char* histogram_name,
+    std::string_view histogram_name,
     uint64_t name_hash,
     base::HistogramBase::Sample32 sample) {
-  DCHECK(histogram_name);
-  if (strcmp("DefaultBrowser.State", histogram_name) == 0) {
+  if ("DefaultBrowser.State" == histogram_name) {
     int answer = 0;
     switch (sample) {
       case 0:  // Not default.
@@ -79,7 +78,7 @@ void HistogramsBraveizer::DoHistogramBravetization(
     UMA_HISTOGRAM_BOOLEAN("Brave.Core.IsDefault", answer);
   }
 
-  if (strcmp("Extensions.LoadExtension", histogram_name) == 0) {
+  if ("Extensions.LoadExtension" == histogram_name) {
     int answer = 0;
     if (sample == 1)
       answer = 1;
@@ -92,8 +91,8 @@ void HistogramsBraveizer::DoHistogramBravetization(
     return;
   }
 
-  if (strcmp("Tabs.TabCount", histogram_name) == 0 ||
-      strcmp("Tabs.TabCountPerLoad", histogram_name) == 0) {
+  if ("Tabs.TabCount" == histogram_name ||
+      "Tabs.TabCountPerLoad" == histogram_name) {
     int answer = 0;
     if (0 <= sample && sample <= 1) {
       answer = 0;
@@ -111,7 +110,7 @@ void HistogramsBraveizer::DoHistogramBravetization(
     return;
   }
 
-  if (strcmp("Tabs.WindowCount", histogram_name) == 0) {
+  if ("Tabs.WindowCount" == histogram_name) {
     int answer = 0;
     if (sample <= 0) {
       answer = 0;

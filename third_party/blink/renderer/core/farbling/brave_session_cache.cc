@@ -16,6 +16,7 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/hash/hash.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
@@ -301,43 +302,41 @@ void BraveSessionCache::FarbleAudioChannel(base::span<float> dst) {
   }
 }
 
-void BraveSessionCache::PerturbPixels(const unsigned char* data, size_t size) {
+void BraveSessionCache::PerturbPixels(base::span<uint8_t> data) {
   if (GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS) ==
       BraveFarblingLevel::OFF) {
     return;
   }
-  PerturbPixelsInternal(data, size);
+  PerturbPixelsInternal(data);
 }
 
-void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
-                                              size_t size) {
-  if (!data || size == 0) {
+void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
+  if (data.empty()) {
     return;
   }
 
-  uint8_t* pixels = const_cast<uint8_t*>(data);
   // This needs to be type size_t because we pass it to std::string_view
   // later for content hashing. This is safe because the maximum canvas
   // dimensions are less than SIZE_T_MAX. (Width and height are each
   // limited to 32,767 pixels.)
   // Four bits per pixel
-  const size_t pixel_count = size / 4;
+  const size_t pixel_count = data.size() / 4;
   // calculate initial seed to find first pixel to perturb, based on session
   // key, domain key, and canvas contents
   crypto::HMAC h(crypto::HMAC::SHA256);
   const auto farbling_token_bytes =
       default_shields_settings_->farbling_token.AsBytes();
-  CHECK(h.Init(farbling_token_bytes.data(), farbling_token_bytes.size()));
-  uint8_t canvas_key[32];
-  CHECK(h.Sign(std::string_view(reinterpret_cast<const char*>(pixels), size),
-               canvas_key, sizeof canvas_key));
-  uint64_t v = *reinterpret_cast<uint64_t*>(canvas_key);
+  CHECK(h.Init(farbling_token_bytes));
+  uint8_t canvas_key_buffer[32];
+  auto canvas_key = base::as_writable_byte_span(canvas_key_buffer);
+  CHECK(h.Sign(data, canvas_key));
+  uint64_t v = base::U64FromNativeEndian(canvas_key.first<8u>());
   uint64_t pixel_index;
   // choose which channel (R, G, or B) to perturb
   uint8_t channel;
   // iterate through 32-byte canvas key and use each bit to determine how to
   // perturb the current pixel
-  for (unsigned char key : canvas_key) {
+  for (uint8_t key : canvas_key) {
     uint8_t bit = key;
     for (int j = 0; j < 16; j++) {
       if (j % 8 == 0) {
@@ -345,7 +344,7 @@ void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
       }
       channel = v % 3;
       pixel_index = 4 * (v % pixel_count) + channel;
-      pixels[pixel_index] = pixels[pixel_index] ^ (bit & 0x1);
+      data[pixel_index] = data[pixel_index] ^ (bit & 0x1);
       bit = bit >> 1;
       // find next pixel to perturb
       v = lfsr_next(v);

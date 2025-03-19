@@ -56,9 +56,6 @@ NotificationAdHeaderView::~NotificationAdHeaderView() = default;
 void NotificationAdHeaderView::SetTitle(const std::u16string& text) {
   CHECK(title_label_);
   title_label_->SetText(text);
-
-  NotifyAccessibilityEvent(ax::mojom::Event::kTextChanged, true);
-
   UpdateAccessibleName();
 }
 
@@ -139,7 +136,7 @@ void NotificationAdHeaderView::UpdateTitleLabel() {
 }
 
 void NotificationAdHeaderView::UpdateAccessibleName() {
-  GetViewAccessibility().SetName(title_label_->GetText());
+  GetViewAccessibility().SetName(std::u16string(title_label_->GetText()));
 }
 
 BEGIN_METADATA(NotificationAdHeaderView)

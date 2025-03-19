@@ -72,7 +72,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
 
   // Check that changing the default engine triggers emitting of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      browser()->profile()->GetPrefs(), search_engine_choice_service,
+      *browser()->profile()->GetPrefs(),
+      search_engine_choice_service->GetCountryId(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   TemplateURL ddg_url(*ddg_data);
 
@@ -82,7 +83,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
 
   // Check switching back to original engine.
   auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      browser()->profile()->GetPrefs(), search_engine_choice_service,
+      *browser()->profile()->GetPrefs(),
+      search_engine_choice_service->GetCountryId(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   TemplateURL brave_url(*brave_data);
   service->SetUserSelectedDefaultSearchProvider(&brave_url);
@@ -117,7 +119,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
 
   // Check that changing the default engine triggers emission of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      browser()->profile()->GetPrefs(), search_engine_choice_service,
+      *browser()->profile()->GetPrefs(),
+      search_engine_choice_service->GetCountryId(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   TemplateURL ddg_url(*ddg_data);
 
@@ -128,7 +131,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
 
   // Check additional changes.
   auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      browser()->profile()->GetPrefs(), search_engine_choice_service,
+      *browser()->profile()->GetPrefs(),
+      search_engine_choice_service->GetCountryId(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   TemplateURL brave_url(*brave_data);
 
@@ -138,7 +142,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
 
   // Check additional changes.
   auto bing_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      browser()->profile()->GetPrefs(), search_engine_choice_service,
+      *browser()->profile()->GetPrefs(),
+      search_engine_choice_service->GetCountryId(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
   TemplateURL bing_url(*bing_data);
 

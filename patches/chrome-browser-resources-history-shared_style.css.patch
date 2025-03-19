@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/shared_style.css b/chrome/browser/resources/history/shared_style.css
-index 5db7e1351e8e9f28e85bd26d26683718db58eeeb..ee1bd0150987feac40f2dc75804654b9d1381b2d 100644
+index 5f4da855dfba237f0771453f033c98cf4c793ad2..e0a446e79b4c37a5560a21a5e42a5b1fd5bbb79a 100644
 --- a/chrome/browser/resources/history/shared_style.css
 +++ b/chrome/browser/resources/history/shared_style.css
 @@ -7,7 +7,7 @@
@@ -10,4 +10,4 @@ index 5db7e1351e8e9f28e85bd26d26683718db58eeeb..ee1bd0150987feac40f2dc75804654b9
 + * #include=cr-hidden-style br-shared-style
   * #css_wrapper_metadata_end */
  
- a {
+ /* Purposefully empty since this style is generated at build time from the

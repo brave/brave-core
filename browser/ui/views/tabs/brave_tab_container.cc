@@ -571,7 +571,8 @@ BraveTabContainer::DropArrow::DropArrow(const BrowserRootView::DropIndex& index,
   arrow_window_->Init(std::move(params));
   arrow_view_ =
       arrow_window_->SetContentsView(std::make_unique<views::ImageView>());
-  arrow_view_->SetImage(GetDropArrowImage(position_, beneath_));
+  arrow_view_->SetImage(
+      ui::ImageModel::FromImageSkia(*GetDropArrowImage(position_, beneath_)));
   scoped_observation_.Observe(arrow_window_.get());
 
   arrow_window_->Show();
@@ -590,7 +591,8 @@ void BraveTabContainer::DropArrow::SetBeneath(bool beneath) {
   }
 
   beneath_ = beneath;
-  arrow_view_->SetImage(GetDropArrowImage(position_, beneath));
+  arrow_view_->SetImage(
+      ui::ImageModel::FromImageSkia(*GetDropArrowImage(position_, beneath)));
 }
 
 void BraveTabContainer::DropArrow::SetWindowBounds(const gfx::Rect& bounds) {

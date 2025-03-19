@@ -1,10 +1,10 @@
 diff --git a/chrome/android/java/res/layout/custom_tabs_toolbar.xml b/chrome/android/java/res/layout/custom_tabs_toolbar.xml
-index 517017eb89801f7c17e4fc53fdb7b9b97654c6e3..b59b984d7a677233a45dca3c7db5f8d65ff74f7b 100644
+index 9f991b6b098fc04faf1c1af561c418e8fda5b39a..824ec7987acb8011b10c06be4b803dad544512fb 100644
 --- a/chrome/android/java/res/layout/custom_tabs_toolbar.xml
 +++ b/chrome/android/java/res/layout/custom_tabs_toolbar.xml
-@@ -139,7 +139,7 @@ found in the LICENSE file.
-         android:gravity="center_vertical"
-         android:orientation="horizontal" />
+@@ -147,7 +147,7 @@ found in the LICENSE file.
+             style="@style/ToolbarHoverableButton" />
+       </LinearLayout>
  
 -
 +    <include layout="@layout/brave_custom_tabs_toolbar" android:layout_height="wrap_content" android:layout_width="match_parent" />

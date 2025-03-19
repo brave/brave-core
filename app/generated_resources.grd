@@ -324,7 +324,7 @@ are declared in tools/grit/grit_args.gni.
       </if>
 
       <!-- MD Extensions specific strings -->
-      <if expr="enable_extensions">
+      <if expr="enable_extensions_core">
         <part file="extensions_strings.grdp" />
       </if>
 
@@ -498,8 +498,8 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_DISABLE" desc="Used for Disable on buttons">
         Disable
       </message>
-      <!-- Search strings are only used in webui, so no mobile. -->
-      <if expr="not is_android">
+      <!-- Search strings are only used in webui. These aren't needed on android unless are enabled. -->
+      <if expr="not is_android or enable_extensions_core">
         <message name="IDS_SEARCH_CLEARED" desc="Message announced to screenreader users when search is cleared.">
           Search cleared
         </message>
@@ -5178,7 +5178,7 @@ are declared in tools/grit/grit_args.gni.
         </message>
 
         <message name="IDS_EXTENSION_PROMPT_WARNING_CONTENT_SETTINGS" desc="Permission string for access to content settings.">
-          Change your settings that control websites' access to features such as cookies, JavaScript, plugins, geolocation, microphone, camera, etc.
+          Change and grant access to features such as geolocation, microphone, camera, cookies, etc., for all your websites and extensions, including this extension.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_PRIVACY" desc="Permission string for access to privacy settings.">
           Change your privacy-related settings
@@ -5431,7 +5431,7 @@ are declared in tools/grit/grit_args.gni.
       </if>
 
       <!-- Extension installed bubble -->
-      <if expr="enable_extensions">
+      <if expr="enable_extensions_core">
         <if expr="is_macosx">
           <message name="IDS_EXTENSION_INSTALLED_APP_INFO" desc="Text displayed inside a link when an app is installed. Clicking this link opens up the New Tab Page to show the app's icon.">
             Show me
@@ -7533,6 +7533,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COLORS_VIOLET" desc="A color option in the customization menu on the New Tab Page.">
         Violet
       </message>
+      <message name="IDS_NTP_COLORS_BATCH_UPLOAD_DESCRIPTION" desc="Text for the Themes batch upload dialog entry.">
+        <ph name="COLOR_NAME">$1<ex>Red</ex></ph> color
+      </message>
       <message name="IDS_NTP_UNDO_DISMISS_PROMO_BUTTON_TOAST" desc="Undo toast for dismissing middle slot promo on New Tab Page.">
         You won't see this specific message again
       </message>
@@ -8022,6 +8025,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CHOOSE_ICONS_LABEL" desc="Label for the description of the functionality of the section of Customize Brave for selecting toolbar icons.">
         Choose what buttons show in the toolbar
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_ENTERPRISE_ENABLED_LABEL" desc="Label for the enterprise icon seen when a user cannot toggle a toolbar icon's pinned state due to an enterprise policy.">
+        Enabled
+      </message>
       <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_REORDER_TIP_LABEL" desc="Label for the tip informing users of how they can reorder buttons that they have pinned to the toolbar.">
         To rearrange buttons on the toolbar, drag them
       </message>
@@ -8157,6 +8163,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_MICROSOFT_FILES_TRENDING_JUSTIFICATION_TEXT" desc="Text shown on the NTP Microsoft files card.">
         Suggested for you
       </message>
+      <message name="IDS_NTP_MODULES_MICROSOFT_FILES_OPENED_TODAY_JUSTIFICATION_TEXT" desc="Text shown on the NTP Microsoft files card.">
+        You opened today
+      </message>
+      <message name="IDS_NTP_MODULES_MICROSOFT_FILES_OPENED_YESTERDAY_JUSTIFICATION_TEXT" desc="Text shown on the NTP Microsoft files card.">
+        You opened yesterday
+      </message>
+      <message name="IDS_NTP_MODULES_MICROSOFT_FILES_OPENED_PAST_WEEK_JUSTIFICATION_TEXT" desc="Text shown on the NTP Microsoft files card.">
+        You opened in the past week
+      </message>
+      <message name="IDS_NTP_MODULES_MICROSOFT_FILES_SHARED_BY_JUSTIFICATION_TEXT" desc="Text shown on the NTP Microsoft files card.">
+        Shared by <ph name="USER_NAME">$1<ex>Megan Bower</ex></ph>
+      </message>
       <message name="IDS_NTP_MODULES_DISMISS_FOR_HOURS_BUTTON_TEXT" desc="Text shown on the dismiss button of an NTP module that specifies length of time in hours.">
         Hide for <ph name="MODULE_TITLE">$1<ex>5</ex></ph> hours
       </message>
@@ -8205,6 +8223,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_CALENDAR_JOIN_MEETING_BUTTON_TEXT" desc="Text shown on button on the NTP Calendar cards for joining a video conference." meaning="Click here to join your video conference meetings.">
         Join Meeting
       </message>
+      <message name="IDS_NTP_MODULES_CALENDAR_JOIN_MEETING_BUTTON_ACCNAME" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the Join Meeting button is focused.">
+        Join meeting <ph name="MEETING_TITLE">$1<ex>Leads Sync</ex></ph>
+      </message>
       <message name="IDS_NTP_MODULES_CALENDAR_IN_PROGRESS" desc="Text displaying that the meeting is in progress." meaning="The meeting is currently in progress.">
         In Progress
       </message>
@@ -8216,6 +8237,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_CALENDAR_SEE_MORE" desc="Text for a link to the user's calendar." meaning="Click here to view more of the calendar.">
         See more
+      </message>
+      <message name="IDS_NTP_MODULES_CALENDAR_SEE_MORE_ACCNAME" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the see more link is focused.">
+        See more meetings on your Calendar
       </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
         Top picks for you
@@ -8341,7 +8365,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
        Hide for 12 hours
       </message>
       <message name="IDS_NTP_MICROSOFT_AUTHENTICATION_HEADING" desc="First line of text shown in the Microsoft Authentication module.">
-       See your Outlook Calendar and Sharepoint files
+       See your Outlook Calendar and SharePoint and OneDrive files
       </message>
       <message name="IDS_NTP_MICROSOFT_AUTHENTICATION_SUBHEADING" desc="Second line of text shown in the Microsoft Authentication module.">
        Easily access recent documents and upcoming calendar events
@@ -8350,7 +8374,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
        Sign in with Microsoft
       </message>
       <message name="IDS_NTP_MICROSOFT_AUTHENTICATION_SIDE_PANEL_DESCRIPTION" desc="Text in the side panel describing the Microsoft Authentication module.">
-       If this card is disabled, your Microsoft cards such as Sharepoint and Outlook Calendar will be disabled as well.
+       If this card is disabled, your Microsoft cards such as SharePoint and OneDrive files and Outlook Calendar will be disabled as well.
       </message>
 
       <!-- Mobile NTP Middle Slot Promo -->
@@ -9144,6 +9168,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TOOLTIP_NEW_TAB" desc="The tooltip for the new tab button">
         New tab
+      </message>
+      <message name="IDS_TOOLTIP_TAB_SCROLL_LEADING" desc="The tooltip for the leading scroll button">
+        Scroll to first tab
+      </message>
+      <message name="IDS_TOOLTIP_TAB_SCROLL_TRAILING" desc="The tooltip for the trailing scroll button">
+        Scroll to last tab
       </message>
       <message name="IDS_TOOLTIP_MIC_SEARCH" desc="The tooltip for search-by-voice button">
         Search by voice
@@ -10365,7 +10395,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_GENERATE_PASSWORD_BUTTON_TITLE" desc="Text for the button used to generate a password.">
           Suggest strong password
         </message>
-        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_USE_DEVICE_PASSKEY" desc="The text of the link in the password sheet that will use a different device’s passkey. This string also exists for desktop password manager and translations should match. See IDS_PASSWORD_MANAGER_USE_DEVICE_PASSKEY in components/password_manager_strings.grdp.">
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_USE_DEVICE_PASSKEY" desc="The text of the link in the password sheet that will use a different device’s passkey.">
           Use a passkey on a different device
         </message>
         <message name="IDS_PASSWORD_GENERATION_DIALOG_DESCRIPTION_BRANDED" desc="Text for password generation dialog, explaining that the password will be saved in Brave sync chain. Unified Password Manager branded variant.">
@@ -10845,7 +10875,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           other {Add tabs to new group}}
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_SPLIT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
-          Split tab with active tab
+          Show side-by-side
         </message>
         <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
           New group
@@ -10949,7 +10979,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           other {Add Tabs to New Group}}
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_SPLIT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
-          Split Tab With Active Tab
+          Show Side-By-Side
         </message>
         <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="In Title Case: The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
           New Group
@@ -11009,6 +11039,11 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           </message>
         </if>
       </if>
+
+      <!-- Side By Side -->
+      <message name="IDS_ACCNAME_SIDE_BY_SIDE_RESIZE" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the side by side resize handle is focused.">
+        Side By Side Resize Handle
+      </message>
 
       <!-- Tab Search -->
       <message name="IDS_TAB_SEARCH_PROMO" desc="Promo UI shown next to the tab search button to encourage it's use.">
@@ -11655,12 +11690,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
             <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_TITLE" desc="Title for the recent activity dialog.">
               Recent Activity
             </message>
-            <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_LATEST_UPDATE_TAB" desc="Title for the subsection for the last tab update.">
-              Last Update to this Tab
-            </message>
-            <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_LATEST_UPDATE_GROUP" desc="Title for the subsection for the last group updates.">
-              Latest Updates to this Group
-            </message>
           <!-- /Recent Activity -->
         </if>
         <if expr="not use_titlecase">
@@ -11806,15 +11835,18 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
             <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_TITLE" desc="Title for the recent activity dialog.">
               Recent activity
             </message>
-            <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_LATEST_UPDATE_TAB" desc="Title for the subsection for the last tab update.">
-              Last update to this tab
-            </message>
-            <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_LATEST_UPDATE_GROUP" desc="Title for the subsection for the last group updates.">
-              Latest updates to this group
-            </message>
           <!-- /Recent Activity -->
         </if>
       <!-- /Title Case Specific IDs -->
+
+      <!-- Recent Activity -->
+        <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_LATEST_UPDATE_TAB" desc="Title for the subsection for the last tab update.">
+          Last update to this tab
+        </message>
+        <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_LATEST_UPDATE_GROUP" desc="Title for the subsection for the last group updates.">
+          Latest updates to this group
+        </message>
+      <!-- /Recent Activity -->
 
       <!-- Data Sharing Create Flow -->
         <message name="IDS_DATA_SHARING_SHARE_GROUP_BODY" desc="The description of how shared group links work.">
@@ -11886,11 +11918,14 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_DATA_SHARING_BLOCK_DIALOG_TITLE" desc="The title of the block dialog.">
           Block <ph name="MEMBER_FULL_NAME">$1<ex>John Doe</ex></ph>?
         </message>
+        <message name="IDS_DATA_SHARING_BLOCK_DIALOG_BODY" desc="The body for the block and leave group dialog.">
+          <ph name="MEMBER_FULL_NAME">$1<ex>John Doe</ex></ph> (<ph name="EMAIL">$2<ex>johndoe@gmail.com</ex></ph>) will immediately lose access to the “<ph name="GROUP_NAME">$3<ex>Vacation</ex></ph>” tab group, and will no longer be able to interact with you across Brave services.
+        </message>
       <!-- /Data Sharing Block Dialog -->
 
       <!-- Data Sharing Block and Leave Dialog -->
         <message name="IDS_DATA_SHARING_BLOCK_LEAVE_DIALOG_BODY" desc="The body for the block and leave group dialog.">
-          You’ll immediately lose access to the “<ph name="GROUP_NAME">$1<ex>Vacation</ex></ph>” tab group, and <ph name="BLOCKED_MEMBER_FULL_NAME">$1<ex>Ali Connors</ex></ph> (<ph name="BLOCKED_MEMBER_EMAIL">$2<ex>ali.connors@gmail.com</ex></ph>) will no longer be able to interact with you across Brave services.
+          You’ll immediately lose access to the “<ph name="GROUP_NAME">$1<ex>Vacation</ex></ph>” tab group, and <ph name="BLOCKED_MEMBER_FULL_NAME">$2<ex>Ali Connors</ex></ph> (<ph name="BLOCKED_MEMBER_EMAIL">$3<ex>ali.connors@gmail.com</ex></ph>) will no longer be able to interact with you across Brave services.
         </message>
         <message name="IDS_DATA_SHARING_BLOCK_LEAVE_LEARN_MORE" desc="The text for the learn more link for the block and leave group dialog.">
           Learn about blocked accounts
@@ -11946,14 +11981,23 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <!-- /errors and warnings -->
 
       <!-- Delete Last Tab Dialog -->
+        <message name="IDS_DATA_SHARING_DELETE_LAST_DIALOG_HEADER" desc="Header of the dialog for confirming the owner deleting the last tab of the shared group.">
+          Keep tab group?
+        </message>
         <message name="IDS_DATA_SHARING_OWNER_DELETE_LAST_TAB_BODY" desc="Description for the confirming the owner deleting the last tab of the shared group. [ICU_Syntax]">
           {NUM_GROUPS, plural, =1 {Keep this group to add tabs later, or delete it if you no longer need it.} other {Keep these groups to add tabs later, or delete them if you no longer need them.}}
+        </message>
+        <message name="IDS_DATA_SHARING_OWNER_DELETE_LAST_TAB_BODY_SINGULAR" desc="Description for the confirming the owner deleting the last tab of the shared group in singular form.">
+          Keep this group to add tabs later, or delete it if you no longer need it.
         </message>
         <message name="IDS_DATA_SHARING_OWNER_DELETE_LAST_TAB_BODY_2" desc="More description for the confirming the owner deleting the last tab of the shared group.">
           If you delete it, everyone will immediately lose access to the "<ph name="GROUP_NAME">$1<ex>Vacation</ex></ph>" tab group, and it will be deleted from all devices.
         </message>
         <message name="IDS_DATA_SHARING_MEMBER_DELETE_LAST_TAB_BODY" desc="Description for the confirming the member deleting the last tab of one or more shared groups. [ICU_Syntax]">
           {NUM_GROUPS, plural, =1 {Keep this group to add tabs later, or leave it if you no longer want access to it} other {Keep these groups to add tabs later, or leave them if you no longer want access to them}}
+        </message>
+        <message name="IDS_DATA_SHARING_MEMBER_DELETE_LAST_TAB_BODY_SINGULAR" desc="Description for the confirming the member deleting the last tab of one or more shared groups in singular form.">
+          Keep this group to add tabs later, or leave it if you no longer want access to it.
         </message>
       <!-- /Delete Last Tab Dialog -->
 
@@ -11963,6 +12007,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_MEMBER_CHANGED_THIS_TAB" desc="A description of the user changing the current tab for the recent activity dialog.">
           <ph name="MEMBER_FIRST_NAME">$1<ex>Ali</ex></ph> changed this tab
+        </message>
+        <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_NO_UPDATES" desc="A description of the user changing the current tab for the recent activity dialog.">
+          No updates to this group
         </message>
       <!-- /Recent Activity -->
 
@@ -11997,6 +12044,15 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_DATA_SHARING_USER_ED_FIRST_TAB_CHANGE" desc="A description of how shared tabs work in a shared group for user education.">
           Changes made are seen by everyone in the group
         </message>
+        <message name="IDS_DATA_SHARING_SHARED_GROUPS_FEEDBACK" desc="The title for the shared tab group feed back button visible in the toolbar.">
+          Shared tab groups feedback
+        </message>
+        <message name="IDS_DATA_SHARING_SHARED_GROUPS_FEEDBACK_IPH" desc="The body text describing how to send feedback for the shared tab groups feature.">
+          Send your feedback about shared tab groups here
+        </message>
+        <message name="IDS_DATA_SHARING_SHARED_GROUPS_FEEDBACK_IPH_SCREENREADER" desc="The screen reader text describing how to send feedback for the shared tab groups feature." is_accessibility_with_no_ui="true">
+          Select the feedback button to send feedback regarding the shared tab groups feature
+        </message>
       <!-- /User Education -->
 
       <!-- Misc -->
@@ -12029,6 +12085,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_DATA_SHARING_LEAVE_GROUP" desc="Text of menu item to leave the group">
           Leave group
+        </message>
+        <message name="IDS_DATA_SHARING_KEEP_GROUP" desc="Text of button to keep the group">
+          Keep group
+        </message>
+        <message name="IDS_DATA_SHARING_DELETE_GROUP" desc="Text of button item to delete the group">
+          Delete group
         </message>
         <message name="IDS_DATA_SHARING_LOADING" desc="Alt text of the loading indicator for the data sharing dialog.">
           Loading
@@ -12291,8 +12353,8 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
 
       <!-- Settings related strings not specific to chrome://settings.
            (Settings specific strings are in settings_strings.grdp).
-           Android uses native UI for settings -->
-      <if expr="not is_android">
+           Not necessary on Android that uses native UI in settings unless extensions are enabled. -->
+      <if expr="not is_android or enable_extensions_core">
         <message name="IDS_TOOLBAR_INFORM_SET_HOME_PAGE" desc="The confirmation message when dropping a link on the Home toolbar button">
            Your home page has been set.
         </message>
@@ -13486,9 +13548,6 @@ This can include information about installed software, files, your browser, and 
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_SWITCH_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble (profile switch variant)">
           Cancel
         </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CONFIRM_SWITCH_BUTTON_LABEL" desc="Label of the profile switch button in the web signin interception bubble">
-          Ok
-        </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CREATE_BUBBLE_DESC_SUPERVISED" desc="This string is the body of a dialog about signing in to Brave with the user's Brave sync chain. It appears when a kid tries to sign in to a Brave service (like Gmail) with their account while using someone else’s Brave profile. The message explains the overarching user benefit of signing in: Kids of a certain age are motivated to get their parents’ help staying safer online, so the tone should be motivating. The body text is after the 'Sign in to Brave in a new profile?' string. We want users to understand why signing in to their own profile is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
           To stay safer online with your parent’s choices, sign in to your own profile as <ph name="USER_EMAIL">$1<ex>john@gmail.com</ex></ph>
         </message>
@@ -13497,9 +13556,6 @@ This can include information about installed software, files, your browser, and 
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_ACCEPT_TEXT" desc="Label of the Accept button of the Brave Signin Bubble intercept that is shown when a signed out user signs in on the web with it's first account. It also uses the given name of the user.">
           Continue as <ph name="NAME">$1<ex>Bob</ex></ph>
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed">
-          This will separate your browsing from <ph name="EXISTING_USER">$1<ex>bob@example.com</ex></ph>
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC_MANAGED_BY_TOKEN" desc="Body of the web signin interception bubble when the new account is managed via a token">
           You just signed in a managed account, creating a new managed profile will allow you to access some resources linked to that account.
@@ -13972,15 +14028,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_SYNC_TOKEN_HANDLE_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error bubble view when the user's token handle is invalid.">
           Your account sign-in details are out of date. Please sign out and sign in again.
-        </message>
-        <message name="IDS_ACTIVE_DIRECTORY_PASSWORD_EXPIRED" desc="The text to display on the hyperlink when the user needs to sign out and sign in again to change their password.">
-          Your password has expired. Please sign out then sign in again to change it.
-        </message>
-        <message name="IDS_ACTIVE_DIRECTORY_PASSWORD_CHANGED" desc="The text to display on the hyperlink when the user needs to sign out and sign in again to update local password to cryptohome.">
-          Your password has been changed on the server. Please sign out then sign in again.
-        </message>
-        <message name="IDS_ACTIVE_DIRECTORY_REFRESH_AUTH_TOKEN" desc="The text to display on the hyperlink when the user needs to sign out and sign in again to get authentication token.">
-          Failed to get authentication token. Please sign out then sign in again to try again.
         </message>
       </if>
       <message name="IDS_SYNC_ADVANCED_OPTIONS" desc="The text in the link that brings up the sync configure screen in the new tab page new data type notification.">
@@ -15323,8 +15370,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DESKTOP_MEDIA_PICKER_MANAGED" desc="Text to display when picker choices have been limited by enterprise policies.">
         Options for sharing are managed by your organization. Some items may be hidden.
       </message>
-      <message name="IDS_DESKTOP_MEDIA_PICKER_PERMISSION_BUTTON_MAC" desc="Text for a button to open the screen recording setting page in system preferences on Mac.">
-        Open System Preferences
+      <message name="IDS_DESKTOP_MEDIA_PICKER_PERMISSION_BUTTON_MAC" desc="Text for a button to open the screen recording setting page in System Settings on Mac.">
+        Open System Settings
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_RESELECT_SCREEN" desc="Text for a button appearing on the window picker dialog which is displayed when there is a secondary, system-level picker in which the user must select the content to share. Clicking this button will re-open the picker to allow the user to choose a new monitor/desktop/screen to share.">
         Choose a different screen
@@ -15335,9 +15382,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <if expr="toolkit_views">
         <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_THIS_TAB" desc="Text for one of the dialog-tabs on the media picker dialog. This dialog-tab controls sharing the current tab.">
           This Tab
-        </message>
-        <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_OTHER_TAB" desc="Text for one of the dialog-tabs on the media picker dialog. This dialog-tab controls sharing the any tab. ('Any' is inaccurate, but preferred by our writer.)">
-          Other Tab
         </message>
       </if>
       <message name="IDS_DESKTOP_MEDIA_PICKER_EMPTY_PREVIEW" desc="Text shown instead of a preview image of a tab when the user hasn't yet selected a tab to screenshare.">
@@ -15891,9 +15935,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SERIAL_PORT_CHOOSER_PROMPT" desc="The label that is used to introduce serial port chooser details to the user in a popup.">
         <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect to a serial port
       </message>
-      <message name="IDS_SERIAL_PORT_CHOOSER_NAME_WITH_PATH" desc="User option displaying a human-readable name for a serial port with the device path in parenthesis">
-        <ph name="FRIENDLY_NAME">$1<ex>Virtual COM Port</ex></ph> (<ph name="DEVICE_PATH">$2<ex>COM1</ex></ph>)
-      </message>
       <message name="IDS_SERIAL_PORT_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the serial port chooser popup and allows the requesting site access to the selected port.">
         Connect
       </message>
@@ -15906,19 +15947,22 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_PRODUCT_ID_AND_VENDOR_NAME" desc="String describing a USB device permission granted by enterprise policy to a site when the vendor name is available by a numeric product ID must be used.">
         USB device from <ph name="VENDOR_NAME">$2<ex>Brave</ex></ph> (product <ph name="PRODUCT_ID">$1<ex>0x12AB</ex></ph>)
       </message>
-      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_PRODUCT_ID_AND_VENDOR_ID" desc="String describing a USB device permission granted by enterprise policy to a site when only the numeric product ID and vendor ID are available.">
-        USB device (<ph name="VENDOR_ID">$2<ex>12AB</ex></ph>:<ph name="PRODUCT_ID">$1<ex>12AB</ex></ph>)
-      </message>
-      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_VENDOR_ID" desc="String describing a USB device permission granted by enterprise policy to a site for all devices from a single vendor when only the numeric vendor ID is available.">
-        USB devices from vendor <ph name="VENDOR_ID">$1<ex>12AB</ex></ph>
-      </message>
       <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_VENDOR_NAME" desc="String describing a USB device permission granted by enterprise policy to a site for all devices from a single vendor.">
         USB devices from <ph name="VENDOR_NAME">$1<ex>Brave</ex></ph>
       </message>
-      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_ANY_PORT" desc="String describing a serial port permission granted by enterprise policy for all ports.">
-        Any serial port
-      </message>
     </if>
+    <message name="IDS_SERIAL_PORT_CHOOSER_NAME_WITH_PATH" desc="User option displaying a human-readable name for a serial port with the device path in parenthesis">
+      <ph name="FRIENDLY_NAME">$1<ex>Virtual COM Port</ex></ph> (<ph name="DEVICE_PATH">$2<ex>COM1</ex></ph>)
+    </message>
+    <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_PRODUCT_ID_AND_VENDOR_ID" desc="String describing a USB device permission granted by enterprise policy to a site when only the numeric product ID and vendor ID are available.">
+      USB device (<ph name="VENDOR_ID">$2<ex>12AB</ex></ph>:<ph name="PRODUCT_ID">$1<ex>12AB</ex></ph>)
+    </message>
+    <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_VENDOR_ID" desc="String describing a USB device permission granted by enterprise policy to a site for all devices from a single vendor when only the numeric vendor ID is available.">
+      USB devices from vendor <ph name="VENDOR_ID">$1<ex>12AB</ex></ph>
+    </message>
+    <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_ANY_PORT" desc="String describing a serial port permission granted by enterprise policy for all ports.">
+      Any serial port
+    </message>
 
     <!-- HID (Human Interface Device) chooser -->
     <if expr="not is_android">
@@ -16435,7 +16479,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <if expr="is_macosx">
-        <message name="IDS_WEBAUTHN_BLUETOOTH_PERMISSION" desc="Body text in a dialog that appears when the user has requested some function that depends on Bluetooth, but Brave doesn't have permission to use Bluetooth. The action on this dialog is a button that will open the macOS System Preferences so that the user can grant permission.">
+        <message name="IDS_WEBAUTHN_BLUETOOTH_PERMISSION" desc="Body text in a dialog that appears when the user has requested some function that depends on Bluetooth, but Brave doesn't have permission to use Bluetooth. The action on this dialog is a button that will open the macOS System Settings so that the user can grant permission.">
           Brave needs permission to use Bluetooth to connect to your device
         </message>
       </if>
@@ -16680,23 +16724,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_OTHER_DEVICES_LABEL" desc="The label for a list of passkeys and their sources the user can choose from devices other than the one they are using. The list includes both passkeys (e.g. 'Juan Perez | Passkey from Pixel 7') and devices that may have passkeys (e.g. 'USB Security Key').">
         On other devices
       </message>
-      <message name="IDS_WEBAUTHN_SOURCE_CHROME_PROFILE" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in the user's Brave Profile.">
-        From your Brave profile
-      </message>
       <message name="IDS_WEBAUTHN_SOURCE_CHROME_PROFILE_NEW" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in the user's Brave Profile.">
         Your Brave profile
       </message>
-      <message name="IDS_WEBAUTHN_SOURCE_ICLOUD_KEYCHAIN" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in the user's iCloud Keychain.">
-        From iCloud Keychain
-      </message>
       <message name="IDS_WEBAUTHN_SOURCE_ICLOUD_KEYCHAIN_NEW" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in the user's iCloud Keychain.">
         iCloud Keychain
-      </message>
-      <message name="IDS_WEBAUTHN_SOURCE_CUSTOM_VENDOR" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in a third party passkey provider identified by VENDOR_NAME.">
-        From "<ph name="VENDOR_NAME">$1<ex>Dashlane</ex></ph>"
-      </message>
-      <message name="IDS_WEBAUTHN_SOURCE_WINDOWS_HELLO" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in Windows Hello.">
-        From Windows Hello
       </message>
       <message name="IDS_WEBAUTHN_SOURCE_WINDOWS_HELLO_NEW" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in Windows Hello.">
         Windows Hello
@@ -16913,57 +16945,75 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Sign in to <ph name="RP_ID">$1<ex>webauthn.io</ex></ph>
       </message>
 
-      <!-- Web-modal dialog shown during Digital Credential request -->
-      <message name="IDS_WEB_DIGITAL_CREDENTIALS_BLUETOOTH_POWER_ON_MANUAL_TITLE" translateable="false">
-        Bluetooth is disabled
+      <!-- WebAuthn Automatic Passkey Upgrades -->
+      <message name="IDS_PASSKEY_UPGRADE_BUBBLE_TITLE" desc="The title of a bubble that informs the user a passkey was created for them automatically. Refer to Glossary for the meaning of 'passkey'.">
+        Sign in faster next time
       </message>
 
-      <message name="IDS_WEB_DIGITAL_CREDENTIALS_BLUETOOTH_POWER_ON_MANUAL_DESCRIPTION" translateable="false">
+      <message name="IDS_PASSKEY_UPGRADE_BUBBLE_DESCRIPTION" desc="The body of a bubble that informs the user a passkey was created for them automatically. Refer to Glossary for the meaning of 'passkey'.">
+        <ph name="RP_ID">$1<ex>example.com</ex></ph> just created a passkey for your account. Passkeys offer a faster and safer way to sign in and are saved in Brave Password Manager for <ph name="USER">$2<ex>elisa.beckett@gmail.com</ex></ph>. <ph name="LEARN_MORE">$3<ex>Learn more about passkeys</ex></ph>
+      </message>
+
+      <message name="IDS_PASSKEY_UPGRADE_BUBBLE_LEARN_MORE" desc="A link in the body of a bubble that informs the user a passkey was created for them automatically. The link opens a Brave help center article on passkeys. Refer to Glossary for the meaning of 'passkey'.">
+        Learn more about passkeys
+      </message>
+
+      <message name="IDS_PASSKEY_UPGRADE_BUBBLE_MANAGE_BUTTON" desc="The label of a button that opens Brave Password Manager settings. Refer to Glossary for the meaning of 'passkey'.">
+        Manage passwords and passkeys
+      </message>
+
+
+      <!-- Web-modal dialog shown during Digital Credential request -->
+      <message name="IDS_WEB_DIGITAL_CREDENTIALS_BLUETOOTH_POWER_ON_MANUAL_TITLE">
+        Turn on Bluetooth?
+      </message>
+
+      <message name="IDS_WEB_DIGITAL_CREDENTIALS_BLUETOOTH_POWER_ON_MANUAL_DESCRIPTION">
         Check your device settings and turn it on to continue
       </message>
 
-      <message name="IDS_WEB_DIGITAL_CREDENTIALS_BLUETOOTH_POWER_ON_MANUAL_NEXT" translateable="false">
+      <message name="IDS_WEB_DIGITAL_CREDENTIALS_BLUETOOTH_POWER_ON_MANUAL_NEXT">
         Try again
       </message>
 
-      <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_TITLE" translateable="false">
-        Scan this QR code to use an ID from an Android device
+      <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_TITLE">
+        To choose an ID, scan the QR code
       </message>
 
-      <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_BODY" translateable="false">
-        Scan this QR code with a camera on the device from which you want to retrieve an ID for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
+      <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_BODY">
+        Safely use an ID from your Android device
       </message>
 
-      <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_CODE_ALT_TEXT" translateable="false">
+      <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_CODE_ALT_TEXT">
         QR code
       </message>
 
-      <message name="IDS_WEB_DIGITAL_CREDENTIALS_CABLEV2_CONNECTING_TITLE" desc="The title of a dialog that is shown when the computer is connecting to a phone or tablet." translateable="false">
-        Connecting to your device
+      <message name="IDS_WEB_DIGITAL_CREDENTIALS_CABLEV2_CONNECTING_TITLE" desc="The title of a dialog that is shown when the computer is connecting to a phone or tablet.">
+        Connecting...
       </message>
 
-      <message name="IDS_WEB_DIGITAL_CREDENTIALS_CABLEV2_CONNECTED_TITLE" desc="The title of a dialog that shows once the computer has successfully connected to the user's phone or tablet. That phone/tablet will be showing instructions for what to do next and the user should follow those instructions." translateable="false">
-        Follow the steps on your device
+      <message name="IDS_WEB_DIGITAL_CREDENTIALS_CABLEV2_CONNECTED_TITLE" desc="The title of a dialog that shows once the computer has successfully connected to the user's phone or tablet. That phone/tablet will be showing instructions for what to do next and the user should follow those instructions.">
+        Follow the steps on your other device
       </message>
 
     <!-- Interstitial shown prior to making digital identity request to wallet -->
     <!-- Android strings are declared in android_chrome_strings.grd. -->
-    <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_DIALOG_TITLE" translateable="false">
-      Make sure you trust this site with your data
+    <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_DIALOG_TITLE">
+      Do you trust this site with your data?
     </message>
-    <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_LOW_RISK_DIALOG_TEXT" translateable="false">
-      <ph name="WEBSITE_ORIGIN">$1<ex>www.cheapalcohol.com</ex></ph> wants to use personal info from your digital wallet. Only continue if you trust this site.
+    <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_LOW_RISK_DIALOG_TEXT">
+      <ph name="WEBSITE_ORIGIN">$1<ex>www.cheapalcohol.com</ex></ph> wants to use personal info from your digital wallet.
     </message>
-    <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_LOW_RISK_NEGATIVE_BUTTON_TEXT" translateable="false">
+    <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_LOW_RISK_NEGATIVE_BUTTON_TEXT">
       Cancel
     </message>
-    <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_HIGH_RISK_DIALOG_TEXT" translateable="false">
+    <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_HIGH_RISK_DIALOG_TEXT">
       <ph name="WEBSITE_ORIGIN">$1<ex>www.cheapalcohol.com</ex></ph> wants to use personal info from your digital wallet. Only continue if you trust this site. Dangerous sites might trick you into revealing things like your legal name or ID number.
     </message>
-    <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_HIGH_RISK_NEGATIVE_BUTTON_TEXT" translateable="false">
+    <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_HIGH_RISK_NEGATIVE_BUTTON_TEXT">
       Back to safety
     </message>
-    <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_POSITIVE_BUTTON_TEXT" translateable="false">
+    <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_POSITIVE_BUTTON_TEXT">
       Continue
     </message>
     <message name="IDS_WEB_DIGITAL_CREDENTIALS_INTERSTITIAL_REQUEST_ABORTED_DIALOG_TEXT" translateable="false">
@@ -17507,6 +17557,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_PICTURE" desc="A user's profile picture, to be used in a list of items shared with a website">
       profile picture
     </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_PHONE" desc="A user's phone number, to be used in a list of items shared with a website" translateable="false">
+      phone number
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_USERNAME" desc="A user's username, to be used in a list of items shared with a website" translateable="false">
+      username
+    </message>
     <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP_OR_TOS" desc="The consent text shown to the user before sign up when there is no privacy policy or terms of service.">
       To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">$1<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">$2<ex>name and email address</ex></ph> with this site.
     </message>
@@ -17935,12 +17991,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
     </if>
 
-    <message name="IDS_ACCNAME_SIDEBAR_WEBVIEW_LOCATION_BAR" desc="The accessible name of the sidebar webview's location bar.">
-      Location
-    </message>
-    <message name="IDS_SIDEBAR_WEBVIEW_TITLE" desc="The menu entry name for the sidebar webview.">
-      Webview
-    </message>
     <if expr="is_android">
       <message name="IDS_FAST_CHECKOUT_A11Y_ADDRESS_FORM_FILLED" desc="Accessibility string announced when an address form was filled.">
         <ph name="ADDRESS_LABEL">$1<ex>Work</ex></ph> address form filled.
@@ -18196,6 +18246,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_MERCHANT_TRUST_IPH_BODY_SCREEN_READER" desc="Announcement to screen reader users when the merchant trust IPH is shown." is_accessibility_with_no_ui="true">
       You can get a summary of what people are saying in their reviews
     </message>
+
+    <!-- Brave Apps Deprecation -->
+    <if expr="is_chromeos">
+      <message name="IDS_USER_INSTALLED_CHROME_APP_DEPRECATION_NOTIFICATION_MESSAGE" desc="Message of the notification displayed while launching a user-installed app.">
+        Support for Brave apps will end soon. To learn about your options, contact the app developer or your IT support team.
+      </message>
+    </if>
+
   </messages>
 </release>
 </grit>
