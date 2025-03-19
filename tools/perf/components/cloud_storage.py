@@ -31,7 +31,7 @@ def UpdateSha1(path: str):
 
 def DownloadFileFromCloudStorage(folder: CloudFolder, sha1: str, output: str):
   assert perf_test_utils.IsSha1Hash(sha1)
-  url = f'{_CLOUD_HTTPS_URL}/{folder}/{sha1}'
+  url = f'{_CLOUD_HTTPS_URL}/{folder.value}/{sha1}'
   perf_test_utils.DownloadFile(url, output)
 
 
