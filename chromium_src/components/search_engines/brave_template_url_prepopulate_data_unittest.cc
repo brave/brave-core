@@ -75,8 +75,9 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
     std::unique_ptr<TemplateURLData> fallback_t_url_data =
         TemplateURLPrepopulateData::GetPrepopulatedFallbackSearch(
             search_engines_test_environment_.pref_service(),
-            search_engines_test_environment_.search_engine_choice_service()
-                .GetCountryId());
+            search_engines_test_environment_.regional_capabilities_service()
+                .GetCountryId()
+                .GetForTesting());
     EXPECT_EQ(fallback_t_url_data->prepopulate_id, prepopulate_id);
   }
 
@@ -127,8 +128,9 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
         kCountryIDAtInstall, country_id);
     std::vector<std::unique_ptr<TemplateURLData>> urls = GetPrepopulatedEngines(
         search_engines_test_environment_.pref_service(),
-        search_engines_test_environment_.search_engine_choice_service()
-            .GetCountryId());
+        search_engines_test_environment_.regional_capabilities_service()
+            .GetCountryId()
+            .GetForTesting());
     std::set<int> unique_ids;
     for (auto& url : urls) {
       ASSERT_TRUE(unique_ids.find(url->prepopulate_id) == unique_ids.end());
@@ -142,8 +144,9 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, ProvidersFromPrepopulated) {
   std::vector<std::unique_ptr<TemplateURLData>> t_urls =
       TemplateURLPrepopulateData::GetPrepopulatedEngines(
           search_engines_test_environment_.pref_service(),
-          search_engines_test_environment_.search_engine_choice_service()
-              .GetCountryId());
+          search_engines_test_environment_.regional_capabilities_service()
+              .GetCountryId()
+              .GetForTesting());
 
   // Ensure all the URLs have the required fields populated.
   ASSERT_FALSE(t_urls.empty());
