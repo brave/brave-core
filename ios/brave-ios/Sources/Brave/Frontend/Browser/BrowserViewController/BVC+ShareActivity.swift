@@ -100,7 +100,7 @@ extension BrowserViewController {
     if FeatureList.kBraveTranslateEnabled.enabled,
       let translationState = tab?.translationState,
       translationState != .unavailable,
-      Preferences.Translate.translateEnabled.value != false
+      Preferences.Translate.translateEnabled.value
     {
       activities.append(
         BasicMenuActivity(

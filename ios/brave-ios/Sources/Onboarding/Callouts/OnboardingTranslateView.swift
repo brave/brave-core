@@ -11,67 +11,21 @@ import Strings
 import SwiftUI
 
 public struct OnboardingTranslateView: View {
-  @Environment(\.dismiss) private var dismiss
 
-  private var onContinueButtonPressed: (() -> Void)?
-  private var onDisableFeature: (() -> Void)?
-
-  public init(onContinueButtonPressed: (() -> Void)? = nil, onDisableFeature: (() -> Void)? = nil) {
-    self.onContinueButtonPressed = onContinueButtonPressed
-    self.onDisableFeature = onDisableFeature
-  }
+  public init() {}
 
   public var body: some View {
     ScrollView(.vertical) {
-      VStack(spacing: 0.0) {
+      VStack(spacing: 16.0) {
         Image("translate-onboarding-icon", bundle: .module)
-          .padding(.vertical, 24.0)
 
         Text(Strings.BraveTranslateOnboarding.translateTitle)
           .font(.callout.weight(.semibold))
           .foregroundColor(Color(braveSystemName: .textPrimary))
-          .padding(.bottom)
 
         Text(Strings.BraveTranslateOnboarding.translateDescription)
           .font(.callout)
           .foregroundColor(Color(braveSystemName: .textSecondary))
-          .padding(.bottom, 24.0)
-
-        Button(
-          action: {
-            dismiss()
-            onContinueButtonPressed?()
-          },
-          label: {
-            Text(Strings.OBContinueButton)
-              .font(.body.weight(.semibold))
-              .padding()
-              .frame(maxWidth: .infinity)
-              .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
-              .background(
-                ContainerRelativeShape()
-                  .fill(Color(braveSystemName: .buttonBackground))
-              )
-              .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
-          }
-        )
-        .buttonStyle(.plain)
-        .padding(.bottom)
-
-        Button(
-          action: {
-            dismiss()
-            onDisableFeature?()
-          },
-          label: {
-            Text(Strings.BraveTranslateOnboarding.disableTranslateButtonTitle)
-              .font(.body.weight(.semibold))
-              .padding()
-              .frame(maxWidth: .infinity)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
-          }
-        )
-        .buttonStyle(.plain)
       }
       .padding(24.0)
     }

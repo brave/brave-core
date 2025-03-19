@@ -304,17 +304,6 @@ class BraveTranslateTabHelper: NSObject {
   }
 
   @MainActor
-  func setupOnboarding() async throws {
-    guard let tab = tab, let delegate = delegate else {
-      return
-    }
-
-    if delegate.canShowTranslateOnboarding(tab: tab) {
-      await detectLanguage()
-    }
-  }
-
-  @MainActor
   func beginSetup() async throws {
     guard tab != nil else {
       return
@@ -358,11 +347,9 @@ class BraveTranslateTabHelper: NSObject {
 
     // Check if the user can view the translation onboarding
     guard delegate.canShowTranslateOnboarding(tab: tab) else {
-      let translateEnabled = Preferences.Translate.translateEnabled.value == true
-
       delegate.updateTranslateURLBar(
         tab: tab,
-        state: translateEnabled ? .available : .unavailable
+        state: Preferences.Translate.translateEnabled.value ? .available : .unavailable
       )
 
       return
@@ -379,16 +366,13 @@ class BraveTranslateTabHelper: NSObject {
 
     delegate.updateTranslateURLBar(
       tab: tab,
-      state: translateEnabled == true ? .available : .unavailable
+      state: translateEnabled ? .available : .unavailable
     )
 
     // User enabled translation via onboarding
-    if translateEnabled == true {
+    if translateEnabled {
       // Load the translate script manually
       try await loadTranslateScript()
-
-      // Automatically translate
-      startTranslation(canShowToast: true)
     }
   }
 

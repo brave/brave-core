@@ -16,9 +16,7 @@ struct BraveTranslateSettingsView: View {
   var body: some View {
     Form {
       Section {
-        Toggle(
-          isOn: .init(get: { translateEnabled.value == true }, set: { translateEnabled.value = $0 })
-        ) {
+        Toggle(isOn: $translateEnabled.value) {
           Text(Strings.BraveTranslate.settingsTranslateEnabledOptionTitle)
         }
         .tint(Color.accentColor)
