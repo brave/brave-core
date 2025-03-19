@@ -64,15 +64,8 @@ open class MenuHelper: NSObject {
       title: Strings.menuItemOpenWebsiteTitle,
       action: MenuHelper.selectorOpenWebsite
     )
-    let searchWithBraveItem = UIMenuItem(
-      title: Strings.searchWithBrave,
-      action: MenuHelper.selectorSearchWithBrave
-    )
-    let forcePaste = UIMenuItem(title: Strings.forcePaste, action: MenuHelper.selectorForcePaste)
-
     UIMenuController.shared.menuItems = [
-      copyItem, forcePaste, revealPasswordItem, hidePasswordItem, openWebsiteItem,
-      searchWithBraveItem,
+      copyItem, revealPasswordItem, hidePasswordItem, openWebsiteItem,
     ]
   }
 }

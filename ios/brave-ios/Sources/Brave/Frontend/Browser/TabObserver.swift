@@ -9,8 +9,6 @@ import WebKit
 protocol TabObserver: AnyObject {
   func tab(_ tab: Tab, didAddSnackbar bar: SnackBar)
   func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar)
-  /// Triggered when "Search with Brave" is selected on selected web text
-  func tab(_ tab: Tab, didSelectSearchWithBraveFor selectedText: String)
   func tab(_ tab: Tab, didCreateWebView webView: UIView)
   func tab(_ tab: Tab, willDeleteWebView webView: UIView)
 
@@ -39,7 +37,6 @@ protocol TabObserver: AnyObject {
 extension TabObserver {
   func tab(_ tab: Tab, didAddSnackbar bar: SnackBar) {}
   func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar) {}
-  func tab(_ tab: Tab, didSelectSearchWithBraveFor selectedText: String) {}
   func tab(_ tab: Tab, didCreateWebView webView: UIView) {}
   func tab(_ tab: Tab, willDeleteWebView webView: UIView) {}
 
@@ -63,7 +60,6 @@ class AnyTabObserver: TabObserver, Hashable {
   let id: ObjectIdentifier
   private let _tabDidAddSnackbar: (Tab, SnackBar) -> Void
   private let _tabDidRemoveSnackbar: (Tab, SnackBar) -> Void
-  private let _tabDidSelectSearchWithBraveFor: (Tab, String) -> Void
   private let _tabDidCreateWebView: (Tab, UIView) -> Void
   private let _tabWillDeleteWebView: (Tab, UIView) -> Void
 
@@ -94,9 +90,6 @@ class AnyTabObserver: TabObserver, Hashable {
     id = ObjectIdentifier(observer)
     _tabDidAddSnackbar = { [weak observer] in observer?.tab($0, didAddSnackbar: $1) }
     _tabDidRemoveSnackbar = { [weak observer] in observer?.tab($0, didRemoveSnackbar: $1) }
-    _tabDidSelectSearchWithBraveFor = { [weak observer] in
-      observer?.tab($0, didSelectSearchWithBraveFor: $1)
-    }
     _tabDidCreateWebView = { [weak observer] in observer?.tab($0, didCreateWebView: $1) }
     _tabWillDeleteWebView = { [weak observer] in observer?.tab($0, willDeleteWebView: $1) }
     _tabDidStartNavigation = { [weak observer] in observer?.tabDidStartNavigation($0) }
@@ -126,9 +119,6 @@ class AnyTabObserver: TabObserver, Hashable {
   }
   func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar) {
     _tabDidRemoveSnackbar(tab, bar)
-  }
-  func tab(_ tab: Tab, didSelectSearchWithBraveFor selectedText: String) {
-    _tabDidSelectSearchWithBraveFor(tab, selectedText)
   }
   func tab(_ tab: Tab, didCreateWebView webView: UIView) {
     _tabDidCreateWebView(tab, webView)

@@ -2510,28 +2510,6 @@ extension BrowserViewController: TabDelegate {
     removeBar(bar, animated: true)
   }
 
-  /// Triggered when "Search with Brave" is selected on selected web text
-  func tab(_ tab: Tab, didSelectSearchWithBraveFor selectedText: String) {
-    let engine = profile.searchEngines.defaultEngine(
-      forType: tab.isPrivate ? .privateMode : .standard
-    )
-
-    guard let url = engine?.searchURLForQuery(selectedText) else {
-      assertionFailure("If this returns nil, investigate why and add proper handling or commenting")
-      return
-    }
-
-    tabManager.addTabAndSelect(
-      URLRequest(url: url),
-      afterTab: tab,
-      isPrivate: tab.isPrivate
-    )
-
-    if !privateBrowsingManager.isPrivateBrowsing {
-      RecentSearch.addItem(type: .text, text: selectedText, websiteUrl: url.absoluteString)
-    }
-  }
-
   func showRequestRewardsPanel(_ tab: Tab) {
     let vc = BraveTalkRewardsOptInViewController()
 

@@ -51,6 +51,7 @@ protocol TabWebDelegate: AnyObject {
   ) -> Tab?
   func tab(_ tab: Tab, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
   func tab(_ tab: Tab, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
+  func tab(_ tab: Tab, buildEditMenuWithBuilder builder: any UIMenuBuilder)
 }
 
 /// Media device capture types that a web page may request
@@ -119,6 +120,8 @@ extension TabWebDelegate {
   func tab(_ tab: Tab, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool {
     return false
   }
+
+  func tab(_ tab: Tab, buildEditMenuWithBuilder builder: any UIMenuBuilder) {}
 }
 
 extension BrowserViewController: TabWebDelegate {
@@ -447,9 +450,57 @@ extension BrowserViewController: TabWebDelegate {
     }
     return false
   }
+
+  func tab(_ tab: Tab, buildEditMenuWithBuilder builder: any UIMenuBuilder) {
+    let forcePaste = UIAction(title: Strings.forcePaste) { [weak tab] _ in
+      if let string = UIPasteboard.general.string {
+        tab?.evaluateSafeJavaScript(
+          functionName: "window.__firefox__.forcePaste",
+          args: [string, UserScriptManager.securityToken],
+          contentWorld: .defaultClient
+        ) { _, _ in }
+      }
+    }
+    let searchWithBrave = UIAction(title: Strings.searchWithBrave) { [weak tab, weak self] _ in
+      tab?.evaluateSafeJavaScript(
+        functionName: "getSelection().toString",
+        contentWorld: .defaultClient
+      ) {
+        result,
+        _ in
+        guard let tab, let selectedText = result as? String else { return }
+        self?.didSelectSearchWithBrave(selectedText, tab: tab)
+      }
+    }
+    let braveMenuItems: UIMenu = .init(
+      options: [.displayInline],
+      children: [forcePaste, searchWithBrave]
+    )
+    builder.insertChild(braveMenuItems, atEndOfMenu: .root)
+  }
 }
 
 extension BrowserViewController {
+  private func didSelectSearchWithBrave(_ selectedText: String, tab: Tab) {
+    let engine = profile.searchEngines.defaultEngine(
+      forType: tab.isPrivate ? .privateMode : .standard
+    )
+
+    guard let url = engine?.searchURLForQuery(selectedText) else {
+      assertionFailure("If this returns nil, investigate why and add proper handling or commenting")
+      return
+    }
+
+    tabManager.addTabAndSelect(
+      URLRequest(url: url),
+      afterTab: tab,
+      isPrivate: tab.isPrivate
+    )
+
+    if !privateBrowsingManager.isPrivateBrowsing {
+      RecentSearch.addItem(type: .text, text: selectedText, websiteUrl: url.absoluteString)
+    }
+  }
   fileprivate func addTab(url: URL, inPrivateMode: Bool, currentTab: Tab) {
     let tab = self.tabManager.addTab(
       URLRequest(url: url),
