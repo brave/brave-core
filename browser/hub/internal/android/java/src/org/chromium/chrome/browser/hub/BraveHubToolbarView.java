@@ -57,8 +57,8 @@ public class BraveHubToolbarView extends HubToolbarView {
     }
 
     @Override
-    void setActionButton(@Nullable FullButtonData buttonData, boolean showText) {
-        super.setActionButton(buttonData, showText);
+    void setActionButton(@Nullable FullButtonData buttonData) {
+        super.setActionButton(buttonData);
 
         updateButtonsVisibility();
     }
