@@ -23,7 +23,7 @@
 #include "chrome/browser/profile_resetter/profile_resetter_test_base.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
-#include "chrome/browser/search_engine_choice/search_engine_choice_service_factory.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -36,8 +36,9 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/country_codes/country_codes.h"
 #include "components/prefs/pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_country_id.h"
+#include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/regional_capabilities/regional_capabilities_switches.h"
-#include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/search_engines_test_util.h"
 #include "components/search_engines/template_url_data_util.h"
@@ -82,10 +83,12 @@ TemplateURLData CreateTestSearchEngine() {
 
 std::string GetBraveSearchProviderSyncGUID(Profile* profile) {
   CHECK(profile);
-  search_engines::SearchEngineChoiceService* search_engine_choice_service =
-      search_engines::SearchEngineChoiceServiceFactory::GetForProfile(profile);
+  regional_capabilities::CountryIdHolder country_id_holder =
+      regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
+          profile)
+          ->GetCountryId();
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *profile->GetPrefs(), search_engine_choice_service->GetCountryId(),
+      *profile->GetPrefs(), country_id_holder.GetForTesting(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   DCHECK(data);
   return data->sync_guid;
@@ -372,12 +375,14 @@ constexpr int kTestExtensionPrepopulatedId = 83;
 // chrome/test/data/extensions/settings_override/manifest.json
 std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(Profile* profile) {
   PrefService* prefs = profile->GetPrefs();
-  search_engines::SearchEngineChoiceService* search_engine_choice_service =
-      search_engines::SearchEngineChoiceServiceFactory::GetForProfile(profile);
+  regional_capabilities::CountryIdHolder country_id_holder =
+      regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
+          profile)
+          ->GetCountryId();
   // Enforcing that `kTestExtensionPrepopulatedId` is not part of the
   // prepopulated set for the current profile's country.
   for (auto& data : TemplateURLPrepopulateData::GetPrepopulatedEngines(
-           *prefs, search_engine_choice_service->GetCountryId())) {
+           *prefs, country_id_holder.GetForTesting())) {
     EXPECT_NE(data->prepopulate_id, kTestExtensionPrepopulatedId);
   }
 
@@ -397,7 +402,7 @@ std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(Profile* profile) {
 
   std::unique_ptr<TemplateURLData> prepopulated =
       TemplateURLPrepopulateData::GetPrepopulatedEngineFromFullList(
-          *prefs, search_engine_choice_service->GetCountryId(),
+          *prefs, country_id_holder.GetForTesting(),
           kTestExtensionPrepopulatedId);
   CHECK(prepopulated);
   // Values below do not exist in extension manifest and are taken from
