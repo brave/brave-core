@@ -433,29 +433,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         TabUtils.openUrlInNewTab(isIncognito, url);
     }
 
-    private void updatePlaylistItem(String playlistId, PlaylistItem playlistItem) {
-        if (mPlaylistViewModel == null) {
-            return;
-        }
-        PlaylistItemModel playlistItemModel =
-                new PlaylistItemModel(
-                        playlistItem.id,
-                        playlistId,
-                        playlistItem.name,
-                        playlistItem.pageSource.url,
-                        playlistItem.mediaPath.url,
-                        playlistItem.hlsMediaPath.url,
-                        playlistItem.mediaSource.url,
-                        playlistItem.thumbnailPath.url,
-                        playlistItem.author,
-                        playlistItem.duration,
-                        playlistItem.lastPlayedPosition,
-                        (long) playlistItem.mediaFileBytes,
-                        playlistItem.cached,
-                        false);
-        mPlaylistViewModel.updatePlaylistItem(playlistItemModel);
-    }
-
     @Override
     public void onItemCached(PlaylistItem playlistItem) {
         loadPlaylist(ConstantUtils.DEFAULT_PLAYLIST);
