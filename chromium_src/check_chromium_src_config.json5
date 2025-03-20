@@ -41,6 +41,8 @@
         "components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
         "components/search_engines/brave_template_url_service_util_unittest.cc",
         "components/variations/service/field_trial_unittest.cc",
+        "crypto/encryptor.cc",
+        "crypto/encryptor.h",
         "net/base/brave_proxy_string_util_unittest.cc",
         "net/cookies/brave_canonical_cookie_unittest.cc",
         "v8/include/DO NOT PUT FILES HERE",

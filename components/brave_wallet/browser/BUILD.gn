@@ -21,6 +21,8 @@ if (is_official_build) {
 
 static_library("browser") {
   sources = [
+    "//brave/chromium_src/crypto/encryptor.cc",
+    "//brave/chromium_src/crypto/encryptor.h",
     "account_discovery_manager.cc",
     "account_discovery_manager.h",
     "account_resolver_delegate.h",
