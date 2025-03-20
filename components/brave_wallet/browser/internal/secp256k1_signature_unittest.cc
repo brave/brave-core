@@ -7,7 +7,6 @@
 
 #include "base/containers/to_vector.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
