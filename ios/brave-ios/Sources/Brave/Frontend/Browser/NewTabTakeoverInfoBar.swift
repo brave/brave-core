@@ -2,18 +2,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Shared
+import BraveStrings
 import SwiftUI
 
 class NewTabTakeoverInfoBar: InfoBar {
-  static let learnMoreOptOutChoicesUrl = "https://brave.com"
-
   init(tabManager: TabManager) {
     super.init(
       tabManager: tabManager,
-      labelText: Strings.newTabTakeoverInfoBarMessage,
-      linkText: Strings.newTabTakeoverInfoBarLearnMoreOptOutChoices,
-      linkUrl: NewTabTakeoverInfoBar.learnMoreOptOutChoicesUrl
+      labelText: Strings.Ads.newTabTakeoverInfoBarMessage,
+      linkText: Strings.Ads.newTabTakeoverInfoBarLearnMoreOptOutChoices,
+      linkUrl: "https://support.brave.com/hc/en-us/articles/35182999599501"
     )
   }
 
