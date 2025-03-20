@@ -89,14 +89,17 @@ function Main() {
     conversationContext.associatedContentInfo === null && // AssociatedContent request has finished and this is a standalone conversation
     !aiChatContext.isPremiumUser
 
+  // TODO: get canShowContextToggle from backend
+  const isLastTurnBraveSearchSERPSummary = false
+    // conversationContext.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
 
-  const isLastTurnBraveSearchSERPSummary =
-    conversationContext.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
-
-  const showContextToggle =
-    (conversationContext.conversationHistory.length === 0 ||
+  const showContextToggle = (
+    !aiChatContext.isSmartPageContentFeatureEnabled &&
+    conversationContext.conversationCapability === Mojom.ConversationCapability.CHAT &&
+    (conversationContext.conversationHistoryLength === 0 ||
       isLastTurnBraveSearchSERPSummary) &&
     !!conversationContext.associatedContentInfo
+  )
 
   const showAttachments = useSupportsAttachments()
     && conversationContext.showAttachments
@@ -337,7 +340,13 @@ function Main() {
             <Attachments />
           </div>)}
         <div className={styles.input}>
-          {aiChatContext.isAgentFeatureEnabled && conversationContext.historyInitialized && !conversationContext.conversationHistory.length &&
+          {showContextToggle && (
+            <div className={styles.toggleContainer}>
+              <PageContextToggle />
+            </div>
+          )}
+          {aiChatContext.isAgentFeatureEnabled && conversationContext.historyInitialized && !conversationContext.conversationHistoryLength &&
+            conversationContext.currentModel?.supportsTools &&
           <SegmentedControl
             size='tiny'
             onChange={(e) => {
@@ -363,11 +372,6 @@ function Main() {
               {CONVERSATION_CAPABILITY_DISPLAY_STRINGS[conversationContext.conversationCapability]}
             </div>
           }
-          {showContextToggle && (
-            <div className={styles.toggleContainer}>
-              <PageContextToggle />
-            </div>
-          )}
           <ToolsButtonMenu {...conversationContext} />
           <InputBox
             conversationStarted={isVisible}

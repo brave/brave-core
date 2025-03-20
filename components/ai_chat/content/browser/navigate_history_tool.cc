@@ -13,7 +13,7 @@
 namespace ai_chat {
 
 NavigateHistoryTool::NavigateHistoryTool(content::WebContents* web_contents)
-    : web_contents_(web_contents) {}
+    : content::WebContentsObserver(web_contents), web_contents_(web_contents) {}
 
 NavigateHistoryTool::~NavigateHistoryTool() = default;
 

@@ -14,8 +14,8 @@ interface SuggestionButtonRawProps {
   onClick: () => void
   className?: string
   isLoading?: boolean
-  icon: React.JSX.Element
-  isDisabled: boolean
+  icon?: React.JSX.Element
+  isDisabled?: boolean
 }
 
 export function SuggestionButtonRaw(props: React.PropsWithChildren<SuggestionButtonRawProps>) {
@@ -24,18 +24,20 @@ export function SuggestionButtonRaw(props: React.PropsWithChildren<SuggestionBut
   // full-width as well as use some features of the Button, like
   // the loading spinner.
   return <Button
-      kind='outline'
-      size='small'
-      onClick={props.onClick}
-      isDisabled={props.isDisabled}
-      isLoading={props.isLoading}
-      className={classnames(styles.suggestion, props.className)}>
-      <div className={styles.container}>
-          <div className={styles.icon}>
-              {props.icon}
-          </div>
-          <span className={styles.buttonText}>{props.children}</span>
-          {props.isLoading && <ProgressRing />}
+    kind='outline'
+    size='small'
+    onClick={props.onClick}
+    isDisabled={!!props.isDisabled}
+    isLoading={props.isLoading}
+    className={classnames(styles.suggestion, props.className)}>
+    <div className={styles.container}>
+      {props.icon &&
+      <div className={styles.icon}>
+          {props.icon}
       </div>
+      }
+      <span className={styles.buttonText}>{props.children}</span>
+      {props.isLoading && <ProgressRing />}
+    </div>
   </Button>
 }

@@ -15,10 +15,17 @@
 namespace ai_chat::features {
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChat);
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatTools);
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kSmartPageContent);
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAgent);
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<std::string> kAIModelsDefaultKey;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<std::string> kAIModelsDefaultAgentKey;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<std::string> kAIModelsPremiumDefaultAgentKey;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<std::string> kAIModelsVisionDefaultKey;
 
@@ -35,18 +42,12 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kConversationAPIEnabled;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<double> kAITemperature;
-COMPONENT_EXPORT(AI_CHAT_COMMON)
-extern const base::FeatureParam<bool> kIsSmartPageContentEnabled;
-COMPONENT_EXPORT(AI_CHAT_COMMON)
-extern const base::FeatureParam<bool> kIsAgentEnabled;
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatHistory);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatHistoryEnabled();
-
-COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatTools);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatToolsEnabled();
 

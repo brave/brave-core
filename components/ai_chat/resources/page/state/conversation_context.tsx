@@ -181,7 +181,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     })
 
   const aiChatContext = useAIChat()
-  const { conversationHandler, callbackRouter, selectedConversationId, updateSelectedConversationId } = useActiveChat()
+  const {
+    conversationHandler,
+    callbackRouter,
+    selectedConversationId,
+    updateSelectedConversationId,
+    updateTabAssociatedConversation } = useActiveChat()
   const sendFeedbackState = useSendFeedback(conversationHandler, getAPI().conversationEntriesFrameObserver)
 
   const [
@@ -327,7 +332,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         context.conversationCapability === Mojom.ConversationCapability.CHAT) {
       const onNewDefaultConversationListenerId =
         getAPI().uiObserver.onNewDefaultConversation.addListener(() => {
-          updateSelectedConversationId(undefined)
+          updateTabAssociatedConversation()
         })
       return () => {
         getAPI().uiObserver.removeListener(onNewDefaultConversationListenerId)
@@ -375,32 +380,34 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   const actionList = useActionMenu(context.inputText, aiChatContext.allActions)
 
-  const shouldShowLongConversationInfo = React.useMemo(() => {
-    const chatHistoryCharTotal = context.conversationHistory.reduce(
-      (charCount, curr) => charCount + curr.text.length,
-      0
-    )
+  // TODO: get from backend
+  const shouldShowLongConversationInfo = false || (false && !hasDismissedLongConversationInfo)
+  // const shouldShowLongConversationInfo = React.useMemo(() => {
+  //   const chatHistoryCharTotal = context.conversationHistory.reduce(
+  //     (charCount, curr) => charCount + curr.text.length,
+  //     0
+  //   )
 
-    const options =
-      context.currentModel?.options.leoModelOptions ||
-      context.currentModel?.options.customModelOptions
+  //   const options =
+  //     context.currentModel?.options.leoModelOptions ||
+  //     context.currentModel?.options.customModelOptions
 
-    let totalCharLimit = 0
+  //   let totalCharLimit = 0
 
-    if (options) {
-      totalCharLimit += options.longConversationWarningCharacterLimit ?? 0
-      totalCharLimit += context.shouldSendPageContents
-        ? options.maxAssociatedContentLength ?? 0
-        : 0
-    }
+  //   if (options) {
+  //     totalCharLimit += options.longConversationWarningCharacterLimit ?? 0
+  //     totalCharLimit += context.shouldSendPageContents
+  //       ? options.maxAssociatedContentLength ?? 0
+  //       : 0
+  //   }
 
-    return !hasDismissedLongConversationInfo
-      && chatHistoryCharTotal >= totalCharLimit
-  }, [
-    context.conversationHistory,
-    context.currentModel,
-    hasDismissedLongConversationInfo
-  ])
+  //   return !hasDismissedLongConversationInfo
+  //     && chatHistoryCharTotal >= totalCharLimit
+  // }, [
+  //   context.conversationHistory,
+  //   context.currentModel,
+  //   hasDismissedLongConversationInfo
+  // ])
 
   const apiHasError = context.currentError !== Mojom.APIError.None
   const shouldDisableUserInput = !!(
@@ -616,7 +623,10 @@ export function useIsNewConversation() {
 }
 
 export function useSupportsAttachments() {
+  const conversationContext = useConversation()
   const aiChatContext = useAIChat()
   const isNew = useIsNewConversation()
-  return aiChatContext.isStandalone && isNew
+  return conversationContext.conversationCapability === Mojom.ConversationCapability.CHAT &&
+      aiChatContext.isStandalone &&
+      isNew
 }

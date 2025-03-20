@@ -4,19 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
-import Tooltip from '@brave/leo/react/tooltip'
-import classnames from '$web-common/classnames'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
-// TODO: move to common
-import { SuggestionButtonRaw } from '../../../page/components/suggested_question/suggested_question_raw'
+
+
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import MarkdownRenderer from '../markdown_renderer'
 import WebSourcesEvent from './web_sources_event'
+import ToolEvent from './tool_event'
 import styles from './style.module.scss'
 
 function SearchSummary (props: { searchQueries: string[] }) {
@@ -49,144 +47,6 @@ function SearchSummary (props: { searchQueries: string[] }) {
       <span>
         {message} <a className={styles.searchLearnMoreLink} href='#' onClick={handleLearnMore}>{getLocale('learnMore')}</a>
       </span>
-    </div>
-  )
-}
-
-export function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boolean }) {
-  const context = useUntrustedConversationContext()
-  const toolUse = props.event
-
-  const input: any | null = React.useMemo(() => {
-    if (!toolUse.inputJson) {
-      return null
-    }
-    let input
-    try {
-      input = JSON.parse(toolUse.inputJson)
-    } catch (e) {
-      return null
-    }
-    return input
-  }, [toolUse.inputJson])
-
-  if (toolUse.toolName === 'active_web_page_content_fetcher') {
-    return (
-      <div className={styles.toolUseRequest}>Leo is requesting access to page content
-        <Button onClick={() => context.conversationHandler?.respondToToolUseRequest(toolUse.toolId, null)}>Allow</Button>
-      </div>
-    )
-  }
-
-  let toolText = <>{toolUse.toolName}</>
-  let statusIcon = <Icon name="check-circle-outline" />
-  let progressIcon = <ProgressRing />
-
-  if (toolUse.toolName === 'computer') {
-    switch (input?.action) {
-      case 'screenshot': {
-        toolText = <>Looking at the page</>
-        break
-      }
-      case 'key': {
-        toolText = <>Pressing the key: {input?.text}</>
-        break
-      }
-      case 'type': {
-        toolText = <div title={input?.text} className={styles.toolUseLongText}>Typing: "{input?.text}"</div>
-        break
-      }
-      case 'mouse_move': {
-        toolText = <>Moving the mouse</>
-        break
-      }
-      case 'left_click': {
-        toolText = <>Clicking the left mouse button</>
-        break
-      }
-      default: {
-        toolText = <>{input?.action}</>
-      }
-    }
-
-    // Append any images (e.g. screenshots) in the output as a tooltip
-    const toolResultOutputImageContentBlocks = toolUse.output?.filter(content => !!content.imageContentBlock) ?? []
-
-    if (toolResultOutputImageContentBlocks.length) {
-      toolText = (
-        <Tooltip>
-          {toolText}
-          <div slot='content'>
-          {toolResultOutputImageContentBlocks.map((content, i) => (
-            <div key={i}>
-              <img className={styles.screenshotPreview} src={content.imageContentBlock?.imageUrl} />
-            </div>
-          ))}
-          </div>
-        </Tooltip>
-      )
-    }
-  }
-
-  if (toolUse.toolName === 'web_page_navigator') {
-    toolText = <>Navigating to the URL: <span className={styles.toolUrl}>{input?.website_url}</span></>
-  }
-
-  if (toolUse.toolName === 'web_page_history_navigator') {
-    toolText = <>Pressing the browser's <i>{input?.back ? 'back' : 'forwards'}</i> button</>
-  }
-
-  if (toolUse.toolName === 'user_choice_tool') {
-    if (toolUse.output) {
-      toolText = (
-        <SuggestionButtonRaw
-          onClick={() => {}}
-          isDisabled={true}
-          icon={<Icon className={styles.completedChoiceIcon} name='checkbox-checked' />}
-        >
-          {toolUse.output[0]?.textContentBlock?.text}
-        </SuggestionButtonRaw>
-      )
-    } else {
-      progressIcon = <Icon name='help-outline' />
-
-      const handleChoice = (choice: string) => {
-        context.conversationHandler?.respondToToolUseRequest(toolUse.toolId,
-            [
-              {textContentBlock: { text: choice } } as Mojom.ContentBlock
-            ]
-        )
-      }
-
-      toolText = (
-        <>
-          {input?.choices?.map((choice: string, i: number) => (
-            <div key={i} className={styles.toolChoice}>
-              <SuggestionButtonRaw
-                className={classnames(styles.choice)}
-                isDisabled={false}
-                onClick={() => handleChoice(choice)}
-                icon={<div className={classnames(styles.choiceNumber)}>{i+1}</div>}
-              >
-                {choice}
-              </SuggestionButtonRaw>
-            </div>
-          ))}
-        </>
-      )
-    }
-  }
-
-  const isComplete = !!toolUse.output
-
-
-  return (
-    <div className={classnames(styles.toolUse, isComplete && styles.toolUseComplete, `tool-${toolUse.toolName}`)}>
-      <div className={styles.toolUseIcon} title={toolUse.inputJson}>
-        {!isComplete && progressIcon}
-        {isComplete && statusIcon}
-      </div>
-      {toolText}
     </div>
   )
 }

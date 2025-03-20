@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 
+#include <cstdint>
 #include <iterator>
 #include <optional>
 #include <string>
@@ -31,6 +32,8 @@
 namespace ai_chat {
 
 namespace {
+
+constexpr uint8_t kMaxCountLargeToolUseEvents = 2;
 
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
@@ -206,7 +209,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
                 }
               }
             }
-            if (large_event_count < 3 || !is_large) {
+            if (large_event_count < kMaxCountLargeToolUseEvents || !is_large) {
               if (is_large) {
                 large_event_count++;
               }

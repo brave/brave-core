@@ -120,6 +120,57 @@ class PageContentTool : public Tool {
   bool RequiresUserInteractionBeforeHandling() const override { return true; }
 };
 
+class AssistantDetailStorageTool : public Tool {
+  public:
+   // static name
+   inline static const std::string_view kName =
+       "assistant_detail_storage";
+
+   ~AssistantDetailStorageTool() override = default;
+
+   std::string_view name() const override { return kName; }
+   std::string_view description() const override {
+     return "This tool allows the assistant to preserve important information "
+            "from screenshots or web content before it gets pushed out of "
+            "context. The assistant should proactively use this tool "
+            "immediately after taking screenshots that contain valuable "
+            "information, especially before performing additional actions that "
+            "might generate more content. By storing key details, "
+            "observations, or data points from visual content, the assistant "
+            "can reference this information later in the conversation even if "
+            "the original screenshots are no longer in context. This is "
+            "particularly important for multi-step tasks where earlier "
+            "screenshots contain critical information needed for later steps. "
+            "Actions like scrolling or clicking will result in an additional "
+            "screenshot and the previous screenshot being removed from "
+            "context, so it's important to use this tool when any valuable "
+            "information is gleamed from a screenshot or web content output.";
+   }
+
+   std::optional<std::string> GetInputSchemaJson() const override {
+     return R"({
+         "type": "object",
+         "properties": {
+           "information": {
+             "type": "string",
+             "description": "Useful information from an immediately-previous tool call"
+           }
+         }
+       })";
+   }
+
+   // TODO: Only needed for agent-style conversations
+   bool IsContentAssociationRequired() const override { return true; }
+
+   bool RequiresUserInteractionBeforeHandling() const override { return false; }
+
+   void UseTool(const std::string& input_json, Tool::UseToolCallback callback) override {
+     std::move(callback).Run(CreateContentBlocksForText(
+         "Look at the function input for the information the assistant needed "
+         "to remember"));
+   }
+ };
+
 class UserChoiceTool : public Tool {
  public:
   // static name
@@ -130,10 +181,11 @@ class UserChoiceTool : public Tool {
   std::string_view name() const override { return kName; }
   std::string_view description() const override {
     return "Presents a list of text choices to the user and returns the user's "
-           "selection. The assistant will call this function when it needs "
-           "the user to make a choice between a list of options in order to "
-           "move forward with a task. Prefer this over asking open-ended "
-           "questions, unless the task is complete or almost complete.";
+           "selection. The assistant will call this function only when it "
+           "needs "
+           "the user to make a choice between a list of a couple options in "
+           "order to "
+           "move forward with a task.";
   }
 
   std::optional<std::string> GetInputSchemaJson() const override {
@@ -159,6 +211,17 @@ class UserChoiceTool : public Tool {
 
   bool RequiresUserInteractionBeforeHandling() const override { return true; }
 };
+
+bool ModelSupportsCapability(const mojom::Model& model,
+                             mojom::ConversationCapability capability) {
+  switch (capability) {
+    case mojom::ConversationCapability::CHAT:
+      return true;
+    case mojom::ConversationCapability::CONTENT_AGENT:
+      return model.supports_tools;
+  }
+  NOTREACHED();
+}
 
 }  // namespace
 
@@ -300,10 +363,11 @@ ConversationHandler::ConversationHandler(
       url_loader_factory_(url_loader_factory) {
   // Build tools list
   if (features::IsAIChatToolsEnabled()) {
-    if (features::kIsSmartPageContentEnabled.Get()) {
+    if (base::FeatureList::IsEnabled(features::kSmartPageContent)) {
       tools_.push_back(std::make_unique<PageContentTool>());
     }
     tools_.push_back(std::make_unique<UserChoiceTool>());
+    tools_.push_back(std::make_unique<AssistantDetailStorageTool>());
   }
 
   // When a client disconnects, let observers know
@@ -315,6 +379,8 @@ ConversationHandler::ConversationHandler(
       weak_ptr_factory_.GetWeakPtr()));
   models_observer_.Observe(model_service_.get());
 
+  // TODO(petemill): Appropriate model for re-loaded capability. For now,
+  // we don't allow reloaded agent conversations to be continued.
   ChangeModel(conversation->model_key.value_or("").empty()
                   ? model_service->GetDefaultModelKey()
                   : conversation->model_key.value());
@@ -462,10 +528,13 @@ void ConversationHandler::InitEngine() {
     SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key", model_key_);
     base::debug::DumpWithoutCrashing();
     // Use default
-    model = model_service_->GetModel(features::kAIModelsDefaultKey.Get());
+    auto default_key = features::kAIModelsDefaultKey.Get();
+    model = model_service_->GetModel(conversation_capability_ == mojom::ConversationCapability::CHAT
+                                         ? default_key
+                                         : features::kAIModelsDefaultAgentKey.Get());
     if (!model) {
       SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key",
-                                  features::kAIModelsDefaultKey.Get());
+                                  default_key);
       base::debug::DumpWithoutCrashing();
       const auto& all_models = model_service_->GetModels();
       // Use first if given bad default value
@@ -721,6 +790,29 @@ void ConversationHandler::ChangeModel(const std::string& model_key) {
   CHECK(!model_key.empty());
   // Check that the key exists
   auto* new_model = model_service_->GetModel(model_key);
+
+  // Handle when the model does not support the current conversation capability
+  if (new_model && !ModelSupportsCapability(*new_model, conversation_capability_)) {
+    // Prioritize model change over current selected conversation capability
+    // only if there's no conversation history.
+    // The UI should not allow model to be changed when there's history, but
+    // this could happen when the conversation is loaded from storage
+    // and the list of models has changed.
+    if (chat_history_.empty()) {
+      conversation_capability_ = mojom::ConversationCapability::CHAT;
+      OnConversationCapabilityChanged();
+      if (!ModelSupportsCapability(*new_model, conversation_capability_)) {
+        // All models should support chat
+        SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key", new_model->key);
+        NOTREACHED();
+      }
+    } else {
+      DVLOG(0) << "Model does not support conversation capability: "
+                << conversation_capability_;
+      return;
+    }
+  }
+
   if (new_model) {
     model_key_ = new_model->key;
 
@@ -750,10 +842,18 @@ void ConversationHandler::ChangeCapability(
     return;
   }
 
-  if (capability == mojom::ConversationCapability::CONTENT_AGENT &&
-      !GetCurrentModel().supports_tools) {
-    DVLOG(0) << "Current model does not support capability: " << capability;
-    return;
+  if (!ModelSupportsCapability(GetCurrentModel(), capability)) {
+    DVLOG(0)
+        << "Changing model because current model does not support capability: "
+        << capability;
+    if (capability == mojom::ConversationCapability::CONTENT_AGENT) {
+      ChangeModel(ai_chat_service_->IsPremiumStatus()
+                      ? features::kAIModelsPremiumDefaultAgentKey.Get()
+                      : features::kAIModelsDefaultAgentKey.Get());
+    } else {
+      // Can't match capability with model
+      return;
+    }
   }
 
   DVLOG(0) << __func__ << ": " << capability;
@@ -861,11 +961,24 @@ void ConversationHandler::SubmitHumanConversationEntry(
   const bool is_page_associated =
       IsContentAssociationPossible() && should_send_page_contents_;
 
+  constexpr auto kContentFetchingMessageTypes =
+      base::MakeFixedFlatSet<mojom::ActionType>(
+          {mojom::ActionType::SUGGESTION, mojom::ActionType::SUMMARIZE_PAGE,
+           mojom::ActionType::SUMMARIZE_VIDEO,
+           mojom::ActionType::SUMMARIZE_SELECTED_TEXT});
+
   const bool can_fetch_content =
       is_page_associated &&
       conversation_capability_ == mojom::ConversationCapability::CHAT &&
-      !(features::kIsSmartPageContentEnabled.Get() &&
-        features::IsAIChatToolsEnabled());
+      (!(base::FeatureList::IsEnabled(features::kSmartPageContent) &&
+         features::IsAIChatToolsEnabled()) ||
+       // Assume content should always be sent for conversations with
+       // content-related message types.
+       std::any_of(chat_history_.begin(), chat_history_.end(),
+                   [&kContentFetchingMessageTypes](auto& turn) {
+                     return base::Contains(kContentFetchingMessageTypes,
+                                           turn->action_type);
+                   }));
 
   if (can_fetch_content) {
     // Fetch updated page content before performing generation
@@ -1178,8 +1291,8 @@ void ConversationHandler::OnActiveWebPageContentFetcherResponseReady(
     std::string content,
     bool is_video,
     std::string invalidation_token) {
-  std::optional<std::vector<mojom::ContentBlockPtr>> output;
-  output->push_back(mojom::ContentBlock::NewTextContentBlock(
+  std::vector<mojom::ContentBlockPtr> output;
+  output.push_back(mojom::ContentBlock::NewTextContentBlock(
       mojom::TextContentBlock::New(content)));
   OnToolUseComplete(tool_id, std::move(output));
 }
@@ -1953,6 +2066,7 @@ void ConversationHandler::OnDefaultModelChanged(const std::string& old_key,
                                                 const std::string& new_key) {
   // When default model changes, change any conversation that
   // has that model.
+  // TODO: handle capability
   DVLOG(1) << "Default model changed from " << old_key << " to " << new_key;
   if (model_key_ == old_key) {
     ChangeModel(new_key);

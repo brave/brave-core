@@ -16,11 +16,20 @@ namespace ai_chat::features {
 BASE_FEATURE(kAIChat,
              "AIChat",
              base::FEATURE_ENABLED_BY_DEFAULT
-);
+            );
+BASE_FEATURE(kAIChatTools, "AIChatTools", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kSmartPageContent,
+             "AIChatSmartPageContent",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAgent, "AIChatAgent", base::FEATURE_DISABLED_BY_DEFAULT);
 const base::FeatureParam<std::string> kAIModelsDefaultKey{
     &kAIChat, "default_model", "chat-leo-expanded"};
 const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey{
     &kAIChat, "default_premium_model", "chat-leo-expanded"};
+const base::FeatureParam<std::string> kAIModelsDefaultAgentKey{
+    &kAIChat, "default_agent_model", "chat-claude-haiku"};
+const base::FeatureParam<std::string> kAIModelsPremiumDefaultAgentKey{
+    &kAIChat, "default_agent_model", "chat-claude-sonnet"};
 const base::FeatureParam<std::string> kAIModelsVisionDefaultKey{
     &kAIChat, "default_vision_model", "chat-vision-basic"};
 const base::FeatureParam<bool> kFreemiumAvailable(&kAIChat,
@@ -32,8 +41,6 @@ const base::FeatureParam<bool> kOmniboxOpensFullPage{
 const base::FeatureParam<bool> kConversationAPIEnabled{
     &kAIChat, "conversation_api", true};
 const base::FeatureParam<double> kAITemperature{&kAIChat, "temperature", 0.2};
-const base::FeatureParam<bool> kIsSmartPageContentEnabled{
-    &kAIChat, "smart_page_content", false};
 
 bool IsAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChat);
@@ -51,16 +58,12 @@ bool IsAIChatHistoryEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatHistory);
 }
 
-BASE_FEATURE(kAIChatTools, "AIChatTools", base::FEATURE_ENABLED_BY_DEFAULT);
-
 bool IsAIChatToolsEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatTools);
 }
 
-const base::FeatureParam<bool> kIsAgentEnabled{&kAIChat, "agent", true};
-
 bool IsAgentConversationCapabilityEnabled() {
-  return IsAIChatToolsEnabled() && kIsAgentEnabled.Get();
+  return IsAIChatToolsEnabled() && base::FeatureList::IsEnabled(kAgent);
 }
 
 BASE_FEATURE(kCustomSiteDistillerScripts,

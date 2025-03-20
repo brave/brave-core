@@ -112,6 +112,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-leo-expanded";
       model->display_name = "Mixtral";
       model->vision_support = false;
+      model->supports_tools = false;
+      model->supports_anthropic_computer_use = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -134,6 +136,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-claude-haiku";
       model->display_name = "Claude Haiku";
       model->vision_support = false;
+      model->supports_tools = true;
+      model->supports_anthropic_computer_use = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -156,6 +160,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-claude-sonnet";
       model->display_name = "Claude Sonnet";
       model->vision_support = true;
+      model->supports_tools = true;
+      model->supports_anthropic_computer_use = true;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -180,6 +186,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-basic";
       model->display_name = "Llama 3.1 8B";
       model->vision_support = false;
+      model->supports_tools = false;
+      model->supports_anthropic_computer_use = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -203,6 +211,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       auto model = mojom::Model::New();
       model->key = "chat-qwen";
       model->display_name = "Qwen 14B";
+      model->supports_tools = false;
+      model->supports_anthropic_computer_use = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -227,6 +237,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-vision-basic";
       model->display_name = "Llama 3.2 11B Vision";
       model->vision_support = true;
+      model->supports_tools = false;
+      model->supports_anthropic_computer_use = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -623,6 +635,8 @@ void ModelService::SetDefaultModelKeyWithoutValidationForTesting(
 }
 
 const std::string& ModelService::GetDefaultModelKey() {
+  // TODO(petemill): Different default model pref for agent and chat
+  // conversations.
   return pref_service_->GetString(kDefaultModelKey);
 }
 
