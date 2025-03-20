@@ -2,18 +2,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Shared
+import BraveStrings
 import SwiftUI
 
 class SearchResultAdClickedInfoBar: InfoBar {
-  static let learnMoreOptOutChoicesUrl = "https://search.brave.com/help/conversion-reporting"
-
   init(tabManager: TabManager) {
     super.init(
       tabManager: tabManager,
-      labelText: Strings.searchResultAdClickedInfoBarTitle,
-      linkText: Strings.searchResultAdClickedLearnMoreOptOutChoicesLabel,
-      linkUrl: SearchResultAdClickedInfoBar.learnMoreOptOutChoicesUrl
+      labelText: Strings.Ads.searchResultAdClickedInfoBarMessage,
+      linkText: Strings.Ads.searchResultAdClickedInfoBarLearnMoreOptOutChoices,
+      linkUrl: "https://search.brave.com/help/conversion-reporting"
     )
   }
 

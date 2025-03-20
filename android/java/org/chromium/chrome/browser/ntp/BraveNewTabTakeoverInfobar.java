@@ -20,7 +20,8 @@ import org.chromium.components.user_prefs.UserPrefs;
 
 public class BraveNewTabTakeoverInfobar {
     private static final String TAG = "NewTabTakeover";
-    private static final String LEARN_MORE_URL = "https://brave.com";
+    private static final String LEARN_MORE_URL =
+            "https://support.brave.com/hc/en-us/articles/35182999599501";
 
     public static void maybeCreate(Profile profile) {
         try {

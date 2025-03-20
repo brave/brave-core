@@ -23,7 +23,8 @@
 namespace ntp_background_images {
 
 namespace {
-constexpr char kLearnMoreUrl[] = "https://brave.com";
+constexpr char kLearnMoreUrl[] =
+    "https://support.brave.com/hc/en-us/articles/35182999599501";
 }  // namespace
 
 // static
