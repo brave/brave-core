@@ -89,7 +89,6 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
 
     @Override
     public void initializeWithNative(
-            Activity activity,
             BottomControlsCoordinator.BottomControlsVisibilityController visibilityController,
             Callback<Object> onModelTokenChange) {
         // Fix for the null object crash at TabGroupSyncFeatures.isTabGroupSyncEnabled
@@ -112,22 +111,21 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                             if (mTabModelSelector.getModels().size() >= 2
                                     && mTabModelSelector.getModel(false).getProfile() != null) {
                                 callSuperInitializeWithNative(
-                                        activity, visibilityController, onModelTokenChange);
+                                        visibilityController, onModelTokenChange);
 
                                 mTabModelSelector.removeObserver(this);
                             }
                         }
                     });
         } else {
-            callSuperInitializeWithNative(activity, visibilityController, onModelTokenChange);
+            callSuperInitializeWithNative(visibilityController, onModelTokenChange);
         }
     }
 
     private void callSuperInitializeWithNative(
-            Activity activity,
             BottomControlsCoordinator.BottomControlsVisibilityController visibilityController,
             Callback<Object> onModelTokenChange) {
-        super.initializeWithNative(activity, visibilityController, onModelTokenChange);
+        super.initializeWithNative(visibilityController, onModelTokenChange);
     }
 
     @Override
