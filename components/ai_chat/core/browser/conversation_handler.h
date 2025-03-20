@@ -479,8 +479,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   std::vector<Suggestion> suggestions_;
   std::string selected_language_;
   // Is a conversation engine request in progress (does not include
-  // non-conversation engine requests.
+  // non-conversation engine requests)?
   bool is_request_in_progress_ = false;
+  // Are we currently performing a loop of tool uses?
+  bool is_tool_use_in_progress_ = false;
 
   // Current selected capability
   mojom::ConversationCapability conversation_capability_ =

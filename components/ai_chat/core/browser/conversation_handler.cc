@@ -962,6 +962,8 @@ void ConversationHandler::SubmitHumanConversationEntry(
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
 
+  MaybeSeedOrClearSuggestions();
+
   const bool is_page_associated =
       IsContentAssociationPossible() && should_send_page_contents_;
 
@@ -1186,7 +1188,7 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
     return;
   }
 
-  bool is_handling_tool = false;
+  is_tool_use_in_progress_ = false;
 
   for (auto& event : *last_entry->events) {
     if (event->is_tool_use_event()) {
@@ -1198,16 +1200,17 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
       for (auto& tool : GetTools()) {
         if (tool->name() == tool_use_event->tool_name &&
             !tool->RequiresUserInteractionBeforeHandling()) {
-          is_handling_tool = true;
+          is_tool_use_in_progress_ = true;
           RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
           break;
         }
       }
-      if (is_handling_tool) {
+      if (is_tool_use_in_progress_) {
         break;
       }
     }
   }
+  OnAPIRequestInProgressChanged();
 }
 
 void ConversationHandler::RespondToToolUseRequest(
@@ -1260,12 +1263,16 @@ void ConversationHandler::OnToolUseComplete(
   auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
   if (!tool_use) {
     DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
+    is_tool_use_in_progress_ = false;
+    OnAPIRequestInProgressChanged();
     return;
   }
 
   // If there's no output, we don't need to send to the assistant
   if (!output) {
     DLOG(ERROR) << "No output from tool use: " << tool_use->tool_name;
+    is_tool_use_in_progress_ = false;
+    OnAPIRequestInProgressChanged();
     return;
   }
 
@@ -1282,6 +1289,7 @@ void ConversationHandler::OnToolUseComplete(
                    event->get_tool_use_event()->output.has_value();
           })) {
     is_request_in_progress_ = true;
+    is_tool_use_in_progress_ = false;
     OnAPIRequestInProgressChanged();
     PerformAssistantGeneration("");
   } else {
@@ -1772,7 +1780,9 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 
 void ConversationHandler::MaybeSeedOrClearSuggestions() {
   const bool is_page_associated =
-      IsContentAssociationPossible() && should_send_page_contents_;
+      (IsContentAssociationPossible() && should_send_page_contents_) ||
+      (conversation_capability_ == mojom::ConversationCapability::CONTENT_AGENT &&
+        chat_history_.size() > 0);
 
   if (!is_page_associated) {
     suggestions_.clear();
@@ -1809,39 +1819,40 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     suggestions_.clear();
   }
 
-  if (suggestions_.empty() &&
+  if (conversation_capability_ == mojom::ConversationCapability::CHAT &&
+      suggestions_.empty() &&
       suggestion_generation_status_ !=
           mojom::SuggestionGenerationStatus::IsGenerating &&
       suggestion_generation_status_ !=
           mojom::SuggestionGenerationStatus::HasGenerated) {
-    // TODO(petemill): ask content fetcher if it knows whether current page is a
-    // video.
-    auto found_iter = std::ranges::find_if(
-        chat_history_, [](mojom::ConversationTurnPtr& turn) {
-          if (turn->action_type == mojom::ActionType::SUMMARIZE_PAGE ||
-              turn->action_type == mojom::ActionType::SUMMARIZE_VIDEO) {
-            return true;
-          }
-          return false;
-        });
-    const bool has_summarized = found_iter != chat_history_.end();
-    if (!has_summarized) {
-      if (associated_content_delegate_->GetCachedIsVideo()) {
-        suggestions_.emplace_back(
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO),
-            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO),
-            mojom::ActionType::SUMMARIZE_VIDEO);
-      } else {
-        suggestions_.emplace_back(
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE),
-            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
-            mojom::ActionType::SUMMARIZE_PAGE);
-      }
+      // TODO(petemill): ask content fetcher if it knows whether current page is a
+      // video.
+      auto found_iter = std::ranges::find_if(
+          chat_history_, [](mojom::ConversationTurnPtr& turn) {
+            if (turn->action_type == mojom::ActionType::SUMMARIZE_PAGE ||
+                turn->action_type == mojom::ActionType::SUMMARIZE_VIDEO) {
+              return true;
+            }
+            return false;
+          });
+      const bool has_summarized = found_iter != chat_history_.end();
+      if (!has_summarized) {
+        if (associated_content_delegate_->GetCachedIsVideo()) {
+          suggestions_.emplace_back(
+              l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO),
+              l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO),
+              mojom::ActionType::SUMMARIZE_VIDEO);
+        } else {
+          suggestions_.emplace_back(
+              l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE),
+              l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
+              mojom::ActionType::SUMMARIZE_PAGE);
+        }
+      suggestion_generation_status_ =
+          mojom::SuggestionGenerationStatus::CanGenerate;
     }
-    suggestion_generation_status_ =
-        mojom::SuggestionGenerationStatus::CanGenerate;
-    OnSuggestedQuestionsChanged();
   }
+  OnSuggestedQuestionsChanged();
 }
 
 void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
@@ -2235,7 +2246,8 @@ ConversationHandler::GetStateForConversationEntries() {
 
   mojom::ConversationEntriesStatePtr entries_state =
       mojom::ConversationEntriesState::New();
-  entries_state->is_generating = IsRequestInProgress();
+  entries_state->is_generating =
+      IsRequestInProgress() || is_tool_use_in_progress_;
   entries_state->is_content_refined = is_content_refined_;
   entries_state->is_leo_model = is_leo_model;
   entries_state->content_used_percentage =
@@ -2302,7 +2314,8 @@ void ConversationHandler::OnSuggestedQuestionsChanged() {
 void ConversationHandler::OnAPIRequestInProgressChanged() {
   OnStateForConversationEntriesChanged();
   for (auto& client : conversation_ui_handlers_) {
-    client->OnAPIRequestInProgress(is_request_in_progress_);
+    client->OnAPIRequestInProgress(is_request_in_progress_ ||
+                                   is_tool_use_in_progress_);
   }
   for (auto& observer : observers_) {
     observer.OnRequestInProgressChanged(this, is_request_in_progress_);
