@@ -1,6 +1,0 @@
-TOML parse error at line 1, column 14
-  |
-1 | leading-us = _1.2
-  |              ^
-invalid integer
-expected leading digit

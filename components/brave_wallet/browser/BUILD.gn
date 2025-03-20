@@ -294,7 +294,6 @@ static_library("browser") {
     "//brave/components/brave_wallet/common:pref_names",
     "//brave/components/constants",
     "//brave/components/decentralized_dns/core",
-    "//brave/components/filecoin/rs:rust_lib",
     "//brave/components/ipfs",
     "//brave/components/json",
     "//brave/components/p3a_utils",

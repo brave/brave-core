@@ -122,9 +122,6 @@ license_files = ['LICENSE.txt']
 [crate.cid]
 license_files = ['LICENSE']
 
-[crate.cbor4ii]
-extra_input_roots = [ "../README.md" ]
-
 [crate.chacha20]
 extra_kv = { raw_gn = '''
 if (target_cpu == "x64" || target_cpu == "x86") {
@@ -187,20 +184,8 @@ license_files = ['LICENSE-APACHE']
 [crate.ff_derive]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
-[crate.forest_bigint]
-license_files = ['../../../../../common/licenses/Apache-2.0']
-
 [crate.funty]
 license_files = ['LICENSE.txt']
-
-[crate.fvm_ipld_blockstore]
-license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.fvm_ipld_encoding]
-license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.fvm_shared]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.fxhash]
 license_files = ['../../../../../common/licenses/Apache-2.0']
@@ -214,26 +199,11 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.halo2_proofs]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
-[crate.ipld-core]
-extra_input_roots = [ "../README.md" ]
-
 [crate.itoa]
 license_files = ['LICENSE-APACHE']
 
 [crate.libm]
 extra_kv = { rustenv = [ "OPT_LEVEL=0" ]}
-
-[crate.libsecp256k1]
-build_script_outputs = [ "const.rs", "const_gen.rs" ]
-
-[crate.libsecp256k1-core]
-license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.libsecp256k1-gen-ecmult]
-license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.libsecp256k1-gen-genmult]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.lock_api]
 extra_kv = { rustflags = [ "--cfg", "has_const_fn_trait_bound" ] }
@@ -247,21 +217,6 @@ build_script_outputs = [ "generated.rs", "named_entities.rs", ]
 
 [crate.match_token]
 license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.multihash]
-extra_kv = { rustenv = [ "CARGO_MANIFEST_DIR=\" + rebase_path(\"//brave/third_party/rust/chromium_crates_io/vendor/multihash-0.19.2\") + \"" ]}
-
-[crate.multihash-codetable]
-license_files = ['LICENSE']
-extra_kv = { rustenv = [
-  "CARGO=\" + rebase_path(\"//third_party/rust-toolchain/bin/cargo\")  + \"",
-  "CARGO_MANIFEST_DIR=\" + rebase_path(\"//brave/third_party/rust/chromium_crates_io/vendor/multihash-codetable-0.1.4\") + \"" ]}
-
-[crate.multihash-derive]
-license_files = ['LICENSE']
-
-[crate.multihash-derive-impl]
-license_files = ['LICENSE']
 
 [crate.num-bigint]
 extra_input_roots = [ "../README.md" ]
@@ -397,9 +352,6 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.windows-targets]
 license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.winnow]
-extra_src_roots = ['../examples']
 
 [crate.wyz]
 license_files = ['LICENSE.txt']
