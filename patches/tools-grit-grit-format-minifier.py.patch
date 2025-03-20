@@ -1,0 +1,12 @@
+diff --git a/tools/grit/grit/format/minifier.py b/tools/grit/grit/format/minifier.py
+index bd2dc7f9936a3c3a1d892be3b05be02a6910c571..764ef36d9275a8479c762dde100e83fff635690f 100644
+--- a/tools/grit/grit/format/minifier.py
++++ b/tools/grit/grit/format/minifier.py
+@@ -13,6 +13,7 @@ __css_minifier = None
+ js_minifier_ignore_list = [
+     # TODO(crbug.com/339686362): Excluded because Terser throws an error.
+     'gen/chrome/browser/resources/omnibox/tsc/',
++    'gen/brave/web-ui-opaque_ke/',
+ ]
+ 
+ 
