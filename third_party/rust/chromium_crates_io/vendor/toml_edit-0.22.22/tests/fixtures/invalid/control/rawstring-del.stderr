@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 23
-  |
-1 | rawstring-del  = 'null'
-  |                       ^
-invalid literal string

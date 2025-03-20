@@ -1,5 +1,0 @@
-TOML parse error at line 2, column 10
-  |
-2 | d = 10000-01-01
-  |          ^
-expected newline, `#`
