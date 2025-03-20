@@ -50,7 +50,11 @@ action("sign_app") {
     if (target_android_output_format == "aab") {
       target_sign_app_path = "$root_out_dir/apks/MonochromePublic64.aab"
     } else {
-      target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
+      if (defined(android_app_secondary_abi)) {
+        target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
+      } else {
+        target_sign_app_path = "$root_out_dir/apks/MonochromePublic64.apk"
+      }
     }
   } else {
     if (target_android_base == "mono") {
@@ -92,9 +96,13 @@ copy("brave") {
       deps += [ "//chrome/android:monochrome_64_public_bundle" ]
       sources += [ "$root_out_dir/apks/MonochromePublic64.aab" ]
     } else {
-      # There is no 64-bit apk target for Mono
-      deps += [ "//chrome/android:monochrome_64_32_public_apk" ]
-      sources += [ "$root_out_dir/apks/MonochromePublic.apk" ]
+      if (defined(android_app_secondary_abi)) {
+        deps += [ "//chrome/android:monochrome_64_32_public_apk" ]
+        sources += [ "$root_out_dir/apks/MonochromePublic.apk" ]
+      } else {
+        deps += [ "//chrome/android:monochrome_64_public_apk" ]
+        sources += [ "$root_out_dir/apks/MonochromePublic64.apk" ]
+      }
     }
   } else {
     if (target_android_base == "mono") {
