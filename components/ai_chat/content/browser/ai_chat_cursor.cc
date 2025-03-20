@@ -68,8 +68,6 @@ AIChatCursorOverlay::AIChatCursorOverlay(content::WebContents* web_contents) {
 
   cursor_image_->SetBounds(0, 0, kIconSize, kIconSize);
   SetBoundsRect(gfx::Rect(0, 0, kIconSize, kIconSize));
-
-  SetVisible(true);
 }
 
 AIChatCursorOverlay::~AIChatCursorOverlay() {
@@ -79,6 +77,11 @@ AIChatCursorOverlay::~AIChatCursorOverlay() {
 }
 
 void AIChatCursorOverlay::MoveCursorTo(int x, int y) {
+  // Hide cursor after a delay, debounced
+  cursor_hide_timer_.Stop();
+  cursor_hide_timer_.Start(FROM_HERE, base::Seconds(3), this, &AIChatCursorOverlay::HideCursor);
+
+  ShowCursor();
   gfx::Rect start_bounds = bounds();
 
   // The new position, keeping the same width/height as the current bounds.
@@ -87,7 +90,7 @@ void AIChatCursorOverlay::MoveCursorTo(int x, int y) {
   // Scope the animation settings to ensure we only animate once (and can
   // customize easing, etc.).
   ui::ScopedLayerAnimationSettings settings(layer()->GetAnimator());
-  settings.SetTransitionDuration(base::Milliseconds(1000));
+  settings.SetTransitionDuration(base::Milliseconds(100));
   settings.SetTweenType(gfx::Tween::EASE_IN_2);
   // Possible tween types: EASE_IN, EASE_OUT, FAST_OUT_SLOW_IN, etc.
 
@@ -95,9 +98,7 @@ void AIChatCursorOverlay::MoveCursorTo(int x, int y) {
   // the old layer bounds to these new layer bounds.
   SetBoundsRect(target_bounds);
 
-  // SetPosition(gfx::Point(x, y));
   LOG(ERROR) << "moving cursor to " << x << ", " << y;
-  // SetBoundsRect(gfx::Rect(x, y, 500, 500));
 }
 
 void AIChatCursorOverlay::ShowCursor() {

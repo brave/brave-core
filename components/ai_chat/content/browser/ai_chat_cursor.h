@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_CURSOR_H_
 
 #include "base/memory/raw_ptr.h"
+#include "base/timer/timer.h"
 #include "ui/views/widget/widget.h"
 
 namespace content {
@@ -37,6 +38,8 @@ class AIChatCursorOverlay : public views::View {
  private:
   // The underlying ImageView that draws the cursor graphic.
   raw_ptr<views::ImageView> cursor_image_ = nullptr;
+  // Timer to hide the cursor after an operation
+  base::OneShotTimer cursor_hide_timer_;
 };
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_CURSOR_H_
