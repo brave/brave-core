@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index eaf4cd4a51ba587772541b54870c893b8c18bb50..6efb7c2be160bf41b5b732e39e89b78bf4429f42 100644
+index 65a00e22d94d99bf32a316e73ce73101d97006f0..4bdac5c0889805c991cf4ba28df5183f33d3519a 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
 @@ -1380,6 +1380,7 @@ const FeatureEntry::FeatureVariation kBestFeaturesScreenInFirstRunVariations[] =
