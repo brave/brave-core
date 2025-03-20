@@ -189,6 +189,13 @@ public class SearchEngineOnboardingFragment extends Fragment {
                         }
                         if (mSelectedSearchEngine != null) {
                             BraveSearchEngineUtils.setDSEPrefs(mSelectedSearchEngine, mProfile);
+                            TemplateUrlService templateUrlService =
+                                    TemplateUrlServiceFactory.getForProfile(
+                                            ProfileManager.getLastUsedRegularProfile());
+                            templateUrlService.runWhenLoaded(
+                                    () ->
+                                            BraveSearchEngineUtils.updateActiveDSE(
+                                                    mProfile, templateUrlService));
                         }
                         getActivity().finish();
                     }
