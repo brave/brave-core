@@ -345,30 +345,29 @@ private struct AIChatPremiumTierSelectionView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 4.0, style: .continuous))
             }
           }
+
           Spacer()
 
           if let product = product {
             HStack(alignment: .center, spacing: 2) {
               Text(
-                "\(product.priceFormatStyle.locale.currencyCode ?? "")\(product.priceFormatStyle.locale.currencySymbol ?? "")"
+                "\(product.priceFormatStyle.locale.currency?.identifier ?? "")\(product.priceFormatStyle.locale.currencySymbol ?? "")"
               )
               .font(.subheadline)
               .foregroundColor(Color(braveSystemName: .primitivePrimary80))
-
-              Text(
-                product.price.frontSymbolCurrencyFormatted(
-                  with: product.priceFormatStyle.locale,
-                  isSymbolIncluded: false
-                ) ?? product.displayPrice
-              )
-              .font(.title)
-              .foregroundColor(.white)
-
-              Text(
-                " / \(type == .monthly ? Strings.AIChat.paywallMonthlyPriceDividend : Strings.AIChat.paywallYearlyPriceDividend)"
-              )
-              .font(.subheadline)
-              .foregroundColor(Color(braveSystemName: .primitivePrimary80))
+                + Text(
+                  product.price.frontSymbolCurrencyFormatted(
+                    with: product.priceFormatStyle.locale,
+                    isSymbolIncluded: false
+                  ) ?? product.displayPrice
+                )
+                .font(.title)
+                .foregroundColor(.white)
+                + Text(
+                  " / \(type == .monthly ? Strings.AIChat.paywallMonthlyPriceDividend : Strings.AIChat.paywallYearlyPriceDividend)"
+                )
+                .font(.subheadline)
+                .foregroundColor(Color(braveSystemName: .primitivePrimary80))
             }
           } else {
             ProgressView()
