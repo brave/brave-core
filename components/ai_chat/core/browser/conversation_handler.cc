@@ -13,15 +13,18 @@
 #include <iterator>
 #include <memory>
 #include <optional>
+#include <string>
 #include <string_view>
 #include <type_traits>
 #include <vector>
 
 #include "base/check.h"
 #include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
@@ -48,6 +51,7 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
@@ -688,7 +692,7 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       model_key, std::move(suggestions), suggestion_generation_status_,
       metadata_->associated_content ? metadata_->associated_content->Clone()
                                     : nullptr,
-      should_send_page_contents_, current_error_, conversation_capability_);
+      should_send_page_contents_, chat_history_.size(), current_error_, conversation_capability_);
 
   std::move(callback).Run(std::move(state));
 }
@@ -1268,7 +1272,7 @@ void ConversationHandler::OnToolUseComplete(
   DVLOG(0) << "got output for tool: " << tool_use->tool_name;
 
   tool_use->output = std::move(output);
-  OnHistoryUpdate();
+  OnHistoryUpdate(chat_history_.back().get());
   // Only perform generation if there are no pending tools left to run from
   // the last entry.
   if (std::ranges::all_of(
@@ -1742,7 +1746,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
       last_event->get_tool_use_event()->input_json =
           base::StrCat({last_event->get_tool_use_event()->input_json,
                         tool_use_event->input_json});
-      OnHistoryUpdate();
+      OnHistoryUpdate(entry.get());
       return;
     }
   }
@@ -1763,7 +1767,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
   entry->events->push_back(std::move(event));
   // Update clients for partial entries but not observers, who will get notified
   // when we know this is a complete entry.
-  OnHistoryUpdate();
+  OnHistoryUpdate(entry.get());
 }
 
 void ConversationHandler::MaybeSeedOrClearSuggestions() {
@@ -2098,14 +2102,16 @@ void ConversationHandler::OnModelDataChanged() {
   OnStateForConversationEntriesChanged();
 }
 
-void ConversationHandler::OnHistoryUpdate() {
-  // TODO(petemill): Provide the updated converation history item so that
-  // we don't need to clone every entry.
+void ConversationHandler::OnHistoryUpdate(mojom::ConversationTurn* updated_or_added_entry/* = nullptr*/) {
   for (auto& client : conversation_ui_handlers_) {
-    client->OnConversationHistoryUpdate();
+    client->OnConversationHistoryUpdate(chat_history_.size());
   }
   for (auto& client : untrusted_conversation_ui_handlers_) {
-    client->OnConversationHistoryUpdate();
+    if (updated_or_added_entry) {
+      client->OnConversationHistoryUpdate(updated_or_added_entry->Clone());
+    } else {
+      client->OnConversationHistoryUpdate(nullptr);
+    }
   }
 }
 
@@ -2124,7 +2130,7 @@ void ConversationHandler::OnConversationEntryAdded(
     mojom::ConversationTurnPtr& entry) {
   // Only notify about staged entries once we have the first staged entry
   if (entry->from_brave_search_SERP) {
-    OnHistoryUpdate();
+    OnHistoryUpdate(entry.get());
     return;
   }
   // Store associated content for archival for chat conversations only
@@ -2150,13 +2156,13 @@ void ConversationHandler::OnConversationEntryAdded(
                                           associated_content_value);
       }
     }
-    OnHistoryUpdate();
+    OnHistoryUpdate(entry.get());
     return;
   }
   for (auto& observer : observers_) {
     observer.OnConversationEntryAdded(this, entry, associated_content_value);
   }
-  OnHistoryUpdate();
+  OnHistoryUpdate(entry.get());
 }
 
 int ConversationHandler::GetContentUsedPercentage() {

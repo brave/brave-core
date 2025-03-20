@@ -172,7 +172,7 @@ function Main() {
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal = !aiChatContext.hasAcceptedAgreement &&
-    !!conversationContext.conversationHistory.length
+    !!conversationContext.conversationHistoryLength
 
   const showContent = !aiChatContext.hasAcceptedAgreement ||
     !conversationContext.conversationUuid ||
@@ -189,7 +189,7 @@ function Main() {
     if (aiChatContext.isMobile && aiChatContext.hasAcceptedAgreement &&
       conversationContext.historyInitialized && !querySubmitted &&
       !conversationContext.isGenerating &&
-      conversationContext.conversationHistory.length === 0) {
+      conversationContext.conversationHistoryLength === 0) {
       aiChatContext.uiHandler?.showSoftKeyboard()
       return true
     }
@@ -327,7 +327,7 @@ function Main() {
                 <LongConversationInfo />
               </div>
             )}
-            {!aiChatContext.hasAcceptedAgreement && !conversationContext.conversationHistory.length && (
+            {!aiChatContext.hasAcceptedAgreement && !conversationContext.conversationHistoryLength && (
               <WelcomeGuide />
             )}
           </div>
@@ -367,7 +367,7 @@ function Main() {
             </SegmentedControlItem>
           </SegmentedControl>
           }
-          {aiChatContext.isAgentFeatureEnabled && conversationContext.historyInitialized && !!conversationContext.conversationHistory.length &&
+          {aiChatContext.isAgentFeatureEnabled && conversationContext.historyInitialized && !!conversationContext.conversationHistoryLength &&
             <div>
               {CONVERSATION_CAPABILITY_DISPLAY_STRINGS[conversationContext.conversationCapability]}
             </div>

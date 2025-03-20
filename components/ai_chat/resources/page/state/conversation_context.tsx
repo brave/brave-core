@@ -28,7 +28,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   historyInitialized: boolean
   conversationUuid?: string
   conversationCapability: Mojom.ConversationCapability
-  conversationHistory: Mojom.ConversationTurn[]
+  conversationHistoryLength: number
   associatedContentInfo?: Mojom.AssociatedContent
   allModels: Mojom.Model[]
   currentModel?: Mojom.Model
@@ -78,7 +78,7 @@ export const defaultCharCountContext: CharCountContext = {
 
 const defaultContext: ConversationContext = {
   historyInitialized: false,
-  conversationHistory: [],
+  conversationHistoryLength: 0,
   conversationCapability: Mojom.ConversationCapability.CHAT,
   allModels: [],
   suggestedQuestions: [],
@@ -213,18 +213,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   // Initialization
   React.useEffect(() => {
-    async function updateHistory() {
-      const { conversationHistory } =
-        await conversationHandler.getConversationHistory()
-      setPartialContext({
-        conversationHistory,
-        historyInitialized: true
-      })
-    }
-
     async function initialize() {
       const { conversationState: {
         conversationUuid,
+        conversationHistoryLength,
         selectedCapability: conversationCapability,
         isRequestInProgress: isGenerating,
         allModels: models,
@@ -236,6 +228,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         error
       } } = await conversationHandler.getState()
       setPartialContext({
+        historyInitialized: true,
+        conversationHistoryLength,
         conversationUuid,
         conversationCapability,
         isGenerating,
@@ -249,14 +243,17 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
 
     // Initial data
-    updateHistory()
     initialize()
 
     // Bind the conversation handler
     let id: number
     const listenerIds: number[] = []
 
-    id = callbackRouter.onConversationHistoryUpdate.addListener(updateHistory)
+    id = callbackRouter.onConversationHistoryUpdate.addListener(
+      (conversationHistoryLength: number) => setPartialContext({
+        conversationHistoryLength
+      })
+    )
     listenerIds.push(id)
 
     id = callbackRouter.onAPIRequestInProgress.addListener(

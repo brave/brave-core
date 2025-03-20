@@ -66,28 +66,32 @@ function ConversationEntries() {
 
   // Combine entry events if there are multiple assistant character types in a row.
   // If we stopped to handle a tool, it should still look like the Assistant did it.
-  const combinedEntries = React.useMemo<Mojom.ConversationTurn[]>(() => {
-    const combinedEntries: Mojom.ConversationTurn[] = []
-    for (const entry of conversationContext.conversationHistory) {
-      const lastEntry = combinedEntries[combinedEntries.length - 1]
-      if (combinedEntries.length === 0 || entry.characterType !== Mojom.CharacterType.ASSISTANT || lastEntry.characterType !== Mojom.CharacterType.ASSISTANT) {
-        combinedEntries.push(entry)
-        continue
-      }
-      if (entry.characterType === Mojom.CharacterType.ASSISTANT && lastEntry.characterType === Mojom.CharacterType.ASSISTANT) {
-        lastEntry.events = [...(lastEntry.events ?? []), ...(entry.events ?? [])]
-        continue
-      }
-    }
-    return combinedEntries
-  }, [conversationContext.conversationHistory])
+  // TODO: this is not efficient, optimize by rendering so that
+  // const combinedEntries = React.useMemo<Mojom.ConversationTurn[]>(() => {
+  //   const combinedEntries: Mojom.ConversationTurn[] = []
+  //   for (const entry of conversationContext.conversationHistory) {
+  //     const lastEntry = combinedEntries[combinedEntries.length - 1]
+  //     if (combinedEntries.length === 0 || entry.characterType !== Mojom.CharacterType.ASSISTANT || lastEntry.characterType !== Mojom.CharacterType.ASSISTANT) {
+  //       combinedEntries.push({...entry})
+  //       continue
+  //     }
+  //     if (entry.characterType === Mojom.CharacterType.ASSISTANT && lastEntry.characterType === Mojom.CharacterType.ASSISTANT) {
+  //       lastEntry.events = [...(lastEntry.events ?? []), ...(entry.events ?? [])]
+  //       continue
+  //     }
+  //   }
+  //   return combinedEntries
+  // }, [conversationContext.conversationHistory])
 
   return (
     <>
       <div className={styles.conversationEntries}>
-        {combinedEntries.map((turn, id) => {
-          const isLastEntry =
-            (id === conversationContext.conversationHistory.length - 1)
+        {conversationContext.conversationHistory.map((turn, id) => {
+          const nextEntry = conversationContext.conversationHistory[id + 1]
+          const previousEntry = conversationContext.conversationHistory[id - 1]
+          const isNextEntryAIAssistant = nextEntry?.characterType === Mojom.CharacterType.ASSISTANT
+          const isPreviousEntryAIAssistant = previousEntry?.characterType === Mojom.CharacterType.ASSISTANT
+          const isLastEntry = !nextEntry
           const isAIAssistant =
             turn.characterType === Mojom.CharacterType.ASSISTANT
           const isEntryInProgress =
@@ -107,17 +111,26 @@ function ConversationEntries() {
           const lastEditedTime = latestTurn.createdTime
           const hasReasoning = latestTurnText.includes('<think>')
 
-          const turnContainer = classnames({
-            [styles.turnContainerMobile]: conversationContext.isMobile
-          })
+          // Since we're combining turns, we don't yet have the ability
+          // to combine edits or copy. These entries are generally
+          // too complicated for those actions anyway since they contain
+          // structured tool use events.
+          const canEditOrCopyContent = !isAIAssistant || !isPreviousEntryAIAssistant
 
           const turnClass = classnames({
             [styles.turn]: true,
-            [styles.turnAI]: isAIAssistant
+            [styles.turnAI]: isAIAssistant,
+            [styles.isMobile]: conversationContext.isMobile
+            // [styles.isCombinedWithPrevious]: isAIAssistant && isPreviousEntryAIAssistant
           })
 
           const handleCopyText = () => {
             if (isAIAssistant) {
+              // TODO(petemill): Combine multiple completion events from turn
+              // and combine multiple assistant turns since they
+              // are rendered as one turn. Or don't offer to copy if
+              // non-completion events are present, which is the only way both
+              // scenarios can occur.
               const event = latestTurn.events?.find(
                 (event) => event.completionEvent
               )
@@ -129,12 +142,10 @@ function ConversationEntries() {
           }
 
           return (
-            <div
-              key={id}
-              className={turnContainer}
-            >
+
               <div
                 data-id={id}
+                key={turn.uuid || id}
                 className={turnClass}
                 onMouseEnter={() => isHuman && setHoverMenuButtonId(id)}
                 onMouseLeave={() => {
@@ -220,17 +231,17 @@ function ConversationEntries() {
                   <EditIndicator time={lastEditedTime} />
                 )}
                 {isAIAssistant &&
+                  !isNextEntryAIAssistant &&
                   conversationContext.isLeoModel &&
                   !turn.selectedText &&
                   !showEditInput && (
                     <ContextActionsAssistant
                       turnUuid={turn.uuid}
-                      onEditAnswerClicked={() => setEditInputId(id)}
-                      onCopyTextClicked={handleCopyText}
+                      onEditAnswerClicked={canEditOrCopyContent ? () => setEditInputId(id) : undefined}
+                      onCopyTextClicked={canEditOrCopyContent ? handleCopyText : undefined}
                     />
                   )}
               </div>
-            </div>
           )
         })}
       </div>

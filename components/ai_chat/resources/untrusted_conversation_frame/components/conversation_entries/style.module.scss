@@ -16,16 +16,18 @@
   color: var(--leo-color-text-primary);
   padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
   letter-spacing: -0.1px;
-}
 
-.turnContainerMobile {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.turnAI {
-  background-color: transparent;
-  align-items: flex-start;
+  &.turnAI {
+    background-color: transparent;
+    align-items: flex-start;
+  }
+  &.turnAI + .turn.turnAI {
+    padding-top: 0;
+  }
+  &.isMobile {
+    user-select: none;
+    -webkit-user-select: none;
+  }
 }
 
 .message {

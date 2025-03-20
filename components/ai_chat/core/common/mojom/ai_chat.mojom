@@ -482,6 +482,7 @@ struct ConversationState {
   SuggestionGenerationStatus suggestion_status;
   AssociatedContent? associated_content;
   bool should_send_content;
+  uint32 conversation_history_length;
   APIError error;
   ConversationCapability selected_capability;
   // TODO(petemill): include conversation history, once
@@ -590,15 +591,12 @@ interface UntrustedConversationUI {
   // TODO(petemill): Provide single entry that's been updated so that we don't
   // need to fetch (and clone) all conversation entries each time text is added
   // to the most recent entry.
-  OnConversationHistoryUpdate();
+  OnConversationHistoryUpdate(ConversationTurn? update_or_new_turn);
   OnEntriesUIStateChanged(ConversationEntriesState state);
 };
 
 interface ConversationUI {
-  // TODO(petemill): Provide single entry that's been updated so that we don't
-  // need to fetch (and clone) all conversation entries each time text is added
-  // to the most recent entry.
-  OnConversationHistoryUpdate();
+  OnConversationHistoryUpdate(uint32 conversation_history_length);
   OnAPIRequestInProgress(bool is_request_in_progress);
   OnAPIResponseError(APIError error);
   // Usually the model is changed from the UI client, but occassionally

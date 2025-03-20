@@ -15,12 +15,14 @@ import { getLocale } from '$web-common/locale'
 // Styles
 import styles from './style.module.scss'
 
-type Props = Pick<ConversationContext, 'uploadImage' | 'conversationHistory'>
+type Props = Pick<ConversationContext, 'uploadImage'>
 
 export default function AttachmentButtonMenu(props: Props) {
-  const isMenuDisabled = props.conversationHistory.some(
-    (turn) => turn.uploadedImages
-  )
+  // TODO: get property from backend, too expensive to store history
+  // const isMenuDisabled = props.conversationHistory.some(
+  //   (turn) => turn.uploadedImages
+  // )
+  const isMenuDisabled = false
   return (
     <>
       <ButtonMenu>

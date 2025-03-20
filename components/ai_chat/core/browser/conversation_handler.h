@@ -436,7 +436,10 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void OnModelDataChanged();
   void OnConversationDeleted();
-  void OnHistoryUpdate();
+  // nullptr means mutliple or unknown entry modified and clients
+  // should be notified to reload them all.
+  void OnHistoryUpdate(
+      mojom::ConversationTurn* updated_or_added_entry = nullptr);
   void OnConversationEntryAdded(mojom::ConversationTurnPtr& entry);
   void OnConversationEntryRemoved(std::optional<std::string> turn_id);
   void OnSuggestedQuestionsChanged();
