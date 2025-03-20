@@ -337,6 +337,9 @@ license_files = ['LICENSE']
 [crate.star-constellation]
 license_files = ['LICENSE']
 
+[crate.strobe-rs]
+extra_input_roots = [ "../README.md" ]
+
 [crate.syn]
 extra_kv = { raw_gn = '''
 if (target_name == "buildrs_support" && epoch == "1") {
