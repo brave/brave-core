@@ -8,8 +8,6 @@
 
 #include <memory>
 
-#include "base/functional/callback_forward.h"
-
 class BraveVPNController;
 
 // This file doesn't include header file for BrowserWindowFeatures_ChromiumImpl
@@ -21,9 +19,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   static std::unique_ptr<BrowserWindowFeatures> CreateBrowserWindowFeatures();
   ~BrowserWindowFeatures() override;
 
-  // Call this method to stub out BrowserWindowFeatures for tests.
-  using BrowserWindowFeaturesFactory =
-      base::RepeatingCallback<std::unique_ptr<BrowserWindowFeatures>()>;
   static void ReplaceBrowserWindowFeaturesForTesting(
       BrowserWindowFeaturesFactory factory);
 

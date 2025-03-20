@@ -5,9 +5,8 @@
 
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 
-#include "base/check_is_test.h"
 #include "base/memory/ptr_util.h"
-#include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -19,34 +18,18 @@
 class BraveVPNController {};
 #endif
 
-namespace {
-
-// This is the generic entry point for test code to stub out browser window
-// functionality. It is called by production code, but only used by tests.
-BrowserWindowFeatures::BrowserWindowFeaturesFactory& GetFactory() {
-  static base::NoDestructor<BrowserWindowFeatures::BrowserWindowFeaturesFactory>
-      factory;
-  return *factory;
-}
-
-}  // namespace
-
 // static
 std::unique_ptr<BrowserWindowFeatures>
 BrowserWindowFeatures::CreateBrowserWindowFeatures() {
-  if (GetFactory()) {
-    CHECK_IS_TEST();
-    return GetFactory().Run();
-  }
-  // Constructor is protected.
   return base::WrapUnique(new BrowserWindowFeatures());
 }
 
 // static
 void BrowserWindowFeatures::ReplaceBrowserWindowFeaturesForTesting(
     BrowserWindowFeaturesFactory factory) {
-  BrowserWindowFeatures::BrowserWindowFeaturesFactory& f = GetFactory();
-  f = std::move(factory);
+  // Upstream doesn't use this static method.
+  // Revisit if used. Need to handle GetFactory() overriding.
+  NOTREACHED();
 }
 
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
