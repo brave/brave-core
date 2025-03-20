@@ -14,13 +14,10 @@ import org.chromium.base.Log;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.chrome.browser.util.BraveProfileUtil;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
 
-/**
- * @noinspection unused
- */
 @JNINamespace("youtube_script_injector")
 public class YouTubeScriptInjectorTabFeature {
     private static final String TAG = "YouTubeTabFeature";
@@ -28,17 +25,23 @@ public class YouTubeScriptInjectorTabFeature {
     public static void setFullscreen(WebContents webContents) {
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_YOUTUBE_SCRIPT_INJECTOR)
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_YOUTUBE_EXTRA_CONTROLS)
-                && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                && UserPrefs.get(BraveProfileUtil.getProfile())
                         .getBoolean(BravePref.YOU_TUBE_EXTRA_CONTROLS_ENABLED)) {
             YouTubeScriptInjectorTabFeatureJni.get().setFullscreen(webContents);
         }
     }
 
+    /**
+     * @noinspection unused
+     */
     @NativeMethods
     interface Natives {
         void setFullscreen(WebContents webContents);
     }
 
+    /**
+     * @noinspection unused
+     */
     @CalledByNative
     public static void enterPipMode() {
         try {
