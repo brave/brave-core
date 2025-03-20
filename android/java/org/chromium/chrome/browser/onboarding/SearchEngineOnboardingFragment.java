@@ -193,8 +193,9 @@ public class SearchEngineOnboardingFragment extends Fragment {
                                     TemplateUrlServiceFactory.getForProfile(
                                             ProfileManager.getLastUsedRegularProfile());
                             templateUrlService.runWhenLoaded(
-                                    () -> BraveSearchEngineUtils.updateActiveDSE(
-                                            mProfile, templateUrlService));
+                                    () ->
+                                            BraveSearchEngineUtils.updateActiveDSE(
+                                                    mProfile, templateUrlService));
                         }
                         getActivity().finish();
                     }
