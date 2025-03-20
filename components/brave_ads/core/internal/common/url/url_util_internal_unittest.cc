@@ -125,6 +125,14 @@ TEST(
 
 TEST(
     BraveAdsUrlUtilInternalTest,
+    ShouldSupportInternalUrlWithBraveSchemeAndSettingsHostNameAndSearchEnginesDefaultSearchPath) {
+  // Act & Assert
+  EXPECT_TRUE(
+      ShouldSupportInternalUrl(GURL("chrome://settings/search/defaultSearch")));
+}
+
+TEST(
+    BraveAdsUrlUtilInternalTest,
     ShouldSupportInternalUrlWithBraveSchemeAndSettingsHostNameSearchEnginesPathAndSearchQuery) {
   // Act & Assert
   EXPECT_TRUE(ShouldSupportInternalUrl(
