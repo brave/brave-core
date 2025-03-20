@@ -31,12 +31,28 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
     })
   }
 
+  async function updateShieldsStats() {
+    const [
+      { showShieldsStats },
+      { shieldsStats }
+    ] = await Promise.all([
+      handler.getShowShieldsStats(),
+      handler.getShieldsStats()
+    ])
+
+    store.update({ showShieldsStats, shieldsStats })
+  }
+
   newTabProxy.addListeners({
-    onClockStateUpdated: debounceListener(updateClockPrefs)
+    onClockStateUpdated: debounceListener(updateClockPrefs),
+    onShieldsStatsUpdated: debounceListener(updateShieldsStats)
   })
 
   async function loadData() {
-    await updateClockPrefs()
+    await Promise.all([
+      updateClockPrefs(),
+      updateShieldsStats()
+    ])
   }
 
   loadData()
@@ -49,6 +65,10 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
 
     setClockFormat(format) {
       handler.setClockFormat(format)
+    },
+
+    setShowShieldsStats(showShieldsStats) {
+      handler.setShowShieldsStats(showShieldsStats)
     }
   }
 }

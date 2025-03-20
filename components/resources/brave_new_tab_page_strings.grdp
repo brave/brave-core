@@ -137,12 +137,32 @@
     Show Sponsored Images
   </message>
 
+  <message name="IDS_NEW_TAB_SHOW_STATS_LABEL" desc="Label for showing or hiding Brave Stats on the NTP">
+    Brave Stats
+  </message>
+
   <message name="IDS_NEW_TAB_SHOW_TOP_SITES_LABEL" desc="Label for control that toggles top sites visibility">
     Show top sites
   </message>
 
   <message name="IDS_NEW_TAB_SOLID_BACKGROUND_LABEL" desc="Solid background colors title">
     Solid colors
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_ADS_BLOCKED_TEXT" desc="Text for trackers and ads blocked stat">
+    Trackers &amp; ads blocked
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_BANDWIDTH_SAVED_TEXT" desc="Text for bandwidth saved stat">
+    Bandwidth saved
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_TIME_SAVED_TEXT" desc="Text for time saved stat">
+    Time saved
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_TITLE" desc="Title for Brave Stats widget">
+    STATS
   </message>
 
   <message name="IDS_NEW_TAB_TOP_SITE_REMOVED_TEXT" desc="Text displayed when a top site is removed">

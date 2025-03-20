@@ -12,7 +12,12 @@ import {
 
 export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
   store.update({
-    showClock: true
+    showClock: true,
+    showShieldsStats: true,
+    shieldsStats: {
+      adsBlocked: 3245,
+      bandwidthSavedBytes: 1024 * 1024
+    }
   })
 
   return {
@@ -24,6 +29,10 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
 
     setShowClock(showClock) {
       store.update({ showClock })
+    },
+
+    setShowShieldsStats(showShieldsStats) {
+      store.update({ showShieldsStats })
     }
   }
 }
