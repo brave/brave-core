@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/browser/content_settings_provider.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/keyed_service/core/refcounted_keyed_service.h"
@@ -25,8 +24,6 @@
       url::Origin& storage_origin);                                           \
   std::vector<url::Origin> TakeEphemeralStorageOpaqueOrigins(                 \
       const std::string& ephemeral_storage_domain);                           \
-  brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettings(           \
-      const url::Origin& origin, const url::Origin& top_frame_origin);        \
                                                                               \
  private:                                                                     \
   /* Ephemeral storage domain to non_opaque->opaque origins map. */           \
