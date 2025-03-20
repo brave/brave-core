@@ -60,8 +60,7 @@ std::string GetScriptWithParams(const std::string& script,
   return result;
 }
 
-void RemoveUnselectedUrls(std::optional<base::Value>& params, const std::vector<std::string>& disabled_checks) {
-  LOG(INFO) << "[PSST] OnUserDialogAction before params:" << (params?params->DebugString():"n/a");
+void PrepareParametersForPolicyExecution(std::optional<base::Value>& params, const std::vector<std::string>& disabled_checks, const bool is_initial) {
   if (!params || !params->is_dict()) {
     return;
   }
@@ -76,8 +75,8 @@ void RemoveUnselectedUrls(std::optional<base::Value>& params, const std::vector<
                                         });
     });
   }
-  LOG(INFO) << "[PSST] OnUserDialogAction post params:"
-            << (params ? params->DebugString() : "n/a");
+
+  params->GetDict().Set("initial_execution", is_initial);
 }
 
 }  // namespace
@@ -88,13 +87,13 @@ void PsstTabHelper::MaybeCreateForWebContents(
     std::unique_ptr<Delegate> delegate,
     const int32_t world_id) {
   // TODO(ssahib): add check for Request-OTR.
-LOG(INFO) << "[PSST] MaybeCreateForWebContents #100 OffTheRecord:" << contents->GetBrowserContext()->IsOffTheRecord() << " feature:" << base::FeatureList::IsEnabled(psst::features::kBravePsst);
+// LOG(INFO) << "[PSST] MaybeCreateForWebContents #100 OffTheRecord:" << contents->GetBrowserContext()->IsOffTheRecord() << " feature:" << base::FeatureList::IsEnabled(psst::features::kBravePsst);
   if (contents->GetBrowserContext()->IsOffTheRecord() ||
       !base::FeatureList::IsEnabled(psst::features::kBravePsst)) {
-LOG(INFO) << "[PSST] MaybeCreateForWebContents #200";
+// LOG(INFO) << "[PSST] MaybeCreateForWebContents #200";
     return;
   }
-LOG(INFO) << "[PSST] MaybeCreateForWebContents #300";
+// LOG(INFO) << "[PSST] MaybeCreateForWebContents #300";
   psst::PsstTabHelper::CreateForWebContents(contents, std::move(delegate),
                                             world_id);
 }
@@ -206,7 +205,7 @@ void PsstTabHelper::OnUserScriptResult(
   if (!show_prompt && !prompt_for_new_version) {
     LOG(INFO)
         << "[PSST]  PsstTabHelper::OnUserScriptResult Allow with No Dialog";
-    OnUserDialogAction(*user_id, rule, std::move(value), render_frame_host_id,
+    OnUserDialogAction(false, *user_id, rule, std::move(value), render_frame_host_id,
                        kAllow, settings_for_site ? settings_for_site->urls_to_skip : std::vector<std::string>());
     return;
   }
@@ -221,17 +220,17 @@ void PsstTabHelper::OnUserScriptResult(
   delegate_->ShowPsstConsentDialog(
       web_contents(), prompt_for_new_version, requests->Clone(),
       base::BindOnce(&PsstTabHelper::OnUserDialogAction,
-        weak_factory_.GetWeakPtr(), *user_id, rule,
+        weak_factory_.GetWeakPtr(), true, *user_id, rule,
         std::move(value), render_frame_host_id, kAllow),
       base::BindOnce(&PsstTabHelper::OnUserDialogAction,
-                      weak_factory_.GetWeakPtr(), *user_id, rule,
+                      weak_factory_.GetWeakPtr(), true, *user_id, rule,
                       std::nullopt /* no params needed */,
                       render_frame_host_id, kBlock)
                      );
-  LOG(INFO) << "[PSST] asked for consent" << std::endl;
 }
 
 void PsstTabHelper::OnUserDialogAction(
+    const bool is_initial,
     const std::string& user_id,
     const MatchedRule& rule,
     std::optional<base::Value> params,
@@ -245,11 +244,12 @@ LOG(INFO) << "[PSST] OnUserDialogAction start disabled_checks.size:" << disabled
     return;
   }
   
-  RemoveUnselectedUrls(params, disabled_checks);
-
   // If the user consented to PSST, insert the script.
   if (status == kAllow) {
-    InsertScriptInPage(render_frame_host_id, world_id_, rule.PolicyScript(), std::move(params),
+    PrepareParametersForPolicyExecution(params, disabled_checks, is_initial);
+
+    InsertScriptInPage(render_frame_host_id, world_id_, rule.PolicyScript(),
+                       std::move(params),
                        base::BindOnce(&PsstTabHelper::OnPolicyScriptResult,
                                       weak_factory_.GetWeakPtr(), user_id, rule,
                                       render_frame_host_id));
@@ -314,13 +314,11 @@ void PsstTabHelper::DidFinishNavigation(
       navigation_handle->IsSameDocument()) {
     return;
   }
-LOG(INFO) << "[PSST] DidFinishNavigation";
   should_process_ =
       navigation_handle->GetRestoreType() == content::RestoreType::kNotRestored;
 }
 
 void PsstTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
-LOG(INFO) << "[PSST] DocumentOnLoadCompletedInPrimaryMainFrame " <<  web_contents()->GetLastCommittedURL();
   if(!PsstRuleRegistryAccessor::GetInstance()->Registry()) {
     return;
   }
@@ -332,7 +330,6 @@ LOG(INFO) << "[PSST] DocumentOnLoadCompletedInPrimaryMainFrame " <<  web_content
   }
 
   auto url = web_contents()->GetLastCommittedURL();
-
   content::GlobalRenderFrameHostId render_frame_host_id =
       web_contents()->GetPrimaryMainFrame()->GetGlobalId();
 

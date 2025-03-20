@@ -86,6 +86,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       base::Value value);
   void OnUserDialogAction(
+      const bool is_initial,
       const std::string& user_id,
       const MatchedRule& rule,
       std::optional<base::Value> params,
