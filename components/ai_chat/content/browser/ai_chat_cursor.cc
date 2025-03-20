@@ -79,7 +79,8 @@ AIChatCursorOverlay::~AIChatCursorOverlay() {
 void AIChatCursorOverlay::MoveCursorTo(int x, int y) {
   // Hide cursor after a delay, debounced
   cursor_hide_timer_.Stop();
-  cursor_hide_timer_.Start(FROM_HERE, base::Seconds(3), this, &AIChatCursorOverlay::HideCursor);
+  cursor_hide_timer_.Start(FROM_HERE, base::Seconds(3), this,
+                           &AIChatCursorOverlay::HideCursor);
 
   ShowCursor();
   gfx::Rect start_bounds = bounds();

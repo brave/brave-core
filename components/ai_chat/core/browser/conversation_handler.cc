@@ -125,34 +125,33 @@ class PageContentTool : public Tool {
 };
 
 class AssistantDetailStorageTool : public Tool {
-  public:
-   // static name
-   inline static const std::string_view kName =
-       "assistant_detail_storage";
+ public:
+  // static name
+  inline static const std::string_view kName = "assistant_detail_storage";
 
-   ~AssistantDetailStorageTool() override = default;
+  ~AssistantDetailStorageTool() override = default;
 
-   std::string_view name() const override { return kName; }
-   std::string_view description() const override {
-     return "This tool allows the assistant to preserve important information "
-            "from screenshots or web content before it gets pushed out of "
-            "context. The assistant should proactively use this tool "
-            "immediately after taking screenshots that contain valuable "
-            "information, especially before performing additional actions that "
-            "might generate more content. By storing key details, "
-            "observations, or data points from visual content, the assistant "
-            "can reference this information later in the conversation even if "
-            "the original screenshots are no longer in context. This is "
-            "particularly important for multi-step tasks where earlier "
-            "screenshots contain critical information needed for later steps. "
-            "Actions like scrolling or clicking will result in an additional "
-            "screenshot and the previous screenshot being removed from "
-            "context, so it's important to use this tool when any valuable "
-            "information is gleamed from a screenshot or web content output.";
-   }
+  std::string_view name() const override { return kName; }
+  std::string_view description() const override {
+    return "This tool allows the assistant to preserve important information "
+           "from screenshots or web content before it gets pushed out of "
+           "context. The assistant should proactively use this tool "
+           "immediately after taking screenshots that contain valuable "
+           "information, especially before performing additional actions that "
+           "might generate more content. By storing key details, "
+           "observations, or data points from visual content, the assistant "
+           "can reference this information later in the conversation even if "
+           "the original screenshots are no longer in context. This is "
+           "particularly important for multi-step tasks where earlier "
+           "screenshots contain critical information needed for later steps. "
+           "Actions like scrolling or clicking will result in an additional "
+           "screenshot and the previous screenshot being removed from "
+           "context, so it's important to use this tool when any valuable "
+           "information is gleamed from a screenshot or web content output.";
+  }
 
-   std::optional<std::string> GetInputSchemaJson() const override {
-     return R"({
+  std::optional<std::string> GetInputSchemaJson() const override {
+    return R"({
          "type": "object",
          "properties": {
            "information": {
@@ -161,19 +160,20 @@ class AssistantDetailStorageTool : public Tool {
            }
          }
        })";
-   }
+  }
 
-   // TODO: Only needed for agent-style conversations
-   bool IsContentAssociationRequired() const override { return true; }
+  // TODO: Only needed for agent-style conversations
+  bool IsContentAssociationRequired() const override { return true; }
 
-   bool RequiresUserInteractionBeforeHandling() const override { return false; }
+  bool RequiresUserInteractionBeforeHandling() const override { return false; }
 
-   void UseTool(const std::string& input_json, Tool::UseToolCallback callback) override {
-     std::move(callback).Run(CreateContentBlocksForText(
-         "Look at the function input for the information the assistant needed "
-         "to remember"));
-   }
- };
+  void UseTool(const std::string& input_json,
+               Tool::UseToolCallback callback) override {
+    std::move(callback).Run(CreateContentBlocksForText(
+        "Look at the function input for the information the assistant needed "
+        "to remember"));
+  }
+};
 
 class UserChoiceTool : public Tool {
  public:
@@ -533,12 +533,12 @@ void ConversationHandler::InitEngine() {
     base::debug::DumpWithoutCrashing();
     // Use default
     auto default_key = features::kAIModelsDefaultKey.Get();
-    model = model_service_->GetModel(conversation_capability_ == mojom::ConversationCapability::CHAT
-                                         ? default_key
-                                         : features::kAIModelsDefaultAgentKey.Get());
+    model = model_service_->GetModel(
+        conversation_capability_ == mojom::ConversationCapability::CHAT
+            ? default_key
+            : features::kAIModelsDefaultAgentKey.Get());
     if (!model) {
-      SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key",
-                                  default_key);
+      SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key", default_key);
       base::debug::DumpWithoutCrashing();
       const auto& all_models = model_service_->GetModels();
       // Use first if given bad default value
@@ -692,7 +692,8 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       model_key, std::move(suggestions), suggestion_generation_status_,
       metadata_->associated_content ? metadata_->associated_content->Clone()
                                     : nullptr,
-      should_send_page_contents_, chat_history_.size(), current_error_, conversation_capability_);
+      should_send_page_contents_, chat_history_.size(), current_error_,
+      conversation_capability_);
 
   std::move(callback).Run(std::move(state));
 }
@@ -796,7 +797,8 @@ void ConversationHandler::ChangeModel(const std::string& model_key) {
   auto* new_model = model_service_->GetModel(model_key);
 
   // Handle when the model does not support the current conversation capability
-  if (new_model && !ModelSupportsCapability(*new_model, conversation_capability_)) {
+  if (new_model &&
+      !ModelSupportsCapability(*new_model, conversation_capability_)) {
     // Prioritize model change over current selected conversation capability
     // only if there's no conversation history.
     // The UI should not allow model to be changed when there's history, but
@@ -812,7 +814,7 @@ void ConversationHandler::ChangeModel(const std::string& model_key) {
       }
     } else {
       DVLOG(0) << "Model does not support conversation capability: "
-                << conversation_capability_;
+               << conversation_capability_;
       return;
     }
   }
@@ -1781,8 +1783,9 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 void ConversationHandler::MaybeSeedOrClearSuggestions() {
   const bool is_page_associated =
       (IsContentAssociationPossible() && should_send_page_contents_) ||
-      (conversation_capability_ == mojom::ConversationCapability::CONTENT_AGENT &&
-        chat_history_.size() > 0);
+      (conversation_capability_ ==
+           mojom::ConversationCapability::CONTENT_AGENT &&
+       chat_history_.size() > 0);
 
   if (!is_page_associated) {
     suggestions_.clear();
@@ -1825,29 +1828,29 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
           mojom::SuggestionGenerationStatus::IsGenerating &&
       suggestion_generation_status_ !=
           mojom::SuggestionGenerationStatus::HasGenerated) {
-      // TODO(petemill): ask content fetcher if it knows whether current page is a
-      // video.
-      auto found_iter = std::ranges::find_if(
-          chat_history_, [](mojom::ConversationTurnPtr& turn) {
-            if (turn->action_type == mojom::ActionType::SUMMARIZE_PAGE ||
-                turn->action_type == mojom::ActionType::SUMMARIZE_VIDEO) {
-              return true;
-            }
-            return false;
-          });
-      const bool has_summarized = found_iter != chat_history_.end();
-      if (!has_summarized) {
-        if (associated_content_delegate_->GetCachedIsVideo()) {
-          suggestions_.emplace_back(
-              l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO),
-              l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO),
-              mojom::ActionType::SUMMARIZE_VIDEO);
-        } else {
-          suggestions_.emplace_back(
-              l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE),
-              l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
-              mojom::ActionType::SUMMARIZE_PAGE);
-        }
+    // TODO(petemill): ask content fetcher if it knows whether current page is a
+    // video.
+    auto found_iter = std::ranges::find_if(
+        chat_history_, [](mojom::ConversationTurnPtr& turn) {
+          if (turn->action_type == mojom::ActionType::SUMMARIZE_PAGE ||
+              turn->action_type == mojom::ActionType::SUMMARIZE_VIDEO) {
+            return true;
+          }
+          return false;
+        });
+    const bool has_summarized = found_iter != chat_history_.end();
+    if (!has_summarized) {
+      if (associated_content_delegate_->GetCachedIsVideo()) {
+        suggestions_.emplace_back(
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO),
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO),
+            mojom::ActionType::SUMMARIZE_VIDEO);
+      } else {
+        suggestions_.emplace_back(
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE),
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
+            mojom::ActionType::SUMMARIZE_PAGE);
+      }
       suggestion_generation_status_ =
           mojom::SuggestionGenerationStatus::CanGenerate;
     }
@@ -2113,7 +2116,8 @@ void ConversationHandler::OnModelDataChanged() {
   OnStateForConversationEntriesChanged();
 }
 
-void ConversationHandler::OnHistoryUpdate(mojom::ConversationTurn* updated_or_added_entry/* = nullptr*/) {
+void ConversationHandler::OnHistoryUpdate(
+    mojom::ConversationTurn* updated_or_added_entry /* = nullptr*/) {
   for (auto& client : conversation_ui_handlers_) {
     client->OnConversationHistoryUpdate(chat_history_.size());
   }

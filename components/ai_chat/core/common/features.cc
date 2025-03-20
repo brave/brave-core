@@ -13,10 +13,7 @@
 
 namespace ai_chat::features {
 
-BASE_FEATURE(kAIChat,
-             "AIChat",
-             base::FEATURE_ENABLED_BY_DEFAULT
-            );
+BASE_FEATURE(kAIChat, "AIChat", base::FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kAIChatTools, "AIChatTools", base::FEATURE_DISABLED_BY_DEFAULT);
 BASE_FEATURE(kSmartPageContent,
              "AIChatSmartPageContent",
