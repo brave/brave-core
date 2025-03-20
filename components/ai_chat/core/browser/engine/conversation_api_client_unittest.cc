@@ -199,16 +199,31 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
   //  - completion response is parsed and passed through to the callbacks
   std::string expected_crediential = "unit_test_credential";
   std::vector<ConversationAPIClient::ConversationEvent> events = {
-      {mojom::CharacterType::HUMAN, ConversationAPIClient::PageText,
-       "This is a page about The Mandalorian."},
-      {mojom::CharacterType::HUMAN, ConversationAPIClient::PageExcerpt,
-       "The Mandalorian"},
-      {mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage,
-       "Est-ce lié à une série plus large?"}};
+      {mojom::CharacterType::HUMAN,
+       ConversationAPIClient::PageText,
+       {"This is a page about The Mandalorian."}},
+      {mojom::CharacterType::HUMAN,
+       ConversationAPIClient::PageExcerpt,
+       {"The Mandalorian"}},
+      {mojom::CharacterType::HUMAN,
+       ConversationAPIClient::ChatMessage,
+       {"Est-ce lié à une série plus large?"}},
+      {mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage, {}},
+      {mojom::CharacterType::HUMAN,
+       ConversationAPIClient::UploadImage,
+       {"data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+        "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+        "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"}}};
   std::string expected_events_body = R"([
     {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
     {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
-    {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"}
+    {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"},
+    {"role": "user", "type": "chatMessage", "content": ""},
+    {"role": "user", "type": "uploadImage",
+     "content": ["data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                 "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"]
+    }
   ])";
   std::string expected_system_language = "en_KY";
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
@@ -407,16 +422,31 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
   //  - completion response is parsed and passed through to the callbacks
   std::string expected_crediential = "unit_test_credential";
   std::vector<ConversationAPIClient::ConversationEvent> events = {
-      {mojom::CharacterType::HUMAN, ConversationAPIClient::PageText,
-       "This is a page about The Mandalorian."},
-      {mojom::CharacterType::HUMAN, ConversationAPIClient::PageExcerpt,
-       "The Mandalorian"},
-      {mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage,
-       "Est-ce lié à une série plus large?"}};
+      {mojom::CharacterType::HUMAN,
+       ConversationAPIClient::PageText,
+       {"This is a page about The Mandalorian."}},
+      {mojom::CharacterType::HUMAN,
+       ConversationAPIClient::PageExcerpt,
+       {"The Mandalorian"}},
+      {mojom::CharacterType::HUMAN,
+       ConversationAPIClient::ChatMessage,
+       {"Est-ce lié à une série plus large?"}},
+      {mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage, {}},
+      {mojom::CharacterType::HUMAN,
+       ConversationAPIClient::UploadImage,
+       {"data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+        "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+        "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"}}};
   std::string expected_events_body = R"([
     {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
     {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
-    {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"}
+    {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"},
+    {"role": "user", "type": "chatMessage", "content": ""},
+    {"role": "user", "type": "uploadImage",
+     "content": ["data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                 "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"]
+    }
   ])";
   std::string expected_system_language = "en_KY";
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
