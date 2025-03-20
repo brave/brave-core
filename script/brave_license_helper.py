@@ -4,8 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import os
+from pathlib import Path
 import re
 import subprocess
+import tomllib
 
 BRAVE_SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -19,6 +21,28 @@ DESKTOP_ONLY_PATHS = []
 
 _REPOSITORY_ROOT = None
 
+
+def GetRustWorkspaceTransitiveDeps(workspace):
+    ws_abs_path = Path(f'{_REPOSITORY_ROOT}/{workspace}')
+
+    def GetMembers():
+        with open(Path(f'{ws_abs_path}/Cargo.toml'), 'rb') as f:
+            return tomllib.load(f)['workspace']['members']
+
+    # The `members` field in `[workspace]` is an array of directories
+    # (as opposed to an array of package names), hence inspecting the
+    # Cargo.toml of each member, instead of using the Cargo.lock
+    # of the workspace.
+    def GetDepsForMember(member):
+        with open(Path(f'{ws_abs_path}/{member}/Cargo.toml'), 'rb') as f:
+            return list(tomllib.load(f)['dependencies'].keys())
+
+    all_deps = next(os.walk(Path(f'{ws_abs_path}/vendor')))[1]
+    direct_deps = [GetDepsForMember(member) for member in GetMembers()]
+    return [
+        str(Path(f'{workspace}/vendor/{dep}')) for dep in all_deps
+        if dep not in sum(direct_deps, [])
+    ]
 
 def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
                     additional_paths):
@@ -156,6 +180,9 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'vendor', 'omaha', 'omaha', 'scons-out'),
         os.path.join('brave', 'third_party', 'libdmg-hfsplus'),
         os.path.join('brave', 'tools', 'crates', 'vendor'),
+
+        # Transitive deps in brave/ui/webui/resources/wasm.
+        *GetRustWorkspaceTransitiveDeps(Path('brave/ui/webui/resources/wasm')),
     ])
 
     # Add the licensing info that would normally be in a README.chromium file.

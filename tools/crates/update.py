@@ -1,4 +1,13 @@
 #!/usr/bin/env vpython3
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# update.py vendors the CLI tools in versions.py and their deps.
+# Run this script via npm run update_brave_tools_crates
+# whenever you need to add a new CLI tool,
+# or bump the version of an existing one.
 
 import fnmatch
 import json
@@ -6,10 +15,16 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import toml
 
+import brave_chromium_utils
 import versions
 
+with brave_chromium_utils.sys_path('//tools/rust'):
+    import update_rust
+    CARGO = os.path.join(update_rust.RUST_TOOLCHAIN_OUT_DIR, 'bin',
+                         'cargo' + ('.exe' if sys.platform == 'win32' else ''))
 REMOVE_CRATES = ['winapi-*gnu*', 'windows_*gnu*']
 
 
@@ -51,13 +66,13 @@ def add_dependencies():
     dict = vars(versions)
     for dep in dependencies:
         version = dict[f'{dep.replace("-", "_").upper()}_VERSION']
-        subprocess.run(['cargo', 'add', f'{dep}@{version}'], check=True)
+        subprocess.run([CARGO, 'add', f'{dep}@{version}'], check=True)
 
     # Update dependencies
-    subprocess.run(['cargo', 'update'], check=True)
+    subprocess.run([CARGO, 'update'], check=True)
 
     # Vendor dependencies
-    subprocess.run(['cargo', 'vendor'], check=True)
+    subprocess.run([CARGO, 'vendor'], check=True)
 
 
 def create_dependency_placeholders():

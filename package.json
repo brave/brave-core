@@ -49,7 +49,8 @@
     "ios_pack_js": "webpack --config ios/brave-ios/webpack.config.js",
     "ios_bootstrap": "node ./build/commands/scripts/iosCommands.js ios_bootstrap",
     "update_brave_tools_crates": "node ./build/commands/scripts/updateBraveToolsCrates.js",
-    "build_rust_toolchain_aux": "node ./build/commands/scripts/buildRustToolchainAux.js"
+    "build_rust_toolchain_aux": "node ./build/commands/scripts/buildRustToolchainAux.js",
+    "update_wasm_resources": "node ./build/commands/scripts/updateWasmResources.js"
   },
   "repository": {
     "type": "git",

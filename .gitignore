@@ -57,10 +57,12 @@ npm-debug.log
 engflow.crt
 *.key
 !tools/crates/vendor/**/*.key
+!ui/webui/resources/wasm/vendor/**/*.key
 privkey.pem
 *~
 CMakeLists.txt
 !tools/crates/vendor/**/CMakeLists.txt
+!ui/webui/resources/wasm/vendor/**/CMakeLists.txt
 cmake-build-debug/
 coverage/
 /build/rustup/
