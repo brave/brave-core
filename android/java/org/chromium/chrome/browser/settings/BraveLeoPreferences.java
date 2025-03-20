@@ -46,6 +46,7 @@ public class BraveLeoPreferences extends BravePreferenceFragment
     private static final String PREF_HISTORY = "history_switch";
     private static final String PREF_SUBSCRIPTION_CATEGORY = "subscription_category";
     private static final String PREF_DEFAULT_MODEL = "default_model";
+    public static final String PREF_LEO_QUICK_SEARCH_ENGINE = "leo_quick_search_engine";
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
     private ChromeSwitchPreference mHistory;

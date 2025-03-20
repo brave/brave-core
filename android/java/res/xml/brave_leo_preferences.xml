@@ -14,6 +14,12 @@
             android:key="autocomplete_switch"
             android:title="@string/leo_autocomplete_pref"
             android:defaultValue="true" />
+        
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="leo_quick_search_engine"
+            android:title="@string/leo_quick_search_engine_pref"
+            android:summary="@string/leo_quick_search_engine_summary"
+            android:defaultValue="true" />
 
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="history_switch"
