@@ -261,12 +261,14 @@ cargo_crate("lib") {
   deps = [
     "//brave/third_party/rust/funty/v2:lib",
     "//brave/third_party/rust/radium/v0_7:lib",
+    "//brave/third_party/rust/serde/v1:lib",
     "//brave/third_party/rust/tap/v1:lib",
     "//brave/third_party/rust/wyz/v0_5:lib",
   ]
   features = [
     "alloc",
     "atomic",
+    "serde",
     "std",
   ]
   rustflags = [

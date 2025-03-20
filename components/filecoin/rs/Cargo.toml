@@ -6,11 +6,11 @@ edition = "2018"
 license = "MPL-2.0"
 
 [dependencies]
-base64 = "0.13.0"
+base64 = "0.22"
 bls-signatures = { version = "0.15", default-features = false, features = ["pairing"] }
 cxx = "1"
 fvm_shared = { version = "4.5.1" }
-libsecp256k1 = "0.7"
+libsecp256k1 = "0.7.2"
 num_bigint_chainsafe = { package = "forest_bigint", version = "0.1.2"}
 serde = { version = "^1.0.117", features = ["derive"] }
 serde_json = "^1.0.59"

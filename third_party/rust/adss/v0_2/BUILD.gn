@@ -13,16 +13,16 @@ cargo_crate("lib") {
   epoch = "0.2"
   crate_type = "rlib"
   crate_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/adss-0.2.2/src/lib.rs"
+      "//brave/third_party/rust/chromium_crates_io/vendor/adss-0.2.3/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/adss-0.2.2/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/adss-0.2.2/src/strobe_rng.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adss-0.2.3/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/adss-0.2.3/src/strobe_rng.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.2.2"
+  cargo_pkg_version = "0.2.3"
   cargo_pkg_authors = "eV <ev@7pr.xyz>, Alex Davidson <coela@alxdavids.xyz>"
   cargo_pkg_name = "adss"
   cargo_pkg_description = "Adept Secret Sharing framework"
@@ -37,7 +37,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/rand/v0_8:lib",
     "//brave/third_party/rust/rand_core/v0_6:lib",
     "//brave/third_party/rust/star_sharks/v0_6:lib",
-    "//brave/third_party/rust/strobe_rs/v0_8:lib",
+    "//brave/third_party/rust/strobe_rs/v0_10:lib",
     "//brave/third_party/rust/zeroize/v1:lib",
   ]
   rustflags = [
