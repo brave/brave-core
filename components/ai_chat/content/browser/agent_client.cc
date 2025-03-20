@@ -311,8 +311,8 @@ void AgentClient::UseTool(const std::string& input_json,
       return;
     }
 
-    // Calculate delta_x and delta_y. Assume a "click" is 30px
-    scroll_amount = *scroll_amount * 30;
+    // Calculate delta_x and delta_y. Assume a "click" is 60px
+    scroll_amount = *scroll_amount * 60;
     int delta_x = 0;
     int delta_y = 0;
     if (*direction == "down") {
