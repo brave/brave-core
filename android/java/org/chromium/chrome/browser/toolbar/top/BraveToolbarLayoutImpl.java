@@ -11,7 +11,6 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -124,7 +123,6 @@ import org.chromium.url.mojom.Url;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -1192,22 +1190,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     @Override
-    public void onUrlFocusChange(boolean hasFocus) {
-        // We need to enable the promo for later release.
-        // Delay showing the panel. Otherwise there are ANRs on holding onUrlFocusChange
-        /* PostTask.postTask(TaskTraits.UI_DEFAULT, () -> {
-            int appOpenCountForWidgetPromo = ChromeSharedPreferences.getInstance().readInt(
-                    BravePreferenceKeys.BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO);
-            if (hasFocus
-                    && appOpenCountForWidgetPromo >= BraveActivity.APP_OPEN_COUNT_FOR_WIDGET_PROMO)
-                mSearchWidgetPromoPanel.showIfNeeded(this);
-        }); */
-        super.onUrlFocusChange(hasFocus);
-    }
-
-    @Override
-    public void populateUrlAnimatorSetImpl(boolean showExpandedState,
-            int urlFocusToolbarButtonsDuration, int urlClearFocusTabStackDelayMs,
+    public void populateUrlAnimatorSetImpl(
+            boolean showExpandedState,
+            int urlFocusToolbarButtonsDuration,
+            int urlClearFocusTabStackDelayMs,
             List<Animator> animators) {
         if (mBraveShieldsButton != null) {
             Animator animator;

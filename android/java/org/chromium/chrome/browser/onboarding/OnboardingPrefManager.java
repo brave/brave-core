@@ -23,7 +23,6 @@ import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 
 /**
  * Provides information regarding onboarding.
