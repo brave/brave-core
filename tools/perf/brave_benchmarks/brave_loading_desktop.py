@@ -36,6 +36,7 @@ def CreateCoreTBMOptions(metric_list):
   loading_metrics_category.AugmentOptionsForLoadingMetrics(tbm_options)
   cat_filter = tbm_options.config.chrome_trace_config.category_filter
   # cat_filter.AddDisabledByDefault('disabled-by-default-histogram_samples')
+  cat_filter.disabled_by_default_categories().remove('base')
   tbm_options.ExtendTimelineBasedMetric(metric_list)
   tbm_options.config.chrome_trace_config.SetTraceBufferSizeInKb(400 * 1024)
   return tbm_options
