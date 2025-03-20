@@ -47,12 +47,12 @@ void ScrollAtPoint(content::WebContents* web_contents,
   std::string script =
       base::StringPrintf(R"JS((function() {
     let target = document.elementFromPoint(%d, %d);
-    if (!target) { return }
-
-    while (target && target !== document.body &&
-        target !== document.documentElement &&
-        target.scrollHeight <= target.clientHeight) {
+    while (target &&
+        target.scrollHeight <= target.clientHeight + 10) {
       target = target.parentElement
+    }
+    if (!target || target === document.documentElement) {
+      target = document.scrollingElement
     }
     if (target) {
       target.scrollBy(%d, %d)
@@ -311,8 +311,8 @@ void AgentClient::UseTool(const std::string& input_json,
       return;
     }
 
-    // Calculate delta_x and delta_y. Assume a "click" is 16px
-    scroll_amount = *scroll_amount * 16;
+    // Calculate delta_x and delta_y. Assume a "click" is 30px
+    scroll_amount = *scroll_amount * 30;
     int delta_x = 0;
     int delta_y = 0;
     if (*direction == "down") {
