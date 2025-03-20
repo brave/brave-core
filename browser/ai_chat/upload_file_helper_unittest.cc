@@ -46,8 +46,9 @@ class UploadFileHelperTest : public content::RenderViewHostTestHarness {
     file_helper_ = std::make_unique<UploadFileHelper>(web_contents(), profile);
   }
 
-  mojom::UploadedImagePtr UploadImageSync() {
-    base::test::TestFuture<mojom::UploadedImagePtr> future;
+  std::optional<std::vector<mojom::UploadedImagePtr>> UploadImageSync() {
+    base::test::TestFuture<std::optional<std::vector<mojom::UploadedImagePtr>>>
+        future;
     file_helper_->UploadImage(
         std::make_unique<ChromeSelectFilePolicy>(web_contents()),
         future.GetCallback());
@@ -58,6 +59,7 @@ class UploadFileHelperTest : public content::RenderViewHostTestHarness {
     file_helper_.reset();
     content::RenderViewHostTestHarness::TearDown();
     ui::SelectFileDialog::SetFactory(nullptr);
+    ASSERT_TRUE(temp_dir_.Delete());
   }
 
   std::unique_ptr<content::BrowserContext> CreateBrowserContext() override {
@@ -79,7 +81,7 @@ TEST_F(UploadFileHelperTest, AcceptedFileExtensions) {
           &dialog_params_));
   // This also test cancel selection result
   EXPECT_FALSE(UploadImageSync());
-  EXPECT_EQ(dialog_params_.type, ui::SelectFileDialog::SELECT_OPEN_FILE);
+  EXPECT_EQ(dialog_params_.type, ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE);
   ASSERT_TRUE(dialog_params_.file_types);
   ASSERT_EQ(1u, dialog_params_.file_types->extensions.size());
   EXPECT_TRUE(base::Contains(dialog_params_.file_types->extensions[0],
@@ -127,10 +129,12 @@ TEST_F(UploadFileHelperTest, ImageRead) {
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{path3}));
   auto sample_result = UploadImageSync();
-  EXPECT_TRUE(sample_result);
-  EXPECT_EQ(sample_result->filename, "sample_png.png");
-  EXPECT_EQ(sample_result->filesize, sample_result->image_data.size());
-  auto encoded_bitmap = gfx::PNGCodec::Decode(sample_result->image_data);
+  ASSERT_TRUE(sample_result);
+  ASSERT_EQ(1u, sample_result->size());
+  EXPECT_EQ((*sample_result)[0]->filename, "sample_png.png");
+  EXPECT_EQ((*sample_result)[0]->filesize,
+            (*sample_result)[0]->image_data.size());
+  auto encoded_bitmap = gfx::PNGCodec::Decode((*sample_result)[0]->image_data);
   EXPECT_TRUE(gfx::test::AreBitmapsClose(sample_bitmap, encoded_bitmap, 1));
   // Check dimensions are the same.
   EXPECT_EQ(sample_bitmap.width(), encoded_bitmap.width());
@@ -144,13 +148,38 @@ TEST_F(UploadFileHelperTest, ImageRead) {
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{path4}));
   auto large_result = UploadImageSync();
-  EXPECT_TRUE(large_result);
-  EXPECT_EQ(large_result->filename, "large_png.png");
-  EXPECT_EQ(large_result->filesize, large_result->image_data.size());
-  EXPECT_LE(large_result->filesize, large_png_bytes->size());
-  encoded_bitmap = gfx::PNGCodec::Decode(large_result->image_data);
+  ASSERT_TRUE(large_result);
+  ASSERT_EQ(1u, large_result->size());
+  EXPECT_EQ((*large_result)[0]->filename, "large_png.png");
+  EXPECT_EQ((*large_result)[0]->filesize,
+            (*large_result)[0]->image_data.size());
+  EXPECT_LE((*large_result)[0]->filesize, large_png_bytes->size());
+  encoded_bitmap = gfx::PNGCodec::Decode((*large_result)[0]->image_data);
   EXPECT_EQ(1024, encoded_bitmap.width());
   EXPECT_EQ(768, encoded_bitmap.height());
+
+  // multiple image selection
+  ui::SelectFileDialog::SetFactory(
+      std::make_unique<content::FakeSelectFileDialogFactory>(
+          std::vector<base::FilePath>{path3, path4}));
+
+  auto result = UploadImageSync();
+
+  ASSERT_TRUE(result);
+  ASSERT_EQ(2u, result->size());
+
+  EXPECT_EQ((*result)[0]->filename, "sample_png.png");
+  EXPECT_EQ((*result)[0]->filesize, (*result)[0]->image_data.size());
+  auto encoded_bitmap1 = gfx::PNGCodec::Decode((*result)[0]->image_data);
+  EXPECT_TRUE(gfx::test::AreBitmapsClose(sample_bitmap, encoded_bitmap1, 1));
+  EXPECT_EQ(sample_bitmap.width(), encoded_bitmap1.width());
+  EXPECT_EQ(sample_bitmap.height(), encoded_bitmap1.height());
+
+  EXPECT_EQ((*result)[1]->filename, "large_png.png");
+  EXPECT_EQ((*result)[1]->filesize, (*result)[1]->image_data.size());
+  auto encoded_bitmap2 = gfx::PNGCodec::Decode((*result)[1]->image_data);
+  EXPECT_EQ(1024, encoded_bitmap2.width());
+  EXPECT_EQ(768, encoded_bitmap2.height());
 }
 
 }  // namespace ai_chat
