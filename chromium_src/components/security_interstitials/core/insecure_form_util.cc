@@ -3,9 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SECURITY_INTERSTITIALS_CORE_INSECURE_FORM_UTIL_CC_
-#define BRAVE_CHROMIUM_SRC_COMPONENTS_SECURITY_INTERSTITIALS_CORE_INSECURE_FORM_UTIL_CC_
-
 #define IsInsecureFormActionOnSecureSource \
   IsInsecureFormActionOnSecureSource_ChromiumImpl
 
@@ -29,5 +26,3 @@ bool IsInsecureFormActionOnSecureSource(const url::Origin& source_origin,
 }
 
 }  // namespace security_interstitials
-
-#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SECURITY_INTERSTITIALS_CORE_INSECURE_FORM_UTIL_CC_

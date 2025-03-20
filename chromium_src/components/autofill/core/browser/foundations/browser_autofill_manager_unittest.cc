@@ -113,8 +113,6 @@ std::string MakeGuid(size_t last_digit) {
   return base::StringPrintf("00000000-0000-0000-0000-%012zu", last_digit);
 }
 
-std::string kElvisProfileGuid = MakeGuid(1);
-
 class MockCreditCardAccessManager : public CreditCardAccessManager {
  public:
   using CreditCardAccessManager::CreditCardAccessManager;
@@ -429,7 +427,7 @@ class BraveBrowserAutofillManagerTest : public testing::Test {
   void CreateTestAutofillProfiles() {
     AutofillProfile profile1 =
         FillDataToAutofillProfile(GetElvisAddressFillData());
-    profile1.set_guid(kElvisProfileGuid);
+    profile1.set_guid(MakeGuid(1));
     profile1.usage_history().set_use_date(base::Time::Now() - base::Days(2));
     personal_data().address_data_manager().AddProfile(profile1);
   }

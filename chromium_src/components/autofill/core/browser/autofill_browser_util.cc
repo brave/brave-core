@@ -3,11 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_AUTOFILL_CORE_BROWSER_AUTOFILL_BROWSER_UTIL_CC_
-#define BRAVE_CHROMIUM_SRC_COMPONENTS_AUTOFILL_CORE_BROWSER_AUTOFILL_BROWSER_UTIL_CC_
-
 #define IsFormMixedContent IsFormMixedContent_ChromiumImpl
-
 #include "src/components/autofill/core/browser/autofill_browser_util.cc"
 #undef IsFormMixedContent
 
@@ -29,5 +25,3 @@ bool IsFormMixedContent(const AutofillClient& client, const FormData& form) {
 }
 
 }  // namespace autofill
-
-#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_AUTOFILL_CORE_BROWSER_AUTOFILL_BROWSER_UTIL_CC_
