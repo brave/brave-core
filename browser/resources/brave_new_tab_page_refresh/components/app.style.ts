@@ -35,6 +35,12 @@ export const style = scoped.css`
     }
   }
 
+  .clock {
+    font: ${font.large.semibold};
+    color: #fff;
+    opacity: .8;
+  }
+
   .allow-background-pointer-events {
     /* This element will allow pointer events to target the background. */
     pointer-events: none;

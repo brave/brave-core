@@ -21,6 +21,26 @@
     Cancel
   </message>
 
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_LABEL" desc="Label for the clock format drop-down on the settings dialog">
+    Format
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION12HOUR_TEXT" desc="Text for the 12-hour clock format option">
+    12-hour clock
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION24HOUR_TEXT" desc="Text for the 24-hour clock format option">
+    24-hour clock
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION_AUTOMATIC_TEXT" desc="Text for the automatic clock format option">
+    Automatic (<ph name="LOCALE">$1<ex>en-US</ex></ph>)
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_SETTINGS_TITLE" desc="Title of the clock settings panel">
+    Clock
+  </message>
+
   <message name="IDS_NEW_TAB_CUSTOM_BACKGROUND_LABEL" desc="Label for custom background option">
     Use your own
   </message>
@@ -103,6 +123,10 @@
 
   <message name="IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL" desc="Text for settings background option">
     Show Background Images
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_CLOCK_LABEL" desc="Label for enabling the clock on the NTP">
+    Show clock
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL" desc="Label for enabling the searchbox on the NTP">

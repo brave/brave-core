@@ -11,6 +11,7 @@ import { Background } from './background/background'
 import { BackgroundCaption } from './background/background_caption'
 import { SettingsModal, SettingsView } from './settings/settings_modal'
 import { TopSites } from './top_sites/top_sites'
+import { Clock } from './common/clock'
 
 import { style } from './app.style'
 
@@ -22,6 +23,12 @@ export function App() {
     <div data-css-scope={style.scope}>
       <Background />
       <div className='top-controls'>
+        <button
+          className='clock'
+          onClick={() => setSettingsView('clock')}
+        >
+          <Clock />
+        </button>
         <button
           className='settings'
           onClick={() => setSettingsView('background')}

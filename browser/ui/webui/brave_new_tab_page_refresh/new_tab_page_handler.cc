@@ -13,6 +13,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -347,6 +348,26 @@ void NewTabPageHandler::SetCustomTopSitePosition(
   std::move(callback).Run();
 }
 
+void NewTabPageHandler::GetShowClock(GetShowClockCallback callback) {
+  std::move(callback).Run(pref_service_->GetBoolean(kNewTabPageShowClock));
+}
+
+void NewTabPageHandler::SetShowClock(bool show_clock,
+                                     SetShowClockCallback callback) {
+  pref_service_->SetBoolean(kNewTabPageShowClock, show_clock);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetClockFormat(GetClockFormatCallback callback) {
+  std::move(callback).Run(pref_service_->GetString(kNewTabPageClockFormat));
+}
+
+void NewTabPageHandler::SetClockFormat(const std::string& clock_format,
+                                       SetClockFormatCallback callback) {
+  pref_service_->SetString(kNewTabPageClockFormat, clock_format);
+  std::move(callback).Run();
+}
+
 void NewTabPageHandler::OnCustomBackgroundsSelected(
     ShowCustomBackgroundChooserCallback callback,
     std::vector<base::FilePath> paths) {
@@ -374,6 +395,9 @@ void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
       break;
     case UpdateObserver::Source::kTopSites:
       page_->OnTopSitesUpdated();
+      break;
+    case UpdateObserver::Source::kClock:
+      page_->OnClockStateUpdated();
       break;
   }
 }

@@ -142,6 +142,11 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void IncludeMostVisitedTopSite(
       const std::string& url,
       IncludeMostVisitedTopSiteCallback callback) override;
+  void GetShowClock(GetShowClockCallback callback) override;
+  void SetShowClock(bool show_clock, SetShowClockCallback callback) override;
+  void GetClockFormat(GetClockFormatCallback callback) override;
+  void SetClockFormat(const std::string& clock_format,
+                      SetClockFormatCallback callback) override;
 
  private:
   void OnCustomBackgroundsSelected(ShowCustomBackgroundChooserCallback callback,

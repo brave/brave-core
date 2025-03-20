@@ -69,6 +69,7 @@ interface NewTabPage {
   OnBackgroundsUpdated();
   OnSearchStateUpdated();
   OnTopSitesUpdated();
+  OnClockStateUpdated();
 };
 
 // Browser-side handler for requests from the WebUI page.
@@ -182,5 +183,13 @@ interface NewTabPageHandler {
   // Includes a site in the "most visited" top sites list, after it was excluded
   // by a call to `ExcludeMostVisitedTopSite`.
   IncludeMostVisitedTopSite(string url) => ();
+
+  // Gets or sets whether the clock is displayed on the new tab page.
+  GetShowClock() => (bool show_clock);
+  SetShowClock(bool show_clock) => ();
+
+  // Gets or sets the clock time format.
+  GetClockFormat() => (string clock_format);
+  SetClockFormat(string clock_format) => ();
 
 };
