@@ -3686,6 +3686,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_LEO_AUTOCOMPLETE_PREF" desc="Title for Leo Autocomplete suggestions.">
       Show autocomplete suggestions in address bar
     </message>
+    <message name="IDS_LEO_QUICK_SEARCH_ENGINE_PREF" desc="Title for Leo Quick Search Engine preference.">
+      Show in quick search engines bar
+    </message>
+    <message name="IDS_LEO_QUICK_SEARCH_ENGINE_SUMMARY" desc="Summary for Leo Quick Search Engine preference.">
+      Enables a shortcut to launch Leo from the quick search engines bar.
+    </message>
     <message name="IDS_LEO_RESET_DATA" desc="Title for Leo Reset and clear data option.">
       Delete all Leo AI conversation data
     </message>

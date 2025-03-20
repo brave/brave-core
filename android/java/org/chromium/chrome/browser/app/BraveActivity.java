@@ -109,6 +109,7 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
+import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsConnectionErrorHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
@@ -2653,7 +2654,8 @@ public abstract class BraveActivity extends ChromeActivity
                 QuickSearchEnginesUtil.getDefaultSearchEngine(getCurrentProfile());
         searchEngines.add(0, defaultQuickSearchEnginesModel);
 
-        if (!getCurrentProfile().isOffTheRecord()) {
+        if (!getCurrentProfile().isOffTheRecord()
+                && BraveLeoPrefUtils.shouldShowLeoQuickSearchEngine()) {
             QuickSearchEnginesModel leoQuickSearchEnginesModel =
                     new QuickSearchEnginesModel(
                             "",
