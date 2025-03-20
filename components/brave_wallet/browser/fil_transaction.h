@@ -16,7 +16,7 @@
 
 namespace brave_wallet {
 
-constexpr size_t kFilTransactionCidSize = 38;
+inline constexpr size_t kFilTransactionCidSize = 38;
 
 class FilTransaction {
  public:
