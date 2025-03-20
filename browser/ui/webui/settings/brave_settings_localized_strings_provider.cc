@@ -87,6 +87,10 @@ constexpr char16_t kLeoCustomModelsLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/"
     u"34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo";
 
+constexpr char16_t kTabOrganizationLearnMoreURL[] =
+    u"https://support.brave.com/hc/en-us/articles/"
+    u"360000766892-How-to-use-Tab-Focus-Mode";
+
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
 
@@ -602,6 +606,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_TITLE},
       {"braveLeoAssistantYourModelsDesc1",
        IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_1},
+      {"braveLeoAssistantAboutLeoLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_LABEL},
+      {"braveLeoAssistantAboutLeoDesc1",
+       IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_DESC_1},
       {"braveLeoModelSectionTitle", IDS_CHAT_UI_MENU_TITLE_MODELS},
       {"braveLeoAssistantEndpointInvalidError",
        IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_INVALID_ERROR},
@@ -957,10 +965,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("braveLeoAssistantTabOrganizationDesc",
                          l10n_util::GetStringFUTF16(
                              IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_DESC,
-                             kLeoPrivacyPolicyURL));
+                             kTabOrganizationLearnMoreURL));
 
-  html_source->AddString("braveLeoAssistantPrivacyPolicyURL",
-                         kLeoPrivacyPolicyURL);
+  html_source->AddString("braveLeoAssistantTabOrganizationLearnMoreURL",
+                         kTabOrganizationLearnMoreURL);
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
@@ -1002,6 +1010,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "braveLeoAssistantYourModelsDesc2",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_2,
                                  kLeoCustomModelsLearnMoreURL));
+
+  html_source->AddString(
+      "braveLeoAssistantAboutLeoDesc2",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_DESC_2,
+                                 kLeoPrivacyPolicyURL));
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,
