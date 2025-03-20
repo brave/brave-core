@@ -15,15 +15,6 @@ bool ShouldAlwaysRunService() {
   return base::FeatureList::IsEnabled(kShouldAlwaysRunBraveAdsServiceFeature);
 }
 
-BASE_FEATURE(kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature,
-             "ShouldAlwaysTriggerBraveNewTabPageAdEvents",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
-bool ShouldAlwaysTriggerNewTabPageAdEvents() {
-  return base::FeatureList::IsEnabled(
-      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
-}
-
 BASE_FEATURE(kShouldSupportSearchResultAdsFeature,
              "ShouldSupportSearchResultAds",
              base::FEATURE_ENABLED_BY_DEFAULT);

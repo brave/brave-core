@@ -848,16 +848,6 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
               brave_ads::kShouldAlwaysRunBraveAdsServiceFeature),              \
       },                                                                       \
       {                                                                        \
-          "brave-ads-should-always-trigger-new-tab-page-ad-events",            \
-          "Should always trigger new tab page ad events",                      \
-          "Support triggering new tab page ad events if Brave Private Ads "    \
-          "are disabled. Requires "                                            \
-          "#brave-ads-should-always-run-brave-ads-service to be enabled.",     \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_ads::kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature),  \
-      },                                                                       \
-      {                                                                        \
           "brave-ads-should-support-search-result-ads",                        \
           "Support Search Result Ads feature",                                 \
           "Should be used in combination with "                                \

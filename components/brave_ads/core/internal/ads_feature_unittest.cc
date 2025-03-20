@@ -26,20 +26,6 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldNotAlwaysRunService) {
   EXPECT_FALSE(ShouldAlwaysRunService());
 }
 
-TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysTriggerNewTabPageAdEvents) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(
-      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
-
-  // Act & Assert
-  EXPECT_TRUE(ShouldAlwaysTriggerNewTabPageAdEvents());
-}
-
-TEST(BraveAdsBraveAdsFeatureTest, ShouldNotAlwaysTriggerNewTabPageAdEvents) {
-  // Act & Assert
-  EXPECT_FALSE(ShouldAlwaysTriggerNewTabPageAdEvents());
-}
-
 TEST(BraveAdsBraveAdsFeatureTest, ShouldSupportSearchResultAds) {
   // Act & Assert
   EXPECT_TRUE(ShouldSupportSearchResultAds());
