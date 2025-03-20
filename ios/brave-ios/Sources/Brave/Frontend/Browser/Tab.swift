@@ -593,13 +593,10 @@ class Tab: NSObject {
         configuration: configuration,
         isPrivate: isPrivate
       )
-      webView.didSelectSearchWithBrave = { [weak self] selectedText in
+      webView.buildEditMenuWithBuilder = { [weak self] builder in
         guard let self else { return }
-        observers.forEach {
-          $0.tab(self, didSelectSearchWithBraveFor: selectedText)
-        }
+        self.webDelegate?.tab(self, buildEditMenuWithBuilder: builder)
       }
-
       webView.accessibilityLabel = Strings.webContentAccessibilityLabel
       webView.allowsBackForwardNavigationGestures = true
       webView.allowsLinkPreview = true
@@ -1488,7 +1485,7 @@ class TabWebView: WKWebView, MenuHelperInterface {
     return dataStore
   }
 
-  fileprivate var didSelectSearchWithBrave: ((String) -> Void)?
+  fileprivate var buildEditMenuWithBuilder: ((any UIMenuBuilder) -> Void)?
 
   fileprivate init(
     frame: CGRect,
@@ -1543,52 +1540,9 @@ class TabWebView: WKWebView, MenuHelperInterface {
     return super.hitTest(point, with: event)
   }
 
-  override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-    if action == MenuHelper.selectorForcePaste {
-      // If paste is allowed, show force paste as well
-      return super.canPerformAction(#selector(paste(_:)), withSender: sender)
-    }
-    return super.canPerformAction(action, withSender: sender)
-  }
-
-  @objc func menuHelperForcePaste() {
-    if let string = UIPasteboard.general.string {
-      evaluateSafeJavaScript(
-        functionName: "window.__firefox__.forcePaste",
-        args: [string, UserScriptManager.securityToken],
-        contentWorld: .defaultClient
-      ) { _, _ in }
-    }
-  }
-
-  @objc func menuHelperSearchWithBrave() {
-    getCurrentSelectedText { [weak self] selectedText in
-      guard let self = self else { return }
-      guard let selectedText = selectedText else {
-        assertionFailure("Impossible to trigger this without selected text")
-        return
-      }
-
-      self.didSelectSearchWithBrave?(selectedText)
-    }
-  }
-
-  // rdar://33283179 Apple bug where `serverTrust` is not defined as KVO when it should be
-  override func value(forUndefinedKey key: String) -> Any? {
-    if key == #keyPath(WKWebView.serverTrust) {
-      return serverTrust
-    }
-
-    return super.value(forUndefinedKey: key)
-  }
-
-  private func getCurrentSelectedText(callback: @escaping (String?) -> Void) {
-    evaluateSafeJavaScript(functionName: "getSelection().toString", contentWorld: .defaultClient) {
-      result,
-      _ in
-      let selectedText = result as? String
-      callback(selectedText)
-    }
+  override func buildMenu(with builder: any UIMenuBuilder) {
+    super.buildMenu(with: builder)
+    buildEditMenuWithBuilder?(builder)
   }
 }
 
