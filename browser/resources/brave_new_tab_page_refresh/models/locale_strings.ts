@@ -9,6 +9,11 @@ export type StringKey =
   'backgroundSettingsTitle' |
   'braveBackgroundLabel' |
   'cancelButtonLabel' |
+  'clockFormatLabel' |
+  'clockFormatOption12HourText' |
+  'clockFormatOption24HourText' |
+  'clockFormatOptionAutomaticText' |
+  'clockSettingsTitle' |
   'customBackgroundLabel' |
   'customBackgroundTitle' |
   'customizeSearchEnginesLink' |
@@ -33,6 +38,7 @@ export type StringKey =
   'searchSuggestionsPromptTitle' |
   'settingsTitle' |
   'showBackgroundsLabel' |
+  'showClockLabel' |
   'showSearchBoxLabel' |
   'showSponsoredImagesLabel' |
   'showTopSitesLabel' |

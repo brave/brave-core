@@ -4,6 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
+  NewTabState,
+  NewTabActions,
+  defaultNewTabState } from './new_tab'
+
+import {
   BackgroundState,
   BackgroundActions,
   defaultBackgroundState } from './backgrounds'
@@ -19,12 +24,14 @@ import {
   defaultTopSitesState } from './top_sites'
 
 export type AppState =
+  NewTabState &
   BackgroundState &
   SearchState &
   TopSitesState
 
 export function defaultState(): AppState {
   return {
+    ...defaultNewTabState(),
     ...defaultBackgroundState(),
     ...defaultSearchState(),
     ...defaultTopSitesState(),
@@ -32,6 +39,7 @@ export function defaultState(): AppState {
 }
 
 export type AppActions =
+  NewTabActions &
   BackgroundActions &
   SearchActions &
   TopSitesActions

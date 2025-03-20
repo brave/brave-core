@@ -1,0 +1,54 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { NewTabPageProxy } from './new_tab_page_proxy'
+import { Store } from '../lib/store'
+import { debounceListener } from './debounce_listener'
+
+import {
+  NewTabState,
+  NewTabActions } from '../models/new_tab'
+
+export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
+  const newTabProxy = NewTabPageProxy.getInstance()
+  const { handler } = newTabProxy
+
+  async function updateClockPrefs() {
+    const [
+      { showClock },
+      { clockFormat }
+    ] = await Promise.all([
+      handler.getShowClock(),
+      handler.getClockFormat()
+    ])
+
+    store.update({
+      showClock,
+      clockFormat:
+          clockFormat === 'h12' || clockFormat === 'h24' ? clockFormat : ''
+    })
+  }
+
+  newTabProxy.addListeners({
+    onClockStateUpdated: debounceListener(updateClockPrefs)
+  })
+
+  async function loadData() {
+    await updateClockPrefs()
+  }
+
+  loadData()
+
+  return {
+
+    setShowClock(showClock) {
+      handler.setShowClock(showClock)
+    },
+
+    setClockFormat(format) {
+      handler.setClockFormat(format)
+    }
+  }
+}

@@ -10,6 +10,7 @@
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
@@ -36,6 +37,9 @@ UpdateObserver::UpdateObserver(PrefService& pref_service,
 
   AddPrefListener(ntp_prefs::kNtpShortcutsVisible, Source::kTopSites);
   AddPrefListener(ntp_prefs::kNtpUseMostVisitedTiles, Source::kTopSites);
+
+  AddPrefListener(kNewTabPageShowClock, Source::kClock);
+  AddPrefListener(kNewTabPageClockFormat, Source::kClock);
 
   if (top_sites_facade) {
     top_sites_facade->SetSitesUpdatedCallback(

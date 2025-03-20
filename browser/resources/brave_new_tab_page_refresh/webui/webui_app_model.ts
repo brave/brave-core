@@ -5,6 +5,7 @@
 
 import { createStore } from '../lib/store'
 import { AppModel, defaultState } from '../models/app_model'
+import { initializeNewTab } from './webui_new_tab'
 import { initializeBackgrounds } from './webui_backgrounds'
 import { initializeSearch } from './webui_search'
 import { initializeTopSites } from './webui_top_sites'
@@ -16,6 +17,7 @@ export function createAppModel(): AppModel {
     getState: store.getState,
     addListener: store.addListener,
 
+    ...initializeNewTab(store),
     ...initializeBackgrounds(store),
     ...initializeSearch(store),
     ...initializeTopSites(store)

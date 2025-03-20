@@ -12,6 +12,7 @@ import { useAppState } from '../context/app_model_context'
 import { BackgroundPanel } from './background_panel'
 import { SearchPanel } from './search_panel'
 import { TopSitesPanel } from './top_sites_panel'
+import { ClockPanel } from './clock_panel'
 import { useLocale } from '../context/locale_context'
 
 import { style } from './settings_modal.style'
@@ -19,7 +20,8 @@ import { style } from './settings_modal.style'
 export type SettingsView =
   'background' |
   'search' |
-  'top-sites'
+  'top-sites' |
+  'clock'
 
 interface Props {
   initialView: SettingsView | null
@@ -57,6 +59,7 @@ export function SettingsModal(props: Props) {
       case 'background': return <BackgroundPanel />
       case 'search': return <SearchPanel />
       case 'top-sites': return <TopSitesPanel />
+      case 'clock': return <ClockPanel />
     }
   }
 
@@ -65,6 +68,7 @@ export function SettingsModal(props: Props) {
       case 'background': return getString('backgroundSettingsTitle')
       case 'search': return getString('searchSettingsTitle')
       case 'top-sites': return getString('topSitesSettingsTitle')
+      case 'clock': return getString('clockSettingsTitle')
     }
   }
 
@@ -94,6 +98,7 @@ export function SettingsModal(props: Props) {
               {renderNavItem('background')}
               {renderNavItem('search')}
               {renderNavItem('top-sites')}
+              {renderNavItem('clock')}
             </Navigation>
           </nav>
           <section>
