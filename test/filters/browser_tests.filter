@@ -1968,51 +1968,22 @@
 # not expect
 -FullscreenTabSearchBubbleDialogTest.InvokeUi_default
 
-# This test fails because we remove toolbar's panel pin button container.
-# When extension side panel is opened, usptream shows close button in toolbar
-# for closing it. However, it's not shown if panel pin button container is not
-# exited. See SidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange().
--ExtensionSidePanelBrowserTest.CloseSidePanelButtonVisibleWhenExtensionsSidePanelOpen
-
-# These tests crash because ToolbarView tries to access
-# |pinned_toolbar_actions_container_| (typically from
-# ToolbarView::GetAnchorView(), but sometimes elsewhere). But we made that
-# container null as we don't want the panel pin button container. In production,
-# this crash doesn't happen because that code path is only effective if
-# features::IsToolbarPinningEnabled(). That feature is disabled by default.
--BrowserActionsBrowserTest.ShowAddressesBubbleOrPage
--BrowserActionsBrowserTest.ShowPaymentsBubbleOrPage
--BrowserCommandControllerBrowserTestToolbarPinningOnly.ShowTranslateStatusFrenchPage
--CastBrowserControllerTest.PausedIcon
--CastBrowserControllerTest.UpdateIssues
+# These tests fail because we only allow adding downloads button to the pinned
+# toolbar buttons container.
 -ChromeLabsMultipleFeaturesUiTest.InvokeUi_default
 -ChromeLabsUiTest.InvokeUi_default
--DownloadExtensionBubbleEnabledTest.SetUiOptions
--DownloadExtensionBubbleEnabledTest.SetUiOptionsBeforeDownloadStart
--DownloadExtensionBubbleEnabledTest.SetUiOptionsMultipleExtensions
--DownloadExtensionBubbleEnabledTest.SetUiOptionsOffTheRecord
--DownloadToolbarUIControllerBrowserTest.ButtonPressWithNoRecentDownloads
--DownloadToolbarUIControllerBrowserTest.ButtonPressWithRecentDownloads
--DownloadToolbarUIControllerBrowserTest.ButtonShowsForDownloadingItems
--DownloadToolbarUIControllerBrowserTest.ButtonShowsInNewBrowserWithRecentDownload
--DownloadToolbarUIControllerBrowserTest.ControllerUpdatesButtonEnabledState
--DownloadToolbarUIControllerBrowserTest.DialogAutoCloses
--DownloadToolbarUIControllerBrowserTest.HideDoesNotRemoveButtonIfPinned
--DownloadToolbarUIControllerBrowserTest.ImageBadgeDoesNotShowForSingleDownload
--DownloadToolbarUIControllerBrowserTest.ImageBadgeShowsForMultipleDownloads
--DownloadToolbarUIControllerBrowserTest.OpenPrimaryDialog
--DownloadToolbarUIControllerBrowserTest.OpenSecurityDialog
--DownloadToolbarUIControllerBrowserTest.ProgressRingDormantState
--DownloadToolbarUIControllerBrowserTest.ProgressRingVisibleDuringDownload
--DownloadToolbarUIControllerBrowserTest.ShowHide
--PinnedToolbarActionsContainerBrowserTest.*
+-RecentActivityBubbleDialogViewActionBrowserTest.HandlesActionFocusTab
+-RecentActivityBubbleDialogViewActionBrowserTest.HandlesActionReopenTab
 -SendTabToSelfBubbleTest.BubbleTriggersCorrectlyWhenPinned
--SendTabToSelfBubbleTest.InvokeUi_ShowDeviceList
--SendTabToSelfBubbleTest.InvokeUi_ShowNoTargetDevicePromo
--SendTabToSelfBubbleTest.InvokeUi_ShowSigninPromo
 -SendTabToSelfToolbarIconControllerTest.DisplayNewEntry
 -SendTabToSelfToolbarIconControllerTest.ReplaceExistingEntry
--SendTabToSelfToolbarIconControllerTest.StorePendingNewEntry*
+-SendTabToSelfToolbarIconControllerTest.StorePendingNewEntryFromIncognitoBrowser
+-SendTabToSelfToolbarIconControllerTest.StorePendingNewEntryFromWebApp
+
+# This test fails in CanvasImageSource::CreatePadded when checking
+# DCHECK(clip_rect.Contains(gfx::Rect(size_in_pixel))); when both clip_rect
+# and size_in_pixel are (0,0). Have not investigated any further.
+-DownloadToolbarUIControllerBrowserTest.ImageBadgeShowsForMultipleDownloads
 
 # These tests fail because we stub captions::IsLiveCaptionFeatureSuppported to
 # always return false
