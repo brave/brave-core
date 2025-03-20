@@ -53,10 +53,22 @@ struct EventDetails {
   bool shift_key;
 };
 
+struct TopSite {
+  string title;
+  string url;
+  string favicon;
+};
+
+enum TopSitesListKind {
+  kCustom,
+  kMostVisited
+};
+
 // WebUI-side handler for notifications from the browser.
 interface NewTabPage {
   OnBackgroundsUpdated();
   OnSearchStateUpdated();
+  OnTopSitesUpdated();
 };
 
 // Browser-side handler for requests from the WebUI page.
@@ -136,5 +148,39 @@ interface NewTabPageHandler {
   ReportSearchBoxHidden() => ();
   ReportSearchEngineUsage(int64 engine_prepopulate_id) => ();
   ReportSearchResultUsage(int64 engine_prepopulate_id) => ();
+
+  // Gets or sets whether top sites are shown on the NTP
+  GetShowTopSites() => (bool show_top_sites);
+  SetShowTopSites(bool show_top_sites) => ();
+
+  // Gets or sets the top sites list kind.
+  GetTopSitesListKind() => (TopSitesListKind list_kind);
+  SetTopSitesListKind(TopSitesListKind list_kind) => ();
+
+  // Returns the current list of top sites for the user.
+  GetTopSites() => (array<TopSite> top_sites);
+
+  // Adds a site to the list of custom top sites.
+  AddCustomTopSite(string url, string title) => ();
+
+  // Updates the custom top site entry with the specified URL.
+  UpdateCustomTopSite(string url, string new_url, string title) => ();
+
+  // Sets the position for a custom top site URL. Allows the user to reorder
+  // custom top sites.
+  SetCustomTopSitePosition(string url, int32 position) => ();
+
+  // Removes a custom top sites entry.
+  RemoveCustomTopSite(string url) => ();
+
+  // Reverses the most recent action on the custom top sites list.
+  UndoCustomTopSiteAction() => ();
+
+  // Excludes a site from the "most visited" top sites list.
+  ExcludeMostVisitedTopSite(string url) => ();
+
+  // Includes a site in the "most visited" top sites list, after it was excluded
+  // by a call to `ExcludeMostVisitedTopSite`.
+  IncludeMostVisitedTopSite(string url) => ();
 
 };

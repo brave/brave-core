@@ -11,13 +11,15 @@ import NavigationItem from '@brave/leo/react/navigationItem'
 import { useAppState } from '../context/app_model_context'
 import { BackgroundPanel } from './background_panel'
 import { SearchPanel } from './search_panel'
+import { TopSitesPanel } from './top_sites_panel'
 import { useLocale } from '../context/locale_context'
 
 import { style } from './settings_modal.style'
 
 export type SettingsView =
   'background' |
-  'search'
+  'search' |
+  'top-sites'
 
 interface Props {
   initialView: SettingsView | null
@@ -54,6 +56,7 @@ export function SettingsModal(props: Props) {
     switch (currentView) {
       case 'background': return <BackgroundPanel />
       case 'search': return <SearchPanel />
+      case 'top-sites': return <TopSitesPanel />
     }
   }
 
@@ -61,6 +64,7 @@ export function SettingsModal(props: Props) {
     switch (view) {
       case 'background': return getString('backgroundSettingsTitle')
       case 'search': return getString('searchSettingsTitle')
+      case 'top-sites': return getString('topSitesSettingsTitle')
     }
   }
 
@@ -89,6 +93,7 @@ export function SettingsModal(props: Props) {
             <Navigation>
               {renderNavItem('background')}
               {renderNavItem('search')}
+              {renderNavItem('top-sites')}
             </Navigation>
           </nav>
           <section>

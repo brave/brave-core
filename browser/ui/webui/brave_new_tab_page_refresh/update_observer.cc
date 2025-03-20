@@ -8,13 +8,16 @@
 #include <utility>
 
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
 
 namespace brave_new_tab_page_refresh {
 
-UpdateObserver::UpdateObserver(PrefService& pref_service) {
+UpdateObserver::UpdateObserver(PrefService& pref_service,
+                               TopSitesFacade* top_sites_facade) {
   pref_change_registrar_.Init(&pref_service);
 
   AddPrefListener(ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
@@ -30,6 +33,15 @@ UpdateObserver::UpdateObserver(PrefService& pref_service) {
                   Source::kSearch);
   AddPrefListener(prefs::kSearchSuggestEnabled, Source::kSearch);
   AddPrefListener(brave_search_conversion::prefs::kDismissed, Source::kSearch);
+
+  AddPrefListener(ntp_prefs::kNtpShortcutsVisible, Source::kTopSites);
+  AddPrefListener(ntp_prefs::kNtpUseMostVisitedTiles, Source::kTopSites);
+
+  if (top_sites_facade) {
+    top_sites_facade->SetSitesUpdatedCallback(
+        base::BindRepeating(&UpdateObserver::OnUpdate,
+                            weak_factory_.GetWeakPtr(), Source::kTopSites));
+  }
 }
 
 UpdateObserver::~UpdateObserver() = default;

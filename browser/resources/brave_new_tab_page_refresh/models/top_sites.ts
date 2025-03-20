@@ -1,0 +1,48 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+export interface TopSite {
+  title: string
+  url: string
+  favicon: string
+}
+
+export type TopSitesListKind = 'custom' | 'most-visited'
+
+export interface TopSitesState {
+  showTopSites: boolean
+  topSitesListKind: TopSitesListKind
+  topSites: TopSite[]
+}
+
+export function defaultTopSitesState(): TopSitesState {
+  return {
+    showTopSites: true,
+    topSitesListKind: 'most-visited',
+    topSites: []
+  }
+}
+
+export interface TopSitesActions {
+  setShowTopSites: (showTopSites: boolean) => void
+  setTopSitesListKind: (listKind: TopSitesListKind) => void
+  addTopSite: (url: string, title: string) => void
+  updateTopSite: (currentURL: string, newURL: string, title: string) => void
+  removeTopSite: (url: string) => void
+  undoRemoveTopSite: () => void
+  setTopSitePosition: (url: string, pos: number) => void
+}
+
+export function defaultTopSitesActions(): TopSitesActions {
+  return {
+    setShowTopSites(showTopSites) {},
+    setTopSitesListKind(listKind) {},
+    addTopSite(url, title) {},
+    updateTopSite(currentURL, newURL, title) {},
+    removeTopSite(url) {},
+    undoRemoveTopSite() {},
+    setTopSitePosition(url, pos) {}
+  }
+}

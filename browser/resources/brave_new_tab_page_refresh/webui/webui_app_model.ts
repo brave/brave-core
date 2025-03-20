@@ -7,6 +7,7 @@ import { createStore } from '../lib/store'
 import { AppModel, defaultState } from '../models/app_model'
 import { initializeBackgrounds } from './webui_backgrounds'
 import { initializeSearch } from './webui_search'
+import { initializeTopSites } from './webui_top_sites'
 
 export function createAppModel(): AppModel {
   const store = createStore(defaultState())
@@ -16,6 +17,7 @@ export function createAppModel(): AppModel {
     addListener: store.addListener,
 
     ...initializeBackgrounds(store),
-    ...initializeSearch(store)
+    ...initializeSearch(store),
+    ...initializeTopSites(store)
   }
 }

@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
 
+  <message name="IDS_NEW_TAB_ADD_TOP_SITE_LABEL" desc="Label button that opens the Add Site dialog">
+    Add site
+  </message>
+
+  <message name="IDS_NEW_TAB_ADD_TOP_SITE_TITLE" desc="Title of the Add Site dialog">
+    Add site
+  </message>
+
   <message name="IDS_NEW_TAB_BACKGROUND_SETTINGS_TITLE" desc="Title for background image settings">
     Background Image
   </message>
 
   <message name="IDS_NEW_TAB_BRAVE_BACKGROUND_LABEL" desc="Label for Brave background option">
     Brave backgrounds
+  </message>
+
+  <message name="IDS_NEW_TAB_CANCEL_BUTTON_LABEL" desc="Label for cancel button">
+    Cancel
   </message>
 
   <message name="IDS_NEW_TAB_CUSTOM_BACKGROUND_LABEL" desc="Label for custom background option">
@@ -17,6 +29,14 @@
     Customize available engines
   </message>
 
+  <message name="IDS_NEW_TAB_EDIT_TOP_SITE_LABEL" desc="Label for button that opens the Edit Site dialog">
+    Edit site
+  </message>
+
+  <message name="IDS_NEW_TAB_EDIT_TOP_SITE_TITLE" desc="Title of the Edit Site dialog">
+    Edit site
+  </message>
+
   <message name="IDS_NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL" desc="Label for the list of search engines">
     Enabled search engines
   </message>
@@ -25,12 +45,24 @@
     Gradients
   </message>
 
+  <message name="IDS_NEW_TAB_HIDE_TOP_SITES_LABEL" desc="Label for button that hides the top sites UI">
+    Hide top sites
+  </message>
+
   <message name="IDS_NEW_TAB_PHOTO_CREDITS_TEXT" desc="Photographer credits for Brave background images">
     Photo by <ph name="AUTHOR">$1</ph>
   </message>
 
   <message name="IDS_NEW_TAB_RANDOMIZE_BACKGROUND_LABEL" desc="Label for random toggle button">
     Refresh on every new tab
+  </message>
+
+  <message name="IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL" desc="Label for button that removes a top site">
+    Remove
+  </message>
+
+  <message name="IDS_NEW_TAB_SAVE_CHANGES_BUTTON_LABEL" desc="Label for button that saves changes">
+    Save changes
   </message>
 
   <message name="IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT" desc="Placeholder text for when Brave is not the selected search engine">
@@ -81,8 +113,60 @@
     Show Sponsored Images
   </message>
 
+  <message name="IDS_NEW_TAB_SHOW_TOP_SITES_LABEL" desc="Label for control that toggles top sites visibility">
+    Show top sites
+  </message>
+
   <message name="IDS_NEW_TAB_SOLID_BACKGROUND_LABEL" desc="Solid background colors title">
     Solid colors
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITE_REMOVED_TEXT" desc="Text displayed when a top site is removed">
+    Top site removed
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITE_REMOVED_TITLE" desc="Title of message that is displayed when a top site is removed">
+    Removed
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT" desc="Text that describes custom top sites option">
+    Top sites are curated by you
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TITLE" desc="Title for custom top sites option">
+    Favorites
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TEXT" desc="Text that describes most visited top sites option">
+    Top sites are suggested based on websites you visit often.
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TITLE" desc="Title for most visited top sites option">
+    Frequently Visited
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_SETTINGS_TITLE" desc="Title of top sites settings panel">
+    Top Sites
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_CUSTOM_LABEL" desc="Label for button that switches top sites to favorites mode">
+    Show favorites
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL" desc="Label for button that switches top sites to most visited mode">
+    Show frequently visited
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_TITLE_LABEL" desc="Label for top site name input">
+    Name
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_URL_LABEL" desc="Label for top site URL input">
+    URL
+  </message>
+
+  <message name="IDS_NEW_TAB_UNDO_BUTTON_LABEL" desc="Label for button that performs an undo operation">
+    Undo
   </message>
 
   <message name="IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL" desc="Text for custom background option upload">

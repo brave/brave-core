@@ -11,6 +11,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -30,20 +31,23 @@ NewTabPageHandler::NewTabPageHandler(
     mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
     std::unique_ptr<CustomImageChooser> custom_image_chooser,
     std::unique_ptr<BackgroundFacade> background_facade,
+    std::unique_ptr<TopSitesFacade> top_sites_facade,
     tabs::TabInterface& tab,
     PrefService& pref_service,
     TemplateURLService& template_url_service,
     misc_metrics::NewTabMetrics& new_tab_metrics)
     : receiver_(this, std::move(receiver)),
-      update_observer_(pref_service),
+      update_observer_(pref_service, top_sites_facade.get()),
       custom_image_chooser_(std::move(custom_image_chooser)),
       background_facade_(std::move(background_facade)),
+      top_sites_facade_(std::move(top_sites_facade)),
       tab_(tab),
       pref_service_(pref_service),
       template_url_service_(template_url_service),
       new_tab_metrics_(new_tab_metrics) {
   CHECK(custom_image_chooser_);
   CHECK(background_facade_);
+  CHECK(top_sites_facade_);
 
   update_observer_.SetCallback(base::BindRepeating(&NewTabPageHandler::OnUpdate,
                                                    weak_factory_.GetWeakPtr()));
@@ -266,6 +270,83 @@ void NewTabPageHandler::ReportSearchResultUsage(
   std::move(callback).Run();
 }
 
+void NewTabPageHandler::GetShowTopSites(GetShowTopSitesCallback callback) {
+  std::move(callback).Run(top_sites_facade_->GetTopSitesVisible());
+}
+
+void NewTabPageHandler::SetShowTopSites(bool show_top_sites,
+                                        SetShowTopSitesCallback callback) {
+  top_sites_facade_->SetTopSitesVisible(show_top_sites);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetTopSitesListKind(
+    GetTopSitesListKindCallback callback) {
+  std::move(callback).Run(top_sites_facade_->GetListKind());
+}
+
+void NewTabPageHandler::SetTopSitesListKind(
+    mojom::TopSitesListKind list_kind,
+    SetTopSitesListKindCallback callback) {
+  top_sites_facade_->SetListKind(list_kind);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetTopSites(GetTopSitesCallback callback) {
+  top_sites_facade_->GetSites(std::move(callback));
+}
+
+void NewTabPageHandler::AddCustomTopSite(const std::string& url,
+                                         const std::string& title,
+                                         AddCustomTopSiteCallback callback) {
+  top_sites_facade_->AddCustomSite(url, title);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::UpdateCustomTopSite(
+    const std::string& url,
+    const std::string& new_url,
+    const std::string& title,
+    UpdateCustomTopSiteCallback callback) {
+  top_sites_facade_->UpdateCustomSite(url, new_url, title);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::RemoveCustomTopSite(
+    const std::string& url,
+    RemoveCustomTopSiteCallback callback) {
+  top_sites_facade_->RemoveCustomSite(url);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::UndoCustomTopSiteAction(
+    UndoCustomTopSiteActionCallback callback) {
+  top_sites_facade_->UndoCustomSiteAction();
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::ExcludeMostVisitedTopSite(
+    const std::string& url,
+    ExcludeMostVisitedTopSiteCallback callback) {
+  top_sites_facade_->ExcludeMostVisitedSite(url);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::IncludeMostVisitedTopSite(
+    const std::string& url,
+    IncludeMostVisitedTopSiteCallback callback) {
+  top_sites_facade_->IncludeMostVisitedTopSite(url);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::SetCustomTopSitePosition(
+    const std::string& url,
+    int32_t position,
+    SetCustomTopSitePositionCallback callback) {
+  top_sites_facade_->SetCustomSitePosition(url, position);
+  std::move(callback).Run();
+}
+
 void NewTabPageHandler::OnCustomBackgroundsSelected(
     ShowCustomBackgroundChooserCallback callback,
     std::vector<base::FilePath> paths) {
@@ -290,6 +371,9 @@ void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
       break;
     case UpdateObserver::Source::kSearch:
       page_->OnSearchStateUpdated();
+      break;
+    case UpdateObserver::Source::kTopSites:
+      page_->OnTopSitesUpdated();
       break;
   }
 }

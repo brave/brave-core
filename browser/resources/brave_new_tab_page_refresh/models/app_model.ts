@@ -13,20 +13,28 @@ import {
   SearchActions,
   defaultSearchState } from './search'
 
+import {
+  TopSitesState,
+  TopSitesActions,
+  defaultTopSitesState } from './top_sites'
+
 export type AppState =
   BackgroundState &
-  SearchState
+  SearchState &
+  TopSitesState
 
 export function defaultState(): AppState {
   return {
     ...defaultBackgroundState(),
-    ...defaultSearchState()
+    ...defaultSearchState(),
+    ...defaultTopSitesState(),
   }
 }
 
 export type AppActions =
   BackgroundActions &
-  SearchActions
+  SearchActions &
+  TopSitesActions
 
 export interface AppModel extends AppActions {
   getState: () => AppState
