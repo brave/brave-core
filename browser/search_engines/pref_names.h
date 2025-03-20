@@ -10,4 +10,8 @@
 inline constexpr char kEnableSearchSuggestionsByDefault[] =
     "brave.enable_search_suggestions_by_default";
 
+// Profile prefs
+inline constexpr char kMigratedSearchDefaultInJP[] =
+    "brave.migrated_search_default_in_jp";
+
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_PREF_NAMES_H_
