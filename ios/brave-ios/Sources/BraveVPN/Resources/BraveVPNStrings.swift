@@ -440,7 +440,7 @@ extension Strings {
       "vpn.yearlySubTitle",
       bundle: .module,
       value: "One Year",
-      comment: "One year lenght vpn subcription"
+      comment: "One year length vpn subcription"
     )
 
     public static let yearlySubDetail = NSLocalizedString(

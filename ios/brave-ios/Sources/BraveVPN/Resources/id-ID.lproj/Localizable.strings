@@ -325,6 +325,6 @@
 /* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
 "vpn.yearlySubDisclaimer" = "Harga terbaik";
 
-/* One year lenght vpn subcription */
+/* One year length vpn subcription */
 "vpn.yearlySubTitle" = "Satu tahun";
 
