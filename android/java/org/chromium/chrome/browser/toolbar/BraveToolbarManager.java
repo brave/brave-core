@@ -328,7 +328,6 @@ public class BraveToolbarManager extends ToolbarManager
                             mBookmarkModelSupplier,
                             mLocationBarModel,
                             /* Below are parameters for BottomControlsCoordinator */
-                            mActivity,
                             mWindowAndroid,
                             mLayoutManager,
                             mCompositorViewHolder.getResourceManager(),
