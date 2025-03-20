@@ -20,6 +20,7 @@
 #include "chrome/browser/translate/chrome_translate_client.h"
 #include "chrome/browser/translate/translate_test_utils.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/translate/translate_bubble_controller.h"
 #include "chrome/browser/ui/views/translate/translate_bubble_view.h"
@@ -260,8 +261,9 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
 
   SetupTestScriptExpectations();
 
-  auto* bubble = TranslateBubbleController::FromWebContents(
-                     browser()->tab_strip_model()->GetActiveWebContents())
+  auto* bubble = browser()
+                     ->GetFeatures()
+                     .translate_bubble_controller()
                      ->GetTranslateBubble();
   ASSERT_TRUE(bubble);
 
@@ -324,8 +326,9 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, NoAutoTranslate) {
       browser(), embedded_test_server()->GetURL("/espanol_page.html")));
   WaitUntilLanguageDetermined();
 
-  auto* bubble = TranslateBubbleController::FromWebContents(
-                     browser()->tab_strip_model()->GetActiveWebContents())
+  auto* bubble = browser()
+                     ->GetFeatures()
+                     .translate_bubble_controller()
                      ->GetTranslateBubble();
   ASSERT_TRUE(bubble);
 
