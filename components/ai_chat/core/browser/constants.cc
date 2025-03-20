@@ -54,7 +54,6 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
         IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_SONNET},
        {"introMessage-chat-vision-basic",
         IDS_CHAT_UI_INTRO_MESSAGE_CHAT_VISION_BASIC},
-       {"modelNameSyntax", IDS_CHAT_UI_MODEL_NAME_SYNTAX},
        {"modelPremiumLabelNonPremium",
         IDS_CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM},
        {"modelCategory-chat", IDS_CHAT_UI_MODEL_CATEGORY_CHAT},

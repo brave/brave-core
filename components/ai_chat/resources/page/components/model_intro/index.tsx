@@ -50,13 +50,8 @@ export default function ModelIntro() {
         </h4>
         <h3 className={styles.name}>
           {conversationContext.isCurrentModelLeo
-            ? formatMessage(getLocale('modelNameSyntax'), {
-                placeholders: {
-                  $1: model.displayName,
-                  $2: model.options.leoModelOptions!.displayMaker
-                }
-              })
-            : `${model.options.customModelOptions?.modelRequestName}`}
+            ? model.displayName
+            : model.options.customModelOptions?.modelRequestName}
           {conversationContext.isCurrentModelLeo && (
             <Tooltip
               mode='default'
