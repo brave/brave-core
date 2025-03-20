@@ -12,6 +12,7 @@
 # pytype: disable=import-error
 
 import os
+import sys
 import time
 
 from benchmarks import loading_metrics_category
@@ -35,7 +36,9 @@ def CreateCoreTBMOptions(metric_list):
   tbm_options = timeline_based_measurement.Options()
   loading_metrics_category.AugmentOptionsForLoadingMetrics(tbm_options)
   cat_filter = tbm_options.config.chrome_trace_config.category_filter
-  cat_filter.AddDisabledByDefault('disabled-by-default-histogram_samples')
+  if sys.platform != 'darwin':
+    # Disabled on MacOS: https://github.com/brave/brave-browser/issues/44800
+    cat_filter.AddDisabledByDefault('disabled-by-default-histogram_samples')
   tbm_options.ExtendTimelineBasedMetric(metric_list)
   return tbm_options
 
@@ -52,8 +55,11 @@ class LoadingDesktopBrave(perf_benchmark.PerfBenchmark):
     return BraveLoadingDesktopStorySet(startup_delay=True)
 
   def CreateCoreTimelineBasedMeasurementOptions(self):
-    return CreateCoreTBMOptions(
-        ['braveGeneralUmaMetric', 'braveNavigationMetric'])
+    metrics = ['braveNavigationMetric']
+    if sys.platform != 'darwin':
+      # Disabled on MacOS: https://github.com/brave/brave-browser/issues/44800
+      metrics.append('braveGeneralUmaMetric')
+    return CreateCoreTBMOptions(metrics)
 
   def WillRunStory(self, _story):
     time.sleep(10)
@@ -76,8 +82,11 @@ class LoadingDesktopBraveStartup(perf_benchmark.PerfBenchmark):
     return BraveLoadingDesktopStorySet(startup_delay=False)
 
   def CreateCoreTimelineBasedMeasurementOptions(self):
-    return CreateCoreTBMOptions(
-        ['braveGeneralUmaMetric', 'braveStartupUmaMetric'])
+    metrics = ['braveStartupUmaMetric']
+    if sys.platform != 'darwin':
+      # Disabled on MacOS: https://github.com/brave/brave-browser/issues/44800
+      metrics.append('braveGeneralUmaMetric')
+    return CreateCoreTBMOptions(metrics)
 
   @classmethod
   def Name(cls):
