@@ -230,7 +230,7 @@ void MigrateToV50(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 
   // Optimize database query for `IsFirstTime` from schema 50.
   CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
-                   /*columns=*/{"campaign_id"});
+                   /*columns=*/{"campaign_id", "confirmation_type"});
 }
 
 }  // namespace
@@ -606,7 +606,7 @@ void AdEvents::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 
   // Optimize database query for `IsFirstTime` from schema 50.
   CreateTableIndex(mojom_db_transaction, /*table_name=*/"ad_events",
-                   /*columns=*/{"campaign_id"});
+                   /*columns=*/{"campaign_id", "confirmation_type"});
 }
 
 void AdEvents::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
