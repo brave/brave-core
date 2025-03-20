@@ -13,52 +13,58 @@ import { useUntrustedConversationContext } from '../../untrusted_conversation_co
 // TODO: move to common
 import { SuggestionButtonRaw } from '../../../page/components/suggested_question/suggested_question_raw'
 import styles from './style.module.scss'
+import { IconName } from '@brave/leo/icons/meta'
 
-
-export default function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boolean }) {
+export function useToolEventContent(toolUseEvent: Mojom.ToolUseEvent) {
   const context = useUntrustedConversationContext()
-  const toolUse = props.event
 
-  const input: any | null = React.useMemo(() => {
-    if (!toolUse.inputJson) {
+  let iconName: IconName | null = null
+
+  const input = React.useMemo(() => {
+    if (!toolUseEvent?.inputJson) {
       return null
     }
-    let input
     try {
-      input = JSON.parse(toolUse.inputJson)
+      return JSON.parse(toolUseEvent.inputJson)
     } catch (e) {
       return null
     }
-    return input
-  }, [toolUse.inputJson])
+  }, [toolUseEvent?.inputJson])
 
-  let toolText = <>{toolUse.toolName}</>
+  let toolText = <>{toolUseEvent.toolName}</>
+  let tooltipContent: JSX.Element | null = null
   let statusIcon = <Icon name="check-circle-outline" />
   let progressIcon = <ProgressRing />
 
-  if (toolUse.toolName === 'computer') {
+  if (toolUseEvent.toolName === 'computer') {
     switch (input?.action) {
       case 'screenshot': {
+        iconName = 'screenshot'
         toolText = <>Looking at the page</>
         break
       }
       case 'key': {
+        iconName = 'keyboard'
         toolText = <>Pressing the key: {input?.text}</>
         break
       }
       case 'type': {
+        iconName = 'edit-box'
         toolText = <div title={input?.text} className={styles.toolUseLongText}>Typing: "{input?.text}"</div>
         break
       }
       case 'mouse_move': {
+        iconName = 'mouse-two-buttons'
         toolText = <>Moving the mouse</>
         break
       }
       case 'left_click': {
+        iconName = 'mouse-two-buttons'
         toolText = <>Clicking the left mouse button</>
         break
       }
       case 'scroll': {
+        iconName = 'mouse-scroll'
         toolText = <>Scrolling</>
         break
       }
@@ -68,61 +74,55 @@ export default function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEn
     }
 
     // Append any images (e.g. screenshots) in the output as a tooltip
-    const toolResultOutputImageContentBlocks = toolUse.output?.filter(content => !!content.imageContentBlock) ?? []
+    const toolResultOutputImageContentBlocks = toolUseEvent.output?.filter(content => !!content.imageContentBlock) ?? []
 
     if (toolResultOutputImageContentBlocks.length) {
-      toolText = (
-        <Tooltip>
-          {toolText}
-          <div slot='content'>
-          {toolResultOutputImageContentBlocks.map((content, i) => (
-            <div key={i}>
-              <img className={styles.toolUseContentPreview} src={content.imageContentBlock?.imageUrl} />
-            </div>
-          ))}
+      tooltipContent = <>
+        {toolResultOutputImageContentBlocks.map((content, i) => (
+          <div key={i}>
+            <img className={styles.toolUseContentPreview} src={content.imageContentBlock?.imageUrl} />
           </div>
-        </Tooltip>
-      )
+        ))}
+      </>
     }
   }
 
-  if (toolUse.toolName === 'web_page_navigator') {
+  if (toolUseEvent.toolName === 'web_page_navigator') {
+    iconName = 'internet'
     toolText = <>Navigating to the URL: <span className={styles.toolUrl}>{input?.website_url}</span></>
   }
 
-  if (toolUse.toolName === 'web_page_history_navigator') {
+  if (toolUseEvent.toolName === 'web_page_history_navigator') {
+    iconName = 'internet'
     toolText = <>Pressing the browser's <i>{input?.back ? 'back' : 'forwards'}</i> button</>
   }
 
-  if (toolUse.toolName === 'assistant_detail_storage') {
-    toolText = (
-    <Tooltip>
-      Sending information from the screenshot for later
-      <div slot='content'>
+  if (toolUseEvent.toolName === 'assistant_detail_storage') {
+    iconName = 'database'
+    toolText = <>Sending information from the screenshot for later</>
+    tooltipContent = (
         <div className={styles.toolUseContentPreview}>
           {input?.information}
         </div>
-      </div>
-    </Tooltip>
     )
   }
 
-  if (toolUse.toolName === 'user_choice_tool') {
-    if (toolUse.output) {
+  if (toolUseEvent.toolName === 'user_choice_tool') {
+    if (toolUseEvent.output) {
       toolText = (
         <SuggestionButtonRaw
           onClick={() => {}}
           isDisabled={true}
           icon={<Icon className={styles.completedChoiceIcon} name='checkbox-checked' />}
         >
-          {toolUse.output[0]?.textContentBlock?.text}
+          {toolUseEvent.output[0]?.textContentBlock?.text}
         </SuggestionButtonRaw>
       )
     } else {
       progressIcon = <Icon name='help-outline' />
 
       const handleChoice = (choice: string) => {
-        context.conversationHandler?.respondToToolUseRequest(toolUse.toolId,
+        context.conversationHandler?.respondToToolUseRequest(toolUseEvent.toolId,
             [
               {textContentBlock: { text: choice } } as Mojom.ContentBlock
             ]
@@ -148,27 +148,23 @@ export default function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEn
     }
   }
 
-  if (toolUse.toolName === 'active_web_page_content_fetcher') {
+  if (toolUseEvent.toolName === 'active_web_page_content_fetcher') {
     progressIcon = <Icon name='help-outline' />
-    if (toolUse.output) {
-      if (toolUse.output[0]?.textContentBlock?.text?.startsWith('Error')) {
+    if (toolUseEvent.output) {
+      if (toolUseEvent.output[0]?.textContentBlock?.text?.startsWith('Error')) {
         statusIcon = <Icon className={styles.deniedChoiceIcon} name='remove-circle-outline' />
       }
-      toolText = (
-        <Tooltip>
-          <>Requested page content</>
-          <div slot='content'>
-          {toolUse.output.map((content, i) => (
-            <div key={i} className={styles.toolUseContentPreview}>
-              {content.textContentBlock?.text}
-            </div>
-          ))}
+      toolText = <>Requested page content</>
+      tooltipContent = (<>
+        {toolUseEvent.output.map((content, i) => (
+          <div key={i} className={styles.toolUseContentPreview}>
+            {content.textContentBlock?.text}
           </div>
-        </Tooltip>
-      )
+        ))}
+      </>)
     } else {
       const respond = (canSend: boolean) =>
-        context.conversationHandler?.respondToToolUseRequest(toolUse.toolId, canSend ? null : [{textContentBlock: { text: 'Error - the user wishes to generate a response without access to the page content.' } } as Mojom.ContentBlock])
+        context.conversationHandler?.respondToToolUseRequest(toolUseEvent.toolId, canSend ? null : [{textContentBlock: { text: 'Error - the user wishes to generate a response without access to the page content.' } } as Mojom.ContentBlock])
 
       toolText = (<>
         <>Leo is requesting access to page content. Do you want to attach the current page?</>
@@ -190,6 +186,27 @@ export default function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEn
     }
   }
 
+  return {
+    iconName,
+    input,
+    progressIcon,
+    statusIcon,
+    tooltipContent,
+    toolText
+  }
+}
+
+
+export default function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boolean }) {
+  const toolUse = props.event
+
+  const {
+    progressIcon,
+    statusIcon,
+    toolText,
+    tooltipContent
+  } = useToolEventContent(toolUse)
+
   const isComplete = !!toolUse.output
   return (
     <div className={classnames(styles.toolUse, isComplete && styles.toolUseComplete, `tool-${toolUse.toolName}`)}>
@@ -197,7 +214,17 @@ export default function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEn
         {!isComplete && progressIcon}
         {isComplete && statusIcon}
       </div>
-      {toolText}
+      {tooltipContent
+      ? (
+      <Tooltip>
+        {toolText}
+        <div slot='content'>
+          {tooltipContent}
+        </div>
+      </Tooltip>
+      )
+      : toolText
+      }
     </div>
   )
 }

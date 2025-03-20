@@ -4,7 +4,23 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .conversationEntries {
+  position: relative;
   padding-bottom: 8px;
+  overflow-x: hidden;
+
+  // Fade out on right edge for long lists that get cut off:
+  // - mini tool events
+  &:after {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    pointer-events: none;
+    content: "";
+    background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+    height: 100%;
+    width: var(--leo-spacing-2xl);
+  }
 }
 
 .turn {

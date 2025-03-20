@@ -129,3 +129,46 @@
   background: var(--leo-color-text-interactive);
 
 }
+
+.eventGroupHeader {
+  margin-bottom: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+  button {
+    cursor: pointer;
+    appearance: none;
+    outline: none;
+    margin: 0;
+    border: none;
+    padding: 0;
+    background: none;
+    font: var(--leo-font-small-link);
+    color: var(--leo-color-text-tertiary);
+    text-decoration: underline;
+  }
+}
+
+.miniEvents {
+  --leo-icon-color: var(--leo-color-text-secondary);
+  position: relative;
+  margin-bottom: 4px;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+}
+
+@keyframes fadein {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.miniEventIcon {
+  flex: 0 0 auto;
+  &.isNew {
+    animation: fadein .3s linear forwards;
+  }
+}

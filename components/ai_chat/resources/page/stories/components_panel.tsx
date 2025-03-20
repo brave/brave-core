@@ -110,6 +110,34 @@ const CONVERSATIONS: Mojom.Conversation[] = [
 const toolEvents: Mojom.ToolUseEvent[] = [
   {
     toolId: 'abc123',
+    toolName: 'active_web_page_content_fetcher',
+    inputJson: JSON.stringify({ confidence_percent: 80 }),
+    output: undefined,
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'active_web_page_content_fetcher',
+    inputJson: JSON.stringify({ confidence_percent: 80 }),
+    output: [{textContentBlock: { text: 'Some content' }, imageContentBlock: undefined}],
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'active_web_page_content_fetcher',
+    inputJson: JSON.stringify({ confidence_percent: 80 }),
+    output: [{textContentBlock: { text: 'Error - Some content' }, imageContentBlock: undefined}],
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'assistant_detail_storage',
+    inputJson: JSON.stringify({ information: 'This is the text to store' }),
+    output: [{textContentBlock: { text: 'Some content' }, imageContentBlock: undefined}],
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
     toolName: 'user_choice_tool',
     inputJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     outputJson: '7:00pm',
@@ -316,7 +344,23 @@ const HISTORY: Mojom.ConversationTurn[] = [
     uploadedImages:[],
     events: [
       getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.'),
-      ...toolEvents.map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent }))
+      ...toolEvents.slice(0,3).map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent }))
+    ],
+    fromBraveSearchSERP: false
+  },
+  {
+    uuid: undefined,
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    uploadedImages:[],
+    events: [
+      getCompletionEvent('Continuing to use tools...'),
+      ...toolEvents.slice(3).map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent }))
     ],
     fromBraveSearchSERP: false
   },
@@ -429,6 +473,8 @@ const MODELS: Mojom.Model[] = [
     key: '1',
     displayName: 'Model One',
     visionSupport: false,
+    supportsTools: true,
+    supportsAnthropicComputerUse: true,
     options: {
       leoModelOptions: {
         name: 'model-one',
@@ -446,6 +492,8 @@ const MODELS: Mojom.Model[] = [
     key: '2',
     displayName: 'Model Two',
     visionSupport: true,
+    supportsTools: true,
+    supportsAnthropicComputerUse: false,
     options: {
       leoModelOptions: {
         name: 'model-two-premium',
@@ -463,6 +511,8 @@ const MODELS: Mojom.Model[] = [
     key: '3',
     displayName: 'Model Three',
     visionSupport: false,
+    supportsTools: false,
+    supportsAnthropicComputerUse: false,
     options: {
       leoModelOptions: {
         name: 'model-three-freemium',
