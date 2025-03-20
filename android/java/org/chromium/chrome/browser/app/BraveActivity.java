@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Rect;
@@ -153,6 +154,7 @@ import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceUtil;
@@ -254,7 +256,8 @@ public abstract class BraveActivity extends ChromeActivity
                 MiscAndroidMetricsConnectionErrorHandler
                         .MiscAndroidMetricsConnectionErrorHandlerDelegate,
                 QuickSearchEnginesCallback,
-                KeyboardVisibilityHelper.KeyboardVisibilityListener {
+                KeyboardVisibilityHelper.KeyboardVisibilityListener,
+                OnSharedPreferenceChangeListener {
     public static final String BRAVE_WALLET_HOST = "wallet";
     public static final String BRAVE_WALLET_ORIGIN = "brave://wallet/";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
@@ -1305,6 +1308,8 @@ public abstract class BraveActivity extends ChromeActivity
                         public void afterTextChanged(Editable s) {}
                     });
         }
+
+        ContextUtils.getAppSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
     private void setBraveAsDefaultPrivateMode() {
@@ -2739,5 +2744,17 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void onKeyboardClosed() {
         removeQuickActionSearchEnginesView();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(
+            SharedPreferences sharedPreferences, @Nullable String key) {
+        if (ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED.equals(key)) {
+            Activity currentActivity = ApplicationStatus.getLastTrackedFocusedActivity();
+            if (currentActivity == null) {
+                currentActivity = this;
+            }
+            BraveRelaunchUtils.askForRelaunch(currentActivity);
+        }
     }
 }

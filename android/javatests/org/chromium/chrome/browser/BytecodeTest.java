@@ -874,6 +874,21 @@ public class BytecodeTest {
                         "getContext",
                         MethodModifier.STATIC,
                         Context.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarPositionController",
+                        "calculateStateTransition",
+                        MethodModifier.STATIC,
+                        int.class,
+                        boolean.class,
+                        boolean.class,
+                        boolean.class,
+                        boolean.class,
+                        boolean.class,
+                        boolean.class,
+                        boolean.class,
+                        boolean.class,
+                        int.class));
     }
 
     @Test
@@ -1051,6 +1066,12 @@ public class BytecodeTest {
                         void.class,
                         Activity.class,
                         int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
+                        "useActiveTabColor",
+                        MethodModifier.REGULAR,
+                        boolean.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -2140,6 +2161,10 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
                         "mContext"));
+        Assert.assertFalse(
+                fieldExists(
+                        "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
+                        "mActiveTab"));
         Assert.assertFalse(
                 fieldExists(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
