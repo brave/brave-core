@@ -11,7 +11,7 @@ import Shared
 
 extension BrowserViewController: TabObserver {
   func tabDidStartNavigation(_ tab: Tab) {
-    tab.contentBlocker.clearPageStats()
+    tab.contentBlocker?.clearPageStats()
 
     let visibleURL = tab.url
 
@@ -42,7 +42,7 @@ extension BrowserViewController: TabObserver {
       // new site has a different origin, hide wallet icon.
       tabManager.selectedTab?.isWalletIconVisible = false
       // new site, reset connected addresses
-      tabManager.selectedTab?.clearSolanaConnectedAccounts()
+      tabManager.selectedTab?.browserData?.clearSolanaConnectedAccounts()
       // close wallet panel if it's open
       if let popoverController = self.presentedViewController as? PopoverController,
         popoverController.contentController is WalletPanelHostingController
@@ -66,9 +66,15 @@ extension BrowserViewController: TabObserver {
     tab.upgradeHTTPSTimeoutTimer?.invalidate()
     tab.upgradeHTTPSTimeoutTimer = nil
 
+    // Clear the current request url and the redirect source url
+    // We don't need these values after the request has been comitted
+    tab.currentRequestURL = nil
+    tab.redirectSourceURL = nil
+    tab.isInternalRedirect = false
+
     // Need to evaluate Night mode script injection after url is set inside the Tab
     tab.nightMode = Preferences.General.nightModeEnabled.value
-    tab.clearSolanaConnectedAccounts()
+    tab.browserData?.clearSolanaConnectedAccounts()
 
     // Dismiss any alerts that are showing on page navigation.
     if let alert = tab.shownPromptAlert {
@@ -78,22 +84,24 @@ extension BrowserViewController: TabObserver {
     // Providers need re-initialized when changing origin to align with desktop in
     // `BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame`
     // https://github.com/brave/brave-core/blob/1.52.x/browser/brave_content_browser_client.cc#L608
-    if let provider = braveCore.braveWalletAPI.ethereumProvider(
-      with: tab,
-      isPrivateBrowsing: tab.isPrivate
-    ) {
-      // The Ethereum provider will fetch allowed accounts from it's delegate (the tab)
-      // on initialization. Fetching allowed accounts requires the origin; so we need to
-      // initialize after `commitedURL` / `url` are updated above
-      tab.walletEthProvider = provider
-      tab.walletEthProvider?.initialize(eventsListener: tab)
-    }
-    if let provider = braveCore.braveWalletAPI.solanaProvider(
-      with: tab,
-      isPrivateBrowsing: tab.isPrivate
-    ) {
-      tab.walletSolProvider = provider
-      tab.walletSolProvider?.initialize(eventsListener: tab)
+    if let browserData = tab.browserData {
+      if let provider = braveCore.braveWalletAPI.ethereumProvider(
+        with: browserData,
+        isPrivateBrowsing: tab.isPrivate
+      ) {
+        // The Ethereum provider will fetch allowed accounts from it's delegate (the tab)
+        // on initialization. Fetching allowed accounts requires the origin; so we need to
+        // initialize after `commitedURL` / `url` are updated above
+        tab.walletEthProvider = provider
+        tab.walletEthProvider?.initialize(eventsListener: browserData)
+      }
+      if let provider = braveCore.braveWalletAPI.solanaProvider(
+        with: browserData,
+        isPrivateBrowsing: tab.isPrivate
+      ) {
+        tab.walletSolProvider = provider
+        tab.walletSolProvider?.initialize(eventsListener: browserData)
+      }
     }
 
     // Notify of tab changes after navigation completes but before notifying that
@@ -152,14 +160,14 @@ extension BrowserViewController: TabObserver {
       isSelected: tabManager.selectedTab == tab,
       isPrivate: privateBrowsingManager.isPrivateBrowsing
     )
-    tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
+    tab.browserData?.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
     // Reset `rewardsReportingState` tab property so that listeners
     // can be notified of tab changes when a new navigation happens.
     tab.rewardsReportingState = RewardsTabChangeReportingState()
 
     Task {
-      await tab.updateEthereumProperties()
-      await tab.updateSolanaProperties()
+      await tab.browserData?.updateEthereumProperties()
+      await tab.browserData?.updateSolanaProperties()
     }
 
     if tab.url?.isLocal == false {
@@ -168,7 +176,7 @@ extension BrowserViewController: TabObserver {
     }
 
     if tab.walletEthProvider != nil {
-      tab.emitEthereumEvent(.connect)
+      tab.browserData?.emitEthereumEvent(.connect)
     }
 
     if let lastCommittedURL = tab.committedURL {
@@ -216,7 +224,7 @@ extension BrowserViewController: TabObserver {
   }
 
   func tabDidUpdateURL(_ tab: Tab) {
-    if tab === tabManager.selectedTab && !tab.restoring {
+    if tab === tabManager.selectedTab && !tab.isRestoring {
       updateUIForReaderHomeStateForTab(tab)
     }
 
@@ -237,12 +245,14 @@ extension BrowserViewController: TabObserver {
       } else if tab === tabManager.selectedTab, tab.url?.displayURL?.scheme == "about",
         !tab.loading
       {
-        if !tab.restoring {
+        if !tab.isRestoring {
           updateUIForReaderHomeStateForTab(tab)
         }
 
         navigateInTab(tab: tab)
-      } else if tab === tabManager.selectedTab, tab.isDisplayingBasicAuthPrompt {
+      } else if tab === tabManager.selectedTab, let tabData = tab.browserData,
+        tabData.isDisplayingBasicAuthPrompt
+      {
         updateToolbarCurrentURL(
           URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
         )
@@ -256,7 +266,7 @@ extension BrowserViewController: TabObserver {
         let rewardsURL = tab.rewardsXHRLoadURL,
         url.host == rewardsURL.host
       {
-        tab.reportPageLoad(to: rewards, redirectChain: [url])
+        tab.browserData?.reportPageLoad(to: rewards, redirectChain: [url])
       }
     }
 

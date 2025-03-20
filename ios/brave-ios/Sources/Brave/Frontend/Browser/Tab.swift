@@ -82,15 +82,23 @@ enum TabSecureContentState: String {
   }
 }
 
+@dynamicMemberLookup
 class Tab: NSObject {
   let id: UUID
-  let rewardsId: UInt32
 
-  var onScreenshotUpdated: (() -> Void)?
-  var rewardsEnabledCallback: ((Bool) -> Void)?
+  var data: TabDataValues {
+    get { _data.withLock { $0 } }
+    set { _data.withLock { $0 = newValue } }
+  }
+  private var _data: OSAllocatedUnfairLock<TabDataValues> = .init(uncheckedState: .init())
 
-  var alertShownCount: Int = 0
-  var blockAllAlerts: Bool = false
+  subscript<Value>(dynamicMember member: KeyPath<TabDataValues, Value>) -> Value {
+    return data[keyPath: member]
+  }
+  subscript<Value>(dynamicMember member: WritableKeyPath<TabDataValues, Value>) -> Value {
+    get { data[keyPath: member] }
+    set { data[keyPath: member] = newValue }
+  }
 
   private(set) var type: TabType = .regular
 
@@ -193,75 +201,6 @@ class Tab: NSObject {
 
   var sslPinningError: Error?
 
-  private let _syncTab: BraveSyncTab?
-  private let _faviconDriver: FaviconDriver?
-  private var _walletEthProvider: BraveWalletEthereumProvider?
-  private var _walletSolProvider: BraveWalletSolanaProvider?
-  private var _walletKeyringService: BraveWalletKeyringService? {
-    didSet {
-      _walletKeyringService?.addObserver(self)
-    }
-  }
-
-  private weak var syncTab: BraveSyncTab? {
-    _syncTab
-  }
-
-  weak var faviconDriver: FaviconDriver? {
-    _faviconDriver
-  }
-
-  weak var walletEthProvider: BraveWalletEthereumProvider? {
-    get { _walletEthProvider }
-    set { _walletEthProvider = newValue }
-  }
-
-  weak var walletSolProvider: BraveWalletSolanaProvider? {
-    get { _walletSolProvider }
-    set { _walletSolProvider = newValue }
-  }
-
-  weak var walletKeyringService: BraveWalletKeyringService? {
-    get { _walletKeyringService }
-    set { _walletKeyringService = newValue }
-  }
-
-  var tabDappStore: TabDappStore = .init()
-  var isWalletIconVisible: Bool = false {
-    didSet {
-      tabDelegate?.updateURLBarWalletButton()
-    }
-  }
-
-  // PageMetadata is derived from the page content itself, and as such lags behind the
-  // rest of the tab.
-  var pageMetadata: PageMetadata?
-
-  var canonicalURL: URL? {
-    if let string = pageMetadata?.siteURL,
-      let siteURL = URL(string: string)
-    {
-      return siteURL
-    }
-    return self.url
-  }
-
-  /// The URL that should be shared when requested by the user via the share sheet
-  ///
-  /// If the canonical URL of the page points to a different base domain entirely, this will result in
-  /// sharing the canonical URL. This is to ensure pages such as Google's AMP share the correct URL while
-  /// also ensuring single page applications which don't update their canonical URLs on navigation share
-  /// the current pages URL
-  var shareURL: URL? {
-    guard let url = url else { return nil }
-    if let canonicalURL = canonicalURL, canonicalURL.baseDomain != url.baseDomain {
-      return canonicalURL
-    }
-    return url
-  }
-
-  var userActivity: NSUserActivity?
-
   private var webView: TabWebView?
   // Should only be used by internal Tab code, will be removed in the future when Tab can live
   // in its own SPM target
@@ -285,22 +224,10 @@ class Tab: NSObject {
     webView?.sampledPageTopColor
   }
   var tabDelegate: TabDelegate?
-  var bars = [SnackBar]()
   var favicon: Favicon
   var lastExecutedTime: Timestamp?
   fileprivate var lastRequest: URLRequest?
-  var restoring: Bool = false
-  var pendingScreenshot = false
-  var isDisplayingBasicAuthPrompt = false
-
-  // This variable is used to keep track of current page. It is used to detect
-  // and report same document navigations to Brave Rewards library.
-  var rewardsXHRLoadURL: URL?
-
-  /// This object holds on to information regarding the current web page
-  ///
-  /// The page data is cleared when the user leaves the page (i.e. when the main frame url changes)
-  @MainActor var currentPageData: PageData?
+  var isRestoring: Bool = false
 
   /// The url set after a successful navigation. This will also set the `url` property.
   ///
@@ -310,12 +237,6 @@ class Tab: NSObject {
     willSet {
       url = newValue
       previousComittedURL = committedURL
-
-      // Clear the current request url and the redirect source url
-      // We don't need these values after the request has been comitted
-      currentRequestURL = nil
-      redirectSourceURL = nil
-      isInternalRedirect = false
     }
     didSet {
       observers.forEach {
@@ -337,21 +258,6 @@ class Tab: NSObject {
     }
   }
 
-  /// This is the url for the current request
-  var currentRequestURL: URL? {
-    willSet {
-      // Lets push the value as a redirect value
-      redirectSourceURL = currentRequestURL
-    }
-  }
-
-  /// This tells us if we internally redirected while navigating (i.e. debounce or query stripping)
-  var isInternalRedirect: Bool = false
-
-  // If the current reqest wasn't comitted and a new one was set
-  // we were redirected and therefore this is set
-  var redirectSourceURL: URL?
-
   /// The previous url that was set before `comittedURL` was set again
   private(set) var previousComittedURL: URL?
 
@@ -369,7 +275,7 @@ class Tab: NSObject {
         url = URL(string: internalUrl.stripAuthorization)
       }
 
-      if isDisplayingBasicAuthPrompt {
+      if data.browserData?.isDisplayingBasicAuthPrompt == true {
         url = URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
       }
 
@@ -377,7 +283,7 @@ class Tab: NSObject {
       if let url = url, !isPrivate, !url.isLocal, !InternalURL.isValid(url: url),
         !url.isInternalURL(for: .readermode)
       {
-        syncTab?.setURL(url)
+        data.browserData?.syncTab?.setURL(url)
       }
     }
   }
@@ -393,49 +299,6 @@ class Tab: NSObject {
   }
 
   var mimeType: String?
-  var isEditing = false
-  var playlistItem: PlaylistInfo?
-  var playlistItemState: PlaylistItemAddedState = .none
-  var translationState: TranslateURLBarButton.TranslateState = .unavailable
-
-  /// The rewards reporting state which is filled during a page navigation.
-  // It is reset to initial values when the page navigation is finished.
-  var rewardsReportingState = RewardsTabChangeReportingState()
-
-  /// This is the request that was upgraded to HTTPS
-  /// This allows us to rollback the upgrade when we encounter a 4xx+
-  var upgradedHTTPSRequest: URLRequest?
-
-  /// This is a timer that's started on HTTPS upgrade
-  /// If the upgrade hasn't completed within 3s, it is cancelled
-  /// and we fallback to HTTP or cancel the request (strict vs. standard)
-  var upgradeHTTPSTimeoutTimer: Timer?
-
-  /// The tabs new tab page controller.
-  ///
-  /// Should be setup in BVC then assigned here for future use.
-  var newTabPageViewController: NewTabPageViewController? {
-    willSet {
-      if newValue == nil {
-        deleteNewTabPageController()
-      }
-    }
-  }
-
-  private func deleteNewTabPageController() {
-    guard let controller = newTabPageViewController, controller.parent != nil else { return }
-    controller.willMove(toParent: nil)
-    controller.removeFromParent()
-    controller.view.removeFromSuperview()
-  }
-
-  /// When viewing a non-HTML content type in the webview (like a PDF document), this URL will
-  /// point to a tempfile containing the content so it can be shared to external applications.
-  var temporaryDocument: TemporaryDocument?
-
-  // There is no 'available macro' on props, we currently just need to store ownership.
-  lazy var contentBlocker = ContentBlockerHelper(tab: self)
-  let requestBlockingContentHelper = RequestBlockingContentScriptHandler()
 
   /// The last title shown by this tab. Used by the tab tray to show titles for zombie tabs.
   var lastTitle: String?
@@ -458,107 +321,26 @@ class Tab: NSObject {
   /// Each tab has separate list of website overrides.
   private var userAgentOverrides: [String: Bool] = [:]
 
-  var readerModeAvailableOrActive: Bool {
-    if let readerMode = self.getContentScript(name: ReaderModeScriptHandler.scriptName)
-      as? ReaderModeScriptHandler
-    {
-      return readerMode.state != .unavailable
-    }
-    return false
-  }
-
-  fileprivate(set) var screenshot: UIImage?
-
-  var webStateDebounceTimer: Timer?
-  var onPageReadyStateChanged: ((ReadyState.State) -> Void)?
-
   // If this tab has been opened from another, its parent will point to the tab from which it was opened
   weak var parent: Tab?
 
-  fileprivate let contentScriptManager = TabContentScriptManager()
-  private var userScripts = Set<UserScriptManager.ScriptType>()
-  private var customUserScripts = Set<UserScriptType>()
-
   private(set) var configuration: WKWebViewConfiguration
-
-  /// Any time a tab tries to make requests to display a Javascript Alert and we are not the active
-  /// tab instance, queue it for later until we become foregrounded.
-  fileprivate var alertQueue = [JSAlertInfo]()
-  weak var shownPromptAlert: UIAlertController?
-
-  var nightMode: Bool {
-    didSet {
-      var isNightModeEnabled = false
-
-      if let fetchedTabURL = fetchedURL, nightMode,
-        !DarkReaderScriptHandler.isNightModeBlockedURL(fetchedTabURL)
-      {
-        isNightModeEnabled = true
-      }
-
-      if isNightModeEnabled {
-        DarkReaderScriptHandler.enable(for: self)
-      } else {
-        DarkReaderScriptHandler.disable(for: self)
-      }
-
-      self.setScript(script: .nightMode, enabled: isNightModeEnabled)
-    }
-  }
-
-  var translateHelper: BraveTranslateTabHelper?
-  private(set) lazy var leoTabHelper = BraveLeoScriptTabHelper(tab: self)
-
-  /// Boolean tracking custom url-scheme alert presented
-  var isExternalAppAlertPresented = false
-  var externalAppPopup: AlertPopupView?
-  var externalAppPopupContinuation: CheckedContinuation<Bool, Never>?
-  var externalAppAlertCounter = 0
-  var isExternalAppAlertSuppressed = false
-  var externalAppURLDomain: String?
-
-  func resetExternalAlertProperties() {
-    externalAppAlertCounter = 0
-    isExternalAppAlertPresented = false
-    isExternalAppAlertSuppressed = false
-    externalAppURLDomain = nil
-  }
 
   init(
     configuration: WKWebViewConfiguration,
     id: UUID = UUID(),
-    type: TabType = .regular,
-    tabGeneratorAPI: BraveTabGeneratorAPI? = nil
+    type: TabType = .regular
   ) {
     self.configuration = configuration
     self.id = id
     self.type = type
 
     self.favicon = Favicon.default
-    rewardsId = UInt32.random(in: 1...UInt32.max)
-    nightMode = Preferences.General.nightModeEnabled.value
-    _syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
-
-    if let syncTab = _syncTab {
-      _faviconDriver = FaviconDriver(webState: syncTab.webState).then {
-        $0.setMaximumFaviconImageSize(CGSize(width: 1024, height: 1024))
-      }
-    } else {
-      _faviconDriver = nil
-    }
-
     super.init()
 
-    self.contentScriptManager.tab = self
     self.navigationHandler = TabWKNavigationHandler(tab: self)
     self.uiHandler = TabWKUIHandler(tab: self)
   }
-
-  /// A helper property that handles native to Brave Search communication.
-  var braveSearchManager: BraveSearchManager?
-
-  /// A helper property that handles Brave Search Result Ads.
-  var braveSearchResultAdManager: BraveSearchResultAdManager?
 
   private lazy var refreshControl = UIRefreshControl().then {
     $0.addTarget(self, action: #selector(reload), for: .valueChanged)
@@ -617,17 +399,6 @@ class Tab: NSObject {
       observers.forEach {
         $0.tab(self, didCreateWebView: webView)
       }
-
-      let scriptPreferences: [UserScriptManager.ScriptType: Bool] = [
-        .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
-        .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
-        .nightMode: Preferences.General.nightModeEnabled.value,
-        .braveTranslate: Preferences.Translate.translateEnabled.value,
-      ]
-
-      userScripts = Set(scriptPreferences.filter({ $0.value }).map({ $0.key }))
-      self.updateInjectedScripts()
-      nightMode = Preferences.General.nightModeEnabled.value
     }
   }
 
@@ -646,7 +417,9 @@ class Tab: NSObject {
       url = newURL
       notifyObservers = true
     } else {
-      if isTabVisible(), url?.displayURL != nil, url?.displayURL?.scheme == "about", !loading {
+      if tabDelegate?.isTabVisible(self) == true, url?.displayURL != nil,
+        url?.displayURL?.scheme == "about", !loading
+      {
         if let newURL {
           url = newURL
           notifyObservers = true
@@ -844,7 +617,6 @@ class Tab: NSObject {
   func resetWebView(config: WKWebViewConfiguration) {
     configuration = config
     deleteWebView()
-    contentScriptManager.helpers.removeAll()
   }
 
   func clearHistory(config: WKWebViewConfiguration) {
@@ -899,11 +671,9 @@ class Tab: NSObject {
     // we extract the information needed to restore the tabs and create a NSURLRequest with the custom session restore URL
     // to trigger the session restore via custom handlers
     if let sessionInfo = restorationData {
-      restoring = true
+      isRestoring = true
       lastTitle = sessionInfo.title
       webView.interactionState = sessionInfo.interactionState
-      restoring = false
-      rewardsReportingState.wasRestored = true
     } else if let request = lastRequest {
       webView.load(request)
     } else {
@@ -918,10 +688,9 @@ class Tab: NSObject {
     requestRestorationData: (title: String, request: URLRequest)?
   ) {
     if let sessionInfo = requestRestorationData {
-      restoring = true
+      isRestoring = true
       lastTitle = sessionInfo.title
       webView.load(sessionInfo.request)
-      restoring = false
     } else if let request = lastRequest {
       webView.load(request)
     } else {
@@ -932,9 +701,6 @@ class Tab: NSObject {
   }
 
   func deleteWebView() {
-    contentScriptManager.uninstall(from: self)
-    translateHelper = nil
-
     if let webView = webView {
       observers.forEach {
         $0.tab(self, willDeleteWebView: webView)
@@ -945,28 +711,9 @@ class Tab: NSObject {
   }
 
   deinit {
+    deleteWebView()
     observers.forEach {
       $0.tabWillBeDestroyed(self)
-    }
-
-    deleteWebView()
-    deleteNewTabPageController()
-    contentScriptManager.helpers.removeAll()
-
-    // A number of mojo-powered core objects have to be deconstructed on the same
-    // thread they were constructed
-    var mojoObjects: [Any?] = [
-      _faviconDriver,
-      _syncTab,
-      _walletEthProvider,
-      _walletSolProvider,
-      _walletKeyringService,
-    ]
-
-    DispatchQueue.main.async {
-      // Reference inside to retain it, supress warnings by reading/writing
-      _ = mojoObjects
-      mojoObjects = []
     }
   }
 
@@ -992,42 +739,35 @@ class Tab: NSObject {
 
   var displayTitle: String {
     if let displayTabTitle = fetchDisplayTitle(using: url, title: title) {
-      syncTab?.setTitle(displayTabTitle)
       return displayTabTitle
     }
 
     // When picking a display title. Tabs with sessionData are pending a restore so show their old title.
     // To prevent flickering of the display title. If a tab is restoring make sure to use its lastTitle.
-    if let url = self.url, InternalURL(url)?.isAboutHomeURL ?? false, !restoring {
-      syncTab?.setTitle(Strings.Hotkey.newTabTitle)
+    if let url = self.url, InternalURL(url)?.isAboutHomeURL ?? false, !isRestoring {
       return Strings.Hotkey.newTabTitle
     }
 
     if let url = self.url, !InternalURL.isValid(url: url),
       let shownUrl = url.displayURL?.absoluteString, webView != nil
     {
-      syncTab?.setTitle(shownUrl)
       return shownUrl
     }
 
     guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
       // FF uses url?.displayURL?.absoluteString ??  ""
       if let title = url?.absoluteString {
-        syncTab?.setTitle(title)
         return title
       } else if let tab = SessionTab.from(tabId: id) {
         if tab.title.isEmpty {
           return Strings.Hotkey.newTabTitle
         }
-        syncTab?.setTitle(tab.title)
         return tab.title
       }
 
-      syncTab?.setTitle("")
       return ""
     }
 
-    syncTab?.setTitle(lastTitle)
     return lastTitle
   }
 
@@ -1045,9 +785,6 @@ class Tab: NSObject {
     }
     return favicon
   }
-
-  /// A list of domains that we want to proceed to anyways regardless of any ad-blocking
-  var proceedAnywaysDomainList: Set<String> = []
 
   var canGoBack: Bool {
     return webView?.canGoBack ?? false
@@ -1087,7 +824,6 @@ class Tab: NSObject {
         displayTitle = ""
       }
 
-      syncTab?.setTitle(displayTitle)
       return displayTitle
     }
 
@@ -1150,8 +886,6 @@ class Tab: NSObject {
       }
     }
 
-    resetExternalAlertProperties()
-
     // If the current page is an error page, and the reload button is tapped, load the original URL
     if let url = webView?.url, let internalUrl = InternalURL(url),
       let page = internalUrl.originalURLFromErrorPage
@@ -1161,7 +895,6 @@ class Tab: NSObject {
     }
 
     if let _ = webView?.reloadFromOrigin() {
-      nightMode = Preferences.General.nightModeEnabled.value
       Logger.module.debug("reloaded zombified tab from origin")
       return
     }
@@ -1186,27 +919,6 @@ class Tab: NSObject {
 
     let desktopMode = userAgentOverrides[baseDomain] ?? UserAgent.shouldUseDesktopMode()
     webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
-  }
-
-  func addContentScript(_ helper: TabContentScript, name: String, contentWorld: WKContentWorld) {
-    contentScriptManager.addContentScript(
-      helper,
-      name: name,
-      forTab: self,
-      contentWorld: contentWorld
-    )
-  }
-
-  func removeContentScript(name: String, forTab tab: Tab, contentWorld: WKContentWorld) {
-    contentScriptManager.removeContentScript(name: name, forTab: tab, contentWorld: contentWorld)
-  }
-
-  func replaceContentScript(_ helper: TabContentScript, name: String, forTab tab: Tab) {
-    contentScriptManager.replaceContentScript(helper, name: name, forTab: tab)
-  }
-
-  func getContentScript(name: String) -> TabContentScript? {
-    return contentScriptManager.getContentScript(name)
   }
 
   func hideContent(_ animated: Bool = false) {
@@ -1237,37 +949,6 @@ class Tab: NSObject {
     }
   }
 
-  func addSnackbar(_ bar: SnackBar) {
-    bars.append(bar)
-    observers.forEach {
-      $0.tab(self, didAddSnackbar: bar)
-    }
-  }
-
-  func removeSnackbar(_ bar: SnackBar) {
-    if let index = bars.firstIndex(of: bar) {
-      bars.remove(at: index)
-      observers.forEach {
-        $0.tab(self, didRemoveSnackbar: bar)
-      }
-    }
-  }
-
-  func removeAllSnackbars() {
-    // Enumerate backwards here because we'll remove items from the list as we go.
-    bars.reversed().forEach { removeSnackbar($0) }
-  }
-
-  func expireSnackbars() {
-    // Enumerate backwards here because we may remove items from the list as we go.
-    bars.reversed().filter({ !$0.shouldPersist(self) }).forEach({ removeSnackbar($0) })
-  }
-
-  func setScreenshot(_ screenshot: UIImage?) {
-    self.screenshot = screenshot
-    onScreenshotUpdated?()
-  }
-
   /// Switches user agent Desktop -> Mobile or Mobile -> Desktop.
   func switchUserAgent() {
     if let urlString = webView?.url?.baseDomain {
@@ -1283,23 +964,6 @@ class Tab: NSObject {
     reload()
   }
 
-  func queueJavascriptAlertPrompt(_ alert: JSAlertInfo) {
-    alertQueue.append(alert)
-  }
-
-  func dequeueJavascriptAlertPrompt() -> JSAlertInfo? {
-    guard !alertQueue.isEmpty else {
-      return nil
-    }
-    return alertQueue.removeFirst()
-  }
-
-  func cancelQueuedAlerts() {
-    alertQueue.forEach { alert in
-      alert.cancel()
-    }
-  }
-
   func updatePullToRefreshVisibility() {
     guard let url = webView?.url, let webView = webView else { return }
     webView.scrollView.refreshControl =
@@ -1312,11 +976,6 @@ class Tab: NSObject {
 
   func stopMediaPlayback() {
     tabDelegate?.stopMediaPlayback(self)
-  }
-
-  func addTabInfoToSyncedSessions(url: URL, displayTitle: String) {
-    syncTab?.setURL(url)
-    syncTab?.setTitle(displayTitle)
   }
 
   private func resolvedPolicyDecision(
@@ -1396,77 +1055,6 @@ class Tab: NSObject {
     observers.forEach {
       $0.tab(self, didFailNavigationWithError: error)
     }
-  }
-}
-
-private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply {
-  fileprivate var helpers = [String: TabContentScript]()
-  weak var tab: Tab?
-
-  func uninstall(from tab: Tab) {
-    helpers.forEach {
-      let name = type(of: $0.value).messageHandlerName
-      tab.configuration.userContentController.removeScriptMessageHandler(forName: name)
-    }
-  }
-
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceive message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  ) {
-    guard let tab,
-      let helper = helpers.values.first(where: {
-        type(of: $0).messageHandlerName == message.name
-      })
-    else {
-      replyHandler(nil, nil)
-      return
-    }
-    helper.tab(tab, receivedScriptMessage: message, replyHandler: replyHandler)
-  }
-
-  func addContentScript(
-    _ helper: TabContentScript,
-    name: String,
-    forTab tab: Tab,
-    contentWorld: WKContentWorld
-  ) {
-    if let _ = helpers[name] {
-      assertionFailure("Duplicate helper added: \(name)")
-    }
-
-    helpers[name] = helper
-
-    // If this helper handles script messages, then get the handler name and register it. The Tab
-    // receives all messages and then dispatches them to the right TabHelper.
-    let scriptMessageHandlerName = type(of: helper).messageHandlerName
-    tab.configuration.userContentController.addScriptMessageHandler(
-      self,
-      contentWorld: contentWorld,
-      name: scriptMessageHandlerName
-    )
-  }
-
-  func removeContentScript(name: String, forTab tab: Tab, contentWorld: WKContentWorld) {
-    if let helper = helpers[name] {
-      let scriptMessageHandlerName = type(of: helper).messageHandlerName
-      tab.configuration.userContentController.removeScriptMessageHandler(
-        forName: scriptMessageHandlerName,
-        contentWorld: contentWorld
-      )
-      helpers[name] = nil
-    }
-  }
-
-  func replaceContentScript(_ helper: TabContentScript, name: String, forTab tab: Tab) {
-    if helpers[name] != nil {
-      helpers[name] = helper
-    }
-  }
-
-  func getContentScript(_ name: String) -> TabContentScript? {
-    return helpers[name]
   }
 }
 
@@ -1589,14 +1177,14 @@ extension Tab {
 
         var queryResult = "null"
 
-        if let url = self.webView?.url,
+        if let url = self.url,
           BraveSearchManager.isValidURL(url),
           let result = self.braveSearchManager?.fallbackQueryResult
         {
           queryResult = result
         }
 
-        self.webView?.evaluateSafeJavaScript(
+        self.evaluateSafeJavaScript(
           functionName: "window.onFetchedBackupResults",
           args: [queryResult],
           contentWorld: BraveSearchScriptHandler.scriptSandbox,
@@ -1613,7 +1201,7 @@ extension Tab {
 // MARK: - Brave SKU
 extension Tab {
   func injectLocalStorageItem(key: String, value: String) {
-    self.webView?.evaluateSafeJavaScript(
+    self.evaluateSafeJavaScript(
       functionName: "localStorage.setItem",
       args: [key, value],
       contentWorld: BraveSkusScriptHandler.scriptSandbox
@@ -1623,54 +1211,6 @@ extension Tab {
 
 // MARK: Script Injection
 extension Tab {
-  func setScript(script: UserScriptManager.ScriptType, enabled: Bool) {
-    setScripts(scripts: [script: enabled])
-  }
-
-  func setScripts(scripts: Set<UserScriptManager.ScriptType>, enabled: Bool) {
-    var scriptMap = [UserScriptManager.ScriptType: Bool]()
-    scripts.forEach({ scriptMap[$0] = enabled })
-    setScripts(scripts: scriptMap)
-  }
-
-  func setScripts(scripts: [UserScriptManager.ScriptType: Bool]) {
-    var scriptsToAdd = Set<UserScriptManager.ScriptType>()
-    var scriptsToRemove = Set<UserScriptManager.ScriptType>()
-
-    for (script, enabled) in scripts {
-      let scriptExists = userScripts.contains(script)
-
-      if !scriptExists && enabled {
-        scriptsToAdd.insert(script)
-      } else if scriptExists && !enabled {
-        scriptsToRemove.insert(script)
-      }
-    }
-
-    if scriptsToAdd.isEmpty && scriptsToRemove.isEmpty {
-      // Scripts already enabled or disabled
-      return
-    }
-
-    userScripts.formUnion(scriptsToAdd)
-    userScripts.subtract(scriptsToRemove)
-    updateInjectedScripts()
-  }
-
-  func setCustomUserScript(scripts: Set<UserScriptType>) {
-    if customUserScripts != scripts {
-      customUserScripts = scripts
-      updateInjectedScripts()
-    }
-  }
-
-  private func updateInjectedScripts() {
-    UserScriptManager.shared.loadCustomScripts(
-      into: self,
-      userScripts: userScripts,
-      customScripts: customUserScripts
-    )
-  }
 }
 
 // Find In Page interaction
@@ -1894,5 +1434,48 @@ extension Tab {
       in: frame,
       contentWorld: contentWorld
     )
+  }
+}
+
+struct TabDataValues {
+  private var storage: [AnyHashable: Any] = [:]
+
+  public subscript<Key: TabDataKey>(key: Key.Type) -> Key.Value? {
+    get {
+      guard let helper = storage[ObjectIdentifier(key)] as? Key.Value else {
+        return Key.defaultValue
+      }
+      return helper
+    }
+    set {
+      storage[ObjectIdentifier(key)] = newValue
+    }
+  }
+}
+
+protocol TabDataKey {
+  associatedtype Value
+  static var defaultValue: Value? { get }
+}
+
+protocol TabHelper {
+  init(tab: Tab)
+  static var keyPath: WritableKeyPath<TabDataValues, Self?> { get }
+  static func create(for tab: Tab)
+  static func remove(from tab: Tab)
+  static func from(tab: Tab) -> Self?
+}
+
+extension TabHelper {
+  static func create(for tab: Tab) {
+    if tab.data[keyPath: keyPath] == nil {
+      tab.data[keyPath: keyPath] = Self(tab: tab)
+    }
+  }
+  static func remove(from tab: Tab) {
+    tab.data[keyPath: keyPath] = nil
+  }
+  static func from(tab: Tab) -> Self? {
+    tab.data[keyPath: keyPath]
   }
 }

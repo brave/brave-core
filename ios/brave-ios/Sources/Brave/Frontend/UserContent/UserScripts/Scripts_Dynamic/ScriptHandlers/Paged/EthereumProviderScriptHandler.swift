@@ -100,7 +100,7 @@ class EthereumProviderScriptHandler: TabContentScript {
     ) {
       Task { @MainActor in
         if updateJSProperties {
-          await tab.updateEthereumProperties()
+          await tab.browserData?.updateEthereumProperties()
         }
 
         if reject {

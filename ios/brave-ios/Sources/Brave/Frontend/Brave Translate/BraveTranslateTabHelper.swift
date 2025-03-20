@@ -111,7 +111,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
         throw BraveTranslateError.invalidLanguage
       }
 
-      let previousState = tab.translationState
+      let previousState = tab.translationState ?? .unavailable
       delegate.updateTranslateURLBar(tab: tab, state: .pending)
 
       // TranslateAgent::TranslateFrame

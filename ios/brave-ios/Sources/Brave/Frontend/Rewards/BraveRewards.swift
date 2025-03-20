@@ -204,32 +204,36 @@ public class BraveRewards: PreferencesObserver {
     tab: Tab,
     isSelected: Bool
   ) {
-    guard !tab.redirectChain.isEmpty, !tab.isPrivate, ads.isServiceRunning() else {
+    guard !tab.redirectChain.isEmpty, !tab.isPrivate, ads.isServiceRunning(),
+      let reportingState = tab.rewardsReportingState
+    else {
       // Don't notify `DidChange` for tabs that haven't finished loading, private tabs,
       // or when the ads service is not running.
       return
     }
 
     ads.notifyTabDidChange(
-      Int(tab.rewardsId),
+      Int(tab.rewardsId ?? 0),
       redirectChain: tab.redirectChain,
-      isNewNavigation: tab.rewardsReportingState.isNewNavigation,
-      isRestoring: tab.rewardsReportingState.wasRestored,
+      isNewNavigation: reportingState.isNewNavigation,
+      isRestoring: reportingState.wasRestored,
       isSelected: isSelected
     )
   }
 
   /// Notifies Brave Ads that the given tab did load
   func maybeNotifyTabDidLoad(tab: Tab) {
-    guard !tab.redirectChain.isEmpty, !tab.isPrivate, ads.isServiceRunning() else {
+    guard !tab.redirectChain.isEmpty, !tab.isPrivate, ads.isServiceRunning(),
+      let reportingState = tab.rewardsReportingState
+    else {
       // Don't notify `DidLoad` for tabs that haven't finished loading, private tabs,
       // or when the ads service is not running.
       return
     }
 
     ads.notifyTabDidLoad(
-      Int(tab.rewardsId),
-      httpStatusCode: tab.rewardsReportingState.httpStatusCode
+      Int(tab.rewardsId ?? 0),
+      httpStatusCode: reportingState.httpStatusCode
     )
   }
 
@@ -257,7 +261,7 @@ public class BraveRewards: PreferencesObserver {
       return
     }
 
-    let tabId = Int(tab.rewardsId)
+    let tabId = Int(tab.rewardsId ?? 0)
     if isSelected {
       tabRetrieved(tabId, url: url, html: nil)
     }
@@ -275,19 +279,19 @@ public class BraveRewards: PreferencesObserver {
       return
     }
 
-    let tabId = Int(tab.rewardsId)
+    let tabId = Int(tab.rewardsId ?? 0)
 
     tabRetrieved(tabId, url: url, html: htmlContent)
 
     // Don't notify about content changes if the ads service is not available, the
     // tab was restored, was a previously committed navigation, or an error page was displayed.
-    if ads.isServiceRunning() {
+    if ads.isServiceRunning(), let tabData = tab.browserData {
       let kHttpClientErrorResponseStatusCodeClass = 4
       let kHttpServerErrorResponseStatusCodeClass = 5
-      let responseStatusCodeClass = tab.rewardsReportingState.httpStatusCode / 100
+      let responseStatusCodeClass = tabData.rewardsReportingState.httpStatusCode / 100
 
-      if !tab.rewardsReportingState.wasRestored
-        && tab.rewardsReportingState.isNewNavigation
+      if !tabData.rewardsReportingState.wasRestored
+        && tabData.rewardsReportingState.isNewNavigation
         && responseStatusCodeClass != kHttpClientErrorResponseStatusCodeClass
         && responseStatusCodeClass != kHttpServerErrorResponseStatusCodeClass
       {

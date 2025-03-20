@@ -330,7 +330,9 @@ extension PlaylistScriptHandler {
 
 extension PlaylistScriptHandler {
   static func updatePlaylistTab(tab: Tab, item: PlaylistInfo?) {
-    if let handler = tab.getContentScript(name: Self.scriptName) as? PlaylistScriptHandler {
+    if let handler = tab.browserData?.getContentScript(name: Self.scriptName)
+      as? PlaylistScriptHandler
+    {
       Self.processPlaylistInfo(tab: tab, handler: handler, item: item)
     }
   }

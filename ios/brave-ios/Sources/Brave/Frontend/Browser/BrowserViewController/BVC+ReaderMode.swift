@@ -50,7 +50,9 @@ extension BrowserViewController: ReaderModeStyleViewControllerDelegate {
     // Change the reader mode style on all tabs that have reader mode active
     for tabIndex in 0..<tabManager.count {
       if let tab = tabManager[tabIndex] {
-        if let readerMode = tab.getContentScript(name: ReaderModeScriptHandler.scriptName)
+        if let readerMode = tab.browserData?.getContentScript(
+          name: ReaderModeScriptHandler.scriptName
+        )
           as? ReaderModeScriptHandler
         {
           if readerMode.state == ReaderModeState.active {
@@ -67,7 +69,7 @@ extension BrowserViewController: ReaderModeStyleViewControllerDelegate {
 extension BrowserViewController: ReaderModeBarViewDelegate {
   func readerModeSettingsTapped(_ view: UIView) {
     guard
-      let readerMode = tabManager.selectedTab?.getContentScript(
+      let readerMode = tabManager.selectedTab?.browserData?.getContentScript(
         name: ReaderModeScriptHandler.scriptName
       ) as? ReaderModeScriptHandler,
       readerMode.state == ReaderModeState.active
@@ -158,15 +160,13 @@ extension BrowserViewController {
 
     recordTimeBasedNumberReaderModeUsedP3A(activated: true)
 
+    let playlistItem = tab.playlistItem
+    let translationState = tab.translationState ?? .unavailable
     if backList.count > 1 && backList.last?.url == readerModeURL {
-      let playlistItem = tab.playlistItem
-      let translationState = tab.translationState
       tab.goToBackForwardListItem(backList.last!)
       PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
       self.updateTranslateURLBar(tab: tab, state: translationState)
     } else if !forwardList.isEmpty && forwardList.first?.url == readerModeURL {
-      let playlistItem = tab.playlistItem
-      let translationState = tab.translationState
       tab.goToBackForwardListItem(forwardList.first!)
       PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
       self.updateTranslateURLBar(tab: tab, state: translationState)
@@ -178,7 +178,7 @@ extension BrowserViewController {
       ) { (object, error) -> Void in
         if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
           let playlistItem = tab.playlistItem
-          let translationState = tab.translationState
+          let translationState = tab.translationState ?? .unavailable
           Task { @MainActor in
             try? await self.readerModeCache.put(currentURL, readabilityResult)
             if tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest) != nil {
@@ -204,21 +204,17 @@ extension BrowserViewController {
 
       if let currentURL = backForwardList.currentItem?.url {
         if let originalURL = currentURL.decodeEmbeddedInternalURL(for: .readermode) {
+          let playlistItem = tab.playlistItem
+          let translationState = tab.translationState ?? .unavailable
           if backList.count > 1 && backList.last?.url == originalURL {
-            let playlistItem = tab.playlistItem
-            let translationState = tab.translationState
             tab.goToBackForwardListItem(backList.last!)
             PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
             self.updateTranslateURLBar(tab: tab, state: translationState)
           } else if !forwardList.isEmpty && forwardList.first?.url == originalURL {
-            let playlistItem = tab.playlistItem
-            let translationState = tab.translationState
             tab.goToBackForwardListItem(forwardList.first!)
             PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
             self.updateTranslateURLBar(tab: tab, state: translationState)
           } else {
-            let playlistItem = tab.playlistItem
-            let translationState = tab.translationState
             if tab.loadRequest(URLRequest(url: originalURL)) != nil {
               PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
               self.updateTranslateURLBar(tab: tab, state: translationState)

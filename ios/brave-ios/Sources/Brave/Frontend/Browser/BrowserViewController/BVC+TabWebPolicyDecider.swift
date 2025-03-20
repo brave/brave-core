@@ -148,7 +148,7 @@ extension BrowserViewController: TabWebPolicyDecider {
           domain: domain,
           isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
         ) ?? []
-      tab.setCustomUserScript(scripts: scriptTypes)
+      tab.browserData?.setCustomUserScript(scripts: scriptTypes)
     }
 
     if let responseURL = responseURL,
@@ -156,7 +156,7 @@ extension BrowserViewController: TabWebPolicyDecider {
     {
       let internalUrl = InternalURL(responseURL)
 
-      tab.rewardsReportingState.httpStatusCode = response.statusCode
+      tab.rewardsReportingState?.httpStatusCode = response.statusCode
     }
 
     let request = response.url.flatMap { pendingRequests[$0.absoluteString] }
@@ -196,6 +196,8 @@ extension BrowserViewController: TabWebPolicyDecider {
       tab.externalAppPopupContinuation = nil
       tab.externalAppPopup = nil
     }
+
+    tab.rewardsReportingState?.wasRestored = tab.isRestoring
 
     // Handle internal:// urls
     if InternalURL.isValid(url: requestURL) {
@@ -317,7 +319,7 @@ extension BrowserViewController: TabWebPolicyDecider {
       }
     }
 
-    tab.rewardsReportingState.isNewNavigation =
+    tab.rewardsReportingState?.isNewNavigation =
       requestInfo.navigationType != .backForward && requestInfo.navigationType != .reload
     tab.currentRequestURL = requestURL
 
@@ -389,7 +391,7 @@ extension BrowserViewController: TabWebPolicyDecider {
 
       // Set some additional user scripts
       if requestInfo.isMainFrame {
-        tab.setScripts(scripts: [
+        tab.browserData?.setScripts(scripts: [
           // Add de-amp script
           // The user script manager will take care to not reload scripts if this value doesn't change
           .deAmp: braveCore.deAmpPrefs.isDeAmpEnabled,
@@ -422,7 +424,7 @@ extension BrowserViewController: TabWebPolicyDecider {
             domain: domainForMainFrame,
             isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
           ) ?? []
-        tab.setCustomUserScript(scripts: scriptTypes)
+        tab.browserData?.setCustomUserScript(scripts: scriptTypes)
       }
 
       // Brave Search logic.
@@ -515,7 +517,7 @@ extension BrowserViewController: TabWebPolicyDecider {
 
       if requestInfo.isMainFrame,
         let etldP1 = requestURL.baseDomain,
-        tab.proceedAnywaysDomainList.contains(etldP1) == false
+        tab.proceedAnywaysDomainList?.contains(etldP1) == false
       {
         let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
 
@@ -554,11 +556,14 @@ extension BrowserViewController: TabWebPolicyDecider {
 
         // Load rule lists
         let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domainForShields)
-        tab.contentBlocker.set(ruleLists: ruleLists)
+        tab.contentBlocker?.set(ruleLists: ruleLists)
       }
 
       // Cookie Blocking code below
-      tab.setScript(script: .cookieBlocking, enabled: Preferences.Privacy.blockAllCookies.value)
+      tab.browserData?.setScript(
+        script: .cookieBlocking,
+        enabled: Preferences.Privacy.blockAllCookies.value
+      )
 
       // Reset the block alert bool on new host.
       if let newHost: String = requestURL.host, let oldHost: String = tab.url?.host,
@@ -585,9 +590,11 @@ extension BrowserViewController: TabWebPolicyDecider {
 
       // Do not show error message for JS navigated links or redirect
       // as it's not the result of a user action.
-      if !shouldOpen, requestInfo.navigationType == .linkActivated && !isSyntheticClick {
+      if let tabData = tab.browserData, !shouldOpen,
+        requestInfo.navigationType == .linkActivated && !isSyntheticClick
+      {
         if self.presentedViewController == nil && self.presentingViewController == nil
-          && !tab.isExternalAppAlertPresented && !tab.isExternalAppAlertSuppressed
+          && !tabData.isExternalAppAlertPresented && !tabData.isExternalAppAlertSuppressed
         {
           return await withCheckedContinuation { continuation in
             // This alert does not need to be a BrowserAlertController because we return a policy
@@ -703,7 +710,7 @@ extension BrowserViewController {
     if let request = request.stripQueryParams(
       initiatorURL: tab.committedURL,
       redirectSourceURL: tab.redirectSourceURL,
-      isInternalRedirect: tab.isInternalRedirect
+      isInternalRedirect: tab.isInternalRedirect == true
     ) {
       Logger.module.debug(
         "Stripping query params for `\(requestURL.absoluteString)`"
@@ -839,12 +846,14 @@ extension BrowserViewController {
     tab.externalAppURLDomain = tab.url?.baseDomain
 
     // Do not try to present over existing warning
-    if tab.isExternalAppAlertPresented || tab.isExternalAppAlertSuppressed {
+    if let tabData = tab.browserData,
+      tabData.isExternalAppAlertPresented || tabData.isExternalAppAlertSuppressed
+    {
       return false
     }
 
     // External dialog should not be shown for non-active tabs #6687 - #7835
-    let isVisibleTab = tab.isTabVisible()
+    let isVisibleTab = tab.browserData?.isTabVisible() == true
 
     if !isVisibleTab {
       return false
@@ -949,7 +958,7 @@ extension BrowserViewController {
       return isTopController && isTopWindow
     }
 
-    tab.externalAppAlertCounter += 1
+    tab.browserData?.externalAppAlertCounter += 1
 
     return await withTaskCancellationHandler {
       return await withCheckedContinuation { [weak tab] continuation in
@@ -958,7 +967,7 @@ extension BrowserViewController {
           return
         }
         tab.externalAppPopupContinuation = continuation
-        showExternalSchemeAlert(for: tab, isSuppressActive: tab.externalAppAlertCounter > 2) {
+        showExternalSchemeAlert(for: tab, isSuppressActive: tab.externalAppAlertCounter ?? 0 > 2) {
           [weak tab] in
           tab?.externalAppPopupContinuation = nil
           continuation.resume(with: .success($0))

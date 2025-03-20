@@ -23,7 +23,7 @@ extension UTType {
 
 extension BrowserViewController: TabDownloadDelegate {
   func tab(_ tab: Tab, didCreateDownload download: Download) {
-    guard tab.isTabVisible() else {
+    guard tab.browserData?.isTabVisible() == true else {
       download.cancel()
       return
     }

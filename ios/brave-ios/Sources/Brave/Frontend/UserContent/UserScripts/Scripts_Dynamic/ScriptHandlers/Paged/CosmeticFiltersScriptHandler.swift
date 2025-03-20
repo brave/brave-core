@@ -89,7 +89,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
 
         // cache blocked selectors
         if let url = tab.url {
-          tab.contentBlocker.cacheSelectors(
+          tab.contentBlocker?.cacheSelectors(
             for: url,
             standardSelectors: standardSelectors,
             aggressiveSelectors: aggressiveSelectors

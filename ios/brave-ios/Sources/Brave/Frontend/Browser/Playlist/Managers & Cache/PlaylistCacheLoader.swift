@@ -37,7 +37,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     type: .private
   ).then {
     $0.createWebview()
-    $0.setScript(
+    $0.browserData?.setScript(
       script: .playlistMediaSource,
       enabled: true
     )
@@ -88,7 +88,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
       browserViewController.tab(tab, didCreateWebView: webContentView)
 
       tab.addObserver(self)
-      tab.replaceContentScript(
+      tab.browserData?.replaceContentScript(
         PlaylistWebLoaderContentHelper(self),
         name: PlaylistWebLoaderContentHelper.scriptName,
         forTab: tab

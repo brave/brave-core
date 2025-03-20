@@ -75,7 +75,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
           var cachedStandardSelectors: Set<String> = .init()
           var cachedAggressiveSelectors: Set<String> = .init()
           if let url = tab.url,
-            let (standard, aggressive) = tab.contentBlocker.cachedSelectors(for: url)
+            let (standard, aggressive) = tab.contentBlocker?.cachedSelectors(for: url)
           {
             cachedStandardSelectors = standard
             cachedAggressiveSelectors = aggressive

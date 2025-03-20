@@ -401,7 +401,7 @@ public class BrowserViewController: UIViewController {
     braveCore.adblockService.registerFilterListChanges { [weak self] _ in
       // Filter lists updated, reset selectors cache(s).
       self?.tabManager.allTabs.forEach {
-        $0.contentBlocker.resetSelectorsCache()
+        $0.contentBlocker?.resetSelectorsCache()
       }
     }
 
@@ -410,7 +410,7 @@ public class BrowserViewController: UIViewController {
       .sink { [weak self] _ in
         // Filter lists selections changed, reset selectors cache(s).
         self?.tabManager.allTabs.forEach {
-          $0.contentBlocker.resetSelectorsCache()
+          $0.contentBlocker?.resetSelectorsCache()
         }
       }
       .store(in: &cancellables)
@@ -465,7 +465,7 @@ public class BrowserViewController: UIViewController {
     }
 
     for tab in tabManager.tabsForCurrentMode where tab.id != tabManager.selectedTab?.id {
-      tab.newTabPageViewController = nil
+      tab.browserData?.newTabPageViewController = nil
     }
   }
 
@@ -1322,7 +1322,7 @@ public class BrowserViewController: UIViewController {
 
   public func showQueuedAlertIfAvailable() {
     if let selectedTab = tabManager.selectedTab,
-      let queuedAlertInfo = selectedTab.dequeueJavascriptAlertPrompt()
+      let queuedAlertInfo = selectedTab.browserData?.dequeueJavascriptAlertPrompt()
     {
       let alertController = queuedAlertInfo.alertController()
       alertController.delegate = self
@@ -1593,13 +1593,16 @@ public class BrowserViewController: UIViewController {
 
         // Refresh the reading view toolbar since the article record may have changed
         if let tab = self.tabManager.selectedTab,
-          let readerMode = tab.getContentScript(name: ReaderModeScriptHandler.scriptName)
+          let readerMode = tab.browserData?.getContentScript(
+            name: ReaderModeScriptHandler.scriptName
+          )
             as? ReaderModeScriptHandler,
           readerMode.state == .active,
-          isReaderModeURL
+          isReaderModeURL,
+          let state = tab.playlistItemState
         {
           self.showReaderModeBar(animated: false)
-          self.updatePlaylistURLBar(tab: tab, state: tab.playlistItemState, item: tab.playlistItem)
+          self.updatePlaylistURLBar(tab: tab, state: state, item: tab.playlistItem)
         }
       }
     )
@@ -1784,7 +1787,7 @@ public class BrowserViewController: UIViewController {
       return
     }
     let scriptHandler =
-      tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
+      tab.browserData?.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
       as? Web3NameServiceScriptHandler
     scriptHandler?.originalURL = originalURL
 
@@ -1797,7 +1800,7 @@ public class BrowserViewController: UIViewController {
       return true
     } else if let selectedTab = tabManager.selectedTab, selectedTab.canGoBack {
       selectedTab.goBack()
-      selectedTab.resetExternalAlertProperties()
+      selectedTab.browserData?.resetExternalAlertProperties()
       return true
     }
     return false
@@ -1835,7 +1838,7 @@ public class BrowserViewController: UIViewController {
 
       updateInContentHomePanel(url as URL)
       updateScreenTimeUrl(url)
-      updatePlaylistURLBar(tab: tab, state: tab.playlistItemState, item: tab.playlistItem)
+      updatePlaylistURLBar(tab: tab, state: tab.playlistItemState ?? .none, item: tab.playlistItem)
     }
   }
 
@@ -2108,7 +2111,9 @@ public class BrowserViewController: UIViewController {
   }
 
   func navigateInTab(tab: Tab) {
-    tabManager.expireSnackbars()
+    for tab in tabManager.allTabs {
+      SnackBarTabHelper.from(tab: tab)?.expireSnackbars()
+    }
 
     if let url = tab.url {
       // Whether to show search icon or + icon
@@ -2203,7 +2208,7 @@ public class BrowserViewController: UIViewController {
 
   func toggleReaderMode() {
     guard let tab = tabManager.selectedTab else { return }
-    if let readerMode = tab.getContentScript(name: ReaderModeScriptHandler.scriptName)
+    if let readerMode = tab.browserData?.getContentScript(name: ReaderModeScriptHandler.scriptName)
       as? ReaderModeScriptHandler
     {
       switch readerMode.state {
@@ -2412,10 +2417,14 @@ extension BrowserViewController: TabDelegate {
       YoutubeQualityScriptHandler(tab: tab),
       BraveLeoScriptHandler(),
       BraveSkusScriptHandler(),
-
-      tab.contentBlocker,
-      tab.requestBlockingContentHelper,
     ]
+
+    if let contentBlocker = tab.contentBlocker {
+      injectedScripts.append(contentBlocker)
+    }
+    if let requestBlockingContentHelper = tab.requestBlockingContentHelper {
+      injectedScripts.append(requestBlockingContentHelper)
+    }
 
     #if canImport(BraveTalk)
     injectedScripts.append(
@@ -2450,20 +2459,22 @@ extension BrowserViewController: TabDelegate {
     // tab.addHelper(spotlightHelper, name: SpotlightHelper.name())
 
     injectedScripts.forEach {
-      tab.addContentScript(
+      tab.browserData?.addContentScript(
         $0,
         name: type(of: $0).scriptName,
         contentWorld: type(of: $0).scriptSandbox
       )
     }
 
-    (tab.getContentScript(name: ReaderModeScriptHandler.scriptName) as? ReaderModeScriptHandler)?
+    (tab.browserData?.getContentScript(name: ReaderModeScriptHandler.scriptName)
+      as? ReaderModeScriptHandler)?
       .delegate = self
-    (tab.getContentScript(name: PlaylistScriptHandler.scriptName) as? PlaylistScriptHandler)?
+    (tab.browserData?.getContentScript(name: PlaylistScriptHandler.scriptName)
+      as? PlaylistScriptHandler)?
       .delegate = self
-    (tab.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName)
+    (tab.browserData?.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName)
       as? PlaylistFolderSharingScriptHandler)?.delegate = self
-    (tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
+    (tab.browserData?.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
       as? Web3NameServiceScriptHandler)?.delegate = self
 
     // Translate Helper
@@ -2471,43 +2482,11 @@ extension BrowserViewController: TabDelegate {
   }
 
   func tab(_ tab: Tab, willDeleteWebView webView: UIView) {
-    tab.cancelQueuedAlerts()
+    tab.browserData?.cancelQueuedAlerts()
     if let scrollView = tab.webScrollView {
       toolbarVisibilityViewModel.endScrollViewObservation(scrollView)
     }
     webView.removeFromSuperview()
-  }
-
-  func showBar(_ bar: SnackBar, animated: Bool) {
-    view.layoutIfNeeded()
-    UIView.animate(
-      withDuration: animated ? 0.25 : 0,
-      animations: {
-        self.alertStackView.insertArrangedSubview(bar, at: 0)
-        self.view.layoutIfNeeded()
-      }
-    )
-  }
-
-  func removeBar(_ bar: SnackBar, animated: Bool) {
-    UIView.animate(
-      withDuration: animated ? 0.25 : 0,
-      animations: {
-        bar.removeFromSuperview()
-      }
-    )
-  }
-
-  func removeAllBars() {
-    alertStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-  }
-
-  func tab(_ tab: Tab, didAddSnackbar bar: SnackBar) {
-    showBar(bar, animated: true)
-  }
-
-  func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar) {
-    removeBar(bar, animated: true)
   }
 
   func showRequestRewardsPanel(_ tab: Tab) {
@@ -2559,12 +2538,12 @@ extension BrowserViewController: TabDelegate {
   func showWalletNotification(_ tab: Tab, origin: URLOrigin) {
     // only display notification when BVC is front and center
     guard presentedViewController == nil,
-      Preferences.Wallet.displayWeb3Notifications.value
+      Preferences.Wallet.displayWeb3Notifications.value,
+      let origin = tab.browserData?.getOrigin(),
+      let tabDappStore = tab.tabDappStore
     else {
       return
     }
-    let origin = tab.getOrigin()
-    let tabDappStore = tab.tabDappStore
     let walletNotificaton = WalletNotification(
       priority: .low,
       origin: origin,
@@ -2973,7 +2952,7 @@ extension BrowserViewController: PreferencesObserver {
       recordGlobalAdBlockShieldsP3A()
       // Global shield setting changed, reset selectors cache.
       tabManager.allTabs.forEach({
-        $0.contentBlocker.resetSelectorsCache()
+        $0.contentBlocker?.resetSelectorsCache()
       })
     case Preferences.Shields.fingerprintingProtection.key:
       tabManager.reloadSelectedTab()
@@ -3007,7 +2986,7 @@ extension BrowserViewController: PreferencesObserver {
       Preferences.Rewards.rewardsToggledOnce.key:
       updateRewardsButtonState()
     case Preferences.General.mediaAutoBackgrounding.key:
-      tabManager.selectedTab?.setScripts(scripts: [
+      tabManager.selectedTab?.browserData?.setScripts(scripts: [
         .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value
       ])
       tabManager.reloadSelectedTab()
@@ -3083,8 +3062,8 @@ extension BrowserViewController: PreferencesObserver {
       }
     case Preferences.Translate.translateEnabled.key:
       tabManager.selectedTab?.translationState = .unavailable
-      tabManager.selectedTab?.setScripts(scripts: [
-        .braveTranslate: Preferences.Translate.translateEnabled.value
+      tabManager.selectedTab?.browserData?.setScripts(scripts: [
+        .braveTranslate: Preferences.Translate.translateEnabled.value != false
       ])
       // Only reload the tab if the setting was changed from the settings controller
       if presentedViewController is SettingsNavigationController {

@@ -52,7 +52,7 @@ class BlockedDomainScriptHandler: TabContentScript {
     }
 
     let request = URLRequest(url: url)
-    tab.proceedAnywaysDomainList.insert(etldP1)
+    tab.proceedAnywaysDomainList?.insert(etldP1)
     tab.loadRequest(request)
   }
 

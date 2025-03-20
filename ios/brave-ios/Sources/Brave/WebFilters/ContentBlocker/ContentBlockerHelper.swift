@@ -87,7 +87,7 @@ class ContentBlockerHelper: ObservableObject {
   /// Cached aggressive selectors. Key is the URL's `baseDomain`.
   private var hiddenAggressiveSelectors: [String: Set<String>] = [:]
 
-  init(tab: Tab) {
+  init(tab: Tab?) {
     self.tab = tab
   }
 

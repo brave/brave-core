@@ -310,6 +310,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
 
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.url
+    tab.isRestoring = false
 
     tab.didCommitNavigation()
   }

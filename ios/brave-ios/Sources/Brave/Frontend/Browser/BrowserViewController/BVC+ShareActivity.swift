@@ -83,7 +83,7 @@ extension BrowserViewController {
     // Toogle Reader Mode Activity
     // If the reader mode button is occluded due to a secure content state warning add it as an activity
     if let tab = tabManager.selectedTab, tab.lastKnownSecureContentState.shouldDisplayWarning {
-      if tab.readerModeAvailableOrActive {
+      if tab.readerModeAvailableOrActive == true {
         activities.append(
           BasicMenuActivity(
             activityType: .toggleReaderMode,

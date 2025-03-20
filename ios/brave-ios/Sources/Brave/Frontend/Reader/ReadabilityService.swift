@@ -35,12 +35,13 @@ class ReadabilityOperation: Operation {
     DispatchQueue.main.async {
       let configuration = WKWebViewConfiguration()
       self.tab = Tab(configuration: configuration)
+      self.tab.browserData = .init(tab: self.tab, tabGeneratorAPI: nil)
       self.tab.createWebview()
       self.tab.addObserver(self)
 
       let readerMode = ReaderModeScriptHandler()
       readerMode.delegate = self
-      self.tab.addContentScript(
+      self.tab.browserData?.addContentScript(
         readerMode,
         name: ReaderModeScriptHandler.scriptName,
         contentWorld: ReaderModeScriptHandler.scriptSandbox

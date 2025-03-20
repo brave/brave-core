@@ -475,7 +475,7 @@ extension BrowserViewController: TopToolbarDelegate {
         if $0.url?.baseDomain == currentDomain {
           $0.reload()
           // Domain specific shield setting changed, reset selectors cache.
-          $0.contentBlocker.resetSelectorsCache()
+          $0.contentBlocker?.resetSelectorsCache()
         }
       }
     }
@@ -676,12 +676,15 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidTapWalletButton(_ urlBar: TopToolbarView) {
-    guard let selectedTab = tabManager.selectedTab else {
+    guard let selectedTab = tabManager.selectedTab,
+      let origin = selectedTab.browserData?.getOrigin(),
+      let tabDappStore = selectedTab.tabDappStore
+    else {
       return
     }
     // System components sit on top so we want to dismiss it
     selectedTab.dismissFindInteraction()
-    presentWalletPanel(from: selectedTab.getOrigin(), with: selectedTab.tabDappStore)
+    presentWalletPanel(from: origin, with: tabDappStore)
   }
 
   private func hideSearchController() {
@@ -1004,7 +1007,7 @@ extension BrowserViewController: ToolbarDelegate {
 
   func tabToolbarDidPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
     tabManager.selectedTab?.goBack()
-    tabManager.selectedTab?.resetExternalAlertProperties()
+    tabManager.selectedTab?.browserData?.resetExternalAlertProperties()
     recordNavigationActionP3A(isNavigationActionForward: false)
   }
 
@@ -1015,7 +1018,7 @@ extension BrowserViewController: ToolbarDelegate {
 
   func tabToolbarDidPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {
     tabManager.selectedTab?.goForward()
-    tabManager.selectedTab?.resetExternalAlertProperties()
+    tabManager.selectedTab?.browserData?.resetExternalAlertProperties()
     recordNavigationActionP3A(isNavigationActionForward: true)
   }
 

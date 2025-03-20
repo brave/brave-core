@@ -134,7 +134,7 @@ class SolanaProviderScriptHandler: TabContentScript {
         if method == Keys.connect.rawValue, let publicKey = result as? String {
           await emitConnectEvent(tab: tab, publicKey: publicKey)
         } else if method == Keys.disconnect.rawValue {
-          tab.emitSolanaEvent(.disconnect)
+          tab.browserData?.emitSolanaEvent(.disconnect)
         }
       case .signTransaction:
         let (result, error) = await signTransaction(tab: tab, args: body.args)
@@ -163,7 +163,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
     }
-    await tab.updateSolanaProperties()
+    await tab.browserData?.updateSolanaProperties()
     return (publicKey, nil)
   }
 
@@ -256,7 +256,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     if method == Keys.connect.rawValue,
       let publicKey = result[Keys.publicKey.rawValue]?.stringValue
     {
-      await tab.updateSolanaProperties()
+      await tab.browserData?.updateSolanaProperties()
       return (publicKey, nil)
     } else {
       guard let encodedResult = MojoBase.Value(dictionaryValue: result).jsonObject else {
