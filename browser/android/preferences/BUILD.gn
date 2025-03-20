@@ -19,6 +19,7 @@ source_set("preferences") {
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_sync:prefs",
     "//brave/components/constants",
+    "//brave/components/youtube_script_injector/common",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/content_settings:content_settings_factory",
@@ -51,6 +52,7 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/request_otr/common/pref_names.h",
     "//brave/components/search_engines/brave_search_engines_pref_names.h",
     "//brave/components/speedreader/speedreader_pref_names.h",
+    "//brave/components/youtube_script_injector/common/pref_names.h",
     "//components/translate/core/browser/translate_pref_names.h",
   ]
 

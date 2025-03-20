@@ -59,8 +59,11 @@ source_set("tab_features") {
   deps = [
     "//base",
     "//brave/browser/ai_chat",
+    "//brave/components/youtube_script_injector/browser/content",
+    "//brave/components/youtube_script_injector/common",
     "//chrome/browser/android:tabs_public",
     "//chrome/browser/profiles:profile",
+    "//chrome/common",
     "//content/public/browser",
   ]
 }

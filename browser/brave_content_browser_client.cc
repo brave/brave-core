@@ -177,6 +177,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
+#include "brave/components/youtube_script_injector/browser/android/youtube_injector_host.h"  // nogncheck
+#include "brave/components/youtube_script_injector/common/features.h"  // nogncheck
+#include "brave/components/youtube_script_injector/common/youtube_injector.mojom.h"  // nogncheck
 #endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
@@ -410,6 +413,16 @@ void BindBraveSearchDefaultHost(
 }
 
 #if BUILDFLAG(IS_ANDROID)
+void BindYouTubeInjectorHost(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<youtube_script_injector::mojom::YouTubeInjector>
+        receiver) {
+  const GURL url = frame_host->GetLastCommittedURL();
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<youtube_script_injector::YouTubeInjectorHost>(url),
+      std::move(receiver));
+}
+
 void BindIAPSubscription(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<ai_chat::mojom::IAPSubscription> receiver) {
@@ -780,6 +793,13 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     map->Add<brave_search::mojom::BraveSearchDefault>(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
+#if BUILDFLAG(IS_ANDROID)
+  if (base::FeatureList::IsEnabled(
+          youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
+    map->Add<youtube_script_injector::mojom::YouTubeInjector>(
+        base::BindRepeating(&BindYouTubeInjectorHost));
+  }
+#endif
 
   map->Add<brave_wallet::mojom::BraveWalletP3A>(
       base::BindRepeating(&MaybeBindWalletP3A));

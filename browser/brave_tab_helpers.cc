@@ -46,10 +46,6 @@
 #include "printing/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
-#if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/android/background_video/background_video_playback_tab_helper.h"
-#endif
-
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
@@ -106,9 +102,7 @@ namespace brave {
 void AttachTabHelpers(content::WebContents* web_contents) {
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
-#if BUILDFLAG(IS_ANDROID)
-  BackgroundVideoPlaybackTabHelper::CreateForWebContents(web_contents);
-#else
+#if !BUILDFLAG(IS_ANDROID)
   // Add tab helpers here unless they are intended for android too
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
   brave_shields::BraveShieldsTabHelper::CreateForWebContents(web_contents);

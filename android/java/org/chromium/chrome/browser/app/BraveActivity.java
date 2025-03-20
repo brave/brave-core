@@ -5,11 +5,16 @@
 
 package org.chromium.chrome.browser.app;
 
+import static org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher.ActivityState.RESUMED_WITH_NATIVE;
+import static org.chromium.chrome.browser.util.PictureInPictureUtils.deviceSupportedPictureInPictureMode;
+import static org.chromium.chrome.browser.util.PictureInPictureUtils.hasPictureInPicturePermissionEnabled;
+import static org.chromium.chrome.browser.util.PictureInPictureUtils.launchPictureInPictureSettings;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -105,6 +110,7 @@ import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.OpenYtInBraveDialogFragment;
+import org.chromium.chrome.browser.YouTubeScriptInjectorTabFeature;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
@@ -205,6 +211,7 @@ import org.chromium.chrome.browser.util.ImageUtils;
 import org.chromium.chrome.browser.util.KeyboardVisibilityHelper;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.util.UsageMonitor;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
@@ -305,6 +312,8 @@ public abstract class BraveActivity extends ChromeActivity
 
     private static final List<String> sYandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
+
+    private static final String TAG = "BraveActivity";
 
     private boolean mIsVerification;
     public boolean mIsDeepLink;
@@ -507,6 +516,18 @@ public abstract class BraveActivity extends ChromeActivity
         cleanUpBraveNewsController();
         cleanUpWalletNativeServices();
         cleanUpMiscAndroidMetrics();
+    }
+
+    @Override
+    public void performOnConfigurationChanged(Configuration newConfig) {
+        super.performOnConfigurationChanged(newConfig);
+
+        Tab currentTab = getActivityTab();
+        if (TabUtils.isYouTubeVideo(currentTab)
+                && !isInPictureInPictureMode()
+                && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            YouTubeScriptInjectorTabFeature.setFullscreen(currentTab.getWebContents());
+        }
     }
 
     /**
@@ -2737,5 +2758,27 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void onKeyboardClosed() {
         removeQuickActionSearchEnginesView();
+    }
+
+    public void enterPipMode() {
+        if (!deviceSupportedPictureInPictureMode(this)) {
+            Toast.makeText(this, R.string.picture_in_picture_not_supported, Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+
+        if (!hasPictureInPicturePermissionEnabled(this)) {
+            launchPictureInPictureSettings(this);
+            return;
+        }
+
+        final Tab currentTab = getActivityTab();
+        if (TabUtils.isYouTubeVideo(currentTab)) {
+            if (getLifecycleDispatcher().getCurrentActivityState() != RESUMED_WITH_NATIVE) {
+                return;
+            }
+            YouTubeScriptInjectorTabFeature.setFullscreen(currentTab.getWebContents());
+            enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+        }
     }
 }
