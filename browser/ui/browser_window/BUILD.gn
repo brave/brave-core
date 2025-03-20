@@ -1,0 +1,32 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+# Don't include this target. Use //chrome/browser/ui/browser_window
+# instead as it includes our additions.
+source_set("browser_window") {
+  visibility = [ "//chrome/browser/ui/browser_window" ]
+
+  sources = [ "public/browser_window_features.h" ]
+
+  public_deps = [ "//base" ]
+}
+
+source_set("impl") {
+  visibility = [ "//chrome/browser/ui/browser_window:impl" ]
+
+  sources = [ "browser_window_features.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//chrome/browser/ui/browser_window",
+  ]
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/browser/ui/brave_vpn" ]
+  }
+}
