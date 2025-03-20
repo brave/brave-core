@@ -86,7 +86,8 @@
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedNavigationBarColorController {
-    *** getNavigationBarColor(...);
+    private *** getNavigationBarColor(...);
+    *** useActiveTabColor(...);
 }
 
 -keep class org.chromium.components.browser_ui.media.MediaSessionHelper {

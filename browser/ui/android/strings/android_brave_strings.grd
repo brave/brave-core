@@ -883,8 +883,11 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SHOW_BRAVE_REWARDS_ICON_SUMMARY" desc="Summary for preference that hides or shows Brave Rewards icon.">
         Show Brave Rewards icon in address bar
       </message>
-      <message name="IDS_BOTTOM_TOOLBAR_ENABLE" desc="Menu item for enabling the bottom toolbar.">
-        Enable bottom toolbar
+      <message name="IDS_BOTTOM_TOOLBAR_TITLE" desc="Menu item for enabling the bottom navigation toolbar.">
+        Enable bottom navigation toolbar
+      </message>
+      <message name="IDS_BRAVE_BOTTOM_NAVIGATION_TOOLBAR_DISABLED_SUMMARY" desc="Summary for disabled state of the bottom navigation toolbar.">
+        This setting is disabled when the bottom address bar position is selected
       </message>
       <message name="IDS_SETTINGS_REQUIRE_RELAUNCH_NOTICE" desc="Text for message asked about browser relaunch to apply new settings">
         Your changes will take effect the next time you relaunch Brave

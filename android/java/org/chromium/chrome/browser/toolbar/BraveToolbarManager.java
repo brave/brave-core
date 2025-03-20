@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.toolbar;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,8 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
+import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -43,6 +47,7 @@ import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBar;
+import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -85,7 +90,8 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.List;
 
-public class BraveToolbarManager extends ToolbarManager {
+public class BraveToolbarManager extends ToolbarManager
+        implements OnSharedPreferenceChangeListener {
     private static final String TAG = "BraveToolbarManager";
 
     // To delete in bytecode, members from parent class will be used instead.
@@ -409,6 +415,8 @@ public class BraveToolbarManager extends ToolbarManager {
                             mActivity.findViewById(R.id.control_container),
                             closeAllTabsAction);
             mLocationBar.getContainerView().setAccessibilityTraversalBefore(R.id.bottom_toolbar);
+
+            ContextUtils.getAppSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         }
     }
 
@@ -528,5 +536,16 @@ public class BraveToolbarManager extends ToolbarManager {
     @Override
     public LocationBar getLocationBar() {
         return mLocationBar;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(
+            SharedPreferences sharedPreferences, @Nullable String key) {
+        if (ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED.equals(key)) {
+            if (sharedPreferences.getBoolean(
+                    BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, true)) {
+                updateBraveBottomControlsVisibility();
+            }
+        }
     }
 }

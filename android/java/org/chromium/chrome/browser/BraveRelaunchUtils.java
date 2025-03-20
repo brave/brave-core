@@ -19,21 +19,25 @@ public class BraveRelaunchUtils {
     static public void askForRelaunch(Context context) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder
-            .setMessage(R.string.settings_require_relaunch_notice)
-            .setCancelable(true)
-            .setPositiveButton(R.string.settings_require_relaunch_now, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog,int id) {
-                    BraveRelaunchUtilsJni.get().restart();
-                    dialog.cancel();
-                }
-            })
-            .setNegativeButton(R.string.settings_require_relaunch_later,new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog,int id) {
-                    dialog.cancel();
-                }
-            });
+                .setMessage(R.string.settings_require_relaunch_notice)
+                .setCancelable(true)
+                .setPositiveButton(
+                        R.string.settings_require_relaunch_now,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                BraveRelaunchUtilsJni.get().restart();
+                                dialog.dismiss();
+                            }
+                        })
+                .setNegativeButton(
+                        R.string.settings_require_relaunch_later,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
     }

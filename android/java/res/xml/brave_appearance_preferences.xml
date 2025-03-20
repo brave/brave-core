@@ -5,6 +5,15 @@
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment"
+        android:key="address_bar"
+        android:title="@string/address_bar_settings"/>
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_bottom_toolbar_enabled_key"
+        android:title="@string/bottom_toolbar_title" />
+
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
       android:key="show_brave_rewards_icon"
       android:title="@string/show_brave_rewards_icon_title"
@@ -14,12 +23,6 @@
         android:key="ads_switch"
         android:title="@string/show_ads_when_brave_is_not_in_use_title"
         android:summary="@string/show_ads_when_brave_is_not_in_use_summary" />
-
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="brave_bottom_toolbar_enabled_key"
-        android:title="@string/bottom_toolbar_enable"
-        android:summaryOn="@string/text_on"
-        android:summaryOff="@string/text_off" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_night_mode_enabled_key"

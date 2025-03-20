@@ -344,6 +344,8 @@ brave_java_resources = [
   "java/res/drawable/ic_ac_onboarding.xml",
   "java/res/drawable/ic_accessibility.xml",
   "java/res/drawable/ic_add.xml",
+  "java/res/drawable/ic_address_bar_bottom.xml",
+  "java/res/drawable/ic_address_bar_top.xml",
   "java/res/drawable/ic_addresses.xml",
   "java/res/drawable/ic_always_on_info.xml",
   "java/res/drawable/ic_antenna.xml",

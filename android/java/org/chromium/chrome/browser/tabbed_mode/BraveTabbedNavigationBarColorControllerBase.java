@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
@@ -27,11 +28,23 @@ class BraveTabbedNavigationBarColorControllerBase {
      */
     protected @Nullable Context mContext;
 
+    /**
+     * This variable will be used instead of `TabGroupModelFilter#mActiveTab`, that will be deleted
+     * in bytecode.
+     */
+    protected @Nullable Tab mActiveTab;
+
+    /**
+     * This variable will be used instead of `TabGroupModelFilter#mTabModelSelector`, that will be
+     * deleted in bytecode.
+     */
     protected @Nullable TabModelSelector mTabModelSelector;
 
-    // Calls from the upstream's private function
-    // `TabbedNavigationBarColorController#getNavigationBarColor`
-    // will be redirected here via bytecode.
+    /**
+     * Calls from the upstream's private function
+     * `TabbedNavigationBarColorController#getNavigationBarColor` will be redirected here via
+     * bytecode.
+     */
     @ColorInt
     public int getNavigationBarColor(boolean forceDarkNavigationBar) {
         // Adjust navigation bar color to match the bottom toolbar color when it is visible.
@@ -54,5 +67,21 @@ class BraveTabbedNavigationBarColorControllerBase {
                         "getNavigationBarColor",
                         boolean.class,
                         forceDarkNavigationBar);
+    }
+
+    /**
+     * Calls from the upstream's private function
+     * `TabbedNavigationBarColorController#useActiveTabColor` will be redirected here via bytecode.
+     */
+    public boolean useActiveTabColor() {
+        // Make an exception for the native pages.
+        if (mActiveTab != null && mActiveTab.isNativePage()) {
+            return false;
+        }
+
+        // Otherwise just call upstream's method.
+        return (boolean)
+                BraveReflectionUtil.invokeMethod(
+                        TabbedNavigationBarColorController.class, this, "useActiveTabColor");
     }
 }

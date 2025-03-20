@@ -121,6 +121,7 @@ public class BraveClassAdapter {
         chain = new BraveTileViewClassAdapter(chain);
         chain = new BraveToolbarLayoutClassAdapter(chain);
         chain = new BraveToolbarManagerClassAdapter(chain);
+        chain = new BraveToolbarPositionControllerClassAdapter(chain);
         chain = new BraveToolbarSwipeLayoutClassAdapter(chain);
         chain = new BraveTopToolbarCoordinatorClassAdapter(chain);
         chain = new BraveUndoBarControllerBaseClassAdapter(chain);

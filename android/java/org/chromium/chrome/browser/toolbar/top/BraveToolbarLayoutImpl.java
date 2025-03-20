@@ -1501,7 +1501,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     public void onBottomControlsVisibilityChanged(boolean isVisible) {
-        if (BottomToolbarConfiguration.isToolbarBottomAnchored()) return;
         mIsBottomControlsVisible = isVisible;
         if (BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class)
                 && getMenuButtonCoordinator() != null) {
