@@ -5,7 +5,7 @@
 
 #include "brave/browser/youtube_script_injector/youtube_script_injector_tab_feature.h"
 
-#include "brave/build/android/jni_headers/YouTubeScriptInjectorTabFeature_jni.h"
+#include "brave/browser/youtube_script_injector/jni_headers/YouTubeScriptInjectorTabFeature_jni.h"
 #include "brave/components/youtube_script_injector/browser/content/youtube_tab_feature.h"
 #include "brave/components/youtube_script_injector/browser/core/youtube_registry.h"
 #include "brave/components/youtube_script_injector/common/features.h"
