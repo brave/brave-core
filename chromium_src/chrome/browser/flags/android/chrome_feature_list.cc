@@ -45,7 +45,6 @@
     &brave_wallet::features::kNativeBraveWalletFeature,                 \
     &playlist::features::kPlaylist,                                     \
     &download::features::kParallelDownloading,                          \
-    &preferences::features::kBraveBackgroundVideoPlayback,              \
     &brave_rewards::features::kNewRewardsUIFeature,                     \
     &youtube_script_injector::features::kBraveYouTubeScriptInjector,    \
     &youtube_script_injector::features::kBraveBackgroundVideoPlayback,  \
