@@ -2489,7 +2489,6 @@ extension BrowserViewController: TabDelegate {
     webView.removeFromSuperview()
   }
 
-
   func showRequestRewardsPanel(_ tab: Tab) {
     let vc = BraveTalkRewardsOptInViewController()
 
