@@ -50,7 +50,8 @@ enum class SearchEngineP3A {
   kBrave,
   kDaum,
   kNaver,
-  kMaxValue = kNaver,
+  kYahooJP,
+  kMaxValue = kYahooJP,
 };
 
 // Note: append-only enumeration! Never remove any existing values, as this enum

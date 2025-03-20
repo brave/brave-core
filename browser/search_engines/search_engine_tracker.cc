@@ -52,6 +52,8 @@ SearchEngineP3A GetSearchEngineProvider(const GURL& search_engine_url,
     result = SearchEngineP3A::kDaum;
   } else if (type == SEARCH_ENGINE_NAVER) {
     result = SearchEngineP3A::kNaver;
+  } else if (type == SEARCH_ENGINE_YAHOO) {
+    result = SearchEngineP3A::kYahooJP;
   } else if (type == SEARCH_ENGINE_BRAVE) {
     result = SearchEngineP3A::kBrave;
   } else if (type == SEARCH_ENGINE_OTHER) {
