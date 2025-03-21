@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-bool ShouldRefillConfirmationTokens();
+[[nodiscard]] bool ShouldRefillConfirmationTokens();
 
 size_t CalculateAmountOfConfirmationTokensToRefill();
 

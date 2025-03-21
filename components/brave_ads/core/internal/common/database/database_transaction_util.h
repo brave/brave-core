@@ -17,7 +17,7 @@
 namespace brave_ads::database {
 
 // Returns true if the transaction result is a success.
-bool IsTransactionSuccessful(
+[[nodiscard]] bool IsTransactionSuccessful(
     const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result);
 
 // Run a database transaction. The callback takes one argument -

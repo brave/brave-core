@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool HasMigratedConfirmation();
+[[nodiscard]] bool HasMigratedConfirmation();
 
 }  // namespace brave_ads
 

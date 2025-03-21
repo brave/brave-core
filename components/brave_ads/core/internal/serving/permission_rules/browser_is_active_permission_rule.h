@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool HasBrowserIsActivePermission();
+[[nodiscard]] bool HasBrowserIsActivePermission();
 
 }  // namespace brave_ads
 

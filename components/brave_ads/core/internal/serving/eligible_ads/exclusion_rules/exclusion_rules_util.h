@@ -16,7 +16,7 @@
 namespace brave_ads {
 
 template <typename T>
-bool CanCapLastServedCreativeAd(T& creative_ads) {
+[[nodiscard]] bool CanCapLastServedCreativeAd(T& creative_ads) {
   return creative_ads.size() != 1;
 }
 

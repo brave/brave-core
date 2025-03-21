@@ -54,12 +54,13 @@ class Reactions final {
 
   void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
                     ToggleReactionCallback callback);
-  bool IsAdSaved(const std::string& creative_instance_id) const;
+  [[nodiscard]] bool IsAdSaved(const std::string& creative_instance_id) const;
   ReactionSet& SavedAdsForTesting() { return saved_ads_; }
 
   void ToggleMarkAdAsInappropriate(mojom::ReactionInfoPtr mojom_reaction,
                                    ToggleReactionCallback callback);
-  bool IsAdMarkedAsInappropriate(const std::string& creative_set_id) const;
+  [[nodiscard]] bool IsAdMarkedAsInappropriate(
+      const std::string& creative_set_id) const;
   ReactionSet& MarkedAdsAsInappropriateForTesting() {
     return marked_as_inappropriate_;
   }

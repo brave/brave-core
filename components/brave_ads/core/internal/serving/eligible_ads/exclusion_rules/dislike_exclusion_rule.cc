@@ -14,7 +14,7 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
+[[nodiscard]] bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
   return GetReactions().AdReactionTypeForId(creative_ad.advertiser_id) !=
          mojom::ReactionType::kDisliked;
 }

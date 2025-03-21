@@ -13,7 +13,7 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
+[[nodiscard]] bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
   return !ShouldFilterSegment(creative_ad.segment);
 }
 

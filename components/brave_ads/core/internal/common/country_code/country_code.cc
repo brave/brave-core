@@ -20,7 +20,7 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesSupportCountryCode() {
+[[nodiscard]] bool DoesSupportCountryCode() {
   return UserHasJoinedBraveRewards();
 }
 

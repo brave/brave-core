@@ -23,9 +23,9 @@ class OnceClosureTaskQueue final {
   void Add(base::OnceClosure closure);
   void FlushAndStopQueueing();
 
-  bool should_queue() const { return should_queue_; }
+  [[nodiscard]] bool should_queue() const { return should_queue_; }
 
-  bool empty() const { return queue_.empty(); }
+  [[nodiscard]] bool empty() const { return queue_.empty(); }
 
  private:
   bool should_queue_ = true;
