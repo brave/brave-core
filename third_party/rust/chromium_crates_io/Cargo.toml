@@ -74,7 +74,7 @@ path = "../../../components/brave_news/browser"
 package = "brave-news-cxx"
 
 [patch.crates-io.brave_wallet_v1]
-path = "../../../components/brave_wallet/browser"
+path = "../../../components/brave_wallet/common"
 package = "brave_wallet"
 
 [patch.crates-io.adblock-cxx_v1]
