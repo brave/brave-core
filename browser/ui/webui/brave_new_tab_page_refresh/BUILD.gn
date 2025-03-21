@@ -39,6 +39,7 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/browser/misc_metrics",
     "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
+    "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_search_conversion",
     "//brave/components/l10n/common",
     "//brave/components/misc_metrics",

@@ -147,6 +147,10 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void GetClockFormat(GetClockFormatCallback callback) override;
   void SetClockFormat(const std::string& clock_format,
                       SetClockFormatCallback callback) override;
+  void GetShowShieldsStats(GetShowShieldsStatsCallback callback) override;
+  void SetShowShieldsStats(bool show_shields_stats,
+                           SetShowShieldsStatsCallback callback) override;
+  void GetShieldsStats(GetShieldsStatsCallback callback) override;
 
  private:
   void OnCustomBackgroundsSelected(ShowCustomBackgroundChooserCallback callback,

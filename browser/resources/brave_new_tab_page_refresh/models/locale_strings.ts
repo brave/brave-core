@@ -41,9 +41,14 @@ export type StringKey =
   'showClockLabel' |
   'showSearchBoxLabel' |
   'showSponsoredImagesLabel' |
+  'showStatsLabel' |
   'showTopSitesLabel' |
   'solidBackgroundLabel' |
   'solidBackgroundTitle' |
+  'statsAdsBlockedText' |
+  'statsBandwidthSavedText' |
+  'statsTimeSavedText' |
+  'statsTitle' |
   'topSiteRemovedText' |
   'topSiteRemovedTitle' |
   'topSitesCustomOptionText' |
