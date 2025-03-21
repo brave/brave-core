@@ -7,12 +7,12 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_type_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_value_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
@@ -46,7 +46,9 @@ void Reactions::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
   if (toggled_mojom_reaction_type == mojom::ReactionType::kLiked) {
     NotifyDidLikeAd(mojom_reaction->advertiser_id);
 
-    Deposit(&*mojom_reaction, mojom::ConfirmationType::kLikedAd);
+    Deposit(mojom_reaction->mojom_ad_type, mojom::ConfirmationType::kLikedAd,
+            mojom_reaction->campaign_id, mojom_reaction->creative_instance_id,
+            mojom_reaction->segment);
   }
 
   std::move(callback).Run(/*success=*/true);
@@ -75,7 +77,9 @@ void Reactions::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
   if (toggled_mojom_reaction_type == mojom::ReactionType::kDisliked) {
     NotifyDidDislikeAd(mojom_reaction->advertiser_id);
 
-    Deposit(&*mojom_reaction, mojom::ConfirmationType::kDislikedAd);
+    Deposit(mojom_reaction->mojom_ad_type, mojom::ConfirmationType::kDislikedAd,
+            mojom_reaction->campaign_id, mojom_reaction->creative_instance_id,
+            mojom_reaction->segment);
   }
 
   std::move(callback).Run(/*success=*/true);
@@ -177,7 +181,9 @@ void Reactions::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
   if (inserted) {
     NotifyDidToggleSaveAd(mojom_reaction->creative_instance_id);
 
-    Deposit(&*mojom_reaction, mojom::ConfirmationType::kSavedAd);
+    Deposit(mojom_reaction->mojom_ad_type, mojom::ConfirmationType::kSavedAd,
+            mojom_reaction->campaign_id, mojom_reaction->creative_instance_id,
+            mojom_reaction->segment);
   }
 
   std::move(callback).Run(/*success=*/true);
@@ -206,7 +212,10 @@ void Reactions::ToggleMarkAdAsInappropriate(
   if (inserted) {
     NotifyDidToggleSaveAd(mojom_reaction->creative_set_id);
 
-    Deposit(&*mojom_reaction, mojom::ConfirmationType::kMarkAdAsInappropriate);
+    Deposit(mojom_reaction->mojom_ad_type,
+            mojom::ConfirmationType::kMarkAdAsInappropriate,
+            mojom_reaction->campaign_id, mojom_reaction->creative_instance_id,
+            mojom_reaction->segment);
   }
 
   std::move(callback).Run(/*success=*/true);
@@ -252,16 +261,6 @@ void Reactions::Load() {
   LoadSegmentReactions();
   LoadSavedAds();
   LoadMarkedAsInappropriate();
-}
-
-// static
-void Reactions::Deposit(const mojom::ReactionInfo* const mojom_reaction,
-                        mojom::ConfirmationType mojom_confirmation_type) {
-  CHECK(mojom_reaction);
-
-  GetAccount().Deposit(mojom_reaction->creative_instance_id,
-                       mojom_reaction->segment, mojom_reaction->mojom_ad_type,
-                       mojom_confirmation_type);
 }
 
 void Reactions::NotifyDidLikeAd(const std::string& advertiser_id) const {

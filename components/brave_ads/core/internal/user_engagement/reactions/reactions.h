@@ -71,9 +71,6 @@ class Reactions final {
   void LoadMarkedAsInappropriate();
   void Load();
 
-  static void Deposit(const mojom::ReactionInfo* mojom_reaction,
-                      mojom::ConfirmationType mojom_confirmation_type);
-
   void NotifyDidLikeAd(const std::string& advertiser_id) const;
   void NotifyDidDislikeAd(const std::string& advertiser_id) const;
   void NotifyDidLikeSegment(const std::string& segment) const;

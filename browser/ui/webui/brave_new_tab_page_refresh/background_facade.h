@@ -55,9 +55,10 @@ class BackgroundFacade {
   void RemoveCustomBackground(const std::string& background_url,
                               base::OnceClosure callback);
 
-  void NotifySponsoredImageLogoClicked(const std::string& creative_instance_id,
+  void NotifySponsoredImageLogoClicked(const std::string& wallpaper_id,
+                                       const std::string& creative_instance_id,
                                        const std::string& destination_url,
-                                       const std::string& wallpaper_id);
+                                       bool should_metrics_fallback_to_p3a);
 
  private:
   void OnCustomBackgroundsSaved(base::OnceClosure callback,

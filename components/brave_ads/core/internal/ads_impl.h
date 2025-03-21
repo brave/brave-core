@@ -13,7 +13,6 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/common/functional/once_closure_task_queue.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads.h"
@@ -128,6 +127,11 @@ class AdsImpl final : public Ads {
   void CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
                                     InitializeCallback callback,
                                     bool success);
+
+  void MigrateStateCallback(mojom::WalletInfoPtr mojom_wallet,
+                            InitializeCallback callback,
+                            bool success);
+
   void FailedToInitialize(InitializeCallback callback);
   void SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
                                InitializeCallback callback);
@@ -146,10 +150,6 @@ class AdsImpl final : public Ads {
   void LoadConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                      InitializeCallback callback,
                                      bool success);
-  void GetActiveCallback(
-      GetInternalsCallback callback,
-      bool success,
-      const CreativeSetConversionList& creative_set_conversions);
 
   bool is_initialized_ = false;
 

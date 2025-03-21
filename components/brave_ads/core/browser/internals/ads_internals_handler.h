@@ -37,15 +37,16 @@ class AdsInternalsHandler : public bat_ads::mojom::AdsInternals {
 
  private:
   // bat_ads::mojom::AdsInternals:
+  void CreateAdsInternalsPageHandler(
+      mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage> page_pending_remote)
+      override;
   void GetAdsInternals(GetAdsInternalsCallback callback) override;
   void ClearAdsData(brave_ads::ClearDataCallback callback) override;
-  void CreateAdsInternalsPageHandler(
-      mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage> page) override;
 
   void GetInternalsCallback(GetAdsInternalsCallback callback,
-                            std::optional<base::Value::List> value);
+                            std::optional<base::Value::Dict> internals);
 
-  void OnPrefChanged(const std::string& path);
+  void OnBraveRewardsEnabledPrefChanged(const std::string& path);
   void UpdateBraveRewardsEnabled();
 
   const raw_ptr<brave_ads::AdsService> ads_service_;  // Not owned.
@@ -54,7 +55,7 @@ class AdsInternalsHandler : public bat_ads::mojom::AdsInternals {
 
   mojo::Receiver<bat_ads::mojom::AdsInternals> receiver_{this};
 
-  mojo::Remote<bat_ads::mojom::AdsInternalsPage> page_;
+  mojo::Remote<bat_ads::mojom::AdsInternalsPage> page_remote_;
 
   PrefChangeRegistrar pref_change_registrar_;
 

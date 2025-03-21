@@ -7,7 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CORE_ADS_CORE_H_
 
 #include <memory>
+#include <string>
 
+#include "base/containers/flat_set.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_handler.h"
 #include "brave/components/brave_ads/core/internal/reminders/reminders.h"
@@ -48,6 +50,14 @@ class AdsCore final {
   // as inappropriate, and saving ads.
   Reactions& GetReactions();
 
+  // The set of creative instance ids that should fallback to P3A metric
+  // reporting. This is a temporary solution which will be removed once P3A
+  // metrics are deprecated.
+  void SetCreativeInstanceIdsToFallbackToP3a(
+      const base::flat_set<std::string>& creative_instance_ids);
+  bool ShouldCreativeInstanceIdFallbackToP3A(
+      const std::string& creative_instance_id) const;
+
  private:
   const std::unique_ptr<TokenGeneratorInterface> token_generator_;
 
@@ -67,6 +77,12 @@ class AdsCore final {
 
   // Handles user studies, a set of experiments conducted on the client.
   Studies studies_;
+
+  // The set of creative instance ids that should fallback to P3A metric
+  // reporting. This is a temporary solution which will be removed once P3A
+  // metrics are deprecated.
+  base::flat_set</*creative_instance_id*/ std::string>
+      should_metrics_fallback_to_p3a_;
 };
 
 }  // namespace brave_ads

@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
@@ -13,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -32,23 +30,6 @@ TEST_F(BraveAdsConversionsNewTabPageAdUtilTest, AllowedToConvertViewedAdEvent) {
 
   // Act & Assert
   EXPECT_TRUE(IsAllowedToConvertAdEvent(ad_event));
-}
-
-TEST_F(
-    BraveAdsConversionsNewTabPageAdUtilTest,
-    NotAllowedToConvertViewedAdEventForNonRewardsUserIfShouldNotAlwaysTriggerNewTabPageAdEvents) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  const AdInfo ad = test::BuildAd(
-      mojom::AdType::kNewTabPageAd, /*should_generate_random_uuids=*/
-      true);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
-                   /*created_at=*/test::Now());
-
-  // Act & Assert
-  EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
 }
 
 TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
@@ -107,27 +88,8 @@ TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
   EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
 }
 
-TEST_F(
-    BraveAdsConversionsNewTabPageAdUtilTest,
-    AllowedToConvertAdClickedEventForNonRewardsUserIfShouldAlwaysTriggerBraveNewTabPageAdEvents) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(
-      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
-
-  test::DisableBraveRewards();
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
-                                  /*should_generate_random_uuids=*/false);
-  const AdEventInfo ad_event = BuildAdEvent(
-      ad, mojom::ConfirmationType::kClicked, /*created_at=*/test::Now());
-
-  // Act & Assert
-  EXPECT_TRUE(IsAllowedToConvertAdEvent(ad_event));
-}
-
-TEST_F(
-    BraveAdsConversionsNewTabPageAdUtilTest,
-    NotAllowedToConvertAdClickedEventForNonRewardsUserIfShouldNotAlwaysTriggerNewTabPageAdEvents) {
+TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
+       NotAllowedToConvertAdClickedEventForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
