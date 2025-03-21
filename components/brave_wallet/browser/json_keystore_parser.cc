@@ -11,9 +11,8 @@
 #include "base/containers/extend.h"
 #include "base/numerics/safe_math.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "crypto/encryptor.h"
+#include "crypto/aes_ctr.h"
 #include "crypto/kdf.h"
-#include "crypto/symmetric_key.h"
 
 namespace brave_wallet {
 
@@ -33,28 +32,6 @@ bool UTCPasswordVerification(
   base::Extend(mac_verification_input, ciphertext);
 
   return KeccakHash(mac_verification_input) == mac;
-}
-
-std::optional<std::vector<uint8_t>> UTCDecryptPrivateKey(
-    base::span<const uint8_t, kDerivedKeySize> derived_key,
-    base::span<const uint8_t> ciphertext,
-    base::span<const uint8_t> iv) {
-  crypto::SymmetricKey decryption_key(derived_key.first(kDerivedKeySize / 2));
-  crypto::Encryptor encryptor;
-  if (!encryptor.Init(&decryption_key, crypto::Encryptor::Mode::CTR,
-                      std::vector<uint8_t>())) {
-    return std::nullopt;
-  }
-  if (!encryptor.SetCounter(iv)) {
-    return std::nullopt;
-  }
-
-  std::vector<uint8_t> private_key;
-  if (!encryptor.Decrypt(ciphertext, &private_key)) {
-    return std::nullopt;
-  }
-
-  return private_key;
 }
 
 template <class T>
@@ -194,18 +171,20 @@ std::optional<std::vector<uint8_t>> DecryptPrivateKeyFromJsonKeystore(
     return std::nullopt;
   }
 
-  std::vector<uint8_t> iv_bytes;
   const auto* iv = crypto->FindStringByDottedPath("cipherparams.iv");
   if (!iv) {
     return std::nullopt;
   }
-  if (!base::HexStringToBytes(*iv, &iv_bytes)) {
+  std::array<uint8_t, crypto::aes_ctr::kCounterSize> iv_bytes;
+  if (!base::HexStringToSpan(*iv, iv_bytes)) {
     return std::nullopt;
   }
 
-  auto private_key =
-      UTCDecryptPrivateKey(derived_key, ciphertext_bytes, iv_bytes);
-  if (!private_key || private_key->size() != kPrivateKeySize) {
+  auto private_key = crypto::aes_ctr::Decrypt(
+      base::span(derived_key).first(kDerivedKeySize / 2), iv_bytes,
+      ciphertext_bytes);
+
+  if (private_key.size() != kPrivateKeySize) {
     return std::nullopt;
   }
 
