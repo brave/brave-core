@@ -189,6 +189,12 @@
       Always show toolbar in full screen
     </message>
   </if>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_THEMES_GALLERY_URL" translateable="false">
+    https://chrome.google.com/webstore?hl=[GRITLANGCODE]&amp;category=theme
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_OPEN_WEB_STORE" desc="Sub-label about choosing something from the Chrome Web Store.">
+    Open Web Store
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_GET_MORE_THEMES" desc="The label for opening theme web store">
     Get more themes
   </message>
