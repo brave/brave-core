@@ -20,6 +20,7 @@
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "net/base/hash_value.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 class PrefService;
 class PrefRegistrySimple;

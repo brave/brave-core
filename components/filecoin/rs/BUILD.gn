@@ -6,6 +6,12 @@
 import("//build/rust/rust_static_library.gni")
 
 rust_static_library("rust_lib") {
+  visibility = [
+    "//brave/browser/brave_wallet:unit_tests",
+    "//brave/components/brave_wallet/browser:*",
+    "//brave/components/brave_wallet/browser/test:*",
+    "//brave/components/ipfs",
+  ]
   crate_name = "filecoin_cxx"
   crate_root = "src/lib.rs"
   allow_unsafe = true

@@ -8,3 +8,12 @@ include_rules = [
   "+third_party/re2",
   "+ui/base",
 ]
+
+specific_include_rules = {
+  "direct_feed_fetcher\.cc": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "direct_feed_fetcher_unittest\.cc": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+}

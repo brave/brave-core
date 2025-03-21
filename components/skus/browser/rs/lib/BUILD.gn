@@ -6,6 +6,7 @@
 import("//build/rust/rust_static_library.gni")
 
 rust_static_library("rust_lib") {
+  visibility = [ "//brave/components/skus/browser/rs/cxx:*" ]
   crate_name = "skus"
   crate_root = "src/lib.rs"
   sources = [

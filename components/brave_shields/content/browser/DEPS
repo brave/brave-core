@@ -16,5 +16,26 @@ include_rules = [
 specific_include_rules = {
   "brave_farbling_service\.h": [
     "+third_party/abseil-cpp/absl/random/random.h",
-  ]
+  ],
+  "ad_block_engine\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_filters_provider_manager\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_custom_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_localhost_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_service\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_subscription_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
 }

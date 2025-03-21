@@ -6,6 +6,7 @@
 import("//build/rust/rust_static_library.gni")
 
 rust_static_library("rust_lib") {
+  visibility = [ "//brave/components/p3a:*" ]
   crate_name = "constellation_cxx"
   crate_root = "src/lib.rs"
   allow_unsafe = true

@@ -9,9 +9,10 @@
 #include <utility>
 #include <vector>
 
+#include "brave/components/brave_news/browser/lib.rs.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/rust/lib.rs.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_news {
 

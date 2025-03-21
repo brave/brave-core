@@ -33,9 +33,10 @@ source_set("brave_news_unit_tests") {
     "//base/test:test_support",
     "//brave/components/api_request_helper",
     "//brave/components/brave_news/browser",
+    "//brave/components/brave_news/browser:rust_lib",
+    "//brave/components/brave_news/browser:unit_tests",
     "//brave/components/brave_news/common",
     "//brave/components/brave_news/common:mojom",
-    "//brave/components/brave_news/rust:unit_tests",
     "//brave/components/brave_rewards/core",
     "//brave/components/l10n/common",
     "//brave/components/l10n/common:test_support",
@@ -52,8 +53,6 @@ source_set("brave_news_unit_tests") {
     "//testing/gtest",
     "//url",
   ]
-
-  public_deps = [ "//brave/components/brave_news/rust:rust_lib" ]
 }
 
 source_set("brave_news_unit_tests_support") {

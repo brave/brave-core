@@ -12,7 +12,7 @@
 #include "base/containers/to_vector.h"
 #include "base/strings/string_util.h"
 #include "base/strings/string_view_rust.h"
-#include "brave/components/brave_wallet/rust/lib.rs.h"
+#include "brave/components/brave_wallet/common/lib.rs.h"
 #include "brave/third_party/bitcoin-core/src/src/bech32.h"
 #include "brave/third_party/bitcoin-core/src/src/util/strencodings.h"
 
