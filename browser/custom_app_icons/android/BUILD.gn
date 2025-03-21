@@ -1,0 +1,96 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+import("//build/config/locales.gni")
+import("//chrome/common/features.gni")
+import("//tools/grit/grit_rule.gni")
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsManager.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsEnum.java",
+  ]
+  deps = [
+    ":java_resources",
+  ]
+
+  resources_package = "org.chromium.brave.browser.custom_app_icons"
+}
+
+android_resources("java_resources") {
+  sources = [
+    "java/res/drawable-hdpi/ic_launcher_3d.webp",
+    "java/res/drawable-mdpi/ic_launcher_3d.webp",
+    "java/res/drawable-xhdpi/ic_launcher_3d.webp",
+    "java/res/drawable-xxhdpi/ic_launcher_3d.webp",
+    "java/res/drawable-xxxhdpi/ic_launcher_3d.webp",
+    "java/res/drawable-hdpi/ic_launcher_80s.webp",
+    "java/res/drawable-mdpi/ic_launcher_80s.webp",
+    "java/res/drawable-xhdpi/ic_launcher_80s.webp",
+    "java/res/drawable-xxhdpi/ic_launcher_80s.webp",
+    "java/res/drawable-xxxhdpi/ic_launcher_80s.webp",
+    "java/res/drawable-hdpi/ic_launcher_aqua.webp",
+    "java/res/drawable-mdpi/ic_launcher_aqua.webp",
+    "java/res/drawable-xhdpi/ic_launcher_aqua.webp",
+    "java/res/drawable-xxhdpi/ic_launcher_aqua.webp",
+    "java/res/drawable-xxxhdpi/ic_launcher_aqua.webp",
+    "java/res/drawable-hdpi/ic_launcher_bat.webp",
+    "java/res/drawable-mdpi/ic_launcher_bat.webp",
+    "java/res/drawable-xhdpi/ic_launcher_bat.webp",
+    "java/res/drawable-xxhdpi/ic_launcher_bat.webp",
+    "java/res/drawable-xxxhdpi/ic_launcher_bat.webp",
+    "java/res/drawable-hdpi/ic_launcher_holo.webp",
+    "java/res/drawable-mdpi/ic_launcher_holo.webp",
+    "java/res/drawable-xhdpi/ic_launcher_holo.webp",
+    "java/res/drawable-xxhdpi/ic_launcher_holo.webp",
+    "java/res/drawable-xxxhdpi/ic_launcher_holo.webp",
+    "java/res/drawable-hdpi/ic_launcher_neon.webp",
+    "java/res/drawable-mdpi/ic_launcher_neon.webp",
+    "java/res/drawable-xhdpi/ic_launcher_neon.webp",
+    "java/res/drawable-xxhdpi/ic_launcher_neon.webp",
+    "java/res/drawable-xxxhdpi/ic_launcher_neon.webp",
+    "java/res/drawable-hdpi/ic_launcher_netscape.webp",
+    "java/res/drawable-mdpi/ic_launcher_netscape.webp",
+    "java/res/drawable-xhdpi/ic_launcher_netscape.webp",
+    "java/res/drawable-xxhdpi/ic_launcher_netscape.webp",
+    "java/res/drawable-xxxhdpi/ic_launcher_netscape.webp",
+    "java/res/drawable-hdpi/ic_launcher_popart.webp",
+    "java/res/drawable-mdpi/ic_launcher_popart.webp",
+    "java/res/drawable-xhdpi/ic_launcher_popart.webp",
+    "java/res/drawable-xxhdpi/ic_launcher_popart.webp",
+    "java/res/drawable-xxxhdpi/ic_launcher_popart.webp",
+    "java/res/drawable-hdpi/ic_launcher_popartdark.webp",
+    "java/res/drawable-mdpi/ic_launcher_popartdark.webp",
+    "java/res/drawable-xhdpi/ic_launcher_popartdark.webp",
+    "java/res/drawable-xxhdpi/ic_launcher_popartdark.webp",
+    "java/res/drawable-xxxhdpi/ic_launcher_popartdark.webp",
+    "java/res/drawable-hdpi/ic_launcher_supernova.webp",
+    "java/res/drawable-mdpi/ic_launcher_supernova.webp",
+    "java/res/drawable-xhdpi/ic_launcher_supernova.webp",
+    "java/res/drawable-xxhdpi/ic_launcher_supernova.webp",
+    "java/res/drawable-xxxhdpi/ic_launcher_supernova.webp",
+    "java/res/drawable-hdpi/ic_launcher_terminal.webp",
+    "java/res/drawable-mdpi/ic_launcher_terminal.webp",
+    "java/res/drawable-xhdpi/ic_launcher_terminal.webp",
+    "java/res/drawable-xxhdpi/ic_launcher_terminal.webp",
+    "java/res/drawable-xxxhdpi/ic_launcher_terminal.webp",
+    "java/res/drawable-hdpi/ic_launcher_windows.webp",
+    "java/res/drawable-mdpi/ic_launcher_windows.webp",
+    "java/res/drawable-xhdpi/ic_launcher_windows.webp",
+    "java/res/drawable-xxhdpi/ic_launcher_windows.webp",
+    "java/res/drawable-xxxhdpi/ic_launcher_windows.webp",
+  ]
+  deps = [ ":java_strings_grd" ]
+}
+
+java_strings_grd("java_strings_grd") {
+  defines = chrome_grit_defines
+  grd_file = "java/strings/android_custom_app_icons_strings.grd"
+  outputs = [ "values/android_custom_app_icons_strings.xml" ] +
+            process_file_template(
+                android_bundle_locales_as_resources,
+                [ "values-{{source_name_part}}/android_custom_app_icons_strings.xml" ])
+}
