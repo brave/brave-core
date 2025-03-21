@@ -418,6 +418,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
 
       <if expr="enable_extensions">
         </if>
-    </messages>
+
+      </messages>
   </release>
 </grit>
