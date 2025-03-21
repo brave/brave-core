@@ -12,15 +12,17 @@
 namespace logging {
 namespace internal {
 
-BASE_EXPORT void print_rust_log(const char* msg,
-                                const char* file,
-                                int line,
-                                LogSeverity severity,
-                                bool verbose) {
+void print_rust_log(const char* msg,
+                    const char* file,
+                    int line,
+                    LogSeverity severity,
+                    bool verbose) {
   switch (severity) {
     // Trace and debug logs are set as `LOGGING_INFO`. Trace is also set as
-    // versbose, so we make a higher level verbosity.
+    // verbose, so we make a higher level verbosity. We also map `LOGGING_WARN`
+    // to verbose, to avoid "excessive output" errors in unit tests.
     case LOGGING_INFO:
+    case LOGGING_WARNING:
       severity = LOGGING_VERBOSE - verbose;
       break;
     default:

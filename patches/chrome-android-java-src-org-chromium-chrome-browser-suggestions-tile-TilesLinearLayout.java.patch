@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TilesLinearLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TilesLinearLayout.java
+index 1de089e183456cbe2ba5c319e941e657c6d8542f..e4b5e9f23720068d8466087304b4f68a1182b8eb 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TilesLinearLayout.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TilesLinearLayout.java
+@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.suggestions.tile;
+ import android.content.Context;
+ import android.util.AttributeSet;
+ import android.view.View;
++import android.widget.GridLayout;
+ import android.widget.LinearLayout;
+ 
+ import org.chromium.build.annotations.NullMarked;
+@@ -23,7 +24,7 @@ import java.util.List;
+  * #getChildCount()} and {@link #getChildAt()}.
+  */
+ @NullMarked
+-public class TilesLinearLayout extends LinearLayout {
++public class TilesLinearLayout extends GridLayout {
+     private List<TileView> mTileList = new ArrayList<TileView>();
+ 
+     public TilesLinearLayout(Context context, @Nullable AttributeSet attrs) {

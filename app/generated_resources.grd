@@ -863,10 +863,6 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FEEDBACK" desc="The name of the Autofill Feedback command in the content area context menu">
             Help improve autofill
           </message>
-          <!-- TODO(359570730): remove non translateable flag  -->
-          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_PREDICTION_IMPROVEMENTS" desc="The name of the Autofill context menu entry that will initiate filling using improved predictions." translateable="false">
-            Autocomplete
-          </message>
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SELECT_PASSWORD" desc="This is a context menu entry in the passwords submenu. It triggers the password selection bubble.">
             Select password
           </message>
@@ -3036,9 +3032,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_COOKIE_THEFT" desc="Subpage summary for cookie theft warning.">
         This file can harm your personal and social network accounts
       </message>
-      <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_COOKIE_THEFT_AND_ACCOUNT" desc="Subpage summary for cookie theft warning with account info.">
-        This file can harm your personal and social network accounts, including <ph name="USER_EMAIL">$1<ex>john@google.com</ex></ph>
-      </message>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_WARNING_ARCHIVE_MALWARE" desc="Subpage summary text for a download item when the downloaded archive file may hide malware.">
         This archive file includes other files that may hide malware
       </message>
@@ -4086,6 +4079,9 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_CERT_X509_SCT_LIST" desc="description of extension Signed Certificate Timestamp List">
           Signed Certificate Timestamp List
         </message>
+        <message name="IDS_CERT_QC_STATEMENTS" desc="description of extension Qualified Certificate Statements">
+          Qualified Certificate Statements
+        </message>
         <message name="IDS_CERT_X509_POLICY_MAPPINGS" desc="description of extension Certificate Policy Mappings">
           Certificate Policy Mappings
         </message>
@@ -4245,6 +4241,24 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_CERT_EKU_OCSP_SIGNING" desc="description of extended key usage Signing OCSP Responses">
           Signing OCSP Responses
         </message>
+
+        <message name="IDS_CERT_POLICY_ETSI_QEVCP_W" desc="description of ETSI qualified website certificates that offer the Extended Validated level of assurance" translateable="false">
+          ETSI QEVCP-w
+        </message>
+        <message name="IDS_CERT_POLICY_ETSI_QNCP_W" desc="description of ETSI qualified website certificates that offer the Organization Validated or Individual Validated level of assurance" translateable="false">
+          ETSI QNCP-w
+        </message>
+
+        <message name="IDS_CERT_QC_ETSI_QCS_QCCOMPLIANCE" desc="description of ETSI qualified certificate statement compliance" translateable="false">
+          ETSI QcCompliance
+        </message>
+        <message name="IDS_CERT_QC_ETSI_QCS_QCTYPE" desc="description of ETSI qualified certificate statement certificate type" translateable="false">
+          ETSI QcType
+        </message>
+        <message name="IDS_CERT_QC_ETSI_QCT_WEB" desc="description of ETSI qualified certificate statement certificate type for web site authentication" translateable="false">
+          ETSI qct-web
+        </message>
+
         <message name="IDS_CERT_EKU_MS_INDIVIDUAL_CODE_SIGNING" desc="description of extended key usage Microsoft Individual Code Signing">
           Microsoft Individual Code Signing
         </message>
@@ -4421,6 +4435,9 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_TASK_MANAGER_KILL" desc="The caption of the Task Manager kill button" formatter_data="android_java">
           End process
         </message>
+        <message name="IDS_TASK_MANAGER_KILL_V2" desc="The caption of the Task Manager kill button">
+          End task
+        </message>
         <message name="IDS_TASK_MANAGER_PROCESS_ID_COLUMN" desc="The title for Task Manager process ID column." formatter_data="android_java">
           Process ID
         </message>
@@ -4494,6 +4511,9 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         <message name="IDS_TASK_MANAGER_KILL" desc="The caption of the Task Manager kill button" formatter_data="android_java">
           End Process
+        </message>
+        <message name="IDS_TASK_MANAGER_KILL_V2" desc="The caption of the Task Manager kill button">
+          End Task
         </message>
         <message name="IDS_TASK_MANAGER_PROCESS_ID_COLUMN" desc="The title for Task Manager process ID column." formatter_data="android_java">
           Process ID
@@ -4588,6 +4608,13 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_TASK_MANAGER_HANDLES_CELL_TEXT" desc="The value displayed in the user/gdi cells.">
         <ph name="NUM_HANDLES">$1<ex>300</ex></ph> (<ph name="NUM_KILOBYTES_LIVE">$2<ex>500</ex></ph> peak)
+      </message>
+      <message name="IDS_TASK_MANAGER_TASK_GROUP_CONNECT_TEXT" desc="The text used to connect tasks in the same task group for accessibility features. [ICU_Syntax]">
+        {NUM_TASKS, plural,
+          =0 {<ph name="TASK_ROW">{TASK_ROW}<ex>MyTask</ex></ph>}
+          =1 {<ph name="TASK_ROW">{TASK_ROW}<ex>MyTask</ex></ph>. Another task in the same task group: <ph name="OTHER_TASKS">{OTHER_TASKS}<ex>TaskA</ex></ph>}
+          other {<ph name="TASK_ROW">{TASK_ROW}<ex>MyTask</ex></ph>. Other # tasks in the same task group: <ph name="OTHER_TASKS">{OTHER_TASKS}<ex>TaskA, TaskB, and TaskC</ex></ph>}
+        }
       </message>
       <message name="IDS_TASK_MANAGER_WEB_BROWSER_CELL_TEXT" desc="The text of the web browser process row">
         Browser
@@ -6706,8 +6733,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_MANAGE_PASSWORDS_BUTTON" desc="In Title Case: The label of the 'Manage Passwords' button in the manage-passwords bubble.">
           Manage Passwords
         </message>
-        <!-- TODO(b/316143236): Finalize the strings and make them translatable -->
-        <message name="IDS_PASSWORD_MANAGER_MANAGE_PASSWORD_BUTTON" desc="In Title Case: The label of the 'Manage Password' button in the password details bubble." translateable="false">
+        <message name="IDS_PASSWORD_MANAGER_MANAGE_PASSWORD_BUTTON" desc="In Title Case: The label of the 'Manage Password' button in the password details bubble.">
           Manage Password
         </message>
       </if>
@@ -6718,8 +6744,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_MANAGE_PASSWORDS_BUTTON" desc="The label of the 'Manage passwords' link in the manage-passwords bubble.">
           Manage passwords
         </message>
-        <!-- TODO(b/316143236): Finalize the strings and make them translatable -->
-        <message name="IDS_PASSWORD_MANAGER_MANAGE_PASSWORD_BUTTON" desc="The label of the 'Manage password' link in the password details bubble." translateable="false">
+        <message name="IDS_PASSWORD_MANAGER_MANAGE_PASSWORD_BUTTON" desc="The label of the 'Manage password' link in the password details bubble.">
           Manage password
         </message>
       </if>
@@ -7359,6 +7384,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_CHROME_CHANGE_THEME_LABEL" desc="The label for the action button for changing Brave theme in the New Tab Page customize chrome side panel.">
         Change theme
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_FOOTER_HEADER" desc="The label for the Footer title in the customization menu on the New Tab Page.">
+        Footer
+      </message>
       <message name="IDS_NTP_CUSTOMIZE_CHROME_MANAGED_NEW_TAB_PAGE" desc="The string that shows on the customize chrome UI when a 3rd party manages the new tab page.">
         <ph name="THIRD_PARTY_NTP_MANAGER">$1<ex>ZomboCom</ex></ph> is managing your new tab page
       </message>
@@ -7391,6 +7419,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_CUSTOMIZE_SHOW_CARDS_LABEL" desc="The label for the option to show cards in the customization menu on the New Tab Page">
         Show cards
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_SHOW_FOOTER_LABEL" desc="The label for the option to show footer in the customization menu on the New Tab Page">
+        Show footer on New Tab page
       </message>
       <message name="IDS_NTP_CUSTOMIZE_SHOW_SHORTCUTS_LABEL" desc="The label for the option to show shortcuts in the customization menu on the New Tab Page">
         Show shortcuts
@@ -9622,6 +9653,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_RELOAD" desc="The accessible name for the reload/stop button.">
         Reload
       </message>
+      <message name="IDS_ACCNAME_SPLIT_TABS" is_accessibility_with_no_ui="true" desc="The accessible name for the toolbar button for the split tabs feature.">
+        Side-by-side
+      </message>
       <message name="IDS_ACCNAME_FIND" desc="The accessible name for the find button.">
         Find
       </message>
@@ -11041,7 +11075,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </if>
 
       <!-- Side By Side -->
-      <message name="IDS_ACCNAME_SIDE_BY_SIDE_RESIZE" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the side by side resize handle is focused.">
+      <message name="IDS_ACCNAME_SPLIT_TABS_RESIZE" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the side by side resize handle is focused.">
         Side By Side Resize Handle
       </message>
 
@@ -12002,12 +12036,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <!-- /Delete Last Tab Dialog -->
 
       <!-- Recent Activity -->
-        <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_MEMBER_ADDED_THIS_TAB" desc="A description of the user adding the current tab for the recent activity dialog.">
-          <ph name="MEMBER_FIRST_NAME">$1<ex>Ali</ex></ph> added this tab
-        </message>
-        <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_MEMBER_CHANGED_THIS_TAB" desc="A description of the user changing the current tab for the recent activity dialog.">
-          <ph name="MEMBER_FIRST_NAME">$1<ex>Ali</ex></ph> changed this tab
-        </message>
         <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_NO_UPDATES" desc="A description of the user changing the current tab for the recent activity dialog.">
           No updates to this group
         </message>
@@ -13403,12 +13431,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_DEVICE_SIGNALS_CONSENT_DIALOG_BODY_TEXT" desc="Message shown when user consent is required to share device signals.">
         To use your device with your <ph name="DOMAIN">$1<ex>example.com</ex></ph> profile, your organization needs information about the device.
 
-This can include information about installed software, files, your browser, and the device’s operating system.
+This can include information about installed software, files, your browser, the device’s operating system, and IP addresses.
         </message>
         <message name="IDS_DEVICE_SIGNALS_CONSENT_DIALOG_DEFAULT_BODY_TEXT" desc="Default message for device signals consent dialog when we are unable to retrieve the name of the managing organization.">
         To use your device with your organization profile, your organization needs information about the device.
 
-This can include information about installed software, files, your browser, and the device’s operating system.
+This can include information about installed software, files, your browser, the device’s operating system, and IP addresses.
         </message>
       </if>
 
@@ -16724,13 +16752,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_OTHER_DEVICES_LABEL" desc="The label for a list of passkeys and their sources the user can choose from devices other than the one they are using. The list includes both passkeys (e.g. 'Juan Perez | Passkey from Pixel 7') and devices that may have passkeys (e.g. 'USB Security Key').">
         On other devices
       </message>
-      <message name="IDS_WEBAUTHN_SOURCE_CHROME_PROFILE_NEW" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in the user's Brave Profile.">
+      <message name="IDS_WEBAUTHN_SOURCE_CHROME_PROFILE" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in the user's Brave Profile.">
         Your Brave profile
       </message>
-      <message name="IDS_WEBAUTHN_SOURCE_ICLOUD_KEYCHAIN_NEW" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in the user's iCloud Keychain.">
+      <message name="IDS_WEBAUTHN_SOURCE_ICLOUD_KEYCHAIN" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in the user's iCloud Keychain.">
         iCloud Keychain
       </message>
-      <message name="IDS_WEBAUTHN_SOURCE_WINDOWS_HELLO_NEW" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in Windows Hello.">
+      <message name="IDS_WEBAUTHN_SOURCE_WINDOWS_HELLO" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in Windows Hello.">
         Windows Hello
       </message>
       <message name="IDS_WEBAUTHN_SOURCE_GOOGLE_PASSWORD_MANAGER" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in Brave Password Manager.">
@@ -16961,7 +16989,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_PASSKEY_UPGRADE_BUBBLE_MANAGE_BUTTON" desc="The label of a button that opens Brave Password Manager settings. Refer to Glossary for the meaning of 'passkey'.">
         Manage passwords and passkeys
       </message>
-
 
       <!-- Web-modal dialog shown during Digital Credential request -->
       <message name="IDS_WEB_DIGITAL_CREDENTIALS_BLUETOOTH_POWER_ON_MANUAL_TITLE">
@@ -17656,6 +17683,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_MULTI_IDP_ACCOUNT_ORIGIN_AND_LAST_USED" desc="The origin of an account as well as how long ago it was used for federation in the RP, separated by a symbol. In this case the separator is a bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements">
       <ph name="SITE_ETLD_PLUS_ONE">$1<ex>idp.example</ex></ph> • <ph name="LAST_USED">$2<ex>used 1 month ago</ex></ph>
     </message>
+    <message name="IDS_USED_ON_THIS_SITE" desc="A string indicating to the user that they have used the identity providers' account for federation in the RP in the past. This is based primarily on the knowledge indicated by the identity provider, so no timestamp is known or displayed to the user in this case.">
+      You used on this site
+    </message>
     <message name="IDS_MULTI_IDP_ACCOUNT_LAST_USED_ON_THIS_SITE" desc="Lets the user know that this is the account which was last used in FedCM on this site. It may be used as the second parameter to IDS_MULTI_IDP_ACCOUNT_ORIGIN_AND_LAST_USED. Only used for the account which was most recently used.">
       last used on this site
     </message>
@@ -18226,6 +18256,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SMART_CARD_POLICY_DESCRIPTION_FOR_ANY_DEVICE" desc="String describing a smart card reader permission granted by permission policy to a site for all devices.">
         Any smart card reader
       </message>
+      <message name="IDS_ACCESSED_SMART_CARD_READER_TITLE" desc="Title of the info bubble shown when site has an active connection to a smart card reader.">
+        Your smart card readers are being accessed
+      </message>
+      <message name="IDS_ACCESSED_SMART_CARD_READER_BODY" desc="The body of the info bubble shown when site has an active connection to a smart card reader.">
+        This site is accessing smart card readers connected to your device and potentially smart cards available to them
+      </message>
     </if>
 
 
@@ -18251,6 +18287,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <if expr="is_chromeos">
       <message name="IDS_USER_INSTALLED_CHROME_APP_DEPRECATION_NOTIFICATION_MESSAGE" desc="Message of the notification displayed while launching a user-installed app.">
         Support for Brave apps will end soon. To learn about your options, contact the app developer or your IT support team.
+      </message>
+    </if>
+
+    <!-- Glic button context menu. -->
+    <if expr="not is_android">
+      <message name="IDS_GLIC_BUTTON_CXMENU_UNPIN" desc="Name of the Glic button context menu item for unpinning Glic.">
+        Unpin
       </message>
     </if>
 

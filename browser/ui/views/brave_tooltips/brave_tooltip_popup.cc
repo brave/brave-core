@@ -311,6 +311,7 @@ void BraveTooltipPopup::CreateWidgetView() {
   // The widget instance is owned by its NativeWidget. For more details see
   // ui/views/widget/widget.h
   views::Widget::InitParams params(
+      views::Widget::InitParams::NATIVE_WIDGET_OWNS_WIDGET,
       views::Widget::InitParams::TYPE_WINDOW_FRAMELESS);
   params.delegate = this;
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
