@@ -110,7 +110,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewLocationBarBrowserTest,
   ASSERT_EQ("about:blank",
             tab_strip_model().GetWebContentsAt(0)->GetVisibleURL().spec());
   ASSERT_EQ(u"about:blank", split_view_location_bar().url_->GetText());
-  auto url_text = split_view_location_bar().url_->GetText();
+
+  // GetText() gives string_view. To refer url's text safely,
+  // copy it to string.
+  auto url_text = std::u16string(split_view_location_bar().url_->GetText());
 
   auto navigate_to_url = [&](content::WebContents* web_contents,
                              const GURL& new_url) {
@@ -138,7 +141,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewLocationBarBrowserTest,
           if (url_text != split_view_location_bar().url_->GetText()) {
             run_loop->Quit();
             scheduler.Stop();
-            url_text = split_view_location_bar().url_->GetText();
+            url_text =
+                std::u16string(split_view_location_bar().url_->GetText());
           }
         }));
     run_loop->Run();
