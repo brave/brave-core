@@ -31,7 +31,8 @@ const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
       alt: 'Be Brave!',
       destinationUrl: 'https://brave.com',
       imageUrl: sampleBackground
-    }
+    },
+    shouldMetricsFallbackToP3a: false
   },
 
   richMedia: {
@@ -44,7 +45,8 @@ const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
       alt: 'Be Brave!',
       destinationUrl: 'https://brave.com',
       imageUrl: ''
-    }
+    },
+    shouldMetricsFallbackToP3a: false
   },
 
   none: null

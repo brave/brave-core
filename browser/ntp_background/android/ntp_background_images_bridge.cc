@@ -123,15 +123,17 @@ void NTPBackgroundImagesBridge::RegisterPageView(
 void NTPBackgroundImagesBridge::WallpaperLogoClicked(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj,
+    const base::android::JavaParamRef<jstring>& jwallpaperId,
     const base::android::JavaParamRef<jstring>& jcreativeInstanceId,
     const base::android::JavaParamRef<jstring>& jdestinationUrl,
-    const base::android::JavaParamRef<jstring>& jwallpaperId) {
+    bool shouldMetricsFallbackToP3a) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (view_counter_service_) {
     view_counter_service_->BrandedWallpaperLogoClicked(
+        base::android::ConvertJavaStringToUTF8(env, jwallpaperId),
         base::android::ConvertJavaStringToUTF8(env, jcreativeInstanceId),
         base::android::ConvertJavaStringToUTF8(env, jdestinationUrl),
-        base::android::ConvertJavaStringToUTF8(env, jwallpaperId));
+        shouldMetricsFallbackToP3a);
   }
 }
 
@@ -184,10 +186,13 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
                     ntp_background_images::kRichMediaWallpaperType;
   }
 
+  const bool should_metrics_fallback_to_p3a =
+      data.FindBool(ntp_background_images::kCampaignMetricsKey).value_or(false);
+
   view_counter_service_->BrandedWallpaperWillBeDisplayed(
-      wallpaper_id ? *wallpaper_id : "",
+      wallpaper_id ? *wallpaper_id : "", campaign_id ? *campaign_id : "",
       creative_instance_id ? *creative_instance_id : "",
-      campaign_id ? *campaign_id : "");
+      should_metrics_fallback_to_p3a);
 
   return Java_NTPBackgroundImagesBridge_createBrandedWallpaper(
       env, ConvertUTF8ToJavaString(env, *image_path), focal_point_x,
@@ -198,7 +203,7 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
       ConvertUTF8ToJavaString(
           env, creative_instance_id ? *creative_instance_id : ""),
       ConvertUTF8ToJavaString(env, wallpaper_id ? *wallpaper_id : ""),
-      is_rich_media);
+      is_rich_media, should_metrics_fallback_to_p3a);
 }
 
 void NTPBackgroundImagesBridge::GetTopSites(JNIEnv* env,

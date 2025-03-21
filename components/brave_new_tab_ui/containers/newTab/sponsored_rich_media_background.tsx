@@ -10,8 +10,9 @@ import * as BraveAds from 'gen/brave/components/brave_ads/core/mojom/brave_ads.m
 
 export interface SponsoredRichMediaBackgroundInfo {
   url: string
-  creativeInstanceId: string
   placementId: string
+  creativeInstanceId: string
+  shouldMetricsFallbackToP3a: boolean
   targetUrl: string
 }
 

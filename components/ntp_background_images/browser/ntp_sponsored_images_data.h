@@ -11,8 +11,8 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 #include "url/gurl.h"
@@ -94,7 +94,6 @@ struct Creative {
   GURL url;
   base::FilePath file_path;
   gfx::Point focal_point;
-  brave_ads::ConditionMatcherMap condition_matchers;
   std::string background_color;
 
   std::string creative_instance_id;
@@ -117,6 +116,7 @@ struct Campaign {
   [[nodiscard]] bool IsValid() const;
 
   std::string campaign_id;
+  bool should_metrics_fallback_to_p3a = false;
   std::vector<Creative> creatives;
 };
 
@@ -139,24 +139,24 @@ struct NTPSponsoredImagesData {
 
   void ParseCampaigns(const base::Value::List& list,
                       const base::FilePath& installed_dir);
-  std::optional<Campaign> ParseCampaign(const base::Value::Dict& dict,
-                                        const base::FilePath& installed_dir);
+  std::optional<Campaign> MaybeParseCampaign(
+      const base::Value::Dict& dict,
+      const base::FilePath& installed_dir);
 
   void ParseSuperReferrals(const base::Value::Dict& dict,
                            const base::FilePath& installed_dir);
 
-  std::optional<base::Value::Dict> GetBackgroundAt(size_t campaign_index,
-                                                   size_t creative_index) const;
-  std::optional<base::Value::Dict> GetBackground(
-      const brave_ads::NewTabPageAdInfo& ad_info);
+  std::optional<base::Value::Dict> MaybeGetBackgroundAt(
+      size_t campaign_index,
+      size_t creative_index) const;
+  std::optional<base::Value::Dict> MaybeGetBackground(
+      const brave_ads::NewTabPageAdInfo& ad);
 
   bool IsSuperReferral() const;
 
-  bool AdInfoMatchesSponsoredImage(const brave_ads::NewTabPageAdInfo& ad_info,
-                                   size_t campaign_index,
-                                   size_t creative_index) const;
-
   std::string url_prefix;
+
+  std::optional<base::TimeDelta> grace_period;
 
   std::vector<Campaign> campaigns;
 

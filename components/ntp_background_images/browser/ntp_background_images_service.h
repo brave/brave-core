@@ -99,7 +99,7 @@ class NTPBackgroundImagesService {
       BlockNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToBlocked);
   FRIEND_TEST_ALL_PREFIXES(
       ViewCounterServiceTest,
-      AllowNewTabTakeOverWithImageIfJavaScriptContentSettingIsSetToAllowed);
+      AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToAllowed);
   FRIEND_TEST_ALL_PREFIXES(
       ViewCounterServiceTest,
       AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToBlocked);
@@ -157,6 +157,24 @@ class NTPBackgroundImagesService {
                            CannotShowBackgroundImagesIfUninitialized);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
                            CannotShowBackgroundImagesIfMalformed);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      GetNewTabTakeoverWallpaperOutsideGracePeriodForNonRewardsUser);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      DoNotGetNewTabTakeoverWallpaperOnCuspOfGracePeriodForNonRewardsUser);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      DoNotGetNewTabTakeoverWallpaperWithinGracePeriodForNonRewardsUser);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      GetNewTabTakeoverWallpaperOutsideGracePeriodForRewardsUser);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      DoNotGetNewTabTakeoverWallpaperOnCuspOfGracePeriodForRewardsUser);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      DoNotGetNewTabTakeoverWallpaperWithinGracePeriodForRewardsUser);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, SponsoredImagesTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest,
                            BasicSuperReferralDataTest);

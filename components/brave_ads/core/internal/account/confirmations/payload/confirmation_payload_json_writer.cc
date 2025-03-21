@@ -27,17 +27,19 @@ constexpr char kTypeKey[] = "type";
 std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
   auto dict =
       base::Value::Dict()
-          .Set(kTransactionIdKey, confirmation.transaction_id)
           .Set(kCreativeInstanceIdKey, confirmation.creative_instance_id)
           .Set(kTypeKey, ToString(confirmation.type));
 
   if (confirmation.reward) {
+    dict.Set(kTransactionIdKey, confirmation.transaction_id);
+
     base::Value::Dict reward_confirmation_payload_dict =
         BuildRewardConfirmationPayload(*confirmation.reward);
     dict.Merge(std::move(reward_confirmation_payload_dict));
   }
 
   dict.Merge(confirmation.user_data.dynamic.Clone());
+
   dict.Merge(confirmation.user_data.fixed.Clone());
 
   std::string json;

@@ -15,6 +15,7 @@ interface NewTabTakeover {
   GetCurrentWallpaper() => (url.mojom.Url? url,
                             string? placement_id,
                             string? creative_instance_id,
+                            bool should_metrics_fallback_to_p3a,
                             url.mojom.Url? target_url);
 
   NavigateToUrl(url.mojom.Url url);

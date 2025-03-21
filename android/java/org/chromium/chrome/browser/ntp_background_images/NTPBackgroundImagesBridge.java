@@ -94,10 +94,14 @@ public class NTPBackgroundImagesBridge {
     }
 
     public void wallpaperLogoClicked(Wallpaper wallpaper) {
-        NTPBackgroundImagesBridgeJni.get().wallpaperLogoClicked(
-                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this,
-                wallpaper.getCreativeInstanceId(),
-                wallpaper.getLogoDestinationUrl(), wallpaper.getWallpaperId());
+        NTPBackgroundImagesBridgeJni.get()
+                .wallpaperLogoClicked(
+                        mNativeNTPBackgroundImagesBridge,
+                        NTPBackgroundImagesBridge.this,
+                        wallpaper.getWallpaperId(),
+                        wallpaper.getCreativeInstanceId(),
+                        wallpaper.getLogoDestinationUrl(),
+                        wallpaper.shouldMetricsFallbackToP3a());
     }
 
     public boolean isSuperReferral() {
@@ -156,7 +160,8 @@ public class NTPBackgroundImagesBridge {
             boolean isSponsored,
             String creativeInstanceId,
             String wallpaperId,
-            boolean isRichMedia) {
+            boolean isRichMedia,
+            boolean shouldMetricsFallbackToP3a) {
         return new Wallpaper(
                 imagePath,
                 focalPointX,
@@ -167,7 +172,8 @@ public class NTPBackgroundImagesBridge {
                 isSponsored,
                 creativeInstanceId,
                 wallpaperId,
-                isRichMedia);
+                isRichMedia,
+                shouldMetricsFallbackToP3a);
     }
 
     @CalledByNative
@@ -182,16 +188,23 @@ public class NTPBackgroundImagesBridge {
         NTPBackgroundImagesBridge getInstance(Profile profile);
         NTPImage getCurrentWallpaper(
                 long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
-        void registerPageView(long nativeNTPBackgroundImagesBridge,
-                              NTPBackgroundImagesBridge caller);
-        void wallpaperLogoClicked(long nativeNTPBackgroundImagesBridge,
-                                  NTPBackgroundImagesBridge caller,
-                                  String creativeInstanceId,
-                                  String destinationUrl, String wallpaperId);
-        void getTopSites(long nativeNTPBackgroundImagesBridge,
-                              NTPBackgroundImagesBridge caller);
-        boolean isSuperReferral(long nativeNTPBackgroundImagesBridge,
-                              NTPBackgroundImagesBridge caller);
+
+        void registerPageView(
+                long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
+
+        void wallpaperLogoClicked(
+                long nativeNTPBackgroundImagesBridge,
+                NTPBackgroundImagesBridge caller,
+                String wallpaperId,
+                String creativeInstanceId,
+                String destinationUrl,
+                boolean shouldMetricsFallbackToP3a);
+
+        void getTopSites(long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
+
+        boolean isSuperReferral(
+                long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
+
         String getSuperReferralThemeName(long nativeNTPBackgroundImagesBridge,
                               NTPBackgroundImagesBridge caller);
         String getSuperReferralCode(long nativeNTPBackgroundImagesBridge,

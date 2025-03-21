@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_constants.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 
@@ -25,18 +24,14 @@ namespace {
 
 bool DoesRequireResourceForNewTabPageAds() {
   // Require resource only if:
-  // - The user has opted into new tab page ads and has either joined Brave
-  //   Rewards or new tab page ad events should always be triggered.
-  return UserHasOptedInToNewTabPageAds() &&
-         (UserHasJoinedBraveRewards() ||
-          ShouldAlwaysTriggerNewTabPageAdEvents());
+  // - The user has opted into new tab page ads and joined Brave Rewards.
+  return UserHasJoinedBraveRewards() && UserHasOptedInToNewTabPageAds();
 }
 
 bool DoesRequireResource() {
   // Require resource only if:
   // - User has opted into Brave News ads.
-  // - User has opted into new tab page ads and either joined Brave Rewards or
-  //   new tab page ad events should always be triggered.
+  // - The user has opted into new tab page ads and and joined Brave Rewards.
   // - User has joined Brave Rewards and opted into notification ads.
   return UserHasOptedInToBraveNewsAds() ||
          DoesRequireResourceForNewTabPageAds() ||

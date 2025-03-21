@@ -115,7 +115,8 @@ export function initializeBackgrounds(
         type: background.type === 'richMedia'
             ? 'sponsored-rich-media'
             : 'sponsored-image',
-        logo: background.logo || null
+        logo: background.logo || null,
+        shouldMetricsFallbackToP3a: background.shouldMetricsFallbackToP3a
       }
     }
     store.update({ sponsoredImageBackground })
@@ -179,9 +180,10 @@ export function initializeBackgrounds(
       const { sponsoredImageBackground } = store.getState()
       if (sponsoredImageBackground && sponsoredImageBackground.logo) {
         handler.notifySponsoredImageLogoClicked(
-            sponsoredImageBackground.creativeInstanceId,
-            sponsoredImageBackground.logo.destinationUrl,
-            sponsoredImageBackground.wallpaperId);
+          sponsoredImageBackground.creativeInstanceId,
+          sponsoredImageBackground.logo.destinationUrl,
+          sponsoredImageBackground.wallpaperId,
+          sponsoredImageBackground.shouldMetricsFallbackToP3a);
       }
     },
 
@@ -190,10 +192,11 @@ export function initializeBackgrounds(
       if (!sponsoredImageBackground) {
         return
       }
-      sponsoredRichMediaAdEventHandler.reportRichMediaAdEvent(
-          sponsoredImageBackground.wallpaperId,
-          sponsoredImageBackground.creativeInstanceId,
-          richMediaEventTypeToMojo(type));
+      sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
+        sponsoredImageBackground.wallpaperId,
+        sponsoredImageBackground.creativeInstanceId,
+        sponsoredImageBackground.shouldMetricsFallbackToP3a,
+        richMediaEventTypeToMojo(type));
     }
   }
 }

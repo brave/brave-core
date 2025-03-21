@@ -46,27 +46,40 @@ const API = AdsInternalsMojo.AdsInternals.getRemote();
 
 const pageCallbackRouter = new AdsInternalsMojo.AdsInternalsPageCallbackRouter();
 
-const URL_PATTERN_TABLE_COLUMN = 'URL Pattern';
-const EXPIRES_AT_TABLE_COLUMN = 'Expires At';
+const CONVERSION_URL_PATTERN_URL_PATTERN_TABLE_COLUMN = 'URL Pattern';
+const CONVERSION_URL_PATTERN_EXPIRES_AT_TABLE_COLUMN = 'Expires At';
+interface ConversionUrlPattern {
+  CONVERSION_URL_PATTERN_URL_PATTERN_TABLE_COLUMN: string
+  CONVERSION_URL_PATTERN_EXPIRES_AT_TABLE_COLUMN: number
+}
 
-interface AdsInternal {
-  URL_PATTERN_TABLE_COLUMN: string
-  EXPIRES_AT_TABLE_COLUMN: number
+const AD_EVENT_TARGET_URL_TABLE_COLUMN = 'Target URL';
+const AD_EVENT_AD_TYPE_TABLE_COLUMN = 'Ad Type';
+const AD_EVENT_EVENT_TYPE_TABLE_COLUMN = 'Event Type';
+const AD_EVENT_CREATED_AT_TABLE_COLUMN = 'Created At';
+interface AdEvent {
+  AD_EVENT_TARGET_URL_TABLE_COLUMN: string
+  AD_EVENT_AD_TYPE_TABLE_COLUMN: string
+  AD_EVENT_EVENT_TYPE_TABLE_COLUMN: string
+  AD_EVENT_CREATED_AT_TABLE_COLUMN: number
 }
 
 const App: React.FC = () => {
-  const [adsInternals, setAdsInternals] = React.useState<AdsInternal[]>([]);
+  const [conversionUrlPatterns, setConversionUrlPatterns] = React.useState<ConversionUrlPattern[]>([]);
+  const [adEvents, setAdEvents] = React.useState<AdEvent[]>([]);
   const [rewardsEnabled, setRewardsEnabled] = React.useState<boolean>(false);
 
-  pageCallbackRouter.onBraveRewardsEnabledChanged.addListener((enabled: boolean) => {
+  pageCallbackRouter.updateBraveRewardsEnabled.addListener((enabled: boolean) => {
     setRewardsEnabled(enabled);
   })
   API.createAdsInternalsPageHandler(pageCallbackRouter.$.bindNewPipeAndPassRemote());
 
   const getAdsInternals = React.useCallback(async () => {
     try {
-      const response = await API.getAdsInternals()
-      setAdsInternals(JSON.parse(response.response) || []);
+      const adsInternals = await API.getAdsInternals();
+      const { conversionUrlPatterns = [], adEvents = [] } = JSON.parse(adsInternals.response);
+      setConversionUrlPatterns(conversionUrlPatterns);
+      setAdEvents(adEvents);
     } catch (error) {
       console.error('Error getting ads internals', error);
     }
@@ -99,7 +112,12 @@ const App: React.FC = () => {
 
       <StateContainer>
         <b>Active Brave Ads conversion URL patterns:</b><br /><br />
-        <ConversionUrlPatternsTable data={adsInternals} /><br /><br />
+        <ConversionUrlPatternTable data={conversionUrlPatterns} /><br /><br />
+      </StateContainer>
+
+      <StateContainer>
+        <b>Active Brave Ads events:</b><br /><br />
+        <AdEventTable data={adEvents} /><br /><br />
       </StateContainer>
 
       {!rewardsEnabled && (
@@ -116,18 +134,18 @@ const formatUnixEpochToLocalTime = (epoch: number) => {
   return date.toLocaleString();
 }
 
-const conversionUrlPatternsTableRow = (header: string, row: any) => {
-  return header === EXPIRES_AT_TABLE_COLUMN ? formatUnixEpochToLocalTime(row[header]) : row[header];
+const conversionUrlPatternTableRow = (header: string, row: any) => {
+  return header === CONVERSION_URL_PATTERN_EXPIRES_AT_TABLE_COLUMN ? formatUnixEpochToLocalTime(row[header]) : row[header];
 }
 
-const ConversionUrlPatternsTable: React.FC<{ data: AdsInternal[] }> = React.memo(({ data }) => {
+const ConversionUrlPatternTable: React.FC<{ data: ConversionUrlPattern[] }> = React.memo(({ data }) => {
   if (data.length === 0) {
     return (
       <p>No Brave Ads conversion URL patterns are currently being matched.</p>
     );
   }
 
-  const tableColumnOrder = [URL_PATTERN_TABLE_COLUMN, EXPIRES_AT_TABLE_COLUMN];
+  const tableColumnOrder = [CONVERSION_URL_PATTERN_URL_PATTERN_TABLE_COLUMN, CONVERSION_URL_PATTERN_EXPIRES_AT_TABLE_COLUMN];
 
   const uniqueTableRows = () => {
     return Array.from(new Set(data.map(item => JSON.stringify(item))))
@@ -148,7 +166,50 @@ const ConversionUrlPatternsTable: React.FC<{ data: AdsInternal[] }> = React.memo
           <tr key={index}>
             {tableColumnOrder.map((header) => (
               <td key={header}>
-                {conversionUrlPatternsTableRow(header, row)}
+                {conversionUrlPatternTableRow(header, row)}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
+});
+
+
+const adEventTableRow = (header: string, row: any) => {
+  return header === AD_EVENT_CREATED_AT_TABLE_COLUMN ? formatUnixEpochToLocalTime(row[header]) : row[header];
+}
+
+const AdEventTable: React.FC<{ data: AdEvent[] }> = React.memo(({ data }) => {
+  if (data.length === 0) {
+    return (
+      <p>No Brave Ads events.</p>
+    );
+  }
+
+  const tableColumnOrder = [AD_EVENT_TARGET_URL_TABLE_COLUMN, AD_EVENT_AD_TYPE_TABLE_COLUMN, AD_EVENT_EVENT_TYPE_TABLE_COLUMN, AD_EVENT_CREATED_AT_TABLE_COLUMN];
+
+  const uniqueTableRows = () => {
+    return Array.from(new Set(data.map(item => JSON.stringify(item))))
+      .map(item => JSON.parse(item));
+  };
+
+  return (
+    <Table>
+      <thead>
+        <tr>
+          {tableColumnOrder.map((header) => (
+            <th key={header}>{header}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {uniqueTableRows().map((row, index) => (
+          <tr key={index}>
+            {tableColumnOrder.map((header) => (
+              <td key={header}>
+                {adEventTableRow(header, row)}
               </td>
             ))}
           </tr>

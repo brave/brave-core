@@ -192,8 +192,9 @@ BackgroundFacade::GetSponsoredImageBackground() {
   auto sponsored_image = ReadSponsoredImageData(*data);
   if (sponsored_image) {
     view_counter_service_->BrandedWallpaperWillBeDisplayed(
-        sponsored_image->wallpaper_id, sponsored_image->creative_instance_id,
-        sponsored_image->campaign_id);
+        sponsored_image->wallpaper_id, sponsored_image->campaign_id,
+        sponsored_image->creative_instance_id,
+        sponsored_image->should_metrics_fallback_to_p3a);
   }
 
   return sponsored_image;
@@ -267,14 +268,16 @@ void BackgroundFacade::RemoveCustomBackground(const std::string& background_url,
 }
 
 void BackgroundFacade::NotifySponsoredImageLogoClicked(
+    const std::string& wallpaper_id,
     const std::string& creative_instance_id,
     const std::string& destination_url,
-    const std::string& wallpaper_id) {
+    bool should_metrics_fallback_to_p3a) {
   if (!view_counter_service_) {
     return;
   }
   view_counter_service_->BrandedWallpaperLogoClicked(
-      creative_instance_id, destination_url, wallpaper_id);
+      wallpaper_id, creative_instance_id, destination_url,
+      should_metrics_fallback_to_p3a);
 }
 
 void BackgroundFacade::OnCustomBackgroundsSaved(

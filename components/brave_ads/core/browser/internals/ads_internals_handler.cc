@@ -21,8 +21,9 @@ AdsInternalsHandler::AdsInternalsHandler(brave_ads::AdsService* ads_service,
   pref_change_registrar_.Init(&*prefs_);
   pref_change_registrar_.Add(
       brave_rewards::prefs::kEnabled,
-      base::BindRepeating(&AdsInternalsHandler::OnPrefChanged,
-                          weak_ptr_factory_.GetWeakPtr()));
+      base::BindRepeating(
+          &AdsInternalsHandler::OnBraveRewardsEnabledPrefChanged,
+          weak_ptr_factory_.GetWeakPtr()));
 }
 
 AdsInternalsHandler::~AdsInternalsHandler() = default;
@@ -38,9 +39,17 @@ void AdsInternalsHandler::BindInterface(
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void AdsInternalsHandler::CreateAdsInternalsPageHandler(
+    mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage> page_pending_remote) {
+  page_remote_ = mojo::Remote<bat_ads::mojom::AdsInternalsPage>(
+      std::move(page_pending_remote));
+
+  UpdateBraveRewardsEnabled();
+}
+
 void AdsInternalsHandler::GetAdsInternals(GetAdsInternalsCallback callback) {
   if (!ads_service_) {
-    return std::move(callback).Run(/*response=*/"");
+    return std::move(callback).Run(/*ads_internals=*/"{}");
   }
 
   ads_service_->GetInternals(
@@ -56,40 +65,28 @@ void AdsInternalsHandler::ClearAdsData(brave_ads::ClearDataCallback callback) {
   ads_service_->ClearData(std::move(callback));
 }
 
-void AdsInternalsHandler::CreateAdsInternalsPageHandler(
-    mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage> page) {
-  page_ = mojo::Remote<bat_ads::mojom::AdsInternalsPage>(std::move(page));
-
-  UpdateBraveRewardsEnabled();
-}
-
 void AdsInternalsHandler::GetInternalsCallback(
     GetAdsInternalsCallback callback,
-    std::optional<base::Value::List> value) {
-  // `value` can be nullopt when:
-  // - bat ads associated remote is not bound
-  // - database query fails
-  if (!value) {
-    return std::move(callback).Run("");
-  }
-
+    std::optional<base::Value::Dict> internals) {
+  // `value` can be nullopt in the following cases:
+  // - `bat_ads::mojom::BatAds` associated remote is not bound.
+  // - A database query fails.
   std::string json;
-  CHECK(base::JSONWriter::Write(*value, &json));
+  CHECK(base::JSONWriter::Write(
+      std::move(internals).value_or(base::Value::Dict{}), &json));
   std::move(callback).Run(json);
 }
 
-void AdsInternalsHandler::OnPrefChanged(const std::string& path) {
-  if (path == brave_rewards::prefs::kEnabled) {
-    UpdateBraveRewardsEnabled();
-  }
+void AdsInternalsHandler::OnBraveRewardsEnabledPrefChanged(
+    const std::string& /*path*/) {
+  UpdateBraveRewardsEnabled();
 }
 
 void AdsInternalsHandler::UpdateBraveRewardsEnabled() {
-  if (!page_) {
+  if (!page_remote_) {
     return;
   }
 
-  const bool rewards_enabled =
-      prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
-  page_->OnBraveRewardsEnabledChanged(rewards_enabled);
+  const bool is_enabled = prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
+  page_remote_->UpdateBraveRewardsEnabled(is_enabled);
 }

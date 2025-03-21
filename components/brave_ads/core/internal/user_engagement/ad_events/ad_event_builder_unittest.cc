@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
+#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -30,13 +31,14 @@ TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
                    /*created_at=*/test::Now());
 
   // Assert
-  EXPECT_THAT(ad_event, ::testing::FieldsAre(
-                            mojom::AdType::kNotificationAd,
-                            mojom::ConfirmationType::kViewedImpression,
-                            test::kPlacementId, test::kCreativeInstanceId,
-                            test::kCreativeSetId, test::kCampaignId,
-                            test::kAdvertiserId, test::kSegment,
-                            /*created_at*/ test::Now()));
+  EXPECT_THAT(
+      ad_event,
+      ::testing::FieldsAre(
+          mojom::AdType::kNotificationAd,
+          mojom::ConfirmationType::kViewedImpression, test::kPlacementId,
+          test::kCreativeInstanceId, test::kCreativeSetId, test::kCampaignId,
+          test::kAdvertiserId, test::kSegment, GURL(test::kTargetUrl),
+          /*created_at*/ test::Now()));
 }
 
 TEST_F(BraveAdsAdEventBuilderTest, RebuildAdEvent) {
@@ -60,7 +62,7 @@ TEST_F(BraveAdsAdEventBuilderTest, RebuildAdEvent) {
           mojom::AdType::kNotificationAd, mojom::ConfirmationType::kConversion,
           test::kPlacementId, test::kCreativeInstanceId, test::kCreativeSetId,
           test::kCampaignId, test::kAdvertiserId, test::kSegment,
-          /*created_at*/ test::DistantFuture()));
+          GURL(test::kTargetUrl), /*created_at*/ test::DistantFuture()));
 }
 
 }  // namespace brave_ads

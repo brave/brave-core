@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
 #include "base/metrics/histogram_functions.h"
@@ -23,7 +22,6 @@
 #include "base/time/time.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
@@ -71,10 +69,8 @@ constexpr base::TimeDelta kCountExpiryTime = base::Days(30);
 
 constexpr base::TimeDelta kStartLandingCheckTime = base::Milliseconds(750);
 
-bool IsRewardsDisabled(PrefService* prefs) {
-  return !prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
-         !base::FeatureList::IsEnabled(
-             brave_ads::kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
+bool IsRewardsEnabled(PrefService* prefs) {
+  return prefs->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
 const char* GetCountDictPref(bool is_constellation) {
@@ -172,7 +168,7 @@ void NTPP3AHelperImpl::RecordView(const std::string& creative_instance_id,
     UpdateCampaignMetric(campaign_id, kCampaignViewedEventKey);
   }
 
-  if (!IsRewardsDisabled(prefs_)) {
+  if (IsRewardsEnabled(prefs_)) {
     return;
   }
   UpdateMetricCount(creative_instance_id, kCreativeViewEventKey);
@@ -181,7 +177,7 @@ void NTPP3AHelperImpl::RecordView(const std::string& creative_instance_id,
 void NTPP3AHelperImpl::RecordNewTabPageAdEvent(
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
     const std::string& creative_instance_id) {
-  if (!p3a_service_->IsP3AEnabled() || !IsRewardsDisabled(prefs_)) {
+  if (!p3a_service_->IsP3AEnabled() || IsRewardsEnabled(prefs_)) {
     return;
   }
 
@@ -269,7 +265,7 @@ void NTPP3AHelperImpl::OnP3ARotation(p3a::MetricLogType log_type,
   }
   // Always send the creative total if ads are disabled (as per spec),
   // or send the total if there were outstanding events sent
-  if (IsRewardsDisabled(prefs_) || total_active_creatives > 0) {
+  if (!IsRewardsEnabled(prefs_) || total_active_creatives > 0) {
     RecordCreativeMetric(kCreativeTotalCountHistogramName,
                          total_active_creatives, is_constellation);
   }

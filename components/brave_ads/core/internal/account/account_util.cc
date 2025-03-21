@@ -7,17 +7,26 @@
 
 #include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
-bool IsAllowedToDeposit(mojom::AdType mojom_ad_type,
+bool IsAllowedToDeposit(const std::string& creative_instance_id,
+                        mojom::AdType mojom_ad_type,
                         mojom::ConfirmationType mojom_confirmation_type) {
   if (UserHasJoinedBraveRewards()) {
     // Always allow deposits for Rewards users.
     return true;
+  }
+
+  if (ShouldCreativeInstanceIdFallbackToP3A(creative_instance_id)) {
+    // Never allow deposits for creative instance ids that should fallback to
+    // P3A. This is a temporary solution which will be removed once P3A
+    // metrics are deprecated.
+    return false;
   }
 
   switch (mojom_ad_type) {
@@ -28,10 +37,9 @@ bool IsAllowedToDeposit(mojom::AdType mojom_ad_type,
     }
 
     case mojom::AdType::kNewTabPageAd: {
-      // Only allow deposits for non-Rewards users if
-      // brave://flags/#brave-ads-should-always-trigger-new-tab-page-ad-events
-      // is enabled.
-      return ShouldAlwaysTriggerNewTabPageAdEvents();
+      // Only allow deposits for non-Rewards users who have opted into new tab
+      // page ads.
+      return UserHasOptedInToNewTabPageAds();
     }
 
     case mojom::AdType::kNotificationAd: {

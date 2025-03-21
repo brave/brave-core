@@ -47,9 +47,10 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
   void WallpaperLogoClicked(
       JNIEnv* env,
       const base::android::JavaParamRef<jobject>& obj,
+      const base::android::JavaParamRef<jstring>& jwallpaperId,
       const base::android::JavaParamRef<jstring>& jcreativeInstanceId,
       const base::android::JavaParamRef<jstring>& jdestinationUrl,
-      const base::android::JavaParamRef<jstring>& jwallpaperId);
+      bool shouldMetricsFallbackToP3a);
   base::android::ScopedJavaLocalRef<jobject> GetCurrentWallpaper(
       JNIEnv* env,
       const base::android::JavaParamRef<jobject>& obj);

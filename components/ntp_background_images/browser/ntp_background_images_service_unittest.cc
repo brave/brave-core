@@ -520,16 +520,18 @@ TEST_F(NTPBackgroundImagesServiceTest, DISABLED_InternalDataTest) {
   EXPECT_THAT(
       observer_.sponsored_images_data->campaigns[0].creatives[0].logo.alt_text,
       ::testing::Not(::testing::IsEmpty()));
-  EXPECT_TRUE(images_data->GetBackgroundAt(0, 0)->FindBool(kIsSponsoredKey));
-  EXPECT_FALSE(images_data->GetBackgroundAt(0, 0)->FindBool(kIsBackgroundKey));
+  EXPECT_TRUE(
+      images_data->MaybeGetBackgroundAt(0, 0)->FindBool(kIsSponsoredKey));
+  EXPECT_FALSE(
+      images_data->MaybeGetBackgroundAt(0, 0)->FindBool(kIsBackgroundKey));
 
   // Default logo is used for wallpaper at 0.
   EXPECT_EQ("logo.png",
-            *images_data->GetBackgroundAt(0, 0)->FindStringByDottedPath(
+            *images_data->MaybeGetBackgroundAt(0, 0)->FindStringByDottedPath(
                 kLogoImagePath));
   // Per wallpaper logo is used for wallpaper at 1.
   EXPECT_EQ("logo-2.png",
-            *images_data->GetBackgroundAt(0, 1)->FindStringByDottedPath(
+            *images_data->MaybeGetBackgroundAt(0, 1)->FindStringByDottedPath(
                 kLogoImagePath));
 
   // Test BI data loading
@@ -889,7 +891,8 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicSuperReferralTest) {
   EXPECT_THAT(images_data->campaigns[0].creatives, ::testing::SizeIs(1));
   EXPECT_THAT(images_data->top_sites, ::testing::SizeIs(3));
   EXPECT_TRUE(images_data->IsSuperReferral());
-  EXPECT_FALSE(*images_data->GetBackgroundAt(0, 0)->FindBool(kIsSponsoredKey));
+  EXPECT_FALSE(
+      *images_data->MaybeGetBackgroundAt(0, 0)->FindBool(kIsSponsoredKey));
   EXPECT_TRUE(observer_.on_sponsored_images_updated);
 }
 
