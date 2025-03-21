@@ -10,6 +10,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
@@ -18,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table_util.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads::database {
 
@@ -30,12 +32,12 @@ void RunOnStartup() {
   PurgeAllOrphanedAdEvents();
 }
 
-// We do not purge ad events for notification ads and search result ads because
-// users can only opt out of these ads if they have joined Brave Rewards.
+// Notification and search result ad events are not purged since only Brave
+// Rewards users can opt out of them.
 
 void MaybePurgeNewTabPageAdEvents() {
   if (UserHasJoinedBraveRewards()) {
-    // We should not purge ad events if the user has joined Brave Rewards.
+    // Do not purge ad events if the user has joined Brave Rewards.
     return;
   }
 
@@ -46,7 +48,7 @@ void MaybePurgeNewTabPageAdEvents() {
 
 void MaybePurgeBraveNewsAdEvents() {
   if (UserHasJoinedBraveRewards()) {
-    // We should not purge ad events if the user has joined Brave Rewards.
+    // Do not purge ad events if the user has joined Brave Rewards.
     return;
   }
 
@@ -59,10 +61,12 @@ void MaybePurgeBraveNewsAdEvents() {
 }  // namespace
 
 Maintenance::Maintenance() {
+  GetAdsClient().AddObserver(this);
   DatabaseManager::GetInstance().AddObserver(this);
 }
 
 Maintenance::~Maintenance() {
+  GetAdsClient().RemoveObserver(this);
   DatabaseManager::GetInstance().RemoveObserver(this);
 }
 
