@@ -552,7 +552,7 @@
     <message name="IDS_AUTOFILL_SIGNIN_PROMO_TITLE_PASSWORD" desc="This is the body text of a confirmation message and means that the password was only saved locally to the user's device (not in their Brave sync chain). It appears after a password save if the user is not signed in to Brave or their sign-in credentials have expired. If the user wants to save this data to their Brave sync chain, they can click the button at the bottom of this message. The tone should be motivating.">
     Password saved to this device
     </message>
-    <message name="IDS_AUTOFILL_VERIFY_PROMO_SUBTITLE_PASSWORD" desc="This is the body text of a confirmation message and means that the password is in an account-pending storage. In other words, it's waiting to be uploaded to the user's Brave sync chain. It appears when the user was signed in to Brave but their sign-in credentials have expired; now, they need to sign back in to Brave. The string is after the 'Password saved' string. If the user wants to save this data to their Brave sync chain, they can click the 'Verify it's you' button at the bottom of this message. The tone should be motivating.">
+    <message name="IDS_AUTOFILL_VERIFY_PROMO_SUBTITLE_PASSWORD" desc="This is the body text of a confirmation message and means that the password was only saved locally to the user's device (not in their Brave sync chain). It appears when the user was signed in to Brave but their sign-in credentials have expired; now, they need to sign back in to Brave. The string is after the 'Password saved to this device' string. If the user wants to save this data to their Brave sync chain, they can click the 'Verify it's you' button at the bottom of this message. The tone should be motivating.">
     To get this password on all your devices, verify it's you
     </message>
     <message name="IDS_AUTOFILL_POPUP_SEARCH_BAR_CLEAR_SEARCH_BUTTON_A11Y_NAME" desc="The a11y name for the clear button accompanying the autofill popup search bar input.">
@@ -568,7 +568,7 @@
     Address saved to this device
     </message>
     <message name="IDS_AUTOFILL_VERIFY_PROMO_SUBTITLE_ADDRESS" desc="This is the body text of a confirmation message and means that the address was only saved locally to the user's device (not in their Brave sync chain). It appears when the user was signed in to Brave but their sign-in credentials have expired; now, they need to sign back in to Brave. The string is after the 'Address saved to this device' string. If the user wants to save this data to their Brave sync chain, they can click the 'Verify it's you' button at the bottom of this message. The tone should be motivating.">
-    To save and use this address on all your devices, verify it's you
+    To get this address on all your devices, verify it's you
     </message>
   </if>
 
