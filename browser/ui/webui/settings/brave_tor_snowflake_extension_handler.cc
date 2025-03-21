@@ -165,7 +165,7 @@ void BraveTorSnowflakeExtensionHandler::EnableSnowflakeExtension(
   if (enable) {
     if (!installed) {
       installer_ = base::MakeRefCounted<SnowflakeWebstoreInstaller>(
-          kSnowflakeExtensionId, profile, /*parent_window=*/nullptr,
+          kSnowflakeExtensionId, profile, /*parent_window=*/gfx::NativeWindow(),
           base::BindOnce(
               &BraveTorSnowflakeExtensionHandler::OnSnowflakeExtensionInstalled,
               weak_factory_.GetWeakPtr(), args[0].Clone()));
