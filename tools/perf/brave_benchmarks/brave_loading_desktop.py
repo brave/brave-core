@@ -82,10 +82,10 @@ class LoadingDesktopBraveStartup(perf_benchmark.PerfBenchmark):
     return BraveLoadingDesktopStorySet(startup_delay=False)
 
   def CreateCoreTimelineBasedMeasurementOptions(self):
-    metrics = ['braveStartupUmaMetric']
+    metrics = []
     if sys.platform != 'darwin':
       # Disabled on MacOS: https://github.com/brave/brave-browser/issues/44800
-      metrics.append('braveGeneralUmaMetric')
+      metrics.extend(['braveGeneralUmaMetric', 'braveStartupUmaMetric'])
     return CreateCoreTBMOptions(metrics)
 
   @classmethod
