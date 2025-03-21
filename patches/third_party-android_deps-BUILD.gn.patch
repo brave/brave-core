@@ -1,8 +1,8 @@
 diff --git a/third_party/android_deps/BUILD.gn b/third_party/android_deps/BUILD.gn
-index 7bf33c6d4b7e0facafd0ca4a4eed81532efdbbbc..7da1fecf0d63af328cc35b28f0e329628f6655fd 100644
+index fb578b1ec777f001ffa36985f9b00ad82797c977..f1dc082ae23220c1d9c46f16023f9cc5ed07ce19 100644
 --- a/third_party/android_deps/BUILD.gn
 +++ b/third_party/android_deps/BUILD.gn
-@@ -1258,6 +1258,7 @@ if (!limit_android_deps) {
+@@ -1231,6 +1231,7 @@ if (!limit_android_deps) {
          "$google_play_services_package:google_firebase_firebase_encoders_proto_java",
          "//third_party/androidx:androidx_annotation_annotation_java",
        ]
