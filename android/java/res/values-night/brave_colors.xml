@@ -27,8 +27,6 @@
     <color name="onboarding_progress_mid_color">#FF1893</color>
     <color name="onboarding_progress_end_color">#A78AFF</color>
 
-    <color name="onboarding_radio_button_active">#495057</color>
-
     <color name="onboarding_progressbar_secondary_bg">#212529</color>
 
     <color name="onboarding_card_bg_color">#1E2029</color>
