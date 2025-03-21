@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/wayback_machine_bubble_view.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -54,7 +55,7 @@ void WaybackMachineBubbleView::Show(Browser* browser, views::View* anchor) {
   }
 
   // Don't need to launch again if existed.
-  if (tab_helper->active_window()) {
+  if (tab_helper->active_window().has_value()) {
     return;
   }
 
@@ -126,7 +127,7 @@ WaybackMachineBubbleView::WaybackMachineBubbleView(
 
 WaybackMachineBubbleView::~WaybackMachineBubbleView() {
   if (auto* tab_helper = GetTabHelper(web_contents_.get())) {
-    tab_helper->set_active_window(nullptr);
+    tab_helper->set_active_window(std::nullopt);
   }
 }
 

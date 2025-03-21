@@ -69,7 +69,7 @@ class BraveBookmarkContextMenuControllerTest : public testing::Test {
 TEST_F(BraveBookmarkContextMenuControllerTest,
        DontShowAppsShortcutContextMenuInBookmarksBar) {
   BookmarkContextMenuController controller(
-      nullptr, nullptr, nullptr, profile_.get(),
+      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
       BookmarkLaunchLocation::kSidePanelContextMenu,
       {model_->bookmark_bar_node()});
 
@@ -107,7 +107,7 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
 
 TEST_F(BraveBookmarkContextMenuControllerTest, AddBraveBookmarksSubmenu) {
   BraveBookmarkContextMenuController controller(
-      nullptr, nullptr, nullptr, profile_.get(),
+      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
       BookmarkLaunchLocation::kSidePanelFolder, {model_->bookmark_bar_node()});
   EXPECT_FALSE(controller.menu_model()
                    ->GetIndexOfCommandId(IDC_BOOKMARK_BAR_ALWAYS_SHOW)
