@@ -22,7 +22,6 @@
 ```
 
 ### `brockit.py lift`
-
 This is *🚀Brockit!* (Brave Rocket? Brave Rock it? Broke it?): a tool to help
 upgrade Brave to a newer Chromium base version. The main goal is to produce
 use it to commit the following changes:
@@ -33,12 +32,22 @@ use it to commit the following changes:
  * Updated strings for Chromium [to].
 
 To start it off, provide a `--to` target version, and a base branch to be used,
-either by providing a `--from_ref` argument, or by having an upstream branch to
+either by providing a `--from-ref` argument, or by having an upstream branch to
 to your current branch.
 
 ```sh
-tools/cr/brockit.py lift --to=135.0.7037.1 --from_ref=origin/master
+tools/cr/brockit.py lift --to=135.0.7037.1 --from-ref=origin/master
 ```
+
+When using `--from-ref`, any valid git reference can be used, such as a branch,
+or even hashes. Additionally there are special tags that can be passed to this
+flag.
+
+ * `--from-ref=@upstream`: This will use the upstream branch as the base for
+    the lift. This requires the user to set an upstream branch.
+ * `--from-ref=@previous`: This tag means the previous version since the last
+    upgrade in the current branch. This is useful when telling brockit that you
+    are doing a minor version bump.
 
 Using upstream:
 
@@ -46,6 +55,13 @@ Using upstream:
 git branch --set-upstream-to=origin/master
 tools/cr/brockit.py lift --to=135.0.7037.1
 ```
+
+The `--to` flag also provides special flags:
+ * `--to=@latest-canary`: This will use the latest canary version as per
+    Chromium Dash. For this particular flag, both the *Canary*, and the
+    *Canary (DCHECK)* channels will be queried for the latest.
+ * `--to=@latest-dev`, and `--to=@latest-beta`: Same as the falg above, but
+    to these respective channels.
 
 The following steps will take place:
 
@@ -74,11 +90,10 @@ The `--restart` flag can be used to start the process from scratch, discarding
 everything committed in the last run.
 
 ```sh
-tools/cr/brockit.py lift --to=135.0.7037.1 --from_ref=origin/master --restart
+tools/cr/brockit.py lift --to=135.0.7037.1 --from-ref=origin/master --restart
 ```
 
 ### `brockit.py regen`
-
 Additionally, *🚀Brockit!* can be run with `regen`. This is useful to generate
 the "Update patches" and "Updated strings" commits on their own when rebasing
 branches, regenerating these files as desired.
@@ -88,7 +103,6 @@ tools/cr/brockit.py update-version-issue
 ````
 
 ### `brockit.py update-version-issue`
-
 The `lift` command supports the use of `--with-github`, which either creates a
 new GitHub issue or updates an existing one with the details of the run.
 However it is also possible to run this task on standalone as well.
@@ -119,6 +133,7 @@ import platform
 import random
 import threading
 import re
+import requests
 from rich.console import Console
 from rich.logging import RichHandler
 from rich.markdown import Markdown
@@ -145,6 +160,9 @@ CHROMIUM_SRC_PATH = BRAVE_CORE_PATH.parent
 
 # Link with the log of changes between two versions.
 GOOGLESOURCE_LINK = 'https://chromium.googlesource.com/chromium/src/+log/{from_version}..{to_version}?pretty=fuller&n=10000'
+
+# Google dash link used to check the latest version for a given channel
+CHROMIUMDASH_LATEST_RELEASE = 'https://chromiumdash.appspot.com/fetch_releases?channel={channel}&platform=Windows&num=1'
 
 # A decorator to be shown for messages that the user should address before
 # continuing.
@@ -934,7 +952,6 @@ class Version:
         starting_version = Version.from_git('HEAD')
         base_version = starting_version
         last_changed = Repository.brave().last_changed(PACKAGE_FILE)
-        last_changed = Repository.brave().last_changed(PACKAGE_FILE)
         while True:
             base_version = Version.from_git(f'{last_changed}~1')
             if base_version != starting_version:
@@ -1242,7 +1259,8 @@ class Task:
             execute method.
 
         Returns:
-            The result `execute()`. True if sucessful, False otherwise.
+            Return 1 if the task failed, 0 if the task succeeded. This is used
+            as the process' exit code.
         """
         console.log('[italic]🚀 Brockit!')
         with console.status(self.status_message()) as status:
@@ -1252,7 +1270,7 @@ class Task:
             if result:
                 console.log('[bold]💥 Done!')
 
-        return result
+        return result == False
 
     def status_message(self) -> str:
         """Returns a status message for the task.
@@ -1802,9 +1820,9 @@ class Upgrade(Versioned):
             result = self._start(launch_vscode=launch_vscode)
 
         if result is True and with_github is True:
-            return GitHubIssue(base_version=self.base_version,
-                               target_version=self.target_version
-                               ).create_or_updade_version_issue()
+            GitHubIssue(base_version=self.base_version,
+                        target_version=self.target_version
+                        ).create_or_updade_version_issue()
 
         return result
 
@@ -1836,6 +1854,27 @@ def _find_from_ref_version(from_ref) -> Version:
     return Version.from_git(from_ref)
 
 
+def fetch_chromium_dash_version(channel: str) -> Version:
+    """Fetches the latest version from the Chromium Dash.
+    """
+    response = requests.get(
+        CHROMIUMDASH_LATEST_RELEASE.format(channel=channel), timeout=10)
+    return Version(response.json()[0].get('version'))
+
+
+def fetch_lastest_canary_version(channel) -> Version:
+    """Fetches the latest canary version from the Chromium Dash.
+    """
+    if channel == 'canary':
+        # The canary branch has two versions, the regular and the ASAN version,
+        # and we want the highest of the two.
+        canary_version = fetch_chromium_dash_version('canary')
+        canary_asan_version = fetch_chromium_dash_version('canary_asan')
+        return max(canary_version, canary_asan_version)
+
+    return fetch_chromium_dash_version(channel)
+
+
 def show(args: argparse.Namespace):
     """Prints various insights about brave-core.
 
@@ -1844,14 +1883,22 @@ def show(args: argparse.Namespace):
     """
     if args.package_version:
         console.print(f'upstream version: {Version.from_git("HEAD")}')
+
     if args.from_ref_value is not None:
         from_ref_value = _find_from_ref_version(args.from_ref_value)
         if from_ref_value is not None:
             console.print(f'base version: {from_ref_value}')
+
     if args.log_link:
         console.print('googlesource link: %s' %
                       Version.from_git('HEAD').get_googlesource_diff_link(
                           Version.from_previous()))
+
+    if args.latest_chromiumdash_version is not None:
+        console.print(
+            'latest canary version: %s' %
+            fetch_lastest_canary_version(args.latest_chromiumdash_version))
+
     return 0
 
 def main():
@@ -1887,7 +1934,8 @@ def main():
     lift_parser = subparsers.add_parser(
         'lift',
         parents=[global_parser, base_version_parser],
-        help='Upgrade the chromium base version.')
+        help='Upgrade the chromium base version. Special tags: '
+        '@latest-[beta|dev|canary] pulls the version from chromium dash.')
     lift_parser.add_argument('--to',
                              required=True,
                              help='The branch used as the base version.')
@@ -1941,6 +1989,10 @@ def main():
     show_parser.add_argument('--log-link',
                              action='store_true',
                              help='Prints the git log links to googlesource.')
+    show_parser.add_argument(
+        '--latest-chromiumdash-version',
+        default=None,
+        help='Prints the latest version available for the channel provided.')
 
     subparsers.add_parser('reference',
                           help='Detailed documentation for this tool.')
@@ -1963,7 +2015,7 @@ def main():
                 parser.error(
                     'Switch --from-ref not supported with --continue.')
 
-    def get_resolved_from_ref():
+    def resolve_from_ref_flag():
         return _find_from_ref_version(
             args.from_ref if args.from_ref is not None else '@upstream')
 
@@ -1971,23 +2023,36 @@ def main():
         parser.error('--no-conflict-change can only be used with --continue')
     if args.command == 'lift' and args.restart and args.is_continuation:
         parser.error('--restart does not support --continue')
+    if args.command == 'lift' and args.to.startswith('@latest-'):
+        [_, channel] = args.to.split('-')
+        if channel not in ['canary', 'beta', 'dev']:
+            parser.error('Invalid channel for --to.')
+
+    def resolve_to_flag() -> Version:
+        if args.to.startswith('@latest-'):
+            [_, channel] = args.to.split('-')
+            if channel not in ['canary', 'beta', 'dev']:
+                parser.error('Invalid channel for --to.')
+            return fetch_lastest_canary_version(channel)
+        return Version(args.to)
 
     if args.command == 'lift':
+        target = resolve_to_flag()
         if args.restart:
-            if not ReUpgrade(Version(args.to)).run():
+            if not ReUpgrade(target).run():
                 return 1
 
         if not args.is_continuation:
-            upgrade = Upgrade(Version(args.to), args.is_continuation,
-                              get_resolved_from_ref())
+            upgrade = Upgrade(target, args.is_continuation,
+                              resolve_from_ref_flag())
         else:
-            upgrade = Upgrade(Version(args.to), args.is_continuation)
+            upgrade = Upgrade(resolve_to_flag(), args.is_continuation)
 
         return upgrade.run(args.no_conflict, args.vscode, args.with_github)
     if args.command == 'regen':
-        return Regen(get_resolved_from_ref()).run()
+        return Regen(resolve_from_ref_flag()).run()
     if args.command == 'update-version-issue':
-        return GitHubIssue(get_resolved_from_ref()).run()
+        return GitHubIssue(resolve_from_ref_flag()).run()
     if args.command == 'reference':
         return console.print(Markdown(__doc__))
     if args.command == 'show':
