@@ -348,6 +348,7 @@ export const {
   useStartShieldSyncMutation,
   useStopShieldSyncMutation,
   useClearChainTipStatusCacheMutation,
+  useClearZCashBalanceCacheMutation,
   useTransactionStatusChangedMutation,
   useUnapprovedTxUpdatedMutation,
   useUnlockWalletMutation,
