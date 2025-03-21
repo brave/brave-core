@@ -56,7 +56,8 @@ export const zcashEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['ZCashAccountInfo', 'IsShieldingAvailable']
+      invalidatesTags: ['ZCashAccountInfo', 'IsShieldingAvailable',
+                        'ZcashChainTipStatus']
     }),
     getZCashAccountInfo: query<
       BraveWallet.ZCashAccountInfo | null,
@@ -201,6 +202,14 @@ export const zcashEndpoints = ({
           }
       },
       invalidatesTags: ['ZcashChainTipStatus']
+    }),
+    clearZCashBalanceCache: mutation<true, void>({
+      queryFn: async (_args, { endpoint }, _extraOptions, baseQuery) => {
+          return {
+            data: true
+          }
+      },
+      invalidatesTags: ['ZCashBalance']
     }),
     stopShieldSync: mutation<true, BraveWallet.AccountId>({
       queryFn: async (args, { endpoint }, _extraOptions, baseQuery) => {
