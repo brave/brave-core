@@ -23,6 +23,7 @@
 #include "brave/browser/search_engines/private_window_search_engine_provider_service_android.h"
 #else
 #include "brave/browser/search_engines/normal_window_search_engine_provider_service.h"
+#include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
 #endif
@@ -99,6 +100,7 @@ void SearchEngineProviderServiceFactory::RegisterProfilePrefs(
 #if !BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(prefs::kDefaultSearchProviderByExtension,
                                 false);
+  registry->RegisterBooleanPref(kMigratedSearchDefaultInJP, false);
   registry->RegisterStringPref(prefs::kSyncedDefaultPrivateSearchProviderGUID,
                                std::string(),
                                user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
