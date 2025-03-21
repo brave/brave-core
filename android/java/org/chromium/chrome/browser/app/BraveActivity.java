@@ -78,6 +78,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -228,6 +229,15 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardUtils;
 import org.chromium.ui.widget.Toast;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.billing.PurchaseModel;
+import org.chromium.chrome.browser.InternetConnection;
+import org.chromium.chrome.browser.util.LiveDataUtil;
+import org.chromium.chrome.browser.vpn.timer.TimerDialogFragment;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -335,9 +345,6 @@ public abstract class BraveActivity extends ChromeActivity
     private boolean mSpoofCustomTab;
 
     private View mQuickSearchEnginesView;
-
-    private static final String ICON_HOLO = "org.chromium.chrome.browser.HoloAlias";
-    private static final String LAUNCHER_ACTIVITY = "com.google.android.apps.chrome.Main";
 
     /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
@@ -467,7 +474,7 @@ public abstract class BraveActivity extends ChromeActivity
             //         }
             //     }
             // }
-            switchIcon(ICON_HOLO);
+            CustomAppIconsManager.switchIcon(BraveActivity.this, CustomAppIconsEnum.ICON_AQUA);
         } else if (id == R.id.request_vpn_location_id || id == R.id.request_vpn_location_icon_id) {
             BraveVpnUtils.openVpnServerSelectionActivity(BraveActivity.this);
         } else if (id == R.id.brave_speedreader_id) {
@@ -478,26 +485,6 @@ public abstract class BraveActivity extends ChromeActivity
             return false;
         }
         return true;
-    }
-
-    private void switchIcon(String enableAlias) {
-        PackageManager pm = getPackageManager();
-
-        pm.setComponentEnabledSetting(
-                new ComponentName(getPackageName(), LAUNCHER_ACTIVITY),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-
-        pm.setComponentEnabledSetting(
-                new ComponentName(getPackageName(), ICON_HOLO),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-
-        // Enable the selected one
-        pm.setComponentEnabledSetting(
-                new ComponentName(getPackageName(), enableAlias),
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP);
     }
 
     @Override
