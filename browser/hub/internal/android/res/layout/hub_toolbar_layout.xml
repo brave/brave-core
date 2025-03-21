@@ -56,7 +56,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
         android:layout_gravity="center_horizontal|bottom"
         android:visibility="gone"
         app:tabIndicator="@drawable/m3_tabs_line_indicator"
-        app:tabIndicatorFullWidth="true"/>
+        app:tabIndicatorFullWidth="true" />
 
       <LinearLayout
         android:id="@+id/menu_button_container"
@@ -81,8 +81,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
     </FrameLayout>
 
     <!-- Hub search is selectively hidden based on the feature flag. -->
-    <view
-      class="org.chromium.chrome.browser.ntp.search.SearchBoxContainerView"
+    <LinearLayout
       android:id="@+id/search_box"
       android:visibility="gone"
       android:layout_width="match_parent"
@@ -108,6 +107,6 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
         android:inputType="text"
         android:singleLine="true"
         android:hint="@string/hub_search_empty_hint" />
-    </view>
+    </LinearLayout>
   </org.chromium.chrome.browser.hub.BraveHubToolbarView>
 </FrameLayout>
