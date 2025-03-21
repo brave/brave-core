@@ -80,11 +80,6 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
-    public boolean isSigninDisabledByPolicy() {
-        return false;
-    }
-
-    @Override
     public IdentityManager getIdentityManager() {
         return mIdentityManager;
     }
