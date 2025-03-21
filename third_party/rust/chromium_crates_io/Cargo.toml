@@ -70,15 +70,15 @@ path = "../../../components/filecoin/rs"
 package = "filecoin-cxx"
 
 [patch.crates-io.brave-news-cxx_v1]
-path = "../../../components/brave_news/rust"
+path = "../../../components/brave_news/browser"
 package = "brave-news-cxx"
 
 [patch.crates-io.brave_wallet_v1]
-path = "../../../components/brave_wallet/rust"
+path = "../../../components/brave_wallet/browser"
 package = "brave_wallet"
 
 [patch.crates-io.adblock-cxx_v1]
-path = "../../../components/brave_shields/adblock/rs"
+path = "../../../components/brave_shields/core/browser/adblock/rs"
 package = "adblock-cxx"
 
 [patch.crates-io.constellation-cxx_v0_1]
