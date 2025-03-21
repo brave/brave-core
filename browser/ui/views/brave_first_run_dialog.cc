@@ -89,7 +89,9 @@ void ShowFirstRunDialog() {
 void BraveFirstRunDialog::Show(base::RepeatingClosure quit_runloop) {
   BraveFirstRunDialog* dialog =
       new BraveFirstRunDialog(std::move(quit_runloop));
-  views::DialogDelegate::CreateDialogWidget(dialog, nullptr, nullptr)->Show();
+  views::DialogDelegate::CreateDialogWidget(dialog, gfx::NativeWindow(),
+                                            gfx::NativeView())
+      ->Show();
 }
 
 BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
