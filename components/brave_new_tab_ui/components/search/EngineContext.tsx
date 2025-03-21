@@ -5,7 +5,10 @@
 import { SearchEngineInfo } from '../../api/background'
 import { useNewTabPref } from '../../hooks/usePref'
 import * as React from 'react';
-import { ENABLED_SEARCH_ENGINES_KEY, LAST_SEARCH_ENGINE_KEY, braveSearchHost } from './config';
+import {
+  ENABLED_SEARCH_ENGINES_KEY,
+  LAST_SEARCH_ENGINE_KEY,
+  defaultSearchHost } from './config';
 
 interface Engine {
   setLastSearchEngine: (engine: SearchEngineInfo) => void
@@ -16,7 +19,7 @@ interface Engine {
 
 const EngineContext = React.createContext<Engine>({
   setLastSearchEngine: () => { },
-  lastSearchEngine: braveSearchHost,
+  lastSearchEngine: defaultSearchHost,
   engineConfig: {},
   setEngineConfig: () => { },
 })
@@ -28,7 +31,7 @@ const searchEngineConfig = () => {
   }
   return {
     // Default to enabling Brave Search
-    [braveSearchHost]: true
+    [defaultSearchHost]: true
   };
 }
 
@@ -56,7 +59,7 @@ export function EngineContextProvider(props: React.PropsWithChildren<{}>) {
     // Note: The key for `Google` is the empty string which is falsey so we need
     // to check for undefined here.
     if (last === undefined || !config[last]) {
-      return Object.keys(config).find(key => config[key]) ?? braveSearchHost
+      return Object.keys(config).find(key => config[key]) ?? defaultSearchHost
     }
 
     return last
