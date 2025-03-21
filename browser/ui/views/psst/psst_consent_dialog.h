@@ -40,9 +40,9 @@ class PsstConsentDialog : public views::DialogDelegateView {
 
   void SetProgressValue(const double value);
 
-  void SetRequestDone(const std::string& url);
+  void SetRequestDone(const std::string& url, const bool is_error);
 
-  void SetRequestError(const std::string& url, const std::string& error);
+  //void SetRequestError(const std::string& url, const std::string& error);
 
 //  void SetStatusView();
   void SetCompletedView(const std::vector<std::string>& applied_checks, const std::vector<std::string>& errors);

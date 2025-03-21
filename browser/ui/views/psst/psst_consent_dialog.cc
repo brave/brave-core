@@ -34,7 +34,8 @@
 namespace {
 constexpr int kHeaderFontSize = 18;
 constexpr int kListTitleFontSize = 15;
-constexpr std::u16string kDoneMessage = u"Done";
+// constexpr std::u16string kDoneMessage = u"Done";
+// constexpr std::u16string kFailedMessage = u"Failed";
 
 void OnOkCallBackCompleteDlgWithClose(base::WeakPtr<PsstConsentDialog> dialog) {
   if (dialog) {
@@ -333,7 +334,7 @@ void PsstConsentDialog::SetProgressValue(const double value) {
   progress_bar_->SetValue(std::move(value));
 }
 
-void PsstConsentDialog::SetRequestDone(const std::string& url) {
+void PsstConsentDialog::SetRequestDone(const std::string& url, const bool is_error) {
   if (!task_checked_list_.contains(url)) {
     return;
   }
@@ -348,30 +349,30 @@ void PsstConsentDialog::SetRequestDone(const std::string& url) {
   }
   LOG(INFO) << "[PSST] SetRequestDone url:" << url;
   if (auto* status_label = status_checked_line_to_mark->status_label.get()) {
-    status_label->SetText(kDoneMessage);
+    status_label->SetText(is_error ? l10n_util::GetStringUTF16(IDS_PSST_CONSENT_DIALOG_TASK_STATUS_FAILED) : l10n_util::GetStringUTF16(IDS_PSST_CONSENT_DIALOG_TASK_STATUS_DONE));
     status_label->SetEnabledColor(
-        status_label->GetColorProvider()->GetColor(ui::kColorLabelForeground));
+      is_error ? status_label->GetColorProvider()->GetColor(ui::kColorSysError) : status_label->GetColorProvider()->GetColor(ui::kColorLabelForeground));
   }
 }
 
-void PsstConsentDialog::SetRequestError(const std::string& url,
-                                        const std::string& error) {
-  if (!task_checked_list_.contains(url)) {
-    return;
-  }
+// void PsstConsentDialog::SetRequestError(const std::string& url,
+//                                         const std::string& error) {
+//   if (!task_checked_list_.contains(url)) {
+//     return;
+//   }
 
-  const auto status_checked_line_to_mark = task_checked_list_[url].get();
-  if (!status_checked_line_to_mark) {
-    return;
-  }
+//   const auto status_checked_line_to_mark = task_checked_list_[url].get();
+//   if (!status_checked_line_to_mark) {
+//     return;
+//   }
 
-  LOG(INFO) << "[PSST] SetRequestError url:" << url;
-  if (auto* status_label = status_checked_line_to_mark->status_label.get()) {
-    status_label->SetText(base::ASCIIToUTF16(error));
-    status_label->SetEnabledColor(
-        status_label->GetColorProvider()->GetColor(ui::kColorSysError));
-  }
-}
+//   LOG(INFO) << "[PSST] SetRequestError url:" << url;
+//   if (auto* status_label = status_checked_line_to_mark->status_label.get()) {
+//     status_label->SetText(base::ASCIIToUTF16(error));
+//     status_label->SetEnabledColor(
+//         status_label->GetColorProvider()->GetColor(ui::kColorSysError));
+//   }
+// }
 
 void PsstConsentDialog::OnConsentClicked() {
   if (!consent_callback_) {

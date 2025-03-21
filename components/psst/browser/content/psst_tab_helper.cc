@@ -17,6 +17,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
@@ -65,8 +66,8 @@ void PrepareParametersForPolicyExecution(std::optional<base::Value>& params, con
     return;
   }
 
-  if (auto* requests = params->GetDict().FindList("requests")) {
-    requests->EraseIf([&](const base::Value& v) {
+  if (auto* tasks = params->GetDict().FindList("tasks")) {
+    tasks->EraseIf([&](const base::Value& v) {
       const auto& item_dict = v.GetDict();
       const auto* url = item_dict.FindString("url");
       return url && std::ranges::any_of(disabled_checks,
@@ -131,9 +132,22 @@ LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult No psst";
     delegate_->SetProgressValue(web_contents(), *percent);
   }
 
-  if(const auto* current_item = psst->FindDict("applyingTask")) {
-    if(const auto* url = current_item->FindString("url"))
-      delegate_->SetRequestDone(web_contents(), *url);
+  std::vector<std::string> applied_list;
+  if (const auto* applied = psst->FindList("applied");
+  applied && !applied->empty()) {
+    for (const auto& val : *applied) {
+      if(!val.is_dict()){
+        continue;
+      }
+      const auto* desc = val.GetDict().FindString("description");
+      const auto* url = val.GetDict().FindString("url");
+      if(!desc || !url) {
+        continue;
+      }
+
+      applied_list.push_back(*desc);
+      delegate_->SetRequestDone(web_contents(), *url, false);
+    }
   }
 
   std::vector<std::string> errors_list;
@@ -142,30 +156,27 @@ LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult No psst";
     LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult errors:"
               << errors->DebugString();
     for (const auto [key, val] : *errors) {
-      if(!val.is_string()){
+      if(!val.is_dict()){
         continue;
       }
-      delegate_->SetRequestError(web_contents(), key, val.GetString());
-      errors_list.push_back(val.GetString());
+
+      const auto* err = val.GetDict().FindString("error");
+      const auto* desc = val.GetDict().FindString("description");
+      if(!err || !desc) {
+        continue;
+      }
+      const auto error_label_text = base::StrCat({*desc, " (", *err, ")"});
+      delegate_->SetRequestDone(web_contents(), key, true);
+      errors_list.push_back(error_label_text);
     }
   }
-
   LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult #500";
   if (const auto result = value.GetDict().FindBool("result"); !result || !result.value()) {
 LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult result false";
     return;  
   }
 
-  std::vector<std::string> applied_list;
-  if (const auto* applied = psst->FindList("applied");
-  applied && !applied->empty()) {
-    for (const auto& val : *applied) {
-      if(!val.is_string()){
-        continue;
-      }
-      applied_list.push_back(val.GetString());
-    }
-  }
+
 
 LOG(INFO) << "[PSST] PsstTabHelper::OnPolicyScriptResult Finished applied_list.size:" << applied_list.size() << " errors_list.size:" << errors_list.size();
 delegate_->SetCompletedView(web_contents(), applied_list, errors_list);
@@ -210,15 +221,15 @@ void PsstTabHelper::OnUserScriptResult(
     return;
   }
 
-  const auto* requests = params->FindList("requests");
-  if (!requests) {
-    LOG(INFO) << "[PSST] PsstTabHelper::OnUserScriptResult requests: N/A";
+  const auto* tasks = params->FindList("tasks");
+  if (!tasks) {
+    LOG(INFO) << "[PSST] PsstTabHelper::OnUserScriptResult tasks: N/A";
     return;
   }
 
   LOG(INFO) << "[PSST] PsstTabHelper::OnUserScriptResult show_prompt:" << show_prompt << " prompt_for_new_version:" << prompt_for_new_version;
   delegate_->ShowPsstConsentDialog(
-      web_contents(), prompt_for_new_version, requests->Clone(),
+      web_contents(), prompt_for_new_version, tasks->Clone(),
       base::BindOnce(&PsstTabHelper::OnUserDialogAction,
         weak_factory_.GetWeakPtr(), true, *user_id, rule,
         std::move(value), render_frame_host_id, kAllow),

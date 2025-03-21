@@ -20,9 +20,7 @@
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
-#include "components/sessions/core/session_id.h"
 #include "content/public/browser/devtools_agent_host_client.h"
-#include "content/public/browser/media_player_id.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -37,9 +35,9 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
       public content::WebContentsUserData<PsstTabHelper> {
  public:
   class Delegate {
-
    public:
-   using ConsentCallback = base::OnceCallback<void(const std::vector<std::string>& disabled_checks)>;
+    using ConsentCallback = base::OnceCallback<void(
+        const std::vector<std::string>& disabled_checks)>;
 
     virtual ~Delegate() = default;
     virtual void ShowPsstConsentDialog(content::WebContents* contents,
@@ -47,10 +45,15 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
                                        const base::Value::List requests,
                                        ConsentCallback yes_cb,
                                        ConsentCallback no_cb) = 0;
-    virtual void SetProgressValue(content::WebContents* contents, const double value) = 0;
-    virtual void SetRequestDone(content::WebContents* contents, const std::string& url) = 0;
-    virtual void SetRequestError(content::WebContents* contents, const std::string& url, const std::string& error) = 0;
-    virtual void SetCompletedView(content::WebContents* contents, const std::vector<std::string>& applied_checks, const std::vector<std::string>& errors) = 0;
+    virtual void SetProgressValue(content::WebContents* contents,
+                                  const double value) = 0;
+    virtual void SetRequestDone(content::WebContents* contents,
+                                const std::string& url,
+                                const bool is_error) = 0;
+    virtual void SetCompletedView(
+        content::WebContents* contents,
+        const std::vector<std::string>& applied_checks,
+        const std::vector<std::string>& errors) = 0;
     virtual void Close(content::WebContents* contents) = 0;
   };
 
@@ -74,10 +77,6 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
       std::optional<base::Value> value,
       content::RenderFrameHost::JavaScriptResultCallback cb);
 
-  // Script injection methods. The flow is:
-  // 1. insert get user script and get logged in user id.
-  // 2. if valid and we need to, get consent and/or insert test script.
-  // 3. if we can make changes, insert policy script to make changes.
   void InsertUserScript(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       const std::optional<MatchedRule>& rule);
@@ -109,17 +108,12 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
-// void DidStartNavigation(
-//       content::NavigationHandle* navigation_handle) override;
-//   void ResourceLoadComplete(
-//       content::RenderFrameHost* render_frame_host,
-//       const content::GlobalRequestID& request_id,
-//       const blink::mojom::ResourceLoadInfo& resource_load_info) override;
+
   std::unique_ptr<Delegate> delegate_;
   const int32_t world_id_;
   const raw_ptr<PrefService> prefs_;
-  const raw_ptr<PsstRuleRegistry> psst_rule_registry_;  // NOT OWNED
-  bool should_process_ = false;
+  const raw_ptr<PsstRuleRegistry> psst_rule_registry_;
+  bool should_process_{false};
   // The remote used to send the script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
