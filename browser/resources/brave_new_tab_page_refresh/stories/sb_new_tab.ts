@@ -12,7 +12,14 @@ import {
 
 export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
   store.update({
-    showClock: true
+    showClock: true,
+    showShieldsStats: true,
+    shieldsStats: {
+      adsBlocked: 3245,
+      bandwidthSavedBytes: 1024 * 1024
+    },
+    showTalkWidget: true,
+    widgetPosition: 'bottom'
   })
 
   return {
@@ -24,6 +31,18 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
 
     setShowClock(showClock) {
       store.update({ showClock })
+    },
+
+    setShowShieldsStats(showShieldsStats) {
+      store.update({ showShieldsStats })
+    },
+
+    setShowTalkWidget(showTalkWidget) {
+      store.update({ showTalkWidget })
+    },
+
+    setWidgetPosition(widgetPosition) {
+      store.update({ widgetPosition })
     }
   }
 }

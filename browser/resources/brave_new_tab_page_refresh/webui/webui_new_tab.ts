@@ -9,7 +9,21 @@ import { debounceListener } from './debounce_listener'
 
 import {
   NewTabState,
-  NewTabActions } from '../models/new_tab'
+  NewTabActions,
+  WidgetPosition } from '../models/new_tab'
+
+function loadWidgetPosition(): WidgetPosition {
+  const value = localStorage.getItem('ntp-widget-position')
+  switch (value) {
+    case 'top':
+    case 'bottom': return value
+    default: return 'bottom'
+  }
+}
+
+function storeWidgetPosition(position: WidgetPosition) {
+  localStorage.setItem('ntp-widget-position', position)
+}
 
 export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
   const newTabProxy = NewTabPageProxy.getInstance()
@@ -31,12 +45,41 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
     })
   }
 
+  async function updateShieldsStats() {
+    const [
+      { showShieldsStats },
+      { shieldsStats }
+    ] = await Promise.all([
+      handler.getShowShieldsStats(),
+      handler.getShieldsStats()
+    ])
+
+    store.update({ showShieldsStats, shieldsStats })
+  }
+
+  async function updateTalkPrefs() {
+    const { showTalkWidget } = await handler.getShowTalkWidget()
+    store.update({ showTalkWidget })
+  }
+
+  function updateWidgetPosition() {
+    store.update({ widgetPosition: loadWidgetPosition() })
+  }
+
   newTabProxy.addListeners({
-    onClockStateUpdated: debounceListener(updateClockPrefs)
+    onClockStateUpdated: debounceListener(updateClockPrefs),
+    onShieldsStatsUpdated: debounceListener(updateShieldsStats),
+    onTalkStateUpdated: debounceListener(updateTalkPrefs)
   })
 
   async function loadData() {
-    await updateClockPrefs()
+    updateWidgetPosition()
+
+    await Promise.all([
+      updateClockPrefs(),
+      updateShieldsStats(),
+      updateTalkPrefs()
+    ])
   }
 
   loadData()
@@ -49,6 +92,19 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
 
     setClockFormat(format) {
       handler.setClockFormat(format)
+    },
+
+    setShowShieldsStats(showShieldsStats) {
+      handler.setShowShieldsStats(showShieldsStats)
+    },
+
+    setShowTalkWidget(showTalkWidget) {
+      handler.setShowTalkWidget(showTalkWidget)
+    },
+
+    setWidgetPosition(widgetPosition) {
+      storeWidgetPosition(widgetPosition)
+      updateWidgetPosition()
     }
   }
 }

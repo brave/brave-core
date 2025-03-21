@@ -36,16 +36,15 @@ namespace brave_new_tab_page_refresh {
 class BackgroundFacade;
 class CustomImageChooser;
 class TopSitesFacade;
+class VPNFacade;
 
-// Handler for messages from the NTP front end application. Interface method
-// implementations should be fairly trivial. Any non-trivial operations should
-// be delegated to a helper class.
 class NewTabPageHandler : public mojom::NewTabPageHandler {
  public:
   NewTabPageHandler(mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
                     std::unique_ptr<CustomImageChooser> custom_image_chooser,
                     std::unique_ptr<BackgroundFacade> background_facade,
                     std::unique_ptr<TopSitesFacade> top_sites_facade,
+                    std::unique_ptr<VPNFacade> vpn_facade,
                     tabs::TabInterface& tab,
                     PrefService& pref_service,
                     TemplateURLService& template_url_service,
@@ -79,7 +78,6 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
       const std::string& destination_url,
       const std::string& wallpaper_id,
       NotifySponsoredImageLogoClickedCallback callback) override;
-
   void GetShowSearchBox(GetShowSearchBoxCallback callback) override;
   void SetShowSearchBox(bool show_search_box,
                         SetShowSearchBoxCallback callback) override;
@@ -147,6 +145,25 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void GetClockFormat(GetClockFormatCallback callback) override;
   void SetClockFormat(const std::string& clock_format,
                       SetClockFormatCallback callback) override;
+  void GetShowShieldsStats(GetShowShieldsStatsCallback callback) override;
+  void SetShowShieldsStats(bool show_shields_stats,
+                           SetShowShieldsStatsCallback callback) override;
+  void GetShieldsStats(GetShieldsStatsCallback callback) override;
+  void GetShowTalkWidget(GetShowTalkWidgetCallback callback) override;
+  void SetShowTalkWidget(bool show_talk_widget,
+                         SetShowTalkWidgetCallback callback) override;
+  void GetShowVPNWidget(GetShowVPNWidgetCallback callback) override;
+  void SetShowVPNWidget(bool show_vpn_widget,
+                        SetShowVPNWidgetCallback callback) override;
+  void ReloadVPNPurchasedState(
+      ReloadVPNPurchasedStateCallback callback) override;
+  void OpenVPNPanel(OpenVPNPanelCallback callback) override;
+  void OpenVPNAccountPage(brave_vpn::mojom::ManageURLType url_type,
+                          OpenVPNAccountPageCallback callback) override;
+  void ReportVPNWidgetUsage(ReportVPNWidgetUsageCallback callback) override;
+  void GetShowRewardsWidget(GetShowRewardsWidgetCallback callback) override;
+  void SetShowRewardsWidget(bool show_rewards_widget,
+                            SetShowRewardsWidgetCallback callback) override;
 
  private:
   void OnCustomBackgroundsSelected(ShowCustomBackgroundChooserCallback callback,
@@ -160,6 +177,7 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   std::unique_ptr<CustomImageChooser> custom_image_chooser_;
   std::unique_ptr<BackgroundFacade> background_facade_;
   std::unique_ptr<TopSitesFacade> top_sites_facade_;
+  std::unique_ptr<VPNFacade> vpn_facade_;
   raw_ref<tabs::TabInterface> tab_;
   raw_ref<PrefService> pref_service_;
   raw_ref<TemplateURLService> template_url_service_;
