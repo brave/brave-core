@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
-import ButtonMenu from '@brave/leo/react/buttonMenu'
 
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
 import { useLocaleContext } from '../../lib/locale_strings'
@@ -52,6 +51,75 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
   dateStyle: 'short'
 })
 
+interface AdsHistoryItemViewProps {
+  item: AdsHistoryItem
+  onToggleLike: (item: AdsHistoryItem) => void
+  onToggleDislike: (item: AdsHistoryItem) => void
+  onToggleInappropriate: (item: AdsHistoryItem) => void
+}
+
+function AdsHistoryItemView(props: AdsHistoryItemViewProps) {
+  const { getString } = useLocaleContext()
+  const tabOpener = React.useContext(TabOpenerContext)
+  const [showMenu, setShowMenu] = React.useState(false)
+  const { item } = props
+
+  React.useEffect(() => {
+    if (!showMenu) {
+      return
+    }
+    const listener = () => { setShowMenu(false) }
+    document.body.addEventListener('click', listener)
+    return () => document.body.removeEventListener('click', listener)
+  }, [showMenu])
+
+  return (
+    <div className='item'>
+      <button className='ad-info' onClick={() => tabOpener.openTab(item.url)}>
+        <div className='name single-line'>{item.name}</div>
+        <div className='text single-line'>{item.text}</div>
+        <div className='domain'>{item.domain}</div>
+      </button>
+      <div className='actions'>
+        <button
+          className={item.likeStatus === 'liked' ? 'on' : ''}
+          onClick={() => props.onToggleLike(item)}
+        >
+          <Icon name='thumb-up' />
+        </button>
+        <button
+          className={item.likeStatus === 'disliked' ? 'on' : ''}
+          onClick={() => props.onToggleDislike(item)}
+        >
+          <Icon name='thumb-down' />
+        </button>
+        <button
+          className='more'
+          onClick={(event) => {
+            event.stopPropagation()
+            setShowMenu(!showMenu)
+          }}
+        >
+          <Icon name='more-vertical' />
+          {
+            showMenu &&
+              <div className='more-menu'>
+                <button onClick={() => props.onToggleInappropriate(item)}>
+                  {getString('adsHistoryMarkInappropriateLabel')}
+                  <Icon
+                    name={item.inappropriate ?
+                      'checkbox-checked' :
+                      'checkbox-unchecked'}
+                  />
+                </button>
+              </div>
+          }
+        </button>
+      </div>
+    </div>
+  )
+}
+
 interface Props {
   onClose: () => void
 }
@@ -59,7 +127,6 @@ interface Props {
 export function AdsHistoryModal(props: Props) {
   const { getString } = useLocaleContext()
   const model = React.useContext(AppModelContext)
-  const tabOpener = React.useContext(TabOpenerContext)
 
   const [adsHistory, setAdsHistory] =
     React.useState<AdsHistoryItem[] | null>(null)
@@ -97,51 +164,20 @@ export function AdsHistoryModal(props: Props) {
     updateItem(item, { inappropriate: value })
   }
 
-  function renderItem(item: AdsHistoryItem) {
-    return (
-      <div key={item.id} className='item'>
-        <button className='ad-info' onClick={() => tabOpener.openTab(item.url)}>
-          <div className='name single-line'>{item.name}</div>
-          <div className='text single-line'>{item.text}</div>
-          <div className='domain'>{item.domain}</div>
-        </button>
-        <div className='actions'>
-          <button
-            className={item.likeStatus === 'liked' ? 'on' : ''}
-            onClick={() => toggleLike(item)}
-          >
-            <Icon name='thumb-up' />
-          </button>
-          <button
-            className={item.likeStatus === 'disliked' ? 'on' : ''}
-            onClick={() => toggleDislike(item)}
-          >
-            <Icon name='thumb-down' />
-          </button>
-          <ButtonMenu>
-            <button slot='anchor-content'>
-              <Icon name='more-vertical' />
-            </button>
-            <leo-menu-item onClick={() => toggleInappropriate(item)}>
-              {getString('adsHistoryMarkInappropriateLabel')}
-              <Icon
-                name={item.inappropriate ?
-                  'checkbox-checked' :
-                  'checkbox-unchecked'}
-              />
-            </leo-menu-item>
-          </ButtonMenu>
-        </div>
-      </div>
-    )
-  }
-
   function renderGroup(group: Group) {
     return (
       <section key={group.date}>
         <label>{dateFormatter.format(new Date(group.date))}</label>
         <div className='items'>
-          {group.items.map(renderItem)}
+          {group.items.map((item) => (
+            <AdsHistoryItemView
+              key={item.id}
+              item={item}
+              onToggleLike={() => toggleLike(item)}
+              onToggleDislike={() => toggleDislike(item)}
+              onToggleInappropriate={() => toggleInappropriate}
+            />
+          ))}
         </div>
       </section>
     )

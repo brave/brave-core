@@ -84,10 +84,39 @@ export const style = scoped.css`
     }
   }
 
-  leo-menu-item {
-    --leo-icon-size: 16px;
+  .more {
+    position: relative;
+  }
+
+  .more-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 1;
+
+    padding: 4px;
+    border-radius: 8px;
+    border: solid 1px ${color.divider.subtle};
+    background: ${color.container.background};
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.05);
     display: flex;
-    gap: 8px;
-    align-items: center;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 180px;
+
+    button {
+      --leo-icon-size: 20px;
+
+      padding: 8px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      white-space: nowrap;
+
+      &:hover, &.highlight {
+        background: ${color.container.highlight};
+      }
+    }
   }
 `

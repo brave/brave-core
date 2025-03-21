@@ -16,6 +16,14 @@ function delay(ms: number) {
   })
 }
 
+function repeat<T>(array: T[], times: number) {
+  const result = []
+  for (let i = 0; i < times; ++i) {
+    result.push(...array)
+  }
+  return result
+}
+
 export function createModel(): AppModel {
   const locale = createLocaleContextForTesting(localeStrings)
   const stateManager = createStateManager<AppState>({
@@ -219,7 +227,7 @@ export function createModel(): AppModel {
     },
 
     async getAdsHistory() {
-      return [
+      return repeat([
         {
           createdAt: Date.now(),
           id: '123',
@@ -240,7 +248,7 @@ export function createModel(): AppModel {
           likeStatus: 'liked',
           inappropriate: false
         }
-      ]
+      ], 500)
     },
 
     async removeRecurringContribution(id) {
