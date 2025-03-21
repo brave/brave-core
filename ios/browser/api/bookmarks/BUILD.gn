@@ -20,6 +20,7 @@ source_set("bookmarks") {
     "//base",
     "//components/bookmarks/browser",
     "//components/prefs",
+    "//components/query_parser",
     "//components/undo",
     "//components/user_prefs",
     "//ios/chrome/browser/bookmarks/model",
