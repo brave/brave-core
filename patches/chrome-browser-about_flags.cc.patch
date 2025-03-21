@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index a14929b7d865124c76f83af1d5a41a14369fd461..2b4e1850773348dc4b12600756de597ad392c7aa 100644
+index 107e8b75f4728ea9343842faec2aab3c10b62545..5b0d40b298b277295184c473f7e6afb6bdf1968f 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4452,6 +4452,7 @@ const FeatureEntry::FeatureVariation
+@@ -4502,6 +4502,7 @@ constexpr auto kScannerDisclaimerDebugOverrideChoices =
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
