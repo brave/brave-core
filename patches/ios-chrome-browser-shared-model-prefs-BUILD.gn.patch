@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/BUILD.gn b/ios/chrome/browser/shared/model/prefs/BUILD.gn
-index 14e322414f5a472843d9beea55df265346fc7e6e..17074635b2f6c7ace5793d63b96f56b80078f5ab 100644
+index f8b437074269ec20ed6f11c7b616e58873ed730e..c786d093468b1e22de94cfb194fbd1391eff0be5 100644
 --- a/ios/chrome/browser/shared/model/prefs/BUILD.gn
 +++ b/ios/chrome/browser/shared/model/prefs/BUILD.gn
-@@ -138,6 +138,7 @@ source_set("browser_prefs") {
+@@ -140,6 +140,7 @@ source_set("browser_prefs") {
      "//ios/web/common:features",
      "//ui/base",
    ]

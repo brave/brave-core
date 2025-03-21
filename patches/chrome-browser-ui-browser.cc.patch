@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index fafd84d08e33622aee01f1792c043180a13dd48d..8773ecb93e5a7c999a13e46b9327657d852f7196 100644
+index 71382674f5d2a93c9bc676d32d28481433b85ea7..a62d8d8779522b3ea4826c91b404552aaf2edd04 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -555,6 +555,7 @@ Browser* Browser::Create(const CreateParams& params) {
+@@ -559,6 +559,7 @@ Browser* Browser::Create(const CreateParams& params) {
    // not possible, e.g. using the wrong profile or during shutdown. The caller
    // should handle this; see e.g. crbug.com/1141608 and crbug.com/1261628.
    CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
@@ -10,7 +10,7 @@ index fafd84d08e33622aee01f1792c043180a13dd48d..8773ecb93e5a7c999a13e46b9327657d
    return new Browser(params);
  }
  
-@@ -565,7 +566,7 @@ Browser::Browser(const CreateParams& params)
+@@ -569,7 +570,7 @@ Browser::Browser(const CreateParams& params)
        window_(nullptr),
        tab_strip_model_delegate_(
            std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),

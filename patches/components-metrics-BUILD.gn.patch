@@ -1,8 +1,8 @@
 diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
-index c298ee63cb2f10aeaa52c829b0aadc048773d7e4..b77d108516cb16a7a65ff56cb7c4da540292476e 100644
+index b4a7bf7e894955b9277117782dce870c9e83d53d..91dd93bd8263950ad52953a24ff6b600cde76b96 100644
 --- a/components/metrics/BUILD.gn
 +++ b/components/metrics/BUILD.gn
-@@ -341,6 +341,7 @@ if (!is_cronet_build || is_ios) {
+@@ -363,6 +363,7 @@ if (!is_cronet_build || is_ios) {
          "motherboard_metrics_provider.h",
        ]
      }
