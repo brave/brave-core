@@ -353,7 +353,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
   void SimulateClick(const std::string& selectors, bool has_user_gesture) {
     const std::string javascript = base::ReplaceStringPlaceholders(
         R"(document.querySelector("$1").click();)", {selectors}, nullptr);
-    ExecuteJavaScript(javascript, has_user_gesture);
+    ASSERT_TRUE(ExecuteJavaScript(javascript, has_user_gesture));
   }
 
   void StartVideoPlayback(const std::string& selectors) {
@@ -361,13 +361,13 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
         R"(document.querySelector("$1")?.play();)", {selectors}, nullptr);
 
     // Video elements must be executed with a user gesture.
-    ExecuteJavaScript(javascript, /*has_user_gesture=*/true);
+    ASSERT_TRUE(ExecuteJavaScript(javascript, /*has_user_gesture=*/true));
   }
 
   void PauseVideoPlayback(const std::string& selectors) {
     const std::string javascript = base::ReplaceStringPlaceholders(
         R"(document.querySelector("$1")?.pause();)", {selectors}, nullptr);
-    ExecuteJavaScript(javascript, /*has_user_gesture=*/true);
+    ASSERT_TRUE(ExecuteJavaScript(javascript, /*has_user_gesture=*/true));
   }
 
   void RestoreBrowser(Profile* const profile) {

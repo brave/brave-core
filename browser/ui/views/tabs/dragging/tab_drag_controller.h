@@ -34,6 +34,7 @@ class TabDragController : public TabDragControllerChromium {
   void MoveAttached(const gfx::Point& point_in_screen,
                     bool just_attached) override;
   views::Widget* GetAttachedBrowserWidget() override;
+  gfx::Vector2d CalculateWindowDragOffset() override;
 
   Liveness GetLocalProcessWindow(const gfx::Point& screen_point,
                                  bool exclude_dragged_view,
@@ -42,13 +43,6 @@ class TabDragController : public TabDragControllerChromium {
   void DetachAndAttachToNewContext(ReleaseCapture release_capture,
                                    TabDragContext* target_context) override;
 
-  gfx::Rect CalculateNonMaximizedDraggedBrowserBounds(
-      views::Widget* widget,
-      const gfx::Point& point_in_screen) override;
-  gfx::Rect CalculateDraggedBrowserBounds(
-      TabDragContext* source,
-      const gfx::Point& point_in_screen,
-      std::vector<gfx::Rect>* drag_bounds) override;
   [[nodiscard]] Liveness ContinueDragging(
       const gfx::Point& point_in_screen) override;
 

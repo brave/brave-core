@@ -83,7 +83,7 @@ class CORE_EXPORT BraveSessionCache final
   BraveFarblingLevel GetBraveFarblingLevel(
       ContentSettingsType webcompat_settings_type);
   void FarbleAudioChannel(base::span<float> dst);
-  void PerturbPixels(const unsigned char* data, size_t size);
+  void PerturbPixels(base::span<uint8_t> data);
   WTF::String GenerateRandomString(std::string seed, wtf_size_t length);
   WTF::String FarbledUserAgent(WTF::String real_user_agent);
   int FarbledInteger(FarbleKey key,
@@ -96,7 +96,7 @@ class CORE_EXPORT BraveSessionCache final
   std::optional<blink::BraveAudioFarblingHelper> GetAudioFarblingHelper();
 
  private:
-  void PerturbPixelsInternal(const unsigned char* data, size_t size);
+  void PerturbPixelsInternal(base::span<uint8_t> data);
 
   WTF::HashMap<FarbleKey, int> farbled_integers_;
   brave_shields::mojom::ShieldsSettingsPtr default_shields_settings_;
