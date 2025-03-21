@@ -3,24 +3,50 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+const fs = require('fs')
 const path = require('path')
 const config = require('../lib/config')
 const updatePatches = require('../lib/updatePatches')
 
-const chromiumPathFilter = (s) => s.length > 0 &&
-  !s.startsWith('buildtools/reclient_cfgs') &&
-  !s.startsWith('chrome/app/theme/default') &&
-  !s.startsWith('chrome/app/theme/brave') &&
-  !s.startsWith('chrome/app/theme/chromium') &&
-  !s.startsWith('third_party/win_build_output/midl/chrome/elevation_service') &&
-  !s.startsWith('third_party/win_build_output/midl/google_update') &&
-  !s.endsWith('.png') && !s.endsWith('.xtb') &&
-  !s.endsWith('.grd') && !s.endsWith('.grdp') &&
-  !s.endsWith('.svg') &&
-  !s.endsWith('new_tab_page_view.xml') &&
-  !s.endsWith('channel_constants.xml') &&
-  s !== 'chrome/VERSION' &&
-  s !== 'ui/webui/resources/css/text_defaults_md.css'
+function loadChromiumPathFilter(filePath) {
+  const configLines =
+      fs.readFileSync(filePath, 'utf-8')
+          .split('\n')
+          .map(line => line.split('#')[0].trim())  // Removing comments.
+          .filter(line => line.length > 0);
+
+  const prefixes = [];
+  const suffixes = [];
+  const exactMatches = new Set();
+
+  // This should be revisited in the future once `path.matchesGlob` is stable
+  // and available in node to use, as this current implementation is a bit
+  // naive.
+  for (const line of configLines) {
+    if (line.startsWith('*')) {
+      suffixes.push(line.slice(1));
+    } else if (line.endsWith('*')) {
+      prefixes.push(line.slice(0, -1));
+    } else {
+      exactMatches.add(line);
+    }
+  }
+
+  return (s) => {
+    if (s.length === 0)
+      return false;
+    if (exactMatches.has(s))
+      return false;
+    if (prefixes.some(prefix => s.startsWith(prefix)))
+      return false;
+    if (suffixes.some(suffix => s.endsWith(suffix)))
+      return false;
+    return true;
+  };
+}
+
+chromiumPathFilter = loadChromiumPathFilter(
+    path.join(config.braveCoreDir, 'build', 'update_patches_exclusions.cfg'))
 
 module.exports = function RunCommand (options) {
   config.update(options)
