@@ -39,5 +39,5 @@ IN_PROC_BROWSER_TEST_F(BraveWaybackMachineTest, BubbleLaunchTest) {
 
   // Check bubble is launched.
   icon->ExecuteCommandForTesting();
-  EXPECT_TRUE(!!tab_helper->active_window());
+  EXPECT_TRUE(tab_helper->active_window().has_value());
 }
