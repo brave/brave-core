@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/page_action/wayback_machine_state_manager.h"
 
+#include <optional>
+
 #include "base/functional/bind.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
@@ -49,10 +51,14 @@ void WaybackMachineStateManager::OnTabStripModelChanged(
     tab_helper->SetWaybackStateChangedCallback(base::NullCallback());
 
     // Try to close if old tab had bubble.
-    if (auto* widget = views::Widget::GetWidgetForNativeWindow(
-            tab_helper->active_window())) {
-      widget->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
-      tab_helper->set_active_window(nullptr);
+    std::optional<gfx::NativeWindow> active_window =
+        tab_helper->active_window();
+    if (active_window.has_value()) {
+      if (auto* widget =
+              views::Widget::GetWidgetForNativeWindow(active_window.value())) {
+        widget->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
+        tab_helper->set_active_window(std::nullopt);
+      }
     }
   }
 
