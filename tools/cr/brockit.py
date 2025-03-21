@@ -33,11 +33,11 @@ use it to commit the following changes:
  * Updated strings for Chromium [to].
 
 To start it off, provide a `--to` target version, and a base branch to be used,
-either by providing a `--previous` argument, or by having an upstream branch to
+either by providing a `--from_ref` argument, or by having an upstream branch to
 to your current branch.
 
 ```sh
-tools/cr/brockit.py lift --to=135.0.7037.1 --previous=origin/master
+tools/cr/brockit.py lift --to=135.0.7037.1 --from_ref=origin/master
 ```
 
 Using upstream:
@@ -59,8 +59,8 @@ The following steps will take place:
 5. Deleted patches will also cause the  *🚀Brockit!* to stop . The user is
    expected to provide separate commits for deleted patches, explaining the
    reason.
-6. Having resolved all conflicts. Restart *🚀Brockit!* with the same arguments
-   as before, but add `--continue` as well.
+6. Having resolved all conflicts. Restart *🚀Brockit!* with `--continue` and
+   other similar arguments you may want to keep (e.g. `--vscode`).
 7. *🚀Brockit!* will pick up from where it stopped, possibly running
   `npm run update_patches`, staging all patches, and committing the under
   *Conflict-resolved patches from Chromium [from] to [to].*
@@ -69,6 +69,13 @@ The following steps will take place:
 
 Steps 3-7 may end up being skipped altogether if no failures take place, or in
 part if resolution is possible without manual intervention.
+
+The `--restart` flag can be used to start the process from scratch, discarding
+everything committed in the last run.
+
+```sh
+tools/cr/brockit.py lift --to=135.0.7037.1 --from_ref=origin/master --restart
+```
 
 ### `brockit.py regen`
 
@@ -507,6 +514,13 @@ class Repository:
     def has_staged_changed(self):
         return self.run_git('diff', '--cached', '--stat') != ''
 
+    def get_commit_short_description(self, commit: str = 'HEAD') -> str:
+        """Gets the short description of a commit.
+
+        This is just the actual first line of the commit message.
+        """
+        return self.run_git('log', '-1', '--pretty=%s', commit)
+
     def git_commit(self, message):
         """Commits the current staged changes.
 
@@ -524,6 +538,25 @@ class Repository:
                               '--abbrev-commit')
         terminal.log_task(f'[bold]✔️ [/] [italic]{commit}')
 
+    def is_valid_git_reference(self, reference) -> bool:
+        """Checks if a name is a valid git branch name or hash.
+        """
+        try:
+            self.run_git('rev-parse', '--verify', reference)
+            return True
+        except subprocess.CalledProcessError:
+            return False
+
+    def last_changed(self,
+                     file: str,
+                     from_commit: Optional[str] = None) -> str:
+        """Gets the last commit for a file.
+        """
+        args = ['log', '--pretty=%h', '-1']
+        if from_commit:
+            args.append(from_commit)
+        args.append(file)
+        return self.run_git(*args)
 
 @dataclass(frozen=True)
 class Patchfile:
@@ -872,6 +905,48 @@ class Version:
             return NotImplemented
         return self.parts < other.parts
 
+    @classmethod
+    def from_upstream(cls) -> Optional["Version"]:
+        """Retrieves the version from the upstream branch.
+
+        Returns:
+            The version from the upstream branch, or None no upstream branch is
+            set in the current branch.
+        """
+        upstream_branch = _get_current_branch_upstream_name()
+        if upstream_branch is None:
+            return None
+
+        return Version.from_git(upstream_branch)
+
+    @classmethod
+    def from_previous(cls) -> "Version":
+        """Retrieves the previous version from the last bump.
+
+        This function looks for what was in the package.json file before the
+        last upgraded in the current branch.
+        """
+        starting_version = Version.from_git('HEAD')
+        base_version = starting_version
+        last_changed = Repository.brave().last_changed(PACKAGE_FILE)
+        last_changed = Repository.brave().last_changed(PACKAGE_FILE)
+        while True:
+            base_version = Version.from_git(f'{last_changed}~1')
+            if base_version != starting_version:
+                break
+            # Prefer to look for the PACKAGE_FILE here, because this has to
+            # resolve even when the upgrade was done manually, so don't assume
+            # the presence of pinslist timestamp changes.
+            last_changed = Repository.brave().last_changed(
+                PACKAGE_FILE, f'{last_changed}~1')
+        return base_version
+
+    def get_googlesource_diff_link(self, from_version: "Version") -> str:
+        """Generates a link to the diff of the upgrade.
+        """
+        return GOOGLESOURCE_LINK.format(from_version=from_version,
+                                        to_version=self)
+
 
 @dataclass(frozen=True)
 class ContinuationFile:
@@ -885,17 +960,13 @@ class ContinuationFile:
     # different from the base version).
     working_version: Version
 
+    # The base version for the upgrade process. This is saved as a reference
+    # like @previous cannot be relied on once we committed a change, moving the
+    # previous branch ahead.
+    base_version: Version
+
     # The continuation data for the patches.
     patches: Optional[PatchfilesContinuation] = field(default=None)
-
-    @staticmethod
-    def initialise(target_version: Version, working_version: Version):
-        """Initialises the continuation file with the target/working versions.
-        """
-        with open(VERSION_UPGRADE_FILE, 'wb') as file:
-            pickle.dump(
-                ContinuationFile(target_version=target_version,
-                                 working_version=working_version), file)
 
     @staticmethod
     def load(target_version: Version,
@@ -1014,7 +1085,7 @@ class PatchFailureResolver:
 
         if len(self.patch_files):
             terminal.log_task(
-                '[bold]Reapplying patch files with --3way:\n[/]' +
+                '[bold]Reapplying patch files with --3way:\n[/]%s' %
                 '\n'.join(f'    * {file}' for file in [
                     patch.path for patch_list in self.patch_files.values()
                     for patch in patch_list
@@ -1095,10 +1166,10 @@ class PatchFailureResolver:
 
         if len(self.files_with_conflicts) > 0:
             vscode_args += self.files_with_conflicts
+            file_list = '\n'.join(f'    ✘ {file}'
+                                  for file in self.files_with_conflicts)
             terminal.log_task(f'[bold]Manually resolve conflicts for '
-                              f'{ACTION_NEEDED_DECORATOR}:[/]\n' +
-                              '\n'.join(f'    ✘ {file}'
-                                        for file in self.files_with_conflicts))
+                              f'{ACTION_NEEDED_DECORATOR}:[/]\n{file_list}')
 
         # The continuation file is updated at the end of the process, in case
         # the process has to be continued later.
@@ -1201,13 +1272,10 @@ class Versioned(Task):
     """
 
     def __init__(self,
-                 base_branch: str,
+                 base_version: Version,
                  target_version: Optional[Version] = None):
-        # The upstream base branch to compare against.
-        self.base_branch = base_branch
-
         # The version in `package.json` found in that upstream branch.
-        self.base_version = Version.from_git(base_branch)
+        self.base_version = base_version
 
         # The target of a given upgrade.
         self.target_version = target_version
@@ -1220,18 +1288,11 @@ class Versioned(Task):
         if self.target_version <= self.base_version:
             logging.error(
                 'Target version is not higher than base version: '
-                'target=%s, base=%s, using=%s', self.target_version,
-                self.base_version, base_branch)
+                'target=%s, base=%s', self.target_version, self.base_version)
             sys.exit(1)
 
     def execute(self) -> bool:
         raise NotImplementedError
-
-    def _get_googlesource_diff_link(self, from_version: Version) -> str:
-        """Generates a link to the diff of the upgrade.
-        """
-        return GOOGLESOURCE_LINK.format(from_version=from_version,
-                                        to_version=self.target_version)
 
     def _save_updated_patches(self):
         """Creates the updated patches change
@@ -1269,6 +1330,9 @@ class Regen(Versioned):
         return "Updating patches and strings..."
 
     def execute(self) -> bool:
+        terminal.log_task(
+            f'Processing changes for Chromium {self.base_version} '
+            f'to Chromium {self.target_version}.')
         terminal.run_npm_command('init')
         terminal.run_npm_command('update_patches')
         self._save_updated_patches()
@@ -1304,7 +1368,7 @@ class GitHubIssue(Versioned):
             title = title.format(previous=str(self.base_version),
                                  to=str(self.target_version))
 
-        link = self._get_googlesource_diff_link(
+        link = self.target_version.get_googlesource_diff_link(
             from_version=str(self.base_version))
 
         results = json.loads(
@@ -1352,6 +1416,59 @@ class GitHubIssue(Versioned):
         return True
 
 
+class ReUpgrade(Task):
+    """Restarts the upgrade process.
+
+    This class is called when `--restart` is provided and it is useful when one
+    wants to restart fresh. It will reset the repository to where it was before
+    the update started.
+    """
+
+    def __init__(self, target_version: Version):
+        # The target version passed to --to, which is used to make sure the
+        # restart is being done in the right place.
+        self.target_version = target_version
+
+    def status_message(self):
+        return "Restarting the upgrade process..."
+
+    def execute(self) -> bool:
+        """Restarts the upgrade process.
+
+        This function will reset the repository to the state it was before the
+        upgrade started. It will also clear the continuation file.
+        """
+        working_version = Version.from_git('HEAD')
+        if self.target_version != working_version:
+            logging.error(
+                'Running with `--restart` but the target version does not '
+                'match the current version. %s vs %s', self.target_version,
+                working_version)
+            return False
+
+        starting_change = Repository.brave().last_changed(
+            PINSLIST_TIMESTAMP_FILE)
+        commit_message = Repository.brave().get_commit_short_description(
+            starting_change)
+        if not commit_message.startswith(
+                'Update from Chromium ') or not commit_message.endswith(
+                    f' to Chromium {self.target_version}.'):
+            logging.error(
+                'Running with `--restart` but the last change does match the '
+                'arguments provide. %s %s', starting_change, commit_message)
+            return False
+
+        console.log('Discarding the following changes:')
+        console.log(
+            Padding(
+                '[dim]%s' % Repository.brave().run_git(
+                    'log', '--pretty=%h %s', f'HEAD...{starting_change}~1'),
+                (0, 4)))
+
+        ContinuationFile.clear()
+        Repository.brave().run_git('reset', '--hard', f'{starting_change}~1')
+        return True
+
 class Upgrade(Versioned):
     """The upgrade process, holding the data related to the upgrade.
 
@@ -1360,9 +1477,16 @@ class Upgrade(Versioned):
   its completion.
   """
 
-    def __init__(self, base_branch: str, target_version: Version,
-                 is_continuation: bool):
-        super().__init__(base_branch, target_version)
+    def __init__(self,
+                 target_version: Version,
+                 is_continuation: bool,
+                 base_version: Optional[Version] = None):
+        if ((base_version is None and is_continuation is False)
+                or (base_version is not None and is_continuation is True)):
+            # either it is a new upgrade, and a base version is provided, or it
+            # is a continuation and no base version is provided as it gets read
+            # from disk.
+            raise NotImplementedError()
 
         # Indicates that the upgrade is a continuation from a previous run.
         self.is_continuation = is_continuation
@@ -1371,12 +1495,20 @@ class Upgrade(Versioned):
         # from
         self.working_version = None
         if self.is_continuation:
+            version_on_head = Version.from_git('HEAD')
+            if target_version != version_on_head:
+                logging.error(
+                    'Running with `--continue` on a branch with a different '
+                    'version what the target should be. %s vs %s',
+                    target_version, version_on_head)
+                sys.exit(1)
+
             # Loads the working version from the continuation file, because the
             # current branch has already updated the working version to the
             # target version.
             try:
                 continuation = ContinuationFile.load(
-                    target_version=self.target_version)
+                    target_version=target_version)
             except FileNotFoundError:
                 logging.error(
                     '%s continuation file does not exist. (Are you sure you '
@@ -1384,15 +1516,14 @@ class Upgrade(Versioned):
                     VERSION_UPGRADE_FILE)
                 sys.exit(1)
             self.working_version = continuation.working_version
+            base_version = continuation.base_version
         else:
-            # Initialising the continuation file at this stage, so we can save
-            # the working version.
             self.working_version = Version.from_git('HEAD')
-            ContinuationFile.initialise(self.target_version,
-                                        self.working_version)
 
         # The version currently set in the VERSION file.
         self.chromium_src_version = _read_chromium_version_file()
+
+        super().__init__(base_version, target_version)
 
     def status_message(self):
         return "Upgrading Chromium base version"
@@ -1441,12 +1572,12 @@ class Upgrade(Versioned):
         if status.has_deleted_patch_files() is True:
             logging.error(
                 'Deleted patches detected. These should be committed as their '
-                'own changes:\n' + '\n'.join(status.deleted))
+                'own changes:\n%s' % '\n'.join(status.deleted))
             return False
         if status.has_untracked_patch_files() is True:
             logging.error(
                 'Untracked patch files detected. These should be committed as '
-                'their own changes:\n' + '\n'.join(status.untracked))
+                'their own changes:\n%s' % '\n'.join(status.untracked))
             return False
 
         return True
@@ -1545,12 +1676,12 @@ class Upgrade(Versioned):
                 self.chromium_src_version)
 
         if self.working_version != self.base_version:
-            terminal.log_task(
-                'Changes for this bump: '
-                f'{self._get_googlesource_diff_link(self.working_version)}')
+            terminal.log_task('Changes for this bump: %s' %
+                              self.target_version.get_googlesource_diff_link(
+                                  self.working_version))
         terminal.log_task(
-            f'Changes since base version: '
-            f'{self._get_googlesource_diff_link(self.base_version)}')
+            'Changes since base version: %s' %
+            self.target_version.get_googlesource_diff_link(self.base_version))
 
         self._update_package_version()
 
@@ -1627,20 +1758,28 @@ class Upgrade(Versioned):
             Indicates the user wants to create or update the github issue for
             the upgrade.
         """
-        if with_github is True and _is_gh_cli_logged_in() is False:
-            # Fail early if gh cli is not logged in.
-            logging.error('GitHub CLI is not logged in.')
-            return False
-
         if self.target_version == self.working_version:
             logging.error(
-                "This branch is already in %s. (Maybe this is a continuation?)",
-                self.target_version)
+                'This branch is already in %s. (Maybe you meant to pass [bold '
+                'cyan]--continue[/]?)', self.target_version)
             return False
 
         if self.target_version < self.working_version:
             logging.error('Cannot upgrade version from %s to %s',
                           self.target_version, self.working_version)
+            return False
+
+        if not self.is_continuation:
+            # We initialise the continuation file here rather than in the
+            # constructor to avoid overwritting the file if the user made the
+            # mistake of calling brockit again without `--continue`.
+            ContinuationFile(target_version=self.target_version,
+                             working_version=self.working_version,
+                             base_version=self.base_version).save()
+
+        if with_github is True and _is_gh_cli_logged_in() is False:
+            # Fail early if gh cli is not logged in.
+            logging.error('GitHub CLI is not logged in.')
             return False
 
         if self.is_continuation:
@@ -1658,12 +1797,57 @@ class Upgrade(Versioned):
             result = self._start(launch_vscode=launch_vscode)
 
         if result is True and with_github is True:
-            return GitHubIssue(base_branch=self.base_branch,
+            return GitHubIssue(base_version=self.base_version,
                                target_version=self.target_version
                                ).create_or_updade_version_issue()
 
         return result
 
+
+def _find_from_ref_version(from_ref) -> Version:
+    """ Finds the version from a reference.
+
+    This function resolves the value provided to --from-ref into a Version
+    whenver that's possible. It also will handle the tags with special meaning
+    like @upstream and @previous.
+    """
+    if from_ref == "@upstream":
+        result = Version.from_upstream()
+        if result is None:
+            logging.error(
+                'Could not determine the upstream branch. (Maybe set [bold '
+                'cyan]--set-upstream-to[/] in your branch?)')
+            sys.exit(1)
+        return result
+
+    if from_ref == "@previous":
+        return Version.from_previous()
+
+    if not Repository.brave().is_valid_git_reference(from_ref):
+        logging.error(
+            'Value provided to [bold cyan]--base-from[/] is not a valid git '
+            'ref: %s', from_ref)
+        sys.exit(1)
+    return Version.from_git(from_ref)
+
+
+def show(args: argparse.Namespace):
+    """Prints various insights about brave-core.
+
+    This is a helper command line that allows us to inspect a few things about
+    brave-core and how brockit process things.
+    """
+    if args.package_version:
+        console.print(f'upstream version: {Version.from_git("HEAD")}')
+    if args.from_ref_value is not None:
+        from_ref_value = _find_from_ref_version(args.from_ref_value)
+        if from_ref_value is not None:
+            console.print(f'base version: {from_ref_value}')
+    if args.log_link:
+        console.print('googlesource link: %s' %
+                      Version.from_git('HEAD').get_googlesource_diff_link(
+                          Version.from_previous()))
+    return 0
 
 def main():
     # This is a global parser with arguments that apply to every function.
@@ -1681,13 +1865,15 @@ def main():
          'CI to be kept alive.'),
         dest='infra_mode')
 
-    # This is parser that supports the `--previous` argument, for processes
-    # that emit data about target and previous version.
+    # The `--from-ref` parse is used by multiple operations.
     base_version_parser = argparse.ArgumentParser(add_help=False)
     base_version_parser.add_argument(
-        '--previous',
-        help='The previous version to be shown as base. Defaults to the '
-        'current upstream branch.',
+        '--from-ref',
+        help=
+        'A reference to the version that the upgrade is coming from. This is '
+        'a git branch, hash, tag, etc, or one of the special values: @upstream'
+        ' (upstream branch), @previous (the previous version from HEAD). '
+        'Defaults to @upstream.',
         default=None)
 
     parser = argparse.ArgumentParser()
@@ -1705,6 +1891,10 @@ def main():
         action='store_true',
         help='Resumes from manual patch conflict resolution.',
         dest='is_continuation')
+    lift_parser.add_argument(
+        '--restart',
+        action='store_true',
+        help='Resumes from manual patch conflict resolution.')
     lift_parser.add_argument(
         '--with-github',
         action='store_true',
@@ -1732,6 +1922,21 @@ def main():
         parents=[global_parser, base_version_parser],
         help='Creates or updates the GitHub issue for the corrent branch.')
 
+    show_parser = subparsers.add_parser(
+        'show', help='Prints various insights about brave-core.')
+    show_parser.add_argument(
+        '--package-version',
+        action='store_true',
+        help='Shows the current Chromium version in package.')
+    show_parser.add_argument(
+        '--from-ref-value',
+        help='Shows the Chromium version from a git reference.',
+        default=None,
+        dest='from_ref_value')
+    show_parser.add_argument('--log-link',
+                             action='store_true',
+                             help='Prints the git log links to googlesource.')
+
     subparsers.add_parser('reference',
                           help='Detailed documentation for this tool.')
     args = parser.parse_args()
@@ -1747,26 +1952,41 @@ def main():
     if hasattr(args, 'infra_mode') and args.infra_mode:
         terminal.set_infra_mode()
 
+    if hasattr(args, 'from_ref'):
+        if args.command == 'lift' and args.is_continuation:
+            if args.from_ref is not None:
+                parser.error(
+                    'Switch --from-ref not supported with --continue.')
+
+    def get_resolved_from_ref():
+        return _find_from_ref_version(
+            args.from_ref if args.from_ref is not None else '@upstream')
+
     if args.command == 'lift' and args.no_conflict and not args.is_continuation:
         parser.error('--no-conflict-change can only be used with --continue')
-    if hasattr(args, 'previous') and args.previous is None:
-        args.previous = _get_current_branch_upstream_name()
-        if args.previous is None:
-            parser.error(
-                'Could not determine the previous version. Please provide it '
-                'with --previous, or assign an upstream branch to your '
-                'current branch.')
+    if args.command == 'lift' and args.restart and args.is_continuation:
+        parser.error('--restart does not support --continue')
 
     if args.command == 'lift':
-        return Upgrade(args.previous, Version(args.to),
-                       args.is_continuation).run(args.no_conflict, args.vscode,
-                                                 args.with_github)
+        if args.restart:
+            if not ReUpgrade(Version(args.to)).run():
+                return 1
+
+        if not args.is_continuation:
+            upgrade = Upgrade(Version(args.to), args.is_continuation,
+                              get_resolved_from_ref())
+        else:
+            upgrade = Upgrade(Version(args.to), args.is_continuation)
+
+        return upgrade.run(args.no_conflict, args.vscode, args.with_github)
     if args.command == 'regen':
-        return Regen(args.previous).run()
+        return Regen(get_resolved_from_ref()).run()
     if args.command == 'update-version-issue':
-        return GitHubIssue(args.previous).run()
+        return GitHubIssue(get_resolved_from_ref()).run()
     if args.command == 'reference':
         return console.print(Markdown(__doc__))
+    if args.command == 'show':
+        return show(args)
 
     return 0
 
