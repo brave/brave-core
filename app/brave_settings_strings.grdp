@@ -1554,7 +1554,7 @@ Leo AI. This action can't be undone.
     About Leo AI
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_DESC_1" desc="Description for the about Leo assistant section">
-    Brave Leo provides privacy-first AI chat and other AI-powered interfaces in the browser. Leo never learns on your data or use it for model training, and all requests are proxied through an anonymizing server.
+    Brave Leo provides privacy-first AI chat and other AI-powered interfaces in the browser. Leo never learns from your data or uses it for model training. All requests are proxied through an anonymizing server.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_DESC_2" desc="Description for learning more about Leo privacy policy">
     Read more about how Brave protects your use of AI in Leo's privacy policy. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
