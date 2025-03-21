@@ -1,10 +1,9 @@
-/* Copyright (c) 2025 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright 2012 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
-#ifndef BRAVE_CHROMIUM_SRC_CRYPTO_ENCRYPTOR_H_
-#define BRAVE_CHROMIUM_SRC_CRYPTO_ENCRYPTOR_H_
+#ifndef CRYPTO_ENCRYPTOR_H_
+#define CRYPTO_ENCRYPTOR_H_
 
 #include <stddef.h>
 #include <stdint.h>
@@ -101,4 +100,4 @@ class CRYPTO_EXPORT Encryptor {
 
 }  // namespace crypto
 
-#endif  // BRAVE_CHROMIUM_SRC_CRYPTO_ENCRYPTOR_H_
+#endif  // CRYPTO_ENCRYPTOR_H_
