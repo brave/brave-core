@@ -220,3 +220,6 @@ script/lib/l10n/requirements.txt @brave/sec-team
 
 # protected URLs (needs security review)
 components/skus/common/skus_utils.h @brave/sec-team
+
+# for brave_exec_script_allowlist
+build/dotfile_settings.gni @bridiver @goodov
