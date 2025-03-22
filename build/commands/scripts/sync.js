@@ -3,10 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+'use strict'
+
 // Check environment before doing anything.
 require('../lib/checkEnvironment')
 
-const fs = require('fs')
 const program = require('commander')
 const path = require('path')
 const config = require('../lib/config')
@@ -14,6 +15,7 @@ const util = require('../lib/util')
 const Log = require('../lib/logging')
 const depotTools = require('../lib/depotTools')
 const syncUtil = require('../lib/syncUtils')
+const JsoncConfig = require('../lib/jsoncConfig')
 
 program
   .version(process.env.npm_package_version)
@@ -27,6 +29,29 @@ program
   .option('-C, --sync_chromium [arg]', 'force or skip chromium sync (true/false/1/0)', JSON.parse)
   .option('-D, --delete_unused_deps', 'delete from the working copy any dependencies that have been removed since the last sync')
   .option('--nohooks', 'Do not run hooks after updating')
+
+const syncConfigTemplate = `{
+  // Add your gclient modifications here.
+  "gclient": {
+    "solutions": [
+      {
+        // Uncomment to checkout Chromium's most recent clangd.
+        // "custom_vars": {
+        //   "checkout_clangd": true,
+        // }
+      }
+    ],
+    // This is updated by the sync command if provided via --target_os.
+    "target_os": [
+      // "android"
+    ],
+    // This is updated by the sync command if provided via --target_arch.
+    "target_cpu": [
+      // "arm64"
+    ],
+  },
+  // "delete_unused_deps": true, // Uncomment to always delete unused deps.
+}`
 
 function syncBrave(program) {
   let args = ['sync', '--nohooks']
@@ -47,30 +72,38 @@ function syncBrave(program) {
 async function RunCommand() {
   program.parse(process.argv)
 
+  const syncConfig = new JsoncConfig(config.syncConfigFile, syncConfigTemplate)
+
   // --target_os, --target_arch as lists make sense only for `init/sync`
   // commands. Handle comma-separated values here and only pass the first value
   // to the config.update() call.
-  const targetOSList = program.target_os?.split(',')
+  const targetOSList = program.target_os?.split(',').filter(Boolean)
   if (targetOSList) {
     program.target_os = targetOSList[0]
+    syncConfig.set('gclient.target_os', targetOSList)
+  } else if (syncConfig.config.gclient?.target_os?.length) {
+    program.target_os = syncConfig.config.gclient.target_os[0]
   }
-  const targetArchList = program.target_arch?.split(',')
+
+  const targetArchList = program.target_arch?.split(',').filter(Boolean)
   if (targetArchList) {
     program.target_arch = targetArchList[0]
+    syncConfig.set('gclient.target_cpu', targetArchList)
+  } else if (syncConfig.config.gclient?.target_cpu?.length) {
+    program.target_arch = syncConfig.config.gclient.target_cpu[0]
+  }
+
+  if (
+    program.delete_unused_deps === undefined &&
+    syncConfig.config.delete_unused_deps !== undefined
+  ) {
+    program.delete_unused_deps = syncConfig.config.delete_unused_deps
   }
 
   config.update(program)
 
   depotTools.installDepotTools()
-
-  if (
-    program.init ||
-    program.target_os ||
-    program.target_arch ||
-    !fs.existsSync(config.defaultGClientFile)
-  ) {
-    syncUtil.buildDefaultGClientConfig(targetOSList, targetArchList)
-  }
+  syncUtil.buildDefaultGClientConfig(syncConfig.config.gclient)
 
   if (config.isCI) {
     program.delete_unused_deps = true

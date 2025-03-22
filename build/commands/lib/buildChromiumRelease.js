@@ -137,7 +137,12 @@ function buildChromiumRelease(buildOptions = {}) {
 
   depotTools.installDepotTools()
   syncUtil.buildDefaultGClientConfig(
-    [config.getTargetOS()], [config.targetArch], true)
+    {
+      target_os: [config.getTargetOS()],
+      target_cpu: [config.targetArch],
+    },
+    true
+  )
 
   util.runGit(config.srcDir, ['clean', '-f', '-d'])
 
