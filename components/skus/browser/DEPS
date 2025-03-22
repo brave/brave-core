@@ -3,5 +3,19 @@ include_rules = [
   "+services/data_decoder/public",
   "+services/preferences/public",
   "+services/network/test",
-  "+third_party/rust/cxx",
 ]
+
+specific_include_rules = {
+  "skus_url_loader_impl\.h": [
+    "+third_party/rust/cxx/v1/cxx.h"
+  ],
+  "skus_url_loader_impl_unittest\.cc": [
+    "+third_party/rust/cxx/v1/cxx.h"
+  ],
+  "skus_context_impl\.h": [
+    "+third_party/rust/cxx/v1/cxx.h"
+  ],
+  "skus_service_impl\.h": [
+    "+third_party/rust/cxx/v1/cxx.h"
+  ],
+}

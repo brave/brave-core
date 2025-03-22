@@ -6,6 +6,7 @@
 import("//build/rust/rust_static_library.gni")
 
 rust_static_library("document_extractor") {
+  visibility = []
   crate_name = "document_extractor"
   crate_root = "lib.rs"
   allow_unsafe = true

@@ -20,4 +20,7 @@ specific_include_rules = {
     "!chrome/test/base/testing_browser_process.h",
     "!chrome/test/base/testing_profile.h",
   ],
+  "test_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
 }

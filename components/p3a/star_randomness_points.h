@@ -16,6 +16,7 @@
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/star_randomness_meta.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace network {
 class SharedURLLoaderFactory;

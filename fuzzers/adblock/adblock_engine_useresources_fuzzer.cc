@@ -8,7 +8,7 @@
 #include <iostream>
 #include <string>
 
-#include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
+#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
   FuzzedDataProvider data_provider(data, size);

@@ -128,7 +128,7 @@ rust_static_library("rust_lib") {
     "librustzcash:zcash_client_backend",
     "librustzcash:zcash_primitives",
     "librustzcash:zcash_protocol",
-    "//brave/components/brave_wallet/rust:rust_lib",
+    "//brave/components/brave_wallet/common:rust_lib",
     "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
     "//brave/third_party/rust/memuse/v0_2:lib",
     "//brave/third_party/rust/nonempty/v0_7:lib",

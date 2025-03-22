@@ -6,6 +6,7 @@
 import("//build/rust/rust_static_library.gni")
 
 rust_static_library("lib") {
+  visibility = [ "//brave/components/speedreader/rust/ffi:*" ]
   crate_name = "speedreader"
   crate_root = "src/lib.rs"
   edition = "2018"
