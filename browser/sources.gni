@@ -30,6 +30,7 @@ import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/playlist/sources.gni")
 import("//brave/browser/profiles/sources.gni")
+import("//brave/browser/psst/sources.gni")
 import("//brave/browser/renderer_context_menu/sources.gni")
 import("//brave/browser/request_otr/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
@@ -49,6 +50,7 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -206,9 +208,6 @@ brave_chrome_browser_deps = [
   "//brave/components/p3a_utils",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/privacy_sandbox",
-  "//brave/components/psst/browser/content",
-  "//brave/components/psst/browser/core",
-  "//brave/components/psst/common",
   "//brave/components/request_otr/common/buildflags",
   "//brave/components/resources",
   "//brave/components/skus/browser",
@@ -269,6 +268,15 @@ brave_chrome_browser_deps = [
   "//ui/base",
   "//url",
 ]
+
+if (enable_psst) {
+  brave_chrome_browser_deps += [
+    "//brave/components/psst/browser/content",
+    "//brave/components/psst/browser/core",
+    "//brave/components/psst/common",
+    "//brave/components/psst/buildflags",
+  ]
+}
 
 if (!is_android) {
   # Already included on android by upstream
@@ -557,6 +565,7 @@ brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_playlist_sources
 brave_chrome_browser_sources += brave_browser_renderer_context_menu_sources
 brave_chrome_browser_sources += brave_browser_request_otr_sources
+brave_chrome_browser_sources += brave_browser_psst_sources
 brave_chrome_browser_sources += brave_browser_search_engines_sources
 brave_chrome_browser_sources += brave_browser_speedreader_sources
 brave_chrome_browser_sources += brave_browser_sync_sources
@@ -588,6 +597,7 @@ brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_playlist_deps
 brave_chrome_browser_deps += brave_browser_renderer_context_menu_deps
 brave_chrome_browser_deps += brave_browser_request_otr_deps
+brave_chrome_browser_deps += brave_browser_psst_deps
 brave_chrome_browser_deps += brave_browser_search_engines_deps
 brave_chrome_browser_deps += brave_browser_speedreader_deps
 brave_chrome_browser_deps += brave_browser_sync_deps

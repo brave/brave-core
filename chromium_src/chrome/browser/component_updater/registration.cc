@@ -18,6 +18,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
 
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 namespace component_updater {
 
 void RegisterComponentsForUpdate() {
@@ -26,8 +27,10 @@ void RegisterComponentsForUpdate() {
   brave_wallet::WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponent(cus,
                                              g_browser_process->local_state());
-  psst::RegisterPsstComponent(cus);
+LOG(INFO) << "[PSST] RegisterComponentsForUpdate() #100 isValid:" << (brave_component_updater::BraveOnDemandUpdater::GetInstance()->IsValid());
   ai_chat::ManageLocalModelsComponentRegistration(cus);
+LOG(INFO) << "[PSST] RegisterComponentsForUpdate() #200 isValid:" << (brave_component_updater::BraveOnDemandUpdater::GetInstance()->IsValid());
+  psst::RegisterPsstComponent(cus);
 }
 
 }  // namespace component_updater
