@@ -1,6 +1,0 @@
-/target
-/bin
-Cargo.lock
-/hongg-fuzz/target
-/hongg-fuzz/hfuzz_target
-/hongg-fuzz/hfuzz_workspace

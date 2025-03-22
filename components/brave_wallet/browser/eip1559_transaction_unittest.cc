@@ -141,9 +141,8 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransactionAndHash) {
             "0x04", entry.max_priority_fee_per_gas, entry.max_fee_per_gas,
             nullptr));
 
-    int recid;
-    auto signature = *key.SignCompact(tx.GetHashedMessageToSign(0), &recid);
-    tx.ProcessSignature(signature, recid, 0);
+    auto signature = *key.SignCompact(tx.GetHashedMessageToSign(0));
+    tx.ProcessSignature(signature, 0);
     EXPECT_EQ(tx.GetSignedTransaction(), entry.signed_tx);
     EXPECT_EQ(tx.GetTransactionHash(), entry.hash);
   }

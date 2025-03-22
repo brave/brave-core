@@ -336,6 +336,10 @@ base::Value::Dict Eip1559Transaction::ToValue() const {
   return tx;
 }
 
+bool Eip1559Transaction::VIsRecid() const {
+  return true;
+}
+
 std::vector<uint8_t> Eip1559Transaction::Serialize() const {
   base::Value::List list;
   list.Append(RLPUint256ToBlob(chain_id_));

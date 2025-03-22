@@ -9,7 +9,11 @@ source_set("hd_key_common") {
   sources = [
     "hd_key_common.cc",
     "hd_key_common.h",
+    "secp256k1_signature.cc",
+    "secp256k1_signature.h",
   ]
+
+  deps = [ "//base" ]
 }
 
 source_set("hd_key") {

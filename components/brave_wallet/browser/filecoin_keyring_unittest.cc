@@ -6,12 +6,13 @@
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 
 #include "base/base64.h"
+#include "base/containers/to_vector.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/filecoin/rs/src/lib.rs.h"
+#include "brave/components/brave_wallet/rust/lib.rs.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,10 +26,8 @@ namespace {
 std::vector<uint8_t> GetPublicKey(const std::string& private_key_hex) {
   std::vector<uint8_t> private_key;
   base::HexStringToBytes(private_key_hex, &private_key);
-  auto result = filecoin::bls_private_key_to_public_key(
-      rust::Slice<const uint8_t>{private_key.data(), private_key.size()});
-  std::vector<uint8_t> public_key(result.begin(), result.end());
-  return public_key;
+  return base::ToVector(bls_private_key_to_public_key(
+      rust::Slice<const uint8_t>{private_key.data(), private_key.size()}));
 }
 }  // namespace
 
