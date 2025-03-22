@@ -1,0 +1,17 @@
+<!--
+  ~ Copyright (c) 2023 The Brave Authors. All rights reserved.
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  ~ You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@color/day_night_icon_color"
+        android:fillType="evenOdd"
+        android:pathData="M12.097,5.942H4.516V19.557H18.162V11.993C18.162,11.579 18.312,11.261 18.728,11.261C19.142,11.261 19.479,11.596 19.479,12.009V20.25C19.479,20.665 19.142,21 18.728,21H3.7C3.286,21 3,20.727 3,20.313V5.185C3,4.771 3.286,4.518 3.7,4.518H11.965C12.38,4.518 12.717,4.853 12.717,5.268C12.717,5.681 12.512,5.942 12.097,5.942ZM12.75,10.5C12.75,10.308 12.824,10.116 12.97,9.97L18.456,4.484L14.25,4.5C13.836,4.5 13.5,4.164 13.5,3.75C13.5,3.336 13.836,3 14.25,3L20.25,3C20.251,3 20.252,3 20.253,3C20.349,3.001 20.446,3.02 20.537,3.057C20.72,3.134 20.866,3.28 20.942,3.463C20.98,3.555 21,3.653 21,3.751V9.75C21,10.164 20.664,10.5 20.25,10.5C19.836,10.5 19.55,10.184 19.55,9.77V5.51L14.031,11.03C13.738,11.323 13.263,11.323 12.97,11.03C12.824,10.884 12.75,10.692 12.75,10.5Z" />
+</vector>
