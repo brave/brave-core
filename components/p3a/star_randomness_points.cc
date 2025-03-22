@@ -75,6 +75,14 @@ void StarRandomnessPoints::SendRandomnessRequest(
       GURL(base::StrCat({config_->star_randomness_host, "/instances/",
                          MetricLogTypeToString(log_type), "/randomness"}));
   resource_request->method = "POST";
+  auto* normal_network_service_observer =
+      randomness_meta->GetURLLoaderNetworkServiceObserver();
+  if (normal_network_service_observer) {
+    resource_request->trusted_params =
+        std::make_optional<network::ResourceRequest::TrustedParams>();
+    resource_request->trusted_params->url_loader_network_observer =
+        normal_network_service_observer->Bind();
+  }
 
   url_loaders_[log_type] = network::SimpleURLLoader::Create(
       std::move(resource_request), GetRandomnessServerInfoAnnotation());
@@ -98,7 +106,8 @@ void StarRandomnessPoints::SendRandomnessRequest(
   url_loaders_[log_type]->AttachStringForUpload(payload_str,
                                                 "application/json");
   url_loaders_[log_type]->SetURLLoaderFactoryOptions(
-      network::mojom::kURLLoadOptionSendSSLInfoWithResponse);
+      network::mojom::kURLLoadOptionSendSSLInfoWithResponse |
+      network::mojom::kURLLoadOptionSendSSLInfoForCertificateError);
 
   url_loaders_[log_type]->DownloadToString(
       url_loader_factory_.get(),
@@ -121,11 +130,6 @@ void StarRandomnessPoints::HandleRandomnessResponse(
                   "randomness request, "
                << "net error: " << error_str;
     std::move(callback).Run(nullptr, nullptr);
-    return;
-  }
-  if (!randomness_meta->VerifyRandomnessCert(url_loaders_[log_type].get())) {
-    std::move(callback).Run(nullptr, nullptr);
-    url_loaders_[log_type] = nullptr;
     return;
   }
   url_loaders_[log_type] = nullptr;

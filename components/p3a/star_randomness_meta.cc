@@ -103,13 +103,23 @@ StarRandomnessMeta::StarRandomnessMeta(
   for (MetricLogType log_type : kAllMetricLogTypes) {
     update_states_[log_type] = std::make_unique<RandomnessServerUpdateState>();
   }
-  std::string approved_cert_fp_str =
-      local_state->GetString(kApprovedCertFPPrefName);
-  net::HashValue approved_cert_fp;
-  if (!approved_cert_fp_str.empty() &&
-      approved_cert_fp.FromString(approved_cert_fp_str)) {
-    VLOG(2) << "StarRandomnessMeta: loaded cached approved cert";
-    approved_cert_fp_ = std::make_optional(approved_cert_fp);
+  if (!config_->disable_star_attestation) {
+    attestation_network_service_observer_ =
+        std::make_unique<StarURLLoaderNetworkServiceObserver>(
+            true, base::DoNothing());
+    normal_network_service_observer_ =
+        std::make_unique<StarURLLoaderNetworkServiceObserver>(
+            false, base::BindRepeating(&StarRandomnessMeta::AttestServer,
+                                       base::Unretained(this), false));
+    std::string approved_cert_fp_str =
+        local_state->GetString(kApprovedCertFPPrefName);
+    net::HashValue approved_cert_fp;
+    if (!approved_cert_fp_str.empty() &&
+        approved_cert_fp.FromString(approved_cert_fp_str)) {
+      VLOG(2) << "StarRandomnessMeta: loaded cached approved cert";
+      normal_network_service_observer_->SetApprovedCertFingerprint(
+          approved_cert_fp);
+    }
   }
 }
 
@@ -150,46 +160,12 @@ void StarRandomnessMeta::MigrateObsoleteLocalStatePrefs(
   }
 }
 
-bool StarRandomnessMeta::ShouldAttestEnclave() {
-  return !config_->disable_star_attestation &&
-         features::IsConstellationEnclaveAttestationEnabled();
-}
-
-bool StarRandomnessMeta::VerifyRandomnessCert(
-    network::SimpleURLLoader* url_loader) {
-  if (!ShouldAttestEnclave()) {
-    VLOG(2) << "StarRandomnessMeta: skipping approved cert check";
-    return true;
-  }
-  const network::mojom::URLResponseHead* response_info =
-      url_loader->ResponseInfo();
-  if (!approved_cert_fp_.has_value()) {
-    LOG(ERROR) << "StarRandomnessMeta: approved cert is missing";
-    AttestServer(false);
-    return false;
-  }
-  if (!response_info->ssl_info.has_value() ||
-      response_info->ssl_info->cert == nullptr) {
-    LOG(ERROR) << "StarRandomnessMeta: ssl info is missing from response info";
-    return false;
-  }
-  net::HashValue cert_fp_hash = net::HashValue(
-      response_info->ssl_info->cert->CalculateChainFingerprint256());
-  if (cert_fp_hash != *approved_cert_fp_) {
-    LOG(ERROR) << "StarRandomnessMeta: approved cert mismatch, will retry "
-                  "attestation; fp = "
-               << cert_fp_hash.ToString();
-    AttestServer(false);
-    return false;
-  }
-  return true;
-}
-
 void StarRandomnessMeta::RequestServerInfo(MetricLogType log_type) {
   RandomnessServerUpdateState* update_state = update_states_[log_type].get();
   update_state->rnd_server_info = nullptr;
 
-  if (ShouldAttestEnclave() && !approved_cert_fp_.has_value()) {
+  if (normal_network_service_observer_ &&
+      !normal_network_service_observer_->HasApprovedCert()) {
     AttestServer(true);
     return;
   }
@@ -240,11 +216,18 @@ void StarRandomnessMeta::RequestServerInfo(MetricLogType log_type) {
                "server info request";
     return;
   }
+  if (normal_network_service_observer_) {
+    resource_request->trusted_params =
+        std::make_optional<network::ResourceRequest::TrustedParams>();
+    resource_request->trusted_params->url_loader_network_observer =
+        normal_network_service_observer_->Bind();
+  }
 
   update_state->url_loader = network::SimpleURLLoader::Create(
       std::move(resource_request), GetRandomnessRequestAnnotation());
   update_state->url_loader->SetURLLoaderFactoryOptions(
-      network::mojom::kURLLoadOptionSendSSLInfoWithResponse);
+      network::mojom::kURLLoadOptionSendSSLInfoWithResponse |
+      network::mojom::kURLLoadOptionSendSSLInfoForCertificateError);
   update_state->url_loader->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&StarRandomnessMeta::HandleServerInfoResponse,
@@ -257,12 +240,17 @@ RandomnessServerInfo* StarRandomnessMeta::GetCachedRandomnessServerInfo(
   return update_states_[log_type]->rnd_server_info.get();
 }
 
+StarURLLoaderNetworkServiceObserver*
+StarRandomnessMeta::GetURLLoaderNetworkServiceObserver() {
+  return normal_network_service_observer_.get();
+}
+
 void StarRandomnessMeta::AttestServer(bool make_info_request_after) {
   if (attestation_pending_) {
     return;
   }
   attestation_pending_ = true;
-  approved_cert_fp_ = std::nullopt;
+  normal_network_service_observer_->SetApprovedCertFingerprint(std::nullopt);
 
   VLOG(2) << "StarRandomnessMeta: starting attestation";
   GURL attestation_url = GURL(
@@ -274,6 +262,7 @@ void StarRandomnessMeta::AttestServer(bool make_info_request_after) {
   }
   nitro_utils::RequestAndVerifyAttestationDocument(
       attestation_url, url_loader_factory_.get(),
+      attestation_network_service_observer_.get(),
       base::BindOnce(&StarRandomnessMeta::HandleAttestationResult,
                      weak_ptr_factory_.GetWeakPtr(), make_info_request_after));
 }
@@ -291,9 +280,11 @@ void StarRandomnessMeta::HandleAttestationResult(
     }
     return;
   }
-  approved_cert_fp_ = std::make_optional(
-      net::HashValue(approved_cert->CalculateChainFingerprint256()));
-  std::string approved_cert_fp_str = approved_cert_fp_->ToString();
+  auto approved_cert_fp =
+      net::HashValue(approved_cert->CalculateChainFingerprint256());
+  std::string approved_cert_fp_str = approved_cert_fp.ToString();
+  normal_network_service_observer_->SetApprovedCertFingerprint(
+      approved_cert_fp);
   local_state_->SetString(kApprovedCertFPPrefName, approved_cert_fp_str);
   attestation_pending_ = false;
   VLOG(2) << "StarRandomnessMeta: attestation succeeded; fp = "
@@ -336,10 +327,6 @@ void StarRandomnessMeta::HandleServerInfoResponse(
         net::ErrorToShortString(update_state->url_loader->NetError());
     VLOG(2) << "StarRandomnessMeta: no response body for randomness server "
             << "info request, net error: " << error_str;
-    ScheduleServerInfoRetry(log_type);
-    return;
-  }
-  if (!VerifyRandomnessCert(update_state->url_loader.get())) {
     ScheduleServerInfoRetry(log_type);
     return;
   }

@@ -15,6 +15,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/p3a/buildflags.h"
+#include "brave/components/p3a/features.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/switches.h"
 #include "url/url_constants.h"
@@ -30,6 +31,7 @@ constexpr char kP2AJsonHostPrefix[] = "p2a-json";
 constexpr char kJsonURLPath[] = "/";
 constexpr char kConstellationCollectorHostPrefix[] = "collector.bsg";
 constexpr char kRandomnessHostPrefix[] = "star-randsrv.bsg";
+constexpr char kRandomnessHostV2Prefix[] = "star-randsrv-v2.bsg";
 
 base::TimeDelta MaybeOverrideTimeDeltaFromCommandLine(
     base::CommandLine* cmdline,
@@ -112,8 +114,12 @@ P3AConfig::P3AConfig()
           GetDefaultURL(kP3ACreativeHostPrefix, kJsonURLPath)),
       p2a_json_upload_url(GetDefaultURL(kP2AJsonHostPrefix, kJsonURLPath)),
       p3a_constellation_upload_host(
-          GetDefaultHost(kConstellationCollectorHostPrefix)),
-      star_randomness_host(GetDefaultHost(kRandomnessHostPrefix)) {
+          GetDefaultHost(kConstellationCollectorHostPrefix)) {
+  disable_star_attestation =
+      !features::IsConstellationEnclaveAttestationEnabled();
+  star_randomness_host =
+      GetDefaultHost(disable_star_attestation ? kRandomnessHostPrefix
+                                              : kRandomnessHostV2Prefix);
   CheckURL(p3a_json_upload_url);
   CheckURL(p3a_creative_upload_url);
   CheckURL(p2a_json_upload_url);

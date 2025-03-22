@@ -32,23 +32,6 @@ constexpr char kBadDocument[] =
     "yxyk5Gl1c2VyX2RhdGFYIgogsn3PzVQFXXUPf6W5qVRUi3bVGRJ2C6PRri1YOt5YwqlqcHVi"
     "bGljX2tlefY=";
 
-// Version of the attestation document with older user_data scheme
-constexpr char kOldDocument[] =
-    "pmVub25jZVShkGajO9w8jptiAlBSISId8fsW9WZkaWdlc3RmU0hBMzg0aW1vZHVs"
-    "ZV9pZHgnaS0wYjQ2MzcxODcxOWFkYjI0YS1lbmMwMTg4OTc4NjRhYmFlNWQyaXRp"
-    "bWVzdGFtcBsAAAGIyxyk5Gl1c2VyX2RhdGFYT3NoYTI1NjpDAdOabr43snNXvkv/"
-    "2MrFUkqawkwDXxM30KIg0PKpejtzaGEyNTY6AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-    "AAAAAAAAAAAAAABqcHVibGljX2tlefY=";
-
-// Version of the attestation document with randomized older scheme
-// user_data and randomized nonce
-constexpr char kOldBadDocument[] =
-    "pmVub25jZVSYQjMTB+E+8zgs690i18gcDtPF5WZkaWdlc3RmU0hBMzg0aW1vZHVs"
-    "ZV9pZHgnaS0wYjQ2MzcxODcxOWFkYjI0YS1lbmMwMTg4OTc4NjRhYmFlNWQyaXRp"
-    "bWVzdGFtcBsAAAGIyxyk5Gl1c2VyX2RhdGFYT3NoYTI1NjpZ1l7mBoYUN/QYaRUP"
-    "4qHov+2saZzBKCCBT16rA6fp6DtzaGEyNTY6psMTTAVeLx8shS1642BWxoW1q/dV"
-    "RMvN0XG/pFkT4cVqcHVibGljX2tlefY=";
-
 // TLS certificate from the same deployment as kShortDocument
 // Certificates can be downloaded with the browser or on the command line:
 // openssl s_client -showcerts -servername $HOST -connect $HOST:443 < /dev/null
@@ -121,23 +104,6 @@ TEST_F(NitroAttestationTest, UserData) {
 
   // Does the invalid document fail to verify against the same cert?
   auto bad = FromBase64(kBadDocument);
-  EXPECT_FALSE(VerifyUserDataKeyForTesting(bad, cert));
-}
-
-TEST_F(NitroAttestationTest, OldUserData) {
-  // Parse a TLS cert whose fingerprint matches the test
-  // attestation document.
-  auto cert_bytes = FromBase64(kTLSCert);
-  auto cert = net::X509Certificate::CreateFromBytes(cert_bytes);
-  ASSERT_TRUE(cert);
-
-  // Does the old scheme document verify against the expected
-  // cert fingerprint?
-  auto old = FromBase64(kOldDocument);
-  EXPECT_TRUE(VerifyUserDataKeyForTesting(old, cert));
-
-  // Does the invalid document fail to verify against the same cert?
-  auto bad = FromBase64(kOldBadDocument);
   EXPECT_FALSE(VerifyUserDataKeyForTesting(bad, cert));
 }
 
