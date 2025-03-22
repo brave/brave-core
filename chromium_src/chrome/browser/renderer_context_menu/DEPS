@@ -5,6 +5,7 @@ include_rules = [
   "+brave/components/ai_chat/core/browser",
   "+brave/components/ai_chat/core/common",
   "+brave/components/brave_shields/core/common",
+  "+brave/components/email_aliases/browser",
   "+brave/components/ai_rewriter/common/features.h",
   "+brave/components/ai_chat/core/browser",
   "+brave/components/text_recognition/common",
