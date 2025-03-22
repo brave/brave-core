@@ -28,3 +28,12 @@ if (!is_android) {
     ]
   }
 }
+
+source_set("split_view") {
+  sources = [ "split_view_browser_data.h" ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/ui/tabs:tab_model",
+  ]
+}

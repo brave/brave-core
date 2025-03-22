@@ -6,12 +6,18 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_
 
+// To prevent widely used "Init" re-definition.
+#include "base/functional/callback.h"
+#include "chrome/common/buildflags.h"
+
 #define BrowserWindowFeatures BrowserWindowFeatures_ChromiumImpl
+#define Init virtual Init
 #define InitPostBrowserViewConstruction virtual InitPostBrowserViewConstruction
 
 #include "src/chrome/browser/ui/browser_window/public/browser_window_features.h"  // IWYU pragma: export
 
 #undef InitPostBrowserViewConstruction
+#undef Init
 #undef BrowserWindowFeatures
 
 #include "brave/browser/ui/browser_window/public/browser_window_features.h"

@@ -17,11 +17,26 @@
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
 #include "brave/components/misc_metrics/split_view_metrics.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 
-SplitViewBrowserData::SplitViewBrowserData(Browser* browser)
-    : BrowserUserData(*browser),
-      tab_strip_model_adapter_(*this, browser->tab_strip_model()) {
+// static
+SplitViewBrowserData* SplitViewBrowserData::FromBrowser(
+    const Browser* browser) {
+  CHECK(browser);
+  if (auto* features = browser->browser_window_features()) {
+    return features->split_view_browser_data();
+  }
+  return nullptr;
+}
+
+SplitViewBrowserData::SplitViewBrowserData(BrowserWindowInterface* browser)
+    : tab_strip_model_adapter_(std::make_unique<SplitViewTabStripModelAdapter>(
+          *this,
+          browser->GetTabStripModel())) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
 }
 
@@ -36,7 +51,7 @@ void SplitViewBrowserData::TileTabs(const TabTile& tile) {
   CHECK(!IsTabTiled(tile.first));
   CHECK(!IsTabTiled(tile.second));
 
-  auto& model = tab_strip_model_adapter_.tab_strip_model();
+  auto& model = tab_strip_model_adapter_->tab_strip_model();
   CHECK_LT(model.GetIndexOfTab(tile.first.Get()),
            model.GetIndexOfTab(tile.second.Get()));
 
@@ -51,13 +66,13 @@ void SplitViewBrowserData::TileTabs(const TabTile& tile) {
   tile_index_for_tab_[tile.second] = tiles_.size() - 1;
 
   bool tabs_are_adjacent =
-      tab_strip_model_adapter_.SynchronizePinnedState(tile, tile.first);
-  tabs_are_adjacent |= tab_strip_model_adapter_.SynchronizeGroupedState(
+      tab_strip_model_adapter_->SynchronizePinnedState(tile, tile.first);
+  tabs_are_adjacent |= tab_strip_model_adapter_->SynchronizeGroupedState(
       tile, /*source=*/tile.first,
       model.GetTabGroupForTab(model.GetIndexOfTab(tile.first.Get())));
 
   if (!tabs_are_adjacent) {
-    tab_strip_model_adapter_.MakeTiledTabsAdjacent(tile);
+    tab_strip_model_adapter_->MakeTiledTabsAdjacent(tile);
   }
 
   for (auto& observer : observers_) {
@@ -211,13 +226,13 @@ SplitViewBrowserData::OnTabDragEndedClosure::~OnTabDragEndedClosure() = default;
 
 SplitViewBrowserData::OnTabDragEndedClosure
 SplitViewBrowserData::TabDragStarted() {
-  tab_strip_model_adapter_.TabDragStarted();
+  tab_strip_model_adapter_->TabDragStarted();
 
   return OnTabDragEndedClosure(
       this, base::BindOnce(
                 [](base::WeakPtr<SplitViewBrowserData> data) {
                   if (data) {
-                    data->tab_strip_model_adapter_.TabDragEnded();
+                    data->tab_strip_model_adapter_->TabDragEnded();
                   }
                 },
                 weak_ptr_factory_.GetWeakPtr()));
@@ -250,5 +265,3 @@ void SplitViewBrowserData::TabsAttachedToNewBrowser(Browser* browser) {
   Transfer(SplitViewBrowserData::FromBrowser(browser),
            std::move(tiles_to_be_attached_to_new_window_));
 }
-
-BROWSER_USER_DATA_KEY_IMPL(SplitViewBrowserData);

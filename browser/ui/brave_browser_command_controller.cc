@@ -316,11 +316,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     UpdateCommandEnabled(IDC_READING_LIST_MENU_ADD_TAB, true);
     UpdateCommandEnabled(IDC_READING_LIST_MENU_SHOW_UI, true);
   }
-
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
-      browser_->is_type_normal()) {
-    UpdateCommandForSplitView();
-  }
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -456,10 +451,7 @@ void BraveBrowserCommandController::UpdateCommandsForPin() {
 void BraveBrowserCommandController::UpdateCommandForSplitView() {
   auto* split_view_browser_data =
       SplitViewBrowserData::FromBrowser(base::to_address(browser_));
-  if (!split_view_browser_data) {
-    // Can happen on start up.
-    return;
-  }
+  CHECK(split_view_browser_data);
 
   if (!split_view_browser_data_observation_.IsObserving()) {
     split_view_browser_data_observation_.Observe(split_view_browser_data);
