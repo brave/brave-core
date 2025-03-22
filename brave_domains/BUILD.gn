@@ -6,6 +6,12 @@
 import("//build/buildflag_header.gni")
 import("buildflags.gni")
 
+if (is_official_build) {
+  # We must have a value for at least production, otherwise
+  # network requests will be sent to the subdomains as fully-qualified.
+  assert(brave_services_production_domain != "")
+}
+
 source_set("brave_domains") {
   sources = [
     "service_domains.cc",
