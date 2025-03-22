@@ -45,10 +45,10 @@ import SwiftUI
 
     vpnStatusPublisher?
       .receive(on: RunLoop.main)
-      .sink(receiveValue: { status in
+      .sink(receiveValue: { [weak self] status in
         MainActor.assumeIsolated {
           withAnimation {
-            self.vpnStatus = status
+            self?.vpnStatus = status
           }
         }
       })
