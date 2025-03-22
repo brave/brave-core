@@ -51,6 +51,7 @@
 #include "components/sync/base/features.h"
 #include "components/user_education/common/user_education_features.h"
 #include "components/webapps/browser/features.h"
+#include "components/webui/chrome_urls/features.h"
 #include "content/common/features.h"
 #include "content/public/common/btm_utils.h"
 #include "content/public/common/content_features.h"
@@ -108,6 +109,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_ANDROID)
       &chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2,
 #endif
+      &chrome_urls::kInternalOnlyUisPref,
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
