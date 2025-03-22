@@ -1,7 +1,7 @@
 {
     "archives": {
         "JetStream2": {
-            "DEFAULT": "jetstream2_27a2217814.wprgo"
+            "DEFAULT": "jetstream2_5993ec0792.wprgo"
         }
     },
     "description": "Describes the Web Page Replay archives for a story set. Don't edit by hand! Use record_wpr for updating.",
