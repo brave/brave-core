@@ -109,12 +109,9 @@ public class BraveSigninManager implements SigninManager {
     public void wipeSyncUserData(Runnable wipeDataCallback, @DataWipeOption int dataWipeOption) {}
 
     @Override
-    public boolean isSyncOptInAllowed() {
-        return false;
-    }
-
-    @Override
-    public void revokeSyncConsent(@SignoutReason int signoutSource, SignOutCallback signOutCallback,
+    public void revokeSyncConsent(
+            @SignoutReason int signoutSource,
+            SignOutCallback signOutCallback,
             boolean forceWipeUserData) {}
 
     @Override
