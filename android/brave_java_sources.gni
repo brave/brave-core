@@ -257,6 +257,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/notifications/retention/RetentionNotificationUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPage.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabTakeoverInfobar.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNtpAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/NtpUtil.java",

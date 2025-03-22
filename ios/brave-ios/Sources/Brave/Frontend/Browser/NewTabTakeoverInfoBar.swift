@@ -5,13 +5,13 @@
 import BraveStrings
 import SwiftUI
 
-class SearchResultAdClickedInfoBar: InfoBar {
+class NewTabTakeoverInfoBar: InfoBar {
   init(tabManager: TabManager) {
     super.init(
       tabManager: tabManager,
-      labelText: Strings.Ads.searchResultAdClickedInfoBarMessage,
-      linkText: Strings.Ads.searchResultAdClickedInfoBarLearnMoreOptOutChoices,
-      linkUrl: "https://search.brave.com/help/conversion-reporting"
+      labelText: Strings.Ads.newTabTakeoverInfoBarMessage,
+      linkText: Strings.Ads.newTabTakeoverInfoBarLearnMoreOptOutChoices,
+      linkUrl: "https://support.brave.com/hc/en-us/articles/35182999599501"
     )
   }
 

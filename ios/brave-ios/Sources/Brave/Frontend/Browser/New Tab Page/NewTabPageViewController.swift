@@ -90,6 +90,7 @@ protocol NewTabPageDelegate: AnyObject {
   func brandedImageCalloutActioned(_ state: BrandedImageCalloutState)
   func tappedQRCodeButton(url: URL)
   func showNTPOnboarding()
+  func showNewTabTakeoverInfoBarIfNeeded()
 }
 
 /// The new tab page. Shows users a variety of information, including stats and
@@ -421,6 +422,7 @@ class NewTabPageViewController: UIViewController {
     super.viewDidAppear(animated)
 
     reportSponsoredBackgroundEvent(.servedImpression) { [weak self] _ in
+      self?.delegate?.showNewTabTakeoverInfoBarIfNeeded()
       self?.reportSponsoredBackgroundEvent(.viewedImpression)
     }
 
