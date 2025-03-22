@@ -2480,3 +2480,7 @@ dependencies = [
  "memuse",
  "subtle",
 ]
+
+[[patch.unused]]
+name = "anyhow"
+version = "1.0.95"
