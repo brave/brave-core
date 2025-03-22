@@ -798,3 +798,8 @@ body {
     width: 56px;
   }
 }
+
+/* Hide Google Translate Element */
+#goog-gt-tt {
+    display: none !important;
+}
