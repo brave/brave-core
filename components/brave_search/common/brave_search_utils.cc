@@ -5,40 +5,43 @@
 
 #include "brave/components/brave_search/common/brave_search_utils.h"
 
-#include <string>
-#include <string_view>
 #include <vector>
 
-#include "base/containers/contains.h"
-#include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "brave/components/brave_search/common/features.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 #include "url/url_constants.h"
 
 namespace {
 
-constexpr auto kVettedHosts =
-    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
-                                             {
-                                                 "safesearch.brave.com",
-                                                 "safesearch.brave.software",
-                                                 "safesearch.bravesoftware.com",
-                                                 "search-dev-local.brave.com",
-                                                 "search.brave.com",
-                                                 "search.brave.software",
-                                                 "search.bravesoftware.com",
-                                             });
+const std::vector<url::Origin>& OriginList() {
+  static const base::NoDestructor<std::vector<url::Origin>> list([] {
+    std::vector<url::Origin> list;
+    std::ranges::transform(brave_search::kVettedHosts, std::back_inserter(list),
+                           [](auto& origin_string) {
+                             return url::Origin::Create(GURL(origin_string));
+                           });
+    return list;
+  }());
+  return *list;
+}
 
 }  // namespace
 
 namespace brave_search {
 
-bool IsAllowedHost(const GURL& url) {
-  if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
+bool IsAllowedHost(const GURL& origin) {
+  if (!origin.is_valid() || !origin.SchemeIs(url::kHttpsScheme)) {
     return false;
   }
-  return kVettedHosts.contains(url.host_piece());
+  const auto& safe_origins = OriginList();
+  for (const url::Origin& safe_origin : safe_origins) {
+    if (safe_origin.host() == origin.host()) {
+      return true;
+    }
+  }
+  return false;
 }
 
 bool IsDefaultAPIEnabled() {

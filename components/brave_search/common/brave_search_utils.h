@@ -6,9 +6,25 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_COMMON_BRAVE_SEARCH_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_SEARCH_COMMON_BRAVE_SEARCH_UTILS_H_
 
+#include <string_view>
+
+#include "base/containers/fixed_flat_set.h"
+
 class GURL;
 
 namespace brave_search {
+
+inline constexpr auto kVettedHosts = base::MakeFixedFlatSet<std::string_view>(
+    base::sorted_unique,
+    {
+        "https://safesearch.brave.com",
+        "https://safesearch.brave.software",
+        "https://safesearch.bravesoftware.com",
+        "https://search-dev-local.brave.com",
+        "https://search.brave.com",
+        "https://search.brave.software",
+        "https://search.bravesoftware.com",
+    });
 
 bool IsAllowedHost(const GURL& url);
 bool IsDefaultAPIEnabled();

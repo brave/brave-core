@@ -96,6 +96,7 @@
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
+#include "brave/components/skus/common/skus_utils.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
@@ -1308,6 +1309,29 @@ bool PreventDarkModeFingerprinting(WebContents* web_contents,
     return true;
   }
   return false;
+}
+
+std::vector<url::Origin>
+BraveContentBrowserClient::GetOriginsRequiringDedicatedProcess() {
+  std::vector<url::Origin> isolated_origin_list;
+
+  std::transform(skus::kSafeOrigins.cbegin(), skus::kSafeOrigins.cend(),
+                 std::back_inserter(isolated_origin_list),
+                 [](auto& url) { return url::Origin::Create(GURL(url)); });
+
+  if (brave_search::IsDefaultAPIEnabled()) {
+    std::transform(brave_search::kVettedHosts.cbegin(),
+                   brave_search::kVettedHosts.cend(),
+                   std::back_inserter(isolated_origin_list),
+                   [](auto& url) { return url::Origin::Create(GURL(url)); });
+  }
+
+  auto origins_from_chrome =
+      ChromeContentBrowserClient::GetOriginsRequiringDedicatedProcess();
+  std::move(std::begin(origins_from_chrome), std::end(origins_from_chrome),
+            std::back_inserter(isolated_origin_list));
+
+  return isolated_origin_list;
 }
 
 bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(

@@ -8,6 +8,9 @@
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/components/brave_search/common/brave_search_utils.h"
+#include "brave/components/skus/common/skus_utils.h"
+#include "chrome/browser/chrome_content_browser_client.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
 #include "extensions/buildflags/buildflags.h"
@@ -118,4 +121,22 @@ TEST_F(BraveContentBrowserClientTest, ResolvesWelcomePage) {
 TEST_F(BraveContentBrowserClientTest, IsolatedWebAppsAreDisabled) {
   BraveContentBrowserClient client;
   EXPECT_FALSE(client.AreIsolatedWebAppsEnabled(&profile_));
+}
+
+TEST_F(BraveContentBrowserClientTest, GetOriginsRequiringDedicatedProcess) {
+  ChromeContentBrowserClient chrome_client;
+  BraveContentBrowserClient client;
+  auto chrome_origins = chrome_client.GetOriginsRequiringDedicatedProcess();
+  auto brave_origins = client.GetOriginsRequiringDedicatedProcess();
+
+  ASSERT_TRUE(std::all_of(
+      brave_origins.begin(), brave_origins.end(),
+      [chrome_origins](auto& origin) {
+        return std::any_of(chrome_origins.begin(), chrome_origins.end(),
+                           [origin](auto& other) {
+                             return other.IsSameOriginWith(origin);
+                           }) ||
+               skus::IsSafeOrigin(origin.GetURL()) ||
+               brave_search::IsAllowedHost(origin.GetURL());
+      }));
 }
