@@ -14,17 +14,17 @@ class GURL;
 
 namespace brave_search {
 
-inline constexpr auto kVettedHosts =
-    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
-                                             {
-                                                 "safesearch.brave.com",
-                                                 "safesearch.brave.software",
-                                                 "safesearch.bravesoftware.com",
-                                                 "search-dev-local.brave.com",
-                                                 "search.brave.com",
-                                                 "search.brave.software",
-                                                 "search.bravesoftware.com",
-                                             });
+inline constexpr auto kVettedHosts = base::MakeFixedFlatSet<std::string_view>(
+    base::sorted_unique,
+    {
+        "https://safesearch.brave.com",
+        "https://safesearch.brave.software",
+        "https://safesearch.bravesoftware.com",
+        "https://search-dev-local.brave.com",
+        "https://search.brave.com",
+        "https://search.brave.software",
+        "https://search.bravesoftware.com",
+    });
 
 bool IsAllowedHost(const GURL& url);
 bool IsDefaultAPIEnabled();

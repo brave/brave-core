@@ -133,7 +133,9 @@ TEST_F(BraveContentBrowserClientTest, GetOriginsRequiringDedicatedProcess) {
       brave_origins.begin(), brave_origins.end(),
       [chrome_origins](auto& origin) {
         return std::any_of(chrome_origins.begin(), chrome_origins.end(),
-                           [origin](auto& other) { return other == origin; }) ||
+                           [origin](auto& other) {
+                             return other.IsSameOriginWith(origin);
+                           }) ||
                skus::IsSafeOrigin(origin.GetURL()) ||
                brave_search::IsAllowedHost(origin.GetURL());
       }));

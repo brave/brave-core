@@ -1317,13 +1317,13 @@ BraveContentBrowserClient::GetOriginsRequiringDedicatedProcess() {
 
   std::transform(skus::kSafeOrigins.cbegin(), skus::kSafeOrigins.cend(),
                  std::back_inserter(isolated_origin_list),
-                 [](auto&& url) { return url::Origin::Create(GURL(url)); });
+                 [](auto& url) { return url::Origin::Create(GURL(url)); });
 
   if (brave_search::IsDefaultAPIEnabled()) {
     std::transform(brave_search::kVettedHosts.cbegin(),
                    brave_search::kVettedHosts.cend(),
                    std::back_inserter(isolated_origin_list),
-                   [](auto&& url) { return url::Origin::Create(GURL(url)); });
+                   [](auto& url) { return url::Origin::Create(GURL(url)); });
   }
 
   auto origins_from_chrome =
