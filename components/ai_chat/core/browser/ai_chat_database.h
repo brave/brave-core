@@ -66,6 +66,11 @@ class AIChatDatabase {
   bool UpdateConversationTitle(std::string_view conversation_uuid,
                                std::string_view title);
 
+  // Updates the token information of the conversation with the provided UUID
+  bool UpdateConversationTokenInfo(std::string_view conversation_uuid,
+                                   uint64_t total_tokens,
+                                   uint64_t trimmed_tokens);
+
   // Deletes the conversation with the provided UUID
   bool DeleteConversation(std::string_view conversation_uuid);
 

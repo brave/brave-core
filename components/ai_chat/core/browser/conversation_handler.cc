@@ -1267,6 +1267,14 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     return;
   }
 
+  if (event->is_content_receipt_event()) {
+    OnConversationTokenInfoChanged(
+        event->get_content_receipt_event()->total_tokens,
+        event->get_content_receipt_event()->trimmed_tokens);
+    // Don't add this event to history
+    return;
+  }
+
   entry->events->push_back(std::move(event));
   // Update clients for partial entries but not observers, who will get notified
   // when we know this is a complete entry.
@@ -1717,6 +1725,8 @@ ConversationHandler::GetStateForConversationEntries() {
   entries_state->is_generating = IsRequestInProgress();
   entries_state->is_content_refined = is_content_refined_;
   entries_state->is_leo_model = is_leo_model;
+  entries_state->total_tokens = metadata_->total_tokens;
+  entries_state->trimmed_tokens = metadata_->trimmed_tokens;
   entries_state->content_used_percentage =
       metadata_->associated_content
           ? std::make_optional(
@@ -1754,6 +1764,15 @@ void ConversationHandler::OnClientConnectionChanged() {
 void ConversationHandler::OnConversationTitleChanged(std::string_view title) {
   for (auto& observer : observers_) {
     observer.OnConversationTitleChanged(metadata_->uuid, std::string(title));
+  }
+}
+
+void ConversationHandler::OnConversationTokenInfoChanged(
+    uint64_t total_tokens,
+    uint64_t trimmed_tokens) {
+  for (auto& observer : observers_) {
+    observer.OnConversationTokenInfoChanged(metadata_->uuid, total_tokens,
+                                            trimmed_tokens);
   }
 }
 

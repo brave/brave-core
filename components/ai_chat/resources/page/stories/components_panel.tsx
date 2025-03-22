@@ -40,7 +40,8 @@ const eventTemplate: Mojom.ConversationEntryEvent = {
   searchStatusEvent: undefined,
   selectedLanguageEvent: undefined,
   conversationTitleEvent: undefined,
-  sourcesEvent: undefined
+  sourcesEvent: undefined,
+  contentReceiptEvent: undefined
 }
 
 function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
@@ -86,6 +87,8 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     updatedTime: { internalValue: BigInt('13278618001000000') },
     associatedContent: undefined,
     modelKey: undefined,
+    totalTokens: BigInt(0),
+    trimmedTokens: BigInt(0),
   },
   {
     title: 'Sorting C++ vectors is hard especially when you have to have a very long title for your conversation to test text clipping or wrapping',
@@ -94,6 +97,8 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     updatedTime: { internalValue: BigInt('13278618001000001') },
     associatedContent: undefined,
     modelKey: undefined,
+    totalTokens: BigInt(0),
+    trimmedTokens: BigInt(0),
   },
   {
     title: '',
@@ -102,6 +107,8 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     updatedTime: { internalValue: BigInt('13278618001000002') },
     associatedContent: undefined,
     modelKey: undefined,
+    totalTokens: BigInt(0),
+    trimmedTokens: BigInt(0),
   }
 ]
 
@@ -474,6 +481,8 @@ type CustomArgs = {
   shouldShowLongConversationInfo: boolean
   shouldShowLongPageWarning: boolean
   shouldShowRefinedWarning: boolean
+  totalTokens: number
+  trimmedTokens: number
   isGenerating: boolean
   showAttachments: boolean
   isNewConversation: boolean
@@ -506,6 +515,8 @@ const args: CustomArgs = {
   shouldShowLongConversationInfo: false,
   shouldShowLongPageWarning: false,
   shouldShowRefinedWarning: false,
+  totalTokens: 0,
+  trimmedTokens: 0,
   isGenerating: false,
   showAttachments: true,
   isNewConversation: false,
@@ -701,9 +712,12 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     conversationHistory: conversationContext.conversationHistory,
     isGenerating: conversationContext.isGenerating,
     isLeoModel: conversationContext.isCurrentModelLeo,
-    contentUsedPercentage: (options.args.shouldShowLongPageWarning || options.args.shouldShowRefinedWarning)
+    contentUsedPercentage: (options.args.shouldShowLongPageWarning ||
+                            options.args.shouldShowRefinedWarning)
       ? 48 : 100,
     isContentRefined: options.args.shouldShowRefinedWarning,
+    totalTokens: BigInt(options.args.totalTokens),
+    trimmedTokens: BigInt(options.args.trimmedTokens),
     canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
     isMobile: aiChatContext.isMobile
   }
