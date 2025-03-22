@@ -9,6 +9,7 @@ import BraveUI
 import Foundation
 import Preferences
 import Shared
+import Storage
 import os.log
 
 // MARK: - SearchSuggestionDataSourceDelegate
@@ -22,12 +23,11 @@ class SearchSuggestionDataSource {
   // MARK: SearchListSection
 
   enum SearchListSection: Int, CaseIterable {
-    case quickBar
     case searchSuggestionsOptIn
     case searchSuggestions
+    case braveSearchPromotion
     case findInPage
     case openTabsAndHistoryAndBookmarks
-    case aiChat
   }
 
   let tabType: TabType
@@ -68,30 +68,10 @@ class SearchSuggestionDataSource {
     return quickSearchEngines.count > 1
   }
 
-  var availableSections: [SearchListSection] {
-    var sections = [SearchListSection]()
-    sections.append(.quickBar)
-
-    if !tabType.isPrivate && searchEngines?.shouldShowSearchSuggestionsOptIn == true {
-      sections.append(.searchSuggestionsOptIn)
-    }
-
-    if !tabType.isPrivate && searchEngines?.shouldShowSearchSuggestions == true {
-      sections.append(.searchSuggestions)
-    }
-    sections.append(.findInPage)
-
-    if searchEngines?.shouldShowBrowserSuggestions == true {
-      sections.append(.openTabsAndHistoryAndBookmarks)
-    }
-
-    if !tabType.isPrivate && Preferences.AIChat.autocompleteSuggestionsEnabled.value
+  var isAIChatAvailable: Bool {
+    !tabType.isPrivate
+      && Preferences.AIChat.leoInQuickSearchBarEnabled.value
       && FeatureList.kAIChat.enabled
-    {
-      sections.append(.aiChat)
-    }
-
-    return sections
   }
 
   var braveSearchPromotionAvailable: Bool {
