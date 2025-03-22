@@ -75,7 +75,15 @@ class ConversationAPIClient {
   struct ConversationEvent {
     mojom::CharacterType role;
     ConversationEventType type;
-    std::string content;
+    std::vector<std::string> content;
+
+    ConversationEvent(mojom::CharacterType,
+                      ConversationEventType,
+                      const std::vector<std::string>&);
+    ConversationEvent();
+    ~ConversationEvent();
+    ConversationEvent(const ConversationEvent&);
+    ConversationEvent& operator=(const ConversationEvent&);
   };
 
   ConversationAPIClient(

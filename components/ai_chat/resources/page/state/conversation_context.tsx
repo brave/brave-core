@@ -507,30 +507,34 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   const uploadImage = () => {
-    if (!context.conversationUuid) {
-      console.error('No conversationUuid found')
-      return
-    }
-    // For now we only allow uploading 1 image per conversation.
-    if (context.pendingMessageImages) {
-      setPartialContext({
-        pendingMessageImages: null
-      })
-    }
-    aiChatContext.uiHandler?.uploadImage(context.conversationUuid)
-    .then(({uploadedImage}) => {
-      if (uploadedImage) {
+    aiChatContext.uiHandler?.uploadImage()
+    .then(({uploadedImages}) => {
+      if (uploadedImages) {
         setPartialContext({
-          pendingMessageImages: [uploadedImage]
+          pendingMessageImages: context.pendingMessageImages
+            ? [...context.pendingMessageImages, ...uploadedImages]
+            : [...uploadedImages]
         })
       }
     })
   }
 
   const removeImage = (index: number) => {
-    setPartialContext({
-      pendingMessageImages: null
-    })
+    if (!context.pendingMessageImages || context.pendingMessageImages.length === 0) {
+      return
+    }
+
+    if (context.pendingMessageImages.length === 1) {
+      setPartialContext({
+        pendingMessageImages: null
+      })
+    } else {
+      const updatedImages = [...context.pendingMessageImages]
+      updatedImages.splice(index, 1)
+      setPartialContext({
+        pendingMessageImages: updatedImages
+      })
+    }
   }
 
   const store: ConversationContext = {
