@@ -2311,6 +2311,8 @@
 -FlocIdProviderSortingLshUninitializedBrowserTest.*
 -FlocOriginTrialBrowserTest.*
 -FontPrewarmerTabHelperTest.*
+-FromGwsAbandonedPageLoadMetricsObserverWithImpressionBrowserTest.FromSearchWithEmptyImpression
+-FromGwsAbandonedPageLoadMetricsObserverWithImpressionBrowserTest.FromSearchWithImpression
 -GcmApiTest.*
 -GeolocationBrowserTest.*
 -GetAuthTokenFunctionInteractivityTest.*/*
