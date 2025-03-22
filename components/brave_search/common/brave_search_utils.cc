@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_search/common/brave_search_utils.h"
 
+#include <vector>
+
 #include "base/feature_list.h"
 #include "brave/components/brave_search/common/features.h"
 #include "url/gurl.h"
@@ -35,7 +37,7 @@ bool IsAllowedHost(const GURL& origin) {
   }
   const auto& safe_origins = OriginList();
   for (const url::Origin& safe_origin : safe_origins) {
-    if (safe_origin.IsSameOriginWith(origin)) {
+    if (safe_origin.host() == origin.host()) {
       return true;
     }
   }
