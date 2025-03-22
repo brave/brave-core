@@ -11,10 +11,11 @@
 #include <type_traits>
 #include <vector>
 
+#include "base/containers/adapters.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
+#include "base/json/json_reader.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
@@ -91,7 +92,13 @@ base::Value::List BuildMessages(
     messages.Append(std::move(message));
   }
 
-  for (const mojom::ConversationTurnPtr& turn : conversation_history) {
+  auto conversation_message_insertion_it = messages.end();
+
+  // Keep count of large tool results to limit the number of large results,
+  // (mainly screenshots), but keep the ones at the end by iterating in reverse.
+  int large_event_count = 0;
+  for (const mojom::ConversationTurnPtr& turn :
+       base::Reversed(conversation_history)) {
     if (turn->uploaded_images) {
       base::Value::Dict message;
       message.Set("role", "user");
@@ -123,6 +130,86 @@ base::Value::List BuildMessages(
                             ? "user"
                             : "assistant");
 
+    base::Value::List tool_results;
+    // Construct tool calls and responses for each turn
+    if (turn->character_type == CharacterType::ASSISTANT &&
+        turn->events.has_value() && !turn->events->empty()) {
+      base::Value::List tool_calls;
+      std::vector<mojom::ConversationEntryEventPtr>& events =
+          turn->events.value();
+
+      for (auto& event : base::Reversed(events)) {
+        if (!event->is_tool_use_event()) {
+          continue;
+        }
+
+        // Reconstruct tool call from assistant
+        const auto& tool_event = event->get_tool_use_event();
+        base::Value::Dict tool_call;
+        tool_call.Set("id", tool_event->tool_id);
+        tool_call.Set("type", "function");
+
+        base::Value::Dict function;
+        function.Set("name", tool_event->tool_name);
+        function.Set("arguments", tool_event->input_json);
+        tool_call.Set("function", std::move(function));
+
+        tool_calls.Insert(tool_calls.begin(),
+                          base::Value(std::move(tool_call)));
+
+        // Tool result
+        if (tool_event->output.has_value()) {
+          base::Value::Dict tool_result;
+          tool_result.Set("role", "tool");
+          tool_result.Set("tool_call_id", tool_event->tool_id);
+          // Only send the large results (images) in the last X tool result
+          // events, otherwise the context gets filled.
+          if (!tool_event->output->empty()) {
+            bool is_large = false;
+            size_t content_size = 0;
+            for (const auto& content : tool_event->output.value()) {
+              base::Value::Dict content_item;
+              if (content->is_image_content_block()) {
+                is_large = true;
+                break;
+              } else if (content->is_text_content_block()) {
+                content_size += content->get_text_content_block()->text.size();
+              }
+            }
+            if (content_size >= 1000) {
+              is_large = true;
+            }
+            if (large_event_count < 3 || !is_large) {
+              if (is_large) {
+                large_event_count++;
+              }
+              base::Value::List tool_result_content;
+              for (const auto& content : tool_event->output.value()) {
+                base::Value::Dict content_item;
+                if (content->is_image_content_block()) {
+                  content_item.Set("type", "image_url");
+                  content_item.SetByDottedPath(
+                      "image_url.url",
+                      content->get_image_content_block()->image_url);
+                } else if (content->is_text_content_block()) {
+                  content_item.Set("type", "text");
+                  content_item.Set("text",
+                                   content->get_text_content_block()->text);
+                } else {
+                  NOTREACHED();
+                }
+                tool_result_content.Append(std::move(content_item));
+              }
+              tool_result.Set("content", std::move(tool_result_content));
+            }
+          }
+          tool_results.Append(std::move(tool_result));
+        }
+      }
+      if (!tool_calls.empty()) {
+        message.Set("tool_calls", std::move(tool_calls));
+      }
+    }
     message.Set(
         "content",
         turn->selected_text
@@ -133,7 +220,18 @@ base::Value::List BuildMessages(
                        {*turn->selected_text}, nullptr),
                    "\n\n", EngineConsumer::GetPromptForEntry(turn)})
             : EngineConsumer::GetPromptForEntry(turn));
-    messages.Append(std::move(message));
+
+    // Tool result should be inserted after the message
+    if (!tool_results.empty()) {
+      for (auto& tool_result : tool_results) {
+        conversation_message_insertion_it =
+            messages.Insert(conversation_message_insertion_it,
+                            base::Value(std::move(tool_result)));
+      }
+    }
+
+    conversation_message_insertion_it = messages.Insert(
+        conversation_message_insertion_it, base::Value(std::move(message)));
   }
 
   return messages;
@@ -192,7 +290,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     messages.Append(std::move(message));
   }
 
-  api_->PerformRequest(model_options_, std::move(messages),
+  api_->PerformRequest(model_options_, std::move(messages), {}, std::nullopt,
                        std::move(received_callback),
                        std::move(completed_callback));
 }
@@ -229,7 +327,8 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
   }
 
   api_->PerformRequest(
-      model_options_, std::move(messages), base::NullCallback(),
+      model_options_, std::move(messages), {}, std::nullopt,
+      base::NullCallback(),
       base::BindOnce(
           &EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -271,6 +370,8 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
     const std::string& page_content,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
+    Tools tools,
+    std::optional<std::string_view> preferred_tool_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
@@ -292,8 +393,8 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   base::Value::List messages =
       BuildMessages(model_options_, truncated_page_content, selected_text,
                     is_video, conversation_history);
-  api_->PerformRequest(model_options_, std::move(messages),
-                       std::move(data_received_callback),
+  api_->PerformRequest(model_options_, std::move(messages), tools,
+                       preferred_tool_name, std::move(data_received_callback),
                        std::move(completed_callback));
 }
 

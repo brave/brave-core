@@ -34,7 +34,6 @@ type Props = Pick<
   | 'uploadImage'
   | 'pendingMessageImages'
   | 'removeImage'
-  | 'conversationHistory'
 > &
   Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
@@ -175,7 +174,6 @@ function InputBox(props: InputBoxProps) {
           )}
           <AttachmentButtonMenu
             uploadImage={props.context.uploadImage}
-            conversationHistory={props.context.conversationHistory}
           />
         </div>
         <div>

@@ -10,6 +10,7 @@ source_set("browser_tests") {
   deps = [
     "//brave/browser/ai_chat",
     "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
     "//chrome/browser/ui",
     "//chrome/test",

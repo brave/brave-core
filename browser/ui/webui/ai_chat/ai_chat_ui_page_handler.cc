@@ -294,8 +294,11 @@ void AIChatUIPageHandler::OnAssociatedContentNavigated(int new_navigation_id) {
   // where it would like to remain associated with the Tab and move away from
   // Conversations of previous navigations. That doens't apply to the standalone
   // UI where it will keep a previous navigation's conversation active.
+  // UI will decide whether to switch to the new default conversation
+  // or not, given the currently viewed conversation.
   chat_ui_->OnNewDefaultConversation();
 }
+
 void AIChatUIPageHandler::CloseUI() {
 #if !BUILDFLAG(IS_ANDROID)
   ai_chat::ClosePanel(owner_web_contents_);

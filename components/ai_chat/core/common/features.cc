@@ -13,14 +13,20 @@
 
 namespace ai_chat::features {
 
-BASE_FEATURE(kAIChat,
-             "AIChat",
-             base::FEATURE_ENABLED_BY_DEFAULT
-);
+BASE_FEATURE(kAIChat, "AIChat", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatTools, "AIChatTools", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kSmartPageContent,
+             "AIChatSmartPageContent",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAgent, "AIChatAgent", base::FEATURE_DISABLED_BY_DEFAULT);
 const base::FeatureParam<std::string> kAIModelsDefaultKey{
     &kAIChat, "default_model", "chat-leo-expanded"};
 const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey{
     &kAIChat, "default_premium_model", "chat-leo-expanded"};
+const base::FeatureParam<std::string> kAIModelsDefaultAgentKey{
+    &kAIChat, "default_agent_model", "chat-claude-haiku"};
+const base::FeatureParam<std::string> kAIModelsPremiumDefaultAgentKey{
+    &kAIChat, "default_agent_model", "chat-claude-sonnet"};
 const base::FeatureParam<std::string> kAIModelsVisionDefaultKey{
     &kAIChat, "default_vision_model", "chat-vision-basic"};
 const base::FeatureParam<bool> kFreemiumAvailable(&kAIChat,
@@ -47,6 +53,14 @@ BASE_FEATURE(kAIChatHistory,
 
 bool IsAIChatHistoryEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatHistory);
+}
+
+bool IsAIChatToolsEnabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatTools);
+}
+
+bool IsAgentConversationCapabilityEnabled() {
+  return IsAIChatToolsEnabled() && base::FeatureList::IsEnabled(kAgent);
 }
 
 BASE_FEATURE(kCustomSiteDistillerScripts,

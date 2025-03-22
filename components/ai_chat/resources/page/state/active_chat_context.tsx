@@ -14,6 +14,7 @@ export const tabAssociatedChatId = 'tab'
 export interface SelectedChatDetails {
   selectedConversationId: string | undefined
   updateSelectedConversationId: (conversationId: string | undefined) => void
+  updateTabAssociatedConversation: () => void
   conversationHandler: Mojom.ConversationHandlerRemote
   callbackRouter: Mojom.ConversationUICallbackRouter
   createNewConversation: () => void,
@@ -23,6 +24,7 @@ export interface SelectedChatDetails {
 export const ActiveChatContext = React.createContext<SelectedChatDetails>({
   selectedConversationId: undefined,
   updateSelectedConversationId: () => { },
+  updateTabAssociatedConversation: () => { },
   callbackRouter: undefined!,
   conversationHandler: undefined!,
   createNewConversation: () => { },
@@ -58,6 +60,14 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     ...conversationAPI,
     selectedConversationId,
     updateSelectedConversationId,
+    updateTabAssociatedConversation: () => {
+      if (selectedConversationId !== tabAssociatedChatId) {
+        console.error('updateTabAssociatedConversation called when the active conversation is not a tab associated conversation')
+        return
+      }
+      // Keep the same url, but update which conversation it's pointing at
+      setConversationAPI(API.bindConversation(undefined))
+    },
     createNewConversation: () => {
       setConversationAPI(API.newConversation())
     },
@@ -75,22 +85,6 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     setConversationAPI(API.bindConversation(selectedConversationId === tabAssociatedChatId
       ? undefined
       : selectedConversationId))
-
-    // The default conversation changes as the associated tab navigates, so
-    // listen for changes.
-    if (selectedConversationId === tabAssociatedChatId) {
-      const onNewDefaultConversationListenerId =
-        getAPI().uiObserver.onNewDefaultConversation.addListener(() => {
-          setConversationAPI(API.bindConversation(undefined))
-        })
-
-      return () => {
-        getAPI().uiObserver.removeListener(onNewDefaultConversationListenerId)
-      }
-    }
-
-    // Satisfy linter
-    return undefined
   }, [selectedConversationId])
 
   // Clean up bindings when not used anymore

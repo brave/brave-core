@@ -394,6 +394,33 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),               \
       },                                                                       \
       {                                                                        \
+          "brave-ai-chat-tools",                                               \
+          "Brave AI Chat Tools",                                               \
+          "Conversations can provide Tools to the AI to perform more "         \
+          "specific actions.",                                                 \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatTools),                 \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-smart-page-content",                                  \
+          "Brave AI Chat Smart Page Content",                                  \
+          "Don't send page content to the AI unless the AI decides it would "  \
+          "be useful for the conversation AND the user provides permission. "  \
+          "Requires AI Chat Tools support flag to be enabled.",                \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(ai_chat::features::kSmartPageContent),            \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-agent",                                               \
+          "Brave AI Chat Agent",                                               \
+          "Enable the browsing agent conversation capabilities. Requires the " \
+          "AI Chat Tools feature to be enabled. This Tool receives contents "  \
+          "and screenshots of any https navigation in the associated tab and " \
+          "can use mouse and keyboard input on the contents.",                 \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAgent),                       \
+      },                                                                       \
+      {                                                                        \
           "brave-ai-host-specific-distillation",                               \
           "Brave AI Host-Specific Distillation",                               \
           "Enables support for host-specific distillation scripts",            \

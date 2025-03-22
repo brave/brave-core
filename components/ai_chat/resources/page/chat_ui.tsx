@@ -79,13 +79,13 @@ function ConversationEntries(props: ConversationEntriesProps) {
   React.useEffect(() => {
     // conversationUuid populated is a sign that data has been fetched
     if (!hasNotifiedContentReady.current && conversationContext.conversationUuid &&
-        !conversationContext.conversationHistory.length && hasLoaded) {
+        !conversationContext.conversationHistoryLength && hasLoaded) {
       hasNotifiedContentReady.current = true
       props.onIsContentReady(true)
     }
   }, [
     conversationContext.conversationUuid,
-    conversationContext.conversationHistory.length,
+    conversationContext.conversationHistoryLength,
     hasLoaded
   ])
 

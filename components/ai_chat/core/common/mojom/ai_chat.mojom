@@ -8,11 +8,15 @@ module ai_chat.mojom;
 import "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom";
 import "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom";
 import "mojo/public/mojom/base/time.mojom";
+import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/url.mojom";
 
 enum CharacterType {
   HUMAN,
-  ASSISTANT
+  ASSISTANT,
+
+  // Only for API tool use events, not for UI or storage
+  TOOL
 };
 
 enum APIError {
@@ -29,6 +33,15 @@ enum ModelEngineType {
   LLAMA_REMOTE,
   CLAUDE_REMOTE,
   BRAVE_CONVERSATION_API,
+};
+
+enum ConversationCapability {
+  // Regular chatting, can be associated with content or standalone. Does
+  // not span navigations of content.
+  CHAT,
+  // A conversation which has access to control a single WebContent instance,
+  // and remains connected to the content accross navigations.
+  CONTENT_AGENT,
 };
 
 // When adding or modifying category names, associated UI strings must also
@@ -150,6 +163,11 @@ enum ActionType {
   SUGGESTION,
 };
 
+enum ToolType {
+  UNKNOWN,
+  COMPUTER_USE,
+};
+
 struct PageContentRefineEvent {
   bool is_refining = true;
 };
@@ -190,6 +208,28 @@ struct UploadedImage {
   array<uint8> image_data;
 };
 
+struct ImageContentBlock {
+  // Only base64 encoded data uri is supported at the moment
+  string image_url;
+};
+
+struct TextContentBlock {
+  string text;
+};
+
+union ContentBlock {
+  ImageContentBlock image_content_block;
+  TextContentBlock text_content_block;
+};
+
+struct ToolUseEvent {
+  string tool_name;
+  string tool_id;
+  ToolType? tool_type;
+  string input_json;
+  array<ContentBlock>? output;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
@@ -197,6 +237,7 @@ union ConversationEntryEvent {
   SearchQueriesEvent search_queries_event;
   SearchStatusEvent search_status_event;
   WebSourcesEvent sources_event;
+  ToolUseEvent tool_use_event;
 
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.
@@ -301,6 +342,10 @@ struct Model {
   string display_name;
   // whether accept image as input
   bool vision_support;
+  // Model supports tool use
+  bool supports_tools;
+  // Model supports anthropic computer use tools
+  bool supports_anthropic_computer_use;
 };
 
 struct ModelWithSubtitle {
@@ -437,7 +482,9 @@ struct ConversationState {
   SuggestionGenerationStatus suggestion_status;
   AssociatedContent? associated_content;
   bool should_send_content;
+  uint32 conversation_history_length;
   APIError error;
+  ConversationCapability selected_capability;
   // TODO(petemill): include conversation history, once
   // `OnConversationHistoryUpdate` is more intelligent (see TOOD in definition).
 };
@@ -470,6 +517,10 @@ interface ConversationHandler {
 
   // Command to change the model for the Conversation to |model_name|
   ChangeModel(string model_key);
+
+  // Modify the conversation's selected capability. If the current model
+  // does not support the new capability, it will not be set.
+  ChangeCapability(ConversationCapability capability);
 
   GetIsRequestInProgress() => (bool is_request_in_progress);
 
@@ -530,6 +581,8 @@ interface UntrustedConversationHandler {
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
   ModifyConversation(uint32 turn_index, string new_text);
+
+  RespondToToolUseRequest(string tool_id, array<ContentBlock>? output_json);
 };
 
 // Untrusted-UI-side handler for a Conversation, responsible for displaying
@@ -538,15 +591,12 @@ interface UntrustedConversationUI {
   // TODO(petemill): Provide single entry that's been updated so that we don't
   // need to fetch (and clone) all conversation entries each time text is added
   // to the most recent entry.
-  OnConversationHistoryUpdate();
+  OnConversationHistoryUpdate(ConversationTurn? update_or_new_turn);
   OnEntriesUIStateChanged(ConversationEntriesState state);
 };
 
 interface ConversationUI {
-  // TODO(petemill): Provide single entry that's been updated so that we don't
-  // need to fetch (and clone) all conversation entries each time text is added
-  // to the most recent entry.
-  OnConversationHistoryUpdate();
+  OnConversationHistoryUpdate(uint32 conversation_history_length);
   OnAPIRequestInProgress(bool is_request_in_progress);
   OnAPIResponseError(APIError error);
   // Usually the model is changed from the UI client, but occassionally
@@ -554,6 +604,8 @@ interface ConversationUI {
   // When the browser changes the model, it will also provide a new list
   // of models.
   OnModelDataChanged(string conversation_model_key, array<Model> all_models);
+  // Any time the conversation capability successfully changes
+  OnConversationCapabilityChanged(ConversationCapability capability);
   // Provides the full list of questions for the active tab in the page's
   // Browser window.
   OnSuggestedQuestionsChanged(

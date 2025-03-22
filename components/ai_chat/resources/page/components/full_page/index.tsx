@@ -27,7 +27,7 @@ export default function FullScreen() {
   const [isNavigationRendered, setIsNavigationRendered] = React.useState(!isSmall)
 
   const canStartNewConversation = aiChatContext.hasAcceptedAgreement &&
-    !!conversationContext.conversationHistory.length
+    !!conversationContext.conversationHistoryLength
 
   const asideRef = React.useRef<HTMLElement | null>(null)
 
