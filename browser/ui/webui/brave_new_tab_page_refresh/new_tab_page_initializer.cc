@@ -10,11 +10,13 @@
 
 #include "base/feature_list.h"
 #include "base/strings/strcat.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/resources/brave_new_tab_page_refresh/grit/brave_new_tab_page_refresh_generated_map.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
@@ -32,6 +34,10 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/webui/webui_util.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
 
 namespace brave_new_tab_page_refresh {
 
@@ -95,6 +101,17 @@ void NewTabPageInitializer::AddLoadTimeValues() {
   source_->AddBoolean(
       "ntpSearchFeatureEnabled",
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  bool vpn_feature_enabled = brave_vpn::IsBraveVPNEnabled(profile->GetPrefs());
+#else
+  bool vpn_feature_enabled = false;
+#endif
+
+  source_->AddBoolean("vpnFeatureEnabled", vpn_feature_enabled);
+
+  source_->AddBoolean("rewardsFeatureEnabled",
+                      brave_rewards::IsSupportedForProfile(profile));
 }
 
 void NewTabPageInitializer::AddStrings() {
@@ -124,6 +141,12 @@ void NewTabPageInitializer::AddStrings() {
       {"photoCreditsText", IDS_NEW_TAB_PHOTO_CREDITS_TEXT},
       {"randomizeBackgroundLabel", IDS_NEW_TAB_RANDOMIZE_BACKGROUND_LABEL},
       {"removeTopSiteLabel", IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL},
+      {"rewardsConnectButtonLabel", IDS_NEW_TAB_REWARDS_CONNECT_BUTTON_LABEL},
+      {"rewardsFeatureText1", IDS_REWARDS_ONBOARDING_TEXT_ITEM_1},
+      {"rewardsFeatureText2", IDS_REWARDS_ONBOARDING_TEXT_ITEM_2},
+      {"rewardsOnboardingButtonLabel", IDS_REWARDS_ONBOARDING_BUTTON_LABEL},
+      {"rewardsOnboardingLink", IDS_NEW_TAB_REWARDS_ONBOARDING_LINK},
+      {"rewardsWidgetTitle", IDS_NEW_TAB_REWARDS_WIDGET_TITLE},
       {"saveChangesButtonLabel", IDS_NEW_TAB_SAVE_CHANGES_BUTTON_LABEL},
       {"searchAskLeoDescription", IDS_OMNIBOX_ASK_LEO_DESCRIPTION},
       {"searchBoxPlaceholderText", IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT},
@@ -143,16 +166,23 @@ void NewTabPageInitializer::AddStrings() {
       {"settingsTitle", IDS_NEW_TAB_SETTINGS_TITLE},
       {"showBackgroundsLabel", IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL},
       {"showClockLabel", IDS_NEW_TAB_SHOW_CLOCK_LABEL},
+      {"showRewardsWidgetLabel", IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL},
       {"showSearchBoxLabel", IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL},
       {"showSponsoredImagesLabel", IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL},
       {"showStatsLabel", IDS_NEW_TAB_SHOW_STATS_LABEL},
+      {"showTalkWidgetLabel", IDS_NEW_TAB_SHOW_TALK_WIDGET_LABEL},
       {"showTopSitesLabel", IDS_NEW_TAB_SHOW_TOP_SITES_LABEL},
+      {"showVpnWidgetLabel", IDS_NEW_TAB_SHOW_VPN_WIDGET_LABEL},
       {"solidBackgroundLabel", IDS_NEW_TAB_SOLID_BACKGROUND_LABEL},
       {"solidBackgroundTitle", IDS_NEW_TAB_SOLID_BACKGROUND_LABEL},
       {"statsAdsBlockedText", IDS_NEW_TAB_STATS_ADS_BLOCKED_TEXT},
       {"statsBandwidthSavedText", IDS_NEW_TAB_STATS_BANDWIDTH_SAVED_TEXT},
       {"statsTimeSavedText", IDS_NEW_TAB_STATS_TIME_SAVED_TEXT},
       {"statsTitle", IDS_NEW_TAB_STATS_TITLE},
+      {"talkDescriptionText", IDS_NEW_TAB_TALK_DESCRIPTION_TEXT},
+      {"talkDescriptionTitle", IDS_NEW_TAB_TALK_DESCRIPTION_TITLE},
+      {"talkStartCallLabel", IDS_NEW_TAB_TALK_START_CALL_LABEL},
+      {"talkWidgetTitle", IDS_NEW_TAB_TALK_WIDGET_TITLE},
       {"topSiteRemovedText", IDS_NEW_TAB_TOP_SITE_REMOVED_TEXT},
       {"topSiteRemovedTitle", IDS_NEW_TAB_TOP_SITE_REMOVED_TITLE},
       {"topSitesCustomOptionText", IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT},
@@ -168,7 +198,21 @@ void NewTabPageInitializer::AddStrings() {
       {"topSitesTitleLabel", IDS_NEW_TAB_TOP_SITES_TITLE_LABEL},
       {"topSitesURLLabel", IDS_NEW_TAB_TOP_SITES_URL_LABEL},
       {"undoButtonLabel", IDS_NEW_TAB_UNDO_BUTTON_LABEL},
-      {"uploadBackgroundLabel", IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL}};
+      {"uploadBackgroundLabel", IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL},
+      {"vpnChangeRegionLabel", IDS_NEW_TAB_VPN_CHANGE_REGION_LABEL},
+      {"vpnFeatureText1", IDS_NEW_TAB_VPN_FEATURE_TEXT1},
+      {"vpnFeatureText2", IDS_NEW_TAB_VPN_FEATURE_TEXT2},
+      {"vpnFeatureText3", IDS_NEW_TAB_VPN_FEATURE_TEXT3},
+      {"vpnRestorePurchaseLabel", IDS_NEW_TAB_VPN_RESTORE_PURCHASE_LABEL},
+      {"vpnStartTrialLabel", IDS_NEW_TAB_VPN_START_TRIAL_LABEL},
+      {"vpnOptimalText", IDS_NEW_TAB_VPN_OPTIMAL_TEXT},
+      {"vpnPoweredByText", IDS_NEW_TAB_VPN_POWERED_BY_TEXT},
+      {"vpnStatusConnected", IDS_NEW_TAB_VPN_STATUS_CONNECTED},
+      {"vpnStatusConnecting", IDS_NEW_TAB_VPN_STATUS_CONNECTING},
+      {"vpnStatusDisconnected", IDS_NEW_TAB_VPN_STATUS_DISCONNECTED},
+      {"vpnStatusDisconnecting", IDS_NEW_TAB_VPN_STATUS_DISCONNECTING},
+      {"vpnWidgetTitle", IDS_NEW_TAB_VPN_WIDGET_TITLE},
+      {"widgetSettingsTitle", IDS_NEW_TAB_WIDGET_SETTINGS_TITLE}};
 
   source_->AddLocalizedStrings(kStrings);
 }

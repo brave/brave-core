@@ -26,6 +26,12 @@ export type StringKey =
   'photoCreditsText' |
   'randomizeBackgroundLabel' |
   'removeTopSiteLabel' |
+  'rewardsConnectButtonLabel' |
+  'rewardsFeatureText1' |
+  'rewardsFeatureText2' |
+  'rewardsOnboardingButtonLabel' |
+  'rewardsOnboardingLink' |
+  'rewardsWidgetTitle' |
   'saveChangesButtonLabel' |
   'searchAskLeoDescription' |
   'searchBoxPlaceholderText' |
@@ -39,16 +45,23 @@ export type StringKey =
   'settingsTitle' |
   'showBackgroundsLabel' |
   'showClockLabel' |
+  'showRewardsWidgetLabel' |
   'showSearchBoxLabel' |
   'showSponsoredImagesLabel' |
   'showStatsLabel' |
+  'showTalkWidgetLabel' |
   'showTopSitesLabel' |
+  'showVpnWidgetLabel' |
   'solidBackgroundLabel' |
   'solidBackgroundTitle' |
   'statsAdsBlockedText' |
   'statsBandwidthSavedText' |
   'statsTimeSavedText' |
   'statsTitle' |
+  'talkDescriptionText' |
+  'talkDescriptionTitle' |
+  'talkStartCallLabel' |
+  'talkWidgetTitle' |
   'topSiteRemovedText' |
   'topSiteRemovedTitle' |
   'topSitesCustomOptionText' |
@@ -61,4 +74,18 @@ export type StringKey =
   'topSitesTitleLabel' |
   'topSitesURLLabel' |
   'undoButtonLabel' |
-  'uploadBackgroundLabel'
+  'uploadBackgroundLabel' |
+  'vpnChangeRegionLabel' |
+  'vpnFeatureText1' |
+  'vpnFeatureText2' |
+  'vpnFeatureText3' |
+  'vpnOptimalText' |
+  'vpnPoweredByText' |
+  'vpnRestorePurchaseLabel' |
+  'vpnStartTrialLabel' |
+  'vpnStatusConnected' |
+  'vpnStatusConnecting' |
+  'vpnStatusDisconnected' |
+  'vpnStatusDisconnecting' |
+  'vpnWidgetTitle' |
+  'widgetSettingsTitle'

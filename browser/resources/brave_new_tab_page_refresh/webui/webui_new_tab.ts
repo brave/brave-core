@@ -43,15 +43,22 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
     store.update({ showShieldsStats, shieldsStats })
   }
 
+  async function updateTalkPrefs() {
+    const { showTalkWidget } = await handler.getShowTalkWidget()
+    store.update({ showTalkWidget })
+  }
+
   newTabProxy.addListeners({
     onClockStateUpdated: debounceListener(updateClockPrefs),
-    onShieldsStatsUpdated: debounceListener(updateShieldsStats)
+    onShieldsStatsUpdated: debounceListener(updateShieldsStats),
+    onTalkStateUpdated: debounceListener(updateTalkPrefs)
   })
 
   async function loadData() {
     await Promise.all([
       updateClockPrefs(),
-      updateShieldsStats()
+      updateShieldsStats(),
+      updateTalkPrefs()
     ])
   }
 
@@ -69,6 +76,10 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
 
     setShowShieldsStats(showShieldsStats) {
       handler.setShowShieldsStats(showShieldsStats)
+    },
+
+    setShowTalkWidget(showTalkWidget) {
+      handler.setShowTalkWidget(showTalkWidget)
     }
   }
 }

@@ -17,7 +17,8 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
     shieldsStats: {
       adsBlocked: 3245,
       bandwidthSavedBytes: 1024 * 1024
-    }
+    },
+    showTalkWidget: true
   })
 
   return {
@@ -33,6 +34,10 @@ export function initializeNewTab(store: Store<NewTabState>): NewTabActions {
 
     setShowShieldsStats(showShieldsStats) {
       store.update({ showShieldsStats })
+    },
+
+    setShowTalkWidget(showTalkWidget) {
+      store.update({ showTalkWidget })
     }
   }
 }
