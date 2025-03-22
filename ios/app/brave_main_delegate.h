@@ -6,8 +6,6 @@
 #ifndef BRAVE_IOS_APP_BRAVE_MAIN_DELEGATE_H_
 #define BRAVE_IOS_APP_BRAVE_MAIN_DELEGATE_H_
 
-#include <string>
-
 #include "ios/chrome/app/startup/ios_chrome_main_delegate.h"
 
 class BraveWebClient;
@@ -22,8 +20,6 @@ class BraveMainDelegate : public IOSChromeMainDelegate {
  protected:
   // web::WebMainDelegate implementation:
   void BasicStartupComplete() override;
-
- private:
 };
 
 #endif  // BRAVE_IOS_APP_BRAVE_MAIN_DELEGATE_H_
