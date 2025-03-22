@@ -17,8 +17,10 @@ TEST(BraveSearchUtilsUnitTest, IsAllowedHost) {
   EXPECT_TRUE(IsAllowedHost(GURL("https://search.brave.com")));
   EXPECT_TRUE(IsAllowedHost(GURL("https://search.brave.software")));
   EXPECT_TRUE(IsAllowedHost(GURL("https://search.bravesoftware.com")));
-  EXPECT_TRUE(IsAllowedHost(GURL("http://safesearch.brave.com")));
 
+  // not https
+  EXPECT_FALSE(IsAllowedHost(GURL("http://safesearch.brave.com")));
+  // not allowed domains
   EXPECT_FALSE(IsAllowedHost(GURL("https://earch.brave.com")));
   EXPECT_FALSE(IsAllowedHost(GURL("https://brave.com")));
   EXPECT_FALSE(IsAllowedHost(GURL("https://a.search.brave.com")));
