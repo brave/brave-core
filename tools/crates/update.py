@@ -6,10 +6,16 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import toml
 
+import brave_chromium_utils
 import versions
 
+with brave_chromium_utils.sys_path('//tools/rust'):
+    import update_rust
+    CARGO = os.path.join(update_rust.RUST_TOOLCHAIN_OUT_DIR, 'bin',
+                         'cargo' + ('.exe' if sys.platform == 'win32' else ''))
 REMOVE_CRATES = ['winapi-*gnu*', 'windows_*gnu*']
 
 
@@ -51,13 +57,13 @@ def add_dependencies():
     dict = vars(versions)
     for dep in dependencies:
         version = dict[f'{dep.replace("-", "_").upper()}_VERSION']
-        subprocess.run(['cargo', 'add', f'{dep}@{version}'], check=True)
+        subprocess.run([CARGO, 'add', f'{dep}@{version}'], check=True)
 
     # Update dependencies
-    subprocess.run(['cargo', 'update'], check=True)
+    subprocess.run([CARGO, 'update'], check=True)
 
     # Vendor dependencies
-    subprocess.run(['cargo', 'vendor'], check=True)
+    subprocess.run([CARGO, 'vendor'], check=True)
 
 
 def create_dependency_placeholders():

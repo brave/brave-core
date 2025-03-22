@@ -1,0 +1,5 @@
+Name: getrandom
+URL: https://crates.io/crates/getrandom
+Version: 0.2.15
+License: MIT OR Apache-2.0
+Description: A small cross-platform library for retrieving random data from system source
