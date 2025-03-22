@@ -965,6 +965,17 @@ const util = {
     }
     return false
   },
+
+  launchDocs: () => {
+    util.run(
+      'vpython3',
+      [
+        path.join(config.srcDir, 'tools', 'md_browser', 'md_browser.py'),
+        'brave/docs'
+      ],
+      config.defaultOptions
+    )
+  },
 }
 
 module.exports = util

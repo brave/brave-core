@@ -8,7 +8,8 @@ Follow [@brave](https://twitter.com/brave) on Twitter for important announcement
 
 - [Issues](https://github.com/brave/brave-browser/issues)
 - [Releases](https://github.com/brave/brave-browser/releases)
-- [Documentation wiki](https://github.com/brave/brave-browser/wiki)
+- [Documentation and guides](https://github.com/brave/brave-core/blob/master/docs/README.md)
+- [Wiki](https://github.com/brave/brave-browser/wiki)
 
 ## Community
 
