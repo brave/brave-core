@@ -29,7 +29,7 @@ class PrivacyHubMetrics;
 class TabMetrics;
 #endif
 class DohMetrics;
-class UptimeMonitor;
+class UptimeMonitorImpl;
 
 class ProcessMiscMetrics {
  public:
@@ -50,7 +50,7 @@ class ProcessMiscMetrics {
   PrivacyHubMetrics* privacy_hub_metrics();
   TabMetrics* tab_metrics();
 #endif
-  UptimeMonitor* uptime_monitor();
+  UptimeMonitorImpl* uptime_monitor();
   ai_chat::AIChatMetrics* ai_chat_metrics();
 
  private:
@@ -65,7 +65,7 @@ class ProcessMiscMetrics {
 #endif
   std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_;
   std::unique_ptr<DohMetrics> doh_metrics_;
-  std::unique_ptr<UptimeMonitor> uptime_monitor_;
+  std::unique_ptr<UptimeMonitorImpl> uptime_monitor_;
 };
 
 }  // namespace misc_metrics

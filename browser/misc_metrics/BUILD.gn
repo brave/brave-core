@@ -21,7 +21,7 @@ static_library("misc_metrics_impl") {
     "//brave/browser/misc_metrics/process_misc_metrics.cc",
     "//brave/browser/misc_metrics/profile_misc_metrics_service.h",
     "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.h",
-    "//brave/browser/misc_metrics/uptime_monitor.h",
+    "//brave/browser/misc_metrics/uptime_monitor_impl.h",
   ]
 
   deps = [
@@ -85,7 +85,7 @@ source_set("unit_tests") {
   sources = [
     "doh_metrics_unittest.cc",
     "page_metrics_unittest.cc",
-    "uptime_monitor_unittest.cc",
+    "uptime_monitor_impl_unittest.cc",
   ]
 
   deps = [
