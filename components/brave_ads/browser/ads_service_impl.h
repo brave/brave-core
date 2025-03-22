@@ -114,6 +114,7 @@ class AdsServiceImpl final : public AdsService,
   bool UserHasOptedInToSearchResultAds() const;
 
   void InitializeNotificationsForCurrentProfile();
+  void InitializeNotificationsForCurrentProfileCallback();
 
   void GetDeviceIdAndMaybeStartBatAdsService();
   void GetDeviceIdAndMaybeStartBatAdsServiceCallback(std::string device_id);
