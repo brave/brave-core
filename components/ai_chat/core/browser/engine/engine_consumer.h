@@ -16,6 +16,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace ai_chat {
@@ -42,6 +43,11 @@ class EngineConsumer {
       base::OnceCallback<void(GenerationResult)>;
 
   using ConversationHistory = std::vector<mojom::ConversationTurnPtr>;
+
+  using GetSuggestedTopicsCallback = base::OnceCallback<void(
+      base::expected<std::vector<std::string>, mojom::APIError>)>;
+  using GetFocusTabsCallback = base::OnceCallback<void(
+      base::expected<std::vector<std::string>, mojom::APIError>)>;
 
   static std::string GetPromptForEntry(const mojom::ConversationTurnPtr& entry);
 
@@ -85,6 +91,15 @@ class EngineConsumer {
   virtual bool SupportsDeltaTextResponses() const;
 
   virtual void UpdateModelOptions(const mojom::ModelOptions& options) = 0;
+
+  // Given a list of tabs, return a list of suggested topics from the server.
+  virtual void GetSuggestedTopics(const std::vector<Tab>& tabs,
+                                  GetSuggestedTopicsCallback callback);
+  // Given a list of tabs and a specific topic, return a list of tabs to be
+  // focused on from the server.
+  virtual void GetFocusTabs(const std::vector<Tab>& tabs,
+                            const std::string& topic,
+                            GetFocusTabsCallback callback);
 
   void SetMaxAssociatedContentLengthForTesting(
       uint32_t max_associated_content_length) {

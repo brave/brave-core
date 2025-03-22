@@ -192,6 +192,10 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       window.open(this.manageUrl_, "_self", "noopener noreferrer")
     }
 
+    openTabOrganizationLearnMore_() {
+      window.open(loadTimeData.getString('braveLeoAssistantTabOrganizationLearnMoreURL'), "_blank", "noopener noreferrer")
+    }
+
     private onStorageEnabledChange_(event: Event) {
       const target = event.target
       assert(target instanceof SettingsToggleButtonElement);
