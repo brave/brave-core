@@ -15,41 +15,24 @@ Resolves
 (1) applied automatically when some files are changed (see: https://github.com/brave/brave-core/blob/master/.github/labeler.yml)
 -->
 
-## Submitter Checklist:
+<!--
+## Checklist:
 
-- [ ] I confirm that no [security/privacy review is needed](https://github.com/brave/brave-browser/wiki/Security-reviews) and no other type of reviews are needed, or that I have [requested](https://github.com/brave/reviews/issues/new/choose) them
-- [ ] There is a [ticket](https://github.com/brave/brave-browser/issues) for my issue
-- [ ] Used Github [auto-closing keywords](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) in the PR description above
-- [ ] Wrote a good [PR/commit description](https://google.github.io/eng-practices/review/developer/cl-descriptions.html)
-- [ ] Squashed any review feedback or "fixup" commits before merge, so that history is a record of what happened in the repo, not your PR
-- [ ] Added appropriate labels (`QA/Yes` or `QA/No`; `release-notes/include` or `release-notes/exclude`; `OS/...`) to the associated issue
-- [ ] Checked the PR locally:
+- Review design docs
+  [Browser design principles](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/chrome_browser_design_principles.md)
+  [Style guide](https://chromium.googlesource.com/chromium/src/+/main/styleguide/c++/c++.md)
+  [Core principles](https://www.chromium.org/developers/core-principles/)
+- Ensure there are (tests)[https://www.chromium.org/developers/testing/]. Unit test as much as possible (including edge cases), but also include browser tests covering high level functionality.
+- Ensure that there are comments explaining what classes/methods are/do. The "why" is often more important than the "what" in comments. Also update any relevant docs (moving docs from wiki to brave-core if necessary).
+- Request security or other review (third-party libraries, rust code, etc...) if applicable [security/privacy review is needed](https://github.com/brave/brave-browser/wiki/Security-reviews) [other review](https://github.com/brave/reviews/issues/new/choose)
+  Also see [adding third-party libraries](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/adding_to_third_party.md) for general guidelines on using third party code
+- Maks sure there is a [ticket](https://github.com/brave/brave-browser/issues) for your issue
+- Use Github [auto-closing keywords](https://docs.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) in the PR description above
+- Write a good [PR/commit description](https://google.github.io/eng-practices/review/developer/cl-descriptions.html)
+- Squash any review feedback or "fixup" commits before merge, so that history is a record of what happened in the repo, not your PR
+- Add appropriate labels (`QA/Yes` or `QA/No`; `release-notes/include` or `release-notes/exclude`; `OS/...`) to the associated issue
+- Checked the PR locally:
   * `npm run test -- brave_browser_tests`, `npm run test -- brave_unit_tests` [wiki](https://github.com/brave/brave-browser/wiki/Tests)
   * `npm run presubmit` [wiki](https://github.com/brave/brave-browser/wiki/Presubmit-checks), `npm run gn_check`, `npm run tslint`
-- [ ] Ran `git rebase master` (if needed)
-
-## Reviewer Checklist:
-
-- [ ] A security review [is not needed](https://github.com/brave/brave-browser/wiki/Security-reviews), or a link to one is included in the PR description
-- [ ] New files have MPL-2.0 license header
-- [ ] Adequate test coverage exists to prevent regressions
-- [ ] Major classes, functions and non-trivial code blocks are well-commented
-- [ ] Changes in component dependencies are properly reflected in `gn`
-- [ ] Code follows the [style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md)
-- [ ] Test plan is specified in PR before merging
-
-## After-merge Checklist:
-
-- [ ] The associated issue milestone is set to the smallest version that the
-  changes has landed on
-- [ ] All relevant documentation has been updated, for instance:
-  - [ ] https://github.com/brave/brave-browser/wiki/Deviations-from-Chromium-(features-we-disable-or-remove)
-  - [ ] https://github.com/brave/brave-browser/wiki/Proxy-redirected-URLs
-  - [ ] https://github.com/brave/brave-browser/wiki/Fingerprinting-Protections
-  - [ ] https://github.com/brave/brave-browser/wiki/Brave%E2%80%99s-Use-of-Referral-Codes
-  - [ ] https://github.com/brave/brave-browser/wiki/Web-Compatibility-Exceptions-in-Brave
-  - [ ] https://github.com/brave/brave-browser/wiki/QA-Guide
-  - [ ] https://github.com/brave/brave-browser/wiki/P3A
-
-## Test Plan:
-
+- Run `git rebase master` (if needed)
+-->
