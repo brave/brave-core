@@ -45,8 +45,7 @@ cargo_crate("lib") {
   cargo_pkg_version = "1.0.3"
   cargo_pkg_authors = "The rust-url developers, the brave-core developers"
   cargo_pkg_name = "idna"
-  cargo_pkg_description =
-      "Stub for IDNA crate using chromium code"
+  cargo_pkg_description = "Stub for IDNA crate using chromium code"
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
