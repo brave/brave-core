@@ -2,7 +2,7 @@
 edition = "2018"
 rust-version = "1.51"
 name = "url"
-version = "2.3.1"
+version = "2.5.0"
 authors = ["The rust-url developers", "Brave developers"]
 include = [
     "src/**/*",

@@ -4,7 +4,7 @@ version = 4
 
 [[package]]
 name = "adblock"
-version = "0.9.6-brave-core"
+version = "0.9.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "base64",
@@ -1131,7 +1131,7 @@ dependencies = [
 
 [[package]]
 name = "idna"
-version = "0.2.3"
+version = "1.0.3"
 
 [[package]]
 name = "incrementalmerkletree"
@@ -1170,7 +1170,7 @@ dependencies = [
 
 [[package]]
 name = "itertools"
-version = "0.10.5"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "either",
@@ -2551,7 +2551,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "url"
-version = "2.3.1"
+version = "2.5.0"
 
 [[package]]
 name = "urlencoding"
