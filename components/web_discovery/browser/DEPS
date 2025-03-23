@@ -8,6 +8,14 @@ include_rules = [
   "+services/service_manager/public/cpp",
   "+third_party/boringssl/src/include",
   "+third_party/re2",
-  "+third_party/rust/cxx",
   "+third_party/zlib",
 ]
+
+specific_include_rules = {
+  "background_credential_helper\.cc": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "content_scraper\.cc": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ]
+}

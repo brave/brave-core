@@ -9,9 +9,3 @@ include_rules = [
   "+brave/components/speech_to_text/features.h",
   "+services/network/host_resolver.h",
 ]
-
-specific_include_rules = {
-  "brave_ad_block_tp_network_delegate_helper\.cc": [
-    "+brave/components/brave_shields/adblock/rs/src/lib.rs.h",
-  ]
-}

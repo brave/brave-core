@@ -77,7 +77,7 @@ static_library("common") {
     ":generated_eth_requests",
     ":generated_json_rpc_requests",
     ":pref_names",
-    "//brave/components/brave_wallet/rust:rust_lib",
+    ":rust_lib",
     "//brave/net/base:utils",
     "//brave/third_party/argon2",
     "//brave/third_party/bitcoin-core",
@@ -193,3 +193,21 @@ source_set("test_support") {
 
   public_deps = [ ":mojom" ]
 }  # source_set("test_support")
+
+rust_static_library("rust_lib") {
+  visibility = [
+    "//brave/components/brave_wallet/browser:hd_keyring",
+    "//brave/components/brave_wallet/browser/zcash/rust:*",
+    "//brave/components/brave_wallet/common",
+  ]
+  crate_name = "brave_wallet"
+  crate_root = "lib.rs"
+  allow_unsafe = true
+  sources = [ "lib.rs" ]
+  cxx_bindings = [ "lib.rs" ]
+
+  deps = [
+    "//brave/third_party/rust/bech32/v0_9:lib",
+    "//brave/third_party/rust/curve25519_dalek/v4:lib",
+  ]
+}
