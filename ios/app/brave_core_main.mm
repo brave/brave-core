@@ -540,7 +540,7 @@ static bool CustomLogHandler(int severity,
         static_cast<BraveApplicationContextImpl*>(GetApplicationContext())
             ->brave_user_agent_service();
     if (!service) {
-      return nullptr;
+      return nil;
     }
     _braveUserAgentService =
         [[BraveUserAgentService alloc] initWithBraveUserAgentService:service];

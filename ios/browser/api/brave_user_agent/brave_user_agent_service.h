@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
 @interface BraveUserAgentService : NSObject
-/// Tells us if the "Use Brave User Agent" feature is enabled
-@property(readonly) bool isUseBraveUserAgentEnabled;
 
 - (instancetype)init NS_UNAVAILABLE;
 /// This returns if a url can show Brave in User Agent

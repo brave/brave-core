@@ -22,7 +22,6 @@
       _braveUserAgentService;  // NOT OWNED
 }
 
-@property(nonatomic) bool isUseBraveUserAgentEnabled;
 @end
 
 @implementation BraveUserAgentService
@@ -34,19 +33,11 @@
   return self;
 }
 
-- (bool)isUseBraveUserAgentEnabled {
-  return base::FeatureList::IsEnabled(
-      brave_user_agent::features::kUseBraveUserAgent);
-}
-
 - (bool)canShowBrave:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
-  if (![self isUseBraveUserAgentEnabled]) {
-    return true;
-  }
-
-  // Check url validity
-  if (!gurl.is_valid()) {
+  if (!base::FeatureList::IsEnabled(
+          brave_user_agent::features::kUseBraveUserAgent) ||
+      !gurl.is_valid()) {
     return true;
   }
 
