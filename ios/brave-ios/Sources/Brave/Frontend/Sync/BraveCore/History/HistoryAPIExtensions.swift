@@ -20,19 +20,6 @@ extension BraveHistoryAPI {
     addHistory(historyNode)
   }
 
-  func suffix(_ maxLength: Int, _ completion: @escaping ([HistoryNode]) -> Void) {
-    let options = HistorySearchOptions(
-      maxCount: UInt(max(20, maxLength)),
-      duplicateHandling: .removePerDay
-    )
-
-    search(
-      withQuery: nil,
-      options: options,
-      completion: completion
-    )
-  }
-
   func byFrequency(
     query: String,
     completion: @escaping ([HistoryNode]) -> Void
