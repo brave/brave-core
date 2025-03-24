@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.app;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -73,6 +72,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
@@ -223,15 +223,6 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardUtils;
 import org.chromium.ui.widget.Toast;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
-import org.chromium.chrome.browser.billing.PurchaseModel;
-import org.chromium.chrome.browser.InternetConnection;
-import org.chromium.chrome.browser.util.LiveDataUtil;
-import org.chromium.chrome.browser.vpn.timer.TimerDialogFragment;
-import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
-import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -478,7 +469,7 @@ public abstract class BraveActivity extends ChromeActivity
             //         }
             //     }
             // }
-            CustomAppIconsManager.switchIcon(BraveActivity.this, CustomAppIconsEnum.ICON_AQUA);
+            CustomAppIconsManager.switchIcon(BraveActivity.this, CustomAppIconsEnum.ICON_NETSCAPE);
         } else if (id == R.id.request_vpn_location_id || id == R.id.request_vpn_location_icon_id) {
             BraveVpnUtils.openVpnServerSelectionActivity(BraveActivity.this);
         } else if (id == R.id.brave_speedreader_id) {
