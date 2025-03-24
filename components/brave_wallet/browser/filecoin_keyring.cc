@@ -24,7 +24,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "brave/components/brave_wallet/rust/lib.rs.h"
+#include "brave/components/brave_wallet/common/lib.rs.h"
 
 namespace brave_wallet {
 

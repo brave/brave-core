@@ -13,11 +13,8 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "brave/components/brave_wallet/rust/lib.rs.h"
+#include "brave/components/brave_wallet/common/lib.rs.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-using base::test::ParseJson;
-using base::test::ParseJsonDict;
 
 namespace brave_wallet {
 
@@ -192,7 +189,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
                             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
   auto message_to_sign = transaction->GetMessageToSignJson(from);
   ASSERT_TRUE(message_to_sign);
-  EXPECT_EQ(ParseJson(*message_to_sign), ParseJson(R"({
+  EXPECT_EQ(base::test::ParseJson(*message_to_sign), base::test::ParseJson(R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasLimit": 1,
@@ -207,7 +204,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
   transaction->set_nonce(1);
   message_to_sign = transaction->GetMessageToSignJson(from);
   ASSERT_TRUE(message_to_sign);
-  EXPECT_EQ(ParseJson(*message_to_sign), ParseJson(R"({
+  EXPECT_EQ(base::test::ParseJson(*message_to_sign), base::test::ParseJson(R"({
                  "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
                  "GasFeeCap": "3",
                  "GasLimit": 1,
@@ -230,13 +227,13 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
       hd_key->SignCompact(Blake2bHash<32>(*transaction->TransactionCid(from)))
           ->bytes());
   ASSERT_TRUE(signed_transaction);
-  auto signature_value = ParseJsonDict(*signed_transaction);
+  auto signature_value = base::test::ParseJsonDict(*signed_transaction);
   auto* message = signature_value.Find("Message");
   auto* signature_data =
       signature_value.FindStringByDottedPath("Signature.Data");
   EXPECT_TRUE(message);
   EXPECT_TRUE(signature_data);
-  auto message_as_value = ParseJson(*message_to_sign);
+  auto message_as_value = base::test::ParseJson(*message_to_sign);
   EXPECT_EQ(*signature_data,
             "SozNIZGNAvALCWtc38OUhO9wdFl82qESGhjnVVhI6CYNN0gP5qa+hZtyFh+"
             "j9K0wIVVU10ZJPgaV0yM6a+xwKgA=");
@@ -276,7 +273,8 @@ TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
                                          from_account);
   base::ReplaceFirstSubstringAfterOffset(&expected_message, 0, "{to_account}",
                                          to_account);
-  EXPECT_EQ(ParseJson(*message_to_sign), ParseJson(expected_message));
+  EXPECT_EQ(base::test::ParseJson(*message_to_sign),
+            base::test::ParseJson(expected_message));
   std::string private_key_decoded =
       DecodePrivateKey("7ug8i7Q6xddnBpvjbHe8zm+UekV+EVtOUxpNXr+PpCc=");
   auto private_key =
@@ -286,13 +284,13 @@ TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
                 base::SpanToRustSlice(private_key),
                 base::SpanToRustSlice(*transaction->TransactionCid(from)))));
   ASSERT_TRUE(signed_transaction);
-  auto signature_value = ParseJsonDict(*signed_transaction);
+  auto signature_value = base::test::ParseJsonDict(*signed_transaction);
   auto* message = signature_value.Find("Message");
   auto* signature_data =
       signature_value.FindStringByDottedPath("Signature.Data");
   EXPECT_TRUE(message);
   EXPECT_TRUE(signature_data);
-  auto message_as_value = ParseJson(*message_to_sign);
+  auto message_as_value = base::test::ParseJson(*message_to_sign);
   EXPECT_EQ(
       *signature_data,
       "lsMyTOOAaW9/FxIKupqypmUl1hXLOKrbcJdQs+bHMPNF6aaCu2MaIRQKjS/"

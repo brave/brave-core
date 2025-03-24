@@ -2485,7 +2485,3 @@ dependencies = [
 [[patch.unused]]
 name = "anyhow"
 version = "1.0.95"
-
-[[patch.unused]]
-name = "base64"
-version = "0.22.1"
