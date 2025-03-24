@@ -313,7 +313,7 @@ public class Tab: NSObject {
     }
     return initialConfiguration
   }
-  private var initialConfiguration: WKWebViewConfiguration
+  var initialConfiguration: WKWebViewConfiguration
 
   init(
     configuration: WKWebViewConfiguration,
@@ -551,7 +551,7 @@ public class Tab: NSObject {
     webViewObservations.removeAll()
   }
 
-  func resetWebView(config: WKWebViewConfiguration) {
+  public func resetWebView(config: WKWebViewConfiguration) {
     initialConfiguration = config
     deleteWebView()
   }

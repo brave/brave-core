@@ -26,7 +26,7 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
         createNewTabWithRequest: navigationAction.request
       )
     else { return nil }
-    childTab.configuration = configuration
+    childTab.initialConfiguration = configuration
     childTab.createWebview()
     return childTab.webView
   }
