@@ -47,11 +47,11 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     }
   }
 
-  availableHeight = 0
-  showBackButton = false
-  isLoadingTopics = false
-  errorMessage = ''
-  needsPremium = false
+  accessor availableHeight: number = 0
+  accessor showBackButton: boolean = false
+  accessor isLoadingTopics: boolean = false
+  accessor errorMessage: string = ''
+  accessor needsPremium: boolean = false
 
   static override get styles() {
     return getCss()
