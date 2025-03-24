@@ -168,7 +168,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "bitflags"
-version = "2.8.0"
+version = "2.9.0"
 
 [[package]]
 name = "bitvec"
@@ -2483,4 +2483,4 @@ dependencies = [
 
 [[patch.unused]]
 name = "anyhow"
-version = "1.0.95"
+version = "1.0.97"
