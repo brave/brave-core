@@ -8,12 +8,17 @@
 #include <memory>
 #include <string_view>
 
+#include "base/base_paths.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_provider_listener.h"
+#include "components/omnibox/browser/on_device_model_update_listener.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -31,6 +36,20 @@ class BraveOnDeviceHeadProviderTest : public testing::Test,
   void SetUp() override {
     provider_ =
         base::WrapRefCounted(BraveOnDeviceHeadProvider::Create(&client_, this));
+    SetupTestOnDeviceHeadModel();
+  }
+
+  void SetupTestOnDeviceHeadModel() {
+    base::FilePath file_path;
+    base::PathService::Get(base::DIR_SRC_TEST_DATA_ROOT, &file_path);
+    // The same test model also used in ./on_device_head_model_unittest.cc.
+    file_path = file_path.AppendASCII("components/test/data/omnibox");
+    ASSERT_TRUE(base::PathExists(file_path));
+    auto* update_listener = OnDeviceModelUpdateListener::GetInstance();
+    if (update_listener) {
+      update_listener->OnHeadModelUpdate(file_path);
+    }
+    task_environment_.RunUntilIdle();
   }
 
   void OnProviderUpdate(bool updated_matches,
