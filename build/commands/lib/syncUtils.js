@@ -120,8 +120,8 @@ function syncChromium(program) {
   let args = [
     'sync',
     '--nohooks',
-    '--revision',
-    'src@' + requiredChromiumRef,
+    // '--revision',
+    // 'src@' + requiredChromiumRef,
     '--reset',
     '--upstream'
   ]
@@ -183,6 +183,13 @@ function syncChromium(program) {
       Log.warn(
         "Chromium doesn't need sync but received the flag to do it anyway."
       )
+    }
+  }
+
+  if (syncWithForce && fs.existsSync(path.join(config.srcDir, 'chrome', 'VERSION'))) {
+    util.runGit(config.srcDir, ['fetch', 'origin', requiredChromiumRef])
+    if ((util.runGit(config.srcDir, ['rev-parse', requiredChromiumRef]) !== util.runGit(config.srcDir, ['rev-parse', 'HEAD']))) {
+      util.runGit(config.srcDir, ['reset', '--hard', 'FETCH_HEAD'])
     }
   }
 
