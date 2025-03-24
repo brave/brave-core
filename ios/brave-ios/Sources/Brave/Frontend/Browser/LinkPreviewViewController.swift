@@ -35,7 +35,7 @@ class LinkPreviewViewController: UIViewController {
       configuration: parentTab.configuration,
       type: parentTab.isPrivate ? .private : .regular
     ).then {
-      $0.tabDelegate = browserController
+      $0.miscDelegate = browserController
       $0.createWebview()
       $0.addPolicyDecider(browserController)
       $0.webDelegate = browserController

@@ -18,6 +18,8 @@ import os.log
 extension BrowserViewController: TabManagerDelegate {
   func attachTabHelpers(to tab: Tab) {
     tab.browserData = .init(tab: tab, tabGeneratorAPI: braveCore.tabGeneratorAPI)
+    tab.browserData?.miscDelegate = self
+    tab.pullToRefresh = .init(tab: tab)
     SnackBarTabHelper.create(for: tab)
   }
 
@@ -106,7 +108,6 @@ extension BrowserViewController: TabManagerDelegate {
 
     clearPageZoomDialog()
     updateTabsBarVisibility()
-    selected?.updatePullToRefreshVisibility()
 
     if let tab = selected {
       topToolbar.locationView.loading = tab.loading
@@ -168,7 +169,6 @@ extension BrowserViewController: TabManagerDelegate {
     if !tabManager.isRestoring {
       updateToolbarUsingTabManager(tabManager)
     }
-    tab.tabDelegate = self
     tab.addObserver(self)
     tab.addPolicyDecider(self)
     tab.webDelegate = self

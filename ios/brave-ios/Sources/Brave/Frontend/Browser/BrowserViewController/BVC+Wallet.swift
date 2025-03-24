@@ -197,7 +197,7 @@ extension TabBrowserData: BraveWalletProviderDelegate {
       Logger.module.error("Failing to show Wallet panel due to unavailable tab url origin")
       return
     }
-    tab.tabDelegate?.showWalletNotification(tab, origin: origin)
+    tab.miscDelegate?.showWalletNotification(tab, origin: origin)
   }
 
   func getOrigin() -> URLOrigin {
@@ -290,12 +290,12 @@ extension TabBrowserData: BraveWalletProviderDelegate {
           case .rejected:
             completion(.none, [])
           }
-          tab.tabDelegate?.updateURLBarWalletButton()
+          tab.miscDelegate?.updateURLBarWalletButton()
         }
       )
 
       tabDappStore.latestPendingPermissionRequest = request
-      tab.tabDelegate?.showWalletNotification(tab, origin: origin)
+      tab.miscDelegate?.showWalletNotification(tab, origin: origin)
     }
   }
 
@@ -353,7 +353,7 @@ extension TabBrowserData: BraveWalletProviderDelegate {
 
   func isTabVisible() -> Bool {
     guard let tab else { return false }
-    return tab.tabDelegate?.isTabVisible(tab) ?? false
+    return tab.isVisible
   }
 
   func isPermissionDenied(_ type: BraveWallet.CoinType) -> Bool {
@@ -383,7 +383,7 @@ extension TabBrowserData: BraveWalletProviderDelegate {
       let isWalletCreated = await keyringService.isWalletCreated()
       if !isWalletCreated {
         // Wallet is not setup. User must onboard / setup wallet first.
-        tab.tabDelegate?.showWalletNotification(tab, origin: origin)
+        tab.miscDelegate?.showWalletNotification(tab, origin: origin)
         return
       }
 
@@ -395,10 +395,10 @@ extension TabBrowserData: BraveWalletProviderDelegate {
 
       // store the account creation request
       accountCreationRequestManager.beginRequest(for: origin, coinType: coin) { [weak tab] in
-        tab?.tabDelegate?.updateURLBarWalletButton()
+        tab?.miscDelegate?.updateURLBarWalletButton()
       }
       // show wallet notification
-      tab.tabDelegate?.showWalletNotification(tab, origin: origin)
+      tab.miscDelegate?.showWalletNotification(tab, origin: origin)
     }
   }
 
@@ -645,7 +645,7 @@ extension TabBrowserData: BraveWalletKeyringServiceObserver {
   func walletReset() {
     guard let tab else { return }
     tab.reload()
-    tab.tabDelegate?.updateURLBarWalletButton()
+    tab.miscDelegate?.updateURLBarWalletButton()
   }
 
   func locked() {

@@ -132,7 +132,7 @@ extension BrowserViewController: TabWebPolicyDecider {
 
     // Store the response in the tab
     if let responseURL = responseURL {
-      tab.responses[responseURL] = response
+      tab.responses?[responseURL] = response
     }
 
     // Check if we upgraded to https and if so we need to update the url of frame evaluations
