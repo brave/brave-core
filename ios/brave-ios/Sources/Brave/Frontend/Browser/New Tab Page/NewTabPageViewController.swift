@@ -693,7 +693,7 @@ class NewTabPageViewController: UIViewController {
         default: return nil
         }
       }()
-      if let eventType {
+      if let eventType, sponsoredBackground.shouldMetricsFallbackToP3A {
         p3aHelper.recordEvent(eventType, on: tab, for: sponsoredBackground)
       }
       rewards.ads.triggerNewTabPageAdEvent(

@@ -84,11 +84,15 @@
 - (instancetype)initWithCampaign:
     (const ntp_background_images::Campaign&)campaign {
   auto campaignId = base::SysUTF8ToNSString(campaign.campaign_id);
+  const bool shouldMetricsFallbackToP3A =
+      campaign.should_metrics_fallback_to_p3a;
   auto backgrounds =
       [[NSMutableArray<NTPSponsoredImageBackground*> alloc] init];
   for (const auto& creative : campaign.creatives) {
-    [backgrounds addObject:[[NTPSponsoredImageBackground alloc]
-                               initWithSponsoredBackground:creative]];
+    [backgrounds
+        addObject:[[NTPSponsoredImageBackground alloc]
+                      initWithSponsoredBackground:creative
+                       shouldMetricsFallbackToP3A:shouldMetricsFallbackToP3A]];
   }
   return [self initWithCampaignId:campaignId backgrounds:backgrounds];
 }
@@ -102,6 +106,7 @@
 @property(nonatomic, copy) NSString* creativeInstanceId;
 @property(nonatomic) NTPSponsoredImageLogo* logo;
 @property(nonatomic) CGRect viewBox;
+@property(nonatomic) BOOL shouldMetricsFallbackToP3A;
 @end
 
 @implementation NTPSponsoredImageBackground
@@ -111,7 +116,8 @@
                   backgroundColor:(NSString*)backgroundColor
                creativeInstanceId:(NSString*)creativeInstanceId
                              logo:(NTPSponsoredImageLogo*)logo
-                          viewBox:(CGRect)viewBox {
+                          viewBox:(CGRect)viewBox
+       shouldMetricsFallbackToP3A:(BOOL)shouldMetricsFallbackToP3A {
   if ((self = [super init])) {
     self.imagePath = imagePath;
     self.focalPoint = focalPoint;
@@ -119,12 +125,14 @@
     self.creativeInstanceId = creativeInstanceId;
     self.logo = logo;
     self.viewBox = viewBox;
+    self.shouldMetricsFallbackToP3A = shouldMetricsFallbackToP3A;
   }
   return self;
 }
 
 - (instancetype)initWithSponsoredBackground:
-    (const ntp_background_images::Creative&)sponsoredBackground {
+                    (const ntp_background_images::Creative&)sponsoredBackground
+                 shouldMetricsFallbackToP3A:(BOOL)shouldMetricsFallbackToP3A {
   auto imagePath =
       [NSURL fileURLWithPath:base::SysUTF8ToNSString(
                                  sponsoredBackground.file_path.value())];
@@ -141,7 +149,8 @@
                  backgroundColor:backgroundColor
               creativeInstanceId:creativeInstanceId
                             logo:logo
-                         viewBox:viewBox];
+                         viewBox:viewBox
+      shouldMetricsFallbackToP3A:shouldMetricsFallbackToP3A];
 }
 
 @end

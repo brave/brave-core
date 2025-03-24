@@ -300,6 +300,7 @@ public class BrowserViewController: UIViewController {
     feedDataSource.historyAPI = braveCore.historyAPI
     backgroundDataSource = .init(
       service: braveCore.backgroundImagesService,
+      rewards: rewards,
       privateBrowsingManager: privateBrowsingManager
     )
 

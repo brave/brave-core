@@ -47,13 +47,16 @@ OBJC_EXPORT
 @property(readonly) NSString* creativeInstanceId;
 @property(readonly) NTPSponsoredImageLogo* logo;
 @property(readonly) CGRect viewBox;
+@property(readonly) BOOL shouldMetricsFallbackToP3A;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithImagePath:(NSURL*)imagePath
                        focalPoint:(CGPoint)focalPoint
                   backgroundColor:(NSString*)backgroundColor
                creativeInstanceId:(NSString*)creativeInstanceId
                              logo:(NTPSponsoredImageLogo*)logo
-                          viewBox:(CGRect)viewBox NS_DESIGNATED_INITIALIZER;
+                          viewBox:(CGRect)viewBox
+       shouldMetricsFallbackToP3A:(BOOL)shouldMetricsFallbackToP3A
+    NS_DESIGNATED_INITIALIZER;
 @end
 
 OBJC_EXPORT

@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class NotificationAdIOS, InlineContentAdIOS;
+@class NotificationAdIOS, InlineContentAdIOS, NewTabPageAdIOS;
 
 OBJC_EXPORT
 @protocol BraveAdsNotificationHandler
@@ -147,6 +147,13 @@ OBJC_EXPORT
                           completion:(void (^)(BOOL success))completion;
 
 - (void)clearData:(void (^)())completion;
+
+#pragma mark - New Tab Page Ad
+
+- (nullable NewTabPageAdIOS*)maybeGetPrefetchedNewTabPageAd;
+
+- (void)onFailedToPrefetchNewTabPageAd:(NSString*)placementId
+                    creativeInstanceId:(NSString*)creativeInstanceId;
 
 #pragma mark - Ads client notifier
 
