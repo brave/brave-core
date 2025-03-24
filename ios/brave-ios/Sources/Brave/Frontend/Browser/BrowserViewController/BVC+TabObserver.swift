@@ -3,13 +3,116 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveUI
 import BraveWallet
 import Foundation
 import Preferences
 import Shared
+import UIKit
 
 extension BrowserViewController: TabObserver {
+  func tab(_ tab: Tab, didCreateWebView webView: UIView) {
+    webView.frame = webViewContainer.frame
+
+    var injectedScripts: [TabContentScript] = [
+      ReaderModeScriptHandler(),
+      ErrorPageHelper(certStore: profile.certStore),
+      BlockedDomainScriptHandler(),
+      HTTPBlockedScriptHandler(tabManager: tabManager),
+      PrintScriptHandler(browserController: self),
+      CustomSearchScriptHandler(),
+      DarkReaderScriptHandler(),
+      FocusScriptHandler(),
+      BraveGetUA(),
+      BraveSearchScriptHandler(profile: profile, rewards: rewards),
+      ResourceDownloadScriptHandler(),
+      DownloadContentScriptHandler(browserController: self),
+      PlaylistScriptHandler(tab: tab),
+      PlaylistFolderSharingScriptHandler(),
+      AdsMediaReportingScriptHandler(rewards: rewards),
+      ReadyStateScriptHandler(),
+      DeAmpScriptHandler(),
+      SiteStateListenerScriptHandler(),
+      CosmeticFiltersScriptHandler(),
+      URLPartinessScriptHandler(),
+      FaviconScriptHandler(),
+      Web3NameServiceScriptHandler(),
+      YoutubeQualityScriptHandler(tab: tab),
+      BraveLeoScriptHandler(),
+      BraveSkusScriptHandler(),
+    ]
+
+    if let contentBlocker = tab.contentBlocker {
+      injectedScripts.append(contentBlocker)
+    }
+    if let requestBlockingContentHelper = tab.requestBlockingContentHelper {
+      injectedScripts.append(requestBlockingContentHelper)
+    }
+
+    #if canImport(BraveTalk)
+    injectedScripts.append(
+      BraveTalkScriptHandler(
+        rewards: rewards,
+        launchNativeBraveTalk: { [weak self] tab, room, token in
+          self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
+        }
+      )
+    )
+    #endif
+
+    // Only add the logins handler and wallet provider if the tab is NOT a private browsing tab
+    if !tab.isPrivate {
+      injectedScripts += [
+        LoginsScriptHandler(profile: profile, passwordAPI: braveCore.passwordAPI),
+        EthereumProviderScriptHandler(),
+        SolanaProviderScriptHandler(),
+        BraveSearchResultAdScriptHandler(),
+      ]
+    }
+
+    if FeatureList.kBraveTranslateEnabled.enabled {
+      injectedScripts.append(contentsOf: [
+        BraveTranslateScriptLanguageDetectionHandler(),
+        BraveTranslateScriptHandler(),
+      ])
+    }
+
+    // XXX: Bug 1390200 - Disable NSUserActivity/CoreSpotlight temporarily
+    // let spotlightHelper = SpotlightHelper(tab: tab)
+    // tab.addHelper(spotlightHelper, name: SpotlightHelper.name())
+
+    injectedScripts.forEach {
+      tab.browserData?.addContentScript(
+        $0,
+        name: type(of: $0).scriptName,
+        contentWorld: type(of: $0).scriptSandbox
+      )
+    }
+
+    (tab.browserData?.getContentScript(name: ReaderModeScriptHandler.scriptName)
+      as? ReaderModeScriptHandler)?
+      .delegate = self
+    (tab.browserData?.getContentScript(name: PlaylistScriptHandler.scriptName)
+      as? PlaylistScriptHandler)?
+      .delegate = self
+    (tab.browserData?.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName)
+      as? PlaylistFolderSharingScriptHandler)?.delegate = self
+    (tab.browserData?.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
+      as? Web3NameServiceScriptHandler)?.delegate = self
+
+    // Translate Helper
+    tab.translateHelper = BraveTranslateTabHelper(tab: tab, delegate: self)
+  }
+
+  func tab(_ tab: Tab, willDeleteWebView webView: UIView) {
+    tab.browserData?.cancelQueuedAlerts()
+    if let scrollView = tab.webScrollView {
+      toolbarVisibilityViewModel.endScrollViewObservation(scrollView)
+    }
+    webView.removeFromSuperview()
+  }
+
   func tabDidStartNavigation(_ tab: Tab) {
     tab.contentBlocker?.clearPageStats()
 
@@ -56,7 +159,7 @@ extension BrowserViewController: TabObserver {
     // Reset redirect chain
     tab.redirectChain = []
     if let url = visibleURL {
-      tab.redirectChain.append(url)
+      tab.redirectChain?.append(url)
     }
   }
 
@@ -160,7 +263,7 @@ extension BrowserViewController: TabObserver {
       isSelected: tabManager.selectedTab == tab,
       isPrivate: privateBrowsingManager.isPrivateBrowsing
     )
-    tab.browserData?.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
+    tab.browserData?.reportPageLoad(to: rewards, redirectChain: tab.redirectChain ?? [])
     // Reset `rewardsReportingState` tab property so that listeners
     // can be notified of tab changes when a new navigation happens.
     tab.rewardsReportingState = RewardsTabChangeReportingState()

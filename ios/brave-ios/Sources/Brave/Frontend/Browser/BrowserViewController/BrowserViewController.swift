@@ -481,7 +481,6 @@ public class BrowserViewController: UIViewController {
     Preferences.Privacy.privateBrowsingOnly.observe(from: self)
     Preferences.General.tabBarVisibility.observe(from: self)
     Preferences.UserAgent.alwaysRequestDesktopSite.observe(from: self)
-    Preferences.General.enablePullToRefresh.observe(from: self)
     Preferences.General.mediaAutoBackgrounding.observe(from: self)
     Preferences.General.youtubeHighQuality.observe(from: self)
     Preferences.General.defaultPageZoomLevel.observe(from: self)
@@ -2416,108 +2415,7 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
   }
 }
 
-extension BrowserViewController: TabDelegate {
-  func tab(_ tab: Tab, didCreateWebView webView: UIView) {
-    webView.frame = webViewContainer.frame
-
-    var injectedScripts: [TabContentScript] = [
-      ReaderModeScriptHandler(),
-      ErrorPageHelper(certStore: profile.certStore),
-      BlockedDomainScriptHandler(),
-      HTTPBlockedScriptHandler(tabManager: tabManager),
-      PrintScriptHandler(browserController: self),
-      CustomSearchScriptHandler(),
-      DarkReaderScriptHandler(),
-      FocusScriptHandler(),
-      BraveGetUA(),
-      BraveSearchScriptHandler(profile: profile, rewards: rewards),
-      ResourceDownloadScriptHandler(),
-      DownloadContentScriptHandler(browserController: self),
-      PlaylistScriptHandler(tab: tab),
-      PlaylistFolderSharingScriptHandler(),
-      AdsMediaReportingScriptHandler(rewards: rewards),
-      ReadyStateScriptHandler(),
-      DeAmpScriptHandler(),
-      SiteStateListenerScriptHandler(),
-      CosmeticFiltersScriptHandler(),
-      URLPartinessScriptHandler(),
-      FaviconScriptHandler(),
-      Web3NameServiceScriptHandler(),
-      YoutubeQualityScriptHandler(tab: tab),
-      BraveLeoScriptHandler(),
-      BraveSkusScriptHandler(),
-    ]
-
-    if let contentBlocker = tab.contentBlocker {
-      injectedScripts.append(contentBlocker)
-    }
-    if let requestBlockingContentHelper = tab.requestBlockingContentHelper {
-      injectedScripts.append(requestBlockingContentHelper)
-    }
-
-    #if canImport(BraveTalk)
-    injectedScripts.append(
-      BraveTalkScriptHandler(
-        rewards: rewards,
-        launchNativeBraveTalk: { [weak self] tab, room, token in
-          self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
-        }
-      )
-    )
-    #endif
-
-    // Only add the logins handler and wallet provider if the tab is NOT a private browsing tab
-    if !tab.isPrivate {
-      injectedScripts += [
-        LoginsScriptHandler(profile: profile, passwordAPI: braveCore.passwordAPI),
-        EthereumProviderScriptHandler(),
-        SolanaProviderScriptHandler(),
-        BraveSearchResultAdScriptHandler(),
-      ]
-    }
-
-    if FeatureList.kBraveTranslateEnabled.enabled {
-      injectedScripts.append(contentsOf: [
-        BraveTranslateScriptLanguageDetectionHandler(),
-        BraveTranslateScriptHandler(),
-      ])
-    }
-
-    // XXX: Bug 1390200 - Disable NSUserActivity/CoreSpotlight temporarily
-    // let spotlightHelper = SpotlightHelper(tab: tab)
-    // tab.addHelper(spotlightHelper, name: SpotlightHelper.name())
-
-    injectedScripts.forEach {
-      tab.browserData?.addContentScript(
-        $0,
-        name: type(of: $0).scriptName,
-        contentWorld: type(of: $0).scriptSandbox
-      )
-    }
-
-    (tab.browserData?.getContentScript(name: ReaderModeScriptHandler.scriptName)
-      as? ReaderModeScriptHandler)?
-      .delegate = self
-    (tab.browserData?.getContentScript(name: PlaylistScriptHandler.scriptName)
-      as? PlaylistScriptHandler)?
-      .delegate = self
-    (tab.browserData?.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName)
-      as? PlaylistFolderSharingScriptHandler)?.delegate = self
-    (tab.browserData?.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
-      as? Web3NameServiceScriptHandler)?.delegate = self
-
-    // Translate Helper
-    tab.translateHelper = BraveTranslateTabHelper(tab: tab, delegate: self)
-  }
-
-  func tab(_ tab: Tab, willDeleteWebView webView: UIView) {
-    tab.browserData?.cancelQueuedAlerts()
-    if let scrollView = tab.webScrollView {
-      toolbarVisibilityViewModel.endScrollViewObservation(scrollView)
-    }
-    webView.removeFromSuperview()
-  }
-
+extension BrowserViewController: TabMiscDelegate {
   func showRequestRewardsPanel(_ tab: Tab) {
     let vc = BraveTalkRewardsOptInViewController()
 
@@ -2970,8 +2868,6 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.UserAgent.alwaysRequestDesktopSite.key:
       tabManager.reset()
       tabManager.reloadSelectedTab()
-    case Preferences.General.enablePullToRefresh.key:
-      tabManager.selectedTab?.updatePullToRefreshVisibility()
     case Preferences.Shields.blockScripts.key,
       Preferences.Shields.blockImages.key,
       Preferences.Shields.useRegionAdBlock.key:

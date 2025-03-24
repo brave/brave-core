@@ -140,7 +140,7 @@ class BraveTalkScriptHandler: TabContentScript {
     tab.rewardsEnabledCallback = { [weak self] success in
       self?.rewardsEnabledReplyHandler?(success, nil)
     }
-    tab.tabDelegate?.showRequestRewardsPanel(tab)
+    tab.miscDelegate?.showRequestRewardsPanel(tab)
   }
 }
 

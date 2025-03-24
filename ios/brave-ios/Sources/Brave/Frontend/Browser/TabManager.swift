@@ -308,6 +308,7 @@ class TabManager: NSObject {
   func selectTab(_ tab: Tab?, previous: Tab? = nil) {
     assert(Thread.isMainThread)
     let previous = previous ?? selectedTab
+    previous?.isVisible = false
 
     if previous === tab {
       return
@@ -352,6 +353,7 @@ class TabManager: NSObject {
     UIImpactFeedbackGenerator(style: .light).vibrate()
     selectedTab?.createWebview()
     selectedTab?.lastExecutedTime = Date.now()
+    selectedTab?.isVisible = true
 
     if let selectedTab = selectedTab,
       selectedTab.url == nil

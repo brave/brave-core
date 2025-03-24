@@ -204,7 +204,8 @@ public class BraveRewards: PreferencesObserver {
     tab: Tab,
     isSelected: Bool
   ) {
-    guard !tab.redirectChain.isEmpty, !tab.isPrivate, ads.isServiceRunning(),
+    guard let redirectChain = tab.redirectChain, !redirectChain.isEmpty, !tab.isPrivate,
+      ads.isServiceRunning(),
       let reportingState = tab.rewardsReportingState
     else {
       // Don't notify `DidChange` for tabs that haven't finished loading, private tabs,
@@ -214,7 +215,7 @@ public class BraveRewards: PreferencesObserver {
 
     ads.notifyTabDidChange(
       Int(tab.rewardsId ?? 0),
-      redirectChain: tab.redirectChain,
+      redirectChain: redirectChain,
       isNewNavigation: reportingState.isNewNavigation,
       isRestoring: reportingState.wasRestored,
       isSelected: isSelected
@@ -223,7 +224,8 @@ public class BraveRewards: PreferencesObserver {
 
   /// Notifies Brave Ads that the given tab did load
   func maybeNotifyTabDidLoad(tab: Tab) {
-    guard !tab.redirectChain.isEmpty, !tab.isPrivate, ads.isServiceRunning(),
+    guard let redirectChain = tab.redirectChain, !redirectChain.isEmpty, !tab.isPrivate,
+      ads.isServiceRunning(),
       let reportingState = tab.rewardsReportingState
     else {
       // Don't notify `DidLoad` for tabs that haven't finished loading, private tabs,
@@ -256,7 +258,7 @@ public class BraveRewards: PreferencesObserver {
     isSelected: Bool,
     isPrivate: Bool
   ) {
-    guard let url = tab.redirectChain.last else {
+    guard let url = tab.redirectChain?.last else {
       // Don't report update for tabs that haven't finished loading.
       return
     }
@@ -274,7 +276,7 @@ public class BraveRewards: PreferencesObserver {
     htmlContent: String?,
     textContent: String?
   ) {
-    guard let url = tab.redirectChain.last else {
+    guard let url = tab.redirectChain?.last else {
       // Don't report update for tabs that haven't finished loading.
       return
     }
@@ -300,13 +302,13 @@ public class BraveRewards: PreferencesObserver {
         // changed with empty HTML to ensure that regular conversions are processed.
         ads.notifyTabHtmlContentDidChange(
           tabId,
-          redirectChain: tab.redirectChain,
+          redirectChain: tab.redirectChain ?? [],
           html: htmlContent ?? ""
         )
         if let textContent {
           ads.notifyTabTextContentDidChange(
             tabId,
-            redirectChain: tab.redirectChain,
+            redirectChain: tab.redirectChain ?? [],
             text: textContent
           )
         }

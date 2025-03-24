@@ -153,7 +153,7 @@ extension BrowserViewController {
     let forwardList = backForwardList.forwardList
 
     guard let currentURL = backForwardList.currentItem?.url,
-      let headers = (tab.responses[currentURL] as? HTTPURLResponse)?.allHeaderFields
+      let headers = (tab.responses?[currentURL] as? HTTPURLResponse)?.allHeaderFields
         as? [String: String],
       let readerModeURL = currentURL.encodeEmbeddedInternalURL(for: .readermode, headers: headers)
     else { return }

@@ -23,6 +23,23 @@ extension TabDataValues {
   }
 }
 
+protocol TabMiscDelegate {
+  func showRequestRewardsPanel(_ tab: Tab)
+  func stopMediaPlayback(_ tab: Tab)
+  func showWalletNotification(_ tab: Tab, origin: URLOrigin)
+  func updateURLBarWalletButton()
+}
+
+struct RewardsTabChangeReportingState {
+  /// Set to true when the resulting page was restored from session state.
+  var wasRestored = false
+  /// Set to true when the resulting page navigation is not a reload or a
+  /// back/forward type.
+  var isNewNavigation = true
+  /// HTTP status code of the resulting page.
+  var httpStatusCode = -1
+}
+
 /// A broad container of assorted data that was previously stored in Tab
 ///
 /// DO NOT ADD NEW PROPERTIES TO THIS TYPE
@@ -93,6 +110,7 @@ class TabBrowserData: NSObject, TabObserver {
 
   var redirectChain = [URL]()
   var responses = [URL: URLResponse]()
+  var miscDelegate: TabMiscDelegate?
 
   private var _syncTab: BraveSyncTab?
   private var _faviconDriver: FaviconDriver?
@@ -130,7 +148,7 @@ class TabBrowserData: NSObject, TabObserver {
   var tabDappStore: TabDappStore = .init()
   var isWalletIconVisible: Bool = false {
     didSet {
-      tab?.tabDelegate?.updateURLBarWalletButton()
+      tab?.miscDelegate?.updateURLBarWalletButton()
     }
   }
 
