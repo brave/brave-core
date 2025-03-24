@@ -1,167 +1,180 @@
 <activity-alias
         android:name=".Icon3dAlias"
         android:enabled="false"
-        android:icon="@drawable/ic_launcher_3d"
-        android:roundIcon="@drawable/ic_launcher_3d"
+        android:icon="@mipmap/ic_launcher_3d"
+        android:roundIcon="@mipmap/ic_launcher_3d_round"
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.APP_BROWSER" />
         </intent-filter>
 </activity-alias>
 
 <activity-alias
         android:name=".Icon80sAlias"
         android:enabled="false"
-        android:icon="@drawable/ic_launcher_80s"
-        android:roundIcon="@drawable/ic_launcher_80s"
+        android:icon="@mipmap/ic_launcher_80s"
+        android:roundIcon="@mipmap/ic_launcher_80s_round"
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.APP_BROWSER" />
         </intent-filter>
 </activity-alias>
 
 <activity-alias
         android:name=".IconAquaAlias"
         android:enabled="false"
-        android:icon="@drawable/ic_launcher_aqua"
-        android:roundIcon="@drawable/ic_launcher_aqua"
+        android:icon="@mipmap/ic_launcher_aqua"
+        android:roundIcon="@mipmap/ic_launcher_aqua_round"
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.APP_BROWSER" />
         </intent-filter>
 </activity-alias>
 
 <activity-alias
         android:name=".IconBatAlias"
         android:enabled="false"
-        android:icon="@drawable/ic_launcher_bat"
-        android:roundIcon="@drawable/ic_launcher_bat"
+        android:icon="@mipmap/ic_launcher_bat"
+        android:roundIcon="@mipmap/ic_launcher_bat_round"
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.APP_BROWSER" />
+            <category android:name="android.intent.category.DEFAULT" />
         </intent-filter>
 </activity-alias>
 
 <activity-alias
         android:name=".IconHoloAlias"
         android:enabled="false"
-        android:icon="@drawable/ic_launcher_holo"
-        android:roundIcon="@drawable/ic_launcher_holo"
+        android:icon="@mipmap/ic_launcher_holo"
+        android:roundIcon="@mipmap/ic_launcher_holo_round"
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.APP_BROWSER" />
         </intent-filter>
 </activity-alias>
 
 <activity-alias
         android:name=".IconNeonAlias"
         android:enabled="false"
-        android:icon="@drawable/ic_launcher_neon"
-        android:roundIcon="@drawable/ic_launcher_neon"
+        android:icon="@mipmap/ic_launcher_neon"
+        android:roundIcon="@mipmap/ic_launcher_neon_round"
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.APP_BROWSER" />
         </intent-filter>
 </activity-alias>
 
 <activity-alias
         android:name=".IconNetscapeAlias"
         android:enabled="false"
-        android:icon="@drawable/ic_launcher_netscape"
-        android:roundIcon="@drawable/ic_launcher_netscape"
+        android:icon="@mipmap/ic_launcher_netscape"
+        android:roundIcon="@mipmap/ic_launcher_netscape_round"
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.APP_BROWSER" />
         </intent-filter>
 </activity-alias>
 
 <activity-alias
         android:name=".IconPopartAlias"
         android:enabled="false"
-        android:icon="@drawable/ic_launcher_popart"
-        android:roundIcon="@drawable/ic_launcher_popart"
+        android:icon="@mipmap/ic_launcher_popart"
+        android:roundIcon="@mipmap/ic_launcher_popart_round"
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.APP_BROWSER" />
         </intent-filter>
 </activity-alias>
 
 <activity-alias
         android:name=".IconPopartDarkAlias"
         android:enabled="false"
-        android:icon="@drawable/ic_launcher_popartdark"
-        android:roundIcon="@drawable/ic_launcher_popartdark"
+        android:icon="@mipmap/ic_launcher_popartdark"
+        android:roundIcon="@mipmap/ic_launcher_popartdark_round"
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.APP_BROWSER" />
         </intent-filter>
 </activity-alias>
 
 <activity-alias
         android:name=".IconSupernovaAlias"
         android:enabled="false"
-        android:icon="@drawable/ic_launcher_supernova"
-        android:roundIcon="@drawable/ic_launcher_supernova"
+        android:icon="@mipmap/ic_launcher_supernova"
+        android:roundIcon="@mipmap/ic_launcher_supernova_round"
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.APP_BROWSER" />
         </intent-filter>
 </activity-alias>
 
 <activity-alias
         android:name=".IconTerminalAlias"
         android:enabled="false"
-        android:icon="@drawable/ic_launcher_terminal"
-        android:roundIcon="@drawable/ic_launcher_terminal"
+        android:icon="@mipmap/ic_launcher_terminal"
+        android:roundIcon="@mipmap/ic_launcher_terminal_round"
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.APP_BROWSER" />
         </intent-filter>
 </activity-alias>
 
 <activity-alias
         android:name=".IconWindowsAlias"
         android:enabled="false"
-        android:icon="@drawable/ic_launcher_windows"
-        android:roundIcon="@drawable/ic_launcher_windows"
+        android:icon="@mipmap/ic_launcher_windows"
+        android:roundIcon="@mipmap/ic_launcher_windows_round"
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.APP_BROWSER" />
         </intent-filter>
 </activity-alias>

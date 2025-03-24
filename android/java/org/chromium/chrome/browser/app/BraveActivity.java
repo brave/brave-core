@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.app;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -78,6 +77,7 @@ import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEngin
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesModel;
 import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
 import org.chromium.brave.browser.quick_search_engines.views.QuickSearchEnginesViewAdapter;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -470,7 +470,7 @@ public abstract class BraveActivity extends ChromeActivity
             //         }
             //     }
             // }
-            CustomAppIconsManager.switchIcon(BraveActivity.this, CustomAppIconsEnum.ICON_AQUA);
+            CustomAppIconsManager.switchIcon(BraveActivity.this, CustomAppIconsEnum.ICON_NETSCAPE);
         } else if (id == R.id.request_vpn_location_id || id == R.id.request_vpn_location_icon_id) {
             BraveVpnUtils.openVpnServerSelectionActivity(BraveActivity.this);
         } else if (id == R.id.brave_speedreader_id) {
