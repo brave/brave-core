@@ -348,10 +348,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(policy::policy_prefs::kHideWebStoreIcon,
                                 base::Value(true));
 
-  // Disable Chromium's privacy sandbox
-  registry->SetDefaultPrefValue(prefs::kPrivacySandboxApisEnabled,
-                                base::Value(false));
-
   // Importer: selected data types
   registry->RegisterBooleanPref(kImportDialogExtensions, true);
   registry->RegisterBooleanPref(kImportDialogPayments, true);
