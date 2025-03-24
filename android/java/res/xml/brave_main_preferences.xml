@@ -95,13 +95,12 @@
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.brave.browser.settings.CustomAppIconsPreferences"
         android:key="custom_app_icons"
-        android:order="17"
-        android:icon="@drawable/ic_launcher"
+        android:order="18"
         android:title="@string/prefs_custom_app_icons"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BackgroundImagesPreferences"
         android:key="background_images"
-        android:order="18"
+        android:order="19"
         android:icon="@drawable/ic_new_tab_page"
         android:title="@string/prefs_new_tab_page"/>
     <PreferenceCategory
