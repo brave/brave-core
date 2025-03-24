@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/side_panel/side_panel_entry_key.h b/chrome/browser/ui/views/side_panel/side_panel_entry_key.h
+index a1af0c548bb277bb45eb4766e47b65ce90f6d027..6e7d2c107649fd1d8ce40e57e3461462cfa39551 100644
+--- a/chrome/browser/ui/views/side_panel/side_panel_entry_key.h
++++ b/chrome/browser/ui/views/side_panel/side_panel_entry_key.h
+@@ -17,7 +17,7 @@ class SidePanelEntryKey {
+   explicit SidePanelEntryKey(SidePanelEntryId id);
+   SidePanelEntryKey(SidePanelEntryId id, extensions::ExtensionId extension_id);
+   SidePanelEntryKey(const SidePanelEntryKey& other);
+-  ~SidePanelEntryKey();
++  virtual ~SidePanelEntryKey();
+ 
+   SidePanelEntryKey& operator=(const SidePanelEntryKey& other);
+   bool operator==(const SidePanelEntryKey& other) const;
