@@ -258,7 +258,7 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
 
   // Cache 1st item to compare after removing.
   const SidebarItem item = service_->items()[0];
-  EXPECT_TRUE(IsBuiltInType(item));
+  EXPECT_TRUE(item.is_built_in_type());
 
   EXPECT_CALL(observer_, OnWillRemoveItem(item, 0)).Times(1);
   EXPECT_CALL(observer_, OnItemRemoved(item, 0)).Times(1);
@@ -279,7 +279,7 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   const SidebarItem item2 = SidebarItem::Create(
       GURL("https://www.brave.com/"), u"brave software",
       SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
-  EXPECT_TRUE(IsWebType(item2));
+  EXPECT_TRUE(item2.is_web_type());
   EXPECT_CALL(observer_, OnItemAdded(item2, default_item_count)).Times(1);
   service_->AddItem(item2);
   testing::Mock::VerifyAndClearExpectations(&observer_);
@@ -324,31 +324,31 @@ TEST_F(SidebarServiceTest, MoveItem) {
 
 TEST(SidebarItemTest, SidebarItemValidation) {
   SidebarItem builtin_item;
-  EXPECT_FALSE(IsValidItem(builtin_item));
+  EXPECT_FALSE(builtin_item.IsValidItem());
 
   builtin_item.type = SidebarItem::Type::kTypeBuiltIn;
   builtin_item.title = u"title";
   builtin_item.built_in_item_type = SidebarItem::BuiltInItemType::kNone;
 
   // builtin item should have have specific builtin item type.
-  EXPECT_FALSE(IsValidItem(builtin_item));
+  EXPECT_FALSE(builtin_item.IsValidItem());
   builtin_item.built_in_item_type = SidebarItem::BuiltInItemType::kBookmarks;
-  EXPECT_TRUE(IsValidItem(builtin_item));
+  EXPECT_TRUE(builtin_item.IsValidItem());
 
   // Invalid if title is empty.
   builtin_item.title = u"";
-  EXPECT_FALSE(IsValidItem(builtin_item));
+  EXPECT_FALSE(builtin_item.IsValidItem());
   builtin_item.title = u"title";
-  EXPECT_TRUE(IsValidItem(builtin_item));
+  EXPECT_TRUE(builtin_item.IsValidItem());
 
   SidebarItem web_item;
   web_item.type = SidebarItem::Type::kTypeWeb;
   web_item.built_in_item_type = SidebarItem::BuiltInItemType::kNone;
   web_item.url = GURL("https://abcd.com/");
   web_item.title = u"title";
-  EXPECT_TRUE(IsValidItem(web_item));
+  EXPECT_TRUE(web_item.IsValidItem());
   web_item.built_in_item_type = SidebarItem::BuiltInItemType::kBookmarks;
-  EXPECT_FALSE(IsValidItem(web_item));
+  EXPECT_FALSE(web_item.IsValidItem());
 }
 
 TEST_F(SidebarServiceTest, UpdateItem) {
@@ -357,7 +357,7 @@ TEST_F(SidebarServiceTest, UpdateItem) {
   // Added webtype item at last.
   int last_item_index = service_->items().size() - 1;
   // Builtin type is not editable.
-  EXPECT_TRUE(IsBuiltInType(service_->items()[last_item_index]));
+  EXPECT_TRUE(service_->items()[last_item_index].is_built_in_type());
   EXPECT_FALSE(service_->IsEditableItemAt(last_item_index));
 
   SidebarItem brave_item;

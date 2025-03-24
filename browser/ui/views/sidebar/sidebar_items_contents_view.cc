@@ -123,7 +123,7 @@ void SidebarItemsContentsView::OnThemeChanged() {
 
   for (size_t item_index = 0; item_index < items_num; ++item_index) {
     const auto item = items[item_index];
-    if (!sidebar::IsWebType(item)) {
+    if (!item.is_web_type()) {
       continue;
     }
 
@@ -147,7 +147,7 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
   const size_t items_num = items.size();
   for (size_t item_index = 0; item_index < items_num; ++item_index) {
     const auto item = items[item_index];
-    if (!sidebar::IsBuiltInType(item)) {
+    if (!item.is_built_in_type()) {
       continue;
     }
 
@@ -294,7 +294,7 @@ void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,
                           base::Unretained(this), item_view));
   item_view->set_drag_controller(drag_controller_);
 
-  if (sidebar::IsWebType(item)) {
+  if (item.is_web_type()) {
     SetDefaultImageFor(item);
   }
 
@@ -377,7 +377,7 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
 
 bool SidebarItemsContentsView::IsBuiltInTypeItemView(views::View* view) const {
   auto index = GetIndexOf(view);
-  return sidebar::IsBuiltInType(sidebar_model_->GetAllSidebarItems()[*index]);
+  return sidebar_model_->GetAllSidebarItems()[*index].is_built_in_type();
 }
 
 void SidebarItemsContentsView::SetImageForItem(const sidebar::SidebarItem& item,
@@ -489,7 +489,7 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
     item_view->SetActiveState(active);
   }
 
-  if (sidebar::IsBuiltInType(item)) {
+  if (item.is_built_in_type()) {
     for (const auto state : views::Button::kButtonStates) {
       auto color_state = state;
       if (active && state != views::Button::STATE_DISABLED) {

@@ -49,6 +49,12 @@ struct SidebarItem {
   SidebarItem& operator=(SidebarItem&&);
   ~SidebarItem();
 
+  bool is_built_in_type() const {
+    return type == SidebarItem::Type::kTypeBuiltIn;
+  }
+  bool is_web_type() const { return type == SidebarItem::Type::kTypeWeb; }
+  bool IsValidItem() const;
+
   bool operator==(const SidebarItem& item) const;
 
   GURL url;
@@ -58,10 +64,6 @@ struct SidebarItem {
   // Set false to open this item in new tab.
   bool open_in_panel = false;
 };
-
-bool IsBuiltInType(const SidebarItem& item);
-bool IsWebType(const SidebarItem& item);
-bool IsValidItem(const SidebarItem& item);
 
 }  // namespace sidebar
 

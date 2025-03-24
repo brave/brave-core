@@ -69,7 +69,7 @@ bool SidebarController::IsActiveIndex(std::optional<size_t> index) const {
 bool SidebarController::DoesBrowserHaveOpenedTabForItem(
     const SidebarItem& item) const {
   // This method is only for builtin item's icon state updating.
-  DCHECK(sidebar::IsBuiltInType(item));
+  DCHECK(item.is_built_in_type());
   DCHECK(!item.open_in_panel);
 
   const std::vector<Browser*> browsers =
@@ -118,7 +118,7 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
   }
 
   // Iterate whenever builtin shortcut type item icon clicks.
-  if (IsBuiltInType(item)) {
+  if (item.is_built_in_type()) {
     IterateOrLoadAtActiveTab(item.url);
     return;
   }
