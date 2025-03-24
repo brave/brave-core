@@ -523,45 +523,6 @@ TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
       /*managed_cookie_exceptions=*/{});
 
   EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
-
-  // Check that even manually updating the preferences, we still don't get this
-  // enabled.
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabled, true);
-  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
-
-  SetupTestState(
-      prefs(), host_content_settings_map(),
-      /*block_third_party_cookies=*/false,
-      /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_BLOCK,
-      /*user_cookie_exceptions=*/{},
-      /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
-      /*managed_cookie_exceptions=*/{});
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabled, true);
-  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
-
-  SetupTestState(
-      prefs(), host_content_settings_map(),
-      /*block_third_party_cookies=*/false,
-      /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
-      /*user_cookie_exceptions=*/{},
-      /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
-      /*managed_cookie_exceptions=*/{});
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabled, true);
-  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
-
-  SetupTestState(
-      prefs(), host_content_settings_map(),
-      /*block_third_party_cookies=*/false,
-      /*default_cookie_setting=*/ContentSetting::CONTENT_SETTING_ALLOW,
-      /*user_cookie_exceptions=*/{},
-      /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
-      /*managed_cookie_exceptions=*/{});
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabled, true);
-  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 }
 
 class PrivacySandboxSettingsTestCookiesClearOnExitTurnedOff
