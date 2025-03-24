@@ -38,6 +38,10 @@ namespace brave {
 class URLSanitizerComponentInstaller;
 }
 
+namespace p3a {
+class RemoteConfigManager;
+}
+
 namespace brave_component_updater {
 
 // DEPRECATED: Create individual component installers instead.
@@ -66,6 +70,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) LocalDataFilesObserver {
   friend class debounce::DebounceComponentInstaller;
   friend class request_otr::RequestOTRComponentInstallerPolicy;
   friend class webcompat::WebcompatExceptionsService;
+  friend class p3a::RemoteConfigManager;
 
   explicit LocalDataFilesObserver(
       LocalDataFilesService* local_data_files_service);

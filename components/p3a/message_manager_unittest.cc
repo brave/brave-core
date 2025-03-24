@@ -58,8 +58,40 @@ class P3AMessageManagerTest : public testing::Test,
                 &url_loader_factory_)) {}
 
   std::optional<MetricLogType> GetDynamicMetricLogType(
-      const std::string& histogram_name) const override {
-    return std::optional<MetricLogType>();
+      std::string_view histogram_name) const override {
+    return std::nullopt;
+  }
+
+  const MetricConfig* GetMetricConfig(
+      std::string_view histogram_name) const override {
+    const std::optional<MetricConfig>* metric_config = nullptr;
+
+    auto it = p3a::kCollectedTypicalHistograms.find(histogram_name);
+    if (it != p3a::kCollectedTypicalHistograms.end()) {
+      metric_config = &it->second;
+    } else if (it = p3a::kCollectedSlowHistograms.find(histogram_name);
+               it != p3a::kCollectedSlowHistograms.end()) {
+      metric_config = &it->second;
+    } else if (it = p3a::kCollectedExpressHistograms.find(histogram_name);
+               it != p3a::kCollectedExpressHistograms.end()) {
+      metric_config = &it->second;
+    }
+    if (metric_config && metric_config->has_value()) {
+      return &metric_config->value();
+    }
+    return nullptr;
+  }
+
+  std::optional<MetricLogType> GetLogTypeForHistogram(
+      std::string_view histogram_name) const override {
+    if (p3a::kCollectedExpressHistograms.contains(histogram_name)) {
+      return MetricLogType::kExpress;
+    } else if (p3a::kCollectedSlowHistograms.contains(histogram_name)) {
+      return MetricLogType::kSlow;
+    } else if (p3a::kCollectedTypicalHistograms.contains(histogram_name)) {
+      return MetricLogType::kTypical;
+    }
+    return std::nullopt;
   }
 
   void OnRotation(MetricLogType log_type, bool is_constellation) override {}

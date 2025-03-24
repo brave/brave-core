@@ -156,7 +156,8 @@ void MetricLogStore::ResetUploadStamps() {
       DCHECK(!it->second.sent_timestamp.is_null());
       DCHECK(!unsent_entries_.contains(it->first));
 
-      if (delegate_->IsEphemeralMetric(it->first)) {
+      if (!delegate_->DoesMetricExistForLogType(it->first, type_) ||
+          delegate_->IsEphemeralMetric(it->first)) {
         // Ephemeral metrics should only be sent once.
         // Remove value from log store so it doesn't get
         // sent again (unless another histogram value is recorded)
@@ -289,7 +290,7 @@ void MetricLogStore::LoadPersistedUnsentLogs() {
   for (const auto [name, value] : log_dict) {
     LogEntry entry;
     // Check if the metric is obsolete.
-    if (!delegate_->IsActualMetric(name)) {
+    if (!delegate_->DoesMetricExistForLogType(name, type_)) {
       // Drop it from the local state.
       metrics_to_remove.push_back(name);
       continue;

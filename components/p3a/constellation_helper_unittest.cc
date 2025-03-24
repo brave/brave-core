@@ -258,8 +258,7 @@ TEST_F(P3AConstellationHelperTest, GenerateBasicMessage) {
     helper_->StartMessagePreparation(
         kTestHistogramName, log_type,
         GenerateP3AConstellationMessage(kTestHistogramName, test_epoch,
-                                        meta_info, kP3AUploadType,
-                                        std::nullopt),
+                                        meta_info, kP3AUploadType, nullptr),
         false);
     task_environment_.RunUntilIdle();
 
@@ -279,7 +278,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   meta_info.Init(&local_state_, "release", install_time_);
 
   std::string message_with_no_refcode = GenerateP3AConstellationMessage(
-      kTestHistogramName, 0, meta_info, kP3AUploadType, std::nullopt);
+      kTestHistogramName, 0, meta_info, kP3AUploadType, nullptr);
   std::vector<std::string> no_refcode_layers = base::SplitString(
       message_with_no_refcode, kP3AMessageConstellationLayerSeparator,
       base::WhitespaceHandling::TRIM_WHITESPACE,
@@ -288,9 +287,9 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   EXPECT_EQ(no_refcode_layers.size(), 8U);
   EXPECT_FALSE(no_refcode_layers.at(7).starts_with("ref"));
 
+  MetricConfig refcode_config{.append_attributes = {MetricAttribute::kRef}};
   std::string message_with_refcode = GenerateP3AConstellationMessage(
-      kTestHistogramName, 0, meta_info, kP3AUploadType,
-      MetricConfig{.append_attributes = {MetricAttribute::kRef}});
+      kTestHistogramName, 0, meta_info, kP3AUploadType, &refcode_config);
   std::vector<std::string> refcode_layers = base::SplitString(
       message_with_refcode, kP3AMessageConstellationLayerSeparator,
       base::WhitespaceHandling::TRIM_WHITESPACE,
@@ -304,8 +303,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   meta_info.Init(&local_state_, "release", install_time_);
 
   message_with_refcode = GenerateP3AConstellationMessage(
-      kTestHistogramName, 0, meta_info, kP3AUploadType,
-      MetricConfig{.append_attributes = {MetricAttribute::kRef}});
+      kTestHistogramName, 0, meta_info, kP3AUploadType, &refcode_config);
   refcode_layers = base::SplitString(message_with_refcode,
                                      kP3AMessageConstellationLayerSeparator,
                                      base::WhitespaceHandling::TRIM_WHITESPACE,
@@ -318,8 +316,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   meta_info.Init(&local_state_, "release", install_time_);
 
   message_with_refcode = GenerateP3AConstellationMessage(
-      kTestHistogramName, 0, meta_info, kP3AUploadType,
-      MetricConfig{.append_attributes = {MetricAttribute::kRef}});
+      kTestHistogramName, 0, meta_info, kP3AUploadType, &refcode_config);
   refcode_layers = base::SplitString(message_with_refcode,
                                      kP3AMessageConstellationLayerSeparator,
                                      base::WhitespaceHandling::TRIM_WHITESPACE,
@@ -346,7 +343,7 @@ TEST_F(P3AConstellationHelperTest, CustomAttributes) {
                       }};
 
   std::string message = GenerateP3AConstellationMessage(
-      kTestHistogramName, 7, meta_info, kP3AUploadType, config);
+      kTestHistogramName, 7, meta_info, kP3AUploadType, &config);
 
   std::vector<std::string> layers =
       base::SplitString(message, kP3AMessageConstellationLayerSeparator,
@@ -374,9 +371,9 @@ TEST_F(P3AConstellationHelperTest, NebulaMessage) {
   MessageMetainfo meta_info;
   meta_info.Init(&local_state_, "release", install_time_);
 
+  MetricConfig nebula_config{.nebula = true};
   std::string message = GenerateP3AConstellationMessage(
-      kTestHistogramName, 3, meta_info, kP3AUploadType,
-      MetricConfig{.nebula = true});
+      kTestHistogramName, 3, meta_info, kP3AUploadType, &nebula_config);
   std::vector<std::string> no_refcode_layers =
       base::SplitString(message, kP3AMessageConstellationLayerSeparator,
                         base::WhitespaceHandling::TRIM_WHITESPACE,
@@ -402,7 +399,7 @@ TEST_F(P3AConstellationHelperTest, NebulaSample) {
         kTestNebulaHistogramName, MetricLogType::kTypical,
         GenerateP3AConstellationMessage(kTestNebulaHistogramName,
                                         kTestTypicalEpoch, meta_info,
-                                        kP3AUploadType, std::nullopt),
+                                        kP3AUploadType, nullptr),
         true);
     task_environment_.RunUntilIdle();
 

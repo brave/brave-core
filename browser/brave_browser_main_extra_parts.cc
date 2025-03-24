@@ -77,7 +77,8 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
   if (g_brave_browser_process->p3a_service() != nullptr) {
     // TODO(iefremov): Maybe find a better place for this initialization.
     g_brave_browser_process->p3a_service()->Init(
-        g_browser_process->shared_url_loader_factory());
+        g_browser_process->shared_url_loader_factory(),
+        g_brave_browser_process->local_data_files_service());
   }
 
   RecordInitialP3AValues();

@@ -12,7 +12,9 @@ namespace brave_component_updater {
 LocalDataFilesObserver::LocalDataFilesObserver(
     LocalDataFilesService* local_data_files_service)
     : local_data_files_service_(local_data_files_service) {
-  local_data_files_observer_.Observe(local_data_files_service);
+  if (local_data_files_service) {
+    local_data_files_observer_.Observe(local_data_files_service);
+  }
 }
 
 LocalDataFilesObserver::~LocalDataFilesObserver() = default;
