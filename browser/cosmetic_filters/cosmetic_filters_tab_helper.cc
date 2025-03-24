@@ -23,7 +23,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
-#include "chrome/browser/ui/tabs/public/tab_interface.h"
+#include "components/tab_collections/public/tab_interface.h"
 #include "ui/color/color_provider.h"
 #else
 #include "brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h"
