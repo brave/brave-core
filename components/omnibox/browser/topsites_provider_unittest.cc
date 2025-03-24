@@ -54,7 +54,7 @@ TEST_F(TopSitesProviderTest, SmokeTest) {
 }
 
 TEST_F(TopSitesProviderTest, NoMatchingWhenPrefIsOff) {
-  prefs()->SetBoolean(omnibox::kTopSiteSuggestionsEnabled, false);
+  prefs()->SetBoolean(omnibox::kTopSuggestionsEnabled, false);
   provider_->Start(CreateAutocompleteInput("dex"), false);
   EXPECT_TRUE(provider_->matches().empty());
 }
