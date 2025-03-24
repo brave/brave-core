@@ -12,7 +12,7 @@ public protocol DownloadDelegate: AnyObject {
   func download(_ download: Download, didFinishDownloadingTo location: URL)
 }
 
-public class Download: NSObject {
+open class Download: NSObject {
   public weak var delegate: DownloadDelegate?
 
   public internal(set) var filename: String

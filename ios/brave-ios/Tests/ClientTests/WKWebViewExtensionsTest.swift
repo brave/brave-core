@@ -8,7 +8,7 @@ import Shared
 import WebKit
 import XCTest
 
-@testable import Brave
+@testable import Web
 
 class WKWebViewExtensionsTest: XCTestCase {
   func testGenerateJavascriptFunctionString() {
