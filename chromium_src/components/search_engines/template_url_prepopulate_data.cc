@@ -27,7 +27,7 @@ namespace TemplateURLPrepopulateData {
 // This redeclaration of the upstream prototype for `GetPrepopulatedEngines` is
 // necessary, otherwise the translation unit fails to compile on calls for
 // `GetPrepopulatedEngines` where there's an expectation for the use of the
-// default value of the last arguent.
+// default value of the last argument.
 std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines_Unused(
     PrefService& prefs,
     CountryID country_id);
@@ -186,7 +186,7 @@ constexpr auto kDefaultEnginesByCountryIdMap =
 // A versioned map tracking the singular default search engine per-country.
 //
 // When a profile is created, the current value for `kBraveCurrentDataVersion`
-// in `//brave/components/search_engines/brave_prepopulated_engines.cc` is
+// in `//brave/components/search_engines/brave_prepopulated_engines.h` is
 // stored as a profile preference.
 //
 // See:
@@ -752,8 +752,7 @@ GetBravePrepopulatedEnginesForCountryID(
   }
   DCHECK_GT(brave_engine_ids.size(), 0ul);
 
-  // Build a vector PrepopulatedEngines from BravePrepopulatedEngineIDs and
-  // also get the default engine index
+  // Build a vector PrepopulatedEngines from BravePrepopulatedEngineIDs.
   std::vector<const PrepopulatedEngine*> engines =
       GetEnginesFromEngineIDs(brave_engine_ids);
   DCHECK(engines.size() == brave_engine_ids.size());

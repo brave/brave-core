@@ -16,7 +16,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-inline constexpr int kBraveCurrentDataVersion = 31;
+inline constexpr int kBraveCurrentDataVersion = 32;
 
 // The version is important to increment because Chromium will cache the list
 // of search engines that are shown. When the version is incremented, Chromium
@@ -47,7 +47,6 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_NAVER = 67,
   PREPOPULATED_ENGINE_ID_DAUM = 68,
   PREPOPULATED_ENGINE_ID_ECOSIA = 101,
-  PREPOPULATED_ENGINE_ID_STARTPAGE = 112,
   // These engine IDs are not defined in Chromium
   // When adding a new engine, also add it to kBraveAddedEngines in
   // chromium_src/components/search_engines/
@@ -67,11 +66,17 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_SEARX,            // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_SEMANTICSCHOLAR,  // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_STACKOVERFLOW,    // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_STARTPAGE_OLD,    // Added to Chromium (2/2025).
-  PREPOPULATED_ENGINE_ID_TWITTER,          // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_WIKIPEDIA,        // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_WOLFRAMALPHA,     // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_YOUTUBE,          // No longer in defaults (2/2019).
+
+  PREPOPULATED_ENGINE_ID_STARTPAGE,  // This ID was used before Chromium added
+                                     // startpage to their prepopulated engines
+                                     // (with id 113). We modify their engine
+                                     // to use our id so that we don't have to
+                                     // replace engines saved in user prefs.
+
+  PREPOPULATED_ENGINE_ID_TWITTER,       // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_WIKIPEDIA,     // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_WOLFRAMALPHA,  // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_YOUTUBE,       // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
 
