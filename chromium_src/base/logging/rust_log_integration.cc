@@ -35,8 +35,7 @@ void print_rust_log(const RustFmtArguments& msg,
     return;
   }
 
-  logging::LogMessage log_message(file, line, severity);
-  log_message.stream() << msg;
+  print_rust_log_chromium_impl(msg, file, line, severity, verbose);
 }
 
 }  // namespace internal
