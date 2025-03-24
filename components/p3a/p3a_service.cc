@@ -22,10 +22,12 @@
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/p3a/message_manager.h"
+#include "brave/components/p3a/metric_config_utils.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p2a_protocols.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/p3a/remote_config_manager.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -47,7 +49,6 @@ namespace {
 // Receiving this value will effectively prevent the metric from transmission
 // to the backend. For now we consider this as a hack for p2a metrics, which
 // should be refactored in better times.
-const int32_t kSuspendedMetricValue = INT_MAX - 1;
 const uint64_t kSuspendedMetricBucket = INT_MAX - 1;
 
 constexpr char kDynamicMetricsDictPref[] = "p3a.dynamic_metrics";
@@ -83,8 +84,11 @@ P3AService::P3AService(PrefService& local_state,
   if (first_run_time.is_null()) {
     first_run_time = base::Time::Now();
   }
+  remote_config_manager_ = std::make_unique<RemoteConfigManager>(this);
+
   message_manager_ = std::make_unique<MessageManager>(
       local_state, &config_, *this, channel, first_run_time);
+
   pref_change_registrar_.Init(&local_state);
   pref_change_registrar_.Add(
       kP3AEnabled, base::BindRepeating(&P3AService::OnP3AEnabledChanged,
@@ -190,21 +194,33 @@ bool P3AService::IsP3AEnabled() const {
 
 void P3AService::Init(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  url_loader_factory_ = url_loader_factory;
-  if (local_state_->GetBoolean(kP3AEnabled)) {
-    message_manager_->Start(url_loader_factory);
+  if (url_loader_factory) {
+    url_loader_factory_ = url_loader_factory;
   }
 
-  // Init basic prefs.
-  initialized_ = true;
+  if (initialized_ || !url_loader_factory_) {
+    return;
+  }
 
-  VLOG(2) << "P3AService::Init() Done!";
+  // TODO(djandries): remove the buildflag guard once
+  // https://github.com/brave/brave-browser/issues/45042 is resolved
+#if !BUILDFLAG(IS_IOS)
+  if (!remote_config_manager_->is_loaded()) {
+    return;
+  }
+#endif
+
+  if (local_state_->GetBoolean(kP3AEnabled)) {
+    message_manager_->Start(url_loader_factory_);
+  }
+
+  initialized_ = true;
 
   // Store values that were recorded between calling constructor and |Init()|.
   for (const auto& entry : histogram_values_) {
     HandleHistogramChange(std::string(entry.first), entry.second);
   }
-  histogram_values_ = {};
+  histogram_values_.clear();
 }
 
 void P3AService::OnRotation(MetricLogType log_type, bool is_constellation) {
@@ -222,6 +238,52 @@ std::optional<MetricLogType> P3AService::GetDynamicMetricLogType(
   return log_type_it != dynamic_metric_log_types_.end()
              ? log_type_it->second
              : std::optional<MetricLogType>();
+}
+
+const MetricConfig* P3AService::GetMetricConfig(
+    std::string_view histogram_name) const {
+  // First check if there's a remote config for this metric
+  if (remote_config_manager_) {
+    const auto* remote_config = remote_config_manager_->GetRemoteMetricConfig(
+        std::string(histogram_name));
+    if (remote_config) {
+      return remote_config;
+    }
+  }
+
+  // Fall back to the base config if no remote config exists
+  return GetBaseMetricConfig(histogram_name);
+}
+
+const MetricConfig* P3AService::GetBaseMetricConfig(
+    std::string_view histogram_name) const {
+  return p3a::GetBaseMetricConfig(histogram_name);
+}
+
+void P3AService::OnRemoteConfigLoaded() {
+  if (!initialized_) {
+    Init(nullptr);
+  } else {
+    message_manager_->RemoveObsoleteLogs();
+  }
+}
+
+std::optional<MetricLogType> P3AService::GetLogTypeForHistogram(
+    std::string_view histogram_name) const {
+  if (remote_config_manager_) {
+    const auto* remote_config =
+        remote_config_manager_->GetRemoteMetricConfig(histogram_name);
+    if (remote_config && remote_config->cadence) {
+      return *remote_config->cadence;
+    }
+  }
+
+  auto dynamic_metric_log_type = GetDynamicMetricLogType(histogram_name);
+  if (dynamic_metric_log_type) {
+    return dynamic_metric_log_type;
+  }
+
+  return GetBaseLogTypeForHistogram(histogram_name);
 }
 
 void P3AService::LoadDynamicMetrics() {
@@ -259,9 +321,9 @@ void P3AService::OnHistogramChanged(std::string_view histogram_name,
   // description for details.
   if (IsSuspendedMetric(histogram_name, sample)) {
     GetUIThreadTaskRunner()->PostTask(
-        FROM_HERE, base::BindOnce(&P3AService::OnHistogramChangedOnUI, this,
-                                  histogram_name, kSuspendedMetricValue,
-                                  kSuspendedMetricBucket));
+        FROM_HERE,
+        base::BindOnce(&P3AService::HandleHistogramChange, this, histogram_name,
+                       kSuspendedMetricBucket, std::nullopt));
     return;
   }
 
@@ -289,34 +351,28 @@ void P3AService::OnHistogramChanged(std::string_view histogram_name,
   }
 
   GetUIThreadTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&P3AService::OnHistogramChangedOnUI, this,
-                                histogram_name, sample, bucket));
-}
-
-void P3AService::OnHistogramChangedOnUI(std::string_view histogram_name,
-                                        base::HistogramBase::Sample32 sample,
-                                        size_t bucket) {
-  VLOG(2) << "P3AService::OnHistogramChanged: histogram_name = "
-          << histogram_name << " Sample = " << sample << " bucket = " << bucket;
-  if (!initialized_) {
-    // Will handle it later when ready.
-    histogram_values_[histogram_name] = bucket;
-  } else {
-    HandleHistogramChange(histogram_name, bucket);
-  }
+      FROM_HERE, base::BindOnce(&P3AService::HandleHistogramChange, this,
+                                histogram_name, bucket, std::nullopt));
 }
 
 void P3AService::HandleHistogramChange(
     std::string_view histogram_name,
     size_t bucket,
     std::optional<bool> only_update_for_constellation) {
+  VLOG(2) << "P3AService::OnHistogramChanged: histogram_name = "
+          << histogram_name << " Sample = " << bucket;
+  if (!initialized_) {
+    // Will handle it later when ready.
+    histogram_values_[histogram_name] = bucket;
+    return;
+  }
   if (IsSuspendedMetric(histogram_name, bucket)) {
     message_manager_->RemoveMetricValue(histogram_name,
                                         only_update_for_constellation);
     return;
   }
-  const auto* metric_config = message_manager_->GetMetricConfig(histogram_name);
-  if (metric_config && *metric_config && (*metric_config)->constellation_only) {
+  const auto* metric_config = GetMetricConfig(histogram_name);
+  if (metric_config && metric_config->constellation_only) {
     only_update_for_constellation = true;
   }
   message_manager_->UpdateMetricValue(histogram_name, bucket,

@@ -60,6 +60,10 @@ class MessageManager : public MetricLogStore::Delegate {
     // or a Constellation preparation for the current epoch.
     virtual void OnMetricCycled(const std::string& histogram_name,
                                 bool is_constellation) = 0;
+    virtual const MetricConfig* GetMetricConfig(
+        std::string_view histogram_name) const = 0;
+    virtual std::optional<MetricLogType> GetLogTypeForHistogram(
+        std::string_view histogram_name) const = 0;
     virtual ~Delegate() {}
   };
   MessageManager(PrefService& local_state,
@@ -77,6 +81,8 @@ class MessageManager : public MetricLogStore::Delegate {
   void Start(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   void Stop();
 
+  void RemoveObsoleteLogs();
+
   // If only_update_for_constellation is null, the value will be updated for
   // both STAR and Constellation. If true, only the Constellation log store will
   // be updated. If false, only the JSON log store will be updated.
@@ -87,9 +93,6 @@ class MessageManager : public MetricLogStore::Delegate {
   void RemoveMetricValue(
       std::string_view histogram_name,
       std::optional<bool> only_update_for_constellation = std::nullopt);
-
-  const std::optional<MetricConfig>* GetMetricConfig(
-      std::string_view histogram_name) const;
 
  private:
   void StartScheduledUpload(bool is_constellation, MetricLogType log_type);

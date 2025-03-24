@@ -81,6 +81,7 @@ class MetricLogStore : public metrics::LogStore {
   void TrimAndPersistUnsentLogs(bool overwrite_in_memory_store) override;
   // Returns early if founds malformed persisted values.
   void LoadPersistedUnsentLogs() override;
+  void RemoveObsoleteLogs();
 
  private:
   struct LogEntry {

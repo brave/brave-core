@@ -18,6 +18,7 @@
 namespace p3a {
 
 constexpr char kTestExpressMetric[] = "Brave.Test.ExpressMetric";
+constexpr char kTestUnknownMetric[] = "Brave.Test.UnknownMetric";
 
 class P3AMetricLogStoreTest : public testing::Test,
                               public MetricLogStore::Delegate {
@@ -104,6 +105,7 @@ TEST_F(P3AMetricLogStoreTest, GetAllLogsAfterReload) {
 
   SetUpLogStore();
   log_store->LoadPersistedUnsentLogs();
+  log_store->RemoveObsoleteLogs();
 
   ConsumeMessages(15);
 }
@@ -117,13 +119,14 @@ TEST_F(P3AMetricLogStoreTest, GetAllLogsAfterTimeReset) {
 }
 
 TEST_F(P3AMetricLogStoreTest, ShouldNotLoadUnknownMetric) {
-  log_store->UpdateValue("Brave.UnknownMetric", 3);
+  log_store->UpdateValue(kTestUnknownMetric, 3);
   log_store->UpdateValue(kTestExpressMetric, 4);
 
   ASSERT_TRUE(log_store->has_unsent_logs());
 
   SetUpLogStore();
   log_store->LoadPersistedUnsentLogs();
+  log_store->RemoveObsoleteLogs();
 
   ASSERT_FALSE(log_store->has_unsent_logs());
 }
