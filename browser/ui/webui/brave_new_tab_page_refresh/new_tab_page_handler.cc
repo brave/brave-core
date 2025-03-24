@@ -20,11 +20,11 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engine_type.h"
 #include "components/search_engines/template_url_service.h"
+#include "components/tab_collections/public/tab_interface.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "url/gurl.h"
 
