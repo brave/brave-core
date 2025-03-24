@@ -1,4 +1,4 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -11,38 +11,33 @@
 #include <string>
 
 #include "base/files/file_path.h"
-#include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
-#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "base/functional/callback.h"
 #include "url/gurl.h"
+
+namespace component_updater {
+class ComponentUpdateService;
+}  // namespace component_updater
 
 namespace brave_user_agent {
 
-class BraveUserAgentService
-    : public brave_component_updater::LocalDataFilesObserver {
+class BraveUserAgentService {
  public:
   explicit BraveUserAgentService(
-      brave_component_updater::LocalDataFilesService* local_data_files_service);
-
-  // implementation of brave_component_updater::LocalDataFilesObserver
-  void OnComponentReady(const std::string& component_id,
-                        const base::FilePath& install_dir,
-                        const std::string& manifest) override;
+      component_updater::ComponentUpdateService* cus);
 
   bool CanShowBrave(const GURL& url);
-  ~BraveUserAgentService() override;
+  ~BraveUserAgentService();
   void SetIsReadyForTesting() { is_ready_ = true; }
-  void OnDATFileDataReady(const std::string& contents);
 
  private:
-  void LoadBraveUserAgentedDomains(const base::FilePath& install_dir);
+  void OnComponentReady(const base::FilePath&);
+  void OnExceptionalDomainsLoaded(const std::string& contents);
+  base::FilePath component_path_;
   std::set<std::string> exceptional_domains_;
   bool is_ready_ = false;
+  raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
   base::WeakPtrFactory<BraveUserAgentService> weak_factory_{this};
 };
-
-// Creates the BraveUserAgentService
-std::unique_ptr<BraveUserAgentService> BraveUserAgentServiceFactory(
-    brave_component_updater::LocalDataFilesService* local_data_files_service);
 
 }  // namespace brave_user_agent
 

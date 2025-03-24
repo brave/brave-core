@@ -1,4 +1,4 @@
-// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -15,7 +15,7 @@ OBJC_EXPORT
 /// Tells us if the "Use Brave User Agent" feature is enabled
 @property(readonly) bool isUseBraveUserAgentEnabled;
 
-- (instancetype)init;
+- (instancetype)init NS_UNAVAILABLE;
 /// This returns if a url can show Brave in User Agent
 - (bool)canShowBrave:(NSURL*)url;
 @end

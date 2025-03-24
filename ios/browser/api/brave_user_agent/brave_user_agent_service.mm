@@ -1,4 +1,4 @@
-// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -18,14 +18,18 @@
 #include "url/origin.h"
 
 @interface BraveUserAgentService () {
+  raw_ptr<brave_user_agent::BraveUserAgentService>
+      _braveUserAgentService;  // NOT OWNED
 }
 
 @property(nonatomic) bool isUseBraveUserAgentEnabled;
 @end
 
 @implementation BraveUserAgentService
-- (instancetype)init {
+- (instancetype)initWithBraveUserAgentService:
+    (brave_user_agent::BraveUserAgentService*)braveUserAgentService {
   if ((self = [super init])) {
+    _braveUserAgentService = braveUserAgentService;
   }
   return self;
 }
@@ -46,8 +50,6 @@
     return true;
   }
 
-  BraveApplicationContextImpl* braveContext =
-      static_cast<BraveApplicationContextImpl*>(GetApplicationContext());
-  return braveContext->brave_user_agent_service()->CanShowBrave(gurl);
+  return _braveUserAgentService->CanShowBrave(gurl);
 }
 @end

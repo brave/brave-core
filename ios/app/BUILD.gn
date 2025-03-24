@@ -66,6 +66,7 @@ source_set("app") {
     "//brave/ios/browser/api/web_image",
     "//brave/ios/browser/api/webcompat_reporter",
     "//brave/ios/browser/api/webcompat_reporter:webcompat_reporter_mojom_wrappers",
+    "//brave/ios/browser/application_context",
     "//brave/ios/browser/brave_ads",
     "//brave/ios/browser/skus",
     "//brave/ios/browser/ui/webui",
