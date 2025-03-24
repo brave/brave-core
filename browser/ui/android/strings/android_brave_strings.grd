@@ -877,6 +877,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_APPEARANCE" desc="Title of Appearance settings, which allows the user to change display settings. [CHAR-LIMIT=32]">
         Appearance
       </message>
+      <message name="IDS_PREFS_CUSTOM_APP_ICONS" desc="Title of Custom App Icons settings, which allows the user to change custom app icons. [CHAR-LIMIT=32]">
+        Change app icon
+      </message>
       <message name="IDS_SHOW_BRAVE_REWARDS_ICON_TITLE" desc="Title for preference that hides or shows Brave Rewards icon.">
         Brave Rewards icon
       </message>
