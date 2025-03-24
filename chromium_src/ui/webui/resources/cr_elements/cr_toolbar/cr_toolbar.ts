@@ -105,26 +105,26 @@ export class CrToolbarElement extends CrLitElement {
     }
   }
 
-  pageName = ''
-  searchPrompt = ''
-  clearLabel = ''
-  menuLabel = ''
-  menuPromo = ''
-  spinnerActive = false
-  showMenu = false
-  showMenuPromo = false
-  showSearch = true
-  narrow = false
-  narrowThreshold = 900
+  accessor pageName: string = ''
+  accessor searchPrompt: string = ''
+  accessor clearLabel: string = ''
+  accessor menuLabel: string = ''
+  accessor menuPromo: string = ''
+  accessor spinnerActive: boolean = false;
+  accessor showMenu: boolean = false;
+  accessor showMenuPromo: boolean = false;
+  accessor showSearch: boolean = true
+  accessor narrow: boolean = false
+  accessor narrowThreshold: number = 900
   narrowQuery_: MediaQueryList | null = null
-  closeMenuPromo = ''
+  accessor closeMenuPromo: string = ''
   showingSearch = false
   showRewardsButton = true
-  isBraveWalletAllowed_ = loadTimeData.getBoolean('brToolbarShowRewardsButton')
+  accessor isBraveWalletAllowed_: boolean = loadTimeData.getBoolean('brToolbarShowRewardsButton')
 
-  alwaysShowLogo = false
-  searchIconOverride?: string
-  searchInputAriaDescription = ''
+  accessor alwaysShowLogo:boolean = false
+  accessor searchIconOverride: string|undefined
+  accessor searchInputAriaDescription: string = ''
 
   // Localized strings:
   historyTitle = loadTimeData.getString('brToolbarHistoryTitle')
@@ -135,10 +135,10 @@ export class CrToolbarElement extends CrLitElement {
   walletsTitle = loadTimeData.getString('brToolbarWalletsTitle')
 
   // Settings from `loadTimeData`
-  shouldShowRewardsButton_ = loadTimeData.getBoolean('brToolbarShowRewardsButton')
+  accessor shouldShowRewardsButton_: boolean = loadTimeData.getBoolean('brToolbarShowRewardsButton')
 
   // Non-observed properties
-  fontsLoadedClassName = ''
+  accessor fontsLoadedClassName: string = ''
 
   // Slotted content
   toolbarExtraSlot: HTMLSlotElement | null = null

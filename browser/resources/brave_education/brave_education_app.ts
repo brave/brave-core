@@ -57,6 +57,8 @@ export class BraveEducationAppElement extends CrLitElement {
     };
   }
 
+  /* eslint-disable-next-line @webui-eslint/lit-property-accessor
+  */
   protected url_: string = '';
 
   private eventTracker_: EventTracker = new EventTracker();
