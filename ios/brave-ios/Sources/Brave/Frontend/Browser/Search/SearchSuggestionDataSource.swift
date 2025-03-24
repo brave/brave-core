@@ -9,6 +9,7 @@ import BraveUI
 import Foundation
 import Preferences
 import Shared
+import Web
 import os.log
 
 // MARK: - SearchSuggestionDataSourceDelegate

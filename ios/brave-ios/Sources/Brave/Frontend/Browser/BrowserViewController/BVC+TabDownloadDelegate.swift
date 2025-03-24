@@ -9,12 +9,8 @@ import PassKit
 import SafariServices
 import Shared
 import UniformTypeIdentifiers
+import Web
 import WebKit
-
-protocol TabDownloadDelegate: AnyObject {
-  func tab(_ tab: Tab, didCreateDownload download: Download)
-  func tab(_ tab: Tab, didFinishDownload download: Download, error: Error?)
-}
 
 extension UTType {
   static let textCalendar = UTType(mimeType: "text/calendar")!  // Not the same as `calendarEvent`
@@ -22,7 +18,7 @@ extension UTType {
 }
 
 extension BrowserViewController: TabDownloadDelegate {
-  func tab(_ tab: Tab, didCreateDownload download: Download) {
+  public func tab(_ tab: Tab, didCreateDownload download: Download) {
     guard tab.browserData?.isTabVisible() == true else {
       download.cancel()
       return
@@ -105,7 +101,7 @@ extension BrowserViewController: TabDownloadDelegate {
     }
   }
 
-  func tab(_ tab: Tab, didFinishDownload download: Download, error: (any Error)?) {
+  public func tab(_ tab: Tab, didFinishDownload download: Download, error: (any Error)?) {
     guard let destinationURL = download.destinationURL, error == nil else {
       downloadQueue.download(download, didCompleteWithError: error)
 

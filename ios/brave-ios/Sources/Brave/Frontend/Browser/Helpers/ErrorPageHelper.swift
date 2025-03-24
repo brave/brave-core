@@ -3,6 +3,7 @@ import CertificateUtilities
 import Foundation
 import Shared
 import Storage
+import Web
 import WebKit
 
 struct ErrorPageModel {
@@ -81,18 +82,14 @@ class ErrorPageHelper {
     self.certStore = certStore
   }
 
-  func loadPage(_ error: NSError, forUrl url: URL, inWebView webView: WKWebView) {
+  func loadPage(_ error: NSError, forUrl url: URL, inTab tab: Tab) {
     guard var components = URLComponents(string: "\(InternalURL.baseUrl)/\(ErrorPageHandler.path)")
     else {
       return
     }
 
-    // In rare cases the web view's url might be nil, like when opening a non existing website via share menu.
-    // In this case we fall back to the failing url.
-    let webViewUrl = webView.url ?? url
-
     // Page has failed to load again, just return and keep showing the existing error page.
-    if let internalUrl = InternalURL(webViewUrl), internalUrl.originalURLFromErrorPage == url {
+    if let internalUrl = InternalURL(url), internalUrl.originalURLFromErrorPage == url {
       return
     }
 
@@ -117,14 +114,14 @@ class ErrorPageHelper {
       let encodedCerts = ErrorPageHelper.encodeCertChain(certChain)
       queryItems.append(URLQueryItem(name: "badcerts", value: encodedCerts))
 
-      let certError = CertificateErrorPageHandler.CertErrorCodes[OSStatus(certErrorCode)] ?? ""
+      let certError = SecurityCertErrors[OSStatus(certErrorCode)] ?? ""
       queryItems.append(URLQueryItem(name: "certerror", value: String(certError)))
     }
 
     components.queryItems = queryItems
     if let urlWithQuery = components.url {
       // A new page needs to be added to the history stack (i.e. the simple case of trying to navigate to an url for the first time and it fails, without pushing a page on the history stack, the webview will just show the current page).
-      webView.load(PrivilegedRequest(url: urlWithQuery) as URLRequest)
+      tab.loadRequest(PrivilegedRequest(url: urlWithQuery) as URLRequest)
     }
   }
 }
@@ -158,16 +155,16 @@ extension ErrorPageHelper {
     // Non-Zero (negative or positive) when there is an error
     if errCode != 0 {
       if let code = CFNetworkErrors(rawValue: Int32(errCode)),
-        CertificateErrorPageHandler.CFNetworkErrorsCertErrors.contains(code)
+        CFNetworkErrors.certErrors.contains(code)
       {
         return errCode
       }
 
-      if CertificateErrorPageHandler.NSURLCertErrors.contains(errCode) {
+      if NSURLCertErrors.contains(errCode) {
         return errCode
       }
 
-      if CertificateErrorPageHandler.CertErrorCodes[OSStatus(errCode)] != nil {
+      if SecurityCertErrors[OSStatus(errCode)] != nil {
         return errCode
       }
       return 0

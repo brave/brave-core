@@ -7,6 +7,7 @@ import BraveCore
 import Foundation
 import Shared
 import Static
+import Web
 
 class RewardsInternalsContributionPublishersListController: TableViewController {
   private let publishers: [BraveCore.BraveRewards.ContributionPublisher]

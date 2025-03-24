@@ -14,6 +14,7 @@ import Playlist
 import PlaylistUI
 import Preferences
 import Shared
+import Web
 import os.log
 
 /// Coordinates the usage of playlist across the main UI, Picture in Picture and CarPlay

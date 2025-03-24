@@ -9,6 +9,7 @@ import Data
 import LocalAuthentication
 import Preferences
 import SwiftUI
+import Web
 
 struct PrivateTabsView: View {
   enum AuthenticationType {

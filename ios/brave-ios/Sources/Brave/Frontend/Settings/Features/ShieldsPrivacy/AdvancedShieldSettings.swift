@@ -12,6 +12,7 @@ import Data
 import Foundation
 import Growth
 import Preferences
+import Web
 import os
 
 @MainActor class AdvancedShieldsSettings: ObservableObject {

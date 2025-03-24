@@ -6,6 +6,7 @@
 import BraveCore
 import BraveShared
 import Foundation
+import Web
 import WebKit
 import os.log
 

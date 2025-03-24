@@ -8,6 +8,7 @@ import DesignSystem
 import Foundation
 import Shared
 import UIKit
+import Web
 import os.log
 
 extension TabTrayController: UIViewControllerTransitioningDelegate {

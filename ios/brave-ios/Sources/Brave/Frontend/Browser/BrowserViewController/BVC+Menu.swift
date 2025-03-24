@@ -15,6 +15,7 @@ import PlaylistUI
 import Preferences
 import Shared
 import SwiftUI
+import Web
 import os.log
 
 extension BrowserViewController {
@@ -468,7 +469,7 @@ extension BrowserViewController {
 
   struct MenuTabDetailsView: View {
     @SwiftUI.Environment(\.colorScheme) var colorScheme: ColorScheme
-    weak var tab: Tab?
+    weak var tab: Web.Tab?
     var url: URL
 
     var body: some View {
@@ -501,7 +502,7 @@ extension BrowserViewController {
   func presentBrowserMenu(
     from sourceView: UIView,
     activities: [UIActivity],
-    tab: Tab?,
+    tab: Web.Tab?,
     pageURL: URL?
   ) {
     var actions: [Action] = []
@@ -589,7 +590,7 @@ extension BrowserViewController {
     return
   }
 
-  private func pageActions(for pageURL: URL?, tab: Tab?) -> [Action] {
+  private func pageActions(for pageURL: URL?, tab: Web.Tab?) -> [Action] {
     let playlistActivity = addToPlayListActivityItem ?? openInPlaylistActivityItem
     let isPlaylistItemAdded = openInPlaylistActivityItem != nil
     var actions: [Action] = [

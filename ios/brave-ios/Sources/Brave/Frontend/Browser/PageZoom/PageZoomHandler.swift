@@ -7,6 +7,7 @@ import Data
 import Foundation
 import Preferences
 import Shared
+import Web
 
 class PageZoomHandler: ObservableObject {
 

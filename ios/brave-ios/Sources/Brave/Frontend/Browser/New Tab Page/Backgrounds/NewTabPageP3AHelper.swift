@@ -8,6 +8,7 @@ import Foundation
 import Growth
 import OSLog
 import Preferences
+import Web
 
 /// A P3A helper that will handle reporting dynamic P3A metrics around NTP SI interactions
 ///

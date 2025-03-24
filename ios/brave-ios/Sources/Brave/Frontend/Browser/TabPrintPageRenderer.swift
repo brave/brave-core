@@ -4,6 +4,7 @@
 
 import Foundation
 import UIKit
+import Web
 
 private struct PrintedPageUX {
   static let pageInsets = CGFloat(36.0)

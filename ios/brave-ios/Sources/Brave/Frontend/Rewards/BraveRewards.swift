@@ -11,6 +11,7 @@ import Foundation
 import Growth
 import Preferences
 import Shared
+import Web
 
 public class BraveRewards: PreferencesObserver {
 
@@ -204,7 +205,7 @@ public class BraveRewards: PreferencesObserver {
     tab: Tab,
     isSelected: Bool
   ) {
-    guard let redirectChain = tab.redirectChain, !redirectChain.isEmpty, !tab.isPrivate,
+    guard !tab.redirectChain.isEmpty, !tab.isPrivate,
       ads.isServiceRunning(),
       let reportingState = tab.rewardsReportingState
     else {
@@ -215,7 +216,7 @@ public class BraveRewards: PreferencesObserver {
 
     ads.notifyTabDidChange(
       Int(tab.rewardsId ?? 0),
-      redirectChain: redirectChain,
+      redirectChain: tab.redirectChain,
       isNewNavigation: reportingState.isNewNavigation,
       isRestoring: reportingState.wasRestored,
       isSelected: isSelected
@@ -224,7 +225,7 @@ public class BraveRewards: PreferencesObserver {
 
   /// Notifies Brave Ads that the given tab did load
   func maybeNotifyTabDidLoad(tab: Tab) {
-    guard let redirectChain = tab.redirectChain, !redirectChain.isEmpty, !tab.isPrivate,
+    guard !tab.redirectChain.isEmpty, !tab.isPrivate,
       ads.isServiceRunning(),
       let reportingState = tab.rewardsReportingState
     else {
@@ -258,7 +259,7 @@ public class BraveRewards: PreferencesObserver {
     isSelected: Bool,
     isPrivate: Bool
   ) {
-    guard let url = tab.redirectChain?.last else {
+    guard let url = tab.redirectChain.last else {
       // Don't report update for tabs that haven't finished loading.
       return
     }
@@ -276,7 +277,7 @@ public class BraveRewards: PreferencesObserver {
     htmlContent: String?,
     textContent: String?
   ) {
-    guard let url = tab.redirectChain?.last else {
+    guard let url = tab.redirectChain.last else {
       // Don't report update for tabs that haven't finished loading.
       return
     }

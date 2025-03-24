@@ -14,115 +14,10 @@ import OSLog
 import Preferences
 import Shared
 import UIKit
+import Web
 
-/// Decides the navigation policy for a tab's navigations
-protocol TabWebPolicyDecider: AnyObject {
-  /// Decide whether or not a request should be allowed
-  func tab(
-    _ tab: Tab,
-    shouldAllowRequest request: URLRequest,
-    requestInfo: WebRequestInfo
-  ) async -> WebPolicyDecision
-
-  /// Decide whether or not a response should be allowed
-  func tab(
-    _ tab: Tab,
-    shouldAllowResponse response: URLResponse,
-    responseInfo: WebResponseInfo
-  ) async -> WebPolicyDecision
-}
-
-extension TabWebPolicyDecider {
-  func tab(
-    _ tab: Tab,
-    shouldAllowRequest: URLRequest,
-    requestInfo: WebRequestInfo
-  ) async -> WebPolicyDecision {
-    return .allow
-  }
-
-  func tab(
-    _ tab: Tab,
-    shouldAllowResponse: URLResponse,
-    responseInfo: WebResponseInfo
-  ) async -> WebPolicyDecision {
-    return .allow
-  }
-}
-
-class AnyTabWebPolicyDecider: TabWebPolicyDecider, Hashable {
-  var id: ObjectIdentifier
-
-  private let _shouldAllowRequest: (Tab, URLRequest, WebRequestInfo) async -> WebPolicyDecision
-  private let _shouldAllowResponse: (Tab, URLResponse, WebResponseInfo) async -> WebPolicyDecision
-
-  init(_ policyDecider: some TabWebPolicyDecider) {
-    id = ObjectIdentifier(policyDecider)
-    _shouldAllowRequest = { [weak policyDecider] in
-      await policyDecider?.tab($0, shouldAllowRequest: $1, requestInfo: $2) ?? .allow
-    }
-    _shouldAllowResponse = { [weak policyDecider] in
-      await policyDecider?.tab($0, shouldAllowResponse: $1, responseInfo: $2) ?? .allow
-    }
-  }
-
-  func tab(
-    _ tab: Tab,
-    shouldAllowRequest request: URLRequest,
-    requestInfo: WebRequestInfo
-  ) async -> WebPolicyDecision {
-    return await _shouldAllowRequest(tab, request, requestInfo)
-  }
-
-  func tab(
-    _ tab: Tab,
-    shouldAllowResponse response: URLResponse,
-    responseInfo: WebResponseInfo
-  ) async -> WebPolicyDecision {
-    return await _shouldAllowResponse(tab, response, responseInfo)
-  }
-
-  static func == (lhs: AnyTabWebPolicyDecider, rhs: AnyTabWebPolicyDecider) -> Bool {
-    lhs.id == rhs.id
-  }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-  }
-}
-
-/// The policy to pass back to a policy decider
-enum WebPolicyDecision {
-  case allow
-  case cancel
-}
-
-/// The type of action triggering a navigation
-enum WebNavigationType: Int {
-  case linkActivated
-  case formSubmitted
-  case backForward
-  case reload
-  case formResubmitted
-  case other = -1
-}
-
-/// Information about an action that may trigger a navigation, which can be used to make policy
-/// decisions.
-struct WebRequestInfo {
-  var navigationType: WebNavigationType
-  var isMainFrame: Bool
-  var isNewWindow: Bool
-  var isUserInitiated: Bool
-}
-
-/// Information about a navigation response that can be used to make policy decisions
-struct WebResponseInfo {
-  var isForMainFrame: Bool
-}
-
-extension BrowserViewController: TabWebPolicyDecider {
-  func tab(
+extension BrowserViewController: TabPolicyDecider {
+  public func tab(
     _ tab: Tab,
     shouldAllowResponse response: URLResponse,
     responseInfo: WebResponseInfo
@@ -180,7 +75,7 @@ extension BrowserViewController: TabWebPolicyDecider {
     return .allow
   }
 
-  func tab(
+  public func tab(
     _ tab: Tab,
     shouldAllowRequest request: URLRequest,
     requestInfo: WebRequestInfo
@@ -432,6 +327,13 @@ extension BrowserViewController: TabWebPolicyDecider {
       if requestInfo.isMainFrame,
         BraveSearchManager.isValidURL(requestURL)
       {
+        // We fetch cookies to determine if backup search was enabled on the website.
+        let cookies = await tab.configuration.websiteDataStore.httpCookieStore.allCookies()
+        tab.braveSearchManager = BraveSearchManager(
+          url: requestURL,
+          cookies: cookies
+        )
+
         let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
         let adsBlockingShieldUp = domain.globalBlockAdsAndTrackingLevel.isEnabled
         let isAggressiveAdsBlocking =
@@ -505,6 +407,7 @@ extension BrowserViewController: TabWebPolicyDecider {
           }
         }
       } else {
+        tab.braveSearchManager = nil
         tab.braveSearchResultAdManager = nil
       }
     }

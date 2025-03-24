@@ -21,18 +21,19 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
     windowFeatures: WKWindowFeatures
   ) -> WKWebView? {
     guard let tab,
-      let childTab = tab.webDelegate?.tab(
+      let childTab = tab.delegate?.tab(
         tab,
-        createNewTabWithRequest: navigationAction.request,
-        configuration: configuration
+        createNewTabWithRequest: navigationAction.request
       )
     else { return nil }
-    return childTab.internalTabWebViewDoNotUse
+    childTab.configuration = configuration
+    childTab.createWebview()
+    return childTab.webView
   }
 
   func webViewDidClose(_ webView: WKWebView) {
     guard let tab else { return }
-    tab.webDelegate?.tabWebViewDidClose(tab)
+    tab.delegate?.tabWebViewDidClose(tab)
   }
 
   func webView(
@@ -42,7 +43,7 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
     type: WKMediaCaptureType,
     decisionHandler: @escaping (WKPermissionDecision) -> Void
   ) {
-    guard let tab, let captureType = WebMediaCaptureType(type), let delegate = tab.webDelegate
+    guard let tab, let captureType = WebMediaCaptureType(type), let delegate = tab.delegate
     else {
       decisionHandler(.deny)
       return
@@ -75,7 +76,7 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
     initiatedByFrame frame: WKFrameInfo,
     completionHandler: @escaping () -> Void
   ) {
-    guard let tab, let url = frame.origin?.url, let delegate = tab.webDelegate else {
+    guard let tab, let url = frame.origin?.url, let delegate = tab.delegate else {
       completionHandler()
       return
     }
@@ -91,7 +92,7 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
     initiatedByFrame frame: WKFrameInfo,
     completionHandler: @escaping (Bool) -> Void
   ) {
-    guard let tab, let url = frame.origin?.url, let delegate = tab.webDelegate else {
+    guard let tab, let url = frame.origin?.url, let delegate = tab.delegate else {
       completionHandler(false)
       return
     }
@@ -112,7 +113,7 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
     initiatedByFrame frame: WKFrameInfo,
     completionHandler: @escaping (String?) -> Void
   ) {
-    guard let tab, let url = frame.origin?.url, let delegate = tab.webDelegate else {
+    guard let tab, let url = frame.origin?.url, let delegate = tab.delegate else {
       completionHandler(nil)
       return
     }
@@ -131,7 +132,7 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
     _ webView: WKWebView,
     contextMenuConfigurationFor elementInfo: WKContextMenuElementInfo
   ) async -> UIContextMenuConfiguration? {
-    guard let tab, let delegate = tab.webDelegate else { return nil }
+    guard let tab, let delegate = tab.delegate else { return nil }
     return await delegate.tab(
       tab,
       contextMenuConfigurationForLinkURL: elementInfo.linkURL

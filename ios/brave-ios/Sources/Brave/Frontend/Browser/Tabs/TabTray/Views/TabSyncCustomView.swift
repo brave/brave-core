@@ -6,6 +6,7 @@
 import BraveStrings
 import BraveUI
 import UIKit
+import Web
 
 protocol TabSyncHeaderViewDelegate: AnyObject {
   func toggleSection(_ header: TabSyncHeaderView, section: Int)

@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
+import Web
 
 extension BrowserViewController: SnackBarTabHelperDelegate {
   func tab(_ tab: Tab, didAddSnackbar bar: SnackBar) {

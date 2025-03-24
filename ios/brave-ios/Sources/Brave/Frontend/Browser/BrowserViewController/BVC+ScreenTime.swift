@@ -5,6 +5,7 @@
 
 import Foundation
 import Preferences
+import Web
 
 extension BrowserViewController {
   /// Updates the url of the screen time controller. Keep in mind a single screen time controller is used for every window.

@@ -10,6 +10,7 @@ import Favicon
 import Foundation
 import Playlist
 import Shared
+import Web
 import WebKit
 import os.log
 

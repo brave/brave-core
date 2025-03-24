@@ -5,6 +5,7 @@
 import BraveShared
 import Foundation
 import Shared
+import Web
 import WebKit
 
 class BraveGetUA: TabContentScript {

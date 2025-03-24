@@ -5,6 +5,7 @@
 import Combine
 import Preferences
 import UIKit
+import Web
 
 class TabBarCell: UICollectionViewCell {
 

@@ -7,6 +7,7 @@ import Data
 import Preferences
 import Shared
 import Storage
+import Web
 
 /// Shared data source for the SearchViewController and the URLBar domain completion.
 /// Since both of these use the same query, we can perform the query once and dispatch the results.

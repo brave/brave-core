@@ -6,6 +6,7 @@
 import Foundation
 import Shared
 import UIKit
+import Web
 
 extension BrowserViewController {
   func launchNativeBraveTalk(tab: Tab?, room: String, token: String) {

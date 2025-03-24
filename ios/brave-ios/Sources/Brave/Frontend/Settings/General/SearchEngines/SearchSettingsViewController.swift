@@ -4,6 +4,7 @@
 
 import Shared
 import UIKit
+import Web
 import os.log
 
 // MARK: - SearchEnginePickerDelegate

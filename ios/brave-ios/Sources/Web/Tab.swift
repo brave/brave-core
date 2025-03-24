@@ -3,50 +3,20 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
-import BraveShields
-import BraveUI
-import BraveWallet
+import BraveStrings
 import CertificateUtilities
 import Combine
 import Data
-import Favicon
+import FaviconModels
 import Foundation
-import Preferences
 import Shared
-import Storage
-import SwiftyJSON
+import Strings
+import UIKit
 import UserAgent
 import WebKit
-import os.log
+import os
 
-protocol TabContentScriptLoader {
-  static func loadUserScript(named: String) -> String?
-  static func secureScript(handlerName: String, securityToken: String, script: String) -> String
-  static func secureScript(
-    handlerNamesMap: [String: String],
-    securityToken: String,
-    script: String
-  ) -> String
-}
-
-protocol TabContentScript: TabContentScriptLoader {
-  static var scriptName: String { get }
-  static var scriptId: String { get }
-  static var messageHandlerName: String { get }
-  static var scriptSandbox: WKContentWorld { get }
-  static var userScript: WKUserScript? { get }
-
-  func verifyMessage(message: WKScriptMessage) -> Bool
-  func verifyMessage(message: WKScriptMessage, securityToken: String) -> Bool
-
-  @MainActor func tab(
-    _ tab: Tab,
-    receivedScriptMessage message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  )
-}
-
-enum TabSecureContentState: String {
+public enum TabSecureContentState: String {
   case unknown = "Unknown"
   case localhost = "Localhost"
   case secure = "Secure"
@@ -54,7 +24,7 @@ enum TabSecureContentState: String {
   case missingSSL = "SSL Certificate Missing"
   case mixedContent = "Mixed Content"
 
-  var shouldDisplayWarning: Bool {
+  public var shouldDisplayWarning: Bool {
     switch self {
     case .unknown, .invalidCert, .missingSSL, .mixedContent:
       return true
@@ -64,68 +34,114 @@ enum TabSecureContentState: String {
   }
 }
 
-@dynamicMemberLookup
-class Tab: NSObject {
-  let id: UUID
+public enum TabType: Int, CustomDebugStringConvertible {
 
-  var data: TabDataValues {
+  /// Regular browsing.
+  case regular
+
+  /// Private browsing.
+  case `private`
+
+  /// Textual representation suitable for debugging.
+  public var debugDescription: String {
+    switch self {
+    case .regular:
+      return "Regular Tab"
+    case .private:
+      return "Private Tab"
+    }
+  }
+
+  /// Returns whether the tab is private or not.
+  public var isPrivate: Bool {
+    switch self {
+    case .regular:
+      return false
+    case .private:
+      return true
+    }
+  }
+
+  /// Returns the type of the given Tab, if the tab is nil returns a regular tab type.
+  ///
+  /// - parameter tab: An object representing a Tab.
+  /// - returns: A Tab type.
+  public static func of(_ tab: Tab?) -> TabType {
+    return tab?.type ?? .regular
+  }
+}
+
+@dynamicMemberLookup
+public class Tab: NSObject {
+  public let id: UUID
+
+  public var data: TabDataValues {
     get { _data.withLock { $0 } }
     set { _data.withLock { $0 = newValue } }
   }
   private var _data: OSAllocatedUnfairLock<TabDataValues> = .init(uncheckedState: .init())
 
-  subscript<Value>(dynamicMember member: KeyPath<TabDataValues, Value>) -> Value {
+  public subscript<Value>(dynamicMember member: KeyPath<TabDataValues, Value>) -> Value {
     return data[keyPath: member]
   }
-  subscript<Value>(dynamicMember member: WritableKeyPath<TabDataValues, Value>) -> Value {
+  public subscript<Value>(dynamicMember member: WritableKeyPath<TabDataValues, Value>) -> Value {
     get { data[keyPath: member] }
     set { data[keyPath: member] = newValue }
   }
 
-  private(set) var type: TabType = .regular
+  public private(set) var type: TabType = .regular
 
-  var isPrivate: Bool {
+  public var isPrivate: Bool {
     return type.isPrivate
   }
 
-  var isVisible: Bool = false
+  public var isVisible: Bool = false {
+    didSet {
+      for observer in observers {
+        if isVisible {
+          observer.tabWasShown(self)
+        } else {
+          observer.tabWasHidden(self)
+        }
+      }
+    }
+  }
 
   private var webViewObservations: [AnyCancellable] = []
 
   private var observers: Set<AnyTabObserver> = .init()
-  private var policyDeciders: Set<AnyTabWebPolicyDecider> = .init()
+  private var policyDeciders: Set<AnyTabPolicyDecider> = .init()
 
   // WebKit handlers
   private var navigationHandler: TabWKNavigationHandler?
   private var uiHandler: TabWKUIHandler?
 
-  var certStore: CertStore?
-  weak var webDelegate: TabWebDelegate?
-  weak var downloadDelegate: TabDownloadDelegate?
+  public weak var delegate: TabDelegate?
+  public weak var downloadDelegate: TabDownloadDelegate?
 
-  func addPolicyDecider(_ policyDecider: some TabWebPolicyDecider) {
+  public func addPolicyDecider(_ policyDecider: some TabPolicyDecider) {
     policyDeciders.insert(.init(policyDecider))
   }
 
-  func removePolicyDecider(_ policyDecider: some TabWebPolicyDecider) {
+  public func removePolicyDecider(_ policyDecider: some TabPolicyDecider) {
     if let policyDecider = policyDeciders.first(where: { $0.id == ObjectIdentifier(policyDecider) })
     {
       policyDeciders.remove(policyDecider)
     }
   }
 
-  func addObserver(_ observer: some TabObserver) {
+  public func addObserver(_ observer: some TabObserver) {
     observers.insert(.init(observer))
   }
 
-  func removeObserver(_ observer: some TabObserver) {
+  public func removeObserver(_ observer: some TabObserver) {
     if let observer = observers.first(where: { $0.id == ObjectIdentifier(observer) }) {
       observers.remove(observer)
     }
   }
 
-  private(set) var lastKnownSecureContentState: TabSecureContentState = .unknown
-  func updateSecureContentState() async {
+  public private(set) var lastKnownSecureContentState: TabSecureContentState = .unknown
+  public func updateSecureContentState() async {
     lastKnownSecureContentState = await secureContentState
   }
   @MainActor private var secureContentState: TabSecureContentState {
@@ -142,7 +158,9 @@ class Tab: NSObject {
         return lastKnownSecureContentState
       }
       if let internalURL = InternalURL(committedURL) {
-        if internalURL.isErrorPage, ErrorPageHelper.certificateError(for: committedURL) != 0 {
+        if internalURL.isErrorPage, let errorCode = internalURL.certificateErrorForErrorPage,
+          errorCode != 0
+        {
           return .invalidCert
         }
         return .localhost
@@ -180,40 +198,36 @@ class Tab: NSObject {
     }
   }
 
-  var sslPinningError: Error?
-
-  private var webView: TabWebView?
-  // Should only be used by internal Tab code, will be removed in the future when Tab can live
-  // in its own SPM target
-  var internalTabWebViewDoNotUse: TabWebView? { webView }
-  var viewPrintFormatter: UIPrintFormatter? { webView?.viewPrintFormatter() }
-  var webContentView: UIView? { webView }
-  var webScrollView: UIScrollView? { webView?.scrollView }
-  var serverTrust: SecTrust? { webView?.serverTrust }
-  var sessionData: Data? {
+  var webView: TabWebView?
+  public var viewPrintFormatter: UIPrintFormatter? { webView?.viewPrintFormatter() }
+  public var webContentView: UIView? { webView }
+  public var webScrollView: UIScrollView? { webView?.scrollView }
+  public var serverTrust: SecTrust? { webView?.serverTrust }
+  public var sessionData: Data? {
     webView?.interactionState as? Data
   }
-  var pageZoomLevel: CGFloat {
+  public var pageZoomLevel: CGFloat {
     get {
-      webView?.value(forKey: PageZoomHandler.propertyName) as? CGFloat ?? 1
+      webView?.viewScale ?? 1
     }
     set {
-      webView?.setValue(newValue, forKey: PageZoomHandler.propertyName)
+      webView?.viewScale = newValue
     }
   }
-  var sampledPageTopColor: UIColor? {
+  public var sampledPageTopColor: UIColor? {
     webView?.sampledPageTopColor
   }
-  var favicon: Favicon
-  var lastExecutedTime: Timestamp?
+  public var favicon: Favicon
+  public var lastExecutedTime: Timestamp?
   fileprivate var lastRequest: URLRequest?
-  var isRestoring: Bool = false
+  public var isRestoring: Bool = false
+  public internal(set) var redirectChain: [URL] = []
 
   /// The url set after a successful navigation. This will also set the `url` property.
   ///
   /// - Note: Unlike the `url` property, which may be set during pre-navigation,
   /// the `committedURL` is only assigned when navigation was committed..
-  var committedURL: URL? {
+  public internal(set) var committedURL: URL? {
     willSet {
       url = newValue
       previousComittedURL = committedURL
@@ -239,31 +253,20 @@ class Tab: NSObject {
   }
 
   /// The previous url that was set before `comittedURL` was set again
-  private(set) var previousComittedURL: URL?
+  public private(set) var previousComittedURL: URL?
 
   /// The URL that is loaded by the web view, but has not committed yet
-  var visibleURL: URL? {
+  public var visibleURL: URL? {
     if let webView {
       return webView.url
     }
     return url
   }
 
-  private(set) var url: URL? {
+  public private(set) var url: URL? {
     didSet {
       if let _url = url, let internalUrl = InternalURL(_url), internalUrl.isAuthorized {
         url = URL(string: internalUrl.stripAuthorization)
-      }
-
-      if data.browserData?.isDisplayingBasicAuthPrompt == true {
-        url = URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
-      }
-
-      // Setting URL in SyncTab is adding pending item to navigation manager on brave-core side
-      if let url = url, !isPrivate, !url.isLocal, !InternalURL.isValid(url: url),
-        !url.isInternalURL(for: .readermode)
-      {
-        data.browserData?.syncTab?.setURL(url)
       }
     }
   }
@@ -274,20 +277,20 @@ class Tab: NSObject {
   /// typically the `url` property is updated based on web navigations.
   ///
   /// - warning: This does not notify TabObserver's that the url has changed
-  func setVirtualURL(_ url: URL?) {
+  public func setVirtualURL(_ url: URL?) {
     self.url = url
   }
 
-  var mimeType: String?
+  public var mimeType: String?
 
   /// The last title shown by this tab. Used by the tab tray to show titles for zombie tabs.
-  var lastTitle: String?
+  public var lastTitle: String?
 
-  var isDesktopSite: Bool {
+  public var isDesktopSite: Bool {
     webView?.customUserAgent?.lowercased().contains("mobile") == false
   }
 
-  var containsWebPage: Bool {
+  public var containsWebPage: Bool {
     if let url = url {
       let isHomeURL = InternalURL(url)?.isAboutHomeURL
       return url.isWebPage() && isHomeURL != true
@@ -302,9 +305,9 @@ class Tab: NSObject {
   private var userAgentOverrides: [String: Bool] = [:]
 
   // If this tab has been opened from another, its parent will point to the tab from which it was opened
-  weak var parent: Tab?
+  public weak var parent: Tab?
 
-  var configuration: WKWebViewConfiguration {
+  public var configuration: WKWebViewConfiguration {
     if let webView {
       return webView.configuration
     }
@@ -328,29 +331,19 @@ class Tab: NSObject {
     self.uiHandler = TabWKUIHandler(tab: self)
   }
 
-  var isWebViewCreated: Bool {
+  public var isWebViewCreated: Bool {
     webView != nil
   }
 
-  func createWebview() {
+  public func createWebview() {
     if webView == nil {
       configuration.userContentController = WKUserContentController()
       configuration.preferences = WKPreferences()
       configuration.preferences.javaScriptCanOpenWindowsAutomatically = false
-      configuration.preferences.isFraudulentWebsiteWarningEnabled =
-        Preferences.Shields.googleSafeBrowsing.value
       configuration.allowsInlineMediaPlayback = true
       // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
       configuration.ignoresViewportScaleLimits = true
-      configuration.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
       configuration.enablePageTopColorSampling()
-
-      if configuration.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
-        configuration.setURLSchemeHandler(
-          InternalSchemeHandler(tab: self),
-          forURLScheme: InternalURL.scheme
-        )
-      }
 
       let webView = TabWebView(
         frame: .zero,
@@ -359,7 +352,7 @@ class Tab: NSObject {
       )
       webView.buildEditMenuWithBuilder = { [weak self] builder in
         guard let self else { return }
-        self.webDelegate?.tab(self, buildEditMenuWithBuilder: builder)
+        self.delegate?.tab(self, buildEditMenuWithBuilder: builder)
       }
       webView.accessibilityLabel = Strings.webContentAccessibilityLabel
       webView.allowsBackForwardNavigationGestures = true
@@ -480,42 +473,6 @@ class Tab: NSObject {
     }
   }
 
-  private class StringKeyPathObserver<Object: NSObject, Value>: NSObject {
-    weak var object: Object?
-    let keyPath: String
-    let changeHandler: (Value?) -> Void
-    var isInvalidated: Bool = false
-
-    init(object: Object, keyPath: String, changeHandler: @escaping (Value?) -> Void) {
-      self.object = object
-      self.keyPath = keyPath
-      self.changeHandler = changeHandler
-      super.init()
-      object.addObserver(self, forKeyPath: keyPath, options: .new, context: nil)
-    }
-
-    func invalidate() {
-      if isInvalidated { return }
-      defer { isInvalidated = true }
-      object?.removeObserver(self, forKeyPath: keyPath)
-    }
-
-    deinit {
-      invalidate()
-    }
-
-    override func observeValue(
-      forKeyPath keyPath: String?,
-      of object: Any?,
-      change: [NSKeyValueChangeKey: Any]?,
-      context: UnsafeMutableRawPointer?
-    ) {
-      if self.keyPath != keyPath { return }
-      let newValue = change?[.newKey] as? Value
-      changeHandler(newValue)
-    }
-  }
-
   private func attachWebObservers() {
     guard let webView else { return }
 
@@ -599,45 +556,21 @@ class Tab: NSObject {
     deleteWebView()
   }
 
-  func clearHistory(config: WKWebViewConfiguration) {
-    guard let webView = webView else {
-      return
-    }
-
+  public func clearHistory(config: WKWebViewConfiguration) {
     // Clear selector is used on WKWebView backForwardList because backForwardList list is only exposed with a getter
     // and this method Removes all items except the current one in the tab list so when another url is added it will add the list properly
     // This approach is chosen to achieve removing tab history in the event of removing  browser history
     // Best way perform this is to clear the backforward list and in our case there is no drawback to clear the list
     // And alternative would be to reload webpages which will be costly and also can cause unexpected results
-    let argument: [Any] = ["_c", "lea", "r"]
-
-    let method = argument.compactMap { $0 as? String }.joined()
-    let selector: Selector = NSSelectorFromString(method)
-
-    if webView.backForwardList.responds(to: selector) {
-      webView.backForwardList.performSelector(
-        onMainThread: selector,
-        with: nil,
-        waitUntilDone: true
-      )
-    }
-
-    // Remove the tab history from saved tabs
-    // To remove history from WebKit, we simply update the session data AFTER calling "clear" above
-    SessionTab.update(
-      tabId: id,
-      interactionState: webView.sessionData ?? Data(),
-      title: title ?? "",
-      url: webView.url ?? TabManager.ntpInteralURL
-    )
+    webView?.backForwardList.clear()
   }
 
-  func restore(restorationData: (title: String, interactionState: Data)?) {
+  public func restore(restorationData: (title: String, interactionState: Data)?) {
     guard let webView else { return }
     restore(webView, restorationData: restorationData)
   }
 
-  func restore(requestRestorationData: (title: String, request: URLRequest)?) {
+  public func restore(requestRestorationData: (title: String, request: URLRequest)?) {
     guard let webView else { return }
     restore(webView, requestRestorationData: requestRestorationData)
   }
@@ -680,7 +613,7 @@ class Tab: NSObject {
     }
   }
 
-  func deleteWebView() {
+  public func deleteWebView() {
     if let webView = webView {
       observers.forEach {
         $0.tab(self, willDeleteWebView: webView)
@@ -697,80 +630,81 @@ class Tab: NSObject {
     }
   }
 
-  var loading: Bool {
+  public var loading: Bool {
     return webView?.isLoading ?? false
   }
 
-  var estimatedProgress: Double {
+  public var estimatedProgress: Double {
     return webView?.estimatedProgress ?? 0
   }
 
-  var backList: [BackForwardList.Item]? {
+  public var backList: [BackForwardList.Item]? {
     return backForwardList.backList
   }
 
-  var forwardList: [BackForwardList.Item]? {
+  public var forwardList: [BackForwardList.Item]? {
     return backForwardList.forwardList
   }
 
-  var title: String? {
+  public var title: String? {
     return webView?.title
   }
 
-  var currentInitialURL: URL? {
+  public var currentInitialURL: URL? {
     return self.webView?.backForwardList.currentItem?.initialURL
   }
 
-  var canGoBack: Bool {
+  public var canGoBack: Bool {
     return webView?.canGoBack ?? false
   }
 
-  var canGoForward: Bool {
+  public var canGoForward: Bool {
     return webView?.canGoForward ?? false
   }
 
-  func goBack() {
+  public func goBack() {
     _ = webView?.goBack()
   }
 
-  func goForward() {
+  public func goForward() {
     _ = webView?.goForward()
   }
 
-  func goToBackForwardListItem(_ item: BackForwardList.Item) {
+  public func goToBackForwardListItem(_ item: BackForwardList.Item) {
     guard let wkItem = item.item else { return }
     _ = webView?.go(to: wkItem)
   }
 
-  func loadHTMLString(_ html: String, baseURL: URL?) {
+  public func loadHTMLString(_ html: String, baseURL: URL?) {
     webView?.loadHTMLString(html, baseURL: baseURL)
   }
 
-  @discardableResult func loadRequest(_ request: URLRequest) -> WKNavigation? {
+  @discardableResult public func loadRequest(_ request: URLRequest) -> WKNavigation? {
     if let webView = webView {
       lastRequest = request
-      sslPinningError = nil
-
-      if let url = request.url {
-        // Donate Custom Intent Open Website
-        if url.isSecureWebPage(), !isPrivate {
-          ActivityShortcutManager.shared.donateCustomIntent(
-            for: .openWebsite,
-            with: url.absoluteString
-          )
-        }
-      }
-
       return webView.load(request)
     }
     return nil
   }
 
-  func stop() {
+  public func stop() {
     webView?.stopLoading()
   }
 
-  @objc func reload() {
+  public func replaceLocation(with url: URL) {
+    let apostropheEncoded = "%27"
+    let safeUrl = url.absoluteString.replacingOccurrences(of: "'", with: apostropheEncoded)
+    evaluateSafeJavaScript(
+      functionName: "location.replace",
+      args: ["'\(safeUrl)'"],
+      contentWorld: .defaultClient,
+      escapeArgs: false,
+      asFunction: true,
+      completion: nil
+    )
+  }
+
+  public func reload() {
     // Clear the user agent before further navigation.
     // Proper User Agent setting happens in BVC's WKNavigationDelegate.
     // This prevents a bug with back-forward list, going back or forward and reloading the tab
@@ -781,7 +715,7 @@ class Tab: NSObject {
     if let url = webView?.url, let internalUrl = InternalURL(url),
       let page = internalUrl.originalURLFromErrorPage
     {
-      webView?.replaceLocation(with: page)
+      replaceLocation(with: page)
       return
     }
 
@@ -796,24 +730,25 @@ class Tab: NSObject {
     }
   }
 
-  func updateUserAgent(_ webView: WKWebView, newURL: URL) {
+  public func updateUserAgent(_ webView: WKWebView, newURL: URL) {
     guard let baseDomain = newURL.baseDomain else { return }
 
-    let screenWidth = webView.currentScene?.screen.bounds.width ?? webView.bounds.size.width
-    if webView.traitCollection.horizontalSizeClass == .compact
-      && (webView.bounds.size.width < screenWidth / 2.0)
-    {
-      let desktopMode = userAgentOverrides[baseDomain] == true
-      webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
-      return
-    }
+    // FIXME: Current Scene
+    //    let screenWidth = webView.currentScene?.screen.bounds.width ?? webView.bounds.size.width
+    //    if webView.traitCollection.horizontalSizeClass == .compact
+    //      && (webView.bounds.size.width < screenWidth / 2.0)
+    //    {
+    //      let desktopMode = userAgentOverrides[baseDomain] == true
+    //      webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
+    //      return
+    //    }
 
     let desktopMode = userAgentOverrides[baseDomain] ?? UserAgent.shouldUseDesktopMode()
     webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
   }
 
   /// Switches user agent Desktop -> Mobile or Mobile -> Desktop.
-  func switchUserAgent() {
+  public func switchUserAgent() {
     if let urlString = webView?.url?.baseDomain {
       // The website was changed once already, need to flip the override.onScreenshotUpdated
       if let siteOverride = userAgentOverrides[urlString] {
@@ -827,13 +762,13 @@ class Tab: NSObject {
     reload()
   }
 
-  func isDescendentOf(_ ancestor: Tab) -> Bool {
+  public func isDescendentOf(_ ancestor: Tab) -> Bool {
     return sequence(first: parent) { $0?.parent }.contains { $0 == ancestor }
   }
 
   private func resolvedPolicyDecision(
-    for policyDeciders: Set<AnyTabWebPolicyDecider>,
-    task: @escaping (AnyTabWebPolicyDecider) async -> WebPolicyDecision
+    for policyDeciders: Set<AnyTabPolicyDecider>,
+    task: @escaping (AnyTabPolicyDecider) async -> WebPolicyDecision
   ) async -> WebPolicyDecision {
     let result = await withTaskGroup(of: WebPolicyDecision.self, returning: WebPolicyDecision.self)
     { group in
@@ -911,12 +846,12 @@ class Tab: NSObject {
   }
 }
 
-class TabWebView: WKWebView, MenuHelperInterface {
+public class TabWebView: WKWebView {
   /// Stores last position when the webview was touched on.
   private(set) var lastHitPoint = CGPoint(x: 0, y: 0)
 
   private static var nonPersistentDataStore: WKWebsiteDataStore?
-  static func sharedNonPersistentStore() -> WKWebsiteDataStore {
+  public static func sharedNonPersistentStore() -> WKWebsiteDataStore {
     if let dataStore = nonPersistentDataStore {
       return dataStore
     }
@@ -947,27 +882,9 @@ class TabWebView: WKWebView, MenuHelperInterface {
     if #available(iOS 16.4, *) {
       isInspectable = true
     }
-
-    updateBackgroundColor()
-    Preferences.General.nightModeEnabled.observe(from: self)
   }
 
-  private func updateBackgroundColor() {
-    if Preferences.General.nightModeEnabled.value {
-      let color = UIColor(braveSystemName: .containerBackground)
-      backgroundColor = color
-      scrollView.backgroundColor = color
-      // WKWebView flashes white screen on load regardless of background colour assignments without
-      // setting `isOpaque` to false
-      isOpaque = false
-    } else {
-      backgroundColor = nil
-      scrollView.backgroundColor = nil
-      isOpaque = true
-    }
-  }
-
-  static func removeNonPersistentStore() {
+  public static func removeNonPersistentStore() {
     TabWebView.nonPersistentDataStore = nil
   }
 
@@ -976,55 +893,49 @@ class TabWebView: WKWebView, MenuHelperInterface {
     fatalError()
   }
 
-  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+  override public func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     lastHitPoint = point
     return super.hitTest(point, with: event)
   }
 
-  override func buildMenu(with builder: any UIMenuBuilder) {
+  override public func buildMenu(with builder: any UIMenuBuilder) {
     super.buildMenu(with: builder)
     buildEditMenuWithBuilder?(builder)
   }
 }
 
-extension TabWebView: PreferencesObserver {
-  func preferencesDidChange(for key: String) {
-    updateBackgroundColor()
-  }
-}
-
 // Find In Page interaction
 extension Tab {
-  func presentFindInteraction(with text: String? = nil) {
+  public func presentFindInteraction(with text: String? = nil) {
     if let findInteraction = webView?.findInteraction {
       findInteraction.searchText = text
       findInteraction.presentFindNavigator(showingReplace: false)
     }
   }
-  func dismissFindInteraction() {
+  public func dismissFindInteraction() {
     webView?.findInteraction?.dismissFindNavigator()
   }
 }
 
 // Back Forward
-struct BackForwardList {
-  struct Item: Equatable {
-    var url: URL
-    var title: String?
+public struct BackForwardList {
+  public struct Item: Equatable {
+    public var url: URL
+    public var title: String?
     fileprivate var item: WKBackForwardListItem?
-    static func == (lhs: Self, rhs: Self) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
       lhs.item === rhs.item
     }
   }
-  var backList: [Item] = []
-  var forwardList: [Item] = []
-  var currentItem: Item?
-  var backItem: Item?
-  var forwardItem: Item?
+  public var backList: [Item] = []
+  public var forwardList: [Item] = []
+  public var currentItem: Item?
+  public var backItem: Item?
+  public var forwardItem: Item?
 }
 
 extension Tab {
-  var backForwardList: BackForwardList {
+  public var backForwardList: BackForwardList {
     guard let webView else { return .init() }
     let list = webView.backForwardList
     return .init(
@@ -1039,27 +950,25 @@ extension Tab {
 
 // PDF creation
 extension Tab {
-  enum PDFCreationError: Error {
+  public enum PDFCreationError: Error {
     case webViewNotRealized
   }
-  func createPDF(completionHandler: @escaping (Result<Data, any Error>) -> Void) {
+  public func createPDF(completionHandler: @escaping (Result<Data, any Error>) -> Void) {
     guard let webView else {
       completionHandler(.failure(PDFCreationError.webViewNotRealized))
       return
     }
     webView.createPDF(completionHandler: completionHandler)
   }
-  func dataForDisplayedPDF() -> Data? {
-    guard let webView, webView.responds(to: Selector(("_dataForDisplayedPDF"))) else {
-      return nil
-    }
-    return webView.perform(Selector(("_dataForDisplayedPDF"))).takeUnretainedValue() as? Data
+  public func dataForDisplayedPDF() -> Data? {
+    return webView?.dataForDisplayedPDF
   }
 }
 
 // Snapshots
 extension Tab {
-  func takeSnapshot(rect: CGRect = .null, _ completionHandler: @escaping (UIImage?) -> Void) {
+  public func takeSnapshot(rect: CGRect = .null, _ completionHandler: @escaping (UIImage?) -> Void)
+  {
     let configuration = WKSnapshotConfiguration()
     configuration.rect = rect
     webView?.takeSnapshot(
@@ -1073,7 +982,7 @@ extension Tab {
 
 // JavaScript injection
 extension Tab {
-  enum JavaScriptError: Error {
+  public enum JavaScriptError: Error {
     case invalid
     case webViewNotRealized
   }
@@ -1217,7 +1126,7 @@ extension Tab {
   }
 }
 
-struct TabDataValues {
+public struct TabDataValues {
   private var storage: [AnyHashable: Any] = [:]
 
   public subscript<Key: TabDataKey>(key: Key.Type) -> Key.Value? {
@@ -1233,12 +1142,12 @@ struct TabDataValues {
   }
 }
 
-protocol TabDataKey {
+public protocol TabDataKey {
   associatedtype Value
   static var defaultValue: Value? { get }
 }
 
-protocol TabHelper {
+public protocol TabHelper {
   init(tab: Tab)
   static var keyPath: WritableKeyPath<TabDataValues, Self?> { get }
   static func create(for tab: Tab)
@@ -1247,15 +1156,15 @@ protocol TabHelper {
 }
 
 extension TabHelper {
-  static func create(for tab: Tab) {
+  public static func create(for tab: Tab) {
     if tab.data[keyPath: keyPath] == nil {
       tab.data[keyPath: keyPath] = Self(tab: tab)
     }
   }
-  static func remove(from tab: Tab) {
+  public static func remove(from tab: Tab) {
     tab.data[keyPath: keyPath] = nil
   }
-  static func from(tab: Tab) -> Self? {
+  public static func from(tab: Tab) -> Self? {
     tab.data[keyPath: keyPath]
   }
 }

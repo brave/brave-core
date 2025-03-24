@@ -9,6 +9,7 @@ import Data
 import Foundation
 import Preferences
 import Shared
+import Web
 import WebKit
 
 class RequestBlockingContentScriptHandler: TabContentScript {

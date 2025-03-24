@@ -21,6 +21,7 @@ import Shared
 import SpeechRecognition
 import Storage
 import SwiftUI
+import Web
 import os.log
 
 // MARK: - TopToolbarDelegate
@@ -436,7 +437,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
   private func navigate(
     to target: ShieldsPanelView.Action.NavigationTarget,
-    tab: Tab,
+    tab: Web.Tab,
     url: URL,
     on viewController: UIViewController?
   ) {
@@ -537,7 +538,7 @@ extension BrowserViewController: TopToolbarDelegate {
     self.present(container, animated: true)
   }
 
-  func shredData(for url: URL, in tab: Tab) {
+  func shredData(for url: URL, in tab: Web.Tab) {
     LottieAnimationView.showShredAnimation(on: view) {
       self.tabManager.shredData(for: url, in: tab)
     }

@@ -11,6 +11,7 @@ import Preferences
 import Shared
 import Static
 import UIKit
+import Web
 
 private typealias EnvironmentOverride = Preferences.Rewards.EnvironmentOverride
 

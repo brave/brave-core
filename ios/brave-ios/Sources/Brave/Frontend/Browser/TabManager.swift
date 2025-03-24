@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShields
 import BraveWallet
 import CoreData
 import Data
@@ -12,6 +13,7 @@ import Growth
 import Preferences
 import Shared
 import Storage
+import Web
 import WebKit
 import os.log
 
@@ -269,10 +271,19 @@ class TabManager: NSObject {
     configuration.processPool = WKProcessPool()
     configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General
       .blockPopups.value
+    configuration.preferences.isFraudulentWebsiteWarningEnabled =
+      Preferences.Shields.googleSafeBrowsing.value
+    configuration.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
 
     // Dev note: Do NOT add `.link` to the list, it breaks interstitial pages
     // and pages that don't want the URL highlighted!
     configuration.dataDetectorTypes = [.phoneNumber]
+    if configuration.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
+      configuration.setURLSchemeHandler(
+        InternalSchemeHandler(),
+        forURLScheme: InternalURL.scheme
+      )
+    }
 
     return configuration
   }
@@ -291,6 +302,15 @@ class TabManager: NSObject {
   func clearTabHistory(_ completion: (() -> Void)? = nil) {
     allTabs.filter({ $0.isWebViewCreated }).forEach({
       $0.clearHistory(config: configuration)
+
+      // Remove the tab history from saved tabs
+      // To remove history from WebKit, we simply update the session data AFTER calling "clear" above
+      SessionTab.update(
+        tabId: $0.id,
+        interactionState: $0.sessionData ?? Data(),
+        title: $0.title ?? "",
+        url: $0.url ?? TabManager.ntpInteralURL
+      )
     })
 
     completion?()

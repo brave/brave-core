@@ -9,6 +9,7 @@ import Foundation
 import OrderedCollections
 import Shared
 import Storage
+import Web
 
 class FrequencyQuery {
 

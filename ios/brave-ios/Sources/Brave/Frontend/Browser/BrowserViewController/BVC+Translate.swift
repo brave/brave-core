@@ -10,9 +10,10 @@ import Onboarding
 import Preferences
 import SwiftUI
 import UIKit
+import Web
 
 extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
-  func updateTranslateURLBar(tab: Tab, state: TranslateURLBarButton.TranslateState) {
+  func updateTranslateURLBar(tab: Web.Tab, state: TranslateURLBarButton.TranslateState) {
     tab.translationState = state
 
     if tab === tabManager.selectedTab {
@@ -20,7 +21,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     }
   }
 
-  func canShowTranslateOnboarding(tab: Tab) -> Bool {
+  func canShowTranslateOnboarding(tab: Web.Tab) -> Bool {
     guard let selectedTab = tabManager.selectedTab, tab === selectedTab else {
       return false
     }
@@ -32,7 +33,10 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
       && shouldShowTranslationOnboardingThisSession && presentedViewController == nil
   }
 
-  func showTranslateOnboarding(tab: Tab, completion: @escaping (_ translateEnabled: Bool) -> Void) {
+  func showTranslateOnboarding(
+    tab: Web.Tab,
+    completion: @escaping (_ translateEnabled: Bool) -> Void
+  ) {
     topToolbar.layoutIfNeeded()
     view.layoutIfNeeded()
 
@@ -76,7 +80,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     }
   }
 
-  func presentTranslateToast(tab: Tab, languageInfo: BraveTranslateLanguageInfo) {
+  func presentTranslateToast(tab: Web.Tab, languageInfo: BraveTranslateLanguageInfo) {
     if presentedViewController != nil || topToolbar.inOverlayMode || tab !== tabManager.selectedTab
     {
       return
@@ -91,7 +95,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     popover.present(from: self.topToolbar.locationView.translateButton, on: self)
   }
 
-  func presentTranslateError(tab: Tab) {
+  func presentTranslateError(tab: Web.Tab) {
     if presentedViewController != nil || topToolbar.inOverlayMode || tab !== tabManager.selectedTab
     {
       return

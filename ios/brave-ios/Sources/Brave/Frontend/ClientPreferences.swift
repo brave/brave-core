@@ -7,6 +7,7 @@ import Foundation
 import Preferences
 import Shared
 import UIKit
+import Web
 
 enum TabBarVisibility: Int, CaseIterable {
   case never

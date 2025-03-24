@@ -13,6 +13,7 @@ import Favicon
 import SnapKit
 import Strings
 import SwiftUI
+import Web
 
 struct ShieldsPanelView: View {
   enum Action {
@@ -27,13 +28,13 @@ struct ShieldsPanelView: View {
   }
 
   private let url: URL
-  private var tab: Tab?
+  private var tab: Web.Tab?
   private let displayHost: String
   @AppStorage("advancedShieldsExpanded") private var advancedShieldsExpanded = false
   @ObservedObject private var viewModel: ShieldsSettingsViewModel
   private var actionCallback: (Action) -> Void
 
-  @MainActor init(url: URL, tab: Tab, domain: Domain, callback: @escaping (Action) -> Void) {
+  @MainActor init(url: URL, tab: Web.Tab, domain: Domain, callback: @escaping (Action) -> Void) {
     self.url = url
     self.tab = tab
     self.viewModel = ShieldsSettingsViewModel(tab: tab, domain: domain)
@@ -347,7 +348,12 @@ private struct ShieldSettingSectionHeader: View {
 class ShieldsPanelViewController: UIHostingController<ShieldsPanelView>, PopoverContentComponent {
   private let shieldsPanelView: ShieldsPanelView
 
-  init(url: URL, tab: Tab, domain: Domain, callback: @escaping (ShieldsPanelView.Action) -> Void) {
+  init(
+    url: URL,
+    tab: Web.Tab,
+    domain: Domain,
+    callback: @escaping (ShieldsPanelView.Action) -> Void
+  ) {
     let shieldsPanelView = ShieldsPanelView(
       url: url,
       tab: tab,

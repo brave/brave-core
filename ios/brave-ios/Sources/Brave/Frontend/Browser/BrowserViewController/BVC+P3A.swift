@@ -11,6 +11,7 @@ import Foundation
 import Growth
 import Preferences
 import Shared
+import Web
 import os.log
 
 extension BrowserViewController {

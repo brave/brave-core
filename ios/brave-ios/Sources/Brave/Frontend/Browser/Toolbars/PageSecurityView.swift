@@ -9,6 +9,7 @@ import BraveUI
 import Foundation
 import Shared
 import SwiftUI
+import Web
 
 /// Displays warnings about the pages security
 ///

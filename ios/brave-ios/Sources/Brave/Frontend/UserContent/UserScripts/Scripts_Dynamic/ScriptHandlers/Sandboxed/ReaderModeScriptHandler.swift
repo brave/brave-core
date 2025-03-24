@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import SwiftyJSON
+import Web
 import WebKit
 import os.log
 

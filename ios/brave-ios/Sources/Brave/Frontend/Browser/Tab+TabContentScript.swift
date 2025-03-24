@@ -5,8 +5,36 @@
 import BraveShared
 import Foundation
 import Shared
+import Web
 import WebKit
 import os.log
+
+protocol TabContentScriptLoader {
+  static func loadUserScript(named: String) -> String?
+  static func secureScript(handlerName: String, securityToken: String, script: String) -> String
+  static func secureScript(
+    handlerNamesMap: [String: String],
+    securityToken: String,
+    script: String
+  ) -> String
+}
+
+protocol TabContentScript: TabContentScriptLoader {
+  static var scriptName: String { get }
+  static var scriptId: String { get }
+  static var messageHandlerName: String { get }
+  static var scriptSandbox: WKContentWorld { get }
+  static var userScript: WKUserScript? { get }
+
+  func verifyMessage(message: WKScriptMessage) -> Bool
+  func verifyMessage(message: WKScriptMessage, securityToken: String) -> Bool
+
+  @MainActor func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
+  )
+}
 
 extension TabContentScriptLoader {
   static var uniqueID: String {

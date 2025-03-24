@@ -6,6 +6,7 @@
 import BraveShared
 import Shared
 import Storage
+import Web
 import WebKit
 
 // MARK: - ReaderModeDelegate

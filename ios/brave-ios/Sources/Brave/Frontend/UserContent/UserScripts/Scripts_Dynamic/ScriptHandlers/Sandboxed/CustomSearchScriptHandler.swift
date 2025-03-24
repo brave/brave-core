@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
+import Web
 import WebKit
 
 class CustomSearchScriptHandler: TabContentScript {

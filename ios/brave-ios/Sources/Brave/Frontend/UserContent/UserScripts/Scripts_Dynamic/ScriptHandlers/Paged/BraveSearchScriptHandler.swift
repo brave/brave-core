@@ -7,6 +7,7 @@ import BraveCore
 import Foundation
 import Preferences
 import Shared
+import Web
 import WebKit
 import os.log
 

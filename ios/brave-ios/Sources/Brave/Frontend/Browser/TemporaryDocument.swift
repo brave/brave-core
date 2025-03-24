@@ -5,6 +5,7 @@
 import BraveShared
 import Foundation
 import Shared
+import Web
 
 private let temporaryDocumentOperationQueue = OperationQueue()
 
