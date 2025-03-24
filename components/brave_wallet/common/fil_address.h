@@ -48,6 +48,7 @@ class FilAddress {
   // Represents byte form of the Filecoin address
   // https://spec.filecoin.io/appendix/address/#section-appendix.address.bytes
   std::vector<uint8_t> GetBytes() const;
+  std::vector<uint8_t> GetBytesForCbor() const;
   bool IsMainNet() const;
 
  private:

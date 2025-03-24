@@ -196,7 +196,10 @@ source_set("test_support") {
 
 rust_static_library("rust_lib") {
   visibility = [
+    "//brave/browser/brave_wallet:unit_tests",
     "//brave/components/brave_wallet/browser:hd_keyring",
+    "//brave/components/brave_wallet/browser:transaction",
+    "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
     "//brave/components/brave_wallet/browser/zcash/rust:*",
     "//brave/components/brave_wallet/common",
   ]
@@ -208,6 +211,7 @@ rust_static_library("rust_lib") {
 
   deps = [
     "//brave/third_party/rust/bech32/v0_9:lib",
+    "//brave/third_party/rust/bls_signatures/v0_15:lib",
     "//brave/third_party/rust/curve25519_dalek/v4:lib",
   ]
 }

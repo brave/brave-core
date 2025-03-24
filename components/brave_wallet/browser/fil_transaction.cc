@@ -6,18 +6,25 @@
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 
 #include <algorithm>
+#include <array>
 #include <optional>
 #include <string>
 #include <utility>
 
+#include "base/base64.h"
+#include "base/containers/adapters.h"
+#include "base/containers/span.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "brave/components/filecoin/rs/src/lib.rs.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/string_utils.h"
 #include "brave/components/json/json_helper.h"
+#include "components/cbor/values.h"
+#include "components/cbor/writer.h"
 
 namespace brave_wallet {
 
@@ -29,6 +36,35 @@ enum SigType { ECDSASigType = 1, BLSSigType = 2 };
 bool IsNumericString(const std::string& value) {
   return std::all_of(value.begin(), value.end(),
                      [](char c) { return std::isdigit(c) != 0; });
+}
+
+std::optional<std::vector<uint8_t>> ToBigIntBytesArray(
+    const std::string& value) {
+  auto bigint = Base10ValueToUint256(value);
+  if (!bigint) {
+    return std::nullopt;
+  }
+
+  std::vector<uint8_t> result;
+
+  // Zero bigint is encoded as an empty byte array, Positive bigint has zero
+  // byte prefix and bytes in big endian order.
+  // https://github.com/filecoin-project/ref-fvm/blob/280d80503f950a1934e3d60910d659fad685f9c7/shared/src/bigint/biguint_ser.rs#L29-L34
+  if (*bigint == 0) {
+    return result;
+  }
+
+  uint32_t significant_bytes_count = 32 - (__builtin_clzg(*bigint) / 8);
+  result.reserve(significant_bytes_count + 1);
+  result.push_back(0);
+
+  auto bigint_span =
+      base::byte_span_from_ref(*bigint).first(significant_bytes_count);
+  for (auto item : base::Reversed(bigint_span)) {
+    result.push_back(item);
+  }
+
+  return result;
 }
 
 }  // namespace
@@ -187,7 +223,8 @@ std::optional<FilTransaction> FilTransaction::FromValue(
   return tx;
 }
 
-base::Value FilTransaction::GetMessageToSign(const FilAddress& from) const {
+base::Value::Dict FilTransaction::GetMessageToSign(
+    const FilAddress& from) const {
   DCHECK(!from.IsEmpty());
 
   auto value = ToValue();
@@ -207,7 +244,53 @@ base::Value FilTransaction::GetMessageToSign(const FilAddress& from) const {
   if (nonce_empty) {
     value.Set("Nonce", "0");
   }
-  return base::Value(std::move(value));
+  return value;
+}
+
+std::optional<std::vector<uint8_t>> FilTransaction::GetMessageToSignCBOR(
+    const FilAddress& from) const {
+  auto value_bytes = ToBigIntBytesArray(value_);
+  auto gas_fee_cap_bytes = ToBigIntBytesArray(gas_fee_cap_);
+  auto gas_premium_bytes = ToBigIntBytesArray(gas_premium_);
+  if (!value_bytes || !gas_fee_cap_bytes || !gas_premium_bytes) {
+    return std::nullopt;
+  }
+
+  std::vector<cbor::Value> data_vec;
+  data_vec.emplace_back(0);  // Version.
+  data_vec.emplace_back(to_.GetBytesForCbor());
+  data_vec.emplace_back(from.GetBytesForCbor());
+  data_vec.emplace_back(static_cast<int64_t>(nonce_.value_or(0)));
+  data_vec.emplace_back(*value_bytes);
+  data_vec.emplace_back(gas_limit_);
+  data_vec.emplace_back(*gas_fee_cap_bytes);
+  data_vec.emplace_back(*gas_premium_bytes);
+  if (to_.protocol() == mojom::FilecoinAddressProtocol::DELEGATED) {
+    // https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0054.md#invokecontract-method-number-38444508371
+    data_vec.emplace_back(int64_t(3844450837));  // Method.
+  } else {
+    data_vec.emplace_back(0);  // Method.
+  }
+  data_vec.emplace_back(base::span<const uint8_t>());  // Params.
+
+  auto encoded_sig_data = cbor::Writer::Write(cbor::Value(std::move(data_vec)));
+  CHECK(encoded_sig_data.has_value());
+
+  return encoded_sig_data.value();
+}
+
+std::optional<std::array<uint8_t, kFilTransactionCidSize>>
+FilTransaction::TransactionCid(const FilAddress& from) const {
+  auto cbor = GetMessageToSignCBOR(from);
+  if (!cbor) {
+    return std::nullopt;
+  }
+
+  std::array<uint8_t, kFilTransactionCidSize> cid = {0x01, 0x71, 0xa0,
+                                                     0xe4, 0x02, 0x20};
+  base::span(cid).last<32>().copy_from(Blake2bHash<32>(*cbor));
+
+  return cid;
 }
 
 std::optional<std::string> FilTransaction::GetMessageToSignJson(
@@ -217,11 +300,11 @@ std::optional<std::string> FilTransaction::GetMessageToSignJson(
     return std::nullopt;
   }
 
-  return ConvertMesssageStringFieldsToInt64("", json);
+  return ConvertMessageStringFieldsToInt64("", json);
 }
 
 // static
-std::optional<std::string> FilTransaction::ConvertMesssageStringFieldsToInt64(
+std::optional<std::string> FilTransaction::ConvertMessageStringFieldsToInt64(
     const std::string& path,
     const std::string& json) {
   std::string converted_json =
@@ -241,7 +324,7 @@ std::optional<std::string> FilTransaction::ConvertMesssageStringFieldsToInt64(
 std::optional<std::string> FilTransaction::ConvertSignedTxStringFieldsToInt64(
     const std::string& path,
     const std::string& json) {
-  return ConvertMesssageStringFieldsToInt64(path + "/Message", json);
+  return ConvertMessageStringFieldsToInt64(path + "/Message", json);
 }
 
 // static
@@ -257,38 +340,27 @@ std::optional<base::Value::Dict> FilTransaction::DeserializeSignedTx(
 // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures
 std::optional<std::string> FilTransaction::GetSignedTransaction(
     const FilAddress& from,
-    base::span<const uint8_t> private_key) const {
+    base::span<const uint8_t> signature) const {
   DCHECK(!from.IsEmpty());
+  DCHECK(from.protocol() == mojom::FilecoinAddressProtocol::SECP256K1 ||
+         from.protocol() == mojom::FilecoinAddressProtocol::BLS)
+      << from.protocol();
 
   auto message = GetMessageToSign(from);
-  auto message_json = GetMessageToSignJson(from);
-  if (!message_json) {
-    return std::nullopt;
-  }
-  base::Value::Dict signature;
-  {
-    std::string data(filecoin::transaction_sign(
-        from.network() == mojom::kFilecoinMainnet, *message_json,
-        rust::Slice<const uint8_t>{private_key.data(), private_key.size()}));
-    if (data.empty()) {
-      return std::nullopt;
-    }
-    signature.Set("Data", data);
-  }
-  // Set signature type based on protocol.
-  // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures.signature-types
-  auto sig_type = from.protocol() == mojom::FilecoinAddressProtocol::SECP256K1
-                      ? SigType::ECDSASigType
-                      : SigType::BLSSigType;
-  signature.Set("Type", sig_type);
+  base::Value::Dict signature_dict;
+  signature_dict.Set("Data", base::Base64Encode(signature));
+  signature_dict.Set("Type",
+                     from.protocol() == mojom::FilecoinAddressProtocol::BLS
+                         ? BLSSigType
+                         : ECDSASigType);
   base::Value::Dict dict;
   dict.Set("Message", std::move(message));
-  dict.Set("Signature", std::move(signature));
+  dict.Set("Signature", std::move(signature_dict));
   std::string json;
   if (!base::JSONWriter::Write(dict, &json)) {
     return std::nullopt;
   }
-  return ConvertMesssageStringFieldsToInt64("/Message", json);
+  return ConvertMessageStringFieldsToInt64("/Message", json);
 }
 
 mojom::FilTxDataPtr FilTransaction::ToFilTxData() const {

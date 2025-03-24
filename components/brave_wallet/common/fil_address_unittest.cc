@@ -300,6 +300,29 @@ TEST(FilAddressUnitTest, GetBytes) {
   }
 }
 
+TEST(FilAddressUnitTest, GetBytesForCbor) {
+  {
+    auto fil_address =
+        FilAddress::FromAddress("t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq");
+    EXPECT_EQ(ToHex(fil_address.GetBytesForCbor()),
+              "0x013f666d84efec7bea64c90135bfef2d9a3d834380");
+  }
+  {
+    auto fil_address = FilAddress::FromAddress(
+        "t3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o"
+        "4tpa4mvigcrayh4a");
+    EXPECT_EQ(ToHex(fil_address.GetBytesForCbor()),
+              "0x03b5774f3d8546d3e797653a5423effa7ab06d4cd3587697d3647798d9fe73"
+              "9167ebeaf1ef053f957a7678ee4de0e32a83");
+  }
+  {
+    auto fil_address =
+        FilAddress::FromAddress("t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y");
+    EXPECT_EQ(ToHex(fil_address.GetBytesForCbor()),
+              "0x040a8c60a3a9530ddd22f44c0b9c219e55e693335b51");
+  }
+}
+
 TEST(FilAddressUnitTest, FromBytes) {
   {
     auto fil_address = FilAddress::FromAddress(

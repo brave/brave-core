@@ -289,6 +289,16 @@ std::vector<uint8_t> FilAddress::GetBytes() const {
   return result;
 }
 
+std::vector<uint8_t> FilAddress::GetBytesForCbor() const {
+  std::vector<uint8_t> result;
+  result.push_back(static_cast<uint8_t>(protocol_));
+  if (protocol_ == mojom::FilecoinAddressProtocol::DELEGATED) {
+    result.push_back(0x0a);
+  }
+  result.insert(result.end(), bytes_.begin(), bytes_.end());
+  return result;
+}
+
 bool FilAddress::IsMainNet() const {
   return network_ == mojom::kFilecoinMainnet;
 }

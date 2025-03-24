@@ -23,7 +23,8 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
-#include "brave/components/filecoin/rs/src/lib.rs.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/lib.rs.h"
 
 namespace brave_wallet {
 
@@ -34,11 +35,12 @@ std::optional<std::vector<uint8_t>> GetBLSPublicKey(
     return std::nullopt;
   }
 
-  auto public_key = base::ToVector(filecoin::bls_private_key_to_public_key(
-      base::SpanToRustSlice(private_key)));
-  if (std::ranges::all_of(public_key, [](int i) { return i == 0; })) {
+  auto public_key = base::ToVector(
+      bls_private_key_to_public_key(base::SpanToRustSlice(private_key)));
+  if (public_key.empty()) {
     return std::nullopt;
   }
+
   return public_key;
 }
 
@@ -236,16 +238,33 @@ std::optional<std::string> FilecoinKeyring::SignTransaction(
     return std::nullopt;
   }
 
+  auto cid = tx.TransactionCid(fil_address);
+  if (!cid) {
+    return std::nullopt;
+  }
+
   if (auto it = imported_bls_accounts_.find(address);
       it != imported_bls_accounts_.end()) {
-    return tx.GetSignedTransaction(fil_address, *it->second);
+    auto signature = base::ToVector(bls_sign_message(
+        base::SpanToRustSlice(*it->second), base::SpanToRustSlice(*cid)));
+    if (signature.empty()) {
+      return std::nullopt;
+    }
+
+    return tx.GetSignedTransaction(fil_address, signature);
   }
 
   HDKey* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key) {
     return std::nullopt;
   }
-  return tx.GetSignedTransaction(fil_address, hd_key->GetPrivateKeyBytes());
+
+  auto signature = hd_key->SignCompact(Blake2bHash<32>(*cid));
+  if (!signature) {
+    return std::nullopt;
+  }
+
+  return tx.GetSignedTransaction(fil_address, signature->bytes());
 }
 
 std::unique_ptr<HDKey> FilecoinKeyring::DeriveAccount(uint32_t index) const {

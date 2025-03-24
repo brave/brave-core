@@ -403,20 +403,16 @@ TEST(HDKeyUnitTest, GenerateFromPrivateKey) {
   std::array<uint8_t, 32> msg_a = {};
   std::array<uint8_t, 32> msg_b = {};
   msg_b.fill(0x08);
-  int recid_a = -1;
-  int recid_b = -1;
-  auto sig_a = *key->SignCompact(msg_a, &recid_a);
-  auto sig_b = *key->SignCompact(msg_b, &recid_b);
-  EXPECT_NE(recid_a, -1);
-  EXPECT_NE(recid_b, -1);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a)),
+  auto sig_a = *key->SignCompact(msg_a);
+  auto sig_b = *key->SignCompact(msg_b);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a.rs_bytes())),
             "6ba4e554457ce5c1f1d7dbd10459465e39219eb9084ee23270688cbe0d49b52b79"
             "05d5beb28492be439a3250e9359e0390f844321b65f1a88ce07960dd85da06");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_b)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_b.rs_bytes())),
             "dfae85d39b73c9d143403ce472f7c4c8a5032c13d9546030044050e7d39355e47a"
             "532e5c0ae2a25392d97f5e55ab1288ef1e08d5c034bad3b0956fbbab73b381");
-  EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a));
-  EXPECT_TRUE(key->VerifyForTesting(msg_b, sig_b));
+  EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a.rs_bytes()));
+  EXPECT_TRUE(key->VerifyForTesting(msg_b, sig_b.rs_bytes()));
 }
 
 TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
@@ -428,28 +424,20 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   std::array<uint8_t, 32> msg_a = {};
   std::array<uint8_t, 32> msg_b = {};
   msg_b.fill(0x08);
-  int recid_a = -1;
-  int recid_b = -1;
-  auto sig_a = *key->SignCompact(msg_a, &recid_a);
-  auto sig_b = *key->SignCompact(msg_b, &recid_b);
-  EXPECT_NE(recid_a, -1);
-  EXPECT_NE(recid_b, -1);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a)),
+  auto sig_a = *key->SignCompact(msg_a);
+  auto sig_b = *key->SignCompact(msg_b);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a.rs_bytes())),
             "6ba4e554457ce5c1f1d7dbd10459465e39219eb9084ee23270688cbe0d49b52b79"
             "05d5beb28492be439a3250e9359e0390f844321b65f1a88ce07960dd85da06");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_b)),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_b.rs_bytes())),
             "dfae85d39b73c9d143403ce472f7c4c8a5032c13d9546030044050e7d39355e47a"
             "532e5c0ae2a25392d97f5e55ab1288ef1e08d5c034bad3b0956fbbab73b381");
-  EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a));
-  EXPECT_TRUE(key->VerifyForTesting(msg_b, sig_b));
-  const std::vector<uint8_t> public_key_a =
-      key->RecoverCompact(true, msg_a, sig_a, recid_a);
-  const std::vector<uint8_t> public_key_b =
-      key->RecoverCompact(true, msg_b, sig_b, recid_b);
-  const std::vector<uint8_t> uncompressed_public_key_a =
-      key->RecoverCompact(false, msg_a, sig_a, recid_a);
-  const std::vector<uint8_t> uncompressed_public_key_b =
-      key->RecoverCompact(false, msg_b, sig_b, recid_b);
+  EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a.rs_bytes()));
+  EXPECT_TRUE(key->VerifyForTesting(msg_b, sig_b.rs_bytes()));
+  auto public_key_a = *key->RecoverCompact(true, msg_a, sig_a);
+  auto public_key_b = *key->RecoverCompact(true, msg_b, sig_b);
+  auto uncompressed_public_key_a = *key->RecoverCompact(false, msg_a, sig_a);
+  auto uncompressed_public_key_b = *key->RecoverCompact(false, msg_b, sig_b);
   EXPECT_EQ(base::HexEncode(public_key_a), base::HexEncode(key->public_key_));
   EXPECT_EQ(base::HexEncode(public_key_b), base::HexEncode(key->public_key_));
   EXPECT_EQ(base::HexEncode(uncompressed_public_key_a),
@@ -459,13 +447,8 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
 
   EXPECT_FALSE(key->VerifyForTesting(std::array<uint8_t, 32>{},
                                      std::array<uint8_t, 64>{}));
-  EXPECT_FALSE(key->VerifyForTesting(msg_a, sig_b));
-  EXPECT_FALSE(key->VerifyForTesting(msg_b, sig_a));
-
-  EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(true, msg_a, sig_a, -1)));
-  EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(true, msg_a, sig_a, 4)));
-  EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(false, msg_a, sig_a, -1)));
-  EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(false, msg_a, sig_a, 4)));
+  EXPECT_FALSE(key->VerifyForTesting(msg_a, sig_b.rs_bytes()));
+  EXPECT_FALSE(key->VerifyForTesting(msg_b, sig_a.rs_bytes()));
 }
 
 TEST(HDKeyUnitTest, SetPrivateKey) {

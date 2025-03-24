@@ -1,6 +1,0 @@
-TOML parse error at line 1, column 17
-  |
-1 | exp-point-3 = 3.e+20
-  |                 ^
-invalid floating-point number
-expected digit

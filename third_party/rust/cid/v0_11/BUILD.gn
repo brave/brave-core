@@ -41,16 +41,9 @@ cargo_crate("lib") {
     "//brave/third_party/rust/core2/v0_4:lib",
     "//brave/third_party/rust/multibase/v0_9:lib",
     "//brave/third_party/rust/multihash/v0_19:lib",
-    "//brave/third_party/rust/serde/v1:lib",
-    "//brave/third_party/rust/serde_bytes/v0_11:lib",
     "//brave/third_party/rust/unsigned_varint/v0_8:lib",
   ]
-  features = [
-    "alloc",
-    "serde",
-    "serde-codec",
-    "std",
-  ]
+  features = [ "alloc" ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

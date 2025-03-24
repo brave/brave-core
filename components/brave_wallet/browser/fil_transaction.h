@@ -16,6 +16,8 @@
 
 namespace brave_wallet {
 
+inline constexpr size_t kFilTransactionCidSize = 38;
+
 class FilTransaction {
  public:
   FilTransaction();
@@ -50,13 +52,17 @@ class FilTransaction {
   void set_max_fee(const std::string& max_fee) { max_fee_ = max_fee; }
 
   std::optional<std::string> GetMessageToSignJson(const FilAddress& from) const;
-  base::Value GetMessageToSign(const FilAddress& from) const;
+  base::Value::Dict GetMessageToSign(const FilAddress& from) const;
+  std::optional<std::vector<uint8_t>> GetMessageToSignCBOR(
+      const FilAddress& from) const;
+  std::optional<std::array<uint8_t, kFilTransactionCidSize>> TransactionCid(
+      const FilAddress& from) const;
 
   base::Value::Dict ToValue() const;
   mojom::FilTxDataPtr ToFilTxData() const;
   std::optional<std::string> GetSignedTransaction(
       const FilAddress& from,
-      base::span<const uint8_t> private_key) const;
+      base::span<const uint8_t> signature) const;
   static std::optional<FilTransaction> FromValue(
       const base::Value::Dict& value);
 
@@ -65,7 +71,7 @@ class FilTransaction {
   static std::optional<base::Value::Dict> DeserializeSignedTx(
       const std::string& signed_tx);
   // Finds signed tx JSON by path and converts some string fields to uint64 form
-  static std::optional<std::string> ConvertMesssageStringFieldsToInt64(
+  static std::optional<std::string> ConvertMessageStringFieldsToInt64(
       const std::string& path,
       const std::string& json);
   // Finds signed tx JSON by path and converts some string fields to uint64 form

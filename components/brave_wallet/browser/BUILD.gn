@@ -294,7 +294,6 @@ static_library("browser") {
     "//brave/components/brave_wallet/common:pref_names",
     "//brave/components/constants",
     "//brave/components/decentralized_dns/core",
-    "//brave/components/filecoin/rs:rust_lib",
     "//brave/components/ipfs",
     "//brave/components/json",
     "//brave/components/p3a_utils",
@@ -459,7 +458,6 @@ source_set("hd_keyring") {
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:rust_lib",
-    "//brave/components/filecoin/rs:rust_lib",
     "//crypto",
   ]
 }
@@ -482,10 +480,12 @@ source_set("transaction") {
 
   deps = [
     "//base",
+    "//brave/components/brave_wallet/browser/internal:hd_key_common",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
-    "//brave/components/filecoin/rs:rust_lib",
+    "//brave/components/brave_wallet/common:rust_lib",
     "//brave/components/json",
+    "//components/cbor",
   ]
 }
 

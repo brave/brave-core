@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 42
-  |
-1 | no-ending-quote = 'One time, at band camp
-  |                                          ^
-invalid literal string

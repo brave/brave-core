@@ -1883,8 +1883,8 @@ KeyringService::SignMessageByDefaultKeyring(
 
 std::optional<std::string> KeyringService::RecoverAddressByDefaultKeyring(
     base::span<const uint8_t> message,
-    base::span<const uint8_t> signature) {
-  return EthereumKeyring::RecoverAddress(message, signature);
+    base::span<const uint8_t> eth_signature) {
+  return EthereumKeyring::RecoverAddress(message, eth_signature);
 }
 
 bool KeyringService::GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(

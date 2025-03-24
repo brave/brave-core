@@ -6,19 +6,8 @@ edition = "2018"
 license = "MPL-2.0"
 
 [dependencies]
-base64 = "0.22"
-bls-signatures = { version = "0.15", default-features = false, features = ["pairing"] }
 cxx = "1"
-fvm_shared = { version = "4.5.1" }
-libsecp256k1 = "0.7.2"
-num_bigint_chainsafe = { package = "forest_bigint", version = "0.1.2"}
-serde = { version = "^1.0.117", features = ["derive"] }
-serde_json = "^1.0.59"
-thiserror = "^1.0.30"
-blake2b_simd = "1"
-cid = { version = "^0.11.1", default-features = false }
-multihash-codetable = { version = "0.1.4", default-features = false }
-fvm_ipld_encoding = "0.5.1"
+cid = { version = "^0.11.1", default-features = false, features = [ "alloc" ] }
 
 [lib]
 name = "filecoin_cxx"

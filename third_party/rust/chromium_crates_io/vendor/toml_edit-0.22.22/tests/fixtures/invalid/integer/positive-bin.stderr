@@ -1,5 +1,0 @@
-TOML parse error at line 1, column 18
-  |
-1 | positive-bin = +0b11010110
-  |                  ^
-expected newline, `#`

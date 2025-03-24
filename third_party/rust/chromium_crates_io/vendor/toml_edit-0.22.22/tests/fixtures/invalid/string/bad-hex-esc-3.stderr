@@ -1,6 +1,0 @@
-TOML parse error at line 1, column 20
-  |
-1 | bad-hex-esc-3 = "\x"
-  |                    ^
-invalid escape sequence
-expected `b`, `f`, `n`, `r`, `t`, `u`, `U`, `\`, `"`

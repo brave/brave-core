@@ -1,6 +1,0 @@
-TOML parse error at line 3, column 18
-  |
-3 | simple = { a = 1 
-  |                  ^
-invalid inline table
-expected `}`
