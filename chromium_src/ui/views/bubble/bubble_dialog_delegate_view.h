@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_VIEWS_BUBBLE_BUBBLE_DIALOG_DELEGATE_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_BUBBLE_BUBBLE_DIALOG_DELEGATE_VIEW_H_
 
+#include "ui/views/window/dialog_delegate.h"
+
 class BraveNewsBubbleView;
 class BraveHelpBubbleDelegateView;
 class SplitViewMenuBubble;
@@ -33,7 +35,7 @@ class BraveBubbleDialogDelegateView;
   friend class ::SidebarEditItemBubbleDelegateView;    \
   friend class ::SidebarAddItemBubbleDelegateView;     \
   friend class ::views::BraveBubbleDialogDelegateView; \
-  static PassKey CreatePassKey
+  static BddvPassKey CreatePassKey
 
 #include "src/ui/views/bubble/bubble_dialog_delegate_view.h"  // IWYU pragma: export
 
