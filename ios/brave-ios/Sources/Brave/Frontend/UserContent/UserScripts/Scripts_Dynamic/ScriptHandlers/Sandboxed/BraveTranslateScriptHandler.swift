@@ -13,7 +13,7 @@ import os.log
 protocol BraveTranslateScriptHandlerDelegate: NSObject {
   func updateTranslateURLBar(tab: Tab, state: TranslateURLBarButton.TranslateState)
   func canShowTranslateOnboarding(tab: Tab) -> Bool
-  func showTranslateOnboarding(tab: Tab, completion: @escaping (_ translateEnabled: Bool?) -> Void)
+  func showTranslateOnboarding(tab: Tab, completion: @escaping (_ translateEnabled: Bool) -> Void)
   func presentTranslateToast(tab: Tab, languageInfo: BraveTranslateLanguageInfo)
   func presentTranslateError(tab: Tab)
 }
@@ -83,7 +83,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
       return
     }
 
-    if Preferences.Translate.translateEnabled.value == false {
+    if !Preferences.Translate.translateEnabled.value {
       Logger.module.debug("Translation Disabled")
       replyHandler(nil, BraveTranslateError.translateDisabled.rawValue)
       return
@@ -121,7 +121,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     body: [String: Any]
   ) async throws -> (Any?, String?) {
     if command == "load_brave_translate_script" {
-      if Preferences.Translate.translateEnabled.value == true {
+      if Preferences.Translate.translateEnabled.value {
         if let script = Self.elementScript {
           return (script, nil)
         }
@@ -130,7 +130,6 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
         return (Self.elementScript, nil)
       }
 
-      try await tab.translateHelper?.setupOnboarding()
       return (nil, BraveTranslateError.translateDisabled.rawValue)
     }
 
