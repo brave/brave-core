@@ -62,9 +62,9 @@ leo-button {
     };
   }
 
-  disabled: boolean = false;
-  class: string = '';
-  size = 'small';
+  accessor disabled: boolean = false;
+  accessor class: string = '';
+  accessor size = 'small';
 
   private onClick_(e: Event) {
     if (this.disabled) {

@@ -45,8 +45,8 @@ export class CrToggleElement extends CrLitElement {
     };
   }
 
-  checked: boolean = false;
-  disabled: boolean = false;
+  accessor checked: boolean = false;
+  accessor disabled: boolean = false;
 
   override firstUpdated(){
     this.addEventListener('click', e => {
