@@ -17,7 +17,8 @@ import { WalletSelectors } from '../selectors'
 // Hooks
 import {
   useGetIsSyncInProgressQuery,
-  useClearChainTipStatusCacheMutation
+  useClearChainTipStatusCacheMutation,
+  useClearZCashBalanceCacheMutation
 } from '../slices/api.slice'
 
 export const useIsAccountSyncing = (accountId?: BraveWallet.AccountId) => {
@@ -26,6 +27,7 @@ export const useIsAccountSyncing = (accountId?: BraveWallet.AccountId) => {
     string | undefined
   >()
   const [clearChainTipStatusCache] = useClearChainTipStatusCacheMutation()
+  const [clearZCashBalanceCache] = useClearZCashBalanceCacheMutation()
 
   // Selectors
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
@@ -53,6 +55,7 @@ export const useIsAccountSyncing = (accountId?: BraveWallet.AccountId) => {
         },
         onSyncStop: (id: BraveWallet.AccountId) => {
           clearChainTipStatusCache()
+          clearZCashBalanceCache()
           if (accountId && accountId.uniqueKey === id.uniqueKey) {
             setSyncingId('')
           }
@@ -66,7 +69,7 @@ export const useIsAccountSyncing = (accountId?: BraveWallet.AccountId) => {
     )
 
     return () => zcashWalletServiceObserver.$.close()
-  }, [accountId, clearChainTipStatusCache])
+  }, [accountId, clearChainTipStatusCache, clearZCashBalanceCache])
 
   return syncingId === undefined
     ? isSyncAlreadyInProgress
