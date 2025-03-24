@@ -12,10 +12,10 @@
 namespace logging {
 namespace internal {
 
-void print_rust_log(const char* msg,
+void print_rust_log(const RustFmtArguments& msg,
                     const char* file,
-                    int line,
-                    LogSeverity severity,
+                    int32_t line,
+                    int32_t severity,
                     bool verbose) {
   switch (severity) {
     // Trace and debug logs are set as `LOGGING_INFO`. Trace is also set as
