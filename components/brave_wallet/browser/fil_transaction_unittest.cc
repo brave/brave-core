@@ -243,6 +243,54 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
   EXPECT_EQ(signature_type, 1);
 }
 
+TEST(FilTransactionUnitTest, GetMessageToSignSecpF1ToV4) {
+  auto from =
+      FilAddress::FromAddress("t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq");
+  auto transaction = FilTransaction::FromTxData(
+      false, mojom::FilTxData::New(
+                 "1", "2", "3", "1", "5",
+                 "t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y", "6"));
+  auto message_to_sign = transaction->GetMessageToSignJson(from);
+  ASSERT_TRUE(message_to_sign);
+  EXPECT_EQ(base::test::ParseJson(*message_to_sign), base::test::ParseJson(R"({
+                 "From": "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
+                 "GasFeeCap": "3",
+                 "GasLimit": 1,
+                 "GasPremium": "2",
+                 "Method": 3844450837,
+                 "Params": "",
+                 "Nonce": 1,
+                 "To": "t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
+                 "Value": "6",
+                 "Version": 0
+               })"));
+
+  std::string private_key_decoded =
+      DecodePrivateKey("8VcW07ADswS4BV2cxi5rnIadVsyTDDhY1NfDH19T8Uo=");
+  auto private_key = *base::as_byte_span(private_key_decoded)
+                          .to_fixed_extent<kSecp256k1PrivateKeySize>();
+  auto hd_key = HDKey::GenerateFromPrivateKey(private_key);
+  auto signed_transaction = transaction->GetSignedTransaction(
+      from,
+      hd_key->SignCompact(Blake2bHash<32>(*transaction->TransactionCid(from)))
+          ->bytes());
+  ASSERT_TRUE(signed_transaction);
+  auto signature_value = base::test::ParseJsonDict(*signed_transaction);
+  auto* message = signature_value.Find("Message");
+  auto* signature_data =
+      signature_value.FindStringByDottedPath("Signature.Data");
+  EXPECT_TRUE(message);
+  EXPECT_TRUE(signature_data);
+  auto message_as_value = base::test::ParseJson(*message_to_sign);
+  EXPECT_EQ(*signature_data,
+            "cJny5ecvdcWNblL8NcFrsrDy8b47UZ5uz7+Djvb4Nx5sRkb/"
+            "B5JaDpBgxuFRqd8Src/jyr3R4YQ/QvdeAjeTGAE=");
+  EXPECT_EQ(*message, message_as_value);
+  auto signature_type = signature_value.FindIntByDottedPath("Signature.Type");
+  ASSERT_TRUE(signature_type);
+  EXPECT_EQ(signature_type, 1);
+}
+
 TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
   const std::string from_account =
       "t3uylp7xgte6rpiqhpivxohtzs7okpnq44mnckimwf6mgi6yc4o6f3iyd426u6wzloiig3a4"

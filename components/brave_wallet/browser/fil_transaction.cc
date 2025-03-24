@@ -258,8 +258,8 @@ std::optional<std::vector<uint8_t>> FilTransaction::GetMessageToSignCBOR(
 
   std::vector<cbor::Value> data_vec;
   data_vec.emplace_back(0);  // Version.
-  data_vec.emplace_back(to_.GetBytes());
-  data_vec.emplace_back(from.GetBytes());
+  data_vec.emplace_back(to_.GetBytesForCbor());
+  data_vec.emplace_back(from.GetBytesForCbor());
   data_vec.emplace_back(static_cast<int64_t>(nonce_.value_or(0)));
   data_vec.emplace_back(*value_bytes);
   data_vec.emplace_back(gas_limit_);
