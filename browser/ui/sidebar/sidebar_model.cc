@@ -97,8 +97,9 @@ void SidebarModel::AddItem(const SidebarItem& item,
   }
 
   // Web type uses site favicon as button's image.
-  if (sidebar::IsWebType(item))
+  if (item.is_web_type()) {
     FetchFavicon(item);
+  }
 }
 
 void SidebarModel::OnItemAdded(const SidebarItem& item, size_t index) {
@@ -155,8 +156,9 @@ void SidebarModel::OnURLVisited(history::HistoryService* history_service,
                                 const history::VisitRow& new_visit) {
   for (const auto& item : GetAllSidebarItems()) {
     // Don't try to update builtin items image. It uses bundled one.
-    if (IsBuiltInType(item))
+    if (item.is_built_in_type()) {
       continue;
+    }
 
     // If same url is added to history service, try to fetch favicon to update
     // for item.
@@ -214,7 +216,7 @@ std::optional<size_t> SidebarModel::GetIndexOf(
     SidebarItem::BuiltInItemType type) const {
   const auto items = GetAllSidebarItems();
   const auto iter = std::ranges::find_if(items, [&type](const auto& i) {
-    return IsBuiltInType(i) && (type == i.built_in_item_type);
+    return i.is_built_in_type() && (type == i.built_in_item_type);
   });
   if (iter == items.end()) {
     return std::nullopt;
