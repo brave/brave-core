@@ -225,7 +225,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #endif
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost ||
-      url.host_piece() == kAdsInternalsHost) {
+      (url.host_piece() == kAdsInternalsHost &&
+       !profile->IsIncognitoProfile())) {
     return &NewWebUI;
   }
 
