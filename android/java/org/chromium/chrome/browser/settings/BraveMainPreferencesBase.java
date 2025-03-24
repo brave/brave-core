@@ -78,6 +78,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_TABS = "tabs";
     private static final String PREF_MEDIA = "media";
     private static final String PREF_APPEARANCE = "appearance";
+    private static final String PREF_CUSTOM_APP_ICONS = "custom_app_icons";
     private static final String PREF_NEW_TAB_PAGE = "background_images";
     private static final String PREF_ACCESSIBILITY = "accessibility";
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
@@ -330,6 +331,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         findPreference(PREF_TABS).setOrder(++displaySectionOrder);
         findPreference(PREF_MEDIA).setOrder(++displaySectionOrder);
         findPreference(PREF_APPEARANCE).setOrder(++displaySectionOrder);
+        findPreference(PREF_CUSTOM_APP_ICONS).setOrder(++displaySectionOrder);
         findPreference(PREF_NEW_TAB_PAGE).setOrder(++displaySectionOrder);
         findPreference(PREF_ACCESSIBILITY).setOrder(++displaySectionOrder);
         findPreference(PREF_BRAVE_LANGUAGES).setOrder(++displaySectionOrder);
@@ -406,6 +408,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 BottomToolbarConfiguration.isToolbarTopAnchored()
                         ? R.drawable.ic_browser_mobile_tabs_top
                         : R.drawable.ic_browser_mobile_tabs_bottom);
+        updatePreferenceIcon(PREF_CUSTOM_APP_ICONS, R.drawable.ic_launcher);
     }
 
     private void updateSearchEnginePreference() {
