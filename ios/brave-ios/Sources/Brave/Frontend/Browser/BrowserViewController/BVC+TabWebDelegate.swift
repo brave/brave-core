@@ -569,8 +569,7 @@ extension BrowserViewController {
 
   public func tab(
     _ tab: Tab,
-    createNewTabWithRequest request: URLRequest,
-    configuration: WKWebViewConfiguration
+    createNewTabWithRequest request: URLRequest
   ) -> Tab? {
     guard !request.isInternalUnprivileged,
       let navigationURL = request.url,
@@ -587,7 +586,7 @@ extension BrowserViewController {
     // If the page uses `window.open()` or `[target="_blank"]`, open the page in a new tab.
     // IMPORTANT!!: WebKit will perform the `URLRequest` automatically!! Attempting to do
     // the request here manually leads to incorrect results!!
-    let newTab = tabManager.addPopupForParentTab(tab, configuration: configuration)
+    let newTab = tabManager.addPopupForParentTab(tab)
 
     newTab.setVirtualURL(URL(string: "about:blank"))
 

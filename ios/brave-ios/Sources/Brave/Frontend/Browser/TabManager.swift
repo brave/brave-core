@@ -447,11 +447,10 @@ class TabManager: NSObject {
   }
 
   @MainActor func addPopupForParentTab(
-    _ parentTab: Tab,
-    configuration: WKWebViewConfiguration
+    _ parentTab: Tab
   ) -> Tab {
     let popup = Tab(
-      configuration: configuration,
+      configuration: parentTab.configuration,
       id: UUID(),
       type: parentTab.type
     )
@@ -460,7 +459,7 @@ class TabManager: NSObject {
       request: nil,
       afterTab: parentTab,
       flushToDisk: true,
-      zombie: false,
+      zombie: true,
       isPopup: true
     )
     return popup
