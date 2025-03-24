@@ -440,8 +440,6 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
 
   GetAdsClient().NotifyPendingObservers();
 
-  task_queue_.FlushAndStopQueueing();
-
   std::move(callback).Run(/*success=*/true);
 }
 
