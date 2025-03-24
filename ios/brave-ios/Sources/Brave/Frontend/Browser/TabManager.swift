@@ -328,11 +328,10 @@ class TabManager: NSObject {
   func selectTab(_ tab: Tab?, previous: Tab? = nil) {
     assert(Thread.isMainThread)
     let previous = previous ?? selectedTab
-    previous?.isVisible = false
-
     if previous === tab {
       return
     }
+    previous?.isVisible = false
     // Convert the global mode to normal/private
     privateBrowsingManager.isPrivateBrowsing = tab?.isPrivate == true
 
