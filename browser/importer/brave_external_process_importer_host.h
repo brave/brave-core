@@ -51,6 +51,7 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
   bool NeedToImportExtensions() const;
 
   void OnExtensionsImportReady(bool ready);
+  void OnExtensionsImportLockDialogEnd(bool is_continue);
   void OnExtensionImported(const std::string& extension_id,
                            extensions_import::ExtensionImportStatus status);
 

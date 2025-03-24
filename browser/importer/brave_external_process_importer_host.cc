@@ -7,6 +7,8 @@
 
 #include "brave/browser/importer/brave_importer_p3a.h"
 #include "brave/browser/importer/extensions_import_helpers.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/importer/importer_lock_dialog.h"
 
 BraveExternalProcessImporterHost::BraveExternalProcessImporterHost()
     : weak_ptr_factory_(this) {}
@@ -83,9 +85,24 @@ void BraveExternalProcessImporterHost::OnExtensionsImportReady(bool ready) {
   }
   if (!ready) {
     extensions_importer_.reset();
-    ShowWarningDialog();
+    importer::ShowImportLockDialog(
+        parent_window_,
+        base::BindOnce(
+            &BraveExternalProcessImporterHost::OnExtensionsImportLockDialogEnd,
+            weak_ptr_factory_.GetWeakPtr()),
+        IDS_EXTENSIONS_IMPORTER_LOCK_TITLE, IDS_EXTENSIONS_IMPORTER_LOCK_TEXT);
   } else {
     LaunchImportIfReady();
+  }
+}
+
+void BraveExternalProcessImporterHost::OnExtensionsImportLockDialogEnd(
+    bool is_continue) {
+  DCHECK(!extensions_importer_);
+  if (is_continue) {
+    LaunchImportIfReady();
+  } else {
+    NotifyImportEnded();
   }
 }
 
