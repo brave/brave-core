@@ -8,7 +8,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/tabs/public/tab_interface.h"
+#include "components/tab_collections/public/tab_interface.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
