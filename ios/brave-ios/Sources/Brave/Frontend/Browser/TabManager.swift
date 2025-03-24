@@ -331,7 +331,6 @@ class TabManager: NSObject {
     if previous === tab {
       return
     }
-    previous?.isVisible = false
     // Convert the global mode to normal/private
     privateBrowsingManager.isPrivateBrowsing = tab?.isPrivate == true
 
@@ -372,7 +371,6 @@ class TabManager: NSObject {
     UIImpactFeedbackGenerator(style: .light).vibrate()
     selectedTab?.createWebview()
     selectedTab?.lastExecutedTime = Date.now()
-    selectedTab?.isVisible = true
 
     if let selectedTab = selectedTab,
       selectedTab.url == nil
@@ -383,6 +381,8 @@ class TabManager: NSObject {
     }
 
     delegates.forEach { $0.get()?.tabManager(self, didSelectedTabChange: tab, previous: previous) }
+    previous?.isVisible = false
+    selectedTab?.isVisible = true
     if let tab = previous {
       TabEvent.post(.didLoseFocus, for: tab)
     }
