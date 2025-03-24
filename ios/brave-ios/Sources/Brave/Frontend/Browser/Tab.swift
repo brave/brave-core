@@ -324,14 +324,20 @@ class Tab: NSObject {
   // If this tab has been opened from another, its parent will point to the tab from which it was opened
   weak var parent: Tab?
 
-  private(set) var configuration: WKWebViewConfiguration
+  var configuration: WKWebViewConfiguration {
+    if let webView {
+      return webView.configuration
+    }
+    return initialConfiguration
+  }
+  private var initialConfiguration: WKWebViewConfiguration
 
   init(
     configuration: WKWebViewConfiguration,
     id: UUID = UUID(),
     type: TabType = .regular
   ) {
-    self.configuration = configuration
+    self.initialConfiguration = configuration
     self.id = id
     self.type = type
 
@@ -615,7 +621,7 @@ class Tab: NSObject {
   }
 
   func resetWebView(config: WKWebViewConfiguration) {
-    configuration = config
+    initialConfiguration = config
     deleteWebView()
   }
 
