@@ -51,14 +51,14 @@ export class BrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
     }
   }
 
-  narrow = false;
-  showingSearch = false;
-  spinnerActive = false;
+  accessor narrow: boolean = false;
+  accessor showingSearch: boolean = false;
+  accessor spinnerActive: boolean = false;
 
-  searchFocused_ = false;
-  isBlurring_ = false;
-  iconOverride?: string
-  inputAriaDescription = ''
+  accessor searchFocused_: boolean = false;
+  isBlurring_: boolean = false;
+  accessor iconOverride: string|undefined;
+  accessor inputAriaDescription: string = ''
 
   get isSpinnerShown() {
     return this.computeIsSpinnerShown_()
