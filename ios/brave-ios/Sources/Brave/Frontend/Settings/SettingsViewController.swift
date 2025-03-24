@@ -48,6 +48,10 @@ extension Preferences.AutoCloseTabsOption: RepresentableOptionType {
 protocol SettingsDelegate: AnyObject {
   func settingsOpenURLInNewTab(_ url: URL)
   func settingsOpenURLs(_ urls: [URL], loadImmediately: Bool)
+
+  func settingsCreateFakeTabs()
+  func settingsCreateFakeBookmarks()
+  func settingsCreateFakeHistory()
 }
 
 class SettingsViewController: TableViewController {
@@ -1253,8 +1257,23 @@ class SettingsViewController: TableViewController {
         Row(
           text: "Create 1000 Tabs",
           selection: { [unowned self] in
-            let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=\($0)")! }
-            self.settingsDelegate?.settingsOpenURLs(urls, loadImmediately: false)
+            self.settingsDelegate?.settingsCreateFakeTabs()
+            self.dismiss(animated: true)
+          },
+          cellClass: ButtonCell.self
+        ),
+        Row(
+          text: "Create 1000 Bookmark Entries",
+          selection: { [unowned self] in
+            self.settingsDelegate?.settingsCreateFakeBookmarks()
+            self.dismiss(animated: true)
+          },
+          cellClass: ButtonCell.self
+        ),
+        Row(
+          text: "Create 1000 History Entries",
+          selection: { [unowned self] in
+            self.settingsDelegate?.settingsCreateFakeHistory()
             self.dismiss(animated: true)
           },
           cellClass: ButtonCell.self

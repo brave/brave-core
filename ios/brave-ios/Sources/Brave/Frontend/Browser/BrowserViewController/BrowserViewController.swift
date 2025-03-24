@@ -2342,6 +2342,35 @@ extension BrowserViewController: SettingsDelegate {
     let tabIsPrivate = TabType.of(tabManager.selectedTab).isPrivate
     self.tabManager.addTabsForURLs(urls, zombie: !loadImmediately, isPrivate: tabIsPrivate)
   }
+
+  // QA Stuff
+  func settingsCreateFakeTabs() {
+    let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=\($0)")! }
+    let tabIsPrivate = TabType.of(tabManager.selectedTab).isPrivate
+    self.tabManager.addTabsForURLs(urls, zombie: true, isPrivate: tabIsPrivate)
+  }
+
+  func settingsCreateFakeBookmarks() {
+    let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=Bookmarks\($0)")! }
+    let tabIsPrivate = TabType.of(tabManager.selectedTab).isPrivate
+    for (index, url) in urls.enumerated() {
+      braveCore.bookmarksAPI.createBookmark(
+        withTitle: "QA-Bookmark - BraveSearch - \(index)",
+        url: url
+      )
+    }
+  }
+
+  func settingsCreateFakeHistory() {
+    let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=History\($0)")! }
+    let tabIsPrivate = TabType.of(tabManager.selectedTab).isPrivate
+    for (index, url) in urls.enumerated() {
+      braveCore.bookmarksAPI.createBookmark(
+        withTitle: "QA-History - BraveSearch - \(index)",
+        url: url
+      )
+    }
+  }
 }
 
 extension BrowserViewController: PresentingModalViewControllerDelegate {
