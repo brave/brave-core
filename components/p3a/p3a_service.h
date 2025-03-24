@@ -31,6 +31,10 @@ namespace network {
 class SharedURLLoaderFactory;
 }
 
+namespace brave_component_updater {
+class LocalDataFilesService;
+}
+
 namespace p3a {
 
 struct P3AConfig;
