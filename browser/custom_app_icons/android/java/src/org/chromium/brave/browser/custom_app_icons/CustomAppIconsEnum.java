@@ -5,10 +5,10 @@
 package org.chromium.brave.browser.custom_app_icons;
 
 public enum CustomAppIconsEnum {
-    //     ICON_DEFAULT(
-    //             R.drawable.ic_launcher_3d,
-    //             R.string.launcher_default_title,
-    //             "com.google.android.apps.chrome.Main"),
+    ICON_DEFAULT(
+            R.drawable.ic_launcher_3d,
+            R.string.launcher_default_title,
+            "com.google.android.apps.chrome.Main"),
     ICON_3D(R.drawable.ic_launcher_3d, R.string.launcher_3d_title, ".Icon3dAlias"),
     ICON_80S(R.drawable.ic_launcher_80s, R.string.launcher_80s_title, ".Icon80sAlias"),
     ICON_AQUA(R.drawable.ic_launcher_aqua, R.string.launcher_aqua_title, ".IconAquaAlias"),

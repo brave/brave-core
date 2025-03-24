@@ -12,10 +12,19 @@ android_library("java") {
   sources = [
     "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsEnum.java",
     "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsManager.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsAdapter.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsFragment.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsPreference.java",
   ]
   deps = [
     ":java_resources",
+    "//base:tasks_java",
     "//chrome/android:chrome_base_module_resources",
+    "//chrome/browser/preferences:java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
+    "//third_party/androidx:androidx_preference_preference_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
   ]
 
   resources_package = "org.chromium.brave.browser.custom_app_icons"
@@ -83,6 +92,9 @@ android_resources("java_resources") {
     "java/res/drawable-xxxhdpi/ic_launcher_supernova.webp",
     "java/res/drawable-xxxhdpi/ic_launcher_terminal.webp",
     "java/res/drawable-xxxhdpi/ic_launcher_windows.webp",
+    "java/res/drawable/ic_check_circle_filled.xml",
+    "java/res/layout/custom_app_icons_item.xml",
+    "java/res/layout/fragment_custom_app_icons.xml",
     "java/res/mipmap-anydpi-v26/ic_launcher_3d.xml",
     "java/res/mipmap-anydpi-v26/ic_launcher_3d_round.xml",
     "java/res/mipmap-anydpi-v26/ic_launcher_80s.xml",
@@ -107,6 +119,7 @@ android_resources("java_resources") {
     "java/res/mipmap-anydpi-v26/ic_launcher_terminal_round.xml",
     "java/res/mipmap-anydpi-v26/ic_launcher_windows.xml",
     "java/res/mipmap-anydpi-v26/ic_launcher_windows_round.xml",
+    "java/res/values/custom_app_icons_style.xml",
   ]
   deps = [ ":java_strings_grd" ]
 }

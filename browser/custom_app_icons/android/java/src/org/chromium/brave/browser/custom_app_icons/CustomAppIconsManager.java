@@ -7,141 +7,56 @@ package org.chromium.brave.browser.custom_app_icons;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.util.Log;
 
-import java.util.List;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 public class CustomAppIconsManager {
+    private static final String CURRENT_APP_ICON = "current_app_icon";
+
     public static void switchIcon(Context context, CustomAppIconsEnum customAppIconsEnum) {
         PackageManager packageManager = context.getPackageManager();
-
-        Log.e("CustomAppIconsManager", "Switching icon to: " + getLauncherActivityName(context));
 
         // Disable all existing icons
         for (CustomAppIconsEnum icon : CustomAppIconsEnum.values()) {
             packageManager.setComponentEnabledSetting(
-                    new ComponentName(
-                            context.getPackageName(), context.getPackageName() + icon.getAlias()),
+                    new ComponentName(context.getPackageName(), getIconClass(context, icon)),
                     PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                     PackageManager.DONT_KILL_APP);
         }
 
-        packageManager.setComponentEnabledSetting(
-                new ComponentName(context.getPackageName(), "com.google.android.apps.chrome.Main"),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-
         // Enable the selected icon
         packageManager.setComponentEnabledSetting(
                 new ComponentName(
-                        context.getPackageName(),
-                        context.getPackageName() + customAppIconsEnum.getAlias()),
+                        context.getPackageName(), getIconClass(context, customAppIconsEnum)),
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP);
-
-        // Intent intent = new Intent(Intent.ACTION_MAIN);
-        // intent.addCategory(Intent.CATEGORY_HOME);
-        // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        // context.startActivity(intent);
-
-        // PackageManager pm = context.getPackageManager();
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_DEFAULT.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_3D.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_80S.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_AQUA.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_BAT.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_HOLO.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_NEON.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_NETSCAPE.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_POPART.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_POPARTDARK.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_SUPERNOVA.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_TERMINAL.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(),
-        // CustomAppIconsEnum.ICON_WINDOWS.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-        //         PackageManager.DONT_KILL_APP);
-
-        // // Enable the selected one
-        // pm.setComponentEnabledSetting(
-        //         new ComponentName(context.getPackageName(), customAppIconsEnum.getAlias()),
-        //         PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-        //         PackageManager.DONT_KILL_APP);
+        setCurrentIcon(customAppIconsEnum);
     }
 
-    private static String getLauncherActivityName(Context context) {
-        String activityName = "";
-        final PackageManager pm = context.getPackageManager();
-        Intent intent = pm.getLaunchIntentForPackage(context.getPackageName());
-        List<ResolveInfo> activityList = pm.queryIntentActivities(intent, 0);
-        if (activityList != null) {
-            activityName = activityList.get(0).activityInfo.name;
+    public static CustomAppIconsEnum getCurrentIcon(Context context) {
+        String currentIcon =
+                ChromeSharedPreferences.getInstance()
+                        .readString(CURRENT_APP_ICON, CustomAppIconsEnum.ICON_DEFAULT.name());
+        return CustomAppIconsEnum.valueOf(currentIcon);
+    }
+
+    private static void setCurrentIcon(CustomAppIconsEnum customAppIconsEnum) {
+        ChromeSharedPreferences.getInstance()
+                .writeString(CURRENT_APP_ICON, customAppIconsEnum.name());
+    }
+
+    /**
+     * Gets the fully qualified class name for the icon component. Suggested name:
+     * getIconComponentClassName
+     *
+     * @param customAppIconsEnum The enum representing which app icon to use
+     * @return The fully qualified class name for the icon component
+     */
+    private static String getIconClass(Context context, CustomAppIconsEnum customAppIconsEnum) {
+        if (customAppIconsEnum == CustomAppIconsEnum.ICON_DEFAULT) {
+            return "com.google.android.apps.chrome.Main";
         }
-        return activityName;
+        return context.getPackageName() + customAppIconsEnum.getAlias();
     }
 }
