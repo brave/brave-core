@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"
 #include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 
 class PrefService;
@@ -90,7 +91,7 @@ class AdsServiceImplIOS : public AdsService {
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
   void ParseAndSaveCreativeNewTabPageAds(
-      const base::Value::Dict& data,
+      base::Value::Dict dict,
       ParseAndSaveCreativeNewTabPageAdsCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
@@ -170,6 +171,8 @@ class AdsServiceImplIOS : public AdsService {
   const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
+
+  OnceClosureTaskQueue task_queue_;
 
   base::FilePath storage_path_;
   std::unique_ptr<AdsClient> ads_client_;
