@@ -28,39 +28,69 @@ RegisterPolymerTemplateModifications({
         safeBrowsingReportingToggle.setAttribute('hidden', 'true')
       }
     }
-    const safeBrowsingEnhanced = templateContent.getElementById('safeBrowsingEnhanced')
+    const safeBrowsingEnhanced = templateContent.
+      getElementById('safeBrowsingEnhanced')
     if (!safeBrowsingEnhanced) {
-      console.error('[Brave Settings Overrides] Could not find safeBrowsingEnhanced id on security page.')
+      console.error('[Brave Settings Overrides] Could not find ' +
+                    'safeBrowsingEnhanced id on security page.')
     } else {
       safeBrowsingEnhanced.setAttribute('hidden', 'true')
     }
-    const safeBrowsingStandard =
-      templateContent.getElementById('safeBrowsingStandard')
+    const safeBrowsingStandard = templateContent.
+      getElementById('safeBrowsingStandard')
     if (!safeBrowsingStandard) {
       console.error(
         '[Brave Settings Overrides] Could not find safeBrowsingStandard id ' +
         'on security page.')
     } else {
-      const passwordsLeakSettings = safeBrowsingStandard.
+      const passwordsLeakSettingsOld = safeBrowsingStandard.
         querySelector(
           'template[is=dom-if][if="[[!enablePasswordLeakToggleMove_]]"]')
-      if (!passwordsLeakSettings) {
+      if (!passwordsLeakSettingsOld) {
         console.error(
           '[Brave Settings Overrides] Could not find template with ' +
-          'if=[[!enablePasswordLeakToggleMove_]] on security page.')
+          'if=[[!enablePasswordLeakToggleMove_]] under Safe Browsing ' +
+          'on security page.')
       } else {
-        const passwordsLeakToggleOld = passwordsLeakSettings.content.
+        const passwordsLeakToggleOld = passwordsLeakSettingsOld.content.
           getElementById('passwordsLeakToggleOld')
         if (!passwordsLeakToggleOld) {
           console.error(
-            '[Brave Settings Overrides] Could not find passwordsLeakToggleOld ' +
-            'on security page.')
+            '[Brave Settings Overrides] Could not find ' +
+            'passwordsLeakToggleOld on security page.')
         } else {
           passwordsLeakToggleOld.setAttribute('hidden', 'true')
         }
         // We don't want to show the separator or arrow icon for this
         // collapsible radio button, as we've hidden what's under it
         safeBrowsingStandard.setAttribute('no-collapse', 'true')
+      }
+    }
+    // Loop over template children to find passwords leak template because
+    // querySelector would return a template inside the enhanced protection
+    // container instead of the one we want, which is a direct child of
+    // templateContent.
+    let passwordsLeakSettings = null
+    for (const child of templateContent.children) {
+      if (child.matches(
+          'template[is=dom-if][if="[[enablePasswordLeakToggleMove_]]"]')) {
+        passwordsLeakSettings = child
+        break;
+      }
+    }
+    if (!passwordsLeakSettings) {
+      console.error(
+        '[Brave Settings Overrides] Could not find template with ' +
+        'if=[[enablePasswordLeakToggleMove_]] on security page.')
+    } else {
+      const passwordsLeakToggle = passwordsLeakSettings.content.
+        getElementById('passwordsLeakToggle')
+      if (!passwordsLeakToggle) {
+        console.error(
+          '[Brave Settings Overrides] Could not find passwordsLeakToggle ' +
+          'on security page.')
+      } else {
+        passwordsLeakToggle.setAttribute('hidden', 'true')
       }
     }
     if (loadTimeData.getBoolean("isHttpsByDefaultEnabled")) {
@@ -76,16 +106,18 @@ RegisterPolymerTemplateModifications({
         const httpsOnlyModeToggle = enableHttpsFirstModeNewSettings.content.
           getElementById('httpsOnlyModeToggle')
         if (!httpsOnlyModeToggle) {
-          console.error('[Brave Settings Overrides] Could not find' +
-            'httpsOnlyModeToggle on security page.')
+          console.error('[Brave Settings Overrides] Could not find ' +
+                        'httpsOnlyModeToggle on security page.')
         } else {
           httpsOnlyModeToggle.setAttribute('hidden', 'true')
         }
       }
     }
-    const link = templateContent.getElementById('advanced-protection-program-link')
+    const link = templateContent.
+      getElementById('advanced-protection-program-link')
     if (!link) {
-      console.error('[Brave Settings Overrides] Could not find advanced-protection-program-link id on security page.')
+      console.error('[Brave Settings Overrides] Could not find ' +
+                    'advanced-protection-program-link id on security page.')
     } else {
       link.setAttribute('hidden', 'true')
     }

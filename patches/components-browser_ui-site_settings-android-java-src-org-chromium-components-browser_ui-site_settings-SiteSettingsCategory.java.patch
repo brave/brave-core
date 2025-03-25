@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index 9215e06fe9f1475607047127c17ee96f34caba68..219899ca0f3f0070fce7203348d77e89a38eb22b 100644
+index f2b819d7a75e2988bdc6cb11abfa2e0e301104e9..7107dd9331f8ee0e5a6e68865413381cf40d3bf1 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-@@ -75,6 +75,7 @@ public class SiteSettingsCategory {
+@@ -77,6 +77,7 @@ public class SiteSettingsCategory {
          Type.TRACKING_PROTECTION,
          Type.FILE_EDITING,
          Type.JAVASCRIPT_OPTIMIZER,
@@ -10,7 +10,7 @@ index 9215e06fe9f1475607047127c17ee96f34caba68..219899ca0f3f0070fce7203348d77e89
          Type.NUM_ENTRIES
      })
      @Retention(RetentionPolicy.SOURCE)
-@@ -115,9 +116,10 @@ public class SiteSettingsCategory {
+@@ -117,9 +118,10 @@ public class SiteSettingsCategory {
          int HAND_TRACKING = 31;
          int FILE_EDITING = 32;
          int JAVASCRIPT_OPTIMIZER = 33;

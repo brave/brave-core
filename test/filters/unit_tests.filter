@@ -5,6 +5,10 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests fails because we disable
+# content_settings::features::kTrackingProtection3pcd
+-All/CookieControlsUserBypassTrackingProtectionUiTest.ProtectionsOnForActFeaturesWhenCookiesAreEnforced/*
+
 # These tests won't work without TPM hardware
 -TPMMetricsProviderTest.GetMetricsFullName
 -TpmIdentifierTest.TpmTest
@@ -49,6 +53,7 @@
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResultExplicitSigninDisabled
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.UploadCardSaveWithCvcDialogContent
+-TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy/SearchEngineChoice*
 
 # These tests crash because pinned_toolbar_actions_container_ in
 # BraveToolbarView is set to nullptr
@@ -79,7 +84,18 @@
 
 # These tests crash because we have kOptimizationHints feature disabled, which
 # causes OptimizationGuideKeyedServiceFactory::GetForProfile return a nullptr.
+-AIManagerTest.*
+-AIRewriterTest.*
+-AISummarizerTest.*
+-AIWriterTest.*
+-All/AILanguageModelTest.*
+-All/AILanguageModelVisionTest.*
+-ChangeFormSubmissionVerifierTest.*
+-ChromeAutofillAiClientTest.GetModelExecutor
+-ChromeComposeClientTest.*
 -ComposeEnablingTest.*
+-ComposePopupAutofillDriverTest.*
+-NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
 -WallpaperSearchHandlerTest.*
 
 # These tests fail because we don't use upstream's material colors.
@@ -201,9 +217,12 @@
 
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
+-AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeResetWhenSignedOut
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeSignedIn
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeTransportMode
+-AccountsPolicyManagerTest.ClearProfileWhenSigninAndRevokeSyncNotAllowed
+-AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
 -AppMenuModelTest.ProfileSyncOnTest
 -BrowserSigninDetectorServiceTest.LateObservation
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfNotSignedInUser
@@ -221,6 +240,7 @@
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailableForSignedInUsers
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable_NoAccount
 -EnclaveManagerTest.PrimaryUserChange
+-ExtensionInstalledBubbleModelTransportModeTest.ShowSigninPromo_NonExtensionsExplicitSignin
 -ExtensionSyncServiceTransportModeTest.AccountExtensionTypeChangesWithSync
 -ExtensionSyncServiceTransportModeTest.OnlySyncAccountExtensions
 -ManagePasswordsUIControllerWithBrowserTestExplicitBrowserSignin.MovePasswordUponSigninWithExistingAccount
@@ -233,6 +253,7 @@
 -ShowPromoTest.ShowPromoWithNoAccount
 -ShowPromoTest.ShowPromoWithSignedInAccount
 -ShowSigninPromoTestExplicitBrowserSignin.RecordSignInPromoShownWithAccount
+-ShowSigninPromoTestExplicitBrowserSignin.RecordSignInPromoShownWithAccount_PromoShouldShowForDifferentType
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed/*
 -SignInPromoVersionTest.SignInPromoVersions
@@ -276,6 +297,7 @@
 -All/ClientSideDetectionServiceTest.TestSessionExecutionSuccessButNotComplete/3
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.AutoCanceledReport_Sent
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.CanceledReportAtShutdown_Persisted
+-ChromeEnterpriseRealTimeUrlLookupServiceTest.TestStartLookup_EnhancedProtectionRequestWithReferringAppInfo
 -ChromePingManagerFactoryTest.ShouldFetchAccessTokenForReport_Yes
 -ChromePingManagerFactoryTest.ShouldSendPersistedReport_Yes
 -ChromeTailoredSecurityServiceTest.EpAlreadyEnabledDoesNotShowDialog
@@ -393,6 +415,8 @@
 # These tests fail because we do not record permissions UKM, see
 # brave/chromium_src/components/permissions/permission_uma_util.cc
 # GetUkmSourceId override.
+-All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/1
+-All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/3
 -SiteSettingsHandlerTest.NotificationPermissionRevokeUkm
 
 # This test fails because we replace WebUI chrome:// scheme with brave://
@@ -476,6 +500,8 @@
 # password card state
 -All/PasswordStatusCheckServiceParameterizedCardTest.PasswordCardState/*
 -PasswordStatusCheckServiceBaseTest.PasswordCardCheckTime
+-SafetyHubCardDataHelperTest.GetOverallState_Multi
+-SafetyHubCardDataHelperTest.GetOverallState_Password
 -SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_HasRecommendationsAndHeader
 -SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_AllModules
 -SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_OneModule
@@ -512,6 +538,28 @@
 
 # These tests fail because our privacy policy URL doesn't match upstream's URL.
 -PrivacyPolicyURLTests/PrivacyPolicyURLTests.ValidatingURL/*
+
+# These tests fail because we disable contextual cueing service.
+-ContextualCueingHelperTest.*
+
+# These tests fail because we disable kTpcdMetadataGrants.
+-ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohort_PreserveSome
+-ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohorts
+
+# These tests fail because we disable
+# ntp_features::kCustomizeChromeWallpaperSearch.
+-WallpaperSearchBackgroundManagerTest.*
+
+# This test fails because we disable kStructuredMetrics.
+-ChromeStructuredMetricsRecorderTest.DeviceEventsRecorded
+
+# These tests fail because we disable kPermissionPredictionsV2.
+-PredictionBasedPermissionUiSelectorTest.OnlyPromptsForCurrentTypeAreCounted
+-PredictionBasedPermissionUiSelectorTest.RequestsWithFewPromptsAreSent
+
+# This test fails because we block installation of Probabilistic Reveal Token
+# component installation.
+-ProbabilisticRevealTokenComponentInstallerTest.ComponentRegistration
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -571,7 +619,6 @@
 -FullStreamUIPolicyTest.*
 -GCMProfileServiceTest.*
 -GetUserPopulationForProfileTest.PopulatesPopulation
--GlicStatusIconTest.ExecuteCommand
 -HostContentSettingsMapTest.IncognitoInheritSaaAndRenew
 -HostContentSettingsMapTest.IncognitoPartialInheritDefault
 -HostContentSettingsMapTest.IncognitoPartialInheritPref
@@ -620,6 +667,7 @@
 -TemplateURLServiceTest.RepairStarterPackEngines/SearchEngineChoiceDisabled
 -TemplateURLServiceTest.RepairStarterPackEngines/SearchEngineChoiceEnabled
 -TestChromeColorsService.RecordDynamicColorOnLoadHistogramForGrayscale
+-ThemeLocalDataBatchUploaderTest.*
 -ThemeServiceTest.IsGrayscale
 -ThemeSyncableServiceTest.*
 -ThemeSyncableServiceTestWithAccountThemesSeparation.LoadsLocalGrayscaleThemeFromPrefUponSyncStop

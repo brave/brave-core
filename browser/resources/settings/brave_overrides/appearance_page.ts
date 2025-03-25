@@ -6,11 +6,21 @@
 import '../brave_appearance_page/super_referral.js'
 import '../brave_appearance_page/brave_theme.js'
 
-import {html, RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
+import {
+  html,
+  RegisterPolymerComponentReplacement,
+  RegisterPolymerTemplateModifications
+} from 'chrome://resources/brave/polymer_overriding.js'
+
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
 import {loadTimeData} from '../i18n_setup.js'
 import {Router} from '../router.js'
+
+import {
+  SettingsAppearancePageElement
+} from '../appearance_page/appearance_page.js'
+
 
 const superReferralStringId = 'superReferralThemeName'
 
@@ -20,6 +30,26 @@ RegisterPolymerTemplateModifications({
     if (!theme) {
       console.error(`[Settings] Couldn't find #themeRow`)
     } else {
+      // Insert Brave colors dropdown before theme.
+      theme.setAttribute('class', 'settings-row hr')
+      theme.insertAdjacentHTML(
+        'beforebegin',
+        getTrustedHTML`
+          <settings-brave-appearance-theme prefs="{{prefs}}">
+          </settings-brave-appearance-theme>
+      `)
+      const openTheme = templateContent.getElementById('openTheme')
+      if (!openTheme) {
+        console.error(`[Settings] Couldn't find #openTheme`)
+      } else {
+        // Remove upstream's click handler. We add our own in
+        // BraveSettingsAppearancePageElement below.
+        openTheme.removeAttribute('on-click')
+        // Restore sub-label to say Open Web Store when no theme is set.
+        openTheme.setAttribute('sub-label',
+          '[[_adjustThemeSublabel(themeSublabel_)]]')
+      }
+      // Fix theme "Reset to default" button.
       const useDefaultButtonTemplate = templateContent.querySelector(
         'template[is=dom-if][if="[[prefs.extensions.theme.id.value]]"]')
       if (!useDefaultButtonTemplate) {
@@ -29,13 +59,13 @@ RegisterPolymerTemplateModifications({
       } else {
         useDefaultButtonTemplate.setAttribute('restamp', 'true')
       }
-      theme.setAttribute('class', 'settings-row hr')
-      theme.insertAdjacentHTML(
-        'beforebegin',
-        getTrustedHTML`
-          <settings-brave-appearance-theme prefs="{{prefs}}">
-          </settings-brave-appearance-theme>
-        `)
+    }
+
+    const customizeToolbar = templateContent.getElementById('customizeToolbar')
+    if (!customizeToolbar) {
+        console.error(`[Settings] Couldn't find #customizeToolbar`)
+    } else {
+        customizeToolbar.setAttribute('hidden', 'true')
     }
 
     // Super-referral
@@ -206,3 +236,38 @@ RegisterPolymerTemplateModifications({
     }
   }
 })
+
+RegisterPolymerComponentReplacement(
+  'settings-appearance-page',
+  class BraveSettingsAppearancePageElement
+    extends SettingsAppearancePageElement {
+    override ready() {
+      super.ready()
+      const openTheme = this.shadowRoot!.getElementById('openTheme')
+      if (!openTheme) {
+        console.error(`[Settings] Couldn't find #openTheme`)
+      } else {
+        // Restore theme link to point to web store instead of to the profile
+        // color picker.
+        openTheme.addEventListener('click',
+          () => {
+            window.open((this as any).themeUrl_ ||
+            loadTimeData.getString('appearanceSettingsThemesGalleryUrl'),
+            '_blank', 'noopener noreferrer');
+          }
+        )
+      }
+    }
+
+    // Restore theme sub-label to say "Open Web Store" when there's no custom
+    // theme set.
+    _adjustThemeSublabel(themeSublabel: string) {
+      // <if expr="not is_linux">
+      if (themeSublabel === '') {
+        return loadTimeData.getString('appearanceSettingsOpenWebStore')
+      }
+      // </if>
+      return themeSublabel
+    }
+  }
+)

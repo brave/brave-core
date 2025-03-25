@@ -83,6 +83,7 @@ import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.logo.CachedTintedBitmap;
 import org.chromium.chrome.browser.logo.LogoCoordinator;
+import org.chromium.chrome.browser.metrics.StartupMetricsTracker;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
@@ -387,38 +388,6 @@ public class BytecodeTest {
     public void testMethodsExist() throws Exception {
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
-                        "extensiveBookmarkChangesBeginning",
-                        MethodModifier.REGULAR,
-                        void.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
-                        "extensiveBookmarkChangesEnded",
-                        MethodModifier.REGULAR,
-                        void.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
-                        "createBookmarkItem",
-                        MethodModifier.STATIC,
-                        BookmarkItem.class,
-                        long.class,
-                        int.class,
-                        String.class,
-                        GURL.class,
-                        boolean.class,
-                        long.class,
-                        int.class,
-                        boolean.class,
-                        boolean.class,
-                        long.class,
-                        boolean.class,
-                        long.class,
-                        boolean.class));
-
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/LaunchIntentDispatcher",
                         "isCustomTabIntent",
                         MethodModifier.STATIC,
@@ -553,15 +522,6 @@ public class BytecodeTest {
                         Activity.class,
                         int.class,
                         Callback.class,
-                        boolean.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/bookmarks/BookmarkUtils",
-                        "showBookmarkManagerOnPhone",
-                        MethodModifier.STATIC,
-                        void.class,
-                        Activity.class,
-                        String.class,
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
@@ -1256,7 +1216,8 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         OneshotSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        StartupMetricsTracker.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
@@ -1491,7 +1452,8 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/SwipeRefreshHandler",
                         "org/chromium/chrome/browser/BraveSwipeRefreshHandler",
-                        Tab.class));
+                        Tab.class,
+                        SwipeRefreshHandler.SwipeRefreshLayoutCreator.class));
 
         Assert.assertTrue(
                 constructorsMatch(
@@ -1563,7 +1525,8 @@ public class BytecodeTest {
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
                         ManualFillingComponentSupplier.class,
-                        EdgeToEdgeManager.class));
+                        EdgeToEdgeManager.class,
+                        ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
@@ -1575,6 +1538,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbarCoordinator",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbarCoordinator",
                         Context.class,
+                        Profile.class,
                         SelectableListLayout.class,
                         SelectionDelegate.class,
                         SearchDelegate.class,
@@ -1593,12 +1557,12 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerCoordinator",
                         Context.class,
-                        ComponentName.class,
                         boolean.class,
                         SnackbarManager.class,
                         Profile.class,
                         BookmarkUiPrefs.class,
-                        Runnable.class));
+                        BookmarkOpener.class,
+                        ComponentName.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
@@ -1641,10 +1605,10 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkPage",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkPage",
-                        ComponentName.class,
                         SnackbarManager.class,
                         Profile.class,
-                        NativePageHost.class));
+                        NativePageHost.class,
+                        ComponentName.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl",
@@ -1756,7 +1720,8 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         ActivityTabProvider.class,
                         TopUiThemeColorProvider.class,
-                        EdgeToEdgeSystemBarColorHelper.class));
+                        EdgeToEdgeSystemBarColorHelper.class,
+                        OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment", // presubmit: ignore-long-line

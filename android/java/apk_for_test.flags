@@ -29,9 +29,6 @@
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkBridge {
     *** mNativeBookmarkBridge;
-    *** extensiveBookmarkChangesBeginning(...);
-    *** extensiveBookmarkChangesEnded(...);
-    *** createBookmarkItem(...);
     <init>(...);
 }
 
@@ -202,7 +199,6 @@
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
     *** addOrEditBookmark(...);
-    *** showBookmarkManagerOnPhone(...);
     *** isSpecialFolder(...);
 }
 
@@ -890,10 +886,6 @@
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.BraveIncognitoTabSwitcherPane {
     public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarController {
-    *** showUndoBar(...);
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedNavigationBarColorController {

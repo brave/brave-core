@@ -26,18 +26,62 @@
   <message name="IDS_COLLABORATION_ONE_GROUP_REMOVED_NOTIFICATION" desc="Format for the notification text appearing when one tab group is no longer shared with the user.">
     "<ph name="GROUP_TITLE">$1<ex>Travel</ex></ph>" tab group no longer available
   </message>
+  <message name="IDS_COLLABORATION_ONE_UNNAMED_GROUP_REMOVED_NOTIFICATION" desc="Notification text appearing when one unnamed tab group is no longer shared with the user.">
+    1 tab group no longer available
+  </message>
   <message name="IDS_COLLABORATION_TWO_GROUPS_REMOVED_NOTIFICATION" desc="Format for the notification text appearing when two tab groups are no longer shared with the user.">
-    "<ph name="GROUP_TITLE_1">$1<ex>Travel</ex></ph>" and "<ph name="GROUP_TITLE_2">$2<ex>Vacation</ex></ph>" "tab groups no longer available
+    "<ph name="GROUP_TITLE_1">$1<ex>Travel</ex></ph>" and "<ph name="GROUP_TITLE_2">$2<ex>Vacation</ex></ph>" tab groups no longer available
   </message>
   <message name="IDS_COLLABORATION_SEVERAL_GROUPS_REMOVED_NOTIFICATION" desc="Format for the notification text appearing when more than 2 tab groups are no longer shared with the user.">
     <ph name="GROUP_COUNT">$1<ex>5</ex></ph> tab groups no longer available
   </message>
+  <message name="IDS_COLLABORATION_LOADING_TEXT" desc="The text message that appears when tab group is loading." formatter_data="android_java">
+    Loading tab group
+  </message>
+  <!-- Error Messages -->
   <message name="IDS_COLLABORATION_SOMETHING_WENT_WRONG_HEADER" desc="The header of the error dialog something went wrong.">
     Something went wrong.
   </message>
   <message name="IDS_COLLABORATION_SOMETHING_WENT_WRONG_BODY" desc="The body of of the error dialog something went wrong.">
     There was an error. Try again.
   </message>
+  <message name="IDS_COLLABORATION_LINK_FAILED_HEADER" desc="The title for the link failed dialog.">
+    This link doesn’t work
+  </message>
+  <message name="IDS_COLLABORATION_LINK_FAILED_BODY" desc="The body for the link failed dialog.">
+    Contact the sender to ask for a new link
+  </message>
+  <message name="IDS_COLLABORATION_SIGNED_OUT_HEADER" desc="The title for the signed out dialog." formatter_data="android_java">
+    You're signed out
+  </message>
+  <message name="IDS_COLLABORATION_SIGNED_OUT_BODY" desc="The body for the signed out dialog." formatter_data="android_java">
+    To share, join, and collaborate in tab groups, open settings and turn on Allow Brave sign-in
+  </message>
+  <message name="IDS_COLLABORATION_SIGNED_OUT_POSITIVE_BUTTON" desc="The positive button text for the signed out dialog." formatter_data="android_java">
+    Settings
+  </message>
+  <message name="IDS_COLLABORATION_GROUP_IS_FULL_DESCRIPTION" desc="The description when group is full, and toggle button for link sharing is disabled." formatter_data="android_java">
+    Your tab group is full, new members can't join with the link
+  </message>
+  <message name="IDS_COLLABORATION_GROUP_IS_FULL_ERROR_DIALOG_HEADER" desc="The header of the error dialog when group is full." formatter_data="android_java">
+    This tab group is full
+  </message>
+  <message name="IDS_COLLABORATION_GROUP_IS_FULL_ERROR_DIALOG_BODY" desc="The body of the error dialog when group is full." formatter_data="android_java">
+    Contact the person who sent this link
+  </message>
+  <message name="IDS_COLLABORATION_ENTREPRISE_SIGNIN_DISABLED_HEADER" desc="The header of the error dialog when entreprise signin disabled.">
+    Your organization doesn't allow you to sign in
+  </message>
+  <message name="IDS_COLLABORATION_ENTREPRISE_SIGNIN_DISABLED_BODY" desc="The body of the error dialog when entreprise signin disabled.">
+    To share or join tab groups, you must be able to sign in to Brave
+  </message>
+  <message name="IDS_COLLABORATION_ENTREPRISE_SYNC_DISABLED_HEADER" desc="The header of the error dialog when entreprise sync disabled.">
+    Your organization limits what you can save
+  </message>
+  <message name="IDS_COLLABORATION_ENTREPRISE_SYNC_DISABLED_BODY" desc="The body of the error dialog when entreprise sync disabled.">
+    When your organization limits saving to your Brave sync chain, you can’t share or join tab groups
+  </message>
+  <!-- Error Messages -->
   <!-- /Collaboration -->
 
   <!-- Data Sharing -->
@@ -96,6 +140,12 @@
   </message>
   <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_EMPTY" desc="The text on the recent activity bottom sheet screen shown to indicate that there is no recent ativity to show and the list is empty." formatter_data="android_java">
     No recent activity
+  </message>
+  <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_JUST_NOW" desc="The timestamp text on a recent activity bottom sheet row when the activity is less than 1 minute ago.">
+    Just now
+  </message>
+  <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_UNKNOWN_USER" desc="The user name to show on the recent activity bottom sheet row if the user info cannot be found, e.g. deleted their account.">
+    Deleted account
   </message>
   <!-- Recent Activity -->
 

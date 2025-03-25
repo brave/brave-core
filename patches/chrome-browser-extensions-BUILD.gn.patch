@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index d629eae2162b78f22aaa53795efe0d6d54d3d40d..dd63b3ab6627d7ab6b449e783e81c562b35f9270 100644
+index 668e8d6f415a3e17efd4dc7bbf3667d0e2fd2786..f0e41257dee6a0ab776d289d66f6bbad2109a613 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1438,6 +1438,7 @@ source_set("extensions") {
+@@ -1476,6 +1476,7 @@ source_set("extensions") {
        allow_circular_includes_from += [ "//chrome/browser/glic:impl" ]
      }
    }  # if (enable_extensions)
 +  deps += brave_extensions_resources
  }
  
- if (enable_extensions) {
+ if (enable_extensions_core) {

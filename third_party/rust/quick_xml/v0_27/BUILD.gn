@@ -48,6 +48,7 @@ cargo_crate("lib") {
   cargo_pkg_version = "0.27.1"
   cargo_pkg_name = "quick-xml"
   cargo_pkg_description = "High performance xml reader and writer"
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
   library_configs -= [ "//build/config/compiler:chromium_code" ]
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]

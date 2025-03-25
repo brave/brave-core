@@ -1,8 +1,8 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index 001b079160362b11b083a5d7cd1c68f2dc03a3da..2c3c8f2614c57ab20f9e10793a317190cdbd2843 100644
+index bc75d8130b40d7c88044e39be2f50e66f8d89750..3c3f29cc74a5849630d17b91836fc0d1adca3cee 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -814,6 +814,7 @@ config("internal_config_base") {
+@@ -828,6 +828,7 @@ config("internal_config_base") {
      "include",
      "$target_gen_dir",
    ]
@@ -10,8 +10,8 @@ index 001b079160362b11b083a5d7cd1c68f2dc03a3da..2c3c8f2614c57ab20f9e10793a317190
  }
  
  config("internal_config") {
-@@ -3168,6 +3169,7 @@ v8_header_set("v8_headers") {
-     ":cppgc_headers",
+@@ -3184,6 +3185,7 @@ v8_header_set("v8_headers") {
+     ":v8_tracing",
      ":v8_version",
    ]
 +  import("//brave/v8/sources.gni") sources += brave_v8_headers_sources public_deps += brave_v8_headers_public_deps

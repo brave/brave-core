@@ -7,6 +7,9 @@ package org.chromium.chrome.browser.bookmarks;
 
 import android.content.ComponentName;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
@@ -17,11 +20,12 @@ public class BraveBookmarkPage extends BookmarkPage {
     private BookmarkManagerCoordinator mBookmarkManagerCoordinator;
 
     public BraveBookmarkPage(
-            ComponentName componentName,
-            SnackbarManager snackbarManager,
-            Profile profile,
-            NativePageHost host) {
-        super(componentName, snackbarManager, profile, host);
+            @NonNull SnackbarManager snackbarManager,
+            @NonNull Profile profile,
+            @NonNull NativePageHost host,
+            @Nullable ComponentName componentName) {
+        super(snackbarManager, profile, host, componentName);
+
         if (mBookmarkManagerCoordinator instanceof BraveBookmarkManagerCoordinator
                 && BraveActivity.getChromeTabbedActivity() != null) {
             ((BraveBookmarkManagerCoordinator) mBookmarkManagerCoordinator)
