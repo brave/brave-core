@@ -228,6 +228,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       if Preferences.Search.defaultEngineName.value == nil {
         AppState.shared.profile.searchEngines.searchEngineSetup()
         Preferences.Search.yahooJPPhaseOneCompleted.value = true
+      } else if !Preferences.Search.yahooJPPhaseTwoCompleted.value {
+        AppState.shared.profile.searchEngines.updateDSEToYahooJpIfNeeded()
+        Preferences.Search.yahooJPPhaseTwoCompleted.value = true
       }
     }
 
