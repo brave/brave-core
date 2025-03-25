@@ -96,6 +96,7 @@ provideStrings({
   braveLeoChatLeoExpandedSubtitle: 'Advanced and accurate chat',
   braveLeoChatClaudeInstantSubtitle: 'Strength in creative tasks',
   pageContentTooLongWarning: 'The page is too long for Leo. Some context could be missing from the conversation. Leo was able to read $1 of the page\'s contents.',
+  trimmedTokensWarning: 'Some context could be missing from the conversation. Leo was able to retain $1 of the conversation.',
   errorConversationEnd: 'This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.',
   searchInProgress: 'Improving your answer with Brave Search…',
   searchQueries: 'Improved answer searching for $1.',

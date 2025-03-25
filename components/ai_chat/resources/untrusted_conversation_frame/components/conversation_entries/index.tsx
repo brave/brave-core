@@ -71,7 +71,8 @@ function ConversationEntries() {
           const showLongPageContentInfo =
             id === 1 &&
             isAIAssistant &&
-            (conversationContext.contentUsedPercentage ?? 100) < 100
+            ((conversationContext.contentUsedPercentage ?? 100) < 100 ||
+             (conversationContext.trimmedTokens > 0 && conversationContext.totalTokens > 0))
           const showEditInput = editInputId === id
           const showEditIndicator = !showEditInput && !!turn.edits?.length
           const latestEdit = turn.edits?.at(-1)

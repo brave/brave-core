@@ -96,6 +96,9 @@ class AIChatService : public KeyedService,
   void OnClientConnectionChanged(ConversationHandler* handler) override;
   void OnConversationTitleChanged(const std::string& conversation_uuid,
                                   const std::string& title) override;
+  void OnConversationTokenInfoChanged(const std::string& conversation_uuid,
+                                      uint64_t total_tokens,
+                                      uint64_t trimmed_tokens) override;
   void OnAssociatedContentDestroyed(ConversationHandler* handler,
                                     int content_id) override;
 

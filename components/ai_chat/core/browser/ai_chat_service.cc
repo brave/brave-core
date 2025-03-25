@@ -158,8 +158,9 @@ ConversationHandler* AIChatService::CreateConversation() {
   std::string conversation_uuid = uuid.AsLowercaseString();
   // Create the conversation metadata
   {
-    mojom::ConversationPtr conversation = mojom::Conversation::New(
-        conversation_uuid, "", base::Time::Now(), false, std::nullopt, nullptr);
+    mojom::ConversationPtr conversation =
+        mojom::Conversation::New(conversation_uuid, "", base::Time::Now(),
+                                 false, std::nullopt, 0, 0, nullptr);
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =
@@ -466,13 +467,17 @@ void AIChatService::OnLoadConversationsLazyData(
              << " with details: " << "\n has content: "
              << conversation->has_content
              << "\n last updated: " << conversation->updated_time
-             << "\n title: " << conversation->title;
+             << "\n title: " << conversation->title
+             << "\n total tokens: " << conversation->total_tokens
+             << "\n trimmed tokens: " << conversation->trimmed_tokens;
     // It's ok to overwrite existing metadata - some operations may modify
     // the database data and we want to keep the in-memory data synchronised.
     auto existing_conversation_it = conversations_.find(uuid);
     if (existing_conversation_it != conversations_.end()) {
       auto& existing_conversation = existing_conversation_it->second;
       existing_conversation->title = conversation->title;
+      existing_conversation->total_tokens = conversation->total_tokens;
+      existing_conversation->trimmed_tokens = conversation->trimmed_tokens;
       existing_conversation->updated_time = conversation->updated_time;
       existing_conversation->has_content = conversation->has_content;
       existing_conversation->model_key = conversation->model_key;
@@ -843,6 +848,31 @@ void AIChatService::OnConversationTitleChanged(
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateConversationTitle))
         .WithArgs(conversation_uuid, new_title);
+  }
+}
+
+void AIChatService::OnConversationTokenInfoChanged(
+    const std::string& conversation_uuid,
+    uint64_t total_tokens,
+    uint64_t trimmed_tokens) {
+  auto conversation_it = conversations_.find(conversation_uuid);
+  if (conversation_it == conversations_.end()) {
+    DLOG(ERROR) << "Conversation not found for token info change";
+    return;
+  }
+
+  auto& conversation_metadata = conversation_it->second;
+  conversation_metadata->total_tokens = total_tokens;
+  conversation_metadata->trimmed_tokens = trimmed_tokens;
+
+  OnConversationListChanged();
+
+  // Persist the change
+  if (ai_chat_db_) {
+    ai_chat_db_
+        .AsyncCall(
+            base::IgnoreResult(&AIChatDatabase::UpdateConversationTokenInfo))
+        .WithArgs(conversation_uuid, total_tokens, trimmed_tokens);
   }
 }
 
