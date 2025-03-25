@@ -901,6 +901,13 @@ public class BytecodeTest {
                         boolean.class,
                         boolean.class,
                         int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
+                        "setWidgetEnabled",
+                        MethodModifier.STATIC,
+                        boolean.class,
+                        boolean.class));
     }
 
     @Test
@@ -1083,6 +1090,14 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
                         "useActiveTabColor",
                         MethodModifier.REGULAR,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
+                        "setWidgetEnabled",
+                        MethodModifier.STATIC,
+                        ui.NativeTheme.class,
+                        boolean.class,
                         boolean.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
