@@ -22,8 +22,7 @@ class TabDragController : public TabDragControllerChromium {
   // So, just hide Chromium's Init and make clients use this version
   Liveness Init(TabDragContext* source_context,
                 TabSlotView* source_view,
-                const std::vector<raw_ptr<TabSlotView, VectorExperimental>>&
-                    dragging_views,
+                const std::vector<TabSlotView*>& dragging_views,
                 const gfx::Point& mouse_offset,
                 int source_view_offset,
                 ui::ListSelectionModel initial_selection_model,
