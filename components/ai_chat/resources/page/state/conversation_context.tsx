@@ -12,6 +12,7 @@ import { isLeoModel } from '../model_utils'
 import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
 import { useAIChat } from './ai_chat_context'
 import getAPI from '../api'
+import { MAX_IMAGES } from '../../common/constants'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -510,11 +511,21 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.uiHandler?.uploadImage()
     .then(({uploadedImages}) => {
       if (uploadedImages) {
-        setPartialContext({
-          pendingMessageImages: context.pendingMessageImages
-            ? [...context.pendingMessageImages, ...uploadedImages]
-            : [...uploadedImages]
-        })
+        const totalUploadedImages = context.conversationHistory.reduce(
+          (total, turn) => total + (turn.uploadedImages?.length || 0),
+          0
+        )
+        const currentPendingImages = context.pendingMessageImages?.length || 0
+        const maxNewImages = MAX_IMAGES - totalUploadedImages - currentPendingImages
+        const newImages = uploadedImages.slice(0, Math.max(0, maxNewImages))
+
+        if (newImages.length > 0) {
+          setPartialContext({
+            pendingMessageImages: context.pendingMessageImages
+              ? [...context.pendingMessageImages, ...newImages]
+              : [...newImages]
+          })
+        }
       }
     })
   }
