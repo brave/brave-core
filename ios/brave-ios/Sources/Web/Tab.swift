@@ -986,41 +986,6 @@ extension Tab {
     case invalid
     case webViewNotRealized
   }
-  private func generateJSFunctionString(
-    functionName: String,
-    args: [Any?],
-    escapeArgs: Bool = true
-  ) -> (javascript: String, error: Error?) {
-    var sanitizedArgs = [String]()
-    for arg in args {
-      if let arg = arg {
-        do {
-          if let arg = arg as? String {
-            sanitizedArgs.append(escapeArgs ? "'\(arg.htmlEntityEncodedString)'" : "\(arg)")
-          } else {
-            let data = try JSONSerialization.data(withJSONObject: arg, options: [.fragmentsAllowed])
-
-            if let str = String(data: data, encoding: .utf8) {
-              sanitizedArgs.append(str)
-            } else {
-              throw JavaScriptError.invalid
-            }
-          }
-        } catch {
-          return ("", error)
-        }
-      } else {
-        sanitizedArgs.append("null")
-      }
-    }
-
-    if args.count != sanitizedArgs.count {
-      assertionFailure("Javascript parsing failed.")
-      return ("", JavaScriptError.invalid)
-    }
-
-    return ("\(functionName)(\(sanitizedArgs.joined(separator: ", ")))", nil)
-  }
 
   public func evaluateSafeJavaScript(
     functionName: String,
@@ -1035,31 +1000,19 @@ extension Tab {
       completion?(nil, JavaScriptError.webViewNotRealized)
       return
     }
-    var javascript = functionName
-
-    if asFunction {
-      let js = generateJSFunctionString(
-        functionName: functionName,
-        args: args,
-        escapeArgs: escapeArgs
-      )
-      if js.error != nil {
-        if let completionHandler = completion {
-          completionHandler(nil, js.error)
-        }
-        return
-      }
-      javascript = js.javascript
-    }
-
-    DispatchQueue.main.async {
-      webView.evaluateJavaScript(javascript, in: frame, in: contentWorld) { result in
-        switch result {
-        case .success(let value):
-          completion?(value, nil)
-        case .failure(let error):
-          completion?(nil, error)
-        }
+    Task { @MainActor in
+      do {
+        let result = try await webView.evaluateJavaScript(
+          functionName: functionName,
+          args: args,
+          frame: frame,
+          contentWorld: contentWorld,
+          escapeArgs: escapeArgs,
+          asFunction: asFunction
+        )
+        completion?(result, nil)
+      } catch {
+        completion?(nil, error)
       }
     }
   }
@@ -1072,17 +1025,21 @@ extension Tab {
     escapeArgs: Bool = true,
     asFunction: Bool = true
   ) async -> (Any?, Error?) {
-    await withCheckedContinuation { continuation in
-      evaluateSafeJavaScript(
+    guard let webView else {
+      return (nil, JavaScriptError.webViewNotRealized)
+    }
+    do {
+      let result = try await webView.evaluateJavaScript(
         functionName: functionName,
         args: args,
         frame: frame,
         contentWorld: contentWorld,
         escapeArgs: escapeArgs,
         asFunction: asFunction
-      ) { value, error in
-        continuation.resume(returning: (value, error))
-      }
+      )
+      return (result, nil)
+    } catch {
+      return (nil, error)
     }
   }
 
