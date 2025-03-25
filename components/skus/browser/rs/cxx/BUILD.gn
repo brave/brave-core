@@ -24,9 +24,9 @@ rust_static_library("rust_lib") {
     "//brave/components/skus/browser/rs/lib:rust_lib",
     "//brave/third_party/rust/async_trait/v0_1:lib",
     "//brave/third_party/rust/futures/v0_3:lib",
+    "//brave/third_party/rust/serde_json/v1:lib",
     "//brave/third_party/rust/tracing_log/v0_2:lib",
     "//third_party/rust/log/v0_4:lib",
-    "//third_party/rust/serde_json/v1:lib",
   ]
 }
 
