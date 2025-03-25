@@ -315,7 +315,7 @@ public class Tab: NSObject {
   }
   var initialConfiguration: WKWebViewConfiguration
 
-  init(
+  public init(
     configuration: WKWebViewConfiguration,
     id: UUID = UUID(),
     type: TabType = .regular
