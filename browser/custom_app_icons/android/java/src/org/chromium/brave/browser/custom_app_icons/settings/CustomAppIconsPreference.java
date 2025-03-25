@@ -15,6 +15,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
 import org.chromium.brave.browser.custom_app_icons.R;
 
 public class CustomAppIconsPreference extends Preference {
@@ -36,8 +37,11 @@ public class CustomAppIconsPreference extends Preference {
 
         ImageView icon24View = (ImageView) holder.findViewById(R.id.icon_24);
         if (icon24View != null) {
-            int iconDrawable = CustomAppIconsManager.getCurrentIcon(getContext()).getIcon();
-            icon24View.setImageResource(iconDrawable);
+            CustomAppIconsEnum currentIcon = CustomAppIconsManager.getCurrentIcon(getContext());
+            int iconResource = currentIcon.equals(CustomAppIconsEnum.ICON_DEFAULT) 
+                ? R.drawable.ic_launcher_round 
+                : currentIcon.getIcon();
+            icon24View.setImageResource(iconResource);
             icon24View.setVisibility(View.VISIBLE);
         }
 

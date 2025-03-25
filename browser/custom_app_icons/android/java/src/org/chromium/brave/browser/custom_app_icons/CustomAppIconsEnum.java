@@ -6,34 +6,37 @@ package org.chromium.brave.browser.custom_app_icons;
 
 public enum CustomAppIconsEnum {
     ICON_DEFAULT(
-            R.drawable.ic_launcher_3d,
+            R.mipmap.ic_launcher_3d_round,
             R.string.launcher_default_title,
             "com.google.android.apps.chrome.Main"),
-    ICON_3D(R.drawable.ic_launcher_3d, R.string.launcher_3d_title, ".Icon3dAlias"),
-    ICON_80S(R.drawable.ic_launcher_80s, R.string.launcher_80s_title, ".Icon80sAlias"),
-    ICON_AQUA(R.drawable.ic_launcher_aqua, R.string.launcher_aqua_title, ".IconAquaAlias"),
-    ICON_BAT(R.drawable.ic_launcher_bat, R.string.launcher_bat_title, ".IconBatAlias"),
-    ICON_HOLO(R.drawable.ic_launcher_holo, R.string.launcher_holo_title, ".IconHoloAlias"),
-    ICON_NEON(R.drawable.ic_launcher_neon, R.string.launcher_neon_title, ".IconNeonAlias"),
+    ICON_3D(R.mipmap.ic_launcher_3d_round, R.string.launcher_3d_title, ".Icon3dAlias"),
+    ICON_80S(R.mipmap.ic_launcher_80s_round, R.string.launcher_80s_title, ".Icon80sAlias"),
+    ICON_AQUA(R.mipmap.ic_launcher_aqua_round, R.string.launcher_aqua_title, ".IconAquaAlias"),
+    ICON_BAT(R.mipmap.ic_launcher_bat_round, R.string.launcher_bat_title, ".IconBatAlias"),
+    ICON_HOLO(R.mipmap.ic_launcher_holo_round, R.string.launcher_holo_title, ".IconHoloAlias"),
+    ICON_NEON(R.mipmap.ic_launcher_neon_round, R.string.launcher_neon_title, ".IconNeonAlias"),
     ICON_NETSCAPE(
-            R.drawable.ic_launcher_netscape,
+            R.mipmap.ic_launcher_netscape_round,
             R.string.launcher_netscape_title,
             ".IconNetscapeAlias"),
-    ICON_POPART(R.drawable.ic_launcher_popart, R.string.launcher_popart_title, ".IconPopartAlias"),
+    ICON_POPART(
+            R.mipmap.ic_launcher_popart_round, R.string.launcher_popart_title, ".IconPopartAlias"),
     ICON_POPARTDARK(
-            R.drawable.ic_launcher_popartdark,
+            R.mipmap.ic_launcher_popartdark_round,
             R.string.launcher_popartdark_title,
             ".IconPopartDarkAlias"),
     ICON_SUPERNOVA(
-            R.drawable.ic_launcher_supernova,
+            R.mipmap.ic_launcher_supernova_round,
             R.string.launcher_supernova_title,
             ".IconSupernovaAlias"),
     ICON_TERMINAL(
-            R.drawable.ic_launcher_terminal,
+            R.mipmap.ic_launcher_terminal_round,
             R.string.launcher_terminal_title,
             ".IconTerminalAlias"),
     ICON_WINDOWS(
-            R.drawable.ic_launcher_windows, R.string.launcher_windows_title, ".IconWindowsAlias");
+            R.mipmap.ic_launcher_windows_round,
+            R.string.launcher_windows_title,
+            ".IconWindowsAlias");
 
     private final int mIcon;
     private final int mDesc;
