@@ -23,6 +23,7 @@
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/components/brave_user_agent/browser/brave_user_agent_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
@@ -537,8 +538,7 @@ static bool CustomLogHandler(int severity,
 - (BraveUserAgentService*)braveUserAgentService {
   if (!_braveUserAgentService) {
     brave_user_agent::BraveUserAgentService* service =
-        static_cast<BraveApplicationContextImpl*>(GetApplicationContext())
-            ->brave_user_agent_service();
+        brave_user_agent::BraveUserAgentService::GetInstance();
     if (!service) {
       return nil;
     }

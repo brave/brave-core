@@ -13,6 +13,8 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_user_agent/browser/brave_user_agent_service.h"
+#include "brave/components/brave_user_agent/common/features.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
@@ -26,11 +28,7 @@ namespace {
 class BraveUserAgentComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  explicit BraveUserAgentComponentInstallerPolicy(
-      const std::string& component_public_key,
-      const std::string& component_id,
-      const std::string& component_name,
-      OnComponentReadyCallback callback);
+  BraveUserAgentComponentInstallerPolicy();
   ~BraveUserAgentComponentInstallerPolicy() override;
 
   BraveUserAgentComponentInstallerPolicy(
@@ -59,21 +57,16 @@ class BraveUserAgentComponentInstallerPolicy
  private:
   const std::string component_id_;
   const std::string component_name_;
-  OnComponentReadyCallback ready_callback_;
   std::array<uint8_t, crypto::kSHA256Length> component_hash_;
 };
 
-BraveUserAgentComponentInstallerPolicy::BraveUserAgentComponentInstallerPolicy(
-    const std::string& component_public_key,
-    const std::string& component_id,
-    const std::string& component_name,
-    OnComponentReadyCallback callback)
-    : component_id_(component_id),
-      component_name_(component_name),
-      ready_callback_(callback) {
+BraveUserAgentComponentInstallerPolicy::BraveUserAgentComponentInstallerPolicy()
+    : component_id_(kBraveUserAgentServiceComponentId),
+      component_name_(kBraveUserAgentServiceComponentName) {
   // Generate hash from public key.
   std::string decoded_public_key;
-  base::Base64Decode(component_public_key, &decoded_public_key);
+  base::Base64Decode(kBraveUserAgentServiceComponentBase64PublicKey,
+                     &decoded_public_key);
   crypto::SHA256HashString(decoded_public_key, component_hash_.data(),
                            component_hash_.size());
 }
@@ -103,7 +96,7 @@ void BraveUserAgentComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     base::Value::Dict manifest) {
-  ready_callback_.Run(path);
+  BraveUserAgentService::GetInstance()->OnComponentReady(path);
 }
 
 bool BraveUserAgentComponentInstallerPolicy::VerifyInstallation(
@@ -135,28 +128,25 @@ bool BraveUserAgentComponentInstallerPolicy::IsBraveComponent() const {
   return true;
 }
 
-void OnRegistered(const std::string& component_id) {
-  brave_component_updater::BraveOnDemandUpdater::GetInstance()->EnsureInstalled(
-      kBraveUserAgentServiceComponentId);
-}
-
 }  // namespace
 
 void RegisterBraveUserAgentComponent(
-    component_updater::ComponentUpdateService* cus,
-    OnComponentReadyCallback callback) {
+    component_updater::ComponentUpdateService* cus) {
   // In test, |cus| could be nullptr.
-  if (!cus) {
+  if (!base::FeatureList::IsEnabled(
+          brave_user_agent::features::kUseBraveUserAgent) ||
+      !cus) {
     return;
   }
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<BraveUserAgentComponentInstallerPolicy>(
-          kBraveUserAgentServiceComponentBase64PublicKey,
-          kBraveUserAgentServiceComponentId,
-          kBraveUserAgentServiceComponentName, callback));
+      std::make_unique<BraveUserAgentComponentInstallerPolicy>());
   installer->Register(
-      cus, base::BindOnce(&OnRegistered, kBraveUserAgentServiceComponentId));
+      // After Register, run the callback with component id.
+      cus, base::BindOnce([]() {
+        brave_component_updater::BraveOnDemandUpdater::GetInstance()
+            ->EnsureInstalled(kBraveUserAgentServiceComponentId);
+      }));
 }
 
 }  // namespace brave_user_agent
