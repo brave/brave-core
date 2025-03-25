@@ -112,11 +112,32 @@ tools/cr/brockit.py update-version-issue
 ````
 
 ### Infra mode
-
 When running on infra, the `--infra-mode` flag should be provided. This will
 suppress all status updates, and rather provide a keep-alive type of feedback
 to make sure that the CI doesn't time out.
 
+### `brockit.py rebase`
+This command is provide for two purposes: to generally rebase the current
+branch before doing a small lift, and to provide a standard way to recommit
+all changes in the branch, which is useful when it is necessary to separate the
+committing stage from the signing stage.
+
+A simple rebase should look like this:
+```sh
+script/version_up.py rebase --from-ref=origin/master
+```
+
+To recommit everything while rebase you can do:
+```sh
+script/version_up.py rebase --from-ref=origin/master --recommit
+```
+
+For convenience, `--discard-regen-change` is provided to discard the types of
+changes that are supposed to be regenerated during the next lift (e.g.
+"Update patches").
+
+This command uses `--interactive` under the hood, so it may require extra steps
+from the user to complete.
 """
 
 import argparse
@@ -127,6 +148,7 @@ from functools import total_ordering
 import itertools
 import json
 import logging
+import os
 from pathlib import Path, PurePath
 import pickle
 import platform
@@ -140,6 +162,7 @@ from rich.markdown import Markdown
 from rich.padding import Padding
 import subprocess
 import sys
+import tempfile
 import time
 from typing import Optional, List, Dict, NamedTuple
 
@@ -273,7 +296,7 @@ class Terminal:
         self.status = status
         self.starting_status_message = status.status
 
-    def run(self, cmd):
+    def run(self, cmd, env: Optional[Dict[str, str]] = None):
         """Runs a command on the terminal.
         """
         # Convert all arguments to strings, to avoid issues with `PurePath`
@@ -309,6 +332,7 @@ class Terminal:
                                     capture_output=True,
                                     text=True,
                                     check=True,
+                                    env=env,
                                     shell=platform.system() == 'Windows')
         except subprocess.CalledProcessError as e:
             logging.debug('❯ %s', e.stderr.strip())
@@ -463,7 +487,6 @@ def _get_apply_patches_list():
         return json.loads(match.group(0))
 
     return None
-
 
 class GitStatus:
     """Runs `git status` and provides a summary.
@@ -627,6 +650,11 @@ class Repository:
         contents of all files are appended to the same string.
         """
         return self.run_git('show', *[f'{commit}:{file}' for file in files])
+
+    def current_branch(self) -> str:
+        """Gets the current branch name, or HEAD if not in any branch.
+        """
+        return self.run_git('rev-parse', '--abbrev-ref', 'HEAD')
 
 @dataclass(frozen=True)
 class Patchfile:
@@ -2130,6 +2158,130 @@ class Upgrade(Versioned):
         return result
 
 
+class Rebase(Task):
+    """Regenerates patches and strings for the current branch.
+
+    This task is used for cases where the user wants to regenerate patches and
+    strings. The purpose is to produce `Update patches` and `Updated strings`
+    where approrpriate.
+    """
+
+    def __init__(self, from_ref):
+        # The raw ref value provided to --from-ref.
+        self.from_ref = from_ref
+
+    def status_message(self):
+        return "Rebasing current branch..."
+
+    def check_for_merge_conflicts(self, from_ref, to_ref) -> List[str]:
+        """Checks for merge conflicts between two refs.
+
+    This method is used to check if a rebase will produce any conflicts, as
+    such cases are better handled manually.
+
+    Returns:
+        A list of files that would cause conflicts during the rebase.
+        """
+        conflicts = []
+        try:
+            terminal.run(
+                ["git", "merge-tree", "--write-tree", from_ref, to_ref], )
+        except subprocess.CalledProcessError as e:
+            for line in e.stdout.splitlines():
+                if "CONFLICT" in line:
+                    parts = line.split()
+                    if parts and parts[
+                            -1]:  # File paths usually come at the end
+                        conflicts.append(parts[-1])
+
+        return conflicts
+
+    # The argument list differs here because that's the way we get args through
+    # Task into the derived methods. Maybe something better can be done here.
+    # pylint: disable=arguments-differ
+    def execute(self, recommit, discard_regen_changes) -> bool:
+        """Rebases the current branch onto the provided ref.
+
+    This function rebases the current branch onto the provided branch. It is
+    the same as calling `git rebase --i --autosquash`.
+
+    Args:
+        recommit:
+            Indicates that the first commit should be recommitted to force all
+            the other commits to be recommitted as well.
+        discard_regen_changes:
+            Indicates that the changes that are automatically regenerated
+            should be discarded.
+
+    Returns:
+        True if the rebase was successful, and False otherwise.
+        """
+        current_branch = Repository.brave().current_branch()
+        forking_from = Repository.brave().run_git('merge-base', '--fork-point',
+                                                  self.from_ref,
+                                                  current_branch)
+
+        conflicts = self.check_for_merge_conflicts(self.from_ref,
+                                                   current_branch)
+        if len(conflicts) > 0:
+            terminal.log_task('Some files would cause conflict during rebase:')
+            for file in conflicts:
+                console.print(Padding(f'* {file}', (0, 15)))
+                console.log(
+                    '👋 (Run manually: [dim]git rebase -i --autosquash --onto '
+                    f'{self.from_ref} {forking_from} {current_branch}[/])')
+            return False
+
+        changes = Repository.brave().run_git(
+            'log', '--pretty=format:%h %s',
+            f'{forking_from}..{current_branch}').splitlines()[::-1]
+        if len(changes) == 0:
+            logging.error(
+                'No changes to rebase based on the arguments provided.')
+            return False
+
+        if discard_regen_changes:
+            changes = [
+                change for change in changes
+                if not change[12:].startswith('Update patches from Chromium ')
+                and not change[12:].startswith('Updated strings for Chromium ')
+            ]
+
+        rebase_plan = '\n'.join(f'pick {commit}' for commit in changes)
+        if recommit:
+            # Forcing a recommit of the first change so all the other changes
+            # get recommitted as well.
+            rebase_plan = rebase_plan.replace('pick', 'edit', 1)
+
+        with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmpfile:
+            tmpfile.write(rebase_plan)
+            tmpfile.flush()
+
+            # The trick here is to get git to treat `cp` as the editor, and
+            # copy our merge plan into .git/rebase-merge/git-rebase-todo.
+            env = os.environ.copy()
+            copy_util = 'copy' if platform.system() == 'Windows' else 'cp'
+            env["GIT_SEQUENCE_EDITOR"] = f'{copy_util} {tmpfile.name}'
+            try:
+                terminal.run([
+                    'git', 'rebase', '--interactive', '--autosquash',
+                    '--empty=drop', '--onto', self.from_ref, forking_from,
+                    Repository.brave().current_branch()
+                ],
+                             env=env)
+                if recommit:
+                    Repository.brave().run_git('commit', '--amend',
+                                               '--no-edit')
+                    Repository.brave().run_git('rebase', '--continue')
+            except subprocess.CalledProcessError as e:
+                logging.error('Rebase failed. %s', e.stderr)
+                return False
+            finally:
+                os.unlink(tmpfile.name)
+
+        return True
+
+
 def _find_from_ref_version(from_ref) -> Version:
     """ Finds the version from a reference.
 
@@ -2278,6 +2430,22 @@ def main():
         parents=[global_parser, base_version_parser],
         help='Regenerates all patches and strings for the current branch.')
 
+    rebase_parser = subparsers.add_parser(
+        'rebase',
+        parents=[global_parser, base_version_parser],
+        help='Rebases the current branch.')
+    rebase_parser.add_argument(
+        '--recommit',
+        action='store_true',
+        help=
+        'Even if there is nothing to rebase, do a rebase to recommit changes.')
+    rebase_parser.add_argument(
+        '--discard-regen-changes',
+        action='store_true',
+        help=
+        'Discard patches like "Update patches" and "Updated strings" that can '
+        'be regenerated.')
+
     subparsers.add_parser(
         'update-version-issue',
         parents=[global_parser, base_version_parser],
@@ -2324,6 +2492,13 @@ def main():
                     'Switch --from-ref not supported with --continue.')
 
     def resolve_from_ref_flag():
+        if args.command == 'rebase':
+            # With the rebase command we do not resolve the argument into a
+            # version number, but rather into the branch name.
+            if args.from_ref is None or args.from_ref == '@upstream':
+                return _get_current_branch_upstream_name()
+            return args.from_ref
+
         return _find_from_ref_version(
             args.from_ref if args.from_ref is not None else '@upstream')
 
@@ -2360,6 +2535,9 @@ def main():
 
         return upgrade.run(args.no_conflict, args.vscode, args.with_github,
                            args.ack_advisory)
+    if args.command == 'rebase':
+        return Rebase(resolve_from_ref_flag()).run(args.recommit,
+                                                   args.discard_regen_changes)
     if args.command == 'regen':
         return Regen(resolve_from_ref_flag()).run()
     if args.command == 'update-version-issue':
