@@ -1,0 +1,11 @@
+diff --git a/third_party/rust/regex_automata/v0_4/BUILD.gn b/third_party/rust/regex_automata/v0_4/BUILD.gn
+index 1f5143b0afc2f2e480d0c7b7b773d7fc295b338c..82e90a0c2b203d31bf6ccbb4a8b50f196c89933d 100644
+--- a/third_party/rust/regex_automata/v0_4/BUILD.gn
++++ b/third_party/rust/regex_automata/v0_4/BUILD.gn
+@@ -111,4 +111,6 @@ cargo_crate("lib") {
+   # //third_party/rust/chromium_crates_io/Cargo.toml to use
+   # it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
++  features += [ "alloc", "meta", "nfa-pikevm", "nfa-thompson", "syntax" ]
++  deps = [ "//brave/third_party/rust/regex_syntax/v0_8:lib" ]
+ }
