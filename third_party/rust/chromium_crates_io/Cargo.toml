@@ -113,10 +113,6 @@ package = "base64"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-2.9.0"
 package = "bitflags"
 
-[patch.crates-io.byteorder_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/byteorder-1.5.0"
-package = "byteorder"
-
 [patch.crates-io.cfg-if_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/cfg-if-1.0.0"
 package = "cfg-if"
