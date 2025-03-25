@@ -5,7 +5,7 @@
 
 #include "ui/native_theme/native_theme_android.h"
 
-#define GetInstanceForNativeUi GetInstanceForNativeUi_ChromiumImpl
+#define GetInstanceForNativeUi GetInstanceForNativeUi_UnUsed
 #include "src/ui/native_theme/native_theme_android.cc"
 #undef GetInstanceForNativeUi
 

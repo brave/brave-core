@@ -8,7 +8,7 @@
 
 #define GetInstanceForNativeUi \
   GetInstanceForNativeUi();    \
-  static ui::NativeTheme* GetInstanceForNativeUi_ChromiumImpl
+  static ui::NativeTheme* GetInstanceForNativeUi_UnUsed
 
 #include "src/ui/native_theme/native_theme_android.h"  // IWYU pragma: export
 #undef GetInstanceForNativeUi
