@@ -23,3 +23,16 @@ static_library("browser") {
     "//url",
   ]
 }
+
+if (!is_ios) {
+  source_set("unit_tests") {
+    testonly = true
+    sources = [ "brave_user_agent_service_unittest.cc" ]
+
+    deps = [
+      "//brave/components/brave_user_agent/browser:browser",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
+}

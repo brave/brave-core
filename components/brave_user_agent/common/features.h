@@ -6,11 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_USER_AGENT_COMMON_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_USER_AGENT_COMMON_FEATURES_H_
 
+#include "base/component_export.h"
 #include "base/feature_list.h"
 
 namespace brave_user_agent {
 namespace features {
 
+COMPONENT_EXPORT(BRAVE_USER_AGENT_COMMON)
 BASE_DECLARE_FEATURE(kUseBraveUserAgent);
 
 bool IsUseBraveUserAgentEnabled();

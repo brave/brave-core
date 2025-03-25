@@ -33,6 +33,8 @@ class BraveUserAgentService {
   void SetIsReadyForTesting() { is_ready_ = true; }
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveUserAgentServiceUnitTest,
+                           TestCanShowBraveDomainsLoaded);
   BraveUserAgentService();
   void OnExceptionalDomainsLoaded(const std::string& contents);
 
@@ -43,6 +45,7 @@ class BraveUserAgentService {
   base::WeakPtrFactory<BraveUserAgentService> weak_factory_{this};
 
   friend struct base::DefaultSingletonTraits<BraveUserAgentService>;
+  friend class BraveUserAgentServiceUnitTest;
 };
 
 }  // namespace brave_user_agent
