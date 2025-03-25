@@ -109,8 +109,10 @@ void BraveTabMenuModel::Build(Browser* browser,
 
   AddItemWithStringId(CommandRestoreTab, GetRestoreTabCommandStringId());
   AddItemWithStringId(CommandBookmarkAllTabs, IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
-  AddItemWithStringId(CommandBringAllTabsToThisWindow,
-                      IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW);
+  if (base::FeatureList::IsEnabled(features::kBraveDisableMoveToWindow)) {
+      AddItemWithStringId(CommandBringAllTabsToThisWindow,
+                          IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW);
+  }
 
   AddSeparator(ui::NORMAL_SEPARATOR);
   AddCheckItemWithStringId(CommandShowVerticalTabs,
