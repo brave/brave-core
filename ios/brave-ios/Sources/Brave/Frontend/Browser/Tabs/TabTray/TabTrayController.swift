@@ -29,8 +29,8 @@ protocol TabTrayDelegate: AnyObject {
 
 class TabTrayController: AuthenticationController {
 
-  typealias DataSource = UICollectionViewDiffableDataSource<TabTraySection, Web.Tab>
-  typealias Snapshot = NSDiffableDataSourceSnapshot<TabTraySection, Web.Tab>
+  typealias DataSource = UICollectionViewDiffableDataSource<TabTraySection, TabState>
+  typealias Snapshot = NSDiffableDataSourceSnapshot<TabTraySection, TabState>
 
   // MARK: Internal
 
@@ -625,7 +625,7 @@ class TabTrayController: AuthenticationController {
   private func cellProvider(
     collectionView: UICollectionView,
     indexPath: IndexPath,
-    tab: Web.Tab
+    tab: TabState
   ) -> UICollectionViewCell? {
     guard
       let cell =
@@ -892,7 +892,7 @@ class TabTrayController: AuthenticationController {
       privateMode && !BraveCore.FeatureList.kBraveShredFeature.enabled
   }
 
-  func remove(tab: Web.Tab) {
+  func remove(tab: TabState) {
     // Initially add the tab to recently closed and remove it from Tab Data after
     tabManager.addTabToRecentlyClosed(tab)
     tabManager.removeTab(tab)
@@ -960,7 +960,7 @@ class TabTrayController: AuthenticationController {
     present(settingsNavigationController, animated: true)
   }
 
-  private func scrollToSelectedTab(_ tab: Web.Tab?) {
+  private func scrollToSelectedTab(_ tab: TabState?) {
     if let selectedTab = tab,
       let selectedIndexPath = dataSource.indexPath(for: selectedTab)
     {
@@ -996,7 +996,7 @@ extension TabTrayController: PresentingModalViewControllerDelegate {
 // MARK: TabManagerDelegate
 
 extension TabTrayController: TabManagerDelegate {
-  func tabManager(_ tabManager: TabManager, didAddTab tab: Web.Tab) {
+  func tabManager(_ tabManager: TabManager, didAddTab tab: TabState) {
     updateShredButtonVisibility()
     applySnapshot()
 
@@ -1010,7 +1010,7 @@ extension TabTrayController: TabManagerDelegate {
     }
   }
 
-  func tabManager(_ tabManager: TabManager, didRemoveTab tab: Web.Tab) {
+  func tabManager(_ tabManager: TabManager, didRemoveTab tab: TabState) {
     // When user removes their last tab, a new one is created.
     // Until then, the view is dismissed and takes the user directly to that tab.
     if tabManager.tabsForCurrentMode.count < 1 {
@@ -1024,11 +1024,11 @@ extension TabTrayController: TabManagerDelegate {
 
   func tabManager(
     _ tabManager: TabManager,
-    didSelectedTabChange selected: Web.Tab?,
-    previous: Web.Tab?
+    didSelectedTabChange selected: TabState?,
+    previous: TabState?
   ) {}
-  func tabManager(_ tabManager: TabManager, willAddTab tab: Web.Tab) {}
-  func tabManager(_ tabManager: TabManager, willRemoveTab tab: Web.Tab) {}
+  func tabManager(_ tabManager: TabManager, willAddTab tab: TabState) {}
+  func tabManager(_ tabManager: TabManager, willRemoveTab tab: TabState) {}
   func tabManagerDidAddTabs(_ tabManager: TabManager) {}
   func tabManagerDidRestoreTabs(_ tabManager: TabManager) {}
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {}

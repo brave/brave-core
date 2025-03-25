@@ -62,7 +62,7 @@ class BraveSearchScriptHandler: TabContentScript {
   }
 
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {
@@ -100,7 +100,10 @@ class BraveSearchScriptHandler: TabContentScript {
     }
   }
 
-  private func handleCanSetBraveSearchAsDefault(tab: Tab, replyHandler: (Any?, String?) -> Void) {
+  private func handleCanSetBraveSearchAsDefault(
+    tab: TabState,
+    replyHandler: (Any?, String?) -> Void
+  ) {
     if tab.isPrivate == true {
       Logger.module.debug("Private mode detected, skipping setting Brave Search as a default")
       replyHandler(false, nil)

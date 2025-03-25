@@ -20,11 +20,11 @@ enum PlaylistItemAddedState {
 }
 
 protocol PlaylistScriptHandlerDelegate: NSObject {
-  func updatePlaylistURLBar(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?)
-  func showPlaylistPopover(tab: Tab?)
-  func showPlaylistToast(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?)
-  func showPlaylistAlert(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?)
-  func showPlaylistOnboarding(tab: Tab?)
+  func updatePlaylistURLBar(tab: TabState?, state: PlaylistItemAddedState, item: PlaylistInfo?)
+  func showPlaylistPopover(tab: TabState?)
+  func showPlaylistToast(tab: TabState?, state: PlaylistItemAddedState, item: PlaylistInfo?)
+  func showPlaylistAlert(tab: TabState?, state: PlaylistItemAddedState, item: PlaylistInfo?)
+  func showPlaylistOnboarding(tab: TabState?)
 }
 
 class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
@@ -33,7 +33,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
   private var asset: AVURLAsset?
   private static let queue = DispatchQueue(label: "com.playlisthelper.queue", qos: .userInitiated)
 
-  init(tab: Tab) {
+  init(tab: TabState) {
     self.url = tab.url
     super.init()
 
@@ -79,7 +79,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
   }()
 
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -107,7 +107,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
   }
 
   private class func processPlaylistInfo(
-    tab: Tab,
+    tab: TabState,
     handler: PlaylistScriptHandler,
     item: PlaylistInfo?
   ) {
@@ -190,7 +190,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
     return await PlaylistMediaStreamer.loadAssetPlayability(asset: asset)
   }
 
-  private func updateItem(_ item: PlaylistInfo, detected: Bool, tab: Tab) {
+  private func updateItem(_ item: PlaylistInfo, detected: Bool, tab: TabState) {
     if detected {
       self.delegate?.updatePlaylistURLBar(tab: tab, state: .existingItem, item: item)
     }
@@ -212,7 +212,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
 
   // MARK: - TabObserver
 
-  func tabDidUpdateURL(_ tab: Tab) {
+  func tabDidUpdateURL(_ tab: TabState) {
     url = tab.url
     asset?.cancelLoading()
     asset = nil
@@ -220,14 +220,14 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
     delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
   }
 
-  func tabWillBeDestroyed(_ tab: Tab) {
+  func tabWillBeDestroyed(_ tab: TabState) {
     tab.removeObserver(self)
   }
 }
 
 extension PlaylistScriptHandler {
   static func getCurrentTime(
-    tab: Tab,
+    tab: TabState,
     nodeTag: String,
     completion: @escaping (Double) -> Void
   ) {
@@ -259,7 +259,7 @@ extension PlaylistScriptHandler {
     }
   }
 
-  static func stopPlayback(tab: Tab?) {
+  static func stopPlayback(tab: TabState?) {
     guard let tab = tab else { return }
 
     tab.evaluateSafeJavaScript(
@@ -278,7 +278,7 @@ extension PlaylistScriptHandler {
 }
 
 extension PlaylistScriptHandler {
-  static func updatePlaylistTab(tab: Tab, item: PlaylistInfo?) {
+  static func updatePlaylistTab(tab: TabState, item: PlaylistInfo?) {
     if let handler = tab.browserData?.getContentScript(name: Self.scriptName)
       as? PlaylistScriptHandler
     {

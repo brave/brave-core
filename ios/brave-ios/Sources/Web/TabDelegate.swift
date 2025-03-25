@@ -12,40 +12,40 @@ import WebKit
 /// `WKWebView` specific things should not be accessed from these methods, if you need to access
 /// the underlying web view, you should only access it via `Tab`
 public protocol TabDelegate: AnyObject {
-  func tabWebViewDidClose(_ tab: Tab)
+  func tabWebViewDidClose(_ tab: TabState)
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
   ) async -> UIContextMenuConfiguration?
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
   ) async -> WebPermissionDecision
-  func tab(_ tab: Tab, runJavaScriptAlertPanelWithMessage message: String, pageURL: URL) async
+  func tab(_ tab: TabState, runJavaScriptAlertPanelWithMessage message: String, pageURL: URL) async
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
     pageURL: URL
   ) async -> Bool
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
     defaultText: String?,
     pageURL: URL
   ) async -> String?
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
     proposedCredential credential: URLCredential?,
     previousFailureCount: Int
   ) async -> URLCredential?
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     createNewTabWithRequest request: URLRequest
-  ) -> Tab?
-  func tab(_ tab: Tab, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
-  func tab(_ tab: Tab, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
-  func tab(_ tab: Tab, buildEditMenuWithBuilder builder: any UIMenuBuilder)
+  ) -> TabState?
+  func tab(_ tab: TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
+  func tab(_ tab: TabState, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
+  func tab(_ tab: TabState, buildEditMenuWithBuilder builder: any UIMenuBuilder)
 }
 
 /// Media device capture types that a web page may request
@@ -64,36 +64,36 @@ public enum WebPermissionDecision {
 
 extension TabDelegate {
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     createNewTabWithRequest request: URLRequest
-  ) -> Tab? {
+  ) -> TabState? {
     return nil
   }
 
-  public func tabWebViewDidClose(_ tab: Tab) {}
+  public func tabWebViewDidClose(_ tab: TabState) {}
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
   ) async -> UIContextMenuConfiguration? {
     return nil
   }
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
   ) async -> WebPermissionDecision {
     return .prompt
   }
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     runJavaScriptAlertPanelWithMessage message: String,
     pageURL: URL
   ) async {}
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
     pageURL: URL
   ) async -> Bool {
@@ -101,7 +101,7 @@ extension TabDelegate {
   }
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
     defaultText: String?,
     pageURL: URL
@@ -110,7 +110,7 @@ extension TabDelegate {
   }
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
     proposedCredential credential: URLCredential?,
     previousFailureCount: Int
@@ -118,11 +118,12 @@ extension TabDelegate {
     return nil
   }
 
-  public func tab(_ tab: Tab, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool {
+  public func tab(_ tab: TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool {
     return false
   }
 
-  public func tab(_ tab: Tab, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool {
+  public func tab(_ tab: TabState, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
+  {
     return false
   }
 }

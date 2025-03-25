@@ -65,13 +65,13 @@ public enum TabType: Int, CustomDebugStringConvertible {
   ///
   /// - parameter tab: An object representing a Tab.
   /// - returns: A Tab type.
-  public static func of(_ tab: Tab?) -> TabType {
+  public static func of(_ tab: TabState?) -> TabType {
     return tab?.type ?? .regular
   }
 }
 
 @dynamicMemberLookup
-public class Tab: NSObject {
+public class TabState: NSObject {
   public let id: UUID
 
   public var data: TabDataValues {
@@ -304,7 +304,7 @@ public class Tab: NSObject {
   private var userAgentOverrides: [String: Bool] = [:]
 
   // If this tab has been opened from another, its parent will point to the tab from which it was opened
-  public weak var parent: Tab?
+  public weak var parent: TabState?
 
   public var configuration: WKWebViewConfiguration {
     if let webView {
@@ -773,7 +773,7 @@ public class Tab: NSObject {
     reload()
   }
 
-  public func isDescendentOf(_ ancestor: Tab) -> Bool {
+  public func isDescendentOf(_ ancestor: TabState) -> Bool {
     return sequence(first: parent) { $0?.parent }.contains { $0 == ancestor }
   }
 
@@ -916,7 +916,7 @@ public class TabWebView: WKWebView {
 }
 
 // Find In Page interaction
-extension Tab {
+extension TabState {
   public func presentFindInteraction(with text: String? = nil) {
     if let findInteraction = webView?.findInteraction {
       findInteraction.searchText = text
@@ -945,7 +945,7 @@ public struct BackForwardList {
   public var forwardItem: Item?
 }
 
-extension Tab {
+extension TabState {
   public var backForwardList: BackForwardList {
     guard let webView else { return .init() }
     let list = webView.backForwardList
@@ -960,7 +960,7 @@ extension Tab {
 }
 
 // PDF creation
-extension Tab {
+extension TabState {
   public enum PDFCreationError: Error {
     case webViewNotRealized
   }
@@ -977,7 +977,7 @@ extension Tab {
 }
 
 // Snapshots
-extension Tab {
+extension TabState {
   public func takeSnapshot(rect: CGRect = .null, _ completionHandler: @escaping (UIImage?) -> Void)
   {
     let configuration = WKSnapshotConfiguration()
@@ -992,7 +992,7 @@ extension Tab {
 }
 
 // JavaScript injection
-extension Tab {
+extension TabState {
   public enum JavaScriptError: Error {
     case invalid
     case webViewNotRealized
@@ -1116,23 +1116,23 @@ public protocol TabDataKey {
 }
 
 public protocol TabHelper {
-  init(tab: Tab)
+  init(tab: TabState)
   static var keyPath: WritableKeyPath<TabDataValues, Self?> { get }
-  static func create(for tab: Tab)
-  static func remove(from tab: Tab)
-  static func from(tab: Tab) -> Self?
+  static func create(for tab: TabState)
+  static func remove(from tab: TabState)
+  static func from(tab: TabState) -> Self?
 }
 
 extension TabHelper {
-  public static func create(for tab: Tab) {
+  public static func create(for tab: TabState) {
     if tab.data[keyPath: keyPath] == nil {
       tab.data[keyPath: keyPath] = Self(tab: tab)
     }
   }
-  public static func remove(from tab: Tab) {
+  public static func remove(from tab: TabState) {
     tab.data[keyPath: keyPath] = nil
   }
-  public static func from(tab: Tab) -> Self? {
+  public static func from(tab: TabState) -> Self? {
     tab.data[keyPath: keyPath]
   }
 }

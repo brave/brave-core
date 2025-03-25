@@ -27,7 +27,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   fileprivate static var pageLoadTimeout = 300.0
   private var pendingRequests = [String: URLRequest]()
 
-  private let tab = Tab(
+  private let tab = TabState(
     configuration: WKWebViewConfiguration().then {
       $0.processPool = WKProcessPool()
       $0.preferences = WKPreferences()
@@ -144,7 +144,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     static let playlistProcessDocumentLoad = PlaylistScriptHandler.playlistProcessDocumentLoad
 
     func tab(
-      _ tab: Tab,
+      _ tab: TabState,
       receivedScriptMessage message: WKScriptMessage,
       replyHandler: @escaping (Any?, String?) -> Void
     ) {
@@ -258,7 +258,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
 }
 
 extension LivePlaylistWebLoader: TabObserver {
-  func tabDidCommitNavigation(_ tab: Tab) {
+  func tabDidCommitNavigation(_ tab: TabState) {
     tab.evaluateSafeJavaScript(
       functionName:
         "window.__firefox__.\(PlaylistWebLoaderContentHelper.playlistProcessDocumentLoad)()",
@@ -268,7 +268,7 @@ extension LivePlaylistWebLoader: TabObserver {
     )
   }
 
-  func tab(_ tab: Tab, didFailNavigationWithError error: any Error) {
+  func tab(_ tab: TabState, didFailNavigationWithError error: any Error) {
     // There is a bug on some sites or something where the page may load TWICE OR there is a bug in WebKit where the page fails to load
     // Either way, WebKit returns _WKRecoveryAttempterErrorKey with a WKReloadFrameErrorRecoveryAttempter
     // Then it automatically reloads the page. In this case, we don't want to error and cancel loading and show the user an alert

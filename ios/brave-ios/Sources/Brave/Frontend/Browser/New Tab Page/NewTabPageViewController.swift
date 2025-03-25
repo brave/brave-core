@@ -116,7 +116,7 @@ class NewTabPageViewController: UIViewController {
 
   private let layout = NewTabPageFlowLayout()
   private let collectionView: NewTabCollectionView
-  private weak var browserTab: Web.Tab?
+  private weak var browserTab: TabState?
   private let rewards: BraveRewards
 
   private var background: NewTabPageBackground
@@ -167,7 +167,7 @@ class NewTabPageViewController: UIViewController {
   private let p3aHelper: NewTabPageP3AHelper
 
   init(
-    tab: Web.Tab,
+    tab: TabState,
     profile: Profile,
     dataSource: NTPDataSource,
     feedDataSource: FeedDataSource,

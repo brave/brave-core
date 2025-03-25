@@ -39,7 +39,7 @@ class BraveLeoScriptHandler: NSObject, TabContentScript {
   }()
 
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -53,9 +53,9 @@ class BraveLeoScriptHandler: NSObject, TabContentScript {
 }
 
 class BraveLeoScriptTabHelper: AIChatWebDelegate {
-  weak var tab: Tab?
+  weak var tab: TabState?
 
-  init(tab: Tab?) {
+  init(tab: TabState?) {
     self.tab = tab
   }
 

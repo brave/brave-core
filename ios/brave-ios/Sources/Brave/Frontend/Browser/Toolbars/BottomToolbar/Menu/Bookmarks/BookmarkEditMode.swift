@@ -13,7 +13,7 @@ import Web
 enum BookmarkEditMode {
   case addBookmark(title: String, url: String)
   case addFolder(title: String)
-  case addFolderUsingTabs(title: String, tabList: [Tab])
+  case addFolderUsingTabs(title: String, tabList: [TabState])
   case editBookmark(_ bookmark: Bookmarkv2)
   case editFolder(_ folder: Bookmarkv2)
   case editFavorite(_ favorite: Bookmarkv2)

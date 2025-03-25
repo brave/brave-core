@@ -1121,7 +1121,7 @@ public class BrowserViewController: UIViewController {
       privateBrowsingManager.isPrivateBrowsing || Preferences.Privacy.privateBrowsingOnly.value
     let noTabsAdded = self.tabManager.tabsForCurrentMode.isEmpty
 
-    var tabToSelect: Web.Tab?
+    var tabToSelect: TabState?
 
     if noTabsAdded {
       // Two scenarios if there are no tabs in tabmanager:
@@ -1815,7 +1815,7 @@ public class BrowserViewController: UIViewController {
     return false
   }
 
-  func updateBackForwardActionStatus(for tab: Web.Tab) {
+  func updateBackForwardActionStatus(for tab: TabState) {
     if let forwardListItem = tab.backForwardList.forwardList.first,
       forwardListItem.url.isInternalURL(for: .readermode)
     {
@@ -1827,7 +1827,7 @@ public class BrowserViewController: UIViewController {
     navigationToolbar.updateBackStatus(tab.canGoBack)
   }
 
-  func updateUIForReaderHomeStateForTab(_ tab: Web.Tab) {
+  func updateUIForReaderHomeStateForTab(_ tab: TabState) {
     updateURLBar()
     toolbarVisibilityViewModel.toolbarState = .expanded
 
@@ -2086,7 +2086,7 @@ public class BrowserViewController: UIViewController {
     self.pageZoomBar = pageZoomBar
   }
 
-  func updateWebViewPageZoom(tab: Web.Tab) {
+  func updateWebViewPageZoom(tab: TabState) {
     if let currentURL = tab.url {
       let domain = Domain.getPersistedDomain(for: currentURL)
 
@@ -2119,7 +2119,7 @@ public class BrowserViewController: UIViewController {
     statusBarOverlay.backgroundColor = color
   }
 
-  func navigateInTab(tab: Web.Tab) {
+  func navigateInTab(tab: TabState) {
     for tab in tabManager.allTabs {
       SnackBarTabHelper.from(tab: tab)?.expireSnackbars()
     }
@@ -2395,7 +2395,7 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
     openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate)
   }
 
-  func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Web.Tab) {
+  func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: TabState) {
     if tab == tabManager.selectedTab { return }
     topToolbar.leaveOverlayMode(didCancel: true)
     tabManager.selectTab(tab)
@@ -2426,7 +2426,7 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
 }
 
 extension BrowserViewController: TabMiscDelegate {
-  func showRequestRewardsPanel(_ tab: Web.Tab) {
+  func showRequestRewardsPanel(_ tab: TabState) {
     let vc = BraveTalkRewardsOptInViewController()
 
     // Edge case: user disabled Rewards button and wants to access free Brave Talk
@@ -2466,13 +2466,13 @@ extension BrowserViewController: TabMiscDelegate {
     }
   }
 
-  func stopMediaPlayback(_ tab: Web.Tab) {
+  func stopMediaPlayback(_ tab: TabState) {
     tabManager.allTabs.forEach({
       PlaylistScriptHandler.stopPlayback(tab: $0)
     })
   }
 
-  func showWalletNotification(_ tab: Web.Tab, origin: URLOrigin) {
+  func showWalletNotification(_ tab: TabState, origin: URLOrigin) {
     // only display notification when BVC is front and center
     guard presentedViewController == nil,
       Preferences.Wallet.displayWeb3Notifications.value,
@@ -2493,7 +2493,7 @@ extension BrowserViewController: TabMiscDelegate {
     notificationsPresenter.display(notification: walletNotificaton, from: self)
   }
 
-  func isTabVisible(_ tab: Web.Tab) -> Bool {
+  func isTabVisible(_ tab: TabState) -> Bool {
     tabManager.selectedTab === tab
   }
 

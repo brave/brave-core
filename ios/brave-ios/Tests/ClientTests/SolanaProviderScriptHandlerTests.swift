@@ -13,8 +13,8 @@ import XCTest
 
 @MainActor class SolanaProviderScriptHandlerTests: XCTestCase {
 
-  private func testTab() -> Tab {
-    let tab = Tab(configuration: .init())
+  private func testTab() -> TabState {
+    let tab = TabState(configuration: .init())
     tab.browserData = .init(tab: tab)
     return tab
   }

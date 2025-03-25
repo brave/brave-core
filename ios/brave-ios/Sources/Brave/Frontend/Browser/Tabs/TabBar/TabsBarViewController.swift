@@ -11,7 +11,7 @@ import UIKit
 import Web
 
 protocol TabsBarViewControllerDelegate: AnyObject {
-  func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab)
+  func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: TabState)
   func tabsBarDidLongPressAddTab(_ tabsBarController: TabsBarViewController, button: UIButton)
   func tabsBarDidSelectAddNewTab(_ isPrivate: Bool)
   func tabsBarDidChangeReaderModeVisibility(_ isHidden: Bool)
@@ -56,7 +56,7 @@ class TabsBarViewController: UIViewController {
   }()
 
   private weak var tabManager: TabManager?
-  private var tabList = WeakList<Tab>()
+  private var tabList = WeakList<TabState>()
 
   init(tabManager: TabManager) {
     self.tabManager = tabManager
@@ -259,7 +259,7 @@ class TabsBarViewController: UIViewController {
       return
     }
 
-    tabList = WeakList<Tab>(tabManager.tabsForCurrentMode)
+    tabList = WeakList<TabState>(tabManager.tabsForCurrentMode)
 
     overflowIndicators()
 
@@ -624,17 +624,21 @@ extension TabsBarViewController: UICollectionViewDragDelegate, UICollectionViewD
 // MARK: - TabManagerDelegate
 
 extension TabsBarViewController: TabManagerDelegate {
-  func tabManager(_ tabManager: TabManager, didSelectedTabChange selected: Tab?, previous: Tab?) {
+  func tabManager(
+    _ tabManager: TabManager,
+    didSelectedTabChange selected: TabState?,
+    previous: TabState?
+  ) {
     assert(Thread.current.isMainThread)
     updateData()
     delegate?.tabsBarDidChangeReaderModeVisibility(false)
   }
 
-  func tabManager(_ tabManager: TabManager, didAddTab tab: Tab) {
+  func tabManager(_ tabManager: TabManager, didAddTab tab: TabState) {
     updateData()
   }
 
-  func tabManager(_ tabManager: TabManager, didRemoveTab tab: Tab) {
+  func tabManager(_ tabManager: TabManager, didRemoveTab tab: TabState) {
     assert(Thread.current.isMainThread)
     updateData()
   }

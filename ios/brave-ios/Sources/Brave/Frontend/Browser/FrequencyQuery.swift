@@ -98,7 +98,7 @@ class FrequencyQuery {
     }
   }
 
-  private func fetchSitesFromTabs(_ tabs: [Tab]) throws -> [Site] {
+  private func fetchSitesFromTabs(_ tabs: [TabState]) throws -> [Site] {
     var tabList = [Site]()
     tabList.reserveCapacity(tabs.count)
 

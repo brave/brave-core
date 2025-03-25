@@ -15,13 +15,13 @@ import XCTest
 
 open class MockTabManagerStateDelegate: TabManagerStateDelegate {
   var numberOfTabsStored = 0
-  public func tabManagerWillStoreTabs(_ tabs: [Tab]) {
+  public func tabManagerWillStoreTabs(_ tabs: [TabState]) {
     numberOfTabsStored = tabs.count
   }
 }
 
 extension TabManager {
-  func tabs(withType type: TabType) -> [Tab] {
+  func tabs(withType type: TabType) -> [TabState] {
     assert(Thread.isMainThread)
     return allTabs.filter { $0.type == type }
   }
@@ -29,14 +29,14 @@ extension TabManager {
 
 struct MethodSpy {
   let functionName: String
-  let method: ((_ tabs: [Tab?]) -> Void)?
+  let method: ((_ tabs: [TabState?]) -> Void)?
 
   init(functionName: String) {
     self.functionName = functionName
     self.method = nil
   }
 
-  init(functionName: String, method: ((_ tabs: [Tab?]) -> Void)?) {
+  init(functionName: String, method: ((_ tabs: [TabState?]) -> Void)?) {
     self.functionName = functionName
     self.method = method
   }
@@ -57,7 +57,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     XCTAssertTrue(methodCatchers.isEmpty, message)
   }
 
-  func testDelegateMethodWithName(_ name: String, tabs: [Tab?]) {
+  func testDelegateMethodWithName(_ name: String, tabs: [TabState?]) {
     guard let spy = self.methodCatchers.first else {
       XCTAssert(
         false,
@@ -74,17 +74,17 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
   public func tabManager(
     _ tabManager: TabManager,
-    didSelectedTabChange selected: Tab?,
-    previous: Tab?
+    didSelectedTabChange selected: TabState?,
+    previous: TabState?
   ) {
     testDelegateMethodWithName(#function, tabs: [selected, previous])
   }
 
-  public func tabManager(_ tabManager: TabManager, didAddTab tab: Tab) {
+  public func tabManager(_ tabManager: TabManager, didAddTab tab: TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
-  public func tabManager(_ tabManager: TabManager, didRemoveTab tab: Tab) {
+  public func tabManager(_ tabManager: TabManager, didRemoveTab tab: TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
@@ -92,11 +92,11 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     testDelegateMethodWithName(#function, tabs: [])
   }
 
-  public func tabManager(_ tabManager: TabManager, willRemoveTab tab: Tab) {
+  public func tabManager(_ tabManager: TabManager, willRemoveTab tab: TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
-  public func tabManager(_ tabManager: TabManager, willAddTab tab: Tab) {
+  public func tabManager(_ tabManager: TabManager, willAddTab tab: TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
@@ -162,7 +162,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     // test that non-private tabs are saved to the db
     // add some non-private tabs to the tab manager
     for _ in 0..<3 {
-      let tab = Tab(configuration: configuration, type: .private)
+      let tab = TabState(configuration: configuration, type: .private)
       tab.setVirtualURL(URL(string: "http://yahoo.com")!)
       manager.configureTab(
         tab,
@@ -405,7 +405,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   func testDeleteSelectedTab() {
     let delegate = MockTabManagerDelegate()
 
-    func addTab(_ visit: Bool) -> Tab {
+    func addTab(_ visit: Bool) -> TabState {
       let tab = manager.addTab(isPrivate: false)
       if visit {
         tab.lastExecutedTime = Date.now()

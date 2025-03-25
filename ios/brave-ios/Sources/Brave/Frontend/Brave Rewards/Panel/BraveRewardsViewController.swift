@@ -17,7 +17,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     case unverifiedPublisherLearnMoreTapped
   }
 
-  let browserTab: Tab
+  let browserTab: TabState
   let rewards: BraveRewards
   var actionHandler: ((Action) -> Void)?
 
@@ -53,7 +53,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     }
   }
 
-  init(tab: Tab, rewards: BraveRewards) {
+  init(tab: TabState, rewards: BraveRewards) {
     self.browserTab = tab
     self.rewards = rewards
 
