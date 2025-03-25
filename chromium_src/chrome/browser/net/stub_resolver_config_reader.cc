@@ -118,13 +118,14 @@ SecureDnsConfig::ManagementMode MaybeOverrideForcedManagementMode(
       MaybeOverrideForcedManagementMode(SECURE_DNS_MODE, local_state_,         \
                                         FORCED_MANAGEMENT_MODE, is_managed))
 
-#define ConfigureStubHostResolver(INSECURE_DNS_CLIENT_ENABLED,                 \
-                                  SECURE_DNS_MODE, DNS_OVER_HTTPS_CONFIG,      \
-                                  ADDITIONAL_DNS_TYPES_ENABLED)                \
+#define ConfigureStubHostResolver(                                             \
+    INSECURE_DNS_CLIENT_ENABLED, HAPPY_EYEBALLS_V3_ENABLED, SECURE_DNS_MODE,   \
+    DNS_OVER_HTTPS_CONFIG, ADDITIONAL_DNS_TYPES_ENABLED)                       \
   ConfigureStubHostResolver(                                                   \
       MaybeOverrideDnsClientEnabled(SECURE_DNS_MODE,                           \
                                     INSECURE_DNS_CLIENT_ENABLED, local_state_, \
                                     forced_management_mode, is_managed),       \
+      HAPPY_EYEBALLS_V3_ENABLED,                                               \
       MaybeOverrideDnsMode(SECURE_DNS_MODE, local_state_,                      \
                            forced_management_mode, is_managed),                \
       MaybeOverrideDnsConfig(SECURE_DNS_MODE, DNS_OVER_HTTPS_CONFIG,           \
