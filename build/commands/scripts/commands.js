@@ -301,4 +301,8 @@ program
   .action(genGradle.bind(null, parsedArgs.unknown))
 
 program
+  .command('docs')
+  .action(util.launchDocs)
+
+program
   .parse(process.argv)
