@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
-from dataclasses import dataclass, field
+import argparse
+from math import nan
 import os
 import re
 import glob
 import gzip
-from typing import Dict, List, Optional, Tuple
 import numpy as np
+
+from typing import Dict, List, Optional, Tuple
+from dataclasses import dataclass, field
+
 from perfetto.trace_processor import TraceProcessor,TraceProcessorConfig
 from perfetto.trace_processor.shell import load_shell
 from perfetto.trace_processor.platform import PlatformDelegate
 
+# TODO(atuchin): install scipy via vpython3 config
+# vpython3 -m pip install scipy
 from scipy.stats import ttest_ind
-import argparse
 
 _DIFF_NEW = 1000000
 
@@ -66,7 +71,7 @@ class Stats:
                    process.name as process_name
             FROM slice
             LEFT JOIN args AS args_1 ON args_1.arg_set_id = slice.arg_set_id AND args_1.key = 'task.posted_from.function_name'
-              LEFT JOIN args AS args_2 ON args_2.arg_set_id = slice.arg_set_id AND args_2.key = 'task.posted_from.file_name'
+            LEFT JOIN args AS args_2 ON args_2.arg_set_id = slice.arg_set_id AND args_2.key = 'task.posted_from.file_name'
             LEFT JOIN args AS args_3 ON args_3.arg_set_id = slice.arg_set_id AND args_3.key = 'chrome_mojo_event_info.mojo_interface_tag'
             LEFT JOIN thread_track ON slice.track_id = thread_track.id
             LEFT JOIN thread ON thread_track.utid = thread.utid
@@ -132,9 +137,11 @@ def compare_values(before_data: List[float], after_data: List[float], display_na
         return None, "" # skip insignificant differences
 
     sign = '+' if after_dur > before_dur else ''
-    if before_dur == 0:
+    if before_dur == 0 or np.isnan(before_dur):
+      before_data = [0]
       diff_msg = "New"
-    elif after_dur == 0:
+    elif after_dur == 0 or np.isnan(after_dur):
+      after_data = [0]
       diff_msg = "Removed"
     else:
       diff_msg = f"{sign}{rel_diff * 100:.1f}%"
@@ -159,7 +166,7 @@ def calc_stats(trace_files: List[str], trace_processor_url: str) -> Stats:
 
     return stats
 
-def compare_series(before: Stats, after: Stats, args):
+def compare_threads(before: Stats, after: Stats, args):
     differences: List[Tuple[float, str]] = []
 
     all_threads = set(before.thread_total_durations.keys()).union(after.thread_total_durations.keys())
@@ -169,6 +176,11 @@ def compare_series(before: Stats, after: Stats, args):
         rel_diff, msg = compare_values(before_durations, after_durations, f'{process_name}-{thread_name}', args.slice_verbose, args)
         if rel_diff is not None:
             differences.append((rel_diff, msg))
+    differences.sort(key=lambda x: -x[0])
+    return differences
+
+def compare_events(before: Stats, after: Stats, args):
+    differences: List[Tuple[float, str]] = []
 
     all_slices = set(before.slices.keys()).union(after.slices.keys())
     for slice_id in all_slices:
@@ -198,11 +210,12 @@ if __name__ == '__main__':
     parser.add_argument('folder1', type=str, help='First folder containing trace files')
     parser.add_argument('folder2', type=str, help='Second folder containing trace files')
     parser.add_argument('--min-p-value', type=float, default=0.05, help='Minimum p-value')
-    parser.add_argument('--min-abs-diff', type=float, default=10, help='Minimum absolute difference')
+    parser.add_argument('--min-abs-diff', type=float, default=10, help='Minimum absolute difference in ms')
     parser.add_argument('--min-rel-diff', type=float, default=0.05, help='Minimum relative difference in %')
     parser.add_argument('--thread-name', type=str, help='Filter by thread name')
     parser.add_argument('--process-name', type=str, help='Filter by process name')
     parser.add_argument('--slice-verbose', action='store_true', help='Verbose slice output')
+    parser.add_argument('--threads', action='store_true', help='Compare threads instead of events')
     args = parser.parse_args()
 
     pattern = '**/*.pb.gz'
@@ -222,7 +235,7 @@ if __name__ == '__main__':
     print(f"Comparing {len(trace_files1)} traces with {len(trace_files2)} traces")
 
     # TODO(atuchin): fetch trace_processor_shell
-    trace_processor_shell_path = "tools/perf/core/perfetto_binary_roller/bin/trace_processor_shell"
+    trace_processor_shell_path = "../tools/perf/core/perfetto_binary_roller/bin/trace_processor_shell"
 
     config = TraceProcessorConfig(bin_path=trace_processor_shell_path)
     trace_processor_url, subprocess = load_shell(config.bin_path,
@@ -232,9 +245,14 @@ if __name__ == '__main__':
                                   config.enable_dev_features,
                                   PlatformDelegate())
 
+    trace_processor_url = 'http://' + trace_processor_url
+    print(f"trace_processor_url: {trace_processor_url}")
     stats_before = calc_stats(trace_files1, trace_processor_url)
     stats_after = calc_stats(trace_files2, trace_processor_url)
-    differences = compare_series(stats_before, stats_after, args)
+    if args.threads:
+        differences = compare_threads(stats_before, stats_after, args)
+    else:
+        differences = compare_events(stats_before, stats_after, args)
     subprocess.kill()
     subprocess.wait()
 
