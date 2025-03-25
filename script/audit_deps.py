@@ -38,7 +38,6 @@ CARGO_INCLUDE_PATHS = [
     os.path.join('third_party', 'rust', 'chromium_crates_io'),
     os.path.join('tools', 'crates'),
     os.path.join('components', 'skus', 'browser', 'rs', 'wasm')
-
 ]
 
 def main():
@@ -69,8 +68,7 @@ def main():
 
     for p in CARGO_INCLUDE_PATHS:
         print(f'Auditing (cargo) {p}')
-        errors += cargo_audit_deps(
-            os.path.join(args.source_root, p), args)
+        errors += cargo_audit_deps(os.path.join(args.source_root, p), args)
 
     return errors > 0
 
