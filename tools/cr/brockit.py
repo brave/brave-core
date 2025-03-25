@@ -347,6 +347,8 @@ class Terminal:
           self.run_npm_command('init')
       """
         cmd = ['npm', 'run'] + list(cmd)
+        if self.infra_mode and cmd[-1] == 'init':
+            cmd += ['--', '--with_issue_44921']
         return self.run(cmd)
 
 terminal = Terminal()

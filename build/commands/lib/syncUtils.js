@@ -115,16 +115,20 @@ function syncChromium(program) {
   const syncWithForce = program.init || program.force
   const syncChromiumValue = program.sync_chromium
   const deleteUnusedDeps = program.delete_unused_deps
+  const gclientWithoutRevision = program.with_issue_44921
 
   const requiredChromiumRef = config.getProjectRef('chrome')
   let args = [
     'sync',
     '--nohooks',
-    '--revision',
-    'src@' + requiredChromiumRef,
     '--reset',
     '--upstream'
   ]
+
+  if (!gclientWithoutRevision) {
+    args.push('--revision')
+    args.push('src@' + requiredChromiumRef)
+  }
 
   if (program.fetch_all) {
     args.push('--with_tags')
@@ -183,6 +187,15 @@ function syncChromium(program) {
       Log.warn(
         "Chromium doesn't need sync but received the flag to do it anyway."
       )
+    }
+  }
+
+  if (gclientWithoutRevision && fs.existsSync(path.join(config.srcDir, 'chrome', 'VERSION'))) {
+    if (util.runGit(config.srcDir, ['rev-parse', requiredChromiumRef], true) == null) {
+      util.runGit(config.srcDir, ['fetch', 'origin', requiredChromiumRef])
+    }
+    if (syncWithForce || chromiumNeedsUpdate) {
+      util.runGit(config.srcDir, ['reset', '--hard', requiredChromiumRef])
     }
   }
 
