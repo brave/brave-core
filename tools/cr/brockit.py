@@ -298,6 +298,11 @@ class Terminal:
           self.run_npm_command('init')
       """
         cmd = ['npm', 'run'] + list(cmd)
+        if self.infra_mode and len(cmd) == 3 and cmd[-1] == 'init':
+            # Special flag to avoid running into issues in jenkins when running
+            # `gclient sync` with `--revision`. For more details see:
+            # https://github.com/brave/brave-browser/issues/44921
+            cmd += ['--', '--with_issue_44921']
         return self.run(cmd)
 
 terminal = Terminal()
