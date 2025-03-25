@@ -27,6 +27,7 @@ program
   .option('-C, --sync_chromium [arg]', 'force or skip chromium sync (true/false/1/0)', JSON.parse)
   .option('-D, --delete_unused_deps', 'delete from the working copy any dependencies that have been removed since the last sync')
   .option('--nohooks', 'Do not run hooks after updating')
+  .option('--with_issue_44921', 'Do not pass --revision to gclient to avoid process hanging on jenkins. https://github.com/brave/brave-browser/issues/44921')
 
 function syncBrave(program) {
   let args = ['sync', '--nohooks']
