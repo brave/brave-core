@@ -97,6 +97,7 @@ struct Creative {
   std::string background_color;
 
   std::string creative_instance_id;
+  bool should_metrics_fallback_to_p3a = false;
 
   Logo logo;
   std::optional<gfx::Rect> viewbox;
@@ -116,7 +117,6 @@ struct Campaign {
   [[nodiscard]] bool IsValid() const;
 
   std::string campaign_id;
-  bool should_metrics_fallback_to_p3a = false;
   std::vector<Creative> creatives;
 };
 

@@ -1662,7 +1662,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   const std::optional<brave_ads::NewTabPageAdInfo> new_tab_page_ad =
       adsService->MaybeGetPrefetchedNewTabPageAd();
   adsService->PrefetchNewTabPageAd();
-
   if (!new_tab_page_ad) {
     return nil;
   }

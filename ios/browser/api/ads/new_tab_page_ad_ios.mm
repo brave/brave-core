@@ -23,18 +23,17 @@
 @implementation NewTabPageAdIOS
 
 - (instancetype)initWithNewTabPageAdInfo:
-    (const brave_ads::NewTabPageAdInfo&)info {
+    (const brave_ads::NewTabPageAdInfo&)ad {
   if ((self = [super init])) {
-    self.placementID = base::SysUTF8ToNSString(info.placement_id);
-    self.creativeInstanceID =
-        base::SysUTF8ToNSString(info.creative_instance_id);
-    self.creativeSetID = base::SysUTF8ToNSString(info.creative_set_id);
-    self.campaignID = base::SysUTF8ToNSString(info.campaign_id);
-    self.advertiserID = base::SysUTF8ToNSString(info.advertiser_id);
-    self.segment = base::SysUTF8ToNSString(info.segment);
-    self.targetURL = base::SysUTF8ToNSString(info.target_url.spec());
-    self.companyName = base::SysUTF8ToNSString(info.company_name);
-    self.alt = base::SysUTF8ToNSString(info.alt);
+    self.placementID = base::SysUTF8ToNSString(ad.placement_id);
+    self.creativeInstanceID = base::SysUTF8ToNSString(ad.creative_instance_id);
+    self.creativeSetID = base::SysUTF8ToNSString(ad.creative_set_id);
+    self.campaignID = base::SysUTF8ToNSString(ad.campaign_id);
+    self.advertiserID = base::SysUTF8ToNSString(ad.advertiser_id);
+    self.segment = base::SysUTF8ToNSString(ad.segment);
+    self.targetURL = base::SysUTF8ToNSString(ad.target_url.spec());
+    self.companyName = base::SysUTF8ToNSString(ad.company_name);
+    self.alt = base::SysUTF8ToNSString(ad.alt);
   }
   return self;
 }

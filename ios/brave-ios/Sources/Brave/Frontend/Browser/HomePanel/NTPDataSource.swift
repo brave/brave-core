@@ -141,8 +141,8 @@ public class NTPDataSource {
       }
     }
 
-    rewards?.ads.onFailed(
-      toPrefetchNewTabPageAd: newTabPageAd.placementID,
+    rewards?.ads.onFailedToPrefetchNewTabPageAd(
+      placementId: newTabPageAd.placementID,
       creativeInstanceId: newTabPageAd.creativeInstanceID
     )
     return nil

@@ -216,10 +216,11 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
   }
   campaign.campaign_id = *campaign_id;
 
+  bool should_metrics_fallback_to_p3a = false;
   if (const std::string* const metrics = dict.FindString(kCampaignMetricsKey)) {
     // Metrics (optional, if not provided, the default is to send
     // confirmations).
-    campaign.should_metrics_fallback_to_p3a = *metrics == "p3a";
+    should_metrics_fallback_to_p3a = *metrics == "p3a";
   }
 
   const base::Value::List* const creative_sets =
@@ -396,6 +397,8 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
         continue;
       }
 
+      creative.should_metrics_fallback_to_p3a = should_metrics_fallback_to_p3a;
+
       campaign.creatives.push_back(creative);
     }
   }
@@ -492,7 +495,7 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackgroundAt(
 
   return base::Value::Dict()
       .Set(kCampaignIdKey, campaign.campaign_id)
-      .Set(kCampaignMetricsKey, campaign.should_metrics_fallback_to_p3a)
+      .Set(kCampaignMetricsKey, creative.should_metrics_fallback_to_p3a)
       .Set(kCreativeInstanceIDKey, creative.creative_instance_id)
       .Set(kThemeNameKey, theme_name)
       .Set(kIsSponsoredKey, !IsSuperReferral())

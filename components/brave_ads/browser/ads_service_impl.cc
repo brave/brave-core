@@ -830,8 +830,7 @@ void AdsServiceImpl::NotifyRewardsWalletDidUpdate(
 }
 
 void AdsServiceImpl::RefetchNewTabPageAd() {
-  is_prefetching_new_tab_page_ad_ = false;
-  prefetched_new_tab_page_ad_.reset();
+  ResetNewTabPageAd();
 
   PurgeOrphanedAdEventsForType(
       mojom::AdType::kNewTabPageAd,
@@ -843,6 +842,21 @@ void AdsServiceImpl::RefetchNewTabPageAdCallback(bool success) {
   if (success) {
     PrefetchNewTabPageAd();
   }
+}
+
+void AdsServiceImpl::ResetNewTabPageAd() {
+  prefetched_new_tab_page_ad_.reset();
+  is_prefetching_new_tab_page_ad_ = false;
+}
+
+void AdsServiceImpl::OnParseAndSaveCreativeNewTabPageAdsCallback(
+    ParseAndSaveCreativeNewTabPageAdsCallback callback,
+    bool success) {
+  if (success) {
+    PrefetchNewTabPageAd();
+  }
+
+  std::move(callback).Run(success);
 }
 
 void AdsServiceImpl::CheckIdleStateAfterDelay() {
@@ -1178,8 +1192,7 @@ void AdsServiceImpl::ShutdownAdsService() {
 
   notification_ad_timers_.clear();
 
-  prefetched_new_tab_page_ad_.reset();
-  is_prefetching_new_tab_page_ad_ = false;
+  ResetNewTabPageAd();
 
   if (is_bat_ads_initialized_) {
     BackgroundHelper::GetInstance()->RemoveObserver(this);
@@ -1378,8 +1391,7 @@ AdsServiceImpl::MaybeGetPrefetchedNewTabPageAd() {
 void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
     const std::string& /*placement_id*/,
     const std::string& /*creative_instance_id*/) {
-  prefetched_new_tab_page_ad_.reset();
-  is_prefetching_new_tab_page_ad_ = false;
+  ResetNewTabPageAd();
 
   PurgeOrphanedAdEventsForType(mojom::AdType::kNewTabPageAd,
                                /*intentional*/ base::DoNothing());
@@ -1393,7 +1405,10 @@ void AdsServiceImpl::ParseAndSaveCreativeNewTabPageAds(
   }
 
   bat_ads_associated_remote_->ParseAndSaveCreativeNewTabPageAds(
-      std::move(dict), std::move(callback));
+      std::move(dict),
+      base::BindOnce(
+          &AdsServiceImpl::OnParseAndSaveCreativeNewTabPageAdsCallback,
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImpl::TriggerNewTabPageAdEvent(
@@ -1952,8 +1967,6 @@ void AdsServiceImpl::OnResourceComponentDidChange(
     bat_ads_client_notifier_remote_->NotifyResourceComponentDidChange(
         manifest_version, id);
   }
-
-  PrefetchNewTabPageAd();
 }
 
 void AdsServiceImpl::OnDidUnregisterResourceComponent(const std::string& id) {
