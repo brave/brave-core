@@ -30,7 +30,7 @@
 namespace {
 
 int GetXCoordinateAdjustmentForMultiSelectedTabs(
-    const std::vector<raw_ptr<TabSlotView, VectorExperimental>>& dragged_views,
+    const std::vector<TabSlotView*>& dragged_views,
     int source_view_index) {
   if (dragged_views.at(source_view_index)->GetTabSlotViewType() ==
           TabSlotView::ViewType::kTabGroupHeader ||
@@ -57,7 +57,7 @@ TabDragController::~TabDragController() = default;
 TabDragController::Liveness TabDragController::Init(
     TabDragContext* source_context,
     TabSlotView* source_view,
-    const std::vector<raw_ptr<TabSlotView, VectorExperimental>>& dragging_views,
+    const std::vector<TabSlotView*>& dragging_views,
     const gfx::Point& mouse_offset,
     int source_view_offset,
     ui::ListSelectionModel initial_selection_model,
