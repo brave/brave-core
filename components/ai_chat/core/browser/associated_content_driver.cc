@@ -66,27 +66,7 @@ AssociatedContentDriver::AssociatedContentDriver(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory) {}
 
-AssociatedContentDriver::~AssociatedContentDriver() {
-  DisassociateWithConversations();
-}
-
-void AssociatedContentDriver::AddRelatedConversation(
-    ConversationHandler* conversation) {
-  associated_conversations_.insert(conversation);
-}
-
-void AssociatedContentDriver::OnRelatedConversationDisassociated(
-    ConversationHandler* conversation) {
-  associated_conversations_.erase(conversation);
-}
-
-void AssociatedContentDriver::AddObserver(Observer* observer) {
-  observers_.AddObserver(observer);
-}
-
-void AssociatedContentDriver::RemoveObserver(Observer* observer) {
-  observers_.RemoveObserver(observer);
-}
+AssociatedContentDriver::~AssociatedContentDriver() = default;
 
 int AssociatedContentDriver::GetContentId() const {
   return current_navigation_id_;
@@ -267,42 +247,15 @@ AssociatedContentDriver::ParseSearchQuerySummaryResponse(
   return entries;
 }
 
-void AssociatedContentDriver::OnTitleChanged() {
-  for (auto& conversation : associated_conversations_) {
-    conversation->OnAssociatedContentTitleChanged();
-  }
-}
-
 void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
-  // This instance will now be used for different content so existing
-  // conversations need to be disassociated.
-  DisassociateWithConversations();
-
-  // Tell the observer how to find the next conversation
-  for (auto& observer : observers_) {
-    observer.OnAssociatedContentNavigated(navigation_id);
-  }
+  ConversationHandler::AssociatedContentDelegate::OnNewPage(navigation_id);
 
   // Reset state for next navigated Page
-  associated_conversations_.clear();
   current_navigation_id_ = navigation_id;
   cached_text_content_.clear();
   content_invalidation_token_.clear();
   is_video_ = false;
   api_request_helper_.reset();
-  ConversationHandler::AssociatedContentDelegate::OnNewPage(navigation_id);
-}
-
-void AssociatedContentDriver::DisassociateWithConversations() {
-  // Iterator might be invalidated by destruction, so copy the items
-  std::vector<ConversationHandler*> conversations{
-      associated_conversations_.begin(), associated_conversations_.end()};
-  for (auto& conversation : conversations) {
-    if (conversation) {
-      conversation->OnAssociatedContentDestroyed(cached_text_content_,
-                                                 is_video_);
-    }
-  }
 }
 
 }  // namespace ai_chat

@@ -43,6 +43,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
@@ -80,15 +81,25 @@ constexpr size_t kDefaultSuggestionsCount = 4;
 }  // namespace
 
 AssociatedContentDelegate::AssociatedContentDelegate()
-    : text_embedder_(nullptr, base::OnTaskRunnerDeleter(nullptr)) {}
+    : uuid_(base::Uuid::GenerateRandomV4().AsLowercaseString()),
+      text_embedder_(nullptr, base::OnTaskRunnerDeleter(nullptr)) {}
 
 AssociatedContentDelegate::~AssociatedContentDelegate() = default;
 
 void AssociatedContentDelegate::OnNewPage(int64_t navigation_id) {
+  for (auto& observer : observers_) {
+    observer.OnNavigated(this);
+  }
+
   pending_top_similarity_requests_.clear();
   if (text_embedder_) {
     text_embedder_->CancelAllTasks();
     text_embedder_.reset();
+  }
+
+  // Once the page has navigated we need to archive the content from this tab.
+  for (auto& observer : observers_) {
+    observer.OnRequestArchive(this);
   }
 }
 
@@ -165,6 +176,26 @@ void AssociatedContentDelegate::OnTextEmbedderInitialized(bool initialized) {
   pending_top_similarity_requests_.clear();
 }
 
+void AssociatedContentDelegate::OnTitleChanged() {
+  for (auto& observer : observers_) {
+    observer.OnTitleChanged(this);
+  }
+}
+
+void AssociatedContentDelegate::OnContentChanged() {
+  for (auto& observer : observers_) {
+    observer.OnContentChanged(this);
+  }
+}
+
+void AssociatedContentDelegate::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void AssociatedContentDelegate::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
 ConversationHandler::Suggestion::Suggestion(std::string title)
     : title(std::move(title)) {}
 ConversationHandler::Suggestion::Suggestion(std::string title,
@@ -204,7 +235,9 @@ ConversationHandler::ConversationHandler(
     AIChatFeedbackAPI* feedback_api,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::optional<mojom::ConversationArchivePtr> initial_state)
-    : metadata_(conversation),
+    : associated_content_manager_(
+          std::make_unique<AssociatedContentManager>(this)),
+      metadata_(conversation),
       ai_chat_service_(ai_chat_service),
       model_service_(model_service),
       credential_manager_(credential_manager),
@@ -229,12 +262,8 @@ ConversationHandler::ConversationHandler(
         std::move(initial_state.value());
     if (!conversation_data->associated_content.empty()) {
       CHECK(!metadata_->associated_content.empty());
-      CHECK_EQ(conversation_data->associated_content[0]->content_uuid,
-               metadata_->associated_content[0]->uuid);
-      bool is_video = (metadata_->associated_content[0]->content_type ==
-                       mojom::ContentType::VideoTranscript);
-      SetArchiveContent(conversation_data->associated_content[0]->content,
-                        is_video);
+      associated_content_manager_->LoadArchivedContent(metadata_,
+                                                       conversation_data);
     }
     DVLOG(1) << "Restoring associated content for conversation "
              << metadata_->uuid << " with "
@@ -288,41 +317,54 @@ void ConversationHandler::BindUntrustedConversationUI(
 }
 
 void ConversationHandler::OnConversationMetadataUpdated() {
-  if (archive_content_) {
-    if (!metadata_->associated_content.empty()) {
-      // Pass the updated data to archive content
-      archive_content_->SetMetadata(
-          metadata_->associated_content[0]->url,
-          base::UTF8ToUTF16(metadata_->associated_content[0]->title),
-          metadata_->associated_content[0]->content_type ==
-              mojom::ContentType::VideoTranscript);
-    } else {
-      archive_content_ = nullptr;
-      associated_content_delegate_ = nullptr;
-    }
-  }
+  // if (archive_content_) {
+  //   if (!metadata_->associated_content.empty()) {
+  //     // Pass the updated data to archive content
+  //     archive_content_->SetMetadata(
+  //         metadata_->associated_content[0]->url,
+  //         base::UTF8ToUTF16(metadata_->associated_content[0]->title),
+  //         metadata_->associated_content[0]->content_type ==
+  //             mojom::ContentType::VideoTranscript);
+  //   } else {
+  //     archive_content_ = nullptr;
+  //     associated_content_delegate_ = nullptr;
+  //   }
+  // }
+  // TODO(fallaciousreasoning): What should we do here?
 
   // Notify UI. If we have live content then the metadata will be updated
   // again from that live data.
-  OnAssociatedContentInfoChanged();
+  OnAssociatedContentUpdated();
 }
 
 void ConversationHandler::OnArchiveContentUpdated(
     mojom::ConversationArchivePtr conversation_data) {
-  // We don't need to update text content if it's not archive since live
-  // content owns the text content and is re-fetched on demand.
-  if (archive_content_) {
-    // Only supports a single associated content for now
-    std::string text_content;
-    if (!conversation_data->associated_content.empty() &&
-        conversation_data->associated_content[0]->content_uuid ==
-            metadata_->associated_content[0]->uuid) {
-      text_content = conversation_data->associated_content[0]->content;
-    } else {
-      text_content = "";
-    }
-    archive_content_->SetContent(std::move(text_content));
+  // // We don't need to update text content if it's not archive since live
+  // // content owns the text content and is re-fetched on demand.
+  // if (archive_content_) {
+  //   // Only supports a single associated content for now
+  //   std::string text_content;
+  //   if (!conversation_data->associated_content.empty() &&
+  //       conversation_data->associated_content[0]->content_uuid ==
+  //           metadata_->associated_content[0]->uuid) {
+  //     text_content = conversation_data->associated_content[0]->content;
+  //   } else {
+  //     text_content = "";
+  //   }
+  //   archive_content_->SetContent(std::move(text_content));
+  // }
+  associated_content_manager_->LoadArchivedContent(metadata_,
+                                                   conversation_data);
+}
+
+void ConversationHandler::OnAssociatedContentUpdated() {
+  UpdateAssociatedContentInfo();
+  for (auto& client : conversation_ui_handlers_) {
+    client->OnAssociatedContentInfoChanged(
+        associated_content_manager_->GetAssociatedContent(),
+        should_send_page_contents_);
   }
+  OnStateForConversationEntriesChanged();
 }
 
 bool ConversationHandler::IsAnyClientConnected() {
@@ -345,7 +387,8 @@ bool ConversationHandler::IsRequestInProgress() {
 }
 
 bool ConversationHandler::IsAssociatedContentAlive() {
-  return associated_content_delegate_ && !archive_content_;
+  return associated_content_manager_ &&
+         !associated_content_manager_->HasArchiveContent();
 }
 
 void ConversationHandler::OnConversationDeleted() {
@@ -401,73 +444,15 @@ void ConversationHandler::InitEngine() {
 
   // When the model changes, the content truncation might be different,
   // and the UI needs to know.
-  if (associated_content_delegate_ &&
-      !associated_content_delegate_->GetCachedTextContent().empty()) {
-    OnAssociatedContentInfoChanged();
+  if (associated_content_manager_ &&
+      !associated_content_manager_->GetCachedTextContent().empty()) {
+    OnAssociatedContentUpdated();
   }
-}
-
-void ConversationHandler::OnAssociatedContentDestroyed(
-    std::string last_text_content,
-    bool is_video) {
-  // The associated content delegate is already or about to be destroyed.
-  auto content_id = associated_content_delegate_
-                        ? associated_content_delegate_->GetContentId()
-                        : -1;
-  DisassociateContentDelegate();
-  if (!chat_history_.empty() && should_send_page_contents_ &&
-      !metadata_->associated_content.empty()) {
-    // Get the latest version of article text and
-    // associated_content_info_ if this chat has history and was connected to
-    // the associated conversation, then store the content so the conversation
-    // can continue.
-    SetArchiveContent(std::move(last_text_content), is_video);
-  }
-  OnAssociatedContentInfoChanged();
-  // Notify observers
-  for (auto& observer : observers_) {
-    observer.OnAssociatedContentDestroyed(this, content_id);
-  }
-}
-
-void ConversationHandler::SetArchiveContent(std::string text_content,
-                                            bool is_video) {
-  CHECK(!metadata_->associated_content.empty());
-
-  // Construct a "content archive" implementation of AssociatedContentDelegate
-  // with a duplicate of the article text.
-  auto archive_content = std::make_unique<AssociatedArchiveContent>(
-      metadata_->associated_content[0]->url, std::move(text_content),
-      base::UTF8ToUTF16(metadata_->associated_content[0]->title), is_video);
-  associated_content_delegate_ = archive_content->GetWeakPtr();
-  archive_content_ = std::move(archive_content);
-  should_send_page_contents_ = features::IsPageContextEnabledInitially();
 }
 
 void ConversationHandler::SetAssociatedContentDelegate(
     base::WeakPtr<AssociatedContentDelegate> delegate) {
-  if (associated_content_delegate_ &&
-      (delegate.get() == associated_content_delegate_.get())) {
-    return;
-  }
-
-  // Unarchive content
-  if (archive_content_) {
-    archive_content_ = nullptr;
-  } else if (!chat_history_.empty()) {
-    // Cannot associate new content with a conversation which already has
-    // messages but this is ok since we're probably just defaulting this
-    // conversation to be "alongside" this target content (e.g. sidebar). The
-    // service will do the association and we can ignore the request to
-    // associate content.
-    return;
-  }
-
-  DisassociateContentDelegate();
-  associated_content_delegate_ = delegate;
-  if (associated_content_delegate_) {
-    associated_content_delegate_->AddRelatedConversation(this);
-  }
+  associated_content_manager_->SetContent(delegate.get());
 
   // Default to send page contents when we have a valid contents.
   // This class should only be provided with a delegate when
@@ -477,7 +462,6 @@ void ConversationHandler::SetAssociatedContentDelegate(
 
   MaybeSeedOrClearSuggestions();
   MaybeFetchOrClearContentStagedConversation();
-  OnAssociatedContentInfoChanged();
 }
 
 const mojom::Model& ConversationHandler::GetCurrentModel() {
@@ -595,18 +579,26 @@ void ConversationHandler::SendFeedback(const std::string& category,
       },
       std::move(callback));
 
-  if (!associated_content_delegate_) {
+  if (!associated_content_manager_) {
     send_hostname = false;
   }
 
-  const GURL page_url =
-      send_hostname ? associated_content_delegate_->GetURL() : GURL();
+  std::vector<std::string> urls;
+  if (send_hostname) {
+    for (const auto& content :
+         associated_content_manager_->GetAssociatedContent()) {
+      if (!content->url.is_valid() || !content->url.SchemeIsHTTPOrHTTPS()) {
+        continue;
+      }
+      urls.push_back(content->url.host());
+    }
+  }
 
-  feedback_api_->SendFeedback(category, feedback, rating_id,
-                              (send_hostname && page_url.SchemeIsHTTPOrHTTPS())
-                                  ? std::optional<std::string>(page_url.host())
-                                  : std::nullopt,
-                              selected_language_, std::move(on_complete));
+  feedback_api_->SendFeedback(
+      category, feedback, rating_id,
+      urls.empty() ? std::nullopt
+                   : std::make_optional(base::JoinString(urls, ",")),
+      selected_language_, std::move(on_complete));
 }
 
 void ConversationHandler::GetConversationUuid(
@@ -980,10 +972,8 @@ void ConversationHandler::PerformQuestionGeneration(
 }
 
 void ConversationHandler::DisassociateContentDelegate() {
-  if (associated_content_delegate_) {
-    associated_content_delegate_->OnRelatedConversationDisassociated(this);
-    associated_content_delegate_ = nullptr;
-  }
+  // TODO: Cleanup related conversations in destructor
+  associated_content_manager_ = nullptr;
 }
 
 void ConversationHandler::GetAssociatedContentInfo(
@@ -1006,7 +996,7 @@ void ConversationHandler::SetShouldSendPageContents(bool should_send) {
   }
   should_send_page_contents_ = should_send;
 
-  OnAssociatedContentInfoChanged();
+  OnAssociatedContentUpdated();
   MaybeSeedOrClearSuggestions();
   MaybeFetchOrClearContentStagedConversation();
 }
@@ -1126,10 +1116,6 @@ void ConversationHandler::AddSubmitSelectedTextError(
   SetAPIError(error);
 }
 
-void ConversationHandler::OnAssociatedContentTitleChanged() {
-  OnAssociatedContentInfoChanged();
-}
-
 void ConversationHandler::OnUserOptedIn() {
   MaybePopPendingRequests();
   MaybeFetchOrClearContentStagedConversation();
@@ -1176,7 +1162,7 @@ void ConversationHandler::PerformAssistantGeneration(
   if (features::IsPageContentRefineEnabled() &&
       page_content.length() > max_content_length &&
       last_entry->action_type != mojom::ActionType::SUMMARIZE_PAGE &&
-      associated_content_delegate_) {
+      associated_content_manager_) {
     DVLOG(2) << "Refining content of length: " << page_content.length();
 
     auto refined_content_callback = base::BindOnce(
@@ -1184,7 +1170,7 @@ void ConversationHandler::PerformAssistantGeneration(
         weak_ptr_factory_.GetWeakPtr(), std::move(data_received_callback),
         std::move(data_completed_callback), page_content, is_video);
 
-    associated_content_delegate_->GetTopSimilarityWithPromptTilContextLimit(
+    associated_content_manager_->GetTopSimilarityWithPromptTilContextLimit(
         last_entry->prompt.value_or(last_entry->text), page_content,
         max_content_length, std::move(refined_content_callback));
 
@@ -1198,7 +1184,7 @@ void ConversationHandler::PerformAssistantGeneration(
     // limit), update the UI to let them know we're not refining content
     // anymore.
     is_content_refined_ = false;
-    OnAssociatedContentInfoChanged();
+    OnAssociatedContentUpdated();
   }
 
   engine_->GenerateAssistantResponse(
@@ -1343,7 +1329,7 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
         });
     const bool has_summarized = found_iter != chat_history_.end();
     if (!has_summarized) {
-      if (associated_content_delegate_->GetCachedIsVideo()) {
+      if (associated_content_manager_->IsVideo()) {
         suggestions_.emplace_back(
             l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO),
             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO),
@@ -1382,7 +1368,7 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
     return;
   }
 
-  associated_content_delegate_->GetStagedEntriesFromContent(
+  associated_content_manager_->GetStagedEntriesFromContent(
       base::BindOnce(&ConversationHandler::OnGetStagedEntriesFromContent,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -1436,8 +1422,8 @@ void ConversationHandler::GeneratePageContent(GetPageContentCallback callback) {
 
   // Keep hold of the current content so we can check if it changed
   std::string current_content =
-      std::string(associated_content_delegate_->GetCachedTextContent());
-  associated_content_delegate_->GetContent(
+      std::string(associated_content_manager_->GetCachedTextContent());
+  associated_content_manager_->GetContent(
       base::BindOnce(&ConversationHandler::OnGeneratePageContentComplete,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(current_content)));
@@ -1465,7 +1451,7 @@ void ConversationHandler::OnGeneratePageContentComplete(
 
   // Content-used percentage and is_video might have changed in addition to
   // content_type.
-  OnAssociatedContentInfoChanged();
+  OnAssociatedContentUpdated();
 }
 
 void ConversationHandler::OnGetRefinedPageContent(
@@ -1487,13 +1473,13 @@ void ConversationHandler::OnGetRefinedPageContent(
   if (refined_page_content.has_value()) {
     page_content_to_use = std::move(refined_page_content.value());
     is_content_refined_ = true;
-    OnAssociatedContentInfoChanged();
+    OnAssociatedContentUpdated();
   } else {
     VLOG(1) << "Failed to get refined page content: "
             << refined_page_content.error();
     if (is_content_refined_) {
       is_content_refined_ = false;
-      OnAssociatedContentInfoChanged();
+      OnAssociatedContentUpdated();
     }
   }
   engine_->GenerateAssistantResponse(
@@ -1642,9 +1628,9 @@ void ConversationHandler::OnConversationEntryAdded(
     return;
   }
   std::optional<std::string> associated_content_value;
-  if (is_content_different_ && associated_content_delegate_) {
+  if (is_content_different_ && associated_content_manager_) {
     associated_content_value =
-        associated_content_delegate_->GetCachedTextContent();
+        associated_content_manager_->GetCachedTextContent();
     is_content_different_ = false;
   }
   // If this is the first entry that isn't staged, notify about all previous
@@ -1671,51 +1657,22 @@ void ConversationHandler::OnConversationEntryAdded(
   OnHistoryUpdate();
 }
 
-int ConversationHandler::GetContentUsedPercentage() {
-  CHECK(associated_content_delegate_);
-  auto& model = GetCurrentModel();
-  uint32_t max_associated_content_length =
-      ModelService::CalcuateMaxAssociatedContentLengthForModel(model);
-
-  auto content_length =
-      associated_content_delegate_->GetCachedTextContent().length();
-
-  if (max_associated_content_length > static_cast<uint32_t>(content_length)) {
-    return 100;
-  }
-
-  // Convert to float to avoid integer division, which truncates towards zero
-  // and could lead to inaccurate results before multiplication.
-  float pct = static_cast<float>(max_associated_content_length) /
-              static_cast<float>(content_length) * 100;
-
-  return base::ClampRound(pct);
-}
-
 bool ConversationHandler::IsContentAssociationPossible() {
-  return (associated_content_delegate_ != nullptr);
+  // TODO(fallaciousreasoning): I think we need to check if we have a page
+  // associated with this conversation (i.e. as in the sidebar).
+  return (associated_content_manager_ != nullptr);
 }
 
 void ConversationHandler::UpdateAssociatedContentInfo() {
   // Only modify associated content metadata here
-  if (associated_content_delegate_) {
+  if (associated_content_manager_) {
     // Note: We don't create a new AssociatedContent object here unless one
     // doesn't exist. If we generate one with a new UUID the deserializer
     // breaks.
-    if (metadata_->associated_content.empty()) {
-      metadata_->associated_content.push_back(mojom::AssociatedContent::New());
-      metadata_->associated_content[0]->uuid =
-          base::Uuid::GenerateRandomV4().AsLowercaseString();
-    }
-    metadata_->associated_content[0]->title =
-        base::UTF16ToUTF8(associated_content_delegate_->GetTitle());
-    const GURL url = associated_content_delegate_->GetURL();
-    metadata_->associated_content[0]->url = url;
-    metadata_->associated_content[0]->content_id =
-        associated_content_delegate_->GetContentId();
-    metadata_->associated_content[0]->content_used_percentage =
-        GetContentUsedPercentage();
-    metadata_->associated_content[0]->is_content_refined = is_content_refined_;
+    // TODO(fallaciousreasoning): I think we need to keep this in sync with
+    // whats in the AssociatedContentManager
+    metadata_->associated_content =
+        associated_content_manager_->GetAssociatedContent();
   } else {
     metadata_->associated_content.clear();
   }
@@ -1745,19 +1702,6 @@ ConversationHandler::GetStateForConversationEntries() {
        model.options->get_leo_model_options()->access !=
            mojom::ModelAccess::PREMIUM);
   return entries_state;
-}
-
-void ConversationHandler::OnAssociatedContentInfoChanged() {
-  UpdateAssociatedContentInfo();
-  for (auto& client : conversation_ui_handlers_) {
-    std::vector<mojom::AssociatedContentPtr> associated_content;
-    std::ranges::transform(metadata_->associated_content,
-                           std::back_inserter(associated_content),
-                           [](const auto& content) { return content->Clone(); });
-    client->OnAssociatedContentInfoChanged(
-        std::move(associated_content), should_send_page_contents_);
-  }
-  OnStateForConversationEntriesChanged();
 }
 
 void ConversationHandler::OnClientConnectionChanged() {

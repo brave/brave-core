@@ -159,6 +159,7 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
 
 void AIChatTabHelper::WebContentsDestroyed() {
   inner_web_contents_ = nullptr;
+  OnNewPage(-1);
 }
 
 void AIChatTabHelper::NavigationEntryCommitted(
