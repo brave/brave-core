@@ -19,11 +19,11 @@ import org.chromium.url_sanitizer.mojom.UrlSanitizerService;
 
 @JNINamespace("chrome::android")
 public class UrlSanitizerServiceFactory {
-    private static final Object lock = new Object();
+    private static final Object sLock = new Object();
     private static UrlSanitizerServiceFactory instance;
 
     public static UrlSanitizerServiceFactory getInstance() {
-        synchronized (lock) {
+        synchronized (sLock) {
             if (instance == null) {
                 instance = new UrlSanitizerServiceFactory();
             }

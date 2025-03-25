@@ -19,11 +19,11 @@ import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
 public class BlockchainRegistryFactory {
-    private static final Object lock = new Object();
+    private static final Object sLock = new Object();
     private static BlockchainRegistryFactory instance;
 
     public static BlockchainRegistryFactory getInstance() {
-        synchronized (lock) {
+        synchronized (sLock) {
             if (instance == null) {
                 instance = new BlockchainRegistryFactory();
             }
