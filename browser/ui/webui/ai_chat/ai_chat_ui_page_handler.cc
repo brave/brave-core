@@ -164,7 +164,7 @@ AIChatUIPageHandler::AIChatUIPageHandler(
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
     active_chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
-    chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
+    associated_content_delegate_observation_.Observe(active_chat_tab_helper_);
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
   }
@@ -295,11 +295,12 @@ void AIChatUIPageHandler::ChatContextObserver::WebContentsDestroyed() {
 
 void AIChatUIPageHandler::HandleWebContentsDestroyed() {
   active_chat_tab_helper_ = nullptr;
-  chat_tab_helper_observation_.Reset();
+  associated_content_delegate_observation_.Reset();
   chat_context_observer_.reset();
 }
 
-void AIChatUIPageHandler::OnAssociatedContentNavigated(int new_navigation_id) {
+void AIChatUIPageHandler::OnNavigated(
+    ConversationHandler::AssociatedContentDelegate* delegate) {
   // This is only applicable to content-adjacent UI, e.g. SidePanel on Desktop
   // where it would like to remain associated with the Tab and move away from
   // Conversations of previous navigations. That doens't apply to the standalone

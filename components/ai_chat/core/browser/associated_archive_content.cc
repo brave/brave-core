@@ -22,13 +22,15 @@ namespace ai_chat {
 AssociatedArchiveContent::AssociatedArchiveContent(GURL url,
                                                    std::string text_content,
                                                    std::u16string title,
-                                                   bool is_video)
+                                                   bool is_video,
+                                                   std::string uuid)
     : url_(url),
       text_content_(text_content),
       title_(title),
       is_video_(is_video) {
   DVLOG(1) << "Made archive for content at: " << url.spec() << "\n"
            << "title: " << title << "text: " << text_content;
+  set_uuid(std::move(uuid));
 }
 
 AssociatedArchiveContent::~AssociatedArchiveContent() = default;

@@ -884,9 +884,32 @@ void AIChatService::OnConversationTokenInfoChanged(
   }
 }
 
-void AIChatService::OnAssociatedContentDestroyed(ConversationHandler* handler,
-                                                 int content_id) {
-  content_conversations_.erase(content_id);
+void AIChatService::OnConversationTokenInfoChanged(
+    const std::string& conversation_uuid,
+    uint64_t total_tokens,
+    uint64_t trimmed_tokens) {
+  auto conversation_it = conversations_.find(conversation_uuid);
+  if (conversation_it == conversations_.end()) {
+    DLOG(ERROR) << "Conversation not found for token info change";
+    return;
+  }
+
+  auto& conversation_metadata = conversation_it->second;
+  conversation_metadata->total_tokens = total_tokens;
+  conversation_metadata->trimmed_tokens = trimmed_tokens;
+
+  OnConversationListChanged();
+
+  // Persist the change
+  if (ai_chat_db_) {
+    ai_chat_db_
+        .AsyncCall(
+            base::IgnoreResult(&AIChatDatabase::UpdateConversationTokenInfo))
+        .WithArgs(conversation_uuid, total_tokens, trimmed_tokens);
+  }
+}
+
+void AIChatService::OnAssociatedContentUpdated(ConversationHandler* handler) {
   MaybeUnloadConversation(handler);
 }
 

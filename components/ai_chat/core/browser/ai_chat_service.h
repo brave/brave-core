@@ -105,8 +105,7 @@ class AIChatService : public KeyedService,
   void OnConversationTokenInfoChanged(const std::string& conversation_uuid,
                                       uint64_t total_tokens,
                                       uint64_t trimmed_tokens) override;
-  void OnAssociatedContentDestroyed(ConversationHandler* handler,
-                                    int content_id) override;
+  void OnAssociatedContentUpdated(ConversationHandler* handler) override;
 
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
