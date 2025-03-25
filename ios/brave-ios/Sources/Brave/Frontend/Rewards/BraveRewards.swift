@@ -210,7 +210,7 @@ public class BraveRewards: PreferencesObserver {
 
   /// Notifies Brave Ads that the given tab did change
   func maybeNotifyTabDidChange(
-    tab: TabState,
+    tab: any TabState,
     isSelected: Bool
   ) {
     guard !tab.redirectChain.isEmpty, !tab.isPrivate,
@@ -232,7 +232,7 @@ public class BraveRewards: PreferencesObserver {
   }
 
   /// Notifies Brave Ads that the given tab did load
-  func maybeNotifyTabDidLoad(tab: TabState) {
+  func maybeNotifyTabDidLoad(tab: any TabState) {
     guard !tab.redirectChain.isEmpty, !tab.isPrivate,
       ads.isServiceRunning(),
       let reportingState = tab.rewardsReportingState
@@ -263,7 +263,7 @@ public class BraveRewards: PreferencesObserver {
 
   /// Report that a tab with a given id was updated
   func reportTabUpdated(
-    tab: TabState,
+    tab: any TabState,
     isSelected: Bool,
     isPrivate: Bool
   ) {
@@ -281,7 +281,7 @@ public class BraveRewards: PreferencesObserver {
   /// Report that a page has loaded in the current browser tab, and the
   /// text/HTML content is available for analysis.
   func reportLoadedPage(
-    tab: TabState,
+    tab: any TabState,
     htmlContent: String?,
     textContent: String?
   ) {

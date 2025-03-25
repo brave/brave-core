@@ -30,14 +30,13 @@ extension BrowserViewController {
   /// Adding Toolbar button over the keyboard for adding Open Search Engine
   /// - Parameter webView: webview triggered open seach engine
   @discardableResult
-  func evaluateWebsiteSupportOpenSearchEngine(in tab: TabState) -> Bool {
+  func evaluateWebsiteSupportOpenSearchEngine(in tab: any TabState) -> Bool {
     if let openSearchMetaData = tab.pageMetadata?.search,
-      let url = tab.url,
-      url.isSecureWebPage(),
-      let webContentView = tab.webContentView
+      let url = tab.visibleURL,
+      url.isSecureWebPage()
     {
       return updateAddOpenSearchEngine(
-        webContentView,
+        tab.view,
         referenceObject: OpenSearchReference(
           reference: openSearchMetaData.href,
           title: openSearchMetaData.title
@@ -143,8 +142,8 @@ extension BrowserViewController {
       return
     }
 
-    guard let scheme = tabManager.selectedTab?.url?.scheme,
-      let host = tabManager.selectedTab?.url?.host
+    guard let scheme = tabManager.selectedTab?.visibleURL?.scheme,
+      let host = tabManager.selectedTab?.visibleURL?.host
     else {
       Logger.module.error("Selected Tab doesn't have URL")
       return

@@ -435,7 +435,7 @@ extension BrowserViewController {
             ) {
               browserViewController.dismiss(animated: true) {
                 guard let tab = self.browserViewController.tabManager.selectedTab,
-                  let url = tab.url
+                  let url = tab.visibleURL
                 else { return }
                 let alert = UIAlertController.shredDataAlert(url: url) { _ in
                   self.browserViewController.shredData(for: url, in: tab)
@@ -469,7 +469,7 @@ extension BrowserViewController {
 
   struct MenuTabDetailsView: View {
     @SwiftUI.Environment(\.colorScheme) var colorScheme: ColorScheme
-    weak var tab: TabState?
+    weak var tab: (any TabState)?
     var url: URL
 
     var body: some View {
@@ -502,7 +502,7 @@ extension BrowserViewController {
   func presentBrowserMenu(
     from sourceView: UIView,
     activities: [UIActivity],
-    tab: TabState?,
+    tab: (any TabState)?,
     pageURL: URL?
   ) {
     var actions: [Action] = []
@@ -539,8 +539,9 @@ extension BrowserViewController {
       pageActivities.insert(
         .init(
           id: .requestDesktopSite,
-          title: tab.isDesktopSite ? Strings.appMenuViewMobileSiteTitleString : nil,
-          image: tab.isDesktopSite ? "leo.smartphone" : nil,
+          title: tab.currentUserAgentType == .desktop
+            ? Strings.appMenuViewMobileSiteTitleString : nil,
+          image: tab.currentUserAgentType == .desktop ? "leo.smartphone" : nil,
           handler: { @MainActor [unowned self, weak tab] _ in
             tab?.switchUserAgent()
             self.dismiss(animated: true)
@@ -590,7 +591,7 @@ extension BrowserViewController {
     return
   }
 
-  private func pageActions(for pageURL: URL?, tab: TabState?) -> [Action] {
+  private func pageActions(for pageURL: URL?, tab: (any TabState)?) -> [Action] {
     let playlistActivity = addToPlayListActivityItem ?? openInPlaylistActivityItem
     let isPlaylistItemAdded = openInPlaylistActivityItem != nil
     var actions: [Action] = [
@@ -650,12 +651,12 @@ extension BrowserViewController {
       },
     ]
     if BraveCore.FeatureList.kBraveShredFeature.enabled {
-      let isShredAvailable = tabManager.selectedTab?.url?.isShredAvailable ?? false
+      let isShredAvailable = tabManager.selectedTab?.visibleURL?.isShredAvailable ?? false
       actions.append(
         .init(id: .shredData, attributes: isShredAvailable ? [] : [.disabled]) {
           @MainActor [unowned self] _ in
           self.dismiss(animated: true) {
-            guard let tab = self.tabManager.selectedTab, let url = tab.url else { return }
+            guard let tab = self.tabManager.selectedTab, let url = tab.visibleURL else { return }
             let alert = UIAlertController.shredDataAlert(url: url) { _ in
               self.shredData(for: url, in: tab)
             }

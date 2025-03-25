@@ -32,7 +32,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
   static let userScript: WKUserScript? = nil
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -89,7 +89,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
         }
 
         // cache blocked selectors
-        if let url = tab.url {
+        if let url = tab.visibleURL {
           tab.contentBlocker?.cacheSelectors(
             for: url,
             standardSelectors: standardSelectors,

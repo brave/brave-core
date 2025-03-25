@@ -15,7 +15,7 @@ enum ReadabilityOperationResult {
 class ReadabilityOperation: Operation {
   private var url: URL
   private var semaphore: DispatchSemaphore
-  private var tab: TabState!
+  private var tab: (any TabState)!
   private var readerModeCache: ReaderModeCache
   var result: ReadabilityOperationResult?
 
@@ -34,10 +34,9 @@ class ReadabilityOperation: Operation {
     // and WebKit are not safe from other threads.
 
     DispatchQueue.main.async {
-      let configuration = WKWebViewConfiguration()
-      self.tab = TabState(configuration: configuration)
+      self.tab = TabStateFactory.create(with: .init(braveCore: nil))
       self.tab.browserData = .init(tab: self.tab, tabGeneratorAPI: nil)
-      self.tab.createWebview()
+      self.tab.createWebView()
       self.tab.addObserver(self)
 
       let readerMode = ReaderModeScriptHandler()
@@ -59,7 +58,6 @@ class ReadabilityOperation: Operation {
     }
 
     DispatchQueue.main.async {
-      self.tab.removeObserver(self)
       self.tab = nil
     }
 
@@ -83,13 +81,13 @@ class ReadabilityOperation: Operation {
 }
 
 extension ReadabilityOperation: TabObserver {
-  func tab(_ tab: TabState, didFailNavigationWithError error: any Error) {
+  func tab(_ tab: any TabState, didFailNavigationWithError error: any Error) {
     result = ReadabilityOperationResult.error(error as NSError)
     semaphore.signal()
   }
 
-  func tabDidFinishNavigation(_ tab: TabState) {
-    tab.evaluateSafeJavaScript(
+  func tabDidFinishNavigation(_ tab: any TabState) {
+    tab.evaluateJavaScript(
       functionName: "\(readerModeNamespace).checkReadability",
       contentWorld: ReaderModeScriptHandler.scriptSandbox
     )
@@ -100,22 +98,22 @@ extension ReadabilityOperation: ReaderModeScriptHandlerDelegate {
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didChangeReaderModeState state: ReaderModeState,
-    forTab tab: TabState
+    forTab tab: any TabState
   ) {
   }
 
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
-    didDisplayReaderizedContentForTab tab: TabState
+    didDisplayReaderizedContentForTab tab: any TabState
   ) {
   }
 
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didParseReadabilityResult readabilityResult: ReadabilityResult,
-    forTab tab: TabState
+    forTab tab: any TabState
   ) {
-    guard tab == self.tab else {
+    guard tab === self.tab else {
       return
     }
 

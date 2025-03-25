@@ -16,7 +16,7 @@ class BlockedDomainScriptHandler: TabContentScript {
   static let userScript: WKUserScript? = nil
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {
@@ -44,8 +44,8 @@ class BlockedDomainScriptHandler: TabContentScript {
     }
   }
 
-  private func blockedDomainDidProceed(tab: TabState) {
-    guard let url = tab.url?.strippedInternalURL, let etldP1 = url.baseDomain else {
+  private func blockedDomainDidProceed(tab: any TabState) {
+    guard let url = tab.visibleURL?.strippedInternalURL, let etldP1 = url.baseDomain else {
       assertionFailure(
         "There should be no way this method can be triggered if the tab is not on an internal url"
       )
@@ -57,15 +57,16 @@ class BlockedDomainScriptHandler: TabContentScript {
     tab.loadRequest(request)
   }
 
-  private func blockedDomainDidGoBack(tab: TabState) {
-    guard let url = tab.url?.strippedInternalURL else {
+  private func blockedDomainDidGoBack(tab: any TabState) {
+    guard let url = tab.visibleURL?.strippedInternalURL else {
       assertionFailure(
         "There should be no way this method can be triggered if the tab is not on an internal url"
       )
       return
     }
 
-    guard let listItem = tab.backList?.reversed().first(where: { $0.url != url }) else {
+    guard let listItem = tab.backForwardList?.backList.reversed().first(where: { $0.url != url })
+    else {
       // How is this even possible?
       // All testing indicates no, so we will not handle.
       // If we find it is, then we need to disable or hide the "Go Back" button in these cases.

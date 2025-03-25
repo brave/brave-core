@@ -27,37 +27,38 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   fileprivate static var pageLoadTimeout = 300.0
   private var pendingRequests = [String: URLRequest]()
 
-  private let tab = TabState(
-    configuration: WKWebViewConfiguration().then {
-      $0.processPool = WKProcessPool()
-      $0.preferences = WKPreferences()
-      $0.preferences.javaScriptCanOpenWindowsAutomatically = false
-      $0.allowsInlineMediaPlayback = true
-      $0.ignoresViewportScaleLimits = true
-    },
-    type: .private
-  ).then {
-    $0.createWebview()
-    $0.browserData = .init(tab: $0)
-    $0.browserData?.setScript(
-      script: .playlistMediaSource,
-      enabled: true
-    )
-    $0.webScrollView?.layer.masksToBounds = true
-  }
+  private let tab: any TabState
 
   private weak var certStore: CertStore?
   private var handler: ((PlaylistInfo?) -> Void)?
 
   init() {
+    let tab = TabStateFactory.create(
+      with: .init(
+        initialConfiguration:
+          WKWebViewConfiguration().then {
+            $0.processPool = WKProcessPool()
+            $0.preferences = WKPreferences()
+            $0.preferences.javaScriptCanOpenWindowsAutomatically = false
+            $0.allowsInlineMediaPlayback = true
+            $0.ignoresViewportScaleLimits = true
+          },
+        braveCore: nil
+      )
+    )
+    self.tab = tab
     super.init(frame: .zero)
 
-    guard let webView = tab.webContentView else {
-      return
-    }
+    tab.createWebView()
+    tab.browserData = .init(tab: tab)
+    tab.browserData?.setScript(
+      script: .playlistMediaSource,
+      enabled: true
+    )
+    tab.webViewProxy?.scrollView?.layer.masksToBounds = true
 
-    self.addSubview(webView)
-    webView.snp.makeConstraints {
+    self.addSubview(tab.view)
+    tab.view.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
   }
@@ -79,15 +80,14 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         continuation.resume(returning: $0)
       }
 
-      guard let webContentView = tab.webContentView,
-        let browserViewController = self.currentScene?.browserViewController
+      guard let browserViewController = self.currentScene?.browserViewController
       else {
         self.handler?(nil)
         return
       }
 
       self.certStore = browserViewController.profile.certStore
-      browserViewController.tab(tab, didCreateWebView: webContentView)
+      browserViewController.tabDidCreateWebView(tab)
 
       tab.addObserver(self)
       tab.browserData?.replaceContentScript(
@@ -96,7 +96,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         forTab: tab
       )
 
-      tab.webContentView?.frame = superview?.bounds ?? self.bounds
+      tab.view.frame = superview?.bounds ?? self.bounds
       tab.loadRequest(
         URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 60.0)
       )
@@ -104,7 +104,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   }
 
   func stop() {
-    tab.stop()
+    tab.stopLoading()
     self.handler?(nil)
     tab.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
   }
@@ -144,7 +144,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     static let playlistProcessDocumentLoad = PlaylistScriptHandler.playlistProcessDocumentLoad
 
     func tab(
-      _ tab: TabState,
+      _ tab: any TabState,
       receivedScriptMessage message: WKScriptMessage,
       replyHandler: @escaping (Any?, String?) -> Void
     ) {
@@ -258,8 +258,8 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
 }
 
 extension LivePlaylistWebLoader: TabObserver {
-  func tabDidCommitNavigation(_ tab: TabState) {
-    tab.evaluateSafeJavaScript(
+  func tabDidCommitNavigation(_ tab: any TabState) {
+    tab.evaluateJavaScript(
       functionName:
         "window.__firefox__.\(PlaylistWebLoaderContentHelper.playlistProcessDocumentLoad)()",
       args: [],
@@ -268,7 +268,7 @@ extension LivePlaylistWebLoader: TabObserver {
     )
   }
 
-  func tab(_ tab: TabState, didFailNavigationWithError error: any Error) {
+  func tab(_ tab: any TabState, didFailNavigationWithError error: any Error) {
     // There is a bug on some sites or something where the page may load TWICE OR there is a bug in WebKit where the page fails to load
     // Either way, WebKit returns _WKRecoveryAttempterErrorKey with a WKReloadFrameErrorRecoveryAttempter
     // Then it automatically reloads the page. In this case, we don't want to error and cancel loading and show the user an alert

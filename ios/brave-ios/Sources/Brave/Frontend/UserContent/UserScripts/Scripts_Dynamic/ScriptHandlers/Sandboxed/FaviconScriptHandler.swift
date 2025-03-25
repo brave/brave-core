@@ -34,7 +34,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
   }()
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -74,7 +74,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
   }
 
   private static func updateFavicon(
-    tab: TabState?,
+    tab: (any TabState)?,
     url: URL,
     isPrivate: Bool,
     icon: UIImage?,

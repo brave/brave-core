@@ -251,7 +251,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   }
 
   private func layoutSuggestionsOptInPrompt() {
-    if dataSource.tabType.isPrivate
+    if dataSource.isPrivate
       || dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn == false
     {
       reloadData()
@@ -401,7 +401,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   }
 
   private func submitSeachTemplateQuery(isBraveSearchPromotion: Bool) {
-    if !dataSource.tabType.isPrivate {
+    if !dataSource.isPrivate {
       RecentSearch.addItem(type: .text, text: dataSource.searchQuery, websiteUrl: nil)
     }
     searchDelegate?.searchViewController(
@@ -435,7 +435,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       return
     }
 
-    if !dataSource.tabType.isPrivate {
+    if !dataSource.isPrivate {
       RecentSearch.addItem(type: .website, text: localSearchQuery, websiteUrl: url.absoluteString)
     }
     searchDelegate?.searchViewController(self, didSelectURL: url)
@@ -460,7 +460,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       if !isBraveSearchPrompt(for: indexPath) {
         // Assume that only the default search engine can provide search suggestions.
         let engine = dataSource.searchEngines?.defaultEngine(
-          forType: dataSource.tabType == .private ? .privateMode : .standard
+          forType: dataSource.isPrivate ? .privateMode : .standard
         )
         let suggestion = dataSource.suggestions[indexPath.row]
 
@@ -470,7 +470,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
         }
 
         if let url = url {
-          if !dataSource.tabType.isPrivate {
+          if !dataSource.isPrivate {
             RecentSearch.addItem(type: .website, text: suggestion, websiteUrl: url.absoluteString)
           }
           searchDelegate?.searchViewController(self, didSelectURL: url)
@@ -521,7 +521,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     case .searchSuggestionsOptIn: return nil
     case .searchSuggestions:
       if let defaultSearchEngine = dataSource.searchEngines?.defaultEngine(
-        forType: dataSource.tabType == .private ? .privateMode : .standard
+        forType: dataSource.isPrivate ? .privateMode : .standard
       ) {
         if defaultSearchEngine.shortName.contains(
           Strings.searchSuggestionSectionTitleNoSearchFormat
@@ -768,7 +768,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
         cell.imageView?.layer.borderWidth = SearchViewControllerUX.iconBorderWidth
         cell.imageView?.loadFavicon(
           for: site.tileURL,
-          isPrivateBrowsing: dataSource.tabType.isPrivate
+          isPrivateBrowsing: dataSource.isPrivate
         )
         cell.backgroundColor = .clear
       }
@@ -815,7 +815,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       }
 
       return shouldShowSuggestions && !dataSource.searchQuery.looksLikeAURL()
-        && !dataSource.tabType.isPrivate ? searchSuggestionsCount : 0
+        && !dataSource.isPrivate ? searchSuggestionsCount : 0
     case .openTabsAndHistoryAndBookmarks:
       // Check for History Bookmarks Open Tabs suggestions
       // Show Browser Suggestions Preference effects all the modes

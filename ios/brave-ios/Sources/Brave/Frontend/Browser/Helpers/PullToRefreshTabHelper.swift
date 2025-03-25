@@ -18,7 +18,7 @@ extension TabDataValues {
 }
 
 class PullToRefreshTabHelper: TabObserver, PreferencesObserver {
-  private weak var tab: TabState?
+  private weak var tab: (any TabState)?
   private lazy var refreshControl = UIRefreshControl(
     frame: .zero,
     primaryAction: .init(handler: { [weak self] _ in
@@ -26,7 +26,7 @@ class PullToRefreshTabHelper: TabObserver, PreferencesObserver {
     })
   )
 
-  init(tab: TabState) {
+  init(tab: any TabState) {
     self.tab = tab
 
     tab.addObserver(self)
@@ -38,24 +38,24 @@ class PullToRefreshTabHelper: TabObserver, PreferencesObserver {
   }
 
   private func updatePullToRefreshVisibility() {
-    guard let url = tab?.visibleURL, let scrollView = tab?.webScrollView else { return }
+    guard let url = tab?.url, let scrollView = tab?.webViewProxy?.scrollView else { return }
     scrollView.refreshControl =
       url.isLocalUtility || !Preferences.General.enablePullToRefresh.value ? nil : refreshControl
   }
 
-  func tabDidUpdateURL(_ tab: TabState) {
+  func tabDidUpdateURL(_ tab: any TabState) {
     updatePullToRefreshVisibility()
   }
 
-  func tab(_ tab: TabState, didCreateWebView webView: UIView) {
+  func tabDidCreateWebView(_ tab: any TabState) {
     updatePullToRefreshVisibility()
   }
 
-  func tabDidStopLoading(_ tab: TabState) {
+  func tabDidStopLoading(_ tab: any TabState) {
     refreshControl.endRefreshing()
   }
 
-  func tabWillBeDestroyed(_ tab: TabState) {
+  func tabWillBeDestroyed(_ tab: any TabState) {
     tab.removeObserver(self)
   }
 

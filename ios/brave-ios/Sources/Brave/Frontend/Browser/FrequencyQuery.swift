@@ -98,7 +98,7 @@ class FrequencyQuery {
     }
   }
 
-  private func fetchSitesFromTabs(_ tabs: [TabState]) throws -> [Site] {
+  private func fetchSitesFromTabs(_ tabs: [any TabState]) throws -> [Site] {
     var tabList = [Site]()
     tabList.reserveCapacity(tabs.count)
 
@@ -107,7 +107,7 @@ class FrequencyQuery {
     }
 
     for tab in tabs {
-      if let url = tab.url, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
+      if let url = tab.visibleURL, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
         if selectedTab.id == tab.id {
           continue
         }

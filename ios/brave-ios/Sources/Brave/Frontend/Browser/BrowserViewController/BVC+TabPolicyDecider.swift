@@ -18,7 +18,7 @@ import Web
 
 extension BrowserViewController: TabPolicyDecider {
   public func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     shouldAllowResponse response: URLResponse,
     responseInfo: WebResponseInfo
   ) async -> WebPolicyDecision {
@@ -68,15 +68,13 @@ extension BrowserViewController: TabPolicyDecider {
       } else {
         tab.temporaryDocument = nil
       }
-
-      tab.mimeType = response.mimeType
     }
 
     return .allow
   }
 
   public func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     shouldAllowRequest request: URLRequest,
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision {
@@ -196,7 +194,7 @@ extension BrowserViewController: TabPolicyDecider {
       let result = await decentralizedDNSHelper.lookup(
         domain: requestURL.schemelessAbsoluteDisplayString
       )
-      topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+      topToolbar.locationView.loading = tabManager.selectedTab?.isLoading == true
       guard !Task.isCancelled else {  // user pressed stop, or typed new url
         return .cancel
       }
@@ -253,7 +251,7 @@ extension BrowserViewController: TabPolicyDecider {
 
         // Forget any websites that have "forget me" enabled
         // if we navigated away from the previous domain
-        if let currentURL = tab.url,
+        if let currentURL = tab.visibleURL,
           !InternalURL.isValid(url: currentURL),
           let currentETLDP1 = currentURL.baseDomain,
           mainDocumentURL.baseDomain != currentETLDP1
@@ -471,7 +469,7 @@ extension BrowserViewController: TabPolicyDecider {
       )
 
       // Reset the block alert bool on new host.
-      if let newHost: String = requestURL.host, let oldHost: String = tab.url?.host,
+      if let newHost: String = requestURL.host, let oldHost: String = tab.visibleURL?.host,
         newHost != oldHost
       {
         self.tabManager.selectedTab?.alertShownCount = 0
@@ -564,7 +562,7 @@ extension BrowserViewController {
   func getInternalRedirect(
     from request: URLRequest,
     isMainFrame: Bool,
-    in tab: TabState,
+    in tab: any TabState,
     domainForMainFrame: Domain
   ) -> URLRequest? {
     guard let requestURL = request.url else { return nil }
@@ -583,7 +581,7 @@ extension BrowserViewController {
     // (i.e. appropriate settings are enabled for that redirect rule)
     if let debounceService = DebounceServiceFactory.get(privateMode: tab.isPrivate),
       debounceService.isEnabled,
-      let currentURL = tab.url,
+      let currentURL = tab.visibleURL,
       currentURL.baseDomain != requestURL.baseDomain
     {
       if let redirectURL = debounceService.debounce(requestURL) {
@@ -593,7 +591,7 @@ extension BrowserViewController {
         // Also strip query params if debouncing
         modifiedRequest =
           modifiedRequest.stripQueryParams(
-            initiatorURL: tab.committedURL,
+            initiatorURL: tab.lastCommittedURL,
             redirectSourceURL: requestURL,
             isInternalRedirect: false
           ) ?? modifiedRequest
@@ -613,7 +611,7 @@ extension BrowserViewController {
 
     // Handle query param stripping
     if let request = request.stripQueryParams(
-      initiatorURL: tab.committedURL,
+      initiatorURL: tab.lastCommittedURL,
       redirectSourceURL: tab.redirectSourceURL,
       isInternalRedirect: tab.isInternalRedirect == true
     ) {
@@ -655,7 +653,7 @@ extension BrowserViewController {
             if let url = modifiedRequest.url,
               let request = handleInvalidHTTPSUpgrade(tab: tab, responseURL: url)
             {
-              tab.stop()
+              tab.stopLoading()
               tab.loadRequest(request)
             }
           }
@@ -694,7 +692,7 @@ extension BrowserViewController {
 
   /// Upon an invalid response, check that we need to roll back any HTTPS upgrade
   /// or show the interstitial page
-  func handleInvalidHTTPSUpgrade(tab: TabState, responseURL: URL) -> URLRequest? {
+  func handleInvalidHTTPSUpgrade(tab: any TabState, responseURL: URL) -> URLRequest? {
     // Handle invalid upgrade to https
     guard let originalRequest = tab.upgradedHTTPSRequest,
       let originalURL = originalRequest.url,
@@ -731,24 +729,24 @@ extension BrowserViewController {
 
   func handleExternalURL(
     _ url: URL,
-    tab: TabState,
+    tab: any TabState,
     requestInfo: WebRequestInfo
   ) async -> Bool {
     // Do not open external links for child tabs automatically
     // The user must tap on the link to open it.
-    if tab.parent != nil && requestInfo.navigationType != .linkActivated {
+    if tab.opener != nil && requestInfo.navigationType != .linkActivated {
       return false
     }
 
     // Check if the current url of the caller has changed
-    if let domain = tab.url?.baseDomain,
+    if let domain = tab.visibleURL?.baseDomain,
       domain != tab.externalAppURLDomain
     {
       tab.externalAppAlertCounter = 0
       tab.isExternalAppAlertSuppressed = false
     }
 
-    tab.externalAppURLDomain = tab.url?.baseDomain
+    tab.externalAppURLDomain = tab.visibleURL?.baseDomain
 
     // Do not try to present over existing warning
     if let tabData = tab.browserData,
@@ -770,13 +768,13 @@ extension BrowserViewController {
       let displayHost =
         "\(origin.scheme)://\(origin.host):\(origin.port)"
       alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
-    } else if let displayHost = tab.url?.withoutWWW.host {
+    } else if let displayHost = tab.visibleURL?.withoutWWW.host {
       alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
     }
 
     // Handling condition when Tab is empty when handling an external URL we should remove the tab once the user decides
     let removeTabIfEmpty = { [weak self] in
-      if tab.url == nil {
+      if tab.visibleURL == nil {
         self?.tabManager.removeTab(tab)
       }
     }
@@ -784,7 +782,7 @@ extension BrowserViewController {
     // Show the external sceheme invoke alert
     @MainActor
     func showExternalSchemeAlert(
-      for tab: TabState,
+      for tab: any TabState,
       isSuppressActive: Bool,
       openedURLCompletionHandler: @escaping (Bool) -> Void
     ) {

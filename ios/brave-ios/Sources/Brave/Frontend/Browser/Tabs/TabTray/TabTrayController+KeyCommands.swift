@@ -61,16 +61,17 @@ extension TabTrayController {
     }
 
     guard let selectedTab = tabManager.selectedTab,
-      let currentIndex = dataSource.indexPath(for: selectedTab)
+      let currentIndex = dataSource.indexPath(for: selectedTab.id)
     else { return }
 
     let tabsCount = tabTrayView.collectionView.numberOfItems(inSection: 0)
     let nextItem = max(0, min(currentIndex.row + step, tabsCount - 1))
-    let nextTab = dataSource.itemIdentifier(
+
+    if let nextTabID = dataSource.itemIdentifier(
       for: .init(row: nextItem, section: currentIndex.section)
-    )
-    tabManager.selectTab(nextTab)
-    if nextTab != nil {
+    ), let nextTab = tabManager[nextTabID] {
+      tabManager.selectTab(nextTab)
+
       // Small hack here to update UI.
       // At the moment `isSelected` flag is not part of Tab's hashable implementation.
       // So to update UI we force reload on the collection view.

@@ -9,14 +9,14 @@ import Foundation
 public protocol TabPolicyDecider: AnyObject {
   /// Decide whether or not a request should be allowed
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     shouldAllowRequest request: URLRequest,
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision
 
   /// Decide whether or not a response should be allowed
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     shouldAllowResponse response: URLResponse,
     responseInfo: WebResponseInfo
   ) async -> WebPolicyDecision
@@ -24,7 +24,7 @@ public protocol TabPolicyDecider: AnyObject {
 
 extension TabPolicyDecider {
   public func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     shouldAllowRequest: URLRequest,
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision {
@@ -32,7 +32,7 @@ extension TabPolicyDecider {
   }
 
   public func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     shouldAllowResponse: URLResponse,
     responseInfo: WebResponseInfo
   ) async -> WebPolicyDecision {
@@ -43,9 +43,10 @@ extension TabPolicyDecider {
 class AnyTabPolicyDecider: TabPolicyDecider, Hashable {
   var id: ObjectIdentifier
 
-  private let _shouldAllowRequest: (TabState, URLRequest, WebRequestInfo) async -> WebPolicyDecision
+  private let _shouldAllowRequest:
+    (any TabState, URLRequest, WebRequestInfo) async -> WebPolicyDecision
   private let _shouldAllowResponse:
-    (TabState, URLResponse, WebResponseInfo) async -> WebPolicyDecision
+    (any TabState, URLResponse, WebResponseInfo) async -> WebPolicyDecision
 
   init(_ policyDecider: some TabPolicyDecider) {
     id = ObjectIdentifier(policyDecider)
@@ -58,7 +59,7 @@ class AnyTabPolicyDecider: TabPolicyDecider, Hashable {
   }
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     shouldAllowRequest request: URLRequest,
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision {
@@ -66,7 +67,7 @@ class AnyTabPolicyDecider: TabPolicyDecider, Hashable {
   }
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     shouldAllowResponse response: URLResponse,
     responseInfo: WebResponseInfo
   ) async -> WebPolicyDecision {

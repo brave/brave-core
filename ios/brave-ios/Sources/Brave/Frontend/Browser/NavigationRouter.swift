@@ -118,7 +118,8 @@ public enum NavigationPath: Equatable {
     switch path {
     case .unknown, .search:
       // Search
-      if let url = bvc.tabManager.selectedTab?.url, InternalURL(url)?.isAboutHomeURL == true {
+      if let url = bvc.tabManager.selectedTab?.visibleURL, InternalURL(url)?.isAboutHomeURL == true
+      {
         bvc.focusURLBar()
       } else {
         bvc.openBlankNewTab(

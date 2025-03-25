@@ -30,7 +30,7 @@ class LoginsScriptHandler: TabContentScript {
   static let userScript: WKUserScript? = nil
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -83,7 +83,7 @@ class LoginsScriptHandler: TabContentScript {
     }
   }
 
-  private func updateORSaveCredentials(for url: URL, script: [String: Any], tab: TabState) {
+  private func updateORSaveCredentials(for url: URL, script: [String: Any], tab: any TabState) {
     guard let scriptCredentials = passwordAPI.fetchFromScript(url, script: script),
       let username = scriptCredentials.usernameValue,
       scriptCredentials.usernameElement != nil,
@@ -124,7 +124,7 @@ class LoginsScriptHandler: TabContentScript {
     }
   }
 
-  private func showAddPrompt(for login: PasswordForm, tab: TabState) {
+  private func showAddPrompt(for login: PasswordForm, tab: any TabState) {
     addSnackBarForPrompt(for: login, tab: tab, isUpdating: false) { [weak self] in
       guard let self = self else { return }
 
@@ -134,7 +134,7 @@ class LoginsScriptHandler: TabContentScript {
     }
   }
 
-  private func showUpdatePrompt(from old: PasswordForm, to new: PasswordForm, tab: TabState) {
+  private func showUpdatePrompt(from old: PasswordForm, to new: PasswordForm, tab: any TabState) {
     addSnackBarForPrompt(for: new, tab: tab, isUpdating: true) { [weak self] in
       guard let self = self else { return }
 
@@ -144,7 +144,7 @@ class LoginsScriptHandler: TabContentScript {
 
   private func addSnackBarForPrompt(
     for login: PasswordForm,
-    tab: TabState,
+    tab: any TabState,
     isUpdating: Bool,
     _ completion: @escaping () -> Void
   ) {
@@ -205,7 +205,7 @@ class LoginsScriptHandler: TabContentScript {
     logins: [PasswordForm],
     requestId: String,
     frameInfo: WKFrameInfo,
-    tab: TabState
+    tab: any TabState
   ) {
     let securityOrigin = frameInfo.securityOrigin
 
@@ -219,7 +219,7 @@ class LoginsScriptHandler: TabContentScript {
 
       // Check for current tab has a url to begin with
       // and the frame is not modified
-      guard let currentURL = tab.url,
+      guard let currentURL = tab.visibleURL,
         LoginsScriptHandler.checkIsSameFrame(
           url: currentURL,
           frameScheme: securityOrigin.protocol,
@@ -247,7 +247,7 @@ class LoginsScriptHandler: TabContentScript {
       return
     }
 
-    tab.evaluateSafeJavaScript(
+    tab.evaluateJavaScript(
       functionName: "window.__firefox__.logins.inject",
       args: [jsonString],
       contentWorld: LoginsScriptHandler.scriptSandbox,

@@ -23,7 +23,7 @@ class HTTPBlockedScriptHandler: TabContentScript {
   static let userScript: WKUserScript? = nil
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -51,8 +51,8 @@ class HTTPBlockedScriptHandler: TabContentScript {
     }
   }
 
-  private func didProceed(tab: TabState) {
-    guard let url = tab.upgradedHTTPSRequest?.url ?? tab.url?.strippedInternalURL else {
+  private func didProceed(tab: any TabState) {
+    guard let url = tab.upgradedHTTPSRequest?.url ?? tab.visibleURL?.strippedInternalURL else {
       //      assertionFailure(
       //        "There should be no way this method can be triggered if the tab is not on an internal url"
       //      )
@@ -70,9 +70,9 @@ class HTTPBlockedScriptHandler: TabContentScript {
     tab.loadRequest(request)
   }
 
-  @MainActor private func didGoBack(tab: TabState) {
+  @MainActor private func didGoBack(tab: any TabState) {
     tab.upgradedHTTPSRequest = nil
-    if tab.backList?.isEmpty == true {
+    if tab.backForwardList?.backList.isEmpty == true {
       // interstitial was opened in a new tab
       tabManager?.addTabToRecentlyClosed(tab)
       tabManager?.removeTab(tab)

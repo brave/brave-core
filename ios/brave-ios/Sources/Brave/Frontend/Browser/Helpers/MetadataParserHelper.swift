@@ -23,17 +23,18 @@ class MetadataParserHelper: TabEventHandler {
     unregister(tabObservers)
   }
 
-  func tab(_ tab: TabState, didChangeURL url: URL) {
+  func tab(_ tab: any TabState, didChangeURL url: URL) {
     // Get the metadata out of the page-metadata-parser, and into a type safe struct as soon
     // as possible.
-    guard let url = tab.url, url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+    guard let url = tab.visibleURL, url.isWebPage(includeDataURIs: false),
+      !InternalURL.isValid(url: url)
     else {
       // TabEvent.post(.pageMetadataNotAvailable, for: tab)
       tab.pageMetadata = nil
       return
     }
 
-    tab.evaluateSafeJavaScript(
+    tab.evaluateJavaScript(
       functionName: "__firefox__.metadata && __firefox__.metadata.getMetadata()",
       contentWorld: .defaultClient,
       asFunction: false
@@ -85,7 +86,7 @@ class MediaImageLoader: TabEventHandler {
     unregister(tabObservers)
   }
 
-  func tab(_ tab: TabState, didLoadPageMetadata metadata: PageMetadata) {
+  func tab(_ tab: any TabState, didLoadPageMetadata metadata: PageMetadata) {
     if let mediaURL = metadata.mediaURL, let url = URL(string: mediaURL) {
       loadImage(from: url)
     }

@@ -19,21 +19,21 @@ extension TabDataValues {
 }
 
 class PlaylistTabHelper: NSObject, TabObserver {
-  private weak var tab: TabState?
+  private weak var tab: (any TabState)?
 
-  init(tab: TabState) {
+  init(tab: any TabState) {
     self.tab = tab
     super.init()
     tab.addObserver(self)
   }
 
-  func tab(_ tab: TabState, didCreateWebView webView: UIView) {
+  func tabDidCreateWebView(_ tab: any TabState) {
     let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:)))
     longPress.delegate = self
-    webView.addGestureRecognizer(longPress)
+    tab.view.addGestureRecognizer(longPress)
   }
 
-  func tabWillBeDestroyed(_ tab: TabState) {
+  func tabWillBeDestroyed(_ tab: any TabState) {
     tab.removeObserver(self)
   }
 
@@ -44,13 +44,13 @@ class PlaylistTabHelper: NSObject, TabObserver {
     {
 
       // If this URL is blocked from Playlist support, do nothing
-      if tab.visibleURL?.isPlaylistBlockedSiteURL == true {
+      if tab.url?.isPlaylistBlockedSiteURL == true {
         return
       }
 
-      let touchPoint = gestureRecognizer.location(in: tab.webContentView)
+      let touchPoint = gestureRecognizer.location(in: tab.view)
 
-      tab.evaluateSafeJavaScript(
+      tab.evaluateJavaScript(
         functionName: "window.__firefox__.\(PlaylistScriptHandler.playlistLongPressed)",
         args: [touchPoint.x, touchPoint.y, PlaylistScriptHandler.scriptId],
         contentWorld: PlaylistScriptHandler.scriptSandbox,

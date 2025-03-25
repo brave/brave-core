@@ -9,21 +9,21 @@ import UIKit
 import Web
 
 extension BrowserViewController {
-  func launchNativeBraveTalk(tab: TabState?, room: String, token: String) {
+  func launchNativeBraveTalk(tab: (any TabState)?, room: String, token: String) {
     #if canImport(BraveTalk)
-    guard let host = tab?.committedURL?.host else { return }
+    guard let host = tab?.lastCommittedURL?.host else { return }
     braveTalkJitsiCoordinator.launchNativeBraveTalk(
       for: room,
       token: token,
       host: host,
       onEnterCall: { [weak tab] in
-        tab?.stop()
+        tab?.stopLoading()
       },
       onExitCall: { [weak self] in
         guard let self = self else { return }
         // When we close the call, redirect to Brave Talk home page if the selected tab is still the original
         // talk URL
-        if let url = self.tabManager.selectedTab?.url,
+        if let url = self.tabManager.selectedTab?.visibleURL,
           let currentHost = url.host,
           DomainUserScript.braveTalkHelper.associatedDomains.contains(currentHost)
         {

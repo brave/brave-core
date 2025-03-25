@@ -34,7 +34,7 @@ if (window.isSecureContext) {
   $Object.defineProperty(window, 'ethereum', provider);
   $Object.defineProperty(window, 'braveEthereum', provider);
   // When using `$Object.defineProperties` & setting `writable: false` we cannot
-  // update properties using `evaluateSafeJavaScript` / `updateEthereumProperties`.
+  // update properties using `evaluateJavaScript` / `updateEthereumProperties`.
   // `chainId`, `networkVersion`, `selectedAddress` differ from desktop (are
   // writable) because need to update in `updateEthereumProperties`
   $Object.defineProperties(window.ethereum, {

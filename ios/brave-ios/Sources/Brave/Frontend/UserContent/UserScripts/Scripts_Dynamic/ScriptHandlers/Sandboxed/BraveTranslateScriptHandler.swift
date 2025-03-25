@@ -12,14 +12,14 @@ import WebKit
 import os.log
 
 protocol BraveTranslateScriptHandlerDelegate: NSObject {
-  func updateTranslateURLBar(tab: TabState, state: TranslateURLBarButton.TranslateState)
-  func canShowTranslateOnboarding(tab: TabState) -> Bool
+  func updateTranslateURLBar(tab: any TabState, state: TranslateURLBarButton.TranslateState)
+  func canShowTranslateOnboarding(tab: any TabState) -> Bool
   func showTranslateOnboarding(
-    tab: TabState,
+    tab: any TabState,
     completion: @escaping (_ translateEnabled: Bool) -> Void
   )
-  func presentTranslateToast(tab: TabState, languageInfo: BraveTranslateLanguageInfo)
-  func presentTranslateError(tab: TabState)
+  func presentTranslateToast(tab: any TabState, languageInfo: BraveTranslateLanguageInfo)
+  func presentTranslateError(tab: any TabState)
 }
 
 class BraveTranslateScriptHandler: NSObject, TabContentScript {
@@ -59,8 +59,8 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     tasks.values.forEach({ $0.cancel() })
   }
 
-  static func checkTranslate(tab: TabState) {
-    tab.evaluateSafeJavaScript(
+  static func checkTranslate(tab: any TabState) {
+    tab.evaluateJavaScript(
       functionName:
         """
         try {
@@ -75,13 +75,13 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   }
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     // Setup
-    let isReaderMode = tab.url?.isInternalURL(for: .readermode) == true
-    if tab.lastKnownSecureContentState != .secure && !isReaderMode {
+    let isReaderMode = tab.visibleURL?.isInternalURL(for: .readermode) == true
+    if tab.visibleSecureContentState != .secure && !isReaderMode {
       Logger.module.debug("Translation Disabled - Insecure Page")
       replyHandler(nil, BraveTranslateError.translateDisabled.rawValue)
       return
@@ -120,7 +120,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   }
 
   private func processScriptMessage(
-    for tab: TabState,
+    for tab: any TabState,
     command: String,
     body: [String: Any]
   ) async throws -> (Any?, String?) {
@@ -235,7 +235,7 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
   static let userScript: WKUserScript? = nil
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {

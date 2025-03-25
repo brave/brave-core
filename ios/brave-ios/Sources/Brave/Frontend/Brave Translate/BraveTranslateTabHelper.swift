@@ -22,7 +22,7 @@ enum BraveTranslateError: String, Error {
 }
 
 class BraveTranslateTabHelper: NSObject, TabObserver {
-  private weak var tab: TabState?
+  private weak var tab: (any TabState)?
   private weak var delegate: BraveTranslateScriptHandlerDelegate?
   private static var requestCache = [URL: (data: Data, response: HTTPURLResponse)]()
   private var tasks = [UUID: Task<Void, Error>]()
@@ -54,10 +54,10 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
 
   // All TabHelpers in Chromium have a `WebState* web_state` parameter in their constructor
   // WebState in Brave, is the same as `Tab`.
-  init(tab: TabState, delegate: BraveTranslateScriptHandlerDelegate) {
+  init(tab: any TabState, delegate: BraveTranslateScriptHandlerDelegate) {
     self.tab = tab
     self.delegate = delegate
-    self.url = tab.url
+    self.url = tab.visibleURL
     super.init()
 
     translationController = UIHostingController(
@@ -279,9 +279,9 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
   func presentUI(on controller: UIViewController) {
     if translationController?.parent != controller {
       controller.addChild(translationController)
-      tab?.webContentView?.addSubview(translationController.view)
+      tab?.view.addSubview(translationController.view)
       translationController.didMove(toParent: controller)
-      tab?.webContentView?.sendSubviewToBack(translationController.view)
+      tab?.view.sendSubviewToBack(translationController.view)
     }
   }
 
@@ -400,8 +400,8 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
 
   // MARK: - TabObserver
 
-  func tabDidUpdateURL(_ tab: TabState) {
-    url = tab.url
+  func tabDidUpdateURL(_ tab: any TabState) {
+    url = tab.visibleURL
     canShowToast = false
     currentLanguageInfo.currentLanguage = .init(identifier: Locale.current.identifier)
     currentLanguageInfo.pageLanguage = nil
@@ -413,7 +413,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
     }
   }
 
-  func tabWillBeDestroyed(_ tab: TabState) {
+  func tabWillBeDestroyed(_ tab: any TabState) {
     tab.removeObserver(self)
   }
 
@@ -481,7 +481,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
   @MainActor
   private func detectLanguage() async {
     guard let tab else { return }
-    _ = await tab.evaluateSafeJavaScript(
+    _ = try? await tab.evaluateJavaScript(
       functionName: "__gCrWeb.languageDetection.detectLanguage",
       contentWorld: BraveTranslateScriptHandler.scriptSandbox,
       asFunction: true
@@ -492,18 +492,17 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
   private func getPageSourceLanguage() async -> String {
     guard let tab else { return "" }
 
-    let (result, error) = await tab.evaluateSafeJavaScript(
-      functionName: "cr.googleTranslate.sourceLang",
-      contentWorld: BraveTranslateScriptHandler.scriptSandbox,
-      asFunction: false
-    )
-
-    if let error = error {
+    do {
+      let result = try await tab.evaluateJavaScript(
+        functionName: "cr.googleTranslate.sourceLang",
+        contentWorld: BraveTranslateScriptHandler.scriptSandbox,
+        asFunction: false
+      )
+      return result as? String ?? ""
+    } catch {
       Logger.module.error("cr.googleTranslate.sourceLang error: \(error)")
       return ""
     }
-
-    return result as? String ?? ""
   }
 
   @MainActor
@@ -512,28 +511,26 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       return false
     }
 
-    let (result, error) = await tab.evaluateSafeJavaScript(
-      functionName: "cr.googleTranslate.translate",
-      args: [pageLanguage, currentLanguage],
-      contentWorld: BraveTranslateScriptHandler.scriptSandbox,
-      asFunction: true
-    )
-
-    if let error = error {
+    do {
+      let result = try await tab.evaluateJavaScript(
+        functionName: "cr.googleTranslate.translate",
+        args: [pageLanguage, currentLanguage],
+        contentWorld: BraveTranslateScriptHandler.scriptSandbox,
+        asFunction: true
+      )
+      return result as? Bool == true
+    } catch {
       Logger.module.error("cr.googleTranslate.translate error: \(error)")
       return false
     }
-
-    return result as? Bool == true
   }
 
-  @MainActor
-  private func undoTranslate() async {
+  private func undoTranslate() {
     guard let tab else {
       return
     }
 
-    _ = await tab.evaluateSafeJavaScript(
+    tab.evaluateJavaScript(
       functionName: "cr.googleTranslate.revert",
       contentWorld: BraveTranslateScriptHandler.scriptSandbox,
       asFunction: true
@@ -546,22 +543,21 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       return false
     }
 
-    let (result, error) = await tab.evaluateSafeJavaScript(
-      functionName: """
-        typeof cr != 'undefined' && typeof cr.googleTranslate != 'undefined' && 
-        typeof cr.googleTranslate.translate == 'function' &&
-        window.__firefox__.\(BraveTranslateScriptHandler.namespace).isTranslateScriptLoaded()
-        """,
-      contentWorld: BraveTranslateScriptHandler.scriptSandbox,
-      asFunction: false
-    )
-
-    if let error = error {
+    do {
+      let result = try await tab.evaluateJavaScript(
+        functionName: """
+          typeof cr != 'undefined' && typeof cr.googleTranslate != 'undefined' && 
+          typeof cr.googleTranslate.translate == 'function' &&
+          window.__firefox__.\(BraveTranslateScriptHandler.namespace).isTranslateScriptLoaded()
+          """,
+        contentWorld: BraveTranslateScriptHandler.scriptSandbox,
+        asFunction: false
+      )
+      return result as? Bool == true
+    } catch {
       Logger.module.error("cr.googleTranslate.translateLibAvailable error: \(error)")
       return false
     }
-
-    return result as? Bool == true
   }
 
   @MainActor
@@ -570,18 +566,17 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       return false
     }
 
-    let (result, error) = await tab.evaluateSafeJavaScript(
-      functionName: "cr.googleTranslate.libReady",
-      contentWorld: BraveTranslateScriptHandler.scriptSandbox,
-      asFunction: false
-    )
-
-    if let error = error {
+    do {
+      let result = try await tab.evaluateJavaScript(
+        functionName: "cr.googleTranslate.libReady",
+        contentWorld: BraveTranslateScriptHandler.scriptSandbox,
+        asFunction: false
+      )
+      return result as? Bool == true
+    } catch {
       Logger.module.error("cr.googleTranslate.libReady error: \(error)")
       return false
     }
-
-    return result as? Bool == true
   }
 
   @MainActor
@@ -590,18 +585,17 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       return true
     }
 
-    let (result, error) = await tab.evaluateSafeJavaScript(
-      functionName: "cr.googleTranslate.finished",
-      contentWorld: BraveTranslateScriptHandler.scriptSandbox,
-      asFunction: false
-    )
-
-    if let error = error {
+    do {
+      let result = try await tab.evaluateJavaScript(
+        functionName: "cr.googleTranslate.finished",
+        contentWorld: BraveTranslateScriptHandler.scriptSandbox,
+        asFunction: false
+      )
+      return result as? Bool ?? true
+    } catch {
       Logger.module.error("cr.googleTranslate.finished error: \(error)")
       return true
     }
-
-    return result as? Bool ?? true
   }
 
   @MainActor
@@ -610,18 +604,17 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       return true
     }
 
-    let (result, error) = await tab.evaluateSafeJavaScript(
-      functionName: "cr.googleTranslate.error",
-      contentWorld: BraveTranslateScriptHandler.scriptSandbox,
-      asFunction: false
-    )
-
-    if let error = error {
+    do {
+      let result = try await tab.evaluateJavaScript(
+        functionName: "cr.googleTranslate.error",
+        contentWorld: BraveTranslateScriptHandler.scriptSandbox,
+        asFunction: false
+      )
+      return result as? Bool ?? true
+    } catch {
       Logger.module.error("cr.googleTranslate.error error: \(error)")
       return true
     }
-
-    return result as? Bool ?? true
   }
 
   @MainActor
@@ -630,22 +623,20 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       return .errorMax
     }
 
-    let (result, error) = await tab.evaluateSafeJavaScript(
-      functionName: "cr.googleTranslate.errorCode",
-      contentWorld: BraveTranslateScriptHandler.scriptSandbox,
-      asFunction: false
-    )
-
-    if let error = error {
+    do {
+      let result = try await tab.evaluateJavaScript(
+        functionName: "cr.googleTranslate.errorCode",
+        contentWorld: BraveTranslateScriptHandler.scriptSandbox,
+        asFunction: false
+      )
+      if let result = result as? Int {
+        return .init(rawValue: result) ?? .errorMax
+      }
+      return .errorMax
+    } catch {
       Logger.module.error("cr.googleTranslate.errorCode error: \(error)")
       return .errorMax
     }
-
-    if let result = result as? Int {
-      return .init(rawValue: result) ?? .errorMax
-    }
-
-    return .errorMax
   }
 }
 

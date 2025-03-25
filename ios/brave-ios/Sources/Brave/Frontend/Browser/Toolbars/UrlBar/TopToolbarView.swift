@@ -103,7 +103,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }
   }
 
-  var secureContentState: TabSecureContentState {
+  var secureContentState: SecureContentState {
     get { return locationView.secureContentState }
     set { locationView.secureContentState = newValue }
   }

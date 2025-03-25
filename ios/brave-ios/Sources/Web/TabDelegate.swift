@@ -12,40 +12,50 @@ import WebKit
 /// `WKWebView` specific things should not be accessed from these methods, if you need to access
 /// the underlying web view, you should only access it via `Tab`
 public protocol TabDelegate: AnyObject {
-  func tabWebViewDidClose(_ tab: TabState)
+  func tabWebViewDidClose(_ tab: any TabState)
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
   ) async -> UIContextMenuConfiguration?
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
   ) async -> WebPermissionDecision
-  func tab(_ tab: TabState, runJavaScriptAlertPanelWithMessage message: String, pageURL: URL) async
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
+    runJavaScriptAlertPanelWithMessage message: String,
+    pageURL: URL
+  ) async
+  func tab(
+    _ tab: any TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
     pageURL: URL
   ) async -> Bool
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
     defaultText: String?,
     pageURL: URL
   ) async -> String?
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
     proposedCredential credential: URLCredential?,
     previousFailureCount: Int
   ) async -> URLCredential?
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     createNewTabWithRequest request: URLRequest
-  ) -> TabState?
-  func tab(_ tab: TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
-  func tab(_ tab: TabState, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
-  func tab(_ tab: TabState, buildEditMenuWithBuilder builder: any UIMenuBuilder)
+  ) -> (any TabState)?
+  func tab(_ tab: any TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
+  func tab(_ tab: any TabState, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
+  func tab(_ tab: any TabState, buildEditMenuWithBuilder builder: any UIMenuBuilder)
+  func tab(_ tab: any TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType
+  func tab(
+    _ tab: any TabState,
+    userAgentForType type: UserAgentType,
+    request: URLRequest
+  ) -> String?
 }
 
 /// Media device capture types that a web page may request
@@ -64,36 +74,36 @@ public enum WebPermissionDecision {
 
 extension TabDelegate {
   public func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     createNewTabWithRequest request: URLRequest
-  ) -> TabState? {
+  ) -> (any TabState)? {
     return nil
   }
 
-  public func tabWebViewDidClose(_ tab: TabState) {}
+  public func tabWebViewDidClose(_ tab: any TabState) {}
 
   public func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
   ) async -> UIContextMenuConfiguration? {
     return nil
   }
 
   public func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
   ) async -> WebPermissionDecision {
     return .prompt
   }
 
   public func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     runJavaScriptAlertPanelWithMessage message: String,
     pageURL: URL
   ) async {}
 
   public func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
     pageURL: URL
   ) async -> Bool {
@@ -101,7 +111,7 @@ extension TabDelegate {
   }
 
   public func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
     defaultText: String?,
     pageURL: URL
@@ -110,7 +120,7 @@ extension TabDelegate {
   }
 
   public func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
     proposedCredential credential: URLCredential?,
     previousFailureCount: Int
@@ -118,12 +128,27 @@ extension TabDelegate {
     return nil
   }
 
-  public func tab(_ tab: TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool {
+  public func tab(_ tab: any TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
+  {
     return false
   }
 
-  public func tab(_ tab: TabState, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
-  {
+  public func tab(
+    _ tab: any TabState,
+    shouldBlockUniversalLinksForRequest request: URLRequest
+  ) -> Bool {
     return false
+  }
+
+  func tab(_ tab: any TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType {
+    return .mobile
+  }
+
+  func tab(
+    _ tab: any TabState,
+    userAgentForType type: UserAgentType,
+    request: URLRequest
+  ) -> String? {
+    return nil
   }
 }
