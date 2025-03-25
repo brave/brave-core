@@ -5,15 +5,14 @@
 
 package org.chromium.chrome.browser.signin;
 
-
 import androidx.annotation.MainThread;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.jni_zero.CalledByNative;
 import org.jni_zero.JniType;
 
 import org.chromium.base.Callback;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.signin.services.SigninManager;
 import org.chromium.components.signin.base.CoreAccountInfo;
@@ -24,6 +23,7 @@ import org.chromium.components.signin.metrics.SigninAccessPoint;
 import org.chromium.components.signin.metrics.SignoutReason;
 import org.chromium.components.sync.SyncService;
 
+@NullMarked
 public class BraveSigninManager implements SigninManager {
     private final IdentityManager mIdentityManager;
 
@@ -55,7 +55,9 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
-    public void signOut(@SignoutReason int signoutSource, SignOutCallback signOutCallback,
+    public void signOut(
+            @SignoutReason int signoutSource,
+            @Nullable SignOutCallback signOutCallback,
             boolean forceWipeUserData) {}
 
     @Override
@@ -127,6 +129,5 @@ public class BraveSigninManager implements SigninManager {
     public void setUserAcceptedAccountManagement(boolean acceptedAccountManagement) {}
 
     @Override
-    public void isAccountManaged(
-            @NonNull CoreAccountInfo account, final Callback<Boolean> callback) {}
+    public void isAccountManaged(CoreAccountInfo account, final Callback<Boolean> callback) {}
 }
