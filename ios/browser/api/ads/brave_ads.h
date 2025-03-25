@@ -79,6 +79,10 @@ OBJC_EXPORT
 /// Brave News.
 - (void)notifyBraveNewsIsEnabledPreferenceDidChange:(BOOL)isEnabled;
 
+/// Used to notify the ads service that the user has opted-in/opted-out to
+/// sponsored images.
+- (void)notifySponsoredImagesIsEnabledPreferenceDidChange:(BOOL)isEnabled;
+
 /// Whether or not Brave Ads is enabled and the user should receive
 /// notification-style ads and be rewarded for it
 @property(nonatomic, assign, getter=isEnabled)

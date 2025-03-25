@@ -27,13 +27,14 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/ntp_background_images/common/view_counter_pref_names.h"
+#include "brave/components/ntp_background_images/common/view_counter_theme_option_type.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/metrics/metrics_pref_names.h"
-#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "url/gurl.h"
@@ -42,54 +43,15 @@ namespace ntp_background_images {
 
 namespace {
 
-constexpr char kNewTabsCreated[] = "brave.new_tab_page.p3a_new_tabs_created";
-constexpr char kSponsoredNewTabsCreated[] =
-    "brave.new_tab_page.p3a_sponsored_new_tabs_created";
-
 constexpr char kNewTabsCreatedHistogramName[] = "Brave.NTP.NewTabsCreated.3";
 constexpr int kNewTabsCreatedMetricBuckets[] = {0, 1, 2, 3, 4, 8, 15};
 constexpr char kSponsoredNewTabsHistogramName[] =
     "Brave.NTP.SponsoredNewTabsCreated.2";
 constexpr int kSponsoredNewTabsBuckets[] = {0, 10, 20, 30, 40, 50};
 
-// Obsolete pref
-constexpr char kObsoleteCountToBrandedWallpaperPref[] =
-    "brave.count_to_branded_wallpaper";
-
 constexpr base::TimeDelta kP3AReportInterval = base::Days(1);
 
 }  // namespace
-
-// static
-void ViewCounterService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterListPref(kNewTabsCreated);
-  registry->RegisterListPref(kSponsoredNewTabsCreated);
-}
-
-void ViewCounterService::RegisterProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(prefs::kBrandedWallpaperNotificationDismissed,
-                                false);
-  registry->RegisterBooleanPref(
-      prefs::kNewTabPageShowSponsoredImagesBackgroundImage, true);
-  // Integer type is used because this pref is used by radio button group in
-  // appearance settings. Super referral is disabled when it is set to DEFAULT.
-  registry->RegisterIntegerPref(
-      prefs::kNewTabPageSuperReferralThemesOption, SUPER_REFERRAL);
-  registry->RegisterBooleanPref(
-      prefs::kNewTabPageShowBackgroundImage, true);
-}
-
-void ViewCounterService::RegisterProfilePrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry) {
-  // Added 09/2023
-  registry->RegisterIntegerPref(kObsoleteCountToBrandedWallpaperPref, 0);
-}
-
-void ViewCounterService::MigrateObsoleteProfilePrefs(PrefService* prefs) {
-  // Added 09/2023
-  prefs->ClearPref(kObsoleteCountToBrandedWallpaperPref);
-}
 
 ViewCounterService::ViewCounterService(
     HostContentSettingsMap* host_content_settings_map,
@@ -120,9 +82,9 @@ ViewCounterService::ViewCounterService(
   host_content_settings_map_->AddObserver(this);
 
   new_tab_count_state_ =
-      std::make_unique<WeeklyStorage>(local_state, kNewTabsCreated);
-  branded_new_tab_count_state_ =
-      std::make_unique<WeeklyStorage>(local_state, kSponsoredNewTabsCreated);
+      std::make_unique<WeeklyStorage>(local_state, prefs::kNewTabsCreated);
+  branded_new_tab_count_state_ = std::make_unique<WeeklyStorage>(
+      local_state, prefs::kSponsoredNewTabsCreated);
 
   ResetModel();
 
@@ -565,7 +527,7 @@ bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
 
 bool ViewCounterService::IsSuperReferralWallpaperOptedIn() const {
   return prefs_->GetInteger(prefs::kNewTabPageSuperReferralThemesOption) ==
-             SUPER_REFERRAL;
+         static_cast<int>(ThemesOption::kSuperReferral);
 }
 
 bool ViewCounterService::IsSuperReferral() const {

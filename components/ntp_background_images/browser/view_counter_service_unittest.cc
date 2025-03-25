@@ -32,6 +32,8 @@
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
+#include "brave/components/ntp_background_images/common/view_counter_theme_option_type.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -183,13 +185,13 @@ class ViewCounterServiceTest : public testing::Test {
 
   void SetUp() override {
     brave_rewards::RegisterProfilePrefs(prefs_.registry());
-    ViewCounterService::RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefs(prefs_.registry());
     HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
 
     brave::RegisterPrefsForBraveReferralsService(local_state_.registry());
     NTPBackgroundImagesService::RegisterLocalStatePrefs(
         local_state_.registry());
-    ViewCounterService::RegisterLocalStatePrefs(local_state_.registry());
+    RegisterLocalStatePrefs(local_state_.registry());
     metrics::MetricsService::RegisterPrefs(local_state_.registry());
 
     local_state_.SetTime(metrics::prefs::kInstallDate, base::Time::Now());
@@ -301,9 +303,10 @@ class ViewCounterServiceTest : public testing::Test {
   }
 
   void SetSuperReferralVisibility(bool should_show) {
+    const ThemesOption themes_option =
+        should_show ? ThemesOption::kSuperReferral : ThemesOption::kDefault;
     prefs_.SetInteger(prefs::kNewTabPageSuperReferralThemesOption,
-                      should_show ? ViewCounterService::SUPER_REFERRAL
-                                  : ViewCounterService::DEFAULT);
+                      static_cast<int>(themes_option));
   }
 
   void SetBackgroundImagesVisibility(bool should_show) {
