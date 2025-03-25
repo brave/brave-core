@@ -141,7 +141,7 @@ class AdsService : public KeyedService {
   // Called to parse and save creative new tab page ads. The callback takes one
   // argument - `bool` is set to `true` if successful otherwise `false`.
   virtual void ParseAndSaveCreativeNewTabPageAds(
-      const base::Value::Dict& dict,
+      base::Value::Dict dict,
       ParseAndSaveCreativeNewTabPageAdsCallback callback) = 0;
 
   // Called when a user views or interacts with a new tab page ad to trigger a

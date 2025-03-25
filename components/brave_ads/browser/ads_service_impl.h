@@ -264,7 +264,7 @@ class AdsServiceImpl final : public AdsService,
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
   void ParseAndSaveCreativeNewTabPageAds(
-      const base::Value::Dict& dict,
+      base::Value::Dict dict,
       ParseAndSaveCreativeNewTabPageAdsCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
