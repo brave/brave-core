@@ -1206,7 +1206,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     && UrlUtilities.isNtpUrl(braveActivity.getActivityTab().getUrl().getSpec())
                     && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
                     && OnboardingPrefManager.getInstance().getUrlFocusCount() == 1
-                    && !BRAVE_SEARCH_ENGINE_DEFAULT_REGIONS.contains(countryCode)) {
+                    && !BRAVE_SEARCH_ENGINE_DEFAULT_REGIONS.contains(countryCode)
+                    && !countryCode.equals("JP")) {
                 Intent searchActivityIntent = new Intent(context, SearchActivity.class);
                 searchActivityIntent.setAction(Intent.ACTION_VIEW);
                 context.startActivity(searchActivityIntent);
