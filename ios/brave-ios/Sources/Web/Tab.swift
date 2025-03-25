@@ -6,7 +6,6 @@ import BraveCore
 import BraveStrings
 import CertificateUtilities
 import Combine
-import Data
 import FaviconModels
 import Foundation
 import Shared
