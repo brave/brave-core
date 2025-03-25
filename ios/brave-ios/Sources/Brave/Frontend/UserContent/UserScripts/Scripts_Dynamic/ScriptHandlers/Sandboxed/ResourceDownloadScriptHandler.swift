@@ -57,7 +57,7 @@ class ResourceDownloadScriptHandler: TabContentScript {
   }()
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -72,8 +72,8 @@ class ResourceDownloadScriptHandler: TabContentScript {
     }
   }
 
-  static func downloadResource(for tab: TabState, url: URL) {
-    tab.evaluateSafeJavaScript(
+  static func downloadResource(for tab: any TabState, url: URL) {
+    tab.evaluateJavaScript(
       functionName: "window.__firefox__.downloadManager.download",
       args: [url.absoluteString],
       contentWorld: self.scriptSandbox

@@ -37,7 +37,7 @@ class UserActivityHandler {
     searchableIndex.deleteAllSearchableItems(completionHandler: completionHandler)
   }
 
-  fileprivate func setUserActivityForTab(_ tab: TabState, url: URL) {
+  fileprivate func setUserActivityForTab(_ tab: any TabState, url: URL) {
     guard !tab.isPrivate, url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
     else {
       tab.userActivity?.resignCurrent()
@@ -56,19 +56,19 @@ class UserActivityHandler {
 }
 
 extension UserActivityHandler: TabEventHandler {
-  func tabDidGainFocus(_ tab: TabState) {
+  func tabDidGainFocus(_ tab: any TabState) {
     tab.userActivity?.becomeCurrent()
   }
 
-  func tabDidLoseFocus(_ tab: TabState) {
+  func tabDidLoseFocus(_ tab: any TabState) {
     tab.userActivity?.resignCurrent()
   }
 
-  func tab(_ tab: TabState, didChangeURL url: URL) {
+  func tab(_ tab: any TabState, didChangeURL url: URL) {
     setUserActivityForTab(tab, url: url)
   }
 
-  func tab(_ tab: TabState, didLoadPageMetadata metadata: PageMetadata) {
+  func tab(_ tab: any TabState, didLoadPageMetadata metadata: PageMetadata) {
     guard let url = URL(string: metadata.siteURL) else {
       return
     }
@@ -76,7 +76,7 @@ extension UserActivityHandler: TabEventHandler {
     setUserActivityForTab(tab, url: url)
   }
 
-  func tabDidClose(_ tab: TabState) {
+  func tabDidClose(_ tab: any TabState) {
     guard let userActivity = tab.userActivity else {
       return
     }

@@ -469,7 +469,7 @@ extension BrowserViewController {
 
   struct MenuTabDetailsView: View {
     @SwiftUI.Environment(\.colorScheme) var colorScheme: ColorScheme
-    weak var tab: TabState?
+    weak var tab: (any TabState)?
     var url: URL
 
     var body: some View {
@@ -502,7 +502,7 @@ extension BrowserViewController {
   func presentBrowserMenu(
     from sourceView: UIView,
     activities: [UIActivity],
-    tab: TabState?,
+    tab: (any TabState)?,
     pageURL: URL?
   ) {
     var actions: [Action] = []
@@ -539,8 +539,9 @@ extension BrowserViewController {
       pageActivities.insert(
         .init(
           id: .requestDesktopSite,
-          title: tab.isDesktopSite ? Strings.appMenuViewMobileSiteTitleString : nil,
-          image: tab.isDesktopSite ? "leo.smartphone" : nil,
+          title: tab.currentUserAgentType == .desktop
+            ? Strings.appMenuViewMobileSiteTitleString : nil,
+          image: tab.currentUserAgentType == .desktop ? "leo.smartphone" : nil,
           handler: { @MainActor [unowned self, weak tab] _ in
             tab?.switchUserAgent()
             self.dismiss(animated: true)
@@ -590,7 +591,7 @@ extension BrowserViewController {
     return
   }
 
-  private func pageActions(for pageURL: URL?, tab: TabState?) -> [Action] {
+  private func pageActions(for pageURL: URL?, tab: (any TabState)?) -> [Action] {
     let playlistActivity = addToPlayListActivityItem ?? openInPlaylistActivityItem
     let isPlaylistItemAdded = openInPlaylistActivityItem != nil
     var actions: [Action] = [

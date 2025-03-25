@@ -17,36 +17,39 @@ import WebKit
 import os.log
 
 extension BrowserViewController: TabManagerDelegate {
-  func attachTabHelpers(to tab: TabState) {
+  func attachTabHelpers(to tab: any TabState) {
     tab.browserData = .init(tab: tab, tabGeneratorAPI: braveCore.tabGeneratorAPI)
     tab.browserData?.miscDelegate = self
     tab.pullToRefresh = .init(tab: tab)
     tab.playlist = .init(tab: tab)
     SnackBarTabHelper.create(for: tab)
     tab.braveUserAgentExceptions = braveCore.braveUserAgentExceptions
+    tab.translateHelper = .init(tab: tab, delegate: self)
   }
 
   func tabManager(
     _ tabManager: TabManager,
-    didSelectedTabChange selected: TabState?,
-    previous: TabState?
+    didSelectedTabChange selected: (any TabState)?,
+    previous: (any TabState)?
   ) {
     // Remove the old accessibilityLabel. Since this webview shouldn't be visible, it doesn't need it
     // and having multiple views with the same label confuses tests.
-    if let wv = previous?.webContentView {
-      if let scrollView = previous?.webScrollView {
+    if let previous, previous.isWebViewCreated {
+      if let scrollView = previous.webViewProxy?.scrollView {
         toolbarVisibilityViewModel.endScrollViewObservation(scrollView)
       }
 
-      wv.endEditing(true)
-      wv.accessibilityLabel = nil
-      wv.accessibilityElementsHidden = true
-      wv.accessibilityIdentifier = nil
-      wv.removeFromSuperview()
+      previous.view.endEditing(true)
+      previous.view.accessibilityLabel = nil
+      previous.view.accessibilityElementsHidden = true
+      previous.view.accessibilityIdentifier = nil
+      previous.view.removeFromSuperview()
     }
 
     toolbar?.setSearchButtonState(url: selected?.url)
-    if let tab = selected, let webView = tab.webContentView, let scrollView = tab.webScrollView {
+    if let tab = selected, case let webView = tab.view,
+      let scrollView = tab.webViewProxy?.scrollView
+    {
       toolbarVisibilityViewModel.beginObservingScrollView(scrollView)
       toolbarVisibilityCancellable = toolbarVisibilityViewModel.objectWillChange
         .receive(on: DispatchQueue.main)
@@ -117,7 +120,7 @@ extension BrowserViewController: TabManagerDelegate {
     updateTabsBarVisibility()
 
     if let tab = selected {
-      topToolbar.locationView.loading = tab.loading
+      topToolbar.locationView.loading = tab.isLoading
       updateBackForwardActionStatus(for: tab)
       navigationToolbar.updateForwardStatus(tab.canGoForward)
     }
@@ -168,10 +171,10 @@ extension BrowserViewController: TabManagerDelegate {
     updateURLBarWalletButton()
   }
 
-  func tabManager(_ tabManager: TabManager, willAddTab tab: TabState) {
+  func tabManager(_ tabManager: TabManager, willAddTab tab: any TabState) {
   }
 
-  func tabManager(_ tabManager: TabManager, didAddTab tab: TabState) {
+  func tabManager(_ tabManager: TabManager, didAddTab tab: any TabState) {
     // If we are restoring tabs then we update the count once at the end
     if !tabManager.isRestoring {
       updateToolbarUsingTabManager(tabManager)
@@ -189,11 +192,11 @@ extension BrowserViewController: TabManagerDelegate {
     updateTabsBarVisibility()
   }
 
-  func tabManager(_ tabManager: TabManager, willRemoveTab tab: TabState) {
-    tab.webContentView?.removeFromSuperview()
+  func tabManager(_ tabManager: TabManager, willRemoveTab tab: any TabState) {
+    tab.view.removeFromSuperview()
   }
 
-  func tabManager(_ tabManager: TabManager, didRemoveTab tab: TabState) {
+  func tabManager(_ tabManager: TabManager, didRemoveTab tab: any TabState) {
     updateToolbarUsingTabManager(tabManager)
     // tabDelegate is a weak ref (and the tab's webView may not be destroyed yet)
     // so we don't expcitly unset it.

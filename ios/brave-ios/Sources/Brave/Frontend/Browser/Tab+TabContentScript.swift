@@ -30,7 +30,7 @@ protocol TabContentScript: TabContentScriptLoader {
   func verifyMessage(message: WKScriptMessage, securityToken: String) -> Bool
 
   @MainActor func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   )

@@ -18,11 +18,13 @@ import BraveTalk
 class BraveTalkScriptHandler: TabContentScript {
   private weak var rewards: BraveRewards?
   private var rewardsEnabledReplyHandler: ((Any?, String?) -> Void)?
-  private let launchNativeBraveTalk: (_ tab: TabState?, _ room: String, _ token: String) -> Void
+  private let launchNativeBraveTalk:
+    (_ tab: (any TabState)?, _ room: String, _ token: String) -> Void
 
   required init(
     rewards: BraveRewards,
-    launchNativeBraveTalk: @escaping (_ tab: TabState?, _ room: String, _ token: String) -> Void
+    launchNativeBraveTalk: @escaping (_ tab: (any TabState)?, _ room: String, _ token: String) ->
+      Void
   ) {
     self.rewards = rewards
     self.launchNativeBraveTalk = launchNativeBraveTalk
@@ -81,7 +83,7 @@ class BraveTalkScriptHandler: TabContentScript {
   }
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -123,7 +125,7 @@ class BraveTalkScriptHandler: TabContentScript {
   }
 
   private func handleBraveRequestAdsEnabled(
-    tab: TabState,
+    tab: any TabState,
     _ replyHandler: @escaping (Any?, String?) -> Void
   ) {
     guard let rewards = rewards, tab.isPrivate != true else {

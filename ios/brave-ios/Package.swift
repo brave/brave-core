@@ -450,8 +450,9 @@ var package = Package(
     .target(
       name: "Web",
       dependencies: [
-        "BraveCore", "FaviconModels", "BraveShared", "Shared", "UserAgent", "CertificateUtilities",
-        "Storage", "BraveStrings", "Strings",
+        "BraveCore", "FaviconModels", "BraveShared", "Shared", "CertificateUtilities", "Storage",
+        "BraveStrings", "Strings",
+        .product(name: "OrderedCollections", package: "swift-collections"),
       ],
       plugins: ["LoggerPlugin"]
     ),

@@ -439,11 +439,11 @@ extension TabBrowserData: BraveWalletEventsListener {
     if let eventArgs = event.arguments {
       arguments.append(eventArgs)
     }
-    tab.evaluateSafeJavaScript(
+    tab.evaluateJavaScript(
       functionName: "window.ethereum.emit",
       args: arguments,
       contentWorld: EthereumProviderScriptHandler.scriptSandbox,
-      completion: nil
+      completionHandler: nil
     )
   }
 
@@ -503,14 +503,14 @@ extension TabBrowserData: BraveWalletEventsListener {
     }
 
     let chainId = await provider.chainId()
-    await tab.evaluateSafeJavaScript(
+    try? await tab.evaluateJavaScript(
       functionName: "window.ethereum.chainId = \"\(chainId)\"",
       contentWorld: EthereumProviderScriptHandler.scriptSandbox,
       asFunction: false
     )
 
     let networkVersion = valueOrUndefined(Int(chainId.removingHexPrefix, radix: 16))
-    await tab.evaluateSafeJavaScript(
+    try? await tab.evaluateJavaScript(
       functionName: "window.ethereum.networkVersion = \"\(networkVersion)\"",
       contentWorld: EthereumProviderScriptHandler.scriptSandbox,
       asFunction: false
@@ -536,7 +536,7 @@ extension TabBrowserData: BraveWalletEventsListener {
         selectedAccount = valueOrUndefined(Optional<String>.none)
       }
     }
-    await tab.evaluateSafeJavaScript(
+    try? await tab.evaluateJavaScript(
       functionName: "window.ethereum.selectedAddress = \(selectedAccount)",
       contentWorld: EthereumProviderScriptHandler.scriptSandbox,
       asFunction: false
@@ -567,7 +567,7 @@ extension TabBrowserData: BraveWalletSolanaEventsListener {
         } else {
           script = "window.solana.emit('accountChanged')"
         }
-        await tab.evaluateSafeJavaScript(
+        try? await tab.evaluateJavaScript(
           functionName: script,
           contentWorld: .page,
           asFunction: false
@@ -592,7 +592,7 @@ extension TabBrowserData: BraveWalletSolanaEventsListener {
       if let eventArgs = event.arguments {
         arguments.append(eventArgs)
       }
-      await tab.evaluateSafeJavaScript(
+      try await tab.evaluateJavaScript(
         functionName: "window.solana.emit",
         args: arguments,
         contentWorld: .page
@@ -609,7 +609,7 @@ extension TabBrowserData: BraveWalletSolanaEventsListener {
       return
     }
     let isConnected = await provider.isConnected()
-    await tab.evaluateSafeJavaScript(
+    try? await tab.evaluateJavaScript(
       functionName: "window.solana.isConnected = \(isConnected)",
       contentWorld: .page,
       asFunction: false
@@ -619,7 +619,7 @@ extension TabBrowserData: BraveWalletSolanaEventsListener {
       let publicKey = await keyringService.allAccounts().solDappSelectedAccount?.address,
       self.isSolanaAccountConnected(publicKey)
     {
-      await tab.evaluateSafeJavaScript(
+      try? await tab.evaluateJavaScript(
         functionName: """
           if (\(UserScriptManager.walletSolanaNameSpace).solanaWeb3) {
             window.__firefox__.execute(function($) {

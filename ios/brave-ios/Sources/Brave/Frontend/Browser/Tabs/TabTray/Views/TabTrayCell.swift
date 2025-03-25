@@ -44,10 +44,10 @@ class TabCell: UICollectionViewCell {
   // Changes depending on whether we're full-screen or not.
   var margin = 0.0
 
-  var closedTab: ((TabState) -> Void)?
-  weak var tab: TabState?
+  var closedTab: ((any TabState) -> Void)?
+  weak var tab: (any TabState)?
 
-  func configure(with tab: TabState) {
+  func configure(with tab: any TabState) {
     self.tab = tab
     tab.onScreenshotUpdated = { [weak self, weak tab] in
       guard let self = self, let tab = tab else { return }
@@ -67,7 +67,7 @@ class TabCell: UICollectionViewCell {
     if !tab.displayTitle.isEmpty {
       accessibilityLabel = tab.displayTitle
     } else {
-      if let url = tab.url {
+      if let url = tab.visibleURL {
         accessibilityLabel = InternalURL(url)?.aboutComponent ?? ""
       } else {
         accessibilityLabel = ""
@@ -82,7 +82,7 @@ class TabCell: UICollectionViewCell {
     // Tab may not be restored and so may not include a tab URL yet...
     if let displayFavicon = tab.displayFavicon {
       favicon.image = displayFavicon.image ?? Favicon.defaultImage
-    } else if let url = tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
+    } else if let url = tab.visibleURL, !url.isLocal, !InternalURL.isValid(url: url) {
       favicon.loadFavicon(for: url, isPrivateBrowsing: tab.isPrivate)
     } else {
       favicon.image = Favicon.defaultImage
@@ -151,7 +151,7 @@ class TabCell: UICollectionViewCell {
     ]
   }
 
-  func setTabSelected(_ tab: TabState) {
+  func setTabSelected(_ tab: any TabState) {
     layer.shadowColor = UIColor.braveInfoBorder.resolvedColor(with: traitCollection).cgColor
     layer.shadowOpacity = 1
     layer.shadowRadius = 0  // A 0 radius creates a solid border instead of a gradient blur

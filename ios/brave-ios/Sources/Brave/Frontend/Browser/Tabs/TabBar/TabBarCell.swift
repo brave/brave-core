@@ -47,7 +47,7 @@ class TabBarCell: UICollectionViewCell {
         || currentIndex == (tabManager?.currentDisplayedIndex ?? 0) + 1
     }
   }
-  weak var tab: TabState?
+  weak var tab: (any TabState)?
   weak var tabManager: TabManager? {
     didSet {
       updateColors()
@@ -61,7 +61,7 @@ class TabBarCell: UICollectionViewCell {
     }
   }
 
-  var closeTabCallback: ((TabState) -> Void)?
+  var closeTabCallback: ((any TabState) -> Void)?
   private var cancellables: Set<AnyCancellable> = []
 
   override init(frame: CGRect) {
@@ -161,7 +161,7 @@ class TabBarCell: UICollectionViewCell {
   }
 
   fileprivate var titleUpdateScheduled = false
-  func updateTitleThrottled(for tab: TabState) {
+  func updateTitleThrottled(for tab: any TabState) {
     if titleUpdateScheduled {
       return
     }

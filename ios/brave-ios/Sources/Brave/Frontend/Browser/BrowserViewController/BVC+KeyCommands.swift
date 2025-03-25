@@ -87,7 +87,7 @@ extension BrowserViewController {
     }
 
     let tabs = tabManager.tabsForCurrentMode
-    if let index = tabs.firstIndex(of: currentTab), index + 1 < tabs.count {
+    if let index = tabs.firstIndex(where: { $0 === currentTab }), index + 1 < tabs.count {
       tabManager.selectTab(tabs[index + 1])
     } else if let firstTab = tabs.first {
       tabManager.selectTab(firstTab)
@@ -100,7 +100,9 @@ extension BrowserViewController {
     }
 
     let tabs = tabManager.tabsForCurrentMode
-    if let index = tabs.firstIndex(of: currentTab), index - 1 < tabs.count && index != 0 {
+    if let index = tabs.firstIndex(where: { $0 === currentTab }),
+      index - 1 < tabs.count && index != 0
+    {
       tabManager.selectTab(tabs[index - 1])
     } else if let lastTab = tabs.last {
       tabManager.selectTab(lastTab)

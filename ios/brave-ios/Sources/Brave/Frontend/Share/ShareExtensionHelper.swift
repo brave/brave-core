@@ -11,9 +11,9 @@ import Web
 class ShareExtensionHelper {
   /// URL and Tab to be shared
   private let selectedURL: URL
-  private weak var selectedTab: TabState?
+  private weak var selectedTab: (any TabState)?
 
-  init(url: URL, tab: TabState?) {
+  init(url: URL, tab: (any TabState)?) {
     self.selectedURL = url
     self.selectedTab = tab
   }

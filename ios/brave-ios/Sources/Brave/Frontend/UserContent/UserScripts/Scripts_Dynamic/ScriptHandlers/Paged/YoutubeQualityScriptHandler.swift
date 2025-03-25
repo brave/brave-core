@@ -14,7 +14,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
   private var url: URL?
   private var urlObserver: NSObjectProtocol?
 
-  init(tab: TabState) {
+  init(tab: any TabState) {
     self.url = tab.url
     super.init()
 
@@ -50,10 +50,10 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
     )
   }()
 
-  static func setEnabled(option: Preferences.Option<String>, for tab: TabState) {
+  static func setEnabled(option: Preferences.Option<String>, for tab: any TabState) {
     let enabled = canEnableHighQuality(option: option)
 
-    tab.evaluateSafeJavaScript(
+    tab.evaluateJavaScript(
       functionName: "window.__firefox__.\(Self.setQuality)",
       args: [enabled ? Self.highestQuality : "''"],
       contentWorld: Self.scriptSandbox,
@@ -63,7 +63,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
   }
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -97,20 +97,20 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
 
   // MARK: - TabObserver
 
-  func tabDidUpdateURL(_ tab: TabState) {
+  func tabDidUpdateURL(_ tab: any TabState) {
     if url?.withoutFragment == tab.url?.withoutFragment {
       return
     }
 
     url = tab.url
-    tab.evaluateSafeJavaScript(
+    tab.evaluateJavaScript(
       functionName: "window.__firefox__.\(Self.refreshQuality)",
       contentWorld: Self.scriptSandbox,
       asFunction: true
     )
   }
 
-  func tabWillBeDestroyed(_ tab: TabState) {
+  func tabWillBeDestroyed(_ tab: any TabState) {
     tab.removeObserver(self)
   }
 }

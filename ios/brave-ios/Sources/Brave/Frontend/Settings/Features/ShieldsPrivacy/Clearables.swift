@@ -58,7 +58,7 @@ class CookiesAndCacheClearable: Clearable {
       modifiedSince: Date(timeIntervalSinceReferenceDate: 0)
     )
     UserDefaults.standard.synchronize()
-    await TabWebView.sharedNonPersistentStore().removeData(
+    await TabManager.sharedNonPersistentStore().removeData(
       ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
       modifiedSince: Date(timeIntervalSinceReferenceDate: 0)
     )
@@ -97,7 +97,7 @@ class CacheClearable: Clearable {
     WebImageCacheWithNoPrivacyProtectionManager.shared.clearMemoryCache()
     await FaviconFetcher.clearCache()
 
-    await TabWebView.sharedNonPersistentStore().removeData(
+    await TabManager.sharedNonPersistentStore().removeData(
       ofTypes: localStorageClearables,
       modifiedSince: Date(timeIntervalSinceReferenceDate: 0)
     )

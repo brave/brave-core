@@ -11,7 +11,7 @@ import UIKit
 import Web
 
 protocol TabsBarViewControllerDelegate: AnyObject {
-  func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: TabState)
+  func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: any TabState)
   func tabsBarDidLongPressAddTab(_ tabsBarController: TabsBarViewController, button: UIButton)
   func tabsBarDidSelectAddNewTab(_ isPrivate: Bool)
   func tabsBarDidChangeReaderModeVisibility(_ isHidden: Bool)
@@ -55,8 +55,8 @@ class TabsBarViewController: UIViewController {
     return view
   }()
 
-  private weak var tabManager: TabManager?
-  private var tabList = WeakList<TabState>()
+  private var tabManager: TabManager?
+  private var tabList: [any TabState] = []
 
   init(tabManager: TabManager) {
     self.tabManager = tabManager
@@ -259,7 +259,7 @@ class TabsBarViewController: UIViewController {
       return
     }
 
-    tabList = WeakList<TabState>(tabManager.tabsForCurrentMode)
+    tabList = tabManager.tabsForCurrentMode
 
     overflowIndicators()
 
@@ -270,7 +270,7 @@ class TabsBarViewController: UIViewController {
 
   func updateSelectedTabTitle() {
     guard let selectedTabIndex = selectedTabIndexPath,
-      let tab = tabList[selectedTabIndex.row]
+      let tab = tabList[safe: selectedTabIndex.row]
     else { return }
     if let cell = collectionView.cellForItem(at: selectedTabIndex) as? TabBarCell {
       cell.titleLabel.text = tab.displayTitle
@@ -290,7 +290,7 @@ class TabsBarViewController: UIViewController {
       scrollTabsBarAnimated = isAnimated
     }
 
-    if selectedTabIndex.row < tabList.count() {
+    if selectedTabIndex.row < tabList.count {
       collectionView.selectItem(
         at: selectedTabIndex,
         animated: scrollTabsBarAnimated,
@@ -301,7 +301,7 @@ class TabsBarViewController: UIViewController {
 
   private var selectedTabIndexPath: IndexPath? {
     guard let tabManager = tabManager, let selectedTab = tabManager.selectedTab,
-      let selectedIndex = tabList.index(of: selectedTab)
+      let selectedIndex = tabList.firstIndex(where: { $0 === selectedTab })
     else { return nil }
 
     return IndexPath(row: selectedIndex, section: 0)
@@ -404,7 +404,7 @@ extension TabsBarViewController: UIScrollViewDelegate {
 // MARK: - UICollectionViewDelegate
 extension TabsBarViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    if let tab = tabList[indexPath.row] {
+    if let tab = tabList[safe: indexPath.row] {
       delegate?.tabsBarDidSelectTab(self, tab)
     }
   }
@@ -415,7 +415,7 @@ extension TabsBarViewController: UICollectionViewDelegate {
     forItemAt indexPath: IndexPath
   ) {
     // Check if it is last item in the row and refresh indicators
-    if indexPath.row == tabList.count() - 1 {
+    if indexPath.row == tabList.count - 1 {
       updateOverflowIndicatorsLayout()
     }
   }
@@ -428,7 +428,7 @@ extension TabsBarViewController: UICollectionViewDelegateFlowLayout {
     layout collectionViewLayout: UICollectionViewLayout,
     sizeForItemAt indexPath: IndexPath
   ) -> CGSize {
-    let tabCount = CGFloat(tabList.count())
+    let tabCount = CGFloat(tabList.count)
 
     if tabCount < 1 { return CGSize.zero }
     if tabCount == 1 { return collectionView.frame.size }
@@ -451,7 +451,7 @@ extension TabsBarViewController: UICollectionViewDataSource {
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    return tabList.count()
+    return tabList.count
   }
 
   func collectionView(
@@ -469,7 +469,7 @@ extension TabsBarViewController: UICollectionViewDataSource {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TabCell", for: indexPath)
         as? TabBarCell
     else { return UICollectionViewCell() }
-    guard let tab = tabList[indexPath.row] else { return cell }
+    guard let tab = tabList[safe: indexPath.row] else { return cell }
 
     cell.tabManager = tabManager
     cell.tab = tab
@@ -480,7 +480,7 @@ extension TabsBarViewController: UICollectionViewDataSource {
     cell.closeTabCallback = { [weak self] tab in
       guard let self = self,
         let tabManager = self.tabManager,
-        let previousIndex = self.tabList.index(of: tab)
+        let previousIndex = self.tabList.firstIndex(where: { $0 === tab })
       else {
         return
       }
@@ -516,7 +516,7 @@ extension TabsBarViewController: UICollectionViewDragDelegate, UICollectionViewD
     itemsForBeginning session: UIDragSession,
     at indexPath: IndexPath
   ) -> [UIDragItem] {
-    guard let tab = tabList[indexPath.row],
+    guard let tab = tabList[safe: indexPath.row],
       let windowId = tabManager?.windowId
     else {
       return []
@@ -555,8 +555,8 @@ extension TabsBarViewController: UICollectionViewDragDelegate, UICollectionViewD
       // TODO: Figure out how to get the item here from other Brave scene...
       // LocalObject is nil because the tab is in another process? :S
       if let sourceIndexPath = item.sourceIndexPath {
-        guard let manager = tabManager, let fromTab = tabList[sourceIndexPath.row],
-          let toTab = tabList[destinationIndexPath.row]
+        guard let manager = tabManager, let fromTab = tabList[safe: sourceIndexPath.row],
+          let toTab = tabList[safe: destinationIndexPath.row]
         else { return }
 
         // Find original from/to index... we need to target the full list not partial.
@@ -567,7 +567,7 @@ extension TabsBarViewController: UICollectionViewDragDelegate, UICollectionViewD
         updateData(reloadingCollectionView: false)
         collectionView.moveItem(at: sourceIndexPath, to: destinationIndexPath)
         collectionView.reloadSections(IndexSet(integer: 0))  // Updates selection states
-        guard let selectedTab = tabList[destinationIndexPath.row] else { return }
+        guard let selectedTab = tabList[safe: destinationIndexPath.row] else { return }
         manager.selectTab(selectedTab)
       }
 
@@ -589,8 +589,8 @@ extension TabsBarViewController: UICollectionViewDragDelegate, UICollectionViewD
     moveItemAt sourceIndexPath: IndexPath,
     to destinationIndexPath: IndexPath
   ) {
-    guard let manager = tabManager, let fromTab = tabList[sourceIndexPath.row],
-      let toTab = tabList[destinationIndexPath.row]
+    guard let manager = tabManager, let fromTab = tabList[safe: sourceIndexPath.row],
+      let toTab = tabList[safe: destinationIndexPath.row]
     else { return }
 
     // Find original from/to index... we need to target the full list not partial.
@@ -607,7 +607,7 @@ extension TabsBarViewController: UICollectionViewDragDelegate, UICollectionViewD
     )
     updateOverflowIndicatorsLayout()
 
-    guard let selectedTab = tabList[destinationIndexPath.row] else { return }
+    guard let selectedTab = tabList[safe: destinationIndexPath.row] else { return }
     manager.selectTab(selectedTab)
   }
 
@@ -626,19 +626,19 @@ extension TabsBarViewController: UICollectionViewDragDelegate, UICollectionViewD
 extension TabsBarViewController: TabManagerDelegate {
   func tabManager(
     _ tabManager: TabManager,
-    didSelectedTabChange selected: TabState?,
-    previous: TabState?
+    didSelectedTabChange selected: (any TabState)?,
+    previous: (any TabState)?
   ) {
     assert(Thread.current.isMainThread)
     updateData()
     delegate?.tabsBarDidChangeReaderModeVisibility(false)
   }
 
-  func tabManager(_ tabManager: TabManager, didAddTab tab: TabState) {
+  func tabManager(_ tabManager: TabManager, didAddTab tab: any TabState) {
     updateData()
   }
 
-  func tabManager(_ tabManager: TabManager, didRemoveTab tab: TabState) {
+  func tabManager(_ tabManager: TabManager, didRemoveTab tab: any TabState) {
     assert(Thread.current.isMainThread)
     updateData()
   }

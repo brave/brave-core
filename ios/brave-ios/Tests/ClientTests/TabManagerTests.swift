@@ -15,13 +15,13 @@ import XCTest
 
 open class MockTabManagerStateDelegate: TabManagerStateDelegate {
   var numberOfTabsStored = 0
-  public func tabManagerWillStoreTabs(_ tabs: [TabState]) {
+  public func tabManagerWillStoreTabs(_ tabs: [any TabState]) {
     numberOfTabsStored = tabs.count
   }
 }
 
 extension TabManager {
-  func tabs(withType type: TabType) -> [TabState] {
+  func tabs(withType type: TabType) -> [any TabState] {
     assert(Thread.isMainThread)
     return allTabs.filter { $0.type == type }
   }
@@ -74,17 +74,17 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
   public func tabManager(
     _ tabManager: TabManager,
-    didSelectedTabChange selected: TabState?,
-    previous: TabState?
+    didSelectedTabChange selected: (any TabState)?,
+    previous: (any TabState)?
   ) {
     testDelegateMethodWithName(#function, tabs: [selected, previous])
   }
 
-  public func tabManager(_ tabManager: TabManager, didAddTab tab: TabState) {
+  public func tabManager(_ tabManager: TabManager, didAddTab tab: any TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
-  public func tabManager(_ tabManager: TabManager, didRemoveTab tab: TabState) {
+  public func tabManager(_ tabManager: TabManager, didRemoveTab tab: any TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
@@ -92,11 +92,11 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     testDelegateMethodWithName(#function, tabs: [])
   }
 
-  public func tabManager(_ tabManager: TabManager, willRemoveTab tab: TabState) {
+  public func tabManager(_ tabManager: TabManager, willRemoveTab tab: any TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
-  public func tabManager(_ tabManager: TabManager, willAddTab tab: TabState) {
+  public func tabManager(_ tabManager: TabManager, willAddTab tab: any TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 

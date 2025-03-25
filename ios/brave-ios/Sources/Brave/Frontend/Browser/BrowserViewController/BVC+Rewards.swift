@@ -163,7 +163,7 @@ extension TabBrowserData {
       // Only utilized for verifiable conversions, which requires the user to have
       // joined Brave Rewards.
       group.enter()
-      tab.evaluateSafeJavaScript(
+      tab.evaluateJavaScript(
         functionName: "new XMLSerializer().serializeToString",
         args: ["document"],
         contentWorld: WKContentWorld.defaultClient,
@@ -177,7 +177,7 @@ extension TabBrowserData {
       // joined Brave Rewards. Desktop requires the user to have opted into
       // notification ads, however we do not have access to that pref at this time.
       group.enter()
-      tab.evaluateSafeJavaScript(
+      tab.evaluateJavaScript(
         functionName: "document?.body?.innerText",
         contentWorld: .defaultClient,
         asFunction: false

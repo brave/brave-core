@@ -39,7 +39,7 @@ class BraveSkusScriptHandler: TabContentScript {
   }()
 
   func tab(
-    _ tab: TabState,
+    _ tab: any TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -83,7 +83,7 @@ class BraveSkusScriptHandler: TabContentScript {
 
   @MainActor
   private func processRequest(
-    tab: TabState,
+    tab: any TabState,
     message: WKScriptMessage,
     method: Method,
     for skusDomain: String

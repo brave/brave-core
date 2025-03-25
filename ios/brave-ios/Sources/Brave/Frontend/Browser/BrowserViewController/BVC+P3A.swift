@@ -50,7 +50,7 @@ extension BrowserViewController {
     )
   }
 
-  func recordURLBarSubmitLocationP3A(from tab: TabState?) {
+  func recordURLBarSubmitLocationP3A(from tab: (any TabState)?) {
     var urlSubmissionTotalStorage = P3ATimedStorage<Int>.urlSubmissionTotalStorage
     var urlSubmissionNewTabStorage = P3ATimedStorage<Int>.urlSubmissionNewTabStorage
 
