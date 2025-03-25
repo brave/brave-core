@@ -109,9 +109,9 @@ rust_static_library("rust_lib") {
 
   deps = [
     "//brave/third_party/rust/feed_rs/v1:lib",
+    "//brave/third_party/rust/regex/v1:lib",
     "//third_party/rust/lazy_static/v1:lib",
     "//third_party/rust/log/v0_4:lib",
-    "//third_party/rust/regex/v1:lib",
   ]
 }
 
