@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/lib/gn.rs b/tools/crates/gnrt/lib/gn.rs
-index 058cebdb525bc170503bb439e88758a65b586933..0bcb3523f56a19ce25b333aee7517f10e1165caf 100644
+index 4a61217a166dadf8a44752b92cd362105d8fa022..6a28c161f4cc2f037b8d7696d5b63df843ebafa2 100644
 --- a/tools/crates/gnrt/lib/gn.rs
 +++ b/tools/crates/gnrt/lib/gn.rs
 @@ -201,8 +201,9 @@ pub fn build_rule_from_dep(
@@ -13,26 +13,7 @@ index 058cebdb525bc170503bb439e88758a65b586933..0bcb3523f56a19ce25b333aee7517f10
              }
          }
          aliases.sort_unstable();
-@@ -575,6 +576,7 @@ fn cfg_to_condition(cfg: &cargo_platform::Cfg) -> Condition {
-             "target_family" => target_family_to_condition(value),
-             "target_os" => target_os_to_condition(value),
-             "target_vendor" => target_vendor_to_condition(value),
-+            "curve25519_dalek_backend" => Condition::AlwaysFalse,
-             _ => Condition::Unsupported(format!("Unknown key `{key}` in `{cfg}`")),
-         },
-     }
-@@ -593,6 +595,10 @@ fn cfg_name_to_condition(name: &str) -> Condition {
-         return Condition::AlwaysFalse;
-     }
- 
-+    if ["tracing_unstable"].contains(&name) {
-+        return Condition::AlwaysFalse;
-+    }
-+
-     Condition::Unsupported(format!("unknown option name: `#[cfg({name})]`"))
- }
- 
-@@ -697,6 +703,7 @@ fn target_os_to_condition(target_os: &str) -> Condition {
+@@ -768,6 +769,7 @@ fn target_os_to_condition(target_os: &str) -> Condition {
      for (t, c) in &[
          ("android", "is_android"),
          ("darwin", "is_mac"),
