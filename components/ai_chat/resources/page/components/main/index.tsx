@@ -8,6 +8,8 @@ import AlertCenter from '@brave/leo/react/alertCenter'
 import Button from '@brave/leo/react/button'
 import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
+import SegmentedControl from '@brave/leo/react/segmentedControl'
+import SegmentedControlItem from '@brave/leo/react/controlItem'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
@@ -40,6 +42,7 @@ import styles from './style.module.scss'
 import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 import Attachments from '../attachments'
 import { useIsElementSmall } from '../../hooks/useIsElementSmall'
+import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -52,6 +55,13 @@ const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
   Mojom.SuggestionGenerationStatus.CanGenerate,
   Mojom.SuggestionGenerationStatus.IsGenerating
 ])
+
+const CONVERSATION_CAPABILITY_KEYS = getKeysForMojomEnum(Mojom.ConversationCapability)
+
+const CONVERSATION_CAPABILITY_DISPLAY_STRINGS = {
+  [Mojom.ConversationCapability.CHAT]: 'Chat',
+  [Mojom.ConversationCapability.CONTENT_AGENT]: 'Browse'
+}
 
 function Main() {
   const aiChatContext = useAIChat()
@@ -79,14 +89,17 @@ function Main() {
     conversationContext.associatedContentInfo === null && // AssociatedContent request has finished and this is a standalone conversation
     !aiChatContext.isPremiumUser
 
+  // TODO: get canShowContextToggle from backend
+  const isLastTurnBraveSearchSERPSummary = false
+    // conversationContext.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
 
-  const isLastTurnBraveSearchSERPSummary =
-    conversationContext.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
-
-  const showContextToggle =
-    (conversationContext.conversationHistory.length === 0 ||
+  const showContextToggle = (
+    !aiChatContext.isSmartPageContentFeatureEnabled &&
+    conversationContext.conversationCapability === Mojom.ConversationCapability.CHAT &&
+    (conversationContext.conversationHistoryLength === 0 ||
       isLastTurnBraveSearchSERPSummary) &&
     !!conversationContext.associatedContentInfo
+  )
 
   const showAttachments = useSupportsAttachments()
     && conversationContext.showAttachments
@@ -159,7 +172,7 @@ function Main() {
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal = !aiChatContext.hasAcceptedAgreement &&
-    !!conversationContext.conversationHistory.length
+    !!conversationContext.conversationHistoryLength
 
   const showContent = !aiChatContext.hasAcceptedAgreement ||
     !conversationContext.conversationUuid ||
@@ -176,7 +189,7 @@ function Main() {
     if (aiChatContext.isMobile && aiChatContext.hasAcceptedAgreement &&
       conversationContext.historyInitialized && !querySubmitted &&
       !conversationContext.isGenerating &&
-      conversationContext.conversationHistory.length === 0) {
+      conversationContext.conversationHistoryLength === 0) {
       aiChatContext.uiHandler?.showSoftKeyboard()
       return true
     }
@@ -314,7 +327,7 @@ function Main() {
                 <LongConversationInfo />
               </div>
             )}
-            {!aiChatContext.hasAcceptedAgreement && !conversationContext.conversationHistory.length && (
+            {!aiChatContext.hasAcceptedAgreement && !conversationContext.conversationHistoryLength && (
               <WelcomeGuide />
             )}
           </div>
@@ -332,6 +345,33 @@ function Main() {
               <PageContextToggle />
             </div>
           )}
+          {aiChatContext.isAgentFeatureEnabled && conversationContext.historyInitialized && !conversationContext.conversationHistoryLength &&
+            conversationContext.currentModel?.supportsTools &&
+          <SegmentedControl
+            size='tiny'
+            onChange={(e) => {
+              const keys: string[] = CONVERSATION_CAPABILITY_KEYS
+              if (e.value && keys.includes(e.value)) {
+                const value = e.value as typeof CONVERSATION_CAPABILITY_KEYS[number]
+                const capability: Mojom.ConversationCapability = Mojom.ConversationCapability[value]
+                conversationContext.conversationHandler?.changeCapability(capability)
+              }
+            }}
+            value={CONVERSATION_CAPABILITY_KEYS[conversationContext.conversationCapability]}
+          >
+            <SegmentedControlItem value={CONVERSATION_CAPABILITY_KEYS[Mojom.ConversationCapability.CHAT]}>
+              {CONVERSATION_CAPABILITY_DISPLAY_STRINGS[Mojom.ConversationCapability.CHAT]}
+            </SegmentedControlItem>
+            <SegmentedControlItem value={CONVERSATION_CAPABILITY_KEYS[Mojom.ConversationCapability.CONTENT_AGENT]}>
+              {CONVERSATION_CAPABILITY_DISPLAY_STRINGS[Mojom.ConversationCapability.CONTENT_AGENT]}
+            </SegmentedControlItem>
+          </SegmentedControl>
+          }
+          {aiChatContext.isAgentFeatureEnabled && conversationContext.historyInitialized && !!conversationContext.conversationHistoryLength &&
+            <div>
+              {CONVERSATION_CAPABILITY_DISPLAY_STRINGS[conversationContext.conversationCapability]}
+            </div>
+          }
           <ToolsButtonMenu {...conversationContext} />
           <InputBox
             conversationStarted={isVisible}

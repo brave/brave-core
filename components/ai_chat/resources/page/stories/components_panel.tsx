@@ -23,6 +23,7 @@ import ACTIONS_LIST from './story_utils/actions'
 import styles from './style.module.scss'
 import StorybookConversationEntries from './story_utils/ConversationEntries'
 import { UntrustedConversationContext, UntrustedConversationReactContext } from '../../untrusted_conversation_frame/untrusted_conversation_context'
+import { ToolEvent } from '../../untrusted_conversation_frame/components/assistant_response'
 import ErrorConnection from '../components/alerts/error_connection'
 import ErrorConversationEnd from '../components/alerts/error_conversation_end'
 import ErrorInvalidAPIKey from '../components/alerts/error_invalid_api_key'
@@ -40,7 +41,8 @@ const eventTemplate: Mojom.ConversationEntryEvent = {
   searchStatusEvent: undefined,
   selectedLanguageEvent: undefined,
   conversationTitleEvent: undefined,
-  sourcesEvent: undefined
+  sourcesEvent: undefined,
+  toolUseEvent: undefined
 }
 
 function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
@@ -102,6 +104,100 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     updatedTime: { internalValue: BigInt('13278618001000002') },
     associatedContent: undefined,
     modelKey: undefined,
+  }
+]
+
+const toolEvents: Mojom.ToolUseEvent[] = [
+  {
+    toolId: 'abc123',
+    toolName: 'active_web_page_content_fetcher',
+    inputJson: JSON.stringify({ confidence_percent: 80 }),
+    output: undefined,
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'active_web_page_content_fetcher',
+    inputJson: JSON.stringify({ confidence_percent: 80 }),
+    output: [{textContentBlock: { text: 'Some content' }, imageContentBlock: undefined}],
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'active_web_page_content_fetcher',
+    inputJson: JSON.stringify({ confidence_percent: 80 }),
+    output: [{textContentBlock: { text: 'Error - Some content' }, imageContentBlock: undefined}],
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'assistant_detail_storage',
+    inputJson: JSON.stringify({ information: 'This is the text to store' }),
+    output: [{textContentBlock: { text: 'Some content' }, imageContentBlock: undefined}],
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'user_choice_tool',
+    inputJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    outputJson: '7:00pm',
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'user_choice_tool',
+    inputJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    outputJson: '',
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'user_choice_tool',
+    inputJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    outputJson: null!,
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'computer',
+    inputJson: JSON.stringify({ action: 'screenshot' }),
+    outputJson: JSON.stringify([{ type: 'image_url', image_url: 'data:image/webp;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAMACAIAAAA12IJaAAAPoklEQVR4nOzZMRHCYBgEUWBQgwMsMjig/gVgAgFYSZkmLvIV+56Ca3fuvq11AaDn/31NTwBgwG16AAAAcB4BAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAg5Lo/PtMbABjwfP+mJwAwwAMAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQIgAAACAEAEAAAAhAgAAAEIEAAAAhAgAAAAIEQAAABAiAAAAIEQAAABAiAAAAIAQAQAAACECAAAAQgQAAACECAAAAAgRAAAAECIAAAAgRAAAAECIAAAAgBABAAAAIQIAAABCBAAAAIQIAAAACBEAAAAQIgAAACBEAAAAQMgRAAD//xw7DZftLGe7AAAAAElFTkSuQmCC'}]),
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'computer',
+    inputJson: JSON.stringify({ action: 'key', text: 'Page_Down' }),
+    outputJson: undefined,
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'computer',
+    inputJson: JSON.stringify({ action: 'type', text: 'Some very very very very very very very very very long text to write' }),
+    outputJson: undefined,
+    toolType: undefined,
+  },
+  {
+    toolId: 'abc123',
+    toolName: 'computer',
+    inputJson: JSON.stringify({ action: 'mouse_move', coordinate: [0, 0] }),
+    outputJson: undefined,
+    toolType: undefined,
+  },
+  // {
+  //   toolId: 'abc123',
+  //   toolName: 'active_web_page_content_fetcher',
+  //   inputJson: JSON.stringify({ action: 'https://example.com' }),
+  //   outputJson: undefined,
+  //   toolType: undefined,
+  // },
+  {
+    toolId: 'abc123',
+    toolName: 'web_page_navigator',
+    inputJson: JSON.stringify({ website_url: 'https://example.com' }),
+    outputJson: undefined,
+    toolType: undefined,
   }
 ]
 
@@ -245,8 +341,27 @@ const HISTORY: Mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.')],
-    uploadedImages : [],
+    uploadedImages:[],
+    events: [
+      getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.'),
+      ...toolEvents.slice(0,3).map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent }))
+    ],
+    fromBraveSearchSERP: false
+  },
+  {
+    uuid: undefined,
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    uploadedImages:[],
+    events: [
+      getCompletionEvent('Continuing to use tools...'),
+      ...toolEvents.slice(3).map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent }))
+    ],
     fromBraveSearchSERP: false
   },
   {
@@ -358,6 +473,8 @@ const MODELS: Mojom.Model[] = [
     key: '1',
     displayName: 'Model One',
     visionSupport: false,
+    supportsTools: true,
+    supportsAnthropicComputerUse: true,
     options: {
       leoModelOptions: {
         name: 'model-one',
@@ -375,6 +492,8 @@ const MODELS: Mojom.Model[] = [
     key: '2',
     displayName: 'Model Two',
     visionSupport: true,
+    supportsTools: true,
+    supportsAnthropicComputerUse: false,
     options: {
       leoModelOptions: {
         name: 'model-two-premium',
@@ -392,6 +511,8 @@ const MODELS: Mojom.Model[] = [
     key: '3',
     displayName: 'Model Three',
     visionSupport: false,
+    supportsTools: false,
+    supportsAnthropicComputerUse: false,
     options: {
       leoModelOptions: {
         name: 'model-three-freemium',
@@ -453,6 +574,7 @@ type CustomArgs = {
   model: string
   inputText: string
   hasConversation: boolean
+  conversationCapability: keyof typeof Mojom.ConversationCapability
   editingConversationId: string | null
   deletingConversationId: string | null
   visibleConversationListCount: number
@@ -469,6 +591,7 @@ type CustomArgs = {
   suggestionStatus: keyof typeof Mojom.SuggestionGenerationStatus
   isMobile: boolean
   isHistoryEnabled: boolean
+  isAgentFeatureEnabled: boolean
   isStandalone: boolean
   isDefaultConversation: boolean
   shouldShowLongConversationInfo: boolean
@@ -483,6 +606,7 @@ const args: CustomArgs = {
   initialized: true,
   inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
   hasConversation: true,
+  conversationCapability: 'CHAT',
   visibleConversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
   hasAssociatedContent: true,
@@ -501,6 +625,7 @@ const args: CustomArgs = {
   model: MODELS[0].key,
   isMobile: false,
   isHistoryEnabled: true,
+  isAgentFeatureEnabled: true,
   isStandalone: false,
   isDefaultConversation: true,
   shouldShowLongConversationInfo: false,
@@ -518,6 +643,10 @@ const meta: Meta<CustomArgs> = {
   },
   argTypes: {
     ...InferControlsFromArgs(args),
+    conversationCapability: {
+      options: getKeysForMojomEnum(Mojom.ConversationCapability),
+      control: { type: 'select' }
+    },
     currentErrorState: {
       options: getKeysForMojomEnum(Mojom.APIError),
       control: { type: 'select' }
@@ -601,6 +730,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     canShowPremiumPrompt: options.args.canShowPremiumPrompt,
     isMobile: options.args.isMobile,
     isHistoryFeatureEnabled: options.args.isHistoryEnabled,
+    isAgentFeatureEnabled: options.args.isAgentFeatureEnabled,
     isStandalone: options.args.isStandalone,
     allActions: ACTIONS_LIST,
     tabs: [{
@@ -653,6 +783,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     conversationUuid: options.args.isNewConversation
       ? 'new-conversation'
       : CONVERSATIONS[1].uuid,
+    conversationCapability: Mojom.ConversationCapability[options.args.conversationCapability],
     conversationHistory: options.args.hasConversation ? HISTORY : [],
     associatedContentInfo: associatedContent,
     allModels: MODELS,
@@ -813,6 +944,18 @@ export const _Loading = {
     return (
       <div className={styles.container}>
         <Loading />
+      </div>
+    )
+  }
+}
+
+export const _ToolUse = {
+  render: () => {
+    return (
+      <div className={styles.container}>
+        {toolEvents.map((event) => (
+        <ToolEvent event={event} isActiveEntry={true}></ToolEvent>
+        ))}
       </div>
     )
   }

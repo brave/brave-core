@@ -57,8 +57,28 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
       ...conversationEntriesState,
       conversationHistory
     })
+
     this.conversationObserver.onConversationHistoryUpdate.addListener(
-      async () => this.setPartialState(await this.conversationHandler.getConversationHistory())
+      async (updatedOrNewEntry?: Mojom.ConversationTurn) => {
+        if (!updatedOrNewEntry) {
+          this.setPartialState(await this.conversationHandler.getConversationHistory())
+          return
+        }
+        const idxExisting = this.state.conversationHistory.findIndex(e => e.uuid === updatedOrNewEntry.uuid)
+        if (idxExisting === -1) {
+          // new entry
+          this.setPartialState({
+            conversationHistory: [...this.state.conversationHistory, updatedOrNewEntry]
+          })
+          return
+        }
+        // update entry
+        const newHistory = [...this.state.conversationHistory]
+        newHistory[idxExisting] = updatedOrNewEntry
+        this.setPartialState({
+          conversationHistory: newHistory
+        })
+      }
     )
 
     this.conversationObserver.onEntriesUIStateChanged.addListener((state: Mojom.ConversationEntriesState) => {

@@ -37,7 +37,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
   const isMobile = useIsSmall() && aiChatContext.isMobile
 
   const shouldDisplayEraseAction = (!aiChatContext.isStandalone || isMobile) &&
-    conversationContext.conversationHistory.length >= 1
+    conversationContext.conversationHistoryLength >= 1
 
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
   const showTitle = (!isTabAssociated || aiChatContext.isStandalone) && !isMobile
@@ -133,7 +133,7 @@ export function NavigationHeader() {
   const conversationContext = useConversation()
   const { createNewConversation } = useActiveChat()
 
-  const canStartNewConversation = conversationContext.conversationHistory.length >= 1
+  const canStartNewConversation = conversationContext.conversationHistoryLength >= 1
     && aiChatContext.hasAcceptedAgreement
   const isMobile = useIsSmall() && aiChatContext.isMobile
 

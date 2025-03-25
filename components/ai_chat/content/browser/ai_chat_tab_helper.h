@@ -16,6 +16,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/ai_chat/content/browser/navigate_history_tool.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -51,6 +52,8 @@ class AIChatUIBrowserTest;
 
 namespace ai_chat {
 class AIChatMetrics;
+class AgentClient;
+class NavigationTool;
 
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
@@ -168,6 +171,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
                       std::string_view invalidation_token) override;
   std::u16string GetPageTitle() const override;
   void OnNewPage(int64_t navigation_id) override;
+  std::vector<Tool*> GetTools(
+      mojom::ConversationCapability conversation_capability) override;
 
   // Called when an event of significance occurs that, if the page is a
   // same-document navigation, should result in that previous navigation
@@ -198,6 +203,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void SetPendingGetContentCallback(GetPageContentCallback callback);
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+  std::unique_ptr<AgentClient> agent_client_;
+  std::unique_ptr<NavigationTool> navigation_tool_;
+  std::unique_ptr<NavigateHistoryTool> navigate_history_tool_;
 
   bool is_same_document_navigation_ = false;
   int pending_navigation_id_;

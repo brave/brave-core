@@ -5,6 +5,8 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 
+#include <cstdint>
+#include <iterator>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -15,18 +17,23 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
+#include "base/json/json_reader.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notreached.h"
 #include "base/numerics/clamped_math.h"
 #include "base/strings/string_split.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace ai_chat {
 
 namespace {
+
+constexpr uint8_t kMaxCountLargeToolUseEvents = 2;
 
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
@@ -55,11 +62,13 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
     const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
-  std::vector<ConversationEvent> conversation = {
-      {mojom::CharacterType::HUMAN, ConversationEventType::UserText, text},
-      {mojom::CharacterType::HUMAN, ConversationEventType::RequestRewrite,
-       question}};
-  api_->PerformRequest(std::move(conversation), selected_language,
+  std::vector<ConversationEvent> conversation;
+  conversation.emplace_back(ConversationEvent(
+      mojom::CharacterType::HUMAN, ConversationEventType::UserText, text));
+  conversation.emplace_back(
+      ConversationEvent(mojom::CharacterType::HUMAN,
+                        ConversationEventType::RequestRewrite, question));
+  api_->PerformRequest(std::move(conversation), {}, selected_language,
                        std::move(received_callback),
                        std::move(completed_callback));
 }
@@ -69,16 +78,18 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
     const std::string& page_content,
     const std::string& selected_language,
     SuggestedQuestionsCallback callback) {
-  std::vector<ConversationEvent> conversation{
-      GetAssociatedContentConversationEvent(page_content, is_video),
-      {mojom::CharacterType::HUMAN,
-       ConversationEventType::RequestSuggestedActions, ""}};
+  std::vector<ConversationEvent> conversation;
+  conversation.emplace_back(
+      GetAssociatedContentConversationEvent(page_content, is_video));
+  conversation.emplace_back(
+      ConversationEvent(mojom::CharacterType::HUMAN,
+                        ConversationEventType::RequestSuggestedActions, ""));
 
   auto on_response = base::BindOnce(
       &EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  api_->PerformRequest(std::move(conversation), selected_language,
+  api_->PerformRequest(std::move(conversation), {}, selected_language,
                        base::NullCallback(), std::move(on_response));
 }
 
@@ -103,6 +114,8 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const std::string& page_content,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
+    Tools tools,
+    std::optional<std::string_view> preferred_tool_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
@@ -116,8 +129,17 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     conversation.push_back(
         GetAssociatedContentConversationEvent(page_content, is_video));
   }
+
+  // Whilst iterating in reverse, each earlier message should
+  // be inserted at this position:
+  auto conversation_message_insertion_it = conversation.end();
+
   // history
-  for (const auto& message : conversation_history) {
+  // Keep count of large tool results to limit the number of large results,
+  // (mainly screenshots), but keep the ones at the end by iterating in reverse.
+  int large_event_count = 0;
+  for (const auto& message : base::Reversed(conversation_history)) {
+    std::vector<ConversationEvent> events_before_message;
     if (message->uploaded_images) {
       size_t counter = 0;
       for (const auto& uploaded_image : message->uploaded_images.value()) {
@@ -126,21 +148,88 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
         if (counter++ > 0) {
           break;
         }
-        conversation.push_back({mojom::CharacterType::HUMAN,
-                                ConversationEventType::UploadImage,
-                                GetImageDataURL(uploaded_image->image_data)});
+        // Event should be inserted before any subsequent message
+        events_before_message.push_back(
+            {mojom::CharacterType::HUMAN, ConversationEventType::UploadImage,
+             GetImageDataURL(uploaded_image->image_data)});
       }
-    }
-    if (message->selected_text.has_value() &&
-        !message->selected_text->empty()) {
-      conversation.push_back({mojom::CharacterType::HUMAN,
-                              ConversationEventType::PageExcerpt,
-                              message->selected_text.value()});
     }
     ConversationEvent event;
     event.role = message->character_type;
 
     event.content = EngineConsumer::GetPromptForEntry(message);
+
+    std::vector<ConversationEvent> tool_results;
+
+    // Construct tool calls and responses for each turn
+    if (message->character_type == mojom::CharacterType::ASSISTANT &&
+        message->events.has_value() && !message->events->empty()) {
+      base::Value::List tool_calls;
+
+      for (auto& message_event : base::Reversed(message->events.value())) {
+        if (!message_event->is_tool_use_event()) {
+          continue;
+        }
+
+        // Reconstruct tool call from assistant
+        const auto& tool_event = message_event->get_tool_use_event();
+        base::Value::Dict tool_call;
+        tool_call.Set("id", tool_event->tool_id);
+        tool_call.Set("type", "function");
+
+        base::Value::Dict function;
+        function.Set("name", tool_event->tool_name);
+        function.Set("arguments", tool_event->input_json);
+        tool_call.Set("function", std::move(function));
+
+        tool_calls.Insert(tool_calls.begin(),
+                          base::Value(std::move(tool_call)));
+
+        // Tool result
+        if (tool_event->output.has_value()) {
+          ConversationEvent tool_result;
+          tool_result.role = mojom::CharacterType::TOOL;
+          tool_result.type = ConversationEventType::ToolUse;
+          tool_result.tool_call_id = tool_event->tool_id;
+
+          // Only send the large results (e.g. images or xml trees) in the last
+          // X tool result events, otherwise the context gets filled.
+          if (!tool_event->output->empty()) {
+            bool is_large = false;
+            size_t content_size = 0;
+            for (const auto& content : tool_event->output.value()) {
+              if (content->is_image_content_block()) {
+                is_large = true;
+                break;
+              } else if (content->is_text_content_block()) {
+                content_size += content->get_text_content_block()->text.size();
+                if (content_size >= 1000) {
+                  is_large = true;
+                  break;
+                }
+              }
+            }
+            if (large_event_count < kMaxCountLargeToolUseEvents || !is_large) {
+              if (is_large) {
+                large_event_count++;
+              }
+              std::vector<mojom::ContentBlockPtr> tool_result_content;
+              for (const auto& item : tool_event->output.value()) {
+                tool_result_content.push_back(item.Clone());
+              }
+              tool_result.content = std::move(tool_result_content);
+            } else {
+              tool_result.content =
+                  "[Large result removed to save space for subsequent results]";
+            }
+          }
+          tool_results.emplace_back(std::move(tool_result));
+        }
+      }
+      if (!tool_calls.empty()) {
+        event.tool_calls = std::move(tool_calls);
+      }
+    }
 
     // TODO(petemill): Shouldn't the server handle the map of mojom::ActionType
     // to prompts in addition to SUMMARIZE_PAGE (e.g. PARAPHRASE, EXPLAIN,
@@ -151,10 +240,41 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     } else {
       event.type = ConversationEventType::ChatMessage;
     }
-    conversation.push_back(std::move(event));
+
+    // Tool result should be sorted after the message
+    if (!tool_results.empty()) {
+      // conversation_message_insertion_it =
+      // conversation.insert(conversation_message_insertion_it,
+      //   std::make_move_iterator(tool_results.rbegin()),
+      //   std::make_move_iterator(tool_results.rend()));
+      for (auto& tool_event : tool_results) {
+        conversation_message_insertion_it = conversation.insert(
+            conversation_message_insertion_it, std::move(tool_event));
+      }
+    }
+
+    conversation_message_insertion_it = conversation.insert(
+        conversation_message_insertion_it, std::move(event));
+
+    if (message->selected_text.has_value() &&
+        !message->selected_text->empty()) {
+      conversation_message_insertion_it = conversation.insert(
+          conversation_message_insertion_it,
+          ConversationEvent(mojom::CharacterType::HUMAN,
+                            ConversationEventType::PageExcerpt,
+                            message->selected_text.value()));
+    }
+
+    // Insert any events before the message
+    if (!events_before_message.empty()) {
+      conversation_message_insertion_it = conversation.insert(
+          conversation_message_insertion_it,
+          std::make_move_iterator(events_before_message.begin()),
+          std::make_move_iterator(events_before_message.end()));
+    }
   }
 
-  api_->PerformRequest(std::move(conversation), selected_language,
+  api_->PerformRequest(std::move(conversation), tools, selected_language,
                        std::move(data_received_callback),
                        std::move(completed_callback));
 }

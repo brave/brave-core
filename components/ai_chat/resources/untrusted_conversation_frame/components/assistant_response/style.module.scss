@@ -43,3 +43,132 @@
     color: var(--leo-color-text-interactive);
   }
 }
+
+.toolUse {
+  margin-left: 11px;
+  border-left: var(--leo-color-neutral-20) 2px solid;
+  padding: 8px 12px 8px 22px;
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+  position: relative;
+
+  .toolUseIcon {
+    position: absolute;
+    top: calc(8px + 0.5lh - 11px); left: -12px;
+    --leo-icon-size: 16px;
+    --leo-progressring-size: 16px;
+    padding: 2px;
+    width: 22px;
+    height: 22px;
+    // circle
+    border-radius: 50%;
+    border: var(--leo-color-divider-subtle) 1px solid;
+    background: var(--leo-color-container-background);
+  }
+
+  &:not(&.toolUseComplete):global(.tool-user_choice_tool) {
+    .toolUseIcon {
+      --leo-icon-color: var(--leo-color-primary-5);
+      background-color: var(--leo-color-primary-40);
+      border-color: var(--leo-color-primary-50);
+    }
+  }
+
+  &.toolUseComplete {
+    color: var(--leo-color-text-tertiary);
+
+    .toolUseIcon {
+      background: var(--leo-color-systemfeedback-success-background);
+      border-color: var(--leo-color-green-20);
+      --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+    }
+  }
+
+}
+
+.toolUseLongText {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  height: 1lh;
+}
+
+.toolUseContentPreview {
+  margin: 4px;
+  max-width: 80vw;
+}
+
+.toolUrl {
+  font-style: italic;
+}
+
+.choice {
+    margin-bottom: var(--leo-spacing-s);
+    &.isDisabled {
+      opacity: 0.5;
+    }
+}
+
+.completedChoiceIcon {
+  --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+}
+
+.deniedChoiceIcon {
+  --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
+}
+
+.choiceNumber {
+  border-radius: 50%;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--leo-color-schemes-on-tertiary);
+  background: var(--leo-color-text-interactive);
+
+}
+
+.eventGroupHeader {
+  margin-bottom: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+  button {
+    cursor: pointer;
+    appearance: none;
+    outline: none;
+    margin: 0;
+    border: none;
+    padding: 0;
+    background: none;
+    font: var(--leo-font-small-link);
+    color: var(--leo-color-text-tertiary);
+    text-decoration: underline;
+  }
+}
+
+.miniEvents {
+  --leo-icon-color: var(--leo-color-text-secondary);
+  position: relative;
+  margin-bottom: 4px;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+}
+
+@keyframes fadein {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.miniEventIcon {
+  flex: 0 0 auto;
+  &.isNew {
+    animation: fadein .3s linear forwards;
+  }
+}

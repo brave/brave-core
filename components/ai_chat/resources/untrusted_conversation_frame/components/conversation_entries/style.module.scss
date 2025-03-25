@@ -3,6 +3,26 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+.conversationEntries {
+  position: relative;
+  padding-bottom: 8px;
+  overflow-x: hidden;
+
+  // Fade out on right edge for long lists that get cut off:
+  // - mini tool events
+  &:after {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    pointer-events: none;
+    content: "";
+    background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255, 1) 90%);
+    height: 100%;
+    width: var(--leo-spacing-2xl);
+  }
+}
+
 .turn {
   display: flex;
   align-items: flex-start;
@@ -12,16 +32,18 @@
   color: var(--leo-color-text-primary);
   padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
   letter-spacing: -0.1px;
-}
 
-.turnContainerMobile {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.turnAI {
-  background-color: transparent;
-  align-items: flex-start;
+  &.turnAI {
+    background-color: transparent;
+    align-items: flex-start;
+  }
+  &.turnAI + .turn.turnAI {
+    padding-top: 0;
+  }
+  &.isMobile {
+    user-select: none;
+    -webkit-user-select: none;
+  }
 }
 
 .message {

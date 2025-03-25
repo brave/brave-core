@@ -4,12 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 .suggestion {
-  --leo-button-color: var(--leo-color-neutral-40);
   --leo-button-padding: 3px;
   --leo-button-radius: var(--leo-radius-m);
   --leo-progressring-color: var(--leo-color-neutral-40);
   --leo-progressring-size: 15px;
-  --leo-button-color: var(--leo-color-divider-subtle);
 
   width: 100%;
   container-type: inline-size;
