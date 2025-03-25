@@ -11,6 +11,7 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
@@ -23,7 +24,7 @@ class SplitViewBrowserDataBrowserTest : public InProcessBrowserTest {
   ~SplitViewBrowserDataBrowserTest() override = default;
 
   SplitViewBrowserData& data() {
-    return *SplitViewBrowserData::FromBrowser(browser());
+    return *browser()->GetFeatures().split_view_browser_data();
   }
 
   tabs::TabModel* CreateTabModel() {

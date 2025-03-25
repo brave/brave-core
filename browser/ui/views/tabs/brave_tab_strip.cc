@@ -27,6 +27,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
@@ -252,8 +253,8 @@ TabTiledState BraveTabStrip::GetTiledStateForTab(int index) const {
 }
 
 std::optional<TabTile> BraveTabStrip::GetTileForTab(const Tab* tab) const {
-  auto* browser = GetBrowser();
-  auto* data = SplitViewBrowserData::FromBrowser(browser);
+  auto* browser = const_cast<Browser*>(GetBrowser());
+  auto* data = browser->GetFeatures().split_view_browser_data();
   if (!data) {
     return std::nullopt;
   }

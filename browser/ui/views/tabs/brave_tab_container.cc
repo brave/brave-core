@@ -27,6 +27,7 @@
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -110,14 +111,14 @@ base::OnceClosure BraveTabContainer::LockLayout() {
 
 void BraveTabContainer::AddedToWidget() {
   TabContainerImpl::AddedToWidget();
-  auto* browser = tab_slot_controller_->GetBrowser();
+  auto* browser = const_cast<Browser*>(tab_slot_controller_->GetBrowser());
   if (!browser) {
     CHECK_IS_TEST();
     return;
   }
 
   if (auto* split_view_data =
-          SplitViewBrowserData::FromBrowser(const_cast<Browser*>(browser))) {
+          browser->GetFeatures().split_view_browser_data()) {
     if (!split_view_data_observation_.IsObserving()) {
       split_view_data_observation_.Observe(split_view_data);
     }
@@ -415,8 +416,9 @@ void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
 
   std::stable_sort(orderable_children.begin(), orderable_children.end());
 
-  if (auto* split_view_data = SplitViewBrowserData::FromBrowser(
-          tab_slot_controller_->GetBrowser())) {
+  auto* browser = const_cast<Browser*>(tab_slot_controller_->GetBrowser());
+  if (auto* split_view_data =
+          browser->GetFeatures().split_view_browser_data()) {
     ui::PaintRecorder recorder(paint_info.context(),
                                paint_info.paint_recording_size(),
                                paint_info.paint_recording_scale_x(),

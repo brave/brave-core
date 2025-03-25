@@ -8,6 +8,7 @@
 
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/ui/color/nala/nala_color_id.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 
 namespace {
 
@@ -469,9 +470,9 @@ bool BraveVerticalTabStyle::IsTabTiled(const Tab* tab) const {
   }
 
   auto is_tab_tiled = false;
-  if (auto* browser = tab->controller()->GetBrowser()) {
+  if (auto* browser = const_cast<Browser*>(tab->controller()->GetBrowser())) {
     // browser can be null during tests.
-    if (auto* data = SplitViewBrowserData::FromBrowser(browser);
+    if (auto* data = browser->GetFeatures().split_view_browser_data();
         data && tab->controller()->IsTabTiled(tab)) {
       is_tab_tiled = true;
     }

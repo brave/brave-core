@@ -17,7 +17,6 @@
 #include "base/observer_list.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 
-class Browser;
 class BrowserWindowInterface;
 class SplitViewTabStripModelAdapter;
 class SplitViewBrowserDataObserver;
@@ -41,10 +40,6 @@ struct TabTile {
 
 class SplitViewBrowserData {
  public:
-  // Don't use this for new code.
-  // Get SplitViewBrowserData via browser features.
-  static SplitViewBrowserData* FromBrowser(const Browser* browser);
-
   explicit SplitViewBrowserData(BrowserWindowInterface* browser);
   virtual ~SplitViewBrowserData();
 
@@ -89,7 +84,7 @@ class SplitViewBrowserData {
   [[nodiscard]] OnTabDragEndedClosure TabDragStarted();
 
   void TabsWillBeAttachedToNewBrowser(const std::vector<tabs::TabHandle>& tabs);
-  void TabsAttachedToNewBrowser(Browser* browser);
+  void TabsAttachedToNewBrowser(SplitViewBrowserData* target_data);
 
  private:
   friend class SplitViewBrowserDataBrowserTest;

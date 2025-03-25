@@ -17,21 +17,9 @@
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
 #include "brave/components/misc_metrics/split_view_metrics.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-
-// static
-SplitViewBrowserData* SplitViewBrowserData::FromBrowser(
-    const Browser* browser) {
-  CHECK(browser);
-  if (auto* features = browser->browser_window_features()) {
-    return features->split_view_browser_data();
-  }
-  return nullptr;
-}
 
 SplitViewBrowserData::SplitViewBrowserData(BrowserWindowInterface* browser)
     : tab_strip_model_adapter_(std::make_unique<SplitViewTabStripModelAdapter>(
@@ -261,7 +249,7 @@ void SplitViewBrowserData::TabsWillBeAttachedToNewBrowser(
   }
 }
 
-void SplitViewBrowserData::TabsAttachedToNewBrowser(Browser* browser) {
-  Transfer(SplitViewBrowserData::FromBrowser(browser),
-           std::move(tiles_to_be_attached_to_new_window_));
+void SplitViewBrowserData::TabsAttachedToNewBrowser(
+    SplitViewBrowserData* target_data) {
+  Transfer(target_data, std::move(tiles_to_be_attached_to_new_window_));
 }
