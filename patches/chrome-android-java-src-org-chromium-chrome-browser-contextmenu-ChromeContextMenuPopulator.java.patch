@@ -1,26 +1,25 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index 64694353ca0095c099e5941fa02098cbc7a7f84e..badd4f0ac06d16889e010cc17b9e4180cf952f64 100644
+index 69c111f75aedda719342e362fb076a2adf2c7223..75359c0525a10bc627318d21204edcd6668e971b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -171,7 +171,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             Action.SHARE_HIGHLIGHT,
-             Action.REMOVE_HIGHLIGHT,
+@@ -175,6 +175,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              Action.LEARN_MORE,
--            Action.OPEN_IN_NEW_TAB_IN_GROUP
-+            Action.OPEN_IN_NEW_TAB_IN_GROUP, Action.COPY_CLEAN_LINK
+             Action.OPEN_IN_NEW_TAB_IN_GROUP,
+             Action.SAVE_PAGE,
++            Action.COPY_CLEAN_LINK,
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -216,7 +216,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             int LEARN_MORE = 38;
+@@ -220,7 +221,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              int OPEN_IN_NEW_TAB_IN_GROUP = 39;
              int OPEN_IN_NEW_WINDOW = 40;
--            int NUM_ENTRIES = 41;
-+            int COPY_CLEAN_LINK = 41;int NUM_ENTRIES = 42;
+             int SAVE_PAGE = 41;
+-            int NUM_ENTRIES = 42;
++            int COPY_CLEAN_LINK = 42;int NUM_ENTRIES = 43;
          }
      }
  
-@@ -312,6 +312,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -334,6 +335,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));

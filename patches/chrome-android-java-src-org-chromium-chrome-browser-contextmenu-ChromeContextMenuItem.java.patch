@@ -1,37 +1,36 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 8051698a9f277e4cd4a255cc0b30d2f41b38da46..25bb25c47850b4ced07568c866a7c3f9cc19c142 100644
+index 1d672fdae9d5f6705fde51b32f4ddf01409e4321..a53fe53c50fd9ef7a70964c92f314a874b9837c5 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-@@ -63,7 +63,7 @@ class ChromeContextMenuItem {
-         Item.OPEN_IN_NEW_TAB_IN_GROUP,
-         Item.SHARE_HIGHLIGHT,
+@@ -65,6 +65,7 @@ class ChromeContextMenuItem {
          Item.REMOVE_HIGHLIGHT,
--        Item.LEARN_MORE
-+        Item.LEARN_MORE, Item.COPY_CLEAN_LINK
+         Item.LEARN_MORE,
+         Item.SAVE_PAGE,
++        Item.COPY_CLEAN_LINK,
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
-@@ -112,7 +112,7 @@ class ChromeContextMenuItem {
-         int REMOVE_HIGHLIGHT = 33;
-         int LEARN_MORE = 34;
+@@ -115,7 +116,7 @@ class ChromeContextMenuItem {
+         // Page Group
+         int SAVE_PAGE = 35;
          // ALWAYS UPDATE!
--        int NUM_ENTRIES = 35;
-+        int COPY_CLEAN_LINK = 35;int NUM_ENTRIES = 36;
+-        int NUM_ENTRIES = 36;
++        int COPY_CLEAN_LINK = 36;int NUM_ENTRIES = 37;
      }
  
      /** Mapping from {@link Item} to the ID found in the ids.xml. */
-@@ -152,6 +152,7 @@ class ChromeContextMenuItem {
-         R.id.contextmenu_share_highlight, // Item.SHARE_HIGHLIGHT
+@@ -156,6 +157,7 @@ class ChromeContextMenuItem {
          R.id.contextmenu_remove_highlight, // Item.REMOVE_HIGHLIGHT
          R.id.contextmenu_learn_more, // Item.LEARN_MORE
+         R.id.contextmenu_save_page, // Item.SAVE_PAGE
 +        R.id.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
-@@ -191,6 +192,7 @@ class ChromeContextMenuItem {
-         R.string.contextmenu_share_highlight, // Item.SHARE_HIGHLIGHT
+@@ -196,6 +198,7 @@ class ChromeContextMenuItem {
          R.string.contextmenu_remove_highlight, // Item.REMOVE_HIGHLIGHT
          R.string.contextmenu_learn_more, // Item.LEARN_MORE
+         R.string.contextmenu_save_page, // Item.SAVE_PAGE
 +        R.string.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  
