@@ -7,6 +7,7 @@ import Foundation
 import MobileCoreServices
 import Shared
 import UniformTypeIdentifiers
+import Web
 import WebKit
 import os.log
 

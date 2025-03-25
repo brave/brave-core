@@ -9,6 +9,7 @@ import Foundation
 import OSLog
 import Shared
 import UIKit
+import Web
 
 extension Tab {
   var displayTitle: String {

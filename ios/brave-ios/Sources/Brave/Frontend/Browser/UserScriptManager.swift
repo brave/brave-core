@@ -7,6 +7,7 @@ import BraveWallet
 import Data
 import Preferences
 import Shared
+import Web
 import WebKit
 import os.log
 

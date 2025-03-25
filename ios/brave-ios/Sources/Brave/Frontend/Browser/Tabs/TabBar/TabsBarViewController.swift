@@ -8,6 +8,7 @@ import Preferences
 import Shared
 import SnapKit
 import UIKit
+import Web
 
 protocol TabsBarViewControllerDelegate: AnyObject {
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab)

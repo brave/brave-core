@@ -12,6 +12,7 @@ import Preferences
 import Shared
 import Static
 import UIKit
+import Web
 
 class RetentionPreferencesDebugMenuViewController: TableViewController {
   private let p3aUtilities: BraveP3AUtils

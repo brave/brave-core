@@ -8,6 +8,7 @@ import Foundation
 import Shared
 import SnapKit
 import UIKit
+import Web
 
 class SnackBarUX {
   static var maxWidth: CGFloat = 400

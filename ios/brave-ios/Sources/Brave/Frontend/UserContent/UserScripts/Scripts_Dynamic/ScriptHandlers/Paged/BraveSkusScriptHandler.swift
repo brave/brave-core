@@ -11,6 +11,7 @@ import BraveVPN
 import Foundation
 import Preferences
 import Shared
+import Web
 import WebKit
 import os.log
 

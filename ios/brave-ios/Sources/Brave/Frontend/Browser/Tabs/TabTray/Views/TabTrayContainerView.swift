@@ -7,6 +7,7 @@ import BraveShared
 import BraveUI
 import Shared
 import UIKit
+import Web
 
 extension TabTrayController {
 

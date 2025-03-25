@@ -7,6 +7,7 @@ import Foundation
 import MobileCoreServices
 import Shared
 import Storage
+import Web
 import WebKit
 
 private let browsingActivityType: String = "com.brave.ios.browsing"

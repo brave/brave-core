@@ -10,6 +10,7 @@ import DeviceCheck
 import Shared
 import Static
 import UIKit
+import Web
 
 class BraveRewardsSettingsViewController: TableViewController {
 

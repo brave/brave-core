@@ -7,6 +7,7 @@ import AIChat
 import BraveStore
 import Foundation
 import Preferences
+import Web
 import WebKit
 import os.log
 

@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShields
 import BraveWallet
 import CoreData
 import Data
@@ -12,6 +13,7 @@ import Growth
 import Preferences
 import Shared
 import Storage
+import Web
 import WebKit
 import os.log
 
@@ -269,10 +271,19 @@ class TabManager: NSObject {
     configuration.processPool = WKProcessPool()
     configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General
       .blockPopups.value
+    configuration.preferences.isFraudulentWebsiteWarningEnabled =
+      Preferences.Shields.googleSafeBrowsing.value
+    configuration.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
 
     // Dev note: Do NOT add `.link` to the list, it breaks interstitial pages
     // and pages that don't want the URL highlighted!
     configuration.dataDetectorTypes = [.phoneNumber]
+    if configuration.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
+      configuration.setURLSchemeHandler(
+        InternalSchemeHandler(),
+        forURLScheme: InternalURL.scheme
+      )
+    }
 
     return configuration
   }
@@ -291,6 +302,15 @@ class TabManager: NSObject {
   func clearTabHistory(_ completion: (() -> Void)? = nil) {
     allTabs.filter({ $0.isWebViewCreated }).forEach({
       $0.clearHistory(config: configuration)
+
+      // Remove the tab history from saved tabs
+      // To remove history from WebKit, we simply update the session data AFTER calling "clear" above
+      SessionTab.update(
+        tabId: $0.id,
+        interactionState: $0.sessionData ?? Data(),
+        title: $0.title ?? "",
+        url: $0.url ?? TabManager.ntpInteralURL
+      )
     })
 
     completion?()
@@ -308,8 +328,6 @@ class TabManager: NSObject {
   func selectTab(_ tab: Tab?, previous: Tab? = nil) {
     assert(Thread.isMainThread)
     let previous = previous ?? selectedTab
-    previous?.isVisible = false
-
     if previous === tab {
       return
     }
@@ -353,7 +371,6 @@ class TabManager: NSObject {
     UIImpactFeedbackGenerator(style: .light).vibrate()
     selectedTab?.createWebview()
     selectedTab?.lastExecutedTime = Date.now()
-    selectedTab?.isVisible = true
 
     if let selectedTab = selectedTab,
       selectedTab.url == nil
@@ -364,6 +381,8 @@ class TabManager: NSObject {
     }
 
     delegates.forEach { $0.get()?.tabManager(self, didSelectedTabChange: tab, previous: previous) }
+    previous?.isVisible = false
+    selectedTab?.isVisible = true
     if let tab = previous {
       TabEvent.post(.didLoseFocus, for: tab)
     }
@@ -427,11 +446,10 @@ class TabManager: NSObject {
   }
 
   @MainActor func addPopupForParentTab(
-    _ parentTab: Tab,
-    configuration: WKWebViewConfiguration
+    _ parentTab: Tab
   ) -> Tab {
     let popup = Tab(
-      configuration: configuration,
+      configuration: parentTab.configuration,
       id: UUID(),
       type: parentTab.type
     )
@@ -440,7 +458,7 @@ class TabManager: NSObject {
       request: nil,
       afterTab: parentTab,
       flushToDisk: true,
-      zombie: false,
+      zombie: true,
       isPopup: true
     )
     return popup

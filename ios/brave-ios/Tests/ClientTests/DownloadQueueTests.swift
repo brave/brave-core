@@ -6,6 +6,7 @@
 import XCTest
 
 @testable import Brave
+@testable import Web
 
 class DownloadQueueTests: XCTestCase {
 

@@ -11,6 +11,7 @@ import Data
 import Favicon
 import Shared
 import SwiftUI
+import Web
 
 struct RecentlyClosedTabsView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode

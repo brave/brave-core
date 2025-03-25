@@ -11,6 +11,7 @@ import Foundation
 import Preferences
 import Shared
 import Storage
+import Web
 
 extension TabDataValues {
   private struct TabBrowserDataKey: TabDataKey {
@@ -108,7 +109,6 @@ class TabBrowserData: NSObject, TabObserver {
   var alertShownCount: Int = 0
   var blockAllAlerts: Bool = false
 
-  var redirectChain = [URL]()
   var responses = [URL: URLResponse]()
   var miscDelegate: TabMiscDelegate?
 

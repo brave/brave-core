@@ -11,126 +11,15 @@ import Preferences
 import Shared
 import Strings
 import UIKit
+import Web
 
-/// A protocol that tells an object about web UI related events happening
-///
-/// `WKWebView` specific things should not be accessed from these methods, if you need to access
-/// the underlying web view, you should only access it via `Tab`
-protocol TabWebDelegate: AnyObject {
-  func tabWebViewDidClose(_ tab: Tab)
-  func tab(
-    _ tab: Tab,
-    contextMenuConfigurationForLinkURL linkURL: URL?
-  ) async -> UIContextMenuConfiguration?
-  func tab(
-    _ tab: Tab,
-    requestMediaCapturePermissionsFor type: WebMediaCaptureType
-  ) async -> WebPermissionDecision
-  func tab(_ tab: Tab, runJavaScriptAlertPanelWithMessage message: String, pageURL: URL) async
-  func tab(
-    _ tab: Tab,
-    runJavaScriptConfirmPanelWithMessage message: String,
-    pageURL: URL
-  ) async -> Bool
-  func tab(
-    _ tab: Tab,
-    runJavaScriptConfirmPanelWithPrompt prompt: String,
-    defaultText: String?,
-    pageURL: URL
-  ) async -> String?
-  func tab(
-    _ tab: Tab,
-    didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
-    proposedCredential credential: URLCredential?,
-    previousFailureCount: Int
-  ) async -> URLCredential?
-  func tab(
-    _ tab: Tab,
-    createNewTabWithRequest request: URLRequest,
-    configuration: WKWebViewConfiguration
-  ) -> Tab?
-  func tab(_ tab: Tab, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
-  func tab(_ tab: Tab, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
-  func tab(_ tab: Tab, buildEditMenuWithBuilder builder: any UIMenuBuilder)
-}
-
-/// Media device capture types that a web page may request
-enum WebMediaCaptureType {
-  case camera
-  case microphone
-  case cameraAndMicrophone
-}
-
-/// Permission decisions for responding to various permission prompts
-enum WebPermissionDecision {
-  case prompt
-  case grant
-  case deny
-}
-
-extension TabWebDelegate {
-  func tabWebViewDidClose(_ tab: Tab) {}
-
-  func tab(
-    _ tab: Tab,
-    contextMenuConfigurationForLinkURL linkURL: URL?
-  ) async -> UIContextMenuConfiguration? {
-    return nil
-  }
-
-  func tab(
-    _ tab: Tab,
-    requestMediaCapturePermissionsFor type: WebMediaCaptureType
-  ) async -> WebPermissionDecision {
-    return .prompt
-  }
-
-  func tab(_ tab: Tab, runJavaScriptAlertPanelWithMessage message: String, pageURL: URL) async {}
-
-  func tab(
-    _ tab: Tab,
-    runJavaScriptConfirmPanelWithMessage message: String,
-    pageURL: URL
-  ) async -> Bool {
-    return false
-  }
-
-  func tab(
-    _ tab: Tab,
-    runJavaScriptConfirmPanelWithPrompt prompt: String,
-    defaultText: String?,
-    pageURL: URL
-  ) async -> String? {
-    return nil
-  }
-
-  func tab(
-    _ tab: Tab,
-    didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
-    proposedCredential credential: URLCredential?,
-    previousFailureCount: Int
-  ) async -> URLCredential? {
-    return nil
-  }
-
-  func tab(_ tab: Tab, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool {
-    return false
-  }
-
-  func tab(_ tab: Tab, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool {
-    return false
-  }
-
-  func tab(_ tab: Tab, buildEditMenuWithBuilder builder: any UIMenuBuilder) {}
-}
-
-extension BrowserViewController: TabWebDelegate {
-  func tabWebViewDidClose(_ tab: Tab) {
+extension BrowserViewController: TabDelegate {
+  public func tabWebViewDidClose(_ tab: Tab) {
     tabManager.addTabToRecentlyClosed(tab)
     tabManager.removeTab(tab)
   }
 
-  func tab(
+  public func tab(
     _ tab: Tab,
     contextMenuConfigurationForLinkURL linkURL: URL?
   ) async -> UIContextMenuConfiguration? {
@@ -288,7 +177,7 @@ extension BrowserViewController: TabWebDelegate {
     )
   }
 
-  func tab(
+  public func tab(
     _ tab: Tab,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
   ) async -> WebPermissionDecision {
@@ -356,7 +245,11 @@ extension BrowserViewController: TabWebDelegate {
     }
   }
 
-  func tab(_ tab: Tab, runJavaScriptAlertPanelWithMessage message: String, pageURL: URL) async {
+  public func tab(
+    _ tab: Tab,
+    runJavaScriptAlertPanelWithMessage message: String,
+    pageURL: URL
+  ) async {
     guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
       return
     }
@@ -376,7 +269,7 @@ extension BrowserViewController: TabWebDelegate {
     }
   }
 
-  func tab(
+  public func tab(
     _ tab: Tab,
     runJavaScriptConfirmPanelWithMessage message: String,
     pageURL: URL
@@ -400,7 +293,7 @@ extension BrowserViewController: TabWebDelegate {
     }
   }
 
-  func tab(
+  public func tab(
     _ tab: Tab,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
     defaultText: String?,
@@ -426,7 +319,7 @@ extension BrowserViewController: TabWebDelegate {
     }
   }
 
-  func tab(_ tab: Tab, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool {
+  public func tab(_ tab: Tab, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool {
     guard let documentTargetURL = request.mainDocumentURL else { return false }
     let domainForShields = Domain.getOrCreate(
       forUrl: documentTargetURL,
@@ -435,7 +328,7 @@ extension BrowserViewController: TabWebDelegate {
     return domainForShields.isShieldExpected(.noScript, considerAllShieldsOption: true)
   }
 
-  func tab(_ tab: Tab, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool {
+  public func tab(_ tab: Tab, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool {
     func isYouTubeLoad() -> Bool {
       guard let domain = request.mainDocumentURL?.baseDomain else {
         return false
@@ -451,7 +344,7 @@ extension BrowserViewController: TabWebDelegate {
     return false
   }
 
-  func tab(_ tab: Tab, buildEditMenuWithBuilder builder: any UIMenuBuilder) {
+  public func tab(_ tab: Tab, buildEditMenuWithBuilder builder: any UIMenuBuilder) {
     let forcePaste = UIAction(title: Strings.forcePaste) { [weak tab] _ in
       if let string = UIPasteboard.general.string {
         tab?.evaluateSafeJavaScript(
@@ -623,7 +516,7 @@ extension BrowserViewController {
     }
   }
 
-  func tab(
+  public func tab(
     _ tab: Tab,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
     proposedCredential credential: URLCredential?,
@@ -674,10 +567,9 @@ extension BrowserViewController {
     }
   }
 
-  func tab(
+  public func tab(
     _ tab: Tab,
-    createNewTabWithRequest request: URLRequest,
-    configuration: WKWebViewConfiguration
+    createNewTabWithRequest request: URLRequest
   ) -> Tab? {
     guard !request.isInternalUnprivileged,
       let navigationURL = request.url,
@@ -694,7 +586,7 @@ extension BrowserViewController {
     // If the page uses `window.open()` or `[target="_blank"]`, open the page in a new tab.
     // IMPORTANT!!: WebKit will perform the `URLRequest` automatically!! Attempting to do
     // the request here manually leads to incorrect results!!
-    let newTab = tabManager.addPopupForParentTab(tab, configuration: configuration)
+    let newTab = tabManager.addPopupForParentTab(tab)
 
     newTab.setVirtualURL(URL(string: "about:blank"))
 
@@ -708,13 +600,13 @@ extension BrowserViewController {
 
       var updated: ((URL?) -> Void)?
 
-      func tabDidUpdateURL(_ tab: Tab) {
+      public func tabDidUpdateURL(_ tab: Tab) {
         updated?(tab.url)
         updated = nil
         tab.removeObserver(self)
       }
 
-      func tabWillBeDestroyed(_ tab: Tab) {
+      public func tabWillBeDestroyed(_ tab: Tab) {
         tab.removeObserver(self)
       }
     }

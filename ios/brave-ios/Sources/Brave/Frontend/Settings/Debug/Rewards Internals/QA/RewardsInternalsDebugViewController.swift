@@ -10,6 +10,7 @@ import Foundation
 import Shared
 import Static
 import UIKit
+import Web
 
 /// A place where all rewards debugging information will live.
 class RewardsInternalsDebugViewController: TableViewController {

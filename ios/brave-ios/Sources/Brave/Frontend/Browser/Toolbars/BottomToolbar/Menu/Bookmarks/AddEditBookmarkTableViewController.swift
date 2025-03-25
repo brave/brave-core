@@ -9,6 +9,7 @@ import DesignSystem
 import Growth
 import Shared
 import UIKit
+import Web
 import os.log
 
 class AddEditBookmarkTableViewController: UITableViewController {

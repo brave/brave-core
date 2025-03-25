@@ -7,6 +7,7 @@ import BraveCore
 import Foundation
 import Shared
 import Static
+import Web
 
 extension BraveCore.BraveRewards.RewardsType {
   fileprivate var displayText: String {

@@ -13,6 +13,7 @@ import Shared
 import SnapKit
 import Strings
 import UIKit
+import Web
 
 protocol TabLocationViewDelegate {
   func tabLocationViewDidTapLocation(_ tabLocationView: TabLocationView)

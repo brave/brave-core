@@ -8,6 +8,7 @@ import Preferences
 import Shared
 import Storage
 import SwiftyJSON
+import Web
 import WebKit
 import os.log
 

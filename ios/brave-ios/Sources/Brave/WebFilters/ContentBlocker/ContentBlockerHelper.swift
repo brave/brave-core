@@ -8,6 +8,7 @@ import Collections
 import Combine
 import Data
 import Shared
+import Web
 import WebKit
 import os.log
 

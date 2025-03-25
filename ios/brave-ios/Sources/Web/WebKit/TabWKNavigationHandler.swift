@@ -11,9 +11,10 @@ import WebKit
 
 class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
   weak var tab: Tab?
-  var certStore: CertStore?
 
   private var downloadHandlers: Set<TabWKDownloadHandler> = []
+  private var sslPinningError: Error?
+  private var pendingMIMEType: String?
 
   init(tab: Tab) {
     self.tab = tab
@@ -25,11 +26,20 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
     _ webView: WKWebView,
     didStartProvisionalNavigation navigation: WKNavigation
   ) {
-    tab?.didStartNavigation()
+    guard let tab else { return }
+    sslPinningError = nil
+
+    // Reset redirect chain
+    tab.redirectChain = []
+    if let url = webView.url {
+      tab.redirectChain.append(url)
+    }
+
+    tab.didStartNavigation()
   }
 
   private func defaultAllowPolicy(for tab: Tab, request: URLRequest) -> WKNavigationActionPolicy {
-    if let delegate = tab.webDelegate,
+    if let delegate = tab.delegate,
       delegate.tab(tab, shouldBlockUniversalLinksForRequest: request)
     {
       // Stop Brave from opening universal links by using the private enum value
@@ -55,19 +65,6 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
     }
     let isMainFrame =
       navigationAction.targetFrame?.isMainFrame ?? navigationAction.sourceFrame.isMainFrame
-
-    // Setup braveSearchManager on the tab as it requires accessing WKWebView cookies
-    if isMainFrame, BraveSearchManager.isValidURL(requestURL) {
-      // We fetch cookies to determine if backup search was enabled on the website.
-
-      let cookies = await webView.configuration.websiteDataStore.httpCookieStore.allCookies()
-      tab.braveSearchManager = BraveSearchManager(
-        url: requestURL,
-        cookies: cookies
-      )
-    } else {
-      tab.braveSearchManager = nil
-    }
 
     let navigationType: WebNavigationType =
       switch navigationAction.navigationType {
@@ -108,7 +105,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
       }
 
       // Handle blocking JS
-      if let delegate = tab.webDelegate,
+      if let delegate = tab.delegate,
         delegate.tab(tab, shouldBlockJavaScriptForRequest: navigationAction.request)
       {
         // Due to a bug in iOS WKWebpagePreferences.allowsContentJavaScript does NOT work!
@@ -146,14 +143,19 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
       if shouldDownloadNavigationResponse {
         return false
       }
-      let mimeType = response.mimeType ?? MIMEType.octetStream
+      let octetStream = "application/octet-stream"
+      let mimeType = response.mimeType ?? octetStream
       if let contentDisposition = (response as? HTTPURLResponse)?.value(
         forHTTPHeaderField: "Content-Disposition"
       ), contentDisposition.starts(with: "attachment") {
         return false
       }
-      return mimeType != MIMEType.octetStream
+      return mimeType != octetStream
     }()
+
+    if navigationResponse.isForMainFrame {
+      pendingMIMEType = response.mimeType
+    }
 
     if shouldRenderResponse {
       let decision: WebPolicyDecision = await tab.shouldAllowResponse(
@@ -219,7 +221,9 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
         return (SecTrustCopyCertificateChain(trust) as? [SecCertificate])?.first
       }.value
 
-      if let cert = cert, let certStore, certStore.containsCertificate(cert, forOrigin: origin) {
+      if let cert = cert, let certStore = tab?.certificateStore,
+        certStore.containsCertificate(cert, forOrigin: origin)
+      {
         return (.useCredential, URLCredential(trust: trust))
       }
     }
@@ -271,7 +275,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
         )
 
         // Handle the error later in `didFailProvisionalNavigation`
-        tab?.sslPinningError = error
+        sslPinningError = error
 
         return (.cancelAuthenticationChallenge, nil)
       }
@@ -291,7 +295,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
       return (.performDefaultHandling, nil)
     }
 
-    let resolvedCredential = await tab.webDelegate?.tab(
+    let resolvedCredential = await tab.delegate?.tab(
       tab,
       didRequestHTTPAuthFor: protectionSpace,
       proposedCredential: credential,
@@ -308,9 +312,11 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
   func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
     guard let tab else { return }
 
-    // Set the committed url which will also set tab.url
+    // Set the committed url which will also set tab.visibleURL
     tab.committedURL = webView.url
-    tab.isRestoring = false
+    tab.mimeType = pendingMIMEType
+
+    pendingMIMEType = nil
 
     tab.didCommitNavigation()
   }
@@ -324,7 +330,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
     didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!
   ) {
     guard let tab, let url = webView.url else { return }
-    tab.redirectChain?.append(url)
+    tab.redirectChain.append(url)
   }
 
   /// Invoked when an error occurs while starting to load data for the main frame.
@@ -351,30 +357,11 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
       }
     }
 
-    let upgradedHTTPSRequest = tab.upgradedHTTPSRequest
-
-    tab.didFailNavigation(with: error)
-
-    if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
-      // Cancelled request, simply move on
-      return
-    }
-
-    if let responseURL = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL,
-      responseURL.scheme == "https", let originalRequest = upgradedHTTPSRequest,
-      let originalURL = originalRequest.url, responseURL.baseDomain == originalURL.baseDomain
-    {
-      // HTTPS upgrade, no error page to show
-      return
-    }
-
-    if let sslPinningError = tab.sslPinningError {
+    if let sslPinningError = sslPinningError {
       error = sslPinningError as NSError
     }
 
-    if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-      ErrorPageHelper(certStore: certStore).loadPage(error, forUrl: url, inWebView: webView)
-    }
+    tab.didFailNavigation(with: error)
   }
 
   func webView(

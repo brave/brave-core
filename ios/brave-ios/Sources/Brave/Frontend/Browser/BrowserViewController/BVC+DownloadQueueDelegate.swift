@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import UIKit
+import Web
 
 extension BrowserViewController: DownloadQueueDelegate {
   func downloadQueue(_ downloadQueue: DownloadQueue, didStartDownload download: Download) {

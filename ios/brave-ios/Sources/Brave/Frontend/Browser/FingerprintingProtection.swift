@@ -5,6 +5,7 @@
 import BraveShields
 import Data
 import Foundation
+import Web
 import WebKit
 
 class FingerprintingProtection: TabContentScript {

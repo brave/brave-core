@@ -8,6 +8,7 @@ import Favicon
 import Foundation
 import Shared
 import UIKit
+import Web
 
 class TabCell: UICollectionViewCell {
 

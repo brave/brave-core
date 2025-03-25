@@ -9,6 +9,7 @@ import Data
 import Preferences
 import Shared
 import UIKit
+import Web
 import os.log
 
 /// Sometimes during heavy operations we want to prevent user from navigating back, changing screen etc.

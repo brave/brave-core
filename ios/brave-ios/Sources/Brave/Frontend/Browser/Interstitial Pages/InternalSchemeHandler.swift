@@ -6,6 +6,7 @@
 import BraveShared
 import Foundation
 import Shared
+import Web
 import WebKit
 
 enum InternalPageSchemeHandlerError: Error {
@@ -20,14 +21,6 @@ public protocol InternalSchemeResponse {
 }
 
 public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
-
-  private weak var tab: Tab?
-
-  init(tab: Tab?) {
-    self.tab = tab
-    super.init()
-  }
-
   public static func response(forUrl url: URL) -> URLResponse {
     return URLResponse(
       url: url,
@@ -175,21 +168,5 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
 
   public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
     activeTasks.removeObject(forKey: urlSchemeTask)
-  }
-}
-
-extension WKWebView {
-  // Use JS to redirect the page without adding a history entry
-  func replaceLocation(with url: URL) {
-    let apostropheEncoded = "%27"
-    let safeUrl = url.absoluteString.replacingOccurrences(of: "'", with: apostropheEncoded)
-    evaluateSafeJavaScript(
-      functionName: "location.replace",
-      args: ["'\(safeUrl)'"],
-      contentWorld: .defaultClient,
-      escapeArgs: false,
-      asFunction: true,
-      completion: nil
-    )
   }
 }

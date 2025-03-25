@@ -6,6 +6,7 @@
 import Foundation
 import Preferences
 import Shared
+import Web
 import WebKit
 
 public class DarkReaderScriptHandler: TabContentScript {

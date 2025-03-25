@@ -5,6 +5,7 @@
 import BraveCore
 import Shared
 import UIKit
+import Web
 import XCTest
 
 @testable import Brave

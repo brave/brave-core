@@ -7,6 +7,7 @@ import BraveStrings
 import Data
 import Favicon
 import UIKit
+import Web
 
 extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
 

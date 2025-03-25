@@ -9,6 +9,7 @@ import Foundation
 import Playlist
 import Preferences
 import Shared
+import Web
 import WebKit
 import os.log
 
@@ -37,11 +38,6 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
     super.init()
 
     tab.addObserver(self)
-    tab.webContentView?.addGestureRecognizer(
-      UILongPressGestureRecognizer(target: self, action: #selector(onLongPressedWebView(_:))).then {
-        $0.delegate = self
-      }
-    )
   }
 
   deinit {
@@ -226,53 +222,6 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
 
   func tabWillBeDestroyed(_ tab: Tab) {
     tab.removeObserver(self)
-  }
-}
-
-extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
-  @objc
-  func onLongPressedWebView(_ gestureRecognizer: UILongPressGestureRecognizer) {
-    if gestureRecognizer.state == .began,
-      let webView = gestureRecognizer.view as? TabWebView,
-      Preferences.Playlist.enableLongPressAddToPlaylist.value
-    {
-
-      // If this URL is blocked from Playlist support, do nothing
-      if url?.isPlaylistBlockedSiteURL == true {
-        return
-      }
-
-      let touchPoint = gestureRecognizer.location(in: webView)
-
-      webView.evaluateSafeJavaScript(
-        functionName: "window.__firefox__.\(PlaylistScriptHandler.playlistLongPressed)",
-        args: [touchPoint.x, touchPoint.y, Self.scriptId],
-        contentWorld: Self.scriptSandbox,
-        asFunction: true
-      ) { _, error in
-
-        if let error = error {
-          Logger.module.error("Error executing onLongPressActivated: \(error.localizedDescription)")
-        }
-      }
-    }
-  }
-
-  func gestureRecognizer(
-    _ gestureRecognizer: UIGestureRecognizer,
-    shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
-  ) -> Bool {
-    if otherGestureRecognizer.isKind(of: UILongPressGestureRecognizer.self) {
-      return true
-    }
-    return false
-  }
-
-  func gestureRecognizer(
-    _ gestureRecognizer: UIGestureRecognizer,
-    shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer
-  ) -> Bool {
-    return false
   }
 }
 

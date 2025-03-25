@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import Web
 import WebKit
 import os.log
 

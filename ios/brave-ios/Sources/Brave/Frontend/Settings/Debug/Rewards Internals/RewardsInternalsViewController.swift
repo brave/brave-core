@@ -9,6 +9,7 @@ import DeviceCheck
 import Shared
 import Static
 import UIKit
+import Web
 
 private class WarningCell: MultilineSubtitleCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

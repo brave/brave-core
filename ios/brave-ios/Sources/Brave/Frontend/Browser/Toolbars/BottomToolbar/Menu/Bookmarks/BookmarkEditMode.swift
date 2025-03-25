@@ -6,6 +6,7 @@ import BraveCore
 import Data
 import Foundation
 import Shared
+import Web
 
 /// Bookmark editing has four states.
 /// each state has small differences in presentation as well as business logic.

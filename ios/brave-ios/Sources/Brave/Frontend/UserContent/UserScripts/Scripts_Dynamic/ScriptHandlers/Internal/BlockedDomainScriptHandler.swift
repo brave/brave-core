@@ -5,6 +5,7 @@
 
 import Foundation
 import Shared
+import Web
 import WebKit
 
 class BlockedDomainScriptHandler: TabContentScript {

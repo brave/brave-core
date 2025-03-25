@@ -7,6 +7,7 @@ import Data
 import Foundation
 import Preferences
 import UIKit
+import Web
 import os.log
 
 struct AppDebugComposer {

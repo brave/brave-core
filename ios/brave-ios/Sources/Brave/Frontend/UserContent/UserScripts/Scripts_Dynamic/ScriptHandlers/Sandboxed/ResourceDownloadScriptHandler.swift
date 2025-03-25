@@ -6,6 +6,7 @@
 import BraveShared
 import Data
 import Foundation
+import Web
 import WebKit
 
 struct DownloadedResourceResponse: Decodable {

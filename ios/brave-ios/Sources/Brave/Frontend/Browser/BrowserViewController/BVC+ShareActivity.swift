@@ -10,6 +10,7 @@ import Growth
 import Preferences
 import Shared
 import UIKit
+import Web
 import os.log
 
 extension BrowserViewController {

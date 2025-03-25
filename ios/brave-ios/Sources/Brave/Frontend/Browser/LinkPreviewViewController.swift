@@ -5,6 +5,7 @@
 import Data
 import Shared
 import UIKit
+import Web
 import WebKit
 
 class LinkPreviewViewController: UIViewController {
@@ -38,7 +39,7 @@ class LinkPreviewViewController: UIViewController {
       $0.miscDelegate = browserController
       $0.createWebview()
       $0.addPolicyDecider(browserController)
-      $0.webDelegate = browserController
+      $0.delegate = browserController
       $0.downloadDelegate = browserController
       $0.webScrollView?.layer.masksToBounds = true
     }

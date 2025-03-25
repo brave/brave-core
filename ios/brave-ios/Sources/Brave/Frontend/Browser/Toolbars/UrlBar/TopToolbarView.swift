@@ -12,6 +12,7 @@ import Preferences
 import Shared
 import SnapKit
 import UIKit
+import Web
 
 protocol TopToolbarDelegate: AnyObject {
   func topToolbarDidPressTabs(_ topToolbar: TopToolbarView)

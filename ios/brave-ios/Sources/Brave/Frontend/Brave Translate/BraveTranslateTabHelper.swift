@@ -6,6 +6,7 @@
 import Foundation
 import Preferences
 import SwiftUI
+import Web
 import WebKit
 import os.log
 
@@ -21,7 +22,7 @@ enum BraveTranslateError: String, Error {
 }
 
 class BraveTranslateTabHelper: NSObject, TabObserver {
-  private weak var tab: Tab?
+  private weak var tab: Web.Tab?
   private weak var delegate: BraveTranslateScriptHandlerDelegate?
   private static var requestCache = [URL: (data: Data, response: HTTPURLResponse)]()
   private var tasks = [UUID: Task<Void, Error>]()
@@ -53,7 +54,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
 
   // All TabHelpers in Chromium have a `WebState* web_state` parameter in their constructor
   // WebState in Brave, is the same as `Tab`.
-  init(tab: Tab, delegate: BraveTranslateScriptHandlerDelegate) {
+  init(tab: Web.Tab, delegate: BraveTranslateScriptHandlerDelegate) {
     self.tab = tab
     self.delegate = delegate
     self.url = tab.url
@@ -399,7 +400,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
 
   // MARK: - TabObserver
 
-  func tabDidUpdateURL(_ tab: Tab) {
+  func tabDidUpdateURL(_ tab: Web.Tab) {
     url = tab.url
     canShowToast = false
     currentLanguageInfo.currentLanguage = .init(identifier: Locale.current.identifier)
@@ -412,7 +413,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
     }
   }
 
-  func tabWillBeDestroyed(_ tab: Tab) {
+  func tabWillBeDestroyed(_ tab: Web.Tab) {
     tab.removeObserver(self)
   }
 

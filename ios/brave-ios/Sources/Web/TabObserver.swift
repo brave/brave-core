@@ -3,12 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import WebKit
+import UIKit
 
-protocol TabObserver: AnyObject {
+public protocol TabObserver: AnyObject {
   func tab(_ tab: Tab, didCreateWebView webView: UIView)
   func tab(_ tab: Tab, willDeleteWebView webView: UIView)
+
+  func tabWasShown(_ tab: Tab)
+  func tabWasHidden(_ tab: Tab)
 
   func tabDidStartNavigation(_ tab: Tab)
   func tabDidCommitNavigation(_ tab: Tab)
@@ -33,29 +35,35 @@ protocol TabObserver: AnyObject {
 }
 
 extension TabObserver {
-  func tab(_ tab: Tab, didCreateWebView webView: UIView) {}
-  func tab(_ tab: Tab, willDeleteWebView webView: UIView) {}
+  public func tab(_ tab: Tab, didCreateWebView webView: UIView) {}
+  public func tab(_ tab: Tab, willDeleteWebView webView: UIView) {}
 
-  func tabDidStartNavigation(_ tab: Tab) {}
-  func tabDidCommitNavigation(_ tab: Tab) {}
-  func tabDidFinishNavigation(_ tab: Tab) {}
-  func tab(_ tab: Tab, didFailNavigationWithError error: Error) {}
+  public func tabWasShown(_ tab: Tab) {}
+  public func tabWasHidden(_ tab: Tab) {}
 
-  func tabDidUpdateURL(_ tab: Tab) {}
-  func tabDidChangeTitle(_ tab: Tab) {}
-  func tabDidStartLoading(_ tab: Tab) {}
-  func tabDidStopLoading(_ tab: Tab) {}
-  func tabDidChangeLoadProgress(_ tab: Tab) {}
-  func tabDidChangeVisibleSecurityState(_ tab: Tab) {}
-  func tabDidChangeBackForwardState(_ tab: Tab) {}
-  func tabDidChangeSampledPageTopColor(_ tab: Tab) {}
-  func tabWillBeDestroyed(_ tab: Tab) {}
+  public func tabDidStartNavigation(_ tab: Tab) {}
+  public func tabDidCommitNavigation(_ tab: Tab) {}
+  public func tabDidFinishNavigation(_ tab: Tab) {}
+  public func tab(_ tab: Tab, didFailNavigationWithError error: Error) {}
+
+  public func tabDidUpdateURL(_ tab: Tab) {}
+  public func tabDidChangeTitle(_ tab: Tab) {}
+  public func tabDidStartLoading(_ tab: Tab) {}
+  public func tabDidStopLoading(_ tab: Tab) {}
+  public func tabDidChangeLoadProgress(_ tab: Tab) {}
+  public func tabDidChangeVisibleSecurityState(_ tab: Tab) {}
+  public func tabDidChangeBackForwardState(_ tab: Tab) {}
+  public func tabDidChangeSampledPageTopColor(_ tab: Tab) {}
+  public func tabWillBeDestroyed(_ tab: Tab) {}
 }
 
 class AnyTabObserver: TabObserver, Hashable {
   let id: ObjectIdentifier
   private let _tabDidCreateWebView: (Tab, UIView) -> Void
   private let _tabWillDeleteWebView: (Tab, UIView) -> Void
+
+  private let _tabWasShown: (Tab) -> Void
+  private let _tabWasHidden: (Tab) -> Void
 
   private let _tabDidStartNavigation: (Tab) -> Void
   private let _tabDidCommitNavigation: (Tab) -> Void
@@ -84,6 +92,8 @@ class AnyTabObserver: TabObserver, Hashable {
     id = ObjectIdentifier(observer)
     _tabDidCreateWebView = { [weak observer] in observer?.tab($0, didCreateWebView: $1) }
     _tabWillDeleteWebView = { [weak observer] in observer?.tab($0, willDeleteWebView: $1) }
+    _tabWasShown = { [weak observer] in observer?.tabWasShown($0) }
+    _tabWasHidden = { [weak observer] in observer?.tabWasHidden($0) }
     _tabDidStartNavigation = { [weak observer] in observer?.tabDidStartNavigation($0) }
     _tabDidCommitNavigation = { [weak observer] in observer?.tabDidCommitNavigation($0) }
     _tabDidFinishNavigation = { [weak observer] in observer?.tabDidFinishNavigation($0) }
@@ -111,6 +121,12 @@ class AnyTabObserver: TabObserver, Hashable {
   }
   func tab(_ tab: Tab, willDeleteWebView webView: UIView) {
     _tabWillDeleteWebView(tab, webView)
+  }
+  func tabWasShown(_ tab: Tab) {
+    _tabWasShown(tab)
+  }
+  func tabWasHidden(_ tab: Tab) {
+    _tabWasHidden(tab)
   }
   func tabDidStartNavigation(_ tab: Tab) {
     _tabDidStartNavigation(tab)

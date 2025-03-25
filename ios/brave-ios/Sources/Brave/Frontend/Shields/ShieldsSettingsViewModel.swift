@@ -6,6 +6,7 @@
 import BraveShields
 import Data
 import Foundation
+import Web
 
 @MainActor
 class ShieldsSettingsViewModel: ObservableObject {

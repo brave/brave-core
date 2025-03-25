@@ -8,6 +8,7 @@ import Shared
 import SnapKit
 import SwiftUI
 import UIKit
+import Web
 
 private struct SearchResultAdClickedInfoBarUX {
   static let toastPadding: CGFloat = 10.0

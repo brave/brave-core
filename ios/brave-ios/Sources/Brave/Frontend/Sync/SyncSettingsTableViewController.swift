@@ -9,6 +9,7 @@ import Data
 import Preferences
 import Shared
 import UIKit
+import Web
 import os.log
 
 protocol SyncStatusDelegate: AnyObject {

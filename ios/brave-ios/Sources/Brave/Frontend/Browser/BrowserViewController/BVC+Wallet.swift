@@ -12,6 +12,7 @@ import Growth
 import Preferences
 import Shared
 import SwiftUI
+import Web
 import os.log
 
 extension WalletStore {

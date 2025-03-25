@@ -374,12 +374,15 @@ final class ScriptExecutionTests: XCTestCase {
       let script = try ScriptFactory.shared.makeScript(
         for: .contentCosmetic(setup, proceduralActions: Set(proceduralFilters))
       )
-      try await viewController.webView.evaluateSafeJavaScriptThrowing(
-        functionName: script.source,
-        frame: message.frameInfo,
-        contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
-        asFunction: false
-      )
+      _ = try await withCheckedThrowingContinuation { continuation in
+        viewController.webView.evaluateJavaScript(
+          script.source,
+          in: message.frameInfo,
+          in: CosmeticFiltersScriptHandler.scriptSandbox
+        ) { result in
+          continuation.resume(with: result)
+        }
+      }
       // Expecting 2 frames (main frame & about:blank iframe)
       if frameInfos.count == 2 {
         break
@@ -402,11 +405,15 @@ final class ScriptExecutionTests: XCTestCase {
     // Execute a script that will test the cosmetic filters page
     let testURL = Bundle.module.url(forResource: "cosmetic-filter-tests", withExtension: "js")!
     let source = try String(contentsOf: testURL)
-    try await viewController.webView.evaluateSafeJavaScriptThrowing(
-      functionName: source,
-      contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
-      asFunction: false
-    )
+    _ = try await withCheckedThrowingContinuation { continuation in
+      viewController.webView.evaluateJavaScript(
+        source,
+        in: nil,
+        in: CosmeticFiltersScriptHandler.scriptSandbox
+      ) { result in
+        continuation.resume(with: result)
+      }
+    }
 
     // Await the results of the test script
     var resultsAfterPump: CosmeticFilteringTestDTO?
@@ -503,17 +510,24 @@ final class ScriptExecutionTests: XCTestCase {
 
     // check that the main frame & local frame (about:blank) have set value from scriptlet
     guard
-      let mainFrameResult = await viewController.webView.evaluateSafeJavaScript(
-        functionName: "document.getElementById('scriptlet-main-div').innerText",
-        contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
-        asFunction: false
-      ).0 as? String,
-      let localFrameResult = await viewController.webView.evaluateSafeJavaScript(
-        functionName:
+      let mainFrameResult = try await withCheckedThrowingContinuation { continuation in
+        viewController.webView.evaluateJavaScript(
+          "document.getElementById('scriptlet-main-div').innerText",
+          in: nil,
+          in: CosmeticFiltersScriptHandler.scriptSandbox
+        ) { result in
+          continuation.resume(with: result)
+        }
+      } as? String,
+      let localFrameResult = try await withCheckedThrowingContinuation { continuation in
+        viewController.webView.evaluateJavaScript(
           "document.getElementById('local-iframe').contentDocument.getElementById('scriptlet-local-frame-div').innerText",
-        contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
-        asFunction: false
-      ).0 as? String
+          in: nil,
+          in: CosmeticFiltersScriptHandler.scriptSandbox
+        ) { result in
+          continuation.resume(with: result)
+        }
+      } as? String
     else {
       XCTFail("Elements should be available. Check test setup.")
       return

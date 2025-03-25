@@ -12,18 +12,24 @@ import Foundation
 import Preferences
 import Shared
 import SwiftUI
+import Web
 import WebKit
 import os.log
 
 extension BrowserViewController: TabManagerDelegate {
-  func attachTabHelpers(to tab: Tab) {
+  func attachTabHelpers(to tab: Web.Tab) {
     tab.browserData = .init(tab: tab, tabGeneratorAPI: braveCore.tabGeneratorAPI)
     tab.browserData?.miscDelegate = self
     tab.pullToRefresh = .init(tab: tab)
+    tab.playlist = .init(tab: tab)
     SnackBarTabHelper.create(for: tab)
   }
 
-  func tabManager(_ tabManager: TabManager, didSelectedTabChange selected: Tab?, previous: Tab?) {
+  func tabManager(
+    _ tabManager: TabManager,
+    didSelectedTabChange selected: Web.Tab?,
+    previous: Web.Tab?
+  ) {
     // Remove the old accessibilityLabel. Since this webview shouldn't be visible, it doesn't need it
     // and having multiple views with the same label confuses tests.
     if let wv = previous?.webContentView {
@@ -161,19 +167,19 @@ extension BrowserViewController: TabManagerDelegate {
     updateURLBarWalletButton()
   }
 
-  func tabManager(_ tabManager: TabManager, willAddTab tab: Tab) {
+  func tabManager(_ tabManager: TabManager, willAddTab tab: Web.Tab) {
   }
 
-  func tabManager(_ tabManager: TabManager, didAddTab tab: Tab) {
+  func tabManager(_ tabManager: TabManager, didAddTab tab: Web.Tab) {
     // If we are restoring tabs then we update the count once at the end
     if !tabManager.isRestoring {
       updateToolbarUsingTabManager(tabManager)
     }
     tab.addObserver(self)
     tab.addPolicyDecider(self)
-    tab.webDelegate = self
+    tab.delegate = self
     tab.downloadDelegate = self
-    tab.certStore = profile.certStore
+    tab.certificateStore = profile.certStore
     attachTabHelpers(to: tab)
 
     SnackBarTabHelper.from(tab: tab)?.delegate = self
@@ -182,11 +188,11 @@ extension BrowserViewController: TabManagerDelegate {
     updateTabsBarVisibility()
   }
 
-  func tabManager(_ tabManager: TabManager, willRemoveTab tab: Tab) {
+  func tabManager(_ tabManager: TabManager, willRemoveTab tab: Web.Tab) {
     tab.webContentView?.removeFromSuperview()
   }
 
-  func tabManager(_ tabManager: TabManager, didRemoveTab tab: Tab) {
+  func tabManager(_ tabManager: TabManager, didRemoveTab tab: Web.Tab) {
     updateToolbarUsingTabManager(tabManager)
     // tabDelegate is a weak ref (and the tab's webView may not be destroyed yet)
     // so we don't expcitly unset it.

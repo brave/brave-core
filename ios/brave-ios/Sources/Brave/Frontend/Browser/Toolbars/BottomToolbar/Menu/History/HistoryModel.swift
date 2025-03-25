@@ -11,6 +11,7 @@ import LocalAuthentication
 import OrderedCollections
 import Preferences
 import ScreenTime
+import Web
 
 enum HistoryItemSelection {
   case selectTab

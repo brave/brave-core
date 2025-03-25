@@ -7,6 +7,7 @@ import BraveUI
 import Foundation
 import Preferences
 import Shared
+import Web
 import WebKit
 
 class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {

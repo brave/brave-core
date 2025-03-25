@@ -10,6 +10,7 @@ import Combine
 import Foundation
 import Shared
 import UIKit
+import Web
 
 class BraveRewardsViewController: UIViewController, PopoverContentComponent {
   enum Action {

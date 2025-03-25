@@ -22,6 +22,7 @@ import Static
 import SwiftUI
 import SwiftyJSON
 import UIKit
+import Web
 import WebKit
 
 extension TabBarVisibility: RepresentableOptionType {

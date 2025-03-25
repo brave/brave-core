@@ -7,6 +7,7 @@ import BraveShared
 import Data
 import Foundation
 import Shared
+import Web
 import WebKit
 import os.log
 

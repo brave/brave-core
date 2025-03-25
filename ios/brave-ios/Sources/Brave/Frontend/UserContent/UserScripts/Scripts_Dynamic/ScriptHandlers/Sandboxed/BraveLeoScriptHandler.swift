@@ -5,6 +5,7 @@
 
 import AIChat
 import Foundation
+import Web
 import WebKit
 import os.log
 

@@ -9,6 +9,7 @@ import Foundation
 import Shared
 import SnapKit
 import UIKit
+import Web
 
 /// A view that displays the tab's secure content state and the URL while scrolling into the page
 class CollapsedURLBarView: UIView {

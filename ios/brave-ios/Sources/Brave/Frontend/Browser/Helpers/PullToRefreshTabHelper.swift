@@ -5,6 +5,7 @@
 
 import Preferences
 import UIKit
+import Web
 
 extension TabDataValues {
   private struct PullToRefreshHelperKey: TabDataKey {

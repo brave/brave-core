@@ -9,6 +9,7 @@ import Foundation
 import Preferences
 import Shared
 import Static
+import Web
 
 class NTPTableViewController: TableViewController {
   enum BackgroundType: RepresentableOptionType {

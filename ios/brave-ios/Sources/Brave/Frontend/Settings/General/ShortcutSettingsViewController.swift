@@ -9,6 +9,7 @@ import IntentsUI
 import Shared
 import Static
 import UIKit
+import Web
 
 // MARK: - ShortcutSettingsViewController
 

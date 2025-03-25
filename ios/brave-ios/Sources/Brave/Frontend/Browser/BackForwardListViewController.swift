@@ -7,6 +7,7 @@ import Shared
 import SnapKit
 import Storage
 import UIKit
+import Web
 import WebKit
 
 private struct BackForwardViewUX {

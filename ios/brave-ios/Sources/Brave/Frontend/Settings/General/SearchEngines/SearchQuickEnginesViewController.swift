@@ -5,6 +5,7 @@
 
 import Shared
 import UIKit
+import Web
 
 // MARK: - SearchQuickEnginesViewController
 
