@@ -63,12 +63,6 @@ public class BraveSigninManager implements SigninManager {
     public void runAfterOperationInProgress(Runnable runnable) {}
 
     @Override
-    public void signinAndEnableSync(
-            CoreAccountInfo coreAccountInfo,
-            @SigninAccessPoint int accessPoint,
-            @Nullable SignInCallback callback) {}
-
-    @Override
     public void removeSignInStateObserver(SignInStateObserver observer) {}
 
     @Override
@@ -119,6 +113,10 @@ public class BraveSigninManager implements SigninManager {
             CoreAccountInfo coreAccountInfo,
             @SigninAccessPoint int accessPoint,
             @Nullable SignInCallback callback) {}
+
+    @Deprecated
+    public void turnOnSyncForTesting(
+            CoreAccountInfo coreAccountInfo, @SigninAccessPoint int accessPoint) {}
 
     @Override
     public boolean getUserAcceptedAccountManagement() {
