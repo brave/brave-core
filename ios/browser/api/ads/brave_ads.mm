@@ -212,6 +212,15 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                  value:base::Value(isEnabled)];
 }
 
+- (void)notifySponsoredImagesIsEnabledPreferenceDidChange:(BOOL)isEnabled {
+  [self setProfilePref:ntp_background_images::prefs::
+                           kNewTabPageShowBackgroundImage
+                 value:base::Value(isEnabled)];
+  [self setProfilePref:ntp_background_images::prefs::
+                           kNewTabPageShowSponsoredImagesBackgroundImage
+                 value:base::Value(isEnabled)];
+}
+
 - (BOOL)isEnabled {
   return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
 }
@@ -1385,14 +1394,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (std::optional<base::Value>)getProfilePref:(const std::string&)path {
-  if (path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
-      path == ntp_background_images::prefs::
-                  kNewTabPageShowSponsoredImagesBackgroundImage) {
-    // TODO(https://github.com/brave/brave-browser/issues/33745): Decouple Brave
-    // Rewards, News and New Tab Page prefs from core.
-    return base::Value(/*enabled*/ true);
-  }
-
   return self.profilePrefService->GetValue(path).Clone();
 }
 

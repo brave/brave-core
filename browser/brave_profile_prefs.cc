@@ -47,6 +47,7 @@
 #include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -193,8 +194,7 @@ void RegisterProfilePrefsForMigration(
 #endif
 
   // Added 2023-09
-  ntp_background_images::ViewCounterService::RegisterProfilePrefsForMigration(
-      registry);
+  ntp_background_images::RegisterProfilePrefsForMigration(registry);
 
   // Added 2023-11
   brave_sync::Prefs::RegisterProfilePrefsForMigration(registry);

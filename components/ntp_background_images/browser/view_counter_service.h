@@ -39,10 +39,6 @@ namespace content {
 class WebUIDataSource;
 }  // namespace content
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}  // namespace user_prefs
-
 class HostContentSettingsMap;
 class WeeklyStorage;
 
@@ -79,12 +75,6 @@ class ViewCounterService : public KeyedService,
 
   ViewCounterService(const ViewCounterService&) = delete;
   ViewCounterService& operator=(const ViewCounterService&) = delete;
-
-  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
-  static void RegisterProfilePrefsForMigration(
-      user_prefs::PrefRegistrySyncable* registry);
-  static void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
   // Lets the counter know that a New Tab Page view has occured.
   // This should always be called as it will evaluate whether the user has
@@ -127,12 +117,6 @@ class ViewCounterService : public KeyedService,
   void OnTabURLChanged(const GURL& url);
 
  private:
-  // Sync with themeValues in brave_appearance_page.js
-  enum ThemesOption {
-    DEFAULT,
-    SUPER_REFERRAL,
-  };
-
   friend class ViewCounterServiceTest;
   friend class NTPBackgroundImagesServiceTest;
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowSponsoredImages);

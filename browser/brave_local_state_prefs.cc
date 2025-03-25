@@ -32,7 +32,7 @@
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/misc_metrics/privacy_hub_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/view_counter_service.h"
+#include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -103,7 +103,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_stats::RegisterLocalStatePrefs(registry);
   ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
       registry);
-  ntp_background_images::ViewCounterService::RegisterLocalStatePrefs(registry);
+  ntp_background_images::RegisterLocalStatePrefs(registry);
   RegisterPrefsForBraveReferralsService(registry);
   brave_l10n::RegisterL10nLocalStatePrefs(registry);
 #if BUILDFLAG(IS_MAC)

@@ -25,8 +25,8 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
-#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -163,8 +163,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   brave_news::p3a::prefs::MigrateObsoleteProfileNewsMetricsPrefs(profile_prefs);
 
   // Added 2023-09
-  ntp_background_images::ViewCounterService::MigrateObsoleteProfilePrefs(
-      profile_prefs);
+  ntp_background_images::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // Added 2023-11
   brave_ads::MigrateObsoleteProfilePrefs(profile_prefs);

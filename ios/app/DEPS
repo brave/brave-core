@@ -11,6 +11,7 @@ include_rules += [
   "+brave/components/brave_component_updater",
   "+brave/components/brave_sync/buildflags.h",
   "+brave/components/ntp_background_images/browser",
+  "+brave/components/ntp_background_images/common",
   "+brave/components/p3a",
   "+brave/components/update_client/buildflags.h",
   "+brave/components/variations",
