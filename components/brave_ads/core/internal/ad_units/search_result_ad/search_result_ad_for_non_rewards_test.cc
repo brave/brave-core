@@ -6,14 +6,12 @@
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/creative_search_result_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -24,9 +22,6 @@ class BraveAdsSearchResultAdForNonRewardsIntegrationTest
  protected:
   void SetUp() override {
     test::TestBase::SetUp(/*is_integration_test=*/true);
-
-    scoped_feature_list_.InitAndEnableFeature(
-        kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
 
     test::ForcePermissionRules();
 
@@ -49,25 +44,10 @@ class BraveAdsSearchResultAdForNonRewardsIntegrationTest
                                         mojom_ad_event_type, callback.Get());
     run_loop.Run();
   }
-
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
        DoNotTriggerViewedEvent) {
-  // Act & Assert
-  TriggerSearchResultAdEventAndVerifyExpectations(
-      test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true),
-      mojom::SearchResultAdEventType::kViewedImpression,
-      /*should_fire_event=*/false);
-}
-
-TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
-       DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEvents) {
-  // Arrange
-  scoped_feature_list_.Reset();
-
   // Act & Assert
   TriggerSearchResultAdEventAndVerifyExpectations(
       test::BuildCreativeSearchResultAdWithConversion(
@@ -111,21 +91,6 @@ TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
   TriggerSearchResultAdEventAndVerifyExpectations(
       mojom_creative_ad.Clone(), mojom::SearchResultAdEventType::kClicked,
       /*should_fire_event=*/true);
-}
-
-TEST_F(BraveAdsSearchResultAdForNonRewardsIntegrationTest,
-       DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEvents) {
-  // Arrange
-  scoped_feature_list_.Reset();
-
-  const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
-
-  // Act & Assert
-  TriggerSearchResultAdEventAndVerifyExpectations(
-      mojom_creative_ad.Clone(), mojom::SearchResultAdEventType::kClicked,
-      /*should_fire_event=*/false);
 }
 
 }  // namespace brave_ads
