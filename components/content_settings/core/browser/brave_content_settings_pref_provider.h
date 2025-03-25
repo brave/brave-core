@@ -22,9 +22,15 @@
 namespace content_settings {
 
 // With this subclass, shields configuration is persisted across sessions.
-class BravePrefProvider : public PrefProvider,
-                          public Observer {
+class BravePrefProvider : public PrefProvider, public Observer {
  public:
+  enum class CookieType {
+    kRegularCookie,
+    kShieldsDownCookie,
+    kCustomShielsCookie,
+    kGoogleSignInCookie,
+  };
+
   BravePrefProvider(PrefService* prefs,
                     bool off_the_record,
                     bool store_last_modified,
@@ -55,6 +61,11 @@ class BravePrefProvider : public PrefProvider,
       ContentSettingsType content_type,
       bool off_the_record,
       const PartitionKey& partition_key) const override;
+
+  CookieType GetCookieType(const ContentSettingsPattern& primary_pattern,
+                           const ContentSettingsPattern& secondary_pattern,
+                           const ContentSetting& value,
+                           bool incognito) const;
 
   // calls superclass directly
   bool SetWebsiteSettingForTest(const ContentSettingsPattern& primary_pattern,

@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/resources/settings/site_settings/site_settings_prefs_browser_proxy.ts b/chrome/browser/resources/settings/site_settings/site_settings_prefs_browser_proxy.ts
+index 3bfc16c896f4b77370c8f6dd59d455d8ff3a99b0..4f3dfc746e7f73d73ea3faf4d6b26c6c79757713 100644
+--- a/chrome/browser/resources/settings/site_settings/site_settings_prefs_browser_proxy.ts
++++ b/chrome/browser/resources/settings/site_settings/site_settings_prefs_browser_proxy.ts
+@@ -83,6 +83,7 @@ export interface RawSiteException {
+   description?: string;
+   setting: ContentSetting;
+   source: SiteSettingSource;
++  braveCookieType?: string;
+ }
+ 
+ /**
+@@ -100,6 +101,7 @@ export interface SiteException {
+   description?: string;
+   enforcement: chrome.settingsPrivate.Enforcement|null;
+   controlledBy: chrome.settingsPrivate.ControlledBy;
++  braveCookieType?: string;
+ }
+ 
+ /**
