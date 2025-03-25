@@ -116,6 +116,28 @@ public class SearchEngines {
     }
   }
 
+  /// Update DSE to Yahoo! JAPAN for Japan region if user's DSE is google for standard tabs
+  public func updateDSEToYahooJPIfNeeded() {
+    // match conditions:
+    // 1. in Japan region
+    // 2. DSE is google for standard tab
+    // 3. user has never picked a DSE for standard tab since version 1.77
+    guard let region = locale.region?.identifier,
+      initialSearchEngines.yahooJapanEnabledRegions.contains(region),
+      let dseStandard = defaultEngine(forType: .standard),
+      dseStandard.engineID == InitialSearchEngines.SearchEngineID.google.rawValue,
+      Preferences.Search.userPickedDSEName.value == nil
+    else { return }
+    DefaultEngineType.standard.option.value = InitialSearchEngines.SearchEngineID.yahoojp.rawValue
+    // Make sure Yahoo! JAPAN is at the first position of the list
+    if let oldIndex = orderedEngines.firstIndex(where: {
+      $0.engineID == InitialSearchEngines.SearchEngineID.yahoojp.rawValue
+    }) {
+      let yahooJP = orderedEngines.remove(at: oldIndex)
+      orderedEngines.insert(yahooJP, at: 0)
+    }
+  }
+
   /// If no engine type is specified this method returns search engine for regular browsing.
   func defaultEngine(forType engineType: DefaultEngineType) -> OpenSearchEngine? {
     if let name = engineType.option.value,
