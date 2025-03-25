@@ -19,6 +19,7 @@ static_library("browser") {
     "//brave/components/brave_user_agent/common",
     "//components/component_updater:component_updater",
     "//crypto",
+    "//net",
     "//url",
   ]
 }

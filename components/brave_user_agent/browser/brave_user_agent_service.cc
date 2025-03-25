@@ -19,6 +19,7 @@
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 #include "brave/components/brave_user_agent/common/features.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 constexpr char kBraveUserAgentExceptionsFile[] = "brave-checks.txt";
 
@@ -71,8 +72,12 @@ bool BraveUserAgentService::CanShowBrave(const GURL& url) {
     // show Brave for any website.
     return true;
   }
+
+  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
+      url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+
   // Show Brave only if the domain is not on the exceptions list.
-  return !base::Contains(exceptional_domains_, url.host());
+  return !base::Contains(exceptional_domains_, domain);
 }
 
 }  // namespace brave_user_agent
