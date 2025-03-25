@@ -413,7 +413,6 @@ static_library("internal") {
     "common/database/database_transaction_util.cc",
     "common/database/database_transaction_util.h",
     "common/functional/once_closure_task_queue.cc",
-    "common/functional/once_closure_task_queue.h",
     "common/locale/locale_util.cc",
     "common/locale/locale_util.h",
     "common/logging_util.h",

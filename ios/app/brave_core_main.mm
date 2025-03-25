@@ -50,6 +50,8 @@
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
+#include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
+#include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
 #include "brave/ios/browser/web/brave_web_client.h"
 #import "build/blink_buildflags.h"
@@ -279,8 +281,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _backgroundImagesService = [[NTPBackgroundImagesService alloc]
         initWithBackgroundImagesService:
             std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
-                cus, GetApplicationContext()->GetLocalState())];
-
+                cus, GetApplicationContext()->GetLocalState())
+                            ads_service:brave_ads::AdsServiceFactoryIOS::
+                                            GetForProfile(profile)];
   }
   return self;
 }

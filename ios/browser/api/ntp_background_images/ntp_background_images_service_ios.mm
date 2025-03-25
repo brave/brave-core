@@ -9,6 +9,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -26,6 +27,7 @@
     (ntp_background_images::NTPBackgroundImagesData*)data;
 - (void)onUpdatedNTPSponsoredImagesData:
     (ntp_background_images::NTPSponsoredImagesData*)data;
+- (void)onUpdatedNTPSponsoredContent:(const base::Value::Dict&)data;
 @end
 
 class NTPBackgroundImagesServiceObserverBridge
@@ -45,23 +47,31 @@ class NTPBackgroundImagesServiceObserverBridge
     [bridge_ onUpdatedNTPSponsoredImagesData:data];
   }
 
+  void OnSponsoredContentDidUpdate(const base::Value::Dict& data) override {
+    [bridge_ onUpdatedNTPSponsoredContent:data];
+  }
+
  private:
   __weak id<NTPBackgroundImagesServiceObserver> bridge_;
 };
 
 @interface NTPBackgroundImagesService () <NTPBackgroundImagesServiceObserver> {
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService> _service;
+  raw_ptr<brave_ads::AdsService> _adsService;  // Not owned.
   std::unique_ptr<NTPBackgroundImagesServiceObserverBridge> _observerBridge;
 }
 @end
 
 @implementation NTPBackgroundImagesService
 
-- (instancetype)initWithBackgroundImagesService:
-    (std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>)
-        service {
+- (instancetype)
+    initWithBackgroundImagesService:
+        (std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>)
+            service
+                        ads_service:(brave_ads::AdsService*)ads_service {
   if ((self = [super init])) {
     _service = std::move(service);
+    _adsService = ads_service;
     _observerBridge =
         std::make_unique<NTPBackgroundImagesServiceObserverBridge>(self);
     _service->AddObserver(_observerBridge.get());
@@ -136,6 +146,15 @@ class NTPBackgroundImagesServiceObserverBridge
       wrappedData = [[NTPSponsoredImageData alloc] initWithData:*data];
     }
     self.sponsoredImageDataUpdated(wrappedData);
+  }
+}
+
+- (void)onUpdatedNTPSponsoredContent:(const base::Value::Dict&)data {
+  if (_adsService) {
+    // Since `data` contains small JSON from a CRX component, cloning it has no
+    // performance impact.
+    _adsService->ParseAndSaveCreativeNewTabPageAds(
+        data.Clone(), /*intentional*/ base::DoNothing());
   }
 }
 

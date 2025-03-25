@@ -10,14 +10,21 @@
 
 #include <memory>
 
+namespace brave_ads {
+class AdsService;
+}  // namespace brave_ads
+
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
 }  // namespace ntp_background_images
 
 @interface NTPBackgroundImagesService (Private)
 
-- (instancetype)initWithBackgroundImagesService:
-    (std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>)service;
+- (instancetype)
+    initWithBackgroundImagesService:
+        (std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>)
+            service
+                        ads_service:(brave_ads::AdsService*)ads_service;
 
 @end
 
