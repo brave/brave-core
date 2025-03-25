@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_vpn/browser/brave_vpn_metrics.h"
 
+#include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -19,21 +20,36 @@ namespace brave_vpn {
 namespace {
 
 constexpr int kWidgetUsageBuckets[] = {1, 10, 20};
+// Buckets are tenths of a percent: 0%, 0.5%, 5%, 33%
+constexpr int kVPNConnectedPercentageBuckets[] = {0, 5, 50, 330};
+constexpr base::TimeDelta kConnectionReportInterval = base::Minutes(1);
 
 }  // namespace
 
-BraveVpnMetrics::BraveVpnMetrics(PrefService* local_state,
-                                 PrefService* profile_prefs)
+BraveVpnMetrics::BraveVpnMetrics(
+    PrefService* local_state,
+    PrefService* profile_prefs,
+    base::WeakPtr<misc_metrics::UptimeMonitor> uptime_monitor,
+    Delegate* delegate)
     : local_state_(local_state),
       profile_prefs_(profile_prefs),
+      uptime_monitor_(uptime_monitor),
+      delegate_(delegate),
       widget_usage_storage_(local_state_,
-                            prefs::kBraveVPNWidgetUsageWeeklyStorage) {
+                            prefs::kBraveVPNWidgetUsageWeeklyStorage),
+      connected_minutes_storage_(
+          local_state_,
+          prefs::kBraveVPNConnectedMinutesWeeklyStorage) {
   pref_change_registrar_.Init(profile_prefs);
   pref_change_registrar_.Add(
       kNewTabPageShowBraveVPN,
       base::BindRepeating(&BraveVpnMetrics::HandleShowWidgetChange,
                           base::Unretained(this)));
   RecordAllMetrics(false);
+
+#if !BUILDFLAG(IS_ANDROID)
+  ReportVPNConnectedDuration();
+#endif
 }
 
 BraveVpnMetrics::~BraveVpnMetrics() = default;
@@ -110,6 +126,41 @@ void BraveVpnMetrics::HandleShowWidgetChange() {
     return;
   }
   UMA_HISTOGRAM_BOOLEAN(kHideWidgetHistogramName, true);
+}
+
+void BraveVpnMetrics::RecordVPNConnectedInterval() {
+  connected_minutes_storage_.AddDelta(kConnectionReportInterval.InMinutes());
+}
+
+void BraveVpnMetrics::ReportVPNConnectedDuration() {
+  connection_report_timer_.Start(
+      FROM_HERE, base::Time::Now() + kConnectionReportInterval,
+      base::BindOnce(&BraveVpnMetrics::ReportVPNConnectedDuration,
+                     base::Unretained(this)));
+
+  if (!delegate_->is_purchased_user() || !uptime_monitor_) {
+    return;
+  }
+
+#if !BUILDFLAG(IS_ANDROID)
+  if (delegate_->IsConnected() && uptime_monitor_->IsInUse()) {
+    RecordVPNConnectedInterval();
+  }
+#endif
+
+  auto total_browser_minutes = uptime_monitor_->GetUsedTimeInWeek().InMinutes();
+
+  auto connected_minutes = connected_minutes_storage_.GetWeeklySum();
+
+  int percentage = 0;
+  if (total_browser_minutes > 0) {
+    percentage =
+        static_cast<int>((connected_minutes * 1000) / total_browser_minutes);
+
+    p3a_utils::RecordToHistogramBucket(kVPNConnectedDurationHistogramName,
+                                       kVPNConnectedPercentageBuckets,
+                                       percentage);
+  }
 }
 
 }  // namespace brave_vpn

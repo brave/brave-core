@@ -29,6 +29,7 @@ static_library("browser") {
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
     "//brave/components/constants",
+    "//brave/components/misc_metrics",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings",
     "//brave/components/skus/browser",

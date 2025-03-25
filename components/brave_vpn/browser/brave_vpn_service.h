@@ -15,6 +15,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/sequence_checker.h"
 #include "base/timer/timer.h"
@@ -40,6 +41,10 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
+namespace misc_metrics {
+class UptimeMonitor;
+}  // namespace misc_metrics
+
 class PrefService;
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -60,13 +65,15 @@ class BraveVpnService :
     public BraveVPNConnectionManager::Observer,
 #endif
     public mojom::ServiceHandler,
-    public KeyedService {
+    public KeyedService,
+    public BraveVpnMetrics::Delegate {
  public:
   BraveVpnService(
       BraveVPNConnectionManager* connection_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* local_prefs,
       PrefService* profile_prefs,
+      base::WeakPtr<misc_metrics::UptimeMonitor> uptime_monitor,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter);
   ~BraveVpnService() override;
@@ -79,16 +86,14 @@ class BraveVpnService :
 #endif  // BUILDFLAG(IS_ANDROID)
 
   std::string GetCurrentEnvironment() const;
-  bool is_purchased_user() const {
-    return GetPurchasedInfoSync().state == mojom::PurchasedState::PURCHASED;
-  }
+  bool is_purchased_user() const override;
   void BindInterface(mojo::PendingReceiver<mojom::ServiceHandler> receiver);
   void ReloadPurchasedState();
   bool IsBraveVPNEnabled() const;
 #if !BUILDFLAG(IS_ANDROID)
   void ToggleConnection();
   mojom::ConnectionState GetConnectionState() const;
-  bool IsConnected() const;
+  bool IsConnected() const override;
 
   // mojom::vpn::ServiceHandler
   void GetConnectionState(GetConnectionStateCallback callback) override;

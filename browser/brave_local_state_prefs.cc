@@ -13,7 +13,7 @@
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
-#include "brave/browser/misc_metrics/uptime_monitor.h"
+#include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
@@ -91,7 +91,7 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kDefaultBrowserPromptEnabled, true);
 #endif
 
-  misc_metrics::UptimeMonitor::RegisterPrefsForMigration(registry);
+  misc_metrics::UptimeMonitorImpl::RegisterPrefsForMigration(registry);
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
   brave_search_conversion::p3a::RegisterLocalStatePrefsForMigration(registry);
   brave_stats::RegisterLocalStatePrefsForMigration(registry);

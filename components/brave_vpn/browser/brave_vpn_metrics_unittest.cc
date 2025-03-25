@@ -19,6 +19,44 @@ namespace brave_vpn {
 
 class BraveVpnMetricsTest : public testing::Test {
  public:
+  // Mock implementation of UptimeMonitor for testing
+  class MockUptimeMonitor : public misc_metrics::UptimeMonitor {
+   public:
+    MockUptimeMonitor() = default;
+    ~MockUptimeMonitor() override = default;
+
+    // UptimeMonitor implementation
+    base::TimeDelta GetUsedTimeInWeek() const override { return usage_time_; }
+    base::WeakPtr<misc_metrics::UptimeMonitor> GetWeakPtr() override {
+      return weak_ptr_factory_.GetWeakPtr();
+    }
+    bool IsInUse() const override { return is_in_use; }
+
+    base::TimeDelta usage_time_;
+    bool is_in_use = true;
+
+   private:
+    base::WeakPtrFactory<MockUptimeMonitor> weak_ptr_factory_{this};
+  };
+
+  // Mock implementation of BraveVpnMetrics::Delegate for testing
+  class MockVpnDelegate : public BraveVpnMetrics::Delegate {
+   public:
+    MockVpnDelegate() = default;
+    ~MockVpnDelegate() override = default;
+
+    // BraveVpnMetrics::Delegate implementation
+    bool is_purchased_user() const override { return is_purchased; }
+#if !BUILDFLAG(IS_ANDROID)
+    bool IsConnected() const override { return is_connected; }
+#endif
+
+    bool is_purchased = true;
+#if !BUILDFLAG(IS_ANDROID)
+    bool is_connected = false;
+#endif
+  };
+
   BraveVpnMetricsTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
@@ -30,14 +68,17 @@ class BraveVpnMetricsTest : public testing::Test {
     profile_prefs_.registry()->RegisterBooleanPref(kNewTabPageShowBraveVPN,
                                                    true);
     brave_vpn::RegisterLocalStatePrefs(local_state_.registry());
-    metrics_ =
-        std::make_unique<BraveVpnMetrics>(&local_state_, &profile_prefs_);
+
+    metrics_ = std::make_unique<BraveVpnMetrics>(
+        &local_state_, &profile_prefs_, uptime_monitor.GetWeakPtr(), &delegate);
   }
 
  protected:
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
   sync_preferences::TestingPrefServiceSyncable profile_prefs_;
+  MockUptimeMonitor uptime_monitor;
+  MockVpnDelegate delegate;
   std::unique_ptr<BraveVpnMetrics> metrics_;
   base::HistogramTester histogram_tester_;
 };
@@ -111,5 +152,36 @@ TEST_F(BraveVpnMetricsTest, WidgetUsageAndHideMetrics) {
 
   histogram_tester_.ExpectTotalCount(kWidgetUsageHistogramName, 3);
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+TEST_F(BraveVpnMetricsTest, ConnectedDuration) {
+  uptime_monitor.usage_time_ = base::Minutes(100);
+  uptime_monitor.is_in_use = true;
+  delegate.is_purchased = false;
+  delegate.is_connected = false;
+
+  histogram_tester_.ExpectTotalCount(kVPNConnectedDurationHistogramName, 0);
+
+  task_environment_.FastForwardBy(base::Minutes(5));
+  histogram_tester_.ExpectTotalCount(kVPNConnectedDurationHistogramName, 0);
+
+  delegate.is_purchased = true;
+
+  task_environment_.FastForwardBy(base::Minutes(5));
+  histogram_tester_.ExpectUniqueSample(kVPNConnectedDurationHistogramName, 0,
+                                       5);
+
+  delegate.is_connected = true;
+
+  task_environment_.FastForwardBy(base::Minutes(4));
+  histogram_tester_.ExpectBucketCount(kVPNConnectedDurationHistogramName, 2, 4);
+
+  delegate.is_connected = false;
+
+  task_environment_.FastForwardBy(base::Minutes(30));
+  histogram_tester_.ExpectBucketCount(kVPNConnectedDurationHistogramName, 2,
+                                      34);
+}
+#endif
 
 }  // namespace brave_vpn

@@ -253,7 +253,7 @@ class BraveVPNServiceTest : public testing::Test {
         nullptr,
 #endif
         url_loader_factory_.GetSafeWeakWrapper(), &local_pref_service_,
-        &profile_pref_service_,
+        &profile_pref_service_, nullptr,
         base::BindRepeating(&BraveVPNServiceTest::GetSkusService,
                             base::Unretained(this)));
   }

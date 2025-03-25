@@ -24,6 +24,7 @@ static_library("misc_metrics") {
     "split_view_metrics.h",
     "tab_metrics.cc",
     "tab_metrics.h",
+    "uptime_monitor.h",
   ]
 
   deps = [

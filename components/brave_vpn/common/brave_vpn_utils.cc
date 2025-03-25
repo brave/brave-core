@@ -56,6 +56,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kBraveVPNSmartProxyRoutingEnabled,
                                 false);
   registry->RegisterListPref(prefs::kBraveVPNWidgetUsageWeeklyStorage);
+  registry->RegisterListPref(prefs::kBraveVPNConnectedMinutesWeeklyStorage);
 }
 
 #if !BUILDFLAG(IS_ANDROID)
