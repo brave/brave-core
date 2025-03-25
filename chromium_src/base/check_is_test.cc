@@ -15,9 +15,6 @@ namespace base {
 namespace test {
 
 BASE_EXPORT void SetTestVendorIsBraveForTesting() {
-  CHECK(!g_this_is_a_brave_test)
-      << "SetTestVendorIsBraveForTesting must not be called more than once";
-
   g_this_is_a_brave_test = true;
 }
 
