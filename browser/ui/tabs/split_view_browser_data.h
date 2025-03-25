@@ -40,7 +40,8 @@ struct TabTile {
 
 class SplitViewBrowserData {
  public:
-  explicit SplitViewBrowserData(BrowserWindowInterface* browser);
+  explicit SplitViewBrowserData(
+      BrowserWindowInterface* browser_window_interface);
   virtual ~SplitViewBrowserData();
 
   // When calling this, make sure that |tile.first| has a smaller model index

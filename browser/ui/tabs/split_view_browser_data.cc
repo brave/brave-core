@@ -21,10 +21,11 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
-SplitViewBrowserData::SplitViewBrowserData(BrowserWindowInterface* browser)
+SplitViewBrowserData::SplitViewBrowserData(
+    BrowserWindowInterface* browser_window_interface)
     : tab_strip_model_adapter_(std::make_unique<SplitViewTabStripModelAdapter>(
           *this,
-          browser->GetTabStripModel())) {
+          browser_window_interface->GetTabStripModel())) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
 }
 
