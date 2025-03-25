@@ -30,6 +30,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
 
     <FrameLayout
       android:id="@+id/toolbar_action_container"
+      android:clipChildren="false"
       android:layout_width="match_parent"
       android:layout_height="@dimen/toolbar_height_no_shadow">
 
@@ -38,7 +39,6 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:drawablePadding="16dp"
         android:minWidth="@dimen/min_touch_target_size"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -46,6 +46,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
         android:visibility="gone"
         app:buttonColor="@android:color/transparent"
         app:buttonTextColor="@color/default_text_color_list"
+        app:rippleColor="?attr/globalTextButtonRippleColor"
         app:verticalInset="0dp" />
 
       <com.google.android.material.tabs.TabLayout
@@ -55,8 +56,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|bottom"
         android:visibility="gone"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         app:tabIndicator="@drawable/m3_tabs_line_indicator"
-        app:tabIndicatorFullWidth="true"/>
+        app:tabIndicatorFullWidth="true"
+        app:tabUnboundedRipple="true" />
 
       <LinearLayout
         android:id="@+id/menu_button_container"
@@ -87,17 +91,16 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
       android:visibility="gone"
       android:layout_width="match_parent"
       android:layout_height="@dimen/hub_search_box_height"
-      android:layout_marginHorizontal="12dp"
-      android:layout_marginVertical="12dp"
-      android:paddingStart="24dp"
-      android:paddingEnd="12dp"
+      android:layout_marginHorizontal="16dp"
+      android:layout_marginVertical="8dp"
+      android:paddingHorizontal="16dp"
       android:orientation="horizontal"
       android:gravity="center_vertical"
       android:background="@drawable/hub_search_box_background">
 
       <EditText
         tools:ignore="Autofill,LabelFor"
-        style="@style/TextAppearance.FakeSearchBoxText"
+        style="@style/TextAppearance.TextLarge.Primary"
         android:id="@+id/search_box_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -106,8 +109,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
         android:focusableInTouchMode="false"
         android:focusable="false"
         android:inputType="text"
-        android:singleLine="true"
-        android:hint="@string/hub_search_empty_hint" />
+        android:singleLine="true" />
     </view>
   </org.chromium.chrome.browser.hub.BraveHubToolbarView>
 </FrameLayout>
