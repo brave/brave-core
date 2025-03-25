@@ -166,7 +166,7 @@ def compare_series(before: Stats, after: Stats, args):
     for (thread_name, process_name) in all_threads:
         before_durations = before.thread_total_durations.get((thread_name, process_name), [])
         after_durations = after.thread_total_durations.get((thread_name, process_name), [])
-        rel_diff, msg = compare_values(before_durations, after_durations, f'{process_name}-{thread_name}', args)
+        rel_diff, msg = compare_values(before_durations, after_durations, f'{process_name}-{thread_name}', args.slice_verbose, args)
         if rel_diff is not None:
             differences.append((rel_diff, msg))
 
