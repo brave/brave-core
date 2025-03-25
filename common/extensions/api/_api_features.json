@@ -78,7 +78,8 @@
     "component_extensions_auto_granted": false,
     "contexts": ["privileged_extension"],
     "allowlist": [
-      "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"  // Web Discovery / Brave Extension
+      "A321D47A2B4CA86898167A55CA8B2E02385EA7CD",  // Web Discovery / Brave Extension
+      "1C66772675E903A8ABF502F539095C4F778A3D31"   // Web Discovery - Dev Mode/Hot Reload
     ]
   }
 }
