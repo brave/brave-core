@@ -141,13 +141,14 @@ from rich.padding import Padding
 import subprocess
 import sys
 import time
-from typing import Optional
-from typing import NamedTuple
+from typing import Optional, List, Dict, NamedTuple
 
 console = Console()
 
 # This file is updated whenever the version number is updated in package.json
-PINSLIST_TIMESTAMP_FILE = 'chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc'
+PINSLIST_TIMESTAMP_FILE = (
+    'chromium_src/net/tools/transport_security_state_generator/'
+    'input_file_parsers.cc')
 VERSION_UPGRADE_FILE = Path('.version_upgrade')
 PACKAGE_FILE = 'package.json'
 CHROMIUM_VERSION_FILE = 'chrome/VERSION'
@@ -158,8 +159,20 @@ BRAVE_CORE_PATH = next(brave for brave in PurePath(__file__).parents
 # The path to chromium's src/ directory.
 CHROMIUM_SRC_PATH = BRAVE_CORE_PATH.parent
 
+# The link to the Chromium source code.
+GOOGLESOURCE_LINK = 'https://chromium.googlesource.com/chromium/src'
+
 # Link with the log of changes between two versions.
-GOOGLESOURCE_LINK = 'https://chromium.googlesource.com/chromium/src/+log/{from_version}..{to_version}?pretty=fuller&n=10000'
+GOOGLESOURCE_LOG_LINK = (
+    f'{GOOGLESOURCE_LINK}'
+    '/+log/{from_version}..{to_version}?pretty=fuller&n=10000')
+
+# The link to a specific commit in the Chromium source code.
+GOOGLESOURCE_COMMIT_LINK = f'{GOOGLESOURCE_LINK}' '/+/{commit}'
+
+# A basic url to the rust toolchain that can be used to check for the toolchain
+# availability for a given version.
+RUST_TOOLCHAIN_URL = 'https://brave-build-deps-public.s3.brave.com/rust-toolchain-aux/linux-x64-rust-toolchain-{revision}.tar.xz'
 
 # Google dash link used to check the latest version for a given channel
 CHROMIUMDASH_LATEST_RELEASE = 'https://chromiumdash.appspot.com/fetch_releases?channel={channel}&platform=Windows&num=1'
@@ -168,10 +181,13 @@ CHROMIUMDASH_LATEST_RELEASE = 'https://chromiumdash.appspot.com/fetch_releases?c
 # continuing.
 ACTION_NEEDED_DECORATOR = '[bold yellow](action needed)[/]'
 
+# The interval in second for the keep-alive ping on infra mode to be printed.
+KEEP_ALIVE_PING_INTERVAL = 20
+
 # The text for the body used on a GitHub issue for a version bump.
 MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 
-{googlesource_link}
+{googlesource_log_link}
 
 ### QA tests
 
@@ -198,10 +214,51 @@ class Terminal:
         # flag indicating if the terminal is running on infra.
         self.infra_mode = False
 
+        # The time when a commmand run was started to check for keep alive
+        # pings. Only relevant when running on infra.
+        self.current_command_start_time = None
+
+        # The keep-alive thread for terminal pings on infra mode.
+        self.keep_alive_thread = threading.Thread(
+            target=self.keep_alive_ci_feedback, daemon=True)
+
+        # The command that is currently running on infra mode.
+        self.running_command = None
+
+    def keep_alive_ci_feedback(self):
+        """Main routine for the keep-alive ping on infra mode.
+
+    This routine runs on a separate thread for the entirety of the  run when on
+    infra mode, sleeping for a set ping interval.
+
+    The routine effects are only visible when `current_command_start_time` is
+    set, at which point there's a chance a ping will be printed to the console
+    in the set time for the ping interval.
+
+    Leaving the back thread running is the best way to ensure we can avoid
+    joining the thread, and all sorts of complexities relating to sleeping and
+    joining, which could result in a minimu time every command has to take.
+        """
+        feedback = [
+            '(-_-)', '(⊙_⊙)', '(¬_¬)', '(－‸ლ)', '(◎_◎;)', '(⌐■_■)', '(•‿•)',
+            '(≖_≖)'
+        ]
+        while True:
+            if self.current_command_start_time:
+                elapsed_time = time.time() - self.current_command_start_time
+                if elapsed_time > KEEP_ALIVE_PING_INTERVAL:
+                    logging.debug(
+                        '%s\n        >>>> %s',
+                        feedback[random.randint(0,
+                                                len(feedback) - 1)],
+                        self.running_command)
+            time.sleep(KEEP_ALIVE_PING_INTERVAL)
+
     def set_infra_mode(self):
         """Sets the terminal to run on infra.
         """
         self.infra_mode = True
+        self.keep_alive_thread.start()
 
     def set_status_object(self, status):
         """Preserves the status object for updates.
@@ -219,7 +276,6 @@ class Terminal:
     def run(self, cmd):
         """Runs a command on the terminal.
         """
-
         # Convert all arguments to strings, to avoid issues with `PurePath`
         # being passed arguments
         cmd = [str(x) for x in cmd]
@@ -242,33 +298,8 @@ class Terminal:
         logging.debug('λ %s', ' '.join(cmd))
 
         if self.infra_mode:
-            # Start a thread to keep the CI feedback alive while the subprocess
-            # is running.
-            stop_event = threading.Event()
-
-            def keep_alive_ci_feedback():
-                """Keep the CI feedback alive while the subprocess is running.
-                """
-                feedback = [
-                    '(-_-)', '(⊙_⊙)', '(¬_¬)', '(－‸ლ)', '(◎_◎;)', '(⌐■_■)',
-                    '(•‿•)', '(≖_≖)'
-                ]
-                starting_time = time.time()
-                while not stop_event.is_set():
-                    if time.time() - starting_time < 40:
-                        time.sleep(0.05)
-                        continue
-
-                    logging.debug(
-                        '%s\n        >>>> %s',
-                        feedback[random.randint(0,
-                                                len(feedback) - 1)],
-                        " ".join(cmd))
-                    starting_time = time.time()
-
-            # Start subprocess in a thread
-            keep_alive_thread = threading.Thread(target=keep_alive_ci_feedback)
-            keep_alive_thread.start()
+            self.current_command_start_time = time.time()
+            self.running_command = " ".join(cmd)
 
         try:
             # It is necessary to pass `shell=True` on Windows, otherwise the
@@ -284,8 +315,8 @@ class Terminal:
             raise e
         finally:
             if self.infra_mode:
-                stop_event.set()
-                keep_alive_thread.join()
+                self.current_command_start_time = None
+                self.running_command = None
 
         return result
 
@@ -359,7 +390,7 @@ def _load_package_file(branch):
     branch:
       A branch or hash to load the file from.
   """
-    package = Repository.brave().run_git('show', f'{branch}:{PACKAGE_FILE}')
+    package = Repository.brave().read_file(PACKAGE_FILE, commit=branch)
     return json.loads(package)
 
 def _update_pinslist_timestamp():
@@ -581,6 +612,22 @@ class Repository:
         args.append(file)
         return self.run_git(*args)
 
+    def read_file(self, *files, commit: str = 'HEAD') -> str:
+        """Reads the content of a file in the repository.
+
+    Args:
+        files:
+            The file paths to read.
+        commit:
+            The commit to read the file from. This can be a branch or a tag to,
+            but the name commit is being used to be more self-explanatory.
+
+    Return:
+        The contents of the file read. If more than one file is provided, the
+        contents of all files are appended to the same string.
+        """
+        return self.run_git('show', *[f'{commit}:{file}' for file in files])
+
 @dataclass(frozen=True)
 class Patchfile:
     """Patchfile data class to hold the patchfile path.
@@ -704,11 +751,6 @@ class Patchfile:
 
         This function applies the patch file with `git apply --3way` to the
         repository, and it returns the status of the operation.
-
-        Args:
-            repo:
-                The repository to apply the patch to. If not provided, the
-                repository is deduced from the patch file name.
 
         Returns:
             The result of the patch application, and an updated patch instance
@@ -966,8 +1008,8 @@ class Version:
     def get_googlesource_diff_link(self, from_version: "Version") -> str:
         """Generates a link to the diff of the upgrade.
         """
-        return GOOGLESOURCE_LINK.format(from_version=from_version,
-                                        to_version=self)
+        return GOOGLESOURCE_LOG_LINK.format(from_version=from_version,
+                                            to_version=self)
 
 
 @dataclass(frozen=True)
@@ -987,13 +1029,32 @@ class ContinuationFile:
     # previous branch ahead.
     base_version: Version
 
+    # This flag indicates that the prerun adivisories have been shown to the
+    # user.
+    has_shown_advisory: bool = False
+
     # The continuation data for the patches.
     patches: Optional[PatchfilesContinuation] = field(default=None)
 
     @staticmethod
     def load(target_version: Version,
+             working_version: Optional[Version] = None,
              check: bool = True) -> Optional["ContinuationFile"]:
         """Loads the continuation file.
+
+        This function loads the continuation file, and returns the instance of
+        the continuation file, or None if the file does not exist.
+
+        Args:
+            target_version:
+                The target version for the upgrade process. Used to validate
+                the continuation file being loaded.
+            working_version:
+                The working version in the branch, used to validate the
+                continuation file being loaded.
+            check:
+                If the function should raise an error if the file does not
+                exist.
         """
         if VERSION_UPGRADE_FILE.exists() is False:
             if check:
@@ -1004,7 +1065,9 @@ class ContinuationFile:
         with open(VERSION_UPGRADE_FILE, 'rb') as file:
             continuation = pickle.load(file)
 
-        if continuation.target_version != target_version:
+        if (continuation.target_version != target_version
+                or (working_version is not None
+                    and continuation.working_version != working_version)):
             if not check:
                 return None
 
@@ -1012,9 +1075,9 @@ class ContinuationFile:
             # If this is being hit, it means some wrong continuation file is in
             # the tree, and the process should be started all over.
             raise TypeError(
-                F'Target version in {VERSION_UPGRADE_FILE} does not match the '
-                f'target version. expected: {target_version} '
-                f'vs {continuation.target_version}')
+                'Trying to load a continuation file from another run. Target '
+                f'verison:{continuation.target_version}, Working '
+                f'version:{continuation.working_version}')
 
         return continuation
 
@@ -1233,8 +1296,7 @@ def _read_chromium_version_file():
     `apply_patches`.
     """
     version_parts = {}
-    file = Repository.chromium().run_git('show',
-                                         f'HEAD:{CHROMIUM_VERSION_FILE}')
+    file = Repository.chromium().read_file(CHROMIUM_VERSION_FILE)
     for line in file.splitlines():
         key, value = line.strip().split('=')
         version_parts[key] = value
@@ -1418,7 +1480,8 @@ class GitHubIssue(Versioned):
                 terminal.log_task(f'GitHub issue udpated {str(issue["url"])}.')
             return
 
-        body = MINOR_VERSION_BUMP_ISSUE_TEMPLATE.format(googlesource_link=link)
+        body = MINOR_VERSION_BUMP_ISSUE_TEMPLATE.format(
+            googlesource_log_link=link)
         issue_url = terminal.run([
             'gh', 'issue', 'create', '--repo', 'brave/brave-browser',
             '--title', title, '--body', f'{body}', '--label',
@@ -1605,14 +1668,233 @@ class Upgrade(Versioned):
 
         return True
 
-    def _get_googlesource_history_link(self, from_version):
-        """Generates a link to the review history of the upgrade.
+    def look_for_diffs(self, *files) -> str:
+        """Return the diffs for the files provided for this upgrade.
 
-    This function generates a link to the review history of changes between the
-    base version and the target version, for the current run.
+    Checks for diffs of the files provided in range of the changes for the
+    current upgrade. Returns an empty string if no diffs are found.
         """
+        return Repository.chromium().run_git('diff', self.working_version,
+                                             self.target_version, '--', *files)
 
-        return f'https://chromium.googlesource.com/chromium/src/+log/{from_version}..{self.target_version}?pretty=fuller&n=10000'
+    def get_assigned_value(self,
+                           contents: str,
+                           key: str,
+                           added: bool = False,
+                           removed: bool = False) -> Optional[str]:
+        """Uses a basic regex to extract the value being assinged into a key.
+
+    This function is useful to extract the value of a key from a file contents
+    that is being diffed or read in general.
+
+    Args:
+        contents:
+            The contents of the file to look for the key.
+        key:
+            The key to look for in the contents.
+        added:
+            If set to True, looks for the key starting with +.
+        removed:
+            If set to True, looks for the key starting with -.
+    Returns:
+        The value assigned to the key, or None if not found
+        """
+        sign = r''
+        if added:
+            sign = r"\+"
+        elif removed:
+            sign = r"-"
+        pattern = re.compile(
+            rf"^\s*{sign}\s*{re.escape(key)}\s*=\s*['\"](.*?)['\"]",
+            re.MULTILINE)
+        matches = pattern.findall(contents)
+        return matches[0] if matches else None
+
+    def _check_toolchain(self, file_path: str, key: str) -> Optional[Dict]:
+        """ Helper function to check for toolchain updates.
+
+    This helper is used to check for the MacOS SDK, Windows SDK to see if the
+    toolchain for their respective OSes need updateing. It looks for diff of a
+    given file to find if a certain key has been updade in-between the working
+    and target version.
+
+    Args:
+        file_path:
+            The file to look for the key in.
+        key:
+            The key to look for in the file.
+    Returns:
+        A dictionary with a summary of the SDK upgrade.
+        """
+        toolchain_diff = self.look_for_diffs(file_path)
+        if key not in toolchain_diff:
+            return None
+
+        updated_value = self.get_assigned_value(toolchain_diff,
+                                                key,
+                                                added=True)
+        current_value = self.get_assigned_value(toolchain_diff,
+                                                key,
+                                                removed=True)
+        commit_log = Repository.chromium().run_git(
+            'log', f'{self.working_version}..{self.target_version}', '-S',
+            updated_value, '--pretty=oneline', '-1', file_path)
+        commit_hash, commit_message = commit_log[:40], commit_log[41:]
+
+        return {
+            'current': current_value,
+            'target': updated_value,
+            'commit': {
+                'hash': commit_hash,
+                'message': commit_message
+            }
+        }
+
+    def _check_win_toolchain(self) -> Optional[Dict]:
+        """Check for Windows toolchain updates.
+
+    This function returns an advisory record if the Windows SDK has been
+    updated, indicating a new toolchain is required.
+        """
+        result = self._check_toolchain('build/vs_toolchain.py', 'SDK_VERSION')
+        if result:
+            result['description'] = (
+                'Windows SDK has been updated. '
+                f'{result["current"]} ➜ {result["target"]}')
+            result['advice'] = (
+                'Contact DevOps regarding the new WinSDK for the hermetic '
+                'toolchain. Update `env.GYP_MSVS_HASH_*` in '
+                'build/commands/lib/config.js with correct hashes.')
+        return result
+
+    def _check_mac_toolchain(self) -> Optional[Dict]:
+        """Check for MacOS toolchain updates.
+
+    This function returns an advisory record if the MacoOS SDK has been updated,
+    indicating a new toolchain is required.
+        """
+        result = self._check_toolchain('build/config/mac/mac_sdk.gni',
+                                       'mac_sdk_official_version')
+        if result:
+            result['description'] = (
+                'MacOS SDK has been updated. '
+                f'{result["current"]} ➜ {result["target"]}')
+            result['advice'] = (
+                'Contact DevOps regarding the new macOS SDK for the hermetic '
+                'toolchain. Update `XCODE_VERSION` and `XCODE_VERSION` values'
+                'in build/mac/download_hermetic_xcode.py for the new download '
+                'URL.')
+        return result
+
+    def _check_rust_toolchain(self) -> Optional[Dict]:
+        """Check for Rust toolchain updates.
+
+    This function checks for any updates to the Rust toolchain, including the
+    validity of the rust toolchain URL for syncing.
+
+    Returns:
+        An advisory record if any updates occurred, and there's no toolchain in
+        our infra.
+        """
+        toolchain_sources = [
+            'tools/rust/update_rust.py', 'tools/clang/scripts/update.py'
+        ]
+        rust_diff = self.look_for_diffs(*toolchain_sources)
+        if not any(
+                key in rust_diff for key in
+            ['-RUST_REVISION =', '-RUST_SUB_REVISION =', '-CLANG_REVISION =']):
+            return None
+
+        def get_rust_clang_revision(version: str) -> str:
+            rust_sources = Repository.chromium().read_file(*toolchain_sources,
+                                                           commit=version)
+            return '-'.join([
+                self.get_assigned_value(rust_sources, "RUST_REVISION"),
+                self.get_assigned_value(rust_sources, "RUST_SUB_REVISION"),
+                self.get_assigned_value(rust_sources, "CLANG_REVISION")
+            ])
+
+        updated_version = get_rust_clang_revision(self.target_version)
+        rust_toolchain_url = RUST_TOOLCHAIN_URL.format(
+            revision=updated_version)
+
+        try:
+            response = requests.head(rust_toolchain_url,
+                                     allow_redirects=True,
+                                     timeout=5)
+            if response.status_code == 200:
+                return None
+        except requests.RequestException:
+            pass  # Assume toolchain is not available if request fails
+
+        commit_log = Repository.chromium().run_git(
+            'log', f'{self.working_version}..{self.target_version}',
+            '--pretty=oneline', '-1', 'tools/rust/update_rust.py')
+        commit_hash, commit_message = commit_log[:40], commit_log[41:]
+
+        return {
+            'current': get_rust_clang_revision(self.working_version),
+            'target': updated_version,
+            'description': 'The rust toolchain has been updated.',
+            'advice': 'Run the jobs in https://ci.brave.com/view/rust to generate a new Rust toolchain.',
+            'commit': {
+                'hash': commit_hash,
+                'message': commit_message
+            }
+        }
+
+    def _prerun_checks(self) -> bool:
+        """Runs pre-run checks for the upgrade.
+
+    This function runs a series of checks to make sure the upgrade can proceed
+    without any issues. If any advisories have been found, this function will
+    print a summary that looks something like:
+
+    * Pre-run advisory (attention needed)
+        * The rust toolchain has been updated.
+            CL: Roll clang+rust llvmorg-21-init-1655-g7b473dfe-1 : llvmorg-2...
+                https://chromium.googlesource.com/chromium/src/+/f9fada98083846
+            Run the jobs in https://ci.brave.com/view/rust to generate a new...
+
+    Returns:
+        True if all checks pass, and False otherwise.
+        """
+        # Fetching the tags between the current version and the target to check
+        # for certain things that may have changed that require attention
+        if not Repository.chromium().is_valid_git_reference(
+                self.working_version) or not Repository.chromium(
+                ).is_valid_git_reference(self.target_version):
+            Repository.chromium().run_git('fetch', GOOGLESOURCE_LINK, 'tag',
+                                          self.working_version, 'tag',
+                                          self.target_version)
+
+        advisories = [
+            check for check in [
+                self._check_win_toolchain(),
+                self._check_mac_toolchain(),
+                self._check_rust_toolchain()
+            ] if check is not None
+        ]
+
+        if len(advisories) == 0:
+            return True
+
+        terminal.log_task(
+            '[bold]Pre-run advisory ([bold yellow]attention needed[/])')
+        for advisory in advisories:
+            console.print(Padding(f'* {advisory["description"]}', (0, 15)))
+            console.print(
+                Padding(f'CL: [dim]{advisory["commit"]["message"]}', (0, 19)))
+            console.print(
+                Padding(
+                    GOOGLESOURCE_COMMIT_LINK.format(
+                        commit=advisory["commit"]["hash"]), (0, 23)))
+            console.print(Padding(f'{advisory["advice"]}', (0, 19)))
+
+        replace(ContinuationFile.load(target_version=self.target_version),
+                has_shown_advisory=True).save()
+
+        return False
 
     def _continue(self, no_conflict_continuation: bool) -> bool:
         """Continues the upgrade process.
@@ -1667,7 +1949,7 @@ class Upgrade(Versioned):
 
         return True
 
-    def _start(self, launch_vscode: bool) -> bool:
+    def _start(self, launch_vscode: bool, ack_advisory: bool) -> bool:
         """Starts the upgrade process.
 
     This function is responsible for starting the upgrade process. It will
@@ -1705,6 +1987,11 @@ class Upgrade(Versioned):
         terminal.log_task(
             'Changes since base version: %s' %
             self.target_version.get_googlesource_diff_link(self.base_version))
+
+        if not ack_advisory and not self._prerun_checks():
+            console.log('👋 (Address advisories and then rerun with '
+                        '[bold cyan]--ack-advisory[/])')
+            return False
 
         self._update_package_version()
 
@@ -1765,7 +2052,7 @@ class Upgrade(Versioned):
     # Task into the derived methods. Maybe something better can be done here.
     # pylint: disable=arguments-differ
     def execute(self, no_conflict_continuation: bool, launch_vscode: bool,
-                with_github: bool) -> bool:
+                with_github: bool, ack_advisory: bool) -> bool:
         """Executes the upgrade process.
 
     Keep in this function all code that is common to both start and continue.
@@ -1793,6 +2080,21 @@ class Upgrade(Versioned):
             return False
 
         if not self.is_continuation:
+            if ack_advisory:
+                # This check for the use of `--ack-advisory` for the actual
+                # case where advisory has been shown is to avoid accidental
+                # suppressions of advisories, and to prevent `--ack-advisory`
+                # becoming something similar to some `--force` flag.
+                continuation = ContinuationFile.load(
+                    target_version=self.target_version,
+                    working_version=self.working_version,
+                    check=False)
+                if (continuation is not None
+                        and not continuation.has_shown_advisory):
+                    logging.error(
+                        'Use [bold cyna]--ack-advisory[/] just after being '
+                        'shown advisories.')
+                return False
             # We initialise the continuation file here rather than in the
             # constructor to avoid overwritting the file if the user made the
             # mistake of calling brockit again without `--continue`.
@@ -1817,7 +2119,8 @@ class Upgrade(Versioned):
             result = self._continue(
                 no_conflict_continuation=no_conflict_continuation)
         else:
-            result = self._start(launch_vscode=launch_vscode)
+            result = self._start(launch_vscode=launch_vscode,
+                                 ack_advisory=ack_advisory)
 
         if result is True and with_github is True:
             GitHubIssue(base_version=self.base_version,
@@ -1945,6 +2248,11 @@ def main():
         help='Resumes from manual patch conflict resolution.',
         dest='is_continuation')
     lift_parser.add_argument(
+        '--ack-advisory',
+        action='store_true',
+        help=
+        'Added to indicate that pre-run check advisory has been acknowledged.')
+    lift_parser.add_argument(
         '--restart',
         action='store_true',
         help='Resumes from manual patch conflict resolution.')
@@ -2023,6 +2331,8 @@ def main():
         parser.error('--no-conflict-change can only be used with --continue')
     if args.command == 'lift' and args.restart and args.is_continuation:
         parser.error('--restart does not support --continue')
+    if args.command == 'lift' and args.ack_advisory and args.is_continuation:
+        parser.error('--ack-advisory does not support --continue')
     if args.command == 'lift' and args.to.startswith('@latest-'):
         [_, channel] = args.to.split('-')
         if channel not in ['canary', 'beta', 'dev']:
@@ -2048,7 +2358,8 @@ def main():
         else:
             upgrade = Upgrade(resolve_to_flag(), args.is_continuation)
 
-        return upgrade.run(args.no_conflict, args.vscode, args.with_github)
+        return upgrade.run(args.no_conflict, args.vscode, args.with_github,
+                           args.ack_advisory)
     if args.command == 'regen':
         return Regen(resolve_from_ref_flag()).run()
     if args.command == 'update-version-issue':
