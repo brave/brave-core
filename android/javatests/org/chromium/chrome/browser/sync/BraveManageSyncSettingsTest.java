@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.sync;
 
+import static org.mockito.Mockito.when;
+
 import androidx.preference.Preference;
 import androidx.test.filters.SmallTest;
 
@@ -12,9 +14,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import org.chromium.base.test.util.CommandLineFlags;
-import org.chromium.base.test.util.DisabledTest;
 import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Feature;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
@@ -24,6 +27,8 @@ import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
 import org.chromium.chrome.browser.sync.settings.ManageSyncSettings;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.components.sync.SyncService;
+import org.chromium.components.sync.TransportState;
 
 /** Tests for BraveManageSyncSettings. */
 @RunWith(ChromeJUnit4ClassRunner.class)
@@ -35,13 +40,16 @@ public class BraveManageSyncSettingsTest {
     private final SettingsActivityTestRule<BraveManageSyncSettings> mSettingsActivityTestRule =
             new SettingsActivityTestRule<>(BraveManageSyncSettings.class);
 
+    @Mock private SyncService mSyncService;
+
     @Before
-    public void setUp() {}
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     @SmallTest
     @Feature({"Sync"})
-    @DisabledTest(message = "https://github.com/brave/brave-browser/issues/43285")
     public void syncEverythingOrPasswordsHandlerIsOriginalOnChromeOS() {
         syncEverythingOrPasswordsOverridden(true, false);
     }
@@ -49,13 +57,30 @@ public class BraveManageSyncSettingsTest {
     @Test
     @SmallTest
     @Feature({"Sync"})
-    @DisabledTest(message = "https://github.com/brave/brave-browser/issues/43285")
     public void syncEverythingOrPasswordsHandlerOverriddenOnNonChromeOS() {
         syncEverythingOrPasswordsOverridden(false, true);
     }
 
     void syncEverythingOrPasswordsOverridden(
             Boolean isChromeOS, Boolean handlerShouldBeOverridden) {
+
+        setupMockSyncService();
+
+        // The next line triggers presubmit warning
+        // Banned functions were used.
+        // ...
+        // It is safe to ignore this warning if you are just moving an existing
+        // call, or if you want special handling for users in the legacy state.
+        // Support the legacy state is the case for Brave Sync
+        when(mSyncService.hasSyncConsent()).thenReturn(true);
+
+        when(mSyncService.getSetupInProgressHandle())
+                .thenReturn(
+                        new SyncService.SyncSetupInProgressHandle() {
+                            @Override
+                            public void close() {}
+                        });
+
         BraveManageSyncSettings.setIsRunningOnChromeOSForTesting(isChromeOS);
         BraveManageSyncSettings fragment = startManageSyncPreferences();
 
@@ -80,5 +105,10 @@ public class BraveManageSyncSettingsTest {
     private BraveManageSyncSettings startManageSyncPreferences() {
         mSettingsActivity = mSettingsActivityTestRule.startSettingsActivity();
         return mSettingsActivityTestRule.getFragment();
+    }
+
+    private void setupMockSyncService() {
+        SyncServiceFactory.setInstanceForTesting(mSyncService);
+        when(mSyncService.getTransportState()).thenReturn(TransportState.ACTIVE);
     }
 }
