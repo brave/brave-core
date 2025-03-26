@@ -84,15 +84,11 @@
 - (instancetype)initWithCampaign:
     (const ntp_background_images::Campaign&)campaign {
   auto campaignId = base::SysUTF8ToNSString(campaign.campaign_id);
-  const bool shouldMetricsFallbackToP3A =
-      campaign.should_metrics_fallback_to_p3a;
   auto backgrounds =
       [[NSMutableArray<NTPSponsoredImageBackground*> alloc] init];
   for (const auto& creative : campaign.creatives) {
-    [backgrounds
-        addObject:[[NTPSponsoredImageBackground alloc]
-                      initWithSponsoredBackground:creative
-                       shouldMetricsFallbackToP3A:shouldMetricsFallbackToP3A]];
+    [backgrounds addObject:[[NTPSponsoredImageBackground alloc]
+                               initWithSponsoredBackground:creative]];
   }
   return [self initWithCampaignId:campaignId backgrounds:backgrounds];
 }
@@ -131,8 +127,7 @@
 }
 
 - (instancetype)initWithSponsoredBackground:
-                    (const ntp_background_images::Creative&)sponsoredBackground
-                 shouldMetricsFallbackToP3A:(BOOL)shouldMetricsFallbackToP3A {
+    (const ntp_background_images::Creative&)sponsoredBackground {
   auto imagePath =
       [NSURL fileURLWithPath:base::SysUTF8ToNSString(
                                  sponsoredBackground.file_path.value())];
@@ -144,6 +139,8 @@
   auto logo =
       [[NTPSponsoredImageLogo alloc] initWithLogo:sponsoredBackground.logo];
   auto viewBox = sponsoredBackground.viewbox.value_or(gfx::Rect()).ToCGRect();
+  const bool shouldMetricsFallbackToP3A =
+      sponsoredBackground.should_metrics_fallback_to_p3a;
   return [self initWithImagePath:imagePath
                       focalPoint:focalPoint
                  backgroundColor:backgroundColor
