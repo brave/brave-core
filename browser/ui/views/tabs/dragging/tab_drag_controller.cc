@@ -106,23 +106,6 @@ TabDragController::Liveness TabDragController::Init(
   return TabDragController::Liveness::ALIVE;
 }
 
-gfx::Point TabDragController::GetAttachedDragPoint(
-    const gfx::Point& point_in_screen) {
-  if (!is_showing_vertical_tabs_) {
-    return TabDragControllerChromium::GetAttachedDragPoint(point_in_screen);
-  }
-
-  DCHECK(attached_context_);  // The tab must be attached.
-
-  gfx::Point tab_loc(point_in_screen);
-  views::View::ConvertPointFromScreen(attached_context_, &tab_loc);
-  const int x = drag_data_.tab_drag_data_.front().pinned
-                    ? tab_loc.x() - mouse_offset_.x()
-                    : 0;
-  const int y = tab_loc.y() - mouse_offset_.y();
-  return {x, y};
-}
-
 gfx::Vector2d TabDragController::CalculateWindowDragOffset() {
   gfx::Vector2d offset = TabDragControllerChromium::CalculateWindowDragOffset();
   if (!is_showing_vertical_tabs_) {
@@ -138,19 +121,6 @@ gfx::Vector2d TabDragController::CalculateWindowDragOffset() {
       attached_context_->GetWidget()->GetTopLevelWidget()->GetRootView(),
       &new_offset);
   return new_offset.OffsetFromOrigin();
-}
-
-void TabDragController::MoveAttached(gfx::Point point_in_screen,
-                                     bool just_attached) {
-  TabDragControllerChromium::MoveAttached(point_in_screen, just_attached);
-  if (!is_showing_vertical_tabs_) {
-    return;
-  }
-
-  // Unlike upstream, We always update coordinate, as we use y coordinate. Since
-  // we don't have threshold there's no any harm for this.
-  views::View::ConvertPointFromScreen(attached_context_, &point_in_screen);
-  last_move_attached_context_loc_ = point_in_screen.y();
 }
 
 views::Widget* TabDragController::GetAttachedBrowserWidget() {
@@ -270,9 +240,9 @@ void TabDragController::DetachAndAttachToNewContext(
     views[i] = drag_data_.tab_drag_data_[i].attached_view.get();
   }
 
-  attached_context_->LayoutDraggedViewsAt(
-      std::move(views), drag_data_.source_view_drag_data()->attached_view,
-      GetCursorScreenPoint(), initial_move_);
+  // attached_context_->LayoutDraggedViewsAt(
+  //     std::move(views), drag_data_.source_view_drag_data()->attached_view,
+  //     GetCursorScreenPoint(), initial_move_);
 
   if (old_split_view_browser_data) {
     auto* new_browser = BrowserView::GetBrowserViewForNativeWindow(
