@@ -47,10 +47,9 @@ class SearchEngineProviderP3ATest : public InProcessBrowserTest {
  private:
   static void OverrideCountryID(const std::string& country_id,
                                 content::BrowserContext* context) {
-    const int32_t id = country_codes::CountryCharsToCountryID(country_id.at(0),
-                                                              country_id.at(1));
+    auto id = country_codes::CountryId(country_id);
     Profile::FromBrowserContext(context)->GetPrefs()->SetInteger(
-        country_codes::kCountryIDAtInstall, id);
+        country_codes::kCountryIDAtInstall, id.Serialize());
   }
 
  protected:
