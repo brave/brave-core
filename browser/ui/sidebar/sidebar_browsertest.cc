@@ -607,7 +607,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
 
   auto* tab_strip_model = browser()->tab_strip_model();
   brave::NewSplitViewForTab(browser());
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser());
+  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
   ASSERT_TRUE(split_view_data);
   ASSERT_TRUE(split_view_data->IsTabTiled(
       tab_strip_model->GetTabAtIndex(0)->GetHandle()));

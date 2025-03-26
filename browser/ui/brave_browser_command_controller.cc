@@ -17,7 +17,6 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -36,6 +35,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_change_type.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -316,11 +316,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     UpdateCommandEnabled(IDC_READING_LIST_MENU_ADD_TAB, true);
     UpdateCommandEnabled(IDC_READING_LIST_MENU_SHOW_UI, true);
   }
-
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
-      browser_->is_type_normal()) {
-    UpdateCommandForSplitView();
-  }
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -454,15 +449,9 @@ void BraveBrowserCommandController::UpdateCommandsForPin() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForSplitView() {
-  auto* split_view_browser_data =
-      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
-  if (!split_view_browser_data) {
-    // Can happen on start up.
-    return;
-  }
-
   if (!split_view_browser_data_observation_.IsObserving()) {
-    split_view_browser_data_observation_.Observe(split_view_browser_data);
+    split_view_browser_data_observation_.Observe(
+        browser_->GetFeatures().split_view_browser_data());
   }
 
   UpdateCommandEnabled(IDC_NEW_SPLIT_VIEW, brave::CanOpenNewSplitViewForTab(

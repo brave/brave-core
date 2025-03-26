@@ -945,7 +945,7 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
   contents_container_->layer()->SetRoundedCornerRadius(corners);
 
   const auto in_split_view_mode =
-      !!SplitViewBrowserData::FromBrowser(browser_.get());
+      !!browser_->GetFeatures().split_view_browser_data();
 
   auto update_corner_radius =
       [in_split_view_mode](views::WebView* contents, views::WebView* devtools,

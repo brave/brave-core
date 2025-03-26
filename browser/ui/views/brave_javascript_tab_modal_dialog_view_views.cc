@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/split_view/split_view.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/javascript_dialogs/javascript_tab_modal_dialog_manager_delegate_desktop.h"
 #include "chrome/browser/ui/views/chrome_widget_sublevel.h"
 #include "components/web_modal/web_contents_modal_dialog_host.h"
@@ -77,7 +78,7 @@ JavaScriptTabModalDialogManagerDelegateDesktop::CreateNewDialog(
         std::move(dialog_force_closed_callback));
   }
 
-  if (!SplitViewBrowserData::FromBrowser(browser)) {
+  if (!browser->GetFeatures().split_view_browser_data()) {
     // Split view isn't enabled.
     return CreateNewDialog_ChromiumImpl(
         alerting_web_contents, title, dialog_type, message_text,
@@ -139,7 +140,8 @@ gfx::Point BraveJavaScriptTabModalDialogViewViews::
                             base::to_address(web_contents_)))
                         ->GetHandle();
 
-  auto* split_view_browser_data = SplitViewBrowserData::FromBrowser(browser);
+  auto* split_view_browser_data =
+      browser->GetFeatures().split_view_browser_data();
   CHECK(split_view_browser_data);
 
   auto tile = split_view_browser_data->GetTile(tab_handle);
