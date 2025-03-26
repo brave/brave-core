@@ -120,12 +120,15 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, OverriddenEngines) {
 // Verifies that the set of prepopulate data for each locale
 // doesn't contain entries with duplicate ids.
 TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
-  static constexpr int kCountryIds[] = {'D' << 8 | 'E', 'F' << 8 | 'R',
-                                        'U' << 8 | 'S', -1};
+  static constexpr country_codes::CountryId kCountryIds[] = {
+      country_codes::CountryId("DE"),
+      country_codes::CountryId("FR"),
+      country_codes::CountryId("US"),
+  };
 
-  for (int country_id : kCountryIds) {
+  for (country_codes::CountryId country_id : kCountryIds) {
     search_engines_test_environment_.pref_service().SetInteger(
-        kCountryIDAtInstall, country_id);
+        kCountryIDAtInstall, country_id.Serialize());
     std::vector<std::unique_ptr<TemplateURLData>> urls = GetPrepopulatedEngines(
         search_engines_test_environment_.pref_service(),
         search_engines_test_environment_.regional_capabilities_service()
