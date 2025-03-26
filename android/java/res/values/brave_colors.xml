@@ -422,8 +422,8 @@
     <color name="schemes_on_primary">#ffffff</color>
     <color name="schemes_surface_container_highest">#c7c7cc</color>
     <color name="schemes_surface_container_lowest">#FFFFFF</color>
-
     <color name="button_background_widget_promo">#4551D1</color>
+    <color name="schemes_surface_container_high">#E7E7EC</color>
 
     <color name="open_yt_dialog_bg">#FFFFFF</color>
 

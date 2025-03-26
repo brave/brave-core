@@ -12,9 +12,10 @@ android_library("java") {
   sources = [
     "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsEnum.java",
     "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsManager.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/Utils.java",
     "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsAdapter.java",
     "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsFragment.java",
-    "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsPreference.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsListener.java",
   ]
   deps = [
     ":java_resources",

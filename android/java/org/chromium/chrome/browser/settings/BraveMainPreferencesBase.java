@@ -13,6 +13,8 @@ import android.provider.Settings;
 
 import androidx.preference.Preference;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
@@ -43,6 +45,10 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
+import org.chromium.brave.browser.utils.DrawableUtils;
+import android.graphics.drawable.Drawable;
 
 import java.util.HashMap;
 
@@ -379,6 +385,19 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
     }
 
+    private void updateCustomAppIcon(String preferenceString) {
+        Preference preference = findPreference(preferenceString);
+        CustomAppIconsEnum currentIcon = CustomAppIconsManager.getCurrentIcon(getContext());
+            int iconResource =
+                    currentIcon.equals(CustomAppIconsEnum.ICON_DEFAULT)
+                            ? R.drawable.ic_launcher_round
+                            : currentIcon.getIcon();
+        if (preference != null) {
+            Drawable drawable = DrawableUtils.getCircularDrawable(getContext(), iconResource, dpToPx(getContext(), 16));
+            preference.setIcon(drawable);
+        }
+    }
+
     private void removePreferenceIfPresent(String key) {
         Preference preference = getPreferenceScreen().findPreference(key);
         if (preference != null) {
@@ -408,7 +427,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 BottomToolbarConfiguration.isToolbarTopAnchored()
                         ? R.drawable.ic_browser_mobile_tabs_top
                         : R.drawable.ic_browser_mobile_tabs_bottom);
-        updatePreferenceIcon(PREF_CUSTOM_APP_ICONS, R.drawable.ic_launcher);
+        updateCustomAppIcon(PREF_CUSTOM_APP_ICONS);
     }
 
     private void updateSearchEnginePreference() {
