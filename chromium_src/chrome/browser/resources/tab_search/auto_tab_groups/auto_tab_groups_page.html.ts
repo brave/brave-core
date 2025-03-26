@@ -62,6 +62,51 @@ function getTopicsHtml(this:  AutoTabGroupsPageElement) {
   `)
 }
 
+export function getEnableTabFocusHtml(this:  AutoTabGroupsPageElement) {
+  return html`
+    <div class="enable-tab-focus-wrapper">
+      <div class="enable-tab-focus-header">
+        ${this.showBackButton ? html`
+          <div>
+            <leo-button
+              size="medium"
+              kind="plain-faint"
+              fab
+              @click=${this.onBackClick_}
+            >
+              <leo-icon name="arrow-left"></leo-icon>
+            </leo-button>
+          </div>
+        ` : ''}
+        <div class="title">${this.getTitle_()}</div>
+      </div>
+      <div class="enable-tab-focus-content-wrapper">
+        <div class="enable-tab-focus-illustration"></div>
+        <div class="enable-tab-focus-info-wrapper">
+          <span class="enable-tab-focus-info-text">
+            ${this.getPrivacyDisclaimerMessage_()}
+          </span>
+          <div class="enable-tab-focus-button-row">
+            <span class="learn-more-link" @click=${this.onLearnMoreClicked_}>
+              ${this.getLearnMoreLabel_()}
+            </span>
+            <div>
+            <leo-button
+              id="enableButton"
+              kind="filled"
+              size="small"
+              @click="${this.onEnableTabFocusClicked_}"
+            >
+              ${this.getEnableButtonLabel_()}
+            </leo-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
+}
+
 export function getHtml(this:  AutoTabGroupsPageElement) {
   return html`<!--_html_template_start_-->
     <div id="brave-tab-focus" class="brave-tab-focus">
