@@ -14,7 +14,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
   private var url: URL?
   private var urlObserver: NSObjectProtocol?
 
-  init(tab: Tab) {
+  init(tab: TabState) {
     self.url = tab.url
     super.init()
 
@@ -50,7 +50,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
     )
   }()
 
-  static func setEnabled(option: Preferences.Option<String>, for tab: Tab) {
+  static func setEnabled(option: Preferences.Option<String>, for tab: TabState) {
     let enabled = canEnableHighQuality(option: option)
 
     tab.evaluateSafeJavaScript(
@@ -63,7 +63,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
   }
 
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -97,7 +97,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
 
   // MARK: - TabObserver
 
-  func tabDidUpdateURL(_ tab: Tab) {
+  func tabDidUpdateURL(_ tab: TabState) {
     if url?.withoutFragment == tab.url?.withoutFragment {
       return
     }
@@ -110,7 +110,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript, TabObserver {
     )
   }
 
-  func tabWillBeDestroyed(_ tab: Tab) {
+  func tabWillBeDestroyed(_ tab: TabState) {
     tab.removeObserver(self)
   }
 }

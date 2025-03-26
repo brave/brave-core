@@ -437,7 +437,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
   private func navigate(
     to target: ShieldsPanelView.Action.NavigationTarget,
-    tab: Web.Tab,
+    tab: TabState,
     url: URL,
     on viewController: UIViewController?
   ) {
@@ -538,7 +538,7 @@ extension BrowserViewController: TopToolbarDelegate {
     self.present(container, animated: true)
   }
 
-  func shredData(for url: URL, in tab: Web.Tab) {
+  func shredData(for url: URL, in tab: TabState) {
     LottieAnimationView.showShredAnimation(on: view) {
       self.tabManager.shredData(for: url, in: tab)
     }

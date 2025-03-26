@@ -21,7 +21,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
   PlaylistFolderSharingScriptHandlerDelegate
 {
   static var didShowStorageFullWarning = false
-  func createPlaylistPopover(item: PlaylistInfo, tab: Tab?) -> PopoverController {
+  func createPlaylistPopover(item: PlaylistInfo, tab: TabState?) -> PopoverController {
 
     let folderName =
       PlaylistItem.getItem(uuid: item.tagId)?.playlistFolder?.title
@@ -65,7 +65,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     )
   }
 
-  func updatePlaylistURLBar(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?) {
+  func updatePlaylistURLBar(tab: TabState?, state: PlaylistItemAddedState, item: PlaylistInfo?) {
     // `tab` is nil when closed, along with the `.none` state and nil `item`
     guard let tab = tab else { return }
 
@@ -113,10 +113,10 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     }
   }
 
-  func showPlaylistPopover(tab: Tab?) {
+  func showPlaylistPopover(tab: TabState?) {
   }
 
-  func showPlaylistToast(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?) {
+  func showPlaylistToast(tab: TabState?, state: PlaylistItemAddedState, item: PlaylistInfo?) {
     updatePlaylistURLBar(tab: tab, state: state, item: item)
 
     guard let selectedTab = tabManager.selectedTab,
@@ -188,7 +188,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     }
   }
 
-  func showPlaylistAlert(tab: Tab?, state: PlaylistItemAddedState, item: PlaylistInfo?) {
+  func showPlaylistAlert(tab: TabState?, state: PlaylistItemAddedState, item: PlaylistInfo?) {
     // Has to be done otherwise it is impossible to play a video after selecting its elements
     UIMenuController.shared.hideMenu()
 
@@ -224,7 +224,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     present(alert, animated: true, completion: nil)
   }
 
-  func showPlaylistOnboarding(tab: Tab?) {
+  func showPlaylistOnboarding(tab: TabState?) {
     // Do NOT show the playlist onboarding popup if the tab isn't visible
 
     guard Preferences.Playlist.enablePlaylistURLBarButton.value,
@@ -280,7 +280,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     }
   }
 
-  func openPlaylist(tab: Tab?, item: PlaylistInfo?, folderSharingPageUrl: String? = nil) {
+  func openPlaylist(tab: TabState?, item: PlaylistInfo?, folderSharingPageUrl: String? = nil) {
     if let item, let tab {
       PlaylistScriptHandler.getCurrentTime(tab: tab, nodeTag: item.tagId) {
         [weak self] currentTime in
@@ -302,7 +302,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
   }
 
   private func openPlaylist(
-    tab: Tab?,
+    tab: TabState?,
     item: PlaylistInfo?,
     playbackOffset: Double,
     folderSharingPageUrl: String? = nil

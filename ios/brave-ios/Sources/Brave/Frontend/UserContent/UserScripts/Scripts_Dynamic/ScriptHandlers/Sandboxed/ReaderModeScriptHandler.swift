@@ -260,13 +260,16 @@ protocol ReaderModeScriptHandlerDelegate: AnyObject {
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didChangeReaderModeState state: ReaderModeState,
-    forTab tab: Tab
+    forTab tab: TabState
   )
-  func readerMode(_ readerMode: ReaderModeScriptHandler, didDisplayReaderizedContentForTab tab: Tab)
+  func readerMode(
+    _ readerMode: ReaderModeScriptHandler,
+    didDisplayReaderizedContentForTab tab: TabState
+  )
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didParseReadabilityResult readabilityResult: ReadabilityResult,
-    forTab tab: Tab
+    forTab tab: TabState
   )
 }
 
@@ -284,24 +287,25 @@ class ReaderModeScriptHandler: TabContentScript {
   static let scriptSandbox: WKContentWorld = .defaultClient
   static let userScript: WKUserScript? = nil
 
-  fileprivate func handleReaderPageEvent(_ readerPageEvent: ReaderPageEvent, tab: Tab) {
+  fileprivate func handleReaderPageEvent(_ readerPageEvent: ReaderPageEvent, tab: TabState) {
     switch readerPageEvent {
     case .pageShow:
       delegate?.readerMode(self, didDisplayReaderizedContentForTab: tab)
     }
   }
 
-  fileprivate func handleReaderModeStateChange(_ state: ReaderModeState, tab: Tab) {
+  fileprivate func handleReaderModeStateChange(_ state: ReaderModeState, tab: TabState) {
     self.state = state
     delegate?.readerMode(self, didChangeReaderModeState: state, forTab: tab)
   }
 
-  fileprivate func handleReaderContentParsed(_ readabilityResult: ReadabilityResult, tab: Tab) {
+  fileprivate func handleReaderContentParsed(_ readabilityResult: ReadabilityResult, tab: TabState)
+  {
     delegate?.readerMode(self, didParseReadabilityResult: readabilityResult, forTab: tab)
   }
 
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -338,7 +342,7 @@ class ReaderModeScriptHandler: TabContentScript {
     }
   }
 
-  func setStyle(_ style: ReaderModeStyle, in tab: Tab) {
+  func setStyle(_ style: ReaderModeStyle, in tab: TabState) {
     if state == ReaderModeState.active {
       tab.evaluateSafeJavaScript(
         functionName: "\(readerModeNamespace).setStyle",
@@ -351,7 +355,7 @@ class ReaderModeScriptHandler: TabContentScript {
     }
   }
 
-  static func cache(for tab: Tab?) -> ReaderModeCache {
+  static func cache(for tab: TabState?) -> ReaderModeCache {
     switch TabType.of(tab) {
     case .regular:
       return DiskReaderModeCache.sharedInstance

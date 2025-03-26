@@ -15,7 +15,7 @@ enum ReadabilityOperationResult {
 class ReadabilityOperation: Operation {
   private var url: URL
   private var semaphore: DispatchSemaphore
-  private var tab: Tab!
+  private var tab: TabState!
   private var readerModeCache: ReaderModeCache
   var result: ReadabilityOperationResult?
 
@@ -35,7 +35,7 @@ class ReadabilityOperation: Operation {
 
     DispatchQueue.main.async {
       let configuration = WKWebViewConfiguration()
-      self.tab = Tab(configuration: configuration)
+      self.tab = TabState(configuration: configuration)
       self.tab.browserData = .init(tab: self.tab, tabGeneratorAPI: nil)
       self.tab.createWebview()
       self.tab.addObserver(self)
@@ -83,12 +83,12 @@ class ReadabilityOperation: Operation {
 }
 
 extension ReadabilityOperation: TabObserver {
-  func tab(_ tab: Tab, didFailNavigationWithError error: any Error) {
+  func tab(_ tab: TabState, didFailNavigationWithError error: any Error) {
     result = ReadabilityOperationResult.error(error as NSError)
     semaphore.signal()
   }
 
-  func tabDidFinishNavigation(_ tab: Tab) {
+  func tabDidFinishNavigation(_ tab: TabState) {
     tab.evaluateSafeJavaScript(
       functionName: "\(readerModeNamespace).checkReadability",
       contentWorld: ReaderModeScriptHandler.scriptSandbox
@@ -100,18 +100,20 @@ extension ReadabilityOperation: ReaderModeScriptHandlerDelegate {
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didChangeReaderModeState state: ReaderModeState,
-    forTab tab: Tab
+    forTab tab: TabState
   ) {
   }
 
-  func readerMode(_ readerMode: ReaderModeScriptHandler, didDisplayReaderizedContentForTab tab: Tab)
-  {
+  func readerMode(
+    _ readerMode: ReaderModeScriptHandler,
+    didDisplayReaderizedContentForTab tab: TabState
+  ) {
   }
 
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didParseReadabilityResult readabilityResult: ReadabilityResult,
-    forTab tab: Tab
+    forTab tab: TabState
   ) {
     guard tab == self.tab else {
       return

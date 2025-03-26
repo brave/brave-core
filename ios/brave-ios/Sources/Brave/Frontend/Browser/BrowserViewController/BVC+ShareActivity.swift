@@ -16,7 +16,7 @@ import os.log
 extension BrowserViewController {
   func makeShareActivities(
     for url: URL,
-    tab: Tab?,
+    tab: TabState?,
     sourceView: UIView?,
     sourceRect: CGRect,
     arrowDirection: UIPopoverArrowDirection
@@ -344,7 +344,7 @@ extension BrowserViewController {
 
   func presentActivityViewController(
     _ url: URL,
-    tab: Tab? = nil,
+    tab: TabState? = nil,
     sourceView: UIView?,
     sourceRect: CGRect,
     arrowDirection: UIPopoverArrowDirection

@@ -45,7 +45,7 @@ extension TabTrayController: UICollectionViewDropDelegate {
   ) {
 
     guard let dragItem = coordinator.items.first?.dragItem,
-      let tab = dragItem.localObject as? Tab,
+      let tab = dragItem.localObject as? TabState,
       let destinationIndexPath = coordinator.destinationIndexPath
     else { return }
 
@@ -63,7 +63,7 @@ extension TabTrayController: UICollectionViewDropDelegate {
 
     guard let localDragSession = session.localDragSession,
       let item = localDragSession.items.first,
-      let tab = item.localObject as? Tab
+      let tab = item.localObject as? TabState
     else {
       return .init(operation: .forbidden)
     }

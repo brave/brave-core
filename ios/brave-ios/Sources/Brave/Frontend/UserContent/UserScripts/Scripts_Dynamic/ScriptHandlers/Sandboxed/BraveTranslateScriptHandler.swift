@@ -12,11 +12,14 @@ import WebKit
 import os.log
 
 protocol BraveTranslateScriptHandlerDelegate: NSObject {
-  func updateTranslateURLBar(tab: Tab, state: TranslateURLBarButton.TranslateState)
-  func canShowTranslateOnboarding(tab: Tab) -> Bool
-  func showTranslateOnboarding(tab: Tab, completion: @escaping (_ translateEnabled: Bool) -> Void)
-  func presentTranslateToast(tab: Tab, languageInfo: BraveTranslateLanguageInfo)
-  func presentTranslateError(tab: Tab)
+  func updateTranslateURLBar(tab: TabState, state: TranslateURLBarButton.TranslateState)
+  func canShowTranslateOnboarding(tab: TabState) -> Bool
+  func showTranslateOnboarding(
+    tab: TabState,
+    completion: @escaping (_ translateEnabled: Bool) -> Void
+  )
+  func presentTranslateToast(tab: TabState, languageInfo: BraveTranslateLanguageInfo)
+  func presentTranslateError(tab: TabState)
 }
 
 class BraveTranslateScriptHandler: NSObject, TabContentScript {
@@ -56,7 +59,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     tasks.values.forEach({ $0.cancel() })
   }
 
-  static func checkTranslate(tab: Tab) {
+  static func checkTranslate(tab: TabState) {
     tab.evaluateSafeJavaScript(
       functionName:
         """
@@ -72,7 +75,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   }
 
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -117,7 +120,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   }
 
   private func processScriptMessage(
-    for tab: Tab,
+    for tab: TabState,
     command: String,
     body: [String: Any]
   ) async throws -> (Any?, String?) {
@@ -232,7 +235,7 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
   static let userScript: WKUserScript? = nil
 
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {

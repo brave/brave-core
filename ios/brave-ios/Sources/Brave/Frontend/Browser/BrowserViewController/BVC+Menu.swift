@@ -469,7 +469,7 @@ extension BrowserViewController {
 
   struct MenuTabDetailsView: View {
     @SwiftUI.Environment(\.colorScheme) var colorScheme: ColorScheme
-    weak var tab: Web.Tab?
+    weak var tab: TabState?
     var url: URL
 
     var body: some View {
@@ -502,7 +502,7 @@ extension BrowserViewController {
   func presentBrowserMenu(
     from sourceView: UIView,
     activities: [UIActivity],
-    tab: Web.Tab?,
+    tab: TabState?,
     pageURL: URL?
   ) {
     var actions: [Action] = []
@@ -590,7 +590,7 @@ extension BrowserViewController {
     return
   }
 
-  private func pageActions(for pageURL: URL?, tab: Web.Tab?) -> [Action] {
+  private func pageActions(for pageURL: URL?, tab: TabState?) -> [Action] {
     let playlistActivity = addToPlayListActivityItem ?? openInPlaylistActivityItem
     let isPlaylistItemAdded = openInPlaylistActivityItem != nil
     var actions: [Action] = [

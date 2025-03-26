@@ -13,13 +13,13 @@ private struct PrintedPageUX {
 }
 
 class TabPrintPageRenderer: UIPrintPageRenderer {
-  private weak var tab: Tab?
+  private weak var tab: TabState?
   private let displayTitle: String
 
   let textAttributes = [NSAttributedString.Key.font: PrintedPageUX.pageTextFont]
   let dateString: String
 
-  required init(tab: Tab) {
+  required init(tab: TabState) {
     self.tab = tab
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .short

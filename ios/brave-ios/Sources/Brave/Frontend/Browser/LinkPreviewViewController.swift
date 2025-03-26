@@ -11,11 +11,11 @@ import WebKit
 class LinkPreviewViewController: UIViewController {
 
   private let url: URL
-  private weak var parentTab: Tab?
-  private var currentTab: Tab?
+  private weak var parentTab: TabState?
+  private var currentTab: TabState?
   private weak var browserController: BrowserViewController?
 
-  init(url: URL, for tab: Tab, browserController: BrowserViewController) {
+  init(url: URL, for tab: TabState, browserController: BrowserViewController) {
     self.url = url
     self.parentTab = tab
     self.browserController = browserController
@@ -32,7 +32,7 @@ class LinkPreviewViewController: UIViewController {
       return
     }
 
-    currentTab = Tab(
+    currentTab = TabState(
       configuration: parentTab.configuration,
       type: parentTab.isPrivate ? .private : .regular
     ).then {

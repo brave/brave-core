@@ -14,13 +14,13 @@ import UIKit
 import Web
 
 extension BrowserViewController: TabDelegate {
-  public func tabWebViewDidClose(_ tab: Tab) {
+  public func tabWebViewDidClose(_ tab: TabState) {
     tabManager.addTabToRecentlyClosed(tab)
     tabManager.removeTab(tab)
   }
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
   ) async -> UIContextMenuConfiguration? {
     // Only show context menu for valid links such as `http`, `https`, `data`. Safari does not show it for anything else.
@@ -178,7 +178,7 @@ extension BrowserViewController: TabDelegate {
   }
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
   ) async -> WebPermissionDecision {
     guard let origin = tab.committedURL?.origin, tab === tabManager.selectedTab else {
@@ -246,7 +246,7 @@ extension BrowserViewController: TabDelegate {
   }
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     runJavaScriptAlertPanelWithMessage message: String,
     pageURL: URL
   ) async {
@@ -270,7 +270,7 @@ extension BrowserViewController: TabDelegate {
   }
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
     pageURL: URL
   ) async -> Bool {
@@ -294,7 +294,7 @@ extension BrowserViewController: TabDelegate {
   }
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
     defaultText: String?,
     pageURL: URL
@@ -319,7 +319,7 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
-  public func tab(_ tab: Tab, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool {
+  public func tab(_ tab: TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool {
     guard let documentTargetURL = request.mainDocumentURL else { return false }
     let domainForShields = Domain.getOrCreate(
       forUrl: documentTargetURL,
@@ -328,7 +328,8 @@ extension BrowserViewController: TabDelegate {
     return domainForShields.isShieldExpected(.noScript, considerAllShieldsOption: true)
   }
 
-  public func tab(_ tab: Tab, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool {
+  public func tab(_ tab: TabState, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
+  {
     func isYouTubeLoad() -> Bool {
       guard let domain = request.mainDocumentURL?.baseDomain else {
         return false
@@ -344,7 +345,7 @@ extension BrowserViewController: TabDelegate {
     return false
   }
 
-  public func tab(_ tab: Tab, buildEditMenuWithBuilder builder: any UIMenuBuilder) {
+  public func tab(_ tab: TabState, buildEditMenuWithBuilder builder: any UIMenuBuilder) {
     let forcePaste = UIAction(title: Strings.forcePaste) { [weak tab] _ in
       if let string = UIPasteboard.general.string {
         tab?.evaluateSafeJavaScript(
@@ -374,7 +375,7 @@ extension BrowserViewController: TabDelegate {
 }
 
 extension BrowserViewController {
-  private func didSelectSearchWithBrave(_ selectedText: String, tab: Tab) {
+  private func didSelectSearchWithBrave(_ selectedText: String, tab: TabState) {
     let engine = profile.searchEngines.defaultEngine(
       forType: tab.isPrivate ? .privateMode : .standard
     )
@@ -394,7 +395,7 @@ extension BrowserViewController {
       RecentSearch.addItem(type: .text, text: selectedText, websiteUrl: url.absoluteString)
     }
   }
-  fileprivate func addTab(url: URL, inPrivateMode: Bool, currentTab: Tab) {
+  fileprivate func addTab(url: URL, inPrivateMode: Bool, currentTab: TabState) {
     let tab = self.tabManager.addTab(
       URLRequest(url: url),
       afterTab: currentTab,
@@ -418,7 +419,7 @@ extension BrowserViewController {
     self.toolbarVisibilityViewModel.toolbarState = .expanded
   }
 
-  func suppressJSAlerts(tab: Tab) {
+  func suppressJSAlerts(tab: TabState) {
     let script = """
       window.alert=window.confirm=window.prompt=function(n){},
       [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
@@ -431,7 +432,7 @@ extension BrowserViewController {
   }
 
   func handleAlert<T: JSAlertInfo>(
-    tab: Tab,
+    tab: TabState,
     origin: URLOrigin,
     alert: inout T,
     completionHandler: @escaping () -> Void
@@ -517,7 +518,7 @@ extension BrowserViewController {
   }
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
     proposedCredential credential: URLCredential?,
     previousFailureCount: Int
@@ -568,9 +569,9 @@ extension BrowserViewController {
   }
 
   public func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     createNewTabWithRequest request: URLRequest
-  ) -> Tab? {
+  ) -> TabState? {
     guard !request.isInternalUnprivileged,
       let navigationURL = request.url,
       navigationURL.shouldRequestBeOpenedAsPopup()
@@ -593,20 +594,20 @@ extension BrowserViewController {
     toolbarVisibilityViewModel.toolbarState = .expanded
 
     class TabOneShotURLObservation: TabObserver {
-      init(tab: Tab, updated: @escaping (URL?) -> Void) {
+      init(tab: TabState, updated: @escaping (URL?) -> Void) {
         tab.addObserver(self)
         self.updated = updated
       }
 
       var updated: ((URL?) -> Void)?
 
-      public func tabDidUpdateURL(_ tab: Tab) {
+      public func tabDidUpdateURL(_ tab: TabState) {
         updated?(tab.url)
         updated = nil
         tab.removeObserver(self)
       }
 
-      public func tabWillBeDestroyed(_ tab: Tab) {
+      public func tabWillBeDestroyed(_ tab: TabState) {
         tab.removeObserver(self)
       }
     }

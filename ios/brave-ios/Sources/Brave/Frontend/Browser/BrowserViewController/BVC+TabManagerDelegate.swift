@@ -17,7 +17,7 @@ import WebKit
 import os.log
 
 extension BrowserViewController: TabManagerDelegate {
-  func attachTabHelpers(to tab: Web.Tab) {
+  func attachTabHelpers(to tab: TabState) {
     tab.browserData = .init(tab: tab, tabGeneratorAPI: braveCore.tabGeneratorAPI)
     tab.browserData?.miscDelegate = self
     tab.pullToRefresh = .init(tab: tab)
@@ -28,8 +28,8 @@ extension BrowserViewController: TabManagerDelegate {
 
   func tabManager(
     _ tabManager: TabManager,
-    didSelectedTabChange selected: Web.Tab?,
-    previous: Web.Tab?
+    didSelectedTabChange selected: TabState?,
+    previous: TabState?
   ) {
     // Remove the old accessibilityLabel. Since this webview shouldn't be visible, it doesn't need it
     // and having multiple views with the same label confuses tests.
@@ -168,10 +168,10 @@ extension BrowserViewController: TabManagerDelegate {
     updateURLBarWalletButton()
   }
 
-  func tabManager(_ tabManager: TabManager, willAddTab tab: Web.Tab) {
+  func tabManager(_ tabManager: TabManager, willAddTab tab: TabState) {
   }
 
-  func tabManager(_ tabManager: TabManager, didAddTab tab: Web.Tab) {
+  func tabManager(_ tabManager: TabManager, didAddTab tab: TabState) {
     // If we are restoring tabs then we update the count once at the end
     if !tabManager.isRestoring {
       updateToolbarUsingTabManager(tabManager)
@@ -189,11 +189,11 @@ extension BrowserViewController: TabManagerDelegate {
     updateTabsBarVisibility()
   }
 
-  func tabManager(_ tabManager: TabManager, willRemoveTab tab: Web.Tab) {
+  func tabManager(_ tabManager: TabManager, willRemoveTab tab: TabState) {
     tab.webContentView?.removeFromSuperview()
   }
 
-  func tabManager(_ tabManager: TabManager, didRemoveTab tab: Web.Tab) {
+  func tabManager(_ tabManager: TabManager, didRemoveTab tab: TabState) {
     updateToolbarUsingTabManager(tabManager)
     // tabDelegate is a weak ref (and the tab's webView may not be destroyed yet)
     // so we don't expcitly unset it.

@@ -82,7 +82,7 @@ class ErrorPageHelper {
     self.certStore = certStore
   }
 
-  func loadPage(_ error: NSError, forUrl url: URL, inTab tab: Tab) {
+  func loadPage(_ error: NSError, forUrl url: URL, inTab tab: TabState) {
     guard var components = URLComponents(string: "\(InternalURL.baseUrl)/\(ErrorPageHandler.path)")
     else {
       return

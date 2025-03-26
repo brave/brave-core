@@ -136,7 +136,7 @@ public class PlaylistCoordinator: NSObject {
   }
 
   func getPlaylistController(
-    tab: Tab?,
+    tab: TabState?,
     initialItem: PlaylistInfo?,
     initialItemPlaybackOffset: Double
   ) -> UIViewController {
@@ -200,7 +200,7 @@ public class PlaylistCoordinator: NSObject {
     return playlistController
   }
 
-  func getPlaylistController(tab: Tab?, completion: @escaping (UIViewController) -> Void) {
+  func getPlaylistController(tab: TabState?, completion: @escaping (UIViewController) -> Void) {
     if let playlistController = self.playlistController {
       return completion(playlistController)
     }

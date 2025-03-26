@@ -330,7 +330,7 @@ class UserScriptManager {
 
   // TODO: Get rid of this OR refactor wallet and domain scripts
   func loadCustomScripts(
-    into tab: Tab,
+    into tab: TabState,
     userScripts: Set<ScriptType>,
     customScripts: Set<UserScriptType>
   ) {

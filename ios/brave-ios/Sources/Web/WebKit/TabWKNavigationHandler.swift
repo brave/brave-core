@@ -10,13 +10,13 @@ import Storage
 import WebKit
 
 class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
-  weak var tab: Tab?
+  weak var tab: TabState?
 
   private var downloadHandlers: Set<TabWKDownloadHandler> = []
   private var sslPinningError: Error?
   private var pendingMIMEType: String?
 
-  init(tab: Tab) {
+  init(tab: TabState) {
     self.tab = tab
   }
 
@@ -38,7 +38,10 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
     tab.didStartNavigation()
   }
 
-  private func defaultAllowPolicy(for tab: Tab, request: URLRequest) -> WKNavigationActionPolicy {
+  private func defaultAllowPolicy(
+    for tab: TabState,
+    request: URLRequest
+  ) -> WKNavigationActionPolicy {
     if let delegate = tab.delegate,
       delegate.tab(tab, shouldBlockUniversalLinksForRequest: request)
     {

@@ -41,7 +41,7 @@ public class DarkReaderScriptHandler: TabContentScript {
   }()
 
   func tab(
-    _ tab: Tab,
+    _ tab: TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -49,7 +49,7 @@ public class DarkReaderScriptHandler: TabContentScript {
   }
 
   /// Enables DarkReader
-  static func enable(for tab: Tab) {
+  static func enable(for tab: TabState) {
     // This is needed to ensure that CORS fetches work correctly, otherwise you get this error:
     // "Embedded Dark Reader cannot access a cross-origin resource"
     tab.evaluateSafeJavaScript(
@@ -65,7 +65,7 @@ public class DarkReaderScriptHandler: TabContentScript {
   }
 
   /// Disables DarkReader
-  static func disable(for tab: Tab) {
+  static func disable(for tab: TabState) {
     tab.evaluateSafeJavaScript(
       functionName: "DarkReader.disable",
       args: [],
@@ -74,7 +74,7 @@ public class DarkReaderScriptHandler: TabContentScript {
   }
 
   /// - Parameter enabled - If true, automatically listens for system's dark-mode vs. light-mode. If false, disables listening.
-  static func auto(enabled: Bool = true, for tab: Tab) {
+  static func auto(enabled: Bool = true, for tab: TabState) {
     if enabled {
       // This is needed to ensure that CORS fetches work correctly, otherwise you get this error:
       // "Embedded Dark Reader cannot access a cross-origin resource"

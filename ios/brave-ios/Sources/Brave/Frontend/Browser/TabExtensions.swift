@@ -11,7 +11,7 @@ import Shared
 import UIKit
 import Web
 
-extension Tab {
+extension TabState {
   var displayTitle: String {
     if let displayTabTitle = fetchDisplayTitle(using: url, title: title) {
       return displayTabTitle
@@ -128,7 +128,7 @@ extension Tab {
 
 // MARK: - Brave Search
 
-extension Tab {
+extension TabState {
   /// Call the api on the Brave Search website and passes the fallback results to it.
   /// Important: This method is also called when there is no fallback results
   /// or when the fallback call should not happen at all.
@@ -187,7 +187,7 @@ extension Tab {
 }
 
 // MARK: - Brave SKU
-extension Tab {
+extension TabState {
   func injectLocalStorageItem(key: String, value: String) {
     self.evaluateSafeJavaScript(
       functionName: "localStorage.setItem",

@@ -620,10 +620,10 @@ class TabLocationView: UIView {
 // MARK: - TabEventHandler
 
 extension TabLocationView: TabEventHandler {
-  func tabDidGainFocus(_ tab: Tab) {
+  func tabDidGainFocus(_ tab: TabState) {
   }
 
-  func tabDidChangeContentBlockerStatus(_ tab: Tab) {
+  func tabDidChangeContentBlockerStatus(_ tab: TabState) {
   }
 }
 

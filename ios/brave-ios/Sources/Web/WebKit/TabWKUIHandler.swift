@@ -8,9 +8,9 @@ import Foundation
 import WebKit
 
 class TabWKUIHandler: NSObject, WKUIDelegate {
-  weak var tab: Tab?
+  weak var tab: TabState?
 
-  init(tab: Tab) {
+  init(tab: TabState) {
     self.tab = tab
   }
 

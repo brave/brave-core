@@ -66,7 +66,7 @@ struct BlockedRequestInfo: Hashable, Identifiable {
 }
 
 class ContentBlockerHelper: ObservableObject {
-  private(set) weak var tab: Tab?
+  private(set) weak var tab: TabState?
 
   /// The rule lists that are loaded into the current tab
   private var setRuleLists: Set<WKContentRuleList> = []
@@ -88,7 +88,7 @@ class ContentBlockerHelper: ObservableObject {
   /// Cached aggressive selectors. Key is the URL's `baseDomain`.
   private var hiddenAggressiveSelectors: [String: Set<String>] = [:]
 
-  init(tab: Tab?) {
+  init(tab: TabState?) {
     self.tab = tab
   }
 

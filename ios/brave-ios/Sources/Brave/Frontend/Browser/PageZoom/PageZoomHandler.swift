@@ -15,7 +15,7 @@ class PageZoomHandler: ObservableObject {
     case increment, decrement
   }
 
-  private weak var tab: Tab?
+  private weak var tab: TabState?
   let isPrivateBrowsing: Bool
 
   static let steps = [
@@ -27,7 +27,7 @@ class PageZoomHandler: ObservableObject {
   static let propertyName = "viewScale"
   @Published var currentValue: Double = 1.0
 
-  required init(tab: Tab?, isPrivateBrowsing: Bool) {
+  required init(tab: TabState?, isPrivateBrowsing: Bool) {
     self.isPrivateBrowsing = isPrivateBrowsing
 
     // Private Browsing on Safari iOS always defaults to 100%, and isn't persistently saved.

@@ -44,10 +44,10 @@ class TabCell: UICollectionViewCell {
   // Changes depending on whether we're full-screen or not.
   var margin = 0.0
 
-  var closedTab: ((Tab) -> Void)?
-  weak var tab: Tab?
+  var closedTab: ((TabState) -> Void)?
+  weak var tab: TabState?
 
-  func configure(with tab: Tab) {
+  func configure(with tab: TabState) {
     self.tab = tab
     tab.onScreenshotUpdated = { [weak self, weak tab] in
       guard let self = self, let tab = tab else { return }
@@ -151,7 +151,7 @@ class TabCell: UICollectionViewCell {
     ]
   }
 
-  func setTabSelected(_ tab: Tab) {
+  func setTabSelected(_ tab: TabState) {
     layer.shadowColor = UIColor.braveInfoBorder.resolvedColor(with: traitCollection).cgColor
     layer.shadowOpacity = 1
     layer.shadowRadius = 0  // A 0 radius creates a solid border instead of a gradient blur

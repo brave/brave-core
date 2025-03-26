@@ -23,7 +23,7 @@ class MetadataParserHelper: TabEventHandler {
     unregister(tabObservers)
   }
 
-  func tab(_ tab: Tab, didChangeURL url: URL) {
+  func tab(_ tab: TabState, didChangeURL url: URL) {
     // Get the metadata out of the page-metadata-parser, and into a type safe struct as soon
     // as possible.
     guard let url = tab.url, url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
@@ -85,7 +85,7 @@ class MediaImageLoader: TabEventHandler {
     unregister(tabObservers)
   }
 
-  func tab(_ tab: Tab, didLoadPageMetadata metadata: PageMetadata) {
+  func tab(_ tab: TabState, didLoadPageMetadata metadata: PageMetadata) {
     if let mediaURL = metadata.mediaURL, let url = URL(string: mediaURL) {
       loadImage(from: url)
     }
