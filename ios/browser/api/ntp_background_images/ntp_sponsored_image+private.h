@@ -30,7 +30,8 @@ struct TopSite;
 
 @interface NTPSponsoredImageBackground (Private)
 - (instancetype)initWithSponsoredBackground:
-    (const ntp_background_images::Creative&)sponsoredBackground;
+                    (const ntp_background_images::Creative&)sponsoredBackground
+                 shouldMetricsFallbackToP3A:(BOOL)shouldMetricsFallbackToP3A;
 @end
 
 @interface NTPSponsoredImageLogo (Private)

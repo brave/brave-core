@@ -30,6 +30,7 @@
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -51,6 +52,7 @@
 #import "brave/ios/browser/api/ads/ads_client_ios.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
 #import "brave/ios/browser/api/ads/inline_content_ad_ios.h"
+#import "brave/ios/browser/api/ads/new_tab_page_ad_ios.h"
 #import "brave/ios/browser/api/ads/notification_ad_ios.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
@@ -98,6 +100,11 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 @interface InlineContentAdIOS ()
 - (instancetype)initWithInlineContentAdInfo:
     (const brave_ads::InlineContentAdInfo&)info;
+@end
+
+@interface NewTabPageAdIOS ()
+- (instancetype)initWithNewTabPageAdInfo:
+    (const brave_ads::NewTabPageAdInfo&)info;
 @end
 
 @interface BraveAds () <AdsClientBridge> {
@@ -1643,6 +1650,35 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   }
 
   adsService->ClearData(base::IgnoreArgs<bool>(base::BindOnce(completion)));
+}
+
+#pragma mark - New Tab Page Ad
+
+- (NewTabPageAdIOS*)maybeGetPrefetchedNewTabPageAd {
+  if (![self isServiceRunning]) {
+    return nil;
+  }
+
+  const std::optional<brave_ads::NewTabPageAdInfo> new_tab_page_ad =
+      adsService->MaybeGetPrefetchedNewTabPageAd();
+  adsService->PrefetchNewTabPageAd();
+
+  if (!new_tab_page_ad) {
+    return nil;
+  }
+
+  return [[NewTabPageAdIOS alloc] initWithNewTabPageAdInfo:*new_tab_page_ad];
+}
+
+- (void)onFailedToPrefetchNewTabPageAd:(NSString*)placementId
+                    creativeInstanceId:(NSString*)creativeInstanceId {
+  if (![self isServiceRunning]) {
+    return;
+  }
+
+  adsService->OnFailedToPrefetchNewTabPageAd(
+      base::SysNSStringToUTF8(placementId),
+      base::SysNSStringToUTF8(creativeInstanceId));
 }
 
 #pragma mark - Ads client notifier

@@ -62,6 +62,7 @@ enum NTPWallpaper {
 }
 
 public class NTPDataSource {
+  private var rewards: BraveRewards?
 
   private(set) var privateBrowsingManager: PrivateBrowsingManager
 
@@ -82,8 +83,13 @@ public class NTPDataSource {
 
   let service: NTPBackgroundImagesService
 
-  public init(service: NTPBackgroundImagesService, privateBrowsingManager: PrivateBrowsingManager) {
+  public init(
+    service: NTPBackgroundImagesService,
+    rewards: BraveRewards?,
+    privateBrowsingManager: PrivateBrowsingManager
+  ) {
     self.service = service
+    self.rewards = rewards
     self.privateBrowsingManager = privateBrowsingManager
 
     Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
@@ -104,114 +110,116 @@ public class NTPDataSource {
   // This can 'easily' be adjusted to support both sets by switching to String, and using filePath to identify uniqueness.
   private var lastBackgroundChoices = [Int]()
 
-  private enum ImageRotationStrategy {
-    /// Special strategy for sponsored images, uses in-memory property to keep track of which image to show.
-    case sponsoredRotation
-    /// Uses random images, keeps in-memory list of recently viewed images to avoid showing it too often.
-    case randomOrderAvoidDuplicates
+  func shouldAttemptSponsoredMedia() -> Bool {
+    return
+      Preferences.NewTabPage.backgroundMediaType.isSponsored
+      && Preferences.NewTabPage.backgroundRotationCounter.value
+        == service.initialCountToBrandedWallpaper
+      && !privateBrowsingManager.isPrivateBrowsing
   }
 
-  func newBackground() -> NTPWallpaper? {
-    if !Preferences.NewTabPage.backgroundImages.value { return nil }
+  func getSponsoredMediaBackground() -> NTPWallpaper? {
+    guard let sponsoredImageData = service.sponsoredImageData,
+      let newTabPageAd = rewards?.ads.maybeGetPrefetchedNewTabPageAd()
+    else { return nil }
 
+    let isSponsoredVideoAllowed =
+      Preferences.NewTabPage.backgroundMediaType == .sponsoredImagesAndVideos
+
+    for campaign in sponsoredImageData.campaigns {
+      if campaign.campaignId != newTabPageAd.campaignID {
+        continue
+      }
+
+      for creative in campaign.backgrounds {
+        if creative.logo.imagePath != nil
+          && creative.creativeInstanceId == newTabPageAd.creativeInstanceID
+          && (!creative.isVideoFile || isSponsoredVideoAllowed)
+        {
+          return NTPWallpaper.sponsoredMedia(creative)
+        }
+      }
+    }
+
+    rewards?.ads.onFailed(
+      toPrefetchNewTabPageAd: newTabPageAd.placementID,
+      creativeInstanceId: newTabPageAd.creativeInstanceID
+    )
+    return nil
+  }
+
+  func getImageBackground() -> NTPWallpaper? {
     // Identifying the background array to use
-    let (backgroundSet, strategy) = {
-      () -> ([NTPWallpaper], ImageRotationStrategy) in
+    let backgroundSet = {
+      () -> [NTPWallpaper] in
 
       if let theme = service.superReferralImageData,
         case let refCode = service.superReferralCode,
         !refCode.isEmpty,
         Preferences.NewTabPage.selectedCustomTheme.value != nil
       {
-        return (
+        return
           theme.campaigns.flatMap(\.backgrounds).map {
             NTPWallpaper.superReferral($0, code: refCode)
-          }, .randomOrderAvoidDuplicates
-        )
-      }
-
-      if let sponsor = service.sponsoredImageData {
-        let attemptSponsored =
-          Preferences.NewTabPage.backgroundMediaType.isSponsored
-          && Preferences.NewTabPage.backgroundRotationCounter.value
-            == service.initialCountToBrandedWallpaper
-          && !privateBrowsingManager.isPrivateBrowsing
-
-        if attemptSponsored {
-          let isSponsoredVideoAllowed =
-            Preferences.NewTabPage.backgroundMediaType == .sponsoredImagesAndVideos
-
-          // Exclude campaigns with only sponsored video backgrounds if the user
-          // has selected the `Sponsored Images` option in settings.
-          let campaigns = sponsor.campaigns.filter {
-            $0.backgrounds.contains {
-              $0.logo.imagePath != nil && (!$0.isVideoFile || isSponsoredVideoAllowed)
-            }
           }
-
-          // Pick the campaign randomly
-          if let campaign = campaigns.randomElement() {
-            // Exclude sponsored video backgrounds if the user has selected
-            // the `Sponsored Images` option in settings.
-            let filteredCreatives = campaign.backgrounds.filter {
-              $0.logo.imagePath != nil && (!$0.isVideoFile || isSponsoredVideoAllowed)
-            }
-            if !filteredCreatives.isEmpty {
-              return (
-                filteredCreatives.map(NTPWallpaper.sponsoredMedia), .sponsoredRotation
-              )
-            }
-          }
-        }
       }
 
       if service.backgroundImages.isEmpty {
-        return ([NTPWallpaper.image(.fallback)], .randomOrderAvoidDuplicates)
+        return [NTPWallpaper.image(.fallback)]
       }
-      return (service.backgroundImages.map(NTPWallpaper.image), .randomOrderAvoidDuplicates)
+      return service.backgroundImages.map(NTPWallpaper.image)
     }()
 
     if backgroundSet.isEmpty { return nil }
 
     // Choosing the actual index / item to use
     let backgroundIndex = { () -> Int in
-      switch strategy {
-      case .sponsoredRotation:
-        return Int.random(in: 0..<backgroundSet.count)
-
-      case .randomOrderAvoidDuplicates:
-        let availableRange = 0..<backgroundSet.count
-        // This takes all indeces and filters out ones that were shown recently
-        let availableBackgroundIndeces = availableRange.filter {
-          !self.lastBackgroundChoices.contains($0)
-        }
-        // Due to how many display modes currently exist, the background avoidance counter may get utilized on a smaller subset.
-        // This can be repro by swapping between normal backgrounds and a super referrer, where all available indeces get squeezed out, resulting in an empty set.
-        // To avoid issues, first fallback results in full set.
-
-        // Chooses a new random index to use from the available indeces
-        let chosenIndex =
-          availableBackgroundIndeces.randomElement() ?? availableRange.randomElement() ?? -1
-        assert(chosenIndex >= 0, "NTP index was nil, this is terrible.")
-        assert(chosenIndex < backgroundSet.count, "NTP index is too large, BAD!")
-
-        // This index is now added to 'past' tracking list to prevent duplicates
-        self.lastBackgroundChoices.append(chosenIndex)
-        // Trimming to fixed length to release older backgrounds
-
-        self.lastBackgroundChoices = self.lastBackgroundChoices
-          .suffix(min(backgroundSet.count - 1, NTPDataSource.numberOfDuplicateAvoidance))
-        return chosenIndex
+      let availableRange = 0..<backgroundSet.count
+      // This takes all indeces and filters out ones that were shown recently
+      let availableBackgroundIndeces = availableRange.filter {
+        !self.lastBackgroundChoices.contains($0)
       }
+      // Due to how many display modes currently exist, the background avoidance counter may get utilized on a smaller subset.
+      // This can be repro by swapping between normal backgrounds and a super referrer, where all available indeces get squeezed out, resulting in an empty set.
+      // To avoid issues, first fallback results in full set.
+
+      // Chooses a new random index to use from the available indeces
+      let chosenIndex =
+        availableBackgroundIndeces.randomElement() ?? availableRange.randomElement() ?? -1
+      assert(chosenIndex >= 0, "NTP index was nil, this is terrible.")
+      assert(chosenIndex < backgroundSet.count, "NTP index is too large, BAD!")
+
+      // This index is now added to 'past' tracking list to prevent duplicates
+      self.lastBackgroundChoices.append(chosenIndex)
+      // Trimming to fixed length to release older backgrounds
+
+      self.lastBackgroundChoices = self.lastBackgroundChoices
+        .suffix(min(backgroundSet.count - 1, NTPDataSource.numberOfDuplicateAvoidance))
+      return chosenIndex
     }()
+
+    return backgroundSet[safe: backgroundIndex]
+  }
+
+  func newBackground() -> NTPWallpaper? {
+    if !Preferences.NewTabPage.backgroundImages.value { return nil }
+
+    var background: NTPWallpaper? = nil
+
+    if shouldAttemptSponsoredMedia() {
+      background = getSponsoredMediaBackground()
+    }
+
+    if background == nil {
+      background = getImageBackground()
+    }
 
     // Force back to `0` if at end
     Preferences.NewTabPage.backgroundRotationCounter.value %= service.countToBrandedWallpaper
     // Increment regardless, this is a counter, not an index, so smallest should be `1`
     Preferences.NewTabPage.backgroundRotationCounter.value += 1
 
-    guard let bgWithIndex = backgroundSet[safe: backgroundIndex] else { return nil }
-    return bgWithIndex
+    return background
   }
 
   func sponsorComponentUpdated() {
