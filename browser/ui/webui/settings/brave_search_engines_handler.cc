@@ -12,6 +12,9 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/components/l10n/common/country_code_util.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/search_engines/template_url_table_model.h"
 #include "components/prefs/pref_service.h"
@@ -23,6 +26,34 @@ namespace settings {
 namespace {
 constexpr char kBraveSearchForTorKeyword[] =
     ":search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion";
+
+// Put yahoo at first place.
+void SortDefaultSearchEnginesListInJP(base::Value::List& defaults) {
+  auto* local_state = g_browser_process->local_state();
+  if (!local_state || brave_l10n::GetCountryCode(local_state) != "JP") {
+    return;
+  }
+
+  const GURL yahoo_jp_url =
+      GURL(TemplateURLPrepopulateData::brave_yahoo_jp.search_url);
+  auto yahoo_jp = std::find_if(
+      defaults.begin(), defaults.end(), [&yahoo_jp_url](auto& val) {
+        const auto& dict = val.GetDict();
+        const std::string* url = dict.FindString("url");
+        if (!url) {
+          return false;
+        }
+
+        return GURL(*url).host_piece() == yahoo_jp_url.host_piece();
+      });
+
+  if (yahoo_jp == defaults.end()) {
+    return;
+  }
+
+  std::rotate(defaults.begin(), yahoo_jp, yahoo_jp + 1);
+}
+
 }  // namespace
 
 BraveSearchEnginesHandler::BraveSearchEnginesHandler(Profile* profile)
@@ -88,6 +119,8 @@ base::Value::List BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
     defaults.Append(std::move(dict));
   }
 
+  SortDefaultSearchEnginesListInJP(defaults);
+
   return defaults;
 }
 
@@ -123,6 +156,9 @@ base::Value::Dict BraveSearchEnginesHandler::GetSearchEnginesList() {
     DCHECK(keyword);
     return *keyword == kBraveSearchForTorKeyword;
   });
+
+  SortDefaultSearchEnginesListInJP(*defaults);
+
   return search_engines_info;
 }
 
