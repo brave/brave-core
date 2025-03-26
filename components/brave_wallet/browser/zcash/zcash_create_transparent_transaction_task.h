@@ -21,7 +21,10 @@ class ZCashCreateTransparentTransactionTask {
   using CreateTransactionCallback =
       ZCashWalletService::CreateTransactionCallback;
   ZCashCreateTransparentTransactionTask(
-      base::PassKey<ZCashWalletService> pass_key,
+      absl::variant<
+          base::PassKey<ZCashWalletService>,
+          base::PassKey<class ZCashCreateTransparentTransactionTaskTest>>
+          pass_key,
       ZCashWalletService& zcash_wallet_service,
       ZCashActionContext context,
       const std::string& address_to,
@@ -56,7 +59,7 @@ class ZCashCreateTransparentTransactionTask {
   bool started_ = false;
 
   std::optional<uint32_t> chain_height_;
-  ZCashWalletService::UtxoMap utxo_map_;
+  std::optional<ZCashWalletService::UtxoMap> utxo_map_;
 
   std::optional<std::string> error_;
   ZCashTransaction transaction_;

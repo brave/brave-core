@@ -17,7 +17,10 @@ namespace brave_wallet {
 
 // CreateTransparentTransactionTask
 ZCashCreateTransparentTransactionTask::ZCashCreateTransparentTransactionTask(
-    base::PassKey<ZCashWalletService> pass_key,
+    absl::variant<
+        base::PassKey<ZCashWalletService>,
+        base::PassKey<class ZCashCreateTransparentTransactionTaskTest>>
+        pass_key,
     ZCashWalletService& zcash_wallet_service,
     ZCashActionContext context,
     const std::string& address_to,
@@ -59,7 +62,7 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
   }
 
   if (!chain_height_) {
-    zcash_wallet_service_->zcash_rpc().GetLatestBlock(
+    context_.zcash_rpc->GetLatestBlock(
         context_.chain_id,
         base::BindOnce(&ZCashCreateTransparentTransactionTask::OnGetChainHeight,
                        weak_ptr_factory_.GetWeakPtr()));
@@ -75,7 +78,7 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
     return;
   }
 
-  if (utxo_map_.empty()) {
+  if (!utxo_map_) {
     zcash_wallet_service_->GetUtxos(
         context_.chain_id, context_.account_id.Clone(),
         base::BindOnce(&ZCashCreateTransparentTransactionTask::OnGetUtxos,
@@ -87,16 +90,21 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L739-L747
   transaction_.set_locktime(chain_height_.value());
 
-  auto pick_inputs_result = PickZCashTransparentInputs(utxo_map_, amount_, 0);
+  auto pick_inputs_result = PickZCashTransparentInputs(*utxo_map_, amount_, 0);
   if (!pick_inputs_result) {
     // TODO(cypt4) : switch to IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE when ready
     SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     WorkOnTask();
     return;
   }
+
   transaction_.set_fee(pick_inputs_result->fee);
   base::Extend(transaction_.transparent_part().inputs,
                pick_inputs_result->inputs);
+  base::CheckedNumeric<uint32_t> value =
+      base::CheckSub(transaction_.TotalInputsAmount(),
+                     transaction_.fee() + pick_inputs_result->change);
+  transaction_.set_amount(value.ValueOrDie());
 
   if (!PrepareOutputs()) {
     SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
