@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
+#include "brave/components/brave_ads/core/internal/common/algorithm/split_vector_util.h"
 
 #include <string>
 
@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsContainerUtilTest, SplitVectorIntoSingleChunk) {
+TEST(BraveAdsSplitVectorUtilTest, SplitVectorIntoSingleChunk) {
   // Arrange
   const std::vector<std::string> element = {"item 1", "item 2", "item 3",
                                             "item 4", "item 5", "item 6"};
@@ -27,7 +27,7 @@ TEST(BraveAdsContainerUtilTest, SplitVectorIntoSingleChunk) {
   EXPECT_THAT(elements, ::testing::SizeIs(1));
 }
 
-TEST(BraveAdsContainerUtilTest,
+TEST(BraveAdsSplitVectorUtilTest,
      SplitVectorIntoSingleChunkWhenChunkSizeIsLargerThanVectorSize) {
   // Arrange
   const std::vector<std::string> element = {"item 1", "item 2", "item 3",
@@ -42,7 +42,7 @@ TEST(BraveAdsContainerUtilTest,
   EXPECT_EQ(expected_elements, elements);
 }
 
-TEST(BraveAdsContainerUtilTest, SplitVectorIntoMultipleEvenChunks) {
+TEST(BraveAdsSplitVectorUtilTest, SplitVectorIntoMultipleEvenChunks) {
   // Arrange
   const std::vector<std::string> element = {
       "item 1", "item 2", "item 3", "item 4", "item 5", "item 6",
@@ -58,7 +58,7 @@ TEST(BraveAdsContainerUtilTest, SplitVectorIntoMultipleEvenChunks) {
   EXPECT_EQ(expected_elements, elements);
 }
 
-TEST(BraveAdsContainerUtilTest, SplitVectorIntoMultipleUnevenChunks) {
+TEST(BraveAdsSplitVectorUtilTest, SplitVectorIntoMultipleUnevenChunks) {
   // Arrange
   const std::vector<std::string> element = {"item 1", "item 2", "item 3",
                                             "item 4", "item 5"};
@@ -73,7 +73,7 @@ TEST(BraveAdsContainerUtilTest, SplitVectorIntoMultipleUnevenChunks) {
   EXPECT_EQ(expected_elements, elements);
 }
 
-TEST(BraveAdsContainerUtilTest, SplitEmptyVector) {
+TEST(BraveAdsSplitVectorUtilTest, SplitEmptyVector) {
   // Arrange
   const std::vector<std::string> element;
 

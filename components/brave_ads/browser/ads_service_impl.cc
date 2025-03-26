@@ -1040,13 +1040,13 @@ void AdsServiceImpl::PrefetchNewTabPageAdCallback(
 }
 
 void AdsServiceImpl::MaybeOpenNewTabWithAd() {
-  if (retry_opening_new_tab_for_ad_with_placement_id_.empty()) {
+  if (!retry_opening_new_tab_for_ad_with_placement_id_) {
     return;
   }
 
-  OpenNewTabWithAd(retry_opening_new_tab_for_ad_with_placement_id_);
+  OpenNewTabWithAd(*retry_opening_new_tab_for_ad_with_placement_id_);
 
-  retry_opening_new_tab_for_ad_with_placement_id_ = "";
+  retry_opening_new_tab_for_ad_with_placement_id_.reset();
 }
 
 void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {

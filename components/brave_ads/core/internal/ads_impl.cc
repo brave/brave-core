@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
 
-#include <memory>
 #include <optional>
 #include <utility>
 
@@ -44,7 +43,7 @@ AdsImpl::AdsImpl(AdsClient& ads_client,
 AdsImpl::~AdsImpl() = default;
 
 void AdsImpl::AddObserver(std::unique_ptr<AdsObserverInterface> observer) {
-  // `AdsNotifierManager` takes ownership of `ads_observer`.
+  // `AdsNotifierManager` takes ownership of `observer`.
   AdsNotifierManager::GetInstance().AddObserver(std::move(observer));
 }
 

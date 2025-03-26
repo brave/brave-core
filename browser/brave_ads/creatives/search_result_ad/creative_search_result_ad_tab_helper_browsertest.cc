@@ -142,7 +142,7 @@ class BraveAdsCreativeSearchResultAdTabHelperTest
   base::test::ScopedFeatureList scoped_feature_list_;
   net::EmbeddedTestServer https_server_{
       net::test_server::EmbeddedTestServer::TYPE_HTTPS};
-  AdsServiceMock ads_service_mock_{nullptr};
+  AdsServiceMock ads_service_mock_{/*delegate=*/nullptr};
 };
 
 IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,

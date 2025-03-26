@@ -459,7 +459,7 @@ class AdsServiceImpl final : public AdsService,
   std::optional<NewTabPageAdInfo> prefetched_new_tab_page_ad_;
   bool is_prefetching_new_tab_page_ad_ = false;
 
-  std::string retry_opening_new_tab_for_ad_with_placement_id_;
+  std::optional<std::string> retry_opening_new_tab_for_ad_with_placement_id_;
 
   base::CancelableTaskTracker history_service_task_tracker_;
 
