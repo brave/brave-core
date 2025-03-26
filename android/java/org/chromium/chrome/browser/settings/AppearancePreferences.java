@@ -211,33 +211,31 @@ public class AppearancePreferences extends BravePreferenceFragment
 
         Preference enableBottomToolbar =
                 findPreference(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
-        if (enableBottomToolbar != null) {
-            if (enableBottomToolbar instanceof ChromeSwitchPreference) {
-                if (BottomToolbarConfiguration.isToolbarTopAnchored()) {
-                    boolean isTablet =
-                            DeviceFormFactor.isNonMultiDisplayContextOnTablet(
-                                    ContextUtils.getApplicationContext());
-                    ((ChromeSwitchPreference) enableBottomToolbar)
-                            .setChecked(
-                                    !isTablet
-                                            && BottomToolbarConfiguration
-                                                    .isBraveBottomControlsEnabled());
-                }
-                if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
-                    updatePreferenceSummary(
-                            BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
-                            R.string.brave_bottom_navigation_toolbar_disabled_summary);
-                } else {
-                    updatePreferenceSummary(
-                            BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
-                            ((ChromeSwitchPreference) enableBottomToolbar).isChecked()
-                                    ? R.string.text_on
-                                    : R.string.text_off);
-                }
+        if (enableBottomToolbar instanceof ChromeSwitchPreference) {
+            if (BottomToolbarConfiguration.isToolbarTopAnchored()) {
+                boolean isTablet =
+                        DeviceFormFactor.isNonMultiDisplayContextOnTablet(
+                                ContextUtils.getApplicationContext());
                 ((ChromeSwitchPreference) enableBottomToolbar)
-                        .setEnabled(BottomToolbarConfiguration.isToolbarTopAnchored());
+                        .setChecked(
+                                !isTablet
+                                        && BottomToolbarConfiguration
+                                                .isBraveBottomControlsEnabled());
             }
-        }
+            if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
+                updatePreferenceSummary(
+                        BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
+                        R.string.brave_bottom_navigation_toolbar_disabled_summary);
+            } else {
+                updatePreferenceSummary(
+                        BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
+                        ((ChromeSwitchPreference) enableBottomToolbar).isChecked()
+                                ? R.string.text_on
+                                : R.string.text_off);
+            }
+            ((ChromeSwitchPreference) enableBottomToolbar)
+                    .setEnabled(BottomToolbarConfiguration.isToolbarTopAnchored());
+            }
     }
 
     @Override
