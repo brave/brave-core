@@ -13,9 +13,12 @@
 #define BrowserWindowFeatures BrowserWindowFeatures_ChromiumImpl
 #define Init virtual Init
 #define InitPostBrowserViewConstruction virtual InitPostBrowserViewConstruction
+#define TearDownPreBrowserViewDestruction \
+  virtual TearDownPreBrowserViewDestruction
 
 #include "src/chrome/browser/ui/browser_window/public/browser_window_features.h"  // IWYU pragma: export
 
+#undef TearDownPreBrowserViewDestruction
 #undef InitPostBrowserViewConstruction
 #undef Init
 #undef BrowserWindowFeatures

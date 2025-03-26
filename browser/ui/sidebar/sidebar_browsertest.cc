@@ -27,6 +27,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_resize_widget.h"
+#include "brave/browser/ui/views/side_panel/mobile_view/mobile_view_side_panel_manager.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
@@ -1342,5 +1343,78 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   private_prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
   EXPECT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
 }
+
+// Test browser launching and proper object instantiation for
+// mobile view feature enable state.
+class SidebarBrowserTestWithMobileViewFeature
+    : public testing::WithParamInterface<bool>,
+      public SidebarBrowserTest {
+ public:
+  SidebarBrowserTestWithMobileViewFeature() {
+    if (GetParam()) {
+      feature_list_.InitAndEnableFeature(features::kSidebarMobileView);
+
+    } else {
+      feature_list_.InitAndDisableFeature(features::kSidebarMobileView);
+    }
+  }
+  ~SidebarBrowserTestWithMobileViewFeature() override = default;
+
+  bool FeatureEnabled() const { return GetParam(); }
+
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithMobileViewFeature,
+                       SimpleItemAddRemoveTest) {
+  // manager is only initialized when its feature is enabled.
+  auto* manager = browser()->GetFeatures().mobile_view_side_panel_manager();
+  EXPECT_EQ(FeatureEnabled(), !!manager);
+
+  SidebarItem item = SidebarItem::Create(
+      GURL("https://www.brave.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
+      /*open_in_panel*/ false);
+  item.mobile_view = true;
+
+  EXPECT_EQ(FeatureEnabled(), item.IsMobileViewItem());
+
+  auto expected_item_size = model()->GetAllSidebarItems().size();
+  size_t expected_coordinators_size = 0;
+  if (FeatureEnabled()) {
+    expected_coordinators_size = manager->coordinators_.size();
+  }
+
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+  sidebar_service->AddItem(item);
+  auto index = model()->GetIndexOf(item);
+
+  // Above item will be added also even flag is disabled.
+  // In that case, it works like typical web type(open in a tab).
+  expected_item_size++;
+  expected_coordinators_size++;
+  EXPECT_EQ(expected_item_size, model()->GetAllSidebarItems().size());
+
+  if (FeatureEnabled()) {
+    EXPECT_EQ(expected_coordinators_size, manager->coordinators_.size());
+    EXPECT_EQ(1u, manager->coordinators_.count(MobileViewId(item.url.spec())));
+    EXPECT_TRUE(manager->coordinators_.contains(MobileViewId(item.url.spec())));
+  }
+
+  sidebar_service->RemoveItemAt(*index);
+  expected_item_size--;
+  expected_coordinators_size--;
+  EXPECT_EQ(expected_item_size, model()->GetAllSidebarItems().size());
+  if (FeatureEnabled()) {
+    EXPECT_EQ(expected_coordinators_size, manager->coordinators_.size());
+    EXPECT_EQ(0u, manager->coordinators_.count(MobileViewId(item.url.spec())));
+  }
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    SidebarBrowserTestWithMobileViewFeature,
+    ::testing::Bool());
 
 }  // namespace sidebar

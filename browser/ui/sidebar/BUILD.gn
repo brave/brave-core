@@ -8,6 +8,20 @@ import("//extensions/buildflags/buildflags.gni")
 
 assert(toolkit_views)
 
+source_set("sidebar") {
+  sources = [
+    "sidebar_controller.h",
+    "sidebar_model.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/sidebar/browser",
+    "//components/history/core/browser",
+    "//ui/base",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -18,9 +32,11 @@ source_set("browser_tests") {
   ]
 
   deps = [
+    ":sidebar",
     "//base",
     "//brave/app:command_ids",
     "//brave/browser/ui/tabs:split_view",
+    "//brave/browser/ui/views/side_panel",
     "//brave/components/ai_chat/core/common",
     "//brave/components/playlist/common",
     "//brave/components/sidebar/browser",
@@ -46,6 +62,7 @@ source_set("unit_tests") {
   sources = [ "sidebar_unittest.cc" ]
 
   deps = [
+    ":sidebar",
     "//base",
     "//brave/common",
     "//brave/components/playlist/common",

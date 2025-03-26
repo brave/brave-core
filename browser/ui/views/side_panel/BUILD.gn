@@ -1,0 +1,23 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("side_panel") {
+  sources = [
+    "mobile_view/mobile_view_side_panel_coordinator.cc",
+    "mobile_view/mobile_view_side_panel_coordinator.h",
+    "mobile_view/mobile_view_side_panel_manager.cc",
+    "mobile_view/mobile_view_side_panel_manager.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ui/sidebar",
+    "//brave/components/sidebar/browser",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/views/side_panel",
+    "//ui/views",
+    "//url",
+  ]
+}

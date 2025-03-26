@@ -145,6 +145,10 @@ void SidebarModel::OnItemUpdated(const SidebarItem& item,
 void SidebarModel::OnWillRemoveItem(const SidebarItem& item, size_t index) {
   if (index == active_index_)
     UpdateActiveIndexAndNotify(std::nullopt);
+
+  for (Observer& obs : observers_) {
+    obs.OnWillRemoveItem(item);
+  }
 }
 
 void SidebarModel::OnItemRemoved(const SidebarItem& item, size_t index) {

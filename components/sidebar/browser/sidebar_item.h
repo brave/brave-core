@@ -54,6 +54,7 @@ struct SidebarItem {
   }
   bool is_web_type() const { return type == SidebarItem::Type::kTypeWeb; }
   bool IsValidItem() const;
+  bool IsMobileViewItem() const;
 
   bool operator==(const SidebarItem& item) const;
 
@@ -61,8 +62,14 @@ struct SidebarItem {
   Type type = Type::kTypeBuiltIn;
   BuiltInItemType built_in_item_type = BuiltInItemType::kNone;
   std::u16string title;
+
   // Set false to open this item in new tab.
   bool open_in_panel = false;
+
+  // TODO(simonhong): Remove this and migrate to |open_in_panel|.
+  // As mobile view feature can be toggled, |open_in_panel| flag
+  // should be preserved till this feature flag is removed.
+  bool mobile_view = false;
 };
 
 }  // namespace sidebar
