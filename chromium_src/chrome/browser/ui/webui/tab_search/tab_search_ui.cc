@@ -26,6 +26,10 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
           profile->GetPrefs()->GetBoolean(
               ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 
+  update_data.Set("shouldShowTabOrganizationFRE",
+                  !profile->GetPrefs()->HasPrefPath(
+                      ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
+
   update_data.Set("autoTabGroupsSelectorHeading",
                   l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_TITLE));
 

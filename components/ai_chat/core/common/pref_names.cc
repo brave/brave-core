@@ -31,7 +31,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 #endif
     registry->RegisterBooleanPref(kBraveAIChatContextMenuEnabled, true);
     registry->RegisterBooleanPref(kBraveAIChatShowToolbarButton, true);
-    registry->RegisterBooleanPref(kBraveAIChatTabOrganizationEnabled, false);
+    registry->RegisterBooleanPref(kBraveAIChatTabOrganizationEnabled, true);
   }
   registry->RegisterBooleanPref(kEnabledByPolicy, true);
 }
