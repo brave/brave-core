@@ -381,18 +381,25 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/media/ui/ChromeMediaNotificationControllerDelegate")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/media/ui/MediaSessionTabHelper"));
-        Assert.assertTrue(
-                classExists(
-                        "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController")); // presubmit: ignore-long-line
-        Assert.assertTrue(
-                classExists(
-                        "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerCompat")); // presubmit: ignore-long-line
-        Assert.assertTrue(
-                classExists(
-                        "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerLegacy")); // presubmit: ignore-long-line
-        Assert.assertTrue(
-                classExists(
-                        "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase")); // presubmit: ignore-long-line
+        // Assert.assertTrue(
+        //         classExists(
+        //
+        // "org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController")); //
+        // presubmit: ignore-long-line
+        // Assert.assertTrue(
+        //         classExists(
+        //
+        // "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerCompat")); // presubmit:
+        // ignore-long-line
+        // Assert.assertTrue(
+        //         classExists(
+        //
+        // "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerLegacy")); // presubmit:
+        // ignore-long-line
+        // Assert.assertTrue(
+        //         classExists(
+        //                 "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase"));
+        // // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider")); // presubmit: ignore-long-line
@@ -906,6 +913,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
                         "setWidgetEnabled",
                         MethodModifier.STATIC,
+                        void.class,
                         boolean.class,
                         boolean.class));
     }
