@@ -49,6 +49,7 @@
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+#include "brave/components/psst/common/psst_prefs.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -390,6 +391,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Brave Wallet
   brave_wallet::RegisterProfilePrefs(registry);
+
+  // PSST
+  psst::RegisterProfilePrefs(registry);
 
   // Brave Search
   if (brave_search::IsDefaultAPIEnabled()) {
