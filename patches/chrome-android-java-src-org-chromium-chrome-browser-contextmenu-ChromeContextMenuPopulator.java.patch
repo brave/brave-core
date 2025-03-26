@@ -1,25 +1,25 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index 69c111f75aedda719342e362fb076a2adf2c7223..75359c0525a10bc627318d21204edcd6668e971b 100644
+index 61532913e06aa20ad5572ff276ce6fe9c059027e..c94a5fb756f4442a4d42a822aa429055e3390674 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -175,6 +175,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             Action.LEARN_MORE,
+@@ -176,6 +176,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              Action.OPEN_IN_NEW_TAB_IN_GROUP,
              Action.SAVE_PAGE,
+             Action.SHARE_PAGE,
 +            Action.COPY_CLEAN_LINK,
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -220,7 +221,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             int OPEN_IN_NEW_TAB_IN_GROUP = 39;
+@@ -222,7 +223,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              int OPEN_IN_NEW_WINDOW = 40;
              int SAVE_PAGE = 41;
--            int NUM_ENTRIES = 42;
-+            int COPY_CLEAN_LINK = 42;int NUM_ENTRIES = 43;
+             int SHARE_PAGE = 42;
+-            int NUM_ENTRIES = 43;
++            int COPY_CLEAN_LINK = 43;int NUM_ENTRIES = 44;
          }
      }
  
-@@ -334,6 +335,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -339,6 +340,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));

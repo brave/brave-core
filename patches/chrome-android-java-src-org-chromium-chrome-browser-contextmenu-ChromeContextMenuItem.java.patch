@@ -1,36 +1,36 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 1d672fdae9d5f6705fde51b32f4ddf01409e4321..a53fe53c50fd9ef7a70964c92f314a874b9837c5 100644
+index 1dbadae60a8213f1ad81020049f920c6d17f02df..389c91fd4fcc405322d44c05399f0cf1ff976fd4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-@@ -65,6 +65,7 @@ class ChromeContextMenuItem {
-         Item.REMOVE_HIGHLIGHT,
+@@ -66,6 +66,7 @@ class ChromeContextMenuItem {
          Item.LEARN_MORE,
          Item.SAVE_PAGE,
+         Item.SHARE_PAGE,
 +        Item.COPY_CLEAN_LINK,
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
-@@ -115,7 +116,7 @@ class ChromeContextMenuItem {
-         // Page Group
+@@ -117,7 +118,7 @@ class ChromeContextMenuItem {
          int SAVE_PAGE = 35;
+         int SHARE_PAGE = 36;
          // ALWAYS UPDATE!
--        int NUM_ENTRIES = 36;
-+        int COPY_CLEAN_LINK = 36;int NUM_ENTRIES = 37;
+-        int NUM_ENTRIES = 37;
++        int COPY_CLEAN_LINK = 37;int NUM_ENTRIES = 38;
      }
  
      /** Mapping from {@link Item} to the ID found in the ids.xml. */
-@@ -156,6 +157,7 @@ class ChromeContextMenuItem {
-         R.id.contextmenu_remove_highlight, // Item.REMOVE_HIGHLIGHT
+@@ -159,6 +160,7 @@ class ChromeContextMenuItem {
          R.id.contextmenu_learn_more, // Item.LEARN_MORE
          R.id.contextmenu_save_page, // Item.SAVE_PAGE
+         R.id.contextmenu_share_page, // Item.SHARE_PAGE
 +        R.id.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
-@@ -196,6 +198,7 @@ class ChromeContextMenuItem {
-         R.string.contextmenu_remove_highlight, // Item.REMOVE_HIGHLIGHT
+@@ -200,6 +202,7 @@ class ChromeContextMenuItem {
          R.string.contextmenu_learn_more, // Item.LEARN_MORE
          R.string.contextmenu_save_page, // Item.SAVE_PAGE
+         R.string.contextmenu_share_page, // Item.SHARE_PAGE
 +        R.string.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  
