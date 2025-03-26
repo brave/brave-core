@@ -1,0 +1,38 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+static_library("browser") {
+  sources = [
+    "brave_user_agent_component_installer.cc",
+    "brave_user_agent_component_installer.h",
+    "brave_user_agent_exceptions.cc",
+    "brave_user_agent_exceptions.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_user_agent/common",
+    "//components/component_updater:component_updater",
+    "//crypto",
+    "//net",
+    "//url",
+  ]
+}
+
+if (!is_ios) {
+  source_set("unit_tests") {
+    testonly = true
+    sources = [ "brave_user_agent_exceptions_unittest.cc" ]
+
+    deps = [
+      "//brave/components/brave_user_agent/browser:browser",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
+}

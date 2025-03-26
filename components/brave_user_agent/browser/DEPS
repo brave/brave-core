@@ -1,0 +1,9 @@
+include_rules = [
+  "+crypto",
+]
+
+specific_include_rules = {
+  ".*test\.cc": [
+    "+content/public/test",
+  ],
+}

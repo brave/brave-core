@@ -738,12 +738,24 @@ public class Tab: NSObject {
     //      && (webView.bounds.size.width < screenWidth / 2.0)
     //    {
     //      let desktopMode = userAgentOverrides[baseDomain] == true
-    //      webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
+    //      if isBraveAllowedInUA(for: newURL) {
+    //        webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
+    //      } else {
+    //        webView.customUserAgent = desktopMode ? UserAgent.desktopMasked : UserAgent.mobileMasked
+    //      }
     //      return
     //    }
 
     let desktopMode = userAgentOverrides[baseDomain] ?? UserAgent.shouldUseDesktopMode()
-    webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
+    if isBraveAllowedInUA(for: newURL) {
+      webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
+    } else {
+      webView.customUserAgent = desktopMode ? UserAgent.desktopMasked : UserAgent.mobileMasked
+    }
+  }
+
+  private func isBraveAllowedInUA(for url: URL) -> Bool {
+    data.braveUserAgentExceptions?.canShowBrave(url) ?? true
   }
 
   /// Switches user agent Desktop -> Mobile or Mobile -> Desktop.

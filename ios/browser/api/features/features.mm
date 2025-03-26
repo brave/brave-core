@@ -15,6 +15,7 @@
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/features.h"
+#include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
@@ -337,6 +338,11 @@
 + (Feature*)kBraveAppleTranslateEnabled {
   return [[Feature alloc]
       initWithFeature:&brave::features::kBraveAppleTranslateEnabled];
+}
+
++ (Feature*)kUseBraveUserAgent {
+  return [[Feature alloc]
+      initWithFeature:&brave_user_agent::features::kUseBraveUserAgent];
 }
 
 @end

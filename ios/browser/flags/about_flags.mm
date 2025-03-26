@@ -11,6 +11,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
@@ -190,6 +191,13 @@
           "Enables page translation using Apple APIs",                         \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave::features::kBraveAppleTranslateEnabled),    \
+      },                                                                       \
+      {                                                                        \
+          "use-brave-user-agent",                                              \
+          "Use Brave user agent",                                              \
+          "Includes Brave version information in the user agent",              \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave_user_agent::features::kUseBraveUserAgent),  \
       },                                                                       \
       {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \

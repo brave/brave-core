@@ -23,6 +23,7 @@
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
@@ -34,6 +35,7 @@
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
+#include "brave/ios/browser/api/brave_user_agent/brave_user_agent_exceptions_ios+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/content_settings/default_host_content_settings.h"
 #include "brave/ios/browser/api/content_settings/default_host_content_settings_internal.h"
@@ -50,6 +52,7 @@
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
+#include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
@@ -170,17 +173,17 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) DefaultHostContentSettings* defaultHostContentSettings;
 @property(nonatomic) CWVWebViewConfiguration* defaultWebViewConfiguration;
 @property(nonatomic) CWVWebViewConfiguration* nonPersistentWebViewConfiguration;
+@property(nonatomic) BraveUserAgentExceptionsIOS* braveUserAgentExceptions;
 @end
 
 @implementation BraveCoreMain
 
-- (instancetype)initWithUserAgent:(NSString*)userAgent {
-  return [self initWithUserAgent:userAgent additionalSwitches:@[]];
+- (instancetype)init {
+  return [self initWithAdditionalSwitches:@[]];
 }
 
-- (instancetype)initWithUserAgent:(NSString*)userAgent
-               additionalSwitches:
-                   (NSArray<BraveCoreSwitch*>*)additionalSwitches {
+- (instancetype)initWithAdditionalSwitches:
+    (NSArray<BraveCoreSwitch*>*)additionalSwitches {
   if ((self = [super init])) {
     [[NSNotificationCenter defaultCenter]
         addObserver:self
@@ -221,9 +224,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     // Setup WebClient ([ClientRegistration registerClients])
     _webClient.reset(new BraveWebClient());
-    if (userAgent != nil) {
-      _webClient->SetLegacyUserAgent(base::SysNSStringToUTF8(userAgent));
-    }
     web::SetWebClient(_webClient.get());
 
     _delegate.reset(new BraveMainDelegate());
@@ -385,6 +385,10 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)setUserAgent:(NSString*)userAgent {
+  _webClient->SetLegacyUserAgent(base::SysNSStringToUTF8(userAgent));
+}
+
 - (void)scheduleLowPriorityStartupTasks {
   // Install overrides
   ios::provider::InstallOverrides();
@@ -529,6 +533,19 @@ static bool CustomLogHandler(int severity,
         [[HTTPSUpgradeExceptionsService alloc] init];
   }
   return _httpsUpgradeExceptionsService;
+}
+
+- (BraveUserAgentExceptionsIOS*)braveUserAgentExceptions {
+  if (!_braveUserAgentExceptions) {
+    brave_user_agent::BraveUserAgentExceptions* brave_user_agent_exceptions =
+        brave_user_agent::BraveUserAgentExceptions::GetInstance();
+    if (!brave_user_agent_exceptions) {
+      return nil;
+    }
+    _braveUserAgentExceptions = [[BraveUserAgentExceptionsIOS alloc]
+        initWithBraveUserAgentExceptions:brave_user_agent_exceptions];
+  }
+  return _braveUserAgentExceptions;
 }
 
 - (BraveStats*)braveStats {
