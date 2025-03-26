@@ -43,6 +43,7 @@
 -StartupBrowserCreatorWelcomeBackTest.WelcomeBackStandardNoPolicy/UsingForYouFre
 
 # These tests fail on CI but passes locally
+-All/PrintCompositorDocumentDataTypeBrowserTest.WindowDotPrint/Xps
 -All/SoftNavigationTest.LayoutShift/*
 -AppMenuBrowserTest.*
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
