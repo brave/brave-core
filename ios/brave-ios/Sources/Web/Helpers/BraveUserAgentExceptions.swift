@@ -8,21 +8,21 @@ import Foundation
 import Storage
 
 extension TabDataValues {
-  private struct BraveUserAgentServiceKey: TabDataKey {
-    static var defaultValue: BraveUserAgentService? = nil
+  private struct BraveUserAgentExceptionsKey: TabDataKey {
+    static var defaultValue: BraveUserAgentExceptionsIOS? = nil
   }
 
-  /// A reference to a Brave user agent service that can be used to check if we should show Brave in
-  /// the user agent for a given website.
+  /// A reference to a Brave user agent exceptions list that can be used to check
+  /// if we should show Brave in the user agent for a given website.
   ///
   /// WebKit only
-  public var braveUserAgentService: BraveUserAgentService? {
-    get { self[BraveUserAgentServiceKey.self] }
+  public var braveUserAgentExceptions: BraveUserAgentExceptionsIOS? {
+    get { self[BraveUserAgentExceptionsKey.self] }
     set {
       if !FeatureList.kUseBraveUserAgent.enabled {
         return
       }
-      self[BraveUserAgentServiceKey.self] = newValue
+      self[BraveUserAgentExceptionsKey.self] = newValue
     }
   }
 }

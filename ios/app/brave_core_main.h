@@ -29,7 +29,7 @@
 @class HTTPSUpgradeExceptionsService;
 @class DefaultHostContentSettings;
 @class CWVWebViewConfiguration;
-@class BraveUserAgentService;
+@class BraveUserAgentExceptionsIOS;
 @protocol AIChatDelegate;
 @protocol IpfsAPI;
 
@@ -73,7 +73,7 @@ OBJC_EXPORT
     HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
 
 @property(nonatomic, readonly, nullable)
-    BraveUserAgentService* braveUserAgentService;
+    BraveUserAgentExceptionsIOS* braveUserAgentExceptions;
 
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///

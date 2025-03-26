@@ -9,8 +9,8 @@ static_library("browser") {
   sources = [
     "brave_user_agent_component_installer.cc",
     "brave_user_agent_component_installer.h",
-    "brave_user_agent_service.cc",
-    "brave_user_agent_service.h",
+    "brave_user_agent_exceptions.cc",
+    "brave_user_agent_exceptions.h",
   ]
 
   deps = [
@@ -27,7 +27,7 @@ static_library("browser") {
 if (!is_ios) {
   source_set("unit_tests") {
     testonly = true
-    sources = [ "brave_user_agent_service_unittest.cc" ]
+    sources = [ "brave_user_agent_exceptions_unittest.cc" ]
 
     deps = [
       "//brave/components/brave_user_agent/browser:browser",

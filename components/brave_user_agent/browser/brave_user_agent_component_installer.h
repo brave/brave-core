@@ -14,11 +14,11 @@ class ComponentUpdateService;
 
 namespace brave_user_agent {
 
-inline constexpr char kBraveUserAgentServiceComponentName[] =
-    "Brave User Agent Service";
-inline constexpr char kBraveUserAgentServiceComponentId[] =
+inline constexpr char kBraveUserAgentExceptionsComponentName[] =
+    "Brave User Agent Exceptions";
+inline constexpr char kBraveUserAgentExceptionsComponentId[] =
     "nlpaeekllejnmhoonlpcefpfnpbajbpe";
-inline constexpr char kBraveUserAgentServiceComponentBase64PublicKey[] =
+inline constexpr char kBraveUserAgentExceptionsComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnZM5zlosFqJ+SJ85K1+"
     "5yZzuvTkxKDRQ3o+MBRCmRpIrT4DhYuhY89X+"
     "0DsgsbVjMOr8V3GeAzZZJ11JvQWjk7IlMAaRjx4HrWDDx7AlOObXNlpco6E2vuqVIMDsw1Tbha"

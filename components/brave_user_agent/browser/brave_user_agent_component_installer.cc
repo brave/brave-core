@@ -13,7 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/brave_user_agent/browser/brave_user_agent_service.h"
+#include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
@@ -61,11 +61,11 @@ class BraveUserAgentComponentInstallerPolicy
 };
 
 BraveUserAgentComponentInstallerPolicy::BraveUserAgentComponentInstallerPolicy()
-    : component_id_(kBraveUserAgentServiceComponentId),
-      component_name_(kBraveUserAgentServiceComponentName) {
+    : component_id_(kBraveUserAgentExceptionsComponentId),
+      component_name_(kBraveUserAgentExceptionsComponentName) {
   // Generate hash from public key.
   std::string decoded_public_key;
-  base::Base64Decode(kBraveUserAgentServiceComponentBase64PublicKey,
+  base::Base64Decode(kBraveUserAgentExceptionsComponentBase64PublicKey,
                      &decoded_public_key);
   crypto::SHA256HashString(decoded_public_key, component_hash_.data(),
                            component_hash_.size());
@@ -96,7 +96,7 @@ void BraveUserAgentComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     base::Value::Dict manifest) {
-  BraveUserAgentService::GetInstance()->OnComponentReady(path);
+  BraveUserAgentExceptions::GetInstance()->OnComponentReady(path);
 }
 
 bool BraveUserAgentComponentInstallerPolicy::VerifyInstallation(
@@ -145,7 +145,7 @@ void RegisterBraveUserAgentComponent(
       // After Register, run the callback with component id.
       cus, base::BindOnce([]() {
         brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->EnsureInstalled(kBraveUserAgentServiceComponentId);
+            ->EnsureInstalled(kBraveUserAgentExceptionsComponentId);
       }));
 }
 

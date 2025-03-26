@@ -23,7 +23,7 @@
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/components/brave_user_agent/browser/brave_user_agent_service.h"
+#include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
@@ -35,7 +35,7 @@
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
-#include "brave/ios/browser/api/brave_user_agent/brave_user_agent_service+private.h"
+#include "brave/ios/browser/api/brave_user_agent/brave_user_agent_exceptions_ios+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/content_settings/default_host_content_settings.h"
 #include "brave/ios/browser/api/content_settings/default_host_content_settings_internal.h"
@@ -173,7 +173,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) DefaultHostContentSettings* defaultHostContentSettings;
 @property(nonatomic) CWVWebViewConfiguration* defaultWebViewConfiguration;
 @property(nonatomic) CWVWebViewConfiguration* nonPersistentWebViewConfiguration;
-@property(nonatomic) BraveUserAgentService* braveUserAgentService;
+@property(nonatomic) BraveUserAgentExceptionsIOS* braveUserAgentExceptions;
 @end
 
 @implementation BraveCoreMain
@@ -535,17 +535,17 @@ static bool CustomLogHandler(int severity,
   return _httpsUpgradeExceptionsService;
 }
 
-- (BraveUserAgentService*)braveUserAgentService {
-  if (!_braveUserAgentService) {
-    brave_user_agent::BraveUserAgentService* service =
-        brave_user_agent::BraveUserAgentService::GetInstance();
-    if (!service) {
+- (BraveUserAgentExceptionsIOS*)braveUserAgentExceptions {
+  if (!_braveUserAgentExceptions) {
+    brave_user_agent::BraveUserAgentExceptions* brave_user_agent_exceptions =
+        brave_user_agent::BraveUserAgentExceptions::GetInstance();
+    if (!brave_user_agent_exceptions) {
       return nil;
     }
-    _braveUserAgentService =
-        [[BraveUserAgentService alloc] initWithBraveUserAgentService:service];
+    _braveUserAgentExceptions = [[BraveUserAgentExceptionsIOS alloc]
+        initWithBraveUserAgentExceptions:brave_user_agent_exceptions];
   }
-  return _braveUserAgentService;
+  return _braveUserAgentExceptions;
 }
 
 - (BraveStats*)braveStats {

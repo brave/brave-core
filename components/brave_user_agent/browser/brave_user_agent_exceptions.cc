@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_user_agent/browser/brave_user_agent_service.h"
+#include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 
 #include <memory>
 #include <set>
@@ -26,22 +26,22 @@ constexpr char kBraveUserAgentExceptionsFile[] = "brave-checks.txt";
 namespace brave_user_agent {
 
 // static
-BraveUserAgentService* BraveUserAgentService::GetInstance() {
+BraveUserAgentExceptions* BraveUserAgentExceptions::GetInstance() {
   // Check if feature flag is enabled.
   if (!base::FeatureList::IsEnabled(
           brave_user_agent::features::kUseBraveUserAgent)) {
     return nullptr;
   }
-  return base::Singleton<BraveUserAgentService>::get();
+  return base::Singleton<BraveUserAgentExceptions>::get();
 }
 
-BraveUserAgentService::BraveUserAgentService() = default;
+BraveUserAgentExceptions::BraveUserAgentExceptions() = default;
 
-BraveUserAgentService::~BraveUserAgentService() {
-  exceptional_domains_.clear();
+BraveUserAgentExceptions::~BraveUserAgentExceptions() {
+  excepted_domains_.clear();
 }
 
-void BraveUserAgentService::OnExceptionalDomainsLoaded(
+void BraveUserAgentExceptions::OnExceptedDomainsLoaded(
     const std::string& contents) {
   if (contents.empty()) {
     // We don't have the file yet.
@@ -49,12 +49,12 @@ void BraveUserAgentService::OnExceptionalDomainsLoaded(
   }
   std::vector<std::string> lines = base::SplitString(
       contents, "\n", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  exceptional_domains_.insert(lines.begin(), lines.end());
+  excepted_domains_.insert(lines.begin(), lines.end());
   is_ready_ = true;
   return;
 }
 
-void BraveUserAgentService::OnComponentReady(const base::FilePath& path) {
+void BraveUserAgentExceptions::OnComponentReady(const base::FilePath& path) {
   component_path_ = path;
 
   base::ThreadPool::PostTaskAndReplyWithResult(
@@ -62,11 +62,11 @@ void BraveUserAgentService::OnComponentReady(const base::FilePath& path) {
       base::BindOnce(
           &brave_component_updater::GetDATFileAsString,
           component_path_.AppendASCII(kBraveUserAgentExceptionsFile)),
-      base::BindOnce(&BraveUserAgentService::OnExceptionalDomainsLoaded,
+      base::BindOnce(&BraveUserAgentExceptions::OnExceptedDomainsLoaded,
                      weak_factory_.GetWeakPtr()));
 }
 
-bool BraveUserAgentService::CanShowBrave(const GURL& url) {
+bool BraveUserAgentExceptions::CanShowBrave(const GURL& url) {
   if (!is_ready_) {
     // We don't have the exceptions list loaded yet. To avoid breakage,
     // show Brave for any website.
@@ -77,7 +77,7 @@ bool BraveUserAgentService::CanShowBrave(const GURL& url) {
       url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   // Show Brave only if the domain is not on the exceptions list.
-  return !base::Contains(exceptional_domains_, domain);
+  return !base::Contains(excepted_domains_, domain);
 }
 
 }  // namespace brave_user_agent

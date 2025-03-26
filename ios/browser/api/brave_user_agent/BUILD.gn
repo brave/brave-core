@@ -5,9 +5,9 @@
 
 source_set("brave_user_agent") {
   sources = [
-    "brave_user_agent_service+private.h",
-    "brave_user_agent_service.h",
-    "brave_user_agent_service.mm",
+    "brave_user_agent_exceptions_ios+private.h",
+    "brave_user_agent_exceptions_ios.h",
+    "brave_user_agent_exceptions_ios.mm",
   ]
   deps = [
     "//base",

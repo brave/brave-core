@@ -755,7 +755,7 @@ public class Tab: NSObject {
   }
 
   private func isBraveAllowedInUA(for url: URL) -> Bool {
-    data.braveUserAgentService?.canShowBrave(url) ?? true
+    data.braveUserAgentExceptions?.canShowBrave(url) ?? true
   }
 
   /// Switches user agent Desktop -> Mobile or Mobile -> Desktop.
