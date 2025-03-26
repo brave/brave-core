@@ -19,8 +19,11 @@
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/bookmarks/browser/bookmark_uuids.h"
+#include "components/bookmarks/browser/titled_url_match.h"
+#include "components/bookmarks/browser/titled_url_node.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/query_parser/query_parser.h"
 #include "components/undo/bookmark_undo_service.h"
 #include "components/undo/undo_manager.h"
 #include "components/user_prefs/user_prefs.h"
@@ -628,34 +631,43 @@
                maxCount:(NSUInteger)maxCountArg
              completion:(void (^)(NSArray<IOSBookmarkNode*>*))callback {
   __weak BraveBookmarksAPI* weak_bookmarks_api = self;
-  auto search_with_query =
-      ^(NSString* query, NSUInteger maxCount,
-        void (^completion)(NSArray<IOSBookmarkNode*>*)) {
-        BraveBookmarksAPI* bookmarks_api = weak_bookmarks_api;
-        if (!bookmarks_api) {
-          completion(@[]);
-          return;
-        }
+  auto search_with_query = ^(NSString* query, NSUInteger maxCount,
+                             void (^completion)(NSArray<IOSBookmarkNode*>*)) {
+    BraveBookmarksAPI* bookmarks_api = weak_bookmarks_api;
+    if (!bookmarks_api) {
+      completion(@[]);
+      return;
+    }
 
-        DCHECK_CURRENTLY_ON(web::WebThread::UI);
-        DCHECK(bookmarks_api->bookmark_model_->loaded());
+    DCHECK_CURRENTLY_ON(web::WebThread::UI);
+    DCHECK(bookmarks_api->bookmark_model_->loaded());
 
-        bookmarks::QueryFields queryFields;
-        queryFields.word_phrase_query.reset(
-            new std::u16string(base::SysNSStringToUTF16(query)));
-        std::vector<const bookmarks::BookmarkNode*> results =
-            GetBookmarksMatchingProperties(bookmarks_api->bookmark_model_,
-                                           queryFields, maxCount);
+    // Using bookmarks::GetBookmarksMatchingProperties from bookmark_utils.h
+    // with bookmarks::QueryFields, is EXTREMELY SLOW!,
+    // when the query is the worst case scenario (no
+    // bookmarks match).
+    // So we use GetBookmarksMatching instead.
 
-        NSMutableArray<IOSBookmarkNode*>* nodes = [[NSMutableArray alloc] init];
-        for (const bookmarks::BookmarkNode* bookmark : results) {
-          IOSBookmarkNode* node = [[IOSBookmarkNode alloc]
-              initWithNode:bookmark
-                     model:bookmarks_api->bookmark_model_];
-          [nodes addObject:node];
-        }
-        completion(nodes);
-      };
+    std::vector<bookmarks::TitledUrlMatch> results =
+        bookmarks_api->bookmark_model_->GetBookmarksMatching(
+            base::SysNSStringToUTF16(query), maxCount,
+            [query length] >= 3
+                ? query_parser::MatchingAlgorithm::ALWAYS_PREFIX_SEARCH
+                : query_parser::MatchingAlgorithm::DEFAULT);
+
+    NSMutableArray<IOSBookmarkNode*>* nodes = [[NSMutableArray alloc] init];
+    for (const auto& result : results) {
+      for (const bookmarks::BookmarkNode* bookmark :
+           bookmarks_api->bookmark_model_->GetNodesByURL(
+               result.node->GetTitledUrlNodeUrl())) {
+        IOSBookmarkNode* node = [[IOSBookmarkNode alloc]
+            initWithNode:bookmark
+                   model:bookmarks_api->bookmark_model_];
+        [nodes addObject:node];
+      }
+    }
+    completion(nodes);
+  };
 
   web::GetUIThreadTaskRunner({})->PostTask(
       FROM_HERE,

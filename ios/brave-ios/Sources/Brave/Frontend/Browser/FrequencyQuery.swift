@@ -78,7 +78,7 @@ class FrequencyQuery {
     task?.cancel()
     historyCancellable = nil
 
-    task = Task.delayed(bySeconds: 0.5) { @MainActor [weak self] in
+    task = Task { @MainActor [weak self] in
       guard let self = self else { return }
 
       try Task.checkCancellation()
