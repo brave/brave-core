@@ -202,7 +202,24 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
     PlaylistItem.updateItem(item) { [weak self] in
       guard let self = self else { return }
 
-      Logger.module.debug("Playlist Item Updated")
+      // We need to use the Database version of this object
+      // because when the fallback streamer updates the object, it uses the database ID.
+      // When the download starts, it uses the database ID.
+      // If we suddenly change the ID, downloads and updates get out of wack
+      let item = PlaylistInfo(
+        name: item.name,
+        src: item.src,
+        pageSrc: item.pageSrc,
+        pageTitle: item.pageTitle,
+        mimeType: item.mimeType,
+        duration: item.duration,
+        lastPlayedOffset: item.lastPlayedOffset,
+        detected: item.detected,
+        dateAdded: item.dateAdded,
+        tagId: $0,  // Use the ID that it was saved as in the database, rather than the Javascript ID
+        order: item.order,
+        isInvisible: item.isInvisible
+      )
 
       if let delegate = self.delegate {
         if detected {
