@@ -17,7 +17,7 @@
 @implementation BraveWebView
 
 // These are shadowed CWVWebView properties
-@dynamic navigationDelegate;
+@dynamic navigationDelegate, UIDelegate;
 
 - (void)attachSecurityInterstitialHelpersToWebStateIfNecessary {
   [super attachSecurityInterstitialHelpersToWebStateIfNecessary];
