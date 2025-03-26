@@ -28,6 +28,7 @@ class ResizeArea;
 class BraveNewTabButton;
 class BrowserView;
 class FullscreenController;
+class TabSearchButton;
 class TabStripScrollContainer;
 class VerticalTabStripScrollContentsView;
 
@@ -128,6 +129,7 @@ class VerticalTabStripRegionView : public views::View,
   class MouseWatcher;
 
  private:
+  friend class VerticalTabSearchButtonBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            OriginalTabSearchButton);
@@ -167,6 +169,7 @@ class VerticalTabStripRegionView : public views::View,
   void OnMouseExited();
   void OnMouseEntered();
   void OnMousePressedInTree();
+  void UpdateBubbleArrow();
 
   gfx::Size GetPreferredSizeForState(State state,
                                      bool include_border,
@@ -183,6 +186,7 @@ class VerticalTabStripRegionView : public views::View,
   void OnMenuClosed();
 
   views::LabelButton& GetToggleButtonForTesting();
+  TabSearchButton* GetTabSearchButtonForTesting();
 
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;
