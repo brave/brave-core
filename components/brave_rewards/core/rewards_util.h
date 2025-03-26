@@ -8,6 +8,8 @@
 
 #include <string_view>
 
+#include "components/country_codes/country_codes.h"
+
 class PrefService;
 
 namespace brave_rewards {
@@ -22,7 +24,7 @@ bool IsSupported(PrefService* prefs,
 
 bool IsUnsupportedRegion();
 
-void SetCountryCodeForOFACTesting(int country_id);
+void SetCountryCodeForOFACTesting(country_codes::CountryId country_id);
 
 bool IsAutoContributeSupportedForCountry(std::string_view country_code);
 

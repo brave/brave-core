@@ -37,12 +37,11 @@ TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionAllowedAllowList) {
     "DE"
   };
   const std::string code = "US";
-  const int32_t id = country_codes::CountryCharsToCountryID(
-    code.at(0), code.at(1));
+  auto id = country_codes::CountryId(code);
 
   auto* profile = profile_.get();
-  profile->GetPrefs()->SetInteger(
-      country_codes::kCountryIDAtInstall, id);
+  profile->GetPrefs()->SetInteger(country_codes::kCountryIDAtInstall,
+                                  id.Serialize());
 
   bool is_supported = ::ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), supported_regions, true);
@@ -57,12 +56,11 @@ TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionUnAllowedAllowList) {
     "DE"
   };
   const std::string code = "JP";
-  const int32_t id = country_codes::CountryCharsToCountryID(
-    code.at(0), code.at(1));
+  auto id = country_codes::CountryId(code);
 
   auto* profile = profile_.get();
-  profile->GetPrefs()->SetInteger(
-      country_codes::kCountryIDAtInstall, id);
+  profile->GetPrefs()->SetInteger(country_codes::kCountryIDAtInstall,
+                                  id.Serialize());
 
   bool is_supported = ::ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), supported_regions, true);
@@ -77,12 +75,11 @@ TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionAllowedDenyList) {
     "DE"
   };
   const std::string code = "JP";
-  const int32_t id = country_codes::CountryCharsToCountryID(
-    code.at(0), code.at(1));
+  auto id = country_codes::CountryId(code);
 
   auto* profile = profile_.get();
-  profile->GetPrefs()->SetInteger(
-      country_codes::kCountryIDAtInstall, id);
+  profile->GetPrefs()->SetInteger(country_codes::kCountryIDAtInstall,
+                                  id.Serialize());
 
   bool is_supported = ::ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), unsupported_regions, false);
@@ -97,12 +94,11 @@ TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionUnAllowedDenyList) {
     "DE"
   };
   const std::string code = "US";
-  const int32_t id = country_codes::CountryCharsToCountryID(
-    code.at(0), code.at(1));
+  auto id = country_codes::CountryId(code);
 
   auto* profile = profile_.get();
-  profile->GetPrefs()->SetInteger(
-      country_codes::kCountryIDAtInstall, id);
+  profile->GetPrefs()->SetInteger(country_codes::kCountryIDAtInstall,
+                                  id.Serialize());
 
   bool is_supported = ::ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), unsupported_regions, false);

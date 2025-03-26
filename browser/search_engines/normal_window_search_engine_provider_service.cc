@@ -99,7 +99,7 @@ void NormalWindowSearchEngineProviderService::MigrateSearchEnginePrefsInJP() {
   }
 
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *prefs, country_codes::CountryStringToCountryID(country_string),
+      *prefs, country_codes::CountryId(country_string),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO_JP);
   if (!data) {
     return;
