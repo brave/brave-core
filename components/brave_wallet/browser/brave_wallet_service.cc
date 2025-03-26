@@ -676,7 +676,8 @@ void BraveWalletService::SetNetworkForAccountOnActiveOrigin(
     return;
   }
 
-  SetNetworkForAccountOnOriginSync(origin.value(), account, chain_id);
+  std::move(callback).Run(
+      SetNetworkForAccountOnOriginSync(origin.value(), account, chain_id));
 }
 
 void BraveWalletService::SetNetworkForSelectedAccountOnActiveOrigin(
