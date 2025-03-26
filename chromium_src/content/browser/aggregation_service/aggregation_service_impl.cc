@@ -66,7 +66,7 @@ void AggregationServiceImpl::AssembleReport(
     AssemblyCallback callback) {}
 
 void AggregationServiceImpl::SendReport(
-    const GURL& url,
+    const GURL url,
     const AggregatableReport& report,
     std::optional<AggregatableReportRequest::DelayType> delay_type,
     SendCallback callback) {
@@ -74,7 +74,7 @@ void AggregationServiceImpl::SendReport(
 }
 
 void AggregationServiceImpl::SendReport(
-    const GURL& url,
+    const GURL url,
     const base::Value& contents,
     std::optional<AggregatableReportRequest::DelayType> delay_type,
     SendCallback callback) {
