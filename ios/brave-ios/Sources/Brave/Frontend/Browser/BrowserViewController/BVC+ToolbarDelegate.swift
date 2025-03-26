@@ -286,16 +286,16 @@ extension BrowserViewController: TopToolbarDelegate {
 
     if let url = URL(string: text), url.scheme == "brave" || url.scheme == "chrome" {
       topToolbar.leaveOverlayMode()
-      return handleChromiumWebUIURL(url)
+      if FeatureList.kUseChromiumWebViews.enabled {
+        finishEditingAndSubmit(url, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
+        return true
+      } else {
+        return handleChromiumWebUIURL(url)
+      }
     }
 
     guard let fixupURL = URIFixup.getURL(text) else {
       return false
-    }
-
-    if fixupURL.scheme == "brave" || fixupURL.scheme == "chrome" {
-      topToolbar.leaveOverlayMode()
-      return handleChromiumWebUIURL(fixupURL)
     }
 
     // check text is decentralized DNS supported domain

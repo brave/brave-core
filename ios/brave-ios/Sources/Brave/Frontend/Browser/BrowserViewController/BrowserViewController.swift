@@ -315,8 +315,7 @@ public class BrowserViewController: UIViewController {
       windowId: windowId,
       prefs: profile.prefs,
       rewards: rewards,
-      tabGeneratorAPI: braveCore.tabGeneratorAPI,
-      historyAPI: braveCore.historyAPI,
+      braveCore: braveCore,
       privateBrowsingManager: privateBrowsingManager
     )
 
