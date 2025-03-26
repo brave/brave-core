@@ -963,12 +963,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_TROUBLESHOOTING_ONBOARDING" desc="Text for trouble shooting page for onboarding">
         Troubleshooting onboarding
       </message>
-      <message name="IDS_CHOOSE_DEFAULT_SEARCH_ENGINE" desc="Title Text for search engine page for onboarding">
-        Choose default search engine
-      </message>
-      <message name="IDS_SEARCH_ENGINE_TEXT" desc="Text for search engine page for onboarding">
-        You can always change your preference later in app settings.
-      </message>
       <message name="IDS_BRAVE_SHIELDS_ONBOARDING_TITLE" desc="Title for brave shield page">
         Brave Shields
       </message>
@@ -1954,39 +1948,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_VIEW_FULL_PRIVACY_REPORT" desc="Shields privacy report text">
         View full Privacy Report
-      </message>
-      <message name="IDS_GOOGLE_DESC" desc="Onboarding SE text">
-        Most popular
-      </message>
-      <message name="IDS_DDG_DESC" desc="Onboarding SE text">
-        Private and no tracking
-      </message>
-      <message name="IDS_QWANT_DESC" desc="Onboarding SE text">
-        Private and no tracking, EU-based
-      </message>
-      <message name="IDS_STARTPAGE_DESC" desc="Onboarding SE text">
-        Google results without trackers
-      </message>
-      <message name="IDS_BING_DESC" desc="Onboarding SE text">
-        Second most popular
-      </message>
-      <message name="IDS_YANDEX_DESC" desc="Onboarding SE text">
-        A leading search engine in Russia
-      </message>
-      <message name="IDS_ECOSIA_DESC" desc="Onboarding SE text">
-        Plants trees, based in Berlin
-      </message>
-      <message name="IDS_DAUM_DESC" desc="Onboarding SE text">
-        South Korean web portal &amp; search
-      </message>
-      <message name="IDS_NAVER_DESC" desc="Onboarding SE text">
-        South Korean web portal &amp; search
-      </message>
-      <message name="IDS_BRAVE_DESC" desc="Onboarding SE text">
-        Private, independent, user-first
-      </message>
-      <message name="IDS_ONBOARDING_SE_TEXT" desc="Onboarding SE title text">
-        Some search engines protect your privacy better than others when you search the web.
       </message>
       <message name="IDS_NOT_NOW" desc="Set default browser modal button text">
         Not now

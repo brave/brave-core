@@ -11,7 +11,6 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -69,7 +68,6 @@ import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.onboarding.SearchActivity;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
@@ -125,7 +123,6 @@ import org.chromium.url.mojom.Url;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -145,8 +142,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 PlaylistServiceObserverImplDelegate {
     private static final String TAG = "BraveToolbar";
 
-    private static final List<String> BRAVE_SEARCH_ENGINE_DEFAULT_REGIONS =
-            Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX", "BR", "AR", "IN");
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
 
     private static final int DAYS_7 = 7;
@@ -1195,46 +1190,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     @Override
-    public void onUrlFocusChange(boolean hasFocus) {
-        Context context = getContext();
-        String countryCode = Locale.getDefault().getCountry();
-        try {
-            BraveActivity braveActivity = BraveActivity.getBraveActivity();
-            if (hasFocus
-                    && PackageUtils.isFirstInstall(context)
-                    && braveActivity.getActivityTab() != null
-                    && UrlUtilities.isNtpUrl(braveActivity.getActivityTab().getUrl().getSpec())
-                    && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
-                    && OnboardingPrefManager.getInstance().getUrlFocusCount() == 1
-                    && !BRAVE_SEARCH_ENGINE_DEFAULT_REGIONS.contains(countryCode)
-                    && !countryCode.equals("JP")) {
-                Intent searchActivityIntent = new Intent(context, SearchActivity.class);
-                searchActivityIntent.setAction(Intent.ACTION_VIEW);
-                context.startActivity(searchActivityIntent);
-            }
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onUrlFocusChange " + e);
-        }
-
-        // We need to enable the promo for later release.
-        // Delay showing the panel. Otherwise there are ANRs on holding onUrlFocusChange
-        /* PostTask.postTask(TaskTraits.UI_DEFAULT, () -> {
-            int appOpenCountForWidgetPromo = ChromeSharedPreferences.getInstance().readInt(
-                    BravePreferenceKeys.BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO);
-            if (hasFocus
-                    && appOpenCountForWidgetPromo >= BraveActivity.APP_OPEN_COUNT_FOR_WIDGET_PROMO)
-                mSearchWidgetPromoPanel.showIfNeeded(this);
-        }); */
-
-        if (OnboardingPrefManager.getInstance().getUrlFocusCount() == 0) {
-            OnboardingPrefManager.getInstance().updateUrlFocusCount();
-        }
-        super.onUrlFocusChange(hasFocus);
-    }
-
-    @Override
-    public void populateUrlAnimatorSetImpl(boolean showExpandedState,
-            int urlFocusToolbarButtonsDuration, int urlClearFocusTabStackDelayMs,
+    public void populateUrlAnimatorSetImpl(
+            boolean showExpandedState,
+            int urlFocusToolbarButtonsDuration,
+            int urlClearFocusTabStackDelayMs,
             List<Animator> animators) {
         if (mBraveShieldsButton != null) {
             Animator animator;
