@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <solid android:color="@color/schemes_surface_container" />
+
+    <corners
+        android:bottomLeftRadius="28dp"
+        android:bottomRightRadius="28dp"
+        android:topLeftRadius="28dp"
+        android:topRightRadius="28dp" />
+
+</shape>
