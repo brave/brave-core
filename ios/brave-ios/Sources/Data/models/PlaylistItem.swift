@@ -403,31 +403,50 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     }
   }
 
-  public static func updateItem(_ item: PlaylistInfo, completion: (() -> Void)? = nil) {
+  public static func updateItem(_ item: PlaylistInfo, completion: ((String) -> Void)? = nil) {
     if itemExists(pageSrc: item.pageSrc) || itemExists(uuid: item.tagId) {
       DataController.perform(context: .new(inMemory: false), save: false) { context in
         if let existingItem = PlaylistItem.first(
           where: NSPredicate(format: "pageSrc == %@ OR uuid == %@", item.pageSrc, item.tagId),
           context: context
         ) {
+          let oldId = existingItem.uuid ?? item.tagId
+
           existingItem.name = item.name
           existingItem.pageTitle = item.pageTitle
           existingItem.pageSrc = item.pageSrc
           existingItem.duration = item.duration
           existingItem.lastPlayedOffset = item.lastPlayedOffset
           existingItem.mimeType = item.mimeType
-          existingItem.mediaSrc = item.src
-          existingItem.uuid = item.tagId
-        }
 
-        PlaylistItem.saveContext(context)
+          // Handle blob updates so that blob URLs don't overwrite existing legitimate URLs
+          // This can happen when the fallback streamer updates a URL, and the page changes the src after.
+          if existingItem.mediaSrc.isEmpty {
+            existingItem.mediaSrc = item.src
+          }
 
-        DispatchQueue.main.async {
-          completion?()
+          if let existingScheme = URL(string: existingItem.mediaSrc)?.scheme,
+            let newScheme = URL(string: item.src)?.scheme,
+            existingScheme == newScheme || (newScheme != existingScheme && newScheme != "blob")
+          {
+            existingItem.mediaSrc = item.src
+          }
+
+          PlaylistItem.saveContext(context)
+
+          DispatchQueue.main.async {
+            completion?(oldId)
+          }
+        } else {
+          DispatchQueue.main.async {
+            completion?(item.tagId)
+          }
         }
       }
     } else {
-      addItem(item, cachedData: nil, completion: completion)
+      addItem(item, cachedData: nil) {
+        completion?(item.tagId)
+      }
     }
   }
 

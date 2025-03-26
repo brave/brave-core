@@ -133,7 +133,7 @@ public class PlaylistMediaStreamer {
       )  // Keep the same order
 
       let item = try await withCheckedThrowingContinuation { continuation in
-        PlaylistItem.updateItem(updatedItem) {
+        PlaylistItem.updateItem(updatedItem) { _ in
           continuation.resume(returning: updatedItem)
         }
       }
