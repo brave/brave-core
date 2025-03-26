@@ -36,6 +36,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -133,7 +134,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       auto model = mojom::Model::New();
       model->key = kClaudeHaikuModelKey;
       model->display_name = "Claude Haiku";
-      model->vision_support = false;
+      model->vision_support = true;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -203,6 +204,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       auto model = mojom::Model::New();
       model->key = "chat-qwen";
       model->display_name = "Qwen 14B";
+      model->vision_support = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 

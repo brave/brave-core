@@ -73,20 +73,31 @@ GetMockEventsAndExpectedEventsBody() {
       std::vector<ConversationAPIClient::ConversationEvent>, std::string>>
       mock_events_and_expected_events_body{
           std::vector<ConversationAPIClient::ConversationEvent>{
-              {mojom::CharacterType::HUMAN, ConversationAPIClient::PageText,
-               "This is a page about The Mandalorian."},
-              {mojom::CharacterType::HUMAN, ConversationAPIClient::PageExcerpt,
-               "The Mandalorian"},
-              {mojom::CharacterType::HUMAN, ConversationAPIClient::ChatMessage,
-               "Est-ce lié à une série plus large?"},
+              {mojom::CharacterType::HUMAN,
+               ConversationAPIClient::PageText,
+               {"This is a page about The Mandalorian."}},
+              {mojom::CharacterType::HUMAN,
+               ConversationAPIClient::PageExcerpt,
+               {"The Mandalorian"}},
+              {mojom::CharacterType::HUMAN,
+               ConversationAPIClient::ChatMessage,
+               {"Est-ce lié à une série plus large?"}},
               {mojom::CharacterType::HUMAN,
                ConversationAPIClient::GetSuggestedTopicsForFocusTabs,
-               "GetSuggestedTopicsForFocusTabs"},
-              {mojom::CharacterType::HUMAN, ConversationAPIClient::DedupeTopics,
-               "DedupeTopics"},
+               {"GetSuggestedTopicsForFocusTabs"}},
+              {mojom::CharacterType::HUMAN,
+               ConversationAPIClient::DedupeTopics,
+               {"DedupeTopics"}},
               {mojom::CharacterType::HUMAN,
                ConversationAPIClient::GetFocusTabsForTopic,
-               "GetFocusTabsForTopics", "C++"},
+               {"GetFocusTabsForTopics"},
+               "C++"},
+              {mojom::CharacterType::HUMAN,
+               ConversationAPIClient::UploadImage,
+               {"data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+                "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///"
+                "yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"}},
           },
           R"([
       {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
@@ -94,7 +105,11 @@ GetMockEventsAndExpectedEventsBody() {
       {"role": "user", "type": "chatMessage", "content": "Est-ce lié à une série plus large?"},
       {"role": "user", "type": "suggestFocusTopics", "content": "GetSuggestedTopicsForFocusTabs"},
       {"role": "user", "type": "dedupeFocusTopics", "content": "DedupeTopics"},
-      {"role": "user", "type": "classifyTabs", "content": "GetFocusTabsForTopics", "topic": "C++"}
+      {"role": "user", "type": "classifyTabs", "content": "GetFocusTabsForTopics", "topic": "C++"},
+      {"role": "user", "type": "uploadImage",
+       "content": ["data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                   "data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"]
+      }
     ])"};
 
   return *mock_events_and_expected_events_body;
