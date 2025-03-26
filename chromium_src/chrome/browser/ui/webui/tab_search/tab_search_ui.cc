@@ -70,6 +70,14 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
       "tabOrganizationDismissButtonLabel",
       l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_DISMISS_BUTTON_LABEL));
 
+  update_data.Set(
+      "tabOrganizationPrivacyDisclaimer",
+      l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_PRIVACY_DISCLAIMER));
+
+  update_data.Set(
+      "tabOrganizationEnableButtonLabel",
+      l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_ENABLE_BUTTON_LABEL));
+
   content::WebUIDataSource::Update(profile, chrome::kChromeUITabSearchHost,
                                    std::move(update_data));
 }
