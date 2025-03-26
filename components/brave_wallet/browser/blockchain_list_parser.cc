@@ -125,7 +125,9 @@ void AddDappListToMap(
     dapp->id = dapp_id;
 
     dapp->name = dapp_from_component.name;
-    dapp->description = dapp_from_component.description;
+    if (dapp_from_component.description.is_string()) {
+      dapp->description = dapp_from_component.description.GetString();
+    }
     dapp->logo = dapp_from_component.logo;
     dapp->website = dapp_from_component.website;
     dapp->chains = std::vector<std::string>(dapp_from_component.chains.begin(),
