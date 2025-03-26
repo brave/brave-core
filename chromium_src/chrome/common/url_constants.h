@@ -467,7 +467,7 @@ inline constexpr char kWallpaperSearchLearnMorePageManagedURL[] =
 // The URL for the "Learn more" page for Tab Organization.
 inline constexpr char kTabOrganizationLearnMorePageURL[] =
     "https://support.brave.com/hc/en-us/articles/"
-    "360000766892-How-to-use-Tab-Focus-Mode";
+    "35200007195917-How-to-use-Tab-Focus-Mode";
 
 // The URL for the "Learn more" page for Tab Organization for managed users.
 inline constexpr char kTabOrganizationLearnMorePageManagedURL[] =
