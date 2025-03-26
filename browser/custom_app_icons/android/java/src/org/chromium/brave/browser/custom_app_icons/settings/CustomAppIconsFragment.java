@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.brave.browser.custom_app_icons.R;
+import org.chromium.brave.browser.utils.confirm_dialog.BraveConfirmationDialog;
+import org.chromium.brave.browser.utils.confirm_dialog.OnConfirmationDialogListener;
 
 public class CustomAppIconsFragment extends Fragment implements CustomAppIconsListener {
 
@@ -39,7 +41,27 @@ public class CustomAppIconsFragment extends Fragment implements CustomAppIconsLi
 
     @Override
     public void onCustomAppIconSelected(CustomAppIconsEnum icon) {
-        CustomAppIconsManager.switchIcon(requireActivity(), icon);
-        requireActivity().onBackPressed();
+        OnConfirmationDialogListener listener =
+                new OnConfirmationDialogListener() {
+                    @Override
+                    public void onPositiveButtonClicked() {
+                        CustomAppIconsManager.switchIcon(requireActivity(), icon);
+                        requireActivity().onBackPressed();
+                    }
+
+                    @Override
+                    public void onNegativeButtonClicked() {
+                        // Do nothing
+                    }
+                };
+
+        BraveConfirmationDialog confirmationDialog = new BraveConfirmationDialog();
+        confirmationDialog.showConfirmDialog(
+                getContext(),
+                getString(R.string.change_app_icon),
+                getString(R.string.custom_app_icons_switch_icon_message),
+                getString(R.string.custom_app_icons_switch_icon_positive_button_text),
+                getString(R.string.custom_app_icons_switch_icon_negative_button_text),
+                listener);
     }
 }

@@ -90,7 +90,7 @@
     <messages fallback_to_english="true">
     <!-- Start of Custom app icons strings -->
     <message name="IDS_CHANGE_APP_ICON" desc="Title of Custom App Icons settings, which allows the user to change custom app icons. [CHAR-LIMIT=32]">
-        Change app icon
+      Change app icon
     </message>
     <message name="IDS_LAUNCHER_DEFAULT_TITLE" desc="Title for app icon Default">
       Default
@@ -133,6 +133,15 @@
     </message>
     <message name="IDS_BRAVE_ICONS_TITLE" desc="Title for custom app icons">
       Brave icons
+    </message>
+    <message name="IDS_CUSTOM_APP_ICONS_SWITCH_ICON_MESSAGE" desc="Message for custom app icons switch icon dialog">
+      Changing the app icon requires to restart the app. Would you like to change it now?
+    </message>
+    <message name="IDS_CUSTOM_APP_ICONS_SWITCH_ICON_POSITIVE_BUTTON_TEXT" desc="Text for custom app icons switch icon positive button">
+      Change
+    </message>
+    <message name="IDS_CUSTOM_APP_ICONS_SWITCH_ICON_NEGATIVE_BUTTON_TEXT" desc="Text for custom app icons switch icon negative button">
+      Cancel
     </message>
     <!-- End of Custom app icons strings -->
   </messages>

@@ -9,8 +9,25 @@ import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
 
 android_library("java") {
-  sources = [ "java/src/org/chromium/brave/browser/utils/DrawableUtils.java" ]
-  deps = [ "//third_party/androidx:androidx_core_core_java" ]
+  sources = [
+    "java/src/org/chromium/brave/browser/utils/DrawableUtils.java",
+    "java/src/org/chromium/brave/browser/utils/confirm_dialog/BraveConfirmationDialog.java",
+    "java/src/org/chromium/brave/browser/utils/confirm_dialog/OnConfirmationDialogListener.java",
+  ]
+  deps = [
+    ":java_resources",
+    "//third_party/androidx:androidx_core_core_java",
+  ]
 
   resources_package = "org.chromium.brave.browser.utils"
+}
+
+android_resources("java_resources") {
+  sources = [
+    "java/res/drawable/alert_dialog_shape.xml",
+    "java/res/drawable/brave_action_button_bg.xml",
+    "java/res/layout/brave_confirmation_dialog_layout.xml",
+    "java/res/values-night/brave_android_utils_colors.xml",
+    "java/res/values/brave_android_utils_colors.xml",
+  ]
 }

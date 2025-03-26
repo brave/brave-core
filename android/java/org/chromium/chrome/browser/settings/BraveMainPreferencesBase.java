@@ -5,7 +5,10 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,10 +16,11 @@ import android.provider.Settings;
 
 import androidx.preference.Preference;
 
-import static org.chromium.ui.base.ViewUtils.dpToPx;
-
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
+import org.chromium.brave.browser.utils.DrawableUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.accessibility.settings.BraveAccessibilitySettings;
@@ -45,10 +49,6 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
-import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
-import org.chromium.brave.browser.utils.DrawableUtils;
-import android.graphics.drawable.Drawable;
 
 import java.util.HashMap;
 
@@ -388,12 +388,14 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private void updateCustomAppIcon(String preferenceString) {
         Preference preference = findPreference(preferenceString);
         CustomAppIconsEnum currentIcon = CustomAppIconsManager.getCurrentIcon(getContext());
-            int iconResource =
-                    currentIcon.equals(CustomAppIconsEnum.ICON_DEFAULT)
-                            ? R.drawable.ic_launcher_round
-                            : currentIcon.getIcon();
+        int iconResource =
+                currentIcon.equals(CustomAppIconsEnum.ICON_DEFAULT)
+                        ? R.drawable.ic_launcher_round
+                        : currentIcon.getIcon();
         if (preference != null) {
-            Drawable drawable = DrawableUtils.getCircularDrawable(getContext(), iconResource, dpToPx(getContext(), 16));
+            Drawable drawable =
+                    DrawableUtils.getCircularDrawable(
+                            getContext(), iconResource, dpToPx(getContext(), 16));
             preference.setIcon(drawable);
         }
     }
