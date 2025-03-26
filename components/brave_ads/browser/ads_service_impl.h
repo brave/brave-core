@@ -180,6 +180,11 @@ class AdsServiceImpl final : public AdsService,
 
   void RefetchNewTabPageAd();
   void RefetchNewTabPageAdCallback(bool success);
+  void ResetNewTabPageAd();
+
+  void OnParseAndSaveCreativeNewTabPageAdsCallback(
+      ParseAndSaveCreativeNewTabPageAdsCallback callback,
+      bool success);
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
   // state business logic.

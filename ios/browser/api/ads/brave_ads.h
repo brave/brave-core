@@ -153,7 +153,8 @@ OBJC_EXPORT
 - (nullable NewTabPageAdIOS*)maybeGetPrefetchedNewTabPageAd;
 
 - (void)onFailedToPrefetchNewTabPageAd:(NSString*)placementId
-                    creativeInstanceId:(NSString*)creativeInstanceId;
+                    creativeInstanceId:(NSString*)creativeInstanceId
+    NS_SWIFT_NAME(onFailedToPrefetchNewTabPageAd(placementId:creativeInstanceId:));
 
 #pragma mark - Ads client notifier
 

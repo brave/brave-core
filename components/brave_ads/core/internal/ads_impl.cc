@@ -440,6 +440,7 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
 
   GetAdsClient().NotifyPendingObservers();
 
+  // Flush any queued tasks that occurred during initialization.
   task_queue_.FlushAndStopQueueing();
 
   std::move(callback).Run(/*success=*/true);

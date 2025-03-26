@@ -20,7 +20,6 @@
 #include "base/notimplemented.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
-#include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
@@ -542,7 +541,12 @@ void AdsServiceImplIOS::ClearAdsDataCallback(ClearDataCallback callback) {
 void AdsServiceImplIOS::PrefetchNewTabPageAdCallback(
     base::optional_ref<const NewTabPageAdInfo> new_tab_page_ad) {
   CHECK(!prefetched_new_tab_page_ad_);
-  CHECK(is_prefetching_new_tab_page_ad_);
+
+  if (!is_prefetching_new_tab_page_ad_) {
+    // `is_prefetching_new_tab_page_ad_` can be reset during shutdown, so fail
+    // gracefully.
+    return;
+  }
 
   is_prefetching_new_tab_page_ad_ = false;
 
