@@ -89,7 +89,7 @@ constexpr char16_t kLeoCustomModelsLearnMoreURL[] =
 
 constexpr char16_t kTabOrganizationLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/"
-    u"360000766892-How-to-use-Tab-Focus-Mode";
+    u"35200007195917-How-to-use-Tab-Focus-Mode";
 
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
