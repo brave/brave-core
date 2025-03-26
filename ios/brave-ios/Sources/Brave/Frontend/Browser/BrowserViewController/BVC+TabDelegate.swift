@@ -654,9 +654,11 @@ extension BrowserViewController {
   }
 
   public func tab(_ tab: some TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType {
-    if Preferences.UserAgent.alwaysRequestDesktopSite.value {
-      return .desktop
+    if FeatureList.kUseChromiumWebViews.enabled {
+      return braveCore.defaultHostContentSettings.defaultPageMode == .desktop ? .desktop : .mobile
+    } else {
+      // FIXME: Probably want to migrate this pref and use `defaultHostContentSettings` for both
+      return Preferences.UserAgent.alwaysRequestDesktopSite.value ? .desktop : .mobile
     }
-    return .mobile
   }
 }

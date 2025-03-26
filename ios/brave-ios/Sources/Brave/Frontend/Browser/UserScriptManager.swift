@@ -279,7 +279,8 @@ class UserScriptManager {
 
   public func loadScripts(
     into userContentController: WKUserContentController,
-    scripts: Set<ScriptType>
+    scripts: Set<ScriptType>,
+    tab: any TabState
   ) {
     if Preferences.UserScript.blockAllScripts.value {
       return
@@ -289,6 +290,7 @@ class UserScriptManager {
 
     userContentController.do { scriptController in
       scriptController.removeAllUserScripts()
+      tab.updateScripts()
 
       // Inject all base scripts
       self.baseScripts.forEach {
@@ -351,7 +353,8 @@ class UserScriptManager {
     ContentBlockerManager.log.debug(
       "Loaded \(userScripts.count + customScripts.count) script(s): \n\(logComponents.joined(separator: "\n"))"
     )
-    loadScripts(into: userContentController, scripts: userScripts)
+
+    loadScripts(into: userContentController, scripts: userScripts, tab: tab)
 
     userContentController.do { scriptController in
       // TODO: Somehow refactor wallet and get rid of this

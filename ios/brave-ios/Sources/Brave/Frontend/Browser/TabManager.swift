@@ -90,6 +90,7 @@ class TabManager: NSObject {
   var privateTabSelectedIndex: Int = 0
   var tempTabs: [any TabState]?
   private weak var rewards: BraveRewards?
+  private var braveCore: BraveCoreMain?
   private weak var tabGeneratorAPI: BraveTabGeneratorAPI?
   private var domainFrc = Domain.frc()
   private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
@@ -117,8 +118,7 @@ class TabManager: NSObject {
     windowId: UUID,
     prefs: Prefs,
     rewards: BraveRewards?,
-    tabGeneratorAPI: BraveTabGeneratorAPI?,
-    historyAPI: BraveHistoryAPI?,
+    braveCore: BraveCoreMain?,
     privateBrowsingManager: PrivateBrowsingManager
   ) {
     assert(Thread.isMainThread)
@@ -126,8 +126,9 @@ class TabManager: NSObject {
     self.windowId = windowId
     self.prefs = prefs
     self.rewards = rewards
-    self.tabGeneratorAPI = tabGeneratorAPI
-    self.historyAPI = historyAPI
+    self.braveCore = braveCore
+    self.tabGeneratorAPI = braveCore?.tabGeneratorAPI
+    self.historyAPI = braveCore?.historyAPI
     self.privateBrowsingManager = privateBrowsingManager
     super.init()
 
@@ -455,7 +456,7 @@ class TabManager: NSObject {
     let popup = TabStateFactory.create(
       with: .init(
         initialConfiguration: parentTab.configuration,
-        braveCore: nil
+        braveCore: braveCore
       )
     )
     configureTab(
@@ -549,7 +550,7 @@ class TabManager: NSObject {
         id: tabId,
         initialConfiguration: initialConfiguration,
         lastActiveTime: lastActiveTime,
-        braveCore: nil
+        braveCore: braveCore
       )
     )
     configureTab(
