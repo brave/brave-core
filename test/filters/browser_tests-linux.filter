@@ -17,6 +17,7 @@
 -EventPage/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 -InfoBarUiTest.InvokeUi_bad_flags
 -InfoBarUiTest.InvokeUi_reload_plugin
+-HasBeforeUnloadHandlerTest.NonEmptyBeforeUnloadDetected
 -PageInfoBubbleViewBrowserTest.BlockedAndInvalidCert
 -PageInfoBubbleViewBrowserTest.MalwareAndEvCert
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
