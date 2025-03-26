@@ -45,6 +45,9 @@
   <message name="IDS_CHAT_UI_PAGE_CONTENT_WARNING" desc="Description about page content being sent to a remote LLM">
      Disconnect to stop sending this page content to Leo, and start a new conversation
   </message>
+  <message name="IDS_CHAT_UI_ERROR_INTERNAL" desc="A general error message for processing user requests">
+    Something went wrong while processing your request. Please try again later.
+  </message>
   <message name="IDS_CUSTOM_MODEL_ENDPOINT_INVALID_ERROR" desc="An error presented when the model endpoint is invalid">
     This model has an invalid endpoint. Please check your configuration and try again.
   </message>

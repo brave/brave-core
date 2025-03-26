@@ -256,6 +256,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatShowToolbarButton] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatTabOrganizationEnabled] =
+      settings_api::PrefType::kBoolean;
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Push Messaging Pref

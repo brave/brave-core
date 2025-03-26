@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -63,6 +64,11 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;
   bool SupportsDeltaTextResponses() const override;
+  void GetSuggestedTopics(const std::vector<Tab>& tabs,
+                          GetSuggestedTopicsCallback callback) override;
+  void GetFocusTabs(const std::vector<Tab>& tabs,
+                    const std::string& topic,
+                    GetFocusTabsCallback callback) override;
 
   void SetAPIForTesting(std::unique_ptr<OAIAPIClient> api_for_testing) {
     api_ = std::move(api_for_testing);

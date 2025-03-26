@@ -14,11 +14,13 @@
 #include <ostream>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/callback_list.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -63,6 +65,10 @@ class AIChatService : public KeyedService,
  public:
   using SkusServiceGetter =
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>;
+  using GetSuggestedTopicsCallback = base::OnceCallback<void(
+      base::expected<std::vector<std::string>, mojom::APIError>)>;
+  using GetFocusTabsCallback = base::OnceCallback<void(
+      base::expected<std::vector<std::string>, mojom::APIError>)>;
 
   AIChatService(
       ModelService* model_service,
@@ -143,6 +149,12 @@ class AIChatService : public KeyedService,
   void AssociateContent(ConversationHandler::AssociatedContentDelegate* content,
                         const std::string& conversation_uuid);
 
+  void GetFocusTabs(const std::vector<Tab>& tabs,
+                    const std::string& topic,
+                    GetFocusTabsCallback callback);
+  void GetSuggestedTopics(const std::vector<Tab>& tabs,
+                          GetSuggestedTopicsCallback callback);
+
   // mojom::Service
   void MarkAgreementAccepted() override;
   void EnableStoragePref() override;
@@ -174,7 +186,15 @@ class AIChatService : public KeyedService,
   bool IsAIChatHistoryEnabled();
 
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
+  std::unique_ptr<EngineConsumer> GetEngineForModel(
+      const std::string& model_key);
 
+  std::unique_ptr<EngineConsumer> GetEngineForTabOrganization();
+
+  void SetCredentialManagerForTesting(
+      std::unique_ptr<AIChatCredentialManager> credential_manager) {
+    credential_manager_ = std::move(credential_manager);
+  }
   AIChatCredentialManager* GetCredentialManagerForTesting() {
     return credential_manager_.get();
   }
@@ -182,7 +202,18 @@ class AIChatService : public KeyedService,
 
   size_t GetInMemoryConversationCountForTesting();
 
+  EngineConsumer* GetTabOrganizationEngineForTesting() {
+    return tab_organization_engine_.get();
+  }
+
+  void SetTabOrganizationEngineForTesting(
+      std::unique_ptr<EngineConsumer> engine) {
+    tab_organization_engine_ = std::move(engine);
+  }
+
  private:
+  friend class AIChatServiceUnitTest;
+
   // Key is uuid
   using ConversationMap =
       std::map<std::string, mojom::ConversationPtr, std::less<>>;
@@ -228,6 +259,16 @@ class AIChatService : public KeyedService,
   mojom::ServiceStatePtr BuildState();
   void OnStateChanged();
 
+  void GetEngineForTabOrganization(base::OnceClosure callback);
+  void ContinueGetEngineForTabOrganization(base::OnceClosure callback,
+                                           mojom::PremiumStatus status,
+                                           mojom::PremiumInfoPtr info);
+  void GetSuggestedTopicsWithEngine(const std::vector<Tab>& tabs,
+                                    GetSuggestedTopicsCallback callback);
+  void GetFocusTabsWithEngine(const std::vector<Tab>& tabs,
+                              const std::string& topic,
+                              GetFocusTabsCallback callback);
+
   raw_ptr<ModelService> model_service_;
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
@@ -237,6 +278,9 @@ class AIChatService : public KeyedService,
 
   std::unique_ptr<AIChatFeedbackAPI> feedback_api_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
+
+  // Engine for tab organization, created on demand and owned by AIChatService.
+  std::unique_ptr<ai_chat::EngineConsumer> tab_organization_engine_;
 
   base::FilePath profile_path_;
 

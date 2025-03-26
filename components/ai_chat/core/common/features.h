@@ -65,6 +65,10 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kPageContextEnabledInitially);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsPageContextEnabledInitially();
 
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kTabOrganization);
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsTabOrganizationEnabled();
+
 }  // namespace ai_chat::features
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_FEATURES_H_

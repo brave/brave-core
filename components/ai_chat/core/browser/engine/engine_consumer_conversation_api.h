@@ -76,7 +76,42 @@ class EngineConsumerConversationAPI : public EngineConsumer {
   ConversationAPIClient* GetAPIForTesting() { return api_.get(); }
   void UpdateModelOptions(const mojom::ModelOptions& options) override {}
 
+  // Given a list of tabs, get the suggested topics from the server.
+  void GetSuggestedTopics(const std::vector<Tab>& tabs,
+                          GetSuggestedTopicsCallback callback) override;
+  // Given a list of tabs and a topic, get the focus tabs from the server.
+  void GetFocusTabs(const std::vector<Tab>& tabs,
+                    const std::string& topic,
+                    GetFocusTabsCallback callback) override;
+
+  // A helper function to extract vector of strings from tab organization
+  // related responses (e.g. GetSuggestedTopics and GetFocusTabs).
+  static base::expected<std::vector<std::string>, mojom::APIError>
+  GetStrArrFromTabOrganizationResponses(
+      std::vector<EngineConsumer::GenerationResult>& results);
+
  private:
+  // Processes the tab chunks and sends the merge callback with the results.
+  // Used by GetSuggestedTopics and GetFocusTabs where the tabs are split into
+  // chunks and processed.
+  void ProcessTabChunks(
+      const std::vector<Tab>& tabs,
+      ConversationAPIClient::ConversationEventType event_type,
+      base::OnceCallback<void(std::vector<GenerationResult>)> merge_callback,
+      const std::string& topic);
+
+  // Merges the result from multiple GetSuggestedTopics requests, which would
+  // then trigger DedupeTopics below to get the final topic list with an emoji
+  // appended to each topic.
+  void MergeSuggestTopicsResults(GetSuggestedTopicsCallback callback,
+                                 std::vector<GenerationResult> results);
+
+  // Given a list of results from GetSuggestedTopics, send another request to
+  // the server to dedupe the topics.
+  void DedupeTopics(
+      base::expected<std::vector<std::string>, mojom::APIError> topics_result,
+      GetSuggestedTopicsCallback callback);
+
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);

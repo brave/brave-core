@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_MOCK_ENGINE_CONSUMER_H_
 
 #include <string>
+#include <vector>
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -51,6 +52,18 @@ class MockEngineConsumer : public EngineConsumer {
   MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
 
   MOCK_METHOD(void, ClearAllQueries, (), (override));
+
+  MOCK_METHOD(void,
+              GetSuggestedTopics,
+              (const std::vector<Tab>&, GetSuggestedTopicsCallback),
+              (override));
+  MOCK_METHOD(void,
+              GetFocusTabs,
+              (const std::vector<Tab>&,
+               const std::string&,
+               GetFocusTabsCallback),
+              (override));
+  MOCK_METHOD(const std::string&, GetModelName, (), (const, override));
 
   bool SupportsDeltaTextResponses() const override {
     return supports_delta_text_responses_;

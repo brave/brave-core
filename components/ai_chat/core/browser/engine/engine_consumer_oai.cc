@@ -299,4 +299,16 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
 
 void EngineConsumerOAIRemote::SanitizeInput(std::string& input) {}
 
+void EngineConsumerOAIRemote::GetSuggestedTopics(
+    const std::vector<Tab>& tabs,
+    GetSuggestedTopicsCallback callback) {
+  std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+}
+
+void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
+                                           const std::string& topic,
+                                           GetFocusTabsCallback callback) {
+  std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+}
+
 }  // namespace ai_chat

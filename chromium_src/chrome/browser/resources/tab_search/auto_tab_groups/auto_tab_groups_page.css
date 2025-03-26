@@ -1,0 +1,168 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #css_wrapper_metadata_end */
+
+#brave-tab-focus {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auto-tab-groups-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  padding: var(--leo-spacing-xl);
+  gap: var(--leo-spacing-l);
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+}
+
+.title-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  gap: var(--leo-spacing-m);
+  box-sizing: border-box;
+}
+
+.title-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--leo-spacing-s);
+}
+
+.input-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: var(--leo-spacing-m);
+}
+
+.title {
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+  text-align: left;
+}
+
+.subtitle {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+  text-align: left;
+}
+
+.topics-title {
+  font: var(--leo-font-default-semibold);
+  color: var(--leo-color-text-secondary);
+  text-align: left;
+}
+
+.topic-input {
+  width: 100%;
+}
+
+.topics-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  padding: var(--leo-spacing-xl) var(--leo-spacing-xl) 0px var(--leo-spacing-xl);
+  gap: var(--leo-spacing-m);
+  box-sizing: border-box;
+}
+
+.topics-button {
+  --leo-button-padding: 3px;
+  --leo-button-radius: var(--leo-radius-m);
+  width: 100%;
+  container-type: inline-size;
+  --leo-button-color: var(--leo-color-divider-subtle);
+}
+
+.topic-description {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100cqw;
+  gap: var(--leo-spacing-m);
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-default-regular);
+  padding: 0 calc(var(--leo-button-padding) + var(--border-width));
+  text-align: left;
+}
+
+.emoji-wrapper {
+  display: flex;
+  flex-shrink: 0;
+  align-self: stretch;
+  min-height: 32px;
+  width: 32px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--leo-color-neutral-10);
+  padding: var(--leo-spacing-s);
+  font-size: 20px;
+  border-radius: var(--leo-radius-s);
+  margin-left: 4px;
+}
+
+.loading-ring {
+  --leo-progressring-color: var(--leo-color-icon-default);
+  --leo-progressring-size: 20px;
+}
+
+.empty-state {
+  display: flex;
+  width: 100%;
+  height: 24px;
+  background-color: var(--leo-color-neutral-10);
+  border-radius: var(--leo-radius-s);
+  margin-right: var(--leo-spacing-m);
+}
+
+.footer {
+  display: flex;
+  padding: var(--leo-spacing-xl);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--leo-spacing-s);
+  align-self: stretch;
+  color: var(--leo-color-text-tertiary);
+}
+
+.learn-more-link {
+  color: var(--leo-color-text-tertiary);
+  font-feature-settings: 'ss03' on;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+}
+
+.error-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  padding: var(--leo-spacing-l);
+  box-sizing: border-box;
+}

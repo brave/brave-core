@@ -939,8 +939,12 @@ bool AIChatService::IsPremiumStatus() {
 }
 
 std::unique_ptr<EngineConsumer> AIChatService::GetDefaultAIEngine() {
-  return model_service_->GetEngineForModel(model_service_->GetDefaultModelKey(),
-                                           url_loader_factory_,
+  return GetEngineForModel(model_service_->GetDefaultModelKey());
+}
+
+std::unique_ptr<EngineConsumer> AIChatService::GetEngineForModel(
+    const std::string& model_key) {
+  return model_service_->GetEngineForModel(model_key, url_loader_factory_,
                                            credential_manager_.get());
 }
 
@@ -1012,4 +1016,63 @@ void AIChatService::AssociateContent(
   MaybeAssociateContentWithConversation(conversation, content->GetContentId(),
                                         content->GetWeakPtr());
 }
+
+void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
+                                       GetSuggestedTopicsCallback callback) {
+  GetEngineForTabOrganization(base::BindOnce(
+      &AIChatService::GetSuggestedTopicsWithEngine,
+      weak_ptr_factory_.GetWeakPtr(), tabs, std::move(callback)));
+}
+
+void AIChatService::GetFocusTabs(const std::vector<Tab>& tabs,
+                                 const std::string& topic,
+                                 GetFocusTabsCallback callback) {
+  GetEngineForTabOrganization(base::BindOnce(
+      &AIChatService::GetFocusTabsWithEngine, weak_ptr_factory_.GetWeakPtr(),
+      tabs, topic, std::move(callback)));
+}
+
+void AIChatService::GetEngineForTabOrganization(base::OnceClosure callback) {
+  GetPremiumStatus(
+      base::BindOnce(&AIChatService::ContinueGetEngineForTabOrganization,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AIChatService::ContinueGetEngineForTabOrganization(
+    base::OnceClosure callback,
+    mojom::PremiumStatus status,
+    mojom::PremiumInfoPtr info) {
+  bool is_premium = IsPremiumStatus();
+  if (tab_organization_engine_) {
+    // Check if model name matches the current premium status.
+    if ((is_premium &&
+         tab_organization_engine_->GetModelName() != kClaudeSonnetModelName) ||
+        (!is_premium &&
+         tab_organization_engine_->GetModelName() != kClaudeHaikuModelName)) {
+      tab_organization_engine_.reset();
+    }
+  }
+
+  if (!tab_organization_engine_) {
+    tab_organization_engine_ = GetEngineForModel(
+        is_premium ? kClaudeSonnetModelKey : kClaudeHaikuModelKey);
+  }
+
+  std::move(callback).Run();
+}
+
+void AIChatService::GetSuggestedTopicsWithEngine(
+    const std::vector<Tab>& tabs,
+    GetSuggestedTopicsCallback callback) {
+  CHECK(tab_organization_engine_);
+  tab_organization_engine_->GetSuggestedTopics(tabs, std::move(callback));
+}
+
+void AIChatService::GetFocusTabsWithEngine(const std::vector<Tab>& tabs,
+                                           const std::string& topic,
+                                           GetFocusTabsCallback callback) {
+  CHECK(tab_organization_engine_);
+  tab_organization_engine_->GetFocusTabs(tabs, topic, std::move(callback));
+}
+
 }  // namespace ai_chat
