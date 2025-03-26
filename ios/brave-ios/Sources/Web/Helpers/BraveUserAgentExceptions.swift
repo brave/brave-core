@@ -9,13 +9,11 @@ import Storage
 
 extension TabDataValues {
   private struct BraveUserAgentExceptionsKey: TabDataKey {
-    static var defaultValue: BraveUserAgentExceptionsIOS? = nil
+    static var defaultValue: BraveUserAgentExceptionsIOS?
   }
 
   /// A reference to a Brave user agent exceptions list that can be used to check
   /// if we should show Brave in the user agent for a given website.
-  ///
-  /// WebKit only
   public var braveUserAgentExceptions: BraveUserAgentExceptionsIOS? {
     get { self[BraveUserAgentExceptionsKey.self] }
     set {

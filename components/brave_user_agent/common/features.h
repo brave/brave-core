@@ -15,8 +15,6 @@ namespace features {
 COMPONENT_EXPORT(BRAVE_USER_AGENT_COMMON)
 BASE_DECLARE_FEATURE(kUseBraveUserAgent);
 
-bool IsUseBraveUserAgentEnabled();
-
 }  // namespace features
 }  // namespace brave_user_agent
 

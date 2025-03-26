@@ -13,8 +13,4 @@ BASE_FEATURE(kUseBraveUserAgent,
              "UseBraveUserAgent",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-bool IsUseBraveUserAgentEnabled() {
-  return base::FeatureList::IsEnabled(kUseBraveUserAgent);
-}
-
 }  // namespace brave_user_agent::features
