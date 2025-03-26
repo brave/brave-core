@@ -15,8 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.base.task.PostTask;
-import org.chromium.base.task.TaskTraits;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.brave.browser.custom_app_icons.R;
@@ -24,9 +22,12 @@ import org.chromium.brave.browser.custom_app_icons.R;
 public class CustomAppIconsAdapter extends RecyclerView.Adapter<CustomAppIconsAdapter.ViewHolder> {
 
     private CustomAppIconsEnum[] mCustomAppIcons;
+    private CustomAppIconsListener mListener;
 
-    public CustomAppIconsAdapter(CustomAppIconsEnum[] customAppIcons) {
+    public CustomAppIconsAdapter(
+            CustomAppIconsEnum[] customAppIcons, CustomAppIconsListener listener) {
         mCustomAppIcons = customAppIcons;
+        mListener = listener;
     }
 
     @NonNull
@@ -55,14 +56,10 @@ public class CustomAppIconsAdapter extends RecyclerView.Adapter<CustomAppIconsAd
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        PostTask.postDelayedTask(
-                                TaskTraits.BEST_EFFORT_MAY_BLOCK,
-                                () -> {
-                                    CustomAppIconsManager.switchIcon(
-                                            v.getContext(),
-                                            mCustomAppIcons[holder.getAdapterPosition()]);
-                                },
-                                500);
+                        if (mListener != null) {
+                            mListener.onCustomAppIconSelected(
+                                    mCustomAppIcons[holder.getAdapterPosition()]);
+                        }
                     }
                 });
     }

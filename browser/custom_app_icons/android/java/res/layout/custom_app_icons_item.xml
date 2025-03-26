@@ -24,22 +24,14 @@
             app:shapeAppearanceOverlay="@style/circleImageView"
             android:contentDescription="@null"
             android:layout_marginEnd="16dp"/>
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/icon_24"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:visibility="gone"
-            app:shapeAppearanceOverlay="@style/circleImageView"
-            android:contentDescription="@null"
-            android:layout_marginEnd="16dp"/>
         
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:textColor="@color/schemes_on_surface"/>
 
         <ImageView
             android:id="@+id/check"
@@ -57,5 +49,5 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E7E7EC"/>
+        android:background="@color/schemes_surface_container_high"/>
 </LinearLayout>

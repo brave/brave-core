@@ -89,7 +89,7 @@
   <release seq="1">
     <messages fallback_to_english="true">
     <!-- Start of Custom app icons strings -->
-    <message name="IDS_CHANGE_APP_ICONS" desc="Title of Custom App Icons settings, which allows the user to change custom app icons. [CHAR-LIMIT=32]">
+    <message name="IDS_CHANGE_APP_ICON" desc="Title of Custom App Icons settings, which allows the user to change custom app icons. [CHAR-LIMIT=32]">
         Change app icon
     </message>
     <message name="IDS_LAUNCHER_DEFAULT_TITLE" desc="Title for app icon Default">

@@ -92,9 +92,10 @@
         android:order="17"
         android:icon="@drawable/ic_appearance"
         android:title="@string/prefs_appearance"/>
-    <org.chromium.brave.browser.custom_app_icons.settings.CustomAppIconsPreference
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.brave.browser.custom_app_icons.settings.CustomAppIconsFragment"
         android:key="custom_app_icons"
+        android:title="@string/change_app_icon"
         android:order="18"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BackgroundImagesPreferences"
@@ -116,7 +117,6 @@
         android:key="support_section"
         android:order="24"
         android:title="@string/prefs_support_section"/>
-
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveSyncScreensPreference"
         android:key="brave_sync_layout"
@@ -134,13 +134,6 @@
         android:icon="@drawable/ic_custom_tabs"
         android:title="@string/prefs_use_custom_tabs_title"
         android:summary="@string/prefs_use_custom_tabs_text"/>
-    <!-- <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.settings.BraveCustomTabsPreference"
-        android:key="use_custom_tabs"
-        android:order="20"
-        android:icon="@drawable/ic_custom_tabs"
-        android:title="@string/prefs_use_custom_tabs_title"
-        android:summary="@string/prefs_use_custom_tabs_text"/> -->
     <Preference
         android:fragment="org.chromium.chrome.browser.language.settings.BraveLanguageSettings"
         android:key="brave_languages"
