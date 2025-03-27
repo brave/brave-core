@@ -42,3 +42,5 @@ This is only an estimate. The **github** view may differ.
     into `brave-core`
 *   [Adapting Chromium tests to the Brave Codebase](adapting_chromium_tests.md) -
     Suggestions on how to make chromium test work on our test targets.
+*   [Ship a File to All Clients](ship_a_file_to_all_clients.md) - How to ship a
+    file to all clients via component updater.
