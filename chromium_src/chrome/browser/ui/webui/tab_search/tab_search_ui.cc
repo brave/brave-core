@@ -26,7 +26,8 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
           profile->GetPrefs()->GetBoolean(
               ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 
-  update_data.Set("shouldShowTabOrganizationFRE",
+  // Show FRE if user doesn't explicitly enable/disble the feature pref.
+  update_data.Set("showTabOrganizationFRE",
                   !profile->GetPrefs()->HasPrefPath(
                       ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 
