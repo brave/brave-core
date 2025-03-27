@@ -13,25 +13,36 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 public class CustomAppIconsManager {
     private static final String CURRENT_APP_ICON = "current_app_icon";
+    private static final String DEFAULT_ACTIVITY_CLASS = "com.google.android.apps.chrome.Main";
 
-    public static void switchIcon(Context context, CustomAppIconsEnum customAppIconsEnum) {
+    public static void switchIcon(Context context, CustomAppIconsEnum newIcon) {
+        disableAllIcons(context);
+        enableIcon(context, newIcon);
+        setCurrentIcon(newIcon);
+    }
+
+    private static void disableAllIcons(Context context) {
         PackageManager packageManager = context.getPackageManager();
-
-        // Disable all existing icons
         for (CustomAppIconsEnum icon : CustomAppIconsEnum.values()) {
-            packageManager.setComponentEnabledSetting(
-                    new ComponentName(context.getPackageName(), getIconClass(context, icon)),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
+            setIconState(
+                    context, packageManager, icon, PackageManager.COMPONENT_ENABLED_STATE_DISABLED);
         }
+    }
 
-        // Enable the selected icon
-        packageManager.setComponentEnabledSetting(
+    private static void enableIcon(Context context, CustomAppIconsEnum icon) {
+        setIconState(
+                context,
+                context.getPackageManager(),
+                icon,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED);
+    }
+
+    private static void setIconState(
+            Context context, PackageManager packageManager, CustomAppIconsEnum icon, int state) {
+        ComponentName component =
                 new ComponentName(
-                        context.getPackageName(), getIconClass(context, customAppIconsEnum)),
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP);
-        setCurrentIcon(customAppIconsEnum);
+                        context.getPackageName(), getIconComponentClassName(context, icon));
+        packageManager.setComponentEnabledSetting(component, state, PackageManager.DONT_KILL_APP);
     }
 
     public static CustomAppIconsEnum getCurrentIcon(Context context) {
@@ -41,22 +52,21 @@ public class CustomAppIconsManager {
         return CustomAppIconsEnum.valueOf(currentIcon);
     }
 
-    private static void setCurrentIcon(CustomAppIconsEnum customAppIconsEnum) {
-        ChromeSharedPreferences.getInstance()
-                .writeString(CURRENT_APP_ICON, customAppIconsEnum.name());
+    private static void setCurrentIcon(CustomAppIconsEnum icon) {
+        ChromeSharedPreferences.getInstance().writeString(CURRENT_APP_ICON, icon.name());
     }
 
     /**
-     * Gets the fully qualified class name for the icon component. Suggested name:
-     * getIconComponentClassName
+     * Gets the fully qualified class name for the icon component.
      *
-     * @param customAppIconsEnum The enum representing which app icon to use
+     * @param context The application context
+     * @param icon The enum representing which app icon to use
      * @return The fully qualified class name for the icon component
      */
-    private static String getIconClass(Context context, CustomAppIconsEnum customAppIconsEnum) {
-        if (customAppIconsEnum == CustomAppIconsEnum.ICON_DEFAULT) {
-            return "com.google.android.apps.chrome.Main";
+    private static String getIconComponentClassName(Context context, CustomAppIconsEnum icon) {
+        if (icon == CustomAppIconsEnum.ICON_DEFAULT) {
+            return DEFAULT_ACTIVITY_CLASS;
         }
-        return context.getPackageName() + customAppIconsEnum.getAlias();
+        return context.getPackageName() + icon.getAlias();
     }
 }

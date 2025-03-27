@@ -11,7 +11,7 @@ xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_margin="16dp"
     android:padding="24dp"
-    android:background="@drawable/alert_dialog_shape">
+    android:background="@drawable/confirmation_dialog_shape">
 
     <TextView
         android:id="@+id/dialogTitle"
@@ -38,7 +38,6 @@ xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/negativeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
             android:textAllCaps="false"
             android:paddingHorizontal="12dp"
             android:layout_marginEnd="8dp"

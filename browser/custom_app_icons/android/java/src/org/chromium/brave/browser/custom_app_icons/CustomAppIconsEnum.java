@@ -4,6 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.brave.browser.custom_app_icons;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+
 public enum CustomAppIconsEnum {
     ICON_DEFAULT(
             R.mipmap.ic_launcher_3d_round,
@@ -38,25 +41,26 @@ public enum CustomAppIconsEnum {
             R.string.launcher_windows_title,
             ".IconWindowsAlias");
 
-    private final int mIcon;
-    private final int mDesc;
-    private final String mAlias;
+    private final @DrawableRes int mIconResId;
+    private final @StringRes int mDescriptionResId;
+    private final String mActivityAlias;
 
-    CustomAppIconsEnum(int icon, int desc, String alias) {
-        this.mIcon = icon;
-        this.mDesc = desc;
-        this.mAlias = alias;
+    CustomAppIconsEnum(
+            @DrawableRes int iconResId, @StringRes int descriptionResId, String activityAlias) {
+        mIconResId = iconResId;
+        mDescriptionResId = descriptionResId;
+        mActivityAlias = activityAlias;
     }
 
-    public int getIcon() {
-        return mIcon;
+    public @DrawableRes int getIcon() {
+        return mIconResId;
     }
 
-    public int getDesc() {
-        return mDesc;
+    public @StringRes int getDesc() {
+        return mDescriptionResId;
     }
 
     public String getAlias() {
-        return mAlias;
+        return mActivityAlias;
     }
 }
