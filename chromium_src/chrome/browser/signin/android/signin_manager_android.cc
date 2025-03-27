@@ -18,8 +18,7 @@ namespace {
 class UnusedClass {
  private:
   void test() {
-    Java_SigninManagerImpl_create(nullptr, 0ll, nullptr, nullptr, nullptr,
-                                  nullptr);
+    Java_SigninManagerImpl_create(nullptr, 0ll, nullptr, nullptr, nullptr);
     Java_SigninManagerImpl_destroy(nullptr, 0ll);
   }
 };
