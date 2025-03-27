@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check_deref.h"
+#include "base/check_is_test.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
@@ -329,9 +330,14 @@ void BraveShieldsActionView::OnTabStripModelChanged(
     const TabStripSelectionChange& selection) {
   if (selection.active_tab_changed()) {
     if (selection.new_contents) {
-      brave_shields::BraveShieldsTabHelper::FromWebContents(
-          selection.new_contents)
-          ->AddObserver(this);
+      auto* helper = brave_shields::BraveShieldsTabHelper::FromWebContents(
+          selection.new_contents);
+      if (helper->HasObserver(this)) {
+        // To avoid "NOTREACHED hit. Observers can only be added once!"
+        CHECK_IS_TEST();
+        helper->RemoveObserver(this);
+      }
+      helper->AddObserver(this);
     }
 
     if (selection.old_contents) {

@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
@@ -69,9 +70,13 @@ void BraveWaybackMachineTabHelper::SetWaybackStateChangedCallback(
   // callback should be set only once.
   // And it should be cleared only when there is existing one.
   if (callback) {
-    CHECK(!wayback_state_changed_callback_);
+    if (wayback_state_changed_callback_) {
+      CHECK_IS_TEST();
+    }
   } else {
-    CHECK(wayback_state_changed_callback_);
+    if (!wayback_state_changed_callback_) {
+      CHECK_IS_TEST();
+    }
   }
 
   wayback_state_changed_callback_ = std::move(callback);
