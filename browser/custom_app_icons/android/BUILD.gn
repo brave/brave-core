@@ -1,4 +1,4 @@
-# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -20,7 +20,9 @@ android_library("java") {
     ":java_resources",
     "//base:tasks_java",
     "//brave/browser/utils/android:java",
-    "//chrome/android:chrome_base_module_resources",
+    "//chrome/android:chrome_base_module_resources",  # adding dep for
+                                                      # ic_launcher &
+                                                      # themed_app_icon
     "//chrome/browser/preferences:java",
     "//third_party/androidx:androidx_annotation_annotation_java",
     "//third_party/androidx:androidx_fragment_fragment_java",
@@ -32,96 +34,58 @@ android_library("java") {
 }
 
 android_resources("java_resources") {
-  sources = [
-    "java/res/drawable-hdpi/ic_launcher_3d.webp",
-    "java/res/drawable-hdpi/ic_launcher_80s.webp",
-    "java/res/drawable-hdpi/ic_launcher_aqua.webp",
-    "java/res/drawable-hdpi/ic_launcher_bat.webp",
-    "java/res/drawable-hdpi/ic_launcher_holo.webp",
-    "java/res/drawable-hdpi/ic_launcher_neon.webp",
-    "java/res/drawable-hdpi/ic_launcher_netscape.webp",
-    "java/res/drawable-hdpi/ic_launcher_popart.webp",
-    "java/res/drawable-hdpi/ic_launcher_popartdark.webp",
-    "java/res/drawable-hdpi/ic_launcher_supernova.webp",
-    "java/res/drawable-hdpi/ic_launcher_terminal.webp",
-    "java/res/drawable-hdpi/ic_launcher_windows.webp",
-    "java/res/drawable-mdpi/ic_launcher_3d.webp",
-    "java/res/drawable-mdpi/ic_launcher_80s.webp",
-    "java/res/drawable-mdpi/ic_launcher_aqua.webp",
-    "java/res/drawable-mdpi/ic_launcher_bat.webp",
-    "java/res/drawable-mdpi/ic_launcher_holo.webp",
-    "java/res/drawable-mdpi/ic_launcher_neon.webp",
-    "java/res/drawable-mdpi/ic_launcher_netscape.webp",
-    "java/res/drawable-mdpi/ic_launcher_popart.webp",
-    "java/res/drawable-mdpi/ic_launcher_popartdark.webp",
-    "java/res/drawable-mdpi/ic_launcher_supernova.webp",
-    "java/res/drawable-mdpi/ic_launcher_terminal.webp",
-    "java/res/drawable-mdpi/ic_launcher_windows.webp",
-    "java/res/drawable-xhdpi/ic_launcher_3d.webp",
-    "java/res/drawable-xhdpi/ic_launcher_80s.webp",
-    "java/res/drawable-xhdpi/ic_launcher_aqua.webp",
-    "java/res/drawable-xhdpi/ic_launcher_bat.webp",
-    "java/res/drawable-xhdpi/ic_launcher_holo.webp",
-    "java/res/drawable-xhdpi/ic_launcher_neon.webp",
-    "java/res/drawable-xhdpi/ic_launcher_netscape.webp",
-    "java/res/drawable-xhdpi/ic_launcher_popart.webp",
-    "java/res/drawable-xhdpi/ic_launcher_popartdark.webp",
-    "java/res/drawable-xhdpi/ic_launcher_supernova.webp",
-    "java/res/drawable-xhdpi/ic_launcher_terminal.webp",
-    "java/res/drawable-xhdpi/ic_launcher_windows.webp",
-    "java/res/drawable-xxhdpi/ic_launcher_3d.webp",
-    "java/res/drawable-xxhdpi/ic_launcher_80s.webp",
-    "java/res/drawable-xxhdpi/ic_launcher_aqua.webp",
-    "java/res/drawable-xxhdpi/ic_launcher_bat.webp",
-    "java/res/drawable-xxhdpi/ic_launcher_holo.webp",
-    "java/res/drawable-xxhdpi/ic_launcher_neon.webp",
-    "java/res/drawable-xxhdpi/ic_launcher_netscape.webp",
-    "java/res/drawable-xxhdpi/ic_launcher_popart.webp",
-    "java/res/drawable-xxhdpi/ic_launcher_popartdark.webp",
-    "java/res/drawable-xxhdpi/ic_launcher_supernova.webp",
-    "java/res/drawable-xxhdpi/ic_launcher_terminal.webp",
-    "java/res/drawable-xxhdpi/ic_launcher_windows.webp",
-    "java/res/drawable-xxxhdpi/ic_launcher_3d.webp",
-    "java/res/drawable-xxxhdpi/ic_launcher_80s.webp",
-    "java/res/drawable-xxxhdpi/ic_launcher_aqua.webp",
-    "java/res/drawable-xxxhdpi/ic_launcher_bat.webp",
-    "java/res/drawable-xxxhdpi/ic_launcher_holo.webp",
-    "java/res/drawable-xxxhdpi/ic_launcher_neon.webp",
-    "java/res/drawable-xxxhdpi/ic_launcher_netscape.webp",
-    "java/res/drawable-xxxhdpi/ic_launcher_popart.webp",
-    "java/res/drawable-xxxhdpi/ic_launcher_popartdark.webp",
-    "java/res/drawable-xxxhdpi/ic_launcher_supernova.webp",
-    "java/res/drawable-xxxhdpi/ic_launcher_terminal.webp",
-    "java/res/drawable-xxxhdpi/ic_launcher_windows.webp",
+  sources = []
+  foreach(density,
+          [
+            "hdpi",
+            "mdpi",
+            "xhdpi",
+            "xxhdpi",
+            "xxxhdpi",
+          ]) {
+    sources += [
+      "java/res/drawable-${density}/ic_launcher_3d.webp",
+      "java/res/drawable-${density}/ic_launcher_80s.webp",
+      "java/res/drawable-${density}/ic_launcher_aqua.webp",
+      "java/res/drawable-${density}/ic_launcher_bat.webp",
+      "java/res/drawable-${density}/ic_launcher_holo.webp",
+      "java/res/drawable-${density}/ic_launcher_neon.webp",
+      "java/res/drawable-${density}/ic_launcher_netscape.webp",
+      "java/res/drawable-${density}/ic_launcher_popart.webp",
+      "java/res/drawable-${density}/ic_launcher_popartdark.webp",
+      "java/res/drawable-${density}/ic_launcher_supernova.webp",
+      "java/res/drawable-${density}/ic_launcher_terminal.webp",
+      "java/res/drawable-${density}/ic_launcher_windows.webp",
+    ]
+  }
+
+  sources += [
     "java/res/drawable/ic_check_circle_filled.xml",
     "java/res/layout/custom_app_icons_item.xml",
     "java/res/layout/fragment_custom_app_icons.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_3d.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_3d_round.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_80s.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_80s_round.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_aqua.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_aqua_round.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_bat.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_bat_round.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_holo.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_holo_round.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_neon.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_neon_round.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_netscape.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_netscape_round.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_popart.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_popart_round.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_popartdark.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_popartdark_round.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_supernova.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_supernova_round.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_terminal.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_terminal_round.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_windows.xml",
-    "java/res/mipmap-anydpi-v26/ic_launcher_windows_round.xml",
-    "java/res/values/custom_app_icons_style.xml",
   ]
+
+  foreach(icon,
+          [
+            "3d",
+            "80s",
+            "aqua",
+            "bat",
+            "holo",
+            "neon",
+            "netscape",
+            "popart",
+            "popartdark",
+            "supernova",
+            "terminal",
+            "windows",
+          ]) {
+    sources += [
+      "java/res/mipmap-anydpi-v26/ic_launcher_${icon}.xml",
+      "java/res/mipmap-anydpi-v26/ic_launcher_${icon}_round.xml",
+    ]
+  }
+
   deps = [ ":java_strings_grd" ]
 }
 

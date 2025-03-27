@@ -1,4 +1,3 @@
-//
 /* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -20,9 +19,8 @@ import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.brave.browser.custom_app_icons.R;
 
 public class CustomAppIconsAdapter extends RecyclerView.Adapter<CustomAppIconsAdapter.ViewHolder> {
-
-    private CustomAppIconsEnum[] mCustomAppIcons;
-    private CustomAppIconsListener mListener;
+    private final CustomAppIconsEnum[] mCustomAppIcons;
+    private final CustomAppIconsListener mListener;
 
     public CustomAppIconsAdapter(
             CustomAppIconsEnum[] customAppIcons, CustomAppIconsListener listener) {
@@ -41,25 +39,24 @@ public class CustomAppIconsAdapter extends RecyclerView.Adapter<CustomAppIconsAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.mTitle.setText(mCustomAppIcons[position].getDesc());
-        if (mCustomAppIcons[position].equals(CustomAppIconsEnum.ICON_DEFAULT)) {
-            holder.mIcon.setImageResource(R.drawable.ic_launcher);
-        } else {
-            holder.mIcon.setImageResource(mCustomAppIcons[position].getIcon());
-        }
+        CustomAppIconsEnum currentIcon = mCustomAppIcons[position];
 
-        boolean shouldShowSelected =
-                mCustomAppIcons[position].equals(
-                        CustomAppIconsManager.getCurrentIcon(holder.mView.getContext()));
-        holder.mCheck.setVisibility(shouldShowSelected ? View.VISIBLE : View.GONE);
-        holder.mView.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mListener != null) {
-                            mListener.onCustomAppIconSelected(
-                                    mCustomAppIcons[holder.getAdapterPosition()]);
-                        }
+        holder.mTitle.setText(currentIcon.getDesc());
+        holder.mIcon.setImageResource(
+                currentIcon.equals(CustomAppIconsEnum.ICON_DEFAULT)
+                        ? R.drawable.ic_launcher
+                        : currentIcon.getIcon());
+
+        boolean isSelected =
+                currentIcon.equals(
+                        CustomAppIconsManager.getCurrentIcon(holder.itemView.getContext()));
+        holder.mCheck.setVisibility(isSelected ? View.VISIBLE : View.GONE);
+
+        holder.itemView.setOnClickListener(
+                v -> {
+                    if (mListener != null) {
+                        mListener.onCustomAppIconSelected(
+                                mCustomAppIcons[holder.getAdapterPosition()]);
                     }
                 });
     }
@@ -70,14 +67,12 @@ public class CustomAppIconsAdapter extends RecyclerView.Adapter<CustomAppIconsAd
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTitle;
-        ImageView mIcon;
-        ImageView mCheck;
-        View mView;
+        final TextView mTitle;
+        final ImageView mIcon;
+        final ImageView mCheck;
 
         ViewHolder(View itemView) {
             super(itemView);
-            mView = itemView;
             mTitle = itemView.findViewById(R.id.title);
             mIcon = itemView.findViewById(R.id.icon);
             mCheck = itemView.findViewById(R.id.check);

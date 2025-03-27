@@ -1,4 +1,4 @@
-# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -14,6 +14,7 @@ android_library("java") {
     "java/src/org/chromium/brave/browser/utils/confirm_dialog/BraveConfirmationDialog.java",
     "java/src/org/chromium/brave/browser/utils/confirm_dialog/OnConfirmationDialogListener.java",
   ]
+
   deps = [
     ":java_resources",
     "//third_party/androidx:androidx_core_core_java",
@@ -24,10 +25,11 @@ android_library("java") {
 
 android_resources("java_resources") {
   sources = [
-    "java/res/drawable/alert_dialog_shape.xml",
     "java/res/drawable/brave_action_button_bg.xml",
+    "java/res/drawable/confirmation_dialog_shape.xml",
     "java/res/layout/brave_confirmation_dialog_layout.xml",
     "java/res/values-night/brave_android_utils_colors.xml",
     "java/res/values/brave_android_utils_colors.xml",
+    "java/res/values/brave_android_utils_styles.xml",
   ]
 }

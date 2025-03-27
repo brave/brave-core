@@ -396,7 +396,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             Drawable drawable =
                     DrawableUtils.getCircularDrawable(
                             getContext(), iconResource, dpToPx(getContext(), 16));
-            preference.setIcon(drawable);
+            if (drawable != null) {
+                preference.setIcon(drawable);
+            }
         }
     }
 

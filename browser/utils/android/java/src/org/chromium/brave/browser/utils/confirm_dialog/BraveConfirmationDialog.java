@@ -22,15 +22,19 @@ import org.chromium.brave.browser.utils.R;
  * all the dialog creation, configuration and display logic.
  */
 public class BraveConfirmationDialog {
+    private Dialog mDialog;
+    private Context mContext;
+    private OnConfirmationDialogListener mListener;
+
     /**
-     * Shows a confirmation dialog with customizable title, message and button text. Creates and
-     * configures a dialog with the provided parameters and displays it.
+     * Shows a confirmation dialog with customizable title, message and button text.
      *
+     * @param context The Android context
      * @param title The title text to show in the dialog header
      * @param message The message text to show in the dialog body
-     * @param positiveButtonText The text to display on the positive/confirm button
-     * @param negativeButtonText The text to display on the negative/cancel button
-     * @param listener Callback interface to handle button click events
+     * @param positiveButtonText The text for the positive/confirm button
+     * @param negativeButtonText The text for the negative/cancel button
+     * @param listener Callback interface for button click events
      */
     public void showConfirmDialog(
             Context context,
@@ -39,85 +43,53 @@ public class BraveConfirmationDialog {
             String positiveButtonText,
             String negativeButtonText,
             OnConfirmationDialogListener listener) {
-        final Dialog dialog = createDialog(context);
-        setupDialogViews(dialog, title, message);
-        setupDialogButtons(dialog, positiveButtonText, negativeButtonText, listener);
-        showDialog(dialog);
+        mContext = context;
+        mListener = listener;
+
+        initializeDialog();
+        configureDialogContent(title, message);
+        configureDialogButtons(positiveButtonText, negativeButtonText);
+        showConfiguredDialog();
     }
 
-    /**
-     * Creates and initializes a new dialog instance. Sets up basic dialog properties like window
-     * features and layout. Configures the dialog with a transparent background and custom layout.
-     *
-     * @return A configured Dialog instance ready for content setup
-     */
-    private Dialog createDialog(Context context) {
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.brave_confirmation_dialog_layout);
-        return dialog;
+    private void initializeDialog() {
+        mDialog = new Dialog(mContext);
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mDialog.setContentView(R.layout.brave_confirmation_dialog_layout);
     }
 
-    /**
-     * Sets up the dialog views including title and message. Finds and configures the title and
-     * message TextViews in the dialog layout.
-     *
-     * @param dialog The dialog whose views need to be configured
-     * @param title The title text to set
-     * @param message The message text to set
-     */
-    private void setupDialogViews(Dialog dialog, String title, String message) {
-        TextView titleTextView = dialog.findViewById(R.id.dialogTitle);
-        TextView messageTextView = dialog.findViewById(R.id.dialogMessage);
-
-        titleTextView.setText(title);
-        messageTextView.setText(message);
+    private void configureDialogContent(String title, String message) {
+        TextView titleView = mDialog.findViewById(R.id.dialogTitle);
+        TextView messageView = mDialog.findViewById(R.id.dialogMessage);
+        titleView.setText(title);
+        messageView.setText(message);
     }
 
-    /**
-     * Sets up the dialog buttons and their click listeners. Configures the positive and negative
-     * buttons with text and click handlers. When buttons are clicked, the appropriate listener
-     * method is called and dialog is dismissed.
-     *
-     * @param dialog The dialog whose buttons need to be configured
-     * @param positiveButtonText The text for the positive/confirm button
-     * @param negativeButtonText The text for the negative/cancel button
-     * @param listener The callback interface for button click events
-     */
-    private void setupDialogButtons(
-            Dialog dialog,
-            String positiveButtonText,
-            String negativeButtonText,
-            OnConfirmationDialogListener listener) {
-        Button positiveButton = dialog.findViewById(R.id.positiveButton);
-        Button negativeButton = dialog.findViewById(R.id.negativeButton);
+    private void configureDialogButtons(String positiveText, String negativeText) {
+        Button positiveButton = mDialog.findViewById(R.id.positiveButton);
+        Button negativeButton = mDialog.findViewById(R.id.negativeButton);
 
-        positiveButton.setText(positiveButtonText);
-        negativeButton.setText(negativeButtonText);
+        positiveButton.setText(positiveText);
+        negativeButton.setText(negativeText);
 
-        positiveButton.setOnClickListener(
-                v -> {
-                    listener.onPositiveButtonClicked();
-                    dialog.dismiss();
-                });
-
-        negativeButton.setOnClickListener(
-                v -> {
-                    listener.onNegativeButtonClicked();
-                    dialog.dismiss();
-                });
+        positiveButton.setOnClickListener(v -> handlePositiveClick());
+        negativeButton.setOnClickListener(v -> handleNegativeClick());
     }
 
-    /**
-     * Shows the configured dialog and sets its layout parameters. Displays the dialog and
-     * configures its window to match parent width while wrapping content height.
-     *
-     * @param dialog The fully configured dialog to be displayed
-     */
-    private void showDialog(Dialog dialog) {
-        dialog.show();
-        Window window = dialog.getWindow();
+    private void handlePositiveClick() {
+        mListener.onPositiveButtonClicked();
+        mDialog.dismiss();
+    }
+
+    private void handleNegativeClick() {
+        mListener.onNegativeButtonClicked();
+        mDialog.dismiss();
+    }
+
+    private void showConfiguredDialog() {
+        mDialog.show();
+        Window window = mDialog.getWindow();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 }
