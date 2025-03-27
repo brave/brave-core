@@ -50,7 +50,7 @@ class UploadFileHelperTest : public content::RenderViewHostTestHarness {
     base::test::TestFuture<std::optional<std::vector<mojom::UploadedImagePtr>>>
         future;
     file_helper_->UploadImage(
-        std::make_unique<ChromeSelectFilePolicy>(web_contents()),
+        std::make_unique<ChromeSelectFilePolicy>(web_contents()), false,
         future.GetCallback());
     return future.Take();
   }

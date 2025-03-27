@@ -9,6 +9,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { ConversationContext } from '../../state/conversation_context'
 import { MAX_IMAGES } from '../../../common/constants'
+import { AIChatContext } from '../../state/ai_chat_context'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -16,7 +17,8 @@ import { getLocale } from '$web-common/locale'
 // Styles
 import styles from './style.module.scss'
 
-type Props = Pick<ConversationContext, 'uploadImage' | 'conversationHistory'>
+type Props = Pick<ConversationContext, 'uploadImage' | 'conversationHistory'> &
+  Pick<AIChatContext, 'isMobile'>
 
 export default function AttachmentButtonMenu(props: Props) {
   const totalUploadedImages = props.conversationHistory.reduce(
@@ -39,7 +41,7 @@ export default function AttachmentButtonMenu(props: Props) {
             <Icon name='attachment' />
           </Button>
         </div>
-        <leo-menu-item onClick={props.uploadImage}>
+        <leo-menu-item onClick={() => props.uploadImage(false)}>
           <div className={styles.buttonContent}>
             <Icon
               className={styles.buttonIcon}
@@ -48,6 +50,17 @@ export default function AttachmentButtonMenu(props: Props) {
             {getLocale('uploadFileButtonLabel')}
           </div>
         </leo-menu-item>
+        {props.isMobile &&
+          <leo-menu-item onClick={() => props.uploadImage(true)}>
+            <div className={styles.buttonContent}>
+              <Icon
+                className={styles.buttonIcon}
+                name='camera'
+              />
+              {getLocale('takeAPictureButtonLabel')}
+            </div>
+          </leo-menu-item>
+        }
       </ButtonMenu>
     </>
   )
