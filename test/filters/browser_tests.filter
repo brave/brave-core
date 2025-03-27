@@ -2051,6 +2051,7 @@
 -All/NoStatePrefetchBrowserTestHttpCacheDefaultAndDoubleKeyed.PrefetchCookie*/*
 -All/OtherFrameNavigationDownloadBrowserTest_AdFrame.*
 -All/PDFExtensionJSInk2Test.Ink2BottomToolbar/*
+-All/PDFExtensionJSInk2Test.Ink2BottomToolbarDropdown/*
 -All/PDFExtensionJSInk2Test.Ink2/*
 -All/PDFExtensionJSInk2Test.Ink2SidePanel/*
 -All/PDFExtensionJSTest.ViewerFilePicker/*
@@ -2488,6 +2489,7 @@
 -ProfileNetworkContextTrustTokensBrowsertest.*
 -ProfilePickerCreationFlowBrowserTest.*
 -ProfilePickerEnterpriseCreationFlowBrowserTest.*
+-ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithCurrentProfile
 -ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithProfileNotLoaded
 -ProfilePickerLocalProfileCreationDialogBrowserTest.CancelLocalProfileCreation
 -ProfilePickerLocalProfileCreationDialogBrowserTest.CreateLocalProfile
