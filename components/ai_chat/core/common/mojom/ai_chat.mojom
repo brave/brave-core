@@ -409,6 +409,8 @@ interface AIChatUIHandler {
   ManagePremium();
   HandleVoiceRecognition(string conversation_uuid);
   ShowSoftKeyboard();
+  // use_media_capture is used on Android only currently. It could
+  // be used on desktop as well in the future when a camera support is added.
   UploadImage(bool use_media_capture)
       => (array<UploadedImage>? uploaded_images);
 

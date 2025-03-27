@@ -33,7 +33,9 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener {
   UploadFileHelper& operator=(const UploadFileHelper&) = delete;
 
   void UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
+#if BUILDFLAG(IS_ANDROID)
                    bool use_media_capture,
+#endif
                    mojom::AIChatUIHandler::UploadImageCallback callback);
 
  private:

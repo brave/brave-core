@@ -139,7 +139,9 @@ UploadFileHelper::UploadFileHelper(content::WebContents* web_contents,
 UploadFileHelper::~UploadFileHelper() = default;
 
 void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
+#if BUILDFLAG(IS_ANDROID)
                                    bool use_media_capture,
+#endif
                                    UploadImageCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   upload_image_callback_ = std::move(callback);

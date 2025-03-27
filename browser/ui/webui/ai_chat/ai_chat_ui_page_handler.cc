@@ -180,7 +180,10 @@ void AIChatUIPageHandler::UploadImage(bool use_media_capture,
   }
   upload_file_helper_->UploadImage(
       std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
-      use_media_capture, std::move(callback));
+#if BUILDFLAG(IS_ANDROID)
+      use_media_capture,
+#endif
+      std::move(callback));
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
