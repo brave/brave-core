@@ -262,7 +262,6 @@ ConversationHandler::ConversationHandler(
         std::move(initial_state.value());
     if (!conversation_data->associated_content.empty()) {
       CHECK(!metadata_->associated_content.empty());
-      should_send_page_contents_ = true;
       associated_content_manager_->LoadArchivedContent(metadata_,
                                                        conversation_data);
     }
@@ -363,7 +362,7 @@ void ConversationHandler::OnAssociatedContentUpdated() {
   for (auto& client : conversation_ui_handlers_) {
     client->OnAssociatedContentInfoChanged(
         associated_content_manager_->GetAssociatedContent(),
-        should_send_page_contents_);
+        associated_content_manager_->should_send());
   }
   OnStateForConversationEntriesChanged();
 }
@@ -455,12 +454,6 @@ void ConversationHandler::SetAssociatedContentDelegate(
     base::WeakPtr<AssociatedContentDelegate> delegate) {
   associated_content_manager_->SetContent(delegate.get());
 
-  // Default to send page contents when we have a valid contents.
-  // This class should only be provided with a delegate when
-  // it is allowed to use it (e.g. not internal WebUI content).
-  // The user can toggle this via the UI.
-  should_send_page_contents_ = features::IsPageContextEnabledInitially();
-
   MaybeSeedOrClearSuggestions();
   MaybeFetchOrClearContentStagedConversation();
 }
@@ -507,7 +500,7 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
       model_key, std::move(suggestions), suggestion_generation_status_,
       associated_content_manager_->GetAssociatedContent(),
-      should_send_page_contents_, current_error_);
+      associated_content_manager_->should_send(), current_error_);
 
   std::move(callback).Run(std::move(state));
 }
@@ -711,8 +704,8 @@ void ConversationHandler::SubmitHumanConversationEntry(
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
-  const bool is_page_associated =
-      IsContentAssociationPossible() && should_send_page_contents_;
+  const bool is_page_associated = associated_content_manager_->HasContent() &&
+                                  associated_content_manager_->should_send();
   if (is_page_associated) {
     // Fetch updated page content before performing generation
     GeneratePageContent(
@@ -840,9 +833,9 @@ void ConversationHandler::ModifyConversation(uint32_t turn_index,
 void ConversationHandler::SubmitSummarizationRequest() {
   // This is a special case for the pre-optin UI which has a specific button
   // to summarize the page if we're associatable with content.
-  DCHECK(IsContentAssociationPossible())
+  DCHECK(associated_content_manager_->HasContent())
       << "This conversation request is not associated with content";
-  DCHECK(should_send_page_contents_)
+  DCHECK(associated_content_manager_->should_send())
       << "This conversation request should send page contents";
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
@@ -910,11 +903,11 @@ void ConversationHandler::GenerateQuestions() {
                 << "opted in to AI Chat";
     return;
   }
-  if (!should_send_page_contents_) {
+  if (!associated_content_manager_->should_send()) {
     DLOG(ERROR) << "Cannot get suggestions when not associated with content.";
     return;
   }
-  if (!IsContentAssociationPossible()) {
+  if (!associated_content_manager_->HasContent()) {
     DLOG(ERROR)
         << "Should not be associated with content when not allowed to be";
     return;
@@ -928,7 +921,10 @@ void ConversationHandler::GenerateQuestions() {
   }
   // We're not expecting to already have generated suggestions
   const size_t expected_existing_suggestions_size =
-      (IsContentAssociationPossible() && should_send_page_contents_) ? 1u : 0u;
+      (associated_content_manager_->HasContent() &&
+       associated_content_manager_->should_send())
+          ? 1u
+          : 0u;
   if (suggestions_.size() > expected_existing_suggestions_size) {
     DLOG(ERROR) << "GenerateQuestions should not be called more than once";
     return;
@@ -977,19 +973,18 @@ void ConversationHandler::GetAssociatedContentInfo(
                          std::back_inserter(associated_content),
                          [](const auto& content) { return content->Clone(); });
   std::move(callback).Run(std::move(associated_content),
-                          should_send_page_contents_);
+                          associated_content_manager_->should_send());
 }
 
 void ConversationHandler::SetShouldSendPageContents(bool should_send) {
-  if (should_send_page_contents_ == should_send) {
+  if (associated_content_manager_->should_send() == should_send) {
     return;
   }
-  if (!IsContentAssociationPossible() && should_send) {
+  if (!associated_content_manager_->HasContent() && should_send) {
     return;
   }
-  should_send_page_contents_ = should_send;
+  associated_content_manager_->SetShouldSend(should_send);
 
-  OnAssociatedContentUpdated();
   MaybeSeedOrClearSuggestions();
   MaybeFetchOrClearContentStagedConversation();
 }
@@ -1267,8 +1262,8 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 }
 
 void ConversationHandler::MaybeSeedOrClearSuggestions() {
-  const bool is_page_associated =
-      IsContentAssociationPossible() && should_send_page_contents_;
+  const bool is_page_associated = associated_content_manager_->HasContent() &&
+                                  associated_content_manager_->should_send();
 
   if (!is_page_associated) {
     suggestions_.clear();
@@ -1347,7 +1342,8 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
   }
 
   const bool can_check_for_staged_conversation =
-      IsContentAssociationPossible() && should_send_page_contents_;
+      associated_content_manager_->HasContent() &&
+      associated_content_manager_->should_send();
   if (!can_check_for_staged_conversation) {
     // Clear any staged conversation entries since user might have unassociated
     // content with this conversation
@@ -1369,8 +1365,9 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
 void ConversationHandler::OnGetStagedEntriesFromContent(
     const std::optional<std::vector<SearchQuerySummary>>& entries) {
   // Check if all requirements are still met.
-  if (is_request_in_progress_ || !entries || !IsContentAssociationPossible() ||
-      !should_send_page_contents_) {
+  if (is_request_in_progress_ || !entries ||
+      !associated_content_manager_->HasContent() ||
+      !associated_content_manager_->should_send()) {
     return;
   }
 
@@ -1403,10 +1400,10 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
 
 void ConversationHandler::GeneratePageContent(GetPageContentCallback callback) {
   VLOG(1) << __func__;
-  DCHECK(should_send_page_contents_);
-  DCHECK(IsContentAssociationPossible())
+  DCHECK(associated_content_manager_->should_send());
+  DCHECK(associated_content_manager_->HasContent())
       << "Shouldn't have been asked to generate page text when "
-      << "|IsContentAssociationPossible()| is false.";
+      << "|associated_content_manager_->HasContent()| is false.";
 
   // Make sure user is opted in since this may make a network request
   // for more page content (e.g. video transcript).
@@ -1650,10 +1647,6 @@ void ConversationHandler::OnConversationEntryAdded(
   OnHistoryUpdate();
 }
 
-bool ConversationHandler::IsContentAssociationPossible() {
-  return associated_content_manager_->HasContent();
-}
-
 void ConversationHandler::UpdateAssociatedContentInfo() {
   metadata_->associated_content =
       associated_content_manager_->GetAssociatedContent();
@@ -1752,7 +1745,7 @@ size_t ConversationHandler::GetConversationHistorySize() {
 }
 
 bool ConversationHandler::should_send_page_contents() const {
-  return should_send_page_contents_;
+  return associated_content_manager_->should_send();
 }
 
 mojom::APIError ConversationHandler::current_error() const {

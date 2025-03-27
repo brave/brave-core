@@ -395,7 +395,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void InitEngine();
   void UpdateAssociatedContentInfo();
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
-  bool IsContentAssociationPossible();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
   void PerformAssistantGeneration(std::string page_content = "",
                                   bool is_video = false,
@@ -476,15 +475,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   mojom::SuggestionGenerationStatus suggestion_generation_status_ =
       mojom::SuggestionGenerationStatus::None;
 
-  // TODO(petemill): Remove the AssociatedContentDelegate when
-  // not sending paging contents instead of keeping track with a bool,
-  // so that it's impossible to use page content when disconnected.
-  // The UI can have access to the UI's associated content in order
-  // to both get metadata and and ask this conversation to be associated with
-  // it. This would also be a good strategy if we can keep a conversation
-  // but change AssociatedContentDelegate as the active Tab navigates to
-  // different pages.
-  bool should_send_page_contents_ = false;
   bool is_content_refined_ = false;
   // When this is true, the most recent content retrieval was different to the
   // previous one.

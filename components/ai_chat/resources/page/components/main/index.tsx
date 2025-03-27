@@ -86,7 +86,7 @@ function Main() {
   const showContextToggle =
     (conversationContext.conversationHistory.length === 0 ||
       isLastTurnBraveSearchSERPSummary) &&
-    !!conversationContext.associatedContentInfo
+    !!conversationContext.associatedContentInfo.length
 
   const showAttachments = useSupportsAttachments()
     && conversationContext.showAttachments

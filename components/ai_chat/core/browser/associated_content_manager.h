@@ -39,7 +39,8 @@ class AssociatedContentManager
                          bool is_video);
 
   // Adds a content driver to the list of content drivers.
-  void AddContent(ConversationHandler::AssociatedContentDelegate* driver);
+  void AddContent(ConversationHandler::AssociatedContentDelegate* driver,
+                  bool notify_updated = true);
 
   // Removes a content driver from the list of content drivers.
   void RemoveContent(ConversationHandler::AssociatedContentDelegate* driver);
@@ -72,7 +73,12 @@ class AssociatedContentManager
   void OnContentChanged(
       ConversationHandler::AssociatedContentDelegate* delegate) override;
 
+  bool should_send() const { return should_send_; }
+  void SetShouldSend(bool value);
+
  private:
+  bool should_send_ = false;
+
   raw_ptr<ConversationHandler> conversation_;
 
   std::vector<ConversationHandler::AssociatedContentDelegate*> content_drivers_;
