@@ -15,9 +15,11 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/uuid.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace ai_chat {
@@ -35,8 +37,15 @@ void AssociatedContentManager::SetContent(
   archive_content_.clear();
 
   if (delegate) {
-    AddContent(delegate);
+    AddContent(delegate, /*notify_updated=*/false);
   }
+
+  // Default to send page contents when we have a valid contents.
+  // This class should only be provided with a delegate when
+  // it is allowed to use it (e.g. not internal WebUI content).
+  // The user can toggle this via the UI.
+  should_send_ = features::IsPageContextEnabledInitially();
+  conversation_->OnAssociatedContentUpdated();
 }
 
 void AssociatedContentManager::LoadArchivedContent(
@@ -59,8 +68,13 @@ void AssociatedContentManager::LoadArchivedContent(
     archive_content_.push_back(std::make_unique<AssociatedArchiveContent>(
         content->url, archive_content->content,
         base::UTF8ToUTF16(content->title), is_video, content->uuid));
-    AddContent(archive_content_.back().get());
+    AddContent(archive_content_.back().get(), /*notify_updated=*/false);
   }
+
+  // If we restored content from an archive then it was used in the conversation
+  // so we should send it.
+  should_send_ = !metadata->associated_content.empty();
+  conversation_->OnAssociatedContentUpdated();
 }
 
 void AssociatedContentManager::SetArchiveContent(int content_id,
@@ -85,14 +99,21 @@ void AssociatedContentManager::SetArchiveContent(int content_id,
 }
 
 void AssociatedContentManager::AddContent(
-    ConversationHandler::AssociatedContentDelegate* delegate) {
+    ConversationHandler::AssociatedContentDelegate* delegate,
+    bool notify_updated) {
   CHECK_EQ(conversation_->GetConversationHistorySize(), 0u)
       << "Cannot add content to an associated content manager with a "
          "conversation history.";
 
+  // If we're adding content, we probably want to send it.
+  should_send_ = true;
+
   content_drivers_.push_back(delegate);
   content_observations_.AddObservation(delegate);
-  conversation_->OnAssociatedContentUpdated();
+
+  if (notify_updated) {
+    conversation_->OnAssociatedContentUpdated();
+  }
 }
 
 void AssociatedContentManager::RemoveContent(
@@ -104,7 +125,8 @@ void AssociatedContentManager::RemoveContent(
   auto it = std::ranges::find(content_drivers_, delegate,
                               [](const auto& ptr) { return ptr; });
   if (it != content_drivers_.end()) {
-    // Let the content know it isn't associated with this conversation anymore.
+    // Let the content know it isn't associated with this conversation
+    // anymore.
     content_observations_.RemoveObservation(delegate);
     content_drivers_.erase(it);
   }
@@ -117,6 +139,8 @@ void AssociatedContentManager::RemoveContent(
     archive_content_.erase(archive_it);
   }
 
+  // If we're modifying the associated content, we probably want to send it.
+  should_send_ = !content_drivers_.empty();
   conversation_->OnAssociatedContentUpdated();
 }
 
@@ -257,6 +281,11 @@ bool AssociatedContentManager::HasContent() const {
 bool AssociatedContentManager::IsVideo() const {
   return content_drivers_.size() == 1 &&
          content_drivers_[0]->GetCachedIsVideo();
+}
+
+void AssociatedContentManager::SetShouldSend(bool value) {
+  should_send_ = value && HasContent();
+  conversation_->OnAssociatedContentUpdated();
 }
 
 void AssociatedContentManager::OnRequestArchive(
