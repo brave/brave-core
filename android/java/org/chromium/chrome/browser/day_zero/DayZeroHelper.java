@@ -8,19 +8,21 @@ package org.chromium.chrome.browser.day_zero;
 import org.jni_zero.CalledByNative;
 
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 public class DayZeroHelper {
     private static final String TAG = "DayZeroHelper";
 
     @CalledByNative
-    private static void setDayZeroExptAndroid(boolean shouldShowFeatures) {
+    private static void setDayZeroVariant(String variant) {
+        Log.d(TAG, "setDayZeroVariant: " + variant);
         ChromeSharedPreferences.getInstance()
-                .writeBoolean(BravePreferenceKeys.DAY_ZERO_EXPT_FLAG, shouldShowFeatures);
+                .writeString(BravePreferenceKeys.DAY_ZERO_EXPT_VARIANT, variant);
     }
 
-    public static boolean getDayZeroExptFlag() {
+    public static String getDayZeroVariant() {
         return ChromeSharedPreferences.getInstance()
-                .readBoolean(BravePreferenceKeys.DAY_ZERO_EXPT_FLAG, true);
+                .readString(BravePreferenceKeys.DAY_ZERO_EXPT_VARIANT, "");
     }
 }
