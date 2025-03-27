@@ -1311,6 +1311,7 @@ if (is_android) {
       "//chrome/browser/safety_check/android:java",
       "//chrome/browser/search_engines/android:java",
       "//chrome/browser/settings:test_support_java",
+      "//chrome/browser/sync/android:java",
       "//chrome/browser/tab:java",
       "//chrome/browser/tab_ui/android:java",
       "//chrome/browser/tabmodel:java",
