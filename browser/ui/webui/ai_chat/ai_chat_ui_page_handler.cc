@@ -172,13 +172,17 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {
 #endif
 }
 
-void AIChatUIPageHandler::UploadImage(UploadImageCallback callback) {
+void AIChatUIPageHandler::UploadImage(bool use_media_capture,
+                                      UploadImageCallback callback) {
   if (!upload_file_helper_) {
     upload_file_helper_ =
         std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
   }
   upload_file_helper_->UploadImage(
       std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
+#if BUILDFLAG(IS_ANDROID)
+      use_media_capture,
+#endif
       std::move(callback));
 }
 
@@ -227,7 +231,6 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
 
-#if !BUILDFLAG(IS_ANDROID)
   content::WebContents* contents_to_navigate =
       (active_chat_tab_helper_) ? active_chat_tab_helper_->web_contents()
                                 : owner_web_contents_.get();
@@ -235,11 +238,6 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
       {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
        ui::PAGE_TRANSITION_LINK, false},
       /*navigation_handle_callback=*/{});
-#else
-  // We handle open link different on Android as we need to close the chat
-  // window because it's always full screen
-  ai_chat::OpenURL(url.spec());
-#endif
 }
 
 void AIChatUIPageHandler::OpenStorageSupportUrl() {

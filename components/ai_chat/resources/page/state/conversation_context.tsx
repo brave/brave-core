@@ -65,7 +65,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
 
   showAttachments: boolean
   setShowAttachments: (show: boolean) => void
-  uploadImage: () => void
+  uploadImage: (useMediaCapture: boolean) => void
   removeImage: (index: number) => void
   pendingMessageImages: Mojom.UploadedImage[] | null
 }
@@ -109,7 +109,7 @@ const defaultContext: ConversationContext = {
   setIsToolsMenuOpen: () => { },
   showAttachments: false,
   setShowAttachments: () => { },
-  uploadImage: () => { },
+  uploadImage: (useMediaCapture: boolean) => { },
   removeImage: () => { },
   pendingMessageImages: null,
   ...defaultSendFeedbackState,
@@ -507,8 +507,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.uiHandler?.handleVoiceRecognition(context.conversationUuid)
   }
 
-  const uploadImage = () => {
-    aiChatContext.uiHandler?.uploadImage()
+  const uploadImage = (useMediaCapture: boolean) => {
+    aiChatContext.uiHandler?.uploadImage(useMediaCapture)
     .then(({uploadedImages}) => {
       if (uploadedImages) {
         const totalUploadedImages = context.conversationHistory.reduce(

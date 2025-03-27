@@ -510,6 +510,9 @@
   <message name="IDS_AI_CHAT_UPLOAD_FILE_BUTTON_LABEL" desc="The button label for upload file">
     Upload file...
   </message>
+  <message name="IDS_AI_CHAT_TAKE_A_PICTURE_BUTTON_LABEL" desc="The button label for upload a picture from camera">
+    Take a picture...
+  </message>
   <message name="IDS_AI_CHAT_SCREENSHOT_BUTTON_LABEL" desc="The button label for screenshot">
     Screenshot
   </message>

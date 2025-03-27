@@ -176,6 +176,7 @@ function InputBox(props: InputBoxProps) {
           <AttachmentButtonMenu
             uploadImage={props.context.uploadImage}
             conversationHistory={props.context.conversationHistory}
+            isMobile={props.context.isMobile}
           />
         </div>
         <div>
