@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check_deref.h"
+#include "base/check_is_test.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
@@ -329,9 +330,39 @@ void BraveShieldsActionView::OnTabStripModelChanged(
     const TabStripSelectionChange& selection) {
   if (selection.active_tab_changed()) {
     if (selection.new_contents) {
-      brave_shields::BraveShieldsTabHelper::FromWebContents(
-          selection.new_contents)
-          ->AddObserver(this);
+      auto* helper = brave_shields::BraveShieldsTabHelper::FromWebContents(
+          selection.new_contents);
+      // Some upstream tests (ex, *.TestGroupDetachedAndReInserted)
+      // do tab group detach & re-attach by raw api w/o updating active tab
+      // state that happens in product. In production, let say we have 4 tabs
+      // (tab A, B, C and D) in window A. made a tab group with tab A and B. and
+      // Current active tab is D. When that tab group is dragged and detached,
+      // tab A becomes active tab during the dragging(before detach) and active
+      // tab could be tab C or D in window A after detached. Then, new window B
+      // is created after tab group is detached. And tab A(or B) could become
+      // active tab in window B. If that tab group in window B is detached, tab
+      // A(in window B) becomes as inactive tab and it becomes active tab in
+      // window A after that tab group is attached to window A. This is a tab
+      // activation flow in production. In the test(ex,
+      // TabGroupsApiTest.TestGroupDetachedAndReInserted), that tab group is
+      // detached by calling DetachTabGroupForInsertion(group). During that
+      // detaching, any tab activation change signal is not delivered because
+      // this test omits tab group dragging step before detaching. So, tab D is
+      // still active Tab after calling that api. And then, this tab group is
+      // re-inserted by calling InsertDetachedTabGroupAt(). When this happens,
+      // window A gets active tab changed signal via OnTabStripModelChanged().
+      // and |selection| args delivered by OnTabStripModelChanged() gives true
+      // for `active_tab_changed()`. and |selection.new_contents| points to D.
+      // Because of this tab D gets activated signal twice. Or
+      // `active_tab_changed()` should give false if active tab is still D.
+      // In production, tab A is active tab instead of tab D. IMO, that upstream
+      // test should be improved.
+      if (helper->HasObserver(this)) {
+        // To avoid "NOTREACHED hit. Observers can only be added once!"
+        CHECK_IS_TEST();
+        helper->RemoveObserver(this);
+      }
+      helper->AddObserver(this);
     }
 
     if (selection.old_contents) {
@@ -343,5 +374,37 @@ void BraveShieldsActionView::OnTabStripModelChanged(
   }
 }
 
+void BraveShieldsActionView::OnTabGroupChanged(const TabGroupChange& change) {
+  if (change.type != TabGroupChange::kCreated ||
+      change.GetCreateChange()->reason() !=
+          TabGroupChange::TabGroupCreationReason::
+              kInsertedFromAnotherTabstrip) {
+    return;
+  }
+
+  const int active_index = tab_strip_model_->active_index();
+  if (tab_strip_model_->empty() || active_index == TabStripModel::kNoTab) {
+    return;
+  }
+
+  // Why we have to find previous active web contents and reset callback here?
+  // We remove observer when it becomes inactive tab via
+  // OnTabStripModelChanged(). However, it doesn't work as expected when active
+  // tab is changed by tab group re-attaching. When it's re-attached, new tab
+  // from tab group is activated but |selection.old_contents| is null when
+  // OnTabStripModelChanged(). So can't have change to do it from
+  // OnTabStripModelChanged(). Curious why it's null. I think it should point to
+  // previous active web contents.
+  const int tab_count = tab_strip_model_->count();
+  for (int i = 0; i < tab_count; ++i) {
+    if (i == active_index) {
+      continue;
+    }
+
+    auto* web_contents = tab_strip_model_->GetWebContentsAt(i);
+    brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents)
+        ->RemoveObserver(this);
+  }
+}
 BEGIN_METADATA(BraveShieldsActionView)
 END_METADATA

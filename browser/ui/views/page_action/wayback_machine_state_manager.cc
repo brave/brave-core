@@ -72,6 +72,42 @@ void WaybackMachineStateManager::OnTabStripModelChanged(
   }
 }
 
+void WaybackMachineStateManager::OnTabGroupChanged(
+    const TabGroupChange& change) {
+  if (change.type != TabGroupChange::kCreated ||
+      change.GetCreateChange()->reason() !=
+          TabGroupChange::TabGroupCreationReason::
+              kInsertedFromAnotherTabstrip) {
+    return;
+  }
+
+  auto* model = browser_->tab_strip_model();
+  const int active_index = model->active_index();
+  if (model->empty() || active_index == TabStripModel::kNoTab) {
+    return;
+  }
+
+  // Why we have to find previous active web contents and reset callback here?
+  // We clear callback when it becomes inactive tab via
+  // OnTabStripModelChanged(). However, it doesn't work as expected when active
+  // tab is changed by tab group re-attaching. When it's re-attached, new tab
+  // from tab group is activated but |selection.old_contents| is null when
+  // OnTabStripModelChanged(). Curious why it's null. I think it should point to
+  // previous active web contents.
+  const int tab_count = model->count();
+  for (int i = 0; i < tab_count; ++i) {
+    if (i == active_index) {
+      continue;
+    }
+
+    auto* web_contents = model->GetWebContentsAt(i);
+    auto* tab_helper =
+        BraveWaybackMachineTabHelper::FromWebContents(web_contents);
+    CHECK(tab_helper);
+    tab_helper->SetWaybackStateChangedCallback(base::NullCallback());
+  }
+}
+
 void WaybackMachineStateManager::OnWaybackStateChanged(WaybackState state) {
   icon_->Update();
 }
