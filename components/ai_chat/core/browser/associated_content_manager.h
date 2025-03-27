@@ -58,6 +58,7 @@ class AssociatedContentManager
 
   bool HasOpenAIChatPermission() const;
   bool HasArchiveContent() const;
+  bool HasContent() const;
 
   // Determines if the content for this conversation is a single video.
   bool IsVideo() const;
