@@ -485,8 +485,8 @@ std::string RewardsServiceImpl::GetCountryCode() const {
   std::string declared_geo = prefs_->GetString(prefs::kDeclaredGeo);
   return !declared_geo.empty()
              ? declared_geo
-             : country_codes::CountryIDToCountryString(
-                   country_codes::GetCountryIDFromPrefs(prefs_));
+             : std::string(
+                   country_codes::GetCountryIDFromPrefs(prefs_).CountryCode());
 }
 
 void RewardsServiceImpl::GetAvailableCountries(
