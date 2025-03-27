@@ -2584,7 +2584,6 @@ extension BrowserViewController: SettingsDelegate {
 
   func settingsCreateFakeBookmarks() {
     let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=Bookmarks\($0)")! }
-    let tabIsPrivate = TabType.of(tabManager.selectedTab).isPrivate
     for (index, url) in urls.enumerated() {
       braveCore.bookmarksAPI.createBookmark(
         withTitle: "QA-Bookmark - BraveSearch - \(index)",
@@ -2595,11 +2594,11 @@ extension BrowserViewController: SettingsDelegate {
 
   func settingsCreateFakeHistory() {
     let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=History\($0)")! }
-    let tabIsPrivate = TabType.of(tabManager.selectedTab).isPrivate
     for (index, url) in urls.enumerated() {
-      braveCore.bookmarksAPI.createBookmark(
-        withTitle: "QA-History - BraveSearch - \(index)",
-        url: url
+      braveCore.historyAPI.add(
+        url: url,
+        title: "QA-History - BraveSearch - \(index)",
+        dateAdded: Date()
       )
     }
   }
