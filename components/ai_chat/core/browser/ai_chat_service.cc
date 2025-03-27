@@ -34,6 +34,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -1019,8 +1020,14 @@ void AIChatService::AssociateContent(
     return;
   }
 
-  MaybeAssociateContentWithConversation(conversation, content->GetContentId(),
-                                        content->GetWeakPtr());
+  conversation->associated_content_manager()->AddContent(content);
+
+  // Record that this is the latest conversation for this content. Even
+  // if we don't call SetAssociatedContentDelegate, the conversation still
+  // has a default Tab's navigation for which is is associated. The Conversation
+  // won't use that Tab's Page for context.
+  content_conversations_.insert_or_assign(
+      content->GetContentId(), conversation->get_conversation_uuid());
 }
 
 void AIChatService::DisassociateContent(
@@ -1033,8 +1040,16 @@ void AIChatService::DisassociateContent(
   if (!conversation) {
     return;
   }
-  conversation->SetAssociatedContentDelegate(nullptr);
-  content_conversations_.erase(content->GetContentId());
+
+  conversation->associated_content_manager()->RemoveContent(content);
+
+  // If there are no more conversations associated with this content, remove
+  // the pointer to this conversation from the cache.
+  if (conversation->associated_content_manager()
+          ->GetAssociatedContent()
+          .empty()) {
+    content_conversations_.erase(content->GetContentId());
+  }
 }
 
 void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
