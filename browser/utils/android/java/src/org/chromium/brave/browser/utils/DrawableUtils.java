@@ -26,31 +26,41 @@ public class DrawableUtils {
      * @return A circular BitmapDrawable, or null if the input drawable cannot be loaded
      */
     public static Drawable getCircularDrawable(Context context, int drawableResId, int size) {
-        // Load the source drawable
-        Drawable drawable = ContextCompat.getDrawable(context, drawableResId);
-        if (drawable == null) {
+        Drawable sourceDrawable = loadSourceDrawable(context, drawableResId);
+        if (sourceDrawable == null) {
             return null;
         }
 
-        // First convert the drawable to a square bitmap of the desired size
-        Bitmap sourceBitmap = drawableToBitmap(drawable, size, size);
+        Bitmap sourceBitmap = drawableToBitmap(sourceDrawable, size, size);
+        return createCircularBitmapDrawable(context, sourceBitmap, size);
+    }
 
-        // Create a new bitmap that will hold the circular result
+    private static Drawable loadSourceDrawable(Context context, int drawableResId) {
+        return ContextCompat.getDrawable(context, drawableResId);
+    }
+
+    private static BitmapDrawable createCircularBitmapDrawable(
+            Context context, Bitmap sourceBitmap, int size) {
         Bitmap outputBitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(outputBitmap);
 
-        // Set up the paint with a shader that will mask the bitmap to a circle
+        Paint paint = createCircularPaint(sourceBitmap);
+        drawCircle(canvas, size, paint);
+
+        return new BitmapDrawable(context.getResources(), outputBitmap);
+    }
+
+    private static Paint createCircularPaint(Bitmap sourceBitmap) {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setShader(
                 new BitmapShader(sourceBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+        return paint;
+    }
 
-        // Draw a circle using the bitmap shader
+    private static void drawCircle(Canvas canvas, int size, Paint paint) {
         float radius = size / 2f;
         canvas.drawCircle(radius, radius, radius, paint);
-
-        // Convert back to a drawable and return
-        return new BitmapDrawable(context.getResources(), outputBitmap);
     }
 
     /**
@@ -64,13 +74,8 @@ public class DrawableUtils {
     private static Bitmap drawableToBitmap(Drawable drawable, int width, int height) {
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-
-        // Set the drawable's bounds to match the canvas
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-
-        // Draw the drawable onto the bitmap canvas
+        drawable.setBounds(0, 0, width, height);
         drawable.draw(canvas);
-
         return bitmap;
     }
 }

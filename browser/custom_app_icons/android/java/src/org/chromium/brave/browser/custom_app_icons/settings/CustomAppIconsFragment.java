@@ -22,7 +22,7 @@ import org.chromium.brave.browser.utils.confirm_dialog.BraveConfirmationDialog;
 import org.chromium.brave.browser.utils.confirm_dialog.OnConfirmationDialogListener;
 
 public class CustomAppIconsFragment extends Fragment implements CustomAppIconsListener {
-
+    private static final String TAG = "CustomAppIconsFragment";
     private RecyclerView mRecyclerView;
 
     @Override
@@ -30,38 +30,53 @@ public class CustomAppIconsFragment extends Fragment implements CustomAppIconsLi
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_custom_app_icons, container, false);
+        return setupView(inflater.inflate(R.layout.fragment_custom_app_icons, container, false));
+    }
 
+    private View setupView(View view) {
         mRecyclerView = view.findViewById(R.id.custom_app_icons_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(new CustomAppIconsAdapter(CustomAppIconsEnum.values(), this));
-
+        mRecyclerView.setAdapter(createAdapter());
         return view;
+    }
+
+    private CustomAppIconsAdapter createAdapter() {
+        return new CustomAppIconsAdapter(CustomAppIconsEnum.values(), this);
     }
 
     @Override
     public void onCustomAppIconSelected(CustomAppIconsEnum icon) {
-        OnConfirmationDialogListener listener =
-                new OnConfirmationDialogListener() {
-                    @Override
-                    public void onPositiveButtonClicked() {
-                        CustomAppIconsManager.switchIcon(requireActivity(), icon);
-                        requireActivity().onBackPressed();
-                    }
+        showConfirmationDialog(icon);
+    }
 
-                    @Override
-                    public void onNegativeButtonClicked() {
-                        // Do nothing
-                    }
-                };
+    private void showConfirmationDialog(CustomAppIconsEnum icon) {
+        OnConfirmationDialogListener listener = createDialogListener(icon);
+        new BraveConfirmationDialog()
+                .showConfirmDialog(
+                        getContext(),
+                        getString(R.string.change_app_icon),
+                        getString(R.string.custom_app_icons_switch_icon_message),
+                        getString(R.string.custom_app_icons_switch_icon_positive_button_text),
+                        getString(R.string.custom_app_icons_switch_icon_negative_button_text),
+                        listener);
+    }
 
-        BraveConfirmationDialog confirmationDialog = new BraveConfirmationDialog();
-        confirmationDialog.showConfirmDialog(
-                getContext(),
-                getString(R.string.change_app_icon),
-                getString(R.string.custom_app_icons_switch_icon_message),
-                getString(R.string.custom_app_icons_switch_icon_positive_button_text),
-                getString(R.string.custom_app_icons_switch_icon_negative_button_text),
-                listener);
+    private OnConfirmationDialogListener createDialogListener(CustomAppIconsEnum icon) {
+        return new OnConfirmationDialogListener() {
+            @Override
+            public void onPositiveButtonClicked() {
+                handleIconSwitch(icon);
+            }
+
+            @Override
+            public void onNegativeButtonClicked() {
+                // No action needed
+            }
+        };
+    }
+
+    private void handleIconSwitch(CustomAppIconsEnum icon) {
+        CustomAppIconsManager.switchIcon(requireActivity(), icon);
+        requireActivity().onBackPressed();
     }
 }

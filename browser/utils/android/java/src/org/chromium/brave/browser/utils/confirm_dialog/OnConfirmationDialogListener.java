@@ -6,13 +6,19 @@
 package org.chromium.brave.browser.utils.confirm_dialog;
 
 /**
- * Interface to handle dialog button click events. Implementing classes can provide custom behavior
- * for positive and negative button clicks.
+ * Interface for handling confirmation dialog button clicks. Implementations can define custom
+ * behavior for when the user confirms or cancels.
  */
 public interface OnConfirmationDialogListener {
-    /** Called when the positive/confirm button is clicked */
+    /**
+     * Called when the user clicks the confirm/positive button. Implementations should handle the
+     * confirmation action.
+     */
     void onPositiveButtonClicked();
 
-    /** Called when the negative/cancel button is clicked */
+    /**
+     * Called when the user clicks the cancel/negative button. Implementations should handle the
+     * cancellation action.
+     */
     void onNegativeButtonClicked();
 }
