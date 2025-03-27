@@ -29,8 +29,9 @@ class AssociatedContentManager
   void SetContent(ConversationHandler::AssociatedContentDelegate* delegate);
 
   // Sets the content from the conversation archive.
-  void LoadArchivedContent(const mojom::Conversation* metadata,
-                           const mojom::ConversationArchivePtr& conversation_archive);
+  void LoadArchivedContent(
+      const mojom::Conversation* metadata,
+      const mojom::ConversationArchivePtr& conversation_archive);
 
   // Replaces |content_id| with some archived content.
   void SetArchiveContent(int content_id,
@@ -74,8 +75,7 @@ class AssociatedContentManager
  private:
   raw_ptr<ConversationHandler> conversation_;
 
-  std::vector<ConversationHandler::AssociatedContentDelegate*>
-      content_drivers_;
+  std::vector<ConversationHandler::AssociatedContentDelegate*> content_drivers_;
 
   // Used for ownership - still stored in the above array.
   std::vector<std::unique_ptr<AssociatedArchiveContent>> archive_content_;

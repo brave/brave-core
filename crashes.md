@@ -9,3 +9,8 @@ Don't land until these are all resolved!
 - [ ] Setting the associated content to nothing crashes when the conversation is started.
 
     Probably same root cause as above?
+
+- [x] Clearing data with a multi content conversation open
+
+    This is being caused by shutting down with a reference to a AssociatedContentDelegate still
+    live in the AssociatedContentManager. Fix is probably an OnDestroying notification.
