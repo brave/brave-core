@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.test.filters.SmallTest;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,9 +35,6 @@ public class BraveMainSettingsFragmentTest {
         Looper.prepare();
         DeveloperSettings.setIsEnabledForTests(true);
     }
-
-    @After
-    public void tearDown() {}
 
     private static final String[] sSortedPrefKeys = {
         "features_section",
