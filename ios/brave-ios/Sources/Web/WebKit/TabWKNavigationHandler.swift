@@ -340,6 +340,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
   ) {
     guard let tab, let url = webView.url else { return }
     tab.redirectChain.append(url)
+    tab.didRedirectNavigation()
   }
 
   /// Invoked when an error occurs while starting to load data for the main frame.

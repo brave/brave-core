@@ -24,6 +24,8 @@ protocol TabStateImpl: TabState {
 
   func didCommitNavigation()
 
+  func didRedirectNavigation()
+
   func didFinishNavigation()
 
   func didFailNavigation(with error: Error)
@@ -115,6 +117,12 @@ extension TabStateImpl {
   func didCommitNavigation() {
     observers.forEach {
       $0.tabDidCommitNavigation(self)
+    }
+  }
+
+  func didRedirectNavigation() {
+    observers.forEach {
+      $0.tabDidRedirectNavigation(self)
     }
   }
 

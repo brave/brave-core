@@ -14,6 +14,7 @@ public protocol TabObserver: AnyObject {
 
   func tabDidStartNavigation(_ tab: any TabState)
   func tabDidCommitNavigation(_ tab: any TabState)
+  func tabDidRedirectNavigation(_ tab: any TabState)
   func tabDidFinishNavigation(_ tab: any TabState)
   func tab(_ tab: any TabState, didFailNavigationWithError error: Error)
 
@@ -43,6 +44,7 @@ extension TabObserver {
 
   public func tabDidStartNavigation(_ tab: any TabState) {}
   public func tabDidCommitNavigation(_ tab: any TabState) {}
+  public func tabDidRedirectNavigation(_ tab: any TabState) {}
   public func tabDidFinishNavigation(_ tab: any TabState) {}
   public func tab(_ tab: any TabState, didFailNavigationWithError error: Error) {}
 
@@ -67,6 +69,7 @@ class AnyTabObserver: TabObserver, Hashable {
 
   private let _tabDidStartNavigation: (any TabState) -> Void
   private let _tabDidCommitNavigation: (any TabState) -> Void
+  private let _tabDidRedirectNavigation: (any TabState) -> Void
   private let _tabDidFinishNavigation: (any TabState) -> Void
   private let _tabDidFailNavigationWithError: (any TabState, Error) -> Void
 
@@ -96,6 +99,7 @@ class AnyTabObserver: TabObserver, Hashable {
     _tabWasHidden = { [weak observer] in observer?.tabWasHidden($0) }
     _tabDidStartNavigation = { [weak observer] in observer?.tabDidStartNavigation($0) }
     _tabDidCommitNavigation = { [weak observer] in observer?.tabDidCommitNavigation($0) }
+    _tabDidRedirectNavigation = { [weak observer] in observer?.tabDidRedirectNavigation($0) }
     _tabDidFinishNavigation = { [weak observer] in observer?.tabDidFinishNavigation($0) }
     _tabDidFailNavigationWithError = { [weak observer] in
       observer?.tab($0, didFailNavigationWithError: $1)
@@ -133,6 +137,9 @@ class AnyTabObserver: TabObserver, Hashable {
   }
   func tabDidCommitNavigation(_ tab: any TabState) {
     _tabDidCommitNavigation(tab)
+  }
+  func tabDidRedirectNavigation(_ tab: any TabState) {
+    _tabDidRedirectNavigation(tab)
   }
   func tabDidFinishNavigation(_ tab: any TabState) {
     _tabDidFinishNavigation(tab)
