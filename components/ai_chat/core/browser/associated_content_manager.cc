@@ -30,12 +30,9 @@ AssociatedContentManager::~AssociatedContentManager() = default;
 
 void AssociatedContentManager::SetContent(
     ConversationHandler::AssociatedContentDelegate* delegate) {
-  // CHECK_EQ(conversation_->GetConversationHistorySize(), 0u)
-  //     << "Cannot set associated content on an conversation with history.";
-
+  content_observations_.RemoveAllObservations();
   content_drivers_.clear();
   archive_content_.clear();
-  content_observations_.RemoveAllObservations();
 
   if (delegate) {
     AddContent(delegate);
@@ -113,9 +110,9 @@ void AssociatedContentManager::RemoveContent(
   }
 
   // If this is archived content, delete it.
-  auto archive_it = std::ranges::find(
-      archive_content_, delegate->GetContentId(),
-      [](const auto& content) { return content->GetContentId(); });
+  auto archive_it = std::ranges::find_if(
+      archive_content_,
+      [delegate](const auto& content) { return content.get() == delegate; });
   if (archive_it != archive_content_.end()) {
     archive_content_.erase(archive_it);
   }
