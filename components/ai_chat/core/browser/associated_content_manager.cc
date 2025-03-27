@@ -252,6 +252,10 @@ bool AssociatedContentManager::HasArchiveContent() const {
   return !archive_content_.empty();
 }
 
+bool AssociatedContentManager::HasContent() const {
+  return !content_drivers_.empty();
+}
+
 bool AssociatedContentManager::IsVideo() const {
   return content_drivers_.size() == 1 &&
          content_drivers_[0]->GetCachedIsVideo();

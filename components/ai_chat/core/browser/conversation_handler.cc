@@ -576,10 +576,6 @@ void ConversationHandler::SendFeedback(const std::string& category,
       },
       std::move(callback));
 
-  if (!associated_content_manager_) {
-    send_hostname = false;
-  }
-
   std::vector<std::string> urls;
   if (send_hostname) {
     for (const auto& content :
@@ -969,8 +965,8 @@ void ConversationHandler::PerformQuestionGeneration(
 }
 
 void ConversationHandler::DisassociateContentDelegate() {
-  // TODO: Cleanup related conversations in destructor
-  associated_content_manager_ = nullptr;
+  // Remove all assocatied conversations.
+  associated_content_manager_->SetContent(nullptr);
 }
 
 void ConversationHandler::GetAssociatedContentInfo(
@@ -1159,7 +1155,7 @@ void ConversationHandler::PerformAssistantGeneration(
   if (features::IsPageContentRefineEnabled() &&
       page_content.length() > max_content_length &&
       last_entry->action_type != mojom::ActionType::SUMMARIZE_PAGE &&
-      associated_content_manager_) {
+      associated_content_manager_->HasContent()) {
     DVLOG(2) << "Refining content of length: " << page_content.length();
 
     auto refined_content_callback = base::BindOnce(
@@ -1625,7 +1621,7 @@ void ConversationHandler::OnConversationEntryAdded(
     return;
   }
   std::optional<std::string> associated_content_value;
-  if (is_content_different_ && associated_content_manager_) {
+  if (is_content_different_ && associated_content_manager_->HasContent()) {
     associated_content_value =
         associated_content_manager_->GetCachedTextContent();
     is_content_different_ = false;
@@ -1655,9 +1651,7 @@ void ConversationHandler::OnConversationEntryAdded(
 }
 
 bool ConversationHandler::IsContentAssociationPossible() {
-  // TODO(fallaciousreasoning): I think we need to check if we have a page
-  // associated with this conversation (i.e. as in the sidebar).
-  return (associated_content_manager_ != nullptr);
+  return associated_content_manager_->HasContent();
 }
 
 void ConversationHandler::UpdateAssociatedContentInfo() {
