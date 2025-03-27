@@ -166,9 +166,9 @@ ConversationHandler* AIChatService::CreateConversation() {
   std::string conversation_uuid = uuid.AsLowercaseString();
   // Create the conversation metadata
   {
-    mojom::ConversationPtr conversation =
-        mojom::Conversation::New(conversation_uuid, "", base::Time::Now(),
-                                 false, std::nullopt, 0, 0, nullptr);
+    mojom::ConversationPtr conversation = mojom::Conversation::New(
+        conversation_uuid, "", base::Time::Now(), false, std::nullopt, 0, 0,
+        std::vector<mojom::AssociatedContentPtr>());
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =
@@ -884,31 +884,6 @@ void AIChatService::OnConversationTokenInfoChanged(
   }
 }
 
-void AIChatService::OnConversationTokenInfoChanged(
-    const std::string& conversation_uuid,
-    uint64_t total_tokens,
-    uint64_t trimmed_tokens) {
-  auto conversation_it = conversations_.find(conversation_uuid);
-  if (conversation_it == conversations_.end()) {
-    DLOG(ERROR) << "Conversation not found for token info change";
-    return;
-  }
-
-  auto& conversation_metadata = conversation_it->second;
-  conversation_metadata->total_tokens = total_tokens;
-  conversation_metadata->trimmed_tokens = trimmed_tokens;
-
-  OnConversationListChanged();
-
-  // Persist the change
-  if (ai_chat_db_) {
-    ai_chat_db_
-        .AsyncCall(
-            base::IgnoreResult(&AIChatDatabase::UpdateConversationTokenInfo))
-        .WithArgs(conversation_uuid, total_tokens, trimmed_tokens);
-  }
-}
-
 void AIChatService::OnAssociatedContentUpdated(ConversationHandler* handler) {
   MaybeUnloadConversation(handler);
 }
@@ -1061,7 +1036,6 @@ void AIChatService::DisassociateContent(
   conversation->SetAssociatedContentDelegate(nullptr);
   content_conversations_.erase(content->GetContentId());
 }
-
 
 void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
                                        GetSuggestedTopicsCallback callback) {

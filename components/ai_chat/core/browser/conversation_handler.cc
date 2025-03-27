@@ -262,6 +262,7 @@ ConversationHandler::ConversationHandler(
         std::move(initial_state.value());
     if (!conversation_data->associated_content.empty()) {
       CHECK(!metadata_->associated_content.empty());
+      should_send_page_contents_ = true;
       associated_content_manager_->LoadArchivedContent(metadata_,
                                                        conversation_data);
     }
@@ -502,15 +503,11 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   std::ranges::transform(suggestions_, std::back_inserter(suggestions),
                          [](const auto& s) { return s.title; });
 
-  std::vector<mojom::AssociatedContentPtr> associated_content;
-  std::ranges::transform(metadata_->associated_content,
-                         std::back_inserter(associated_content),
-                         [](const auto& content) { return content->Clone(); });
   mojom::ConversationStatePtr state = mojom::ConversationState::New(
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
       model_key, std::move(suggestions), suggestion_generation_status_,
-      std::move(associated_content), should_send_page_contents_,
-      current_error_);
+      associated_content_manager_->GetAssociatedContent(),
+      should_send_page_contents_, current_error_);
 
   std::move(callback).Run(std::move(state));
 }
@@ -1664,18 +1661,8 @@ bool ConversationHandler::IsContentAssociationPossible() {
 }
 
 void ConversationHandler::UpdateAssociatedContentInfo() {
-  // Only modify associated content metadata here
-  if (associated_content_manager_) {
-    // Note: We don't create a new AssociatedContent object here unless one
-    // doesn't exist. If we generate one with a new UUID the deserializer
-    // breaks.
-    // TODO(fallaciousreasoning): I think we need to keep this in sync with
-    // whats in the AssociatedContentManager
-    metadata_->associated_content =
-        associated_content_manager_->GetAssociatedContent();
-  } else {
-    metadata_->associated_content.clear();
-  }
+  metadata_->associated_content =
+      associated_content_manager_->GetAssociatedContent();
 }
 
 mojom::ConversationEntriesStatePtr
