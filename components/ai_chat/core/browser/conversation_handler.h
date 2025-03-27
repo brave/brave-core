@@ -337,7 +337,7 @@ class ConversationHandler : public mojom::ConversationHandler,
     }
   }
 
-  AssociatedContentManager* GetAssociatedContentManagerForTesting() {
+  AssociatedContentManager* associated_content_manager() {
     return associated_content_manager_.get();
   }
 
