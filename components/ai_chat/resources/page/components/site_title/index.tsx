@@ -49,7 +49,10 @@ function SiteTitle(props: SiteTitleProps) {
 
 export default function SiteTitles(props: { size: 'default' | 'small' }) {
   const context = useConversation()
-  return <>
+  return <div className={classnames({
+    [styles.container]: true,
+    [styles.small]: props.size === 'small'
+  })}>
     {context.associatedContentInfo.map(c => <SiteTitle key={c.uuid} size={props.size} content={c} />)}
-  </>
+  </div>
 }
