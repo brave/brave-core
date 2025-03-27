@@ -12,6 +12,7 @@
 
 @interface CWVWebView ()
 - (void)attachSecurityInterstitialHelpersToWebStateIfNecessary;
+- (void)updateCurrentURLs;
 @end
 
 @implementation BraveWebView
@@ -51,6 +52,17 @@
                            completionHandler:handler];
   } else {
     handler(nil, nil);
+  }
+}
+
+#pragma mark - CRWWebStateObserver
+
+- (void)webState:(web::WebState*)webState
+    didRedirectNavigation:(web::NavigationContext*)navigationContext {
+  [self updateCurrentURLs];
+  if ([self.navigationDelegate
+          respondsToSelector:@selector(webViewDidRedirectNavigation:)]) {
+    [self.navigationDelegate webViewDidRedirectNavigation:self];
   }
 }
 

@@ -111,6 +111,14 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
     tab.didCommitNavigation()
   }
 
+  public func webViewDidRedirectNavigation(_ webView: CWVWebView) {
+    guard let tab else { return }
+    if let url = webView.visibleURL {
+      tab.redirectChain.append(url)
+    }
+    tab.didRedirectNavigation()
+  }
+
   public func webView(
     _ webView: CWVWebView,
     decidePolicyFor navigationResponse: CWVNavigationResponse,

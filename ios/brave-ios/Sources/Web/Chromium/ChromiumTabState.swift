@@ -365,7 +365,6 @@ class ChromiumTabState: TabState, TabStateImpl {
     return webView?.backForwardList.flatMap { ChromiumBackForwardList($0) }
   }
 
-  // FIXME: No way currently to get the redirects from CWVWebView so this will always only be the original request URL
   var redirectChain: [URL] = []
 
   var currentInitialURL: URL? {

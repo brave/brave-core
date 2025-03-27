@@ -41,6 +41,9 @@ CWV_EXPORT
                        completionHandler:
                            (void (^)(NSString* _Nullable username,
                                      NSString* _Nullable password))handler;
+/// Notifies the delegate that a server redirect occured. At the point when this
+/// is called, the url will already be updated.
+- (void)webViewDidRedirectNavigation:(CWVWebView*)webView;
 @end
 
 CWV_EXPORT
