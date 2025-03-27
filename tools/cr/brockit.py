@@ -162,7 +162,6 @@ from rich.markdown import Markdown
 from rich.padding import Padding
 import subprocess
 import sys
-import tempfile
 import time
 from typing import Optional, List, Dict, NamedTuple
 
@@ -2196,6 +2195,37 @@ class Rebase(Task):
 
         return conflicts
 
+    @staticmethod
+    def discard_regen_changes_from_rebase_plan(todo_file: Path):
+        """Removes regen changes from the rebase plan.
+
+    This function removes all lines that contain the string `Update patches`
+    or `Updated strings` from the rebase plan file, and saves the changes to
+    the file.
+        """
+        with open(todo_file, 'r') as file:
+            lines = file.readlines()
+
+        with open(todo_file, 'w') as file:
+            for line in lines:
+                if ('Update patches from Chromium ' not in line
+                        and 'Updated strings for Chromium ' not in line):
+                    file.write(line)
+
+    @staticmethod
+    def recommit_in_rebase_plan(todo_file: Path):
+        """Recommits the first commit in the rebase plan.
+
+    This function replaces the first `pick` in the rebase plan with `edit`,
+    which forces the first commit to be recommitted.
+        """
+        with open(todo_file, 'r') as file:
+            contents = file.read()
+
+        with open(todo_file, 'w') as file:
+            contents = contents.replace('pick', 'edit', 1)
+            file.write(contents)
+
     # The argument list differs here because that's the way we get args through
     # Task into the derived methods. Maybe something better can be done here.
     # pylint: disable=arguments-differ
@@ -2232,52 +2262,37 @@ class Rebase(Task):
                     f'{self.from_ref} {forking_from} {current_branch}[/])')
             return False
 
-        changes = Repository.brave().run_git(
-            'log', '--pretty=format:%h %s',
-            f'{forking_from}..{current_branch}').splitlines()[::-1]
-        if len(changes) == 0:
-            logging.error(
-                'No changes to rebase based on the arguments provided.')
-            return False
-
+        # We have to receive the rebase plan from git, and then modify it
+        # if that's desired. That's done by calling this script again with
+        # special internal flags.
+        editor = [sys.executable, __file__]
         if discard_regen_changes:
-            changes = [
-                change for change in changes
-                if not change[12:].startswith('Update patches from Chromium ')
-                and not change[12:].startswith('Updated strings for Chromium ')
-            ]
-
-        rebase_plan = '\n'.join(f'pick {commit}' for commit in changes)
+            editor.append('--internal-rebase-remove-regen-changes')
         if recommit:
-            # Forcing a recommit of the first change so all the other changes
-            # get recommitted as well.
-            rebase_plan = rebase_plan.replace('pick', 'edit', 1)
+            editor.append('--internal-rebase-recommit')
 
-        with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmpfile:
-            tmpfile.write(rebase_plan)
-            tmpfile.flush()
+        env = os.environ.copy()
+        if len(editor) > 2:
+            env["GIT_SEQUENCE_EDITOR"] = " ".join(editor)
+        else:
+            # If there are no internal operation, we can just return always
+            # true to whatever plan git gives us.
+            env["GIT_SEQUENCE_EDITOR"] = 'cmd /c "exit 0"' if platform.system(
+            ) == 'Windows' else 'true'
 
-            # The trick here is to get git to treat `cp` as the editor, and
-            # copy our merge plan into .git/rebase-merge/git-rebase-todo.
-            env = os.environ.copy()
-            copy_util = 'copy' if platform.system() == 'Windows' else 'cp'
-            env["GIT_SEQUENCE_EDITOR"] = f'{copy_util} {tmpfile.name}'
-            try:
-                terminal.run([
-                    'git', 'rebase', '--interactive', '--autosquash',
-                    '--empty=drop', '--onto', self.from_ref, forking_from,
-                    Repository.brave().current_branch()
-                ],
-                             env=env)
-                if recommit:
-                    Repository.brave().run_git('commit', '--amend',
-                                               '--no-edit')
-                    Repository.brave().run_git('rebase', '--continue')
-            except subprocess.CalledProcessError as e:
-                logging.error('Rebase failed. %s', e.stderr)
-                return False
-            finally:
-                os.unlink(tmpfile.name)
+        try:
+            terminal.run([
+                'git', 'rebase', '--interactive', '--autosquash',
+                '--empty=drop', '--onto', self.from_ref, forking_from,
+                Repository.brave().current_branch()
+            ],
+                         env=env)
+            if recommit:
+                Repository.brave().run_git('commit', '--amend', '--no-edit')
+                Repository.brave().run_git('rebase', '--continue')
+        except subprocess.CalledProcessError as e:
+            logging.error('Rebase failed. %s', e.stderr)
+            return False
 
         return True
 
@@ -2551,4 +2566,13 @@ def main():
 
 
 if __name__ == '__main__':
+    if any(arg.startswith("--internal-rebase") for arg in sys.argv):
+        # Special flags used to carry out some of the rebase tasks fed by git
+        # during rebase --interactive mode.
+        if '--internal-rebase-remove-regen-changes' in sys.argv:
+            Rebase.discard_regen_changes_from_rebase_plan(sys.argv[-1])
+        if '--internal-rebase-recommit' in sys.argv:
+            Rebase.recommit_in_rebase_plan(sys.argv[-1])
+        sys.exit(0)
+
     sys.exit(main())
