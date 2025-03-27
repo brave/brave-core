@@ -262,6 +262,7 @@ program
     'semicolon-separated list files to run presubmit on')
   .option('--verbose [arg]', 'pass --verbose 2 for more debugging info', JSON.parse)
   .option('--fix', 'try to fix found issues automatically')
+  .option('--json <output>', 'An output file for a JSON report')
   .action(util.presubmit)
 
 program
