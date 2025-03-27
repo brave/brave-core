@@ -802,6 +802,7 @@ source_set("ui") {
     "//brave/components/ai_chat/resources",
     "//brave/components/ai_chat/resources/custom_site_distiller_scripts:generated_resources",
     "//brave/components/ai_rewriter/common/buildflags",
+    "//brave/components/brave_account/core/common/mojom",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",

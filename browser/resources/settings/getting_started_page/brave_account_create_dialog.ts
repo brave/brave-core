@@ -144,8 +144,9 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
   protected onPasswordInput(detail: { value: string }) {
     this.password = detail.value
-    this.browserProxy.getPasswordStrength(this.password).then(
-      (passwordStrength: number) => this.passwordStrength = passwordStrength
+    this.browserProxy.handler.getPasswordStrength(this.password).then(
+      (value: { passwordStrength: number; }) =>
+        this.passwordStrength = value.passwordStrength
     )
   }
 

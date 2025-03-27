@@ -6,24 +6,32 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_HANDLER_H_
 
-#include "base/values.h"
-#include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+#include <string>
 
-class BraveAccountHandler : public settings::SettingsPageUIHandler {
+#include "brave/components/brave_account/core/common/mojom/brave_account.mojom.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
+
+namespace brave_account {
+class BraveAccountHandler : public mojom::BraveAccountHandler {
  public:
-  BraveAccountHandler();
-  ~BraveAccountHandler() override;
+  BraveAccountHandler(mojo::PendingReceiver<mojom::BraveAccountHandler> handler,
+                      mojo::PendingRemote<mojom::BraveAccountClient> client);
+
   BraveAccountHandler(const BraveAccountHandler&) = delete;
   BraveAccountHandler& operator=(const BraveAccountHandler&) = delete;
 
- private:
-  // WebUIMessageHandler overrides:
-  void RegisterMessages() override;
-  // SettingsPageUIHandler overrides:
-  void OnJavascriptAllowed() override {}
-  void OnJavascriptDisallowed() override {}
+  ~BraveAccountHandler() override;
 
-  void GetPasswordStrength(const base::Value::List& args);
+  void GetPasswordStrength(
+      const std::string& password,
+      mojom::BraveAccountHandler::GetPasswordStrengthCallback callback)
+      override;
+
+ private:
+  mojo::Receiver<mojom::BraveAccountHandler> handler_;
+  mojo::Remote<mojom::BraveAccountClient> client_;
 };
+}  // namespace brave_account
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_HANDLER_H_
