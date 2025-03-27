@@ -23,6 +23,8 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   protected topics_: string[] = []
   protected topic = ''
   protected undoTopic_ = ''
+  protected showFRE_: boolean =
+      loadTimeData.getBoolean('showTabOrganizationFRE')
 
   private apiProxy_: BraveTabSearchApiProxy =
       TabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
@@ -41,7 +43,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
       isLoadingTopics: {type: Boolean},
       errorMessage: {type: String},
       needsPremium: {type: Boolean},
-      isEnabled: {type: Boolean},
+      showFRE_: {type: Boolean},
     }
   }
 
@@ -50,8 +52,6 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   isLoadingTopics = false
   errorMessage = ''
   needsPremium = false
-  isEnabled = loadTimeData.getBoolean('shouldShowTabOrganizationFRE')
-
 
   static override get styles() {
     return getCss()
@@ -146,10 +146,10 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   }
 
   override render() {
-    if (this.isEnabled) {
-      return getHtml.bind(this)()
+    if (this.showFRE_) {
+      return getEnableTabFocusHtml.bind(this)()
     }
-    return getEnableTabFocusHtml.bind(this)()
+    return getHtml.bind(this)()
   }
 
   override connectedCallback() {
@@ -236,7 +236,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
 
   protected onEnableTabFocusClicked_() {
     this.apiProxy_.enableTabFocus(true)
-    this.isEnabled = true
+    this.showFRE_ = false
   }
 
   protected onDismissErrorClicked_() {
