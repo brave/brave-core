@@ -79,7 +79,7 @@ public final class BravePreferenceKeys {
 
     public static final String BRAVE_IN_APP_UPDATE_TIMING = "in_app_update_timing";
 
-    public static final String DAY_ZERO_EXPT_FLAG = "day_zero_expt_flag";
+    public static final String DAY_ZERO_EXPT_VARIANT = "day_zero_expt_variant";
 
     public static final String SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
 
