@@ -1,0 +1,17 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ui/webui/resources/tools/generate_grd.gni")
+
+generate_grd("build_grdp") {
+  grd_prefix = "brave_webui_images"
+  out_grd = "$target_gen_dir/resources.grdp"
+  input_files_base_dir = rebase_path(".", "//")
+  input_files = [
+    "tab_organizer_illustration.svg"
+    ]
+
+  resource_path_prefix = "brave/images"
+}
