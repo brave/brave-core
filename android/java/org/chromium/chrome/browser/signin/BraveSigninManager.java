@@ -21,7 +21,6 @@ import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.signin.identitymanager.IdentityMutator;
 import org.chromium.components.signin.metrics.SigninAccessPoint;
 import org.chromium.components.signin.metrics.SignoutReason;
-import org.chromium.components.sync.SyncService;
 
 @NullMarked
 public class BraveSigninManager implements SigninManager {
@@ -90,8 +89,7 @@ public class BraveSigninManager implements SigninManager {
             long nativeSigninManagerAndroid,
             @JniType("Profile*") Profile profile,
             @JniType("signin::IdentityManager*") IdentityManager identityManager,
-            IdentityMutator identityMutator,
-            SyncService syncService) {
+            IdentityMutator identityMutator) {
         AccountInfoServiceProvider.init(identityManager);
         return new BraveSigninManager(identityManager);
     }
