@@ -7,16 +7,15 @@
 
 #include <memory>
 
-#include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/ui/brave_pages.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_commands.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -76,7 +75,8 @@ AIChatButton::AIChatButton(Browser* browser)
 AIChatButton::~AIChatButton() = default;
 
 void AIChatButton::ButtonPressed() {
-  chrome::ExecuteCommand(&browser_.get(), IDC_TOGGLE_AI_CHAT);
+  // We could use settings for opening full page or panel.
+  brave::ShowFullpageChat(base::to_address(browser_));
 
   ai_chat::AIChatMetrics* metrics =
       g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
