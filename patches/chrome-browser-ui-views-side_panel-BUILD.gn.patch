@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/side_panel/BUILD.gn b/chrome/browser/ui/views/side_panel/BUILD.gn
-index e6cd05e1fd991b85b7671c125ee4882fb4f4bc83..3faf40e515295e152f1cdcbd26f95d40926147e5 100644
+index e6cd05e1fd991b85b7671c125ee4882fb4f4bc83..1ffe9aa1c08d3a0128fa8631db78753401fc42a7 100644
 --- a/chrome/browser/ui/views/side_panel/BUILD.gn
 +++ b/chrome/browser/ui/views/side_panel/BUILD.gn
 @@ -193,6 +193,7 @@ source_set("side_panel") {
      ]
      deps += [ "//chrome/common/extensions/api" ]
    }
-+  public_deps += [ "//brave/components/sidebar/browser" ]
++  import("//brave/browser/ui/views/side_panel/sources.gni") public_deps += brave_chrome_browser_ui_views_side_panel_public_deps
  
    allow_circular_includes_from = [
      "//chrome/browser/ui/views/toolbar",

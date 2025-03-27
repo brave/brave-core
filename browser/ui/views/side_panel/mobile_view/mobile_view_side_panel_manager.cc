@@ -12,8 +12,8 @@
 #include "ui/views/view.h"
 
 MobileViewSidePanelManager::MobileViewSidePanelManager(
-    BrowserWindowInterface* browser_window_interface)
-    : browser_window_interface_(*browser_window_interface) {}
+    BrowserWindowInterface& browser_window_interface)
+    : browser_window_interface_(browser_window_interface) {}
 
 MobileViewSidePanelManager::~MobileViewSidePanelManager() = default;
 

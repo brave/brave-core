@@ -1351,7 +1351,7 @@ class SidebarBrowserTestWithMobileViewFeature
       public SidebarBrowserTest {
  public:
   SidebarBrowserTestWithMobileViewFeature() {
-    if (GetParam()) {
+    if (FeatureEnabled()) {
       feature_list_.InitAndEnableFeature(features::kSidebarMobileView);
 
     } else {
@@ -1362,6 +1362,7 @@ class SidebarBrowserTestWithMobileViewFeature
 
   bool FeatureEnabled() const { return GetParam(); }
 
+ protected:
   base::test::ScopedFeatureList feature_list_;
 };
 

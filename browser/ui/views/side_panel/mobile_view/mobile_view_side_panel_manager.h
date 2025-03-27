@@ -28,7 +28,7 @@ FORWARD_DECLARE_TEST(SidebarBrowserTestWithMobileViewFeature,
 class MobileViewSidePanelManager : public sidebar::SidebarModel::Observer {
  public:
   explicit MobileViewSidePanelManager(
-      BrowserWindowInterface* browser_window_interface);
+      BrowserWindowInterface& browser_window_interface);
 
   MobileViewSidePanelManager(const MobileViewSidePanelManager&) = delete;
   MobileViewSidePanelManager& operator=(const MobileViewSidePanelManager&) =

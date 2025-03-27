@@ -58,7 +58,7 @@ void BrowserWindowFeatures::Init(
 
   if (base::FeatureList::IsEnabled(sidebar::features::kSidebarMobileView)) {
     mobile_view_side_panel_manager_ =
-        std::make_unique<MobileViewSidePanelManager>(browser_window_interface);
+        std::make_unique<MobileViewSidePanelManager>(*browser_window_interface);
   }
 }
 
@@ -73,7 +73,7 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
 }
 
 void BrowserWindowFeatures::TearDownPreBrowserViewDestruction() {
-  // Destroy before upstream's |side_panel_coordinator_| as this panal manager
+  // Destroy before upstream's |side_panel_coordinator_| as this panel manager
   // depends on it.
   mobile_view_side_panel_manager_.reset();
 
