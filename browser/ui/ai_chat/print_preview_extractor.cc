@@ -10,7 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "base/json/json_reader.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
@@ -37,7 +36,9 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "pdf/buildflags.h"
+#include "printing/mojom/print.mojom.h"
 #include "printing/print_job_constants.h"
+#include "printing/units.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 
@@ -216,46 +217,48 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
       }
       CHECK(print_preview_ui_id_);
 
-      // A mininum print setting to avoid PrinterSettingsInvalid
-      auto settings = base::JSONReader::ReadDict(R"({
-     "collate": true,
-     "color": 2,
-     "copies": 1,
-     "deviceName": "Save as PDF",
-     "dpiHorizontal": 300,
-     "dpiVertical": 300,
-     "duplex": 0,
-     "headerFooterEnabled": false,
-     "isFirstRequest": true,
-     "landscape": false,
-     "marginsType": 0,
-     "mediaSize": {
-        "height_microns": 279400,
-        "imageable_area_bottom_microns": 0,
-        "imageable_area_left_microns": 0,
-        "imageable_area_right_microns": 215900,
-        "imageable_area_top_microns": 279400,
-        "width_microns": 215900
-     },
-     "pageRange": [  ],
-     "pagesPerSheet": 1,
-     "printerType": 2,
-     "rasterizePDF": false,
-     "scaleFactor": 100,
-     "scalingType": 0,
-     "shouldPrintBackgrounds": false,
-     "shouldPrintSelectionOnly": false
-    })");
-      CHECK(settings);
-      settings->Set(printing::kPreviewUIID, print_preview_ui_id_.value());
-      settings->Set(printing::kPreviewRequestID, ++preview_request_id_);
-      settings->Set(printing::kSettingHeaderFooterTitle,
-                    web_contents_->GetTitle());
-      settings->Set(printing::kSettingPreviewModifiable, !is_pdf_);
+      // Basic print setting from PrintingContext::UsePdfSettings and modified
+      base::Value::Dict settings;
+      settings.Set(printing::kSettingHeaderFooterEnabled, false);
+      settings.Set(printing::kSettingShouldPrintBackgrounds, false);
+      settings.Set(printing::kSettingShouldPrintSelectionOnly, false);
+      settings.Set(
+          printing::kSettingMarginsType,
+          static_cast<int>(printing::mojom::MarginType::kDefaultMargins));
+      settings.Set(printing::kSettingCollate, true);
+      settings.Set(printing::kSettingCopies, 1);
+      settings.Set(printing::kSettingColor,
+                   static_cast<int>(printing::mojom::ColorModel::kColor));
+      settings.Set(printing::kSettingDpiHorizontal, printing::kDefaultPdfDpi);
+      settings.Set(printing::kSettingDpiVertical, printing::kDefaultPdfDpi);
+      settings.Set(printing::kSettingDuplexMode,
+                   static_cast<int>(printing::mojom::DuplexMode::kSimplex));
+      settings.Set(printing::kSettingLandscape, false);
+      settings.Set(printing::kSettingDeviceName, "");
+      settings.Set(printing::kSettingPrinterType,
+                   static_cast<int>(printing::mojom::PrinterType::kPdf));
+      settings.Set(printing::kSettingScaleFactor, 100);
+      settings.Set(printing::kSettingRasterizePdf, false);
+      settings.Set(printing::kSettingPagesPerSheet, 1);
+
+      base::Value::Dict media_size;
+      media_size.Set(printing::kSettingMediaSizeWidthMicrons, 215900);
+      media_size.Set(printing::kSettingMediaSizeHeightMicrons, 279400);
+      media_size.Set(printing::kSettingsImageableAreaRightMicrons, 215900);
+      media_size.Set(printing::kSettingsImageableAreaTopMicrons, 279400);
+      settings.Set(printing::kSettingMediaSize, std::move(media_size));
+      settings.Set(printing::kSettingScalingType,
+                   static_cast<int>(printing::ScalingType::DEFAULT));
+      settings.Set(printing::kIsFirstRequest, true);
+      settings.Set(printing::kPreviewUIID, print_preview_ui_id_.value());
+      settings.Set(printing::kPreviewRequestID, ++preview_request_id_);
+      settings.Set(printing::kSettingHeaderFooterTitle,
+                   web_contents_->GetTitle());
+      settings.Set(printing::kSettingPreviewModifiable, !is_pdf_);
       auto url = web_contents_->GetLastCommittedURL();
-      settings->Set(printing::kSettingHeaderFooterURL, url.spec());
+      settings.Set(printing::kSettingHeaderFooterURL, url.spec());
       OnPrintPreviewRequest(preview_request_id_);
-      print_render_frame_->PrintPreview(std::move(settings).value());
+      print_render_frame_->PrintPreview(std::move(settings));
     }
   }
 
