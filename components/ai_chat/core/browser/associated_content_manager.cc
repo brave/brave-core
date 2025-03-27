@@ -30,15 +30,16 @@ AssociatedContentManager::~AssociatedContentManager() = default;
 
 void AssociatedContentManager::SetContent(
     ConversationHandler::AssociatedContentDelegate* delegate) {
-  CHECK(delegate);
-
   // CHECK_EQ(conversation_->GetConversationHistorySize(), 0u)
   //     << "Cannot set associated content on an conversation with history.";
 
   content_drivers_.clear();
   archive_content_.clear();
   content_observations_.RemoveAllObservations();
-  AddContent(delegate);
+
+  if (delegate) {
+    AddContent(delegate);
+  }
 }
 
 void AssociatedContentManager::LoadArchivedContent(
