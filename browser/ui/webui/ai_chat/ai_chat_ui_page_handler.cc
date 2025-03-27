@@ -228,7 +228,6 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
 
-#if !BUILDFLAG(IS_ANDROID)
   content::WebContents* contents_to_navigate =
       (active_chat_tab_helper_) ? active_chat_tab_helper_->web_contents()
                                 : owner_web_contents_.get();
@@ -236,11 +235,6 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
       {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
        ui::PAGE_TRANSITION_LINK, false},
       /*navigation_handle_callback=*/{});
-#else
-  // We handle open link different on Android as we need to close the chat
-  // window because it's always full screen
-  ai_chat::OpenURL(url.spec());
-#endif
 }
 
 void AIChatUIPageHandler::OpenStorageSupportUrl() {
