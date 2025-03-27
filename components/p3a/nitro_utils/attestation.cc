@@ -50,9 +50,9 @@ constexpr size_t kUserDataMinLength =
 // https://aws-nitro-enclaves.amazonaws.com/AWS_NitroEnclaves_Root-G1.zip
 // Fingerprint `openssl x509 -fingerprint -sha256 -in root.pem -noout`
 constexpr net::SHA256HashValue kAWSRootCertFP{
-    .data = {0x64, 0x1A, 0x03, 0x21, 0xA3, 0xE2, 0x44, 0xEF, 0xE4, 0x56, 0x46,
-             0x31, 0x95, 0xD6, 0x06, 0x31, 0x7E, 0xD7, 0xCD, 0xCC, 0x3C, 0x17,
-             0x56, 0xE0, 0x98, 0x93, 0xF3, 0xC6, 0x8F, 0x79, 0xBB, 0x5B}};
+    0x64, 0x1A, 0x03, 0x21, 0xA3, 0xE2, 0x44, 0xEF, 0xE4, 0x56, 0x46,
+    0x31, 0x95, 0xD6, 0x06, 0x31, 0x7E, 0xD7, 0xCD, 0xCC, 0x3C, 0x17,
+    0x56, 0xE0, 0x98, 0x93, 0xF3, 0xC6, 0x8F, 0x79, 0xBB, 0x5B};
 
 // Old-style user_data is a pair of prefix:<binary digest> values
 // separated by semicolons. The first value is the TLS cert fingerprint.
@@ -123,7 +123,7 @@ bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
           << "Nitro verification: user data is missing sha256 hash prefix";
       return false;
     }
-    if (memcmp(server_cert_fp.data,
+    if (memcmp(server_cert_fp.data(),
                UNSAFE_TODO(user_data_bytes.data() + kHashPrefixLength),
                kSHA256HashLength) == 0) {
       return true;
@@ -141,7 +141,7 @@ bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
       LOG(ERROR) << "Nitro verification: user data not a sha2-256 multihash";
       return false;
     }
-    if (memcmp(server_cert_fp.data,
+    if (memcmp(server_cert_fp.data(),
                UNSAFE_TODO(user_data_bytes.data() + kMultihashPrefixLength),
                kSHA256HashLength) == 0) {
       return true;
@@ -150,7 +150,7 @@ bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
   LOG(ERROR)
       << "Nitro verification: server cert fp does not match user data fp, "
       << "user data = " << base::HexEncode(user_data_bytes)
-      << ", server cert fp = " << base::HexEncode(server_cert_fp.data);
+      << ", server cert fp = " << base::HexEncode(server_cert_fp);
   return false;
 }
 
