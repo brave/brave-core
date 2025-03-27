@@ -9,9 +9,7 @@ generate_grd("build_grdp") {
   grd_prefix = "brave_webui_images"
   out_grd = "$target_gen_dir/resources.grdp"
   input_files_base_dir = rebase_path(".", "//")
-  input_files = [
-    "tab_organizer_illustration.svg"
-    ]
+  input_files = [ "tab_organizer_illustration.svg" ]
 
   resource_path_prefix = "brave/images"
 }
