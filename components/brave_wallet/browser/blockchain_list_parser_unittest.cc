@@ -320,6 +320,28 @@ TEST(BlockchainListParseUnitTest, ParseDappLists) {
             "volume": "32352.38",
             "balance": "3.81"
           }
+        },
+        {
+          "dappId": "1111",
+          "name": "Some app",
+          "description": null,
+          "logo": "https://appdomain.com/applogo.png",
+          "link": "https://appdomain.com/app",
+          "website": "https://appdomain.com/",
+          "chains": [
+            "polygon",
+            "solana",
+            "binance-smart-chain"
+          ],
+          "categories": [
+            "marketplaces"
+          ],
+          "metrics": {
+            "transactions": "1513120",
+            "uaw": "917737",
+            "volume": "32352.38",
+            "balance": "3.81"
+          }
         }
       ]
     },
@@ -477,7 +499,25 @@ TEST(BlockchainListParseUnitTest, ParseDappLists) {
       GetTokenListKey(mojom::CoinType::SOL, mojom::kSolanaMainnet));
   EXPECT_TRUE(it_s != dapp_list_map->end());
   const auto& sol_dapp_list = it_s->second;
-  EXPECT_EQ(sol_dapp_list.size(), 1u);
+  EXPECT_EQ(sol_dapp_list.size(), 2u);
+  {
+    const auto& sol_dapp = sol_dapp_list[0];
+    EXPECT_EQ(sol_dapp->range, "30d");
+    EXPECT_EQ(sol_dapp->name, "GameTrade Market");
+    EXPECT_EQ(sol_dapp->description,
+              "Discover, buy, sell and trade in-game NFTs");
+    EXPECT_EQ(sol_dapp->logo,
+              "https://dashboard-assets.dappradar.com/document/20419/"
+              "gametrademarket-dapp-marketplaces-matic-logo_"
+              "e3e698e60ebd9bfe8ed1421bb41b890d.png");
+  }
+  {
+    const auto& sol_dapp = sol_dapp_list[1];
+    EXPECT_EQ(sol_dapp->range, "30d");
+    EXPECT_EQ(sol_dapp->name, "Some app");
+    EXPECT_EQ(sol_dapp->description, "");
+    EXPECT_EQ(sol_dapp->logo, "https://appdomain.com/applogo.png");
+  }
   const auto& sol_dapp = sol_dapp_list[0];
   EXPECT_EQ(sol_dapp->range, "30d");
   EXPECT_EQ(sol_dapp->name, "GameTrade Market");

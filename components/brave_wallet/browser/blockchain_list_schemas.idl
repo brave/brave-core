@@ -31,8 +31,10 @@ namespace blockchain_lists {
     // e.g. "Uniswap V3"
     DOMString name;
 
+    // Nullable
     // e.g. "A protocol for trading and automated liquidity provision on Ethereum."
-    DOMString description;
+    // or null.
+    any description;
 
     // An url for the dapp logo.
     DOMString logo;
