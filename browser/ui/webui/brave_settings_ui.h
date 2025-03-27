@@ -6,11 +6,21 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
 
+#include <memory>
+
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
+#include "brave/components/brave_account/core/common/mojom/brave_account.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 
 class BraveSettingsUI;
+
+namespace brave_account {
+class BraveAccountHandler;
+}
 
 namespace content {
 class WebUIDataSource;
@@ -26,7 +36,9 @@ class BraveSettingsUIConfig
                            chrome::kChromeUISettingsHost) {}
 };
 
-class BraveSettingsUI : public settings::SettingsUI {
+class BraveSettingsUI
+    : public settings::SettingsUI,
+      public brave_account::mojom::BraveAccountHandlerFactory {
  public:
   explicit BraveSettingsUI(content::WebUI* web_ui);
   BraveSettingsUI(const BraveSettingsUI&) = delete;
@@ -41,6 +53,20 @@ class BraveSettingsUI : public settings::SettingsUI {
       mojo::PendingReceiver<commands::mojom::CommandsService> pending_receiver);
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
                          pending_receiver);
+  void BindInterface(
+      mojo::PendingReceiver<brave_account::mojom::BraveAccountHandlerFactory>
+          pending_receiver);
+
+ private:
+  // brave_account::mojom::BraveAccountHandlerFactory:
+  void CreateBraveAccountHandler(
+      mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler> handler,
+      mojo::PendingRemote<brave_account::mojom::BraveAccountClient> client)
+      override;
+
+  std::unique_ptr<brave_account::BraveAccountHandler> brave_account_handler_;
+  mojo::Receiver<brave_account::mojom::BraveAccountHandlerFactory>
+      brave_account_handler_factory_receiver_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_

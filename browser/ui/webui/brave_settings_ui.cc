@@ -100,7 +100,6 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
-  web_ui->AddMessageHandler(std::make_unique<BraveAccountHandler>());
 #if BUILDFLAG(ENABLE_TOR)
   web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
 #endif
@@ -235,4 +234,20 @@ void BraveSettingsUI::BindInterface(
           web_ui()->GetWebContents()->GetBrowserContext()));
   assistant_handler->BindInterface(std::move(pending_receiver));
   web_ui()->AddMessageHandler(std::move(assistant_handler));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::BraveAccountHandlerFactory>
+        pending_receiver) {
+  if (brave_account_handler_factory_receiver_.is_bound()) {
+    brave_account_handler_factory_receiver_.reset();
+  }
+  brave_account_handler_factory_receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveSettingsUI::CreateBraveAccountHandler(
+    mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler> handler,
+    mojo::PendingRemote<brave_account::mojom::BraveAccountClient> client) {
+  brave_account_handler_ = std::make_unique<brave_account::BraveAccountHandler>(
+      std::move(handler), std::move(client));
 }
