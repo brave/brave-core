@@ -404,8 +404,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         updatePreferenceIcon(
                 MainSettings.PREF_ADDRESS_BAR,
                 BottomToolbarConfiguration.isToolbarTopAnchored()
-                        ? R.drawable.ic_address_bar_top
-                        : R.drawable.ic_address_bar_bottom);
+                        ? R.drawable.ic_browser_mobile_tabs_top
+                        : R.drawable.ic_browser_mobile_tabs_bottom);
     }
 
     private void updateSearchEnginePreference() {
