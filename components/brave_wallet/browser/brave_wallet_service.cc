@@ -1867,8 +1867,8 @@ void BraveWalletService::SetTransactionSimulationOptInStatus(
 }
 
 void BraveWalletService::GetCountryCode(GetCountryCodeCallback callback) {
-  std::move(callback).Run(country_codes::CountryIDToCountryString(
-      country_codes::GetCountryIDFromPrefs(profile_prefs_)));
+  std::move(callback).Run(std::string(
+      country_codes::GetCountryIDFromPrefs(profile_prefs_).CountryCode()));
 }
 
 }  // namespace brave_wallet
