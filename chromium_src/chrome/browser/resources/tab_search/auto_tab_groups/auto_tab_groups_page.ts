@@ -50,7 +50,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   isLoadingTopics = false
   errorMessage = ''
   needsPremium = false
-  isEnabled = false
+  isEnabled = loadTimeData.getBoolean('shouldShowTabOrganizationFRE')
 
 
   static override get styles() {
@@ -235,6 +235,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   }
 
   protected onEnableTabFocusClicked_() {
+    this.apiProxy_.enableTabFocus(true)
     this.isEnabled = true
   }
 

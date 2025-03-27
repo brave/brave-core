@@ -198,9 +198,8 @@
 }
 
 .enable-tab-focus-illustration {
-  background-image: url('../images/tab_organizer_illustration.svg');
+  background-image: url(//resources/brave/images/tab_organizer_illustration.svg);
   background-size: cover;
-  background-color: bisque;
   width: 100%;
   height: 174px;
 }
