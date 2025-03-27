@@ -140,8 +140,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   }
 
   // Variables considered when determining which onboarding cards to show
-  source->AddString("countryString",
-                    country_codes::CountryIDToCountryString(country_id));
+  source->AddString("countryString", country_id.CountryCode());
   source->AddBoolean(
       "showRewardsCard",
       base::FeatureList::IsEnabled(brave_welcome::features::kShowRewardsCard));
