@@ -27,6 +27,7 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/re2/src/re2/re2.h"
 
@@ -35,6 +36,8 @@
 #else
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
+
+using base::test::IsSupersetOfValue;
 
 namespace web_discovery {
 
@@ -200,25 +203,28 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryContentScraperTest, RendererScrape) {
 
               ASSERT_EQ(fields->size(), 2u);
 
-              base::ExpectDictStringValue("https://example.com/foo1",
-                                          (*fields)[0], "href");
-              base::ExpectDictStringValue("Foo1", (*fields)[0], "text");
-              base::ExpectDictStringValue("A query", (*fields)[0], "q");
+              EXPECT_THAT(
+                  (*fields)[0],
+                  IsSupersetOfValue(base::Value::Dict()
+                                        .Set("href", "https://example.com/foo1")
+                                        .Set("text", "Foo1")
+                                        .Set("q", "A query")));
 
-              base::ExpectDictStringValue("https://example.com/foo2",
-                                          (*fields)[1], "href");
-              base::ExpectDictStringValue("Foo2", (*fields)[1], "text");
-
-              const auto* query_value = (*fields)[1].Find("q");
-              ASSERT_TRUE(query_value);
-              EXPECT_TRUE(query_value->is_none());
+              EXPECT_THAT(
+                  (*fields)[1],
+                  IsSupersetOfValue(base::Value::Dict()
+                                        .Set("href", "https://example.com/foo2")
+                                        .Set("text", "Foo2")
+                                        .Set("q", base::Value())));
 
               field_map_it = scrape_result->fields.find("dont>match");
               ASSERT_TRUE(field_map_it != scrape_result->fields.end());
               fields = &field_map_it->second;
 
               ASSERT_EQ(fields->size(), 1u);
-              base::ExpectDictStringValue("testquery", (*fields)[0], "q2");
+              EXPECT_THAT((*fields)[0],
+                          IsSupersetOfValue(
+                              base::Value::Dict().Set("q2", "testquery")));
             }();
             run_loop_->Quit();
           }));
@@ -247,18 +253,19 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryContentScraperTest, RustParseAndScrape) {
 
               ASSERT_EQ(fields->size(), 1u);
 
-              base::ExpectDictStringValue("Foo3", (*fields)[0], "text");
-              base::ExpectDictStringValue("Foo4", (*fields)[0], "input");
+              EXPECT_THAT((*fields)[0],
+                          IsSupersetOfValue(base::Value::Dict()
+                                                .Set("text", "Foo3")
+                                                .Set("input", "Foo4")));
 
               field_map_it = scrape_result->fields.find("dont>match");
               ASSERT_TRUE(field_map_it != scrape_result->fields.end());
               fields = &field_map_it->second;
 
               ASSERT_EQ(fields->size(), 1u);
-
-              const auto* ctry_value = (*fields)[0].FindString("ctry");
-              ASSERT_TRUE(ctry_value);
-              EXPECT_EQ(*ctry_value, "us");
+              EXPECT_THAT(
+                  (*fields)[0],
+                  IsSupersetOfValue(base::Value::Dict().Set("ctry", "us")));
             }();
             run_loop_->Quit();
           }));
