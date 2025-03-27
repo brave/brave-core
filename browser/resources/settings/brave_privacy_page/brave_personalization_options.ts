@@ -48,6 +48,13 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isDebounceFeatureEnabled')
         }
       },
+      isPsstFeatureEnabled_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isPsstFeatureEnabled')
+        }
+      },
       isRequestOTRFeatureEnabled_: {
         readOnly: true,
         type: Boolean,

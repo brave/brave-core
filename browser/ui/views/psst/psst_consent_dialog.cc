@@ -62,7 +62,8 @@ void SetFont(views::Label* label, const int size) {
 PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
                                      base::Value::List requests,
                                      ConsentDialogCallback consent_callback,
-                                     base::OnceClosure cancel_callback)
+                                     base::OnceClosure cancel_callback,
+                                     base::OnceClosure never_ask_me_callback)
     : consent_callback_(std::move(consent_callback)) {
   set_margins(gfx::Insets(20));
   SetModalType(ui::mojom::ModalType::kChild);
@@ -164,6 +165,17 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
           .SetCrossAxisAlignment(views::BoxLayout::CrossAxisAlignment::kEnd)
           .SetProperty(views::kMarginsKey,
                        gfx::Insets().set_bottom(16).set_top(16))
+          .AddChild(
+              views::Builder<views::MdTextButton>()
+                  .SetText(l10n_util::GetStringUTF16(
+                      IDS_PSST_CONSENT_DIALOG_NEVER_ASK_ME_AGAIN))
+                  .SetStyle(ui::ButtonStyle::kText)
+                  .SetCallback(base::BindOnce(&CallBackWithClose,
+                                              weak_factory_.GetWeakPtr(),
+                                              std::move(never_ask_me_callback)))
+                  .CopyAddressTo(&no_button_)
+                  .SetHorizontalAlignment(
+                      gfx::HorizontalAlignment::ALIGN_CENTER))
           .AddChild(views::Builder<views::MdTextButton>()
                         .SetText(l10n_util::GetStringUTF16(
                             IDS_PSST_CONSENT_DIALOG_CANCEL))
@@ -272,6 +284,16 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
           .AddChild(
               views::Builder<views::MdTextButton>()
                   .SetText(l10n_util::GetStringUTF16(
+                      IDS_PSST_COMPLETE_CONSENT_DIALOG_SHARE))
+                  .SetStyle(ui::ButtonStyle::kText)
+                  // .SetCallback(base::BindRepeating(&OnOkCallBackCompleteDlgWithClose,
+                  //                             weak_factory_.GetWeakPtr()))
+                  .SetProperty(views::kMarginsKey, gfx::Insets().set_left(16))
+                  .SetHorizontalAlignment(
+                      gfx::HorizontalAlignment::ALIGN_CENTER))
+          .AddChild(
+              views::Builder<views::MdTextButton>()
+                  .SetText(l10n_util::GetStringUTF16(
                       IDS_PSST_COMPLETE_CONSENT_DIALOG_REPORT))
                   .SetStyle(ui::ButtonStyle::kText)
                   // .SetCallback(base::BindRepeating(&OnOkCallBackCompleteDlgWithClose,
@@ -334,7 +356,8 @@ void PsstConsentDialog::SetProgressValue(const double value) {
   progress_bar_->SetValue(std::move(value));
 }
 
-void PsstConsentDialog::SetRequestDone(const std::string& url, const bool is_error) {
+void PsstConsentDialog::SetRequestDone(const std::string& url,
+                                       const bool is_error) {
   if (!task_checked_list_.contains(url)) {
     return;
   }
@@ -349,30 +372,18 @@ void PsstConsentDialog::SetRequestDone(const std::string& url, const bool is_err
   }
   LOG(INFO) << "[PSST] SetRequestDone url:" << url;
   if (auto* status_label = status_checked_line_to_mark->status_label.get()) {
-    status_label->SetText(is_error ? l10n_util::GetStringUTF16(IDS_PSST_CONSENT_DIALOG_TASK_STATUS_FAILED) : l10n_util::GetStringUTF16(IDS_PSST_CONSENT_DIALOG_TASK_STATUS_DONE));
+    status_label->SetText(is_error
+                              ? l10n_util::GetStringUTF16(
+                                    IDS_PSST_CONSENT_DIALOG_TASK_STATUS_FAILED)
+                              : l10n_util::GetStringUTF16(
+                                    IDS_PSST_CONSENT_DIALOG_TASK_STATUS_DONE));
     status_label->SetEnabledColor(
-      is_error ? status_label->GetColorProvider()->GetColor(ui::kColorSysError) : status_label->GetColorProvider()->GetColor(ui::kColorLabelForeground));
+        is_error
+            ? status_label->GetColorProvider()->GetColor(ui::kColorSysError)
+            : status_label->GetColorProvider()->GetColor(
+                  ui::kColorLabelForeground));
   }
 }
-
-// void PsstConsentDialog::SetRequestError(const std::string& url,
-//                                         const std::string& error) {
-//   if (!task_checked_list_.contains(url)) {
-//     return;
-//   }
-
-//   const auto status_checked_line_to_mark = task_checked_list_[url].get();
-//   if (!status_checked_line_to_mark) {
-//     return;
-//   }
-
-//   LOG(INFO) << "[PSST] SetRequestError url:" << url;
-//   if (auto* status_label = status_checked_line_to_mark->status_label.get()) {
-//     status_label->SetText(base::ASCIIToUTF16(error));
-//     status_label->SetEnabledColor(
-//         status_label->GetColorProvider()->GetColor(ui::kColorSysError));
-//   }
-// }
 
 void PsstConsentDialog::OnConsentClicked() {
   if (!consent_callback_) {
@@ -395,17 +406,6 @@ void PsstConsentDialog::OnConsentClicked() {
   }
   std::move(consent_callback_).Run(std::move(skip_checks));
 }
-
-// void PsstConsentDialog::SetStatusView() {
-//   if(!box_complete_view_ || owned_box_complete_view_) {
-//     return;
-//   }
-
-//   owned_box_complete_view_ = RemoveChildViewT(box_complete_view_);
-//   box_complete_view_ = nullptr;
-
-//   box_status_view_ = AddChildView(std::move(owned_box_status_view_));
-// }
 
 void PsstConsentDialog::SetCompletedView(
     const std::vector<std::string>& applied_checks,

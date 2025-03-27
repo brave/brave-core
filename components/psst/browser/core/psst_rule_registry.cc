@@ -64,12 +64,9 @@ PsstRuleRegistryAccessor::PsstRuleRegistryAccessor()
 PsstRuleRegistryAccessor::~PsstRuleRegistryAccessor() = default;
 
 PsstRuleRegistry* PsstRuleRegistryAccessor::Registry() {
-  LOG(INFO) << "[PSST] PsstRuleRegistryAccessor::Registry #100";
   if (!base::FeatureList::IsEnabled(psst::features::kBravePsst)) {
-    LOG(INFO) << "[PSST] PsstRuleRegistryAccessor::Registry #200";
     return nullptr;
   }
-    LOG(INFO) << "[PSST] PsstRuleRegistryAccessor::Registry #300";
 
   return impl_.get();
 }
@@ -86,9 +83,9 @@ PsstRuleRegistryImpl::~PsstRuleRegistryImpl() = default;
 void PsstRuleRegistryImpl::CheckIfMatch(
     const GURL& url,
     base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) const {
-LOG(INFO) << "[PSST] PsstRuleRegistryImpl::CheckIfMatch url:" << url << " rules_count:" << rules_.size();
+//LOG(INFO) << "[PSST] PsstRuleRegistryImpl::CheckIfMatch url:" << url << " rules_count:" << rules_.size();
   for (const PsstRule& rule : rules_) {
-LOG(INFO) << "[PSST] rule:" << rule.Name();
+//LOG(INFO) << "[PSST] rule:" << rule.Name();
     if (rule.ShouldInsertScript(url)) {
       base::ThreadPool::PostTaskAndReplyWithResult(
           FROM_HERE, {base::MayBlock()},

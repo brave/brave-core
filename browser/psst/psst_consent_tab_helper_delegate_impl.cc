@@ -15,7 +15,8 @@ void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
     bool prompt_for_new_version,
     base::Value::List requests,
     ConsentCallback yes_cb,
-    ConsentCallback no_cb) {
+    ConsentCallback no_cb,
+    base::OnceClosure never_ask_me_callback) {
   NOTIMPLEMENTED();
 }
 

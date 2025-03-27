@@ -36,7 +36,8 @@ void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
     bool prompt_for_new_version,
     base::Value::List requests,
     ConsentCallback yes_cb,
-    ConsentCallback no_cb) {
+    ConsentCallback no_cb,
+    base::OnceClosure never_ask_me_callback) {
   PsstConsentDialogTracker::CreateForWebContents(contents);
   auto* dialog_tracker = PsstConsentDialogTracker::FromWebContents(contents);
   if (!dialog_tracker) {
@@ -48,7 +49,8 @@ void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
           prompt_for_new_version, std::move(requests),
           base::BindOnce(&OnConsentCallback, std::move(yes_cb)),
           base::BindOnce(&OnConsentCallback, std::move(no_cb),
-                         std::vector<std::string>{})),
+                         std::vector<std::string>{}),
+          std::move(never_ask_me_callback)),
       contents);
   dialog_tracker->SetActiveDialog(new_dialog);
 

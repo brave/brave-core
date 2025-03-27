@@ -44,7 +44,8 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
                                        bool prompt_for_new_version,
                                        const base::Value::List requests,
                                        ConsentCallback yes_cb,
-                                       ConsentCallback no_cb) = 0;
+                                       ConsentCallback no_cb,
+                                       base::OnceClosure never_ask_me_callback) = 0;
     virtual void SetProgressValue(content::WebContents* contents,
                                   const double value) = 0;
     virtual void SetRequestDone(content::WebContents* contents,

@@ -50,6 +50,14 @@
   label="$i18n{reduceLanguageControlLabel}"
   sub-label="$i18n{reduceLanguageDesc}">
 </settings-toggle-button>
+<template is="dom-if" if="[[isPsstFeatureEnabled_]]">
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.psst.settings.never_ask_me_flag}}"
+  label="$i18n{enablePsstDialogLabelDesc}"
+  sub-label="$i18n{enablePsstDialogSubLabelDesc}">
+</settings-toggle-button>
+</template>
 <div hidden="[[!isRequestOTRFeatureEnabled_]]" class="settings-box">
     <div class="start" id="labelWrapper">
         <div class="label">$i18n{requestOTRLabel}</div>

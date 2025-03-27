@@ -21,7 +21,8 @@ class PsstConsentTabHelperDelegateImpl : public psst::PsstTabHelper::Delegate {
                              bool prompt_for_new_version,
                              base::Value::List requests,
                              ConsentCallback yes_cb,
-                             ConsentCallback no_cb) override;
+                             ConsentCallback no_cb,
+                             base::OnceClosure never_ask_me_callback) override;
   void SetProgressValue(content::WebContents* contents,
                         const double value) override;
   void SetRequestDone(content::WebContents* contents,

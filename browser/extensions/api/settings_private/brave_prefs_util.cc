@@ -20,6 +20,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/psst/common/psst_prefs.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -99,6 +100,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[brave_shields::prefs::kLinkedInEmbedControlType] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_shields::prefs::kReduceLanguageEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[psst::prefs::kPsstNeverAskMeEnabled] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_shields::prefs::kAdBlockDeveloperMode] =
       settings_api::PrefType::kBoolean;

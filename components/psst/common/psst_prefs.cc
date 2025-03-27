@@ -5,6 +5,7 @@
 
 #include "brave/components/psst/common/psst_prefs.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -24,11 +25,13 @@ namespace {
 inline constexpr char kConsentStatus[] = "consent_status";
 inline constexpr char kScriptVersion[] = "script_version";
 inline constexpr char kUrlsToSkip[] = "urls_to_skip";
+inline constexpr char kNeverAskMeFlag[] = "never_ask_me_flag";
 
 }  // namespace
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   if (base::FeatureList::IsEnabled(psst::features::kBravePsst)) {
+    registry->RegisterBooleanPref(prefs::kPsstNeverAskMeEnabled, true);
     registry->RegisterDictionaryPref(
         prefs::kPsstSettingsPref,
         user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
@@ -46,27 +49,54 @@ const std::string ConstructPath(const std::string& user_id,
   return base::StringPrintf("%s.%s", name.c_str(), user_id.c_str());
 }
 
-PsstSettings::PsstSettings(const PsstConsentStatus consent_status, const int script_version, const std::vector<std::string>& urls_to_skip)
-:urls_to_skip(urls_to_skip),
-consent_status(consent_status),
-script_version(script_version){}
+PsstSettings::PsstSettings(const PsstConsentStatus consent_status,
+                           const int script_version,
+                           const std::vector<std::string>& urls_to_skip)
+    : urls_to_skip(urls_to_skip),
+      consent_status(consent_status),
+      script_version(script_version) {}
 
-PsstSettings::PsstSettings(const PsstConsentStatus consent_status, const int script_version)
-:consent_status(consent_status),
-script_version(script_version){}
+PsstSettings::PsstSettings(const PsstConsentStatus consent_status,
+                           const int script_version)
+    : consent_status(consent_status), script_version(script_version) {}
 
 PsstSettings::PsstSettings(const PsstSettings& other) = default;
 PsstSettings::PsstSettings(PsstSettings&& other) = default;
 PsstSettings::~PsstSettings() = default;
 
+bool GetNeverAskFlag(PrefService* prefs) {
+  if (!prefs->HasPrefPath(prefs::kPsstSettingsPref)) {
+    return false;
+  }
+
+  const auto& psst_settings = prefs->GetDict(prefs::kPsstSettingsPref);
+
+  const auto result = psst_settings.FindBool(kNeverAskMeFlag);
+
+  return result.has_value() && !result.value();
+}
+
+void SetNeverAskFlag(PrefService* prefs, const bool val) {
+  ScopedDictPrefUpdate update(prefs, prefs::kPsstSettingsPref);
+  base::Value::Dict& pref = update.Get();
+  pref.Set(kNeverAskMeFlag, val);
+}
+
 std::optional<PsstSettings> GetPsstSettings(const std::string& user_id,
                                             const std::string& name,
                                             PrefService* prefs) {
+  if (!prefs->HasPrefPath(prefs::kPsstSettingsPref)) {
+    return std::nullopt;
+  }
+
   const auto& psst_settings = prefs->GetDict(prefs::kPsstSettingsPref);
   const std::string path = ConstructPath(user_id, name);
   const base::Value* settings_for_site_val =
       psst_settings.FindByDottedPath(path);
-LOG(INFO) << "[PSST] GetPsstSettings path:" << path << " settings_for_site_val:" << (settings_for_site_val ? settings_for_site_val->DebugString() : "n/a");
+  LOG(INFO) << "[PSST] GetPsstSettings path:" << path
+            << " settings_for_site_val:"
+            << (settings_for_site_val ? settings_for_site_val->DebugString()
+                                      : "n/a");
   if (!settings_for_site_val || !settings_for_site_val->is_dict()) {
     return std::nullopt;
   }
@@ -79,8 +109,8 @@ LOG(INFO) << "[PSST] GetPsstSettings path:" << path << " settings_for_site_val:"
   std::vector<std::string> urls;
   auto* urls_to_skip = settings_for_site.FindList(kUrlsToSkip);
   if (urls_to_skip) {
-    for(auto& url : *urls_to_skip) {
-      if(url.is_string()) {
+    for (auto& url : *urls_to_skip) {
+      if (url.is_string()) {
         urls.push_back(url.GetString());
       }
     }
@@ -90,7 +120,7 @@ LOG(INFO) << "[PSST] GetPsstSettings path:" << path << " settings_for_site_val:"
 
 base::Value::Dict PsstSettingsToDict(const PsstSettings settings) {
   base::Value::List urls_to_skip;
-  for(const auto& url : settings.urls_to_skip){
+  for (const auto& url : settings.urls_to_skip) {
     urls_to_skip.Append(url);
   }
   return base::Value::Dict()

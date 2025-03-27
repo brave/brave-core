@@ -15,7 +15,8 @@
 namespace psst {
 
 namespace prefs {
-constexpr char kPsstSettingsPref[] = "brave.psst.settings";
+  inline constexpr char kPsstSettingsPref[] = "brave.psst.settings";
+  inline constexpr char kPsstNeverAskMeEnabled[] = "brave.psst.settings.never_ask_me_flag";
 }  // namespace prefs
 
 enum PsstConsentStatus {
@@ -47,6 +48,12 @@ struct COMPONENT_EXPORT(PSST_COMMON) PsstSettings {
 
 COMPONENT_EXPORT(PSST_COMMON)
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+
+COMPONENT_EXPORT(PSST_COMMON)
+bool GetNeverAskFlag(PrefService* prefs);
+
+COMPONENT_EXPORT(PSST_COMMON)
+void SetNeverAskFlag(PrefService* prefs, const bool val);
 
 COMPONENT_EXPORT(PSST_COMMON)
 std::optional<PsstSettings> GetPsstSettings(const std::string& user_id,

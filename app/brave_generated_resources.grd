@@ -1419,11 +1419,17 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_PSST_CONSENT_DIALOG_OK" desc="Ok button's Text for a dialog to adjust PSST">
         Yes, change privacy settings for this website
       </message>
+      <message name="IDS_PSST_CONSENT_DIALOG_NEVER_ASK_ME_AGAIN" desc="Never ask me button's Text for a dialog to adjust PSST">
+        Never Ask me again
+      </message>
       <message name="IDS_PSST_CONSENT_DIALOG_CANCEL" desc="Cancel button's Text for a dialog to adjust PSST">
         No thanks
       </message>
       <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_OK" desc="Ok button's Text for PSST complete dialog">
         Ok
+      </message>
+      <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_SHARE" desc="Share your PSST expirience button's text for PSST complete dialog">
+        Share
       </message>
       <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_REPORT" desc="Report button's Text for PSST complete dialog">
         Report

@@ -15,6 +15,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/psst/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -102,6 +103,9 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
       "isOpenAIChatFromBraveSearchEnabled",
       ai_chat::IsAIChatEnabled(profile->GetPrefs()) &&
           ai_chat::features::IsOpenAIChatFromBraveSearchEnabled());
+  data_source->AddBoolean(
+    "isPsstFeatureEnabled",
+    base::FeatureList::IsEnabled(psst::features::kBravePsst));
 }
 
 void BravePrivacyHandler::SetLocalStateBooleanEnabled(

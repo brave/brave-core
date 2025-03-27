@@ -13,8 +13,6 @@
 #include "base/component_export.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
-#include "base/gtest_prod_util.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
