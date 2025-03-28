@@ -327,6 +327,7 @@
 <translation id="2631006050119455616">Uložené</translation>
 <translation id="3671566813999349838">Částka</translation>
 <translation id="6976444672879155794">Automatický príspevok [[processor]]</translation>
+<translation id="944736176598169208">Odmeny</translation>
 <translation id="8804164990146287819">Zásady ochrany osobných údajov</translation>
 <translation id="7262285991915892790">Ťahajte ikonu BAT na</translation>
 <translation id="7656781188259414093">cieľ.</translation>
@@ -504,7 +505,6 @@
     }</translation>
 <translation id="8611388433418909120">{ADS_VIEWED, plural,      =0 {Tento mesiac ste videli <ph name="COUNT_BEGIN"/># reklám<ph name="COUNT_END"/>}      =1 {Získavate tento mesiac za zobrazenie <ph name="COUNT_BEGIN"/># reklamy<ph name="COUNT_END"/>}      other {Získavate tento mesiac za zobrazenie <ph name="COUNT_BEGIN"/># reklám<ph name="COUNT_END"/>}    }</translation>
 <translation id="6067959437127691361">Používanie Brave Odmien podporuje tvorcov obsahu a umožňuje vám zarábať BAT.</translation>
-<translation id="944736176598169208">Odmeny</translation>
 <translation id="2359808026110333948">Pokračovat</translation>
 <translation id="885805571521218129">Toto odráža váš odhadovaný rozsah zárobkov za Brave Ads tento mesiac.</translation>
 <translation id="3863981251715594911">Ako to funguje?</translation>
@@ -639,7 +639,7 @@
 <translation id="6895088073061692390">Váš profil Odmeny Brave bol, bohužiaľ, pozastavený, pretože naše automatické kontroly zistili neočakávanú aktivitu Reklám Brave.</translation>
 <translation id="4229056297802204697">Kým je váš profil pozastavený, môžu sa vám naďalej zobrazovať reklamy, ale nebudete môcť dostávať platby. Takisto nebudete môcť pripojiť správcovský účet k službe Odmeny Brave.</translation>
 <translation id="5124846913141379164">Je možné, že váš profil bol pozastavený omylom a nie sú potrebné žiadne okamžité kroky z vašej strany. Pozastavenie na vašom profile môže byť v budúcnosti odstránené.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Získajte viac informácií o procese prehliadača Brave pri pozastavení profilov Rewards<ph name="END_LINK"/></translation>
+<translation id="8947002243324362172">Získajte viac informácií o procese prehliadača Brave pri pozastavení profilov Rewards</translation>
 <translation id="4699218748197721830">Profil Brave Rewards je označený</translation>
 <translation id="2607420597216860026">Skúste to znova po dokončení overenia ID na <ph name="PROVIDER"/>.</translation>
 <translation id="5037332159336402972">Na prihlásenie potrebujete overený účet</translation>
@@ -674,7 +674,6 @@
 <translation id="5916664084637901428">Zap.</translation>
 <translation id="3977723631999461201">Počet reklám, prijatých tento mesiac: <ph name="NUM"/></translation>
 <translation id="7924320838799747606">Váš zostatok</translation>
-<translation id="8714473477079007268">Peňaženka <ph name="PROVIDER"/></translation>
 <translation id="3175337080016717494">Účet pre výplaty</translation>
 <translation id="453760933181416879">Prejsť na môj účet</translation>
 <translation id="8290994471756102241">Odhlásené</translation>
@@ -684,7 +683,6 @@
 <translation id="2310070536993781610">Použite propagačný kód BRAVEREWARDS a získajte 10% zľavu na všetky položky z obchodu Brave merch.</translation>
 <translation id="1170674812179664523">Obchod s tovarom značky Brave</translation>
 <translation id="8673202990286883068">Vaše výhody</translation>
-<translation id="3699766258844277472">Nemáte zatiaľ nastavené žiadne opakované príspevky.</translation>
 <translation id="957921474773060718">Ďalší príspevok:</translation>
 <translation id="351973834053818251">Opakované príspevky</translation>
 <translation id="7751260505918304024">Zobraziť všetky</translation>
@@ -943,6 +941,8 @@
 <translation id="2399555431746923964">Uloženie aktív BTC Testnet</translation>
 <translation id="8749751940551938347">Uložiť aktíva ZEC</translation>
 <translation id="3451958544919449297">Uloženie aktív ZEC Testnet</translation>
+<translation id="8459631690385393533">Ukladanie aktív Cardano</translation>
+<translation id="4915057812371523845">Uloženie aktív Cardano Testnet</translation>
 <translation id="8500387257977999003">Súkromný kľúč <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="232925166623833246">Import z hardvérovej peňaženky</translation>
@@ -1187,7 +1187,11 @@
 <translation id="4667144295226514387">Chýbajúci limit paliva</translation>
 <translation id="2021522108838444624">Suma musí byť vyššia ako 0</translation>
 <translation id="8464365289405373974">Vyžaduje sa adresovanie</translation>
-<translation id="6326239384961270135">Chýba transparentná časť adresy</translation>
+<translation id="6449503919127419230">Nesprávna transparentná adresa</translation>
+<translation id="3778662247272439818">Nesúlad siete</translation>
+<translation id="1170025316306464310">Nesprávny formát jednotnej adresy</translation>
+<translation id="8380483120683767377">Chýba časť Orchard</translation>
+<translation id="1536211570215515174">Chýba transparentná časť adresy</translation>
 <translation id="8585995109882455949">Ako nájdem správnu adresu?</translation>
 <translation id="105524480632150318">Brave zabraňuje používateľom posielať prostriedky na nesprávnu adresu z dôvodu nesprávneho používania veľkých písmen. Podľa pokynov nižšie sa uistite, že ide o správnu adresu.</translation>
 <translation id="4583433813614292221">1. Navštíviť</translation>
@@ -2078,7 +2082,6 @@
 <translation id="4885527781814382758">Brave Leo je súkromný asistent s umelou inteligenciou, ktorý zlepšuje vaše používanie internetu. Leo je bezplatný s obmedzeným prístupom. Brave Leo Premium ponúka viac modelov, vyššie limity a poskytuje predplatiteľom skorší prístup k novým funkciám. Predvolený model sa bude z času na čas meniť. Viac informácií nájdete v <ph name="LINK_BEFORE"/>Centre pomoci Brave<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Keď položíte Leovi otázku, predvolene môže do Brave Leo na poskytnutie odpovede odoslať a použiť obsah webovej stránky, ktorú si prezeráte, alebo akýkoľvek text, ktorý na stránke zvýrazníte. Presnosť odpovedí nie je zaručená a môže obsahovať nepresné, zavádzajúce alebo nepravdivé informácie. Funkcia Leo používa údaje z vyhľadávača Brave Search na zlepšenie kvality odpovedí. Nevkladajte citlivé alebo súkromné informácie a pri odpovediach týkajúcich sa zdravia, financií, osobnej bezpečnosti, a pod. buďte opatrní. Možnosti funkcie Leo môžete kedykoľvek upraviť v Nastaveniach. Prejdite do časti Nastavenia &gt; Leo.</translation>
 <translation id="3038772045018370764">Spoločnosť Leo nezhromažďuje identifikátory, ako je vaša IP adresa, ktoré by sa s vami dali spojiť. Na trénovanie modelov umelej inteligencie sa nepoužívajú žiadne údaje a modely umelej inteligencie neuchovávajú žiadne osobné údaje (okrem modelu Anthropic, ktorý uchováva údaje na 30 dní pred tým, než ich vymaže). Viac informácií nájdete v <ph name="LINK_BEFORE"/>Zásadách ochrany osobných údajov<ph name="LINK_AFTER"/>.</translation>
-<translation id="7839853125981164613">Tu zadajte pokyn</translation>
 <translation id="4524675003624341892">Navrhnite otázky...</translation>
 <translation id="4567071417854988869">Zosumarizovať toto video</translation>
 <translation id="7921782882718083488">Zosumarizovať túto stránku</translation>
@@ -2138,6 +2141,8 @@
 <translation id="8261506727792406068">Odstrániť</translation>
 <translation id="6574153208133461043">Určite chcete túto konverzáciu vymazať? Túto akciu nemožno vrátiť späť.</translation>
 <translation id="7488762544858401571">Upravené</translation>
+<translation id="5604254791550001355">Upraviť pokyn</translation>
+<translation id="8115786586976830777">Kopírovať prompt</translation>
 <translation id="1406205536570262057">Upraviť odpoveď</translation>
 <translation id="2399439821649319175">Nepomohlo</translation>
 <translation id="2976167228906046828">Nesprávne</translation>
@@ -2149,6 +2154,9 @@
 <translation id="903201991022343217">Začať novú konverzáciu</translation>
 <translation id="8171760814579050200">Premenovať konverzáciu</translation>
 <translation id="7754678742055438573">Odstrániť konverzáciu</translation>
+<translation id="1946267518364740045">Spracováva sa...</translation>
+<translation id="4198859185714743678">Spracovanie dokončené</translation>
+<translation id="6140948187512243695">Zobraziť podrobnosti</translation>
 <translation id="7494736170250048402">Poslať správu do asistenta Leo</translation>
 <translation id="8650874793377330048">Zastaviť odpovede</translation>
 <translation id="8712637175834984815">Dobre</translation>

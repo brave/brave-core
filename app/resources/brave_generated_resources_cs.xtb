@@ -333,6 +333,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="1336940801687497203">Stejná jako u Windows</translation>
 <translation id="8721331068159819483">Stejné jako macOS</translation>
 <translation id="4171684937791228083">Vždy zobrazovat panel nástrojů na celé obrazovce</translation>
+<translation id="5840822070878669614">Otevřít Internetový obchod</translation>
 <translation id="1692470335103807198">Získejte další témata</translation>
 <translation id="2906510232093002459">Výchozí obrázky Brave</translation>
 <translation id="8000020256436988724">Panel nástrojů</translation>
@@ -497,6 +498,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="1389601498324964367">Úložiště řízené kvótou</translation>
 <translation id="814018970995616154">Kontroluje URL adresy pomocí seznamu nebezpečných webů, který je uložen v Brave.</translation>
 <translation id="1144810021918451336">Nechrání vás před nebezpečnými internetovými stránkami, staženými soubory a rozšířeními.</translation>
+<translation id="4905744245455598930">Chrání před weby, staženými soubory a rozšířeními, o kterých se ví, že jsou nebezpečné.</translation>
 <translation id="5570470519803062774">Nastavení webů a štítů</translation>
 <translation id="410351446219883937">Automatické přehrávání</translation>
 <translation id="3512883292907992390">Povolit webům automatické přehrávání videí</translation>
@@ -588,8 +590,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="4908081302669157000">Telefonní čísla, e-maily a adresy</translation>
 <translation id="294985549514492876">Webové aplikace (PWA)</translation>
 <translation id="7029809446516969842">Hesla</translation>
-<translation id="924029461438529367">Zobrazit návrhy vyhledávání</translation>
-<translation id="3128251601544028053">Když píšete do adresního řádku nebo vyhledávacího pole, odesílá Brave to, co píšete, do vašeho výchozího vyhledávače, abyste získali lepší návrhy. V soukromých oknech to není dostupné.</translation>
+<translation id="6011308810877101166">Zlepšit návrhy vyhledávání</translation>
+<translation id="2332576387809612040">Když je možnost zapnutá, Brave zasílá text, který zadáte do adresního řádku nebo vyhledávacího pole, do vašeho výchozího vyhledávacího programu, aby byla zobrazena lepší doporučení. Když je možnost vypnutá, Brave zobrazuje pouze návrhy vytvořené ve vašem zařízení. V soukromých oknech je tato funkce vždy vypnutá.</translation>
 <translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
 <translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
 <translation id="5522403133543437426">Vyhledávač používaný v adresním řádku.</translation>
@@ -643,7 +645,6 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="188228077840632890">AdGuard je Manifest V2 rozšíření, které nabízí blokování reklam, možnosti rodičovské kontroly a integraci s dalšími službami AdGuard.</translation>
 <translation id="8137559199583651773">Správa rozšíření</translation>
 <translation id="7013485839273047434">Získejte další rozšíření</translation>
-<translation id="5840822070878669614">Otevřít Internetový obchod</translation>
 <translation id="4954512758656527938">Základní peněženka Ethereum</translation>
 <translation id="7701023802820268122">Základní peněženka Solana</translation>
 <translation id="8488282162676695335">Peněženka Brave</translation>
@@ -673,6 +674,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1561541094377237745">Sítě Solana</translation>
 <translation id="7141438739990875547">Sítě Bitcoin</translation>
 <translation id="1077567586443625607">Sítě Zcash</translation>
+<translation id="1177180573354712438">Sítě Cardano</translation>
 <translation id="3159419679550543837">Zobrazit zkušební sítě</translation>
 <translation id="3215569562674795548">Upravit nebo přidat novou síť</translation>
 <translation id="4418993400653250511">ID řetězce</translation>
@@ -746,7 +748,7 @@ v budoucnu a také vymaže historii vašeho chatu. Vymazání vaší historie ch
 <translation id="7265212806651512211">Ještě jste nepřipojili model.</translation>
 <translation id="7304802428852949897">Vaše modely</translation>
 <translation id="7435587476558117990">Připojte k Leo svůj vlastní nebo hostovaný LLM třetí strany a používejte je v prohlížeči.</translation>
-<translation id="1381050642750209119">Použijte libovolný obslužný rámec kompatibilní s protokolem OpenAI Chat, například Ollama.</translation>
+<translation id="8137606697798069075">Použijte libovolný obslužný rámec kompatibilní s protokolem OpenAI Chat, například Ollama. <ph name="BEGIN_LINK"/>Zjistit více<ph name="END_LINK"/></translation>
 <translation id="2642905648178380593">Uložit model</translation>
 <translation id="6304169450064541679">Požadavek systému</translation>
 <translation id="3081947790648024460">Vlastní pokyny a/nebo kontext zadaný modelu, kterým se řídí jeho odpovědi v konkrétním směru nebo stylu. Pokud chcete, aby bylo vloženo současné datum a čas, použijte %datetime%.</translation>

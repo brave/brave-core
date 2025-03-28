@@ -276,9 +276,6 @@
 <translation id="4225265925807365011">我的復原詞句有 24 個字</translation>
 <translation id="3570367516044491911">設為預設瀏覽器</translation>
 <translation id="6800338374677644736">設為預設瀏覽器</translation>
-<translation id="19715420010996093">選取 Brave 瀏覽器並點擊「一律使用」</translation>
-<translation id="3546439402724649282">Brave 已設為預設瀏覽器。</translation>
-<translation id="8389661903259423907">你已有預設瀏覽器。你可到應用程式設定頁面更改預設瀏覽器。</translation>
 <translation id="1545749641540134597">掃描 QR Code</translation>
 <translation id="5317781812114905957">說明</translation>
 <translation id="8515319483805157233">若要以 QR 碼搜尋，請將 QR 碼放在方框中央。</translation>
@@ -549,7 +546,6 @@
 <translation id="1945330434665345785">您上週以 Brave 瀏覽器封鎖了 <ph name="COUNT"/> 追蹤裝置 &amp; 廣告。</translation>
 <translation id="2883868922264431515">藉檢視尊重隱私權廣告來賺取代幣並且支持您最喜愛的網站。</translation>
 <translation id="7408493389591475748">開始瀏覽來觀看隱私權報告</translation>
-<translation id="9080777565335515917">將 Brave 設定為您的預設瀏覽器供私密和穩妥的瀏覽。</translation>
 <translation id="1390943217516275883">容許 Brave 來顯示您的隱私權統計數字</translation>
 <translation id="1763352720905582220">送出每週隱私權報告</translation>
 <translation id="1811691435325545066">清除所有隱私權報告資料</translation>

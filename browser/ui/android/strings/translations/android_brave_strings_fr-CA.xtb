@@ -276,9 +276,6 @@
 <translation id="4225265925807365011">J'ai une phrase de récupération de 24 mots</translation>
 <translation id="3570367516044491911">Définir comme navigateur par défaut</translation>
 <translation id="6800338374677644736">Définir comme navigateur par défaut</translation>
-<translation id="19715420010996093">Sélectionnez le navigateur Brave et appuyez sur « toujours ».</translation>
-<translation id="3546439402724649282">Brave est déjà défini comme votre navigateur par défaut.</translation>
-<translation id="8389661903259423907">Vous avez déjà défini un navigateur par défaut. Vous pouvez modifier le navigateur par défaut dans les paramètres de votre application.</translation>
 <translation id="1545749641540134597">Scanner le code QR</translation>
 <translation id="5317781812114905957">Instructions</translation>
 <translation id="8515319483805157233">Pour effectuer une recherche par code QR, alignez ce dernier sur le centre du cadre.</translation>
@@ -549,7 +546,6 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="1945330434665345785">Vous avez bloqué <ph name="COUNT"/> traqueurs et publicités avec le navigateur Brave la semaine dernière.</translation>
 <translation id="2883868922264431515">Gagnez des jetons en regardant des publicités respectant la confidentialité et en soutenant vos sites web favoris.</translation>
 <translation id="7408493389591475748">Commencez à naviguer pour voir les rapports de confidentialité</translation>
-<translation id="9080777565335515917">Configurez Brave comme navigateur par défaut pour une navigation confidentielle et sûre.</translation>
 <translation id="1390943217516275883">Autorise Brave à afficher vos statistiques de confidentialité</translation>
 <translation id="1763352720905582220">Envoie un rapport de confidentialité hebdomadaire</translation>
 <translation id="1811691435325545066">Effacer toutes les données de rapports de confidentialité</translation>

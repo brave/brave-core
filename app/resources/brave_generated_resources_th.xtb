@@ -333,6 +333,7 @@
 <translation id="1336940801687497203">เหมือน Windows</translation>
 <translation id="8721331068159819483">เหมือนกับ macOS</translation>
 <translation id="4171684937791228083">แสดงแถบเครื่องมือแบบเต็มหน้าจอเสมอ</translation>
+<translation id="5840822070878669614">เปิดเว็บสโตร์</translation>
 <translation id="1692470335103807198">รับธีมเพิ่มเติม</translation>
 <translation id="2906510232093002459">ภาพเริ่มต้นของ Brave</translation>
 <translation id="8000020256436988724">แถบเครื่องมือ</translation>
@@ -497,6 +498,7 @@
 <translation id="1389601498324964367">พื้นที่เก็บข้อมูลจัดการตามโควตา</translation>
 <translation id="814018970995616154">ตรวจสอบ URL ที่มีรายชื่อเว็บไซต์ที่ไม่ปลอดภัยเก็บไว้ใน Brave</translation>
 <translation id="1144810021918451336">ไม่ป้องกันคุณจากเว็บไซต์ การดาวน์โหลด และส่วนขยายที่เป็นอันตราย</translation>
+<translation id="4905744245455598930">ป้องกันเว็บไซต์ การดาวน์โหลด และส่วนขยายที่อันตราย</translation>
 <translation id="5570470519803062774">การตั้งค่าเว็บไซต์และชิลด์</translation>
 <translation id="410351446219883937">เล่นอัตโนมัติ</translation>
 <translation id="3512883292907992390">อนุญาตให้เว็บไซต์เล่นวิดีโออัตโนมัติ</translation>
@@ -588,8 +590,8 @@
 <translation id="4908081302669157000">หมายเลขโทรศัพท์ อีเมล และที่อยู่</translation>
 <translation id="294985549514492876">เว็บแอป (PWA)</translation>
 <translation id="7029809446516969842">รหัสผ่าน</translation>
-<translation id="924029461438529367">แสดงคำแนะนำในการค้นหา</translation>
-<translation id="3128251601544028053">เมื่อคุณพิมพ์ในแถบที่อยู่หรือช่องค้นหา Brave จะส่งข้อมูลที่คุณพิมพ์ไปยังเครื่องมือค้นหาเริ่มต้นเพื่อรับคำแนะนำที่ดีขึ้น ซึ่งการกระทำนี้จะไม่สามารถใช้ได้ในหน้าต่างแบบส่วนตัว</translation>
+<translation id="6011308810877101166">ปรับปรุงข้อเสนอแนะการค้นหา</translation>
+<translation id="2332576387809612040">เมื่อเปิดใช้งาน Brave จะส่งสิ่งที่คุณพิมพ์ในแถบที่อยู่หรือกล่องค้นหาถึงเครื่องมือค้นหามาตรฐานของคุณเพื่อให้ได้ข้อเสนอแนะที่ดีกว่า เมื่อปิดใช้งาน Brave จะโชว์ข้อเสนอแนะที่สร้างขึ้นในอุปกรณ์ของคุณเท่านั้น ซึ่งจะปิดใช้งานเสมอในโหมดส่วนตัว</translation>
 <translation id="6285118765755298263">จัดทำดัชนีเครื่องมือค้นหาอื่นๆ</translation>
 <translation id="919715748352669592">จัดทำดัชนีเว็บไซต์ที่เป็นไปตามข้อกำหนดของ OpenSearch โดยอัตโนมัติ</translation>
 <translation id="5522403133543437426">เครื่องมือค้นหาที่ใช้ในแถบที่อยู่</translation>
@@ -643,7 +645,6 @@
 <translation id="188228077840632890">AdGuard คือส่วนขยาย Manifest V2 ที่ให้การบล็อกโฆษณา ตัวเลือกการควบคุมโดยผู้ปกครอง และการผสานรวมกับข้อเสนอบริการ AdGuard อื่นๆ</translation>
 <translation id="8137559199583651773">จัดการส่วนขยาย</translation>
 <translation id="7013485839273047434">รับส่วนขยายเพิ่มเติม</translation>
-<translation id="5840822070878669614">เปิดเว็บสโตร์</translation>
 <translation id="4954512758656527938">วอลเล็ต Ethereum เริ่มต้น</translation>
 <translation id="7701023802820268122">วอลเล็ต Solana เริ่มต้น</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -673,6 +674,7 @@
 <translation id="1561541094377237745">เครือข่าย Solana</translation>
 <translation id="7141438739990875547">เครือข่าย Bitcoin</translation>
 <translation id="1077567586443625607">เครือข่าย Zcash</translation>
+<translation id="1177180573354712438">เครือข่ายบล็อกเชน Cardano</translation>
 <translation id="3159419679550543837">แสดงเครือข่ายทดสอบ</translation>
 <translation id="3215569562674795548">แก้ไขหรือเพิ่มเครือข่ายใหม่</translation>
 <translation id="4418993400653250511">หมายเลขของเชน</translation>
@@ -745,7 +747,7 @@
 <translation id="7265212806651512211">คุณยังไม่ได้เชื่อมต่อกับโมเดล</translation>
 <translation id="7304802428852949897">โมเดลของคุณ</translation>
 <translation id="7435587476558117990">เชื่อมต่อ LLM ที่คุณโฮสต์ด้วยตนเองหรือโฮสต์โดยบุคคลที่สามกับ Leo และใช้งานภายในเบราว์เซอร์</translation>
-<translation id="1381050642750209119">ใช้เฟรมเวิร์กที่เข้ากันได้กับ OpenAI Chat Protocol เช่น Ollama</translation>
+<translation id="8137606697798069075">ใช้เฟรมเวิร์กที่เข้ากันได้กับ OpenAI Chat Protocol เช่น Ollama<ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
 <translation id="2642905648178380593">บันทึกโมเดล</translation>
 <translation id="6304169450064541679">พรอมต์ระบบ</translation>
 <translation id="3081947790648024460">คำสั่งหรือบริบทที่กำหนดให้กับโมเดลเพื่อแนะแนวทางการตอบสนองในทิศทางหรือสไตล์ที่เฉพาะเจาะจง ใช้ %datetime% เมื่อคุณต้องการแทรกวันที่และเวลาปัจจุบัน</translation>

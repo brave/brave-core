@@ -327,6 +327,7 @@
 <translation id="2631006050119455616">Gemt</translation>
 <translation id="3671566813999349838">Beløb</translation>
 <translation id="6976444672879155794">Auto-bidrag med [[processor]]</translation>
+<translation id="944736176598169208">Rewards</translation>
 <translation id="8804164990146287819">Privatlivspolitik</translation>
 <translation id="7262285991915892790">Træk BAT-Ikonet hen til</translation>
 <translation id="7656781188259414093">mål.</translation>
@@ -509,7 +510,6 @@
       other {Du optjener for at se <ph name="COUNT_BEGIN"/># annoncer <ph name="COUNT_END"/> i denne måned}
     }</translation>
 <translation id="6067959437127691361">Ved at bruge Brave Rewards understøtter du indholdsskabere, samtidig med at du optjener BAT.</translation>
-<translation id="944736176598169208">Rewards</translation>
 <translation id="2359808026110333948">Fortsæt</translation>
 <translation id="885805571521218129">Dette viser din omtrentlige indtjening for Brave Ads denne måned.</translation>
 <translation id="3863981251715594911">Hvordan virker det?</translation>
@@ -646,7 +646,7 @@
 <translation id="6895088073061692390">Desværre er din Brave Rewards-profil blevet markeret, da vores automatiske systemer opdagede nogle uventede Brave Ads-aktiviteter.</translation>
 <translation id="4229056297802204697">Mens din profil er markeret, kan du fortsat se reklamer, men du vil ikke være berettiget til at modtage udbetalinger. Du vil heller ikke kunne tilknytte en forvaltningskonto til Brave Rewards.</translation>
 <translation id="5124846913141379164">Det er muligt, at din profil er blevet markeret ved en fejl, og at du ikke behøver at foretage dig noget. Markeringen på din profil kan blive fjernet i fremtiden.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Få mere at vide om Braves proces med at markere Rewards-profiler.<ph name="END_LINK"/></translation>
+<translation id="8947002243324362172">Få mere at vide om Braves proces med at markere Rewards-profiler.</translation>
 <translation id="4699218748197721830">Brave Rewards-profil er markeret</translation>
 <translation id="2607420597216860026">Prøv igen, når du har udført ID-validering på <ph name="PROVIDER"/>.</translation>
 <translation id="5037332159336402972">Du skal have en bekræftet konto, før du kan logge ind</translation>
@@ -681,7 +681,6 @@
 <translation id="5916664084637901428">Til</translation>
 <translation id="3977723631999461201"><ph name="NUM"/> annoncer modtaget denne måned</translation>
 <translation id="7924320838799747606">Din saldo</translation>
-<translation id="8714473477079007268"><ph name="PROVIDER"/> tegnebog</translation>
 <translation id="3175337080016717494">Udbetalingskonto</translation>
 <translation id="453760933181416879">Gå til min konto</translation>
 <translation id="8290994471756102241">Logget ud</translation>
@@ -691,7 +690,6 @@
 <translation id="2310070536993781610">Brug kampagnekoden BRAVEREWARDS for at få 10 % rabat på alle varer i Braves butik.</translation>
 <translation id="1170674812179664523">Brave-butik</translation>
 <translation id="8673202990286883068">Dine fordele</translation>
-<translation id="3699766258844277472">Du har endnu ikke oprettet nogle bidrag.</translation>
 <translation id="957921474773060718">Næste bidrag:</translation>
 <translation id="351973834053818251">Tilbagevendende bidrag</translation>
 <translation id="7751260505918304024">Vis alle</translation>
@@ -950,6 +948,8 @@
 <translation id="2399555431746923964">Gem BTC Testnet-aktiver</translation>
 <translation id="8749751940551938347">Gem ZEC-aktiver</translation>
 <translation id="3451958544919449297">Gem ZEC Testnet-aktiver</translation>
+<translation id="8459631690385393533">Gem Cardano-aktiver</translation>
+<translation id="4915057812371523845">Gem Cardano Testnet-aktiver</translation>
 <translation id="8500387257977999003">Privat nøgle <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Importér</translation>
 <translation id="232925166623833246">Importér fra hardware-tegnebog</translation>
@@ -1194,7 +1194,11 @@
 <translation id="4667144295226514387">Mangler gas-grænse</translation>
 <translation id="2021522108838444624">Beløbet skal være større end 0</translation>
 <translation id="8464365289405373974">Til-adresse påkrævet</translation>
-<translation id="6326239384961270135">Transparent del mangler</translation>
+<translation id="6449503919127419230">Forkert transparent adresse</translation>
+<translation id="3778662247272439818">Uoverensstemmelse mellem netværk</translation>
+<translation id="1170025316306464310">Forkert forenet adresseformat</translation>
+<translation id="8380483120683767377">Orchard-del mangler</translation>
+<translation id="1536211570215515174">Transparent del mangler</translation>
 <translation id="8585995109882455949">Hvordan finder jeg den rigtige adresse?</translation>
 <translation id="105524480632150318">Brave forhindrer brugere i at sende penge til den forkerte adresse på grund af forkert brug af store bogstaver. Sørg for, at det er den korrekte adresse ved at følge instruktionerne nedenfor.</translation>
 <translation id="4583433813614292221">1. Gå til</translation>
@@ -1348,6 +1352,8 @@
 <translation id="7694836973509310467">Overføring</translation>
 <translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> på <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="6934057383578424432">Der opstod en fejl i forsøget på at <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> på <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="4916833841663290382">Afskærmer <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/></translation>
+<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> er blevet afskærmet</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} transaktion mere afventer.}
       other {{PENDING_TRANSACTIONS} transaktioner mere afventer.}
@@ -1745,7 +1751,9 @@
 <translation id="4438043733494739848">Gennemsigtig</translation>
 <translation id="1950406774300125954">Ikke synkroniseret</translation>
 <translation id="68413355604013935">Ikke synkroniseret (<ph name="BLOCKS"/>-blokke bagud)</translation>
+<translation id="1724354250024376254">Afventende saldo (flere bekræftelser påkrævet): <ph name="FUNDS"/></translation>
 <translation id="1597233669965903034">Synkroniser din konto for at få adgang til de seneste transaktioner og saldo.</translation>
+<translation id="3609785682760573515">Synkroniserer ...</translation>
 <translation id="7499262814309712782">Synkroniser konto</translation>
 <translation id="2804568727504456403">Synkroniser <ph name="ACCOUNT"/></translation>
 <translation id="813913629614996137">Initialiserer ...</translation>
@@ -1757,6 +1765,15 @@
 <translation id="7714298753782862705">Synkronisering gennemført. Du kan nu lukke dette vindue.</translation>
 <translation id="7716113567047550378">Luk ikke dette vindue, før synkroniseringen er færdig.</translation>
 <translation id="5123590959308755060">Fortsæt med at bruge wallet i en ny fane</translation>
+<translation id="4594014034647546191">Den afskærmede kontos første blok</translation>
+<translation id="6666784075827260119">Kontoens første blok skal være større end <ph name="BLOCK_NUMBER"/></translation>
+<translation id="3102477628835823956">Kontoens første blok skal være mindre end <ph name="BLOCK_NUMBER"/></translation>
+<translation id="6850229669854962550"><ph name="BLOCKS"/> blokke bagud</translation>
+<translation id="7747318989577709780">Kontoen synkroniseres</translation>
+<translation id="9086302186042011942">Synkroniserer</translation>
+<translation id="99991973626409495">Gennemgå afskærmning</translation>
+<translation id="3114681061018999547">Afskærmer</translation>
+<translation id="8897189056319316783">Afskærm ZEC</translation>
 <translation id="7144878232160441200">Prøv igen</translation>
 <translation id="9094621390791852268">Forhåndsvisning af transaktionen mislykkedes.</translation>
 <translation id="4982713341035600933">Anslået saldoændring</translation>
@@ -2084,7 +2101,8 @@
 <translation id="4885527781814382758">Brave Leo er en privat AI-smartassistent, der forbedrer din brug af internettet. Leo er gratis at bruge med begrænset adgang. Brave Leo Premium tilbyder flere modeller, højere grænser og giver abonnenter tidlig adgang til nye funktioner. Standardmodellen vil ændre sig fra tid til anden. Se flere detaljer i <ph name="LINK_BEFORE"/>Braves hjælpecenter<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Når du stiller Leo et spørgsmål, kan den som udgangspunkt sende og bruge indholdet af den hjemmeside, du besøger, eller enhver tekst, du fremhæver på en side, for at give et svar. Nøjagtigheden af svar er ikke garanteret og kan inkludere unøjagtige, misvisende eller falske informationer. Leo bruger data fra Brave-søgning for at forbedre kvaliteten af svar. Brug ikke følsomme eller private oplysninger, og udvis påpasselighed, når det angår svar, der omhandler helbred, finans, personlig sikkerhed eller lignende emner. Du kan altid ændre på Leos opførsel under indstillinger. Gå til Indstillinger &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo indsamler ikke identifikatorer, som din IP-adresse, der kan tilbageføres til dig. Intet data bruges til at træne AI-modellerne, og ingen personlige oplysninger bibeholdes af AI-modellerne (bortset fra Anthropic, der bibeholder data i 30 dage, hvorefter det slettes). Se <ph name="LINK_BEFORE"/>privatlivspolitikken<ph name="LINK_AFTER"/> for mere information.</translation>
-<translation id="7839853125981164613">Skriv noget her</translation>
+<translation id="6961721183181597848">Hvordan kan jeg hjælpe dig i dag?</translation>
+<translation id="2966135729673253768">Stil uddybende spørgsmål</translation>
 <translation id="4524675003624341892">Foreslå spørgsmål...</translation>
 <translation id="4567071417854988869">Sammenfat denne video</translation>
 <translation id="7921782882718083488">Sammenfat denne side</translation>
@@ -2097,6 +2115,7 @@
 <translation id="7905602379229309187">Slutpunktet er i øjeblikket overbelastet. Prøv venligst igen senere.</translation>
 <translation id="8151638057146502721">Konfigurer</translation>
 <translation id="4177458398826096846">Hej, jeg hedder Leo. Jeg er en fuldt ud hostet AI-assistent fra Brave. Jeg er udviklet af Llama 3.1 8B, en model skabt af Meta til at være effektiv og anvendelig i mange use cases. <ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
+<translation id="5252251845674154807">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave, der er fuldt hostet. Jeg er drevet af Qwen 14B, en model skabt af Alibaba Cloud til at blive benyttet i mange forskellige situationer. <ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hej, jeg hedder Leo. Jeg er en fuldt ud hostet AI-assistent fra Brave. Jeg er udviklet af Mixtral 8x7B, en model skabt af Mistral AI til at håndtere avancerede opgaver. <ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hej, jeg hedder Leo. Jeg er en proxy fra Brave og udviklet af Claude Instant, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. <ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="2001874998841390450">Hej, jeg hedder Leo. Jeg er en proxy fra Brave og drevet af Claude Haiku, en model skabt af Anthropic til at drive samtale- og tekstbehandlingsopgaver. <ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
@@ -2144,6 +2163,8 @@
 <translation id="8261506727792406068">Slet</translation>
 <translation id="6574153208133461043">Er du sikker på, at du vil slette denne samtale? Denne handling kan ikke fortrydes.</translation>
 <translation id="7488762544858401571">Redigeret</translation>
+<translation id="5604254791550001355">Rediger prompt</translation>
+<translation id="8115786586976830777">Kopiér prompt</translation>
 <translation id="1406205536570262057">Redigér svar</translation>
 <translation id="2399439821649319175">Ikke nyttigt</translation>
 <translation id="2976167228906046828">Forkert</translation>
@@ -2155,6 +2176,9 @@
 <translation id="903201991022343217">Begynd en ny samtale</translation>
 <translation id="8171760814579050200">Omdøb samtalen</translation>
 <translation id="7754678742055438573">Slet samtale</translation>
+<translation id="1946267518364740045">Tænker sig om ...</translation>
+<translation id="4198859185714743678">Færdig</translation>
+<translation id="6140948187512243695">Vis detaljer</translation>
 <translation id="7494736170250048402">Send en besked til Leo</translation>
 <translation id="8650874793377330048">Hold op med at svare</translation>
 <translation id="8712637175834984815">Forstået</translation>
@@ -2164,7 +2188,12 @@
 <translation id="4370698775470316661">Denne samtale er for lang og kan ikke fortsættes. Der findes muligvis andre modeller, som Leo kan bruge til at bibeholde nøjagtigheden i længere samtaler.</translation>
 <translation id="5719170755629028558">Forbedrer dit svar med Brave Search …</translation>
 <translation id="5794962229997281366">Søger efter forbedret svar på <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="7307396647043599949"><ph name="COUNT"/> mere …</translation>
 <translation id="8103700533980268469">Luk denne besked</translation>
+<translation id="3417835166382867856">Søg i faner</translation>
+<translation id="9090243919347147717">Vedhæftede filer</translation>
+<translation id="4444978378117903684">Tilføj dine browserfaner for at give Leo mere kontekst til samtalen</translation>
+<translation id="4300920590112551536">Browserfaner</translation>
 <translation id="2315654674554095762">Leo vil nu huske dine samtaler, så du kan gå tilbage til dem. De gemmes krypteret på din enhed, og du kan slette dem når som helst.</translation>
 <translation id="7821251979960635244">Din samtalehistorik vises her, når du starter en samtale.</translation>
 <translation id="887511360213807449">Historik er slået fra</translation>
@@ -2174,6 +2203,7 @@
 <translation id="3185367320601718531">Generering af samtale og tekst</translation>
 <translation id="7979673624064378842">Hurtig chat</translation>
 <translation id="2836330653441111204">Afbalanceret hastighed og intelligens</translation>
+<translation id="6695329447007213917">Chat til generelle formål, kodning og meget mere</translation>
 <translation id="3965507912994218570">Leo-indstillinger</translation>
 <translation id="1037324977127422019">Hej, jeg hedder Leo!</translation>
 <translation id="8930348081963284873">En AI-drevet intelligent assistent bygget direkte ind i Brave.</translation>
@@ -2403,5 +2433,6 @@ Lad os få dig tilknyttet!</translation>
 <translation id="1538335063514960365">Knappen Åbn her, tryk på Enter for at åbne denne webadresse i den aktuelle fane i stedet for at skifte til den
     nuværende fane</translation>
 <translation id="451189393813405346">Spørg Leo</translation>
+<translation id="1602850501393095406">Tryk på ↑ for at fremhæve</translation>
 <translation id="8525248723479742219">Afspil senere</translation>
 </translationbundle>

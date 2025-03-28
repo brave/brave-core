@@ -333,6 +333,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1336940801687497203">Samma som Windows</translation>
 <translation id="8721331068159819483">Samma som MacOS</translation>
 <translation id="4171684937791228083">Visa alltid verktygsfältet i helskärmsläge</translation>
+<translation id="5840822070878669614">Öppna Brave Web Store</translation>
 <translation id="1692470335103807198">Få fler teman</translation>
 <translation id="2906510232093002459">Ordinarie bilder i Brave</translation>
 <translation id="8000020256436988724">Verktygsfält</translation>
@@ -497,6 +498,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1389601498324964367">Kvothanterad lagring</translation>
 <translation id="814018970995616154">Kontrollerar webbadresser mot en lista över osäkra webbplatser som lagras i Brave.</translation>
 <translation id="1144810021918451336">Skyddar dig inte mot farliga webbplatser, nedladdningar eller tillägg.</translation>
+<translation id="4905744245455598930">Skyddar mot webbplatser, nedladdningar och tillägg som är kända för att vara farliga.</translation>
 <translation id="5570470519803062774">Inställningar för sajt och Shields</translation>
 <translation id="410351446219883937">Autospela</translation>
 <translation id="3512883292907992390">Tillåt att webbplatser spelar upp videor automatiskt</translation>
@@ -588,8 +590,8 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="4908081302669157000">Telefonnummer, e-postadresser och adresser</translation>
 <translation id="294985549514492876">Webbappar (PWA:er)</translation>
 <translation id="7029809446516969842">Lösenord</translation>
-<translation id="924029461438529367">Visa sökförslag</translation>
-<translation id="3128251601544028053">När du skriver i adressfältet eller sökrutan skickar Brave det du skriver till din standardsökmotor för att få bättre förslag. Detta är inte tillgängligt i privata fönster.</translation>
+<translation id="6011308810877101166">Förbättra sökförslag</translation>
+<translation id="2332576387809612040">När den är på skickar Brave det du skriver i adressfältet eller sökrutan till din standardsökmotor för att få bättre förslag. När den är av visar Brave bara förslag som genererats på din enhet. Detta är alltid av i privata fönster.</translation>
 <translation id="6285118765755298263">Indexera andra sökmotorer</translation>
 <translation id="919715748352669592">Indexerar automatiskt webbplatser som följer OpenSearch-specifikationerna.</translation>
 <translation id="5522403133543437426">Sökmotor som används i adressfältet.</translation>
@@ -643,7 +645,6 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="188228077840632890">AdGuard är ett Manifest V2-tillägg som erbjuder annonsblockering, föräldrakontrollalternativ och integration med andra AdGuard-tjänster.</translation>
 <translation id="8137559199583651773">Hantera tillägg</translation>
 <translation id="7013485839273047434">Skaffa fler tillägg</translation>
-<translation id="5840822070878669614">Öppna Brave Web Store</translation>
 <translation id="4954512758656527938">Standardplånbok för Ethereum</translation>
 <translation id="7701023802820268122">Standardplånbok för Solana</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -673,6 +674,7 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="1561541094377237745">Solana-nätverk</translation>
 <translation id="7141438739990875547">Bitcoin-nätverk</translation>
 <translation id="1077567586443625607">Zcash-nätverk</translation>
+<translation id="1177180573354712438">Cardano-nätverk</translation>
 <translation id="3159419679550543837">Visa testnätverk</translation>
 <translation id="3215569562674795548">Redigera eller lägg till ett nytt nätverk</translation>
 <translation id="4418993400653250511">Kedjans id</translation>
@@ -748,7 +750,7 @@ Leo AI att raderas. Denna åtgärd kan inte ångras.</translation>
 <translation id="7265212806651512211">Du har inte anslutit någon modell ännu.</translation>
 <translation id="7304802428852949897">Dina modeller</translation>
 <translation id="7435587476558117990">Anslut din egenhostade eller tredjepartshostade LLM med Leo och använd dem i webbläsaren.</translation>
-<translation id="1381050642750209119">Använd valfritt ramverk som är kompatibelt med OpenAI-chattprotokoll, t.ex. Ollama.</translation>
+<translation id="8137606697798069075">Använd ett OpenAI Chat Protocol-kompatibelt ramverk, t.ex. Ollama. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="2642905648178380593">Spara modell</translation>
 <translation id="6304169450064541679">Systemuppmaning</translation>
 <translation id="3081947790648024460">Anpassade instruktioner och/eller kontext som ges till modellen för att vägleda dess svar i en specifik riktning eller stil. Använd %datetime% där du vill att aktuellt datum och tid ska infogas.</translation>

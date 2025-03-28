@@ -276,9 +276,6 @@
 <translation id="4225265925807365011">Tinc una frase de recuperació de 24 paraules</translation>
 <translation id="3570367516044491911">Configura com a navegador predeterminat</translation>
 <translation id="6800338374677644736">Configura com a navegador predeterminat</translation>
-<translation id="19715420010996093">Selecciona el navegador Brave i clica 'Sempre'</translation>
-<translation id="3546439402724649282">Brave ja s'ha configurat com el teu navegador predeterminat.</translation>
-<translation id="8389661903259423907">Ja has configurat un navegador predeterminat. Pots modificar el navegador predeterminat a la configuració de l'aplicació.</translation>
 <translation id="1545749641540134597">Escaneja codi QR</translation>
 <translation id="5317781812114905957">Instruccions</translation>
 <translation id="8515319483805157233">Per cercar per codi QR, alinea el codi QR al centre del marc.</translation>
@@ -549,7 +546,6 @@ Segur que vols continuar?</translation>
 <translation id="1945330434665345785">La setmana passada vas bloquejar <ph name="COUNT"/> rastrejadors i anuncis amb el navegador de Brave.</translation>
 <translation id="2883868922264431515">Guanya tokens visualitzant anuncis que respectin la privacitat i donin suport als teus llocs web preferits.</translation>
 <translation id="7408493389591475748">Comença a navegar per veure els informes de privacitat</translation>
-<translation id="9080777565335515917">Defineix Brave com a navegador predeterminat per a una navegació privada i segura.</translation>
 <translation id="1390943217516275883">Permet a Brave mostrar les teves estadístiques de privacitat</translation>
 <translation id="1763352720905582220">Envia un informe setmanal de privacitat</translation>
 <translation id="1811691435325545066">Neteja totes les dades dels informes de privacitat</translation>

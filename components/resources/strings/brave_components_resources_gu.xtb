@@ -1,8 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="gu">
+<translation id="5288293905681750318">ટ્રેકર્સ અને જાહેરાતોને બ્લોક કરી</translation>
 <translation id="2313532038420432247">HTTPS  અપગ્રેડ્સ</translation>
 <translation id="788493840831967104">સમયની બચત</translation>
+<translation id="2318592590318590295">બેન્ડવિડ્થની બચત કરી</translation>
 <translation id="2079545284768500474">છેલ્લો ફેરફાર રદ કરો</translation>
 <translation id="6040143037577758943">બંધ કરો</translation>
 <translation id="7108338896283013870">છુપાવો</translation>
@@ -16,6 +18,7 @@
 <translation id="5327248766486351172">નામ</translation>
 <translation id="5317780077021120954">સાચવો</translation>
 <translation id="7658239707568436148">રદ કરો</translation>
+<translation id="5525668735313040116">વેબમાં ખાનગી રીતે શોધ કરો</translation>
 <translation id="3435896845095436175">સક્ષમ કરો</translation>
 <translation id="780301667611848630">નહીં, આભાર</translation>
 <translation id="2875302873837723333">લોકપ્રિય સાઇટ</translation>
@@ -25,6 +28,7 @@
 <translation id="370665806235115550">લોડ કરી રહ્યું છે...</translation>
 <translation id="8890516388109605451">સ્રોતો</translation>
 <translation id="7791543448312431591">ઉમેરો</translation>
+<translation id="6216996674668969227">પ્રાઇવસીનો આદર કરતી જાહેરાતો જોવા બદલ ટોકન કમાઓ.</translation>
 <translation id="8488282162676695335">Brave વૉલેટ</translation>
 <translation id="8820817407110198400">બુકમાર્ક્સ</translation>
 <translation id="1644574205037202324">ઇતિહાસ</translation>
@@ -82,6 +86,7 @@
 <translation id="2359808026110333948">આગળ વધો</translation>
 <translation id="3863981251715594911">તે કેવી રીતે કાર્ય કરે છે?</translation>
 <translation id="7931127789630755251">Braveમાં તમે જે ખાનગી જાહેરાતો જુઓ છો તેના માટે ટોકન કમાઓ</translation>
+<translation id="2278423362884506724">કન્ટેન્ટ ક્રિએટરોને સપોર્ટ કરો અને તમારા ટોકનનો ઉપયોગ ગિફ્ટ કાર્ડ ખરીદવા, અન્ય ચલણો સામે વિનિમય કરવા વગેરે માટે કરો.</translation>
 <translation id="6278643716658443228">રિવોર્ડના સેટિંગ્સ</translation>
 <translation id="2965798296974325760">રિવોર્ડનો ઉપયોગ કરવાનું શરૂ કરો</translation>
 <translation id="7335371657242627509">આપમેળે-ફાળામાં સામેલ કરો</translation>
@@ -109,6 +114,9 @@
 <translation id="7550470870580166294">અપૂરતું ભંડોળ</translation>
 <translation id="1166682575529520472">માસિક</translation>
 <translation id="7138678301420049075">અન્ય</translation>
+<translation id="5309155375926073606">હા, મને Brave સર્ચ પર યોગદાન કરવું અને <ph name="LINK_BEGIN"/>વેબ ડિસ્કવરી પ્રોજેક્ટ<ph name="LINK_END"/>માં શામેલ થવું ગમશે.</translation>
+<translation id="4622826307953794521">વેબ ડિસ્કવરી પ્રોજેક્ટને રિફાઇન કરવા માટે થોડા અનામી શોધ અને બ્રાઉઝિંગ ડેટાનું યોગદાન આપો. તે સંપૂર્ણપણે ઓપન-સોર્સ છે.</translation>
+<translation id="4174337572777167894">વેબ ડિસ્કવરી પ્રોજેક્ટ</translation>
 <translation id="7090992647511817643">એકાઉન્ટ</translation>
 <translation id="3269475789479462358">ડોમેન</translation>
 <translation id="1288078776976153868">નેટવર્ક</translation>
@@ -193,18 +201,25 @@
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">મોનોસ્પેસ</translation>
 <translation id="7557539689487606886">પ્રીમિયમ સભ્ય બનો</translation>
+<translation id="3840096463915153852">વાતચીતનો ઇતિહાસ</translation>
+<translation id="2304783958703511257">ઉન્નત સેટિંગ્સ</translation>
 <translation id="4173478269537830374">વિવિધ AI મોડેલ્સ એક્સ્પ્લોર કરો</translation>
 <translation id="3245401959451976966">તમારી રચનાત્મકતા ઉજાગર કરો</translation>
 <translation id="4165928407303989823">વિષય પર રહો</translation>
 <translation id="2389665228467129817">લાંબા સમય સુધી ચેટ કરો</translation>
+<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /માસ</translation>
 <translation id="1028627582482425924">એક વર્ષ</translation>
+<translation id="36366199652730057">શ્રેષ્ઠ મૂલ્ય</translation>
 <translation id="5474757891469990756">પ્રીમિયમ સાથે Leoની સંપૂર્ણ શક્તિ ઉજાગર કરો:</translation>
 <translation id="3453542753968940696">વિવિધ કૌશલ્યો સાથેના પાવરફૂલ મોડેલ્સ પર અગ્રતાપૂર્ણ ઍક્સેસ.</translation>
 <translation id="5031778211368112461">રચનાત્મક કાર્યો અને કન્ટેન્ટ જનરેશન માટે વધુ યોગ્ય મોડેલ્સને ઍક્સેસ કરો.</translation>
 <translation id="298783097210745222">સૂક્ષ્મ પરંતુ અગત્યની વાતચીત માટે વધુ સચોટ જવાબો મેળવો.</translation>
 <translation id="4314705522985583059">લાંબી વાતચીતો માટે વધુ ઊંચી રેટ મર્યાદા મેળવો.</translation>
 <translation id="8261506727792406068">ડિલીટ કરો</translation>
+<translation id="8171760814579050200">વાતચીતનું નામ બદલો</translation>
+<translation id="7754678742055438573">વાતચીતને ડિલીટ કરો</translation>
 <translation id="8712637175834984815">સમજાઈ ગયું</translation>
+<translation id="2315654674554095762">Leo હવે તમારી વાતચીતોને યાદ રાખશે જેથી તમે તેમને ફરીથી જોઈ શકો. તેઓને તમારા ડિવાઇસ પર એન્ક્રિપ્ટ કરીને સ્ટોર કરવામાં આવે છે અને તમે તેઓને કોઈપણ સમયે ડિલીટ કરી શકો છો.</translation>
 <translation id="6291843235651817590">સામાન્ય હેતુની ચેટ</translation>
 <translation id="8193130769524604031">ચેટના ઉન્નત ટાસ્ક</translation>
 <translation id="7979673624064378842">એકદમ ઝડપી ચેટ</translation>
@@ -218,7 +233,15 @@
 <translation id="2453860139492968684">સમાપ્ત</translation>
 <translation id="2273851479262317744">Braveને ડિફોલ્ટ બ્રાઉઝર તરીકે સેટ કરો</translation>
 <translation id="5148943178722443958">Braveને બહેતર બનાવવામાં મદદ કરો.</translation>
+<translation id="6302485303316397682">બહેતર શોધ પરિણામો જોઈએ છે?</translation>
+<translation id="7014699001826714920">ચળવળમાં જોડાઓ, Brave સર્ચમાં યોગદાન આપો.</translation>
+<translation id="6821108091726602352">Braveના વેબ ડિસ્કવરી પ્રોજેક્ટમાં સહભાગી થઈને અમને વેબને સુધારવામાં મદદ કરો. સંપૂર્ણપણે અનામી સર્ચ સંકેતોને શેર કરીને, તમે Braveને સર્ચ ઇન્ડેક્સ વધારવામાં મદદ કરી શકો છો.</translation>
+<translation id="6764845498618413165">વધુ જાણો.</translation>
+<translation id="7818938154803162778">ચોક્કસ, હું મદદ કરીશ</translation>
+<translation id="2370739752330685659">કદાચ પછી</translation>
 <translation id="7143207342074048698">કનેક્ટ કરી રહ્યું છે</translation>
+<translation id="5753795690521538679">7-દિવસની મફત અજમાયશ શરૂ કરો</translation>
+<translation id="3357036723290257445">Brave VPN પહેલાંથી જ ખરીદ્યું છે?</translation>
 <translation id="8814357473522731680">સંચાલન કરનાર</translation>
 <translation id="7805768142964895445">સ્થિતિ</translation>
 <translation id="5747552184818312860">સમાપ્ત થાય છે</translation>
@@ -232,4 +255,5 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">અતિરિક્ત ગોપનીયતા અને સુરક્ષા ઓનલાઇન.</translation>
 <translation id="8425213833346101688">બદલો</translation>
+<translation id="8703188411226330709">મફત અજમાયશ શરૂ કરો</translation>
 </translationbundle>
