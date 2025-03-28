@@ -34,22 +34,22 @@ public enum SecureContentState {
 public class TabStateFactory {
   public struct CreateTabParams {
     public var id: UUID
-    public var configurationProvider: () -> WKWebViewConfiguration
+    public var initialConfiguration: WKWebViewConfiguration?
     public var braveCore: BraveCoreMain?
 
     public init(
       id: UUID = .init(),
-      configurationProvider: @escaping () -> WKWebViewConfiguration = { .init() },
+      initialConfiguration: WKWebViewConfiguration? = nil,
       braveCore: BraveCoreMain?
     ) {
       self.id = id
-      self.configurationProvider = configurationProvider
+      self.initialConfiguration = initialConfiguration
       self.braveCore = braveCore
     }
   }
 
   public static func create(with params: CreateTabParams) -> any TabState {
-    let wkConfiguration = params.configurationProvider()
+    let wkConfiguration = params.initialConfiguration ?? .init()
     wkConfiguration.enablePageTopColorSampling()
     return WebKitTabState(id: params.id, configuration: wkConfiguration)
   }

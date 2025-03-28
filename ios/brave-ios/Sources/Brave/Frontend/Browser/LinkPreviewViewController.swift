@@ -34,7 +34,7 @@ class LinkPreviewViewController: UIViewController {
 
     let tab = TabStateFactory.create(
       with: .init(
-        configurationProvider: { parentTab.configuration },
+        initialConfiguration: parentTab.configuration,
         braveCore: browserController.braveCore
       )
     )

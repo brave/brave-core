@@ -457,7 +457,7 @@ class TabManager: NSObject {
   ) -> any TabState {
     let popup = TabStateFactory.create(
       with: .init(
-        configurationProvider: { parentTab.configuration },
+        initialConfiguration: parentTab.configuration,
         braveCore: nil
       )
     )
@@ -545,14 +545,12 @@ class TabManager: NSObject {
     assert(Thread.isMainThread)
 
     let tabId = id ?? UUID()
+    let initialConfiguration = WKWebViewConfiguration()
+    Self.resetConfiguration(initialConfiguration, isPrivate: isPrivate)
     let tab = TabStateFactory.create(
       with: .init(
         id: tabId,
-        configurationProvider: {
-          let configuration = WKWebViewConfiguration()
-          Self.resetConfiguration(configuration, isPrivate: isPrivate)
-          return configuration
-        },
+        initialConfiguration: initialConfiguration,
         braveCore: nil
       )
     )

@@ -73,7 +73,7 @@ extension BrowserViewController: TopToolbarDelegate {
           let result = await decentralizedDNSHelper.lookup(
             domain: url.schemelessAbsoluteDisplayString
           )
-          topToolbar.locationView.loading = tabManager.selectedTab?.isLoading ?? false
+          topToolbar.locationView.loading = tabManager.selectedTab?.isLoading == true
           guard !Task.isCancelled else { return }  // user pressed stop, or typed new url
           switch result {
           case .loadInterstitial(let service):
@@ -306,7 +306,7 @@ extension BrowserViewController: TopToolbarDelegate {
       let result = await decentralizedDNSHelper.lookup(
         domain: fixupURL.schemelessAbsoluteDisplayString
       )
-      topToolbar.locationView.loading = tabManager.selectedTab?.isLoading ?? false
+      topToolbar.locationView.loading = tabManager.selectedTab?.isLoading == true
       guard !Task.isCancelled else { return true }  // user pressed stop, or typed new url
       switch result {
       case .loadInterstitial(let service):
@@ -1098,7 +1098,7 @@ extension BrowserViewController: ToolbarDelegate {
     tabManager.selectedTab?.stopLoading()
     processAddressBarTask?.cancel()
     topToolbarDidPressReloadTask?.cancel()
-    topToolbar.locationView.loading = tabManager.selectedTab?.isLoading ?? false
+    topToolbar.locationView.loading = tabManager.selectedTab?.isLoading == true
   }
 }
 

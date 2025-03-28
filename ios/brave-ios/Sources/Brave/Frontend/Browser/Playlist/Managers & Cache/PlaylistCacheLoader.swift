@@ -35,15 +35,14 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   init() {
     let tab = TabStateFactory.create(
       with: .init(
-        configurationProvider: {
+        initialConfiguration:
           WKWebViewConfiguration().then {
             $0.processPool = WKProcessPool()
             $0.preferences = WKPreferences()
             $0.preferences.javaScriptCanOpenWindowsAutomatically = false
             $0.allowsInlineMediaPlayback = true
             $0.ignoresViewportScaleLimits = true
-          }
-        },
+          },
         braveCore: nil
       )
     )
