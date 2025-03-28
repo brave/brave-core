@@ -8,6 +8,9 @@
     "target": "v1.71.15",
     "profile": "brave-typical-win",
     "profile-rebase": "online",
+    "extra-browser-args": [
+      // "--disable-http2", // add this to record jetstream2
+    ],
   },
   {
     "browser-type": "chromium",
@@ -25,7 +28,7 @@
       ]
     },
     // {
-    //   "name": "jet_stream2_story_set",
+    //   "name": "jet_stream2",
     // },
     // {
     //   "name": "rendering_story_set",
