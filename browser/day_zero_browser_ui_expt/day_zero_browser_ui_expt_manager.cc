@@ -20,10 +20,11 @@
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include <string_view>
+
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "brave/build/android/jni_headers/DayZeroHelper_jni.h"
-#include <string_view>
 #endif  // #BUILDFLAG(IS_ANDROID)
 
 // static
@@ -118,9 +119,10 @@ void DayZeroBrowserUIExptManager::OnProfileManagerDestroying() {
 void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
   VLOG(2) << __func__ << " Update prefs for day zero expt.";
 #if BUILDFLAG(IS_ANDROID)
-  Java_DayZeroHelper_setDayZeroVariant(
-      base::android::AttachCurrentThread(), base::android::ConvertUTF8ToJavaString(
-          base::android::AttachCurrentThread(), GetDayZeroVariant().value_or("")));
+  Java_DayZeroHelper_setDayZeroVariant(base::android::AttachCurrentThread(),
+                                       base::android::ConvertUTF8ToJavaString(
+                                           base::android::AttachCurrentThread(),
+                                           GetDayZeroVariant().value_or("")));
 #endif  // #BUILDFLAG(IS_ANDROID)
 }
 

@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.app;
 
-import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.app.Activity;
 import android.app.NotificationChannel;
@@ -22,7 +21,6 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -32,7 +30,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
@@ -40,7 +37,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
@@ -131,7 +127,6 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
@@ -148,8 +143,6 @@ import org.chromium.chrome.browser.notifications.retention.RetentionNotification
 import org.chromium.chrome.browser.ntp.NewTabPageManager;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
-import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
-import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -203,7 +196,6 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.Snackbar
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManagerProvider;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
-import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.ImageUtils;
 import org.chromium.chrome.browser.util.KeyboardVisibilityHelper;
 import org.chromium.chrome.browser.util.LiveDataUtil;
@@ -1213,12 +1205,6 @@ public abstract class BraveActivity extends ChromeActivity
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_VPN, false);
             handleDeepLinkVpn();
-        } else if (!mIsDeepLink
-                && OnboardingPrefManager.getInstance().isOnboardingSearchBoxTooltip()
-                && getActivityTab() != null
-                && getActivityTab().getUrl().getSpec() != null
-                && UrlUtilities.isNtpUrl(getActivityTab().getUrl().getSpec())) {
-            showSearchBoxTooltip();
         }
 
         // Added to reset app links settings for upgrade case
@@ -1487,57 +1473,6 @@ public abstract class BraveActivity extends ChromeActivity
                 .writeBoolean(
                         BravePreferenceKeys.BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE,
                         true);
-    }
-
-    private void showSearchBoxTooltip() {
-        OnboardingPrefManager.getInstance().setOnboardingSearchBoxTooltip(false);
-        HighlightView highlightView = new HighlightView(this, null);
-        highlightView.setColor(
-                ContextCompat.getColor(this, R.color.onboarding_search_highlight_color));
-        ViewGroup viewGroup = findViewById(android.R.id.content);
-        View anchorView = (View) findViewById(R.id.toolbar);
-        float padding = (float) dpToPx(this, 20);
-        boolean isTablet = ConfigurationUtils.isTablet(this);
-        new Handler()
-                .postDelayed(
-                        () -> {
-                            PopupWindowTooltip popupWindowTooltip =
-                                    new PopupWindowTooltip.Builder(this)
-                                            .anchorView(anchorView)
-                                            .arrowColor(getColor(R.color.onboarding_arrow_color))
-                                            .gravity(Gravity.BOTTOM)
-                                            .dismissOnOutsideTouch(true)
-                                            .dismissOnInsideTouch(false)
-                                            .backgroundDimDisabled(true)
-                                            .contentArrowAtStart(!isTablet)
-                                            .padding(padding)
-                                            .parentPaddingHorizontal(dpToPx(this, 10))
-                                            .onDismissListener(
-                                                    tooltip -> {
-                                                        if (viewGroup != null
-                                                                && highlightView != null) {
-                                                            viewGroup.removeView(highlightView);
-                                                        }
-                                                    })
-                                            .modal(true)
-                                            .contentView(R.layout.brave_onboarding_searchbox)
-                                            .build();
-
-                            String countryCode = Locale.getDefault().getCountry();
-                            if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)) {
-                                TextView toolTipBody =
-                                        popupWindowTooltip.findViewById(R.id.tv_tooltip_title);
-                                toolTipBody.setText(
-                                        getResources()
-                                                .getString(R.string.searchbox_onboarding_india));
-                            }
-                            viewGroup.addView(highlightView);
-                            HighlightItem item = new HighlightItem(anchorView);
-                            highlightView.setHighlightTransparent(true);
-                            highlightView.setHighlightItem(item);
-                            popupWindowTooltip.show();
-                        },
-                        500);
     }
 
     public void setDormantUsersPrefs() {

@@ -757,7 +757,6 @@ brave_java_resources = [
   "java/res/layout/brave_news_settings_details.xml",
   "java/res/layout/brave_notification_permission_rationale_dialog.xml",
   "java/res/layout/brave_notification_warning_dialog.xml",
-  "java/res/layout/brave_onboarding_searchbox.xml",
   "java/res/layout/brave_permission_prompt_dialog.xml",
   "java/res/layout/brave_rating_dialog_fragment.xml",
   "java/res/layout/brave_rating_news_layout.xml",

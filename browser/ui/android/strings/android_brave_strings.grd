@@ -930,15 +930,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SURE_ILL_HELP_ONBOARDING" desc="Text for Sure i'll help button onboarding">
         Sure, I'll help
       </message>
-      <message name="IDS_TYPE_WEBSITE" desc="Text for searhbox tooltip title onboarding">
-        Type a website name or URL
-      </message>
-      <message name="IDS_SEARCHBOX_ONBOARDING" desc="Text for searhbox tooltip onboarding">
-        See the Brave difference: No ads. No trackers. Way faster page load.
-      </message>
-      <message name="IDS_SEARCHBOX_ONBOARDING_INDIA" desc="Text for searhbox tooltip onboarding for india">
-        See the Brave difference: Block ads. Save data. Stream faster.
-      </message>
       <message name="IDS_SHIELD_ONBOARDING" desc="Text for shield tooltip onboarding">
         Tap to view Brave Shields
       </message>
