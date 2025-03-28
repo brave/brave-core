@@ -227,9 +227,9 @@ void SplitViewSeparator::OnViewBoundsChanged(views::View* observed_view) {
 void SplitViewSeparator::CreateMenuButton() {
   CHECK(!menu_button_widget_);
 
-  menu_button_widget_ = new views::Widget();
+  menu_button_widget_ = std::make_unique<views::Widget>();
   views::Widget::InitParams params(
-      views::Widget::InitParams::NATIVE_WIDGET_OWNS_WIDGET,
+      views::Widget::InitParams::CLIENT_OWNS_WIDGET,
       views::Widget::InitParams::Type::TYPE_CONTROL);
   params.delegate = new MenuButtonDelegate(browser_);
   params.parent = GetWidget()->GetNativeView();
