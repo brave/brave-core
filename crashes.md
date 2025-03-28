@@ -18,3 +18,5 @@ Don't land until these are all resolved!
 - [ ] Switching back and forward between a multi conversation and a normal causes a crash
 
     Looks like metadata size is not being loaded? Maybe it's because we move it somewhere instead of just passing it through?
+
+    Alternatively we could be accidentally updating the metadata to be empty via an |OnAssociatedContentUpdated|?
