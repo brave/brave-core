@@ -760,16 +760,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.SwipeRefreshHandler {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.BraveSwipeRefreshHandler {
-    public <init>(...);
-    *** mSwipeType;
-    *** mTab;
-}
-
 -keep class org.chromium.chrome.browser.identity_disc.IdentityDiscController {
     public <init>(...);
     *** calculateButtonData(...);

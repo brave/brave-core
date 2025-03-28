@@ -353,7 +353,6 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/SwipeRefreshHandler"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/identity_disc/IdentityDiscController"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs"));
@@ -1008,15 +1007,6 @@ public class BytecodeTest {
                         "isTabModelRestored",
                         MethodModifier.REGULAR,
                         boolean.class));
-
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/SwipeRefreshHandler",
-                        "start",
-                        MethodModifier.REGULAR,
-                        boolean.class,
-                        int.class,
-                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
@@ -1467,13 +1457,6 @@ public class BytecodeTest {
                         String.class,
                         boolean.class,
                         boolean.class));
-
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/SwipeRefreshHandler",
-                        "org/chromium/chrome/browser/BraveSwipeRefreshHandler",
-                        Tab.class,
-                        SwipeRefreshHandler.SwipeRefreshLayoutCreator.class));
 
         Assert.assertTrue(
                 constructorsMatch(
@@ -2102,10 +2085,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
                         "mIsResetting"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/SwipeRefreshHandler", "mSwipeType"));
-        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/SwipeRefreshHandler", "mTab"));
-
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/customtabs/features/partialcustomtab/PartialCustomTabBottomSheetStrategy", // presubmit: ignore-long-line
