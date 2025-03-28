@@ -753,6 +753,14 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"p3aEnabledDesc", IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM},
       {"siteSettings", IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS},
       {"showFullUrls", IDS_SETTINGS_ALWAYS_SHOW_FULL_URLS},
+      {"resetZCashSyncStateInfo",
+       IDS_SETTINGS_WALLET_RESET_ZCASH_SYNC_STATE_INFO},
+      {"resetZCashSyncStateDesc",
+       IDS_SETTINGS_WALLET_RESET_ZCASH_SYNC_STATE_DESC},
+      {"resetZCashSyncStateConfirmation",
+       IDS_SETTINGS_WALLET_RESET_ZCASH_SYNC_STATE_CONFIRMATION},
+      {"resetZCashSyncStateConfirmed",
+       IDS_SETTINGS_WALLET_RESET_ZCASH_SYNC_STATE_CONFIRMED},
       {"resetWallet", IDS_SETTINGS_WALLET_RESET},
       {"resetTransactionInfo", IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO},
       {"resetTransactionInfoDesc",
@@ -972,7 +980,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       confirmation_phrase);
   html_source->AddString("walletResetTransactionInfoConfirmation",
                          reset_tx_confirmation_text);
-
+  auto reset_zcash_sync_state_confirmation_text = l10n_util::GetStringFUTF16(
+      IDS_SETTINGS_WALLET_RESET_ZCASH_SYNC_STATE_CONFIRMATION,
+      confirmation_phrase);
+  html_source->AddString("resetZCashSyncStateConfirmation",
+                         reset_zcash_sync_state_confirmation_text);
   html_source->AddString(
       "braveLeoAssistantInputDefaultContextSize",
       base::NumberToString16(ai_chat::kDefaultCustomModelContextSize));

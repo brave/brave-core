@@ -175,6 +175,14 @@
 </settings-animated-pages>
 
 <template is="dom-if" if="[[!isNetworkEditor_]]">
+  <template is="dom-if" if="[[isZCashShieldedTxEnabled_]]">
+  <div class="settings-box " on-click="onResetZCashSyncState_">
+    <div class="flex cr-padded-text reset-transaction-info">
+      <div>$i18n{resetZCashSyncStateInfo}</div>
+      <div class="secondary">$i18n{resetZCashSyncStateDesc}</div>
+    </div>
+  </div>
+  </template>
   <div class="settings-box " on-click="onResetTransactionInfo_">
     <div class="flex cr-padded-text reset-transaction-info">
       <div>$i18n{resetTransactionInfo}</div>
