@@ -53,6 +53,10 @@ namespace sidebar {
 class SidebarBrowserTest;
 }  // namespace sidebar
 
+namespace views {
+class Widget;
+}  // namespace views
+
 class BraveBrowser;
 class BraveHelpBubbleHostView;
 class ContentsLayoutManager;
@@ -198,6 +202,8 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   void UpdateSideBarHorizontalAlignment();
+
+  std::unique_ptr<views::Widget> vertical_tab_strip_widget_;
 
   bool closing_confirm_dialog_activated_ = false;
   raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
