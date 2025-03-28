@@ -35,6 +35,9 @@ import org.chromium.ui.util.ColorUtils;
 
 /** New Rewards 3.0 custom tab activity */
 public class FullScreenCustomTabActivity extends CustomTabActivity {
+
+    private boolean mIsEnterAnimationCompleted;
+
     private static final int CLOSE_BUTTON_MARGIN = 16;
     private static final int CLOSE_BUTTON_PADDING = 8;
 
@@ -52,6 +55,11 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
 
     @Override
     public void performPostInflationStartup() {
+
+        // Updating the value of mIsEnterAnimationCompleted to true to avoid
+        // https://github.com/brave/brave-browser/issues/45005
+        mIsEnterAnimationCompleted = true;
+
         super.performPostInflationStartup();
 
         View toolbarContainer = findViewById(R.id.toolbar_container);
