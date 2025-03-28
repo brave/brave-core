@@ -108,6 +108,7 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
 
   public func webViewDidCommitNavigation(_ webView: CWVWebView) {
     guard let tab else { return }
+    tab.isRestoring = false
     tab.didCommitNavigation()
   }
 
