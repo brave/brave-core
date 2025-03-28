@@ -386,6 +386,13 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),                      \
       },                                                                       \
       {                                                                        \
+          "brave-ai-first",                                                    \
+          "Brave AI Chat First",                                               \
+          "Prioritize Leo vs Search within Brave",                             \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatFirst),                 \
+      },                                                                       \
+      {                                                                        \
           "brave-ai-chat-history",                                             \
           "Brave AI Chat History",                                             \
           "Enables AI Chat History persistence and management",                \
