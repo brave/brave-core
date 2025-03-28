@@ -966,11 +966,7 @@ void ConversationHandler::DisassociateContentDelegate() {
 void ConversationHandler::GetAssociatedContentInfo(
     GetAssociatedContentInfoCallback callback) {
   UpdateAssociatedContentInfo();
-  std::vector<mojom::AssociatedContentPtr> associated_content;
-  std::ranges::transform(metadata_->associated_content,
-                         std::back_inserter(associated_content),
-                         [](const auto& content) { return content->Clone(); });
-  std::move(callback).Run(std::move(associated_content),
+  std::move(callback).Run(associated_content_manager_->GetAssociatedContent(),
                           associated_content_manager_->should_send());
 }
 
@@ -1430,6 +1426,8 @@ void ConversationHandler::OnGeneratePageContentComplete(
       is_content_different_ || contents_text != previous_content;
 
   if (!metadata_->associated_content.empty()) {
+    // TODO(fallaciousreasoning): We should probably be doing this for
+    // everything as part of the associated content manager.
     metadata_->associated_content[0]->content_type =
         is_video ? mojom::ContentType::VideoTranscript
                  : mojom::ContentType::PageContent;
