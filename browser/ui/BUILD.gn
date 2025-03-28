@@ -256,6 +256,7 @@ source_set("ui") {
       "tabs/brave_tab_strip_model.cc",
       "tabs/brave_tab_strip_model.h",
       "tabs/brave_tab_style.h",
+      "tabs/public/tab_features.h",
       "tabs/shared_pinned_tab_dummy_view.h",
       "tabs/shared_pinned_tab_service.cc",
       "tabs/shared_pinned_tab_service.h",
