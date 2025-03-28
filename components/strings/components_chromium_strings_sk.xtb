@@ -20,6 +20,7 @@
           a zrušte začiarknutie políčka „Používať server proxy pre sieť LAN".</translation>
 <translation id="303960458633076466">Táto stránka bola zablokovaná prehliadačom Brave</translation>
 <translation id="2017237562285586622">Prehliadaču Brave povoľte prístup k sieti v nastaveniach brány firewall alebo antivírusového softvéru.</translation>
+<translation id="4949828774841497663">Prejdite do sekcie Aplikácie &gt; Nastavenia systému &gt; Sieť, vyberte aktívnu sieť, kliknite na tlačidlo Podrobnosti… a zrušte výber všetkých vybraných proxy serverov.</translation>
 <translation id="8619622797841001082">Prejdite na
           ponuku Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -42,9 +43,6 @@
         a zrušte výber položky <ph name="NO_PREFETCH_DESCRIPTION"/>.
         Ak to problém nevyrieši, odporúčame túto možnosť vybrať,
         aby ste získali lepšiu výkonnosť.</translation>
-<translation id="8187289872471304532">Prejdite na možnosť
-          Aplikácie &gt; Systémové predvoľby &gt; Sieť &gt; Rozšírené nastavenia &gt; Servery proxy
-          a zrušte výber všetkých vybratých serverov proxy.</translation>
 <translation id="4159376633403260073">Prezeráte si zabezpečenú stránku Brave for Testing</translation>
 <translation id="88187049159266777">Brave nebol správne vypnutý.</translation>
 </translationbundle>

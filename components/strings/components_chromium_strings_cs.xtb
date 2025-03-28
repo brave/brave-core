@@ -20,6 +20,7 @@
           a zrušte zaškrtnutí políčka Použít pro síť LAN proxy server.</translation>
 <translation id="303960458633076466">Tato stránka je blokována prohlížečem Brave</translation>
 <translation id="2017237562285586622">V nastavení firewallu a antivirového programu povolte prohlížeči Brave přístup k síti.</translation>
+<translation id="4949828774841497663">Přejděte do části Aplikace &gt; Nastavení systému &gt; Síť, vyberte aktivní síť, klikněte na tlačítko Podrobnosti… a zrušte výběr všech proxy serverů, které jsou vybrány.</translation>
 <translation id="8619622797841001082">Přejděte do
           nabídky Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -35,9 +36,6 @@
  pokračovat v párování. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Brave staví na open source projektu <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Přejděte do nabídky Brave &gt; <ph name="SETTINGS_TITLE"/> &gt; <ph name="ADVANCED_TITLE"/> a zrušte výběr možnosti <ph name="NO_PREFETCH_DESCRIPTION"/>. Pokud to však problém nevyřeší, doporučujeme vám tuto možnost znovu vybrat (za účelem zlepšení výkonu).</translation>
-<translation id="8187289872471304532">Přejděte do nabídky
-          Aplikace &gt; Nastavení systému &gt; Síť &gt; Rozšířená nastavení &gt; Servery proxy
-          a zrušte výběr všech vybraných serverů proxy.</translation>
 <translation id="4159376633403260073">Prohlížíte si zabezpečenou stránku Brave for Testing</translation>
 <translation id="88187049159266777">Aplikace Brave nebyla řádně ukončena.</translation>
 </translationbundle>

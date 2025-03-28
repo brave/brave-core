@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Ohita toistaiseksi</translation>
 <translation id="6165508094623778733">Lisätietoa</translation>
 <translation id="986879628471635371">Perehdytysprosessin vianetsintä</translation>
-<translation id="5808759341041733958">Valitse oletusarvoinen hakukone</translation>
-<translation id="1331593888918588693">Voit aina vaihtaa mieltymyksiäsi sovelluksen asetuksissa.</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400">Ansaitse <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">Minulla on 24-sanainen palautuslause</translation>
 <translation id="3570367516044491911">Aseta oletusselaimeksi</translation>
 <translation id="6800338374677644736">Aseta oletusselaimeksi</translation>
-<translation id="19715420010996093">Valitse Brave Browser ja paina 'Aina'</translation>
-<translation id="3546439402724649282">Brave on jo asetettu oletusselaimeksi.</translation>
-<translation id="8389661903259423907">Olet jo asettanut oletusselaimen. Voit vaihtaa oletusselainta sovelluksen asetuksista.</translation>
 <translation id="1545749641540134597">Lue QR-koodi</translation>
 <translation id="5317781812114905957">Ohjeet</translation>
 <translation id="8515319483805157233">Hae QR-koodilla kohdistamalla QR-koodi kehyksen keskiosaan.</translation>
@@ -549,7 +544,6 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="1945330434665345785">Estit Brave-selaimella viime viikolla <ph name="COUNT"/> seurainta &amp; mainosta.</translation>
 <translation id="2883868922264431515">Tienaa poletteja katselemalla yksityisyyttä kunnioittavia mainoksia ja tue suosikkisivustojasi.</translation>
 <translation id="7408493389591475748">Aloita selailu yksityisyysraporttien näkemiseksi</translation>
-<translation id="9080777565335515917">Tee Bravesta oletusselaimesi ja nauti yksityisestä ja turvallisesta selaamisesta.</translation>
 <translation id="1390943217516275883">Sallii Braven näyttää yksityisyystilastosi</translation>
 <translation id="1763352720905582220">Lähettää viikoittaisen yksityisyysraportin</translation>
 <translation id="1811691435325545066">Tyhjennä kaikki yksityisyysraportit</translation>
@@ -593,16 +587,6 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2977501775944575564">Samanaikainen lataus</translation>
 <translation id="6224180438946945617">Ota samanaikainen lataus käyttöön ja tehosta latausnopeutta</translation>
 <translation id="8967385052772844086">Näytä yksityisyysraportti kokonaisuudessaan</translation>
-<translation id="6864343534748973390">Suosituimmat</translation>
-<translation id="4608192160278975831">Yksityinen, ei seurantaa</translation>
-<translation id="7208522820527289601">Yksityinen, ei seurantaa, toimii EU:sta käsin</translation>
-<translation id="1161008391729450974">Googlen tulokset ilman seuraimia</translation>
-<translation id="7320542277711359296">Toiseksi suosituin</translation>
-<translation id="8295049095570748497">Venäjän johtava hakukone</translation>
-<translation id="2642661895835126239">Istuttaa puita, toimii Beriliinistä käsin</translation>
-<translation id="2422627462367776805">Etelä-korealainen verkkoportaali ja hakukone</translation>
-<translation id="177282784098234156">Yksityinen, riippumaton, käyttäjä ensin</translation>
-<translation id="1410130669636877548">Jotkin hakukoneet suojaavat yksityisyyttäsi muita paremmin tehdessäsi verkkohakuja.</translation>
 <translation id="3479552764303398839">Ei nyt</translation>
 <translation id="7138272885617540195">Salli sovelluslinkkien avautuminen Braven ulkopuolisissa sovelluksissa</translation>
 <translation id="4954512758656527938">Oletusarvoinen Ethereum-lompakko</translation>

@@ -21,6 +21,9 @@
 <translation id="303960458633076466">Brave bloqueou esta páxina</translation>
 <translation id="2017237562285586622">Configura o teu firewall ou o teu antivirus para permitir o acceso
         de Brave á rede.</translation>
+<translation id="4949828774841497663">Vai a Aplicacións &gt; Configuración do sistema &gt; Rede, selecciona a
+          rede activa, fai clic no botón Detalles e anula a selección de calquera proxy
+          que poida estar seleccionado.</translation>
 <translation id="8619622797841001082">Accede ao
           menú de Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -42,9 +45,6 @@
         e desmarca a opción "<ph name="NO_PREFETCH_DESCRIPTION"/>".
         Se esta acción non resolve o problema, é recomendable volver seleccionar
         esta opción para mellorar o rendemento.</translation>
-<translation id="8187289872471304532">Acede a
-          Aplicacións &gt; Preferencias do sistema &gt; Rede &gt; Avanzado &gt; Servidores proxy
-          e anula a selección dos servidores proxy que estean seleccionados.</translation>
 <translation id="4159376633403260073">Estás vendo unha páxina de Brave for Testing segura</translation>
 <translation id="88187049159266777">Brave non pechou correctamente.</translation>
 </translationbundle>

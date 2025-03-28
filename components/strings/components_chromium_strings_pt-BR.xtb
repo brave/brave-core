@@ -21,6 +21,9 @@
 <translation id="303960458633076466">Esta página foi bloqueada pelo Brave</translation>
 <translation id="2017237562285586622">Permitir que o Brave acesse a rede nas configurações do seu
           firewall ou antivírus.</translation>
+<translation id="4949828774841497663">Acesse Aplicativos &gt; Ajustes do Sistema &gt; Rede, selecione a
+          rede ativa, clique no botão Detalhes… e desmarque todos os proxies
+          que podem ter sido selecionados.</translation>
 <translation id="8619622797841001082">Vá para
           o menu do Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -43,9 +46,6 @@
           e desmarque "<ph name="NO_PREFETCH_DESCRIPTION"/>".
           Se isso não resolver o problema, recomendamos que você selecione essa opção
           novamente para melhorar o desempenho.</translation>
-<translation id="8187289872471304532">Vá para
-          Aplicativos &gt; Preferências do Sistema &gt; Rede &gt; Avançado &gt; Proxies
-          e desmarque todos os proxies que estiverem selecionados.</translation>
 <translation id="4159376633403260073">Você está em uma página segura do Brave for Testing</translation>
 <translation id="88187049159266777">O Brave não foi encerrado corretamente.</translation>
 </translationbundle>

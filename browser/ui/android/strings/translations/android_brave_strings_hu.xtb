@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Most kihagyod</translation>
 <translation id="6165508094623778733">Tudjon meg többet</translation>
 <translation id="986879628471635371">Előkészítési hibaelhárítás</translation>
-<translation id="5808759341041733958">Válasszon alapértelmezett keresőmotort</translation>
-<translation id="1331593888918588693">Az alkalmazás beállításaiban később bármikor változtathatod a beállításokat.</translation>
 <translation id="5806601733251372221">Brave védelem</translation>
 <translation id="8537217141725709400">Szerezzen <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave jutalmak</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">24 szavas helyreállítási kifejezésem van</translation>
 <translation id="3570367516044491911">Beállítás alapértelmezett böngészőként</translation>
 <translation id="6800338374677644736">Beállítás alapértelmezett böngészőként</translation>
-<translation id="19715420010996093">Válaszd ki a Brave böngészőt és kattints a 'Mindig'-re</translation>
-<translation id="3546439402724649282">A Brave már be van állítva alapértelmezett böngészőként.</translation>
-<translation id="8389661903259423907">Már beállított egy alapértelmezett böngészőt. Az alapértelmezett böngészőt az alkalmazás beállításaiban lehet változtatni.</translation>
 <translation id="1545749641540134597">QR-kód beolvasása</translation>
 <translation id="5317781812114905957">Utasítások</translation>
 <translation id="8515319483805157233">A QR-kód alapján történő kereséshez helyezze a QR-kódot a keret közepéhez.</translation>
@@ -549,7 +544,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="1945330434665345785">Az elmúlt héten <ph name="COUNT"/> követőt és reklámot blokkoltál a Brave böngészővel.</translation>
 <translation id="2883868922264431515">Szerezz tokeneket magánéletet tiszteletben tartó reklámok nézésével, és támogasd kedvenc weboldalaidat.</translation>
 <translation id="7408493389591475748">Az adatvédelmi jelentés megtekintéséhez kezdj el böngészni</translation>
-<translation id="9080777565335515917">Tedd a Brave-et alapértelmezett böngésződdé, hogy a böngészés privát és biztonságos legyen.</translation>
 <translation id="1390943217516275883">Engedélyezi, hogy a Brave megmutassa adatvédelmi statisztikáidat</translation>
 <translation id="1763352720905582220">Heti adatvédelmi jelentést küld</translation>
 <translation id="1811691435325545066">Törölj minden adatot az adatvédelmi jelentésekről.</translation>
@@ -593,16 +587,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2977501775944575564">Párhuzamos letöltés</translation>
 <translation id="6224180438946945617">A párhuzamos letöltés engedélyezése a gyorsabb letöltés érdekében</translation>
 <translation id="8967385052772844086">Teljes adatvédelmi jelentés megtekintése</translation>
-<translation id="6864343534748973390">Legnépszerűbb</translation>
-<translation id="4608192160278975831">Privát és követő nélküli</translation>
-<translation id="7208522820527289601">Privát és követés nélküli, EU alapú</translation>
-<translation id="1161008391729450974">Google eredmények követők nélkül</translation>
-<translation id="7320542277711359296">Második legnépszerűbb</translation>
-<translation id="8295049095570748497">Egy vezető keresőmotor Oroszországban</translation>
-<translation id="2642661895835126239">Fákat ültet, berlini székhelyű</translation>
-<translation id="2422627462367776805">Dél-koreai internetes portál &amp; amp; keresés</translation>
-<translation id="177282784098234156">Privát, független, felhasználóbarát</translation>
-<translation id="1410130669636877548">Egyes keresőmotorok jobban védik adataidat internetes keresés közben.</translation>
 <translation id="3479552764303398839">Ne most</translation>
 <translation id="7138272885617540195">Alkalmazás-hivatkozások megnyitásának engedélyezése Brave-en kívüli alkalmazásokban</translation>
 <translation id="4954512758656527938">Alapértelmezett Ethereum pénztárca</translation>

@@ -21,6 +21,9 @@
 <translation id="303960458633076466">‏تم حظر هذه الصفحة بواسطة متصفّح Brave.</translation>
 <translation id="2017237562285586622">‏اسمح لـ Brave بالدخول إلى الشبكة من خلال إعدادات جدار الحماية أو
         برنامج مكافحة الفيروسات.</translation>
+<translation id="4949828774841497663">‏يُرجى الانتقال إلى "التطبيقات" (Applications) &gt; "إعدادات النظام" (System Settings) &gt; "الشبكة" (Network)، ثم اختيار
+          الشبكة النشطة، والنقر على زر "التفاصيل…" (Details…‎) وإلغاء اختيار أي خوادم وكيلة
+          سبق اختيارها.</translation>
 <translation id="8619622797841001082">‏انتقل إلى
           قائمة Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -43,7 +46,6 @@
         وألغ اختيار "<ph name="NO_PREFETCH_DESCRIPTION"/>"
         في حالة ما إذا لم يؤد ذلك إلى حل المشكلة، نوصي بتحديد هذا الخيار
         مرة أخرى من أجل أداء أفضل.</translation>
-<translation id="8187289872471304532">‏انتقل إلى Applications (التطبيقات) &gt; System Preferences (الإعدادات المفضّلة للنظام) &gt; Network (الشبكة) &gt; Advanced (الخيارات المتقدمة) &gt; Proxies (الخوادم الوكيلة) وألغ اختيار أي خوادم وكيلة تم تحديدها.</translation>
 <translation id="4159376633403260073">‏أنت تعرض صفحة Brave for Testing آمنة.</translation>
 <translation id="88187049159266777">‏لم يغلق Brave بشكل صحيح.</translation>
 </translationbundle>

@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Na razie pomiń</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
 <translation id="986879628471635371">Rozwiązywanie problemów z wdrożeniem</translation>
-<translation id="5808759341041733958">Wybierz domyślną wyszukiwarkę</translation>
-<translation id="1331593888918588693">Później możesz zawsze zmienić preferencje w ustawieniach aplikacji.</translation>
 <translation id="5806601733251372221">Tarcze Brave</translation>
 <translation id="8537217141725709400">Zdobywaj <ph name="TOKEN"/>y</translation>
 <translation id="3333887201479867589">Nagrody Brave</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">Mam 24-wyrazową frazę odzyskiwania</translation>
 <translation id="3570367516044491911">Ustaw jako domyślną przeglądarkę</translation>
 <translation id="6800338374677644736">Ustaw jako domyślną przeglądarkę</translation>
-<translation id="19715420010996093">Wybierz przeglądarkę Brave i kliknij „Zawsze”</translation>
-<translation id="3546439402724649282">Brave jest już ustawiona jako Twoja domyślna przeglądarka.</translation>
-<translation id="8389661903259423907">Domyślna przeglądarka jest już ustawiona. Możesz zmienić domyślną przeglądarkę w ustawieniach aplikacji.</translation>
 <translation id="1545749641540134597">Skanuj kod QR</translation>
 <translation id="5317781812114905957">Instrukcje</translation>
 <translation id="8515319483805157233">Aby wyszukać za pomocą kodu QR, wyrównaj QR wewnątrz ramki.</translation>
@@ -550,7 +545,6 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1945330434665345785">W ubiegłym tygodnia zablokowałeś z pomocą przeglądarki Brave <ph name="COUNT"/> skryptów śledzących i reklam.</translation>
 <translation id="2883868922264431515">Zarabiaj tokeny, oglądając reklamy z poszanowaniem Twojej prywatności i wspieraj ulubione witryny internetowe.</translation>
 <translation id="7408493389591475748">Zacznij przeglądać, aby zobaczyć raporty o prywatności.</translation>
-<translation id="9080777565335515917">Ustaw przeglądarkę Brave jako swoją domyślną do prywatnego i bezpiecznego przeglądania.</translation>
 <translation id="1390943217516275883">Zezwala Brave na pokazywanie statystyk prywatności.</translation>
 <translation id="1763352720905582220">Wysyła cotygodniowy raport o prywatności</translation>
 <translation id="1811691435325545066">Wyczyść wszystkie dane dotyczące raportów o prywatności.</translation>
@@ -594,16 +588,6 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="2977501775944575564">Pobieranie równoległe</translation>
 <translation id="6224180438946945617">Włączenie pobierania równoległego przyspieszy proces pobierania</translation>
 <translation id="8967385052772844086">Zobacz pełny Raport prywatności</translation>
-<translation id="6864343534748973390">Najpopularniejsze</translation>
-<translation id="4608192160278975831">Prywatny i bez śledzenia</translation>
-<translation id="7208522820527289601">Prywatny i bez śledzenia, z siedzibą w Unii Europejskiej</translation>
-<translation id="1161008391729450974">Wyniki Google bez śledzenia</translation>
-<translation id="7320542277711359296">Drugi najbardziej popularny</translation>
-<translation id="8295049095570748497">Wiodąca wyszukiwarka w Rosji</translation>
-<translation id="2642661895835126239">Sadzimy drzewa, z siedzibą w Berlinie</translation>
-<translation id="2422627462367776805">Wyszukiwanie w południowokoreańskim portalu &amp;</translation>
-<translation id="177282784098234156">Prywatne, niezależne, nastawione na użytkownika</translation>
-<translation id="1410130669636877548">Gdy przeszukujesz sieć, niektóre wyszukiwarki chronią Twoją prywatność lepiej od innych.</translation>
 <translation id="3479552764303398839">Nie teraz</translation>
 <translation id="7138272885617540195">Zezwalaj na otwieranie łączy w zewnętrznych aplikacjach</translation>
 <translation id="4954512758656527938">Domyślny portfel Ethereum</translation>

@@ -327,6 +327,7 @@
 <translation id="2631006050119455616">Gespeichert</translation>
 <translation id="3671566813999349838">Anzahl</translation>
 <translation id="6976444672879155794">Automatische Beitragszahlung für [[processor]]</translation>
+<translation id="944736176598169208">Belohnungen</translation>
 <translation id="8804164990146287819">Datenschutzerklärung</translation>
 <translation id="7262285991915892790">Ziehen Sie das BAT-Icon auf das</translation>
 <translation id="7656781188259414093">Ziel.</translation>
@@ -504,7 +505,6 @@
     }</translation>
 <translation id="8611388433418909120">{ADS_VIEWED, plural,      =0 {Du hast <ph name="COUNT_BEGIN"/>#Anzeigen<ph name="COUNT_END"/> diesen Monat}      =1 {Du verdienst dafür <ph name="COUNT_BEGIN"/># Anzeigen<ph name="COUNT_END"/> diesen Monat}      other {Du verdienst dafür<ph name="COUNT_BEGIN"/># Anzeigen<ph name="COUNT_END"/> diesen Monat}    }</translation>
 <translation id="6067959437127691361">Mit Brave-Belohnungen unterstützen Sie die Ersteller von Inhalten und können BAT verdienen.</translation>
-<translation id="944736176598169208">Belohnungen</translation>
 <translation id="2359808026110333948">Fortfahren</translation>
 <translation id="885805571521218129">Dies stellt Ihre geschätzte Verdienstspanne für Brave-Anzeigen dar.</translation>
 <translation id="3863981251715594911">Wie funktioniert das?</translation>
@@ -639,7 +639,7 @@
 <translation id="6895088073061692390">Leider wurde Ihr Brave Belohnungen-Profil markiert, weil unsere automatischen Prüfungen unerwartete Brave Anzeigen-Aktivitäten festgestellt haben.</translation>
 <translation id="4229056297802204697">Solange Ihr Profil markiert ist, können Sie weiterhin Anzeigen sehen, sind aber nicht berechtigt, Auszahlungen zu erhalten. Sie können auch kein Depotkonto mit Brave Belohnungen verbinden.</translation>
 <translation id="5124846913141379164">Es ist möglich, dass Ihr Profil irrtümlich markiert wurde, und Sie müssen nicht sofort handeln. Die Markierug Ihres Profils kann in Zukunft entfernt werden.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Erfahren Sie mehr über den Prozess von Brave zum Markieren von Brave Belohnungen-Profilen.<ph name="END_LINK"/></translation>
+<translation id="8947002243324362172">Erfahren Sie mehr über den Prozess von Brave zum Markieren von Brave Belohnungen-Profilen.</translation>
 <translation id="4699218748197721830">Das Brave-Belohnungen-Profil wurde gemeldet</translation>
 <translation id="2607420597216860026">Bitte versuchen Sie es erneut, nachdem Sie die ID-Verifizierung für <ph name="PROVIDER"/> abgeschlossen haben.</translation>
 <translation id="5037332159336402972">Sie brauchen ein verifiziertes Profil, um sich anzumelden</translation>
@@ -674,7 +674,6 @@
 <translation id="5916664084637901428">An</translation>
 <translation id="3977723631999461201"><ph name="NUM"/> In diesem Monat angezeigte Anzeigen</translation>
 <translation id="7924320838799747606">Ihr Guthaben</translation>
-<translation id="8714473477079007268"><ph name="PROVIDER"/>-Wallet</translation>
 <translation id="3175337080016717494">Auszahlungskonto</translation>
 <translation id="453760933181416879">Zu meinem Konto</translation>
 <translation id="8290994471756102241">Abgemeldet</translation>
@@ -684,7 +683,6 @@
 <translation id="2310070536993781610">Verwende den Promo-Code BRAVEREWARDS, um 10 % Rabatt auf alle Artikel im Brave Merch Store zu erhalten.</translation>
 <translation id="1170674812179664523">Brave-Fanartikel-Shop</translation>
 <translation id="8673202990286883068">Ihre Vorteile</translation>
-<translation id="3699766258844277472">Sie haben noch keine wiederkehrenden Beiträge erstellt.</translation>
 <translation id="957921474773060718">Nächster Beitrag:</translation>
 <translation id="351973834053818251">Wiederkehrende Beiträge</translation>
 <translation id="7751260505918304024">Alle anzeigen</translation>
@@ -1187,7 +1185,6 @@
 <translation id="4667144295226514387">Gaslimit fehlt</translation>
 <translation id="2021522108838444624">Der Betrag muss größer als 0 sein</translation>
 <translation id="8464365289405373974">Eine Adresse ist erforderlich</translation>
-<translation id="6326239384961270135">Transparenter Teil fehlt</translation>
 <translation id="8585995109882455949">Wie finde ich die richtige Adresse?</translation>
 <translation id="105524480632150318">Brave verhindert, dass Nutzer aufgrund von fehlerhafter Klein- und Großschreibung Beträge an die falsche Adresse schicken. Stellen Sie sicher, dass es sich um die richtige Adresse handelt, indem Sie die Anweisungen unten befolgen.</translation>
 <translation id="4583433813614292221">1. Website aufrufen</translation>
@@ -1736,8 +1733,11 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="3819528427777765709">Geschützt</translation>
 <translation id="2142946302539262412">Einheitlich</translation>
 <translation id="4438043733494739848">Transparent</translation>
+<translation id="1950406774300125954">Keine Synchronisation</translation>
+<translation id="68413355604013935">Außer Synchronisation (<ph name="BLOCKS"/> Blöcke im Rückstand)</translation>
 <translation id="1597233669965903034">Synchronisiere dein Konto, um die neuesten Transaktionen und den Kontostand anzuzeigen.</translation>
 <translation id="7499262814309712782">Konto synchronisieren</translation>
+<translation id="2804568727504456403">Synchronisiere <ph name="ACCOUNT"/></translation>
 <translation id="813913629614996137">Wird initialisiert…</translation>
 <translation id="4404141491825711928">Block wird verarbeitet</translation>
 <translation id="4983989175143324911">Noch <ph name="BLOCKS"/> übrig</translation>
@@ -2074,7 +2074,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="4885527781814382758">Brave Leo ist ein privater AI-Smart-Assistant, der deine Internetnutzung verbessert. Leo ist kostenlos mit eingeschränktem Zugang. Brave Leo Premium bietet mehr Modelle, höhere Limits und gewährt Abonnenten frühen Zugriff auf neue Funktionen. Das Standardmodell wird von Zeit zu Zeit geändert. Weitere Details findest du im <ph name="LINK_BEFORE"/>Brave Help Center<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Wenn Sie Leo eine Frage stellen, kann er standardmäßig den Inhalt der von Ihnen angezeigten Webseite oder jeden Text, den Sie auf einer Seite markieren, an Brave Leo senden und verwenden, um eine Antwort zu geben. Die Richtigkeit der Antworten ist nicht garantiert und kann ungenaue, irreführende oder falsche Informationen enthalten. Leo verwendet die Daten der Brave-Suche, um die Qualität der Antworten zu verbessern. Geben Sie keine sensiblen oder privaten Daten ein und seien Sie vorsichtig bei Antworten, die sich auf Gesundheit, Finanzen, persönliche Sicherheit oder ähnliches beziehen. Sie können die Optionen von Leo in den Einstellungen jederzeit anpassen. Gehen Sie dazu zu Einstellungen &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo sammelt keine Identifikatoren wie Ihre IP-Adresse, die mit Ihnen in Verbindung gebracht werden können. Es werden keine Daten verwendet, um die KI-Modelle zu trainieren. Die KI-Modelle speichern keine persönlichen Daten (außer Anthropic, das Daten 30 Tage lang speichert, bevor es sie löscht). Weitere Informationen finden Sie in der <ph name="LINK_BEFORE"/>Datenschutzrichtlinie<ph name="LINK_AFTER"/>.</translation>
-<translation id="7839853125981164613">Befehl hier eingeben</translation>
 <translation id="4524675003624341892">Fragen vorschlagen …</translation>
 <translation id="4567071417854988869">Dieses Video zusammenfassen</translation>
 <translation id="7921782882718083488">Diese Seite zusammenfassen</translation>
@@ -2111,6 +2110,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD/Monat</translation>
 <translation id="9031958221569934724">USD $ <ph name="PRICE_VALUE"/> /pro Jahr</translation>
 <translation id="1028627582482425924">Ein Jahr</translation>
+<translation id="36366199652730057">Bestes Angebot</translation>
 <translation id="5151923271944811339">Zum kostenlosen Modell wechseln</translation>
 <translation id="5474757891469990756">Entfesseln Sie mit Premium die volle Stärke von Leo:</translation>
 <translation id="3453542753968940696">Prioritärer Zugang zu leistungsstarken Modellen mit unterschiedlichen Fähigkeiten.</translation>
@@ -2133,6 +2133,8 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8261506727792406068">Löschen</translation>
 <translation id="6574153208133461043">Bist du sicher, dass du dieses Gespräch löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.</translation>
 <translation id="7488762544858401571">Bearbeitet</translation>
+<translation id="5604254791550001355">Prompt bearbeiten</translation>
+<translation id="8115786586976830777">Prompt kopieren</translation>
 <translation id="1406205536570262057">Antwort bearbeiten</translation>
 <translation id="2399439821649319175">Nicht hilfreich</translation>
 <translation id="2976167228906046828">Falsch</translation>
@@ -2144,6 +2146,9 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="903201991022343217">Neuen Chat starten</translation>
 <translation id="8171760814579050200">Unterhaltung umbenennen</translation>
 <translation id="7754678742055438573">Unterhaltung löschen</translation>
+<translation id="1946267518364740045">Verarbeitung...</translation>
+<translation id="4198859185714743678">Prozess abgeschlossen</translation>
+<translation id="6140948187512243695">Details anzeigen</translation>
 <translation id="7494736170250048402">Nachricht an Leo schicken</translation>
 <translation id="8650874793377330048">Nicht mehr antworten</translation>
 <translation id="8712637175834984815">Alles klar</translation>

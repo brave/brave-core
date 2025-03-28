@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">지금은 넘어가기</translation>
 <translation id="6165508094623778733">자세히 알아보기</translation>
 <translation id="986879628471635371">온보딩 문제 해결</translation>
-<translation id="5808759341041733958">기본 검색 엔진 선택</translation>
-<translation id="1331593888918588693">나중에 언제든 앱 설정에서 기본 설정을 변경하실 수 있습니다.</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400"><ph name="TOKEN"/> 적립</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">24단어 복구 문구가 있음</translation>
 <translation id="3570367516044491911">기본 브라우저로 설정</translation>
 <translation id="6800338374677644736">기본 브라우저로 설정</translation>
-<translation id="19715420010996093">Brave Browser를 선택하고 "항상"을 탭하세요</translation>
-<translation id="3546439402724649282">Brave가 이미 기본 브라우저로 설정되어 있습니다.</translation>
-<translation id="8389661903259423907">이미 기본 브라우저가 설정되어 있습니다. 앱 설정에서 기본 브라우저를 변경할 수 있습니다.</translation>
 <translation id="1545749641540134597">QR 코드 스캔</translation>
 <translation id="5317781812114905957">지침</translation>
 <translation id="8515319483805157233">QR 코드로 검색하려면 QR 코드를 프레임 중앙에 맞추세요.</translation>
@@ -549,7 +544,6 @@
 <translation id="1945330434665345785">지난주 Brave 브라우저로 <ph name="COUNT"/> 추적기 및 광고를 차단하셨습니다.</translation>
 <translation id="2883868922264431515">개인정보 존중 광고를 시청하여 토큰을 획득하고 즐겨찾는 웹사이트를 지원하십시오.</translation>
 <translation id="7408493389591475748">개인정보 보고를 보려면 검색 시작</translation>
-<translation id="9080777565335515917">비공개 및 보안 검색을 위한 기본 브라우저로 Brave를 설정하십시오.</translation>
 <translation id="1390943217516275883">Brave가 비공개 통계를 표시할 수 있도록 허용</translation>
 <translation id="1763352720905582220">매주 개인정보 보고서 전송</translation>
 <translation id="1811691435325545066">모든 개인정보 보고서 데이터 지우기</translation>
@@ -593,16 +587,6 @@
 <translation id="2977501775944575564">병렬 다운로딩</translation>
 <translation id="6224180438946945617">병렬 다운로딩을 황성화하여 다운로드 속도 높이기</translation>
 <translation id="8967385052772844086">전체 개인 정보 보호 보고서 보기</translation>
-<translation id="6864343534748973390">가장 인기있는</translation>
-<translation id="4608192160278975831">개인 정보가 보호되고 추적 요소 없음</translation>
-<translation id="7208522820527289601">개인정보 보호, 사용자 추적 없음, EU 기반</translation>
-<translation id="1161008391729450974">추적기 없는 Google 결과</translation>
-<translation id="7320542277711359296">두 번째로 인기가 많은</translation>
-<translation id="8295049095570748497">러시아의 상위권 검색 엔진</translation>
-<translation id="2642661895835126239">베를린 소재, 나무를 심습니다</translation>
-<translation id="2422627462367776805">대한민국 웹 포털 및 검색</translation>
-<translation id="177282784098234156">프라이빗, 독립적, 사용자 우선</translation>
-<translation id="1410130669636877548">여러분이 웹에서 검색을 할 때, 어떤 검색 엔진은 다른 엔진에 비해 여러분의 개인 정보를 더욱 잘 보호합니다.</translation>
 <translation id="3479552764303398839">나중에</translation>
 <translation id="7138272885617540195">앱 링크가 Brave 외부 앱에서 열릴 수 있게 허용</translation>
 <translation id="4954512758656527938">기본 이더리움 월렛</translation>
