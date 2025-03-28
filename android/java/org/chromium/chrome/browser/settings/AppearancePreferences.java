@@ -200,8 +200,7 @@ public class AppearancePreferences extends BravePreferenceFragment
 
         if (ToolbarPositionController.isToolbarPositionCustomizationEnabled(getContext(), false)) {
             updatePreferenceTitle(
-                    PREF_ADDRESS_BAR,
-                    AddressBarSettingsFragment.getTitleWithoutSpans(getContext()));
+                    PREF_ADDRESS_BAR, AddressBarSettingsFragment.getTitle(getContext()));
             updatePreferenceIcon(
                     PREF_ADDRESS_BAR,
                     BottomToolbarConfiguration.isToolbarTopAnchored()
