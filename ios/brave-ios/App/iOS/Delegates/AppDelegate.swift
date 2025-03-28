@@ -225,6 +225,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       Preferences.PrivacyReports.ntpOnboardingCompleted.value = false
     }
 
+    if Preferences.Search.defaultEngineName.value != nil
+      && !Preferences.Search.yahooJPPhaseOneCompleted.value
+    {
+      // Not a new install. DSE has been set previously.
+      Preferences.Search.shouldOverrideDSEForJapanRegion.value = false
+      Preferences.Search.yahooJPPhaseOneCompleted.value = true
+    }
+
     Preferences.General.isFirstLaunch.value = false
 
     Task {
@@ -234,6 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       // was not set.
       if Preferences.Search.defaultEngineName.value == nil {
         AppState.shared.profile.searchEngines.searchEngineSetup()
+        Preferences.Search.yahooJPPhaseOneCompleted.value = true
       }
     }
 
