@@ -13,14 +13,12 @@ import Web
 
 extension TabState {
   var displayTitle: String {
-    if let displayTabTitle = fetchDisplayTitle(using: url, title: title) {
-      return displayTabTitle
+    if let url = self.url, InternalURL(url)?.isAboutHomeURL ?? false {
+      return Strings.Hotkey.newTabTitle
     }
 
-    // When picking a display title. Tabs with sessionData are pending a restore so show their old title.
-    // To prevent flickering of the display title. If a tab is restoring make sure to use its lastTitle.
-    if let url = self.url, InternalURL(url)?.isAboutHomeURL ?? false, !isRestoring {
-      return Strings.Hotkey.newTabTitle
+    if let displayTabTitle = fetchDisplayTitle(using: url, title: title) {
+      return displayTabTitle
     }
 
     if let url = self.url, !InternalURL.isValid(url: url),
