@@ -32,7 +32,9 @@ import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
+import org.chromium.chrome.browser.toolbar.ToolbarPositionController;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -51,6 +53,7 @@ public class AppearancePreferences extends BravePreferenceFragment
     public static final String PREF_BRAVE_ENABLE_SPEEDREADER = "brave_enable_speedreader";
     public static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
     public static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
+    public static final String PREF_ADDRESS_BAR = "address_bar";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
@@ -82,6 +85,10 @@ public class AppearancePreferences extends BravePreferenceFragment
         }
         if (!new BraveMultiWindowUtils().shouldShowEnableWindow(getActivity())) {
             removePreferenceIfPresent(PREF_ENABLE_MULTI_WINDOWS);
+        }
+
+        if (!ToolbarPositionController.isToolbarPositionCustomizationEnabled(getContext(), false)) {
+            removePreferenceIfPresent(PREF_ADDRESS_BAR);
         }
     }
 
@@ -123,20 +130,6 @@ public class AppearancePreferences extends BravePreferenceFragment
                 findPreference(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
         if (enableBottomToolbar != null) {
             enableBottomToolbar.setOnPreferenceChangeListener(this);
-            if (enableBottomToolbar instanceof ChromeSwitchPreference) {
-                if (BottomToolbarConfiguration.isToolbarTopAnchored()) {
-                    boolean isTablet =
-                            DeviceFormFactor.isNonMultiDisplayContextOnTablet(
-                                    ContextUtils.getApplicationContext());
-                    ((ChromeSwitchPreference) enableBottomToolbar)
-                            .setChecked(
-                                    !isTablet
-                                            && BottomToolbarConfiguration
-                                                    .isBraveBottomControlsEnabled());
-                }
-                ((ChromeSwitchPreference) enableBottomToolbar)
-                        .setEnabled(BottomToolbarConfiguration.isToolbarTopAnchored());
-            }
         }
 
         Preference disableSharingHub = findPreference(PREF_BRAVE_DISABLE_SHARING_HUB);
@@ -204,6 +197,45 @@ public class AppearancePreferences extends BravePreferenceFragment
             mBraveRewardsNativeWorker.addObserver(this);
         }
         super.onStart();
+
+        if (ToolbarPositionController.isToolbarPositionCustomizationEnabled(getContext(), false)) {
+            updatePreferenceTitle(
+                    PREF_ADDRESS_BAR,
+                    AddressBarSettingsFragment.getTitleWithoutSpans(getContext()));
+            updatePreferenceIcon(
+                    PREF_ADDRESS_BAR,
+                    BottomToolbarConfiguration.isToolbarTopAnchored()
+                            ? R.drawable.ic_browser_mobile_tabs_top
+                            : R.drawable.ic_browser_mobile_tabs_bottom);
+        }
+
+        Preference enableBottomToolbar =
+                findPreference(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
+        if (enableBottomToolbar instanceof ChromeSwitchPreference) {
+            if (BottomToolbarConfiguration.isToolbarTopAnchored()) {
+                boolean isTablet =
+                        DeviceFormFactor.isNonMultiDisplayContextOnTablet(
+                                ContextUtils.getApplicationContext());
+                ((ChromeSwitchPreference) enableBottomToolbar)
+                        .setChecked(
+                                !isTablet
+                                        && BottomToolbarConfiguration
+                                                .isBraveBottomControlsEnabled());
+            }
+            if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
+                updatePreferenceSummary(
+                        BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
+                        R.string.brave_bottom_navigation_toolbar_disabled_summary);
+            } else {
+                updatePreferenceSummary(
+                        BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
+                        ((ChromeSwitchPreference) enableBottomToolbar).isChecked()
+                                ? R.string.text_on
+                                : R.string.text_off);
+            }
+            ((ChromeSwitchPreference) enableBottomToolbar)
+                    .setEnabled(BottomToolbarConfiguration.isToolbarTopAnchored());
+        }
     }
 
     @Override
@@ -221,6 +253,9 @@ public class AppearancePreferences extends BravePreferenceFragment
         if (BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY.equals(key)) {
             SharedPreferences prefs = ContextUtils.getAppSharedPreferences();
             Boolean originalStatus = BottomToolbarConfiguration.isBraveBottomControlsEnabled();
+            updatePreferenceSummary(
+                    BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
+                    !originalStatus ? R.string.text_on : R.string.text_off);
             prefs.edit()
                     .putBoolean(
                             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, !originalStatus)
@@ -305,5 +340,26 @@ public class AppearancePreferences extends BravePreferenceFragment
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_ADS_SWITCH, enabled);
         sharedPreferencesEditor.apply();
+    }
+
+    private void updatePreferenceIcon(String preferenceString, int drawable) {
+        Preference preference = findPreference(preferenceString);
+        if (preference != null) {
+            preference.setIcon(drawable);
+        }
+    }
+
+    private void updatePreferenceTitle(String preferenceString, CharSequence title) {
+        Preference preference = findPreference(preferenceString);
+        if (preference != null) {
+            preference.setTitle(title);
+        }
+    }
+
+    private void updatePreferenceSummary(String preferenceString, int summaryId) {
+        Preference preference = findPreference(preferenceString);
+        if (preference != null) {
+            preference.setSummary(summaryId);
+        }
     }
 }

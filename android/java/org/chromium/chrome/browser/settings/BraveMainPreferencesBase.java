@@ -365,6 +365,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 && BottomToolbarConfiguration.isToolbarTopAnchored()) {
             removePreferenceIfPresent(MainSettings.PREF_HOMEPAGE);
         }
+
+        // We want to move the address bar preference to the Appearence settings.
+        removePreferenceIfPresent(MainSettings.PREF_ADDRESS_BAR);
     }
 
     private void updatePreferenceIcon(String preferenceString, int drawable) {
@@ -398,6 +401,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_info);
         updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_homepage);
         updatePreferenceIcon(MainSettings.PREF_TABS, R.drawable.ic_browser_mobile_tabs);
+        updatePreferenceIcon(
+                MainSettings.PREF_ADDRESS_BAR,
+                BottomToolbarConfiguration.isToolbarTopAnchored()
+                        ? R.drawable.ic_browser_mobile_tabs_top
+                        : R.drawable.ic_browser_mobile_tabs_bottom);
     }
 
     private void updateSearchEnginePreference() {
