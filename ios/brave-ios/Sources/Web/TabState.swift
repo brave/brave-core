@@ -65,7 +65,11 @@ public class TabStateFactory {
         wkConfiguration: wkConfiguration
       )
     }
-    return WebKitTabState(id: params.id, configuration: wkConfiguration)
+    let webKitTabState = WebKitTabState(id: params.id, configuration: wkConfiguration)
+    if let lastActiveTime = params.lastActiveTime {
+      webKitTabState.lastActiveTime = lastActiveTime
+    }
+    return webKitTabState
   }
 }
 
