@@ -94,9 +94,4 @@ void BraveScreenshotsTabFeature::OnCaptureComplete(
   strategy_.reset();
 }
 
-void BraveScreenshotsTabFeature::WebContentsDestroyed() {
-  DVLOG(1) << "Associated WebContents Destroyed";
-  strategy_.reset();
-}
-
 }  // namespace brave_screenshots

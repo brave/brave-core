@@ -39,7 +39,6 @@ class BraveScreenshotsTabFeature : public content::WebContentsObserver {
  private:
   void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
   std::unique_ptr<BraveScreenshotStrategy> CreateStrategy(ScreenshotType type);
-  void WebContentsDestroyed() override;
 
   std::unique_ptr<BraveScreenshotStrategy> strategy_ = nullptr;
   base::WeakPtrFactory<BraveScreenshotsTabFeature> weak_factory_{this};
