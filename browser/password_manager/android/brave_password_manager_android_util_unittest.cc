@@ -115,7 +115,8 @@ TEST_F(BravePasswordManagerAndroidUtilTest,
   EXPECT_TRUE(PathExists(profile_db_journal_path));
   EXPECT_TRUE(PathExists(account_db_journal_path));
 
-  SetUsesSplitStoresAndUPMForLocal(pref_service(), login_db_directory());
+  SetUsesSplitStoresAndUPMForLocal(pref_service(), login_db_directory(),
+                                   nullptr);
 
   // Pref should be kOff, as we want keep using profile store instead of the
   // account store, so the paswords will be synced from Android to Desktop
