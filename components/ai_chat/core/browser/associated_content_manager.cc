@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/barrier_callback.h"
 #include "base/observer_list.h"
@@ -51,18 +52,25 @@ void AssociatedContentManager::SetContent(
 void AssociatedContentManager::LoadArchivedContent(
     const mojom::Conversation* metadata,
     const mojom::ConversationArchivePtr& archive) {
-  archive_content_.clear();
-  content_drivers_.clear();
-  content_observations_.RemoveAllObservations();
+  // Remove all archived content - its been reloaded from the DB.
+  for (int i = archive_content_.size() - 1; i >= 0; --i) {
+    RemoveContent(archive_content_[i].get(), /*notify_updated=*/false);
+  }
 
   CHECK_EQ(metadata->associated_content.size(),
            archive->associated_content.size());
 
-  for (size_t i = 0; i < metadata->associated_content.size(); ++i) {
-    const auto& content = metadata->associated_content[i];
+  for (size_t i = 0; i < archive->associated_content.size(); ++i) {
     const auto& archive_content = archive->associated_content[i];
-    CHECK_EQ(content->uuid, archive_content->content_uuid);
+    const auto& content_it = std::ranges::find_if(
+        metadata->associated_content, [&archive_content](const auto& content) {
+          return archive_content->content_uuid == content->uuid;
+        });
+    if (content_it == metadata->associated_content.end()) {
+      continue;
+    }
 
+    auto* content = content_it->get();
     bool is_video =
         (content->content_type == mojom::ContentType::VideoTranscript);
     archive_content_.push_back(std::make_unique<AssociatedArchiveContent>(
@@ -117,7 +125,8 @@ void AssociatedContentManager::AddContent(
 }
 
 void AssociatedContentManager::RemoveContent(
-    ConversationHandler::AssociatedContentDelegate* delegate) {
+    ConversationHandler::AssociatedContentDelegate* delegate,
+    bool notify_updated) {
   CHECK_EQ(conversation_->GetConversationHistorySize(), 0u)
       << "Cannot remove content from an associated content manager with a "
          "conversation history.";
@@ -141,7 +150,10 @@ void AssociatedContentManager::RemoveContent(
 
   // If we're modifying the associated content, we probably want to send it.
   should_send_ = !content_drivers_.empty();
-  conversation_->OnAssociatedContentUpdated();
+
+  if (notify_updated) {
+    conversation_->OnAssociatedContentUpdated();
+  }
 }
 
 std::vector<mojom::AssociatedContentPtr>

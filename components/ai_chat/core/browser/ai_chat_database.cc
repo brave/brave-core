@@ -21,6 +21,7 @@
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
+#include "sql/statement_id.h"
 #include "sql/transaction.h"
 
 namespace ai_chat {
@@ -260,16 +261,17 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
   while (statement.Step()) {
     DVLOG(1) << __func__ << " got a result";
     std::string uuid = statement.ColumnString(0);
-    if (conversation) {
-      if (conversation->uuid == uuid) {
-        // TODO(petemill): Support multiple associated content
-        continue;
-      } else {
-        conversation_list.emplace_back(std::move(conversation));
-      }
+    if (conversation && conversation->uuid != uuid) {
+      conversation_list.emplace_back(std::move(conversation));
     }
+
+    if (!conversation) {
+      conversation = mojom::Conversation::New();
+    }
+
     auto index = 1;
-    conversation = mojom::Conversation::New();
+
+    // TODO: Probably don't need to set most of these every time.
     conversation->uuid = uuid;
     conversation->title =
         DecryptOptionalColumnToString(statement, index++).value_or("");
@@ -514,9 +516,8 @@ AIChatDatabase::GetArchiveContentsForConversation(
   CHECK(statement.is_valid());
   statement.BindString(0, conversation_uuid);
   std::vector<mojom::ContentArchivePtr> archive_contents;
-  // We only support a single entry until ConversationHandler supports multiple
-  // associated contents.
-  if (statement.Step()) {
+
+  while (statement.Step()) {
     auto content = mojom::ContentArchive::New(
         statement.ColumnString(0), DecryptColumnToString(statement, 1));
     archive_contents.emplace_back(std::move(content));
@@ -600,62 +601,93 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
     return false;
   }
 
-  // TODO(petemill): handle multiple associated content per conversation
+  // Note: This needs to run inside a transaction so its safe to bail out if
+  // inserting/updating one AssociatedContent fails.
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    DVLOG(0) << "Transaction cannot begin";
+    return false;
+  }
+
   CHECK(!conversation_uuid.empty());
   CHECK(!associated_content.empty());
 
-  // TODO(fallaciousreasoning): Save them all!
-  auto& content = associated_content[0];
+  // Check what ids already exist in our database.
+  base::flat_set<std::string> existing_ids_set;
+  {
+    static constexpr char kSelectExistingAssociatedContentIds[] =
+        "SELECT uuid FROM associated_content WHERE conversation_uuid=?";
+    sql::Statement select_existing_ids(GetDB().GetCachedStatement(
+        SQL_FROM_HERE, kSelectExistingAssociatedContentIds));
+    select_existing_ids.BindString(0, conversation_uuid);
+    std::vector<std::string> existing_ids;
+    while (select_existing_ids.Step()) {
+      existing_ids.push_back(select_existing_ids.ColumnString(0));
+    }
 
-  // Check if we already have persisted this content
-  static constexpr char kSelectExistingAssociatedContentId[] =
-      "SELECT uuid FROM associated_content WHERE conversation_uuid=?"
-      " AND uuid=?";
-  sql::Statement select_statement(GetDB().GetCachedStatement(
-      SQL_FROM_HERE, kSelectExistingAssociatedContentId));
-  CHECK(select_statement.is_valid());
-  select_statement.BindString(0, conversation_uuid);
-  select_statement.BindString(1, content->uuid);
-
-  sql::Statement statement;
-  if (select_statement.Step()) {
-    DVLOG(4) << "Updating associated content for conversation "
-             << conversation_uuid << " with id " << content->uuid;
-    static constexpr char kUpdateAssociatedContentQuery[] =
-        "UPDATE associated_content"
-        " SET title = ?,"
-        " url = ?,"
-        " content_type = ?,"
-        " last_contents = ?,"
-        " content_used_percentage = ?,"
-        " is_content_refined = ?"
-        " WHERE uuid=? and conversation_uuid=?";
-    statement.Assign(GetDB().GetUniqueStatement(kUpdateAssociatedContentQuery));
-  } else {
-    DVLOG(4) << "Inserting associated content for conversation "
-             << conversation_uuid;
-    static constexpr char kInsertAssociatedContentQuery[] =
-        "INSERT INTO associated_content(title, url,"
-        " content_type, last_contents, content_used_percentage,"
-        " is_content_refined, uuid, conversation_uuid)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?) ";
-    statement.Assign(GetDB().GetUniqueStatement(kInsertAssociatedContentQuery));
+    // Store as a set for faster lookup. Note: We don't push directly to the set
+    // as that is O(n**2) with a base::flat_set.
+    existing_ids_set = existing_ids;
   }
-  CHECK(statement.is_valid());
-  int index = 0;
-  BindAndEncryptOptionalString(statement, index++, content->title);
-  BindAndEncryptOptionalString(statement, index++, content->url.spec());
-  statement.BindInt(index++, base::to_underlying(content->content_type));
-  BindAndEncryptOptionalString(statement, index++, contents);
-  statement.BindInt(index++, content->content_used_percentage);
-  statement.BindBool(index++, content->is_content_refined);
-  statement.BindString(index++, content->uuid);
-  statement.BindString(index, conversation_uuid);
 
-  if (!statement.Run()) {
-    DVLOG(0)
-        << "Failed to execute 'associated_content' insert or update statement: "
-        << db_.GetErrorMessage();
+  for (const auto& content : associated_content) {
+    sql::Statement insert_or_update_statement;
+    bool exists = existing_ids_set.contains(content->uuid);
+    if (exists) {
+      DVLOG(4) << "Updating associated content for conversation "
+               << conversation_uuid << " with id " << content->uuid;
+      static constexpr char kUpdateAssociatedContentQuery[] =
+          "UPDATE associated_content"
+          " SET title = ?,"
+          " url = ?,"
+          " content_type = ?,"
+          " last_contents = ?,"
+          " content_used_percentage = ?,"
+          " is_content_refined = ?"
+          " WHERE uuid=? and conversation_uuid=?";
+      insert_or_update_statement.Assign(
+          GetDB().GetUniqueStatement(kUpdateAssociatedContentQuery));
+    } else {
+      DVLOG(4) << "Inserting associated content for conversation "
+               << conversation_uuid;
+      static constexpr char kInsertAssociatedContentQuery[] =
+          "INSERT INTO associated_content(title, url,"
+          " content_type, last_contents, content_used_percentage,"
+          " is_content_refined, uuid, conversation_uuid)"
+          " VALUES(?, ?, ?, ?, ?, ?, ?, ?) ";
+      insert_or_update_statement.Assign(
+          GetDB().GetUniqueStatement(kInsertAssociatedContentQuery));
+    }
+
+    CHECK(insert_or_update_statement.is_valid());
+    int index = 0;
+    BindAndEncryptOptionalString(insert_or_update_statement, index++,
+                                 content->title);
+    BindAndEncryptOptionalString(insert_or_update_statement, index++,
+                                 content->url.spec());
+    insert_or_update_statement.BindInt(
+        index++, base::to_underlying(content->content_type));
+    BindAndEncryptOptionalString(insert_or_update_statement, index++, contents);
+    insert_or_update_statement.BindInt(index++,
+                                       content->content_used_percentage);
+    insert_or_update_statement.BindBool(index++, content->is_content_refined);
+    insert_or_update_statement.BindString(index++, content->uuid);
+    insert_or_update_statement.BindString(index, conversation_uuid);
+
+    if (!insert_or_update_statement.Run()) {
+      DVLOG(0) << "Failed to execute 'associated_content' insert or update "
+                  "statement: "
+               << db_.GetErrorMessage();
+      // Note: This should run inside a transaction, so its safe to bail out
+      // here.
+      transaction.Rollback();
+      return false;
+    }
+  }
+
+  if (!transaction.Commit()) {
+    DVLOG(0) << "Transaction commit failed with reason: "
+             << db_.GetErrorMessage();
     return false;
   }
 
