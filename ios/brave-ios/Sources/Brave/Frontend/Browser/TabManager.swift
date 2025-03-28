@@ -540,6 +540,7 @@ class TabManager: NSObject {
     flushToDisk: Bool = true,
     zombie: Bool = false,
     id: UUID? = nil,
+    lastActiveTime: Date? = nil,
     isPrivate: Bool
   ) -> any TabState {
     assert(Thread.isMainThread)
@@ -551,6 +552,7 @@ class TabManager: NSObject {
       with: .init(
         id: tabId,
         initialConfiguration: initialConfiguration,
+        lastActiveTime: lastActiveTime,
         braveCore: nil
       )
     )

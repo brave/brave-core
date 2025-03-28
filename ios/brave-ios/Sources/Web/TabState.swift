@@ -35,15 +35,18 @@ public class TabStateFactory {
   public struct CreateTabParams {
     public var id: UUID
     public var initialConfiguration: WKWebViewConfiguration?
+    public var lastActiveTime: Date?
     public var braveCore: BraveCoreMain?
 
     public init(
       id: UUID = .init(),
       initialConfiguration: WKWebViewConfiguration? = nil,
-      braveCore: BraveCoreMain?
+      lastActiveTime: Date? = nil,
+      braveCore: BraveCoreMain? = nil
     ) {
       self.id = id
       self.initialConfiguration = initialConfiguration
+      self.lastActiveTime = lastActiveTime
       self.braveCore = braveCore
     }
   }
@@ -51,7 +54,11 @@ public class TabStateFactory {
   public static func create(with params: CreateTabParams) -> any TabState {
     let wkConfiguration = params.initialConfiguration ?? .init()
     wkConfiguration.enablePageTopColorSampling()
-    return WebKitTabState(id: params.id, configuration: wkConfiguration)
+    let tabState = WebKitTabState(id: params.id, configuration: wkConfiguration)
+    if let lastActiveTime = params.lastActiveTime {
+      tabState.lastActiveTime = lastActiveTime
+    }
+    return tabState
   }
 }
 
