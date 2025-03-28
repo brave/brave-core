@@ -314,6 +314,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
 
     // Set the committed url which will also set tab.visibleURL
     tab.committedURL = webView.url
+    tab.isRestoring = false
     tab.mimeType = pendingMIMEType
 
     pendingMIMEType = nil
