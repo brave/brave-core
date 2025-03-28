@@ -54,7 +54,7 @@ if (fs.existsSync(outputPath)) {
 }
 
 const genPath = path.join(outputPath, 'gen')
-export { 
+export {
     outputPath,
     genPath
 }
