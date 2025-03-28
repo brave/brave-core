@@ -333,6 +333,7 @@
 <translation id="1336940801687497203">Windowsと同じ</translation>
 <translation id="8721331068159819483">Mac OS と同様</translation>
 <translation id="4171684937791228083">全画面で常にツールバーを表示</translation>
+<translation id="5840822070878669614">Brave ウェブストアを開く</translation>
 <translation id="1692470335103807198">より多くのテーマを取得する</translation>
 <translation id="2906510232093002459">Braveデフォルト画像</translation>
 <translation id="8000020256436988724">ツールバー</translation>
@@ -497,6 +498,7 @@
 <translation id="1389601498324964367">クォータ管理ストレージ</translation>
 <translation id="814018970995616154">Braveに保存された安全でないサイトのリストを使ってURLをチェックします。</translation>
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
+<translation id="4905744245455598930">危険性が知られているサイトや、ダウンロード、拡張機能から保護します。</translation>
 <translation id="5570470519803062774">サイトとシールドの設定</translation>
 <translation id="410351446219883937">自動再生</translation>
 <translation id="3512883292907992390">動画の自動再生をサイトに許可する</translation>
@@ -588,8 +590,8 @@
 <translation id="4908081302669157000">電話番号、メールアドレス、住所</translation>
 <translation id="294985549514492876">ウェブアプリ（PWA）</translation>
 <translation id="7029809446516969842">パスワード</translation>
-<translation id="924029461438529367">検索候補を表示</translation>
-<translation id="3128251601544028053">アドレスバーや検索ボックスに文字を入力すると、Braveは入力した文字をデフォルトの検索エンジンに送信し、より良い候補を取得します。これはプライベートウィンドウでは利用できません。</translation>
+<translation id="6011308810877101166">検索候補の品質を改善</translation>
+<translation id="2332576387809612040">これをオンにすると、Braveはアドレスバーや検索ボックスに入力した内容をデフォルトの検索エンジンに送信し、より適切な候補が表示されるようにします。オフにすると、Braveはあなたのデバイスで生成された候補のみを表示します。この機能はプライベートウィンドウでは常にオフになっています。</translation>
 <translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
 <translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
 <translation id="5522403133543437426">アドレスバーで使用される検索エンジン。</translation>
@@ -643,7 +645,6 @@
 <translation id="188228077840632890">AdGuardは、広告ブロック、ペアレンタルコントロールオプション、および他のAdGuardサービス提供との統合を提供するManifest V2拡張機能です。</translation>
 <translation id="8137559199583651773">拡張機能を管理</translation>
 <translation id="7013485839273047434">機能拡張をさらに取得</translation>
-<translation id="5840822070878669614">Brave ウェブストアを開く</translation>
 <translation id="4954512758656527938">デフォルトの Ethereum ウォレット</translation>
 <translation id="7701023802820268122">デフォルトの Solana ウォレット</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
@@ -673,6 +674,7 @@
 <translation id="1561541094377237745">Solanaネットワーク</translation>
 <translation id="7141438739990875547">Bitcoinネットワーク</translation>
 <translation id="1077567586443625607">Zcashネットワーク</translation>
+<translation id="1177180573354712438">カルダノネットワーク</translation>
 <translation id="3159419679550543837">テストネットワークを表示</translation>
 <translation id="3215569562674795548">編集または新しいネットワークを追加</translation>
 <translation id="4418993400653250511">チェーンID</translation>
@@ -746,7 +748,7 @@
 <translation id="7265212806651512211">まだモデルが接続されていません。</translation>
 <translation id="7304802428852949897">モデル</translation>
 <translation id="7435587476558117990">セルフまたはサードパーティによりホストされたLLMをLeoに接続し、ブラウザ内で使用します。</translation>
-<translation id="1381050642750209119">OllamaのようなOpenAI Chat Protocol互換のフレームワークを使用してください。</translation>
+<translation id="8137606697798069075">OllamaなどのOpenAI Chat Protocol互換のフレームワークを使用してください。;<ph name="BEGIN_LINK"/>詳細はこちら<ph name="END_LINK"/></translation>
 <translation id="2642905648178380593">モデルを保存</translation>
 <translation id="6304169450064541679">システムプロンプト</translation>
 <translation id="3081947790648024460">モデルに特定の方向やスタイルで応答させるためのカスタム指示やコンテキストです。現在の日付や時刻を挿入したい場合は、%datetime%を使用してください。</translation>

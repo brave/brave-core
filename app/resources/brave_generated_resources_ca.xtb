@@ -333,6 +333,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="1336940801687497203">Mateix que Windows</translation>
 <translation id="8721331068159819483">Mateix que MacOS</translation>
 <translation id="4171684937791228083">Mostra sempre la barra d'eines en mode de pantalla completa</translation>
+<translation id="5840822070878669614">Obre la Botiga Web de Brave</translation>
 <translation id="1692470335103807198">Obtingues més temes</translation>
 <translation id="2906510232093002459">Imatges predeterminades de Brave</translation>
 <translation id="8000020256436988724">Barra d'eines</translation>
@@ -497,6 +498,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="1389601498324964367">Emmagatzematge gestionat per quotes</translation>
 <translation id="814018970995616154">Comprova els enllaços amb una llista de llocs no segurs emmagatzemats a Brave.</translation>
 <translation id="1144810021918451336">No us protegeix contra llocs web, descàrregues i extensions perilloses.</translation>
+<translation id="4905744245455598930">Protegeix-te contra els llocs web, descàrregues i extensions perilloses.</translation>
 <translation id="5570470519803062774">Configuració del Lloc i dels Escuts</translation>
 <translation id="410351446219883937">Reproducció automàtica</translation>
 <translation id="3512883292907992390">Permet que els llocs web reprodueixin automàticament els vídeos</translation>
@@ -588,8 +590,8 @@ Segur que vols continuar?</translation>
 <translation id="4908081302669157000">Números de telèfon, correus electrònics i adreces</translation>
 <translation id="294985549514492876">Aplicacions web (PWA)</translation>
 <translation id="7029809446516969842">Contrasenyes</translation>
-<translation id="924029461438529367">Mostra suggeriments de cerca</translation>
-<translation id="3128251601544028053">Quan escrius a la barra d'adreces o al quadre de cerca, Brave envia el que escrius al motor de cerca predeterminat per obtenir els millors suggeriments. Això no està disponible a les finestres d'incògnit.</translation>
+<translation id="6011308810877101166">Millora els suggeriments de cerca</translation>
+<translation id="2332576387809612040">Mentre està activat, Brave envia allò que escrius a la barra d'adreces o al quadre de cerca al teu motor de cerca per defecte per obtenir millors suggeriments. Quan està desactivat, Brave només et mostra suggeriments generats al teu dispositiu. A les finestres d'incògnit, sempre està desactivat.</translation>
 <translation id="6285118765755298263">Indexa altres cercadors</translation>
 <translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
 <translation id="5522403133543437426">Motor de cerca en ús a la barra de direccions.</translation>
@@ -643,7 +645,6 @@ Segur que vols continuar?</translation>
 <translation id="188228077840632890">AdGuard és una extensió del Manifest V2 que proporciona bloqueig d'anuncis, opcions de control parental i integració amb altres ofertes de servei d'AdGuard.</translation>
 <translation id="8137559199583651773">Gestiona les extensions</translation>
 <translation id="7013485839273047434">Obtingues més extensions</translation>
-<translation id="5840822070878669614">Obre la Botiga Web de Brave</translation>
 <translation id="4954512758656527938">Cartera Ethereum predeterminada</translation>
 <translation id="7701023802820268122">Cartera Solana predeterminada</translation>
 <translation id="8488282162676695335">Cartera Brave</translation>
@@ -673,6 +674,7 @@ Segur que vols continuar?</translation>
 <translation id="1561541094377237745">Xarxes Solana</translation>
 <translation id="7141438739990875547">Xarxes Bitcoin</translation>
 <translation id="1077567586443625607">Xarxes Zcash</translation>
+<translation id="1177180573354712438">Xarxes Cardano</translation>
 <translation id="3159419679550543837">Mostra les xarxes de prova</translation>
 <translation id="3215569562674795548">Edita o afegeix una xarxa nova</translation>
 <translation id="4418993400653250511">La ID de la cadena</translation>
@@ -745,7 +747,7 @@ Segur que vols continuar?</translation>
 <translation id="7265212806651512211">Encara no heu connectat cap model.</translation>
 <translation id="7304802428852949897">Els vostres models</translation>
 <translation id="7435587476558117990">Connecteu el vostre LLM propi o allotjat per un tercer a Leo i feu-los servir en el navegador.</translation>
-<translation id="1381050642750209119">Utilitzeu qualsevol marc compatible de protocol de xat d'OpenAI com ara Ollama.</translation>
+<translation id="8137606697798069075">Utilitzeu qualsevol marc compatible de protocol de xat d'OpenAI, com ara Ollama. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
 <translation id="2642905648178380593">Desa el model</translation>
 <translation id="6304169450064541679">Guies del sistema</translation>
 <translation id="3081947790648024460">Les instruccions i/o el context personalitzats que se li donen al model per guiar les seves respostes cap a una direcció o estil determinats. Allà on t'agradaria insertar la data i hora actuals, utilitza %datetime%.</translation>

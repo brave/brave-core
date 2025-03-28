@@ -7,11 +7,19 @@
 <translation id="6406506848690869874">Синхронизирај</translation>
 <translation id="1544192797660353713">Паричник</translation>
 <translation id="1990886731975529483">Инсталирај и стартувај Google Widevine</translation>
+<translation id="4900351245762303149">Инсталирај Google Widevine</translation>
+<translation id="8342816622062204340"><ph name="URL"/> сака да репродуцира заштитена содржина на Google Widevine, за што е потребно да дозволите системска поддршка за Widevine на Android. Ако дозволите, се согласувате со условите за користење на Google.</translation>
 <translation id="5039804452771397117">Дозволи</translation>
 <translation id="8915916167043355778">Затвори ги сите</translation>
 <translation id="7658239707568436148">Откажи</translation>
 <translation id="4870911314065352661">Да се затворат сите картички?</translation>
 <translation id="9194637241566114638">Помогнете да се подобри <ph name="SEARCH_NAME"/> со испраќање анонимни податоци за користење. <ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">Brave пребарување</translation>
+<translation id="8184318863960255706">Повеќе информации</translation>
+<translation id="6965382102122355670">Во ред</translation>
+<translation id="780301667611848630">Не, благодарам</translation>
+<translation id="4174337572777167894">Проект за веб-обелоденување</translation>
+<translation id="8659271182272561965">Придонесете со анонимни податоци за пребарување и прелистување за да го подобрите Brave пребарување.</translation>
 <translation id="7400418766976504921">УРЛ</translation>
 <translation id="5916664084637901428">Вклучено</translation>
 <translation id="5860033963881614850">Исклучено</translation>
@@ -34,6 +42,10 @@
 <translation id="6165508094623778733">Дознајте повеќе</translation>
 <translation id="933652931229970927">Испраќај дијагностички извештаи автоматски</translation>
 <translation id="3858860766373142691">Име</translation>
+<translation id="298546024891487702">За да започнете, потребно е Brave да биде инсталиран на сите уреди што планирате да ги синхронизирате. За да ги поврзете, стартувајте синџир за синхронизација што ќе го користите за безбедно поврзување на сите ваши уреди.</translation>
+<translation id="5249433283143453448">Користете ја компонентата за управување со дигитални права (DRM) Widevine за да гледате заштитен видео пренос и друга содржина во прелистувачот.</translation>
 <translation id="8488282162676695335">Паричник Brave</translation>
+<translation id="5781842473834867765">Складирај ја мојата историја на разговори</translation>
+<translation id="6106701981952170121">Избриши ги сите податоци за разговори на Лео ВИ</translation>
 <translation id="614530507403667291">Стандарден модел за нови разговори</translation>
 </translationbundle>

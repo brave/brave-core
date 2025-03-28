@@ -332,6 +332,7 @@
 <translation id="1336940801687497203">Tāds pats kā Windows</translation>
 <translation id="8721331068159819483">Tāds pats kā macOS</translation>
 <translation id="4171684937791228083">Vienmēr rādīt rīkjoslu pilnekrāna režīmā</translation>
+<translation id="5840822070878669614">Atveriet interneta veikalu</translation>
 <translation id="1692470335103807198">Iegūt vairāk motīvu</translation>
 <translation id="2906510232093002459">Brave noklusējuma attēli</translation>
 <translation id="8000020256436988724">Rīkjosla</translation>
@@ -496,6 +497,7 @@
 <translation id="1389601498324964367">Kvotu pārvaldītā glabāšana</translation>
 <translation id="814018970995616154">Salīdzina URL ar Brave saglabāto nedrošo vietņu sarakstu.</translation>
 <translation id="1144810021918451336">Nepasargā jūs no bīstamām vietnēm, lejupielādēm un paplašinājumiem.</translation>
+<translation id="4905744245455598930">Aizsargā pret zināmām bīstamām vietnēm, lejupielādēm un paplašinājumiem.</translation>
 <translation id="5570470519803062774">Vietņu un vairogu iestatījumi</translation>
 <translation id="410351446219883937">Automātiska atskaņošana</translation>
 <translation id="3512883292907992390">Atļaut vietnēm automātiski atskaņot video</translation>
@@ -587,8 +589,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="4908081302669157000">Tālruņa numuri, e-pasta adreses un adreses</translation>
 <translation id="294985549514492876">Tīmekļa lietotnes (PWA)</translation>
 <translation id="7029809446516969842">Paroles</translation>
-<translation id="924029461438529367">Rādīt meklēšanas ieteikumus</translation>
-<translation id="3128251601544028053">Kad rakstāt adrešu joslā vai meklēšanas logā, Brave nosūta jūsu rakstīto informāciju noklusējuma meklētājprogrammatūrai, lai saņemtu labākus ieteikumus. Tas nav pieejams inkognito logos.</translation>
+<translation id="6011308810877101166">Uzlabojiet meklēšanas ieteikumus</translation>
+<translation id="2332576387809612040">Ja šī funkcija ir ieslēgta, Brave nosūta to, ko jūs ievadāt adreses joslā vai meklēšanas laukā, uz jūsu noklusējuma meklētājprogrammu, lai iegūtu labākus ieteikumus. Ja šī funkcija ir izslēgta, Brave rāda tikai jūsu ierīcē ģenerētus ieteikumus. Inkognito logos šī funkcija vienmēr ir izslēgta.</translation>
 <translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
 <translation id="919715748352669592">Automātiski indeksē tīmekļa vietnes, kas atbilst OpenSearch specifikācijām.</translation>
 <translation id="5522403133543437426">Adreses joslā izmantotā meklētājprogramma.</translation>
@@ -642,7 +644,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="188228077840632890">AdGuard ir Manifest V2 paplašinājums, kas piedāvā reklāmu bloķēšanu, vecāku kontroles iespējas un integrāciju ar citiem AdGuard pakalpojuma piedāvājumiem.</translation>
 <translation id="8137559199583651773">Pārvaldīt paplašinājumus</translation>
 <translation id="7013485839273047434">Iegūt citus paplašinājumus</translation>
-<translation id="5840822070878669614">Atveriet interneta veikalu</translation>
 <translation id="4954512758656527938">Noklusējuma Ethereum maks</translation>
 <translation id="7701023802820268122">Noklusējuma Solana maks</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -672,6 +673,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1561541094377237745">Solana tīkli</translation>
 <translation id="7141438739990875547">Bitcoin tīkli</translation>
 <translation id="1077567586443625607">Zcash tīkli</translation>
+<translation id="1177180573354712438">Cardano tīkli</translation>
 <translation id="3159419679550543837">Parādīt testa tīklus</translation>
 <translation id="3215569562674795548">Rediģēt vai pievienot jaunu tīklu</translation>
 <translation id="4418993400653250511">Ķēdes ID</translation>
@@ -744,7 +746,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7265212806651512211">Jūs vēl neesat pieslēdzis nevienu modeli.</translation>
 <translation id="7304802428852949897">Jūsu modeļi</translation>
 <translation id="7435587476558117990">Savienojiet savu pašviesotu vai trešās personas viesotu LLM ar Leo un izmantojiet tos pārlūkā.</translation>
-<translation id="1381050642750209119">Izmantojiet ar OpenAI Chat Protocol saderīgu pakalpojumu, piemēram, Ollama.</translation>
+<translation id="8137606697798069075">Izmantojiet ar OpenAI tērzēšanas protokolu saderīgu pakalpojumu, piemēram, Ollama. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="2642905648178380593">Saglabāt modeli</translation>
 <translation id="6304169450064541679">Sistēmas uzvedne</translation>
 <translation id="3081947790648024460">Modelim sniegtās instrukcijas un/vai konteksts, kas pielāgos tā atbildes, ievērojot vēlamo virzienu vai stilu. Izmantojiet %datetime% tur, kur vēlaties ievietot datumu un laiku.</translation>

@@ -333,6 +333,7 @@
 <translation id="1336940801687497203">與 Windows 相同</translation>
 <translation id="8721331068159819483">與 macOS 相同</translation>
 <translation id="4171684937791228083">總是在全螢幕中顯示工具列</translation>
+<translation id="5840822070878669614">開啟 Brave 線上應用程式商店</translation>
 <translation id="1692470335103807198">取得更多主題</translation>
 <translation id="2906510232093002459">Brave 預設圖像</translation>
 <translation id="8000020256436988724">工具列</translation>
@@ -497,6 +498,7 @@
 <translation id="1389601498324964367">配額管理儲存空間</translation>
 <translation id="814018970995616154">以 Brave 中儲存的不安全網站清單檢查 URL。</translation>
 <translation id="1144810021918451336">無法協助您防護危險網站、下載和延伸套件。</translation>
+<translation id="4905744245455598930">防止已知不安全的網站、下載和延伸功能。</translation>
 <translation id="5570470519803062774">網站與 Shields 設定</translation>
 <translation id="410351446219883937">自動播放</translation>
 <translation id="3512883292907992390">允許網站自動播放影片</translation>
@@ -589,8 +591,8 @@
 <translation id="4908081302669157000">電話號碼、電子郵件和地址</translation>
 <translation id="294985549514492876">Web 應用程式 (PWA)</translation>
 <translation id="7029809446516969842">密碼</translation>
-<translation id="924029461438529367">顯示搜尋建議</translation>
-<translation id="3128251601544028053">您在網址列或搜尋方塊輸入內容時，Brave 會將您輸入的內容傳送至您的預設搜尋引擎，以取得更好的建議。私密瀏覽視窗不支援此功能。</translation>
+<translation id="6011308810877101166">改善搜尋建議</translation>
+<translation id="2332576387809612040">開啟時，Brave 會將您在位址列或搜尋方塊中輸入的內容傳送至預設搜尋引擎，以獲得更好的建議。關閉時，Brave 只會顯示您裝置上產生的建議。在無痕視窗中，此功能將常設為關閉。</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
 <translation id="5522403133543437426">網址列中使用的搜尋引擎。</translation>
@@ -644,7 +646,6 @@
 <translation id="188228077840632890">AdGuard 是一種 Manifest V2 擴充功能，提供廣告封鎖、家長監護選項，以及與其他 AdGuard 服務方案的整合。</translation>
 <translation id="8137559199583651773">管理擴充功能</translation>
 <translation id="7013485839273047434">取得更多擴充功能</translation>
-<translation id="5840822070878669614">開啟 Brave 線上應用程式商店</translation>
 <translation id="4954512758656527938">預設以太坊錢包</translation>
 <translation id="7701023802820268122">預設 Solana 錢包</translation>
 <translation id="8488282162676695335">Brave 錢包</translation>
@@ -674,6 +675,7 @@
 <translation id="1561541094377237745">Solana 網路</translation>
 <translation id="7141438739990875547">比特幣網路</translation>
 <translation id="1077567586443625607">Zcash 網路</translation>
+<translation id="1177180573354712438">Cardano 網絡</translation>
 <translation id="3159419679550543837">顯示測試網站</translation>
 <translation id="3215569562674795548">編輯或新增新網路</translation>
 <translation id="4418993400653250511">鏈結 ID</translation>
@@ -746,7 +748,7 @@
 <translation id="7265212806651512211">您尚未連結模型。</translation>
 <translation id="7304802428852949897">您的模型</translation>
 <translation id="7435587476558117990">將自我裝載或第三方託管大型語言模型 (LLM) 與 Leo 連結，並在瀏覽器中使用。</translation>
-<translation id="1381050642750209119">請使用與 OpenAI 聊天通訊協定相容的架構，例如 Ollama。</translation>
+<translation id="8137606697798069075">請使用任何與 OpenAI 聊天通訊協定相容的架構，例如 Ollama。<ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>
 <translation id="2642905648178380593">儲存模型</translation>
 <translation id="6304169450064541679">系統提示</translation>
 <translation id="3081947790648024460">提供給模型的自訂指示和/或內容，以引導其朝特定方向或風格做出回應。使用 %datetime% 來插入目前的日期和時間。</translation>

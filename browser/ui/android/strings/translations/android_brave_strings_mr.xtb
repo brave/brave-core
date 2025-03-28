@@ -16,6 +16,12 @@
 <translation id="7307834434086582547">ब्रेव्ह शिल्ड्स सक्षम / अक्षम करा</translation>
 <translation id="94154759592465111">स्क्रिप्ट्स ब्लॉक करा</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="2233004324252915283">YouTube ने सुचवलेला काँटेंट ब्लॉक करा</translation>
+<translation id="1005372663692637999">youtube.com वरील पुढील आणि समाप्ती पत्रकामधील मजकूर ब्लॉक करते.</translation>
+<translation id="5152595963250646670">YouTube वरील लक्ष विचलित करणारे मजकूर ब्लॉक करा</translation>
+<translation id="2998960761270772157">youtube.com वरील साईन इन, मेन्यू, कमेंट्स आणि व्हिडिओ माहितीचे मजकूर ब्लॉक करते.</translation>
+<translation id="8531835121131500698">YouTube Shorts ब्लॉक करा</translation>
+<translation id="2167271714269158912">youtube.com वरील होम पेजवरून, ट्रेंडिग पानावरून आणि शोध परिणामांमधून Shorts ब्लॉक करते.</translation>
 <translation id="6052725679982758334">सोशल मीडिया ब्लॉकिंग</translation>
 <translation id="7498695072878479744">तृतीय पक्ष साइटवर Google लॉगिन बटणांना अनुमती द्या</translation>
 <translation id="863171915776379000">फेसबुक लॉगिन आणि अंतःस्थापित पोस्टना अनुमती द्या</translation>
@@ -46,6 +52,8 @@
 <translation id="2448893613530489637">ट्रॅकर्स &amp; जाहिराती लोड होण्यापासून आणि वेबपेजेसवर दिसण्यापासून थांबवा</translation>
 <translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>
 <translation id="1680858055899097121">ब्राउझिंग सत्र दरम्यान टॅब टिकवून ठेवू नका</translation>
+<translation id="4174337572777167894">वेब डिस्कव्हरी प्रकल्प</translation>
+<translation id="8659271182272561965">Brave शोध अधिक शुद्ध करण्यासाठी थोड्या निनावी शोधाच्या आणि &amp; ब्राऊझिंग डेटाच्या स्वरूपात योगदान द्या.</translation>
 <translation id="933652931229970927">आपोआप निदान अहवाल पाठवा</translation>
 <translation id="7977176350719484850">अंदाजे डेटा\nबचत</translation>
 <translation id="9008534313521214777">अंदाजे वेळेची\nबचत</translation>
@@ -53,9 +61,12 @@
 <translation id="7445411102860286510">साइटना स्वयंचलितपणे नि:शब्द केलेले व्हिडिओ प्ले करण्याची अनुमती द्या (शिफारस केलेले)</translation>
 <translation id="7837721118676387834">एका विशिष्ट साइटकरिता नि:शब्द केलेल्या व्हिडिओंच्या ऑटोप्ले ला अनुमती द्या.</translation>
 <translation id="8026334261755873520">ब्राउझिंग डेटा साफ करा</translation>
+<translation id="1690924763769415936">बॅकग्राऊंड प्ले</translation>
 <translation id="6332924730165919598">सर्व टॅब बंद केल्यावर ब्रेव्ह बंद होतो</translation>
+<translation id="8308305244351876417">यामुळे तुम्ही Brave च्या दुसऱ्या टॅबमध्ये गेलात, किंवा दुसऱ्या ॲपमध्ये गेलात किंवा डिव्हाईसची स्क्रीन बंद केलीत तरी ऑडिओ प्ले होत राहतो.</translation>
 <translation id="4150201353443180367">डिस्प्ले करा</translation>
 <translation id="4275663329226226506">माध्यम</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
 <translation id="2433507940547922241">स्वरूप</translation>
 <translation id="6587448235155023666">तुम्ही पुढल्या वेळी Brave रीलाँच कराल तोपर्यंत तुमचे बदल प्रभावी होतील</translation>
 <translation id="4117451092682672487">गोपनीयता. सहज साध्य.</translation>
@@ -64,15 +75,18 @@
 <translation id="5148943178722443958">ब्रेव्ह सुधारायला मदत करा.</translation>
 <translation id="6718362830686703942">तुम्ही क्रॅश किंवा फ्रीझ अनुभवलात तर निदानाचे अहवाल पाठवा.</translation>
 <translation id="8616157231067364693">ब्रेव्हच्या वापरकर्त्यांकडून कोणती वैशिष्ट्ये वापरली जात आहेत याविषयीची गोपनीय आणि निनावी उत्पादन माहिती सांगा.</translation>
+<translation id="7044431516245362795">अनुक्रमणिका वाढवण्यासाठी आणि शोध परिणाम सुधारण्यासाठी मदत करायला वेब डिस्कव्हरी प्रकल्पात सहभागी व्हा. <ph name="LEARN_MORE_START"/> अधिक जाणून घ्या. <ph name="LEARN_MORE_END"/></translation>
+<translation id="7818938154803162778">हो, मी नक्की मदत करेन</translation>
 <translation id="2877653791257935258">वेबसाईटचे नाव किंवा URL टाईप करा</translation>
 <translation id="5329830149661250028">ब्रेव्हसह फरक अनुभवा : शून्य जाहिराती. शून्य ट्रॅकर्स. पान लोड होते अति वेगाने.</translation>
 <translation id="3941792073703079607">ब्रेव्हसह फरक अनुभवा : जाहिराती ब्लॉक करा. डेटा वाचवा. जलद स्ट्रीम करा.</translation>
+<translation id="3545804467215833536">Brave शील्ड्स पाहण्यासाठी टॅप करा</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ॲड्स &amp; ट्रॅकर्स ब्लॉक केले</translation>
 <translation id="8281886186245836920">वगळा</translation>
 <translation id="6165508094623778733">अधिक जाणून घ्या</translation>
 <translation id="5806601733251372221">ब्रेव्ह शील्ड्स</translation>
 <translation id="3333887201479867589">ब्रेव्ह बक्षिसे</translation>
 <translation id="3570367516044491911">डीफॉल्ट ब्राऊझर करा</translation>
-<translation id="3546439402724649282">ब्रेव्ह आधीपासूनच तुमचा डीफॉल्ट ब्राऊझर आहे.</translation>
 <translation id="7658239707568436148">रद्द करा</translation>
 <translation id="1201402288615127009">पुढील</translation>
 <translation id="8926389886865778422">पुन्हा विचारू नका</translation>
@@ -81,7 +95,10 @@
 <translation id="1772301834467143364">ब्रेव्ह न्यूज</translation>
 <translation id="8428213095426709021">सेटिंग्ज</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
+<translation id="348794064910142198">Brave सिंक तुम्हाला बुकमार्क गुप्तपणे तुमच्या विविध डिव्हायसेसवरील Brave ब्राऊझर्सवर सिंक करू देते.\n\nनुसता तुमच्या दुसऱ्या डिव्हाईसवर तुम्ही तयार केलेल्या सिंक चेन मधील कोड स्कॅन करा. किंवा नवीन सिंक चेन सुरु करा.</translation>
 <translation id="5817918615728894473">जोडा</translation>
+<translation id="7745082336226088126">सिंक कोड स्कॅन किंवा एंटर करा</translation>
+<translation id="1602067095281698985">नवीन सिंक चेन सुरु करा</translation>
 <translation id="2175927920773552910">QR कोड</translation>
 <translation id="8730621377337864115">पूर्ण झाले</translation>
 <translation id="8131740175452115882">पुष्टी करा</translation>
@@ -93,6 +110,12 @@
 <translation id="1426410128494586442">होय</translation>
 <translation id="6336451774241870485">नवीन गुप्त टॅब</translation>
 <translation id="3110967157686007724">गुप्त टॅब</translation>
+<translation id="944340256927461196">तुमच्या डिव्हाईसवर कोणताही मागमूस ठेवू नका</translation>
+<translation id="2063044449012253966">तुम्ही गोपनीय विंडोजमधून पाहिलेल्या साईट्स इतिहासात दिसणार नाहीत. एकदा सर्व गोपनीय विंडोज बंद झाल्या की कूकीज्, फॉर्म माहिती आणि साईट माहिती नाहीशी होते.</translation>
+<translation id="7395764193745523646">ब्राऊझिंग दृश्यमानता</translation>
+<translation id="8670344404057978375">लक्षात घ्या, की गोपनीय विंडोजमध्येसुद्धा, तुमचा ब्राऊझिंग क्रियाकलाप तुमच्या ISP ला, नेटवर्क निरीक्षकांना किंवा तुमच्या सेवायोजकाला (जर तुम्ही कामाच्या ठिकाणचे डिव्हाईस / नेटवर्क वापरत असाल तर) दिसू शकतो.</translation>
+<translation id="1413177583895309156">तुम्ही ऑनलाईन जे काही करता ते Brave VPN एन्क्रिप्ट करतो आणि त्याचे रक्षण करतो, अगदी Brave ब्राऊझर बाहेरसुद्धा.</translation>
+<translation id="3974348661685061050">7 दिवस विनामूल्य वापरून पाहा</translation>
 <translation id="7781069478569868053">नवीन टॅबचे पान</translation>
 <translation id="2898634658146274982">बाहेरच्या लिंक्स ब्रेव्हमध्ये उघडा</translation>
 <translation id="5616508928556767259">इतर ॲप्समधील लिंक्स ब्रेव्ह वेबदृश्यात उघडतो. टीप : यासाठी ब्रेव्ह तुमचा डीफॉल्ट ब्राऊझर असायला हवा.</translation>
@@ -151,9 +174,13 @@
 <translation id="7410504850864021600">अतिजलद कनेक्शनचे वेग</translation>
 <translation id="2422309687188612485">एका प्लॅनसह 10 डिव्हायसेस सुरक्षित करा</translation>
 <translation id="4882693590083943563">सर्व प्लॅन्समध्ये आहे एक <ph name="TRIAL_DAYS"/></translation>
+<translation id="487741927046441232">विनामूल्य 7 दिवसांचा ट्रायल!</translation>
+<translation id="1532536259167115948">मासिक वर्गणी <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">दरमहा नूतनीकरण होते</translation>
 <translation id="112929124115834557">दरवर्षी नूतनीकरण होते</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> / महिना</translation>
 <translation id="1163809943099641131">एक वर्ष</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> / वर्ष</translation>
 <translation id="2786538705804257030">सदस्यत्वांसाठी तुमच्या गूगल खात्यावरून शुल्क आकारले जाईल. तुमच्या विनामूल्य चाचणीत्न वापरलेला कोणताही भाग तुम्ही सदस्यत्व खरेदी केल्यावर बाद होतो. \n\n तुमचे सदस्यत्व चालू मुदतीच्या अखेरीआधी किमान 24 तास अगोदर रद्द केले नाही तर आपोआप नूतनीकृत होते. \n\n तुम्ही सेटिंग्जमध्ये तुमच्या सदस्यत्वांचे व्यवस्थापन करू शकता. \n\n ब्रेव्ह वापरून, तुम्ही वापरासंदर्भातील नियम आणि गोपनीयता धोरण यांच्याशी सहमती दर्शवता.</translation>
 <translation id="5035172357624830412">brave.com वर आधीच खरेदी केलीत?</translation>
 <translation id="713136183174551885">तुमची अधिकारपत्रे रीफ्रेश करा</translation>
@@ -167,6 +194,7 @@
 <translation id="604124094241169006">स्वयंचलित</translation>
 <translation id="6452181791372256707">नाकारा</translation>
 <translation id="8030852056903932865">मंजूर करा</translation>
+<translation id="2304783958703511257">प्रगत सेटिंग्स</translation>
 <translation id="5317780077021120954">सेव्ह करा</translation>
 <translation id="9065203028668620118">संपादन</translation>
 <translation id="473775607612524610">अपडेट करा</translation>
@@ -190,6 +218,7 @@
 <translation id="7144878232160441200">पुन्हा प्रयत्न करा</translation>
 <translation id="6040143037577758943">बंद करा</translation>
 <translation id="5456039738087398178">होम स्क्रीन विजेट</translation>
+<translation id="2326703104633309781">Brave ट्रान्सलेट वापरा</translation>
 <translation id="4530494379350999373">मूळ</translation>
 <translation id="6736243959894955139">पत्ता</translation>
 <translation id="308268297242056490">URI</translation>
@@ -203,7 +232,9 @@
 <translation id="3435896845095436175">सक्षम करा</translation>
 <translation id="5494920125229734069">सर्व निवडा</translation>
 <translation id="1179407411385015942">लिओ हा एक AI-समर्थित स्मार्ट मदतनीस आहे, जो थेट ब्राऊझरमध्येच उभारण्यात आला आहे</translation>
+<translation id="5781842473834867765">माझा संभाषण इतिहास जतन करा</translation>
 <translation id="4109670531935487117">ॲड्रेस बारमध्ये ऑटोकम्प्लीट शिफारसी दाखवा</translation>
+<translation id="6106701981952170121">सर्व Leo AI संभाषण डेटा काढून टाका</translation>
 <translation id="73236265316873967">लिओ प्रीमियम</translation>
 <translation id="1028627582482425924">एक वर्ष</translation>
 <translation id="2985392169397572983">सर्वोत्तम मूल्य</translation>

@@ -327,6 +327,7 @@
 <translation id="2631006050119455616">저장됨</translation>
 <translation id="3671566813999349838">금액</translation>
 <translation id="6976444672879155794">[[processor]] 자동 기부</translation>
+<translation id="944736176598169208">리워드</translation>
 <translation id="8804164990146287819">개인정보 보호 정책</translation>
 <translation id="7262285991915892790">배트 아이콘을 다음으로 드래그하세요</translation>
 <translation id="7656781188259414093">타킷.</translation>
@@ -508,7 +509,6 @@
       other {이번 달 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>를 본 데에 대한 수익}
     }</translation>
 <translation id="6067959437127691361">Brave Rewards를 사용하면 콘텐츠 제작자를 지원하고 BAT도 적립받을 수 있습니다.</translation>
-<translation id="944736176598169208">리워드</translation>
 <translation id="2359808026110333948">계속</translation>
 <translation id="885805571521218129">이번 달 Brave Ads로 적립되는 예상액 범위입니다.</translation>
 <translation id="3863981251715594911">원리가 무엇인가요?</translation>
@@ -643,7 +643,7 @@
 <translation id="6895088073061692390">안타깝지만 자동 검사 결과 귀하의 Brave Rewards 프로필에서 비정상적인 Brave Ads 활동이 감지되어 플래깅되었습니다.</translation>
 <translation id="4229056297802204697">프로필이 플래깅되어 있어도 광고를 계속 볼 수 있지만 적립액을 지급받을 수 없습니다. Brave Rewards에 보호관리 계정도 연결할 수 없습니다.</translation>
 <translation id="5124846913141379164">프로필이 착오로 인해 플래깅되었더라도 즉시 가능한 조치는 없습니다. 프로필 플래깅은 향후 검토를 거쳐 해제됩니다.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Brave Rewards 프로필 플래깅 프로세스 자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="8947002243324362172">Brave Rewards 프로필 플래깅 프로세스 자세히 알아보기</translation>
 <translation id="4699218748197721830">Brave Rewards 프로필이 플래깅됨</translation>
 <translation id="2607420597216860026"><ph name="PROVIDER"/>에서 ID 확인을 완료하고 다시 시도하세요.</translation>
 <translation id="5037332159336402972">로그인하려면 계정을 검증해야 함</translation>
@@ -678,7 +678,6 @@
 <translation id="5916664084637901428">켬</translation>
 <translation id="3977723631999461201">이번 달 받은 광고 <ph name="NUM"/>개</translation>
 <translation id="7924320838799747606">내 잔액</translation>
-<translation id="8714473477079007268"><ph name="PROVIDER"/> 월렛</translation>
 <translation id="3175337080016717494">지급 계정</translation>
 <translation id="453760933181416879">내 계정으로 이동</translation>
 <translation id="8290994471756102241">로그아웃됨</translation>
@@ -688,7 +687,6 @@
 <translation id="2310070536993781610">BRAVEREWARDS 프로모션 코드를 사용하여 모든 Brave 가맹점 상품에서 10% 할인을 받으세요.</translation>
 <translation id="1170674812179664523">Brave 굿즈 스토어</translation>
 <translation id="8673202990286883068">내 혜택</translation>
-<translation id="3699766258844277472">아직 설정된 정기 후원이 없습니다.</translation>
 <translation id="957921474773060718">다음 후원:</translation>
 <translation id="351973834053818251">정기 후원</translation>
 <translation id="7751260505918304024">전체 보기</translation>
@@ -947,6 +945,8 @@
 <translation id="2399555431746923964">BTC Testnet 자산 저장</translation>
 <translation id="8749751940551938347">ZEC 자산 저장</translation>
 <translation id="3451958544919449297">ZEC Testnet 자산 저장</translation>
+<translation id="8459631690385393533">Cardano 자산 저장</translation>
+<translation id="4915057812371523845">Cardano Testnet 자산 저장</translation>
 <translation id="8500387257977999003">비공개 키 <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">가져오기</translation>
 <translation id="232925166623833246">하드웨어 월렛에서 가져오기</translation>
@@ -1191,7 +1191,11 @@
 <translation id="4667144295226514387">가스 한도 누락</translation>
 <translation id="2021522108838444624">금액이 0보다 커야 함</translation>
 <translation id="8464365289405373974">받는사람 주소 필요</translation>
-<translation id="6326239384961270135">비보호 부분 누락</translation>
+<translation id="6449503919127419230">잘못된 투명 주소</translation>
+<translation id="3778662247272439818">네트워크 불일치</translation>
+<translation id="1170025316306464310">잘못된 통합 주소 형식</translation>
+<translation id="8380483120683767377">Orchard 부분이 누락됨</translation>
+<translation id="1536211570215515174">투명 부분이 누락됨</translation>
 <translation id="8585995109882455949">정확한 주소를 확인하는 방법</translation>
 <translation id="105524480632150318">대소문자가 부정확하면 잘못된 주소로 사용자가 송금하지 않도록 Brave가 방지합니다. 아래 지침을 따라 정확한 주소를 입력하세요.</translation>
 <translation id="4583433813614292221">1. 방문하기</translation>
@@ -1345,6 +1349,8 @@
 <translation id="7694836973509310467">브리지</translation>
 <translation id="997000407026317399"><ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/>의 <ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/></translation>
 <translation id="6934057383578424432"><ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/>에서 <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> 시도 중 오류 발생</translation>
+<translation id="4916833841663290382"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 차폐</translation>
+<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>을(를) 차폐했습니다</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {보류 중인 트랜잭션 {PENDING_TRANSACTIONS}개 더 있음.}
       other {보류 중인 트랜잭션 {PENDING_TRANSACTIONS}개 더 있음.}
@@ -1742,7 +1748,9 @@
 <translation id="4438043733494739848">투명한 입금</translation>
 <translation id="1950406774300125954">동기화되지 않음</translation>
 <translation id="68413355604013935">동기화되지 않음 (동기화되지 않은 블록 <ph name="BLOCKS"/>개)</translation>
+<translation id="1724354250024376254">보류 중인 잔액(추가 확인 필요): <ph name="FUNDS"/></translation>
 <translation id="1597233669965903034">계정을 동기화하여 최신 트랜잭션과 잔액에 액세스하세요.</translation>
+<translation id="3609785682760573515">동기화하는 중...</translation>
 <translation id="7499262814309712782">계정 동기화</translation>
 <translation id="2804568727504456403"><ph name="ACCOUNT"/> 동기화</translation>
 <translation id="813913629614996137">초기화 중...</translation>
@@ -1754,6 +1762,15 @@
 <translation id="7714298753782862705">동기화가 완료되었습니다. 이제 이 창을 닫아도 됩니다.</translation>
 <translation id="7716113567047550378">동기화가 완료될 때까지 이 창을 닫지 마세요.</translation>
 <translation id="5123590959308755060">새 탭에서 지갑 계속 사용</translation>
+<translation id="4594014034647546191">차폐된 계정 생년월일 차단</translation>
+<translation id="6666784075827260119">계정 생년월일은 <ph name="BLOCK_NUMBER"/>보다 커야 합니다</translation>
+<translation id="3102477628835823956">계정 생년월일은 <ph name="BLOCK_NUMBER"/>보다 작아야 합니다</translation>
+<translation id="6850229669854962550">동기화되지 않은 블록 <ph name="BLOCKS"/>개</translation>
+<translation id="7747318989577709780">계정을 동기화 중입니다</translation>
+<translation id="9086302186042011942">동기화하는 중</translation>
+<translation id="99991973626409495">쉴드 검토</translation>
+<translation id="3114681061018999547">차폐</translation>
+<translation id="8897189056319316783">ZEC 쉴드</translation>
 <translation id="7144878232160441200">재시도</translation>
 <translation id="9094621390791852268">트랜잭션 미리보기 실패.</translation>
 <translation id="4982713341035600933">예상 잔액 변화</translation>
@@ -2081,7 +2098,8 @@
 <translation id="4885527781814382758">Brave 레오는 인터넷 사용성을 개선해주는 개인용 AI 스마트 어시스턴트입니다. 레오는 무료로 사용할 수 있으며 액세스 한도가 있습니다. Brave 레오 프리미엄은 더 많은 모델을 지원하고 한도가 높으며 구독자 여러분께 새로운 기능을 먼저 제공해 드립니다. 기본 모델은 수시로 변경됩니다. 자세한 정보는 <ph name="LINK_BEFORE"/>Brave 도움말 센터<ph name="LINK_AFTER"/>를 참조하세요.</translation>
 <translation id="7189603330209995455">기본적으로, 사용자가 보고 있는 웹페이지나 페이지상에 강조된 텍스트에 대해 레오에게 질문을 하면 그 내용이 Brave 레오에게 전송되어 답변을 제공합니다. 답변의 정확성은 보장되지 않으며 부정확하거나 오인할 수 있거나 잘못된 정보가 포함될 수 있습니다. 레오는 Brave 검색에서 얻어진 데이터를 사용하여 답변의 품질을 개선합니다. 민감하거나 사적인 정보를 입력하지 않아야 하며, 건강, 재무, 개인 안전 등과 관련된 텍스트에는 특별한 주의를 요합니다. 레오 옵션은 설정에서 언제든 조정할 수 있습니다. 설정 &gt; 레오로 이동하세요.</translation>
 <translation id="3038772045018370764">레오는 IP 주소와 같이 개인을 특정할 수 있는 식별자를 수집하지 않습니다. 어떠한 데이터도 AI 모델을 훈련하는 데 사용되지 않으며 AI 모델은 개인 데이터를 보관하지 않습니다(예외적으로 Anthropic의 경우 30일간 보관 후 삭제). 자세한 정보는 <ph name="LINK_BEFORE"/>개인정보 보호정책<ph name="LINK_AFTER"/>을 참조하세요.</translation>
-<translation id="7839853125981164613">여기 프롬프트 입력</translation>
+<translation id="6961721183181597848">무엇을 도와드릴까요?</translation>
+<translation id="2966135729673253768">후속 조치 요청</translation>
 <translation id="4524675003624341892">추천 질문...</translation>
 <translation id="4567071417854988869">이 동영상 요약하기</translation>
 <translation id="7921782882718083488">이 페이지 요약하기</translation>
@@ -2094,6 +2112,7 @@
 <translation id="7905602379229309187">현재 엔드포인트에 과부하가 걸렸습니다. 나중에 다시 시도하세요.</translation>
 <translation id="8151638057146502721">구성</translation>
 <translation id="4177458398826096846">안녕하세요, 저는 레오예요. 전 Meta가 만든 모델인 Llama 3.1 8B 기반으로 구동되어 많은 사용 사례에 적용이 가능합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="5252251845674154807">안녕하세요, 레오입니다. 저는 Brave의 완전 호스팅된 AI 어시스턴트입니다. 저는 높은 성능을 발휘하여 다양한 사용 사례에 적용할 수 있도록  Alibaba Cloud에서 만든 모델인 Qwen 14B로 구동됩니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">안녕하세요, 저는 레오예요. 전 Mistral AI가 만든 모델인 Mixtral 8x7B 기반으로 구동되어 고도의 작업도 처리 가능합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, Anthropic가 만든 모델인 Claude Instant 기반으로 구동되어 대화문 및 텍스트 처리 성능이 강력합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="2001874998841390450">안녕하세요, 저는 레오입니다. 저는 Brave의 프록시를 통해 Anthropic에서 개발한 모델인 Claude Haiku를 사용하여 대화와 텍스트 작업을 처리합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
@@ -2141,6 +2160,8 @@
 <translation id="8261506727792406068">삭제</translation>
 <translation id="6574153208133461043">이 대화를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.</translation>
 <translation id="7488762544858401571">편집됨</translation>
+<translation id="5604254791550001355">프롬프트 편집</translation>
+<translation id="8115786586976830777">프롬프트 복사</translation>
 <translation id="1406205536570262057">답변 편집</translation>
 <translation id="2399439821649319175">유용하지 않음</translation>
 <translation id="2976167228906046828">부정확함</translation>
@@ -2152,6 +2173,9 @@
 <translation id="903201991022343217">새 대화 시작</translation>
 <translation id="8171760814579050200">대화 이름 변경</translation>
 <translation id="7754678742055438573">대화 삭제</translation>
+<translation id="1946267518364740045">추론 중...</translation>
+<translation id="4198859185714743678">추론 완료</translation>
+<translation id="6140948187512243695">세부 정보 표시</translation>
 <translation id="7494736170250048402">레오에게 메시지 보내기</translation>
 <translation id="8650874793377330048">응답 중지</translation>
 <translation id="8712637175834984815">확인</translation>
@@ -2161,7 +2185,12 @@
 <translation id="4370698775470316661">대화가 너무 길어 계속할 수 없습니다. 레오가 긴 대화에서도 정확성을 유지할 수 있게 해주는 다른 모델을 사용하실 수 있습니다.</translation>
 <translation id="5719170755629028558">Brave 검색으로 답변 수준 높이기...</translation>
 <translation id="5794962229997281366"><ph name="SEARCH_TERMS"/>에 대한 더 나은 답변 검색.</translation>
+<translation id="7307396647043599949"><ph name="COUNT"/>개 더 보기…</translation>
 <translation id="8103700533980268469">이 알림 닫기</translation>
+<translation id="3417835166382867856">검색 탭</translation>
+<translation id="9090243919347147717">첨부 파일</translation>
+<translation id="4444978378117903684">브라우저 탭을 추가하여 레오에게 더 자세한 대화 맥락을 제공하세요</translation>
+<translation id="4300920590112551536">브라우저 탭</translation>
 <translation id="2315654674554095762">이제 레오가 대화를 기억해두므로 다시 대화로 돌아갈 수 있습니다. 대화는 장치에 암호화되어 저장되며 언제든지 삭제할 수 있습니다.</translation>
 <translation id="7821251979960635244">대화를 시작하면 여기에 대화 기록이 나타납니다.</translation>
 <translation id="887511360213807449">기록을 비활성화함</translation>
@@ -2171,6 +2200,7 @@
 <translation id="3185367320601718531">대화 및 텍스트 생성</translation>
 <translation id="7979673624064378842">빛처럼 빠른 채팅</translation>
 <translation id="2836330653441111204">속도와 지능의 균형</translation>
+<translation id="6695329447007213917">범용 채팅, 코딩 등</translation>
 <translation id="3965507912994218570">레오 설정</translation>
 <translation id="1037324977127422019">안녕하세요, 저는 레오예요!</translation>
 <translation id="8930348081963284873">Brave에 바로 이식된 AI 기반 지능형 어시스턴트.</translation>
@@ -2400,5 +2430,6 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 <translation id="1538335063514960365">여기서 열기 버튼, Enter를 누르면 기존 탭으로 전환하지 않고 이 URL을 현재
     탭에서 열기</translation>
 <translation id="451189393813405346">레오에게 묻기</translation>
+<translation id="1602850501393095406">↑ 키를 눌러 강조 표시하세요</translation>
 <translation id="8525248723479742219">나중에 재생</translation>
 </translationbundle>

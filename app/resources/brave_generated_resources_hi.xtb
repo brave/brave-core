@@ -334,6 +334,7 @@
 <translation id="1336940801687497203">Windows के जैसे ही</translation>
 <translation id="8721331068159819483">MacOS के जैसे ही</translation>
 <translation id="4171684937791228083">टूलबार को हमेशा फ़ुल स्क्रीन में दिखाएँ</translation>
+<translation id="5840822070878669614">वेब स्टोर खोलें</translation>
 <translation id="1692470335103807198">शुल्क
 घड़ी
 अमान्य प्रविष्टि।
@@ -531,6 +532,7 @@ Binance
 <translation id="1389601498324964367">कोटा आधारित स्टोरेज</translation>
 <translation id="814018970995616154">Brave में संग्रहीत असुरक्षित साइटों की सूची के साथ URL की जाँच करता है।</translation>
 <translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
+<translation id="4905744245455598930">उन साइटों, डाउनलोड और एक्सटेंशन से सुरक्षित करता है जिन्हें खतरनाक माना जाता है।</translation>
 <translation id="5570470519803062774">साइट और शील्ड सेटिंग</translation>
 <translation id="410351446219883937">स्वतः प्ले</translation>
 <translation id="3512883292907992390">वेबसाइट को अपने-आप वीडियो प्ले करने की इजाज़त दें</translation>
@@ -622,8 +624,8 @@ Binance
 <translation id="4908081302669157000">फ़ोन नंबर, ईमेल और पता</translation>
 <translation id="294985549514492876">वेब ऐप (PWA)</translation>
 <translation id="7029809446516969842">पासवर्ड</translation>
-<translation id="924029461438529367">सर्च के सुझाव दिखाएं</translation>
-<translation id="3128251601544028053">जब आप एड्रेस बार या सर्च बॉक्स में टाइप करते हैं, तो बेहतर सुझाव पाने के लिए, आप जो कुछ टाइप करते हैं Brave उसे आपके डिफ़ॉल्ट सर्च इंजन पर भेजता है. यह प्राइवेट विंडोज़ में उपलब्ध नहीं है.</translation>
+<translation id="6011308810877101166">सर्च के सुझाव बेहतर बनाएँ</translation>
+<translation id="2332576387809612040">चालू होने पर, Brave ऐड्रेस बार या सर्च बॉक्स में आप जो भी टाइप करते हैं उसे आपके डिफ़ॉल्ट सर्च इंजन में भेजता है, ताकि बेहतर सुझाव मिल सकें। बंद होने पर, Brave सिर्फ़ आपके डिवाइस पर जनरेट हुआ सुझाव दिखाता है। यह प्राइवेट विंडो में हमेशा बंद होता है।</translation>
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
 <translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
 <translation id="5522403133543437426">ऐड्रेस बार में इस्तेमाल किया गया सर्च इंजन।</translation>
@@ -677,7 +679,6 @@ Binance
 <translation id="188228077840632890">AdGuard मैनिफ़ेस्ट V2 एक ऐसा एक्सटेंशन है जो विज्ञापन ब्लॉकिंग, मूल नियंत्रण के विकल्प और अन्य AdGuard सेवाओं के ऑफ़र के साथ एकीकरण देता है।</translation>
 <translation id="8137559199583651773">एक्सटेंशन प्रबंधित करें</translation>
 <translation id="7013485839273047434">और एक्सटेंशन प्राप्त करें</translation>
-<translation id="5840822070878669614">वेब स्टोर खोलें</translation>
 <translation id="4954512758656527938">डिफ़ॉल्ट Ethereum वॉलेट</translation>
 <translation id="7701023802820268122">डिफ़ॉल्ट Solana वॉलेट</translation>
 <translation id="8488282162676695335">Brave वॉलेट</translation>
@@ -707,6 +708,7 @@ Binance
 <translation id="1561541094377237745">Solana नेटवर्क</translation>
 <translation id="7141438739990875547">Bitcoin नेटवर्क</translation>
 <translation id="1077567586443625607">Zcash नेटवर्क</translation>
+<translation id="1177180573354712438">Cardano नेटवर्क</translation>
 <translation id="3159419679550543837">टेस्ट नेटवर्क दिखाएँ</translation>
 <translation id="3215569562674795548">बदलें या नए नेटवर्क जोड़ें</translation>
 <translation id="4418993400653250511">चेन की id</translation>
@@ -779,7 +781,7 @@ Binance
 <translation id="7265212806651512211">आपने अभी तक मॉडल कनेक्ट नहीं किया है.</translation>
 <translation id="7304802428852949897">आपके मॉडल</translation>
 <translation id="7435587476558117990">अपने सेल्फ़-होस्टेड या थर्ड पार्टी ज़रिए होस्ट किए गए LLM को Leo से कनेक्ट करें और उन्हें ब्राउज़र में इस्तेमाल करें.</translation>
-<translation id="1381050642750209119">Ollama जैसे किसी भी OpenAI चैट प्रोटोकॉल कम्पैटिबल फ़्रेमवर्क का इस्तेमाल करें.</translation>
+<translation id="8137606697798069075">Ollama जैसा कोई भी OpenAI चैट प्रोटोकॉल कंपैटिबल फ़्रेमवर्क इस्तेमाल करें। <ph name="BEGIN_LINK"/>ज़्यादा जानें<ph name="END_LINK"/></translation>
 <translation id="2642905648178380593">मॉडल सेव करें</translation>
 <translation id="6304169450064541679">सिस्टम प्रॉम्प्ट</translation>
 <translation id="3081947790648024460">मॉडल के जवाबों को खास दिशा या स्टाइल में गाइड करने के लिए, मॉडल को दिए गए कस्टम निर्देश और/या कॉन्टेक्स्ट। %datetime% का इस्तेमाल करें, जहाँ आप मौजूदा तारीख और समय डाला जाना चाहेंगे।</translation>

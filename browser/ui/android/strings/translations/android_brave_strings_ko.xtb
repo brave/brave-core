@@ -276,9 +276,6 @@
 <translation id="4225265925807365011">24단어 복구 문구가 있음</translation>
 <translation id="3570367516044491911">기본 브라우저로 설정</translation>
 <translation id="6800338374677644736">기본 브라우저로 설정</translation>
-<translation id="19715420010996093">Brave Browser를 선택하고 "항상"을 탭하세요</translation>
-<translation id="3546439402724649282">Brave가 이미 기본 브라우저로 설정되어 있습니다.</translation>
-<translation id="8389661903259423907">이미 기본 브라우저가 설정되어 있습니다. 앱 설정에서 기본 브라우저를 변경할 수 있습니다.</translation>
 <translation id="1545749641540134597">QR 코드 스캔</translation>
 <translation id="5317781812114905957">지침</translation>
 <translation id="8515319483805157233">QR 코드로 검색하려면 QR 코드를 프레임 중앙에 맞추세요.</translation>
@@ -549,7 +546,6 @@
 <translation id="1945330434665345785">지난주 Brave 브라우저로 <ph name="COUNT"/> 추적기 및 광고를 차단하셨습니다.</translation>
 <translation id="2883868922264431515">개인정보 존중 광고를 시청하여 토큰을 획득하고 즐겨찾는 웹사이트를 지원하십시오.</translation>
 <translation id="7408493389591475748">개인정보 보고를 보려면 검색 시작</translation>
-<translation id="9080777565335515917">비공개 및 보안 검색을 위한 기본 브라우저로 Brave를 설정하십시오.</translation>
 <translation id="1390943217516275883">Brave가 비공개 통계를 표시할 수 있도록 허용</translation>
 <translation id="1763352720905582220">매주 개인정보 보고서 전송</translation>
 <translation id="1811691435325545066">모든 개인정보 보고서 데이터 지우기</translation>

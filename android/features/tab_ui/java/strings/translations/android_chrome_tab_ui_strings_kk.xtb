@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="kk">
+<translation id="1045448422538531528">Топқа қосу</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> апта бұрын жасалды.}other{<ph name="NUM_WEEKS_MANY"/> апта бұрын жасалды.}}</translation>
 <translation id="1063300264396686489">Қойындылар топтарын басқа құрылғылардан автоматты түрде ашу</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> қойынды біраздан бері пайдаланылмады. Олар жабылсын ба?</translation>
@@ -11,26 +12,26 @@
 <translation id="1293272072740285747">Бұл топты кейінірек қойындылар қосу үшін сақтап қойыңыз. Қажет болмаса, жойыңыз.
 
 Жойсаңыз, барлығы "<ph name="TITLE_OF_GROUP"/>" қойындылар тобын пайдалану рұқсатынан бірден айырылып қалады. Бұл топ барлық құрылғыдан жойылады.</translation>
+<translation id="1329584516321524826">Жаңа ғана жаңартылды</translation>
 <translation id="1340839264183302272">Топтан шығу</translation>
 <translation id="1419023007528516122">Бұл жағдайда топ құрылғыңыздан біржола жойылады.</translation>
 <translation id="1486715732399361704">Барлық қойындылар топтары осы жерде болады.</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{<ph name="NUM_MINS_ONE"/> минут бұрын жасалды.}other{<ph name="NUM_MINS_MANY"/> минут бұрын жасалды.}}</translation>
-<translation id="3228718275011575753">Барлық инкогнито қойындысы жабылсын ба?</translation>
 <translation id="1501480321619201731">Топты жою</translation>
 <translation id="1555130319947370107">Көк</translation>
 <translation id="161042844686301425">Көгілдір</translation>
 <translation id="1645759014353344461"><ph name="TABS_COUNT_MANY"/> қойынды топтастырылды.</translation>
 <translation id="1657719826150349398">Қойындыны төмен жылжыту</translation>
+<translation id="1697284962337958118">Келесілерге қосу</translation>
 <translation id="1713541401465507417">Барлық қойынды мен топты жабу</translation>
+<translation id="1738346536511908887">{TAB_GROUPS_COUNT,plural, =1{<ph name="TAB_GROUPS_COUNT_ONE"/> қойындылар тобы бұдан былай қолжетімді емес.}other{<ph name="TAB_GROUPS_COUNT_MANY"/> қойындылар тобы бұдан былай қолжетімді емес.}}</translation>
 <translation id="176485176228926164"><ph name="BEGIN_LINK1"/>Толық ақпарат<ph name="END_LINK1"/></translation>
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> қойынды топтастырылды.</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> қойынды}other{<ph name="TABS_COUNT_MANY"/> қойынды}}</translation>
 <translation id="1909810060368225529">Ескерту: енгізілетін өзгерістерді барлық пайдаланушы көреді. Ортақ қойындылар топтарына барлығы өзгеріс енгізе алады</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> таңдалған қойындыға бетбелгі қою}other{<ph name="TABS_COUNT_MANY"/> таңдалған қойындыға бетбелгі қою}}</translation>
 <translation id="2118649612461486615">Дүкен туралы ақпарат</translation>
-<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT,plural, =1{Жабылған қойындылар мен топтарды "Соңғы қойындылар" және "Қойындылар топтары" бөлімдерінен қайта ашуға болады. Инкогнито қойындыңыз қолжетімді болмайды.}other{Жабылған қойындылар мен топтарды "Соңғы қойындылар" және "Қойындылар топтары" бөлімдерінен қайта ашуға болады. # инкогнито қойындыңыз қолжетімді болмайды.}}</translation>
 <translation id="2162620598375156287"><ph name="SOURCE_WEBSITE"/> сайтындағы қазіргі бағасы – <ph name="CURRENT_PRICE"/>.</translation>
-<translation id="2242907120821295124"><ph name="TAB_GROUP_NAME"/> қойындылар тобы енді қолжетімді емес.</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Қойындыны топтан шығару}other{Қойындыларды топтан шығару}}</translation>
 <translation id="2271452184061378400">Қойындылар топтары осы жерде сақталады.</translation>
 <translation id="2277224997687551299">Топтың атауын өзгерту</translation>
@@ -38,13 +39,16 @@
 <translation id="2359808026110333948">Жалғастыру</translation>
 <translation id="2375257132547014176">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> қойындысы бар <ph name="TITLE_OF_GROUP"/> қойындылар тобын жию.}other{<ph name="TABS_COUNT_MANY"/> қойындысы бар <ph name="TITLE_OF_GROUP"/> қойындылар тобын жию.}}</translation>
 <translation id="2498435670446402865">Топ атауын өзгерту</translation>
+<translation id="2536366509642644298">"<ph name="TAB_GROUP_NAME_1"/>" және "<ph name="TAB_GROUP_NAME_2"/>" қойындылар топтары енді қолжетімді емес.</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> қойындысын жию.}other{<ph name="TABS_COUNT_MANY"/> қойындысы бар қойындылар тобын жию.}}</translation>
 <translation id="2569352796411618312">Ұсыныс: <ph name="NUMBER_OF_TABS"/> қойынды біраздан бері пайдаланылмады. Олар жабылсын ба?</translation>
 <translation id="2662028055331606429">Бағасы: <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="266935134738038806">Сайтқа кіру</translation>
 <translation id="2671423594960767771">Топты бөлісу</translation>
 <translation id="2677748264148917807">Шығу</translation>
+<translation id="2734252994837336591">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> апта бұрын жаңартылды.}other{<ph name="NUM_WEEKS_MANY"/> апта бұрын жаңартылды.}}</translation>
 <translation id="2753098591787393794">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> қойынды қосылды, <ph name="ANY_CHANGED"/> өзгертілді, <ph name="ANY_CLOSED"/> жабылды.}other{<ph name="MANY_ADDED"/> қойынды қосылды, <ph name="ANY_CHANGED"/> өзгертілді, <ph name="ANY_CLOSED"/> жабылды.}}</translation>
+<translation id="2753877351161418426">{NUM_HOURS,plural, =1{<ph name="NUM_HOURS_ONE"/> сағат бұрын жаңартылды.}other{<ph name="NUM_HOURS_MANY"/> сағат бұрын жаңартылды.}}</translation>
 <translation id="2755485474385016903">Енгізілетін өзгерістерді топтағы барлық адам көреді.</translation>
 <translation id="2776817246640326047">{NUM_HOURS,plural, =1{<ph name="NUM_HOURS_ONE"/> сағат бұрын жасалды.}other{<ph name="NUM_HOURS_MANY"/> сағат бұрын жасалды.}}</translation>
 <translation id="2801787514987684416">Дүкен туралы ақпаратты көресіз бе?</translation>
@@ -58,11 +62,13 @@
 <translation id="3051031624272448591">Оларды тарихтан кез келген уақытта қайтаруға болады.</translation>
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/> бағасы <ph name="PRICE_DROP"/> арзандады.</translation>
 <translation id="3078350928901129212">Қойындылар тобының <ph name="COLOR_NAME"/> түсті белгішесі</translation>
+<translation id="311432875115153175">Қойындылар тобының тізімі жабылды.</translation>
 <translation id="3194464645767632461">бағасы</translation>
 <translation id="3275186015127230296">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> қойынды қосылды, <ph name="ANY_CHANGED"/> өзгертілді.}other{<ph name="MANY_ADDED"/> қойынды қосылды, <ph name="ANY_CHANGED"/> өзгертілді.}}</translation>
 <translation id="3328308545011660196">Ұсыныс: <ph name="NUMBER_OF_TABS"/> қойынды өзара қатысты сияқты. Олар топтастырылсын ба?</translation>
 <translation id="3547352561153509682">Бұл жағдайда топ <ph name="USER_EMAIL"/> аккаунтына кірген барлық құрылғыдан жойылады.</translation>
 <translation id="3613492231657284463">"Әрекетсіз қойындылар" диалогтік терезесін жасыру</translation>
+<translation id="3619255692378312441">Кіру рұқсатын басқару</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="374923079891132274">Алғы көрінісі бар нобай.</translation>
 <translation id="3810973564298564668">Басқару</translation>
@@ -72,6 +78,7 @@
 <translation id="395587619114760247">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> әрекетсіз қойынды}other{<ph name="TABS_COUNT_MANY"/> әрекетсіз қойынды}}</translation>
 <translation id="3969565576924904454"><ph name="TITLE_OF_GROUP"/> тобын ашу</translation>
 <translation id="4009732926939031387">{NUM_DAYS,plural, =1{<ph name="NUM_DAYS_ONE"/> күн бұрын жасалды.}other{<ph name="NUM_DAYS_MANY"/> күн бұрын жасалды.}}</translation>
+<translation id="4076226664360336092">Толығымен ашылған қойындылар тобының тізімі</translation>
 <translation id="4133493477912226187"><ph name="NUMBER_OF_TABS"/> қойынды өзара қатысты сияқты. Олар топтастырылсын ба?</translation>
 <translation id="4139634748112164403">Қойындылар осы құрылғыда ашық қалады, бірақ топ біржола жойылады.</translation>
 <translation id="4156086991340739772">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> қойындысы бар <ph name="COLOR_NAME"/> түсті <ph name="TITLE_OF_GROUP"/> тобын жабу.}other{<ph name="TABS_COUNT_MANY"/> қойындысы бар <ph name="COLOR_NAME"/> түсті <ph name="TITLE_OF_GROUP"/> тобын жабу.}}</translation>
@@ -80,6 +87,7 @@
 <translation id="4320174784941799771">{NUMBER_OF_TABS_CHANGED,plural, =1{<ph name="ONE_CHANGED"/> қойынды өзгертілді, <ph name="ANY_CLOSED"/> жабылды.}other{<ph name="MANY_CHANGED"/> қойынды өзгертілді, <ph name="ANY_CLOSED"/> жабылды.}}</translation>
 <translation id="4371591986692297148">Өшірілген</translation>
 <translation id="4431937619879060901">"<ph name="GROUP_NAME"/>" қойындылар тобын пайдалану рұқсатынан бірден айырылып қаласыз. Бұл топ барлық құрылғыңыздан жойылады.</translation>
+<translation id="4453940245650019914">{NUM_DAYS,plural, =1{<ph name="NUM_DAYS_ONE"/> күн бұрын жаңартылды.}other{<ph name="NUM_DAYS_MANY"/> күн бұрын жаңартылды.}}</translation>
 <translation id="4460014764210899310">Топты тарату</translation>
 <translation id="4632233446660511480">{TAB_COUNT,plural, =1{1 әрекетсіз қойындыны жабу керек пе?}other{<ph name="TAB_COUNT_MANY"/> әрекетсіз қойындыны жабу керек пе?}}</translation>
 <translation id="4686942373615810936">Жаңа ғана жасалды.</translation>
@@ -143,6 +151,7 @@
 <translation id="6744956528665271406">Топ түсін өзгерту</translation>
 <translation id="6856809498882026482">Бірнеше нұсқа таңдау режимін жасыру</translation>
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> қойындысы бар <ph name="COLOR_NAME"/> түсті <ph name="TITLE_OF_GROUP"/> ортақ қойындылар тобын жаю.}other{<ph name="TABS_COUNT_MANY"/> қойындысы бар <ph name="COLOR_NAME"/> түсті <ph name="TITLE_OF_GROUP"/> ортақ қойындылар тобын жаю.}}</translation>
+<translation id="709473454666962555">Қойындылар тобын таңдаңыз</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Қойындыны бөлісу}other{Қойындыларды бөлісу}}</translation>
 <translation id="7129458170538955174">Бұл дүкеннің жартылай ашылғандығы туралы ақпарат</translation>
 <translation id="7204204600596740190">Бірнеше нұсқа таңдау режимі</translation>
@@ -150,6 +159,7 @@
 <translation id="731648547091221002"><ph name="COLOR_NAME"/> таңдалды</translation>
 <translation id="7326879924029668159">Қайтару саясаты мен басқа да ақпаратты көріңіз.</translation>
 <translation id="7352298686197644113">Ашық тұрған қойындылардағы қай тауардың бағасы арзан екенін көріңіз.</translation>
+<translation id="7369451074646620503">"<ph name="TAB_GROUP_NAME"/>" қойындылар тобы енді қолжетімді емес.</translation>
 <translation id="742664698522525515">Топты сақтау қажет пе?</translation>
 <translation id="7452985128687107478">Қойындылар топтары барлық құрылғыңызда автоматты түрде сақталып, жаңарады.</translation>
 <translation id="747459581954555080">Барлығын қалпына келтіру</translation>
@@ -160,6 +170,7 @@
 <translation id="7658239707568436148">Бас тарту</translation>
 <translation id="7688386659311034820">"Әрекетсіз қойындылар" диалогтік терезесі</translation>
 <translation id="7699041944097291312">{TABS_COUNT,plural, =1{Таңдалған <ph name="TABS_COUNT_ONE"/> қойындыны бөлісу}other{Таңдалған <ph name="TABS_COUNT_MANY"/> қойындыны бөлісу}}</translation>
+<translation id="775668479044571025">{NUM_MONTHS,plural, =1{<ph name="NUM_YEARS_ONE"/> жыл бұрын жаңартылды.}other{<ph name="NUM_YEARS_MANY"/> жыл бұрын жаңартылды.}}</translation>
 <translation id="7773714564112603605">Қойындыны өшіру және топты жою</translation>
 <translation id="7792771145871471484">Ұсыныстарды көріңіз.</translation>
 <translation id="7792860826279960128">Ортақ қойындылар тобының өзгерістері туралы ескерту жартылай ашылды.</translation>
@@ -174,13 +185,16 @@
 <translation id="7966321538264951561">Ұсыныстарды қабылдамау.</translation>
 <translation id="799469866974412355">Басқа құрылғыдағы жаңа топ</translation>
 <translation id="8029301326595421733">Бұл дүкеннің толық ашылғандығы туралы ақпарат</translation>
+<translation id="8053770993984522566">Жартылай ашылған қойындылар тобының тізімі</translation>
 <translation id="8076492880354921740">Қойындылар</translation>
 <translation id="8153873338998959464">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> қойындысы бар <ph name="COLOR_NAME"/> түсті <ph name="TITLE_OF_GROUP"/> қойындылар тобын жаю.}other{<ph name="TABS_COUNT_MANY"/> қойындысы бар <ph name="COLOR_NAME"/> түсті <ph name="TITLE_OF_GROUP"/> қойындылар тобын жаю.}}</translation>
 <translation id="8205266828577616993">Қойындыны жоғары жылжыту</translation>
+<translation id="8207688828622594111">{NUM_MINS,plural, =1{<ph name="NUM_MINS_ONE"/> минут бұрын жаңартылды.}other{<ph name="NUM_MINS_MANY"/> минут бұрын жаңартылды.}}</translation>
 <translation id="8261506727792406068">Жою</translation>
 <translation id="8338427544764842461">Қойындылар топтары осы жерде сақталады және аккаунтқа кірген барлық құрылғыда жаңартылады.</translation>
 <translation id="8344020191144794051">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> қойындысы бар <ph name="COLOR_NAME"/> түсті ортақ қойындылар тобын жаю.}other{<ph name="TABS_COUNT_MANY"/> қойындысы бар <ph name="COLOR_NAME"/> түсті ортақ қойындылар тобын жаю.}}</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{Таңдалған <ph name="TABS_COUNT_ONE"/> қойындыны жабу}other{Таңдалған <ph name="TABS_COUNT_MANY"/> қойындыны жабу}}</translation>
+<translation id="8374451057714760401">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> ай бұрын жаңартылды.}other{<ph name="NUM_MONTHS_MANY"/> ай бұрын жаңартылды.}}</translation>
 <translation id="8398929769197326728">Жаңа қалта – <ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="8428213095426709021">Параметрлер</translation>
 <translation id="8516612320289425423">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> қойынды қосылды, <ph name="ANY_CLOSED"/> жабылды.}other{<ph name="MANY_ADDED"/> қойынды қосылды, <ph name="ANY_CLOSED"/> жабылды.}}</translation>
@@ -204,4 +218,8 @@
 <translation id="945522503751344254">Пікір жіберу</translation>
 <translation id="94870150074703282">Топты жою қажет пе?</translation>
 <translation id="992256792861109788">Қызғылт</translation>
+<translation id="3228718275011575753">Барлық жеке беттерді жабу керек пе?</translation>
+<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT, plural,
+        =1 {Жабылған беттеріңіз бен топтарыңыз Жақында жабылған беттер және бет топтары бөлімдерінде қайта ашылуы мүмкін. Сіздің Жеке бетіңіз қолжетімді болмайды.}
+        other {Жабылған беттеріңіз бен топтарыңыз Жақында жабылған беттер және бет топтары бөлімдерінен қайта ашылуы мүмкін. Сіздің Жеке беттеріңіз қолжетімді болмайды.}}</translation>
 </translationbundle>

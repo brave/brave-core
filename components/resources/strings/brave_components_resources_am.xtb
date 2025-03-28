@@ -311,6 +311,7 @@
 <translation id="2631006050119455616">የተቀመጡ</translation>
 <translation id="3671566813999349838">መጠን</translation>
 <translation id="6976444672879155794">በራስ-ሰር ማበርከቻ [[processor]]</translation>
+<translation id="944736176598169208">ሽልማቶች</translation>
 <translation id="8804164990146287819">የግለኝነት መጠበቂያ ህግ</translation>
 <translation id="7262285991915892790">የ BAT ምልክቱን ወደ ፋይሉ ይጎትቱ</translation>
 <translation id="7656781188259414093">ኢላማ።</translation>
@@ -475,7 +476,6 @@
     }</translation>
 <translation id="3264975266761862670">ገንዘብ ማግኘት ለመጀመር ዝግጁ ነዎት?</translation>
 <translation id="6067959437127691361">የBrave ሽልማቶችን መጠቀም የድጋፍ ይዘት ፈጣሪዎችን ለመደገፍ ያግዛል እንዲሁም እርስዎ BAT እንዲያገኙ ያስችልዎታል።</translation>
-<translation id="944736176598169208">ሽልማቶች</translation>
 <translation id="2359808026110333948">ቀጥል</translation>
 <translation id="885805571521218129">ይህ በዚህ ወር ለBrave Ads የእርስዎን የተገመተው የገቢ መጠን ያንፀባርቃል።</translation>
 <translation id="3863981251715594911">እንዴት ይሰራል?</translation>
@@ -600,7 +600,7 @@
 <translation id="6895088073061692390">እንደ አለመታደል ሆኖ፣ የBrave ሽልማቶች መገለጫዎ ተጠቁሟል ምክንያቱም የእኛ በራስ ሰር የተካሄዱ ፍተሻዎች አንዳንድ ያልተጠበቁ የBrave ማስታወቂያዎች እንቅስቃሴን ስላገኙ ነው።</translation>
 <translation id="4229056297802204697">መገለጫዎ በተጠቆመበት ጊዜ ማስታወቂያዎችን ማየትዎን መቀጠል ይችላሉ ነገር ግን ክፍያዎችን ለመቀበል ብቁ አይሆኑም። እንዲሁም የማቆያ መለያን ከBrave ሽልማቶች ጋር ማገናኘት አይችሉም።</translation>
 <translation id="5124846913141379164">የእርስዎ መገለጫ በስህተት የተጠቆመ ሊሆን ይችላል፣ እና በእርስዎ በኩል ምንም አፋጣኝ እርምጃ አያስፈልግም። በመገለጫዎ ላይ ያለው ባንዲራ ወደፊት ሊወገድ ይችላል።</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>የ Rewards መገለጫዎችን ለመጠቆም ስለ Brave ሂደት የበለጠ ይረዱ።<ph name="END_LINK"/></translation>
+<translation id="8947002243324362172">የ Rewards መገለጫዎችን ለመጠቆም ስለ Brave ሂደት የበለጠ ይረዱ።</translation>
 <translation id="2607420597216860026">የመታወቂያ ማረጋገጫን በ <ph name="PROVIDER"/> ላይ ካጠናቀቁ በኋላ እባክዎ እንደገና ይሞክሩ።</translation>
 <translation id="1859789048900659918">እምም, የ እርሶ Brave Rewards ሀገር ሊገናኙት ከሚፈልጉት የ <ph name="PROVIDER"/> መለያ አገር ጋር አይዛመድም።</translation>
 <translation id="5260522591743022748">የብሬቭ ሽልማቶችዎ በሌላ <ph name="PROVIDER"/>መለያ ተረጋግጧል። እባክዎ በራስዎ የቀድሞ መለያ ለማረጋገጥ ይሞክሩ።</translation>
@@ -1016,7 +1016,6 @@
 <translation id="4667144295226514387">የጠፋ የጋዝ ገደብ</translation>
 <translation id="2021522108838444624">መጠኑ ከ 0 በላይ መሆን አለበት</translation>
 <translation id="8464365289405373974">አድራሻ ያስፈልጋል</translation>
-<translation id="6326239384961270135">ግልጽ ክፍል ጠፍቷል</translation>
 <translation id="8585995109882455949">ትክክለኛውን አድራሻ እንዴት ላገኝ እችላለሁ?</translation>
 <translation id="4583433813614292221">1. ይጎብኙ</translation>
 <translation id="8061317754447191238">Etherscanን ይጎብኙ እና ቶከኖችን ለመላክ የሚፈልጉትን የዋሌት አድራሻ ይለጥፉ። ከዚያም የሚከተለውን ያስገቡ</translation>
@@ -1728,7 +1727,6 @@
 <translation id="7491773233732232424">ስለ Leo</translation>
 <translation id="7189603330209995455">በነባሪነት፣ ለLeo ጥያቄ ሲጠይቁ የሚመለከቱትን የድረ-ገጹን ይዘት ወይም በገጽ ላይ የሚያደምቁትን ማንኛውንም ጽሁፍ ለBrave Leo ምላሽ ለመስጠት ሊልክና ሊጠቀም ይችላል። የምላሾች ትክክለኛነት ዋስትና የለውም እናም ትክክል ያልሆነ፣ አሳሳች ወይም የሀሰት መረጃን ሊያካትት ይችላል። Leo የምላሽ ጥራትን ለማሻሻል ከ Brave ፍለጋ የተገኘውን መረጃ ይጠቀማል። ሚስጥራዊነት ያለው ወይም ግላዊ መረጃ አታስገባ፣ እና ከጤና፣ ፋይናንስ፣ የግል ደህንነት ወይም ተመሳሳይ ጉዳዮች ጋር በተያያዙ ማናቸውም መልሶች ጥንቃቄን ይጠቀሙ። በማንኛውም ጊዜ የLeo አማራጮችን በቅንብሮች ውስጥ ማስተካከል ይችላሉ። ወደ ቅንብሮች እና Leo ይሂዱ።</translation>
 <translation id="3038772045018370764">Leo ከእርስዎ ጋር ሊገናኙ የሚችሉ እንደ የእርስዎ IP አድራሻ ያሉ መለያዎችን አይሰበስብም። የ AI ሞዴሎችን ለማሰልጠን ምንም አይነት መረጃ ጥቅም ላይ አይውልም እና ምንም የግል መረጃ በ AI ሞዴሎች አይቀመጥም (ከመሰረዝዎ በፊት ለ 30 ቀናት መረጃን ከሚይዘው አንትሮፒክ በስተቀር)። ለተጨማሪ መረጃ <ph name="LINK_BEFORE"/>የግላዊነት ፖሊሲ<ph name="LINK_AFTER"/> ይመልከቱ።</translation>
-<translation id="7839853125981164613">ጥያቄ እዚህ ያስገቡ</translation>
 <translation id="4524675003624341892">ጥያቄዎችን ጠቁም…</translation>
 <translation id="4567071417854988869">ይህንን ቪዲዮ ያጠቃልሉ</translation>
 <translation id="7921782882718083488">ይህንን ገጽ ያጠቃልሉ</translation>

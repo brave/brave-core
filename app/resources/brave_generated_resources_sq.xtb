@@ -9,6 +9,8 @@
 <translation id="1544192797660353713">Kuleta</translation>
 <translation id="1990886731975529483">Instalo dhe hap Google Widevine</translation>
 <translation id="8926389886865778422">Mos pyet sërish</translation>
+<translation id="4900351245762303149">Instalo Google Widevine</translation>
+<translation id="8342816622062204340"><ph name="URL"/> dëshiron të luajë përmbajtje të mbrojtur të Google Widevine, e cila kërkon që të lejosh mbështetjen e sistemit Android për Widevine. Duke lejuar, do të pranosh kushtet e përdorimit të Google.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Mëso më shumë për Widevine</translation>
@@ -42,8 +44,12 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1307431692088049276">Mos më pyet sërish</translation>
 <translation id="2640297688005939449">Kërkimi Brave nuk ju krijon profil. Dhe është 100% i pavarur.</translation>
 <translation id="9194637241566114638">Ndihmo përmirësimin <ph name="SEARCH_NAME"/> duke dërguar të dhëna përdorimi anonime. <ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">Kërkim Brave</translation>
+<translation id="8184318863960255706">Më shumë informacion</translation>
 <translation id="780301667611848630">Jo, faleminderit</translation>
 <translation id="6040143037577758943">Mbylle</translation>
+<translation id="4174337572777167894">Projekti i Zbulimit të Internetit</translation>
+<translation id="8659271182272561965">Kontribuo me kërkime anonime &amp; duke shfletuar të dhëna për të përmirësuar Kërkimin Brave.</translation>
 <translation id="1181037720776840403">Hiqe</translation>
 <translation id="4002066346123236978">Titulli</translation>
 <translation id="7400418766976504921">URL</translation>
@@ -103,6 +109,7 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1360441190790440400">Njësoj si në Linux</translation>
 <translation id="1336940801687497203">Njësoj si në Windows</translation>
 <translation id="8721331068159819483">Njësoj si në macOS</translation>
+<translation id="5840822070878669614">Hap "Dyqanin e uebit të Brave"</translation>
 <translation id="8076492880354921740">Skedat</translation>
 <translation id="8168435359814927499">Përmbajtja</translation>
 <translation id="2113977810652731515">Kartë</translation>
@@ -174,13 +181,15 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8762452230727230396">Tor fsheh adresën tënde IP nga faqet e internetit që ti hyn</translation>
 <translation id="2653659639078652383">Parashtroje</translation>
 <translation id="2896916411183256228">Përdoret WebTorrent për të shfaqur rrëke drejt e në shfletues. Mnbulon kartela rrëkesh dhe lidhje magnet.</translation>
+<translation id="5249433283143453448">Përdor elementin e menaxhimit të të drejtave digjitale (DRM) Widevine për të parë video që transmetohen të mbrojtura dhe përmbajtje të tjera në shfletues.</translation>
 <translation id="8137559199583651773">Administroni zgjerime</translation>
 <translation id="7013485839273047434">Merrni më tepër zgjerime</translation>
-<translation id="5840822070878669614">Hap "Dyqanin e uebit të Brave"</translation>
 <translation id="8488282162676695335">Kuleta Brave</translation>
 <translation id="6942354363301686374">Shtesat (pa kthim pas)</translation>
 <translation id="3047726704186619366">URL-të e ikonave</translation>
 <translation id="2775956301559569472">Trego Makinën Wayback .... faqet 404</translation>
+<translation id="5781842473834867765">Ruaj historinë time të bisedave</translation>
+<translation id="6106701981952170121">Fshiji të gjitha të dhënat e bisedës me Leo AI</translation>
 <translation id="614530507403667291">Model i paracaktuar për biseda të reja</translation>
 <translation id="4335128003329183586">Madhësia e kontekstit</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> emblema</translation>

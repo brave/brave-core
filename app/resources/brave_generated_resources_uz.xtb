@@ -7,11 +7,19 @@
 <translation id="6406506848690869874">Sinxronlash</translation>
 <translation id="1544192797660353713">Hamyon</translation>
 <translation id="1990886731975529483">Google Widevine oʻrnatish va ishga tushirish</translation>
+<translation id="4900351245762303149">Google Widevine oʻrnatish</translation>
+<translation id="8342816622062204340"><ph name="URL"/> himoyalangan Google Widevine kontentini ijro etmoqchi. Buning uchun Android tizimining Widevine dastaklash ruxsatini berishingiz kerak. Siz ruxsat berish orqali Google foydalanish shartlari uchun rozilik berasiz.</translation>
 <translation id="5039804452771397117">Ruxsat</translation>
 <translation id="8915916167043355778">Hammasini yopish</translation>
 <translation id="7658239707568436148">Bekor qilish</translation>
 <translation id="4870911314065352661">Barcha varaqlar yopilsinmi?</translation>
 <translation id="9194637241566114638">Anonim foydalanish maʼlumotlarini yuborish orqali <ph name="SEARCH_NAME"/> rivojlanishiga yordam bering. <ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">Brave Qidiruv</translation>
+<translation id="8184318863960255706">Batafsil</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="780301667611848630">Kerak emas</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave Qidiruv xizmatini yaxshilash uchun qidiruv va tashriflar haqidagi ayrim anonim maʼlumotlarni taqdim etish.</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="5916664084637901428">Yoniq</translation>
 <translation id="5860033963881614850">Oʻchiq</translation>
@@ -34,6 +42,10 @@
 <translation id="6165508094623778733">Batafsil</translation>
 <translation id="933652931229970927">Diagnostika hisobotlarini avtomatik yuborish</translation>
 <translation id="3858860766373142691">Nomi</translation>
+<translation id="298546024891487702">Boshlash uchun sinxronlashni rejalagan barcha qurilmalaringizga Brave brauzerini oʻrnatishingiz kerak. Qurilmalaringizni birlashtirish uchun ularni bir-biriga xavfsiz ulashga ishlatadigan sinxronlash zanjirini boshlang.</translation>
+<translation id="5249433283143453448">Himoyalangan video translatsiyasi va boshqa kontentni brauzerda koʻrish uchun Widevine raqamli huquqlarni boshqarish (DRM) tarkibiy qismidan foydalanish.</translation>
 <translation id="8488282162676695335">Brave Hamyon</translation>
+<translation id="5781842473834867765">Suhbatlar tarixini saqlash</translation>
+<translation id="6106701981952170121">Barcha Leo AI suhbat maʼlumotlarini oʻchirish</translation>
 <translation id="614530507403667291">Yangi suhbatlar uchun odatiy model</translation>
 </translationbundle>

@@ -327,6 +327,7 @@
 <translation id="2631006050119455616">בוצעה שמירה</translation>
 <translation id="3671566813999349838">כמות</translation>
 <translation id="6976444672879155794">לבצע תרומה אוטומטית [[processor]]</translation>
+<translation id="944736176598169208">פרסים</translation>
 <translation id="8804164990146287819">מדיניות הפרטיות</translation>
 <translation id="7262285991915892790">גרור את סמל ה-BAT אל</translation>
 <translation id="7656781188259414093">יעד.</translation>
@@ -512,7 +513,6 @@
       other {ניתן לקבל תשלום על <ph name="COUNT_BEGIN"/># המודעות<ph name="COUNT_END"/> שצפית בהן החודש}
     }</translation>
 <translation id="6067959437127691361">השימוש ב-Brave Rewards עוזר לתמוך ביוצרי תוכן, ומאפשר לך להרוויח BAT.</translation>
-<translation id="944736176598169208">פרסים</translation>
 <translation id="2359808026110333948">המשך</translation>
 <translation id="885805571521218129">זה משקף את טווח הרווחים המשוער שלך עבור Brave Ads החודש.</translation>
 <translation id="3863981251715594911">איך זה עובד?</translation>
@@ -649,7 +649,7 @@
 <translation id="6895088073061692390">לרוע המזל, פרופיל Brave Rewards שלך סומן מכיוון שהבדיקות האוטומטיות שלנו מצאו פעילות לא צפויה של Brave Ads.</translation>
 <translation id="4229056297802204697">בזמן שהפרופיל שלך מסומן, ייתכן שתמשיך לראות מודעות, אך לא תהיה זכאי לקבל תשלומים. כמו כן, לא תוכל לחבר חשבון משמורת ל-Brave Rewards.</translation>
 <translation id="5124846913141379164">ייתכן שהפרופיל שלך סומן בטעות, ולא נדרשת פעולה מיידית מצידך. ייתכן שהדגל בפרופיל שלך יוסר בעתיד.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>למידע נוסף על התהליך של Brave לסימון פרופילים של Rewards. <ph name="END_LINK"/></translation>
+<translation id="8947002243324362172">למידע נוסף על התהליך של Brave לסימון פרופילים של Rewards.</translation>
 <translation id="4699218748197721830">פרופיל Brave תגמולים מסומן</translation>
 <translation id="2607420597216860026">נא לנסות שוב לאחר שתסיים את אימות הזיהוי ב-<ph name="PROVIDER"/>.</translation>
 <translation id="5037332159336402972">כדי להתחבר דרוש חשבון מאומת</translation>
@@ -684,7 +684,6 @@
 <translation id="5916664084637901428">פועל</translation>
 <translation id="3977723631999461201"><ph name="NUM"/> מודעות התקבלו החודש</translation>
 <translation id="7924320838799747606">היתרה שלך</translation>
-<translation id="8714473477079007268"><ph name="PROVIDER"/> ארנק</translation>
 <translation id="3175337080016717494">חשבון לתשלום</translation>
 <translation id="453760933181416879">עבור לחשבון שלי</translation>
 <translation id="8290994471756102241">יצאת מהמערכת</translation>
@@ -694,7 +693,6 @@
 <translation id="2310070536993781610">אפשר להשתמש בקוד המבצע BRAVEREWARDS ולקבל 10% הנחה על כל פריטי Brave בחנות.</translation>
 <translation id="1170674812179664523">חנות מוצרי Brave</translation>
 <translation id="8673202990286883068">ההטבות שלך</translation>
-<translation id="3699766258844277472">עדיין לא הגדרת תרומות מחזוריות.</translation>
 <translation id="957921474773060718">התרומה הבאה:</translation>
 <translation id="351973834053818251">תרומות מחזוריות</translation>
 <translation id="7751260505918304024">הצג הכל</translation>
@@ -953,6 +951,8 @@
 <translation id="2399555431746923964">אחסון נכסי BTC Testnet</translation>
 <translation id="8749751940551938347">אחסן נכסי ZEC</translation>
 <translation id="3451958544919449297">אחסון נכסי ZEC Testnet</translation>
+<translation id="8459631690385393533">אחסון נכסי Carando</translation>
+<translation id="4915057812371523845">אחסון נכסי Cardano Testnet</translation>
 <translation id="8500387257977999003">מפתח פרטי<ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">ייבוא</translation>
 <translation id="232925166623833246">ייבוא מארנק חומרה</translation>
@@ -1197,7 +1197,11 @@
 <translation id="4667144295226514387">חסרה מגבלת גז</translation>
 <translation id="2021522108838444624">הסכום חייב להיות גדול מ-0</translation>
 <translation id="8464365289405373974">יש להזין כתובת</translation>
-<translation id="6326239384961270135">חלק שקוף חסר</translation>
+<translation id="6449503919127419230">כתובת שקופה שגויה</translation>
+<translation id="3778662247272439818">אי התאמת רשת</translation>
+<translation id="1170025316306464310">פורמט כתובת מאוחד שגוי</translation>
+<translation id="8380483120683767377">חלק Orchard חסר</translation>
+<translation id="1536211570215515174">חלק שקוף חסר</translation>
 <translation id="8585995109882455949">איך אני יכול למצוא את הכתובת הנכונה?</translation>
 <translation id="105524480632150318">Brave מונע ממשתמשים לשלוח כספים לכתובת הלא נכונה עקב רישיות שגויה. ודא שזו הכתובת הנכונה על ידי מעקב אחר ההוראות למטה.</translation>
 <translation id="4583433813614292221">1. בקר</translation>
@@ -1351,6 +1355,8 @@
 <translation id="7694836973509310467">גישור</translation>
 <translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> באמצעות <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="6934057383578424432">אירעה שגיאה במהלך ניסיון ה<ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> באמצעות <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="4916833841663290382">מגנים על <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/></translation>
+<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> מוגנים</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} עוד עסקאות ממתינות.}
       other {{PENDING_TRANSACTIONS} עוד עסקאות ממתינות.}
@@ -1756,7 +1762,9 @@ CoinGecko</translation>
 <translation id="4438043733494739848">שקוף</translation>
 <translation id="1950406774300125954">לא מסונכרן</translation>
 <translation id="68413355604013935">לא מסונכרן (בעיכוב של <ph name="BLOCKS"/> בלוקים)</translation>
+<translation id="1724354250024376254">יתרה ממתינה (נדרשים אישורים נוספים): <ph name="FUNDS"/></translation>
 <translation id="1597233669965903034">יש לסנכרן את החשבון שלך כדי לגשת לעסקאות האחרונות וליתרה העדכנית.</translation>
+<translation id="3609785682760573515">מתבצע סנכרון...</translation>
 <translation id="7499262814309712782">סנכרון חשבון</translation>
 <translation id="2804568727504456403">סנכרון <ph name="ACCOUNT"/></translation>
 <translation id="813913629614996137">בהקמה...</translation>
@@ -1768,6 +1776,15 @@ CoinGecko</translation>
 <translation id="7714298753782862705">הסנכרון הושלם. אפשר לסגור את החלון הזה.</translation>
 <translation id="7716113567047550378">נא לא לסגור את החלון הזה עד שהסנכרון יסתיים.</translation>
 <translation id="5123590959308755060">המשך השימוש בארנק בכרטיסיה חדשה</translation>
+<translation id="4594014034647546191">הבלוק הראשון של החשבון המוגן</translation>
+<translation id="6666784075827260119">הבלוק הראשון בחשבון חייב להיות מעל <ph name="BLOCK_NUMBER"/></translation>
+<translation id="3102477628835823956">הבלוק הראשון בחשבון חייב להיות מתחת ל-<ph name="BLOCK_NUMBER"/></translation>
+<translation id="6850229669854962550"><ph name="BLOCKS"/> בלוקים נותרו</translation>
+<translation id="7747318989577709780">החשבון מסתנכרן</translation>
+<translation id="9086302186042011942">מתבצע סנכרון</translation>
+<translation id="99991973626409495">הצגת פרטי הגנה</translation>
+<translation id="3114681061018999547">בהגנה</translation>
+<translation id="8897189056319316783">הגנת ZEC</translation>
 <translation id="7144878232160441200">נסה שוב</translation>
 <translation id="9094621390791852268">תצוגה מקדימה של העסקה נכשלה.</translation>
 <translation id="4982713341035600933">שינוי יתרה משוער</translation>
@@ -2097,7 +2114,8 @@ CoinGecko</translation>
 <translation id="4885527781814382758">Brave Leo הוא עוזר חכם אישי המופעל באמצעות בינה מלאכותית ומשפר את השימוש שלך באינטרנט. השימוש ב-Leo ניתן ללא עלות עם גישה מוגבלת. גרסת Brave Leo Premium מציעה מודלים נוספים, מגבלות רחבות יותר, ומאפשרת למנויים גישה מוקדמת לפיצ׳רים חדשים. מודל ברירת ישתנה מעת לעת. ניתן לבקר ב<ph name="LINK_BEFORE"/>מרכז העזרה של Brave<ph name="LINK_AFTER"/> לפרטים נוספים.</translation>
 <translation id="7189603330209995455">כברירת מחדל, כששואלים את Leo שאלה, הוא עשוי לשלוח את התוכן של דף הרשת שאתם צופים בו או של כל טקסט שאתם מדגישים בדף ל-Brave Leo ולעשות בהם שימוש. דיוק התגובה אינו מובטח ועשוי לכלול מידע לא מדויקף מטעה או לא נכון. Leo עושה שימוש בנתונים מחיפוש Brave כדי לשפר את איכות התגובה. אין לשלוח מידע רגיש או אישי ויש להתייחס לכל התשובות הקשורות לתחום הבריאות, הכלכלה, הבטיחות האישית או לתחומים דומים במשנה זהירות. באפשרותכם להתאים את אפשרויות Leo בהגדרות בכל עת. עברו אל 'הגדרות' ולאחר מכן אל 'Leo'.</translation>
 <translation id="3038772045018370764">Leo אינו אוסף מידע מזהה כגון כתובת IP שניתן לקשר אותה אליכם. לא נעשה שימוש בנתונים למקד את מודלי הבינה המלאכותית ונתונים אישיים אינם נשמרים על ידי מודלי הבינה המלאכותית (למעט Anthropic המחזיק בנתונים למשך 30 ימים לפני מחיקתם). יש לעיין <ph name="LINK_BEFORE"/>במדיניות הפרטיות<ph name="LINK_AFTER"/> למידע נוסף.</translation>
-<translation id="7839853125981164613">הזינו כאן הנחייה</translation>
+<translation id="6961721183181597848">איך אפשר לעזור לך היום?</translation>
+<translation id="2966135729673253768">בקשה למעקב</translation>
 <translation id="4524675003624341892">הצעת שאלות…</translation>
 <translation id="4567071417854988869">לסכם את הדף הזה</translation>
 <translation id="7921782882718083488">לסכם את הדף הזה</translation>
@@ -2110,6 +2128,7 @@ CoinGecko</translation>
 <translation id="7905602379229309187">נקודת הקצה נמצאת בעומס יתר כרגע. נא לנסות שוב מאוחר יותר.</translation>
 <translation id="8151638057146502721">קביעת קונפיגורציה</translation>
 <translation id="4177458398826096846">שלום, שמי Leo. אני עוזר המבוסס בינה מלאכותית של Brave. אני מופעל על ידי Llama 3.1 8B, דגם שנוצר על ידי Meta לשיפור ביצועים ויכול להיות שימושי במגוון תחומים. <ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="5252251845674154807">היי, אני Leo. אני עוזר AI שמנוהל באופן מלא על ידי Brave. אני מופעל באמצעות Qwen 14B, מודל שיצרה Alibaba Cloud כדי שיהיה ביצועי וישים לשימושים מגוונים. <ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">שלום, אני ליאו. אני אסיסטנט באחסון מלא של Brave. אני מופעל על ידי Mixtral 8x7B, דגם שנוצר על ידי Mistral AI לטיפול במשימות מתקדמות. <ph name="LINK_BEFORE"/>למד עוד<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">שלום, אני ליאו. אני משתמש ב־Brave כפרוקסי ומופעל על ידי Claude Instant, דגם שנוצר על ידי Anthropic להפעלת משימות עיבוד שיחות וטקסטים. <ph name="LINK_BEFORE"/>למד עוד<ph name="LINK_AFTER"/></translation>
 <translation id="2001874998841390450">היי, אני Leo. אני מתווך באמצעות Brave ומופעל באמצעות Claude Haiku, מודל שנוצר על ידי Anthropic כדי לאפשר משימות עיבוד של שיחה וטקסט. <ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
@@ -2157,6 +2176,8 @@ CoinGecko</translation>
 <translation id="8261506727792406068">מחיקה</translation>
 <translation id="6574153208133461043">בטוח שברצונך למחוק את השיחה הזו? הפעולה הזו לא ניתנת לביטול.</translation>
 <translation id="7488762544858401571">נערך</translation>
+<translation id="5604254791550001355">עריכת פרומפט</translation>
+<translation id="8115786586976830777">העתקת פרומפט</translation>
 <translation id="1406205536570262057">ערוך תשובה</translation>
 <translation id="2399439821649319175">לא עוזר</translation>
 <translation id="2976167228906046828">לֹא נָכוֹן</translation>
@@ -2168,6 +2189,9 @@ CoinGecko</translation>
 <translation id="903201991022343217">התחלת שיחה חדשה</translation>
 <translation id="8171760814579050200">שינוי שם שיחה</translation>
 <translation id="7754678742055438573">מחיקת שיחה</translation>
+<translation id="1946267518364740045">מעבד תגובה...</translation>
+<translation id="4198859185714743678">העיבוד הושלם</translation>
+<translation id="6140948187512243695">הצגת פרטים</translation>
 <translation id="7494736170250048402">שלח הודעה לליאו</translation>
 <translation id="8650874793377330048">הפסקת מענה</translation>
 <translation id="8712637175834984815">הבנתי</translation>
@@ -2177,7 +2201,12 @@ CoinGecko</translation>
 <translation id="4370698775470316661">השיחה הזו ארוכה מדי ואי אפשר להמשיך. ייתכן שקיימים דגמים אחרים שבהם ליאו מסוגל לשמור על דיוק לשיחות ארוכות יותר.</translation>
 <translation id="5719170755629028558">משפר את התשובה שלך עם חיפוש Brave...</translation>
 <translation id="5794962229997281366">תשובה משופרת לחיפוש טוב יותר של<ph name="SEARCH_TERMS"/>.</translation>
+<translation id="7307396647043599949">עוד <ph name="COUNT"/>…</translation>
 <translation id="8103700533980268469">סגירת התראה זו</translation>
+<translation id="3417835166382867856">חיפוש בכרטיסיות</translation>
+<translation id="9090243919347147717">קבצים מצורפים</translation>
+<translation id="4444978378117903684">אפשר להוסיף את כרטיסיות הדפדפן שלך כדי לתת ל-Leo הקשר נוסף לשיחה</translation>
+<translation id="4300920590112551536">כרטיסיות דפדפן</translation>
 <translation id="2315654674554095762">עכשיו Leo יזכור את השיחות שלך כך שתהיה לך אפשרות לחזור אליהן. הן מאוחסנות באופן מוצפן במכשיר שלך, ובאפשרותך למחוק אותן בכל עת.</translation>
 <translation id="7821251979960635244">היסטוריית השיחות שלך תופיע כאן ברגע שתתחיל/י שיחה.</translation>
 <translation id="887511360213807449">היסטוריה מושבתת</translation>
@@ -2187,6 +2216,7 @@ CoinGecko</translation>
 <translation id="3185367320601718531">יצירת שיחות וטקסט</translation>
 <translation id="7979673624064378842">צ'אט מהיר כברק</translation>
 <translation id="2836330653441111204">מהירות ואינטליגנציה מאוזנות</translation>
+<translation id="6695329447007213917">צ׳אט כללי, תכנות, ועוד</translation>
 <translation id="3965507912994218570">הגדרות Leo</translation>
 <translation id="1037324977127422019">היי, אני ליאו!</translation>
 <translation id="8930348081963284873">עוזר אינטליגנטי המופעל על ידי בינה מלאכותית, מובנה ישירות לתוך Brave.</translation>
@@ -2417,5 +2447,6 @@ Brave יש שירות עוזר שמגן עליך מפני חשיפה זו על �
 <translation id="1538335063514960365">לחצן פתח כאן, הקש Enter כדי לפתוח את כתובת האתר הזו בלשונית הנוכחית, במקום לעבור ל-
 הכרטיסייה הקיימת</translation>
 <translation id="451189393813405346">תשאל את ליאו</translation>
+<translation id="1602850501393095406">יש ללחוץ ↑ כדי להדגיש</translation>
 <translation id="8525248723479742219">נגן מאוחר יותר</translation>
 </translationbundle>
