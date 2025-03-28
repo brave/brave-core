@@ -257,11 +257,9 @@ ConversationHandler::ConversationHandler(
                   : conversation->model_key.value());
 
   if (initial_state.has_value() && !initial_state.value()->entries.empty()) {
-    // We only support single associated content for now
     mojom::ConversationArchivePtr conversation_data =
         std::move(initial_state.value());
     if (!conversation_data->associated_content.empty()) {
-      CHECK(!metadata_->associated_content.empty());
       associated_content_manager_->LoadArchivedContent(metadata_,
                                                        conversation_data);
     }
@@ -353,8 +351,8 @@ void ConversationHandler::OnArchiveContentUpdated(
   //   }
   //   archive_content_->SetContent(std::move(text_content));
   // }
-  associated_content_manager_->LoadArchivedContent(metadata_,
-                                                   conversation_data);
+  // associated_content_manager_->LoadArchivedContent(metadata_,
+  //                                                  conversation_data);
 }
 
 void ConversationHandler::OnAssociatedContentUpdated() {

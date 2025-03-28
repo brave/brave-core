@@ -43,7 +43,8 @@ class AssociatedContentManager
                   bool notify_updated = true);
 
   // Removes a content driver from the list of content drivers.
-  void RemoveContent(ConversationHandler::AssociatedContentDelegate* driver);
+  void RemoveContent(ConversationHandler::AssociatedContentDelegate* driver,
+                     bool notify_updated = false);
 
   void GetContent(ConversationHandler::GetPageContentCallback callback);
   void GetStagedEntriesFromContent(
