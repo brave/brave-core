@@ -103,11 +103,6 @@ class AIChatUIPageHandlerBrowserTest : public PlatformBrowserTest,
   }
 
   AIChatUIPageHandler* GetPageHandler(content::WebContents* web_contents) {
-    CHECK(base::test::RunUntil([&]() {
-      return !!static_cast<AIChatUI*>(web_contents->GetWebUI()->GetController())
-          ->page_handler_;
-    }));
-
     auto* webui =
         static_cast<AIChatUI*>(web_contents->GetWebUI()->GetController());
     EXPECT_TRUE(webui);
