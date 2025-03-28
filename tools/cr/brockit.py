@@ -141,6 +141,7 @@ from the user to complete.
 """
 
 import argparse
+from contextlib import contextmanager
 from dataclasses import dataclass, field, replace
 from datetime import datetime
 from enum import Enum, auto
@@ -282,18 +283,43 @@ class Terminal:
         self.infra_mode = True
         self.keep_alive_thread.start()
 
-    def set_status_object(self, status):
+    def _set_status_object(self, status):
         """Preserves the status object for updates.
 
     This function is used to preserve the status object for updates, so that
     the status can be updated with the initial status message.
     """
-        if self.infra_mode:
-            status.stop()
-            return
-
         self.status = status
         self.starting_status_message = status.status
+
+    def update_status(self, status_message: str):
+        if self.infra_mode or not self.status:
+            return
+
+        self.status.update(f'{self.starting_status_message} '
+                           f'[bold cyan]({status_message})[/]')
+
+    @contextmanager
+    def with_status(self, status_message: str):
+        """Context manager to manage `rich.console.status` internally.
+
+        Does nothing when `infra_mode` is enabled.
+
+        Args:
+            status_message: The message to display in the console status.
+        """
+        if self.infra_mode:
+            yield  # No-op when in infra mode
+            return
+
+        status = console.status(f'[bold green]{status_message}[/]')
+        status.start()
+        self._set_status_object(status)
+        try:
+            yield status
+        finally:
+            status.stop()
+            self.status = None
 
     def run(self, cmd, env: Optional[Dict[str, str]] = None):
         """Runs a command on the terminal.
@@ -313,10 +339,8 @@ class Terminal:
                 message = message[:max_length - 3] + '...'
             return message
 
-        if self.status is not None and not self.infra_mode:
-            self.status.update(
-                f'[bold green]{self.starting_status_message}[/] [bold cyan]'
-                f'({truncate_on_max_length(" ".join(cmd))})[/]')
+        if not self.infra_mode:
+            self.update_status(truncate_on_max_length(" ".join(cmd)))
         logging.debug('λ %s', ' '.join(cmd))
 
         if self.infra_mode:
@@ -1352,8 +1376,7 @@ class Task:
             as the process' exit code.
         """
         console.log('[italic]🚀 Brockit!')
-        with console.status(self.status_message()) as status:
-            terminal.set_status_object(status)
+        with terminal.with_status(self.status_message()):
             result = self.execute(*cmd)
 
             if result:
@@ -1706,7 +1729,7 @@ class Upgrade(Versioned):
 
     def get_assigned_value(self,
                            contents: str,
-                           key: str,
+                           lookup: str,
                            added: bool = False,
                            removed: bool = False) -> Optional[str]:
         """Uses a basic regex to extract the value being assinged into a key.
@@ -1717,7 +1740,7 @@ class Upgrade(Versioned):
     Args:
         contents:
             The contents of the file to look for the key.
-        key:
+        lookup:
             The key to look for in the contents.
         added:
             If set to True, looks for the key starting with +.
@@ -1726,16 +1749,29 @@ class Upgrade(Versioned):
     Returns:
         The value assigned to the key, or None if not found
         """
-        sign = r''
-        if added:
-            sign = r"\+"
-        elif removed:
-            sign = r"-"
-        pattern = re.compile(
-            rf"^\s*{sign}\s*{re.escape(key)}\s*=\s*['\"](.*?)['\"]",
-            re.MULTILINE)
-        matches = pattern.findall(contents)
-        return matches[0] if matches else None
+        for line in contents.splitlines():
+            # Discad any comment that there may be in the line
+            line = line.split('#', 1)[0].strip()
+
+            if lookup not in line:
+                continue
+            if added and not line.startswith('+'):
+                continue
+            if removed and not line.startswith('-'):
+                continue
+
+            # remove the sign at the beggining of the line, if that's the case
+            # we are looking for.
+            if added or removed:
+                line = line[1:]
+
+            if '=' not in line:
+                continue
+
+            [key, value] = line.split('=', 1)
+            if key.strip().lstrip() == lookup:
+                return value.strip().lstrip().replace('"', '').replace("'", "")
+        return None
 
     def _check_toolchain(self, file_path: str, key: str) -> Optional[Dict]:
         """ Helper function to check for toolchain updates.
@@ -2257,9 +2293,10 @@ class Rebase(Task):
             terminal.log_task('Some files would cause conflict during rebase:')
             for file in conflicts:
                 console.print(Padding(f'* {file}', (0, 15)))
-                console.log(
-                    '👋 (Run manually: [dim]git rebase -i --autosquash --onto '
-                    f'{self.from_ref} {forking_from} {current_branch}[/])')
+
+            console.log(
+                '👋 (Run manually: [dim]git rebase -i --autosquash --onto '
+                f'{self.from_ref} {forking_from} {current_branch}[/])')
             return False
 
         # We have to receive the rebase plan from git, and then modify it
@@ -2539,7 +2576,7 @@ def main():
     if args.command == 'lift':
         target = resolve_to_flag()
         if args.restart:
-            if not ReUpgrade(target).run():
+            if ReUpgrade(target).run() != 0:
                 return 1
 
         if not args.is_continuation:
