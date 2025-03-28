@@ -2107,6 +2107,10 @@
 -ManifestV2ExperimentManagerBrowserTest.*
 -ManifestV2ExperimentWithLegacyExtensionSupportTest.*
 
+# This test fails because it conflicts with our own split view layout,
+# specifically with how we currently manage our vertical tabs host view
+-SideBySideBrowserViewTest.SplitViewInactiveIndexReturnsCorrectly
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
