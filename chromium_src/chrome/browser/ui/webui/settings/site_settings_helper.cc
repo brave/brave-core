@@ -155,6 +155,12 @@ void BraveGetExceptionForPage(ContentSettingsType type,
                               base::Value::Dict& exception) {
   constexpr char kBraveCookieType[] = "braveCookieType";
 
+  // Update the RawSiteException.braveCookieType declaration in
+  // site_settings_prefs_browser_proxy.ts if you want to change or add values.
+  constexpr char kShieldsDown[] = "shields down";
+  constexpr char kShieldsSettings[] = "shields settings";
+  constexpr char kGoogleSignIn[] = "google sign-in";
+
   if (type == ContentSettingsType::COOKIES) {
     auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
     auto* provider = static_cast<content_settings::BravePrefProvider*>(
@@ -164,13 +170,13 @@ void BraveGetExceptionForPage(ContentSettingsType type,
       case content_settings::BravePrefProvider::CookieType::kRegularCookie:
         break;
       case content_settings::BravePrefProvider::CookieType::kShieldsDownCookie:
-        exception.Set(kBraveCookieType, "shields down");
+        exception.Set(kBraveCookieType, kShieldsDown);
         break;
       case content_settings::BravePrefProvider::CookieType::kCustomShielsCookie:
-        exception.Set(kBraveCookieType, "shields settings");
+        exception.Set(kBraveCookieType, kShieldsSettings);
         break;
       case content_settings::BravePrefProvider::CookieType::kGoogleSignInCookie:
-        exception.Set(kBraveCookieType, "goolge sign-in");
+        exception.Set(kBraveCookieType, kGoogleSignIn);
         break;
     }
   }

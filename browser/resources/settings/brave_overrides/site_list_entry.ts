@@ -46,7 +46,7 @@ RegisterPolymerTemplateModifications({
 enum BraveCookieTypes {
   SHIELDS_DOWN = 'shields down',
   SHIELDS_SETTINGS = 'shields settings',
-  GOOGLE_SIGN_IN = 'goolge sign-in'
+  GOOGLE_SIGN_IN = 'google sign-in'
 }
 
 RegisterPolymerComponentReplacement(
