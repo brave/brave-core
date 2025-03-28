@@ -332,7 +332,6 @@ class TabManager: NSObject {
 
   func selectTab(_ tab: (any TabState)?, previous: (any TabState)? = nil) {
     assert(Thread.isMainThread)
-    previous?.isVisible = false
     let previous = previous ?? selectedTab
 
     if previous === tab {
@@ -374,6 +373,8 @@ class TabManager: NSObject {
     if let tabId = tab?.id {
       SessionTab.setSelected(tabId: tabId)
     }
+
+    previous?.isVisible = false
 
     UIImpactFeedbackGenerator(style: .light).vibrate()
     selectedTab?.createWebView()
