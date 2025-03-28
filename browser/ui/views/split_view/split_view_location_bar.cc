@@ -117,9 +117,8 @@ views::Widget::InitParams SplitViewLocationBar::GetWidgetInitParams(
     gfx::NativeView parent_native_view,
     views::WidgetDelegateView* delegate) {
   views::Widget::InitParams params(
-      views::Widget::InitParams::NATIVE_WIDGET_OWNS_WIDGET,
+      views::Widget::InitParams::CLIENT_OWNS_WIDGET,
       views::Widget::InitParams::TYPE_CONTROL);
-  params.ownership = views::Widget::InitParams::CLIENT_OWNS_WIDGET;
   params.activatable = views::Widget::InitParams::Activatable::kNo;
   params.parent = parent_native_view;
   params.delegate = delegate;
