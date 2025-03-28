@@ -808,7 +808,9 @@ class TabManager: NSObject {
       // First seach down or up for a tab that is not being destroyed
       var increasingIndex = index + 1
       while nextTab == nil, increasingIndex < allTabs.count {
-        if allTabs[increasingIndex].url?.urlToShred?.baseDomain != etldP1 {
+        if allTabs[increasingIndex].url?.urlToShred?.baseDomain != etldP1
+          && allTabs[increasingIndex].isPrivate == tab.isPrivate
+        {
           nextTab = allTabs[increasingIndex]
         }
         increasingIndex += 1
@@ -816,7 +818,9 @@ class TabManager: NSObject {
 
       var decreasingIndex = index - 1
       while nextTab == nil, decreasingIndex > 0 {
-        if allTabs[decreasingIndex].url?.urlToShred?.baseDomain != etldP1 {
+        if allTabs[decreasingIndex].url?.urlToShred?.baseDomain != etldP1
+          && allTabs[decreasingIndex].isPrivate == tab.isPrivate
+        {
           nextTab = allTabs[decreasingIndex]
         }
         decreasingIndex -= 1
