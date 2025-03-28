@@ -44,7 +44,7 @@ class VerticalTabStripWidget : public ThemeCopyingWidget {
 }  // namespace
 
 // static
-VerticalTabStripWidgetDelegateView* VerticalTabStripWidgetDelegateView::Create(
+std::unique_ptr<views::Widget> VerticalTabStripWidgetDelegateView::Create(
     BrowserView* browser_view,
     views::View* host_view) {
   DCHECK(browser_view->GetWidget());
@@ -52,7 +52,7 @@ VerticalTabStripWidgetDelegateView* VerticalTabStripWidgetDelegateView::Create(
   auto* delegate_view =
       new VerticalTabStripWidgetDelegateView(browser_view, host_view);
   views::Widget::InitParams params(
-      views::Widget::InitParams::NATIVE_WIDGET_OWNS_WIDGET,
+      views::Widget::InitParams::CLIENT_OWNS_WIDGET,
       views::Widget::InitParams::TYPE_CONTROL);
   params.delegate = delegate_view;
 
@@ -68,9 +68,7 @@ VerticalTabStripWidgetDelegateView* VerticalTabStripWidgetDelegateView::Create(
   widget->GetNativeView()->SetProperty(views::kHostViewKey, host_view);
 #endif
   widget->Show();
-  widget.release();
-
-  return delegate_view;
+  return widget;
 }
 
 VerticalTabStripWidgetDelegateView::~VerticalTabStripWidgetDelegateView() {

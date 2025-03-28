@@ -38,9 +38,8 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
                                            public views::WidgetObserver {
   METADATA_HEADER(VerticalTabStripWidgetDelegateView, views::WidgetDelegateView)
  public:
-
-  static VerticalTabStripWidgetDelegateView* Create(BrowserView* browser_view,
-                                                    views::View* host_view);
+  static std::unique_ptr<views::Widget> Create(BrowserView* browser_view,
+                                               views::View* host_view);
   ~VerticalTabStripWidgetDelegateView() override;
 
   VerticalTabStripRegionView* vertical_tab_strip_region_view() const {
