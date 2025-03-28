@@ -19,7 +19,8 @@ import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
-
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.base.BravePreferenceKeys;
 import java.util.List;
 
 public class BraveSearchEngineAdapter extends SearchEngineAdapter {
@@ -158,6 +159,8 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
 
         TemplateUrl templateUrl = (TemplateUrl) getItem((int) view.getTag());
         setDSEPrefs(templateUrl, mProfile);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED, true);
     }
 
     // TemplateUrlService.LoadListener

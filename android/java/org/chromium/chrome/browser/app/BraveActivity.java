@@ -1025,6 +1025,11 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+        Log.e("brave_search", ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED, false)
+                ? "true" : "false");
+
+
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
 
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
