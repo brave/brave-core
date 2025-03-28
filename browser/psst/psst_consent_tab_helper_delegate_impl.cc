@@ -16,7 +16,8 @@ void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
     base::Value::List requests,
     ConsentCallback yes_cb,
     ConsentCallback no_cb,
-    base::OnceClosure never_ask_me_callback) {
+    base::OnceClosure never_ask_me_callback,
+    ShareCallback share_cb) {
   NOTIMPLEMENTED();
 }
 

@@ -15,8 +15,10 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
+#include "base/functional/callback_helpers.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -34,21 +36,6 @@
 namespace {
 constexpr int kHeaderFontSize = 18;
 constexpr int kListTitleFontSize = 15;
-// constexpr std::u16string kDoneMessage = u"Done";
-// constexpr std::u16string kFailedMessage = u"Failed";
-
-void OnOkCallBackCompleteDlgWithClose(base::WeakPtr<PsstConsentDialog> dialog) {
-  if (dialog) {
-    dialog->GetWidget()->CloseWithReason(
-        views::Widget::ClosedReason::kCancelButtonClicked);
-  }
-}
-
-void CallBackWithClose(base::WeakPtr<PsstConsentDialog> dialog,
-                       base::OnceClosure callback) {
-  std::move(callback).Run();
-  OnOkCallBackCompleteDlgWithClose(dialog);
-}
 
 void SetFont(views::Label* label, const int size) {
   const auto& header_font_list = label->font_list();
@@ -63,7 +50,8 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
                                      base::Value::List requests,
                                      ConsentDialogCallback consent_callback,
                                      base::OnceClosure cancel_callback,
-                                     base::OnceClosure never_ask_me_callback)
+                                     base::OnceClosure never_ask_me_callback,
+                                     ShareCallback share_cb)
     : consent_callback_(std::move(consent_callback)) {
   set_margins(gfx::Insets(20));
   SetModalType(ui::mojom::ModalType::kChild);
@@ -124,7 +112,7 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
 
     change_item_box.AddChild(
         views::Builder<views::Checkbox>()
-            .SetText(base::ASCIIToUTF16(*description))
+            .SetText(base::UTF8ToUTF16(*description))
             .SetChecked(true)
             .CopyAddressTo(&current_status_line->check_box));
     change_item_box.AddChild(
@@ -170,18 +158,20 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
                   .SetText(l10n_util::GetStringUTF16(
                       IDS_PSST_CONSENT_DIALOG_NEVER_ASK_ME_AGAIN))
                   .SetStyle(ui::ButtonStyle::kText)
-                  .SetCallback(base::BindOnce(&CallBackWithClose,
+                  .SetCallback(base::BindOnce(&PsstConsentDialog::OnCloseWithReasonCallBack,
                                               weak_factory_.GetWeakPtr(),
+                                              views::Widget::ClosedReason::kCancelButtonClicked,
                                               std::move(never_ask_me_callback)))
-                  .CopyAddressTo(&no_button_)
+                  .CopyAddressTo(&never_ask_me_button_)
                   .SetHorizontalAlignment(
                       gfx::HorizontalAlignment::ALIGN_CENTER))
           .AddChild(views::Builder<views::MdTextButton>()
                         .SetText(l10n_util::GetStringUTF16(
                             IDS_PSST_CONSENT_DIALOG_CANCEL))
                         .SetStyle(ui::ButtonStyle::kText)
-                        .SetCallback(base::BindOnce(&CallBackWithClose,
+                        .SetCallback(base::BindOnce(&PsstConsentDialog::OnCloseWithReasonCallBack,
                                                     weak_factory_.GetWeakPtr(),
+                                                    views::Widget::ClosedReason::kCancelButtonClicked,
                                                     std::move(cancel_callback)))
                         .CopyAddressTo(&no_button_)
                         .SetHorizontalAlignment(
@@ -285,9 +275,12 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
               views::Builder<views::MdTextButton>()
                   .SetText(l10n_util::GetStringUTF16(
                       IDS_PSST_COMPLETE_CONSENT_DIALOG_SHARE))
+                  .CopyAddressTo(&share_button_)
                   .SetStyle(ui::ButtonStyle::kText)
-                  // .SetCallback(base::BindRepeating(&OnOkCallBackCompleteDlgWithClose,
-                  //                             weak_factory_.GetWeakPtr()))
+                  .SetCallback(base::BindOnce(&PsstConsentDialog::OnCloseWithReasonCallBack,
+                                              weak_factory_.GetWeakPtr(), 
+                                              views::Widget::ClosedReason::kCancelButtonClicked,
+                                              std::move(share_cb)))
                   .SetProperty(views::kMarginsKey, gfx::Insets().set_left(16))
                   .SetHorizontalAlignment(
                       gfx::HorizontalAlignment::ALIGN_CENTER))
@@ -295,8 +288,9 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
               views::Builder<views::MdTextButton>()
                   .SetText(l10n_util::GetStringUTF16(
                       IDS_PSST_COMPLETE_CONSENT_DIALOG_REPORT))
+                  .CopyAddressTo(&report_button_)
                   .SetStyle(ui::ButtonStyle::kText)
-                  // .SetCallback(base::BindRepeating(&OnOkCallBackCompleteDlgWithClose,
+                  // .SetCallback(base::BindRepeating(&PsstConsentDialog::OnOkCallBackCompleteDlgWithClose,
                   //                             weak_factory_.GetWeakPtr()))
                   .SetProperty(views::kMarginsKey, gfx::Insets().set_left(16))
                   .SetHorizontalAlignment(
@@ -307,8 +301,10 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
                       IDS_PSST_COMPLETE_CONSENT_DIALOG_OK))
                   .SetStyle(ui::ButtonStyle::kDefault)
                   .SetCallback(
-                      base::BindRepeating(&OnOkCallBackCompleteDlgWithClose,
-                                          weak_factory_.GetWeakPtr()))
+                      base::BindRepeating(&PsstConsentDialog::OnCloseWithReasonCallBack,
+                                          weak_factory_.GetWeakPtr(),
+                                          views::Widget::ClosedReason::kCancelButtonClicked,
+                                          base::NullCallback()))
                   .SetProperty(views::kMarginsKey, gfx::Insets().set_left(16))
                   .SetHorizontalAlignment(
                       gfx::HorizontalAlignment::ALIGN_CENTER)));
@@ -396,6 +392,9 @@ void PsstConsentDialog::OnConsentClicked() {
   if (no_button_) {
     no_button_->SetEnabled(false);
   }
+  if (never_ask_me_button_) {
+    never_ask_me_button_->SetEnabled(false);
+  }
 
   std::vector<std::string> skip_checks;
   for (auto& [url, status_data] : task_checked_list_) {
@@ -414,22 +413,39 @@ void PsstConsentDialog::SetCompletedView(
     return;
   }
 
+  bool show_share_button{true};
   if (!applied_checks.empty()) {
     complete_view_body_applied_title_->SetText(l10n_util::GetStringUTF16(
         IDS_PSST_COMPLETE_CONSENT_DIALOG_APPLIED_LIST_TITLE));
     complete_view_body_applied_->SetText(
-        base::ASCIIToUTF16(base::JoinString(applied_checks, "\n")));
+        base::UTF8ToUTF16(base::JoinString(applied_checks, "\n")));
   }
 
   if (!errors.empty()) {
     complete_view_body_failed_title_->SetText(l10n_util::GetStringUTF16(
         IDS_PSST_COMPLETE_CONSENT_DIALOG_FAILED_LIST_TITLE));
     complete_view_body_failed_->SetText(
-        base::ASCIIToUTF16(base::JoinString(errors, "\n")));
+        base::UTF8ToUTF16(base::JoinString(errors, "\n")));
+    
+    show_share_button = false;
   }
+
+  share_button_->SetVisible(show_share_button);
+  report_button_->SetVisible(!show_share_button);
 
   box_status_view_->SetVisible(false);
   box_complete_view_->SetVisible(true);
 
   GetWidget()->SetBounds(GetDesiredWidgetBounds());
+}
+
+void PsstConsentDialog::OnCloseWithReasonCallBack(
+    const views::Widget::ClosedReason reason,
+    base::OnceClosure callback) {
+  if (callback) {
+    std::move(callback).Run();
+  }
+  if (auto* widget = GetWidget()) {
+    widget->CloseWithReason(reason);
+  }
 }

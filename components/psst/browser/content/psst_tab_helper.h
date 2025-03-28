@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/component_export.h"
@@ -31,13 +32,14 @@ class PsstRuleRegistry;
 
 // Used to inject PSST scripts into the page, based on PSST rules.
 class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<PsstTabHelper> {
+     : public content::WebContentsObserver
+      {
  public:
   class Delegate {
    public:
     using ConsentCallback = base::OnceCallback<void(
         const std::vector<std::string>& disabled_checks)>;
+    using ShareCallback = base::OnceCallback<void()>;
 
     virtual ~Delegate() = default;
     virtual void ShowPsstConsentDialog(content::WebContents* contents,
@@ -45,7 +47,8 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
                                        const base::Value::List requests,
                                        ConsentCallback yes_cb,
                                        ConsentCallback no_cb,
-                                       base::OnceClosure never_ask_me_callback) = 0;
+                                       base::OnceClosure never_ask_me_callback,
+                                       ShareCallback share_cb) = 0;
     virtual void SetProgressValue(content::WebContents* contents,
                                   const double value) = 0;
     virtual void SetRequestDone(content::WebContents* contents,
@@ -58,9 +61,14 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
     virtual void Close(content::WebContents* contents) = 0;
   };
 
-  static void MaybeCreateForWebContents(content::WebContents* contents,
-                                        std::unique_ptr<Delegate> delegate,
-                                        const int32_t world_id);
+  struct PsstOperationContext {
+    std::string user_id;
+    std::string rule_name;
+  };
+
+  static std::unique_ptr<PsstTabHelper> MaybeCreateForWebContents(content::WebContents* contents,
+    std::unique_ptr<Delegate> delegate);
+
   ~PsstTabHelper() override;
   PsstTabHelper(const PsstTabHelper&) = delete;
   PsstTabHelper& operator=(const PsstTabHelper&) = delete;
@@ -81,7 +89,11 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
   void InsertUserScript(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       const std::optional<MatchedRule>& rule);
-  void OnUserScriptResult(
+  void InsertPolicyScript(
+        const content::GlobalRenderFrameHostId& render_frame_host_id,
+        const std::optional<MatchedRule>& rule);
+  
+      void OnUserScriptResult(
       const MatchedRule& rule,
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       base::Value value);
@@ -109,6 +121,8 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
+
+  std::optional<PsstOperationContext> psst_operation_context_;
 
   std::unique_ptr<Delegate> delegate_;
   const int32_t world_id_;

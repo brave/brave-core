@@ -13,6 +13,7 @@
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/values.h"
+#include "brave/components/psst/browser/content/psst_tab_helper.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/progress_bar.h"
@@ -23,16 +24,22 @@ class PsstConsentDialog : public views::DialogDelegateView {
  public:
   using ConsentDialogCallback =
       base::OnceCallback<void(const std::vector<std::string>& skipped_checks)>;
+  using ShareCallback = psst::PsstTabHelper::Delegate::ShareCallback;
   struct StatusCheckedLine {
     raw_ptr<views::Checkbox> check_box{nullptr};
     raw_ptr<views::Label> status_label{nullptr};
   };
 
+  PsstConsentDialog(const PsstConsentDialog&) = delete;
+  PsstConsentDialog(PsstConsentDialog&&) = delete;
+  PsstConsentDialog& operator=(const PsstConsentDialog&) = delete;
+  PsstConsentDialog& operator=(PsstConsentDialog&&) = delete;
   PsstConsentDialog(bool prompt_for_new_version,
                     base::Value::List requests,
                     ConsentDialogCallback consent_callback,
                     base::OnceClosure cancel_callback,
-                    base::OnceClosure never_ask_me_callback);
+                    base::OnceClosure never_ask_me_callback,
+                    ShareCallback share_cb);
   ~PsstConsentDialog() override;
 
   // views::DialogDelegateView:
@@ -51,8 +58,11 @@ class PsstConsentDialog : public views::DialogDelegateView {
 
  private:
   void DisableAdBlockForSite();
+  void OnCloseWithReasonCallBack(const views::Widget::ClosedReason reason,
+                                 base::OnceClosure callback);
 
   ConsentDialogCallback consent_callback_;
+  raw_ptr<views::Button> never_ask_me_button_{nullptr};
   raw_ptr<views::Button> no_button_{nullptr};
   raw_ptr<views::Button> ok_button_{nullptr};
   raw_ptr<views::ProgressBar> progress_bar_{nullptr};
@@ -67,6 +77,9 @@ class PsstConsentDialog : public views::DialogDelegateView {
 
   raw_ptr<views::Label> complete_view_body_failed_title_{nullptr};
   raw_ptr<views::Label> complete_view_body_failed_{nullptr};
+  ShareCallback sare_callback_;
+  raw_ptr<views::Button> share_button_{nullptr};
+  raw_ptr<views::Button> report_button_{nullptr};
 
   base::flat_map<std::string, std::unique_ptr<StatusCheckedLine>>
       task_checked_list_;

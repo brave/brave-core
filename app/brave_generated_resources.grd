@@ -1378,7 +1378,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Psst! Want to try out the new Privacy Site Settings Tool?
       </message>
       <message name="IDS_PSST_CONSENT_COMPLETE_DIALOG_HEADER" desc="A header for PSST complete dialog">
-        The operation completed
+        Done!
       </message>
 
       <!-- File select -->
@@ -1420,25 +1420,25 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Yes, change privacy settings for this website
       </message>
       <message name="IDS_PSST_CONSENT_DIALOG_NEVER_ASK_ME_AGAIN" desc="Never ask me button's Text for a dialog to adjust PSST">
-        Never Ask me again
+        Never ask me again
       </message>
       <message name="IDS_PSST_CONSENT_DIALOG_CANCEL" desc="Cancel button's Text for a dialog to adjust PSST">
-        No thanks
+        Not for this website
       </message>
       <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_OK" desc="Ok button's Text for PSST complete dialog">
-        Ok
+        OK
       </message>
       <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_SHARE" desc="Share your PSST expirience button's text for PSST complete dialog">
         Share
       </message>
       <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_REPORT" desc="Report button's Text for PSST complete dialog">
-        Report
+        Report failures
       </message>
       <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_APPLIED_LIST_TITLE" desc="The title for list of the applied operations on the complete consent dialog">
-        Applied Operations:
+        The following settings were changed:
       </message>
       <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_FAILED_LIST_TITLE" desc="The title for list of the failed operations on the complete consent dialog">
-        Failed operations:
+        Could not change:
       </message>
       <message name="IDS_PSST_CONSENT_DIALOG_TASK_STATUS_DONE" desc="Done task's status text for a PSST dialog">
         Done

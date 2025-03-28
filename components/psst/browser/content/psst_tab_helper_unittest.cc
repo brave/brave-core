@@ -51,7 +51,8 @@ void ShowPsstConsentDialog(content::WebContents* contents,
                 bool prompt_for_new_version,
                 base::Value::List requests,
                 base::OnceClosure yes_cb,
-                base::OnceClosure no_cb) override {
+                base::OnceClosure no_cb,
+                ShareCallback share_cb) override {
 LOG(INFO) << "[PSST] ShowPsstConsentDialog";
                 }
 void Close(content::WebContents* contents) override {}

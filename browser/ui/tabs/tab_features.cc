@@ -13,9 +13,15 @@
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "components/tab_collections/public/tab_interface.h"
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/psst/psst_consent_tab_helper_delegate_impl.h"
+#include "brave/components/psst/browser/content/psst_tab_helper.h"
+#endif
 
 namespace tabs {
 namespace {
@@ -54,6 +60,11 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
     tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
         tab.GetHandle().raw_value(), tab.GetContents());
   }
+
+#if BUILDFLAG(ENABLE_PSST)
+  psst_observer_ =
+      psst::PsstTabHelper::MaybeCreateForWebContents(tab.GetContents(), std::make_unique<PsstConsentTabHelperDelegateImpl>());
+#endif
 }
 
 }  // namespace tabs

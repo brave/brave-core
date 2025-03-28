@@ -16,7 +16,7 @@ namespace psst {
 
 namespace prefs {
   inline constexpr char kPsstSettingsPref[] = "brave.psst.settings";
-  inline constexpr char kPsstNeverAskMeEnabled[] = "brave.psst.settings.never_ask_me_flag";
+  inline constexpr char kPsstEnabled[] = "brave.psst.settings.enable_psst";
 }  // namespace prefs
 
 enum PsstConsentStatus {

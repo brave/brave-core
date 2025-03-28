@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/functional/bind.h"
+ #include "brave/browser/psst/psst_consent_tab_helper_delegate_impl.h"
+
+ #include "base/functional/bind.h"
 #include "base/values.h"
-#include "brave/browser/psst/psst_consent_tab_helper_delegate_impl.h"
 #include "brave/browser/ui/views/psst/psst_consent_dialog.h"
 #include "brave/browser/ui/views/psst/psst_consent_dialog_tracker.h"
 #include "components/constrained_window/constrained_window_views.h"
@@ -37,7 +38,8 @@ void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
     base::Value::List requests,
     ConsentCallback yes_cb,
     ConsentCallback no_cb,
-    base::OnceClosure never_ask_me_callback) {
+    base::OnceClosure never_ask_me_callback,
+    ShareCallback share_cb) {
   PsstConsentDialogTracker::CreateForWebContents(contents);
   auto* dialog_tracker = PsstConsentDialogTracker::FromWebContents(contents);
   if (!dialog_tracker) {
@@ -50,7 +52,7 @@ void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
           base::BindOnce(&OnConsentCallback, std::move(yes_cb)),
           base::BindOnce(&OnConsentCallback, std::move(no_cb),
                          std::vector<std::string>{}),
-          std::move(never_ask_me_callback)),
+          std::move(never_ask_me_callback), std::move(share_cb)),
       contents);
   dialog_tracker->SetActiveDialog(new_dialog);
 

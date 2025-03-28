@@ -25,13 +25,13 @@ namespace {
 inline constexpr char kConsentStatus[] = "consent_status";
 inline constexpr char kScriptVersion[] = "script_version";
 inline constexpr char kUrlsToSkip[] = "urls_to_skip";
-inline constexpr char kNeverAskMeFlag[] = "never_ask_me_flag";
+inline constexpr char kEnablePsstFlag[] = "enable_psst";
 
 }  // namespace
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   if (base::FeatureList::IsEnabled(psst::features::kBravePsst)) {
-    registry->RegisterBooleanPref(prefs::kPsstNeverAskMeEnabled, true);
+    registry->RegisterBooleanPref(prefs::kPsstEnabled, true);
     registry->RegisterDictionaryPref(
         prefs::kPsstSettingsPref,
         user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
@@ -71,7 +71,7 @@ bool GetNeverAskFlag(PrefService* prefs) {
 
   const auto& psst_settings = prefs->GetDict(prefs::kPsstSettingsPref);
 
-  const auto result = psst_settings.FindBool(kNeverAskMeFlag);
+  const auto result = psst_settings.FindBool(kEnablePsstFlag);
 
   return result.has_value() && !result.value();
 }
@@ -79,7 +79,7 @@ bool GetNeverAskFlag(PrefService* prefs) {
 void SetNeverAskFlag(PrefService* prefs, const bool val) {
   ScopedDictPrefUpdate update(prefs, prefs::kPsstSettingsPref);
   base::Value::Dict& pref = update.Get();
-  pref.Set(kNeverAskMeFlag, val);
+  pref.Set(kEnablePsstFlag, val);
 }
 
 std::optional<PsstSettings> GetPsstSettings(const std::string& user_id,

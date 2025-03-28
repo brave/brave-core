@@ -16,6 +16,10 @@ namespace ai_chat {
 class TabDataWebContentsObserver;
 }
 
+namespace psst {
+class PsstTabHelper;
+}
+
 namespace tabs {
 
 class TabInterface;
@@ -34,6 +38,7 @@ class TabFeatures : public TabFeatures_Chromium {
 
  private:
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
+  std::unique_ptr<psst::PsstTabHelper> psst_observer_;
 };
 
 }  // namespace tabs

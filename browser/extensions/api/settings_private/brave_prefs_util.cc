@@ -101,7 +101,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_shields::prefs::kReduceLanguageEnabled] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[psst::prefs::kPsstNeverAskMeEnabled] =
+  (*s_brave_allowlist)[psst::prefs::kPsstEnabled] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_shields::prefs::kAdBlockDeveloperMode] =
       settings_api::PrefType::kBoolean;

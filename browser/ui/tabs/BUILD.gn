@@ -25,6 +25,7 @@ if (!is_android) {
       "//brave/browser/ui/side_panel",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/tabs:impl",
+      "//brave/components/psst/browser/content",
     ]
   }
 }

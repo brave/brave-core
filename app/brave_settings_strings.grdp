@@ -438,10 +438,10 @@
     Prevent sites from fingerprinting me based on my language preferences
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_PSST_ASK_AGAIN_LABEL" desc="Enable appearing PSST dialog setting label">
-    Enable PSST feature
+    Allow Brave to make privacy-friendly changes for me on websites
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_PSST_ASK_AGAIN_SUB_LABEL" desc="The sub-label describing appearing PSST dialog">
-    Enabling this settings allows PSST propose privacy settings for users
+    Brave can opt you out of privacy-harmful settings on certain websites. Learn more.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_REDUCE_LANGUAGE_SUBITEM" desc="Description that shows under main toggle setting for reduce language control setting label">
     Enabling this setting reduces how much web sites can learn about your language preferences.
