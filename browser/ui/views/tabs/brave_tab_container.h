@@ -66,7 +66,7 @@ class BraveTabContainer : public TabContainerImpl,
   void OnSwapTabsInTile(const TabTile& tile) override;
 
  private:
-  class DropArrow : public views::WidgetObserver {
+  class DropArrow {
    public:
     enum class Position { Vertical, Horizontal };
 
@@ -76,7 +76,7 @@ class BraveTabContainer : public TabContainerImpl,
               views::Widget* context);
     DropArrow(const DropArrow&) = delete;
     DropArrow& operator=(const DropArrow&) = delete;
-    ~DropArrow() override;
+    virtual ~DropArrow();
 
     void set_index(const BrowserRootView::DropIndex& index) { index_ = index; }
     BrowserRootView::DropIndex index() const { return index_; }
@@ -85,9 +85,6 @@ class BraveTabContainer : public TabContainerImpl,
     bool beneath() const { return beneath_; }
 
     void SetWindowBounds(const gfx::Rect& bounds);
-
-    // views::WidgetObserver:
-    void OnWidgetDestroying(views::Widget* widget) override;
 
    private:
     // Index of the tab to drop on.
@@ -98,12 +95,8 @@ class BraveTabContainer : public TabContainerImpl,
     bool beneath_ = false;
 
     // Renders the drop indicator.
-    raw_ptr<views::Widget, DanglingUntriaged> arrow_window_ = nullptr;
-
+    std::unique_ptr<views::Widget> arrow_window_;
     raw_ptr<views::ImageView, DanglingUntriaged> arrow_view_ = nullptr;
-
-    base::ScopedObservation<views::Widget, views::WidgetObserver>
-        scoped_observation_{this};
   };
 
   void UpdateLayoutOrientation();

@@ -106,7 +106,11 @@ NotificationAdPopup::NotificationAdPopup(
   FadeIn();
 }
 
-NotificationAdPopup::~NotificationAdPopup() = default;
+NotificationAdPopup::~NotificationAdPopup() {
+  // To cleanup widget related stuffs.
+  // This will fire OnWidgetDestroyed() notification.
+  widget_.reset();
+}
 
 // static
 void NotificationAdPopup::SetDisableFadeInAnimationForTesting(bool disable) {
@@ -439,24 +443,22 @@ gfx::Insets NotificationAdPopup::GetWidgetMargin() const {
 void NotificationAdPopup::CreateWidgetView(
     gfx::NativeWindow browser_native_window,
     gfx::NativeView browser_native_view) {
-  // The widget instance is owned by its NativeWidget. For more details see
-  // ui/views/widget/widget.h
-  NotificationAdPopupWidget* widget = new NotificationAdPopupWidget();
-  widget->set_focus_on_creation(false);
-  widget_observation_.Observe(widget);
+  widget_ = std::make_unique<NotificationAdPopupWidget>();
+  widget_->set_focus_on_creation(false);
+  widget_observation_.Observe(widget_.get());
 
   const gfx::Rect widget_bounds = GetInitialWidgetBounds(browser_native_view);
-  widget->InitWidget(this, widget_bounds, browser_native_window,
-                     browser_native_view);
+  widget_->InitWidget(this, widget_bounds, browser_native_window,
+                      browser_native_view);
 
   if (g_disable_fade_in_animation_for_testing) {
     CHECK_IS_TEST();
   } else {
-    widget->SetOpacity(0.0);
+    widget_->SetOpacity(0.0);
   }
-  const gfx::Rect bounds = widget->GetWindowBoundsInScreen();
-  AdjustBoundsAndSnapToFitWorkAreaForWidget(widget, bounds);
-  widget->ShowInactive();
+  const gfx::Rect bounds = widget_->GetWindowBoundsInScreen();
+  AdjustBoundsAndSnapToFitWorkAreaForWidget(widget_.get(), bounds);
+  widget_->ShowInactive();
 }
 
 void NotificationAdPopup::CloseWidgetView() {

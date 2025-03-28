@@ -43,6 +43,7 @@ class Widget;
 
 namespace brave_ads {
 
+class NotificationAdPopupWidget;
 class NotificationAdView;
 
 // The widget delegate of an notification ad popup. The view is owned by the
@@ -154,6 +155,8 @@ class NotificationAdPopup final : public views::WidgetDelegateView,
   bool inside_adjust_bounds_ = false;
 
   gfx::PointF last_normalized_coordinate_;
+
+  std::unique_ptr<NotificationAdPopupWidget> widget_;
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
