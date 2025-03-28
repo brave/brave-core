@@ -568,9 +568,9 @@ BraveTabContainer::DropArrow::DropArrow(const BrowserRootView::DropIndex& index,
                                         bool beneath,
                                         views::Widget* context)
     : index_(index), position_(position), beneath_(beneath) {
-  arrow_window_ = new views::Widget;
+  arrow_window_ = std::make_unique<views::Widget>();
   views::Widget::InitParams params(
-      views::Widget::InitParams::NATIVE_WIDGET_OWNS_WIDGET,
+      views::Widget::InitParams::CLIENT_OWNS_WIDGET,
       views::Widget::InitParams::TYPE_POPUP);
   params.z_order = ui::ZOrderLevel::kFloatingUIElement;
   params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
@@ -587,17 +587,11 @@ BraveTabContainer::DropArrow::DropArrow(const BrowserRootView::DropIndex& index,
       arrow_window_->SetContentsView(std::make_unique<views::ImageView>());
   arrow_view_->SetImage(
       ui::ImageModel::FromImageSkia(*GetDropArrowImage(position_, beneath_)));
-  scoped_observation_.Observe(arrow_window_.get());
 
   arrow_window_->Show();
 }
 
-BraveTabContainer::DropArrow::~DropArrow() {
-  // Close eventually deletes the window, which deletes arrow_view too.
-  if (arrow_window_) {
-    arrow_window_->Close();
-  }
-}
+BraveTabContainer::DropArrow::~DropArrow() = default;
 
 void BraveTabContainer::DropArrow::SetBeneath(bool beneath) {
   if (beneath_ == beneath) {
@@ -611,12 +605,6 @@ void BraveTabContainer::DropArrow::SetBeneath(bool beneath) {
 
 void BraveTabContainer::DropArrow::SetWindowBounds(const gfx::Rect& bounds) {
   arrow_window_->SetBounds(bounds);
-}
-
-void BraveTabContainer::DropArrow::OnWidgetDestroying(views::Widget* widget) {
-  DCHECK(scoped_observation_.IsObservingSource(arrow_window_.get()));
-  scoped_observation_.Reset();
-  arrow_window_ = nullptr;
 }
 
 void BraveTabContainer::HandleDragUpdate(
