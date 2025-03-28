@@ -42,9 +42,7 @@ void BraveBookmarkProvider::Start(const AutocompleteInput& input,
     // We only allow the bookmark to be the default match if the input is an
     // exact match for the bookmark title
     auto lower_description = base::ToLowerASCII(match.description);
-    auto description_matches =
-        lower_description == base::ToLowerASCII(input.text());
-    if (!description_matches) {
+    if (lower_description != lower_text) {
       continue;
     }
 
