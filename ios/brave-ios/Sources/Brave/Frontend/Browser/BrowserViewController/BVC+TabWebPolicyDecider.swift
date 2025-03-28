@@ -306,8 +306,7 @@ extension BrowserViewController: TabPolicyDecider {
 
           // Add Brave search result ads processing script
           // This script will process search result ads on the Brave search page.
-          .searchResultAd: BraveAds.shouldSupportSearchResultAds()
-            && BraveSearchManager.isValidURL(requestURL) && !isPrivateBrowsing,
+          .searchResultAd: BraveSearchManager.isValidURL(requestURL) && !isPrivateBrowsing,
         ])
       }
 

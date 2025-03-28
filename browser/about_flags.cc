@@ -848,15 +848,6 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
               brave_ads::kShouldAlwaysRunBraveAdsServiceFeature),              \
       },                                                                       \
       {                                                                        \
-          "brave-ads-should-support-search-result-ads",                        \
-          "Support Search Result Ads feature",                                 \
-          "Should be used in combination with "                                \
-          "#brave-ads-should-always-trigger-search-result-ad-events and "      \
-          "#brave-ads-should-always-run-brave-ads-service",                    \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(brave_ads::kShouldSupportSearchResultAdsFeature), \
-      },                                                                       \
-      {                                                                        \
           "brave-ads-should-always-trigger-search-result-ad-events",           \
           "Should always trigger search result ad events",                     \
           "Support triggering search result ad events if Brave Private Ads "   \
