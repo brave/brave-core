@@ -94,30 +94,29 @@ macro_rules! impl_result {
 }
 
 macro_rules! impl_result_option_wrapper {
-    ($t: ty, $rt: ident, $l: ident) => {
-        paste::item! {
-            fn [<wrap_ $l>](item: $t) -> Box<$rt> {
-                Box::new($rt(Ok(Option::Some(item))))
-            }
-            fn [<wrap_ $l _error>]() -> Box<$rt> {
-                Box::new($rt(Err(Error::ShardStoreError)))
-            }
-            fn [<wrap_ $l _none>]() -> Box<$rt> {
-                Box::new($rt(Ok(Option::None)))
-            }
+    ($t:ty, $rt:ident, $wrap_l:ident, $wrap_l_error:ident, $wrap_l_none:ident) => {
+        fn $wrap_l(item: $t) -> Box<$rt> {
+            Box::new($rt(Ok(Some(item))))
+        }
+
+        fn $wrap_l_error() -> Box<$rt> {
+            Box::new($rt(Err(Error::ShardStoreError)))
+        }
+
+        fn $wrap_l_none() -> Box<$rt> {
+            Box::new($rt(Ok(None)))
         }
     };
 }
 
 macro_rules! impl_result_wrapper {
-    ($t: ty, $rt: ident, $l: ident) => {
-        paste::item! {
-            fn [<wrap_ $l>](item: $t) -> Box<$rt> {
-                Box::new($rt(Ok(item)))
-            }
-            fn [<wrap_ $l _error>]() -> Box<$rt> {
-                Box::new($rt(Err(Error::ShardStoreError)))
-            }
+    ($t:ty, $rt:ident, $wrap_l:ident, $wrap_l_error:ident) => {
+        fn $wrap_l(item: $t) -> Box<$rt> {
+            Box::new($rt(Ok(item)))
+        }
+
+        fn $wrap_l_error() -> Box<$rt> {
+            Box::new($rt(Err(Error::ShardStoreError)))
         }
     };
 }
@@ -733,22 +732,37 @@ struct CxxCheckpointsResultWrapper(Result<Vec<CxxOrchardCheckpointBundle>, Error
 struct CxxShardRootsResultWrapper(Result<Vec<CxxOrchardShardAddress>, Error>);
 struct CxxCheckpointCountResultWrapper(Result<usize, Error>);
 
-impl_result_option_wrapper!(CxxOrchardShard, CxxOrchardShardResultWrapper, shard_tree_shard);
+impl_result_option_wrapper!(
+    CxxOrchardShard,
+    CxxOrchardShardResultWrapper,
+    wrap_shard_tree_shard,
+    wrap_shard_tree_shard_error,
+    wrap_shard_tree_shard_none);
 impl_result_option_wrapper!(
     CxxOrchardShardTreeCap,
     CxxOrchardShardTreeCapResultWrapper,
-    shard_tree_cap
-);
-impl_result_option_wrapper!(u32, CxxCheckpointIdResultWrapper, checkpoint_id);
+    wrap_shard_tree_cap,
+    wrap_shard_tree_cap_error,
+    wrap_shard_tree_cap_none);
+impl_result_option_wrapper!(u32, CxxCheckpointIdResultWrapper,
+    wrap_checkpoint_id,
+    wrap_checkpoint_id_error,
+    wrap_checkpoint_id_none);
 impl_result_option_wrapper!(
     CxxOrchardCheckpointBundle,
     CxxCheckpointBundleResultWrapper,
-    checkpoint_bundle
+    wrap_checkpoint_bundle,
+    wrap_checkpoint_bundle_error,
+    wrap_checkpoint_bundle_none
 );
-impl_result_wrapper!(bool, CxxBoolResultWrapper, bool);
-impl_result_wrapper!(usize, CxxCheckpointCountResultWrapper, checkpoint_count);
-impl_result_wrapper!(Vec<CxxOrchardCheckpointBundle>, CxxCheckpointsResultWrapper, checkpoints);
-impl_result_wrapper!(Vec<CxxOrchardShardAddress>, CxxShardRootsResultWrapper, shard_tree_roots);
+impl_result_wrapper!(bool, CxxBoolResultWrapper,
+    wrap_bool, wrap_bool_error);
+impl_result_wrapper!(usize, CxxCheckpointCountResultWrapper,
+    wrap_checkpoint_count, wrap_checkpoint_count_error);
+impl_result_wrapper!(Vec<CxxOrchardCheckpointBundle>, CxxCheckpointsResultWrapper,
+    wrap_checkpoints, wrap_checkpoints_error);
+impl_result_wrapper!(Vec<CxxOrchardShardAddress>, CxxShardRootsResultWrapper,
+    wrap_shard_tree_roots, wrap_shard_tree_roots_error);
 
 fn generate_orchard_extended_spending_key_from_seed(
     bytes: &[u8],
