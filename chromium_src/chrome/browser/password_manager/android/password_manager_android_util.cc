@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/password_manager/android/password_manager_util_bridge_interface.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/prefs/pref_service.h"
 
@@ -50,7 +51,8 @@ void ForcePasswordsProfileStore(PrefService* pref_service) {
 //      MaybeDeleteLoginDataFiles
 void SetUsesSplitStoresAndUPMForLocal(
     PrefService* pref_service,
-    const base::FilePath& login_db_directory) {
+    const base::FilePath& login_db_directory,
+    std::unique_ptr<PasswordManagerUtilBridgeInterface> util_bridge) {
   ForcePasswordsProfileStore(pref_service);
 }
 }  // namespace password_manager_android_util
