@@ -433,6 +433,10 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   // interaction.
   mixer[kColorBraveDownloadToolbarButtonActive] = {
       SkColorSetRGB(0x5F, 0x5C, 0xF1)};
+  mixer[kColorBraveDownloadToolbarButtonInactive] = {kColorToolbarButtonIcon};
+  // Color for download button progress ring background.
+  mixer[kColorBraveDownloadToolbarButtonRingBackground] = {
+      SkColorSetRGB(0xC7, 0xCA, 0xF1)};
 
   mixer[kColorLocationBarHoveredShadow] = {
       SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
@@ -508,6 +512,9 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorBraveDownloadToolbarButtonActive] = {
       SkColorSetRGB(0x87, 0x84, 0xF4)};
+  mixer[kColorBraveDownloadToolbarButtonInactive] = {kColorToolbarButtonIcon};
+  mixer[kColorBraveDownloadToolbarButtonRingBackground] = {
+      SkColorSetRGB(0xC7, 0xCA, 0xF1)};
 
   mixer[kColorLocationBarHoveredShadow] = {
       SkColorSetA(SK_ColorBLACK, 0.4 * 255)};
