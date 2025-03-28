@@ -29,7 +29,6 @@
 #include "crypto/aead.h"
 #include "crypto/hkdf.h"
 #include "crypto/random.h"
-#include "crypto/symmetric_key.h"
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/unloaded_extension_reason.h"
