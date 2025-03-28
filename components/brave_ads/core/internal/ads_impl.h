@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
@@ -52,6 +53,17 @@ class AdsImpl final : public Ads {
   void Initialize(mojom::WalletInfoPtr mojom_wallet,
                   InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;
+
+  template <typename Func, typename... Args>
+  void RunOrQueueTask(Func&& func, Args&&... args) {
+    auto task =
+        base::BindOnce(std::forward<Func>(func), std::forward<Args>(args)...);
+    if (task_queue_.should_queue()) {
+      task_queue_.Add(std::move(task));
+    } else {
+      std::move(task).Run();
+    }
+  }
 
   void GetInternals(GetInternalsCallback callback) override;
 
@@ -136,8 +148,8 @@ class AdsImpl final : public Ads {
   void SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
                                InitializeCallback callback);
 
-  // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
-  // from using JSON state to a more efficient data approach.
+  // TODO(https://github.com/brave/brave-browser/issues/39795): Transition
+  // away from using JSON state to a more efficient data approach.
   void MigrateClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                   InitializeCallback callback,
                                   bool success);
@@ -153,8 +165,8 @@ class AdsImpl final : public Ads {
 
   bool is_initialized_ = false;
 
-  // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate global
-  // state.
+  // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate
+  // global state.
   GlobalState global_state_;
 
   OnceClosureTaskQueue task_queue_;
