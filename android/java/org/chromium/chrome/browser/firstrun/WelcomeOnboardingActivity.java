@@ -275,6 +275,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
         mCurrentStep++;
         if (mCurrentStep == 0) {
+            // Set as default step
             if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
                 if (mIvBrave != null) {
                     mIvBrave.setVisibility(View.VISIBLE);
@@ -286,15 +287,17 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 nextOnboardingStep();
             }
         } else if (isWDPEnabled() && mCurrentStep == getWDPPageStep()) {
+            // WDP step
             if (mIvBrave != null) {
                 mIvBrave.setVisibility(View.VISIBLE);
             }
             showWDPPage();
         } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
+            // Analytics consent step
             showAnalyticsConsentPage();
         } else {
+            // Last step
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
-            OnboardingPrefManager.getInstance().setOnboardingSearchBoxTooltip(true);
 
             FirstRunStatus.setFirstRunFlowComplete(true);
 

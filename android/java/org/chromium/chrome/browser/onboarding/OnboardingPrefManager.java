@@ -41,7 +41,6 @@ public class OnboardingPrefManager {
     public static final String DORMANT_USERS_NOTIFICATION = "dormant_users_notification";
     public static final String SHOW_BADGE_ANIMATION = "show_badge_animation";
     public static final String PREF_DORMANT_USERS_ENGAGEMENT = "dormant_users_engagement";
-    private static final String PREF_SHOW_SEARCHBOX_TOOLTIP = "show_searchbox_tooltip";
     private static final String PREF_P3A_CRASH_REPORTING_MESSAGE_SHOWN =
             "p3a_crash_reporting_message_shown";
     private static final String PREF_NOTIFICATION_PERMISSION_ENABLING_DIALOG =
@@ -94,16 +93,6 @@ public class OnboardingPrefManager {
     public void setOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_ONBOARDING, isShown);
-        sharedPreferencesEditor.apply();
-    }
-
-    public boolean isOnboardingSearchBoxTooltip() {
-        return mSharedPreferences.getBoolean(PREF_SHOW_SEARCHBOX_TOOLTIP, false);
-    }
-
-    public void setOnboardingSearchBoxTooltip(boolean shouldTooltipShow) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_SHOW_SEARCHBOX_TOOLTIP, shouldTooltipShow);
         sharedPreferencesEditor.apply();
     }
 
