@@ -13,25 +13,23 @@
 
 // clang-format off
 
-#define BRAVE_COMMON_COLOR_IDS                               \
-    E_CPONLY(kColorForTest)                                  \
-    E_CPONLY(kColorIconBase)                                 \
-    E_CPONLY(kColorMenuItemSubText)                          \
-    E_CPONLY(kColorBookmarkBarInstructionsText)              \
-    E_CPONLY(kColorBookmarkBarInstructionsLink)              \
-    E_CPONLY(kColorLocationBarFocusRing)                     \
-    E_CPONLY(kColorLocationBarHoveredShadow)                 \
-    E_CPONLY(kColorDialogDontAskAgainButton)                 \
-    E_CPONLY(kColorDialogDontAskAgainButtonHovered)          \
-    E_CPONLY(kColorTabGroupBackgroundAlpha)                  \
-    E_CPONLY(kColorWebDiscoveryInfoBarBackground)            \
-    E_CPONLY(kColorWebDiscoveryInfoBarMessage)               \
-    E_CPONLY(kColorWebDiscoveryInfoBarLink)                  \
-    E_CPONLY(kColorWebDiscoveryInfoBarNoThanks)              \
-    E_CPONLY(kColorWebDiscoveryInfoBarClose)                 \
-    E_CPONLY(kColorBraveDownloadToolbarButtonActive)         \
-    E_CPONLY(kColorBraveDownloadToolbarButtonInactive)       \
-    E_CPONLY(kColorBraveDownloadToolbarButtonRingBackground) \
+#define BRAVE_COMMON_COLOR_IDS                       \
+    E_CPONLY(kColorForTest)                          \
+    E_CPONLY(kColorIconBase)                         \
+    E_CPONLY(kColorMenuItemSubText)                  \
+    E_CPONLY(kColorBookmarkBarInstructionsText)      \
+    E_CPONLY(kColorBookmarkBarInstructionsLink)      \
+    E_CPONLY(kColorLocationBarFocusRing)             \
+    E_CPONLY(kColorLocationBarHoveredShadow)         \
+    E_CPONLY(kColorDialogDontAskAgainButton)         \
+    E_CPONLY(kColorDialogDontAskAgainButtonHovered)  \
+    E_CPONLY(kColorTabGroupBackgroundAlpha)          \
+    E_CPONLY(kColorWebDiscoveryInfoBarBackground)    \
+    E_CPONLY(kColorWebDiscoveryInfoBarMessage)       \
+    E_CPONLY(kColorWebDiscoveryInfoBarLink)          \
+    E_CPONLY(kColorWebDiscoveryInfoBarNoThanks)      \
+    E_CPONLY(kColorWebDiscoveryInfoBarClose)         \
+    E_CPONLY(kColorBraveDownloadToolbarButtonActive) \
     E_CPONLY(kColorToolbarButtonActivated)
 
 #define BRAVE_SEARCH_CONVERSION_COLOR_IDS                             \

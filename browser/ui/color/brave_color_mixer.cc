@@ -216,9 +216,9 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0xE1, 0xE2, 0xF6)};
 
   // Used for download button progress ring color.
-  mixer[kColorDownloadToolbarButtonActive] = {SkColorSetRGB(0x42, 0x3E, 0xEE)};
+  mixer[kColorDownloadToolbarButtonActive] = {SkColorSetRGB(0x45, 0x51, 0xD1)};
   mixer[kColorDownloadToolbarButtonRingBackground] = {
-      SkColorSetARGB(0x0F, 0x1D, 0x1F, 0x25)};
+      SkColorSetARGB(0x4B, 0x45, 0x51, 0xD1)};
 
   mixer[kColorTabCloseButtonFocusRingActive] = {
       ui::kColorFocusableBorderFocused};
@@ -256,9 +256,9 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorToggleButtonThumbOn] = {SkColorSetRGB(0x44, 0x36, 0xE1)};
   mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
   mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0x76, 0x79, 0xB1)};
-  mixer[kColorDownloadToolbarButtonActive] = {SkColorSetRGB(0x87, 0x84, 0xF4)};
+  mixer[kColorDownloadToolbarButtonActive] = {SkColorSetRGB(0xC1, 0xC6, 0xFF)};
   mixer[kColorDownloadToolbarButtonRingBackground] = {
-      SkColorSetARGB(0x33, 0x16, 0x17, 0x1D)};
+      SkColorSetARGB(0x4B, 0xC1, 0xC6, 0xFF)};
 
   mixer[kColorTabCloseButtonFocusRingActive] = {
       ui::kColorFocusableBorderFocused};
@@ -433,10 +433,6 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   // interaction.
   mixer[kColorBraveDownloadToolbarButtonActive] = {
       SkColorSetRGB(0x5F, 0x5C, 0xF1)};
-  mixer[kColorBraveDownloadToolbarButtonInactive] = {kColorToolbarButtonIcon};
-  // Color for download button progress ring background.
-  mixer[kColorBraveDownloadToolbarButtonRingBackground] = {
-      SkColorSetRGB(0xC7, 0xCA, 0xF1)};
 
   mixer[kColorLocationBarHoveredShadow] = {
       SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
@@ -512,9 +508,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorBraveDownloadToolbarButtonActive] = {
       SkColorSetRGB(0x87, 0x84, 0xF4)};
-  mixer[kColorBraveDownloadToolbarButtonInactive] = {kColorToolbarButtonIcon};
-  mixer[kColorBraveDownloadToolbarButtonRingBackground] = {
-      SkColorSetRGB(0xC7, 0xCA, 0xF1)};
 
   mixer[kColorLocationBarHoveredShadow] = {
       SkColorSetA(SK_ColorBLACK, 0.4 * 255)};
