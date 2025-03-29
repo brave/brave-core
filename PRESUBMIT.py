@@ -499,4 +499,37 @@ To remove unused imports: ./tools/android/checkstyle/remove_unused_imports.sh"""
         ret.append(output_api.PresubmitError(msg))
     return ret
 
+
+@chromium_presubmit_overrides.override_check(globals())
+def CheckTodoBugReferences(_original_check, input_api, output_api):
+    """Checks that bugs in TODOs use updated issue tracker IDs."""
+
+    files_to_skip = [
+        'PRESUBMIT_test.py', r"^third_party/rust/chromium_crates_io/vendor/.*"
+    ]
+
+    def _FilterFile(affected_file):
+        return input_api.FilterSourceFile(affected_file,
+                                          files_to_skip=files_to_skip)
+
+    # Check for bug link in TODO comments.
+    pattern = input_api.re.compile(r'.*\bTODO\([^\)0-9]*([0-9]+)\).*')
+    problems = []
+    for f in input_api.AffectedSourceFiles(_FilterFile):
+        for line_number, line in f.ChangedContents():
+            match = pattern.match(line)
+            if match and 'https://github.com/brave/brave-browser/issues' not in match.group(
+                    0):
+                problems.append(f"{f.LocalPath()}: {line_number}\n    {line}")
+
+    if problems:
+        return [
+            output_api.PresubmitPromptWarning(
+                'TODO comments must be accompanied with a valid brave-browser '
+                'issue. https://github.com/brave/brave-browser/issues',
+                problems)
+        ]
+    return []
+
+
 # DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit().
