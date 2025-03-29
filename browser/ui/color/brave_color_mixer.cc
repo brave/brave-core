@@ -215,11 +215,6 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0xDA, 0xDC, 0xE8)};
   mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0xE1, 0xE2, 0xF6)};
 
-  // Used for download button progress ring color.
-  mixer[kColorDownloadToolbarButtonActive] = {SkColorSetRGB(0x45, 0x51, 0xD1)};
-  mixer[kColorDownloadToolbarButtonRingBackground] = {
-      SkColorSetARGB(0x4B, 0x45, 0x51, 0xD1)};
-
   mixer[kColorTabCloseButtonFocusRingActive] = {
       ui::kColorFocusableBorderFocused};
   mixer[kColorTabCloseButtonFocusRingInactive] = {
@@ -256,9 +251,6 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorToggleButtonThumbOn] = {SkColorSetRGB(0x44, 0x36, 0xE1)};
   mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
   mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0x76, 0x79, 0xB1)};
-  mixer[kColorDownloadToolbarButtonActive] = {SkColorSetRGB(0xC1, 0xC6, 0xFF)};
-  mixer[kColorDownloadToolbarButtonRingBackground] = {
-      SkColorSetARGB(0x4B, 0xC1, 0xC6, 0xFF)};
 
   mixer[kColorTabCloseButtonFocusRingActive] = {
       ui::kColorFocusableBorderFocused};
@@ -363,6 +355,9 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
   }
 
   mixer[kColorToolbar] = {ui::kColorSysBase};
+  mixer[kColorDownloadToolbarButtonActive] = {nala::kColorIconInteractive};
+  mixer[kColorDownloadToolbarButtonRingBackground] = {SkColorSetA(
+      mixer.GetResultColor(kColorDownloadToolbarButtonActive), 0.3 * 255)};
 
   key.color_mode == ui::ColorProviderKey::ColorMode::kDark
       ? AddChromeDarkThemeColorMixer(provider, key)
