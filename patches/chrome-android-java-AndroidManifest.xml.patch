@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 5b5fe60a41618735c6bc44d50af8c6434ec28740..1b3536b2b40a1b2cdf7b0512931d1b6e58c46dcd 100644
+index 5b5fe60a41618735c6bc44d50af8c6434ec28740..c4f58edc03fc28d38be54f910170b59af58899dc 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -20,7 +20,7 @@ index 5b5fe60a41618735c6bc44d50af8c6434ec28740..1b3536b2b40a1b2cdf7b0512931d1b6e
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
  
-@@ -79,11 +82,17 @@ by a child template that "extends" this file.
+@@ -79,25 +82,33 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" tools:ignore="SystemPermissionTypo" />
      <uses-permission android:name="android.permission.RUN_USER_INITIATED_JOBS" />
  
@@ -37,8 +37,10 @@ index 5b5fe60a41618735c6bc44d50af8c6434ec28740..1b3536b2b40a1b2cdf7b0512931d1b6e
 +-->
      <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
      <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
-     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-@@ -92,7 +101,9 @@ by a child template that "extends" this file.
+-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
++    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
+     <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_AUDIO"/>
+     <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_IMAGES"/>
      <uses-permission-sdk-23 android:name="android.permission.READ_MEDIA_VIDEO"/>
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -48,6 +50,12 @@ index 5b5fe60a41618735c6bc44d50af8c6434ec28740..1b3536b2b40a1b2cdf7b0512931d1b6e
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
+     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
++    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
+ 
+     <!-- Permission for using Android 14's credential management framework. -->
+     <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
 @@ -144,7 +155,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
