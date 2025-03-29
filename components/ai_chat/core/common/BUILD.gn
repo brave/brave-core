@@ -49,10 +49,11 @@ if (!is_ios) {
 
     deps = [
       "//base/test:test_support",
-      "//brave/components/ai_chat/core/common",
       "//components/prefs:test_support",
       "//content/test:test_support",
       "//testing/gtest:gtest",
     ]
+
+    public_deps = [ "//brave/components/ai_chat/core/common" ]
   }
 }
