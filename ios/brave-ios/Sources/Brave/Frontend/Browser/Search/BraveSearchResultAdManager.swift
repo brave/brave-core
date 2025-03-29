@@ -79,6 +79,5 @@ class BraveSearchResultAdManager: NSObject {
     isAggressiveAdsBlocking: Bool
   ) -> Bool {
     return !isPrivateBrowsing && !isAggressiveAdsBlocking && BraveSearchManager.isValidURL(url)
-      && BraveAds.shouldSupportSearchResultAds()
   }
 }

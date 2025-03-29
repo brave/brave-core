@@ -15,14 +15,6 @@ bool ShouldAlwaysRunService() {
   return base::FeatureList::IsEnabled(kShouldAlwaysRunBraveAdsServiceFeature);
 }
 
-BASE_FEATURE(kShouldSupportSearchResultAdsFeature,
-             "ShouldSupportSearchResultAds",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-bool ShouldSupportSearchResultAds() {
-  return base::FeatureList::IsEnabled(kShouldSupportSearchResultAdsFeature);
-}
-
 BASE_FEATURE(kShouldAlwaysTriggerBraveSearchResultAdEventsFeature,
              "ShouldAlwaysTriggerBraveSearchResultAdEvents",
              base::FEATURE_DISABLED_BY_DEFAULT);

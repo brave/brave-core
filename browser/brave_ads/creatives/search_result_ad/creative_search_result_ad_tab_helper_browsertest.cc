@@ -85,11 +85,6 @@ class ScopedTestingAdsServiceSetter {
 class BraveAdsCreativeSearchResultAdTabHelperTest
     : public CertVerifierBrowserTest {
  public:
-  BraveAdsCreativeSearchResultAdTabHelperTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        kShouldSupportSearchResultAdsFeature);
-  }
-
   void SetUpOnMainThread() override {
     CertVerifierBrowserTest::SetUpOnMainThread();
     mock_cert_verifier()->set_default_result(net::OK);
