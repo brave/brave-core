@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.back_press.SecondaryActivityBackPressUma.SecondaryActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -98,6 +99,16 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private Button mBtnNegative;
     private CheckBox mCheckboxCrash;
     private CheckBox mCheckboxP3a;
+
+    private enum CurrentOnboardingPage {
+        SET_AS_DEFAULT,
+        NOTIFICATION_PERMISSION,
+        WDP_PAGE,
+        ANALYTICS_CONSENT_PAGE,
+        FINAL_PAGE
+    }
+
+    private CurrentOnboardingPage mCurrentOnboardingPage;
 
     /**
      * Initializes the views and sets up the onboarding activity UI. This method handles the initial
@@ -229,7 +240,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                     view -> {
                         if (mCurrentStep == 0 && !isDefaultBrowser()) {
                             setDefaultBrowserAndProceedToNextStep();
-                        } else if (isWDPEnabled() && mCurrentStep == getWDPPageStep()) {
+                        } else if (isWDPEnabled()
+                                && mCurrentOnboardingPage == CurrentOnboardingPage.WDP_PAGE) {
                             UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
                                     .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
                             nextOnboardingStep();
@@ -242,7 +254,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mBtnNegative != null) {
             mBtnNegative.setOnClickListener(
                     view -> {
-                        if (mCurrentStep == getAnalyticsConsentPageStep()) {
+                        if (mCurrentOnboardingPage
+                                == CurrentOnboardingPage.ANALYTICS_CONSENT_PAGE) {
                             CustomTabActivity.showInfoPage(this, P3A_URL);
                         } else {
                             nextOnboardingStep();
@@ -274,40 +287,110 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (isActivityFinishingOrDestroyed()) return;
 
         mCurrentStep++;
-        if (mCurrentStep == 0) {
-            // Set as default step
-            if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
-                if (mIvBrave != null) {
-                    mIvBrave.setVisibility(View.VISIBLE);
-                }
-                showBrowserSelectionPage();
-            } else if (!isDefaultBrowser()) {
-                setDefaultBrowserAndProceedToNextStep();
-            } else {
-                nextOnboardingStep();
-            }
-        } else if (isWDPEnabled() && mCurrentStep == getWDPPageStep()) {
-            // WDP step
-            if (mIvBrave != null) {
-                mIvBrave.setVisibility(View.VISIBLE);
-            }
-            showWDPPage();
-        } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
-            // Analytics consent step
-            showAnalyticsConsentPage();
-        } else {
-            // Last step
-            OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
+        String variant = DayZeroHelper.getDayZeroVariant();
+        switch (variant) {
+            case "b":
+                handleOnboardingStepForVariantB(mCurrentStep);
+                break;
+            case "c":
+                handleOnboardingStepForVariantC(mCurrentStep);
+                break;
+            case "d":
+                handleOnboardingStepForVariantD(mCurrentStep);
+                break;
+            default:
+                handleOnboardingStepForVariantA(mCurrentStep);
+                break;
+        }
+    }
 
-            FirstRunStatus.setFirstRunFlowComplete(true);
+    private void handleOnboardingStepForVariantA(int step) {
+        if (step == 0) {
+            handleSetAsDefaultStep();
+        } else if (isWDPEnabled() && step == getWDPPageStep()) {
+            handleWDPStep();
+        } else if (step == getAnalyticsConsentPageStep()) {
+            handleAnalyticsConsentPage();
+        } else {
+            finalStep();
+        }
+    }
+
+    private void handleOnboardingStepForVariantB(int step) {
+        if (step == 0) {
+            handleSetAsDefaultStep();
+        } else if (step == 1) {
+            // Notification permission
+        } else if (isWDPEnabled() && step == 2) {
+            handleWDPStep();
+        } else if (step == 3) {
+            handleAnalyticsConsentPage();
+        } else {
+            finalStep();
+        }
+    }
+
+    private void handleOnboardingStepForVariantC(int step) {
+        if (step == 0) {
+            handleSetAsDefaultStep();
+        } else if (isWDPEnabled() && step == 2) {
+            handleWDPStep();
+        } else if (step == 3) {
+            handleAnalyticsConsentPage();
+        } else {
+            // Show widget page on NTP
+            finalStep();
+        }
+    }
+
+    private void handleOnboardingStepForVariantD(int step) {
+        if (step == 0) {
+            handleSetAsDefaultStep();
+        } else if (step == 1) {
+            // Notification permission
+        } else if (isWDPEnabled() && step == 2) {
+            handleWDPStep();
+        } else if (step == 3) {
+            handleAnalyticsConsentPage();
+        } else {
+            // Show widget page on NTP
+            finalStep();
+        }
+    }
+
+    private void finalStep() {
+        OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
+
+        FirstRunStatus.setFirstRunFlowComplete(true);
 
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(ChromePreferenceKeys.FIRST_RUN_CACHED_TOS_ACCEPTED, true);
             FirstRunUtils.setEulaAccepted();
 
-            finish();
-            sendFirstRunCompleteIntent();
+        finish();
+        sendFirstRunCompleteIntent();
+    }
+
+    private void handleSetAsDefaultStep() {
+        mCurrentOnboardingPage = CurrentOnboardingPage.SET_AS_DEFAULT;
+        if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
+            if (mIvBrave != null) {
+                mIvBrave.setVisibility(View.VISIBLE);
+            }
+            showBrowserSelectionPage();
+        } else if (!isDefaultBrowser()) {
+            setDefaultBrowserAndProceedToNextStep();
+        } else {
+            nextOnboardingStep();
         }
+    }
+
+    private void handleWDPStep() {
+        mCurrentOnboardingPage = CurrentOnboardingPage.WDP_PAGE;
+        if (mIvBrave != null) {
+            mIvBrave.setVisibility(View.VISIBLE);
+        }
+        showWDPPage();
     }
 
     private boolean isWDPEnabled() {
@@ -352,7 +435,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
-    private void showAnalyticsConsentPage() {
+    private void handleAnalyticsConsentPage() {
+        mCurrentOnboardingPage = CurrentOnboardingPage.ANALYTICS_CONSENT_PAGE;
         int margin = mIsTablet ? 250 : 60;
         setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
         setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.5f, margin, false);
