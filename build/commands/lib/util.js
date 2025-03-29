@@ -547,6 +547,18 @@ const util = {
     sourceFiles.forEach(chromiumSrcFile => {
       const relativeChromiumSrcFile = chromiumSrcFile.slice(chromiumSrcDirLen)
       let overriddenFile = path.join(config.srcDir, relativeChromiumSrcFile)
+
+      const additionalExtensions = [
+        // .lit_mangler.ts files are used to modify the upstream .html.ts file at
+        // build time.
+        '.lit_mangler.ts',
+      ]
+
+      const additionalExtension = additionalExtensions.find(key => overriddenFile.endsWith(key))
+      if (additionalExtension) {
+        overriddenFile = overriddenFile.substring(0, overriddenFile.length - additionalExtension.length)
+      }
+
       if (fs.existsSync(overriddenFile)) {
         // If overriddenFile is older than file in chromium_src, touch it to trigger rebuild.
         isDirty |= updateFileUTimesIfOverrideIsNewer(overriddenFile, chromiumSrcFile)

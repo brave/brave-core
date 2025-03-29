@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/extensions/detail_view.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/extensions/detail_view.html.ts
++++ gen/chrome/browser/resources/extensions/preprocessed/detail_view.html.ts
+@@ -351,16 +351,13 @@
+               @change=\\"\${this.onPinnedToToolbarChange_}\\">
+             <span>$i18n{itemPinToToolbar}</span>
+           </extensions-toggle-row>\` : ''}
+         \${this.shouldShowIncognitoOption_() ? html\`
+-          <extensions-toggle-row id=\\"allow-incognito\\"
+-              ?checked=\\"\${this.data.incognitoAccess.isActive}\\" class=\\"hr\\"
+-              @change=\\"\${this.onAllowIncognitoChange_}\\">
++          <extensions-toggle-row id=\\"allow-incognito\\" ?checked=\\"\${this.data.incognitoAccess.isActive}\\" class=\\"hr\\" @change=\\"\${this.onAllowIncognitoChange_}\\">
+             <div>
+               <div>$i18n{itemAllowIncognito}</div>
+-              <div class=\\"section-content\\">$i18n{incognitoInfoWarning}</div>
+-              <div class=\\"section-content\\" id=\\"allow-incognito-warning\\"
+-                  ?hidden=\\"\${!this.data.incognitoAccessPendingChange}\\">
++              <div class=\\"section-content\\">$i18n{privateInfoWarning}<span ?hidden=\\"\${!this.data.incognitoAccess.isActive}\\"> $i18n{spanningInfoWarning}</span><span> $i18n{privateAndTorInfoWarning}</span></div>
++              <div class=\\"section-content\\" id=\\"allow-incognito-warning\\" ?hidden=\\"\${!this.data.incognitoAccessPendingChange}\\">
+                 $i18n{pendingChangeWarning}
+               </div>
+             </div>
+           </extensions-toggle-row>\` : ''}
+"
+`;
