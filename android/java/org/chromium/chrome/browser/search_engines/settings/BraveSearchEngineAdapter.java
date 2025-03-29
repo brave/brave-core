@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.search_engines.R;
@@ -158,6 +160,8 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
 
         TemplateUrl templateUrl = (TemplateUrl) getItem((int) view.getTag());
         setDSEPrefs(templateUrl, mProfile);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED, true);
     }
 
     // TemplateUrlService.LoadListener
