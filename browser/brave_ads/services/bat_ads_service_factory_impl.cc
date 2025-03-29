@@ -36,10 +36,11 @@ mojo::Remote<bat_ads::mojom::BatAdsService> LaunchInProcessBatAdsService() {
   base::ThreadPool::CreateSingleThreadTaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives()},
       base::SingleThreadTaskRunnerThreadMode::DEDICATED)
-      ->PostTask(
+      ->PostDelayedTask(
           FROM_HERE,
           base::BindOnce(&BindInProcessBatAdsService,
-                         bat_ads_service_remote.BindNewPipeAndPassReceiver()));
+                         bat_ads_service_remote.BindNewPipeAndPassReceiver()),
+          base::Seconds(3));
   return bat_ads_service_remote;
 }
 
