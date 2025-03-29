@@ -4,7 +4,7 @@ Table of contents
 - [How can you contribute?](#how-can-you-contribute)
   - [Help triage issues](#help-triage-issues)
   - [Updating documentation](#updating-documentation)
-  - [Help with translations](#help-with-translations)
+  - [Help with translations and localization efforts](#help-with-translations-and-localization-efforts-earth_africaearth_asiaearth_americas)
   - [Work on the code](#work-on-the-code)
 - [Getting started](#getting-started)
   - [Making changes](#making-changes)
@@ -33,11 +33,14 @@ Documentation is extremely important. There are lots of areas we can improve:
 * Helping to propose a way to bring documentation to other languages. Right now, everything is in English
 * Improving this document :smile:
 
-### Help with translations
-All text being added to Brave is done initially in English (en-US) and then is translated by real people into other languages.
-We're missing translations for many languages and some translations might be incomplete or poor quality.
+### Help with translations and localization efforts :earth_africa::earth_asia::earth_americas:
+All of the user interface text and strings added to Brave are written initially in English (en-US) and then are localized by real people into other languages. Brave supports many languages already. Though, the languages that Brave supports may vary by platform.
 
-For everything you'd need to get started, check out https://www.transifex.com/brave/brave/ :smile:
+Brave is constantly analyzing their language support to see if new languages are necessary. We pride ourselves on being a global company and want to include as many language communities as we can. Our aim is to make web privacy accessible to everyone regardless of their language. However, it is not possible to support all languages on all platforms.
+
+If you find that we are missing your preferred language or you see missing, incomplete, or poor quality translations, please [email us](mailto:localization@brave.com).
+
+Brave does consider volunteer translators on a case-by-case basis. If you represent a language community or are interested in collaborating with our team for specific projects, then please [reach out](mailto:localization@brave.com).
 
 ### Work on the code
 * The [repo's wiki](https://github.com/brave/brave-browser/wiki) has instructions for cloning the repo and getting setup on your platform of choice

@@ -22,7 +22,7 @@ branding_replacements = [
 ]
 
 
-# Strings we want to replace but that we need to use Transifex for
+# Strings we want to replace but that we need to use Crowdin for
 # to translate the XTB files
 default_replacements = [
     (r'Brave Web Store', r'Web Store'),

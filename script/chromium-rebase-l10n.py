@@ -109,7 +109,8 @@ def migrate_google_chrome_strings(brave_strings_xml_tree,
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Push strings to Transifex')
+    parser = argparse.ArgumentParser(
+        description='Rebase strings/l10n on the current Chromium version.')
     parser.add_argument('--source_string_path', nargs=1)
     return parser.parse_args()
 
@@ -225,7 +226,7 @@ def main():
     generate_overrides_and_replace_strings(source_string_path)
 
     # If you modify the translateable attribute then also update
-    # is_translateable_string function in brave/script/lib/transifex_common.py.
+    # is_translateable_string function in brave/script/lib/l10n/grd_utils.py.
     xml_tree = etree.parse(source_string_path)
     (basename, _) = filename.split('.')
     if basename == 'brave_strings':
