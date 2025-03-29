@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+     
+<resources>
+    <!-- Playlist attrs -->
+    <declare-styleable name="PlaylistToolbar">
+        <attr name="title" format="string" />
+        <attr name="showOptions" format="boolean" />
+        <attr name="showActionButton" format="boolean" />
+        <attr name="actionButtonText" format="string" />
+        <attr name="requireDarkMode" format="boolean" />
+        <attr name="backButtonIcon" format="reference" />
+        <attr name="backButtonTint" format="reference" />
+        <attr name="optionButtonIcon" format="reference" />
+        <attr name="optionButtonTint" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="BottomPanelLayout">
+        <attr name="panelHeight" format="dimension" />
+        <attr name="scrollableView" format="reference" />
+        <attr name="initialState" format="enum">
+            <enum name="expanded" value="0" />
+            <enum name="collapsed" value="1" />
+            <enum name="anchored" value="2" />
+            <enum name="hidden" value="3" />
+        </attr>
+    </declare-styleable>
+    <bool name="isTablet">false</bool>
+</resources>
