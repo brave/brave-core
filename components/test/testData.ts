@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // Initial state
-import { defaultState as rewardsData } from '../../components/brave_rewards/resources/page/reducers/default_state'
 import { defaultState as adblockData } from '../../components/brave_adblock_ui/storage'
 
 export class ChromeEvent {
@@ -22,8 +21,6 @@ export class ChromeEvent {
     this.listeners.push(cb)
   }
 }
-
-export const rewardsInitialState: Rewards.ApplicationState = { rewardsData }
 
 export const adblockInitialState: AdBlock.ApplicationState = { adblockData }
 

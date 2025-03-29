@@ -26,11 +26,6 @@ inline constexpr char kRewardsInternalsHost[] = "rewards-internals";
 inline constexpr char kWelcomeHost[] = "welcome";
 inline constexpr char kWelcomeURL[] = "chrome://welcome/";
 inline constexpr char kWelcomeJS[] = "brave_welcome.js";
-inline constexpr char kBraveRewardsPanelURL[] =
-    "chrome://rewards-panel.top-chrome";
-inline constexpr char kBraveRewardsPanelHost[] = "rewards-panel.top-chrome";
-inline constexpr char kBraveTipPanelURL[] = "chrome://tip-panel.top-chrome";
-inline constexpr char kBraveTipPanelHost[] = "tip-panel.top-chrome";
 inline constexpr char kBraveNewTabJS[] = "brave_new_tab.js";
 inline constexpr char kBraveNewsInternalsHost[] = "news-internals";
 inline constexpr char kBraveUIAdblockURL[] = "chrome://adblock/";

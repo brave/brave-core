@@ -815,13 +815,6 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
               brave_rewards::features::kAllowSelfCustodyProvidersFeature),     \
       },                                                                       \
       {                                                                        \
-          "brave-rewards-new-rewards-ui",                                      \
-          "Show the new Rewards UI",                                           \
-          "Displays the new Rewards UI.",                                      \
-          kOsDesktop | kOsAndroid,                                             \
-          FEATURE_VALUE_TYPE(brave_rewards::features::kNewRewardsUIFeature),   \
-      },                                                                       \
-      {                                                                        \
           "brave-rewards-animated-background",                                 \
           "Show an animated background on the Rewards UI",                     \
           "Shows an animated background on the Rewards panel and page.",       \
