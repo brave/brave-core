@@ -18,7 +18,6 @@
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_news/common/features.h"
@@ -837,26 +836,6 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           kOsDesktop | kOsAndroid,                                             \
           FEATURE_VALUE_TYPE(                                                  \
               brave_rewards::features::kPlatformCreatorDetectionFeature),      \
-      },                                                                       \
-      {                                                                        \
-          "brave-ads-should-always-run-brave-ads-service",                     \
-          "Should always run Brave Ads service",                               \
-          "Always run Brave Ads service to support triggering ad events when " \
-          "Brave Private Ads are disabled.",                                   \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_ads::kShouldAlwaysRunBraveAdsServiceFeature),              \
-      },                                                                       \
-      {                                                                        \
-          "brave-ads-should-always-trigger-search-result-ad-events",           \
-          "Should always trigger search result ad events",                     \
-          "Support triggering search result ad events if Brave Private Ads "   \
-          "are disabled. Requires "                                            \
-          "#brave-ads-should-always-run-brave-ads-service to be enabled.",     \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_ads::                                                      \
-                  kShouldAlwaysTriggerBraveSearchResultAdEventsFeature),       \
       },                                                                       \
       {                                                                        \
           "brave-ads-custom-push-notifications-ads",                           \

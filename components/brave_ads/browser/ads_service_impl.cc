@@ -347,10 +347,27 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
 }
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
-  return ShouldAlwaysRunService() || UserHasOptedInToBraveNewsAds() ||
-         (UserHasJoinedBraveRewards() && (UserHasOptedInToNotificationAds() ||
-                                          UserHasOptedInToNewTabPageAds() ||
-                                          UserHasOptedInToSearchResultAds()));
+  const bool user_has_opted_in_to_brave_news_ads =
+      UserHasOptedInToBraveNewsAds();
+  const bool user_has_opted_in_to_new_tab_page_ads =
+      UserHasOptedInToNewTabPageAds();
+  const bool user_has_opted_in_to_notification_ads =
+      UserHasOptedInToNotificationAds();
+  const bool user_has_opted_in_to_search_result_ads =
+      UserHasOptedInToSearchResultAds();
+
+  const bool should_start_for_non_rewards =
+      user_has_opted_in_to_brave_news_ads ||
+      (ShouldAlwaysRunService() && (user_has_opted_in_to_new_tab_page_ads ||
+                                    user_has_opted_in_to_search_result_ads));
+
+  const bool should_start_for_rewards =
+      UserHasJoinedBraveRewards() && (user_has_opted_in_to_brave_news_ads ||
+                                      user_has_opted_in_to_new_tab_page_ads ||
+                                      user_has_opted_in_to_notification_ads ||
+                                      user_has_opted_in_to_search_result_ads);
+
+  return should_start_for_non_rewards || should_start_for_rewards;
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
@@ -1034,7 +1051,12 @@ void AdsServiceImpl::CloseAllNotificationAds() {
 void AdsServiceImpl::PrefetchNewTabPageAdCallback(
     std::optional<base::Value::Dict> dict) {
   CHECK(!prefetched_new_tab_page_ad_);
-  CHECK(is_prefetching_new_tab_page_ad_);
+
+  if (!is_prefetching_new_tab_page_ad_) {
+    // `is_prefetching_new_tab_page_ad_` can be reset during shutdown, so fail
+    // gracefully.
+    return;
+  }
 
   is_prefetching_new_tab_page_ad_ = false;
 

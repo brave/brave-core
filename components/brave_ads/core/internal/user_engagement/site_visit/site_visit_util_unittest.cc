@@ -5,11 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_util.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -169,19 +167,6 @@ TEST_F(
     BraveAdsSiteVisitUtilTest,
     DoNotAllowSearchResultAdPageLandIfNonRewardsUserAndOptedInToSearchResultAds) {
   // Arrange
-  test::DisableBraveRewards();
-
-  // Act & Assert
-  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kSearchResultAd));
-}
-
-TEST_F(
-    BraveAdsSiteVisitUtilTest,
-    DoNotAllowSearchResultAdPageLandIfNonRewardsUserAndOptedInToSearchResultAdsAndShouldAlwaysTriggerSearchResultAdEvents) {
-  // Arrange
-  const base::test::ScopedFeatureList scoped_feature_list(
-      kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
-
   test::DisableBraveRewards();
 
   // Act & Assert

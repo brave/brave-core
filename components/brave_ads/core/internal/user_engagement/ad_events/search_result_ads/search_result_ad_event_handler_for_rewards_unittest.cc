@@ -25,7 +25,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_delegate_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_feature.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -66,9 +65,6 @@ class BraveAdsSearchResultAdEventHandlerForRewardsTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    scoped_feature_list_.InitAndEnableFeature(
-        kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
-
     test::ForcePermissionRules();
 
     event_handler_.SetDelegate(&delegate_mock_);
@@ -106,8 +102,6 @@ class BraveAdsSearchResultAdEventHandlerForRewardsTest : public test::TestBase {
 
     VerifyCreativeSetConversionExpectation(expected_count);
   }
-
-  base::test::ScopedFeatureList scoped_feature_list_;
 
   SearchResultAdEventHandler event_handler_;
   ::testing::StrictMock<SearchResultAdEventHandlerDelegateMock> delegate_mock_;

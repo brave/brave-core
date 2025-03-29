@@ -10,7 +10,6 @@
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
@@ -25,7 +24,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_delegate_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -67,9 +65,6 @@ class BraveAdsSearchResultAdEventHandlerForNonRewardsTest
   void SetUp() override {
     test::TestBase::SetUp();
 
-    scoped_feature_list_.InitAndEnableFeature(
-        kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
-
     test::DisableBraveRewards();
 
     event_handler_.SetDelegate(&delegate_mock_);
@@ -107,32 +102,9 @@ class BraveAdsSearchResultAdEventHandlerForNonRewardsTest
     VerifyCreativeSetConversionExpectation(expected_count);
   }
 
-  base::test::ScopedFeatureList scoped_feature_list_;
-
   SearchResultAdEventHandler event_handler_;
   ::testing::StrictMock<SearchResultAdEventHandlerDelegateMock> delegate_mock_;
 };
-
-TEST_F(BraveAdsSearchResultAdEventHandlerForNonRewardsTest,
-       DoNotFireEventIfShouldNotAlwaysTriggerAdEvents) {
-  // Arrange
-  scoped_feature_list_.Reset();
-
-  const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
-  const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
-
-  // Act & Assert
-  base::RunLoop run_loop;
-  EXPECT_CALL(delegate_mock_, OnFailedToFireSearchResultAdEvent(
-                                  ad, mojom::SearchResultAdEventType::kClicked))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  FireEventAndVerifyExpectations(mojom_creative_ad,
-                                 mojom::SearchResultAdEventType::kClicked,
-                                 /*should_fire_event=*/false);
-  run_loop.Run();
-}
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForNonRewardsTest,
        DoNotFireServedEventWithoutConversion) {
