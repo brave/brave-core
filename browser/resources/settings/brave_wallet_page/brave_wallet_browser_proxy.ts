@@ -40,12 +40,14 @@ export type SolanaProvider = Option
 
 export interface BraveWalletBrowserProxy {
   resetWallet: () => void
+  resetZCashSyncState: () => void
   getWeb3ProviderList: () => Promise<string>
   getSolanaProviderOptions: () => Promise<SolanaProvider[]>
   getTransactionSimulationOptInStatusOptions: () => Promise<Option[]>
   isNativeWalletEnabled: () => Promise<boolean>
   isBitcoinEnabled: () => Promise<boolean>
   isZCashEnabled: () => Promise<boolean>
+  isZCashShieldedTxEnabled: () => Promise<boolean>
   isCardanoEnabled: () => Promise<boolean>
   getAutoLockMinutes: () => Promise<number>
   getNetworksList: (coin: number) => Promise<NetworksList>
@@ -65,6 +67,10 @@ export interface BraveWalletBrowserProxy {
 export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
   resetWallet () {
     chrome.send('resetWallet', [])
+  }
+
+  resetZCashSyncState() {
+    chrome.send('resetZCashSyncState')
   }
 
   resetTransactionInfo () {
@@ -128,6 +134,10 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
 
   isZCashEnabled() {
     return sendWithPromise('isZCashEnabled')
+  }
+
+  isZCashShieldedTxEnabled() {
+    return sendWithPromise('isZCashShieldedTxEnabled')
   }
 
   isCardanoEnabled() {
