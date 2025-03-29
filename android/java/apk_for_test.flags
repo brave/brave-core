@@ -228,6 +228,15 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.customtabs.CustomTabActivity {
+    *** mIsEnterAnimationCompleted;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkManagerCoordinator {
     *** mMediator;
     public <init>(...);
