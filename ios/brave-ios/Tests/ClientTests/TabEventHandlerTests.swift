@@ -12,7 +12,7 @@ import XCTest
 @MainActor class TabEventHandlerTests: XCTestCase {
 
   func testEventDelivery() {
-    let tab = TabState(configuration: WKWebViewConfiguration())
+    let tab = TabStateFactory.create(with: .init())
     let handler = DummyHandler()
 
     XCTAssertNil(handler.isFocused)
@@ -25,7 +25,7 @@ import XCTest
   }
 
   func testUnregistration() {
-    let tab = TabState(configuration: WKWebViewConfiguration())
+    let tab = TabStateFactory.create(with: .init())
     let handler = DummyHandler()
 
     XCTAssertNil(handler.isFocused)
@@ -40,7 +40,7 @@ import XCTest
   }
 
   func testOnlyRegisteredForEvents() {
-    let tab = TabState(configuration: WKWebViewConfiguration())
+    let tab = TabStateFactory.create(with: .init())
     let handler = DummyHandler()
     handler.doUnregister()
 
@@ -58,7 +58,9 @@ import XCTest
   }
 
   func testOnlyRegisteredForEvents111() {
-    let tab = TabState(configuration: WKWebViewConfiguration(), type: .private)
+    let configuration = WKWebViewConfiguration()
+    configuration.websiteDataStore = .nonPersistent()
+    let tab = TabStateFactory.create(with: .init(initialConfiguration: configuration))
 
     let urlTest1 = URL(string: "https://www.brave.com")
     let urlTest2 = URL(string: "http://localhost:8080")
@@ -100,11 +102,11 @@ class DummyHandler: TabEventHandler {
     unregister(tabObservers)
   }
 
-  func tabDidGainFocus(_ tab: TabState) {
+  func tabDidGainFocus(_ tab: any TabState) {
     isFocused = true
   }
 
-  func tabDidLoseFocus(_ tab: TabState) {
+  func tabDidLoseFocus(_ tab: any TabState) {
     isFocused = false
   }
 }

@@ -7,11 +7,11 @@ import UIKit
 import Web
 
 extension BrowserViewController: SnackBarTabHelperDelegate {
-  func tab(_ tab: TabState, didAddSnackbar bar: SnackBar) {
+  func tab(_ tab: any TabState, didAddSnackbar bar: SnackBar) {
     showBar(bar, animated: true)
   }
 
-  func tab(_ tab: TabState, didRemoveSnackbar bar: SnackBar) {
+  func tab(_ tab: any TabState, didRemoveSnackbar bar: SnackBar) {
     removeBar(bar, animated: true)
   }
 

@@ -11,11 +11,11 @@ import WebKit
 class LinkPreviewViewController: UIViewController {
 
   private let url: URL
-  private weak var parentTab: TabState?
-  private var currentTab: TabState?
+  private weak var parentTab: (any TabState)?
+  private var currentTab: (any TabState)?
   private weak var browserController: BrowserViewController?
 
-  init(url: URL, for tab: TabState, browserController: BrowserViewController) {
+  init(url: URL, for tab: any TabState, browserController: BrowserViewController) {
     self.url = url
     self.parentTab = tab
     self.browserController = browserController
@@ -32,21 +32,21 @@ class LinkPreviewViewController: UIViewController {
       return
     }
 
-    currentTab = TabState(
-      configuration: parentTab.configuration,
-      type: parentTab.isPrivate ? .private : .regular
-    ).then {
-      $0.miscDelegate = browserController
-      $0.createWebview()
-      $0.addPolicyDecider(browserController)
-      $0.delegate = browserController
-      $0.downloadDelegate = browserController
-      $0.webScrollView?.layer.masksToBounds = true
-    }
+    let tab = TabStateFactory.create(
+      with: .init(
+        initialConfiguration: parentTab.configuration,
+        braveCore: browserController.braveCore
+      )
+    )
+    tab.miscDelegate = browserController
+    tab.createWebView()
+    tab.addPolicyDecider(browserController)
+    tab.delegate = browserController
+    tab.downloadDelegate = browserController
+    tab.webViewProxy?.scrollView?.layer.masksToBounds = true
+    self.currentTab = tab
 
-    guard let currentTab = currentTab,
-      let webView = currentTab.webContentView
-    else {
+    guard let currentTab = currentTab else {
       return
     }
 
@@ -60,8 +60,8 @@ class LinkPreviewViewController: UIViewController {
       }
     }
 
-    webView.frame = view.bounds
-    view.addSubview(webView)
+    currentTab.view.frame = view.bounds
+    view.addSubview(currentTab.view)
 
     currentTab.loadRequest(URLRequest(url: url))
   }

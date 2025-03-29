@@ -73,7 +73,7 @@ extension BrowserViewController: TopToolbarDelegate {
           let result = await decentralizedDNSHelper.lookup(
             domain: url.schemelessAbsoluteDisplayString
           )
-          topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+          topToolbar.locationView.loading = tabManager.selectedTab?.isLoading == true
           guard !Task.isCancelled else { return }  // user pressed stop, or typed new url
           switch result {
           case .loadInterstitial(let service):
@@ -111,7 +111,7 @@ extension BrowserViewController: TopToolbarDelegate {
     alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
 
     let toggleActionTitle =
-      tab.isDesktopSite == true
+      tab.currentUserAgentType == .desktop
       ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString
     alert.addAction(
       UIAlertAction(
@@ -212,7 +212,7 @@ extension BrowserViewController: TopToolbarDelegate {
   func topToolbarDidPressScrollToTop(_ topToolbar: TopToolbarView) {
     if let selectedTab = tabManager.selectedTab, favoritesController == nil {
       // Only scroll to top if we are not showing the home view controller
-      selectedTab.webScrollView?.setContentOffset(CGPoint.zero, animated: true)
+      selectedTab.webViewProxy?.scrollView?.setContentOffset(CGPoint.zero, animated: true)
     }
   }
 
@@ -306,7 +306,7 @@ extension BrowserViewController: TopToolbarDelegate {
       let result = await decentralizedDNSHelper.lookup(
         domain: fixupURL.schemelessAbsoluteDisplayString
       )
-      topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+      topToolbar.locationView.loading = tabManager.selectedTab?.isLoading == true
       guard !Task.isCancelled else { return true }  // user pressed stop, or typed new url
       switch result {
       case .loadInterstitial(let service):
@@ -437,7 +437,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
   private func navigate(
     to target: ShieldsPanelView.Action.NavigationTarget,
-    tab: TabState,
+    tab: any TabState,
     url: URL,
     on viewController: UIViewController?
   ) {
@@ -538,7 +538,7 @@ extension BrowserViewController: TopToolbarDelegate {
     self.present(container, animated: true)
   }
 
-  func shredData(for url: URL, in tab: TabState) {
+  func shredData(for url: URL, in tab: any TabState) {
     LottieAnimationView.showShredAnimation(on: view) {
       self.tabManager.shredData(for: url, in: tab)
     }
@@ -703,9 +703,8 @@ extension BrowserViewController: TopToolbarDelegate {
     if searchController != nil { return }
 
     // Setting up data source for SearchSuggestions
-    let tabType = TabType.of(tabManager.selectedTab)
     let searchDataSource = SearchSuggestionDataSource(
-      forTabType: tabType,
+      isPrivate: tabManager.selectedTab?.isPrivate ?? false,
       searchEngines: profile.searchEngines
     )
 
@@ -1055,7 +1054,7 @@ extension BrowserViewController: ToolbarDelegate {
       (tab.serverTrust ?? (try? ErrorPageHelper.serverTrust(from: url))) != nil
     let pageSecurityView = PageSecurityView(
       displayURL: urlBar.locationView.urlDisplayLabel.text ?? url.absoluteDisplayString,
-      secureState: tab.lastKnownSecureContentState,
+      secureState: tab.visibleSecureContentState,
       hasCertificate: hasCertificate,
       presentCertificateViewer: { [weak self] in
         self?.dismiss(animated: true)
@@ -1096,10 +1095,10 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func stopTabToolbarLoading() {
-    tabManager.selectedTab?.stop()
+    tabManager.selectedTab?.stopLoading()
     processAddressBarTask?.cancel()
     topToolbarDidPressReloadTask?.cancel()
-    topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+    topToolbar.locationView.loading = tabManager.selectedTab?.isLoading == true
   }
 }
 
@@ -1124,9 +1123,9 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
   private func makeReloadMenu() -> UIMenu? {
     guard let tab = tabManager.selectedTab, let url = tab.url, url.isWebPage() else { return nil }
     let reloadTitle =
-      tab.isDesktopSite == true
+      tab.currentUserAgentType == .desktop
       ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString
-    let reloadIcon = tab.isDesktopSite == true ? "leo.smartphone" : "leo.monitor"
+    let reloadIcon = tab.currentUserAgentType == .desktop ? "leo.smartphone" : "leo.monitor"
     let reloadAction = UIAction(
       title: reloadTitle,
       image: UIImage(braveSystemNamed: reloadIcon),

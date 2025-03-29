@@ -13,8 +13,8 @@ import UIKit
 import Web
 
 extension BrowserViewController: TabObserver {
-  public func tab(_ tab: TabState, didCreateWebView webView: UIView) {
-    webView.frame = webViewContainer.frame
+  public func tabDidCreateWebView(_ tab: any TabState) {
+    tab.view.frame = webViewContainer.frame
 
     var injectedScripts: [TabContentScript] = [
       ReaderModeScriptHandler(),
@@ -101,20 +101,17 @@ extension BrowserViewController: TabObserver {
       as? PlaylistFolderSharingScriptHandler)?.delegate = self
     (tab.browserData?.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
       as? Web3NameServiceScriptHandler)?.delegate = self
-
-    // Translate Helper
-    tab.translateHelper = BraveTranslateTabHelper(tab: tab, delegate: self)
   }
 
-  public func tab(_ tab: TabState, willDeleteWebView webView: UIView) {
+  public func tabWillDeleteWebView(_ tab: any TabState) {
     tab.browserData?.cancelQueuedAlerts()
-    if let scrollView = tab.webScrollView {
+    if let scrollView = tab.webViewProxy?.scrollView {
       toolbarVisibilityViewModel.endScrollViewObservation(scrollView)
     }
-    webView.removeFromSuperview()
+    tab.view.removeFromSuperview()
   }
 
-  public func tabDidStartNavigation(_ tab: TabState) {
+  public func tabDidStartNavigation(_ tab: any TabState) {
     tab.contentBlocker?.clearPageStats()
 
     let visibleURL = tab.url
@@ -158,7 +155,7 @@ extension BrowserViewController: TabObserver {
     hideToastsOnNavigationStartIfNeeded(tabManager)
   }
 
-  public func tabDidCommitNavigation(_ tab: TabState) {
+  public func tabDidCommitNavigation(_ tab: any TabState) {
     // Reset the stored http request now that load has committed.
     tab.upgradedHTTPSRequest = nil
     tab.upgradeHTTPSTimeoutTimer?.invalidate()
@@ -207,7 +204,7 @@ extension BrowserViewController: TabObserver {
     // before the tab is considered loaded.
     rewards.maybeNotifyTabDidChange(
       tab: tab,
-      isSelected: tabManager.selectedTab == tab
+      isSelected: tabManager.selectedTab === tab
     )
     rewards.maybeNotifyTabDidLoad(tab: tab)
 
@@ -222,7 +219,7 @@ extension BrowserViewController: TabObserver {
     updateBackForwardActionStatus(for: tab)
   }
 
-  public func tabDidFinishNavigation(_ tab: TabState) {
+  public func tabDidFinishNavigation(_ tab: any TabState) {
     if !Preferences.Privacy.privateBrowsingOnly.value
       && (!tab.isPrivate || Preferences.Privacy.persistentPrivateBrowsing.value)
     {
@@ -255,7 +252,7 @@ extension BrowserViewController: TabObserver {
     navigateInTab(tab: tab)
     rewards.reportTabUpdated(
       tab: tab,
-      isSelected: tabManager.selectedTab == tab,
+      isSelected: tabManager.selectedTab === tab,
       isPrivate: privateBrowsingManager.isPrivateBrowsing
     )
     tab.browserData?.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
@@ -277,7 +274,7 @@ extension BrowserViewController: TabObserver {
       tab.browserData?.emitEthereumEvent(.connect)
     }
 
-    if let lastCommittedURL = tab.committedURL {
+    if let lastCommittedURL = tab.lastCommittedURL {
       maybeRecordBraveSearchDailyUsage(url: lastCommittedURL)
     }
 
@@ -288,7 +285,7 @@ extension BrowserViewController: TabObserver {
     recordFinishedPageLoadP3A()
   }
 
-  public func tab(_ tab: TabState, didFailNavigationWithError error: any Error) {
+  public func tab(_ tab: any TabState, didFailNavigationWithError error: any Error) {
     let error = error as NSError
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
       // load cancelled / user stopped load. Cancel https upgrade fallback timer.
@@ -324,7 +321,7 @@ extension BrowserViewController: TabObserver {
     }
   }
 
-  public func tabDidUpdateURL(_ tab: TabState) {
+  public func tabDidUpdateURL(_ tab: any TabState) {
     if tab.isDisplayingBasicAuthPrompt == true {
       tab.setVirtualURL(
         URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
@@ -335,7 +332,7 @@ extension BrowserViewController: TabObserver {
       updateUIForReaderHomeStateForTab(tab)
     }
 
-    if tab.url?.origin == tab.previousComittedURL?.origin {
+    if tab.url?.origin == tab.previousCommittedURL?.origin {
       // Catch history pushState navigation, but ONLY for same origin navigation,
       // for reasons above about URL spoofing risk.
       navigateInTab(tab: tab)
@@ -350,7 +347,7 @@ extension BrowserViewController: TabObserver {
           updateToolbarCurrentURL(url.displayURL)
         }
       } else if tab === tabManager.selectedTab, tab.url?.displayURL?.scheme == "about",
-        !tab.loading
+        !tab.isLoading
       {
         if !tab.isRestoring {
           updateUIForReaderHomeStateForTab(tab)
@@ -386,14 +383,13 @@ extension BrowserViewController: TabObserver {
     }
 
     Task {
-      await tab.updateSecureContentState()
       if self.tabManager.selectedTab === tab {
-        self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
+        self.updateToolbarSecureContentState(tab.visibleSecureContentState)
       }
     }
   }
 
-  public func tabDidChangeLoadProgress(_ tab: TabState) {
+  public func tabDidChangeLoadProgress(_ tab: any TabState) {
     guard tab === tabManager.selectedTab else { return }
     if let url = tab.visibleURL, !InternalURL.isValid(url: url) {
       topToolbar.updateProgressBar(Float(tab.estimatedProgress))
@@ -402,20 +398,20 @@ extension BrowserViewController: TabObserver {
     }
   }
 
-  public func tabDidStartLoading(_ tab: TabState) {
+  public func tabDidStartLoading(_ tab: any TabState) {
     guard tab === tabManager.selectedTab else { return }
-    topToolbar.locationView.loading = tab.loading
+    topToolbar.locationView.loading = tab.isLoading
   }
 
-  public func tabDidStopLoading(_ tab: TabState) {
+  public func tabDidStopLoading(_ tab: any TabState) {
     guard tab === tabManager.selectedTab else { return }
-    topToolbar.locationView.loading = tab.loading
+    topToolbar.locationView.loading = tab.isLoading
     if tab.estimatedProgress != 1 {
       topToolbar.updateProgressBar(1)
     }
   }
 
-  public func tabDidChangeTitle(_ tab: TabState) {
+  public func tabDidChangeTitle(_ tab: any TabState) {
     // Ensure that the tab title *actually* changed to prevent repeated calls
     // to navigateInTab(tab:).
     guard
@@ -427,18 +423,18 @@ extension BrowserViewController: TabObserver {
     }
   }
 
-  public func tabDidChangeBackForwardState(_ tab: TabState) {
+  public func tabDidChangeBackForwardState(_ tab: any TabState) {
     if tab !== tabManager.selectedTab { return }
     updateBackForwardActionStatus(for: tab)
   }
 
-  public func tabDidChangeVisibleSecurityState(_ tab: TabState) {
+  public func tabDidChangeVisibleSecurityState(_ tab: any TabState) {
     if tabManager.selectedTab === tab {
-      self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
+      self.updateToolbarSecureContentState(tab.visibleSecureContentState)
     }
   }
 
-  public func tabDidChangeSampledPageTopColor(_ tab: TabState) {
+  public func tabDidChangeSampledPageTopColor(_ tab: any TabState) {
     if tabManager.selectedTab === tab {
       updateStatusBarOverlayColor()
     }

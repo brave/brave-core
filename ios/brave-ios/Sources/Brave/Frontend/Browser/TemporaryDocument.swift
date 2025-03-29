@@ -10,7 +10,7 @@ import Web
 private let temporaryDocumentOperationQueue = OperationQueue()
 
 class TemporaryDocument: NSObject {
-  private weak var tab: TabState?
+  private weak var tab: (any TabState)?
   private let request: URLRequest
   private let filename: String
 
@@ -21,7 +21,7 @@ class TemporaryDocument: NSObject {
   private var pendingContinuation: CheckedContinuation<URL, Never>?
   private var pendingTask: Task<URL, Never>?
 
-  init(preflightResponse: URLResponse, request: URLRequest, tab: TabState) {
+  init(preflightResponse: URLResponse, request: URLRequest, tab: any TabState) {
     self.request = request
     self.filename = preflightResponse.suggestedFilename ?? "unknown"
     self.tab = tab

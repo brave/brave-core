@@ -392,7 +392,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     }
   }
 
-  private func addListOfBookmarks(_ tabs: [TabState], parentFolder: Bookmarkv2? = nil) {
+  private func addListOfBookmarks(_ tabs: [any TabState], parentFolder: Bookmarkv2? = nil) {
     isLoading = true
 
     for tab in tabs {

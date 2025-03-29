@@ -9,15 +9,15 @@ import UIKit
 import Web
 
 extension BrowserViewController {
-  func launchNativeBraveTalk(tab: TabState?, room: String, token: String) {
+  func launchNativeBraveTalk(tab: (any TabState)?, room: String, token: String) {
     #if canImport(BraveTalk)
-    guard let host = tab?.committedURL?.host else { return }
+    guard let host = tab?.lastCommittedURL?.host else { return }
     braveTalkJitsiCoordinator.launchNativeBraveTalk(
       for: room,
       token: token,
       host: host,
       onEnterCall: { [weak tab] in
-        tab?.stop()
+        tab?.stopLoading()
       },
       onExitCall: { [weak self] in
         guard let self = self else { return }

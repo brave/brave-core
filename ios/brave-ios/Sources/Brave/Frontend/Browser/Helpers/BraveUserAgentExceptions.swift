@@ -6,6 +6,7 @@
 import BraveCore
 import Foundation
 import Storage
+import Web
 
 extension TabDataValues {
   private struct BraveUserAgentExceptionsKey: TabDataKey {

@@ -161,7 +161,7 @@ class SnackBar: UIView {
   /// Called to check if the snackbar should be removed or not. By default, Snackbars persist forever.
   /// Override this class or use a class like CountdownSnackbar if you want things expire
   /// - returns: true if the snackbar should be kept alive
-  func shouldPersist(_ tab: TabState) -> Bool {
+  func shouldPersist(_ tab: any TabState) -> Bool {
     return true
   }
 
@@ -232,7 +232,7 @@ class TimerSnackBar: SnackBar {
     self.timer = nil
   }
 
-  override func shouldPersist(_ tab: TabState) -> Bool {
+  override func shouldPersist(_ tab: any TabState) -> Bool {
     if !showing {
       return timer != nil
     }
