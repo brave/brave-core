@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/android/android_browser_tests.gni")
+import("//brave/browser/brave_screenshots/buildflags/buildflags.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/metrics/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
@@ -475,6 +476,10 @@ test("brave_unit_tests") {
 
   if (enable_commander) {
     deps += [ "//brave/browser/ui/commander:unit_tests" ]
+  }
+
+  if (enable_brave_screenshots) {
+    deps += [ "//brave/browser/brave_screenshots:unit_tests" ]
   }
 
   if (enable_captive_portal_detection) {
