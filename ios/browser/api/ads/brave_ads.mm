@@ -208,6 +208,11 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
       brave_ads::prefs::kShouldShowSearchResultAdClickedInfoBar);
 }
 
+- (BOOL)shouldShowNewTabTakeoverInfoBar {
+  return self.profilePrefService->GetBoolean(
+      brave_ads::prefs::kShowNewTabTakeoverInfobar);
+}
+
 - (void)notifyBraveNewsIsEnabledPreferenceDidChange:(BOOL)isEnabled {
   [self setProfilePref:brave_news::prefs::kBraveNewsOptedIn
                  value:base::Value(isEnabled)];
@@ -1528,10 +1533,19 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
     return completion(/*success=*/false);
   }
 
+  const brave_ads::mojom::NewTabPageAdEventType mojom_event_type =
+      static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType);
+
+  // Show the new tab takeover info bar on the first viewed impression only.
+  if (mojom_event_type ==
+      brave_ads::mojom::NewTabPageAdEventType::kViewedImpression) {
+    self.profilePrefService->SetBoolean(
+        brave_ads::prefs::kShowNewTabTakeoverInfobar, false);
+  }
+
   adsService->TriggerNewTabPageAdEvent(
       base::SysNSStringToUTF8(wallpaperId),
-      base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType),
+      base::SysNSStringToUTF8(creativeInstanceId), mojom_event_type,
       base::BindOnce(completion));
 }
 

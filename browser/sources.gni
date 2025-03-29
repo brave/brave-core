@@ -607,6 +607,7 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/ui",
   "//brave/browser/brave_ads:impl",
   "//brave/browser/brave_ads/creatives/search_result_ad",
+  "//brave/browser/ntp_background",
 ]
 
 # https://github.com/brave/brave-browser/issues/41418
