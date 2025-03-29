@@ -94,12 +94,11 @@ base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
                                          const MessageMetainfo& meta,
                                          const std::string& upload_type);
 
-std::string GenerateP3AConstellationMessage(
-    std::string_view metric_name,
-    uint64_t metric_value,
-    const MessageMetainfo& meta,
-    const std::string& upload_type,
-    const std::optional<MetricConfig>& metric_config);
+std::string GenerateP3AConstellationMessage(std::string_view metric_name,
+                                            uint64_t metric_value,
+                                            const MessageMetainfo& meta,
+                                            const std::string& upload_type,
+                                            const MetricConfig* metric_config);
 
 }  // namespace p3a
 

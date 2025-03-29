@@ -32,8 +32,10 @@ class P3AMetricLogStoreTest : public testing::Test,
            "_" + base::NumberToString(is_constellation) + "_" + upload_type;
   }
 
-  bool IsActualMetric(const std::string& histogram_name) const override {
-    return p3a::kCollectedTypicalHistograms.contains(histogram_name);
+  bool DoesMetricExistForLogType(const std::string& histogram_name,
+                                 MetricLogType log_type) const override {
+    return log_type == MetricLogType::kTypical &&
+           p3a::kCollectedTypicalHistograms.contains(histogram_name);
   }
 
   bool IsEphemeralMetric(const std::string& histogram_name) const override {
