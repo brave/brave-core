@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <include name="IDR_EMAIL_ALIASES_BUBBLE_HTML" file="../email_aliases/browser/resources/email_aliases_bubble.html" type="BINDATA" />
+</grit-part>
