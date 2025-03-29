@@ -63,6 +63,9 @@ void ZCashTxManager::AddUnapprovedTransaction(
     return;
   }
 
+  uint64_t amount =
+      zec_tx_data->sending_max_amount ? kZCashFullAmount : zec_tx_data->amount;
+
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     std::optional<OrchardMemo> memo = ToOrchardMemo(zec_tx_data->memo);
@@ -72,7 +75,7 @@ void ZCashTxManager::AddUnapprovedTransaction(
     }
     if (tx_result.value() == mojom::ZCashTxType::kOrchardToOrchard) {
       zcash_wallet_service_->CreateOrchardToOrchardTransaction(
-          chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount, memo,
+          chain_id, from->Clone(), zec_tx_data->to, amount, memo,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                          weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
                          origin, std::move(callback)));
@@ -80,7 +83,7 @@ void ZCashTxManager::AddUnapprovedTransaction(
     } else if (tx_result.value() == mojom::ZCashTxType::kTransparentToOrchard ||
                tx_result.value() == mojom::ZCashTxType::kShielding) {
       zcash_wallet_service_->CreateTransparentToOrchardTransaction(
-          chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount, memo,
+          chain_id, from->Clone(), zec_tx_data->to, amount, memo,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                          weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
                          origin, std::move(callback)));
@@ -90,7 +93,7 @@ void ZCashTxManager::AddUnapprovedTransaction(
 #endif
   if (tx_result.value() == mojom::ZCashTxType::kTransparentToTransparent) {
     zcash_wallet_service_->CreateFullyTransparentTransaction(
-        chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount,
+        chain_id, from->Clone(), zec_tx_data->to, amount,
         base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                        weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
                        origin, std::move(callback)));

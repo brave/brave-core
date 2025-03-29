@@ -2054,6 +2054,7 @@ struct ZecTxOutput {
 struct ZecTxData {
   bool use_shielded_pool;
   string to;
+  bool sending_max_amount;
   // Memo field should exist only for shielded output.
   array<uint8>? memo;
   uint64 amount;
