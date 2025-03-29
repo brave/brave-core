@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index 2cd6ca756a745e1387469914eb3d649dff104ccb..85ededbcaee08c17355571e5749f811e777cdc2d 100644
+index a0d9ecaa8da4b79fcb920c1d0ff10361aeb75b50..8276a4ca91bf2496bedc18ebd477547539e61895 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,9 @@
@@ -30,7 +30,7 @@ index 2cd6ca756a745e1387469914eb3d649dff104ccb..85ededbcaee08c17355571e5749f811e
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -951,6 +954,9 @@
+@@ -971,6 +974,9 @@
      # Big alignment at start of section.
      "messages": [7020],
    },
@@ -40,12 +40,17 @@ index 2cd6ca756a745e1387469914eb3d649dff104ccb..85ededbcaee08c17355571e5749f811e
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1447,7 +1453,7 @@
+@@ -1471,11 +1477,11 @@
      "includes": [9980],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {
+-    "META": {"sizes": {"includes": [250]}},
++    "META": {"sizes": {"includes": [252]}},
+     "includes": [9990],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_resources.grd": {
 -    "META": {"sizes": {"includes": [1100]}},
-+    "META": {"sizes": {"includes": [1113]}},
++    "META": {"sizes": {"includes": [1118]}},
      "includes": [10000],
    },
    "weblayer/weblayer_resources.grd": {

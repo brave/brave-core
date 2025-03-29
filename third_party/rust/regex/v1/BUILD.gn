@@ -1,3 +1,118 @@
-group("lib") {
-  public_deps = [ "//third_party/rust/regex/v1:lib" ]
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "regex"
+  epoch = "1"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/builders.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/find_byte.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/pattern.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regex/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regex/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regex/string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regexset/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regexset/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regexset/string.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "1.11.1"
+  cargo_pkg_authors =
+      "The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>"
+  cargo_pkg_name = "regex"
+  cargo_pkg_description = "An implementation of regular expressions for Rust. This implementation uses finite automata and guarantees linear time matching on all inputs."
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/aho_corasick/v1:lib",
+    "//brave/third_party/rust/memchr/v2:lib",
+    "//brave/third_party/rust/regex_automata/v0_4:lib",
+    "//brave/third_party/rust/regex_syntax/v0_8:lib",
+  ]
+  features = [
+    "perf",
+    "perf-backtrack",
+    "perf-cache",
+    "perf-dfa",
+    "perf-inline",
+    "perf-literal",
+    "perf-onepass",
+    "std",
+    "unicode",
+    "unicode-age",
+    "unicode-bool",
+    "unicode-case",
+    "unicode-gencat",
+    "unicode-perl",
+    "unicode-script",
+    "unicode-segment",
+  ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
+}
+cargo_crate("buildrs_support") {
+  crate_name = "regex"
+  epoch = "1"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/builders.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/find_byte.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/pattern.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regex/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regex/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regex/string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regexset/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regexset/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/src/regexset/string.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "1.11.1"
+  cargo_pkg_authors =
+      "The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>"
+  cargo_pkg_name = "regex"
+  cargo_pkg_description = "An implementation of regular expressions for Rust. This implementation uses finite automata and guarantees linear time matching on all inputs."
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/aho_corasick/v1:lib",
+    "//brave/third_party/rust/memchr/v2:lib",
+    "//brave/third_party/rust/regex_automata/v0_4:lib",
+    "//brave/third_party/rust/regex_syntax/v0_8:lib",
+  ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

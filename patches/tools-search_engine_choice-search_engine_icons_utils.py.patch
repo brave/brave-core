@@ -1,8 +1,8 @@
 diff --git a/tools/search_engine_choice/search_engine_icons_utils.py b/tools/search_engine_choice/search_engine_icons_utils.py
-index 9d0a2fdaef3443118722e7dd9d934e329fc14a77..949044596b15c31fce887ccaf0c4a03fc196a8e0 100644
+index 418a690eeffd2c97104b87562de78c14ddf58958..095061b34846d16927b231e6ff788b6e2c802bca 100644
 --- a/tools/search_engine_choice/search_engine_icons_utils.py
 +++ b/tools/search_engine_choice/search_engine_icons_utils.py
-@@ -89,3 +89,4 @@ try:
+@@ -94,3 +94,4 @@ try:
    import json_comment_eater
  finally:
    sys.path.pop(0)

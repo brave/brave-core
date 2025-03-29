@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 65a00e22d94d99bf32a316e73ce73101d97006f0..4bdac5c0889805c991cf4ba28df5183f33d3519a 100644
+index 388ce0b1694d410c7d0315a021419d6a63153d71..a4fcd1058b8bb43ecca45cf65f199bf364ebe5ef 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1380,6 +1380,7 @@ const FeatureEntry::FeatureVariation kBestFeaturesScreenInFirstRunVariations[] =
+@@ -1428,6 +1428,7 @@ const FeatureEntry::FeatureVariation
  //
  // When adding a new choice, add it to the end of the list.
  const flags_ui::FeatureEntry kFeatureEntries[] = {

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 
+#include <variant>
+
 #include "base/test/bind.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -111,7 +113,7 @@ IN_PROC_BROWSER_TEST_F(DirectFeedFetcherBrowserTest, RedirectToFeed) {
   fetcher_->DownloadFeed(
       feed2_url, "test_publisher",
       base::BindLambdaForTesting([&](DirectFeedResponse response) {
-        const auto& result = absl::get<DirectFeedResult>(response.result);
+        const auto& result = std::get<DirectFeedResult>(response.result);
         ASSERT_EQ(1u, result.articles.size());
         EXPECT_EQ(feed2_url.spec(), response.url.spec());
         EXPECT_EQ("Hacker News", result.title);

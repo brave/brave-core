@@ -17,6 +17,6 @@ version = "1.0.83"
 "parallel" = []
 
 [dependencies.libc]
-version = "*"
+version = "^0.2.62"
 default_features = false
 features = []

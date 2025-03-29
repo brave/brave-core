@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 51a239344ece084daaa83d7f1c48dd953a8d4eef..8278bec2bf2960be713301b86fbde70bee14df4d 100644
+index ac72ab9f7d48d178514521824932efdb927bfec4..351892335542a862a7787b04d35daefcc603a872 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
-@@ -543,6 +543,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -542,6 +542,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+ 
    std::vector<gfx::Rect> CalculateBoundsForDraggedViews(
-       const std::vector<raw_ptr<TabSlotView, VectorExperimental>>& views)
-       override {
-+    BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
+       const std::vector<TabSlotView*>& views) override {
++        BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
      CHECK(!views.empty(), base::NotFatalUntil::M128)
          << "The views vector must not be empty.";
  
-@@ -839,6 +840,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -834,6 +835,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
          continue;
        }
  

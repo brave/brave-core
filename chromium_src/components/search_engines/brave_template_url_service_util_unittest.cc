@@ -24,7 +24,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace TemplateURLPrepopulateData {
-extern void LocalizeEngineList(int country_id,
+extern void LocalizeEngineList(country_codes::CountryId country_id,
                                std::vector<BravePrepopulatedEngineID>* engines);
 }
 
@@ -113,16 +113,15 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   GetSearchProvidersUsingKeywordResult(
       result.GetValue(), nullptr,
       &search_engines_test_environment_.pref_service(),
-      &search_engines_test_environment_.search_engine_choice_service(),
       search_engines_test_environment_.prepopulate_data_resolver(),
       &template_urls, default_turl.get(), SearchTermsData(),
       updated_keywords_metadata, nullptr);
 
   // Verify count and order.
   // Default prepopulated engines order is :br, :g, :d, :q, :b, :sp
-  TestDefaultOrder(template_urls,
-                   {":br", ":g", ":d", ":q", ":b", ":sp", ":ya", "random1",
-                    "random2", "@bookmarks", "@history", "@tabs", "@gemini"});
+  TestDefaultOrder(template_urls, {":br", ":g", ":d", ":q", ":b", ":sp", ":ya",
+                                   "random1", "random2", "@bookmarks",
+                                   "@history", "@tabs", "@gemini", "@page"});
 }
 
 TEST_F(BraveTemplateURLServiceUtilTest,
@@ -149,7 +148,6 @@ TEST_F(BraveTemplateURLServiceUtilTest,
   GetSearchProvidersUsingKeywordResult(
       result.GetValue(), nullptr,
       &search_engines_test_environment_.pref_service(),
-      &search_engines_test_environment_.search_engine_choice_service(),
       search_engines_test_environment_.prepopulate_data_resolver(),
       &template_urls, default_turl.get(), SearchTermsData(),
       updated_keywords_metadata, nullptr);
@@ -158,5 +156,5 @@ TEST_F(BraveTemplateURLServiceUtilTest,
   // Prepopulated engines order for DE is :br, :d, :q, :g, :sp, :e
   TestDefaultOrder(template_urls,
                    {":br", ":d", ":q", ":g", ":b", ":sp", ":e", ":ya",
-                    "@bookmarks", "@history", "@tabs", "@gemini"});
+                    "@bookmarks", "@history", "@tabs", "@gemini", "@page"});
 }

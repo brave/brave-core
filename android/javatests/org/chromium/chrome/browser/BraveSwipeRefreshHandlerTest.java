@@ -8,7 +8,6 @@ package org.chromium.chrome.browser;
 import androidx.test.filters.SmallTest;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,9 +46,6 @@ public class BraveSwipeRefreshHandlerTest {
     @Rule
     public BlankCTATabInitialStateRule mInitialStateRule =
             new BlankCTATabInitialStateRule(sActivityTestRule, false);
-
-    @Before
-    public void setUp() throws Exception {}
 
     private TabbedModeTabDelegateFactory createTabDelegateFactory() {
         BrowserControlsVisibilityDelegate visibilityDelegate =

@@ -23,10 +23,10 @@ rust_static_library("lib") {
     "//brave/third_party/rust/lifeguard/v0_6:lib",
     "//brave/third_party/rust/lol_html/v2:lib",
     "//brave/third_party/rust/markup5ever/v0_14:lib",
+    "//brave/third_party/rust/regex/v1:lib",
+    "//brave/third_party/rust/serde_json/v1:lib",
     "//brave/third_party/rust/thiserror/v1:lib",
     "//brave/third_party/rust/url/v2:lib",
     "//third_party/rust/lazy_static/v1:lib",
-    "//third_party/rust/regex/v1:lib",
-    "//third_party/rust/serde_json/v1:lib",
   ]
 }

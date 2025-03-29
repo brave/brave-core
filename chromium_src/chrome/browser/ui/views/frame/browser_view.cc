@@ -7,6 +7,7 @@
 // therefore avoid undef before use.
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
+#include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 #include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
@@ -31,6 +32,11 @@
 #define BookmarkBarView BraveBookmarkBarView
 #define UpdateExclusiveAccessBubble UpdateExclusiveAccessBubble_ChromiumImpl
 
+#define BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST \
+  if (dst->GetWidget() != src->GetWidget()) {        \
+    return false;                                    \
+  }
+
 #include "src/chrome/browser/ui/views/frame/browser_view.cc"
 
 #undef UpdateExclusiveAccessBubble
@@ -41,6 +47,7 @@
 #undef ToolbarView
 #undef BrowserViewLayout
 #undef InfoBarContainerView
+#undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
 
 views::View* BrowserView::GetContentsContainerForLayoutManager() {
   return contents_container();

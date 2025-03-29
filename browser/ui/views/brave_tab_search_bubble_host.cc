@@ -36,13 +36,15 @@ bool BraveTabSearchBubbleHost::ShowTabSearchBubble(
   anchor_widget = anchor_widget->GetTopLevelWidget();
   DCHECK(anchor_widget);
 
-#if DCHECK_IS_ON()
-  // This path is reachable only when it's vertical tabs.
   auto* browser_view = BrowserView::GetBrowserViewForNativeWindow(
       anchor_widget->GetNativeWindow());
+#if DCHECK_IS_ON()
   DCHECK(browser_view);
-  DCHECK(tabs::utils::ShouldShowVerticalTabs(browser_view->browser()));
 #endif
+
+  if (!tabs::utils::ShouldShowVerticalTabs(browser_view->browser())) {
+    return result;
+  }
 
   bubble_delegate->SetArrow(*arrow_);
 

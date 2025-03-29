@@ -1,0 +1,12 @@
+diff --git a/components/regional_capabilities/BUILD.gn b/components/regional_capabilities/BUILD.gn
+index cf1da286c709674be0379005602821b277865c58..e12e06e90c8f5483896336f7b97dee2fcb3dc6fa 100644
+--- a/components/regional_capabilities/BUILD.gn
++++ b/components/regional_capabilities/BUILD.gn
+@@ -42,6 +42,7 @@ source_set("country_access_reason") {
+     "//chrome/browser/ui:ui",
+     "//components/search_engines:search_engines",
+   ]
++  import("//brave/browser/search_engines/sources.gni") visibility += brave_browser_search_engines_visibility + [ "//brave/browser/brave_ads:impl" ]
+ 
+   sources = [ "access/country_access_reason.h" ]
+ 

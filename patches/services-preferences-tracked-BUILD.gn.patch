@@ -1,8 +1,8 @@
 diff --git a/services/preferences/tracked/BUILD.gn b/services/preferences/tracked/BUILD.gn
-index 551ab8ca8da7e1d6b11ba7cd6fbd44743b2418c9..efd754da15d30dd66919f4046e787a1447d0ff5d 100644
+index d7f3d6277da1f8729d8d5bda6952b946af228eae..daaaa836725502e4b43a1f71a51b2587b6b75b21 100644
 --- a/services/preferences/tracked/BUILD.gn
 +++ b/services/preferences/tracked/BUILD.gn
-@@ -59,6 +59,7 @@ source_set("tracked") {
+@@ -64,6 +64,7 @@ source_set("tracked") {
    if (is_mac) {
      frameworks = [ "IOKit.framework" ]
    }
