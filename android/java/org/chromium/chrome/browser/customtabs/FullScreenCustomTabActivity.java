@@ -36,6 +36,9 @@ import org.chromium.ui.util.ColorUtils;
 /** New Rewards 3.0 custom tab activity */
 public class FullScreenCustomTabActivity extends CustomTabActivity {
 
+    // Unused members, never read:
+    // - mIsEnterAnimationCompleted
+    @SuppressWarnings("UnusedVariable")
     private boolean mIsEnterAnimationCompleted;
 
     private static final int CLOSE_BUTTON_MARGIN = 16;
