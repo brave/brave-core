@@ -495,12 +495,13 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackgroundAt(
 
   return base::Value::Dict()
       .Set(kCampaignIdKey, campaign.campaign_id)
-      .Set(kCampaignMetricsKey, creative.should_metrics_fallback_to_p3a)
       .Set(kCreativeInstanceIDKey, creative.creative_instance_id)
       .Set(kThemeNameKey, theme_name)
       .Set(kIsSponsoredKey, !IsSuperReferral())
       .Set(kIsBackgroundKey, false)
       .Set(kWallpaperIDKey, base::Uuid::GenerateRandomV4().AsLowercaseString())
+      .Set(kWallpaperShouldMetricsFallbackToP3aKey,
+           creative.should_metrics_fallback_to_p3a)
       .Set(kWallpaperURLKey, creative.url.spec())
       .Set(kWallpaperFilePathKey, creative.file_path.AsUTF8Unsafe())
       .Set(kWallpaperFocalPointXKey, creative.focal_point.x())
