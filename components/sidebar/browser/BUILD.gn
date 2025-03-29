@@ -11,6 +11,7 @@ assert(toolkit_views)
 static_library("browser") {
   sources = [
     "constants.h",
+    "mobile_view_id.h",
     "pref_names.h",
     "sidebar_item.cc",
     "sidebar_item.h",
