@@ -114,15 +114,35 @@ def override_scope_variable(scope,
         yield
         return
 
-    var_exist = hasattr(scope, name)
+    is_dict_scope = isinstance(scope, dict)
+
+    def _has(scope, name):
+        return name in scope if is_dict_scope else hasattr(scope, name)
+
+    def _get(scope, name):
+        return scope[name] if is_dict_scope else getattr(scope, name)
+
+    def _set(scope, name, value):
+        if is_dict_scope:
+            scope[name] = value
+        else:
+            setattr(scope, name, value)
+
+    def _del(scope, name):
+        if is_dict_scope:
+            del scope[name]
+        else:
+            delattr(scope, name)
+
+    var_exist = _has(scope, name)
     if fail_if_not_found and not var_exist:
         raise NameError(f'Failed to override scope variable: {name} not found')
-    original_value = getattr(scope, name) if var_exist else None
+    original_value = _get(scope, name) if var_exist else None
     try:
-        setattr(scope, name, value)
+        _set(scope, name, value)
         yield
     finally:
         if var_exist:
-            setattr(scope, name, original_value)
+            _set(scope, name, original_value)
         else:
-            delattr(scope, name)
+            _del(scope, name)

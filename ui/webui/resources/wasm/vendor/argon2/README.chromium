@@ -1,0 +1,6 @@
+Name: argon2
+URL: https://crates.io/crates/argon2
+Version: 0.5.3
+License: Apache-2.0
+License File: //brave/ui/webui/resources/wasm/vendor/argon2/LICENSE-APACHE
+Description: Pure Rust implementation of the Argon2 password hashing function with support for the Argon2d, Argon2i, and Argon2id algorithmic variants.
