@@ -12,7 +12,7 @@ import {CrLitElement} from '//resources/lit/v3_0/lit.rollup.js'
 import {BraveTabSearchApiProxy, TabSearchApiProxyImpl} from '../tab_search_api_proxy.js'
 import type {TabOrganizationSession} from '../tab_search.mojom-webui.js'
 
-import {getHtml} from './auto_tab_groups_page.html.js'
+import {getHtml, getEnableTabFocusHtml} from './auto_tab_groups_page.html.js'
 import {getCss} from './auto_tab_groups_page.css.js'
 
 export class AutoTabGroupsPageElement extends CrLitElement {
@@ -23,6 +23,8 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   protected topics_: string[] = []
   protected topic = ''
   protected undoTopic_ = ''
+  protected showFRE_: boolean =
+      loadTimeData.getBoolean('showTabOrganizationFRE')
 
   private apiProxy_: BraveTabSearchApiProxy =
       TabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
@@ -41,6 +43,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
       isLoadingTopics: {type: Boolean},
       errorMessage: {type: String},
       needsPremium: {type: Boolean},
+      showFRE_: {type: Boolean},
     }
   }
 
@@ -143,6 +146,9 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   }
 
   override render() {
+    if (this.showFRE_) {
+      return getEnableTabFocusHtml.bind(this)()
+    }
     return getHtml.bind(this)()
   }
 
@@ -212,12 +218,25 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     return loadTimeData.getString('tabOrganizationDismissButtonLabel')
   }
 
+  protected getPrivacyDisclaimerMessage_(): string {
+    return loadTimeData.getString('tabOrganizationPrivacyDisclaimer')
+  }
+
+  protected getEnableButtonLabel_(): string {
+    return loadTimeData.getString('tabOrganizationEnableButtonLabel')
+  }
+
   protected onLearnMoreClicked_() {
     this.apiProxy_.openHelpPage()
   }
 
   protected onGoPremiumClicked_() {
     this.apiProxy_.openLeoGoPremiumPage()
+  }
+
+  protected onEnableTabFocusClicked_() {
+    this.apiProxy_.enableTabFocus(true)
+    this.showFRE_ = false
   }
 
   protected onDismissErrorClicked_() {

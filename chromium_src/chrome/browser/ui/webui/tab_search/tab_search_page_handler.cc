@@ -246,3 +246,8 @@ void TabSearchPageHandler::OpenLeoGoPremiumPage() {
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   Navigate(&params);
 }
+
+void TabSearchPageHandler::EnableTabFocus(bool enable) {
+  Profile::FromWebUI(web_ui_)->GetPrefs()->SetBoolean(
+      ai_chat::prefs::kBraveAIChatTabOrganizationEnabled, enable);
+}

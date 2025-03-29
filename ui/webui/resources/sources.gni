@@ -11,6 +11,7 @@ brave_resources_extra_grdps_path = "$root_gen_dir/brave/ui/webui/resources"
 brave_resources_extra_grdps = [
   "$brave_resources_extra_grdps_path/brave_static_resources.grdp",
   "$root_gen_dir/brave/web-ui-leo/leo.grdp",
+  "$brave_resources_extra_grdps_path/images/resources.grdp",
 ]
 
 brave_resources_extra_grdps_deps = [ "//brave/ui/webui/resources:grdp" ]

@@ -30,6 +30,7 @@ group("grdp") {
     ":icons_grdp",
     ":leo_web_components",
     ":static_grdp",
+    "images:build_grdp",
   ]
   if (include_polymer) {
     public_deps += [ ":build_grdp" ]
