@@ -1149,6 +1149,14 @@ extension Strings {
       comment: "Text indicating how many server is used for that region used as Ex: '2 Servers'"
     )
 
+    public static let smartProxyPopoverTitle = NSLocalizedString(
+      "vpn.smartProxyPopoverTitle",
+      bundle: .module,
+      value: "Smart Proxy routing available",
+      comment:
+        "Text in the smart proxy popover, that lets the user know the server supports smart proxy routing"
+    )
+
     public static let connectedRegionDescription = NSLocalizedString(
       "vpn.connectedRegionDescription",
       bundle: .module,
