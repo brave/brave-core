@@ -190,8 +190,10 @@ void WebcompatExceptionsService::SetRules(
 }
 
 void WebcompatExceptionsService::SetRulesForTesting(
-  PatternsByWebcompatTypeMap patterns_by_webcompat_type) {
-    SetRules(std::move(patterns_by_webcompat_type));
+    const std::string& json_string) {
+  PatternsByWebcompatTypeMap patterns_by_webcompat_type;
+  ParseJsonRules(json_string, patterns_by_webcompat_type);
+  SetRules(patterns_by_webcompat_type);
 }
 
 // implementation of LocalDataFilesObserver
