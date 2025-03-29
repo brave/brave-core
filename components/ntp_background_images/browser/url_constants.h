@@ -49,6 +49,8 @@ inline constexpr char kIsSponsoredKey[] = "isSponsored";
 inline constexpr char kWallpaperURLKey[] = "wallpaperImageUrl";
 inline constexpr char kWallpaperFilePathKey[] = "wallpaperImagePath";
 inline constexpr char kWallpaperColorKey[] = "wallpaperColor";
+inline constexpr char kWallpaperShouldMetricsFallbackToP3aKey[] =
+    "shouldMetricsFallbackToP3a";
 inline constexpr char kWallpaperTypeKey[] = "type";
 inline constexpr char kWallpaperRandomKey[] = "random";
 inline constexpr char kWallpaperFocalPointXKey[] = "wallpaperFocalPointX";

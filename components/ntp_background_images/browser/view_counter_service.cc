@@ -265,7 +265,9 @@ void ViewCounterService::GetCurrentBrandedWallpaper(
   }
 
   const bool should_metrics_fallback_to_p3a =
-      current_wallpaper_->FindBool(ntp_background_images::kCampaignMetricsKey)
+      current_wallpaper_
+          ->FindBool(
+              ntp_background_images::kWallpaperShouldMetricsFallbackToP3aKey)
           .value_or(false);
 
   const std::string* const target_url =
