@@ -26,21 +26,6 @@ TEST(BraveAdsBraveAdsFeatureTest, ShouldNotAlwaysRunService) {
   EXPECT_FALSE(ShouldAlwaysRunService());
 }
 
-TEST(BraveAdsBraveAdsFeatureTest, ShouldSupportSearchResultAds) {
-  // Act & Assert
-  EXPECT_TRUE(ShouldSupportSearchResultAds());
-}
-
-TEST(BraveAdsBraveAdsFeatureTest, ShouldNotSupportSearchResultAds) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(
-      kShouldSupportSearchResultAdsFeature);
-
-  // Act & Assert
-  EXPECT_FALSE(ShouldSupportSearchResultAds());
-}
-
 TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysTriggerSearchResultAdEvents) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(

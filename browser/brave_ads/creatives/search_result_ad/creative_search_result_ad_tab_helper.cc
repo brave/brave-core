@@ -79,19 +79,10 @@ void CreativeSearchResultAdTabHelper::MaybeCreateForWebContents(
     return;
   }
 
-  if (!ShouldSupportSearchResultAds()) {
-    return;
-  }
-
   CreateForWebContents(web_contents);
 }
 
 bool CreativeSearchResultAdTabHelper::ShouldHandleCreativeAdEvents() const {
-  if (!ShouldSupportSearchResultAds()) {
-    // If the feature is disabled, we should not trigger creative ad events.
-    return false;
-  }
-
   if (ShouldAlwaysTriggerSearchResultAdEvents()) {
     // If the feature is enabled, we should always trigger creative ad events.
     return true;
