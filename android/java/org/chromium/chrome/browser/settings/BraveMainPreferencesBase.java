@@ -5,7 +5,10 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +18,9 @@ import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
+import org.chromium.brave.browser.utils.DrawableUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.accessibility.settings.BraveAccessibilitySettings;
@@ -78,6 +84,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_TABS = "tabs";
     private static final String PREF_MEDIA = "media";
     private static final String PREF_APPEARANCE = "appearance";
+    private static final String PREF_CUSTOM_APP_ICONS = "custom_app_icons";
     private static final String PREF_NEW_TAB_PAGE = "background_images";
     private static final String PREF_ACCESSIBILITY = "accessibility";
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
@@ -330,6 +337,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         findPreference(PREF_TABS).setOrder(++displaySectionOrder);
         findPreference(PREF_MEDIA).setOrder(++displaySectionOrder);
         findPreference(PREF_APPEARANCE).setOrder(++displaySectionOrder);
+        findPreference(PREF_CUSTOM_APP_ICONS).setOrder(++displaySectionOrder);
         findPreference(PREF_NEW_TAB_PAGE).setOrder(++displaySectionOrder);
         findPreference(PREF_ACCESSIBILITY).setOrder(++displaySectionOrder);
         findPreference(PREF_BRAVE_LANGUAGES).setOrder(++displaySectionOrder);
@@ -377,6 +385,23 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
     }
 
+    private void updateCustomAppIcon(String preferenceString) {
+        Preference preference = findPreference(preferenceString);
+        CustomAppIconsEnum currentIcon = CustomAppIconsManager.getCurrentIcon(getContext());
+        int iconResource =
+                currentIcon.equals(CustomAppIconsEnum.ICON_DEFAULT)
+                        ? R.drawable.ic_launcher_round
+                        : currentIcon.getIcon();
+        if (preference != null) {
+            Drawable drawable =
+                    DrawableUtils.getCircularDrawable(
+                            getContext(), iconResource, dpToPx(getContext(), 16));
+            if (drawable != null) {
+                preference.setIcon(drawable);
+            }
+        }
+    }
+
     private void removePreferenceIfPresent(String key) {
         Preference preference = getPreferenceScreen().findPreference(key);
         if (preference != null) {
@@ -406,6 +431,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 BottomToolbarConfiguration.isToolbarTopAnchored()
                         ? R.drawable.ic_browser_mobile_tabs_top
                         : R.drawable.ic_browser_mobile_tabs_bottom);
+        updateCustomAppIcon(PREF_CUSTOM_APP_ICONS);
     }
 
     private void updateSearchEnginePreference() {
