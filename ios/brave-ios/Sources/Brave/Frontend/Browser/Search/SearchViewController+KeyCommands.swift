@@ -12,11 +12,11 @@ extension SearchViewController {
     let initialSection = SearchSuggestionDataSource.SearchListSection.openTabsAndHistoryAndBookmarks
       .rawValue
 
-    guard let current = tableView.indexPathForSelectedRow else {
-      let numberOfRows = tableView(tableView, numberOfRowsInSection: initialSection)
+    guard let current = collectionView.indexPathsForVisibleItems.last else {
+      let numberOfRows = collectionView.numberOfItems(inSection: initialSection)
       if sender.input == UIKeyCommand.inputDownArrow, numberOfRows > 0 {
         let next = IndexPath(item: 0, section: initialSection)
-        tableView.selectRow(at: next, animated: false, scrollPosition: .top)
+        collectionView.selectItem(at: next, animated: false, scrollPosition: .top)
       }
       return
     }
@@ -40,16 +40,16 @@ extension SearchViewController {
           return
         } else {
           nextSection = current.section - 1
-          nextItem = tableView(tableView, numberOfRowsInSection: nextSection) - 1
+          nextItem = collectionView.numberOfItems(inSection: nextSection) - 1
         }
       } else {
         nextSection = current.section
         nextItem = current.item - 1
       }
     case UIKeyCommand.inputDownArrow:
-      let currentSectionItemsCount = tableView(tableView, numberOfRowsInSection: current.section)
+      let currentSectionItemsCount = collectionView.numberOfItems(inSection: current.section)
       if current.item == currentSectionItemsCount - 1 {
-        if current.section == tableView.numberOfSections - 1 {
+        if current.section == collectionView.numberOfSections - 1 {
           // We've reached the last item in the last section
           return
         } else {
@@ -68,6 +68,6 @@ extension SearchViewController {
     guard nextItem >= 0 else { return }
 
     let next = IndexPath(item: nextItem, section: nextSection)
-    tableView.selectRow(at: next, animated: false, scrollPosition: .middle)
+    collectionView.selectItem(at: next, animated: false, scrollPosition: .centeredVertically)
   }
 }

@@ -1,31 +1,37 @@
-// Copyright 2021 The Brave Authors. All rights reserved.
+// Copyright 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
-import Foundation
-import SnapKit
+import Shared
 import UIKit
 
-class FavoritesRecentSearchCell: UICollectionViewCell, CollectionViewReusable {
-  static let identifier = "RecentSearchCell"
-  var openButtonAction: (() -> Void)?
+class SearchSuggestionCell: UICollectionViewCell, CollectionViewReusable {
+  var openButtonActionHandler: (() -> Void)?
 
-  private let hStackView = UIStackView().then {
-    $0.axis = .horizontal
+  private let stackView = UIStackView().then {
+    $0.spacing = 16.0
     $0.alignment = .center
-    $0.spacing = 12.0
+    $0.isLayoutMarginsRelativeArrangement = true
+    $0.insetsLayoutMarginsFromSafeArea = false
+    $0.layoutMargins = .init(vertical: 0, horizontal: 16)
+  }
+
+  private let searchImageView = UIImageView().then {
+    $0.image = UIImage(braveSystemNamed: "leo.search")!.template
+    $0.contentMode = .scaleAspectFit
+    $0.tintColor = UIColor(braveSystemName: .iconDefault)
   }
 
   private let titleLabel = UILabel().then {
-    $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
   }
 
-  private let openButton = BraveButton(type: .system).then {
+  private let openButton = BraveButton().then {
     $0.imageView?.contentMode = .scaleAspectFit
-    $0.hitTestSlop = UIEdgeInsets(equalInset: -25.0)
+    $0.hitTestSlop = UIEdgeInsets(equalInset: -25)
   }
 
   override var isHighlighted: Bool {
@@ -35,38 +41,51 @@ class FavoritesRecentSearchCell: UICollectionViewCell, CollectionViewReusable {
         delay: 0,
         options: [.beginFromCurrentState],
         animations: {
-          self.alpha = self.isHighlighted ? 0.5 : 1.0
+          self.contentView.alpha = self.isHighlighted ? 0.5 : 1.0
         }
       )
     }
   }
 
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    setTheme()
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
+    backgroundColor = .clear
+
     setTheme()
 
-    contentView.addSubview(hStackView)
-    hStackView.snp.makeConstraints {
-      $0.horizontalEdges.equalToSuperview().inset(20)
-      $0.verticalEdges.equalToSuperview().inset(10)
+    contentView.addSubview(stackView)
+    [searchImageView, titleLabel, openButton].forEach {
+      stackView.addArrangedSubview($0)
     }
-    [titleLabel, openButton].forEach(hStackView.addArrangedSubview(_:))
+
+    stackView.snp.makeConstraints {
+      $0.horizontalEdges.equalToSuperview()
+      $0.verticalEdges.equalToSuperview().inset(8)
+    }
+
+    searchImageView.snp.makeConstraints {
+      $0.size.equalTo(20.0)
+    }
 
     openButton.snp.makeConstraints {
       $0.size.equalTo(20.0)
     }
 
-    openButton.addTarget(self, action: #selector(onOpenButtonPressed(_:)), for: .touchUpInside)
+    openButton.addTarget(self, action: #selector(onOpenButtonPressed), for: .touchUpInside)
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    setTheme()
+  func setTitle(_ title: String) {
+    titleLabel.text = title
   }
 
   private func setTheme() {
@@ -96,16 +115,8 @@ class FavoritesRecentSearchCell: UICollectionViewCell, CollectionViewReusable {
     }
   }
 
-  func setTitle(_ title: String?) {
-    titleLabel.text = title
-  }
-
-  func setAttributedTitle(_ title: NSAttributedString?) {
-    titleLabel.attributedText = title
-  }
-
   @objc
-  private func onOpenButtonPressed(_ button: UIButton) {
-    openButtonAction?()
+  private func onOpenButtonPressed() {
+    openButtonActionHandler?()
   }
 }
