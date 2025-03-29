@@ -9,6 +9,9 @@ import { initializeNewTab } from './sb_new_tab'
 import { initializeBackgrounds } from './sb_backgrounds'
 import { initializeSearch } from './sb_search'
 import { initializeTopSites } from './sb_top_sites'
+import { initializeRewards } from './sb_rewards'
+import { initializeVPN } from './sb_vpn'
+import { initializeNewTab } from './sb_new_tab'
 
 export function createAppModel(): AppModel {
   const store = createStore(defaultState())
@@ -20,6 +23,8 @@ export function createAppModel(): AppModel {
     ...initializeNewTab(store),
     ...initializeBackgrounds(store),
     ...initializeSearch(store),
-    ...initializeTopSites(store)
+    ...initializeTopSites(store),
+    ...initializeRewards(store),
+    ...initializeVPN(store)
   }
 }
