@@ -519,6 +519,10 @@ void ViewCounterService::OnTabURLChanged(const GURL& url) {
   }
 }
 
+NTPP3AHelper* ViewCounterService::GetP3AHelper() const {
+  return ntp_p3a_helper_.get();
+}
+
 bool ViewCounterService::IsBrandedWallpaperActive() const {
   if (!GetCurrentBrandedWallpaperData()) {
     return false;

@@ -13,7 +13,6 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -25,6 +24,8 @@
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"  // nogncheck
 #endif
 
+class PrefService;
+
 namespace brave_ads {
 class AdsService;
 }  // namespace brave_ads
@@ -34,13 +35,9 @@ class BraveNewsController;
 }  // namespace brave_news
 
 namespace ntp_background_images {
-class NTPBackgroundImagesService;
 class NTPSponsoredRichMediaAdEventHandler;
+class ViewCounterService;
 }  // namespace ntp_background_images
-
-namespace p3a {
-class P3AService;
-}  // namespace p3a
 
 class BraveNewTabPageHandler;
 
@@ -50,10 +47,8 @@ class BraveNewTabUI : public ui::MojoWebUIController,
   BraveNewTabUI(content::WebUI* web_ui,
                 const std::string& name,
                 brave_ads::AdsService* ads_service,
-                PrefService* local_state,
-                p3a::P3AService* p3a_service,
-                ntp_background_images::NTPBackgroundImagesService*
-                    ntp_background_images_service);
+                ntp_background_images::ViewCounterService* view_counter_service,
+                PrefService* local_state);
   ~BraveNewTabUI() override;
   BraveNewTabUI(const BraveNewTabUI&) = delete;
   BraveNewTabUI& operator=(const BraveNewTabUI&) = delete;
