@@ -8,7 +8,6 @@ import override_utils
 
 @override_utils.override_function(globals())
 def Minify(original_function, source, filename):
-    with override_utils.override_scope_variable(
-            globals(), 'js_minifier_ignore_list',
-            js_minifier_ignore_list + ['gen/brave/web-ui-opaque_ke/']):
-        return original_function(source, filename)
+    if 'gen/brave/web-ui-opaque_ke/' in filename:
+        return source
+    return original_function(source, filename)
