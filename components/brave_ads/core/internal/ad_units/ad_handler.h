@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <string>
 
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/ad_units/creative_ad_cache.h"
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_handler.h"
@@ -100,8 +101,12 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   CreativeAdCache creative_ad_cache_;
 
   Conversions conversions_;
+  base::ScopedObservation<Conversions, ConversionsObserver>
+      conversions_observation_{this};
 
   SiteVisit site_visit_;
+  base::ScopedObservation<SiteVisit, SiteVisitObserver> site_visit_observation_{
+      this};
 
   CountryCode country_code_;
   SubdivisionTargeting subdivision_targeting_;

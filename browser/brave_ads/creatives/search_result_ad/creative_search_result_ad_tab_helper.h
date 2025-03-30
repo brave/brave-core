@@ -23,17 +23,18 @@ namespace brave_ads {
 class AdsService;
 class CreativeSearchResultAdHandler;
 
-class CreativeSearchResultAdTabHelper
+class CreativeSearchResultAdTabHelper final
     : public content::WebContentsObserver,
       public content::WebContentsUserData<CreativeSearchResultAdTabHelper> {
  public:
   explicit CreativeSearchResultAdTabHelper(content::WebContents* web_contents);
-  ~CreativeSearchResultAdTabHelper() override;
 
   CreativeSearchResultAdTabHelper(const CreativeSearchResultAdTabHelper&) =
       delete;
   CreativeSearchResultAdTabHelper& operator=(
       const CreativeSearchResultAdTabHelper&) = delete;
+
+  ~CreativeSearchResultAdTabHelper() override;
 
   static void SetAdsServiceForTesting(AdsService* ads_service);
 

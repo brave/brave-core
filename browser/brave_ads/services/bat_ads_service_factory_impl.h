@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-class BatAdsServiceFactoryImpl : public BatAdsServiceFactory {
+class BatAdsServiceFactoryImpl final : public BatAdsServiceFactory {
  public:
   BatAdsServiceFactoryImpl();
 

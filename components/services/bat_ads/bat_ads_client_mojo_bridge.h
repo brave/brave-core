@@ -26,7 +26,7 @@ struct NotificationAdInfo;
 
 namespace bat_ads {
 
-class BatAdsClientMojoBridge : public brave_ads::AdsClient {
+class BatAdsClientMojoBridge final : public brave_ads::AdsClient {
  public:
   explicit BatAdsClientMojoBridge(
       mojo::PendingAssociatedRemote<mojom::BatAdsClient>
@@ -36,10 +36,6 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
 
   BatAdsClientMojoBridge(const BatAdsClientMojoBridge&) = delete;
   BatAdsClientMojoBridge& operator=(const BatAdsClientMojoBridge&) = delete;
-
-  BatAdsClientMojoBridge(BatAdsClientMojoBridge&& other) noexcept = delete;
-  BatAdsClientMojoBridge& operator=(BatAdsClientMojoBridge&& other) noexcept =
-      delete;
 
   ~BatAdsClientMojoBridge() override;
 

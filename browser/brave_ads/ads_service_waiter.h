@@ -6,8 +6,8 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_WAITER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_WAITER_H_
 
-#include "base/memory/raw_ref.h"
 #include "base/run_loop.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 
 namespace brave_ads {
@@ -15,19 +15,18 @@ namespace brave_ads {
 class AdsService;
 
 // This class waits for the ads service to be initialized.
-class AdsServiceWaiter : public AdsServiceObserver {
+class AdsServiceWaiter final : public AdsServiceObserver {
  public:
-  explicit AdsServiceWaiter(AdsService& ads_service);
-  ~AdsServiceWaiter() override;
+  explicit AdsServiceWaiter(AdsService* ads_service);
 
   AdsServiceWaiter(const AdsServiceWaiter&) = delete;
   AdsServiceWaiter& operator=(const AdsServiceWaiter&) = delete;
 
+  ~AdsServiceWaiter() override;
+
   void WaitForOnDidInitializeAdsService();
   void WaitForOnDidShutdownAdsService();
   void WaitForOnDidClearAdsServiceData();
-
-  void Wait();
 
  private:
   // AdsServiceObserver:
@@ -39,7 +38,7 @@ class AdsServiceWaiter : public AdsServiceObserver {
   base::RunLoop on_did_shutdown_ads_service_run_loop_;
   base::RunLoop on_did_clear_ads_service_data_run_loop_;
 
-  const raw_ref<AdsService> ads_service_;
+  base::ScopedObservation<AdsService, AdsServiceObserver> observation_{this};
 };
 
 }  // namespace brave_ads

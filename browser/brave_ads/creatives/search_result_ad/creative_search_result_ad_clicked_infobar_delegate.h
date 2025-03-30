@@ -20,12 +20,13 @@ class CreativeSearchResultAdClickedInfoBarDelegate
     : public ConfirmInfoBarDelegate {
  public:
   CreativeSearchResultAdClickedInfoBarDelegate();
-  ~CreativeSearchResultAdClickedInfoBarDelegate() override;
 
   CreativeSearchResultAdClickedInfoBarDelegate(
       const CreativeSearchResultAdClickedInfoBarDelegate&) = delete;
   CreativeSearchResultAdClickedInfoBarDelegate& operator=(
       const CreativeSearchResultAdClickedInfoBarDelegate&) = delete;
+
+  ~CreativeSearchResultAdClickedInfoBarDelegate() override;
 
   static void Create(content::WebContents* web_contents, PrefService* prefs);
 

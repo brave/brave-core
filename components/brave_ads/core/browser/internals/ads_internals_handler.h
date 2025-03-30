@@ -23,7 +23,7 @@ namespace brave_ads {
 class AdsService;
 }  // namespace brave_ads
 
-class AdsInternalsHandler : public bat_ads::mojom::AdsInternals {
+class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals {
  public:
   AdsInternalsHandler(brave_ads::AdsService* ads_service, PrefService& prefs);
 

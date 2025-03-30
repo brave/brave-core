@@ -19,7 +19,7 @@ namespace brave_ads {
 // button. This allows the creation of buttons whose clickable areas extend
 // beyond their image areas without the need to create and maintain
 // corresponding resource images with alpha padding.
-class PaddedImageButton : public views::ImageButton {
+class PaddedImageButton final : public views::ImageButton {
   METADATA_HEADER(PaddedImageButton, views::ImageButton)
  public:
 

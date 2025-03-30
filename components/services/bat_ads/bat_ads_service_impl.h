@@ -17,7 +17,7 @@
 
 namespace bat_ads {
 
-class BatAdsServiceImpl : public mojom::BatAdsService {
+class BatAdsServiceImpl final : public mojom::BatAdsService {
  public:
   // This constructor assumes the `BatAdsServiceImpl` will be bound to an
   // externally owned receiver, such as through `mojo::MakeSelfOwnedReceiver()`.
@@ -28,9 +28,6 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
 
   BatAdsServiceImpl(const BatAdsServiceImpl&) = delete;
   BatAdsServiceImpl& operator=(const BatAdsServiceImpl&) = delete;
-
-  BatAdsServiceImpl(BatAdsServiceImpl&& other) noexcept = delete;
-  BatAdsServiceImpl& operator=(BatAdsServiceImpl&& other) noexcept = delete;
 
   ~BatAdsServiceImpl() override;
 

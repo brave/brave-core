@@ -14,7 +14,7 @@ class TimeDelta;
 
 namespace brave_ads {
 
-class UserIdleDetection : public AdsClientNotifierObserver {
+class UserIdleDetection final : public AdsClientNotifierObserver {
  public:
   UserIdleDetection();
 

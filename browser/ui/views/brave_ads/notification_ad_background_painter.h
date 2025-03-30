@@ -12,7 +12,7 @@ namespace brave_ads {
 
 // Background painter for notification ads with rounded corners. This draws the
 // rectangle with rounded corners
-class NotificationAdBackgroundPainter : public views::Painter {
+class NotificationAdBackgroundPainter final : public views::Painter {
  public:
   NotificationAdBackgroundPainter(int top_radius,
                                   int bottom_radius,

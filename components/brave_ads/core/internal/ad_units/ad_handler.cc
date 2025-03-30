@@ -35,15 +35,13 @@ AdHandler::AdHandler()
                                anti_targeting_resource_),
       promoted_content_ad_handler_(site_visit_),
       search_result_ad_handler_(site_visit_) {
-  conversions_.AddObserver(this);
-  site_visit_.AddObserver(this);
+  conversions_observation_.Observe(&conversions_);
+  site_visit_observation_.Observe(&site_visit_);
   subdivision_.AddObserver(&country_code_);
   subdivision_.AddObserver(&subdivision_targeting_);
 }
 
 AdHandler::~AdHandler() {
-  conversions_.RemoveObserver(this);
-  site_visit_.RemoveObserver(this);
   subdivision_.RemoveObserver(&country_code_);
   subdivision_.RemoveObserver(&subdivision_targeting_);
 }

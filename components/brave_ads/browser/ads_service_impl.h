@@ -18,6 +18,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -482,6 +483,8 @@ class AdsServiceImpl final : public AdsService,
 
   const raw_ptr<HostContentSettingsMap> host_content_settings_map_ =
       nullptr;  // Not owned.
+  base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
+      host_content_settings_map_observation_{this};
 
   const std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
 

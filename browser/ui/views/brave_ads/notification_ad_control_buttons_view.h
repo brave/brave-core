@@ -21,7 +21,7 @@ class NotificationAdView;
 class PaddedImageButton;
 class PaddedImageView;
 
-class NotificationAdControlButtonsView : public views::View {
+class NotificationAdControlButtonsView final : public views::View {
   METADATA_HEADER(NotificationAdControlButtonsView, views::View)
  public:
 

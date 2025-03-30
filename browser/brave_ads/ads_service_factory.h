@@ -23,7 +23,7 @@ class AdsService;
 class AdsTooltipsDelegateImpl;
 
 // Singleton that owns all AdsService and associates them with Profiles.
-class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
+class AdsServiceFactory final : public BrowserContextKeyedServiceFactory {
  public:
   AdsServiceFactory(const AdsServiceFactory&) = delete;
   AdsServiceFactory& operator=(const AdsServiceFactory&) = delete;

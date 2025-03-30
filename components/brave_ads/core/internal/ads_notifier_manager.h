@@ -22,9 +22,6 @@ class AdsNotifierManager final {
   AdsNotifierManager(const AdsNotifierManager& other) = delete;
   AdsNotifierManager& operator=(const AdsNotifierManager& other) = delete;
 
-  AdsNotifierManager(AdsNotifierManager&& other) noexcept = delete;
-  AdsNotifierManager& operator=(AdsNotifierManager&& other) noexcept = delete;
-
   ~AdsNotifierManager();
 
   static AdsNotifierManager& GetInstance();

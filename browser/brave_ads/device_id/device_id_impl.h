@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-class DeviceIdImpl : public DeviceId {
+class DeviceIdImpl final : public DeviceId {
  public:
   void GetDeviceId(DeviceIdCallback callback) override;
 

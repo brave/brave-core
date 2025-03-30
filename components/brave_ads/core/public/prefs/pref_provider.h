@@ -17,7 +17,7 @@ class PrefService;
 
 namespace brave_ads {
 
-class PrefProvider : public PrefProviderInterface {
+class PrefProvider final : public PrefProviderInterface {
  public:
   explicit PrefProvider(PrefService* profile_prefs,
                         PrefService* local_state_prefs,
@@ -25,9 +25,6 @@ class PrefProvider : public PrefProviderInterface {
 
   PrefProvider(const PrefProvider& other) = delete;
   PrefProvider& operator=(const PrefProvider& other) = delete;
-
-  PrefProvider(PrefProvider&& other) noexcept = delete;
-  PrefProvider& operator=(PrefProvider&& other) noexcept = delete;
 
   ~PrefProvider() override;
 

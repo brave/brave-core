@@ -20,7 +20,7 @@ namespace brave_ads {
 
 class ResourceComponentRegistrarDelegate;
 
-class ResourceComponentRegistrar
+class ResourceComponentRegistrar final
     : public brave_component_updater::BraveComponent {
  public:
   ResourceComponentRegistrar(Delegate* component_updater_delegate,

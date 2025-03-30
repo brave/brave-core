@@ -18,7 +18,7 @@ class Label;
 
 namespace brave_ads {
 
-class NotificationAdHeaderView : public views::View {
+class NotificationAdHeaderView final : public views::View {
   METADATA_HEADER(NotificationAdHeaderView, views::View)
  public:
   NotificationAdHeaderView();

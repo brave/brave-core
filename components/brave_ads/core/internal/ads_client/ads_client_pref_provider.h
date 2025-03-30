@@ -14,16 +14,12 @@
 
 namespace brave_ads {
 
-class AdsClientPrefProvider : public PrefProviderInterface {
+class AdsClientPrefProvider final : public PrefProviderInterface {
  public:
   AdsClientPrefProvider();
 
   AdsClientPrefProvider(const AdsClientPrefProvider& other) = delete;
   AdsClientPrefProvider& operator=(const AdsClientPrefProvider& other) = delete;
-
-  AdsClientPrefProvider(AdsClientPrefProvider&& other) noexcept = delete;
-  AdsClientPrefProvider& operator=(AdsClientPrefProvider&& other) noexcept =
-      delete;
 
   ~AdsClientPrefProvider() override;
 

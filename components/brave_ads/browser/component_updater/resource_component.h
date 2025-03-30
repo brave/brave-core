@@ -21,7 +21,7 @@
 
 namespace brave_ads {
 
-class ResourceComponent : public ResourceComponentRegistrarDelegate {
+class ResourceComponent final : public ResourceComponentRegistrarDelegate {
  public:
   explicit ResourceComponent(
       brave_component_updater::BraveComponent::Delegate* delegate);

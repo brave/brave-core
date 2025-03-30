@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-class BackgroundHelperMac : public BackgroundHelper {
+class BackgroundHelperMac final : public BackgroundHelper {
  public:
   BackgroundHelperMac(const BackgroundHelperMac&) = delete;
   BackgroundHelperMac& operator=(const BackgroundHelperMac&) = delete;
