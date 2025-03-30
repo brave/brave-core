@@ -36,19 +36,11 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     static get properties() {
       return {
-        /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
-         */
-        prefs: {
-          type: Object,
-          notify: true,
-        },
         leoAssistantShowOnToolbarPref_: {
           type: Boolean,
           value: false,
           notify: true,
         },
-        /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
-         */
         selectedModelDisplayName_: {
           type: String,
           computed: 'computeDisplayName_(models_, defaultModelKeyPrefValue_)'
@@ -67,6 +59,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       loadTimeData.getBoolean('isLeoAssistantHistoryAllowed')
 
     leoAssistantShowOnToolbarPref_: boolean
+    selectedModelDisplayName_: string
     defaultModelKeyPrefValue_: string
     models_: ModelWithSubtitle[]
     premiumStatus_: PremiumStatus = PremiumStatus.Unknown
