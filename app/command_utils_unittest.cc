@@ -14,7 +14,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 // Note: If this test fails because an accelerated command isn't present just
-// add the missing command to |commands::GetCommands| in command_utils.h.
+// add the missing command to //brave/app/generate_command_metadata.py
 TEST(CommandUtilsUnitTest, AllAcceleratedCommandsShouldBeAvailable) {
   base::test::ScopedFeatureList features;
   features.InitAndEnableFeature(commands::features::kBraveCommands);
