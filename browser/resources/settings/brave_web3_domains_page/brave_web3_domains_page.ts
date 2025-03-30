@@ -28,8 +28,6 @@ export class SettingBraveWeb3DomainsPageElement
     return {
       resolveMethod_: Array,
       ensOffchainResolveMethod_: Array,
-      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
-      */
       showEnsOffchainLookupRow_: {
         type: Boolean,
         computed: 'computeShowEnsOffchainLookupRow_(prefs.*)',
@@ -40,6 +38,7 @@ export class SettingBraveWeb3DomainsPageElement
   private browserProxy_ = BraveWeb3DomainsBrowserProxyImpl.getInstance()
   resolveMethod_: DropdownMenuOptionList
   ensOffchainResolveMethod_: DropdownMenuOptionList
+  showEnsOffchainLookupRow_: boolean
 
   override ready() {
     super.ready()

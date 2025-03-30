@@ -84,8 +84,6 @@ export class ModelConfigUI extends ModelConfigUIBase {
         readOnly: true,
         computed: 'computeIsEditing_(modelItem)'
       },
-      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
-      */
       buttonLabel_: {
         type: String,
         computed: 'computeButtonLabel_(isEditing_)'
@@ -106,6 +104,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
   apiKey: string
   modelItem: mojom.Model | null
   isEditing_: boolean
+  buttonLabel_: string
   isUrlInvalid: boolean
   shouldShowUnsafeEndpointLabel: boolean
   isValidAsPrivateEndpoint: boolean
