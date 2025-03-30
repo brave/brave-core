@@ -116,6 +116,8 @@ class ViewCounterService : public KeyedService,
 
   void OnTabURLChanged(const GURL& url);
 
+  NTPP3AHelper* GetP3AHelper() const;
+
  private:
   friend class ViewCounterServiceTest;
   friend class NTPBackgroundImagesServiceTest;
