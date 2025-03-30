@@ -36,14 +36,14 @@
 // the class is really hard to be extended with inheritance, so using patch file
 // seems to be the most efficient way for now. If we could split this into
 // another file or child class, that'd be great.
-#define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX                \
-  if (tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {       \
-    tabs::UpdateInsertionIndexForVerticalTabs(                               \
-        dragged_bounds, first_dragged_tab_index, num_dragged_tabs,           \
-        dragged_group, candidate_index, tab_strip_->controller_.get(),       \
-        &tab_strip_->tab_container_.get(), min_distance, min_distance_index, \
-        tab_strip_);                                                         \
-    continue;                                                                \
+#define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX             \
+  if (tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {    \
+    tabs::UpdateInsertionIndexForVerticalTabs(                            \
+        dragged_bounds, first_dragged_tab_index, num_dragged_tabs,        \
+        can_insert_into_groups, candidate_index,                          \
+        tab_strip_->controller_.get(), &tab_strip_->tab_container_.get(), \
+        min_distance, min_distance_index, tab_strip_);                    \
+    continue;                                                             \
   }
 
 #define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS      \
