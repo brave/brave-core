@@ -28,6 +28,8 @@ export class SettingBraveWeb3DomainsPageElement
     return {
       resolveMethod_: Array,
       ensOffchainResolveMethod_: Array,
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       showEnsOffchainLookupRow_: {
         type: Boolean,
         computed: 'computeShowEnsOffchainLookupRow_(prefs.*)',
