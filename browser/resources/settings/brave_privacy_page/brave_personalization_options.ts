@@ -41,6 +41,8 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         },
       },
       webRTCPolicy_: String,
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       isDebounceFeatureEnabled_: {
         readOnly: true,
         type: Boolean,
@@ -48,6 +50,8 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isDebounceFeatureEnabled')
         }
       },
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       isRequestOTRFeatureEnabled_: {
         readOnly: true,
         type: Boolean,

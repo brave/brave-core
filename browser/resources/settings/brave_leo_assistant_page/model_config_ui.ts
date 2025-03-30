@@ -84,6 +84,8 @@ export class ModelConfigUI extends ModelConfigUIBase {
         readOnly: true,
         computed: 'computeIsEditing_(modelItem)'
       },
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       buttonLabel_: {
         type: String,
         computed: 'computeButtonLabel_(isEditing_)'

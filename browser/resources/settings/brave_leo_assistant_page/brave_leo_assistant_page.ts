@@ -36,6 +36,8 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     static get properties() {
       return {
+        /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+         */
         prefs: {
           type: Object,
           notify: true,
@@ -45,6 +47,8 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           value: false,
           notify: true,
         },
+        /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+         */
         selectedModelDisplayName_: {
           type: String,
           computed: 'computeDisplayName_(models_, defaultModelKeyPrefValue_)'
