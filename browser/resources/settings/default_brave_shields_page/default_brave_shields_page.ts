@@ -98,6 +98,8 @@ class BraveShieldsPage extends BraveShieldsPageBase {
             ]
           }
       },
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       httpsUpgradeControlTypes_: {
           readOnly: true,
           type: Array,
@@ -121,14 +123,20 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         type: Boolean,
         value: false
       },
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       isHttpsByDefaultEnabled_: {
         type: Boolean,
         value: loadTimeData.getBoolean('isHttpsByDefaultEnabled')
       },
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       showStrictFingerprintingMode_: {
         type: Boolean,
         value: loadTimeData.getBoolean('showStrictFingerprintingMode')
       },
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       isForgetFirstPartyStorageFeatureEnabled_: {
         type: Boolean,
         value: loadTimeData.getBoolean('isForgetFirstPartyStorageFeatureEnabled')
