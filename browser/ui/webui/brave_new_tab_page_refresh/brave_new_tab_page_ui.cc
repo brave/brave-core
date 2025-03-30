@@ -20,6 +20,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -72,18 +73,15 @@ void BraveNewTabPageUI::BindInterface(
         ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
         receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
-  std::unique_ptr<ntp_background_images::NTPP3AHelperImpl> ntp_p3a_helper;
-  if (g_brave_browser_process->p3a_service()) {
-    ntp_p3a_helper = std::make_unique<ntp_background_images::NTPP3AHelperImpl>(
-        g_browser_process->local_state(),
-        g_brave_browser_process->p3a_service(),
-        g_brave_browser_process->ntp_background_images_service(),
-        profile->GetPrefs());
+  ntp_background_images::NTPP3AHelper* ntp_p3a_helper = nullptr;
+  if (ntp_background_images::ViewCounterService* view_counter_service =
+          ntp_background_images::ViewCounterServiceFactory::GetForProfile(
+              profile)) {
+    ntp_p3a_helper = view_counter_service->GetP3AHelper();
   }
   rich_media_ad_event_handler_ = std::make_unique<
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
-      brave_ads::AdsServiceFactory::GetForProfile(profile),
-      std::move(ntp_p3a_helper));
+      brave_ads::AdsServiceFactory::GetForProfile(profile), ntp_p3a_helper);
   rich_media_ad_event_handler_->Bind(std::move(receiver));
 }
 

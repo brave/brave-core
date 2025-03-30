@@ -17,8 +17,8 @@ namespace ntp_background_images {
 
 NTPSponsoredRichMediaAdEventHandler::NTPSponsoredRichMediaAdEventHandler(
     brave_ads::AdsService* ads_service,
-    std::unique_ptr<NTPP3AHelper> ntp_p3a_helper)
-    : ads_service_(ads_service), ntp_p3a_helper_(std::move(ntp_p3a_helper)) {}
+    NTPP3AHelper* ntp_p3a_helper)
+    : ads_service_(ads_service), ntp_p3a_helper_(ntp_p3a_helper) {}
 
 NTPSponsoredRichMediaAdEventHandler::~NTPSponsoredRichMediaAdEventHandler() =
     default;

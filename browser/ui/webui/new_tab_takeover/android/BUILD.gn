@@ -17,13 +17,10 @@ source_set("new_tab_takeover") {
 
   deps = [
     "//base",
-    "//brave/browser:browser_process",
     "//brave/browser/brave_ads:brave_ads",
-    "//brave/browser/ntp_background",
     "//brave/components/constants",
     "//brave/components/new_tab_takeover:new_tab_takeover_generated_resources",
     "//brave/components/ntp_background_images/browser",
-    "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
@@ -33,6 +30,7 @@ source_set("new_tab_takeover") {
   ]
 
   public_deps = [
+    "//brave/browser/ntp_background",
     "//brave/components/new_tab_takeover/mojom",
     "//brave/components/ntp_background_images/browser/mojom",
     "//mojo/public/cpp/bindings",
