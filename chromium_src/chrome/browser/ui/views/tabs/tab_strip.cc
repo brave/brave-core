@@ -40,7 +40,8 @@
   if (tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {       \
     tabs::UpdateInsertionIndexForVerticalTabs(                               \
         dragged_bounds, first_dragged_tab_index, num_dragged_tabs,           \
-        dragged_group, candidate_index, tab_strip_->controller_.get(),       \
+        GetTabAt(first_dragged_tab_index)->group().has_value(),              \
+        candidate_index, tab_strip_->controller_.get(),                      \
         &tab_strip_->tab_container_.get(), min_distance, min_distance_index, \
         tab_strip_);                                                         \
     continue;                                                                \
