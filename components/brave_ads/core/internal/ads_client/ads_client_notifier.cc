@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/common/functional/once_closure_task_queue.h"
+#include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

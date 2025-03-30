@@ -71,7 +71,7 @@ class AdsServiceMock : public AdsService {
               (const std::string&, const std::string&));
   MOCK_METHOD(void,
               ParseAndSaveCreativeNewTabPageAds,
-              (const base::Value::Dict& data,
+              (base::Value::Dict dict,
                ParseAndSaveCreativeNewTabPageAdsCallback));
 
   MOCK_METHOD(void,
