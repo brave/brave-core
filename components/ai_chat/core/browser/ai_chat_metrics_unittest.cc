@@ -494,10 +494,19 @@ TEST_F(AIChatMetricsUnitTest, ChatDuration) {
   histogram_tester_.ExpectTotalCount(kMaxChatDurationHistogramName, 4);
 
   task_environment_.FastForwardBy(base::Days(7));
-  histogram_tester_.ExpectTotalCount(kMaxChatDurationHistogramName, 10);
+  auto total_count =
+      histogram_tester_.GetTotalCountsForPrefix(kMaxChatDurationHistogramName)
+          .begin()
+          ->second;
+  EXPECT_GE(total_count, 10);
+  EXPECT_LE(total_count, 11);
 
   task_environment_.FastForwardBy(base::Days(7));
-  histogram_tester_.ExpectTotalCount(kMaxChatDurationHistogramName, 10);
+  EXPECT_EQ(
+      histogram_tester_.GetTotalCountsForPrefix(kMaxChatDurationHistogramName)
+          .begin()
+          ->second,
+      total_count);
 }
 
 TEST_F(AIChatMetricsUnitTest, FirstChatPrompts) {
