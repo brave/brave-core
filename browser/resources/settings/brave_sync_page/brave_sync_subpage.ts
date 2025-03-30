@@ -57,6 +57,8 @@ class SettingBraveSyncSubpage extends SettingBraveSyncSubpageBase {
        * The current sync preferences, supplied by SyncBrowserProxy.
        * @type {SyncPrefs|undefined}
        */
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       syncPrefs: {
         type: Object,
       },
