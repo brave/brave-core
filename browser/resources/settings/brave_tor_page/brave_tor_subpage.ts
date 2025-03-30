@@ -64,12 +64,16 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         notify: true
       },
 
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       useBridgesValue_: {
         type: String,
         computed: 'computeUseBridgesValue_(useBridges_)',
         notify: true,
       },
 
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       builtInBridgesTypes_: {
         type: Array,
         readOnly: true,
@@ -97,6 +101,8 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         notify: true
       },
 
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+       */
       isUsingBridgesPref_: {
         type: Object,
         value() {
@@ -117,6 +123,8 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
         computed: 'computeRequestedBridgesPlaceholder_(useBridges_, providedBridges_)'
       },
 
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       providedBridgesPlaceholder_: {
         type: String,
         value: '',

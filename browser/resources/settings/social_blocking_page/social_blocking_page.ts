@@ -18,6 +18,8 @@ export class BraveSettingsSocialBlockingPage extends PolymerElement {
 
   static get properties() {
     return {
+      /* eslint-disable-next-line @webui-eslint/polymer-property-class-member
+      */
       isGoogleSignInFeatureEnabled_: {
         readOnly: true,
         type: Boolean,
