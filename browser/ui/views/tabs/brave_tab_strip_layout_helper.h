@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
-#include "components/tab_groups/tab_group_id.h"
 
 namespace gfx {
 class Rect;
@@ -48,7 +47,7 @@ void UpdateInsertionIndexForVerticalTabs(
     const gfx::Rect& dragged_bounds,
     int first_dragged_tab_index,
     int num_dragged_tabs,
-    std::optional<tab_groups::TabGroupId> dragged_group,
+    bool dragged_groups,
     int candidate_index,
     TabStripController* tab_strip_controller,
     TabContainer* tab_container,
