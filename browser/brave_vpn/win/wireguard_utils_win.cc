@@ -22,16 +22,84 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/win/com_init_util.h"
+#include "base/win/registry.h"
 #include "base/win/scoped_bstr.h"
 #include "brave/browser/brave_vpn/win/service_constants.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/win/brave_wireguard_manager_idl.h"
+#include "url/gurl.h"
 
 namespace brave_vpn {
 
 namespace {
 std::optional<bool> g_wireguard_service_registered_for_testing;
+// TODO(bsclifton): consider persisting last used value to registry or disk.
+// As-is, it won't survive the owning process being restarted.
+std::optional<std::string> g_smart_proxy_url;
+constexpr wchar_t kSystemProxyRegistryKey[] =
+    L"Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
+
+void MaybeEnableSystemProxy() {
+  if (!g_smart_proxy_url.has_value()) {
+    return;
+  }
+
+  base::win::RegKey key;
+  LONG rv =
+      key.Create(HKEY_CURRENT_USER, kSystemProxyRegistryKey, KEY_ALL_ACCESS);
+  if (rv == ERROR_SUCCESS && key.Valid()) {
+    std::wstring current_proxy_url;
+    if (key.ReadValue(L"AutoConfigURL", &current_proxy_url) == ERROR_SUCCESS) {
+      // Person already has a proxy value set; don't touch it.
+      VLOG(1) << L"User has `AutoConfigURL` value already set: \""
+              << current_proxy_url
+              << "\".\nBrave VPN smart proxy routing can't be used.";
+    } else {
+      // Set the system proxy URL.
+      current_proxy_url = base::UTF8ToWide(*g_smart_proxy_url);
+      rv = key.WriteValue(L"AutoConfigURL", current_proxy_url.c_str());
+      VLOG(1) << L"Set Brave VPN smart proxy routing to = \""
+              << current_proxy_url << "\"";
+    }
+  }
+}
+
+void MaybeDisableSystemProxy() {
+  base::win::RegKey key;
+  LONG rv =
+      key.Create(HKEY_CURRENT_USER, kSystemProxyRegistryKey, KEY_ALL_ACCESS);
+  if (rv != ERROR_SUCCESS || !key.Valid()) {
+    VLOG(1) << L"Nothing to clean up; user does not have a key for "
+               L"`AutoConfigURL`.";
+    return;
+  }
+
+  // Only disable system proxy if...
+  // 1) There's a value actually set.
+  std::wstring current_proxy_url;
+  if (key.ReadValue(L"AutoConfigURL", &current_proxy_url) != ERROR_SUCCESS) {
+    VLOG(1) << L"Error reading `AutoConfigURL`; value may not exist.";
+    return;
+  }
+
+  // 2) The value is a valid URL.
+  GURL current_proxy_gurl(base::WideToUTF8(current_proxy_url));
+  if (current_proxy_gurl.is_empty() || !current_proxy_gurl.is_valid()) {
+    VLOG(1)
+        << "User has `AutoConfigURL` value set but it appears to be invalid: \""
+        << current_proxy_url << "\".";
+    return;
+  }
+
+  // 3) The URL is for Brave VPN.
+  if (current_proxy_gurl.DomainIs("guardianapp.com")) {
+    LOG(ERROR) << "Removing Brave VPN smart proxy routing value: \""
+               << current_proxy_url << "\".";
+    key.DeleteValue(L"AutoConfigURL");
+  }
+}
+
 }  // namespace
 
 namespace wireguard {
@@ -65,6 +133,8 @@ bool EnableBraveVpnWireguardServiceImpl(
     const std::string& mapped_ip4_address,
     const std::string& vpn_server_hostname) {
   base::win::AssertComInitialized();
+  MaybeEnableSystemProxy();
+
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
   if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
                               nullptr, CLSCTX_LOCAL_SERVER,
@@ -111,7 +181,22 @@ void EnableBraveVpnWireguardService(const std::string& server_public_key,
                                     const std::string& client_private_key,
                                     const std::string& mapped_ip4_address,
                                     const std::string& vpn_server_hostname,
+                                    std::optional<std::string> smart_proxy_url,
                                     wireguard::BooleanCallback callback) {
+  // If all params are empty this is a reconnect (using last known good config).
+  // This happens when the person triggered reconnect using the tray icon.
+  bool reconnect_using_last_config =
+      server_public_key.length() == 0 && client_private_key.length() == 0 &&
+      mapped_ip4_address.length() == 0 && vpn_server_hostname.length() == 0;
+  // Only reset smart proxy URL if this is not a reconnect or if it has a value.
+  if (!reconnect_using_last_config || smart_proxy_url.has_value()) {
+    g_smart_proxy_url.reset();
+    if (smart_proxy_url.has_value()) {
+      VLOG(1) << "Using smart_proxy_url = \"" << *smart_proxy_url << "\"";
+      g_smart_proxy_url = smart_proxy_url;
+    }
+  }
+
   base::ThreadPool::CreateCOMSTATaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives(),
        base::TaskPriority::BEST_EFFORT,
@@ -127,6 +212,7 @@ void EnableBraveVpnWireguardService(const std::string& server_public_key,
 
 bool DisableBraveVpnWireguardServiceImpl() {
   base::win::AssertComInitialized();
+  MaybeDisableSystemProxy();
 
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
   if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
