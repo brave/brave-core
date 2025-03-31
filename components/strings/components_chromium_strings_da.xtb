@@ -21,6 +21,7 @@
 <translation id="303960458633076466">Brave har blokeret denne side</translation>
 <translation id="2017237562285586622">Tillad, at Brave får adgang til netværket i dine indstillinger for firewall eller
         antivirus.</translation>
+<translation id="4949828774841497663">Gå til Apps &gt; Systemindstillinger &gt; Netværk, vælg det aktive netværk, klik på knappen Oplysninger…, og fravælg eventuelle proxyer, der måtte være valgt.</translation>
 <translation id="8619622797841001082">Gå til
           Brave-menuen &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -43,9 +44,6 @@
           og fjern markeringen af "<ph name="NO_PREFETCH_DESCRIPTION"/>".
           Hvis det ikke løser problemet, bør du markere dette afkrydsningsfelt
           igen for at forbedre effektiviteten.</translation>
-<translation id="8187289872471304532">Gå til 
-          Applikationer &gt; Systemindstillinger &gt; Netværk &gt; Avanceret &gt; Proxyer,
-          og fjern markeringen af alle valgte proxyer.</translation>
 <translation id="4159376633403260073">Du ser en sikker Brave for Testing-side</translation>
 <translation id="88187049159266777">Brave blev ikke afsluttet korrekt.</translation>
 </translationbundle>

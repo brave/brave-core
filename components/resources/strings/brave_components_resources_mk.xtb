@@ -1,12 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="mk">
+<translation id="5288293905681750318">Блокирани следачи и реклами</translation>
 <translation id="788493840831967104">Заштедено време</translation>
+<translation id="2318592590318590295">Заштеден опсег на проток</translation>
 <translation id="2079545284768500474">Врати</translation>
 <translation id="7400418766976504921">УРЛ</translation>
 <translation id="5327248766486351172">Име</translation>
 <translation id="7658239707568436148">Откажи</translation>
+<translation id="5525668735313040116">Пребарувајте на интернет приватно</translation>
+<translation id="780301667611848630">Не, благодарам</translation>
 <translation id="3333887201479867589">Награди на Brave</translation>
+<translation id="6216996674668969227">Заработувајте токени за гледање реклами што ја почитуваат приватноста.</translation>
 <translation id="8488282162676695335">Паричник Brave</translation>
 <translation id="8820817407110198400">Обележувач</translation>
 <translation id="1644574205037202324">Историја</translation>
@@ -22,6 +27,7 @@
 <translation id="2359808026110333948">Продолжи</translation>
 <translation id="3863981251715594911">Како функционира?</translation>
 <translation id="7931127789630755251">Заработувајте токени за приватните реклами што ги гледате на Brave</translation>
+<translation id="2278423362884506724">Поддржувајте ги креаторите на содржина и користете ги вашите токени за купување картички за подароци, менувајте во други валути и многу повеќе.</translation>
 <translation id="6278643716658443228">Поставки за награди</translation>
 <translation id="2965798296974325760">Започни со користење на наградите</translation>
 <translation id="5899814466108868020">Го поддржувате Brave и заедницата на BAT</translation>
@@ -33,25 +39,36 @@
 <translation id="5860033963881614850">Исклучено</translation>
 <translation id="5916664084637901428">Вклучено</translation>
 <translation id="1166682575529520472">Месечно</translation>
+<translation id="5309155375926073606">Да, сакам да придонесам за Brave пребарување да се вклучам во <ph name="LINK_BEGIN"/>проектот за веб-обелоденување<ph name="LINK_END"/>.</translation>
+<translation id="4622826307953794521">Придонесете со анонимни податоци за пребарување и прелистување за да го подобрите Brave пребарување со проектот за веб-обелоденување. Тоа е со целосно отворен код.</translation>
+<translation id="4174337572777167894">Проект за веб-обелоденување</translation>
 <translation id="1426410128494586442">Да</translation>
 <translation id="4250680216510889253">Не</translation>
 <translation id="5039804452771397117">Дозволи</translation>
 <translation id="9065203028668620118">Уреди</translation>
 <translation id="9218430445555521422">Постави како стандардно</translation>
 <translation id="5385187102307010596">Се чини дека во моментов нема статии на овој ѕид. Вратете се подоцна или освежете го ѕидот.</translation>
+<translation id="7180865173735832675">Приспособи</translation>
 <translation id="5233638681132016545">Нова картичка</translation>
 <translation id="7557539689487606886">Вклучи Premium</translation>
+<translation id="3840096463915153852">Историја на разговори</translation>
+<translation id="2304783958703511257">Напредни поставки</translation>
 <translation id="4173478269537830374">Истражете повеќе модели на ВИ</translation>
 <translation id="3245401959451976966">Отклучете ја вашата креативност</translation>
 <translation id="4165928407303989823">Останете на темата</translation>
 <translation id="2389665228467129817">Разговарајте подолго</translation>
+<translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> месечно</translation>
 <translation id="1028627582482425924">Една година</translation>
+<translation id="36366199652730057">Најдобра цена</translation>
 <translation id="5474757891469990756">Ослободете ги сите моќи на Leo со Premium:</translation>
 <translation id="3453542753968940696">Приоритетен пристап до моќни модели со различни вештини.</translation>
 <translation id="5031778211368112461">Имајте пристап до модели приспособени конкретно за креативни задачи и генерирање содржина.</translation>
 <translation id="298783097210745222">Добивајте попрецизни одговори за подлабоки разговори.</translation>
 <translation id="4314705522985583059">Помали ограничувања за подолги разговори.</translation>
+<translation id="8171760814579050200">Преименување разговор</translation>
+<translation id="7754678742055438573">Бришење разговор</translation>
 <translation id="8712637175834984815">Разбрав</translation>
+<translation id="2315654674554095762">Лео отсега ќе ги запомнува вашите разговори за да може да се вратите на нив. Тие се чуваат шифрирани на вашиот уред и може да ги избришете во секое време.</translation>
 <translation id="6291843235651817590">Општ разговор</translation>
 <translation id="8193130769524604031">Задачи за напреден разговор</translation>
 <translation id="7979673624064378842">Молневито брз разговор</translation>
@@ -60,6 +77,14 @@
 <translation id="650318023204990401">Напредни контроли</translation>
 <translation id="2273851479262317744">Постави го Brave како стандарден прегледувач</translation>
 <translation id="5148943178722443958">Помогнете во подобрувањето на Brave.</translation>
+<translation id="6302485303316397682">Сакате подобри резултати при пребарување?</translation>
+<translation id="7014699001826714920">Придружете се на движењето, придонесете кон Brave пребарување.</translation>
+<translation id="6821108091726602352">Помогнете ни да го подобриме интернетот така што ќе учествувате во проектот за веб-обелоденување на Brave. Со споделување на анонимни сигнали за пребарување, ќе помогнете Brave да го зголеми индексот на пребарување.</translation>
+<translation id="6764845498618413165">Дознајте повеќе.</translation>
+<translation id="7818938154803162778">Да, ќе помогнам</translation>
+<translation id="2370739752330685659">Можеби подоцна</translation>
+<translation id="5753795690521538679">Започни 7-дневна бесплатна проба</translation>
+<translation id="3357036723290257445">Веќе купивте Brave VPN?</translation>
 <translation id="8814357473522731680">Овозможено од</translation>
 <translation id="1116694919640316211">За Brave</translation>
 <translation id="755045397420611731">Дополнителна приватност и безбедност на интернет</translation>
@@ -69,4 +94,5 @@
 <translation id="2422309687188612485">Заштитете до 10 уреди со една претплата</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">Дополнителна приватност и безбедност на интернет.</translation>
+<translation id="8703188411226330709">Започнете бесплатна проба</translation>
 </translationbundle>

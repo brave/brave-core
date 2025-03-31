@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Salta per ara</translation>
 <translation id="6165508094623778733">Saber més</translation>
 <translation id="986879628471635371">Resolució de problemes a bord</translation>
-<translation id="5808759341041733958">Sel·lecciona el motor de cerca per defecte</translation>
-<translation id="1331593888918588693">Sempre podràs canviar les teves preferències en la configuració de l'aplicació.</translation>
 <translation id="5806601733251372221">Escuts de Brave</translation>
 <translation id="8537217141725709400">Guanya <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Recompenses de Brave</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">Tinc una frase de recuperació de 24 paraules</translation>
 <translation id="3570367516044491911">Configura com a navegador predeterminat</translation>
 <translation id="6800338374677644736">Configura com a navegador predeterminat</translation>
-<translation id="19715420010996093">Selecciona el navegador Brave i clica 'Sempre'</translation>
-<translation id="3546439402724649282">Brave ja s'ha configurat com el teu navegador predeterminat.</translation>
-<translation id="8389661903259423907">Ja has configurat un navegador predeterminat. Pots modificar el navegador predeterminat a la configuració de l'aplicació.</translation>
 <translation id="1545749641540134597">Escaneja codi QR</translation>
 <translation id="5317781812114905957">Instruccions</translation>
 <translation id="8515319483805157233">Per cercar per codi QR, alinea el codi QR al centre del marc.</translation>
@@ -549,7 +544,6 @@ Segur que vols continuar?</translation>
 <translation id="1945330434665345785">La setmana passada vas bloquejar <ph name="COUNT"/> rastrejadors i anuncis amb el navegador de Brave.</translation>
 <translation id="2883868922264431515">Guanya tokens visualitzant anuncis que respectin la privacitat i donin suport als teus llocs web preferits.</translation>
 <translation id="7408493389591475748">Comença a navegar per veure els informes de privacitat</translation>
-<translation id="9080777565335515917">Defineix Brave com a navegador predeterminat per a una navegació privada i segura.</translation>
 <translation id="1390943217516275883">Permet a Brave mostrar les teves estadístiques de privacitat</translation>
 <translation id="1763352720905582220">Envia un informe setmanal de privacitat</translation>
 <translation id="1811691435325545066">Neteja totes les dades dels informes de privacitat</translation>
@@ -593,16 +587,6 @@ Segur que vols continuar?</translation>
 <translation id="2977501775944575564">Descàrrega en paral·lel</translation>
 <translation id="6224180438946945617">Habilitar la descàrrega en paral·lel per accelerar la velocitat de la baixada</translation>
 <translation id="8967385052772844086">Consulta l'informe de privacitat complet</translation>
-<translation id="6864343534748973390">El més popular</translation>
-<translation id="4608192160278975831">Privat i sense seguiment</translation>
-<translation id="7208522820527289601">Privat i sense seguiment, establert a la UE</translation>
-<translation id="1161008391729450974">Resultats de Google sense seguiments</translation>
-<translation id="7320542277711359296">El segon més popular</translation>
-<translation id="8295049095570748497">Un motor de recerca capdavanter a Rússia</translation>
-<translation id="2642661895835126239">Planta arbres, establert a Berlín</translation>
-<translation id="2422627462367776805">Portal web i cerca de Corea del Sud</translation>
-<translation id="177282784098234156">privat, independent, primer l'usuari</translation>
-<translation id="1410130669636877548">Alguns motors de recerca protegeixen la teva privacitat millor que altres quan navegues per la xarxa.</translation>
 <translation id="3479552764303398839">Ara no</translation>
 <translation id="7138272885617540195">Permet que els enllaços d'aplicacions s'obrin en aplicacions fora de Brave</translation>
 <translation id="4954512758656527938">Cartera predeterminada d'Ethereum</translation>

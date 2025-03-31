@@ -21,6 +21,9 @@
 <translation id="303960458633076466">Na-block ng Brave ang page na ito</translation>
 <translation id="2017237562285586622">Pahintulutan ang Brave na i-access ang network sa
           mga setting ng iyong firewall o antivirus.</translation>
+<translation id="4949828774841497663">Pumunta sa Applications &gt; System Settings &gt; Network, piliin ang
+          aktibong network, i-click ang button na Details... at i-deselect ang anumang proxy
+          na posibleng napili.</translation>
 <translation id="8619622797841001082">Pumunta sa
           menu ng Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -43,9 +46,6 @@
           at alisin sa pagkakapili ang "<ph name="NO_PREFETCH_DESCRIPTION"/>."
           Kung hindi nito malulutas ang isyu, inirerekomenda naming piliing muli ang opsyong ito
           para sa pinahusay na pagganap.</translation>
-<translation id="8187289872471304532">Pumunta sa
-          Applications &gt; System Preferences &gt; Network &gt; Advanced &gt; Proxies
-          at alisin sa pagkakapili ang anumang mga napiling proxy.</translation>
 <translation id="4159376633403260073">Isang secure na page ng Brave na Pang-test ang tinitingnan mo</translation>
 <translation id="88187049159266777">Hindi nag-shut down nang tama ang Brave.</translation>
 </translationbundle>

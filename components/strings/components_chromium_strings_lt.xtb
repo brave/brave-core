@@ -21,6 +21,9 @@
 <translation id="303960458633076466">Šį puslapį užblokavo „Brave“</translation>
 <translation id="2017237562285586622">Leiskite „Brave“ pasiekti tinklą užkardos arba antivirusinės programos
           nustatymuose.</translation>
+<translation id="4949828774841497663">Eikite į skiltį „Programos“ &gt; „Sistemos nustatymai“ &gt; „Tinklas“, pasirinkite
+          aktyvų tinklą, spustelėkite mygtuką „Išsami informacija...“ ir panaikinkite visų tarpinių serverių,
+          kurie galėjo būti pasirinkti, pasirinkimą.</translation>
 <translation id="8619622797841001082">Eikite į
           „Brave“ meniu &gt;
           „<ph name="SETTINGS_TITLE"/>“
@@ -43,9 +46,6 @@
         ir panaikinkite „<ph name="NO_PREFETCH_DESCRIPTION"/>“ pasirinkimą.
         Jei tai atlikus problema išlieka, rekomenduojame vėl pasirinkti šią parinktį,
         kad pagerėtų našumas.</translation>
-<translation id="8187289872471304532">Eikite į
-          „Programos“ &gt; „Sistemos nuostatos“ &gt; „Tinklas“ &gt; „Išplėstinis“ &gt; „Tarpiniai serveriai“
-          ir panaikinkite visų tarpinių serverių pasirinkimą.</translation>
 <translation id="4159376633403260073">Peržiūrite saugų „Brave for Testing“ puslapį</translation>
 <translation id="88187049159266777">„Brave“ netinkamai išsijungė.</translation>
 </translationbundle>

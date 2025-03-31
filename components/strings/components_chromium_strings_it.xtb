@@ -21,6 +21,7 @@
 <translation id="303960458633076466">Questa pagina è stata bloccata da Brave</translation>
 <translation id="2017237562285586622">Consenti a Brave di accedere alla rete nelle impostazioni del firewall o del software
          antivirus.</translation>
+<translation id="4949828774841497663">Vai a Applicazioni &gt; Impostazioni di sistema &gt; Rete, seleziona la rete attiva, fai clic sul pulsante Dettagli… e deseleziona eventuali proxy che potrebbero essere stati selezionati.</translation>
 <translation id="8619622797841001082">Seleziona
           il menu Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -36,9 +37,6 @@
 <translation id="6477625882876869143">La realizzazione di Brave è stata possibile grazie al progetto open source <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Seleziona il menu Brave &gt; <ph name="SETTINGS_TITLE"/> &gt; <ph name="ADVANCED_TITLE"/> e deseleziona "<ph name="NO_PREFETCH_DESCRIPTION"/>".
 Se il problema non si risolve, dovresti riselezionare questa opzione per ottenere prestazioni migliori.</translation>
-<translation id="8187289872471304532">Seleziona
-          Applicazioni &gt; Preferenze di Sistema &gt; Network &gt; Avanzate &gt; Proxy
-          e deseleziona i proxy selezionati.</translation>
 <translation id="4159376633403260073">Stai visualizzando una pagina sicura di Brave for Testing</translation>
 <translation id="88187049159266777">Brave non si è chiuso correttamente.</translation>
 </translationbundle>

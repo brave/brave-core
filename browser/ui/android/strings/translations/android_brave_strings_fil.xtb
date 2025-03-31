@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Laktawan sa ngayon</translation>
 <translation id="6165508094623778733">Matuto pa</translation>
 <translation id="986879628471635371">Pag-troubleshoot sa onboarding</translation>
-<translation id="5808759341041733958">Pumili ng default na search engine</translation>
-<translation id="1331593888918588693">Puwede mong baguhin kailanman ang iyong kagustuhan sa mga setting ng app.</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400">Magkaroon ng <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Mga Reward ng Brave</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">Mayroon akong 24 na salitang recovery phrase</translation>
 <translation id="3570367516044491911">Itakda bilang default na browser</translation>
 <translation id="6800338374677644736">Itakda bilang Default na Browser</translation>
-<translation id="19715420010996093">Piliin ang Brave Browser at i-tap ang 'Palagi'</translation>
-<translation id="3546439402724649282">Nakatakda na ang Brave bilang iyong default na browser.</translation>
-<translation id="8389661903259423907">Nagtakda ka na ng default na browser. Maaari mong palitan ang default na browser sa mga setting ng app mo.</translation>
 <translation id="1545749641540134597">I-scan ang QR Code</translation>
 <translation id="5317781812114905957">Mga Tagubilin</translation>
 <translation id="8515319483805157233">Para mag-search sa pamamagitan ng QR Code, i-align ang QR Code sa gitna ng frame.</translation>
@@ -549,7 +544,6 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="1945330434665345785">Na-block mo ang <ph name="COUNT"/> (na) tracker at ad gamit ang Brave browser noong nakaraang linggo.</translation>
 <translation id="2883868922264431515">Makakuha ng mga token sa pamamagitan ng panonood ng mga ad na nagpapahalaga sa privacy at suportahan ang mga paborito mong website.</translation>
 <translation id="7408493389591475748">Magsimulang mag-browse para makakita ng pag-uulat ng privacy</translation>
-<translation id="9080777565335515917">Itakda ang Brave bilang iyong default na browser para sa pribado at ligtas na pagba-browse.</translation>
 <translation id="1390943217516275883">Binibigyang-daan ang Brave na ipakita ang iyong mga istatistika ng privacy</translation>
 <translation id="1763352720905582220">Nagpapadala ng lingguhang ulat ng privacy</translation>
 <translation id="1811691435325545066">I-clear ang lahat ng data ng mga ulat ng privacy</translation>
@@ -593,16 +587,6 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="2977501775944575564">Parallel na Pag-download</translation>
 <translation id="6224180438946945617">Paganahin ang parallel na pag-download para pabilisin ang tulin ng pag-download</translation>
 <translation id="8967385052772844086">Tingnan ang buong Ulat sa Privacy</translation>
-<translation id="6864343534748973390">Pinakasikat</translation>
-<translation id="4608192160278975831">Pribado at bawal ang pag-track</translation>
-<translation id="7208522820527289601">Pribado at bawal ang pag-track, nasa EU</translation>
-<translation id="1161008391729450974">Mga resulta sa Google nang walang kasamang tracker</translation>
-<translation id="7320542277711359296">Pangalawang pinakasikat</translation>
-<translation id="8295049095570748497">Isang nangungunang search engine sa Russia</translation>
-<translation id="2642661895835126239">Nagtatanim ng mga puno, nasa Berlin</translation>
-<translation id="2422627462367776805">Web portal at search mula sa South Korea</translation>
-<translation id="177282784098234156">Pribado, independent, at binibigyang-priyoridad ang user</translation>
-<translation id="1410130669636877548">Pinoprotektahan ng ilang search engine ang iyong privacy nang mas mahusay sa iba kapag naghahanap ka sa web.</translation>
 <translation id="3479552764303398839">Hindi ngayon</translation>
 <translation id="7138272885617540195">Payagan ang mga link ng app na magbukas sa mga app sa labas ng Brave</translation>
 <translation id="4954512758656527938">Default na Ethereum wallet</translation>

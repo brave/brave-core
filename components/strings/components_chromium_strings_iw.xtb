@@ -21,6 +21,9 @@
 <translation id="303960458633076466">‏הדף הזה נחסם על ידי Brave</translation>
 <translation id="2017237562285586622">‏שינוי הגדרות חומת האש או האנטי-וירוס כדי לאפשר ל-Brave
           לגשת לרשת.</translation>
+<translation id="4949828774841497663">‏עוברים אל "אפליקציות" &gt; "הגדרות המערכת" &gt; "רשת", ובוחרים את
+          הרשת הפעילה, לוחצים על הכפתור "פרטים…" ומבטלים את הבחירה בכל שרתי ה-proxy
+          שנבחרו.</translation>
 <translation id="8619622797841001082">‏יש לעבור אל
           תפריט Brave‏ &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -43,9 +46,6 @@
         ולבטל את הבחירה באפשרות '<ph name="NO_PREFETCH_DESCRIPTION"/>'.
         אם פעולה זו אינה פותרת את הבעיה, מומלץ לבחור שוב באפשרות זו
         לקבלת ביצועים משופרים.</translation>
-<translation id="8187289872471304532">‏יש לעבור אל
-          'יישומים' &gt; 'העדפות מערכת' &gt; 'רשת' &gt; 'מתקדם' &gt; שרתי Proxy'
-          ולבטל את הבחירה בשרתי proxy שנבחרו.</translation>
 <translation id="4159376633403260073">‏זהו דף מאובטח של Brave for Testing</translation>
 <translation id="88187049159266777">‏כיבוי Brave לא בוצע כהלכה.</translation>
 </translationbundle>

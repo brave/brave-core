@@ -21,6 +21,9 @@
 <translation id="303960458633076466">ይህ ገፅ በBrave ታግዷል</translation>
 <translation id="2017237562285586622">Brave በኬላ ወይም የጸረ-ቫይረስ ቅንብሮችዎን አውታረ መረቡን እንዲደርስበት
         ይፍቀዱለት።</translation>
+<translation id="4949828774841497663">ወደ መተግበሪያዎች &gt; የሥርዓት ቅንብሮች &gt; አውታረ መረብ ይሂዱ፣
+          ንቁ አውታረ መረብ የሚለውን ይምረጡ፣ የዝርዝሮች... አዝራሩ ላይ ጠቅ ያድርጉ እና የተመረጡ ሊሆኑ የሚችሉ
+          ማናቸውም ተኪዎችን አይምረጡ።</translation>
 <translation id="8619622797841001082">ወደ
           የBrave ምናሌ &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -41,9 +44,6 @@
         <ph name="ADVANCED_TITLE"/>
         ይሂዱና «<ph name="NO_PREFETCH_DESCRIPTION"/>»ን አይምረጡ።
         ይሄ ችግሩን ካልፈታው ለተሻሻለ አፈጻጸም ይህን አማራጭ እንደገና መምረጥ እንመክራለን።</translation>
-<translation id="8187289872471304532">ወደ
-          መተግበሪያዎች &gt; የስርዓት ምርጫዎች &gt; አውታረ መረብ &gt; የላቁ &gt; ተኪዎች
-          ይሂዱና የተመረጡ ማናቸውም ተኪዎችን አይምረጡ።</translation>
 <translation id="4159376633403260073">ደህንነቱ የተጠበቀ የBrave ለሙከራ ገፅ እየተመለከቱ ነው</translation>
 <translation id="88187049159266777">Brave በትክክል አልተዘጋም።</translation>
 </translationbundle>

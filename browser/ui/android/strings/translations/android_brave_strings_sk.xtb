@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Zatiaľ preskočiť</translation>
 <translation id="6165508094623778733">Dozvedieť sa viac</translation>
 <translation id="986879628471635371">Riešenie problémov pri prvotnom nastavení</translation>
-<translation id="5808759341041733958">Vyberte predvolený vyhľadávací nástroj</translation>
-<translation id="1331593888918588693">Svoje predvoľby môžete kedykoľvek zmeniť v nastaveniach aplikácie.</translation>
 <translation id="5806601733251372221">Brave štíty</translation>
 <translation id="8537217141725709400">Zarábať <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Odmeny Brave</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">Mám 24-slovnú frázu obnovenia</translation>
 <translation id="3570367516044491911">Nastaviť ako predvolený prehliadač</translation>
 <translation id="6800338374677644736">Nastaviť ako predvolený prehliadač</translation>
-<translation id="19715420010996093">Zvoľte si Prehliadač Brave a klepnite na „Vždy“</translation>
-<translation id="3546439402724649282">Brave je už nastavený ako váš predvolený prehliadač.</translation>
-<translation id="8389661903259423907">Už ste nastavili predvolený prehliadač. Môžete ho zmeniť v nastaveniach aplikácie.</translation>
 <translation id="1545749641540134597">Skenovať QR kód</translation>
 <translation id="5317781812114905957">Pokyny</translation>
 <translation id="8515319483805157233">Ak chcete vyhľadávať podľa kódu QR, zarovnajte kód QR do stredu rámika.</translation>
@@ -549,7 +544,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="1945330434665345785">Za posledný týždeň ste pomocou prehliadača Brave zablokovali <ph name="COUNT"/> trackers &amp; reklám.</translation>
 <translation id="2883868922264431515">Získajte tokeny sledovaním reklám rešpektujúcich súkromie a podporte svoje obľúbené webové stránky.</translation>
 <translation id="7408493389591475748">Na zobrazenie hlásenia o súkromí začnite prehliadať</translation>
-<translation id="9080777565335515917">Nastaviť Brave ako predvolený prehliadač pre súkromné a zabezpečené prehliadanie.</translation>
 <translation id="1390943217516275883">Umožňuje prehliadaču Brave zobraziť vaše štatistiky ochrany osobných údajov</translation>
 <translation id="1763352720905582220">Posiela týždenné hlásenie o súkromí</translation>
 <translation id="1811691435325545066">Vymazať všetky údaje Hlásení o súkromí</translation>
@@ -593,16 +587,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="2977501775944575564">Paralelné sťahovanie</translation>
 <translation id="6224180438946945617">Povoliť paralelné sťahovanie na zvýšenie rýchlosti sťahovania</translation>
 <translation id="8967385052772844086">Zobraziť celú správu o ochrane osobných údajov</translation>
-<translation id="6864343534748973390">Najpopulárnejšie</translation>
-<translation id="4608192160278975831">Súkromné a bez sledovania</translation>
-<translation id="7208522820527289601">Súkromné a bez sledovania, so sídlom v EÚ</translation>
-<translation id="1161008391729450974">Výsledky Google bez sledovacích nástrojov</translation>
-<translation id="7320542277711359296">Druhé najpopulárnejšie</translation>
-<translation id="8295049095570748497">Popredný vyhľadávač v Rusku</translation>
-<translation id="2642661895835126239">Zasaďte stromy, so sídlom v Berlíne</translation>
-<translation id="2422627462367776805">Juhokórejský webový vyhľadávací portál &amp;</translation>
-<translation id="177282784098234156">Súkromný, nezávislý, najprv pre používateľov</translation>
-<translation id="1410130669636877548">Niektoré vyhľadávače pri prehliadaní webu chránia vaše súkromie lepšie ako iné.</translation>
 <translation id="3479552764303398839">Teraz nie</translation>
 <translation id="7138272885617540195">Povoliť otvárenie odkazov na aplikácie v aplikáciích mimo Brave</translation>
 <translation id="4954512758656527938">Predvolená peňaženka Ethereum</translation>

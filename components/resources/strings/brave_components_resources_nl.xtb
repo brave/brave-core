@@ -327,6 +327,7 @@
 <translation id="2631006050119455616">Opgeslagen</translation>
 <translation id="3671566813999349838">Hoeveelheid</translation>
 <translation id="6976444672879155794">Automatisch bijdragen [[processor]]</translation>
+<translation id="944736176598169208">Beloningen</translation>
 <translation id="8804164990146287819">Privacybeleid</translation>
 <translation id="7262285991915892790">Sleep het BAT-pictogram naar de</translation>
 <translation id="7656781188259414093">doel.</translation>
@@ -508,7 +509,6 @@
       other {Deze maand krijg je betaald voor het bekijken van <ph name="COUNT_BEGIN"/># advertenties<ph name="COUNT_END"/>}
     }</translation>
 <translation id="6067959437127691361">Brave Beloningen helpt contentontwikkelaars te ondersteunen en u kunt er BAT mee verdienen.</translation>
-<translation id="944736176598169208">Beloningen</translation>
 <translation id="2359808026110333948">Doorgaan met</translation>
 <translation id="885805571521218129">Dit toont uw geschatte inkomstenvoor Brave-advertenties deze maand.</translation>
 <translation id="3863981251715594911">Hoe werkt het?</translation>
@@ -643,7 +643,7 @@
 <translation id="6895088073061692390">Helaas is uw Brave Beloningen-profiel gerapporteerd, omdat onze automatische controles ongebruikelijke activiteit van Brave Ads hebben gezien.</translation>
 <translation id="4229056297802204697">Wanneer een profiel is gerapporteerd, blijven advertenties zichtbaar, maar komt u niet in aanmerking voor het ontvangen van uitbetalingen. U kunt een beheerdersaccount dan ook niet koppelen aan Brave Beloningen.</translation>
 <translation id="5124846913141379164">Het kan gebeuren dat uw profiel onterecht is gerapporteerd en u hoeft dan ook niet onmiddellijk actie te ondernemen. De vlag op uw profiel kan in de toekomst worden verwijderd.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Meer informatie over het proces van Brave met betrekking tot het rapporteren van Beloningen-profielen.<ph name="END_LINK"/></translation>
+<translation id="8947002243324362172">Kom meer te weten over de melding van Rewards-profielen door Brave.</translation>
 <translation id="4699218748197721830">Brave Rewards-profiel is gemeld</translation>
 <translation id="2607420597216860026">Probeer het opnieuw nadat je de ID-verificatie hebt doorlopen voor <ph name="PROVIDER"/>.</translation>
 <translation id="5037332159336402972">Je hebt een geverifieerd account nodig om in te loggen</translation>
@@ -678,7 +678,6 @@
 <translation id="5916664084637901428">On</translation>
 <translation id="3977723631999461201"><ph name="NUM"/> advertenties ontvangen deze maand</translation>
 <translation id="7924320838799747606">Je overzicht</translation>
-<translation id="8714473477079007268"><ph name="PROVIDER"/>-wallet</translation>
 <translation id="3175337080016717494">Uitbetalingsaccount</translation>
 <translation id="453760933181416879">Naar mijn account</translation>
 <translation id="8290994471756102241">Uitgelogd</translation>
@@ -688,7 +687,6 @@
 <translation id="2310070536993781610">Gebruik de promotiecode BRAVEREWARDS om 10% korting te krijgen op alle artikelen uit de Brave-merchandisewinkel.</translation>
 <translation id="1170674812179664523">Brave-merchandisewinkel</translation>
 <translation id="8673202990286883068">Je voordelen</translation>
-<translation id="3699766258844277472">Je hebt nog geen terugkerende bijdragen ingesteld.</translation>
 <translation id="957921474773060718">Volgende bijdrage:</translation>
 <translation id="351973834053818251">Terugkerende bijdragen</translation>
 <translation id="7751260505918304024">Alles weergeven</translation>
@@ -947,6 +945,8 @@
 <translation id="2399555431746923964">BTC Testnet-assets opslaan</translation>
 <translation id="8749751940551938347">ZET-assets opslaan</translation>
 <translation id="3451958544919449297">ZEC Testnet-assets opslaan</translation>
+<translation id="8459631690385393533">Cardano-activa opslaan</translation>
+<translation id="4915057812371523845">Cardano-activa in testnet opslaan</translation>
 <translation id="8500387257977999003">Privésleutel <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Importeer</translation>
 <translation id="232925166623833246">Importeren uit hardwarewallet</translation>
@@ -1191,7 +1191,11 @@
 <translation id="4667144295226514387">Gaslimiet ontbreekt</translation>
 <translation id="2021522108838444624">Bedrag moet hoger zijn dan 0</translation>
 <translation id="8464365289405373974">Adres van ontvanger is vereist</translation>
-<translation id="6326239384961270135">Zichtbaar onderdeel ontbreekt</translation>
+<translation id="6449503919127419230">Verkeerd transparant adres</translation>
+<translation id="3778662247272439818">Netwerk is onjuist</translation>
+<translation id="1170025316306464310">Verkeerde adresindeling</translation>
+<translation id="8380483120683767377">Orchard-onderdeel ontbreekt</translation>
+<translation id="1536211570215515174">Transparant onderdeel ontbreekt</translation>
 <translation id="8585995109882455949">Hoe kan ik het juiste adres vinden?</translation>
 <translation id="105524480632150318">Brave voorkomt dat gebruikers geld naar het verkeerde adres sturen door onjuist hoofdlettergebruik. Volg de instructies hieronder om te controleren of dit het juiste adres is.</translation>
 <translation id="4583433813614292221">1. Ga naar</translation>
@@ -1345,6 +1349,8 @@
 <translation id="7694836973509310467">Overbruggen</translation>
 <translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> via <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="6934057383578424432"><ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> via <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/> is mislukt vanwege een fout</translation>
+<translation id="4916833841663290382"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> beschermen</translation>
+<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> is beschermd</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {Nog {PENDING_TRANSACTIONS} transacties in behandeling.}
       other {Nog {PENDING_TRANSACTIONS} transacties in behandeling.}
@@ -1742,18 +1748,29 @@
 <translation id="4438043733494739848">Transparant</translation>
 <translation id="1950406774300125954">Niet gesynchroniseerd</translation>
 <translation id="68413355604013935">Niet gesynchroniseerd (<ph name="BLOCKS"/> blokken achter)</translation>
+<translation id="1724354250024376254">Saldo in behandeling (meer bevestigingen vereist): <ph name="FUNDS"/></translation>
 <translation id="1597233669965903034">Synchroniseer je account om toegang te krijgen tot je laatste transacties en saldo.</translation>
+<translation id="3609785682760573515">Synchroniseren...</translation>
 <translation id="7499262814309712782">Account synchroniseren</translation>
 <translation id="2804568727504456403"><ph name="ACCOUNT"/> synchroniseren</translation>
 <translation id="813913629614996137">Initialiseren...</translation>
 <translation id="4404141491825711928">Blok verwerken:</translation>
 <translation id="4983989175143324911"><ph name="BLOCKS"/> resterend</translation>
-<translation id="1703172100615786285"><ph name="BLOCKS"/> of <ph name="TOTAL_BLOCKS"/></translation>
+<translation id="1703172100615786285"><ph name="BLOCKS"/> van <ph name="TOTAL_BLOCKS"/></translation>
 <translation id="5055918601206839704">Reeksen:</translation>
 <translation id="1178581264944972037">Onderbreken</translation>
 <translation id="7714298753782862705">Synchronisatie voltooid. Je kunt dit venster nu sluiten.</translation>
 <translation id="7716113567047550378">Sluit dit venster pas nadat de synchronisatie is voltooid.</translation>
 <translation id="5123590959308755060">Wallet verder gebruiken op ander tabblad</translation>
+<translation id="4594014034647546191">Genesisblok van beschermd account</translation>
+<translation id="6666784075827260119">Genesisblok van account moet groter zijn dan <ph name="BLOCK_NUMBER"/></translation>
+<translation id="3102477628835823956">Genesisblok van account moet kleiner zijn dan <ph name="BLOCK_NUMBER"/></translation>
+<translation id="6850229669854962550"><ph name="BLOCKS"/> blokken achter</translation>
+<translation id="7747318989577709780">Account wordt gesynchroniseerd</translation>
+<translation id="9086302186042011942">Synchroniseren</translation>
+<translation id="99991973626409495">Bescherming controleren</translation>
+<translation id="3114681061018999547">Beschermen</translation>
+<translation id="8897189056319316783">ZEC beschermen</translation>
 <translation id="7144878232160441200">Opnieuw proberen</translation>
 <translation id="9094621390791852268">Geen transactievoorbeeld mogelijk.</translation>
 <translation id="4982713341035600933">Geschatte saldowijziging</translation>
@@ -2081,7 +2098,8 @@
 <translation id="4885527781814382758">Brave Leo is je persoonlijke slimme AI-assistent waarmee je het web beter gebruikt. Leo kun je gratis gebruiken met beperkte toegang. Brave Leo Premium biedt meer modellen, hogere limieten en geeft abonnees vroegtijdige toegang tot nieuwe functies. Het standaardmodel zal van tijd tot tijd veranderen. Ga naar het <ph name="LINK_BEFORE"/>Brave Helpcentrum<ph name="LINK_AFTER"/> voor meer informatie.</translation>
 <translation id="7189603330209995455">Als u Leo een vraag stelt, wordt normaal gesproken de inhoud van de webpagina die u bekijkt of tekst die u hebt gemarkeerd op een pagina naar Brave Leo gestuurd om een antwoord te geven. De nauwkeurigheid van de antwoorden is niet gegarandeerd en kan misleidende, onjuiste of valse informatie bevatten. Leo gebruikt gegevens van Brave Zoeken om de kwaliteit van de antwoorden te verbeteren. Geef geen gevoelige of privé-informatie en wees voorzichtig met antwoorden die gaan over gezondheid, financiën, persoonlijke veiligheid en dergelijke. U kunt de instellingen van Leo op elk gewenst moment aanpassen. Ga hiervoor naar Instellingen &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo verzamelt geen identifiers die aan u kunnen worden gekoppeld, zoals uw IP-adres. Er worden geen gegevens gebruikt om de AI-modellen te trainen en de AI-model en modellen van derden bewaren geen persoonsgegevens (met uitzondering van Anthropic, dat gegevens 30 dagen bewaart alvorens deze te verwijderen). Ga naar het <ph name="LINK_BEFORE"/>privacybeleid<ph name="LINK_AFTER"/> voor meer informatie.</translation>
-<translation id="7839853125981164613">Voer hier een opdracht in</translation>
+<translation id="6961721183181597848">Hoe kan ik je vandaag helpen?</translation>
+<translation id="2966135729673253768">Vervolgvragen stellen</translation>
 <translation id="4524675003624341892">Stel vragen voor...</translation>
 <translation id="4567071417854988869">Deze video samenvatten</translation>
 <translation id="7921782882718083488">Deze pagina samenvatten</translation>
@@ -2094,6 +2112,7 @@
 <translation id="7905602379229309187">Het eindpunt is momenteel overbelast. Probeer het later nog eens.</translation>
 <translation id="8151638057146502721">Configureren</translation>
 <translation id="4177458398826096846">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik word gestuurd door Llama 3.1 8B, een model ontwikkeld door Meta om hoge prestaties te leveren en breed inzetbaar te zijn. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
+<translation id="5252251845674154807">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik word aangedreven door Qwen 14B, een door Alibaba Cloud ontwikkeld model om hoge prestaties te leveren en je met vele taken te kunnen helpen. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hallo, ik ben Leo. Ik ben een volledig gehoste AI-assistent van Brave. Ik draai op Mixtral 8x7B, een model dat ontwikkeld is door Mistral om geavanceerde taken uit te voeren. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hallo, ik ben Leo. Ik ben een proxy van Brave en draai op Claude Instant, een model dat ontwikkeld is door Anthropic om gespreks- en tekstverwerkingstaken te ondersteunen. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="2001874998841390450">Hallo, ik ben Leo. Ik werk via een proxy van Brave en word aangestuurd door Claude Haiku, een model gemaakt door Anthropic om gespreks- en tekstverwerkingstaken uit te voeren. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
@@ -2141,6 +2160,8 @@
 <translation id="8261506727792406068">Verwijder</translation>
 <translation id="6574153208133461043">Weet je zeker dat je dit gesprek wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.</translation>
 <translation id="7488762544858401571">Bewerkt</translation>
+<translation id="5604254791550001355">Prompt bewerken</translation>
+<translation id="8115786586976830777">Prompt kopiëren</translation>
 <translation id="1406205536570262057">Antwoord bewerken</translation>
 <translation id="2399439821649319175">Niet nuttig</translation>
 <translation id="2976167228906046828">Onjuist</translation>
@@ -2152,6 +2173,9 @@
 <translation id="903201991022343217">Nieuw gesprek beginnen</translation>
 <translation id="8171760814579050200">Gesprek hernoemen</translation>
 <translation id="7754678742055438573">Gesprek verwijderen</translation>
+<translation id="1946267518364740045">Redeneren...</translation>
+<translation id="4198859185714743678">Redenering voltooid</translation>
+<translation id="6140948187512243695">Details tonen</translation>
 <translation id="7494736170250048402">Bericht naar Leo sturen</translation>
 <translation id="8650874793377330048">Antwoord stoppen</translation>
 <translation id="8712637175834984815">Begrepen</translation>
@@ -2161,7 +2185,12 @@
 <translation id="4370698775470316661">Dit gesprek is te lang en kan niet verdergaan. Mogelijk kan Leo met andere, beschikbare modellen langere gesprekken correct uitvoeren.</translation>
 <translation id="5719170755629028558">Uw antwoord verbeteren met Brave Zoeken...</translation>
 <translation id="5794962229997281366">Verbeterde antwoorden zoeken voor <ph name="SEARCH_TERMS"/></translation>
+<translation id="7307396647043599949">Nog <ph name="COUNT"/>…</translation>
 <translation id="8103700533980268469">Bericht sluiten</translation>
+<translation id="3417835166382867856">Tabbladen doorzoeken</translation>
+<translation id="9090243919347147717">Bijlagen</translation>
+<translation id="4444978378117903684">Voeg je browsertabbladen toe om Leo meer context voor het gesprek te geven</translation>
+<translation id="4300920590112551536">Browsertabbladen</translation>
 <translation id="2315654674554095762">Leo onthoudt nu je gesprekken, zodat je ze later kunt bekijken. Ze worden versleuteld opgeslagen op je apparaat en je kunt ze altijd verwijderen.</translation>
 <translation id="7821251979960635244">Je gespreksgeschiedenis verschijnt hier zodra je een gesprek begint.</translation>
 <translation id="887511360213807449">Geschiedenis is uitgeschakeld</translation>
@@ -2171,6 +2200,7 @@
 <translation id="3185367320601718531">Gespreks- en tekstproductie</translation>
 <translation id="7979673624064378842">Razendsnelle chat</translation>
 <translation id="2836330653441111204">Snelheid en intelligentie in balans</translation>
+<translation id="6695329447007213917">Chat voor algemene doeleinden, codering en meer</translation>
 <translation id="3965507912994218570">Leo-instellingen</translation>
 <translation id="1037324977127422019">Hallo, ik ben Leo!</translation>
 <translation id="8930348081963284873">Ik ben een AI-assistent die rechtstreeks in Brave is ingebouwd.</translation>
@@ -2400,5 +2430,6 @@ Laten we je verbinding snel in orde brengen!</translation>
 <translation id="1538335063514960365">Hier openen-knop, druk op Enter om deze URL in het huidige tabblad te openen, in plaats van naar het
     bestaande tabblad te gaan</translation>
 <translation id="451189393813405346">Vraag het Leo</translation>
+<translation id="1602850501393095406">Druk op ↑ om te markeren</translation>
 <translation id="8525248723479742219">Later afspelen</translation>
 </translationbundle>

@@ -17,7 +17,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="1157985233335035034">Son dillər</translation>
 <translation id="1184145431117212167">Windows versiyanız dəstəklənmədiyi üçün quraşdırma alınmadı.</translation>
 <translation id="8541922081612557424">Brave haqqında</translation>
-<translation id="6213288206540454953">Pəncərəni paylaşmaq məqsədilə Sistem tərcihlərində Brave üçün ekranın yazılmasına icazə verin.</translation>
 <translation id="1203500561924088507">Quraşdırdığınız üçün təşəkkür edirik. <ph name="BUNDLE_NAME"/> istifadə etməzdən əvvəl brauzerinizi yenidən başlatmalısınız.</translation>
 <translation id="8799570501820813406">Bu tab deaktiv olduqda Brave-u sürətli saxlamaq üçün yaddaş boşaldıldı. Bu saytın deaktiv olmasını həmişə istisna edə bilərsiniz.</translation>
 <translation id="8767381092474532098">Bu fayl təhlükəli olduğu üçün Brave endirməni blokladı</translation>
@@ -31,6 +30,7 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="1345251407431278948">Bərkidildi! Alətlər panelindəki yeni düymə ilə Şəkil Axtarışına yenidən daxil ola bilərsiniz</translation>
 <translation id="1356661055722410047">Yenilik! Həm ekrandakı mətni, həm də təsvirləri tərcümə edə bilərsiniz</translation>
 <translation id="8132634101975074716">Brave'a daxil oldunuz!</translation>
+<translation id="3880714039086599943">Pəncərəni paylaşmaq üçün Sistem Ayarlarında Brave üzrə ekranın qeydə alınmasına icazə verin.</translation>
 <translation id="1586284627848250203">Sınaq üçün Brave ilə bağlı kömək alın</translation>
 <translation id="1497802159252041924">Quraşdırma xətası: <ph name="INSTALL_ERROR"/></translation>
 <translation id="5147525139567260139">Brave tabı paylaşın</translation>
@@ -98,6 +98,7 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="9095263438435683933">Buradan Android telefonunuza nömrə göndərmək üçün hər iki cihazda Brave'a daxil olun.</translation>
 <translation id="2359808026110333948">Davam edin</translation>
 <translation id="6485997157403727556">"<ph name="EXTENSION_NAME"/>" artırması Brave-a daxil olmağınızı istəyir</translation>
+<translation id="7017760840808989683">Tətbiqlər üçün arxa fonda işləyən Brave-u deaktiv edin</translation>
 <translation id="8491912023989916905"><ph name="USER_EMAIL_ADDRESS"/> kimi bu artırmanı istifadə etmək üçün Brave-a daxil olun.</translation>
 <translation id="8418845734693287262">ChromeOS datanızı sinxronizasiya edə bilmir, çünki hesaba giriş məlumatlarınız köhnədir.</translation>
 <translation id="5617265241715541684">{NUM_DEVICES,plural, =0{Bir və ya bir neçə Brave artırması 1 HID cihazına daxil olurdu}=1{Bir və ya bir neçə Brave artırması 1 HID cihazına daxil olur}other{Bir və ya bir neçə Brave artırması # HID cihazına daxil olur}}</translation>
@@ -109,7 +110,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="6078442581074612226">Brave'da</translation>
 <translation id="2485422356828889247">Sistemdən silin</translation>
 <translation id="2513154137948333830">Yenidən yükləmə tələb edilir: <ph name="INSTALL_SUCCESS"/></translation>
-<translation id="3263471340406187648">Davam etməklə Brave-a <ph name="EMAIL"/> ilə daxil olmalı olacaqsınız. Bu, təşkilatınızın siyasətlərinə uyğunluğu təmin edir.</translation>
 <translation id="2542968102051442371">Şəkil Axtarışı ilə mətn seçin</translation>
 <translation id="70183448213529602">Brave mövcud parolları əvəz etmək istəyir. İcazə vermək üçün Windows parolunu yazın.</translation>
 <translation id="7798069806040634998">Faylları endirmək üçün Brave yaddaşa giriş tələb edir</translation>
@@ -119,6 +119,7 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="7291143854620707672">Bu profilin istifadəsi zamanı yaranan hər hansı bir Brave datası (əlfəcinlər, tarixçələr, parolların yaradılması və digər ayarlar kimi) iş profili administratoru tərəfindən silinə bilər. <ph name="LEARN_MORE"/></translation>
 <translation id="6252796827759111076">Brave istifadəsinə davam edin</translation>
 <translation id="259935314519650377">Endirilmiş quraşdırıcı keşlənmədi. Xəta: <ph name="UNPACK_CACHING_ERROR_CODE"/>.</translation>
+<translation id="7931230852267968641">Təşkilat əlfəcin, tarixçə və parollar kimi axtarış datasını görə və idarə edə bilər. Digər Brave profillərindəki axtarış datasını görə bilməz</translation>
 <translation id="2257221826278123061">Brave datasını hesabınızda (<ph name="ACCOUNT_EMAIL"/>) istifadə etmək və yadda saxlamaq üçün kimliyinizi doğrulayın</translation>
 <translation id="7788346643684168549">Brave sürətli işləyir və JavaScript istifadə edən funksiyalar nəzərdə tutulan kimi işləməlidir (tövsiyə olunur)</translation>
 <translation id="7387051847644272380">Quraşdırma zamanı əməliyyat sistemi xətası baş verdi. Brave'u yenidən endirin.</translation>
@@ -134,7 +135,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="2799223571221894425">Yenidən başladın</translation>
 <translation id="5962774139606909656">Sizin Brave</translation>
 <translation id="3355084177729745988">Brave ad günü, yaş və pasport nömrəsi kimi forma məlumatlarını yadda saxlamaq istəyib-istəmədiyinizi soruşacaq</translation>
-<translation id="3783547330001921298">Bununla <ph name="USER_EMAIL_ADDRESS"/> üçün yeni Brave profili yaradılacaq</translation>
 <translation id="2841525013647267359">Mənbə dil:</translation>
 <translation id="2846251086934905009">Quraşdırma xətası: Quraşdırıcı prosesi tamamlanmadı. Quraşdırma dayandırıldı.</translation>
 <translation id="777113543093865885">Brave'dan silin...</translation>
@@ -149,7 +149,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="8208853227947884571">Brave güncəldir</translation>
 <translation id="5122472867956731189">Sayt parolunuzu oğurlamağa çalışdıqda və ya zərərli fayl endirdiyinizdə Brave səhifə məzmunundan kiçik nümunələr də daxil olmaqla, URL'ləri Təhlükəsiz Baxışa göndərə bilər</translation>
 <translation id="3963199983793987097">Onlayn təhlükəsizliyinizi valideyninizin seçimləri ilə qorumaq üçün Brave-a daxil olun</translation>
-<translation id="500707801149472925">Brave baxış təcrübənizi yaxşılaşdırmaq və resursları boşaltmaq üçün bu tabları deaktiv edə bilər.</translation>
 <translation id="4202995875619419215">Brave-da yeni tabda <ph name="URL"/> açın.</translation>
 <translation id="8755404239607088219">Brave parollarınızı yoxlaya bilmir. Sonra yenidən cəhd edin.</translation>
 <translation id="8880183781256147665">Xrom durub ...</translation>
@@ -163,6 +162,7 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="8919461291440820124">Brave mikrofonunuzu istifadə edir.</translation>
 <translation id="3137969841538672700">Sürüşdürərək axtarın</translation>
 <translation id="8372436892102763334">Bu tab əlavə resurslardan istifadə edir. Performansı təkmilləşdirmək üçün Brave-a onu deaktiv etmək imkanı verin.</translation>
+<translation id="5949068186379578553">Ekranı paylaşmaq üçün Sistem Ayarlarında Brave üzrə ekranın qeydə alınmasına icazə verin</translation>
 <translation id="4805806622840861220">Brave'u yenidən başladın</translation>
 <translation id="3161522574479303604">Bütün dillər</translation>
 <translation id="6554952862405000915">Linki Gizli Brave Pəncərəsində açın</translation>
@@ -175,24 +175,24 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="8926637909431618259">Brave bağlı olduqda arxa fon tətbiqləri işləsin?</translation>
 <translation id="518125528057094977">Brave təhlükəli bağlantı ilə sayt yükləməzdən əvvəl xəbərdarlıq edəcək</translation>
 <translation id="8652321858775514885">Brave-a daxil olsanız, Brave Hesabı istisna olmaqla bütün Brave pəncərələrini bağladıqda əksər saytlardan çıxacaqsınız. Saytların sizi xatırlaması üçün <ph name="SETTINGS_LINK"/>.</translation>
-<translation id="2711887072399498551">Bu hesab ilə Brave profili artıq mövcuddur</translation>
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">Mövcud Brave profilinə keçirilsin?</translation>
 <translation id="3412460710772753638">Bu cihazda Parol Menecerində</translation>
-<translation id="2450003541323895471">Brave profilləri ilə bütün Brave elementlərinizi ayıra bilərsiniz. Dostlarınız və ailəniz üçün profillər yaradın və ya iş və əyləncə arasında bölün.</translation>
+<translation id="6011025461074959315">Artırma və digərlərini bütün kompüterlərinizdə əldə etmək üçün Brave-a daxil olun</translation>
 <translation id="9216183508558772570">Oğurlanmış parol ilə daxil olduqda Brave sizə bildiriş göndərəcək</translation>
 <translation id="5853262807109651878"><ph name="ITEMS_COUNT"/> element bu cihazdan silinəcək. Sonradan datanızı bərpa etmək üçün Bravea <ph name="USER_EMAIL"/> kimi daxil olun.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> Brave profilləri arasında keçid edə bilər</translation>
 <translation id="8703492925273919597">Bütün Brave pəncərələrini bağlayın və yenidən cəhd edin.</translation>
+<translation id="599091950194451698">Pəncərəni paylaşmaq üçün Sistem Ayarlarında Brave üzrə ekranın qeydə alınmasına icazə verin</translation>
 <translation id="1447863765638888625"><ph name="EXISTING_USER"/> artıq giriş edib.  Baxışı ayrı saxlamaq üçün öz profilinizdə Brave-a <ph name="USER_EMAIL_ADDRESS"/> kimi daxil olun.</translation>
 <translation id="4061445349373849749">Məxfiliyinizi qorumaq üçün 4 həftədən köhnə maraqlarınızı avtomatik silirik. Baxmağa davam etdikcə, maraq siyahıda yenidən görünə bilər. Və ya Brave'un nəzərə almasını istəmədiyiniz maraqları silə bilərsiniz.</translation>
+<translation id="8981774130895723211">Ekranı paylaşmaq üçün Sistem Ayarlarında Brave üçün ekranın qeydə alınmasına icazə verin.</translation>
 <translation id="691208314680168371">Baxış tarixçəniz, bu cihazda Brave istifadə edərək ziyarət etdiyiniz saytların qeydi.</translation>
 <translation id="3597003331831379823">Artırılmış imtiyazlar ilə ayarlamanı işə salmaq alınmadı. <ph name="METAINSTALLER_ERROR"/></translation>
 <translation id="3066805437003400520">Bu şəxsin axtarış datası bu cihazdan silinəcək. Datanı bərpa etmək üçün Brave'a <ph name="USER_EMAIL"/> olaraq daxil olun.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave üçün yeni güncəlləmə əlçatandır. Brave yenidən işə başladıqdan sonra tətbiq ediləcək.}=1{Brave üçün yeni güncəlləmə əlçatandır. Brave yenidən işə başladıqdan sonra tətbiq ediləcək. Anonim pəncərəniz yenidən açılmayacaq.}other{Brave üçün yeni güncəlləmə əlçatandır. Brave yenidən işə başladıqdan sonra tətbiq ediləcək. # Anonim pəncərəniz yenidən açılmayacaq.}}</translation>
 <translation id="7029305463989165490"><ph name="ORIGIN"/> cihazından Android telefonunuza nömrə göndərmək üçün hər iki cihazda Brave'a daxil olun.</translation>
 <translation id="3667616615096815454">Quraşdırmaq olmur. Tətbiq serverə məlum deyil.</translation>
-<translation id="6637642329430475361">Ekranı paylaşmaq məqsədilə Sistem tərcihlərində Brave üçün ekranın yazılmasına icazə verin.</translation>
 <translation id="4304059894777924102">Brave parollarınızı yoxlaya bilmir. İnternet bağlantınızı yoxlamağa cəhd edin.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administrator bu güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir}=1{Administrator bu güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir. Anonim pəncərəniz yenidən açılmayacaq.}other{Administrator bu güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir. # Anonim pəncərəniz yenidən açılmayacaq.}}</translation>
 <translation id="1807774211756215222">Linki yeni Brave tabında açın</translation>
@@ -257,15 +257,12 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="137732229629632648">Brave ətrafın xəritəsini çəkmək və əllərinizi izləmək üçün icazə tələb edir</translation>
 <translation id="5917968343741192617">Brave formaları daha yaxşı başa düşür və onları sizin üçün daha tez avtomatik doldura bilər</translation>
 <translation id="5036046007335188949">Artıq başqa Brave profilində <ph name="USER_EMAIL_ADDRESS"/> kimi daxil olmusunuz</translation>
-<translation id="3275149320720837338">Brave baxış təcrübənizi təkmilləşdirmək və işləri sürətləndirmək üçün bu tabı qeyri-aktiv edə bilər.</translation>
-<translation id="3679799810790990472">Yeni Brave profilində davam edilsin?</translation>
 <translation id="1878185978731985193">Brave səhifələri əvvəlcədən yükləyərək baxış və axtarışı sürətləndirir. <ph name="BEGIN_LINK"/>Səhifələri əvvəlcədən yükləmək haqqında ətraflı məlumat<ph name="END_LINK"/></translation>
 <translation id="4567424176335768812"><ph name="USER_EMAIL_ADDRESS"/> kimi daxil olmusunuz. İndi bütün daxil olan cihazlarınızdan əlfəcin, tarixçə və digər ayarlara daxil ola bilərsiniz.</translation>
 <translation id="8669339108356170796">Güvənli Baxış deaktiv olduğu və bu fayl doğrulanmadığı üçün Brave endirməni blokladı</translation>
 <translation id="4594305310729380060">Bu cihazda Parol Menecerinə</translation>
 <translation id="300669147395456190">Brave Tətbiqləri</translation>
 <translation id="4970880042055371251">ChromeOS versiyası</translation>
-<translation id="3738697088264775175">Ekranı paylaşmaq məqsədilə Sistem Tərcihlərində Brave üçün ekranın yazılmasına icazə verin</translation>
 <translation id="2182657378556811785">Güncəllənmək üzrədir. Güncəlləşməni tamamlamaq üçün Brave'u yenidən işə salın.</translation>
 <translation id="1299765473362724475">Xəbərdarlıq: Brave artırmaların brauzer tarixçənizi yazmasının qarşısını ala bilməz. Bu artırmanı Anonim rejimdə deaktiv etmək üçün bu seçimi ləğv edin.</translation>
 <translation id="7402642357351265733">Brave istifadə hesabatlarını da paylaşırsınızsa, bu hesabatlara ziyarət etdiyiniz keçidlər daxil olacaq</translation>
@@ -286,6 +283,7 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="8794694805872287186">Brave güncəlləmələri əldə etmək üçün macOS 11 və ya yeni versiya tələb olunur. Bu kompüter macOS 10.15 istifadə edir.</translation>
 <translation id="8797356639448065696">Brave arxa fon rejimindədir.</translation>
 <translation id="1895567721497166950">Klikləyərək Brave giriş dialoqunu bağlayın</translation>
+<translation id="2692971232706994729">Brave profilləri ilə bütün Brave elementlərinizi ayıra bilərsiniz. Dostlarınız və ailəniz üçün profillər yaradın, yaxud iş və əyləncə olaraq ayırın.</translation>
 <translation id="7406627712452599344">Qonaqlar geridə heç nə buraxmadan Brave istifadə edə bilər.</translation>
 <translation id="5952898964075639679">Özünüzü Brave'a əlavə edin</translation>
 <translation id="1204184037023366446">Brave əllərinizi izləmək üçün icazə istəyir</translation>
@@ -294,7 +292,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="9078804073692109646">Yadda saxlanmış parol yoxdur. Parollarınızı yadda saxladıqda Brave onları yoxlaya bilər.</translation>
 <translation id="6234515504547364178">Brave hesabından çıxın</translation>
 <translation id="5234764350956374838">Kənarlaşdırın</translation>
-<translation id="729580998737807583"><ph name="EXISTING_USER"/> artıq bu Brave profilinə daxil olub. Bununla <ph name="USER_EMAIL_ADDRESS"/> üçün yeni Brave profili yaradılacaq</translation>
 <translation id="8586264863973514035">Dəyişiklikləri tətbiq etmək üçün Brave'u yenidən başladın</translation>
 <translation id="5286907366254680517">Aşkarlandı</translation>
 <translation id="5994282802285556682">Anonim rejimdə nəzər saldıqda Brave təhlükəli bağlantı ilə sayt yükləməzdən əvvəl xəbərdarlıq edəcək</translation>
@@ -318,10 +315,10 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="1744365871163268756">Brave'um ən son sistem güncəlləşmələrini quraşdırmasını gözləyin.</translation>
 <translation id="3861679447659630159">Brave parolları redaktə etməyə çalışır. Buna icazə vermək üçün Windows parolunuzu yazın.</translation>
 <translation id="232381795826373334">PDF-ləri Brave'da açın</translation>
-<translation id="8698412764809151604">Artırmaları bütün kompüterlərinizdə əldə etmək üçün Brave-a daxil olun</translation>
 <translation id="5579324208890605088">Başlatma xətası: quraşdırıcını administrator kimi deyil, adi istifadəçi kimi işə salın.</translation>
 <translation id="5596627076506792578">Əlavə seçimlər</translation>
 <translation id="5605834417512968703">Şəkil Axtarışı ilə axtarış etmək üçün istədiyinizi seçin və ya Şəkil Axtarışından çıxmaq üçün escape düyməsini basın</translation>
+<translation id="5618818588972826921">Şəkil Axtarışı ilə axtarmaq üçün istənilən mətn və ya şəkli seçin və ya Şəkil Axtarışından çıxmaq üçün escape düyməsini basın</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave güncəlləməsi əlçatandır}=1{Brave güncəlləməsi əlçatandır}other{Brave güncəlləməsi # gün ərzində əlçatan olub}}</translation>
 <translation id="1023472437588692618">Brave-u bağladıqda sayt datasını cihazdan silin</translation>
 <translation id="5646769069113654257">Brave'u indi başladın</translation>
@@ -341,7 +338,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="5895138241574237353">Yenidən başladın</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Şəbəkəyə Giriş</translation>
 <translation id="5924017743176219022">İnternetə qoşulur...</translation>
-<translation id="690491870562219491">Brave baxış təcrübənizi təkmilləşdirmək və resursları boşaltmaq üçün bu tabı qeyri-aktiv edə bilər.</translation>
 <translation id="5941711191222866238">Minimallaşdırın</translation>
 <translation id="3613110494561632737">Brave təsadüfi olaraq sizi aktiv sınağa təyin edibsə, baxış tarixçəniz gördüyünüz reklamlara və aşağıda təxmin edilən maraqlara təsir edir. Məxfiliyinizi qorumaq üçün Brave hər ay maraqlarınızı növbəlilik əsasında silir. Silmədiyiniz təqdirdə maraqlar yenilənir.</translation>
 <translation id="4357808717322635817">{COUNT,plural, =1{Brave 1 dəqiqə istifadə edilmədikdə təşkilat onu avtomatik bağlayır.}other{Brave # dəqiqə istifadə edilmədikdə təşkilat onu avtomatik bağlayır.}}</translation>
@@ -383,11 +379,11 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="6327105987658262776">Güncəlləmə əlçatan deyil.</translation>
 <translation id="1819119299840995223">Brave'da digər əməliyyat davam edir. Sonra yenidən cəhd edin.</translation>
 <translation id="8616874628011103667">Brave'u Brave Hesabınız ilə ə paylaşılmış kompüterlərdə istifadə etmək indi daha asandır.</translation>
-<translation id="2727290586877408122">Brave baxış təcrübənizi yaxşılaşdırmaq və işləri sürətləndirmək üçün bu tabları deaktiv edə bilər.</translation>
 <translation id="4264606872840545968">Brave qısayolu</translation>
 <translation id="6890616081898535725">Bu fayl adətən endirilmədiyi və təhlükəli ola biləcəyi üçün Brave endirməni blokladı</translation>
 <translation id="335632367599648646">Brave'u silmək istəyirsiniz?</translation>
 <translation id="6375219077595103062">Parol meneceri üçün qısayol əlavə edin</translation>
+<translation id="7920857181125123335">Davam etmək üçün Brave-a <ph name="EMAIL"/> kimi daxil olun. Bu, təşkilat siyasətlərinin tətbiq edilməsini təmin edir.</translation>
 <translation id="3256100650978957522">Kompüter ekranında Brave loqosu.</translation>
 <translation id="6373767849825830651">Brave veb səhifələri və tətbiqləri ildırım sürəti ilə işlədən veb brauzerdir. Brave sürətlidir, stabildir və istifadəyə rahatdır. Brave ilə internetdən fırıldaqlardan və viruslardan uzaq şəkildə istifadə edin.</translation>
 <translation id="6436260184216827876">Şəkil Axtarışı əlçatan deyil. Sonra cəhd edin.</translation>
@@ -410,7 +406,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="6600016381025017075">Bu səhifədə istədiyinizi axtarın</translation>
 <translation id="9156965752763025780">Dəyişiklikləriniz gələn dəfə Brave'u başlatdıqda qüvvəyə minəcək.</translation>
 <translation id="245693535809364497">Brave ətrafınızın 3D xəritəsini yaratmaq üçün kameranıza giriş icazəsi tələb edir</translation>
-<translation id="5060669762365466104">Saytlar yəqin ki, gözlədiyiniz kimi işləyəcək, lakin bütün Brave pəncərələrini bağladıqdan sonra sizi xatırlamayacaq</translation>
 <translation id="9210457680074341078">Brave-da məhsul qiymətlərini izləmək və qiymət enəndə bildiriş almaq üçün əlfəcinləri Brave Hesabında da saxlayın</translation>
 <translation id="6676384891291319759">İnternet</translation>
 <translation id="1363996462118479832">Giriş xətası səbəbindən ChromeOS datanızı sinxronizasiya edə bilmədi.</translation>
@@ -422,7 +417,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstərin və ya yeni Brave versiyası işlədin.</translation>
 <translation id="1505112054322049777">Fərdiləşdirmə və digər funksiyaları əldə etmək üçün Brave-u Veb və Tətbiq fəaliyyəti, habelə əlaqələndirilmiş Brave xidmətlərinə daxil edin</translation>
 <translation id="6666624454809779082">Brave kompüterinizdəki bütün istifadəçilər üçün artıq quraşdırılıb.</translation>
-<translation id="5360050006043219962">Bütün cihazlarınızda Brave elementlərinə giriş etmək üçün daxil olun və sinxronizasiyanı aktiv edin.</translation>
 <translation id="9136637081636160997">Bu yaxınlarda daxil olmamısınız. Brave sildi: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> və daha <ph name="COUNT"/> icazə</translation>
 <translation id="3136039682492230890">Brave bu faylı skan etməyi tövsiyə edir, çünki o, təhlükəli ola bilər.</translation>
 <translation id="1547295885616600893">ChromeOS əlavə <ph name="BEGIN_LINK_CROS_OSS"/>açıq mənbə proqram təminatı ilə<ph name="END_LINK_CROS_OSS"/> mümkün oldu.</translation>
@@ -437,7 +431,6 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="4624945300945265642">Linki gizli Brave pəncərəsində açın</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6418340404893954563">Zəif parolları tapmaq asandır. Brave'un <ph name="BEGIN_LINK"/>sizin üçün güclü parollar yaratmasına və yadda saxlamasına<ph name="END_LINK"/> imkan verin.</translation>
-<translation id="3073260428462538962">Təşkilat əlfəcin, tarixçə və parollar kimi axtarış datasını görə və idarə edə bilər. Şəxsi Brave profillərində axtarış datasını görə bilməz.</translation>
 <translation id="3453763134178591239">ChromeOS şərtləri</translation>
 <translation id="3335606533094650083">Brave bu sayt üçün mikrofona giriş tələb edir</translation>
 <translation id="6643520655691573653">Brave datasını hesabınızda (<ph name="ACCOUNT_EMAIL"/>) istifadə etmək və yadda saxlamaq üçün parol ifadəsini daxil edin</translation>
@@ -476,7 +469,6 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="2619516027171717873">Hazırda istifadə olunan Brave versiyasını quraşdıra bilməzsiniz. Lütfən, Brave'u qapadın və yenidən cəhd edin.</translation>
 <translation id="5337027666828618338">Saytlar gözlənilən kimi işləyəcək. Brave-a daxil olsanız, Brave Hesabı istisna olmaqla bütün Brave pəncərələrini bağladıqda əksər saytlardan çıxacaqsınız.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave 1 dəqiqəyə yenidən başlayacaq}other{Brave # dəqiqəyə yenidən başlayacaq}}</translation>
-<translation id="4643431486173796900">Pəncərəni paylaşmaq məqsədilə Sistem Tərcihlərində Brave üçün ekranın yazılmasına icazə verin</translation>
 <translation id="6378857626787254617">Brave maraqlarınızı təxmin edə bilər. Daha sonra ziyarət etdiyiniz sayt gördüyünüz reklamları fərdiləşdirmək üçün Brave'dan maraqlarınızı görməyi tələb edə bilər.</translation>
 <translation id="7583399374488819119"><ph name="COMPANY_NAME"/> Quraşdırıcısı</translation>
 <translation id="2731215269012281181">Bu yaxınlarda daxil olmamısınız. Brave sildi: <ph name="PERMISSION"/></translation>
@@ -508,6 +500,7 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="7685904775439037072">Brave'un giriş imkanı olduqda veb saytlar giriş üçün Sizdən icazə istəyəcək.</translation>
 <translation id="80471789339884597">Quraşdırdığınız üçün təşəkkür edirik. <ph name="BUNDLE_NAME"/> istifadə etməzdən əvvəl bütün brauzerlərinizi yenidən başlatmalısınız.</translation>
 <translation id="8054112667659782652">Şəkil Axtarışı qısayolunu həmişə göstərin</translation>
+<translation id="6175141682081019059">Tətbiqlər üçün arxa fonda işləyən Brave-u deaktiv edin</translation>
 <translation id="80790299200510644">Şəkil axtarışı</translation>
 <translation id="8086881907087796310">Kompüteriniz minimum avadanlıq tələblərinə cavab vermədiyi üçün quraşdırma alınmadı.</translation>
 <translation id="8263061319795838019"><ph name="PAGE_TITLE"/> - Brave Sınaq üçün Brave</translation>
@@ -517,6 +510,7 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="813913629614996137">Başladılır...</translation>
 <translation id="7550680632761245819">Brave-un JavaScript və WebAssembly mexanizmində əlavə qorumanı aktiv edin</translation>
 <translation id="9067428552314418522">Bu fayl təklükəlidir, bu səbəbdən Brave onu blok etdi.</translation>
+<translation id="8177472873527554730">Səhifədə kontenti tapmaq olmur</translation>
 <translation id="6219250889396046657">Brave datasını hesabınızda (<ph name="USER_EMAIL"/>) istifadə etmək və yadda saxlamaq üçün parol ifadəsini daxil edin</translation>
 <translation id="8221491193165283816">Bildirişləri, adətən, bloklayırsınız. Bu saytın sizə bildirişlər göndərməsinə icazə vermək üçün buraya klikləyin.</translation>
 <translation id="8377926237617998195">Kameradan istifadə etmək üçün Brave-a <ph name="BEGIN_LINK"/>sistem ayarlarında<ph name="END_LINK"/> giriş imkanı verin</translation>
@@ -598,6 +592,7 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="983803489796659991">Yeniləmə serverində tətbiq heş datası olmadığı üçün quraşdırma alınmadı.</translation>
 <translation id="8435446479956716379">Hesab olmadan Brave istifadə edin</translation>
 <translation id="8992261409816268381">Brave Müəllifləri</translation>
+<translation id="989970834842471429">Şəkil Axtarışı ilə axtarmaq üçün istənilən mətn və ya şəkli seçin</translation>
 <translation id="3146636448190445245">Məkandan istifadə etmək üçün Brave-a <ph name="BEGIN_LINK"/>sistem ayarlarında<ph name="END_LINK"/> giriş imkanı verin</translation>
 <translation id="137466361146087520">Google Chrome Beta</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>

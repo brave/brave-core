@@ -242,6 +242,8 @@
 <translation id="5148943178722443958">Pomozite nam da poboljšamo Brave.</translation>
 <translation id="6718362830686703942">Pošaljite nam dijagnostički izveštaj u slučaju da pregledač prekine sa radom ili se zamrzne.</translation>
 <translation id="8616157231067364693">Podelite privatna i anonimna saznanja o funkcijama proizvoda koje koriste Brave korisnici.</translation>
+<translation id="2888496576732880897">Doprinesi razvoju Brave pretrage</translation>
+<translation id="7044431516245362795">Pridružite se projektu istraživanja veba i doprinesite povećanju indeksa i poboljšau rezultata pretrage. <ph name="LEARN_MORE_START"/>Saznajte više.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Naravno, pomoći ću</translation>
 <translation id="2877653791257935258">Unesite naziv veb-sajta ili URL</translation>
 <translation id="5329830149661250028">Vidite koliko se Brave razlikuje od drugih: nema oglasa, nema praćenja, a učitavanje stranica je znatno brže.</translation>
@@ -255,8 +257,6 @@
 <translation id="1377600615067678409">Preskoči za sada</translation>
 <translation id="6165508094623778733">Saznajte više</translation>
 <translation id="986879628471635371">Rešavanje problema pri uvodnom procesu</translation>
-<translation id="5808759341041733958">Izaberite podrazumevani pregledač</translation>
-<translation id="1331593888918588693">Uvek možete promeniti opcije kasnije u podešavanjima aplikacije.</translation>
 <translation id="5806601733251372221">Brave štitovi</translation>
 <translation id="8537217141725709400">Zaradite <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave nagrade</translation>
@@ -274,9 +274,6 @@
 <translation id="4225265925807365011">Imam frazu za oporavak od 24 reči</translation>
 <translation id="3570367516044491911">Podesi kao podrazumevani pregledač</translation>
 <translation id="6800338374677644736">Podesi kao podrazumevani pregledač</translation>
-<translation id="19715420010996093">Izaberite Brave pregledač i dodirnite „Uvek“</translation>
-<translation id="3546439402724649282">Brave je već podešen kao vaš podrazumevani pregledač.</translation>
-<translation id="8389661903259423907">Već ste podesili podrazumevani pregledač. Možete promeniti podrazumevani pregledač u podešavanjima aplikacije.</translation>
 <translation id="1545749641540134597">Skenirajte QR kod</translation>
 <translation id="5317781812114905957">Uputstva</translation>
 <translation id="8515319483805157233">Da biste pretražili po QR kodu, postavite QR kod u sredinu okvira.</translation>
@@ -459,6 +456,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="3624048886326677117">Blokiraj oglase i praćenje (agresivno)</translation>
 <translation id="7151914815476509258">Blokiraj oglase i praćenje (standardno)</translation>
 <translation id="7384778069178817075">Dozvoliti sva praćenja i oglase</translation>
+<translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>Opcija za blokiranje svih kolačića je zastarela. Da biste saznali kako da prinudno aktivirate ovu opciju, posetite<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>našu stranicu za pomoć<ph name="END_LINK_1"/></translation>
 <translation id="3763681089644577874">Blokiraj kolačiće</translation>
 <translation id="614747795780742163">Sprečava veb-sajtove da čuvaju informacije o vašim prethodnim posetama</translation>
 <translation id="6883611015375728278">Blokiraj sve kolačiće</translation>
@@ -546,7 +544,6 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="1945330434665345785">Broj praćenja i oglasa koje ste blokirali pomoću Brave pregledača u proteklih nedelju dana je <ph name="COUNT"/>.</translation>
 <translation id="2883868922264431515">Zaradite tokene gledajući oglase kojima se poštuje privatnost i podržite svoje omiljene veb-sajtove.</translation>
 <translation id="7408493389591475748">Započnite sa pregledanjem veba da biste videli izveštaje o privatnosti</translation>
-<translation id="9080777565335515917">Podesit Brave kao podrazumevani pregledač da biste mogli da privatno i sigurno pregledate veb.</translation>
 <translation id="1390943217516275883">Omogućava Brave-u da prikazuje vašu statistiku privatnosti</translation>
 <translation id="1763352720905582220">Šalje nedeljni izveštaj o privatnosti</translation>
 <translation id="1811691435325545066">Izbriši sve podatke iz izveštaja o privatnosti</translation>
@@ -590,16 +587,6 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="2977501775944575564">Paralelno preuzimanje</translation>
 <translation id="6224180438946945617">Uključite paralelno preuzimanje da biste povećali brzinu preuzimanja</translation>
 <translation id="8967385052772844086">Vidite celokupan izveštaj o privatnosti</translation>
-<translation id="6864343534748973390">Najpopularnije</translation>
-<translation id="4608192160278975831">Privatno i bez praćenja</translation>
-<translation id="7208522820527289601">Privatno i bez praćenja, u EU</translation>
-<translation id="1161008391729450974">Rezultati sa Google-a bez praćenja</translation>
-<translation id="7320542277711359296">Drugo najpopularnije</translation>
-<translation id="8295049095570748497">Vodeći pregledač u Rusiji</translation>
-<translation id="2642661895835126239">Sadi drveće, u Berlinu</translation>
-<translation id="2422627462367776805">Južnokorejski veb-portal i pretraga</translation>
-<translation id="177282784098234156">Privatno, nezavisno, fokusirano na korisnika</translation>
-<translation id="1410130669636877548">Neki pretraživači štite vašu privatnost bolje od drugih kada pretražujete veb.</translation>
 <translation id="3479552764303398839">Ne sada</translation>
 <translation id="7138272885617540195">Dozvoli otvaranje linkova aplikacija u aplikacijama van Brave-a</translation>
 <translation id="4954512758656527938">Podrazumevani Ethereum novčanik</translation>
@@ -1244,4 +1231,5 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="1336494649091412226">Želite li sigurno da izađete iz Brave-a?</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Istorija ćaskanja</translation>
+<translation id="6859935199732075666">Prikaži greške prilikom bezbednog pregledanja</translation>
 </translationbundle>

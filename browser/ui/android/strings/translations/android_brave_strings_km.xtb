@@ -15,6 +15,12 @@
 <translation id="7307834434086582547">ភ្ជាប់/ផ្ដាច់ ខែលការពារ Brave</translation>
 <translation id="94154759592465111">រារាំងស្គ្រីប</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="2233004324252915283">ទប់ស្កាត់មាតិកាដែលបានណែនាំរបស់ YouTube</translation>
+<translation id="1005372663692637999">ទប់ស្កាត់ធាតុកាតបន្ទាប់ និងចុងនៅលើ youtube.com។</translation>
+<translation id="5152595963250646670">ទប់ស្កាត់ធាតុរំខាន YouTube</translation>
+<translation id="2998960761270772157">រារាំងការចូល ម៉ឺនុយ មតិ និងធាតុព័ត៌មានវីដេអូនៅលើ youtube.com ។</translation>
+<translation id="8531835121131500698">ទប់ស្កាត់វីដេអូខ្លីៗ YouTube</translation>
+<translation id="2167271714269158912">ទប់ស្កាតវីដេអូខ្លីៗពីទំព័រដើម ទំព័រពេញនិយម និងលទ្ធផលស្វែងរកនៅលើ youtube.com ។</translation>
 <translation id="6052725679982758334">ធ្វើការរារាំងបញ្ដាញសង្គម</translation>
 <translation id="7498695072878479744">អនុញ្ញាតឱ្យប៊ូតុងចូលគណនី Google មានលើវេបសាយភាគីទីបី</translation>
 <translation id="863171915776379000">អនុញ្ញាតឱ្យចូលគណនីហ្វេសប៊ុក និងប្រកាសដែលបានបានបង្កប់</translation>
@@ -52,6 +58,8 @@
 <translation id="4448697385961650078">ទប់ស្កាត់អ្នកតាមដាន &amp; ads</translation>
 <translation id="2448893613530489637">បង្អាក់អ្នកតាមដាន &amp; ads ពីការផ្ទុកឡើង និងការបង្ហាញក្នុងទំព័រវែប</translation>
 <translation id="3570081523466826008">តំឡើងការតភ្ជាប់ទៅជា HTTPS</translation>
+<translation id="4174337572777167894">គម្រោងស្វែងរកគេហទំព័រ</translation>
+<translation id="8659271182272561965">ចូលរួមចំណែកការស្វែងរកអនាមិកមួយចំនួន &amp; ការរុករកទិន្នន័យដើម្បីកែលម្អ Brave ស្វែងរក។</translation>
 <translation id="933652931229970927">ផ្ញើរបាយការណ៍វិភាគដោយស្វ័យប្រវត្តិ</translation>
 <translation id="7977176350719484850">ប៉ាន់ស្មាន ទិន្នន័យ\nបានរក្សាទុក</translation>
 <translation id="9008534313521214777">ប៉ាន់ស្មាន រយះពេល\nបានរក្សាទុក</translation>
@@ -60,9 +68,12 @@
 <translation id="7837721118676387834">អនុញ្ញាតឱ្យចាក់ស្វ័យប្រវត្តិនៃវីដេអូដែលបានបិទសម្លេងសម្រាប់គេហទំព័រជាក់លាក់។</translation>
 <translation id="2675679258824361492">ការកំណត់ឯកជនភាពផ្សេងទៀត</translation>
 <translation id="8026334261755873520">ជម្រះទិន្នន័យរុករក</translation>
+<translation id="1690924763769415936">ការចាក់ផ្ទៃខាងក្រោយ</translation>
 <translation id="6332924730165919598">ការបិទផ្ទាំងទាំងអស់ក្រោយពេលបិទ Brave</translation>
+<translation id="8308305244351876417">អនុញ្ញាតឱ្យសំឡេងលេងនៅពេលអ្នកប្តូរទៅផ្ទាំងផ្សេងទៀតនៅក្នុង Brave ឬកម្មវិធីផ្សេងទៀត ឬអេក្រង់ឧបករណ៍របស់អ្នកបិទ។</translation>
 <translation id="4150201353443180367">ការបង្ហាញ</translation>
 <translation id="4275663329226226506">កំសាន្ត</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
 <translation id="2433507940547922241">លក្ខណៈខាងក្រៅ</translation>
 <translation id="834487290629916192">ពេលក្រោយ</translation>
 <translation id="4117451092682672487">ផ្តល់ជូននូវដំណោះស្រាយដែលផ្តោតលើឯកជនភាព</translation>
@@ -71,15 +82,17 @@
 <translation id="5148943178722443958">ជួយធ្វើឱ្យ Brave កាន់តែប្រសើរឡើង។</translation>
 <translation id="6718362830686703942">ផ្ញើរបាយការណ៍វិភាគ ប្រសិនបើអ្នកជួបប្រទះការគាំង ឬបង្កក។</translation>
 <translation id="8616157231067364693">ចែករំលែកការយល់ដឹងអំពីផលិតផលឯកជន និងអនាមិកអំពីមុខងារអ្វីខ្លះដែលកំពុងត្រូវបានប្រើប្រាស់ដោយអ្នកប្រើប្រាស់របស់ Brave។</translation>
+<translation id="7044431516245362795">ចូលរួមក្នុងគម្រោងស្វែងរកគេហទំព័រដើម្បីជួយបង្កើនសន្ទស្សន៍ និងកែលម្អលទ្ធផលស្វែងរក។ <ph name="LEARN_MORE_START"/>ស្វែងយល់បន្ថែម។<ph name="LEARN_MORE_END"/></translation>
+<translation id="7818938154803162778">ប្រាកដណាស់ ខ្ញុំនឹងជួយ</translation>
 <translation id="2877653791257935258">វាយបញ្ចូលឈ្មោះគេហទំព័រ ឬតំណភ្ជាប់</translation>
 <translation id="5329830149661250028">មើលអត្ថប្រយោជន៍ដ៏អស្ចារ្យរបស់ Brave៖ គ្មានការផ្សាយពាណិជ្ជកម្ម គ្មានឧបករណ៍តាមដាន និងផ្ទុកទំព័របានយ៉ាងរហ័ស។</translation>
 <translation id="3941792073703079607">មើលអត្ថប្រយោជន៍ដ៏អស្ចារ្យរបស់ Brave៖ ទប់ស្កាត់ការផ្សាយពាណិជ្ជកម្ម រក្សាទុកទិន្នន័យ និងស្ទ្រីមបានយ៉ាងរហ័ស។</translation>
+<translation id="3545804467215833536">ចុចដើម្បីមើលខែលការពារ Brave</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ការផ្សាយពាណិជ្ជកម្ម &amp; amp; ឧបករណ៍តាមដានត្រូវបានរារាំង</translation>
 <translation id="8281886186245836920">រំលង</translation>
 <translation id="1377600615067678409">រំលងភ្លាម</translation>
 <translation id="6165508094623778733">ស្វែងយល់​បន្ថែម</translation>
 <translation id="986879628471635371">ការដោះស្រាយបញ្ហាតែដំណើរការ</translation>
-<translation id="5808759341041733958">ជ្រើសរើស​ម៉ាស៊ីន​ស្វែងរកជាលំនាំដើម</translation>
-<translation id="1331593888918588693">អ្នកនៅតែអាចផ្លាស់ប្តូរចំណូលចិត្តរបស់អ្នកនៅពេលក្រោយបាន នៅក្នុងការកំណត់កម្មវិធី។</translation>
 <translation id="5806601733251372221">ខែលការពារ Brave</translation>
 <translation id="3333887201479867589">កម្មវិធី Brave Rewards</translation>
 <translation id="5870330605209713397">ដោយការមើលការផ្សាយពាណិជ្ជកម្មដែលគោរពឯកជនភាព និងគាំទ្រគេហទំព័រដែលអ្នកចូលចិត្ត និងអ្នកបង្កើតតាមលំនាំដើម។</translation>
@@ -93,9 +106,6 @@
 <translation id="2070991379950719711">ចាប់ផ្តើមប្រើ Brave Rewards</translation>
 <translation id="48520986898237073">បន្តទៅកាបូប</translation>
 <translation id="3570367516044491911">កំណត់ជាកម្មវិធីរុករកតាមលំនាំដើម</translation>
-<translation id="19715420010996093">ជ្រើស Brave Rewards ហើយប៉ះ 'រហូត'</translation>
-<translation id="3546439402724649282">Brave ត្រូវបានកំណត់ជាកម្មវិធីរុករកលំនាំដើមរបស់អ្នករួចហើយ។</translation>
-<translation id="8389661903259423907">អ្នកបានកំណត់ជាកម្មវិធីរុករកលំនាំដើមរួចហើយ។ អ្នកអាចផ្លាស់ប្តូរកម្មវិធីរុករកលំនាំដើមនៅក្នុងការកំណត់កម្មវិធីរបស់អ្នក។</translation>
 <translation id="7658239707568436148">បដិសេធ</translation>
 <translation id="1201402288615127009">បន្ទាប់</translation>
 <translation id="8926389886865778422">កុំសួរម្តងទៀត</translation>
@@ -122,7 +132,10 @@
 <translation id="683765328936486920">លើ YouTube</translation>
 <translation id="8969049974285901797">លើ Twitch</translation>
 <translation id="222883304157347087">( ឧបករណ៍នេះ )</translation>
+<translation id="348794064910142198">Brave សមកាលកម្មអនុញ្ញាតឱ្យអ្នកធ្វើសមកាលកម្មទិន្នន័យចំណាំជាលក្ខណៈឯកជនរវាងកម្មវិធីរុករក Brave របស់អ្នកនៅលើឧបករណ៍ផ្សេងៗរបស់អ្នក។\n\nគ្រាន់តែស្កេនកូដពីខ្សែសង្វាក់សមកាលកម្មរបស់អ្នកដែលអ្នកបានបង្កើតនៅលើឧបករណ៍ផ្សេងទៀត។ ឬចាប់ផ្តើមខ្សែសង្វាក់សមកាលកម្មថ្មី។</translation>
 <translation id="5817918615728894473">ផ្គូផ្គង</translation>
+<translation id="7745082336226088126">ស្កេន ឬបញ្ចូលលេខកូដសមកាលកម្ម</translation>
+<translation id="1602067095281698985">ចាប់ផ្តើមខ្សែសង្វាក់សមកាលកម្មថ្មី</translation>
 <translation id="2175927920773552910">កូដ QR</translation>
 <translation id="8730621377337864115">រួចរាល់</translation>
 <translation id="8131740175452115882">អះអាង</translation>
@@ -133,6 +146,12 @@
 <translation id="1426410128494586442">បាទ/ចាស</translation>
 <translation id="6336451774241870485">ផ្ទាំងអនាមិកថ្មី</translation>
 <translation id="3110967157686007724">ផ្ទាំង​អនាមិក</translation>
+<translation id="944340256927461196">កុំទុកដាននៅលើឧបករណ៍របស់អ្នក</translation>
+<translation id="2063044449012253966">គេហទំព័រដែលអ្នកចូលមើលក្នុងវិនដូឯកជននឹងមិនបង្ហាញក្នុងប្រវត្តិរបស់អ្នកទេ។ ខូឃីស៍ ទិន្នន័យទម្រង់ និងទិន្នន័យគេហទំព័រនឹងរលាយបាត់ នៅពេលដែលវីនដូឯកជនទាំងអស់ត្រូវបានបិទ។</translation>
+<translation id="7395764193745523646">ភាពមើលឃើញនៃការរុករក</translation>
+<translation id="8670344404057978375">សូមចំណាំថា ទោះបីជានៅក្នុងបង្អួចឯកជនក៏ដោយ សកម្មភាពរុករករបស់អ្នកអាចនៅតែអាចមើលឃើញដោយ ISP របស់អ្នក អ្នកសង្កេតការណ៍បណ្តាញ ឬនិយោជករបស់អ្នក (ប្រសិនបើអ្នកកំពុងប្រើឧបករណ៍/បណ្តាញការងារ)។</translation>
+<translation id="1413177583895309156">Brave VPN អ៊ិនគ្រីប និងការពារអ្វីដែលអ្នកធ្វើនៅលើអ៊ីនធឺណិត សូម្បីតែនៅខាងក្រៅកម្មវិធីរុករក Brave ក៏ដោយ។</translation>
+<translation id="3974348661685061050">សាកល្បងដោយឥតគិតថ្លៃរយៈពេល 7 ថ្ងៃ</translation>
 <translation id="7047578174221019462">ការបរិច្ចាគរបស់អ្នក ត្រូវបានដំណើរការ។</translation>
 <translation id="7781069478569868053">ទំព័រផ្ទាំងថ្មី</translation>
 <translation id="2898634658146274982">បើកតំណភ្ជាប់ខាងក្រៅនៅក្នុង Brave</translation>
@@ -198,9 +217,13 @@
 <translation id="7410504850864021600">ល្បឿននៃការតភ្ជាប់យ៉ាងរហ័ស</translation>
 <translation id="2422309687188612485">ការពារឧបករណ៍រហូតដល់ 10 ដោយប្រើគម្រោងតែមួយ</translation>
 <translation id="4882693590083943563">គម្រោងទាំងអស់រួមមាន <ph name="TRIAL_DAYS"/></translation>
+<translation id="487741927046441232">សាកល្បង 7 ថ្ងៃដោយឥតគិតថ្លៃ!</translation>
+<translation id="1532536259167115948">ការជាវប្រចាំខែ <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">បន្តប្រចាំខែ</translation>
 <translation id="112929124115834557">បន្តប្រចាំឆ្នាំ</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /ខែ</translation>
 <translation id="1163809943099641131">មួយឆ្នាំ</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /ឆ្នាំ</translation>
 <translation id="2786538705804257030">ការជាវនឹងត្រូវបានគិតប្រាក់តាមរយៈគណនី Google របស់អ្នក។ ផ្នែកណាមួយនៃការសាកល្បងឥតគិតថ្លៃដែលមិនបានប្រើ ប្រសិនបើត្រូវបានផ្តល់ជូន នឹងបាត់បង់ នៅពេលអ្នកទិញការជាវ។\n\nការជាវរបស់អ្នកនឹងបន្តដោយស្វ័យប្រវត្តិ លុះត្រាតែវាត្រូវបានបោះបង់យ៉ាងហោចណាស់ 24 ម៉ោងមុនពេលចុងបញ្ចប់នៃរយៈពេលបច្ចុប្បន្ន។\n\nអ្នកអាចគ្រប់គ្រងការជាវរបស់អ្នកនៅក្នុងការកំណត់។\n\nតាមរយៈការប្រើប្រាស់ Brave អ្នកយល់ព្រមនឹងលក្ខខណ្ឌប្រើប្រាស់ និងគោលការណ៍ឯកជនភាព។</translation>
 <translation id="5035172357624830412">បានទិញរួចហើយនៅលើ brave.com?</translation>
 <translation id="713136183174551885">ផ្ទុកព័ត៌មានសម្ងាត់របស់អ្នកឡើងវិញ</translation>
@@ -212,6 +235,7 @@
 <translation id="7138678301420049075">ផ្សេងទៀត</translation>
 <translation id="6452181791372256707">បដិសេធ</translation>
 <translation id="8030852056903932865">យល់ព្រម</translation>
+<translation id="2304783958703511257">ការកំណត់កម្រិតខ្ពស់</translation>
 <translation id="5317780077021120954">រក្សាទុក</translation>
 <translation id="9065203028668620118">កែប្រែ</translation>
 <translation id="473775607612524610">ធ្វើបច្ចុប្បន្នភាព</translation>
@@ -237,6 +261,7 @@
 <translation id="7144878232160441200">ព្យាយាមម្តងទៀត</translation>
 <translation id="6040143037577758943">បិទ</translation>
 <translation id="5456039738087398178">ផ្ទាំងវិចិត្រអេក្រង់ដើម</translation>
+<translation id="2326703104633309781">ប្រើ Brave បកប្រែ</translation>
 <translation id="4530494379350999373">ប្រភពដើម</translation>
 <translation id="6736243959894955139">អាសយដ្ឋាន</translation>
 <translation id="3798449238516105146">កំណែ</translation>
@@ -249,7 +274,9 @@
 <translation id="579702532610384533">ភ្ជាប់ឡើងវិញ</translation>
 <translation id="6390041270339783491">ការបរិច្ចាគប្រចាំខែបានបរាជ័យ</translation>
 <translation id="1179407411385015942">Leo គឺជាជំនួយការឆ្លាតវៃ ដំណើរការដោយ AI ដែលត្រូវបានបង្កើតឡើងនៅក្នុងកម្មវិធីរុករក</translation>
+<translation id="5781842473834867765">រក្សាទុកប្រវត្តិសន្ទនារបស់ខ្ញុំ</translation>
 <translation id="4109670531935487117">បង្ហាញការណែនាំអំពីការបំពេញដោយស្វ័យប្រវត្តិនៅក្នុងរបារអាសយដ្ឋាន</translation>
+<translation id="6106701981952170121">លុបទិន្នន័យសន្ទនា Leo AI ទាំងអស់</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">មួយឆ្នាំ</translation>
 <translation id="2985392169397572983">តម្លៃពិសេសបំផុត</translation>

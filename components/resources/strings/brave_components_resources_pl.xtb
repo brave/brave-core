@@ -327,6 +327,7 @@
 <translation id="2631006050119455616">Zapisano</translation>
 <translation id="3671566813999349838">Kwota</translation>
 <translation id="6976444672879155794">Wspieraj automatycznie [[processor]]</translation>
+<translation id="944736176598169208">Nagrody</translation>
 <translation id="8804164990146287819">Polityka prywatności</translation>
 <translation id="7262285991915892790">Przeciągnij ikonę BAT na</translation>
 <translation id="7656781188259414093">cel.</translation>
@@ -510,7 +511,6 @@
       other {Zarabiasz za obejrzenie <ph name="COUNT_BEGIN"/># reklam<ph name="COUNT_END"/> w tym miesiącu}
     }</translation>
 <translation id="6067959437127691361">Korzystanie z Nagród Brave pomaga we wsparciu twórców i pozwala na zdobywanie BAT.</translation>
-<translation id="944736176598169208">Nagrody</translation>
 <translation id="2359808026110333948">Dalej</translation>
 <translation id="885805571521218129">Oto Twoje szacunkowe zarobki z reklam Brave w tym miesiącu.</translation>
 <translation id="3863981251715594911">Jak to działa?</translation>
@@ -645,7 +645,7 @@
 <translation id="6895088073061692390">Niestety Twój profil nagród Brave został oznaczony, ponieważ nasze automatyczne sprawdzanie znalazło nieoczekiwaną aktywność reklam Brave.</translation>
 <translation id="4229056297802204697">Gdy Twój profil jest oznaczony, możesz nadal wyświetlać reklamy, ale nie będziesz mieć uprawnień do otrzymywania wypłat. Nie będzie również możliwe podłączenie konta powierniczego do nagród Brave.</translation>
 <translation id="5124846913141379164">Możliwe, że Twój profil został oznaczony przez pomyłkę i nie musisz podejmować żadnych natychmiastowych działań. Oznaczenie profilu może zostać w przyszłości usunięte.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Dowiedz się więcej o procesie oznaczania profili Nagród Brave.<ph name="END_LINK"/></translation>
+<translation id="8947002243324362172">Dowiedz się więcej o procesie oznaczania profili Nagród Brave.</translation>
 <translation id="4699218748197721830">Profil Nagród Brave jest oznaczony</translation>
 <translation id="2607420597216860026">Spróbuj ponownie po zakończeniu weryfikacji tożsamości w <ph name="PROVIDER"/>.</translation>
 <translation id="5037332159336402972">Do zalogowania potrzebne jest zweryfikowane konto</translation>
@@ -680,7 +680,6 @@
 <translation id="5916664084637901428">Włączone</translation>
 <translation id="3977723631999461201">Reklamy otrzymane w tym miesiącu: <ph name="NUM"/></translation>
 <translation id="7924320838799747606">Twoje saldo</translation>
-<translation id="8714473477079007268">Portfel <ph name="PROVIDER"/></translation>
 <translation id="3175337080016717494">Konto do wypłat</translation>
 <translation id="453760933181416879">Przejdź do mojego konta</translation>
 <translation id="8290994471756102241">Wylogowano</translation>
@@ -690,7 +689,6 @@
 <translation id="2310070536993781610">Użyj kodu promocyjnego BRAVEREWARDS, by otrzymać 10% zniżki na wszystkie produkty w sklepie Brave.</translation>
 <translation id="1170674812179664523">Sklep z produktami Brave</translation>
 <translation id="8673202990286883068">Twoje korzyści</translation>
-<translation id="3699766258844277472">Nie określono jeszcze miesięcznych darowizn.</translation>
 <translation id="957921474773060718">Następna darowizna:</translation>
 <translation id="351973834053818251">Cykliczna darowizna</translation>
 <translation id="7751260505918304024">Pokaż wszystkie</translation>
@@ -949,6 +947,8 @@
 <translation id="2399555431746923964">Przechowuj aktywa BTC Testnet</translation>
 <translation id="8749751940551938347">Przechowuj aktywa ZEC</translation>
 <translation id="3451958544919449297">Przechowuj aktywa ZEC Testnet</translation>
+<translation id="8459631690385393533">Przechowuj aktywa Cardano</translation>
+<translation id="4915057812371523845">Przechowuj aktywa Cardano Testnet</translation>
 <translation id="8500387257977999003">Klucz prywatny <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="232925166623833246">Importuj z portfela sprzętowego</translation>
@@ -1193,7 +1193,11 @@
 <translation id="4667144295226514387">Limit braku gazu</translation>
 <translation id="2021522108838444624">Kwota musi być większa od 0</translation>
 <translation id="8464365289405373974">Adres wysyłki jest wymagany</translation>
-<translation id="6326239384961270135">Brakujący T-adres</translation>
+<translation id="6449503919127419230">Nieprawidłowy adres transparentny</translation>
+<translation id="3778662247272439818">Niezgodność sieci</translation>
+<translation id="1170025316306464310">Nieprawidłowy format zunifikowanego adresu</translation>
+<translation id="8380483120683767377">Brakuje części Orchard</translation>
+<translation id="1536211570215515174">Brakuje części transparentnej</translation>
 <translation id="8585995109882455949">Jak mogę znaleźć poprawny adres?</translation>
 <translation id="105524480632150318">Brave uniemożliwia użytkownikom wysłanie środków na zły adres z powodu nieprawidłowej kapitalizacji. Upewnij się, że adres jest prawidłowy, postępując z poniższymi instrukcjami.</translation>
 <translation id="4583433813614292221">1. Przejdź do strony</translation>
@@ -1347,6 +1351,8 @@
 <translation id="7694836973509310467">Tworzenie mostu</translation>
 <translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> na <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="6934057383578424432">Operacja <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/><ph name="NETWORK_BEFORE"/> nie powiodła się na <ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="4916833841663290382">Chronione <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/></translation>
+<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> zostało osłonięte</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} oczekująca transakcja.}
       other {{PENDING_TRANSACTIONS} oczekujące transakcje.}
@@ -1744,7 +1750,9 @@
 <translation id="4438043733494739848">Przejrzyste</translation>
 <translation id="1950406774300125954">Brak synchronizacji</translation>
 <translation id="68413355604013935">Brak synchronizacji (<ph name="BLOCKS"/> niezsynchronizowanych bloków)</translation>
+<translation id="1724354250024376254">Saldo oczekujące (wymagane więcej potwierdzeń): <ph name="FUNDS"/></translation>
 <translation id="1597233669965903034">Zsynchronizuj swoje konto, aby uzyskać dostęp do najnowszych transakcji i salda.</translation>
+<translation id="3609785682760573515">Synchronizacja…</translation>
 <translation id="7499262814309712782">Zsynchronizuj konto</translation>
 <translation id="2804568727504456403">Zsynchronizuj <ph name="ACCOUNT"/></translation>
 <translation id="813913629614996137">Inicjowanie...</translation>
@@ -1756,6 +1764,15 @@
 <translation id="7714298753782862705">Synchronizacja zakończona. Możesz teraz zamknąć to okno.</translation>
 <translation id="7716113567047550378">Nie zamykaj tego okna przed zakończeniem synchronizacji.</translation>
 <translation id="5123590959308755060">Skorzystaj z portfela w nowej karcie</translation>
+<translation id="4594014034647546191">Pierwszy blok chronionego konta</translation>
+<translation id="6666784075827260119">Pierwszy blok na koncie musi być wyższy niż <ph name="BLOCK_NUMBER"/></translation>
+<translation id="3102477628835823956">Pierwszy blok na koncie musi być niższy niż <ph name="BLOCK_NUMBER"/></translation>
+<translation id="6850229669854962550"><ph name="BLOCKS"/> niezsynchronizowanych bloków</translation>
+<translation id="7747318989577709780">Konto jest synchronizowane</translation>
+<translation id="9086302186042011942">Synchronizacja…</translation>
+<translation id="99991973626409495">Sprawdź tarczę</translation>
+<translation id="3114681061018999547">Chronione</translation>
+<translation id="8897189056319316783">Tarcza ZEC</translation>
 <translation id="7144878232160441200">Ponów próbę</translation>
 <translation id="9094621390791852268">Nie udało się wyświetlić podglądu transakcji.</translation>
 <translation id="4982713341035600933">Szacowana zmiana salda</translation>
@@ -2085,7 +2102,8 @@
 <translation id="4885527781814382758">Brave Leo to oparty na sztucznej inteligencji inteligentny asystent, który ułatwia korzystanie z Internetu. Leo jest darmowy, ale ma ograniczony dostęp. Brave Leo Premium oferuje więcej modeli, wyższe limity i umożliwia subskrybentom wcześniejszy dostęp do nowych funkcji. Domyślny model będzie się od czasu do czasu zmieniał. Aby uzyskać więcej informacji, zajrzyj do <ph name="LINK_BEFORE"/>Centrum pomocy Brave<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Domyślnie, gdy zadajesz Leo pytanie, może on odpowiedzieć w oparciu o zawartość strony internetowej, którą przeglądasz, lub dowolny zaznaczony przez Ciebie tekst na stronie. Dokładność odpowiedzi nie jest gwarantowana i mogą one zawierać nieprecyzyjne, wprowadzające w błąd lub fałszywe informacje. Leo korzysta z danych z wyszukiwarki Brave w celu poprawy jakości odpowiedzi. Nie przesyłaj poufnych ani prywatnych informacji i zachowaj ostrożność w przypadku odpowiedzi związanych ze zdrowiem, finansami, bezpieczeństwem osobistym itp. W każdej chwili możesz dostosować opcje Leo w Ustawieniach. Przejdź do Ustawień &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo nie zbiera identyfikatorów, takich jak adres IP, które można powiązać z użytkownikiem. Żadne dane osobowe nie są przechowywane przez modele sztucznej inteligencji ani używane przez nie do nauki (poza modelem Anthropic, który przechowuje dane przez 30 dni przed usunięciem ich). Aby uzyskać więcej informacji, zobacz <ph name="LINK_BEFORE"/>Politykę prywatności<ph name="LINK_AFTER"/>.</translation>
-<translation id="7839853125981164613">Wprowadź komunikat tutaj</translation>
+<translation id="6961721183181597848">Jak mogę Ci dziś pomóc?</translation>
+<translation id="2966135729673253768">Poproś o kontynuację</translation>
 <translation id="4524675003624341892">Zasugeruj pytania…</translation>
 <translation id="4567071417854988869">Streść ten film</translation>
 <translation id="7921782882718083488">Streść tę stronę</translation>
@@ -2098,6 +2116,7 @@
 <translation id="7905602379229309187">Punkt końcowy jest obecnie przeciążony. Spróbuj ponownie później.</translation>
 <translation id="8151638057146502721">Skonfiguruj</translation>
 <translation id="4177458398826096846">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Llama 3.1 8B opracowanym przez firmę Meta z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="5252251845674154807">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Llama 8B opracowanym przez firmę Meta z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Mixtral 8x7B opracowanym przez firmę Mistral AI z myślą o radzeniu sobie z zaawansowanymi zadaniami <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Instant opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="2001874998841390450">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Haiku opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
@@ -2145,6 +2164,8 @@
 <translation id="8261506727792406068">Usuń</translation>
 <translation id="6574153208133461043">Czy na pewno chcesz usunąć tę rozmowę? Tego działania nie można cofnąć.</translation>
 <translation id="7488762544858401571">Zmodyfikowano</translation>
+<translation id="5604254791550001355">Edytuj komunikat</translation>
+<translation id="8115786586976830777">Skopiuj komunikat</translation>
 <translation id="1406205536570262057">Edytuj odpowiedź</translation>
 <translation id="2399439821649319175">Nieprzydatna</translation>
 <translation id="2976167228906046828">Niepoprawna</translation>
@@ -2156,6 +2177,9 @@
 <translation id="903201991022343217">Rozpocznij nową rozmowę</translation>
 <translation id="8171760814579050200">Zmień nazwę rozmowy</translation>
 <translation id="7754678742055438573">Usuń rozmowę</translation>
+<translation id="1946267518364740045">Wnioskowanie...</translation>
+<translation id="4198859185714743678">Wnioskowanie zakończone</translation>
+<translation id="6140948187512243695">Pokaż szczegóły</translation>
 <translation id="7494736170250048402">Wyślij wiadomość do Leo</translation>
 <translation id="8650874793377330048">Przestań odpowiadać</translation>
 <translation id="8712637175834984815">Rozumiem</translation>
@@ -2165,7 +2189,12 @@
 <translation id="4370698775470316661">Ta rozmowa jest za długa i nie może być kontynuowana. Mogą być dostępne inne modele, z którymi Leo jest w stanie zapewnić dokładność przy dłuższych rozmowach.</translation>
 <translation id="5719170755629028558">Udoskonalamy Twoją odpowiedź za pomocą Wyszukiwarki Brave…</translation>
 <translation id="5794962229997281366">Udoskonalona odpowiedź wyszukiwania dla <ph name="SEARCH_TERMS"/></translation>
+<translation id="7307396647043599949"><ph name="COUNT"/> więcej…</translation>
 <translation id="8103700533980268469">Zamknij to powiadomienie</translation>
+<translation id="3417835166382867856">Wyszukaj karty</translation>
+<translation id="9090243919347147717">Załączniki</translation>
+<translation id="4444978378117903684">Dodaj karty przeglądarki, by dać Leo więcej kontekstu do rozmowy.</translation>
+<translation id="4300920590112551536">Karty przeglądarki</translation>
 <translation id="2315654674554095762">Leo będzie teraz zapamiętywać rozmowy, by można było do nich wracać. Są one zaszyfrowane na twoim urządzeniu i możesz je w każdej chwili usunąć.</translation>
 <translation id="7821251979960635244">Historia rozmowy pojawi się tutaj, gdy rozpoczniesz rozmowę.</translation>
 <translation id="887511360213807449">Historia jest wyłączona</translation>
@@ -2175,6 +2204,7 @@
 <translation id="3185367320601718531">Rozmowa i generowanie tekstu</translation>
 <translation id="7979673624064378842">Nieprawdopodobnie szybki czat</translation>
 <translation id="2836330653441111204">Równowaga prędkości działania i inteligencji</translation>
+<translation id="6695329447007213917">Czat ogólny, generowanie kodu i nie tylko</translation>
 <translation id="3965507912994218570">Ustawienia Leo</translation>
 <translation id="1037324977127422019">Witaj, jestem Leo!</translation>
 <translation id="8930348081963284873">Inteligentny asystent oparty na sztucznej inteligencji, wbudowany bezpośrednio w przeglądarkę.</translation>
@@ -2403,5 +2433,6 @@ Zaraz Cię połączymy!</translation>
 <translation id="1538335063514960365">Przycisk Otwórz tutaj. Naciśnij klawisz Enter, aby otworzyć ten adres URL w bieżącej karcie, zamiast przełączać się do
     istniejącej karty.</translation>
 <translation id="451189393813405346">Zapytaj Leo</translation>
+<translation id="1602850501393095406">Naciśnij ↑ aby podświetlić</translation>
 <translation id="8525248723479742219">Odtwórz później</translation>
 </translationbundle>

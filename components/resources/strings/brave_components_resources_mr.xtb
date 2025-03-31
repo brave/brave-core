@@ -1,8 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="mr">
+<translation id="5288293905681750318">ट्रॅकर्स &amp; जाहिराती ब्लॉक केल्या</translation>
 <translation id="2313532038420432247">एचटीटीपीएस शेणीसुधारणा</translation>
 <translation id="788493840831967104">वेळेची बचत</translation>
+<translation id="2318592590318590295">वाचवलेली बँडविड्थ</translation>
 <translation id="2079545284768500474">पहिल्यासारखे करा</translation>
 <translation id="6040143037577758943">बंद करा</translation>
 <translation id="7108338896283013870">लपवा</translation>
@@ -17,6 +19,7 @@
 <translation id="5327248766486351172">नाव</translation>
 <translation id="5317780077021120954">सेव्ह करा</translation>
 <translation id="7658239707568436148">रद्द करा</translation>
+<translation id="5525668735313040116">वेबवर गुप्तपणे शोध घ्या</translation>
 <translation id="3435896845095436175">सक्षम करा</translation>
 <translation id="780301667611848630">नाही, नको</translation>
 <translation id="2875302873837723333">टॉप साइट</translation>
@@ -26,6 +29,7 @@
 <translation id="370665806235115550">लोड करीत आहे...</translation>
 <translation id="8890516388109605451">स्रोत</translation>
 <translation id="7791543448312431591">जोडा</translation>
+<translation id="6216996674668969227">गोपनीयतेचा मान राखणाऱ्या ॲड्स पाहिल्याबद्दल टोकन्स कमवा.</translation>
 <translation id="8488282162676695335">ब्रेव्ह वॉलेट</translation>
 <translation id="8820817407110198400">Bookmarks</translation>
 <translation id="1644574205037202324">इतिहास</translation>
@@ -75,6 +79,7 @@
 <translation id="2359808026110333948">सुरू ठेवा</translation>
 <translation id="3863981251715594911">हे काम कसे करते?</translation>
 <translation id="7931127789630755251">ब्रेव्हमध्ये तुम्ही पाहिलेल्या खासगी जाहिरातींसाठी टोकन्स कमवा</translation>
+<translation id="2278423362884506724">काँटेंट निर्मात्यांना समर्थन द्या आणि गिफ्ट कार्ड्स खरेदी करण्यासाठी, इतर चलने बदलून घेण्यासाठी, आणि इतर अनेक गोष्टींसाठी तुमचे टोकन वापरा.</translation>
 <translation id="6278643716658443228">बक्षिसांच्या सेटिंग्ज</translation>
 <translation id="2965798296974325760">बक्षिसे वापरायला सुरुवात करा</translation>
 <translation id="6965382102122355670">ठीक आहे</translation>
@@ -99,6 +104,9 @@
 <translation id="7751260505918304024">सर्व दर्शवा</translation>
 <translation id="1166682575529520472">मासिक</translation>
 <translation id="7138678301420049075">इतर</translation>
+<translation id="5309155375926073606">हो, मला Brave शोधामध्ये योगदान द्यायचे आहे आणि <ph name="LINK_BEGIN"/> वेब डिस्कव्हरी प्रकल्पामध्ये <ph name="LINK_END"/> सहभागी व्हायचे आहे.</translation>
+<translation id="4622826307953794521">वेब डिस्कव्हरी प्रकल्पासह Brave शोध अधिक शुद्ध करण्यासाठी थोड्या निनावी शोधाच्या आणि ब्राऊझिंग डेटाच्या स्वरूपात योगदान द्या. हा प्रकल्प पूर्णपणे ओपन-सोर्स आहे.</translation>
+<translation id="4174337572777167894">वेब डिस्कव्हरी प्रकल्प</translation>
 <translation id="7090992647511817643">खाते</translation>
 <translation id="3269475789479462358">डोमेन</translation>
 <translation id="1288078776976153868">नेटवर्क</translation>
@@ -162,7 +170,9 @@
 <translation id="8775144690796719618">चुकीची URL</translation>
 <translation id="1472675084647422956">अधिक दर्शवा</translation>
 <translation id="4522570452068850558">तपशील</translation>
+<translation id="3609785682760573515">संकालन करत आहे...</translation>
 <translation id="1178581264944972037">विराम द्या</translation>
+<translation id="9086302186042011942">समक्रमण करीत आहे</translation>
 <translation id="7144878232160441200">पुन्हा प्रयत्न करा</translation>
 <translation id="939305735877869636">Brave Software</translation>
 <translation id="1264974993859112054">क्रीडा</translation>
@@ -180,18 +190,25 @@
 <translation id="2593272815202181319">मोनोस्पेस</translation>
 <translation id="8151638057146502721">कॉन्फिगर करा</translation>
 <translation id="7557539689487606886">प्रीमियम घ्या</translation>
+<translation id="3840096463915153852">संभाषणाचा इतिहास</translation>
+<translation id="2304783958703511257">प्रगत सेटिंग्स</translation>
 <translation id="4173478269537830374">वेगवेगळे AI मॉडेल्स पाहा</translation>
 <translation id="3245401959451976966">तुमची कल्पनाशक्ती खुलून येऊ द्या</translation>
 <translation id="4165928407303989823">विषय चालू ठेवा</translation>
 <translation id="2389665228467129817">जास्त काळ चॅट करा</translation>
+<translation id="8556044455877152001">युएस $<ph name="PRICE_VALUE"/> / महिना</translation>
 <translation id="1028627582482425924">एक वर्ष</translation>
+<translation id="36366199652730057">सर्वोत्तम मूल्य</translation>
 <translation id="5474757891469990756">लिओची पूर्ण शक्ती अनुभवा प्रीमियमसह :</translation>
 <translation id="3453542753968940696">वेगवेगळी कौशल्ये असणारी शक्तिशाली मॉडेल्स प्राप्त करण्यात प्राधान्य मिळवा.</translation>
 <translation id="5031778211368112461">कल्पक कामांसाठी आणि काँटेंट निर्मितीसाठी जास्त अनुरूप असणारी मॉडेल्स मिळवा.</translation>
 <translation id="298783097210745222">जास्त गहन संभाषणांसाठी अधिक अचूक उत्तरे मिळवा.</translation>
 <translation id="4314705522985583059">मिळवा मोठ्या संभाषणांसाठी उच्च दराच्या मर्यादा.</translation>
 <translation id="8261506727792406068">हटवा</translation>
+<translation id="8171760814579050200">संभाषणाचे नाव बदला</translation>
+<translation id="7754678742055438573">संभाषण काढून टाका</translation>
 <translation id="8712637175834984815">समजले</translation>
+<translation id="2315654674554095762">Leo आता तुमची संभाषणे लक्षात ठेवेल ज्यामुळे तुम्ही त्यांमध्ये पुन्हा सहभागी होऊ शकता. ती तुमच्या डिव्हाईसवर एन्क्रिप्ट करून जतन केलेली असतात, आणि तुम्ही कधीही ती काढून टाकू शकता.</translation>
 <translation id="6291843235651817590">सर्वसाधारण हेतुसाठीचे चॅट</translation>
 <translation id="8193130769524604031">प्रगत चॅट कामे</translation>
 <translation id="7979673624064378842">अतिजलद चॅट</translation>
@@ -206,7 +223,15 @@
 <translation id="2453860139492968684">समाप्त</translation>
 <translation id="2273851479262317744">ब्रेव्हला तुमचा डीफॉल्ट ब्राऊझर करा</translation>
 <translation id="5148943178722443958">ब्रेव्ह सुधारायला मदत करा.</translation>
+<translation id="6302485303316397682">शोधाचे जास्त चांगले परिणाम हवे आहेत का?</translation>
+<translation id="7014699001826714920">तर मग चळवळीत सहभागी व्हा, Brave शोधात योगदान द्या.</translation>
+<translation id="6821108091726602352">Brave च्या वेब डिस्कव्हरी प्रकल्पामध्ये भाग घेऊन वेब सुधारण्यास आम्हाला मदत करा. पूर्णपणे निनावी शोध संकेत शेअर करून, तुम्ही Brave ला शोध अनुक्रमणिका वाढवण्यास मदत करू शकता.</translation>
+<translation id="6764845498618413165">अधिक जाणून घ्या.</translation>
+<translation id="7818938154803162778">हो, मी नक्की मदत करेन</translation>
+<translation id="2370739752330685659">नंतर बघू</translation>
 <translation id="7143207342074048698">कनेक्ट करीत आहे</translation>
+<translation id="5753795690521538679">7 दिवसांचे विनामूल्य ट्रायल सुरु करा</translation>
+<translation id="3357036723290257445">Brave VPN आधीच खरेदी केला आहे?</translation>
 <translation id="8814357473522731680">समर्थक</translation>
 <translation id="7805768142964895445">स्थिती</translation>
 <translation id="5747552184818312860">कालबाह्य होईल</translation>
@@ -220,4 +245,5 @@
 <translation id="3960619311638643872">ब्रेव्ह VPN</translation>
 <translation id="4295077644587784828">अतिरिक्त गोपनीयता &amp; ऑनलाईन संरक्षण.</translation>
 <translation id="8425213833346101688">बदल करा</translation>
+<translation id="8703188411226330709">विनामूल्य ट्रायल सुरु करा</translation>
 </translationbundle>
