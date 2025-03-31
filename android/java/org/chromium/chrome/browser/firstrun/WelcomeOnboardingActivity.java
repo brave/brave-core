@@ -11,6 +11,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.animation.LayoutTransition;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.text.SpannableString;
@@ -26,8 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse;
@@ -45,6 +45,7 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
@@ -104,8 +105,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         SET_AS_DEFAULT,
         NOTIFICATION_PERMISSION,
         WDP_PAGE,
-        ANALYTICS_CONSENT_PAGE,
-        FINAL_PAGE
+        ANALYTICS_CONSENT_PAGE
     }
 
     private CurrentOnboardingPage mCurrentOnboardingPage;
@@ -276,12 +276,14 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         return BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this);
     }
 
-    ActivityResultLauncher<String> mRequestPermissionLauncher =
-            registerForActivityResult(
-                    new ActivityResultContracts.RequestPermission(),
-                    isGranted -> {
-                        nextOnboardingStep();
-                    });
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == BravePermissionUtils.NOTIFICATION_PERMISSION_CODE) {
+            nextOnboardingStep();
+        }
+    }
 
     private void nextOnboardingStep() {
         if (isActivityFinishingOrDestroyed()) return;
@@ -307,9 +309,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private void handleOnboardingStepForVariantA(int step) {
         if (step == 0) {
             handleSetAsDefaultStep();
-        } else if (isWDPEnabled() && step == getWDPPageStep()) {
+        } else if (isWDPEnabled() && step == 1) {
             handleWDPStep();
-        } else if (step == getAnalyticsConsentPageStep()) {
+        } else if (step == 2) {
             handleAnalyticsConsentPage();
         } else {
             finalStep();
@@ -321,6 +323,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             handleSetAsDefaultStep();
         } else if (step == 1) {
             // Notification permission
+            handleNotificationPermission();
         } else if (isWDPEnabled() && step == 2) {
             handleWDPStep();
         } else if (step == 3) {
@@ -333,13 +336,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private void handleOnboardingStepForVariantC(int step) {
         if (step == 0) {
             handleSetAsDefaultStep();
-        } else if (isWDPEnabled() && step == 2) {
+        } else if (isWDPEnabled() && step == 1) {
             handleWDPStep();
-        } else if (step == 3) {
+        } else if (step == 2) {
             handleAnalyticsConsentPage();
         } else {
             ChromeSharedPreferences.getInstance()
-                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, false);
+                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, true);
             finalStep();
         }
     }
@@ -349,13 +352,14 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             handleSetAsDefaultStep();
         } else if (step == 1) {
             // Notification permission
+            handleNotificationPermission();
         } else if (isWDPEnabled() && step == 2) {
             handleWDPStep();
         } else if (step == 3) {
             handleAnalyticsConsentPage();
         } else {
             ChromeSharedPreferences.getInstance()
-                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, false);
+                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, true);
             finalStep();
         }
     }
@@ -371,6 +375,15 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
         finish();
         sendFirstRunCompleteIntent();
+    }
+
+    private void handleNotificationPermission() {
+        mCurrentOnboardingPage = CurrentOnboardingPage.NOTIFICATION_PERMISSION;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            BravePermissionUtils.showNotificationPermissionDialog(WelcomeOnboardingActivity.this);
+        } else {
+            nextOnboardingStep();
+        }
     }
 
     private void handleSetAsDefaultStep() {
@@ -397,14 +410,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private boolean isWDPEnabled() {
         return BraveConfig.WEB_DISCOVERY_ENABLED;
-    }
-
-    private int getAnalyticsConsentPageStep() {
-        return 2;
-    }
-
-    private int getWDPPageStep() {
-        return 1;
     }
 
     private void showBrowserSelectionPage() {
@@ -660,10 +665,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK
-                && requestCode == BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE) {
-            // We don't need to anything with the result here.
-        }
         if (isActivityFinishingOrDestroyed()) return;
         nextOnboardingStep();
     }
