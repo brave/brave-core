@@ -20,8 +20,7 @@ import java.util.Set;
 public class BraveBaseSearchEngineAdapter extends BaseAdapter {
     private static final String JAPAN_COUNTRY_CODE = "JP";
 
-    public BraveBaseSearchEngineAdapter() {
-    }
+    public BraveBaseSearchEngineAdapter() {}
 
     // BaseAdapter:
     @Override
