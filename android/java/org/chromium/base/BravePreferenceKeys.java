@@ -93,6 +93,8 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_SAFE_BROWSING_ERRORS =
             "org.chromium.brave.browser.Brave_SAFE_BROWSING_ERRORS";
 
+    public static final String DEFAULT_SEARCH_ENGINE_CHANGED = "default_search_engine_changed";
+
     /*
      * Checks if preference key is used in Brave.
      * It's no op currently. We might reconsider
