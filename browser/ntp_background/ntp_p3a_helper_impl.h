@@ -16,6 +16,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
 
+class GURL;
 class PrefRegistrySimple;
 class PrefService;
 
@@ -45,7 +46,7 @@ class NTPP3AHelperImpl : public NTPP3AHelper,
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
       const std::string& creative_instance_id) override;
 
-  void SetLastTabURL(const GURL& url) override;
+  void OnNavigationDidFinish(const GURL& url) override;
 
   void CheckLoadedCampaigns(const NTPSponsoredImagesData& data);
 
@@ -57,6 +58,10 @@ class NTPP3AHelperImpl : public NTPP3AHelper,
                          bool is_constellation);
 
  private:
+  void MaybeLand(const GURL& url);
+  void MaybeLandCallback(const std::string& creative_instance_id,
+                         const GURL& url);
+
   void RecordCreativeMetric(const std::string& histogram_name,
                             int count,
                             bool is_constellation);
@@ -72,11 +77,6 @@ class NTPP3AHelperImpl : public NTPP3AHelper,
   void UpdateCampaignMetric(const std::string& campaign_id,
                             const std::string& event_type);
 
-  void OnLandingStartCheck(const std::string& creative_instance_id);
-
-  void OnLandingEndCheck(const std::string& creative_instance_id,
-                         const std::string& expected_hostname);
-
   // NTPBackgroundImagesService::Observer:
   void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
 
@@ -84,9 +84,9 @@ class NTPP3AHelperImpl : public NTPP3AHelper,
   raw_ptr<p3a::P3AService> p3a_service_;
   raw_ptr<PrefService> prefs_;
 
-  std::optional<std::string> last_tab_hostname_;
-
-  base::OneShotTimer landing_check_timer_;
+  std::optional<GURL> last_url_;
+  std::optional<std::string> last_clicked_creative_instance_id_;
+  base::OneShotTimer page_land_timer_;
 
   base::CallbackListSubscription metric_sent_subscription_;
   base::CallbackListSubscription rotation_subscription_;

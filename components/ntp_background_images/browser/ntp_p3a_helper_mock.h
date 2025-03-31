@@ -37,7 +37,7 @@ class NTPP3AHelperMock : public NTPP3AHelper {
                const std::string& creative_instance_id),
               (override));
 
-  MOCK_METHOD(void, SetLastTabURL, (const GURL& url), (override));
+  MOCK_METHOD(void, OnNavigationDidFinish, (const GURL& url), (override));
 };
 
 }  // namespace ntp_background_images

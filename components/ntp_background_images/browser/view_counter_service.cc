@@ -475,7 +475,7 @@ void ViewCounterService::InitializeWebUIDataSource(
 
 void ViewCounterService::OnTabURLChanged(const GURL& url) {
   if (ntp_p3a_helper_) {
-    ntp_p3a_helper_->SetLastTabURL(url);
+    ntp_p3a_helper_->OnNavigationDidFinish(url);
   }
 }
 

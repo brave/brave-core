@@ -219,13 +219,13 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
   EXPECT_FALSE(
       p3a_service_->GetDynamicMetricLogType(lands_histogram_name).has_value());
 
-  ntp_p3a_helper_->SetLastTabURL(GURL("https://adexample.com/page1"));
+  ntp_p3a_helper_->OnNavigationDidFinish(GURL("https://adexample.com/page1"));
 
   task_environment_.FastForwardBy(base::Seconds(6));
 
   // It's acceptable to access other pages,
   // as long as they're on the same host.
-  ntp_p3a_helper_->SetLastTabURL(GURL("https://adexample.com/page2"));
+  ntp_p3a_helper_->OnNavigationDidFinish(GURL("https://adexample.com/page2"));
 
   task_environment_.FastForwardBy(base::Seconds(5));
 
@@ -245,14 +245,15 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
   ntp_p3a_helper_->RecordNewTabPageAdEvent(
       brave_ads::mojom::NewTabPageAdEventType::kClicked, kTestCreativeMetricId);
 
-  ntp_p3a_helper_->SetLastTabURL(GURL("https://adexample.com/page1"));
+  ntp_p3a_helper_->OnNavigationDidFinish(GURL("https://adexample.com/page1"));
 
   task_environment_.FastForwardBy(base::Seconds(6));
   histogram_tester_->ExpectTotalCount(clicks_histogram_name, 1);
   histogram_tester_->ExpectTotalCount(lands_histogram_name, 1);
 
   // Should not trigger land, since user left page before "land time"
-  ntp_p3a_helper_->SetLastTabURL(GURL("https://differenthost.com/page1"));
+  ntp_p3a_helper_->OnNavigationDidFinish(
+      GURL("https://differenthost.com/page1"));
 
   task_environment_.FastForwardBy(base::Seconds(5));
 
