@@ -210,6 +210,7 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
+import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo.SearchWidgetPromoPanel;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
@@ -332,6 +333,8 @@ public abstract class BraveActivity extends ChromeActivity
     private boolean mSpoofCustomTab;
 
     private View mQuickSearchEnginesView;
+
+    private SearchWidgetPromoPanel mSearchWidgetPromoPanel;
 
     /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
@@ -1293,6 +1296,13 @@ public abstract class BraveActivity extends ChromeActivity
                         @Override
                         public void afterTextChanged(Editable s) {}
                     });
+            if (ChromeSharedPreferences.getInstance()
+                    .readBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, false)) {
+                mSearchWidgetPromoPanel = new SearchWidgetPromoPanel(BraveActivity.this);
+                mSearchWidgetPromoPanel.showIfNeeded(urlBar);
+                ChromeSharedPreferences.getInstance()
+                        .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, false);
+            }
         }
 
         ContextUtils.getAppSharedPreferences().registerOnSharedPreferenceChangeListener(this);

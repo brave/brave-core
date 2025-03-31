@@ -338,7 +338,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         } else if (step == 3) {
             handleAnalyticsConsentPage();
         } else {
-            // Show widget page on NTP
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, false);
             finalStep();
         }
     }
@@ -353,7 +354,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         } else if (step == 3) {
             handleAnalyticsConsentPage();
         } else {
-            // Show widget page on NTP
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, false);
             finalStep();
         }
     }
@@ -363,9 +365,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
         FirstRunStatus.setFirstRunFlowComplete(true);
 
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(ChromePreferenceKeys.FIRST_RUN_CACHED_TOS_ACCEPTED, true);
-            FirstRunUtils.setEulaAccepted();
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(ChromePreferenceKeys.FIRST_RUN_CACHED_TOS_ACCEPTED, true);
+        FirstRunUtils.setEulaAccepted();
 
         finish();
         sendFirstRunCompleteIntent();
