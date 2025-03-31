@@ -19,6 +19,11 @@ inline constexpr auto kAllowedContentSchemes =
         {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme,
          url::kDataScheme});
 
+// Model key for Claude Haiku model.
+inline constexpr char kClaudeHaikuModelKey[] = "chat-claude-haiku";
+// Model key for Claude Sonnet model.
+inline constexpr char kClaudeSonnetModelKey[] = "chat-claude-sonnet";
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_CONSTANTS_H_

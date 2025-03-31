@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/barrier_callback.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -99,6 +100,34 @@ std::optional<std::vector<uint8_t>> ReadFileToBytes(
   return std::nullopt;
 }
 
+void OnImageDecoded(
+    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback,
+    const SkBitmap& decoded_bitmap) {
+  if (decoded_bitmap.drawsNothing()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  auto encode_image = base::BindOnce(
+      [](const SkBitmap& decoded_bitmap) {
+        return gfx::PNGCodec::EncodeBGRASkBitmap(ScaleBitmap(decoded_bitmap),
+                                                 false);
+      },
+      decoded_bitmap);
+  base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
+                                               std::move(encode_image),
+                                               std::move(callback));
+}
+
+void ProcessImageData(
+    std::vector<uint8_t> image_data,
+    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback) {
+  data_decoder::DecodeImage(
+      GetDataDecoder(), std::move(image_data),
+      data_decoder::mojom::ImageCodec::kDefault, true,
+      data_decoder::kDefaultMaxSizeInBytes, gfx::Size(),
+      base::BindOnce(&OnImageDecoded, std::move(callback)));
+}
+
 }  // namespace
 
 UploadFileHelper::UploadFileHelper(content::WebContents* web_contents,
@@ -126,7 +155,7 @@ void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
       {u"image/png", u"image/jpeg", u"image/jpg", u"image/webp"});
 #endif
   select_file_dialog_->SelectFile(
-      ui::SelectFileDialog::SELECT_OPEN_FILE, std::u16string(),
+      ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE, std::u16string(),
       profile_->last_selected_directory(), &info, 0,
       base::FilePath::StringType(), web_contents_->GetTopLevelNativeWindow(),
       nullptr);
@@ -152,10 +181,84 @@ void UploadFileHelper::FileSelected(const ui::SelectedFileInfo& file,
                                                std::move(on_image_read));
 }
 
+void UploadFileHelper::MultiFilesSelected(
+    const std::vector<ui::SelectedFileInfo>& files) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (files.empty()) {
+    std::move(upload_image_callback_).Run(std::nullopt);
+    return;
+  }
+
+  // Create a barrier callback that will be called when all files are processed
+  auto barrier_callback = base::BarrierCallback<
+      std::tuple<std::optional<std::vector<uint8_t>>, std::string>>(
+      files.size(),
+      base::BindOnce(
+          [](UploadImageCallback callback,
+             std::vector<std::tuple<std::optional<std::vector<uint8_t>>,
+                                    std::string>> results) {
+            std::vector<mojom::UploadedImagePtr> uploaded_images;
+            for (const auto& [image_data, filename] : results) {
+              if (image_data) {
+                uploaded_images.push_back(mojom::UploadedImage::New(
+                    std::move(filename), image_data->size(), *image_data));
+              }
+            }
+            std::move(callback).Run(
+                uploaded_images.empty()
+                    ? std::nullopt
+                    : std::make_optional(std::move(uploaded_images)));
+          },
+          std::move(upload_image_callback_)));
+
+  // Process each file
+  for (const auto& file : files) {
+    auto read_image = base::BindOnce(
+        [](const ui::SelectedFileInfo& info)
+            -> std::tuple<std::optional<std::vector<uint8_t>>, std::string> {
+          return std::make_tuple(
+              ai_chat::ReadFileToBytes(info.path()),
+              base::FilePath(info.display_name).AsUTF8Unsafe());
+        },
+        file);
+
+    auto on_image_read = base::BindOnce(
+        [](base::OnceCallback<void(
+               std::tuple<std::optional<std::vector<uint8_t>>, std::string>)>
+               callback,
+           std::tuple<std::optional<std::vector<uint8_t>>, std::string>
+               result) {
+          auto image_data = std::get<0>(result);
+          if (!image_data) {
+            std::move(callback).Run(
+                std::make_tuple(std::nullopt, std::get<1>(result)));
+            return;
+          }
+          ProcessImageData(
+              std::move(*image_data),
+              base::BindOnce(
+                  [](base::OnceCallback<void(
+                         std::tuple<std::optional<std::vector<uint8_t>>,
+                                    std::string>)> callback,
+                     std::string filename,
+                     std::optional<std::vector<uint8_t>> output) {
+                    std::move(callback).Run(std::make_tuple(
+                        std::move(output), std::move(filename)));
+                  },
+                  std::move(callback), std::get<1>(result)));
+        },
+        barrier_callback);
+
+    base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
+                                                 std::move(read_image),
+                                                 std::move(on_image_read));
+  }
+}
+
 void UploadFileHelper::FileSelectionCanceled() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (upload_image_callback_) {
-    std::move(upload_image_callback_).Run(nullptr);
+    std::move(upload_image_callback_).Run(std::nullopt);
   }
 }
 
@@ -164,50 +267,27 @@ void UploadFileHelper::OnImageRead(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto image_data = std::get<0>(result);
   if (!image_data) {
-    std::move(upload_image_callback_).Run(nullptr);
+    std::move(upload_image_callback_).Run(std::nullopt);
     return;
   }
-  auto on_image_sanitized =
-      base::BindOnce(&UploadFileHelper::OnImageSanitized,
-                     weak_ptr_factory_.GetWeakPtr(), std::get<1>(result));
-  data_decoder::DecodeImage(GetDataDecoder(), *image_data,
-                            data_decoder::mojom::ImageCodec::kDefault, true,
-                            data_decoder::kDefaultMaxSizeInBytes, gfx::Size(),
-                            std::move(on_image_sanitized));
-}
-
-void UploadFileHelper::OnImageSanitized(std::string filename,
-                                        const SkBitmap& decoded_bitmap) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (decoded_bitmap.drawsNothing()) {
-    std::move(upload_image_callback_).Run(nullptr);
-    return;
-  }
-  auto encode_image = base::BindOnce(
-      [](const SkBitmap& decoded_bitmap) {
-        return gfx::PNGCodec::EncodeBGRASkBitmap(ScaleBitmap(decoded_bitmap),
-                                                 false);
-      },
-      decoded_bitmap);
-  auto on_image_encoded =
+  ProcessImageData(
+      std::move(*image_data),
       base::BindOnce(&UploadFileHelper::OnImageEncoded,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(filename));
-
-  base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
-                                               std::move(encode_image),
-                                               std::move(on_image_encoded));
+                     weak_ptr_factory_.GetWeakPtr(), std::get<1>(result)));
 }
 
 void UploadFileHelper::OnImageEncoded(
     std::string filename,
     std::optional<std::vector<uint8_t>> output) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  mojom::UploadedImagePtr uploaded_image;
-  if (output) {
-    uploaded_image =
-        mojom::UploadedImage::New(std::move(filename), output->size(), *output);
+  if (!output) {
+    std::move(upload_image_callback_).Run(std::nullopt);
+    return;
   }
-  std::move(upload_image_callback_).Run(std::move(uploaded_image));
+  std::vector<mojom::UploadedImagePtr> images;
+  images.push_back(
+      mojom::UploadedImage::New(std::move(filename), output->size(), *output));
+  std::move(upload_image_callback_).Run(std::make_optional(std::move(images)));
 }
 
 }  // namespace ai_chat

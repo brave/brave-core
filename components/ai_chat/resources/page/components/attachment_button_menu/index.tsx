@@ -8,6 +8,7 @@ import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { ConversationContext } from '../../state/conversation_context'
+import { MAX_IMAGES } from '../../../common/constants'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -18,9 +19,13 @@ import styles from './style.module.scss'
 type Props = Pick<ConversationContext, 'uploadImage' | 'conversationHistory'>
 
 export default function AttachmentButtonMenu(props: Props) {
-  const isMenuDisabled = props.conversationHistory.some(
-    (turn) => turn.uploadedImages
+  const totalUploadedImages = props.conversationHistory.reduce(
+    (total, turn) => total + (turn.uploadedImages?.length || 0),
+    0
   )
+
+  const isMenuDisabled = totalUploadedImages >= MAX_IMAGES
+
   return (
     <>
       <ButtonMenu>

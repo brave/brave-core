@@ -131,9 +131,11 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   std::vector<ConversationEvent> conversation = {
-      {mojom::CharacterType::HUMAN, ConversationEventType::UserText, text},
-      {mojom::CharacterType::HUMAN, ConversationEventType::RequestRewrite,
-       question}};
+      {mojom::CharacterType::HUMAN, ConversationEventType::UserText, {text}},
+      {mojom::CharacterType::HUMAN,
+       ConversationEventType::RequestRewrite,
+       {question}}};
+
   api_->PerformRequest(std::move(conversation), selected_language,
                        std::move(received_callback),
                        std::move(completed_callback));
@@ -147,7 +149,8 @@ void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
   std::vector<ConversationEvent> conversation{
       GetAssociatedContentConversationEvent(page_content, is_video),
       {mojom::CharacterType::HUMAN,
-       ConversationEventType::RequestSuggestedActions, ""}};
+       ConversationEventType::RequestSuggestedActions,
+       {""}}};
 
   auto on_response = base::BindOnce(
       &EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse,
@@ -194,35 +197,31 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   // history
   for (const auto& message : conversation_history) {
     if (message->uploaded_images) {
-      size_t counter = 0;
+      std::vector<std::string> images;
       for (const auto& uploaded_image : message->uploaded_images.value()) {
-        // Only send the first uploaded_image becasue llama-vision seems to take
-        // the last one if there are multiple images
-        if (counter++ > 0) {
-          break;
-        }
-        conversation.push_back({mojom::CharacterType::HUMAN,
-                                ConversationEventType::UploadImage,
-                                GetImageDataURL(uploaded_image->image_data)});
+        images.emplace_back(GetImageDataURL(uploaded_image->image_data));
       }
+      conversation.push_back({mojom::CharacterType::HUMAN,
+                              ConversationEventType::UploadImage,
+                              std::move(images)});
     }
     if (message->selected_text.has_value() &&
         !message->selected_text->empty()) {
       conversation.push_back({mojom::CharacterType::HUMAN,
                               ConversationEventType::PageExcerpt,
-                              message->selected_text.value()});
+                              {message->selected_text.value()}});
     }
     ConversationEvent event;
     event.role = message->character_type;
 
-    event.content = EngineConsumer::GetPromptForEntry(message);
+    event.content = {EngineConsumer::GetPromptForEntry(message)};
 
     // TODO(petemill): Shouldn't the server handle the map of mojom::ActionType
     // to prompts in addition to SUMMARIZE_PAGE (e.g. PARAPHRASE, EXPLAIN,
     // IMPROVE, etc.)
     if (message->action_type == mojom::ActionType::SUMMARIZE_PAGE) {
       event.type = ConversationEventType::RequestSummary;
-      event.content = "";
+      event.content = {""};
     } else {
       event.type = ConversationEventType::ChatMessage;
     }
@@ -251,7 +250,7 @@ EngineConsumerConversationAPI::GetAssociatedContentConversationEvent(
 
   ConversationEvent event;
   event.role = mojom::CharacterType::HUMAN;
-  event.content = truncated_page_content;
+  event.content = {truncated_page_content};
   // TODO(petemill): Differentiate video transcript / XML / VTT
   event.type = is_video ? ConversationEventType::VideoTranscript
                         : ConversationEventType::PageText;
@@ -271,9 +270,10 @@ void EngineConsumerConversationAPI::DedupeTopics(
     topic_list.Append(topic);
   }
   std::vector<ConversationEvent> conversation;
-  conversation.push_back({mojom::CharacterType::HUMAN,
-                          ConversationEventType::DedupeTopics,
-                          base::WriteJson(topic_list).value_or(std::string())});
+  conversation.push_back(
+      {mojom::CharacterType::HUMAN,
+       ConversationEventType::DedupeTopics,
+       {base::WriteJson(topic_list).value_or(std::string())}});
   api_->PerformRequest(
       std::move(conversation), "" /* selected_language */,
       base::NullCallback() /* data_received_callback */,
@@ -314,8 +314,10 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
 
     std::vector<ConversationEvent> conversation;
     conversation.push_back(
-        {mojom::CharacterType::HUMAN, event_type,
-         base::WriteJson(tab_value_list).value_or(std::string()), topic});
+        {mojom::CharacterType::HUMAN,
+         event_type,
+         {base::WriteJson(tab_value_list).value_or(std::string())},
+         topic});
 
     api_->PerformRequest(std::move(conversation), "" /* selected_language */,
                          base::NullCallback() /* data_received_callback */,

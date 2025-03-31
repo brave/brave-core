@@ -182,7 +182,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
         EXPECT_EQ(conversation.size(), 2u);
         EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
         // Page content should be truncated
-        EXPECT_EQ(conversation[0].content, expected_page_content);
+        EXPECT_EQ(conversation[0].content[0], expected_page_content);
         EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
         EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
         // Match entire structure
@@ -487,12 +487,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
         ASSERT_EQ(conversation.size(), 2u);
         EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
         EXPECT_EQ(
-            conversation[0].content,
+            conversation[0].content[0],
             base::StrCat({"data:image/png;base64,",
                           base::Base64Encode(uploaded_images[0]->image_data)}));
         EXPECT_EQ(conversation[0].type, ConversationAPIClient::UploadImage);
         EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
-        EXPECT_EQ(conversation[1].content, kTestPrompt);
+        EXPECT_EQ(conversation[1].content[0], kTestPrompt);
         EXPECT_EQ(conversation[1].type, ConversationAPIClient::ChatMessage);
         std::move(callback).Run(kAssistantResponse);
       });

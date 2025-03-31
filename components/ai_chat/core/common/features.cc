@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "build/build_config.h"
 
 namespace ai_chat::features {
@@ -19,7 +20,9 @@ const base::FeatureParam<std::string> kAIModelsDefaultKey{
 const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey{
     &kAIChat, "default_premium_model", "chat-leo-expanded"};
 const base::FeatureParam<std::string> kAIModelsVisionDefaultKey{
-    &kAIChat, "default_vision_model", "chat-vision-basic"};
+    &kAIChat, "default_vision_model", kClaudeHaikuModelKey};
+const base::FeatureParam<std::string> kAIModelsPremiumVisionDefaultKey{
+    &kAIChat, "default_vision_model", kClaudeSonnetModelKey};
 const base::FeatureParam<bool> kFreemiumAvailable(&kAIChat,
                                                   "is_freemium_available",
                                                   true);
