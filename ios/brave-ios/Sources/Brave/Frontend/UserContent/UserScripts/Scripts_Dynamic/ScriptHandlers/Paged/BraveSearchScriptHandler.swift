@@ -62,7 +62,7 @@ class BraveSearchScriptHandler: TabContentScript {
   }
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {
@@ -101,7 +101,7 @@ class BraveSearchScriptHandler: TabContentScript {
   }
 
   private func handleCanSetBraveSearchAsDefault(
-    tab: any TabState,
+    tab: some TabState,
     replyHandler: (Any?, String?) -> Void
   ) {
     if tab.isPrivate == true {

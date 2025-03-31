@@ -34,10 +34,11 @@ class ReadabilityOperation: Operation {
     // and WebKit are not safe from other threads.
 
     DispatchQueue.main.async {
-      self.tab = TabStateFactory.create(with: .init(braveCore: nil))
-      self.tab.browserData = .init(tab: self.tab, tabGeneratorAPI: nil)
-      self.tab.createWebView()
-      self.tab.addObserver(self)
+      let tab = TabStateFactory.create(with: .init(braveCore: nil))
+      tab.browserData = .init(tab: tab, tabGeneratorAPI: nil)
+      tab.createWebView()
+      tab.addObserver(self)
+      self.tab = tab
 
       let readerMode = ReaderModeScriptHandler()
       readerMode.delegate = self
@@ -81,12 +82,12 @@ class ReadabilityOperation: Operation {
 }
 
 extension ReadabilityOperation: TabObserver {
-  func tab(_ tab: any TabState, didFailNavigationWithError error: any Error) {
+  func tab(_ tab: some TabState, didFailNavigationWithError error: any Error) {
     result = ReadabilityOperationResult.error(error as NSError)
     semaphore.signal()
   }
 
-  func tabDidFinishNavigation(_ tab: any TabState) {
+  func tabDidFinishNavigation(_ tab: some TabState) {
     tab.evaluateJavaScript(
       functionName: "\(readerModeNamespace).checkReadability",
       contentWorld: ReaderModeScriptHandler.scriptSandbox
@@ -98,20 +99,20 @@ extension ReadabilityOperation: ReaderModeScriptHandlerDelegate {
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didChangeReaderModeState state: ReaderModeState,
-    forTab tab: any TabState
+    forTab tab: some TabState
   ) {
   }
 
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
-    didDisplayReaderizedContentForTab tab: any TabState
+    didDisplayReaderizedContentForTab tab: some TabState
   ) {
   }
 
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didParseReadabilityResult readabilityResult: ReadabilityResult,
-    forTab tab: any TabState
+    forTab tab: some TabState
   ) {
     guard tab === self.tab else {
       return

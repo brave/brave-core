@@ -30,7 +30,7 @@ class FingerprintingProtection: TabContentScript {
   }()
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {

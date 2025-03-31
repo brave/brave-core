@@ -23,10 +23,10 @@ protocol TabManagerDelegate: AnyObject {
     didSelectedTabChange selected: (any TabState)?,
     previous: (any TabState)?
   )
-  func tabManager(_ tabManager: TabManager, willAddTab tab: any TabState)
-  func tabManager(_ tabManager: TabManager, didAddTab tab: any TabState)
-  func tabManager(_ tabManager: TabManager, willRemoveTab tab: any TabState)
-  func tabManager(_ tabManager: TabManager, didRemoveTab tab: any TabState)
+  func tabManager(_ tabManager: TabManager, willAddTab tab: some TabState)
+  func tabManager(_ tabManager: TabManager, didAddTab tab: some TabState)
+  func tabManager(_ tabManager: TabManager, willRemoveTab tab: some TabState)
+  func tabManager(_ tabManager: TabManager, didRemoveTab tab: some TabState)
 
   func tabManagerDidRestoreTabs(_ tabManager: TabManager)
   func tabManagerDidAddTabs(_ tabManager: TabManager)
@@ -566,7 +566,7 @@ class TabManager: NSObject {
     return tab
   }
 
-  func moveTab(_ tab: any TabState, toIndex visibleToIndex: Int) {
+  func moveTab(_ tab: some TabState, toIndex visibleToIndex: Int) {
     assert(Thread.isMainThread)
 
     let currentTabs = tabs(isPrivate: tab.isPrivate)
@@ -606,7 +606,7 @@ class TabManager: NSObject {
   }
 
   @MainActor func configureTab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     request: URLRequest?,
     afterTab parent: (any TabState)? = nil,
     flushToDisk: Bool,
@@ -729,7 +729,7 @@ class TabManager: NSObject {
     )
   }
 
-  func saveTab(_ tab: any TabState, saveOrder: Bool = false) {
+  func saveTab(_ tab: some TabState, saveOrder: Bool = false) {
     if Preferences.Privacy.privateBrowsingOnly.value
       || (tab.isPrivate && !Preferences.Privacy.persistentPrivateBrowsing.value)
     {
@@ -777,7 +777,7 @@ class TabManager: NSObject {
   ///   - checkOtherTabs: Check if other tabs are open for the given domain
   @MainActor func forgetDataIfNeeded(
     for url: URL,
-    in tab: any TabState
+    in tab: some TabState
   ) {
     guard FeatureList.kBraveShredFeature.enabled else { return }
     guard let url = url.urlToShred,
@@ -807,7 +807,7 @@ class TabManager: NSObject {
     }
   }
 
-  @MainActor func shredData(for url: URL, in tab: any TabState) {
+  @MainActor func shredData(for url: URL, in tab: some TabState) {
     guard let url = url.urlToShred,
       let etldP1 = url.baseDomain
     else { return }
@@ -862,7 +862,7 @@ class TabManager: NSObject {
   /// The task may be delayed in case we want to cancel it
   @MainActor private func forgetDataDelayed(
     for url: URL,
-    in tab: any TabState,
+    in tab: some TabState,
     delay: TimeInterval
   ) {
     guard let url = url.urlToShred,
@@ -945,7 +945,7 @@ class TabManager: NSObject {
   }
 
   /// Cancel a forget data request in case we navigate back to the tab within a certain period
-  @MainActor func cancelForgetData(for url: URL, in tab: any TabState) {
+  @MainActor func cancelForgetData(for url: URL, in tab: some TabState) {
     guard let etldP1 = url.urlToShred?.baseDomain else { return }
     forgetTasks[tab.isPrivate]?[etldP1]?.cancel()
     forgetTasks[tab.isPrivate]?.removeValue(forKey: etldP1)
@@ -1080,7 +1080,7 @@ class TabManager: NSObject {
   }
 
   func removeAllBrowsingDataForTab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     completionHandler: @escaping () -> Void = {}
   ) {
     let dataTypes = WKWebsiteDataStore.allWebsiteDataTypes()
@@ -1192,7 +1192,7 @@ class TabManager: NSObject {
     delegates.forEach { $0.get()?.tabManagerDidRemoveAllTabs(self, toast: nil) }
   }
 
-  func getIndex(_ tab: any TabState) -> Int? {
+  func getIndex(_ tab: some TabState) -> Int? {
     assert(Thread.isMainThread)
 
     for i in 0..<count where allTabs[i] === tab {
@@ -1222,7 +1222,7 @@ class TabManager: NSObject {
     return allTabs.filter { $0.id == id }.first
   }
 
-  func preserveScreenshot(for tab: any TabState) {
+  func preserveScreenshot(for tab: some TabState) {
     assert(Thread.isMainThread)
     if isRestoring { return }
 
@@ -1342,7 +1342,7 @@ class TabManager: NSObject {
     return nil
   }
 
-  func restoreTab(_ tab: any TabState) {
+  func restoreTab(_ tab: some TabState) {
     guard let sessionTab = SessionTab.from(tabId: tab.id) else {
       if let tabURL = tab.visibleURL {
         let request =
@@ -1429,7 +1429,7 @@ class TabManager: NSObject {
 
   /// Function used to add the tab information to Recently Closed when it is removed
   /// - Parameter tab: The tab which is removed
-  func addTabToRecentlyClosed(_ tab: any TabState) {
+  func addTabToRecentlyClosed(_ tab: some TabState) {
     if let savedItem = createRecentlyClosedFromActiveTab(tab) {
       RecentlyClosed.insert(savedItem)
     }
@@ -1487,9 +1487,9 @@ class TabManager: NSObject {
 
   /// An internal function to create a RecentlyClosed item from a tab
   /// Also handles the backforward list transfer
-  /// - Parameter tab: any TabState to be converted to Recently Closed
+  /// - Parameter tab: some TabState to be converted to Recently Closed
   /// - Returns: Recently Closed item
-  private func createRecentlyClosedFromActiveTab(_ tab: any TabState) -> SavedRecentlyClosed? {
+  private func createRecentlyClosedFromActiveTab(_ tab: some TabState) -> SavedRecentlyClosed? {
     // Private Tabs can not be added to Recently Closed
     if tab.isPrivate {
       return nil
@@ -1521,8 +1521,8 @@ class TabManager: NSObject {
 
 // MARK: - TabManagerDelegate optional methods.
 extension TabManagerDelegate {
-  func tabManager(_ tabManager: TabManager, willAddTab tab: any TabState) {}
-  func tabManager(_ tabManager: TabManager, willRemoveTab tab: any TabState) {}
+  func tabManager(_ tabManager: TabManager, willAddTab tab: some TabState) {}
+  func tabManager(_ tabManager: TabManager, willRemoveTab tab: some TabState) {}
   func tabManagerDidAddTabs(_ tabManager: TabManager) {}
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {}
 }

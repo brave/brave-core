@@ -15,7 +15,7 @@ extension BrowserViewController: ReaderModeScriptHandlerDelegate {
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didChangeReaderModeState state: ReaderModeState,
-    forTab tab: any TabState
+    forTab tab: some TabState
   ) {
     // If this reader mode availability state change is for the tab that we currently show, then update
     // the button. Otherwise do nothing and the button will be updated when the tab is made active.
@@ -26,7 +26,7 @@ extension BrowserViewController: ReaderModeScriptHandlerDelegate {
 
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
-    didDisplayReaderizedContentForTab tab: any TabState
+    didDisplayReaderizedContentForTab tab: some TabState
   ) {
     if tabManager.selectedTab !== tab { return }
     showReaderModeBar(animated: true)
@@ -36,7 +36,7 @@ extension BrowserViewController: ReaderModeScriptHandlerDelegate {
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didParseReadabilityResult readabilityResult: ReadabilityResult,
-    forTab tab: any TabState
+    forTab tab: some TabState
   ) {}
 }
 

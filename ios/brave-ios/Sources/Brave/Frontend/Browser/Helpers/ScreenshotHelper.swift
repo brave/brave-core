@@ -19,7 +19,7 @@ class ScreenshotHelper {
     self.tabManager = tabManager
   }
 
-  func takeScreenshot(_ tab: any TabState) {
+  func takeScreenshot(_ tab: some TabState) {
     guard let url = tab.visibleURL else {
       Logger.module.error("Tab webView or url is nil")
       tab.browserData?.setScreenshot(nil)
@@ -52,7 +52,7 @@ class ScreenshotHelper {
   /// Takes a screenshot after a small delay.
   /// Trying to take a screenshot immediately after didFinishNavigation results in a screenshot
   /// of the previous page, presumably due to an iOS bug. Adding a brief delay fixes this.
-  func takeDelayedScreenshot(_ tab: any TabState) {
+  func takeDelayedScreenshot(_ tab: some TabState) {
     let time = DispatchTime.now() + Double(Int64(100 * NSEC_PER_MSEC)) / Double(NSEC_PER_SEC)
     DispatchQueue.main.asyncAfter(deadline: time) {
       // If the view controller isn't visible, the screenshot will be blank.

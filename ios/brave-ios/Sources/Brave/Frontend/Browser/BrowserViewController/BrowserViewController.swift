@@ -1815,7 +1815,7 @@ public class BrowserViewController: UIViewController {
     return false
   }
 
-  func updateBackForwardActionStatus(for tab: any TabState) {
+  func updateBackForwardActionStatus(for tab: some TabState) {
     if let forwardListItem = tab.backForwardList?.forwardList.first,
       forwardListItem.url.isInternalURL(for: .readermode)
     {
@@ -1827,7 +1827,7 @@ public class BrowserViewController: UIViewController {
     navigationToolbar.updateBackStatus(tab.canGoBack)
   }
 
-  func updateUIForReaderHomeStateForTab(_ tab: any TabState) {
+  func updateUIForReaderHomeStateForTab(_ tab: some TabState) {
     updateURLBar()
     toolbarVisibilityViewModel.toolbarState = .expanded
 
@@ -2086,7 +2086,7 @@ public class BrowserViewController: UIViewController {
     self.pageZoomBar = pageZoomBar
   }
 
-  func updateWebViewPageZoom(tab: any TabState) {
+  func updateWebViewPageZoom(tab: some TabState) {
     if let currentURL = tab.visibleURL {
       let domain = Domain.getPersistedDomain(for: currentURL)
 
@@ -2119,7 +2119,7 @@ public class BrowserViewController: UIViewController {
     statusBarOverlay.backgroundColor = color
   }
 
-  func navigateInTab(tab: any TabState) {
+  func navigateInTab(tab: some TabState) {
     for tab in tabManager.allTabs {
       SnackBarTabHelper.from(tab: tab)?.expireSnackbars()
     }
@@ -2389,7 +2389,7 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
     openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate)
   }
 
-  func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: any TabState) {
+  func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: some TabState) {
     if tab === tabManager.selectedTab { return }
     topToolbar.leaveOverlayMode(didCancel: true)
     tabManager.selectTab(tab)
@@ -2420,7 +2420,7 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
 }
 
 extension BrowserViewController: TabMiscDelegate {
-  func showRequestRewardsPanel(_ tab: any TabState) {
+  func showRequestRewardsPanel(_ tab: some TabState) {
     let vc = BraveTalkRewardsOptInViewController()
 
     // Edge case: user disabled Rewards button and wants to access free Brave Talk
@@ -2460,13 +2460,13 @@ extension BrowserViewController: TabMiscDelegate {
     }
   }
 
-  func stopMediaPlayback(_ tab: any TabState) {
+  func stopMediaPlayback(_ tab: some TabState) {
     tabManager.allTabs.forEach({
       PlaylistScriptHandler.stopPlayback(tab: $0)
     })
   }
 
-  func showWalletNotification(_ tab: any TabState, origin: URLOrigin) {
+  func showWalletNotification(_ tab: some TabState, origin: URLOrigin) {
     // only display notification when BVC is front and center
     guard presentedViewController == nil,
       Preferences.Wallet.displayWeb3Notifications.value,
@@ -2487,7 +2487,7 @@ extension BrowserViewController: TabMiscDelegate {
     notificationsPresenter.display(notification: walletNotificaton, from: self)
   }
 
-  func isTabVisible(_ tab: any TabState) -> Bool {
+  func isTabVisible(_ tab: some TabState) -> Bool {
     tabManager.selectedTab === tab
   }
 

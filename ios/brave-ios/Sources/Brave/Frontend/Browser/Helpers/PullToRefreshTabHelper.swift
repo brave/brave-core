@@ -26,7 +26,7 @@ class PullToRefreshTabHelper: TabObserver, PreferencesObserver {
     })
   )
 
-  init(tab: any TabState) {
+  init(tab: some TabState) {
     self.tab = tab
 
     tab.addObserver(self)
@@ -43,19 +43,19 @@ class PullToRefreshTabHelper: TabObserver, PreferencesObserver {
       url.isLocalUtility || !Preferences.General.enablePullToRefresh.value ? nil : refreshControl
   }
 
-  func tabDidUpdateURL(_ tab: any TabState) {
+  func tabDidUpdateURL(_ tab: some TabState) {
     updatePullToRefreshVisibility()
   }
 
-  func tabDidCreateWebView(_ tab: any TabState) {
+  func tabDidCreateWebView(_ tab: some TabState) {
     updatePullToRefreshVisibility()
   }
 
-  func tabDidStopLoading(_ tab: any TabState) {
+  func tabDidStopLoading(_ tab: some TabState) {
     refreshControl.endRefreshing()
   }
 
-  func tabWillBeDestroyed(_ tab: any TabState) {
+  func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
   }
 

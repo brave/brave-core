@@ -17,7 +17,7 @@ import WebKit
 import os.log
 
 extension BrowserViewController: TabManagerDelegate {
-  func attachTabHelpers(to tab: any TabState) {
+  func attachTabHelpers(to tab: some TabState) {
     tab.browserData = .init(tab: tab, tabGeneratorAPI: braveCore.tabGeneratorAPI)
     tab.browserData?.miscDelegate = self
     tab.pullToRefresh = .init(tab: tab)
@@ -171,10 +171,10 @@ extension BrowserViewController: TabManagerDelegate {
     updateURLBarWalletButton()
   }
 
-  func tabManager(_ tabManager: TabManager, willAddTab tab: any TabState) {
+  func tabManager(_ tabManager: TabManager, willAddTab tab: some TabState) {
   }
 
-  func tabManager(_ tabManager: TabManager, didAddTab tab: any TabState) {
+  func tabManager(_ tabManager: TabManager, didAddTab tab: some TabState) {
     // If we are restoring tabs then we update the count once at the end
     if !tabManager.isRestoring {
       updateToolbarUsingTabManager(tabManager)
@@ -192,11 +192,11 @@ extension BrowserViewController: TabManagerDelegate {
     updateTabsBarVisibility()
   }
 
-  func tabManager(_ tabManager: TabManager, willRemoveTab tab: any TabState) {
+  func tabManager(_ tabManager: TabManager, willRemoveTab tab: some TabState) {
     tab.view.removeFromSuperview()
   }
 
-  func tabManager(_ tabManager: TabManager, didRemoveTab tab: any TabState) {
+  func tabManager(_ tabManager: TabManager, didRemoveTab tab: some TabState) {
     updateToolbarUsingTabManager(tabManager)
     // tabDelegate is a weak ref (and the tab's webView may not be destroyed yet)
     // so we don't expcitly unset it.

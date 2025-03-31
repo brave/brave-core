@@ -32,7 +32,7 @@ class DownloadContentScriptHandler: TabContentScript {
   static let scriptSandbox: WKContentWorld = .defaultClient
   static let userScript: WKUserScript? = nil
 
-  static func downloadBlob(url: URL, tab: any TabState) -> Bool {
+  static func downloadBlob(url: URL, tab: some TabState) -> Bool {
     let safeUrl = url.absoluteString.replacingOccurrences(of: "'", with: "%27")
     guard url.scheme == "blob" else {
       return false
@@ -47,7 +47,7 @@ class DownloadContentScriptHandler: TabContentScript {
   }
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {

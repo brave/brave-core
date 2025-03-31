@@ -37,7 +37,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
   private var asset: AVURLAsset?
   private static let queue = DispatchQueue(label: "com.playlisthelper.queue", qos: .userInitiated)
 
-  init(tab: any TabState) {
+  init(tab: some TabState) {
     self.url = tab.visibleURL
     super.init()
 
@@ -83,7 +83,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
   }()
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -111,7 +111,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
   }
 
   private class func processPlaylistInfo(
-    tab: any TabState,
+    tab: some TabState,
     handler: PlaylistScriptHandler,
     item: PlaylistInfo?
   ) {
@@ -194,7 +194,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
     return await PlaylistMediaStreamer.loadAssetPlayability(asset: asset)
   }
 
-  private func updateItem(_ item: PlaylistInfo, detected: Bool, tab: any TabState) {
+  private func updateItem(_ item: PlaylistInfo, detected: Bool, tab: some TabState) {
     if detected {
       self.delegate?.updatePlaylistURLBar(tab: tab, state: .existingItem, item: item)
     }
@@ -216,7 +216,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
 
   // MARK: - TabObserver
 
-  func tabDidUpdateURL(_ tab: any TabState) {
+  func tabDidUpdateURL(_ tab: some TabState) {
     url = tab.visibleURL
     asset?.cancelLoading()
     asset = nil
@@ -224,14 +224,14 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
     delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
   }
 
-  func tabWillBeDestroyed(_ tab: any TabState) {
+  func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
   }
 }
 
 extension PlaylistScriptHandler {
   static func getCurrentTime(
-    tab: any TabState,
+    tab: some TabState,
     nodeTag: String,
     completion: @escaping (Double) -> Void
   ) {
@@ -282,7 +282,7 @@ extension PlaylistScriptHandler {
 }
 
 extension PlaylistScriptHandler {
-  static func updatePlaylistTab(tab: any TabState, item: PlaylistInfo?) {
+  static func updatePlaylistTab(tab: some TabState, item: PlaylistInfo?) {
     if let handler = tab.browserData?.getContentScript(name: Self.scriptName)
       as? PlaylistScriptHandler
     {

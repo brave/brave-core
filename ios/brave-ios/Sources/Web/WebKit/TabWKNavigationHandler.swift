@@ -39,7 +39,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
   }
 
   private func defaultAllowPolicy(
-    for tab: any TabState,
+    for tab: some TabState,
     request: URLRequest
   ) -> WKNavigationActionPolicy {
     if let delegate = tab.delegate,

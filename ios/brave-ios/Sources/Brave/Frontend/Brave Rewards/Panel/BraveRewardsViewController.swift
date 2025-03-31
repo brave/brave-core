@@ -53,7 +53,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     }
   }
 
-  init(tab: any TabState, rewards: BraveRewards) {
+  init(tab: some TabState, rewards: BraveRewards) {
     self.browserTab = tab
     self.rewards = rewards
 

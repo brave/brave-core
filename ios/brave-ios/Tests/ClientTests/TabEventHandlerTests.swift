@@ -102,11 +102,11 @@ class DummyHandler: TabEventHandler {
     unregister(tabObservers)
   }
 
-  func tabDidGainFocus(_ tab: any TabState) {
+  func tabDidGainFocus(_ tab: some TabState) {
     isFocused = true
   }
 
-  func tabDidLoseFocus(_ tab: any TabState) {
+  func tabDidLoseFocus(_ tab: some TabState) {
     isFocused = false
   }
 }

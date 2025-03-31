@@ -260,16 +260,16 @@ protocol ReaderModeScriptHandlerDelegate: AnyObject {
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didChangeReaderModeState state: ReaderModeState,
-    forTab tab: any TabState
+    forTab tab: some TabState
   )
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
-    didDisplayReaderizedContentForTab tab: any TabState
+    didDisplayReaderizedContentForTab tab: some TabState
   )
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didParseReadabilityResult readabilityResult: ReadabilityResult,
-    forTab tab: any TabState
+    forTab tab: some TabState
   )
 }
 
@@ -287,27 +287,27 @@ class ReaderModeScriptHandler: TabContentScript {
   static let scriptSandbox: WKContentWorld = .defaultClient
   static let userScript: WKUserScript? = nil
 
-  fileprivate func handleReaderPageEvent(_ readerPageEvent: ReaderPageEvent, tab: any TabState) {
+  fileprivate func handleReaderPageEvent(_ readerPageEvent: ReaderPageEvent, tab: some TabState) {
     switch readerPageEvent {
     case .pageShow:
       delegate?.readerMode(self, didDisplayReaderizedContentForTab: tab)
     }
   }
 
-  fileprivate func handleReaderModeStateChange(_ state: ReaderModeState, tab: any TabState) {
+  fileprivate func handleReaderModeStateChange(_ state: ReaderModeState, tab: some TabState) {
     self.state = state
     delegate?.readerMode(self, didChangeReaderModeState: state, forTab: tab)
   }
 
   fileprivate func handleReaderContentParsed(
     _ readabilityResult: ReadabilityResult,
-    tab: any TabState
+    tab: some TabState
   ) {
     delegate?.readerMode(self, didParseReadabilityResult: readabilityResult, forTab: tab)
   }
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -344,7 +344,7 @@ class ReaderModeScriptHandler: TabContentScript {
     }
   }
 
-  func setStyle(_ style: ReaderModeStyle, in tab: any TabState) {
+  func setStyle(_ style: ReaderModeStyle, in tab: some TabState) {
     if state == ReaderModeState.active {
       tab.evaluateJavaScript(
         functionName: "\(readerModeNamespace).setStyle",

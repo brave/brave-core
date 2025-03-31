@@ -167,7 +167,7 @@ class NewTabPageViewController: UIViewController {
   private let p3aHelper: NewTabPageP3AHelper
 
   init(
-    tab: any TabState,
+    tab: some TabState,
     profile: Profile,
     dataSource: NTPDataSource,
     feedDataSource: FeedDataSource,

@@ -9,14 +9,14 @@ import Foundation
 public protocol TabPolicyDecider: AnyObject {
   /// Decide whether or not a request should be allowed
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     shouldAllowRequest request: URLRequest,
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision
 
   /// Decide whether or not a response should be allowed
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     shouldAllowResponse response: URLResponse,
     responseInfo: WebResponseInfo
   ) async -> WebPolicyDecision
@@ -24,7 +24,7 @@ public protocol TabPolicyDecider: AnyObject {
 
 extension TabPolicyDecider {
   public func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     shouldAllowRequest: URLRequest,
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision {
@@ -32,7 +32,7 @@ extension TabPolicyDecider {
   }
 
   public func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     shouldAllowResponse: URLResponse,
     responseInfo: WebResponseInfo
   ) async -> WebPolicyDecision {
@@ -59,7 +59,7 @@ class AnyTabPolicyDecider: TabPolicyDecider, Hashable {
   }
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     shouldAllowRequest request: URLRequest,
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision {
@@ -67,7 +67,7 @@ class AnyTabPolicyDecider: TabPolicyDecider, Hashable {
   }
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     shouldAllowResponse response: URLResponse,
     responseInfo: WebResponseInfo
   ) async -> WebPolicyDecision {

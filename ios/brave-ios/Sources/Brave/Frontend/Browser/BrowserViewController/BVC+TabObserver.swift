@@ -13,7 +13,7 @@ import UIKit
 import Web
 
 extension BrowserViewController: TabObserver {
-  public func tabDidCreateWebView(_ tab: any TabState) {
+  public func tabDidCreateWebView(_ tab: some TabState) {
     tab.view.frame = webViewContainer.frame
 
     var injectedScripts: [TabContentScript] = [
@@ -103,7 +103,7 @@ extension BrowserViewController: TabObserver {
       as? Web3NameServiceScriptHandler)?.delegate = self
   }
 
-  public func tabWillDeleteWebView(_ tab: any TabState) {
+  public func tabWillDeleteWebView(_ tab: some TabState) {
     tab.browserData?.cancelQueuedAlerts()
     if let scrollView = tab.webViewProxy?.scrollView {
       toolbarVisibilityViewModel.endScrollViewObservation(scrollView)
@@ -111,7 +111,7 @@ extension BrowserViewController: TabObserver {
     tab.view.removeFromSuperview()
   }
 
-  public func tabDidStartNavigation(_ tab: any TabState) {
+  public func tabDidStartNavigation(_ tab: some TabState) {
     tab.contentBlocker?.clearPageStats()
 
     let visibleURL = tab.visibleURL
@@ -155,7 +155,7 @@ extension BrowserViewController: TabObserver {
     hideToastsOnNavigationStartIfNeeded(tabManager)
   }
 
-  public func tabDidCommitNavigation(_ tab: any TabState) {
+  public func tabDidCommitNavigation(_ tab: some TabState) {
     // Reset the stored http request now that load has committed.
     tab.upgradedHTTPSRequest = nil
     tab.upgradeHTTPSTimeoutTimer?.invalidate()
@@ -219,7 +219,7 @@ extension BrowserViewController: TabObserver {
     updateBackForwardActionStatus(for: tab)
   }
 
-  public func tabDidFinishNavigation(_ tab: any TabState) {
+  public func tabDidFinishNavigation(_ tab: some TabState) {
     if !Preferences.Privacy.privateBrowsingOnly.value
       && (!tab.isPrivate || Preferences.Privacy.persistentPrivateBrowsing.value)
     {
@@ -285,7 +285,7 @@ extension BrowserViewController: TabObserver {
     recordFinishedPageLoadP3A()
   }
 
-  public func tab(_ tab: any TabState, didFailNavigationWithError error: any Error) {
+  public func tab(_ tab: some TabState, didFailNavigationWithError error: any Error) {
     let error = error as NSError
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
       // load cancelled / user stopped load. Cancel https upgrade fallback timer.
@@ -321,7 +321,7 @@ extension BrowserViewController: TabObserver {
     }
   }
 
-  public func tabDidUpdateURL(_ tab: any TabState) {
+  public func tabDidUpdateURL(_ tab: some TabState) {
     if tab.isDisplayingBasicAuthPrompt == true {
       tab.setVirtualURL(
         URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
@@ -389,7 +389,7 @@ extension BrowserViewController: TabObserver {
     }
   }
 
-  public func tabDidChangeLoadProgress(_ tab: any TabState) {
+  public func tabDidChangeLoadProgress(_ tab: some TabState) {
     guard tab === tabManager.selectedTab else { return }
     if let url = tab.url, !InternalURL.isValid(url: url) {
       topToolbar.updateProgressBar(Float(tab.estimatedProgress))
@@ -398,12 +398,12 @@ extension BrowserViewController: TabObserver {
     }
   }
 
-  public func tabDidStartLoading(_ tab: any TabState) {
+  public func tabDidStartLoading(_ tab: some TabState) {
     guard tab === tabManager.selectedTab else { return }
     topToolbar.locationView.loading = tab.isLoading
   }
 
-  public func tabDidStopLoading(_ tab: any TabState) {
+  public func tabDidStopLoading(_ tab: some TabState) {
     guard tab === tabManager.selectedTab else { return }
     topToolbar.locationView.loading = tab.isLoading
     if tab.estimatedProgress != 1 {
@@ -411,7 +411,7 @@ extension BrowserViewController: TabObserver {
     }
   }
 
-  public func tabDidChangeTitle(_ tab: any TabState) {
+  public func tabDidChangeTitle(_ tab: some TabState) {
     // Ensure that the tab title *actually* changed to prevent repeated calls
     // to navigateInTab(tab:).
     guard
@@ -423,18 +423,18 @@ extension BrowserViewController: TabObserver {
     }
   }
 
-  public func tabDidChangeBackForwardState(_ tab: any TabState) {
+  public func tabDidChangeBackForwardState(_ tab: some TabState) {
     if tab !== tabManager.selectedTab { return }
     updateBackForwardActionStatus(for: tab)
   }
 
-  public func tabDidChangeVisibleSecurityState(_ tab: any TabState) {
+  public func tabDidChangeVisibleSecurityState(_ tab: some TabState) {
     if tabManager.selectedTab === tab {
       self.updateToolbarSecureContentState(tab.visibleSecureContentState)
     }
   }
 
-  public func tabDidChangeSampledPageTopColor(_ tab: any TabState) {
+  public func tabDidChangeSampledPageTopColor(_ tab: some TabState) {
     if tabManager.selectedTab === tab {
       updateStatusBarOverlayColor()
     }

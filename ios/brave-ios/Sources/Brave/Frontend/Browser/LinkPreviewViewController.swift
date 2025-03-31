@@ -15,7 +15,7 @@ class LinkPreviewViewController: UIViewController {
   private var currentTab: (any TabState)?
   private weak var browserController: BrowserViewController?
 
-  init(url: URL, for tab: any TabState, browserController: BrowserViewController) {
+  init(url: URL, for tab: some TabState, browserController: BrowserViewController) {
     self.url = url
     self.parentTab = tab
     self.browserController = browserController

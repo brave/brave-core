@@ -25,9 +25,9 @@ extension TabDataValues {
 }
 
 protocol TabMiscDelegate {
-  func showRequestRewardsPanel(_ tab: any TabState)
-  func stopMediaPlayback(_ tab: any TabState)
-  func showWalletNotification(_ tab: any TabState, origin: URLOrigin)
+  func showRequestRewardsPanel(_ tab: some TabState)
+  func stopMediaPlayback(_ tab: some TabState)
+  func showWalletNotification(_ tab: some TabState, origin: URLOrigin)
   func updateURLBarWalletButton()
 }
 
@@ -52,7 +52,7 @@ class TabBrowserData: NSObject, TabObserver {
   weak var tab: (any TabState)?
 
   init(
-    tab: any TabState,
+    tab: some TabState,
     tabGeneratorAPI: BraveTabGeneratorAPI? = nil
   ) {
     self.tab = tab
@@ -310,11 +310,11 @@ class TabBrowserData: NSObject, TabObserver {
     )
   }
 
-  func removeContentScript(name: String, forTab tab: any TabState, contentWorld: WKContentWorld) {
+  func removeContentScript(name: String, forTab tab: some TabState, contentWorld: WKContentWorld) {
     contentScriptManager.removeContentScript(name: name, forTab: tab, contentWorld: contentWorld)
   }
 
-  func replaceContentScript(_ helper: TabContentScript, name: String, forTab tab: any TabState) {
+  func replaceContentScript(_ helper: TabContentScript, name: String, forTab tab: some TabState) {
     contentScriptManager.replaceContentScript(helper, name: name, forTab: tab)
   }
 
@@ -396,16 +396,16 @@ class TabBrowserData: NSObject, TabObserver {
 
   // MARK: - TabObserver
 
-  func tabDidStartNavigation(_ tab: any TabState) {
+  func tabDidStartNavigation(_ tab: some TabState) {
     resetExternalAlertProperties()
     nightMode = Preferences.General.nightModeEnabled.value
   }
 
-  func tabDidChangeTitle(_ tab: any TabState) {
+  func tabDidChangeTitle(_ tab: some TabState) {
     syncTab?.setTitle(tab.displayTitle)
   }
 
-  func tabDidUpdateURL(_ tab: any TabState) {
+  func tabDidUpdateURL(_ tab: some TabState) {
     if let url = tab.visibleURL, !tab.isPrivate, !url.isLocal, !InternalURL.isValid(url: url),
       !url.isInternalURL(for: .readermode)
     {
@@ -413,7 +413,7 @@ class TabBrowserData: NSObject, TabObserver {
     }
   }
 
-  func tabDidCreateWebView(_ tab: any TabState) {
+  func tabDidCreateWebView(_ tab: some TabState) {
     let scriptPreferences: [UserScriptManager.ScriptType: Bool] = [
       .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
       .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
@@ -426,13 +426,13 @@ class TabBrowserData: NSObject, TabObserver {
     nightMode = Preferences.General.nightModeEnabled.value
   }
 
-  func tabWillDeleteWebView(_ tab: any TabState) {
+  func tabWillDeleteWebView(_ tab: some TabState) {
     contentScriptManager.helpers.removeAll()
     contentScriptManager.uninstall(from: tab)
     translateHelper = nil
   }
 
-  func tabWillBeDestroyed(_ tab: any TabState) {
+  func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
   }
 }
@@ -441,7 +441,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
   fileprivate var helpers = [String: TabContentScript]()
   weak var tab: (any TabState)?
 
-  func uninstall(from tab: any TabState) {
+  func uninstall(from tab: some TabState) {
     helpers.forEach {
       let name = type(of: $0.value).messageHandlerName
       tab.configuration.userContentController.removeScriptMessageHandler(forName: name)
@@ -467,7 +467,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
   func addContentScript(
     _ helper: TabContentScript,
     name: String,
-    forTab tab: any TabState,
+    forTab tab: some TabState,
     contentWorld: WKContentWorld
   ) {
     if let _ = helpers[name] {
@@ -486,7 +486,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     )
   }
 
-  func removeContentScript(name: String, forTab tab: any TabState, contentWorld: WKContentWorld) {
+  func removeContentScript(name: String, forTab tab: some TabState, contentWorld: WKContentWorld) {
     if let helper = helpers[name] {
       let scriptMessageHandlerName = type(of: helper).messageHandlerName
       tab.configuration.userContentController.removeScriptMessageHandler(
@@ -497,7 +497,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     }
   }
 
-  func replaceContentScript(_ helper: TabContentScript, name: String, forTab tab: any TabState) {
+  func replaceContentScript(_ helper: TabContentScript, name: String, forTab tab: some TabState) {
     if helpers[name] != nil {
       helpers[name] = helper
     }

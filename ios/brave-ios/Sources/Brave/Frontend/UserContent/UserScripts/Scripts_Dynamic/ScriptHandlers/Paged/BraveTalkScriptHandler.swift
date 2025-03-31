@@ -83,7 +83,7 @@ class BraveTalkScriptHandler: TabContentScript {
   }
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -125,7 +125,7 @@ class BraveTalkScriptHandler: TabContentScript {
   }
 
   private func handleBraveRequestAdsEnabled(
-    tab: any TabState,
+    tab: some TabState,
     _ replyHandler: @escaping (Any?, String?) -> Void
   ) {
     guard let rewards = rewards, tab.isPrivate != true else {

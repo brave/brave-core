@@ -34,7 +34,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
   }()
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {

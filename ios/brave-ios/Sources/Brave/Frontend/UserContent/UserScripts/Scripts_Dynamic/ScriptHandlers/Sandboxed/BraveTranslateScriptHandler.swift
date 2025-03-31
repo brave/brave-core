@@ -12,14 +12,14 @@ import WebKit
 import os.log
 
 protocol BraveTranslateScriptHandlerDelegate: NSObject {
-  func updateTranslateURLBar(tab: any TabState, state: TranslateURLBarButton.TranslateState)
-  func canShowTranslateOnboarding(tab: any TabState) -> Bool
+  func updateTranslateURLBar(tab: some TabState, state: TranslateURLBarButton.TranslateState)
+  func canShowTranslateOnboarding(tab: some TabState) -> Bool
   func showTranslateOnboarding(
-    tab: any TabState,
+    tab: some TabState,
     completion: @escaping (_ translateEnabled: Bool) -> Void
   )
-  func presentTranslateToast(tab: any TabState, languageInfo: BraveTranslateLanguageInfo)
-  func presentTranslateError(tab: any TabState)
+  func presentTranslateToast(tab: some TabState, languageInfo: BraveTranslateLanguageInfo)
+  func presentTranslateError(tab: some TabState)
 }
 
 class BraveTranslateScriptHandler: NSObject, TabContentScript {
@@ -59,7 +59,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     tasks.values.forEach({ $0.cancel() })
   }
 
-  static func checkTranslate(tab: any TabState) {
+  static func checkTranslate(tab: some TabState) {
     tab.evaluateJavaScript(
       functionName:
         """
@@ -75,7 +75,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   }
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -120,7 +120,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   }
 
   private func processScriptMessage(
-    for tab: any TabState,
+    for tab: some TabState,
     command: String,
     body: [String: Any]
   ) async throws -> (Any?, String?) {
@@ -235,7 +235,7 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
   static let userScript: WKUserScript? = nil
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {

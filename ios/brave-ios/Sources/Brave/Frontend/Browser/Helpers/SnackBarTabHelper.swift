@@ -19,8 +19,8 @@ extension TabDataValues {
 }
 
 protocol SnackBarTabHelperDelegate: AnyObject {
-  func tab(_ tab: any TabState, didAddSnackbar bar: SnackBar)
-  func tab(_ tab: any TabState, didRemoveSnackbar bar: SnackBar)
+  func tab(_ tab: some TabState, didAddSnackbar bar: SnackBar)
+  func tab(_ tab: some TabState, didRemoveSnackbar bar: SnackBar)
 }
 
 final class SnackBarTabHelper {
@@ -29,7 +29,7 @@ final class SnackBarTabHelper {
 
   var bars = [SnackBar]()
 
-  init(tab: any TabState) {
+  init(tab: some TabState) {
     self.tab = tab
   }
 

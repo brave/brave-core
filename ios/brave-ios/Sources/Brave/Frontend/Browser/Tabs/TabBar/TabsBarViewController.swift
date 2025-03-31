@@ -11,7 +11,7 @@ import UIKit
 import Web
 
 protocol TabsBarViewControllerDelegate: AnyObject {
-  func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: any TabState)
+  func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: some TabState)
   func tabsBarDidLongPressAddTab(_ tabsBarController: TabsBarViewController, button: UIButton)
   func tabsBarDidSelectAddNewTab(_ isPrivate: Bool)
   func tabsBarDidChangeReaderModeVisibility(_ isHidden: Bool)
@@ -634,11 +634,11 @@ extension TabsBarViewController: TabManagerDelegate {
     delegate?.tabsBarDidChangeReaderModeVisibility(false)
   }
 
-  func tabManager(_ tabManager: TabManager, didAddTab tab: any TabState) {
+  func tabManager(_ tabManager: TabManager, didAddTab tab: some TabState) {
     updateData()
   }
 
-  func tabManager(_ tabManager: TabManager, didRemoveTab tab: any TabState) {
+  func tabManager(_ tabManager: TabManager, didRemoveTab tab: some TabState) {
     assert(Thread.current.isMainThread)
     updateData()
   }

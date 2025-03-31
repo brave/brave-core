@@ -34,8 +34,12 @@ struct ShieldsPanelView: View {
   @ObservedObject private var viewModel: ShieldsSettingsViewModel
   private var actionCallback: (Action) -> Void
 
-  @MainActor init(url: URL, tab: any TabState, domain: Domain, callback: @escaping (Action) -> Void)
-  {
+  @MainActor init(
+    url: URL,
+    tab: some TabState,
+    domain: Domain,
+    callback: @escaping (Action) -> Void
+  ) {
     self.url = url
     self.tab = tab
     self.viewModel = ShieldsSettingsViewModel(tab: tab, domain: domain)
@@ -351,7 +355,7 @@ class ShieldsPanelViewController: UIHostingController<ShieldsPanelView>, Popover
 
   init(
     url: URL,
-    tab: any TabState,
+    tab: some TabState,
     domain: Domain,
     callback: @escaping (ShieldsPanelView.Action) -> Void
   ) {

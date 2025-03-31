@@ -21,19 +21,19 @@ extension TabDataValues {
 class PlaylistTabHelper: NSObject, TabObserver {
   private weak var tab: (any TabState)?
 
-  init(tab: any TabState) {
+  init(tab: some TabState) {
     self.tab = tab
     super.init()
     tab.addObserver(self)
   }
 
-  func tabDidCreateWebView(_ tab: any TabState) {
+  func tabDidCreateWebView(_ tab: some TabState) {
     let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:)))
     longPress.delegate = self
     tab.view.addGestureRecognizer(longPress)
   }
 
-  func tabWillBeDestroyed(_ tab: any TabState) {
+  func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
   }
 

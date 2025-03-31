@@ -30,7 +30,7 @@ class LoginsScriptHandler: TabContentScript {
   static let userScript: WKUserScript? = nil
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -83,7 +83,7 @@ class LoginsScriptHandler: TabContentScript {
     }
   }
 
-  private func updateORSaveCredentials(for url: URL, script: [String: Any], tab: any TabState) {
+  private func updateORSaveCredentials(for url: URL, script: [String: Any], tab: some TabState) {
     guard let scriptCredentials = passwordAPI.fetchFromScript(url, script: script),
       let username = scriptCredentials.usernameValue,
       scriptCredentials.usernameElement != nil,
@@ -124,7 +124,7 @@ class LoginsScriptHandler: TabContentScript {
     }
   }
 
-  private func showAddPrompt(for login: PasswordForm, tab: any TabState) {
+  private func showAddPrompt(for login: PasswordForm, tab: some TabState) {
     addSnackBarForPrompt(for: login, tab: tab, isUpdating: false) { [weak self] in
       guard let self = self else { return }
 
@@ -134,7 +134,7 @@ class LoginsScriptHandler: TabContentScript {
     }
   }
 
-  private func showUpdatePrompt(from old: PasswordForm, to new: PasswordForm, tab: any TabState) {
+  private func showUpdatePrompt(from old: PasswordForm, to new: PasswordForm, tab: some TabState) {
     addSnackBarForPrompt(for: new, tab: tab, isUpdating: true) { [weak self] in
       guard let self = self else { return }
 
@@ -144,7 +144,7 @@ class LoginsScriptHandler: TabContentScript {
 
   private func addSnackBarForPrompt(
     for login: PasswordForm,
-    tab: any TabState,
+    tab: some TabState,
     isUpdating: Bool,
     _ completion: @escaping () -> Void
   ) {
@@ -205,7 +205,7 @@ class LoginsScriptHandler: TabContentScript {
     logins: [PasswordForm],
     requestId: String,
     frameInfo: WKFrameInfo,
-    tab: any TabState
+    tab: some TabState
   ) {
     let securityOrigin = frameInfo.securityOrigin
 

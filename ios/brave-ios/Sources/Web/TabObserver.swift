@@ -6,57 +6,57 @@
 import UIKit
 
 public protocol TabObserver: AnyObject {
-  func tabDidCreateWebView(_ tab: any TabState)
-  func tabWillDeleteWebView(_ tab: any TabState)
+  func tabDidCreateWebView(_ tab: some TabState)
+  func tabWillDeleteWebView(_ tab: some TabState)
 
-  func tabWasShown(_ tab: any TabState)
-  func tabWasHidden(_ tab: any TabState)
+  func tabWasShown(_ tab: some TabState)
+  func tabWasHidden(_ tab: some TabState)
 
-  func tabDidStartNavigation(_ tab: any TabState)
-  func tabDidCommitNavigation(_ tab: any TabState)
-  func tabDidRedirectNavigation(_ tab: any TabState)
-  func tabDidFinishNavigation(_ tab: any TabState)
-  func tab(_ tab: any TabState, didFailNavigationWithError error: Error)
+  func tabDidStartNavigation(_ tab: some TabState)
+  func tabDidCommitNavigation(_ tab: some TabState)
+  func tabDidRedirectNavigation(_ tab: some TabState)
+  func tabDidFinishNavigation(_ tab: some TabState)
+  func tab(_ tab: some TabState, didFailNavigationWithError error: Error)
 
-  func tabDidUpdateURL(_ tab: any TabState)
-  func tabDidChangeTitle(_ tab: any TabState)
-  func tabDidStartLoading(_ tab: any TabState)
-  func tabDidStopLoading(_ tab: any TabState)
-  func tabDidChangeLoadProgress(_ tab: any TabState)
-  func tabDidChangeVisibleSecurityState(_ tab: any TabState)
-  func tabDidChangeBackForwardState(_ tab: any TabState)
-  func tabDidChangeSampledPageTopColor(_ tab: any TabState)
+  func tabDidUpdateURL(_ tab: some TabState)
+  func tabDidChangeTitle(_ tab: some TabState)
+  func tabDidStartLoading(_ tab: some TabState)
+  func tabDidStopLoading(_ tab: some TabState)
+  func tabDidChangeLoadProgress(_ tab: some TabState)
+  func tabDidChangeVisibleSecurityState(_ tab: some TabState)
+  func tabDidChangeBackForwardState(_ tab: some TabState)
+  func tabDidChangeSampledPageTopColor(_ tab: some TabState)
 
   /// Called when the Tab is about to deinit, use this to remove any observers/policy deciders added
   /// to the Tab.
   ///
   /// - warning: The supplied `tab` will nil immediately after execution, therefore you cannot
   ///            capture this tab in escaping closures
-  func tabWillBeDestroyed(_ tab: any TabState)
+  func tabWillBeDestroyed(_ tab: some TabState)
 }
 
 extension TabObserver {
-  public func tabDidCreateWebView(_ tab: any TabState) {}
-  public func tabWillDeleteWebView(_ tab: any TabState) {}
+  public func tabDidCreateWebView(_ tab: some TabState) {}
+  public func tabWillDeleteWebView(_ tab: some TabState) {}
 
-  public func tabWasShown(_ tab: any TabState) {}
-  public func tabWasHidden(_ tab: any TabState) {}
+  public func tabWasShown(_ tab: some TabState) {}
+  public func tabWasHidden(_ tab: some TabState) {}
 
-  public func tabDidStartNavigation(_ tab: any TabState) {}
-  public func tabDidCommitNavigation(_ tab: any TabState) {}
-  public func tabDidRedirectNavigation(_ tab: any TabState) {}
-  public func tabDidFinishNavigation(_ tab: any TabState) {}
-  public func tab(_ tab: any TabState, didFailNavigationWithError error: Error) {}
+  public func tabDidStartNavigation(_ tab: some TabState) {}
+  public func tabDidCommitNavigation(_ tab: some TabState) {}
+  public func tabDidRedirectNavigation(_ tab: some TabState) {}
+  public func tabDidFinishNavigation(_ tab: some TabState) {}
+  public func tab(_ tab: some TabState, didFailNavigationWithError error: Error) {}
 
-  public func tabDidUpdateURL(_ tab: any TabState) {}
-  public func tabDidChangeTitle(_ tab: any TabState) {}
-  public func tabDidStartLoading(_ tab: any TabState) {}
-  public func tabDidStopLoading(_ tab: any TabState) {}
-  public func tabDidChangeLoadProgress(_ tab: any TabState) {}
-  public func tabDidChangeVisibleSecurityState(_ tab: any TabState) {}
-  public func tabDidChangeBackForwardState(_ tab: any TabState) {}
-  public func tabDidChangeSampledPageTopColor(_ tab: any TabState) {}
-  public func tabWillBeDestroyed(_ tab: any TabState) {}
+  public func tabDidUpdateURL(_ tab: some TabState) {}
+  public func tabDidChangeTitle(_ tab: some TabState) {}
+  public func tabDidStartLoading(_ tab: some TabState) {}
+  public func tabDidStopLoading(_ tab: some TabState) {}
+  public func tabDidChangeLoadProgress(_ tab: some TabState) {}
+  public func tabDidChangeVisibleSecurityState(_ tab: some TabState) {}
+  public func tabDidChangeBackForwardState(_ tab: some TabState) {}
+  public func tabDidChangeSampledPageTopColor(_ tab: some TabState) {}
+  public func tabWillBeDestroyed(_ tab: some TabState) {}
 }
 
 class AnyTabObserver: TabObserver, Hashable {
@@ -120,58 +120,58 @@ class AnyTabObserver: TabObserver, Hashable {
     _tabWillBeDestroyed = { [weak observer] in observer?.tabWillBeDestroyed($0) }
   }
 
-  func tabDidCreateWebView(_ tab: any TabState) {
+  func tabDidCreateWebView(_ tab: some TabState) {
     _tabDidCreateWebView(tab)
   }
-  func tabWillDeleteWebView(_ tab: any TabState) {
+  func tabWillDeleteWebView(_ tab: some TabState) {
     _tabWillDeleteWebView(tab)
   }
-  func tabWasShown(_ tab: any TabState) {
+  func tabWasShown(_ tab: some TabState) {
     _tabWasShown(tab)
   }
-  func tabWasHidden(_ tab: any TabState) {
+  func tabWasHidden(_ tab: some TabState) {
     _tabWasHidden(tab)
   }
-  func tabDidStartNavigation(_ tab: any TabState) {
+  func tabDidStartNavigation(_ tab: some TabState) {
     _tabDidStartNavigation(tab)
   }
-  func tabDidCommitNavigation(_ tab: any TabState) {
+  func tabDidCommitNavigation(_ tab: some TabState) {
     _tabDidCommitNavigation(tab)
   }
-  func tabDidRedirectNavigation(_ tab: any TabState) {
+  func tabDidRedirectNavigation(_ tab: some TabState) {
     _tabDidRedirectNavigation(tab)
   }
-  func tabDidFinishNavigation(_ tab: any TabState) {
+  func tabDidFinishNavigation(_ tab: some TabState) {
     _tabDidFinishNavigation(tab)
   }
-  func tab(_ tab: any TabState, didFailNavigationWithError error: Error) {
+  func tab(_ tab: some TabState, didFailNavigationWithError error: Error) {
     _tabDidFailNavigationWithError(tab, error)
   }
-  func tabDidUpdateURL(_ tab: any TabState) {
+  func tabDidUpdateURL(_ tab: some TabState) {
     _tabDidUpdateURL(tab)
   }
-  func tabDidChangeTitle(_ tab: any TabState) {
+  func tabDidChangeTitle(_ tab: some TabState) {
     _tabDidChangeTitle(tab)
   }
-  func tabDidStartLoading(_ tab: any TabState) {
+  func tabDidStartLoading(_ tab: some TabState) {
     _tabDidStartLoading(tab)
   }
-  func tabDidStopLoading(_ tab: any TabState) {
+  func tabDidStopLoading(_ tab: some TabState) {
     _tabDidStopLoading(tab)
   }
-  func tabDidChangeLoadProgress(_ tab: any TabState) {
+  func tabDidChangeLoadProgress(_ tab: some TabState) {
     _tabDidChangeLoadProgress(tab)
   }
-  func tabDidChangeVisibleSecurityState(_ tab: any TabState) {
+  func tabDidChangeVisibleSecurityState(_ tab: some TabState) {
     _tabDidChangeVisibleSecurityState(tab)
   }
-  func tabDidChangeBackForwardState(_ tab: any TabState) {
+  func tabDidChangeBackForwardState(_ tab: some TabState) {
     _tabDidChangeBackForwardState(tab)
   }
-  func tabDidChangeSampledPageTopColor(_ tab: any TabState) {
+  func tabDidChangeSampledPageTopColor(_ tab: some TabState) {
     _tabDidChangeSampledPageTopColor(tab)
   }
-  func tabWillBeDestroyed(_ tab: any TabState) {
+  func tabWillBeDestroyed(_ tab: some TabState) {
     _tabWillBeDestroyed(tab)
   }
 }

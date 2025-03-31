@@ -73,7 +73,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   }
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -148,7 +148,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   }
 
   /// Given optional args `{onlyIfTrusted: Bool}`, will return the base 58 encoded public key for success or the error dictionary for failures.
-  @MainActor func connect(tab: any TabState, args: String?) async -> (Any?, String?) {
+  @MainActor func connect(tab: some TabState, args: String?) async -> (Any?, String?) {
     guard let provider = tab.walletSolProvider else {
       return (
         nil,
@@ -171,7 +171,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   /// Given args `{serializedMessage: [Uint8], signatures: [Buffer], sendOptions: [:]}`, will return
   /// dictionary `{publicKey: <base58 encoded string>, signature: <base58 encoded string>}` for success
   /// or an error dictionary for failures.
-  @MainActor func signAndSendTransaction(tab: any TabState, args: String?) async -> (Any?, String?)
+  @MainActor func signAndSendTransaction(tab: some TabState, args: String?) async -> (Any?, String?)
   {
     guard let args = args,
       let arguments = MojoBase.Value(jsonString: args)?.dictionaryValue,
@@ -203,7 +203,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   /// Given args `{[[UInt8], String]}` (second arg optional), will return
   /// `{publicKey: <base58 encoded String>, signature: <base 58 decoded list>}` for success flow
   /// or an error dictionary for failures
-  @MainActor func signMessage(tab: any TabState, args: String?) async -> (Any?, String?) {
+  @MainActor func signMessage(tab: some TabState, args: String?) async -> (Any?, String?) {
     guard let args = args,
       let argsList = MojoBase.Value(jsonString: args)?.listValue,
       let blobMsg = argsList.first?.numberArray,
@@ -234,7 +234,7 @@ class SolanaProviderScriptHandler: TabContentScript {
 
   /// Given a request arg `{method: String, params: {}}`, will encode the response as a json object for success
   /// or provide an error dictionary for failures
-  @MainActor func request(tab: any TabState, args: String?) async -> (Any?, String?) {
+  @MainActor func request(tab: some TabState, args: String?) async -> (Any?, String?) {
     guard let args = args,
       var argDict = MojoBase.Value(jsonString: args)?.dictionaryValue,
       let method = argDict[Keys.method.rawValue]?.stringValue,
@@ -273,7 +273,7 @@ class SolanaProviderScriptHandler: TabContentScript {
 
   /// Given args `{serializedMessage: Buffer, signatures: {publicKey: String, signature: Buffer}}`,
   /// will encoded the response as a json object for success or provide an error dictionary for failures
-  @MainActor func signTransaction(tab: any TabState, args: String?) async -> (Any?, String?) {
+  @MainActor func signTransaction(tab: some TabState, args: String?) async -> (Any?, String?) {
     guard let args = args,
       let arguments = MojoBase.Value(jsonString: args)?.dictionaryValue,
       let serializedMessage = arguments[Keys.serializedMessage.rawValue],
@@ -305,7 +305,7 @@ class SolanaProviderScriptHandler: TabContentScript {
 
   /// Given args `[{serializedMessage: Buffer, signatures: {publicKey: String, signature: Buffer}}]`,
   /// will encoded the response as a json object for success or provide an error dictionary for failures
-  @MainActor func signAllTransactions(tab: any TabState, args: String?) async -> (Any?, String?) {
+  @MainActor func signAllTransactions(tab: some TabState, args: String?) async -> (Any?, String?) {
     guard let args = args,
       let transactions = MojoBase.Value(jsonString: args)?.listValue,
       let provider = tab.walletSolProvider
@@ -400,7 +400,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     )
   }
 
-  @MainActor private func emitConnectEvent(tab: any TabState, publicKey: String) async {
+  @MainActor private func emitConnectEvent(tab: some TabState, publicKey: String) async {
     let script =
       "window.solana.emit('connect', new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)'))"
     try? await tab.evaluateJavaScript(

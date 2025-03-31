@@ -161,7 +161,7 @@ class TabBarCell: UICollectionViewCell {
   }
 
   fileprivate var titleUpdateScheduled = false
-  func updateTitleThrottled(for tab: any TabState) {
+  func updateTitleThrottled(for tab: some TabState) {
     if titleUpdateScheduled {
       return
     }

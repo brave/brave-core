@@ -19,7 +19,7 @@ class TabPrintPageRenderer: UIPrintPageRenderer {
   let textAttributes = [NSAttributedString.Key.font: PrintedPageUX.pageTextFont]
   let dateString: String
 
-  required init(tab: any TabState) {
+  required init(tab: some TabState) {
     self.tab = tab
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .short

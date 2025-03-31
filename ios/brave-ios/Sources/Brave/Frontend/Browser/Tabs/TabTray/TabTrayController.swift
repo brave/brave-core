@@ -630,7 +630,7 @@ class TabTrayController: AuthenticationController {
   private func cellProvider(
     collectionView: UICollectionView,
     indexPath: IndexPath,
-    tab: any TabState
+    tab: some TabState
   ) -> UICollectionViewCell? {
     guard
       let cell =
@@ -897,7 +897,7 @@ class TabTrayController: AuthenticationController {
       privateMode && !BraveCore.FeatureList.kBraveShredFeature.enabled
   }
 
-  func remove(tab: any TabState) {
+  func remove(tab: some TabState) {
     // Initially add the tab to recently closed and remove it from Tab Data after
     tabManager.addTabToRecentlyClosed(tab)
     tabManager.removeTab(tab)
@@ -1001,7 +1001,7 @@ extension TabTrayController: PresentingModalViewControllerDelegate {
 // MARK: TabManagerDelegate
 
 extension TabTrayController: TabManagerDelegate {
-  func tabManager(_ tabManager: TabManager, didAddTab tab: any TabState) {
+  func tabManager(_ tabManager: TabManager, didAddTab tab: some TabState) {
     updateShredButtonVisibility()
     applySnapshot()
 
@@ -1015,7 +1015,7 @@ extension TabTrayController: TabManagerDelegate {
     }
   }
 
-  func tabManager(_ tabManager: TabManager, didRemoveTab tab: any TabState) {
+  func tabManager(_ tabManager: TabManager, didRemoveTab tab: some TabState) {
     // When user removes their last tab, a new one is created.
     // Until then, the view is dismissed and takes the user directly to that tab.
     if tabManager.tabsForCurrentMode.count < 1 {
@@ -1032,8 +1032,8 @@ extension TabTrayController: TabManagerDelegate {
     didSelectedTabChange selected: (any TabState)?,
     previous: (any TabState)?
   ) {}
-  func tabManager(_ tabManager: TabManager, willAddTab tab: any TabState) {}
-  func tabManager(_ tabManager: TabManager, willRemoveTab tab: any TabState) {}
+  func tabManager(_ tabManager: TabManager, willAddTab tab: some TabState) {}
+  func tabManager(_ tabManager: TabManager, willRemoveTab tab: some TabState) {}
   func tabManagerDidAddTabs(_ tabManager: TabManager) {}
   func tabManagerDidRestoreTabs(_ tabManager: TabManager) {}
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {}

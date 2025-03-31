@@ -45,7 +45,7 @@ final class NewTabPageP3AHelper {
   /// Records an NTP SI event which will be used to generate dynamic P3A metrics
   func recordEvent(
     _ event: EventType,
-    on tab: any TabState,
+    on tab: some TabState,
     for sponsoredImage: NTPSponsoredImageBackground
   ) {
     if !p3aUtils.isP3AEnabled || rewards.isEnabled {

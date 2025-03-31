@@ -16,7 +16,7 @@ class BlockedDomainScriptHandler: TabContentScript {
   static let userScript: WKUserScript? = nil
 
   func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {
@@ -44,7 +44,7 @@ class BlockedDomainScriptHandler: TabContentScript {
     }
   }
 
-  private func blockedDomainDidProceed(tab: any TabState) {
+  private func blockedDomainDidProceed(tab: some TabState) {
     guard let url = tab.visibleURL?.strippedInternalURL, let etldP1 = url.baseDomain else {
       assertionFailure(
         "There should be no way this method can be triggered if the tab is not on an internal url"
@@ -57,7 +57,7 @@ class BlockedDomainScriptHandler: TabContentScript {
     tab.loadRequest(request)
   }
 
-  private func blockedDomainDidGoBack(tab: any TabState) {
+  private func blockedDomainDidGoBack(tab: some TabState) {
     guard let url = tab.visibleURL?.strippedInternalURL else {
       assertionFailure(
         "There should be no way this method can be triggered if the tab is not on an internal url"

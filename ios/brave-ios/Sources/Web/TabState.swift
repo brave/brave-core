@@ -380,7 +380,7 @@ public protocol TabDataKey {
 }
 
 public protocol TabHelper {
-  init(tab: any TabState)
+  init(tab: some TabState)
   static var keyPath: WritableKeyPath<TabDataValues, Self?> { get }
   static func create(for tab: any TabState)
   static func remove(from tab: any TabState)

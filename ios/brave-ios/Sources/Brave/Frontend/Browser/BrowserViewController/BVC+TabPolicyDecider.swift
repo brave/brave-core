@@ -18,7 +18,7 @@ import Web
 
 extension BrowserViewController: TabPolicyDecider {
   public func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     shouldAllowResponse response: URLResponse,
     responseInfo: WebResponseInfo
   ) async -> WebPolicyDecision {
@@ -74,7 +74,7 @@ extension BrowserViewController: TabPolicyDecider {
   }
 
   public func tab(
-    _ tab: any TabState,
+    _ tab: some TabState,
     shouldAllowRequest request: URLRequest,
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision {
@@ -562,7 +562,7 @@ extension BrowserViewController {
   func getInternalRedirect(
     from request: URLRequest,
     isMainFrame: Bool,
-    in tab: any TabState,
+    in tab: some TabState,
     domainForMainFrame: Domain
   ) -> URLRequest? {
     guard let requestURL = request.url else { return nil }
@@ -692,7 +692,7 @@ extension BrowserViewController {
 
   /// Upon an invalid response, check that we need to roll back any HTTPS upgrade
   /// or show the interstitial page
-  func handleInvalidHTTPSUpgrade(tab: any TabState, responseURL: URL) -> URLRequest? {
+  func handleInvalidHTTPSUpgrade(tab: some TabState, responseURL: URL) -> URLRequest? {
     // Handle invalid upgrade to https
     guard let originalRequest = tab.upgradedHTTPSRequest,
       let originalURL = originalRequest.url,
@@ -729,7 +729,7 @@ extension BrowserViewController {
 
   func handleExternalURL(
     _ url: URL,
-    tab: any TabState,
+    tab: some TabState,
     requestInfo: WebRequestInfo
   ) async -> Bool {
     // Do not open external links for child tabs automatically
@@ -782,7 +782,7 @@ extension BrowserViewController {
     // Show the external sceheme invoke alert
     @MainActor
     func showExternalSchemeAlert(
-      for tab: any TabState,
+      for tab: some TabState,
       isSuppressActive: Bool,
       openedURLCompletionHandler: @escaping (Bool) -> Void
     ) {

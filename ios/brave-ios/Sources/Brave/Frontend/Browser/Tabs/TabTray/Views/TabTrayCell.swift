@@ -47,7 +47,7 @@ class TabCell: UICollectionViewCell {
   var closedTab: ((any TabState) -> Void)?
   weak var tab: (any TabState)?
 
-  func configure(with tab: any TabState) {
+  func configure(with tab: some TabState) {
     self.tab = tab
     tab.onScreenshotUpdated = { [weak self, weak tab] in
       guard let self = self, let tab = tab else { return }
@@ -151,7 +151,7 @@ class TabCell: UICollectionViewCell {
     ]
   }
 
-  func setTabSelected(_ tab: any TabState) {
+  func setTabSelected(_ tab: some TabState) {
     layer.shadowColor = UIColor.braveInfoBorder.resolvedColor(with: traitCollection).cgColor
     layer.shadowOpacity = 1
     layer.shadowRadius = 0  // A 0 radius creates a solid border instead of a gradient blur

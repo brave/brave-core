@@ -80,11 +80,11 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     testDelegateMethodWithName(#function, tabs: [selected, previous])
   }
 
-  public func tabManager(_ tabManager: TabManager, didAddTab tab: any TabState) {
+  public func tabManager(_ tabManager: TabManager, didAddTab tab: some TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
-  public func tabManager(_ tabManager: TabManager, didRemoveTab tab: any TabState) {
+  public func tabManager(_ tabManager: TabManager, didRemoveTab tab: some TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
@@ -92,11 +92,11 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     testDelegateMethodWithName(#function, tabs: [])
   }
 
-  public func tabManager(_ tabManager: TabManager, willRemoveTab tab: any TabState) {
+  public func tabManager(_ tabManager: TabManager, willRemoveTab tab: some TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
-  public func tabManager(_ tabManager: TabManager, willAddTab tab: any TabState) {
+  public func tabManager(_ tabManager: TabManager, willAddTab tab: some TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
