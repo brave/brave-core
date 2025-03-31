@@ -111,6 +111,8 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::GetSuggestedTopicsForFocusTabs,
             "suggestFocusTopics"},
            {ConversationEventType::DedupeTopics, "dedupeFocusTopics"},
+           {ConversationEventType::GetSuggestedAndDedupeTopicsForFocusTabs,
+            "suggestAndDedupeFocusTopics"},
            {ConversationEventType::GetFocusTabsForTopic, "classifyTabs"},
            {ConversationEventType::UploadImage, "uploadImage"}});
 
