@@ -118,7 +118,7 @@ public protocol TabState: AnyObject {
   /// The certificiate assoicated with this page if one exists
   var serverTrust: SecTrust? { get }
   /// The current pages favicon
-  // FIXME: Should be get only, make favicon fetch logic internal
+  // TODO: Should be get only, make favicon fetch logic internal (brave/brave-browser#45095)
   var favicon: Favicon? { get set }
   /// The current URL loaded on the page, regardless of the navigation status or spoofing
   @available(iOS, deprecated, message: "Use `visibleURL` or `lastCommittedURL` instead")

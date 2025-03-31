@@ -2168,12 +2168,6 @@ public class BrowserViewController: UIViewController {
         self.screenshotHelper.takeScreenshot(tab)
       }
     } else if tab.isWebViewCreated {
-      // Ref #2016: Keyboard auto hides while typing
-      // For some reason the web view will steal first responder as soon
-      // as its added to the view heirarchy below. This line fixes that...
-      // somehow...
-      // FIXME: Do we still need this?
-      //      webView.resignFirstResponder()
       // To Screenshot a tab that is hidden we must add the webView,
       // then wait enough time for the webview to render.
       view.insertSubview(tab.view, at: 0)
