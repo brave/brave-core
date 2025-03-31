@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 
 #include "base/i18n/time_formatting.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -18,8 +17,8 @@ std::string LongFriendlyDateAndTime(base::Time time, bool use_sentence_style) {
       base::TimeFormatFriendlyDateAndTime(time);
 
   // Show date and time as "on Tuesday, 5 May 2020 at 2:44:30 PM" if over 1 day
-  return base::StrCat({use_sentence_style ? "on " : "",
-                       base::UTF16ToUTF8(friendly_date_and_time)});
+  return (use_sentence_style ? "on " : "") +
+         base::UTF16ToUTF8(friendly_date_and_time);
 }
 
 std::string FriendlyDateAndTime(base::Time time, bool use_sentence_style) {

@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -46,8 +45,7 @@ std::string UrlResponseToString(
 
 std::string UrlResponseHeadersToString(
     const mojom::UrlResponseInfo& mojom_url_response) {
-  return base::StrCat(
-      {"  Headers:\n", HeadersToString(mojom_url_response.headers)});
+  return "  Headers:\n" + HeadersToString(mojom_url_response.headers);
 }
 
 }  // namespace brave_ads

@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/containers/fixed_flat_set.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -38,7 +37,7 @@ std::string HeadersToString(const std::vector<std::string>& headers,
 
   for (const auto& header : headers) {
     if (ShouldAllowHeader(header)) {
-      formatted_headers.push_back(base::StrCat({spaces, header}));
+      formatted_headers.push_back(spaces + header);
     }
   }
 
@@ -66,7 +65,7 @@ std::string UrlRequestToString(
 
   std::ostringstream ss;
   ss << mojom_url_request->method;
-  log += base::StrCat({"  Method: ", ss.str()});
+  log += "  Method: " + ss.str();
 
   return log;
 }
