@@ -960,3 +960,20 @@
 -keep class org.chromium.chrome.browser.toolbar.BraveToolbarPositionController {
     *** calculateStateTransition(...);
 }
+
+-keep class org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider {
+    *** setWidgetEnabled(...);
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderDino {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.quickactionsearchwidget.BraveQuickActionSearchWidgetProvider {
+    public <init>(...);
+}

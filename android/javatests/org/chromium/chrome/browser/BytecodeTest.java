@@ -393,6 +393,18 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderDino")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider")); // presubmit: ignore-long-line
     }
 
     @Test
@@ -889,6 +901,14 @@ public class BytecodeTest {
                         boolean.class,
                         boolean.class,
                         int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
+                        "setWidgetEnabled",
+                        MethodModifier.STATIC,
+                        void.class,
+                        boolean.class,
+                        boolean.class));
     }
 
     @Test
@@ -1071,6 +1091,14 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
                         "useActiveTabColor",
                         MethodModifier.REGULAR,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
+                        "setWidgetEnabled",
+                        MethodModifier.STATIC,
+                        void.class,
+                        boolean.class,
                         boolean.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
