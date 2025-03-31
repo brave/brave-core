@@ -74,6 +74,21 @@ public class SearchEngines {
     setInitialDefaultEngine(engine.legacyName ?? engine.rawValue)
   }
 
+  public func updateYahooJPOrderIfNeeded() {
+    guard let region = locale.region?.identifier,
+      initialSearchEngines.yahooJapanEnabledRegions.contains(region),
+      DefaultEngineType.standard.option.value
+        != InitialSearchEngines.SearchEngineID.yahoojp.rawValue
+    else { return }
+    // Move Yahoo! JP to the second position (after the DSE)
+    if let oldIndex = orderedEngines.firstIndex(where: {
+      $0.engineID == InitialSearchEngines.SearchEngineID.yahoojp.rawValue
+    }) {
+      let yahooJP = orderedEngines.remove(at: oldIndex)
+      orderedEngines.insert(yahooJP, at: 1)
+    }
+  }
+
   private var loadingStream: AsyncStream<Void>?
 
   public func loadSearchEngines() async {
