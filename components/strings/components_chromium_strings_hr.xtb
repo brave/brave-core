@@ -20,6 +20,9 @@
           i poništite odabir potvrdnog okvira "Upotrijebi proxy poslužitelj za LAN".</translation>
 <translation id="303960458633076466">Brave je blokirao ovu stranicu</translation>
 <translation id="2017237562285586622">U postavkama vatrozida ili antivirusnog programa omogućite Braveu da pristupa mreži.</translation>
+<translation id="4949828774841497663">Idite na Aplikacije &gt; Postavke sustava &gt; Mreža, odaberite
+          aktivnu mrežu, kliknite gumb Pojedinosti... i poništite odabir svih proxyja
+          koji su možda odabrani.</translation>
 <translation id="8619622797841001082">Idite na
           izbornik Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -42,9 +45,6 @@
         pa poništite odabir stavke "<ph name="NO_PREFETCH_DESCRIPTION"/>".
         Ako se time ne riješi poteškoća, preporučujemo da ponovo odaberete tu opciju
         radi bolje izvedbe.</translation>
-<translation id="8187289872471304532">Idite na
-          Aplikacije &gt; Postavke sustava &gt; Mreža &gt; Napredno &gt; Proxy poslužitelji
-          i poništite odabir proxy poslužitelja.</translation>
 <translation id="4159376633403260073">Pregledavate sigurnu stranicu Brave for Testing</translation>
 <translation id="88187049159266777">Brave se nije ispravno zatvorio.</translation>
 </translationbundle>

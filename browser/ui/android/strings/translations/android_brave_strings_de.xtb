@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Für den Moment überspringen</translation>
 <translation id="6165508094623778733">Mehr erfahren</translation>
 <translation id="986879628471635371">Fehlerbehebung im Onboarding</translation>
-<translation id="5808759341041733958">Standardsuchmaschine auswählen</translation>
-<translation id="1331593888918588693">Später können Sie Ihre Einstellung immer in den App-Einstellungen ändern.</translation>
 <translation id="5806601733251372221">Brave Schutz</translation>
 <translation id="8537217141725709400">Verdienen Sie <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">Ich habe eine 24-Wörter-Wiederherstellungsphrase</translation>
 <translation id="3570367516044491911">Als Standardbrowser setzen</translation>
 <translation id="6800338374677644736">Als Standardbrowser festlegen</translation>
-<translation id="19715420010996093">Wählen Sie Brave-Browser und tippen Sie auf „Immer“</translation>
-<translation id="3546439402724649282">Brave ist bereits aus Ihr Standardbrowser gesetzt.</translation>
-<translation id="8389661903259423907">Sie haben bereits einen Standardbrowser festgelegt. Sie können den Standardbrowser in Ihren App-Einstellungen ändern.</translation>
 <translation id="1545749641540134597">QR-Code scannen</translation>
 <translation id="5317781812114905957">Anleitungen</translation>
 <translation id="8515319483805157233">Um mit einem QR-Code zu suchen, richten Sie den QR-Code in der Mitte des Rahmens aus.</translation>
@@ -549,7 +544,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1945330434665345785">Letzte Wochen haben Sie <ph name="COUNT"/> Tracker &amp; Werbeanzeigen mit dem Brave Browser blockiert.</translation>
 <translation id="2883868922264431515">Verdienen Sie Tokens, indem Sie Werbung ansehen, die die Privatsphäre respektiert, und unterstützen Sie Ihre Lieblingswebsites.</translation>
 <translation id="7408493389591475748">Fangen Sie an, zu browsen, um den Privatsphärebericht zu sehen</translation>
-<translation id="9080777565335515917">Legen Sie für privates und sicheres Browsen Brave als Ihren Standardbrowser fest.</translation>
 <translation id="1390943217516275883">Brave erlauben, Ihre Privatsphärestatistik anzuzeigen</translation>
 <translation id="1763352720905582220">Sendet einen wöchentlichen Privatsphärebericht</translation>
 <translation id="1811691435325545066">Alle Privatsphäreberichtsdaten löschen</translation>
@@ -593,16 +587,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2977501775944575564">Parallele Downloads</translation>
 <translation id="6224180438946945617">Aktivieren Sie parallele Downloads, um die Download-Geschwindigkeit zu steigern</translation>
 <translation id="8967385052772844086">Vollen Datenschutzbericht sehen</translation>
-<translation id="6864343534748973390">Beliebteste</translation>
-<translation id="4608192160278975831">Privat und kein Tracking</translation>
-<translation id="7208522820527289601">Privat und kein Tracking, EU-basiert</translation>
-<translation id="1161008391729450974">Google-Ergebnisse ohne Tracker</translation>
-<translation id="7320542277711359296">Zweitbeliebteste</translation>
-<translation id="8295049095570748497">Eine führende Suchmaschine in Russland</translation>
-<translation id="2642661895835126239">Pflanzt Bäume, lebt in Berlin</translation>
-<translation id="2422627462367776805">Südkoreanische Website und Suche</translation>
-<translation id="177282784098234156">Privat, unabhängig und nutzerzentriert</translation>
-<translation id="1410130669636877548">Einige Suchmaschinen schützen Ihre Daten besser als andere, wenn Sie etwas im Internet suchen.</translation>
 <translation id="3479552764303398839">Jetzt nicht</translation>
 <translation id="7138272885617540195">Erlauben, dass Anwendungslinks in Anwendungen außerhalb von Brave geöffnet werden</translation>
 <translation id="4954512758656527938">Standard-Ethereum-Wallet</translation>

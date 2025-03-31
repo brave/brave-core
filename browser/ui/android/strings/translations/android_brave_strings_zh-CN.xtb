@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">现在跳过</translation>
 <translation id="6165508094623778733">了解详情</translation>
 <translation id="986879628471635371">对启动过程进行故障排除</translation>
-<translation id="5808759341041733958">请选择默认搜索引擎</translation>
-<translation id="1331593888918588693">您以后随时可以在应用设置中更改自己的偏好。</translation>
 <translation id="5806601733251372221">Brave 屏蔽</translation>
 <translation id="8537217141725709400">赚取<ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave 奖励</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">我有一个 24 字的恢复密语</translation>
 <translation id="3570367516044491911">设置为默认浏览器</translation>
 <translation id="6800338374677644736">设置为默认浏览器</translation>
-<translation id="19715420010996093">选择 Brave 浏览器并轻按 "始终"</translation>
-<translation id="3546439402724649282">Brave 已被设置为您的默认浏览器。</translation>
-<translation id="8389661903259423907">您已经设置了默认浏览器。您可以在应用设置中更改默认浏览器。</translation>
 <translation id="1545749641540134597">扫描二维码</translation>
 <translation id="5317781812114905957">说明</translation>
 <translation id="8515319483805157233">要按 QR 码搜索，请将 QR 码放在方框中央。</translation>
@@ -549,7 +544,6 @@
 <translation id="1945330434665345785">您上周用 Brave  屏蔽了 <ph name="COUNT"/> 个跟踪器和广告。</translation>
 <translation id="2883868922264431515">通过查看尊重隐私的广告来赚取令牌和支持您喜欢的网站。</translation>
 <translation id="7408493389591475748">开始浏览以查看隐私报告</translation>
-<translation id="9080777565335515917">将 Brave 设为您的默认浏览器，以进行安全的私人浏览。</translation>
 <translation id="1390943217516275883">允许 Brave 展示你的隐私统计数据</translation>
 <translation id="1763352720905582220">发送每周的隐私报告</translation>
 <translation id="1811691435325545066">清除所有隐私报告数据</translation>
@@ -593,16 +587,6 @@
 <translation id="2977501775944575564">同步下载</translation>
 <translation id="6224180438946945617">启用同步下载，加快下载速度</translation>
 <translation id="8967385052772844086">查看完整的隐私报告</translation>
-<translation id="6864343534748973390">最受欢迎的</translation>
-<translation id="4608192160278975831">私密无痕</translation>
-<translation id="7208522820527289601">私密无痕的、基于欧盟</translation>
-<translation id="1161008391729450974">无追踪器的 Google 结果</translation>
-<translation id="7320542277711359296">第二受欢迎</translation>
-<translation id="8295049095570748497">俄罗斯领先的搜索引擎</translation>
-<translation id="2642661895835126239">Plants trees （总部位于柏林）</translation>
-<translation id="2422627462367776805">韩国门户网站&amp;搜索</translation>
-<translation id="177282784098234156">隐私, 独立, 用户优先</translation>
-<translation id="1410130669636877548">当您搜索网络时，某些搜索引擎会比其他搜索引擎更好地保护您的隐私。</translation>
 <translation id="3479552764303398839">以后再说</translation>
 <translation id="7138272885617540195">允许在 Brave 之外的应用程序中打开应用程序链接</translation>
 <translation id="4954512758656527938">默认以太坊钱包</translation>

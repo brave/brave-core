@@ -325,6 +325,7 @@
 <translation id="2631006050119455616">Imehifadhi</translation>
 <translation id="3671566813999349838">Kiasi</translation>
 <translation id="6976444672879155794">Changa Kiotomatiki [[processor]]</translation>
+<translation id="944736176598169208">Zawadi</translation>
 <translation id="8804164990146287819">Sera ya Faragha</translation>
 <translation id="7262285991915892790">Buruza ikoni ya BAT ili kuiweka kwenye</translation>
 <translation id="7656781188259414093">lengo.</translation>
@@ -500,7 +501,6 @@
       other {Unaweza kulipwa kwa matangazo <ph name="COUNT_BEGIN"/>#<ph name="COUNT_END"/> ambayo umeona mwezi huu.}
     }</translation>
 <translation id="6067959437127691361">Kutumia Zawadi za Brave huwezesha kuwasaidia waundaji maudhui na kukufanya kupata BAT.</translation>
-<translation id="944736176598169208">Zawadi</translation>
 <translation id="2359808026110333948">Endelea</translation>
 <translation id="885805571521218129">Hii inaonyesha makadirio ya mapato yako kwa Matangazo kwenye Brave mwezi huu.</translation>
 <translation id="3863981251715594911">Inafanyaje kazi/</translation>
@@ -633,7 +633,7 @@
 <translation id="6895088073061692390">Kwa bahati mbaya, wasifu wako wa Zawadi za Brave ulialamishwa kwa sababu ukaguzi wetu otomatiki ulipata shughuli fulani isiyotarajiwa ya Matangazo ya Brave.</translation>
 <translation id="4229056297802204697">Wakati wasifu wako umealamishwa, unaweza kuendelea kuona matangazo, lakini hutastahiki kupokea malipo. Pia hutaweza kuunganisha akaunti ya uangalizi kwenye Zawadi za Brave.</translation>
 <translation id="5124846913141379164">Inawezekana kuwa wasifu wako ulialamishwa kimakosa, na hakuna hatua ya haraka inayohitajika kutoka kwako. Alama kwenye wasifu wako inaweza kuondolewa baadaye.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Jifunze zaidi kuhusu mchakato wa Brave wa kualamisha wasifu wa Zawadi.<ph name="END_LINK"/></translation>
+<translation id="8947002243324362172">Jifunze zaidi kuhusu mchakato wa Brave wa kualamisha wasifu wa Zawadi.</translation>
 <translation id="4699218748197721830">Wasifu wa Zawadi za Brave umealamishwa</translation>
 <translation id="2607420597216860026">Tafadhali jaribu tena baada ya kukamilisha uthibitishaji wa kitambulisho kwenye <ph name="PROVIDER"/></translation>
 <translation id="5037332159336402972">Unahitaji akaunti iliyothibitishwa ili kuingia</translation>
@@ -668,7 +668,6 @@
 <translation id="5916664084637901428">Imewashwa</translation>
 <translation id="3977723631999461201">Matangazo <ph name="NUM"/> yalipokelewa mwezi huu</translation>
 <translation id="7924320838799747606">Salio lako</translation>
-<translation id="8714473477079007268">Pochi ya <ph name="PROVIDER"/></translation>
 <translation id="3175337080016717494">Akaunti ya Malipo</translation>
 <translation id="453760933181416879">Nenda kwenye akaunti yangu</translation>
 <translation id="8290994471756102241">Umeondoka kwenye Akaunti</translation>
@@ -677,7 +676,6 @@
 <translation id="1060062421977823695">Mapato yako ya BAT yatawekwa kwenye akaunti hii ya malipo.</translation>
 <translation id="1170674812179664523">Duka la bidhaa la Brave</translation>
 <translation id="8673202990286883068">Manufaa yako</translation>
-<translation id="3699766258844277472">Bado huna michango yoyote ya kujirudia iliyosanidiwa.</translation>
 <translation id="957921474773060718">Mchango unaofuata:</translation>
 <translation id="351973834053818251">Malipo Yanayorudiwa</translation>
 <translation id="7751260505918304024">Onyesha zote</translation>
@@ -1166,7 +1164,6 @@
 <translation id="4667144295226514387">Kikomo cha gesi kinakosekana</translation>
 <translation id="2021522108838444624">Kiasi ni lazima kiwe zaidi ya 0</translation>
 <translation id="8464365289405373974">Anwani ya ufikio inahitajika</translation>
-<translation id="6326239384961270135">Sehemu ya uwazi haipo</translation>
 <translation id="8585995109882455949">Je, ninaweza kupata anwani sahihi vipi?</translation>
 <translation id="105524480632150318">Brave huzuia watumiaji kutuma pesa kwa anwani isiyo sahihi kutokana na matumizi yasiyo sahihi ya herufi kubwa na ndogo. Hakikisha kuwa ni anwani sahihi kwa kufuata maelekezo yaliyo hapo chini.</translation>
 <translation id="4583433813614292221">1. Tembelea</translation>
@@ -2011,7 +2008,6 @@
 <translation id="7491773233732232424">Kuhusu Leo</translation>
 <translation id="7189603330209995455">Kwa chaguomsingi, unapouliza programu ya Leo swali inaweza kutuma na kutumia maudhui ya ukurasa wa wavuti unaotazama au maandishi yoyote unayoyaangazia kwenye ukurasa kwa Brave Leo ili kutoa jibu. Usahihi wa majibu haujahakikishwa, na inaweza kujumuisha maelezo yasiyo sahihi, ya kupotosha au ya uongo. Leo hutumia data kutoka kwa huduma ya Brave Search ili kuboresha ubora wa majibu. Usitume maelezo nyeti au ya binafsi, na uwe mwangalifu na majibu yoyote yanayohusiana na afya, fedha, usalama wa binafsi au mengineyo. Unaweza kurekebisha chaguo za Leo katika Mipangilio wakati wowote. Nenda kwenye Mipangilio &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo haikusanyi vitambulishi kama vile anwani yako ya IP inayoweza kukutambulisha. Hakuna data inayotumika kufunza miundo ya AI na hakuna data ya binafsi inayohifadhiwa na miundo ya AI (isipokuwa kwa Anthropic ambayo huhifadhi data kwa siku 30 kabla ya kuifuta). Angalia <ph name="LINK_BEFORE"/>sera ya faragha<ph name="LINK_AFTER"/> kwa maelezo zaidi.</translation>
-<translation id="7839853125981164613">Weka kidokezo hapa</translation>
 <translation id="4524675003624341892">Pendekeza maswali...</translation>
 <translation id="4567071417854988869">Fupisha video hii</translation>
 <translation id="7921782882718083488">Fupisha ukurasa huu</translation>

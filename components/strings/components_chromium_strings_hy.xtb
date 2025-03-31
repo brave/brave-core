@@ -21,6 +21,8 @@
 <translation id="303960458633076466">Այս էջն արգելափակվել է Brave-ի կողմից</translation>
 <translation id="2017237562285586622">Հրապատի կամ հակավիրուսային ծրագրի կարգավորումներում
        թույլատրեք Brave-ին միանալ ցանցին:</translation>
+<translation id="4949828774841497663">Գնացեք Հավելվածներ &gt; Համակարգի կարգավորումներ &gt; Ցանց, ընտրեք
+         ակտիվ ցանցը, սեղմեք Մանրամասներ... կոճակը և չեղարկեք ցանկացած                              պրոքսի սերվերի ընտրությունը։</translation>
 <translation id="8619622797841001082">Անցեք
           Brave-ի ընտրացանկ &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -42,9 +44,6 @@
           և ապանշեք «<ph name="NO_PREFETCH_DESCRIPTION"/>»-ը:
           Եթե խնդիրը չվերանա, խորհուրդ ենք տալիս կրկին ընտրել այս տարբերակը՝
           արդյունավետությունը բարձրացնելու համար:</translation>
-<translation id="8187289872471304532">Անցեք
-          Applications &gt; System Preferences &gt; Network &gt; Advanced &gt; Proxies
-          և ապընտեք բոլոր ընտրված պրոքսի-սերվերները:</translation>
 <translation id="4159376633403260073">Դուք դիտում եք Brave for Testing-ի անվտանգ էջ</translation>
 <translation id="88187049159266777">Brave-ը ճիշտ չի փակվել:</translation>
 </translationbundle>

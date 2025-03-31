@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Langkau buat sekarang</translation>
 <translation id="6165508094623778733">Ketahui lebih lanjut</translation>
 <translation id="986879628471635371">Penyertaan pencarisilapan</translation>
-<translation id="5808759341041733958">Pilih enjin carian lalai.</translation>
-<translation id="1331593888918588693">Anda sentiasa boleh menukar pilihan anda kemudian dalam tetapan aplikasi.</translation>
 <translation id="5806601733251372221">Pelindung Brave</translation>
 <translation id="8537217141725709400">Memperoleh <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">Saya mempunyai frasa pemulihan 24 perkataan</translation>
 <translation id="3570367516044491911">Tetapkan sebagai pelayar lalai</translation>
 <translation id="6800338374677644736">Tetapkan sebagai Penyemak Imbas Lalai</translation>
-<translation id="19715420010996093">Pilih Pelayar Brave dan ketik 'Sentiasa'</translation>
-<translation id="3546439402724649282">Brave sudah pun ditetapkan sebagai pelayar lalai anda.</translation>
-<translation id="8389661903259423907">Anda telah pun menetapkan pelayar lalai. Anda boleh mengubah pelayar lalai melalui tetapan aplikasi anda.</translation>
 <translation id="1545749641540134597">Imbas Kod QR</translation>
 <translation id="5317781812114905957">Arahan</translation>
 <translation id="8515319483805157233">Untuk mencari mengikut Kod QR, sejajarkan Kod QR di tengah bingkai.</translation>
@@ -549,7 +544,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="1945330434665345785">Anda telah menyekat <ph name="COUNT"/> iklan &amp; penjejak dengna pelayar Brave minggu lalu.</translation>
 <translation id="2883868922264431515">Peroleh token dengan melihat iklan yang menghormati privasi dan sokong laman-laman web kegemaran anda.</translation>
 <translation id="7408493389591475748">Mula berlayar untuk melihat laporan privasi</translation>
-<translation id="9080777565335515917">Tetapkan Brave sebagai pelayar lalai anda untuk pelayaran peribadi dan selamat.</translation>
 <translation id="1390943217516275883">Membolehkan Brave menunjukkan statistik privasi anda</translation>
 <translation id="1763352720905582220">Menghantar sebuah laporan privasi mingguan</translation>
 <translation id="1811691435325545066">Bersihkan semua data laporan privasi</translation>
@@ -593,16 +587,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="2977501775944575564">Muat Turun Selari</translation>
 <translation id="6224180438946945617">Dayakan muat turun selari untuk mempercepat kelajuan muat turun</translation>
 <translation id="8967385052772844086">Lihat Laporan Privasi penuh</translation>
-<translation id="6864343534748973390">Paling popular</translation>
-<translation id="4608192160278975831">Peribadi dan tiada penjejakan</translation>
-<translation id="7208522820527289601">Peribadi dan tanpa penjejakan, berpangkalan di EU</translation>
-<translation id="1161008391729450974">Google keputusan tanpa penjejak</translation>
-<translation id="7320542277711359296">Kedua paling popular</translation>
-<translation id="8295049095570748497">Enjin carian yang terkemuka di Rusia</translation>
-<translation id="2642661895835126239">Menanam pokok, berpangkalan di Berlin</translation>
-<translation id="2422627462367776805">Carian &amp; portal web Korea Selatan</translation>
-<translation id="177282784098234156">Peribadi, bebas, pengguna dahulu</translation>
-<translation id="1410130669636877548">Sesetengah enjin carian melindungi privasi anda lebih baik daripada yang lain apabila anda melayari web.</translation>
 <translation id="3479552764303398839">Bukan sekarang</translation>
 <translation id="7138272885617540195">Benarkan pautan apl dibuka dalam apl di luar Brave</translation>
 <translation id="4954512758656527938">Dompet Ethereum lalai</translation>

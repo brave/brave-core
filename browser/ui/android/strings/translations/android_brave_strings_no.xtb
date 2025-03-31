@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Hopp over i denne omgang</translation>
 <translation id="6165508094623778733">Finn ut mer</translation>
 <translation id="986879628471635371">Feilsøking av introduksjonsprogram</translation>
-<translation id="5808759341041733958">Velg den tidligere valgte søkemotoren</translation>
-<translation id="1331593888918588693">Du kan alltid endre valgene dine senere i appinnstillingene.</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400">Tjen <ph name="TOKEN"/>er</translation>
 <translation id="3333887201479867589">Brave-belønninger</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">Jeg har en gjenopprettingsfrase på 24 ord</translation>
 <translation id="3570367516044491911">Angi som standardnettleser</translation>
 <translation id="6800338374677644736">Sett som standardnettleser</translation>
-<translation id="19715420010996093">Velg Brave Browser og trykk på 'Alltid'</translation>
-<translation id="3546439402724649282">Brave er allerede angitt som standardnettleser.</translation>
-<translation id="8389661903259423907">Du har allerede angitt en standardnettleser. Du kan endre standardnettleseren i appinnstillingene.</translation>
 <translation id="1545749641540134597">Skann QR-kode</translation>
 <translation id="5317781812114905957">Instruksjoner</translation>
 <translation id="8515319483805157233">For å søke med QR-koden må QR-koden midstilles i rammen.</translation>
@@ -549,7 +544,6 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="1945330434665345785">Du blokkerte <ph name="COUNT"/> trackere &amp; annonser med Brave-nettleseren  forrige uke.</translation>
 <translation id="2883868922264431515">Tjen polletter ved å se annonser som repekterer personvernet ditt og støtt favorittnettstedene dine.</translation>
 <translation id="7408493389591475748">Begynn å bruke nettleseren for å se personvernrapportering</translation>
-<translation id="9080777565335515917">Sett Brave som din standardnettleser for privat og trygg weblesing.</translation>
 <translation id="1390943217516275883">Lar Brave vise statistikken din for personvern</translation>
 <translation id="1763352720905582220">Sender en ukentlig personvernrapport</translation>
 <translation id="1811691435325545066">Slett alle personvernrapport-data</translation>
@@ -593,16 +587,6 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="2977501775944575564">Parallell nedlasting</translation>
 <translation id="6224180438946945617">Aktiver parallell nedlasting for å øke nedlastingshastigheten</translation>
 <translation id="8967385052772844086">Se hele Personvernrapporten</translation>
-<translation id="6864343534748973390">Mest populær</translation>
-<translation id="4608192160278975831">Privat og ingen sporing</translation>
-<translation id="7208522820527289601">Privat og uten sporing, EU-basert</translation>
-<translation id="1161008391729450974">Google-resultater uten trackere</translation>
-<translation id="7320542277711359296">Nest mest populær</translation>
-<translation id="8295049095570748497">En ledende søkemotor i Russland</translation>
-<translation id="2642661895835126239">Planter trær, basert i Berlin</translation>
-<translation id="2422627462367776805">Sør-koreansk nettportal &amp; søk</translation>
-<translation id="177282784098234156">Privat, uavhengig, brukeren kommer først</translation>
-<translation id="1410130669636877548">Noen søkemotorer beskytter personvernet ditt bedre enn andre når du søker på nettet.</translation>
 <translation id="3479552764303398839">Ikke nå</translation>
 <translation id="7138272885617540195">Tillat at applinker åpnes i apper utenfor Brave</translation>
 <translation id="4954512758656527938">Standard Ethereum-lommebok</translation>

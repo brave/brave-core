@@ -21,6 +21,7 @@
 <translation id="303960458633076466">Denne siden er blokkert av Brave</translation>
 <translation id="2017237562285586622">Tillat at Brave bruker nettverket, i brannmur- eller
           antivirusinnstillingene dine.</translation>
+<translation id="4949828774841497663">Gå til Programmer &gt; Systeminnstillinger &gt; Nettverk, velg det aktive nettverket, klikk på «Detaljer…»-knappen, og fjern avmerkingen for eventuelle proxy-tjenere som muligens er valgt.</translation>
 <translation id="8619622797841001082">Gå til
           Brave-menyen &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -42,7 +43,6 @@
         og fjern avmerkingen for «<ph name="NO_PREFETCH_DESCRIPTION"/>».
         Hvis dette ikke løser problemet, bør du aktivere dette alternativet
         på nytt for bedre ytelse.</translation>
-<translation id="8187289872471304532">Gå til Programmer &gt; Systeminnstillinger &gt; Nettverk &gt; Avansert &gt; Proxy-tjenere og fjern avmerkingen for alle valgte proxy-tjenere.</translation>
 <translation id="4159376633403260073">Du ser på en sikker side for Brave for testing</translation>
 <translation id="88187049159266777">Brave ble ikke avsluttet på riktig måte.</translation>
 </translationbundle>

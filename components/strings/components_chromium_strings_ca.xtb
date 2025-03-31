@@ -21,6 +21,7 @@
 <translation id="303960458633076466">Brave ha bloquejat aquesta pàgina</translation>
 <translation id="2017237562285586622">Configureu el tallafoc o l'antivirus per permetre que Brave accedeixi
           a la xarxa.</translation>
+<translation id="4949828774841497663">Ves a Aplicacions &gt; Configuració del sistema &gt; Xarxa, selecciona la xarxa activa, fes clic al botó Detalls... i desselecciona els servidors intermediaris que s'hagin seleccionat.</translation>
 <translation id="8619622797841001082">Aneu al
           menú de Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -43,9 +44,6 @@
         i desmarqueu <ph name="NO_PREFETCH_DESCRIPTION"/>.
         Si això no resol el problema, us recomanem que torneu a seleccionar
         aquesta opció per obtenir un rendiment millorat.</translation>
-<translation id="8187289872471304532">Aneu a
-          Aplicacions &gt; Preferències del sistema &gt; Xarxa &gt; Configuració avançada &gt; Servidors intermediaris
-          i desmarqueu tots els servidors intermediaris que s'hagin seleccionat.</translation>
 <translation id="4159376633403260073">Estàs consultant una pàgina segura de Brave for Testing</translation>
 <translation id="88187049159266777">Brave no s'ha tancat correctament.</translation>
 </translationbundle>

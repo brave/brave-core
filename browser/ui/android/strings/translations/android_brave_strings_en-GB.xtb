@@ -250,8 +250,6 @@
 <translation id="1377600615067678409">Skip for now</translation>
 <translation id="6165508094623778733">Learn more</translation>
 <translation id="986879628471635371">Troubleshooting onboarding</translation>
-<translation id="5808759341041733958">Choose default search engine</translation>
-<translation id="1331593888918588693">You can always change your preference later in app settings.</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400">Earn <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
@@ -269,9 +267,6 @@
 <translation id="4225265925807365011">I have a 24-word recovery phrase</translation>
 <translation id="3570367516044491911">Set as default browser</translation>
 <translation id="6800338374677644736">Set as default browser</translation>
-<translation id="19715420010996093">Select Brave Browser and tap 'Always'</translation>
-<translation id="3546439402724649282">Brave is already set as your default browser.</translation>
-<translation id="8389661903259423907">You've already set a default browser. You can change the default browser in your app settings.</translation>
 <translation id="1545749641540134597">Scan QR Code</translation>
 <translation id="5317781812114905957">Instructions</translation>
 <translation id="8515319483805157233">To search by QR code, align the QR code in the centre of frame.</translation>
@@ -528,7 +523,6 @@ Are you sure you want to do this?</translation>
 <translation id="1945330434665345785">You blocked <ph name="COUNT"/> trackers &amp; ads with Brave browser last week.</translation>
 <translation id="2883868922264431515">Earn tokens by viewing privacy-respecting ads and support your favourite websites.</translation>
 <translation id="7408493389591475748">Start browsing to see privacy reporting</translation>
-<translation id="9080777565335515917">Set Brave as your default browser for private and secure browsing.</translation>
 <translation id="1390943217516275883">Allows Brave to show your privacy statistics</translation>
 <translation id="1763352720905582220">Sends a weekly privacy report</translation>
 <translation id="1811691435325545066">Clear all privacy reports data</translation>
@@ -572,16 +566,6 @@ Are you sure you want to do this?</translation>
 <translation id="2977501775944575564">Parallel downloading</translation>
 <translation id="6224180438946945617">Enable parallel downloading to accelerate download speed</translation>
 <translation id="8967385052772844086">View full Privacy Report</translation>
-<translation id="6864343534748973390">Most popular</translation>
-<translation id="4608192160278975831">Private and no tracking</translation>
-<translation id="7208522820527289601">Private and no tracking, EU-based</translation>
-<translation id="1161008391729450974">Google results without trackers</translation>
-<translation id="7320542277711359296">Second most popular</translation>
-<translation id="8295049095570748497">A leading search engine in Russia</translation>
-<translation id="2642661895835126239">Plants trees, based in Berlin</translation>
-<translation id="2422627462367776805">South Korean web portal &amp; search</translation>
-<translation id="177282784098234156">Private, independent, user-first</translation>
-<translation id="1410130669636877548">Some search engines protect your privacy better than others when you search the web.</translation>
 <translation id="3479552764303398839">Not now</translation>
 <translation id="7138272885617540195">Allow app links to open in apps outside of Brave</translation>
 <translation id="4954512758656527938">Default Ethereum wallet</translation>

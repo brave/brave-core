@@ -21,6 +21,9 @@
 <translation id="303960458633076466">Kjo faqe është bllokuar nga Brave</translation>
 <translation id="2017237562285586622">Lejo Brave të qaset në rrjet, në cilësimet e murit mbrojtës ose
       të antivirusit.</translation>
+<translation id="4949828774841497663">Shko te Aplikacionet &gt; Cilësimet e sistemit &gt; Rrjeti, zgjidh
+          rrjetin aktiv, kliko te butoni "Detajet..." , dhe hiq përzgjedhjen e çdo proxy
+          që mund të jetë zgjedhur.</translation>
 <translation id="8619622797841001082">Shko te
           menyja e Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -42,7 +45,6 @@
           dhe anulo zgjedhjen e "<ph name="NO_PREFETCH_DESCRIPTION"/>."
           Nëse kjo nuk e zgjidh këtë problem, rekomandojmë ta zgjedhësh përsëri këtë opsion
           për një veprimtari më të mirë funksionimi.</translation>
-<translation id="8187289872471304532">Shko te Aplikacionet &gt; Preferencat e sistemit &gt; Rrjeti &gt; Të përparuara &gt; Përfaqësuesit dhe anulo zgjedhjen për çdo përfaqësues që është zgjedhur.</translation>
 <translation id="4159376633403260073">Po shikon një faqe të sigurt të Brave for Testing</translation>
 <translation id="88187049159266777">Brave nuk u mbyll si duhet.</translation>
 </translationbundle>

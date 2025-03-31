@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Passer pour l'instant</translation>
 <translation id="6165508094623778733">En savoir plus</translation>
 <translation id="986879628471635371">Intégration du dépannage</translation>
-<translation id="5808759341041733958">Choisissez le moteur de recherche par défaut</translation>
-<translation id="1331593888918588693">Vous pouvez toujours modifier vos préférences plus tard dans les paramètres de l'application.</translation>
 <translation id="5806601733251372221">Boucliers Brave</translation>
 <translation id="8537217141725709400">Gagnez des <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Récompenses Brave</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">J'ai une phrase de récupération de 24 mots</translation>
 <translation id="3570367516044491911">Définir comme navigateur par défaut</translation>
 <translation id="6800338374677644736">Définir comme navigateur par défaut</translation>
-<translation id="19715420010996093">Sélectionnez le navigateur Brave et appuyez sur « Toujours ».</translation>
-<translation id="3546439402724649282">Brave est déjà configuré comme votre navigateur par défaut.</translation>
-<translation id="8389661903259423907">Vous avez déjà configuré un navigateur par défaut. Vous pouvez changer le navigateur par défaut dans les paramètres de votre application.</translation>
 <translation id="1545749641540134597">Scannez le QR Code</translation>
 <translation id="5317781812114905957">Instructions</translation>
 <translation id="8515319483805157233">Pour effectuer une recherche par code QR, alignez ce dernier sur le centre du cadre.</translation>
@@ -549,7 +544,6 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="1945330434665345785">Vous avez bloqué <ph name="COUNT"/> traqueurs et pubs avec le navigateur Brave la semaine dernière.</translation>
 <translation id="2883868922264431515">Gagnez des jetons en visualisant des annonces respectueuses de la vie privée et soutenez vos sites web préférés.</translation>
 <translation id="7408493389591475748">Commencez à naviguer pour voir les rapports de confidentialité</translation>
-<translation id="9080777565335515917">Définissez Brave comme votre navigateur par défaut pour une navigation privée et sécurisée.</translation>
 <translation id="1390943217516275883">Permettre à Brave de montrer vos statistiques privées</translation>
 <translation id="1763352720905582220">Envoi un rapport de confidentialité chaque semaine</translation>
 <translation id="1811691435325545066">Supprimer toutes les données des rapports de confidentialité</translation>
@@ -593,16 +587,6 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="2977501775944575564">Téléchargements parallèles</translation>
 <translation id="6224180438946945617">Activez les téléchargements parallèles pour augmenter votre vitesse de téléchargement</translation>
 <translation id="8967385052772844086">Voir le rapport de confidentialité complet</translation>
-<translation id="6864343534748973390">Les plus populaires</translation>
-<translation id="4608192160278975831">Privé et sans tracking</translation>
-<translation id="7208522820527289601">Privé et sans tracking, basé en Europe</translation>
-<translation id="1161008391729450974">Les résultats Google sans traqueurs</translation>
-<translation id="7320542277711359296">Deuxième plus populaire</translation>
-<translation id="8295049095570748497">Un moteur de recherche de premier plan en Russie</translation>
-<translation id="2642661895835126239">Plante des arbres, basé à Berlin</translation>
-<translation id="2422627462367776805">Portail Web et moteur de recherche sud-coréens</translation>
-<translation id="177282784098234156">Privé, indépendant et centré sur l'utilisateur</translation>
-<translation id="1410130669636877548">Certains moteurs de recherche protègent votre confidentialité mieux que d'autres lorsque vous faites des recherches sur le Web.</translation>
 <translation id="3479552764303398839">Pas maintenant</translation>
 <translation id="7138272885617540195">Autoriser l'ouverture des liens dans les applications en dehors de Brave</translation>
 <translation id="4954512758656527938">Portefeuille Ethereum par défaut</translation>
