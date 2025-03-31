@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">今はスキップ</translation>
 <translation id="6165508094623778733">詳しく知る</translation>
 <translation id="986879628471635371">トラブルシューティングのチュートリアル</translation>
-<translation id="5808759341041733958">既定の検索エンジンを選択してください</translation>
-<translation id="1331593888918588693">アプリの設定で、後からいつでも設定を変更することができます。</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400"><ph name="TOKEN"/>を獲得</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">24語のリカバリーフレーズをお持ちの方</translation>
 <translation id="3570367516044491911">デフォルトのブラウザに設定</translation>
 <translation id="6800338374677644736">デフォルトのブラウザとして設定</translation>
-<translation id="19715420010996093">Braveブラウザーを選択して[常に]をタップします</translation>
-<translation id="3546439402724649282">Braveは、すでにデフォルトブラウザとして設定されています。</translation>
-<translation id="8389661903259423907">すでにデフォルトブラウザが設定されています。アプリの設定でデフォルトブラウザを変更するこができます。</translation>
 <translation id="1545749641540134597">Scan QR Code</translation>
 <translation id="5317781812114905957">手順</translation>
 <translation id="8515319483805157233">QRコードで検索するには、フレームの中心にQRコードを合わせます。</translation>
@@ -549,7 +544,6 @@
 <translation id="1945330434665345785">先週、Braveブラウザで <ph name="COUNT"/>件のトラッカーと広告をブロックしました。</translation>
 <translation id="2883868922264431515">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのウェブサイトをサポートしましょう。</translation>
 <translation id="7408493389591475748">ブラウジングを開始してプライバシーレポートを表示</translation>
-<translation id="9080777565335515917">プライベートで安全なブラウジングのため、Braveをデフォルトのブラウザとして設定します。</translation>
 <translation id="1390943217516275883">Braveにプライバシー統計の表示を許可</translation>
 <translation id="1763352720905582220">毎週のプライバシーレポートを送信</translation>
 <translation id="1811691435325545066">すべてのプライバシーレポートデータを消去</translation>
@@ -593,16 +587,6 @@
 <translation id="2977501775944575564">パラレルダウンロード</translation>
 <translation id="6224180438946945617">パラレルダウンロードを有効にしてダウンロード速度をアップ</translation>
 <translation id="8967385052772844086">完全なプライバシーレポートを表示します</translation>
-<translation id="6864343534748973390">最も人気のある</translation>
-<translation id="4608192160278975831">プライベートでトラッキングなし</translation>
-<translation id="7208522820527289601">プライベートでトラッキングなし、EUベース</translation>
-<translation id="1161008391729450974">トラッカーのないGoogleの検索結果</translation>
-<translation id="7320542277711359296">2番目に人気のある</translation>
-<translation id="8295049095570748497">ロシアにおける主要な検索エンジン</translation>
-<translation id="2642661895835126239">ベルリンを拠点に、木を植える</translation>
-<translation id="2422627462367776805">韓国のWebポータルを検索</translation>
-<translation id="177282784098234156">プライベート、独立型、ユーザーファースト</translation>
-<translation id="1410130669636877548">一部の検索エンジンは、ウェブを検索する際に、他の検索エンジンよりもうまくユーザーのプライバシーを保護します。</translation>
 <translation id="3479552764303398839">後で</translation>
 <translation id="7138272885617540195">Brave外のアプリでアプリのリンクを開くことを許可</translation>
 <translation id="4954512758656527938">デフォルトのイーサリアムウォレット</translation>

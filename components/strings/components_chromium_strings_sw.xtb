@@ -20,6 +20,9 @@
          na uondoe tiki "Tumia seva ya proksi kwa kikasha kaguzi chako cha LAN".</translation>
 <translation id="303960458633076466">Ukurasa huu umezuiwa na Brave</translation>
 <translation id="2017237562285586622">Ruhusu Brave ifikie mtandao kwenye mipangilio yako ya kinga mtandao au kingavirusi.</translation>
+<translation id="4949828774841497663">Nenda kwenye Programu &gt; Mipangilio ya Mfumo &gt; Mtandao, chagua
+          mtandao unaotumika, bofya kitufe cha Maelezo... kisha uache kuchagua seva zozote mbadala
+          ambazo huenda umechagua.</translation>
 <translation id="8619622797841001082">Nenda kwenye
           menyu ya Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -39,8 +42,6 @@
         <ph name="SETTINGS_TITLE"/>
         <ph name="ADVANCED_TITLE"/>na uondoe tiki kwenye "<ph name="NO_PREFETCH_DESCRIPTION"/>."
         Ikiwa hili halitatatua tatizo, tunapendekeza uchague tena chaguo hili kwa utendaji ulioboreshwa.</translation>
-<translation id="8187289872471304532">Nenda kwenye
-          Programu &gt; Mapendeleo ya Mfumo &gt; Mtandao &gt; Uboreshaji &gt; Proksi na uondoe tiki kwenye proksi zozote ambazo zimechaguliwa.</translation>
 <translation id="4159376633403260073">Unaangalia ukurasa salama wa Brave ya Majaribio</translation>
 <translation id="88187049159266777">Brave haikuzimika kwa njia sahihi.</translation>
 </translationbundle>

@@ -21,6 +21,7 @@
 <translation id="303960458633076466">Тази страница е блокирана от Brave</translation>
 <translation id="2017237562285586622">Разрешете достъпа на Brave до мрежата от настройките на защитната стена
 или антивирусния си софтуер.</translation>
+<translation id="4949828774841497663">Отворете Applications &gt; System Settings &gt; Network, изберете активната мрежа, кликнете върху бутона Details... и премахнете избора от всички евентуално избрани прокси сървъри.</translation>
 <translation id="8619622797841001082">Отворете
 менюто на Brave &gt;
 <ph name="SETTINGS_TITLE"/>
@@ -43,9 +44,6 @@
 и премахнете отметката от „<ph name="NO_PREFETCH_DESCRIPTION"/>“.
 Ако това не реши проблема, препоръчваме ви да изберете отново тази опция,
 за да подобрите ефективността.</translation>
-<translation id="8187289872471304532">Отворете
-„Applications“ &gt; „System Preferences“ &gt; „Network“ &gt; „Advanced“ &gt; „Proxies“
-и премахнете отметките от избраните прокси сървъри.</translation>
 <translation id="4159376633403260073">Преглеждате защитена страница в Brave for Testing</translation>
 <translation id="88187049159266777">Brave не се затвори правилно.</translation>
 </translationbundle>

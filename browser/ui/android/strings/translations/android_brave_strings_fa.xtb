@@ -259,8 +259,6 @@
 <translation id="1377600615067678409">فعلاً رد شود</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="986879628471635371">آشنا شدن با عیب‌یابی</translation>
-<translation id="5808759341041733958">انتخاب موتور جستجوی پیش‌فرض</translation>
-<translation id="1331593888918588693">همیشه می‌توانید بعداً در تنظیمات برنامه، تنظیمات ترجیحی خود را تغییر دهید.</translation>
 <translation id="5806601733251372221">سپرهای ایمنی Brave</translation>
 <translation id="8537217141725709400">کسب کردن <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
@@ -278,9 +276,6 @@
 <translation id="4225265925807365011">من یک عبارت بازیابی 24 کلمه‌ای دارم</translation>
 <translation id="3570367516044491911">تنظیم به‌عنوان مرورگر پیش‌فرض</translation>
 <translation id="6800338374677644736">تنظیم به‌عنوان مرورگر پیش‌فرض</translation>
-<translation id="19715420010996093">مرورگر Brave را انتخاب کنید و روی «همیشه» ضربه بزنید</translation>
-<translation id="3546439402724649282">Brave در حال حاضر به‌عنوان مرورگر پیش‌فرض شما تنظیم شده است.</translation>
-<translation id="8389661903259423907">در حال حاضر مرورگر پیش‌فرض را تنظیم کرده‌اید. می‌توانید در تنظیمات برنامه خود آن را تغییر دهید.</translation>
 <translation id="1545749641540134597">اسکن QR کد</translation>
 <translation id="5317781812114905957">دستورالعمل‌ها</translation>
 <translation id="8515319483805157233">برای اینکه بتوانید از طریق کد QR جستجو کنید، کد QR را در وسط کادر قرار دهید.</translation>
@@ -551,7 +546,6 @@
 <translation id="1945330434665345785">شما <ph name="COUNT"/> ردیاب‌ها و آگهی‌ها را در مرورگر Brave در هفته گذشته مسدود کرده‌اید.</translation>
 <translation id="2883868922264431515">با مشاهده آگهی‌هایی که به حریم‌خصوصی احترام می‌گذارند و پشتیبانی از وب‌سایت‌های دلخواه خود، توکن کسب کنید.</translation>
 <translation id="7408493389591475748">برای مشاهده گزارش حریم‌خصوصی، شروع به مرور کردن کنید</translation>
-<translation id="9080777565335515917">Brave را به‌عنوان مرورگر پیش‌فرض خود تنظیم کنید تا مروری خصوصی و ایمن داشته باشید.</translation>
 <translation id="1390943217516275883">به Brave اجازه می‌دهد آمار حریم خصوصی شما را نمایش دهد</translation>
 <translation id="1763352720905582220">گزارش حریم‌خصوصی هفتگی ارسال می‌کند</translation>
 <translation id="1811691435325545066">پاک کردن کل داده‌های گزارش‌های حریم‌خصوصی</translation>
@@ -595,16 +589,6 @@
 <translation id="2977501775944575564">دانلود موازی</translation>
 <translation id="6224180438946945617">برای افزایش سرعت بارگیری، دانلود موازی را فعال کنید</translation>
 <translation id="8967385052772844086">مشاهده گزارش حریم خصوصی کامل</translation>
-<translation id="6864343534748973390">پرطرفدارترین</translation>
-<translation id="4608192160278975831">خصوصی و بدون ردیابی</translation>
-<translation id="7208522820527289601">خصوصی و بدون ردیابی، مخصوص اروپا</translation>
-<translation id="1161008391729450974">نتایج Google بدون ردیاب‌ها</translation>
-<translation id="7320542277711359296">دومین پرطرفدار</translation>
-<translation id="8295049095570748497">موتور جستجویی پیشرو در روسیه</translation>
-<translation id="2642661895835126239">Plants trees، مستقر در برلین</translation>
-<translation id="2422627462367776805">جستجو و درگاه وب کره جنوبی</translation>
-<translation id="177282784098234156">خصوصی، مستقل، با اولویت کاربر</translation>
-<translation id="1410130669636877548">وقتی وب را جستجو می‌کنید، برخی از موتورهای جستجو بهتر از موارد دیگر از حریم خصوصی شما محافظت می‌کند.</translation>
 <translation id="3479552764303398839">اکنون نه</translation>
 <translation id="7138272885617540195">به پیوندهای برنامه اجازه دهید در برنامه‌های خارج از Brave باز شوند</translation>
 <translation id="4954512758656527938">کیف پول پیش‌فرض اتریوم</translation>

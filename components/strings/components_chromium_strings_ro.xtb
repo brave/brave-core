@@ -21,6 +21,9 @@
 <translation id="303960458633076466">Pagina a fost blocată de Brave</translation>
 <translation id="2017237562285586622">Din setările pentru firewall sau antivirus, permite browserului Brave să acceseze
           rețeaua.</translation>
+<translation id="4949828774841497663">Accesează Aplicații &gt; Setări de sistem &gt; Rețea, selectează rețeaua
+          activă, dă clic pe butonul Detalii... și debifează orice proxy
+          care ar fi fost selectat.</translation>
 <translation id="8619622797841001082">Accesați
           meniul Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -42,9 +45,6 @@
           și debifează „<ph name="NO_PREFETCH_DESCRIPTION"/>”.
           Dacă această acțiune nu rezolvă problema, îți recomandăm să selectezi din nou
           această opțiune pentru performanță îmbunătățită.</translation>
-<translation id="8187289872471304532">Accesați
-          Applications (Aplicații) &gt; System Preferences (Preferințe de sistem) &gt; Network (Rețea) &gt; Advanced (Avansat) &gt; Proxies (Servere proxy)
-          și debifați toate serverele proxy selectate.</translation>
 <translation id="4159376633403260073">Se afișează o pagină Brave for Testing</translation>
 <translation id="88187049159266777">Brave nu s-a închis corect.</translation>
 </translationbundle>

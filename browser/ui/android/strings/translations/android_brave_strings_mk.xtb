@@ -11,6 +11,12 @@
 <translation id="7335142069363686805">Оцени сега</translation>
 <translation id="6681362094306959654">Ви се допаѓа Brave?</translation>
 <translation id="5488843227043643519">Дали сакате да оставите оценка на Play Store?</translation>
+<translation id="2233004324252915283">Блокирај предложена содржина на YouTube</translation>
+<translation id="1005372663692637999">Ги блокира картичките за следни и завршни елементи на youtube.com.</translation>
+<translation id="5152595963250646670">Блокирај ги елементите на YouTube што го одвлекуваат вниманието</translation>
+<translation id="2998960761270772157">Ги блокира елементите за најавување, мени, коментари и информации за видеото на youtube.com.</translation>
+<translation id="8531835121131500698">Блокирај YouTube Shorts</translation>
+<translation id="2167271714269158912">Ги блокира Shorts на почетната страница, на страницата со трендови и во резултатите од пребарувањата на youtube.com.</translation>
 <translation id="8617525558807213034">Автоматско пополнување во приватни картички</translation>
 <translation id="8685431198160039193">Зачуваните информации може да се пополнуваат автоматски во приватни картички</translation>
 <translation id="6583902294974160967">Поддршка</translation>
@@ -23,12 +29,17 @@
 <translation id="7823038307453615214">Прикажувај Brave News</translation>
 <translation id="1654539412343893324">Дознајте повеќе за вашите податоци</translation>
 <translation id="2448893613530489637">Спречува следачите и рекламите да се вчитаат и да се прикажуваат на веб-страници</translation>
+<translation id="4174337572777167894">Проект за веб-обелоденување</translation>
+<translation id="8659271182272561965">Придонесете со анонимни податоци за пребарување и прелистување за да го подобрите Brave пребарување.</translation>
 <translation id="933652931229970927">Испраќај дијагностички извештаи автоматски</translation>
 <translation id="7977176350719484850">Прибл. заштеден\nинтернет</translation>
 <translation id="9008534313521214777">Прибл. заштедено\nвреме</translation>
+<translation id="1690924763769415936">Репродукција во заднина</translation>
 <translation id="6332924730165919598">Со затворање на сите картички се затвора и Brave</translation>
+<translation id="8308305244351876417">Дозволува да се репродуцира аудио кога ќе се префрлите на друга картичка во Brave или на друга апликација или кога екранот на уредот е исклучен.</translation>
 <translation id="4150201353443180367">Приказ</translation>
 <translation id="4275663329226226506">Медиумска содржина</translation>
+<translation id="5950428831347558278">Widevine DRM</translation>
 <translation id="2433507940547922241">Изглед</translation>
 <translation id="4117451092682672487">Приватност. На едноставен начин.</translation>
 <translation id="7909375417585209817">Со Brave како стандарден пребарувач, секој линк што ќе го допрете се отвора со заштита на приватноста што ја нуди Brave.</translation>
@@ -36,24 +47,38 @@
 <translation id="5148943178722443958">Помогнете во подобрувањето на Brave.</translation>
 <translation id="6718362830686703942">Испраќај дијагностички извештаи при пад или закочување.</translation>
 <translation id="8616157231067364693">Споделувај приватна и анонимна статистика за тоа кои функции ги користат корисниците на Brave.</translation>
+<translation id="7044431516245362795">Вклучете се во проектот за веб-обелоденување за да помогнете во зголемување на индексот и подобрување на резултатите од пребарувањата. <ph name="LEARN_MORE_START"/>Дознајте повеќе.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7818938154803162778">Да, ќе помогнам</translation>
 <translation id="2877653791257935258">Напишете име или УРЛ на веб-страница</translation>
 <translation id="5329830149661250028">Почувствувајте ја разликата со Brave: Нема реклами. Нема следачи. Многу побрзо вчитување на страниците.</translation>
 <translation id="3941792073703079607">Почувствувајте ја разликата со Brave: Блокирајте реклами. Заштедете интернет. Вршете преноси побрзо.</translation>
+<translation id="3545804467215833536">Допрете за да ги видите Brave штитовите</translation>
+<translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> блокирани реклами и следачи</translation>
 <translation id="6165508094623778733">Дознајте повеќе</translation>
 <translation id="5806601733251372221">Штитови на Brave</translation>
 <translation id="3333887201479867589">Награди на Brave</translation>
 <translation id="3570367516044491911">Постави како стандарден прегледувач</translation>
-<translation id="3546439402724649282">Brave веќе е поставен како стандарден прегледувач.</translation>
 <translation id="7658239707568436148">Откажи</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="8428213095426709021">Поставки</translation>
+<translation id="348794064910142198">Brave Sync ви овозможува приватно да ги синхронизирате податоците за обележувачи помеѓу прелистувачите Brave на вашите различни уреди.\n\nСамо скенирајте го кодот од синџирот за синхронизација што сте го создале на друг уред. Или започнете нов синџир за синхронизација.</translation>
+<translation id="7745082336226088126">Скенирај или внеси код за синхронизација</translation>
+<translation id="1602067095281698985">Започни нов синџир за синхронизација</translation>
 <translation id="2149973817440762519">Уреди обележувач</translation>
 <translation id="1426410128494586442">Да</translation>
 <translation id="6336451774241870485">Нова приватна картичка</translation>
+<translation id="3110967157686007724">Приватна картичка</translation>
+<translation id="944340256927461196">Не оставајте траги на вашиот уред</translation>
+<translation id="2063044449012253966">Страниците што ги посетувате во приватни прозорци нема да се појавуваат во вашата историја. Колачињата, податоците од формулари и податоците за локација исчезнуваат откако ќе се затворат сите приватни прозорци.</translation>
+<translation id="7395764193745523646">Видливост на прелистувањето</translation>
+<translation id="8670344404057978375">Имајте предвид дека, дури и во приватни прозорци, вашето прелистување може да биде видливо за вашиот давател на интернет-пристап, набљудувачите на мрежата или вашиот работодавец (ако користите работен уред/мрежа).</translation>
+<translation id="1413177583895309156">Brave VPN шифрира и заштитува сѐ што правите онлајн, дури и надвор од прелистувачот Brave.</translation>
+<translation id="3974348661685061050">Пробајте бесплатно 7 дена</translation>
 <translation id="7781069478569868053">Страница на нова картичка</translation>
 <translation id="2898634658146274982">Отворај надворешни линкови во Brave</translation>
 <translation id="5616508928556767259">Отвора линкови од други апликации во веб-приказ на Brave. Забелешка: Brave мора да биде поставен како стандарден прегледувач.</translation>
+<translation id="987264212798334818">Општо</translation>
 <translation id="1116694919640316211">За Brave</translation>
 <translation id="7961015016161918242">Никогаш</translation>
 <translation id="1275213816424141989">Можеби подоцна</translation>
@@ -89,21 +114,27 @@
 <translation id="7410504850864021600">Молневити брзини</translation>
 <translation id="2422309687188612485">Заштитете до 10 уреди со една претплата</translation>
 <translation id="4882693590083943563">Сите претплати вклучуваат <ph name="TRIAL_DAYS"/></translation>
+<translation id="487741927046441232">бесплатна 7-дневна проба!</translation>
+<translation id="1532536259167115948">Месечна претплата <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Се обновува месечно</translation>
 <translation id="112929124115834557">Се обновува годишно</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> месечно</translation>
 <translation id="1163809943099641131">Една година</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> годишно</translation>
 <translation id="2786538705804257030">За претплатите ќе ви се наплаќа преку вашата сметка на Google. Секој неискористен дел од бесплатниот пробен период, доколку се нуди, се губи кога ќе купите претплата.\n\nВашата претплата ќе се обновува автоматски, освен ако не се откаже најмалку 24 часа пред крајот на тековниот период.\n\nСо вашите претплати може да управувате во Поставки.\n\nСо користење на Brave, се согласувате со Условите за користење и Политиката за приватност.</translation>
 <translation id="5035172357624830412">Веќе купивте на brave.com?</translation>
 <translation id="713136183174551885">Освежете ги вашите акредитиви</translation>
 <translation id="6053992191006521518">Пробај БЕСПЛАТНО</translation>
 <translation id="5903391101107992067">Пробај 7 дена бесплатно</translation>
 <translation id="8681480718817027245">Претплата</translation>
+<translation id="2304783958703511257">Напредни поставки</translation>
 <translation id="9065203028668620118">Уреди</translation>
 <translation id="1450735350187803276">Реклами видени овој месец</translation>
 <translation id="5233638681132016545">Нова картичка</translation>
 <translation id="5039804452771397117">Дозволи</translation>
 <translation id="4250680216510889253">Не</translation>
 <translation id="5456039738087398178">Виџет за почетен екран</translation>
+<translation id="2326703104633309781">Користи Brave превод</translation>
 <translation id="5899814466108868020">Го поддржувате Brave и заедницата на BAT</translation>
 <translation id="3264975266761862670">Подготвени сте за заработка?</translation>
 <translation id="265337947574975838">Поврзете се или креирајте сметка со еден од нашите партнери.</translation>
@@ -111,7 +142,9 @@
 <translation id="6278643716658443228">Поставки за награди</translation>
 <translation id="4272136334824111854">Месецов посетивте <ph name="CREATOR_COUNT"/> креатори што се поддржани од Награди на Brave</translation>
 <translation id="1179407411385015942">Leo е паметен асистент со вештачка интелигенција, вграден директно во прегледувачот</translation>
+<translation id="5781842473834867765">Складирај ја мојата историја на разговори</translation>
 <translation id="4109670531935487117">Прикажувај предлози за автоматско пополнување во лентата за адреси</translation>
+<translation id="6106701981952170121">Избриши ги сите податоци за разговори на Лео ВИ</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Една година</translation>
 <translation id="2985392169397572983">НАЈДОБРА ЦЕНА</translation>

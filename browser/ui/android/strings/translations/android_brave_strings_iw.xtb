@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">דלג לעת עתה</translation>
 <translation id="6165508094623778733">לימדו עוד</translation>
 <translation id="986879628471635371">פתרון תקלות מובנה</translation>
-<translation id="5808759341041733958">בחר מנוע חיפוש ברירת מחדל</translation>
-<translation id="1331593888918588693">תמיד תוכלו לשנות את העדפתכם בהמשך דרך הגדרות האפליקציה.</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400">הרווח/י <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">תגמולי Brave</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">יש ברשותי ביטוי שחזור בן 24 מילים</translation>
 <translation id="3570367516044491911">הגדר כדפדפן ברירת המחדל</translation>
 <translation id="6800338374677644736">הגדר כדפדפן ברירת המחדל</translation>
-<translation id="19715420010996093">בחר/י בדפדפן Brave והקש/י על "תמיד"</translation>
-<translation id="3546439402724649282">Brave כבר מוגדר כדפדפן ברירת המחדל שלך.</translation>
-<translation id="8389661903259423907">כבר הגדרת דפדפן ברירת מחדל. באפשרותך לשנות את דפדפן ברירת המחדל בהגדרות האפליקציה שלך.</translation>
 <translation id="1545749641540134597">סריקת קוד QR</translation>
 <translation id="5317781812114905957">הוראות</translation>
 <translation id="8515319483805157233">כדי לחפש לפי קוד QR, מקם את קוד ה-QR במרכז המסגרת.</translation>
@@ -550,7 +545,6 @@
 <translation id="1945330434665345785">חסמתם <ph name="COUNT"/> עוקבים &amp; פרסומות עם דפדפן Brave בשבוע האחרון.</translation>
 <translation id="2883868922264431515">הרוויחו טוקנים על ידי הצגת מודעות השומרות על הפרטיות ותמכו באתרים האהובים עליכם.</translation>
 <translation id="7408493389591475748">התחל לגלוש כדי לראות דוחות פרטיות</translation>
-<translation id="9080777565335515917">הגדירו את Brave כדפדפן ברירת המחדל שלכם לגלישה פרטית ומאובטחת.</translation>
 <translation id="1390943217516275883">מאפשר ל-Brave להציג את סטטיסטיקת הפרטיות שלכם</translation>
 <translation id="1763352720905582220">שולח דוח פרטיות שבועי</translation>
 <translation id="1811691435325545066">נקה את כל נתוני דוחות הפרטיות</translation>
@@ -594,16 +588,6 @@
 <translation id="2977501775944575564">מבצע הורדה במקביל</translation>
 <translation id="6224180438946945617">אפשר הורדה במקביל כדי להאיץ את מהירות ההורדה</translation>
 <translation id="8967385052772844086">הצג דוח פרטיות מלא</translation>
-<translation id="6864343534748973390">הכי פופולרי</translation>
-<translation id="4608192160278975831">פרטי וללא מעקב</translation>
-<translation id="7208522820527289601">פרטי וללא מעקב, ממוקם באיחוד האירופי</translation>
-<translation id="1161008391729450974">תוצאות גוגל ללא עוקבים</translation>
-<translation id="7320542277711359296">השני הכי פופולרי</translation>
-<translation id="8295049095570748497">מנוע חיפוש מוביל ברוסיה</translation>
-<translation id="2642661895835126239">נוטע עצים, מבוסס בברלין</translation>
-<translation id="2422627462367776805">חיפוש ופורטל אינטרנט דרום קוריאני</translation>
-<translation id="177282784098234156">פרטי, בלתי תלוי, המשתמש קודם</translation>
-<translation id="1410130669636877548">מנועי חיפוש מסוימים מגנים על פרטיותכם טוב יותר מאחרים בעת חיפוש באינטרנט.</translation>
 <translation id="3479552764303398839">לא עכשיו</translation>
 <translation id="7138272885617540195">אפשר קישורי אפליקציות להיפתח באפליקציות מחוץ ל-Brave</translation>
 <translation id="4954512758656527938">ארנק ברירת המחדל של Ethereum</translation>

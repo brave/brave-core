@@ -21,6 +21,9 @@
 <translation id="303960458633076466">Ovu stranicu je blokirao Brave</translation>
 <translation id="2017237562285586622">U postavkama zaštitnog zida ili antivirusnog programa dozvolite Braveu da pristupi
           mreži.</translation>
+<translation id="4949828774841497663">Idite u Aplikacije &gt; Postavke sistema &gt; Mreža, odaberite
+          aktivnu mrežu, kliknite na dugme Detalji… i poništite odabir svih proksi servera
+          koji su možda odabrani.</translation>
 <translation id="8619622797841001082">Idite u
           meni Bravea&gt;
           <ph name="SETTINGS_TITLE"/>
@@ -43,9 +46,6 @@ uparivanjem. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/><
           i poništite odabir za "<ph name="NO_PREFETCH_DESCRIPTION"/>."
           Ako ovo ne riješi problem, preporučujemo vam da ponovo odaberete
           ovu opcija za unapređenje performansi.</translation>
-<translation id="8187289872471304532">Idite na
-          Aplikacije &gt; Postavke sistema &gt; Mreža &gt; Napredno &gt; Proksiji
-          i poništite odabir svih odabranih proksija.</translation>
 <translation id="4159376633403260073">Gledate sigurnu stranicu verzije Brave for Testing</translation>
 <translation id="88187049159266777">Brave se nije ispravno zatvorio.</translation>
 </translationbundle>

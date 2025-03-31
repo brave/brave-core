@@ -21,6 +21,9 @@
 <translation id="303960458633076466">Hierdie bladsy is deur Brave geblokkeer</translation>
 <translation id="2017237562285586622">Laat Brave in jou brandmuur- of antivirusinstellings toe om by jou netwerk
           in te gaan.</translation>
+<translation id="4949828774841497663">Gaan na Apps &gt; Stelselinstellings &gt; Netwerk, kies die
+          aktiewe netwerk, klik die Besonderhedeknoppie, en ontkies enige instaanbedieners
+          wat dalk gekies is.</translation>
 <translation id="8619622797841001082">Gaan na
           die Brave-kieslys &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -43,9 +46,6 @@
         en ontmerk "<ph name="NO_PREFETCH_DESCRIPTION"/>."
         As dit nie die probleem oplos nie, beveel ons aan dat hierdie opsie
         weer gekies word vir verbeterde werkverrigting.</translation>
-<translation id="8187289872471304532">Gaan na
-          Programme &gt; Stelselvoorkeure &gt; Netwerk &gt; Gevorderd &gt; Instaanbedieners
-          en ontkies enige instaanbedieners wat gekies is.</translation>
 <translation id="4159376633403260073">Jy bekyk tans ’n veilige Brave-toetsweergawe-bladsy</translation>
 <translation id="88187049159266777">Brave het nie reg toegemaak nie.</translation>
 </translationbundle>

@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">अभी के लिए रहने दो</translation>
 <translation id="6165508094623778733">ज़्यादा जानें</translation>
 <translation id="986879628471635371">शुरुआत करने में समस्या निवारण</translation>
-<translation id="5808759341041733958">डिफ़ॉल्ट खोज इंजन चुनें</translation>
-<translation id="1331593888918588693">आप बाद में ऐप सेटिंग्स में हमेशा अपनी पसंद बदल सकते हैं।</translation>
 <translation id="5806601733251372221">Brave शील्ड्स</translation>
 <translation id="8537217141725709400"><ph name="TOKEN"/>s पाएं</translation>
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">मेरे पास 24 शब्दों का रिकवरी फ्रेज़ है</translation>
 <translation id="3570367516044491911">डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
 <translation id="6800338374677644736">डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें</translation>
-<translation id="19715420010996093">Brave ब्राउज़र का चयन करें और 'हमेशा' टैप करें</translation>
-<translation id="3546439402724649282">Brave पहले से ही आपके डिफ़ॉल्ट ब्राउज़र के रूप में सेट है।</translation>
-<translation id="8389661903259423907">आपने पहले ही एक डिफ़ॉल्ट ब्राउज़र सेट कर लिया है। आप अपनी ऐप सेटिंग में डिफ़ॉल्ट ब्राउज़र को बदल सकते हैं।</translation>
 <translation id="1545749641540134597">QR कोड स्कैन करें</translation>
 <translation id="5317781812114905957">निर्देश</translation>
 <translation id="8515319483805157233">QR कोड से सर्च करने के लिए, QR कोड को फ़्रेम के बीच में रखें.</translation>
@@ -548,7 +543,6 @@
 <translation id="1945330434665345785">आपने Brave ब्राउज़र पर <ph name="COUNT"/> ट्रैकर्स &amp; विज्ञापन को पिछले सप्ताह ब्लॉक किया है।</translation>
 <translation id="2883868922264431515">गोपनीयता-सम्मान वाले विज्ञापन देखकर टोकन प्राप्त करें और अपनी पसंदीदा वेबसाइटों को सपोर्ट करें।</translation>
 <translation id="7408493389591475748">गोपनीयता रिपोर्टिंग देखने के लिए ब्राउज़ करना शुरू करें</translation>
-<translation id="9080777565335515917">निजी और सुरक्षित ब्राउज़िंग के लिए अपने डिफ़ॉल्ट ब्राउज़र के रूप में Brave को सेट करें।</translation>
 <translation id="1390943217516275883">Brave को अपनी गोपनीयता आँकड़े दिखाने की अनुमति दें</translation>
 <translation id="1763352720905582220">एक साप्ताहिक गोपनीयता रिपोर्ट भेजता है</translation>
 <translation id="1811691435325545066">सभी गोपनीयता रिपोर्ट डेटा साफ़ करें</translation>
@@ -592,16 +586,6 @@
 <translation id="2977501775944575564">पैरलेल डाउनलोडिंग</translation>
 <translation id="6224180438946945617">डाउनलोड स्पीड बढ़ाने के लिए पैरलेल डाउनलोडिंग इनेबल करें</translation>
 <translation id="8967385052772844086">पूरी गोपनीयता रिपोर्ट देखें</translation>
-<translation id="6864343534748973390">सबसे लोकप्रिय</translation>
-<translation id="4608192160278975831">निजी और कोई ट्रैकिंग नहीं</translation>
-<translation id="7208522820527289601">निजी और कोई ट्रैकिंग नहीं, EU-आधारित</translation>
-<translation id="1161008391729450974">Google ट्रैकर्स के बिना परिणाम देता है</translation>
-<translation id="7320542277711359296">दूसरा सबसे लोकप्रिय</translation>
-<translation id="8295049095570748497">रूस का एक अग्रणी खोज इंजन</translation>
-<translation id="2642661895835126239">बर्लिन में स्थित पेड़ पौधे</translation>
-<translation id="2422627462367776805">दक्षिण कोरिया वेब पोर्टल और सर्च</translation>
-<translation id="177282784098234156">निजी, स्वतंत्र, उपयोगकर्ता-केंद्रित</translation>
-<translation id="1410130669636877548">जब आप वेब पर खोज करते हैं तो कुछ खोज इंजन आपकी गोपनीयता की दूसरों की तुलना में बेहतर तरीके से सुरक्षा करते हैं।</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
 <translation id="7138272885617540195">ऐप लिंक को Brave के बाहर के ऐप्स में खोलने की अनुमति दें</translation>
 <translation id="4954512758656527938">डिफ़ॉल्ट Ethereum वॉलेट</translation>
