@@ -32,11 +32,13 @@
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/url_data_source.h"
@@ -73,13 +75,12 @@ std::string GetSearchWidgetDefaultHost(PrefService* local_state) {
 
 }  // namespace
 
-BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui,
-                             const std::string& name,
-                             brave_ads::AdsService* ads_service,
-                             PrefService* local_state,
-                             p3a::P3AService* p3a_service,
-                             ntp_background_images::NTPBackgroundImagesService*
-                                 ntp_background_images_service)
+BraveNewTabUI::BraveNewTabUI(
+    content::WebUI* web_ui,
+    const std::string& name,
+    brave_ads::AdsService* ads_service,
+    ntp_background_images::ViewCounterService* view_counter_service,
+    PrefService* local_state)
     : ui::MojoWebUIController(
           web_ui,
           true /* Needed for legacy non-mojom message handler */),
@@ -170,15 +171,13 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui,
   source->AddString("ntpNewTabTakeoverRichMediaUrl",
                     kNTPNewTabTakeoverRichMediaUrl);
 
-  std::unique_ptr<ntp_background_images::NTPP3AHelperImpl> ntp_p3a_helper;
-  if (g_brave_browser_process->p3a_service() != nullptr) {
-    ntp_p3a_helper = std::make_unique<ntp_background_images::NTPP3AHelperImpl>(
-        local_state, p3a_service, ntp_background_images_service,
-        profile->GetPrefs());
+  ntp_background_images::NTPP3AHelper* ntp_p3a_helper = nullptr;
+  if (view_counter_service != nullptr) {
+    ntp_p3a_helper = view_counter_service->GetP3AHelper();
   }
   rich_media_ad_event_handler_ = std::make_unique<
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
-      ads_service, std::move(ntp_p3a_helper));
+      ads_service, ntp_p3a_helper);
 
   // Add a SanitizedImageSource to allow fetching images for Brave News.
   content::URLDataSource::Add(profile,

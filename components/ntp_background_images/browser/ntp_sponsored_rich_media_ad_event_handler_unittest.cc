@@ -32,15 +32,14 @@ class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {
 
     std::unique_ptr<NTPP3AHelperMock> ntp_p3a_helper =
         std::make_unique<NTPP3AHelperMock>();
-    raw_ptr<NTPP3AHelperMock> ntp_p3a_helper_ptr = ntp_p3a_helper.get();
 
-    NTPSponsoredRichMediaAdEventHandler ad_event_handler(
-        &ads_service, std::move(ntp_p3a_helper));
+    NTPSponsoredRichMediaAdEventHandler ad_event_handler(&ads_service,
+                                                         ntp_p3a_helper.get());
 
     if (should_metrics_fallback_to_p3a) {
       if (should_report) {
         EXPECT_CALL(
-            *ntp_p3a_helper_ptr,
+            *ntp_p3a_helper,
             RecordNewTabPageAdEvent(mojom_ad_event_type, kCreativeInstanceId));
 
         // `TriggerNewTabPageAdEvent` should be called because the ads service
@@ -48,7 +47,7 @@ class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {
         // campaign should report using P3A.
         EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent);
       } else {
-        EXPECT_CALL(*ntp_p3a_helper_ptr, RecordNewTabPageAdEvent).Times(0);
+        EXPECT_CALL(*ntp_p3a_helper, RecordNewTabPageAdEvent).Times(0);
         EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent).Times(0);
       }
     } else {
@@ -60,15 +59,12 @@ class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {
       } else {
         EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent).Times(0);
       }
-      EXPECT_CALL(*ntp_p3a_helper_ptr, RecordNewTabPageAdEvent).Times(0);
+      EXPECT_CALL(*ntp_p3a_helper, RecordNewTabPageAdEvent).Times(0);
     }
 
     ad_event_handler.MaybeReportRichMediaAdEvent(
         kPlacementId, kCreativeInstanceId, should_metrics_fallback_to_p3a,
         mojom_ad_event_type);
-
-    // Reset the `ntp_p3a_helper_ptr` to nullptr to avoid dangling pointer.
-    ntp_p3a_helper_ptr = nullptr;
   }
 };
 
