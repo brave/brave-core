@@ -41,6 +41,7 @@ source_set("win") {
     "//brave/components/brave_vpn/browser",
     "//brave/components/brave_vpn/browser/connection/wireguard",
     "//brave/components/brave_vpn/browser/connection/wireguard/credentials",
+    "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/win",
     "//chrome/elevation_service:public_headers",
     "//chrome/install_static:install_static_util",

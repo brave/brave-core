@@ -22,6 +22,7 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/win/com_init_util.h"
+#include "base/win/registry.h"
 #include "base/win/scoped_bstr.h"
 #include "brave/browser/brave_vpn/win/service_constants.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
@@ -32,6 +33,7 @@ namespace brave_vpn {
 
 namespace {
 std::optional<bool> g_wireguard_service_registered_for_testing;
+std::optional<std::string> g_smart_proxy_url;
 }  // namespace
 
 namespace wireguard {
@@ -65,6 +67,33 @@ bool EnableBraveVpnWireguardServiceImpl(
     const std::string& mapped_ip4_address,
     const std::string& vpn_server_hostname) {
   base::win::AssertComInitialized();
+
+  // TODO(bsclifton): clean this up
+  if (g_smart_proxy_url.has_value()) {
+    base::win::RegKey key;
+    LONG rv = key.Create(
+        HKEY_CURRENT_USER,
+        L"Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",
+        KEY_ALL_ACCESS);
+    if (rv == ERROR_SUCCESS && key.Valid()) {
+      std::wstring current_proxy_url;
+      if (key.ReadValue(L"AutoConfigURL", &current_proxy_url) ==
+          ERROR_SUCCESS) {
+        LOG(ERROR) << L"User has `AutoConfigURL` value already set: \""
+                   << current_proxy_url
+                   << "\".\nBrave VPN smart proxy routing can't be used.";
+      } else {
+        // make the change
+        current_proxy_url = base::UTF8ToWide(*g_smart_proxy_url);
+        rv = key.WriteValue(L"AutoConfigURL", current_proxy_url.c_str());
+        LOG(ERROR) << L"Set Brave VPN smart proxy routing to = \""
+                   << current_proxy_url << "\"";
+      }
+      // TODO(bsclifton): if value passed in is empty, delete key
+    }
+  }
+  // ------------------------------
+
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
   if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
                               nullptr, CLSCTX_LOCAL_SERVER,
@@ -111,7 +140,13 @@ void EnableBraveVpnWireguardService(const std::string& server_public_key,
                                     const std::string& client_private_key,
                                     const std::string& mapped_ip4_address,
                                     const std::string& vpn_server_hostname,
+                                    std::optional<std::string> smart_proxy_url,
                                     wireguard::BooleanCallback callback) {
+  g_smart_proxy_url.reset();
+  if (smart_proxy_url.has_value()) {
+    g_smart_proxy_url = smart_proxy_url;
+  }
+
   base::ThreadPool::CreateCOMSTATaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives(),
        base::TaskPriority::BEST_EFFORT,
@@ -127,6 +162,19 @@ void EnableBraveVpnWireguardService(const std::string& server_public_key,
 
 bool DisableBraveVpnWireguardServiceImpl() {
   base::win::AssertComInitialized();
+
+  // TODO(bsclifton): clean this up
+  base::win::RegKey key;
+  LONG rv = key.Create(
+      HKEY_CURRENT_USER,
+      L"Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",
+      KEY_ALL_ACCESS);
+  if (rv == ERROR_SUCCESS && key.Valid()) {
+    // TODO(bsclifton): only delete if enabled via above
+    key.DeleteValue(L"AutoConfigURL");
+    LOG(ERROR) << "BSC]] delete";
+  }
+  // ------------------------------
 
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
   if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
