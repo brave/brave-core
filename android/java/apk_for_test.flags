@@ -962,6 +962,7 @@
 }
 
 -keep class org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider {
+    *** setWidgetEnabled(...);
     public <init>(...);
 }
 
