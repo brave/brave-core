@@ -9,6 +9,7 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/ntp_background/custom_background_file_manager.h"
@@ -19,6 +20,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_handler.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/browser_process.h"
@@ -91,6 +93,16 @@ void BraveNewTabPageUI::BindInterface(
       std::move(receiver), Profile::FromWebUI(web_ui()),
       web_ui()->GetWebContents(), /*metrics_reporter=*/nullptr,
       /*omnibox_controller=*/nullptr);
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  rewards_page_handler_ = std::make_unique<brave_rewards::RewardsPageHandler>(
+      std::move(receiver), nullptr,
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile),
+      brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr,
+      profile->GetPrefs());
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewTabPageUI)

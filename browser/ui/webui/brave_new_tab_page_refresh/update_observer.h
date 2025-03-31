@@ -28,7 +28,8 @@ class UpdateObserver {
     kTopSites,
     kClock,
     kShieldsStats,
-    kTalk
+    kTalk,
+    kRewards
   };
 
   UpdateObserver(PrefService& pref_service, TopSitesFacade* top_sites_facade);

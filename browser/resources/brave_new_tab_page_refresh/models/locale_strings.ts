@@ -26,6 +26,15 @@ export type StringKey =
   'photoCreditsText' |
   'randomizeBackgroundLabel' |
   'removeTopSiteLabel' |
+  'rewardsBalanceTitle' |
+  'rewardsConnectButtonLabel' |
+  'rewardsConnectText' |
+  'rewardsConnectTitle' |
+  'rewardsFeatureText1' |
+  'rewardsFeatureText2' |
+  'rewardsOnboardingButtonLabel' |
+  'rewardsOnboardingLink' |
+  'rewardsWidgetTitle' |
   'saveChangesButtonLabel' |
   'searchAskLeoDescription' |
   'searchBoxPlaceholderText' |
@@ -39,6 +48,7 @@ export type StringKey =
   'settingsTitle' |
   'showBackgroundsLabel' |
   'showClockLabel' |
+  'showRewardsWidgetLabel' |
   'showSearchBoxLabel' |
   'showSponsoredImagesLabel' |
   'showStatsLabel' |
