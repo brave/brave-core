@@ -59,6 +59,7 @@ export const style = scoped.css`
   }
 
   main {
+    container-type: inline-size;
     position: relative;
     z-index: 1;
     display: flex;
@@ -100,6 +101,31 @@ export const style = scoped.css`
     flex: 1 1 auto;
     align-self: stretch;
   }
+
+  .widget-container {
+    --widget-preferred-height: 120px;
+    --widget-preferred-width: 420px;
+    --widget-flex-basis: var(--widget-preferred-width);
+
+    align-self: stretch;
+    flex: 0 0 var(--widget-preferred-height);
+
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 16px;
+
+    @container (max-width: 900px) {
+      --widget-flex-basis: var(--widget-preferred-height);
+
+      width: var(--widget-preferred-width);
+      align-self: center;
+      flex-basis: auto;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
 `
 
 global.css`

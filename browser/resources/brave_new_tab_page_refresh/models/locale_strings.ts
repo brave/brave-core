@@ -42,6 +42,7 @@ export type StringKey =
   'showSearchBoxLabel' |
   'showSponsoredImagesLabel' |
   'showStatsLabel' |
+  'showTalkWidgetLabel' |
   'showTopSitesLabel' |
   'solidBackgroundLabel' |
   'solidBackgroundTitle' |
@@ -49,6 +50,10 @@ export type StringKey =
   'statsBandwidthSavedText' |
   'statsTimeSavedText' |
   'statsTitle' |
+  'talkDescriptionText' |
+  'talkDescriptionTitle' |
+  'talkStartCallLabel' |
+  'talkWidgetTitle' |
   'topSiteRemovedText' |
   'topSiteRemovedTitle' |
   'topSitesCustomOptionText' |
@@ -61,4 +66,5 @@ export type StringKey =
   'topSitesTitleLabel' |
   'topSitesURLLabel' |
   'undoButtonLabel' |
-  'uploadBackgroundLabel'
+  'uploadBackgroundLabel' |
+  'widgetSettingsTitle'

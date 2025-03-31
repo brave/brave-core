@@ -48,6 +48,8 @@ UpdateObserver::UpdateObserver(PrefService& pref_service,
   AddPrefListener(brave_perf_predictor::prefs::kBandwidthSavedBytes,
                   Source::kShieldsStats);
 
+  AddPrefListener(kNewTabPageShowBraveTalk, Source::kTalk);
+
   if (top_sites_facade) {
     top_sites_facade->SetSitesUpdatedCallback(
         base::BindRepeating(&UpdateObserver::OnUpdate,

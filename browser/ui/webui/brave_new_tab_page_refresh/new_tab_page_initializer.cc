@@ -146,6 +146,7 @@ void NewTabPageInitializer::AddStrings() {
       {"showSearchBoxLabel", IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL},
       {"showSponsoredImagesLabel", IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL},
       {"showStatsLabel", IDS_NEW_TAB_SHOW_STATS_LABEL},
+      {"showTalkWidgetLabel", IDS_NEW_TAB_SHOW_TALK_WIDGET_LABEL},
       {"showTopSitesLabel", IDS_NEW_TAB_SHOW_TOP_SITES_LABEL},
       {"solidBackgroundLabel", IDS_NEW_TAB_SOLID_BACKGROUND_LABEL},
       {"solidBackgroundTitle", IDS_NEW_TAB_SOLID_BACKGROUND_LABEL},
@@ -153,6 +154,10 @@ void NewTabPageInitializer::AddStrings() {
       {"statsBandwidthSavedText", IDS_NEW_TAB_STATS_BANDWIDTH_SAVED_TEXT},
       {"statsTimeSavedText", IDS_NEW_TAB_STATS_TIME_SAVED_TEXT},
       {"statsTitle", IDS_NEW_TAB_STATS_TITLE},
+      {"talkDescriptionText", IDS_NEW_TAB_TALK_DESCRIPTION_TEXT},
+      {"talkDescriptionTitle", IDS_NEW_TAB_TALK_DESCRIPTION_TITLE},
+      {"talkStartCallLabel", IDS_NEW_TAB_TALK_START_CALL_LABEL},
+      {"talkWidgetTitle", IDS_NEW_TAB_TALK_WIDGET_TITLE},
       {"topSiteRemovedText", IDS_NEW_TAB_TOP_SITE_REMOVED_TEXT},
       {"topSiteRemovedTitle", IDS_NEW_TAB_TOP_SITE_REMOVED_TITLE},
       {"topSitesCustomOptionText", IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT},
@@ -168,7 +173,8 @@ void NewTabPageInitializer::AddStrings() {
       {"topSitesTitleLabel", IDS_NEW_TAB_TOP_SITES_TITLE_LABEL},
       {"topSitesURLLabel", IDS_NEW_TAB_TOP_SITES_URL_LABEL},
       {"undoButtonLabel", IDS_NEW_TAB_UNDO_BUTTON_LABEL},
-      {"uploadBackgroundLabel", IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL}};
+      {"uploadBackgroundLabel", IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL},
+      {"widgetSettingsTitle", IDS_NEW_TAB_WIDGET_SETTINGS_TITLE}};
 
   source_->AddLocalizedStrings(kStrings);
 }

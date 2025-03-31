@@ -44,6 +44,7 @@ const localeStrings: { [K in StringKey]: string }  = {
   showSearchBoxLabel: 'Show search widget in new tabs',
   showSponsoredImagesLabel: 'Show Sponsored Images',
   showStatsLabel: 'Brave Stats',
+  showTalkWidgetLabel: 'Brave Talk',
   showTopSitesLabel: 'Show top sites',
   solidBackgroundLabel: 'Solid colors',
   solidBackgroundTitle: 'Solid colors',
@@ -51,6 +52,10 @@ const localeStrings: { [K in StringKey]: string }  = {
   statsBandwidthSavedText: 'Bandwidth saved',
   statsTimeSavedText: 'Time saved',
   statsTitle: 'STATS',
+  talkDescriptionText: 'Encrypted video calls with Brave Talk.',
+  talkDescriptionTitle: 'Privacy-First Calls',
+  talkStartCallLabel: 'Start call',
+  talkWidgetTitle: 'TALK',
   topSiteRemovedText: 'Top site removed',
   topSiteRemovedTitle: 'Removed',
   topSitesCustomOptionText: 'Top sites are curated by you',
@@ -63,7 +68,8 @@ const localeStrings: { [K in StringKey]: string }  = {
   topSitesTitleLabel: 'Name',
   topSitesURLLabel: 'URL',
   undoButtonLabel: 'Undo',
-  uploadBackgroundLabel: 'Upload from device'
+  uploadBackgroundLabel: 'Upload from device',
+  widgetSettingsTitle: 'Widgets'
 }
 
 export function createLocale() {

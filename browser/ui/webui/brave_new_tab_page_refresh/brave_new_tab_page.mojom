@@ -77,6 +77,7 @@ interface NewTabPage {
   OnTopSitesUpdated();
   OnClockStateUpdated();
   OnShieldsStatsUpdated();
+  OnTalkStateUpdated();
 };
 
 // Browser-side handler for requests from the WebUI page.
@@ -206,5 +207,9 @@ interface NewTabPageHandler {
 
   // Returns shields browsing stats for the current user.
   GetShieldsStats() => (ShieldsStats shields_stats);
+
+  // Gets or sets whether the Brave Talk widget is displayed.
+  GetShowTalkWidget() => (bool show_talk_widget);
+  SetShowTalkWidget(bool show_talk_widget) => ();
 
 };
