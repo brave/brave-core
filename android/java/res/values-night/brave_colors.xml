@@ -275,4 +275,14 @@
     <color name="text_interactive">#7c91ff</color>
 
     <color name="open_yt_dialog_bg">#000000</color>
+
+    <!-- Empty state icon Colors -->
+    <color name="empty_state_icon_bg_color">#000B89</color>
+    <color name="empty_state_icon_bg_background_color">#000B89</color>
+    <color name="empty_state_icon_bg_foreground_color">#000B89</color>
+    <color name="empty_state_icon_color">#828CFF</color>
+    <color name="empty_state_icon_tabswitcher_bg_color">#000B89</color>
+    <color name="empty_state_tab_border_color">#828CFF</color>
+    <color name="empty_state_tab_group_border_color">#828CFF</color>
+
 </resources>
