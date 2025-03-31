@@ -96,7 +96,9 @@ export const ConnectWithSiteHeader = (props: Props) => {
               </GradientLine>
               <Tooltip text={originInfo.eTldPlusOne}>
                 <FavIcon
-                  src={`chrome://favicon/size/64@1x/${originInfo.originSpec}`}
+                  src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
+                    originInfo.originSpec
+                  )}`}
                   isReadyToConnect={isReadyToConnect}
                 />
               </Tooltip>
@@ -109,7 +111,9 @@ export const ConnectWithSiteHeader = (props: Props) => {
               marginBottom={16}
             >
               <FavIcon
-                src={`chrome://favicon/size/64@1x/${originInfo.originSpec}`}
+                src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
+                  originInfo.originSpec
+                )}`}
                 isReadyToConnect={isReadyToConnect}
               />
               <Column alignItems='flex-start'>

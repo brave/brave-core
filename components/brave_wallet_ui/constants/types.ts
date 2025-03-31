@@ -583,6 +583,9 @@ export enum WalletRoutes {
   // dev zcash screen
   DevZCash = '/dev-zcash',
 
+  // panel connection screen
+  Connections = '/crypto/connections',
+
   // Hashes
   AccountsHash = '#accounts',
   TransactionsHash = '#transactions',
@@ -895,6 +898,7 @@ export type NavIDTypes =
   | 'bridge'
   | 'explore'
   | 'web3'
+  | 'connections'
 
 export type AccountPageTabs =
   (typeof AccountPageTabs)[keyof typeof AccountPageTabs]

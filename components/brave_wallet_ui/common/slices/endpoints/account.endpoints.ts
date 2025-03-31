@@ -111,6 +111,28 @@ export const accountEndpoints = ({
       providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }]
     }),
 
+    getSelectedSOLAccountId: query<BraveWallet.AccountId | null, void>({
+      queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
+        return {
+          data:
+            (await baseQuery(undefined).cache.getAllAccounts())
+              .solDappSelectedAccount?.accountId || null
+        }
+      },
+      providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }]
+    }),
+
+    getSelectedETHAccountId: query<BraveWallet.AccountId | null, void>({
+      queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
+        return {
+          data:
+            (await baseQuery(undefined).cache.getAllAccounts())
+              .ethDappSelectedAccount?.accountId || null
+        }
+      },
+      providesTags: [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }]
+    }),
+
     addAccount: mutation<
       BraveWallet.AccountInfo,
       {
