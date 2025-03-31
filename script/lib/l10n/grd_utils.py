@@ -346,7 +346,7 @@ def get_grd_strings(grd_file_path, validate_tags=True):
 
         # Check for a duplicate message_name, this can happen, for example,
         # for the same message id but one is title case and the other isn't.
-        # Both need to be uploaded to Transifex with different message names.
+        # Both need to be uploaded to Crowdin with different message names.
         # When XTB files are later generated, the ID doesn't matter at all.
         # The only thing that matters is the fingerprint string hash.
         if dupe_dict[message_name] > 1:
