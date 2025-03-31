@@ -17,11 +17,12 @@ const pushL10n = (options) => {
     : options.with_missing_translations
     ? '--with_missing_translations'
     : ''
-  // Get rid of local copied xtb and grd changes
+  // Get rid of the copied from //brave xtb and grd changes.
   let args = ['checkout', '--', '*.xtb']
   util.run('git', args, runOptions)
   args = ['checkout', '--', '*.grd*']
   util.run('git', args, runOptions)
+
   l10nUtil.getBraveTopLevelPaths().forEach((sourceStringPath) => {
     if (
       !options.grd_path ||
@@ -31,7 +32,6 @@ const pushL10n = (options) => {
         'python3',
         [
           'script/push-l10n.py',
-          '--service', options.service,
           '--channel', options.channel,
           '--source_string_path',
           sourceStringPath,

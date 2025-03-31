@@ -21,7 +21,6 @@ const updatePatches = require('./updatePatches')
 const pullL10n = require('../lib/pullL10n')
 const pushL10n = require('../lib/pushL10n')
 const chromiumRebaseL10n = require('../lib/chromiumRebaseL10n')
-const l10nDeleteTranslations = require('../lib/l10nDeleteTranslations')
 const test = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
 const genGradle = require('../lib/genGradle')
@@ -189,33 +188,18 @@ program
 
 program
   .command('pull_l10n')
-  .option('--service <service>', 'Service to use: Transifex or Crowdin')
-  .option('--channel <channel>', 'Release|Beta|Nightly for Crowdin, Release for Transifex')
+  .option('--channel <channel>', 'Release|Beta|Nightly, Release by default')
   .option('--grd_path <grd_path>', `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`)
-  .option('--debug', `Dumps downloaded content for one language into TransifexCurrent.txt or CrowdinCurrent.txt file in the temp directory.`)
+  .option('--debug', `Dumps downloaded content for one language into CrowdinCurrent.txt file in the temp directory.`)
   .action(pullL10n)
 
 program
   .command('push_l10n')
-  .option('--service <service>', 'Service to use: Transifex or Crowdin')
-  .option('--channel <channel>', 'Release|Beta|Nightly for Crowdin, Release for Transifex')
+  .option('--channel <channel>', 'Release|Beta|Nightly, Release by default')
   .option('--grd_path <grd_path>', `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`)
-  .option('--with_translations', 'Push local translations. WARNING: this will overwrite translations in Transifex/Crowdin.')
-  .option('--with_missing_translations', 'Push local translations for strings that do not have translations in Transifex/Crowdin.')
+  .option('--with_translations', 'Push local translations. WARNING: this will overwrite translations in Crowdin.')
+  .option('--with_missing_translations', 'Push local translations for strings that do not have translations in Crowdin.')
   .action(pushL10n)
-
-program
-  .command('delete_string_translations')
-  .option(
-    '--string_ids <string_ids>',
-    'Transifex string hash IDs to clear translated values from all languages (comma separated), e.g: "647dde44fb7eb1e62cd502c4b1c25cb8,8b03500bd8f2fa55928521a68bed4b1b"',
-    commaSeparatedList
-  )
-  .option(
-    '--resource_name <resource_name>',
-    'Transifex resource name from which to clear all translations for specified string IDs, e.g: "generated_resources"'
-  )
-  .action(l10nDeleteTranslations)
 
 program
   .command('chromium_rebase_l10n')
