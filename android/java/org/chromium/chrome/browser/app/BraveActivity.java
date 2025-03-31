@@ -146,6 +146,7 @@ import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPageManager;
+import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
@@ -1311,6 +1312,31 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         ContextUtils.getAppSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
+        applyChangesForYahooJp();
+    }
+
+    private void applyChangesForYahooJp() {
+        boolean isDefaultSearchEngineChanged =
+                ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED, false);
+        String countryCode = Locale.getDefault().getCountry();
+        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(getCurrentProfile());
+        Runnable onTemplateUrlServiceReady =
+                () -> {
+                    if (isActivityFinishingOrDestroyed()) return;
+
+                    if (!isDefaultSearchEngineChanged
+                            && countryCode.equals(BraveConstants.JAPAN_COUNTRY_CODE)
+                            && templateUrlService.isDefaultSearchEngineGoogle()) {
+                        BraveSearchEngineUtils.setDSEPrefs(
+                                BraveSearchEngineUtils.getTemplateUrlByShortName(
+                                        getCurrentProfile(), OnboardingPrefManager.YAHOO_JP),
+                                getCurrentProfile()
+                                        .getPrimaryOtrProfile(/* createIfNeeded= */ true));
+                    }
+                };
+        templateUrlService.runWhenLoaded(onTemplateUrlServiceReady);
     }
 
     private void setBraveAsDefaultPrivateMode() {

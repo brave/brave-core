@@ -11,6 +11,8 @@ import android.widget.BaseAdapter;
 
 import org.chromium.components.search_engines.TemplateUrl;
 
+import org.chromium.base.Log;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -53,6 +55,7 @@ public class BraveBaseSearchEngineAdapter extends BaseAdapter {
         Set<String> templateUrlSet = new HashSet<String>();
         Iterator<TemplateUrl> iterator = templateUrls.iterator();
         while (iterator.hasNext()) {
+            Log.e("brave_search", "templateUrl: " + iterator.next().getShortName());
             TemplateUrl templateUrl = iterator.next();
             if (!templateUrlSet.contains(templateUrl.getShortName())) {
                 templateUrlSet.add(templateUrl.getShortName());
