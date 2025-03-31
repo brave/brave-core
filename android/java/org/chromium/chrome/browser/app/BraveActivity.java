@@ -1328,12 +1328,16 @@ public abstract class BraveActivity extends ChromeActivity
 
                     if (!isDefaultSearchEngineChanged
                             && countryCode.equals(BraveConstants.JAPAN_COUNTRY_CODE)
-                            && templateUrlService.isDefaultSearchEngineGoogle()) {
+                            && templateUrlService.isDefaultSearchEngineGoogle()
+                            && !ChromeSharedPreferences.getInstance()
+                                    .readBoolean(BravePreferenceKeys.BRAVE_DEFAULT_SEARCH_ENGINE_MIGRATED_JP, false)) {
                         BraveSearchEngineUtils.setDSEPrefs(
                                 BraveSearchEngineUtils.getTemplateUrlByShortName(
                                         getCurrentProfile(), OnboardingPrefManager.YAHOO_JP),
                                 getCurrentProfile()
                                         .getPrimaryOtrProfile(/* createIfNeeded= */ true));
+                        ChromeSharedPreferences.getInstance()
+                                .writeBoolean(BravePreferenceKeys.BRAVE_DEFAULT_SEARCH_ENGINE_MIGRATED_JP, true);
                     }
                 };
         templateUrlService.runWhenLoaded(onTemplateUrlServiceReady);
