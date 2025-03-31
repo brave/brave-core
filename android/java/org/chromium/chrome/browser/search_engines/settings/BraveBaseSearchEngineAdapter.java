@@ -14,11 +14,13 @@ import org.chromium.components.search_engines.TemplateUrl;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class BraveBaseSearchEngineAdapter extends BaseAdapter {
-    public BraveBaseSearchEngineAdapter() {
-    }
+    private static final String JAPAN_COUNTRY_CODE = "JP";
+
+    public BraveBaseSearchEngineAdapter() {}
 
     // BaseAdapter:
     @Override
@@ -67,6 +69,21 @@ public class BraveBaseSearchEngineAdapter extends BaseAdapter {
                 recentEngineNum++;
             } else {
                 iterator.remove();
+            }
+        }
+
+        applyChangesForYahooJp(templateUrls);
+    }
+
+    private static void applyChangesForYahooJp(List<TemplateUrl> templateUrls) {
+        String countryCode = Locale.getDefault().getCountry();
+        if (countryCode.equals(JAPAN_COUNTRY_CODE)) {
+            for (TemplateUrl templateUrl : templateUrls) {
+                if (templateUrl.getKeyword().equals("yahoo.co.jp")) {
+                    templateUrls.remove(templateUrl);
+                    templateUrls.add(0, templateUrl);
+                    break;
+                }
             }
         }
     }
