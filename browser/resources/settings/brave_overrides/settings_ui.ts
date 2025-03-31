@@ -11,6 +11,7 @@ import {
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {SettingsUiElement} from '../settings_ui/settings_ui.js'
+import {setGlobalScrollTarget, resetGlobalScrollTargetForTesting} from '../global_scroll_target_mixin.js';
 
 // TODO: move throttle utility to a chrome://resources module
 function throttle (callback: () => void, maxWaitTime: number = 30) {
@@ -141,11 +142,22 @@ const BraveClearSettingsMenuHighlightBehavior = {
       }, 100)
       container.addEventListener('scroll', onScroll)
     })
-  }
+  },
+}
+
+// In Brave we scroll the settings-main element, not the container.
+const BraveSetGlobalScrollTargetBehavior = {
+  ready: function(this: SettingsUiElement) {
+    // Note: We abuse resetGlobalScrollTargetForTesting() to clear the
+    // global scroll target, as the promise it uses can only be resolved once.
+    resetGlobalScrollTargetForTesting();
+    setGlobalScrollTarget(this.$.main);
+  },
 }
 
 RegisterPolymerComponentBehaviors({
   'settings-ui': [
-    BraveClearSettingsMenuHighlightBehavior
+    BraveClearSettingsMenuHighlightBehavior,
+    BraveSetGlobalScrollTargetBehavior
   ]
 })
