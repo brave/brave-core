@@ -1021,6 +1021,7 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
 
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
