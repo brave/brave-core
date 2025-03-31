@@ -2152,6 +2152,10 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
                         "mCustomTabFeatureOverridesManager"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/customtabs/CustomTabActivity",
+                        "mIsEnterAnimationCompleted"));
     }
 
     @Test
