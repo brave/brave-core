@@ -117,7 +117,8 @@ void StatusTrayRunner::ConnectVPN() {
   if (IsWireguardActive()) {
     wireguard::EnableBraveVpnWireguardService(
         // passing empty params will reconnect using last known good config.
-        "", "", "", "",
+        // TODO(bsclifton): store last known value on other side
+        "", "", "", "", std::nullopt,
         base::BindOnce(&StatusTrayRunner::OnConnected,
                        weak_factory_.GetWeakPtr()));
   } else {

@@ -46,6 +46,8 @@ std::string EncodeBase64(const std::vector<uint8_t>& in) {
 
 constexpr char kCloudflareIPv4[] = "1.1.1.1";
 // Template for wireguard config generation.
+// For a quick reference on the keys/values, please see:
+// https://github.com/pirate/wireguard-docs?tab=readme-ov-file#config-reference
 constexpr char kWireguardConfigTemplate[] = R"(
   [Interface]
   PrivateKey = {client_private_key}

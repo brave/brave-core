@@ -9,9 +9,10 @@
 #include <tuple>
 #include <utility>
 
-#include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
 #include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/common/win/utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_vpn {
@@ -57,6 +58,7 @@ void WireguardConnectionAPIImplWin::PlatformConnectImpl(
   brave_vpn::wireguard::EnableBraveVpnWireguardService(
       credentials.server_public_key, credentials.client_private_key,
       credentials.mapped_ip4_address, vpn_server_hostname,
+      SmartRoutingEnabled() ? std::string(kProxyUrl) : nullptr,
       base::BindOnce(&WireguardConnectionAPIImplWin::OnWireguardServiceLaunched,
                      weak_factory_.GetWeakPtr()));
 }
