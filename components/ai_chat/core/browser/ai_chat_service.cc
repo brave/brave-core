@@ -886,6 +886,9 @@ void AIChatService::OnConversationTokenInfoChanged(
 }
 
 void AIChatService::OnAssociatedContentUpdated(ConversationHandler* handler) {
+  if (handler->associated_content_manager()->HasContent()) {
+    return;
+  }
   MaybeUnloadConversation(handler);
 }
 

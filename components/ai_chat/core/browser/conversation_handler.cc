@@ -361,7 +361,14 @@ void ConversationHandler::OnAssociatedContentUpdated() {
         associated_content_manager_->GetAssociatedContent(),
         associated_content_manager_->should_send());
   }
+
   OnStateForConversationEntriesChanged();
+  MaybeSeedOrClearSuggestions();
+  MaybeFetchOrClearContentStagedConversation();
+
+  for (auto& observer : observers_) {
+    observer.OnAssociatedContentUpdated(this);
+  }
 }
 
 bool ConversationHandler::IsAnyClientConnected() {
@@ -449,9 +456,6 @@ void ConversationHandler::InitEngine() {
 void ConversationHandler::SetAssociatedContentDelegate(
     base::WeakPtr<AssociatedContentDelegate> delegate) {
   associated_content_manager_->SetContent(delegate.get());
-
-  MaybeSeedOrClearSuggestions();
-  MaybeFetchOrClearContentStagedConversation();
 }
 
 const mojom::Model& ConversationHandler::GetCurrentModel() {
