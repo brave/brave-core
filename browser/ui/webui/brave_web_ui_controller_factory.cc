@@ -12,10 +12,10 @@
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
@@ -156,9 +156,9 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new BraveNewTabUI(
         web_ui, url.host(),
         brave_ads::AdsServiceFactory::GetForProfile(profile),
-        g_browser_process->local_state(),
-        g_brave_browser_process->p3a_service(),
-        g_brave_browser_process->ntp_background_images_service());
+        ntp_background_images::ViewCounterServiceFactory::GetForProfile(
+            profile),
+        g_browser_process->local_state());
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
   } else if (host == kTorInternalsHost) {

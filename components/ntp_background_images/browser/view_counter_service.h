@@ -117,6 +117,8 @@ class ViewCounterService : public KeyedService,
 
   void OnTabURLChanged(const GURL& url);
 
+  NTPP3AHelper* GetP3AHelper() const;
+
  private:
   // Sync with themeValues in brave_appearance_page.js
   enum ThemesOption {

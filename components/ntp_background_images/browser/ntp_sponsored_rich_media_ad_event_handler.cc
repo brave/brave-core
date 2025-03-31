@@ -5,6 +5,8 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 
+#include <utility>
+
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
@@ -13,8 +15,8 @@ namespace ntp_background_images {
 
 NTPSponsoredRichMediaAdEventHandler::NTPSponsoredRichMediaAdEventHandler(
     brave_ads::AdsService* ads_service,
-    std::unique_ptr<NTPP3AHelper> ntp_p3a_helper)
-    : ads_service_(ads_service), ntp_p3a_helper_(std::move(ntp_p3a_helper)) {}
+    NTPP3AHelper* ntp_p3a_helper)
+    : ads_service_(ads_service), ntp_p3a_helper_(ntp_p3a_helper) {}
 
 NTPSponsoredRichMediaAdEventHandler::~NTPSponsoredRichMediaAdEventHandler() =
     default;

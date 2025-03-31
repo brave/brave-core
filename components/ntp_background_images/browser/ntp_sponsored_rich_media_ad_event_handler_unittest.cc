@@ -29,23 +29,19 @@ class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {
       bool should_record) {
     std::unique_ptr<NTPP3AHelperMock> ntp_p3a_helper =
         std::make_unique<NTPP3AHelperMock>();
-    raw_ptr<NTPP3AHelperMock> ntp_p3a_helper_ptr = ntp_p3a_helper.get();
 
     NTPSponsoredRichMediaAdEventHandler ad_event_handler(
-        /*ads_service=*/nullptr, std::move(ntp_p3a_helper));
+        /*ads_service=*/nullptr, ntp_p3a_helper.get());
 
     if (should_record) {
       EXPECT_CALL(
-          *ntp_p3a_helper_ptr,
+          *ntp_p3a_helper,
           RecordNewTabPageAdEvent(mojom_ad_event_type, kCreativeInstanceId));
     } else {
-      EXPECT_CALL(*ntp_p3a_helper_ptr, RecordNewTabPageAdEvent).Times(0);
+      EXPECT_CALL(*ntp_p3a_helper, RecordNewTabPageAdEvent).Times(0);
     }
     ad_event_handler.ReportRichMediaAdEvent(kPlacementId, kCreativeInstanceId,
                                             mojom_ad_event_type);
-
-    // Reset the `ntp_p3a_helper_ptr` to nullptr to avoid dangling pointer.
-    ntp_p3a_helper_ptr = nullptr;
   }
 
   void VerifyTriggerNewTabPageAdEventExpectation(
