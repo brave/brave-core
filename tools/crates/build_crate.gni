@@ -38,6 +38,7 @@ template("build_crate") {
     args = [
       rebase_path(cargo_exe),
       "build",
+      "--quiet",
       "--release",
       "--manifest-path",
       rebase_path("Cargo.toml"),
@@ -46,7 +47,7 @@ template("build_crate") {
       "--target-dir",
       rebase_path(get_path_info(crate_exe, "dir") + "/.."),
       "--frozen",
-      "-p",
+      "--package",
       string_replace(crate, "_", "-"),
     ]
   }

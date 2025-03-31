@@ -48,6 +48,8 @@ template("rust_to_wasm") {
 
       # below will be forwarded to wasm-pack (above will be added to $PATH)
       rebase_path(wasm_pack_exe),
+      "--log-level",
+      "warn",
       "build",
       "{{source_dir}}",
       "--mode",
@@ -60,6 +62,7 @@ template("rust_to_wasm") {
       "--out-name",
       "index",
       "--",
+      "--quiet",
       "--config",
       rebase_path("//{{source_root_relative_dir}}/.cargo/config.toml"),
       "--target-dir",
