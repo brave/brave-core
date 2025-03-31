@@ -22,7 +22,7 @@ class NotificationAd;
 class NotificationAdControlButtonsView;
 class NotificationAdHeaderView;
 
-class TextNotificationAdView : public NotificationAdView {
+class TextNotificationAdView final : public NotificationAdView {
  public:
   explicit TextNotificationAdView(const NotificationAd& notification_ad);
 

@@ -28,6 +28,7 @@ class EligibleNotificationAdsV2 final : public EligibleNotificationAdsBase {
   EligibleNotificationAdsV2(
       const SubdivisionTargeting& subdivision_targeting,
       const AntiTargetingResource& anti_targeting_resource);
+
   ~EligibleNotificationAdsV2() override;
 
   void GetForUserModel(

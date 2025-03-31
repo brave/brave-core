@@ -43,9 +43,6 @@ class GlobalState final {
   GlobalState(const GlobalState& other) = delete;
   GlobalState& operator=(const GlobalState& other) = delete;
 
-  GlobalState(GlobalState&& other) noexcept = delete;
-  GlobalState& operator=(GlobalState&& other) noexcept = delete;
-
   ~GlobalState();
 
   static GlobalState* GetInstance();

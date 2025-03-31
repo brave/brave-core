@@ -15,8 +15,6 @@ namespace brave_ads {
 
 class PlatformHelper {
  public:
-  virtual ~PlatformHelper();
-
   static const PlatformHelper& GetInstance();
 
   static void SetForTesting(const PlatformHelper* platform_helper);
@@ -29,6 +27,8 @@ class PlatformHelper {
   friend class base::NoDestructor<PlatformHelper>;
 
   PlatformHelper();
+
+  virtual ~PlatformHelper();
 
  private:
   static const PlatformHelper& GetInstanceImpl();

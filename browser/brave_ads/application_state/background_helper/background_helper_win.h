@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-class BackgroundHelperWin : public BackgroundHelper {
+class BackgroundHelperWin final : public BackgroundHelper {
  public:
   BackgroundHelperWin(const BackgroundHelperWin&) = delete;
   BackgroundHelperWin& operator=(const BackgroundHelperWin&) = delete;

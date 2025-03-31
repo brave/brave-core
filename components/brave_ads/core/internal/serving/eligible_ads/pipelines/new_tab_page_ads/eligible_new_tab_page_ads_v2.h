@@ -29,6 +29,7 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
  public:
   EligibleNewTabPageAdsV2(const SubdivisionTargeting& subdivision_targeting,
                           const AntiTargetingResource& anti_targeting_resource);
+
   ~EligibleNewTabPageAdsV2() override;
 
   void GetForUserModel(

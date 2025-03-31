@@ -34,17 +34,18 @@ namespace brave_ads {
 
 class AdsService;
 
-class AdsTabHelper : public content::WebContentsObserver,
+class AdsTabHelper final : public content::WebContentsObserver,
 #if !BUILDFLAG(IS_ANDROID)
-                     public BrowserListObserver,
+                           public BrowserListObserver,
 #endif
-                     public content::WebContentsUserData<AdsTabHelper> {
+                           public content::WebContentsUserData<AdsTabHelper> {
  public:
   explicit AdsTabHelper(content::WebContents* const);
-  ~AdsTabHelper() override;
 
   AdsTabHelper(const AdsTabHelper&) = delete;
   AdsTabHelper& operator=(const AdsTabHelper&) = delete;
+
+  ~AdsTabHelper() override;
 
   AdsService* ads_service() { return ads_service_; }
 

@@ -25,7 +25,7 @@ namespace brave_ads {
 
 // Overrides base functionality of Widget to specify native theme used for ads
 // notification popup.
-class NotificationAdPopupWidget : public views::Widget {
+class NotificationAdPopupWidget final : public views::Widget {
  public:
   NotificationAdPopupWidget();
 

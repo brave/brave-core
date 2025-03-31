@@ -16,7 +16,7 @@ namespace brave_ads {
 
 inline constexpr char kScheduledCaptchaTooltipId[] = "scheduled-captcha";
 
-class AdsCaptchaTooltip : public brave_tooltips::BraveTooltip {
+class AdsCaptchaTooltip final : public brave_tooltips::BraveTooltip {
  public:
   AdsCaptchaTooltip(ShowScheduledCaptchaCallback show_captcha_callback,
                     SnoozeScheduledCaptchaCallback snooze_captcha_callback,

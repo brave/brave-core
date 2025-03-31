@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-class TokenGeneratorMock : public TokenGeneratorInterface {
+class TokenGeneratorMock final : public TokenGeneratorInterface {
  public:
   TokenGeneratorMock();
 

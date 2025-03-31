@@ -23,7 +23,7 @@ namespace bat_ads {
 
 class BatAdsClientMojoBridge;
 
-class BatAdsImpl : public mojom::BatAds {
+class BatAdsImpl final : public mojom::BatAds {
  public:
   BatAdsImpl(const base::FilePath& service_path,
              mojo::PendingAssociatedRemote<mojom::BatAdsClient>
@@ -33,9 +33,6 @@ class BatAdsImpl : public mojom::BatAds {
 
   BatAdsImpl(const BatAdsImpl&) = delete;
   BatAdsImpl& operator=(const BatAdsImpl&) = delete;
-
-  BatAdsImpl(BatAdsImpl&& other) noexcept = delete;
-  BatAdsImpl& operator=(BatAdsImpl&& other) noexcept = delete;
 
   ~BatAdsImpl() override;
 

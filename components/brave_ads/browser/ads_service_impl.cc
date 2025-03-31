@@ -222,7 +222,7 @@ AdsServiceImpl::AdsServiceImpl(
     CHECK_IS_TEST();
   }
 
-  host_content_settings_map_->AddObserver(this);
+  host_content_settings_map_observation_.Observe(host_content_settings_map);
 
   rewards_service_observation_.Observe(rewards_service);
 
@@ -244,9 +244,7 @@ AdsServiceImpl::AdsServiceImpl(
   }
 }
 
-AdsServiceImpl::~AdsServiceImpl() {
-  host_content_settings_map_->RemoveObserver(this);
-}
+AdsServiceImpl::~AdsServiceImpl() = default;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -1218,8 +1216,6 @@ void AdsServiceImpl::ShutdownAdsService() {
 
   if (is_bat_ads_initialized_) {
     BackgroundHelper::GetInstance()->RemoveObserver(this);
-
-    host_content_settings_map_->RemoveObserver(this);
   }
 
   CloseAllNotificationAds();

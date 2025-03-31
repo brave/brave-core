@@ -47,10 +47,10 @@ class NotificationAdView;
 
 // The widget delegate of an notification ad popup. The view is owned by the
 // widget
-class NotificationAdPopup : public views::WidgetDelegateView,
-                            public views::WidgetObserver,
-                            public gfx::AnimationDelegate,
-                            public display::DisplayObserver {
+class NotificationAdPopup final : public views::WidgetDelegateView,
+                                  public views::WidgetObserver,
+                                  public gfx::AnimationDelegate,
+                                  public display::DisplayObserver {
   METADATA_HEADER(NotificationAdPopup, views::WidgetDelegateView)
  public:
   NotificationAdPopup(Profile& profile,

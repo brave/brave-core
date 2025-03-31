@@ -16,7 +16,7 @@
 
 namespace brave_ads {
 
-class Reminders : public AdHistoryManagerObserver {
+class Reminders final : public AdHistoryManagerObserver {
  public:
   Reminders();
 

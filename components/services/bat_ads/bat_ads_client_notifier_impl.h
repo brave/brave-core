@@ -18,7 +18,8 @@
 
 namespace bat_ads {
 
-class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
+class BatAdsClientNotifierImpl final
+    : public bat_ads::mojom::BatAdsClientNotifier {
  public:
   explicit BatAdsClientNotifierImpl(
       mojo::PendingReceiver<mojom::BatAdsClientNotifier>
@@ -27,10 +28,6 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   BatAdsClientNotifierImpl(const BatAdsClientNotifierImpl& other) = delete;
   BatAdsClientNotifierImpl& operator=(const BatAdsClientNotifierImpl& other) =
       delete;
-
-  BatAdsClientNotifierImpl(BatAdsClientNotifierImpl&& other) noexcept = delete;
-  BatAdsClientNotifierImpl& operator=(
-      BatAdsClientNotifierImpl&& other) noexcept = delete;
 
   ~BatAdsClientNotifierImpl() override;
 

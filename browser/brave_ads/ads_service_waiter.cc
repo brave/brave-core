@@ -5,18 +5,18 @@
 
 #include "brave/browser/brave_ads/ads_service_waiter.h"
 
+#include "base/check.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 
 namespace brave_ads {
 
-AdsServiceWaiter::AdsServiceWaiter(AdsService& ads_service)
-    : ads_service_(ads_service) {
-  ads_service_->AddObserver(this);
+AdsServiceWaiter::AdsServiceWaiter(AdsService* ads_service) {
+  CHECK(ads_service);
+
+  observation_.Observe(ads_service);
 }
 
-AdsServiceWaiter::~AdsServiceWaiter() {
-  ads_service_->RemoveObserver(this);
-}
+AdsServiceWaiter::~AdsServiceWaiter() = default;
 
 void AdsServiceWaiter::WaitForOnDidInitializeAdsService() {
   on_did_initialize_ads_service_run_loop_.Run();

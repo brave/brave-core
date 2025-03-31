@@ -29,6 +29,7 @@ class EligibleInlineContentAdsV2 final : public EligibleInlineContentAdsBase {
   EligibleInlineContentAdsV2(
       const SubdivisionTargeting& subdivision_targeting,
       const AntiTargetingResource& anti_targeting_resource);
+
   ~EligibleInlineContentAdsV2() override;
 
   void GetForUserModel(
