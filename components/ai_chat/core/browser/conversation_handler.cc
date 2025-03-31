@@ -384,8 +384,7 @@ bool ConversationHandler::IsRequestInProgress() {
 }
 
 bool ConversationHandler::IsAssociatedContentAlive() {
-  return associated_content_manager_ &&
-         !associated_content_manager_->HasArchiveContent();
+  return associated_content_manager_->HasNonArchiveContent();
 }
 
 void ConversationHandler::OnConversationDeleted() {

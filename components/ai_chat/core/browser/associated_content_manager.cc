@@ -282,8 +282,8 @@ bool AssociatedContentManager::HasOpenAIChatPermission() const {
          content_drivers_[0]->HasOpenAIChatPermission();
 }
 
-bool AssociatedContentManager::HasArchiveContent() const {
-  return !archive_content_.empty();
+bool AssociatedContentManager::HasNonArchiveContent() const {
+  return archive_content_.size() < content_drivers_.size();
 }
 
 bool AssociatedContentManager::HasContent() const {

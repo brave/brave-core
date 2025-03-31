@@ -60,7 +60,7 @@ class AssociatedContentManager
   std::string_view GetCachedTextContent();
 
   bool HasOpenAIChatPermission() const;
-  bool HasArchiveContent() const;
+  bool HasNonArchiveContent() const;
   bool HasContent() const;
 
   // Determines if the content for this conversation is a single video.
@@ -76,6 +76,11 @@ class AssociatedContentManager
 
   bool should_send() const { return should_send_; }
   void SetShouldSend(bool value);
+
+  std::vector<ConversationHandler::AssociatedContentDelegate*>
+  GetContentDriversForTesting() {
+    return content_drivers_;
+  }
 
  private:
   void DetachContent();
