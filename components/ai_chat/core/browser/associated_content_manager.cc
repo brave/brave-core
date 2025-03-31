@@ -29,13 +29,13 @@ AssociatedContentManager::AssociatedContentManager(
     ConversationHandler* conversation)
     : conversation_(conversation) {}
 
-AssociatedContentManager::~AssociatedContentManager() = default;
+AssociatedContentManager::~AssociatedContentManager() {
+  DetachContent();
+}
 
 void AssociatedContentManager::SetContent(
     ConversationHandler::AssociatedContentDelegate* delegate) {
-  content_observations_.RemoveAllObservations();
-  content_drivers_.clear();
-  archive_content_.clear();
+  DetachContent();
 
   if (delegate) {
     AddContent(delegate, /*notify_updated=*/false);
@@ -81,7 +81,7 @@ void AssociatedContentManager::LoadArchivedContent(
 
   // If we restored content from an archive then it was used in the conversation
   // so we should send it.
-  should_send_ = !metadata->associated_content.empty();
+  should_send_ = !archive->associated_content.empty();
   conversation_->OnAssociatedContentUpdated();
 }
 
@@ -318,6 +318,12 @@ void AssociatedContentManager::OnTitleChanged(
 void AssociatedContentManager::OnContentChanged(
     ConversationHandler::AssociatedContentDelegate* delegate) {
   conversation_->OnAssociatedContentUpdated();
+}
+
+void AssociatedContentManager::DetachContent() {
+  content_observations_.RemoveAllObservations();
+  content_drivers_.clear();
+  archive_content_.clear();
 }
 
 }  // namespace ai_chat

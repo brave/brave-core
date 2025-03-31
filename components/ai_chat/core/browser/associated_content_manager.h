@@ -78,6 +78,8 @@ class AssociatedContentManager
   void SetShouldSend(bool value);
 
  private:
+  void DetachContent();
+
   bool should_send_ = false;
 
   raw_ptr<ConversationHandler> conversation_;

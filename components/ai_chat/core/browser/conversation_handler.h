@@ -406,12 +406,6 @@ class ConversationHandler : public mojom::ConversationHandler,
                                  bool is_video,
                                  std::string invalidation_token);
 
-  // Disassociate with the current associated content. Use this instead of
-  // settings associated_content_delegegate_ to nullptr to ensure that we
-  // inform the delegate, otherwise when this class instance is destroyed,
-  // the delegate will not be informed.
-  void DisassociateContentDelegate();
-
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 

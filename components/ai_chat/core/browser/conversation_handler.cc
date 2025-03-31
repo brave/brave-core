@@ -252,9 +252,9 @@ ConversationHandler::ConversationHandler(
       weak_ptr_factory_.GetWeakPtr()));
   models_observer_.Observe(model_service_.get());
 
-  ChangeModel(conversation->model_key.value_or("").empty()
+  ChangeModel(metadata_->model_key.value_or("").empty()
                   ? model_service->GetDefaultModelKey()
-                  : conversation->model_key.value());
+                  : metadata_->model_key.value());
 
   if (initial_state.has_value() && !initial_state.value()->entries.empty()) {
     mojom::ConversationArchivePtr conversation_data =
@@ -273,7 +273,6 @@ ConversationHandler::ConversationHandler(
 }
 
 ConversationHandler::~ConversationHandler() {
-  DisassociateContentDelegate();
   OnConversationDeleted();
 }
 
@@ -713,7 +712,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
     // Now the conversation is committed, we can remove some unneccessary data
     // if we're not associated with a page.
     suggestions_.clear();
-    DisassociateContentDelegate();
+    associated_content_manager_->SetContent(nullptr);
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
     PerformAssistantGeneration();
@@ -956,11 +955,6 @@ void ConversationHandler::PerformQuestionGeneration(
       is_video, page_content, selected_language_,
       base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
                      weak_ptr_factory_.GetWeakPtr()));
-}
-
-void ConversationHandler::DisassociateContentDelegate() {
-  // Remove all assocatied conversations.
-  associated_content_manager_->SetContent(nullptr);
 }
 
 void ConversationHandler::GetAssociatedContentInfo(

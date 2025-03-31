@@ -15,7 +15,7 @@ Don't land until these are all resolved!
     This is being caused by shutting down with a reference to a AssociatedContentDelegate still
     live in the AssociatedContentManager. Fix is probably an OnDestroying notification.
 
-- [ ] Switching back and forward between a multi conversation and a normal causes a crash
+- [x] Switching back and forward between a multi conversation and a normal causes a crash
 
     Looks like metadata size is not being loaded? Maybe it's because we move it somewhere instead of just passing it through?
 
