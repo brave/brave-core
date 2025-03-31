@@ -33,9 +33,26 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 
+class SplitViewDisabledBrowserTest : public InProcessBrowserTest {
+ public:
+  SplitViewDisabledBrowserTest() {
+    scoped_features_.InitAndDisableFeature(tabs::features::kBraveSplitView);
+  }
+  ~SplitViewDisabledBrowserTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(SplitViewDisabledBrowserTest,
+                       SplitViewDisabledStateTest) {
+  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
+  EXPECT_FALSE(!!split_view_data);
+}
+
 class SplitViewBrowserTest : public InProcessBrowserTest {
  public:
-  SplitViewBrowserTest() : scoped_features_(tabs::features::kBraveSplitView) {}
+  SplitViewBrowserTest() = default;
   ~SplitViewBrowserTest() override = default;
 
   BraveBrowserView& browser_view() {
@@ -65,9 +82,6 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
   SplitView& split_view() { return *browser_view().split_view_; }
 
   TabStripModel& tab_strip_model() { return *(browser()->tab_strip_model()); }
-
- private:
-  base::test::ScopedFeatureList scoped_features_;
 };
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
