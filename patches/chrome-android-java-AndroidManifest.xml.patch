@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 5b5fe60a41618735c6bc44d50af8c6434ec28740..1b3536b2b40a1b2cdf7b0512931d1b6e58c46dcd 100644
+index 5b5fe60a41618735c6bc44d50af8c6434ec28740..77839ff86e06c551c683f89c0249ef9708be4350 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -66,7 +66,25 @@ index 5b5fe60a41618735c6bc44d50af8c6434ec28740..1b3536b2b40a1b2cdf7b0512931d1b6e
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1207,6 +1221,7 @@ by a child template that "extends" this file.
+@@ -889,6 +903,7 @@ by a child template that "extends" this file.
+         </service>
+ 
+         <!-- Quick Action Search widget -->
++        <!-- 
+         <receiver
+             android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
+             android:label="@string/quick_action_search_widget_title"
+@@ -911,7 +926,8 @@ by a child template that "extends" this file.
+             <meta-data
+                 android:name="android.appwidget.provider"
+                 android:resource="@xml/quick_action_search_widget_dino_info" />
+-        </receiver>
++        </receiver> 
++        -->
+ 
+         <!-- Bookmarks widget -->
+         <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
+@@ -1207,6 +1223,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

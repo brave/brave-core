@@ -393,6 +393,18 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderDino")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider")); // presubmit: ignore-long-line
     }
 
     @Test
@@ -874,6 +886,14 @@ public class BytecodeTest {
                         "getContext",
                         MethodModifier.STATIC,
                         Context.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
+                        "setWidgetEnabled",
+                        MethodModifier.STATIC,
+                        void.class,
+                        boolean.class,
+                        boolean.class));
     }
 
     @Test
@@ -1051,6 +1071,14 @@ public class BytecodeTest {
                         void.class,
                         Activity.class,
                         int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
+                        "setWidgetEnabled",
+                        MethodModifier.STATIC,
+                        void.class,
+                        boolean.class,
+                        boolean.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
