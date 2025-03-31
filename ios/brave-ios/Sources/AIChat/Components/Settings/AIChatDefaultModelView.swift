@@ -144,11 +144,17 @@ struct AIChatDefaultModelView: View {
     case .chatExpanded:
       return Strings.AIChat.introMessageMixtralModelPurposeDescription
 
+    case .chatQwen:
+      return Strings.AIChat.introMessageQwenModelPurposeDescription
+
     case .chatClaudeHaiku:
       return Strings.AIChat.introMessageClaudeHaikuModelPurposeDescription
 
     case .chatClaudeSonnet:
       return Strings.AIChat.introMessageClaudeSonnetModelPurposeDescription
+
+    case .chatVisionBasic:
+      return Strings.AIChat.introMessageLlamaVisionModelPurposeDescription
     }
   }
 }

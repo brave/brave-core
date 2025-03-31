@@ -1,4 +1,4 @@
-// Copyright 2024 The Brave Authors. All rights reserved.
+// Copyright 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -6,7 +6,8 @@
 import DesignSystem
 import SwiftUI
 
-struct AIChatNetworkErrorView: View {
+struct AIChatGenericErrorView: View {
+  var title: String
   var onRetryRequest: () -> Void
 
   var body: some View {
@@ -15,7 +16,7 @@ struct AIChatNetworkErrorView: View {
         .foregroundStyle(Color(braveSystemName: .systemfeedbackErrorIcon))
 
       VStack(alignment: .leading, spacing: 16.0) {
-        Text(Strings.AIChat.networkErrorViewTitle)
+        Text(title)
           .font(.callout)
           .foregroundColor(Color(braveSystemName: .textPrimary))
 
@@ -36,17 +37,15 @@ struct AIChatNetworkErrorView: View {
       }
     }
     .padding()
-    .background(
-      Color(braveSystemName: .systemfeedbackErrorBackground),
-      in: .rect(cornerRadius: 8, style: .continuous)
-    )
+    .background(Color(braveSystemName: .systemfeedbackErrorBackground))
+    .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
   }
 }
 
 #if DEBUG
-struct AIChatNetworkErrorView_Preview: PreviewProvider {
+struct AIChatGenericErrorView_Preview: PreviewProvider {
   static var previews: some View {
-    AIChatNetworkErrorView {}
+    AIChatGenericErrorView(title: Strings.AIChat.invalidApiKeyErrorViewTitle) {}
       .previewColorSchemes()
       .previewLayout(.sizeThatFits)
   }
