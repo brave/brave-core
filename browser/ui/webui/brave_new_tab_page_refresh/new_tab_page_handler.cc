@@ -392,6 +392,16 @@ void NewTabPageHandler::GetShieldsStats(GetShieldsStatsCallback callback) {
   std::move(callback).Run(std::move(stats));
 }
 
+void NewTabPageHandler::GetShowTalkWidget(GetShowTalkWidgetCallback callback) {
+  std::move(callback).Run(pref_service_->GetBoolean(kNewTabPageShowBraveTalk));
+}
+
+void NewTabPageHandler::SetShowTalkWidget(bool show_talk_widget,
+                                          SetShowTalkWidgetCallback callback) {
+  pref_service_->SetBoolean(kNewTabPageShowBraveTalk, show_talk_widget);
+  std::move(callback).Run();
+}
+
 void NewTabPageHandler::OnCustomBackgroundsSelected(
     ShowCustomBackgroundChooserCallback callback,
     std::vector<base::FilePath> paths) {
@@ -425,6 +435,9 @@ void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
       break;
     case UpdateObserver::Source::kShieldsStats:
       page_->OnShieldsStatsUpdated();
+      break;
+    case UpdateObserver::Source::kTalk:
+      page_->OnTalkStateUpdated();
       break;
   }
 }

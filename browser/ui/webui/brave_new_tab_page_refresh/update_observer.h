@@ -22,7 +22,14 @@ class TopSitesFacade;
 // new tab page.
 class UpdateObserver {
  public:
-  enum class Source { kBackgrounds, kSearch, kTopSites, kClock, kShieldsStats };
+  enum class Source {
+    kBackgrounds,
+    kSearch,
+    kTopSites,
+    kClock,
+    kShieldsStats,
+    kTalk
+  };
 
   UpdateObserver(PrefService& pref_service, TopSitesFacade* top_sites_facade);
   ~UpdateObserver();

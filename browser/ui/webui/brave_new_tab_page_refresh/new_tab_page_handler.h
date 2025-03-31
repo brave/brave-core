@@ -152,6 +152,9 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void SetShowShieldsStats(bool show_shields_stats,
                            SetShowShieldsStatsCallback callback) override;
   void GetShieldsStats(GetShieldsStatsCallback callback) override;
+  void GetShowTalkWidget(GetShowTalkWidgetCallback callback) override;
+  void SetShowTalkWidget(bool show_talk_widget,
+                         SetShowTalkWidgetCallback callback) override;
 
  private:
   void OnCustomBackgroundsSelected(ShowCustomBackgroundChooserCallback callback,
