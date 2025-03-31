@@ -24,7 +24,7 @@ class NTPP3AHelper {
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
       const std::string& creative_instance_id) = 0;
 
-  virtual void SetLastTabURL(const GURL& url) = 0;
+  virtual void OnNavigationDidFinish(const GURL& url) = 0;
 };
 
 }  // namespace ntp_background_images
