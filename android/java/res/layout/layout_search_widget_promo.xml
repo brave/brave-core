@@ -13,12 +13,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="9dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="10dp"
-        app:cardBackgroundColor="@color/search_widget_promo_bg_color"
-        app:cardCornerRadius="16dp"
+        android:padding="24dp"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/schemes_surface_container_lowest"
+        app:cardCornerRadius="8dp"
         app:cardElevation="0dp">
 
         <LinearLayout
@@ -49,61 +47,56 @@
                         android:id="@+id/tvSearchWidgetPromoTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/HeadingH4"
                         android:fontFamily="sans-serif-medium"
                         android:text="@string/try_brave_search_widget"
-                        android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
-                        android:textSize="20sp" />
+                        android:textColor="@color/schemes_on_surface"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvSearchWidgetPromoDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="2dp"
                         android:text="@string/try_brave_search_widget_description"
-                        android:textColor="@color/quick_action_search_and_bookmark_widget_tint" />
+                        android:textColor="@color/schemes_on_surface_variant" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <View
-               android:id="@+id/divider"
-               android:layout_width="match_parent"
-               android:layout_height="1dp"
-               android:layout_marginVertical="16dp"
-               android:background="@color/news_settings_divider_color"/>
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvNotNow"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/not_now"
-                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
                     android:ellipsize="end"
-                    android:textColor="@color/search_widget_promo_not_now_text_color"
+                    android:layout_marginEnd="8dp"
+                    android:padding="12dp"
+                    android:textColor="@color/text_secondary"
                     android:fontFamily="sans-serif-medium" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btAddWidget"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="0.5"
                     android:gravity="center"
                     android:background="@drawable/add_widget_button"
                     android:text="@string/add_widget"
                     android:textAllCaps="false"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="10dp"
-                    android:textColor="@color/search_widget_promo_add_widget_text_color"
+                    android:padding="12dp"
+                    android:textColor="@color/schemes_on_primary"
                     android:fontFamily="sans-serif-medium"
-                    app:drawableStartCompat="@drawable/ic_plus_add_widget"
+                    app:drawableStartCompat="@drawable/ic_widget_generic"
+                    app:drawableTint="@color/schemes_on_primary"
                     android:drawablePadding="2dp"
                     style="?android:attr/borderlessButtonStyle"/>
 
