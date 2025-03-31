@@ -14,11 +14,17 @@ using TabDragControllerBrave = TabDragController;
 
 #define TabDragController TabDragControllerChromium
 
+#define GetAttachedDragPoint      \
+  Unused_GetAttachedDragPoint() { \
+    return {};                    \
+  }                               \
+  friend TabDragControllerBrave;  \
+  virtual gfx::Point GetAttachedDragPoint
+
 #define GetAttachedBrowserWidget      \
   GetAttachedBrowserWidget_Unused() { \
     return {};                        \
   }                                   \
-  friend TabDragControllerBrave;      \
   virtual views::Widget* GetAttachedBrowserWidget
 
 #define CalculateWindowDragOffset      \
@@ -39,6 +45,7 @@ using TabDragControllerBrave = TabDragController;
 #undef CalculateWindowDragOffset
 #undef GetAttachedBrowserWidget
 #undef TabDragController
+#undef GetAttachedDragPoint
 
 #include "brave/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
