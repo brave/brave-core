@@ -32,6 +32,32 @@
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 
+@implementation UIImage (AIChat)
++ (nullable UIImage*)imageFromAIChatUploadedImage:
+    (AiChatUploadedImage*)uploadedImage {
+  std::vector<std::uint8_t>* bytes = &uploadedImage.cppObjPtr->image_data;
+  NSData* image_data = [NSData dataWithBytes:bytes->data()
+                                      length:bytes->size()];
+  if (image_data) {
+    return [UIImage imageWithData:image_data];
+  }
+  return nullptr;
+}
+
+- (ai_chat::mojom::UploadedImagePtr)toUploadedImageWithName:
+    (const std::string&)name {
+  NSData* pngData = UIImagePNGRepresentation(self);
+  if (!pngData || pngData.length == 0) {
+    return nullptr;
+  }
+
+  std::vector<std::uint8_t> image_data(pngData.length);
+  [pngData getBytes:image_data.data() length:pngData.length];
+  return ai_chat::mojom::UploadedImage::New(name, image_data.size(),
+                                            std::move(image_data));
+}
+@end
+
 @implementation AiChat
 @end
 
@@ -108,9 +134,23 @@
   return [history copy];
 }
 
-- (void)submitHumanConversationEntry:(NSString*)text {
-  current_conversation_->SubmitHumanConversationEntry(
-      base::SysNSStringToUTF8(text), std::nullopt);
+- (void)submitHumanConversationEntry:(NSString*)text
+                              images:(NSArray<UIImage*>*)images {
+  if (images && [images count] > 0) {
+    std::vector<ai_chat::mojom::UploadedImagePtr> conversation_images;
+    for (std::size_t i = 0; i < [images count]; ++i) {
+      UIImage* image = [images objectAtIndex:i];
+      conversation_images.emplace_back([image
+          toUploadedImageWithName:"image_" + base::NumberToString(i) + ".png"]);
+    }
+
+    current_conversation_->SubmitHumanConversationEntry(
+        base::SysNSStringToUTF8(text),
+        std::make_optional(std::move(conversation_images)));
+  } else {
+    current_conversation_->SubmitHumanConversationEntry(
+        base::SysNSStringToUTF8(text), std::nullopt);
+  }
 }
 
 - (void)submitSuggestion:(NSString*)text {

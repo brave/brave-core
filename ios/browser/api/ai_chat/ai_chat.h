@@ -7,6 +7,8 @@
 #define BRAVE_IOS_BROWSER_API_AI_CHAT_AI_CHAT_H_
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
 #import "ai_chat.mojom.objc.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -14,6 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @interface AiChat : NSObject  // AiChat Namespace for Swift exports
 - (instancetype)init NS_UNAVAILABLE;
+@end
+
+OBJC_EXPORT
+@interface UIImage (AIChat)
++ (nullable UIImage*)imageFromAIChatUploadedImage:
+    (AiChatUploadedImage*)uploadedImage;
 @end
 
 OBJC_EXPORT
@@ -35,7 +43,8 @@ OBJC_EXPORT
 
 - (void)changeModel:(NSString*)modelKey;
 
-- (void)submitHumanConversationEntry:(NSString*)text;
+- (void)submitHumanConversationEntry:(NSString*)text
+                              images:(NSArray<UIImage*>* _Nullable)images;
 
 - (void)submitSuggestion:(NSString*)text;
 

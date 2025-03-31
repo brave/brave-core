@@ -13,8 +13,10 @@ import WebKit
 public enum AIChatModelKey: String {
   case chatBasic = "chat-basic"
   case chatExpanded = "chat-leo-expanded"
+  case chatQwen = "chat-qwen"
   case chatClaudeHaiku = "chat-claude-haiku"
   case chatClaudeSonnet = "chat-claude-sonnet"
+  case chatVisionBasic = "chat-vision-basic"
 }
 
 public protocol AIChatWebDelegate: AnyObject {
@@ -70,6 +72,11 @@ public class AIChatViewModel: NSObject, ObservableObject {
 
   public var isContentAssociationPossible: Bool {
     return webDelegate?.url?.isWebPage(includeDataURIs: true) == true
+  }
+
+  public var isCurrentModelVissionSupported: Bool {
+    guard let currentModel = currentModel else { return false }
+    return AIChatModelKey(rawValue: currentModel.key) == .chatVisionBasic
   }
 
   public var shouldSendPageContents: Bool {
@@ -170,9 +177,9 @@ public class AIChatViewModel: NSObject, ObservableObject {
     api.submitSuggestion(suggestion)
   }
 
-  func submitQuery(_ text: String) {
+  func submitQuery(_ text: String, images: [UIImage]?) {
     apiError = .none
-    api.submitHumanConversationEntry(text)
+    api.submitHumanConversationEntry(text, images: images)
   }
 
   func submitSelectedText(_ text: String, action: AiChat.ActionType) {

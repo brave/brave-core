@@ -37,6 +37,7 @@ nala_icons = [
   "leo.browser.mobile-tabs.svg",
   "leo.browser.refresh.svg",
   "leo.bug.svg",
+  "leo.camera.svg",
   "leo.carat.down.svg",
   "leo.carat.right.svg",
   "leo.carat.up.svg",

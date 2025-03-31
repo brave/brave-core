@@ -24,6 +24,8 @@ struct AIChatPromptInputView: View {
   @Binding
   var isShowingSlashTools: Bool
 
+  var isVisionModel = false
+
   @Binding
   var slashToolsOption:
     (
@@ -33,12 +35,13 @@ struct AIChatPromptInputView: View {
 
   var focusedField: FocusState<AIChatView.Field?>.Binding
 
-  var onSubmit: (String) -> Void
+  var onSubmit: (String, [UIImage]) -> Void
 
   @Environment(\.isEnabled) private var isEnabled
 
   init(
     prompt: Binding<String>,
+    isVisionModel: Bool,
     speechRecognizer: SpeechRecognizer,
     isShowingSlashTools: Binding<Bool>,
     slashToolsOption: Binding<
@@ -48,10 +51,11 @@ struct AIChatPromptInputView: View {
       )?
     >,
     focusedField: FocusState<AIChatView.Field?>.Binding,
-    onSubmit: @escaping (String) -> Void
+    onSubmit: @escaping (String, [UIImage]) -> Void
   ) {
     self._prompt = prompt
     self.speechRecognizer = speechRecognizer
+    self.isVisionModel = isVisionModel
     self._isShowingSlashTools = isShowingSlashTools
     self._slashToolsOption = slashToolsOption
     self.focusedField = focusedField
@@ -95,7 +99,7 @@ struct AIChatPromptInputView: View {
         },
         onSubmit: {
           if !prompt.isEmpty {
-            onSubmit(prompt)
+            onSubmit(prompt, [])
             prompt = ""
           }
         },
@@ -154,7 +158,7 @@ struct AIChatPromptInputView: View {
         Spacer()
 
         Button {
-          onSubmit(prompt)
+          onSubmit(prompt, [])
           prompt = ""
         } label: {
           Image(braveSystemName: prompt.isEmpty ? "leo.send" : "leo.send.filled")
@@ -234,6 +238,7 @@ struct AIChatPromptInputView_Preview: PreviewProvider {
 
     AIChatPromptInputView(
       prompt: .constant(""),
+      isVisionModel: false,
       speechRecognizer: SpeechRecognizer(),
       isShowingSlashTools: .constant(false),
       slashToolsOption: .constant((group, entry)),

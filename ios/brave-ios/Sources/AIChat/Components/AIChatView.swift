@@ -336,11 +336,12 @@ public struct AIChatView: View {
       if model.isAgreementAccepted || (!hasSeenIntro.value && !model.isAgreementAccepted) {
         AIChatPromptInputView(
           prompt: $prompt,
+          isVisionModel: model.isCurrentModelVissionSupported,
           speechRecognizer: speechRecognizer,
           isShowingSlashTools: $isShowingSlashTools,
           slashToolsOption: $slashToolsOption,
           focusedField: $focusedField
-        ) { prompt in
+        ) { prompt, images in
           hasSeenIntro.value = true
 
           if let actionType = slashToolsOption?.entry.details?.type {
@@ -352,7 +353,7 @@ public struct AIChatView: View {
             slashToolsOption = nil
             isShowingSlashTools = false
           } else {
-            model.submitQuery(prompt)
+            model.submitQuery(prompt, images: images.isEmpty ? nil : images)
           }
 
           hideKeyboard()
@@ -391,7 +392,7 @@ public struct AIChatView: View {
       if let query = model.querySubmited {
         model.querySubmited = nil
         hasSeenIntro.value = true
-        model.submitQuery(query)
+        model.submitQuery(query, images: nil)
       }
     }
     .toastView($feedbackToast)
@@ -478,7 +479,7 @@ public struct AIChatView: View {
           if turnIndex == model.conversationHistory.count - 1 {
             model.retryLastRequest()
           } else if let query = model.conversationHistory[safe: turnIndex - 1]?.text {
-            model.submitQuery(query)
+            model.submitQuery(query, images: nil)
           }
         }
       )
@@ -597,6 +598,38 @@ public struct AIChatView: View {
       .padding()
     } else {
       switch model.apiError {
+      case .internalError:
+        AIChatGenericErrorView(title: Strings.AIChat.internalErrorViewTitle) {
+          if !model.conversationHistory.isEmpty {
+            model.retryLastRequest()
+          }
+        }
+        .padding()
+
+      case .invalidApiKey:
+        AIChatGenericErrorView(title: Strings.AIChat.invalidApiKeyErrorViewTitle) {
+          if !model.conversationHistory.isEmpty {
+            model.retryLastRequest()
+          }
+        }
+        .padding()
+
+      case .invalidEndpointUrl:
+        AIChatGenericErrorView(title: Strings.AIChat.invalidEndpointErrorViewTitle) {
+          if !model.conversationHistory.isEmpty {
+            model.retryLastRequest()
+          }
+        }
+        .padding()
+
+      case .serviceOverloaded:
+        AIChatGenericErrorView(title: Strings.AIChat.serviceOverloadedErrorViewTitle) {
+          if !model.conversationHistory.isEmpty {
+            model.retryLastRequest()
+          }
+        }
+        .padding()
+
       case .connectionIssue:
         AIChatNetworkErrorView {
           if !model.conversationHistory.isEmpty {
@@ -802,12 +835,13 @@ struct AIChatView_Preview: PreviewProvider {
 
       AIChatPromptInputView(
         prompt: .constant(""),
+        isVisionModel: false,
         speechRecognizer: SpeechRecognizer(),
         isShowingSlashTools: .constant(false),
         slashToolsOption: .constant(nil),
         focusedField: $focusedField
-      ) {
-        print("Prompt Submitted: \($0)")
+      ) { prompt, _ in
+        print("Prompt Submitted: \(prompt)")
       }
     }
     .background(Color(braveSystemName: .containerBackground))
