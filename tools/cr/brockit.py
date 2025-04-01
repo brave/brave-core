@@ -2247,6 +2247,15 @@ def show(args: argparse.Namespace):
             'latest canary version: %s' %
             fetch_lastest_canary_version(args.latest_chromiumdash_version))
 
+    if args.reason_for_lift_failure_for is not None:
+        continuation = ContinuationFile.load(
+                target_version=Version(args.reason_for_lift_failure_for))
+        if continuation:
+            if continuation.has_shown_advisory:
+                console.print('Advisories')
+            elif continuation.patches:
+                console.print('Continuance')
+
     return 0
 
 
@@ -2374,6 +2383,11 @@ def main():
         '--latest-chromiumdash-version',
         default=None,
         help='Prints the latest version available for the channel provided.')
+
+    show_parser.add_argument(
+        '--reason-for-lift-failure-for',
+        default=None,
+        help='Tries to produce a failure reason for a lift run based on the continuation file.')
 
     subparsers.add_parser('reference',
                           help='Detailed documentation for this tool.')

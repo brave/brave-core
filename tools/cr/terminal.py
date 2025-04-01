@@ -8,6 +8,7 @@ import logging
 import platform
 import secrets
 import subprocess
+import sys
 import threading
 import time
 from typing import Optional, Dict
@@ -21,6 +22,7 @@ KEEP_ALIVE_PING_ART = [
     '(-_-)', '(⊙_⊙)', '(¬_¬)', '(－‸ლ)', '(◎_◎;)', '(⌐■_■)', '(•‿•)', '(≖_≖)'
 ]
 
+console = Console(force_terminal=('--infra-mode' in sys.argv), log_path=not('--infra-mode' in sys.argv))
 
 class Terminal:
     """A class that holds the application data and methods.
@@ -76,6 +78,9 @@ class Terminal:
         """
         self.infra_mode = True
         self.keep_alive_thread.start()
+
+        # let's give it some large width to avoid wrapping in jenkins
+        console.size = console.size._replace(width=200)
 
     def _set_status_object(self, status):
         """Preserves the status object for updates.
@@ -202,5 +207,4 @@ class Terminal:
         return self.run(cmd)
 
 
-console = Console()
 terminal = Terminal()
