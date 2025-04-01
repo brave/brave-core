@@ -152,21 +152,17 @@ import os
 from pathlib import Path, PurePath
 import pickle
 import platform
-import random
-import threading
 import re
 import requests
-from rich.console import Console
-from rich.logging import RichHandler
 from rich.markdown import Markdown
 from rich.padding import Padding
 import subprocess
 import sys
-import tempfile
-import time
 from typing import Optional, List, Dict, NamedTuple
 
-console = Console()
+from repository import Repository, CHROMIUM_SRC_PATH
+from terminal import console, terminal
+from incendiary_error_handler import IncendiaryErrorHandler
 
 # This file is updated whenever the version number is updated in package.json
 PINSLIST_TIMESTAMP_FILE = (
@@ -175,12 +171,6 @@ PINSLIST_TIMESTAMP_FILE = (
 VERSION_UPGRADE_FILE = Path('.version_upgrade')
 PACKAGE_FILE = 'package.json'
 CHROMIUM_VERSION_FILE = 'chrome/VERSION'
-
-# The path to the brave/ directory.
-BRAVE_CORE_PATH = next(brave for brave in PurePath(__file__).parents
-                       if brave.name == 'brave')
-# The path to chromium's src/ directory.
-CHROMIUM_SRC_PATH = BRAVE_CORE_PATH.parent
 
 # The link to the Chromium source code.
 GOOGLESOURCE_LINK = 'https://chromium.googlesource.com/chromium/src'
@@ -204,9 +194,6 @@ CHROMIUMDASH_LATEST_RELEASE = 'https://chromiumdash.appspot.com/fetch_releases?c
 # continuing.
 ACTION_NEEDED_DECORATOR = '[bold yellow](action needed)[/]'
 
-# The interval in second for the keep-alive ping on infra mode to be printed.
-KEEP_ALIVE_PING_INTERVAL = 20
-
 # The text for the body used on a GitHub issue for a version bump.
 MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 
@@ -221,181 +208,6 @@ MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 
 - No specific code changes in Brave (only line number changes in patches)
 """
-
-class Terminal:
-    """A class that holds the application data and methods.
-    """
-
-    def __init__(self):
-        # The status object to update with the terminal.
-        self.status = None
-
-        # The inital part of the status message, used as a prefix for all
-        # updates.
-        self.starting_status_message = ''
-
-        # flag indicating if the terminal is running on infra.
-        self.infra_mode = False
-
-        # The time when a commmand run was started to check for keep alive
-        # pings. Only relevant when running on infra.
-        self.current_command_start_time = None
-
-        # The keep-alive thread for terminal pings on infra mode.
-        self.keep_alive_thread = threading.Thread(
-            target=self.keep_alive_ci_feedback, daemon=True)
-
-        # The command that is currently running on infra mode.
-        self.running_command = None
-
-    def keep_alive_ci_feedback(self):
-        """Main routine for the keep-alive ping on infra mode.
-
-    This routine runs on a separate thread for the entirety of the  run when on
-    infra mode, sleeping for a set ping interval.
-
-    The routine effects are only visible when `current_command_start_time` is
-    set, at which point there's a chance a ping will be printed to the console
-    in the set time for the ping interval.
-
-    Leaving the back thread running is the best way to ensure we can avoid
-    joining the thread, and all sorts of complexities relating to sleeping and
-    joining, which could result in a minimu time every command has to take.
-        """
-        feedback = [
-            '(-_-)', '(⊙_⊙)', '(¬_¬)', '(－‸ლ)', '(◎_◎;)', '(⌐■_■)', '(•‿•)',
-            '(≖_≖)'
-        ]
-        while True:
-            if self.current_command_start_time:
-                elapsed_time = time.time() - self.current_command_start_time
-                if elapsed_time > KEEP_ALIVE_PING_INTERVAL:
-                    logging.debug(
-                        '%s\n        >>>> %s',
-                        feedback[random.randint(0,
-                                                len(feedback) - 1)],
-                        self.running_command)
-            time.sleep(KEEP_ALIVE_PING_INTERVAL)
-
-    def set_infra_mode(self):
-        """Sets the terminal to run on infra.
-        """
-        self.infra_mode = True
-        self.keep_alive_thread.start()
-
-    def set_status_object(self, status):
-        """Preserves the status object for updates.
-
-    This function is used to preserve the status object for updates, so that
-    the status can be updated with the initial status message.
-    """
-        if self.infra_mode:
-            status.stop()
-            return
-
-        self.status = status
-        self.starting_status_message = status.status
-
-    def run(self, cmd, env: Optional[Dict[str, str]] = None):
-        """Runs a command on the terminal.
-        """
-        # Convert all arguments to strings, to avoid issues with `PurePath`
-        # being passed arguments
-        cmd = [str(x) for x in cmd]
-
-        def truncate_on_max_length(message):
-            # Truncate at the first newline if it exists
-            if '\n' in message:
-                message = message.split('\n')[0] + '...'
-            # Truncate at max_length if the message is still too long
-            max_length = console.size.width - len(
-                self.starting_status_message) - 10
-            if len(message) > max_length:
-                message = message[:max_length - 3] + '...'
-            return message
-
-        if self.status is not None and not self.infra_mode:
-            self.status.update(
-                f'[bold green]{self.starting_status_message}[/] [bold cyan]'
-                f'({truncate_on_max_length(" ".join(cmd))})[/]')
-        logging.debug('λ %s', ' '.join(cmd))
-
-        if self.infra_mode:
-            self.current_command_start_time = time.time()
-            self.running_command = " ".join(cmd)
-
-        try:
-            # It is necessary to pass `shell=True` on Windows, otherwise the
-            # process handle is entirely orphan and can't resolve things like
-            # `npm`.
-            result = subprocess.run(cmd,
-                                    capture_output=True,
-                                    text=True,
-                                    check=True,
-                                    env=env,
-                                    shell=platform.system() == 'Windows')
-        except subprocess.CalledProcessError as e:
-            logging.debug('❯ %s', e.stderr.strip())
-            raise e
-        finally:
-            if self.infra_mode:
-                self.current_command_start_time = None
-                self.running_command = None
-
-        return result
-
-    def run_git(self, *cmd) -> str:
-        """Runs a git command with the arguments provided.
-
-    This function returns a proper utf8 string in success, otherwise it allows
-    the exception thrown by subprocess through.
-
-    e.g:
-        self.run_git('add', '-u', '*.patch')
-    """
-        cmd = ['git'] + list(cmd)
-        return self.run(cmd).stdout.strip()
-
-    def log_task(self, message):
-        """Logs a task to the console using common decorators
-        """
-        console.log(f'[bold red]*[/] {message}')
-
-    def run_npm_command(self, *cmd):
-        """Runs an npm build command.
-
-      This function will run 'npm run' commands appended by any extra arguments
-      are passed into it.
-
-      e.g:
-          self.run_npm_command('init')
-      """
-        cmd = ['npm', 'run'] + list(cmd)
-        if self.infra_mode and len(cmd) == 3 and cmd[-1] == 'init':
-            # Special flag to avoid running into issues in jenkins when running
-            # `gclient sync` with `--revision`. For more details see:
-            # https://github.com/brave/brave-browser/issues/44921
-            cmd += ['--', '--with_issue_44921']
-        return self.run(cmd)
-
-terminal = Terminal()
-
-
-class IncendiaryErrorHandler(RichHandler):
-    """ A custom handler that adds emojis to error messages.
-    """
-
-    def emit(self, record: logging.LogRecord) -> None:
-        if record.levelno == logging.ERROR:
-            record.msg = f'¯\\_(ツ)_/¯\n🔥🔥 {record.msg}'
-        elif record.levelno == logging.DEBUG:
-            # Debug messages should be printed as normal logs, otherwise the
-            # formatting goes all over the place with the status bar.
-            console.log(f'[dim]{record.getMessage()}[/]', _stack_offset=8)
-            return
-
-        super().emit(record)
-
 
 def _get_current_branch_upstream_name():
     """Retrieves the name of the current branch's upstream.
@@ -513,148 +325,12 @@ class GitStatus:
             elif status == '??':
                 self.untracked.append(path)
 
-    def has_deleted_files(self):
-        return len(self.deleted) > 0
-
     def has_deleted_patch_files(self):
         return any(path.endswith('.patch') for path in self.deleted)
 
     def has_untracked_patch_files(self):
         return any(path.endswith('.patch') for path in self.untracked)
 
-
-@dataclass(frozen=True)
-class Repository:
-    """Repository data class to hold the repository path.
-
-    This class provides helpers around the use of repository paths, such as
-    relative paths to and from the repository, and repository specific git
-    operations.
-    """
-
-    # The repository path. This path is extracted from the subdirectory section
-    # of a patch file, with chromium/src being ''.
-    # e.g. "third_party/search_engines_data/resources"
-    path: PurePath
-
-    @classmethod
-    def chromium(cls) -> "Repository":
-        """Returns the chromium/src repository.
-        """
-        return cls(PurePath(CHROMIUM_SRC_PATH))
-
-    @classmethod
-    def brave(cls) -> "Repository":
-        """Returns the brave/ repository.
-        """
-        return cls(BRAVE_CORE_PATH)
-
-    @property
-    def is_chromium(self) -> bool:
-        """If this repo is chromium/src.
-        """
-        return self.path == CHROMIUM_SRC_PATH
-
-    @property
-    def is_brave(self) -> bool:
-        """If this repo is brave/.
-        """
-        return self.path == BRAVE_CORE_PATH
-
-    def to_brave(self) -> PurePath:
-        """ Returns the path from the repository to brave/.
-        """
-        if self.is_chromium:
-            return BRAVE_CORE_PATH.relative_to(CHROMIUM_SRC_PATH)
-        return PurePath(
-            len(self.path.relative_to(CHROMIUM_SRC_PATH).parts) *
-            '../') / BRAVE_CORE_PATH.relative_to(CHROMIUM_SRC_PATH)
-
-    def from_brave(self) -> PurePath:
-        """ Returns the path from brave/ to the repository.
-        """
-        return PurePath('..') / self.path.relative_to(CHROMIUM_SRC_PATH)
-
-    def run_git(self, *cmd) -> str:
-        """Runs a git command on the repository.
-        """
-        if self.is_brave:
-            return terminal.run_git(*cmd)
-
-        return terminal.run_git('-C', self.from_brave(), *cmd)
-
-    def unstage_all_changes(self):
-        """Unstages all changes in the repository.
-        """
-        self.run_git('reset', 'HEAD')
-
-    def has_staged_changed(self):
-        return self.run_git('diff', '--cached', '--stat') != ''
-
-    def get_commit_short_description(self, commit: str = 'HEAD') -> str:
-        """Gets the short description of a commit.
-
-        This is just the actual first line of the commit message.
-        """
-        return self.run_git('log', '-1', '--pretty=%s', commit)
-
-    def git_commit(self, message):
-        """Commits the current staged changes.
-
-        This function also prints the commit hash/message to the user.
-        Args:
-        message:
-            The message to be used for the commit.
-        """
-        if self.has_staged_changed() is False:
-            # Nothing to commit
-            return
-
-        self.run_git('commit', '-m', message)
-        commit = self.run_git('log', '-1', '--pretty=oneline',
-                              '--abbrev-commit')
-        terminal.log_task(f'[bold]✔️ [/] [italic]{commit}')
-
-    def is_valid_git_reference(self, reference) -> bool:
-        """Checks if a name is a valid git branch name or hash.
-        """
-        try:
-            self.run_git('rev-parse', '--verify', reference)
-            return True
-        except subprocess.CalledProcessError:
-            return False
-
-    def last_changed(self,
-                     file: str,
-                     from_commit: Optional[str] = None) -> str:
-        """Gets the last commit for a file.
-        """
-        args = ['log', '--pretty=%h', '-1']
-        if from_commit:
-            args.append(from_commit)
-        args.append(file)
-        return self.run_git(*args)
-
-    def read_file(self, *files, commit: str = 'HEAD') -> str:
-        """Reads the content of a file in the repository.
-
-    Args:
-        files:
-            The file paths to read.
-        commit:
-            The commit to read the file from. This can be a branch or a tag to,
-            but the name commit is being used to be more self-explanatory.
-
-    Return:
-        The contents of the file read. If more than one file is provided, the
-        contents of all files are appended to the same string.
-        """
-        return self.run_git('show', *[f'{commit}:{file}' for file in files])
-
-    def current_branch(self) -> str:
-        """Gets the current branch name, or HEAD if not in any branch.
-        """
-        return self.run_git('rev-parse', '--abbrev-ref', 'HEAD')
 
 @dataclass(frozen=True)
 class Patchfile:
@@ -691,9 +367,8 @@ class Patchfile:
         if self.path.suffix != '.patch':
             raise ValueError(
                 f'Patch file name should end with `.patch`. {self.path}')
-        if self.path.is_absolute() or len(
-                self.path.parents
-        ) < 2 or self.path.parents[-2].stem != "patches":
+        if (self.path.is_absolute() or len(self.path.parents) < 2
+                or self.path.parents[-2].stem != "patches"):
             raise ValueError(
                 f'Patch file name should start with `patches/`. {self.path}')
 
@@ -789,7 +464,7 @@ class Patchfile:
             self.repository.run_git('apply', '--3way', '--ignore-space-change',
                                     '--ignore-whitespace',
                                     self.path_from_repo())
-            return self.ApplyResult(self.ApplyStatus.CLEAN, None)
+            return self.ApplyResult(status=self.ApplyStatus.CLEAN, patch=None)
         except subprocess.CalledProcessError as e:
             # If the process fails, we need to collect the files that failed to
             # apply for manual conflict resolution.
@@ -837,7 +512,8 @@ class Patchfile:
                         'Patch being flagged as broken, but with unexpected '
                         'reason: %s %s', self.path, reason)
 
-                return self.ApplyResult(self.ApplyStatus.BROKEN, None)
+                return self.ApplyResult(status=self.ApplyStatus.BROKEN,
+                                        patch=None)
 
         raise NotImplementedError()
 
@@ -1084,7 +760,7 @@ class ContinuationFile:
                 If the function should raise an error if the file does not
                 exist.
         """
-        if VERSION_UPGRADE_FILE.exists() is False:
+        if not VERSION_UPGRADE_FILE.exists():
             if check:
                 raise FileNotFoundError(
                     f'File {VERSION_UPGRADE_FILE} does not exist')
@@ -1173,7 +849,7 @@ class PatchFailureResolver:
 
         A list of the patches applied will be produced as well.
         """
-        if len(self.patch_files) > 0:
+        if self.patch_files:
             raise NotImplementedError(
                 'unreachable: 3way apply should happen only once.')
 
@@ -1196,7 +872,7 @@ class PatchFailureResolver:
             # iterate through them, applying them in their repo paths.
             self.patch_files.setdefault(patch.repository, []).append(patch)
 
-        if len(self.patch_files):
+        if self.patch_files:
             terminal.log_task(
                 '[bold]Reapplying patch files with --3way:\n[/]%s' %
                 '\n'.join(f'    * {file}' for file in [
@@ -1221,7 +897,7 @@ class PatchFailureResolver:
             # issues when generating patches.
             repo.unstage_all_changes()
 
-        if len(self.patches_to_deleted_files) > 0:
+        if self.patches_to_deleted_files:
             # The goal in this this section is print a report for listing every
             # patch that cannot apply anymore because the source file is gone,
             # fetching from git the commit and the reason why exactly the file
@@ -1267,7 +943,7 @@ class PatchFailureResolver:
                         (0, 8),
                         style="dim"))
 
-        if len(self.broken_patches) > 0:
+        if self.broken_patches:
             terminal.log_task(
                 '[bold]Broken patches that fail to apply entirely '
                 f'{ACTION_NEEDED_DECORATOR}:[/]')
@@ -1277,7 +953,7 @@ class PatchFailureResolver:
                 console.log(Padding(f'✘ {patch.path} ➜ {source}', (0, 4)))
                 vscode_args += [patch.path, source]
 
-        if len(self.files_with_conflicts) > 0:
+        if self.files_with_conflicts:
             vscode_args += self.files_with_conflicts
             file_list = '\n'.join(f'    ✘ {file}'
                                   for file in self.files_with_conflicts)
@@ -1297,8 +973,8 @@ class PatchFailureResolver:
             terminal.run(vscode_args)
 
     def requires_conflict_resolution(self):
-        return len(self.files_with_conflicts) > 0 or len(
-            self.patches_to_deleted_files) > 0 or len(self.broken_patches) > 0
+        return (self.files_with_conflicts or self.patches_to_deleted_files
+                or self.broken_patches)
 
     def stage_all_patches(self, ignore_deleted_files=False):
         """Stages all patches that were applied, so they can be committed as
@@ -1311,7 +987,7 @@ class PatchFailureResolver:
         for _, patches in self.patch_files.items():
             for patch in patches:
                 if (ignore_deleted_files is True
-                        and Path(patch.path).exists() is False):
+                        and not Path(patch.path).exists()):
                     # Skip deleted files.
                     continue
 
@@ -1353,8 +1029,7 @@ class Task:
             as the process' exit code.
         """
         console.log('[italic]🚀 Brockit!')
-        with console.status(self.status_message()) as status:
-            terminal.set_status_object(status)
+        with terminal.with_status(self.status_message()):
             result = self.execute(*cmd)
 
             if result:
@@ -1522,7 +1197,7 @@ class GitHubIssue(Versioned):
         terminal.log_task(f'GitHub Issue created for this bump: {issue_url}')
 
     def execute(self) -> bool:
-        if _is_gh_cli_logged_in() is False:
+        if not _is_gh_cli_logged_in():
             logging.error('GitHub CLI is not logged in.')
             return False
 
@@ -1595,8 +1270,8 @@ class Upgrade(Versioned):
                  target_version: Version,
                  is_continuation: bool,
                  base_version: Optional[Version] = None):
-        if ((base_version is None and is_continuation is False)
-                or (base_version is not None and is_continuation is True)):
+        if ((base_version is None and not is_continuation)
+                or (base_version is not None and is_continuation)):
             # either it is a new upgrade, and a base version is provided, or it
             # is a continuation and no base version is provided as it gets read
             # from disk.
@@ -1707,7 +1382,7 @@ class Upgrade(Versioned):
 
     def get_assigned_value(self,
                            contents: str,
-                           key: str,
+                           lookup: str,
                            added: bool = False,
                            removed: bool = False) -> Optional[str]:
         """Uses a basic regex to extract the value being assinged into a key.
@@ -1718,7 +1393,7 @@ class Upgrade(Versioned):
     Args:
         contents:
             The contents of the file to look for the key.
-        key:
+        lookup:
             The key to look for in the contents.
         added:
             If set to True, looks for the key starting with +.
@@ -1727,16 +1402,29 @@ class Upgrade(Versioned):
     Returns:
         The value assigned to the key, or None if not found
         """
-        sign = r''
-        if added:
-            sign = r"\+"
-        elif removed:
-            sign = r"-"
-        pattern = re.compile(
-            rf"^\s*{sign}\s*{re.escape(key)}\s*=\s*['\"](.*?)['\"]",
-            re.MULTILINE)
-        matches = pattern.findall(contents)
-        return matches[0] if matches else None
+        for line in contents.splitlines():
+            # Discad any comment that there may be in the line
+            line = line.split('#', 1)[0].strip()
+
+            if lookup not in line:
+                continue
+            if added and not line.startswith('+'):
+                continue
+            if removed and not line.startswith('-'):
+                continue
+
+            # remove the sign at the beggining of the line, if that's the case
+            # we are looking for.
+            if added or removed:
+                line = line[1:]
+
+            if '=' not in line:
+                continue
+
+            [key, value] = line.split('=', 1)
+            if key.strip().lstrip() == lookup:
+                return value.strip().lstrip().replace('"', '').replace("'", "")
+        return None
 
     def _check_toolchain(self, file_path: str, key: str) -> Optional[Dict]:
         """ Helper function to check for toolchain updates.
@@ -1809,7 +1497,7 @@ class Upgrade(Versioned):
                 f'{result["current"]} ➜ {result["target"]}')
             result['advice'] = (
                 'Contact DevOps regarding the new macOS SDK for the hermetic '
-                'toolchain. Update `XCODE_VERSION` and `XCODE_VERSION` values'
+                'toolchain. Update `XCODE_VERSION` and `XCODE_VERSION` values '
                 'in build/mac/download_hermetic_xcode.py for the new download '
                 'URL.')
         return result
@@ -1904,7 +1592,7 @@ class Upgrade(Versioned):
             ] if check is not None
         ]
 
-        if len(advisories) == 0:
+        if not advisories:
             return True
 
         terminal.log_task(
@@ -2122,7 +1810,7 @@ class Upgrade(Versioned):
                     logging.error(
                         'Use [bold cyna]--ack-advisory[/] just after being '
                         'shown advisories.')
-                return False
+                    return False
             # We initialise the continuation file here rather than in the
             # constructor to avoid overwritting the file if the user made the
             # mistake of calling brockit again without `--continue`.
@@ -2196,6 +1884,37 @@ class Rebase(Task):
 
         return conflicts
 
+    @staticmethod
+    def discard_regen_changes_from_rebase_plan(todo_file: Path):
+        """Removes regen changes from the rebase plan.
+
+    This function removes all lines that contain the string `Update patches`
+    or `Updated strings` from the rebase plan file, and saves the changes to
+    the file.
+        """
+        with open(todo_file, 'r') as file:
+            lines = file.readlines()
+
+        with open(todo_file, 'w') as file:
+            for line in lines:
+                if ('Update patches from Chromium ' not in line
+                        and 'Updated strings for Chromium ' not in line):
+                    file.write(line)
+
+    @staticmethod
+    def recommit_in_rebase_plan(todo_file: Path):
+        """Recommits the first commit in the rebase plan.
+
+    This function replaces the first `pick` in the rebase plan with `edit`,
+    which forces the first commit to be recommitted.
+        """
+        with open(todo_file, 'r') as file:
+            contents = file.read()
+
+        with open(todo_file, 'w') as file:
+            contents = contents.replace('pick', 'edit', 1)
+            file.write(contents)
+
     # The argument list differs here because that's the way we get args through
     # Task into the derived methods. Maybe something better can be done here.
     # pylint: disable=arguments-differ
@@ -2223,61 +1942,47 @@ class Rebase(Task):
 
         conflicts = self.check_for_merge_conflicts(self.from_ref,
                                                    current_branch)
-        if len(conflicts) > 0:
+        if conflicts:
             terminal.log_task('Some files would cause conflict during rebase:')
             for file in conflicts:
                 console.print(Padding(f'* {file}', (0, 15)))
-                console.log(
-                    '👋 (Run manually: [dim]git rebase -i --autosquash --onto '
-                    f'{self.from_ref} {forking_from} {current_branch}[/])')
+
+            console.log(
+                '👋 (Run manually: [dim]git rebase -i --autosquash --onto '
+                f'{self.from_ref} {forking_from} {current_branch}[/])')
             return False
 
-        changes = Repository.brave().run_git(
-            'log', '--pretty=format:%h %s',
-            f'{forking_from}..{current_branch}').splitlines()[::-1]
-        if len(changes) == 0:
-            logging.error(
-                'No changes to rebase based on the arguments provided.')
-            return False
-
+        # We have to receive the rebase plan from git, and then modify it
+        # if that's desired. That's done by calling this script again with
+        # special internal flags.
+        editor = [sys.executable, __file__]
         if discard_regen_changes:
-            changes = [
-                change for change in changes
-                if not change[12:].startswith('Update patches from Chromium ')
-                and not change[12:].startswith('Updated strings for Chromium ')
-            ]
-
-        rebase_plan = '\n'.join(f'pick {commit}' for commit in changes)
+            editor.append('--internal-rebase-remove-regen-changes')
         if recommit:
-            # Forcing a recommit of the first change so all the other changes
-            # get recommitted as well.
-            rebase_plan = rebase_plan.replace('pick', 'edit', 1)
+            editor.append('--internal-rebase-recommit')
 
-        with tempfile.NamedTemporaryFile(mode='w+', delete=False) as tmpfile:
-            tmpfile.write(rebase_plan)
-            tmpfile.flush()
+        env = os.environ.copy()
+        if len(editor) > 2:
+            env["GIT_SEQUENCE_EDITOR"] = " ".join(editor)
+        else:
+            # If there are no internal operation, we can just return always
+            # true to whatever plan git gives us.
+            env["GIT_SEQUENCE_EDITOR"] = 'cmd /c "exit 0"' if platform.system(
+            ) == 'Windows' else 'true'
 
-            # The trick here is to get git to treat `cp` as the editor, and
-            # copy our merge plan into .git/rebase-merge/git-rebase-todo.
-            env = os.environ.copy()
-            copy_util = 'copy' if platform.system() == 'Windows' else 'cp'
-            env["GIT_SEQUENCE_EDITOR"] = f'{copy_util} {tmpfile.name}'
-            try:
-                terminal.run([
-                    'git', 'rebase', '--interactive', '--autosquash',
-                    '--empty=drop', '--onto', self.from_ref, forking_from,
-                    Repository.brave().current_branch()
-                ],
-                             env=env)
-                if recommit:
-                    Repository.brave().run_git('commit', '--amend',
-                                               '--no-edit')
-                    Repository.brave().run_git('rebase', '--continue')
-            except subprocess.CalledProcessError as e:
-                logging.error('Rebase failed. %s', e.stderr)
-                return False
-            finally:
-                os.unlink(tmpfile.name)
+        try:
+            terminal.run([
+                'git', 'rebase', '--interactive', '--autosquash',
+                '--empty=drop', '--onto', self.from_ref, forking_from,
+                Repository.brave().current_branch()
+            ],
+                         env=env)
+            if recommit:
+                Repository.brave().run_git('commit', '--amend', '--no-edit')
+                Repository.brave().run_git('rebase', '--continue')
+        except subprocess.CalledProcessError as e:
+            logging.error('Rebase failed. %s', e.stderr)
+            return False
 
         return True
 
@@ -2524,7 +2229,7 @@ def main():
     if args.command == 'lift':
         target = resolve_to_flag()
         if args.restart:
-            if not ReUpgrade(target).run():
+            if ReUpgrade(target).run() != 0:
                 return 1
 
         if not args.is_continuation:
@@ -2551,4 +2256,13 @@ def main():
 
 
 if __name__ == '__main__':
+    if any(arg.startswith("--internal-rebase") for arg in sys.argv):
+        # Special flags used to carry out some of the rebase tasks fed by git
+        # during rebase --interactive mode.
+        if '--internal-rebase-remove-regen-changes' in sys.argv:
+            Rebase.discard_regen_changes_from_rebase_plan(sys.argv[-1])
+        if '--internal-rebase-recommit' in sys.argv:
+            Rebase.recommit_in_rebase_plan(sys.argv[-1])
+        sys.exit(0)
+
     sys.exit(main())
