@@ -69,6 +69,8 @@ TabDragController::Liveness TabDragController::Init(
     return TabDragController::Liveness::DELETED;
   }
 
+  mouse_offset_ = mouse_offset;
+
   auto* widget = source_view->GetWidget();
   DCHECK(widget);
   const auto* browser =
@@ -106,23 +108,6 @@ TabDragController::Liveness TabDragController::Init(
   return TabDragController::Liveness::ALIVE;
 }
 
-gfx::Point TabDragController::GetAttachedDragPoint(
-    const gfx::Point& point_in_screen) {
-  if (!is_showing_vertical_tabs_) {
-    return TabDragControllerChromium::GetAttachedDragPoint(point_in_screen);
-  }
-
-  DCHECK(attached_context_);  // The tab must be attached.
-
-  gfx::Point tab_loc(point_in_screen);
-  views::View::ConvertPointFromScreen(attached_context_, &tab_loc);
-  const int x = drag_data_.tab_drag_data_.front().pinned
-                    ? tab_loc.x() - mouse_offset_.x()
-                    : 0;
-  const int y = tab_loc.y() - mouse_offset_.y();
-  return {x, y};
-}
-
 gfx::Vector2d TabDragController::CalculateWindowDragOffset() {
   gfx::Vector2d offset = TabDragControllerChromium::CalculateWindowDragOffset();
   if (!is_showing_vertical_tabs_) {
@@ -140,17 +125,15 @@ gfx::Vector2d TabDragController::CalculateWindowDragOffset() {
   return new_offset.OffsetFromOrigin();
 }
 
-void TabDragController::MoveAttached(gfx::Point point_in_screen,
-                                     bool just_attached) {
-  TabDragControllerChromium::MoveAttached(point_in_screen, just_attached);
-  if (!is_showing_vertical_tabs_) {
-    return;
-  }
-
-  // Unlike upstream, We always update coordinate, as we use y coordinate. Since
-  // we don't have threshold there's no any harm for this.
-  views::View::ConvertPointFromScreen(attached_context_, &point_in_screen);
-  last_move_attached_context_loc_ = point_in_screen.y();
+void TabDragController::StartDraggingTabsSession(
+    bool initial_move,
+    gfx::Point start_point_in_screen) {
+  TabDragControllerChromium::StartDraggingTabsSession(initial_move,
+                                                      start_point_in_screen);
+  CHECK(dragging_tabs_session_);
+  dragging_tabs_session_->set_mouse_y_offset(mouse_offset_.y());
+  dragging_tabs_session_->set_is_showing_vertical_tabs(
+      is_showing_vertical_tabs_);
 }
 
 views::Widget* TabDragController::GetAttachedBrowserWidget() {
@@ -264,15 +247,14 @@ void TabDragController::DetachAndAttachToNewContext(
   // Relayout tabs with expanded bounds.
   attached_context_->ForceLayout();
 
-  std::vector<raw_ptr<TabSlotView, VectorExperimental>> views(
-      drag_data_.tab_drag_data_.size());
+  std::vector<TabSlotView*> views(drag_data_.tab_drag_data_.size());
   for (size_t i = 0; i < drag_data_.tab_drag_data_.size(); ++i) {
     views[i] = drag_data_.tab_drag_data_[i].attached_view.get();
   }
 
   attached_context_->LayoutDraggedViewsAt(
       std::move(views), drag_data_.source_view_drag_data()->attached_view,
-      GetCursorScreenPoint(), initial_move_);
+      GetCursorScreenPoint(), false);
 
   if (old_split_view_browser_data) {
     auto* new_browser = BrowserView::GetBrowserViewForNativeWindow(
