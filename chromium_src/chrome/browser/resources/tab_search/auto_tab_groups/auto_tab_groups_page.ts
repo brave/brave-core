@@ -12,7 +12,7 @@ import {CrLitElement} from '//resources/lit/v3_0/lit.rollup.js'
 import {BraveTabSearchApiProxy, TabSearchApiProxyImpl} from '../tab_search_api_proxy.js'
 import type {TabOrganizationSession} from '../tab_search.mojom-webui.js'
 
-import {getHtml, getEnableTabFocusHtml} from './auto_tab_groups_page.html.js'
+import {getHtml} from './auto_tab_groups_page.html.js'
 import {getCss} from './auto_tab_groups_page.css.js'
 
 export class AutoTabGroupsPageElement extends CrLitElement {
@@ -23,7 +23,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   protected topics_: string[] = []
   protected topic = ''
   protected undoTopic_ = ''
-  protected showFRE_: boolean =
+  protected showFRE_ =
       loadTimeData.getBoolean('showTabOrganizationFRE')
 
   private apiProxy_: BraveTabSearchApiProxy =
@@ -146,9 +146,6 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   }
 
   override render() {
-    if (this.showFRE_) {
-      return getEnableTabFocusHtml.bind(this)()
-    }
     return getHtml.bind(this)()
   }
 
@@ -235,7 +232,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   }
 
   protected onEnableTabFocusClicked_() {
-    this.apiProxy_.enableTabFocus(true)
+    this.apiProxy_.setTabFocusEnabled()
     this.showFRE_ = false
   }
 

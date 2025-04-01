@@ -171,26 +171,16 @@
 .enable-tab-focus-wrapper {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  align-items: stretch;
   box-sizing: border-box;
   padding: var(--leo-spacing-m);
   gap: var(--leo-spacing-m);
 }
 
-.enable-tab-focus-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  gap: var(--leo-spacing-m);
-  box-sizing: border-box;
-}
-
 .enable-tab-focus-content-wrapper {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  align-items: stretch;
   box-sizing: border-box;
   border-radius: var(--leo-radius-m);
   background-color: var(--leo-color-neutral-10);
@@ -200,7 +190,7 @@
 .enable-tab-focus-illustration {
   background-image: url(//resources/brave/images/tab_organizer_illustration.svg);
   background-size: cover;
-  width: 100%;
+  align-items: stretch;
   height: 174px;
 }
 
