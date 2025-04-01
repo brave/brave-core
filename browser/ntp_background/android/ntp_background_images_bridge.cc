@@ -187,7 +187,9 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
   }
 
   const bool should_metrics_fallback_to_p3a =
-      data.FindBool(ntp_background_images::kCampaignMetricsKey).value_or(false);
+      data.FindBool(
+              ntp_background_images::kWallpaperShouldMetricsFallbackToP3aKey)
+          .value_or(false);
 
   view_counter_service_->BrandedWallpaperWillBeDisplayed(
       wallpaper_id ? *wallpaper_id : "", campaign_id ? *campaign_id : "",

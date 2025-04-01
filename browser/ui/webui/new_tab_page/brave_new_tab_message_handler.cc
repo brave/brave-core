@@ -471,7 +471,8 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
   const std::string* target_url = dict->FindStringByDottedPath(
       ntp_background_images::kLogoDestinationURLPath);
   const bool should_metrics_fallback_to_p3a =
-      dict->FindBool(ntp_background_images::kCampaignMetricsKey)
+      dict->FindBool(
+              ntp_background_images::kWallpaperShouldMetricsFallbackToP3aKey)
           .value_or(false);
 
   service->BrandedWallpaperLogoClicked(
@@ -528,7 +529,8 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
   const std::string* campaign_id =
       data->FindString(ntp_background_images::kCampaignIdKey);
   const bool should_metrics_fallback_to_p3a =
-      data->FindBool(ntp_background_images::kCampaignMetricsKey)
+      data->FindBool(
+              ntp_background_images::kWallpaperShouldMetricsFallbackToP3aKey)
           .value_or(false);
 
   service->BrandedWallpaperWillBeDisplayed(
