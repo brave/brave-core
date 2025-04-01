@@ -11,16 +11,17 @@ import Preferences
 import Shared
 import Strings
 import UIKit
+import UserAgent
 import Web
 
 extension BrowserViewController: TabDelegate {
-  public func tabWebViewDidClose(_ tab: TabState) {
+  public func tabWebViewDidClose(_ tab: some TabState) {
     tabManager.addTabToRecentlyClosed(tab)
     tabManager.removeTab(tab)
   }
 
   public func tab(
-    _ tab: TabState,
+    _ tab: some TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
   ) async -> UIContextMenuConfiguration? {
     // Only show context menu for valid links such as `http`, `https`, `data`. Safari does not show it for anything else.
@@ -33,9 +34,9 @@ extension BrowserViewController: TabDelegate {
       var actions = [UIAction]()
 
       if let currentTab = self.tabManager.selectedTab {
-        let tabType = currentTab.type
+        let isPrivate = currentTab.isPrivate
 
-        if !tabType.isPrivate {
+        if !isPrivate {
           let openNewTabAction = UIAction(
             title: Strings.openNewTabButtonTitle,
             image: UIImage(systemName: "plus")
@@ -51,7 +52,7 @@ extension BrowserViewController: TabDelegate {
           title: Strings.openNewPrivateTabButtonTitle,
           image: UIImage(named: "private_glasses", in: .module, compatibleWith: nil)!.template
         ) { _ in
-          if !tabType.isPrivate, Preferences.Privacy.privateBrowsingLock.value {
+          if !isPrivate, Preferences.Privacy.privateBrowsingLock.value {
             self.askForLocalAuthentication { [weak self] success, error in
               if success {
                 self?.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
@@ -66,7 +67,7 @@ extension BrowserViewController: TabDelegate {
         actions.append(openNewPrivateTabAction)
 
         if UIApplication.shared.supportsMultipleScenes {
-          if !tabType.isPrivate {
+          if !isPrivate {
             let openNewWindowAction = UIAction(
               title: Strings.openInNewWindowTitle,
               image: UIImage(braveSystemNamed: "leo.window")
@@ -82,7 +83,7 @@ extension BrowserViewController: TabDelegate {
             title: Strings.openInNewPrivateWindowTitle,
             image: UIImage(braveSystemNamed: "leo.window.tab-private")
           ) { _ in
-            if !tabType.isPrivate, Preferences.Privacy.privateBrowsingLock.value {
+            if !isPrivate, Preferences.Privacy.privateBrowsingLock.value {
               self.askForLocalAuthentication { [weak self] success, error in
                 if success {
                   self?.openInNewWindow(url: url, isPrivate: true)
@@ -178,10 +179,10 @@ extension BrowserViewController: TabDelegate {
   }
 
   public func tab(
-    _ tab: TabState,
+    _ tab: some TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
   ) async -> WebPermissionDecision {
-    guard let origin = tab.committedURL?.origin, tab === tabManager.selectedTab else {
+    guard let origin = tab.lastCommittedURL?.origin, tab === tabManager.selectedTab else {
       return .deny
     }
 
@@ -246,7 +247,7 @@ extension BrowserViewController: TabDelegate {
   }
 
   public func tab(
-    _ tab: TabState,
+    _ tab: some TabState,
     runJavaScriptAlertPanelWithMessage message: String,
     pageURL: URL
   ) async {
@@ -270,7 +271,7 @@ extension BrowserViewController: TabDelegate {
   }
 
   public func tab(
-    _ tab: TabState,
+    _ tab: some TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
     pageURL: URL
   ) async -> Bool {
@@ -294,7 +295,7 @@ extension BrowserViewController: TabDelegate {
   }
 
   public func tab(
-    _ tab: TabState,
+    _ tab: some TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
     defaultText: String?,
     pageURL: URL
@@ -319,7 +320,8 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
-  public func tab(_ tab: TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool {
+  public func tab(_ tab: some TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
+  {
     guard let documentTargetURL = request.mainDocumentURL else { return false }
     let domainForShields = Domain.getOrCreate(
       forUrl: documentTargetURL,
@@ -328,8 +330,10 @@ extension BrowserViewController: TabDelegate {
     return domainForShields.isShieldExpected(.noScript, considerAllShieldsOption: true)
   }
 
-  public func tab(_ tab: TabState, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
-  {
+  public func tab(
+    _ tab: some TabState,
+    shouldBlockUniversalLinksForRequest request: URLRequest
+  ) -> Bool {
     func isYouTubeLoad() -> Bool {
       guard let domain = request.mainDocumentURL?.baseDomain else {
         return false
@@ -345,10 +349,10 @@ extension BrowserViewController: TabDelegate {
     return false
   }
 
-  public func tab(_ tab: TabState, buildEditMenuWithBuilder builder: any UIMenuBuilder) {
+  public func tab(_ tab: some TabState, buildEditMenuWithBuilder builder: any UIMenuBuilder) {
     let forcePaste = UIAction(title: Strings.forcePaste) { [weak tab] _ in
       if let string = UIPasteboard.general.string {
-        tab?.evaluateSafeJavaScript(
+        tab?.evaluateJavaScript(
           functionName: "window.__firefox__.forcePaste",
           args: [string, UserScriptManager.securityToken],
           contentWorld: .defaultClient
@@ -356,7 +360,7 @@ extension BrowserViewController: TabDelegate {
       }
     }
     let searchWithBrave = UIAction(title: Strings.searchWithBrave) { [weak tab, weak self] _ in
-      tab?.evaluateSafeJavaScript(
+      tab?.evaluateJavaScript(
         functionName: "getSelection().toString",
         contentWorld: .defaultClient
       ) {
@@ -375,7 +379,7 @@ extension BrowserViewController: TabDelegate {
 }
 
 extension BrowserViewController {
-  private func didSelectSearchWithBrave(_ selectedText: String, tab: TabState) {
+  private func didSelectSearchWithBrave(_ selectedText: String, tab: some TabState) {
     let engine = profile.searchEngines.defaultEngine(
       forType: tab.isPrivate ? .privateMode : .standard
     )
@@ -395,7 +399,7 @@ extension BrowserViewController {
       RecentSearch.addItem(type: .text, text: selectedText, websiteUrl: url.absoluteString)
     }
   }
-  fileprivate func addTab(url: URL, inPrivateMode: Bool, currentTab: TabState) {
+  fileprivate func addTab(url: URL, inPrivateMode: Bool, currentTab: some TabState) {
     let tab = self.tabManager.addTab(
       URLRequest(url: url),
       afterTab: currentTab,
@@ -419,12 +423,12 @@ extension BrowserViewController {
     self.toolbarVisibilityViewModel.toolbarState = .expanded
   }
 
-  func suppressJSAlerts(tab: TabState) {
+  func suppressJSAlerts(tab: some TabState) {
     let script = """
       window.alert=window.confirm=window.prompt=function(n){},
       [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
       """
-    tab.evaluateSafeJavaScript(
+    tab.evaluateJavaScript(
       functionName: script,
       contentWorld: .defaultClient,
       asFunction: false
@@ -432,7 +436,7 @@ extension BrowserViewController {
   }
 
   func handleAlert<T: JSAlertInfo>(
-    tab: TabState,
+    tab: some TabState,
     origin: URLOrigin,
     alert: inout T,
     completionHandler: @escaping () -> Void
@@ -518,7 +522,7 @@ extension BrowserViewController {
   }
 
   public func tab(
-    _ tab: TabState,
+    _ tab: some TabState,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
     proposedCredential credential: URLCredential?,
     previousFailureCount: Int
@@ -531,19 +535,17 @@ extension BrowserViewController {
     tab.isDisplayingBasicAuthPrompt = true
     defer { tab.isDisplayingBasicAuthPrompt = false }
 
-    if let webView = tab.webContentView {
-      let isHidden = webView.isHidden
-      defer { webView.isHidden = isHidden }
+    let isHidden = tab.view.isHidden
+    defer { tab.view.isHidden = isHidden }
 
-      // Manually trigger a `url` change notification
-      if host != tab.url?.host {
-        webView.isHidden = true
+    // Manually trigger a `url` change notification
+    if host != tab.visibleURL?.host {
+      tab.view.isHidden = true
 
-        if tabManager.selectedTab === tab {
-          updateToolbarCurrentURL(
-            URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
-          )
-        }
+      if tabManager.selectedTab === tab {
+        updateToolbarCurrentURL(
+          URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
+        )
       }
     }
 
@@ -568,10 +570,29 @@ extension BrowserViewController {
     }
   }
 
+  private class TabOneShotURLObservation: TabObserver {
+    init(tab: some TabState, updated: @escaping (URL?) -> Void) {
+      tab.addObserver(self)
+      self.updated = updated
+    }
+
+    var updated: ((URL?) -> Void)?
+
+    public func tabDidUpdateURL(_ tab: some TabState) {
+      updated?(tab.visibleURL)
+      updated = nil
+      tab.removeObserver(self)
+    }
+
+    public func tabWillBeDestroyed(_ tab: some TabState) {
+      tab.removeObserver(self)
+    }
+  }
+
   public func tab(
-    _ tab: TabState,
+    _ tab: some TabState,
     createNewTabWithRequest request: URLRequest
-  ) -> TabState? {
+  ) -> (any TabState)? {
     guard !request.isInternalUnprivileged,
       let navigationURL = request.url,
       navigationURL.shouldRequestBeOpenedAsPopup()
@@ -593,25 +614,6 @@ extension BrowserViewController {
 
     toolbarVisibilityViewModel.toolbarState = .expanded
 
-    class TabOneShotURLObservation: TabObserver {
-      init(tab: TabState, updated: @escaping (URL?) -> Void) {
-        tab.addObserver(self)
-        self.updated = updated
-      }
-
-      var updated: ((URL?) -> Void)?
-
-      public func tabDidUpdateURL(_ tab: TabState) {
-        updated?(tab.url)
-        updated = nil
-        tab.removeObserver(self)
-      }
-
-      public func tabWillBeDestroyed(_ tab: TabState) {
-        tab.removeObserver(self)
-      }
-    }
-
     // Wait until WebKit starts the request before selecting the new tab, otherwise the tab manager may
     // restore it as if it was a dead tab.
     var observation: TabOneShotURLObservation?
@@ -622,9 +624,39 @@ extension BrowserViewController {
       guard let self = self, let tab = newTab else { return }
 
       // When a child tab is being selected, dismiss any popups on the parent tab
-      tab.parent?.shownPromptAlert?.dismiss(animated: false)
+      tab.opener?.shownPromptAlert?.dismiss(animated: false)
       self.tabManager.selectTab(tab)
     }
     return newTab
+  }
+
+  public func tab(
+    _ tab: some TabState,
+    userAgentForType type: UserAgentType,
+    request: URLRequest
+  ) -> String? {
+    let isBraveAllowedInUA =
+      request.url.flatMap {
+        tab.braveUserAgentExceptions?.canShowBrave($0)
+      } ?? true
+    let mobile = isBraveAllowedInUA ? UserAgent.mobile : UserAgent.mobileMasked
+    let desktop = isBraveAllowedInUA ? UserAgent.desktop : UserAgent.desktopMasked
+    switch type {
+    case .none, .automatic:
+      let screenWidth = UIScreen.main.bounds.width
+      if traitCollection.horizontalSizeClass == .compact && view.bounds.width < screenWidth / 2 {
+        return mobile
+      }
+      return UserAgent.shouldUseDesktopMode() ? desktop : mobile
+    case .desktop: return desktop
+    case .mobile: return mobile
+    }
+  }
+
+  public func tab(_ tab: some TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType {
+    if Preferences.UserAgent.alwaysRequestDesktopSite.value {
+      return .desktop
+    }
+    return .mobile
   }
 }

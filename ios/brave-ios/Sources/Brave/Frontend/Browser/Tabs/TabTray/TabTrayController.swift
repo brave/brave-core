@@ -29,8 +29,8 @@ protocol TabTrayDelegate: AnyObject {
 
 class TabTrayController: AuthenticationController {
 
-  typealias DataSource = UICollectionViewDiffableDataSource<TabTraySection, TabState>
-  typealias Snapshot = NSDiffableDataSourceSnapshot<TabTraySection, TabState>
+  typealias DataSource = UICollectionViewDiffableDataSource<TabTraySection, TabState.ID>
+  typealias Snapshot = NSDiffableDataSourceSnapshot<TabTraySection, TabState.ID>
 
   // MARK: Internal
 
@@ -80,8 +80,13 @@ class TabTrayController: AuthenticationController {
   private(set) lazy var dataSource =
     DataSource(
       collectionView: tabTrayView.collectionView,
-      cellProvider: { [weak self] collectionView, indexPath, tab -> UICollectionViewCell? in
-        self?.cellProvider(collectionView: collectionView, indexPath: indexPath, tab: tab)
+      cellProvider: { [weak self] collectionView, indexPath, tabID -> UICollectionViewCell? in
+        guard let self,
+          let tab = self.tabManager.tabsForCurrentMode.first(where: { $0.id == tabID })
+        else {
+          return nil
+        }
+        return cellProvider(collectionView: collectionView, indexPath: indexPath, tab: tab)
       }
     )
 
@@ -546,7 +551,7 @@ class TabTrayController: AuthenticationController {
     if initialScrollCompleted { return }
 
     if let selectedTab = tabManager.selectedTab,
-      let selectedIndexPath = dataSource.indexPath(for: selectedTab)
+      let selectedIndexPath = dataSource.indexPath(for: selectedTab.id)
     {
       DispatchQueue.main.async {
         self.tabTrayView.collectionView.scrollToItem(
@@ -605,7 +610,7 @@ class TabTrayController: AuthenticationController {
   func applySnapshot(for query: String? = nil) {
     var snapshot = Snapshot()
     snapshot.appendSections([.main])
-    snapshot.appendItems(tabManager.tabsForCurrentMode(for: query))
+    snapshot.appendItems(tabManager.tabsForCurrentMode(for: query).map(\.id))
     dataSource.apply(snapshot, animatingDifferences: true) { [weak self] in
       guard let self = self else { return }
 
@@ -625,7 +630,7 @@ class TabTrayController: AuthenticationController {
   private func cellProvider(
     collectionView: UICollectionView,
     indexPath: IndexPath,
-    tab: TabState
+    tab: some TabState
   ) -> UICollectionViewCell? {
     guard
       let cell =
@@ -638,7 +643,7 @@ class TabTrayController: AuthenticationController {
 
     cell.configure(with: tab)
 
-    if tab == tabManager.selectedTab {
+    if tab === tabManager.selectedTab {
       cell.setTabSelected(tab)
     }
 
@@ -892,7 +897,7 @@ class TabTrayController: AuthenticationController {
       privateMode && !BraveCore.FeatureList.kBraveShredFeature.enabled
   }
 
-  func remove(tab: TabState) {
+  func remove(tab: some TabState) {
     // Initially add the tab to recently closed and remove it from Tab Data after
     tabManager.addTabToRecentlyClosed(tab)
     tabManager.removeTab(tab)
@@ -960,9 +965,9 @@ class TabTrayController: AuthenticationController {
     present(settingsNavigationController, animated: true)
   }
 
-  private func scrollToSelectedTab(_ tab: TabState?) {
+  private func scrollToSelectedTab(_ tab: (any TabState)?) {
     if let selectedTab = tab,
-      let selectedIndexPath = dataSource.indexPath(for: selectedTab)
+      let selectedIndexPath = dataSource.indexPath(for: selectedTab.id)
     {
       DispatchQueue.main.async {
         self.tabTrayView.collectionView.scrollToItem(
@@ -996,7 +1001,7 @@ extension TabTrayController: PresentingModalViewControllerDelegate {
 // MARK: TabManagerDelegate
 
 extension TabTrayController: TabManagerDelegate {
-  func tabManager(_ tabManager: TabManager, didAddTab tab: TabState) {
+  func tabManager(_ tabManager: TabManager, didAddTab tab: some TabState) {
     updateShredButtonVisibility()
     applySnapshot()
 
@@ -1010,7 +1015,7 @@ extension TabTrayController: TabManagerDelegate {
     }
   }
 
-  func tabManager(_ tabManager: TabManager, didRemoveTab tab: TabState) {
+  func tabManager(_ tabManager: TabManager, didRemoveTab tab: some TabState) {
     // When user removes their last tab, a new one is created.
     // Until then, the view is dismissed and takes the user directly to that tab.
     if tabManager.tabsForCurrentMode.count < 1 {
@@ -1024,11 +1029,11 @@ extension TabTrayController: TabManagerDelegate {
 
   func tabManager(
     _ tabManager: TabManager,
-    didSelectedTabChange selected: TabState?,
-    previous: TabState?
+    didSelectedTabChange selected: (any TabState)?,
+    previous: (any TabState)?
   ) {}
-  func tabManager(_ tabManager: TabManager, willAddTab tab: TabState) {}
-  func tabManager(_ tabManager: TabManager, willRemoveTab tab: TabState) {}
+  func tabManager(_ tabManager: TabManager, willAddTab tab: some TabState) {}
+  func tabManager(_ tabManager: TabManager, willRemoveTab tab: some TabState) {}
   func tabManagerDidAddTabs(_ tabManager: TabManager) {}
   func tabManagerDidRestoreTabs(_ tabManager: TabManager) {}
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {}

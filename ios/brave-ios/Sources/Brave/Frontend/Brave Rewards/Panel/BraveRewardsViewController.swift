@@ -17,7 +17,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     case unverifiedPublisherLearnMoreTapped
   }
 
-  let browserTab: TabState
+  let browserTab: any TabState
   let rewards: BraveRewards
   var actionHandler: ((Action) -> Void)?
 
@@ -40,7 +40,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
         )!.withRenderingMode(.alwaysOriginal)
         rewardsView.publisherView.faviconImageView.contentMode = .center
       } else {
-        if let url = browserTab.url {
+        if let url = browserTab.visibleURL {
           rewardsView.publisherView.faviconImageView.contentMode = .scaleAspectFit
           rewardsView.publisherView.faviconImageView.loadFavicon(
             for: url,
@@ -53,7 +53,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     }
   }
 
-  init(tab: TabState, rewards: BraveRewards) {
+  init(tab: some TabState, rewards: BraveRewards) {
     self.browserTab = tab
     self.rewards = rewards
 
@@ -82,7 +82,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
       self.rewardsView.statusView.setVisibleStatus(status: .rewardsOff, animated: false)
       self.rewardsView.publisherView.isHidden = true
     } else {
-      if let url = self.browserTab.url, !url.isLocal, !InternalURL.isValid(url: url) {
+      if let url = self.browserTab.visibleURL, !url.isLocal, !InternalURL.isValid(url: url) {
         self.rewardsView.publisherView.isHidden = false
         self.rewardsView.publisherView.hostLabel.text = url.baseDomain
         rewardsAPI.fetchPublisherActivity(
@@ -105,7 +105,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     ) {
       rewardsView.publisherView.hostLabel.attributedText = displayName
     } else {
-      rewardsView.publisherView.hostLabel.text = browserTab.url?.baseDomain
+      rewardsView.publisherView.hostLabel.text = browserTab.visibleURL?.baseDomain
     }
   }
 

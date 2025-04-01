@@ -10,13 +10,13 @@ import Storage
 import WebKit
 
 class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
-  weak var tab: TabState?
+  weak var tab: WebKitTabState?
 
   private var downloadHandlers: Set<TabWKDownloadHandler> = []
   private var sslPinningError: Error?
   private var pendingMIMEType: String?
 
-  init(tab: TabState) {
+  init(tab: WebKitTabState) {
     self.tab = tab
   }
 
@@ -39,7 +39,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
   }
 
   private func defaultAllowPolicy(
-    for tab: TabState,
+    for tab: some TabState,
     request: URLRequest
   ) -> WKNavigationActionPolicy {
     if let delegate = tab.delegate,
@@ -104,7 +104,12 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
     if ["http", "https", "data", "blob", "file"].contains(requestURL.scheme) {
       // Handle updating the user agent
       if navigationAction.targetFrame?.isMainFrame == true {
-        tab.updateUserAgent(webView, newURL: requestURL)
+        let userAgentType = tab.userAgentTypeForURL(requestURL)
+        webView.customUserAgent = tab.delegate?.tab(
+          tab,
+          userAgentForType: userAgentType,
+          request: navigationAction.request
+        )
       }
 
       // Handle blocking JS
@@ -316,9 +321,9 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
     guard let tab else { return }
 
     // Set the committed url which will also set tab.visibleURL
-    tab.committedURL = webView.url
+    tab.lastCommittedURL = webView.url
     tab.isRestoring = false
-    tab.mimeType = pendingMIMEType
+    tab.contentsMimeType = pendingMIMEType
 
     pendingMIMEType = nil
 
@@ -335,6 +340,7 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
   ) {
     guard let tab, let url = webView.url else { return }
     tab.redirectChain.append(url)
+    tab.didRedirectNavigation()
   }
 
   /// Invoked when an error occurs while starting to load data for the main frame.

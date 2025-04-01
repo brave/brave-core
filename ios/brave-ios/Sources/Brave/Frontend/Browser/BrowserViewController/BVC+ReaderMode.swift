@@ -15,7 +15,7 @@ extension BrowserViewController: ReaderModeScriptHandlerDelegate {
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didChangeReaderModeState state: ReaderModeState,
-    forTab tab: TabState
+    forTab tab: some TabState
   ) {
     // If this reader mode availability state change is for the tab that we currently show, then update
     // the button. Otherwise do nothing and the button will be updated when the tab is made active.
@@ -26,7 +26,7 @@ extension BrowserViewController: ReaderModeScriptHandlerDelegate {
 
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
-    didDisplayReaderizedContentForTab tab: TabState
+    didDisplayReaderizedContentForTab tab: some TabState
   ) {
     if tabManager.selectedTab !== tab { return }
     showReaderModeBar(animated: true)
@@ -36,7 +36,7 @@ extension BrowserViewController: ReaderModeScriptHandlerDelegate {
   func readerMode(
     _ readerMode: ReaderModeScriptHandler,
     didParseReadabilityResult readabilityResult: ReadabilityResult,
-    forTab tab: TabState
+    forTab tab: some TabState
   ) {}
 }
 
@@ -149,8 +149,9 @@ extension BrowserViewController {
   /// of the current page is there. And if so, we go there.
 
   func enableReaderMode() {
-    guard let tab = tabManager.selectedTab else { return }
-    let backForwardList = tab.backForwardList
+    guard let tab = tabManager.selectedTab, let backForwardList = tab.backForwardList else {
+      return
+    }
 
     let backList = backForwardList.backList
     let forwardList = backForwardList.forwardList
@@ -175,7 +176,7 @@ extension BrowserViewController {
       self.updateTranslateURLBar(tab: tab, state: translationState)
     } else {
       // Store the readability result in the cache and load it. This will later move to the ReadabilityHelper.
-      tab.evaluateSafeJavaScript(
+      tab.evaluateJavaScript(
         functionName: "\(readerModeNamespace).readerize",
         contentWorld: ReaderModeScriptHandler.scriptSandbox
       ) { (object, error) -> Void in
@@ -200,8 +201,7 @@ extension BrowserViewController {
   /// of the page is either to the left or right in the BackForwardList. If that is the case, we navigate there.
 
   func disableReaderMode() {
-    if let tab = tabManager.selectedTab {
-      let backForwardList = tab.backForwardList
+    if let tab = tabManager.selectedTab, let backForwardList = tab.backForwardList {
       let backList = backForwardList.backList
       let forwardList = backForwardList.forwardList
 

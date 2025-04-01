@@ -11,7 +11,7 @@ import Web
 @MainActor
 class ShieldsSettingsViewModel: ObservableObject {
   private var domain: Domain
-  private let tab: TabState
+  private let tab: any TabState
 
   @Published var stats: TPPageStats
   @Published var shieldsEnabled: Bool {
@@ -47,7 +47,7 @@ class ShieldsSettingsViewModel: ObservableObject {
   /// If we are updating our state values, we don't want to assign to the domain preference.
   private var isUpdatingState: Bool = false
 
-  init(tab: TabState, domain: Domain) {
+  init(tab: some TabState, domain: Domain) {
     self.domain = domain
     self.tab = tab
     self.shieldsEnabled = !domain.areAllShieldsOff

@@ -28,13 +28,18 @@ struct ShieldsPanelView: View {
   }
 
   private let url: URL
-  private var tab: TabState?
+  private var tab: (any TabState)?
   private let displayHost: String
   @AppStorage("advancedShieldsExpanded") private var advancedShieldsExpanded = false
   @ObservedObject private var viewModel: ShieldsSettingsViewModel
   private var actionCallback: (Action) -> Void
 
-  @MainActor init(url: URL, tab: TabState, domain: Domain, callback: @escaping (Action) -> Void) {
+  @MainActor init(
+    url: URL,
+    tab: some TabState,
+    domain: Domain,
+    callback: @escaping (Action) -> Void
+  ) {
     self.url = url
     self.tab = tab
     self.viewModel = ShieldsSettingsViewModel(tab: tab, domain: domain)
@@ -350,7 +355,7 @@ class ShieldsPanelViewController: UIHostingController<ShieldsPanelView>, Popover
 
   init(
     url: URL,
-    tab: TabState,
+    tab: some TabState,
     domain: Domain,
     callback: @escaping (ShieldsPanelView.Action) -> Void
   ) {

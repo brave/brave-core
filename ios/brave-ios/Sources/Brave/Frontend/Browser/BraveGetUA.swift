@@ -30,7 +30,7 @@ class BraveGetUA: TabContentScript {
   }()
 
   func tab(
-    _ tab: TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {

@@ -4,6 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 public protocol TabDownloadDelegate: AnyObject {
-  func tab(_ tab: TabState, didCreateDownload download: Download)
-  func tab(_ tab: TabState, didFinishDownload download: Download, error: Error?)
+  func tab(_ tab: some TabState, didCreateDownload download: Download)
+  func tab(_ tab: some TabState, didFinishDownload download: Download, error: Error?)
 }

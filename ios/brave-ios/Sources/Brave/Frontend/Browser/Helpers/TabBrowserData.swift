@@ -25,9 +25,9 @@ extension TabDataValues {
 }
 
 protocol TabMiscDelegate {
-  func showRequestRewardsPanel(_ tab: TabState)
-  func stopMediaPlayback(_ tab: TabState)
-  func showWalletNotification(_ tab: TabState, origin: URLOrigin)
+  func showRequestRewardsPanel(_ tab: some TabState)
+  func stopMediaPlayback(_ tab: some TabState)
+  func showWalletNotification(_ tab: some TabState, origin: URLOrigin)
   func updateURLBarWalletButton()
 }
 
@@ -49,10 +49,10 @@ struct RewardsTabChangeReportingState {
 /// any additional properties or changes to data in this should be pulled out and placed in its own
 /// type such as a tab helper.
 class TabBrowserData: NSObject, TabObserver {
-  weak var tab: TabState?
+  weak var tab: (any TabState)?
 
   init(
-    tab: TabState,
+    tab: some TabState,
     tabGeneratorAPI: BraveTabGeneratorAPI? = nil
   ) {
     self.tab = tab
@@ -155,6 +155,7 @@ class TabBrowserData: NSObject, TabObserver {
   // PageMetadata is derived from the page content itself, and as such lags behind the
   // rest of the tab.
   var pageMetadata: PageMetadata?
+  var lastTitle: String?
 
   var userActivity: NSUserActivity?
 
@@ -309,11 +310,11 @@ class TabBrowserData: NSObject, TabObserver {
     )
   }
 
-  func removeContentScript(name: String, forTab tab: TabState, contentWorld: WKContentWorld) {
+  func removeContentScript(name: String, forTab tab: some TabState, contentWorld: WKContentWorld) {
     contentScriptManager.removeContentScript(name: name, forTab: tab, contentWorld: contentWorld)
   }
 
-  func replaceContentScript(_ helper: TabContentScript, name: String, forTab tab: TabState) {
+  func replaceContentScript(_ helper: TabContentScript, name: String, forTab tab: some TabState) {
     contentScriptManager.replaceContentScript(helper, name: name, forTab: tab)
   }
 
@@ -395,24 +396,24 @@ class TabBrowserData: NSObject, TabObserver {
 
   // MARK: - TabObserver
 
-  func tabDidStartNavigation(_ tab: TabState) {
+  func tabDidStartNavigation(_ tab: some TabState) {
     resetExternalAlertProperties()
     nightMode = Preferences.General.nightModeEnabled.value
   }
 
-  func tabDidChangeTitle(_ tab: TabState) {
+  func tabDidChangeTitle(_ tab: some TabState) {
     syncTab?.setTitle(tab.displayTitle)
   }
 
-  func tabDidUpdateURL(_ tab: TabState) {
-    if let url = tab.url, !tab.isPrivate, !url.isLocal, !InternalURL.isValid(url: url),
+  func tabDidUpdateURL(_ tab: some TabState) {
+    if let url = tab.visibleURL, !tab.isPrivate, !url.isLocal, !InternalURL.isValid(url: url),
       !url.isInternalURL(for: .readermode)
     {
       syncTab?.setURL(url)
     }
   }
 
-  func tab(_ tab: TabState, didCreateWebView webView: UIView) {
+  func tabDidCreateWebView(_ tab: some TabState) {
     let scriptPreferences: [UserScriptManager.ScriptType: Bool] = [
       .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
       .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
@@ -425,22 +426,22 @@ class TabBrowserData: NSObject, TabObserver {
     nightMode = Preferences.General.nightModeEnabled.value
   }
 
-  func tab(_ tab: TabState, willDeleteWebView webView: UIView) {
+  func tabWillDeleteWebView(_ tab: some TabState) {
     contentScriptManager.helpers.removeAll()
     contentScriptManager.uninstall(from: tab)
     translateHelper = nil
   }
 
-  func tabWillBeDestroyed(_ tab: TabState) {
+  func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
   }
 }
 
 private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply {
   fileprivate var helpers = [String: TabContentScript]()
-  weak var tab: TabState?
+  weak var tab: (any TabState)?
 
-  func uninstall(from tab: TabState) {
+  func uninstall(from tab: some TabState) {
     helpers.forEach {
       let name = type(of: $0.value).messageHandlerName
       tab.configuration.userContentController.removeScriptMessageHandler(forName: name)
@@ -466,7 +467,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
   func addContentScript(
     _ helper: TabContentScript,
     name: String,
-    forTab tab: TabState,
+    forTab tab: some TabState,
     contentWorld: WKContentWorld
   ) {
     if let _ = helpers[name] {
@@ -485,7 +486,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     )
   }
 
-  func removeContentScript(name: String, forTab tab: TabState, contentWorld: WKContentWorld) {
+  func removeContentScript(name: String, forTab tab: some TabState, contentWorld: WKContentWorld) {
     if let helper = helpers[name] {
       let scriptMessageHandlerName = type(of: helper).messageHandlerName
       tab.configuration.userContentController.removeScriptMessageHandler(
@@ -496,7 +497,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     }
   }
 
-  func replaceContentScript(_ helper: TabContentScript, name: String, forTab tab: TabState) {
+  func replaceContentScript(_ helper: TabContentScript, name: String, forTab tab: some TabState) {
     if helpers[name] != nil {
       helpers[name] = helper
     }
@@ -515,7 +516,7 @@ extension TabState {
     {
       return siteURL
     }
-    return self.url
+    return self.visibleURL
   }
 
   /// The URL that should be shared when requested by the user via the share sheet
@@ -525,7 +526,7 @@ extension TabState {
   /// also ensuring single page applications which don't update their canonical URLs on navigation share
   /// the current pages URL
   var shareURL: URL? {
-    guard let url = url else { return nil }
+    guard let url = visibleURL else { return nil }
     if let canonicalURL = canonicalURL, canonicalURL.baseDomain != url.baseDomain {
       return canonicalURL
     }

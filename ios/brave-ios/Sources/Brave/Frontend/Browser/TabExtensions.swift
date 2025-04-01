@@ -13,23 +13,23 @@ import Web
 
 extension TabState {
   var displayTitle: String {
-    if let url = self.url, InternalURL(url)?.isAboutHomeURL ?? false {
+    if let url = self.visibleURL, InternalURL(url)?.isAboutHomeURL ?? false {
       return Strings.Hotkey.newTabTitle
     }
 
-    if let displayTabTitle = fetchDisplayTitle(using: url, title: title) {
+    if let displayTabTitle = fetchDisplayTitle(using: visibleURL, title: title) {
       return displayTabTitle
     }
 
-    if let url = self.url, !InternalURL.isValid(url: url),
+    if let url = self.visibleURL, !InternalURL.isValid(url: url),
       let shownUrl = url.displayURL?.absoluteString, isWebViewCreated
     {
       return shownUrl
     }
 
-    guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
+    guard let lastTitle = data.browserData?.lastTitle, !lastTitle.isEmpty else {
       // FF uses url?.displayURL?.absoluteString ??  ""
-      if let title = url?.absoluteString {
+      if let title = visibleURL?.absoluteString {
         return title
       } else if let tab = SessionTab.from(tabId: id) {
         if tab.title.isEmpty {
@@ -45,7 +45,7 @@ extension TabState {
   }
 
   var displayFavicon: Favicon? {
-    if let url = url, InternalURL(url)?.isAboutHomeURL == true {
+    if let url = visibleURL, InternalURL(url)?.isAboutHomeURL == true {
       return Favicon(
         image: UIImage(sharedNamed: "brave.logo"),
         isMonogramImage: false,
@@ -60,14 +60,14 @@ extension TabState {
   /// For Normal  Mode Tab information is fetched using Tab ID from
   var fetchedURL: URL? {
     if isPrivate {
-      if let url = url, url.isWebPage() {
+      if let url = visibleURL, url.isWebPage() {
         return url
       }
     } else {
-      if let tabUrl = url, tabUrl.isWebPage() {
+      if let tabUrl = visibleURL, tabUrl.isWebPage() {
         return tabUrl
       } else if let fetchedTab = SessionTab.from(tabId: id), fetchedTab.url?.isWebPage() == true {
-        return url
+        return visibleURL
       }
     }
 
@@ -92,35 +92,44 @@ extension TabState {
   }
 
   func hideContent(_ animated: Bool = false) {
-    webContentView?.isUserInteractionEnabled = false
+    view.isUserInteractionEnabled = false
     if animated {
       UIView.animate(
         withDuration: 0.25,
         animations: { () -> Void in
-          self.webContentView?.alpha = 0.0
+          self.view.alpha = 0.0
         }
       )
     } else {
-      webContentView?.alpha = 0.0
+      view.alpha = 0.0
     }
   }
 
   func showContent(_ animated: Bool = false) {
-    webContentView?.isUserInteractionEnabled = true
+    view.isUserInteractionEnabled = true
     if animated {
       UIView.animate(
         withDuration: 0.25,
         animations: { () -> Void in
-          self.webContentView?.alpha = 1.0
+          self.view.alpha = 1.0
         }
       )
     } else {
-      webContentView?.alpha = 1.0
+      view.alpha = 1.0
     }
   }
 
   func stopMediaPlayback() {
     data.browserData?.miscDelegate?.stopMediaPlayback(self)
+  }
+
+  var containsWebPage: Bool {
+    if let url = visibleURL {
+      let isHomeURL = InternalURL(url)?.isAboutHomeURL
+      return url.isWebPage() && isHomeURL != true
+    }
+
+    return false
   }
 }
 
@@ -137,7 +146,7 @@ extension TabState {
       // The method we pass data to is undefined.
       // For such case we do not call that method or remove the search backup manager.
 
-      self.evaluateSafeJavaScript(
+      self.evaluateJavaScript(
         functionName: "window.onFetchedBackupResults === undefined",
         contentWorld: BraveSearchScriptHandler.scriptSandbox,
         asFunction: false
@@ -163,14 +172,14 @@ extension TabState {
 
         var queryResult = "null"
 
-        if let url = self.url,
+        if let url = self.visibleURL,
           BraveSearchManager.isValidURL(url),
           let result = self.braveSearchManager?.fallbackQueryResult
         {
           queryResult = result
         }
 
-        self.evaluateSafeJavaScript(
+        self.evaluateJavaScript(
           functionName: "window.onFetchedBackupResults",
           args: [queryResult],
           contentWorld: BraveSearchScriptHandler.scriptSandbox,
@@ -182,15 +191,37 @@ extension TabState {
       }
     }
   }
+
+  func replaceLocation(with url: URL) {
+    let apostropheEncoded = "%27"
+    let safeUrl = url.absoluteString.replacingOccurrences(of: "'", with: apostropheEncoded)
+    evaluateJavaScript(
+      functionName: "location.replace",
+      args: ["'\(safeUrl)'"],
+      contentWorld: .defaultClient,
+      escapeArgs: false
+    )
+  }
 }
 
 // MARK: - Brave SKU
 extension TabState {
   func injectLocalStorageItem(key: String, value: String) {
-    self.evaluateSafeJavaScript(
+    self.evaluateJavaScript(
       functionName: "localStorage.setItem",
       args: [key, value],
       contentWorld: BraveSkusScriptHandler.scriptSandbox
     )
+  }
+}
+
+extension SecureContentState {
+  public var shouldDisplayWarning: Bool {
+    switch self {
+    case .unknown, .invalidCertificate, .missingSSL, .mixedContent:
+      return true
+    case .localhost, .secure:
+      return false
+    }
   }
 }

@@ -35,7 +35,7 @@ public class DeAmpScriptHandler: TabContentScript {
   }()
 
   func tab(
-    _ tab: TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
@@ -54,7 +54,7 @@ public class DeAmpScriptHandler: TabContentScript {
       // Also check that our window url does not match the previously committed url
       // or that previousURL is nil which indicates as circular loop caused by a server side redirect
       let shouldRedirect =
-        dto.destURL != tab.previousComittedURL && tab.committedURL != tab.previousComittedURL
+        dto.destURL != tab.previousCommittedURL && tab.lastCommittedURL != tab.previousCommittedURL
       replyHandler(shouldRedirect, nil)
     } catch {
       assertionFailure("Invalid type of message. Fix the `RequestBlocking.js` script")

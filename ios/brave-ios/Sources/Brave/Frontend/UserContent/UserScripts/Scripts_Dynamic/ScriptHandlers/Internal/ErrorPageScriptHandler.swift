@@ -19,7 +19,7 @@ extension ErrorPageHelper: TabContentScript {
   static let userScript: WKUserScript? = nil
 
   func tab(
-    _ tab: TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {

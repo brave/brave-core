@@ -18,7 +18,7 @@ extension UTType {
 }
 
 extension BrowserViewController: TabDownloadDelegate {
-  public func tab(_ tab: TabState, didCreateDownload download: Download) {
+  public func tab(_ tab: some TabState, didCreateDownload download: Download) {
     guard tab.browserData?.isTabVisible() == true else {
       download.cancel()
       return
@@ -101,7 +101,7 @@ extension BrowserViewController: TabDownloadDelegate {
     }
   }
 
-  public func tab(_ tab: TabState, didFinishDownload download: Download, error: (any Error)?) {
+  public func tab(_ tab: some TabState, didFinishDownload download: Download, error: (any Error)?) {
     guard let destinationURL = download.destinationURL, error == nil else {
       downloadQueue.download(download, didCompleteWithError: error)
 
@@ -164,13 +164,13 @@ extension BrowserViewController: TabDownloadDelegate {
   ///
   /// The user unfortunately has to  dismiss it manually after they have handled the file.
   /// Chrome iOS does the same
-  private func handleLinkWithSafariViewController(_ url: URL, tab: TabState) {
+  private func handleLinkWithSafariViewController(_ url: URL, tab: some TabState) {
     let vc = SFSafariViewController(url: url, configuration: .init())
     vc.modalPresentationStyle = .formSheet
     self.present(vc, animated: true)
 
     // If the website opened this URL in a separate tab, remove the empty tab
-    if tab.url == nil || tab.url?.absoluteString == "about:blank" {
+    if tab.visibleURL == nil || tab.visibleURL?.absoluteString == "about:blank" {
       tabManager.removeTab(tab)
     }
   }
@@ -178,7 +178,7 @@ extension BrowserViewController: TabDownloadDelegate {
   @MainActor
   private func downloadAlert(
     for download: Download,
-    tab: TabState,
+    tab: some TabState,
     suggestedFileName: String
   ) async -> Bool {
     // Only download if there is a valid host

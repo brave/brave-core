@@ -15,15 +15,15 @@ import XCTest
 
 open class MockTabManagerStateDelegate: TabManagerStateDelegate {
   var numberOfTabsStored = 0
-  public func tabManagerWillStoreTabs(_ tabs: [TabState]) {
+  public func tabManagerWillStoreTabs(_ tabs: [any TabState]) {
     numberOfTabsStored = tabs.count
   }
 }
 
 extension TabManager {
-  func tabs(withType type: TabType) -> [TabState] {
+  func tabs(isPrivate: Bool) -> [any TabState] {
     assert(Thread.isMainThread)
-    return allTabs.filter { $0.type == type }
+    return allTabs.filter { $0.isPrivate == isPrivate }
   }
 }
 
@@ -74,17 +74,17 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
   public func tabManager(
     _ tabManager: TabManager,
-    didSelectedTabChange selected: TabState?,
-    previous: TabState?
+    didSelectedTabChange selected: (any TabState)?,
+    previous: (any TabState)?
   ) {
     testDelegateMethodWithName(#function, tabs: [selected, previous])
   }
 
-  public func tabManager(_ tabManager: TabManager, didAddTab tab: TabState) {
+  public func tabManager(_ tabManager: TabManager, didAddTab tab: some TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
-  public func tabManager(_ tabManager: TabManager, didRemoveTab tab: TabState) {
+  public func tabManager(_ tabManager: TabManager, didRemoveTab tab: some TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
@@ -92,11 +92,11 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     testDelegateMethodWithName(#function, tabs: [])
   }
 
-  public func tabManager(_ tabManager: TabManager, willRemoveTab tab: TabState) {
+  public func tabManager(_ tabManager: TabManager, willRemoveTab tab: some TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
-  public func tabManager(_ tabManager: TabManager, willAddTab tab: TabState) {
+  public func tabManager(_ tabManager: TabManager, willAddTab tab: some TabState) {
     testDelegateMethodWithName(#function, tabs: [tab])
   }
 
@@ -158,15 +158,16 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     manager.stateDelegate = stateDelegate
     let configuration = WKWebViewConfiguration()
     configuration.processPool = WKProcessPool()
+    configuration.websiteDataStore = .nonPersistent()
 
     // test that non-private tabs are saved to the db
     // add some non-private tabs to the tab manager
     for _ in 0..<3 {
-      let tab = TabState(configuration: configuration, type: .private)
+      let tab = TabStateFactory.create(with: .init(initialConfiguration: configuration))
       tab.setVirtualURL(URL(string: "http://yahoo.com")!)
       manager.configureTab(
         tab,
-        request: URLRequest(url: tab.url!),
+        request: URLRequest(url: tab.visibleURL!),
         flushToDisk: false,
         zombie: false
       )
@@ -200,8 +201,8 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       tabs in
       let next = tabs[0]!
       let previous = tabs[1]!
-      XCTAssertTrue(previous != next)
-      XCTAssertTrue(previous == tab)
+      XCTAssertTrue(previous !== next)
+      XCTAssertTrue(previous === tab)
       XCTAssertFalse(next.isPrivate)
     }
     delegate.expect([willRemove, didRemove, willAdd, didAdd, didSelect])
@@ -221,8 +222,8 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       tabs in
       let next = tabs[0]!
       let previous = tabs[1]!
-      XCTAssertTrue(previous != next)
-      XCTAssertTrue(previous == tab)
+      XCTAssertTrue(previous !== next)
+      XCTAssertTrue(previous === tab)
       XCTAssertTrue(next.isPrivate)
     }
     delegate.expect([willRemove, didRemove, willAdd, didAdd, didSelect])
@@ -239,33 +240,33 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     manager.selectTab(manager.addTab(isPrivate: true))
 
     XCTAssertEqual(
-      TabType.of(manager.selectedTab).isPrivate,
+      manager.selectedTab!.isPrivate,
       true,
       "The selected tab should be the private tab"
     )
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       1,
       "There should only be one private tab"
     )
 
     manager.selectTab(tab)
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       1,
       "If the normal tab is selected the private tab should NOT be deleted"
     )
     XCTAssertEqual(
-      manager.tabs(withType: .regular).count,
+      manager.tabs(isPrivate: false).count,
       1,
       "The regular tab should stil be around"
     )
 
     manager.selectTab(manager.addTab(isPrivate: true))
-    XCTAssertEqual(manager.tabs(withType: .private).count, 2, "There should be two private tabs")
+    XCTAssertEqual(manager.tabs(isPrivate: true).count, 2, "There should be two private tabs")
     manager.willSwitchTabMode(leavingPBM: true)
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       2,
       "After willSwitchTabMode there should be 2 private tabs"
     )
@@ -273,18 +274,18 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     manager.selectTab(manager.addTab(isPrivate: true))
     manager.selectTab(manager.addTab(isPrivate: true))
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       4,
       "Private tabs should not be deleted when another one is added"
     )
     manager.selectTab(manager.addTab(isPrivate: false))
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       4,
       "But once we add a normal tab we've switched out of private mode. Private tabs should be be persistent"
     )
     XCTAssertEqual(
-      manager.tabs(withType: .regular).count,
+      manager.tabs(isPrivate: false).count,
       2,
       "The original normal tab and the new one should both still exist"
     )
@@ -301,33 +302,33 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     manager.selectTab(manager.addTab(isPrivate: true))
 
     XCTAssertEqual(
-      TabType.of(manager.selectedTab).isPrivate,
+      manager.selectedTab?.isPrivate,
       true,
       "The selected tab should be the private tab"
     )
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       1,
       "There should only be one private tab"
     )
 
     manager.selectTab(tab)
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       0,
       "If the normal tab is selected the private tab should have been deleted"
     )
     XCTAssertEqual(
-      manager.tabs(withType: .regular).count,
+      manager.tabs(isPrivate: false).count,
       1,
       "The regular tab should stil be around"
     )
 
     manager.selectTab(manager.addTab(isPrivate: true))
-    XCTAssertEqual(manager.tabs(withType: .private).count, 1, "There should be one new private tab")
+    XCTAssertEqual(manager.tabs(isPrivate: true).count, 1, "There should be one new private tab")
     manager.willSwitchTabMode(leavingPBM: true)
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       0,
       "After willSwitchTabMode there should be no more private tabs"
     )
@@ -335,18 +336,18 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     manager.selectTab(manager.addTab(isPrivate: true))
     manager.selectTab(manager.addTab(isPrivate: true))
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       2,
       "Private tabs should not be deleted when another one is added"
     )
     manager.selectTab(manager.addTab(isPrivate: false))
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       0,
       "But once we add a normal tab we've switched out of private mode. Private tabs should be deleted"
     )
     XCTAssertEqual(
-      manager.tabs(withType: .regular).count,
+      manager.tabs(isPrivate: false).count,
       2,
       "The original normal tab and the new one should both still exist"
     )
@@ -361,11 +362,11 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     manager.selectTab(manager.addTab(isPrivate: true))
 
     manager.willSwitchTabMode(leavingPBM: false)
-    XCTAssertEqual(manager.tabs(withType: .private).count, 1, "There should be 1 private tab")
+    XCTAssertEqual(manager.tabs(isPrivate: true).count, 1, "There should be 1 private tab")
     manager.willSwitchTabMode(leavingPBM: true)
-    XCTAssertEqual(manager.tabs(withType: .private).count, 1, "There should be 1 private tab")
+    XCTAssertEqual(manager.tabs(isPrivate: true).count, 1, "There should be 1 private tab")
     manager.removeTab(tab)
-    XCTAssertEqual(manager.tabs(withType: .regular).count, 1, "There should be 1 normal tab")
+    XCTAssertEqual(manager.tabs(isPrivate: false).count, 1, "There should be 1 normal tab")
 
     setPersistentPrivateMode(false)
   }
@@ -379,11 +380,11 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     manager.selectTab(manager.addTab(isPrivate: true))
 
     manager.willSwitchTabMode(leavingPBM: false)
-    XCTAssertEqual(manager.tabs(withType: .private).count, 1, "There should be 1 private tab")
+    XCTAssertEqual(manager.tabs(isPrivate: true).count, 1, "There should be 1 private tab")
     manager.willSwitchTabMode(leavingPBM: true)
-    XCTAssertEqual(manager.tabs(withType: .private).count, 0, "There should be 0 private tab")
+    XCTAssertEqual(manager.tabs(isPrivate: true).count, 0, "There should be 0 private tab")
     manager.removeTab(tab)
-    XCTAssertEqual(manager.tabs(withType: .regular).count, 1, "There should be 1 normal tab")
+    XCTAssertEqual(manager.tabs(isPrivate: false).count, 1, "There should be 1 normal tab")
   }
 
   func testDeleteNonSelectedTab() {
@@ -406,11 +407,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     let delegate = MockTabManagerDelegate()
 
     func addTab(_ visit: Bool) -> TabState {
-      let tab = manager.addTab(isPrivate: false)
-      if visit {
-        tab.lastExecutedTime = Date.now()
-      }
-      return tab
+      return manager.addTab(lastActiveTime: visit ? nil : .distantPast, isPrivate: false)
     }
 
     let tab0 = addTab(false)  // not visited
@@ -423,22 +420,22 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     // [ tab3, tab4, tab2, tab0 ]
 
     manager.selectTab(tab1)
-    tab1.parent = tab3
+    tab1.opener = tab3
     manager.removeTab(manager.selectedTab!)
     // Rule: parent tab if it was the most recently visited
-    XCTAssertEqual(manager.selectedTab, tab3)
+    XCTAssertEqual(manager.selectedTab?.id, tab3.id)
 
     manager.removeTab(manager.selectedTab!)
     // Rule: next to the right.
-    XCTAssertEqual(manager.selectedTab, tab4)
+    XCTAssertEqual(manager.selectedTab?.id, tab4.id)
 
     manager.removeTab(manager.selectedTab!)
     // Rule: next to the left, when none to the right
-    XCTAssertEqual(manager.selectedTab, tab2)
+    XCTAssertEqual(manager.selectedTab?.id, tab2.id)
 
     manager.removeTab(manager.selectedTab!)
     // Rule: last one left.
-    XCTAssertEqual(manager.selectedTab, tab0)
+    XCTAssertEqual(manager.selectedTab?.id, tab0.id)
   }
 
   func testDeleteLastTab() {
@@ -455,8 +452,8 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       tabs in
       let next = tabs[0]!
       let previous = tabs[1]!
-      XCTAssertEqual(deleteTab, previous)
-      XCTAssertEqual(next, newSelectedTab)
+      XCTAssertEqual(deleteTab?.id, previous.id)
+      XCTAssertEqual(next.id, newSelectedTab.id)
     }
     delegate.expect([willRemove, didRemove, didSelect])
     manager.removeTab(manager.allTabs.last!)
@@ -479,12 +476,12 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
     // Double check a few things
     XCTAssertEqual(
-      TabType.of(manager.selectedTab).isPrivate,
+      manager.selectedTab?.isPrivate,
       true,
       "The selected tab should be the private tab"
     )
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       1,
       "There should only be one private tab"
     )
@@ -494,7 +491,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
     //make sure tabs are NOT cleared properly and indexes are reset
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       1,
       "Private tab should not have been deleted"
     )
@@ -535,12 +532,12 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
     // Double check a few things
     XCTAssertEqual(
-      TabType.of(manager.selectedTab).isPrivate,
+      manager.selectedTab?.isPrivate,
       true,
       "The selected tab should be the private tab"
     )
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       1,
       "There should only be one private tab"
     )
@@ -550,7 +547,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
     //make sure tabs are cleared properly and indexes are reset
     XCTAssertEqual(
-      manager.tabs(withType: .private).count,
+      manager.tabs(isPrivate: true).count,
       0,
       "Private tab should have been deleted"
     )
@@ -588,8 +585,8 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       tabs in
       let next = tabs[0]!
       let previous = tabs[1]!
-      XCTAssertEqual(deleteTab, previous)
-      XCTAssertEqual(next, newSelectedTab)
+      XCTAssertEqual(deleteTab?.id, previous.id)
+      XCTAssertEqual(next.id, newSelectedTab.id)
     }
     delegate.expect([willRemove, didRemove, didSelect])
     manager.removeTab(manager.allTabs.first!)
@@ -614,8 +611,8 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       tabs in
       let next = tabs[0]!
       let previous = tabs[1]!
-      XCTAssertEqual(deleted, previous)
-      XCTAssertEqual(next, newSelected)
+      XCTAssertEqual(deleted.id, previous.id)
+      XCTAssertEqual(next.id, newSelected.id)
     }
     delegate.expect([willRemove, didRemove, didSelect])
     manager.removeTab(manager.allTabs.last!)
@@ -639,8 +636,8 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       tabs in
       let next = tabs[0]!
       let previous = tabs[1]!
-      XCTAssertEqual(deleted, previous)
-      XCTAssertEqual(next, newSelected)
+      XCTAssertEqual(deleted.id, previous.id)
+      XCTAssertEqual(next.id, newSelected.id)
     }
     delegate.expect([willRemove, didRemove, didSelect])
     manager.removeTab(manager.allTabs.first!)
@@ -693,14 +690,14 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     manager.addTab(isPrivate: true)
     let thirdTab = manager.addTab(isPrivate: false)
 
-    manager.moveTab(firstTab, toIndex: manager.tabs(withType: .regular).count - 1)
+    manager.moveTab(firstTab, toIndex: manager.tabs(isPrivate: false).count - 1)
 
-    let reorderedTabs = manager.tabs(withType: .regular)
-    XCTAssertEqual(firstTab, reorderedTabs.last, "First tab should now be the last tab")
-    XCTAssertEqual(manager.selectedTab, firstTab, "First tab should still be selected")
+    let reorderedTabs = manager.tabs(isPrivate: false)
+    XCTAssertEqual(firstTab.id, reorderedTabs.last?.id, "First tab should now be the last tab")
+    XCTAssertEqual(manager.selectedTab?.id, firstTab.id, "First tab should still be selected")
     XCTAssertEqual(
-      [secondTab, thirdTab, firstTab],
-      reorderedTabs,
+      [secondTab, thirdTab, firstTab].map(\.id),
+      reorderedTabs.map(\.id),
       "Tabs should shift and the have the correct order ignoring the private tab"
     )
   }
@@ -713,12 +710,12 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
     manager.moveTab(thirdTab, toIndex: 0)
 
-    let reorderedTabs = manager.tabs(withType: .regular)
-    XCTAssertEqual(thirdTab, reorderedTabs.first, "Last tab should now be the first tab")
-    XCTAssertEqual(manager.selectedTab, firstTab, "First tab should still be selected")
+    let reorderedTabs = manager.tabs(isPrivate: false)
+    XCTAssertEqual(thirdTab.id, reorderedTabs.first?.id, "Last tab should now be the first tab")
+    XCTAssertEqual(manager.selectedTab?.id, firstTab.id, "First tab should still be selected")
     XCTAssertEqual(
-      [thirdTab, firstTab, secondTab],
-      reorderedTabs,
+      [thirdTab, firstTab, secondTab].map(\.id),
+      reorderedTabs.map(\.id),
       "Tabs should shift and the have the correct order ignoring the private tab"
     )
   }
@@ -732,12 +729,12 @@ open class MockTabManagerDelegate: TabManagerDelegate {
 
     manager.moveTab(forthTab, toIndex: 1)
 
-    let reorderedTabs = manager.tabs(withType: .regular)
-    XCTAssertEqual(forthTab, reorderedTabs[1], "Last tab should now be at index 1")
-    XCTAssertEqual(manager.selectedTab, thirdTab, "Third tab should still be selected")
+    let reorderedTabs = manager.tabs(isPrivate: false)
+    XCTAssertEqual(forthTab.id, reorderedTabs[1].id, "Last tab should now be at index 1")
+    XCTAssertEqual(manager.selectedTab?.id, thirdTab.id, "Third tab should still be selected")
     XCTAssertEqual(
-      [firstTab, forthTab, secondTab, thirdTab],
-      reorderedTabs,
+      [firstTab, forthTab, secondTab, thirdTab].map(\.id),
+      reorderedTabs.map(\.id),
       "Tabs should shift and the have the correct order ignoring the private tab"
     )
   }

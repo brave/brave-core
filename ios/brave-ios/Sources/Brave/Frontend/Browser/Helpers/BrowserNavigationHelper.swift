@@ -110,7 +110,7 @@ class BrowserNavigationHelper {
     guard let bvc = bvc else { return }
     dismissView()
 
-    guard let tab = bvc.tabManager.selectedTab, let url = tab.url else { return }
+    guard let tab = bvc.tabManager.selectedTab, let url = tab.visibleURL else { return }
 
     Task { @MainActor in
       @MainActor func share(url: URL) {

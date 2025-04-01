@@ -8,9 +8,9 @@ import Foundation
 import WebKit
 
 class TabWKUIHandler: NSObject, WKUIDelegate {
-  weak var tab: TabState?
+  weak var tab: WebKitTabState?
 
-  init(tab: TabState) {
+  init(tab: WebKitTabState) {
     self.tab = tab
   }
 
@@ -24,10 +24,10 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
       let childTab = tab.delegate?.tab(
         tab,
         createNewTabWithRequest: navigationAction.request
-      )
+      ) as? WebKitTabState
     else { return nil }
     childTab.initialConfiguration = configuration
-    childTab.createWebview()
+    childTab.createWebView()
     return childTab.webView
   }
 

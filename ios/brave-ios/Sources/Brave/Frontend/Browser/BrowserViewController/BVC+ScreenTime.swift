@@ -31,7 +31,7 @@ extension BrowserViewController {
     screenTimeViewController.url = url
   }
 
-  func recordScreenTimeUsage(for tab: TabState) {
+  func recordScreenTimeUsage(for tab: some TabState) {
     screenTimeViewController?.suppressUsageRecording =
       tab.isPrivate || !Preferences.Privacy.screenTimeEnabled.value
   }

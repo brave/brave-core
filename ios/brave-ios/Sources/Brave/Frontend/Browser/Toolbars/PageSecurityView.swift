@@ -16,7 +16,7 @@ import Web
 /// Currently this is only shown when the page security requires a visible warning on the URL bar
 struct PageSecurityView: View {
   var displayURL: String
-  var secureState: TabSecureContentState
+  var secureState: SecureContentState
   var hasCertificate: Bool
   var presentCertificateViewer: () -> Void
 
@@ -29,7 +29,7 @@ struct PageSecurityView: View {
     case .unknown:
       Image(braveSystemName: "leo.info.filled")
         .foregroundColor(Color(braveSystemName: .systemfeedbackWarningIcon))
-    case .invalidCert, .missingSSL, .mixedContent:
+    case .invalidCertificate, .missingSSL, .mixedContent:
       Image(braveSystemName: "leo.warning.triangle-filled")
         .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
     }
@@ -42,7 +42,7 @@ struct PageSecurityView: View {
     case .unknown:
       Text(Strings.PageSecurityView.pageUnknownStatusTitle)
         .foregroundColor(Color(braveSystemName: .systemfeedbackWarningText))
-    case .invalidCert, .missingSSL:
+    case .invalidCertificate, .missingSSL:
       Text(Strings.PageSecurityView.pageNotSecureTitle)
         .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
     case .mixedContent:
@@ -57,7 +57,7 @@ struct PageSecurityView: View {
       return ""
     case .unknown:
       return Strings.PageSecurityView.pageUnknownStatusWarning
-    case .invalidCert, .missingSSL, .mixedContent:
+    case .invalidCertificate, .missingSSL, .mixedContent:
       return Strings.PageSecurityView.pageNotSecureDetailedWarning
     }
   }

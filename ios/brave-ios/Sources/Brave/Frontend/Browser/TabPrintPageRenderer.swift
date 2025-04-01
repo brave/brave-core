@@ -13,13 +13,13 @@ private struct PrintedPageUX {
 }
 
 class TabPrintPageRenderer: UIPrintPageRenderer {
-  private weak var tab: TabState?
+  private weak var tab: (any TabState)?
   private let displayTitle: String
 
   let textAttributes = [NSAttributedString.Key.font: PrintedPageUX.pageTextFont]
   let dateString: String
 
-  required init(tab: TabState) {
+  required init(tab: some TabState) {
     self.tab = tab
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .short
@@ -54,7 +54,11 @@ class TabPrintPageRenderer: UIPrintPageRenderer {
     let headerRect = paperRect.inset(by: headerInsets)
 
     // url on left
-    self.drawTextAtPoint(tab!.url?.displayURL?.absoluteString ?? "", rect: headerRect, onLeft: true)
+    self.drawTextAtPoint(
+      tab!.visibleURL?.displayURL?.absoluteString ?? "",
+      rect: headerRect,
+      onLeft: true
+    )
 
     // page number on right
     let pageNumberString = "\(pageIndex + 1)"

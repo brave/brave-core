@@ -46,11 +46,11 @@ class RequestBlockingContentScriptHandler: TabContentScript {
   }()
 
   func tab(
-    _ tab: TabState,
+    _ tab: some TabState,
     receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
-    guard let currentTabURL = tab.url else {
+    guard let currentTabURL = tab.visibleURL else {
       assertionFailure("Should have a tab set")
       return
     }
@@ -87,7 +87,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
         // For subframes which may use different etld+1 than the main frame (example `reddit.com` and `redditmedia.com`)
         // We simply check the known subframeURLs on this page.
         guard
-          tab.url?.baseDomain == windowOriginURL.baseDomain
+          tab.visibleURL?.baseDomain == windowOriginURL.baseDomain
             || tab.currentPageData?.allSubframeURLs.contains(windowOriginURL) == true
         else {
           replyHandler(shouldBlock, nil)

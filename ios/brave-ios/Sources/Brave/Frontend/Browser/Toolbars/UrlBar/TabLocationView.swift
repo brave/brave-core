@@ -53,7 +53,7 @@ class TabLocationView: UIView {
     }
   }
 
-  var secureContentState: TabSecureContentState = .unknown {
+  var secureContentState: SecureContentState = .unknown {
     didSet {
       updateLeadingItem()
     }
@@ -95,7 +95,7 @@ class TabLocationView: UIView {
     switch secureContentState {
     case .localhost, .secure:
       break
-    case .invalidCert:
+    case .invalidCertificate:
       configuration.baseForegroundColor = UIColor(braveSystemName: .systemfeedbackErrorIcon)
       if isTitleVisible {
         configuration.attributedTitle = title
@@ -620,10 +620,10 @@ class TabLocationView: UIView {
 // MARK: - TabEventHandler
 
 extension TabLocationView: TabEventHandler {
-  func tabDidGainFocus(_ tab: TabState) {
+  func tabDidGainFocus(_ tab: some TabState) {
   }
 
-  func tabDidChangeContentBlockerStatus(_ tab: TabState) {
+  func tabDidChangeContentBlockerStatus(_ tab: some TabState) {
   }
 }
 
