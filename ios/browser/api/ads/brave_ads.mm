@@ -1445,7 +1445,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
             line:(int)line
     verboseLevel:(int)verbose_level
          message:(const std::string&)message {
-  if (verbose_level <= logging::GetVlogLevelHelper(file, strlen(file))) {
+  if (verbose_level <= logging::GetVlogLevelHelper(file)) {
     logging::LogMessage(file, line, -verbose_level).stream()
         << "[ads] " << message;
   }
