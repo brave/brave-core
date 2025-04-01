@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 
 /**
  * Utility class for managing quick search engines functionality. Provides methods for saving and
@@ -39,6 +40,9 @@ public class QuickSearchEnginesUtil {
             "https://www.youtube.com/results?search_query={searchTerms}";
     public static final String GOOGLE_SEARCH_ENGINE_URL =
             "https://www.google.com/search?q={searchTerms}";
+
+    private static final String JAPAN_COUNTRY_CODE = "JP";
+    private static final String YAHOO_SEARCH_ENGINE_KEYWORD = "yahoo.co.jp";
 
     /**
      * Saves the provided search engines map to SharedPreferences
@@ -289,7 +293,22 @@ public class QuickSearchEnginesUtil {
                         searchEngineTemplateUrl.getURL(),
                         true,
                         QuickSearchEnginesModel.QuickSearchEnginesModelType.SEARCH_ENGINE);
-        searchEnginesMap.put(keyword, quickSearchEnginesModel);
+        String countryCode = Locale.getDefault().getCountry();
+        if (countryCode.equals(JAPAN_COUNTRY_CODE) && keyword.equals(YAHOO_SEARCH_ENGINE_KEYWORD)) {
+            addSearchEngineToTop(searchEnginesMap, quickSearchEnginesModel);
+        } else {
+            searchEnginesMap.put(keyword, quickSearchEnginesModel);
+        }
+    }
+
+    private static void addSearchEngineToTop(
+            Map<String, QuickSearchEnginesModel> searchEnginesMap,
+            QuickSearchEnginesModel quickSearchEnginesModel) {
+                Map<String, QuickSearchEnginesModel> orderedMap = new LinkedHashMap<>();
+            orderedMap.put(quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
+            orderedMap.putAll(searchEnginesMap);
+            searchEnginesMap.clear();
+            searchEnginesMap.putAll(orderedMap);
     }
 
     /**
