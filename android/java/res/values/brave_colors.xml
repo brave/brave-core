@@ -14,7 +14,7 @@
     <!-- Overriding chromium theme colors to brave theme colors -->
     <color name="baseline_primary_90">#F9C3B6</color>
     <color name="baseline_primary_80">#FF7654</color>
-    <color name="baseline_primary_40">#EA3A0D</color>
+    <color name="baseline_primary_40">@color/schemes_primary</color> <!-- Primary color for light mode -->
     <color name="baseline_primary_20">@color/modern_blue_600</color>
     <color name="baseline_primary_10">@color/modern_blue_700</color>
     <color name="black_alpha_30">#4D000000</color>

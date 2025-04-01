@@ -9,7 +9,7 @@
     <!-- Theme colors -->
     <!-- Overriding chromium theme colors to brave theme colors -->
     <color name="baseline_primary_30">#F0F2FF</color>
-    <color name="baseline_primary_80">#FA7250</color>
+    <color name="baseline_primary_80">@color/schemes_primary</color> <!-- Primary color for night mode -->
     <color name="baseline_primary_90">#5B2A23</color>
     <color name="default_text_color_on_accent1_baseline">@color/default_text_color_on_accent1_light</color>
     <color name="dialog_bg_color_dark_baseline">@color/default_bg_color_baseline</color>
