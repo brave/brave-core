@@ -40,6 +40,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     private boolean mIsLocationBarFocusedFromNtpScroll;
     private Context mContext;
     private @BrandedColorScheme int mBrandedColorScheme = BrandedColorScheme.APP_DEFAULT;
+    private OneshotSupplier<TemplateUrlService> mTemplateUrlServiceSupplier;
 
     public BraveLocationBarMediator(
             @NonNull Context context,
@@ -112,6 +113,21 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     public void onPrimaryColorChanged() {
         super.onPrimaryColorChanged();
         updateQRButtonColors();
+    }
+
+    @Override
+    public void onResumeWithNative() {
+        if (mTemplateUrlServiceSupplier.hasValue()
+                && !mTemplateUrlServiceSupplier.get().isLoaded()) {
+            mTemplateUrlServiceSupplier
+                    .get()
+                    .runWhenLoaded(
+                            () -> {
+                                super.onResumeWithNative();
+                            });
+            return;
+        }
+        super.onResumeWithNative();
     }
 
     void updateQRButtonColors() {
