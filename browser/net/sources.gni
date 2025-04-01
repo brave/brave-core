@@ -83,6 +83,7 @@ brave_browser_net_deps = [
   "//brave/components/speech_to_text:buildflags",
   "//brave/components/update_client:buildflags",
   "//brave/extensions:common",
+  "//brave/net/static_redirect_helper",
   "//chrome/browser:browser_process",
   "//chrome/browser/profiles",
   "//components/content_settings/core/browser",

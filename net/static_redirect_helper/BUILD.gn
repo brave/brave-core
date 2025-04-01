@@ -1,0 +1,20 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("static_redirect_helper") {
+  sources = [
+    "static_redirect_helper.cc",
+    "static_redirect_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/net:geolocation",
+    "//brave/browser/safebrowsing:buildflags",
+    "//brave/components/constants",
+    "//brave/extensions:common",
+    "//url",
+  ]
+}
