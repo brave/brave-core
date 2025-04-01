@@ -144,7 +144,11 @@ void EnableBraveVpnWireguardService(const std::string& server_public_key,
                                     const std::string& vpn_server_hostname,
                                     std::optional<std::string> smart_proxy_url,
                                     wireguard::BooleanCallback callback) {
-  g_smart_proxy_url = smart_proxy_url;
+  g_smart_proxy_url.reset();
+  if (smart_proxy_url.has_value()) {
+    g_smart_proxy_url = smart_proxy_url;
+  }
+
   base::ThreadPool::CreateCOMSTATaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives(),
        base::TaskPriority::BEST_EFFORT,

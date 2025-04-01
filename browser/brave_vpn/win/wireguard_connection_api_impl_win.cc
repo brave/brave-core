@@ -6,6 +6,7 @@
 #include "brave/browser/brave_vpn/win/wireguard_connection_api_impl_win.h"
 
 #include <memory>
+#include <string>
 #include <tuple>
 #include <utility>
 
@@ -55,10 +56,13 @@ void WireguardConnectionAPIImplWin::CheckConnection() {
 void WireguardConnectionAPIImplWin::PlatformConnectImpl(
     const wireguard::WireguardProfileCredentials& credentials) {
   auto vpn_server_hostname = GetHostname();
+  std::optional<std::string> smart_proxy_url;
+  if (SmartRoutingEnabled()) {
+    smart_proxy_url = kProxyUrl;
+  }
   brave_vpn::wireguard::EnableBraveVpnWireguardService(
       credentials.server_public_key, credentials.client_private_key,
-      credentials.mapped_ip4_address, vpn_server_hostname,
-      SmartRoutingEnabled() ? std::string(kProxyUrl) : nullptr,
+      credentials.mapped_ip4_address, vpn_server_hostname, smart_proxy_url,
       base::BindOnce(&WireguardConnectionAPIImplWin::OnWireguardServiceLaunched,
                      weak_factory_.GetWeakPtr()));
 }
