@@ -38,8 +38,6 @@ public class BraveLocationBarMediatorClassAdapter extends BraveClassVisitor {
         makeProtectedField(sLocationBarMediator, "mContext");
         deleteField(sBraveLocationBarMediator, "mBrandedColorScheme");
         makeProtectedField(sLocationBarMediator, "mBrandedColorScheme");
-        deleteField(sBraveLocationBarMediator, "mAssistantVoiceSearchServiceSupplier");
-        makeProtectedField(sLocationBarMediator, "mAssistantVoiceSearchServiceSupplier");
         deleteField(sBraveLocationBarMediator, "mTemplateUrlServiceSupplier");
         makeProtectedField(sLocationBarMediator, "mTemplateUrlServiceSupplier");
     }
