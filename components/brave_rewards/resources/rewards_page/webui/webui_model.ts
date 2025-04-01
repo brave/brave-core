@@ -147,21 +147,18 @@ export function createModel(): AppModel {
     stateManager.update({ selfCustodyInviteDismissed: inviteDismissed })
   }
 
+  // TODO(https://github.com/brave/brave-browser/issues/42702): Remove this
+  // after a listener is added for Ads initialization, or after the Ads service
+  // queues these calls during service restart.
+  function scheduleAdsInfoUpdate() {
+    setTimeout(() => { updateAdsInfo() }, 1000)
+  }
+
   async function updateAdsInfo() {
     let [{ statement }, { settings }] = await Promise.all([
       await pageHandler.getAdsStatement(),
       await pageHandler.getAdsSettings()
     ])
-
-    // TODO(https://github.com/brave/brave-browser/issues/42702): Remove this
-    // retry after a listener is added for Ads initialization, or after the Ads
-    // service queues these calls during service restart.
-    // If statement data was not returned, the Ads service might be restarting.
-    // Try again after a short delay.
-    if (!statement) {
-      await new Promise<void>((resolve) => setTimeout(resolve, 500))
-      statement = (await pageHandler.getAdsStatement()).statement
-    }
 
     if (statement && settings) {
       const { adTypeSummaryThisMonth } = statement
@@ -375,6 +372,7 @@ export function createModel(): AppModel {
 
     async enableRewards(countryCode) {
       const { result } = await pageHandler.enableRewards(countryCode)
+      scheduleAdsInfoUpdate()
       switch (result) {
         case mojom.CreateRewardsWalletResult.kSuccess:
           updatePaymentId()
@@ -416,6 +414,7 @@ export function createModel(): AppModel {
     async connectExternalWallet(provider, args) {
       const ResultType = mojom.ConnectExternalWalletResult
       const { result } = await pageHandler.connectExternalWallet(provider, args)
+      scheduleAdsInfoUpdate()
       switch (result) {
         case ResultType.kSuccess:
           return 'success'
