@@ -57,6 +57,13 @@ function ConversationEntries() {
     return event?.completionEvent?.completion ?? ''
   }
 
+  const allAllowedLinks: string[] = conversationContext.conversationHistory
+    .flatMap(turn =>
+    turn.events?.flatMap(event =>
+      event.sourcesEvent?.sources?.map(source => source.url.url) || []
+    ) || []
+  )
+
   return (
     <>
       <div>
@@ -140,6 +147,7 @@ function ConversationEntries() {
                     <AssistantResponse
                       entry={latestTurn}
                       isEntryInProgress={isEntryInProgress}
+                      allowedLinks={allAllowedLinks}
                     />
                   )}
                   {isHuman && !turn.selectedText && !showEditInput && (

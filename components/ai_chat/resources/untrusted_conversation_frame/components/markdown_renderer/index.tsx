@@ -6,11 +6,13 @@
 import * as React from 'react'
 import Markdown from 'react-markdown'
 import type { Root, Element as HastElement } from 'hast'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 import { visit } from 'unist-util-visit'
 
 import styles from './style.module.scss'
 import CaretSVG from '../svg/caret'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 
 const removeReasoning = (text: string) => {
   return text.includes('<think>') ? text.split('</think>')[1] : text
@@ -52,7 +54,10 @@ const allowedElements = [
 
   // Line elements
   'br',
-  'hr'
+  'hr',
+
+  // Hyperlinks
+  'a'
 ]
 
 interface CursorDecoratorProps {
@@ -79,10 +84,12 @@ function CursorDecorator(props: CursorDecoratorProps) {
 interface MarkdownRendererProps {
   text: string
   shouldShowTextCursor: boolean
+  allowedLinks?: string[]
 }
 
 export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
   const lastElementRef = React.useRef<HastElement | undefined>()
+  const context = useUntrustedConversationContext()
 
   const plugin = React.useCallback(() => {
     const transformer = (tree: Root) => {
@@ -102,6 +109,78 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
     return transformer
   }, [])
 
+
+ const renderLink = React.useCallback((props: React.ComponentProps<'a'>) => {
+    const { href, children, ...rest } = props
+    const isAllowed = mainProps.allowedLinks?.some(link =>
+      href?.startsWith(link)
+    ) ?? false
+
+    if (!isAllowed) {
+      return <span>{children}</span>
+    }
+
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault()
+      if (href) {
+        const mojomUrl = new Url()
+        mojomUrl.url = href
+        context.uiHandler?.openURLFromResponse(mojomUrl)
+      }
+    }
+
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={handleClick}
+        className={styles.conversationLink}
+        {...rest}
+      >
+        {children}
+      </a>
+    )
+  }, [mainProps.allowedLinks, context.uiHandler])
+
+  const components = React.useMemo(() => ({
+    p: (props: any) => (
+      <CursorDecorator
+        as='p'
+        children={props.children}
+        isCursorVisible={
+          (props.node as HastElement) === lastElementRef.current
+        }
+      />
+    ),
+    li: (props: any) => (
+      <CursorDecorator
+        as='li'
+        children={props.children}
+        isCursorVisible={
+          (props.node as HastElement) === lastElementRef.current
+        }
+      />
+    ),
+    code: (props: React.ComponentProps<'code'>) => {
+      const { children, className } = props
+      const match = /language-([^ ]+)/.exec(className || '')
+      return match ? (
+        <React.Suspense fallback={'...'}>
+          <CodeBlock
+            lang={match[1]}
+            code={String(children).replace(/\n$/, '')}
+          />
+        </React.Suspense>
+      ) : (
+        <React.Suspense fallback={'...'}>
+          <CodeInline code={String(children)} />
+        </React.Suspense>
+      )
+    },
+    a: renderLink
+  }), [renderLink])
+
   return (
     <div className={styles.markdownContainer}>
       <Markdown
@@ -111,42 +190,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
         rehypePlugins={mainProps.shouldShowTextCursor ? [plugin] : undefined}
         unwrapDisallowed={true}
         children={removeReasoning(mainProps.text)}
-        components={{
-          p: (props) => (
-            <CursorDecorator
-              as='p'
-              children={props.children}
-              isCursorVisible={
-                (props.node as HastElement) === lastElementRef.current
-              }
-            />
-          ),
-          li: (props) => (
-            <CursorDecorator
-              as='li'
-              children={props.children}
-              isCursorVisible={
-                (props.node as HastElement) === lastElementRef.current
-              }
-            />
-          ),
-          code: (props) => {
-            const { children, className } = props
-            const match = /language-([^ ]+)/.exec(className || '')
-            return match ? (
-              <React.Suspense fallback={'...'}>
-                <CodeBlock
-                  lang={match[1]}
-                  code={String(children).replace(/\n$/, '')}
-                />
-              </React.Suspense>
-            ) : (
-              <React.Suspense fallback={'...'}>
-                <CodeInline code={String(children)} />
-              </React.Suspense>
-            )
-          }
-        }}
+        components={components}
       />
     </div>
   )

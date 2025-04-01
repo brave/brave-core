@@ -48,12 +48,18 @@ function SearchSummary (props: { searchQueries: string[] }) {
   )
 }
 
-function AssistantEvent(props: { event: Mojom.ConversationEntryEvent, hasCompletionStarted: boolean, isEntryInProgress: boolean }) {
+function AssistantEvent(props: {
+  event: Mojom.ConversationEntryEvent,
+  hasCompletionStarted: boolean,
+  isEntryInProgress: boolean,
+  allowedLinks: string[]
+}) {
   if (props.event.completionEvent) {
     return (
       <MarkdownRenderer
         shouldShowTextCursor={props.isEntryInProgress}
         text={props.event.completionEvent.completion}
+        allowedLinks={props.allowedLinks}
       />
     )
   }
@@ -79,7 +85,11 @@ function AssistantEvent(props: { event: Mojom.ConversationEntryEvent, hasComplet
   return null
 }
 
-export default function AssistantResponse(props: { entry: Mojom.ConversationTurn, isEntryInProgress: boolean }) {
+export default function AssistantResponse(props: {
+  entry: Mojom.ConversationTurn,
+  isEntryInProgress: boolean,
+  allowedLinks: string[]
+}) {
   // Extract certain events which need to render at specific locations (e.g. end of the events)
   const searchQueriesEvent = props.entry.events?.find(event => event.searchQueriesEvent)?.searchQueriesEvent
   const sourcesEvent = props.entry.events?.find(event => !!event.sourcesEvent)?.sourcesEvent
@@ -95,6 +105,7 @@ export default function AssistantResponse(props: { entry: Mojom.ConversationTurn
         event={event}
         hasCompletionStarted={hasCompletionStarted}
         isEntryInProgress={props.isEntryInProgress}
+        allowedLinks={props.allowedLinks}
       />
     )
   }

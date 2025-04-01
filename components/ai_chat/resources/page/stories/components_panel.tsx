@@ -281,7 +281,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [
       getSearchStatusEvent(),
       getSearchEvent(['pointer compression', 'c++ language specification']),
-      getCompletionEvent('Pointer compression is a memory optimization technique.'),
+      getCompletionEvent('[Pointer compression](https://www.example.com) is a [memory](https://brave.com/wont-show-as-link) optimization technique.'),
       getWebSourcesEvent([
         { url: { url: 'https://www.example.com' }, title: 'Pointer Compression', faviconUrl: { url: 'https://www.example.com/favicon.ico' } },
         { title: 'LTT Store', faviconUrl: { url: 'https://lttstore.com/favicon.ico' }, url: { url: 'https://lttstore.com' } },

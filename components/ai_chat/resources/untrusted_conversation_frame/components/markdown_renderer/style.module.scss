@@ -63,3 +63,13 @@
     }
   }
 }
+
+.conversationLink {
+  font: var(--leo-font-small-regular);
+  text-decoration: underline;
+  color: var(--leo-color-text-primary);
+  &:hover {
+    color: var(--leo-color-text-interactive);
+  }
+}
+
