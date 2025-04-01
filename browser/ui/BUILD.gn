@@ -613,6 +613,8 @@ source_set("ui") {
       "views/tabs/brave_tab_strip.h",
       "views/tabs/brave_tab_strip_layout_helper.cc",
       "views/tabs/brave_tab_strip_layout_helper.h",
+      "views/tabs/dragging/dragging_tabs_session.cc",
+      "views/tabs/dragging/dragging_tabs_session.h",
       "views/tabs/dragging/tab_drag_controller.cc",
       "views/tabs/dragging/tab_drag_controller.h",
       "views/tabs/shared_pinned_tab_dummy_view_views.cc",
