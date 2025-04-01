@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">暫時跳過</translation>
 <translation id="6165508094623778733">了解更多</translation>
 <translation id="986879628471635371">新手故障排除</translation>
-<translation id="5808759341041733958">選擇預設搜尋引擎</translation>
-<translation id="1331593888918588693">您稍後能隨時在應用程式設定中更改您的偏好。</translation>
 <translation id="5806601733251372221">Brave 防護</translation>
 <translation id="8537217141725709400">賺取 <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">我的復原詞句有 24 個字</translation>
 <translation id="3570367516044491911">設為預設瀏覽器</translation>
 <translation id="6800338374677644736">設為預設瀏覽器</translation>
-<translation id="19715420010996093">選取 Brave 瀏覽器並點擊「一律使用」</translation>
-<translation id="3546439402724649282">Brave 已設為預設瀏覽器。</translation>
-<translation id="8389661903259423907">你已有預設瀏覽器。你可到應用程式設定頁面更改預設瀏覽器。</translation>
 <translation id="1545749641540134597">掃描 QR Code</translation>
 <translation id="5317781812114905957">說明</translation>
 <translation id="8515319483805157233">若要以 QR 碼搜尋，請將 QR 碼放在方框中央。</translation>
@@ -549,7 +544,6 @@
 <translation id="1945330434665345785">您上週以 Brave 瀏覽器封鎖了 <ph name="COUNT"/> 追蹤裝置 &amp; 廣告。</translation>
 <translation id="2883868922264431515">藉檢視尊重隱私權廣告來賺取代幣並且支持您最喜愛的網站。</translation>
 <translation id="7408493389591475748">開始瀏覽來觀看隱私權報告</translation>
-<translation id="9080777565335515917">將 Brave 設定為您的預設瀏覽器供私密和穩妥的瀏覽。</translation>
 <translation id="1390943217516275883">容許 Brave 來顯示您的隱私權統計數字</translation>
 <translation id="1763352720905582220">送出每週隱私權報告</translation>
 <translation id="1811691435325545066">清除所有隱私權報告資料</translation>
@@ -593,16 +587,6 @@
 <translation id="2977501775944575564">並行下載</translation>
 <translation id="6224180438946945617">啟用並行下載以加快下載速度</translation>
 <translation id="8967385052772844086">檢視完整的隱私權報告</translation>
-<translation id="6864343534748973390">最熱門</translation>
-<translation id="4608192160278975831">私人且沒有追蹤</translation>
-<translation id="7208522820527289601">私人且沒有追蹤，總部設於歐盟</translation>
-<translation id="1161008391729450974">沒有追蹤器的 Google 結果</translation>
-<translation id="7320542277711359296">第二熱門</translation>
-<translation id="8295049095570748497">俄羅斯領先的搜尋引擎</translation>
-<translation id="2642661895835126239">植樹，總部設於柏林</translation>
-<translation id="2422627462367776805">南韓入口網站 &amp; 搜尋</translation>
-<translation id="177282784098234156">私人、獨立、使用者至上</translation>
-<translation id="1410130669636877548">當您搜尋網路時，一些搜尋引擎會比其他搜尋引擎更好地保護您的隱私權。</translation>
 <translation id="3479552764303398839">現在不要</translation>
 <translation id="7138272885617540195">允許在 Brave 以外的應用程式中開啟應用程式連結</translation>
 <translation id="4954512758656527938">預設以太坊錢包</translation>

@@ -21,6 +21,9 @@
 <translation id="303960458633076466">Mae'r dudalen hon wedi'i rhwystro gan Brave</translation>
 <translation id="2017237562285586622">Caniatewch i Brave gael mynediad at y rhwydwaith yn eich gosodiadau wal dân neu 
          wrthfeirysau.</translation>
+<translation id="4949828774841497663">Ewch i Apiau &gt; Gosodiadau System &gt; Rhwydwaith, dewiswch y
+          rhwydwaith gweithredol, cliciwch ar y botwm Manylion... a dad-ddewiswch unrhyw ddirprwyon gweinydd
+          a allai fod wedi cael eu dewis.</translation>
 <translation id="8619622797841001082">Ewch i
           ddewislen Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -43,9 +46,6 @@ baru <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></transla
           a dad-ddewiswch "<ph name="NO_PREFETCH_DESCRIPTION"/>."
           Os na fydd hyn yn datrys y broblem, rydym yn argymell dewis yr opsiwn hwn
           eto ar gyfer perfformiad gwell.</translation>
-<translation id="8187289872471304532">Ewch i
-          Rhaglenni &gt; Dewisiadau System &gt; Rhwydwaith &gt; Uwch &gt; Dirprwy Weinyddion
-          a dad-diciwch unrhyw ddirprwy weinyddion sydd wedi'u ticio.</translation>
 <translation id="4159376633403260073">Rydych yn edrych ar dudalen Brave for Testing ddiogel</translation>
 <translation id="88187049159266777">Ni wnaeth Brave gau'n gywir.</translation>
 </translationbundle>

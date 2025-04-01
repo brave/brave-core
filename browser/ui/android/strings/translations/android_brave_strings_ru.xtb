@@ -98,8 +98,8 @@
 <translation id="958971637207126733">Разрешить встроенные посты LinkedIn</translation>
 <translation id="6302422639282249274">Управление Brave Rewards</translation>
 <translation id="2709516037105925701">Автозаполнение</translation>
-<translation id="8617525558807213034">Автозаполнение в режиме инкогнито</translation>
-<translation id="8685431198160039193">Автозаполнять сохраненные данные в режиме инкогнито.</translation>
+<translation id="8617525558807213034">Автозаполнение в приватных вкладках</translation>
+<translation id="8685431198160039193">Автозаполнять сохраненные данные в приватных вкладках</translation>
 <translation id="6583902294974160967">Поддержка</translation>
 <translation id="1799030480311994998">Функции</translation>
 <translation id="2005732746077850308">Защита Brave и конфиденциальность</translation>
@@ -174,7 +174,7 @@
 <translation id="6527303717912515753">Поделиться</translation>
 <translation id="1654539412343893324">Узнайте больше о своих данных</translation>
 <translation id="2989805286512600854">Открыть в новой вкладке</translation>
-<translation id="3709782636417497984">Открыть в приватном режиме</translation>
+<translation id="3709782636417497984">Открыть в новой приватной вкладке</translation>
 <translation id="2014017248518069982">Не показывать контент от <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/>: отключено</translation>
 <translation id="1276592121036104130">Загрузить новый контент</translation>
@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Пока пропустить</translation>
 <translation id="6165508094623778733">Подробнее</translation>
 <translation id="986879628471635371">Устранение неполадок при включении</translation>
-<translation id="5808759341041733958">Выберите поисковую систему по умолчанию</translation>
-<translation id="1331593888918588693">Вы всегда сможете изменить свои предпочтения позже в настройках приложения.</translation>
 <translation id="5806601733251372221">Защита Brave</translation>
 <translation id="8537217141725709400">Заработать <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">В моей секретной фразе 24 слова</translation>
 <translation id="3570367516044491911">Установить в качестве браузера по умолчанию</translation>
 <translation id="6800338374677644736">Сделать браузером по умолчанию</translation>
-<translation id="19715420010996093">Выберите Brave Browser в списке и нажмите 'Всегда'</translation>
-<translation id="3546439402724649282">Brave уже установлен в качестве браузера по умолчанию.</translation>
-<translation id="8389661903259423907">Вы уже установили браузер по умолчанию. Вы можете изменить браузер по умолчанию в настройках вашего приложения.</translation>
 <translation id="1545749641540134597">Scan QR Code</translation>
 <translation id="5317781812114905957">Инструкции</translation>
 <translation id="8515319483805157233">Чтобы выполнить поиск по QR-коду, поместите его в центр кадра.</translation>
@@ -549,7 +544,6 @@
 <translation id="1945330434665345785">Вы заблокировали <ph name="COUNT"/> трекеров и рекламы с браузером Brave на прошлой неделе.</translation>
 <translation id="2883868922264431515">Заработайте токены, просматривая безопасные для вашей конфиденциальности рекламные объявления, и поддержите свои любимые веб-сайты.</translation>
 <translation id="7408493389591475748">Начните просмотр, чтобы увидеть отчеты о конфиденциальности</translation>
-<translation id="9080777565335515917">Установите Brave в качестве браузера по умолчанию для приватного и безопасного просмотра интернета.</translation>
 <translation id="1390943217516275883">Разрешает Brave показывать вашу статистику конфиденциальности</translation>
 <translation id="1763352720905582220">Отправляет еженедельный отчет о конфиденциальности</translation>
 <translation id="1811691435325545066">Очистить все данные отчетов о конфиденциальности</translation>
@@ -593,16 +587,6 @@
 <translation id="2977501775944575564">Параллельное скачивание</translation>
 <translation id="6224180438946945617">Разрешите параллельное скачивание, чтобы увеличить скорость скачивания.</translation>
 <translation id="8967385052772844086">Просмотреть полный отчет о конфиденциальности</translation>
-<translation id="6864343534748973390">Самый популярный</translation>
-<translation id="4608192160278975831">Приватный и без трекеров</translation>
-<translation id="7208522820527289601">Приватный и без трекеров, работает из ЕС</translation>
-<translation id="1161008391729450974">Результаты Google без трекеров</translation>
-<translation id="7320542277711359296">Второй по популярности</translation>
-<translation id="8295049095570748497">Ведущая поисковая система в России</translation>
-<translation id="2642661895835126239">Выращивает деревья, живет в Берлине</translation>
-<translation id="2422627462367776805">Южнокорейский веб-портал и поисковая система</translation>
-<translation id="177282784098234156">Автономный и удобный приватный браузер</translation>
-<translation id="1410130669636877548">При поиске в Интернете некоторые поисковые системы защищают вашу конфиденциальность лучше, чем другие.</translation>
 <translation id="3479552764303398839">Не сейчас</translation>
 <translation id="7138272885617540195">Разрешить открывать ссылки на приложения в других приложениях.</translation>
 <translation id="4954512758656527938">Кошелек Ethereum по умолчанию</translation>

@@ -21,6 +21,9 @@
 <translation id="303960458633076466">Trang này bị Brave chặn</translation>
 <translation id="2017237562285586622">Cho phép Brave truy cập mạng trong cài đặt tường lửa hoặc diệt vi-rút 
         của bạn.</translation>
+<translation id="4949828774841497663">Chuyển đến phần Ứng dụng &gt; Cài đặt hệ thống &gt; Mạng, chọn
+          mạng đang hoạt động, nhấp vào nút Chi tiết..., rồi bỏ chọn mọi máy chủ proxy
+          có thể đã được chọn.</translation>
 <translation id="8619622797841001082">Đi tới
           menu Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -43,9 +46,6 @@
           và bỏ chọn "<ph name="NO_PREFETCH_DESCRIPTION"/>."
           Nếu cách này không giải quyết được sự cố thì chúng tôi khuyên bạn nên chọn lại tùy chọn này
           để cải thiện hiệu suất.</translation>
-<translation id="8187289872471304532">Đi tới
-          Ứng dụng&gt; Tùy chọn hệ thống &gt; Mạng &gt; Nâng cao &gt; Proxy
-          và bỏ chọn bất kỳ proxy nào đã được chọn.</translation>
 <translation id="4159376633403260073">Bạn đang xem một trang Brave for Testing an toàn</translation>
 <translation id="88187049159266777">Brave không tắt đúng cách.</translation>
 </translationbundle>

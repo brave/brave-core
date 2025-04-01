@@ -21,6 +21,7 @@
 <translation id="303960458633076466">Brave a bloqué cette page</translation>
 <translation id="2017237562285586622">Autorisez Brave à accéder au réseau dans les paramètres de votre pare-feu
         ou de votre antivirus.</translation>
+<translation id="4949828774841497663">Accédez à Applis &gt; Paramètres système &gt; Réseau, sélectionnez le réseau actif, cliquez sur le bouton Détails et désélectionnez tous les mandataires qui ont pu être sélectionnés.</translation>
 <translation id="8619622797841001082">Accédez au
           menu Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -42,9 +43,6 @@
           et décochez « <ph name="NO_PREFETCH_DESCRIPTION"/> ».
           Si le problème persiste, nous vous conseillons de sélectionner
           à nouveau cette option pour améliorer les performances.</translation>
-<translation id="8187289872471304532">Sélectionnez
-          Applications &gt; Préférences Système &gt; Réseau &gt; Avancé... &gt; Proxys et 
-          désélectionnez tous les serveurs mandataires qui ont été sélectionnés.</translation>
 <translation id="4159376633403260073">Vous consultez une page sécurisée Brave for Testing</translation>
 <translation id="88187049159266777">Brave n'a pas été fermé correctement.</translation>
 </translationbundle>

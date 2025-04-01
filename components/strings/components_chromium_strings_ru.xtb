@@ -21,6 +21,7 @@
 <translation id="303960458633076466">Эта страница была заблокирована браузером Brave.</translation>
 <translation id="2017237562285586622">Разрешите доступ к сети для Brave
           в настройках брандмауэра или антивируса.</translation>
+<translation id="4949828774841497663">Перейдите в раздел "Приложения &gt; Системные настройки &gt; Сеть", выберите активную сеть, нажмите "Подробнее" и снимите флажки напротив всех прокси-серверов, которые используются.</translation>
 <translation id="8619622797841001082">Выберите
           меню Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -35,9 +36,6 @@
 <translation id="8828443087767259398">Чтобы продолжить подключение, предоставьте браузеру Brave доступ к Bluetooth. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Brave создан на основе проекта <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> с открытым исходным кодом.</translation>
 <translation id="4068928808254189629">Откройте меню Brave, нажмите "<ph name="SETTINGS_TITLE"/>" &gt; "<ph name="ADVANCED_TITLE"/>" и снимите флажок "<ph name="NO_PREFETCH_DESCRIPTION"/>". Если устранить проблему не удалось, снова установите флажок, чтобы страницы загружались быстрее.</translation>
-<translation id="8187289872471304532">Выберите
-          Программы &gt; Системные настройки &gt; Сеть &gt; Дополнительно &gt; Прокси
-          и снимите флажки напротив всех прокси-серверов.</translation>
 <translation id="4159376633403260073">Вы просматриваете безопасную страницу Brave для тестирования</translation>
 <translation id="88187049159266777">Работа Brave была завершена некорректно.</translation>
 </translationbundle>

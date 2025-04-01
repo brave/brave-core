@@ -21,6 +21,7 @@
 <translation id="303960458633076466">このページは Brave によってブロックされています</translation>
 <translation id="2017237562285586622">ファイアウォールやウイルス対策の設定で、Brave からネットワークへのアクセスを
         許可します。</translation>
+<translation id="4949828774841497663">[アプリケーション] &gt; [システム設定] &gt; [ネットワーク] に移動し、アクティブなネットワークを選択したあと、[詳細] ボタンをクリックして、選択されているプロキシがあれば選択を解除します。</translation>
 <translation id="8619622797841001082">このオプションを無効にするには:
           Brave メニュー &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -41,9 +42,6 @@
           の順に移動して、[<ph name="NO_PREFETCH_DESCRIPTION"/>] をオフにします。
           上記を行っても問題が解決しない場合は、パフォーマンス向上のため
           このオプションを再びオンにすることをおすすめします。</translation>
-<translation id="8187289872471304532">このオプションを無効にするには:
-          [アプリケーション] &gt; [システム環境設定] &gt; [ネットワーク] &gt; [詳細] &gt; [プロキシ] の順に移動して、
-          選択されているプロキシの選択を解除します。</translation>
 <translation id="4159376633403260073">保護された Brave for Testing ページを表示しています</translation>
 <translation id="88187049159266777">Brave は正しく終了しませんでした。</translation>
 </translationbundle>

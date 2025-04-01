@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Tạm thời bỏ qua</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="986879628471635371">Bắt đầu sử dụng công cụ khắc phục sự cố</translation>
-<translation id="5808759341041733958">Chọn công cụ tìm kiếm mặc định</translation>
-<translation id="1331593888918588693">Bạn có thể thay đổi tùy chọn của mình trong phần cài đặt của ứng dụng bất cứ lúc nào.</translation>
 <translation id="5806601733251372221">Khiên Brave</translation>
 <translation id="8537217141725709400">Kiếm <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Phần thưởng của Brave</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">Tôi có một cụm từ phục hồi gồm 24 từ</translation>
 <translation id="3570367516044491911">Đặt thành trình duyệt mặc định</translation>
 <translation id="6800338374677644736">Đặt làm Trình duyệt mặc định</translation>
-<translation id="19715420010996093">Chọn Trình duyệt Brave rồi nhấn vào "Luôn luôn"</translation>
-<translation id="3546439402724649282">Brave đã được đặt làm trình duyệt mặc định của bạn.</translation>
-<translation id="8389661903259423907">Bạn đã đặt trình duyệt mặc định. Bạn có thể thay đổi trình duyệt mặc định trong mục cài đặt ứng dụng.</translation>
 <translation id="1545749641540134597">Scan QR Code</translation>
 <translation id="5317781812114905957">Hướng dẫn</translation>
 <translation id="8515319483805157233">Để tìm kiếm bằng Mã QR, hãy căn chỉnh Mã QR ở giữa khung.</translation>
@@ -549,7 +544,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1945330434665345785">Tuần trước, bạn đã chặn <ph name="COUNT"/> trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.</translation>
 <translation id="2883868922264431515">Kiếm token bằng cách xem quảng cáo tôn trọng quyền riêng tư và hỗ trợ các trang web yêu thích của bạn.</translation>
 <translation id="7408493389591475748">Bắt đầu duyệt web để xem báo cáo quyền riêng tư</translation>
-<translation id="9080777565335515917">Đặt Brave làm trình duyệt mặc định của bạn để duyệt web an toàn và bảo mật.</translation>
 <translation id="1390943217516275883">Cho phép Brave hiển thị số liệu thống kê về quyền riêng tư của bạn</translation>
 <translation id="1763352720905582220">Gửi báo cáo quyền riêng tư hàng tuần</translation>
 <translation id="1811691435325545066">Xóa tất cả dữ liệu trong báo cáo quyền riêng tư</translation>
@@ -593,16 +587,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2977501775944575564">Đang tải xuống song song</translation>
 <translation id="6224180438946945617">Cho phép tải xuống song song để tăng tốc độ tải xuống</translation>
 <translation id="8967385052772844086">Xem toàn văn Báo cáo Quyền riêng tư</translation>
-<translation id="6864343534748973390">Phổ biến nhất</translation>
-<translation id="4608192160278975831">Riêng tư và không theo dõi</translation>
-<translation id="7208522820527289601">Riêng tư và không theo dõi, có căn cứ ở Liên minh Châu Âu</translation>
-<translation id="1161008391729450974">Kết quả của Google mà không có trình theo dõi</translation>
-<translation id="7320542277711359296">Phổ biến thứ hai</translation>
-<translation id="8295049095570748497">Công cụ tìm kiếm hàng đầu ở Nga</translation>
-<translation id="2642661895835126239">Trồng cây, có trụ sở ở Berlin</translation>
-<translation id="2422627462367776805">Cổng thông tin điện tử &amp; tìm kiếm của Hàn Quốc</translation>
-<translation id="177282784098234156">Riêng tư, độc lập, người dùng là trên hết</translation>
-<translation id="1410130669636877548">Một vài công cụ tìm kiếm bảo vệ quyền riêng tư của bạn tốt hơn những công cụ khác khi bạn tìm kiếm trên web</translation>
 <translation id="3479552764303398839">Không phải bây giờ</translation>
 <translation id="7138272885617540195">Cho phép mở liên kết ứng dụng trong các ứng dụng bên ngoài Brave</translation>
 <translation id="4954512758656527938">Ví Ethereum mặc định</translation>

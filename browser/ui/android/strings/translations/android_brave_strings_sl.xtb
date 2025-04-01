@@ -259,8 +259,6 @@
 <translation id="1377600615067678409">Zaenkrat preskoči</translation>
 <translation id="6165508094623778733">Preberite več</translation>
 <translation id="986879628471635371">Odpravljanje težav uvajalnega procesa</translation>
-<translation id="5808759341041733958">Izberi privzeti iskalnik</translation>
-<translation id="1331593888918588693">V nastavitvah aplikacije lahko kasneje kadar koli spremenite svoje želje.</translation>
 <translation id="5806601733251372221">Ščiti Brave</translation>
 <translation id="8537217141725709400">Prislužite si <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Storitev Brave Rewards</translation>
@@ -278,9 +276,6 @@
 <translation id="4225265925807365011">Imam 24-besedno frazo za obnovitev</translation>
 <translation id="3570367516044491911">Nastavite kot privzeti brskalnik</translation>
 <translation id="6800338374677644736">Nastavi kot privzeti brskalnik</translation>
-<translation id="19715420010996093">Izberi brskalnik Brave in tapni 'Vedno'</translation>
-<translation id="3546439402724649282">Brskalnik Brave je že nastavljen kot privzeti brskalnik.</translation>
-<translation id="8389661903259423907">Privzeti brskalnik ste že nastavili. Privzeti brskalnik lahko spremenite v nastavitvah svoje aplikacije.</translation>
 <translation id="1545749641540134597">Skeniraj QR kodo</translation>
 <translation id="5317781812114905957">Navodila</translation>
 <translation id="8515319483805157233">Če želite iskati po kodi QR, postavite kodo QR na sredino okvirja.</translation>
@@ -554,7 +549,6 @@ je v teku.
 <translation id="1945330434665345785">Z brskalnikom Brave ste v zadnjem tednu blokirali <ph name="COUNT"/> sledilnikov &amp; oglasov.</translation>
 <translation id="2883868922264431515">Zaslužite z ogledom oglasov, ki spoštujejo zasebnost, in podprite svoja najljubša spletna mesta.</translation>
 <translation id="7408493389591475748">Začnite z brskanjem, da lahko pridobite poročilo o zasebnosti</translation>
-<translation id="9080777565335515917">Za zasebno in varno brskanje nastavite Brave kot privzeti brskalnik.</translation>
 <translation id="1390943217516275883">Storitvi Brave omogoča prikaz vaših statistik zasebnosti</translation>
 <translation id="1763352720905582220">Pošilja tedenska poročila o zasebnosti</translation>
 <translation id="1811691435325545066">Počisti podatke o poročilih o zasebnosti</translation>
@@ -600,16 +594,6 @@ je v teku.
 <translation id="2977501775944575564">Vzporedno prenašanje</translation>
 <translation id="6224180438946945617">Omogočite vzporedni prenos in tako pospešite hitrost prenosa</translation>
 <translation id="8967385052772844086">Oglejte si celotno poročilo o zasebnosti</translation>
-<translation id="6864343534748973390">Najbolj priljubljeno</translation>
-<translation id="4608192160278975831">Zasebno in brez sledenja</translation>
-<translation id="7208522820527289601">Zasebno in brez sledenja, s sedežem v EU</translation>
-<translation id="1161008391729450974">Googlovi rezultati brez sledilcev</translation>
-<translation id="7320542277711359296">Drugi najbolj priljubljeni</translation>
-<translation id="8295049095570748497">Vodilni iskalnik v Rusiji</translation>
-<translation id="2642661895835126239">Sadi drevesa s sedežem v Berlinu</translation>
-<translation id="2422627462367776805">Južnokorejski spletni portal &amp; iskanje</translation>
-<translation id="177282784098234156">Zaseben, neodvisen, uporabnik je na prvem mestu</translation>
-<translation id="1410130669636877548">Nekateri iskalniki varujejo vašo zasebnost bolje kot drugi, ko iščete po spletu.</translation>
 <translation id="3479552764303398839">Ne zdaj</translation>
 <translation id="7138272885617540195">Dovoli odpiranje povezav aplikacij v aplikacijah izven Brave</translation>
 <translation id="4954512758656527938">Privzeta denarnica Ethereum</translation>

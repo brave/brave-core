@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Pagaidām izlaist</translation>
 <translation id="6165508094623778733">Uzziniet vairāk</translation>
 <translation id="986879628471635371">Traucējummeklēšanas pievienošana</translation>
-<translation id="5808759341041733958">Izvēlēties noklusējuma meklētājprogrammu</translation>
-<translation id="1331593888918588693">Savas preferences vienmēr varēsiet mainīt lietotnes iestatījumos.</translation>
 <translation id="5806601733251372221">Brave aizsargi</translation>
 <translation id="8537217141725709400">Nopelniet <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave balvas</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">Man ir 24 vārdu atkopšanas frāze</translation>
 <translation id="3570367516044491911">Iestatīt kā noklusējuma pārlūku</translation>
 <translation id="6800338374677644736">Iestatīt kā noklusējuma pārlūku</translation>
-<translation id="19715420010996093">Atlasiet Brave pārlūku un pieskarieties pie "Vienmēr"</translation>
-<translation id="3546439402724649282">Brave jau ir iestatīts kā jūsu noklusējuma pārlūks.</translation>
-<translation id="8389661903259423907">Jums jau ir iestatīts noklusējuma pārlūks. Savu noklusējuma pārlūku varat nomainīt lietotņu iestatījumos.</translation>
 <translation id="1545749641540134597">Ieskenēt QR kodu</translation>
 <translation id="5317781812114905957">Instrukcijas</translation>
 <translation id="8515319483805157233">Lai meklētu pēc kvadrātkoda, ietilpiniet kvadrātkodu rāmja centrā.</translation>
@@ -550,7 +545,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1945330434665345785">Ar Brave pārlūku jūs pēdējā nedēļā esat bloķējis <ph name="COUNT"/> izsekotājus un reklāmas.</translation>
 <translation id="2883868922264431515">Nopelniet marķierus, skatot privātumu cienošas reklāmas, un atbalstiet savas iecienītās vietnes.</translation>
 <translation id="7408493389591475748">Sāciet pārlūkot, lai redzētu privātuma ziņojumus</translation>
-<translation id="9080777565335515917">Iestatiet Brave kā savu noklusējuma pārlūku privātai un drošai pārlūkošanai.</translation>
 <translation id="1390943217516275883">Ļauj Brave rādīt jūsu privātuma statistiku</translation>
 <translation id="1763352720905582220">Sūta iknedēļas privātuma ziņojumu</translation>
 <translation id="1811691435325545066">Notīrīt visus privātuma ziņojumu datus</translation>
@@ -594,16 +588,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2977501775944575564">Paralēla lejupielāde</translation>
 <translation id="6224180438946945617">Iespējojiet paralēlu lejupielādi, lai palielinātu lejupielādes ātrumu</translation>
 <translation id="8967385052772844086">Skatīt pilnu konfidencialitātes ziņojumu</translation>
-<translation id="6864343534748973390">Populārākais</translation>
-<translation id="4608192160278975831">Privāts un bez izsekošanas</translation>
-<translation id="7208522820527289601">Privāts un bez izsekošanas, atrodas ES</translation>
-<translation id="1161008391729450974">Google rezultāti bez izsekotājiem</translation>
-<translation id="7320542277711359296">Otrais populārākais</translation>
-<translation id="8295049095570748497">Vadošā meklētājprogramma Krievijā</translation>
-<translation id="2642661895835126239">Stāda kokus, atrodas Berlīnē</translation>
-<translation id="2422627462367776805">Dienvidkorejas portāls &amp; meklētājs</translation>
-<translation id="177282784098234156">Privāts, neitrāls, orientēts uz lietotāju</translation>
-<translation id="1410130669636877548">Veicot meklēšanu tīmeklī, dažas meklētājprogrammas jūsu konfidencialitāti aizsargā labāk nekā citas.</translation>
 <translation id="3479552764303398839">Vēlāk</translation>
 <translation id="7138272885617540195">Ļaut lietotņu saites atvērt lietotnēs ārpus Brave</translation>
 <translation id="4954512758656527938">Noklusējuma Ethereum maks</translation>
