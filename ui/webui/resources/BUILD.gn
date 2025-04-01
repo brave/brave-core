@@ -31,7 +31,6 @@ group("grdp") {
     ":leo_web_components",
     ":opaque_ke",
     ":static_grdp",
-    "images:build_grdp",
   ]
   if (include_polymer) {
     public_deps += [ ":build_grdp" ]

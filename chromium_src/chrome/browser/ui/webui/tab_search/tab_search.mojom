@@ -36,6 +36,6 @@ interface PageHandler {
   UndoFocusTabs() => ();
   // Open a new tab for purchasing Leo premium.
   OpenLeoGoPremiumPage();
-  // Set the user pref to enable or disable tab focus with Leo.
-  EnableTabFocus(bool enable);
+  // Set the user pref to enable tab focus with Leo.
+  SetTabFocusEnabled();
 };

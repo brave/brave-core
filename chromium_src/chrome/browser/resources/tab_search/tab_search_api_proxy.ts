@@ -33,7 +33,7 @@ export class BraveTabSearchApiProxyImpl extends TabSearchApiProxyImpl implements
   }
 
   setTabFocusEnabled() {
-    this.handler.enableTabFocus(true)
+    this.handler.setTabFocusEnabled()
   }
 }
 

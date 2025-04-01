@@ -247,7 +247,7 @@ void TabSearchPageHandler::OpenLeoGoPremiumPage() {
   Navigate(&params);
 }
 
-void TabSearchPageHandler::EnableTabFocus(bool enable) {
+void TabSearchPageHandler::SetTabFocusEnabled() {
   Profile::FromWebUI(web_ui_)->GetPrefs()->SetBoolean(
-      ai_chat::prefs::kBraveAIChatTabOrganizationEnabled, enable);
+      ai_chat::prefs::kBraveAIChatTabOrganizationEnabled, true);
 }
