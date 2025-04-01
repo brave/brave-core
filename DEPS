@@ -120,7 +120,7 @@ hooks = [
     # in sensitive contexts.
     'name': 'update_cr_tools_pip',
     'pattern': '.',
-    'action': ['python3', '-m', 'pip', '-q', '--disable-pip-version-check', 'install', '-r', 'tools/cr/requirements.txt'],
+    'action': ['vpython3', '-m', 'pip', '-q', '--disable-pip-version-check', 'install', '-r', 'tools/cr/requirements.txt'],
   },
   {
     'name': 'wireguard_nt',
