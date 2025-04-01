@@ -258,8 +258,6 @@
 <translation id="1377600615067678409">تخطي في الوقت الراهن</translation>
 <translation id="6165508094623778733">اعرف المزيد</translation>
 <translation id="986879628471635371">استكشاف الأخطاء وإصلاحها أثناء عمل الخدمة</translation>
-<translation id="5808759341041733958">اختر محرك البحث الافتراضي</translation>
-<translation id="1331593888918588693">يمكنك دائماً تغيير تفضيلاتك لاحقاً في إعدادات التطبيق.</translation>
 <translation id="5806601733251372221">دروع Brave</translation>
 <translation id="8537217141725709400">اكسب <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">مكافآت Brave</translation>
@@ -277,9 +275,6 @@
 <translation id="4225265925807365011">لدي عبارة استرداد مكونة من 24 كلمة</translation>
 <translation id="3570367516044491911">تعيين كمتصفح افتراضي</translation>
 <translation id="6800338374677644736">التعيين كمتصفح افتراضي</translation>
-<translation id="19715420010996093">حدد متصفح Brave وانقر على "دائماً"</translation>
-<translation id="3546439402724649282">تم تعيين Brave بالفعل كمتصفح افتراضي.</translation>
-<translation id="8389661903259423907">لقد قمت بالفعل بتعيين المتصفح الافتراضي. يمكنك تغيير المتصفح الافتراضي في إعدادات التطبيق الخاصة بك.</translation>
 <translation id="1545749641540134597">مسح كود الاستجابة السريعة QR</translation>
 <translation id="5317781812114905957">تعليمات</translation>
 <translation id="8515319483805157233">للبحث عن طريق رمز الاستجابة السريعة، قم بمحاذاة رمز الاستجابة السريعة في وسط الإطار.</translation>
@@ -546,7 +541,6 @@
 <translation id="1945330434665345785">لقد قمت بحظر <ph name="COUNT"/> أدوات تتبع &amp; وإعلانات مع متصفح Brave الأسبوع الماضي.</translation>
 <translation id="2883868922264431515">اربح عملات رمزية عند مشاهدة إعلانات تحترم الخصوصية وادعم المواقع الإلكترونية المفضلة لديك.</translation>
 <translation id="7408493389591475748">ابدأ التصفح لمشاهدة تقرير الخصوصية</translation>
-<translation id="9080777565335515917">قم بتعيين Brave كمتصفحك الافتراضي للتصفح الخاص والآمن.</translation>
 <translation id="1390943217516275883">السماح لـ Brave بإظهار إحصائيات الخصوصية الخاصة بك</translation>
 <translation id="1763352720905582220">يُرسل تقرير خصوصية أسبوعي</translation>
 <translation id="1811691435325545066">مسح كافة بيانات تقارير الخصوصية</translation>
@@ -590,16 +584,6 @@
 <translation id="2977501775944575564">التنزيل الموازي</translation>
 <translation id="6224180438946945617">تمكين التنزيل المتوازي لتسريع سرعة التنزيل</translation>
 <translation id="8967385052772844086">عرض تقرير الخصوصية الكامل</translation>
-<translation id="6864343534748973390">الأكثر شهرة</translation>
-<translation id="4608192160278975831">خاص وبدون تتبع</translation>
-<translation id="7208522820527289601">خاصة ولا تتبع، مقرها في الاتحاد الأوروبي</translation>
-<translation id="1161008391729450974">نتائج جوجل دون تتبع</translation>
-<translation id="7320542277711359296">يحتل الترتيب الثاني من حيث الشعبية</translation>
-<translation id="8295049095570748497">محرك بحث رائد في روسيا</translation>
-<translation id="2642661895835126239">نباتات الأشجار، ومقرها برلين</translation>
-<translation id="2422627462367776805">مدخل الويب في كوريا الجنوبية &amp; بحث</translation>
-<translation id="177282784098234156">خاص، مستقل، المستخدم أولاً</translation>
-<translation id="1410130669636877548">تحمي بعض محركات البحث خصوصيتك بشكل أفضل من غيرها عند البحث في الويب.</translation>
 <translation id="3479552764303398839">ليس الآن</translation>
 <translation id="7138272885617540195">يتم السماح لروابط التطبيقات بالفتح في التطبيقات خارج موقع Brave</translation>
 <translation id="4954512758656527938">محفظة Ethereum الافتراضية</translation>

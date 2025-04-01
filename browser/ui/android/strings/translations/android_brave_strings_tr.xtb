@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Şimdilik atla</translation>
 <translation id="6165508094623778733">Daha fazla bilgi edinin</translation>
 <translation id="986879628471635371">Ekleme sorunlarının giderilmesi</translation>
-<translation id="5808759341041733958">Varsayılan arama motorunu seçin</translation>
-<translation id="1331593888918588693">Tercihinizi daha sonra istediğiniz zaman uygulama içi ayarlardan değiştirebilirsiniz.</translation>
 <translation id="5806601733251372221">Brave Kalkanları</translation>
 <translation id="8537217141725709400"><ph name="TOKEN"/> Kazanın</translation>
 <translation id="3333887201479867589">Brave Ödülleri</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">24 kelimelik kurtarma ifadem var</translation>
 <translation id="3570367516044491911">Varsayılan tarayıcı olarak ayarla</translation>
 <translation id="6800338374677644736">Varsayılan Tarayıcı olarak ayarla</translation>
-<translation id="19715420010996093">Brave Browser'ı seçin ve 'Her Zaman'a dokunun</translation>
-<translation id="3546439402724649282">Brave zaten varsayılan tarayıcınız olarak ayarlandı.</translation>
-<translation id="8389661903259423907">Zaten varsayılan bir tarayıcı ayarladınız. Varsayılan tarayıcıvıyı uygulama ayarlarınızda değiştirebilirsiniz.</translation>
 <translation id="1545749641540134597">Scan QR Code</translation>
 <translation id="5317781812114905957">Talimatlar</translation>
 <translation id="8515319483805157233">QR Koduyla arama yapmak için QR Kodunu çerçevenin ortasına hizalayın.</translation>
@@ -550,7 +545,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1945330434665345785">Brave tarayıcı ile geçen hafta <ph name="COUNT"/> izleyici &amp; reklamı engellediniz.</translation>
 <translation id="2883868922264431515">Gizlilik dostu reklamlar izleyerek token kazanın ve sevdiğiniz websitelerini destekleyin.</translation>
 <translation id="7408493389591475748">Gizlilik raporunu görmek için gezinmeye başlayın</translation>
-<translation id="9080777565335515917">Gizli ve güvenli gezinti için, Brave'i varsayılan tarayıcınız yapın.</translation>
 <translation id="1390943217516275883">Brave'in gizlilik istatistiklerinizi göstermesine izin verir</translation>
 <translation id="1763352720905582220">Haftalık gizlilik raporu gönderir</translation>
 <translation id="1811691435325545066">Bütün gizlilik raporları verisini temizleyin</translation>
@@ -594,16 +588,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="2977501775944575564">Paralel İndirme</translation>
 <translation id="6224180438946945617">İndirme hızlarını artırmak için paralel indirmeyi etkinleştirin</translation>
 <translation id="8967385052772844086">Tüm Gizlilik Raporunu görüntüleyin</translation>
-<translation id="6864343534748973390">En popüler</translation>
-<translation id="4608192160278975831">Gizli ve izleme yok</translation>
-<translation id="7208522820527289601">Gizli ve izlemesiz, AB temelli</translation>
-<translation id="1161008391729450974">İzleyiciler olmadan Google sonuçları</translation>
-<translation id="7320542277711359296">En popüler ikinci</translation>
-<translation id="8295049095570748497">Rusya'nın önde gelen bir arama motoru</translation>
-<translation id="2642661895835126239">Ağaç diker, Berlin'de yer alır</translation>
-<translation id="2422627462367776805">Güney Kore web portalı ve araması</translation>
-<translation id="177282784098234156">Gizli, bağımsız, kullanıcı öncelikli</translation>
-<translation id="1410130669636877548">Webde arama yaptığınızda, bazı arama motorları gizliliğinizi diğerlerinden daha iyi korur.</translation>
 <translation id="3479552764303398839">Şimdi değil</translation>
 <translation id="7138272885617540195">Uygulama bağlantılarının Brave dışındaki uygulamalarda açılmasına izin ver</translation>
 <translation id="4954512758656527938">Varsayılan Ethereum cüzdanı</translation>

@@ -21,6 +21,9 @@
 <translation id="303960458633076466">Brave setti þessa síðu á bannlista</translation>
 <translation id="2017237562285586622">Veittu Brave aðgang að netkerfinu þínu í eldveggsstillingunum þínum eða
           vírusvarnarstillingunum.</translation>
+<translation id="4949828774841497663">Farðu í Forrit &gt; Kerfisstillingar &gt; Netkerfi og veldu
+          virkt netkerfi, smelltu á hnappinn Upplýsingar... og afveldu alla staðgengla
+          sem kunna að hafa verið valdir.</translation>
 <translation id="8619622797841001082">Farðu í
           valmynd Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -43,9 +46,6 @@
         og taktu valið af „<ph name="NO_PREFETCH_DESCRIPTION"/>“.
         Ef þetta leysir ekki málið mælum við með að gera þennan valkost
         virkan á ný til að auka afköst.</translation>
-<translation id="8187289872471304532">Farðu í
-          Applications &gt; System Preferences &gt; Network &gt; Advanced &gt; Proxies
-          og taktu valið af öllum proxy-þjónum sem hafa verið valdir.</translation>
 <translation id="4159376633403260073">Þú ert að skoða örugga Brave for Testing-síðu</translation>
 <translation id="88187049159266777">Brave lokaðist ekki á réttan hátt.</translation>
 </translationbundle>

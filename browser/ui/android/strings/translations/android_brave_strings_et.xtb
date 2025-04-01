@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Jäta praegu vahele</translation>
 <translation id="6165508094623778733">Lisateave</translation>
 <translation id="986879628471635371">Abi võimalustega tutvumine</translation>
-<translation id="5808759341041733958">Vali vaikeotsingumootor</translation>
-<translation id="1331593888918588693">Oma eelistusi on võimalik hiljem muuta rakenduse sätetes.</translation>
 <translation id="5806601733251372221">Brave'i kaitse</translation>
 <translation id="8537217141725709400">Teeni <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">Mul on 24-sõnaline taastefraas</translation>
 <translation id="3570367516044491911">Määra tavabrauseriks</translation>
 <translation id="6800338374677644736">Määra vaikebrauseriks</translation>
-<translation id="19715420010996093">Valige Brave'i brauser ja puudutage valikut „Alati“</translation>
-<translation id="3546439402724649282">Brave on juba vaikebrauser.</translation>
-<translation id="8389661903259423907">Oled juba määranud vaikebrauseri. Seda saad muuda rakenduse seadetest.</translation>
 <translation id="1545749641540134597">Skannige QR-koos</translation>
 <translation id="5317781812114905957">Juhised</translation>
 <translation id="8515319483805157233">QR-koodi järgi otsimiseks paigutage QR-kood kaadri keskele.</translation>
@@ -550,7 +545,6 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="1945330434665345785">Blokeerisid eelmisel nädalal Brave'i brauseris <ph name="COUNT"/> jälitajat ja reklaami.</translation>
 <translation id="2883868922264431515">Teeni tokeneid privaatsust austavate reklaamide vaatamise eest ja toeta oma lemmikuid veebilehti.</translation>
 <translation id="7408493389591475748">Privaatsusaruannete vaatamiseks alusta sirvimist</translation>
-<translation id="9080777565335515917">Privaatseks ja turvaliseks sirvimiseks määra Brave vaikebrauseriks.</translation>
 <translation id="1390943217516275883">Võimaldab Brave'il kuvada sinu privaatsuse statistikat.</translation>
 <translation id="1763352720905582220">Saadab privaatsusaruande iga nädal</translation>
 <translation id="1811691435325545066">Tühjenda kõik privaatsusaruande andmed</translation>
@@ -594,16 +588,6 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="2977501775944575564">Paralleelne allalaadimine</translation>
 <translation id="6224180438946945617">Allalaadimise kiirendamiseks lubage paralleelne allalaadimine</translation>
 <translation id="8967385052772844086">Kuva täielik privaatsusaruanne</translation>
-<translation id="6864343534748973390">Kõige populaarsem</translation>
-<translation id="4608192160278975831">Privaatne ja jälitamiseta</translation>
-<translation id="7208522820527289601">Privaatne ja jälitamiseta, ELi põhine</translation>
-<translation id="1161008391729450974">Google'i tulemused ilma jälitajateta</translation>
-<translation id="7320542277711359296">Populaarsuselt teine</translation>
-<translation id="8295049095570748497">Venemaa juhtiv otsimootor</translation>
-<translation id="2642661895835126239">Istutab puid, tegutseb Berliinis</translation>
-<translation id="2422627462367776805">Lõuna-Korea veebiportaal ja otsing</translation>
-<translation id="177282784098234156">Privaatne, sõltumatu, suunatud eelkõige kasutajatele</translation>
-<translation id="1410130669636877548">Veebist otsimisel kaitseb mõni otsimootor teie privaatsust teistest paremini.</translation>
 <translation id="3479552764303398839">Mitte praegu</translation>
 <translation id="7138272885617540195">Luba rakenduse linkide avamine Brave'i välistes rakendustes</translation>
 <translation id="4954512758656527938">Ethereumi vaikerahakott</translation>

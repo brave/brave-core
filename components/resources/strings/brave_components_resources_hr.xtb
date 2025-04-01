@@ -327,6 +327,7 @@
 <translation id="2631006050119455616">Spremljeno</translation>
 <translation id="3671566813999349838">Iznos</translation>
 <translation id="6976444672879155794">Automatski doprinesi [[processor]]</translation>
+<translation id="944736176598169208">Rewards</translation>
 <translation id="8804164990146287819">Pravilnik o zaštiti privatnosti</translation>
 <translation id="7262285991915892790">Povucite ikonu BAT na</translation>
 <translation id="7656781188259414093">cilj.</translation>
@@ -509,7 +510,6 @@
       other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_END"/> ovog mjeseca}
     }</translation>
 <translation id="6067959437127691361">Upotrebom značajke Nagrade Brave podražavaju se stvaratelji sadržaja i omogućuje vam se zarađivanje tokena BAT.</translation>
-<translation id="944736176598169208">Rewards</translation>
 <translation id="2359808026110333948">Nastavi</translation>
 <translation id="885805571521218129">To odražava procijenjeni raspon vaše zarade od oglasa Brave ovoga mjeseca.</translation>
 <translation id="3863981251715594911">Kako to funkcionira?</translation>
@@ -646,7 +646,7 @@
 <translation id="6895088073061692390">Nažalost, vaš je profil za značajku Nagrade Brave prijavljen jer je tijekom naših automatiziranih provjera pronađena neočekivana aktivnost za značajku Oglasi Brave.</translation>
 <translation id="4229056297802204697">Dok je vaš profil prijavljen, i dalje možete vidjeti oglase, ali ne ispunjavate uvjete za primanje isplata. Jednako tako, ne možete povezati skrbnički račun sa značajkom Nagrade Brave.</translation>
 <translation id="5124846913141379164">Postoji mogućnost da je vaš profil pogrešno prijavljen i da ne morate poduzeti nikakvu radnju. Prijava profila može se ukloniti u budućnosti.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Doznajte više o postupku preglednika Brave za označivanje profila Nagrade.<ph name="END_LINK"/></translation>
+<translation id="8947002243324362172">Doznajte više o postupku preglednika Brave za označivanje profila Nagrade.</translation>
 <translation id="4699218748197721830">Profil Nagrade Brave jest označen</translation>
 <translation id="2607420597216860026">Pokušajte ponovno nakon što obavite potvrđivanje identifikacijske oznake putem usluge<ph name="PROVIDER"/>.</translation>
 <translation id="5037332159336402972">Za prijavu vam je potreban provjereni račun</translation>
@@ -681,7 +681,6 @@
 <translation id="5916664084637901428">Uključeno</translation>
 <translation id="3977723631999461201">Oglasa primljenih ovog mjeseca: <ph name="NUM"/></translation>
 <translation id="7924320838799747606">Vaš raspoloživi iznos</translation>
-<translation id="8714473477079007268">Novčanik <ph name="PROVIDER"/></translation>
 <translation id="3175337080016717494">Račun za isplatu</translation>
 <translation id="453760933181416879">Idi na moj račun</translation>
 <translation id="8290994471756102241">Odjavljeni ste</translation>
@@ -691,7 +690,6 @@
 <translation id="2310070536993781610">Koristite promotivni kôd BRAVEREWARDS kako biste dobili 10 % popusta na sve artikle u Braveovoj prodavaonici.</translation>
 <translation id="1170674812179664523">Trgovina Brave</translation>
 <translation id="8673202990286883068">Vaše pogodnosti</translation>
-<translation id="3699766258844277472">Još nemate postavljenih ponavljajućih doprinosa.</translation>
 <translation id="957921474773060718">Sljedeći doprinos:</translation>
 <translation id="351973834053818251">Ponavljajući doprinosi</translation>
 <translation id="7751260505918304024">Prikaži sve</translation>
@@ -950,6 +948,8 @@
 <translation id="2399555431746923964">Pohranite sredstva BTC Testnet</translation>
 <translation id="8749751940551938347">Pohrana imovine ZEC</translation>
 <translation id="3451958544919449297">Pohranite ZEC Testnet sredstva</translation>
+<translation id="8459631690385393533">Pohranite sredstva Cardano</translation>
+<translation id="4915057812371523845">Pohranite sredstva Cardano Testnet</translation>
 <translation id="8500387257977999003">Privatan ključ<ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Uvezi</translation>
 <translation id="232925166623833246">Uvezi iz hardverskog novčanika</translation>
@@ -1194,7 +1194,11 @@
 <translation id="4667144295226514387">Nedostaje ograničenje naknade</translation>
 <translation id="2021522108838444624">Iznos mora biti veći od 0</translation>
 <translation id="8464365289405373974">Potrebna adresa primatelja</translation>
-<translation id="6326239384961270135">Nedostaje dio s javnim informacijama</translation>
+<translation id="6449503919127419230">Pogrešna transparentna adresa</translation>
+<translation id="3778662247272439818">Mreže se ne podudaraju</translation>
+<translation id="1170025316306464310">Pogrešan format jedinstvene adrese</translation>
+<translation id="8380483120683767377">Nedostaje dio Orchard</translation>
+<translation id="1536211570215515174">Nedostaje transparentni dio</translation>
 <translation id="8585995109882455949">Kako mogu pronaći pravu adresu?</translation>
 <translation id="105524480632150318">U pregledniku Brave sprječava se korisnikovo slanje sredstava pogrešnoj adresi zbog netočno upisanih velikih i malih slova. Pobrinite se da je riječ o točnoj adresi pridržavanjem uputa u nastavku.</translation>
 <translation id="4583433813614292221">1. Posjetite</translation>
@@ -1348,6 +1352,8 @@
 <translation id="7694836973509310467">Premoštavanje</translation>
 <translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> na <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="6934057383578424432">Došlo je do pogreške prilikom pokušaja <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> on <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="4916833841663290382">Zaštita <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/></translation>
+<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> je zaštićen</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} transakcije/a na čekanju.}
       other {{PENDING_TRANSACTIONS} transakcije/a na čekanju.}
@@ -1745,7 +1751,9 @@
 <translation id="4438043733494739848">Transparentno</translation>
 <translation id="1950406774300125954">Nije sinkronizirano</translation>
 <translation id="68413355604013935">Nije sinkronizirano (<ph name="BLOCKS"/> zaostalih blokova)</translation>
+<translation id="1724354250024376254">Stanje na čekanju (treba više potvrda): <ph name="FUNDS"/></translation>
 <translation id="1597233669965903034">Sinkronizirajte svoj račun kako biste dobili pristup posljednjim transakcijama i stanju.</translation>
+<translation id="3609785682760573515">Sinkronizacija...</translation>
 <translation id="7499262814309712782">Sinkroniziraj račun</translation>
 <translation id="2804568727504456403">Sinkronizacija <ph name="ACCOUNT"/></translation>
 <translation id="813913629614996137">Pokretanje...</translation>
@@ -1757,6 +1765,15 @@
 <translation id="7714298753782862705">Sinkronizacija je završena. Možete zatvoriti ovaj prozor.</translation>
 <translation id="7716113567047550378">Ne zatvarajte ovaj prozor dok se sinkronizacija ne završi.</translation>
 <translation id="5123590959308755060">Nastavite koristiti novčanik u novoj kartici</translation>
+<translation id="4594014034647546191">Početni blok zaštićenog računa</translation>
+<translation id="6666784075827260119">Početni blok računa mora biti veći od <ph name="BLOCK_NUMBER"/></translation>
+<translation id="3102477628835823956">Početni blok računa mora biti manji od <ph name="BLOCK_NUMBER"/></translation>
+<translation id="6850229669854962550">Preostalo blokova: <ph name="BLOCKS"/></translation>
+<translation id="7747318989577709780">Račun se sinkronizira</translation>
+<translation id="9086302186042011942">Sinkronizacija</translation>
+<translation id="99991973626409495">Pregled štita</translation>
+<translation id="3114681061018999547">Zaštita</translation>
+<translation id="8897189056319316783">Štit ZEC</translation>
 <translation id="7144878232160441200">Pokušaj ponovo</translation>
 <translation id="9094621390791852268">Pregled transakcije nije uspio.</translation>
 <translation id="4982713341035600933">Procijenjena promjena stanja</translation>
@@ -2084,7 +2101,8 @@
 <translation id="4885527781814382758">Brave Leo privatni je AI pametni asistent koji poboljšava vaše korištenje interneta. Leo je besplatan za korištenje s ograničenim pristupom. Brave Leo Premium nudi više modela, veće limite i daje pretplatnicima rani pristup novim značajkama. Zadani model za sve korisnike trenutačno je Mixtral 8x7B. Više informacija pronađite u <ph name="LINK_BEFORE"/>Braveovom Centru za pomoć<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Prema zadanim postavkama, kada Leu postavite pitanje, on može poslati i upotrijebiti sadržaj mrežne stranice koju gledate ili bilo koji tekst koji označite na stranici Brave Leu za pružanje odgovora. Točnost odgovora nije zajamčena i može uključivati netočne, obmanjujuće ili lažne informacije. Leo upotrebljava podatke iz tražilice Brave Search za poboljšanje kvalitete odgovora. Ne šaljite osjetljive ili privatne informacije i budite oprezni s odgovorima koji se odnose na zdravlje, financije, osobnu sigurnost ili slično. Možete prilagoditi Leove opcije u Postavkama bilo kada. Idite na Postavke &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo ne prikuplja identifikatore kao što je Vaša IP adresa koja se može povezati s Vama. Nikakvi se podatci ne upotrebljavaju za obuku modela umjetne inteligencije i  modeli umjetne inteligencije ne zadržavaju nikakve osobne podatke (osim za Anthropic koji čuva podatke 30 dana prije nego što ih izbriše). Pogledajte <ph name="LINK_BEFORE"/>pravilnik o privatnosti<ph name="LINK_AFTER"/> za više informacija.</translation>
-<translation id="7839853125981164613">Ovdje upišite upit</translation>
+<translation id="6961721183181597848">Kako vam danas mogu pomoći?</translation>
+<translation id="2966135729673253768">Zatraži komentar</translation>
 <translation id="4524675003624341892">Predložite pitanja...</translation>
 <translation id="4567071417854988869">Sažmi ovaj videozapis</translation>
 <translation id="7921782882718083488">Sažmi ovu stranicu</translation>
@@ -2097,6 +2115,7 @@
 <translation id="7905602379229309187">Krajnja točka je trenutačno preopterećena. Pokušajte kasnije.</translation>
 <translation id="8151638057146502721">Konfiguriraj</translation>
 <translation id="4177458398826096846">Bok, ja sam Leo. Pomoćnik sam umjetne inteligencije u potpunosti smješten u poduzeću Brave. Pokreće me Llama 3.1 8B, model koji je stvorila Meta da bude učinkovit i primjenjiv u mnogim slučajevima upotrebe. <ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="5252251845674154807">Pozdrav, ja sam Leo. Ja sam Braveov asistent zasnovan na umjetnoj inteligenciji. Pokreže me Qwen 14B, model koji je kreirao Alibaba Cloud kako bih bio učinkovit i primjenjiv u mnogim slučajevima. <ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Pozdrav, ja sam Leo. Ja sam pomoćnik s umjetnom inteligencijom potpuno smješten u Braveu. Pokreće me Mixtral 8x7B, model koji je izradio Mistral AI radi obavljanja naprednih zadataka. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Pozdrav, ja sam Leo. Posreduje me Brave i pokreće me Claude Instant, model koji je izradio Anthropic radi obavljanja razgovornih zadataka i zadataka obrade teksta. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="2001874998841390450">Pozdrav, ja sam Leo. Brave mi je proksi a pokreće me Claude Haiku koji je kreirala tvrtka Anthropic rado obavljanja razgovornih zadataka i zadataka obrade teksta. <ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
@@ -2144,6 +2163,8 @@
 <translation id="8261506727792406068">Izbriši</translation>
 <translation id="6574153208133461043">Jeste li sigurni da želite izbrisati ovaj razgovor? Ova se radnja ne može opozvati.</translation>
 <translation id="7488762544858401571">Uređeno</translation>
+<translation id="5604254791550001355">Uredi upit</translation>
+<translation id="8115786586976830777">Kopiraj upit</translation>
 <translation id="1406205536570262057">Uredi odgovor</translation>
 <translation id="2399439821649319175">Nije korisno</translation>
 <translation id="2976167228906046828">Netočno</translation>
@@ -2155,6 +2176,9 @@
 <translation id="903201991022343217">Započni novi razgovor</translation>
 <translation id="8171760814579050200">Preimenuj razgovor</translation>
 <translation id="7754678742055438573">Izbriši razgovor</translation>
+<translation id="1946267518364740045">Razmišljam...</translation>
+<translation id="4198859185714743678">Razmišljanje završeno</translation>
+<translation id="6140948187512243695">Pokaži više informacija</translation>
 <translation id="7494736170250048402">Pošalji poruku pomoćniku Leo</translation>
 <translation id="8650874793377330048">Prestani odgovarati</translation>
 <translation id="8712637175834984815">Shvaćam</translation>
@@ -2164,7 +2188,12 @@
 <translation id="4370698775470316661">Ovaj je razgovor predug i ne može se nastaviti. Možda su dostupni drugi modeli s kojima pomoćnik Leo može održavati točnost tijekom dužih razgovora.</translation>
 <translation id="5719170755629028558">Poboljšavamo vaš odgovor pretraživanjem Brave…</translation>
 <translation id="5794962229997281366">Poboljšano pretraživanje odgovora za <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="7307396647043599949"><ph name="COUNT"/> više…</translation>
 <translation id="8103700533980268469">Zatvori ovu obavijest</translation>
+<translation id="3417835166382867856">Pretraživanje kartica</translation>
+<translation id="9090243919347147717">Prilozi</translation>
+<translation id="4444978378117903684">Dodajte kartice preglednika kako bi Leo imao više konteksta za razgovor</translation>
+<translation id="4300920590112551536">Kartice preglednika</translation>
 <translation id="2315654674554095762">Leo će sada pamtiti vaše razgovore kako biste im se mogli vratiti. Oni se čuvaju šifrirani na vašem uređaju i možete ih izbrisati u bilo kojem trenutku.</translation>
 <translation id="7821251979960635244">Vaša povijest razgovora pojavite će se ovdje kad započnete razgovor.</translation>
 <translation id="887511360213807449">Povijest je isključena</translation>
@@ -2174,6 +2203,7 @@
 <translation id="3185367320601718531">Razgovor i generiranje teksta</translation>
 <translation id="7979673624064378842">Iznimno brzo čavrljanje</translation>
 <translation id="2836330653441111204">Ravnoteža brzine i inteligencije</translation>
+<translation id="6695329447007213917">Čavrljanje opće namjene, programiranje i još mnogo više</translation>
 <translation id="3965507912994218570">Postavke pomoćnika Leo</translation>
 <translation id="1037324977127422019">Pozdrav, ja sam Leo!</translation>
 <translation id="8930348081963284873">Pametni pomoćnik koji pokreće umjetna inteligencija, ugrađen izravno u Brave.</translation>
@@ -2403,5 +2433,6 @@ Povežimo vas!</translation>
 <translation id="1538335063514960365">Gumb Otvori ovdje, pritisnite Enter za otvaranje ovog URL-a u trenutačnoj kartici umjesto prebacivanja u
     postojeću karticu</translation>
 <translation id="451189393813405346">Pitaj pomoćnika Leo</translation>
+<translation id="1602850501393095406">Kliknite ↑ da označite</translation>
 <translation id="8525248723479742219">Reproducirajte kasnije</translation>
 </translationbundle>

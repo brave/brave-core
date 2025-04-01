@@ -328,6 +328,7 @@
 <translation id="2631006050119455616">Išsaugota</translation>
 <translation id="3671566813999349838">Suma</translation>
 <translation id="6976444672879155794">Automatinis indėlis [[processor]]</translation>
+<translation id="944736176598169208">„Rewards“</translation>
 <translation id="8804164990146287819">Privatumo politika</translation>
 <translation id="7262285991915892790">Nuvilkite BAT piktogramą ant</translation>
 <translation id="7656781188259414093">tikslas.</translation>
@@ -509,7 +510,6 @@
       other {Galite gauti atlygį už peržiūrėtas <ph name="COUNT_BEGIN"/># reklamas<ph name="COUNT_END"/> šį mėnesį}
     }</translation>
 <translation id="6067959437127691361">Naudojimasis „Brave“ atlygiais padeda remti turinio kūrėjus ir suteikia galimybę uždirbti BAT.</translation>
-<translation id="944736176598169208">„Rewards“</translation>
 <translation id="2359808026110333948">Tęsti</translation>
 <translation id="885805571521218129">Tai jūsų numatomas uždarbio intervalas už „Brave“ reklamas šį mėnesį.</translation>
 <translation id="3863981251715594911">Kaip tai veikia?</translation>
@@ -645,7 +645,7 @@
 <translation id="6895088073061692390">Deja, jūsų „Brave Rewards“ profilis buvo pažymėtas, nes per automatinę patikrą buvo nustatyta nenumatyta veikla, susijusi su „Brave“ reklamomis.</translation>
 <translation id="4229056297802204697">Kol jūsų profilis pažymėtas, galite ir toliau matyti reklamas, bet neturėsite teisės gauti išmokų, be to, negalėsite prijungti saugotojo paskyros prie „Brave Rewards“.</translation>
 <translation id="5124846913141379164">Gali būti, kad jūsų profilis buvo pažymėtas per klaidą, todėl iš jūsų nereikalaujama imtis skubių veiksmų. Ateityje jūsų profilio žyma gali būti pašalinta.</translation>
-<translation id="280350148043792509"><ph name="BEGIN_LINK"/>Sužinokite daugiau apie „Brave“ procedūrą atlygio profilius žymėti vėliavėlėmis.<ph name="END_LINK"/></translation>
+<translation id="8947002243324362172">Sužinokite daugiau apie „Brave“ procedūrą atlygio profilius žymėti vėliavėlėmis.</translation>
 <translation id="4699218748197721830">„Brave Rewards“ profilis pažymėtas vėliavėle</translation>
 <translation id="2607420597216860026"><ph name="PROVIDER"/>baigę tapatybės patvirtinimą, bandykite dar kartą.</translation>
 <translation id="5037332159336402972">Norint prisijungti, jums reikia patvirtintos paskyros</translation>
@@ -680,7 +680,6 @@
 <translation id="5916664084637901428">Įjungta</translation>
 <translation id="3977723631999461201"><ph name="NUM"/> šį mėnesį gautų reklamų</translation>
 <translation id="7924320838799747606">Jūsų likutis</translation>
-<translation id="8714473477079007268"><ph name="PROVIDER"/> piniginė</translation>
 <translation id="3175337080016717494">Išmokų sąskaita</translation>
 <translation id="453760933181416879">Eiti į mano paskyrą</translation>
 <translation id="8290994471756102241">Atsijungta</translation>
@@ -690,7 +689,6 @@
 <translation id="2310070536993781610">Su akcijos kodu BRAVEREWARDS gaukite 10 % nuolaidą visoms „Brave“ praduotuvės prekėms.</translation>
 <translation id="1170674812179664523">„Brave“ prekių parduotuvė</translation>
 <translation id="8673202990286883068">Nauda jums</translation>
-<translation id="3699766258844277472">Dar nenustatėte jokių pasikartojančių indėlių.</translation>
 <translation id="957921474773060718">Kitas indėlis:</translation>
 <translation id="351973834053818251">Pasikartojantys indėliai</translation>
 <translation id="7751260505918304024">Rodyti visas</translation>
@@ -949,6 +947,8 @@
 <translation id="2399555431746923964">Išsaugokite „BTC Testnet“ išteklius</translation>
 <translation id="8749751940551938347">Saugoti ZEC išteklius</translation>
 <translation id="3451958544919449297">Išsaugokite „ZEC Testnet“ išteklius</translation>
+<translation id="8459631690385393533">Išsaugokite „Cardano“ turtą</translation>
+<translation id="4915057812371523845">Išsaugokite „Cardano Testnet“ turtą</translation>
 <translation id="8500387257977999003">Privatus raktas <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Importuoti</translation>
 <translation id="232925166623833246">Importuoti iš aparatinės įrangos piniginės</translation>
@@ -1193,7 +1193,11 @@
 <translation id="4667144295226514387">Trūksta dujų limito</translation>
 <translation id="2021522108838444624">Suma turi būti didesnė nei 0</translation>
 <translation id="8464365289405373974">Reikalingas gavėjo adresas</translation>
-<translation id="6326239384961270135">Trūksta skaidriosios dalies</translation>
+<translation id="6449503919127419230">Neteisingas skaidrusis adresas</translation>
+<translation id="3778662247272439818">Tinklo neatitiktis</translation>
+<translation id="1170025316306464310">Neteisingas suvienodinto adreso formatas</translation>
+<translation id="8380483120683767377">Trūksta „Orchard“ dalies</translation>
+<translation id="1536211570215515174">Trūksta skaidriosios dalies</translation>
 <translation id="8585995109882455949">Kaip galiu sužinoti teisingą adresą?</translation>
 <translation id="105524480632150318">„Brave“ neleidžia naudotojams siųsti lėšų netiksliu adresu, kai neteisingai parašytos didžiosios raidės. Įsitikinkite, kad adresas tikslus vadovaudamiesi toliau pateiktais nurodymais.</translation>
 <translation id="4583433813614292221">1. Apsilankykite savo ETH sąskaitoje</translation>
@@ -1347,6 +1351,8 @@
 <translation id="7694836973509310467">Tiltas</translation>
 <translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> ant <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="6934057383578424432">Įvyko klaida bandant <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> ant <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="4916833841663290382">Ekranavimas <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/></translation>
+<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> buvo ekranuoti</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {dar {PENDING_TRANSACTIONS} operacija laukia patvirtinimo.}
       other {dar {PENDING_TRANSACTIONS} operacijos (-ų) laukia patvirtinimo.}
@@ -1744,7 +1750,9 @@
 <translation id="4438043733494739848">Skaidrus</translation>
 <translation id="1950406774300125954">Nesinchronizuota</translation>
 <translation id="68413355604013935">Nesinchronizuota (<ph name="BLOCKS"/> blokai atsilieka)</translation>
+<translation id="1724354250024376254">Laukiantis likutis (reikia daugiau patvirtinimų): <ph name="FUNDS"/></translation>
 <translation id="1597233669965903034">Sinchronizuokite savo paskyrą, kad galėtumėte peržiūrėti naujausias operacijas ir likutį.</translation>
+<translation id="3609785682760573515">Sinchronizuojama...</translation>
 <translation id="7499262814309712782">Sinchronizuokite paskyrą</translation>
 <translation id="2804568727504456403">Sinchronizavimas <ph name="ACCOUNT"/></translation>
 <translation id="813913629614996137">Inicijuojama...</translation>
@@ -1756,6 +1764,15 @@
 <translation id="7714298753782862705">Sinchronizavimas baigtas. Dabar galite uždaryti šį langą.</translation>
 <translation id="7716113567047550378">Neuždarykite šio lango, kol nebus baigta sinchronizacija.</translation>
 <translation id="5123590959308755060">Tęsti naudojimąsi „wallet“ naujame skirtuke</translation>
+<translation id="4594014034647546191">Ekranuotas paskyros gimtadienio blokas</translation>
+<translation id="6666784075827260119">Gimtadienio sąskaita turi būti didesnė nei <ph name="BLOCK_NUMBER"/></translation>
+<translation id="3102477628835823956">Gimtadienio sąskaita turi būti mažesnė nei <ph name="BLOCK_NUMBER"/></translation>
+<translation id="6850229669854962550"><ph name="BLOCKS"/> už esantys blokai</translation>
+<translation id="7747318989577709780">Paskyra sinchronizuojama</translation>
+<translation id="9086302186042011942">Sinchronizuojama</translation>
+<translation id="99991973626409495">Peržiūrėkite skydą</translation>
+<translation id="3114681061018999547">Ekranavimas</translation>
+<translation id="8897189056319316783">Skydas ZEC</translation>
 <translation id="7144878232160441200">Kartoti</translation>
 <translation id="9094621390791852268">Operacijos peržiūra nepavyko.</translation>
 <translation id="4982713341035600933">Numatomas balanso pokytis</translation>
@@ -2084,7 +2101,8 @@
 <translation id="4885527781814382758">„Brave Leo“ yra privatus dirbtinio intelekto išmanusis asistentas, kuris pagerina jūsų naudojimąsi internetu. „Leo“ galima naudotis nemokamai, o prieiga yra ribota. „Brave Leo Premium“ siūlo daugiau modelių, didesnius apribojimus ir suteikia prenumeratoriams išankstinę prieigą prie naujų funkcijų. Numatytasis modelis kartkartėmis keisis. Daugiau informacijos rasite <ph name="LINK_BEFORE"/>„Brave“ pagalbos centre<ph name="LINK_AFTER"/></translation>
 <translation id="7189603330209995455">Kai užduodate „Leo“ klausimą, pagal numatymą jis gali siųsti „Brave Leo“ ir naudoti jūsų žiūrimo tinklalapio turinį arba bet kurį jūsų paryškintą puslapyje turinį, kad galėtų atsakyti. Atsakymų tikslumas neužtikrinamas, juose gali būti netikslios, klaidinamos ar neteisingos informacijos. „Leo“ naudoja gautus iš „Brave Search“ duomenis, kad pagerintų atsako kokybę. Neteikite neatskleistinos ar privačios informacijos ir atsargiai vertinkite visus atsakymus, susijusius su sveikata, finansais, asmens saugumu ar panašia informacija. Galite bet kada koreguoti „Leo“ parinktis nuostatose. Eikite į nuostatas &gt; „Leo“.</translation>
 <translation id="3038772045018370764">„Leo“ nerenka identifikatorių, pvz., IP adreso, kuriuos galima susieti su jumis. Jokie duomenys nenaudojami DI modeliams mokyti ir DI modeliai nelaiko jokių asmens duomenų (išskyrus „Anthropic“, kuris laiko duomenis 30 dienų, o vėliau juos pašalina). Daugiau informacijos žr. <ph name="LINK_BEFORE"/>privatumo politikoje<ph name="LINK_AFTER"/>.</translation>
-<translation id="7839853125981164613">Čia įveskite raginimą</translation>
+<translation id="6961721183181597848">Kuo galiu jums šiandien padėti?</translation>
+<translation id="2966135729673253768">Paklauskite, kokie tolesni veiksmai</translation>
 <translation id="4524675003624341892">Siūlyti klausimus…</translation>
 <translation id="4567071417854988869">Apibendrinti šį vaizdo įrašą</translation>
 <translation id="7921782882718083488">Apibendrinti šį puslapį</translation>
@@ -2097,6 +2115,7 @@
 <translation id="7905602379229309187">Šiuo metu galinis taškas yra perkrautas. Prašome pabandyti vėliau.</translation>
 <translation id="8151638057146502721">Konfigūruoti</translation>
 <translation id="4177458398826096846">Sveiki, aš esu „Leo“. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Mane valdo „Llama 3.1 8B“ – „Meta“ sukurtas modelis, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="5252251845674154807">Sveiki, aš esu „Leo“. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Mane valdo „Qwen 14B“ – „Alibaba Cloud“ sukurtas modelis, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Sveiki, aš esu Leo. Esu „Brave“ teikiamas visapusę prieglobą naudojantis DI padėjėjas. Veikiu „Mixtral 8x7B“ pagrindu – šį modelį sukūrė „Mistral AI“ sudėtingesnėms užduotims vykyti.<ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Sveiki, aš Leo. Mane teikia „Brave“ ir naudoju „Claude Instant“ – „Anthropic“ sukurtą modelį, skirtą pokalbių ir teksto apdorojimo užduotims atlikti.<ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="2001874998841390450">Sveiki, aš esu Leo. Mane atstovauja „Brave“ ir naudoja „Claude Haiku“ – „Anthropic“ sukurtas modelis, skirtas pokalbių ir teksto apdorojimo užduotims atlikti. <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
@@ -2144,6 +2163,8 @@
 <translation id="8261506727792406068">Ištrinti</translation>
 <translation id="6574153208133461043">Ar tikrai norite ištrinti šį pokalbį? Šio veiksmo atšaukti negalima.</translation>
 <translation id="7488762544858401571">Redaguota</translation>
+<translation id="5604254791550001355">Redaguoti raginimą</translation>
+<translation id="8115786586976830777">Kopijavimo užklausa</translation>
 <translation id="1406205536570262057">Redaguoti atsakymą</translation>
 <translation id="2399439821649319175">Nenaudinga</translation>
 <translation id="2976167228906046828">Neteisinga</translation>
@@ -2155,6 +2176,9 @@
 <translation id="903201991022343217">Pradėti naują pokalbį</translation>
 <translation id="8171760814579050200">Pervadinti pokalbį</translation>
 <translation id="7754678742055438573">Šalinti pokalbį</translation>
+<translation id="1946267518364740045">Pagrindimas...</translation>
+<translation id="4198859185714743678">Pagrindimas baigtas</translation>
+<translation id="6140948187512243695">Rodyti išsamią informaciją</translation>
 <translation id="7494736170250048402">Siųsti „Leo“ žinutę</translation>
 <translation id="8650874793377330048">Nustokite atsakinėti</translation>
 <translation id="8712637175834984815">Supratau</translation>
@@ -2164,7 +2188,12 @@
 <translation id="4370698775470316661">Šis pokalbis per ilgas ir negali tęstis. Gali būti kitų modelių, su kuriais „Leo“ gali palaikyti tikslumą ilgesniuose pokalbiuose.</translation>
 <translation id="5719170755629028558">Jūsų atsakymas tobulinamas naudojant „Brave“ paiešką...</translation>
 <translation id="5794962229997281366">Patobulinta <ph name="SEARCH_TERMS"/>atsakymų paieška.</translation>
+<translation id="7307396647043599949"><ph name="COUNT"/> daugiau…</translation>
 <translation id="8103700533980268469">Uždaryti šį pranešimą</translation>
+<translation id="3417835166382867856">Paieškos skirtukai</translation>
+<translation id="9090243919347147717">Priedai</translation>
+<translation id="4444978378117903684">Pridėkite naršyklės skirtukus, kad suteiktumėte „Leo“ daugiau konteksto pokalbiui</translation>
+<translation id="4300920590112551536">Naršyklės skirtukai</translation>
 <translation id="2315654674554095762">Nuo šiol „Leo“ įsimins jūsų pokalbius, kad galėtumėte prie jų grįžti. Užšifruoti pokalbiai saugomi jūsų įrenginyje, ir bet kada galite juos ištrinti.</translation>
 <translation id="7821251979960635244">Jūsų pokalbių istorija bus rodoma čia, kai pradėsite pokalbį.</translation>
 <translation id="887511360213807449">Istorija išjungta</translation>
@@ -2174,6 +2203,7 @@
 <translation id="3185367320601718531">Pokalbis ir teksto generavimas</translation>
 <translation id="7979673624064378842">Žaibiškai greitas pokalbis</translation>
 <translation id="2836330653441111204">Greičio ir intelekto pusiausvyra</translation>
+<translation id="6695329447007213917">Bendros paskirties pokalbiai, kodavimas ir dar daugiau</translation>
 <translation id="3965507912994218570">"Leo" nustatymai</translation>
 <translation id="1037324977127422019">Labas, aš Leo!</translation>
 <translation id="8930348081963284873">DI pagrįstas išmanusis asistentas, integruotas tiesiogiai į „Brave“.</translation>
@@ -2403,5 +2433,6 @@ Būkite prisijungę!</translation>
 <translation id="1538335063514960365">Atidarykite čia, paspauskite „Enter“, kad URL nuoroda būtų atidaryta dabartiniame skirtuke, o ne perjungta į
     esamą skirtuką</translation>
 <translation id="451189393813405346">Klausti „Leo“</translation>
+<translation id="1602850501393095406">Paspauskite ↑, kad paryškintumėte</translation>
 <translation id="8525248723479742219">Leisti vėliau</translation>
 </translationbundle>

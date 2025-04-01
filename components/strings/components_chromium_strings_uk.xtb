@@ -21,6 +21,7 @@
 <translation id="303960458633076466">Веб-переглядач Brave заблокував цю сторінку</translation>
 <translation id="2017237562285586622">Надайте Brave доступ до мережі в налаштуваннях брандмауера чи
         антивірусної програми.</translation>
+<translation id="4949828774841497663">Перейдіть у меню Applications (Програми) &gt; System Settings (Системні параметри) &gt; Network (Мережа) і виберіть активну мережу, а потім натисніть кнопку Details (Докладніше) і зніміть прапорці біля всіх вибраних проксі-серверів.</translation>
 <translation id="8619622797841001082">Перейдіть у
           меню Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -43,9 +44,6 @@
           і зніміть прапорець біля опції "<ph name="NO_PREFETCH_DESCRIPTION"/>".
           Якщо проблема не зникне, радимо знову вибрати цю опцію,
           щоб покращити стабільність.</translation>
-<translation id="8187289872471304532">Перейдіть у меню
-          Applications &gt; System Preferences &gt; Network &gt; Advanced &gt; Proxies (Програми &gt; Системні налаштування &gt; Мережа &gt; Розширені &gt; Проксі-сервери)
-          і зніміть прапорці біля всіх вибраних проксі-серверів.</translation>
 <translation id="4159376633403260073">Ви переглядаєте безпечну сторінку Brave for Testing</translation>
 <translation id="88187049159266777">Brave було неправильно закрито.</translation>
 </translationbundle>

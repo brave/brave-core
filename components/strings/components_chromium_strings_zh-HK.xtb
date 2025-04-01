@@ -22,6 +22,7 @@
 <translation id="2017237562285586622">在防火牆或防毒軟件設定中允許 Brave 存取
 
           網絡。</translation>
+<translation id="4949828774841497663">前往 [應用程式] &gt; [系統設定] &gt; [網絡]，選取有效的網絡，然後按一下「詳細資料…」按鈕，並取消選取任何可能已選取的 Proxy。</translation>
 <translation id="8619622797841001082">前往
           [Brave 選單] &gt;
           [<ph name="SETTINGS_TITLE"/>]
@@ -43,9 +44,6 @@
         然後取消勾選 [<ph name="NO_PREFETCH_DESCRIPTION"/>]。
         如果上述動作仍無法解決問題，建議您重新選取這個選項
         以改善效能。</translation>
-<translation id="8187289872471304532">前往
-          [應用程式] &gt; [系統偏好設定] &gt; [網絡] &gt; [進階] &gt; [Proxy]
-          然後取消剔選所有已選取的 Proxy。</translation>
 <translation id="4159376633403260073">您正在查看安全的 Brave for Testing 頁面</translation>
 <translation id="88187049159266777">Brave 未正常關閉。</translation>
 </translationbundle>

@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">Ignoră pentru moment</translation>
 <translation id="6165508094623778733">Aflați mai multe</translation>
 <translation id="986879628471635371">Depanarea procesului de înscriere</translation>
-<translation id="5808759341041733958">Alegeți motorul de căutare prestabilit</translation>
-<translation id="1331593888918588693">Puteți oricând să vă schimbați preferințele ulterior în setările aplicației.</translation>
 <translation id="5806601733251372221">Scuturi Brave</translation>
 <translation id="8537217141725709400">Câștigați <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Recompense Brave</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">Am o frază de recuperare de 24 de cuvinte</translation>
 <translation id="3570367516044491911">Setați ca browser implicit</translation>
 <translation id="6800338374677644736">Setat ca browser implicit</translation>
-<translation id="19715420010996093">Selectați Brave Browser și atingeți „Întotdeauna”</translation>
-<translation id="3546439402724649282">Brave este setat deja ca browser implicit.</translation>
-<translation id="8389661903259423907">Ați setat deja un browser implicit. Puteți să schimbați browserul implicit din setările aplicației.</translation>
 <translation id="1545749641540134597">Scanați codul QR</translation>
 <translation id="5317781812114905957">Instrucțiuni</translation>
 <translation id="8515319483805157233">Pentru a căuta cu ajutorul Codului QR, poziționați codul QR în centrul cadrului.</translation>
@@ -549,7 +544,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1945330434665345785">Ați blocat <ph name="COUNT"/> (de) urmăriri și reclame cu browserul Brave săptămâna trecută.</translation>
 <translation id="2883868922264431515">Câștigați tokenuri vizualizând reclame care respectă confidențialitate și susțineți website-urile favorite.</translation>
 <translation id="7408493389591475748">Începeți să navigați pentru a vedea rapoartele de confidențialitate</translation>
-<translation id="9080777565335515917">Setați Brave ca browser prestabilit pentru o navigare privată și sigură.</translation>
 <translation id="1390943217516275883">Permite browserului Brave să afișeze statisticile privind confidențialitatea</translation>
 <translation id="1763352720905582220">Trimite un raport de confidențialitate săptămânal</translation>
 <translation id="1811691435325545066">Ștergeți toate datele rapoartelor de confidențialitate</translation>
@@ -593,16 +587,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2977501775944575564">Descărcare paralelă</translation>
 <translation id="6224180438946945617">Activați descărcarea paralelă pentru a accelera viteza de descărcare</translation>
 <translation id="8967385052772844086">Vizualizare text integral al Raportului de confidențialitate</translation>
-<translation id="6864343534748973390">Cele mai populare</translation>
-<translation id="4608192160278975831">Confidențial și fără monitorizare</translation>
-<translation id="7208522820527289601">Confidențial și fără monitorizare, sediu în UE</translation>
-<translation id="1161008391729450974">Rezultate Google fără trackere</translation>
-<translation id="7320542277711359296">Al doilea cel mai popular</translation>
-<translation id="8295049095570748497">Un motor de căutare de top din Rusia</translation>
-<translation id="2642661895835126239">Plantează copaci, cu sediul în Berlin</translation>
-<translation id="2422627462367776805">Portal și căutare web sud-coreeană</translation>
-<translation id="177282784098234156">O soluție confidențială, independentă, cu utilizatorul pe primul plan</translation>
-<translation id="1410130669636877548">Atunci când cauți ceva pe web, unele motoare de căutare îți protejează confidențialitatea datelor mai bine decât altele.</translation>
 <translation id="3479552764303398839">Nu acum</translation>
 <translation id="7138272885617540195">Permiteți deschiderea linkurilor de aplicații în aplicații distincte de Brave</translation>
 <translation id="4954512758656527938">Portofelul implicit pentru Ethereum</translation>

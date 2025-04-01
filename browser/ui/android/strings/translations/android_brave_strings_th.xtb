@@ -257,8 +257,6 @@
 <translation id="1377600615067678409">ข้ามไปก่อน</translation>
 <translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
 <translation id="986879628471635371">การแก้ไขปัญหาการเตรียมความพร้อม</translation>
-<translation id="5808759341041733958">เลื่อกเอนจิ้นค้นหาเริ่มต้น</translation>
-<translation id="1331593888918588693">คุณสามารถเปลี่ยนการตั้งค่าในภายหลังได้เสมอในการตั้งค่าแอป</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400">รับ <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
@@ -276,9 +274,6 @@
 <translation id="4225265925807365011">ฉันมีวลีกู้คืนรหัส 24 คำ</translation>
 <translation id="3570367516044491911">ตั้งเป็นเบราว์เซอร์เริ่มต้น</translation>
 <translation id="6800338374677644736">ตั้งเป็นเบราว์เซอร์เริ่มต้น</translation>
-<translation id="19715420010996093">เลือกเบราว์เซอร์ Brave แล้วแตะ 'เสมอ'</translation>
-<translation id="3546439402724649282">Brave ถูกตั้งเป็นเบราว์เซอร์เริ่มต้นของคุณอยู่แล้ว</translation>
-<translation id="8389661903259423907">คุณตั้งเบราว์เซอร์เริ่มต้นไปแล้ว คุณสามารถเปลี่ยนเบราว์เซอร์เริ่มต้นได้ในการตั้งค่าแอป</translation>
 <translation id="1545749641540134597">Scan QR Code</translation>
 <translation id="5317781812114905957">คำแนะนำ</translation>
 <translation id="8515319483805157233">หากต้องการค้นหาด้วย QR Code ให้นำ QR Code มาไว้ตรงกลางกรอบ</translation>
@@ -549,7 +544,6 @@
 <translation id="1945330434665345785">คุณได้บล็อก <ph name="COUNT"/> แอปติดตามและโฆษณาด้วยเบราว์เซอร์ Brave เมื่อสัปดาห์ที่แล้ว</translation>
 <translation id="2883868922264431515">รับโทเคนโดยการชมโฆษณาที่เคารพความเป็นส่วนตัวและสนับสนุนเว็บไซต์ที่คุณชื่นชอบ</translation>
 <translation id="7408493389591475748">เริ่มท่องเว็บเพื่อดูรายงานความเป็นส่วนตัว</translation>
-<translation id="9080777565335515917">ตั้ง Brave เป็นเบราว์เซอร์เริ่มต้นเพื่อการท่องเว็บที่เป็นส่วนตัวและปลอดภัย</translation>
 <translation id="1390943217516275883">อนุญาตให้ Brave แสดงสถิติความเป็นส่วนตัวของคุณ</translation>
 <translation id="1763352720905582220">ส่งรายงานความเป็นส่วนตัวประจำสัปดาห์</translation>
 <translation id="1811691435325545066">ล้างข้อมูลรายงานความเป็นส่วนตัวทั้งหมด</translation>
@@ -593,16 +587,6 @@
 <translation id="2977501775944575564">การดาวน์โหลดหลายรายการพร้อมกัน</translation>
 <translation id="6224180438946945617">เปิดใช้งานการดาวน์โหลดหลายรายการพร้อมกันเพื่อเร่งความเร็วในการดาวน์โหลด</translation>
 <translation id="8967385052772844086">ดูรายงานความเป็นส่วนตัวฉบับเต็ม</translation>
-<translation id="6864343534748973390">ยอดนิยม</translation>
-<translation id="4608192160278975831">เป็นส่วนตัวและไม่มีการติดตาม</translation>
-<translation id="7208522820527289601">เป็นส่วนตัว ไม่มีการติดตาม มีศูนย์กลางอยู่ใน EU</translation>
-<translation id="1161008391729450974">ผลลัพธ์จาก Google แบบไม่มีตัวติดตาม</translation>
-<translation id="7320542277711359296">อันดับยอดนิยมรองลงมา</translation>
-<translation id="8295049095570748497">เสิร์ชเอนจินชั้นนำในรัสเซีย</translation>
-<translation id="2642661895835126239">ปลูกต้นไม้ในเบอร์ลิน</translation>
-<translation id="2422627462367776805">เว็บพอร์ทัลและการค้นหาของเกาหลีใต้</translation>
-<translation id="177282784098234156">ส่วนตัว เป็นอิสระ ผู้ใช้มาเป็นอันดับแรก</translation>
-<translation id="1410130669636877548">เสิร์ชเอนจินบางตัวช่วยปกป้องความเป็นส่วนตัวได้ดีกว่าเสิร์ชเอนจินอื่นๆ เมื่อคุณค้นหาข้อมูลบนเว็บไซต์</translation>
 <translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
 <translation id="7138272885617540195">อนุญาตให้เปิดลิงก์แอปในแอปนอก Brave</translation>
 <translation id="4954512758656527938">วอลเล็ต Ethereum เริ่มต้น</translation>

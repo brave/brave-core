@@ -10,6 +10,8 @@
 <translation id="1544192797660353713">वॉलेट</translation>
 <translation id="1990886731975529483">गूगल वाइडवाइन इन्स्टॉल करा आणि चालू करा</translation>
 <translation id="8926389886865778422">पुन्हा विचारू नका</translation>
+<translation id="4900351245762303149">Google Widevine इन्स्टॉल करा</translation>
+<translation id="8342816622062204340"><ph name="URL"/> ला संरक्षित Google Widevine काँटेंट प्ले करायचा आहे, ज्यासाठी तुम्ही Widevine करिता Android यंत्रणेच्या समर्थनास संमती देणे गरजेचे आहे. संमती देऊन, तुम्ही Google च्या वापराच्या अटींना सहमती देता.</translation>
 <translation id="6965382102122355670">ठीक आहे</translation>
 <translation id="474217410105706308">टॅब निःशब्द करा</translation>
 <translation id="5039804452771397117">परवानगी द्या</translation>
@@ -19,10 +21,13 @@
 <translation id="4870911314065352661">सर्व टॅब्स बंद करू?</translation>
 <translation id="5234764350956374838">डिसमिस करा</translation>
 <translation id="9194637241566114638">निनावी वापर माहिती पाठवून <ph name="SEARCH_NAME"/> सुधारण्यास मदत करा. <ph name="MORE_INFO"/></translation>
+<translation id="7404610376221341525">Brave शोध</translation>
 <translation id="8184318863960255706">अधिक माहिती</translation>
 <translation id="780301667611848630">नाही, नको</translation>
 <translation id="2770465223704140727">सूचीमधून काढून टाका</translation>
 <translation id="6040143037577758943">बंद करा</translation>
+<translation id="4174337572777167894">वेब डिस्कव्हरी प्रकल्प</translation>
+<translation id="8659271182272561965">Brave शोध अधिक शुद्ध करण्यासाठी थोड्या निनावी शोधाच्या आणि &amp; ब्राऊझिंग डेटाच्या स्वरूपात योगदान द्या.</translation>
 <translation id="9149866541089851383">संपादन...</translation>
 <translation id="1181037720776840403">काढून टाका</translation>
 <translation id="4002066346123236978">शीर्षक</translation>
@@ -72,6 +77,7 @@
 <translation id="984275831282074731">पेमेंट पद्धती</translation>
 <translation id="1807246157184219062">फिकट</translation>
 <translation id="2414886740292270097">गडद</translation>
+<translation id="5840822070878669614">Brave वेब स्टोअर उघडा</translation>
 <translation id="8076492880354921740">टॅब</translation>
 <translation id="8168435359814927499">आशय</translation>
 <translation id="4109670531935487117">ॲड्रेस बारमध्ये ऑटोकम्प्लीट शिफारसी दाखवा</translation>
@@ -117,11 +123,14 @@
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">कॅशे स्टोरेज</translation>
 <translation id="410351446219883937">ऑटोप्ले</translation>
+<translation id="298546024891487702">सुरुवातीला, तुम्हाला सिंक करायचे असलेल्या सगळ्या डिव्हायसेसवर Brave इन्स्टॉल केलेले असायला हवे. त्यांना एकत्र जोडण्यासाठी, एक सिंक चेन सुरु करा जी तुम्ही तुमचे सगळे डिव्हाईस एकत्र सुरक्षितपणे लिंक करण्यासाठी वापराल.</translation>
 <translation id="1736420071277903564">काँप्युटर</translation>
 <translation id="7029809446516969842">पासवर्ड</translation>
 <translation id="2653659639078652383">सबमिट करा</translation>
+<translation id="5249433283143453448">ब्राऊझरमध्ये संरक्षित स्ट्रीमिंग व्हिडिओ आणि इतर काँटेंट पाहण्यासाठी Widevine डिजिटल अधिकार व्यवस्थापन (DRM) घटक वापरा.</translation>
 <translation id="8137559199583651773">विस्तार व्यवस्थापित करा</translation>
-<translation id="5840822070878669614">Brave वेब स्टोअर उघडा</translation>
 <translation id="8488282162676695335">ब्रेव्ह वॉलेट</translation>
+<translation id="5781842473834867765">माझा संभाषण इतिहास जतन करा</translation>
+<translation id="6106701981952170121">सर्व Leo AI संभाषण डेटा काढून टाका</translation>
 <translation id="614530507403667291">नवीन संभाषणांसाठीचे डीफॉल्ट मॉडेल</translation>
 </translationbundle>

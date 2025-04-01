@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="km">
+<translation id="5288293905681750318">កម្មវិធីតាមដាន &amp; ការផ្សាយពាណិជ្ជកម្មត្រូវបានរារាំង</translation>
 <translation id="788493840831967104">សន្សំពេលវេលា</translation>
+<translation id="2318592590318590295">បានរក្សាទុកកម្រិតបញ្ជូន</translation>
 <translation id="2079545284768500474">បកក្រោយ</translation>
 <translation id="6040143037577758943">បិទ</translation>
 <translation id="7210211103303402262">នាទី</translation>
@@ -14,6 +16,7 @@
 <translation id="5317780077021120954">រក្សាទុក</translation>
 <translation id="7658239707568436148">បដិសេធ</translation>
 <translation id="4643117005422448078">គេហទំព័រកំពូលៗ</translation>
+<translation id="5525668735313040116">ស្វែងរកគេហទំព័រឯកជន</translation>
 <translation id="780301667611848630">ទេ អរគុណ</translation>
 <translation id="2875302873837723333">គេហទំព័រ​ពេញនិយម</translation>
 <translation id="1383876407941801731">ស្វែងរក</translation>
@@ -24,6 +27,7 @@
 <translation id="3189348785087463371">បានផ្សព្វផ្សាយ</translation>
 <translation id="4541978218358617681">Ad</translation>
 <translation id="7791543448312431591">បន្ថែម</translation>
+<translation id="6216996674668969227">ទទួលបានសញ្ញាសម្ងាត់សម្រាប់ការមើលការផ្សាយពាណិជ្ជកម្មដែលគោរពភាពឯកជន។</translation>
 <translation id="8488282162676695335">កាបូប Brave</translation>
 <translation id="8820817407110198400">របាចំណាំ</translation>
 <translation id="1644574205037202324">ប្រវត្តិ</translation>
@@ -77,6 +81,7 @@
 <translation id="2359808026110333948">បន្ត</translation>
 <translation id="3863981251715594911">តើ​វា​ដំណើរការ​ដោយ​របៀប​ណា?</translation>
 <translation id="7931127789630755251">ទទួលបានថូខឹនសម្រាប់ការផ្សាយពាណិជ្ជកម្មឯកជនដែលអ្នកឃើញនៅក្នុង Brave</translation>
+<translation id="2278423362884506724">គាំទ្រអ្នកបង្កើតមាតិកា និងប្រើថូខឹនរបស់អ្នកដើម្បីទិញកាតអំណោយ ប្តូររូបិយប័ណ្ណផ្សេងទៀត និងច្រើនទៀត។</translation>
 <translation id="6278643716658443228">ការកំណត់រង្វាន់</translation>
 <translation id="2965798296974325760">ចាប់ផ្តើមប្រើប្រាស់រង្វាន់</translation>
 <translation id="2956070106555335453">របាយការណ៍សង្ខេប</translation>
@@ -109,6 +114,9 @@
 <translation id="7550470870580166294">ទុនមិនគ្រប់គ្រាន់</translation>
 <translation id="1166682575529520472">ប្រចាំខែ</translation>
 <translation id="7138678301420049075">ផ្សេងទៀត</translation>
+<translation id="5309155375926073606">បាទ/ចាស ខ្ញុំក៏ចង់រួមចំណែកដល់ Brave Search ហើយជ្រើសរើសចូល <ph name="LINK_BEGIN"/>គម្រោងស្វែងរកគេហទំព័រ<ph name="LINK_END"/>។</translation>
+<translation id="4622826307953794521">ចូលរួមចំណែកក្នុងការស្វែងរក និងទិន្នន័យរុករកអនាមិកមួយចំនួន ដើម្បីកែលម្អការស្វែងរកដ៏ក្លាហានជាមួយនឹងគម្រោងស្វែងរកគេហទំព័រ។ វាជាប្រភពបើកចំហទាំងស្រុង។</translation>
+<translation id="4174337572777167894">គម្រោងស្វែងរកគេហទំព័រ</translation>
 <translation id="7090992647511817643">គណនី</translation>
 <translation id="6979737339423435258">គ្រប់​ពេល</translation>
 <translation id="629730747756840877">គណនី</translation>
@@ -161,6 +169,7 @@
 <translation id="1472675084647422956">បង្ហាញ​ច្រើនទៀត</translation>
 <translation id="4522570452068850558">ព័ត៌មានលំអិត</translation>
 <translation id="1178581264944972037">ផ្អាក</translation>
+<translation id="9086302186042011942">កំពុងធ្វើសមកម្ម</translation>
 <translation id="7144878232160441200">ព្យាយាមម្តងទៀត</translation>
 <translation id="1765217911817124376">បើក Brave ព័ត៌មាន</translation>
 <translation id="939305735877869636">Brave</translation>
@@ -174,18 +183,25 @@
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">Monospace</translation>
 <translation id="7557539689487606886">ដំឡើងទៅ Premium</translation>
+<translation id="3840096463915153852">ប្រវត្តិនៃការសន្ទនា</translation>
+<translation id="2304783958703511257">ការកំណត់កម្រិតខ្ពស់</translation>
 <translation id="4173478269537830374">ស្វែងរកម៉ូដែល AI ផ្សេងៗគ្នា</translation>
 <translation id="3245401959451976966">ដោះសោភាពច្នៃប្រឌិតរបស់អ្នក</translation>
 <translation id="4165928407303989823">បន្ត​នៅ​លើ​ប្រធានបទ</translation>
 <translation id="2389665228467129817">ជជែក​គ្នា​បាន​យូរ</translation>
+<translation id="8556044455877152001"><ph name="PRICE_VALUE"/> ដុល្លារ / ខែ</translation>
 <translation id="1028627582482425924">មួយឆ្នាំ</translation>
+<translation id="36366199652730057">តម្លៃល្អបំផុត</translation>
 <translation id="5474757891469990756">បញ្ចេញថាមពលពេញលេញរបស់ Leo ជាមួយ Premium៖</translation>
 <translation id="3453542753968940696">ការចូលប្រើជាអាទិភាពចំពោះម៉ូដែលដ៏មានឥទ្ធិពលដែលមានជំនាញផ្សេងៗគ្នា។</translation>
 <translation id="5031778211368112461">ចូលប្រើម៉ូដែលដែលបានរចនាឡើងសម្រាប់កិច្ចការច្នៃប្រឌិត និងការបង្កើតខ្លឹមសារ។</translation>
 <translation id="298783097210745222">ទទួលបានចម្លើយដែលត្រឹមត្រូវជាងមុនសម្រាប់ការសន្ទនាដែលស្មុគស្មាញ។</translation>
 <translation id="4314705522985583059">ទទួលបានដែនកំណត់អត្រាខ្ពស់ជាងមុនសម្រាប់ការសន្ទនាបានកាន់តែយូរ។</translation>
 <translation id="8261506727792406068">លុប</translation>
+<translation id="8171760814579050200">ប្តូរឈ្មោះការសន្ទនា</translation>
+<translation id="7754678742055438573">លុបការសន្ទនា</translation>
 <translation id="8712637175834984815">យល់ហើយ</translation>
+<translation id="2315654674554095762">ឥឡូវនេះ Leo នឹងចងចាំការសន្ទនារបស់អ្នក ដូច្នេះអ្នកអាចត្រឡប់ទៅរកពួកគេវិញ។ ពួកវាត្រូវបានរក្សាទុកដោយអ៊ិនគ្រីបនៅលើឧបករណ៍របស់អ្នក ហើយអ្នកអាចលុបវាបានគ្រប់ពេល។</translation>
 <translation id="6291843235651817590">ការជជែកអំពីគោលបំណងទូទៅ</translation>
 <translation id="8193130769524604031">កិច្ចការជជែកកម្រិតខ្ពស់</translation>
 <translation id="7979673624064378842">ការជជែកយ៉ាងរហ័ស</translation>
@@ -200,7 +216,14 @@
 <translation id="2453860139492968684">បញ្ចប់</translation>
 <translation id="2273851479262317744">កំណត់ Brave ជាកម្មវិធីរុករកលំនាំដើម</translation>
 <translation id="5148943178722443958">ជួយធ្វើឱ្យ Brave កាន់តែប្រសើរឡើង។</translation>
+<translation id="6302485303316397682">ចង់បានលទ្ធផលស្វែងរកប្រសើរជាងមុនទេ?</translation>
+<translation id="7014699001826714920">ចូលរួមចលនា រួមចំណែកដល់ Brave ស្វែងរក។</translation>
+<translation id="6821108091726602352">ជួយយើងជួសជុលគេហទំព័រដោយចូលរួមក្នុងគម្រោងស្វែងរកបណ្តាញរបស់ Brave ។ តាមរយៈការចែករំលែកសញ្ញាស្វែងរកអនាមិកទាំងស្រុង អ្នកអាចជួយ Brave បង្កើនសន្ទស្សន៍ស្វែងរក។</translation>
 <translation id="6764845498618413165">ស្វែងយល់បន្ថែម.</translation>
+<translation id="7818938154803162778">ប្រាកដណាស់ ខ្ញុំនឹងជួយ</translation>
+<translation id="2370739752330685659">ប្រហែលជាពេលក្រោយ</translation>
+<translation id="5753795690521538679">ចាប់ផ្តើមការសាកល្បងឥតគិតថ្លៃរយៈពេល 7 ថ្ងៃ</translation>
+<translation id="3357036723290257445">បានទិញ Brave VPN រួចហើយ?</translation>
 <translation id="8814357473522731680">ដំណើរការដោយ</translation>
 <translation id="7805768142964895445">ស្ថានភាព</translation>
 <translation id="1116694919640316211">អំពី</translation>
@@ -212,4 +235,5 @@
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="4295077644587784828">ភាពឯកជនបន្ថែម &amp; សុវត្ថិភាពតាមអនឡាញ.</translation>
 <translation id="8425213833346101688">ប្តូរ</translation>
+<translation id="8703188411226330709">ចាប់ផ្តើមការសាកល្បងឥតគិតថ្លៃ</translation>
 </translationbundle>
