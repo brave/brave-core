@@ -81,6 +81,34 @@
     Remove
   </message>
 
+  <message name="IDS_NEW_TAB_REWARDS_BALANCE_TITLE" desc="Title for balance section on Rewards NTP widget">
+    Rewards balance
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_CONNECT_BUTTON_LABEL" desc="Label for button to connect a Rewards payment account">
+    Connect
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_CONNECT_TEXT" desc="Text for connect account section of the Rewards NTP widget">
+    Connect a payout account
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_CONNECT_TITLE" desc="Title for connect account section of the Rewards NTP widget">
+    Ready to start earning?
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_ONBOARDING_BUTTON_LABEL" desc="Label for the Rewards onboarding button">
+    Start using Brave Rewards
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_ONBOARDING_LINK" desc="Text for Rewards onboarding link">
+    How does it work?
+  </message>
+
+  <message name="IDS_NEW_TAB_REWARDS_WIDGET_TITLE" desc="Title of the Rewards NTP widget">
+    REWARDS
+  </message>
+
   <message name="IDS_NEW_TAB_SAVE_CHANGES_BUTTON_LABEL" desc="Label for button that saves changes">
     Save changes
   </message>
@@ -127,6 +155,10 @@
 
   <message name="IDS_NEW_TAB_SHOW_CLOCK_LABEL" desc="Label for enabling the clock on the NTP">
     Show clock
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL" desc="Label for enabling the Rewards widget on the NTP">
+    Brave Rewards
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL" desc="Label for enabling the searchbox on the NTP">

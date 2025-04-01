@@ -50,6 +50,8 @@ UpdateObserver::UpdateObserver(PrefService& pref_service,
 
   AddPrefListener(kNewTabPageShowBraveTalk, Source::kTalk);
 
+  AddPrefListener(kNewTabPageShowRewards, Source::kRewards);
+
   if (top_sites_facade) {
     top_sites_facade->SetSitesUpdatedCallback(
         base::BindRepeating(&UpdateObserver::OnUpdate,

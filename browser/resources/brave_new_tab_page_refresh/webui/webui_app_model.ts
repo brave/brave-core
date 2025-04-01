@@ -9,6 +9,7 @@ import { initializeNewTab } from './webui_new_tab'
 import { initializeBackgrounds } from './webui_backgrounds'
 import { initializeSearch } from './webui_search'
 import { initializeTopSites } from './webui_top_sites'
+import { initializeRewards } from './webui_rewards'
 
 export function createAppModel(): AppModel {
   const store = createStore(defaultState())
@@ -20,6 +21,7 @@ export function createAppModel(): AppModel {
     ...initializeNewTab(store),
     ...initializeBackgrounds(store),
     ...initializeSearch(store),
-    ...initializeTopSites(store)
+    ...initializeTopSites(store),
+    ...initializeRewards(store)
   }
 }

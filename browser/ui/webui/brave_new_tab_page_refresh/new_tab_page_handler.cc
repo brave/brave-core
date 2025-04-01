@@ -402,6 +402,18 @@ void NewTabPageHandler::SetShowTalkWidget(bool show_talk_widget,
   std::move(callback).Run();
 }
 
+void NewTabPageHandler::GetShowRewardsWidget(
+    GetShowRewardsWidgetCallback callback) {
+  std::move(callback).Run(pref_service_->GetBoolean(kNewTabPageShowRewards));
+}
+
+void NewTabPageHandler::SetShowRewardsWidget(
+    bool show_rewards_widget,
+    SetShowRewardsWidgetCallback callback) {
+  pref_service_->SetBoolean(kNewTabPageShowRewards, show_rewards_widget);
+  std::move(callback).Run();
+}
+
 void NewTabPageHandler::OnCustomBackgroundsSelected(
     ShowCustomBackgroundChooserCallback callback,
     std::vector<base::FilePath> paths) {
@@ -438,6 +450,9 @@ void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
       break;
     case UpdateObserver::Source::kTalk:
       page_->OnTalkStateUpdated();
+      break;
+    case UpdateObserver::Source::kRewards:
+      page_->OnRewardsStateUpdated();
       break;
   }
 }

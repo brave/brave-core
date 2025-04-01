@@ -10,6 +10,7 @@
 
 #include "base/feature_list.h"
 #include "base/strings/strcat.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/resources/brave_new_tab_page_refresh/grit/brave_new_tab_page_refresh_generated_map.h"
@@ -95,6 +96,9 @@ void NewTabPageInitializer::AddLoadTimeValues() {
   source_->AddBoolean(
       "ntpSearchFeatureEnabled",
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
+
+  source_->AddBoolean("rewardsFeatureEnabled",
+                      brave_rewards::IsSupportedForProfile(profile));
 }
 
 void NewTabPageInitializer::AddStrings() {
@@ -124,6 +128,16 @@ void NewTabPageInitializer::AddStrings() {
       {"photoCreditsText", IDS_NEW_TAB_PHOTO_CREDITS_TEXT},
       {"randomizeBackgroundLabel", IDS_NEW_TAB_RANDOMIZE_BACKGROUND_LABEL},
       {"removeTopSiteLabel", IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL},
+      {"rewardsBalanceTitle", IDS_NEW_TAB_REWARDS_BALANCE_TITLE},
+      {"rewardsConnectButtonLabel", IDS_NEW_TAB_REWARDS_CONNECT_BUTTON_LABEL},
+      {"rewardsConnectText", IDS_NEW_TAB_REWARDS_CONNECT_TEXT},
+      {"rewardsConnectTitle", IDS_NEW_TAB_REWARDS_CONNECT_TITLE},
+      {"rewardsFeatureText1", IDS_REWARDS_ONBOARDING_TEXT_ITEM_1},
+      {"rewardsFeatureText2", IDS_REWARDS_ONBOARDING_TEXT_ITEM_2},
+      {"rewardsOnboardingButtonLabel",
+       IDS_NEW_TAB_REWARDS_ONBOARDING_BUTTON_LABEL},
+      {"rewardsOnboardingLink", IDS_NEW_TAB_REWARDS_ONBOARDING_LINK},
+      {"rewardsWidgetTitle", IDS_NEW_TAB_REWARDS_WIDGET_TITLE},
       {"saveChangesButtonLabel", IDS_NEW_TAB_SAVE_CHANGES_BUTTON_LABEL},
       {"searchAskLeoDescription", IDS_OMNIBOX_ASK_LEO_DESCRIPTION},
       {"searchBoxPlaceholderText", IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT},
@@ -143,6 +157,7 @@ void NewTabPageInitializer::AddStrings() {
       {"settingsTitle", IDS_NEW_TAB_SETTINGS_TITLE},
       {"showBackgroundsLabel", IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL},
       {"showClockLabel", IDS_NEW_TAB_SHOW_CLOCK_LABEL},
+      {"showRewardsWidgetLabel", IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL},
       {"showSearchBoxLabel", IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL},
       {"showSponsoredImagesLabel", IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL},
       {"showStatsLabel", IDS_NEW_TAB_SHOW_STATS_LABEL},

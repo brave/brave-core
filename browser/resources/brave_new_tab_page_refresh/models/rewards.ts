@@ -1,0 +1,37 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { ExternalWallet } from '../../../../components/brave_rewards/resources/shared/lib/external_wallet'
+import { Optional } from '../lib/optional'
+
+export interface RewardsState {
+  rewardsFeatureEnabled: boolean
+  showRewardsWidget: boolean
+  rewardsEnabled: boolean
+  rewardsExternalWallet: ExternalWallet | null
+  rewardsBalance: Optional<number>
+  rewardsExchangeRate: number
+}
+
+export function defaultRewardsState(): RewardsState {
+  return {
+    rewardsFeatureEnabled: false,
+    showRewardsWidget: false,
+    rewardsEnabled: false,
+    rewardsExternalWallet: null,
+    rewardsBalance: new Optional(),
+    rewardsExchangeRate: 1
+  }
+}
+
+export interface RewardsActions {
+  setShowRewardsWidget: (showRewardsWidget: boolean) => void
+}
+
+export function defaultRewardsActions(): RewardsActions {
+  return {
+    setShowRewardsWidget(showRewardsWidget) {}
+  }
+}

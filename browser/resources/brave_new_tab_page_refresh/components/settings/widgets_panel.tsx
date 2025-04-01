@@ -18,6 +18,8 @@ export function WidgetsPanel() {
 
   const showStats = useAppState((s) => s.showShieldsStats)
   const showTalkWidget = useAppState((s) => s.showTalkWidget)
+  const rewardsFeatureEnabled = useAppState((s) => s.rewardsFeatureEnabled)
+  const showRewardsWidget = useAppState((s) => s.showRewardsWidget)
 
   return (
     <div data-css-scope={style.scope}>
@@ -31,6 +33,19 @@ export function WidgetsPanel() {
           }}
         />
       </div>
+      {
+        rewardsFeatureEnabled &&
+          <div className='form-control-row'>
+            <label>{getString('showRewardsWidgetLabel')}</label>
+            <Toggle
+              size='small'
+              checked={showRewardsWidget}
+              onChange={({ checked }) => {
+                actions.setShowRewardsWidget(checked)
+              }}
+            />
+          </div>
+      }
       <div className='form-control-row'>
         <label>{getString('showTalkWidgetLabel')}</label>
         <Toggle
