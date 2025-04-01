@@ -209,4 +209,8 @@ public class AnyTabState: TabState {
   public func clearBackForwardList() {
     tab.clearBackForwardList()
   }
+
+  public func updateScripts() {
+    tab.updateScripts()
+  }
 }
