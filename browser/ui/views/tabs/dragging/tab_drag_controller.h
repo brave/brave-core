@@ -29,11 +29,10 @@ class TabDragController : public TabDragControllerChromium {
                 ui::mojom::DragEventSource event_source);
 
   // TabDragControllerChromium:
-  gfx::Point GetAttachedDragPoint(const gfx::Point& point_in_screen) override;
-  void MoveAttached(gfx::Point point_in_screen, bool just_attached) override;
   views::Widget* GetAttachedBrowserWidget() override;
   gfx::Vector2d CalculateWindowDragOffset() override;
-
+  void StartDraggingTabsSession(bool initial_move,
+                                gfx::Point start_point_in_screen) override;
   Liveness GetLocalProcessWindow(const gfx::Point& screen_point,
                                  bool exclude_dragged_view,
                                  gfx::NativeWindow* window) override;
@@ -47,6 +46,7 @@ class TabDragController : public TabDragControllerChromium {
  private:
   gfx::Vector2d GetVerticalTabStripWidgetOffset();
 
+  gfx::Point mouse_offset_;
   bool is_showing_vertical_tabs_ = false;
 
   VerticalTabStripRegionView::ScopedStateResetter vertical_tab_state_resetter_;
