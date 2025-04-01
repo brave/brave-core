@@ -65,36 +65,6 @@ void SaveLastVariationsSeedFetchTime() {
   });
 }
 
-- (std::unique_ptr<variations::SeedResponse>)
-    seedResponseForHTTPResponse:(NSHTTPURLResponse*)httpResponse
-                           data:(NSData*)data {
-  if ([httpResponse valueForHTTPHeaderField:@"IM"]) {
-    return [super seedResponseForHTTPResponse:httpResponse data:data];
-  }
-
-  // Seed is NOT gzip compressed.
-  // None of Brave's Seeds are gzip compressed.
-  // For Chromium, they always are.
-  // See: https://github.com/brave/devops/issues/13379
-  bool is_gzip_compressed = false;
-
-  NSString* signature =
-      [httpResponse valueForHTTPHeaderField:@"X-Seed-Signature"];
-  NSString* country = [httpResponse valueForHTTPHeaderField:@"X-Country"];
-
-  auto seed = std::make_unique<variations::SeedResponse>();
-  if (data) {
-    seed->data =
-        std::string(reinterpret_cast<const char*>([data bytes]), [data length]);
-  }
-
-  seed->signature = base::SysNSStringToUTF8(signature);
-  seed->country = base::SysNSStringToUTF8(country);
-  seed->date = base::Time::Now();
-  seed->is_gzip_compressed = is_gzip_compressed;
-  return seed;
-}
-
 - (void)fetchSeedSynchronously {
   [self fetchSeedSynchronously:false];
 }
