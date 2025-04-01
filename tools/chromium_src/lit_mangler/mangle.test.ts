@@ -33,18 +33,24 @@ function* walkManglers(root=chromiumSrc) {
 
 describe('mangled files should have up to date snapshots', () => {
     for (const mangler of walkManglers()) {
-        const name = path.relative(root, mangler)
+        const name = path.relative(root, mangler).replaceAll(path.sep, '/')
         it(`./${name} should match snapshot`, () => {
             const manglerPath = name.replace('.lit_mangler.ts', '')
-                .replace('chromium_src/', '')
+                .replace(`chromium_src/`, '')
             const baseName = path.basename(manglerPath)
 
             const mangledPath = path.relative(root, path.join(genPath, manglerPath.replace(baseName, 'preprocessed/' + baseName)))
             const originalPath = path.join('..', manglerPath)
 
             const mangledText = fs.readFileSync(mangledPath, 'utf8')
-            const originalText = fs.readFileSync(originalPath, 'utf8').substring(header.length)
-            const linesDiff = diff.createTwoFilesPatch(originalPath, path.relative(outputPath, mangledPath), originalText, mangledText)
+                .replaceAll('\r\n', '\n')
+            const originalText = fs.readFileSync(originalPath, 'utf8')
+                .replaceAll('\r\n', '\n')
+                .substring(header.length)
+            const linesDiff = diff.createTwoFilesPatch(originalPath.replaceAll(path.sep, '/'),
+                path.relative(outputPath, mangledPath).replaceAll(path.sep, '/'),
+                originalText,
+                mangledText)
             expect(linesDiff).toMatchSnapshot()
         });
     }

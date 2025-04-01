@@ -37,13 +37,14 @@ const getTsConfigForFiles = (genDir: string, files: string[]) => {
     const tsConfigName = `lit-mangler-check-tsconfig_${files.map(file => path.basename(file)).join('_')}.json`
     const tempTsConfigPath = path.join(genDir, tsConfigName)
     fs.writeFileSync(tempTsConfigPath, JSON.stringify(tsConfig, null, 2))
-    return tempTsConfigPath
+    return path.normalize(tempTsConfigPath)
 }
 
 const runTypecheck = (genDir: string, files: string[]) => {
     const result = childProcess.spawnSync('tsc', ['-p', getTsConfigForFiles(genDir, files)])
-    if (result.status !== 0) {
-        console.error('Typechecking failed:\n', result.stdout?.toString())
+    // Note: tsc in Windows doesn't return a status code on success (i.e. status === null).
+    if (result.status ?? 0 !== 0) {
+        console.error('Typechecking failed:\n', result.stderr?.toString())
         process.exit(1)
     }
 }
@@ -62,7 +63,8 @@ commander
             runTypecheck(genDir, [mangler])
         }
 
-        await import(mangler)
+        // Note: Windows requires the file:// scheme for absolute import paths
+        await import(`file://${mangler}`)
         write(output)
     })
 
