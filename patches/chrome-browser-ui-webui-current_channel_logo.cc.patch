@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/webui/current_channel_logo.cc b/chrome/browser/ui/webui/current_channel_logo.cc
+index d9fca84f38db06f615a57b93ee10c00c5fe8eb56..322f6e3252f2341da6f9310be442dc374fab18ba 100644
+--- a/chrome/browser/ui/webui/current_channel_logo.cc
++++ b/chrome/browser/ui/webui/current_channel_logo.cc
+@@ -12,7 +12,7 @@ namespace webui {
+ 
+ int CurrentChannelLogoResourceId() {
+   switch (chrome::GetChannel()) {
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || defined(OFFICIAL_BUILD)
+     case version_info::Channel::CANARY:
+       return IDR_PRODUCT_LOGO_32_CANARY;
+     case version_info::Channel::DEV:
+@@ -29,7 +29,10 @@ int CurrentChannelLogoResourceId() {
+       NOTREACHED();
+ #endif
+     case version_info::Channel::UNKNOWN:
++      return IDR_PRODUCT_LOGO_32_DEVELOPMENT;
++#if 0
+       return IDR_PRODUCT_LOGO_32;
++#endif
+   }
+   return -1;
+ }
