@@ -29,7 +29,10 @@ import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinition
 public class BravePermissionUtils {
     private static final String APP_PACKAGE = "app_package";
     private static final String APP_UID = "app_uid";
-    private static final int NOTIFICATION_PERMISSION_CODE = 123;
+    public static final int NOTIFICATION_PERMISSION_CODE = 123;
+
+    public static final String REWARDS_NOTIFICATION_PERMISSION_COUNT =
+            "rewards_notification_permission_count";
 
     public static boolean hasNotificationPermission(Context context) {
         return hasPermission(context, Manifest.permission.POST_NOTIFICATIONS);
