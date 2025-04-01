@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { spacing } from "@brave/leo/tokens/css/variables";
 import * as React from "react";
+import * as Mojom from '../../../../ai_chat/resources/common/mojom'
 import styled from "styled-components";
 import InputBox from '../../../../ai_chat/resources/page/components/input_box';
 import ToolsButtonMenu from "../../../../ai_chat/resources/page/components/tools_button_menu";
@@ -55,7 +56,7 @@ export default function BeginGeneration() {
           isGenerating: context.isGenerating,
           handleStopGenerating: async () => {},
           removeImage: () => {},
-          uploadImage: (useMediaCapture: boolean) => {},
+          uploadImage: (options: Mojom.UploadImageOptions) => {},
           conversationHistory: [],
           pendingMessageImages: null
         }} />

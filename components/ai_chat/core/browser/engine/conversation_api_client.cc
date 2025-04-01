@@ -114,7 +114,8 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::GetSuggestedAndDedupeTopicsForFocusTabs,
             "suggestAndDedupeFocusTopics"},
            {ConversationEventType::GetFocusTabsForTopic, "classifyTabs"},
-           {ConversationEventType::UploadImage, "uploadImage"}});
+           {ConversationEventType::UploadImage, "uploadImage"},
+           {ConversationEventType::PageScreenshot, "pageScreenshot"}});
 
   base::Value::List events;
   for (const auto& event : conversation) {

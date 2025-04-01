@@ -5,6 +5,7 @@
 
 #include "brave/browser/ai_chat/upload_file_helper.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/barrier_callback.h"
@@ -14,6 +15,7 @@
 #include "base/no_destructor.h"
 #include "base/sequence_checker.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/ai_chat/content/browser/full_screenshotter.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
@@ -130,21 +132,30 @@ void ProcessImageData(
 
 }  // namespace
 
-UploadFileHelper::UploadFileHelper(content::WebContents* web_contents,
+UploadFileHelper::UploadFileHelper(content::WebContents* owner_web_contents,
+                                   content::WebContents* web_contents,
                                    Profile* profile)
-    : web_contents_(web_contents), profile_(profile) {
+    : owner_web_contents_(owner_web_contents),
+      web_contents_(web_contents),
+      profile_(profile) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
 
 UploadFileHelper::~UploadFileHelper() = default;
 
 void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
-#if BUILDFLAG(IS_ANDROID)
-                                   bool use_media_capture,
-#endif
+                                   mojom::UploadImageOptionsPtr options,
                                    UploadImageCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   upload_image_callback_ = std::move(callback);
+
+  if (options && options->use_screenshots) {
+    full_screenshotter_ = std::make_unique<FullScreenshotter>();
+    full_screenshotter_->CaptureScreenshots(
+        web_contents_, base::BindOnce(&UploadFileHelper::OnScreenshotsCaptured,
+                                      weak_ptr_factory_.GetWeakPtr()));
+    return;
+  }
 
   select_file_dialog_ = ui::SelectFileDialog::Create(this, std::move(policy));
   ui::SelectFileDialog::FileTypeInfo info;
@@ -156,13 +167,15 @@ void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
   // to any subsequent SelectFile() calls.
   select_file_dialog_->SetAcceptTypes(
       {u"image/png", u"image/jpeg", u"image/jpg", u"image/webp"});
-  select_file_dialog_->SetUseMediaCapture(use_media_capture);
+  if (options && options->use_media_capture) {
+    select_file_dialog_->SetUseMediaCapture(use_media_capture);
+  }
 #endif
   select_file_dialog_->SelectFile(
       ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE, std::u16string(),
       profile_->last_selected_directory(), &info, 0,
-      base::FilePath::StringType(), web_contents_->GetTopLevelNativeWindow(),
-      nullptr);
+      base::FilePath::StringType(),
+      owner_web_contents_->GetTopLevelNativeWindow(), nullptr);
 }
 
 void UploadFileHelper::FileSelected(const ui::SelectedFileInfo& file,
@@ -292,6 +305,24 @@ void UploadFileHelper::OnImageEncoded(
   images.push_back(
       mojom::UploadedImage::New(std::move(filename), output->size(), *output));
   std::move(upload_image_callback_).Run(std::make_optional(std::move(images)));
+}
+
+void UploadFileHelper::OnScreenshotsCaptured(
+    base::expected<std::vector<std::vector<uint8_t>>, std::string> result) {
+  if (result.has_value()) {
+    std::vector<mojom::UploadedImagePtr> images;
+    size_t screenshot_index = 0;
+    for (auto& screenshot : result.value()) {
+      size_t screenshot_size = screenshot.size();
+      images.push_back(mojom::UploadedImage::New(
+          base::StringPrintf("fullscreenshot_%i.png", screenshot_index++),
+          screenshot_size, std::move(screenshot)));
+    }
+    std::move(upload_image_callback_).Run(std::move(images));
+  } else {
+    VLOG(1) << result.error();
+    std::move(upload_image_callback_).Run(std::nullopt);
+  }
 }
 
 }  // namespace ai_chat

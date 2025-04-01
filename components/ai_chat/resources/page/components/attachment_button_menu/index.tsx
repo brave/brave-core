@@ -41,7 +41,9 @@ export default function AttachmentButtonMenu(props: Props) {
             <Icon name='attachment' />
           </Button>
         </div>
-        <leo-menu-item onClick={() => props.uploadImage(false)}>
+        <leo-menu-item onClick={() => props.uploadImage({
+          useMediaCapture: false, useScreenshots: false
+        })}>
           <div className={styles.buttonContent}>
             <Icon
               className={styles.buttonIcon}
@@ -50,8 +52,21 @@ export default function AttachmentButtonMenu(props: Props) {
             {getLocale('uploadFileButtonLabel')}
           </div>
         </leo-menu-item>
+       <leo-menu-item onClick={() => props.uploadImage({
+         useMediaCapture: false, useScreenshots: true
+       })}>
+          <div className={styles.buttonContent}>
+            <Icon
+              className={styles.buttonIcon}
+              name='screenshot'
+            />
+            {getLocale('screenshotButtonLabel')}
+          </div>
+        </leo-menu-item>
         {props.isMobile &&
-          <leo-menu-item onClick={() => props.uploadImage(true)}>
+          <leo-menu-item onClick={() => props.uploadImage({
+             useMediaCapture: true, useScreenshots: false
+           })}>
             <div className={styles.buttonContent}>
               <Icon
                 className={styles.buttonIcon}

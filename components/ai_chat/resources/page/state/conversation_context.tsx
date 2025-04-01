@@ -69,7 +69,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
 
   showAttachments: boolean
   setShowAttachments: (show: boolean) => void
-  uploadImage: (useMediaCapture: boolean) => void
+  uploadImage: (options: Mojom.UploadImageOptions) => void
   removeImage: (index: number) => void
   setGeneratedUrlToBeOpened: (url?: Url) => void
   setIgnoreExternalLinkWarning: () => void
@@ -116,7 +116,7 @@ const defaultContext: ConversationContext = {
   setIsToolsMenuOpen: () => { },
   showAttachments: false,
   setShowAttachments: () => { },
-  uploadImage: (useMediaCapture: boolean) => { },
+  uploadImage: (options: Mojom.UploadImageOptions) => { },
   removeImage: () => { },
   setGeneratedUrlToBeOpened: () => { },
   setIgnoreExternalLinkWarning: () => { },
@@ -516,8 +516,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.uiHandler?.handleVoiceRecognition(context.conversationUuid)
   }
 
-  const uploadImage = (useMediaCapture: boolean) => {
-    aiChatContext.uiHandler?.uploadImage(useMediaCapture)
+  const uploadImage = (options: Mojom.UploadImageOptions) => {
+    aiChatContext.uiHandler?.uploadImage(options)
     .then(({uploadedImages}) => {
       if (uploadedImages) {
         const totalUploadedImages = context.conversationHistory.reduce(

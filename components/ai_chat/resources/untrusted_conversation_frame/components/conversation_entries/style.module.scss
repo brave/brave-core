@@ -78,3 +78,9 @@
 .divToKeepGap {
   min-width: 16px;
 }
+
+.uploadedImages {
+  max-height: 300px;
+  overflow-y: auto;
+  gap: var(--leo-spacing-m);
+}
