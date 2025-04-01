@@ -408,7 +408,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 
 static bool CustomLogHandler(int severity,
-                             const char* file,
+                             std::string_view file,
                              int line,
                              size_t message_start,
                              const std::string& str) {
@@ -416,7 +416,7 @@ static bool CustomLogHandler(int severity,
     return false;
   }
   if (severity > logging::LOGGING_VERBOSE ||
-      severity <= logging::GetVlogLevelHelper(file, strlen(file))) {
+      severity <= logging::GetVlogLevelHelper(file)) {
     return _logHandler(severity, base::SysUTF8ToNSString(file), line,
                        message_start, base::SysUTF8ToNSString(str));
   }
