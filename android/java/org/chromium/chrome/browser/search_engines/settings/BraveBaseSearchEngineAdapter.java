@@ -11,8 +11,6 @@ import android.widget.BaseAdapter;
 
 import org.chromium.components.search_engines.TemplateUrl;
 
-import org.chromium.base.Log;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
