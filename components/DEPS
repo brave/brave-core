@@ -39,7 +39,6 @@ specific_include_rules = {
     "+chrome",
   ],
   "webcompat_exceptions_unittest\.cc": [
-    "+brave/browser",
     "+chrome",
     "+content",
   ],
