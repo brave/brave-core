@@ -151,6 +151,9 @@ browser/net/brave_network_audit_allowed_lists.h @brave/sec-team
 browser/net/brave_network_audit_rewards_browsertest.cc @brave/sec-team
 browser/net/brave_network_audit_search_ad_browsertest.cc @brave/sec-team
 
+# Canary
+tools/cr/ @brave/chromium-rebase-team
+
 # iOS
 /ios/ @brave/ios
 build/ios/ @brave/ios
