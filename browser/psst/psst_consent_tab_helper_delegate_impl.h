@@ -22,8 +22,7 @@ class PsstConsentTabHelperDelegateImpl : public psst::PsstTabHelper::Delegate {
                              base::Value::List requests,
                              ConsentCallback yes_cb,
                              ConsentCallback no_cb,
-                             base::OnceClosure never_ask_me_callback,
-                             ShareCallback share_cb) override;
+                             base::OnceClosure never_ask_me_callback) override;
   void SetProgressValue(content::WebContents* contents,
                         const double value) override;
   void SetRequestDone(content::WebContents* contents,
@@ -31,7 +30,8 @@ class PsstConsentTabHelperDelegateImpl : public psst::PsstTabHelper::Delegate {
                       const bool is_error) override;
   void SetCompletedView(content::WebContents* contents,
                         const std::vector<std::string>& applied_checks,
-                        const std::vector<std::string>& errors) override;
+                        const std::vector<std::string>& errors,
+                        ShareCallback share_cb) override;
   void Close(content::WebContents* contents) override;
 };
 

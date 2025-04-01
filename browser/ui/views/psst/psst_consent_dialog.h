@@ -38,8 +38,7 @@ class PsstConsentDialog : public views::DialogDelegateView {
                     base::Value::List requests,
                     ConsentDialogCallback consent_callback,
                     base::OnceClosure cancel_callback,
-                    base::OnceClosure never_ask_me_callback,
-                    ShareCallback share_cb);
+                    base::OnceClosure never_ask_me_callback);
   ~PsstConsentDialog() override;
 
   // views::DialogDelegateView:
@@ -52,7 +51,8 @@ class PsstConsentDialog : public views::DialogDelegateView {
   void SetRequestDone(const std::string& url, const bool is_error);
 
   void SetCompletedView(const std::vector<std::string>& applied_checks,
-                        const std::vector<std::string>& errors);
+                        const std::vector<std::string>& errors,
+                        ShareCallback share_cb);
 
   void OnConsentClicked();
 

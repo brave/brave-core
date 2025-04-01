@@ -18,7 +18,9 @@ component("core") {
     "psst_rule_registry.cc",
     "psst_rule_registry.h",
     "rule_data_reader.cc",
-    "rule_data_reader.h"
+    "rule_data_reader.h",
+    "psst_opeartion_context.cc",
+    "psst_opeartion_context.h"
   ]
 
   deps = [

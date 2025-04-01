@@ -38,8 +38,7 @@ void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
     base::Value::List requests,
     ConsentCallback yes_cb,
     ConsentCallback no_cb,
-    base::OnceClosure never_ask_me_callback,
-    ShareCallback share_cb) {
+    base::OnceClosure never_ask_me_callback) {
   PsstConsentDialogTracker::CreateForWebContents(contents);
   auto* dialog_tracker = PsstConsentDialogTracker::FromWebContents(contents);
   if (!dialog_tracker) {
@@ -52,7 +51,7 @@ void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
           base::BindOnce(&OnConsentCallback, std::move(yes_cb)),
           base::BindOnce(&OnConsentCallback, std::move(no_cb),
                          std::vector<std::string>{}),
-          std::move(never_ask_me_callback), std::move(share_cb)),
+          std::move(never_ask_me_callback)),
       contents);
   dialog_tracker->SetActiveDialog(new_dialog);
 
@@ -84,13 +83,14 @@ void PsstConsentTabHelperDelegateImpl::SetRequestDone(
 void PsstConsentTabHelperDelegateImpl::SetCompletedView(
     content::WebContents* contents,
     const std::vector<std::string>& applied_checks,
-    const std::vector<std::string>& errors) {
+    const std::vector<std::string>& errors,
+    ShareCallback share_cb) {
   auto* delegate = GetDelegate(contents);
   if (!delegate) {
     return;
   }
 
-  delegate->SetCompletedView(applied_checks, errors);
+  delegate->SetCompletedView(applied_checks, errors, std::move(share_cb));
 }
 
 void PsstConsentTabHelperDelegateImpl::Close(content::WebContents* contents) {

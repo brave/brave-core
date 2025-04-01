@@ -50,8 +50,7 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
                                      base::Value::List requests,
                                      ConsentDialogCallback consent_callback,
                                      base::OnceClosure cancel_callback,
-                                     base::OnceClosure never_ask_me_callback,
-                                     ShareCallback share_cb)
+                                     base::OnceClosure never_ask_me_callback)
     : consent_callback_(std::move(consent_callback)) {
   set_margins(gfx::Insets(20));
   SetModalType(ui::mojom::ModalType::kChild);
@@ -277,10 +276,6 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
                       IDS_PSST_COMPLETE_CONSENT_DIALOG_SHARE))
                   .CopyAddressTo(&share_button_)
                   .SetStyle(ui::ButtonStyle::kText)
-                  .SetCallback(base::BindOnce(&PsstConsentDialog::OnCloseWithReasonCallBack,
-                                              weak_factory_.GetWeakPtr(), 
-                                              views::Widget::ClosedReason::kCancelButtonClicked,
-                                              std::move(share_cb)))
                   .SetProperty(views::kMarginsKey, gfx::Insets().set_left(16))
                   .SetHorizontalAlignment(
                       gfx::HorizontalAlignment::ALIGN_CENTER))
@@ -408,7 +403,8 @@ void PsstConsentDialog::OnConsentClicked() {
 
 void PsstConsentDialog::SetCompletedView(
     const std::vector<std::string>& applied_checks,
-    const std::vector<std::string>& errors) {
+    const std::vector<std::string>& errors,
+    ShareCallback share_cb) {
   if (!box_status_view_ || !box_complete_view_) {
     return;
   }
@@ -431,6 +427,10 @@ void PsstConsentDialog::SetCompletedView(
   }
 
   share_button_->SetVisible(show_share_button);
+  share_button_->SetCallback(base::BindOnce(
+      &PsstConsentDialog::OnCloseWithReasonCallBack, weak_factory_.GetWeakPtr(),
+      views::Widget::ClosedReason::kCancelButtonClicked, std::move(share_cb)));
+
   report_button_->SetVisible(!show_share_button);
 
   box_status_view_->SetVisible(false);

@@ -1446,6 +1446,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_PSST_CONSENT_DIALOG_TASK_STATUS_FAILED" desc="Failed task's status text for a PSST dialog">
         Failed
       </message>
+      <message name="IDS_PSST_CONSENT_DIALOG_SHARE_MESSAGE_PRE_POPULATED_TEXT" desc="Prepopulated text which Brave proposes to share on social network">
+        Brave browser automatically opted me out of data sharing and other privacy-harmful settings on <ph name="COUNT">$1</ph>!
+      </message>
 
       <!-- Tab Search -->
       <message name="IDS_BRAVE_ORGANIZE_TAB_TITLE" desc="Title for the tab organizer page">

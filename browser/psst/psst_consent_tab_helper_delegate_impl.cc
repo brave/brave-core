@@ -37,7 +37,8 @@ void PsstConsentTabHelperDelegateImpl::SetRequestDone(
 void PsstConsentTabHelperDelegateImpl::SetCompletedView(
     content::WebContents* contents,
     const std::vector<std::string>& applied_checks,
-    const std::vector<std::string>& errors) {}
+    const std::vector<std::string>& errors,
+    ShareCallback share_cb) {}
 
 void PsstConsentTabHelperDelegateImpl::Close(content::WebContents* contents) {
   NOTIMPLEMENTED();

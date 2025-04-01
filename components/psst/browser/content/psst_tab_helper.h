@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
+#include "brave/components/psst/browser/core/psst_opeartion_context.h"
 #include "brave/components/psst/common/psst_prefs.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "build/build_config.h"
@@ -25,6 +26,7 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "url/gurl.h"
 
 namespace psst {
 
@@ -47,8 +49,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
                                        const base::Value::List requests,
                                        ConsentCallback yes_cb,
                                        ConsentCallback no_cb,
-                                       base::OnceClosure never_ask_me_callback,
-                                       ShareCallback share_cb) = 0;
+                                       base::OnceClosure never_ask_me_callback) = 0;
     virtual void SetProgressValue(content::WebContents* contents,
                                   const double value) = 0;
     virtual void SetRequestDone(content::WebContents* contents,
@@ -57,14 +58,16 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
     virtual void SetCompletedView(
         content::WebContents* contents,
         const std::vector<std::string>& applied_checks,
-        const std::vector<std::string>& errors) = 0;
+        const std::vector<std::string>& errors,
+        ShareCallback share_cb) = 0;
     virtual void Close(content::WebContents* contents) = 0;
   };
 
-  struct PsstOperationContext {
-    std::string user_id;
-    std::string rule_name;
-  };
+//   struct PsstOperationContext {
+//     std::string user_id;
+//     std::string share_experience_link;
+//     std::string rule_name;
+//   };
 
   static std::unique_ptr<PsstTabHelper> MaybeCreateForWebContents(content::WebContents* contents,
     std::unique_ptr<Delegate> delegate);
@@ -122,7 +125,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
       content::NavigationHandle* navigation_handle) override;
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
 
-  std::optional<PsstOperationContext> psst_operation_context_;
+  std::unique_ptr<PsstOperationContext> psst_operation_context_;
 
   std::unique_ptr<Delegate> delegate_;
   const int32_t world_id_;
