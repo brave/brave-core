@@ -26,8 +26,8 @@ import org.chromium.components.search_engines.TemplateUrlService;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Utility class for managing quick search engines functionality. Provides methods for saving and
@@ -304,11 +304,11 @@ public class QuickSearchEnginesUtil {
     private static void addSearchEngineToTop(
             Map<String, QuickSearchEnginesModel> searchEnginesMap,
             QuickSearchEnginesModel quickSearchEnginesModel) {
-                Map<String, QuickSearchEnginesModel> orderedMap = new LinkedHashMap<>();
-            orderedMap.put(quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
-            orderedMap.putAll(searchEnginesMap);
-            searchEnginesMap.clear();
-            searchEnginesMap.putAll(orderedMap);
+        Map<String, QuickSearchEnginesModel> orderedMap = new LinkedHashMap<>();
+        orderedMap.put(quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
+        orderedMap.putAll(searchEnginesMap);
+        searchEnginesMap.clear();
+        searchEnginesMap.putAll(orderedMap);
     }
 
     /**
