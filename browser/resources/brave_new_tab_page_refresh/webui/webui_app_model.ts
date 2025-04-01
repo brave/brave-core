@@ -10,6 +10,7 @@ import { initializeBackgrounds } from './webui_backgrounds'
 import { initializeSearch } from './webui_search'
 import { initializeTopSites } from './webui_top_sites'
 import { initializeRewards } from './webui_rewards'
+import { initializeVPN } from './webui_vpn'
 
 export function createAppModel(): AppModel {
   const store = createStore(defaultState())
@@ -22,6 +23,7 @@ export function createAppModel(): AppModel {
     ...initializeBackgrounds(store),
     ...initializeSearch(store),
     ...initializeTopSites(store),
-    ...initializeRewards(store)
+    ...initializeRewards(store),
+    ...initializeVPN(store)
   }
 }

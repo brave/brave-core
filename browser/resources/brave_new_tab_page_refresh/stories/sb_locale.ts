@@ -56,6 +56,7 @@ const localeStrings: { [K in StringKey]: string }  = {
   showStatsLabel: 'Brave Stats',
   showTalkWidgetLabel: 'Brave Talk',
   showTopSitesLabel: 'Show top sites',
+  showVpnWidgetLabel: 'Brave VPN',
   solidBackgroundLabel: 'Solid colors',
   solidBackgroundTitle: 'Solid colors',
   statsAdsBlockedText: 'Trackers & ads blocked',
@@ -79,6 +80,19 @@ const localeStrings: { [K in StringKey]: string }  = {
   topSitesURLLabel: 'URL',
   undoButtonLabel: 'Undo',
   uploadBackgroundLabel: 'Upload from device',
+  vpnChangeRegionLabel: 'Change',
+  vpnFeatureText1: 'Extra privacy & security online',
+  vpnFeatureText2: 'Hide your IP & change your location',
+  vpnFeatureText3: 'Protect every app on your device',
+  vpnRestorePurchaseLabel: 'Already purchased?',
+  vpnStartTrialLabel: 'Start free trial',
+  vpnOptimalText: 'Optimal',
+  vpnPoweredByText: 'Powered by',
+  vpnStatusConnected: 'Connected',
+  vpnStatusConnecting: 'Connecting',
+  vpnStatusDisconnected: 'Disconnected',
+  vpnStatusDisconnecting: 'Disconnecting',
+  vpnWidgetTitle: 'BRAVE VPN',
   widgetSettingsTitle: 'Widgets'
 }
 
