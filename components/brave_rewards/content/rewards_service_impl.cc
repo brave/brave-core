@@ -1426,8 +1426,7 @@ void RewardsServiceImpl::Log(const std::string& file,
                              const std::string& message) {
   WriteDiagnosticLog(file, line, verbose_level, message);
 
-  const int vlog_level =
-      ::logging::GetVlogLevelHelper(file.c_str(), strlen(file.c_str()));
+  const int vlog_level = ::logging::GetVlogLevelHelper(file);
   if (verbose_level <= vlog_level) {
     ::logging::LogMessage(file.c_str(), line, -verbose_level).stream()
         << message;

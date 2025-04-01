@@ -756,8 +756,7 @@ NSNotificationName const BraveRewardsNotificationAdded =
             line:(int32_t)line
     verboseLevel:(int32_t)verboseLevel
          message:(const std::string&)message {
-  const int vlog_level =
-      logging::GetVlogLevelHelper(file.c_str(), file.length());
+  const int vlog_level = logging::GetVlogLevelHelper(file);
   if (verboseLevel <= vlog_level) {
     logging::LogMessage(file.c_str(), line, -verboseLevel).stream() << message;
   }
