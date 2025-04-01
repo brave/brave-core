@@ -47,7 +47,7 @@ def parse_args(_self, original_method, *args, **kwargs):
 
     opts.sources = sources
 
-    if copied_sources:
-        atexit.register(remove_copied_sources, copied_sources)
+    # if copied_sources:
+    #     atexit.register(remove_copied_sources, copied_sources)
 
     return opts
