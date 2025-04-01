@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
@@ -40,8 +39,8 @@ GURL FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
           ? GetAnonymousSearchUrlHost()
           : GetAnonymousUrlHost();
 
-  const std::string spec = base::StrCat(
-      {url_host, BuildFetchPaymentTokenUrlPath(confirmation_.transaction_id)});
+  const std::string spec =
+      url_host + BuildFetchPaymentTokenUrlPath(confirmation_.transaction_id);
 
   return GURL(spec);
 }

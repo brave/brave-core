@@ -31,9 +31,7 @@ std::string BuildDigestHeaderValue(const std::string& body) {
   CHECK(!body.empty());
 
   const std::vector<uint8_t> body_sha256 = crypto::Sha256(body);
-  const std::string body_sha256_base64 = base::Base64Encode(body_sha256);
-
-  return base::StrCat({"SHA-256=", body_sha256_base64});
+  return "SHA-256=" + base::Base64Encode(body_sha256);
 }
 
 }  // namespace
@@ -64,25 +62,18 @@ mojom::UrlRequestInfoPtr RequestSignedTokensUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 GURL RequestSignedTokensUrlRequestBuilder::BuildUrl() const {
-  const std::string spec =
-      base::StrCat({GetNonAnonymousUrlHost(),
-                    BuildRequestSignedTokensUrlPath(wallet_.payment_id)});
+  const std::string spec = GetNonAnonymousUrlHost() +
+                           BuildRequestSignedTokensUrlPath(wallet_.payment_id);
   return GURL(spec);
 }
 
 std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
     const std::string& body) const {
   std::vector<std::string> headers;
-
-  headers.push_back(base::StrCat({"digest: ", BuildDigestHeaderValue(body)}));
-
-  headers.push_back(
-      base::StrCat({"signature: ", BuildSignatureHeaderValue(body)}));
-
+  headers.push_back("digest: " + BuildDigestHeaderValue(body));
+  headers.push_back("signature: " + BuildSignatureHeaderValue(body));
   headers.emplace_back("content-type: application/json");
-
   headers.emplace_back("accept: application/json");
-
   return headers;
 }
 

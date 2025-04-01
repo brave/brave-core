@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/base_switches.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature.h"
@@ -69,11 +68,10 @@ struct ParamInfo final {
       base::JoinString({"Foo", kUserActivityFeature.name, "Bar"}, ",")},
      true},
     {{switches::kEnableFeatures,
-      base::StrCat({kAntiTargetingFeature.name, ":param/value"})},
+      std::string(kAntiTargetingFeature.name) + ":param/value"},
      true},
-    {{switches::kEnableFeatures,
-      base::StrCat({kTextClassificationFeature.name,
-                    "<TrialName.GroupName:param/value"})},
+    {{switches::kEnableFeatures, std::string(kTextClassificationFeature.name) +
+                                     "<TrialName.GroupName:param/value"},
      true},
     {{switches::kEnableFeatures, kAccountStatementFeature.name}, true},
     {{switches::kEnableFeatures, kAccountTokensFeature.name}, true},

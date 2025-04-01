@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_util.h"
@@ -55,9 +54,9 @@ GURL CreateRewardConfirmationUrlRequestBuilder::BuildUrl() const {
           : GetAnonymousUrlHost();
 
   const std::string spec =
-      base::StrCat({url_host, BuildCreateRewardConfirmationUrlPath(
-                                  confirmation_.transaction_id,
-                                  confirmation_.reward->credential_base64url)});
+      url_host + BuildCreateRewardConfirmationUrlPath(
+                     confirmation_.transaction_id,
+                     confirmation_.reward->credential_base64url);
 
   return GURL(spec);
 }

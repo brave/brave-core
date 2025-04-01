@@ -106,7 +106,7 @@ std::string TestParamToString(
 
   std::string when;
   if (!flags.empty()) {
-    when = base::StrCat({"When", base::JoinString(flags, "And")});
+    when = "When" + base::JoinString(flags, "And");
   }
 
   // With

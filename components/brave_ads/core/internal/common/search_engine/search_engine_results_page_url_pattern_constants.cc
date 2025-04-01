@@ -6,38 +6,37 @@
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_url_pattern_constants.h"
 
 #include "base/no_destructor.h"
-#include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_url_pattern_constants.h"
 
 namespace brave_ads {
 
 const std::string& GetAmazonResultsPageUrlPattern() {
   static const base::NoDestructor<std::string> kUrlPattern(
-      base::StrCat({GetAmazonUrlPattern(), "s"}));
+      GetAmazonUrlPattern() + "s");
   return *kUrlPattern;
 }
 
 const std::string& GetGoogleResultsPageUrlPattern() {
   static const base::NoDestructor<std::string> kUrlPattern(
-      base::StrCat({GetGoogleUrlPattern(), "search"}));
+      GetGoogleUrlPattern() + "search");
   return *kUrlPattern;
 }
 
 const std::string& GetMojeekResultsPageUrlPattern() {
   static const base::NoDestructor<std::string> kUrlPattern(
-      base::StrCat({GetMojeekUrlPattern(), "search"}));
+      GetMojeekUrlPattern() + "search");
   return *kUrlPattern;
 }
 
 const std::string& GetWikipediaResultsPageUrlPattern() {
   static const base::NoDestructor<std::string> kUrlPattern(
-      base::StrCat({GetWikipediaUrlPattern(), "wiki/(.*)"}));
+      GetWikipediaUrlPattern() + "wiki/(.*)");
   return *kUrlPattern;
 }
 
 const std::string& GetYahooResultsPageUrlPattern() {
   static const base::NoDestructor<std::string> kUrlPattern(
-      base::StrCat({GetYahooUrlPattern(), "search(.*)"}));
+      GetYahooUrlPattern() + "search(.*)");
   return *kUrlPattern;
 }
 
