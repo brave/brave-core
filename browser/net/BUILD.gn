@@ -5,20 +5,7 @@
 
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
-import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
-
-declare_args() {
-  brave_google_api_key = ""
-  brave_google_api_endpoint = ""
-}
-
-buildflag_header("geolocation") {
-  header = "brave_geolocation_buildflags.h"
-
-  flags =
-      [ "GOOGLEAPIS_URL=\"$brave_google_api_endpoint$brave_google_api_key\"" ]
-}
 
 source_set("browser_tests") {
   testonly = true
@@ -38,6 +25,7 @@ source_set("browser_tests") {
     "//brave/components/brave_shields/core/common",
     "//brave/components/query_filter",
     "//brave/components/tor/buildflags",
+    "//brave/net/geolocation",
     "//brave/net/static_redirect_helper",
     "//chrome/browser",
     "//chrome/browser:browser_process",
@@ -84,7 +72,6 @@ source_set("unit_tests") {
   ]
 
   deps = [
-    "//brave/browser/net:geolocation",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/browser/service:test_support",
     "//brave/components/brave_component_updater/browser",
@@ -93,6 +80,7 @@ source_set("unit_tests") {
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/content/test:test_support",
     "//brave/components/l10n/common:test_support",
+    "//brave/net/geolocation",
     "//brave/net/static_redirect_helper",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",

@@ -9,8 +9,8 @@
 #include <string>
 
 #include "base/strings/string_util.h"
-#include "brave/browser/net/brave_geolocation_buildflags.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/net/geolocation/brave_geolocation_buildflags.h"
 #include "brave/net/static_redirect_helper/static_redirect_helper.h"
 #include "components/component_updater/component_updater_url_constants.h"
 #include "net/base/net_errors.h"

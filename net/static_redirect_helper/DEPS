@@ -1,6 +1,6 @@
 include_rules = [
-  "+brave/browser/net",
   "+brave/browser/safebrowsing",
   "+brave/components/constants",
+  "+brave/net/geolocation",
   "+extensions/common",
 ]

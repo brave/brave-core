@@ -11,9 +11,9 @@
 #include <string_view>
 
 #include "base/no_destructor.h"
-#include "brave/browser/net/brave_geolocation_buildflags.h"
 #include "brave/browser/safebrowsing/buildflags.h"
 #include "brave/components/constants/network_constants.h"
+#include "brave/net/geolocation/brave_geolocation_buildflags.h"
 #include "extensions/common/url_pattern.h"
 
 namespace brave {
