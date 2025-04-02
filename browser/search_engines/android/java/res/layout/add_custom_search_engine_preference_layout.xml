@@ -87,7 +87,7 @@
             android:text="@string/add_search_engine"
             android:textAllCaps="false"
             android:padding="12dp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/brave_button_text_color"
             style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>

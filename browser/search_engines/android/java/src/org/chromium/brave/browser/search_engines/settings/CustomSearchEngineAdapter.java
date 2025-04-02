@@ -13,28 +13,28 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.browser.search_engines.R;
 
 public class CustomSearchEngineAdapter extends ListAdapter<String, CustomSearchEngineViewHolder> {
     private CustomSearchEnginesCallback mCustomSearchEnginesCallback;
 
     protected CustomSearchEngineAdapter() {
-        super(
-                new DiffUtil.ItemCallback<String>() {
-                    @Override
-                    public boolean areItemsTheSame(
-                            @NonNull String oldItem, @NonNull String newItem) {
-                        return oldItem.equals(newItem);
-                    }
-
-                    @Override
-                    public boolean areContentsTheSame(
-                            @NonNull String oldItem, @NonNull String newItem) {
-                        return oldItem.equals(newItem);
-                    }
-                });
+        super(DIFF_CALLBACK);
     }
+
+    private static final DiffUtil.ItemCallback<String> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<String>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull String oldItem, @NonNull String newItem) {
+                    return oldItem.equals(newItem);
+                }
+
+                @Override
+                public boolean areContentsTheSame(
+                        @NonNull String oldItem, @NonNull String newItem) {
+                    return oldItem.equals(newItem);
+                }
+            };
 
     public void setCustomSearchEnginesCallback(
             CustomSearchEnginesCallback customSearchEnginesCallback) {
@@ -45,24 +45,20 @@ public class CustomSearchEngineAdapter extends ListAdapter<String, CustomSearchE
     public void onBindViewHolder(
             @NonNull CustomSearchEngineViewHolder customSearchEngineViewHolder, int position) {
         final String searchEngineKeyword = getItem(position);
-        Log.e("brave_search", "CustomSearchEngineViewHolder : " + searchEngineKeyword);
-        customSearchEngineViewHolder.mSearchEngineText.setText(searchEngineKeyword);
-        customSearchEngineViewHolder.mView.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mCustomSearchEnginesCallback.onSearchEngineClick(searchEngineKeyword);
-                    }
-                });
-        customSearchEngineViewHolder.mDeleteIcon.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mCustomSearchEnginesCallback.removeSearchEngine(searchEngineKeyword);
-                    }
-                });
+
+        customSearchEngineViewHolder.getSearchEngineText().setText(searchEngineKeyword);
+
+        customSearchEngineViewHolder
+                .getView()
+                .setOnClickListener(
+                        v -> mCustomSearchEnginesCallback.onSearchEngineClick(searchEngineKeyword));
+        customSearchEngineViewHolder
+                .getDeleteIcon()
+                .setOnClickListener(
+                        v -> mCustomSearchEnginesCallback.removeSearchEngine(searchEngineKeyword));
+
         mCustomSearchEnginesCallback.loadSearchEngineLogo(
-                customSearchEngineViewHolder.mSearchEngineLogo, searchEngineKeyword);
+                customSearchEngineViewHolder.getSearchEngineLogo(), searchEngineKeyword);
     }
 
     @NonNull

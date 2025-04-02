@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.util.Patterns;
+import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -24,76 +27,107 @@ import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.net.NetworkTrafficAnnotationTag;
 import org.chromium.url.GURL;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomSearchEnginesUtil {
 
+    private static final String TAG = "CustomSearchEnginesUtil";
+
     private static final String CUSTOM_SEARCH_ENGINES = "custom_search_engines";
 
+    public static String KEYWORD = "keyword";
+
     private static void saveCustomSearchEngines(List<String> customSearchEnginesList) {
+        if (customSearchEnginesList == null) {
+            return;
+        }
+
         try {
-            JSONArray customSearchEnginesJsonArray = new JSONArray();
-            for (String customSearchEngineKeyword : customSearchEnginesList) {
-                customSearchEnginesJsonArray.put(customSearchEngineKeyword);
-            }
+            JSONArray jsonArray = new JSONArray(customSearchEnginesList);
             ChromeSharedPreferences.getInstance()
-                    .writeString(CUSTOM_SEARCH_ENGINES, customSearchEnginesJsonArray.toString());
+                    .writeString(CUSTOM_SEARCH_ENGINES, jsonArray.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error saving search engines", e);
         }
     }
 
     public static void addCustomSearchEngine(String searchEngineKeyword) {
         List<String> customSearchEnginesList = getCustomSearchEngines();
-        if (customSearchEnginesList.size() == 0) {
-            customSearchEnginesList = new ArrayList();
+        if (customSearchEnginesList.isEmpty()) {
+            customSearchEnginesList = new ArrayList<>();
         }
-        customSearchEnginesList.add(searchEngineKeyword);
-        saveCustomSearchEngines(customSearchEnginesList);
+        if (!customSearchEnginesList.contains(searchEngineKeyword)) {
+            customSearchEnginesList.add(searchEngineKeyword);
+            saveCustomSearchEngines(customSearchEnginesList);
+        }
     }
 
     public static List<String> getCustomSearchEngines() {
-        List<String> customSearchEnginesList = new ArrayList();
-        String customSearchEngines =
+        List<String> customSearchEnginesList = new ArrayList<>();
+        String savedSearchEngines =
                 ChromeSharedPreferences.getInstance().readString(CUSTOM_SEARCH_ENGINES, null);
-        if (customSearchEngines == null) {
+
+        if (savedSearchEngines == null) {
             return customSearchEnginesList;
         }
-        customSearchEngines = "{\"customSearchEngines\":" + customSearchEngines + "}";
+
         try {
-            JSONObject result = new JSONObject(customSearchEngines);
-            JSONArray customSearchEnginesJsonArray = result.getJSONArray("customSearchEngines");
-            for (int i = 0; i < customSearchEnginesJsonArray.length(); i++) {
-                String customSearchEngineKeyword = customSearchEnginesJsonArray.getString(i);
-                customSearchEnginesList.add(customSearchEngineKeyword);
+            // Wrap the array in an object to make it valid JSON
+            JSONObject wrapper =
+                    new JSONObject("{\"customSearchEngines\":" + savedSearchEngines + "}");
+            JSONArray searchEnginesArray = wrapper.getJSONArray("customSearchEngines");
+
+            for (int i = 0; i < searchEnginesArray.length(); i++) {
+                customSearchEnginesList.add(searchEnginesArray.getString(i));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return customSearchEnginesList;
     }
 
     public static boolean isCustomSearchEngineAdded(String searchEngineKeyword) {
         List<String> customSearchEnginesList = getCustomSearchEngines();
-        if (customSearchEnginesList.size() > 0
-                && customSearchEnginesList.contains(searchEngineKeyword)) {
-            return true;
-        }
-        return false;
+        return !customSearchEnginesList.isEmpty()
+                && customSearchEnginesList.contains(searchEngineKeyword);
     }
 
     public static void removeCustomSearchEngine(String searchEngineKeyword) {
         List<String> customSearchEnginesList = getCustomSearchEngines();
-        if (customSearchEnginesList.size() > 0
+        if (!customSearchEnginesList.isEmpty()
                 && customSearchEnginesList.contains(searchEngineKeyword)) {
-            Log.e(
-                    "brave_search",
-                    "CustomSearchEnginesUtil.removeCustomSearchEngine : searchEngineKeyword : "
-                            + searchEngineKeyword);
             customSearchEnginesList.remove(searchEngineKeyword);
+            saveCustomSearchEngines(customSearchEnginesList);
         }
-        saveCustomSearchEngines(customSearchEnginesList);
+    }
+
+    public static boolean isSearchQuery(String text) {
+        return text.contains("%s");
+    }
+
+    public static boolean isValidUrl(String url) {
+        try {
+            String encodedUrl = URLEncoder.encode(url, "UTF-8");
+            Log.e(TAG, "encodedUrl : "+encodedUrl);
+            return Patterns.WEB_URL.matcher(encodedUrl).matches();
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "UnsupportedEncodingException : "+e.getMessage());
+            return false;
+        }
+        // try {
+        //     URI uri = new URI(encodedUrl);
+
+        //     Log.e(TAG, "uri.getScheme() : "+uri.getScheme());
+        //     return uri.getScheme() != null
+        //             && (uri.getScheme().equals("http") || uri.getScheme().equals("https"));
+        // } catch (URISyntaxException e) {
+        //     Log.e(TAG, "URISyntaxException : "+e.getMessage());
+        //     return false;
+        // }
     }
 
     public static void loadSearchEngineLogo(

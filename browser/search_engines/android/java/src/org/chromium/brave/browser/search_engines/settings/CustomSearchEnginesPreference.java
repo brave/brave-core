@@ -20,13 +20,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -47,18 +45,15 @@ public class CustomSearchEnginesPreference extends Preference
 
     public CustomSearchEnginesPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Log.e("brave_search", "CustomSearchEnginesPreference");
     }
 
     public void initialize(Profile profile) {
-        Log.e("brave_search", "initialize(Profile profile)");
         mProfile = profile;
     }
 
     @Override
     public void onBindViewHolder(@NonNull PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
-        Log.e("brave_search", "onBindViewHolder");
         mRecyclerView = (RecyclerView) holder.findViewById(R.id.custom_search_engine_list);
 
         if (mRecyclerView != null) {
@@ -73,32 +68,34 @@ public class CustomSearchEnginesPreference extends Preference
 
     public void updateCustomSearchEngines() {
         if (mRecyclerView == null || mCustomSearchEngineAdapter == null) {
-            Log.e("brave_search", "updateCustomSearchEngines 1");
             return;
         }
         List<String> customSearchEngines = CustomSearchEnginesUtil.getCustomSearchEngines();
-        for (String keyword : customSearchEngines) {
-            Log.e("brave_search", "updateCustomSearchEngines : keyword : " + keyword);
-        }
         mCustomSearchEngineAdapter.submitList(customSearchEngines);
     }
 
     @Override
     public void onSearchEngineClick(String searchEngineKeyword) {
-        Log.e("brave_search", "onSearchEngineClick : " + searchEngineKeyword);
-        if (getContext() instanceof FragmentActivity) {
-            Bundle bundle = new Bundle();
-            bundle.putString("keyword", searchEngineKeyword);
-            AddCustomSearchEnginePreferenceFragment addCustomSearchEnginePreferenceFragment =
-                    new AddCustomSearchEnginePreferenceFragment();
-            addCustomSearchEnginePreferenceFragment.setArguments(bundle);
-            FragmentManager fragmentManager =
-                    ((FragmentActivity) getContext()).getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content, addCustomSearchEnginePreferenceFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+        Context context = getContext();
+        if (context == null || !(context instanceof FragmentActivity)) {
+            return;
         }
+
+        FragmentActivity activity = (FragmentActivity) context;
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+        Bundle args = new Bundle();
+        args.putString(CustomSearchEnginesUtil.KEYWORD, searchEngineKeyword);
+
+        AddCustomSearchEnginePreferenceFragment fragment =
+                new AddCustomSearchEnginePreferenceFragment();
+        fragment.setArguments(args);
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.content, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -149,7 +146,6 @@ public class CustomSearchEnginesPreference extends Preference
                 v -> {
                     Runnable templateUrlServiceReady =
                             () -> {
-                                Log.e("brave_search", "removeSearchEngine");
                                 ((BraveTemplateUrlService)
                                                 TemplateUrlServiceFactory.getForProfile(mProfile))
                                         .removeSearchEngine(searchEngineKeyword);

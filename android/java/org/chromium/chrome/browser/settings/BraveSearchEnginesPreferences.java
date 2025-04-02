@@ -12,7 +12,6 @@ import android.view.View;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
-import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave.browser.search_engines.settings.CustomSearchEnginesPreference;
@@ -105,7 +104,6 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
 
         if (customSearchEnginesListPreference != null
                 && customSearchEnginesListPreference instanceof CustomSearchEnginesPreference) {
-            Log.e("brave_search", "updateCustomSearchEngines");
             ((CustomSearchEnginesPreference) customSearchEnginesListPreference)
                     .updateCustomSearchEngines();
         } else if (preferenceCategory != null) {
@@ -199,42 +197,11 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
                     UserPrefs.get(getProfile())
                             .getBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED));
         }
-        // Preference customSearchEnginePreference =
-        // getPreferenceScreen().findPreference(PREF_CUSTOM_SEARCH_ENGINES);
-        // if (customSearchEnginePreference != null) {
-        //     getPreferenceScreen().removePreference(customSearchEnginePreference);
-        // }
-
-        // Preference customSearchEnginePreference2 =
-        // getPreferenceScreen().findPreference(PREF_CUSTOM_SEARCH_ENGINES);
-        // if (customSearchEnginePreference2 != null) {
-        //     getPreferenceScreen().addPreference(customSearchEnginePreference2);
-        // }
-
-        // Preference customPreference = findPreference(PREF_CUSTOM_SEARCH_ENGINES);
-        // if (customPreference
-        //         instanceof
-        //         org.chromium.brave.browser.search_engines.settings.CustomSearchEnginesPreference)
-        // {
-        //     View view = getView();
-        //     if (view != null) {
-        //         RecyclerView recyclerView = view.findViewById(R.id.custom_search_engine_list);
-        //         RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
-        //         if (adapter != null) {
-        //             adapter.notifyDataSetChanged(); // Refresh UI
-        //         }
-        //     }
-        // }
-
-        // CustomSearchEnginesPreference customSearchEnginesPreference =
-        //         (CustomSearchEnginesPreference) findPreference(PREF_CUSTOM_SEARCH_ENGINES);
-        // customSearchEnginesPreference.initialize(getProfile());
 
         Preference customSearchEnginesListPreference =
                 findPreference(PREF_CUSTOM_SEARCH_ENGINE_LIST);
         if (customSearchEnginesListPreference != null
                 && customSearchEnginesListPreference instanceof CustomSearchEnginesPreference) {
-            Log.e("brave_search", "updateCustomSearchEngines");
             ((CustomSearchEnginesPreference) customSearchEnginesListPreference)
                     .updateCustomSearchEngines();
         }

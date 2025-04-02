@@ -14,16 +14,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.chrome.browser.search_engines.R;
 
 public class CustomSearchEngineViewHolder extends RecyclerView.ViewHolder {
-    ImageView mSearchEngineLogo;
-    TextView mSearchEngineText;
-    ImageView mDeleteIcon;
-    View mView;
+    private final ImageView mSearchEngineLogo;
+    private final TextView mSearchEngineText;
+    private final ImageView mDeleteIcon;
+    private final View mView;
 
     CustomSearchEngineViewHolder(View itemView) {
         super(itemView);
         mView = itemView;
-        mSearchEngineLogo = (ImageView) itemView.findViewById(R.id.search_engine_logo);
-        mSearchEngineText = (TextView) itemView.findViewById(R.id.search_engine_text);
-        mDeleteIcon = (ImageView) itemView.findViewById(R.id.search_engine_delete_icon);
+        mSearchEngineLogo = itemView.findViewById(R.id.search_engine_logo);
+        mSearchEngineText = itemView.findViewById(R.id.search_engine_text);
+        mDeleteIcon = itemView.findViewById(R.id.search_engine_delete_icon);
+    }
+
+    public ImageView getSearchEngineLogo() {
+        return mSearchEngineLogo;
+    }
+
+    public TextView getSearchEngineText() {
+        return mSearchEngineText;
+    }
+
+    public ImageView getDeleteIcon() {
+        return mDeleteIcon;
+    }
+
+    public View getView() {
+        return mView;
     }
 }
