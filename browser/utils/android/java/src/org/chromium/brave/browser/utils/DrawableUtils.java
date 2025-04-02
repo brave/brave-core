@@ -26,17 +26,13 @@ public class DrawableUtils {
      * @return A circular BitmapDrawable, or null if the input drawable cannot be loaded
      */
     public static Drawable getCircularDrawable(Context context, int drawableResId, int size) {
-        Drawable sourceDrawable = loadSourceDrawable(context, drawableResId);
+        Drawable sourceDrawable = ContextCompat.getDrawable(context, drawableResId);
         if (sourceDrawable == null) {
             return null;
         }
 
         Bitmap sourceBitmap = drawableToBitmap(sourceDrawable, size, size);
         return createCircularBitmapDrawable(context, sourceBitmap, size);
-    }
-
-    private static Drawable loadSourceDrawable(Context context, int drawableResId) {
-        return ContextCompat.getDrawable(context, drawableResId);
     }
 
     private static BitmapDrawable createCircularBitmapDrawable(

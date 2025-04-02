@@ -6,11 +6,7 @@
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.APP_BROWSER" />
-        </intent-filter>
+        {% include "//brave/android/java/AndroidManifest_activity_alias_actions.xml" %}
 </activity-alias>
 
 <activity-alias
@@ -21,11 +17,7 @@
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.APP_BROWSER" />
-        </intent-filter>
+        {% include "//brave/android/java/AndroidManifest_activity_alias_actions.xml" %}
 </activity-alias>
 
 <activity-alias
@@ -36,11 +28,7 @@
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.APP_BROWSER" />
-        </intent-filter>
+        {% include "//brave/android/java/AndroidManifest_activity_alias_actions.xml" %}
 </activity-alias>
 
 <activity-alias
@@ -51,11 +39,7 @@
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.APP_BROWSER" />
-        </intent-filter>
+        {% include "//brave/android/java/AndroidManifest_activity_alias_actions.xml" %}
 </activity-alias>
 
 <activity-alias
@@ -66,11 +50,7 @@
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.APP_BROWSER" />
-        </intent-filter>
+        {% include "//brave/android/java/AndroidManifest_activity_alias_actions.xml" %}
 </activity-alias>
 
 <activity-alias
@@ -81,11 +61,7 @@
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.APP_BROWSER" />
-        </intent-filter>
+        {% include "//brave/android/java/AndroidManifest_activity_alias_actions.xml" %}
 </activity-alias>
 
 <activity-alias
@@ -96,11 +72,7 @@
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.APP_BROWSER" />
-        </intent-filter>
+        {% include "//brave/android/java/AndroidManifest_activity_alias_actions.xml" %}
 </activity-alias>
 
 <activity-alias
@@ -111,11 +83,7 @@
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.APP_BROWSER" />
-        </intent-filter>
+        {% include "//brave/android/java/AndroidManifest_activity_alias_actions.xml" %}
 </activity-alias>
 
 <activity-alias
@@ -126,11 +94,7 @@
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.APP_BROWSER" />
-        </intent-filter>
+        {% include "//brave/android/java/AndroidManifest_activity_alias_actions.xml" %}
 </activity-alias>
 
 <activity-alias
@@ -141,11 +105,7 @@
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.APP_BROWSER" />
-        </intent-filter>
+        {% include "//brave/android/java/AndroidManifest_activity_alias_actions.xml" %}
 </activity-alias>
 
 <activity-alias
@@ -156,11 +116,7 @@
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.APP_BROWSER" />
-        </intent-filter>
+        {% include "//brave/android/java/AndroidManifest_activity_alias_actions.xml" %}
 </activity-alias>
 
 <activity-alias
@@ -171,9 +127,5 @@
         android:label="@string/app_name"
         android:targetActivity="org.chromium.chrome.browser.ChromeTabbedActivity"
         android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            <category android:name="android.intent.category.APP_BROWSER" />
-        </intent-filter>
+        {% include "//brave/android/java/AndroidManifest_activity_alias_actions.xml" %}
 </activity-alias>
