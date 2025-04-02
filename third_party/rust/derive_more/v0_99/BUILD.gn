@@ -63,7 +63,6 @@ cargo_crate("lib") {
     "//brave/third_party/rust/quote/v1:lib",
     "//brave/third_party/rust/syn/v1:lib",
   ]
-  build_deps = [ "//brave/third_party/rust/rustc_version/v0_4:buildrs_support" ]
   features = [
     "add",
     "add_assign",
