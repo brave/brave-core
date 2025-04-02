@@ -73,17 +73,12 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
         Button addSearchEngineButton =
                 (Button) rootView.findViewById(R.id.add_search_engine_button);
 
-        String searchEngineKeyword = getArguments().getString("keyword");
-        Log.e("brave_search", "AddCustomSearchEnginePreferenceFragment 1 : " + searchEngineKeyword);
+        String searchEngineKeyword = getArguments().getString(CustomSearchEnginesUtil.KEYWORD);
         if (searchEngineKeyword != null) {
             Runnable templateUrlServiceReady =
                     () -> {
                         TemplateUrl templateUrl = getTemplateUrlByKeyword(searchEngineKeyword);
                         if (templateUrl != null) {
-                            Log.e(
-                                    "brave_search",
-                                    "AddCustomSearchEnginePreferenceFragment 2 : "
-                                            + templateUrl.getShortName());
                             mTitleEdittext.setText(templateUrl.getShortName());
                             mUrlEdittext.setText(templateUrl.getURL());
                             addSearchEngineButton.setText(
@@ -101,7 +96,6 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                     actionBar.setTitle(getString(R.string.edit_custom_search_engine));
                 }
             }
-            // mPageTitle.set(getString(R.string.edit_custom_search_engine));
         }
 
         TextView addCustomSeText = (TextView) rootView.findViewById(R.id.add_custom_se_text);
@@ -214,9 +208,6 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
             List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
             for (int index = 0; index < templateUrls.size(); ++index) {
                 TemplateUrl templateUrl = templateUrls.get(index);
-                Log.e(
-                        "brave_search",
-                        "AddCustomSearchEnginePreferenceFragment : 4 " + templateUrl.getKeyword());
                 if (templateUrl.getKeyword().equals(keyword)) {
                     return templateUrl;
                 }

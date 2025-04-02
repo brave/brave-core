@@ -31,16 +31,20 @@ public class CustomSearchEnginesUtil {
 
     private static final String CUSTOM_SEARCH_ENGINES = "custom_search_engines";
 
+    public static String KEYWORD = "keyword";
+
     private static void saveCustomSearchEngines(List<String> customSearchEnginesList) {
+        if (customSearchEnginesList == null) {
+            return;
+        }
+
         try {
-            JSONArray customSearchEnginesJsonArray = new JSONArray();
-            for (String customSearchEngineKeyword : customSearchEnginesList) {
-                customSearchEnginesJsonArray.put(customSearchEngineKeyword);
-            }
+            JSONArray jsonArray = new JSONArray(customSearchEnginesList);
             ChromeSharedPreferences.getInstance()
-                    .writeString(CUSTOM_SEARCH_ENGINES, customSearchEnginesJsonArray.toString());
+                    .writeString(CUSTOM_SEARCH_ENGINES, jsonArray.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            // Log error instead of just printing stack trace
+            Log.e("CustomSearchEnginesUtil", "Error saving search engines", e);
         }
     }
 
@@ -54,23 +58,27 @@ public class CustomSearchEnginesUtil {
     }
 
     public static List<String> getCustomSearchEngines() {
-        List<String> customSearchEnginesList = new ArrayList();
-        String customSearchEngines =
+        List<String> customSearchEnginesList = new ArrayList<>();
+        String savedSearchEngines =
                 ChromeSharedPreferences.getInstance().readString(CUSTOM_SEARCH_ENGINES, null);
-        if (customSearchEngines == null) {
+
+        if (savedSearchEngines == null) {
             return customSearchEnginesList;
         }
-        customSearchEngines = "{\"customSearchEngines\":" + customSearchEngines + "}";
+
         try {
-            JSONObject result = new JSONObject(customSearchEngines);
-            JSONArray customSearchEnginesJsonArray = result.getJSONArray("customSearchEngines");
-            for (int i = 0; i < customSearchEnginesJsonArray.length(); i++) {
-                String customSearchEngineKeyword = customSearchEnginesJsonArray.getString(i);
-                customSearchEnginesList.add(customSearchEngineKeyword);
+            // Wrap the array in an object to make it valid JSON
+            JSONObject wrapper =
+                    new JSONObject("{\"customSearchEngines\":" + savedSearchEngines + "}");
+            JSONArray searchEnginesArray = wrapper.getJSONArray("customSearchEngines");
+
+            for (int i = 0; i < searchEnginesArray.length(); i++) {
+                customSearchEnginesList.add(searchEnginesArray.getString(i));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return customSearchEnginesList;
     }
 
@@ -87,10 +95,6 @@ public class CustomSearchEnginesUtil {
         List<String> customSearchEnginesList = getCustomSearchEngines();
         if (customSearchEnginesList.size() > 0
                 && customSearchEnginesList.contains(searchEngineKeyword)) {
-            Log.e(
-                    "brave_search",
-                    "CustomSearchEnginesUtil.removeCustomSearchEngine : searchEngineKeyword : "
-                            + searchEngineKeyword);
             customSearchEnginesList.remove(searchEngineKeyword);
         }
         saveCustomSearchEngines(customSearchEnginesList);

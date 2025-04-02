@@ -7,8 +7,6 @@ package org.chromium.components.search_engines;
 
 import org.jni_zero.NativeMethods;
 
-import org.chromium.base.Log;
-
 public class BraveTemplateUrlService extends TemplateUrlService {
 
     // Overridden Chromium's TemplateUrlService.mNativeTemplateUrlServiceAndroid
@@ -17,14 +15,9 @@ public class BraveTemplateUrlService extends TemplateUrlService {
     public BraveTemplateUrlService(long nativeTemplateUrlServiceAndroid) {
         super(nativeTemplateUrlServiceAndroid);
         mNativeTemplateUrlServiceAndroid = nativeTemplateUrlServiceAndroid;
-        Log.e(
-                "brave_search",
-                "BraveTemplateUrlService : nativeTemplateUrlServiceAndroid : "
-                        + nativeTemplateUrlServiceAndroid);
     }
 
     public boolean addSearchEngine(String title, String keyword, String url) {
-        Log.e("brave_search", "addSearchEngine : " + mNativeTemplateUrlServiceAndroid);
         return BraveTemplateUrlServiceJni.get()
                 .addSearchEngine(mNativeTemplateUrlServiceAndroid, title, keyword, url);
     }
@@ -37,7 +30,6 @@ public class BraveTemplateUrlService extends TemplateUrlService {
     }
 
     public void removeSearchEngine(String keyword) {
-        Log.e("brave_search", "removeSearchEngine");
         BraveTemplateUrlServiceJni.get()
                 .removeSearchEngine(mNativeTemplateUrlServiceAndroid, keyword);
     }

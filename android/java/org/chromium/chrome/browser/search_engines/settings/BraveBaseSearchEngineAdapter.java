@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import org.chromium.base.Log;
 import org.chromium.brave.browser.search_engines.settings.CustomSearchEnginesUtil;
 import org.chromium.components.search_engines.TemplateUrl;
 
@@ -21,7 +20,7 @@ import java.util.Set;
 
 public class BraveBaseSearchEngineAdapter extends BaseAdapter {
     private static final String JAPAN_COUNTRY_CODE = "JP";
-    
+
     public BraveBaseSearchEngineAdapter() {}
 
     // BaseAdapter:
@@ -92,7 +91,6 @@ public class BraveBaseSearchEngineAdapter extends BaseAdapter {
 
     public static @SearchEngineAdapter.TemplateUrlSourceType int getSearchEngineSourceType(
             TemplateUrl templateUrl, TemplateUrl defaultSearchEngine) {
-        Log.e("brave_search", "templateUrl.getKeyword() : " + templateUrl.getKeyword());
         if (templateUrl.getIsPrepopulated()
                 || CustomSearchEnginesUtil.isCustomSearchEngineAdded(templateUrl.getKeyword())) {
             return SearchEngineAdapter.TemplateUrlSourceType.PREPOPULATED;
