@@ -1,25 +1,25 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index 9d470b0e353041db2a1d519c2295fd0d418cbf12..2d0040d8bb5a1465cd45bd1d8b084e0a8df26772 100644
+index 150749de09f3c0cecada87de017871beea0de576..2a0be73bd955f39a54f8140b55d664f61cf56daf 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -177,6 +177,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             Action.SAVE_PAGE,
-             Action.SHARE_PAGE,
-             Action.PRINT_PAGE,
+@@ -180,6 +180,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+             Action.BACK,
+             Action.FORWARD,
+             Action.RELOAD,
 +            Action.COPY_CLEAN_LINK,
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -224,7 +225,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
-             int SAVE_PAGE = 41;
-             int SHARE_PAGE = 42;
-             int PRINT_PAGE = 43;
--            int NUM_ENTRIES = 44;
-+            int COPY_CLEAN_LINK = 44;int NUM_ENTRIES = 45;
+@@ -230,7 +231,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+             int BACK = 44;
+             int FORWARD = 45;
+             int RELOAD = 46;
+-            int NUM_ENTRIES = 47;
++            int COPY_CLEAN_LINK = 47;int NUM_ENTRIES = 48;
          }
      }
  
-@@ -345,6 +346,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -359,6 +360,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));
