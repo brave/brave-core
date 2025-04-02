@@ -23,6 +23,7 @@
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#include "brave/browser/ui/webui/hello_world/hello_world_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
@@ -81,6 +82,7 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<BravePrivateNewTabUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveSettingsUIConfig>());
   map.AddWebUIConfig(std::make_unique<CookieListOptInUIConfig>());
+  map.AddWebUIConfig(std::make_unique<HelloWorldUIConfig>());
   map.AddWebUIConfig(std::make_unique<ShieldsPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<SpeedreaderToolbarUIConfig>());
   map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
