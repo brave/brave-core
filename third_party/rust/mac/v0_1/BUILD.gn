@@ -13,16 +13,16 @@ cargo_crate("lib") {
   epoch = "0.1"
   crate_type = "rlib"
   crate_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/mac-0.1.1/src/lib.rs"
+      "//brave/third_party/rust/chromium_crates_io/vendor/mac-v0_1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/mac-0.1.1/src/cfg.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/mac-0.1.1/src/format.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/mac-0.1.1/src/inspect.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/mac-0.1.1/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/mac-0.1.1/src/matches.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/mac-0.1.1/src/mem.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/mac-0.1.1/src/syntax_ext.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/mac-0.1.1/src/test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/mac-v0_1/src/cfg.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/mac-v0_1/src/format.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/mac-v0_1/src/inspect.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/mac-v0_1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/mac-v0_1/src/matches.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/mac-v0_1/src/mem.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/mac-v0_1/src/syntax_ext.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/mac-v0_1/src/test.rs",
   ]
   inputs = []
 

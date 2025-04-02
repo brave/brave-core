@@ -1,3 +1,82 @@
-group("lib") {
-  public_deps = [ "//third_party/rust/rand/v0_8:lib" ]
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "rand"
+  epoch = "0.8"
+  crate_type = "rlib"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/distributions/bernoulli.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/distributions/distribution.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/distributions/float.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/distributions/integer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/distributions/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/distributions/other.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/distributions/slice.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/distributions/uniform.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/distributions/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/distributions/weighted.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/distributions/weighted_index.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/prelude.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/rng.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/rngs/adapter/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/rngs/adapter/read.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/rngs/adapter/reseeding.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/rngs/mock.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/rngs/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/rngs/small.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/rngs/std.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/rngs/thread.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/rngs/xoshiro128plusplus.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/rngs/xoshiro256plusplus.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/seq/index.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand-v0_8/src/seq/mod.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2018"
+  cargo_pkg_version = "0.8.5"
+  cargo_pkg_authors = "The Rand Project Developers, The Rust Project Developers"
+  cargo_pkg_name = "rand"
+  cargo_pkg_description =
+      "Random number generators and other randomness functionality."
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/rand_chacha/v0_3:lib",
+    "//brave/third_party/rust/rand_core/v0_6:lib",
+  ]
+  if (!is_win) {
+    deps += [ "//brave/third_party/rust/libc/v0_2:lib" ]
+  }
+  features = [
+    "alloc",
+    "default",
+    "getrandom",
+    "libc",
+    "rand_chacha",
+    "small_rng",
+    "std",
+    "std_rng",
+  ]
+  rustenv = []
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

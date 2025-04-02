@@ -12,27 +12,28 @@ cargo_crate("lib") {
   crate_name = "bytes"
   epoch = "1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/buf/buf_impl.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/buf/buf_mut.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/buf/chain.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/buf/iter.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/buf/limit.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/buf/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/buf/reader.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/buf/take.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/buf/uninit_slice.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/buf/vec_deque.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/buf/writer.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/bytes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/bytes_mut.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/fmt/debug.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/fmt/hex.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/fmt/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/loom.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/src/serde.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/buf/buf_impl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/buf/buf_mut.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/buf/chain.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/buf/iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/buf/limit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/buf/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/buf/reader.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/buf/take.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/buf/uninit_slice.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/buf/vec_deque.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/buf/writer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/bytes_mut.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/fmt/debug.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/fmt/hex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/fmt/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/loom.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/src/serde.rs",
   ]
   inputs = []
 

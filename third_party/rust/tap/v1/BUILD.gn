@@ -13,12 +13,12 @@ cargo_crate("lib") {
   epoch = "1"
   crate_type = "rlib"
   crate_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/tap-1.0.1/src/lib.rs"
+      "//brave/third_party/rust/chromium_crates_io/vendor/tap-v1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/tap-1.0.1/src/conv.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tap-1.0.1/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tap-1.0.1/src/pipe.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tap-1.0.1/src/tap.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tap-v1/src/conv.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tap-v1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tap-v1/src/pipe.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tap-v1/src/tap.rs",
   ]
   inputs = []
 

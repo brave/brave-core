@@ -12,8 +12,10 @@ cargo_crate("lib") {
   crate_name = "bech32"
   epoch = "0.9"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/bech32-0.9.1/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/bech32-0.9.1/src/lib.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/bech32-v0_9/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/bech32-v0_9/src/lib.rs",
+  ]
   inputs = []
 
   build_native_rust_unit_tests = false

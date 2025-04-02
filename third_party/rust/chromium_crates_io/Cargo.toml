@@ -49,10 +49,6 @@ package = "speedreader-ffi"
 path = "../../../components/speedreader/rust/lib"
 package = "speedreader"
 
-[patch.crates-io.readability_v0_1]
-path = "../../../components/speedreader/rust/lib/src/readability"
-package = "readability"
-
 [patch.crates-io.skus-cxx_v0_1]
 path = "../../../components/skus/browser/rs/cxx"
 package = "skus-cxx"

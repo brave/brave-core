@@ -12,11 +12,11 @@ cargo_crate("lib") {
   crate_name = "keccak"
   epoch = "0.1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/keccak-0.1.3/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/keccak-v0_1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/keccak-0.1.3/src/armv8.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/keccak-0.1.3/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/keccak-0.1.3/src/unroll.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/keccak-v0_1/src/armv8.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/keccak-v0_1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/keccak-v0_1/src/unroll.rs",
   ]
   inputs = []
 

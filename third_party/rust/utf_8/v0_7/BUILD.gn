@@ -12,11 +12,12 @@ cargo_crate("lib") {
   crate_name = "utf_8"
   epoch = "0.7"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/utf-8-0.7.6/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/utf-8-v0_7/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/utf-8-0.7.6/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/utf-8-0.7.6/src/lossy.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/utf-8-0.7.6/src/read.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/utf-8-v0_7/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/utf-8-v0_7/src/lossy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/utf-8-v0_7/src/read.rs",
   ]
   inputs = []
 

@@ -12,17 +12,17 @@ cargo_crate("lib") {
   crate_name = "cipher"
   epoch = "0.4"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/cipher-0.4.4/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/cipher-v0_4/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-0.4.4/src/block.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-0.4.4/src/dev.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-0.4.4/src/dev/block.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-0.4.4/src/dev/stream.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-0.4.4/src/errors.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-0.4.4/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-0.4.4/src/stream.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-0.4.4/src/stream_core.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-0.4.4/src/stream_wrapper.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-v0_4/src/block.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-v0_4/src/dev.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-v0_4/src/dev/block.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-v0_4/src/dev/stream.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-v0_4/src/errors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-v0_4/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-v0_4/src/stream.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-v0_4/src/stream_core.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cipher-v0_4/src/stream_wrapper.rs",
   ]
   inputs = []
 

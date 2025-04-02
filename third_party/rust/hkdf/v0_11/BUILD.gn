@@ -12,8 +12,10 @@ cargo_crate("lib") {
   crate_name = "hkdf"
   epoch = "0.11"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/hkdf-0.11.0/src/hkdf.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/hkdf-0.11.0/src/hkdf.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/hkdf-v0_11/src/hkdf.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/hkdf-v0_11/src/hkdf.rs",
+  ]
   inputs = []
 
   build_native_rust_unit_tests = false

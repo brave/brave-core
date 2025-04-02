@@ -12,13 +12,13 @@ cargo_crate("lib") {
   crate_name = "futures_executor"
   epoch = "0.3"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-executor-0.3.31/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-executor-v0_3/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-executor-0.3.31/src/enter.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-executor-0.3.31/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-executor-0.3.31/src/local_pool.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-executor-0.3.31/src/thread_pool.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-executor-0.3.31/src/unpark_mutex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-executor-v0_3/src/enter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-executor-v0_3/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-executor-v0_3/src/local_pool.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-executor-v0_3/src/thread_pool.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-executor-v0_3/src/unpark_mutex.rs",
   ]
   inputs = []
 

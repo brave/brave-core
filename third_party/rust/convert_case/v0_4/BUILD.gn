@@ -12,11 +12,11 @@ cargo_crate("lib") {
   crate_name = "convert_case"
   epoch = "0.4"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/convert_case-0.4.0/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/convert_case-v0_4/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/convert_case-0.4.0/src/case.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/convert_case-0.4.0/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/convert_case-0.4.0/src/words.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/convert_case-v0_4/src/case.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/convert_case-v0_4/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/convert_case-v0_4/src/words.rs",
   ]
   inputs = []
 

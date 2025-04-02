@@ -12,15 +12,15 @@ cargo_crate("lib") {
   crate_name = "num_bigint"
   epoch = "0.2"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-v0_2/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/src/algorithms.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/src/bigint.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/src/bigrand.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/src/biguint.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/src/macros.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/src/monty.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-v0_2/src/algorithms.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-v0_2/src/bigint.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-v0_2/src/bigrand.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-v0_2/src/biguint.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-v0_2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-v0_2/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-v0_2/src/monty.rs",
   ]
   inputs = []
 
@@ -43,8 +43,8 @@ cargo_crate("lib") {
   ]
   build_deps = [ "//brave/third_party/rust/autocfg/v1:buildrs_support" ]
   features = [ "std" ]
-  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs"
-  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/build.rs" ]
+  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-v0_2/build.rs"
+  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-v0_2/build.rs" ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
