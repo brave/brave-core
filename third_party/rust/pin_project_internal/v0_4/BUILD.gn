@@ -12,15 +12,15 @@ cargo_crate("lib") {
   crate_name = "pin_project_internal"
   epoch = "0.4"
   crate_type = "proc-macro"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-0.4.30/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-v0_4/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-0.4.30/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-0.4.30/src/pin_project/attribute.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-0.4.30/src/pin_project/derive.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-0.4.30/src/pin_project/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-0.4.30/src/pinned_drop.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-0.4.30/src/project.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-0.4.30/src/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-v0_4/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-v0_4/src/pin_project/attribute.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-v0_4/src/pin_project/derive.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-v0_4/src/pin_project/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-v0_4/src/pinned_drop.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-v0_4/src/project.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-v0_4/src/utils.rs",
   ]
   inputs = []
 
@@ -41,8 +41,8 @@ cargo_crate("lib") {
     "//brave/third_party/rust/quote/v1:lib",
     "//brave/third_party/rust/syn/v1:lib",
   ]
-  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-0.4.30/build.rs"
-  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-0.4.30/build.rs" ]
+  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-v0_4/build.rs"
+  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-v0_4/build.rs" ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

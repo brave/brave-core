@@ -12,18 +12,18 @@ cargo_crate("lib") {
   crate_name = "futures_timer"
   epoch = "3"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-3.0.2/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-3.0.2/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-3.0.2/src/native.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-3.0.2/src/native/arc_list.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-3.0.2/src/native/atomic_waker.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-3.0.2/src/native/delay.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-3.0.2/src/native/global.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-3.0.2/src/native/heap.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-3.0.2/src/native/heap_timer.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-3.0.2/src/native/timer.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-3.0.2/src/wasm.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/src/native.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/src/native/arc_list.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/src/native/atomic_waker.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/src/native/delay.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/src/native/global.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/src/native/heap.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/src/native/heap_timer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/src/native/timer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/src/wasm.rs",
   ]
   inputs = []
 

@@ -3,7 +3,7 @@ URL: https://crates.io/crates/aes
 Version: 0.8.4
 Revision: f2dbee516b4d0cf4cb4f3045d09e35b5fd80087b
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/aes-0.8.4/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/aes-v0_8/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

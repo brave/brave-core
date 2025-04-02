@@ -12,23 +12,23 @@ cargo_crate("lib") {
   crate_name = "scraper"
   epoch = "0.22"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/element_ref/element.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/element_ref/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/element_ref/serializable.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/error.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/error/utils.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/html/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/html/serializable.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/html/tree_sink.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/main.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/node.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/node/serializable.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/selectable.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/selector.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/src/test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/element_ref/element.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/element_ref/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/element_ref/serializable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/error/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/html/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/html/serializable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/html/tree_sink.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/main.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/node.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/node/serializable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/selectable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/selector.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/scraper-v0_22/src/test.rs",
   ]
   inputs = []
 
