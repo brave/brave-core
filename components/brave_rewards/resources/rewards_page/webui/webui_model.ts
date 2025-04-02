@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
+import { debounce } from '$web-common/debounce'
 
 import {
   externalWalletFromExtensionData,
@@ -319,11 +320,12 @@ export function createModel(): AppModel {
     stateManager.update({ loading: false })
   }
 
-  browserProxy.callbackRouter.onRewardsStateUpdated.addListener(() => {
-    if (document.visibilityState === 'visible') {
-      loadData()
-    }
-  })
+  browserProxy.callbackRouter.onRewardsStateUpdated.addListener(
+    debounce(() => {
+      if (document.visibilityState === 'visible') {
+        loadData()
+      }
+    }, 60))
 
   // When displayed in a bubble, this page may be cached. In order to reset the
   // view state when the bubble is re-opened with cached contents, we update the
