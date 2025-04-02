@@ -92,7 +92,6 @@ inline constexpr char kBraveGettingStartedURL[] = "chrome://getting-started/";
 inline constexpr char kBraveGettingStartedHost[] = "getting-started";
 inline constexpr char kRewriterUIURL[] = "chrome://rewriter/";
 inline constexpr char kRewriterUIHost[] = "rewriter";
-
 inline constexpr char16_t kTransactionSimulationLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/Transaction-Simulation";
 
@@ -112,4 +111,10 @@ inline constexpr auto kInstallablePWAWebUIHosts =
         kAIChatUIHost,
     });
 
+inline constexpr char kEmailAliasesHost[] = "email-aliases";
+inline constexpr char kEmailAliasesSettingsURL[] =
+    "brave://settings/email-aliases";
+inline constexpr char kEmailAliasesBubbleURL[] =
+    "chrome://email-aliases-bubble";
+inline constexpr char kEmailAliasesBubbleHost[] = "email-aliases-bubble";
 #endif  // BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_

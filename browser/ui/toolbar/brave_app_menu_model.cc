@@ -9,10 +9,12 @@
 #include <optional>
 #include <string>
 
+#include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/toolbar/app_menu_icons.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -27,7 +29,6 @@
 #include "ui/base/models/button_menu_item_model.h"
 #include "ui/base/models/menu_separator_types.h"
 #include "ui/base/ui_base_features.h"
-
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -101,6 +102,9 @@ void BraveAppMenuModel::Build() {
   BuildBraveProductsSection();
   BuildBrowserSection();
   BuildMoreToolsSubMenu();
+  if (base::FeatureList::IsEnabled(features::kBraveEmailAliases)) {
+    BuildAutofillSubMenu();
+  }
   BuildHelpSubMenu();
 
   ApplyLeoIcons(this);
@@ -237,6 +241,20 @@ void BraveAppMenuModel::BuildBrowserSection() {
     RemoveItemAt(GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value());
     InsertItemWithStringIdAt(bookmark_item_index.value(), IDC_SHOW_DOWNLOADS,
                              IDS_SHOW_DOWNLOADS);
+  }
+}
+
+void BraveAppMenuModel::BuildAutofillSubMenu() {
+  ui::SimpleMenuModel* autofill_menu_model =
+      static_cast<ui::SimpleMenuModel*>(GetSubmenuModelAt(
+          GetIndexOfCommandId(IDC_PASSWORDS_AND_AUTOFILL_MENU).value()));
+  DCHECK(autofill_menu_model);
+
+  // Create email Aliases menu item
+  if (const auto index =
+          autofill_menu_model->GetIndexOfCommandId(IDC_SHOW_PASSWORD_MANAGER)) {
+    autofill_menu_model->InsertItemWithStringIdAt(
+        *index + 1, IDC_SHOW_EMAIL_ALIASES, IDS_SHOW_EMAIL_ALIASES);
   }
 }
 
