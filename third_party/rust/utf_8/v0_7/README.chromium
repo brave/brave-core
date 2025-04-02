@@ -3,7 +3,7 @@ URL: https://crates.io/crates/utf-8
 Version: 0.7.6
 Revision: 9b4165786edaea2ef9cf48f75756537eacf7f20d
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/utf-8-0.7.6/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/utf-8-v0_7/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

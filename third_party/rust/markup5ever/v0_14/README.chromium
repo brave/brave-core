@@ -3,7 +3,7 @@ URL: https://crates.io/crates/markup5ever
 Version: 0.14.1
 Revision: 844aa1f805b58b0dbc9c913618f3d78c482bcd0c
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/markup5ever-0.14.1/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/markup5ever-v0_14/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

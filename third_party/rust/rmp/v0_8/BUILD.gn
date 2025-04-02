@@ -13,28 +13,28 @@ cargo_crate("lib") {
   epoch = "0.8"
   crate_type = "rlib"
   crate_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/lib.rs"
+      "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/decode/bytes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/decode/dec.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/decode/ext.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/decode/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/decode/sint.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/decode/str.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/decode/uint.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/encode/bin.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/encode/buffer.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/encode/dec.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/encode/ext.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/encode/map.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/encode/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/encode/sint.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/encode/str.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/encode/uint.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/encode/vec.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/errors.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-0.8.11/src/marker.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/decode/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/decode/dec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/decode/ext.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/decode/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/decode/sint.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/decode/str.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/decode/uint.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/encode/bin.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/encode/buffer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/encode/dec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/encode/ext.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/encode/map.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/encode/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/encode/sint.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/encode/str.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/encode/uint.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/encode/vec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/errors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-v0_8/src/marker.rs",
   ]
   inputs = []
 

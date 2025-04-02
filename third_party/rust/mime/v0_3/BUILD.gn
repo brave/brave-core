@@ -12,10 +12,11 @@ cargo_crate("lib") {
   crate_name = "mime"
   epoch = "0.3"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/mime-0.3.17/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/mime-v0_3/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/mime-0.3.17/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/mime-0.3.17/src/parse.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/mime-v0_3/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/mime-v0_3/src/parse.rs",
   ]
   inputs = []
 

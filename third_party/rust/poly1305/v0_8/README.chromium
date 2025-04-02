@@ -3,7 +3,7 @@ URL: https://crates.io/crates/poly1305
 Version: 0.8.0
 Revision: 47a72962e8898fc70ab79d4ab40949efe61a23d2
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/poly1305-0.8.0/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/poly1305-v0_8/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

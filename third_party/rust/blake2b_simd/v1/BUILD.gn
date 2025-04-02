@@ -12,16 +12,16 @@ cargo_crate("lib") {
   crate_name = "blake2b_simd"
   epoch = "1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-1.0.1/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-v1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-1.0.1/src/avx2.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-1.0.1/src/blake2bp.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-1.0.1/src/guts.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-1.0.1/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-1.0.1/src/many.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-1.0.1/src/portable.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-1.0.1/src/sse41.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-1.0.1/src/test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-v1/src/avx2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-v1/src/blake2bp.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-v1/src/guts.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-v1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-v1/src/many.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-v1/src/portable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-v1/src/sse41.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/blake2b_simd-v1/src/test.rs",
   ]
   inputs = []
 

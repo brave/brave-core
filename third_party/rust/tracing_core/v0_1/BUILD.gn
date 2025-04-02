@@ -12,22 +12,22 @@ cargo_crate("lib") {
   crate_name = "tracing_core"
   epoch = "0.1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/callsite.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/dispatcher.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/event.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/field.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/lazy.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/metadata.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/parent.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/span.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/spin/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/spin/mutex.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/spin/once.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/stdlib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/subscriber.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/callsite.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/dispatcher.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/event.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/field.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/lazy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/metadata.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/parent.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/span.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/spin/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/spin/mutex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/spin/once.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/stdlib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/src/subscriber.rs",
   ]
   inputs = []
 

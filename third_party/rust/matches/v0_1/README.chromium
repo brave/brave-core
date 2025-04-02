@@ -3,7 +3,7 @@ URL: https://crates.io/crates/matches
 Version: 0.1.10
 Revision: e66ab5acd06085513490fd8ea41a61ad556c0cf9
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/matches-0.1.10/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/matches-v0_1/LICENSE
 Shipped: yes
 Security Critical: yes
 

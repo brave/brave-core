@@ -12,13 +12,13 @@ cargo_crate("lib") {
   crate_name = "cpufeatures"
   epoch = "0.2"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-v0_2/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/src/aarch64.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/src/loongarch64.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/src/miri.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/src/x86.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-v0_2/src/aarch64.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-v0_2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-v0_2/src/loongarch64.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-v0_2/src/miri.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-v0_2/src/x86.rs",
   ]
   inputs = []
 

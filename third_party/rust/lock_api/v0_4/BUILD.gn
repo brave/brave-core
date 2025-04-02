@@ -12,12 +12,12 @@ cargo_crate("lib") {
   crate_name = "lock_api"
   epoch = "0.4"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-0.4.9/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-v0_4/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-0.4.9/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-0.4.9/src/mutex.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-0.4.9/src/remutex.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-0.4.9/src/rwlock.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-v0_4/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-v0_4/src/mutex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-v0_4/src/remutex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-v0_4/src/rwlock.rs",
   ]
   inputs = []
 
@@ -36,8 +36,10 @@ cargo_crate("lib") {
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [ "//brave/third_party/rust/scopeguard/v1:lib" ]
   build_deps = [ "//brave/third_party/rust/autocfg/v1:buildrs_support" ]
-  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-0.4.9/build.rs"
-  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-0.4.9/build.rs" ]
+  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-v0_4/build.rs"
+  build_sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/lock_api-v0_4/build.rs",
+  ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
     "--cfg",
