@@ -139,5 +139,11 @@ provideStrings({
   reasoningLabel: 'Reasoning...',
   reasoningCompleteLabel: 'Reasoning complete',
   hideDetailsButtonLabel: 'Hide details',
-  showDetailsButtonLabel: 'Show details'
+  showDetailsButtonLabel: 'Show details',
+  openLabel: 'Open',
+  openExternalLink: 'Open external link?',
+  openExternalLinkInfo:
+    'Leo AI wants to open a website in a new tab. ' +
+    'Do you want to continue?',
+  openExternalLinkCheckboxLabel: 'Open links without asking me again',
 })

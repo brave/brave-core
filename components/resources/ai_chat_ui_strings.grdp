@@ -303,6 +303,18 @@
   <message name="IDS_CHAT_UI_SHOW_DETAILS_BUTTON_LABEL" desc="A button label to show details of the AI Assistant reasoning">
     Show details
   </message>
+  <message name="IDS_CHAT_UI_OPEN_LABEL" desc="A button label to open a link">
+    Open
+  </message>
+  <message name="IDS_CHAT_UI_OPEN_EXTERNAL_LINK" desc="A button label to open a link">
+    Open external link?
+  </message>
+  <message name="IDS_CHAT_UI_OPEN_EXTERNAL_LINK_INFO" desc="Info text to open a link">
+    Leo AI wants to open a website in a new tab. Do you want to continue?
+  </message>
+  <message name="IDS_CHAT_UI_OPEN_EXTERNAL_LINK_CHECKBOX_LABEL" desc="A checkbox label to open a link without asking me again">
+    Open links without asking me again
+  </message>
   <message name="IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL" desc="A button label for sending a chat message">
     Send message to Leo
   </message>
