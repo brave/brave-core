@@ -11691,8 +11691,8 @@ Domena <ph name="DOMAIN"/> wymaga, by karta inteligentna pozostała w gnieździ
     }</translation>
 <translation id="4304377874648098617">Jesteś w trybie prywatnym</translation>
 <translation id="5749925632993910318">{0, plural,
-      =1 {Close Private}
-      other {Close Private (# windows)}
+      =1 {Zamknij prywatne}
+      other {Zamknij prywatne (# okna)}
     }</translation>
 <translation id="7253003527666031200">Znajdź więcej narzędzi dostępu w Web Store</translation>
 <translation id="5832813618714645810">Profile</translation>
