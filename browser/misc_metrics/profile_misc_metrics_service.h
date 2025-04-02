@@ -18,6 +18,10 @@ namespace content {
 class BrowserContext;
 }  // namespace content
 
+namespace ai_chat {
+class AIChatMetrics;
+}  // namespace ai_chat
+
 namespace misc_metrics {
 
 #if BUILDFLAG(IS_ANDROID)
@@ -46,6 +50,7 @@ class ProfileMiscMetricsService : public KeyedService {
   void Shutdown() override;
 
   PageMetrics* GetPageMetrics();
+  ai_chat::AIChatMetrics* GetAIChatMetrics();
 #if BUILDFLAG(IS_ANDROID)
   MiscAndroidMetrics* GetMiscAndroidMetrics();
 #endif
@@ -59,6 +64,7 @@ class ProfileMiscMetricsService : public KeyedService {
   std::unique_ptr<AutofillMetrics> autofill_metrics_ = nullptr;
   std::unique_ptr<LanguageMetrics> language_metrics_ = nullptr;
   std::unique_ptr<PageMetrics> page_metrics_ = nullptr;
+  std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_ = nullptr;
 #if BUILDFLAG(IS_ANDROID)
   std::unique_ptr<MiscAndroidMetrics> misc_android_metrics_ = nullptr;
 #else

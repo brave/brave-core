@@ -16,6 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/timer/wall_clock_timer.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_tab_focus_metrics.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/time_period_storage/time_period_storage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
@@ -128,12 +129,13 @@ class ConversationHandlerForMetrics {
   virtual mojom::APIError current_error() const = 0;
 };
 
-class AIChatMetrics : public mojom::Metrics {
+class AIChatMetrics : public mojom::Metrics,
+                      public AIChatTabFocusMetrics::Delegate {
  public:
   using RetrievePremiumStatusCallback =
       base::OnceCallback<void(mojom::Service::GetPremiumStatusCallback)>;
 
-  explicit AIChatMetrics(PrefService* local_state);
+  AIChatMetrics(PrefService* local_state, PrefService* profile_prefs);
   ~AIChatMetrics() override;
 
   AIChatMetrics(const AIChatMetrics&) = delete;
@@ -142,6 +144,10 @@ class AIChatMetrics : public mojom::Metrics {
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void Bind(mojo::PendingReceiver<mojom::Metrics> receiver);
+
+  AIChatTabFocusMetrics* tab_focus_metrics() {
+    return tab_focus_metrics_.get();
+  }
 
   void RecordEnabled(
       bool is_enabled,
@@ -174,6 +180,9 @@ class AIChatMetrics : public mojom::Metrics {
   // Metrics:
   void OnSendingPromptWithFullPage() override;
   void OnQuickActionStatusChange(bool is_enabled) override;
+
+  // AIChatTabFocusMetrics::Delegate:
+  bool IsPremium() const override;
 
  private:
   void ReportAllMetrics();
@@ -232,6 +241,8 @@ class AIChatMetrics : public mojom::Metrics {
   raw_ptr<PrefService> local_state_;
 
   mojo::ReceiverSet<mojom::Metrics> receivers_;
+
+  std::unique_ptr<AIChatTabFocusMetrics> tab_focus_metrics_;
 
   base::WeakPtrFactory<AIChatMetrics> weak_ptr_factory_{this};
 };

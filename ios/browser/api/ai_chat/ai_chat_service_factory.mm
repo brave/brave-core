@@ -39,7 +39,8 @@ AIChatServiceFactory::AIChatServiceFactory()
                                     ServiceCreation::kCreateLazily,
                                     TestingCreation::kNoServiceForTests),
       ai_chat_metrics_(std::make_unique<AIChatMetrics>(
-          GetApplicationContext()->GetLocalState())) {}
+          GetApplicationContext()->GetLocalState(),
+          nullptr)) {}
 
 AIChatServiceFactory::~AIChatServiceFactory() {}
 
