@@ -109,38 +109,30 @@ public class PlaylistMediaStreamer {
         throw PlaybackError.cannotLoadMedia
       }
 
-      let newItem = await webLoader.load(url: url)
+      var newItem = await webLoader.load(url: url)
       webLoader.removeFromSuperview()
       self.webLoader = nil
 
-      guard let newItem = newItem, URL(string: newItem.src) != nil else {
+      guard var newItem = newItem, URL(string: newItem.src) != nil else {
         throw PlaybackError.cannotLoadMedia
       }
 
-      let updatedItem = PlaylistInfo(
-        name: newItem.name,
-        src: newItem.src,
-        pageSrc: item.pageSrc,  // Keep the same pageSrc
-        pageTitle: newItem.pageTitle,
-        mimeType: newItem.mimeType,
-        duration: newItem.duration,
-        lastPlayedOffset: 0.0,
-        detected: newItem.detected,
-        dateAdded: item.dateAdded,  // Keep the same dateAdded
-        tagId: item.tagId,  // Keep the same tagId
-        order: item.order,
-        isInvisible: item.isInvisible
-      )  // Keep the same order
+      newItem.pageSrc = item.pageSrc
+      newItem.dateAdded = item.dateAdded
+      newItem.tagId = item.tagId
+      newItem.order = item.order
+      newItem.isInvisible = item.isInvisible
+      newItem.lastPlayedOffset = 0.0
 
       let item = try await withCheckedThrowingContinuation { continuation in
-        PlaylistItem.updateItem(updatedItem) { _ in
-          continuation.resume(returning: updatedItem)
+        PlaylistItem.updateItem(newItem) { _ in
+          continuation.resume(returning: newItem)
         }
       }
 
       Task {
         try await Task.sleep(nanoseconds: NSEC_PER_SEC)
-        PlaylistManager.shared.autoDownload(item: updatedItem)
+        PlaylistManager.shared.autoDownload(item: newItem)
       }
       return item
     } onCancel: {

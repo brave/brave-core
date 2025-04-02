@@ -206,20 +206,8 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
       // because when the fallback streamer updates the object, it uses the database ID.
       // When the download starts, it uses the database ID.
       // If we suddenly change the ID, downloads and updates get out of wack
-      let item = PlaylistInfo(
-        name: item.name,
-        src: item.src,
-        pageSrc: item.pageSrc,
-        pageTitle: item.pageTitle,
-        mimeType: item.mimeType,
-        duration: item.duration,
-        lastPlayedOffset: item.lastPlayedOffset,
-        detected: item.detected,
-        dateAdded: item.dateAdded,
-        tagId: $0,  // Use the ID that it was saved as in the database, rather than the Javascript ID
-        order: item.order,
-        isInvisible: item.isInvisible
-      )
+      var item = item
+      item.tagId = $0  // Use the ID that it was saved as in the database, rather than the Javascript ID
 
       if let delegate = self.delegate {
         if detected {
