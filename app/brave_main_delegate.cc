@@ -212,5 +212,16 @@ std::optional<int> BraveMainDelegate::PostEarlyInitialization(
         switches::kComponentUpdater,
         (current_value + "url-source=" + update_url).c_str());
   }
+
+  // For Self-host sync service URL, we need to ensure that the URL is HTTPS.
+  if (command_line->HasSwitch(syncer::kSyncServiceURL)) {
+    std::string sync_service_url =
+        command_line->GetSwitchValueASCII(syncer::kSyncServiceURL);
+    if (!GURL(sync_service_url).SchemeIs("https")) {
+      // Remove non-HTTPS sync URLs
+      command_line->RemoveSwitch(syncer::kSyncServiceURL);
+    }
+  }
+
   return result;
 }
