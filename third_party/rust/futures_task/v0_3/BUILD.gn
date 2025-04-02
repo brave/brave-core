@@ -12,15 +12,15 @@ cargo_crate("lib") {
   crate_name = "futures_task"
   epoch = "0.3"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-v0_3/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/arc_wake.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/future_obj.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/noop_waker.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/spawn.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/waker.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/waker_ref.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-v0_3/src/arc_wake.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-v0_3/src/future_obj.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-v0_3/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-v0_3/src/noop_waker.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-v0_3/src/spawn.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-v0_3/src/waker.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-v0_3/src/waker_ref.rs",
   ]
   inputs = []
 

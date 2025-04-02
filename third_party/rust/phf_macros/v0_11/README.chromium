@@ -3,7 +3,7 @@ URL: https://crates.io/crates/phf_macros
 Version: 0.11.3
 Revision: 9b679189639fec8d449cd2f1759fad5dc0ef38db
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/phf_macros-0.11.3/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/phf_macros-v0_11/LICENSE
 Shipped: yes
 Security Critical: yes
 

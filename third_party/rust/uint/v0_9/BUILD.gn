@@ -13,10 +13,10 @@ cargo_crate("lib") {
   epoch = "0.9"
   crate_type = "rlib"
   crate_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/uint-0.9.5/src/lib.rs"
+      "//brave/third_party/rust/chromium_crates_io/vendor/uint-v0_9/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/uint-0.9.5/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/uint-0.9.5/src/uint.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uint-v0_9/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/uint-v0_9/src/uint.rs",
   ]
   inputs = []
 
