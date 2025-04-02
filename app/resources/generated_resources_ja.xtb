@@ -11697,8 +11697,8 @@
     }</translation>
 <translation id="4304377874648098617">これはプライベートウィンドウです</translation>
 <translation id="5749925632993910318">{0, plural,
-        =1 {Close Private}
-        other {Close Private (# windows)}
+        =1 {プライベートを閉じる}
+        other {# 個のプライベートウィンドウを閉じます}
       }</translation>
 <translation id="7253003527666031200">その他のアクセシビリティツールをウェブストアで見る</translation>
 <translation id="5832813618714645810">プロフィール</translation>
