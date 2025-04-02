@@ -12,21 +12,21 @@ cargo_crate("lib") {
   crate_name = "parking_lot"
   epoch = "0.12"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/condvar.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/deadlock.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/elision.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/fair_mutex.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/mutex.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/once.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/raw_fair_mutex.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/raw_mutex.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/raw_rwlock.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/remutex.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/rwlock.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/src/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/condvar.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/deadlock.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/elision.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/fair_mutex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/mutex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/once.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/raw_fair_mutex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/raw_mutex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/raw_rwlock.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/remutex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/rwlock.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot-v0_12/src/util.rs",
   ]
   inputs = []
 

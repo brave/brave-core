@@ -12,22 +12,22 @@ cargo_crate("lib") {
   crate_name = "html5ever"
   epoch = "0.29"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/driver.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/macros.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/serialize/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/tokenizer/char_ref/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/tokenizer/interface.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/tokenizer/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/tokenizer/states.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/tree_builder/data.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/tree_builder/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/tree_builder/rules.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/tree_builder/tag_sets.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/tree_builder/types.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/src/util/str.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/driver.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/serialize/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/tokenizer/char_ref/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/tokenizer/interface.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/tokenizer/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/tokenizer/states.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/tree_builder/data.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/tree_builder/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/tree_builder/rules.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/tree_builder/tag_sets.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/tree_builder/types.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-v0_29/src/util/str.rs",
   ]
   inputs = []
 

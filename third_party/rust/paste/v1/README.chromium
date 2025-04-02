@@ -3,7 +3,7 @@ URL: https://crates.io/crates/paste
 Version: 1.0.12
 Revision: 58a4a8f86aad820d58010bf2377405f2bf2f56fd
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/paste-1.0.12/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/paste-v1/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

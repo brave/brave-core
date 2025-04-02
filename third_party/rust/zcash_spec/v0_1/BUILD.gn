@@ -12,10 +12,10 @@ cargo_crate("lib") {
   crate_name = "zcash_spec"
   epoch = "0.1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/zcash_spec-0.1.0/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/zcash_spec-v0_1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_spec-0.1.0/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_spec-0.1.0/src/prf_expand.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_spec-v0_1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zcash_spec-v0_1/src/prf_expand.rs",
   ]
   inputs = []
 

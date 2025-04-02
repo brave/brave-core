@@ -12,25 +12,25 @@ cargo_crate("lib") {
   crate_name = "allocator_api2"
   epoch = "0.2"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/nightly.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/alloc/global.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/alloc/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/alloc/system.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/boxed.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/macros.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/raw_vec.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/slice.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/unique.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/vec/drain.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/vec/into_iter.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/vec/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/vec/partial_eq.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/vec/set_len_on_drop.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-0.2.21/src/stable/vec/splice.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/nightly.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/alloc/global.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/alloc/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/alloc/system.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/boxed.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/raw_vec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/slice.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/unique.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/vec/drain.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/vec/into_iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/vec/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/vec/partial_eq.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/vec/set_len_on_drop.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/allocator-api2-v0_2/src/stable/vec/splice.rs",
   ]
   inputs = []
 

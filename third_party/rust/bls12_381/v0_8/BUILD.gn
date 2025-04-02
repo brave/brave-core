@@ -12,27 +12,27 @@ cargo_crate("lib") {
   crate_name = "bls12_381"
   epoch = "0.8"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/fp.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/fp12.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/fp2.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/fp6.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/g1.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/g2.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/hash_to_curve/chain.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/hash_to_curve/expand_msg.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/hash_to_curve/map_g1.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/hash_to_curve/map_g2.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/hash_to_curve/map_scalar.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/hash_to_curve/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/notes/design.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/notes/serialization.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/pairings.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/scalar.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/tests/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.8.0/src/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/fp.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/fp12.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/fp2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/fp6.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/g1.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/g2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/hash_to_curve/chain.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/hash_to_curve/expand_msg.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/hash_to_curve/map_g1.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/hash_to_curve/map_g2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/hash_to_curve/map_scalar.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/hash_to_curve/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/notes/design.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/notes/serialization.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/pairings.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/scalar.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/tests/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bls12_381-v0_8/src/util.rs",
   ]
   inputs = []
 

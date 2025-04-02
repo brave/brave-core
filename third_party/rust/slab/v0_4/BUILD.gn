@@ -13,11 +13,11 @@ cargo_crate("lib") {
   epoch = "0.4"
   crate_type = "rlib"
   crate_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/src/lib.rs"
+      "//brave/third_party/rust/chromium_crates_io/vendor/slab-v0_4/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/src/builder.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/src/serde.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/slab-v0_4/src/builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/slab-v0_4/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/slab-v0_4/src/serde.rs",
   ]
   inputs = []
 
@@ -37,9 +37,9 @@ cargo_crate("lib") {
   build_deps = [ "//brave/third_party/rust/autocfg/v1:buildrs_support" ]
   features = [ "std" ]
   build_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/build.rs"
+      "//brave/third_party/rust/chromium_crates_io/vendor/slab-v0_4/build.rs"
   build_sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/build.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/slab-v0_4/build.rs",
   ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates

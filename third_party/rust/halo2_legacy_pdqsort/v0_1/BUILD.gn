@@ -12,11 +12,11 @@ cargo_crate("lib") {
   crate_name = "halo2_legacy_pdqsort"
   epoch = "0.1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-0.1.0/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-v0_1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-0.1.0/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-0.1.0/src/rust_slice.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-0.1.0/src/sort.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-v0_1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-v0_1/src/rust_slice.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-v0_1/src/sort.rs",
   ]
   inputs = []
 
