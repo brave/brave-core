@@ -100,9 +100,8 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
   base::expected<ImportInfo, ImportError> SimulateGetImportInfo(
       const std::string& password,
       const std::string& json_str) {
-    auto json = base::test::ParseJsonDict(
-        json_str,
-        base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_CONTROL_CHARS);
+    auto json = base::test::ParseJsonDict(json_str,
+                                          base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     base::expected<ImportInfo, ImportError> out_info;
 
     {
