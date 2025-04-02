@@ -11729,7 +11729,7 @@ other {# پنجره خصوصی باز}
 <translation id="4304377874648098617">در حالت خصوصی هستید</translation>
 <translation id="5749925632993910318">{0, plural,
       =1 {بستن خصوصی}
-      other {Close Private (# پنجره‌های)}
+      other {بستن خصوصی (# پنجره‌های)}
     }</translation>
 <translation id="7253003527666031200">ابزار‌های دسترسی بیشتر را در Web Store بیابید.</translation>
 <translation id="5832813618714645810">نمایه‌ها</translation>

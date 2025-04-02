@@ -187,7 +187,7 @@
 <translation id="7526443283522395161">Anuncios en páginas de nuevas pestañas</translation>
 <translation id="7968650944098083708">Anuncios en notificaciones</translation>
 <translation id="8289546216379862569">Anuncios de Búsqueda</translation>
-<translation id="4758111936363146244">La herramienta Anuncios de Búsqueda de Brave se encuentra en <ph name="BEGIN_LINK"/>Búsqueda de Brave<ph name="END_LINK"/>.</translation>
+<translation id="4758111936363146244">Anuncios de Búsqueda se aparecen en <ph name="BEGIN_LINK"/>Búsqueda de Brave<ph name="END_LINK"/>.</translation>
 <translation id="7596536223419118193">Aún no puede ganar BAT con Anuncios de Búsqueda de Brave, pero nos ayudará si activa esta herramienta.</translation>
 <translation id="6390952132783970876">Anuncios en Noticias de Brave</translation>
 <translation id="7516281787184495886">Noticias de Brave contiene anuncios que no se pueden deshabilitar por separado.</translation>
@@ -211,7 +211,7 @@
 <translation id="3216275550298493597">Esto permite que Brave te muestre anuncios adaptados específicamente a tu región.</translation>
 <translation id="8446884382197647889">Más información</translation>
 <translation id="3783399046165388366">Detectado automáticamente como<ph name="SUBDIVISION"/></translation>
-<translation id="8010081455002666927">Detectar automáticamente</translation>
+<translation id="8010081455002666927">Auto-detectar</translation>
 <translation id="4394049700291259645">Deshabilitar</translation>
 <translation id="4176463684765177261">Deshabilitado</translation>
 <translation id="8283001340969131076">Vaya, se ha producido un error al tratar de desconectar tu cuenta de <ph name="PROVIDER"/>. Vuelve a intentarlo pasados unos instantes.</translation>
@@ -510,7 +510,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
       other {Podrías ganar dinero gracias a los <ph name="COUNT_BEGIN"/># anuncios<ph name="COUNT_END"/> que has visto este mes}
     }</translation>
 <translation id="6067959437127691361">Utilizar Recompensas de Brave ayuda a apoyar a los creadores de contenidos y te permite ganar BAT.</translation>
-<translation id="2359808026110333948">Continue</translation>
+<translation id="2359808026110333948">Continuar</translation>
 <translation id="885805571521218129">Esta es una estimación de las ganancias que has obtenido con Anuncios de Brave este mes.</translation>
 <translation id="3863981251715594911">¿Cómo funciona?</translation>
 <translation id="7931127789630755251">Gana tokens con los anuncios privados que ves en Brave.</translation>
@@ -591,7 +591,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="86107454835395919">Enviar como contribución mensual</translation>
 <translation id="6621880242105464352">Brave cobra un <ph name="FEE_PCT"/> del importe enviado en concepto de tasa de tramitación.</translation>
 <translation id="1420756770787071946">Apoya a este creador</translation>
-<translation id="1483493594462132177">Send</translation>
+<translation id="1483493594462132177">Enviar</translation>
 <translation id="6632987674051304487">Enviar con <ph name="PROVIDER"/></translation>
 <translation id="4319632089378796037">Usar cartera de Web3</translation>
 <translation id="4530198836725543997">Este creador se ha registrado con Brave y puede recibir contribuciones de los usuarios de Recompensas de Brave.</translation>
@@ -672,7 +672,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="3266055641283174315">Tipo de anuncio</translation>
 <translation id="8706824117053903390">Visualizaciones este mes</translation>
 <translation id="5105890735834548623">Ajustes de los anuncios</translation>
-<translation id="96989662637180657">La herramienta Anuncios de Búsqueda de Brave se encuentra en<ph name="LINK_BEGIN"/>Búsqueda de Brave<ph name="LINK_END"/>.</translation>
+<translation id="96989662637180657">Anuncios de Búsqueda se aparecen en <ph name="LINK_BEGIN"/>Búsqueda de Brave<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Ajustes de los anuncios</translation>
 <translation id="2446517297521536638">Controle los tipos de Anuncios de Brave que ve y la frecuencia. Cuantos más anuncios vea, más ganará.</translation>
 <translation id="5860033963881614850">Apagado</translation>
