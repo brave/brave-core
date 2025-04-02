@@ -248,7 +248,7 @@ public class BraveToolbarManager extends ToolbarManager
         if (isToolbarPhone()) {
             updateBraveBottomControlsVisibility();
             mLayoutStateProviderSupplier.onAvailable(
-                mCallbackController.makeCancelable(this::setLayoutStateProvider));
+                    mCallbackController.makeCancelable(this::setLayoutStateProvider));
         }
 
         mBraveHomepageStateListener =
