@@ -76,17 +76,16 @@ class ChromiumTabState: TabState, TabStateImpl {
   }
 
   private func webViewTitleDidChange() {
-    // FIXME: Do we need this in CWVWebView?
-    //    if let webView, let url = webView.url,
-    //       webView.configuration.preferences.isFraudulentWebsiteWarningEnabled,
-    //       webView.responds(to: Selector(("_safeBrowsingWarning"))),
-    //       webView.value(forKey: "_safeBrowsingWarning") != nil
-    //    {
-    //      self.url = url  // We can update the URL whenever showing an interstitial warning
-    //      observers.forEach {
-    //        $0.tabDidUpdateURL(self)
-    //      }
-    //    }
+    if let webView = webView?.internalWebView, let url = webView.url,
+      webView.configuration.preferences.isFraudulentWebsiteWarningEnabled,
+      webView.responds(to: Selector(("_safeBrowsingWarning"))),
+      webView.value(forKey: "_safeBrowsingWarning") != nil
+    {
+      self.virtualURL = url  // We can update the URL whenever showing an interstitial warning
+      observers.forEach {
+        $0.tabDidUpdateURL(self)
+      }
+    }
 
     observers.forEach {
       $0.tabDidChangeTitle(self)
