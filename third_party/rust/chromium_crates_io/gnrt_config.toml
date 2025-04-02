@@ -153,7 +153,7 @@ build_script_outputs = [ "lib.rs" ]
 license_files = ['LICENSE']
 extra_kv = { raw_gn = '''
 if (epoch == "0.29") {
-    build_script_inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-" + cargo_pkg_version + "/build/match_byte.rs" ]
+    build_script_inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_29/build/match_byte.rs" ]
     build_script_outputs = [ "tokenizer.rs" ]
   }
 ''' }
