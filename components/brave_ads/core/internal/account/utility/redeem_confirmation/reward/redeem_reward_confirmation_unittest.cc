@@ -119,7 +119,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest,
-       RetryRedeemingForFetchPaymentTokenHttpNotFoundResponse) {
+       DoNotRetryRedeemingForFetchPaymentTokenHttpNotFoundResponse) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -144,7 +144,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
 
   EXPECT_CALL(delegate_mock_,
               OnFailedToRedeemConfirmation(*confirmation,
-                                           /*should_retry=*/true));
+                                           /*should_retry=*/false));
 
   RedeemRewardConfirmation::CreateAndRedeem(
       confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);

@@ -188,7 +188,7 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
     const mojom::UrlResponseInfo& mojom_url_response) {
   if (mojom_url_response.status_code == net::HTTP_NOT_FOUND) {
     return base::unexpected(
-        std::make_tuple("Confirmation not found", /*should_retry=*/true));
+        std::make_tuple("Confirmation not found", /*should_retry=*/false));
   }
 
   if (mojom_url_response.status_code == net::HTTP_BAD_REQUEST) {

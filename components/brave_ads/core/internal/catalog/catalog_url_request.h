@@ -39,7 +39,7 @@ class CatalogUrlRequest final {
   void FetchAfterDelay();
 
   void SuccessfullyFetchedCatalog(const CatalogInfo& catalog);
-  void FailedToFetchCatalog();
+  void FailedToFetchCatalog(bool should_retry);
 
   void Retry();
   void RetryCallback();
