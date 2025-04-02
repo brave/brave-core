@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <limits>
 #include <utility>
 #include <vector>
 
@@ -43,7 +44,13 @@ constexpr char kTableName[] = "confirmation_queue";
 
 constexpr int kDefaultBatchSize = 50;
 
-constexpr base::TimeDelta kMaximumRetryDelay = base::Hours(1);
+// The `kMaximumRetryCount` constant is calculated as the number of bits in an
+// `int` minus one. This ensures that the retry count does not exceed the
+// maximum number of left shifts possible for an int, preventing potential
+// overflow issues during delay calculations.
+constexpr int kMaximumRetryCount = (std::numeric_limits<int>::digits) - 1;
+
+constexpr base::TimeDelta kMaximumRetryAfter = base::Hours(1);
 
 void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
   CHECK(mojom_db_action);
@@ -335,33 +342,42 @@ void ConfirmationQueue::Delete(const std::string& transaction_id,
 
 void ConfirmationQueue::Retry(const std::string& transaction_id,
                               ResultCallback callback) const {
-  const std::string retry_after =
-      base::NumberToString(RetryProcessingConfirmationAfter().InMicroseconds());
-
-  const std::string max_retry_delay =
-      base::NumberToString(kMaximumRetryDelay.InMicroseconds());
-
-  // Exponentially backoff `process_at` for the next retry up to
-  // `kMaximumRetryDelay`.
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
+
+  const std::string retry_after =
+      base::NumberToString(RetryProcessingConfirmationAfter().InMicroseconds());
+  const std::string max_retry_after =
+      base::NumberToString(kMaximumRetryAfter.InMicroseconds());
   Execute(
       mojom_db_transaction, R"(
+          UPDATE
+            $1
+          SET
+            process_at = $2 + (
+              CASE
+                WHEN ($3 << retry_count) < $4
+                THEN ($5 << retry_count)
+                ELSE $6
+              END
+            )
+          WHERE
+            transaction_id = '$7')",
+      {GetTableName(), TimeToSqlValueAsString(base::Time::Now()), retry_after,
+       max_retry_after, retry_after, max_retry_after, transaction_id});
+
+  const std::string max_retry_count = base::NumberToString(kMaximumRetryCount);
+  Execute(mojom_db_transaction, R"(
             UPDATE
               $1
             SET
-              retry_count = retry_count + 1,
-              process_at = $2 + (
-                CASE
-                  WHEN ($3 << retry_count) < $4
-                  THEN ($5 << retry_count)
-                  ELSE $6
-                END
-              )
+              retry_count = CASE
+                              WHEN retry_count + 1 < $2 THEN retry_count + 1
+                              ELSE $3
+                            END
             WHERE
-              transaction_id = '$7')",
-      {GetTableName(), TimeToSqlValueAsString(base::Time::Now()), retry_after,
-       max_retry_delay, retry_after, max_retry_delay, transaction_id});
+              transaction_id = '$4')",
+          {GetTableName(), max_retry_count, max_retry_count, transaction_id});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));

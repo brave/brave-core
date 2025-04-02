@@ -87,13 +87,18 @@ void CatalogUrlRequest::FetchCallback(
         .NotifyBrowserUpgradeRequiredToServeAds();
   }
 
+  if (mojom_url_response.status_code == net::HTTP_FORBIDDEN) {
+    BLOG(1, "Failed to request catalog as forbidden");
+    return FailedToFetchCatalog(/*should_retry=*/false);
+  }
+
   if (mojom_url_response.status_code == net::HTTP_NOT_MODIFIED) {
     BLOG(1, "Catalog is up to date");
     return FetchAfterDelay();
   }
 
   if (mojom_url_response.status_code != net::HTTP_OK) {
-    return FailedToFetchCatalog();
+    return FailedToFetchCatalog(/*should_retry=*/true);
   }
 
   BLOG(1, "Parsing catalog");
@@ -101,12 +106,12 @@ void CatalogUrlRequest::FetchCallback(
       json::reader::ReadCatalog(mojom_url_response.body);
   if (!catalog) {
     BLOG(0, "Failed to parse catalog");
-    return FailedToFetchCatalog();
+    return FailedToFetchCatalog(/*should_retry=*/true);
   }
 
   if (catalog->version != kCatalogVersion) {
     BLOG(1, "Catalog version mismatch");
-    return FailedToFetchCatalog();
+    return FailedToFetchCatalog(/*should_retry=*/true);
   }
 
   SuccessfullyFetchedCatalog(*catalog);
@@ -134,12 +139,14 @@ void CatalogUrlRequest::SuccessfullyFetchedCatalog(const CatalogInfo& catalog) {
   FetchAfterDelay();
 }
 
-void CatalogUrlRequest::FailedToFetchCatalog() {
+void CatalogUrlRequest::FailedToFetchCatalog(bool should_retry) {
   BLOG(1, "Failed to fetch catalog");
 
   NotifyFailedToFetchCatalog();
 
-  Retry();
+  if (should_retry) {
+    Retry();
+  }
 }
 
 void CatalogUrlRequest::Retry() {
