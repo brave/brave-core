@@ -7,4 +7,5 @@ module brave_account.mojom;
 
 interface BraveAccountHandler {
   GetPasswordStrength(string password) => (int32 strength);
+  OpenDialog();
 };

@@ -1,0 +1,210 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/webui/brave_account/brave_account_dialogs_ui.h"
+
+#include "base/containers/span.h"
+#include "brave/components/brave_account/resources/grit/brave_account_resources.h"
+#include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_dialogs.h"
+#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+#include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_strings.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_data_source.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/compositor/layer.h"
+#include "ui/views/widget/widget_delegate.h"
+#include "ui/webui/webui_util.h"
+
+namespace {
+constexpr char16_t kBraveAccountSelfCustodyLearnMoreURL[] =
+    u"https://search.brave.com";
+constexpr char16_t kBraveAccountTermsOfServiceURL[] =
+    u"https://brave.com/terms-of-use/";
+constexpr char16_t kBraveAccountPrivacyAgreementURL[] =
+    u"https://brave.com/privacy/browser/";
+
+void AddStringResources(content::WebUIDataSource* source) {
+  static constexpr webui::LocalizedString kStrings[] = {
+      // Row:
+      {"braveAccountRowTitle", IDS_BRAVE_ACCOUNT_ROW_TITLE},
+      {"braveAccountRowDescription", IDS_BRAVE_ACCOUNT_ROW_DESCRIPTION},
+      {"braveAccountGetStartedButtonLabel",
+       IDS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL},
+      {"braveAccountManageAccountButtonLabel",
+       IDS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL},
+
+      // 'Entry' dialog:
+      {"braveAccountEntryDialogTitle", IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE},
+      {"braveAccountEntryDialogDescription",
+       IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_DESCRIPTION},
+      {"braveAccountCreateBraveAccountButtonLabel",
+       IDS_BRAVE_ACCOUNT_ENTRY_DIALOG_CREATE_BRAVE_ACCOUNT_BUTTON_LABEL},
+      {"braveAccountAlreadyHaveAccountSignInButtonLabel",
+       IDS_BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL},
+      {"braveAccountSelfCustodyButtonLabel",
+       IDS_BRAVE_ACCOUNT_SELF_CUSTODY_BUTTON_LABEL},
+
+      // 'Create' dialog:
+      {"braveAccountCreateDialogTitle", IDS_BRAVE_ACCOUNT_CREATE_DIALOG_TITLE},
+      {"braveAccountCreateDialogDescription",
+       IDS_BRAVE_ACCOUNT_CREATE_DIALOG_DESCRIPTION},
+      {"braveAccountEmailInputErrorMessage",
+       IDS_BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE},
+      {"braveAccountCreatePasswordInputLabel",
+       IDS_BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL},
+      {"braveAccountPasswordStrengthMeterWeak",
+       IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK},
+      {"braveAccountPasswordStrengthMeterMedium",
+       IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM},
+      {"braveAccountPasswordStrengthMeterStrong",
+       IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG},
+      {"braveAccountConfirmPasswordInputLabel",
+       IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL},
+      {"braveAccountConfirmPasswordInputPlaceholder",
+       IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_PLACEHOLDER},
+      {"braveAccountConfirmPasswordInputErrorMessage",
+       IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE},
+      {"braveAccountConfirmPasswordInputSuccessMessage",
+       IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE},
+      {"braveAccountCreateAccountButtonLabel",
+       IDS_BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL},
+
+      // 'Sign In' dialog:
+      {"braveAccountSignInDialogTitle", IDS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE},
+      {"braveAccountSignInDialogDescription",
+       IDS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_DESCRIPTION},
+      {"braveAccountPasswordInputLabel",
+       IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL},
+      {"braveAccountForgotPasswordButtonLabel",
+       IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL},
+      {"braveAccountSignInButtonLabel", IDS_BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL},
+
+      // 'Forgot Password' dialog:
+      {"braveAccountForgotPasswordDialogTitle",
+       IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE},
+      {"braveAccountForgotPasswordDialogDescription",
+       IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION},
+      {"braveAccountAlertMessage", IDS_BRAVE_ACCOUNT_ALERT_MESSAGE},
+      {"braveAccountCancelButtonLabel", IDS_BRAVE_ACCOUNT_CANCEL_BUTTON_LABEL},
+      {"braveAccountResetPasswordButtonLabel",
+       IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL},
+
+      // Common:
+      {"braveAccountEmailInputLabel", IDS_BRAVE_ACCOUNT_EMAIL_INPUT_LABEL},
+      {"braveAccountEmailInputPlaceholder",
+       IDS_BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER},
+      {"braveAccountPasswordInputPlaceholder",
+       IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER},
+  };
+
+  source->AddLocalizedStrings(kStrings);
+
+  source->AddString(
+      "braveAccountSelfCustodyDescription",
+      l10n_util::GetStringFUTF16(IDS_BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION,
+                                 kBraveAccountSelfCustodyLearnMoreURL));
+  source->AddString(
+      "braveAccountConsentCheckboxLabel",
+      l10n_util::GetStringFUTF16(IDS_BRAVE_ACCOUNT_CONSENT_CHECKBOX_LABEL,
+                                 kBraveAccountTermsOfServiceURL,
+                                 kBraveAccountPrivacyAgreementURL));
+}
+}  // namespace
+
+BraveAccountDialogsUI::BraveAccountDialogsUI(content::WebUI* web_ui)
+    : content::WebUIController(web_ui) {
+  content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
+      web_ui->GetWebContents()->GetBrowserContext(), kBraveAccountDialogsHost);
+
+  webui::SetupWebUIDataSource(source, kBraveAccountResources,
+                              IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOGS_HTML);
+
+  AddStringResources(source);
+
+  source->AddResourcePath("full_brave_brand.svg",
+                          IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_SVG);
+  source->AddResourcePath("full_brave_brand_dark.svg",
+                          IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_DARK_SVG);
+  source->UseStringsJs();
+}
+
+BraveAccountDialogsUI::~BraveAccountDialogsUI() = default;
+
+BraveAccountDialogsDialog::BraveAccountDialogsDialog() = default;
+
+void BraveAccountDialogsDialog::Show(content::WebUI* web_ui) {
+  // chrome::ShowWebDialog(web_ui->GetWebContents()->GetNativeView(),
+  //                       Profile::FromWebUI(web_ui), new
+  //                       BraveAccountDialogsDialog());
+  const int kSigninEmailConfirmationDialogWidth = 500;
+  const int kSigninEmailConfirmationDialogMinHeight = 470;
+  const int kSigninEmailConfirmationDialogMaxHeight = 794;
+  gfx::Size min_size(kSigninEmailConfirmationDialogWidth,
+                     kSigninEmailConfirmationDialogMinHeight);
+  gfx::Size max_size(kSigninEmailConfirmationDialogWidth,
+                     kSigninEmailConfirmationDialogMaxHeight);
+
+  auto* delegate = ShowConstrainedWebDialogWithAutoResize(
+      Profile::FromWebUI(web_ui),
+      base::WrapUnique(new BraveAccountDialogsDialog()),
+      web_ui->GetWebContents(), min_size, max_size);
+  DCHECK(delegate);
+  auto* widget =
+      views::Widget::GetWidgetForNativeWindow(delegate->GetNativeDialog());
+  if (widget && widget->GetLayer()) {
+    widget->GetLayer()->SetRoundedCornerRadius(gfx::RoundedCornersF(16));
+  }
+}
+
+ui::mojom::ModalType BraveAccountDialogsDialog::GetDialogModalType() const {
+  return ui::mojom::ModalType::kWindow;
+}
+
+std::u16string BraveAccountDialogsDialog::GetDialogTitle() const {
+  return u"";
+}
+
+GURL BraveAccountDialogsDialog::GetDialogContentURL() const {
+  return GURL(kBraveAccountDialogsURL);
+}
+
+void BraveAccountDialogsDialog::GetWebUIMessageHandlers(
+    std::vector<content::WebUIMessageHandler*>* handlers) {}
+
+void BraveAccountDialogsDialog::GetDialogSize(gfx::Size* size) const {
+  const int kDefaultWidth = 500;
+  const int kDefaultHeight = 754;
+  size->SetSize(kDefaultWidth, kDefaultHeight);
+}
+
+std::string BraveAccountDialogsDialog::GetDialogArgs() const {
+  return "";
+}
+
+void BraveAccountDialogsDialog::OnDialogShown(content::WebUI* webui) {
+  webui_ = webui;
+}
+
+void BraveAccountDialogsDialog::OnDialogClosed(const std::string& json_retval) {
+  VLOG(0) << "deleted";
+  // delete this;
+}
+
+void BraveAccountDialogsDialog::OnCloseContents(content::WebContents* source,
+                                                bool* out_close_dialog) {
+  *out_close_dialog = true;
+}
+
+bool BraveAccountDialogsDialog::ShouldShowDialogTitle() const {
+  return false;
+}
+
+BraveAccountDialogsDialog::~BraveAccountDialogsDialog() {
+  VLOG(0) << "~BraveAccountDialogsDialog()";
+}
