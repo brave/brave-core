@@ -66,17 +66,22 @@ void LeoProvider::Start(const AutocompleteInput& input, bool minimal_changes) {
     return;
   }
 
-  // This score is approximate number used for keyword search. The
+  // The default score is an approximate number used for keyword search. The
   // |SearchProvider| could add or take away score a little bit, but we don't
   // need that for now.
-  constexpr int kRelevance = 1500;
+  // The high relevance is meant to be above other values.
+  constexpr int kDefaultRelevance = 1500;
+  constexpr int kHighRelevance = 2500;
+  const int relevance = ai_chat::features::IsAIChatFirstEnabled()
+                            ? kHighRelevance
+                            : kDefaultRelevance;
 
   // Use SEARCH_SUGGEST_ENTITY match type so that the match.description can be
   // visible from OmniboxResultView.
   constexpr AutocompleteMatchType::Type kMatchType =
       AutocompleteMatchType::SEARCH_SUGGEST_ENTITY;
 
-  AutocompleteMatch match(/*provider*/ this, kRelevance, /*deletable*/ false,
+  AutocompleteMatch match(/*provider*/ this, relevance, /*deletable*/ false,
                           kMatchType);
 
   auto text = input.text();
@@ -97,6 +102,11 @@ void LeoProvider::Start(const AutocompleteInput& input, bool minimal_changes) {
   match.suggest_type = omnibox::SuggestType::TYPE_ENTITY;
   match.RecordAdditionalInfo(kIsMatchFromLeoProviderKey, true);
   match.takeover_action = base::MakeRefCounted<LeoAction>(text);
+  // If AIChatFirst is enabled, then allow it to show up as first and
+  // match to things users enter and press enter.
+  if (ai_chat::features::IsAIChatFirstEnabled()) {
+    match.allowed_to_be_default_match = true;
+  }
 
   matches_.push_back(std::move(match));
 
