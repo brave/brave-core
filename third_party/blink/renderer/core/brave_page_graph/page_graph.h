@@ -93,6 +93,8 @@ class EventTarget;
 class EncodedFormData;
 class ModuleScriptCreationParams;
 class ReferrerScriptInfo;
+class QualifiedName;
+class RegisteredEventListener;
 
 enum class RenderBlockingBehavior : uint8_t;
 enum class ResourceType : uint8_t;
