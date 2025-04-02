@@ -567,7 +567,7 @@
     *** mIsLocationBarFocusedFromNtpScroll;
     *** mContext;
     *** mBrandedColorScheme;
-    *** mAssistantVoiceSearchServiceSupplier;
+    *** mTemplateUrlServiceSupplier;
     <init>(...);
     *** updateButtonVisibility(...);
     *** onPrimaryColorChanged(...);
