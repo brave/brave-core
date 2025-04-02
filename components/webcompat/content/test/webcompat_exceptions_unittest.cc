@@ -7,9 +7,8 @@
 #include <string_view>
 
 #include "base/feature_list.h"
-#include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/brave_browser_process.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -19,27 +18,20 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
-#include "chrome/test/base/platform_browser_test.h"
+#include "chrome/test/base/testing_browser_process.h"
+#include "chrome/test/base/testing_profile_manager.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "components/google/core/common/google_switches.h"
-#include "components/network_session_configurator/common/network_switches.h"
-#include "content/public/browser/render_frame_host.h"
-#include "content/public/test/browser_test.h"
-#include "content/public/test/browser_test_utils.h"
+#include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_utils.h"
-#include "net/dns/mock_host_resolver.h"
-#include "net/test/embedded_test_server/default_handlers.h"
 #include "url/origin.h"
-
-#if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser_navigator_params.h"
-#endif
 
 using brave_shields::ControlType;
 using content_settings::mojom::ContentSettingsType;
 using enum ContentSettingsType;
+using brave_component_updater::LocalDataFilesService;
+using brave_component_updater::LocalDataFilesServiceFactory;
 
 namespace {
 
@@ -72,88 +64,61 @@ constexpr TestCase kTestCases[] = {
 
 }  // namespace
 
-class WebcompatExceptionsBrowserTest : public PlatformBrowserTest {
+class WebcompatExceptionsTest : public testing::Test {
  public:
-  WebcompatExceptionsBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+  WebcompatExceptionsTest()
+      : testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {
     feature_list_.InitAndEnableFeature(
         webcompat::features::kBraveWebcompatExceptionsService);
   }
 
-  void SetUpOnMainThread() override {
-    PlatformBrowserTest::SetUpOnMainThread();
-
-    host_resolver()->AddRule("*", "127.0.0.1");
-
-    base::FilePath test_data_dir =
-        base::PathService::CheckedGet(brave::DIR_TEST_DATA);
-    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
-    https_server_.AddDefaultHandlers(GetTestDataDir());
-
-    ASSERT_TRUE(https_server_.Start());
-
-    url_ = https_server_.GetURL("a.test", "/simple.html");
+  void SetUp() override {
+    ASSERT_TRUE(testing_profile_manager_.SetUp());
+    profile_ = testing_profile_manager()->CreateTestingProfile("profile");
+    testing::Test::SetUp();
   }
 
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    PlatformBrowserTest::SetUpCommandLine(command_line);
-    // Since the HTTPS server only serves a valid cert for localhost,
-    // this is needed to load pages from "www.google.*" without an interstitial.
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
-
-    // The production code only allows known ports (80 for http and 443 for
-    // https), but the test server runs on a random port.
-    command_line->AppendSwitch(switches::kIgnoreGooglePortNumbers);
+  TestingProfileManager* testing_profile_manager() {
+    return &testing_profile_manager_;
   }
 
-  base::FilePath GetTestDataDir() {
-    return base::FilePath(FILE_PATH_LITERAL("net/data/url_request_unittest"));
-  }
-
-  const net::EmbeddedTestServer& https_server() { return https_server_; }
-  const GURL& url() { return url_; }
-
-  content::WebContents* GetActiveWebContents() {
-    return chrome_test_utils::GetActiveWebContents(this);
-  }
-
-  HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(
-        chrome_test_utils::GetProfile(this));
-  }
-
-  void NavigateToURL(const std::string& origin, const std::string& path) {
-    ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),
-                                       https_server().GetURL(origin, path)));
-  }
-
- protected:
-  base::test::ScopedFeatureList feature_list_;
+  TestingProfile* profile() { return profile_.get(); }
 
  private:
-  GURL url_;
-  net::test_server::EmbeddedTestServer https_server_;
+  content::BrowserTaskEnvironment task_environment_;
+  TestingProfileManager testing_profile_manager_;
+  raw_ptr<TestingProfile> profile_;
+  base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(WebcompatExceptionsBrowserTest, RemoteSettingsTest) {
-  NavigateToURL("a.test", "/simple.html");
-  const auto pattern = ContentSettingsPattern::FromString("*://a.test/*");
+TEST_F(WebcompatExceptionsTest, RemoteSettingsTest) {
+  HostContentSettingsMap* map =
+      HostContentSettingsMapFactory::GetForProfile(profile());
+
+  std::unique_ptr<LocalDataFilesService> dummy_local_data_files_service =
+      LocalDataFilesServiceFactory(nullptr);
+
   auto* webcompat_exceptions_service =
       webcompat::WebcompatExceptionsService::CreateInstance(
-          g_brave_browser_process->local_data_files_service());
-  auto* map = content_settings();
+          dummy_local_data_files_service.get());
+
   for (const auto& test_case : kTestCases) {
     // Check the default setting
     const auto observed_setting_default =
         map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
     EXPECT_NE(observed_setting_default, CONTENT_SETTING_ALLOW);
 
-    // Create a rule and then reload the page.
-    webcompat::PatternsByWebcompatTypeMap rule_map;
-    rule_map[test_case.type] = std::vector<ContentSettingsPattern>({pattern});
-    webcompat_exceptions_service->SetRulesForTesting(rule_map);
-    NavigateToURL("a.test", "/simple.html");
+    // Create a rule
+    const std::string json_string = std::string(R"([{
+      "include": [
+        "*://a.test/*"
+      ],
+      "exceptions": [
+        ")") + test_case.name + std::string(R"("
+      ],
+      "issue": "test"
+    }])");
+    webcompat_exceptions_service->SetRulesForTesting(json_string);
 
     // Check the remote setting gets used
     const auto observed_setting_remote =

@@ -49,7 +49,7 @@ class WebcompatExceptionsService
   // HostContentSettingsMap::GetContentSetting(...)
   std::vector<ContentSettingsPattern> GetPatterns(
       ContentSettingsType webcompat_type);
-  void SetRulesForTesting(PatternsByWebcompatTypeMap patterns_by_webcompat_type);
+  void SetRulesForTesting(const std::string& json_string);
 
  private:
   void LoadWebcompatExceptions(const base::FilePath& install_dir);
