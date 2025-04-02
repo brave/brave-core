@@ -12,9 +12,9 @@ cargo_crate("lib") {
   crate_name = "curve25519_dalek_derive"
   epoch = "0.1"
   crate_type = "proc-macro"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/src/lib.rs" ]
-  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/src/../README.md" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-v0_1/src/lib.rs"
+  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-v0_1/src/lib.rs" ]
+  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-v0_1/src/../README.md" ]
 
   build_native_rust_unit_tests = false
   edition = "2021"

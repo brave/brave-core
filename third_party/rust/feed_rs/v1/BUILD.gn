@@ -12,29 +12,30 @@ cargo_crate("lib") {
   crate_name = "feed_rs"
   epoch = "1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/model.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/atom/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/atom/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/fuzz.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/itunes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/json/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/json/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/mediarss.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss0/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss0/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss1/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss1/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss2/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss2/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/util.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/util/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/util/test.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/xml/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/xml/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/model.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/atom/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/atom/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/fuzz.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/itunes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/json/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/json/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/mediarss.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/rss0/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/rss0/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/rss1/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/rss1/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/rss2/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/rss2/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/parser/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/util/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/util/test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/xml/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-v1/src/xml/tests.rs",
   ]
   inputs = []
 
