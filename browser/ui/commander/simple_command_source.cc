@@ -14,11 +14,12 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/command_utils.h"
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/commander/command_source.h"
 #include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/accelerator_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -28,12 +29,20 @@ namespace commander {
 
 namespace {
 
-void MaybeReportCommandExecution(int command_id) {
+void MaybeReportCommandExecution(Browser* browser, int command_id) {
   if (command_id == IDC_TOGGLE_AI_CHAT) {
-    ai_chat::AIChatMetrics* metrics =
-        g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
-    CHECK(metrics);
-    metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kOmniboxCommand);
+    auto* profile_metrics =
+        misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+            browser->profile());
+    if (!profile_metrics) {
+      return;
+    }
+    auto* ai_chat_metrics = profile_metrics->GetAIChatMetrics();
+    if (!ai_chat_metrics) {
+      return;
+    }
+    ai_chat_metrics->HandleOpenViaEntryPoint(
+        ai_chat::EntryPoint::kOmniboxCommand);
   }
 }
 
@@ -77,7 +86,7 @@ CommandSource::CommandResults SimpleCommandSource::GetCommands(
 
     item->command = base::BindOnce(
         [](Browser* browser, int command_id) {
-          MaybeReportCommandExecution(command_id);
+          MaybeReportCommandExecution(browser, command_id);
           chrome::ExecuteCommand(browser, command_id);
         },
         // Unretained is safe here, as the commands will be reset if the browser

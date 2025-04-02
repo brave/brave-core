@@ -59,14 +59,15 @@ void RecordFeatureUsage(PrefService* prefs,
                         const char* last_use_time_pref_name,
                         const base::Time& last_new_use_time) {
   DCHECK(prefs);
-  DCHECK(first_use_time_pref_name);
   DCHECK(last_use_time_pref_name);
   DCHECK(!last_new_use_time.is_null());
 
   base::Time new_time_midnight = last_new_use_time.LocalMidnight();
   prefs->SetTime(last_use_time_pref_name, new_time_midnight);
-  if (prefs->GetTime(first_use_time_pref_name).is_null()) {
-    prefs->SetTime(first_use_time_pref_name, new_time_midnight);
+  if (first_use_time_pref_name) {
+    if (prefs->GetTime(first_use_time_pref_name).is_null()) {
+      prefs->SetTime(first_use_time_pref_name, new_time_midnight);
+    }
   }
 }
 

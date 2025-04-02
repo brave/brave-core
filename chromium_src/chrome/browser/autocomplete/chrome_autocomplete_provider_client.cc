@@ -21,8 +21,8 @@
 #include "ui/base/window_open_disposition.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "chrome/browser/ui/omnibox/clipboard_utils.h"
@@ -111,10 +111,14 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
           std::nullopt /* uploaded images */,
           false /* from_brave_search_SERP */);
 
-  ai_chat::AIChatMetrics* metrics =
-      g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
-  CHECK(metrics);
-  metrics->RecordOmniboxOpen();
+  auto* profile_metrics =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+          profile_);
+  if (profile_metrics) {
+    auto* ai_chat_metrics = profile_metrics->GetAIChatMetrics();
+    CHECK(ai_chat_metrics);
+    ai_chat_metrics->RecordOmniboxOpen();
+  }
 
   conversation_handler->SubmitHumanConversationEntry(std::move(turn));
 #endif

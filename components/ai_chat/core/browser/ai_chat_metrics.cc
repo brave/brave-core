@@ -181,7 +181,8 @@ constexpr auto kUsageDailyHistogramNames =
 
 }  // namespace
 
-AIChatMetrics::AIChatMetrics(PrefService* local_state)
+AIChatMetrics::AIChatMetrics(PrefService* local_state,
+                             PrefService* profile_prefs)
     : is_premium_(
           local_state->GetBoolean(prefs::kBraveChatP3ALastPremiumStatus)),
       chat_count_storage_(local_state,
@@ -207,7 +208,8 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state)
       full_page_switch_storage_(local_state,
                                 prefs::kBraveChatP3AFullPageSwitches),
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-      local_state_(local_state) {
+      local_state_(local_state),
+      tab_focus_metrics_(local_state, profile_prefs, this) {
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   for (int i = 0; i <= static_cast<int>(ContextMenuAction::kMaxValue); i++) {
     ContextMenuAction action = static_cast<ContextMenuAction>(i);
@@ -258,6 +260,7 @@ void AIChatMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveChatP3AFullPageSwitches);
   registry->RegisterListPref(prefs::kBraveChatP3ARateLimitStops);
   registry->RegisterListPref(prefs::kBraveChatP3AContextLimits);
+  AIChatTabFocusMetrics::RegisterPrefs(registry);
 }
 
 void AIChatMetrics::Bind(mojo::PendingReceiver<mojom::Metrics> receiver) {
@@ -406,6 +409,10 @@ void AIChatMetrics::OnQuickActionStatusChange(bool is_enabled) {
   prompted_via_quick_action_ = is_enabled;
 }
 
+bool AIChatMetrics::IsPremium() const {
+  return is_premium_;
+}
+
 void AIChatMetrics::MaybeReportFirstChatPrompts(bool new_prompt_made) {
   if (local_state_->GetBoolean(prefs::kBraveChatP3AFirstChatPromptsReported)) {
     return;
@@ -478,6 +485,7 @@ void AIChatMetrics::ReportAllMetrics() {
   ReportFeatureUsageMetrics();
   ReportContextSource();
   ReportLimitMetrics();
+  tab_focus_metrics_.ReportAllMetrics();
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   ReportOmniboxCounts();
   ReportContextMenuMetrics();

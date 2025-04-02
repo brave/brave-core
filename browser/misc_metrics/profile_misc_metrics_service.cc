@@ -9,6 +9,7 @@
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
 #include "brave/browser/misc_metrics/theme_metrics.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
@@ -42,6 +43,10 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
   if (profile_prefs_) {
     language_metrics_ = std::make_unique<LanguageMetrics>(profile_prefs_);
     pref_change_registrar_.Init(profile_prefs_);
+    if (local_state) {
+      ai_chat_metrics_ =
+          std::make_unique<ai_chat::AIChatMetrics>(local_state, profile_prefs_);
+    }
   }
   auto* profile = Profile::FromBrowserContext(context);
   auto* history_service = HistoryServiceFactory::GetForProfile(
@@ -116,6 +121,10 @@ void ProfileMiscMetricsService::ReportSimpleMetrics() {
   UMA_HISTOGRAM_BOOLEAN(
       kSearchSuggestEnabledHistogramName,
       profile_prefs_->GetBoolean(prefs::kSearchSuggestEnabled));
+}
+
+ai_chat::AIChatMetrics* ProfileMiscMetricsService::GetAIChatMetrics() {
+  return ai_chat_metrics_.get();
 }
 
 }  // namespace misc_metrics
