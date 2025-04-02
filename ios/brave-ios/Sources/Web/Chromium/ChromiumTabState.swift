@@ -12,10 +12,6 @@ import Shared
 import WebKit
 import os
 
-// TODO:
-// - Need a way to discard or ignore restoration when switching between flags
-// - Test background audio play given that hiding a tab removes it from the hierarchy
-
 class ChromiumTabState: TabState, TabStateImpl {
   init(
     id: UUID,
