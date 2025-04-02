@@ -181,7 +181,8 @@ constexpr auto kUsageDailyHistogramNames =
 
 }  // namespace
 
-AIChatMetrics::AIChatMetrics(PrefService* local_state)
+AIChatMetrics::AIChatMetrics(PrefService* local_state,
+                             PrefService* profile_prefs)
     : is_premium_(
           local_state->GetBoolean(prefs::kBraveChatP3ALastPremiumStatus)),
       chat_count_storage_(local_state,
@@ -228,6 +229,10 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state)
         local_state_, prefs::kBraveChatP3AContextSourceUsages,
         kContextSourceKeys.at(context_source));
   }
+  if (profile_prefs) {
+    tab_focus_metrics_ = std::make_unique<AIChatTabFocusMetrics>(
+        local_state_, profile_prefs, this);
+  }
 }
 
 AIChatMetrics::~AIChatMetrics() = default;
@@ -258,6 +263,7 @@ void AIChatMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveChatP3AFullPageSwitches);
   registry->RegisterListPref(prefs::kBraveChatP3ARateLimitStops);
   registry->RegisterListPref(prefs::kBraveChatP3AContextLimits);
+  AIChatTabFocusMetrics::RegisterPrefs(registry);
 }
 
 void AIChatMetrics::Bind(mojo::PendingReceiver<mojom::Metrics> receiver) {
@@ -406,6 +412,10 @@ void AIChatMetrics::OnQuickActionStatusChange(bool is_enabled) {
   prompted_via_quick_action_ = is_enabled;
 }
 
+bool AIChatMetrics::IsPremium() const {
+  return is_premium_;
+}
+
 void AIChatMetrics::MaybeReportFirstChatPrompts(bool new_prompt_made) {
   if (local_state_->GetBoolean(prefs::kBraveChatP3AFirstChatPromptsReported)) {
     return;
@@ -478,6 +488,9 @@ void AIChatMetrics::ReportAllMetrics() {
   ReportFeatureUsageMetrics();
   ReportContextSource();
   ReportLimitMetrics();
+  if (tab_focus_metrics_) {
+    tab_focus_metrics_->ReportAllMetrics();
+  }
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   ReportOmniboxCounts();
   ReportContextMenuMetrics();

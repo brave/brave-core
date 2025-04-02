@@ -18,6 +18,7 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_search_conversion/p3a.h"
@@ -177,6 +178,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   misc_metrics::ProcessMiscMetrics::RegisterPrefs(registry);
   misc_metrics::PageMetrics::RegisterPrefs(registry);
+  ai_chat::AIChatMetrics::RegisterPrefs(registry);
   brave_ads::BraveStatsHelper::RegisterLocalStatePrefs(registry);
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
 

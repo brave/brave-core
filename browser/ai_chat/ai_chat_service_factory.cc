@@ -13,7 +13,8 @@
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -57,6 +58,7 @@ AIChatServiceFactory::AIChatServiceFactory()
   DependsOn(skus::SkusServiceFactory::GetInstance());
   DependsOn(ModelServiceFactory::GetInstance());
   DependsOn(TabTrackerServiceFactory::GetInstance());
+  DependsOn(misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance());
 }
 
 AIChatServiceFactory::~AIChatServiceFactory() = default;
@@ -73,13 +75,15 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
       std::make_unique<AIChatCredentialManager>(
           std::move(skus_service_getter), g_browser_process->local_state());
 
+  auto* profile_metrics =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+          context);
+
   return std::make_unique<AIChatService>(
       ModelServiceFactory::GetForBrowserContext(context),
       TabTrackerServiceFactory::GetForBrowserContext(context),
       std::move(credential_manager), user_prefs::UserPrefs::Get(context),
-      (g_brave_browser_process->process_misc_metrics())
-          ? g_brave_browser_process->process_misc_metrics()->ai_chat_metrics()
-          : nullptr,
+      profile_metrics ? profile_metrics->GetAIChatMetrics() : nullptr,
       g_browser_process->os_crypt_async(),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),

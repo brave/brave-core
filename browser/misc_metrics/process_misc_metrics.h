@@ -13,10 +13,6 @@
 class PrefRegistrySimple;
 class PrefService;
 
-namespace ai_chat {
-class AIChatMetrics;
-}  // namespace ai_chat
-
 namespace misc_metrics {
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -51,7 +47,6 @@ class ProcessMiscMetrics {
   TabMetrics* tab_metrics();
 #endif
   UptimeMonitorImpl* uptime_monitor();
-  ai_chat::AIChatMetrics* ai_chat_metrics();
 
  private:
 #if !BUILDFLAG(IS_ANDROID)
@@ -63,7 +58,6 @@ class ProcessMiscMetrics {
   std::unique_ptr<PrivacyHubMetrics> privacy_hub_metrics_;
   std::unique_ptr<TabMetrics> tab_metrics_;
 #endif
-  std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_;
   std::unique_ptr<DohMetrics> doh_metrics_;
   std::unique_ptr<UptimeMonitorImpl> uptime_monitor_;
 };

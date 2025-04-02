@@ -4,7 +4,18 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("misc_metrics") {
-  sources = [ "//brave/browser/misc_metrics/process_misc_metrics.h" ]
+  sources = [
+    "//brave/browser/misc_metrics/process_misc_metrics.h",
+    "//brave/browser/misc_metrics/profile_misc_metrics_service.h",
+    "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.h",
+  ]
+
+  deps = [
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//content/public/browser",
+  ]
 }
 
 static_library("misc_metrics_impl") {
@@ -19,8 +30,6 @@ static_library("misc_metrics_impl") {
     "//brave/browser/misc_metrics/page_metrics_tab_helper.cc",
     "//brave/browser/misc_metrics/page_metrics_tab_helper.h",
     "//brave/browser/misc_metrics/process_misc_metrics.cc",
-    "//brave/browser/misc_metrics/profile_misc_metrics_service.h",
-    "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.h",
     "//brave/browser/misc_metrics/uptime_monitor_impl.h",
   ]
 
