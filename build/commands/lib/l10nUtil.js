@@ -89,7 +89,7 @@ const braveSpecificGeneratedResourcesPath = path.resolve(path.join(srcDir, 'brav
 const braveResourcesComponentsStringsPath = path.resolve(path.join(srcDir, 'brave', 'components', 'resources', 'brave_components_strings.grd'))
 const braveExtensionMessagesPath = path.resolve(path.join(srcDir, 'brave', 'components', 'brave_extension', 'extension', 'brave_extension', '_locales', 'en_US', 'messages.json'))
 const braveAndroidBraveStringsPath = path.resolve(path.join(srcDir, 'brave', 'browser', 'ui', 'android', 'strings', 'android_brave_strings.grd'))
-const braveAndroidCustomAppIconsStringsPath = path.resolve(path.join(srcDir, 'brave','browser','custom_app_icons', 'android', 'java', 'org', 'chromium','brave','browser','custom_app_icons', 'android_custom_app_icons_strings.grd'))
+const braveAndroidCustomAppIconsStringsPath = path.resolve(path.join(srcDir, 'brave','browser','custom_app_icons', 'android', 'java', 'strings', 'android_custom_app_icons_strings.grd'))
 
 // Helper function to find all grdp parts in a grd.
 function getGrdPartsFromGrd(path) {
