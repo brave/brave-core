@@ -36,7 +36,8 @@ public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
             @NonNull DoubleConsumer onToolbarAlphaChange,
             @NonNull UserEducationHelper userEducationHelper,
             @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
-            @NonNull ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier) {
+            @NonNull ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
+            @NonNull TabGroupCreationUiFlow tabGroupCreationUiFlow) {
         super(
                 context,
                 factory,
@@ -46,7 +47,8 @@ public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
                 onToolbarAlphaChange,
                 userEducationHelper,
                 edgeToEdgeSupplier,
-                compositorViewHolderSupplier);
+                compositorViewHolderSupplier,
+                tabGroupCreationUiFlow);
 
         ResourceButtonData newReferenceButtonData =
                 new ResourceButtonData(
