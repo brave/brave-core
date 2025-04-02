@@ -541,6 +541,7 @@ brave_browser_ui_android_toolbar_sources = [
 brave_java_base_sources = [
   "//brave/android/java/org/chromium/base/BraveCommandLineInitUtil.java",
   "//brave/android/java/org/chromium/base/BraveFeatureList.java",
+  "//brave/android/java/org/chromium/base/BraveIntent.java",
   "//brave/android/java/org/chromium/base/BravePreferenceKeys.java",
   "//brave/android/java/org/chromium/base/BraveReflectionUtil.java",
   "//brave/android/java/org/chromium/base/BraveUrlConstants.java",
