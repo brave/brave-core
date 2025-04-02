@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/lib/gn.rs b/tools/crates/gnrt/lib/gn.rs
-index 4a61217a166dadf8a44752b92cd362105d8fa022..6a28c161f4cc2f037b8d7696d5b63df843ebafa2 100644
+index 779c3fd3b028056075241b397f84a255cc31b21c..60c8e8c7e9cd0778d686d12232960addbce81d5b 100644
 --- a/tools/crates/gnrt/lib/gn.rs
 +++ b/tools/crates/gnrt/lib/gn.rs
 @@ -201,8 +201,9 @@ pub fn build_rule_from_dep(
