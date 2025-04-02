@@ -11727,8 +11727,8 @@ A(z) <ph name="DOMAIN"/> megköveteli, hogy ne távolítsa el az intelligens ká
     }</translation>
 <translation id="4304377874648098617">Privát módban vagy</translation>
 <translation id="5749925632993910318">{0, plural,
-      one {}=1 {Close Private}
-      other {Close Private (# windows)}
+      =1 {Privát ablak bezárása}
+      other {Privát ablak bezárása (# ablak)}
     }</translation>
 <translation id="7253003527666031200">További akadálymentesítési eszközök keresése a Webáruházban</translation>
 <translation id="5832813618714645810">Profilok</translation>
