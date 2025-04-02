@@ -123,6 +123,7 @@ export type StringKey =
   'contributeSendingText' |
   'contributeSuccessText' |
   'contributeSuccessTitle' |
+  'contributeTitle' |
   'contributeWeb3Label' |
   'contributeWeb3Subtext' |
   'countrySelectPlaceholder' |
