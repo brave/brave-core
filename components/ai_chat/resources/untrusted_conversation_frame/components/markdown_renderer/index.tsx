@@ -139,10 +139,13 @@ export function RenderLink(props: RenderLinkProps) {
     return <span>{children}</span>
   }
 
+  const isCitation = typeof children === 'string' && /^\d+$/.test(children)
+
   return (
     <>
       <button
-        className={styles.conversationLink}
+        className={`${styles.conversationLink}${isCitation ?
+          ` ${styles.citation}` : ''}`}
         onClick={handleLinkClicked}
       >
         {children}

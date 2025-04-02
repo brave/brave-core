@@ -54,12 +54,27 @@ function AssistantEvent(props: {
   isEntryInProgress: boolean,
   allowedLinks: string[]
 }) {
-  if (props.event.completionEvent) {
+  const { allowedLinks, event, isEntryInProgress } = props;
+
+  if (event.completionEvent) {
+    const numberedLinks =
+      allowedLinks.length > 0
+        ? allowedLinks.map((url: string, index: number) =>
+                           `[${index + 1}]: ${url}`).join('\n') + '\n\n'
+        : '';
+
+    // Replaces 2 consecutive citations with a separator so that
+    // they will both render as links.
+    const completion =
+      event.completionEvent.completion.replace(/(\[\d+\])(?=\[\d+\])/g,
+                                               '$1\u200B')
+    const fullText = `${numberedLinks}${completion}`;
+
     return (
       <MarkdownRenderer
-        shouldShowTextCursor={props.isEntryInProgress}
-        text={props.event.completionEvent.completion}
-        allowedLinks={props.allowedLinks}
+        shouldShowTextCursor={isEntryInProgress}
+        text={fullText}
+        allowedLinks={allowedLinks}
       />
     )
   }

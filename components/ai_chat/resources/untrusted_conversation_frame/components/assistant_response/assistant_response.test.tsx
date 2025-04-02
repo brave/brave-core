@@ -60,7 +60,8 @@ test('AssistantResponse should include expandable sources', async () => {
       ])
     ]
   }
-  render(<AssistantResponse entry={testEntry} isEntryInProgress={false} />)
+  render(<AssistantResponse
+            entry={testEntry} isEntryInProgress={false} allowedLinks={[]} />)
   // There should be the first items showing
   let links = screen.getAllByRole('link')
   expect(links).toHaveLength(4)
