@@ -12,10 +12,10 @@ cargo_crate("lib") {
   crate_name = "phf_generator"
   epoch = "0.10"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/phf_generator-0.10.0/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/phf_generator-v0_10/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/phf_generator-0.10.0/src/bin/gen_hash_test.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/phf_generator-0.10.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/phf_generator-v0_10/src/bin/gen_hash_test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/phf_generator-v0_10/src/lib.rs",
   ]
   inputs = []
 

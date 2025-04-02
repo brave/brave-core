@@ -12,12 +12,12 @@ cargo_crate("lib") {
   crate_name = "chacha20poly1305"
   epoch = "0.10"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/chacha20poly1305-0.10.1/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/chacha20poly1305-v0_10/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20poly1305-0.10.1/src/cipher.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20poly1305-0.10.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20poly1305-v0_10/src/cipher.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20poly1305-v0_10/src/lib.rs",
   ]
-  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/chacha20poly1305-0.10.1/src/../README.md" ]
+  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/chacha20poly1305-v0_10/src/../README.md" ]
 
   build_native_rust_unit_tests = false
   edition = "2021"

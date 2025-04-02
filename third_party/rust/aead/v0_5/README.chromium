@@ -3,7 +3,7 @@ URL: https://crates.io/crates/aead
 Version: 0.5.2
 Revision: 1ae238c527c204dd9590e3abc406cfbb342d46ea
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/aead-0.5.2/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/aead-v0_5/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

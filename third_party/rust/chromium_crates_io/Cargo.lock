@@ -396,14 +396,14 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.5.32"
+version = "4.5.35"
 dependencies = [
  "clap_builder",
 ]
 
 [[package]]
 name = "clap_builder"
-version = "4.5.32"
+version = "4.5.35"
 dependencies = [
  "anstyle",
  "clap_lex",
@@ -546,7 +546,7 @@ dependencies = [
 
 [[package]]
 name = "cxx"
-version = "1.0.150"
+version = "1.0.156"
 dependencies = [
  "cc",
  "cxxbridge-cmd",
@@ -558,7 +558,7 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-cmd"
-version = "1.0.150"
+version = "1.0.156"
 dependencies = [
  "clap",
  "codespan-reporting",
@@ -569,11 +569,11 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-flags"
-version = "1.0.150"
+version = "1.0.156"
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.150"
+version = "1.0.156"
 dependencies = [
  "proc-macro2",
  "quote",

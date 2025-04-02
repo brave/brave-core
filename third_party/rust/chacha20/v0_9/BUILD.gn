@@ -12,16 +12,16 @@ cargo_crate("lib") {
   crate_name = "chacha20"
   epoch = "0.9"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-v0_9/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/backends.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/backends/avx2.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/backends/neon.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/backends/soft.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/backends/sse2.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/legacy.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-0.9.1/src/xchacha.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-v0_9/src/backends.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-v0_9/src/backends/avx2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-v0_9/src/backends/neon.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-v0_9/src/backends/soft.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-v0_9/src/backends/sse2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-v0_9/src/legacy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-v0_9/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chacha20-v0_9/src/xchacha.rs",
   ]
   inputs = []
 

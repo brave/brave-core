@@ -12,17 +12,18 @@ cargo_crate("lib") {
   crate_name = "core2"
   epoch = "0.4"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/core2-0.4.0/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/core2-v0_4/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/core2-0.4.0/src/error.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/core2-0.4.0/src/io/buffered.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/core2-0.4.0/src/io/cursor.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/core2-0.4.0/src/io/error.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/core2-0.4.0/src/io/impls.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/core2-0.4.0/src/io/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/core2-0.4.0/src/io/traits.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/core2-0.4.0/src/io/util.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/core2-0.4.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/core2-v0_4/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/core2-v0_4/src/io/buffered.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/core2-v0_4/src/io/cursor.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/core2-v0_4/src/io/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/core2-v0_4/src/io/impls.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/core2-v0_4/src/io/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/core2-v0_4/src/io/traits.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/core2-v0_4/src/io/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/core2-v0_4/src/lib.rs",
   ]
   inputs = []
 

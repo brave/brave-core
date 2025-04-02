@@ -12,15 +12,15 @@ cargo_crate("lib") {
   crate_name = "unsigned_varint"
   epoch = "0.8"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-0.8.0/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-v0_8/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-0.8.0/src/aio.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-0.8.0/src/codec.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-0.8.0/src/decode.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-0.8.0/src/encode.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-0.8.0/src/io.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-0.8.0/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-0.8.0/src/nom.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-v0_8/src/aio.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-v0_8/src/codec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-v0_8/src/decode.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-v0_8/src/encode.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-v0_8/src/io.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-v0_8/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-v0_8/src/nom.rs",
   ]
   inputs = []
 
