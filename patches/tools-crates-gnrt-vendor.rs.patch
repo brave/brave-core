@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/vendor.rs b/tools/crates/gnrt/vendor.rs
-index ad7fca63febf0cfaabbe4ed25270cebfc1a4b972..332fabd5fb96ae5be8f9ed22a978b15616a548a2 100644
+index ad7fca63febf0cfaabbe4ed25270cebfc1a4b972..9b2df4e0b09f25f52cd1d06ec5dd961a12706068 100644
 --- a/tools/crates/gnrt/vendor.rs
 +++ b/tools/crates/gnrt/vendor.rs
 @@ -110,7 +110,7 @@ fn vendor_impl(args: VendorCommandArgs, paths: &paths::ChromiumPaths) -> Result<
@@ -20,3 +20,12 @@ index ad7fca63febf0cfaabbe4ed25270cebfc1a4b972..332fabd5fb96ae5be8f9ed22a978b156
      else {
          // No patches for this crate.
          return Ok(());
+@@ -336,7 +336,7 @@ fn apply_patches(
+         let args = vec![
+             "apply".to_string(),
+             // We need to rebase from the old versioned directory to the new one.
+-            format!("-p{}", crate_dir.ancestors().count()),
++            format!("-p{}", crate_dir.ancestors().count()-1),
+             format!("--directory={}", crate_dir.display()),
+         ];
+         let mut c = std::process::Command::new("git");
