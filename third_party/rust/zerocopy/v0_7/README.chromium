@@ -1,9 +1,0 @@
-Name: zerocopy
-URL: https://crates.io/crates/zerocopy
-Version: 0.7.35
-License: Apache-2.0
-License File:
-Shipped: yes
-Security Critical: yes
-
-Description: Utilities for zero-copy parsing and serialization
