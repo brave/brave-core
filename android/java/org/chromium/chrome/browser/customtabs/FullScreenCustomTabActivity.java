@@ -13,7 +13,9 @@ import static org.chromium.chrome.browser.customtabs.CustomTabIntentDataProvider
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Browser;
 import android.view.Gravity;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
@@ -30,7 +33,13 @@ import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntent
 import org.chromium.chrome.browser.customtabs.content.CustomTabActivityTabController;
 import org.chromium.chrome.browser.customtabs.features.minimizedcustomtab.CustomTabMinimizationManagerHolder;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbarCoordinator;
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
+import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManagerProvider;
 import org.chromium.ui.util.ColorUtils;
 
 /** New Rewards 3.0 custom tab activity */
@@ -94,6 +103,56 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                     finish();
                 });
         parentView.addView(closeImg, layoutParams);
+
+        int count =
+                ChromeSharedPreferences.getInstance()
+                        .readInt(BravePermissionUtils.REWARDS_NOTIFICATION_PERMISSION_COUNT, 0);
+
+        if (!BravePermissionUtils.hasNotificationPermission(FullScreenCustomTabActivity.this)
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && count < 3) {
+            BravePermissionUtils.showNotificationPermissionDialog(FullScreenCustomTabActivity.this);
+            ChromeSharedPreferences.getInstance()
+                    .writeInt(
+                            BravePermissionUtils.REWARDS_NOTIFICATION_PERMISSION_COUNT, count + 1);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == BravePermissionUtils.NOTIFICATION_PERMISSION_CODE
+                && grantResults.length != 0
+                && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            Snackbar snackbar =
+                    Snackbar.make(
+                                    getResources()
+                                            .getString(
+                                                    R.string
+                                                            .enable_notifications_from_brave_to_earn_brave_rewards),
+                                    new SnackbarController() {
+                                        @Override
+                                        public void onDismissNoAction(Object actionData) {}
+
+                                        @Override
+                                        public void onAction(Object actionData) {
+                                            BravePermissionUtils.notificationSettingPage(
+                                                    FullScreenCustomTabActivity.this);
+                                        }
+                                    },
+                                    Snackbar.TYPE_ACTION,
+                                    Snackbar.UMA_UNKNOWN)
+                            .setAction(
+                                    getResources()
+                                            .getString(R.string.brave_open_system_sync_settings),
+                                    null)
+                            .setSingleLine(false)
+                            .setDuration(0); // it would use default timing for snackbar
+
+            SnackbarManager snackbarManager = SnackbarManagerProvider.from(getWindowAndroid());
+            snackbarManager.showSnackbar(snackbar);
+        }
     }
 
     public static void showPage(Context context, String url) {
