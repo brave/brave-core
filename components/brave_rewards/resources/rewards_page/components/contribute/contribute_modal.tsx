@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 import { AppModelContext, useAppState } from '../../lib/app_model_context'
+import { useLocaleContext } from '../../lib/locale_strings'
 import { isSelfCustodyProvider } from '../../../shared/lib/external_wallet'
 import { Modal } from '../modal'
 import { PaymentForm } from './payment_form'
@@ -28,6 +29,7 @@ interface Props {
 }
 
 export function ContributeModal (props: Props) {
+  const { getString } = useLocaleContext()
   const model = React.useContext(AppModelContext)
 
   const creator = useAppState((state) => state.currentCreator)
@@ -66,7 +68,12 @@ export function ContributeModal (props: Props) {
       case 'error':
         return <Modal.Header onClose={props.onClose} />
       default:
-        return <Modal.Header title='Contribute' onClose={props.onClose} />
+        return (
+          <Modal.Header
+            title={getString('contributeTitle')}
+            onClose={props.onClose}
+          />
+        )
     }
   }
 

@@ -121,6 +121,7 @@ export const localeStrings: { [K in StringKey]: string }  = {
   contributeSendingText: 'Sending contribution',
   contributeSuccessText: 'Thanks for supporting your favorite creators',
   contributeSuccessTitle: 'Contribution sent!',
+  contributeTitle: 'Contribute',
   contributeWeb3Label: 'Web3 Wallet',
   contributeWeb3Subtext: 'Use your Web3 wallet',
   countrySelectPlaceholder: 'Select',

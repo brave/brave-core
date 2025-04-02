@@ -185,6 +185,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"contributeSendingText", IDS_REWARDS_CONTRIBUTE_SENDING_TEXT},
     {"contributeSuccessText", IDS_REWARDS_CONTRIBUTE_SUCCESS_TEXT},
     {"contributeSuccessTitle", IDS_REWARDS_CONTRIBUTE_SUCCESS_TITLE},
+    {"contributeTitle", IDS_REWARDS_CONTRIBUTE_BUTTON_LABEL},
     {"contributeWeb3Label", IDS_REWARDS_CONTRIBUTE_WEB3LABEL},
     {"contributeWeb3Subtext", IDS_REWARDS_CONTRIBUTE_WEB3SUBTEXT},
     {"countrySelectPlaceholder", IDS_BRAVE_REWARDS_ONBOARDING_SELECT_COUNTRY},

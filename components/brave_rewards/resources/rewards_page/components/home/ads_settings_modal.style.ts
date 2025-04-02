@@ -71,8 +71,9 @@ export const style = scoped.css`
     .name {
       --leo-icon-size: 16px;
 
-      flex: 1 0 auto;
+      flex: 1 1 auto;
       display: flex;
+      flex-wrap: wrap;
       gap: 8px;
       align-items: center;
 
@@ -98,6 +99,7 @@ export const style = scoped.css`
 
   .subdivision-row {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     gap: 8px;
