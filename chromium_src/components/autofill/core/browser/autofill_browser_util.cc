@@ -7,9 +7,7 @@
 #include "src/components/autofill/core/browser/autofill_browser_util.cc"
 #undef IsFormMixedContent
 
-namespace {
-constexpr char kOnionDomain[] = "onion";
-}  // namespace
+#include "net/base/url_util.h"
 
 namespace autofill {
 
@@ -18,8 +16,7 @@ bool IsFormMixedContent(const AutofillClient& client, const FormData& form) {
     return true;
   }
 
-  return client.GetLastCommittedPrimaryMainFrameOrigin().DomainIs(
-             kOnionDomain) &&
+  return net::IsOnion(client.GetLastCommittedPrimaryMainFrameOrigin()) &&
          (form.action().is_valid() &&
           security_interstitials::IsInsecureFormAction(form.action()));
 }

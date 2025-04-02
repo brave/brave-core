@@ -9,15 +9,13 @@
 #include "src/components/security_interstitials/core/insecure_form_util.cc"
 #undef IsInsecureFormActionOnSecureSource
 
-namespace {
-constexpr char kOnionDomain[] = "onion";
-}  // namespace
+#include "net/base/url_util.h"
 
 namespace security_interstitials {
 
 bool IsInsecureFormActionOnSecureSource(const url::Origin& source_origin,
                                         const GURL& action_url) {
-  if (source_origin.DomainIs(kOnionDomain)) {
+  if (net::IsOnion(source_origin)) {
     return IsInsecureFormAction(action_url);
   }
 
