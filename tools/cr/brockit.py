@@ -111,6 +111,11 @@ However it is also possible to run this task on standalone as well.
 tools/cr/brockit.py update-version-issue
 ````
 
+Different from a lift using `--with-github`, the command above will
+also attempt to create a PR, if none exists, however it is necessary that the
+current branch has an upstream branch set, as creating a PR involves having an
+upstream branch.
+
 ### Infra mode
 When running on infra, the `--infra-mode` flag should be provided. This will
 suppress all status updates, and rather provide a keep-alive type of feedback
@@ -1144,12 +1149,15 @@ class GitHubIssue(Versioned):
     def status_message(self):
         return "Creating/Updating GitHub issue for upgrade..."
 
-    def create_or_updade_version_issue(self):
-        """Creates a github issue for the upgrade.
+    def compose_issue_title(self):
+        """Generates the title for the upgrade issue.
 
-        This function creates/updates the upgrade github issue.
+        This function generates the title for the upgrade issue, based on the
+        base and target version. The title is generated in a way that it can be
+        used for both major and minor upgrades.
+
+        This title is the same used for the push request.
         """
-
         title = 'Upgrade from Chromium {previous} to Chromium {to}'
         if self.target_version.major > self.base_version.major:
             # For major updates, the issue description doesn't have a precise
@@ -1159,18 +1167,104 @@ class GitHubIssue(Versioned):
         else:
             title = title.format(previous=str(self.base_version),
                                  to=str(self.target_version))
+        return title
 
-        link = self.target_version.get_googlesource_diff_link(
-            from_version=str(self.base_version))
+    def lookup_issue(self, title: str) -> Optional[List]:
+        """Looks up the issue for the upgrade.
 
+        This function checks if there's already an issue with the title
+        provided, and returns its details.
+        """
         results = json.loads(
             terminal.run([
                 'gh', 'issue', 'list', '--repo', 'brave/brave-browser',
                 '--search', title, '--state', 'open', '--json',
                 'number,title,url,body'
             ]).stdout.strip())
-        issue = next((entry for entry in results if entry['title'] == title),
-                     None)
+        return next((entry for entry in results if entry['title'] == title),
+                    None)
+
+    def create_push_request(self, issue_url: str) -> bool:
+        """Creates a push request for the current branch.
+
+        This function creates a push request for the upgrade.
+        """
+        current_branch = Repository.brave().current_branch()
+        if current_branch == 'HEAD':
+            logging.error('Cannot create a push request: Not in a branch')
+            return False
+
+        # It is assumed that the upstream branch is the base branch for the PR.
+        upstream_branch = _get_current_branch_upstream_name()
+        if upstream_branch is None:
+            logging.error(
+                'Cannot create a push request: Not in a branch with an upstream'
+            )
+            return False
+        if '/' in upstream_branch:
+            # removing the remote portion.
+            upstream_branch = upstream_branch.split("/", 1)[-1]
+
+        results = json.loads(
+            terminal.run([
+                'gh', 'pr', 'list', '--head', current_branch,
+                '--json=number,url'
+            ]).stdout.strip())
+        if results:
+            console.log(
+                f'The push request for {current_branch} is: {results[0]["url"]}'
+            )
+            return True
+
+        tag = f'[{upstream_branch}] ' if upstream_branch != 'master' else ''
+        cmd = [
+            'gh', 'pr', 'create', '--base', upstream_branch, '--head',
+            current_branch, '--title', f'{tag}{self.compose_issue_title()}',
+            '--body', f'Resolves {issue_url}', '--label',
+            '"CI/run-audit-deps"', '--label', '"CI/run-network-audit"',
+            '--assignee', 'cdesouza-chromium'
+        ]
+        # Emerick and Alexey take care of even-numbered major versions, while
+        # Max and Sam do the odd ones.
+        if self.target_version.major % 2 == 0:
+            cmd += ['--assignee', 'emerick', '--assignee', 'AlexeyBarabash']
+        else:
+            cmd += ['--assignee', 'mkarolin', '--assignee', 'samartnik']
+
+        is_major = self.target_version.major > self.base_version.major
+
+        if is_major or upstream_branch == 'master':
+            # It is not common for upstream test to be run on uplifts of minor
+            # upgrades.
+            cmd += ['--label', '"CI/run-upstream-tests"']
+
+        if is_major:
+            cmd += ['--label', '"CI/storybook-url"']
+
+            # Always create PR for major version upgrades as draft
+            cmd.append('--draft')
+
+        try:
+            pr_url = terminal.run(cmd).stdout.strip()
+            terminal.log_task(f'GitHub PR created for this bump: {pr_url}')
+        except subprocess.CalledProcessError as e:
+            console.log(
+                f'Failed to create PR for {current_branch}: {e.stderr.strip()}'
+            )
+            return False
+
+        return True
+
+    def create_or_update_version_issue(self, with_pr: bool) -> bool:
+        """Creates a github issue for the upgrade.
+
+        This function creates/updates the upgrade github issue.
+        """
+        link = self.target_version.get_googlesource_diff_link(
+            from_version=str(self.base_version))
+
+        title = self.compose_issue_title()
+        issue = self.lookup_issue(title)
         if issue is not None:
             pattern = r"https://chromium\.googlesource\.com/chromium/src/\+log/[^\s]+"
             body = re.sub(pattern, link, issue['body'])
@@ -1184,8 +1278,10 @@ class GitHubIssue(Versioned):
                     str(issue['number']), '--repo', 'brave/brave-browser',
                     '--body', f'{body}'
                 ])
-                terminal.log_task(f'GitHub issue udpated {str(issue["url"])}.')
-            return
+                terminal.log_task(f'GitHub issue updated {str(issue["url"])}.')
+            if with_pr:
+                return self.create_push_request(issue["url"])
+            return True
 
         body = MINOR_VERSION_BUMP_ISSUE_TEMPLATE.format(
             googlesource_log_link=link)
@@ -1200,14 +1296,16 @@ class GitHubIssue(Versioned):
         ]).stdout.strip()
         terminal.log_task(f'GitHub Issue created for this bump: {issue_url}')
 
+        if with_pr:
+            return self.create_push_request(issue_url)
+        return True
+
     def execute(self) -> bool:
         if not _is_gh_cli_logged_in():
             logging.error('GitHub CLI is not logged in.')
             return False
 
-        self.create_or_updade_version_issue()
-        return True
-
+        return self.create_or_update_version_issue(with_pr=True)
 
 class ReUpgrade(Task):
     """Restarts the upgrade process.
@@ -1845,7 +1943,7 @@ class Upgrade(Versioned):
         if result and with_github:
             GitHubIssue(base_version=self.base_version,
                         target_version=self.target_version
-                        ).create_or_updade_version_issue()
+                        ).create_or_update_version_issue(with_pr=False)
 
         return result
 
