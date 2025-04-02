@@ -1,0 +1,68 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #scheme=relative
+ * #import=./brave_account_common.css.js
+ * #include=brave-account-common
+ * #css_wrapper_metadata_end */
+
+.dropdown {
+  height: var(--height);
+  margin: calc(-1 * var(--height)) var(--leo-spacing-s) 0px var(--leo-spacing-s);
+  position: relative;
+  transition: all 750ms;
+  z-index: -1;
+}
+
+.dropdown.visible {
+  margin-top: var(--leo-spacing-s);
+}
+
+#brave-alias-dropdown {
+  --height: 36px;
+  --leo-icon-size: var(--leo-icon-xs);
+  display: flex;
+  font: var(--leo-font-small-regular);
+  gap: var(--leo-spacing-s);
+}
+
+#password-dropdown {
+  --height: 18px;
+  display: flex;
+}
+
+#password-confirmation-dropdown {
+  --height: 18px;
+  --leo-icon-size: var(--leo-icon-xs);
+  align-items: center;
+  display: flex;
+  font: var(--leo-font-small-regular);
+  gap: var(--leo-spacing-s);
+}
+
+leo-icon[name=check-circle-filled] {
+  --leo-icon-color: var(--leo-color-text-interactive);
+}
+
+leo-icon[name=check-circle-filled] + div {
+  color: var(--leo-color-text-interactive);
+}
+
+leo-icon[name=warning-triangle-filled] {
+  --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
+}
+
+leo-icon[name=warning-triangle-filled] + div {
+  color: var(--leo-color-systemfeedback-error-text);
+}
+
+leo-checkbox a {
+  color: var(--leo-color-text-interactive);
+  font: var(--leo-font-default-link);
+  text-decoration-skip-ink: none;
+  text-underline-offset: 2.8px;
+}
