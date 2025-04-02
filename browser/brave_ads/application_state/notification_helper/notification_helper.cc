@@ -5,7 +5,10 @@
 
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 
+#include <utility>
+
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/no_destructor.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h"
@@ -94,17 +97,18 @@ NotificationHelper* NotificationHelper::GetInstance() {
   return instance.get();
 }
 
-void NotificationHelper::InitForProfile(Profile* profile) {
+void NotificationHelper::InitForProfile(Profile* profile,
+                                        base::OnceClosure callback) {
   NotificationPlatformBridge* system_bridge =
       GetSystemNotificationPlatformBridge(profile);
   if (!system_bridge) {
     does_support_system_notifications_ = false;
-    return;
+    return std::move(callback).Run();
   }
 
   system_bridge->SetReadyCallback(base::BindOnce(
       &NotificationHelper::OnSystemNotificationPlatformBridgeReady,
-      weak_factory_.GetWeakPtr()));
+      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 bool NotificationHelper::CanShowNotifications() {
@@ -132,8 +136,12 @@ bool NotificationHelper::DoesSupportSystemNotifications() const {
   return does_support_system_notifications_;
 }
 
-void NotificationHelper::OnSystemNotificationPlatformBridgeReady(bool success) {
+void NotificationHelper::OnSystemNotificationPlatformBridgeReady(
+    base::OnceClosure callback,
+    bool success) {
   does_support_system_notifications_ = success;
+
+  impl_->InitSystemNotifications(std::move(callback));
 }
 
 }  // namespace brave_ads

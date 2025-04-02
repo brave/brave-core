@@ -7,10 +7,14 @@
 
 #include <Windows.h>
 
+#include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 #include "base/trace_event/trace_event.h"
 #include "base/win/core_winrt_util.h"
 #include "base/win/scoped_hstring.h"
@@ -20,6 +24,8 @@
 #include "chrome/installer/util/shell_util.h"
 
 namespace brave_ads {
+
+namespace {
 
 // Copied from ntdef.h as not available in the Windows SDK and is required to
 // detect if Focus Assist is enabled. Focus Assist is currently undocumented
@@ -59,11 +65,63 @@ enum FocusAssistResult {
   ALARMS_ONLY = 2
 };
 
-///////////////////////////////////////////////////////////////////////////////
+// Templated wrapper for ABI::Windows::Foundation::GetActivationFactory()
+template <unsigned int size>
+HRESULT CreateActivationFactory(wchar_t const (&class_name)[size],
+                                const IID& iid,
+                                void** factory) {
+  auto ref_class_name =
+      base::win::ScopedHString::Create(std::wstring_view(class_name, size - 1));
+
+  return base::win::RoGetActivationFactory(ref_class_name.get(), iid, factory);
+}
+
+std::wstring GetAppId() {
+  return ShellUtil::GetBrowserModelId(InstallUtil::IsPerUserInstall());
+}
+
+Microsoft::WRL::ComPtr<ABI::Windows::UI::Notifications::IToastNotifier>
+InitializeToastNotifier() {
+  Microsoft::WRL::ComPtr<
+      ABI::Windows::UI::Notifications::IToastNotificationManagerStatics>
+      toast_notification_manager;
+
+  HRESULT hr = CreateActivationFactory(
+      RuntimeClass_Windows_UI_Notifications_ToastNotificationManager,
+      IID_PPV_ARGS(&toast_notification_manager));
+
+  if (FAILED(hr)) {
+    VLOG(0) << "Failed to create activation factory";
+    return {};
+  }
+
+  auto application_id = base::win::ScopedHString::Create(GetAppId());
+  Microsoft::WRL::ComPtr<ABI::Windows::UI::Notifications::IToastNotifier>
+      toast_notifier;
+  hr = toast_notification_manager->CreateToastNotifierWithId(
+      application_id.get(), &toast_notifier);
+  if (FAILED(hr)) {
+    VLOG(0) << "Failed to create toast notifier";
+    return {};
+  }
+
+  return toast_notifier;
+}
+
+}  // namespace
 
 NotificationHelperImplWin::NotificationHelperImplWin() = default;
 
 NotificationHelperImplWin::~NotificationHelperImplWin() = default;
+
+void NotificationHelperImplWin::InitSystemNotifications(
+    base::OnceClosure callback) {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()}, base::BindOnce(&InitializeToastNotifier),
+      base::BindOnce(
+          &NotificationHelperImplWin::InitSystemNotificationsCallback,
+          weak_factory_.GetWeakPtr(), std::move(callback)));
+}
 
 bool NotificationHelperImplWin::CanShowNotifications() {
   if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
@@ -103,6 +161,14 @@ bool NotificationHelperImplWin::ShowOnboardingNotification() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void NotificationHelperImplWin::InitSystemNotificationsCallback(
+    base::OnceClosure callback,
+    Microsoft::WRL::ComPtr<ABI::Windows::UI::Notifications::IToastNotifier>
+        toast_notifier) {
+  toast_notifier_ = toast_notifier;
+  std::move(callback).Run();
+}
 
 bool NotificationHelperImplWin::IsFocusAssistEnabled() const {
   const auto nt_query_wnf_state_data_func =
@@ -165,15 +231,14 @@ bool NotificationHelperImplWin::IsFocusAssistEnabled() const {
 
 bool NotificationHelperImplWin::IsNotificationsEnabled() {
   TRACE_EVENT("brave.ads", "NotificationHelperImplWin::IsNotificationsEnabled");
-  HRESULT hr = InitializeToastNotifier();
   auto* toast_notifier = toast_notifier_.Get();
-  if (!toast_notifier || FAILED(hr)) {
+  if (!toast_notifier) {
     VLOG(0) << "Failed to initialize toast notifier";
     return true;
   }
 
   ABI::Windows::UI::Notifications::NotificationSetting notification_setting;
-  hr = toast_notifier->get_Setting(&notification_setting);
+  HRESULT hr = toast_notifier->get_Setting(&notification_setting);
   if (FAILED(hr)) {
     VLOG(0) << "Failed to get notification settings from toast notifier";
     return true;
@@ -208,47 +273,6 @@ bool NotificationHelperImplWin::IsNotificationsEnabled() {
       return false;
     }
   }
-}
-
-std::wstring NotificationHelperImplWin::GetAppId() const {
-  return ShellUtil::GetBrowserModelId(InstallUtil::IsPerUserInstall());
-}
-
-HRESULT NotificationHelperImplWin::InitializeToastNotifier() {
-  Microsoft::WRL::ComPtr<
-      ABI::Windows::UI::Notifications::IToastNotificationManagerStatics>
-      toast_notification_manager;
-
-  HRESULT hr = CreateActivationFactory(
-      RuntimeClass_Windows_UI_Notifications_ToastNotificationManager,
-      IID_PPV_ARGS(&toast_notification_manager));
-
-  if (FAILED(hr)) {
-    VLOG(0) << "Failed to create activation factory";
-    return hr;
-  }
-
-  auto application_id = base::win::ScopedHString::Create(GetAppId());
-  hr = toast_notification_manager->CreateToastNotifierWithId(
-      application_id.get(), &toast_notifier_);
-  if (FAILED(hr)) {
-    VLOG(0) << "Failed to create toast notifier";
-    return hr;
-  }
-
-  return hr;
-}
-
-// Templated wrapper for ABI::Windows::Foundation::GetActivationFactory()
-template <unsigned int size>
-HRESULT NotificationHelperImplWin::CreateActivationFactory(
-    wchar_t const (&class_name)[size],
-    const IID& iid,
-    void** factory) const {
-  auto ref_class_name =
-      base::win::ScopedHString::Create(std::wstring_view(class_name, size - 1));
-
-  return base::win::RoGetActivationFactory(ref_class_name.get(), iid, factory);
 }
 
 }  // namespace brave_ads
