@@ -11724,8 +11724,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
     }</translation>
 <translation id="4304377874648098617">Tämä on Yksityinen ikkuna</translation>
 <translation id="5749925632993910318">{0, plural,
-      one {}=1 {Close Private}
-      other {Close Private (# windows)}
+      one {}=1 {Sulje yksityinen}
+      other {Sulje yksityinen (# ikkunaa)}
     }</translation>
 <translation id="7253003527666031200">Löydät verkkokaupasta lisää helppokäyttöisyystyökaluja</translation>
 <translation id="5832813618714645810">Profiilit</translation>

@@ -11731,8 +11731,8 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="8712375231869053533">{0,plural, =1{Anônima}one{Anônima (#)}other{Anônimas (#)}}</translation>
 <translation id="4304377874648098617">Você está no modo privado</translation>
 <translation id="5749925632993910318">{0, plural,
-      =1 {Close Private}
-      other {Close Private (# windows)}
+      =1 {Privado Fechado}
+      other {# janelas privadas fechadas}
     }</translation>
 <translation id="7253003527666031200">Encontre mais ferramentas de acessibilidade na Web Store</translation>
 <translation id="5832813618714645810">Perfis</translation>

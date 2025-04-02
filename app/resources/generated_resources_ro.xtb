@@ -11718,8 +11718,8 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="4304377874648098617">Sunteți în modul incognito</translation>
 <translation id="5749925632993910318">{0, plural,
       one {}
-      few {Închide (# windows) private}=1 {Close Private}
-      other {Închide (# windows) private}
+      few {Închide (# ferestre) private}=1 {Închide private}
+      other {Închide (# ferestre) private}
     }</translation>
 <translation id="7253003527666031200">Găsiți mai multe instrumente de accesibilitate în Web Store</translation>
 <translation id="5832813618714645810">Profiluri</translation>
