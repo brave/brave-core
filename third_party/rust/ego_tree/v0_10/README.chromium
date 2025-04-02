@@ -3,7 +3,7 @@ URL: https://crates.io/crates/ego-tree
 Version: 0.10.0
 Revision: a38b9c42cbf06049b2cc1859bfbf9d5895e4b018
 License: ISC
-License File: //brave/third_party/rust/chromium_crates_io/vendor/ego-tree-0.10.0/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/ego-tree-v0_10/LICENSE
 Shipped: yes
 Security Critical: yes
 

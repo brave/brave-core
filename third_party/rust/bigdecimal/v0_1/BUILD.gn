@@ -12,10 +12,10 @@ cargo_crate("lib") {
   crate_name = "bigdecimal"
   epoch = "0.1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/bigdecimal-0.1.2/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/bigdecimal-v0_1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/bigdecimal-0.1.2/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/bigdecimal-0.1.2/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bigdecimal-v0_1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/bigdecimal-v0_1/src/macros.rs",
   ]
   inputs = []
 

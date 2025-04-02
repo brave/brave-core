@@ -12,13 +12,13 @@ cargo_crate("lib") {
   crate_name = "proc_macro_hack"
   epoch = "0.5"
   crate_type = "proc-macro"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-0.5.20+deprecated/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-v0_5/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-0.5.20+deprecated/src/error.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-0.5.20+deprecated/src/iter.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-0.5.20+deprecated/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-0.5.20+deprecated/src/parse.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-0.5.20+deprecated/src/quote.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-v0_5/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-v0_5/src/iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-v0_5/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-v0_5/src/parse.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-v0_5/src/quote.rs",
   ]
   inputs = []
 
@@ -35,8 +35,8 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
-  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-0.5.20+deprecated/build.rs"
-  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-0.5.20+deprecated/build.rs" ]
+  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-v0_5/build.rs"
+  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-v0_5/build.rs" ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

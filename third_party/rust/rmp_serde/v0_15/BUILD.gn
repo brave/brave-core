@@ -12,12 +12,12 @@ cargo_crate("lib") {
   crate_name = "rmp_serde"
   epoch = "0.15"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/rmp-serde-0.15.5/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/rmp-serde-v0_15/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-serde-0.15.5/src/config.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-serde-0.15.5/src/decode.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-serde-0.15.5/src/encode.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-serde-0.15.5/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-serde-v0_15/src/config.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-serde-v0_15/src/decode.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-serde-v0_15/src/encode.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rmp-serde-v0_15/src/lib.rs",
   ]
   inputs = []
 

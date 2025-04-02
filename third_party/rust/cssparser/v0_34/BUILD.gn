@@ -12,21 +12,21 @@ cargo_crate("lib") {
   crate_name = "cssparser"
   epoch = "0.34"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/color.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/cow_rc_str.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/from_bytes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/macros.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/nth.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/parser.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/rules_and_declarations.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/serializer.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/size_of_tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/tokenizer.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.34.0/src/unicode_range.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/color.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/cow_rc_str.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/from_bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/nth.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/parser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/rules_and_declarations.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/serializer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/size_of_tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/tokenizer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_34/src/unicode_range.rs",
   ]
   inputs = []
 
@@ -54,9 +54,7 @@ cargo_crate("lib") {
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
   if (epoch == "0.29") {
-    build_script_inputs =
-        [ "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-" +
-          cargo_pkg_version + "/build/match_byte.rs" ]
+    build_script_inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-v0_29/build/match_byte.rs" ]
     build_script_outputs = [ "tokenizer.rs" ]
   }
 }

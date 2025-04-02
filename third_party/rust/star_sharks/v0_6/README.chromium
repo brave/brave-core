@@ -3,7 +3,7 @@ URL: https://crates.io/crates/star-sharks
 Version: 0.6.1
 Revision: 462a673663dd025721832026fb021193c1fe926e
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/star-sharks-0.6.1/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/star-sharks-v0_6/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

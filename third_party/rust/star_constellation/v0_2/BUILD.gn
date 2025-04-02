@@ -12,13 +12,13 @@ cargo_crate("lib") {
   crate_name = "star_constellation"
   epoch = "0.2"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/star-constellation-0.2.5/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/star-constellation-v0_2/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/star-constellation-0.2.5/src/api.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/star-constellation-0.2.5/src/format.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/star-constellation-0.2.5/src/internal.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/star-constellation-0.2.5/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/star-constellation-0.2.5/src/randomness.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/star-constellation-v0_2/src/api.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/star-constellation-v0_2/src/format.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/star-constellation-v0_2/src/internal.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/star-constellation-v0_2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/star-constellation-v0_2/src/randomness.rs",
   ]
   inputs = []
 

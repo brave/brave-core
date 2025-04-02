@@ -3,7 +3,7 @@ URL: https://crates.io/crates/new_debug_unreachable
 Version: 1.0.4
 Revision: d82486c6d9a87b245ab04555d210626fafcc4758
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/new_debug_unreachable-1.0.4/LICENSE-MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/new_debug_unreachable-v1/LICENSE-MIT
 Shipped: yes
 Security Critical: yes
 

@@ -3,7 +3,7 @@ URL: https://crates.io/crates/proc-macro-hack
 Version: 0.5.20+deprecated
 Revision: fe0889cb7a67adfe070fad449066034e7a662f56
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-0.5.20+deprecated/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-v0_5/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

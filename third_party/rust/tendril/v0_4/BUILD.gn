@@ -12,16 +12,16 @@ cargo_crate("lib") {
   crate_name = "tendril"
   epoch = "0.4"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/tendril-0.4.3/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/tendril-v0_4/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-0.4.3/src/bench.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-0.4.3/src/buf32.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-0.4.3/src/fmt.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-0.4.3/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-0.4.3/src/stream.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-0.4.3/src/tendril.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-0.4.3/src/utf8_decode.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-0.4.3/src/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-v0_4/src/bench.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-v0_4/src/buf32.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-v0_4/src/fmt.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-v0_4/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-v0_4/src/stream.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-v0_4/src/tendril.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-v0_4/src/utf8_decode.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tendril-v0_4/src/util.rs",
   ]
   inputs = []
 

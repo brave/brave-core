@@ -3,7 +3,7 @@ URL: https://crates.io/crates/ppoprf
 Version: 0.4.2
 Revision: 54973c88e45f9080a614c4713db2e8e6e601b930
 License: Mozilla-Public-License-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/ppoprf-0.4.2/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/ppoprf-v0_4/LICENSE
 Shipped: yes
 Security Critical: yes
 

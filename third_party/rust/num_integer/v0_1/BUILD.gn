@@ -12,11 +12,11 @@ cargo_crate("lib") {
   crate_name = "num_integer"
   epoch = "0.1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/num-integer-0.1.45/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/num-integer-v0_1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/num-integer-0.1.45/src/average.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/num-integer-0.1.45/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/num-integer-0.1.45/src/roots.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/num-integer-v0_1/src/average.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/num-integer-v0_1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/num-integer-v0_1/src/roots.rs",
   ]
   inputs = []
 
@@ -39,8 +39,8 @@ cargo_crate("lib") {
     "i128",
     "std",
   ]
-  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/num-integer-0.1.45/build.rs"
-  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/num-integer-0.1.45/build.rs" ]
+  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/num-integer-v0_1/build.rs"
+  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/num-integer-v0_1/build.rs" ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

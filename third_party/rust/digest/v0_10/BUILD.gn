@@ -12,22 +12,22 @@ cargo_crate("lib") {
   crate_name = "digest"
   epoch = "0.10"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/core_api.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/core_api/ct_variable.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/core_api/rt_variable.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/core_api/wrapper.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/core_api/xof_reader.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/dev.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/dev/fixed.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/dev/mac.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/dev/rng.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/dev/variable.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/dev/xof.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/digest.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/digest-0.10.7/src/mac.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/core_api.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/core_api/ct_variable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/core_api/rt_variable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/core_api/wrapper.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/core_api/xof_reader.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/dev.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/dev/fixed.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/dev/mac.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/dev/rng.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/dev/variable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/dev/xof.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/digest.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/digest-v0_10/src/mac.rs",
   ]
   inputs = []
 

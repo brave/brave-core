@@ -3,7 +3,7 @@ URL: https://crates.io/crates/radium
 Version: 0.7.0
 Revision: 3f27e0d827338aee919213fd071b99819a1b9fff
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/radium-0.7.0/LICENSE.txt
+License File: //brave/third_party/rust/chromium_crates_io/vendor/radium-v0_7/LICENSE.txt
 Shipped: yes
 Security Critical: yes
 

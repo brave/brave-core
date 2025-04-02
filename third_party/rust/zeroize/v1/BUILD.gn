@@ -12,11 +12,12 @@ cargo_crate("lib") {
   crate_name = "zeroize"
   epoch = "1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/zeroize-1.8.1/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/zeroize-v1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/zeroize-1.8.1/src/aarch64.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/zeroize-1.8.1/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/zeroize-1.8.1/src/x86.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zeroize-v1/src/aarch64.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zeroize-v1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zeroize-v1/src/x86.rs",
   ]
   inputs = []
 
