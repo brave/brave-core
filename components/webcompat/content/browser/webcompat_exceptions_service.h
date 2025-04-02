@@ -17,6 +17,7 @@
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/webcompat/content/browser/webcompat_exceptions_observer.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
@@ -50,6 +51,8 @@ class WebcompatExceptionsService
   std::vector<ContentSettingsPattern> GetPatterns(
       ContentSettingsType webcompat_type);
   void SetRulesForTesting(PatternsByWebcompatTypeMap patterns_by_webcompat_type);
+  static void AddObserver(WebcompatExceptionsObserver* observer);
+  static void RemoveObserver(WebcompatExceptionsObserver* observer);
 
  private:
   void LoadWebcompatExceptions(const base::FilePath& install_dir);
