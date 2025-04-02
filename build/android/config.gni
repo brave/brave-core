@@ -18,6 +18,7 @@ brave_android_manifest_includes = [
   "//brave/android/java/AndroidManifest_intent_filters.xml",
   "//brave/android/java/AndroidManifest_user_permissions.xml",
   "//brave/android/java/AndroidManifest_activity_alias.xml",
+  "//brave/android/java/AndroidManifest_activity_alias_actions.xml",
 ]
 
 brave_chrome_java_deps = [

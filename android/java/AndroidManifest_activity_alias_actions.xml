@@ -1,0 +1,19 @@
+<property android:name="android.window.PROPERTY_SUPPORTS_MULTI_INSTANCE_SYSTEM_UI"
+    android:value="true" />
+<intent-filter>
+    <action android:name="android.intent.action.MAIN" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.LAUNCHER" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <category android:name="android.intent.category.APP_BROWSER" />
+    {% if channel in ['dev', 'canary', 'default'] %}
+    <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
+    {% endif %}
+</intent-filter>
+<meta-data android:name="android.app.shortcuts"
+    android:resource="@xml/launchershortcuts" />
+<intent-filter>
+    <action android:name="org.chromium.chrome.browser.dummy.action" />
+    <category android:name="com.google.intent.category.DAYDREAM" />
+    <category android:name="com.google.intent.category.CARDBOARD" />
+</intent-filter>
