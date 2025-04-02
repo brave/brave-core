@@ -138,6 +138,11 @@ changes that are supposed to be regenerated during the next lift (e.g.
 
 This command uses `--interactive` under the hood, so it may require extra steps
 from the user to complete.
+
+Furthermore, there is also `--squash-minor-bumps`, which can be used to squash
+away all minor bumps in a branch down to a single one. This is useful when
+when running a cr branch, as it is common to have multiple minor daily bumps
+in a branch.
 """
 
 import argparse
@@ -986,8 +991,7 @@ class PatchFailureResolver:
         """
         for _, patches in self.patch_files.items():
             for patch in patches:
-                if (ignore_deleted_files is True
-                        and not Path(patch.path).exists()):
+                if (ignore_deleted_files and not Path(patch.path).exists()):
                     # Skip deleted files.
                     continue
 
@@ -1358,12 +1362,12 @@ class Upgrade(Versioned):
         terminal.run_npm_command('update_patches')
 
         status = GitStatus()
-        if status.has_deleted_patch_files() is True:
+        if status.has_deleted_patch_files():
             logging.error(
                 'Deleted patches detected. These should be committed as their '
                 'own changes:\n%s' % '\n'.join(status.deleted))
             return False
-        if status.has_untracked_patch_files() is True:
+        if status.has_untracked_patch_files():
             logging.error(
                 'Untracked patch files detected. These should be committed as '
                 'their own changes:\n%s' % '\n'.join(status.untracked))
@@ -1631,19 +1635,19 @@ class Upgrade(Versioned):
             Indicates that a continuation does not produce a conflict-resolved
             change.
         """
-        if no_conflict_continuation is not True:
+        if not no_conflict_continuation:
             # There's no need to try to create a `conflict-resolved` commit if
             # all changes have already been committed during the run's break.
             resolver = PatchFailureResolver(
                 ContinuationFile.load(self.target_version))
 
-            if resolver.requires_conflict_resolution() is True:
-                if self._run_update_patches_with_no_deletions() is not True:
+            if resolver.requires_conflict_resolution():
+                if not self._run_update_patches_with_no_deletions():
                     return False
 
             resolver.stage_all_patches(ignore_deleted_files=True)
 
-            if Repository.brave().has_staged_changed() is False:
+            if not Repository.brave().has_staged_changed():
                 logging.error(
                     'Nothing has been staged to commit conflict-resolved '
                     'patches.')
@@ -1716,7 +1720,7 @@ class Upgrade(Versioned):
 
             # When no conflicts come back, we can proceed with the
             # update_patches.
-            if self._run_update_patches_with_no_deletions() is not True:
+            if not self._run_update_patches_with_no_deletions():
                 return False
         except subprocess.CalledProcessError as e:
             if ('There were some failures during git reset of specific '
@@ -1732,7 +1736,7 @@ class Upgrade(Versioned):
                 resolver = PatchFailureResolver()
                 resolver.apply_patches_3way(target_version=self.target_version,
                                             launch_vscode=launch_vscode)
-                if resolver.requires_conflict_resolution() is True:
+                if resolver.requires_conflict_resolution():
                     # Manual resolution required.
                     console.log(
                         '👋 (Address all sections with '
@@ -1741,7 +1745,7 @@ class Upgrade(Versioned):
                         '--continue[/])')
                     return False
 
-                if self._run_update_patches_with_no_deletions() is not True:
+                if not self._run_update_patches_with_no_deletions():
                     return False
 
                 resolver.stage_all_patches()
@@ -1818,7 +1822,7 @@ class Upgrade(Versioned):
                              working_version=self.working_version,
                              base_version=self.base_version).save()
 
-        if with_github is True and _is_gh_cli_logged_in() is False:
+        if with_github and not _is_gh_cli_logged_in():
             # Fail early if gh cli is not logged in.
             logging.error('GitHub CLI is not logged in.')
             return False
@@ -1838,7 +1842,7 @@ class Upgrade(Versioned):
             result = self._start(launch_vscode=launch_vscode,
                                  ack_advisory=ack_advisory)
 
-        if result is True and with_github is True:
+        if result and with_github:
             GitHubIssue(base_version=self.base_version,
                         target_version=self.target_version
                         ).create_or_updade_version_issue()
@@ -1885,7 +1889,7 @@ class Rebase(Task):
         return conflicts
 
     @staticmethod
-    def discard_regen_changes_from_rebase_plan(todo_file: Path):
+    def discard_regen_changes_from_rebase_plan(todo_file: PurePath):
         """Removes regen changes from the rebase plan.
 
     This function removes all lines that contain the string `Update patches`
@@ -1902,7 +1906,7 @@ class Rebase(Task):
                     file.write(line)
 
     @staticmethod
-    def recommit_in_rebase_plan(todo_file: Path):
+    def recommit_in_rebase_plan(todo_file: PurePath):
         """Recommits the first commit in the rebase plan.
 
     This function replaces the first `pick` in the rebase plan with `edit`,
@@ -1915,10 +1919,70 @@ class Rebase(Task):
             contents = contents.replace('pick', 'edit', 1)
             file.write(contents)
 
+    @staticmethod
+    def squash_minor_bumps_from_rebase_plan(todo_file: PurePath):
+        """Squashes minor bumps from the rebase plan.
+
+    This function groups all commmit lines that start with "Update from
+    Chromium" into a single commit on top, and does the same for commits
+    that start with "Conflict-resolved patches from Chromium"
+    """
+        with open(todo_file, 'r') as file:
+            lines = file.readlines()
+
+        version = []
+        conflict = []
+        gnrt = []
+        others = []
+        for line in lines:
+            if 'Update from Chromium ' in line:
+                version.append(line if not version else line.replace('pick', 'squash'))
+            elif 'Conflict-resolved patches from Chromium ' in line:
+                conflict.append(line if not conflict else line.replace('pick', 'squash'))
+            elif '`gnrt` run for Chromium ' in line:
+                gnrt.append(line if not gnrt else line.replace('pick', 'squash'))
+            else:
+                others.append(line)
+
+        console.print('Version:', version)
+
+        with open(todo_file, 'w') as file:
+            for line in version:
+                file.write(line)
+            for line in conflict:
+                file.write(line)
+            for line in gnrt:
+                file.write(line)
+            for line in others:
+                file.write(line)
+
+    @staticmethod
+    def squash_commit_message_to_last_line(todo_file: PurePath):
+        """Squashes the commit message to the last line.
+
+    This function removes all lines that are not the last line of the commit
+    message, and saves the changes to the file. This is useful to discard all
+    the minor bumps from history.
+        """
+        with open(todo_file, 'r') as file:
+            lines = file.readlines()
+
+        # finds the last line that is not empty and that doesn't start with a
+        # hash comment.
+        last_valid_line = next(
+            (line for line in reversed(lines) if line.strip() and not line.lstrip().startswith("#")), None)
+
+        if not last_valid_line:
+            # This should never happen, as there should be one valid line
+            sys.exit(1)
+
+        with open(todo_file, 'w') as file:
+            file.write(last_valid_line)
+
     # The argument list differs here because that's the way we get args through
     # Task into the derived methods. Maybe something better can be done here.
     # pylint: disable=arguments-differ
-    def execute(self, recommit, discard_regen_changes) -> bool:
+    def execute(self, recommit: bool, discard_regen_changes: bool, squash_minor_bumps: bool) -> bool:
         """Rebases the current branch onto the provided ref.
 
     This function rebases the current branch onto the provided branch. It is
@@ -1955,13 +2019,19 @@ class Rebase(Task):
         # We have to receive the rebase plan from git, and then modify it
         # if that's desired. That's done by calling this script again with
         # special internal flags.
+        env = os.environ.copy()
         editor = [sys.executable, __file__]
         if discard_regen_changes:
             editor.append('--internal-rebase-remove-regen-changes')
         if recommit:
             editor.append('--internal-rebase-recommit')
+        if squash_minor_bumps:
+            editor.append('--internal-rebase-squash-minor-bumps')
 
-        env = os.environ.copy()
+            # Squashes will cause `GIT_EDITOR` also to open for the commit
+            # message, so we need to handle those too.
+            env["GIT_EDITOR"] = f'{sys.executable} {__file__} --internal-rebase-squash-commit-message'
+
         if len(editor) > 2:
             env["GIT_SEQUENCE_EDITOR"] = " ".join(editor)
         else:
@@ -2150,6 +2220,11 @@ def main():
         help=
         'Discard patches like "Update patches" and "Updated strings" that can '
         'be regenerated.')
+    rebase_parser.add_argument(
+        '--squash-minor-bumps',
+        action='store_true',
+        help=
+        'Squashes all the minor bumps in-between the the last version and the previous upstream ref.')
 
     subparsers.add_parser(
         'update-version-issue',
@@ -2242,7 +2317,7 @@ def main():
                            args.ack_advisory)
     if args.command == 'rebase':
         return Rebase(resolve_from_ref_flag()).run(args.recommit,
-                                                   args.discard_regen_changes)
+                                                   args.discard_regen_changes, args.squash_minor_bumps)
     if args.command == 'regen':
         return Regen(resolve_from_ref_flag()).run()
     if args.command == 'update-version-issue':
@@ -2260,9 +2335,13 @@ if __name__ == '__main__':
         # Special flags used to carry out some of the rebase tasks fed by git
         # during rebase --interactive mode.
         if '--internal-rebase-remove-regen-changes' in sys.argv:
-            Rebase.discard_regen_changes_from_rebase_plan(sys.argv[-1])
+            Rebase.discard_regen_changes_from_rebase_plan(PurePath(sys.argv[-1]))
         if '--internal-rebase-recommit' in sys.argv:
-            Rebase.recommit_in_rebase_plan(sys.argv[-1])
+            Rebase.recommit_in_rebase_plan(PurePath(sys.argv[-1]))
+        if '--internal-rebase-squash-minor-bumps' in sys.argv:
+            Rebase.squash_minor_bumps_from_rebase_plan(PurePath(sys.argv[-1]))
+        if '--internal-rebase-squash-commit-message' in sys.argv:
+            Rebase.squash_commit_message_to_last_line(PurePath(sys.argv[-1]))
         sys.exit(0)
 
     sys.exit(main())
