@@ -1353,9 +1353,6 @@ class SidebarBrowserTestWithMobileViewFeature
   SidebarBrowserTestWithMobileViewFeature() {
     if (FeatureEnabled()) {
       feature_list_.InitAndEnableFeature(features::kSidebarMobileView);
-
-    } else {
-      feature_list_.InitAndDisableFeature(features::kSidebarMobileView);
     }
   }
   ~SidebarBrowserTestWithMobileViewFeature() override = default;

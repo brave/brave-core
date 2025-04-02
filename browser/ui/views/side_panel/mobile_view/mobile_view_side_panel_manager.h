@@ -15,8 +15,8 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/sidebar/browser/mobile_view_id.h"
 
-class BrowserWindowInterface;
 class MobileViewSidePanelCoordinator;
+class SidePanelRegistry;
 
 namespace sidebar {
 FORWARD_DECLARE_TEST(SidebarBrowserTestWithMobileViewFeature,
@@ -27,8 +27,7 @@ FORWARD_DECLARE_TEST(SidebarBrowserTestWithMobileViewFeature,
 // Create/Remove it with item add/remove state.
 class MobileViewSidePanelManager : public sidebar::SidebarModel::Observer {
  public:
-  explicit MobileViewSidePanelManager(
-      BrowserWindowInterface& browser_window_interface);
+  explicit MobileViewSidePanelManager(SidePanelRegistry& window_registry);
 
   MobileViewSidePanelManager(const MobileViewSidePanelManager&) = delete;
   MobileViewSidePanelManager& operator=(const MobileViewSidePanelManager&) =
@@ -52,7 +51,7 @@ class MobileViewSidePanelManager : public sidebar::SidebarModel::Observer {
   base::flat_map<sidebar::MobileViewId,
                  std::unique_ptr<MobileViewSidePanelCoordinator>>
       coordinators_;
-  base::raw_ref<BrowserWindowInterface> browser_window_interface_;
+  base::raw_ref<SidePanelRegistry> window_registry_;
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>
       sidebar_model_observation_{this};

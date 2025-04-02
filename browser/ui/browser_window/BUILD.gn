@@ -28,6 +28,7 @@ source_set("impl") {
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/sidebar/common",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/views/side_panel",
   ]
 
   if (enable_brave_vpn) {

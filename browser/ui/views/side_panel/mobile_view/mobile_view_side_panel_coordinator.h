@@ -12,7 +12,6 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "url/gurl.h"
 
-class BrowserWindowInterface;
 class SidePanelRegistry;
 
 namespace views {
@@ -20,12 +19,13 @@ class View;
 }  // namespace views
 
 // Handles the creation and registration of the mobile view panel
-// SidePanelEntry.
+// SidePanelEntry. Mobile view is another type of side panel that can
+// load any url. As different url can be loaded in different panel,
+// each panel should have its own panel coordinator.
 class MobileViewSidePanelCoordinator {
  public:
-  MobileViewSidePanelCoordinator(
-      BrowserWindowInterface& browser_window_interface,
-      const GURL& url);
+  MobileViewSidePanelCoordinator(SidePanelRegistry& window_registry,
+                                 const GURL& url);
   virtual ~MobileViewSidePanelCoordinator();
   MobileViewSidePanelCoordinator(const MobileViewSidePanelCoordinator&) =
       delete;
@@ -35,10 +35,9 @@ class MobileViewSidePanelCoordinator {
  private:
   std::unique_ptr<views::View> CreateView(SidePanelEntryScope& scope);
   SidePanelEntry::Key GetEntryKey() const;
-  SidePanelRegistry* GetWindowRegistry();
   void DeregisterEntry();
 
-  raw_ref<BrowserWindowInterface> browser_window_interface_;
+  raw_ref<SidePanelRegistry> window_registry_;
   const GURL url_;
 };
 

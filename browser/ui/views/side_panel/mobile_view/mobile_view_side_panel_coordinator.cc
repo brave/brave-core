@@ -5,22 +5,19 @@
 
 #include "brave/browser/ui/views/side_panel/mobile_view/mobile_view_side_panel_coordinator.h"
 
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
 #include "url/gurl.h"
 
 MobileViewSidePanelCoordinator::MobileViewSidePanelCoordinator(
-    BrowserWindowInterface& browser_window_interface,
+    SidePanelRegistry& window_registry,
     const GURL& url)
-    : browser_window_interface_(browser_window_interface), url_(url) {
+    : window_registry_(window_registry), url_(url) {
   CHECK(url_.is_valid());
 
   // Using Unretained() here is safe becuase this coordinator
   // will be destroyed by MobileViewSidePanelManager
   // while SidePanelCoordinator() lives. It owns this registry.
-  GetWindowRegistry()->Register(std::make_unique<SidePanelEntry>(
+  window_registry_->Register(std::make_unique<SidePanelEntry>(
       GetEntryKey(),
       base::BindRepeating(&MobileViewSidePanelCoordinator::CreateView,
                           base::Unretained(this))));
@@ -33,6 +30,7 @@ MobileViewSidePanelCoordinator::~MobileViewSidePanelCoordinator() {
 std::unique_ptr<views::View> MobileViewSidePanelCoordinator::CreateView(
     SidePanelEntryScope& scope) {
   // TODO(simonhong): Implement UI.
+  // https://github.com/brave/brave-browser/issues/34597
   NOTREACHED();
 }
 
@@ -42,11 +40,5 @@ SidePanelEntry::Key MobileViewSidePanelCoordinator::GetEntryKey() const {
 }
 
 void MobileViewSidePanelCoordinator::DeregisterEntry() {
-  GetWindowRegistry()->Deregister(GetEntryKey());
-}
-
-SidePanelRegistry* MobileViewSidePanelCoordinator::GetWindowRegistry() {
-  return browser_window_interface_->GetFeatures()
-      .side_panel_coordinator()
-      ->GetWindowRegistry();
+  window_registry_->Deregister(GetEntryKey());
 }

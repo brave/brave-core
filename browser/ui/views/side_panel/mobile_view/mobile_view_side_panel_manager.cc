@@ -8,12 +8,11 @@
 #include <utility>
 
 #include "brave/browser/ui/views/side_panel/mobile_view/mobile_view_side_panel_coordinator.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "ui/views/view.h"
 
 MobileViewSidePanelManager::MobileViewSidePanelManager(
-    BrowserWindowInterface& browser_window_interface)
-    : browser_window_interface_(browser_window_interface) {}
+    SidePanelRegistry& window_registry)
+    : window_registry_(window_registry) {}
 
 MobileViewSidePanelManager::~MobileViewSidePanelManager() = default;
 
@@ -26,7 +25,7 @@ void MobileViewSidePanelManager::CreateMobileViewSidePanelCoordinator(
     const sidebar::SidebarItem& item) {
   coordinators_.emplace(sidebar::MobileViewId(item.url.spec()),
                         std::make_unique<MobileViewSidePanelCoordinator>(
-                            browser_window_interface_.get(), item.url));
+                            window_registry_.get(), item.url));
 }
 
 void MobileViewSidePanelManager::OnItemAdded(const sidebar::SidebarItem& item,

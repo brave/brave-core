@@ -62,6 +62,8 @@ bool BraveBrowser::ShouldUseBraveWebViewRoundedCorners(Browser* browser) {
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
   if (sidebar::CanUseSidebar(this)) {
+    // TODO(simonhong): Remove this constraint -
+    // https://github.com/brave/brave-browser/issues/45138.
     // Below call order is important.
     // When reaches here, Sidebar UI is setup in BraveBrowserView but
     // not initialized. It's just empty because sidebar controller/model is not
