@@ -11,6 +11,7 @@
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/brave_account/core/mojom/brave_account.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
+#include "brave/components/password_strength_meter/mojom/password_strength_meter.mojom.h"
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
@@ -22,6 +23,10 @@ class BraveAccountHandler;
 
 namespace content {
 class WebUIDataSource;
+}
+
+namespace password_strength_meter {
+class PasswordStrengthMeterHandler;
 }
 
 class Profile;
@@ -52,9 +57,15 @@ class BraveSettingsUI : public settings::SettingsUI {
   void BindInterface(
       mojo::PendingReceiver<brave_account::mojom::BraveAccountHandler>
           pending_receiver);
+  void BindInterface(
+      mojo::PendingReceiver<
+          password_strength_meter::mojom::PasswordStrengthMeterHandler>
+          pending_receiver);
 
  private:
   std::unique_ptr<brave_account::BraveAccountHandler> brave_account_handler_;
+  std::unique_ptr<password_strength_meter::PasswordStrengthMeterHandler>
+      password_strength_meter_handler_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_

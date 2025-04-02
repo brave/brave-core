@@ -208,6 +208,8 @@ brave_chrome_browser_deps = [
   "//brave/components/p3a",
   "//brave/components/p3a:buildflags",
   "//brave/components/p3a_utils",
+  "//brave/components/password_strength_meter",
+  "//brave/components/password_strength_meter:mojom",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/privacy_sandbox",
   "//brave/components/psst/browser/content",

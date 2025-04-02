@@ -8,14 +8,20 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_account/core/mojom/brave_account.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+
+namespace content {
+class WebUI;
+}  // namespace content
 
 namespace brave_account {
 class BraveAccountHandler : public mojom::BraveAccountHandler {
  public:
   explicit BraveAccountHandler(
+      content::WebUI* web_ui,
       mojo::PendingReceiver<mojom::BraveAccountHandler> handler);
 
   BraveAccountHandler(const BraveAccountHandler&) = delete;
@@ -23,12 +29,10 @@ class BraveAccountHandler : public mojom::BraveAccountHandler {
 
   ~BraveAccountHandler() override;
 
-  void GetPasswordStrength(
-      const std::string& password,
-      mojom::BraveAccountHandler::GetPasswordStrengthCallback callback)
-      override;
+  void OpenDialog() override;
 
  private:
+  raw_ptr<content::WebUI> web_ui_;
   mojo::Receiver<mojom::BraveAccountHandler> handler_;
 };
 }  // namespace brave_account

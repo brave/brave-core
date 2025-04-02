@@ -1,8 +1,25 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index ad39862fdd9a5a4f827f36e6a9778223a638d831..2144901f26a6c85d554cac8d958297b5d9ad2613 100644
+index ad39862fdd9a5a4f827f36e6a9778223a638d831..f7f887c517d445971150868de211c76860b58666 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2582,6 +2582,7 @@ static_library("browser") {
+@@ -368,6 +368,8 @@ static_library("browser") {
+     "component_updater/trust_token_key_commitments_component_installer.h",
+     "component_updater/wasm_tts_engine_component_installer.cc",
+     "component_updater/wasm_tts_engine_component_installer.h",
++    "component_updater/zxcvbn_data_component_installer.cc",
++    "component_updater/zxcvbn_data_component_installer.h",
+     "consent_auditor/consent_auditor_factory.cc",
+     "consent_auditor/consent_auditor_factory.h",
+     "content_index/content_index_metrics.cc",
+@@ -2544,6 +2546,7 @@ static_library("browser") {
+     "//third_party/zlib:minizip",
+     "//third_party/zlib/google:compression_utils",
+     "//third_party/zlib/google:zip",
++    "//third_party/zxcvbn-cpp",
+     "//ui/accessibility",
+     "//ui/actions",
+     "//ui/base",
+@@ -2582,6 +2585,7 @@ static_library("browser") {
    } else {
      sources += [ "net/net_error_diagnostics_dialog_stub.cc" ]
    }
@@ -10,6 +27,23 @@ index ad39862fdd9a5a4f827f36e6a9778223a638d831..2144901f26a6c85d554cac8d958297b5
  
    if (is_android) {
      sources += [
+@@ -3621,8 +3625,6 @@ static_library("browser") {
+       "component_updater/soda_component_installer.h",
+       "component_updater/soda_language_pack_component_installer.cc",
+       "component_updater/soda_language_pack_component_installer.h",
+-      "component_updater/zxcvbn_data_component_installer.cc",
+-      "component_updater/zxcvbn_data_component_installer.h",
+       "contextual_cueing/contextual_cueing_helper.cc",
+       "contextual_cueing/contextual_cueing_service.cc",
+       "contextual_cueing/contextual_cueing_service.h",
+@@ -4448,7 +4450,6 @@ static_library("browser") {
+       "//services/screen_ai/public/cpp:utilities",
+       "//services/screen_ai/public/mojom",
+       "//third_party/crashpad/crashpad/client:common",
+-      "//third_party/zxcvbn-cpp",
+       "//ui/views",
+       "//ui/web_dialogs",
+       "//ui/webui",
 @@ -8497,6 +8498,7 @@ static_library("browser_public_dependencies") {
        "//rlz:rlz_lib",
      ]

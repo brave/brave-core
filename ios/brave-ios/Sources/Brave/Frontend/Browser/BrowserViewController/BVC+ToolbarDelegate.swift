@@ -342,12 +342,14 @@ extension BrowserViewController: TopToolbarDelegate {
       "version",
       "skus-internals",
       "ads-internals",
+      "account-dialogs",
     ]
     guard let host = url.host, supportedPages.contains(host) else {
       return false
     }
     let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
     controller.webView.load(URLRequest(url: url))
+    controller.webView.internalWebView?.isInspectable = true
     controller.title = url.host?.capitalizeFirstLetter
     let webView = controller.webView
     controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
