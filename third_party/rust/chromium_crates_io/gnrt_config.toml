@@ -221,11 +221,6 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.num-bigint]
 extra_input_roots = [ "../README.md" ]
 extra_kv = { raw_gn = '''
-if (target_cpu == "arm64" || target_cpu == "x64") {
-  rustenv = [ "CARGO_CFG_TARGET_POINTER_WIDTH=64" ]
-} else {
-  rustenv = [ "CARGO_CFG_TARGET_POINTER_WIDTH=32" ]
-}
 if (epoch != "0.2") {
   build_script_outputs = [ "radix_bases.rs" ]
 } else {
