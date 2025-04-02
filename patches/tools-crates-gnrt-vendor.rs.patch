@@ -20,3 +20,12 @@ index 505da80a2c585a14a709a92193372305db88a382..bc73a03dcd872e8796ab0e46f88cfe4e
      else {
          // No patches for this crate.
          return Ok(());
+@@ -336,7 +336,7 @@ fn apply_patches(
+         let args = vec![
+             "apply".to_string(),
+             // We need to rebase from the old versioned directory to the new one.
+-            format!("-p{}", crate_dir.ancestors().count()),
++            format!("-p{}", crate_dir.ancestors().count()-1),
+             format!("--directory={}", crate_dir.display()),
+         ];
+         let mut c = std::process::Command::new("git");
