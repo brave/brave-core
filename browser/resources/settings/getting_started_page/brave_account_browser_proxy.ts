@@ -3,18 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { sendWithPromise } from '//resources/js/cr.js'
+import { BraveAccountHandler } from '../brave_account.mojom-webui.js'
+import type { BraveAccountHandlerInterface } from '../brave_account.mojom-webui.js'
 
 export interface BraveAccountBrowserProxy {
-  getPasswordStrength(password: string): Promise<number>
+  handler: BraveAccountHandlerInterface
 }
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
-  getPasswordStrength (password: string) {
-    return sendWithPromise('getPasswordStrength', password)
+  handler: BraveAccountHandlerInterface
+
+  private constructor() {
+    this.handler = BraveAccountHandler.getRemote()
   }
 
-  static getInstance() {
+  static getInstance(): BraveAccountBrowserProxy {
     return instance || (instance = new BraveAccountBrowserProxyImpl())
   }
 }
