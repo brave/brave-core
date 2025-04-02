@@ -2743,7 +2743,11 @@ public abstract class BraveActivity extends ChromeActivity
                 return;
             }
             YouTubeScriptInjectorTabFeature.setFullscreen(currentTab.getWebContents());
-            enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+            try {
+                enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+            } catch (IllegalStateException e) {
+                Log.e(TAG, "Error entering picture in picture mode.", e);
+            }
         }
     }
 }
