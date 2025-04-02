@@ -33,6 +33,7 @@ mojom::SponsoredImageBackgroundPtr ReadSponsoredImageData(
   using ntp_background_images::kIsBackgroundKey;
   using ntp_background_images::kLogoKey;
   using ntp_background_images::kWallpaperIDKey;
+  using ntp_background_images::kWallpaperShouldMetricsFallbackToP3aKey;
   using ntp_background_images::kWallpaperTypeKey;
   using ntp_background_images::kWallpaperURLKey;
 
@@ -77,6 +78,11 @@ mojom::SponsoredImageBackgroundPtr ReadSponsoredImageData(
     if (!logo->image_url.empty()) {
       background->logo = std::move(logo);
     }
+  }
+
+  if (auto fallback_to_p3a =
+          data.FindBool(kWallpaperShouldMetricsFallbackToP3aKey)) {
+    background->should_metrics_fallback_to_p3a = *fallback_to_p3a;
   }
 
   return background;

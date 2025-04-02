@@ -34,6 +34,15 @@ export function initializeRewards(store: Store<RewardsState>): RewardsActions {
     store.update({ showRewardsWidget })
   }
 
+  async function updateParameters() {
+    const { rewardsParameters } = await rewardsHandler.getRewardsParameters()
+    if (rewardsParameters) {
+      store.update({
+        rewardsExchangeRate: rewardsParameters.rate
+      })
+    }
+  }
+
   async function updateRewardsEnabled() {
     const { paymentId } = await rewardsHandler.getRewardsPaymentId()
     store.update({ rewardsEnabled: Boolean(paymentId) })
@@ -59,6 +68,7 @@ export function initializeRewards(store: Store<RewardsState>): RewardsActions {
       updatePrefs(),
       updateRewardsEnabled(),
       updateExternalWallet(),
+      updateParameters(),
       updateBalance()
     ])
   }
