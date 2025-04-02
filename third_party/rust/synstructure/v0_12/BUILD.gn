@@ -12,10 +12,10 @@ cargo_crate("lib") {
   crate_name = "synstructure"
   epoch = "0.12"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/synstructure-0.12.6/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/synstructure-v0_12/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/synstructure-0.12.6/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/synstructure-0.12.6/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/synstructure-v0_12/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/synstructure-v0_12/src/macros.rs",
   ]
   inputs = []
 

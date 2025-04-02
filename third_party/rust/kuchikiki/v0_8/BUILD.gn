@@ -12,18 +12,18 @@ cargo_crate("lib") {
   crate_name = "kuchikiki"
   epoch = "0.8"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.8-speedreader/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-v0_8/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.8-speedreader/src/attributes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.8-speedreader/src/cell_extras.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.8-speedreader/src/iter.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.8-speedreader/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.8-speedreader/src/node_data_ref.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.8-speedreader/src/parser.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.8-speedreader/src/select.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.8-speedreader/src/serializer.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.8-speedreader/src/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.8-speedreader/src/tree.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-v0_8/src/attributes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-v0_8/src/cell_extras.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-v0_8/src/iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-v0_8/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-v0_8/src/node_data_ref.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-v0_8/src/parser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-v0_8/src/select.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-v0_8/src/serializer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-v0_8/src/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-v0_8/src/tree.rs",
   ]
   inputs = []
 

@@ -12,8 +12,8 @@ cargo_crate("lib") {
   crate_name = "futures"
   epoch = "0.3"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-0.3.31/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/futures-0.3.31/src/lib.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-v0_3/src/lib.rs"
+  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/futures-v0_3/src/lib.rs" ]
   inputs = []
 
   build_native_rust_unit_tests = false

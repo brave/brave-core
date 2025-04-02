@@ -3,7 +3,7 @@ URL: https://crates.io/crates/fpe
 Version: 0.6.1
 Revision: 913e533c9345d5c8e11aac42318fc5743d6f58e9
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/fpe-0.6.1/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/fpe-v0_6/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

@@ -3,7 +3,7 @@ URL: https://crates.io/crates/synstructure
 Version: 0.12.6
 Revision: 26b84b4dd4e29eef7436b94ba656cd0765a6c4a0
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/synstructure-0.12.6/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/synstructure-v0_12/LICENSE
 Shipped: yes
 Security Critical: yes
 
