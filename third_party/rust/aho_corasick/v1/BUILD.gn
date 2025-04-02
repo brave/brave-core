@@ -1,3 +1,73 @@
-group("lib") {
-  public_deps = [ "//third_party/rust/aho_corasick/v1:lib" ]
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "aho_corasick"
+  epoch = "1"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/ahocorasick.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/automaton.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/dfa.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/nfa/contiguous.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/nfa/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/nfa/noncontiguous.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/packed/api.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/packed/ext.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/packed/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/packed/pattern.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/packed/rabinkarp.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/packed/teddy/builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/packed/teddy/generic.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/packed/teddy/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/packed/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/packed/vector.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/transducer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/util/alphabet.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/util/buffer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/util/byte_frequencies.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/util/debug.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/util/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/util/int.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/util/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/util/prefilter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/util/primitives.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/util/remapper.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/util/search.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/util/special.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3/src/packed/teddy/README.md" ]
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "1.1.3"
+  cargo_pkg_authors = "Andrew Gallant <jamslam@gmail.com>"
+  cargo_pkg_name = "aho-corasick"
+  cargo_pkg_description = "Fast multiple substring searching."
+  library_configs -= [ "//build/config/coverage:default_coverage" ]
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [ "//brave/third_party/rust/memchr/v2:lib" ]
+  features = [
+    "perf-literal",
+    "std",
+  ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }
