@@ -313,8 +313,12 @@ bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
 }
 
 void AdsServiceImpl::InitializeNotificationsForCurrentProfile() {
-  delegate_->InitNotificationHelper();
+  delegate_->InitNotificationHelper(base::BindOnce(
+      &AdsServiceImpl::InitializeNotificationsForCurrentProfileCallback,
+      weak_ptr_factory_.GetWeakPtr()));
+}
 
+void AdsServiceImpl::InitializeNotificationsForCurrentProfileCallback() {
   // Postpone recording P3A to make browser startup smoother.
   content::GetUIThreadTaskRunner({base::TaskPriority::BEST_EFFORT})
       ->PostDelayedTask(
