@@ -41,6 +41,7 @@ public class Migration {
 
     migrateDeAmpPreferences()
     migrateDebouncePreferences()
+    migrateDefaultUserAgentPreferences()
 
     // Adding Observer to enable sync types
     NotificationCenter.default.addObserver(
@@ -49,6 +50,12 @@ public class Migration {
       name: BraveServiceStateObserver.coreServiceLoadedNotification,
       object: nil
     )
+  }
+
+  private func migrateDefaultUserAgentPreferences() {
+    Preferences.DeprecatedPreferences.alwaysRequestDesktopSite.migrate { value in
+      self.braveCore.defaultHostContentSettings.defaultPageMode = value ? .desktop : .mobile
+    }
   }
 
   private func migrateDeAmpPreferences() {
@@ -186,7 +193,7 @@ extension Migration {
 }
 
 extension Preferences {
-  private final class DeprecatedPreferences {
+  fileprivate final class DeprecatedPreferences {
     static let blockAdsAndTracking = Option<Bool>(
       key: "shields.block-ads-and-tracking",
       default: true
@@ -208,6 +215,13 @@ extension Preferences {
     static let showBookmarkToolbarShortcut = Option<Bool>(
       key: "general.show-bookmark-toolbar-shortcut",
       default: UIDevice.isIpad
+    )
+
+    /// Sets Desktop UA for iPad by default (iOS 13+ & iPad only).
+    /// Do not read it directly, prefer to use `UserAgent.shouldUseDesktopMode` instead.
+    static let alwaysRequestDesktopSite = Option<Bool>(
+      key: "general.always-request-desktop-site",
+      default: UIDevice.current.userInterfaceIdiom == .pad
     )
   }
 

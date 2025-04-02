@@ -15,16 +15,4 @@ public struct UserAgent {
   public static let desktop = UserAgentBuilder().build(desktopMode: true)
   /// Desktop user agent for masking we are Brave
   public static let desktopMasked = UserAgentBuilder().build(desktopMode: true, maskBrave: true)
-
-  public static func userAgentForIdiom(
-    _ idiom: UIUserInterfaceIdiom = UIDevice.current.userInterfaceIdiom
-  ) -> String {
-    return shouldUseDesktopMode(idiom: idiom) ? UserAgent.desktop : UserAgent.mobile
-  }
-
-  public static func shouldUseDesktopMode(
-    idiom: UIUserInterfaceIdiom = UIDevice.current.userInterfaceIdiom
-  ) -> Bool {
-    return idiom == .pad ? Preferences.UserAgent.alwaysRequestDesktopSite.value : false
-  }
 }

@@ -378,7 +378,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   fileprivate func setUserAgent() {
-    let userAgent = UserAgent.userAgentForIdiom()
+    let userAgent = UserAgent.mobile
 
     // Set the favicon fetcher, and the image loader.
     // This only needs to be done once per runtime. Note that we use defaults here that are

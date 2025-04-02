@@ -481,7 +481,6 @@ public class BrowserViewController: UIViewController {
     // Observe some user preferences
     Preferences.Privacy.privateBrowsingOnly.observe(from: self)
     Preferences.General.tabBarVisibility.observe(from: self)
-    Preferences.UserAgent.alwaysRequestDesktopSite.observe(from: self)
     Preferences.General.mediaAutoBackgrounding.observe(from: self)
     Preferences.General.youtubeHighQuality.observe(from: self)
     Preferences.General.defaultPageZoomLevel.observe(from: self)
@@ -2868,9 +2867,6 @@ extension BrowserViewController: PreferencesObserver {
       setupTabs()
       updateTabsBarVisibility()
       updateApplicationShortcuts()
-    case Preferences.UserAgent.alwaysRequestDesktopSite.key:
-      tabManager.reset()
-      tabManager.reloadSelectedTab()
     case Preferences.Shields.blockScripts.key,
       Preferences.Shields.blockImages.key,
       Preferences.Shields.useRegionAdBlock.key:
