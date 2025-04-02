@@ -1,0 +1,32 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ui/webui/resources/tools/build_webui.gni")
+
+build_webui("build") {
+  grd_prefix = "hello_world"
+
+  static_files = [
+    "hello_world.css",
+    "hello_world.html",
+  ]
+
+  non_web_component_files = [
+    "hello_world_app.html.ts",
+    "hello_world_app.ts",
+  ]
+
+  css_files = [ "hello_world_app.css" ]
+
+  webui_context_type = "trusted"
+
+  use_brave_grit = true
+  grit_output_dir = target_gen_dir
+
+  ts_deps = [
+    "//third_party/lit/v3_0:build_ts",
+    "//ui/webui/resources/js:build_ts",
+  ]
+}

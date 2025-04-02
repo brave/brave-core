@@ -46,6 +46,7 @@ include_rules += [
   "+brave/components/debounce/core/browser",
   "+brave/components/debounce/core/common",
   "+brave/components/google_sign_in_permission",
+  "+brave/components/hello_world",
   "+brave/components/ntp_background_images/browser",
   "+brave/components/ntp_background_images/common",
   "+brave/components/ntp_background_images/buildflags",

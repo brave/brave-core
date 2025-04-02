@@ -104,6 +104,9 @@ inline constexpr char kBraveUINewTabURL[] = "chrome://newtab/";
 inline constexpr char kBraveUINewTabTakeoverURL[] =
     "chrome://new-tab-takeover/";
 
+inline constexpr char kChromeUIHelloWorldHost[] = "hello-world";
+inline constexpr char kChromeUIHelloWorldURL[] = "chrome://hello-world/";
+
 // Hosts that are allowed to be installed as PWAs, which is usually
 // a blocked action for WebUIs. In Chromium, the "password-manager" host
 // is already allowed.
