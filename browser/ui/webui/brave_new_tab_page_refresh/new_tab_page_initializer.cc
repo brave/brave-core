@@ -16,6 +16,7 @@
 #include "brave/browser/resources/brave_new_tab_page_refresh/grit/brave_new_tab_page_refresh_generated_map.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
@@ -33,6 +34,10 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/webui/webui_util.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
 
 namespace brave_new_tab_page_refresh {
 
@@ -99,6 +104,13 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 
   source_->AddBoolean("rewardsFeatureEnabled",
                       brave_rewards::IsSupportedForProfile(profile));
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  bool vpn_feature_enabled = brave_vpn::IsBraveVPNEnabled(profile->GetPrefs());
+#else
+  bool vpn_feature_enabled = false;
+#endif
+  source_->AddBoolean("vpnFeatureEnabled", vpn_feature_enabled);
 }
 
 void NewTabPageInitializer::AddStrings() {
@@ -163,6 +175,7 @@ void NewTabPageInitializer::AddStrings() {
       {"showStatsLabel", IDS_NEW_TAB_SHOW_STATS_LABEL},
       {"showTalkWidgetLabel", IDS_NEW_TAB_SHOW_TALK_WIDGET_LABEL},
       {"showTopSitesLabel", IDS_NEW_TAB_SHOW_TOP_SITES_LABEL},
+      {"showVpnWidgetLabel", IDS_NEW_TAB_SHOW_VPN_WIDGET_LABEL},
       {"solidBackgroundLabel", IDS_NEW_TAB_SOLID_BACKGROUND_LABEL},
       {"solidBackgroundTitle", IDS_NEW_TAB_SOLID_BACKGROUND_LABEL},
       {"statsAdsBlockedText", IDS_NEW_TAB_STATS_ADS_BLOCKED_TEXT},
@@ -189,6 +202,19 @@ void NewTabPageInitializer::AddStrings() {
       {"topSitesURLLabel", IDS_NEW_TAB_TOP_SITES_URL_LABEL},
       {"undoButtonLabel", IDS_NEW_TAB_UNDO_BUTTON_LABEL},
       {"uploadBackgroundLabel", IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL},
+      {"vpnChangeRegionLabel", IDS_NEW_TAB_VPN_CHANGE_REGION_LABEL},
+      {"vpnFeatureText1", IDS_NEW_TAB_VPN_FEATURE_TEXT1},
+      {"vpnFeatureText2", IDS_NEW_TAB_VPN_FEATURE_TEXT2},
+      {"vpnFeatureText3", IDS_NEW_TAB_VPN_FEATURE_TEXT3},
+      {"vpnRestorePurchaseLabel", IDS_NEW_TAB_VPN_RESTORE_PURCHASE_LABEL},
+      {"vpnStartTrialLabel", IDS_NEW_TAB_VPN_START_TRIAL_LABEL},
+      {"vpnOptimalText", IDS_NEW_TAB_VPN_OPTIMAL_TEXT},
+      {"vpnPoweredByText", IDS_NEW_TAB_VPN_POWERED_BY_TEXT},
+      {"vpnStatusConnected", IDS_NEW_TAB_VPN_STATUS_CONNECTED},
+      {"vpnStatusConnecting", IDS_NEW_TAB_VPN_STATUS_CONNECTING},
+      {"vpnStatusDisconnected", IDS_NEW_TAB_VPN_STATUS_DISCONNECTED},
+      {"vpnStatusDisconnecting", IDS_NEW_TAB_VPN_STATUS_DISCONNECTING},
+      {"vpnWidgetTitle", IDS_NEW_TAB_VPN_WIDGET_TITLE},
       {"widgetSettingsTitle", IDS_NEW_TAB_WIDGET_SETTINGS_TITLE}};
 
   source_->AddLocalizedStrings(kStrings);

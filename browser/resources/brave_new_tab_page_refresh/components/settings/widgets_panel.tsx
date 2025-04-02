@@ -20,6 +20,8 @@ export function WidgetsPanel() {
   const showTalkWidget = useAppState((s) => s.showTalkWidget)
   const rewardsFeatureEnabled = useAppState((s) => s.rewardsFeatureEnabled)
   const showRewardsWidget = useAppState((s) => s.showRewardsWidget)
+  const vpnFeatureEnabled = useAppState((s) => s.vpnFeatureEnabled)
+  const showVpnWidget = useAppState((s) => s.showVpnWidget)
 
   return (
     <div data-css-scope={style.scope}>
@@ -33,6 +35,19 @@ export function WidgetsPanel() {
           }}
         />
       </div>
+      {
+        vpnFeatureEnabled &&
+          <div className='form-control-row'>
+            <label>{getString('showVpnWidgetLabel')}</label>
+            <Toggle
+              size='small'
+              checked={showVpnWidget}
+              onChange={({ checked }) => {
+                actions.setShowVpnWidget(checked)
+              }}
+            />
+          </div>
+      }
       {
         rewardsFeatureEnabled &&
           <div className='form-control-row'>

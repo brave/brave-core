@@ -20,6 +20,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_handler.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -30,6 +31,11 @@
 #include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#endif
+
 namespace {
 
 using brave_new_tab_page_refresh::BackgroundFacade;
@@ -37,6 +43,7 @@ using brave_new_tab_page_refresh::CustomImageChooser;
 using brave_new_tab_page_refresh::NewTabPageHandler;
 using brave_new_tab_page_refresh::NewTabPageInitializer;
 using brave_new_tab_page_refresh::TopSitesFacade;
+using brave_new_tab_page_refresh::VPNFacade;
 
 }  // namespace
 
@@ -63,9 +70,17 @@ void BraveNewTabPageUI::BindInterface(
   auto top_sites_facade = std::make_unique<TopSitesFacade>(
       ChromeMostVisitedSitesFactory::NewForProfile(profile), *prefs);
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  auto vpn_facade = std::make_unique<VPNFacade>(
+      *tab, brave_vpn::BraveVpnServiceFactory::GetForProfile(profile));
+#else
+  auto vpn_facade = std::make_unique<VPNFacade>();
+#endif
+
   page_handler_ = std::make_unique<NewTabPageHandler>(
       std::move(receiver), std::move(image_chooser),
-      std::move(background_facade), std::move(top_sites_facade), *tab, *prefs,
+      std::move(background_facade), std::move(top_sites_facade),
+      std::move(vpn_facade), *tab, *prefs,
       *TemplateURLServiceFactory::GetForProfile(profile),
       *g_brave_browser_process->process_misc_metrics()->new_tab_metrics());
 }
@@ -104,5 +119,16 @@ void BraveNewTabPageUI::BindInterface(
       brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr,
       profile->GetPrefs());
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
+  auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
+      Profile::FromWebUI(web_ui()));
+  if (vpn_service) {
+    vpn_service->BindInterface(std::move(receiver));
+  }
+}
+#endif
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewTabPageUI)

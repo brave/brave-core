@@ -54,6 +54,7 @@ export type StringKey =
   'showStatsLabel' |
   'showTalkWidgetLabel' |
   'showTopSitesLabel' |
+  'showVpnWidgetLabel' |
   'solidBackgroundLabel' |
   'solidBackgroundTitle' |
   'statsAdsBlockedText' |
@@ -77,4 +78,17 @@ export type StringKey =
   'topSitesURLLabel' |
   'undoButtonLabel' |
   'uploadBackgroundLabel' |
+  'vpnChangeRegionLabel' |
+  'vpnFeatureText1' |
+  'vpnFeatureText2' |
+  'vpnFeatureText3' |
+  'vpnOptimalText' |
+  'vpnPoweredByText' |
+  'vpnRestorePurchaseLabel' |
+  'vpnStartTrialLabel' |
+  'vpnStatusConnected' |
+  'vpnStatusConnecting' |
+  'vpnStatusDisconnected' |
+  'vpnStatusDisconnecting' |
+  'vpnWidgetTitle' |
   'widgetSettingsTitle'

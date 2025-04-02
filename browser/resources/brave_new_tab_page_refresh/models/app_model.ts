@@ -28,12 +28,18 @@ import {
   RewardsActions,
   defaultRewardsState } from './rewards'
 
+import {
+  VPNState,
+  VPNActions,
+  defaultVPNState } from './vpn'
+
 export type AppState =
   NewTabState &
   BackgroundState &
   SearchState &
   TopSitesState &
-  RewardsState
+  RewardsState &
+  VPNState
 
 export function defaultState(): AppState {
   return {
@@ -41,7 +47,8 @@ export function defaultState(): AppState {
     ...defaultBackgroundState(),
     ...defaultSearchState(),
     ...defaultTopSitesState(),
-    ...defaultRewardsState()
+    ...defaultRewardsState(),
+    ...defaultVPNState()
   }
 }
 
@@ -50,7 +57,8 @@ export type AppActions =
   BackgroundActions &
   SearchActions &
   TopSitesActions &
-  RewardsActions
+  RewardsActions &
+  VPNActions
 
 export interface AppModel extends AppActions {
   getState: () => AppState

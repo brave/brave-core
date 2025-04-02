@@ -10,17 +10,20 @@ import { useAppState } from '../context/app_model_context'
 import { NtpWidget } from './ntp_widget'
 import { RewardsWidget } from './rewards_widget'
 import { TalkWidget } from './talk_widget'
+import { VPNWidget } from './vpn_widget'
 
 import { style } from './product_widget_stack.style'
 
-type TabName = 'rewards' | 'talk'
+type TabName = 'rewards' | 'talk' | 'vpn'
 
-const tabList: TabName[] = ['rewards', 'talk']
+const tabList: TabName[] = ['vpn', 'rewards', 'talk']
 
 export function ProductWidgetStack() {
   const showTalkWidget = useAppState((s) => s.showTalkWidget)
   const showRewardsWidget = useAppState((s) => s.showRewardsWidget)
   const rewardsFeatureEnabled = useAppState((s) => s.rewardsFeatureEnabled)
+  const vpnFeatureEnabled = useAppState((s) => s.vpnFeatureEnabled)
+  const showVpnWidget = useAppState((s) => s.showVpnWidget)
 
   const [currentTab, setCurrentTab] = React.useState(loadCurrentTab())
 
@@ -29,9 +32,16 @@ export function ProductWidgetStack() {
       switch (tab) {
         case 'rewards': return rewardsFeatureEnabled && showRewardsWidget
         case 'talk': return showTalkWidget
+        case 'vpn': return vpnFeatureEnabled && showVpnWidget
       }
     })
-  }, [showTalkWidget, rewardsFeatureEnabled, showRewardsWidget])
+  }, [
+    showTalkWidget,
+    rewardsFeatureEnabled,
+    showRewardsWidget,
+    vpnFeatureEnabled,
+    showVpnWidget
+  ])
 
   React.useEffect(() => {
     storeCurrentTab(currentTab)
@@ -56,6 +66,7 @@ export function ProductWidgetStack() {
     switch (tab) {
       case 'rewards': return <Icon name='product-bat-outline' />
       case 'talk': return <Icon name='product-brave-talk' />
+      case 'vpn': return <Icon name='product-vpn' />
     }
   }
 
@@ -63,6 +74,7 @@ export function ProductWidgetStack() {
     switch (activeTab) {
       case 'rewards': return <RewardsWidget />
       case 'talk': return <TalkWidget />
+      case 'vpn': return <VPNWidget />
     }
   }
 
@@ -94,6 +106,8 @@ const currentTabStorageKey = 'ntp-current-product-widget'
 function loadCurrentTab(): TabName | null {
   const value = localStorage.getItem(currentTabStorageKey)
   switch (value) {
+    case 'vpn':
+    case 'rewards':
     case 'talk':
       return value
     default:

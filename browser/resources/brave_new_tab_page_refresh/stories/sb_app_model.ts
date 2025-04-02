@@ -10,6 +10,7 @@ import { initializeBackgrounds } from './sb_backgrounds'
 import { initializeSearch } from './sb_search'
 import { initializeTopSites } from './sb_top_sites'
 import { initializeRewards } from './sb_rewards'
+import { initializeVPN } from './sb_vpn'
 
 export function createAppModel(): AppModel {
   const store = createStore(defaultState())
@@ -22,6 +23,7 @@ export function createAppModel(): AppModel {
     ...initializeBackgrounds(store),
     ...initializeSearch(store),
     ...initializeTopSites(store),
-    ...initializeRewards(store)
+    ...initializeRewards(store),
+    ...initializeVPN(store)
   }
 }

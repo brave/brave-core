@@ -181,6 +181,10 @@
     Show top sites
   </message>
 
+  <message name="IDS_NEW_TAB_SHOW_VPN_WIDGET_LABEL" desc="Label for showing or hiding the Brave VPN NTP widget">
+    Brave VPN
+  </message>
+
   <message name="IDS_NEW_TAB_SOLID_BACKGROUND_LABEL" desc="Solid background colors title">
     Solid colors
   </message>
@@ -267,6 +271,58 @@
 
   <message name="IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL" desc="Text for custom background option upload">
     Upload from device
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_CHANGE_REGION_LABEL" desc="Label for button to change the VPN region">
+    Change
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT1" desc="Brave VPN product feature text item 1">
+    Extra privacy &amp; security online
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT2" desc="Brave VPN product feature text item 2">
+    Hide your IP &amp; change your location
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_FEATURE_TEXT3" desc="Brave VPN product feature text item 3">
+    Protect every app on your device
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_RESTORE_PURCHASE_LABEL" desc="Label for button to restore a VPN purchase">
+    Already purchased?
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_START_TRIAL_LABEL" desc="Label for button to start a Brave VPN free trial">
+    Start free trial
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_OPTIMAL_TEXT" desc="Text indicating an optimal VPN connection">
+    Optimal
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_POWERED_BY_TEXT" desc="Text introducing the underlying VPN service provider logo">
+    Powered by
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_STATUS_CONNECTED" desc="Text indicating that the VPN is connected">
+    Connected
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_STATUS_CONNECTING" desc="Text indicating that the VPN is connecting">
+    Connecting
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_STATUS_DISCONNECTED" desc="Text indicating that the VPN is disconnected">
+    Disconnected
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_STATUS_DISCONNECTING" desc="Text indicating that the VPN is disconnecting">
+    Disconnecting
+  </message>
+
+  <message name="IDS_NEW_TAB_VPN_WIDGET_TITLE" desc="Title of the Brave VPN NTP widget">
+    BRAVE VPN
   </message>
 
   <message name="IDS_NEW_TAB_WIDGET_SETTINGS_TITLE" desc="Title of widgets settings panel">
