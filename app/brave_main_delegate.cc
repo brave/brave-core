@@ -127,15 +127,7 @@ void BraveMainDelegate::AppendCommandLineOptions() {
                                     kBraveOriginTrialsPublicKey);
   }
 
-  std::string brave_sync_service_url = BUILDFLAG(BRAVE_SYNC_ENDPOINT);
-
   command_line->AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
-
-  // Brave's sync protocol does not use the sync service url
-  if (!command_line->HasSwitch(syncer::kSyncServiceURL)) {
-    command_line->AppendSwitchASCII(syncer::kSyncServiceURL,
-                                    brave_sync_service_url.c_str());
-  }
 
   variations::AppendBraveCommandLineOptions(*command_line);
 }
