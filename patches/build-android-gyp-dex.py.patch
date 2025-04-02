@@ -1,10 +1,10 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index e2267c6ce7f98b4d69f65dfbc86f293fffdfa79c..ad5c1c953db71858a240734cc9c1b892f906fc0c 100755
+index f2af6f8010d16bf8515ba63caefaa3fc8fa914ca..d12191ccf3e1d1323c89ae9b16b08621f9dfdd4b 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
-@@ -33,6 +33,7 @@ DEFAULT_IGNORE_WARNINGS = (
-     # https://issuetracker.google.com/327611582
-     r'The companion object Companion could not be found',
+@@ -35,6 +35,7 @@ DEFAULT_IGNORE_WARNINGS = (
+     # https://crbug.com/408280256
+     r'MethodHandle.invoke',
  )
 +DEFAULT_IGNORE_WARNINGS += ( r'.Brave', )
  

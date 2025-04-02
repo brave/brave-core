@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-index a1a50693e330e93c7a1eb99f145db5502c851dcb..df20c92c5f48c3dcc58d96e1b5be882542a8cd55 100644
+index 20a3ffecbad1a89a86acf6c7602403d84251f2a3..b63611fc594a5d56fba4a1ffbc7f70034d730eab 100644
 --- a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
 +++ b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
 @@ -78,6 +78,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
@@ -10,8 +10,8 @@ index a1a50693e330e93c7a1eb99f145db5502c851dcb..df20c92c5f48c3dcc58d96e1b5be8825
          ChannelId.MEDIA_PLAYBACK,
          ChannelId.SCREEN_CAPTURE,
          ChannelId.CONTENT_SUGGESTIONS,
-@@ -133,7 +134,8 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
-         String USB = "usb";
+@@ -135,7 +136,8 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+         String SERIAL = "serial";
      }
  
 -    @StringDef({ChannelGroupId.GENERAL, ChannelGroupId.SITES})
@@ -20,7 +20,7 @@ index a1a50693e330e93c7a1eb99f145db5502c851dcb..df20c92c5f48c3dcc58d96e1b5be8825
      @Retention(RetentionPolicy.SOURCE)
      public @interface ChannelGroupId {
          String SITES = "sites";
-@@ -161,6 +163,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -163,6 +165,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
              Map<String, PredefinedChannel> map = new HashMap<>();
              Set<String> startup = new HashSet<>();
  
@@ -28,7 +28,7 @@ index a1a50693e330e93c7a1eb99f145db5502c851dcb..df20c92c5f48c3dcc58d96e1b5be8825
              map.put(
                      ChannelId.BROWSER,
                      PredefinedChannel.create(
-@@ -400,6 +403,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -412,6 +415,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
  
          static {
              Map<String, PredefinedChannelGroup> map = new HashMap<>();
