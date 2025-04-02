@@ -309,7 +309,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private void handleOnboardingStepForVariantA(int step) {
         if (step == 0) {
             handleSetAsDefaultStep();
-        } else if (isWDPEnabled() && step == 1) {
+        } else if (step == 1) {
             handleWDPStep();
         } else if (step == 2) {
             handleAnalyticsConsentPage();
@@ -324,7 +324,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         } else if (step == 1) {
             // Notification permission
             handleNotificationPermission();
-        } else if (isWDPEnabled() && step == 2) {
+        } else if (step == 2) {
             handleWDPStep();
         } else if (step == 3) {
             handleAnalyticsConsentPage();
@@ -336,7 +336,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private void handleOnboardingStepForVariantC(int step) {
         if (step == 0) {
             handleSetAsDefaultStep();
-        } else if (isWDPEnabled() && step == 1) {
+        } else if (step == 1) {
             handleWDPStep();
         } else if (step == 2) {
             handleAnalyticsConsentPage();
@@ -353,7 +353,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         } else if (step == 1) {
             // Notification permission
             handleNotificationPermission();
-        } else if (isWDPEnabled() && step == 2) {
+        } else if (step == 2) {
             handleWDPStep();
         } else if (step == 3) {
             handleAnalyticsConsentPage();
@@ -401,6 +401,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private void handleWDPStep() {
+        if (!isWDPEnabled()) {
+            nextOnboardingStep();
+            return;
+        }
+
         mCurrentOnboardingPage = CurrentOnboardingPage.WDP_PAGE;
         if (mIvBrave != null) {
             mIvBrave.setVisibility(View.VISIBLE);
