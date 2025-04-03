@@ -13,11 +13,8 @@ class SidePanelEntryScope;
 #include "base/functional/callback_forward.h"
 #include "brave/browser/ui/webui/playlist_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
-#include "ui/base/metadata/metadata_header_macros.h"
 
 class PlaylistSidePanelWebView : public SidePanelWebUIView {
-  METADATA_HEADER(PlaylistSidePanelWebView, SidePanelWebUIView)
-
  public:
   PlaylistSidePanelWebView(Browser* browser,
                            SidePanelEntryScope& scope,

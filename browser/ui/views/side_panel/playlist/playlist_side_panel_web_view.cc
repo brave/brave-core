@@ -5,8 +5,6 @@
 
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_web_view.h"
 
-#include "ui/base/metadata/metadata_impl_macros.h"
-
 PlaylistSidePanelWebView::PlaylistSidePanelWebView(
     Browser* browser,
     SidePanelEntryScope& scope,
@@ -22,6 +20,3 @@ PlaylistSidePanelWebView::~PlaylistSidePanelWebView() = default;
 base::WeakPtr<PlaylistSidePanelWebView> PlaylistSidePanelWebView::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
-
-BEGIN_METADATA(PlaylistSidePanelWebView)
-END_METADATA

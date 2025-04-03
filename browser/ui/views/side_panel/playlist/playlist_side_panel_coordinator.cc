@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check_is_test.h"
 #include "base/functional/callback.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -90,34 +91,32 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView(
 
     Proxy::CreateForWebContents(contents_wrapper_->web_contents(),
                                 weak_ptr_factory_.GetWeakPtr());
-
-    // |web_view_| is also created and cached together with |contents_wrapper_|.
-    // Why caching webview also? When SidePanelWebView is created, its contents
-    // is marked as side panel to make its loading faster at
-    // SidePanelLoadingVoter::MarkAsSidePanel(). However, upstream has
-    // assumption that it should have initial state(not url loaded before)
-    // except it's preloaded side panel. If we create PlaylistSidePanelWebView
-    // whenever opening, we conflict with it as playlist could still play even
-    // it's closed. By caching webview also, we could avoid that conflict.
-    CHECK(!side_panel_web_view_);
-    side_panel_web_view_ = std::make_unique<PlaylistSidePanelWebView>(
-        &GetBrowser(), scope, base::DoNothing(), contents_wrapper_.get());
-    side_panel_web_view_->set_owned_by_client();
+  } else {
+    // Set visible to avoid CHECK(page_node->IsVisible()) failure in
+    // SidePanelLoadingVoter::MarkAsSidePanel(). When SidePanelWebView is
+    // created below, upstream marks this content and has assumption that it's
+    // visible if it has loaded url. When playlist panel is closed while
+    // playing, we cache |contents_wrapper_| to make it continue to play after
+    // closing panel. So, it has loaded url already. Should be visible before
+    // creating SidePanelWebView with it to avoid above CHECK failure.
+    contents_wrapper_->web_contents()->UpdateWebContentsVisibility(
+        content::Visibility::VISIBLE);
   }
+
+  auto web_view = std::make_unique<PlaylistSidePanelWebView>(
+      &GetBrowser(), scope, base::DoNothing(), contents_wrapper_.get());
+  side_panel_web_view_ = web_view->GetWeakPtr();
 
   if (!should_create_contents_wrapper) {
     // SidePanelWebView's initial visibility is hidden. Thus, we need to
     // call this manually when we don't reload the web contents.
     // Calling this will also mark that the web contents is ready to go.
-    side_panel_web_view_->ShowUI();
+    web_view->ShowUI();
   }
 
-  auto view = std::make_unique<views::View>();
-  view->SetUseDefaultFillLayout(true);
-  view->AddChildViewRaw(side_panel_web_view_.get());
-  view_observation_.Observe(view.get());
+  view_observation_.Observe(web_view.get());
 
-  return view;
+  return web_view;
 }
 
 BrowserView* PlaylistSidePanelCoordinator::GetBrowserView() {
@@ -132,10 +131,14 @@ void PlaylistSidePanelCoordinator::OnViewIsDeleting(views::View* view) {
 
 void PlaylistSidePanelCoordinator::DestroyWebContentsIfNeeded() {
   DCHECK(contents_wrapper_);
-  if (!is_audible_for_testing_ &&
-      !contents_wrapper_->web_contents()->IsCurrentlyAudible()) {
+
+  if (is_audible_for_testing_) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  if (!contents_wrapper_->web_contents()->IsCurrentlyAudible()) {
     contents_wrapper_.reset();
-    side_panel_web_view_.reset();
   }
 }
 

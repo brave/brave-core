@@ -190,7 +190,6 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
   // Close playlist panel check cached instances are still live.
   panel_ui->Close();
   EXPECT_TRUE(coordinator->contents_wrapper_);
-  EXPECT_TRUE(coordinator->side_panel_web_view_);
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return !panel_ui->IsSidePanelShowing(); }));
 
@@ -205,7 +204,6 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
   // Close playlist panel. Check cached instances are all freed.
   panel_ui->Close();
   EXPECT_FALSE(coordinator->contents_wrapper_);
-  EXPECT_FALSE(coordinator->side_panel_web_view_);
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return !panel_ui->IsSidePanelShowing(); }));
 }

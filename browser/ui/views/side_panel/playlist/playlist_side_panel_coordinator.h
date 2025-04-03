@@ -63,7 +63,7 @@ class PlaylistSidePanelCoordinator
   void LoadPlaylist(const std::string& playlist_id, const std::string& item_id);
 
   base::WeakPtr<PlaylistSidePanelWebView> side_panel_web_view() {
-    return side_panel_web_view_ ? side_panel_web_view_->GetWeakPtr() : nullptr;
+    return side_panel_web_view_;
   }
 
   BrowserView* GetBrowserView();
@@ -80,13 +80,12 @@ class PlaylistSidePanelCoordinator
 
   std::unique_ptr<views::View> CreateWebView(SidePanelEntryScope& scope);
 
-  bool is_audible_for_testing_ = false;
   raw_ptr<Browser> browser_ = nullptr;
 
-  // Both are cached while it's playing even if playlist panel is closed.
-  // Destroyed when panel is closed and not played.
+  bool is_audible_for_testing_ = false;
   std::unique_ptr<PlaylistContentsWrapper> contents_wrapper_;
-  std::unique_ptr<PlaylistSidePanelWebView> side_panel_web_view_;
+
+  base::WeakPtr<PlaylistSidePanelWebView> side_panel_web_view_;
 
   base::ScopedObservation<views::View, views::ViewObserver> view_observation_{
       this};
