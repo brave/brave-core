@@ -1530,8 +1530,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     public void updateMenuButtonState() {
-        BraveMenuButtonCoordinator.setMenuFromBottom(
-                mIsBottomControlsVisible || BottomToolbarConfiguration.isToolbarBottomAnchored());
+        // No need to change the state if bottom controls are not enabled.
+        if (!BottomToolbarConfiguration.isBraveBottomControlsEnabled()) return;
+
+        BraveMenuButtonCoordinator.setMenuFromBottom(mIsBottomControlsVisible);
     }
 
     @Override
