@@ -16,8 +16,10 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/location.h"
 #include "base/no_destructor.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -210,10 +212,13 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
     auto* map = GetTorProxyMap(service);
     if (host_port_pair.username() == username) {
       // password is a int64_t -> std::to_string in milliseconds
-      int64_t time = strtoll(host_port_pair.password().c_str(), nullptr, 10);
+      CHECK_GE(host_port_pair.password().size(), 8u);
+      // int64_t time = strtoll(host_port_pair.password().c_str(), nullptr, 10);
       map->MaybeExpire(
           host_port_pair.username(),
-          base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(time)));
+          base::Time::FromDeltaSinceWindowsEpoch(
+              base::Microseconds(base::I64FromNativeEndian(
+                  base::as_byte_span(host_port_pair.password()).first<8u>()))));
     }
     host_port_pair.set_username(username);
     host_port_pair.set_password(map->Get(username));
