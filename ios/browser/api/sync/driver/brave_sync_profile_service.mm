@@ -48,8 +48,6 @@ std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
          BraveSyncUserSelectableTypes_SAVED_TAB_GROUPS},
         {syncer::UserSelectableType::kPayments,
          BraveSyncUserSelectableTypes_PAYMENTS},
-        {syncer::UserSelectableType::kSharedTabGroupData,
-         BraveSyncUserSelectableTypes_SHARED_TAB_GROUP_DATA},
         {syncer::UserSelectableType::kProductComparison,
          BraveSyncUserSelectableTypes_PRODUCT_COMPARISON},
         {syncer::UserSelectableType::kCookies,
