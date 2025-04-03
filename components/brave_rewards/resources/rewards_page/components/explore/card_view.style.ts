@@ -1,0 +1,81 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { color, font } from '@brave/leo/tokens/css/variables'
+import { scoped } from '../../lib/scoped_css'
+
+export const style = scoped.css`
+  h4 {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    a {
+      --leo-icon-size: 16px;
+      --leo-icon-color: ${color.icon.interactive};
+
+      font: ${font.components.buttonSmall};
+      color: ${color.text.interactive};
+      text-decoration: none;
+      display: flex;
+      gap: 8px;
+    }
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  section a {
+    display: flex;
+    gap: 16px;
+    text-decoration: none;
+    color: ${color.text.primary};
+    padding: 8px;
+    border-bottom: solid 1px ${color.divider.subtle};
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .thumbnail {
+    flex: 0 0 56px;
+    height: 56px;
+    width: 56px;
+    overflow: hidden;
+    border-radius: 12px;
+    border: solid 1px ${color.divider.subtle};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    .favicon {
+      width: 24px;
+      height: auto;
+      border-radius: 4px;
+    }
+  }
+
+  .item-info {
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      font: ${font.default.semibold};
+    }
+
+    .description {
+      font: ${font.xSmall.regular};
+      color: ${color.text.tertiary};
+    }
+  }
+`
