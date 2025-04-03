@@ -13,6 +13,7 @@ module.exports = {
     'ui/webui/resources/*',
     '*.js',
     '*.d.ts',
+    'tools/chromium_src/lit_mangler/*.ts',
     '!components/playlist/resources/media_detector/*.js' /* allow js scripts which will be bundled into playlist */
   ],
   'env': {
@@ -68,6 +69,7 @@ module.exports = {
     ],
     'object-shorthand': 0,
     'n/no-callback-literal': 0,
+    'no-template-curly-in-string': 0,
     '@typescript-eslint/await-thenable': 0,
     '@typescript-eslint/consistent-generic-constructors': 0,
     '@typescript-eslint/ban-ts-comment': 0,

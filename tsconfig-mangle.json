@@ -1,0 +1,19 @@
+{
+  "include": [
+    "./tools/chromium_src/lit_mangler.ts",
+    "./tools/chromium_src/lit_mangler_cli.ts",
+    "./chromium_src/**/*.lit_mangler.ts"
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "paths": {
+      "lit_mangler": ["./tools/chromium_src/lit_mangler/lit_mangler.ts"]
+    },
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  }
+}

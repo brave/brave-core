@@ -9,7 +9,7 @@ import os
 import shutil
 import json
 
-from brave_chromium_utils import get_chromium_src_override, get_webui_overriden_file_name, get_webui_overridden_but_referenced_files
+from brave_chromium_utils import get_chromium_src_override, get_webui_overriden_file_name, get_webui_overridden_but_referenced_files, get_src_dir, wspath
 
 
 def purge_overrides(out_folder, in_files):
@@ -44,15 +44,44 @@ def maybe_keep_upstream_version(override_in_folder, out_folder, override_file):
     return None
 
 
+def run_mangler(out_folder, mangler_file, preprocess_file):
+    """Runs the mangler on the given file"""
+    import brave_node
+
+    tsx = brave_node.PathInNodeModules('tsx', 'dist', 'cli.mjs')
+    ts_config = wspath("//brave/tsconfig-mangle.json")
+    lit_mangler = wspath(
+        "//brave/tools/chromium_src/lit_mangler/lit_mangler_cli.ts")
+
+    # Note: We read from and write to the preprocess file - this way any
+    # preprocessing that upstream does will be mangled.
+    brave_node.RunNode([
+        tsx, '--tsconfig', ts_config, lit_mangler, 'mangle', '--typecheck',
+        '-m', mangler_file, '-i', preprocess_file, '-o', preprocess_file, '-g',
+        out_folder
+    ])
+
+
 def get_chromium_src_files(in_folder, in_files):
     """Gets all the overrides we have in brave-core for this target"""
     override_files = []
-    for file in in_files:
-        in_file = get_chromium_src_override(os.path.join(in_folder, file))
-        if os.path.exists(in_file):
-            override_files.append(file)
+    lit_mangler_files = []
 
-    return override_files
+    for file in in_files:
+        override_file = get_chromium_src_override(os.path.join(
+            in_folder, file))
+        if os.path.exists(override_file):
+            if should_run_mangler(override_file):
+                lit_mangler_files.append((file, override_file))
+            else:
+                override_files.append(file)
+
+    return override_files, lit_mangler_files
+
+
+def should_run_mangler(in_file):
+    """Determines if we should run the mangler on the given file"""
+    return in_file.endswith('.html.ts.lit_mangler.ts')
 
 
 # Used to indicate that there are no overrides, so we don't need to reprocess
@@ -81,7 +110,14 @@ def main(original_function, argv):
         override_root_folder = get_chromium_src_override(in_folder)
 
         purge_overrides(out_folder, args.in_files)
-        overrides = get_chromium_src_files(in_folder, args.in_files)
+        overrides, lit_mangler_files = get_chromium_src_files(
+            in_folder, args.in_files)
+
+        # Run the manglers - this doesn't need to happen in the second call to main because we don't depend on anything there.
+        for upstream_file, lit_mangler_file in lit_mangler_files:
+            run_mangler(out_folder,
+                        os.path.join(override_root_folder, lit_mangler_file),
+                        os.path.join(out_folder, upstream_file))
 
         if len(overrides) == 0:
             # Throw an exception to abort the second call to `main()` early if no overrides were found.
