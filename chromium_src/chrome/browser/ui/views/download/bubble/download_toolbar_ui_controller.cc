@@ -50,12 +50,15 @@ void DownloadToolbarUIController::UpdateIcon() {
 
   // Use an exclamation point icon when an insecure download is pending.
   if (HasInsecureDownloads()) {
+    auto icon_color = browser_view_->GetColorProvider()->GetColor(ui::kColorAlertMediumSeverityIcon);
+    button->set_icon_color(icon_color);
+    button->SetVectorIcon(vector_icons::kNotSecureWarningIcon);
     const gfx::VectorIcon* new_icon = &vector_icons::kNotSecureWarningIcon;
     const int icon_size = action_item_->GetImage().Size().height();
-    SkColor icon_color =
-        GetIconColor(is_dormant_, active_, browser_view_->GetColorProvider());
     action_item_->SetImage(
         ui::ImageModel::FromVectorIcon(*new_icon, icon_color, icon_size));
+  } else {
+    button->set_icon_color(std::nullopt);
   }
 }
 
