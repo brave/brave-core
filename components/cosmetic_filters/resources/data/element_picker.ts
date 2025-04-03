@@ -785,10 +785,10 @@ const localizeTextData = (root: ShadowRoot, btnCreateText: string,
 const active = document.getElementById('brave-element-picker')
 if (!active) {
   isAndroid = api.getPlatform() === 'android'
+  const root = attachElementPicker()
   api.getLocalizedTexts(
     (btnCreateText: string, btnManageText: string,
       btnShowRulesBoxText: string, btnQuitText: string) => {
-      const root = attachElementPicker()
       localizeTextData(root, btnCreateText, btnManageText,
         btnShowRulesBoxText, btnQuitText)
       launchElementPicker(root)
