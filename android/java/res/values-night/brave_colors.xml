@@ -251,8 +251,6 @@
     <color name="rewards_estimated_earning_close_color">#EDEEF1</color>
     <color name="rewards_tipping_progress_bar">@android:color/white</color>
 
-    <color name="leo_reset_text_color">#FF4B6A</color>
-
     <color name="vpn_timer_bg_color">#0D0F14</color>
     <color name="vpn_timer_text_color">#F6F7F8</color>
     <color name="vpn_timer_icon_color">#A1ABBA</color>
@@ -262,7 +260,7 @@
     <color name="text_tertiary">#a1b2ba</color>
     <color name="primary_20">#2A118E</color>
     <color name="button_background">#3f39e8</color>
-    <color name="systemfeedback_error_text">#ffb1b0</color>
+    <color name="systemfeedback_error_text">#ff888a</color>
 
     <color name="location_bar_background_color_for_ntp">#383839</color>
     <color name="toolbar_background_color_for_ntp">#1f1f1f</color>

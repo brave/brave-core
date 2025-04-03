@@ -22,8 +22,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.AppCompatRadioButton;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
@@ -55,13 +56,13 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(getResources().getString(R.string.contact_technical_support));
 
-        SwitchCompat vpnHostnameSwitch = findViewById(R.id.vpn_hostname_switch);
-        SwitchCompat subscriptionTypeSwitch = findViewById(R.id.subscription_type_switch);
-        SwitchCompat appReceiptSwitch = findViewById(R.id.app_receipt_switch);
-        SwitchCompat appVersionSwitch = findViewById(R.id.app_version_switch);
-        SwitchCompat timezoneSwitch = findViewById(R.id.timezone_switch);
-        SwitchCompat networkTypeSwitch = findViewById(R.id.network_type_switch);
-        SwitchCompat cellularCarrierSwitch = findViewById(R.id.cellular_carrier_switch);
+        MaterialSwitch vpnHostnameSwitch = findViewById(R.id.vpn_hostname_switch);
+        MaterialSwitch subscriptionTypeSwitch = findViewById(R.id.subscription_type_switch);
+        MaterialSwitch appReceiptSwitch = findViewById(R.id.app_receipt_switch);
+        MaterialSwitch appVersionSwitch = findViewById(R.id.app_version_switch);
+        MaterialSwitch timezoneSwitch = findViewById(R.id.timezone_switch);
+        MaterialSwitch networkTypeSwitch = findViewById(R.id.network_type_switch);
+        MaterialSwitch cellularCarrierSwitch = findViewById(R.id.cellular_carrier_switch);
 
         RadioGroup otherIssuesRadioGroup = findViewById(R.id.other_issues_radiogroup);
 

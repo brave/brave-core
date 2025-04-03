@@ -52,7 +52,7 @@ public class BraveWalletResetPreference
         super(context, attrs);
 
         Resources resources = getContext().getResources();
-        mPrefAccentColor = getContext().getColor(R.color.wallet_error_text_color);
+        mPrefAccentColor = getContext().getColor(R.color.systemfeedback_error_text);
         mConfirmationPhrase =
                 resources.getString(R.string.brave_wallet_reset_settings_confirmation_phrase);
         setOnPreferenceClickListener(this);

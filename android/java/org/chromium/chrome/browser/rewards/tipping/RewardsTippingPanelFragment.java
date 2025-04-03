@@ -27,9 +27,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import org.json.JSONException;
 
@@ -425,7 +426,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
                                 false, BraveActivity.BRAVE_REWARDS_WALLET_RECONNECT_URL);
                         dismissRewardsPanel();
                     } else {
-                        SwitchCompat isMonthly = view.findViewById(R.id.monthly_switch);
+                        MaterialSwitch isMonthly = view.findViewById(R.id.monthly_switch);
                         mAmountSelected = selectedAmount();
 
                         if (mSendButton.isEnabled()) {

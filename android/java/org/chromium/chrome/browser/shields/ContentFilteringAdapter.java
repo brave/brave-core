@@ -14,9 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import org.chromium.brave_shields.mojom.SubscriptionInfo;
 import org.chromium.chrome.R;
@@ -281,7 +282,7 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView urlText;
         ImageView deleteImageView;
         ImageView arrowImageView;
-        SwitchCompat toggleSwitch;
+        MaterialSwitch toggleSwitch;
         View divider;
 
         CustomFilterListViewHolder(View itemView) {
@@ -291,7 +292,7 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
             this.urlText = (TextView) itemView.findViewById(R.id.url_text);
             this.deleteImageView = (ImageView) itemView.findViewById(R.id.iv_delete);
             this.arrowImageView = (ImageView) itemView.findViewById(R.id.iv_arrow);
-            this.toggleSwitch = (SwitchCompat) itemView.findViewById(R.id.toggle_switch);
+            this.toggleSwitch = (MaterialSwitch) itemView.findViewById(R.id.toggle_switch);
             this.divider = itemView.findViewById(R.id.divider);
         }
     }
@@ -299,13 +300,13 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
     public static class FilterListViewHolder extends RecyclerView.ViewHolder {
         TextView titleText;
         TextView descriptionText;
-        SwitchCompat toggleSwitch;
+        MaterialSwitch toggleSwitch;
 
         FilterListViewHolder(View itemView) {
             super(itemView);
             this.titleText = (TextView) itemView.findViewById(R.id.title_text);
             this.descriptionText = (TextView) itemView.findViewById(R.id.description_text);
-            this.toggleSwitch = (SwitchCompat) itemView.findViewById(R.id.toggle_switch);
+            this.toggleSwitch = (MaterialSwitch) itemView.findViewById(R.id.toggle_switch);
         }
     }
 }

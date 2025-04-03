@@ -266,15 +266,14 @@
         app:layout_constraintEnd_toStartOf="@id/currency1"
         app:layout_constraintTop_toBottomOf="@id/tipChoiceCustom" />
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/monthly_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:theme="@style/TippingSwitchTheme"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="@id/currency1"
-        app:layout_constraintTop_toBottomOf="@id/currencyOneEditText"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        app:layout_constraintTop_toBottomOf="@id/currencyOneEditText" />
 
  <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tipping_warning_message_layout"

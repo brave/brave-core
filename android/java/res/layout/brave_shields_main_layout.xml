@@ -55,13 +55,11 @@
 
 			</LinearLayout>
 
-			<androidx.appcompat.widget.SwitchCompat
+			<com.google.android.material.materialswitch.MaterialSwitch
 		        android:id="@+id/site_switch"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:switchMinWidth="56dp"
-		        android:scaleX="2.2"
-		        android:scaleY="2.2"
 		        android:layout_marginTop="32dp"
 		        android:theme="@style/BraveSwitchTheme"
 		        android:gravity="center_horizontal"

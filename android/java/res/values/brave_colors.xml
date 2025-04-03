@@ -92,7 +92,7 @@
 
     <!-- From src/brave/node_modules/@brave/leo/tokens/android/values/colors.xml -->
     <color name="systemfeedback_error_background">#ffe8e7</color>
-    <color name="systemfeedback_error_text">#b3002a</color>
+    <color name="systemfeedback_error_text">#bf002c</color>
     <color name="systemfeedback_error_icon">#b3002a</color>
     <color name="systemfeedback_info_background">#e2f0ff</color>
     <color name="systemfeedback_info_icon">#0061aa</color>
@@ -392,7 +392,6 @@
     <!-- Brave Leo colors-->
     <color name="leo_plan_upgrade_now_bt_bg_start">#FF1F01</color>
     <color name="leo_plan_upgrade_now_bt_bg_end">#FF4000</color>
-    <color name="leo_reset_text_color">#FF4B6A</color>
     <!-- End Brave Leo colors-->
 
     <color name="text_primary">#0D1214</color>
@@ -443,4 +442,5 @@
     <color name="empty_state_icon_tabswitcher_bg_color">#EFF0FF</color>
     <color name="empty_state_tab_border_color">#4551D1</color>
     <color name="empty_state_tab_group_border_color">#4551D1</color>
+    
 </resources>

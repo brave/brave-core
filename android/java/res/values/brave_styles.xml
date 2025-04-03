@@ -355,7 +355,7 @@
 
     <!-- Brave Leo preferences -->
     <style name="BraveLeoResetTextColor" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/leo_reset_text_color</item>
+        <item name="android:textColor">@color/systemfeedback_error_text</item>
     </style>
 
     <style name="TimerBottomSheetDialogTheme"

@@ -35,7 +35,7 @@
           android:textSize="14sp"
           android:textColor="@color/filter_summary_color"/>
 
-     <androidx.appcompat.widget.SwitchCompat
+     <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/toggle_switch"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"

@@ -39,7 +39,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.SwitchCompat;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
@@ -101,11 +101,11 @@ public class BraveShieldsHandler
     private View mHardwareButtonMenuAnchor;
     private final Map<Integer, BlockersInfo> mTabsStat =
             Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
-    private SwitchCompat mBraveShieldsBlockingScriptsSwitch;
+    private MaterialSwitch mBraveShieldsBlockingScriptsSwitch;
     private OnCheckedChangeListener mBraveShieldsBlockingScriptsChangeListener;
-    private SwitchCompat mBraveShieldsForgetFirstPartyStorageSwitch;
+    private MaterialSwitch mBraveShieldsForgetFirstPartyStorageSwitch;
     private OnCheckedChangeListener mBraveShieldsForgetFirstPartyStorageChangeListener;
-    private SwitchCompat mFingerprintingSwitch;
+    private MaterialSwitch mFingerprintingSwitch;
     private OnCheckedChangeListener mBraveShieldsFingerprintingChangeListener;
 
     private View mPopupView;
@@ -478,7 +478,7 @@ public class BraveShieldsHandler
         TextView mSiteText = mMainLayout.findViewById(R.id.site_text);
         mSiteText.setText(mHost.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", ""));
 
-        SwitchCompat mShieldMainSwitch = mMainLayout.findViewById(R.id.site_switch);
+        MaterialSwitch mShieldMainSwitch = mMainLayout.findViewById(R.id.site_switch);
 
         ImageView helpImage = (ImageView) mMainLayout.findViewById(R.id.help);
         ImageView shareImage = (ImageView) mMainLayout.findViewById(R.id.share);
@@ -1071,7 +1071,7 @@ public class BraveShieldsHandler
         setUpMainLayout();
     }
 
-    private void setupBlockingScriptsSwitchClick(SwitchCompat braveShieldsBlockingScriptsSwitch) {
+    private void setupBlockingScriptsSwitchClick(MaterialSwitch braveShieldsBlockingScriptsSwitch) {
         if (null == braveShieldsBlockingScriptsSwitch) {
             return;
         }
@@ -1096,7 +1096,7 @@ public class BraveShieldsHandler
     }
 
     private void setupBlockingScriptsSwitch(
-            SwitchCompat braveShieldsBlockingScriptsSwitch, boolean fromTopSwitch) {
+            MaterialSwitch braveShieldsBlockingScriptsSwitch, boolean fromTopSwitch) {
         if (null == braveShieldsBlockingScriptsSwitch) {
             return;
         }
@@ -1125,7 +1125,7 @@ public class BraveShieldsHandler
     }
 
     private void setupForgetFirstPartyStorageSwitchClick(
-            SwitchCompat braveShieldsForgetFirstPartyStorageSwitch) {
+            MaterialSwitch braveShieldsForgetFirstPartyStorageSwitch) {
         if (null == braveShieldsForgetFirstPartyStorageSwitch) {
             return;
         }
@@ -1148,7 +1148,7 @@ public class BraveShieldsHandler
     }
 
     private void setupForgetFirstPartyStorageSwitch(
-            SwitchCompat braveShieldsForgetFirstPartyStorageSwitch, boolean fromTopSwitch) {
+            MaterialSwitch braveShieldsForgetFirstPartyStorageSwitch, boolean fromTopSwitch) {
         if (null == braveShieldsForgetFirstPartyStorageSwitch) {
             return;
         }
@@ -1178,7 +1178,7 @@ public class BraveShieldsHandler
         }
     }
 
-    private void setupFingerprintingSwitchClick(SwitchCompat fingerprintingSwitch) {
+    private void setupFingerprintingSwitchClick(MaterialSwitch fingerprintingSwitch) {
         if (null == fingerprintingSwitch) {
             return;
         }
@@ -1205,7 +1205,7 @@ public class BraveShieldsHandler
     }
 
     private void setupFingerprintingSwitch(
-            SwitchCompat braveShieldsFingerprintingSwitch, boolean fromTopSwitch) {
+            MaterialSwitch braveShieldsFingerprintingSwitch, boolean fromTopSwitch) {
         if (null == braveShieldsFingerprintingSwitch) {
             return;
         }
@@ -1239,7 +1239,7 @@ public class BraveShieldsHandler
         }
     }
 
-    private void setupMainSwitchClick(SwitchCompat braveShieldsSwitch) {
+    private void setupMainSwitchClick(MaterialSwitch braveShieldsSwitch) {
         if (null == braveShieldsSwitch) {
             return;
         }
