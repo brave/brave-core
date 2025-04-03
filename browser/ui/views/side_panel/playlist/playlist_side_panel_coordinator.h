@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_contents_wrapper.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_web_view.h"
@@ -18,6 +19,7 @@
 
 namespace playlist {
 class PlaylistUI;
+FORWARD_DECLARE_TEST(PlaylistBrowserTest, PanelToggleTestWhilePlaying);
 }  // namespace playlist
 
 class Browser;
@@ -71,6 +73,8 @@ class PlaylistSidePanelCoordinator
 
  private:
   friend class BrowserUserData<PlaylistSidePanelCoordinator>;
+  FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest,
+                           PanelToggleTestWhilePlaying);
 
   void DestroyWebContentsIfNeeded();
 
@@ -78,6 +82,7 @@ class PlaylistSidePanelCoordinator
 
   raw_ptr<Browser> browser_ = nullptr;
 
+  bool is_audible_for_testing_ = false;
   std::unique_ptr<PlaylistContentsWrapper> contents_wrapper_;
 
   base::WeakPtr<PlaylistSidePanelWebView> side_panel_web_view_;
