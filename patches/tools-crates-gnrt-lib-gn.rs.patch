@@ -13,11 +13,3 @@ index 779c3fd3b028056075241b397f84a255cc31b21c..60c8e8c7e9cd0778d686d12232960add
              }
          }
          aliases.sort_unstable();
-@@ -768,6 +769,7 @@ fn target_os_to_condition(target_os: &str) -> Condition {
-     for (t, c) in &[
-         ("android", "is_android"),
-         ("darwin", "is_mac"),
-+        ("macos", "is_mac"),
-         ("fuchsia", "is_fuchsia"),
-         ("ios", "is_ios"),
-         ("linux", "is_linux || is_chromeos"),
