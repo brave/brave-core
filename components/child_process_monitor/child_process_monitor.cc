@@ -76,16 +76,14 @@ void SetupPipeHack() {
   if (fcntl(pipehack[1], F_SETFL, flags) == -1)
     VLOG(0) << "set flags errno:" << errno;
 
-  struct sigaction action;
-  memset(&action, 0, sizeof(action));
+  struct sigaction action = {};
   action.sa_handler = SIGCHLDHandler;
   action.sa_flags = SA_RESTART;
   sigaction(SIGCHLD, &action, nullptr);
 }
 
 void TearDownPipeHack() {
-  struct sigaction action;
-  memset(&action, 0, sizeof(action));
+  struct sigaction action = {};
   action.sa_handler = SIG_DFL;
   action.sa_flags = SA_RESTART;
   sigaction(SIGCHLD, &action, nullptr);
