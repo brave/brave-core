@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/observer_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
@@ -33,7 +34,7 @@ class AdsService : public KeyedService {
    public:
     virtual ~Delegate() = default;
 
-    virtual void InitNotificationHelper() = 0;
+    virtual void InitNotificationHelper(base::OnceClosure callback) = 0;
     virtual bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() = 0;
     virtual bool DoesSupportSystemNotifications() = 0;
     virtual bool CanShowNotifications() = 0;

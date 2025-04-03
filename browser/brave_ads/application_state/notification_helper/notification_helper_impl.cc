@@ -5,11 +5,20 @@
 
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h"
 
+#include <utility>
+
+#include "base/functional/callback.h"
+
 namespace brave_ads {
 
 NotificationHelperImpl::NotificationHelperImpl() = default;
 
 NotificationHelperImpl::~NotificationHelperImpl() = default;
+
+void NotificationHelperImpl::InitSystemNotifications(
+    base::OnceClosure callback) {
+  std::move(callback).Run();
+}
 
 bool NotificationHelperImpl::CanShowNotifications() {
   return true;
