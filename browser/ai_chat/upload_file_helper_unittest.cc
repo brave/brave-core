@@ -51,6 +51,9 @@ class UploadFileHelperTest : public content::RenderViewHostTestHarness {
         future;
     file_helper_->UploadImage(
         std::make_unique<ChromeSelectFilePolicy>(web_contents()),
+#if BUILDFLAG(IS_ANDROID)
+        false,
+#endif
         future.GetCallback());
     return future.Take();
   }

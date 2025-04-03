@@ -215,6 +215,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"attachmentMenuButtonLabel",
         IDS_AI_CHAT_LEO_ATTACHMENT_MENU_BUTTON_LABEL},
        {"uploadFileButtonLabel", IDS_AI_CHAT_UPLOAD_FILE_BUTTON_LABEL},
+       {"takeAPictureButtonLabel", IDS_AI_CHAT_TAKE_A_PICTURE_BUTTON_LABEL},
        {"screenshotButtonLabel", IDS_AI_CHAT_SCREENSHOT_BUTTON_LABEL},
        {"currentTabContentsButtonLabel",
         IDS_AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL},
