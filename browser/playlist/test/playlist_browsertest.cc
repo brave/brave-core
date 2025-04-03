@@ -11,6 +11,7 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
@@ -32,7 +33,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "content/public/test/browser_test.h"
@@ -167,6 +171,42 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
 
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
+
+// Check toggling playlist panel while playing doesn't make crash.
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+
+  // Open playlist panel.
+  panel_ui->Show(SidePanelEntryId::kPlaylist);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return panel_ui->IsSidePanelShowing(); }));
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
+
+  auto* coordinator = PlaylistSidePanelCoordinator::FromBrowser(browser());
+  ASSERT_TRUE(coordinator);
+  coordinator->is_audible_for_testing_ = true;
+
+  // Close playlist panel check cached instances are still live.
+  panel_ui->Close();
+  EXPECT_TRUE(coordinator->contents_wrapper_);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !panel_ui->IsSidePanelShowing(); }));
+
+  // Re-open playlist panel.
+  panel_ui->Show(SidePanelEntryId::kPlaylist);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
+
+  // Not audible. Check cached webview/contents are destroyed.
+  coordinator->is_audible_for_testing_ = false;
+
+  // Close playlist panel. Check cached instances are all freed.
+  panel_ui->Close();
+  EXPECT_FALSE(coordinator->contents_wrapper_);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !panel_ui->IsSidePanelShowing(); }));
+}
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),

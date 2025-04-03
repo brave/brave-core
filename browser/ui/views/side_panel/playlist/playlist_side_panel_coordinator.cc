@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check_is_test.h"
 #include "base/functional/callback.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -22,6 +23,8 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "content/public/browser/visibility.h"
+#include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/views/vector_icons.h"
@@ -88,6 +91,16 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView(
 
     Proxy::CreateForWebContents(contents_wrapper_->web_contents(),
                                 weak_ptr_factory_.GetWeakPtr());
+  } else {
+    // Set visible to avoid CHECK(page_node->IsVisible()) failure in
+    // SidePanelLoadingVoter::MarkAsSidePanel(). When SidePanelWebView is
+    // created below, upstream marks this content and has assumption that it's
+    // visible if it has loaded url. When playlist panel is closed while
+    // playing, we cache |contents_wrapper_| to make it continue to play after
+    // closing panel. So, it has loaded url already. Should be visible before
+    // creating SidePanelWebView with it to avoid above CHECK failure.
+    contents_wrapper_->web_contents()->UpdateWebContentsVisibility(
+        content::Visibility::VISIBLE);
   }
 
   auto web_view = std::make_unique<PlaylistSidePanelWebView>(
@@ -118,6 +131,12 @@ void PlaylistSidePanelCoordinator::OnViewIsDeleting(views::View* view) {
 
 void PlaylistSidePanelCoordinator::DestroyWebContentsIfNeeded() {
   DCHECK(contents_wrapper_);
+
+  if (is_audible_for_testing_) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   if (!contents_wrapper_->web_contents()->IsCurrentlyAudible()) {
     contents_wrapper_.reset();
   }
