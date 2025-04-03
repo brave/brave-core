@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 398a0dfa43025cbc54398fe386d2f531cbf1bf8f..bb7f90dbfc38c7c9a6c436117854fb905ed4ac1b 100644
+index 398a0dfa43025cbc54398fe386d2f531cbf1bf8f..bbc88e3e095ed9e91b5ab345d958f0a3a9a0c79e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 @@ -70,6 +70,7 @@ class ChromeContextMenuItem {
@@ -15,7 +15,7 @@ index 398a0dfa43025cbc54398fe386d2f531cbf1bf8f..bb7f90dbfc38c7c9a6c436117854fb90
          int RELOAD = 40;
          // ALWAYS UPDATE!
 -        int NUM_ENTRIES = 41;
-+        int COPY_CLEAN_LINK = 41,int NUM_ENTRIES = 42;
++        int COPY_CLEAN_LINK = 41;int NUM_ENTRIES = 42;
      }
  
      /** Mapping from {@link Item} to the ID found in the ids.xml. */
