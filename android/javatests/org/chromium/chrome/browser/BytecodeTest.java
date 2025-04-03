@@ -55,7 +55,6 @@ import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
 import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
-import org.chromium.chrome.browser.bookmarks.BookmarkMoveSnackbarManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkOpener;
 import org.chromium.chrome.browser.bookmarks.BookmarkUiPrefs;
 import org.chromium.chrome.browser.bookmarks.BookmarkUndoController;
@@ -1629,7 +1628,6 @@ public class BytecodeTest {
                         BookmarkUiPrefs.class,
                         ModalDialogManager.class,
                         Runnable.class,
-                        BookmarkMoveSnackbarManager.class,
                         BooleanSupplier.class,
                         BookmarkManagerOpener.class));
         Assert.assertTrue(
@@ -1669,7 +1667,6 @@ public class BytecodeTest {
                         SnackbarManager.class,
                         BooleanSupplier.class,
                         Consumer.class,
-                        BookmarkMoveSnackbarManager.class,
                         BookmarkManagerOpener.class,
                         PriceDropNotificationManager.class));
         Assert.assertTrue(
