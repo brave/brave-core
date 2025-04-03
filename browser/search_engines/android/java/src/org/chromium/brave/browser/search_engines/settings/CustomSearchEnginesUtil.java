@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.util.Patterns;
+import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -24,10 +27,14 @@ import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.net.NetworkTrafficAnnotationTag;
 import org.chromium.url.GURL;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomSearchEnginesUtil {
+
+    private static final String TAG = "CustomSearchEnginesUtil";
 
     private static final String CUSTOM_SEARCH_ENGINES = "custom_search_engines";
 
@@ -43,18 +50,19 @@ public class CustomSearchEnginesUtil {
             ChromeSharedPreferences.getInstance()
                     .writeString(CUSTOM_SEARCH_ENGINES, jsonArray.toString());
         } catch (Exception e) {
-            // Log error instead of just printing stack trace
-            Log.e("CustomSearchEnginesUtil", "Error saving search engines", e);
+            Log.e(TAG, "Error saving search engines", e);
         }
     }
 
     public static void addCustomSearchEngine(String searchEngineKeyword) {
         List<String> customSearchEnginesList = getCustomSearchEngines();
-        if (customSearchEnginesList.size() == 0) {
-            customSearchEnginesList = new ArrayList();
+        if (customSearchEnginesList.isEmpty()) {
+            customSearchEnginesList = new ArrayList<>();
         }
-        customSearchEnginesList.add(searchEngineKeyword);
-        saveCustomSearchEngines(customSearchEnginesList);
+        if (!customSearchEnginesList.contains(searchEngineKeyword)) {
+            customSearchEnginesList.add(searchEngineKeyword);
+            saveCustomSearchEngines(customSearchEnginesList);
+        }
     }
 
     public static List<String> getCustomSearchEngines() {
@@ -84,20 +92,42 @@ public class CustomSearchEnginesUtil {
 
     public static boolean isCustomSearchEngineAdded(String searchEngineKeyword) {
         List<String> customSearchEnginesList = getCustomSearchEngines();
-        if (customSearchEnginesList.size() > 0
-                && customSearchEnginesList.contains(searchEngineKeyword)) {
-            return true;
-        }
-        return false;
+        return !customSearchEnginesList.isEmpty()
+                && customSearchEnginesList.contains(searchEngineKeyword);
     }
 
     public static void removeCustomSearchEngine(String searchEngineKeyword) {
         List<String> customSearchEnginesList = getCustomSearchEngines();
-        if (customSearchEnginesList.size() > 0
+        if (!customSearchEnginesList.isEmpty()
                 && customSearchEnginesList.contains(searchEngineKeyword)) {
             customSearchEnginesList.remove(searchEngineKeyword);
+            saveCustomSearchEngines(customSearchEnginesList);
         }
-        saveCustomSearchEngines(customSearchEnginesList);
+    }
+
+    public static boolean isSearchQuery(String text) {
+        return text.contains("%s");
+    }
+
+    public static boolean isValidUrl(String url) {
+        try {
+            String encodedUrl = URLEncoder.encode(url, "UTF-8");
+            Log.e(TAG, "encodedUrl : "+encodedUrl);
+            return Patterns.WEB_URL.matcher(encodedUrl).matches();
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "UnsupportedEncodingException : "+e.getMessage());
+            return false;
+        }
+        // try {
+        //     URI uri = new URI(encodedUrl);
+
+        //     Log.e(TAG, "uri.getScheme() : "+uri.getScheme());
+        //     return uri.getScheme() != null
+        //             && (uri.getScheme().equals("http") || uri.getScheme().equals("https"));
+        // } catch (URISyntaxException e) {
+        //     Log.e(TAG, "URISyntaxException : "+e.getMessage());
+        //     return false;
+        // }
     }
 
     public static void loadSearchEngineLogo(

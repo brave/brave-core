@@ -50,10 +50,10 @@ xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/brave_action_button_bg"
+            android:textColor="@color/schemes_on_primary"
             android:textAllCaps="false"
             android:paddingHorizontal="8dp"
             android:paddingVertical="12dp"
-            android:textColor="@android:color/white"
             style="?android:attr/borderlessButtonStyle"/>
     </LinearLayout>
 </LinearLayout>

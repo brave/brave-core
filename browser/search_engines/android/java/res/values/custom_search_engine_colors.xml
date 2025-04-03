@@ -7,6 +7,9 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="systemfeedback_error_icon">#bf002c</color>
-    <color name="semantic_button_background">#4551D1</color>
+    <color name="button_background">#4a46e0</color>
     <color name="schemes_surface_container">#f0f0f4</color>
+    <color name="text_disabled">#21272a</color>
+    <color name="button_disabled">#46464a</color>
+    <color name="schemes_on_primary">#ffffff</color>
 </resources>

@@ -5,8 +5,20 @@
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="@color/semantic_button_background" />
-    <corners android:radius="12dp" />
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Disabled state -->
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="12dp"/>
+            <solid android:color="@color/button_disabled"/>
+        </shape>
+    </item>
+
+    <!-- Enabled state -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="12dp"/>
+            <solid android:color="@color/button_background"/>
+        </shape>
+    </item>
+</selector>

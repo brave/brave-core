@@ -7,6 +7,8 @@ package org.chromium.brave.browser.search_engines.settings;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +23,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -42,7 +44,11 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
     private TextInputEditText mUrlEdittext;
     private TextInputLayout mUrlLayout;
 
+    private Button mAddSearchEngineButton;
+    private Button mCancelButton;
     private boolean mIsEditMode;
+
+    private String mSearchEngineKeywordForEdit;
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
@@ -63,40 +69,65 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                 inflater.inflate(
                         R.layout.add_custom_search_engine_preference_layout, container, false);
 
+        initViews(rootView);
+        updateToolbarTitle();
+
+        OnBackPressedCallback callback =
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        handleBackPressed();
+                    }
+                };
+        requireActivity()
+                .getOnBackPressedDispatcher()
+                .addCallback(getViewLifecycleOwner(), callback);
+
+        return rootView;
+    }
+
+    private void updateToolbarTitle() {
+        mSearchEngineKeywordForEdit = getArguments().getString(CustomSearchEnginesUtil.KEYWORD);
+        if (mSearchEngineKeywordForEdit == null) {
+            return;
+        }
+
+        TemplateUrlServiceFactory.getForProfile(getProfile())
+                .runWhenLoaded(
+                        () -> {
+                            TemplateUrl templateUrl =
+                                    getTemplateUrlByKeyword(mSearchEngineKeywordForEdit);
+                            if (templateUrl != null) {
+                                populateFields(templateUrl);
+                                mIsEditMode = true;
+                            }
+                        });
+
+        updateActionBarTitle();
+    }
+
+    private void populateFields(TemplateUrl templateUrl) {
+        mTitleEdittext.setText(templateUrl.getShortName());
+        mUrlEdittext.setText(templateUrl.getURL());
+        mAddSearchEngineButton.setText(getString(R.string.save_changes_action_text));
+    }
+
+    private void updateActionBarTitle() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            Toolbar actionBar = activity.findViewById(R.id.action_bar);
+            if (actionBar != null) {
+                actionBar.setTitle(getString(R.string.edit_custom_search_engine));
+            }
+        }
+    }
+
+    private void initViews(View rootView) {
         mTitleEdittext = (TextInputEditText) rootView.findViewById(R.id.title_edittext);
         mTitleLayout = (TextInputLayout) rootView.findViewById(R.id.title_layout);
 
         mUrlEdittext = (TextInputEditText) rootView.findViewById(R.id.url_edittext);
         mUrlLayout = (TextInputLayout) rootView.findViewById(R.id.url_layout);
-
-        Button cancelButton = (Button) rootView.findViewById(R.id.cancel_button);
-        Button addSearchEngineButton =
-                (Button) rootView.findViewById(R.id.add_search_engine_button);
-
-        String searchEngineKeyword = getArguments().getString(CustomSearchEnginesUtil.KEYWORD);
-        if (searchEngineKeyword != null) {
-            Runnable templateUrlServiceReady =
-                    () -> {
-                        TemplateUrl templateUrl = getTemplateUrlByKeyword(searchEngineKeyword);
-                        if (templateUrl != null) {
-                            mTitleEdittext.setText(templateUrl.getShortName());
-                            mUrlEdittext.setText(templateUrl.getURL());
-                            addSearchEngineButton.setText(
-                                    getString(R.string.save_changes_action_text));
-                            mIsEditMode = true;
-                        }
-                    };
-            TemplateUrlServiceFactory.getForProfile(getProfile())
-                    .runWhenLoaded(templateUrlServiceReady);
-
-            Activity activity = getActivity();
-            if (activity != null) {
-                Toolbar actionBar = activity.findViewById(R.id.action_bar);
-                if (actionBar != null) {
-                    actionBar.setTitle(getString(R.string.edit_custom_search_engine));
-                }
-            }
-        }
 
         TextView addCustomSeText = (TextView) rootView.findViewById(R.id.add_custom_se_text);
         String addCustomSeString =
@@ -105,7 +136,25 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                         + getResources().getString(R.string.add_custom_search_engine_text2);
         addCustomSeText.setText(addCustomSeString);
 
-        cancelButton.setOnClickListener(
+        initTextWatchers();
+
+        initButtons(rootView);
+    }
+
+    private void initButtons(View rootView) {
+        mCancelButton = (Button) rootView.findViewById(R.id.cancel_button);
+        mAddSearchEngineButton = (Button) rootView.findViewById(R.id.add_search_engine_button);
+        mAddSearchEngineButton.setEnabled(mIsEditMode);
+
+        handleClickListeners();
+    }
+
+    private void handleClickListeners() {
+        if (mCancelButton == null || mAddSearchEngineButton == null) {
+            return;
+        }
+
+        mCancelButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -113,21 +162,17 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                     }
                 });
 
-        addSearchEngineButton.setOnClickListener(
+        mAddSearchEngineButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!isSearchEngineValidated()) {
+                        String title = mTitleEdittext.getText().toString();
+                        String keyword = title.toLowerCase(Locale.getDefault());
+                        String url = mUrlEdittext.getText().toString();
+
+                        if (!isUrlValid(url)) {
                             return;
                         }
-
-                        String keyword =
-                                mTitleEdittext
-                                        .getText()
-                                        .toString()
-                                        .toLowerCase(Locale.getDefault());
-                        String title = mTitleEdittext.getText().toString();
-                        String url = mUrlEdittext.getText().toString();
 
                         TemplateUrlService braveTemplateUrlService =
                                 TemplateUrlServiceFactory.getForProfile(getProfile());
@@ -139,58 +184,100 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                                 (BraveTemplateUrlService) braveTemplateUrlService;
 
                         if (mIsEditMode) {
-                            boolean isUpdated =
-                                    templateUrlService.updateSearchEngine(
-                                            searchEngineKeyword, title, keyword, url);
-                            if (isUpdated) {
-                                CustomSearchEnginesUtil.removeCustomSearchEngine(
-                                        searchEngineKeyword);
-                                CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
-                                handleBackPressed();
-                            } else {
-                                Toast.makeText(
-                                                getActivity(),
-                                                "Failed to update search engine",
-                                                Toast.LENGTH_SHORT)
-                                        .show();
-                            }
-                            return;
-                        }
-
-                        if (CustomSearchEnginesUtil.isCustomSearchEngineAdded(keyword)) {
-                            Toast.makeText(
-                                            getActivity(),
-                                            "Search engine is already added",
-                                            Toast.LENGTH_SHORT)
-                                    .show();
-                            return;
-                        }
-
-                        if (templateUrlService.addSearchEngine(title, keyword, url)) {
-                            CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
-                            handleBackPressed();
+                            handleSearchEngineUpdate(
+                                    templateUrlService,
+                                    mSearchEngineKeywordForEdit,
+                                    title,
+                                    keyword,
+                                    url);
                         } else {
-                            Toast.makeText(
-                                            getActivity(),
-                                            "Failed to add search engine",
-                                            Toast.LENGTH_SHORT)
-                                    .show();
+                            handleSearchEngineAdd(templateUrlService, title, keyword, url);
                         }
                     }
                 });
+    }
 
-        requireActivity()
-                .getOnBackPressedDispatcher()
-                .addCallback(
-                        getViewLifecycleOwner(),
-                        new OnBackPressedCallback(true) {
-                            @Override
-                            public void handleOnBackPressed() {
-                                handleBackPressed();
-                            }
-                        });
+    private void handleSearchEngineUpdate(
+            BraveTemplateUrlService templateUrlService,
+            String searchEngineKeyword,
+            String title,
+            String keyword,
+            String url) {
+        boolean isUpdated =
+                templateUrlService.updateSearchEngine(searchEngineKeyword, title, keyword, url);
+        if (isUpdated) {
+            CustomSearchEnginesUtil.removeCustomSearchEngine(searchEngineKeyword);
+            CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
+            handleBackPressed();
+        } else {
+            Toast.makeText(
+                            getActivity(),
+                            getString(R.string.failed_to_update_search_engine),
+                            Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
 
-        return rootView;
+    private void handleSearchEngineAdd(
+            BraveTemplateUrlService templateUrlService, String title, String keyword, String url) {
+        if (CustomSearchEnginesUtil.isCustomSearchEngineAdded(keyword)) {
+            Toast.makeText(
+                            getActivity(),
+                            getString(R.string.search_engine_already_exists_error),
+                            Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+
+        if (templateUrlService.addSearchEngine(title, keyword, url)) {
+            CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
+            handleBackPressed();
+        } else {
+            Toast.makeText(
+                            getActivity(),
+                            getString(R.string.failed_to_add_search_engine),
+                            Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
+
+    private void checkFields() {
+        if (mTitleEdittext == null || mUrlEdittext == null || mAddSearchEngineButton == null) {
+            return;
+        }
+
+        String title = mTitleEdittext.getText().toString().trim();
+        String url = mUrlEdittext.getText().toString().trim();
+        mAddSearchEngineButton.setEnabled(!title.isEmpty() && !url.isEmpty());
+    }
+
+    private void initTextWatchers() {
+        if (mTitleEdittext == null || mUrlEdittext == null) {
+            return;
+        }
+
+        TextWatcher textWatcher =
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        // Not used
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (s != null) {
+                            checkFields();
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        // Not used
+                    }
+                };
+
+        mTitleEdittext.addTextChangedListener(textWatcher);
+        mUrlEdittext.addTextChangedListener(textWatcher);
     }
 
     private void handleBackPressed() {
@@ -216,19 +303,18 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
         return null;
     }
 
-    private boolean isSearchEngineValidated() {
-        boolean isValidated = true;
-        if (mTitleEdittext.getText().toString().isEmpty()) {
-            isValidated = false;
-            mTitleLayout.setError(
-                    getResources().getString(R.string.add_custom_search_engine_title_error));
-        }
-        if (mUrlEdittext.getText().toString().isEmpty()) {
-            isValidated = false;
+    private boolean isUrlValid(String url) {
+        boolean isValid =
+                !url.isEmpty()
+                        && CustomSearchEnginesUtil.isSearchQuery(url);
+
+        if (!isValid) {
             mUrlLayout.setError(
                     getResources().getString(R.string.add_custom_search_engine_url_error));
+            return false;
         }
-        return isValidated;
+
+        return true;
     }
 
     @Override
