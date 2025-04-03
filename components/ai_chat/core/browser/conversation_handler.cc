@@ -313,45 +313,11 @@ void ConversationHandler::BindUntrustedConversationUI(
   std::move(callback).Run(GetStateForConversationEntries());
 }
 
-void ConversationHandler::OnConversationMetadataUpdated() {
-  // if (archive_content_) {
-  //   if (!metadata_->associated_content.empty()) {
-  //     // Pass the updated data to archive content
-  //     archive_content_->SetMetadata(
-  //         metadata_->associated_content[0]->url,
-  //         base::UTF8ToUTF16(metadata_->associated_content[0]->title),
-  //         metadata_->associated_content[0]->content_type ==
-  //             mojom::ContentType::VideoTranscript);
-  //   } else {
-  //     archive_content_ = nullptr;
-  //     associated_content_delegate_ = nullptr;
-  //   }
-  // }
-  // TODO(fallaciousreasoning): What should we do here?
-
-  // Notify UI. If we have live content then the metadata will be updated
-  // again from that live data.
-  OnAssociatedContentUpdated();
-}
-
 void ConversationHandler::OnArchiveContentUpdated(
     mojom::ConversationArchivePtr conversation_data) {
-  // // We don't need to update text content if it's not archive since live
-  // // content owns the text content and is re-fetched on demand.
-  // if (archive_content_) {
-  //   // Only supports a single associated content for now
-  //   std::string text_content;
-  //   if (!conversation_data->associated_content.empty() &&
-  //       conversation_data->associated_content[0]->content_uuid ==
-  //           metadata_->associated_content[0]->uuid) {
-  //     text_content = conversation_data->associated_content[0]->content;
-  //   } else {
-  //     text_content = "";
-  //   }
-  //   archive_content_->SetContent(std::move(text_content));
-  // }
-  // associated_content_manager_->LoadArchivedContent(metadata_,
-  //                                                  conversation_data);
+  UpdateAssociatedContentInfo();
+  associated_content_manager_->LoadArchivedContent(metadata_,
+                                                   conversation_data);
 }
 
 void ConversationHandler::OnAssociatedContentUpdated() {
@@ -1400,7 +1366,10 @@ void ConversationHandler::GeneratePageContent(GetPageContentCallback callback) {
   // for more page content (e.g. video transcript).
   DCHECK(ai_chat_service_->HasUserOptedIn())
       << "UI shouldn't allow operations before user has accepted agreement";
+  GeneratePageContentInternal(std::move(callback));
+}
 
+void ConversationHandler::GeneratePageContentInternal(GetPageContentCallback callback) {
   // Keep hold of the current content so we can check if it changed
   std::string current_content =
       std::string(associated_content_manager_->GetCachedTextContent());

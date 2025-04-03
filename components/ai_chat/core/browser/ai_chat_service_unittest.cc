@@ -63,6 +63,15 @@ namespace ai_chat {
 
 namespace {
 
+void WaitForAssociatedContentFetch(AssociatedContentManager* manager) {
+  base::RunLoop run_loop;
+  manager->GetContent(base::BindLambdaForTesting(
+      [&](std::string text, bool is_video, std::string invalidation_token) {
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+}
+
 class MockAIChatCredentialManager : public AIChatCredentialManager {
  public:
   using AIChatCredentialManager::AIChatCredentialManager;
@@ -148,7 +157,10 @@ class MockAssociatedContent
     : public ConversationHandler::AssociatedContentDelegate {
  public:
   MockAssociatedContent() = default;
-  ~MockAssociatedContent() override = default;
+  ~MockAssociatedContent() override {
+    // Let observers know this content is gone.
+    OnNewPage(-1);
+  }
 
   int GetContentId() const override { return content_id_; }
 
@@ -394,6 +406,8 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
 
   // Connect a client then disconnect
   auto client1 = CreateConversationClient(conversation_handler1);
+  auto client2 = CreateConversationClient(conversation_handler2);
+
   DisconnectConversationClient(client1.get());
   // Only 1 should be deleted, whether we preserve history or not (is preserved
   // in the database).
@@ -402,7 +416,6 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 2u : 1u);
 
   // Connect a client then disconnect
-  auto client2 = CreateConversationClient(conversation_handler2);
   DisconnectConversationClient(client2.get());
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
 
@@ -796,6 +809,8 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
         ai_chat_service_->GetOrCreateConversationHandlerForContent(
             data[i].associated_content.GetContentId(),
             data[i].associated_content.GetWeakPtr());
+    WaitForAssociatedContentFetch(
+        data[i].conversation_handler->associated_content_manager());
     EXPECT_TRUE(data[i].conversation_handler);
     data[i].client = CreateConversationClient(data[i].conversation_handler);
     data[i].conversation_handler->SetChatHistoryForTesting(
@@ -847,10 +862,9 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
                 bool should_send_page_contents) {
               SCOPED_TRACE(testing::Message() << "data index: " << i);
               if (i == 1) {
-                EXPECT_TRUE(site_info.empty());
+                EXPECT_EQ(0u, site_info.size());
               } else {
-                ASSERT_FALSE(site_info.empty());
-                EXPECT_EQ(site_info.size(), 1u);
+                ASSERT_EQ(site_info.size(), 1u);
                 EXPECT_EQ(site_info[0]->url, content_url);
                 EXPECT_EQ(site_info[0]->title, base::UTF16ToUTF8(page_title));
               }
@@ -859,13 +873,13 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
     run_loop.Run();
 
     base::RunLoop run_loop_2;
-    data[i].conversation_handler->GeneratePageContent(
+    data[i].conversation_handler->GeneratePageContentInternal(
         base::BindLambdaForTesting([&](std::string content, bool is_video,
                                        std::string invalidation_token) {
           if (i == 1) {
-            EXPECT_TRUE(content.empty());
+            EXPECT_TRUE(content.empty()) << i << " content was not empty";
           } else {
-            EXPECT_EQ(content, page_content);
+            EXPECT_EQ(content, page_content) << i << " content did not match";
           }
           run_loop_2.Quit();
         }));

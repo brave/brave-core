@@ -499,7 +499,6 @@ void AIChatService::OnLoadConversationsLazyData(
     if (handler_it != conversation_handlers_.end()) {
       // Notify the handler that metadata is possibly changed
       ConversationHandler* handler = handler_it->second.get();
-      handler->OnConversationMetadataUpdated();
       // If a reload was asked for, then we should also update the deeper
       // conversation data from the database, since the reload was likely due
       // to underlying data changing.
@@ -511,6 +510,9 @@ void AIChatService::OnLoadConversationsLazyData(
                 if (!handler) {
                   return;
                 }
+                DVLOG(1) << handler->get_conversation_uuid() << " read "
+                         << updated_data->associated_content.size()
+                         << " pieces of associated content from DB";
                 handler->OnArchiveContentUpdated(std::move(updated_data));
               },
               handler->GetWeakPtr()));
@@ -764,7 +766,8 @@ void AIChatService::HandleFirstEntry(
     std::optional<std::string_view> associated_content_value,
     mojom::ConversationPtr& conversation) {
   DVLOG(1) << __func__ << " Conversation " << conversation->uuid
-           << " being persisted for first time.";
+           << " being persisted for first time. Associated content value: "
+           << associated_content_value.value_or("<null>");
   CHECK(entry->uuid.has_value());
 
   // We can persist the conversation metadata for the first time as well as the
@@ -791,7 +794,9 @@ void AIChatService::HandleNewEntry(
   CHECK(entry->uuid.has_value());
   DVLOG(1) << __func__ << " Conversation " << conversation->uuid
            << " persisting new entry. Count of entries: "
-           << handler->GetConversationHistory().size();
+           << handler->GetConversationHistory().size()
+           << " associated content value: "
+           << associated_content_value.value_or("<null>");
 
   // Persist the new entry and update the associated content data, if present
   if (ai_chat_db_) {

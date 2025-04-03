@@ -12,11 +12,8 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
-#include "base/observer_list.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/uuid.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -52,13 +49,14 @@ void AssociatedContentManager::SetContent(
 void AssociatedContentManager::LoadArchivedContent(
     const mojom::Conversation* metadata,
     const mojom::ConversationArchivePtr& archive) {
+  DVLOG(2) << __func__
+           << " metadata size: " << metadata->associated_content.size()
+           << ", archive size: " << archive->associated_content.size();
+
   // Remove all archived content - its been reloaded from the DB.
   for (int i = archive_content_.size() - 1; i >= 0; --i) {
     RemoveContent(archive_content_[i].get(), /*notify_updated=*/false);
   }
-
-  CHECK_EQ(metadata->associated_content.size(),
-           archive->associated_content.size());
 
   for (size_t i = 0; i < archive->associated_content.size(); ++i) {
     const auto& archive_content = archive->associated_content[i];
@@ -81,7 +79,7 @@ void AssociatedContentManager::LoadArchivedContent(
 
   // If we restored content from an archive then it was used in the conversation
   // so we should send it.
-  should_send_ = !archive->associated_content.empty();
+  should_send_ = should_send_ || !archive->associated_content.empty();
   conversation_->OnAssociatedContentUpdated();
 }
 
@@ -102,6 +100,7 @@ void AssociatedContentManager::SetArchiveContent(int content_id,
       delegate->GetURL(), std::move(text_content), delegate->GetTitle(),
       is_video, delegate->uuid()));
   *it = archive_content_.back().get();
+  content_observations_.AddObservation(*it);
 
   conversation_->OnAssociatedContentUpdated();
 }
@@ -109,10 +108,6 @@ void AssociatedContentManager::SetArchiveContent(int content_id,
 void AssociatedContentManager::AddContent(
     ConversationHandler::AssociatedContentDelegate* delegate,
     bool notify_updated) {
-  CHECK_EQ(conversation_->GetConversationHistorySize(), 0u)
-      << "Cannot add content to an associated content manager with a "
-         "conversation history.";
-
   // If we're adding content, we probably want to send it.
   should_send_ = true;
 
@@ -127,10 +122,6 @@ void AssociatedContentManager::AddContent(
 void AssociatedContentManager::RemoveContent(
     ConversationHandler::AssociatedContentDelegate* delegate,
     bool notify_updated) {
-  CHECK_EQ(conversation_->GetConversationHistorySize(), 0u)
-      << "Cannot remove content from an associated content manager with a "
-         "conversation history.";
-
   auto it = std::ranges::find(content_drivers_, delegate,
                               [](const auto& ptr) { return ptr; });
   if (it != content_drivers_.end()) {
@@ -204,8 +195,28 @@ AssociatedContentManager::GetAssociatedContent() const {
 
 void AssociatedContentManager::GetContent(
     ConversationHandler::GetPageContentCallback callback) {
+  // Note: |GetContent| on the AssociatedContentDelegate's is sometimes sync,
+  // sometimes async depending on whether it has already been run. This means we
+  // need to make sure we don't destroy the signal before we post this callback.
+  auto cb = base::BindOnce(
+      [](base::WeakPtr<AssociatedContentManager> self,
+         ConversationHandler::GetPageContentCallback callback) {
+        if (!self) {
+          return;
+        }
+        self->conversation_->OnAssociatedContentUpdated();
+        std::move(callback).Run(self->cached_text_content_, false, "");
+      },
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
   if (!on_page_text_fetch_complete_) {
     on_page_text_fetch_complete_ = std::make_unique<base::OneShotEvent>();
+
+    // Note: When we create the signal here its important we post the callback
+    // before running the BarrierCallback, which will null out the signal when
+    // it completes (if all the |GetContent| calls are synchronous).
+    on_page_text_fetch_complete_->Post(FROM_HERE, std::move(cb));
+
     // wait for all GetPageContent to finish
     auto content_callback = base::BarrierCallback<std::string>(
         content_drivers_.size(),
@@ -215,36 +226,32 @@ void AssociatedContentManager::GetContent(
               if (!self) {
                 return;
               }
-              self->cached_text_content_ = base::StrCat(
-                  {"<page>", base::JoinString(results, "</page><page>"),
-                   "</page>"});
+
+              // If we only have one content driver directly return the content.
+              // Otherwise, wrap each content in <page> tags.
+              if (results.size() == 1) {
+                self->cached_text_content_ = results[0];
+              } else if (results.size() > 0) {
+                self->cached_text_content_ = base::StrCat(
+                    {"<page>", base::JoinString(results, "</page><page>"),
+                     "</page>"});
+              } else {
+                self->cached_text_content_ = "";
+              }
               self->on_page_text_fetch_complete_->Signal();
               self->on_page_text_fetch_complete_ = nullptr;
             },
             weak_ptr_factory_.GetWeakPtr()));
-    for (const auto& content : content_drivers_) {
-      if (!content) {
-        continue;
-      }
+    for (auto* content : content_drivers_) {
       content->GetContent(base::BindOnce(
           [](base::RepeatingCallback<void(std::string)> callback,
              std::string content, bool is_video,
              std::string invalidation_token) { callback.Run(content); },
           content_callback));
     }
+  } else {
+    on_page_text_fetch_complete_->Post(FROM_HERE, std::move(cb));
   }
-  on_page_text_fetch_complete_->Post(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<AssociatedContentManager> self,
-                        ConversationHandler::GetPageContentCallback callback) {
-                       if (!self) {
-                         return;
-                       }
-                       self->conversation_->OnAssociatedContentUpdated();
-                       std::move(callback).Run(self->cached_text_content_,
-                                               false, "");
-                     },
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AssociatedContentManager::GetStagedEntriesFromContent(
@@ -302,8 +309,8 @@ void AssociatedContentManager::SetShouldSend(bool value) {
 
 void AssociatedContentManager::OnRequestArchive(
     ConversationHandler::AssociatedContentDelegate* delegate) {
-  std::string text(delegate->GetCachedTextContent());
-  SetArchiveContent(delegate->GetContentId(), std::move(text),
+  SetArchiveContent(delegate->GetContentId(),
+                    std::string(delegate->GetCachedTextContent()),
                     delegate->GetCachedIsVideo());
 
   // Note: We don't call conversation_->OnAssociatedContentUpdated() here

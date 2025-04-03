@@ -237,8 +237,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  // Called when the provided Conversation data is updated
-  void OnConversationMetadataUpdated();
   void OnArchiveContentUpdated(mojom::ConversationArchivePtr conversation_data);
 
   bool IsAnyClientConnected();
@@ -410,7 +408,9 @@ class ConversationHandler : public mojom::ConversationHandler,
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 
   void GeneratePageContent(GetPageContentCallback callback);
-
+  // This method is the same as |GeneratePageContent| but without DCHECKs.
+  // Its used in tests.
+  void GeneratePageContentInternal(GetPageContentCallback callback);
   void OnGeneratePageContentComplete(GetPageContentCallback callback,
                                      std::string previous_content,
                                      std::string contents_text,
