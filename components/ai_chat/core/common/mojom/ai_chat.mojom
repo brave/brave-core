@@ -409,7 +409,7 @@ interface AIChatUIHandler {
   ManagePremium();
   HandleVoiceRecognition(string conversation_uuid);
   ShowSoftKeyboard();
-  UploadImage(string conversation_uuid) => (UploadedImage? uploaded_image);
+  UploadImage() => (array<UploadedImage>? uploaded_images);
 
   // This might be a no-op if the UI isn't closeable
   CloseUI();

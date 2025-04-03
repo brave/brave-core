@@ -78,8 +78,17 @@ class ConversationAPIClient {
   struct ConversationEvent {
     mojom::CharacterType role;
     ConversationEventType type;
-    std::string content;
+    std::vector<std::string> content;
     std::string topic;  // Used in GetFocusTabsForTopic event.
+
+    ConversationEvent(mojom::CharacterType,
+                      ConversationEventType,
+                      const std::vector<std::string>&,
+                      const std::string& = "");
+    ConversationEvent();
+    ~ConversationEvent();
+    ConversationEvent(const ConversationEvent&);
+    ConversationEvent& operator=(const ConversationEvent&);
   };
 
   ConversationAPIClient(

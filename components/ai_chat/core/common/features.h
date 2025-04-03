@@ -21,6 +21,8 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<std::string> kAIModelsPremiumDefaultKey;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<std::string> kAIModelsVisionDefaultKey;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<std::string> kAIModelsPremiumVisionDefaultKey;
 
 // If true, certain freemium models are available to non-premium users. If
 // false, those models are premium-only.

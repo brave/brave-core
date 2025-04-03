@@ -664,7 +664,9 @@ void ConversationHandler::SubmitHumanConversationEntry(
                                      ? model_service_->GetDefaultModelKey()
                                      : metadata_->model_key.value());
     if (!current_model->vision_support) {
-      ChangeModel(features::kAIModelsVisionDefaultKey.Get());
+      ChangeModel(ai_chat_service_->IsPremiumStatus()
+                      ? features::kAIModelsPremiumVisionDefaultKey.Get()
+                      : features::kAIModelsVisionDefaultKey.Get());
     }
   }
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(

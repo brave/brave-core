@@ -12,6 +12,7 @@ import { isLeoModel } from '../model_utils'
 import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
 import { useAIChat } from './ai_chat_context'
 import getAPI from '../api'
+import { MAX_IMAGES } from '../../common/constants'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -507,30 +508,44 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   const uploadImage = () => {
-    if (!context.conversationUuid) {
-      console.error('No conversationUuid found')
-      return
-    }
-    // For now we only allow uploading 1 image per conversation.
-    if (context.pendingMessageImages) {
-      setPartialContext({
-        pendingMessageImages: null
-      })
-    }
-    aiChatContext.uiHandler?.uploadImage(context.conversationUuid)
-    .then(({uploadedImage}) => {
-      if (uploadedImage) {
-        setPartialContext({
-          pendingMessageImages: [uploadedImage]
-        })
+    aiChatContext.uiHandler?.uploadImage()
+    .then(({uploadedImages}) => {
+      if (uploadedImages) {
+        const totalUploadedImages = context.conversationHistory.reduce(
+          (total, turn) => total + (turn.uploadedImages?.length || 0),
+          0
+        )
+        const currentPendingImages = context.pendingMessageImages?.length || 0
+        const maxNewImages = MAX_IMAGES - totalUploadedImages - currentPendingImages
+        const newImages = uploadedImages.slice(0, Math.max(0, maxNewImages))
+
+        if (newImages.length > 0) {
+          setPartialContext({
+            pendingMessageImages: context.pendingMessageImages
+              ? [...context.pendingMessageImages, ...newImages]
+              : [...newImages]
+          })
+        }
       }
     })
   }
 
   const removeImage = (index: number) => {
-    setPartialContext({
-      pendingMessageImages: null
-    })
+    if (!context.pendingMessageImages || context.pendingMessageImages.length === 0) {
+      return
+    }
+
+    if (context.pendingMessageImages.length === 1) {
+      setPartialContext({
+        pendingMessageImages: null
+      })
+    } else {
+      const updatedImages = [...context.pendingMessageImages]
+      updatedImages.splice(index, 1)
+      setPartialContext({
+        pendingMessageImages: updatedImages
+      })
+    }
   }
 
   const store: ConversationContext = {
