@@ -176,11 +176,6 @@
     <color name="quick_action_search_and_bookmark_widget_tint">#F0F2FF</color>
     <color name="quick_action_search_and_bookmark_widget_text_color">#CED0DB</color>
 
-    <!-- Quick Action Search and Bookmark Widget Promo-->
-    <color name="search_widget_promo_add_widget_text_color">#FFFFFF</color>
-    <color name="search_widget_promo_not_now_text_color">#8389E0</color>
-    <color name="search_widget_promo_bg_color">#1E2025</color>
-
     <color name="brave_rate_bg_color">#1E2025</color>
     <color name="brave_smiley_sad_color">#DC1D3C</color>
     <color name="brave_smiley_happy_color">#5F5CF1</color>
@@ -258,7 +253,7 @@
     <color name="vpn_timer_icon_color">#A1ABBA</color>
 
     <color name="text_primary">#F3F5F7</color>
-    <color name="text_secondary">#BECAD0</color>
+    <color name="text_secondary">#c7c7cc</color>
     <color name="text_tertiary">#a1b2ba</color>
     <color name="primary_20">#2A118E</color>
     <color name="button_background">#3f39e8</color>
@@ -271,8 +266,12 @@
     <color name="schemes_on_surface_variant">#c7c7cc</color>
     <color name="schemes_outline_variant">#3b3b3f</color>
     <color name="schemes_primary">#c1c4ff</color>
+    <color name="schemes_on_primary">#251491</color>
     <color name="schemes_surface_container_highest">#303034</color>
+    <color name="schemes_surface_container_lowest">#0D0E11</color>
     <color name="text_interactive">#7c91ff</color>
+
+    <color name="button_background_widget_promo">#C1C6FF</color>
 
     <color name="open_yt_dialog_bg">#000000</color>
 

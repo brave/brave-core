@@ -25,6 +25,7 @@ class DayZeroBrowserUIExptManager : public ProfileManagerObserver {
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
   static std::unique_ptr<DayZeroBrowserUIExptManager> Create(
       ProfileManager* profile_manager);
+  static std::optional<std::string> GetDayZeroVariant();
 
   ~DayZeroBrowserUIExptManager() override;
   DayZeroBrowserUIExptManager(const DayZeroBrowserUIExptManager&) = delete;
