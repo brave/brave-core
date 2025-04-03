@@ -54,11 +54,13 @@ void ToolbarButton::InkDropRippleAnimationEnded(views::InkDropState state) {
 }
 
 void ToolbarButton::UpdateIcon() {
-  if (HasVectorIcons() && icon_color_) {
+  if (HasVectorIcons() && icon_enabled_colors_override_) {
     UpdateIconsWithColors(
         ui::TouchUiController::Get()->touch_ui() ? GetVectorTouchIcon()
                                                  : GetVectorIcon(),
-        *icon_color_, *icon_color_, *icon_color_, *icon_color_);
+        *icon_enabled_colors_override_, *icon_enabled_colors_override_,
+        *icon_enabled_colors_override_,
+        GetForegroundColor(ButtonState::STATE_DISABLED));
     return;
   }
 
@@ -66,7 +68,7 @@ void ToolbarButton::UpdateIcon() {
 }
 
 void ToolbarButton::OnInkDropStateChanged(views::InkDropState state) {
-  if (icon_color_) {
+  if (icon_enabled_colors_override_) {
     return UpdateIcon();
   }
 

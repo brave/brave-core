@@ -36,8 +36,13 @@ class ToolbarButton : public ToolbarButton_ChromiumImpl,
   using ToolbarButton_ChromiumImpl::ToolbarButton_ChromiumImpl;
   ~ToolbarButton() override;
 
-  void set_icon_color(std::optional<SkColor> color) { icon_color_ = color; }
-  bool has_custom_color() const { return icon_color_.has_value(); }
+  // Override icon color for non-disabled button states.
+  void SetIconEnabledColorsOverride(std::optional<SkColor> color) {
+    icon_enabled_colors_override_ = color;
+  }
+  bool HasIconEnabledColorsOverride() const {
+    return icon_enabled_colors_override_.has_value();
+  }
 
   // ToolbarButton_ChromiumImpl overrides:
   void OnThemeChanged() override;
@@ -51,7 +56,7 @@ class ToolbarButton : public ToolbarButton_ChromiumImpl,
   void InkDropRippleAnimationEnded(views::InkDropState state) override;
 
   bool activated_ = false;
-  std::optional<SkColor> icon_color_;
+  std::optional<SkColor> icon_enabled_colors_override_;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_TOOLBAR_BUTTON_H_
