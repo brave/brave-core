@@ -82,8 +82,7 @@ constexpr NetworkTrafficAnnotationTag kTorProxyTrafficAnnotation =
 static base::NoDestructor<std::map<ProxyResolutionService*, TorProxyMap>>
     g_tor_proxy_map;
 
-TorProxyMap* GetTorProxyMap(
-    ProxyResolutionService* service) {
+TorProxyMap* GetTorProxyMap(ProxyResolutionService* service) {
   return &(g_tor_proxy_map.get()->operator[](service));
 }
 
@@ -140,8 +139,7 @@ void ProxyConfigServiceTor::UpdateProxyURI(const std::string& uri) {
   auto config_valid = GetLatestProxyConfig(&proxy_config);
 
   for (auto& observer : observers_)
-    observer.OnProxyConfigChanged(proxy_config,
-                                  config_valid);
+    observer.OnProxyConfigChanged(proxy_config, config_valid);
 }
 
 // static
@@ -178,8 +176,7 @@ void ProxyConfigServiceTor::SetNewTorCircuit(const GURL& url) {
   auto config_valid = GetLatestProxyConfig(&proxy_config);
 
   for (auto& observer : observers_)
-    observer.OnProxyConfigChanged(proxy_config,
-                                  config_valid);
+    observer.OnProxyConfigChanged(proxy_config, config_valid);
 }
 
 // static
@@ -210,7 +207,8 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
     auto* map = GetTorProxyMap(service);
     if (host_port_pair.username() == username) {
       // password is a int64_t -> std::to_string in milliseconds
-      int64_t time = strtoll(host_port_pair.password().c_str(), nullptr, 10);
+      int64_t time = 0;
+      base::StringToInt64(host_port_pair.password(), &time);
       map->MaybeExpire(
           host_port_pair.username(),
           base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(time)));
@@ -278,8 +276,7 @@ std::string TorProxyMap::GenerateNewPassword() {
   return base::HexEncode(password.data(), password.size());
 }
 
-std::string TorProxyMap::Get(
-    const std::string& username) {
+std::string TorProxyMap::Get(const std::string& username) {
   // Clear any expired entries, in case this one has expired.
   ClearExpiredEntries();
 
@@ -299,8 +296,7 @@ std::string TorProxyMap::Get(
   // using Tor for a while.
   // TODO(bridiver) - the timer should be in the ProxyConfigServiceTor class
   timer_.Stop();
-  timer_.Start(FROM_HERE, kTenMins, this,
-               &TorProxyMap::ClearExpiredEntries);
+  timer_.Start(FROM_HERE, kTenMins, this, &TorProxyMap::ClearExpiredEntries);
 
   return password;
 }
@@ -318,12 +314,10 @@ void TorProxyMap::Erase(const std::string& username) {
   map_.erase(username);
 }
 
-void TorProxyMap::MaybeExpire(
-    const std::string& username,
-    const base::Time& timestamp) {
+void TorProxyMap::MaybeExpire(const std::string& username,
+                              const base::Time& timestamp) {
   auto found = map_.find(username);
-  if (found != map_.end() &&
-      timestamp >= found->second.second) {
+  if (found != map_.end() && timestamp >= found->second.second) {
     Erase(username);
   }
 }
