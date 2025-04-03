@@ -176,15 +176,18 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {
 #endif
 }
 
-void AIChatUIPageHandler::UploadImage(mojom::UploadImageOptionsPtr options,
+void AIChatUIPageHandler::UploadImage(bool use_media_capture,
                                       UploadImageCallback callback) {
   if (!upload_file_helper_) {
-    upload_file_helper_ = std::make_unique<UploadFileHelper>(
-        owner_web_contents_, active_chat_tab_helper_->web_contents(), profile_);
+    upload_file_helper_ =
+        std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
   }
   upload_file_helper_->UploadImage(
       std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
-      std::move(options), std::move(callback));
+#if BUILDFLAG(IS_ANDROID)
+      use_media_capture,
+#endif
+      std::move(callback));
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {

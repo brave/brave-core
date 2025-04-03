@@ -116,6 +116,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     // Signifies whether the content has permission to open a conversation's UI
     // within the browser.
     virtual bool HasOpenAIChatPermission() const;
+    virtual void GetScreenshots(
+        mojom::ConversationHandler::GetScreenshotsCallback callback);
 
     void GetTopSimilarityWithPromptTilContextLimit(
         const std::string& prompt,
@@ -295,6 +297,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAssociatedContentTitleChanged();
   void OnUserOptedIn();
   size_t GetConversationHistorySize() override;
+  void GetScreenshots(GetScreenshotsCallback callback) override;
 
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.

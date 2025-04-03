@@ -17,7 +17,8 @@ import { getLocale } from '$web-common/locale'
 // Styles
 import styles from './style.module.scss'
 
-type Props = Pick<ConversationContext, 'uploadImage' | 'conversationHistory'> &
+type Props = Pick<ConversationContext, 'uploadImage' | 'getScreenshots' |
+  'conversationHistory' | 'associatedContentInfo'> &
   Pick<AIChatContext, 'isMobile'>
 
 export default function AttachmentButtonMenu(props: Props) {
@@ -41,9 +42,7 @@ export default function AttachmentButtonMenu(props: Props) {
             <Icon name='attachment' />
           </Button>
         </div>
-        <leo-menu-item onClick={() => props.uploadImage({
-          useMediaCapture: false, useScreenshots: false
-        })}>
+        <leo-menu-item onClick={() => props.uploadImage(false)}>
           <div className={styles.buttonContent}>
             <Icon
               className={styles.buttonIcon}
@@ -52,21 +51,19 @@ export default function AttachmentButtonMenu(props: Props) {
             {getLocale('uploadFileButtonLabel')}
           </div>
         </leo-menu-item>
-       <leo-menu-item onClick={() => props.uploadImage({
-         useMediaCapture: false, useScreenshots: true
-       })}>
-          <div className={styles.buttonContent}>
-            <Icon
-              className={styles.buttonIcon}
-              name='screenshot'
-            />
-            {getLocale('screenshotButtonLabel')}
-          </div>
-        </leo-menu-item>
+        {!!props.associatedContentInfo &&
+          <leo-menu-item onClick={() => props.getScreenshots()}>
+             <div className={styles.buttonContent}>
+               <Icon
+                 className={styles.buttonIcon}
+                 name='screenshot'
+               />
+               {getLocale('screenshotButtonLabel')}
+             </div>
+          </leo-menu-item>
+       }
         {props.isMobile &&
-          <leo-menu-item onClick={() => props.uploadImage({
-             useMediaCapture: true, useScreenshots: false
-           })}>
+          <leo-menu-item onClick={() => props.uploadImage(true)}>
             <div className={styles.buttonContent}>
               <Icon
                 className={styles.buttonIcon}

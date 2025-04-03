@@ -69,7 +69,8 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
 
   showAttachments: boolean
   setShowAttachments: (show: boolean) => void
-  uploadImage: (options: Mojom.UploadImageOptions) => void
+  uploadImage: (useMediaCapture: boolean) => void
+  getScreenshots: () => void
   removeImage: (index: number) => void
   setGeneratedUrlToBeOpened: (url?: Url) => void
   setIgnoreExternalLinkWarning: () => void
@@ -116,7 +117,8 @@ const defaultContext: ConversationContext = {
   setIsToolsMenuOpen: () => { },
   showAttachments: false,
   setShowAttachments: () => { },
-  uploadImage: (options: Mojom.UploadImageOptions) => { },
+  uploadImage: (useMediaCapture: boolean) => { },
+  getScreenshots: () => {},
   removeImage: () => { },
   setGeneratedUrlToBeOpened: () => { },
   setIgnoreExternalLinkWarning: () => { },
@@ -516,17 +518,14 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.uiHandler?.handleVoiceRecognition(context.conversationUuid)
   }
 
-  const uploadImage = (options: Mojom.UploadImageOptions) => {
-    aiChatContext.uiHandler?.uploadImage(options)
-    .then(({uploadedImages}) => {
-      if (uploadedImages) {
+  const processUploadedImage = (images: Mojom.UploadedImage[]) => {
         const totalUploadedImages = context.conversationHistory.reduce(
           (total, turn) => total + (turn.uploadedImages?.length || 0),
           0
         )
         const currentPendingImages = context.pendingMessageImages?.length || 0
         const maxNewImages = MAX_IMAGES - totalUploadedImages - currentPendingImages
-        const newImages = uploadedImages.slice(0, Math.max(0, maxNewImages))
+        const newImages = images.slice(0, Math.max(0, maxNewImages))
 
         if (newImages.length > 0) {
           setPartialContext({
@@ -535,6 +534,22 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
               : [...newImages]
           })
         }
+    }
+
+  const getScreenshots = () => {
+    conversationHandler.getScreenshots()
+    .then(({screenshots}) => {
+      if (screenshots) {
+        processUploadedImage(screenshots)
+      }
+    })
+  }
+
+  const uploadImage = (useMediaCapture: boolean) => {
+    aiChatContext.uiHandler?.uploadImage(useMediaCapture)
+    .then(({uploadedImages}) => {
+      if (uploadedImages) {
+        processUploadedImage(uploadedImages)
       }
     })
   }
@@ -645,6 +660,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setIsToolsMenuOpen: (isToolsMenuOpen) => setPartialContext({ isToolsMenuOpen }),
     handleVoiceRecognition,
     uploadImage,
+    getScreenshots,
     removeImage,
     conversationHandler,
     setGeneratedUrlToBeOpened:

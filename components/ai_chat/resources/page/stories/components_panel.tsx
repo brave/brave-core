@@ -711,6 +711,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     showAttachments: options.args.showAttachments,
     removeImage: () => {},
     uploadImage: (useMediaCapture: boolean) => {},
+    getScreenshots: () => {},
     setGeneratedUrlToBeOpened:
       (url?: Url) => setArgs({ generatedUrlToBeOpened: url }),
     setIgnoreExternalLinkWarning: () => { }

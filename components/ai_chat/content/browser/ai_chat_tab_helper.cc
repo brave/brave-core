@@ -36,6 +36,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/strings/grit/components_strings.h"
@@ -430,6 +431,34 @@ bool AIChatTabHelper::HasOpenAIChatPermission() const {
       permission_controller->GetPermissionResultForCurrentDocument(
           blink::PermissionType::BRAVE_OPEN_AI_CHAT, rfh);
   return permission_status.status == content::PermissionStatus::GRANTED;
+}
+
+void AIChatTabHelper::GetScreenshots(
+    mojom::ConversationHandler::GetScreenshotsCallback callback) {
+  full_screenshotter_ = std::make_unique<FullScreenshotter>();
+  full_screenshotter_->CaptureScreenshots(
+      web_contents(),
+      base::BindOnce(&AIChatTabHelper::OnScreenshotsCaptured,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AIChatTabHelper::OnScreenshotsCaptured(
+    mojom::ConversationHandler::GetScreenshotsCallback callback,
+    base::expected<std::vector<std::vector<uint8_t>>, std::string> result) {
+  if (result.has_value()) {
+    std::vector<mojom::UploadedImagePtr> images;
+    size_t screenshot_index = 0;
+    for (auto& screenshot : result.value()) {
+      size_t screenshot_size = screenshot.size();
+      images.push_back(mojom::UploadedImage::New(
+          base::StringPrintf("fullscreenshot_%i.png", screenshot_index++),
+          screenshot_size, std::move(screenshot)));
+    }
+    std::move(callback).Run(std::move(images));
+  } else {
+    VLOG(1) << result.error();
+    std::move(callback).Run(std::nullopt);
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

@@ -13,7 +13,6 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "brave/components/ai_chat/content/browser/full_screenshotter.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 #include "ui/shell_dialogs/select_file_policy.h"
@@ -28,15 +27,15 @@ namespace ai_chat {
 
 class UploadFileHelper : public ui::SelectFileDialog::Listener {
  public:
-  UploadFileHelper(content::WebContents* owner_web_contents,
-                   content::WebContents* web_contents,
-                   Profile* profile);
+  UploadFileHelper(content::WebContents* web_contents, Profile* profile);
   ~UploadFileHelper() override;
   UploadFileHelper(const UploadFileHelper&) = delete;
   UploadFileHelper& operator=(const UploadFileHelper&) = delete;
 
   void UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
-                   mojom::UploadImageOptionsPtr options,
+#if BUILDFLAG(IS_ANDROID)
+                   bool use_media_capture,
+#endif
                    mojom::AIChatUIHandler::UploadImageCallback callback);
 
  private:
@@ -51,13 +50,9 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener {
   void OnImageSanitized(std::string filename, const SkBitmap& decoded_bitmap);
   void OnImageEncoded(std::string filename,
                       std::optional<std::vector<uint8_t>> output);
-  void OnScreenshotsCaptured(
-      base::expected<std::vector<std::vector<uint8_t>>, std::string>);
 
-  raw_ptr<content::WebContents> owner_web_contents_ = nullptr;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
-  std::unique_ptr<FullScreenshotter> full_screenshotter_;
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
   mojom::AIChatUIHandler::UploadImageCallback upload_image_callback_;
 

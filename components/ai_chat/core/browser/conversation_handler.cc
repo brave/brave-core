@@ -101,6 +101,11 @@ bool AssociatedContentDelegate::HasOpenAIChatPermission() const {
   return false;
 }
 
+void AssociatedContentDelegate::GetScreenshots(
+    mojom::ConversationHandler::GetScreenshotsCallback callback) {
+  std::move(callback).Run(std::nullopt);
+}
+
 void AssociatedContentDelegate::GetTopSimilarityWithPromptTilContextLimit(
     const std::string& prompt,
     const std::string& text,
@@ -1818,6 +1823,14 @@ void ConversationHandler::OnStateForConversationEntriesChanged() {
 
 size_t ConversationHandler::GetConversationHistorySize() {
   return GetConversationHistory().size();
+}
+
+void ConversationHandler::GetScreenshots(GetScreenshotsCallback callback) {
+  if (associated_content_delegate_) {
+    associated_content_delegate_->GetScreenshots(std::move(callback));
+  } else {
+    std::move(callback).Run(std::nullopt);
+  }
 }
 
 bool ConversationHandler::should_send_page_contents() const {

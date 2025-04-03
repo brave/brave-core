@@ -380,11 +380,6 @@ interface ServiceObserver {
   OnStateChanged(ServiceState state);
 };
 
-struct UploadImageOptions {
-  bool use_media_capture;
-  bool use_screenshots;
-};
-
 // Browser-side handler for general AI Chat UI functions, implemented
 // per-platform
 interface AIChatUIHandler {
@@ -408,7 +403,7 @@ interface AIChatUIHandler {
   ShowSoftKeyboard();
   // use_media_capture is used on Android only currently. It could
   // be used on desktop as well in the future when a camera support is added.
-  UploadImage(UploadImageOptions options)
+  UploadImage(bool use_media_capture)
       => (array<UploadedImage>? uploaded_images);
 
   // This might be a no-op if the UI isn't closeable
@@ -535,6 +530,8 @@ interface ConversationHandler {
       string category,
       string feedback,
       string rating_id, bool send_hostname) => (bool is_success);
+
+  GetScreenshots() => (array<UploadedImage>? screenshots);
 };
 
 // Browser-side handler for a Conversation's UI responsible for displaying
