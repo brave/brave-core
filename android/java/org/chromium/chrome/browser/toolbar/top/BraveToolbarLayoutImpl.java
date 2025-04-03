@@ -191,9 +191,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private ColorStateList mDarkModeTint;
     private ColorStateList mLightModeTint;
 
-    // See comment at onUrlFocusChange
-    // private SearchWidgetPromoPanel mSearchWidgetPromoPanel;
-
     private final Set<Integer> mTabsWithWalletIcon =
             Collections.synchronizedSet(new HashSet<Integer>());
 
@@ -258,9 +255,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mDarkModeTint = ThemeUtils.getThemedToolbarIconTint(getContext(), false);
         mLightModeTint =
                 ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.brave_white));
-
-        // See comment at onUrlFocusChange
-        // mSearchWidgetPromoPanel = new SearchWidgetPromoPanel(getContext());
 
         if (mHomeButton != null) {
             mHomeButton.setOnLongClickListener(this);
