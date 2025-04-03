@@ -57,7 +57,7 @@ struct PlaylistItemView: View {
           switch duration {
           case .seconds(let duration):
             if duration > 0 {
-              Text(.seconds(duration), format: .time(pattern: .minuteSecond))
+              Text(.seconds(duration), format: .timestamp)
             } else {
               EmptyView()
             }

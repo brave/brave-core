@@ -353,7 +353,7 @@ struct CompactMediaScrubberLabel: View {
   var duration: PlayerModel.ItemDuration
 
   private var currentValueLabel: Text {
-    return Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
+    return Text(.seconds(currentTime), format: .timestamp)
   }
 
   var body: some View {
@@ -361,7 +361,7 @@ struct CompactMediaScrubberLabel: View {
       currentValueLabel
       if case .seconds(let duration) = duration {
         Text(verbatim: "/")  // FIXME: Does this need some sort of localization?
-        Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
+        Text(.seconds(currentTime - duration), format: .timestamp)
       }
     }
     .font(.caption2)
