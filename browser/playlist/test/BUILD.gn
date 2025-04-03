@@ -41,7 +41,10 @@ source_set("browser_tests") {
   if (is_android) {
     deps += [ "//chrome/test:test_support_ui_android" ]
   } else {
-    deps += [ "//chrome/test:test_support_ui" ]
+    deps += [
+      "//chrome/browser/ui/browser_window",
+      "//chrome/test:test_support_ui",
+    ]
   }
 }
 
