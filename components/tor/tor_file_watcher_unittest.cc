@@ -116,20 +116,17 @@ TEST_F(TorFileWatcherTest, EatControlCookie) {
   EXPECT_EQ(cookie.size(), 0u);
   EXPECT_EQ(time.InMillisecondsFSinceUnixEpoch(), 0u);
 
-  constexpr unsigned char expected_auth_cookie[] = {
+  constexpr uint8_t expected_auth_cookie[] = {
       0x6c, 0x6e, 0x9d, 0x24, 0x78, 0xe6, 0x6d, 0x69, 0xd3, 0x2d, 0xc9,
       0x90, 0x9a, 0x3c, 0x39, 0x54, 0x2b, 0x37, 0xff, 0x30, 0xda, 0x5a,
       0x90, 0x94, 0x44, 0xa4, 0x3d, 0x30, 0xd5, 0xa9, 0x19, 0xef};
-  unsigned int expected_auth_cookie_len = 32;
 
   tor_file_watcher = std::make_unique<TorFileWatcher>(
       test_data_dir().AppendASCII("normal_auth_cookies"));
   tor_file_watcher->polling_ = true;
   EXPECT_TRUE(tor_file_watcher->EatControlCookie(cookie, time));
-  EXPECT_EQ(std::memcmp(cookie.data(), expected_auth_cookie,
-                        expected_auth_cookie_len),
-            0);
-  EXPECT_EQ(cookie.size(), expected_auth_cookie_len);
+  ASSERT_EQ(cookie.size(), std::size(expected_auth_cookie));
+  EXPECT_EQ(base::span(cookie), base::span(expected_auth_cookie));
   EXPECT_NE(time.InMillisecondsFSinceUnixEpoch(), 0u);
 }
 
