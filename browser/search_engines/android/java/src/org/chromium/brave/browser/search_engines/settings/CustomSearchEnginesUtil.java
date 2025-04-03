@@ -6,14 +6,12 @@
 package org.chromium.brave.browser.search_engines.settings;
 
 import android.content.Context;
+import android.util.Patterns;
 import android.widget.ImageView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.util.Patterns;
-import java.net.URLEncoder;
-import java.io.UnsupportedEncodingException;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -27,8 +25,8 @@ import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.net.NetworkTrafficAnnotationTag;
 import org.chromium.url.GURL;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,22 +110,11 @@ public class CustomSearchEnginesUtil {
     public static boolean isValidUrl(String url) {
         try {
             String encodedUrl = URLEncoder.encode(url, "UTF-8");
-            Log.e(TAG, "encodedUrl : "+encodedUrl);
             return Patterns.WEB_URL.matcher(encodedUrl).matches();
         } catch (UnsupportedEncodingException e) {
-            Log.e(TAG, "UnsupportedEncodingException : "+e.getMessage());
+            Log.e(TAG, "UnsupportedEncodingException : " + e.getMessage());
             return false;
         }
-        // try {
-        //     URI uri = new URI(encodedUrl);
-
-        //     Log.e(TAG, "uri.getScheme() : "+uri.getScheme());
-        //     return uri.getScheme() != null
-        //             && (uri.getScheme().equals("http") || uri.getScheme().equals("https"));
-        // } catch (URISyntaxException e) {
-        //     Log.e(TAG, "URISyntaxException : "+e.getMessage());
-        //     return false;
-        // }
     }
 
     public static void loadSearchEngineLogo(

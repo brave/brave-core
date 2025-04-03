@@ -24,7 +24,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -108,7 +107,8 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
 
     private void populateFields(TemplateUrl templateUrl) {
         mTitleEdittext.setText(templateUrl.getShortName());
-        mUrlEdittext.setText(templateUrl.getURL());
+        String queryReplacedUrl = templateUrl.getURL().replace("{searchTerms}", "%s");
+        mUrlEdittext.setText(queryReplacedUrl);
         mAddSearchEngineButton.setText(getString(R.string.save_changes_action_text));
     }
 
@@ -203,8 +203,10 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
             String title,
             String keyword,
             String url) {
+        String queryReplacedUrl = url.replace("%s", "{searchTerms}");
         boolean isUpdated =
-                templateUrlService.updateSearchEngine(searchEngineKeyword, title, keyword, url);
+                templateUrlService.updateSearchEngine(
+                        searchEngineKeyword, title, keyword, queryReplacedUrl);
         if (isUpdated) {
             CustomSearchEnginesUtil.removeCustomSearchEngine(searchEngineKeyword);
             CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
@@ -220,6 +222,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
 
     private void handleSearchEngineAdd(
             BraveTemplateUrlService templateUrlService, String title, String keyword, String url) {
+        String queryReplacedUrl = url.replace("%s", "{searchTerms}");
         if (CustomSearchEnginesUtil.isCustomSearchEngineAdded(keyword)) {
             Toast.makeText(
                             getActivity(),
@@ -229,7 +232,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
             return;
         }
 
-        if (templateUrlService.addSearchEngine(title, keyword, url)) {
+        if (templateUrlService.addSearchEngine(title, keyword, queryReplacedUrl)) {
             CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
             handleBackPressed();
         } else {
@@ -304,9 +307,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
     }
 
     private boolean isUrlValid(String url) {
-        boolean isValid =
-                !url.isEmpty()
-                        && CustomSearchEnginesUtil.isSearchQuery(url);
+        boolean isValid = !url.isEmpty() && CustomSearchEnginesUtil.isSearchQuery(url);
 
         if (!isValid) {
             mUrlLayout.setError(
