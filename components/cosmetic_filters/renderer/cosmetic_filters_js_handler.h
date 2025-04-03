@@ -88,6 +88,14 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
       std::unique_ptr<v8::Global<v8::Context>> context_old,
       bool is_dark_mode_enabled,
       int32_t background_color);
+
+  v8::Local<v8::Promise> GetLocalizedTexts(v8::Isolate* isolate);
+  void OnGetLocalizedTexts(
+      std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
+      v8::Isolate* isolate,
+      std::unique_ptr<v8::Global<v8::Context>> context_old,
+      mojom::ElementPickerLocalizationPtr localization_data);
+
   int OnEventBegin(const std::string& event_name);
   void OnEventEnd(const std::string& event_name, int);
 
