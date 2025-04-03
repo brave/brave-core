@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_contents_wrapper.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_web_view.h"
@@ -18,6 +19,7 @@
 
 namespace playlist {
 class PlaylistUI;
+FORWARD_DECLARE_TEST(PlaylistBrowserTest, PanelToggleTestWhilePlaying);
 }  // namespace playlist
 
 class Browser;
@@ -61,7 +63,7 @@ class PlaylistSidePanelCoordinator
   void LoadPlaylist(const std::string& playlist_id, const std::string& item_id);
 
   base::WeakPtr<PlaylistSidePanelWebView> side_panel_web_view() {
-    return side_panel_web_view_;
+    return side_panel_web_view_ ? side_panel_web_view_->GetWeakPtr() : nullptr;
   }
 
   BrowserView* GetBrowserView();
@@ -71,16 +73,20 @@ class PlaylistSidePanelCoordinator
 
  private:
   friend class BrowserUserData<PlaylistSidePanelCoordinator>;
+  FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest,
+                           PanelToggleTestWhilePlaying);
 
   void DestroyWebContentsIfNeeded();
 
   std::unique_ptr<views::View> CreateWebView(SidePanelEntryScope& scope);
 
+  bool is_audible_for_testing_ = false;
   raw_ptr<Browser> browser_ = nullptr;
 
+  // Both are cached while it's playing even if playlist panel is closed.
+  // Destroyed when panel is closed and not played.
   std::unique_ptr<PlaylistContentsWrapper> contents_wrapper_;
-
-  base::WeakPtr<PlaylistSidePanelWebView> side_panel_web_view_;
+  std::unique_ptr<PlaylistSidePanelWebView> side_panel_web_view_;
 
   base::ScopedObservation<views::View, views::ViewObserver> view_observation_{
       this};
