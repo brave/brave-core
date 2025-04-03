@@ -36,7 +36,6 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
             BookmarkUiPrefs bookmarkUiPrefs,
             ModalDialogManager modalDialogManager,
             Runnable endSearchRunnable,
-            BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager,
             BooleanSupplier incognitoEnabledSupplier,
             BookmarkManagerOpener bookmarkManagerOpener) {
         super(
@@ -53,7 +52,6 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
                 bookmarkUiPrefs,
                 modalDialogManager,
                 endSearchRunnable,
-                bookmarkMoveSnackbarManager,
                 incognitoEnabledSupplier,
                 bookmarkManagerOpener);
 
