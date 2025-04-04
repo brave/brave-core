@@ -84,7 +84,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_widget_generic" />
+                                app:srcCompat="@drawable/ic_widget_generic_with_container" />
 
                             <TextView
                                 android:id="@+id/tv_explore"

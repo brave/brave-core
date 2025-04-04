@@ -4,29 +4,14 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_enabled="false" android:state_pressed="false">
-        <shape android:padding="12dp" android:shape="rectangle">
-            <solid android:color="@color/baseline_neutral_30" />
-            <corners android:radius="48dp" />
-        </shape>
-    </item>
-    <item android:state_enabled="true" android:state_pressed="false">
-        <shape android:padding="12dp" android:shape="rectangle">
-            <solid android:color="@color/brave_action_color" />
-            <corners android:radius="48dp" />
-        </shape>
-    </item>
-    <item android:state_focused="false" android:state_pressed="true">
-        <shape android:padding="12dp" android:shape="rectangle">
-            <solid android:color="@color/brave_add_widget_button_pressed" />
-            <corners android:radius="48dp" />
-        </shape>
-    </item>
-    <item android:state_enabled="true">
-        <shape android:padding="12dp" android:shape="rectangle">
-            <solid android:color="@color/brave_action_color" />
-            <corners android:radius="48dp" />
-        </shape>
-    </item>
-</selector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <solid android:color="@color/button_background_widget_promo" />
+
+    <corners
+        android:bottomLeftRadius="12dp"
+        android:bottomRightRadius="12dp"
+        android:topLeftRadius="12dp"
+        android:topRightRadius="12dp" />
+
+</shape>

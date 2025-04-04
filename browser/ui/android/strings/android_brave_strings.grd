@@ -927,15 +927,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SURE_ILL_HELP_ONBOARDING" desc="Text for Sure i'll help button onboarding">
         Sure, I'll help
       </message>
-      <message name="IDS_TYPE_WEBSITE" desc="Text for searhbox tooltip title onboarding">
-        Type a website name or URL
-      </message>
-      <message name="IDS_SEARCHBOX_ONBOARDING" desc="Text for searhbox tooltip onboarding">
-        See the Brave difference: No ads. No trackers. Way faster page load.
-      </message>
-      <message name="IDS_SEARCHBOX_ONBOARDING_INDIA" desc="Text for searhbox tooltip onboarding for india">
-        See the Brave difference: Block ads. Save data. Stream faster.
-      </message>
       <message name="IDS_SHIELD_ONBOARDING" desc="Text for shield tooltip onboarding">
         Tap to view Brave Shields
       </message>
@@ -3429,7 +3420,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Widget added to the home screen
     </message>
     <message name="IDS_TRY_BRAVE_SEARCH_WIDGET" desc="Title of Brave search widget promo">
-      Try the Brave search widget
+      Try the Brave Search widget
     </message>
     <message name="IDS_TRY_BRAVE_SEARCH_WIDGET_DESCRIPTION" desc="Description of Brave search widget promo">
       Access private, independent search right from your home screen.

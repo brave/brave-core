@@ -83,7 +83,7 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     android:padding="8dp"
-                                    app:srcCompat="@drawable/ic_widget_generic"
+                                    app:srcCompat="@drawable/ic_widget_generic_with_container"
                                     android:contentDescription="@null"/>
 
                             <TextView
