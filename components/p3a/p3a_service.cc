@@ -15,7 +15,7 @@
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/p3a/component_installer.h"
+#include "brave/components/p3a/managed/component_installer.h"
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_config_utils.h"
 #include "brave/components/p3a/metric_names.h"
@@ -74,7 +74,11 @@ P3AService::P3AService(PrefService& local_state,
   if (first_run_time.is_null()) {
     first_run_time = base::Time::Now();
   }
-  remote_config_manager_ = std::make_unique<RemoteConfigManager>(this);
+
+  remote_metric_manager_ =
+      std::make_unique<RemoteMetricManager>(&local_state, this);
+  remote_config_manager_ =
+      std::make_unique<RemoteConfigManager>(this, remote_metric_manager_.get());
 
   message_manager_ = std::make_unique<MessageManager>(
       local_state, &config_, *this, channel, first_run_time);
@@ -91,6 +95,7 @@ void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
 
   registry->RegisterDictionaryPref(kDynamicMetricsDictPref);
   registry->RegisterDictionaryPref(kActivationDatesDictPref);
+  registry->RegisterDictionaryPref(kRemoteMetricStorageDictPref);
 }
 
 void P3AService::InitCallback(std::string_view histogram_name) {
@@ -195,7 +200,7 @@ void P3AService::Init(
 
   // Store values that were recorded between calling constructor and |Init()|.
   for (const auto& entry : histogram_values_) {
-    HandleHistogramChange(std::string(entry.first), entry.second);
+    UpdateMetricValue(std::string(entry.first), entry.second);
   }
   histogram_values_.clear();
 
@@ -300,7 +305,7 @@ void P3AService::OnHistogramChanged(std::string_view histogram_name,
   // description for details.
   if (IsSuspendedMetric(histogram_name, sample)) {
     GetUIThreadTaskRunner()->PostTask(
-        FROM_HERE, base::BindOnce(&P3AService::HandleHistogramChange, this,
+        FROM_HERE, base::BindOnce(&P3AService::UpdateMetricValue, this,
                                   histogram_name, kSuspendedMetricBucket));
     return;
   }
@@ -314,12 +319,12 @@ void P3AService::OnHistogramChanged(std::string_view histogram_name,
   }
 
   GetUIThreadTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&P3AService::HandleHistogramChange, this,
+      FROM_HERE, base::BindOnce(&P3AService::UpdateMetricValue, this,
                                 histogram_name, bucket));
 }
 
-void P3AService::HandleHistogramChange(std::string_view histogram_name,
-                                       size_t bucket) {
+void P3AService::UpdateMetricValue(std::string_view histogram_name,
+                                   size_t bucket) {
   VLOG(2) << "P3AService::OnHistogramChanged: histogram_name = "
           << histogram_name << " Sample = " << bucket;
   if (!initialized_) {
