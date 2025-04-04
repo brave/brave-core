@@ -35,7 +35,8 @@ void ConversationClient::ChangeConversation(ConversationHandler* conversation) {
 
 // MARK: - mojom::ConversationUI
 
-void ConversationClient::OnConversationHistoryUpdate() {
+void ConversationClient::OnConversationHistoryUpdate(
+    mojom::ConversationTurnPtr entry) {
   [bridge_ onHistoryUpdate];
 }
 

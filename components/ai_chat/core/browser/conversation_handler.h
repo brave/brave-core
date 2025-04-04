@@ -428,7 +428,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void OnModelDataChanged();
   void OnConversationDeleted();
-  void OnHistoryUpdate();
+  void OnHistoryUpdate(mojom::ConversationTurnPtr entry);
   void OnConversationEntryAdded(mojom::ConversationTurnPtr& entry);
   void OnConversationEntryRemoved(std::optional<std::string> turn_id);
   void OnSuggestedQuestionsChanged();

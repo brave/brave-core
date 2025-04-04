@@ -16,6 +16,7 @@ import getAPI from '../api'
 import {
   IGNORE_EXTERNAL_LINK_WARNING_KEY, MAX_IMAGES //
 } from '../../common/constants'
+import { updateConversationHistory } from '../../common/conversation_history_utils'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -218,13 +219,24 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   // Initialization
   React.useEffect(() => {
-    async function updateHistory() {
-      const { conversationHistory } =
-        await conversationHandler.getConversationHistory()
-      setPartialContext({
-        conversationHistory,
-        historyInitialized: true
-      })
+    async function updateHistory(entry?: Mojom.ConversationTurn) {
+      if (entry) {
+        // Use the shared utility function to update the history
+        const updatedHistory =
+          updateConversationHistory(context.conversationHistory, entry)
+        setPartialContext({
+          conversationHistory: updatedHistory,
+          historyInitialized: true
+        })
+      } else {
+        // When no entry is provided, fetch the full history
+        const { conversationHistory } =
+          await conversationHandler.getConversationHistory()
+        setPartialContext({
+          conversationHistory,
+          historyInitialized: true
+        })
+      }
     }
 
     async function initialize() {

@@ -6,6 +6,7 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import API from '../common/api'
 import * as Mojom from '../common/mojom'
+import { updateConversationHistory } from '../common/conversation_history_utils'
 
 // Global state for this UI
 export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
@@ -60,7 +61,21 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
       conversationHistory
     })
     this.conversationObserver.onConversationHistoryUpdate.addListener(
-      async () => this.setPartialState(await this.conversationHandler.getConversationHistory())
+      async (entry?: Mojom.ConversationTurn) => {
+        if (entry) {
+          // Use the shared utility function to update the history
+          const updatedHistory =
+            updateConversationHistory(this.state.conversationHistory, entry)
+          this.setPartialState({
+            conversationHistory: updatedHistory
+          })
+        } else {
+          // When no entry is provided, fetch the full history
+          const { conversationHistory } =
+            await this.conversationHandler.getConversationHistory()
+          this.setPartialState({ conversationHistory })
+        }
+      }
     )
 
     this.conversationObserver.onEntriesUIStateChanged.addListener((state: Mojom.ConversationEntriesState) => {
