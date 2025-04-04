@@ -10,6 +10,7 @@
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/common/importer/importer_constants.h"
 #include "brave/components/brave_education/education_urls.h"
 #include "brave/components/brave_education/features.h"
@@ -62,6 +63,15 @@ bool IsChromeDev(const std::u16string& browser_name) {
              l10n_util::GetStringUTF16(IDS_CHROME_SHORTCUT_NAME_DEV) ||
          browser_name == kChromeDevMacBrowserName ||
          browser_name == kChromeDevLinuxBrowserName;
+}
+
+bool ShouldRedirectToGettingStartedPage() {
+  if (base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment) &&
+      features::kBraveDayZeroExperimentVariant.Get() == "c") {
+    return true;
+  }
+  return base::FeatureList::IsEnabled(
+      brave_education::features::kShowGettingStartedPage);
 }
 
 }  // namespace
@@ -192,8 +202,7 @@ void WelcomeDOMHandler::HandleGetWelcomeCompleteURL(
   CHECK_EQ(1U, args.size());
   const auto& callback_id = args[0].GetString();
   AllowJavascript();
-  if (!base::FeatureList::IsEnabled(
-          brave_education::features::kShowGettingStartedPage)) {
+  if (!ShouldRedirectToGettingStartedPage()) {
     OnGettingStartedServerCheck(callback_id, /* available */ false);
     return;
   }
