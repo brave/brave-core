@@ -2611,17 +2611,27 @@ void KeyringService::UpdateNextUnusedAddressForZCashAccount(
   auto accounts = GetDerivedAccountsForKeyring(profile_prefs_, keyring_id);
   for (auto& account : accounts) {
     if (account_id == account.GetAccountId()) {
+      bool account_changed = false;
       if (next_receive_index) {
+        account_changed =
+            account_changed ||
+            account.bitcoin_next_receive_address_index != *next_receive_index;
         account.bitcoin_next_receive_address_index = *next_receive_index;
       }
       if (next_change_index) {
+        account_changed =
+            account_changed ||
+            account.bitcoin_next_change_address_index != *next_change_index;
         account.bitcoin_next_change_address_index = *next_change_index;
       }
-      SetDerivedAccountsForKeyring(profile_prefs_, keyring_id, accounts);
-      NotifyAccountsChanged();
-      return;
+      if (account_changed) {
+        SetDerivedAccountsForKeyring(profile_prefs_, keyring_id, accounts);
+        NotifyAccountsChanged();
+        return;
+      }
     }
   }
+  return;
 }
 
 mojom::BitcoinAccountInfoPtr KeyringService::GetBitcoinAccountInfo(

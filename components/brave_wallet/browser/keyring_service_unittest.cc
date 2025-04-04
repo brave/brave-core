@@ -3846,6 +3846,54 @@ TEST_F(KeyringServiceUnitTest, SignMessageByBitcoinKeyring) {
           btc_acc->account_id, mojom::BitcoinKeyId::New(1, 7), message)));
 }
 
+TEST_F(KeyringServiceUnitTest, UpdateNextUnusedAddressForZCashAccount) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletZCashFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto zec_acc = GetAccountUtils(&service).EnsureZecAccount(0);
+  EXPECT_EQ(mojom::ZCashKeyId::New(0, 0),
+            service.GetZCashAccountInfo(zec_acc->account_id)
+                ->next_receive_address->key_id);
+  EXPECT_EQ(mojom::ZCashKeyId::New(1, 0),
+            service.GetBitcoinAccountInfo(zec_acc->account_id)
+                ->next_change_address->key_id);
+
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+  EXPECT_CALL(observer, AccountsChanged());
+  service.UpdateNextUnusedAddressForZCashAccount(zec_acc->account_id, 7,
+                                                 std:nullptr);
+  observer.WaitAndVerify();
+  EXPECT_EQ(mojom::ZCashKeyId::New(0, 7),
+            service.GetZCashAccountInfo(zec_acc->account_id)
+                ->next_receive_address->key_id);
+  EXPECT_EQ(mojom::ZCashKeyId::New(1, 0),
+            service.GetZCashAccountInfo(zec_acc->account_id)
+                ->next_change_address->key_id);
+  EXPECT_CALL(observer, AccountsChanged());
+  service.UpdateNextUnusedAddressForZCashAccount(zec_acc->account_id,
+                                                std::nullopt, 9);
+  observer.WaitAndVerify();
+  EXPECT_EQ(mojom::BitcoinKeyId::New(0, 7),
+            service.GetZCashAccountInfo(zec_acc->account_id)
+                ->next_receive_address->key_id);
+  EXPECT_EQ(mojom::BitcoinKeyId::New(1, 9),
+            service.GetZCashAccountInfo(zec_acc->account_id)
+                ->next_change_address->key_id);
+  EXPECT_CALL(observer, AccountsChanged());
+  service.UpdateNextUnusedAddressForZCashAccount(zec_acc->account_id, 7, 9);
+  observer.WaitAndVerify();
+  EXPECT_EQ(mojom::BitcoinKeyId::New(0, 7),
+            service.GetZCashAccountInfo(zec_acc->account_id)
+                ->next_receive_address->key_id);
+  EXPECT_EQ(mojom::BitcoinKeyId::New(1, 9),
+            service.GetZCashAccountInfo(zec_acc->account_id)
+                ->next_change_address->key_id);
+  EXPECT_CALL(observer, AccountsChanged()).Times(0);
+}
+
 #if BUILDFLAG(ENABLE_ORCHARD)
 
 // Generated using https://github.com/zcash/zcash-test-vectors
