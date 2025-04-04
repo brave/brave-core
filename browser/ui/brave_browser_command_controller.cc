@@ -148,7 +148,9 @@ void BraveBrowserCommandController::OnTabChangedAt(tabs::TabInterface* tab,
                                                    TabChangeType change_type) {
   BrowserCommandController::OnTabChangedAt(tab, index, change_type);
   UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
-                       brave::HasDuplicateTabs(&*browser_));
+                       brave::HasDuplicatesOfActiveTab(&*browser_));
+  UpdateCommandEnabled(IDC_CLOSE_ALL_DUPLICATE_TABS,
+                       brave::HasAnyDuplicateTabs(&*browser_));
   UpdateCommandsForTabs();
   UpdateCommandsForSend();
 }
@@ -169,7 +171,9 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
   UpdateCommandEnabled(IDC_WINDOW_CLOSE_TABS_TO_LEFT,
                        brave::CanCloseTabsToLeft(&*browser_));
   UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
-                       brave::HasDuplicateTabs(&*browser_));
+                       brave::HasDuplicatesOfActiveTab(&*browser_));
+  UpdateCommandEnabled(IDC_CLOSE_ALL_DUPLICATE_TABS,
+                       brave::HasAnyDuplicateTabs(&*browser_));
   UpdateCommandsForTabs();
   UpdateCommandsForSend();
   UpdateCommandsForPin();
@@ -342,7 +346,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
 
   UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
-                       brave::HasDuplicateTabs(&*browser_));
+                       brave::HasDuplicatesOfActiveTab(&*browser_));
+  UpdateCommandEnabled(IDC_CLOSE_ALL_DUPLICATE_TABS,
+                       brave::HasAnyDuplicateTabs(&*browser_));
   UpdateCommandEnabled(IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP, true);
 
   UpdateCommandEnabled(IDC_SCROLL_TAB_TO_TOP, true);
@@ -733,7 +739,10 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::MoveGroupToNewWindow(&*browser_);
       break;
     case IDC_CLOSE_DUPLICATE_TABS:
-      brave::CloseDuplicateTabs(&*browser_);
+      brave::CloseDuplicatesOfActiveTab(&*browser_);
+      break;
+    case IDC_CLOSE_ALL_DUPLICATE_TABS:
+      brave::CloseAllDuplicateTabs(&*browser_);
       break;
     case IDC_WINDOW_CLOSE_TABS_TO_LEFT:
       brave::CloseTabsToLeft(&*browser_);
