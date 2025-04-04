@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/files/file_path.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -64,9 +65,12 @@ class ProfileMiscMetricsService : public KeyedService {
 
  private:
   void ReportSimpleMetrics();
+  void OnLastUsedProfileChanged();
 
   raw_ptr<PrefService> profile_prefs_;
+  base::FilePath context_path_;
   PrefChangeRegistrar pref_change_registrar_;
+  PrefChangeRegistrar last_used_profile_pref_change_registrar_;
 
   std::unique_ptr<AutofillMetrics> autofill_metrics_;
   std::unique_ptr<LanguageMetrics> language_metrics_;
