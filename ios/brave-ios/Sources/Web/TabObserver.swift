@@ -59,8 +59,11 @@ extension TabObserver {
   public func tabWillBeDestroyed(_ tab: some TabState) {}
 }
 
-class AnyTabObserver: TabObserver, Hashable {
+class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
   let id: ObjectIdentifier
+  #if DEBUG
+  let objectName: String
+  #endif
   private let _tabDidCreateWebView: (any TabState) -> Void
   private let _tabWillDeleteWebView: (any TabState) -> Void
 
@@ -83,6 +86,14 @@ class AnyTabObserver: TabObserver, Hashable {
   private let _tabDidChangeSampledPageTopColor: (any TabState) -> Void
   private let _tabWillBeDestroyed: (any TabState) -> Void
 
+  var debugDescription: String {
+    #if DEBUG
+    return "AnyTabObserver: \(objectName)"
+    #else
+    return "AnyTabObserver: \(id)"
+    #endif
+  }
+
   func hash(into hasher: inout Hasher) {
     hasher.combine(id)
   }
@@ -93,6 +104,9 @@ class AnyTabObserver: TabObserver, Hashable {
 
   init(_ observer: some TabObserver) {
     id = ObjectIdentifier(observer)
+    #if DEBUG
+    objectName = String(describing: observer)
+    #endif
     _tabDidCreateWebView = { [weak observer] in observer?.tabDidCreateWebView($0) }
     _tabWillDeleteWebView = { [weak observer] in observer?.tabWillDeleteWebView($0) }
     _tabWasShown = { [weak observer] in observer?.tabWasShown($0) }
