@@ -84,7 +84,8 @@ class P3ARemoteConfigManagerTest : public testing::Test,
     test_data_path_ =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA).AppendASCII("p3a");
 
-    remote_config_manager_ = std::make_unique<RemoteConfigManager>(this);
+    remote_config_manager_ =
+        std::make_unique<RemoteConfigManager>(this, nullptr);
   }
 
   void TearDown() override { remote_config_manager_.reset(); }
