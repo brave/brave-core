@@ -139,6 +139,9 @@ UploadFileHelper::UploadFileHelper(content::WebContents* web_contents,
 UploadFileHelper::~UploadFileHelper() = default;
 
 void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
+#if BUILDFLAG(IS_ANDROID)
+                                   bool use_media_capture,
+#endif
                                    UploadImageCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   upload_image_callback_ = std::move(callback);
@@ -153,6 +156,7 @@ void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
   // to any subsequent SelectFile() calls.
   select_file_dialog_->SetAcceptTypes(
       {u"image/png", u"image/jpeg", u"image/jpg", u"image/webp"});
+  select_file_dialog_->SetUseMediaCapture(use_media_capture);
 #endif
   select_file_dialog_->SelectFile(
       ui::SelectFileDialog::SELECT_OPEN_MULTI_FILE, std::u16string(),

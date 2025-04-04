@@ -55,7 +55,7 @@ export default function BeginGeneration() {
           isGenerating: context.isGenerating,
           handleStopGenerating: async () => {},
           removeImage: () => {},
-          uploadImage: () => {},
+          uploadImage: (useMediaCapture: boolean) => {},
           conversationHistory: [],
           pendingMessageImages: null
         }} />
