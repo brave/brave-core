@@ -122,13 +122,6 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
   return web_controller.webView;
 }
 
-- (WKWebViewConfiguration*)WKConfiguration {
-  web::WKWebViewConfigurationProvider& config_provider =
-      web::WKWebViewConfigurationProvider::FromBrowserState(
-          self.webState->GetBrowserState());
-  return config_provider.GetWebViewConfiguration();
-}
-
 - (NSURL*)originalRequestURLForLastCommitedNavigation {
   // Since CWVBackForwardItemListItem doesn't provide the original URL request
   web::NavigationItem* item =

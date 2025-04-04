@@ -88,12 +88,6 @@ CWV_EXPORT
 /// specific paths.
 @property(readonly, nullable) WKWebView* internalWebView;
 
-/// The underlying WKWebViewConfiguration for this CWVWebView
-///
-/// This is only available for `use_blink=false` builds and be used for WebKit
-/// specific paths.
-@property(readonly) WKWebViewConfiguration* WKConfiguration;
-
 @end
 
 NS_ASSUME_NONNULL_END
