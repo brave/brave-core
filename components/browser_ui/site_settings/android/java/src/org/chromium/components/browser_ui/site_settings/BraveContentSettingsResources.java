@@ -8,9 +8,11 @@ package org.chromium.components.browser_ui.site_settings;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.components.content_settings.ContentSettingValues;
 import org.chromium.components.content_settings.ContentSettingsType;
 
+@NullMarked
 public class BraveContentSettingsResources extends ContentSettingsResources {
     // Placeholder class
     protected static class ResourceItem {
