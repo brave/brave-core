@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_REMOTE_CONFIG_MANAGER_H_
-#define BRAVE_COMPONENTS_P3A_REMOTE_CONFIG_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_P3A_MANAGED_REMOTE_CONFIG_MANAGER_H_
+#define BRAVE_COMPONENTS_P3A_MANAGED_REMOTE_CONFIG_MANAGER_H_
 
 #include <memory>
 #include <string>
@@ -19,6 +19,8 @@
 #include "brave/components/p3a/metric_log_type.h"
 
 namespace p3a {
+
+class RemoteMetricManager;
 
 inline constexpr base::FilePath::CharType kP3AManifestFileName[] =
     FILE_PATH_LITERAL("p3a_manifest.json");
@@ -37,7 +39,8 @@ class RemoteConfigManager {
         std::string_view histogram_name) const = 0;
   };
 
-  explicit RemoteConfigManager(const Delegate* delegate);
+  RemoteConfigManager(const Delegate* delegate,
+                      RemoteMetricManager* remote_metric_manager);
   ~RemoteConfigManager();
 
   void LoadRemoteConfig(const base::FilePath& install_dir,
@@ -49,12 +52,16 @@ class RemoteConfigManager {
 
  private:
   void SetMetricConfigs(
-      std::unique_ptr<base::flat_map<std::string, RemoteMetricConfig>> result);
+      std::unique_ptr<
+          base::flat_map<std::string, std::unique_ptr<RemoteMetricConfig>>>
+          result);
 
   base::flat_map<std::string, MetricConfig> metric_configs_;
   base::flat_set<std::string> activation_metric_names_;
 
   raw_ptr<const Delegate> delegate_ = nullptr;
+  raw_ptr<RemoteMetricManager> remote_metric_manager_ = nullptr;
+
   base::OnceClosure config_loaded_callback_;
 
   base::WeakPtrFactory<RemoteConfigManager> weak_factory_{this};
@@ -62,4 +69,4 @@ class RemoteConfigManager {
 
 }  // namespace p3a
 
-#endif  // BRAVE_COMPONENTS_P3A_REMOTE_CONFIG_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_P3A_MANAGED_REMOTE_CONFIG_MANAGER_H_

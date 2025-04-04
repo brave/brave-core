@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/p3a/component_installer.h"
+#include "brave/components/p3a/managed/component_installer.h"
 
 #include <memory>
 #include <string>
@@ -12,7 +12,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/p3a/remote_config_manager.h"
+#include "brave/components/p3a/managed/remote_config_manager.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 
