@@ -9,7 +9,6 @@
 #include "chrome/browser/download/bubble/download_bubble_update_service_factory.h"
 #include "chrome/browser/download/download_ui_model.h"
 #include "components/vector_icons/vector_icons.h"
-// #include "ui/views/controls/button/button.h"
 
 #define DownloadToolbarUIController DownloadToolbarUIController_ChromiumImpl
 #include "src/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc"
@@ -48,9 +47,11 @@ void DownloadToolbarUIController::UpdateIcon() {
     return;
   }
 
-  // Use an exclamation point icon while there's an insecure download in the download models.
+  // Use an exclamation point icon while there's an insecure download in the
+  // download models.
   if (HasInsecureDownloads()) {
-    auto icon_color = browser_view_->GetColorProvider()->GetColor(ui::kColorAlertMediumSeverityIcon);
+    auto icon_color = browser_view_->GetColorProvider()->GetColor(
+        ui::kColorAlertMediumSeverityIcon);
     button->SetIconEnabledColorsOverride(icon_color);
     button->SetVectorIcon(vector_icons::kNotSecureWarningIcon);
     const gfx::VectorIcon* new_icon = &vector_icons::kNotSecureWarningIcon;
