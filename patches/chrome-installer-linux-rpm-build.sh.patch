@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/rpm/build.sh b/chrome/installer/linux/rpm/build.sh
-index 92ada67d32e0ce915c348b61e4fd503d5ddd2667..10f74273bff670526dea6a468caa700ae268363a 100755
+index f4502c3f96e5cb3c36e75068378974bb9fc7ca51..b537fdc361571541d753bec998ecef1842737485 100755
 --- a/chrome/installer/linux/rpm/build.sh
 +++ b/chrome/installer/linux/rpm/build.sh
 @@ -15,8 +15,9 @@ gen_spec() {
