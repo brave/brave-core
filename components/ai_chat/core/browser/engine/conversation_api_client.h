@@ -66,6 +66,7 @@ class ConversationAPIClient {
     UploadImage,
     GetSuggestedTopicsForFocusTabs,
     DedupeTopics,
+    GetSuggestedAndDedupeTopicsForFocusTabs,
     GetFocusTabsForTopic,
     // TODO(petemill):
     // - Search in-progress?
