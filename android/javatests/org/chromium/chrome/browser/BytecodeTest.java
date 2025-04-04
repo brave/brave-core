@@ -1824,6 +1824,10 @@ public class BytecodeTest {
                         Activity.class,
                         ObservableSupplier.class,
                         boolean.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/components/search_engines/TemplateUrlService",
+                        "org/chromium/components/search_engines/BraveTemplateUrlService"));
     }
 
     @Test
