@@ -207,7 +207,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
       // When the download starts, it uses the database ID.
       // If we suddenly change the ID, downloads and updates get out of wack
       var item = item
-      item.tagId = $0  // Use the ID that it was saved as in the database, rather than the Javascript ID
+      item.tagId = $0
 
       if let delegate = self.delegate {
         if detected {
