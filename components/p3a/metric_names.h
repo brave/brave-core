@@ -152,7 +152,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Playlist.NewUserReturning", {}},
     {"Brave.Playlist.UsageDaysInWeek", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.AdTypesEnabled.2", {}},
-    {"Brave.Rewards.AutoContributionsState.3", {}},
     {"Brave.Rewards.DesktopPanelCount.2", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.EnabledSource", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.MobileConversion", MetricConfig{.ephemeral = true}},
@@ -179,7 +178,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Search.WidgetDefault", {}},
     {"Brave.Search.WidgetUsage", MetricConfig{.ephemeral = true}},
     {"Brave.Shields.AdBlockSetting", {}},
-    {"Brave.Shields.CookieListEnabled", {}},
     {"Brave.Shields.DomainAdsSettingsAboveGlobal", {}},
     {"Brave.Shields.DomainAdsSettingsBelowGlobal", {}},
     {"Brave.Shields.FingerprintBlockSetting", {}},
@@ -214,7 +212,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Wallet.BtcTransactionSent", {}},
     {"Brave.Wallet.EthTransactionSent", {}},
     {"Brave.Wallet.NFTCount", MetricConfig{.ephemeral = true}},
-    {"Brave.Wallet.NewUserBalance", MetricConfig{.ephemeral = true}},
     {"Brave.Wallet.NewUserReturning", {}},
     {"Brave.Wallet.OnboardingConversion.3", MetricConfig{.ephemeral = true}},
     {"Brave.Wallet.SolTransactionSent", {}},
@@ -278,7 +275,6 @@ inline constexpr auto kCollectedExpressHistograms =
       .record_activation_date = true
     }},
     {"Brave.Uptime.BrowserOpenTime.2", MetricConfig{.ephemeral = true}},
-    {"Brave.Wallet.UsageDaily", MetricConfig{.ephemeral = true}},
     {"creativeInstanceId.total.count", {}},
 });
 
