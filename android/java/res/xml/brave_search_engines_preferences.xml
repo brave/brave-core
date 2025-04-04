@@ -53,6 +53,7 @@
         android:key="custom_search_engines_category"
         android:order="9"
         android:title="@string/custom_search_engines">
+        <!-- We are going to add Custom search engines list preference here  from .java file which takes order 1-->
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:fragment="org.chromium.brave.browser.search_engines.settings.AddCustomSearchEnginePreferenceFragment"
             android:key="add_custom_search_engine"

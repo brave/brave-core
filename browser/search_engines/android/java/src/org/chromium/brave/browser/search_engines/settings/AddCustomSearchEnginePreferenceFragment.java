@@ -63,7 +63,6 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        // Inflate custom LinearLayout
         View rootView =
                 inflater.inflate(
                         R.layout.add_custom_search_engine_preference_layout, container, false);
