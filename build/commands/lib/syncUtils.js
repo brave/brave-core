@@ -196,7 +196,9 @@ function syncChromium(program) {
     // being passed to gclient.
     if (util.runGit(config.srcDir, ['rev-parse', requiredChromiumRef], true) ==
         null) {
-      util.runGit(config.srcDir, ['fetch', 'origin', requiredChromiumRef])
+      util.runGit(
+          config.srcDir,
+          ['fetch', 'origin', requiredChromiumRef + ':' + requiredChromiumRef])
     }
     util.runGit(config.srcDir, ['reset', '--hard', requiredChromiumRef])
   }
