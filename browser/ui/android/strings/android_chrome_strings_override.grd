@@ -126,6 +126,10 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_SUMMARY_ANDROID_SETTING_ON" desc="Summary for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism. This summary is shown to the user when the screen lock setting is on in the device.">
         Use screen lock to see open Private tabs
       </message>
+      <message name="IDS_BOOKMARK_BAR_SETTING" desc="Title for the bookmark bar setting.">
+        Show bookmarks
+      </message>
+
       <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_INCOGNITO_TITLE" desc="Title for the radio button for blocking third-party cookies in private.">
         Block while using Private
       </message>
@@ -239,6 +243,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new tab in Private mode
       </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_TOGGLE_BOOKMARK_BAR" desc="A text label that appears next to the keyboard shortcut that will toggle the bookmark bar. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Show or hide the bookmarks
+      </message>
       <if expr="enable_arcore">
         </if>
 
@@ -278,6 +285,10 @@ CHAR_LIMIT guidelines:
       <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_MESSAGE_NO_INCOGNITO" desc="Toast message shown when the user tries to open Private tab which is disabled on the device.">
         Private is not available on this device
       </message>
+      <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_DESCRIPTION" desc="Description text for the quick action search widget">
+        Search using keyboard, voice, Private, or camera
+      </message>
+
       <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
         You’ll be able to easily manage media controls, Private sessions, downloads and more
       </message>
