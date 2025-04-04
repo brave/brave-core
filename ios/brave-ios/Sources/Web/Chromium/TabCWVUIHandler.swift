@@ -31,6 +31,11 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
     return childTab.webView
   }
 
+  func webViewDidCreateNewWebView(_ webView: CWVWebView) {
+    guard let tab else { return }
+    tab.didCreateWebView()
+  }
+
   func webViewDidClose(_ webView: CWVWebView) {
     guard let tab else { return }
     tab.delegate?.tabWebViewDidClose(tab)

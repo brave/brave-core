@@ -342,9 +342,7 @@ class WebKitTabState: TabState, TabStateImpl {
 
     attachWebObservers()
 
-    observers.forEach {
-      $0.tabDidCreateWebView(self)
-    }
+    didCreateWebView()
   }
 
   func deleteWebView() {

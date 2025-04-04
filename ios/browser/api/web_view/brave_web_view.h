@@ -49,6 +49,14 @@ CWV_EXPORT
 CWV_EXPORT
 @protocol BraveWebViewUIDelegate <CWVUIDelegate>
 @optional
+/// Notifies the delegate that the underlying web view has been created
+///
+/// This will be called if you create a `BraveWebView` without providing it a
+/// `WKWebViewConfiguration` since `CWVWebView` will rely on `WebState` to
+/// handle creating the web view if the config is not provided up front. This
+/// is a typical flow for when handling window.open since the underlying
+/// web view must be created with the configuration provided by Apple.
+- (void)webViewDidCreateNewWebView:(CWVWebView*)webView;
 /// Build the edit menu that will be displayed when long pressing static content
 /// on the page.
 - (void)webView:(CWVWebView*)webView
