@@ -5,8 +5,21 @@
 
 #include "chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h"
 
+#include "chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_button.h"
+
+#define UpdateIcon UpdateIcon_ChromiumImpl
 #include "src/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.cc"
+#undef UpdateIcon
 
 bool PinnedActionToolbarButton::ShouldShowMenu() {
   return false;
+}
+
+void PinnedActionToolbarButton::UpdateIcon() {
+  if (HasIconEnabledColorsOverride() && action_engaged_) {
+    ToolbarButton::UpdateIcon();
+    return;
+  }
+  UpdateIcon_ChromiumImpl();
 }
