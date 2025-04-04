@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index 57c676cf539d12adc74f2e982c1b9dbfb54d7217..307a8e3968658119c3c35551cf3d93d947fb9e0a 100644
+index 1d9b1bf142401b7042f9c080fa2b217ad699c6ab..2980f35c67e10fc3ae583482d5049de46f76042a 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
 @@ -138,6 +138,7 @@ generate_grd("build_grd") {
