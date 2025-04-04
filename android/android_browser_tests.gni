@@ -121,6 +121,7 @@ android_only_test_deps = [
   "//chrome/test:test_support",
   "//chrome/test:test_support_ui_android",
   "//components/browser_ui/widget/android:java",
+  "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
 
   # TODO(crbug.com/961849): This is needed for ShellManager which is what
   # the ChromeBrowserTestsActivity is using to build the java UI. It's
