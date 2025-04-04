@@ -22,6 +22,12 @@ const sampleLog = `\
 export function createModel(): AppModel {
   const stateManager = createStateManager<AppState>({
     ...defaultState(),
+    externalWallet: {
+      provider: 'uphold',
+      authenticated: true,
+      name: 'Account name',
+      url: 'https://brave.com'
+    },
     adDiagnosticEntries: [
       {
         name: 'Device Id',
