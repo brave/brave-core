@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/tools/build_webui.gni b/ui/webui/resources/tools/build_webui.gni
-index f68a42c7168a9d2abace106437474e5c276a5c6b..5246ea75079ac5f4bddfd88b25002bd97e3610e9 100644
+index fb9c599da336ea3876891b535cd472ea45102b13..d6eddc47c99db5b27327dcf3b137afd540bcfd2f 100644
 --- a/ui/webui/resources/tools/build_webui.gni
 +++ b/ui/webui/resources/tools/build_webui.gni
-@@ -215,6 +215,7 @@ template("build_webui") {
+@@ -221,6 +221,7 @@ template("build_webui") {
          enable_removal_comments = enable_source_maps
        }
        in_files = ts_files
@@ -10,7 +10,7 @@ index f68a42c7168a9d2abace106437474e5c276a5c6b..5246ea75079ac5f4bddfd88b25002bd9
      }
    }
  
-@@ -265,6 +266,7 @@ template("build_webui") {
+@@ -271,6 +272,7 @@ template("build_webui") {
        if (defined(invoker.css_files)) {
          in_files += invoker.css_files
        }
@@ -18,7 +18,7 @@ index f68a42c7168a9d2abace106437474e5c276a5c6b..5246ea75079ac5f4bddfd88b25002bd9
      }
    }
  
-@@ -452,6 +454,7 @@ template("build_webui") {
+@@ -458,6 +460,7 @@ template("build_webui") {
    enable_type_aware_eslint_checks =
        !defined(invoker.enable_type_aware_eslint_checks) ||
        invoker.enable_type_aware_eslint_checks
@@ -26,7 +26,7 @@ index f68a42c7168a9d2abace106437474e5c276a5c6b..5246ea75079ac5f4bddfd88b25002bd9
  
    if (enable_type_aware_eslint_checks) {
      eslint_ts("lint") {
-@@ -588,7 +591,7 @@ template("build_webui") {
+@@ -661,7 +664,7 @@ template("build_webui") {
    }
  
    if (!generate_grdp) {

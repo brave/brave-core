@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/common/features.cc b/third_party/blink/common/features.cc
-index 18e5ae64bc2000f7472960614d0c4020e14f3e67..a23f06d2df977c8c179c4f4283ab493f88c8b60c 100644
+index d703564af790ba6a2dd2a8100fc30389ecc8865b..a6e1f29ae60419d29f517edf50888be521eecbbe 100644
 --- a/third_party/blink/common/features.cc
 +++ b/third_party/blink/common/features.cc
-@@ -1095,7 +1095,10 @@ BASE_FEATURE(kHiddenSelectionBounds,
+@@ -1128,7 +1128,10 @@ BASE_FEATURE(kHiddenSelectionBounds,
  
  BASE_FEATURE(kIgnoreInputWhileHidden,
               "IgnoreInputWhileHidden",

@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/bitflags/v2/BUILD.gn b/third_party/rust/bitflags/v2/BUILD.gn
-index bc1fd25250cba328fae350813f197916a0bc7810..e39dc78b2707875b0b98ead66a27ec4880eefb90 100644
+index c12b071969d2cfd9de6fb808b9b0d4f5a417864a..6cf65f0839adf7f48a5c4477d664685a004ab53f 100644
 --- a/third_party/rust/bitflags/v2/BUILD.gn
 +++ b/third_party/rust/bitflags/v2/BUILD.gn
-@@ -74,4 +74,5 @@ cargo_crate("lib") {
+@@ -75,4 +75,5 @@ cargo_crate("lib") {
    rustflags = [
      "--cap-lints=allow",  # Suppress all warnings in crates.io crates
    ]

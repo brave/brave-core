@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 6d333df15831dc47a3cd9570fd33eed544437567..4f142d577c824579f84454f7f8a7b6a619723b2c 100644
+index 8f3eb2abe29aa0d5c97d98dd85a31b15810f4079..b0ec88dd14e5c8792d1408dbe17ef0dff1964380 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
 @@ -332,6 +332,7 @@ void Tab::Layout(PassKey) {
@@ -18,7 +18,7 @@ index 6d333df15831dc47a3cd9570fd33eed544437567..4f142d577c824579f84454f7f8a7b6a6
      } else if (showing_close_button_) {
        // Allow the title to overlay the close button's empty border padding.
        title_right = close_x - after_title_padding;
-@@ -1162,6 +1164,7 @@ void Tab::UpdateIconVisibility() {
+@@ -1177,6 +1179,7 @@ void Tab::UpdateIconVisibility() {
          !controller_->IsLockedForOnTask() &&
  #endif
          large_enough_for_close_button;
