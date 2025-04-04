@@ -23,7 +23,7 @@ void PinnedToolbarActionsContainer::UpdateActionState(actions::ActionId id,
 void PinnedToolbarActionsContainer::ShowActionEphemerallyInToolbar(
     actions::ActionId id,
     bool show) {
-  if (id != kActionShowDownloads) {
+  if (id != kActionShowDownloads && id != kActionSendTabToSelf) {
     return;
   }
   PinnedToolbarActionsContainer::ShowActionEphemerallyInToolbar_ChromiumImpl(
