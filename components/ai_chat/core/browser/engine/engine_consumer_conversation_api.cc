@@ -295,6 +295,8 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
     base::OnceCallback<void(std::vector<GenerationResult>)> merge_callback,
     const std::string& topic) {
   CHECK(event_type == ConversationEventType::GetSuggestedTopicsForFocusTabs ||
+        event_type ==
+            ConversationEventType::GetSuggestedAndDedupeTopicsForFocusTabs ||
         event_type == ConversationEventType::GetFocusTabsForTopic);
 
   // Split tab into chunks of 75
@@ -328,6 +330,14 @@ void EngineConsumerConversationAPI::ProcessTabChunks(
 void EngineConsumerConversationAPI::MergeSuggestTopicsResults(
     GetSuggestedTopicsCallback callback,
     std::vector<GenerationResult> results) {
+  if (results.size() == 1) {
+    // No need to dedupe topics if there is only one result.
+    std::move(callback).Run(
+        EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
+            results));
+    return;
+  }
+
   // Merge the result and send another request to dedupe topics.
   DedupeTopics(GetStrArrFromTabOrganizationResponses(results),
                std::move(callback));
@@ -336,8 +346,12 @@ void EngineConsumerConversationAPI::MergeSuggestTopicsResults(
 void EngineConsumerConversationAPI::GetSuggestedTopics(
     const std::vector<Tab>& tabs,
     GetSuggestedTopicsCallback callback) {
+  auto event_type =
+      tabs.size() > kChunkSize
+          ? ConversationEventType::GetSuggestedTopicsForFocusTabs
+          : ConversationEventType::GetSuggestedAndDedupeTopicsForFocusTabs;
   ProcessTabChunks(
-      tabs, ConversationEventType::GetSuggestedTopicsForFocusTabs,
+      tabs, event_type,
       base::BindOnce(&EngineConsumerConversationAPI::MergeSuggestTopicsResults,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
       "" /* topic */);

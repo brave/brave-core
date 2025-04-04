@@ -760,6 +760,43 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GetSuggestedTopics_SingleTabChunk) {
+  // Skip this test if not using Rust JSON parser, as it is not supported.
+  if (!base::JSONReader::UsingRust()) {
+    return;
+  }
+
+  auto [tabs, tabs_json_strings] = GetMockTabsAndExpectedTabsJsonString(1);
+  ASSERT_EQ(tabs.size(), 1u);
+  ASSERT_EQ(tabs_json_strings.size(), 1u);
+
+  std::string expected_events = R"([
+    {"role": "user", "type": "suggestAndDedupeFocusTopics", "content": ")" +
+                                tabs_json_strings[0] + R"("}])";
+
+  auto* mock_api_client = GetMockConversationAPIClient();
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events).c_str());
+        std::move(callback).Run("{ \"topics\": [\"topic1\", \"topic2\"] }");
+      });
+
+  engine_->GetSuggestedTopics(
+      tabs,
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result, std::vector<std::string>({"topic1", "topic2"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
 TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
   // Skip this test if not using Rust JSON parser, as it is not supported.
   if (!base::JSONReader::UsingRust()) {
