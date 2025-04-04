@@ -23,4 +23,10 @@ specific_include_rules = {
   "p3a_message\.cc": [
     "!brave/components/l10n/common/locale_util.h",
   ],
+  "remote_metric_manager\.cc": [
+    "+chrome/common/pref_names.h",
+  ],
+  "remote_metric_manager_unittest\.cc": [
+    "+chrome/common/pref_names.h",
+  ],
 }
