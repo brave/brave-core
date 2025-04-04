@@ -26,4 +26,9 @@ export const style = scoped.css`
       text-align: right;
     }
   }
+
+  p {
+    margin: 40px 0;
+    text-align: center;
+  }
 `

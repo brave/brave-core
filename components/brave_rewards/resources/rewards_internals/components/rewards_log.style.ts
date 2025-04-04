@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { color } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../../rewards_page/lib/scoped_css'
 
 export const style = scoped.css`
@@ -20,12 +21,15 @@ export const style = scoped.css`
     }
   }
 
-  section {
+  textarea {
     font-family: monospace;
     font-size: 13px;
     padding: 8px;
     white-space: pre;
-    overflow: auto;
-    min-height: 100px;
+    height: calc(100vh - 240px);
+    width: 100%;
+    border-radius: 12px;
+    background: ${color.container.background};
+    border: none;
   }
 `
