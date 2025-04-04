@@ -73,7 +73,11 @@ P3AService::P3AService(PrefService& local_state,
   if (first_run_time.is_null()) {
     first_run_time = base::Time::Now();
   }
-  remote_config_manager_ = std::make_unique<RemoteConfigManager>(this);
+
+  remote_metric_manager_ =
+      std::make_unique<RemoteMetricManager>(&local_state, this);
+  remote_config_manager_ =
+      std::make_unique<RemoteConfigManager>(this, remote_metric_manager_.get());
 
   message_manager_ = std::make_unique<MessageManager>(
       local_state, &config_, *this, channel, first_run_time);
@@ -90,6 +94,7 @@ void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
 
   registry->RegisterDictionaryPref(kDynamicMetricsDictPref);
   registry->RegisterDictionaryPref(kActivationDatesDictPref);
+  registry->RegisterDictionaryPref(kRemoteMetricStorageDictPref);
 }
 
 void P3AService::InitCallback(std::string_view histogram_name) {
@@ -182,7 +187,7 @@ void P3AService::Init(
 
   // Store values that were recorded between calling constructor and |Init()|.
   for (const auto& entry : histogram_values_) {
-    HandleHistogramChange(std::string(entry.first), entry.second);
+    UpdateMetricValue(std::string(entry.first), entry.second, std::nullopt);
   }
   histogram_values_.clear();
 
