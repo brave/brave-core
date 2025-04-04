@@ -13,6 +13,7 @@ import static androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_LIGHT;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Browser;
@@ -32,6 +33,8 @@ import org.jni_zero.CalledByNative;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
@@ -50,6 +53,7 @@ import org.chromium.ui.util.ColorUtils;
 
 import java.lang.reflect.Field;
 
+@NullMarked
 public class TabUtils {
     private static final String TAG = "TabUtils";
 
@@ -100,14 +104,11 @@ public class TabUtils {
         MenuItem deleteMenuItem = popup.getMenu().findItem(R.id.delete_bookmark);
 
         if (GlobalNightModeStateProviderHolder.getInstance().isInNightMode()) {
-            addMenuItem.getIcon().setTint(
-                    ContextCompat.getColor(context, R.color.bookmark_menu_text_color));
-            editMenuItem.getIcon().setTint(
-                    ContextCompat.getColor(context, R.color.bookmark_menu_text_color));
-            viewMenuItem.getIcon().setTint(
-                    ContextCompat.getColor(context, R.color.bookmark_menu_text_color));
-            deleteMenuItem.getIcon().setTint(
-                    ContextCompat.getColor(context, R.color.bookmark_menu_text_color));
+            int tintColor = ContextCompat.getColor(context, R.color.bookmark_menu_text_color);
+            tintIcon(addMenuItem.getIcon(), tintColor);
+            tintIcon(editMenuItem.getIcon(), tintColor);
+            tintIcon(viewMenuItem.getIcon(), tintColor);
+            tintIcon(addMenuItem.getIcon(), tintColor);
         }
 
         if (editingAllowed) {
@@ -378,5 +379,9 @@ public class TabUtils {
             return transition;
         }
         return 0;
+    }
+
+    private static void tintIcon(@Nullable Drawable icon, int color) {
+        if (icon != null) icon.setTint(color);
     }
 }
