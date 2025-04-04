@@ -229,14 +229,12 @@ class ChromiumTabState: TabState, TabStateImpl {
       return
     }
     CWVWebView.webInspectorEnabled = true
-    if let wkConfiguration {
-      wkConfiguration.userContentController.removeAllScriptMessageHandlers()
-    }
+    var createdWKWebView: WKWebView?
     let webView = BraveWebView(
       frame: .init(width: 1, height: 1),
       configuration: cwvConfiguration,
       wkConfiguration: wkConfiguration,
-      createdWKWebView: nil
+      createdWKWebView: &createdWKWebView
     )
     webView.navigationDelegate = navigationHandler
     webView.uiDelegate = uiHandler
@@ -249,8 +247,14 @@ class ChromiumTabState: TabState, TabStateImpl {
 
     attachWebObservers()
 
-    observers.forEach {
-      $0.tabDidCreateWebView(self)
+    if createdWKWebView != nil {
+      // CWVWebView only creates the underlying WKWebView if you pass in a WKWebViewConfiguration.
+      // When a new web view is created via window.open we must wait until WebState creates the
+      // underlying web view using the configuration passed by WebKit
+      //
+      // See: `TabCWVUIHandler.webView(_:createWebViewWith:for)` and
+      //      `TabCWVUIHandler.webViewDidCreateNewWebView`
+      didCreateWebView()
     }
   }
 
@@ -475,7 +479,7 @@ class ChromiumTabState: TabState, TabStateImpl {
   }
 
   var configuration: WKWebViewConfiguration {
-    if let configuration = webView?.wkConfiguration {
+    if let configuration = webView?.internalWebView?.configuration {
       return configuration
     }
     return wkConfiguration ?? .init()

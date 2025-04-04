@@ -55,6 +55,13 @@
   }
 }
 
+- (void)webStateDidCreateWebView:(web::WebState*)webState {
+  SEL selector = @selector(webViewDidCreateNewWebView:);
+  if ([self.UIDelegate respondsToSelector:selector]) {
+    [self.UIDelegate webViewDidCreateNewWebView:self];
+  }
+}
+
 #pragma mark - CRWWebStateObserver
 
 - (void)webState:(web::WebState*)webState

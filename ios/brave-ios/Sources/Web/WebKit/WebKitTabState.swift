@@ -313,10 +313,6 @@ class WebKitTabState: TabState, TabStateImpl {
       return
     }
 
-    // Doing this after the Web View is created seems to break things but at the same time, this
-    // shouldn't really be done here unless the we move script handling into Web...
-    configuration.userContentController.removeAllScriptMessageHandlers()
-
     let webView = WKWebView(frame: .zero, configuration: initialConfiguration)
     webView.navigationDelegate = navigationHandler
     webView.uiDelegate = uiHandler
@@ -338,9 +334,7 @@ class WebKitTabState: TabState, TabStateImpl {
 
     attachWebObservers()
 
-    observers.forEach {
-      $0.tabDidCreateWebView(self)
-    }
+    didCreateWebView()
   }
 
   func deleteWebView() {
