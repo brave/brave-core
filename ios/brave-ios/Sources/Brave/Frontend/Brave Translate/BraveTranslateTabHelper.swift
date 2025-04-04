@@ -78,7 +78,7 @@ class BraveTranslateTabHelper: NSObject {
     urlObserver = tab.webView?.observe(
       \.url,
       options: [.new],
-      changeHandler: { [weak self] _, change in
+      changeHandler: { [weak self, weak tab] _, change in
         guard let self = self, let url = change.newValue else { return }
         if self.url != url {
           self.url = url
@@ -87,7 +87,7 @@ class BraveTranslateTabHelper: NSObject {
           self.currentLanguageInfo.pageLanguage = nil
           self.translationTask = nil
 
-          if let delegate = self.delegate {
+          if let delegate = self.delegate, let tab = tab {
             delegate.updateTranslateURLBar(tab: tab, state: .unavailable)
             BraveTranslateScriptHandler.checkTranslate(tab: tab)
           }
