@@ -811,6 +811,12 @@ are declared in tools/grit/grit_args.gni.
           </if>
       </if>
 
+      <if expr="use_titlecase">
+        <then>
+          </then>
+        <else>
+          </else>
+      </if>
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
@@ -1313,6 +1319,9 @@ are declared in tools/grit/grit_args.gni.
 
 
   <if expr="is_chromeos">
+      </if>
+
+    <if expr="not is_android">
       </if>
 
   </messages>
