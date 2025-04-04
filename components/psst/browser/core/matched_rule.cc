@@ -28,17 +28,14 @@ MatchedRule::MatchedRule(const std::string& name,
 MatchedRule::~MatchedRule() = default;
 MatchedRule::MatchedRule(const MatchedRule&) = default;
 
-MatchedRuleFactory::MatchedRuleFactory(
-    RuleDataReader* rule_reader,
-    const std::string& rule_name,
-    const int version)
-    : rule_reader_(rule_reader),
-      name_(rule_name),
-      version_(version) {}
+MatchedRuleFactory::MatchedRuleFactory(RuleDataReader* rule_reader,
+                                       const std::string& rule_name,
+                                       const int version)
+    : rule_reader_(rule_reader), name_(rule_name), version_(version) {}
 
 std::optional<MatchedRule> MatchedRuleFactory::Create(const PsstRule& rule) {
   DCHECK(rule_reader_);
-  if(!rule_reader_) {
+  if (!rule_reader_) {
     return std::nullopt;
   }
 

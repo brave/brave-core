@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/psst/common/psst_prefs.h"
+
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/psst/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -30,6 +31,12 @@ TEST_F(PsstPrefsUnitTest, TestPsstSettings) {
   SetPsstSettings("user1", "twitter", PsstSettings{psst::kAsk, 1}, prefs);
   SetPsstSettings("user2", "twitter", PsstSettings{psst::kAllow, 2}, prefs);
   SetPsstSettings("user1", "linkedin", PsstSettings{psst::kBlock, 3}, prefs);
+
+  SetEnablePsstFlag(prefs, true);
+  EXPECT_TRUE(GetEnablePsstFlag(prefs));
+  SetEnablePsstFlag(prefs, false);
+  EXPECT_FALSE(GetEnablePsstFlag(prefs));
+
   auto settings = psst::GetPsstSettings("user1", "twitter", prefs);
   EXPECT_TRUE(settings.has_value());
   EXPECT_EQ(settings->consent_status, kAsk);
@@ -39,15 +46,15 @@ TEST_F(PsstPrefsUnitTest, TestPsstSettings) {
 
   EXPECT_FALSE(psst::GetPsstSettings("user1", "unknown_name", prefs));
 
-  settings = psst::GetPsstSettings("user2", "twitter", prefs);
-  EXPECT_TRUE(settings.has_value());
-  EXPECT_EQ(settings->consent_status, kAllow);
-  EXPECT_EQ(settings->script_version, 2);
+  auto settings_user2 = psst::GetPsstSettings("user2", "twitter", prefs);
+  EXPECT_TRUE(settings_user2.has_value());
+  EXPECT_EQ(settings_user2->consent_status, kAllow);
+  EXPECT_EQ(settings_user2->script_version, 2);
 
-  settings = psst::GetPsstSettings("user1", "linkedin", prefs);
-  EXPECT_TRUE(settings.has_value());
-  EXPECT_EQ(settings->consent_status, kBlock);
-  EXPECT_EQ(settings->script_version, 3);
+  auto settings_user1 = psst::GetPsstSettings("user1", "linkedin", prefs);
+  EXPECT_TRUE(settings_user1.has_value());
+  EXPECT_EQ(settings_user1->consent_status, kBlock);
+  EXPECT_EQ(settings_user1->script_version, 3);
 }
 
 }  // namespace psst

@@ -12,11 +12,13 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/debug/task_trace.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/no_destructor.h"
+#include "base/path_service.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
@@ -25,12 +27,8 @@
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
 #include "crypto/sha2.h"
-#include "base/path_service.h"
-
-#include "base/debug/task_trace.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
-
 
 namespace psst {
 
@@ -140,9 +138,11 @@ void PsstComponentInstallerPolicy::OnCustomUninstall() {}
 void PsstComponentInstallerPolicy::ComponentReady(const base::Version& version,
                                                   const base::FilePath& path,
                                                   base::Value::Dict manifest) {
-  LOG(INFO) << "[PSST] PsstComponentInstallerPolicy::ComponentReady version:" << version.GetString() << " path:" << path << " manifest:" << manifest.DebugString();
+  LOG(INFO) << "[PSST] PsstComponentInstallerPolicy::ComponentReady version:"
+            << version.GetString() << " path:" << path
+            << " manifest:" << manifest.DebugString();
   auto* registry = PsstRuleRegistryAccessor::GetInstance()->Registry();
-  if(registry) {
+  if (registry) {
     registry->LoadRules(path);
     LOG(INFO) << "[PSST] PsstComponentInstallerPolicy::ComponentReady #100";
   }
@@ -185,16 +185,15 @@ void RegisterPsstComponent(component_updater::ComponentUpdateService* cus) {
     return;
   }
 
-auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
+  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<PsstComponentInstallerPolicy>());
   installer->Register(
       // After Register, run the callback with component id.
       cus, base::BindOnce([]() {
-base::debug::TaskTrace().Print();
+        base::debug::TaskTrace().Print();
         brave_component_updater::BraveOnDemandUpdater::GetInstance()
             ->EnsureInstalled(kPsstComponentId);
       }));
 }
-
 
 }  // namespace psst

@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_PSST_PSST_CONSENT_TAB_HELPER_DELEGATE_IMPL_H_
 
 #include <string>
+#include <vector>
 
 #include "base/values.h"
 #include "brave/components/psst/browser/content/psst_tab_helper.h"

@@ -62,8 +62,8 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
   }
 
 #if BUILDFLAG(ENABLE_PSST)
-  psst_observer_ =
-      psst::PsstTabHelper::MaybeCreateForWebContents(tab.GetContents(), std::make_unique<PsstConsentTabHelperDelegateImpl>());
+  psst_observer_ = psst::PsstTabHelper::MaybeCreateForWebContents(
+      tab.GetContents(), std::make_unique<PsstConsentTabHelperDelegateImpl>());
 #endif
 }
 

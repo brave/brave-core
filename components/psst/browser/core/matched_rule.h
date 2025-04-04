@@ -30,6 +30,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRule {
  private:
   friend class MatchedRuleFactory;
   friend class RuleDataReaderUnitTest;
+  friend class PsstOperationContextUnitTest;
   MatchedRule(const std::string& name,
               const std::string& user_script,
               const std::string& policy_script,
@@ -43,14 +44,17 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRule {
 
 class RuleDataReader;
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) MatchedRuleFactory {
-public:
-  explicit MatchedRuleFactory(RuleDataReader* rule_reader, const std::string& rule_name, const int version);
+ public:
+  explicit MatchedRuleFactory(RuleDataReader* rule_reader,
+                              const std::string& rule_name,
+                              const int version);
   MatchedRuleFactory(const MatchedRuleFactory&) = delete;
   MatchedRuleFactory& operator=(const MatchedRuleFactory&) = delete;
   virtual ~MatchedRuleFactory() = default;
 
   virtual std::optional<MatchedRule> Create(const PsstRule& rule);
-private:
+
+ private:
   raw_ptr<RuleDataReader> rule_reader_;
   const std::string name_;
   const int version_;

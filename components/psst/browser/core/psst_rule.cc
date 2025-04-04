@@ -64,7 +64,7 @@ PsstRule::PsstRule(const PsstRule& other) {
   exclude_pattern_set_ = other.exclude_pattern_set_.Clone();
   name_ = other.name_;
   user_script_path_ = other.user_script_path_;
-//  test_script_path_ = other.test_script_path_;
+  //  test_script_path_ = other.test_script_path_;
   policy_script_path_ = other.policy_script_path_;
   version_ = other.version_;
 }
@@ -120,7 +120,8 @@ bool PsstRule::ShouldInsertScript(const GURL& url) const {
   // If URL does not match an explicitly included pattern, this rule does not
   // apply.
   if (!include_pattern_set_.MatchesURL(url)) {
-    LOG(INFO) << "[PSST] ShouldInsertScript !include_pattern_set_ !!!:" << (include_pattern_set_.ToValue().DebugString());
+    LOG(INFO) << "[PSST] ShouldInsertScript !include_pattern_set_ !!!:"
+              << (include_pattern_set_.ToValue().DebugString());
     return false;
   }
 

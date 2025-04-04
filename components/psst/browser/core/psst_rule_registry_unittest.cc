@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <optional>
+#include <utility>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -39,7 +40,7 @@ std::string ReadFile(const base::FilePath& file_path) {
 
 class MockRuleDataReader : public RuleDataReader {
  public:
-  MockRuleDataReader(const base::FilePath& component_path);
+  explicit MockRuleDataReader(const base::FilePath& component_path);
   ~MockRuleDataReader() override = default;
 
   MOCK_METHOD(std::optional<std::string>,
@@ -59,16 +60,16 @@ class MockPsstRuleRegistryImpl : public PsstRuleRegistryImpl {
   MOCK_METHOD(void, OnLoadRules, (const std::string& data), (override));
 };
 
-using OnRuleMatchedCallback =
-      base::RepeatingCallback<void(const std::optional<MatchedRule>& matched_rule)>;
+using OnRuleMatchedCallback = base::RepeatingCallback<void(
+    const std::optional<MatchedRule>& matched_rule)>;
 
 class PsstRuleRegistryUnitTest : public testing::Test {
  public:
   void SetUp() override {
     scoped_feature_list_.InitAndEnableFeature(features::kBravePsst);
 
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    base::FilePath test_data_dir(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
     test_data_dir_base_ = test_data_dir.AppendASCII("psst-component-data");
 
     auto rule_data_reader_mock = std::make_unique<MockRuleDataReader>(
@@ -100,42 +101,40 @@ class PsstRuleRegistryUnitTest : public testing::Test {
         }));
   }
 
-  void TestMatchedRuleLoading(const GURL& url, std::optional<std::string> user_script,
-                          std::optional<std::string> policy_script,
-                          OnRuleMatchedCallback on_rule_matched_callback) {
- {
+  void TestMatchedRuleLoading(const GURL& url,
+                              std::optional<std::string> user_script,
+                              std::optional<std::string> policy_script,
+                              OnRuleMatchedCallback on_rule_matched_callback) {
+    {
+      base::RunLoop run_loop;
+      EXPECT_CALL(*GetMockRuleDataReader(), ReadUserScript)
+          .Times(1)
+          .WillOnce(testing::Invoke(
+              [&](const PsstRule& rule) { return user_script; }));
+
+      EXPECT_CALL(*GetMockRuleDataReader(), ReadPolicyScript)
+          .Times(1)
+          .WillOnce(testing::Invoke(
+              [&](const PsstRule& rule) { return policy_script; }));
+      MockOnLoadRules(run_loop);
+      PsstRuleRegistryAccessor::GetInstance()->Registry()->LoadRules(
+          GetTestDataDirBase());
+      run_loop.Run();
+    }
     base::RunLoop run_loop;
-    EXPECT_CALL(*GetMockRuleDataReader(), ReadUserScript)
+    base::MockCallback<
+        base::OnceCallback<void(const std::optional<MatchedRule>&)>>
+        mock_callback;
+    EXPECT_CALL(mock_callback, Run)
         .Times(1)
-        .WillOnce(testing::Invoke([&](const PsstRule& rule) {
-          return user_script;
-        }));
+        .WillRepeatedly([&](const std::optional<MatchedRule>& matched_rule) {
+          on_rule_matched_callback.Run(matched_rule);
+          run_loop.Quit();
+        });
 
-    EXPECT_CALL(*GetMockRuleDataReader(), ReadPolicyScript)
-        .Times(1)
-        .WillOnce(testing::Invoke([&](const PsstRule& rule) {
-          return policy_script;
-        }));
-    MockOnLoadRules(run_loop);
-    PsstRuleRegistryAccessor::GetInstance()->Registry()->LoadRules(
-        GetTestDataDirBase());
+    PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
+        url, mock_callback.Get());
     run_loop.Run();
-  }
-  base::RunLoop run_loop;
-  base::MockCallback<
-      base::OnceCallback<void(const std::optional<MatchedRule>&)>>
-      mock_callback;
-  EXPECT_CALL(mock_callback, Run)
-      .Times(1)
-      .WillRepeatedly([&](const std::optional<MatchedRule>& matched_rule) {
-        on_rule_matched_callback.Run(matched_rule);
-        run_loop.Quit();
-      });
-
-  PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
-      url, mock_callback.Get());
-  run_loop.Run();
-
   }
 
  private:
@@ -157,8 +156,7 @@ TEST_F(PsstRuleRegistryUnitTest, SimpleLoadRules) {
 
 TEST_F(PsstRuleRegistryUnitTest, NoRulesLoaded) {
   TestMatchedRuleLoading(
-      GURL("https://url.com"), std::nullopt,
-      std::nullopt,
+      GURL("https://url.com"), std::nullopt, std::nullopt,
       base::BindRepeating([](const std::optional<MatchedRule>& matched_rule) {
         ASSERT_FALSE(matched_rule);
       }));

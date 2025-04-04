@@ -10,6 +10,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "base/component_export.h"
 #include "base/functional/callback_forward.h"
@@ -21,6 +22,7 @@
 #include "brave/components/psst/common/psst_prefs.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "build/build_config.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/devtools_agent_host_client.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -34,8 +36,7 @@ class PsstRuleRegistry;
 
 // Used to inject PSST scripts into the page, based on PSST rules.
 class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
-     : public content::WebContentsObserver
-      {
+    : public content::WebContentsObserver {
  public:
   class Delegate {
    public:
@@ -44,12 +45,13 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
     using ShareCallback = base::OnceCallback<void()>;
 
     virtual ~Delegate() = default;
-    virtual void ShowPsstConsentDialog(content::WebContents* contents,
-                                       bool prompt_for_new_version,
-                                       const base::Value::List requests,
-                                       ConsentCallback yes_cb,
-                                       ConsentCallback no_cb,
-                                       base::OnceClosure never_ask_me_callback) = 0;
+    virtual void ShowPsstConsentDialog(
+        content::WebContents* contents,
+        bool prompt_for_new_version,
+        const base::Value::List requests,
+        ConsentCallback yes_cb,
+        ConsentCallback no_cb,
+        base::OnceClosure never_ask_me_callback) = 0;
     virtual void SetProgressValue(content::WebContents* contents,
                                   const double value) = 0;
     virtual void SetRequestDone(content::WebContents* contents,
@@ -63,14 +65,15 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
     virtual void Close(content::WebContents* contents) = 0;
   };
 
-//   struct PsstOperationContext {
-//     std::string user_id;
-//     std::string share_experience_link;
-//     std::string rule_name;
-//   };
+  //   struct PsstOperationContext {
+  //     std::string user_id;
+  //     std::string share_experience_link;
+  //     std::string rule_name;
+  //   };
 
-  static std::unique_ptr<PsstTabHelper> MaybeCreateForWebContents(content::WebContents* contents,
-    std::unique_ptr<Delegate> delegate);
+  static std::unique_ptr<PsstTabHelper> MaybeCreateForWebContents(
+      content::WebContents* contents,
+      std::unique_ptr<Delegate> delegate);
 
   ~PsstTabHelper() override;
   PsstTabHelper(const PsstTabHelper&) = delete;
@@ -93,10 +96,10 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       const std::optional<MatchedRule>& rule);
   void InsertPolicyScript(
-        const content::GlobalRenderFrameHostId& render_frame_host_id,
-        const std::optional<MatchedRule>& rule);
-  
-      void OnUserScriptResult(
+      const content::GlobalRenderFrameHostId& render_frame_host_id,
+      const std::optional<MatchedRule>& rule);
+
+  void OnUserScriptResult(
       const MatchedRule& rule,
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       base::Value value);
@@ -114,6 +117,10 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       base::Value value);
 
+  void OnDisablePsst();
+
+  void ResetContext();
+
   // Get the remote used to send the script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
       content::RenderFrameHost* rfh);
@@ -129,6 +136,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
 
   std::unique_ptr<Delegate> delegate_;
   const int32_t world_id_;
+  PrefChangeRegistrar pref_change_registrar_;
   const raw_ptr<PrefService> prefs_;
   const raw_ptr<PsstRuleRegistry> psst_rule_registry_;
   bool should_process_{false};

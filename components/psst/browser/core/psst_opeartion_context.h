@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_OPERATION_CONTEXT_H_
-#define BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_OPERATION_CONTEXT_H_
+#ifndef BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_OPEARTION_CONTEXT_H_
+#define BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_OPEARTION_CONTEXT_H_
 
 #include <memory>
 #include <optional>
@@ -48,4 +48,4 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstOperationContext {
 };
 }  // namespace psst
 
-#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_OPERATION_CONTEXT_H_
+#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CORE_PSST_OPEARTION_CONTEXT_H_

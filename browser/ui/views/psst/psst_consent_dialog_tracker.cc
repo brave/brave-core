@@ -7,8 +7,7 @@
 
 PsstConsentDialogTracker::PsstConsentDialogTracker(
     content::WebContents* web_contents)
-    : content::WebContentsUserData<PsstConsentDialogTracker>(
-          *web_contents) {}
+    : content::WebContentsUserData<PsstConsentDialogTracker>(*web_contents) {}
 
 PsstConsentDialogTracker::~PsstConsentDialogTracker() = default;
 

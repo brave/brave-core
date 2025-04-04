@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_PSST_COMMON_PSST_PREFS_H_
 
 #include <string>
+#include <vector>
 
 #include "base/component_export.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -15,14 +16,14 @@
 namespace psst {
 
 namespace prefs {
-  inline constexpr char kPsstSettingsPref[] = "brave.psst.settings";
-  inline constexpr char kPsstEnabled[] = "brave.psst.settings.enable_psst";
+inline constexpr char kPsstSettingsPref[] = "brave.psst.settings";
+inline constexpr char kPsstEnabled[] = "brave.psst.settings.enable_psst";
 }  // namespace prefs
 
 enum PsstConsentStatus {
-  kAsk,     // show the popup dialog to ask user to apply privacy
-  kAllow,   // continue to apply privacy with no prompts
-  kBlock    // do not ask user any more
+  kAsk,    // show the popup dialog to ask user to apply privacy
+  kAllow,  // continue to apply privacy with no prompts
+  kBlock   // do not ask user any more
 };
 
 struct COMPONENT_EXPORT(PSST_COMMON) PsstSettings {
@@ -30,8 +31,11 @@ struct COMPONENT_EXPORT(PSST_COMMON) PsstSettings {
   PsstConsentStatus consent_status;
   int script_version;
 
-  PsstSettings(const PsstConsentStatus consent_status, const int script_version, const std::vector<std::string>& urls_to_skip);
-  PsstSettings(const PsstConsentStatus consent_status, const int script_version);
+  PsstSettings(const PsstConsentStatus consent_status,
+               const int script_version,
+               const std::vector<std::string>& urls_to_skip);
+  PsstSettings(const PsstConsentStatus consent_status,
+               const int script_version);
   PsstSettings(const PsstSettings& other);
   PsstSettings(PsstSettings&& other);
   ~PsstSettings();
@@ -50,10 +54,10 @@ COMPONENT_EXPORT(PSST_COMMON)
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
 COMPONENT_EXPORT(PSST_COMMON)
-bool GetNeverAskFlag(PrefService* prefs);
+bool GetEnablePsstFlag(PrefService* prefs);
 
 COMPONENT_EXPORT(PSST_COMMON)
-void SetNeverAskFlag(PrefService* prefs, const bool val);
+void SetEnablePsstFlag(PrefService* prefs, const bool val);
 
 COMPONENT_EXPORT(PSST_COMMON)
 std::optional<PsstSettings> GetPsstSettings(const std::string& user_id,

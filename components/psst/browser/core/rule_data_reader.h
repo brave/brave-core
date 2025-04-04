@@ -3,7 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#ifndef BRAVE_COMPONENTS_PSST_BROWSER_CORE_RULE_DATA_READER_H_
+#define BRAVE_COMPONENTS_PSST_BROWSER_CORE_RULE_DATA_READER_H_
+
 #include <optional>
+#include <string>
 
 #include "base/component_export.h"
 #include "base/files/file_path.h"
@@ -27,3 +31,5 @@ class COMPONENT_EXPORT(PSST_BROWSER_CORE) RuleDataReader {
 };
 
 }  // namespace psst
+
+#endif  // BRAVE_COMPONENTS_PSST_BROWSER_CORE_RULE_DATA_READER_H_

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_PSST_CONSENT_DIALOG_TRACKER_H_
-#define BRAVE_BROWSER_UI_VIEWS_PSST_CONSENT_DIALOG_TRACKER_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_PSST_PSST_CONSENT_DIALOG_TRACKER_H_
+#define BRAVE_BROWSER_UI_VIEWS_PSST_PSST_CONSENT_DIALOG_TRACKER_H_
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
@@ -18,8 +18,7 @@ class PsstConsentDialogTracker
       public views::WidgetObserver {
  public:
   PsstConsentDialogTracker(const PsstConsentDialogTracker&) = delete;
-  PsstConsentDialogTracker& operator=(const PsstConsentDialogTracker&) =
-      delete;
+  PsstConsentDialogTracker& operator=(const PsstConsentDialogTracker&) = delete;
   ~PsstConsentDialogTracker() override;
 
   void SetActiveDialog(views::Widget* widget);
@@ -40,4 +39,4 @@ class PsstConsentDialogTracker
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_PSST_CONSENT_DIALOG_TRACKER_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_PSST_PSST_CONSENT_DIALOG_TRACKER_H_

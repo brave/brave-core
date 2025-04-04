@@ -24,35 +24,34 @@ class GURL;
 namespace psst {
 
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
-public:
+ public:
   PsstRuleRegistry(const PsstRuleRegistry&) = delete;
   PsstRuleRegistry& operator=(const PsstRuleRegistry&) = delete;
 
-virtual ~PsstRuleRegistry() = default;
+  virtual ~PsstRuleRegistry() = default;
 
   // Returns the matched PSST rule, if any.
-virtual void CheckIfMatch(
+  virtual void CheckIfMatch(
       const GURL& url,
       base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) const = 0;
 
   // Given a path to psst.json, loads the rules from the file into memory.
-virtual void LoadRules(const base::FilePath& path) = 0;
+  virtual void LoadRules(const base::FilePath& path) = 0;
 
-protected:
+ protected:
   PsstRuleRegistry() = default;
 
-private:
-virtual void OnLoadRules(const std::string& data) = 0;
+ private:
+  virtual void OnLoadRules(const std::string& data) = 0;
 
   // Needed for testing private methods.
   friend class PsstTabHelperBrowserTest;
   friend class PsstTabHelperUnitTest;
   friend class PsstRuleRegistryUnitTest;
-
 };
 
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistryAccessor {
-public:
+ public:
   PsstRuleRegistryAccessor();
   PsstRuleRegistryAccessor(const PsstRuleRegistryAccessor&) = delete;
   PsstRuleRegistryAccessor& operator=(const PsstRuleRegistryAccessor&) = delete;
@@ -62,7 +61,7 @@ public:
 
   PsstRuleRegistry* Registry();
 
-private:
+ private:
   friend class PsstTabHelperBrowserTest;
   friend class PsstRuleRegistryUnitTest;
 
@@ -73,27 +72,28 @@ private:
 
 // This class loads and stores the rules from the psst.json file.
 // It is also used for matching based on the URL.
-class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistryImpl : public PsstRuleRegistry {
+class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistryImpl
+    : public PsstRuleRegistry {
  public:
   PsstRuleRegistryImpl();
   PsstRuleRegistryImpl(const PsstRuleRegistryImpl&) = delete;
   PsstRuleRegistryImpl& operator=(const PsstRuleRegistryImpl&) = delete;
   ~PsstRuleRegistryImpl() override;
-  void CheckIfMatch(
-      const GURL& url,
-      base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) const override;
+  void CheckIfMatch(const GURL& url,
+                    base::OnceCallback<void(const std::optional<MatchedRule>&)>
+                        cb) const override;
   // Given a path to psst.json, loads the rules from the file into memory.
   void LoadRules(const base::FilePath& path) override;
 
-protected:
+ protected:
   // These methods are also called by PsstTabHelperBrowserTest.
   // Given contents of psst.json, loads the rules from the file into memory.
   // Called by |LoadRules| after the file is read.
   void OnLoadRules(const std::string& data) override;
 
  private:
-
-  void SetRuleDataReaderForTest(std::unique_ptr<RuleDataReader> rule_data_reader);
+  void SetRuleDataReaderForTest(
+      std::unique_ptr<RuleDataReader> rule_data_reader);
 
   std::unique_ptr<RuleDataReader> rule_data_reader_;
   std::vector<PsstRule> rules_;

@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "components/sync_preferences/common_syncable_prefs_database.h"
+
 #include <optional>
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
 #include "brave/components/psst/common/psst_prefs.h"
 #include "components/search_engines/search_engines_pref_names.h"
-#include "components/sync_preferences/common_syncable_prefs_database.h"
 // "//components/sync_preferences:common_syncable_prefs_database" already
 // depends on "//components/search_engines"
 

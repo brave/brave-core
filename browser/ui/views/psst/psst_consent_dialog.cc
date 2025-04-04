@@ -1,7 +1,7 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/psst/psst_consent_dialog.h"
 
@@ -118,7 +118,6 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
         views::Builder<views::Label>()
             .CopyAddressTo(&current_status_line->status_label)
             .SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT)
-            //.SetEnabledColor(SK_ColorRED)
             .SetProperty(views::kMarginsKey, gfx::Insets().set_left(16)));
 
     box.AddChild(std::move(change_item_box));
@@ -152,26 +151,27 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
           .SetCrossAxisAlignment(views::BoxLayout::CrossAxisAlignment::kEnd)
           .SetProperty(views::kMarginsKey,
                        gfx::Insets().set_bottom(16).set_top(16))
-          .AddChild(
-              views::Builder<views::MdTextButton>()
-                  .SetText(l10n_util::GetStringUTF16(
-                      IDS_PSST_CONSENT_DIALOG_NEVER_ASK_ME_AGAIN))
-                  .SetStyle(ui::ButtonStyle::kText)
-                  .SetCallback(base::BindOnce(&PsstConsentDialog::OnCloseWithReasonCallBack,
-                                              weak_factory_.GetWeakPtr(),
-                                              views::Widget::ClosedReason::kCancelButtonClicked,
-                                              std::move(never_ask_me_callback)))
-                  .CopyAddressTo(&never_ask_me_button_)
-                  .SetHorizontalAlignment(
-                      gfx::HorizontalAlignment::ALIGN_CENTER))
+          .AddChild(views::Builder<views::MdTextButton>()
+                        .SetText(l10n_util::GetStringUTF16(
+                            IDS_PSST_CONSENT_DIALOG_NEVER_ASK_ME_AGAIN))
+                        .SetStyle(ui::ButtonStyle::kText)
+                        .SetCallback(base::BindOnce(
+                            &PsstConsentDialog::OnCloseWithReasonCallBack,
+                            weak_factory_.GetWeakPtr(),
+                            views::Widget::ClosedReason::kCancelButtonClicked,
+                            std::move(never_ask_me_callback)))
+                        .CopyAddressTo(&never_ask_me_button_)
+                        .SetHorizontalAlignment(
+                            gfx::HorizontalAlignment::ALIGN_CENTER))
           .AddChild(views::Builder<views::MdTextButton>()
                         .SetText(l10n_util::GetStringUTF16(
                             IDS_PSST_CONSENT_DIALOG_CANCEL))
                         .SetStyle(ui::ButtonStyle::kText)
-                        .SetCallback(base::BindOnce(&PsstConsentDialog::OnCloseWithReasonCallBack,
-                                                    weak_factory_.GetWeakPtr(),
-                                                    views::Widget::ClosedReason::kCancelButtonClicked,
-                                                    std::move(cancel_callback)))
+                        .SetCallback(base::BindOnce(
+                            &PsstConsentDialog::OnCloseWithReasonCallBack,
+                            weak_factory_.GetWeakPtr(),
+                            views::Widget::ClosedReason::kCancelButtonClicked,
+                            std::move(cancel_callback)))
                         .CopyAddressTo(&no_button_)
                         .SetHorizontalAlignment(
                             gfx::HorizontalAlignment::ALIGN_CENTER))
@@ -285,8 +285,6 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
                       IDS_PSST_COMPLETE_CONSENT_DIALOG_REPORT))
                   .CopyAddressTo(&report_button_)
                   .SetStyle(ui::ButtonStyle::kText)
-                  // .SetCallback(base::BindRepeating(&PsstConsentDialog::OnOkCallBackCompleteDlgWithClose,
-                  //                             weak_factory_.GetWeakPtr()))
                   .SetProperty(views::kMarginsKey, gfx::Insets().set_left(16))
                   .SetHorizontalAlignment(
                       gfx::HorizontalAlignment::ALIGN_CENTER))
@@ -295,11 +293,11 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
                   .SetText(l10n_util::GetStringUTF16(
                       IDS_PSST_COMPLETE_CONSENT_DIALOG_OK))
                   .SetStyle(ui::ButtonStyle::kDefault)
-                  .SetCallback(
-                      base::BindRepeating(&PsstConsentDialog::OnCloseWithReasonCallBack,
-                                          weak_factory_.GetWeakPtr(),
-                                          views::Widget::ClosedReason::kCancelButtonClicked,
-                                          base::NullCallback()))
+                  .SetCallback(base::BindRepeating(
+                      &PsstConsentDialog::OnCloseWithReasonCallBack,
+                      weak_factory_.GetWeakPtr(),
+                      views::Widget::ClosedReason::kCancelButtonClicked,
+                      base::NullCallback()))
                   .SetProperty(views::kMarginsKey, gfx::Insets().set_left(16))
                   .SetHorizontalAlignment(
                       gfx::HorizontalAlignment::ALIGN_CENTER)));
@@ -422,7 +420,7 @@ void PsstConsentDialog::SetCompletedView(
         IDS_PSST_COMPLETE_CONSENT_DIALOG_FAILED_LIST_TITLE));
     complete_view_body_failed_->SetText(
         base::UTF8ToUTF16(base::JoinString(errors, "\n")));
-    
+
     show_share_button = false;
   }
 

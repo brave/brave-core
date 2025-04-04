@@ -58,9 +58,7 @@ PsstRuleRegistryAccessor* PsstRuleRegistryAccessor::GetInstance() {
 }
 
 PsstRuleRegistryAccessor::PsstRuleRegistryAccessor()
-: impl_(std::make_unique<PsstRuleRegistryImpl>()) {
-
-}
+    : impl_(std::make_unique<PsstRuleRegistryImpl>()) {}
 PsstRuleRegistryAccessor::~PsstRuleRegistryAccessor() = default;
 
 PsstRuleRegistry* PsstRuleRegistryAccessor::Registry() {
@@ -83,9 +81,10 @@ PsstRuleRegistryImpl::~PsstRuleRegistryImpl() = default;
 void PsstRuleRegistryImpl::CheckIfMatch(
     const GURL& url,
     base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) const {
-//LOG(INFO) << "[PSST] PsstRuleRegistryImpl::CheckIfMatch url:" << url << " rules_count:" << rules_.size();
+  // LOG(INFO) << "[PSST] PsstRuleRegistryImpl::CheckIfMatch url:" << url << "
+  // rules_count:" << rules_.size();
   for (const PsstRule& rule : rules_) {
-//LOG(INFO) << "[PSST] rule:" << rule.Name();
+    // LOG(INFO) << "[PSST] rule:" << rule.Name();
     if (rule.ShouldInsertScript(url)) {
       base::ThreadPool::PostTaskAndReplyWithResult(
           FROM_HERE, {base::MayBlock()},
@@ -107,12 +106,12 @@ void PsstRuleRegistryImpl::SetRuleDataReaderForTest(
 }
 
 void PsstRuleRegistryImpl::LoadRules(const base::FilePath& path) {
-LOG(INFO) << "[PSST] LoadRules #100";
+  LOG(INFO) << "[PSST] LoadRules #100";
   if (!rule_data_reader_) {
     rule_data_reader_ = std::make_unique<RuleDataReader>(path);
   }
 
-LOG(INFO) << "[PSST] LoadRules #200";
+  LOG(INFO) << "[PSST] LoadRules #200";
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFile, path.Append(kJsonFile)),

@@ -64,22 +64,21 @@ PsstSettings::PsstSettings(const PsstSettings& other) = default;
 PsstSettings::PsstSettings(PsstSettings&& other) = default;
 PsstSettings::~PsstSettings() = default;
 
-bool GetNeverAskFlag(PrefService* prefs) {
+bool GetEnablePsstFlag(PrefService* prefs) {
   if (!prefs->HasPrefPath(prefs::kPsstSettingsPref)) {
     return false;
   }
 
   const auto& psst_settings = prefs->GetDict(prefs::kPsstSettingsPref);
-
   const auto result = psst_settings.FindBool(kEnablePsstFlag);
-
-  return result.has_value() && !result.value();
+  return result.has_value() && result.value();
 }
 
-void SetNeverAskFlag(PrefService* prefs, const bool val) {
+void SetEnablePsstFlag(PrefService* prefs, const bool val) {
   ScopedDictPrefUpdate update(prefs, prefs::kPsstSettingsPref);
   base::Value::Dict& pref = update.Get();
   pref.Set(kEnablePsstFlag, val);
+  //  update->Set(kEnablePsstFlag, val);
 }
 
 std::optional<PsstSettings> GetPsstSettings(const std::string& user_id,
@@ -93,10 +92,7 @@ std::optional<PsstSettings> GetPsstSettings(const std::string& user_id,
   const std::string path = ConstructPath(user_id, name);
   const base::Value* settings_for_site_val =
       psst_settings.FindByDottedPath(path);
-  LOG(INFO) << "[PSST] GetPsstSettings path:" << path
-            << " settings_for_site_val:"
-            << (settings_for_site_val ? settings_for_site_val->DebugString()
-                                      : "n/a");
+
   if (!settings_for_site_val || !settings_for_site_val->is_dict()) {
     return std::nullopt;
   }
@@ -136,7 +132,6 @@ base::Value* SetPsstSettings(const std::string& user_id,
   ScopedDictPrefUpdate update(prefs, prefs::kPsstSettingsPref);
   const std::string path = ConstructPath(user_id, name);
   auto value = PsstSettingsToDict(settings);
-  LOG(INFO) << "[PSST] SetPsstSettings path:" << path << " value:" << value;
   return update->SetByDottedPath(path, std::move(value));
 }
 

@@ -11,8 +11,8 @@
 
 #include "base/check_is_test.h"
 #include "base/functional/callback.h"  // IWYU pragma: keep
-#include "base/no_destructor.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
 
 namespace {
 static std::string LogThreadId() {
@@ -30,17 +30,16 @@ BraveOnDemandUpdater* BraveOnDemandUpdater::GetInstance() {
   return instance.get();
 }
 bool BraveOnDemandUpdater::IsValid() {
-  //LOG(INFO) << "[PSST] BraveOnDemandUpdater::IsValid(): " << (on_demand_updater_ != nullptr);
-return on_demand_updater_ != nullptr;
+  // LOG(INFO) << "[PSST] BraveOnDemandUpdater::IsValid(): " <<
+  // (on_demand_updater_ != nullptr);
+  return on_demand_updater_ != nullptr;
 }
 
 BraveOnDemandUpdater::BraveOnDemandUpdater() = default;
 
 BraveOnDemandUpdater::~BraveOnDemandUpdater() {
-LOG(INFO) << "[PSST] BraveOnDemandUpdater::~BraveOnDemandUpdater "
-<< " PID:" << getpid()
-<< " ThreadID:" << LogThreadId()
-;
+  LOG(INFO) << "[PSST] BraveOnDemandUpdater::~BraveOnDemandUpdater "
+            << " PID:" << getpid() << " ThreadID:" << LogThreadId();
 }
 
 component_updater::OnDemandUpdater*
@@ -49,18 +48,16 @@ BraveOnDemandUpdater::RegisterOnDemandUpdater(
   if (!on_demand_updater) {
     CHECK_IS_TEST();
   }
-LOG(INFO) << "[PSST] BraveOnDemandUpdater::RegisterOnDemandUpdater";
+  LOG(INFO) << "[PSST] BraveOnDemandUpdater::RegisterOnDemandUpdater";
   return std::exchange(on_demand_updater_, on_demand_updater);
 }
 
 void BraveOnDemandUpdater::EnsureInstalled(
     const std::string& id,
     component_updater::Callback callback) {
-LOG(INFO) << "[PSST] BraveOnDemandUpdater::EnsureInstalled "
-<< " on_demand_updater_:" << on_demand_updater_
-<< " PID:" << getpid()
-<< " ThreadID:" << LogThreadId()
-;
+  LOG(INFO) << "[PSST] BraveOnDemandUpdater::EnsureInstalled "
+            << " on_demand_updater_:" << on_demand_updater_
+            << " PID:" << getpid() << " ThreadID:" << LogThreadId();
   CHECK(on_demand_updater_);
   on_demand_updater_->EnsureInstalled(id, std::move(callback));
 }

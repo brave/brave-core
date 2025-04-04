@@ -6,6 +6,8 @@
 #include "brave/components/psst/browser/core/rule_data_reader.h"
 
 #include <optional>
+#include <string>
+#include <vector>
 
 #include "base/base_paths.h"
 #include "base/files/file_path.h"
@@ -33,8 +35,8 @@ std::string ReadFile(const base::FilePath& file_path) {
 class RuleDataReaderUnitTest : public testing::Test {
  public:
   void SetUp() override {
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    base::FilePath test_data_dir(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
     test_data_dir_base_ = test_data_dir.AppendASCII("psst-component-data");
 
     auto psst_rules_content = ReadFile(test_data_dir_base_.Append("psst.json"));
@@ -81,7 +83,6 @@ TEST_F(RuleDataReaderUnitTest, TryToLoadWrongWithComponentScriptPath) {
 
   auto policy_script = crr.ReadPolicyScript(GetWrongNameRule());
   ASSERT_FALSE(policy_script);
-
 }
 
 }  // namespace psst
