@@ -125,9 +125,11 @@ constexpr char kHideSelectorsInjectScript[] =
 constexpr char kIsDarkModeEnabledPropery[] = "isDarkModeEnabled";
 constexpr char kBackgroundColorPropery[] = "bgcolor";
 
-constexpr char kBtnCreateTextPropery[] = "btnCreateText";
+constexpr char kBtnCreateDisabledTextPropery[] = "btnCreateDisabledText";
+constexpr char kBtnCreateEnabledTextPropery[] = "btnCreateEnabledText";
 constexpr char kBtnManageTextPropery[] = "btnManageText";
 constexpr char kBtnShowRulesBoxTextPropery[] = "btnShowRulesBoxText";
+constexpr char kBtnHideRulesBoxTextPropery[] = "btnHideRulesBoxText";
 constexpr char kBtnQuitTextPropery[] = "btnQuitText";
 
 std::string LoadDataResource(const int id) {
@@ -407,9 +409,13 @@ void CosmeticFiltersJSHandler::OnGetLocalizedTexts(
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate);
   v8::Local<v8::Value> result;
   v8::Local<v8::Object> object = v8::Object::New(isolate);
-  CHECK(CreateDataProperty(context, object, kBtnCreateTextPropery,
+  CHECK(CreateDataProperty(context, object, kBtnCreateDisabledTextPropery,
                            v8_value_converter_->ToV8Value(
-                               base::Value(loc->create_text), context))
+                               base::Value(loc->create_disabled_text), context))
+            .ToChecked());
+  CHECK(CreateDataProperty(context, object, kBtnCreateEnabledTextPropery,
+                           v8_value_converter_->ToV8Value(
+                               base::Value(loc->create_enabled_text), context))
             .ToChecked());
   CHECK(CreateDataProperty(context, object, kBtnManageTextPropery,
                            v8_value_converter_->ToV8Value(
@@ -418,6 +424,10 @@ void CosmeticFiltersJSHandler::OnGetLocalizedTexts(
   CHECK(CreateDataProperty(context, object, kBtnShowRulesBoxTextPropery,
                            v8_value_converter_->ToV8Value(
                                base::Value(loc->show_rules_text), context))
+            .ToChecked());
+  CHECK(CreateDataProperty(context, object, kBtnHideRulesBoxTextPropery,
+                           v8_value_converter_->ToV8Value(
+                               base::Value(loc->hide_rules_text), context))
             .ToChecked());
   CHECK(CreateDataProperty(context, object, kBtnQuitTextPropery,
                            v8_value_converter_->ToV8Value(

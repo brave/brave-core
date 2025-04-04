@@ -227,8 +227,12 @@ declare namespace cf_worker {
   const getElementPickerThemeInfo: () =>
     Promise<{isDarkModeEnabled: boolean; bgcolor: number}>
   const getLocalizedTexts: () =>
-    Promise<{btnCreateText: string; btnManageText: string;
-        btnShowRulesBoxText: string; btnQuitText: string}>
+    Promise<{btnCreateDisabledText: string;
+        btnCreateEnabledText: string;
+        btnManageText: string;
+        btnShowRulesBoxText: string;
+        btnHideRulesBoxText: string;
+        btnQuitText: string}>
   const getPlatform: () => string
 }
 

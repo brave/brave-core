@@ -7,6 +7,10 @@ const NSSVG = 'http://www.w3.org/2000/svg'
 let pickerDiv: HTMLDivElement | null
 let shadowRoot: ShadowRoot | null
 let isAndroid: boolean | null
+let btnCreateEnabledText: string
+let btnCreateDisabledText: string
+let btnShowRulesBoxText: string
+let btnHideRulesBoxText: string
 
 const api = {
   cosmeticFilterCreate: (selector: string) => {
@@ -23,12 +27,24 @@ const api = {
       })
   },
   getLocalizedTexts: (callback: (
-    btnCreateText: string, btnManageText: string, btnShowRulesBoxText: string,
-      btnQuitText: string) => void) => {
+    btnCreateDisabledText: string,
+    btnCreateEnabledText: string,
+    btnManageText: string,
+    btnShowRulesBoxText: string,
+    btnHideRulesBoxText: string,
+    btnQuitText: string) => void) => {
     cf_worker.getLocalizedTexts().then(
-      (val: { btnCreateText: string; btnManageText: string;
-        btnShowRulesBoxText: string; btnQuitText: string }) => {
-        callback(val.btnCreateText, val.btnManageText, val.btnShowRulesBoxText,
+      (val: { btnCreateDisabledText: string;
+        btnCreateEnabledText: string;
+        btnManageText: string;
+        btnShowRulesBoxText: string;
+        btnHideRulesBoxText: string;
+        btnQuitText: string }) => {
+        callback(val.btnCreateDisabledText,
+          val.btnCreateEnabledText,
+          val.btnManageText,
+          val.btnShowRulesBoxText,
+          val.btnHideRulesBoxText,
           val.btnQuitText)
       })
   },
@@ -607,9 +623,9 @@ const launchElementPicker = (root: ShadowRoot) => {
   const togglePopup = (show: boolean) => {
     enableButtons(!show)
     if (show) {
-      createButton.textContent = "Block Element"
+      createButton.textContent = btnCreateEnabledText
     } else {
-      createButton.textContent = "Select element you want to block"
+      createButton.textContent = btnCreateDisabledText
     }
     if (!isAndroid) {
       section.style.setProperty('opacity', show ? '1' : '0.2')
@@ -709,10 +725,10 @@ const launchElementPicker = (root: ShadowRoot) => {
     trigger.addEventListener('click', e => {
       if (target.style.display !== 'block') {
         target.style.display = 'block'
-        trigger.textContent = 'Hide rules'
+        trigger.textContent = btnHideRulesBoxText
       } else {
         target.style.display = 'none'
-        trigger.textContent = 'Show rules'
+        trigger.textContent = btnShowRulesBoxText
       }
     })
   }
@@ -762,11 +778,20 @@ const highlightElements = () => {
   svg.appendChild(svgFragment)
 }
 
-const localizeTextData = (root: ShadowRoot, btnCreateText: string,
-  btnManageText: string, btnShowRulesBoxText: string, btnQuitText: string) => {
+const localizeTextData = (root: ShadowRoot,
+  btnCrDisText: string,
+  btnCrEnblText: string,
+  btnManageText: string,
+  btnShowRulesText: string,
+  btnHideRulesText: string,
+  btnQuitText: string) => {
+  btnCreateDisabledText = btnCrDisText
+  btnCreateEnabledText = btnCrEnblText
+  btnShowRulesBoxText = btnShowRulesText
+  btnHideRulesBoxText = btnHideRulesText
   const btnCreate = root.getElementById('btnCreate')
   if (btnCreate) {
-    btnCreate.textContent = btnCreateText
+    btnCreate.textContent = btnCreateDisabledText
   }
   const btnManage = root.getElementById('btnManage')
   if (btnManage) {
@@ -787,10 +812,16 @@ if (!active) {
   isAndroid = api.getPlatform() === 'android'
   const root = attachElementPicker()
   api.getLocalizedTexts(
-    (btnCreateText: string, btnManageText: string,
-      btnShowRulesBoxText: string, btnQuitText: string) => {
-      localizeTextData(root, btnCreateText, btnManageText,
-        btnShowRulesBoxText, btnQuitText)
+    (btnCreateDisabledText: string,
+      btnCreateEnabledText: string,
+      btnManageText: string,
+      btnShowRulesBoxText: string,
+      btnHideRulesBoxText: string,
+      btnQuitText: string) => {
+      localizeTextData(root, btnCreateDisabledText,
+        btnCreateEnabledText, btnManageText,
+        btnShowRulesBoxText, btnHideRulesBoxText,
+        btnQuitText)
       launchElementPicker(root)
     });
 }

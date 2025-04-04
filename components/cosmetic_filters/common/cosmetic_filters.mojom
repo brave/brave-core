@@ -8,9 +8,11 @@ module cosmetic_filters.mojom;
 import "mojo/public/mojom/base/values.mojom";
 
 struct ElementPickerLocalization {
-  string create_text;
+  string create_enabled_text;
+  string create_disabled_text;
   string manage_text;
   string show_rules_text;
+  string hide_rules_text;
   string quit_text;
 };
 

@@ -128,11 +128,15 @@ void CosmeticFiltersTabHelper::GetElementPickerLocalizedTexts(
     GetElementPickerLocalizedTextsCallback callback) {
   auto localization_data = mojom::ElementPickerLocalization::New(
       base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_BRAVE_ELEMENT_PICKER_CREATE_BTN_LABEL)),
+          IDS_BRAVE_ELEMENT_PICKER_CREATE_BTN_ENABLED_LABEL)),
+      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_BRAVE_ELEMENT_PICKER_CREATE_BTN_DISABLED_LABEL)),
       base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
           IDS_BRAVE_ELEMENT_PICKER_MANAGE_BTN_LABEL)),
       base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
           IDS_BRAVE_ELEMENT_PICKER_SHOW_RULES_BTN_LABEL)),
+      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_BRAVE_ELEMENT_PICKER_HIDE_RULES_BTN_LABEL)),
       base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
           IDS_BRAVE_ELEMENT_PICKER_QUIT_BTN_LABEL)));
   std::move(callback).Run(std::move(localization_data));
