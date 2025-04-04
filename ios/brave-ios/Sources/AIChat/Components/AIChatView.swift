@@ -597,6 +597,38 @@ public struct AIChatView: View {
       .padding()
     } else {
       switch model.apiError {
+      case .internalError:
+        AIChatGenericErrorView(title: Strings.AIChat.internalErrorViewTitle) {
+          if !model.conversationHistory.isEmpty {
+            model.retryLastRequest()
+          }
+        }
+        .padding()
+
+      case .invalidApiKey:
+        AIChatGenericErrorView(title: Strings.AIChat.invalidApiKeyErrorViewTitle) {
+          if !model.conversationHistory.isEmpty {
+            model.retryLastRequest()
+          }
+        }
+        .padding()
+
+      case .invalidEndpointUrl:
+        AIChatGenericErrorView(title: Strings.AIChat.invalidEndpointErrorViewTitle) {
+          if !model.conversationHistory.isEmpty {
+            model.retryLastRequest()
+          }
+        }
+        .padding()
+
+      case .serviceOverloaded:
+        AIChatGenericErrorView(title: Strings.AIChat.serviceOverloadedErrorViewTitle) {
+          if !model.conversationHistory.isEmpty {
+            model.retryLastRequest()
+          }
+        }
+        .padding()
+
       case .connectionIssue:
         AIChatNetworkErrorView {
           if !model.conversationHistory.isEmpty {

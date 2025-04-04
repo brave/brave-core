@@ -48,6 +48,39 @@ extension Strings {
       comment:
         "The title for view that shows network - connection error and suggesting to try again"
     )
+    public static let internalErrorViewTitle = NSLocalizedString(
+      "aichat.internalErrorViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Something went wrong while processing your request. Please try again later.",
+      comment:
+        "The title for view that shows an internal error screen. Suggests to try again later."
+    )
+    public static let invalidApiKeyErrorViewTitle = NSLocalizedString(
+      "aichat.invalidApiKeyErrorViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "The API key configured for this model is invalid. Please check your configuration and try again.",
+      comment:
+        "The title for view that shows an invalid API key error screen. Suggests to try again later."
+    )
+    public static let invalidEndpointErrorViewTitle = NSLocalizedString(
+      "aichat.invalidEndpointErrorViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "This model has an invalid endpoint. Please check your configuration and try again.",
+      comment:
+        "The title for view that shows an invalid endpoint error screen. Suggests to try again later."
+    )
+    public static let serviceOverloadedErrorViewTitle = NSLocalizedString(
+      "aichat.serviceOverloadedErrorViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "The endpoint is currently overloaded. Please try again later.",
+      comment:
+        "The title for view that shows a service overloaded error screen. Suggests to try again later."
+    )
     public static let retryActionTitle = NSLocalizedString(
       "aichat.retryActionTitle",
       tableName: "BraveLeo",
@@ -219,38 +252,6 @@ extension Strings {
       value: "Chat",
       comment: "The title for intro message"
     )
-    public static let introMessageLlamaModelDescription = NSLocalizedString(
-      "aichat.introMessageLlamaModelDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "Llama 3.1 8B by Meta",
-      comment:
-        "The model and creator for intro message - Llama 3.1 8B is the model name -- Meta is the creator"
-    )
-    public static let introMessageMixtralModelDescription = NSLocalizedString(
-      "aichat.introMessageMixtralModelDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "Mixtral by Mistral AI",
-      comment:
-        "The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator"
-    )
-    public static let introMessageClaudeHaikuModelDescription = NSLocalizedString(
-      "aichat.introMessageClaudeHaikuModelDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "Claude Haiku by Anthropic",
-      comment:
-        "The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator"
-    )
-    public static let introMessageClaudeSonnetModelDescription = NSLocalizedString(
-      "aichat.introMessageClaudeSonnetModelDescription",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "Claude Sonnet by Anthropic",
-      comment:
-        "The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator"
-    )
     public static let introMessageLlamaModelPurposeDescription = NSLocalizedString(
       "aichat.introMessageLlamaModelPurposeDescription",
       tableName: "BraveLeo",
@@ -264,6 +265,14 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value: "Advanced chat tasks",
+      comment:
+        "The model's purpose - Describes what it can do best"
+    )
+    public static let introMessageQwenModelPurposeDescription = NSLocalizedString(
+      "aichat.introMessageQwenModelPurposeDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "General purpose chat, coding, and more",
       comment:
         "The model's purpose - Describes what it can do best"
     )
@@ -283,12 +292,28 @@ extension Strings {
       comment:
         "The model's purpose - Describes what it can do best"
     )
+    public static let introMessageLlamaVisionModelPurposeDescription = NSLocalizedString(
+      "aichat.introMessageLlamaVisionModelPurposeDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "General purpose vision",
+      comment:
+        "The model's purpose - Describes what it can do best"
+    )
     public static let introMessageLlamaMessageDescription = NSLocalizedString(
       "aichat.introMessageLlamaMessageDescription",
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases.",
+        "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. Llama is Brave-hosted through our own secure infrastructure.",
+      comment: "The model intro message when you first enter the chat assistant"
+    )
+    public static let introMessageQwenMessageDescription = NSLocalizedString(
+      "aichat.introMessageQwenMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Qwen 14B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageMixtralMessageDescription = NSLocalizedString(
@@ -296,7 +321,15 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks.",
+        "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks. Mixtral is Brave-hosted through our own secure infrastructure.",
+      comment: "The model intro message when you first enter the chat assistant"
+    )
+    public static let introMessageClaudeInstantMessageDescription = NSLocalizedString(
+      "aichat.introMessageClaudeInstantMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageClaudeHaikuMessageDescription = NSLocalizedString(
@@ -304,7 +337,7 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks.",
+        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks. Claude Haiku is Brave-hosted through our own secure infrastructure.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageClaudeSonnetMessageDescription = NSLocalizedString(
@@ -312,7 +345,15 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks.",
+        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. Claude Sonnet is Brave-hosted through our own secure infrastructure.",
+      comment: "The model intro message when you first enter the chat assistant"
+    )
+    public static let introMessageLlamaVisionMessageDescription = NSLocalizedString(
+      "aichat.introMessageLlamaVisionMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama Vision, a model created by Meta to be performant and applicable to many use cases. Llama Vision is Brave-hosted through our own secure infrastructure.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageGenericMessageDescription = NSLocalizedString(
@@ -904,6 +945,15 @@ extension Strings {
         "Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.",
       comment:
         "The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated."
+    )
+    public static let leoDocumentPickerButtonAccessibilityTitle = NSLocalizedString(
+      "aichat.leoDocumentPickerButtonAccessibilityTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Upload Image",
+      comment:
+        "The text that's read aloud to the user when accessibility is enabled for the Document Picker button"
     )
     public static let leoSlashToolsButtonAccessibilityTitle = NSLocalizedString(
       "aichat.leoSlashToolsButtonAccessibilityTitle",

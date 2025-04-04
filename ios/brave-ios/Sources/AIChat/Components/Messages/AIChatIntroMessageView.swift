@@ -13,26 +13,6 @@ struct AIChatIntroMessageView: View {
 
   var model: AiChat.Model
 
-  private var modelDescription: String {
-    guard let modelKey = AIChatModelKey(rawValue: model.key) else {
-      return model.displayName
-    }
-
-    switch modelKey {
-    case .chatBasic:
-      return Strings.AIChat.introMessageLlamaModelDescription
-
-    case .chatExpanded:
-      return Strings.AIChat.introMessageMixtralModelDescription
-
-    case .chatClaudeHaiku:
-      return Strings.AIChat.introMessageClaudeHaikuModelDescription
-
-    case .chatClaudeSonnet:
-      return Strings.AIChat.introMessageClaudeSonnetModelDescription
-    }
-  }
-
   private var introMessage: String {
     guard let modelKey = AIChatModelKey(rawValue: model.key) else {
       return String(format: Strings.AIChat.introMessageGenericMessageDescription, model.displayName)
@@ -45,11 +25,17 @@ struct AIChatIntroMessageView: View {
     case .chatExpanded:
       return Strings.AIChat.introMessageMixtralMessageDescription
 
+    case .chatQwen:
+      return Strings.AIChat.introMessageQwenMessageDescription
+
     case .chatClaudeHaiku:
       return Strings.AIChat.introMessageClaudeHaikuMessageDescription
 
     case .chatClaudeSonnet:
       return Strings.AIChat.introMessageClaudeSonnetMessageDescription
+
+    case .chatVisionBasic:
+      return Strings.AIChat.introMessageLlamaVisionMessageDescription
     }
   }
 
@@ -68,7 +54,7 @@ struct AIChatIntroMessageView: View {
         .fixedSize(horizontal: false, vertical: true)
 
       HStack(alignment: .firstTextBaseline) {
-        Text(modelDescription)
+        Text(model.displayName)
           .font(.footnote)
           .foregroundStyle(Color(braveSystemName: .textTertiary))
           .multilineTextAlignment(.leading)
