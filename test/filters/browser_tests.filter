@@ -1975,10 +1975,6 @@
 -RecentActivityBubbleDialogViewActionBrowserTest.HandlesActionFocusTab
 -RecentActivityBubbleDialogViewActionBrowserTest.HandlesActionReopenTab
 -SendTabToSelfBubbleTest.BubbleTriggersCorrectlyWhenPinned
--SendTabToSelfToolbarIconControllerTest.DisplayNewEntry
--SendTabToSelfToolbarIconControllerTest.ReplaceExistingEntry
--SendTabToSelfToolbarIconControllerTest.StorePendingNewEntryFromIncognitoBrowser
--SendTabToSelfToolbarIconControllerTest.StorePendingNewEntryFromWebApp
 
 # This test fails in CanvasImageSource::CreatePadded when checking
 # DCHECK(clip_rect.Contains(gfx::Rect(size_in_pixel))); when both clip_rect
