@@ -1,0 +1,10 @@
+diff --git a/chrome/updater/mac/signing/config_factory.py b/chrome/updater/mac/signing/config_factory.py
+index 00b3da3cf75da2a23ce923804dea3c0257f77d6c..c5217fedcc99b788b9fe5087a1096055e6f36d7e 100644
+--- a/chrome/updater/mac/signing/config_factory.py
++++ b/chrome/updater/mac/signing/config_factory.py
+@@ -19,3 +19,4 @@ def get_invoker_class():
+ 
+     from signing.standard_invoker import Invoker
+     return Invoker
++from brave_chromium_utils import inline_file; inline_file("//brave/chromium_src/chrome/updater/mac/signing/config_factory.py", globals(), locals())
+\ No newline at end of file

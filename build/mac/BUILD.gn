@@ -13,8 +13,7 @@ import("//chrome/version.gni")
 import("//components/crx_file/crx3.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
-packaging_dir = "$root_out_dir/" +
-                string_replace("$chrome_product_full_name Packaging", " ", "_")
+packaging_dir = "$root_out_dir/$chrome_product_full_name Packaging"
 packaging_out_dir = "$root_out_dir/packaged"
 
 unsigned_app_path = "$root_out_dir/$brave_exe"
@@ -35,6 +34,12 @@ upstream_dmg_path = "$upstream_packaged_basename.dmg"
 upstream_pkg_path = "$upstream_packaged_basename.pkg"
 upstream_zip_path = "$upstream_packaged_basename.zip"
 upstream_crx_path = "$upstream_packaged_basename.crx3"
+
+if (is_release_channel) {
+  channel_nonempty = "release"
+} else {
+  channel_nonempty = brave_channel
+}
 
 if (is_universal_binary) {
   assert(target_cpu == "arm64")
@@ -310,6 +315,8 @@ action("package") {
   }
   if (skip_signing) {
     args += [ "--skip_signing" ]
+  } else {
+    args += [ "--provisioning_profile_basename=$channel_nonempty" ]
   }
   if (notarize) {
     args += [ "--notarize" ]
@@ -378,11 +385,6 @@ copy("copy_helper_entitlements") {
 
 if (is_official_build) {
   copy("copy_provisionprofile") {
-    if (is_release_channel) {
-      channel_nonempty = "release"
-    } else {
-      channel_nonempty = brave_channel
-    }
     sources = [ "${channel_nonempty}.provisionprofile" ]
     outputs = [ "${packaging_dir}/${channel_nonempty}.9c57a508dc89402964eb013d30ef6df4da849aa9.provisionprofile" ]
   }
