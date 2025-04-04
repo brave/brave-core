@@ -281,6 +281,8 @@
       <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_CARDS" desc="Text for cards option">Cards</message>
       <message name="IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page">Show Sponsored Images</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OPT_IN_DESCRIPTION" desc="Description text for setting to opt-in to Sponsored Images on New Tab Page">You can earn for seeing Sponsored Images.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OPT_IN_LEARN_MORE" desc="Learn more link text for setting to opt-in to Sponsored Images on New Tab Page">Learn more</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_EARNING_TITLE" desc="Title of message about already earning from sponsored images">You're earning BAT for Sponsored Images.</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ENABLE_REWARDS" desc="Text of the button to enable Rewards">Enable Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_NOT_EARNING_TITLE" desc="Title of message about not yet earning from sponsored images">You can earn for seeing Sponsored Images.</message>
