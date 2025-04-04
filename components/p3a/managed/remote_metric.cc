@@ -14,6 +14,9 @@
 #include "brave/components/p3a/managed/bucket_intermediate.h"
 #include "brave/components/p3a/managed/percentage_intermediate.h"
 #include "brave/components/p3a/managed/pref_intermediate.h"
+#include "brave/components/p3a/managed/probe_intermediate.h"
+#include "brave/components/p3a/managed/time_period_events_intermediate.h"
+#include "brave/components/p3a/managed/value_map_intermediate.h"
 #include "components/prefs/pref_service.h"
 
 namespace p3a {
@@ -22,9 +25,12 @@ namespace {
 
 constexpr char kMinVersionKey[] = "min_version";
 constexpr char kTypeKey[] = "type";
+constexpr char kProbeIntermediateType[] = "probe";
 constexpr char kPrefIntermediateType[] = "pref";
+constexpr char kTimePeriodEventsIntermediateType[] = "time_period_events";
 constexpr char kBucketIntermediateType[] = "bucket";
 constexpr char kPercentageIntermediateType[] = "percentage";
+constexpr char kValueMapIntermediateType[] = "value_map";
 
 }  // namespace
 
@@ -130,6 +136,15 @@ std::unique_ptr<RemoteMetricIntermediate> RemoteMetric::GetIntermediateInstance(
     return nullptr;
   }
 
+  if (*type == kProbeIntermediateType) {
+    ProbeIntermediateDefinition definition;
+    base::JSONValueConverter<ProbeIntermediateDefinition> converter;
+    if (!converter.Convert(config, &definition)) {
+      return nullptr;
+    }
+    return std::make_unique<ProbeIntermediate>(std::move(definition), this);
+  }
+
   if (*type == kPrefIntermediateType) {
     PrefIntermediateDefinition definition;
     base::JSONValueConverter<PrefIntermediateDefinition> converter;
@@ -138,6 +153,16 @@ std::unique_ptr<RemoteMetricIntermediate> RemoteMetric::GetIntermediateInstance(
     }
     return std::make_unique<PrefIntermediate>(
         std::move(definition), local_state_, profile_prefs_, this);
+  }
+
+  if (*type == kTimePeriodEventsIntermediateType) {
+    TimePeriodEventsIntermediateDefinition definition;
+    base::JSONValueConverter<TimePeriodEventsIntermediateDefinition> converter;
+    if (!converter.Convert(config, &definition)) {
+      return nullptr;
+    }
+    return std::make_unique<TimePeriodEventsIntermediate>(std::move(definition),
+                                                          this);
   }
 
   if (*type == kBucketIntermediateType) {
@@ -157,6 +182,15 @@ std::unique_ptr<RemoteMetricIntermediate> RemoteMetric::GetIntermediateInstance(
     }
     return std::make_unique<PercentageIntermediate>(std::move(definition),
                                                     this);
+  }
+
+  if (*type == kValueMapIntermediateType) {
+    ValueMapIntermediateDefinition definition;
+    base::JSONValueConverter<ValueMapIntermediateDefinition> converter;
+    if (!converter.Convert(config, &definition)) {
+      return nullptr;
+    }
+    return std::make_unique<ValueMapIntermediate>(std::move(definition), this);
   }
 
   return nullptr;  // Unknown type
