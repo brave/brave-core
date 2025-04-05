@@ -116,6 +116,10 @@ void BraveWalletHandler::RegisterMessages() {
       "isZCashEnabled", base::BindRepeating(&BraveWalletHandler::IsZCashEnabled,
                                             base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "isZCashShieldedTxEnabled",
+      base::BindRepeating(&BraveWalletHandler::IsZCashShieldedTxEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "isCardanoEnabled",
       base::BindRepeating(&BraveWalletHandler::IsCardanoEnabled,
                           base::Unretained(this)));
@@ -381,6 +385,15 @@ void BraveWalletHandler::IsZCashEnabled(const base::Value::List& args) {
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
                             base::Value(::brave_wallet::IsZCashEnabled()));
+}
+
+void BraveWalletHandler::IsZCashShieldedTxEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(
+      args[0],
+      base::Value(::brave_wallet::IsZCashShieldedTransactionsEnabled()));
 }
 
 void BraveWalletHandler::IsCardanoEnabled(const base::Value::List& args) {

@@ -1354,11 +1354,23 @@
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC" desc="Reset wallet transactions description">
     Clearing transactions may be useful for developers or when clearing state on a local server
   </message>
-  <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
-    Reset and clear wallet data
+  <message name="IDS_SETTINGS_WALLET_RESET_ZCASH_SYNC_STATE_INFO" desc="Reset zcash sync state settings item text">
+    Reset Zcash sync state
+  </message>
+  <message name="IDS_SETTINGS_WALLET_RESET_ZCASH_SYNC_STATE_DESC" desc="Reset zcash sync state settings item description text">
+    Resets Zcash sync progress for all shielded accounts
+  </message>
+  <message name="IDS_SETTINGS_WALLET_RESET_ZCASH_SYNC_STATE_CONFIRMATION" desc="Reset Zcash sync state confirmation message text">
+    Are you sure you want to reset Zcash sync state? Sync progress for all shielded accounts will be dropped. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
+  </message>
+  <message name="IDS_SETTINGS_WALLET_RESET_ZCASH_SYNC_STATE_CONFIRMED" desc="Reset Zcash sync state confirmed message text">
+    Your sync state for Zcash accounts was reset.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION" desc="Reset wallet settings confirmation for resetting transaction info message text">
     Are you sure you want to reset all of your wallet transaction and nonce information? This option is mostly used by developers running a local test server. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
+  </message>
+  <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
+    Reset and clear wallet data
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION" desc="Reset wallet settings confirmation message text">
     Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
