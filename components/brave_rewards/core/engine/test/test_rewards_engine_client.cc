@@ -208,7 +208,8 @@ void TestRewardsEngineClient::Log(const std::string& file,
                                   int32_t line,
                                   int32_t verbose_level,
                                   const std::string& message) {
-  int vlog_level = logging::GetVlogLevelHelper(file);
+  int vlog_level =
+      logging::GetVlogLevelHelper(file.c_str(), strlen(file.c_str()));
 
   if (verbose_level <= vlog_level) {
     logging::LogMessage(file.c_str(), line, -verbose_level).stream() << message;
