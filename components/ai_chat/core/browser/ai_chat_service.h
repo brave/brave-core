@@ -269,6 +269,10 @@ class AIChatService : public KeyedService,
                               const std::string& topic,
                               GetFocusTabsCallback callback);
 
+  void OnGetFocusTabs(
+      GetFocusTabsCallback callback,
+      base::expected<std::vector<std::string>, mojom::APIError> result);
+
   raw_ptr<ModelService> model_service_;
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;

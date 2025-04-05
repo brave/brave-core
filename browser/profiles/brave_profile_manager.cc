@@ -12,6 +12,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/perf/brave_perf_features_processor.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -158,7 +159,12 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   status->UpdateGCMDriverStatus();
 #endif
   brave::URLSanitizerServiceFactory::GetForBrowserContext(profile);
-  misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(profile);
+  auto* profile_metrics =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+          profile);
+  if (profile_metrics) {
+    profile_metrics->GetAIChatMetrics();
+  }
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRServiceFactory::GetForBrowserContext(profile);
 #endif

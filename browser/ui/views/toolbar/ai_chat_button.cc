@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -78,10 +78,17 @@ void AIChatButton::ButtonPressed() {
   // We could use settings for opening full page or panel.
   brave::ShowFullpageChat(base::to_address(browser_));
 
-  ai_chat::AIChatMetrics* metrics =
-      g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
-  CHECK(metrics);
-  metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kToolbarButton);
+  auto* profile_metrics =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+          browser_->profile());
+  if (!profile_metrics) {
+    return;
+  }
+  auto* ai_chat_metrics = profile_metrics->GetAIChatMetrics();
+  if (!ai_chat_metrics) {
+    return;
+  }
+  ai_chat_metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kToolbarButton);
 }
 
 BEGIN_METADATA(AIChatButton)

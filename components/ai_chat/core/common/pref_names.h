@@ -67,6 +67,14 @@ inline constexpr char kBraveChatP3ARateLimitStops[] =
     "brave.ai_chat.p3a_rate_limit_stops";
 inline constexpr char kBraveChatP3AContextLimits[] =
     "brave.ai_chat.p3a_context_limits";
+inline constexpr char kTabFocusP3ATotalTabCountPrefName[] =
+    "brave.ai_chat.p3a_tab_focus_total_tab_count";
+inline constexpr char kTabFocusP3AMaxTabCountPrefName[] =
+    "brave.ai_chat.p3a_tab_focus_max_tab_count";
+inline constexpr char kTabFocusP3ASessionCountPrefName[] =
+    "brave.ai_chat.p3a_tab_focus_session_count";
+inline constexpr char kTabFocusP3ALastUsageTimePrefName[] =
+    "brave.ai_chat.p3a_tab_focus_last_usage_time";
 #if BUILDFLAG(IS_ANDROID)
 inline constexpr char kBraveChatSubscriptionActiveAndroid[] =
     "brave.ai_chat.subscription_active_android";

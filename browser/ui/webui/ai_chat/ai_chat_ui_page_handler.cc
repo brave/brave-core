@@ -14,8 +14,8 @@
 #include "base/functional/callback_forward.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -137,12 +137,16 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver)
     : owner_web_contents_(owner_web_contents),
       profile_(profile),
-      ai_chat_metrics_(
-          g_brave_browser_process->process_misc_metrics()->ai_chat_metrics()),
       receiver_(this, std::move(receiver)) {
   // Standalone mode means Chat is opened as its own tab in the tab strip and
   // not a side panel. chat_context_web_contents is nullptr in that case
   const bool is_standalone = chat_context_web_contents == nullptr;
+  auto* profile_metrics =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+          profile);
+  if (profile_metrics) {
+    ai_chat_metrics_ = profile_metrics->GetAIChatMetrics();
+  }
   if (!is_standalone) {
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
     if (ai_chat_metrics_) {
