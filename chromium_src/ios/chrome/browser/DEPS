@@ -5,6 +5,7 @@ include_rules = [
   "+brave/components/constants",
   "+brave/components/https_upgrade_exceptions/browser",
   "+brave/ios/browser/application_context",
+  "+brave/net/static_redirect_helper",
   "+components/component_updater",
   "+components/gcm_driver/gcm_driver.h",
   "+components/history/core/browser",

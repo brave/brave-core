@@ -12,6 +12,7 @@
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/brave_services_key_helper.h"
 #include "brave/components/constants/network_constants.h"
+#include "brave/net/static_redirect_helper/static_redirect_helper.h"
 
 namespace {
 
@@ -32,5 +33,6 @@ int IOSChromeNetworkDelegate::OnBeforeURLRequest(
     net::CompletionOnceCallback callback,
     GURL* new_url) {
   ::AddBraveServicesKeyHeader(request);
+  brave::StaticRedirectHelper(request->url(), new_url);
   return net::OK;
 }
