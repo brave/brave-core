@@ -37,7 +37,10 @@ export const PortfolioOverviewHeader = () => {
   const history = useHistory()
 
   return isPanel ? (
-    <DefaultPanelHeader title={getLocale('braveWalletTopNavPortfolio')} />
+    <DefaultPanelHeader
+      expandRoute={WalletRoutes.PortfolioAssets}
+      title={getLocale('braveWalletTopNavPortfolio')}
+    />
   ) : (
     <Row
       padding='24px 0px'

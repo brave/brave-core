@@ -426,6 +426,8 @@
   <message name="IDS_BRAVE_WALLET_NOT_CONNECTED" desc="DApp settings panel, account not connected status">Not connected</message>
   <message name="IDS_BRAVE_WALLET_CONNECTED_ACCOUNTS" desc="DApp settings panel, connected accounts list">Connected accounts</message>
   <message name="IDS_BRAVE_WALLET_AVAILABLE_ACCOUNTS" desc="DApp settings panel, available accounts list">Available accounts</message>
+  <message name="IDS_BRAVE_WALLET_CONNECTION" desc="DApp Connection Button">Connection</message>
+  <message name="IDS_BRAVE_WALLET_UNBLOCK" desc="DApp Connection Unblock Button">Unblock</message>
   <message name="IDS_BRAVE_WALLET_PANEL_BLOCKED" desc="Brave Wallet panel blocked status">Blocked</message>
   <message name="IDS_BRAVE_WALLET_TITLE" desc="Brave Wallet Title">Wallet</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_NEW_ACCOUNT" desc="Site Permissions panel add a new account">New account</message>

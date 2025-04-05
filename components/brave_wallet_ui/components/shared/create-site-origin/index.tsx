@@ -23,7 +23,7 @@ export const CreateSiteOrigin = (props: Props) => {
     return (
       <span>
         {before}
-        <b>{eTldPlusOne}</b>
+        <span style={{ fontWeight: 600 }}>{eTldPlusOne}</span>
         {after}
       </span>
     )

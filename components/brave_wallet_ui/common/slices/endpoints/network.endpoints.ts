@@ -145,6 +145,67 @@ export const networkEndpoints = ({
           ? ['UNKNOWN_ERROR']
           : [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
     }),
+    getNetworkForAccountOnActiveOrigin: query<
+      BraveWallet.NetworkInfo | null,
+      {
+        accountId: BraveWallet.AccountId | undefined
+      }
+    >({
+      queryFn: async (args, { endpoint }, _extraOptions, baseQuery) => {
+        const { accountId } = args
+        if (!accountId) {
+          return { data: null }
+        }
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { network } = await api.braveWalletService //
+            .getNetworkForAccountOnActiveOrigin(accountId)
+          return {
+            data: network
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to fetch getNetworkForAccountOnActiveOrigin`,
+            error
+          )
+        }
+      },
+      providesTags: (res, err) =>
+        err
+          ? ['UNKNOWN_ERROR']
+          : [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
+    }),
+    setNetworkForAccountOnActiveOrigin: mutation<
+      /** success */
+      true,
+      {
+        accountId: BraveWallet.AccountId
+        chainId: string
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+
+          api.braveWalletService.setNetworkForAccountOnActiveOrigin(
+            arg.accountId,
+            arg.chainId
+          )
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to setNetworkForAccountOnActiveOrigin',
+            error
+          )
+        }
+      },
+      invalidatesTags: []
+    }),
     getPendingAddChainRequest: query<BraveWallet.AddChainRequest | null, void>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {

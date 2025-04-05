@@ -14,6 +14,8 @@ import {
   useGetAccountInfosRegistryQuery,
   useGetNetworkQuery,
   useGetSelectedAccountIdQuery,
+  useGetSelectedSOLAccountIdQuery,
+  useGetSelectedETHAccountIdQuery,
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
@@ -97,6 +99,32 @@ export const useSelectedAccountQuery = () => {
 
   return {
     isLoading: isLoadingSelectedAccountId || isLoadingAccount,
+    data: selectedAccount
+  }
+}
+
+export const useSelectedSOLAccountQuery = () => {
+  const { data: selectedAccountId, isFetching: isLoadingSelectedSOLAccountId } =
+    useGetSelectedSOLAccountIdQuery()
+
+  const { account: selectedAccount, isLoading: isLoadingAccount } =
+    useAccountQuery(selectedAccountId ?? skipToken)
+
+  return {
+    isLoading: isLoadingSelectedSOLAccountId || isLoadingAccount,
+    data: selectedAccount
+  }
+}
+
+export const useSelectedETHAccountQuery = () => {
+  const { data: selectedAccountId, isFetching: isLoadingSelectedETHAccountId } =
+    useGetSelectedETHAccountIdQuery()
+
+  const { account: selectedAccount, isLoading: isLoadingAccount } =
+    useAccountQuery(selectedAccountId ?? skipToken)
+
+  return {
+    isLoading: isLoadingSelectedETHAccountId || isLoadingAccount,
     data: selectedAccount
   }
 }

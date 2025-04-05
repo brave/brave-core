@@ -67,6 +67,7 @@ import { DevZCash } from './screens/dev-zcash/dev-zcash'
 import {
   PartnersConsentModal //
 } from '../components/desktop/popup-modals/partners_consent_modal/partners_consent_modal'
+import { Connection } from '../components/extension/connection/connection'
 
 export const Container = () => {
   // routing
@@ -208,6 +209,15 @@ export const Container = () => {
           >
             <LockScreen />
           </WalletPageWrapper>
+        </ProtectedRoute>
+
+        <ProtectedRoute
+          path={WalletRoutes.Connection}
+          requirement={!isWalletLocked && !walletNotYetCreated}
+          redirectRoute={defaultRedirect}
+          exact={true}
+        >
+          <Connection />
         </ProtectedRoute>
 
         <ProtectedRoute

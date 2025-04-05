@@ -38,7 +38,8 @@ export function isPersistableSessionRoute(
     route.includes(WalletRoutes.PortfolioNFTAsset) ||
     route.includes(WalletRoutes.PortfolioActivity) ||
     route.includes(WalletRoutes.Market) ||
-    route.includes(WalletRoutes.Explore)
+    route.includes(WalletRoutes.Explore) ||
+    route.includes(WalletRoutes.Connection)
   if (isPanel) {
     return isPersistableInPanel
   }

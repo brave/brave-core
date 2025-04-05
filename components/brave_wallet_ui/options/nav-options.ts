@@ -106,6 +106,12 @@ export const PanelNavOptions: NavOption[] = [
     route: WalletRoutes.Portfolio
   },
   {
+    id: 'connection',
+    name: 'braveWalletConnection',
+    icon: 'link-normal',
+    route: WalletRoutes.Connection
+  },
+  {
     id: 'accounts',
     name: 'braveWalletTopNavAccounts',
     icon: 'user-accounts',

@@ -13,6 +13,7 @@ import TopLayerDark from './assets/top_layer_dark.svg'
 import BottomLayerDark from './assets/bottom_layer_dark.svg'
 import LinesLight from './assets/portfolio_lines_background_light.svg'
 import LinesDark from './assets/portfolio_lines_background_dark.svg'
+import ConnectionDotsBackground from './assets/connection_dots_background.svg'
 
 // Shared Styles
 import { Row } from '../../shared/style'
@@ -298,5 +299,26 @@ export const PortfolioBackgroundWatermark = styled.div`
   left: 0px;
   @media (prefers-color-scheme: dark) {
     background-image: url(${LinesDark});
+  }
+`
+
+export const ConnectionBackgroundColor = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: ${leo.color.container.highlight};
+`
+
+export const ConnectionBackgroundWatermark = styled.div`
+  width: 100%;
+  height: 200px;
+  background-image: url(${ConnectionDotsBackground});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  @media (prefers-color-scheme: dark) {
+    opacity: 0.6;
   }
 `

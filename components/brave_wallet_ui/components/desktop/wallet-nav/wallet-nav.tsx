@@ -8,6 +8,10 @@ import { useLocation, useHistory } from 'react-router-dom'
 import NavigationMenu from '@brave/leo/react/navigationMenu'
 import NavigationItem from '@brave/leo/react/navigationItem'
 
+// Selectors
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
+
 // Utils
 import { getLocale } from '../../../../common/locale'
 
@@ -32,25 +36,22 @@ import {
 } from './wallet-nav.style'
 import { Row, VerticalDivider } from '../../shared/style'
 
-export interface Props {
-  isAndroid: boolean
-}
-
-export const WalletNav = (props: Props) => {
-  const { isAndroid } = props
+export const WalletNav = () => {
+  // UI Selectors (safe)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // routing
   const history = useHistory()
   const { pathname: walletLocation } = useLocation()
 
   // computed
-  const panelOrAndroidNavOptions = isAndroid ? NavOptions : PanelNavOptions
+  const navigationOptions = isPanel ? PanelNavOptions : NavOptions
 
   return (
     <Wrapper>
       <PanelOptionsWrapper>
         <Section>
-          {panelOrAndroidNavOptions.map((option) => (
+          {navigationOptions.map((option) => (
             <WalletNavButton
               option={option}
               key={option.id}
@@ -69,7 +70,7 @@ export const WalletNav = (props: Props) => {
             <WalletLogo />
           </Row>
           <NavigationMenu>
-            {NavOptions.map((option) => (
+            {navigationOptions.map((option) => (
               <NavigationItem
                 key={option.id}
                 icon={option.icon}

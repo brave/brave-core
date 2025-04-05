@@ -79,10 +79,6 @@ std::string NeonEVMNetworkChainName() {
   return NeonEVMNetwork() + " .chainName";
 }
 
-std::string DAppSettingsButton() {
-  return R"([data-test-id='dapp-settings-button'])";
-}
-
 std::string NetworksButton() {
   return R"([data-test-id='select-network-button'])";
 }
@@ -165,7 +161,8 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
 
   void CreateWalletTab() {
     ui_test_utils::NavigateToURLWithDisposition(
-        browser(), GURL(kBraveUIWalletPanelURL),
+        browser(),
+        GURL(std::string(kBraveUIWalletPanelURL) + "crypto/connection"),
         WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     wallet_index_ = browser()->tab_strip_model()->active_index();
@@ -269,9 +266,6 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, InitialUIRendered) {
 #endif
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, MAYBE_HideNetworkInSettings) {
   ActivateWalletTab();
-  // Wait and click on DApp settings button.
-  ASSERT_TRUE(
-      WaitAndClickElement(wallet(), QuerySelectorJS(DAppSettingsButton())));
   // Wait and click on select network button.
   ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 
@@ -291,9 +285,6 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, MAYBE_HideNetworkInSettings) {
   ActivateWalletTab();
   wallet()->GetController().Reload(content::ReloadType::NORMAL, true);
   EXPECT_TRUE(WaitForLoadStop(wallet()));
-  // Wait and click on DApp settings button.
-  ASSERT_TRUE(
-      WaitAndClickElement(wallet(), QuerySelectorJS(DAppSettingsButton())));
   // Wait and click on select network button.
   ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 
@@ -309,9 +300,6 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
   CreateSettingsTab();
 
   ActivateWalletTab();
-  // Wait and click on DApp settings button.
-  ASSERT_TRUE(
-      WaitAndClickElement(wallet(), QuerySelectorJS(DAppSettingsButton())));
   // Wait and click on select network button.
   ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 

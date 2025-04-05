@@ -818,6 +818,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNotConnected", IDS_BRAVE_WALLET_NOT_CONNECTED},
     {"braveWalletConnectedAccounts", IDS_BRAVE_WALLET_CONNECTED_ACCOUNTS},
     {"braveWalletAvailableAccounts", IDS_BRAVE_WALLET_AVAILABLE_ACCOUNTS},
+    {"braveWalletConnection", IDS_BRAVE_WALLET_CONNECTION},
+    {"braveWalletUnblock", IDS_BRAVE_WALLET_UNBLOCK},
     {"braveWalletSitePermissionsNewAccount",
      IDS_BRAVE_WALLET_SITE_PERMISSIONS_NEW_ACCOUNT},
     {"braveWalletPanelBlocked", IDS_BRAVE_WALLET_PANEL_BLOCKED},

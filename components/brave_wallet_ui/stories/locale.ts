@@ -855,6 +855,8 @@ provideStrings({
   braveWalletNotConnected: 'Not connected',
   braveWalletConnectedAccounts: 'Connected accounts',
   braveWalletAvailableAccounts: 'Available accounts',
+  braveWalletConnection: 'Connection',
+  braveWalletUnblock: 'Unblock',
 
   // Transaction Detail Box
   braveWalletTransactionDetailBoxFunction: 'FUNCTION TYPE',
