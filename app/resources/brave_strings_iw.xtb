@@ -389,6 +389,7 @@
 <translation id="3617744907966785605">‏לפי הגדרת הארגון, Brave נסגר אוטומטית כשלא משתמשים בו במשך <ph name="TIMEOUT_DURATION"/>. נתוני הגלישה נמחקו. בין הנתונים שנמחקו: היסטוריה, מילוי אוטומטי והורדות.</translation>
 <translation id="8646609321956191980">‏בכל פרופיל מאוחסנים נתוני Brave משלו כמו סימניות, היסטוריה, סיסמאות ועוד</translation>
 <translation id="6756656512757374876">‏<ph name="BEGIN_LINK"/>מידע נוסף לגבי השמירה על פרטיות הנתונים ב-Brave<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">‏השינויים בהגדרה הזו ייכנסו לתוקף לאחר הפעלה מחדש של Brave.</translation>
 <translation id="2535436634051789953">‏אפשר לעבור לפרופיל Brave אחר כדי לראות סיסמאות</translation>
 <translation id="2312399718665761438">‏Brave שולח את הטקסט שמוקלד בשדות טקסט ל-Brave כדי לתקן שגיאות כתיב</translation>
 <translation id="3507835409099344374">‏מעבר אל הגדרות ההודעות של Brave</translation>

@@ -268,7 +268,6 @@ Nur Personen, die deine Passphrase kennen, können deine verschlüsselten Daten 
 <translation id="2259659629660284697">Passwörter exportieren…</translation>
 <translation id="781982477617612877">Melde dich in deinem Brave-Konto an, um deine Passwörter zu prüfen</translation>
 <translation id="2278052315791335171">Durch das Entfernen dieses Passworts wird dein Konto auf <ph name="SITE"/> nicht gelöscht</translation>
-<translation id="1315014485411054095"><ph name="TAB_TITLE"/>, ausgewählter Inkognitotab</translation>
 <translation id="2286841657746966508">Rechnungsadresse</translation>
 <translation id="228704530595896923">Liste der Freigabeoptionen.</translation>
 <translation id="2287421207599770907">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> Tab ansehen}other{<ph name="TABS_COUNT_MANY"/> Tabs ansehen}}</translation>
@@ -1812,7 +1811,6 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="987264212798334818">Allgemein</translation>
 <translation id="992745192656291733"><ph name="TAB_COUNT"/> Tabs</translation>
 <translation id="996149300115483134">Feedkartenmenü ist geschlossen</translation>
-<translation id="4639461638460276789"><ph name="TAB_TITLE"/>, Inkognitotab</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="79269250264141507">Wenn Sie etwas in die Adressleiste oder das Suchfeld eingeben, sendet Brave Ihre Eingabe an Ihre Standardsuchmaschine, um bessere Vorschläge zu erhalten. Dies ist im Privatmodus deaktiviert.</translation>
 <translation id="5711390076756601471">Sperren Sie private Registerkarten, wenn Sie Brave verlassen</translation>
@@ -1840,6 +1838,8 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="4968908871398201967">Privatmodus</translation>
 <translation id="8448127664493413656">Privatmodus einschalten</translation>
 <translation id="6484416399492735324">Privatmodus verlassen</translation>
+<translation id="4639461638460276789"><ph name="TAB_TITLE"/> Privater Tab</translation>
+<translation id="1315014485411054095"><ph name="TAB_TITLE"/> Ausgewählter privater Tab</translation>
 <translation id="2280910239864711607">Öffnen Sie eine neue Registerkarte im Privatmodus</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE"/> privater Tab}

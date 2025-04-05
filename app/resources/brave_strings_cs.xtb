@@ -392,6 +392,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="3617744907966785605">Když prohlížeč Brave <ph name="TIMEOUT_DURATION"/> není používán, vaše organizace ho zavře. Údaje o prohlížení byly smazány. To může zahrnovat historii, automatické vyplňování a stažené soubory.</translation>
 <translation id="8646609321956191980">V každém profilu jsou uloženy soukromé údaje z Chromia, například záložky, historie, hesla a další</translation>
 <translation id="6756656512757374876"><ph name="BEGIN_LINK"/>Další informace o tom, jak prohlížeč Brave uchovává vaše data v soukromí<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">Změny tohohle nastavení se projeví po restartování prohlížeče Brave.</translation>
 <translation id="2535436634051789953">Přepnutím můžete zobrazit hesla z jiného profilu Brave</translation>
 <translation id="2312399718665761438">Text zadaný do textových polí odesílá Brave kvůli opravě pravopisných chyb do Googlu</translation>
 <translation id="3507835409099344374">Přejít na nastavení oznámení prohlížeče Brave</translation>

@@ -393,6 +393,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="3617744907966785605">Organisationen avslutar Brave när det inte har använts på <ph name="TIMEOUT_DURATION"/>. Webbinformation har raderats. Detta kan innefatta historik, autofyll och nedladdningar.</translation>
 <translation id="8646609321956191980">I alla profiler sparas egen Brave-information som bokmärken, historik, lösenord och annat</translation>
 <translation id="6756656512757374876">Läs mer om <ph name="BEGIN_LINK"/>hur Brave skyddar din data<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">Ändringar av den här inställningen tillämpas när Brave startas om.</translation>
 <translation id="2535436634051789953">Du kan byta för att se lösenord från en annan Brave-profil</translation>
 <translation id="2312399718665761438">Brave skickar det du skriver i textfält till Brave för att kontrollera stavningen</translation>
 <translation id="3507835409099344374">Öppna aviseringsinställningarna för Brave</translation>

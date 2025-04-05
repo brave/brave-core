@@ -232,7 +232,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="2082238445998314030"><ph name="TOTAL_RESULTS"/> sonuçtan <ph name="RESULT_NUMBER"/> numaralı sonuç</translation>
 <translation id="8992364521253636633">Otomatik doldurma kurulumunu tamamlamak için Brave'u şimdi yeniden başlatın. Sekmeleriniz otomatik olarak yeniden açılır.</translation>
 <translation id="2091863218454846791">Kompakt görünüm gösteriliyor</translation>
-<translation id="2093731487903423814">son 15 dakika</translation>
+<translation id="2093731487903423814">Son 15 dakika</translation>
 <translation id="2100273922101894616">Otomatik Oturum Aç</translation>
 <translation id="2109384632594340939">profil resmi</translation>
 <translation id="2111511281910874386">Sayfaya gidin</translation>
@@ -620,7 +620,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="3924911262913579434"><ph name="SAFE_BROWSING_MODE"/> açık</translation>
 <translation id="3927692899758076493">Sans Serif</translation>
 <translation id="3928666092801078803">Verilerimi birleştir</translation>
-<translation id="3931947361983910192">son 4 hafta</translation>
+<translation id="3931947361983910192">Son 4 hafta</translation>
 <translation id="3932390316856284148">Oturum açma alt sayfası tam ekranda açıldı.</translation>
 <translation id="393697183122708255">Kullanılabilir etkin sesli arama yok</translation>
 <translation id="3950820424414687140">Oturum açın</translation>
@@ -738,7 +738,7 @@ Sadece parolanıza sahip olan kişiler şifrelenmiş verilerinizi okuyabilir. Pa
 <translation id="1664855196866195614">Seçilen veriler Brave'dan ve senkronize edilen cihazlarınızdan kaldırıldı.
 
 Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabınızla ilişkili başka biçimlerde tarama geçmişi <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> adresinde bulunabilir.</translation>
-<translation id="4523326818319942067">son saat</translation>
+<translation id="4523326818319942067">Son bir saat</translation>
 <translation id="452750746583162491">Senkronize edilmiş verilerinizi inceleyin</translation>
 <translation id="4532845899244822526">Klasör seçin</translation>
 <translation id="4535755320005483982">Paylaşılan <ph name="GROUP_TITLE"/> sekme grubu</translation>
@@ -902,7 +902,7 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="5233638681132016545">Yeni sekme</translation>
 <translation id="5235196193381275927">Oturum açılırken bir hata oluştu</translation>
 <translation id="5246093389635966745">Araç çubuğu düzenleme kısayolu</translation>
-<translation id="5264813352784073502">son 24 saat</translation>
+<translation id="5264813352784073502">Son 24 saat</translation>
 <translation id="5267572070504076962">Tehlikeli sitelere karşı korunmak için Güvenli Tarama'yı etkinleştirin</translation>
 <translation id="5271967389191913893">Cihaz, indirilecek içeriği açamıyor.</translation>
 <translation id="5273031377282080577">Bu ayar, yöneticiniz tarafından yönetilir.</translation>
@@ -917,7 +917,7 @@ Diğer Brave hizmetlerinden yapılan aramalar ve etkinlikler gibi Brave hesabın
 <translation id="5326246328175179736">Bu hesabı kullanarak oturum açamazsınız</translation>
 <translation id="5328542107300944283"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ile kullanın</translation>
 <translation id="5342314432463739672">İzin istekleri</translation>
-<translation id="534580735623577507"><ph name="TIME_PERIOD"/> itibarıyla ziyaret edilen site yok</translation>
+<translation id="534580735623577507"><ph name="TIME_PERIOD"/> içinde ziyaret edilen site yok</translation>
 <translation id="5355191726083956201">Gelişmiş Koruma açık</translation>
 <translation id="5375374982898812658">"<ph name="GROUP_NAME"/>" sekme grubuna erişiminizi anında kaybedersiniz ve grup tüm cihazlarınızdan silinir</translation>
 <translation id="5375577065097716013">Google Lens ile görsel ara <ph name="BEGIN_NEW"/>Yeni<ph name="END_NEW"/></translation>
@@ -1448,7 +1448,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="7638584964844754484">Yanlış parola</translation>
 <translation id="7646499124171960488">Sizi herkese açık güvensiz sitelerle ilgili uyarır</translation>
 <translation id="7646772052135772216">Şifre senkronizasyonu çalışmıyor</translation>
-<translation id="7655240423373329753">son 7 gün</translation>
+<translation id="7655240423373329753">Son 7 gün</translation>
 <translation id="7656721520530864426">Site yok</translation>
 <translation id="7658239707568436148">İptal</translation>
 <translation id="7663320421139257046"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>, devam etmek için <ph name="FIELDS_STRING"/> bilgilerinizi bu siteyle paylaşacak. Bu sitenin <ph name="BEGIN_LINK1"/>Gizlilik Politikası<ph name="END_LINK1"/>'nı inceleyin.</translation>
@@ -1550,7 +1550,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>hesabınızdaki Brave veril
 <translation id="6213630783726251371">Geçmişinizin bir kısmı burada görünmeyebilir. Tüm Brave geçmişinizi görmek için Brave geçmişinin tamamını açın. Brave Hesabınızın <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> adresinde başka biçimlerde tarama geçmişi olabilir.</translation>
 <translation id="8088176524274673045">Yakınlardaki kişilerle paylaşmak için bu QR Kodunu taramalarını sağlayın</translation>
 <translation id="8090732854597034573">Yardıma ihtiyacınız olursa ebeveyninize sorun</translation>
-<translation id="8101414242770404289"><ph name="TIME_PERIOD"/> itibarıyla sekme yok</translation>
+<translation id="8101414242770404289"><ph name="TIME_PERIOD"/> içinde açılan sekme yok</translation>
 <translation id="3249150807062904185">Devam ederek <ph name="BEGIN_TOS_LINK"/>Hizmet Şartları<ph name="END_TOS_LINK"/>'nı kabul etmiş olursunuz.\nBrave, uygulamanın iyileştirilmesine yardımcı olmak için kullanım ve kilitlenme verilerini Brave'a gönderir. <ph name="BEGIN_UMA_LINK"/>Yönet<ph name="END_UMA_LINK"/></translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8107530384992929318">Sıralama seçeneklerini kapat</translation>

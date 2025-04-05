@@ -392,6 +392,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles et les modificat
 <translation id="3617744907966785605">Votre organisation ferme Brave lorsqu'il n'est pas utilisé pendant <ph name="TIMEOUT_DURATION"/>. Les données de navigation ont été supprimées. Cela peut inclure l'historique, le remplissage automatique et les téléchargements.</translation>
 <translation id="8646609321956191980">Chaque profil Brave contient ses propres données, comme les favoris, l'historique, les mots de passe, etc.</translation>
 <translation id="6756656512757374876">En savoir plus sur la <ph name="BEGIN_LINK"/>manière dont Brave préserve la confidentialité de vos données<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">Les modifications apportées à ce paramètre seront appliquées une fois que Brave aura redémarré.</translation>
 <translation id="2535436634051789953">Vous pouvez passer à un autre profil Brave pour voir les mots de passe</translation>
 <translation id="2312399718665761438">Pour corriger les fautes d'orthographe, Brave envoie le texte que vous entrez dans des zones de texte à Brave</translation>
 <translation id="3507835409099344374">Accéder aux paramètres de notification Brave</translation>

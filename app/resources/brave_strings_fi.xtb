@@ -391,6 +391,7 @@
 <translation id="3617744907966785605">Kun Brave on ollut käyttämättömänä <ph name="TIMEOUT_DURATION"/>, organisaatiosi sulkee sen. Selausdata on poistettu. Data voi sisältää historian, automaattisen täytön ja lataukset.</translation>
 <translation id="8646609321956191980">Jokainen profiili sisältää omat Brave-tietonsa, esim. kirjanmerkit, historian ja salasanat</translation>
 <translation id="6756656512757374876">Lue lisää siitä, <ph name="BEGIN_LINK"/>miten Brave pitää datasi yksityisenä<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">Asetukseen tehdyt muutokset tulevat voimaan, kun Brave käynnistetään uudelleen.</translation>
 <translation id="2535436634051789953">Voit vaihtaa profiilia nähdäksesi toisen Brave-profiilin salasanat</translation>
 <translation id="2312399718665761438">Brave lähettää kenttiin kirjoittamasi tekstin Bravelle oikeinkirjoitusvirheiden korjaamiseksi.</translation>
 <translation id="3507835409099344374">Siirry Bravein ilmoitusasetuksiin</translation>

@@ -11721,8 +11721,10 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
     }</translation>
 <translation id="4304377874648098617">Ste v režime inkognito</translation>
 <translation id="5749925632993910318">{0, plural,
-      =1 {Zavrieť súkromné}
-      other {Zavrieť súkromné (# okná)}
+      one {}
+      few {Zavrieť súkromné (# okná)}
+      many {Zavrieť súkromné (# okien)}=1 {Zavrieť súkromné}
+      other {Zavrieť súkromné (# okien)}
     }</translation>
 <translation id="7253003527666031200">Ďalšie nástroje na zlepšenie prístupnosti nájdete v internetovom obchode</translation>
 <translation id="5832813618714645810">Profily</translation>

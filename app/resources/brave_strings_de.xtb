@@ -390,6 +390,7 @@
 <translation id="3617744907966785605">In deiner Organisation wird Brave nach <ph name="TIMEOUT_DURATION"/> Inaktivität geschlossen. Browserdaten wurden gelöscht. Dazu können der Verlauf, Autofill-Daten und Downloads gehören.</translation>
 <translation id="8646609321956191980">In jedem Profil sind eigene Brave-Daten wie zum Beispiel Lesezeichen, Verlauf und Passwörter enthalten</translation>
 <translation id="6756656512757374876"><ph name="BEGIN_LINK"/>Weitere Informationen zum Datenschutz bei Brave<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">Änderungen an dieser Einstellung werden nach dem Neustart von Brave übernommen.</translation>
 <translation id="2535436634051789953">Wenn du das Profil wechselst, kannst du dir Passwörter anderer Brave-Profile anzeigen lassen</translation>
 <translation id="2312399718665761438">Zur Behebung von Tippfehlern sendet Brave eingegebenen Text an Brave</translation>
 <translation id="3507835409099344374">Zu Brave-Benachrichtigungseinstellungen wechseln</translation>

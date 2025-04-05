@@ -390,6 +390,7 @@
 <translation id="3617744907966785605"><ph name="TIMEOUT_DURATION"/> 使用しなかったため、Brave は組織によって終了されます。閲覧データは削除されました。これには、履歴、自動入力、ダウンロードが含まれます。</translation>
 <translation id="8646609321956191980">Brave の情報（ブックマーク、履歴、パスワードなど）はプロフィールごとに分けて保持されます</translation>
 <translation id="6756656512757374876"><ph name="BEGIN_LINK"/>Brave でユーザーデータのプライバシーを保護する方法<ph name="END_LINK"/>についての詳細</translation>
+<translation id="3556601443414636547">この設定の変更内容は、Brave を再起動すると適用されます。</translation>
 <translation id="2535436634051789953">別の Brave プロフィールに切り替えて、そのプロフィールのパスワードを表示できます</translation>
 <translation id="2312399718665761438">スペルミスを修正するために、テキスト欄に入力したテキストが Brave から Brave に送信されます</translation>
 <translation id="3507835409099344374">Brave の通知設定に移動</translation>

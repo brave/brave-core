@@ -401,6 +401,7 @@
 <translation id="3617744907966785605">您的機構會在 Brave 閒置 <ph name="TIMEOUT_DURATION"/>後將其關閉。瀏覽資料已刪除，當中可能包括記錄、自動填入資料和下載檔案。</translation>
 <translation id="8646609321956191980">每個設定檔都會保存本身專屬的 Brave 資料，例如書籤、記錄、密碼等</translation>
 <translation id="6756656512757374876">進一步瞭解 <ph name="BEGIN_LINK"/>Brave 如何確保你的資料保密<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">此設定變更會在 Brave 重新啟動後套用。</translation>
 <translation id="2535436634051789953">您可切換查看其他 Brave 個人檔案的密碼</translation>
 <translation id="2312399718665761438">為修正拼字錯誤，Brave 會將您在文字欄中輸入的文字傳送給 Brave</translation>
 <translation id="3507835409099344374">前往 Brave 通知設定</translation>

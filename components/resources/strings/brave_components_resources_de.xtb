@@ -941,6 +941,8 @@
 <translation id="2399555431746923964">BTC Testnet-Guthaben speichern</translation>
 <translation id="8749751940551938347">ZEC-Assets speichern</translation>
 <translation id="3451958544919449297">ZEC Testnet-Assets speichern</translation>
+<translation id="8459631690385393533">Cardano-Assets speichern</translation>
+<translation id="4915057812371523845">Cardano-Testnet-Assets speichern</translation>
 <translation id="8500387257977999003">Privater Schlüssel <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">importieren</translation>
 <translation id="232925166623833246">Import aus Hardware-Wallet</translation>
@@ -1185,6 +1187,11 @@
 <translation id="4667144295226514387">Gaslimit fehlt</translation>
 <translation id="2021522108838444624">Der Betrag muss größer als 0 sein</translation>
 <translation id="8464365289405373974">Eine Adresse ist erforderlich</translation>
+<translation id="6449503919127419230">Falsche transparente Adresse</translation>
+<translation id="3778662247272439818">Netzwerkfehlanpassung</translation>
+<translation id="1170025316306464310">Falsches vereinheitlichtes Adressformat</translation>
+<translation id="8380483120683767377">Der Orchard-Teil fehlt</translation>
+<translation id="1536211570215515174">Der transparente Teil fehlt</translation>
 <translation id="8585995109882455949">Wie finde ich die richtige Adresse?</translation>
 <translation id="105524480632150318">Brave verhindert, dass Nutzer aufgrund von fehlerhafter Klein- und Großschreibung Beträge an die falsche Adresse schicken. Stellen Sie sicher, dass es sich um die richtige Adresse handelt, indem Sie die Anweisungen unten befolgen.</translation>
 <translation id="4583433813614292221">1. Website aufrufen</translation>
@@ -1338,6 +1345,8 @@
 <translation id="7694836973509310467">Bridging</translation>
 <translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> auf <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="6934057383578424432">Es gab einen Fehler beim Versuch <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> zu <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="4916833841663290382">Abschirmung <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT_AFTER"/></translation>
+<translation id="6216364770732957499"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> wurde abgeschirmt</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.} 
 other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
@@ -1735,7 +1744,9 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="4438043733494739848">Transparent</translation>
 <translation id="1950406774300125954">Keine Synchronisation</translation>
 <translation id="68413355604013935">Außer Synchronisation (<ph name="BLOCKS"/> Blöcke im Rückstand)</translation>
+<translation id="1724354250024376254">Ausstehendes Guthaben (mehr Bestätigungen erforderlich): <ph name="FUNDS"/></translation>
 <translation id="1597233669965903034">Synchronisiere dein Konto, um die neuesten Transaktionen und den Kontostand anzuzeigen.</translation>
+<translation id="3609785682760573515">Synchronisiere...</translation>
 <translation id="7499262814309712782">Konto synchronisieren</translation>
 <translation id="2804568727504456403">Synchronisiere <ph name="ACCOUNT"/></translation>
 <translation id="813913629614996137">Wird initialisiert…</translation>
@@ -1747,6 +1758,15 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="7714298753782862705">Synchronisierung abgeschlossen. Du kannst dieses Fenster jetzt schließen.</translation>
 <translation id="7716113567047550378">Bitte schließe dieses Fenster nicht, bis die Synchronisierung abgeschlossen ist.</translation>
 <translation id="5123590959308755060">Fahre fort, dein Wallet in einem neuen Tab zu verwenden.</translation>
+<translation id="4594014034647546191">Shield-Konto-Geburtsblock</translation>
+<translation id="6666784075827260119">Das Geburtsdatum des Kontos muss größer sein als <ph name="BLOCK_NUMBER"/></translation>
+<translation id="3102477628835823956">Das Geburtsdatum des Kontos muss kleiner sein als <ph name="BLOCK_NUMBER"/></translation>
+<translation id="6850229669854962550"><ph name="BLOCKS"/> Blöcke hinter</translation>
+<translation id="7747318989577709780">Das Konto wird synchronisiert</translation>
+<translation id="9086302186042011942">Synchronisierung läuft.</translation>
+<translation id="99991973626409495">Überprüfe Shields</translation>
+<translation id="3114681061018999547">Abschirmung</translation>
+<translation id="8897189056319316783">Shielding ZEC</translation>
 <translation id="7144878232160441200">Erneut versuchen</translation>
 <translation id="9094621390791852268">Vorschau der Transaktion fehlgeschlagen.</translation>
 <translation id="4982713341035600933">Geschätzte Änderung des Guthabens</translation>
@@ -2074,6 +2094,8 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="4885527781814382758">Brave Leo ist ein privater AI-Smart-Assistant, der deine Internetnutzung verbessert. Leo ist kostenlos mit eingeschränktem Zugang. Brave Leo Premium bietet mehr Modelle, höhere Limits und gewährt Abonnenten frühen Zugriff auf neue Funktionen. Das Standardmodell wird von Zeit zu Zeit geändert. Weitere Details findest du im <ph name="LINK_BEFORE"/>Brave Help Center<ph name="LINK_AFTER"/>.</translation>
 <translation id="7189603330209995455">Wenn Sie Leo eine Frage stellen, kann er standardmäßig den Inhalt der von Ihnen angezeigten Webseite oder jeden Text, den Sie auf einer Seite markieren, an Brave Leo senden und verwenden, um eine Antwort zu geben. Die Richtigkeit der Antworten ist nicht garantiert und kann ungenaue, irreführende oder falsche Informationen enthalten. Leo verwendet die Daten der Brave-Suche, um die Qualität der Antworten zu verbessern. Geben Sie keine sensiblen oder privaten Daten ein und seien Sie vorsichtig bei Antworten, die sich auf Gesundheit, Finanzen, persönliche Sicherheit oder ähnliches beziehen. Sie können die Optionen von Leo in den Einstellungen jederzeit anpassen. Gehen Sie dazu zu Einstellungen &gt; Leo.</translation>
 <translation id="3038772045018370764">Leo sammelt keine Identifikatoren wie Ihre IP-Adresse, die mit Ihnen in Verbindung gebracht werden können. Es werden keine Daten verwendet, um die KI-Modelle zu trainieren. Die KI-Modelle speichern keine persönlichen Daten (außer Anthropic, das Daten 30 Tage lang speichert, bevor es sie löscht). Weitere Informationen finden Sie in der <ph name="LINK_BEFORE"/>Datenschutzrichtlinie<ph name="LINK_AFTER"/>.</translation>
+<translation id="6961721183181597848">Wie kann ich dir heute helfen?</translation>
+<translation id="2966135729673253768">Folgefrage stellen</translation>
 <translation id="4524675003624341892">Fragen vorschlagen …</translation>
 <translation id="4567071417854988869">Dieses Video zusammenfassen</translation>
 <translation id="7921782882718083488">Diese Seite zusammenfassen</translation>
@@ -2086,6 +2108,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="7905602379229309187">Es scheint, dass der Endpunkt momentan überlastet ist. Bitte versuche es später noch einmal.</translation>
 <translation id="8151638057146502721">Konfiguriere</translation>
 <translation id="4177458398826096846">Hallo, ich bin Leo. Ich bin ein vollständig gehosteter KI-Assistent von Brave. Ich laufe auf Llama 3.1 8B, einem Modell, das von Meta entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="5252251845674154807">Hallo, ich bin Leo. Ich bin ein vollständig gehosteter KI-Assistent von Brave. Ich werde von Qwen 14B betrieben, einem Modell, das von Alibaba Cloud entwickelt wurde, um leistungsfähig und für viele Anwendungsfälle geeignet zu sein. <ph name="LINK_BEFORE"/>Lerne mehr<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hallo, ich bin Leo. Ich bin ein vollständig gehosteter KI-Assistent von Brave. Ich laufe auf Mixtral 8x7B, einem Modell, das von Mistral AI für fortgeschrittene Aufgaben entwickelt wurde. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hallo, ich bin Leo. Ich bin ein Proxy von Brave und laufe auf Claude Instant, einem von Anthropic entwickeltem Modell, um Konversations- und Textverarbeitungsaufgaben zu unterstützen. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="2001874998841390450">Hallo, ich bin Leo! Ich werde von Brave vermittelt und von Claude Haiku betrieben, einem Modell von Anthropic, das für Konversations- und Textverarbeitungsaufgaben entwickelt wurde. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
@@ -2158,7 +2181,12 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="4370698775470316661">Diese Unterhaltung ist zu lang und kann nicht fortgesetzt werden. Möglicherweise gibt es andere Modelle, mit denen Leo auch über längere Unterhaltungen richtige Antworten geben kann.</translation>
 <translation id="5719170755629028558">Ihre Antworten werden mithilfe der Brave-Suche verbessert …</translation>
 <translation id="5794962229997281366">Es wird nach besseren Antworten für „<ph name="SEARCH_TERMS"/>“ gesucht</translation>
+<translation id="7307396647043599949"><ph name="COUNT"/> Mehr...</translation>
 <translation id="8103700533980268469">Diese Mitteilung schließen</translation>
+<translation id="3417835166382867856">Tabs durchsuchen</translation>
+<translation id="9090243919347147717">Anhänge</translation>
+<translation id="4444978378117903684">Füge deine Browser-Tabs hinzu, um Leo mehr Kontext für das Gespräch zu geben</translation>
+<translation id="4300920590112551536">Browser-Tabs</translation>
 <translation id="2315654674554095762">Leo merkt sich jetzt deine Unterhaltungen, damit du zu ihnen zurückkehren kannst. Sie werden verschlüsselt auf deinem Gerät gespeichert, und du kannst sie jederzeit löschen.</translation>
 <translation id="7821251979960635244">Dein Konversationsverlauf wird hier angezeigt, sobald du eine Konversation beginnst.</translation>
 <translation id="887511360213807449">Verlauf ist deaktiviert</translation>
@@ -2168,6 +2196,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="3185367320601718531">Unterhaltung und Textgenerierung</translation>
 <translation id="7979673624064378842">Blitzschneller Chat</translation>
 <translation id="2836330653441111204">Ausgeglichene Geschwindigkeit und Intelligenz</translation>
+<translation id="6695329447007213917">Allzweck-Chat, Codierung und mehr</translation>
 <translation id="3965507912994218570">Leo-Einstellungen</translation>
 <translation id="1037324977127422019">Hallo, ich bin Leo!</translation>
 <translation id="8930348081963284873">Ein intelligenter KI-Assistent, der direkt in den Browser integriert ist.</translation>
@@ -2397,5 +2426,6 @@ Lassen Sie uns gemeinsam eine Verbindung herstellen!</translation>
 <translation id="1538335063514960365">„Hier öffnen“-Schaltfläche. Drücken Sie Eingabe, um diese URL im aktuellen Tab zu öffnen
     und nicht zum bestehenden Tab zu wechseln.</translation>
 <translation id="451189393813405346">Leo fragen</translation>
+<translation id="1602850501393095406">Drücke ↑, um hervorzuheben</translation>
 <translation id="8525248723479742219">Später abspielen</translation>
 </translationbundle>

@@ -591,7 +591,7 @@ Solo alguien con tu frase de contraseña puede leer los datos encriptados. Brave
 <translation id="3771290962915251154">Se inhabilitó esta configuración porque los controles parentales están activados</translation>
 <translation id="1138681184697033370">Condiciones del Servicio de Brave</translation>
 <translation id="3775705724665058594">Enviar a tus dispositivos</translation>
-<translation id="3777796259512476958">Saldrás de la mayoría de los sitios.</translation>
+<translation id="3777796259512476958">Se cerrará tu sesión en la mayoría de los sitios.</translation>
 <translation id="3243177302419415164">El Administrador de contraseñas de Brave dejará de funcionar en este dispositivo</translation>
 <translation id="3791957072666773229">{TAB_COUNT,plural, =1{1 pestaña}other{# pestañas}}</translation>
 <translation id="3795154175078851242">Copiar imagen con el vínculo</translation>
@@ -976,7 +976,7 @@ Es posible que tu cuenta de Brave tenga otros formularios de historial de navega
 <translation id="5626134646977739690">Nombre:</translation>
 <translation id="5628604359369369630">Sin leer - Disponible sin conexión</translation>
 <translation id="5631483240431073854">Administrar pestañas abiertas</translation>
-<translation id="3801854459269566477">Es posible que el <ph name="BEGIN_LINK1"/>historial de búsqueda<ph name="END_LINK1"/> y <ph name="BEGIN_LINK2"/>otras formas de actividad<ph name="END_LINK2"/> se guarden en tu Cuenta de Brave.</translation>
+<translation id="3801854459269566477">Es posible que el <ph name="BEGIN_LINK1"/>historial de búsqueda<ph name="END_LINK1"/> y <ph name="BEGIN_LINK2"/>otras formas de actividad<ph name="END_LINK2"/> se guarden en tu Cuenta de Brave</translation>
 <translation id="5648166631817621825">Últimos 7 días</translation>
 <translation id="5655963694829536461">Buscar tus descargas</translation>
 <translation id="5657871969392618475">Tu información está protegida con un bloqueo de perfil</translation>

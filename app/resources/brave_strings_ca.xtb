@@ -391,6 +391,7 @@
 <translation id="3617744907966785605">La teva organització tanca Brave quan no s'utilitza durant <ph name="TIMEOUT_DURATION"/>. Les dades de navegació s'han suprimit. Això pot incloure l'historial, les dades d'Emplenament automàtic i les baixades.</translation>
 <translation id="8646609321956191980">Cada perfil conserva la seva pròpia informació de Brave, com ara les adreces d'interès, l'historial, les contrasenyes i més</translation>
 <translation id="6756656512757374876">Més informació sobre <ph name="BEGIN_LINK"/>com Brave manté la privadesa de les teves dades<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">Els canvis en aquesta opció de configuració s'aplicaran quan Brave es reiniciï.</translation>
 <translation id="2535436634051789953">Pots canviar de perfil per veure les contrasenyes d'un altre perfil de Brave</translation>
 <translation id="2312399718665761438">Per corregir els errors d'ortografia, Brave envia a Brave el que escrius als camps de text</translation>
 <translation id="3507835409099344374">Ves a la configuració de notificacions de Brave</translation>

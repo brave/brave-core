@@ -36,7 +36,6 @@
 <translation id="6570689355868013775">Brave xavfsizlik vositalari</translation>
 <translation id="6198411733024382246">Ayrim maʼlumotlar Brave hisobingizda saqlanishi va barcha qurilmalarda ishlatilishidan avval Brave shaxsingizni tasdiqlashi kerak. Hisobdan chiqsangiz, bu maʼlumotlar qurilmada saqlanib qoladi.</translation>
 <translation id="1902837727299679178">Brave Parollar menejeri maʼlumotlarini oʻchirmoqchi. Ruxsat berish uchun Windows parolingizni kiriting.</translation>
-<translation id="552349673358711446">{COUNT,plural, =0{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni talab qilmoqda}=1{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni talab qilmoqda Inkognito oynalar qayta ochilmaydi.}other{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni talab qilmoqda # ta inkognito oyna qayta ochilmaydi.}}</translation>
 <translation id="4449148723378534338">Brave ichida asosiy maxfiylik va xavfsizlik boshqaruvini tekshiring</translation>
 <translation id="1640672724030957280">Yuklab olinmoqda...</translation>
 <translation id="1709772298389099340"><ph name="BROWSER_NAME"/> brauzeriga imtiyozli ruxsatlar beradi.</translation>
@@ -48,7 +47,6 @@
 <translation id="9048361966237194186">Brave <ph name="REMAINING_TIME"/>dan keyin qayta ishga tushadi</translation>
 <translation id="5524150602137990006">HTTPS mavjud boʻlmasa, Brave sizni ogohlantirmasdan himoyalanmagan ulanishdan foydalanadi.</translation>
 <translation id="6797402139308059782">Brave fonda ishlashiga ruxsat</translation>
-<translation id="1448049584457347995">Ma’lumotlaringiz xavfsizligini ta’minlash maqsadida ayrim kengaytmalarni o‘chirib qo‘ydik, chunki <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>‘da ular haqida hech qanday ma’lumot yo‘q (ya’ni, ular sizning ruxsatingizsiz o‘rnatilgan bo‘lishi mumkin).</translation>
 <translation id="5875673934455379806">Brave brauzerini qayta o‘rnatish</translation>
 <translation id="4529028207655448215">Brave buni bajarmoqchi: <ph name="AUTHENTICATION_PURPOSE"/></translation>
 <translation id="1838374766361614909">Qidiruv shartlarini tozalash</translation>
@@ -162,7 +160,6 @@
 <translation id="5949068186379578553">Ekranni ulashish uchun tizim sozlamalarida Brave uchun ekranni yozib olishga ruxsat bering.</translation>
 <translation id="4805806622840861220">Brave’ni qayta ishga tushiring</translation>
 <translation id="3161522574479303604">Barcha tillar</translation>
-<translation id="6554952862405000915">Havolani Brave &amp;inkognito oynasida ochish</translation>
 <translation id="1742948938503172561">Yangi Brave profilini moslash</translation>
 <translation id="4805865169608137960">Bravedan Brave hisobini olib tashlash uchun Sozlamalar orqali hisobdan chiqing</translation>
 <translation id="2585240446624043880">Brave o‘z jildidan ma’lumotlarni o‘qib yoki yozib ololmadi: <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -187,11 +184,9 @@
 <translation id="691208314680168371">Bu qurilmada Brave orqali siz kirgan saytlar tarixidagi qaydlar.</translation>
 <translation id="3597003331831379823">Kengaytirilgan ruxsatlar bilan sozlash ishga tushmadi. <ph name="METAINSTALLER_ERROR"/></translation>
 <translation id="3066805437003400520">Bu foydalanuvchi brauzerining tarixi ushbu qurilmadan butunlay tozalanadi. Axborotlarni tiklash uchun brauzerga <ph name="USER_EMAIL"/> sifatida kiring.</translation>
-<translation id="8274659559228306809">{COUNT,plural, =0{Brave uchun yangilanish mavjud va brauzer qayta ishga tushirilganda oʻrnatiladi.}=1{Brave uchun yangilanish mavjud va brauzer qayta ishga tushirilganda oʻrnatiladi. Inkognito oynalar qayta ochilmaydi.}other{Brave uchun yangilanish mavjud va brauzer qayta ishga tushirilganda oʻrnatiladi. # ta inkognito oyna qayta ochilmaydi.}}</translation>
 <translation id="7029305463989165490"><ph name="ORIGIN"/> orqali Android telefoningizga raqam yuborish uchun ikkala qurilmada Brave hisobingizga kiring.</translation>
 <translation id="3667616615096815454">Oʻrnatilmadi, ilova serverga nomaʼlum.</translation>
 <translation id="4304059894777924102">Brave parollaringizni tekshira olmadi. Internet aloqasini tekshiring.</translation>
-<translation id="3829358914761176693">{COUNT,plural, =0{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni soʻramoqda}=1{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni soʻramoqda Inkognito oynalar qayta ochilmaydi.}other{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni soʻramoqda # ta inkognito oyna qayta ochilmaydi.}}</translation>
 <translation id="1807774211756215222">Havolani yangi Brave oynasida ochish</translation>
 <translation id="387105482057676379">Brave va boshqa Brave xizmatlarini moslashtirish kabi maqsadlarda ulang</translation>
 <translation id="3867175562099983425">Brave profillarini boshqaring</translation>
@@ -205,7 +200,6 @@
 <translation id="7130675370997202556">Brave‘ga kirish uchun o‘z ismingiz ustiga bosing.</translation>
 <translation id="3892148308691398805">Matnni nusxalash</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> allaqachon ushbu Brave profiliga kirgan. Internetni alohida kezish uchun Brave siz uchun alohida profil yaratadi.</translation>
-<translation id="6184592406110188164">Bu kengaytma Brave Web Store qoidalariga mos emas va xavfli boʻlishi mumkin. Ochilgan saytlarda shaxsiy axborot kabi maʼlumotlarni koʻrishi va oʻzgartirishini tugatish uchun uni Bravedan olib tashlang.</translation>
 <translation id="3941890832296813527">Oʻrnatishda xato: Oʻrnatish vositasi fayl nomi yaroqsiz yoki ishlamaydi.</translation>
 <translation id="8090497651549769448">Brave parollarni nusxalashga urinmoqda. Ruxsat berish uchun Windows parolingizni kiriting.</translation>
 <translation id="4256965182800026277">Brave hisobingizga saqlangan parollar, toʻlov usullari va manzillar bu qurilmadan olib tashlanadi. Ularni Braveda yana ishlatish uchun hisobingizga kiring.</translation>
@@ -219,7 +213,6 @@
 <translation id="4050175100176540509">So‘nggi versiyada himoya devori yaxshilandi va yangi funksiyalar qo‘shildi.</translation>
 <translation id="4055805654398742145">Parollar menejeri</translation>
 <translation id="6217792792122501564">{COUNT,plural, =1{Brave 1 daqiqa ishlatilmasa, tashkilot avtomatik ravishda yopadi. Brauzerning ishlashi haqida axborot oʻchiriladi. Bunga tarix, avtomatik kiritish va yuklanmalar kirishi mumkin.}other{Brave # daqiqa ishlatilmasa, tashkilot avtomatik ravishda yopadi. Brauzerning ishlashi haqida axborot oʻchiriladi. Bunga tarix, avtomatik kiritish va yuklanmalar kirishi mumkin.}}</translation>
-<translation id="2589970573128789862">Brave Inkognito</translation>
 <translation id="5794951150713244901">Brave haqida sahifasini oching</translation>
 <translation id="4148957013307229264">O‘rnatilmoqda..</translation>
 <translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Tarmoqqa kirish - Brave</translation>
@@ -261,7 +254,6 @@
 <translation id="300669147395456190">Brave ilovalari</translation>
 <translation id="4970880042055371251">ChromeOS versiyasi</translation>
 <translation id="2182657378556811785">Yangilashni yakunlash uchun Brave brauzerini qayta ishga tushiring.</translation>
-<translation id="1299765473362724475">Diqqat! Brave kengaytmalarga brauzer tarixini yozib olishni taqiqlay olmaydi. Kengaytmani inkognito rejimida faolsizlantirish uchun bayroqchani olib tashlang.</translation>
 <translation id="7402642357351265733">Shuningdek, Brave foydalanish statistikasini ham ulashsangiz, bu hisobotlarga siz tashrif qilgan URL manzillar ham kiradi</translation>
 <translation id="8142245354207161805">Profil boshqa kompyuterdagi (<ph name="HOST_NAME"/>) boshqa Brave jarayonida (<ph name="PROCESS_ID"/>) foydalanilayotgan ko‘rinadi. Ishdan chiqishlarni oldini olish maqsadida profil qulflandi. Agar aniq o‘zingiz foydalanayotgan bo‘lsangiz, qulfdan yeching va Brave‘ni qaytadan ishga tushiring.</translation>
 <translation id="4680828127924988555">Oʻrnatishni bekor qilish</translation>
@@ -291,7 +283,6 @@
 <translation id="5234764350956374838">Yopish</translation>
 <translation id="8586264863973514035">O‘zgarishlarni tatbi qilish uchun Brave qayta ishga tushirilishi zarur</translation>
 <translation id="5286907366254680517">Aniqlandi</translation>
-<translation id="5994282802285556682">Inkognito rejimida ishlayotganingizda, xavfsiz ulanishli saytga kirganingizda Brave sizni ogohlantiradi.</translation>
 <translation id="300369155175407115">Sinov muddatlari yoqilganida Brave sizni tasodifiy faol sinovga joylaganda siz ochgan sahifalar tarixi chiqadigan reklama va quyidagi qiziqishlaringizga taʼsir qiladi. Maxfiylikni himoya qilish maqsadida Brave har oyda qiziqishlaringizni avtomatik oʻchiradi.</translation>
 <translation id="6944930779012811739">Brave Updater ichki xizmati</translation>
 <translation id="7573068992266397941">Sizda Brave bilan ishlashda xavfsizlikka oid bir nechta tavsiya bor</translation>
@@ -397,6 +388,7 @@
 <translation id="3617744907966785605">Tashkilotingiz Brave <ph name="TIMEOUT_DURATION"/> ishlatilmasa avtomatik yopilishini sozlagan. Brauzer maʼlumotlari oʻchirib tashlandi. Jumladan, tarix, avtomatik kiritish va yuklanmalar.</translation>
 <translation id="8646609321956191980">Har bir profilda bukmark, tarix va parol kabi Brave axboroti saqlanadi</translation>
 <translation id="6756656512757374876"><ph name="BEGIN_LINK"/>Brave maʼlumotlaringizni qanday xavfsiz saqlashi<ph name="END_LINK"/> haqida batafsil</translation>
+<translation id="3556601443414636547">Bu sozlamaga kiritilgan oʻzgarishlar Brave qayta ishga tushganda kuchga kiradi.</translation>
 <translation id="2535436634051789953">Profilni almashtirib, boshqa Brave profili parollarini koʻrish mumkin</translation>
 <translation id="2312399718665761438">Imloni tekshirish uchun Brave siz kiritgan matnni Brave serverlariga yuboradi</translation>
 <translation id="3507835409099344374">Brave bildirishnomalar sozlamalarini ochish</translation>
@@ -425,7 +417,6 @@ Ba’zi imkoniyatlar ishlamasligi mumkin. Profilni saqlash uchun boshqa jild tay
 <translation id="6896758677409633944">Nusxa olish</translation>
 <translation id="126871877963043118">Sinov muddatlari yoqilganida Reklamani oʻlchash orqali siz kiradigan saytlar oʻzidagi reklama unumdorligini hisoblashga yordam beradigan maʼlumotlarni Brave ilovasidan soʻray oladi. Reklama statistikasi imkon qadar kam axborotni saytlararo ulashish orqali saytlardagi kuzatuv mexanizmlarini taqiqlaydi.</translation>
 <translation id="4392161457256085190">Keyinchalik sayt sizga chiqadigan reklamani moslashtirish maqsadida Bravedan qiziqishlaringiz haqida soʻrashi mumkin. Brave 3 tagacha qiziqishingizni ulasha oladi.</translation>
-<translation id="4624945300945265642">Havolani Brave &amp;inkognito oynasida ochish</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6418340404893954563">Kuchsiz parollar oson topiladi. Brave <ph name="BEGIN_LINK"/>siz uchun ishonchli parol yaratsin va eslab qolsin<ph name="END_LINK"/>.</translation>
 <translation id="3453763134178591239">ChromeOS shartlari</translation>
@@ -487,14 +478,12 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="7810005234485217901">Tezkor ochish uchun Rasm orqali qidiruvni mahkamlash mumkin</translation>
 <translation id="1652855885539187849">Bu hisobli Brave profili ushbu qurilmada allaqachon mavjud</translation>
 <translation id="7845233973568007926">Oʻrnatganingiz uchun tashakkur! <ph name="BUNDLE_NAME"/>ni ishlatishdan oldin kompyuterni qayta ishga tushirishingiz lozim.</translation>
-<translation id="79269250264141507">Manzillar qatori yoki qidiruv oynasiga matn kiritilganda Brave yaxshiroq takliflar olish uchun yozilgan matnni birlamchi qidiruv tizimiga yuboradi. Inkognito rejimda bu funksiya yoqilmasin</translation>
 <translation id="7963515534397191222">Brave brauzerining so‘nggi versiyasini o‘rnatib bo‘lmadi. Xavfsizlik sozlamalariga kiritilgan tuzatishlar va yangi funksiyalardan bahramand bo‘la olmaysiz.</translation>
 <translation id="7872446069773932638">Yuklab olinmoqda... <ph name="SECONDS"/> soniya qoldi.</translation>
 <translation id="5687542525349822727">Braveni asosiy brauzer etib belgilang</translation>
 <translation id="6396151137840491551">Brave himoyasiz ulanishlarni imkon qadar HTTPS protokolga avtomatik yangilaydi</translation>
 <translation id="2925193881330501265">Avvallari siz Brave‘ga <ph name="USER_EMAIL_ADDRESS"/> hisobidan kirgandingiz. O‘sha hisobdan foydalanib yana qaytadan kiring.</translation>
 <translation id="6915252145142862992">Brave takroran o‘rnatilgan, shuning uchun u asosiy brauzer bo‘la olmaydi.</translation>
-<translation id="1743665722170667430">Nomaʼlum manbalar kengaytmalari, ilovalari va mavzulari qurilmangizni zararlashi mumkin. Brave ularni faqat <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> orqali oʻrnatishni tavsiya qiladi</translation>
 <translation id="8010081455002666927">Avtomatik aniqlash</translation>
 <translation id="7685904775439037072">Brave saytlarga ulanganda sizdan ruxsat so‘raydi.</translation>
 <translation id="80471789339884597">Oʻrnatganingiz uchun tashakkur! <ph name="BUNDLE_NAME"/>ni ishlatishdan oldin barcha brauzerlarni qayta ishga tushirishingiz kerak.</translation>
@@ -567,7 +556,6 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="7731184591599776500">Brave Enterprise logotipi</translation>
 <translation id="8986207147630327271">Bu brauzerga ish profilini kiritish bilan siz administratorga ish profili orqali barcha boshqaruv ruxsatlarini berasiz.</translation>
 <translation id="3424657754843264466">Brave profillarini boshqaring</translation>
-<translation id="8848045066928358658">Ma’lumotlaringiz xavfsizligini ta’minlash maqsadida ayrim kengaytmalarni o‘chirib qo‘ydik, chunki <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>da ular haqida hech qanday ma’lumot yo‘q (ya’ni, ular sizning ruxsatingizsiz o‘rnatilgan bo‘lishi mumkin).</translation>
 <translation id="82609232232243542">Brave‘ga kirish</translation>
 <translation id="7055223246119657449">Brave bu yuklanmani blokladi, chunki bu arxivda zararli dastur yashirilgan boʻlishi mumkin</translation>
 <translation id="9049928023195059068">Boshqa Brave xizmatlariga kirilganda Brave hisobiga kirilsin</translation>
@@ -595,4 +583,26 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="3146636448190445245">Joylashuvdan foydalanish uchun <ph name="BEGIN_LINK"/>tizim sozlamalari<ph name="END_LINK"/> orqali Bravega ruxsat bering</translation>
 <translation id="137466361146087520">Google Chrome Beta</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>
+<translation id="1743665722170667430">Notanish manbalardan olingan kengaytma, ilova va mavzular qurilmangizni zararlashi mumkin. Brave ularni faqat <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> orqali oʻrnatishni tavsiya qiladi</translation>
+<translation id="6184592406110188164">Bu kengaytma Internet doʻkon siyosatini buzadi va xavfli boʻlishi mumkin. Siz tashrif buyuradigan saytlardagi maʼlumotlaringizni, jumladan, shaxsiy axborotlaringizni oʻzgartirmasligi uchun uni Brave brauzeridan olib tashlang.</translation>
+<translation id="1299765473362724475">Ogohlantirish: Brave kengaytmalarga tashriflaringiz tarixini qayd qilishni taqiqlay olmaydi. Maxfiy rejimda ushbu kengaytmani faolsizlantirish uchun ushbu parametrni belgilamang.</translation>
+<translation id="1448049584457347995">Maʼlumotlaringiz xavfsizligini taʼminlash maqsadida, <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> roʻyxatida keltirilmagan va sizdan yashirincha qoʻshilgan ayrim Brave kengaytmalari faolsizlantirildi.</translation>
+<translation id="8848045066928358658">Maʼlumotlaringiz xavfsizligini taʼminlash maqsadida, <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> roʻyxatida keltirilmagan va sizdan yashirincha qoʻshilgan ushbu Brave kengaytmasi faolsizlantirildi.</translation>
+<translation id="4624945300945265642">Havolani Brave maxfiy oynasida ochish</translation>
+<translation id="6554952862405000915">Havolani Brave Maxfiy oynasida ochish</translation>
+<translation id="8274659559228306809">{COUNT, plural,
+          =0 {Brave uchun yangilanish mavjud va qayta ishga tushirganingizdan keyin tatbiq etiladi.}
+          =1 {Brave uchun yangilanish mavjud va qayta ishga tushirganingizdan keyin tatbiq etiladi. Maxfiy oynangiz qayta ochilmaydi.}
+          other {Brave uchun yangilanish mavjud va qayta ishga tushirganingizdan keyin tatbiq etiladi. # ta Maxfiy oynangiz qayta ochilmaydi.}}</translation>
+<translation id="3829358914761176693">{COUNT, plural,
+              =0 {Bu yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda}
+              =1 {Bu yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda. Maxfiy oynangiz qayta ochilmaydi.}
+              other {Bu yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda. # ta Maxfiy oynangiz qayta ochilmaydi.}}</translation>
+<translation id="552349673358711446">{COUNT, plural,
+              =0 {Yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda}
+              =1 {Yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda. Maxfiy oynangiz qayta ochilmaydi.}
+              other {Yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda. # ta Maxfiy oynangiz qayta ochilmaydi.}}</translation>
+<translation id="79269250264141507">Manzil qatori va qidiruv maydonchasida matn kiritganingizda, yaxshiroq tavsiyalar berilishi uchun Brave kiritilganlarni birlamchi qidiruv tizimingizga yuboradi. Bu funksiya Maxfiy rejimda faolsizlantiriladi.</translation>
+<translation id="2589970573128789862">Brave Maxfiy rejimi</translation>
+<translation id="5994282802285556682">Maxfiy rejimdan foydalanilganda, Brave saytni yuklashdan oldin sizni xavfsiz boʻlmagan ulanish usuli orqali ogohlantiradi</translation>
 </translationbundle>

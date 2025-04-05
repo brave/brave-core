@@ -558,7 +558,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="3616113530831147358">音声</translation>
 <translation id="3619255692378312441">アクセスを管理</translation>
 <translation id="3622349720008044802">ウィンドウの管理</translation>
-<translation id="3623240789707551553">{DOMAIN_COUNT,plural, =1{1 つ以上のサイト}other{# つ以上のサイト}}</translation>
+<translation id="3623240789707551553">{DOMAIN_COUNT,plural, =1{と 1 つのサイト}other{と # つのサイト}}</translation>
 <translation id="3631987586758005671"><ph name="DEVICE_NAME"/> と共有しています</translation>
 <translation id="363484704507524488">ID チェックは盗難保護の設定で管理できます。<ph name="BEGIN_LINK"/>設定に移動<ph name="END_LINK"/></translation>
 <translation id="871233388178581868">パスワードを保存すると、Brave による確認が可能になります</translation>

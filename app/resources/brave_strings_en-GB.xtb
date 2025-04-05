@@ -393,6 +393,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="3617744907966785605">Your organisation closes Brave when it isn't used for <ph name="TIMEOUT_DURATION"/>. Browsing data was deleted. This could include history, autofill and downloads.</translation>
 <translation id="8646609321956191980">Each profile holds its own Brave info, like bookmarks, history, passwords and more</translation>
 <translation id="6756656512757374876">Learn more about <ph name="BEGIN_LINK"/>how Brave keeps your data private<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">Changes to this setting will be applied once Brave restarts.</translation>
 <translation id="2535436634051789953">You can switch to see passwords from another Brave profile</translation>
 <translation id="2312399718665761438">To fix spelling errors, Brave sends the text that you type in text fields to Brave</translation>
 <translation id="3507835409099344374">Go to Brave notification settings</translation>

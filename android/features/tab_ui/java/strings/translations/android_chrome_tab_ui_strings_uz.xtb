@@ -203,7 +203,6 @@ Agar tark etsangiz, “<ph name="TITLE_OF_GROUP"/>” varaqlar guruhiga boshqa k
 <translation id="8712637175834984815">Tushunarli</translation>
 <translation id="8714939927607906138">Past narxda</translation>
 <translation id="8730621377337864115">Tayyor</translation>
-<translation id="6687920250729800417">Bu inkognito varaqlardagi harakatlar tarixi ushbu qurilmadan olib tashlanadi</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> oy oldin yaratilgan}other{<ph name="NUM_MONTHS_MANY"/> oy oldin yaratilgan}}</translation>
 <translation id="8804742093141782941">Guruh qolsin</translation>
 <translation id="8820741577754260431">Narxlar tushishini varaqlarda kuzating</translation>
@@ -219,7 +218,8 @@ Agar tark etsangiz, “<ph name="TITLE_OF_GROUP"/>” varaqlar guruhiga boshqa k
 <translation id="94870150074703282">Guruh oʻchirilsinmi?</translation>
 <translation id="992256792861109788">Pushti</translation>
 <translation id="3228718275011575753">Barcha maxfiy varaqlar yopilsinmi?</translation>
+<translation id="6687920250729800417">Bu Maxfiy varaqlardagi xatti-harakatlaringiz ushbu qurilmadan olib tashlanadi</translation>
 <translation id="6086127758480584723">{INCOGNITO_TABS_COUNT, plural,
-        one {}=1 {Yopilgan varaqlar va guruhlarni Oxirgi varaqlar hamda Varaq guruhlari boʻlimlarida qayta ochish mumkin. Maxfiy varaq qayta ochilmaydi.}
+        =1 {Yopilgan varaqlar va guruhlarni Oxirgi varaqlar hamda Varaq guruhlari boʻlimlarida qayta ochish mumkin. Maxfiy varaq qayta ochilmaydi.}
         other {Yopilgan varaqlar va guruhlarni Oxirgi varaqlar hamda Varaq guruhlari boʻlimlarida qayta ochish mumkin. Maxfiy varaqlar (#) qayta ochilmaydi.}}</translation>
 </translationbundle>

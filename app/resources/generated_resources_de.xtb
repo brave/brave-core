@@ -194,7 +194,6 @@ Du kannst deine Passwörter jederzeit im <ph name="GOOGLE_PASSWORD_MANAGER"/> pr
 <translation id="1129348283834595293">Cyberpunk</translation>
 <translation id="1129420403709586868">Fotos und Medien von deinem Smartphone abrufen</translation>
 <translation id="1129850422003387628">Apps verwalten</translation>
-<translation id="5749925632993910318">{0,plural, =1{Inkognitofenster schließen}other{Inkognitofenster schließen (# Fenster)}}</translation>
 <translation id="113050636487300043">Lege einen Namen und ein Farbdesign fest, um einfach zwischen Profilen unterscheiden zu können</translation>
 <translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> – Teil der Gruppe <ph name="GROUP_NAME"/></translation>
 <translation id="1130676589211693127">Akkustand des rechten Kopfhörers bei <ph name="PERCENTAGE"/> %.</translation>
@@ -11706,6 +11705,10 @@ Informationen dazu, welche Daten von Brave erhoben werden und warum, findest du 
       other {Privat (#)}
     }</translation>
 <translation id="4304377874648098617">Du bist im Privatmodus.</translation>
+<translation id="5749925632993910318">{0, plural,
+      =1 {Close Private}
+      other {Close Private (# windows)}
+    }</translation>
 <translation id="7253003527666031200">Weitere Bedienungshilfen finden Sie im Web Store</translation>
 <translation id="5832813618714645810">Profile</translation>
 <translation id="3707212204259470604">Andere Profile verwalten</translation>

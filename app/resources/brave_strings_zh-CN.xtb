@@ -390,6 +390,7 @@
 <translation id="3617744907966785605">贵组织会在 Brave 闲置 <ph name="TIMEOUT_DURATION"/>后将其关闭。浏览数据已被删除，其中可能包括历史记录、自动填充和下载内容。</translation>
 <translation id="8646609321956191980">每份个人资料均包含自己的 Brave 信息，例如书签、历史记录、密码等等</translation>
 <translation id="6756656512757374876">详细了解 <ph name="BEGIN_LINK"/>Brave 如何确保您数据的私密性<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">对此设置的更改将在 Brave 重启后生效。</translation>
 <translation id="2535436634051789953">您可切换到另一份 Brave 个人资料以查看其中的密码</translation>
 <translation id="2312399718665761438">为了修正拼写错误，Brave 会将您在文本字段中输入的文字发送给 Brave</translation>
 <translation id="3507835409099344374">转到 Brave 通知设置部分</translation>

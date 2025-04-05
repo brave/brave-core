@@ -389,6 +389,7 @@
 <translation id="3617744907966785605">Tu organización cierra Brave cuando no se usa durante <ph name="TIMEOUT_DURATION"/>. Se borraron los datos de navegación. Esto puede incluir el historial, los datos de Autocompletar y las descargas.</translation>
 <translation id="8646609321956191980">Cada perfil conserva su propia información de Brave, como los favoritos, el historial, las contraseñas y más.</translation>
 <translation id="6756656512757374876">Más información sobre <ph name="BEGIN_LINK"/>cómo Brave mantiene la privacidad de tus datos<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">Los cambios en este parámetro de configuración se aplicarán una vez que se reinicie Brave.</translation>
 <translation id="2535436634051789953">Puedes cambiar a otro perfil de Brave para ver las contraseñas</translation>
 <translation id="2312399718665761438">Para corregir los errores ortográficos, Brave envía a Brave lo que escribes en los campos de texto</translation>
 <translation id="3507835409099344374">Ir a la configuración de notificaciones Brave</translation>

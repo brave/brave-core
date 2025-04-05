@@ -391,6 +391,7 @@
 <translation id="3617744907966785605">Teie organisatsioon suleb Bravei, kui seda ei kasutata <ph name="TIMEOUT_DURATION"/> jooksul. Sirvimisandmed kustutati. Need võivad hõlmata ajalugu, automaattäidet ja allalaadimisi.</translation>
 <translation id="8646609321956191980">Igal profiilil on oma Bravei teave, nagu järjehoidjad, ajalugu, paroolid ja muu</translation>
 <translation id="6756656512757374876">Vaadake lisateavet, <ph name="BEGIN_LINK"/>kuidas Brave teie andmeid privaatsena hoiab<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">Selle seade muudatused rakendatakse Brave taaskäivitamisel.</translation>
 <translation id="2535436634051789953">Saate lülituda, et näha paroole teiselt Bravei profiililt</translation>
 <translation id="2312399718665761438">Õigekirjavigade parandamiseks saadab Brave teie tekstiväljadel sisestatud teksti Brave'ile</translation>
 <translation id="3507835409099344374">Ava Bravei märguandeseaded</translation>

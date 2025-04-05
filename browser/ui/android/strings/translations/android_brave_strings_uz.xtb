@@ -82,11 +82,15 @@
 <translation id="1116694919640316211">Haqida</translation>
 <translation id="7961015016161918242">Hech qachon</translation>
 <translation id="1275213816424141989">Balki keyinroq</translation>
+<translation id="7445306466605902444">Raqamli barmoq izlari bloklanadi (jiddiy, saytlarning ishlashini buzishi mumkin)</translation>
+<translation id="5582686930349810484">Raqamli barmoq izlari bloklanadi (standart)</translation>
+<translation id="769702552748212954">Barcha raqamli barmoq izlariga ruxsat</translation>
 <translation id="876424292214881779">Reklama va boshqa nomaqbul elementlar bloklandi</translation>
 <translation id="8912304686498704084">FAOL</translation>
 <translation id="4963218453264888510">NOFAOL</translation>
 <translation id="7474113515179313724">Bu saytdan Brave maxfiylik himoyasi vositalarisiz foydalanyapsiz. U Qalqon yoniqligida kutilganidek ishlamayaptimi?</translation>
 <translation id="9055546041146396417">Agar ushbu sayt kutilganidek ishlamayotgan boʻlsa, Qalqon funksiyalarini faolsizlantirishingiz mumkin.</translation>
+<translation id="7898672232170410330">Elementni bloklash</translation>
 <translation id="1209739344687072997">Nosoz sayt haqida xabar qilish</translation>
 <translation id="8759753423332885148">Batafsil.</translation>
 <translation id="650318023204990401">Kengaytirilgan boshqaruv</translation>
@@ -141,6 +145,7 @@
 <translation id="654447476965480878">BAT ishlab olish haqida batafsil</translation>
 <translation id="6278643716658443228">Mukofotlar sozlamalari</translation>
 <translation id="4272136334824111854">Bu oyda Brave Mukofotlar tomonidan dastaklanadigan <ph name="CREATOR_COUNT"/> ta ijodkorning sahifasiga tashrif buyurdingiz</translation>
+<translation id="6129027151000961048">Leo</translation>
 <translation id="1179407411385015942">Leo bu – AI asosida ishlovchi brauzerning ichki intellektual assistentidir</translation>
 <translation id="5781842473834867765">Suhbatlar tarixini saqlash</translation>
 <translation id="4109670531935487117">Manzil qatorida avtomatik kiritish tavsiyalarini chiqarish</translation>

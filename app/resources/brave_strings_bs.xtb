@@ -402,6 +402,7 @@ Neke funkcije možda neće biti dostupne i promjene postavki se neće sačuvati.
 <translation id="3617744907966785605">Vaš organizacija zatvara Brave kada se ne koristi <ph name="TIMEOUT_DURATION"/>. Podaci o pregledanju su izbrisani. Ovo može uključivati historiju, automatsko popunjavanje i preuzimanja.</translation>
 <translation id="8646609321956191980">Svaki profil sadrži svoje Brave informacije, poput oznaka, historije, lozinki i još mnogo toga</translation>
 <translation id="6756656512757374876">Saznajte više o tome <ph name="BEGIN_LINK"/>kako Brave štiti privatnost vaših podataka<ph name="END_LINK"/></translation>
+<translation id="3556601443414636547">Promjene postavke će se primijeniti čim se Brave ponovo pokrene.</translation>
 <translation id="2535436634051789953">Možete se prebaciti da vidite lozinke s drugog Brave profila</translation>
 <translation id="2312399718665761438">Zbog ispravke pravopisnih grešaka, Brave šalje Braveu tekst koji napišete u polja.</translation>
 <translation id="3507835409099344374">Idi u postavke obavještenja Bravea</translation>
