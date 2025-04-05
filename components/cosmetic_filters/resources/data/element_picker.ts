@@ -7,6 +7,10 @@ const NSSVG = 'http://www.w3.org/2000/svg'
 let pickerDiv: HTMLDivElement | null
 let shadowRoot: ShadowRoot | null
 let isAndroid: boolean | null
+let btnCreateEnabledText: string
+let btnCreateDisabledText: string
+let btnShowRulesBoxText: string
+let btnHideRulesBoxText: string
 
 const api = {
   cosmeticFilterCreate: (selector: string) => {
@@ -18,11 +22,33 @@ const api = {
   getElementPickerThemeInfo: (callback: (
     isDarkModeEnabled: boolean, bgcolor: number) => void) => {
     cf_worker.getElementPickerThemeInfo().then(
-      (val:{ isDarkModeEnabled: boolean; bgcolor: number }) => {
-      callback(val.isDarkModeEnabled, val.bgcolor)
-    })
+      (val: { isDarkModeEnabled: boolean; bgcolor: number }) => {
+        callback(val.isDarkModeEnabled, val.bgcolor)
+      })
   },
-  getPlatform: ():string => {
+  getLocalizedTexts: (callback: (
+    btnCreateDisabledText: string,
+    btnCreateEnabledText: string,
+    btnManageText: string,
+    btnShowRulesBoxText: string,
+    btnHideRulesBoxText: string,
+    btnQuitText: string) => void) => {
+    cf_worker.getLocalizedTexts().then(
+      (val: { btnCreateDisabledText: string;
+        btnCreateEnabledText: string;
+        btnManageText: string;
+        btnShowRulesBoxText: string;
+        btnHideRulesBoxText: string;
+        btnQuitText: string }) => {
+        callback(val.btnCreateDisabledText,
+          val.btnCreateEnabledText,
+          val.btnManageText,
+          val.btnShowRulesBoxText,
+          val.btnHideRulesBoxText,
+          val.btnQuitText)
+      })
+  },
+  getPlatform: (): string => {
     return cf_worker.getPlatform()
   }
 }
@@ -69,14 +95,14 @@ class ElementSelectorBuilder {
   private readonly rules: Rule[]
   private tag: string
 
-  constructor (elem: Element) {
+  constructor(elem: Element) {
     this.rules = []
     this.tag = ''
     this.elem = elem
     this.hasId = false
   }
 
-  addRule (rule: Rule): void {
+  addRule(rule: Rule): void {
     if (rule.type < Selector.Id || rule.type > Selector.NthOfType) {
       console.log(`Unexpected selector: ${rule.type}`)
       return
@@ -88,15 +114,15 @@ class ElementSelectorBuilder {
     this.rules.push(rule)
   }
 
-  addTag (tag: string): void {
+  addTag(tag: string): void {
     this.tag = tag
   }
 
-  size (): number {
+  size(): number {
     return this.rules.length
   }
 
-  toString (mask: number = mostSpecificMask): string {
+  toString(mask: number = mostSpecificMask): string {
     let selector = this.tag + ''
     for (const rule of this.rules) {
       if (!(mask & SpecificityFlags.Id) && rule.type === Selector.Id) {
@@ -359,7 +385,7 @@ class Target {
   rectElem: Element
   coord: TargetRect
 
-  constructor (elem: Element) {
+  constructor(elem: Element) {
     this.element = elem
     this.coord = targetRectFromElement(this.element)
   }
@@ -383,8 +409,8 @@ class TargetsCollection {
     this.targets.forEach(t => t.forceRecalcCoords())
     // for case when element no longer in the DOM
     this.targets = this.targets.filter(item =>
-        item.coord.height !== 0 && item.coord.width !== 0)
-    if(this.targets.length === 0 && this.togglePicker) {
+      item.coord.height !== 0 && item.coord.width !== 0)
+    if (this.targets.length === 0 && this.togglePicker) {
       this.togglePicker(false)
     }
   }
@@ -408,7 +434,7 @@ let lastHoveredElem: HTMLElement | null = null
 const targetedElems = new TargetsCollection
 
 const recalculateAndSendTargets = (elems: Element[] | null) => {
-  if(elems) {
+  if (elems) {
     targetedElems.reset(elems)
   } else {
     targetedElems.forceRecalcCoords()
@@ -458,7 +484,7 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
     const b = selectorBuilders[i]
     try {
       if ((mask & SpecificityFlags.Id) && b.hasId ||
-          document.querySelectorAll(b.toString(mask)).length === 1) {
+        document.querySelectorAll(b.toString(mask)).length === 1) {
         break
       }
     } catch {
@@ -466,10 +492,10 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
     }
   }
   const selector = selectorBuilders
-      .slice(0, i + 1)
-      .reverse()
-      .map((b) => b.toString(mask))
-      .join(' > ')
+    .slice(0, i + 1)
+    .reverse()
+    .map((b) => b.toString(mask))
+    .join(' > ')
   return selector
 }
 
@@ -483,8 +509,8 @@ const elementPickerHoverCoordsChanged = (x: number, y: number) => {
 
 const getElementBySelector = (selector: string) => {
   let elements: Element[] | null;
-      const nodeList = document.querySelectorAll(selector);
-      elements = nodeList.length > 0 ? Array.from(nodeList) : null;
+  const nodeList = document.querySelectorAll(selector);
+  elements = nodeList.length > 0 ? Array.from(nodeList) : null;
   return elements
 }
 
@@ -494,7 +520,7 @@ const elementPickerUserSelectedTarget = (specificity: number) => {
     if (selector !== '') {
       try {
         recalculateAndSendTargets(getElementBySelector(selector))
-      } catch {}
+      } catch { }
     }
     return {
       isValid: selector !== '',
@@ -511,7 +537,7 @@ const elementPickerUserModifiedRule = (selector: string) => {
   if (selector.length > 0) {
     try {
       recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
-    } catch {}
+    } catch { }
   }
 }
 
@@ -536,18 +562,18 @@ const launchElementPicker = (root: ShadowRoot) => {
   )
 
   const svg = root.getElementById('picker-ui')!
-  if(window.matchMedia("(pointer: fine)").matches &&
-      window.matchMedia("(hover: hover)").matches) {
-        svg.addEventListener(
-          'mousemove',
-          (event) => {
-            if (!hasSelectedTarget) {
-              elementPickerHoverCoordsChanged(event.clientX, event.clientY)
-            }
-            event.stopPropagation()
-          },
-          true,
-        )
+  if (window.matchMedia("(pointer: fine)").matches &&
+    window.matchMedia("(hover: hover)").matches) {
+    svg.addEventListener(
+      'mousemove',
+      (event) => {
+        if (!hasSelectedTarget) {
+          elementPickerHoverCoordsChanged(event.clientX, event.clientY)
+        }
+        event.stopPropagation()
+      },
+      true,
+    )
   }
 
   const rulesTextArea: HTMLInputElement = root.querySelector(
@@ -581,7 +607,7 @@ const launchElementPicker = (root: ShadowRoot) => {
   const enableButtons = (isDisabled: boolean) => {
     const elements = root.querySelectorAll('.button');
     elements.forEach(element => {
-      if(isDisabled) {
+      if (isDisabled) {
         element.classList.add('disabled')
       } else {
         element.classList.remove('disabled');
@@ -595,12 +621,12 @@ const launchElementPicker = (root: ShadowRoot) => {
   }
 
   const togglePopup = (show: boolean) => {
-      enableButtons(!show)
-      if (show) {
-        createButton.textContent = "Block Element"
-      } else {
-        createButton.textContent = "Select element you want to block"
-      }
+    enableButtons(!show)
+    if (show) {
+      createButton.textContent = btnCreateEnabledText
+    } else {
+      createButton.textContent = btnCreateDisabledText
+    }
     if (!isAndroid) {
       section.style.setProperty('opacity', show ? '1' : '0.2')
     }
@@ -616,13 +642,13 @@ const launchElementPicker = (root: ShadowRoot) => {
   const retrieveTheme = () => {
     api.getElementPickerThemeInfo(
       (isDarkModeEnabled: boolean, bgcolor: number) => {
-      const colorHex = `#${(bgcolor & 0xFFFFFF).toString(16).padStart(6, '0')}`
-      section.style.setProperty('background-color', colorHex)
-      root.querySelectorAll('.secondary-button').forEach(e =>
+        const colorHex = `#${(bgcolor & 0xFFFFFF).toString(16).padStart(6, '0')}`
+        section.style.setProperty('background-color', colorHex)
+        root.querySelectorAll('.secondary-button').forEach(e =>
           (e as HTMLElement).style.setProperty('background-color', colorHex))
 
-      setDarkModeButtons(isDarkModeEnabled)
-    })
+        setDarkModeButtons(isDarkModeEnabled)
+      })
   }
   const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
   const handleColorSchemeChange = (event: MediaQueryListEvent) => {
@@ -653,7 +679,7 @@ const launchElementPicker = (root: ShadowRoot) => {
     let elem: Element | null = null
     if (event instanceof MouseEvent) {
       elem = elementFromFrameCoords(event.clientX, event.clientY)
-    } else if (event instanceof TouchEvent){
+    } else if (event instanceof TouchEvent) {
       const touch = event.touches[0];
       elem = elementFromFrameCoords(touch.clientX, touch.clientY)
     }
@@ -693,16 +719,16 @@ const launchElementPicker = (root: ShadowRoot) => {
 
   const toggleDisplay = (target: HTMLElement | null,
     trigger: HTMLElement | null) => {
-    if(!target || !trigger){
+    if (!target || !trigger) {
       return
     }
     trigger.addEventListener('click', e => {
       if (target.style.display !== 'block') {
         target.style.display = 'block'
-        trigger.textContent = 'Hide rules'
+        trigger.textContent = btnHideRulesBoxText
       } else {
         target.style.display = 'none'
-        trigger.textContent = 'Show rules'
+        trigger.textContent = btnShowRulesBoxText
       }
     })
   }
@@ -752,8 +778,50 @@ const highlightElements = () => {
   svg.appendChild(svgFragment)
 }
 
+const localizeTextData = (root: ShadowRoot,
+  btnCrDisText: string,
+  btnCrEnblText: string,
+  btnManageText: string,
+  btnShowRulesText: string,
+  btnHideRulesText: string,
+  btnQuitText: string) => {
+  btnCreateDisabledText = btnCrDisText
+  btnCreateEnabledText = btnCrEnblText
+  btnShowRulesBoxText = btnShowRulesText
+  btnHideRulesBoxText = btnHideRulesText
+  const btnCreate = root.getElementById('btnCreate')
+  if (btnCreate) {
+    btnCreate.textContent = btnCreateDisabledText
+  }
+  const btnManage = root.getElementById('btnManage')
+  if (btnManage) {
+    btnManage.textContent = btnManageText
+  }
+  const btnShowRulesBox = root.getElementById('btnShowRulesBox')
+  if (btnShowRulesBox) {
+    btnShowRulesBox.textContent = btnShowRulesBoxText
+  }
+  const btnQuit = root.getElementById('btnQuit')
+  if (btnQuit) {
+    btnQuit.textContent = btnQuitText
+  }
+}
+
 const active = document.getElementById('brave-element-picker')
 if (!active) {
   isAndroid = api.getPlatform() === 'android'
-  launchElementPicker(attachElementPicker())
+  const root = attachElementPicker()
+  api.getLocalizedTexts(
+    (btnCreateDisabledText: string,
+      btnCreateEnabledText: string,
+      btnManageText: string,
+      btnShowRulesBoxText: string,
+      btnHideRulesBoxText: string,
+      btnQuitText: string) => {
+      localizeTextData(root, btnCreateDisabledText,
+        btnCreateEnabledText, btnManageText,
+        btnShowRulesBoxText, btnHideRulesBoxText,
+        btnQuitText)
+      launchElementPicker(root)
+    });
 }

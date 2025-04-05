@@ -7,6 +7,15 @@ module cosmetic_filters.mojom;
 
 import "mojo/public/mojom/base/values.mojom";
 
+struct ElementPickerLocalization {
+  string create_enabled_text;
+  string create_disabled_text;
+  string manage_text;
+  string show_rules_text;
+  string hide_rules_text;
+  string quit_text;
+};
+
 interface CosmeticFiltersResources {
   // Receives an input string which is JSON object.
   HiddenClassIdSelectors(string input, array<string> exceptions) => (
@@ -27,6 +36,10 @@ interface CosmeticFiltersHandler {
 
   GetElementPickerThemeInfo() => (
       bool is_dark_mode_enabled, int32 background_color);
+
+  GetElementPickerLocalizedTexts() => (
+    ElementPickerLocalization localization_data
+  );
 };
 
 // An interface to render frame agent `CosmeticFiltersJSHandler` to control

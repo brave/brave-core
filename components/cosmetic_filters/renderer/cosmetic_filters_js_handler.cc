@@ -125,6 +125,13 @@ constexpr char kHideSelectorsInjectScript[] =
 constexpr char kIsDarkModeEnabledPropery[] = "isDarkModeEnabled";
 constexpr char kBackgroundColorPropery[] = "bgcolor";
 
+constexpr char kBtnCreateDisabledTextPropery[] = "btnCreateDisabledText";
+constexpr char kBtnCreateEnabledTextPropery[] = "btnCreateEnabledText";
+constexpr char kBtnManageTextPropery[] = "btnManageText";
+constexpr char kBtnShowRulesBoxTextPropery[] = "btnShowRulesBoxText";
+constexpr char kBtnHideRulesBoxTextPropery[] = "btnHideRulesBoxText";
+constexpr char kBtnQuitTextPropery[] = "btnQuitText";
+
 std::string LoadDataResource(const int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   if (resource_bundle.IsGzipped(id)) {
@@ -364,6 +371,73 @@ void CosmeticFiltersJSHandler::OnGetCosmeticFilterThemeInfo(
   std::ignore = resolver->Resolve(context, result);
 }
 
+v8::Local<v8::Promise> CosmeticFiltersJSHandler::GetLocalizedTexts(
+    v8::Isolate* isolate) {
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+
+  if (!resolver.IsEmpty()) {
+    auto promise_resolver =
+        std::make_unique<v8::Global<v8::Promise::Resolver>>();
+    promise_resolver->Reset(isolate, resolver.ToLocalChecked());
+    auto context_old = std::make_unique<v8::Global<v8::Context>>(
+        isolate, isolate->GetCurrentContext());
+
+    GetElementPickerRemoteHandler()->GetElementPickerLocalizedTexts(
+        base::BindOnce(&CosmeticFiltersJSHandler::OnGetLocalizedTexts,
+                       weak_ptr_factory_.GetWeakPtr(),
+                       std::move(promise_resolver), isolate,
+                       std::move(context_old)));
+
+    return resolver.ToLocalChecked()->GetPromise();
+  }
+
+  return v8::Local<v8::Promise>();
+}
+
+void CosmeticFiltersJSHandler::OnGetLocalizedTexts(
+    std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
+    v8::Isolate* isolate,
+    std::unique_ptr<v8::Global<v8::Context>> context_old,
+    mojom::ElementPickerLocalizationPtr loc) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old->Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate);
+  v8::Local<v8::Value> result;
+  v8::Local<v8::Object> object = v8::Object::New(isolate);
+  CHECK(CreateDataProperty(context, object, kBtnCreateDisabledTextPropery,
+                           v8_value_converter_->ToV8Value(
+                               base::Value(loc->create_disabled_text), context))
+            .ToChecked());
+  CHECK(CreateDataProperty(context, object, kBtnCreateEnabledTextPropery,
+                           v8_value_converter_->ToV8Value(
+                               base::Value(loc->create_enabled_text), context))
+            .ToChecked());
+  CHECK(CreateDataProperty(context, object, kBtnManageTextPropery,
+                           v8_value_converter_->ToV8Value(
+                               base::Value(loc->manage_text), context))
+            .ToChecked());
+  CHECK(CreateDataProperty(context, object, kBtnShowRulesBoxTextPropery,
+                           v8_value_converter_->ToV8Value(
+                               base::Value(loc->show_rules_text), context))
+            .ToChecked());
+  CHECK(CreateDataProperty(context, object, kBtnHideRulesBoxTextPropery,
+                           v8_value_converter_->ToV8Value(
+                               base::Value(loc->hide_rules_text), context))
+            .ToChecked());
+  CHECK(CreateDataProperty(context, object, kBtnQuitTextPropery,
+                           v8_value_converter_->ToV8Value(
+                               base::Value(loc->quit_text), context))
+            .ToChecked());
+  result = object;
+
+  std::ignore = resolver->Resolve(context, result);
+}
+
 v8::Local<v8::Value> CosmeticFiltersJSHandler::GetPlatform(
     v8::Isolate* isolate) {
   return gin::StringToV8(isolate,
@@ -449,6 +523,10 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
   BindFunctionToObject(
       isolate, javascript_object, "getElementPickerThemeInfo",
       base::BindRepeating(&CosmeticFiltersJSHandler::GetCosmeticFilterThemeInfo,
+                          base::Unretained(this)));
+  BindFunctionToObject(
+      isolate, javascript_object, "getLocalizedTexts",
+      base::BindRepeating(&CosmeticFiltersJSHandler::GetLocalizedTexts,
                           base::Unretained(this)));
 
   BindFunctionToObject(

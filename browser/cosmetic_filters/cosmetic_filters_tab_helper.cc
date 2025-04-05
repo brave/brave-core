@@ -9,11 +9,15 @@
 #include <utility>
 
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/l10n/common/localization_util.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_pages.h"
@@ -118,6 +122,24 @@ void CosmeticFiltersTabHelper::GetElementPickerThemeInfo(
           dark_mode_state == chrome::android::DarkModeState::kDarkModeApp,
       GetThemeBackgroundColor());
 #endif  // !BUILDFLAG(IS_ANDROID)
+}
+
+void CosmeticFiltersTabHelper::GetElementPickerLocalizedTexts(
+    GetElementPickerLocalizedTextsCallback callback) {
+  auto localization_data = mojom::ElementPickerLocalization::New(
+      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_BRAVE_ELEMENT_PICKER_CREATE_BTN_ENABLED_LABEL)),
+      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_BRAVE_ELEMENT_PICKER_CREATE_BTN_DISABLED_LABEL)),
+      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_BRAVE_ELEMENT_PICKER_MANAGE_BTN_LABEL)),
+      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_BRAVE_ELEMENT_PICKER_SHOW_RULES_BTN_LABEL)),
+      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_BRAVE_ELEMENT_PICKER_HIDE_RULES_BTN_LABEL)),
+      base::UTF16ToUTF8(brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_BRAVE_ELEMENT_PICKER_QUIT_BTN_LABEL)));
+  std::move(callback).Run(std::move(localization_data));
 }
 
 CosmeticFiltersTabHelper::CosmeticFiltersTabHelper(
