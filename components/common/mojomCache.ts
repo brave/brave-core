@@ -3,10 +3,84 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { Value } from 'gen/mojo/public/mojom/base/values.mojom.m'
+import { useEffect, useState } from 'react';
+
 export type CacheListener<T> = (
   newValue: T,
   oldValue: T
 ) => void
+
+export function immutableMerge<T extends { [key: string | number]: any; }>(initial: T, patch: Partial<T>): T {
+  if (patch === undefined) return initial
+
+  const result: T = { ...initial }
+
+  for (const key in patch) {
+    const patchedValue = patch[key]
+    const patchedType = typeof patchedValue
+
+    if (Array.isArray(patchedValue)) {
+      const array = [...initial as any]
+      for (const [index, value] of patchedValue.entries()) {
+        if (value === null) {
+          delete array[index]
+        } else {
+          array[index] = value
+        }
+      }
+      result[key as any] = array
+    } else if (patchedType === 'object') {
+      for (const [key, value] of Object.entries(patchedValue as any)) {
+        result[key as any] = value
+      }
+    } else {
+      result[key as any] = patch[key]
+    }
+  }
+
+  return result
+}
+
+export function valueToJS<T>(value: Value): T {
+  if (value.binaryValue) {
+    return value.binaryValue as T
+  }
+
+  if (value.boolValue) {
+    return value.boolValue as T
+  }
+
+  if (value.doubleValue) {
+    return value.doubleValue as T
+  }
+
+  if (value.intValue) {
+    return value.intValue as T
+  }
+
+  if (value.stringValue) {
+    return value.stringValue as T
+  }
+
+  if (value.listValue) {
+    return value.listValue.storage.map((item) => valueToJS<any>(item)) as T
+  }
+
+  if (value.dictionaryValue) {
+    const result: any = {}
+    for (const [key, item] of Object.entries(value.dictionaryValue.storage)) {
+      result[key] = valueToJS<any>(item as Value)
+    }
+    return result as T
+  }
+
+  if (value.nullValue) {
+    return null as T
+  }
+
+  return null as T
+}
 
 /**
  * Allows consumers to subscribe to changes to an object.
@@ -15,7 +89,7 @@ export type CacheListener<T> = (
  * keeping track of the intermediate value.
  */
 export class CachingWrapper<T> {
-  protected cache: T
+  cache: T
   protected listeners: Array<CacheListener<T>> = []
 
   constructor(defaultValue: T) {
@@ -107,4 +181,14 @@ export class EntityCachingWrapper<Entity> extends CachingWrapper<Cache<Entity>> 
 
     this.notifyChanged(copy)
   }
+}
+
+export function useCachedValue<T, K=T>(wrapper: CachingWrapper<T>, selector: (value: T) => K = v => v as any) {
+  const [value, setValue] = useState(() => selector(wrapper.cache))
+  useEffect(() => {
+    const handler = (newValue: T) => setValue(selector(newValue))
+    wrapper.addListener(handler)
+    return () => wrapper.removeListener(handler)
+  }, [])
+  return value
 }
