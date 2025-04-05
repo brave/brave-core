@@ -3,7 +3,7 @@ URL: https://crates.io/crates/bytes
 Version: 1.5.0
 Revision: 74e6e200fd671340d4d4a874f83776def04f6c7b
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/bytes-1.5.0/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/bytes-v1/LICENSE
 Shipped: yes
 Security Critical: yes
 

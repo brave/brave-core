@@ -12,13 +12,13 @@ cargo_crate("lib") {
   crate_name = "multibase"
   epoch = "0.9"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/multibase-0.9.1/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/multibase-v0_9/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/multibase-0.9.1/src/base.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/multibase-0.9.1/src/encoding.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/multibase-0.9.1/src/error.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/multibase-0.9.1/src/impls.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/multibase-0.9.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/multibase-v0_9/src/base.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/multibase-v0_9/src/encoding.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/multibase-v0_9/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/multibase-v0_9/src/impls.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/multibase-v0_9/src/lib.rs",
   ]
   inputs = []
 

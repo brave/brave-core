@@ -26,6 +26,7 @@
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/hit_test.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/canvas.h"
 
 namespace {

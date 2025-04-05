@@ -2,7 +2,7 @@ Name: getrandom
 URL: https://crates.io/crates/getrandom
 Version: 0.2.15
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/getrandom-0.2.15/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/getrandom-v0_2/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

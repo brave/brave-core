@@ -12,21 +12,22 @@ cargo_crate("lib") {
   crate_name = "sha2"
   epoch = "0.10"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/consts.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/core_api.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/sha256.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/sha256/aarch64.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/sha256/loongarch64_asm.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/sha256/soft.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/sha256/x86.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/sha512.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/sha512/aarch64.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/sha512/loongarch64_asm.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/sha512/soft.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-0.10.8/src/sha512/x86.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/consts.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/core_api.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha256.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha256/aarch64.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha256/loongarch64_asm.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha256/soft.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha256/x86.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha512.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha512/aarch64.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha512/loongarch64_asm.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha512/soft.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha512/x86.rs",
   ]
   inputs = []
 

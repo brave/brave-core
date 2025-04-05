@@ -12,11 +12,11 @@ cargo_crate("lib") {
   crate_name = "rand_chacha"
   epoch = "0.2"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/rand_chacha-0.2.2/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/rand_chacha-v0_2/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/rand_chacha-0.2.2/src/chacha.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rand_chacha-0.2.2/src/guts.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/rand_chacha-0.2.2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_chacha-v0_2/src/chacha.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_chacha-v0_2/src/guts.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/rand_chacha-v0_2/src/lib.rs",
   ]
   inputs = []
 

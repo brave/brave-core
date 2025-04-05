@@ -3,7 +3,7 @@ URL: https://crates.io/crates/pin-project-lite
 Version: 0.2.9
 Revision: 1ccf058c2ba13fd7eee2154951ac64a84590d886
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/pin-project-lite-0.2.9/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/pin-project-lite-v0_2/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

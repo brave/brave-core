@@ -78,7 +78,6 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
             SnackbarManager snackbarManager,
             BooleanSupplier canShowSigninPromo,
             Consumer<OnScrollListener> onScrollListenerConsumer,
-            BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager,
             BookmarkManagerOpener bookmarkManagerOpener,
             PriceDropNotificationManager priceDropNotificationManager) {
         super(
@@ -103,7 +102,6 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
                 snackbarManager,
                 canShowSigninPromo,
                 onScrollListenerConsumer,
-                bookmarkMoveSnackbarManager,
                 bookmarkManagerOpener,
                 priceDropNotificationManager);
     }

@@ -17,6 +17,7 @@
 #include <string>
 #include <utility>
 
+#include "base/compiler_specific.h"
 #include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -117,10 +118,9 @@ class MacAddressProcessor {
   bool ProcessInterface(struct ifaddrs* ifaddr) {
     bool keep_going = true;
 
-
-    struct ifreq ifinfo;
-    memset(&ifinfo, 0, sizeof(ifinfo));
-    strncpy(ifinfo.ifr_name, ifaddr->ifa_name, sizeof(ifinfo.ifr_name) - 1);
+    struct ifreq ifinfo = {};
+    UNSAFE_TODO(strncpy(ifinfo.ifr_name, ifaddr->ifa_name,
+                        sizeof(ifinfo.ifr_name) - 1));
 
     const int sd = socket(AF_INET, SOCK_DGRAM, 0);
     const int result = ioctl(sd, SIOCGIFHWADDR, &ifinfo);

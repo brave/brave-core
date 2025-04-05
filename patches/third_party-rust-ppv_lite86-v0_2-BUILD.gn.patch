@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/ppv_lite86/v0_2/BUILD.gn b/third_party/rust/ppv_lite86/v0_2/BUILD.gn
-index 46ee9271aad3852454793de9c3426e9b04448dad..298ca396932320a4af029b5fcf35e47bc662be1f 100644
+index 809d1c4a0ad82a09712ac36579aa7584d442dd11..8bd24874a37f517365b832a703dbdfb7e8f1aad4 100644
 --- a/third_party/rust/ppv_lite86/v0_2/BUILD.gn
 +++ b/third_party/rust/ppv_lite86/v0_2/BUILD.gn
-@@ -50,5 +50,4 @@ cargo_crate("lib") {
+@@ -51,5 +51,4 @@ cargo_crate("lib") {
    # //third_party/rust/chromium_crates_io/Cargo.toml to use
    # it from first-party code.
    visibility = [ "//third_party/rust/*" ]

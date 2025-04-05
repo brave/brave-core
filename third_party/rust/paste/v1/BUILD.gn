@@ -12,12 +12,13 @@ cargo_crate("lib") {
   crate_name = "paste"
   epoch = "1"
   crate_type = "proc-macro"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/paste-1.0.12/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/paste-v1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/paste-1.0.12/src/attr.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/paste-1.0.12/src/error.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/paste-1.0.12/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/paste-1.0.12/src/segment.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/paste-v1/src/attr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/paste-v1/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/paste-v1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/paste-v1/src/segment.rs",
   ]
   inputs = []
 
@@ -35,10 +36,9 @@ cargo_crate("lib") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   build_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/paste-1.0.12/build.rs"
-  build_sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/paste-1.0.12/build.rs",
-  ]
+      "//brave/third_party/rust/chromium_crates_io/vendor/paste-v1/build.rs"
+  build_sources =
+      [ "//brave/third_party/rust/chromium_crates_io/vendor/paste-v1/build.rs" ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

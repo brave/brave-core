@@ -12,15 +12,15 @@ cargo_crate("lib") {
   crate_name = "siphasher"
   epoch = "0.3"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-0.3.10/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-v0_3/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-0.3.10/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-0.3.10/src/sip.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-0.3.10/src/sip128.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-0.3.10/src/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-0.3.10/src/tests128.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-v0_3/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-v0_3/src/sip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-v0_3/src/sip128.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-v0_3/src/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-v0_3/src/tests128.rs",
   ]
-  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-0.3.10/src/../README.md" ]
+  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/siphasher-v0_3/src/../README.md" ]
 
   build_native_rust_unit_tests = false
   edition = "2018"

@@ -12,8 +12,8 @@ cargo_crate("lib") {
   crate_name = "match_token"
   epoch = "0.1"
   crate_type = "proc-macro"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/match_token-0.1.0/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/match_token-0.1.0/src/lib.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/match_token-v0_1/src/lib.rs"
+  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/match_token-v0_1/src/lib.rs" ]
   inputs = []
 
   build_native_rust_unit_tests = false

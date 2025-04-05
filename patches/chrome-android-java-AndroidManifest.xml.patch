@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 364f021a07e1dd20463ccadeacecbfd1361cb93c..8477af119562f001a974b7e08180c849512c6c78 100644
+index 829845910f2ab27e2a39ff536244704eefb2cfef..4e501e9f3954c1b47fabaad2f43a67e7c21f5e4a 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -90,7 +90,7 @@ index 364f021a07e1dd20463ccadeacecbfd1361cb93c..8477af119562f001a974b7e08180c849
  
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1202,6 +1218,7 @@ by a child template that "extends" this file.
+@@ -1205,6 +1221,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  
