@@ -100,7 +100,7 @@
     "@types/array-move": "2.0.0",
     "@types/async": "3.2.20",
     "@types/bs58": "4.0.4",
-    "@types/chrome": "0.0.241",
+    "@types/chrome": "0.0.313",
     "@types/dom-navigation": "1.0.3",
     "@types/jest": "28.1.6",
     "@types/qr-image": "3.2.5",
