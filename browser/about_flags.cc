@@ -42,6 +42,7 @@
 #include "components/content_settings/core/common/features.h"
 #include "components/history/core/browser/features.h"
 #include "components/omnibox/common/omnibox_features.h"
+#include "components/sync/base/command_line_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "components/webui/flags/feature_entry.h"
 #include "components/webui/flags/feature_entry_macros.h"
@@ -108,6 +109,10 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
      std::size(kZCashShieldedTransactionsEnabled), nullptr}
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 };
+
+namespace {
+const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
+}
 
 #define SPEEDREADER_FEATURE_ENTRIES                                        \
   IF_BUILDFLAG(                                                            \
@@ -1011,6 +1016,18 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           "corners, padding, and a drop shadow",                               \
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
+      },                                                                       \
+      {                                                                        \
+          "brave-self-host-sync-url",                                          \
+          "Brave Self-host Sync URL",                                          \
+          "Allows you to set a secure (HTTPS) self-hosted sync URL. You can "  \
+          "learn more about the server implementation in the repository link " \
+          "mentioned below. "                                                  \
+          "Note: HTTP URLs are not supported and will be ignored "             \
+          "in favor of the default sync URL",                                  \
+          kOsWin | kOsLinux | kOsMac,                                          \
+          ORIGIN_LIST_VALUE_TYPE(syncer::kSyncServiceURL, ""),                 \
+          kBraveSyncImplLink,                                                  \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
@@ -1037,11 +1054,13 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 namespace flags_ui {
 namespace {
 
-// Unused function to reference Brave feature entries for clang checks.
+// Unused function to reference Brave feature entries for clang
+// checks.
 [[maybe_unused]] void UseBraveAboutFlags() {
   // These vars are declared in anonymous namespace in
-  // //chrome/browser/about_flags.cc. We declare them here manually to
-  // instantiate BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES without errors.
+  // //chrome/browser/about_flags.cc. We declare them here
+  // manually to instantiate BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
+  // without errors.
   constexpr int kOsAll = 0;
   constexpr int kOsDesktop = 0;
 
