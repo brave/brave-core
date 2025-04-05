@@ -62,7 +62,66 @@ function getTopicsHtml(this:  AutoTabGroupsPageElement) {
   `)
 }
 
+function getHeaderHtml(this:  AutoTabGroupsPageElement) {
+  return html`
+    <div class="title-row">
+      ${!this.showBackButton ? html`
+        <div>
+          <leo-button
+            size="medium"
+            kind="plain-faint"
+            fab
+            @click=${this.onBackClick_}
+          >
+            <leo-icon name="arrow-left"></leo-icon>
+          </leo-button>
+        </div>
+      ` : ''}
+      <div class='title-column'>
+        <div class="title">${this.getTitle_()}</div>
+        ${!this.showFRE_ ? html`
+          <div class="subtitle">${this.getSubtitle_()}</div>
+        ` : ''}
+      </div>
+    </div>
+  `
+}
+
+function getEnableTabFocusHtml(this:  AutoTabGroupsPageElement) {
+  return html`
+    <div class="enable-tab-focus-wrapper">
+      ${getHeaderHtml.bind(this)()}
+      <div class="enable-tab-focus-content-wrapper">
+        <div class="enable-tab-focus-illustration"></div>
+        <div class="enable-tab-focus-info-wrapper">
+          <span class="enable-tab-focus-info-text">
+            ${this.getPrivacyDisclaimerMessage_()}
+          </span>
+          <div class="enable-tab-focus-button-row">
+            <span class="learn-more-link" @click=${this.onLearnMoreClicked_}>
+              ${this.getLearnMoreLabel_()}
+            </span>
+            <div>
+            <leo-button
+              id="enableButton"
+              kind="filled"
+              size="small"
+              @click="${this.onEnableTabFocusClicked_}"
+            >
+              ${this.getEnableButtonLabel_()}
+            </leo-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
+}
+
 export function getHtml(this:  AutoTabGroupsPageElement) {
+  if (this.showFRE_) {
+    return getEnableTabFocusHtml.bind(this)()
+  }
   return html`<!--_html_template_start_-->
     <div id="brave-tab-focus" class="brave-tab-focus">
       <div
@@ -71,22 +130,7 @@ export function getHtml(this:  AutoTabGroupsPageElement) {
         aria-live="polite"
         aria-relevant="all"
       >
-        <div class='title-row'>
-          ${this.showBackButton ? html`
-            <leo-button
-              size="medium"
-              kind="plain-faint"
-              fab
-              @click=${this.onBackClick_}
-            >
-              <leo-icon name="arrow-left"></leo-icon>
-            </leo-button>
-          ` : ''}
-          <div class='title-column'>
-            <div class="title">${this.getTitle_()}</div>
-            <div class="subtitle">${this.getSubtitle_()}</div>
-          </div>
-        </div>
+        ${getHeaderHtml.bind(this)()}
         <div class="input-row">
           <leo-input
             id="topic-input"

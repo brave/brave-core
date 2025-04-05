@@ -1408,6 +1408,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_ORGANIZE_TAB_DISMISS_BUTTON_LABEL" desc="Text of the dismiss button">
         Dismiss
       </message>
+      <message name="IDS_BRAVE_ORGANIZE_TAB_PRIVACY_DISCLAIMER" desc="Disclaimer text for enabling the tab focus feature">
+        When opened, this will automatically send the titles and origin of all non-private tabs to Leo to classify them.
+      </message>
+      <message name="IDS_BRAVE_ORGANIZE_TAB_ENABLE_BUTTON_LABEL" desc="Text of enable tab focus button">
+        Enable
+      </message>
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

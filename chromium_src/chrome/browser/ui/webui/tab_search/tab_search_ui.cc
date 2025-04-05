@@ -26,6 +26,11 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
           profile->GetPrefs()->GetBoolean(
               ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 
+  // Show FRE if user doesn't explicitly enable/disble the feature pref.
+  update_data.Set("showTabOrganizationFRE",
+                  !profile->GetPrefs()->HasPrefPath(
+                      ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
+
   update_data.Set("autoTabGroupsSelectorHeading",
                   l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_TITLE));
 
@@ -69,6 +74,14 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
   update_data.Set(
       "tabOrganizationDismissButtonLabel",
       l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_DISMISS_BUTTON_LABEL));
+
+  update_data.Set(
+      "tabOrganizationPrivacyDisclaimer",
+      l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_PRIVACY_DISCLAIMER));
+
+  update_data.Set(
+      "tabOrganizationEnableButtonLabel",
+      l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_ENABLE_BUTTON_LABEL));
 
   content::WebUIDataSource::Update(profile, chrome::kChromeUITabSearchHost,
                                    std::move(update_data));
