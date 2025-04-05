@@ -35,6 +35,10 @@ bool IsOnion(const GURL& url) {
   return url.DomainIs(kOnionDomain);
 }
 
+bool IsOnion(const url::Origin& origin) {
+  return origin.DomainIs(kOnionDomain);
+}
+
 bool IsLocalhostOrOnion(const GURL& url) {
   return IsLocalhost(url) || IsOnion(url);
 }
