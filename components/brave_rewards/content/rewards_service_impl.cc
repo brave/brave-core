@@ -485,8 +485,8 @@ std::string RewardsServiceImpl::GetCountryCode() const {
   std::string declared_geo = prefs_->GetString(prefs::kDeclaredGeo);
   return !declared_geo.empty()
              ? declared_geo
-             : country_codes::CountryIDToCountryString(
-                   country_codes::GetCountryIDFromPrefs(prefs_));
+             : std::string(
+                   country_codes::GetCountryIDFromPrefs(prefs_).CountryCode());
 }
 
 void RewardsServiceImpl::GetAvailableCountries(
@@ -1426,8 +1426,7 @@ void RewardsServiceImpl::Log(const std::string& file,
                              const std::string& message) {
   WriteDiagnosticLog(file, line, verbose_level, message);
 
-  const int vlog_level =
-      ::logging::GetVlogLevelHelper(file.c_str(), strlen(file.c_str()));
+  const int vlog_level = ::logging::GetVlogLevelHelper(file);
   if (verbose_level <= vlog_level) {
     ::logging::LogMessage(file.c_str(), line, -verbose_level).stream()
         << message;

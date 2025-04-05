@@ -13,8 +13,6 @@ namespace prefs {
 // The following prefs have been deprecated and privated, however in Brave it
 // is necessary to keep these prefs visible while they are deprecated to make
 // sure these modes are not enabled.
-inline constexpr char kPrivacySandboxApisEnabled[] =
-    "privacy_sandbox.apis_enabled";
 inline constexpr char kPrivacySandboxManuallyControlledV2[] =
     "privacy_sandbox.manually_controlled_v2";
 

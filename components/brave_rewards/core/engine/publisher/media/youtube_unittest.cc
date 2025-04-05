@@ -436,7 +436,7 @@ TEST(RewardsMediaYouTubeTest, GetVideoUrl) {
 #if !BUILDFLAG(IS_ANDROID)
   GTEST_FLAG_SET(death_test_style, "threadsafe");
   EXPECT_DEATH(
-      { YouTube::GetVideoUrl(media_id); }, "Check failed: !media_id.empty*");
+      { YouTube::GetVideoUrl(media_id); }, "DCHECK failed: !media_id.empty*");
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif
 
@@ -473,7 +473,7 @@ TEST(RewardsMediaYouTubeTest, GetChannelUrl) {
   GTEST_FLAG_SET(death_test_style, "threadsafe");
   EXPECT_DEATH(
       { YouTube::GetChannelUrl(channel_id); },
-      "Check failed: !publisher_key.empty*");
+      "DCHECK failed: !publisher_key.empty*");
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif
 

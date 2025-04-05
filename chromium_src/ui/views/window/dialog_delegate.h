@@ -18,8 +18,33 @@
  public:                                                                  \
   void ResetViewShownTimeStampForTesting
 
+class BraveFirstRunDialog;
+class CrashReportPermissionAskDialogView;
+class WindowClosingConfirmDialogView;
+class PlaylistActionDialog;
+class TextRecognitionDialogView;
+class ObsoleteSystemConfirmDialogView;
+
+namespace brave_vpn {
+class BraveVpnFallbackDialogView;
+class BraveVpnDnsSettingsNotificiationDialogView;
+}  // namespace brave_vpn
+
+#define CreatePassKey                                                 \
+  CreatePassKey_Unused();                                             \
+  friend class ::BraveFirstRunDialog;                                 \
+  friend class ::CrashReportPermissionAskDialogView;                  \
+  friend class ::WindowClosingConfirmDialogView;                      \
+  friend class ::PlaylistActionDialog;                                \
+  friend class ::TextRecognitionDialogView;                           \
+  friend class ::ObsoleteSystemConfirmDialogView;                     \
+  friend class brave_vpn::BraveVpnFallbackDialogView;                 \
+  friend class brave_vpn::BraveVpnDnsSettingsNotificiationDialogView; \
+  static DdvPassKey CreatePassKey
+
 #include "src/ui/views/window/dialog_delegate.h"  // IWYU pragma: export
 
+#undef CreatePassKey
 #undef ResetViewShownTimeStampForTesting
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_VIEWS_WINDOW_DIALOG_DELEGATE_H_

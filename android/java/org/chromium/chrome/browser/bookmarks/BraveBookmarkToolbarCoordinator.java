@@ -37,7 +37,8 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
             ModalDialogManager modalDialogManager,
             Runnable endSearchRunnable,
             BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager,
-            BooleanSupplier incognitoEnabledSupplier) {
+            BooleanSupplier incognitoEnabledSupplier,
+            BookmarkManagerOpener bookmarkManagerOpener) {
         super(
                 context,
                 profile,
@@ -53,7 +54,8 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
                 modalDialogManager,
                 endSearchRunnable,
                 bookmarkMoveSnackbarManager,
-                incognitoEnabledSupplier);
+                incognitoEnabledSupplier,
+                bookmarkManagerOpener);
 
         if (mToolbar instanceof BraveBookmarkToolbar) {
             ((BraveBookmarkToolbar) mToolbar).setBraveBookmarkDelegate(bookmarkDelegateSupplier);

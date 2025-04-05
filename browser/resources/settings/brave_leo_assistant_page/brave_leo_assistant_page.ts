@@ -36,10 +36,6 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     static get properties() {
       return {
-        prefs: {
-          type: Object,
-          notify: true,
-        },
         leoAssistantShowOnToolbarPref_: {
           type: Boolean,
           value: false,
@@ -63,6 +59,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       loadTimeData.getBoolean('isLeoAssistantHistoryAllowed')
 
     leoAssistantShowOnToolbarPref_: boolean
+    selectedModelDisplayName_: string
     defaultModelKeyPrefValue_: string
     models_: ModelWithSubtitle[]
     premiumStatus_: PremiumStatus = PremiumStatus.Unknown

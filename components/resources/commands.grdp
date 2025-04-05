@@ -238,7 +238,9 @@
   <message name="IDS_IDC_IMPORT_SETTINGS">
     Import settings
   </message>
-
+  <message name="IDS_IDC_GLIC_TOGGLE_FOCUS">
+    Focus Gemini Live
+  </message>
   <message name="IDS_IDC_OPEN_FULL_PAGE_CHAT">
     Open AI Chat
   </message>

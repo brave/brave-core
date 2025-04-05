@@ -16,6 +16,7 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/bookmarks/bookmark_merged_surface_service_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "chrome/browser/bookmarks/bookmark_test_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/bookmarks/bookmark_context_menu_controller.h"
 #include "chrome/browser/ui/bookmarks/bookmark_stats.h"
@@ -49,6 +50,8 @@ class BraveBookmarkContextMenuControllerTest : public testing::Test {
     profile_ = builder.Build();
     model_ = BookmarkModelFactory::GetForBrowserContext(profile_.get());
     bookmarks::test::WaitForBookmarkModelToLoad(model_);
+    WaitForBookmarkMergedSurfaceServiceToLoad(
+        BookmarkMergedSurfaceServiceFactory::GetForProfile(profile_.get()));
   }
 
   static base::RepeatingCallback<content::PageNavigator*()>
@@ -66,7 +69,7 @@ class BraveBookmarkContextMenuControllerTest : public testing::Test {
 TEST_F(BraveBookmarkContextMenuControllerTest,
        DontShowAppsShortcutContextMenuInBookmarksBar) {
   BookmarkContextMenuController controller(
-      nullptr, nullptr, nullptr, profile_.get(),
+      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
       BookmarkLaunchLocation::kSidePanelContextMenu,
       {model_->bookmark_bar_node()});
 
@@ -104,7 +107,7 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
 
 TEST_F(BraveBookmarkContextMenuControllerTest, AddBraveBookmarksSubmenu) {
   BraveBookmarkContextMenuController controller(
-      nullptr, nullptr, nullptr, profile_.get(),
+      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
       BookmarkLaunchLocation::kSidePanelFolder, {model_->bookmark_bar_node()});
   EXPECT_FALSE(controller.menu_model()
                    ->GetIndexOfCommandId(IDC_BOOKMARK_BAR_ALWAYS_SHOW)

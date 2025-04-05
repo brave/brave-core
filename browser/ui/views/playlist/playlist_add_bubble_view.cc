@@ -129,7 +129,7 @@ PlaylistAddBubbleView::PlaylistAddBubbleView(
   scroll_view_ = AddChildView(std::make_unique<views::ScrollView>());
   scroll_view_->ClipHeightTo(/*min_height=*/0, /*max_height=*/230);
   scroll_view_->SetDrawOverflowIndicator(false);
-  scroll_view_->SetBorder(views::CreateThemedRoundedRectBorder(
+  scroll_view_->SetBorder(views::CreateRoundedRectBorder(
       /*thickness=*/1,
       /*corner_radius=*/4.f, kColorBravePlaylistListBorder));
   scroll_view_->SetVisible(false);

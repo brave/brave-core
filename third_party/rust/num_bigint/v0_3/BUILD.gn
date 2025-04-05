@@ -68,11 +68,6 @@ cargo_crate("lib") {
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
-  if (target_cpu == "arm64" || target_cpu == "x64") {
-    rustenv = [ "CARGO_CFG_TARGET_POINTER_WIDTH=64" ]
-  } else {
-    rustenv = [ "CARGO_CFG_TARGET_POINTER_WIDTH=32" ]
-  }
   if (epoch != "0.2") {
     build_script_outputs = [ "radix_bases.rs" ]
   } else {

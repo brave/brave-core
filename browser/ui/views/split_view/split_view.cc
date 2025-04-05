@@ -104,6 +104,10 @@ SplitView::SplitView(Browser& browser,
   secondary_contents_scrim_view_ = secondary_contents_container_->AddChildView(
       std::make_unique<ScrimView>());
 
+  secondary_lens_overlay_view_ = secondary_contents_container_->AddChildView(
+      std::make_unique<views::View>());
+  secondary_lens_overlay_view_->SetVisible(false);
+
   split_view_separator_ = AddChildView(
       std::make_unique<SplitViewSeparator>(base::to_address(browser_)));
 
@@ -119,8 +123,8 @@ SplitView::SplitView(Browser& browser,
   secondary_contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
           secondary_devtools_web_view_, secondary_contents_web_view_,
-          secondary_contents_scrim_view_, nullptr, nullptr,
-          secondary_reader_mode_toolbar_));
+          secondary_lens_overlay_view_, secondary_contents_scrim_view_, nullptr,
+          nullptr, secondary_reader_mode_toolbar_));
 #endif
 
   SetLayoutManager(std::make_unique<SplitViewLayoutManager>(
@@ -409,7 +413,7 @@ void SplitView::UpdateContentsWebViewBorder() {
             ? BraveContentsViewUtil::kBorderRadius + kBorderThickness
             : 0;
     // Use same color for active focus border.
-    contents_container_->SetBorder(views::CreateThemedRoundedRectBorder(
+    contents_container_->SetBorder(views::CreateRoundedRectBorder(
         kBorderThickness, kRadius, kColorBraveSplitViewActiveWebViewBorder));
 
     BraveContentsLayoutManager::GetLayoutManagerForView(contents_container_)
