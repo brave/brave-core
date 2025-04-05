@@ -5,6 +5,8 @@
 
 source_set("common") {
   sources = [
+    "new_tab_takeover_infobar_util.cc",
+    "new_tab_takeover_infobar_util.h",
     "pref_names.h",
     "view_counter_pref_names.h",
     "view_counter_pref_registry.cc",
@@ -14,5 +16,18 @@ source_set("common") {
   deps = [
     "//components/pref_registry",
     "//components/prefs",
+  ]
+}
+
+source_set("unittests") {
+  testonly = true
+
+  sources = [ "new_tab_takeover_infobar_util_unittest.cc" ]
+
+  deps = [
+    ":common",
+    "//base",
+    "//components/sync_preferences:test_support",
+    "//testing/gtest",
   ]
 }
