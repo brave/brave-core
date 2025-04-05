@@ -23,12 +23,11 @@ class SearchSuggestionDataSource {
   // MARK: SearchListSection
 
   enum SearchListSection: Int, CaseIterable {
-    case quickBar
     case searchSuggestionsOptIn
     case searchSuggestions
+    case braveSearchPromotion
     case findInPage
     case openTabsAndHistoryAndBookmarks
-    case aiChat
   }
 
   let isPrivate: Bool
@@ -69,30 +68,10 @@ class SearchSuggestionDataSource {
     return quickSearchEngines.count > 1
   }
 
-  var availableSections: [SearchListSection] {
-    var sections = [SearchListSection]()
-    sections.append(.quickBar)
-
-    if !isPrivate && searchEngines?.shouldShowSearchSuggestionsOptIn == true {
-      sections.append(.searchSuggestionsOptIn)
-    }
-
-    if !isPrivate && searchEngines?.shouldShowSearchSuggestions == true {
-      sections.append(.searchSuggestions)
-    }
-    sections.append(.findInPage)
-
-    if searchEngines?.shouldShowBrowserSuggestions == true {
-      sections.append(.openTabsAndHistoryAndBookmarks)
-    }
-
-    if !isPrivate && Preferences.AIChat.autocompleteSuggestionsEnabled.value
+  var isAIChatAvailable: Bool {
+    !isPrivate
+      && Preferences.AIChat.leoInQuickSearchBarEnabled.value
       && FeatureList.kAIChat.enabled
-    {
-      sections.append(.aiChat)
-    }
-
-    return sections
   }
 
   var braveSearchPromotionAvailable: Bool {
