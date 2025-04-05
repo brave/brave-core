@@ -30,6 +30,7 @@ brave_grit("static_resources") {
     "//brave/components/brave_shields/resources:bundle_js",
     "//brave/components/decentralized_dns/content/resources:bundle_js",
     "//brave/components/request_otr/resources:bundle_js",
+    "//brave/components/psst/resources",
   ]
 
   if (enable_extensions) {

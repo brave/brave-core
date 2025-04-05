@@ -829,6 +829,7 @@ source_set("ui") {
     "//brave/components/brave_rewards/resources:internals_generated_resources",
     "//brave/components/brave_rewards/resources:page_generated_resources",
     "//brave/components/brave_rewards/resources/rewards_page:rewards_page_generated",
+    "//brave/components/psst/resources",
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_shields/content/browser",
