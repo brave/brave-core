@@ -8,35 +8,20 @@ package org.chromium.chrome.browser.brave_leo;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveLeoPreferences;
+import org.chromium.chrome.browser.util.BraveProfileUtil;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
 
 public class BraveLeoPrefUtils {
     private static final String TAG = "BraveLeoPrefUtils";
 
-    private static Profile getProfile() {
-        Profile profile = null;
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            profile = activity.getCurrentProfile();
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "get BraveActivity exception", e);
-        }
-        if (profile == null) {
-            Log.e(TAG, "BraveLeoPrefUtils.getProfile profile is null");
-        }
-
-        return profile;
-    }
-
     public static void setIsSubscriptionActive(boolean value) {
-        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        Profile profileToUse = BraveProfileUtil.getProfile();
         if (profileToUse == null) {
             Log.e(TAG, "BraveLeoPrefUtils.setIsSubscriptionActive profile is null");
             return;
@@ -46,7 +31,7 @@ public class BraveLeoPrefUtils {
     }
 
     public static boolean getIsSubscriptionActive(Profile profile) {
-        Profile profileToUse = profile == null ? BraveLeoPrefUtils.getProfile() : profile;
+        Profile profileToUse = profile == null ? BraveProfileUtil.getProfile() : profile;
         if (profileToUse == null) {
             Log.e(TAG, "BraveLeoPrefUtils.getIsSubscriptionActive profile is null");
             return false;
@@ -56,7 +41,7 @@ public class BraveLeoPrefUtils {
     }
 
     public static void setChatPurchaseToken(String token) {
-        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        Profile profileToUse = BraveProfileUtil.getProfile();
         if (profileToUse == null) {
             Log.e(TAG, "BraveLeoPrefUtils.setChatPurchaseToken profile is null");
             return;
@@ -77,7 +62,7 @@ public class BraveLeoPrefUtils {
     }
 
     public static boolean getIsHistoryEnabled() {
-        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        Profile profileToUse = BraveProfileUtil.getProfile();
         if (profileToUse == null) {
             Log.e(TAG, "BraveLeoPrefUtils.getIsHistoryEnabled profile is null");
             return false;
@@ -86,7 +71,7 @@ public class BraveLeoPrefUtils {
     }
 
     public static void setIsHistoryEnabled(boolean isEnabled) {
-        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        Profile profileToUse = BraveProfileUtil.getProfile();
         if (profileToUse == null) {
             Log.e(TAG, "BraveLeoPrefUtils.getIsHistoryEnabled profile is null");
             return;
@@ -116,7 +101,7 @@ public class BraveLeoPrefUtils {
     }
 
     public static void setChatPackageName() {
-        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        Profile profileToUse = BraveProfileUtil.getProfile();
         if (profileToUse == null) {
             Log.e(TAG, "BraveLeoPrefUtils.setChatPackageName profile is null");
             return;
@@ -128,7 +113,7 @@ public class BraveLeoPrefUtils {
     }
 
     public static void setChatProductId(String productId) {
-        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        Profile profileToUse = BraveProfileUtil.getProfile();
         if (profileToUse == null) {
             Log.e(TAG, "BraveLeoPrefUtils.setChatProductId profile is null");
             return;
@@ -145,7 +130,7 @@ public class BraveLeoPrefUtils {
     }
 
     public static boolean isSubscriptionLinked() {
-        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        Profile profileToUse = BraveProfileUtil.getProfile();
         if (profileToUse == null) {
             Log.e(TAG, "BraveLeoPrefUtils.isSubscriptionLinked profile is null");
             return false;
