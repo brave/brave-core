@@ -39,6 +39,13 @@ auto MakeVectorFromArgs(Args&&... args) {
   return result;
 }
 
+template <size_t SZ>
+std::array<uint8_t, SZ> HexToArray(std::string_view input) {
+  std::array<uint8_t, SZ> result;
+  CHECK(base::HexStringToSpan(input, result));
+  return result;
+}
+
 }  // namespace test
 
 inline constexpr mojom::CoinType kAllCoins[] = {

@@ -12,26 +12,27 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_rpc.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
 
 namespace brave_wallet {
 class CardanoWalletService;
 
 class GetCardanoUtxosTask {
  public:
-  using UtxoMap = std::map<std::string, cardano_rpc::UnspentOutputs>;
+  using UtxoMap = std::map<CardanoAddress, cardano_rpc::UnspentOutputs>;
   using Callback =
-      base::OnceCallback<void(GetCardanoUtxosTask*,
-                              base::expected<UtxoMap, std::string>)>;
+      base::OnceCallback<void(base::expected<UtxoMap, std::string>)>;
 
   GetCardanoUtxosTask(CardanoWalletService& cardano_wallet_service,
                       const std::string& chain_id,
-                      std::vector<mojom::CardanoAddressPtr> addresses,
-                      Callback callback);
+                      std::vector<CardanoAddress> addresses);
   virtual ~GetCardanoUtxosTask();
+
+  void set_callback(Callback callback) { callback_ = std::move(callback); }
 
   void ScheduleWorkOnTask();
 
@@ -39,12 +40,12 @@ class GetCardanoUtxosTask {
   void WorkOnTask();
   void MaybeSendRequests();
   void OnGetUtxoList(
-      mojom::CardanoAddressPtr address,
+      CardanoAddress address,
       base::expected<cardano_rpc::UnspentOutputs, std::string> utxos);
 
   raw_ref<CardanoWalletService> cardano_wallet_service_;
   std::string chain_id_;
-  std::vector<mojom::CardanoAddressPtr> addresses_;
+  std::vector<CardanoAddress> addresses_;
   bool requests_sent_ = false;
 
   UtxoMap utxos_;

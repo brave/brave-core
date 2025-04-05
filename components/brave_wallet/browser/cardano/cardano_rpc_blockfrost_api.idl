@@ -5,11 +5,25 @@
 
 // Cardano RPC structures.
 namespace cardano_rpc {
-
   dictionary Block {
     // uint32_t
     DOMString height;
+
+    // uint64_t
+    DOMString slot;
+
+    // uint32_t
+    DOMString epoch;
   };
+
+  dictionary EpochParameters {
+    // uint64_t
+    DOMString min_fee_a;
+
+    // uint64_t
+    DOMString min_fee_b;
+  };
+
 
   dictionary UnspentOutputAsset {
     DOMString unit;
