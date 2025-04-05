@@ -10,6 +10,7 @@ include_rules += [
   "+brave/app",
   "!brave/build/android",
   "+brave/common",
+  "+brave/services/device/geolocation",
   "+brave/services/network/public",
   "+brave/test/base",
   "+brave/ui",
