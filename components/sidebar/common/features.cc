@@ -16,6 +16,11 @@ const base::FeatureParam<bool> kOpenOneShotLeoPanel{
     /*name=*/"open_one_shot_leo_panel",
     /*default_value=*/false};
 
+// Load sidebar item's url in the panel instead of loading it in the tab.
+BASE_FEATURE(kSidebarMobileView,
+             "SidebarMobileView",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 SidebarDefaultMode GetSidebarDefaultMode() {
    if (base::FeatureList::IsEnabled(kSidebarShowAlwaysOnStable)) {
      if (kOpenOneShotLeoPanel.Get()) {
