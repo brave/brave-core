@@ -23,7 +23,7 @@ def _LoadPolicies(orig_func):
     # Brave uses the group name "BraveSoftware". The child element for the
     # group is the policy itself (those are the yaml files in the folder).
     #
-    # Brave specific entries are get copied into place by `update_policy_files`.
+    # Brave specific entries are copied into place by `update_policy_files`.
     # We copy the files from:
     # `//brave/components/policy/resources/templates/policy_definitions/BraveSoftware` # pylint: disable=line-too-long
     # to:
