@@ -11,7 +11,7 @@
   <Param name="appid" value="dj00aiZpPXVyZmc2WDgzWnA5SSZzPWNvbnN1bWVyc2VjcmV0Jng9MTE-"/>
   <Param name="fr" value="brave-mobile_ext"/>
 </Url>
-<Url type="text/html" method="GET" template="https://search.yahoo.co.jp/search/">
+<Url type="text/html" method="GET" template="https://search.yahoo.co.jp/search">
   <Param name="p" value="{searchTerms}"/>
   <Param name="ei" value="UTF-8"/>
   <Param name="fr" value="brave-mobile_ext"/>

@@ -229,11 +229,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       if Preferences.Search.defaultEngineName.value == nil {
         AppState.shared.profile.searchEngines.searchEngineSetup()
         Preferences.Search.yahooJPPhaseOneCompleted.value = true
-      } else if !Preferences.Search.yahooJPPhaseOneCompleted.value {
+        Preferences.Search.yahooJPPhaseTwoCompleted.value = true
+      }
+      if !Preferences.Search.yahooJPPhaseOneCompleted.value {
         // Upgrade from existed version which has a DSE set. Need to insert Yahoo! JAPAN into
         // the correct position of the ordered search engines list
         AppState.shared.profile.searchEngines.updateYahooJPOrderIfNeeded()
         Preferences.Search.yahooJPPhaseOneCompleted.value = true
+      }
+      if !Preferences.Search.yahooJPPhaseTwoCompleted.value {
+        AppState.shared.profile.searchEngines.updateDSEToYahooJPIfNeeded()
+        Preferences.Search.yahooJPPhaseTwoCompleted.value = true
       }
     }
 
