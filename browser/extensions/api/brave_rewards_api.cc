@@ -16,7 +16,6 @@
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
-#include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
@@ -40,7 +39,6 @@ using brave_rewards::RewardsPanelCoordinator;
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
-using brave_rewards::TipPanelCoordinator;
 
 namespace {
 
@@ -59,17 +57,6 @@ RewardsTabHelper* GetRewardsTabHelperForTabId(
   return RewardsTabHelper::FromWebContents(web_contents);
 }
 
-content::WebContents* WebContentsFromBrowserContext(
-    int tab_id,
-    content::BrowserContext* browser_context) {
-  content::WebContents* contents = nullptr;
-  extensions::WindowController* window = nullptr;
-  extensions::ExtensionTabUtil::GetTabById(
-      tab_id, Profile::FromBrowserContext(browser_context),
-      /*incognito_enabled=*/false, &window, &contents, /*tab_index=*/nullptr);
-  return contents;
-}
-
 RewardsPanelCoordinator* GetPanelCoordinator(
     content::WebContents* web_contents) {
   DCHECK(web_contents);
@@ -84,22 +71,6 @@ RewardsPanelCoordinator* GetPanelCoordinator(ExtensionFunction* function) {
     return nullptr;
   }
   return GetPanelCoordinator(web_contents);
-}
-
-TipPanelCoordinator* GetTipPanelCoordinator(
-    int tab_id,
-    content::BrowserContext* browser_context) {
-  auto* contents = WebContentsFromBrowserContext(tab_id, browser_context);
-  if (!contents) {
-    return nullptr;
-  }
-
-  auto* browser = chrome::FindBrowserWithTab(contents);
-  if (!browser) {
-    return nullptr;
-  }
-
-  return brave_rewards::TipPanelCoordinator::FromBrowser(browser);
 }
 
 std::string StringifyResult(
@@ -261,29 +232,6 @@ void BraveRewardsGetPublisherInfoForTabFunction::OnGetPublisherPanelInfo(
   dict.Set("favIconUrl", info->favicon_url);
 
   Respond(WithArguments(std::move(dict)));
-}
-
-BraveRewardsTipSiteFunction::~BraveRewardsTipSiteFunction() = default;
-
-ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
-  std::optional<brave_rewards::TipSite::Params> params =
-      brave_rewards::TipSite::Params::Create(args());
-  EXTENSION_FUNCTION_VALIDATE(params);
-
-  // Sanity check: don't allow tips in private / tor contexts,
-  // although the command should not have been enabled in the first place.
-  if (!Profile::FromBrowserContext(browser_context())->IsRegularProfile()) {
-    return RespondNow(Error("Cannot tip to site in a private context"));
-  }
-
-  auto* coordinator = GetTipPanelCoordinator(params->tab_id, browser_context());
-  if (!coordinator) {
-    return RespondNow(Error(extensions::ExtensionTabUtil::kTabNotFoundError,
-                            base::NumberToString(params->tab_id)));
-  }
-
-  coordinator->ShowPanelForPublisher(params->publisher_key);
-  return RespondNow(NoArguments());
 }
 
 BraveRewardsGetRewardsParametersFunction::

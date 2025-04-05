@@ -17,13 +17,11 @@
 #include "base/numerics/byte_conversions.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/components/brave_rewards/content/rewards_service_impl.h"
 #include "brave/components/brave_rewards/core/engine/publisher/protos/channel_response.pb.h"
-#include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -42,10 +40,7 @@ namespace brave_rewards {
 // See the "EnableRewards" test for hints on writing new Rewards page tests.
 class RewardsPageBrowserTest : public InProcessBrowserTest {
  protected:
-  RewardsPageBrowserTest() {
-    scoped_feature_list_.InitWithFeatures({features::kNewRewardsUIFeature}, {});
-  }
-
+  RewardsPageBrowserTest() = default;
   ~RewardsPageBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
@@ -299,7 +294,6 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
     }
   }
 
-  base::test::ScopedFeatureList scoped_feature_list_;
   base::FilePath test_data_dir_;
   base::WeakPtr<content::WebContents> page_contents_;
   RequestHandler request_handler_;
