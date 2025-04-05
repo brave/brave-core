@@ -57,14 +57,15 @@ class MockPageContentFetcher
               (override));
 };
 
-class MockAssociatedContentObserver : public AssociatedContentDriver::Observer {
+class MockAssociatedContentObserver
+    : public ConversationHandler::AssociatedContentDelegate::Observer {
  public:
   MockAssociatedContentObserver() = default;
   ~MockAssociatedContentObserver() override = default;
 
   MOCK_METHOD(void,
-              OnAssociatedContentNavigated,
-              (int new_navigation_id),
+              OnNavigated,
+              (ConversationHandler::AssociatedContentDelegate*),
               (override));
 };
 
@@ -171,88 +172,65 @@ INSTANTIATE_TEST_SUITE_P(
     });
 
 TEST_P(AIChatTabHelperUnitTest, OnNewPage) {
-  int current_navigation_id = -1;
-  int previous_navigation_id = -2;
-  // Each time we navigate, we should get call OnNewPage with a new content ID
-  EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
-      .Times(3)
-      .WillRepeatedly([&](int new_navigation_id) {
-        EXPECT_GT(new_navigation_id, current_navigation_id);
-        previous_navigation_id = current_navigation_id;
-        current_navigation_id = new_navigation_id;
-      });
+  EXPECT_CALL(*observer_, OnNavigated).Times(3);
   NavigateTo(GURL("https://www.brave.com"));
   NavigateTo(GURL("https://www.brave.com/1"));
   NavigateTo(GURL("https://www.brave.com/2"));
 
-  // Going back should revive the same content id
-  EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
-      .WillOnce([&](int new_navigation_id) {
-        EXPECT_EQ(new_navigation_id, previous_navigation_id);
-      });
+  // Going back should notify navigated
+  EXPECT_CALL(*observer_, OnNavigated).Times(1);
   content::NavigationSimulator::GoBack(web_contents());
 
   // Same with going forward
-  EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
-      .WillOnce([&](int new_navigation_id) {
-        EXPECT_EQ(new_navigation_id, current_navigation_id);
-      });
+  EXPECT_CALL(*observer_, OnNavigated).Times(1);
   content::NavigationSimulator::GoForward(web_contents());
 
   // Same-document navigation should not call OnNewPage if page title is the
   // same
-  EXPECT_CALL(*observer_, OnAssociatedContentNavigated).Times(0);
+  EXPECT_CALL(*observer_, OnNavigated).Times(0);
   NavigateTo(GURL("https://www.brave.com/2/3"), false, true, "www.brave.com/2");
   testing::Mock::VerifyAndClearExpectations(&observer_);
   // ...unless the page title changes before the next navigation.
-  EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
-      .WillOnce([&](int new_navigation_id) {
-        EXPECT_GT(new_navigation_id, current_navigation_id);
-        previous_navigation_id = current_navigation_id;
-        current_navigation_id = new_navigation_id;
-      });
+  EXPECT_CALL(*observer_, OnNavigated).Times(1);
   SimulateTitleChange(u"New Title");
   testing::Mock::VerifyAndClearExpectations(&observer_);
   // Back same-document navigation doesn't get a different title event
   // so let's check it's still detected as a new page if the navigation
   // results in a title difference.
-  EXPECT_CALL(*observer_, OnAssociatedContentNavigated)
-      .WillOnce([&](int new_navigation_id) {
-        EXPECT_EQ(new_navigation_id, previous_navigation_id);
-      });
+  EXPECT_CALL(*observer_, OnNavigated).Times(1);
   content::NavigationSimulator::GoBack(web_contents());
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   // Title changes after different-document navigation should not
   // trigger OnNewPage.
-  EXPECT_CALL(*observer_, OnAssociatedContentNavigated(_)).Times(1);
+  EXPECT_CALL(*observer_, OnNavigated(_)).Times(1);
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       web_contents(), GURL("https://www.brave.com/3"));
   testing::Mock::VerifyAndClearExpectations(&observer_);
-  EXPECT_CALL(*observer_, OnAssociatedContentNavigated(_)).Times(0);
+  EXPECT_CALL(*observer_, OnNavigated(_)).Times(0);
   SimulateTitleChange(u"Another New Title");
   testing::Mock::VerifyAndClearExpectations(&observer_);
 }
 
 TEST_P(AIChatTabHelperUnitTest, GetPageContent_HasContent) {
-  constexpr char expected_text[] = "This is the way.";
+  constexpr char kExpectedText[] = "This is the way.";
   // Add whitespace to ensure it's trimmed
-  constexpr char supplied_text[] = "   \n    This is the way.   \n  ";
+  constexpr char kSuppliedText[] = "   \n    This is the way.   \n  ";
   // A url that doesn't by itself trigger print preview extraction.
   NavigateTo(GURL("https://www.brave.com"));
   EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-      .WillOnce(base::test::RunOnceCallback<1>(supplied_text, false, ""));
+      .WillOnce(base::test::RunOnceCallback<1>(kSuppliedText, false, ""));
   if (print_preview_extractor_) {
     // Fallback won't initiate if we already have content
     EXPECT_CALL(*print_preview_extractor_, Extract).Times(0);
   }
   base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
-  EXPECT_CALL(callback, Run(expected_text, false, ""));
+  EXPECT_CALL(callback, Run(kExpectedText, false, ""));
   GetPageContent(callback.Get(), "");
 }
 
 TEST_P(AIChatTabHelperUnitTest, GetPageContent_FallbackPrintPreview) {
-  constexpr char expected_text[] = "This is the way.";
+  constexpr char kExpectedText[] = "This is the way.";
   // A url that doesn't by itself trigger print preview extraction.
   NavigateTo(GURL("https://www.brave.com"));
   EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
@@ -260,16 +238,16 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_FallbackPrintPreview) {
   if (print_preview_extractor_) {
     // Fallback iniatiated on empty string then succeeded.
     EXPECT_CALL(*print_preview_extractor_, Extract)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_text));
+        .WillOnce(base::test::RunOnceCallback<1>(kExpectedText));
   }
   base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
   EXPECT_CALL(callback,
-              Run(print_preview_extractor_ ? expected_text : "", false, ""));
+              Run(print_preview_extractor_ ? kExpectedText : "", false, ""));
   GetPageContent(callback.Get(), "");
 }
 
 TEST_P(AIChatTabHelperUnitTest, GetPageContent_OnlyWhitespace) {
-  constexpr char expected_text[] = "This is the way.";
+  constexpr char kExpectedText[] = "This is the way.";
   // A url that doesn't by itself trigger print preview extraction.
   NavigateTo(GURL("https://www.brave.com"));
   EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
@@ -278,11 +256,11 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_OnlyWhitespace) {
   if (print_preview_extractor_) {
     // Fallback iniatiated on white spaces and line breaks then succeeded.
     EXPECT_CALL(*print_preview_extractor_, Extract)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_text));
+        .WillOnce(base::test::RunOnceCallback<1>(kExpectedText));
   }
   base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
   EXPECT_CALL(callback,
-              Run(print_preview_extractor_ ? expected_text : "", false, ""));
+              Run(print_preview_extractor_ ? kExpectedText : "", false, ""));
   GetPageContent(callback.Get(), "");
 }
 
@@ -317,19 +295,19 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_VideoContent) {
 
 TEST_P(AIChatTabHelperUnitTest, GetPageContent_PrintPreviewTriggeringURL) {
   base::MockCallback<ConversationHandler::GetPageContentCallback> callback;
-  constexpr char expected_text[] = "This is the way.";
+  constexpr char kExpectedText[] = "This is the way.";
   // A url that does by itself trigger print preview extraction.
   NavigateTo(GURL("https://docs.google.com"));
   if (is_print_preview_supported_) {
     // PrintPreview always initiated on URL
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
     EXPECT_CALL(*print_preview_extractor_, Extract)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_text));
+        .WillOnce(base::test::RunOnceCallback<1>(kExpectedText));
   } else {
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
-        .WillOnce(base::test::RunOnceCallback<1>(expected_text, false, ""));
+        .WillOnce(base::test::RunOnceCallback<1>(kExpectedText, false, ""));
   }
-  EXPECT_CALL(callback, Run(expected_text, false, ""));
+  EXPECT_CALL(callback, Run(kExpectedText, false, ""));
   GetPageContent(callback.Get(), "");
 }
 

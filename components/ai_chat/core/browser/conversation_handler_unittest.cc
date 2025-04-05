@@ -32,6 +32,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
@@ -110,7 +111,7 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void,
               OnAssociatedContentInfoChanged,
-              (const mojom::AssociatedContentPtr, bool),
+              (std::vector<mojom::AssociatedContentPtr>, bool),
               (override));
 
   MOCK_METHOD(void, OnConversationDeleted, (), (override));
@@ -141,11 +142,6 @@ class MockAssociatedContent
   MOCK_METHOD(void,
               GetStagedEntriesFromContent,
               (ConversationHandler::GetStagedEntriesCallback),
-              (override));
-
-  MOCK_METHOD(void,
-              OnRelatedConversationDisassociated,
-              (ConversationHandler*),
               (override));
 
   base::WeakPtr<ConversationHandler::AssociatedContentDelegate> GetWeakPtr() {
@@ -207,7 +203,8 @@ class ConversationHandlerUnitTest : public testing::Test {
         temp_directory_.GetPath());
 
     conversation_ = mojom::Conversation::New(
-        "uuid", "title", base::Time::Now(), false, std::nullopt, 0, 0, nullptr);
+        "uuid", "title", base::Time::Now(), false, std::nullopt, 0, 0,
+        std::vector<mojom::AssociatedContentPtr>());
 
     conversation_handler_ = std::make_unique<ConversationHandler>(
         conversation_.get(), ai_chat_service_.get(), model_service_.get(),
@@ -371,7 +368,7 @@ TEST_F(ConversationHandlerUnitTest, GetState) {
                     should_send_content
                         ? mojom::SuggestionGenerationStatus::CanGenerate
                         : mojom::SuggestionGenerationStatus::None);
-          EXPECT_TRUE(state->associated_content);
+          EXPECT_FALSE(state->associated_content.empty());
           EXPECT_EQ(state->should_send_content, should_send_content);
           EXPECT_EQ(state->error, mojom::APIError::None);
           run_loop.Quit();
@@ -405,15 +402,15 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   EXPECT_FALSE(conversation_handler_->HasAnyHistory());
 
   // Test without page contents.
-  conversation_handler_->GetAssociatedContentInfo(
-      base::BindLambdaForTesting([&](mojom::AssociatedContentPtr site_info,
-                                     bool should_send_page_contents) {
+  conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
+      [&](std::vector<mojom::AssociatedContentPtr> site_info,
+          bool should_send_page_contents) {
         EXPECT_TRUE(should_send_page_contents);
       }));
   conversation_handler_->SetShouldSendPageContents(false);
-  conversation_handler_->GetAssociatedContentInfo(
-      base::BindLambdaForTesting([&](mojom::AssociatedContentPtr site_info,
-                                     bool should_send_page_contents) {
+  conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
+      [&](std::vector<mojom::AssociatedContentPtr> site_info,
+          bool should_send_page_contents) {
         EXPECT_FALSE(should_send_page_contents);
       }));
 
@@ -434,8 +431,8 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   // that it is no longer associated with the conversation
   // and shouldn't access the conversation because the conversation
   // will not be considering the associated content for lifetime notifications.
-  EXPECT_CALL(*associated_content_, OnRelatedConversationDisassociated)
-      .Times(1);
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->HasContent());
 
   conversation_handler_->SubmitSelectedText(
       selected_text, mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
@@ -445,13 +442,13 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   // article_text_ and suggestions_ should be cleared when page content is
   // unlinked.
-  conversation_handler_->GetAssociatedContentInfo(
-      base::BindLambdaForTesting([&](mojom::AssociatedContentPtr site_info,
-                                     bool should_send_page_contents) {
+  conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
+      [&](std::vector<mojom::AssociatedContentPtr> site_info,
+          bool should_send_page_contents) {
         EXPECT_FALSE(should_send_page_contents);
         // We should not have any relationship to associated content
         // once conversation history is committed.
-        EXPECT_FALSE(site_info);
+        EXPECT_TRUE(site_info.empty());
       }));
   EXPECT_TRUE(conversation_handler_->GetSuggestedQuestionsForTest().empty());
 
@@ -504,12 +501,12 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   EXPECT_CALL(*associated_content_, GetContent)
       .WillOnce(base::test::RunOnceCallback<0>(page_content, false, ""));
   conversation_handler_->SetShouldSendPageContents(true);
-  conversation_handler_->GetAssociatedContentInfo(
-      base::BindLambdaForTesting([&](mojom::AssociatedContentPtr site_info,
-                                     bool should_send_page_contents) {
+  conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
+      [&](std::vector<mojom::AssociatedContentPtr> site_info,
+          bool should_send_page_contents) {
         EXPECT_TRUE(should_send_page_contents);
-        ASSERT_TRUE(site_info);
-        EXPECT_EQ(site_info->url, GURL("https://www.brave.com/"));
+        ASSERT_EQ(site_info.size(), 1u);
+        EXPECT_EQ(site_info[0]->url, GURL("https://www.brave.com/"));
       }));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -532,12 +529,12 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   testing::Mock::VerifyAndClearExpectations(&client);
 
   // associated info should be unchanged
-  conversation_handler_->GetAssociatedContentInfo(
-      base::BindLambdaForTesting([&](mojom::AssociatedContentPtr site_info,
-                                     bool should_send_page_contents) {
+  conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
+      [&](std::vector<mojom::AssociatedContentPtr> site_info,
+          bool should_send_page_contents) {
         EXPECT_TRUE(should_send_page_contents);
-        ASSERT_TRUE(site_info);
-        EXPECT_EQ(site_info->url, GURL("https://www.brave.com/"));
+        ASSERT_EQ(site_info.size(), 1u);
+        EXPECT_EQ(site_info[0]->url, GURL("https://www.brave.com/"));
       }));
 
   // Should not be any LLM-generated suggested questions yet because they
@@ -944,9 +941,9 @@ TEST_F(ConversationHandlerUnitTest,
   // History update notification once for each entry
   EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(2);
 
-  conversation_handler_->GetAssociatedContentInfo(
-      base::BindLambdaForTesting([&](mojom::AssociatedContentPtr site_info,
-                                     bool should_send_page_contents) {
+  conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
+      [&](std::vector<mojom::AssociatedContentPtr> site_info,
+          bool should_send_page_contents) {
         EXPECT_TRUE(should_send_page_contents);
       }));
 
@@ -1006,9 +1003,9 @@ TEST_F(ConversationHandlerUnitTest,
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(4);
   EXPECT_TRUE(conversation_handler_->IsAnyClientConnected());
-  conversation_handler_->GetAssociatedContentInfo(
-      base::BindLambdaForTesting([&](mojom::AssociatedContentPtr site_info,
-                                     bool should_send_page_contents) {
+  conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
+      [&](std::vector<mojom::AssociatedContentPtr> site_info,
+          bool should_send_page_contents) {
         EXPECT_TRUE(should_send_page_contents);
       }));
 
@@ -1203,9 +1200,9 @@ TEST_F(ConversationHandlerUnitTest,
   // Connecting a client will trigger content staging.
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_TRUE(conversation_handler_->IsAnyClientConnected());
-  conversation_handler_->GetAssociatedContentInfo(
-      base::BindLambdaForTesting([&](mojom::AssociatedContentPtr site_info,
-                                     bool should_send_page_contents) {
+  conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
+      [&](std::vector<mojom::AssociatedContentPtr> site_info,
+          bool should_send_page_contents) {
         EXPECT_TRUE(should_send_page_contents);
       }));
 
@@ -1222,10 +1219,10 @@ TEST_F(ConversationHandlerUnitTest,
   // use page content.
   SetAssociatedContentStagedEntries(/*empty=*/false);
   conversation_handler_->SetShouldSendPageContents(false);
-  conversation_handler_->GetAssociatedContentInfo(
-      base::BindLambdaForTesting([&](mojom::AssociatedContentPtr site_info,
-                                     bool should_send_page_contents) {
-        EXPECT_TRUE(site_info);
+  conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
+      [&](std::vector<mojom::AssociatedContentPtr> site_info,
+          bool should_send_page_contents) {
+        EXPECT_FALSE(site_info.empty());
         EXPECT_FALSE(should_send_page_contents);
       }));
 
@@ -1311,8 +1308,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
        MaybeFetchOrClearSearchQuerySummary) {
   // Ensure nothing gets staged when there's no associated content.
   conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
-      [&](mojom::AssociatedContentPtr site_info,
-          bool should_send_page_contents) { EXPECT_FALSE(site_info); }));
+      [&](std::vector<mojom::AssociatedContentPtr> site_info,
+          bool should_send_page_contents) { EXPECT_TRUE(site_info.empty()); }));
   // Client connecting would trigger content staging
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(0);
@@ -1448,9 +1445,9 @@ TEST_F(ConversationHandlerUnitTest, SubmitSuggestion) {
 
 TEST_F(ConversationHandlerUnitTest, GenerateQuestions_DisableSendPageContent) {
   conversation_handler_->SetShouldSendPageContents(false);
-  conversation_handler_->GetAssociatedContentInfo(
-      base::BindLambdaForTesting([&](mojom::AssociatedContentPtr site_info,
-                                     bool should_send_page_contents) {
+  conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
+      [&](std::vector<mojom::AssociatedContentPtr> site_info,
+          bool should_send_page_contents) {
         EXPECT_FALSE(should_send_page_contents);
       }));
   EXPECT_CALL(*associated_content_, GetURL).Times(0);
@@ -1625,7 +1622,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
   auto delegate = std::make_unique<AssociatedArchiveContent>(
       GURL("https://example.com"), "This is the way - page contents",
       u"The way",
-      /*is_video=*/false);
+      /*is_video=*/false, "my-uuid");
   conversation_handler_->SetAssociatedContentDelegate(delegate->GetWeakPtr());
 
   std::string expected_input = "What is the way?";
@@ -1698,15 +1695,6 @@ TEST_F(ConversationHandlerUnitTest, StopGenerationAndMaybeGetHumanEntry) {
       base::BindLambdaForTesting([](mojom::ConversationTurnPtr entry) {
         EXPECT_EQ(entry->character_type, mojom::CharacterType::HUMAN);
       }));
-}
-
-TEST_F(ConversationHandlerUnitTest, Destuctor) {
-  // Verify that the conversation handler cleans up the associated content
-  // object when it is destroyed.
-  EXPECT_CALL(*associated_content_, OnRelatedConversationDisassociated)
-      .Times(1);
-  conversation_handler_.reset();
-  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
 }
 
 class PageContentRefineTest : public ConversationHandlerUnitTest,

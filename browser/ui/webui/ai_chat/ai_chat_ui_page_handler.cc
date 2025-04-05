@@ -103,20 +103,33 @@ void EnsureWebContentsLoaded(
   contents->GetController().LoadIfNecessary();
 }
 
+content::WebContents* GetWebContentsFromTabId(int32_t tab_id) {
 #if BUILDFLAG(IS_ANDROID)
-TabAndroid* GetAndroidTabFromId(int32_t tab_id) {
+  TabAndroid* tab = nullptr;
   for (TabModel* model : TabModelList::models()) {
     const size_t tab_count = model->GetTabCount();
     for (size_t index = 0; index < tab_count; index++) {
-      auto* tab = model->GetTabAt(index);
-      if (tab_id == tab->GetAndroidId()) {
-        return tab;
+      auto* current_tab = model->GetTabAt(index);
+      if (tab_id == current_tab->GetAndroidId()) {
+        tab = current_tab;
+        break;
       }
     }
   }
-  return nullptr;
-}
+  if (!tab) {
+    return nullptr;
+  }
+
+  auto* contents = tab->web_contents();
+#else
+  auto* tab = tabs::TabInterface::Handle(tab_id).Get();
+  if (!tab) {
+    return nullptr;
+  }
+  auto* contents = tab->GetContents();
 #endif
+  return contents;
+}
 
 }  // namespace
 
@@ -151,7 +164,7 @@ AIChatUIPageHandler::AIChatUIPageHandler(
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
     active_chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
-    chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
+    associated_content_delegate_observation_.Observe(active_chat_tab_helper_);
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
   }
@@ -280,11 +293,12 @@ void AIChatUIPageHandler::ChatContextObserver::WebContentsDestroyed() {
 
 void AIChatUIPageHandler::HandleWebContentsDestroyed() {
   active_chat_tab_helper_ = nullptr;
-  chat_tab_helper_observation_.Reset();
+  associated_content_delegate_observation_.Reset();
   chat_context_observer_.reset();
 }
 
-void AIChatUIPageHandler::OnAssociatedContentNavigated(int new_navigation_id) {
+void AIChatUIPageHandler::OnNavigated(
+    ConversationHandler::AssociatedContentDelegate* delegate) {
   // This is only applicable to content-adjacent UI, e.g. SidePanel on Desktop
   // where it would like to remain associated with the Tab and move away from
   // Conversations of previous navigations. That doens't apply to the standalone
@@ -327,21 +341,7 @@ void AIChatUIPageHandler::BindRelatedConversation(
 
 void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
                                        const std::string& conversation_uuid) {
-#if BUILDFLAG(IS_ANDROID)
-  auto* tab = GetAndroidTabFromId(mojom_tab->id);
-  if (!tab) {
-    return;
-  }
-
-  auto* contents = tab->web_contents();
-#else
-  const auto* tab = tabs::TabInterface::Handle(mojom_tab->id).Get();
-  if (!tab) {
-    return;
-  }
-  auto* contents = tab->GetContents();
-#endif
-
+  auto* contents = GetWebContentsFromTabId(mojom_tab->id);
   if (!contents) {
     return;
   }
@@ -361,6 +361,23 @@ void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
                           ->AssociateContent(tab_helper, conversation_uuid);
                     },
                     conversation_uuid));
+}
+
+void AIChatUIPageHandler::DisassociateTab(
+    mojom::TabDataPtr mojom_tab,
+    const std::string& conversation_uuid) {
+  auto* contents = GetWebContentsFromTabId(mojom_tab->id);
+  if (!contents) {
+    return;
+  }
+
+  auto* tab_helper = ai_chat::AIChatTabHelper::FromWebContents(contents);
+  if (!tab_helper) {
+    return;
+  }
+
+  AIChatServiceFactory::GetForBrowserContext(contents->GetBrowserContext())
+      ->DisassociateContent(tab_helper, conversation_uuid);
 }
 
 void AIChatUIPageHandler::NewConversation(
