@@ -1,0 +1,12 @@
+diff --git a/content/browser/web_package/signed_exchange_utils.cc b/content/browser/web_package/signed_exchange_utils.cc
+index 4b7d75e14e16cd94c5397ca6beb06d5a2d5bce81..af02f1841f94bcce9b9aa53dc166fd6e46b47fae 100644
+--- a/content/browser/web_package/signed_exchange_utils.cc
++++ b/content/browser/web_package/signed_exchange_utils.cc
+@@ -55,6 +55,7 @@ bool IsSignedExchangeHandlingEnabled(BrowserContext* context) {
+ }
+ 
+ bool IsSignedExchangeReportingForDistributorsEnabled() {
++  if ((true)) return false;
+   return base::FeatureList::IsEnabled(network::features::kReporting);
+ }
+ 

@@ -1,12 +1,19 @@
 diff --git a/base/test/launcher/test_results_tracker.cc b/base/test/launcher/test_results_tracker.cc
-index 1bf546b57fa37089d91a32fe32456a63aa22c748..f0f1a8f58be6296fc3ecca10e3c41ae522ccd65f 100644
+index 1bf546b57fa37089d91a32fe32456a63aa22c748..d73a67912e1fe66ef539bb38e048ffdec643c952 100644
 --- a/base/test/launcher/test_results_tracker.cc
 +++ b/base/test/launcher/test_results_tracker.cc
-@@ -152,6 +152,7 @@ TestResultsTracker::~TestResultsTracker() {
+@@ -152,6 +152,14 @@ TestResultsTracker::~TestResultsTracker() {
                     : ""),
                result.GetTestCaseName().c_str());
        if (result.status != TestResult::TEST_SUCCESS) {
-+        TEST_RESULTS_TRACKER_ADD_FAILURE_DETAILS
++        // Upstream deliberately avoids including the failure's details and stack trace
++        // in the result XML for the xUnit format, so we need to add it explicitly to be
++        // able to visualize the data directly from Jenkins for each failed test.
++        fprintf(out_,
++                "      <failure message=\"[  FAILED  ] %s.%s\" "
++                "type=\"\"><![CDATA[%s]]></failure>\n",
++                testsuite_name.c_str(), result.GetTestName().c_str(),
++                result.output_snippet.c_str());
          // The actual failure message is not propagated up to here, as it's too
          // much work to escape it properly, and in case of failure, almost
          // always one needs to look into full log anyway.

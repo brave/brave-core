@@ -1,0 +1,36 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+plasters = [
+    # Adding just after the opening for the first namespace
+    {
+        'pattern': r'(namespace \{)',
+        'replacement': r'\1\n{replacement}'.format(replacement="""
+#if BUILDFLAG(IS_WIN)
+// Split into two places to avoid patching:
+// components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_crash_reporter_client.cc
+// Need keep it in sync
+constexpr char kBraveVPNHelperProcessType[] = "brave-vpn-helper";
+
+// Split into two places to avoid patching:
+// components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/brave_wireguard_service_crash_reporter_client.cc
+// Need keep it in sync
+constexpr char kBraveWireguardProcessType[] = "brave-vpn-wireguard-service";
+#endif // BUILDFLAG(IS_WIN)"""),
+        'flags': [ 'MULTILINE' ],
+        'count': 1,
+    },
+
+    # Adding just before the line:
+    # process_type == "GCPW Installer" || process_type == "GCPW DLL" ||
+    {
+      'pattern': rf'^(.*{escape('process_type == "GCPW Installer" || process_type == "GCPW DLL" ||')}.*)$',
+      'replacement': r'{replacement}\n\1'.format(replacement=
+"""#if BUILDFLAG(IS_WIN)
+           process_type == kBraveVPNHelperProcessType || process_type == kBraveWireguardProcessType ||
+#endif // BUILDFLAG(IS_WIN)"""),
+      'flags': ['MULTILINE'],      
+    },
+]

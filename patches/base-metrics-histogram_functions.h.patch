@@ -1,12 +1,22 @@
 diff --git a/base/metrics/histogram_functions.h b/base/metrics/histogram_functions.h
-index 20ca685ec430c00760a72da425a3c32ece12b28c..dfea10f252e9a2413ff60cf18d7e911ae60cdb00 100644
+index 20ca685ec430c00760a72da425a3c32ece12b28c..ff0d56f0a9fd18835bdc05a8ebab4bcb5f07d9b7 100644
 --- a/base/metrics/histogram_functions.h
 +++ b/base/metrics/histogram_functions.h
-@@ -80,6 +80,7 @@ void UmaHistogramEnumeration(std::string_view name, T sample) {
+@@ -79,7 +79,16 @@ void UmaHistogramEnumeration(std::string_view name, T sample) {
+   // with a semi-useful error ("no member named 'kMaxValue' in ...").
    static_assert(static_cast<uintmax_t>(T::kMaxValue) <=
                      static_cast<uintmax_t>(INT_MAX) - 1,
-                 "Enumeration's kMaxValue is out of range of INT_MAX!");
-+  BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION
+-                "Enumeration's kMaxValue is out of range of INT_MAX!");
++                "Enumeration's kMaxValue is out of range of INT_MAX!");\
++  // We use negative integers when defining Brave-specific PageActionIconType
++  // values to avoid conflicting with upstream values. However,
++  // UmaHistogramEnumeration performs a DCHECK_LE to confirm that all
++  // PageActionIconType values are less than T::kMaxValue and it casts the sample
++  // to an unsigned int, so we fail the DCHECK. This override only performs the
++  // DCHECK if the sample is non-negative.
++  if (static_cast<intmax_t>(sample) < 0) {
++    return;
++  }
    DCHECK_LE(static_cast<uintmax_t>(sample),
              static_cast<uintmax_t>(T::kMaxValue));
    // While UmaHistogramExactLinear’s documentation states that the third

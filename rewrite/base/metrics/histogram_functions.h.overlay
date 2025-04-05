@@ -1,0 +1,22 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+plasters = [
+    # Adding just after the opening for the first namespace
+    {
+        'pattern': r'"Enumeration\'s kMaxValue is out of range of INT_MAX!\"\);',
+        'replacement': r'\g<0>\{replacement}'.format(replacement="""
+  // We use negative integers when defining Brave-specific PageActionIconType
+  // values to avoid conflicting with upstream values. However,
+  // UmaHistogramEnumeration performs a DCHECK_LE to confirm that all
+  // PageActionIconType values are less than T::kMaxValue and it casts the sample
+  // to an unsigned int, so we fail the DCHECK. This override only performs the
+  // DCHECK if the sample is non-negative.
+  if (static_cast<intmax_t>(sample) < 0) {
+    return;
+  }"""),
+        'flags': [ 'MULTILINE' ],
+    },
+]

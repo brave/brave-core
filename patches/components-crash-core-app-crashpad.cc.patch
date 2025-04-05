@@ -1,12 +1,33 @@
 diff --git a/components/crash/core/app/crashpad.cc b/components/crash/core/app/crashpad.cc
-index b63e5c28a63a68a87758d4b8952f7376d2fa1088..1f729e3990d825e6b33b6f6c2e421e9341e31cba 100644
+index b63e5c28a63a68a87758d4b8952f7376d2fa1088..46f2ee6b927d10f6044e27e9ffa85d998510487b 100644
 --- a/components/crash/core/app/crashpad.cc
 +++ b/components/crash/core/app/crashpad.cc
-@@ -99,6 +99,7 @@ bool InitializeCrashpadImpl(bool initial_client,
+@@ -60,6 +60,18 @@ crashpad::StringAnnotation<24>& PlatformStorage() {
+ 
+ namespace {
+ 
++#if BUILDFLAG(IS_WIN)
++// Split into two places to avoid patching:
++// components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_crash_reporter_client.cc
++// Need keep it in sync
++constexpr char kBraveVPNHelperProcessType[] = "brave-vpn-helper";
++
++// Split into two places to avoid patching:
++// components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service/brave_wireguard_service_crash_reporter_client.cc
++// Need keep it in sync
++constexpr char kBraveWireguardProcessType[] = "brave-vpn-wireguard-service";
++#endif // BUILDFLAG(IS_WIN)
++
+ base::FilePath* g_database_path;
+ 
+ crashpad::CrashReportDatabase* g_database;
+@@ -99,6 +111,9 @@ bool InitializeCrashpadImpl(bool initial_client,
             process_type == "os-update-handler" ||
             process_type == "platform-experience-helper" ||
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
-+           BRAVE_INITIALIZE_CRASHPAD_IMPL_PROCESS_TYPE
++#if BUILDFLAG(IS_WIN)
++           process_type == kBraveVPNHelperProcessType || process_type == kBraveWireguardProcessType ||
++#endif // BUILDFLAG(IS_WIN)
             process_type == "GCPW Installer" || process_type == "GCPW DLL" ||
             process_type == "elevated-tracing-service");
  #elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)

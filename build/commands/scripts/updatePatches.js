@@ -17,26 +17,19 @@ function loadChromiumPathFilter(filePath) {
 
   const prefixes = [];
   const suffixes = [];
-  const exactMatches = new Set();
 
-  // This should be revisited in the future once `path.matchesGlob` is stable
-  // and available in node to use, as this current implementation is a bit
-  // naive.
+  // This can be revisited once `path.matchesGlob` is available on stable node.
+  // This naive implementation is closer to how chromium handles .cfg
+  // exclusion files.
   for (const line of configLines) {
     if (line.startsWith('*')) {
       suffixes.push(line.slice(1));
-    } else if (line.endsWith('*')) {
-      prefixes.push(line.slice(0, -1));
     } else {
-      exactMatches.add(line);
+      prefixes.push(line);
     }
   }
 
   return (s) => {
-    if (s.length === 0)
-      return false;
-    if (exactMatches.has(s))
-      return false;
     if (prefixes.some(prefix => s.startsWith(prefix)))
       return false;
     if (suffixes.some(suffix => s.endsWith(suffix)))
