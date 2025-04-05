@@ -108,15 +108,16 @@ extension View {
   /// Allows the view access to the `requestGeometryUpdate` and `interfaceOrientation` environment
   /// values.
   public func prepareEffectiveGeometryEnvironment() -> some View {
-    modifier(EffectiveGeometryEnvironmentModifier())
+    self
+      .modifier(EffectiveGeometryEnvironmentModifier())
+      .prepareWindowSceneEnvironment()
   }
 }
 
-/// A modifier that injects a `UIViewControllerRepresentable` into the SwiftUI hierarchy to obtain
-/// the underlying `UIWindowScene` associated with this UI and then uses that scene to inject
-/// various related values into the SwiftUI environment.
+/// A modifier that uses this hierarchies UIWindowScene to inject effective gemoetry related values
+/// into the SwiftUI environment.
 private struct EffectiveGeometryEnvironmentModifier: ViewModifier {
-  @State private var windowScene: UIWindowScene?
+  @Environment(\.windowScene) private var windowScene
   @State private var orientation: UIInterfaceOrientation = .unknown
 
   private var interfaceOrientationPublisher: some Publisher<UIInterfaceOrientation, Never> {
@@ -134,46 +135,5 @@ private struct EffectiveGeometryEnvironmentModifier: ViewModifier {
       .onReceive(interfaceOrientationPublisher) { orientation in
         self.orientation = orientation
       }
-      .background {
-        _Representable(windowScene: $windowScene)
-          // Can't use the `hidden` modifier or the VC isn't added at all and can't receive updates
-          .opacity(0)
-          .accessibilityHidden(true)
-      }
-  }
-
-  private struct _Representable: UIViewControllerRepresentable {
-    @Binding var windowScene: UIWindowScene?
-
-    func makeUIViewController(context: Context) -> some UIViewController {
-      _RepresentableViewController(windowScene: $windowScene)
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-    }
-  }
-
-  private class _RepresentableViewController: UIViewController {
-    @Binding var windowScene: UIWindowScene?
-
-    init(windowScene: Binding<UIWindowScene?>) {
-      self._windowScene = windowScene
-      super.init(nibName: nil, bundle: nil)
-    }
-
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-      fatalError()
-    }
-
-    override func viewIsAppearing(_ animated: Bool) {
-      super.viewIsAppearing(animated)
-      windowScene = view.window?.windowScene
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-      super.viewDidDisappear(animated)
-      windowScene = nil
-    }
   }
 }
