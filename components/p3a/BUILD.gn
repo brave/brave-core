@@ -14,6 +14,8 @@ buildflag_header("buildflags") {
 
 static_library("p3a") {
   sources = [
+    "component_installer.cc",
+    "component_installer.h",
     "constellation_helper.cc",
     "constellation_helper.h",
     "constellation_log_store.cc",
@@ -24,6 +26,7 @@ static_library("p3a") {
     "histograms_braveizer.h",
     "message_manager.cc",
     "message_manager.h",
+    "metric_config.cc",
     "metric_config.h",
     "metric_log_store.cc",
     "metric_log_store.h",
@@ -47,6 +50,8 @@ static_library("p3a") {
     "pref_names.h",
     "region.cc",
     "region.h",
+    "remote_config_manager.cc",
+    "remote_config_manager.h",
     "rotation_scheduler.cc",
     "rotation_scheduler.h",
     "scheduler.cc",
@@ -65,6 +70,7 @@ static_library("p3a") {
     "constellation/rs/cxx:rust_lib",
     "//base",
     "//brave/brave_domains",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/l10n/common",
     "//brave/components/p3a:buildflags",
@@ -72,6 +78,7 @@ static_library("p3a") {
     "//brave/components/version_info",
     "//brave/vendor/brave_base",
     "//components/cbor",
+    "//components/component_updater",
     "//components/metrics",
     "//components/prefs",
     "//net",
@@ -104,6 +111,7 @@ source_set("unit_tests") {
     "p2a_protocols_unittest.cc",
     "p3a_service_unittest.cc",
     "region_unittest.cc",
+    "remote_config_manager_unittest.cc",
     "rotation_scheduler_unittest.cc",
     "scheduler_unittest.cc",
     "star_randomness_test_util.cc",
@@ -112,6 +120,7 @@ source_set("unit_tests") {
   deps = [
     "constellation/rs/cxx:rust_lib",
     "//base/test:test_support",
+    "//brave/components/constants",
     "//brave/components/p3a",
     "//brave/components/p3a:buildflags",
     "//components/cbor",

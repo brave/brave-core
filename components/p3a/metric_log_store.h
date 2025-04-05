@@ -39,7 +39,8 @@ class MetricLogStore : public metrics::LogStore {
                                      bool is_constellation,
                                      const std::string& upload_type) = 0;
     // Returns false if the metric is obsolete and should be cleaned up.
-    virtual bool IsActualMetric(const std::string& histogram_name) const = 0;
+    virtual bool DoesMetricExistForLogType(const std::string& histogram_name,
+                                           MetricLogType log_type) const = 0;
     virtual bool IsEphemeralMetric(const std::string& histogram_name) const = 0;
     virtual ~Delegate() {}
   };

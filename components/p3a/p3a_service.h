@@ -21,6 +21,7 @@
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
+#include "brave/components/p3a/remote_config_manager.h"
 #include "components/prefs/pref_change_registrar.h"
 
 class PrefRegistrySimple;
@@ -28,6 +29,10 @@ class PrefService;
 
 namespace network {
 class SharedURLLoaderFactory;
+}
+
+namespace brave_component_updater {
+class LocalDataFilesService;
 }
 
 namespace p3a {
@@ -41,7 +46,8 @@ struct P3AConfig;
 // P3AMessageManager.
 // TODO(iefremov): It should be possible to get rid of refcounted here.
 class P3AService : public base::RefCountedThreadSafe<P3AService>,
-                   public MessageManager::Delegate {
+                   public MessageManager::Delegate,
+                   public RemoteConfigManager::Delegate {
  public:
   P3AService(PrefService& local_state,
              std::string channel,
@@ -100,12 +106,25 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
                           uint64_t name_hash,
                           base::HistogramBase::Sample32 sample);
 
-  // P3AMessageManager::Delegate
+  // Returns the RemoteConfigManager instance owned by this P3AService
+  RemoteConfigManager* remote_config_manager() {
+    return remote_config_manager_.get();
+  }
+
+  // MessageManager::Delegate
   void OnRotation(MetricLogType log_type, bool is_constellation) override;
   void OnMetricCycled(const std::string& histogram_name,
                       bool is_constellation) override;
   std::optional<MetricLogType> GetDynamicMetricLogType(
-      const std::string& histogram_name) const override;
+      std::string_view histogram_name) const override;
+  const MetricConfig* GetMetricConfig(
+      std::string_view histogram_name) const override;
+  std::optional<MetricLogType> GetLogTypeForHistogram(
+      std::string_view histogram_name) const override;
+
+  // RemoteConfigManager::Delegate
+  const MetricConfig* GetBaseMetricConfig(
+      std::string_view histogram_name) const override;
 
   void DisableStarAttestationForTesting();
 
@@ -146,6 +165,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
       dynamic_metric_sample_callbacks_;
 
   std::unique_ptr<MessageManager> message_manager_;
+  std::unique_ptr<RemoteConfigManager> remote_config_manager_;
 
   // Used to store histogram values that are produced between constructing
   // the service and its initialization.
