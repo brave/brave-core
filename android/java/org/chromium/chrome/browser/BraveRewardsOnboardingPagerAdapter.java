@@ -21,6 +21,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.chrome.browser.util.BraveConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +31,6 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
     private static final String TAG = "RewardsOnboarding";
     private boolean shouldShowMoreOptions;
     private TextView adsPerHourText;
-    private static final String JAPAN_COUNTRY_CODE = "JP";
     private String countryCode = BraveRewardsNativeWorker.getInstance().getCountryCode();
     private List<Integer> adsPerHourValues = Arrays.asList(0, 1, 2, 3, 4, 5, 10);
 
@@ -90,7 +90,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
         List<String> headers = new ArrayList();
         headers.add(context.getResources().getString(R.string.welcome_to_brave_rewards));
         headers.add(context.getResources().getString(R.string.where_do_ads_show_up));
-        if (!countryCode.equals(JAPAN_COUNTRY_CODE)) {
+        if (!countryCode.equals(BraveConstants.JAPAN_COUNTRY_CODE)) {
             headers.add(context.getResources().getString(R.string.giving_back_made_effortless));
         }
         headers.add(context.getResources().getString(R.string.say_thank_you_with_tips));
@@ -103,7 +103,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
         List<String> texts = new ArrayList();
         texts.add(context.getResources().getString(R.string.welcome_to_brave_rewards_text));
         texts.add(context.getResources().getString(R.string.where_do_ads_show_up_text));
-        if (!countryCode.equals(JAPAN_COUNTRY_CODE)) {
+        if (!countryCode.equals(BraveConstants.JAPAN_COUNTRY_CODE)) {
             texts.add(context.getResources().getString(R.string.giving_back_made_effortless_text));
         }
         texts.add(context.getResources().getString(R.string.say_thank_you_with_tips_text));
@@ -116,7 +116,7 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
         List<Integer> images = new ArrayList();
         images.add(R.drawable.ic_onboarding_graphic_bat_ecosystem);
         images.add(R.drawable.ic_onboarding_graphic_android_brave_ads);
-        if (!countryCode.equals(JAPAN_COUNTRY_CODE)) {
+        if (!countryCode.equals(BraveConstants.JAPAN_COUNTRY_CODE)) {
             images.add(R.drawable.ic_onboarding_graphic_auto_contribute);
         }
         images.add(R.drawable.ic_onboarding_graphic_tipping);
