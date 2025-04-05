@@ -15,7 +15,7 @@
 
 namespace {
 
-constexpr int kBraveMaxMenuWidth = 800;
+constexpr int kBraveMaxMenuWidth = 500;
 
 }  // namespace
 
@@ -24,6 +24,7 @@ int BookmarkMenuDelegate::GetMaxWidthForMenu(MenuItemView* menu) {
   // when displayed in German. Upstream doesn't specify a reason for this size
   // only saying that "IE and FF restrict the max width of a menu". However,
   // MenuDelegate sets the limit to 800 and no other submenu seems to override
-  // that value.
+  // that value. Update: users indicated that the menu was too wide now, so
+  // reduced it to 500, which is enough to fit the German l10n.
   return kBraveMaxMenuWidth;
 }
