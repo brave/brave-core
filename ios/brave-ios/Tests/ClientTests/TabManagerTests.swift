@@ -133,8 +133,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       windowId: testWindowId,
       prefs: profile.prefs,
       rewards: nil,
-      tabGeneratorAPI: nil,
-      historyAPI: nil,
+      braveCore: nil,
       privateBrowsingManager: privateBrowsingManager
     )
     privateBrowsingManager.isPrivateBrowsing = false

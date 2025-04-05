@@ -55,6 +55,15 @@ public class AppState {
           DataController.shared.initializeOnce()
           DataController.sharedInMemory.initializeOnce()
           Migration.migrateLostTabsActiveWindow()
+
+          let useChromiumWebViews = FeatureList.kUseChromiumWebViews.enabled
+          if let value = Preferences.Chromium.lastWebViewsFlagState.value,
+            value != useChromiumWebViews
+          {
+            SessionTab.purgeSessionData()
+          }
+
+          Preferences.Chromium.lastWebViewsFlagState.value = useChromiumWebViews
         }
 
         if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {

@@ -251,6 +251,14 @@ extension Preferences {
       key: "chromium.last.bookmark.folder.node.id",
       default: nil
     )
+    /// The last feature flag value for kUseChromiumWebViews
+    ///
+    /// Allows us to invalidate the session restore data for web views when changed by griffin or
+    /// the user via flags
+    public static let lastWebViewsFlagState = Option<Bool?>(
+      key: "chromium.last.webviewsflagstate",
+      default: nil
+    )
   }
 
   public final class Debug {

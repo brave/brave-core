@@ -175,7 +175,7 @@ public class PlaylistMediaStreamer {
       // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range
       request.addValue("bytes=0-1", forHTTPHeaderField: "Range")
       request.addValue(UUID().uuidString, forHTTPHeaderField: "X-Playback-Session-Id")
-      request.addValue(UserAgent.userAgentForIdiom(), forHTTPHeaderField: "User-Agent")
+      request.addValue(UserAgent.mobile, forHTTPHeaderField: "User-Agent")
       return request
     }()
 

@@ -19,6 +19,7 @@
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/browser_menu/features.h"
+#include "brave/ios/browser/ui/web_view/features.h"
 #include "build/build_config.h"
 #include "components/webui/flags/feature_entry_macros.h"
 #include "components/webui/flags/flags_state.h"
@@ -197,6 +198,13 @@
           "Includes Brave version information in the user agent",              \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave_user_agent::features::kUseBraveUserAgent),  \
+      },                                                                       \
+      {                                                                        \
+          "brave-use-chromium-web-embedder",                                   \
+          "Use Chromium Web Embedder",                                         \
+          "Replace WKWebView usages with Chromium web views",                  \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kUseChromiumWebViews),           \
       },                                                                       \
       {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \
