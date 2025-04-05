@@ -94,9 +94,14 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
     WorkOnTask();
     return;
   }
+
   transaction_.set_fee(pick_inputs_result->fee);
   base::Extend(transaction_.transparent_part().inputs,
                pick_inputs_result->inputs);
+  base::CheckedNumeric<uint32_t> value =
+      base::CheckSub(transaction_.TotalInputsAmount(),
+                     transaction_.fee() + pick_inputs_result->change);
+  transaction_.set_amount(value.ValueOrDie());
 
   if (!PrepareOutputs()) {
     SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
