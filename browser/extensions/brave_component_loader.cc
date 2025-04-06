@@ -40,9 +40,8 @@ using extensions::mojom::ManifestLocation;
 
 namespace extensions {
 
-BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
-                                           Profile* profile)
-    : ComponentLoader(extension_system, profile),
+BraveComponentLoader::BraveComponentLoader(Profile* profile)
+    : ComponentLoader(profile),
       profile_(profile),
       profile_prefs_(profile->GetPrefs()) {
   pref_change_registrar_.Init(profile_prefs_);
