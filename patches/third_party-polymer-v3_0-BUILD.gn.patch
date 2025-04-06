@@ -1,5 +1,5 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index eccacf527d53342e9c540cd56b256cd36d4b4ecb..b6a2741834205732edccccd17c3231d87b1f96bb 100644
+index d4e03ef10eee8d971483706c9fa020ec56ac0365..3ebbdbfddbdc1b393dc7cb80588d42453ab7e66d 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
 @@ -19,6 +19,7 @@ js_files = [
@@ -10,7 +10,7 @@ index eccacf527d53342e9c540cd56b256cd36d4b4ecb..b6a2741834205732edccccd17c3231d8
    js_files += [
      "iron-a11y-announcer/iron-a11y-announcer.js",
      "iron-a11y-keys/iron-a11y-keys.js",
-@@ -241,11 +242,13 @@ ts_library("library") {
+@@ -239,11 +240,13 @@ ts_library("library") {
    # Also needed on LaCros for Print Preview. Remove once CrOS Print Preview
    # launches.
    if (is_chromeos) {
@@ -24,7 +24,7 @@ index eccacf527d53342e9c540cd56b256cd36d4b4ecb..b6a2741834205732edccccd17c3231d8
      definitions += [
        "components-chromium/iron-a11y-announcer/iron-a11y-announcer.d.ts",
        "components-chromium/iron-a11y-keys/iron-a11y-keys.d.ts",
-@@ -288,4 +291,5 @@ ts_library("library") {
+@@ -286,4 +289,5 @@ ts_library("library") {
        "components-chromium/paper-tooltip/paper-tooltip.d.ts",
      ]
    }

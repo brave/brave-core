@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index c9600922e50e0007c453ba8956916cd9ed60e739..c9182e85bf7a8b7e0e9eb12806c808a7c5c0c0ce 100644
+index 65ae7126fb23bf6c6500cc8c2798e1dc2da87765..fb8f166987246772a65b8d69de15bfd867acbdca 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
 @@ -243,6 +243,7 @@ class BrowserProcessImpl : public BrowserProcess,

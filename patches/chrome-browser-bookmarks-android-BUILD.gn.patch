@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/bookmarks/android/BUILD.gn b/chrome/browser/bookmarks/android/BUILD.gn
-index 11300fa324fd773e62343631f62fc3bb66071dd2..079d53e918c558aa5283297053bc21b2fb801d6a 100644
+index 384704230dc9a2bd28c0fe444a2f4b4a9251af88..6a8190dfc356e286fd2f9ddecc8fdc4d3f464889 100644
 --- a/chrome/browser/bookmarks/android/BUILD.gn
 +++ b/chrome/browser/bookmarks/android/BUILD.gn
-@@ -92,6 +92,7 @@ android_library("java") {
+@@ -91,6 +91,7 @@ android_library("java") {
      "java/src/org/chromium/chrome/browser/bookmarks/bar/BookmarkBarUtils.java",
      "java/src/org/chromium/chrome/browser/bookmarks/bar/BookmarkBarViewBinder.java",
    ]

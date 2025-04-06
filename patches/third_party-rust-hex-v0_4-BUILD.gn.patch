@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/hex/v0_4/BUILD.gn b/third_party/rust/hex/v0_4/BUILD.gn
-index 24dcfb0bf4474047ebf5ff7acded9f2c16c0d373..d6e1f1e834101bd1c3d265dfd11b7f3732d74527 100644
+index 7f5ff4ba4484ecffd57d8a2f9e5afc4c531d3f8f..43a311ec58c31d87a17672b82e47773f2cd8e95f 100644
 --- a/third_party/rust/hex/v0_4/BUILD.gn
 +++ b/third_party/rust/hex/v0_4/BUILD.gn
 @@ -43,5 +43,4 @@ cargo_crate("lib") {
