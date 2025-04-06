@@ -66,9 +66,9 @@ class Terminal:
             if self.current_command_start_time:
                 elapsed_time = time.time() - self.current_command_start_time
                 if elapsed_time > KEEP_ALIVE_PING_INTERVAL:
-                    logging.debug('%s\n        >>>> %s',
-                                  secrets.choice(KEEP_ALIVE_PING_ART),
-                                  self.running_command)
+                    logging.info('%s\n        [dim]>>>> %s[/]',
+                                 secrets.choice(KEEP_ALIVE_PING_ART),
+                                 self.running_command)
             time.sleep(KEEP_ALIVE_PING_INTERVAL)
 
     def set_infra_mode(self):
@@ -76,6 +76,9 @@ class Terminal:
         """
         self.infra_mode = True
         self.keep_alive_thread.start()
+
+        # let's give it some large width to avoid wrapping in jenkins
+        console.size = console.size._replace(width=200)
 
     def _set_status_object(self, status):
         """Preserves the status object for updates.
