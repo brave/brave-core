@@ -48,6 +48,9 @@ flag.
  * `--from-ref=@previous`: This tag means the previous version since the last
     upgrade in the current branch. This is useful when telling brockit that you
     are doing a minor version bump.
+ * `--from-ref=@previous-major`: This tag means the reference the parent commit
+    for the current major. This is useful when doing rebases, and wanting to
+    select from the version change.
 
 Using upstream:
 
@@ -129,7 +132,15 @@ committing stage from the signing stage.
 
 A simple rebase should look like this:
 ```sh
-script/version_up.py rebase --from-ref=origin/master
+script/version_up.py rebase
+```
+
+To rebase a lift of a major bump, you can either set the upstream for your
+local branch and rely on the defaults, or pass `--from-ref`/`--to-ref`
+yourself.
+
+```sh
+script/version_up.py rebase --from-ref=@previous-major --to-ref=origin/master
 ```
 
 To recommit everything while rebase you can do:
@@ -219,6 +230,7 @@ MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 - No specific code changes in Brave (only line number changes in patches)
 """
 
+
 def _get_current_branch_upstream_name():
     """Retrieves the name of the current branch's upstream.
     """
@@ -229,6 +241,7 @@ def _get_current_branch_upstream_name():
     except subprocess.CalledProcessError:
         return None
 
+
 def _load_package_file(branch):
     """Retrieves the json content of package.json for a given revision
 
@@ -238,6 +251,7 @@ def _load_package_file(branch):
   """
     package = Repository.brave().read_file(PACKAGE_FILE, commit=branch)
     return json.loads(package)
+
 
 def _update_pinslist_timestamp():
     """Updates the pinslist timestamp in the input_file_parsers.cc file for the
@@ -292,6 +306,7 @@ def _is_gh_cli_logged_in():
 
     return False
 
+
 def _get_apply_patches_list():
     """Retrieves the list of patches to be applied by running 
     `npm run apply_patches`
@@ -309,6 +324,7 @@ def _get_apply_patches_list():
         return json.loads(match.group(0))
 
     return None
+
 
 class GitStatus:
     """Runs `git status` and provides a summary.
@@ -684,41 +700,6 @@ class Version:
             return NotImplemented
         return self.parts < other.parts
 
-    @classmethod
-    def from_upstream(cls) -> Optional["Version"]:
-        """Retrieves the version from the upstream branch.
-
-        Returns:
-            The version from the upstream branch, or None no upstream branch is
-            set in the current branch.
-        """
-        upstream_branch = _get_current_branch_upstream_name()
-        if upstream_branch is None:
-            return None
-
-        return Version.from_git(upstream_branch)
-
-    @classmethod
-    def from_previous(cls) -> "Version":
-        """Retrieves the previous version from the last bump.
-
-        This function looks for what was in the package.json file before the
-        last upgraded in the current branch.
-        """
-        starting_version = Version.from_git('HEAD')
-        base_version = starting_version
-        last_changed = Repository.brave().last_changed(PACKAGE_FILE)
-        while True:
-            base_version = Version.from_git(f'{last_changed}~1')
-            if base_version != starting_version:
-                break
-            # Prefer to look for the PACKAGE_FILE here, because this has to
-            # resolve even when the upgrade was done manually, so don't assume
-            # the presence of pinslist timestamp changes.
-            last_changed = Repository.brave().last_changed(
-                PACKAGE_FILE, f'{last_changed}~1')
-        return base_version
-
     def get_googlesource_diff_link(self, from_version: "Version") -> str:
         """Generates a link to the diff of the upgrade.
         """
@@ -808,6 +789,7 @@ class ContinuationFile:
             Path(VERSION_UPGRADE_FILE).unlink()
         except FileNotFoundError:
             pass
+
 
 class PatchFailureResolver:
     """Assist patch-failure resolutions, applying patches, reseting patches.
@@ -980,7 +962,12 @@ class PatchFailureResolver:
                     broken_patches=self.broken_patches)).save()
 
         if launch_vscode and len(vscode_args) > 1:
-            terminal.run(vscode_args)
+            try:
+                terminal.run(vscode_args)
+            except subprocess.CalledProcessError as e:
+                logging.error(
+                    'Failed to launch VSCode with the following args: %s\n%s',
+                    ' '.join(vscode_args), e.stderr)
 
     def requires_conflict_resolution(self):
         return (self.files_with_conflicts or self.patches_to_deleted_files
@@ -1001,6 +988,7 @@ class PatchFailureResolver:
                     continue
 
                 Repository.brave().run_git('add', patch.path)
+
 
 def _read_chromium_version_file():
     """Retrieves the Chromium version from the VERSION file.
@@ -1307,6 +1295,7 @@ class GitHubIssue(Versioned):
 
         return self.create_or_update_version_issue(with_pr=True)
 
+
 class ReUpgrade(Task):
     """Restarts the upgrade process.
 
@@ -1359,6 +1348,7 @@ class ReUpgrade(Task):
         ContinuationFile.clear()
         Repository.brave().run_git('reset', '--hard', f'{starting_change}~1')
         return True
+
 
 class Upgrade(Versioned):
     """The upgrade process, holding the data related to the upgrade.
@@ -1647,7 +1637,8 @@ class Upgrade(Versioned):
 
         commit_log = Repository.chromium().run_git(
             'log', f'{self.working_version}..{self.target_version}',
-            '--pretty=oneline', '-1', 'tools/rust/update_rust.py')
+            '--pretty=oneline', '-1', 'tools/rust/update_rust.py',
+            'tools/clang/scripts/update.py')
         commit_hash, commit_message = commit_log[:40], commit_log[41:]
 
         return {
@@ -1948,6 +1939,71 @@ class Upgrade(Versioned):
         return result
 
 
+def solve_git_ref(from_ref: str) -> str:
+    """Solves the git reference.
+
+    This function is used to resolve the git reference provided by the user.
+    This reference can be either a branch name, a commit hash, or a special
+    tag used by brockit to find specific changes.
+
+    Args:
+        from_ref:
+            The git reference to resolve.
+
+    Returns:
+        The resolved git reference, if the reference is valid, or the
+        reference for the solved special tag:
+        @upstream: The upstream branch of the current branch.
+        @previous: The commit just before the last version bump.
+        @previous-major: The commit just before the last major version bump.
+    """
+    if from_ref and from_ref[0] != '@':
+        # No special handling needed
+        if not Repository.brave().is_valid_git_reference(from_ref):
+            logging.error(
+                'Value provided to [bold cyan]--from-ref[/] is not a valid git '
+                'ref: %s', from_ref)
+            sys.exit(1)
+        return from_ref
+
+    if from_ref == "@upstream":
+        upstream_branch = _get_current_branch_upstream_name()
+        if upstream_branch is None:
+            logging.error(
+                'Could not determine the upstream branch. (Maybe set [bold '
+                'cyan]--set-upstream-to[/] in your branch?)')
+            sys.exit(1)
+        return upstream_branch
+
+    def find_previous_version_hash(is_major: bool = False) -> str:
+        starting_version = Version.from_git('HEAD')
+        base_version = starting_version
+        last_changed = Repository.brave().last_changed(PACKAGE_FILE)
+        while True:
+            base_version = Version.from_git(f'{last_changed}~1')
+            if (is_major and base_version.major != starting_version.major):
+                break
+            if (not is_major and base_version != starting_version):
+                break
+            # Prefer to look for the PACKAGE_FILE here, because this has to
+            # resolve even when the upgrade was done manually, so don't assume
+            # the presence of pinslist timestamp changes.
+            last_changed = Repository.brave().last_changed(
+                PACKAGE_FILE, f'{last_changed}~1')
+
+        return f'{last_changed}~1'
+
+    if from_ref == "@previous":
+        return find_previous_version_hash()
+
+    if from_ref == "@previous-major":
+        return find_previous_version_hash(is_major=True)
+
+    raise NotImplementedError(
+        f'Unknown value for [bold cyan]--from-ref[/]: {from_ref}. '
+        'Valid values are: @upstream, @previous, @previous-major')
+
+
 class Rebase(Task):
     """Regenerates patches and strings for the current branch.
 
@@ -1956,35 +2012,8 @@ class Rebase(Task):
     where approrpriate.
     """
 
-    def __init__(self, from_ref):
-        # The raw ref value provided to --from-ref.
-        self.from_ref = from_ref
-
     def status_message(self):
         return "Rebasing current branch..."
-
-    def check_for_merge_conflicts(self, from_ref, to_ref) -> List[str]:
-        """Checks for merge conflicts between two refs.
-
-    This method is used to check if a rebase will produce any conflicts, as
-    such cases are better handled manually.
-
-    Returns:
-        A list of files that would cause conflicts during the rebase.
-        """
-        conflicts = []
-        try:
-            terminal.run(
-                ["git", "merge-tree", "--write-tree", from_ref, to_ref], )
-        except subprocess.CalledProcessError as e:
-            for line in e.stdout.splitlines():
-                if "CONFLICT" in line:
-                    parts = line.split()
-                    if parts and parts[
-                            -1]:  # File paths usually come at the end
-                        conflicts.append(parts[-1])
-
-        return conflicts
 
     @staticmethod
     def discard_regen_changes_from_rebase_plan(todo_file: PurePath):
@@ -2034,11 +2063,14 @@ class Rebase(Task):
         others = []
         for line in lines:
             if 'Update from Chromium ' in line:
-                version.append(line if not version else line.replace('pick', 'squash'))
+                version.append(
+                    line if not version else line.replace('pick', 'squash'))
             elif 'Conflict-resolved patches from Chromium ' in line:
-                conflict.append(line if not conflict else line.replace('pick', 'squash'))
+                conflict.append(
+                    line if not conflict else line.replace('pick', 'squash'))
             elif '`gnrt` run for Chromium ' in line:
-                gnrt.append(line if not gnrt else line.replace('pick', 'squash'))
+                gnrt.append(
+                    line if not gnrt else line.replace('pick', 'squash'))
             else:
                 others.append(line)
 
@@ -2068,7 +2100,8 @@ class Rebase(Task):
         # finds the last line that is not empty and that doesn't start with a
         # hash comment.
         last_valid_line = next(
-            (line for line in reversed(lines) if line.strip() and not line.lstrip().startswith("#")), None)
+            (line for line in reversed(lines)
+             if line.strip() and not line.lstrip().startswith("#")), None)
 
         if not last_valid_line:
             # This should never happen, as there should be one valid line
@@ -2080,13 +2113,24 @@ class Rebase(Task):
     # The argument list differs here because that's the way we get args through
     # Task into the derived methods. Maybe something better can be done here.
     # pylint: disable=arguments-differ
-    def execute(self, recommit: bool, discard_regen_changes: bool, squash_minor_bumps: bool) -> bool:
+    def execute(self, from_ref: Optional[str], to_ref: Optional[str],
+                recommit: bool, discard_regen_changes: bool,
+                squash_minor_bumps: bool) -> bool:
         """Rebases the current branch onto the provided ref.
 
     This function rebases the current branch onto the provided branch. It is
     the same as calling `git rebase --i --autosquash`.
 
     Args:
+        from_ref:
+            The reference to start rebasing from. This refers to the first
+            change in the branch we want to pick up when rebasing. When null,
+            it will either default to `@previous-major` when `to_ref` is in a
+            different major version, or to `@previous` when `to_ref` is in the
+            same version.
+        to_ref:
+            This is the git reference that we are rebasing onto. This will
+            default to `@upstream` if not provided.
         recommit:
             Indicates that the first commit should be recommitted to force all
             the other commits to be recommitted as well.
@@ -2097,22 +2141,23 @@ class Rebase(Task):
     Returns:
         True if the rebase was successful, and False otherwise.
         """
-        current_branch = Repository.brave().current_branch()
-        forking_from = Repository.brave().run_git('merge-base', '--fork-point',
-                                                  self.from_ref,
-                                                  current_branch)
+        if to_ref is None:
+            to_ref = '@upstream'
 
-        conflicts = self.check_for_merge_conflicts(self.from_ref,
-                                                   current_branch)
-        if conflicts:
-            terminal.log_task('Some files would cause conflict during rebase:')
-            for file in conflicts:
-                console.print(Padding(f'* {file}', (0, 15)))
+        to_ref = solve_git_ref(to_ref)
 
-            console.log(
-                '👋 (Run manually: [dim]git rebase -i --autosquash --onto '
-                f'{self.from_ref} {forking_from} {current_branch}[/])')
-            return False
+        if from_ref is None:
+            if Version.from_git(to_ref).major != Version.from_git(
+                    'HEAD').major:
+                # If the major version is different, we default to the
+                # previous major version.
+                from_ref = solve_git_ref(from_ref or '@previous-major')
+            else:
+                # If the major version is the same, we default to the
+                # previous version.
+                from_ref = solve_git_ref(from_ref or '@previous')
+
+        from_ref = solve_git_ref(from_ref)
 
         # We have to receive the rebase plan from git, and then modify it
         # if that's desired. That's done by calling this script again with
@@ -2128,7 +2173,9 @@ class Rebase(Task):
 
             # Squashes will cause `GIT_EDITOR` also to open for the commit
             # message, so we need to handle those too.
-            env["GIT_EDITOR"] = f'{sys.executable} {__file__} --internal-rebase-squash-commit-message'
+            env["GIT_EDITOR"] = (
+                f'{sys.executable} '
+                f'{__file__} --internal-rebase-squash-commit-message')
 
         if len(editor) > 2:
             env["GIT_SEQUENCE_EDITOR"] = " ".join(editor)
@@ -2141,7 +2188,7 @@ class Rebase(Task):
         try:
             terminal.run([
                 'git', 'rebase', '--interactive', '--autosquash',
-                '--empty=drop', '--onto', self.from_ref, forking_from,
+                '--empty=drop', '--onto', to_ref, from_ref,
                 Repository.brave().current_branch()
             ],
                          env=env)
@@ -2153,33 +2200,6 @@ class Rebase(Task):
             return False
 
         return True
-
-
-def _find_from_ref_version(from_ref) -> Version:
-    """ Finds the version from a reference.
-
-    This function resolves the value provided to --from-ref into a Version
-    whenver that's possible. It also will handle the tags with special meaning
-    like @upstream and @previous.
-    """
-    if from_ref == "@upstream":
-        result = Version.from_upstream()
-        if result is None:
-            logging.error(
-                'Could not determine the upstream branch. (Maybe set [bold '
-                'cyan]--set-upstream-to[/] in your branch?)')
-            sys.exit(1)
-        return result
-
-    if from_ref == "@previous":
-        return Version.from_previous()
-
-    if not Repository.brave().is_valid_git_reference(from_ref):
-        logging.error(
-            'Value provided to [bold cyan]--base-from[/] is not a valid git '
-            'ref: %s', from_ref)
-        sys.exit(1)
-    return Version.from_git(from_ref)
 
 
 def fetch_chromium_dash_version(channel: str) -> Version:
@@ -2213,14 +2233,14 @@ def show(args: argparse.Namespace):
         console.print(f'upstream version: {Version.from_git("HEAD")}')
 
     if args.from_ref_value is not None:
-        from_ref_value = _find_from_ref_version(args.from_ref_value)
+        from_ref_value = Version.from_git(solve_git_ref(args.from_ref_value))
         if from_ref_value is not None:
             console.print(f'base version: {from_ref_value}')
 
     if args.log_link:
         console.print('googlesource link: %s' %
                       Version.from_git('HEAD').get_googlesource_diff_link(
-                          Version.from_previous()))
+                          Version.from_git(solve_git_ref('@previous'))))
 
     if args.latest_chromiumdash_version is not None:
         console.print(
@@ -2228,6 +2248,7 @@ def show(args: argparse.Namespace):
             fetch_lastest_canary_version(args.latest_chromiumdash_version))
 
     return 0
+
 
 def main():
     # This is a global parser with arguments that apply to every function.
@@ -2308,6 +2329,11 @@ def main():
         parents=[global_parser, base_version_parser],
         help='Rebases the current branch.')
     rebase_parser.add_argument(
+        '--to-ref',
+        default=None,
+        help='The branch you are rebasing to. Defaults to the upstream branch.'
+    )
+    rebase_parser.add_argument(
         '--recommit',
         action='store_true',
         help=
@@ -2322,7 +2348,8 @@ def main():
         '--squash-minor-bumps',
         action='store_true',
         help=
-        'Squashes all the minor bumps in-between the the last version and the previous upstream ref.')
+        'Squashes all the minor bumps in-between the the last version and the '
+        'previous upstream ref.')
 
     subparsers.add_parser(
         'update-version-issue',
@@ -2369,16 +2396,9 @@ def main():
                 parser.error(
                     'Switch --from-ref not supported with --continue.')
 
-    def resolve_from_ref_flag():
-        if args.command == 'rebase':
-            # With the rebase command we do not resolve the argument into a
-            # version number, but rather into the branch name.
-            if args.from_ref is None or args.from_ref == '@upstream':
-                return _get_current_branch_upstream_name()
-            return args.from_ref
-
-        return _find_from_ref_version(
-            args.from_ref if args.from_ref is not None else '@upstream')
+    def resolve_from_ref_flag_version() -> Version:
+        return Version.from_git(
+            solve_git_ref(args.from_ref if args.from_ref else '@upstream'))
 
     if args.command == 'lift' and args.no_conflict and not args.is_continuation:
         parser.error('--no-conflict-change can only be used with --continue')
@@ -2407,19 +2427,20 @@ def main():
 
         if not args.is_continuation:
             upgrade = Upgrade(target, args.is_continuation,
-                              resolve_from_ref_flag())
+                              resolve_from_ref_flag_version())
         else:
             upgrade = Upgrade(resolve_to_flag(), args.is_continuation)
 
         return upgrade.run(args.no_conflict, args.vscode, args.with_github,
                            args.ack_advisory)
     if args.command == 'rebase':
-        return Rebase(resolve_from_ref_flag()).run(args.recommit,
-                                                   args.discard_regen_changes, args.squash_minor_bumps)
+        return Rebase().run(args.from_ref, args.to_ref, args.recommit,
+                            args.discard_regen_changes,
+                            args.squash_minor_bumps)
     if args.command == 'regen':
-        return Regen(resolve_from_ref_flag()).run()
+        return Regen(resolve_from_ref_flag_version()).run()
     if args.command == 'update-version-issue':
-        return GitHubIssue(resolve_from_ref_flag()).run()
+        return GitHubIssue(resolve_from_ref_flag_version()).run()
     if args.command == 'reference':
         return console.print(Markdown(__doc__))
     if args.command == 'show':
@@ -2433,7 +2454,8 @@ if __name__ == '__main__':
         # Special flags used to carry out some of the rebase tasks fed by git
         # during rebase --interactive mode.
         if '--internal-rebase-remove-regen-changes' in sys.argv:
-            Rebase.discard_regen_changes_from_rebase_plan(PurePath(sys.argv[-1]))
+            Rebase.discard_regen_changes_from_rebase_plan(
+                PurePath(sys.argv[-1]))
         if '--internal-rebase-recommit' in sys.argv:
             Rebase.recommit_in_rebase_plan(PurePath(sys.argv[-1]))
         if '--internal-rebase-squash-minor-bumps' in sys.argv:
