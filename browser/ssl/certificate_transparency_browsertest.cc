@@ -44,7 +44,7 @@ net::HashValue GetSPKIHash(const CRYPTO_BUFFER* cert) {
   EXPECT_TRUE(net::asn1::ExtractSPKIFromDERCert(
       net::x509_util::CryptoBufferAsStringPiece(cert), &spki_bytes));
   net::HashValue sha256(net::HASH_VALUE_SHA256);
-  crypto::SHA256HashString(spki_bytes, sha256.data(), crypto::kSHA256Length);
+  sha256.span().copy_from(crypto::SHA256Hash(base::as_byte_span(spki_bytes)));
   return sha256;
 }
 
