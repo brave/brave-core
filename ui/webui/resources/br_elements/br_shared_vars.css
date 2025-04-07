@@ -18,6 +18,7 @@ html {
   --cr-link-color-rgb: 63, 57, 232;
   --cr-link-color: var(--leo-color-text-interactive, rgb(var(--cr-link-color-rgb))) !important;
   --disabled-color: rgb(241, 243, 244);
+  --cr-focus-outline-color: var(--leo-color-primary-50) !important;
   --flat-focus-shadow-color: var(--leo-color-divider-interactive) !important;
   --brave-focus-outline: auto 3px var(--flat-focus-shadow-color);
   --cr-selectable-focus_-_outline: var(--brave-focus-outline) !important;

@@ -1,0 +1,74 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./md_select_lit-chromium.css.js
+ * #scheme=relative
+ * #include=md-select-lit-chromium
+ * #css_wrapper_metadata_end */
+
+.md-select {
+  appearance: base-select;
+
+  background: transparent;
+  border: 1px solid var(--leo-color-divider-strong);
+  border-radius: var(--leo-radius-m);
+
+  padding: 10px 7px;
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+
+  display: flex;
+  align-items: center;
+}
+
+.md-select:hover {
+  background: transparent;
+  border-color: var(--leo-color-neutral-30);
+}
+
+.md-select:open {
+  outline: solid 2px var(--cr-focus-outline-color);
+  outline-offset: -1px;
+}
+
+.md-select::picker(select) {
+  margin-top: var(--leo-spacing-m);
+
+  appearance: base-select;
+  background: var(--leo-color-container-background);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-m);
+}
+
+.md-select option:not(.z) {
+  margin: var(--leo-spacing-s);
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
+  border-radius: var(--leo-radius-s);
+  background-color: var(--leo-color-container-background);
+}
+
+.md-select option:hover {
+  background-color: var(--leo-color-container-highlight);
+}
+
+.md-select option:checked {
+  background-color: var(--leo-color-container-highlight);
+}
+
+.md-select option::checkmark {
+  display: none;
+}
+
+.md-select option:focus {
+  background-color: var(--leo-color-container-interactive);
+  color: var(--leo-color-text-interactive);
+}
+
+.md-select option:focus-visible {
+  box-shadow: 0px 0px 0px 1.5px rgba(255, 255, 255, 0.5),
+    0px 0px 4px 2px #423eee;
+}
