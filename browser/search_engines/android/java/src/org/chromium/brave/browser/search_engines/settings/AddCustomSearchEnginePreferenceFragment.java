@@ -207,8 +207,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                 templateUrlService.updateSearchEngine(
                         searchEngineKeyword, title, keyword, queryReplacedUrl);
         if (isUpdated) {
-            CustomSearchEnginesUtil.removeCustomSearchEngine(searchEngineKeyword);
-            CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
+            CustomSearchEnginesUtil.updateCustomSearchEngine(searchEngineKeyword, keyword);
             handleBackPressed();
         } else {
             Toast.makeText(

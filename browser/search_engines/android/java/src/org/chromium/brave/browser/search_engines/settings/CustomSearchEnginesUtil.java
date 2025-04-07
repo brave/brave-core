@@ -27,7 +27,7 @@ import org.chromium.url.GURL;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CustomSearchEnginesUtil {
@@ -55,7 +55,7 @@ public class CustomSearchEnginesUtil {
     public static void addCustomSearchEngine(String searchEngineKeyword) {
         List<String> customSearchEnginesList = getCustomSearchEngines();
         if (customSearchEnginesList.isEmpty()) {
-            customSearchEnginesList = new ArrayList<>();
+            customSearchEnginesList = new LinkedList<>();
         }
         if (!customSearchEnginesList.contains(searchEngineKeyword)) {
             customSearchEnginesList.add(searchEngineKeyword);
@@ -64,7 +64,7 @@ public class CustomSearchEnginesUtil {
     }
 
     public static List<String> getCustomSearchEngines() {
-        List<String> customSearchEnginesList = new ArrayList<>();
+        List<String> customSearchEnginesList = new LinkedList();
         String savedSearchEngines =
                 ChromeSharedPreferences.getInstance().readString(CUSTOM_SEARCH_ENGINES, null);
 
@@ -99,6 +99,19 @@ public class CustomSearchEnginesUtil {
         if (!customSearchEnginesList.isEmpty()
                 && customSearchEnginesList.contains(searchEngineKeyword)) {
             customSearchEnginesList.remove(searchEngineKeyword);
+            saveCustomSearchEngines(customSearchEnginesList);
+        }
+    }
+
+    public static void updateCustomSearchEngine(
+            String searchEngineKeyword, String newSearchEngineKeyword) {
+        List<String> customSearchEnginesList = getCustomSearchEngines();
+        if (!customSearchEnginesList.isEmpty()
+                && customSearchEnginesList.contains(searchEngineKeyword)) {
+            int index = customSearchEnginesList.indexOf(searchEngineKeyword);
+            if (index != -1) {
+                customSearchEnginesList.set(index, newSearchEngineKeyword);
+            }
             saveCustomSearchEngines(customSearchEnginesList);
         }
     }
