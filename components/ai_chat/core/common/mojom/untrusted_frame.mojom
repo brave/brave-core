@@ -22,6 +22,14 @@ interface ParentUIFrame {
   // frame deals with it instead of the child frame, due to UI space as well as
   // sensitive user information being captured.
   RateMessage(string turn_uuid, bool is_liked);
+
+  // This is sent to the parent trusted webui to allow displaying the
+  // open external link modal outside of the untrusted iframe. This is
+  // to prevent the modal backdrop from being clipped within the iframe
+  // and fixes centering the modal in the page view. The parent frame
+  // then deals with whether to display the modal or to continue opening
+  // the link.
+  SetOpeningExternalLinkURL(string url);
 };
 
 // Browser-side handler for untrusted frame that handles rendering of
