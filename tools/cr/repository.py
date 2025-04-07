@@ -8,7 +8,7 @@ from pathlib import PurePath
 import subprocess
 from typing import Optional
 
-from terminal import console, terminal
+from terminal import terminal
 
 # The path to the brave/ directory.
 BRAVE_CORE_PATH = next(brave for brave in PurePath(__file__).parents
@@ -31,18 +31,6 @@ class Repository:
     # of a patch file, with chromium/src being ''.
     # e.g. "third_party/search_engines_data/resources"
     path: PurePath
-
-    @classmethod
-    def chromium(cls) -> "Repository":
-        """Returns the chromium/src repository.
-        """
-        return cls(PurePath(CHROMIUM_SRC_PATH))
-
-    @classmethod
-    def brave(cls) -> "Repository":
-        """Returns the brave/ repository.
-        """
-        return cls(BRAVE_CORE_PATH)
 
     @property
     def is_chromium(self) -> bool:
@@ -156,3 +144,10 @@ class Repository:
         """Gets the current branch name, or HEAD if not in any branch.
         """
         return self.run_git('rev-parse', '--abbrev-ref', 'HEAD')
+
+
+# An instance to the chromium repository.
+chromium = Repository(PurePath(CHROMIUM_SRC_PATH))
+
+# An instance to the brave repository.
+brave = Repository(PurePath(BRAVE_CORE_PATH))
