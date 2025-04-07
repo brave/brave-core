@@ -154,6 +154,28 @@
     ],
     "CheckStableMojomChanges": [
       "components/brave_rewards/core/mojom/.*\\.mojom",
+    ],
+    // TODO(alexeybarabash): https://github.com/brave/brave-browser/issues/45245
+    "_CheckAndroidNullAwayAnnotatedClasses": [
+      "android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveIncognitoTabSwitcherPane.java",
+      "android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator.java",
+      "android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabSwitcherPaneBase.java",
+      "android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerCoordinator.java",
+      "android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerMediator.java",
+      "android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbarCoordinator.java",
+      "android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
+      "android/java/org/chromium/chrome/browser/customtabs/FullScreenCustomTabActivity.java",
+      "android/java/org/chromium/chrome/browser/customtabs/FullScreenCustomTabRootUiCoordinator.java",
+      "android/java/org/chromium/chrome/browser/firstrun/WelcomeOnboardingActivity.java",
+      "android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java",
+      "android/java/org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesLayoutBase.java",
+      "android/java/org/chromium/chrome/browser/toolbar/BraveToolbarManager.java",
+      "android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java",
+      "android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsCoordinator.java",
+      "android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayoutImpl.java",
+      "android/java/org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator.java",
+      "browser/hub/internal/android/java/src/org/chromium/chrome/browser/hub/BraveHubManagerImpl.java",
+      "browser/hub/internal/android/java/src/org/chromium/chrome/browser/hub/BraveHubToolbarView.java",
     ]
   },
 
