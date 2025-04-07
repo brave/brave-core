@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/tools/build_webui.gni b/ui/webui/resources/tools/build_webui.gni
-index fb9c599da336ea3876891b535cd472ea45102b13..d6eddc47c99db5b27327dcf3b137afd540bcfd2f 100644
+index e9df094209fbccb642f4ce162cb3395133aa93a5..c88586657e55083962648580547e5cb239302872 100644
 --- a/ui/webui/resources/tools/build_webui.gni
 +++ b/ui/webui/resources/tools/build_webui.gni
 @@ -221,6 +221,7 @@ template("build_webui") {
@@ -18,7 +18,7 @@ index fb9c599da336ea3876891b535cd472ea45102b13..d6eddc47c99db5b27327dcf3b137afd5
      }
    }
  
-@@ -458,6 +460,7 @@ template("build_webui") {
+@@ -461,6 +463,7 @@ template("build_webui") {
    enable_type_aware_eslint_checks =
        !defined(invoker.enable_type_aware_eslint_checks) ||
        invoker.enable_type_aware_eslint_checks
@@ -26,7 +26,7 @@ index fb9c599da336ea3876891b535cd472ea45102b13..d6eddc47c99db5b27327dcf3b137afd5
  
    if (enable_type_aware_eslint_checks) {
      eslint_ts("lint") {
-@@ -661,7 +664,7 @@ template("build_webui") {
+@@ -664,7 +667,7 @@ template("build_webui") {
    }
  
    if (!generate_grdp) {
