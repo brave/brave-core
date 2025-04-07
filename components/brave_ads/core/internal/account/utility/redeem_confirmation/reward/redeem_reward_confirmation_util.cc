@@ -15,29 +15,15 @@
 
 namespace brave_ads {
 
-namespace {
-
-base::expected<void, std::string> ShouldAddPaymentToken(
-    const PaymentTokenInfo& payment_token) {
+bool MaybeAddPaymentToken(const PaymentTokenInfo& payment_token) {
   if (PaymentTokenExists(payment_token)) {
-    return base::unexpected("Payment token is a duplicate");
-  }
-
-  return base::ok();
-}
-
-}  // namespace
-
-base::expected<void, std::string> MaybeAddPaymentToken(
-    const PaymentTokenInfo& payment_token) {
-  auto result = ShouldAddPaymentToken(payment_token);
-  if (!result.has_value()) {
-    return result;
+    BLOG(1, "Payment token is a duplicate");
+    return false;
   }
 
   AddPaymentTokens({payment_token});
 
-  return base::ok();
+  return true;
 }
 
 void LogPaymentTokenStatus() {

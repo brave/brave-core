@@ -27,10 +27,9 @@ class NotificationAdDismissedExclusionRule final
 
   ~NotificationAdDismissedExclusionRule() override;
 
-  std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
-
-  base::expected<void, std::string> ShouldInclude(
-      const CreativeAdInfo& creative_ad) const override;
+  // ExclusionRuleInterface:
+  std::string GetCacheKey(const CreativeAdInfo& creative_ad) const override;
+  bool ShouldInclude(const CreativeAdInfo& creative_ad) const override;
 
  private:
   AdEventList ad_events_;

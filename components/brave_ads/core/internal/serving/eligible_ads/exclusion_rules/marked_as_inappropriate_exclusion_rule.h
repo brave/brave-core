@@ -17,10 +17,9 @@ struct CreativeAdInfo;
 class MarkedAsInappropriateExclusionRule final
     : public ExclusionRuleInterface<CreativeAdInfo> {
  public:
-  std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
-
-  base::expected<void, std::string> ShouldInclude(
-      const CreativeAdInfo& creative_ad) const override;
+  // ExclusionRuleInterface:
+  std::string GetCacheKey(const CreativeAdInfo& creative_ad) const override;
+  bool ShouldInclude(const CreativeAdInfo& creative_ad) const override;
 };
 
 }  // namespace brave_ads

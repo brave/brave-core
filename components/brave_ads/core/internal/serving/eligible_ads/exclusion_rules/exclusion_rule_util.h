@@ -8,9 +8,6 @@
 
 #include <cstddef>
 
-#include "base/check.h"
-#include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
@@ -51,20 +48,6 @@ bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
                             const AdEventList& ad_events,
                             mojom::ConfirmationType mojom_confirmation_type,
                             size_t cap);
-
-template <typename T>
-bool ShouldInclude(const T& ad,
-                   const ExclusionRuleInterface<T>* const exclusion_rule) {
-  CHECK(exclusion_rule);
-
-  const auto result = exclusion_rule->ShouldInclude(ad);
-  if (!result.has_value()) {
-    BLOG(2, result.error());
-    return false;
-  }
-
-  return true;
-}
 
 }  // namespace brave_ads
 

@@ -166,7 +166,7 @@ TEST_P(
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
   // Act & Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 TEST_P(
@@ -181,7 +181,7 @@ TEST_P(
   creative_ad.geo_targets = {GetParam().country_code};
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
@@ -199,7 +199,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 TEST_P(
@@ -219,7 +219,7 @@ TEST_P(
                              BuildOtherSubdivisionForTestParam()};
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 TEST_P(
@@ -238,7 +238,7 @@ TEST_P(
   creative_ad.geo_targets = {GetParam().country_code};
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 TEST_P(
@@ -261,7 +261,7 @@ TEST_P(
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 TEST_P(
@@ -285,7 +285,7 @@ TEST_P(
                              BuildOtherSubdivisionForTestParam()};
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 TEST_P(
@@ -308,7 +308,7 @@ TEST_P(
   creative_ad.geo_targets = {GetParam().country_code};
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
@@ -327,7 +327,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
       /*country_code=*/"US", /*subdivision_code=*/"XX")};
 
   // Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 TEST_P(
@@ -347,7 +347,7 @@ TEST_P(
       /*country_code=*/"GB", /*subdivision_code=*/"DEV")};
 
   // Act & Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 TEST_P(
@@ -371,7 +371,7 @@ TEST_P(
   creative_ad.geo_targets = {"XX"};
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
@@ -392,7 +392,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
   // Act & Assert
-  EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_FALSE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 TEST_P(
@@ -414,7 +414,7 @@ TEST_P(
   creative_ad.geo_targets = {"XX"};
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad));
 }
 
 std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {

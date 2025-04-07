@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
@@ -22,20 +22,21 @@ AntiTargetingExclusionRule::AntiTargetingExclusionRule(
 
 AntiTargetingExclusionRule::~AntiTargetingExclusionRule() = default;
 
-std::string AntiTargetingExclusionRule::GetUuid(
+std::string AntiTargetingExclusionRule::GetCacheKey(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.creative_set_id;
 }
 
-base::expected<void, std::string> AntiTargetingExclusionRule::ShouldInclude(
+bool AntiTargetingExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(creative_ad)) {
-    return base::unexpected(base::ReplaceStringPlaceholders(
-        "creativeSetId $1 excluded due to visiting an anti-targeted site",
-        {creative_ad.creative_set_id}, nullptr));
+    BLOG(1, "creativeSetId "
+                << creative_ad.creative_set_id
+                << " excluded due to visiting an anti-targeted site");
+    return false;
   }
 
-  return base::ok();
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

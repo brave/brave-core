@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
 
-#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 
@@ -20,21 +20,21 @@ bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
 
 }  // namespace
 
-std::string MarkedAsInappropriateExclusionRule::GetUuid(
+std::string MarkedAsInappropriateExclusionRule::GetCacheKey(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.creative_set_id;
 }
 
-base::expected<void, std::string>
-MarkedAsInappropriateExclusionRule::ShouldInclude(
+bool MarkedAsInappropriateExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(creative_ad)) {
-    return base::unexpected(base::ReplaceStringPlaceholders(
-        "creativeSetId $1 excluded due to being marked as inappropriate",
-        {creative_ad.creative_set_id}, nullptr));
+    BLOG(1, "creativeSetId "
+                << creative_ad.creative_set_id
+                << " excluded due to being marked as inappropriate");
+    return false;
   }
 
-  return base::ok();
+  return true;
 }
 
 }  // namespace brave_ads

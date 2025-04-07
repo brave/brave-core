@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -19,22 +19,22 @@ DailyCapExclusionRule::DailyCapExclusionRule(AdEventList ad_events)
 
 DailyCapExclusionRule::~DailyCapExclusionRule() = default;
 
-std::string DailyCapExclusionRule::GetUuid(
+std::string DailyCapExclusionRule::GetCacheKey(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.campaign_id;
 }
 
-base::expected<void, std::string> DailyCapExclusionRule::ShouldInclude(
+bool DailyCapExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCampaignCap(creative_ad, ad_events_,
                               mojom::ConfirmationType::kServedImpression,
                               base::Days(1), creative_ad.daily_cap)) {
-    return base::unexpected(base::ReplaceStringPlaceholders(
-        "campaignId $1 has exceeded the dailyCap frequency cap",
-        {creative_ad.campaign_id}, nullptr));
+    BLOG(1, "campaignId " << creative_ad.campaign_id
+                          << " has exceeded the dailyCap frequency cap");
+    return false;
   }
 
-  return base::ok();
+  return true;
 }
 
 }  // namespace brave_ads

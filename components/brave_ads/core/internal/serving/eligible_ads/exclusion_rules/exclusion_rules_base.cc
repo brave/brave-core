@@ -7,7 +7,6 @@
 
 #include <algorithm>
 
-#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/conversion_exclusion_rule.h"
@@ -33,91 +32,73 @@ ExclusionRulesBase::ExclusionRulesBase(
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource,
     const SiteHistoryList& site_history) {
-  exclusion_rules_.push_back(std::make_unique<AntiTargetingExclusionRule>(
-      anti_targeting_resource, site_history));
-
-  exclusion_rules_.push_back(
-      std::make_unique<ConversionExclusionRule>(ad_events));
-
   exclusion_rules_.push_back(
       std::make_unique<DailyCapExclusionRule>(ad_events));
 
-  exclusion_rules_.push_back(std::make_unique<DaypartExclusionRule>());
-
-  exclusion_rules_.push_back(std::make_unique<DislikeSegmentExclusionRule>());
-
-  exclusion_rules_.push_back(std::make_unique<DislikeExclusionRule>());
-
-  exclusion_rules_.push_back(
-      std::make_unique<MarkedAsInappropriateExclusionRule>());
-
-  exclusion_rules_.push_back(
-      std::make_unique<PageLandExclusionRule>(ad_events));
-
   exclusion_rules_.push_back(std::make_unique<PerDayExclusionRule>(ad_events));
+
+  exclusion_rules_.push_back(std::make_unique<PerWeekExclusionRule>(ad_events));
 
   exclusion_rules_.push_back(
       std::make_unique<PerMonthExclusionRule>(ad_events));
 
-  exclusion_rules_.push_back(std::make_unique<PerWeekExclusionRule>(ad_events));
-
-  exclusion_rules_.push_back(std::make_unique<SplitTestExclusionRule>());
+  exclusion_rules_.push_back(
+      std::make_unique<TotalMaxExclusionRule>(ad_events));
 
   exclusion_rules_.push_back(
       std::make_unique<SubdivisionTargetingExclusionRule>(
           subdivision_targeting));
 
+  exclusion_rules_.push_back(std::make_unique<DaypartExclusionRule>());
+
   exclusion_rules_.push_back(
-      std::make_unique<TotalMaxExclusionRule>(ad_events));
+      std::make_unique<PageLandExclusionRule>(ad_events));
+
+  exclusion_rules_.push_back(
+      std::make_unique<ConversionExclusionRule>(ad_events));
+
+  exclusion_rules_.push_back(std::make_unique<AntiTargetingExclusionRule>(
+      anti_targeting_resource, site_history));
+
+  exclusion_rules_.push_back(std::make_unique<SplitTestExclusionRule>());
+
+  exclusion_rules_.push_back(std::make_unique<DislikeExclusionRule>());
+
+  exclusion_rules_.push_back(std::make_unique<DislikeSegmentExclusionRule>());
+
+  exclusion_rules_.push_back(
+      std::make_unique<MarkedAsInappropriateExclusionRule>());
 }
 
 ExclusionRulesBase::~ExclusionRulesBase() = default;
 
 bool ExclusionRulesBase::ShouldExcludeCreativeAd(
     const CreativeAdInfo& creative_ad) {
-  return std::ranges::any_of(
-      exclusion_rules_,
-      [&](const std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>&
-              exclusion_rule) {
-        return AddToCacheIfNeeded(creative_ad, exclusion_rule);
-      });
-}
-
-bool ExclusionRulesBase::AddToCacheIfNeeded(
-    const CreativeAdInfo& creative_ad,
-    const std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>&
-        exclusion_rule) {
-  CHECK(exclusion_rule);
-
   if (IsCached(creative_ad)) {
     return true;
   }
 
-  const auto result = exclusion_rule->ShouldInclude(creative_ad);
-  if (result.has_value()) {
+  return std::ranges::any_of(exclusion_rules_, [&](const auto& exclusion_rule) {
+    if (!exclusion_rule->ShouldInclude(creative_ad)) {
+      Cache(exclusion_rule->GetCacheKey(creative_ad));
+      return true;
+    }
     return false;
-  }
-
-  BLOG(2, result.error());
-
-  AddToCache(exclusion_rule->GetUuid(creative_ad));
-
-  return true;
+  });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 bool ExclusionRulesBase::IsCached(const CreativeAdInfo& creative_ad) const {
-  return std::ranges::any_of(uuids_, [&creative_ad](const std::string& uuid) {
-    return creative_ad.creative_instance_id == uuid ||
-           creative_ad.creative_set_id == uuid ||
-           creative_ad.campaign_id == uuid ||
-           creative_ad.advertiser_id == uuid || creative_ad.segment == uuid;
-  });
+  return cache_.contains(creative_ad.creative_instance_id) ||
+         cache_.contains(creative_ad.creative_set_id) ||
+         cache_.contains(creative_ad.campaign_id) ||
+         cache_.contains(creative_ad.advertiser_id) ||
+         cache_.contains(creative_ad.segment);
 }
 
-void ExclusionRulesBase::AddToCache(const std::string& uuid) {
-  uuids_.insert(uuid);
+void ExclusionRulesBase::Cache(const std::string& key) {
+  cache_.insert(key);
 }
 
 }  // namespace brave_ads

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_segment_exclusion_rule.h"
 
-#include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
@@ -19,21 +19,22 @@ bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
 
 }  // namespace
 
-std::string DislikeSegmentExclusionRule::GetUuid(
+std::string DislikeSegmentExclusionRule::GetCacheKey(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.segment;
 }
 
-base::expected<void, std::string> DislikeSegmentExclusionRule::ShouldInclude(
+bool DislikeSegmentExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(creative_ad)) {
-    return base::unexpected(base::ReplaceStringPlaceholders(
-        "creativeSetId $1 excluded due to $2 segment being marked to no "
-        "longer receive ads",
-        {creative_ad.creative_set_id, creative_ad.segment}, nullptr));
+    BLOG(1, "creativeSetId " << creative_ad.creative_set_id
+                             << " excluded due to " << creative_ad.segment
+                             << " segment being marked to no "
+                                "longer receive ads");
+    return false;
   }
 
-  return base::ok();
+  return true;
 }
 
 }  // namespace brave_ads

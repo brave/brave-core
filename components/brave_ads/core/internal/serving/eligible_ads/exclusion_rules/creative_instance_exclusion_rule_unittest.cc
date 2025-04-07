@@ -33,7 +33,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldAlwaysInclude) {
   const CreativeInstanceExclusionRule exclusion_rule(/*ad_events=*/{});
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
@@ -45,7 +45,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   const CreativeInstanceExclusionRule exclusion_rule(/*ad_events=*/{});
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldIncludeAfter1Hour) {
@@ -65,7 +65,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldIncludeAfter1Hour) {
   AdvanceClockBy(base::Hours(1));
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
@@ -105,7 +105,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   AdvanceClockBy(base::Hours(1));
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
@@ -126,7 +126,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+  EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad));
 }
 
 }  // namespace brave_ads
