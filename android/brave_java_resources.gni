@@ -515,7 +515,6 @@ brave_java_resources = [
   "java/res/drawable/ic_phantom.xml",
   "java/res/drawable/ic_phone.xml",
   "java/res/drawable/ic_plans.xml",
-  "java/res/drawable/ic_plus_add_widget.xml",
   "java/res/drawable/ic_popular_sources.xml",
   "java/res/drawable/ic_privacy_reports.xml",
   "java/res/drawable/ic_product_brave_leo.xml",
