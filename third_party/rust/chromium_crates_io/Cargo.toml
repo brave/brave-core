@@ -181,6 +181,18 @@ package = "log"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/memchr-2.7.4"
 package = "memchr"
 
+[patch.crates-io.num-bigint_v0_4]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/num-bigint-0.4.6"
+package = "num-bigint"
+
+[patch.crates-io.num-integer_v0_1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/num-integer-0.1.46"
+package = "num-integer"
+
+[patch.crates-io.num-traits_v0_2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/num-traits-0.2.19"
+package = "num-traits"
+
 [patch.crates-io.ppv_lite86_v0_2]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/ppv-lite86-0.2.21"
 package = "ppv-lite86"
