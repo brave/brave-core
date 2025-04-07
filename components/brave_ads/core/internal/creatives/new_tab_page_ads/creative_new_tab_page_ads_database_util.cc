@@ -94,9 +94,6 @@ constexpr char kCreativeConditionMatcherPrefPathKey[] = "prefPath";
 
 }  // namespace
 
-// This temporary implementation has high congitive complexity to parse and save
-// creative new tab page ads. It will be replaced when new tab page ads are
-// served from the ads component.
 bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
   const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (schema_version != kExpectedSchemaVersion) {

@@ -558,7 +558,7 @@ void CreativeInlineContentAds::MigrateToV48(
   // downloading the catalog post-migration. However, after this migration, we
   // should not drop the table as it will store catalog and non-catalog ad units
   // and maintain relationships with other tables.
-  DropTable(mojom_db_transaction, GetTableName());
+  DropTable(mojom_db_transaction, "creative_inline_content_ads");
   Create(mojom_db_transaction);
 }
 
