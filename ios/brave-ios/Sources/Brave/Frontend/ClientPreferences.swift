@@ -237,7 +237,8 @@ extension Preferences {
     /// Enables the Apple's Screen Time feature.
     public static let screenTimeEnabled = Option<Bool>(
       key: "privacy.screentime-toggle",
-      default: AppConstants.buildChannel != .release && !ProcessInfo.processInfo.isiOSAppOnVisionOS
+      default: Preferences.DebugFlag.enableScreenTimeByDefault
+        ?? (AppConstants.buildChannel != .release && !ProcessInfo.processInfo.isiOSAppOnVisionOS)
     )
 
   }

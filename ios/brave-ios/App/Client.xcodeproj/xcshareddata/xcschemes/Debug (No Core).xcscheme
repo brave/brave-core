@@ -101,6 +101,10 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "-BREnableScreenTimeByDefault NO"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "-com.apple.CoreData.SQLDebug 1"
             isEnabled = "NO">
          </CommandLineArgument>
