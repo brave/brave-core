@@ -33,6 +33,7 @@ import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
+import org.chromium.chrome.browser.toolbar.back_button.BackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
@@ -89,7 +90,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             OneshotSupplier<TabStripTransitionDelegate> tabStripTransitionDelegateSupplier,
             @Nullable OnLongClickListener onLongClickListener,
             ToolbarProgressBar progressBar,
-            ObservableSupplier<Tab> tabSupplier) {
+            ObservableSupplier<Tab> tabSupplier,
+            @Nullable BackButtonCoordinator backButtonCoordinator) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -118,7 +120,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 tabStripTransitionDelegateSupplier,
                 onLongClickListener,
                 progressBar,
-                tabSupplier);
+                tabSupplier,
+                backButtonCoordinator);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
