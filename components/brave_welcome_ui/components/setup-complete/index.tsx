@@ -24,8 +24,8 @@ function SetupComplete () {
       <div className='icon-box'>
         <LottiePlayer
           animationUrl={LOTTIE_CHECK_MARK_ICON}
-          autoPlay={true}
-          singleLoop={true}
+          play
+          loop={false}
           onComplete={handleComplete}
         />
       </div>
