@@ -50,7 +50,7 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
       completionHandler(nil)
       return
     }
-    Task {
+    Task { @MainActor in
       let configuration = await tab.delegate?.tab(
         tab,
         contextMenuConfigurationForLinkURL: element.hyperlink
@@ -69,7 +69,7 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
       decisionHandler(.prompt)
       return
     }
-    Task {
+    Task { @MainActor in
       let permission = await delegate.tab(tab, requestMediaCapturePermissionsFor: captureType)
       decisionHandler(.init(permission))
     }
@@ -101,7 +101,7 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
       completionHandler(false)
       return
     }
-    Task {
+    Task { @MainActor in
       let result = await delegate.tab(
         tab,
         runJavaScriptConfirmPanelWithMessage: message,
