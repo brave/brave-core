@@ -1,17 +1,17 @@
 diff --git a/tools/crates/gnrt/vendor.rs b/tools/crates/gnrt/vendor.rs
-index 505da80a2c585a14a709a92193372305db88a382..bc73a03dcd872e8796ab0e46f88cfe4e1bb843df 100644
+index 5afdf9dd9882e6c5753b5c3842304bc4c1457fcb..7355dac0d7a0916d4b76fe18c4bccec76574ce04 100644
 --- a/tools/crates/gnrt/vendor.rs
 +++ b/tools/crates/gnrt/vendor.rs
-@@ -122,7 +122,7 @@ fn vendor_impl(args: VendorCommandArgs, paths: &paths::ChromiumPaths) -> Result<
+@@ -130,7 +130,7 @@ fn download_crates(args: &VendorCommandArgs, paths: &paths::ChromiumPaths) -> Re
          if is_removed(p.id()) {
-             println!("Generating placeholder for removed crate {}", &crate_dir);
-             generate_placeholder_crate(p, paths, &config)?;
+             println!("Generating placeholder for removed crate {}", &crate_dirname);
+             generate_placeholder_crate(p, &crate_path)?;
 -        } else {
-+        } else if p.source.is_some() {
-             println!("Downloading {}", &crate_dir);
++        } else if !p.source().is_local() {
+             println!("Downloading {}", &crate_dirname);
              download_crate(p.name(), p.version(), paths)?;
              let skip_patches = match &args.no_patches {
-@@ -310,7 +310,7 @@ fn apply_patches(
+@@ -360,7 +360,7 @@ fn apply_patches(
      let crate_dir = vendor_dir.join(get_vendor_dir_for_package(name, version));
  
      let mut patches = Vec::new();
@@ -20,7 +20,7 @@ index 505da80a2c585a14a709a92193372305db88a382..bc73a03dcd872e8796ab0e46f88cfe4e
      else {
          // No patches for this crate.
          return Ok(());
-@@ -336,7 +336,7 @@ fn apply_patches(
+@@ -380,7 +380,7 @@ fn apply_patches(
          let args = vec![
              "apply".to_string(),
              // We need to rebase from the old versioned directory to the new one.
