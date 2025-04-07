@@ -10,6 +10,7 @@ import { useLocale } from '../context/locale_context'
 import { useNewTabState, useNewTabActions } from '../context/new_tab_context'
 import { useRewardsState, useRewardsActions } from '../context/rewards_context'
 import { useVpnState, useVpnActions } from '../context/vpn_context'
+import { useNewsState, useNewsActions } from '../context/news_context'
 
 import { style } from './widgets_panel.style'
 
@@ -19,6 +20,7 @@ export function WidgetsPanel() {
   const newTabActions = useNewTabActions()
   const rewardsActions = useRewardsActions()
   const vpnActions = useVpnActions()
+  const newsActions = useNewsActions()
 
   const showStats = useNewTabState((s) => s.showShieldsStats)
   const showTalkWidget = useNewTabState((s) => s.showTalkWidget)
@@ -26,6 +28,7 @@ export function WidgetsPanel() {
   const showRewardsWidget = useRewardsState((s) => s.showRewardsWidget)
   const vpnFeatureEnabled = useVpnState((s) => s.vpnFeatureEnabled)
   const showVpnWidget = useVpnState((s) => s.showVpnWidget)
+  const showNewsWidget = useNewsState((s) => s.showNewsWidget)
 
   return (
     <div data-css-scope={style.scope}>
@@ -36,6 +39,16 @@ export function WidgetsPanel() {
           checked={showStats}
           onChange={({ checked }) => {
             newTabActions.setShowShieldsStats(checked)
+          }}
+        />
+      </div>
+      <div className='form-control-row'>
+        <label>{getString('showNewsWidgetLabel')}</label>
+        <Toggle
+          size='small'
+          checked={showNewsWidget}
+          onChange={({ checked }) => {
+            newsActions.setShowNewsWidget(checked)
           }}
         />
       </div>

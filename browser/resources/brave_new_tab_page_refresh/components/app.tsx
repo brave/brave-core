@@ -13,16 +13,27 @@ import { SettingsModal, SettingsView } from './settings/settings_modal'
 import { TopSites } from './top_sites/top_sites'
 import { Clock } from './common/clock'
 import { WidgetStack } from './widgets/widget_stack'
+import { NewsFeed } from './news/news_feed'
 
-import { style } from './app.style'
+import { style, threeColumnQuery } from './app.style'
 
 export function App() {
   const [settingsView, setSettingsView] =
     React.useState<SettingsView | null>(null)
 
+  const [threeColumnWidth, setThreeColumnWidth] =
+    React.useState(threeColumnQuery.matches)
+
+  React.useEffect(() => {
+    const listener = () => setThreeColumnWidth(threeColumnQuery.matches)
+    threeColumnQuery.addEventListener('change', listener)
+    return () => threeColumnQuery.removeEventListener('change', listener)
+  }, [])
+
   return (
     <div data-css-scope={style.scope}>
       <Background />
+      <div className='background-filter allow-background-pointer-events' />
       <div className='top-controls'>
         <button
           className='clock'
@@ -51,15 +62,33 @@ export function App() {
           <BackgroundCaption />
         </div>
         <div className='widget-container'>
-          <WidgetStack name='left' tabs={['stats']} />
+          {
+            threeColumnWidth ?
+              <>
+                <WidgetStack name='left' tabs={['stats']} />
+                <WidgetStack name='center' tabs={['news']} />
+              </> :
+              <WidgetStack name='left' tabs={['stats', 'news']} />
+          }
           <WidgetStack name='right' tabs={['vpn', 'rewards', 'talk']} />
         </div>
       </main>
+      <div className='news-container'>
+        <NewsFeed />
+      </div>
       <SettingsModal
         isOpen={settingsView !== null}
         initialView={settingsView}
         onClose={() => setSettingsView(null)}
       />
+    </div>
+  )
+}
+
+export function NewsApp() {
+  return (
+    <div data-css-scope={style.scope}>
+      <NewsFeed standalone />
     </div>
   )
 }

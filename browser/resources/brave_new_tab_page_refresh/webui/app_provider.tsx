@@ -12,6 +12,7 @@ import { SearchProvider } from '../components/context/search_context'
 import { TopSitesProvider } from '../components/context/top_sites_context'
 import { VpnProvider } from '../components/context/vpn_context'
 import { RewardsProvider } from '../components/context/rewards_context'
+import { NewsProvider } from '../components/context/news_context'
 
 import { createLocale } from './webui_locale'
 import { createBackgroundAPI } from './webui_backgrounds'
@@ -20,6 +21,7 @@ import { createRewardsAPI } from './webui_rewards'
 import { createSearchAPI } from './webui_search'
 import { createTopSitesAPI   } from './webui_top_sites'
 import { createVpnAPI } from './webui_vpn'
+import { createNewsAPI } from './webui_news'
 
 const newTab = createNewTabAPI()
 const backgrounds = createBackgroundAPI()
@@ -27,6 +29,7 @@ const rewards = createRewardsAPI()
 const search = createSearchAPI()
 const topSites = createTopSitesAPI()
 const vpn = createVpnAPI()
+const news = createNewsAPI()
 
 Object.assign(self, {
   [Symbol.for('ntp')]: {
@@ -35,7 +38,8 @@ Object.assign(self, {
     rewards,
     search,
     topSites,
-    vpn
+    vpn,
+    news
   }
 })
 
@@ -48,7 +52,9 @@ export function AppProvider(props: { children: React.ReactNode }) {
             <TopSitesProvider value={topSites}>
               <VpnProvider value={vpn}>
                 <RewardsProvider value={rewards}>
-                  {props.children}
+                  <NewsProvider value={news}>
+                    {props.children}
+                  </NewsProvider>
                 </RewardsProvider>
               </VpnProvider>
             </TopSitesProvider>
