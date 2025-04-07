@@ -553,8 +553,16 @@ void CreativeNewTabPageAds::MigrateToV48(
   // downloading the component resource post-migration. However, after this
   // migration, we should not drop the table as it is needed to maintain
   // relationships with other tables.
-  DropTable(mojom_db_transaction, GetTableName());
-  Create(mojom_db_transaction);
+  DropTable(mojom_db_transaction, "creative_new_tab_page_ads");
+
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE creative_new_tab_page_ads (
+        creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        creative_set_id TEXT NOT NULL,
+        campaign_id TEXT NOT NULL,
+        company_name TEXT NOT NULL,
+        alt TEXT NOT NULL
+      );)");
 }
 
 void CreativeNewTabPageAds::MigrateToV49(
@@ -563,8 +571,8 @@ void CreativeNewTabPageAds::MigrateToV49(
 
   // Create a temporary table:
   //   - with a new `type` column constraint. The default value for existing
-  //   rows is 'image', which will be corrected when the new tab page ads are
-  //   updated.
+  //     rows is 'image', which will be corrected when the new tab page ads are
+  //     updated.
   Execute(mojom_db_transaction, R"(
       CREATE TABLE creative_new_tab_page_ads_temp (
         creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
