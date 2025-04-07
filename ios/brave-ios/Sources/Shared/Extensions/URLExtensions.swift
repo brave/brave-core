@@ -483,19 +483,8 @@ public struct InternalURL {
   }
 
   public static func authorize(url: URL) -> URL? {
-    guard var components = URLComponents(string: url.absoluteString) else { return nil }
-    if components.queryItems == nil {
-      components.queryItems = []
-    }
-
-    if var item = components.queryItems?.first(where: { Param.uuidkey.matches($0.name) }) {
-      item.value = InternalURL.uuid
-    } else {
-      components.queryItems?.append(
-        URLQueryItem(name: Param.uuidkey.rawValue, value: InternalURL.uuid)
-      )
-    }
-    return components.url
+    return (url as NSURL)
+      .replacingQueryParameter(key: Param.uuidkey.rawValue, value: InternalURL.uuid)
   }
 
   public var isErrorPage: Bool {
