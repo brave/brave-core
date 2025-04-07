@@ -1970,7 +1970,7 @@ Du kan administrere indstillingerne for denne konto ved at installere Family Lin
 <translation id="2349896577940037438">Hvis indstillingen for yderligere web- og appaktivitet er aktiveret, gemmes disse data muligvis på din Brave-konto. Du kan se dine data, slette dem, og ændre dine kontoindstillinger på account.google.com.</translation>
 <translation id="2350133097354918058">Genindlæst</translation>
 <translation id="2350182423316644347">Starter applikation...</translation>
-<translation id="235028206512346451">Hvis du bevæger dig væk fra din enhed, låser din skærm automatisk. Når du befinder dig foran din enhed, forbliver din skærm ulåst i længere tid. Hvis du ikke bruger en låseskærm, går din enhed i dvale i stedet for at låse.</translation>
+<translation id="235028206512346451">Hvis du bevæger dig væk fra din enhed, låser din skærm automatisk. Når du befinder dig foran din enhed, forbliver din skærm oplåst i længere tid. Hvis du ikke bruger en låseskærm, går din enhed i dvale i stedet for at låse.</translation>
 <translation id="2351923523007389195">Tilladt – <ph name="PERMISSION_DETAILS"/>. Aktivér <ph name="LINK_BEGIN"/>systemets lokationsadgang<ph name="LINK_END"/>.</translation>
 <translation id="2352662711729498748">&lt; 1 MB</translation>
 <translation id="2353168619378866466">Åbn gruppe</translation>
@@ -5882,7 +5882,7 @@ Brug Ctrl+Alt+Lysstyrke ned for at zoome ud.</translation>
 <translation id="514387318601895731">Kig ned</translation>
 <translation id="5143960098217235598">Dette giver apps, websites med mikrofontilladelsen og systemtjenester adgang til mikrofonen</translation>
 <translation id="5144815231216017543">Alt + <ph name="TOP_ROW_KEY"/></translation>
-<translation id="5145464978649806571">Hvis du bevæger dig væk fra din enhed, låser din skærm automatisk. Når du befinder dig foran din enhed, forbliver din skærm ulåst i længere tid. Hvis låseskærmen er deaktiveret, går din enhed i dvale i stedet for at låse.</translation>
+<translation id="5145464978649806571">Hvis du bevæger dig væk fra din enhed, låser din skærm automatisk. Når du befinder dig foran din enhed, forbliver din skærm oplåst i længere tid. Hvis låseskærmen er deaktiveret, går din enhed i dvale i stedet for at låse.</translation>
 <translation id="5145876360421795017">Tilmeld ikke enheden</translation>
 <translation id="5146235736676876345">Vælg din egen</translation>
 <translation id="5146896637028965135">Systemstemme</translation>
@@ -11673,7 +11673,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5932571686022524861">Privat tilbage/fremad-cached side: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
 <translation id="1799432502220762862">Privat underfane: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="6666022817001893507">Privat tilbage/fremad-cached subframe: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
-<translation id="3193187622878830588">Inkognitoportal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Privat portal: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="1389212885096774902">Privat "fenced frame": <ph name="FENCEDFRAME_SITE"/></translation>
 <translation id="8808478386290700967">Web-butik</translation>
 <translation id="8261378640211443080">Denne udvidelse er ikke anført i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> og er muligvis blevet tilføjet, uden at du vidste det.</translation>
@@ -11746,11 +11746,11 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="383007806262310953">Vis bogmærkelinjen</translation>
 <translation id="1375809909601272984">Vis fanegrupper i bogmærker</translation>
 <translation id="1313972218645777584">Fastgør automatisk nye fanegrupper oprettet på enhver enhed til bogmærkerne</translation>
-<translation id="8648684608605749476">Bloker tredjepartscookies i Inkognito</translation>
+<translation id="8648684608605749476">Bloker tredjepartscookies i privat</translation>
 <translation id="3293179957233653243">Nogle funktioner på denne side vil ikke virke i Private</translation>
 <translation id="6304377454418270508">Når du browser privat, kan sider kun bruge cookies til at se din browsing-aktivitet på deres egne sider. Cookies bliver slettet, når du lukker den private session.</translation>
 <translation id="3497049935870467874">Se advarsler, før du går til usikre websteder i Privat tilstand</translation>
-<translation id="6105125042109106861">Tredjepartscookies er blokeret i inkognitotilstand</translation>
+<translation id="6105125042109106861">Tredjepartscookies er blokeret i privat tilstand</translation>
 <translation id="6642913673024345959">Blokér cookies fra tredjeparter i privat tilstand</translation>
 <translation id="8106998200722680369">Læs mere om at blokere cookies fra tredjeparter i privat tilstand</translation>
 <translation id="7900108753072273763">Når du er i privat tilstand, kan websteder ikke bruge dine cookies til at se din browsingaktivitet på tværs af websteder. Din browsingaktivitet bruges ikke til f.eks. at tilpasse annoncer. Funktioner på nogle websteder fungerer muligvis ikke.</translation>
