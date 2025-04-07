@@ -30,3 +30,8 @@ if (enable_pin_shortcut) {
 
 settings_auto_imports =
     [ "chrome/browser/resources/settings/router.html|Router,Route" ]
+
+brave_settings_ts_definitions = [
+  "//brave/components/definitions/chrome_brave_theme.d.ts",
+  "//brave/components/definitions/chrome_brave_wallet.d.ts",
+]

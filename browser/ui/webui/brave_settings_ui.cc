@@ -19,8 +19,6 @@
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
-#include "brave/browser/resources/settings/grit/brave_settings_resources.h"
-#include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/resources/settings/shortcuts_page/grit/commands_generated_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
@@ -127,11 +125,6 @@ BraveSettingsUI::~BraveSettingsUI() = default;
 // static
 void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                    Profile* profile) {
-  for (size_t i = 0; i < kBraveSettingsResourcesSize; ++i) {
-    html_source->AddResourcePath(kBraveSettingsResources[i].path,
-                                 kBraveSettingsResources[i].id);
-  }
-
   // These resource files are generated from the files in
   // brave/browser/resources/settings/shortcuts_page
   // They are generated separately so they can use React and our Leo

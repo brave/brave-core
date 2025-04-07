@@ -1,0 +1,216 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
+import("//brave/build/config.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
+import("//brave/ui/webui/resources/tools/build_webui.gni")
+import("//chrome/common/features.gni")
+import("//extensions/buildflags/buildflags.gni")
+import("settings.gni")
+
+template("brave_settings_build_webui") {
+  brave_build_webui(target_name) {
+    forward_variables_from(invoker, "*")
+    brave_base_dir = rebase_path(".", "//")
+
+    brave_static_files = [
+      "brave_sync_page/device_computer.svg",
+      "brave_sync_page/device_mobile.svg",
+      "brave_sync_page/qr_scanning.svg",
+      "brave_sync_page/start_icon.svg",
+      "images/cookies_banner.svg",
+      "images/cookies_banner_dark.svg",
+      "images/full_brave_brand.svg",
+      "images/full_brave_brand_dark.svg",
+      "images/permissions_banner.svg",
+      "images/permissions_banner_dark.svg",
+      "images/safe_browsing_banner.svg",
+      "images/safe_browsing_banner_dark.svg",
+      "images/warning_triangle.svg",
+    ]
+
+    brave_web_component_files = [
+      "brave_appearance_page/bookmark_bar.ts",
+      "brave_appearance_page/brave_theme.ts",
+      "brave_appearance_page/sidebar.ts",
+      "brave_appearance_page/super_referral.ts",
+      "brave_appearance_page/tabs.ts",
+      "brave_appearance_page/toolbar.ts",
+      "brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.ts",
+      "brave_content_page/content.ts",
+      "brave_content_page/playlist.ts",
+      "brave_content_page/speedreader.ts",
+      "brave_data_collection_page/brave_data_collection_page.ts",
+      "brave_default_extensions_page/brave_default_extensions_page.ts",
+      "brave_default_extensions_page/brave_extensions_manifest_v2_subpage.ts",
+      "brave_new_tab_page/brave_new_tab_page.ts",
+      "brave_privacy_page/brave_personalization_options.ts",
+      "brave_search_engines_page/brave_search_engines_page.ts",
+      "brave_search_engines_page/private_search_engine_list_dialog.ts",
+      "brave_sync_page/brave_sync_code_dialog.ts",
+      "brave_sync_page/brave_sync_configure.ts",
+      "brave_sync_page/brave_sync_delete_account_dialog.ts",
+      "brave_sync_page/brave_sync_page.ts",
+      "brave_sync_page/brave_sync_setup.ts",
+      "brave_sync_page/brave_sync_subpage.ts",
+      "brave_system_page/brave_performance_page.ts",
+      "brave_tor_page/brave_tor_bridges_dialog.ts",
+      "brave_tor_page/brave_tor_snowflake_install_failed_dialog.ts",
+      "brave_tor_page/brave_tor_subpage.ts",
+      "brave_leo_assistant_page/brave_leo_assistant_page.ts",
+      "brave_leo_assistant_page/model_list_section.ts",
+      "brave_leo_assistant_page/model_config_ui.ts",
+      "brave_wallet_page/add_wallet_network_dialog.ts",
+      "brave_wallet_page/brave_wallet_page.ts",
+      "brave_wallet_page/wallet_networks_list.ts",
+      "brave_wallet_page/wallet_networks_subpage.ts",
+      "brave_web3_domains_page/brave_web3_domains_page.ts",
+      "default_brave_shields_page/brave_adblock_subpage.ts",
+      "default_brave_shields_page/components/brave_adblock_editor.ts",
+      "default_brave_shields_page/components/brave_adblock_scriptlet_editor.ts",
+      "default_brave_shields_page/components/brave_adblock_scriptlet_list.ts",
+      "default_brave_shields_page/components/brave_adblock_subscribe_dropdown.ts",
+      "default_brave_shields_page/default_brave_shields_page.ts",
+      "getting_started_page/getting_started.ts",
+      "social_blocking_page/social_blocking_page.ts",
+      "ui/searchable_drop_down_cros.ts",
+    ]
+
+    brave_non_web_component_files = [
+      "brave_appearance_page/brave_appearance_browser_proxy.ts",
+      "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
+      "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
+      "brave_autofill_page/brave_autofill_page.ts",
+      "brave_add_site_dialog/brave_add_site_dialog.ts",
+      "brave_data_collection_page/brave_data_collection_browser_proxy.ts",
+      "brave_default_extensions_page/brave_default_extensions_browser_proxy.ts",
+      "brave_new_tab_page/brave_new_tab_browser_proxy.ts",
+      "brave_leo_assistant_page/brave_leo_assistant_browser_proxy.ts",
+      "brave_overrides/a11y_page.ts",
+      "brave_overrides/all_sites.ts",
+      "brave_overrides/about_page.ts",
+      "brave_overrides/autofill_page.ts",
+      "brave_overrides/appearance_page.ts",
+      "brave_overrides/basic_page.ts",
+      "brave_overrides/clear_browsing_data_dialog.ts",
+      "brave_overrides/config.ts",
+      "brave_overrides/cookies_page.ts",
+      "brave_overrides/default_browser_page.ts",
+      "brave_overrides/edit_dictionary_page.ts",
+      "brave_overrides/import_data_dialog.ts",
+      "brave_overrides/index.ts",
+      "brave_overrides/theme_color_picker.ts",
+      "brave_overrides/page_visibility.ts",
+      "brave_overrides/passwords_section.ts",
+      "brave_overrides/payments_section.ts",
+      "brave_overrides/people_page.ts",
+      "brave_overrides/performance_page.ts",
+      "brave_overrides/personalization_options.ts",
+      "brave_overrides/printing_page.ts",
+      "brave_overrides/privacy_page.ts",
+      "brave_overrides/reset_profile_dialog.ts",
+      "brave_overrides/safety_check.ts",
+      "brave_overrides/safety_check_passwords_child.ts",
+      "brave_overrides/safety_hub_page.ts",
+      "brave_overrides/search_page.ts",
+      "brave_overrides/security_page.ts",
+      "brave_overrides/settings_basic_page.ts",
+      "brave_overrides/settings_manage_profile.ts",
+      "brave_overrides/settings_menu.ts",
+      "brave_overrides/settings_section.ts",
+      "brave_overrides/settings_subpage.ts",
+      "brave_overrides/settings_ui.ts",
+      "brave_overrides/site_details.ts",
+      "brave_overrides/system_page.ts",
+      "brave_overrides/add_site_dialog.ts",
+      "brave_overrides/site_settings_page.ts",
+      "brave_overrides/sync_account_control.ts",
+      "brave_overrides/sync_controls.ts",
+      "brave_privacy_page/brave_privacy_page_browser_proxy.ts",
+      "brave_reset_page/brave_reset_profile_dialog_behavior.ts",
+      "brave_routes.ts",
+      "brave_search_engines_page/brave_search_engines_page_browser_proxy.ts",
+      "brave_sync_page/brave_sync_browser_proxy.ts",
+      "brave_tor_page/brave_tor_browser_proxy.ts",
+      "brave_wallet_page/brave_wallet_browser_proxy.ts",
+      "brave_web3_domains_page/brave_web3_domains_browser_proxy.ts",
+      "default_brave_shields_page/brave_adblock_browser_proxy.ts",
+      "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
+      "getting_started_page/brave_account_browser_proxy.ts",
+      "getting_started_page/brave_account_common.ts",
+      "getting_started_page/brave_account_create_dialog.html.ts",
+      "getting_started_page/brave_account_create_dialog.ts",
+      "getting_started_page/brave_account_dialog.html.ts",
+      "getting_started_page/brave_account_dialog.ts",
+      "getting_started_page/brave_account_entry_dialog.html.ts",
+      "getting_started_page/brave_account_entry_dialog.ts",
+      "getting_started_page/brave_account_forgot_password_dialog.html.ts",
+      "getting_started_page/brave_account_forgot_password_dialog.ts",
+      "getting_started_page/brave_account_row.html.ts",
+      "getting_started_page/brave_account_row.ts",
+      "getting_started_page/brave_account_sign_in_dialog.html.ts",
+      "getting_started_page/brave_account_sign_in_dialog.ts",
+      "shortcuts_page/shortcuts_page.ts",
+    ]
+
+    brave_css_files = [
+      "getting_started_page/brave_account_common.css",
+      "getting_started_page/brave_account_create_dialog.css",
+      "getting_started_page/brave_account_dialog.css",
+      "getting_started_page/brave_account_entry_dialog.css",
+      "getting_started_page/brave_account_forgot_password_dialog.css",
+      "getting_started_page/brave_account_row.css",
+      "getting_started_page/brave_account_sign_in_dialog.css",
+    ]
+
+    brave_ts_definitions = brave_settings_ts_definitions
+
+    if (enable_brave_vpn_wireguard) {
+      brave_web_component_files += [ "brave_system_page/brave_vpn_page.ts" ]
+      brave_non_web_component_files +=
+          [ "brave_system_page/brave_vpn_browser_proxy.ts" ]
+    }
+
+    if (enable_pin_shortcut) {
+      brave_web_component_files += [ "pin_shortcut_page/pin_shortcut_page.ts" ]
+      brave_non_web_component_files +=
+          [ "pin_shortcut_page/pin_shortcut_page_browser_proxy.ts" ]
+    }
+
+    brave_preprocessor_defines = [
+      "enable_tor=$enable_tor",
+      "enable_brave_wayback_machine=$enable_brave_wayback_machine",
+      "enable_brave_vpn=$enable_brave_vpn",
+      "enable_brave_vpn_wireguard=$enable_brave_vpn_wireguard",
+      "enable_extensions=$enable_extensions",
+      "enable_pin_shortcut=$enable_pin_shortcut",
+      "enable_web_discovery_native=$enable_web_discovery_native",
+    ]
+
+    brave_mojo_files = [
+      "$root_gen_dir/brave/components/ai_chat/core/common/mojom/settings_helper.mojom-webui.ts",
+      "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ai_chat.mojom-webui.ts",
+
+      # ai_chat.mojom depends on related mojom even though they aren't used on settings
+      "$root_gen_dir/brave/components/ai_chat/core/common/mojom/tab_tracker.mojom-webui.ts",
+      "$root_gen_dir/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-webui.ts",
+      "$root_gen_dir/brave/components/brave_account/core/mojom/brave_account.mojom-webui.ts",
+    ]
+
+    brave_mojo_files_deps = [
+      "//brave/components/ai_chat/core/common/mojom:mojom_ts__generator",
+      "//brave/components/brave_account/core/mojom:mojom_ts__generator",
+    ]
+
+    brave_ts_deps = [
+      "//third_party/lit/v3_0:build_ts",
+      "//ui/webui/resources/mojo:build_ts",
+    ]
+  }
+}

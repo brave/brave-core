@@ -1,0 +1,156 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//tools/grit/preprocess_if_expr.gni")
+import("//ui/webui/resources/tools/build_webui.gni")
+import("//ui/webui/resources/tools/generate_grd.gni")
+
+# Allows brave a single template for each webui to add files to the single
+# set of resources for that webui. This is especially important for typescript
+# compiles and resource bundling. It also however allows static resources
+# to enter the generated GRD file and prevent having to override the C++
+# WebUI to add more another resource pack.
+template("brave_build_webui") {
+  # 1) Move any .ts files required to be part of the chromium TS compile
+  #    to the same gen path that the chromium files are moved to before the
+  #    rollup compile step.
+  #    Also tell chromium about the files so that they can be included
+  #    in generated GRDP.
+  # 2) Generate any GRDP files for static files and add to the chromium GRD
+
+  assert(defined(invoker.brave_base_dir),
+         "Need to know the root of the brave-specific source files")
+
+  this_path_ = rebase_path(".", "//")
+  print("Brave overriding webui target: $this_path_/$target_name")
+
+  # Generate the list for inclusion via preprocess and exclusion for chromium's preprocess
+  brave_ts_files = []
+  _has_ts = defined(invoker.brave_css_files)
+
+  if (defined(invoker.brave_non_web_component_files)) {
+    _has_ts = true
+
+    # consider the regular (non web component) ts files
+    brave_ts_files += invoker.brave_non_web_component_files
+  }
+
+  brave_html_files = []
+  if (defined(invoker.brave_web_component_files)) {
+    _has_ts = true
+
+    # consider the web component ts files
+    brave_ts_files += invoker.brave_web_component_files
+
+    # consider the .ts version of .html files
+    foreach(component_file, invoker.brave_web_component_files) {
+      brave_html_files += [ string_replace(component_file, ".ts", ".html") ]
+    }
+  }
+
+  # Move brave files to the place where chromium webui TS is compiled from.
+  # It should be the same directory that build_webui.gni uses after it performs
+  # its own preprocess_if_expr. Once chromium and brave frontend files are all in
+  # the same place, build_webui.gni will continue its typescript and rollup
+  # compile (etc.) from that directory.
+  if (_has_ts) {
+    preprocess_if_expr("brave_preprocess") {
+      if (defined(invoker.brave_preprocessor_defines)) {
+        defines = invoker.brave_preprocessor_defines
+      }
+      out_folder = "${target_gen_dir}/preprocessed"
+
+      in_files = brave_ts_files + brave_html_files
+
+      if (defined(invoker.brave_css_files)) {
+        in_files += invoker.brave_css_files
+      }
+    }
+  }
+
+  if (defined(invoker.brave_static_files)) {
+    extras_grdp = "$target_gen_dir/brave_extras.grdp"
+    generate_grd("brave_static_files") {
+      grd_prefix = "brave_extras"
+      out_grd = extras_grdp
+      input_files = invoker.brave_static_files
+      input_files_base_dir = invoker.brave_base_dir
+    }
+  }
+
+  build_webui(target_name) {
+    forward_variables_from(invoker,
+                           "*",
+                           [
+                             "brave_base_dir",
+                             "brave_static_files",
+                             "brave_web_component_files",
+                             "brave_non_web_component_files",
+                             "brave_css_files",
+                             "brave_preprocessor_defines",
+                             "brave_ts_definitions",
+                             "brave_mojo_files",
+                             "brave_mojo_files_deps",
+                             "brave_ts_deps",
+                           ])
+
+    if (defined(invoker.brave_static_files)) {
+      extra_grdp_deps = [ ":brave_static_files" ]
+      extra_grdp_files = [ extras_grdp ]
+    }
+
+    if (defined(invoker.brave_web_component_files)) {
+      web_component_files += invoker.brave_web_component_files
+    }
+
+    if (defined(invoker.brave_non_web_component_files)) {
+      non_web_component_files += invoker.brave_non_web_component_files
+    }
+
+    exclude_html_css_preprocess_files = brave_html_files
+
+    if (defined(invoker.brave_css_files)) {
+      css_files += invoker.brave_css_files
+      exclude_html_css_preprocess_files += invoker.brave_css_files
+    }
+
+    # make sure chromium doesn't try and move brave files from chromium src
+    # since we're taking care of that.
+    exclude_ts_preprocess_files = brave_ts_files
+    if (_has_ts) {
+      preprocess_deps = [ ":brave_preprocess" ]
+    }
+
+    # ts_extra_deps = brave_ts_extra_deps
+    if (defined(invoker.brave_ts_definitions)) {
+      ts_definitions += invoker.brave_ts_definitions
+    }
+
+    # if (optimize_webui) {
+    #   extra_grdp_deps += [ ":brave_preprocess" ]
+    #   extra_grdp_files = []
+    # }
+
+    if (defined(invoker.brave_mojo_files)) {
+      if (!defined(mojo_files)) {
+        mojo_files = []
+      }
+      mojo_files += invoker.brave_mojo_files
+
+      if (!defined(mojo_files_deps)) {
+        mojo_files_deps = []
+      }
+      mojo_files_deps += invoker.brave_mojo_files_deps
+    }
+
+    # ts_deps = []
+    # if (defined(invoker.ts_deps)) {
+    #   ts_deps += invoker.ts_deps
+    # }
+    if (defined(invoker.brave_ts_deps)) {
+      ts_deps += invoker.brave_ts_deps
+    }
+  }
+}

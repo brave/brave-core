@@ -1,0 +1,19 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/ui/webui/resources/tools/build_webui.gni")
+
+template("brave_tab_search_build_webui") {
+  brave_build_webui(target_name) {
+    forward_variables_from(invoker, "*")
+    brave_base_dir = rebase_path(".", "//")
+
+    # See brave's build_webui for other types of files= which can be overriden
+    brave_static_files = [
+      "brave/remove_me.txt",
+      # SVG and other static files
+    ]
+  }
+}
