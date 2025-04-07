@@ -146,7 +146,7 @@ extension BrowserViewController {
     present(popup, animated: false)
   }
 
-  private func presentDefaultBrowserScreenCallout(skipSafeGuards: Bool = false) {
+  func presentDefaultBrowserScreenCallout(skipSafeGuards: Bool = false) {
     if !Locale.current.isNewOnboardingRegion {
       let onboardingController = WelcomeViewController(
         state: WelcomeViewCalloutState.defaultBrowserCallout(

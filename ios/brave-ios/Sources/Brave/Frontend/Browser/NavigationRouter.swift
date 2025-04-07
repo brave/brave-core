@@ -15,6 +15,7 @@ public enum DeepLink: String {
   case braveLeo = "brave_leo"
   case playlist
   case browserMenu = "menu"
+  case setDefaultBrowser = "set-default"
 }
 
 // The root navigation for the Router. Look at the tests to see a complete URL
@@ -95,6 +96,8 @@ public enum NavigationPath: Equatable {
       helper.openPlaylist()
     case .browserMenu:
       bvc.presentMenu(from: bvc.navigationToolbar)
+    case .setDefaultBrowser:
+      bvc.presentDefaultBrowserScreenCallout(skipSafeGuards: true)
     }
   }
 
