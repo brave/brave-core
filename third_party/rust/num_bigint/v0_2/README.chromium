@@ -3,7 +3,7 @@ URL: https://crates.io/crates/num-bigint
 Version: 0.2.6
 Revision: fc3aefed8e3c6d77a0f81a0b35aa8af1417853ef
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.2.6/../../../../../common/licenses/Apache-2.0
 Shipped: yes
 Security Critical: yes
 
