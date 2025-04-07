@@ -829,7 +829,7 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
    * polling mechanism
    */
   const scheduleQueuePump = (hide1pContent, genericHide) => {
-    if (!genericHide) {
+    if (!genericHide || CC.hasProceduralActions) {
       if (args.firstSelectorsPollingDelayMs === undefined) {
         startPollingSelectors()
       } else {
