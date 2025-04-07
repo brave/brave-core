@@ -4622,9 +4622,9 @@ Yderligere oplysninger:
 <translation id="8362995731815961365">Den person, der har konfigureret denne computer, har valgt at blokere dette website.</translation>
 <translation id="2977472760057091832">Åbn link i privat vindue</translation>
 <translation id="896703648578722320">Når udvidelser føjes til Brave, sendes relevante data om disse udvidelser til analyse hos tredjeparter, og de kan muligvis ses af din administrator. Dataene omfatter oplysninger om udvidelserne, f.eks. navn, installationstidspunkt, installationskilde samt aktivitet, der er knyttet til disse udvidelser (f.eks. skift mellem faner, kontakt til websites eller adgang til cookies). Disse data indsamles for udvidelser, der er installeret via Webshop, samt for udvidelser, der ikke er fra Webshop.</translation>
-<translation id="4075123085690634698">Åbn siden i et nyt inkognitovindue (⇧⌘N)</translation>
-<translation id="2388886110302389394">Åbn siden i et nyt inkognitovindue (Ctrl-Shift-N)</translation>
-<translation id="6957624206566198865">Åbn siden på en ny inkognitofane</translation>
+<translation id="4075123085690634698">Åbn siden i et nyt privat vindue (⇧⌘N)</translation>
+<translation id="2388886110302389394">Åbn siden i et nyt privat vindue (Ctrl-Shift-N)</translation>
+<translation id="6957624206566198865">Åbn siden på en ny privat fane</translation>
 <translation id="8326104954595890674">Ny privat fane</translation>
 <translation id="356726776930413501">Få mere at vide om Privat</translation>
 <translation id="6417973700199526943">Du er nu i privat tilstand</translation>
@@ -4652,8 +4652,8 @@ Yderligere oplysninger:
     &lt;li&gt;Gå til et website, der begynder med &lt;code&gt;http://&lt;/code&gt;, f.eks. &lt;a href="http://eksempel.dk" target="_blank" rel="noopener noreferrer"&gt;http://eksempel.dk&lt;/a&gt;.&lt;/li&gt;
     &lt;li&gt;Log ind på den loginside, der åbnes, for at bruge nettet.&lt;/li&gt;
     &lt;/ol&gt;
-    &lt;h4&gt;Trin 2: Åbn siden i inkognitotilstand (kun på computere)&lt;/h4&gt;
-    &lt;p&gt;Åbn den side, du besøgte, i et inkognitovindue.&lt;/p&gt;
+    &lt;h4&gt;Trin 2: Åbn siden i privat tilstand (kun på computere)&lt;/h4&gt;
+    &lt;p&gt;Åbn den side, du besøgte, i et privat vindue.&lt;/p&gt;
     &lt;p&gt;Hvis siden åbnes, fungerer en Brave-udvidelse ikke korrekt. Deaktiver udvidelsen for at rette fejlen.&lt;/p&gt;
     &lt;h4&gt;Trin 3: Opdater dit operativsystem&lt;/h4&gt;
     &lt;p&gt;Sørg for, at din enhed er opdateret.&lt;/p&gt;
