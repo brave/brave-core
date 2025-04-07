@@ -38,7 +38,6 @@ import java.util.Locale;
 
 public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsFragment {
     private TextInputEditText mTitleEdittext;
-    private TextInputLayout mTitleLayout;
 
     private TextInputEditText mUrlEdittext;
     private TextInputLayout mUrlLayout;
@@ -123,7 +122,6 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
 
     private void initViews(View rootView) {
         mTitleEdittext = (TextInputEditText) rootView.findViewById(R.id.title_edittext);
-        mTitleLayout = (TextInputLayout) rootView.findViewById(R.id.title_layout);
 
         mUrlEdittext = (TextInputEditText) rootView.findViewById(R.id.url_edittext);
         mUrlLayout = (TextInputLayout) rootView.findViewById(R.id.url_layout);
@@ -207,8 +205,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                 templateUrlService.updateSearchEngine(
                         searchEngineKeyword, title, keyword, queryReplacedUrl);
         if (isUpdated) {
-            CustomSearchEnginesUtil.removeCustomSearchEngine(searchEngineKeyword);
-            CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
+            CustomSearchEnginesUtil.updateCustomSearchEngine(searchEngineKeyword, keyword);
             handleBackPressed();
         } else {
             Toast.makeText(
