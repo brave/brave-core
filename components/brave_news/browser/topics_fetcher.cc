@@ -95,6 +95,7 @@ void TopicsFetcher::GetTopics(const std::string& locale,
 void TopicsFetcher::FetchTopics(FetchState state) {
   GURL url(base::StrCat({"https://", brave_news::GetHostname(), kTopicsEndpoint,
                          ".", state.locale, ".json"}));
+  LOG(ERROR) << "zenparsing brave news url: " << url;
   api_request_helper_.Request(
       "GET", url, "", "",
       base::BindOnce(

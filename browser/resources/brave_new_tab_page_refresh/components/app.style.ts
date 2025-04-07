@@ -11,6 +11,30 @@ export const style = scoped.css`
     --search-transition-duration: 120ms;
   }
 
+  @keyframes scroll-fade {
+    from {
+      background: rgba(0, 0, 0, 0);
+      backdrop-filter: blur(0);
+    }
+    50% {
+      backdrop-filter: blur(0);
+    }
+    to {
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(32px);
+    }
+  }
+
+  .background-filter {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+
+    animation: linear scroll-fade both;
+    animation-timeline: scroll();
+    animation-range: 0px 100vh;
+  }
+
   .top-controls {
     position: absolute;
     inset-block-start: 4px;
@@ -126,6 +150,11 @@ export const style = scoped.css`
     }
   }
 
+  .news-container {
+    position: relative;
+    z-index: 1;
+    padding-bottom: 30px;
+  }
 `
 
 global.css`
@@ -210,6 +239,57 @@ global.css`
         &:hover, &.highlight {
           background: ${color.container.highlight};
         }
+      }
+    }
+
+    .skeleton {
+      --self-animation-color: rgba(0, 0, 0, 0.1);
+
+      background: rgba(255, 255, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+      opacity: .7;
+
+      animation: skeleton-fade-in 1s ease-in-out both 250ms;
+
+      @media (prefers-color-scheme: dark) {
+        --self-animation-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    .skeleton:after {
+      content: '';
+      position: absolute;
+      transform: translateX(-100%);
+      inset: 0;
+      background: linear-gradient(
+        90deg, transparent, var(--self-animation-color), transparent);
+      animation: skeleton-background-cycle 2s linear 0.5s infinite;
+    }
+
+    @keyframes skeleton-fade-in {
+      0% { opacity: 0; }
+      100% { opacity: .7; }
+    }
+
+    @keyframes skeleton-background-cycle {
+      0% { transform: translateX(-100%); }
+      50% { transform: translateX(100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .hidden-above-fold {
+      animation: linear hidden-above-fold both;
+      animation-timeline: scroll();
+      animation-range: 90vh 110vh;
+    }
+
+    @keyframes hidden-above-fold {
+      from {
+        visibility: hidden;
+      }
+      to {
+        visibility: visible;
       }
     }
   }

@@ -12,10 +12,11 @@ import { RewardsWidget } from './rewards_widget'
 import { TalkWidget } from './talk_widget'
 import { VPNWidget } from './vpn_widget'
 import { StatsWidget } from './stats_widget'
+import { NewsWidget } from './news_widget'
 
 import { style } from './widget_stack.style'
 
-type TabName = 'rewards' | 'talk' | 'vpn' | 'stats'
+type TabName = 'rewards' | 'talk' | 'vpn' | 'stats' | 'news'
 
 interface Props {
   name: string
@@ -29,6 +30,7 @@ export function WidgetStack(props: Props) {
   const vpnFeatureEnabled = useAppState((s) => s.vpnFeatureEnabled)
   const showVpnWidget = useAppState((s) => s.showVpnWidget)
   const showShieldsStats = useAppState((s) => s.showShieldsStats)
+  const showNewsWidget = useAppState((s) => s.showNewsWidget)
 
   const [currentTab, setCurrentTab] = React.useState(loadCurrentTab(props.name))
 
@@ -39,6 +41,7 @@ export function WidgetStack(props: Props) {
         case 'talk': return showTalkWidget
         case 'vpn': return vpnFeatureEnabled && showVpnWidget
         case 'stats': return showShieldsStats
+        case 'news': return showNewsWidget
       }
     })
   }, [
@@ -48,7 +51,8 @@ export function WidgetStack(props: Props) {
     showRewardsWidget,
     vpnFeatureEnabled,
     showVpnWidget,
-    showShieldsStats
+    showShieldsStats,
+    showNewsWidget
   ])
 
   React.useEffect(() => {
@@ -76,6 +80,7 @@ export function WidgetStack(props: Props) {
       case 'talk': return <Icon name='product-brave-talk' />
       case 'vpn': return <Icon name='product-vpn' />
       case 'stats': return <Icon name='bar-chart' />
+      case 'news': return <Icon name='product-brave-news' />
     }
   }
 
@@ -85,6 +90,7 @@ export function WidgetStack(props: Props) {
       case 'talk': return <TalkWidget />
       case 'vpn': return <VPNWidget />
       case 'stats': return <StatsWidget />
+      case 'news': return <NewsWidget />
     }
   }
 
@@ -122,6 +128,7 @@ function tabNameIdentity(tabName: TabName): TabName {
     case 'rewards':
     case 'talk':
     case 'stats':
+    case 'news':
       return tabName
   }
 }

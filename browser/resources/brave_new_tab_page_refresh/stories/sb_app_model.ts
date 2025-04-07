@@ -11,6 +11,7 @@ import { initializeSearch } from './sb_search'
 import { initializeTopSites } from './sb_top_sites'
 import { initializeRewards } from './sb_rewards'
 import { initializeVPN } from './sb_vpn'
+import { initializeNews } from './sb_news'
 
 export function createAppModel(): AppModel {
   const store = createStore(defaultState())
@@ -24,6 +25,7 @@ export function createAppModel(): AppModel {
     ...initializeSearch(store),
     ...initializeTopSites(store),
     ...initializeRewards(store),
-    ...initializeVPN(store)
+    ...initializeVPN(store),
+    ...initializeNews(store)
   }
 }

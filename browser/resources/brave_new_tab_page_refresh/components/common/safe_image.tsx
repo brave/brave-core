@@ -22,5 +22,7 @@ export function SafeImage(props: Props) {
     })
   }, [props.src])
 
-  return <img src={imageURL} className={props.className} />
+  return (
+    <img src={imageURL} loading='lazy' className={props.className} />
+  )
 }

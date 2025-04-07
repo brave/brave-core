@@ -11,6 +11,7 @@ import { initializeSearch } from './webui_search'
 import { initializeTopSites } from './webui_top_sites'
 import { initializeRewards } from './webui_rewards'
 import { initializeVPN } from './webui_vpn'
+import { initializeNews } from './webui_news'
 
 export function createAppModel(): AppModel {
   const store = createStore(defaultState())
@@ -24,6 +25,7 @@ export function createAppModel(): AppModel {
     ...initializeSearch(store),
     ...initializeTopSites(store),
     ...initializeRewards(store),
-    ...initializeVPN(store)
+    ...initializeVPN(store),
+    ...initializeNews(store)
   }
 }

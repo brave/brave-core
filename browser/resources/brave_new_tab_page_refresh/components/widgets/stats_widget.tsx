@@ -18,7 +18,6 @@ const adsBlockedFormatter = new Intl.NumberFormat(undefined, {
 export function StatsWidget() {
   const { getString } = useLocale()
 
-  const showStats = useAppState((s) => s.showShieldsStats)
   const stats = useAppState((s) => s.shieldsStats)
 
   function renderUnits(parts: Intl.NumberFormatPart[]) {
@@ -28,10 +27,6 @@ export function StatsWidget() {
       }
       return value
     })
-  }
-
-  if (!showStats) {
-    return null
   }
 
   return (

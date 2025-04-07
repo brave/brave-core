@@ -23,6 +23,54 @@ export type StringKey =
   'gradientBackgroundLabel' |
   'gradientBackgroundTitle' |
   'hideTopSitesLabel' |
+  'newsAddSourcesButtonLabel' |
+  'newsCaughtUpText' |
+  'newsChannelBrave' |
+  'newsChannelBusiness' |
+  'newsChannelCars' |
+  'newsChannelCelebrities' |
+  'newsChannelCrypto' |
+  'newsChannelCulture' |
+  'newsChannelEducation' |
+  'newsChannelEntertainment' |
+  'newsChannelFashion' |
+  'newsChannelFilmAndTV' |
+  'newsChannelFood' |
+  'newsChannelFun' |
+  'newsChannelGaming' |
+  'newsChannelHealth' |
+  'newsChannelHome' |
+  'newsChannelLifestyle' |
+  'newsChannelMusic' |
+  'newsChannelPolitics' |
+  'newsChannelRegionalNews' |
+  'newsChannelScience' |
+  'newsChannelSports' |
+  'newsChannelTravel' |
+  'newsChannelTechnology' |
+  'newsChannelTopNews' |
+  'newsChannelTopSources' |
+  'newsChannelUKNews' |
+  'newsChannelUSNews' |
+  'newsChannelWeather' |
+  'newsChannelWorldNews' |
+  'newsConnectionErrorText' |
+  'newsConnectionErrorTitle' |
+  'newsContentAvailableButtonLabel' |
+  'newsDiscoverTitle' |
+  'newsEnableButtonLabel' |
+  'newsEnableText' |
+  'newsFeedAllTitle' |
+  'newsFeedChannelsTitle' |
+  'newsFeedFollowingTitle' |
+  'newsFeedPublishersTitle' |
+  'newsHidePublisherLabel' |
+  'newsNoArticlesText' |
+  'newsNoArticlesTitle' |
+  'newsNoFeedsText' |
+  'newsNoFeedsTitle' |
+  'newsRefreshButtonLabel' |
+  'newsWidgetTitle' |
   'photoCreditsText' |
   'randomizeBackgroundLabel' |
   'removeTopSiteLabel' |
