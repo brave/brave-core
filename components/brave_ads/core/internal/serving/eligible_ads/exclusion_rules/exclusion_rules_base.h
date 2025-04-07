@@ -39,15 +39,11 @@ class ExclusionRulesBase {
   std::vector<std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>>
       exclusion_rules_;
 
-  std::set<std::string> uuids_;
-  bool AddToCacheIfNeeded(
-      const CreativeAdInfo& creative_ad,
-      const std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>&
-          exclusion_rule);
-
  private:
   bool IsCached(const CreativeAdInfo& creative_ad) const;
-  void AddToCache(const std::string& uuid);
+  void Cache(const std::string& key);
+
+  std::set</*key*/ std::string> cache_;
 };
 
 }  // namespace brave_ads

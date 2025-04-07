@@ -7,7 +7,7 @@
 
 #include <algorithm>
 
-#include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
@@ -41,21 +41,21 @@ SubdivisionTargetingExclusionRule::SubdivisionTargetingExclusionRule(
 SubdivisionTargetingExclusionRule::~SubdivisionTargetingExclusionRule() =
     default;
 
-std::string SubdivisionTargetingExclusionRule::GetUuid(
+std::string SubdivisionTargetingExclusionRule::GetCacheKey(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.creative_set_id;
 }
 
-base::expected<void, std::string>
-SubdivisionTargetingExclusionRule::ShouldInclude(
+bool SubdivisionTargetingExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(creative_ad)) {
-    return base::unexpected(base::ReplaceStringPlaceholders(
-        "creativeSetId $1 excluded as not within the targeted subdivision",
-        {creative_ad.creative_set_id}, nullptr));
+    BLOG(1, "creativeSetId "
+                << creative_ad.creative_set_id
+                << " excluded as not within the targeted subdivision");
+    return false;
   }
 
-  return base::ok();
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

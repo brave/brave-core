@@ -25,7 +25,7 @@ TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, ShouldInclude) {
   creative_ad.creative_set_id = test::kCreativeSetId;
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, ShouldExclude) {
@@ -36,7 +36,7 @@ TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, ShouldExclude) {
   creative_ad.creative_set_id = test::kCreativeSetId;
 
   // Act & Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
 }  // namespace brave_ads

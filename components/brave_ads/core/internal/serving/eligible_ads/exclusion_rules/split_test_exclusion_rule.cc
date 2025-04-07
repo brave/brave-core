@@ -8,7 +8,7 @@
 #include <optional>
 
 #include "base/metrics/field_trial.h"
-#include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
 namespace brave_ads {
@@ -49,21 +49,22 @@ bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
 
 }  // namespace
 
-std::string SplitTestExclusionRule::GetUuid(
+std::string SplitTestExclusionRule::GetCacheKey(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.creative_set_id;
 }
 
-base::expected<void, std::string> SplitTestExclusionRule::ShouldInclude(
+bool SplitTestExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(creative_ad)) {
-    return base::unexpected(base::ReplaceStringPlaceholders(
-        "creativeSetId $1 excluded as not associated with an advertiser split "
-        "test group",
-        {creative_ad.creative_set_id}, nullptr));
+    BLOG(1, "creativeSetId "
+                << creative_ad.creative_set_id
+                << " excluded as not associated with an advertiser split test "
+                   "group");
+    return false;
   }
 
-  return base::ok();
+  return true;
 }
 
 }  // namespace brave_ads

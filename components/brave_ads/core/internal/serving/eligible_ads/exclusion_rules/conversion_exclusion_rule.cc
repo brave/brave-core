@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_util.h"
@@ -19,22 +19,22 @@ ConversionExclusionRule::ConversionExclusionRule(AdEventList ad_events)
 
 ConversionExclusionRule::~ConversionExclusionRule() = default;
 
-std::string ConversionExclusionRule::GetUuid(
+std::string ConversionExclusionRule::GetCacheKey(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.creative_set_id;
 }
 
-base::expected<void, std::string> ConversionExclusionRule::ShouldInclude(
+bool ConversionExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCreativeSetCap(
           creative_ad, ad_events_, mojom::ConfirmationType::kConversion,
           kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get())) {
-    return base::unexpected(base::ReplaceStringPlaceholders(
-        "creativeSetId $1 has exceeded the conversions frequency cap",
-        {creative_ad.creative_set_id}, nullptr));
+    BLOG(1, "creativeSetId " << creative_ad.creative_set_id
+                             << " has exceeded the conversions frequency cap");
+    return false;
   }
 
-  return base::ok();
+  return true;
 }
 
 }  // namespace brave_ads

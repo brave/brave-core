@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
 namespace brave_ads {
@@ -43,20 +43,20 @@ TotalMaxExclusionRule::TotalMaxExclusionRule(AdEventList ad_events)
 
 TotalMaxExclusionRule::~TotalMaxExclusionRule() = default;
 
-std::string TotalMaxExclusionRule::GetUuid(
+std::string TotalMaxExclusionRule::GetCacheKey(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.creative_set_id;
 }
 
-base::expected<void, std::string> TotalMaxExclusionRule::ShouldInclude(
+bool TotalMaxExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(ad_events_, creative_ad)) {
-    return base::unexpected(base::ReplaceStringPlaceholders(
-        "creativeSetId $1 has exceeded the totalMax frequency cap",
-        {creative_ad.creative_set_id}, nullptr));
+    BLOG(1, "creativeSetId " << creative_ad.creative_set_id
+                             << " has exceeded the totalMax frequency cap");
+    return false;
   }
 
-  return base::ok();
+  return true;
 }
 
 }  // namespace brave_ads

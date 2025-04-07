@@ -18,30 +18,19 @@ TEST_F(BraveAdsRedeemRewardConfirmationUtilTest, AddPaymentToken) {
   // Arrange
   const PaymentTokenInfo payment_token = test::BuildPaymentToken();
 
-  // Act
-  const auto result = MaybeAddPaymentToken(payment_token);
-
-  // Assert
-  EXPECT_TRUE(result.has_value());
+  // Act & Assert
+  EXPECT_TRUE(MaybeAddPaymentToken(payment_token));
 }
 
 TEST_F(BraveAdsRedeemRewardConfirmationUtilTest,
        DoNotAddDuplicatePaymentToken) {
   // Arrange
   const PaymentTokenInfo payment_token = test::BuildPaymentToken();
+  ASSERT_TRUE(MaybeAddPaymentToken(payment_token));
 
-  {
-    const auto result = MaybeAddPaymentToken(payment_token);
-    ASSERT_TRUE(result.has_value());
-  }
-
-  // Act
-  const auto result = MaybeAddPaymentToken(payment_token);
-
-  // Assert
-  EXPECT_FALSE(result.has_value());
+  // Act & Assert
+  EXPECT_FALSE(MaybeAddPaymentToken(payment_token));
 }
-
 TEST_F(BraveAdsRedeemRewardConfirmationUtilTest, LogPaymentTokenStatus) {
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, Log);

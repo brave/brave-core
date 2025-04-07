@@ -10,8 +10,8 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/string_util.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 
@@ -76,23 +76,22 @@ NotificationAdDismissedExclusionRule::NotificationAdDismissedExclusionRule(
 NotificationAdDismissedExclusionRule::~NotificationAdDismissedExclusionRule() =
     default;
 
-std::string NotificationAdDismissedExclusionRule::GetUuid(
+std::string NotificationAdDismissedExclusionRule::GetCacheKey(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.campaign_id;
 }
 
-base::expected<void, std::string>
-NotificationAdDismissedExclusionRule::ShouldInclude(
+bool NotificationAdDismissedExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   const AdEventList filtered_ad_events =
       FilterAdEvents(ad_events_, creative_ad);
   if (!DoesRespectCap(filtered_ad_events)) {
-    return base::unexpected(base::ReplaceStringPlaceholders(
-        "campaignId $1 has exceeded the dismissed frequency cap",
-        {creative_ad.campaign_id}, nullptr));
+    BLOG(1, "campaignId " << creative_ad.campaign_id
+                          << " has exceeded the dismissed frequency cap");
+    return false;
   }
 
-  return base::ok();
+  return true;
 }
 
 }  // namespace brave_ads

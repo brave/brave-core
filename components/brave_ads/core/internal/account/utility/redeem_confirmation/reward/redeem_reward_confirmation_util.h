@@ -6,16 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_REWARD_REDEEM_REWARD_CONFIRMATION_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_REWARD_REDEEM_REWARD_CONFIRMATION_UTIL_H_
 
-#include <string>
-
-#include "base/types/expected.h"
-
 namespace brave_ads {
 
 struct PaymentTokenInfo;
 
-base::expected<void, std::string> MaybeAddPaymentToken(
-    const PaymentTokenInfo& payment_token);
+bool MaybeAddPaymentToken(const PaymentTokenInfo& payment_token);
 
 void LogPaymentTokenStatus();
 

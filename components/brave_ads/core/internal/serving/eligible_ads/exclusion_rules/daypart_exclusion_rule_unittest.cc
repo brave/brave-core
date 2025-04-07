@@ -34,7 +34,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, ShouldIncludeIfNoDayparts) {
   creative_ad.creative_set_id = test::kCreativeSetId;
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest,
@@ -52,7 +52,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
   creative_ad.dayparts.insert(daypart);
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest,
@@ -70,7 +70,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
   creative_ad.dayparts.insert(daypart);
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest,
@@ -104,7 +104,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
   creative_ad.dayparts.insert(daypart_3);
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest,
@@ -138,7 +138,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
   creative_ad.dayparts.insert(daypart_3);
 
   // Act & Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowForWrongDayOfWeek) {
@@ -155,7 +155,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowForWrongDayOfWeek) {
   creative_ad.dayparts.insert(daypart);
 
   // Act & Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsDaypartExclusionRuleTest,
@@ -181,7 +181,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
   creative_ad.dayparts.insert(daypart_2);
 
   // Act & Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
 }  // namespace brave_ads

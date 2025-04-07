@@ -27,7 +27,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   const PerMonthExclusionRule exclusion_rule(/*ad_events=*/{});
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfZero) {
@@ -39,7 +39,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfZero) {
   const PerMonthExclusionRule exclusion_rule(/*ad_events=*/{});
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
@@ -58,7 +58,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   const PerMonthExclusionRule exclusion_rule(ad_events);
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsPerMonthExclusionRuleTest,
@@ -81,7 +81,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
   AdvanceClockBy(base::Days(28));
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsPerMonthExclusionRuleTest,
@@ -104,7 +104,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
   AdvanceClockBy(base::Days(28) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+  EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldExcludeIfExceedsCap) {
@@ -124,7 +124,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   const PerMonthExclusionRule exclusion_rule(ad_events);
 
   // Act & Assert
-  EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad).has_value());
+  EXPECT_FALSE(exclusion_rule.ShouldInclude(creative_ad));
 }
 
 }  // namespace brave_ads

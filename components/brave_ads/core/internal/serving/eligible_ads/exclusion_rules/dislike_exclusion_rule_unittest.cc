@@ -25,7 +25,7 @@ TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldIncludeForNeutralReaction) {
   creative_ad.advertiser_id = test::kAdvertiserId;
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldIncludeForLikedReaction) {
@@ -37,7 +37,7 @@ TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldIncludeForLikedReaction) {
   creative_ad.advertiser_id = test::kAdvertiserId;
 
   // Act & Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
 TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldExcludeForDislikedReaction) {
@@ -49,7 +49,7 @@ TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldExcludeForDislikedReaction) {
   creative_ad.advertiser_id = test::kAdvertiserId;
 
   // Act & Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
 }  // namespace brave_ads

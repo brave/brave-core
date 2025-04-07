@@ -7,9 +7,9 @@
 
 #include <algorithm>
 
-#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
@@ -39,20 +39,21 @@ bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
 
 }  // namespace
 
-std::string DaypartExclusionRule::GetUuid(
+std::string DaypartExclusionRule::GetCacheKey(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.creative_set_id;
 }
 
-base::expected<void, std::string> DaypartExclusionRule::ShouldInclude(
+bool DaypartExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCap(creative_ad)) {
-    return base::unexpected(base::ReplaceStringPlaceholders(
-        "creativeSetId $1 excluded as not within a scheduled time slot",
-        {creative_ad.creative_set_id}, nullptr));
+    BLOG(1, "creativeSetId "
+                << creative_ad.creative_set_id
+                << " excluded as not within a scheduled time slot");
+    return false;
   }
 
-  return base::ok();
+  return true;
 }
 
 }  // namespace brave_ads
