@@ -165,8 +165,6 @@ import argparse
 from dataclasses import dataclass, field, replace
 from datetime import datetime
 from enum import Enum, auto
-from functools import total_ordering
-import itertools
 import json
 import logging
 import os
@@ -181,28 +179,21 @@ import subprocess
 import sys
 from typing import Optional, List, Dict, NamedTuple
 
+from incendiary_error_handler import IncendiaryErrorHandler
+import repository
 from repository import Repository, CHROMIUM_SRC_PATH
 from terminal import console, terminal
-from incendiary_error_handler import IncendiaryErrorHandler
+import versioning
+from versioning import Version
 
 # This file is updated whenever the version number is updated in package.json
 PINSLIST_TIMESTAMP_FILE = (
     'chromium_src/net/tools/transport_security_state_generator/'
     'input_file_parsers.cc')
 VERSION_UPGRADE_FILE = Path('.version_upgrade')
-PACKAGE_FILE = 'package.json'
-CHROMIUM_VERSION_FILE = 'chrome/VERSION'
-
-# The link to the Chromium source code.
-GOOGLESOURCE_LINK = 'https://chromium.googlesource.com/chromium/src'
-
-# Link with the log of changes between two versions.
-GOOGLESOURCE_LOG_LINK = (
-    f'{GOOGLESOURCE_LINK}'
-    '/+log/{from_version}..{to_version}?pretty=fuller&n=10000')
 
 # The link to a specific commit in the Chromium source code.
-GOOGLESOURCE_COMMIT_LINK = f'{GOOGLESOURCE_LINK}' '/+/{commit}'
+GOOGLESOURCE_COMMIT_LINK = f'{versioning.GOOGLESOURCE_LINK}' '/+/{commit}'
 
 # A basic url to the rust toolchain that can be used to check for the toolchain
 # availability for a given version.
@@ -235,22 +226,10 @@ def _get_current_branch_upstream_name():
     """Retrieves the name of the current branch's upstream.
     """
     try:
-        return Repository.brave().run_git('rev-parse', '--abbrev-ref',
-                                          '--symbolic-full-name',
-                                          '@{upstream}')
+        return repository.brave.run_git('rev-parse', '--abbrev-ref',
+                                        '--symbolic-full-name', '@{upstream}')
     except subprocess.CalledProcessError:
         return None
-
-
-def _load_package_file(branch):
-    """Retrieves the json content of package.json for a given revision
-
-  Args:
-    branch:
-      A branch or hash to load the file from.
-  """
-    package = Repository.brave().read_file(PACKAGE_FILE, commit=branch)
-    return json.loads(package)
 
 
 def _update_pinslist_timestamp():
@@ -289,7 +268,7 @@ def _update_pinslist_timestamp():
     with open(PINSLIST_TIMESTAMP_FILE, "w", encoding="utf-8") as file:
         file.write(updated_content)
 
-    updated = Repository.brave().run_git('diff', PINSLIST_TIMESTAMP_FILE)
+    updated = repository.brave.run_git('diff', PINSLIST_TIMESTAMP_FILE)
     if updated == '':
         raise ValueError('Pinslist timestamp failed to update.')
 
@@ -331,7 +310,7 @@ class GitStatus:
     """
 
     def __init__(self):
-        self.git_status = Repository.brave().run_git('status', '--short')
+        self.git_status = repository.brave.run_git('status', '--short')
 
         # a list of all deleted files, regardless of their staged status.
         self.deleted = []
@@ -652,61 +631,6 @@ class PatchfilesContinuation:
     broken_patches: list[Patchfile] = field(default_factory=list)
 
 
-@total_ordering
-@dataclass(frozen=True)
-class Version:
-    """A class to hold the version information.
-    """
-
-    # The version data in the format of 'MAJOR.MINOR.BUILD.PATCH'
-    value: str
-
-    def __post_init__(self):
-        if len(self.parts) != 4:
-            raise ValueError(
-                'Version required format: MAJOR.MINOR.BUILD.PATCH. '
-                f'version={self.value}')
-
-    def __str__(self):
-        return self.value
-
-    @property
-    def parts(self) -> list[int]:
-        """The version parts as integers.
-        """
-        return tuple(map(int, self.value.split('.')))
-
-    @property
-    def major(self) -> int:
-        """The major version part.
-        """
-        return self.parts[0]
-
-    @classmethod
-    def from_git(cls, branch: str) -> "Version":
-        """Retrieves the version from the git repository.
-        """
-        return cls(
-            _load_package_file(branch).get('config').get('projects').get(
-                'chrome').get('tag'))
-
-    def __eq__(self, other):
-        if not isinstance(other, Version):
-            return NotImplemented
-        return self.parts == other.parts
-
-    def __lt__(self, other):
-        if not isinstance(other, Version):
-            return NotImplemented
-        return self.parts < other.parts
-
-    def get_googlesource_diff_link(self, from_version: "Version") -> str:
-        """Generates a link to the diff of the upgrade.
-        """
-        return GOOGLESOURCE_LOG_LINK.format(from_version=from_version,
-                                            to_version=self)
-
-
 @dataclass(frozen=True)
 class ContinuationFile:
     """A class to hold the continuation data for the upgrade process.
@@ -987,21 +911,7 @@ class PatchFailureResolver:
                     # Skip deleted files.
                     continue
 
-                Repository.brave().run_git('add', patch.path)
-
-
-def _read_chromium_version_file():
-    """Retrieves the Chromium version from the VERSION file.
-
-    This function reads directly from git, as VERSION gets patched during
-    `apply_patches`.
-    """
-    version_parts = {}
-    file = Repository.chromium().read_file(CHROMIUM_VERSION_FILE)
-    for line in file.splitlines():
-        key, value = line.strip().split('=')
-        version_parts[key] = value
-    return Version('{MAJOR}.{MINOR}.{BUILD}.{PATCH}'.format(**version_parts))
+                repository.brave.run_git('add', patch.path)
 
 
 class Task:
@@ -1086,9 +996,9 @@ class Versioned(Task):
     all patches that might have been changed or deleted. Untracked patches are
     excluded from addition at this stage.
     """
-        Repository.brave().run_git('add', '-u', '*.patch')
+        repository.brave.run_git('add', '-u', '*.patch')
 
-        Repository.brave().git_commit(
+        repository.brave.git_commit(
             f'Update patches from Chromium {self.base_version} '
             f'to Chromium {self.target_version}.')
 
@@ -1098,8 +1008,8 @@ class Versioned(Task):
     This function stages, and commits, all changed, updated, or deleted files
     resulting from running npm run chromium_rebase_l10n.
     """
-        Repository.brave().run_git('add', '*.grd', '*.grdp', '*.xtb')
-        Repository.brave().git_commit(
+        repository.brave.run_git('add', '*.grd', '*.grdp', '*.xtb')
+        repository.brave.git_commit(
             f'Updated strings for Chromium {self.target_version}.')
 
 
@@ -1177,7 +1087,7 @@ class GitHubIssue(Versioned):
 
         This function creates a push request for the upgrade.
         """
-        current_branch = Repository.brave().current_branch()
+        current_branch = repository.brave.current_branch()
         if current_branch == 'HEAD':
             logging.error('Cannot create a push request: Not in a branch')
             return False
@@ -1326,9 +1236,9 @@ class ReUpgrade(Task):
                 working_version)
             return False
 
-        starting_change = Repository.brave().last_changed(
+        starting_change = repository.brave.last_changed(
             PINSLIST_TIMESTAMP_FILE)
-        commit_message = Repository.brave().get_commit_short_description(
+        commit_message = repository.brave.get_commit_short_description(
             starting_change)
         if not commit_message.startswith(
                 'Update from Chromium ') or not commit_message.endswith(
@@ -1341,12 +1251,12 @@ class ReUpgrade(Task):
         console.log('Discarding the following changes:')
         console.log(
             Padding(
-                '[dim]%s' % Repository.brave().run_git(
+                '[dim]%s' % repository.brave.run_git(
                     'log', '--pretty=%h %s', f'HEAD...{starting_change}~1'),
                 (0, 4)))
 
         ContinuationFile.clear()
-        Repository.brave().run_git('reset', '--hard', f'{starting_change}~1')
+        repository.brave.run_git('reset', '--hard', f'{starting_change}~1')
         return True
 
 
@@ -1402,7 +1312,7 @@ class Upgrade(Versioned):
             self.working_version = Version.from_git('HEAD')
 
         # The version currently set in the VERSION file.
-        self.chromium_src_version = _read_chromium_version_file()
+        self.chromium_src_version = versioning.read_chromium_version_file()
 
         super().__init__(base_version, target_version)
 
@@ -1416,23 +1326,23 @@ class Upgrade(Versioned):
     package.json to the target version provided, and commiting the change to
     the repo
     """
-        package = _load_package_file('HEAD')
+        package = versioning.load_package_file('HEAD')
         package['config']['projects']['chrome']['tag'] = str(
             self.target_version)
-        with open(PACKAGE_FILE, "w") as package_file:
+        with open(versioning.PACKAGE_FILE, "w") as package_file:
             json.dump(package, package_file, indent=2)
 
-        Repository.brave().run_git('add', PACKAGE_FILE)
+        repository.brave.run_git('add', versioning.PACKAGE_FILE)
 
         # Pinlist timestamp update occurs with the package version update.
         _update_pinslist_timestamp()
-        Repository.brave().run_git('add', PINSLIST_TIMESTAMP_FILE)
-        Repository.brave().git_commit(
+        repository.brave.run_git('add', PINSLIST_TIMESTAMP_FILE)
+        repository.brave.git_commit(
             f'Update from Chromium {self.base_version} '
             f'to Chromium {self.target_version}.')
 
     def _save_conflict_resolved_patches(self):
-        Repository.brave().git_commit(
+        repository.brave.git_commit(
             f'Conflict-resolved patches from Chromium {self.base_version} to '
             f'Chromium {self.target_version}.')
 
@@ -1469,8 +1379,8 @@ class Upgrade(Versioned):
     Checks for diffs of the files provided in range of the changes for the
     current upgrade. Returns an empty string if no diffs are found.
         """
-        return Repository.chromium().run_git('diff', self.working_version,
-                                             self.target_version, '--', *files)
+        return repository.chromium.run_git('diff', self.working_version,
+                                           self.target_version, '--', *files)
 
     def get_assigned_value(self,
                            contents: str,
@@ -1544,7 +1454,7 @@ class Upgrade(Versioned):
         current_value = self.get_assigned_value(toolchain_diff,
                                                 key,
                                                 removed=True)
-        commit_log = Repository.chromium().run_git(
+        commit_log = repository.chromium.run_git(
             'log', f'{self.working_version}..{self.target_version}', '-S',
             updated_value, '--pretty=oneline', '-1', file_path)
         commit_hash, commit_message = commit_log[:40], commit_log[41:]
@@ -1614,8 +1524,8 @@ class Upgrade(Versioned):
             return None
 
         def get_rust_clang_revision(version: str) -> str:
-            rust_sources = Repository.chromium().read_file(*toolchain_sources,
-                                                           commit=version)
+            rust_sources = repository.chromium.read_file(*toolchain_sources,
+                                                         commit=version)
             return '-'.join([
                 self.get_assigned_value(rust_sources, "RUST_REVISION"),
                 self.get_assigned_value(rust_sources, "RUST_SUB_REVISION"),
@@ -1635,7 +1545,7 @@ class Upgrade(Versioned):
         except requests.RequestException:
             pass  # Assume toolchain is not available if request fails
 
-        commit_log = Repository.chromium().run_git(
+        commit_log = repository.chromium.run_git(
             'log', f'{self.working_version}..{self.target_version}',
             '--pretty=oneline', '-1', 'tools/rust/update_rust.py',
             'tools/clang/scripts/update.py')
@@ -1670,12 +1580,13 @@ class Upgrade(Versioned):
         """
         # Fetching the tags between the current version and the target to check
         # for certain things that may have changed that require attention
-        if not Repository.chromium().is_valid_git_reference(
-                self.working_version) or not Repository.chromium(
-                ).is_valid_git_reference(self.target_version):
-            Repository.chromium().run_git('fetch', GOOGLESOURCE_LINK, 'tag',
-                                          self.working_version, 'tag',
-                                          self.target_version)
+        if (not repository.chromium.is_valid_git_reference(
+                self.working_version)
+                or not repository.chromium().is_valid_git_reference(
+                    self.target_version)):
+            repository.chromium.run_git('fetch', versioning.GOOGLESOURCE_LINK,
+                                        'tag', self.working_version, 'tag',
+                                        self.target_version)
 
         advisories = [
             check for check in [
@@ -1736,7 +1647,7 @@ class Upgrade(Versioned):
 
             resolver.stage_all_patches(ignore_deleted_files=True)
 
-            if not Repository.brave().has_staged_changed():
+            if not repository.brave.has_staged_changed():
                 logging.error(
                     'Nothing has been staged to commit conflict-resolved '
                     'patches.')
@@ -1959,7 +1870,7 @@ def solve_git_ref(from_ref: str) -> str:
     """
     if from_ref and from_ref[0] != '@':
         # No special handling needed
-        if not Repository.brave().is_valid_git_reference(from_ref):
+        if not repository.brave.is_valid_git_reference(from_ref):
             logging.error(
                 'Value provided to [bold cyan]--from-ref[/] is not a valid git '
                 'ref: %s', from_ref)
@@ -1978,7 +1889,7 @@ def solve_git_ref(from_ref: str) -> str:
     def find_previous_version_hash(is_major: bool = False) -> str:
         starting_version = Version.from_git('HEAD')
         base_version = starting_version
-        last_changed = Repository.brave().last_changed(PACKAGE_FILE)
+        last_changed = repository.brave.last_changed(versioning.PACKAGE_FILE)
         while True:
             base_version = Version.from_git(f'{last_changed}~1')
             if (is_major and base_version.major != starting_version.major):
@@ -1988,8 +1899,8 @@ def solve_git_ref(from_ref: str) -> str:
             # Prefer to look for the PACKAGE_FILE here, because this has to
             # resolve even when the upgrade was done manually, so don't assume
             # the presence of pinslist timestamp changes.
-            last_changed = Repository.brave().last_changed(
-                PACKAGE_FILE, f'{last_changed}~1')
+            last_changed = repository.brave.last_changed(
+                versioning.PACKAGE_FILE, f'{last_changed}~1')
 
         return f'{last_changed}~1'
 
@@ -2159,7 +2070,7 @@ class Rebase(Task):
 
         from_ref = solve_git_ref(from_ref)
 
-        current_branch = Repository.brave().current_branch()
+        current_branch = repository.brave.current_branch()
         terminal.log_task(
             f'Rebasing {current_branch} onto {to_ref} starting from {from_ref}'
         )
@@ -2197,8 +2108,8 @@ class Rebase(Task):
             ],
                          env=env)
             if recommit:
-                Repository.brave().run_git('commit', '--amend', '--no-edit')
-                Repository.brave().run_git('rebase', '--continue')
+                repository.brave.run_git('commit', '--amend', '--no-edit')
+                repository.brave.run_git('rebase', '--continue')
         except subprocess.CalledProcessError as e:
             logging.error('Rebase failed. %s', e.stderr)
             return False

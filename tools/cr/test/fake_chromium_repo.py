@@ -7,6 +7,7 @@ import tempfile
 import subprocess
 from pathlib import Path
 from typing import List
+import json
 
 CHROME_VERSION_TEMPLATE: str = """MAJOR={major}
 MINOR={minor}
@@ -160,6 +161,50 @@ class FakeChromiumRepo:
         file_path.parent.mkdir(parents=True, exist_ok=True)
         file_path.write_text(content)
         self._run_git_command(["git", "add", str(file_path)], repo_path)
+
+    def update_brave_version(self, version: str) -> str:
+        """Updates the Brave version in package.json and commits the change.
+
+        Args:
+            version: The new version string to set.
+
+        Returns:
+            The hash of the commit made.
+        """
+        package_json_path = self.brave / "package.json"
+        old_version = None
+
+        # Check if package.json exists and read the old version if present
+        if package_json_path.exists():
+            with package_json_path.open("r") as f:
+                package_data = json.load(f)
+                old_version = package_data.get("config",
+                                               {}).get("projects",
+                                                       {}).get("chrome",
+                                                               {}).get("tag")
+        else:
+            package_data = {}
+
+        # Update the version in the JSON structure
+        package_data.setdefault("config",
+                                {}).setdefault("projects", {}).setdefault(
+                                    "chrome", {})["tag"] = version
+
+        # Write the updated JSON back to package.json
+        with package_json_path.open("w") as f:
+            json.dump(package_data, f, indent=2)
+
+        # Stage the file and commit the change
+        self._run_git_command(
+            ["git", "add", str(package_json_path)], self.brave)
+        commit_message = (
+            f"Update from Chromium {old_version or 'N/A'} to Chromium {version}"
+        )
+        self._run_git_command(["git", "commit", "-m", commit_message],
+                              self.brave)
+
+        # Return the hash of the commit
+        return self._run_git_command(["git", "rev-parse", "HEAD"], self.brave)
 
     def cleanup(self) -> None:
         """Cleans up the temporary directory used for the fake repository."""
