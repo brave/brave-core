@@ -26,18 +26,11 @@ class LinkPreviewViewController: UIViewController {
   required init?(coder aDecoder: NSCoder) { fatalError() }
 
   override func viewDidLoad() {
-    guard let parentTab = parentTab,
-      let browserController
-    else {
+    guard let browserController else {
       return
     }
 
-    let tab = TabStateFactory.create(
-      with: .init(
-        initialConfiguration: parentTab.configuration,
-        braveCore: browserController.braveCore
-      )
-    )
+    let tab = TabStateFactory.create(with: .init(braveCore: browserController.braveCore))
     tab.miscDelegate = browserController
     tab.createWebView()
     tab.addPolicyDecider(browserController)

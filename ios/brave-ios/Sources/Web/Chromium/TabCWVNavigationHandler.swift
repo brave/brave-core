@@ -43,7 +43,7 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
     proposedCredential: URLCredential,
     completionHandler handler: @escaping (String?, String?) -> Void
   ) {
-    Task {
+    Task { @MainActor in
       guard let tab, let delegate = tab.delegate else {
         handler(nil, nil)
         return
