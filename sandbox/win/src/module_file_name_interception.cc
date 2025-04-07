@@ -19,13 +19,13 @@
 namespace {
 
 void ReplaceAt(char* dest, size_t dest_size, std::string_view src) {
-  ::strncpy_s(dest, dest_size, src.data(),
-              std::min(dest_size - 1, src.length()));
+  UNSAFE_TODO(::strncpy_s(dest, dest_size, src.data(),
+                          std::min(dest_size - 1, src.length())));
 }
 
 void ReplaceAt(wchar_t* dest, size_t dest_size, std::wstring_view src) {
-  ::wcsncpy_s(dest, dest_size, src.data(),
-              std::min(dest_size - 1, src.length()));
+  UNSAFE_TODO(::wcsncpy_s(dest, dest_size, src.data(),
+                          std::min(dest_size - 1, src.length())));
 }
 
 template <typename CharT>

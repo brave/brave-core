@@ -76,12 +76,12 @@ std::optional<std::string> SetCredentials(LPCTSTR phone_book_path,
                                           LPCTSTR password) {
   RASCREDENTIALS credentials;
 
-  ZeroMemory(&credentials, sizeof(RASCREDENTIALS));
+  UNSAFE_TODO(ZeroMemory(&credentials, sizeof(RASCREDENTIALS)));
   credentials.dwSize = sizeof(RASCREDENTIALS);
   credentials.dwMask = RASCM_UserName | RASCM_Password;
 
-  wcscpy_s(credentials.szUserName, UNLEN + 1, username);
-  wcscpy_s(credentials.szPassword, PWLEN + 1, password);
+  UNSAFE_TODO(wcscpy_s(credentials.szUserName, UNLEN + 1, username));
+  UNSAFE_TODO(wcscpy_s(credentials.szPassword, PWLEN + 1, password));
 
   DWORD dw_ret =
       RasSetCredentials(phone_book_path, entry_name, &credentials, FALSE);
@@ -322,13 +322,13 @@ RasOperationResult ConnectEntry(const std::wstring& entry_name) {
     return GetRasErrorResult("HeapAlloc failed at ConnectEntry().");
   }
   lp_ras_dial_params->dwSize = sizeof(RASDIALPARAMS);
-  wcscpy_s(lp_ras_dial_params->szEntryName, RAS_MaxEntryName + 1,
-           entry_name.c_str());
-  wcscpy_s(lp_ras_dial_params->szDomain, DNLEN + 1, L"*");
+  UNSAFE_TODO(wcscpy_s(lp_ras_dial_params->szEntryName, RAS_MaxEntryName + 1,
+                       entry_name.c_str()));
+  UNSAFE_TODO(wcscpy_s(lp_ras_dial_params->szDomain, DNLEN + 1, L"*"));
   // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rasgetcredentialsw
   RASCREDENTIALS credentials;
 
-  ZeroMemory(&credentials, sizeof(RASCREDENTIALS));
+  UNSAFE_TODO(ZeroMemory(&credentials, sizeof(RASCREDENTIALS)));
   credentials.dwSize = sizeof(RASCREDENTIALS);
   credentials.dwMask = RASCM_UserName | RASCM_Password;
   DWORD dw_ret = RasGetCredentials(phone_book_path.c_str(), entry_name.c_str(),
@@ -336,8 +336,10 @@ RasOperationResult ConnectEntry(const std::wstring& entry_name) {
   if (dw_ret != ERROR_SUCCESS) {
     return GetRasErrorResult(GetRasErrorMessage(dw_ret), "RasGetCredentials()");
   }
-  wcscpy_s(lp_ras_dial_params->szUserName, UNLEN + 1, credentials.szUserName);
-  wcscpy_s(lp_ras_dial_params->szPassword, PWLEN + 1, credentials.szPassword);
+  UNSAFE_TODO(wcscpy_s(lp_ras_dial_params->szUserName, UNLEN + 1,
+                       credentials.szUserName));
+  UNSAFE_TODO(wcscpy_s(lp_ras_dial_params->szPassword, PWLEN + 1,
+                       credentials.szPassword));
 
   VLOG(2) << __func__ << " : Connecting to " << entry_name;
   HRASCONN h_ras_conn = NULL;
@@ -538,19 +540,20 @@ RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
           << hostname;
 
   RASENTRY entry;
-  ZeroMemory(&entry, sizeof(RASENTRY));
+  UNSAFE_TODO(ZeroMemory(&entry, sizeof(RASENTRY)));
   // For descriptions of each field (including valid values) see:
   // https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa377274(v=vs.85)
   entry.dwSize = sizeof(RASENTRY);
   entry.dwfOptions = RASEO_RemoteDefaultGateway | RASEO_RequireEAP |
                      RASEO_PreviewUserPw | RASEO_PreviewDomain |
                      RASEO_ShowDialingProgress;
-  wcscpy_s(entry.szLocalPhoneNumber, RAS_MaxPhoneNumber + 1, hostname.c_str());
+  UNSAFE_TODO(wcscpy_s(entry.szLocalPhoneNumber, RAS_MaxPhoneNumber + 1,
+                       hostname.c_str()));
   entry.dwfNetProtocols = RASNP_Ip | RASNP_Ipv6;
   entry.dwFramingProtocol = RASFP_Ppp;
-  wcscpy_s(entry.szDeviceType, RAS_MaxDeviceType + 1, RASDT_Vpn);
-  wcscpy_s(entry.szDeviceName, RAS_MaxDeviceName + 1,
-           TEXT("WAN Miniport (IKEv2)"));
+  UNSAFE_TODO(wcscpy_s(entry.szDeviceType, RAS_MaxDeviceType + 1, RASDT_Vpn));
+  UNSAFE_TODO(wcscpy_s(entry.szDeviceName, RAS_MaxDeviceName + 1,
+                       TEXT("WAN Miniport (IKEv2)")));
   entry.dwType = RASET_Vpn;
   entry.dwEncryptionType = ET_Optional;
   entry.dwVpnStrategy = VS_Ikev2Only;
@@ -598,7 +601,7 @@ CheckConnectionResult GetConnectionState(HRASCONN h_ras_conn) {
   DWORD dw_ret = 0;
 
   RASCONNSTATUS ras_conn_status;
-  ZeroMemory(&ras_conn_status, sizeof(RASCONNSTATUS));
+  UNSAFE_TODO(ZeroMemory(&ras_conn_status, sizeof(RASCONNSTATUS)));
   ras_conn_status.dwSize = sizeof(RASCONNSTATUS);
 
   // Checking connection status using RasGetConnectStatus

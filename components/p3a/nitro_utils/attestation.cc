@@ -118,14 +118,15 @@ bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
   // The hashes in the  old and new user_data schemes have incommensurate
   // lengths, so use the total length to distinguish between them.
   if (user_data_bytes.size() == kUserDataOldLength) {
-    if (memcmp(user_data_bytes.data(), kHashPrefix, kHashPrefixLength) != 0) {
+    if (UNSAFE_TODO(memcmp(user_data_bytes.data(), kHashPrefix,
+                           kHashPrefixLength)) != 0) {
       LOG(ERROR)
           << "Nitro verification: user data is missing sha256 hash prefix";
       return false;
     }
-    if (memcmp(server_cert_fp.data(),
-               UNSAFE_TODO(user_data_bytes.data() + kHashPrefixLength),
-               kSHA256HashLength) == 0) {
+    if (UNSAFE_TODO(memcmp(server_cert_fp.data(),
+                           user_data_bytes.data() + kHashPrefixLength,
+                           kSHA256HashLength)) == 0) {
       return true;
     }
   } else {
@@ -141,9 +142,9 @@ bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
       LOG(ERROR) << "Nitro verification: user data not a sha2-256 multihash";
       return false;
     }
-    if (memcmp(server_cert_fp.data(),
-               UNSAFE_TODO(user_data_bytes.data() + kMultihashPrefixLength),
-               kSHA256HashLength) == 0) {
+    if (UNSAFE_TODO(memcmp(server_cert_fp.data(),
+                           user_data_bytes.data() + kMultihashPrefixLength,
+                           kSHA256HashLength)) == 0) {
       return true;
     }
   }
