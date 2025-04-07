@@ -17,6 +17,8 @@ extension Preferences {
     static let skipEduPopups = boolOrNil(for: "BRSkipEduPopups")
     /// Skips default browser, Brave VPN and other in-app callouts.
     static let skipNTPCallouts = boolOrNil(for: "BRSkipAppLaunchPopups")
+    /// Enables Screen Time by default
+    static let enableScreenTimeByDefault = boolOrNil(for: "BREnableScreenTimeByDefault")
 
     private static func boolOrNil(for key: String) -> Bool? {
       if AppConstants.buildChannel != .debug || prefs.object(forKey: key) == nil {
