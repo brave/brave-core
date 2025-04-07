@@ -8,7 +8,6 @@ import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
   & {
-    padding: 16px;
     display: flex;
     flex-direction: column;
     gap: 8px;
