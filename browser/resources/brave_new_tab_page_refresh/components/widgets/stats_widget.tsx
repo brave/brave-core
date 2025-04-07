@@ -7,7 +7,6 @@ import * as React from 'react'
 
 import { useAppState } from '../context/app_model_context'
 import { useLocale } from '../context/locale_context'
-import { NtpWidget } from './ntp_widget'
 
 import { style } from './stats_widget.style'
 
@@ -36,34 +35,32 @@ export function StatsWidget() {
   }
 
   return (
-    <NtpWidget>
-      <div data-css-scope={style.scope}>
-        <div className='title'>
-          {getString('statsTitle')}
+    <div data-css-scope={style.scope}>
+      <div className='title'>
+        {getString('statsTitle')}
+      </div>
+      <div className='data'>
+        <div className='ads-blocked'>
+          <div className='value'>
+            {stats && adsBlockedFormatter.format(stats.adsBlocked)}
+          </div>
+          {getString('statsAdsBlockedText')}
         </div>
-        <div className='data'>
-          <div className='ads-blocked'>
-            <div className='value'>
-              {stats && adsBlockedFormatter.format(stats.adsBlocked)}
-            </div>
-            {getString('statsAdsBlockedText')}
+        <div className='bandwidth-saved'>
+          <div className='value'>
+            {stats && renderUnits(formatBandwidth(stats.bandwidthSavedBytes))}
           </div>
-          <div className='bandwidth-saved'>
-            <div className='value'>
-              {stats && renderUnits(formatBandwidth(stats.bandwidthSavedBytes))}
-            </div>
-            {getString('statsBandwidthSavedText')}
+          {getString('statsBandwidthSavedText')}
+        </div>
+        <div className='time-saved'>
+          <div className='value'>
+            {stats &&
+              renderUnits(formatTimeSaved(getTimeSaved(stats.adsBlocked)))}
           </div>
-          <div className='time-saved'>
-            <div className='value'>
-              {stats &&
-                renderUnits(formatTimeSaved(getTimeSaved(stats.adsBlocked)))}
-            </div>
-            {getString('statsTimeSavedText')}
-          </div>
+          {getString('statsTimeSavedText')}
         </div>
       </div>
-    </NtpWidget>
+    </div>
   )
 }
 

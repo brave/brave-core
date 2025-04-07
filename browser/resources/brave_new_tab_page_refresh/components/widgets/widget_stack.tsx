@@ -11,40 +11,48 @@ import { NtpWidget } from './ntp_widget'
 import { RewardsWidget } from './rewards_widget'
 import { TalkWidget } from './talk_widget'
 import { VPNWidget } from './vpn_widget'
+import { StatsWidget } from './stats_widget'
 
-import { style } from './product_widget_stack.style'
+import { style } from './widget_stack.style'
 
-type TabName = 'rewards' | 'talk' | 'vpn'
+type TabName = 'rewards' | 'talk' | 'vpn' | 'stats'
 
-const tabList: TabName[] = ['vpn', 'rewards', 'talk']
+interface Props {
+  name: string
+  tabs: TabName[]
+}
 
-export function ProductWidgetStack() {
+export function WidgetStack(props: Props) {
   const showTalkWidget = useAppState((s) => s.showTalkWidget)
   const showRewardsWidget = useAppState((s) => s.showRewardsWidget)
   const rewardsFeatureEnabled = useAppState((s) => s.rewardsFeatureEnabled)
   const vpnFeatureEnabled = useAppState((s) => s.vpnFeatureEnabled)
   const showVpnWidget = useAppState((s) => s.showVpnWidget)
+  const showShieldsStats = useAppState((s) => s.showShieldsStats)
 
-  const [currentTab, setCurrentTab] = React.useState(loadCurrentTab())
+  const [currentTab, setCurrentTab] = React.useState(loadCurrentTab(props.name))
 
   const visibleTabs = React.useMemo(() => {
-    return tabList.filter((tab) => {
+    return props.tabs.filter((tab) => {
       switch (tab) {
         case 'rewards': return rewardsFeatureEnabled && showRewardsWidget
         case 'talk': return showTalkWidget
         case 'vpn': return vpnFeatureEnabled && showVpnWidget
+        case 'stats': return showShieldsStats
       }
     })
   }, [
+    props.tabs,
     showTalkWidget,
     rewardsFeatureEnabled,
     showRewardsWidget,
     vpnFeatureEnabled,
-    showVpnWidget
+    showVpnWidget,
+    showShieldsStats
   ])
 
   React.useEffect(() => {
-    storeCurrentTab(currentTab)
+    storeCurrentTab(props.name, currentTab)
     if (currentTab && !visibleTabs.includes(currentTab)) {
       setCurrentTab(null)
     }
@@ -67,6 +75,7 @@ export function ProductWidgetStack() {
       case 'rewards': return <Icon name='product-bat-outline' />
       case 'talk': return <Icon name='product-brave-talk' />
       case 'vpn': return <Icon name='product-vpn' />
+      case 'stats': return <Icon name='bar-chart' />
     }
   }
 
@@ -75,6 +84,7 @@ export function ProductWidgetStack() {
       case 'rewards': return <RewardsWidget />
       case 'talk': return <TalkWidget />
       case 'vpn': return <VPNWidget />
+      case 'stats': return <StatsWidget />
     }
   }
 
@@ -101,20 +111,25 @@ export function ProductWidgetStack() {
   )
 }
 
-const currentTabStorageKey = 'ntp-current-product-widget'
+function loadCurrentTab(stackName: string): TabName | null {
+  const value = localStorage.getItem(storageKey(stackName))
+  return tabNameIdentity(value as TabName) ?? null
+}
 
-function loadCurrentTab(): TabName | null {
-  const value = localStorage.getItem(currentTabStorageKey)
-  switch (value) {
+function tabNameIdentity(tabName: TabName): TabName {
+  switch (tabName) {
     case 'vpn':
     case 'rewards':
     case 'talk':
-      return value
-    default:
-      return null
+    case 'stats':
+      return tabName
   }
 }
 
-function storeCurrentTab(tab: TabName | null) {
-  localStorage.setItem(currentTabStorageKey, tab ?? '')
+function storeCurrentTab(stackName: string, tab: TabName | null) {
+  localStorage.setItem(storageKey(stackName), tab ?? '')
+}
+
+function storageKey(stackName: string) {
+  return `ntp-current-${stackName}-widget`
 }

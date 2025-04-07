@@ -12,8 +12,7 @@ import { BackgroundCaption } from './background/background_caption'
 import { SettingsModal, SettingsView } from './settings/settings_modal'
 import { TopSites } from './top_sites/top_sites'
 import { Clock } from './common/clock'
-import { StatsWidget } from './widgets/stats_widget'
-import { ProductWidgetStack } from './widgets/product_widget_stack'
+import { WidgetStack } from './widgets/widget_stack'
 
 import { style } from './app.style'
 
@@ -52,8 +51,8 @@ export function App() {
           <BackgroundCaption />
         </div>
         <div className='widget-container'>
-          <StatsWidget />
-          <ProductWidgetStack />
+          <WidgetStack name='left' tabs={['stats']} />
+          <WidgetStack name='right' tabs={['vpn', 'rewards', 'talk']} />
         </div>
       </main>
       <SettingsModal
