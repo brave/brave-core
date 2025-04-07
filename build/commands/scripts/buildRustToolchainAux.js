@@ -10,7 +10,18 @@ const util = require('../lib/util')
 
 program
   .option('--out_dir <out_dir>', 'Path to put the build artifacts.')
+  .option('--tag <tag>', '(optional) A Chromium tag to be checked out for generating this toolchain.')
   .action((options) => {
+    if (options.tag) {
+      tagRef = 'refs/tags/' + options.tag
+      util.runGit(config.srcDir, ['fetch', 'origin', tagRef + ':' + tagRef])
+      util.runGit(config.srcDir, ['reset', '--hard', tagRef])
+
+      // Setting this env variable to prevent downloading the toolchain using
+      // the new tag's revision, as the intent is to generate a new toolchain.
+      process.env.SKIP_DOWNLOAD_RUST_TOOLCHAIN_AUX = '1'
+      util.runGClient(['sync', '--reset', '--upstream', '--revision', 'src@' + tagRef])
+    }
     args = [path.join(config.srcDir, 'brave', 'build', 'rust', 'build_rust_toolchain_aux.py')]
     if (options.out_dir) {
       args.push('--out-dir=' + options.out_dir)
