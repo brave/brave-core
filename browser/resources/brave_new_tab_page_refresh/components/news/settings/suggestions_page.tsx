@@ -1,0 +1,38 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import * as React from 'react'
+
+import { useLocale } from '../../../context/locale_context'
+import { Publisher } from '../../../api/news_api'
+import { PublisherSourceCard } from '../source_card'
+import { SubpageHeader } from './subpage_header'
+
+interface Props {
+  publishers: Publisher[]
+  onBack: () => void
+}
+
+export function SuggestionsPage(props: Props) {
+  const { getString } = useLocale()
+  return (
+    <main>
+      <SubpageHeader
+        title={getString('newsSettingsSuggestionsTitle')}
+        onBack={props.onBack}
+      />
+      <div className='source-grid'>
+        {
+          props.publishers.map((publisher) =>
+            <PublisherSourceCard
+              key={publisher.publisherId}
+              publisher={publisher}
+            />
+          )
+        }
+      </div>
+    </main>
+  )
+}

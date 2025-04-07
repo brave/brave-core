@@ -12,6 +12,7 @@ import { SearchProvider } from '../context/search_context'
 import { TopSitesProvider } from '../context/top_sites_context'
 import { VpnProvider } from '../context/vpn_context'
 import { RewardsProvider } from '../context/rewards_context'
+import { NewsProvider } from '../context/news_context'
 
 import { createLocale } from './storybook_locale'
 import { createBackgroundAPI } from './background_impl'
@@ -20,8 +21,9 @@ import { createRewardsAPI } from './rewards_impl'
 import { createSearchAPI } from './search_impl'
 import { createTopSitesAPI } from './top_sites_impl'
 import { createVpnAPI } from './vpn_impl'
+import { createNewsAPI } from './news_impl'
 
-import { App } from '../components/app'
+import { App, NewsApp } from '../components/app'
 
 export default {
   title: 'New Tab/Refresh'
@@ -36,7 +38,9 @@ function AppProvider(props: { children: React.ReactNode }) {
               <TopSitesProvider value={createTopSitesAPI()}>
                 <VpnProvider value={createVpnAPI()}>
                   <RewardsProvider value={createRewardsAPI()}>
-                    {props.children}
+                    <NewsProvider value={createNewsAPI()}>
+                      {props.children}
+                    </NewsProvider>
                   </RewardsProvider>
                 </VpnProvider>
               </TopSitesProvider>
@@ -54,5 +58,19 @@ export function NTPRefresh() {
         <App />
       </div>
     </AppProvider>
+  )
+}
+
+export function NewsOnly() {
+  React.useEffect(() => {
+    document.body.style.padding = '0'
+  }, [])
+
+  return (
+    <LocaleProvider value={createLocale()}>
+      <NewsProvider value={createNewsAPI()}>
+        <NewsApp />
+      </NewsProvider>
+    </LocaleProvider>
   )
 }

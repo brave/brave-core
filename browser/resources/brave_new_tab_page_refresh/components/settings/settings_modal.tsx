@@ -13,6 +13,7 @@ import { useSearchState } from '../../context/search_context'
 import { BackgroundPanel } from './background_panel'
 import { SearchPanel } from './search_panel'
 import { TopSitesPanel } from './top_sites_panel'
+import { NewsPanel } from './news_panel'
 import { ClockPanel } from './clock_panel'
 import { WidgetsPanel } from './widgets_panel'
 import { useLocale } from '../../context/locale_context'
@@ -23,6 +24,7 @@ export type SettingsView =
   'background' |
   'search' |
   'top-sites' |
+  'news' |
   'clock' |
   'widgets'
 
@@ -61,6 +63,7 @@ export function SettingsModal(props: Props) {
       case 'background': return <BackgroundPanel />
       case 'search': return <SearchPanel />
       case 'top-sites': return <TopSitesPanel />
+      case 'news': return <NewsPanel />
       case 'clock': return <ClockPanel />
       case 'widgets': return <WidgetsPanel />
     }
@@ -71,6 +74,7 @@ export function SettingsModal(props: Props) {
       case 'background': return getString('backgroundSettingsTitle')
       case 'search': return getString('searchSettingsTitle')
       case 'top-sites': return getString('topSitesSettingsTitle')
+      case 'news': return getString('newsSettingsTitle')
       case 'clock': return getString('clockSettingsTitle')
       case 'widgets': return getString('widgetSettingsTitle')
     }
@@ -81,6 +85,7 @@ export function SettingsModal(props: Props) {
       case 'background': return <Icon name='image' />
       case 'search': return <Icon name='search' />
       case 'top-sites': return <Icon name='window-content' />
+      case 'news': return <Icon name='product-brave-news' />
       case 'clock': return <Icon name='clock' />
       case 'widgets': return <Icon name='browser-ntp-widget' />
     }
@@ -113,6 +118,7 @@ export function SettingsModal(props: Props) {
               {renderNavItem('background')}
               {renderNavItem('search')}
               {renderNavItem('top-sites')}
+              {renderNavItem('news')}
               {renderNavItem('clock')}
               {renderNavItem('widgets')}
             </Navigation>

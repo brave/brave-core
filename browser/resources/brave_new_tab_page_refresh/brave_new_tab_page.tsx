@@ -17,6 +17,7 @@ import { SearchProvider } from './context/search_context'
 import { TopSitesProvider } from './context/top_sites_context'
 import { VpnProvider } from './context/vpn_context'
 import { RewardsProvider } from './context/rewards_context'
+import { NewsProvider } from './context/news_context'
 
 import { createBackgroundAPI } from './api/background_impl'
 import { createNewTabAPI } from './api/new_tab_impl'
@@ -24,6 +25,7 @@ import { createRewardsAPI } from './api/rewards_impl'
 import { createSearchAPI } from './api/search_impl'
 import { createTopSitesAPI   } from './api/top_sites_impl'
 import { createVpnAPI } from './api/vpn_impl'
+import { createNewsAPI } from './api/news_impl'
 
 import { App } from './components/app'
 
@@ -35,6 +37,7 @@ const rewards = createRewardsAPI()
 const search = createSearchAPI()
 const topSites = createTopSitesAPI()
 const vpn = createVpnAPI()
+const news = createNewsAPI()
 
 // Expose APIs on the window object for console debugging.
 Object.assign(window, {
@@ -44,7 +47,8 @@ Object.assign(window, {
     rewards,
     search,
     topSites,
-    vpn
+    vpn,
+    news
   }
 })
 
@@ -65,7 +69,9 @@ createRoot(document.getElementById('root')!).render(
           <TopSitesProvider value={topSites}>
             <VpnProvider value={vpn}>
               <RewardsProvider value={rewards}>
-                <App />
+                <NewsProvider value={news}>
+                  <App />
+                </NewsProvider>
               </RewardsProvider>
             </VpnProvider>
           </TopSitesProvider>
