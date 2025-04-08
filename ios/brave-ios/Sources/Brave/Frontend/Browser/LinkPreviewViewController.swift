@@ -30,13 +30,21 @@ class LinkPreviewViewController: UIViewController {
       return
     }
 
-    let tab = TabStateFactory.create(with: .init(braveCore: browserController.braveCore))
+    let isPrivate = parentTab?.isPrivate ?? false
+    let tab = TabStateFactory.create(
+      with: .init(
+        initialConfiguration: isPrivate
+          ? TabManager.privateConfiguration : TabManager.defaultConfiguration,
+        braveCore: browserController.braveCore
+      )
+    )
     tab.miscDelegate = browserController
     tab.createWebView()
     tab.addPolicyDecider(browserController)
     tab.delegate = browserController
     tab.downloadDelegate = browserController
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
+    tab.isVisible = true
     self.currentTab = tab
 
     guard let currentTab = currentTab else {

@@ -269,8 +269,8 @@ class TabManager: NSObject {
     }
   }
 
-  private static var defaultConfiguration = getNewConfiguration(isPrivate: false)
-  private static var privateConfiguration = getNewConfiguration(isPrivate: true)
+  private(set) static var defaultConfiguration = getNewConfiguration(isPrivate: false)
+  private(set) static var privateConfiguration = getNewConfiguration(isPrivate: true)
 
   private class func getNewConfiguration(isPrivate: Bool = false) -> WKWebViewConfiguration {
     let configuration: WKWebViewConfiguration = .init()
