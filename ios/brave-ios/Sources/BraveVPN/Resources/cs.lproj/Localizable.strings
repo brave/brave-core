@@ -278,7 +278,7 @@
 "vpn.settingsViewReceipt" = "Zobrazit stvrzenku z App Store";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
-"vpn.settingsVPNKillSwitchDescription" = "Pokud je tato funkce povolena, v případě neočekávaného přerušení připojení VPN se vaše zařízení automaticky odpojí od internetu, aby se zabránilo úniku IP adresy a dat. [Další informace](%@)";
+"vpn.settingsVPNKillSwitchDescription" = "Pokud je tato funkce povolena, v případě neočekávaného přerušení připojení VPN se vaše zařízení automaticky odpojí od internetu, aby se zabránilo úniku IP adresy a dat. [Zjistit více](%@)";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchTitle" = "Povolit okamžité vypnutí";

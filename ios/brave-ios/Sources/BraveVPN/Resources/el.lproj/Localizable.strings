@@ -278,7 +278,7 @@
 "vpn.settingsViewReceipt" = "Προβολή απόδειξης AppStore";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
-"vpn.settingsVPNKillSwitchDescription" = "Όταν είναι ενεργοποιημένο, εάν η σύνδεση VPN διακοπεί απροσδόκητα, η συσκευή σας θα αποσυνδεθεί αυτόματα από το διαδίκτυο, για να αποφευχθεί η διαρροή διεύθυνσης IP και δεδομένων. [Μάθετε περισσότερα](%@)";
+"vpn.settingsVPNKillSwitchDescription" = "Όταν είναι ενεργοποιημένο, εάν η σύνδεση VPN διακοπεί απροσδόκητα, η συσκευή σου θα αποσυνδεθεί αυτόματα από το διαδίκτυο, για να αποφευχθεί η διαρροή διεύθυνσης IP και δεδομένων. [Μάθε περισσότερα](%@)";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchTitle" = "Ενεργοποίηση διακόπτη άμεσου τερματισμού";

@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "โดเมนถูกบล็อค";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "เปิดใช้งาน API การควบคุมความเป็นส่วนตัวทั่วไปของ JS";
+"EnableGPCDescription" = "ขอให้เว็บไซต์ต่าง ๆ ห้ามขายหรือแชร์ข้อมูลของคุณ [เรียนรู้เพิ่มเติม] (https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "เปิดใช้งานการควบคุมความเป็นส่วนตัวทั่วไป";

@@ -38,7 +38,13 @@
 "HN8elO" = "Otvaranje mrežnog mjesta povijesti";
 
 /* (No Comment) */
+"iLL70C" = "${websiteURL}";
+
+/* (No Comment) */
 "LHHK1N" = "Ovim se otvara ${websiteURL} u novoj kartici.";
+
+/* (No Comment) */
+"Lr38ve" = "${websiteURL}";
 
 /* (No Comment) */
 "MISOeA" = "Otvaranje iz povijesti";
@@ -78,6 +84,9 @@
 
 /* (No Comment) */
 "ycaNZf" = "Otvaranje iz knjižnih oznaka";
+
+/* (No Comment) */
+"YCxX7a" = "${websiteURL}";
 
 /* (No Comment) */
 "ZgJKfY" = "Ovim se otvara ${websiteURL} iz knjižnih oznaka.";

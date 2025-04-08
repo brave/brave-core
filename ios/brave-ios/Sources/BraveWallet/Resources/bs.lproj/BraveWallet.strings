@@ -61,6 +61,9 @@
 /* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
 "wallet.addCustomNetworkDropdownButtonTitle" = "Dodaj mrežu…";
 
+/* A title of one segment on top of Add Custom Assets screen. Users would need to select this segment if they are willing to add a custom non-fungible token. */
+"wallet.addCustomNFTTitle" = "NFT";
+
 /* A title of an initally hidden section in Add custom asset screen for users to input icon url and coingecko id. */
 "wallet.addCustomTokenAdvanced" = "Napredno";
 
@@ -78,6 +81,9 @@
 
 /* A title that will be displayed on top of the text field for users to input the custom token's ID. */
 "wallet.addCustomTokenId" = "ID tokena (samo za ERC721)";
+
+/* A title of one segment on top of Add Custom Assets screen, which is default selected. Users would need to select this segment if they are willing to add a custom fungible token. */
+"wallet.addCustomTokenTitle" = "Token";
 
 /* The description of the view shown over a dapps website that describes what adding a new network will do. */
 "wallet.addNetworkDescription" = "Time se omogućuje upotreba mreže unutar novčanika preglednika Brave.";
@@ -235,6 +241,9 @@
 /* The text beside the striked-through percentage Brave would normally charge for a swap. */
 "wallet.braveSwapFree" = "Besplatno";
 
+/* A description of an Bitcoin account, displayed in Accounts tab. */
+"wallet.btcAccountDescription" = "Bitcoin";
+
 /* Description displayed in row beside users available balance. */
 "wallet.btcAvailableBalanceDesc" = "Dostupna sredstva za uporabu.";
 
@@ -313,17 +322,29 @@
 /* The title of the rank of this coin from market. */
 "wallet.coinMarketRank" = "Rang";
 
+/* One of the coin types for users to create an account to store BTC assets */
+"wallet.coinTypeBitcoin" = "Bitcoin";
+
 /* A description for Bitcoin coin type. */
 "wallet.coinTypeBitcoinDescription" = "Pohranite imovinu BTC";
 
+/* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
+"wallet.coinTypeEthereum" = "Ethereum";
+
 /* A description for Ethereum coin type. */
 "wallet.coinTypeEthereumDescription" = "Podržava imovinu kompatibilnu s EVM-om na lancu podatkovnih blokova platforme Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)";
+
+/* One of the coin types for users to create an account to store FIL assets */
+"wallet.coinTypeFilecoin" = "Filecoin";
 
 /* A description for Filecoin coin type. */
 "wallet.coinTypeFilecoinDescription" = "Pohrani imovinu FIL";
 
 /* A header displayed above coin types selection. */
 "wallet.coinTypeSelectionHeader" = "Odaberi jednu od sljedećih vrsta računa";
+
+/* One of the coin types for users to create an account with in Solana network */
+"wallet.coinTypeSolana" = "Solana";
 
 /* A description for Solana coin type. */
 "wallet.coinTypeSolanaDescription" = "Podržava imovinu kompatibilnu s SLP-om na lancu podatkovnih blokova platforme Solana";
@@ -751,6 +772,9 @@
 /* A title displayed in an alert above the error message or description. */
 "wallet.errorAlertTitle" = "Pogreška";
 
+/* A description of an Ethereum account, displayed in Accounts tab. */
+"wallet.ethAccountDescription" = "Ethereum + EVM Chains";
+
 /* A button title displayed in a menu to export an account's private key. */
 "wallet.exportButtonTitle" = "Izvezi";
 
@@ -780,6 +804,9 @@
 
 /* A title of a button which will a new view to display the error. */
 "wallet.failedTransactionViewErrorButtonTitle" = "Prikaži pogrešku";
+
+/* A description of an Filecoin account, displayed in Accounts tab. */
+"wallet.filAccountDescription" = "Filecoin";
 
 /* The title of the modal for filtering Portfolio and NFT views. */
 "wallet.filtersAndDisplaySettings" = "Filtri i postavke prikaza";
@@ -937,6 +964,9 @@
 /* The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings. */
 "wallet.lowToHighSortOption" = "Od dna prema vrhu";
 
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example "1 account" or "2 accounts") */
+"wallet.manageSiteConnectionsAccount" = "%1$lld %2$@";
+
 /* The plural word that will beused in `manageSiteConnectionsAccount`. */
 "wallet.manageSiteConnectionsAccountPlural" = "računi";
 
@@ -1036,6 +1066,12 @@
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
 "wallet.nftDetailBlockchain" = "Lanac podatkovnih blokova";
 
+/* The title of a section in NFT detail screen that will display NFT's description if there is any. */
+"wallet.nftDetailDescription" = "Opis";
+
+/* This is one type of token standard. And most likey this does not need to be translated */
+"wallet.nftDetailERC721" = "ERC 721";
+
 /* A placeholder text, indicates this NFT image was not able to be loaded. */
 "wallet.nftDetailImageNotAvailable" = "Slika nije dostupna";
 
@@ -1050,6 +1086,9 @@
 
 /* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
 "wallet.nftDetailSendNFTButtonTitle" = "Pošalji";
+
+/* This is one type of NFT standard. And most likey this does not need to be translated */
+"wallet.nftDetailSPL" = "SPL";
 
 /* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
 "wallet.nftDetailSVGImageDisclaimer" = "Gore prikazana slika možda se neće potpuno podudarati s NFT-om";
@@ -1090,6 +1129,9 @@
 /* The title of the empty state inside NFT tab. */
 "wallet.nftPageEmptyTitle" = "Ovdje još nema NFT-ova.";
 
+/* The title of the tab that will display user's visible NFT assets. */
+"wallet.nftPageTitle" = "NFT";
+
 /* The title of context button for user to do not show a NFT in wallet at all. */
 "wallet.nftRemoveFromWallet" = "Ne prikazuj u novčaniku";
 
@@ -1104,6 +1146,9 @@
 
 /* The title of an overlay on top left of the junk NFT grid. */
 "wallet.nftSpam" = "Smeće";
+
+/* The description of the NFTs row in Account Details when user has 1 NFT. */
+"wallet.nftsSingularDescription" = "%d NFT";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
 "wallet.nftsTab" = "Kartica NFT-ova";
@@ -1210,6 +1255,12 @@
 /* The description of one of the 'Ramp.Network' provider. */
 "wallet.rampNetworkProviderDescription" = "Kupite kriptovalute karticom Visa ili Mastercard.";
 
+/* The name of one of the on ramp provider. */
+"wallet.rampNetworkProviderName" = "Ramp.Network";
+
+/* The short name of one of the on ramp provider. */
+"wallet.rampNetworkProviderShortName" = "Ramp";
+
 /* The message displayed when the user takes a screenshot of their recovery phrase */
 "wallet.recoveryPhraseScreenshotDetectedMessage" = "Upozorenje: snimka zaslona vaše rečenice za oporavak može se sigurnosno kopirati na uslugu datoteka u oblaku i može se čitati svakom aplikacijom s pristupom fotografijama. Društvo Brave preporučuje vam da ne spremate ovu snimku zaslona i da je izbrišete što je prije moguće.";
 
@@ -1281,6 +1332,12 @@
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "Obavljajte trenutne kupnje svojim bankovnim računom. Niže naknade.";
+
+/* The name of one of the on ramp provider. */
+"wallet.sardineProviderName" = "Sardine";
+
+/* The short name of one of the on ramp provider. */
+"wallet.sardineProviderShortName" = "Sardine";
 
 /* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
 "wallet.saveButtonTitle" = "Spremi";
@@ -1561,6 +1618,9 @@
 /* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
 "wallet.siweStatementLabel" = "Izjava";
 
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+"wallet.siweURILabel" = "URI";
+
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
 "wallet.siweVersionLabel" = "Inačica";
 
@@ -1575,6 +1635,9 @@
 
 /* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
 "wallet.snsDomainInterstitialPageTitle" = "Omogućiti podršku za Solana Name Service (SNS) u pregledniku Brave?";
+
+/* A description of an Solana account, displayed in Accounts tab. */
+"wallet.solAccountDescription" = "Solana + SVM Chains";
 
 /* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaAdvanceNonceAccountInstructionName" = "Proslijedi račun nonce";
@@ -1741,6 +1804,9 @@
 /* A title of transaction signed status view indicating this transaction has been submitted to the network. */
 "wallet.submittedTransactionTitle" = "Transakcija je poslana";
 
+/* As in swapping cryptocurrency from one asset to another */
+"wallet.swap" = "Swap";
+
 /* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
 "wallet.swapConfirmationNetworkDesc" = "na mreži %@";
 
@@ -1770,6 +1836,9 @@
 
 /* The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value */
 "wallet.swapCryptoSlippageTitle" = "Tolerancija prekoračenja";
+
+/* The title of the button for users to click when they want to swap between two cryptos */
+"wallet.swapCryptoSwapButtonTitle" = "Swap";
 
 /* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoToTitle" = "Primatelj";
@@ -1927,6 +1996,9 @@
 /* The label used to describe a transaction type. Used like 'Send from' or 'Approved from'. */
 "wallet.transactionSummaryIntentLabel" = "Od: %@";
 
+/* The label to describe an Solana Swap transaction. */
+"wallet.transactionSummarySolanaSwap" = "Solana Swap";
+
 /* The label to describe an Swap transaction. */
 "wallet.transactionSummarySwapOn" = "Zamjena";
 
@@ -1941,6 +2013,12 @@
 
 /* The description of one of the 'Transak' provider. */
 "wallet.transakProviderDescription" = "Obavljajte trenutne kupnje svojim bankovnim računom. Niže naknade.";
+
+/* The name of one of the on ramp provider. */
+"wallet.transakProviderName" = "Transak";
+
+/* The short name of one of the on ramp provider. */
+"wallet.transakProviderShortName" = "Transak";
 
 /* Blockchain function name for Solana compressed NFT transfers. */
 "wallet.txFunctionTypeCompressedNFTTransfer" = "Komprimirani prijenos NFT";
@@ -1971,6 +2049,9 @@
 
 /* Blockchain function name for Solana SPL token transfer with associated token account creation. */
 "wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation" = "Prijenos tokena SPL s pridruženim stvaranjem računa tokena";
+
+/* Blockchain function name for swap. */
+"wallet.txFunctionTypeSwap" = "Swap";
 
 /* Blockchain function name for non-native token transfers. */
 "wallet.txFunctionTypeTokenTransfer" = "Prijenos tokena";
@@ -2113,6 +2194,9 @@ The message after the title when a swap transaction failed to be confirmed on th
 
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
 "wallet.warningAlertConfirmation" = "Jeste li sigurni?";
+
+/* The title shown on the settings menu to Web3 settings. */
+"wallet.web3" = "Web3";
 
 /* Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered. */
 "wallet.web3DomainInterstitialPageButtonDisable" = "Onemogući";

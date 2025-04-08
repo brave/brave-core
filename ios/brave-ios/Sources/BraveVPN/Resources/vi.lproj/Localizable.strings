@@ -278,7 +278,7 @@
 "vpn.settingsViewReceipt" = "Xem biên lai App Store";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
-"vpn.settingsVPNKillSwitchDescription" = "Khi bật, nếu kết nối VPN ngừng đột ngột, thiết bị của bạn sẽ tự động được ngắt kết nối internet để ngăn việc rò rỉ dữ liệu địa chỉ IP. [Tìm hiểu thêm](%@)";
+"vpn.settingsVPNKillSwitchDescription" = "Khi bật, nếu kết nối VPN ngừng đột ngột, thiết bị của bạn sẽ tự động được ngắt kết nối internet để ngăn việc rò rỉ địa chỉ IP và dữ liệu. [Tìm hiểu thêm](%@)";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchTitle" = "Bật Kill Switch";

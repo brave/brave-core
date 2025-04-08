@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "리더 모드 토글";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "번역";
+"TranslatePage" = "페이지 번역";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";

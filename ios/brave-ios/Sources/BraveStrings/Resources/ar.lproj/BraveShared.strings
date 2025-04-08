@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "تبديل وضع القارئ";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "ترجمة";
+"TranslatePage" = "ترجمة الصفحة";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "هل تريد تشغيل اقتراحات البحث؟";

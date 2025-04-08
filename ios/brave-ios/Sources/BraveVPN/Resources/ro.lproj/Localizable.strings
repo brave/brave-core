@@ -278,7 +278,7 @@
 "vpn.settingsViewReceipt" = "Vezi chitanța App Store";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
-"vpn.settingsVPNKillSwitchDescription" = "Atunci când este activat, dacă conexiunea VPN se întrerupe în mod neașteptat, dispozitivul dvs. va fi deconectat automat de la internet, pentru a preveni scurgerile de date și adrese IP. [Află mai multe](%@)";
+"vpn.settingsVPNKillSwitchDescription" = "Atunci când este activat, dacă conexiunea VPN se întrerupe în mod neașteptat, dispozitivul tău va fi deconectat automat de la internet, pentru a preveni scurgerile de date și adrese IP. [Află mai multe](%@)";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchTitle" = "Activează Comutator de oprire";

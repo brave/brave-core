@@ -17,7 +17,7 @@
 "vpn.checkboxGeoLocation" = "Geo-Standort/Land auswählen";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Keine Protokollierung Ihrer Aktivitäten durch Brave";
+"vpn.checkboxNoIPLog" = "Keine Protokollierung deiner Aktivitäten durch Brave";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxProtectYourDevices" = "Schütze jede App und dein gesamtes Gerät";
@@ -80,7 +80,7 @@
 "vpn.contactFormIssueSlowConnection" = "Langsame Verbindung";
 
 /* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "Die Webseite funktioniert nicht";
+"vpn.contactFormIssueWebsiteProblems" = "Die Website funktioniert nicht";
 
 /* VPN logs field for customer support contact form. */
 "vpn.contactFormLogs" = "Fehlerprotokolle";
@@ -278,7 +278,7 @@
 "vpn.settingsViewReceipt" = "App-Store-Beleg anzeigen";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
-"vpn.settingsVPNKillSwitchDescription" = "Wenn diese Funktion aktiviert ist, wird dein Gerät bei einem unerwarteten Abbruch der VPN-Verbindung automatisch vom Internet getrennt, um IP-Adressen- und Datenlecks zu verhindern. [Mehr erfahren]%@)";
+"vpn.settingsVPNKillSwitchDescription" = "Wenn aktiviert, wird dein Gerät automatisch vom Internet getrennt, falls deine VPN-Verbindung unerwartet abbricht, um IP-Adressen- und Datenlecks zu verhindern. [Mehr erfahren](%@)";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchTitle" = "Kill Switch einschalten";
@@ -293,7 +293,7 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Zahlungsmethode aktualisieren";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Auch im Hintergrund schützt Brave dichweiter.";
+"vpn.vpnBackgroundNotificationBody" = "Auch im Hintergrund schützt Brave dich weiter.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN ist AN";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Fehler";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Für die Nutzung von Brave Firewall + VPN muss ein VPN-Profil auf Ihrem Gerät installiert sein.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Für die Nutzung von Brave Firewall + VPN muss ein VPN-Profil auf deinem Gerät installiert sein.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Zugriff verweigert";

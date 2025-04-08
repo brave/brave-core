@@ -143,7 +143,7 @@
 "wallet.aToZSortOption" = "A bis Z";
 
 /* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
-"wallet.auroraBridgeAlertDescription" = "Rainbow Bridge ist ein unabhängiger Service, mit dem Sie Assets über Netzwerke hinweg verbinden und Ihre Kryptowährung für andere Netzwerke und DApp-Ökosysteme nutzen können. Die Verbindung von Assets mit anderen Netzwerken birgt einige Risiken.";
+"wallet.auroraBridgeAlertDescription" = "Rainbow Bridge ist ein unabhängiger Service, mit dem du Assets über Netzwerke hinweg verbinden und deine Kryptowährung für andere Netzwerke und DApp-Ökosysteme nutzen kannst. Die Verbindung von Assets mit anderen Netzwerken birgt einige Risiken.";
 
 /* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
 "wallet.auroraBridgeAlertTitle" = "Rainbow Bridge-App öffnen?";
@@ -179,10 +179,10 @@
 "wallet.backupSkipButtonTitle" = "Ich werde die Sicherungskopie später erstellen";
 
 /* The sub-title on the pop up when user decides to skip backup recovery phrases. */
-"wallet.backupSkipPromptSubTitle" = "Um Ihr Konto zu schützen, sollten Sie eine Sicherungskopie Ihrer Wiederherstellungsphrase erstellen.";
+"wallet.backupSkipPromptSubTitle" = "Um dein Konto zu schützen, solltest du eine Sicherungskopie deiner Wiederherstellungsphrase erstellen.";
 
 /* The title on the pop up when user decides to skip backup recovery phrases. */
-"wallet.backupSkipPromptTitle" = "Sie können diesen Schritt jetzt überspringen, aber Sie müssen trotzdem eine Sicherungskopie Ihrer Wiederherstellungsphrase erstellen, um die Sicherheit Ihres Kontos zu gewährleisten.";
+"wallet.backupSkipPromptTitle" = "Du kannst diesen Schritt jetzt überspringen, aber du musst trotzdem eine Sicherungskopie deiner Wiederherstellungsphrase erstellen, um die Sicherheit deines Kontos zu gewährleisten.";
 
 /* The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.backUpWallet" = "Jetzt sichern";
@@ -197,13 +197,13 @@
 "wallet.backupWalletPasswordPlaceholder" = "Passwort eingeben, um Wallet zu sichern";
 
 /* The subtitle of the backup wallet screen */
-"wallet.backupWalletSubtitle" = "Im nächsten Schritt sehen Sie eine Wiederherstellungsphrase aus 12 Wörtern, mit der Sie Ihre primären Kryptowährungskonten wiederherstellen können. Speichern Sie sie an einem sicheren Ort. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Zugriff auf Ihr Konto wiederherzustellen, wenn Sie Ihr Passwort vergessen haben, wenn Ihr Gerät verloren gegangen ist oder gestohlen wurde oder wenn Sie die Wallet wechseln möchten.";
+"wallet.backupWalletSubtitle" = "Im nächsten Schritt siehst du eine Wiederherstellungsphrase aus 12 Wörtern, mit der du deine primären Kryptowährungskonten wiederherstellen kannst. Speichere sie an einem sicheren Ort. Deine Wiederherstellungsphrase ist die einzige Möglichkeit, den Zugriff auf dein Konto wiederherzustellen, wenn du dein Passwort vergessen hast, wenn dein Gerät verloren gegangen ist oder gestohlen wurde oder wenn du das Wallet wechseln möchtest.";
 
 /* The title of the backup wallet screen */
-"wallet.backupWalletTitle" = "Sichern Sie Ihre Kryptowährungs-Wallet";
+"wallet.backupWalletTitle" = "Sichere dir dein Kryptowährungs-Wallet";
 
 /* The message displayed on the crypto tab if you have not yet completed the backup process */
-"wallet.backupWalletWarningMessage" = "Sichern Sie Ihre Wallet jetzt, um Ihre Kryptowährungs-Assets zu schützen und sicherzustellen, dass Sie niemals den Zugriff verlieren.";
+"wallet.backupWalletWarningMessage" = "Sichere dir dein Wallet jetzt, um deine Kryptowährungs-Assets zu schützen und sicherzustellen, dass du niemals den Zugriff verlierst.";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
 "wallet.balances" = "Guthaben";
@@ -212,7 +212,7 @@
 "wallet.biometricsSetupEnableButtonTitle" = "%@ verwenden";
 
 /* The message of an alert when the user has an error setting up biometric unlock */
-"wallet.biometricsSetupErrorMessage" = "Es ist ein Fehler während der Aktivierung der biometrischen Entsperrung aufgetreten. Bitte versuchen Sie es später erneut.";
+"wallet.biometricsSetupErrorMessage" = "Es ist ein Fehler während der Aktivierung der biometrischen Entsperrung aufgetreten. Bitte versuche es später erneut.";
 
 /* The title of an alert when the user has an error setting up biometric unlock */
 "wallet.biometricsSetupErrorTitle" = "Biometrische Entsperrung konnte nicht aktiviert werden.";
@@ -233,7 +233,7 @@
 "wallet.bitcoinImportExtendedKeyWarning" = "Es werden nur erweiterte %@-Schlüssel unterstützt.";
 
 /* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
-"wallet.braveFeeLabel" = "Brave-Gebühr: %@";
+"wallet.braveFeeLabel" = "BraveGebühr: %@";
 
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
 "wallet.braveSwapFeeDisclaimer" = "Angebot enthält eine Brave-Gebühr von %@.";
@@ -245,16 +245,16 @@
 "wallet.btcAccountDescription" = "Bitcoin";
 
 /* Description displayed in row beside users available balance. */
-"wallet.btcAvailableBalanceDesc" = "Mittel, die Ihnen zur Verfügung stehen.";
+"wallet.btcAvailableBalanceDesc" = "Mittel, die dir zur Verfügung stehen.";
 
 /* Title displayed in row beside users available BTC balance. */
 "wallet.btcAvailableBalanceTitle" = "Verfügbar";
 
 /* A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected. */
-"wallet.btcOrdinalsUnsupportedWarning" = "Brave-Wallet unterstützt derzeit keine Bitcoin-NFTs („Ordinals“). Das Senden von BTC von einer Adresse, die Ordinals hat, kann dazu führen, dass die Ordinals versehentlich übertragen werden.";
+"wallet.btcOrdinalsUnsupportedWarning" = "Brave Wallet unterstützt derzeit keine Bitcoin-NFTs („Ordinals“). Das Senden von BTC von einer Adresse, die Ordinals hat, kann dazu führen, dass die Ordinals versehentlich übertragen werden.";
 
 /* Description displayed in row beside users pending balance. */
-"wallet.btcPendingBalanceDesc" = "Eine anstehende Änderung Ihres Wallet-Guthabens";
+"wallet.btcPendingBalanceDesc" = "Eine anstehende Änderung deines Wallet-Guthabens";
 
 /* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
 "wallet.btcPendingBalancesBannerDesc" = "Einige Guthaben sind eventuell nicht verfügbar";
@@ -566,19 +566,19 @@
 "wallet.dateIntervalMonthAccessibilityLabel" = "1 Monat";
 
 /* An abbreivated form of "3 Months" used to describe what range of data to show on the graph (past 3 months) */
-"wallet.dateIntervalThreeMonths" = "3 M";
+"wallet.dateIntervalThreeMonths" = "3 M.";
 
 /* Describes what range of data to show on the graph (past 3 months) */
 "wallet.dateIntervalThreeMonthsAccessibilityLabel" = "3 Monate";
 
 /* An abbreivated form of "1 Week" used to describe what range of data to show on the graph (past week) */
-"wallet.dateIntervalWeek" = "1 W";
+"wallet.dateIntervalWeek" = "1 W.";
 
 /* Describes what range of data to show on the graph (past week) */
 "wallet.dateIntervalWeekAccessibilityLabel" = "1 Woche";
 
 /* An abbreivated form of "1 Year" used to describe what range of data to show on the graph (past year) */
-"wallet.dateIntervalYear" = "1 J";
+"wallet.dateIntervalYear" = "1 J.";
 
 /* Describes what range of data to show on the graph (past year) */
 "wallet.dateIntervalYearAccessibilityLabel" = "1 Jahr";
@@ -1004,7 +1004,7 @@
 "wallet.maxPriorityFeeTitle" = "Max. Prioritätsgebühr";
 
 /* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
-"wallet.module" = "Brave-Wallet";
+"wallet.module" = "Brave Wallet";
 
 /* A button title for user to open more option in asset details screen other than buy/send/swap. */
 "wallet.more" = "Mehr";
@@ -1493,7 +1493,7 @@
 "wallet.settingsResetWalletAlertButtonTitle" = "Wallet zurücksetzen";
 
 /* The message the confirmation dialog when resetting the wallet. */
-"wallet.settingsResetWalletAlertMessage" = "Diese Aktion kann nicht rückgängig gemacht werden. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Zugriff auf Ihr Konto und Ihre Kryptowährungs-Assets wiederherzustellen";
+"wallet.settingsResetWalletAlertMessage" = "Diese Aktion kann nicht rückgängig gemacht werden. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Zugriff auf dein Konto und deine Kryptowährungs-Assets wiederherzustellen";
 
 /* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetWalletAlertTitle" = "Möchtest du dein Brave Wallet wirklich zurücksetzen?";
@@ -1514,7 +1514,7 @@
 "wallet.setupCryptoDisclaimer" = "©2023 Brave Software Inc. Brave und das Brave-Logo sind eingetragene Marken von Brave. Andere Produktnamen und Logos können Marken der jeweiligen Unternehmen sein. Alle Rechte vorbehalten.";
 
 /* The subtitle displayed in the section for user that need to restore an existed wallet */
-"wallet.setupCryptoRestoreSubTitle" = "Ihre vorhandene Wallet importieren";
+"wallet.setupCryptoRestoreSubTitle" = "Dein vorhandenes Wallet importieren";
 
 /* The title displayed in the section for user that need to restore an existed wallet */
 "wallet.setupCryptoRestoreTitle" = "Hast du bereits ein Wallet?";

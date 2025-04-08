@@ -4,14 +4,26 @@
 /* A button title shown on the menu that opens a link to the Brave Talk feature. */
 "ActionTitles.braveTalk" = "Usluga Razgovor Brave";
 
+/* A button title shown on the menu that presents the Brave Leo AI feature. */
+"ActionTitles.leoAIChat" = "AI Chat";
+
 /* A button title shown on the menu that presents the Brave Playlist feature */
 "ActionTitles.playlist" = "Popis za reprodukciju";
 
 /* A button title shown on the menu that when tapped lets the user print the page they're viewing */
 "ActionTitles.print" = "Ispis";
 
+/* A button title shown on the menu that presents the Brave Rewards feature. */
+"ActionTitles.rewards" = "Nagrade Brave";
+
 /* A button title shown on the menu that when tapped lets the user share the current URL or document they're viewing */
 "ActionTitles.share" = "Podijelite…";
+
+/* A button title shown on the menu that translates the page into a different language. */
+"ActionTitles.translate" = "Prevedi stranicu";
+
+/* A button title shown on the menu that when tapped presents a Brave VPN paywall */
+"ActionTitles.vpn" = "VPN";
 
 /* The title of a button that presents the settings screen */
 "BrowserMenu.allSettingsButtonTitle" = "Sve postavke";
@@ -36,4 +48,7 @@
 
 /* A title shown above the list of actions that are visible on the menu. */
 "BrowserMenu.visibleActionsTitle" = "Sve radnje";
+
+/* A title on a button that lets the user switch the active VPN's selected region. */
+"BrowserMenu.vpnButtonTitle" = "VPN";
 

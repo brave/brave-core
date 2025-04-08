@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "ドメインがブロックされました";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "Global Privacy Control JS APIを有効にする";
+"EnableGPCDescription" = "自分のデータを販売または共有しないよう、ウェブサイトに要求します。[詳細はこちら](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Global Privacy Controlを有効にする";

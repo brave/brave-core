@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "สลับเป็นโหมดผู้อ่าน";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "แปล";
+"TranslatePage" = "แปลหน้านี้";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "ต้องการเปิดคำแนะนำในการค้นหาหรือไม่";

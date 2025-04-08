@@ -8,7 +8,7 @@
 "vpn.autoRenewDiscountPopOverTitle" = "Verlängere Brave VPN-Abonnement jetzt automatisch und erhalte 3 Monate lang 20 %-Rabatt!";
 
 /* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Verlängere deun Brave VPN-Abonnement jetzt automatisch und erhalte einen Monat gratis!";
+"vpn.autoRenewFreeMonthPopOverTitle" = "Verlängere dein Brave VPN-Abonnement jetzt automatisch und erhalte einen Monat gratis!";
 
 /* Pop up description for VPN subscription is about expire */
 "vpn.autoRenewSoonExpirePopOverDescription" = "Das bedeutet, dass du den zusätzlichen Schutz von Brave für jede App auf deinem Smartphone verlierst.";

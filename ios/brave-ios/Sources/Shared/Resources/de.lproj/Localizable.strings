@@ -92,7 +92,7 @@
 "ScanQRCodeInvalidDataErrorMessage" = "Die Daten sind ungültig.";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Bitte erlaubee Brave den Zugriff auf die Kamera deines Geräts unter „Einstellungen“ -> „Datenschutz“ -> „Kamera“.";
+"ScanQRCodePermissionErrorMessage" = "Bitte erlaube Brave den Zugriff auf die Kamera deines Geräts unter „Einstellungen“ -> „Datenschutz“ -> „Kamera“.";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "QR-Code scannen";
