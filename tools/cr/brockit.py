@@ -1582,7 +1582,7 @@ class Upgrade(Versioned):
         # for certain things that may have changed that require attention
         if (not repository.chromium.is_valid_git_reference(
                 self.working_version)
-                or not repository.chromium().is_valid_git_reference(
+                or not repository.chromium.is_valid_git_reference(
                     self.target_version)):
             repository.chromium.run_git('fetch', versioning.GOOGLESOURCE_LINK,
                                         'tag', self.working_version, 'tag',
