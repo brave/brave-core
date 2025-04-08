@@ -12,7 +12,13 @@ group("resources") {
 repack("repack_unscaled_resources") {
   visibility = [ ":resources" ]
   output = "$target_gen_dir/brave_resources.pak"
-  sources = [ "$root_gen_dir/components/brave_components_resources.pak" ]
-  deps = [ "//brave/components/resources" ]
+  sources = [
+    "$root_gen_dir/brave/components/hello_world/resources/hello_world_resources.pak",
+    "$root_gen_dir/components/brave_components_resources.pak",
+  ]
+  deps = [
+    "//brave/components/hello_world/resources",
+    "//brave/components/resources",
+  ]
   copy_data_to_bundle = true
 }
