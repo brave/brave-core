@@ -34,6 +34,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -56,12 +57,14 @@ class SharedURLLoaderFactory;
 namespace ai_chat {
 
 class ModelService;
+class TabTrackerService;
 class AIChatMetrics;
 
 // Main entry point for creating and consuming AI Chat conversations
 class AIChatService : public KeyedService,
                       public mojom::Service,
-                      public ConversationHandler::Observer {
+                      public ConversationHandler::Observer,
+                      public mojom::TabDataObserver {
  public:
   using SkusServiceGetter =
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>;
@@ -72,6 +75,7 @@ class AIChatService : public KeyedService,
 
   AIChatService(
       ModelService* model_service,
+      TabTrackerService* tab_tracker_service,
       std::unique_ptr<AIChatCredentialManager> ai_chat_credential_manager,
       PrefService* profile_prefs,
       AIChatMetrics* ai_chat_metrics,
@@ -107,6 +111,9 @@ class AIChatService : public KeyedService,
                                       uint64_t trimmed_tokens) override;
   void OnAssociatedContentDestroyed(ConversationHandler* handler,
                                     int content_id) override;
+
+  // mojom::TabDataObserver
+  void TabDataChanged(std::vector<mojom::TabDataPtr> tab_data) override;
 
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
@@ -211,6 +218,10 @@ class AIChatService : public KeyedService,
     tab_organization_engine_ = std::move(engine);
   }
 
+  void SetTabTrackerServiceForTesting(TabTrackerService* tab_tracker_service) {
+    tab_tracker_service_ = tab_tracker_service;
+  }
+
  private:
   friend class AIChatServiceUnitTest;
 
@@ -269,7 +280,12 @@ class AIChatService : public KeyedService,
                               const std::string& topic,
                               GetFocusTabsCallback callback);
 
+  void OnSuggestedTopicsReceived(
+      GetSuggestedTopicsCallback callback,
+      base::expected<std::vector<std::string>, mojom::APIError> topics);
+
   raw_ptr<ModelService> model_service_;
+  raw_ptr<TabTrackerService> tab_tracker_service_;
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
   raw_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_;
@@ -311,11 +327,17 @@ class AIChatService : public KeyedService,
   // associated_content_delegate_ for some time.
   std::map<int, std::string> content_conversations_;
 
+  // Cached suggested topics for users to be focused on from the latest
+  // GetSuggestedTopics call, would be cleared when there are tab data changes.
+  std::vector<std::string> cached_focus_topics_;
+
   base::ScopedMultiSourceObservation<ConversationHandler,
                                      ConversationHandler::Observer>
       conversation_observations_{this};
   mojo::ReceiverSet<mojom::Service> receivers_;
   mojo::RemoteSet<mojom::ServiceObserver> observer_remotes_;
+
+  mojo::Receiver<mojom::TabDataObserver> tab_data_observer_receiver_{this};
 
   // AIChatCredentialManager / Skus does not provide an event when
   // subscription status changes. So we cache it and fetch latest fairly
