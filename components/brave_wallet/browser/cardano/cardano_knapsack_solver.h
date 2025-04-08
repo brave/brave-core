@@ -21,7 +21,8 @@ namespace brave_wallet {
 // Tries to find the best set of inputs(minimal fee) for a transaction.
 // Does two runs of search: with and without change output. See
 // `SolveForTransaction` for details.
-// TODO(apaymyshev): consider moving this calculation to separate thread.
+// TODO(https://github.com/brave/brave-browser/issues/45278): consider moving
+// this calculation to separate thread.
 class CardanoKnapsackSolver {
  public:
   CardanoKnapsackSolver(CardanoTransaction base_transaction,
@@ -29,10 +30,6 @@ class CardanoKnapsackSolver {
                         uint64_t min_fee_constant,
                         std::vector<CardanoTransaction::TxInput> inputs);
   ~CardanoKnapsackSolver();
-
-  static uint64_t GetCostOfChangeOutput(const CardanoTransaction& tx,
-                                        uint64_t min_fee_coefficient,
-                                        uint64_t min_fee_constant);
 
   base::expected<CardanoTransaction, std::string> Solve();
 
@@ -42,8 +39,9 @@ class CardanoKnapsackSolver {
   uint64_t min_fee_constant_ = 0;
   std::vector<CardanoTransaction::TxInput> inputs_;
 
-  void SolveForTransaction(const CardanoTransaction& transaction,
-                           std::optional<CardanoTransaction>& solution);
+  void SolveForTransaction(
+      const CardanoTransaction& transaction,
+      std::optional<CardanoTransaction>& current_best_solution);
 };
 
 }  // namespace brave_wallet

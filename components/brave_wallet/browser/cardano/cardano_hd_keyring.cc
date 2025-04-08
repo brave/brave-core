@@ -10,7 +10,7 @@
 #include <optional>
 #include <utility>
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
@@ -100,9 +100,10 @@ CardanoHDKeyring::SignMessage(uint32_t account,
   }
 
   std::array<uint8_t, kCardanoSignatureSize> result;
-  base::span(result).first<kEd25519PublicKeySize>().copy_from(
+  base::span(result).first<kEd25519PublicKeySize>().copy_from_nonoverlapping(
       hd_key->GetPublicKeyAsSpan());
-  base::span(result).last<kEd25519SignatureSize>().copy_from(*signature);
+  base::span(result).last<kEd25519SignatureSize>().copy_from_nonoverlapping(
+      *signature);
 
   return result;
 }

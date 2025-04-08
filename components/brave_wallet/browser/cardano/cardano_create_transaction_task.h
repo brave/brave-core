@@ -22,6 +22,8 @@ namespace brave_wallet {
 class CardanoWalletService;
 class CardanoTransaction;
 
+// This class handles logic of creating a Cardano transaction based on wallet's
+// account, destination address and amount of native coins to send.
 class CreateCardanoTransactionTask {
  public:
   using UtxoMap = std::map<CardanoAddress, cardano_rpc::UnspentOutputs>;

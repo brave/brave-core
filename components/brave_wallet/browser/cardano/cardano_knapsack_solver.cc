@@ -8,9 +8,11 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/numerics/clamped_math.h"
 #include "base/rand_util.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_serializer.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -26,6 +28,30 @@ uint64_t ApplyFeeRate(uint64_t min_fee_coefficient,
   return tx_size * min_fee_coefficient + min_fee_constant;
 }
 
+// static
+uint64_t GetCostOfChangeOutput(const CardanoTransaction& tx,
+                               uint64_t min_fee_coefficient,
+                               uint64_t min_fee_constant) {
+  CHECK(tx.ChangeOutput());
+
+  auto tx_with_change = tx;
+  CardanoTransaction::TxInput fake_input;
+  fake_input.utxo_value = tx.amount();
+  tx_with_change.AddInput(std::move(fake_input));
+
+  auto fee_with_change =
+      ApplyFeeRate(min_fee_coefficient, min_fee_constant,
+                   CardanoSerializer::CalcTransactionSize(tx_with_change));
+
+  auto tx_without_change = tx_with_change;
+  tx_without_change.ClearChangeOutput();
+  auto fee_without_change =
+      ApplyFeeRate(min_fee_coefficient, min_fee_constant,
+                   CardanoSerializer::CalcTransactionSize(tx_without_change));
+
+  return base::ClampSub(fee_with_change, fee_without_change);
+}
+
 }  // namespace
 
 CardanoKnapsackSolver::CardanoKnapsackSolver(
@@ -39,32 +65,13 @@ CardanoKnapsackSolver::CardanoKnapsackSolver(
       inputs_(std::move(inputs)) {}
 CardanoKnapsackSolver::~CardanoKnapsackSolver() = default;
 
-// static
-uint64_t CardanoKnapsackSolver::GetCostOfChangeOutput(
-    const CardanoTransaction& tx,
-    uint64_t min_fee_coefficient,
-    uint64_t min_fee_constant) {
-  CHECK(tx.ChangeOutput());
-
-  auto fee_with_change =
-      ApplyFeeRate(min_fee_coefficient, min_fee_constant,
-                   CardanoSerializer::CalcTransactionSize(tx));
-
-  auto tx_without_change = tx;
-  tx_without_change.ClearChangeOutput();
-  auto fee_without_change =
-      ApplyFeeRate(min_fee_coefficient, min_fee_constant,
-                   CardanoSerializer::CalcTransactionSize(tx_without_change));
-
-  if (fee_with_change > fee_without_change) {
-    return fee_with_change - fee_without_change;
-  }
-  return 0;
-}
-
 void CardanoKnapsackSolver::SolveForTransaction(
     const CardanoTransaction& transaction,
-    std::optional<CardanoTransaction>& solution) {
+    std::optional<CardanoTransaction>& current_best_solution) {
+  if (inputs_.empty()) {
+    return;
+  }
+
   // Don't create transaction if output's amount appears to be less than this
   // threshold. Cost of spending such output should not be higher than its
   // value.
@@ -74,9 +81,12 @@ void CardanoKnapsackSolver::SolveForTransaction(
                                   min_fee_constant_)
           : 0;
 
+  std::vector<uint8_t> picked_inputs(inputs_.size(), false);
   for (int i = 0; i < kCardanoKnapsackSolverIterations; ++i) {
-    std::vector<bool> picked_groups(inputs_.size(), false);
+    std::ranges::fill(picked_inputs, false);
+
     CardanoTransaction cur_transaction = transaction;
+
     bool has_valid_transaction_for_iteration = false;
 
     // First pass: Go through input groups(sorted desc) and randomly pick
@@ -93,13 +103,15 @@ void CardanoKnapsackSolver::SolveForTransaction(
       for (uint32_t input_index = 0; input_index < inputs_.size();
            ++input_index) {
         bool pick_group =
-            pass == 0 ? base::RandInt(0, 1) : !picked_groups[input_index];
+            pass == 0 ? base::RandInt(0, 1) : !picked_inputs[input_index];
         if (!pick_group) {
           continue;
         }
 
         CardanoTransaction next_transaction = cur_transaction;
         next_transaction.AddInput(inputs_[input_index]);
+        next_transaction.AddWitness(
+            CardanoTransaction::TxWitness::DummyTxWitness());
 
         // Minimum fee required for this transaction to be accepted.
         // Depends on transaction's size and current fee rate.
@@ -119,12 +131,13 @@ void CardanoKnapsackSolver::SolveForTransaction(
 
         if (next_transaction.AmountsAreValid(min_fee)) {
           has_valid_transaction_for_iteration = true;
-          if (!solution || solution->EffectiveFeeAmount() <
-                               next_transaction.EffectiveFeeAmount()) {
-            solution = next_transaction;
+          if (!current_best_solution ||
+              current_best_solution->EffectiveFeeAmount() >
+                  next_transaction.EffectiveFeeAmount()) {
+            current_best_solution = next_transaction;
           }
         } else {
-          picked_groups[input_index] = true;
+          picked_inputs[input_index] = true;
           cur_transaction = std::move(next_transaction);
         }
       }
@@ -138,25 +151,27 @@ base::expected<CardanoTransaction, std::string> CardanoKnapsackSolver::Solve() {
   DCHECK(base_transaction_.ChangeOutput());
   DCHECK(!base_transaction_.sending_max_amount());
 
-  std::optional<CardanoTransaction> solution;
+  std::optional<CardanoTransaction> best_solution;
 
   // Try to find the best transaction with a change output which receives a
   // fee surplus.
-  SolveForTransaction(base_transaction_, solution);
+  SolveForTransaction(base_transaction_, best_solution);
 
   // Drop the change output from the transaction and try to find the best
   // transaction again. Might find a transaction with a slightly higher fee
   // but still less than the cost of having a change output.
   auto no_change_transaction = base_transaction_;
   no_change_transaction.ClearChangeOutput();
-  SolveForTransaction(no_change_transaction, solution);
+  SolveForTransaction(no_change_transaction, best_solution);
 
-  if (!solution) {
+  if (!best_solution) {
     return base::unexpected(
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE));
   }
 
-  return base::ok(std::move(*solution));
+  best_solution->SetWitnesses({});
+
+  return base::ok(std::move(*best_solution));
 }
 
 }  // namespace brave_wallet

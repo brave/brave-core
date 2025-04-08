@@ -41,6 +41,8 @@ cbor::Value::ArrayValue SerializeOutputs(const CardanoTransaction& tx) {
 }
 
 cbor::Value SerializeTxBody(const CardanoTransaction& tx) {
+  // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/core/src/Serialization/TransactionBody/TransactionBody.ts#L75-L250
+
   cbor::Value::MapValue body_map;
 
   body_map.emplace(0, SerializeInputs(tx));
@@ -52,6 +54,8 @@ cbor::Value SerializeTxBody(const CardanoTransaction& tx) {
 }
 
 cbor::Value SerializeWitnessSet(const CardanoTransaction& tx) {
+  // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/core/src/Serialization/TransactionWitnessSet/TransactionWitnessSet.ts#L49-L116
+
   cbor::Value::MapValue witness_map;
 
   // Verification Key Witness array
@@ -86,7 +90,7 @@ cbor::Value SerializeWitnessSet(const CardanoTransaction& tx) {
 // static
 std::vector<uint8_t> CardanoSerializer::SerializeTransaction(
     const CardanoTransaction& tx) {
-  DCHECK(tx.IsSigned());
+  // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/core/src/Serialization/Transaction.ts#L59-L84
 
   cbor::Value::ArrayValue transaction_array;
   transaction_array.push_back(SerializeTxBody(tx));
