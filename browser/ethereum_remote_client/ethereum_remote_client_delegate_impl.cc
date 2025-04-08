@@ -13,10 +13,8 @@ EthereumRemoteClientDelegateImpl::~EthereumRemoteClientDelegateImpl() = default;
 
 void EthereumRemoteClientDelegateImpl::MaybeLoadCryptoWalletsExtension(
     content::BrowserContext* context) {
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(context)->extension_service();
-  if (service) {
-    extensions::ComponentLoader* loader = service->component_loader();
+  auto* loader = extensions::ComponentLoader::Get(context);
+  if (loader) {
     static_cast<extensions::BraveComponentLoader*>(loader)
         ->AddEthereumRemoteClientExtension();
   }
@@ -24,10 +22,8 @@ void EthereumRemoteClientDelegateImpl::MaybeLoadCryptoWalletsExtension(
 
 void EthereumRemoteClientDelegateImpl::UnloadCryptoWalletsExtension(
     content::BrowserContext* context) {
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(context)->extension_service();
-  if (service) {
-    extensions::ComponentLoader* loader = service->component_loader();
+  auto* loader = extensions::ComponentLoader::Get(context);
+  if (loader) {
     static_cast<extensions::BraveComponentLoader*>(loader)
         ->UnloadEthereumRemoteClientExtension();
   }
