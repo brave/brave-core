@@ -90,7 +90,7 @@ import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
 import org.chromium.chrome.browser.notifications.BraveNotificationPlatformBridge;
 import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationPlatformBridge.NotificationIdentifyingAttributes;
-import org.chromium.chrome.browser.ntp.NewTabPageUma;
+import org.chromium.chrome.browser.ntp.NewTabPageCreationTracker;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
 import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCallback;
@@ -1287,7 +1287,7 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         TabModelSelector.class,
                         boolean.class,
-                        NewTabPageUma.class,
+                        NewTabPageCreationTracker.class,
                         boolean.class,
                         NativePageHost.class,
                         Tab.class,
