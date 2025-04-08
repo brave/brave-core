@@ -268,10 +268,11 @@ class TabManager: NSObject {
     }
   }
 
-  private class func resetConfiguration(
-    _ configuration: WKWebViewConfiguration,
-    isPrivate: Bool = false
-  ) {
+  private static var defaultConfiguration = getNewConfiguration(isPrivate: false)
+  private static var privateConfiguration = getNewConfiguration(isPrivate: true)
+
+  private class func getNewConfiguration(isPrivate: Bool = false) -> WKWebViewConfiguration {
+    let configuration: WKWebViewConfiguration = .init()
     configuration.processPool = WKProcessPool()
     configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General
       .blockPopups.value
@@ -296,11 +297,14 @@ class TabManager: NSObject {
         forURLScheme: InternalURL.scheme
       )
     }
+
+    return configuration
   }
 
   func reset() {
+    Self.defaultConfiguration = Self.getNewConfiguration(isPrivate: false)
+    Self.privateConfiguration = Self.getNewConfiguration(isPrivate: true)
     for tab in allTabs {
-      Self.resetConfiguration(tab.configuration, isPrivate: tab.isPrivate)
       if tab.isWebViewCreated {
         tab.deleteWebView()
       }
@@ -546,8 +550,7 @@ class TabManager: NSObject {
     assert(Thread.isMainThread)
 
     let tabId = id ?? UUID()
-    let initialConfiguration = WKWebViewConfiguration()
-    Self.resetConfiguration(initialConfiguration, isPrivate: isPrivate)
+    let initialConfiguration = isPrivate ? Self.privateConfiguration : Self.defaultConfiguration
     let tab = TabStateFactory.create(
       with: .init(
         id: tabId,
@@ -973,6 +976,7 @@ class TabManager: NSObject {
         // reaches zero and destroys all its data.
 
         Self.nonPersistentDataStore = nil
+        Self.privateConfiguration = Self.getNewConfiguration(isPrivate: true)
       }
     }
 
