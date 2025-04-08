@@ -23,6 +23,8 @@ export class AutoTabGroupsPageElement extends CrLitElement {
   protected topics_: string[] = []
   protected topic = ''
   protected undoTopic_ = ''
+  protected showFRE_ =
+      loadTimeData.getBoolean('showTabOrganizationFRE')
 
   private apiProxy_: BraveTabSearchApiProxy =
       TabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
@@ -41,6 +43,7 @@ export class AutoTabGroupsPageElement extends CrLitElement {
       isLoadingTopics: {type: Boolean},
       errorMessage: {type: String},
       needsPremium: {type: Boolean},
+      showFRE_: {type: Boolean},
     }
   }
 
@@ -212,12 +215,25 @@ export class AutoTabGroupsPageElement extends CrLitElement {
     return loadTimeData.getString('tabOrganizationDismissButtonLabel')
   }
 
+  protected getPrivacyDisclaimerMessage_(): string {
+    return loadTimeData.getString('tabOrganizationPrivacyDisclaimer')
+  }
+
+  protected getEnableButtonLabel_(): string {
+    return loadTimeData.getString('tabOrganizationEnableButtonLabel')
+  }
+
   protected onLearnMoreClicked_() {
     this.apiProxy_.openHelpPage()
   }
 
   protected onGoPremiumClicked_() {
     this.apiProxy_.openLeoGoPremiumPage()
+  }
+
+  protected onEnableTabFocusClicked_() {
+    this.apiProxy_.setTabFocusEnabled()
+    this.showFRE_ = false
   }
 
   protected onDismissErrorClicked_() {
