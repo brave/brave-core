@@ -14,6 +14,7 @@
 #include "base/stl_util.h"
 #include "base/values.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/search_engines/brave_prepopulated_engines_version.h"
 #include "components/google/core/common/google_switches.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_test_utils.h"
@@ -42,7 +43,7 @@ using namespace TemplateURLPrepopulateData;  // NOLINT
 const PrepopulatedEngine* const kBraveAddedEngines[] = {};
 
 const std::unordered_set<std::u16string_view> kOverriddenEnginesNames = {
-    u"DuckDuckGo", u"Qwant"};
+    u"DuckDuckGo", u"Qwant", u"Startpage"};
 
 }  // namespace
 
@@ -74,10 +75,11 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
         TemplateURLPrepopulateData::kBraveCurrentDataVersion);
     std::unique_ptr<TemplateURLData> fallback_t_url_data =
         TemplateURLPrepopulateData::GetPrepopulatedFallbackSearch(
+            search_engines_test_environment_.regional_capabilities_service()
+                .GetRegionalDefaultEngine(),
             search_engines_test_environment_.pref_service(),
             search_engines_test_environment_.regional_capabilities_service()
-                .GetCountryId()
-                .GetForTesting());
+                .GetRegionalPrepopulatedEngines());
     EXPECT_EQ(fallback_t_url_data->prepopulate_id, prepopulate_id);
   }
 
@@ -132,8 +134,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
     std::vector<std::unique_ptr<TemplateURLData>> urls = GetPrepopulatedEngines(
         search_engines_test_environment_.pref_service(),
         search_engines_test_environment_.regional_capabilities_service()
-            .GetCountryId()
-            .GetForTesting());
+            .GetRegionalPrepopulatedEngines());
     std::set<int> unique_ids;
     for (auto& url : urls) {
       ASSERT_TRUE(unique_ids.find(url->prepopulate_id) == unique_ids.end());
@@ -148,8 +149,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, ProvidersFromPrepopulated) {
       TemplateURLPrepopulateData::GetPrepopulatedEngines(
           search_engines_test_environment_.pref_service(),
           search_engines_test_environment_.regional_capabilities_service()
-              .GetCountryId()
-              .GetForTesting());
+              .GetRegionalPrepopulatedEngines());
 
   // Ensure all the URLs have the required fields populated.
   ASSERT_FALSE(t_urls.empty());

@@ -1,5 +1,14 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 group("search_engines") {
   deps = [ "//components/search_engines" ]
+}
+
+source_set("brave_prepopulated_engines_version") {
+  sources = [ "brave_prepopulated_engines_version.h" ]
 }
 
 source_set("unit_tests") {

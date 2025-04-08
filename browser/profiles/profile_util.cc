@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/search_engines/brave_prepopulated_engines_version.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/pref_names.h"

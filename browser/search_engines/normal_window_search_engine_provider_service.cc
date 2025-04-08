@@ -14,9 +14,11 @@
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/common/pref_names.h"
 #include "components/country_codes/country_codes.h"
+#include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
@@ -98,8 +100,13 @@ void NormalWindowSearchEngineProviderService::MigrateSearchEnginePrefsInJP() {
     return;
   }
 
+  auto* regional_capabilities =
+      regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
+          profile_);
+  DCHECK(regional_capabilities);
+
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *prefs, country_codes::CountryId(country_string),
+      *prefs, regional_capabilities->GetRegionalPrepopulatedEngines(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO_JP);
   if (!data) {
     return;
