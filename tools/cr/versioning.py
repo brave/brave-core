@@ -49,6 +49,13 @@ def read_chromium_version_file():
     return Version('{MAJOR}.{MINOR}.{BUILD}.{PATCH}'.format(**version_parts))
 
 
+def get_uplift_branch_name_from_package() -> str:
+    """Generates the name of the uplift branch from `package.json`.
+    """
+    version = load_package_file('HEAD')['version'].split('.')
+    return f'{version[0]}.{version[1]}.x'
+
+
 @total_ordering
 @dataclass(frozen=True)
 class Version:
