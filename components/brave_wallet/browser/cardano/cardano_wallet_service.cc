@@ -85,7 +85,8 @@ void CardanoWalletService::DiscoverNextUnusedAddress(
     DiscoverNextUnusedAddressCallback callback) {
   CHECK(IsCardanoAccount(account_id));
 
-  // TODO(apaymyshev): this always returns first address.
+  // TODO(https://github.com/brave/brave-browser/issues/45278): this always
+  // returns first address.
   auto address = keyring_service().GetCardanoAddress(
       account_id, mojom::CardanoKeyId::New(role, 0));
   if (!address) {

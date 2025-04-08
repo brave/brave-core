@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/numerics/clamped_math.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 
@@ -29,6 +30,23 @@ bool ReadStringTo(const base::Value::Dict& dict,
     return false;
   }
   to = *str;
+  return true;
+}
+
+bool ReadCardanoAddressTo(const base::Value::Dict& dict,
+                          std::string_view key,
+                          CardanoAddress& to) {
+  std::string address_string;
+  if (!ReadStringTo(dict, key, address_string)) {
+    return false;
+  }
+
+  auto cardano_address = CardanoAddress::FromString(address_string);
+  if (!cardano_address) {
+    return false;
+  }
+
+  to = std::move(*cardano_address);
   return true;
 }
 
@@ -159,15 +177,9 @@ std::optional<CardanoTransaction::TxInput>
 CardanoTransaction::TxInput::FromValue(const base::Value::Dict& value) {
   CardanoTransaction::TxInput result;
 
-  std::string address_string;
-  if (!ReadStringTo(value, "utxo_address", address_string)) {
+  if (!ReadCardanoAddressTo(value, "utxo_address", result.utxo_address)) {
     return std::nullopt;
   }
-  auto cardano_address = CardanoAddress::FromString(address_string);
-  if (!cardano_address) {
-    return std::nullopt;
-  }
-  result.utxo_address = std::move(*cardano_address);
 
   if (!ReadDictTo(value, "utxo_outpoint", result.utxo_outpoint)) {
     return std::nullopt;
@@ -269,15 +281,10 @@ CardanoTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
   result.type = type_string == kTargetOutputType ? TxOutputType::kTarget
                                                  : TxOutputType::kChange;
 
-  std::string address_string;
-  if (!ReadStringTo(value, "address", address_string)) {
+  if (!ReadCardanoAddressTo(value, "address", result.address)) {
     return std::nullopt;
   }
-  auto cardano_address = CardanoAddress::FromString(address_string);
-  if (!cardano_address) {
-    return std::nullopt;
-  }
-  result.address = std::move(*cardano_address);
+
   if (!ReadUint64StringTo(value, "amount", result.amount)) {
     return std::nullopt;
   }
@@ -345,15 +352,9 @@ std::optional<CardanoTransaction> CardanoTransaction::FromValue(
     return std::nullopt;
   }
 
-  std::string to_string;
-  if (!ReadStringTo(value, "to", to_string)) {
+  if (!ReadCardanoAddressTo(value, "to", result.to_)) {
     return std::nullopt;
   }
-  auto to_address = CardanoAddress::FromString(to_string);
-  if (!to_address) {
-    return std::nullopt;
-  }
-  result.to_ = std::move(*to_address);
 
   if (!ReadUint64StringTo(value, "amount", result.amount_)) {
     return std::nullopt;
@@ -394,8 +395,7 @@ bool CardanoTransaction::AmountsAreValid(uint64_t min_fee) const {
 }
 
 uint64_t CardanoTransaction::EffectiveFeeAmount() const {
-  DCHECK_GE(TotalInputsAmount(), TotalOutputsAmount());
-  return TotalInputsAmount() - TotalOutputsAmount();
+  return base::ClampSub(TotalInputsAmount(), TotalOutputsAmount());
 }
 
 void CardanoTransaction::AddInput(TxInput input) {
@@ -412,8 +412,11 @@ void CardanoTransaction::ClearInputs() {
   inputs_.clear();
 }
 
+void CardanoTransaction::AddWitness(TxWitness witnesses) {
+  witnesses_.push_back(std::move(witnesses));
+}
+
 void CardanoTransaction::SetWitnesses(std::vector<TxWitness> witnesses) {
-  CHECK_EQ(witnesses.size(), inputs_.size());
   witnesses_ = std::move(witnesses);
 }
 

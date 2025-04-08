@@ -13,6 +13,7 @@
 
 namespace brave_wallet::cardano_rpc {
 
+// Adapter of Blockfrost's EpochParameters struct for wallets use.
 struct EpochParameters {
   bool operator==(const EpochParameters& other) const = default;
 
@@ -23,6 +24,7 @@ struct EpochParameters {
       const base::Value& value);
 };
 
+// Adapter of Blockfrost's Block struct for wallets use.
 struct Block {
   bool operator==(const Block& other) const = default;
 
@@ -33,6 +35,7 @@ struct Block {
   static std::optional<Block> FromBlockfrostApiValue(const base::Value& value);
 };
 
+// Adapter of Blockfrost's UnspentOutput struct for wallets use.
 struct UnspentOutput {
   bool operator==(const UnspentOutput& other) const = default;
 

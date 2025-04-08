@@ -6,22 +6,24 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_SERIALIZER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_SERIALIZER_H_
 
-#include <optional>
-#include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
-#include "brave/components/brave_wallet/common/hash_utils.h"
 
 namespace brave_wallet {
 
+// Utility class for serializing Cardano transactions and related functionality.
 class CardanoSerializer {
  public:
+  // Serializes a Cardano transaction into a byte vector (CBOR format).
   static std::vector<uint8_t> SerializeTransaction(
       const CardanoTransaction& tx);
 
+  // Calculates the size (in bytes) of the serialized transaction.
   static uint32_t CalcTransactionSize(const CardanoTransaction& tx);
 
+  // Computes the transaction hash (Blake2b-256 hash of the serialized
+  // transaction body)
   static std::array<uint8_t, kCardanoTxHashSize> GetTxHash(
       const CardanoTransaction& tx);
 };

@@ -13,9 +13,7 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_blockfrost_api.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 
 namespace brave_wallet {

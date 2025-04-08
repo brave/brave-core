@@ -19,6 +19,7 @@ namespace brave_wallet {
 inline constexpr uint32_t kCardanoTxHashSize = 32u;
 inline constexpr uint32_t kCardanoWitnessSize = 96u;
 
+// This class is used to make Cardano transactions for sending to blockchain.
 class CardanoTransaction {
  public:
   // Cardano tx outpoint. Pair of transaction id and its output index.
@@ -145,6 +146,7 @@ class CardanoTransaction {
   void ClearInputs();
 
   const std::vector<TxWitness>& witnesses() const { return witnesses_; }
+  void AddWitness(TxWitness witnesses);
   void SetWitnesses(std::vector<TxWitness> witnesses);
 
   const std::vector<TxOutput>& outputs() const { return outputs_; }
