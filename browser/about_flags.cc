@@ -1018,14 +1018,16 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
       },                                                                       \
       {                                                                        \
-          "brave-self-host-sync-url",                                          \
-          "Brave Self-host Sync URL",                                          \
-          "Allows you to set a secure (HTTPS) self-hosted sync URL. You can "  \
+          "brave-override-sync-server-url",                                    \
+          "Override Brave Sync server URL",                                    \
+          "Allows you to use a self-hosted server with Brave Sync. You can "   \
           "learn more about the server implementation in the repository link " \
           "mentioned below. "                                                  \
-          "Note: HTTP URLs are not supported and will be ignored "             \
-          "in favor of the default sync URL",                                  \
-          kOsWin | kOsLinux | kOsMac,                                          \
+          "Note: Only HTTPS URLs are supported by default. HTTP URLs are "     \
+          "only allowed for potentially trustworthy origins like localhost."   \
+          "Insecure URLs that don't meet these requirements will be ignored"   \
+          "in favor of official Brave-hosted server",                          \
+          kOsAll,                                                              \
           ORIGIN_LIST_VALUE_TYPE(syncer::kSyncServiceURL, ""),                 \
           kBraveSyncImplLink,                                                  \
       })                                                                       \
