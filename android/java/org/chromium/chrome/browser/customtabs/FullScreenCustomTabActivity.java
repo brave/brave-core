@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
@@ -61,7 +60,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
     private CustomTabMinimizationManagerHolder mMinimizationManagerHolder;
     private CustomTabFeatureOverridesManager mCustomTabFeatureOverridesManager;
 
-    public static boolean sIsFullScreenCustomTabActivityClosed = false;
+    public static boolean sIsFullScreenCustomTabActivityClosed;
 
     @Override
     public boolean supportsAppMenu() {
@@ -103,7 +102,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                 android.graphics.PorterDuff.Mode.SRC_IN);
         closeImg.setOnClickListener(
                 button -> {
-                    handleActivityFinish();
+                    finish();
                 });
         parentView.addView(closeImg, layoutParams);
 
@@ -119,21 +118,18 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                     .writeInt(
                             BravePermissionUtils.REWARDS_NOTIFICATION_PERMISSION_COUNT, count + 1);
         }
-
-        getOnBackPressedDispatcher()
-                .addCallback(
-                        this,
-                        new OnBackPressedCallback(true) {
-                            @Override
-                            public void handleOnBackPressed() {
-                                handleActivityFinish();
-                            }
-                        });
     }
 
-    private void handleActivityFinish() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        sIsFullScreenCustomTabActivityClosed = false;
+    }
+
+    @Override
+    public void finish() {
         sIsFullScreenCustomTabActivityClosed = true;
-        finish();
+        super.finish();
     }
 
     @Override
