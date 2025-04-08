@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.brave.browser.utils.confirm_dialog;
+package org.chromium.brave.browser.custom_app_icons.confirm_dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.chromium.brave.browser.utils.R;
+import org.chromium.brave.browser.custom_app_icons.R;
 
 /**
  * A dialog class that handles confirmation dialogs in Brave browser. Provides functionality for

@@ -7,20 +7,27 @@ package org.chromium.chrome.browser.settings;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 
+import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
-import org.chromium.brave.browser.utils.DrawableUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.accessibility.settings.BraveAccessibilitySettings;
@@ -394,12 +401,44 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         : currentIcon.getIcon();
         if (preference != null) {
             Drawable drawable =
-                    DrawableUtils.getCircularDrawable(
-                            getContext(), iconResource, dpToPx(getContext(), 16));
+                    getCircularDrawable(getContext(), iconResource, dpToPx(getContext(), 16));
             if (drawable != null) {
                 preference.setIcon(drawable);
             }
         }
+    }
+
+    private Drawable getCircularDrawable(Context context, int drawableResId, int size) {
+        Drawable sourceDrawable = ContextCompat.getDrawable(context, drawableResId);
+        if (sourceDrawable == null) {
+            return null;
+        }
+
+        Bitmap sourceBitmap = drawableToBitmap(sourceDrawable, size, size);
+        return createCircularBitmapDrawable(context, sourceBitmap, size);
+    }
+
+    private BitmapDrawable createCircularBitmapDrawable(
+            Context context, Bitmap sourceBitmap, int size) {
+        Bitmap outputBitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(outputBitmap);
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setShader(
+                new BitmapShader(sourceBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+        float radius = size / 2f;
+        canvas.drawCircle(radius, radius, radius, paint);
+
+        return new BitmapDrawable(context.getResources(), outputBitmap);
+    }
+
+    private Bitmap drawableToBitmap(Drawable drawable, int width, int height) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, width, height);
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     private void removePreferenceIfPresent(String key) {

@@ -12,6 +12,8 @@ android_library("java") {
   sources = [
     "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsEnum.java",
     "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsManager.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/confirm_dialog/BraveConfirmationDialog.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/confirm_dialog/OnConfirmationDialogListener.java",
     "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsAdapter.java",
     "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsFragment.java",
     "java/src/org/chromium/brave/browser/custom_app_icons/settings/CustomAppIconsListener.java",
@@ -19,7 +21,6 @@ android_library("java") {
   deps = [
     ":java_resources",
     "//base:tasks_java",
-    "//brave/browser/utils/android:java",
     "//chrome/android:chrome_base_module_resources",
     "//chrome/browser/preferences:java",
     "//third_party/androidx:androidx_annotation_annotation_java",
@@ -58,9 +59,15 @@ android_resources("java_resources") {
   }
 
   sources += [
+    "java/res/drawable/brave_action_button_bg.xml",
+    "java/res/drawable/confirmation_dialog_shape.xml",
     "java/res/drawable/ic_check_circle_filled.xml",
+    "java/res/layout/brave_confirmation_dialog_layout.xml",
     "java/res/layout/custom_app_icons_item.xml",
     "java/res/layout/fragment_custom_app_icons.xml",
+    "java/res/values-night/custom_app_icons_colors.xml",
+    "java/res/values/custom_app_icons_colors.xml",
+    "java/res/values/custom_app_icons_styles.xml",
   ]
 
   foreach(icon,
