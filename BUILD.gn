@@ -60,6 +60,7 @@ if (!is_ios) {
       "common",
       "//components/omnibox/common",
       "//services/device/public/cpp:device_features",
+      "//services/network/public/cpp",
     ]
 
     data_deps = [ ":unpacked_resources" ]
