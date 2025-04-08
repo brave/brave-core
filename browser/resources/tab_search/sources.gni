@@ -7,7 +7,7 @@ brave_tab_search_extras_grdp =
     "$root_gen_dir/brave/browser/resources/tab_search/brave_extras.grdp"
 
 brave_tab_search_static_files = [
-  "brave/remove_me.txt",
+  "brave/tab_organizer_illustration.svg",
   # SVG and other static files
 ]
 
