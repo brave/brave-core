@@ -132,13 +132,13 @@ AdsServiceDelegate::AdsServiceDelegate(
 AdsServiceDelegate::~AdsServiceDelegate() {}
 
 std::string AdsServiceDelegate::GetDefaultSearchEngineName() {
+  auto* regional_capabilities =
+      regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
+          &*profile_);
   const auto template_url_data =
       TemplateURLPrepopulateData::GetPrepopulatedFallbackSearch(
           *profile_->GetPrefs(),
-          country_id_holder_.GetRestricted(
-              regional_capabilities::CountryAccessKey(
-                  regional_capabilities::CountryAccessReason::
-                      kTemplateURLPrepopulateDataResolution)));
+          regional_capabilities->GetRegionalPrepopulatedEngines());
 
   const std::u16string& default_search_engine_name =
       template_url_data ? template_url_data->short_name() : u"";

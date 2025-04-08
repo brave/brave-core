@@ -38,23 +38,23 @@ namespace brave {
 class WithCountryAccessKeyAccess {
  public:
   static void SetBraveAsDefaultPrivateSearchProvider(Profile& profile) {
-    auto& prefs = *profile.GetPrefs();
-    regional_capabilities::CountryIdHolder country_id_holder =
-        regional_capabilities::RegionalCapabilitiesServiceFactory::
-            GetForProfile(&profile)
-                ->GetCountryId();
+    // auto& prefs = *profile.GetPrefs();
+    // regional_capabilities::CountryIdHolder country_id_holder =
+    //     regional_capabilities::RegionalCapabilitiesServiceFactory::
+    //         GetForProfile(&profile)
+    //             ->GetCountryId();
 
-    auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-        prefs,
-        country_id_holder.GetRestricted(regional_capabilities::CountryAccessKey(
-            regional_capabilities::CountryAccessReason::
-                kTemplateURLPrepopulateDataResolution)),
-        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
-    DCHECK(data);
-    prefs.SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
-                    data->sync_guid);
-    prefs.SetDict(prefs::kSyncedDefaultPrivateSearchProviderData,
-                  TemplateURLDataToDictionary(*data));
+    // auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+    //     prefs,
+    //     country_id_holder.GetRestricted(regional_capabilities::CountryAccessKey(
+    //         regional_capabilities::CountryAccessReason::
+    //             kTemplateURLPrepopulateDataResolution)),
+    //     TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+    // DCHECK(data);
+    // prefs.SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
+    //                 data->sync_guid);
+    // prefs.SetDict(prefs::kSyncedDefaultPrivateSearchProviderData,
+    //               TemplateURLDataToDictionary(*data));
   }
 };
 

@@ -30,25 +30,25 @@ namespace TemplateURLPrepopulateData {
 // default value of the last argument.
 std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines_Unused(
     PrefService& prefs,
-    CountryId country_id);
+    country_codes::CountryId country_id);
 
 }  // namespace TemplateURLPrepopulateData
 
 #define GetDataVersion GetDataVersion_ChromiumImpl
-#if BUILDFLAG(IS_ANDROID)
-#define GetLocalPrepopulatedEngines GetLocalPrepopulatedEngines_Unused
-#endif
-#define GetPrepopulatedFallbackSearch GetPrepopulatedFallbackSearch_Unused
-#define GetPrepopulatedEngine GetPrepopulatedEngine_Unused
-#define GetPrepopulatedEngines GetPrepopulatedEngines_Unused
+// #if BUILDFLAG(IS_ANDROID)
+// #define GetLocalPrepopulatedEngines GetLocalPrepopulatedEngines_Unused
+// #endif
+// #define GetPrepopulatedFallbackSearch GetPrepopulatedFallbackSearch_Unused
+// #define GetPrepopulatedEngine GetPrepopulatedEngine_Unused
+// #define GetPrepopulatedEngines GetPrepopulatedEngines_Unused
 #include "src/components/search_engines/template_url_prepopulate_data.cc"
 #undef GetDataVersion
-#if BUILDFLAG(IS_ANDROID)
-#undef GetLocalPrepopulatedEngines
-#endif
-#undef GetPrepopulatedFallbackSearch
-#undef GetPrepopulatedEngine
-#undef GetPrepopulatedEngines
+// #if BUILDFLAG(IS_ANDROID)
+// #undef GetLocalPrepopulatedEngines
+// #endif
+// #undef GetPrepopulatedFallbackSearch
+// #undef GetPrepopulatedEngine
+// #undef GetPrepopulatedEngines
 
 namespace TemplateURLPrepopulateData {
 
@@ -171,8 +171,9 @@ constexpr auto kDefaultEnginesByCountryIdMap =
 // set the default search engine back to what it was when the profile was
 // originally created. This way, a person doesn't get a new unexpected default
 // when they reset the profile; it goes back to the original value.
-BravePrepopulatedEngineID GetDefaultSearchEngine(CountryId country_id,
-                                                 int version) {
+BravePrepopulatedEngineID GetDefaultSearchEngine(
+    country_codes::CountryId country_id,
+    int version) {
   const BravePrepopulatedEngineID default_v6 = PREPOPULATED_ENGINE_ID_GOOGLE;
   static constexpr auto kContentV6 = base::MakeFixedFlatMap<
       country_codes::CountryId, BravePrepopulatedEngineID>({
@@ -531,7 +532,7 @@ void UpdateTemplateURLDataKeyword(
 // |country_id|.
 std::vector<std::unique_ptr<TemplateURLData>>
 GetBravePrepopulatedEnginesForCountryID(
-    CountryId country_id,
+    country_codes::CountryId country_id,
     int version = kBraveCurrentDataVersion) {
   base::span<const BravePrepopulatedEngineID> brave_engine_ids =
       kBraveEnginesDefault;
@@ -580,7 +581,7 @@ int GetDataVersion(PrefService* prefs) {
 // get search engines defined by Brave.
 std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
     PrefService& prefs,
-    CountryId country_id) {
+    country_codes::CountryId country_id) {
   // If there is a set of search engines in the preferences file, it overrides
   // the built-in set.
   std::vector<std::unique_ptr<TemplateURLData>> t_urls =
@@ -617,7 +618,7 @@ std::vector<std::unique_ptr<TemplateURLData>> GetLocalPrepopulatedEngines(
 // the list). We should return the default engine by country, or Brave.
 std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
     PrefService& prefs,
-    CountryId country_id) {
+    country_codes::CountryId country_id) {
   std::vector<std::unique_ptr<TemplateURLData>> prepopulated_engines =
       GetPrepopulatedEngines(prefs, country_id);
   if (prepopulated_engines.empty()) {
@@ -652,9 +653,10 @@ std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
   return std::move(prepopulated_engines[0]);
 }
 
-std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(PrefService& prefs,
-                                                       CountryId country_id,
-                                                       int prepopulated_id) {
+std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(
+    PrefService& prefs,
+    country_codes::CountryId country_id,
+    int prepopulated_id) {
   auto engines =
       TemplateURLPrepopulateData::GetPrepopulatedEngines(prefs, country_id);
   for (auto& engine : engines) {

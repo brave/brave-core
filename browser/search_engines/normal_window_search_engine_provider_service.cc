@@ -98,17 +98,17 @@ void NormalWindowSearchEngineProviderService::MigrateSearchEnginePrefsInJP() {
     return;
   }
 
-  auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *prefs, country_codes::CountryId(country_string),
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO_JP);
-  if (!data) {
-    return;
-  }
+  // auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+  //     *prefs, country_codes::CountryId(country_string),
+  //     TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO_JP);
+  // if (!data) {
+  //   return;
+  // }
 
-  TemplateURL url(*data);
-  service->SetUserSelectedDefaultSearchProvider(&url);
+  // TemplateURL url(*data);
+  // service->SetUserSelectedDefaultSearchProvider(&url);
 
-  if (prefs->GetBoolean(prefs::kSearchSuggestEnabled)) {
-    prefs->SetBoolean(prefs::kSearchSuggestEnabled, false);
-  }
+  // if (prefs->GetBoolean(prefs::kSearchSuggestEnabled)) {
+  //   prefs->SetBoolean(prefs::kSearchSuggestEnabled, false);
+  // }
 }
