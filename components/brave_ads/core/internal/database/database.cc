@@ -110,6 +110,10 @@ mojom::DBTransactionResultInfo::StatusCode Database::RunActions(
   TRACE_EVENT(kTraceEventCategory, "Database::RunActions", "trace_id",
               trace_id);
 
+  if (mojom_db_transaction->actions.empty()) {
+    return mojom::DBTransactionResultInfo::StatusCode::kSuccess;
+  }
+
   sql::Transaction transaction(&db_);
   if (!transaction.Begin()) {
     return mojom::DBTransactionResultInfo::StatusCode::kTransactionError;

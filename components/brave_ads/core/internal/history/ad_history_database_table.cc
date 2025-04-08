@@ -5,11 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table.h"
 
+#include <algorithm>
 #include <cstdint>
-#include <optional>
+#include <iterator>
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
+#include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/location.h"
 #include "base/strings/string_util.h"
@@ -25,6 +28,7 @@
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads::database::table {
 
@@ -62,26 +66,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   int32_t index = 0;
   for (const auto& ad_history_item : ad_history) {
-    if (!ad_history_item.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/43328): Invalid ad
-      // history item.
-      SCOPED_CRASH_KEY_STRING64("Issue43328", "ad_type",
-                                ToString(ad_history_item.type));
-      SCOPED_CRASH_KEY_STRING64("Issue43328", "confirmation_type",
-                                ToString(ad_history_item.confirmation_type));
-      SCOPED_CRASH_KEY_STRING64("Issue43328", "creative_instance_id",
-                                ad_history_item.creative_instance_id);
-      SCOPED_CRASH_KEY_STRING64("Issue43328", "advertiser_id",
-                                ad_history_item.advertiser_id);
-      SCOPED_CRASH_KEY_STRING64("Issue43328", "segment",
-                                ad_history_item.segment);
-      SCOPED_CRASH_KEY_STRING64("Issue43328", "failure_reason",
-                                "Invalid ad history item");
-      base::debug::DumpWithoutCrashing();
-
-      BLOG(0, "Invalid ad history item");
-      continue;
-    }
+    CHECK(ad_history_item.IsValid());
 
     BindColumnTime(mojom_db_action, index++, ad_history_item.created_at);
     BindColumnString(mojom_db_action, index++, ToString(ad_history_item.type));
@@ -143,22 +128,32 @@ void GetCallback(
        mojom_db_transaction_result->rows_union->get_rows()) {
     const AdHistoryItemInfo ad_history_item = FromMojomRow(mojom_db_row);
     if (!ad_history_item.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/43328): Invalid ad
-      // history item.
-      SCOPED_CRASH_KEY_STRING64("Issue43328", "ad_type",
-                                ToString(ad_history_item.type));
-      SCOPED_CRASH_KEY_STRING64("Issue43328", "confirmation_type",
-                                ToString(ad_history_item.confirmation_type));
-      SCOPED_CRASH_KEY_STRING64("Issue43328", "creative_instance_id",
-                                ad_history_item.creative_instance_id);
-      SCOPED_CRASH_KEY_STRING64("Issue43328", "advertiser_id",
-                                ad_history_item.advertiser_id);
-      SCOPED_CRASH_KEY_STRING64("Issue43328", "segment",
-                                ad_history_item.segment);
-      SCOPED_CRASH_KEY_STRING64("Issue43328", "failure_reason",
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "type",
+                            ad_history_item.type != mojom::AdType::kUndefined);
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "confirmation_type",
+                            ad_history_item.confirmation_type !=
+                                mojom::ConfirmationType::kUndefined);
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "placement_id",
+                            !ad_history_item.placement_id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
+                            !ad_history_item.creative_instance_id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_set_id",
+                            !ad_history_item.creative_set_id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "campaign_id",
+                            !ad_history_item.campaign_id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "advertiser_id",
+                            !ad_history_item.advertiser_id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "segment",
+                            !ad_history_item.segment.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "title",
+                            !ad_history_item.title.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "description",
+                            !ad_history_item.description.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "target_url",
+                            ad_history_item.target_url.is_valid());
+      SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
                                 "Invalid ad history item");
       base::debug::DumpWithoutCrashing();
-
       BLOG(0, "Invalid ad history item");
       continue;
     }
@@ -211,7 +206,46 @@ AdHistory::AdHistory() : batch_size_(kDefaultBatchSize) {}
 
 void AdHistory::Save(const AdHistoryList& ad_history,
                      ResultCallback callback) const {
-  if (ad_history.empty()) {
+  AdHistoryList filtered_ad_history;
+  std::copy_if(
+      ad_history.cbegin(), ad_history.cend(),
+      std::back_inserter(filtered_ad_history),
+      [](const AdHistoryItemInfo& ad_history_item) {
+        const bool is_valid = ad_history_item.IsValid();
+        if (!is_valid) {
+          SCOPED_CRASH_KEY_BOOL(
+              "Issue45296", "type",
+              ad_history_item.type != mojom::AdType::kUndefined);
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "confirmation_type",
+                                ad_history_item.confirmation_type !=
+                                    mojom::ConfirmationType::kUndefined);
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "placement_id",
+                                !ad_history_item.placement_id.empty());
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
+                                !ad_history_item.creative_instance_id.empty());
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_set_id",
+                                !ad_history_item.creative_set_id.empty());
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "campaign_id",
+                                !ad_history_item.campaign_id.empty());
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "advertiser_id",
+                                !ad_history_item.advertiser_id.empty());
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "segment",
+                                !ad_history_item.segment.empty());
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "title",
+                                !ad_history_item.title.empty());
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "description",
+                                !ad_history_item.description.empty());
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "target_url",
+                                ad_history_item.target_url.is_valid());
+          SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
+                                    "Invalid ad history item");
+          base::debug::DumpWithoutCrashing();
+          BLOG(0, "Invalid ad history item");
+        }
+
+        return is_valid;
+      });
+  if (filtered_ad_history.empty()) {
     return std::move(callback).Run(/*success=*/true);
   }
 
@@ -219,7 +253,7 @@ void AdHistory::Save(const AdHistoryList& ad_history,
       mojom::DBTransactionInfo::New();
 
   const std::vector<AdHistoryList> batches =
-      SplitVector(ad_history, batch_size_);
+      SplitVector(filtered_ad_history, batch_size_);
 
   for (const auto& batch : batches) {
     Insert(mojom_db_transaction, batch);
@@ -485,10 +519,7 @@ void AdHistory::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 void AdHistory::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                        const AdHistoryList& ad_history) const {
   CHECK(mojom_db_transaction);
-
-  if (ad_history.empty()) {
-    return;
-  }
+  CHECK(!ad_history.empty());
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
