@@ -612,7 +612,7 @@ class Patchfile:
 
 
 @dataclass(frozen=True)
-class PatchfilesContinuation:
+class ApplyPatchesRecord:
     """A class to hold the continuation data for patches.
     """
 
@@ -629,6 +629,32 @@ class PatchfilesContinuation:
 
     # A list of patches that fail entirely when running apply with `--3way`.
     broken_patches: list[Patchfile] = field(default_factory=list)
+
+    def requires_conflict_resolution(self):
+        """Checks if there are any patches that require manual conflict
+        resolution.
+
+        This function is used to determine it is necessary to stop the process
+        to address any potential patch changes.
+        """
+        return (self.files_with_conflicts or self.patches_to_deleted_files
+                or self.broken_patches)
+
+    def stage_all_patches(self, ignore_deleted_files=False):
+        """Stages all patches that were applied, so they can be committed as
+        conflict-resolved patches.
+
+        Args:
+            ignore_deleted_files:
+                If set to True, deleted files will be ignored, and not staged.
+        """
+        for _, patches in self.patch_files.items():
+            for patch in patches:
+                if (ignore_deleted_files and not Path(patch.path).exists()):
+                    # Skip deleted files.
+                    continue
+
+                repository.brave.run_git('add', patch.path)
 
 
 @dataclass(frozen=True)
@@ -653,7 +679,7 @@ class ContinuationFile:
     has_shown_advisory: bool = False
 
     # The continuation data for the patches.
-    patches: Optional[PatchfilesContinuation] = field(default=None)
+    apply_record: Optional[ApplyPatchesRecord] = field(default=None)
 
     @staticmethod
     def load(target_version: Version,
@@ -713,206 +739,6 @@ class ContinuationFile:
             Path(VERSION_UPGRADE_FILE).unlink()
         except FileNotFoundError:
             pass
-
-
-class PatchFailureResolver:
-    """Assist patch-failure resolutions, applying patches, reseting patches.
-
-    This class provides methods to assist with patch failures, including:
-    - Applying patches with `--3way`.
-    - Resetting patches that have been applied.
-    - Reporting on deleted/renamed source files.
-    - Reporting on broken patches.
-
-    This class uses a continuation file to allow for multisession patch
-    resolution.
-  """
-
-    def __init__(self, continuation: Optional[ContinuationFile] = None):
-        # A dictionary that holds a list for all patch files affected, by
-        # repository.
-        self.patch_files = {}
-
-        # This is a flat of list of patches that cannot be applied due to their
-        # source file being deleted.
-        self.patches_to_deleted_files = []
-
-        # A list of files that require manual conflict resolution before
-        # continuing.
-        self.files_with_conflicts = []
-
-        # These are patches that fail entirely when running apply with `--3way`.
-        self.broken_patches = []
-
-        if continuation is not None:
-            # Load it from the continuation file.
-            self.patch_files = continuation.patches.patch_files
-            self.patches_to_deleted_files = (
-                continuation.patches.patches_to_deleted_files)
-            self.files_with_conflicts = (
-                continuation.patches.files_with_conflicts)
-            self.broken_patches = continuation.patches.broken_patches
-
-    def apply_patches_3way(self,
-                           target_version: Version,
-                           launch_vscode: bool = False):
-        """Applies patches that have failed using the --3way option to allow for
-        manual conflict resolution.
-
-        This method will apply the patches and reset the state of applied
-        patches. Additionally, it will also produce a list of the files that
-        are waiting for conflict resolution.
-
-        A list of the patches applied will be produced as well.
-        """
-        if self.patch_files:
-            raise NotImplementedError(
-                'unreachable: 3way apply should happen only once.')
-
-        # the raw list of patches that failed to apply.
-        patch_failures = _get_apply_patches_list()
-        if patch_failures is None:
-            raise ValueError(
-                'Apply patches failed to provide a list of patches.')
-
-        for entry in patch_failures:
-            patch = Patchfile(path=PurePath(entry['patchPath']),
-                              provided_source=entry.get('path'))
-
-            if entry['reason'] == 'SRC_REMOVED':
-                # Skip patches that can't apply as the source is gone.
-                self.patches_to_deleted_files.append(patch)
-                continue
-
-            # Grouping patch files by their repositories, so to allow us to
-            # iterate through them, applying them in their repo paths.
-            self.patch_files.setdefault(patch.repository, []).append(patch)
-
-        if self.patch_files:
-            terminal.log_task(
-                '[bold]Reapplying patch files with --3way:\n[/]%s' %
-                '\n'.join(f'    * {file}' for file in [
-                    patch.path for patch_list in self.patch_files.values()
-                    for patch in patch_list
-                ]))
-
-        vscode_args = ['code']
-        for repo, patches in self.patch_files.items():
-            for patch in patches:
-                apply_result = patch.apply()
-                if apply_result.status == Patchfile.ApplyStatus.CONFLICT:
-                    source = patch.source_from_brave()
-                    self.files_with_conflicts.append(source)
-                elif apply_result.status == Patchfile.ApplyStatus.BROKEN:
-                    self.broken_patches.append(patch)
-                elif apply_result.status == Patchfile.ApplyStatus.DELETED:
-                    self.patches_to_deleted_files.append(patch)
-
-        for repo, patches in self.patch_files.items():
-            # Resetting any staged states from apply patches as that can cause
-            # issues when generating patches.
-            repo.unstage_all_changes()
-
-        if self.patches_to_deleted_files:
-            # The goal in this this section is print a report for listing every
-            # patch that cannot apply anymore because the source file is gone,
-            # fetching from git the commit and the reason why exactly the file
-            # is not there anymore (e.g. renamed, deleted).
-
-            terminal.log_task('[bold]Files that cannot be patched anymore '
-                              f'{ACTION_NEEDED_DECORATOR}:[/]')
-
-            # This set will hold the information about the deleted patches
-            # in a way that they can be grouped around the chang that caused
-            # their removal.
-            deletion_report = {}
-
-            for patch in self.patches_to_deleted_files:
-                # Make sure we have an correct file source for the patch.
-                patch = patch.fetch_source_from_git()
-                # Finding the culptrit commit hash.
-                commit = patch.get_last_commit_for_source()
-                deletion_report.setdefault(
-                    commit,
-                    {})[patch] = patch.get_source_removal_status(commit)
-
-            for commit, patches in deletion_report.items():
-                for patch, status in patches.items():
-                    if status.status == 'D':
-                        console.log(
-                            Padding(f'✘ {patch.source()} [red bold](deleted)',
-                                    (0, 4)))
-                        vscode_args.append(patch.path)
-                    elif status.status == 'R':
-                        renamed_to = patch.repository.from_brave(
-                        ) / status.renamed_to
-                        console.log(
-                            Padding(
-                                f'✘ {patch.source_from_brave()}\n    '
-                                f'([yellow bold]renamed to[/] {renamed_to})',
-                                (0, 4)))
-                        vscode_args += [patch.path, renamed_to]
-
-            # Printing the commmit message for the grouped changes.
-            console.log(
-                Padding(f'{next(iter(patches.items()))[1].commit_details}\n',
-                        (0, 8),
-                        style="dim"))
-
-        if self.broken_patches:
-            terminal.log_task(
-                '[bold]Broken patches that fail to apply entirely '
-                f'{ACTION_NEEDED_DECORATOR}:[/]')
-
-            for patch in self.broken_patches:
-                source = patch.source_from_brave()
-                console.log(Padding(f'✘ {patch.path} ➜ {source}', (0, 4)))
-                vscode_args += [patch.path, source]
-
-        if self.files_with_conflicts:
-            vscode_args += self.files_with_conflicts
-            file_list = '\n'.join(f'    ✘ {file}'
-                                  for file in self.files_with_conflicts)
-            terminal.log_task(f'[bold]Manually resolve conflicts for '
-                              f'{ACTION_NEEDED_DECORATOR}:[/]\n{file_list}')
-
-        # The continuation file is updated at the end of the process, in case
-        # the process has to be continued later.
-        replace(ContinuationFile.load(target_version=target_version),
-                patches=PatchfilesContinuation(
-                    patch_files=self.patch_files,
-                    patches_to_deleted_files=self.patches_to_deleted_files,
-                    files_with_conflicts=self.files_with_conflicts,
-                    broken_patches=self.broken_patches)).save()
-
-        if launch_vscode and len(vscode_args) > 1:
-            try:
-                terminal.run(vscode_args)
-            except subprocess.CalledProcessError as e:
-                logging.error(
-                    'Failed to launch VSCode with the following args: %s\n%s',
-                    ' '.join(vscode_args), e.stderr)
-
-    def requires_conflict_resolution(self):
-        return (self.files_with_conflicts or self.patches_to_deleted_files
-                or self.broken_patches)
-
-    def stage_all_patches(self, ignore_deleted_files=False):
-        """Stages all patches that were applied, so they can be committed as
-        conflict-resolved patches.
-
-        Args:
-            ignore_deleted_files:
-                If set to True, deleted files will be ignored, and not staged.
-        """
-        for _, patches in self.patch_files.items():
-            for patch in patches:
-                if (ignore_deleted_files and not Path(patch.path).exists()):
-                    # Skip deleted files.
-                    continue
-
-                repository.brave.run_git('add', patch.path)
-
 
 class Task:
     """ Base class for all tasks in brockit.
@@ -1319,6 +1145,164 @@ class Upgrade(Versioned):
     def status_message(self):
         return "Upgrading Chromium base version"
 
+    def apply_patches_3way(self,
+                           launch_vscode: bool = False) -> ApplyPatchesRecord:
+        """Applies patches that have failed using the --3way option to allow for
+        manual conflict resolution.
+
+        This method will apply the patches and reset the state of applied
+        patches. Additionally, it will also produce a list of the files that
+        are waiting for conflict resolution.
+
+        A list of the patches applied will be produced as well.
+        """
+        # A dictionary that holds a list for all patch files affected, by
+        # repository.
+        patch_files = {}
+
+        # This is a flat of list of patches that cannot be applied due to their
+        # source file being deleted.
+        patches_to_deleted_files = []
+
+        # A list of files that require manual conflict resolution before
+        # continuing.
+        files_with_conflicts = []
+
+        # These are patches that fail entirely when running apply with `--3way`.
+        broken_patches = []
+
+        if patch_files:
+            raise NotImplementedError(
+                'unreachable: 3way apply should happen only once.')
+
+        # the raw list of patches that failed to apply.
+        patch_failures = _get_apply_patches_list()
+        if patch_failures is None:
+            raise ValueError(
+                'Apply patches failed to provide a list of patches.')
+
+        for entry in patch_failures:
+            patch = Patchfile(path=PurePath(entry['patchPath']),
+                              provided_source=entry.get('path'))
+
+            if entry['reason'] == 'SRC_REMOVED':
+                # Skip patches that can't apply as the source is gone.
+                patches_to_deleted_files.append(patch)
+                continue
+
+            # Grouping patch files by their repositories, so to allow us to
+            # iterate through them, applying them in their repo paths.
+            patch_files.setdefault(patch.repository, []).append(patch)
+
+        if patch_files:
+            terminal.log_task(
+                '[bold]Reapplying patch files with --3way:\n[/]%s' %
+                '\n'.join(f'    * {file}' for file in [
+                    patch.path for patch_list in patch_files.values()
+                    for patch in patch_list
+                ]))
+
+        vscode_args = ['code']
+        for repo, patches in patch_files.items():
+            for patch in patches:
+                apply_result = patch.apply()
+                if apply_result.status == Patchfile.ApplyStatus.CONFLICT:
+                    source = patch.source_from_brave()
+                    files_with_conflicts.append(source)
+                elif apply_result.status == Patchfile.ApplyStatus.BROKEN:
+                    broken_patches.append(patch)
+                elif apply_result.status == Patchfile.ApplyStatus.DELETED:
+                    patches_to_deleted_files.append(patch)
+
+        for repo, patches in patch_files.items():
+            # Resetting any staged states from apply patches as that can cause
+            # issues when generating patches.
+            repo.unstage_all_changes()
+
+        if patches_to_deleted_files:
+            # The goal in this this section is print a report for listing every
+            # patch that cannot apply anymore because the source file is gone,
+            # fetching from git the commit and the reason why exactly the file
+            # is not there anymore (e.g. renamed, deleted).
+
+            terminal.log_task('[bold]Files that cannot be patched anymore '
+                              f'{ACTION_NEEDED_DECORATOR}:[/]')
+
+            # This set will hold the information about the deleted patches
+            # in a way that they can be grouped around the chang that caused
+            # their removal.
+            deletion_report = {}
+
+            for patch in patches_to_deleted_files:
+                # Make sure we have an correct file source for the patch.
+                patch = patch.fetch_source_from_git()
+                # Finding the culptrit commit hash.
+                commit = patch.get_last_commit_for_source()
+                deletion_report.setdefault(
+                    commit,
+                    {})[patch] = patch.get_source_removal_status(commit)
+
+            for commit, patches in deletion_report.items():
+                for patch, status in patches.items():
+                    if status.status == 'D':
+                        console.log(
+                            Padding(f'✘ {patch.source()} [red bold](deleted)',
+                                    (0, 4)))
+                        vscode_args.append(patch.path)
+                    elif status.status == 'R':
+                        renamed_to = patch.repository.from_brave(
+                        ) / status.renamed_to
+                        console.log(
+                            Padding(
+                                f'✘ {patch.source_from_brave()}\n    '
+                                f'([yellow bold]renamed to[/] {renamed_to})',
+                                (0, 4)))
+                        vscode_args += [patch.path, renamed_to]
+
+            # Printing the commmit message for the grouped changes.
+            console.log(
+                Padding(f'{next(iter(patches.items()))[1].commit_details}\n',
+                        (0, 8),
+                        style="dim"))
+
+        if broken_patches:
+            terminal.log_task(
+                '[bold]Broken patches that fail to apply entirely '
+                f'{ACTION_NEEDED_DECORATOR}:[/]')
+
+            for patch in broken_patches:
+                source = patch.source_from_brave()
+                console.log(Padding(f'✘ {patch.path} ➜ {source}', (0, 4)))
+                vscode_args += [patch.path, source]
+
+        if files_with_conflicts:
+            vscode_args += files_with_conflicts
+            file_list = '\n'.join(f'    ✘ {file}'
+                                  for file in files_with_conflicts)
+            terminal.log_task(f'[bold]Manually resolve conflicts for '
+                              f'{ACTION_NEEDED_DECORATOR}:[/]\n{file_list}')
+
+        if launch_vscode and len(vscode_args) > 1:
+            try:
+                terminal.run(vscode_args)
+            except subprocess.CalledProcessError as e:
+                logging.error(
+                    'Failed to launch VSCode with the following args: %s\n%s',
+                    ' '.join(vscode_args), e.stderr)
+
+        # The continuation file is updated at the end of the process, in case
+        # the process has to be continued later.
+        apply_record = ApplyPatchesRecord(
+            patch_files=patch_files,
+            patches_to_deleted_files=patches_to_deleted_files,
+            files_with_conflicts=files_with_conflicts,
+            broken_patches=broken_patches)
+
+        replace(ContinuationFile.load(target_version=self.target_version),
+                apply_record=apply_record).save()
+
+        return apply_record
+
     def _update_package_version(self):
         """Creates the change upgrading the Chromium version
 
@@ -1638,14 +1622,14 @@ class Upgrade(Versioned):
         if not no_conflict_continuation:
             # There's no need to try to create a `conflict-resolved` commit if
             # all changes have already been committed during the run's break.
-            resolver = PatchFailureResolver(
-                ContinuationFile.load(self.target_version))
+            continuation = ContinuationFile.load(self.target_version)
 
-            if resolver.requires_conflict_resolution():
+            if continuation.apply_record.requires_conflict_resolution():
                 if not self._run_update_patches_with_no_deletions():
                     return False
 
-            resolver.stage_all_patches(ignore_deleted_files=True)
+            continuation.apply_record.stage_all_patches(
+                ignore_deleted_files=True)
 
             if not repository.brave.has_staged_changed():
                 logging.error(
@@ -1733,10 +1717,9 @@ class Upgrade(Versioned):
             if (e.returncode != 0
                     and 'Exiting as not all patches were successful!'
                     in e.stderr.splitlines()[-1]):
-                resolver = PatchFailureResolver()
-                resolver.apply_patches_3way(target_version=self.target_version,
-                                            launch_vscode=launch_vscode)
-                if resolver.requires_conflict_resolution():
+                apply_record = self.apply_patches_3way(
+                    launch_vscode=launch_vscode)
+                if apply_record.requires_conflict_resolution():
                     # Manual resolution required.
                     console.log(
                         '👋 (Address all sections with '
@@ -1748,7 +1731,7 @@ class Upgrade(Versioned):
                 if not self._run_update_patches_with_no_deletions():
                     return False
 
-                resolver.stage_all_patches()
+                apply_record.stage_all_patches()
                 self._save_conflict_resolved_patches()
 
                 # With all conflicts resolved, it is necessary to close the
