@@ -53,10 +53,12 @@
 #include "ios/chrome/browser/reading_list/model/reading_list_model_factory.h"
 #include "ios/chrome/browser/safe_browsing/model/safe_browsing_client_factory.h"
 #include "ios/chrome/browser/safe_browsing/model/safe_browsing_metrics_collector_factory.h"
+#include "ios/chrome/browser/saved_tab_groups/model/tab_group_service_factory.h"
 #include "ios/chrome/browser/saved_tab_groups/model/tab_group_sync_service_factory.h"
 #include "ios/chrome/browser/search_engines/model/template_url_service_factory.h"
 #include "ios/chrome/browser/segmentation_platform/model/segmentation_platform_service_factory.h"
 #include "ios/chrome/browser/sessions/model/session_restoration_service_factory.h"
+#include "ios/chrome/browser/share_kit/model/share_kit_service_factory.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list_factory.h"
 #include "ios/chrome/browser/signin/model/account_consistency_service_factory.h"
 #include "ios/chrome/browser/signin/model/account_reconcilor_factory.h"
@@ -140,7 +142,9 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   PowerBookmarkServiceFactory::GetInstance();
   PushNotificationProfileServiceFactory::GetInstance();
   SupervisedUserServiceFactory::GetInstance();
+  ShareKitServiceFactory::GetInstance();
   SyncServiceFactory::GetInstance();
+  TabGroupServiceFactory::GetInstance();
   UnifiedConsentServiceFactory::GetInstance();
   ReadingListModelFactory::GetInstance();
   SafeBrowsingClientFactory::GetInstance();
