@@ -379,6 +379,7 @@ source_set("ui") {
       "//chrome/browser/ui/webui/settings",
       "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings",
       "//chrome/common:channel_info",
+      "//components/autofill/content/browser",
       "//components/bookmarks/common",
       "//components/google/core/common",
       "//components/keyed_service/content",
@@ -1304,6 +1305,7 @@ source_set("ui") {
     ]
     deps += [
       "//brave/browser/brave_wallet:tab_helper",
+      "//brave/browser/resources/settings/email_aliases_page:generated_resources",
       "//brave/browser/resources/settings/shortcuts_page:generated_resources",
       "//brave/browser/ui/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
