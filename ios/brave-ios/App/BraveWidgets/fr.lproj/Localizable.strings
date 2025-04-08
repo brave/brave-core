@@ -1,5 +1,5 @@
 /* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "Marque-pages";
+"widgets.BookmarksMenuItem" = "Favoris";
 
 /* The name of the feature */
 "widgets.braveLeo" = "IA Leo";
@@ -26,7 +26,7 @@
 "widgets.newsClusteringReadMoreButtonTitle" = "En savoir plus";
 
 /* Description for Brave News widgets that display the top news */
-"widgets.newsClusteringWidgetDescription" = "Obtenez les dernières actualités";
+"widgets.newsClusteringWidgetDescription" = "Gardez un œil sur les dernières actualités.";
 
 /* Title for Brave News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "L'essentiel de l'actu";
@@ -41,7 +41,7 @@
 "widgets.searchShortcutTitle" = "Recherche";
 
 /* Description for Brave Shields widget on 'add widget' screen. */
-"widgets.shieldStatsDescription" = "Un résumé de la manière dont Brave vous fait gagner du temps et vous protège en ligne.";
+"widgets.shieldStatsDescription" = "Découvrez comment Brave vous fait gagner du temps et vous protège pendant votre navigation.";
 
 /* Title for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsTitle" = "Statistiques de confidentialité";
@@ -56,22 +56,22 @@
 "widgets.shortcutsNewTabButton" = "Nouvel onglet";
 
 /* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Liste de lecture";
+"widgets.shortcutsPlaylistButton" = "Playlist";
 
 /* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "Onglet privé";
+"widgets.shortcutsPrivateTabButton" = "Onglet de navigation privée";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Accès rapide pour rechercher sur le Web ou ouvrir des pages Web dans Brave.";
+"widgets.shortcutsWidgetDescription" = "Effectuez une recherche sur le Web ou accédez rapidement à vos pages Web dans Brave.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Raccourcis";
 
 /* Description for Brave Shields single stat widget on 'add widget' screen. */
-"widgets.singleStatDescription" = "Un résumé de la manière dont Brave vous a protégé en ligne.";
+"widgets.singleStatDescription" = "Découvrez comment Brave vous a protégé pendant votre navigation.";
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
-"widgets.singleStatTitle" = "Statistique de confidentialité";
+"widgets.singleStatTitle" = "Statistiques de confidentialité";
 
 /* Description for the Brave Wallet option on the 'shortcuts' widget. */
 "widgets.walletShortcutTitle" = "Portefeuille Brave";

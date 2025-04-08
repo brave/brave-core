@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "הפעלה או כיבוי של תצוגת קורא";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "תרגום";
+"TranslatePage" = "תרגום דף";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "להפעיל הצעות חיפוש?";

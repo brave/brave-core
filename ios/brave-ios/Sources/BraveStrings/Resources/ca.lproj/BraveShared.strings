@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Canvia al mode lector";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Traduir";
+"TranslatePage" = "Traduir pàgina";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Vols activar els suggeriments de cerca?";

@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Olvasó mód átkapcsolása";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Fordítás";
+"TranslatePage" = "Oldal lefordítása";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Bekapcsolja a keresési javaslatokat?";

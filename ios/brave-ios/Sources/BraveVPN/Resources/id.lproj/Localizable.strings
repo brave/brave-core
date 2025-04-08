@@ -278,7 +278,7 @@
 "vpn.settingsViewReceipt" = "Lihat Tanda Terima App Store";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
-"vpn.settingsVPNKillSwitchDescription" = "Saat diaktifkan, jika koneksi VPN Anda terputus secara tidak terduga, perangkat Anda otomatis terputus dari internet, untuk mencegah kebocoran Alamat IP dan Data. [Pelajari Selengkapnya](%@)";
+"vpn.settingsVPNKillSwitchDescription" = "Saat diaktifkan, jika koneksi VPN Anda terputus secara tidak terduga, perangkat Anda otomatis terputus dari internet, ini untuk mencegah kebocokan alamat IP dan data. [Pelajari Selengkapnya](%@)";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchTitle" = "Aktifkan Tombol Pemutus";

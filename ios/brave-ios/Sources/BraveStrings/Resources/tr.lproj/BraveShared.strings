@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Okuyucu Modunu Aç/Kapat";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Çevir";
+"TranslatePage" = "Sayfayı Çevir";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Arama önerileri açılsın mı?";

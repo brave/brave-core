@@ -2,10 +2,10 @@
 "0W40Cl" = "Nouvel onglet";
 
 /* (No Comment) */
-"5ixvGX-tYwiRd" = "Il y a ${count} éléments correspondant à « Temps économisé est. ».";
+"5ixvGX-tYwiRd" = "Il y a ${count} éléments correspondant à « Temps gagné estimé ».";
 
 /* (No Comment) */
-"5ixvGX-vjA5pZ" = "Il y a ${count} éléments correspondant à « Données économisées est. ».";
+"5ixvGX-vjA5pZ" = "Il y a ${count} éléments correspondant à « Données économisées estimées ».";
 
 /* (No Comment) */
 "5ixvGX-xcI3h9" = "Il y a ${count} éléments correspondant à « Publicités bloquées ».";
@@ -17,7 +17,7 @@
 "7JYzOv" = "Type";
 
 /* (No Comment) */
-"7MuqiB" = "Raccourci";
+"7MuqiB" = "Raccourcis";
 
 /* (No Comment) */
 "8pcZ6L" = "Widget des favoris sur l'écran de verrouillage";
@@ -35,7 +35,7 @@
 "bUXzTx" = "Type de statistique";
 
 /* (No Comment) */
-"crhbMy" = "Marque-pages";
+"crhbMy" = "Favoris";
 
 /* (No Comment) */
 "D5r3nt" = "URL";
@@ -65,7 +65,7 @@
 "e13lS3-VBH4G6" = "Vouliez-vous dire « Historique » ?";
 
 /* (No Comment) */
-"e13lS3-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
+"e13lS3-vs094F" = "Vouliez-vous dire « Nouvel onglet de navigation privée » ?";
 
 /* (No Comment) */
 "e13lS3-XCyA8c" = "Vouliez-vous dire « Actualités Brave » ?";
@@ -101,7 +101,7 @@
 "EvESs0-VBH4G6" = "Vouliez-vous dire « Historique » ?";
 
 /* (No Comment) */
-"EvESs0-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
+"EvESs0-vs094F" = "Vouliez-vous dire « Nouvel onglet de navigation privée » ?";
 
 /* (No Comment) */
 "EvESs0-XCyA8c" = "Vouliez-vous dire « Actualités Brave » ?";
@@ -152,7 +152,7 @@
 "L1fziM-VBH4G6" = "Il y a ${count} éléments correspondant à « Historique ».";
 
 /* (No Comment) */
-"L1fziM-vs094F" = "Il y a ${count} éléments correspondant à « Nouvel onglet privé ».";
+"L1fziM-vs094F" = "Il y a ${count} éléments correspondant à « Nouvel onglet de navigation privée ».";
 
 /* (No Comment) */
 "L1fziM-XCyA8c" = "Il y a ${count} éléments correspondant à « Actualités Brave ».";
@@ -161,7 +161,7 @@
 "L1fziM-Y7TWy8" = "Il y a ${count} éléments correspondant à « Recherche ».";
 
 /* (No Comment) */
-"M2Y1rg" = "#4";
+"M2Y1rg" = "Nº 4";
 
 /* (No Comment) */
 "nthxSL" = "Téléchargements";
@@ -197,7 +197,7 @@
 "r2EI05-VBH4G6" = "Vouliez-vous dire « Historique » ?";
 
 /* (No Comment) */
-"r2EI05-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
+"r2EI05-vs094F" = "Vouliez-vous dire « Nouvel onglet de navigation privée » ?";
 
 /* (No Comment) */
 "r2EI05-XCyA8c" = "Vouliez-vous dire « Actualités Brave » ?";
@@ -206,10 +206,10 @@
 "r2EI05-Y7TWy8" = "Vouliez-vous dire « Recherche » ?";
 
 /* (No Comment) */
-"sdOBtj-tYwiRd" = "Vouliez-vous dire « Temps économisé est. » ?";
+"sdOBtj-tYwiRd" = "Vouliez-vous dire « Temps économisé estimé » ?";
 
 /* (No Comment) */
-"sdOBtj-vjA5pZ" = "Vouliez-vous dire « Données économisées est. » ?";
+"sdOBtj-vjA5pZ" = "Vouliez-vous dire « Données économisées estimées » ?";
 
 /* (No Comment) */
 "sdOBtj-xcI3h9" = "Vouliez-vous dire « Publicités bloquées » ?";
@@ -239,7 +239,7 @@
 "tNCrcE-VBH4G6" = "Il y a ${count} éléments correspondant à « Historique ».";
 
 /* (No Comment) */
-"tNCrcE-vs094F" = "Il y a ${count} éléments correspondant à « Nouvel onglet privé ».";
+"tNCrcE-vs094F" = "Il y a ${count} éléments correspondant à « Nouvel onglet de navigation privée ».";
 
 /* (No Comment) */
 "tNCrcE-XCyA8c" = "Il y a ${count} éléments correspondant à « Actualités Brave ».";
@@ -275,7 +275,7 @@
 "TxuMja-VBH4G6" = "Il y a ${count} éléments correspondant à « Historique ».";
 
 /* (No Comment) */
-"TxuMja-vs094F" = "Il y a ${count} éléments correspondant à « Nouvel onglet privé ».";
+"TxuMja-vs094F" = "Il y a ${count} éléments correspondant à « Nouvel onglet de navigation privée ».";
 
 /* (No Comment) */
 "TxuMja-XCyA8c" = "Il y a ${count} éléments correspondant à « Actualités Brave ».";
@@ -284,7 +284,7 @@
 "TxuMja-Y7TWy8" = "Il y a ${count} éléments correspondant à « Recherche ».";
 
 /* (No Comment) */
-"tYwiRd" = "Temps gagné est.";
+"tYwiRd" = "Temps gagné estimé";
 
 /* (No Comment) */
 "U0eRbw" = "IA Leo";
@@ -293,7 +293,7 @@
 "VBH4G6" = "Historique";
 
 /* (No Comment) */
-"vjA5pZ" = "Données économisées est.";
+"vjA5pZ" = "Données économisées estimées";
 
 /* (No Comment) */
 "vs094F" = "Nouvel onglet de navigation privée";
@@ -335,7 +335,7 @@
 "YQiQuz-VBH4G6" = "Vouliez-vous dire « Historique » ?";
 
 /* (No Comment) */
-"YQiQuz-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
+"YQiQuz-vs094F" = "Vouliez-vous dire « Nouvel onglet de navigation privée » ?";
 
 /* (No Comment) */
 "YQiQuz-XCyA8c" = "Vouliez-vous dire « Actualités Brave » ?";
@@ -368,7 +368,7 @@
 "z517nu-VBH4G6" = "Il y a ${count} éléments correspondant à « Historique ».";
 
 /* (No Comment) */
-"z517nu-vs094F" = "Il y a ${count} éléments correspondant à « Nouvel onglet privé ».";
+"z517nu-vs094F" = "Il y a ${count} éléments correspondant à « Nouvel onglet de navigation privée ».";
 
 /* (No Comment) */
 "z517nu-XCyA8c" = "Il y a ${count} éléments correspondant à « Actualités Brave ».";

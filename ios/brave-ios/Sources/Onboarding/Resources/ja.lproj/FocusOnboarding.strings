@@ -2,10 +2,10 @@
 "focusOnboarding.continueButtonTitle" = "続ける";
 
 /* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "タップしたリンクをプライバシー保護のBraveで開きます";
+"focusOnboarding.defaultBrowserScreenDescription" = "Braveを今すぐデフォルトブラウザに設定。";
 
 /* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Braveをデフォルトブラウザに設定しましょう";
+"focusOnboarding.defaultBrowserScreenTitle" = "アクセスするすべてのサイトで広告をブロック";
 
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "後で";
@@ -16,20 +16,17 @@
 /* The title of the screen that shows ads embeded in video are blocked */
 "focusOnboarding.noVideoAdsScreenTitle" = "ストリーミングを中断する広告をブロック";
 
-/* The title of the button that opens the website abouyt privacy preserving analytics. */
-"focusOnboarding.p3aInformationButtonTitle" = "プライバシーを保護したプロダクト分析 (P3A) について詳細はこちら";
-
 /* The subtitle of the screen that asks user to enable privacy preserving analytics. */
 "focusOnboarding.p3aScreenDescription" = "お気に入りの機能についてご意見をお聞かせください";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
 "focusOnboarding.p3aScreenTitle" = "Braveは進化を続けます";
 
-/* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "この設定は \"Brave Shields & プライバシー\" でいつでも変更できます";
+/* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
+"focusOnboarding.p3aToggleDescription" = "この設定は ** Shields & プライバシー** でいつでもオプトアウトできます。P3A（プライバシー保護製品分析）の[詳細はこちら]（#p3a-learn-more）をご覧ください。";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "プライバシーを保護した匿名のプロダクト分析を共有します。";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "この設定は ** Shields & プライバシー** でいつでもオプトアウトできます。P3A（プライバシー保護製品分析）の[詳細はこちら]（#p3a-learn-more）をご覧ください。";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "ブラウジングを開始する";
