@@ -340,6 +340,7 @@ public abstract class BraveActivity extends ChromeActivity
     private View mQuickSearchEnginesView;
 
     private SearchWidgetPromoPanel mSearchWidgetPromoPanel;
+
     /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
         public BraveActivityNotFoundException(String message) {

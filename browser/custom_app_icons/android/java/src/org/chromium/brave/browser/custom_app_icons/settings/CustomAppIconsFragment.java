@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.brave.browser.custom_app_icons.R;
-import org.chromium.brave.browser.utils.confirm_dialog.BraveConfirmationDialog;
-import org.chromium.brave.browser.utils.confirm_dialog.OnConfirmationDialogListener;
+import org.chromium.brave.browser.custom_app_icons.confirm_dialog.BraveConfirmationDialog;
+import org.chromium.brave.browser.custom_app_icons.confirm_dialog.OnConfirmationDialogListener;
 
 public class CustomAppIconsFragment extends Fragment implements CustomAppIconsListener {
     private static final String TAG = "CustomAppIconsFragment";
