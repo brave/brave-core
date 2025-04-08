@@ -25,5 +25,5 @@ class OmniboxAutocompleteUnitTest : public testing::Test {
 };
 
 TEST_F(OmniboxAutocompleteUnitTest, TopSiteSuggestionsEnabledTest) {
-  EXPECT_TRUE(prefs()->GetBoolean(omnibox::kTopSiteSuggestionsEnabled));
+  EXPECT_TRUE(prefs()->GetBoolean(omnibox::kTopSuggestionsEnabled));
 }

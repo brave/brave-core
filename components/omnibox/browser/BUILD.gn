@@ -22,6 +22,7 @@ source_set("unit_tests") {
     "//brave/components/omnibox/browser/on_device_head_provider_unittest.cc",
     "//brave/components/omnibox/browser/topsites_provider_unittest.cc",
     "brave_autocomplete_result_unittest.cc",
+    "brave_on_device_head_provider_unittest.cc",
     "brave_search_suggestion_parser_unittest.cc",
     "promotion_unittest.cc",
   ]
