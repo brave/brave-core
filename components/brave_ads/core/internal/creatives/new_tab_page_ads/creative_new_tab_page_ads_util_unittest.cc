@@ -3,21 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
 
 #include <utility>
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
+#include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsCreativeNewTabPageAdsDatabaseUtilTest : public test::TestBase {};
+class BraveAdsCreativeNewTabPageAdsUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseUtilTest, ParseAndSaveCreativeAds) {
+TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest, ParseAndSaveAds) {
   // Arrange
   base::Value::Dict dict = base::test::ParseJsonDict(R"JSON(
       {
@@ -109,23 +113,76 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseUtilTest, ParseAndSaveCreativeAds) {
       })JSON");
 
   // Act & Assert
-  EXPECT_TRUE(database::ParseAndSaveCreativeNewTabPageAds(std::move(dict)));
+  base::MockCallback<ResultCallback> callback;
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  ParseAndSaveNewTabPageAds(std::move(dict), callback.Get());
+  run_loop.Run();
 }
 
-TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseUtilTest,
-       DoNotParseAndSaveCreativeAdsWithEmptyData) {
+TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
+       ParseAndSaveAdsWithEmptyCampaigns) {
+  // Arrange
+  base::Value::Dict dict = base::test::ParseJsonDict(R"JSON(
+      {
+        "schemaVersion": 2,
+        "campaigns": []
+      })JSON");
+
   // Act & Assert
-  EXPECT_FALSE(
-      database::ParseAndSaveCreativeNewTabPageAds(base::Value::Dict()));
+  base::MockCallback<ResultCallback> callback;
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  ParseAndSaveNewTabPageAds(std::move(dict), callback.Get());
+  run_loop.Run();
 }
 
-TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseUtilTest,
-       DoNotParseAndSaveCreativeAdsWithMissingCampaigns) {
-  base::Value::Dict dict =
-      base::test::ParseJsonDict(R"JSON({"schemaVersion": 2})JSON");
+TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
+       DoNotParseAndSaveAdsWithInvalidData) {
+  // Act & Assert
+  base::MockCallback<ResultCallback> callback;
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/false))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  ParseAndSaveNewTabPageAds(base::Value::Dict(), callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
+       DoNotParseAndSaveAdsWithUnsupportedSchemaVersion) {
+  // Arrange
+  base::Value::Dict dict = base::test::ParseJsonDict(R"JSON(
+      {
+        "schemaVersion": 0,
+        "campaigns": []
+      })JSON");
 
   // Act & Assert
-  EXPECT_FALSE(database::ParseAndSaveCreativeNewTabPageAds(std::move(dict)));
+  base::MockCallback<ResultCallback> callback;
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/false))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  ParseAndSaveNewTabPageAds(std::move(dict), callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
+       DoNotParseAndSaveAdsWithMissingCampaigns) {
+  // Arrange
+  base::Value::Dict dict = base::test::ParseJsonDict(R"JSON(
+      {
+        "schemaVersion": 2,
+      })JSON");
+
+  // Act & Assert
+  base::MockCallback<ResultCallback> callback;
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/false))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  ParseAndSaveNewTabPageAds(std::move(dict), callback.Get());
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

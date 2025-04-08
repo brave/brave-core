@@ -7,23 +7,25 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 
 namespace brave_ads::test {
 
-NewTabPageAdInfo BuildNewTabPageAd(bool should_generate_random_uuids) {
-  const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd(
-      CreativeNewTabPageAdWallpaperType::kImage, should_generate_random_uuids);
+NewTabPageAdInfo BuildNewTabPageAd(
+    CreativeNewTabPageAdWallpaperType wallpaper_type,
+    bool should_generate_random_uuids) {
+  const CreativeNewTabPageAdInfo creative_ad =
+      BuildCreativeNewTabPageAd(wallpaper_type, should_generate_random_uuids);
   return BuildNewTabPageAd(creative_ad);
 }
 
-NewTabPageAdInfo BuildAndSaveNewTabPageAd(bool should_generate_random_uuids) {
-  const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd(
-      CreativeNewTabPageAdWallpaperType::kImage, should_generate_random_uuids);
-  database::SaveCreativeNewTabPageAds({creative_ad});
+NewTabPageAdInfo BuildAndSaveNewTabPageAd(
+    CreativeNewTabPageAdWallpaperType wallpaper_type,
+    bool should_generate_random_uuids) {
+  const CreativeNewTabPageAdInfo creative_ad =
+      BuildCreativeNewTabPageAd(wallpaper_type, should_generate_random_uuids);
+  SaveCreativeNewTabPageAds({creative_ad});
   return BuildNewTabPageAd(creative_ad);
 }
 

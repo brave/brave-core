@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -29,7 +28,7 @@ class BraveAdsCreativeNewTabPageAdsDatabaseTableTest : public test::TestBase {
 
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, SaveEmpty) {
   // Act
-  database::SaveCreativeNewTabPageAds({});
+  test::SaveCreativeNewTabPageAds({});
 
   // Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
@@ -49,7 +48,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, Save) {
           CreativeNewTabPageAdWallpaperType::kImage, /*count=*/2);
 
   // Act
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
@@ -72,7 +71,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, SaveInBatches) {
           CreativeNewTabPageAdWallpaperType::kImage, /*count=*/3);
 
   // Act
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
@@ -92,10 +91,10 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, DoNotSaveDuplicates) {
   const CreativeNewTabPageAdList creative_ads =
       test::BuildCreativeNewTabPageAds(
           CreativeNewTabPageAdWallpaperType::kImage, /*count=*/1);
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
@@ -124,7 +123,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForImageSegments) {
   creative_ad_2.segment = "technology & computing";
   creative_ads.push_back(creative_ad_2);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
@@ -155,7 +154,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   creative_ad_2.segment = "technology & computing";
   creative_ads.push_back(creative_ad_2);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
@@ -188,7 +187,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   creative_ad_2.segment = "technology & computing";
   creative_ads.push_back(creative_ad_2);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
@@ -218,7 +217,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
           /*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
@@ -238,7 +237,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   const CreativeNewTabPageAdList creative_ads =
       test::BuildCreativeNewTabPageAds(
           CreativeNewTabPageAdWallpaperType::kImage, /*count=*/1);
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
@@ -274,7 +273,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetForMultipleSegments) {
   creative_ad_3.segment = "automotive";
   creative_ads.push_back(creative_ad_3);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdsCallback>
@@ -306,7 +305,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
                                       /*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
@@ -336,7 +335,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
                                       /*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
@@ -365,7 +364,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
                                       /*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
@@ -396,7 +395,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
                                       /*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
@@ -416,7 +415,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   const CreativeNewTabPageAdList creative_ads =
       test::BuildCreativeNewTabPageAds(
           CreativeNewTabPageAdWallpaperType::kImage, /*count=*/1);
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
@@ -448,7 +447,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   creative_ad_2.end_at = test::DistantFuture();
   creative_ads.push_back(creative_ad_2);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   AdvanceClockBy(base::Milliseconds(1));
 
@@ -483,7 +482,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   creative_ad_2.end_at = test::DistantFuture();
   creative_ads.push_back(creative_ad_2);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   AdvanceClockBy(base::Milliseconds(1));
 
@@ -520,7 +519,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
   creative_ad_2.end_at = test::DistantFuture();
   creative_ads.push_back(creative_ad_2);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   AdvanceClockBy(base::Milliseconds(1));
 

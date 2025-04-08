@@ -46,7 +46,7 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForRewardsUser) {
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "totals": [
                         {
@@ -60,7 +60,7 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForRewardsUser) {
                         }
                       ]
                     }
-                )"),
+                )JSON"),
             user_data);
 }
 
@@ -84,10 +84,10 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataIfNoPaymentTokens) {
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "totals": []
-                    })"),
+                    })JSON"),
             user_data);
 }
 

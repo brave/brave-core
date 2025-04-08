@@ -24,10 +24,10 @@ TEST_F(BraveAdsPageLandUserDataTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "httpResponseStatus": "1xx"
-                    })"),
+                    })JSON"),
             user_data);
 }
 
@@ -38,10 +38,10 @@ TEST_F(BraveAdsPageLandUserDataTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "httpResponseStatus": "2xx"
-                    })"),
+                    })JSON"),
             user_data);
 }
 
@@ -53,10 +53,10 @@ TEST_F(BraveAdsPageLandUserDataTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "httpResponseStatus": "3xx"
-                    })"),
+                    })JSON"),
             user_data);
 }
 
@@ -68,10 +68,10 @@ TEST_F(BraveAdsPageLandUserDataTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "httpResponseStatus": "404"
-                    })"),
+                    })JSON"),
             user_data);
 }
 
@@ -83,10 +83,10 @@ TEST_F(BraveAdsPageLandUserDataTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "httpResponseStatus": "4xx"
-                    })"),
+                    })JSON"),
             user_data);
 }
 
@@ -99,10 +99,10 @@ TEST_F(
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "httpResponseStatus": "500"
-                    })"),
+                    })JSON"),
             user_data);
 }
 
@@ -115,10 +115,10 @@ TEST_F(
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "httpResponseStatus": "5xx"
-                    })"),
+                    })JSON"),
             user_data);
 }
 

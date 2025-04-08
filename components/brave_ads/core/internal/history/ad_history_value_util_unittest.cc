@@ -18,7 +18,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kAdHistoryAsJson[] = R"(
+constexpr char kAdHistoryAsJson[] = R"JSON(
   [
     {
       "adDetailRows": [
@@ -80,7 +80,7 @@ constexpr char kAdHistoryAsJson[] = R"(
       "timestampInMilliseconds": 1348854300000,
       "uuid": "1"
     }
-  ])";
+  ])JSON";
 
 }  // namespace
 

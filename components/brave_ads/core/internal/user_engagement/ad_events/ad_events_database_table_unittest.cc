@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
@@ -144,7 +145,8 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, Get) {
   // Ad event 4: Recorded on 17th June 2024. This ad event should not be
   // included because it is not a notification ad.
   const NewTabPageAdInfo ad_3 =
-      test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
+      test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                              /*should_generate_random_uuids=*/true);
   const AdEventInfo ad_event_4 =
       BuildAdEvent(ad_3, mojom::ConfirmationType::kServedImpression,
                    /*created_at=*/test::Now());
@@ -286,7 +288,8 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForAdType) {
   // Ad event 1: Recorded on 19th March 2024. This ad event should not be
   // included because it will occur outside the expiry window.
   const NewTabPageAdInfo ad_1 =
-      test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
+      test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                              /*should_generate_random_uuids=*/true);
   const AdEventInfo ad_event_1 =
       BuildAdEvent(ad_1, mojom::ConfirmationType::kViewedImpression,
                    /*created_at=*/test::Now());
@@ -307,7 +310,8 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForAdType) {
   // Ad event 3: Recorded on 17th June 2024. This ad event should be included
   // because it occurred within the expiry window.
   const NewTabPageAdInfo ad_3 =
-      test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
+      test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                              /*should_generate_random_uuids=*/true);
   const AdEventInfo ad_event_3 =
       BuildAdEvent(ad_3, mojom::ConfirmationType::kViewedImpression,
                    /*created_at=*/test::Now());
@@ -342,7 +346,8 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   // Ad event 2: Recorded on 19th March 2024. This ad event should not be
   // included because it has a mismatching ad type.
   const NewTabPageAdInfo ad_2 =
-      test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
+      test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                              /*should_generate_random_uuids=*/true);
   const AdEventInfo ad_event_2 =
       BuildAdEvent(ad_2, mojom::ConfirmationType::kViewedImpression,
                    /*created_at=*/test::Now());
@@ -520,7 +525,8 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphanedForType) {
   // Ad event 2: This served impression ad event should not be purged because it
   // has a mismatching ad type.
   const NewTabPageAdInfo ad_2 =
-      test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
+      test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                              /*should_generate_random_uuids=*/true);
 
   const AdEventInfo ad_event_2_served =
       BuildAdEvent(ad_2, mojom::ConfirmationType::kServedImpression,
@@ -577,7 +583,8 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphaned) {
   // Ad event 2: This served impression ad event should be purged because it has
   // a matching placement id.
   const NewTabPageAdInfo ad_2 =
-      test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
+      test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                              /*should_generate_random_uuids=*/true);
 
   const AdEventInfo ad_event_2_served =
       BuildAdEvent(ad_2, mojom::ConfirmationType::kServedImpression,
@@ -635,7 +642,8 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeAllOrphaned) {
   // Ad event 2: This served impression ad event should be purged because it
   // does not have an associated viewed impression ad event.
   const NewTabPageAdInfo ad_2 =
-      test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
+      test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                              /*should_generate_random_uuids=*/true);
 
   const AdEventInfo ad_event_2_served =
       BuildAdEvent(ad_2, mojom::ConfirmationType::kServedImpression,

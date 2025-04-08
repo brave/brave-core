@@ -41,7 +41,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForRewardsUser) {
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "buildChannel": "release",
                       "catalog": [
@@ -55,7 +55,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForRewardsUser) {
                       "segment": "untargeted",
                       "studies": [],
                       "versionNumber": "1.2.3.4"
-                    })"),
+                    })JSON"),
             fixed_user_data);
 }
 

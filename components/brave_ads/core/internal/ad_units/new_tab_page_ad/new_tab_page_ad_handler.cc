@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
@@ -57,6 +58,12 @@ NewTabPageAdHandler::NewTabPageAdHandler(
 }
 
 NewTabPageAdHandler::~NewTabPageAdHandler() = default;
+
+void NewTabPageAdHandler::ParseAndSave(
+    base::Value::Dict dict,
+    ParseAndSaveNewTabPageAdsCallback callback) {
+  ParseAndSaveNewTabPageAds(std::move(dict), std::move(callback));
+}
 
 void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
   if (!UserHasOptedInToNewTabPageAds()) {

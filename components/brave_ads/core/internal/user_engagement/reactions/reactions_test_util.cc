@@ -14,11 +14,11 @@ mojom::ReactionInfoPtr BuildReaction(mojom::AdType mojom_ad_type) {
   mojom::ReactionInfoPtr mojom_reaction = mojom::ReactionInfo::New();
 
   mojom_reaction->mojom_ad_type = mojom_ad_type;
-  mojom_reaction->creative_instance_id = test::kCreativeInstanceId;
-  mojom_reaction->creative_set_id = test::kCreativeSetId;
-  mojom_reaction->campaign_id = test::kCampaignId;
-  mojom_reaction->advertiser_id = test::kAdvertiserId;
-  mojom_reaction->segment = test::kSegment;
+  mojom_reaction->creative_instance_id = kCreativeInstanceId;
+  mojom_reaction->creative_set_id = kCreativeSetId;
+  mojom_reaction->campaign_id = kCampaignId;
+  mojom_reaction->advertiser_id = kAdvertiserId;
+  mojom_reaction->segment = kSegment;
 
   return mojom_reaction;
 }

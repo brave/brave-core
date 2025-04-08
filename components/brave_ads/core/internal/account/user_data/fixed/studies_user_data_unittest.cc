@@ -25,10 +25,10 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataIfNoFieldTrials) {
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "studies": []
-                    })"),
+                    })JSON"),
             user_data);
 }
 
@@ -46,7 +46,7 @@ TEST_F(BraveAdsStudiesUserDataTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "studies": [
                         {
@@ -55,7 +55,7 @@ TEST_F(BraveAdsStudiesUserDataTest,
                         }
                       ]
                     }
-                )"),
+                )JSON"),
             user_data);
 }
 
@@ -77,10 +77,10 @@ TEST_F(BraveAdsStudiesUserDataTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "studies": []
-                    })"),
+                    })JSON"),
             user_data);
 }
 

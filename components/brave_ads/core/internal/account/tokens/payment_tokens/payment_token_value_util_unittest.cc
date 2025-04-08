@@ -17,7 +17,7 @@ namespace brave_ads {
 namespace {
 
 constexpr char kPaymentTokensAsJson[] =
-    R"(
+    R"JSON(
         [
           {
             "ad_type": "ad_notification",
@@ -33,7 +33,7 @@ constexpr char kPaymentTokensAsJson[] =
             "transaction_id": "8b742869-6e4a-490c-ac31-31b49130098a",
             "unblinded_token": "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K"
           }
-        ])";
+        ])JSON";
 
 }  // namespace
 

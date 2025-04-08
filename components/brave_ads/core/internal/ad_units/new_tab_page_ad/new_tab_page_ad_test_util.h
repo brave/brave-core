@@ -6,15 +6,21 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_NEW_TAB_PAGE_AD_NEW_TAB_PAGE_AD_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_NEW_TAB_PAGE_AD_NEW_TAB_PAGE_AD_TEST_UTIL_H_
 
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
+
 namespace brave_ads {
 
 struct NewTabPageAdInfo;
 
 namespace test {
 
-NewTabPageAdInfo BuildNewTabPageAd(bool should_generate_random_uuids);
+NewTabPageAdInfo BuildNewTabPageAd(
+    CreativeNewTabPageAdWallpaperType wallpaper_type,
+    bool should_generate_random_uuids);
 
-NewTabPageAdInfo BuildAndSaveNewTabPageAd(bool should_generate_random_uuids);
+NewTabPageAdInfo BuildAndSaveNewTabPageAd(
+    CreativeNewTabPageAdWallpaperType wallpaper_type,
+    bool should_generate_random_uuids);
 
 }  // namespace test
 

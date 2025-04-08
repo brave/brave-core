@@ -42,10 +42,10 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "rotatingHash": "j9D7eKSoPLYNfxkG2Mx+SbgKJ9hcKg1QwDB8B5qxlpk="
-                    })"),
+                    })JSON"),
             user_data);
 }
 

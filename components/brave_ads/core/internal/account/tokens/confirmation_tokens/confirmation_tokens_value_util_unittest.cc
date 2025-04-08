@@ -17,7 +17,7 @@ namespace brave_ads {
 namespace {
 
 constexpr char kConfirmationTokensAsJson[] =
-    R"(
+    R"JSON(
         [
           {
             "public_key": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=",
@@ -29,7 +29,7 @@ constexpr char kConfirmationTokensAsJson[] =
             "signature": "WeBTGGAvueivHOo33UKGTgDRw7fF/Hp9+tNZYDlUjc9CIKt/+ksh4X+mVxSMXc2E1chUWqUDME7DFFuDhasmCg==",
             "unblinded_token": "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K"
           }
-        ])";
+        ])JSON";
 
 }  // namespace
 

@@ -16,10 +16,10 @@ class BraveAdsIssuersUrlRequestJsonReaderUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, ParsePing) {
   // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict(R"(
+  const base::Value::Dict dict = base::test::ParseJsonDict(R"JSON(
     {
       "ping": 7200000
-    })");
+    })JSON");
 
   // Act & Assert
   EXPECT_EQ(7'200'000, json::reader::ParsePing(dict));
@@ -35,7 +35,7 @@ TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, DoNotParseMissingPing) {
 
 TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, ParseTokenIssuers) {
   // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict(R"(
+  const base::Value::Dict dict = base::test::ParseJsonDict(R"JSON(
     {
       "issuers": [
         {
@@ -65,7 +65,7 @@ TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, ParseTokenIssuers) {
           ]
         }
       ]
-    })");
+    })JSON");
 
   // Act & Assert
   EXPECT_EQ(test::BuildTokenIssuers(), json::reader::ParseTokenIssuers(dict));

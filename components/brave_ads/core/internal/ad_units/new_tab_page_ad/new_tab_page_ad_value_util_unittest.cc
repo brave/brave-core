@@ -19,7 +19,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kNewTabPageAdAsJson[] = R"({
+constexpr char kNewTabPageAdAsJson[] = R"JSON({
     "type": "new_tab_page_ad",
     "placement_id": "9bac9ae4-693c-4569-9b3e-300e357780cf",
     "campaign_id": "84197fc8-830a-4a8e-8339-7a70c2bfa104",
@@ -30,7 +30,7 @@ constexpr char kNewTabPageAdAsJson[] = R"({
     "alt": "Test Ad Alt",
     "target_url": "https://brave.com/",
     "segment": "untargeted"
-  })";
+  })JSON";
 
 }  // namespace
 

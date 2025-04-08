@@ -16,7 +16,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kTokenIssuersAsJson[] = R"(
+constexpr char kTokenIssuersAsJson[] = R"JSON(
   [
     {
       "name": "confirmations",
@@ -44,7 +44,7 @@ constexpr char kTokenIssuersAsJson[] = R"(
         }
       ]
     }
-  ])";
+  ])JSON";
 
 }  // namespace
 

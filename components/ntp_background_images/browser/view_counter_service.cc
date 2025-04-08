@@ -348,11 +348,10 @@ void ViewCounterService::OnSponsoredContentDidUpdate(
   if (ads_service_) {
     // Since `data` contains small JSON from a CRX component, cloning it has no
     // performance impact.
-    ads_service_->ParseAndSaveCreativeNewTabPageAds(
+    ads_service_->ParseAndSaveNewTabPageAds(
         data.Clone(),
-        base::BindOnce(
-            &ViewCounterService::ParseAndSaveCreativeNewTabPageAdsCallback,
-            weak_ptr_factory_.GetWeakPtr()));
+        base::BindOnce(&ViewCounterService::ParseAndSaveNewTabPageAdsCallback,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
@@ -362,8 +361,7 @@ void ViewCounterService::OnSuperReferralCampaignDidEnd() {
   ResetModel();
 }
 
-void ViewCounterService::ParseAndSaveCreativeNewTabPageAdsCallback(
-    bool success) {
+void ViewCounterService::ParseAndSaveNewTabPageAdsCallback(bool success) {
   if (success) {
     MaybePrefetchNewTabPageAd();
   }

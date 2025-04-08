@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/ads_internals/ads_internals_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_maintenance.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
@@ -156,19 +155,17 @@ void AdsImpl::TriggerInlineContentAdEvent(
                                              std::move(callback));
 }
 
-void AdsImpl::ParseAndSaveCreativeNewTabPageAds(
+void AdsImpl::ParseAndSaveNewTabPageAds(
     base::Value::Dict dict,
-    ParseAndSaveCreativeNewTabPageAdsCallback callback) {
+    ParseAndSaveNewTabPageAdsCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(
-        &AdsImpl::ParseAndSaveCreativeNewTabPageAds, weak_factory_.GetWeakPtr(),
+        &AdsImpl::ParseAndSaveNewTabPageAds, weak_factory_.GetWeakPtr(),
         std::move(dict), std::move(callback)));
   }
 
-  const bool success =
-      database::ParseAndSaveCreativeNewTabPageAds(std::move(dict));
-
-  std::move(callback).Run(success);
+  GetAdHandler().ParseAndSaveNewTabPageAds(std::move(dict),
+                                           std::move(callback));
 }
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {

@@ -18,8 +18,7 @@ class BraveAdsRedeemPaymentTokensUserDataBuilderTest : public test::TestBase {};
 TEST_F(BraveAdsRedeemPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Act & Assert
   EXPECT_EQ(
-      base::test::ParseJsonDict(
-          R"(
+      base::test::ParseJsonDict(R"JSON(
           {
             "platform": "windows",
             "totals": [
@@ -28,7 +27,7 @@ TEST_F(BraveAdsRedeemPaymentTokensUserDataBuilderTest, BuildUserData) {
                 "view": 2
               }
             ]
-          })"),
+          })JSON"),
       BuildRedeemPaymentTokensUserData(test::BuildPaymentTokens(/*count=*/2)));
 }
 

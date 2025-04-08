@@ -167,7 +167,7 @@ interface BatAds {
       brave_ads.mojom.InlineContentAdEventType mojom_ad_event_type) =>
           (bool success);
 
-  ParseAndSaveCreativeNewTabPageAds(mojo_base.mojom.DictionaryValue json) => (bool success);
+  ParseAndSaveNewTabPageAds(mojo_base.mojom.DictionaryValue value) => (bool success);
   MaybeServeNewTabPageAd() => (mojo_base.mojom.DictionaryValue? value);
   TriggerNewTabPageAdEvent(
       string placement_id,

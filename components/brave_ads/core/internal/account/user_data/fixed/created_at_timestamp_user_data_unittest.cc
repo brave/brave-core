@@ -40,10 +40,10 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "createdAtTimestamp": "2020-11-18T12:00:00.000Z"
-                    })"),
+                    })JSON"),
             user_data);
 }
 

@@ -34,7 +34,7 @@ std::optional<ConfirmationInfo> BuildRewardConfirmation(
 std::optional<ConfirmationInfo> BuildRewardConfirmationWithoutDynamicUserData(
     bool should_generate_random_uuids) {
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(should_generate_random_uuids);
+      BuildRewardConfirmation(should_generate_random_uuids);
   CHECK(confirmation);
 
   return RebuildConfirmationWithoutDynamicUserData(*confirmation);

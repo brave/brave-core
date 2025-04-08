@@ -54,6 +54,8 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
       mojom::InlineContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback);
 
+  void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
+                                 ParseAndSaveNewTabPageAdsCallback callback);
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback);
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,

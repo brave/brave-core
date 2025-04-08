@@ -6,10 +6,13 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 
 #include "base/check_op.h"
+#include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_test_constants.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_ads::test {
 
@@ -43,6 +46,12 @@ CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
   creative_new_tab_page_ad.alt = "Test Ad Alt";
 
   return creative_new_tab_page_ad;
+}
+
+void SaveCreativeNewTabPageAds(const CreativeNewTabPageAdList& creative_ads) {
+  database::table::CreativeNewTabPageAds database_table;
+  database_table.Save(
+      creative_ads, base::BindOnce([](bool success) { ASSERT_TRUE(success); }));
 }
 
 }  // namespace brave_ads::test

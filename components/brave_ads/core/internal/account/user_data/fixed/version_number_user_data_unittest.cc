@@ -22,10 +22,10 @@ TEST_F(BraveAdsVersionNumberUserDataTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "versionNumber": "1.2.3.4"
-                    })"),
+                    })JSON"),
             user_data);
 }
 

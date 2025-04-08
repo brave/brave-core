@@ -77,13 +77,13 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
 
   UserDataInfo expected_user_data;
   expected_user_data.dynamic = base::test::ParseJsonDict(
-      R"(
+      R"JSON(
           {
             "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
             "systemTimestamp": "1996-07-08T09:00:00.000Z"
-          })");
+          })JSON");
   expected_user_data.fixed = base::test::ParseJsonDict(
-      R"(
+      R"JSON(
           {
             "buildChannel": "release",
             "catalog": [
@@ -97,7 +97,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
             "segment": "untargeted",
             "studies": [],
             "versionNumber": "1.2.3.4"
-          })");
+          })JSON");
 
   EXPECT_THAT(
       *confirmation,

@@ -184,8 +184,8 @@ class AdsServiceImpl final : public AdsService,
   void RefetchNewTabPageAdCallback(bool success);
   void ResetNewTabPageAd();
 
-  void OnParseAndSaveCreativeNewTabPageAdsCallback(
-      ParseAndSaveCreativeNewTabPageAdsCallback callback,
+  void OnParseAndSaveNewTabPageAdsCallback(
+      ParseAndSaveNewTabPageAdsCallback callback,
       bool success);
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
@@ -270,9 +270,9 @@ class AdsServiceImpl final : public AdsService,
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
-  void ParseAndSaveCreativeNewTabPageAds(
+  void ParseAndSaveNewTabPageAds(
       base::Value::Dict dict,
-      ParseAndSaveCreativeNewTabPageAdsCallback callback) override;
+      ParseAndSaveNewTabPageAdsCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,

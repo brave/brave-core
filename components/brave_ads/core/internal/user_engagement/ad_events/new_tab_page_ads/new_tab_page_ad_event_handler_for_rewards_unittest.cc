@@ -9,6 +9,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
@@ -50,7 +51,8 @@ class BraveAdsNewTabPageAdEventHandlerForRewardsTest : public test::TestBase {
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireServedEvent) {
   // Arrange
   const NewTabPageAdInfo ad =
-      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                     /*should_generate_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -66,7 +68,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireServedEvent) {
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireViewedEvent) {
   // Arrange
   const NewTabPageAdInfo ad =
-      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                     /*should_generate_random_uuids=*/false);
   test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
   // Act & Assert
@@ -84,7 +87,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
   const NewTabPageAdInfo ad =
-      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                     /*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
@@ -106,7 +110,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
        DoNotFireViewedEventIfAdPlacementWasNotServed) {
   // Arrange
   const NewTabPageAdInfo ad =
-      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                     /*should_generate_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -125,7 +130,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireClickedEvent) {
   // Arrange
   const NewTabPageAdInfo ad =
-      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                     /*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
@@ -143,7 +149,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
   const NewTabPageAdInfo ad =
-      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                     /*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression,
                             mojom::ConfirmationType::kClicked});
@@ -164,7 +171,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
        DoNotFireClickedEventIfAdPlacementWasNotServed) {
   // Arrange
   const NewTabPageAdInfo ad =
-      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                     /*should_generate_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -214,7 +222,8 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
        DoNotFireEventForMissingCreativeInstanceId) {
   // Arrange
   const NewTabPageAdInfo ad =
-      test::BuildAndSaveNewTabPageAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                     /*should_generate_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;

@@ -23,7 +23,7 @@ namespace brave_ads {
 namespace {
 
 constexpr char kNotificationAdAsJson[] =
-    R"(
+    R"JSON(
         {
           "advertiser_id": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
           "body": "Test Ad Body",
@@ -35,10 +35,10 @@ constexpr char kNotificationAdAsJson[] =
           "title": "Test Ad Title",
           "type": "ad_notification",
           "uuid": "9bac9ae4-693c-4569-9b3e-300e357780cf"
-        })";
+        })JSON";
 
 constexpr char kNotificationAdsAsJson[] =
-    R"(
+    R"JSON(
         [
           {
             "advertiser_id": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
@@ -64,7 +64,7 @@ constexpr char kNotificationAdsAsJson[] =
             "type": "ad_notification",
             "uuid": "9bac9ae4-693c-4569-9b3e-300e357780cf"
           }
-        ])";
+        ])JSON";
 
 }  // namespace
 

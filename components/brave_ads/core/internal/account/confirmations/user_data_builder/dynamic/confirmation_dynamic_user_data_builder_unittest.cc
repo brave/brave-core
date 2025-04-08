@@ -33,11 +33,11 @@ TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
                       "systemTimestamp": "2020-11-18T12:00:00.000Z"
-                    })"),
+                    })JSON"),
             dynamic_user_data);
 }
 

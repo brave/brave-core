@@ -95,11 +95,11 @@ class Ads {
       mojom::InlineContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) = 0;
 
-  // Called to parse and save creative new tab page ads. The callback takes one
-  // argument - `bool` is set to `true` if successful otherwise `false`.
-  virtual void ParseAndSaveCreativeNewTabPageAds(
+  // Called to parse and save new tab page ads. The callback takes one argument
+  // - `bool` is set to `true` if successful otherwise `false`.
+  virtual void ParseAndSaveNewTabPageAds(
       base::Value::Dict dict,
-      ParseAndSaveCreativeNewTabPageAdsCallback callback) = 0;
+      ParseAndSaveNewTabPageAdsCallback callback) = 0;
 
   // Called to serve a new tab page ad. The callback takes one argument -
   // `NewTabPageAdInfo` containing the info for the ad.
