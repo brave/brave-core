@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
@@ -41,7 +42,6 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManagerProvider;
 import org.chromium.ui.util.ColorUtils;
-import androidx.activity.OnBackPressedCallback;
 
 /** New Rewards 3.0 custom tab activity */
 public class FullScreenCustomTabActivity extends CustomTabActivity {
@@ -103,8 +103,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                 android.graphics.PorterDuff.Mode.SRC_IN);
         closeImg.setOnClickListener(
                 button -> {
-                    sIsFullScreenCustomTabActivityClosed = true;
-                    finish();
+                    handleActivityFinish();
                 });
         parentView.addView(closeImg, layoutParams);
 
@@ -121,15 +120,20 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                             BravePermissionUtils.REWARDS_NOTIFICATION_PERMISSION_COUNT, count + 1);
         }
 
-        getOnBackPressedDispatcher().addCallback(
-                this,
-                new OnBackPressedCallback(true) {
-                    @Override
-                    public void handleOnBackPressed() {
-                        sIsFullScreenCustomTabActivityClosed = true;
-                        finish();
-                    }
-                });
+        getOnBackPressedDispatcher()
+                .addCallback(
+                        this,
+                        new OnBackPressedCallback(true) {
+                            @Override
+                            public void handleOnBackPressed() {
+                                handleActivityFinish();
+                            }
+                        });
+    }
+
+    private void handleActivityFinish() {
+        sIsFullScreenCustomTabActivityClosed = true;
+        finish();
     }
 
     @Override

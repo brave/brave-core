@@ -127,6 +127,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActi
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
@@ -227,7 +228,6 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardUtils;
 import org.chromium.ui.widget.Toast;
-import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -364,10 +364,15 @@ public abstract class BraveActivity extends ChromeActivity
             if (layout != null && layout.isWalletIconVisible()) {
                 updateWalletBadgeVisibility();
             }
-            if (FullScreenCustomTabActivity.sIsFullScreenCustomTabActivityClosed) {
+
+            // If a full screen custom tab was closed and bottom controls are enabled,
+            // show the bottom toolbar controls again
+            if (FullScreenCustomTabActivity.sIsFullScreenCustomTabActivityClosed
+                    && BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
                 layout.onBottomControlsVisibilityChanged(true);
-                FullScreenCustomTabActivity.sIsFullScreenCustomTabActivityClosed = false;
             }
+            // Reset the flag tracking whether a full screen custom tab was closed
+            FullScreenCustomTabActivity.sIsFullScreenCustomTabActivityClosed = false;
         }
 
         BraveSafeBrowsingApiHandler.getInstance()
