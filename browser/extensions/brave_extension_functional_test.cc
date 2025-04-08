@@ -35,7 +35,7 @@ ExtensionFunctionalTest::InstallExtensionSilently(
 
   installer->InstallCrx(path);
   EXPECT_TRUE(registry_observer.WaitForExtensionInstalled());
-  EXPECT_TRUE(observer_->WaitForExtensionViewsToLoad());
+  EXPECT_TRUE(test_notification_observer()->WaitForExtensionViewsToLoad());
 
   size_t num_after = registry->enabled_extensions().size();
   EXPECT_EQ(num_before + 1, num_after);
