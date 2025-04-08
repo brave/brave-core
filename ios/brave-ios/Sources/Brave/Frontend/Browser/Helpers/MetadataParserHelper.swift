@@ -69,31 +69,3 @@ class MetadataParserHelper: TabEventHandler {
     }
   }
 }
-
-class MediaImageLoader: TabEventHandler {
-  private var tabObservers: TabObservers!
-  private let prefs: Prefs
-
-  init(_ prefs: Prefs) {
-    self.prefs = prefs
-    self.tabObservers = registerFor(
-      .didLoadPageMetadata,
-      queue: .main
-    )
-  }
-
-  deinit {
-    unregister(tabObservers)
-  }
-
-  func tab(_ tab: some TabState, didLoadPageMetadata metadata: PageMetadata) {
-    if let mediaURL = metadata.mediaURL, let url = URL(string: mediaURL) {
-      loadImage(from: url)
-    }
-  }
-
-  fileprivate func loadImage(from url: URL) {
-    WebImageCacheManager.shared.load(from: url)
-  }
-
-}
