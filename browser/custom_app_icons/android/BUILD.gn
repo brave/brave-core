@@ -20,9 +20,7 @@ android_library("java") {
     ":java_resources",
     "//base:tasks_java",
     "//brave/browser/utils/android:java",
-    "//chrome/android:chrome_base_module_resources",  # adding dep for
-                                                      # ic_launcher &
-                                                      # themed_app_icon
+    "//chrome/android:chrome_base_module_resources",
     "//chrome/browser/preferences:java",
     "//third_party/androidx:androidx_annotation_annotation_java",
     "//third_party/androidx:androidx_fragment_fragment_java",
