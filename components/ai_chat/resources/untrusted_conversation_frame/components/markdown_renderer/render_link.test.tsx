@@ -16,7 +16,7 @@ test('Test RenderLink component with allowed links.', async () => {
     />
   )
   expect(screen.getByText('Test Link')).toBeInTheDocument()
-  expect(screen.getByText('Test Link').tagName).toBe('BUTTON')
+  expect(screen.getByText('Test Link').tagName).toBe('A')
   expect(screen.getByText('Test Link').className).toBe('conversationLink')
 })
 
@@ -40,6 +40,6 @@ test('Test RenderLink component with citations.', async () => {
     />
   )
   expect(screen.getByText('1')).toBeInTheDocument()
-  expect(screen.getByText('1').tagName).toBe('BUTTON')
+  expect(screen.getByText('1').tagName).toBe('A')
   expect(screen.getByText('1').className).toBe('conversationLink citation')
 })
