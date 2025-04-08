@@ -561,9 +561,7 @@ extension Tab {
       return data.browserData?[keyPath: member]
     }
     set {
-      if let newValue {
-        data.browserData?[keyPath: member] = newValue
-      }
+      data.browserData?[keyPath: member] = newValue
     }
   }
 }
