@@ -1,0 +1,10 @@
+diff --git a/chrome/browser/resources/tab_search/BUILD.gn b/chrome/browser/resources/tab_search/BUILD.gn
+index 06e7993d57ea7d35473ee7dc409ea9f8c5b69bd2..4c8a0fc5dc59b691456f98e55ad3e097c453841a 100644
+--- a/chrome/browser/resources/tab_search/BUILD.gn
++++ b/chrome/browser/resources/tab_search/BUILD.gn
+@@ -123,4 +123,5 @@ build_webui("build") {
+     optimize_webui_host = "tab-search.top-chrome"
+     optimize_webui_in_files = [ "tab_search.js" ]
+   }
++  import("//brave/browser/resources/tab_search/sources.gni") extra_grdp_deps = brave_tab_search_extra_grdp_deps extra_grdp_files = brave_tab_search_extra_grdp_files
+ }
