@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Alternar modo leitor";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Traduzir";
+"TranslatePage" = "Traduzir página";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Ativar as sugestões de pesquisa?";

@@ -152,7 +152,7 @@
 "BraveRewardsOpen" = "Otvori";
 
 /* Brave Rewards title in settings */
-"BraveRewardsSettingsTitle" = "Rewards";
+"BraveRewardsSettingsTitle" = "Nagrade Brave";
 
 /* Brave Rewards title */
 "BraveRewardsTitle" = "Nagrade Brave";
@@ -230,10 +230,10 @@
 "BraveTranslate.searchInputTitle" = "Pretraži";
 
 /* This text is for the settings menu for all Brave-Translate options. */
-"BraveTranslate.settingsMenuTitle" = "Brave Translate";
+"BraveTranslate.settingsMenuTitle" = "Brave Prevoditelj";
 
 /* This text is for the translate settings screen. It's the title of the settings menu. */
-"BraveTranslate.settingsScreenTitle" = "Brave Translate";
+"BraveTranslate.settingsScreenTitle" = "Brave Prevoditelj";
 
 /* This text is for a Toggle that allows the user to enable or disable page translation. */
 "BraveTranslate.settingsTranslateEnabledOptionDescription" = "Kad je uključena, funkcionalnost Brave Translate automatski prepoznaje jezik vaše stranice i pokazuje gumb za prijevod u polju za URL.";
@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Uključi/isključi način čitača";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Prevedi";
+"TranslatePage" = "Prevedi stranicu";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Uključiti prijedloge za pretraživanje?";

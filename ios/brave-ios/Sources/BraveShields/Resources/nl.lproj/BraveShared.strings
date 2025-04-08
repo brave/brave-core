@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "Domein geblokkeerd";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "Schakel de JS API van Global Privacy Control in";
+"EnableGPCDescription" = "Vraag websites om je gegevens niet te verkopen of te delen. [Meer informatie](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Schakel Global Privacy Control in";

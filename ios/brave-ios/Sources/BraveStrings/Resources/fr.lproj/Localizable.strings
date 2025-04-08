@@ -41,7 +41,7 @@
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Ouvrir l'onglet sélectionné";
 
 /* Title label text for refreshing credentials from brave site. */
-"paywall.alreadyPurchasedTitle" = "Vous avez déjà acheté sur brave.com ?";
+"paywall.alreadyPurchasedTitle" = "Vous avez déjà acheté un abonnement sur brave.com ?";
 
 /* Title label text for entering a promo code. */
 "paywall.havePromoCodeTitle" = "Vous possédez un code promo ?";
@@ -50,7 +50,7 @@
 "paywall.redeemPromoCodeButtonTitle" = "Utiliser le code promo";
 
 /* Button action text for refreshing credentials from brave site. */
-"paywall.refreshCredentialsButtonTitle" = "Actualisez vos identifiants";
+"paywall.refreshCredentialsButtonTitle" = "Changer d'identifiant";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts used for opening recently closed tab. */
 "RecentlyClosedTabTitle" = "Rouvrir l'onglet fermé";

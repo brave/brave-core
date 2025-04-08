@@ -1,3 +1,6 @@
+/* A label shown above a list of icons designed by Brave */
+"altAppIcon.braveIconsHeader" = "Brave Icons";
+
 /* The title for the screen that lets the user select a custom app icon */
 "altAppIcon.changeAppIcon" = "Promijenite ikonu aplikacije";
 

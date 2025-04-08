@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "切换阅读器模式";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "翻译";
+"TranslatePage" = "翻译页面";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "开启搜索建议功能？";
