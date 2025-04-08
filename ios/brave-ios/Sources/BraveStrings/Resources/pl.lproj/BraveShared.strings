@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Przełącz tryb czytania";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Przetłumacz";
+"TranslatePage" = "Przetłumacz stronę";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Czy włączyć sugestie wyszukiwania?";

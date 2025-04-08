@@ -11,16 +11,16 @@
 "EstTimerSaved" = "Geschätzte \nZeitersparnis";
 
 /* Time Saved Days */
-"ShieldsTimeStatsDays" = "d";
+"ShieldsTimeStatsDays" = "Tage";
 
 /* Time Saved Hours */
-"ShieldsTimeStatsHour" = "h";
+"ShieldsTimeStatsHour" = "Stunden";
 
 /* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "min";
+"ShieldsTimeStatsMinutes" = "Min.";
 
 /* Time Saved Seconds */
-"ShieldsTimeStatsSeconds" = "s";
+"ShieldsTimeStatsSeconds" = "Sek.";
 
 /* Shields Trackers Stat */
 "TrackersrBlocked" = "Blockierte \nTracker";

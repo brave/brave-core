@@ -278,7 +278,7 @@
 "vpn.settingsViewReceipt" = "عرض إيصال App Store";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
-"vpn.settingsVPNKillSwitchDescription" = "عند التمكين، إذا انقطع اتصال VPN الخاص بك بشكل غير متوقع، فسيتم فصل جهازك تلقائيًا عن الإنترنت لمنع تسرب عنوان IP وتسريب البيانات. [اعرف المزيد](%@)";
+"vpn.settingsVPNKillSwitchDescription" = "عند التمكين، إذا انقطع اتصال VPN الخاص بك بشكل غير متوقع، فسيتم فصل اتصال جهازك تلقائيًا عن الإنترنت لمنع تسريب عنوان IP الخاص بك وبياناتك. [اعرف المزيد](%@)";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchTitle" = "تمكين مفتاح إيقاف التشغيل";

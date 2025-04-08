@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "切換閱讀器模式";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "翻譯";
+"TranslatePage" = "翻譯頁面";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "開啟搜尋建議？";

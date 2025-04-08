@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Prepnúť režim čítačky";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Preložiť";
+"TranslatePage" = "Preložiť stránku";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Chcete zapnúť návrhy vyhľadávania?";

@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "已被阻止的域";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "啟用全球隱私控制 JS API";
+"EnableGPCDescription" = "要求网站不出售或共享您的数据。[了解更多](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "啟用全球隱私控制";

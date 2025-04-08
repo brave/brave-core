@@ -11,7 +11,7 @@
 "AntiAdBlockWarningBravePlayerDescription" = "Der **Brave Player** ist dein Ticket zu einem werbe- und unterbrechungsfreien Videoerlebnis.";
 
 /* A button that disables ad-blocking and uses brave player. */
-"AntiAdBlockWarningConfirmationButton" = "Schutz für mich anpassen";
+"AntiAdBlockWarningConfirmationButton" = "Shhields für mich anpassen";
 
 /* A descriptive message explaining this site's ad-blocking crackdown. */
 "AntiAdBlockWarningDescription" = "Diese Website hat damit begonnen, einige Werbeblocker zu blockieren. Das bedeutet, dass die Website möglicherweise nicht wie erwartet funktioniert.";
@@ -65,7 +65,7 @@
 "ContentFiltering" = "Inhaltsfilterung";
 
 /* A description of the content filtering page. */
-"ContentFilteringDescription" = "Aktiviere benutzerdefinierte Filter, die regionale und sprachspezifische Tracker und Belästigungen blockieren.";
+"ContentFilteringDescription" = "Aktiviere benutzerdefinierte Filter, die regionale und sprachspezifische Tracker und Unterbrechungen blockieren.";
 
 /* Title for the custom filter list add screen found in the navigation bar. */
 "CustomFilterList" = "Benutzerdefinierte Filterliste";
@@ -95,13 +95,13 @@
 "DomainBlockedGoBackAction" = "Zurück";
 
 /* A description in the warning page that appears when a page was blocked */
-"DomainBlockedPageDescription" = "Weil du darum gebeten hast, Tracker und Anzeigen aggressiv zu blockieren, blockt Brave diese Site, bevor die erste Netzwerkverbindung hergestellt wird.";
+"DomainBlockedPageDescription" = "Weil du darum gebeten hast, Tracker und Anzeigen zu blockieren, blockt Brave diese Seite, bevor die erste Netzwerkverbindung hergestellt wird.";
 
 /* A message in the warning page that appears when a page was blocked */
-"DomainBlockedPageMessage" = "Brave hat das Laden der folgenden Site verhindert:";
+"DomainBlockedPageMessage" = "Brave hat das Laden der folgenden Seite verhindert:";
 
 /* A title in the warning page that appears when a page was blocked */
-"DomainBlockedPageTitle" = "Diese Website versucht möglicherweise, dich über andere Websites hinweg zu verfolgen";
+"DomainBlockedPageTitle" = "Diese Website versucht möglicherweise, dich über andere Websites hinweg zu tracken";
 
 /* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
 "DomainBlockedProceedAction" = "Fortfahren";
@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "Domain blockiert";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "JS-API für die Global Privacy Control aktivieren";
+"EnableGPCDescription" = "Bitte Websites, deine Daten nicht zu verkaufen oder weiterzugeben. [Mehr erfahren] (https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Global Privacy Control aktivieren";
@@ -149,7 +149,7 @@
 "FilterListURLTextFieldPlaceholder" = "URL der Filterliste eingeben";
 
 /* A description of what the forget me toggle does */
-"ForgetMeDescription" = "Löscht Cookies und andere Seitendaten, wenn du eine Seite schließen";
+"ForgetMeDescription" = "Löscht Cookies und andere Seitendaten, wenn du eine Seite schließst";
 
 /* A toggle option that deletes website content when the site is closed */
 "ForgetMeLabel" = "Vergessen, wenn die Seite geschlossen wird";

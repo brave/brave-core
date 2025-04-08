@@ -8,7 +8,7 @@
 "ActionTitles.leoAIChat" = "Chat IA";
 
 /* A button title shown on the menu that presents the Brave Playlist feature */
-"ActionTitles.playlist" = "Liste de lecture";
+"ActionTitles.playlist" = "Playlist";
 
 /* A button title shown on the menu that when tapped lets the user print the page they're viewing */
 "ActionTitles.print" = "Imprimer";
@@ -18,6 +18,9 @@
 
 /* A button title shown on the menu that when tapped lets the user share the current URL or document they're viewing */
 "ActionTitles.share" = "Partager";
+
+/* A button title shown on the menu that translates the page into a different language. */
+"ActionTitles.translate" = "Traduire la page";
 
 /* A button title shown on the menu that when tapped presents a Brave VPN paywall */
 "ActionTitles.vpn" = "VPN";
@@ -32,7 +35,7 @@
 "BrowserMenu.doneButtonTitle" = "Terminé";
 
 /* The title of a button that shows a screen that lets the user customize which actions are visible on the menu */
-"BrowserMenu.editButtonTitle" = "Édition";
+"BrowserMenu.editButtonTitle" = "Modifier";
 
 /* A title shown above the list of actions that are hidden on the menu but available for the user to make visible. */
 "BrowserMenu.hiddenActionsTitle" = "Actions disponibles";

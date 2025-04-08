@@ -305,7 +305,7 @@
 "aichat.paywallYearlySubscriptionDescription" = "MEJOR RELACIÓN CALIDAD-PRECIO";
 
 /* Title indicating yearly subscription */
-"aichat.paywallYearlySubscriptionTitle" = "One Year";
+"aichat.paywallYearlySubscriptionTitle" = "Un año";
 
 /* The title of the badge where a model which can be used limited */
 "aichat.premiumModelStatusTitle" = "Premium";

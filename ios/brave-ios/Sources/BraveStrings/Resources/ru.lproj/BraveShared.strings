@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Вкл/выкл режим чтения";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Перевод";
+"TranslatePage" = "Перевести страницу";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Включить подсказки при поиске?";

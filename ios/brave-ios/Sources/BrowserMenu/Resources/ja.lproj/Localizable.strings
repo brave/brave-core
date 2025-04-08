@@ -19,6 +19,9 @@
 /* A button title shown on the menu that when tapped lets the user share the current URL or document they're viewing */
 "ActionTitles.share" = "共有";
 
+/* A button title shown on the menu that translates the page into a different language. */
+"ActionTitles.translate" = "ページを翻訳";
+
 /* A button title shown on the menu that when tapped presents a Brave VPN paywall */
 "ActionTitles.vpn" = "VPN";
 

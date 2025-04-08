@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Переключення режиму читання";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Перекласти";
+"TranslatePage" = "Перекласти сторінку";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Увімкнути пошукові підказки?";

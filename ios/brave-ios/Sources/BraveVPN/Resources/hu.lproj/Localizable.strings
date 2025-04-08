@@ -278,7 +278,7 @@
 "vpn.settingsViewReceipt" = "App Store nyugta megtekintése";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
-"vpn.settingsVPNKillSwitchDescription" = "Ha ezt a beállítást engedélyezi, a VPN-kapcsolat váratlanul megszakadása esetén a készülék automatikusan lekapcsolódik az internetről, hogy megakadályozza az IP-cím és az adatok kiszivárgását. [Tudjon meg többet](%@)";
+"vpn.settingsVPNKillSwitchDescription" = "Ha ezt a beállítást engedélyezi, a VPN-kapcsolat váratlanul megszakadása esetén a készülék automatikusan lekapcsolódik az internetről, hogy megakadályozza az IP-cím és az adatok kiszivárgását. [További információk](%@)";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchTitle" = "Vészleállítás aktiválása";

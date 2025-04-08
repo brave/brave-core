@@ -2,10 +2,10 @@
 "focusOnboarding.continueButtonTitle" = "Kontynuuj";
 
 /* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "Otwieraj każdy link, który dotkniesz, dzięki ochronie prywatności Brave";
+"focusOnboarding.defaultBrowserScreenDescription" = "Ustaw Brave jako domyślną przeglądarkę już dziś.";
 
 /* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Ustaw Brave jako domyślną przeglądarkę";
+"focusOnboarding.defaultBrowserScreenTitle" = "Blokowanie reklam w każdej odwiedzanej witrynie";
 
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Nie teraz";
@@ -16,20 +16,17 @@
 /* The title of the screen that shows ads embeded in video are blocked */
 "focusOnboarding.noVideoAdsScreenTitle" = "Blokowanie przerywników wideo";
 
-/* The title of the button that opens the website abouyt privacy preserving analytics. */
-"focusOnboarding.p3aInformationButtonTitle" = "Dowiedz się więcej o naszej analizie produktów z zachowaniem prywatności (P3A)";
-
 /* The subtitle of the screen that asks user to enable privacy preserving analytics. */
 "focusOnboarding.p3aScreenDescription" = "Daj nam znać, które funkcje podobają Ci się najbardziej.";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "Pomóż ulepszyć Brave.";
+"focusOnboarding.p3aScreenTitle" = "Pomóż ulepszyć Brave";
 
-/* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Można to zmienić w dowolnym momencie w Ustawieniach Brave w sekcji „Tarcze Brave i prywatność”.";
+/* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
+"focusOnboarding.p3aToggleDescription" = "Możesz zrezygnować w dowolnym momencie w Ustawieniach w sekcji **Tarcze i prywatność**. [Dowiedz się więcej](#p3a-learn-more) o naszej analizie produktów z zachowaniem prywatności.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Dziel się prywatnie i anonimowo uwagami na temat produktów.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Dziel się **całkowicie prywatnie i anonimowo** uwagami na temat produktów.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Rozpocznij przeglądanie";

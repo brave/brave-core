@@ -151,6 +151,9 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Otvori";
 
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Nagrade Brave";
+
 /* Brave Rewards title */
 "BraveRewardsTitle" = "Nagrade Brave";
 
@@ -225,6 +228,12 @@
 
 /* Title for the search field in the navigation bar for the translate language selection page. The user can search for a language to translate to or from. */
 "BraveTranslate.searchInputTitle" = "Pretraži";
+
+/* This text is for the settings menu for all Brave-Translate options. */
+"BraveTranslate.settingsMenuTitle" = "Brave Prevoditelj";
+
+/* This text is for the translate settings screen. It's the title of the settings menu. */
+"BraveTranslate.settingsScreenTitle" = "Brave Prevoditelj";
 
 /* This text is for a Toggle that allows the user to enable or disable page translation. */
 "BraveTranslate.settingsTranslateEnabledOptionDescription" = "Kad je uključena, funkcionalnost Brave Translate automatski prepoznaje jezik vaše stranice i pokazuje gumb za prijevod u polju za URL.";
@@ -886,6 +895,9 @@
 /* No comment provided by engineer. */
 "learnMore" = "Saznaj više";
 
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
+
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Spremljena prijava uklanja se trajno.";
 
@@ -1374,6 +1386,9 @@
 
 /* The subtitle description of menu item Brave VPN */
 "optionsMenu.braveVPNItemDescription" = "Zaštitite cijeli uređaj na mreži";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
 
 /* The subtitle description of menu item Brave Wallet */
 "optionsMenu.braveWalletItemDescription" = "Siguran kriptonovčanik, ne trebaju vam proširenja";
@@ -2026,6 +2041,9 @@
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Povećaj veličinu teksta";
 
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
 /* Accessibility label for brightness adjustment slider in Reader Mode display settings */
 "ReaderModeBrightSliderAccessibilityLabel" = "Svjetlina";
 
@@ -2034,6 +2052,15 @@
 
 /* Error displayed when reader mode cannot be enabled */
 "ReaderModeErrorConvertDisplayText" = "Nastala je pogreška pri pretvaranju stranice";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Serif";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "Aa";
 
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Mijenja se vrsta fonta.";
@@ -2052,6 +2079,9 @@
 
 /* Accessibility label for button decreasing font size in display settings of reader mode */
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Smanji veličinu teksta";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Mijenja se tema boje.";
@@ -2593,6 +2623,9 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Automatski šalji ping dnevne uporabe Braveu";
 
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nije moguće učitati stranicu.";
 
@@ -2949,6 +2982,9 @@
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
 "sync.codeExpirationTitleLabel" = "Kôd je istekao. Generirajte novi pritiskom na gumb u nastavku.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "min";
 
 /* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
 "sync.codeTimeMultipleHourText" = "sati";
@@ -3503,7 +3539,7 @@
 "ToggleReaderMode" = "Uključi/isključi način čitača";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Prevedi";
+"TranslatePage" = "Prevedi stranicu";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Uključiti prijedloge za pretraživanje?";
@@ -3513,6 +3549,9 @@
 
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "Nepodržani instrumenti plaćanja";
+
+/* Bookmark URL */
+"URL" = "URL";
 
 /* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
 "URLBarViewLocationTextViewAccessibilityLabel" = "Adresa i pretraživanje";
