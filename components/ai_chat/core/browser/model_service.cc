@@ -121,6 +121,28 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
     {
       auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "DeepSeek";
+      options->name = "bedrock-us.deepseek-r1-v1:0";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = mojom::ModelAccess::PREMIUM;
+      options->engine_type =
+          conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
+                           : mojom::ModelEngineType::LLAMA_REMOTE;
+      options->max_associated_content_length = 64000;
+      options->long_conversation_warning_character_limit = 64000;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-deepseek-r1";
+      model->display_name = "DeepSeek R1";
+      model->vision_support = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    {
+      auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Anthropic";
       options->name = kClaudeHaikuModelName;
       options->category = mojom::ModelCategory::CHAT;
