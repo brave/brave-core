@@ -11,6 +11,13 @@
 
 namespace TemplateURLPrepopulateData {
 
+// ****************************************************************************
+// IMPORTANT! Make sure to bump the value of kBraveCurrentDataVersion in
+// brave_prepopulated_engines.h if you add, remove, or make changes
+// to the engines in here or to mappings in
+// chromium_src/components/regional_capabilities/regional_capabilities_utils.cc.
+// ****************************************************************************
+
 namespace {
 
 PrepopulatedEngine MakeBravePrepopulatedEngine(const char16_t* const name,
@@ -51,7 +58,7 @@ PrepopulatedEngine MakeBravePrepopulatedEngine(const char16_t* const name,
 // Maps BravePrepopulatedEngineID to Chromium's PrepopulatedEngine.
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
     brave_engines_map = {
-        {PREPOPULATED_ENGINE_ID_GOOGLE, &google},
+        {PREPOPULATED_ENGINE_ID_GOOGLE, &brave_google},
         {PREPOPULATED_ENGINE_ID_YANDEX, &brave_yandex},
         {PREPOPULATED_ENGINE_ID_BING, &brave_bing},
         {PREPOPULATED_ENGINE_ID_NAVER, &naver},
@@ -230,7 +237,7 @@ const PrepopulatedEngine brave_search_tor = ModifyEngineParams(
 const PrepopulatedEngine brave_bing = ModifyEngineParams(
     bing,
     u"Bing",
-    nullptr,
+    u":b",
     "https://www.bing.com/search?q={searchTerms}",
     "https://www.bing.com/osjson.aspx?query={searchTerms}&language={language}",
     "https://www.bing.com/images/detail/search?iss=sbiupload#enterInsights",
@@ -266,6 +273,9 @@ const PrepopulatedEngine brave_yahoo_jp = ModifyEngineParams(
     "brave-desktop_ext",
 #endif
     PREPOPULATED_ENGINE_ID_YAHOO_JP);
+
+const PrepopulatedEngine brave_google =
+    ModifyEngineParams(google, nullptr, u":g", nullptr, nullptr, nullptr, 0);
 
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
 GetBraveEnginesMap() {
