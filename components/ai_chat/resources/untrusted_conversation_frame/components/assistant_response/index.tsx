@@ -52,9 +52,10 @@ function AssistantEvent(props: {
   event: Mojom.ConversationEntryEvent,
   hasCompletionStarted: boolean,
   isEntryInProgress: boolean,
-  allowedLinks: string[]
+  allowedLinks: string[],
+  isLeoModel: boolean
 }) {
-  const { allowedLinks, event, isEntryInProgress } = props;
+  const { allowedLinks, event, isEntryInProgress, isLeoModel } = props;
 
   if (event.completionEvent) {
     const numberedLinks =
@@ -75,6 +76,7 @@ function AssistantEvent(props: {
         shouldShowTextCursor={isEntryInProgress}
         text={fullText}
         allowedLinks={allowedLinks}
+        disableLinkRestrictions={!isLeoModel}
       />
     )
   }
@@ -103,7 +105,8 @@ function AssistantEvent(props: {
 export default function AssistantResponse(props: {
   entry: Mojom.ConversationTurn,
   isEntryInProgress: boolean,
-  allowedLinks: string[]
+  allowedLinks: string[],
+  isLeoModel: boolean
 }) {
   // Extract certain events which need to render at specific locations (e.g. end of the events)
   const searchQueriesEvent = props.entry.events?.find(event => event.searchQueriesEvent)?.searchQueriesEvent
@@ -121,6 +124,7 @@ export default function AssistantResponse(props: {
         hasCompletionStarted={hasCompletionStarted}
         isEntryInProgress={props.isEntryInProgress}
         allowedLinks={props.allowedLinks}
+        isLeoModel={props.isLeoModel}
       />
     )
   }

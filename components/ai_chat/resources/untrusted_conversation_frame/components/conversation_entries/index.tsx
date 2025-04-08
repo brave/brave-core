@@ -148,6 +148,7 @@ function ConversationEntries() {
                       entry={latestTurn}
                       isEntryInProgress={isEntryInProgress}
                       allowedLinks={allAllowedLinks}
+                      isLeoModel={conversationContext.isLeoModel}
                     />
                   )}
                   {isHuman && !turn.selectedText && !showEditInput && (
