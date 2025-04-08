@@ -227,6 +227,7 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardUtils;
 import org.chromium.ui.widget.Toast;
+import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -362,6 +363,10 @@ public abstract class BraveActivity extends ChromeActivity
             BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
             if (layout != null && layout.isWalletIconVisible()) {
                 updateWalletBadgeVisibility();
+            }
+            if (FullScreenCustomTabActivity.sIsFullScreenCustomTabActivityClosed) {
+                layout.onBottomControlsVisibilityChanged(true);
+                FullScreenCustomTabActivity.sIsFullScreenCustomTabActivityClosed = false;
             }
         }
 

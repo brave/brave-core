@@ -41,6 +41,7 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManagerProvider;
 import org.chromium.ui.util.ColorUtils;
+import androidx.activity.OnBackPressedCallback;
 
 /** New Rewards 3.0 custom tab activity */
 public class FullScreenCustomTabActivity extends CustomTabActivity {
@@ -59,6 +60,8 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
     private CustomTabActivityTabController mTabController;
     private CustomTabMinimizationManagerHolder mMinimizationManagerHolder;
     private CustomTabFeatureOverridesManager mCustomTabFeatureOverridesManager;
+
+    public static boolean sIsFullScreenCustomTabActivityClosed = false;
 
     @Override
     public boolean supportsAppMenu() {
@@ -100,6 +103,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                 android.graphics.PorterDuff.Mode.SRC_IN);
         closeImg.setOnClickListener(
                 button -> {
+                    sIsFullScreenCustomTabActivityClosed = true;
                     finish();
                 });
         parentView.addView(closeImg, layoutParams);
@@ -116,6 +120,16 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                     .writeInt(
                             BravePermissionUtils.REWARDS_NOTIFICATION_PERMISSION_COUNT, count + 1);
         }
+
+        getOnBackPressedDispatcher().addCallback(
+                this,
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        sIsFullScreenCustomTabActivityClosed = true;
+                        finish();
+                    }
+                });
     }
 
     @Override
