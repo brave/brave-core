@@ -14,6 +14,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/permission_controller.h"
+#include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/net_errors.h"
 #include "net/base/url_util.h"
@@ -145,7 +146,9 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
         permission_controller->RequestPermissionsFromCurrentDocument(
             /* rfh */ contents->GetPrimaryMainFrame(),
             content::PermissionRequestDescription(
-                blink::PermissionType::BRAVE_LOCALHOST_ACCESS,
+                content::PermissionDescriptorUtil::
+                    CreatePermissionDescriptorForPermissionType(
+                        blink::PermissionType::BRAVE_LOCALHOST_ACCESS),
                 /*user_gesture*/ true),
             base::BindOnce(&OnPermissionRequestStatus,
                            ctx->frame_tree_node_id));

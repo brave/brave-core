@@ -19,6 +19,7 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/permission_controller.h"
+#include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/permission_request_description.h"
 #include "content/public/browser/permission_result.h"
 #include "content/public/browser/web_contents.h"
@@ -133,7 +134,10 @@ void AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce(
     permission_controller->RequestPermissionFromCurrentDocument(
         rfh,
         content::PermissionRequestDescription(
-            blink::PermissionType::BRAVE_OPEN_AI_CHAT, /*user_gesture=*/true),
+            content::PermissionDescriptorUtil::
+                CreatePermissionDescriptorForPermissionType(
+                    blink::PermissionType::BRAVE_OPEN_AI_CHAT),
+            /*user_gesture=*/true),
         base::BindOnce(&AIChatBraveSearchThrottle::OnPermissionPromptResult,
                        weak_factory_.GetWeakPtr()));
   }
