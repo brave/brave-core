@@ -27,6 +27,7 @@ public final class BraveConstants {
             "https://brave.com/privacy/browser/#brave-news";
 
     public static final String INDIA_COUNTRY_CODE = "IN";
+    public static final String JAPAN_COUNTRY_CODE = "JP";
 
     public static final String BRAVE_NEWS_PREFERENCES_TYPE = "BraveNewsPreferencesType";
 
