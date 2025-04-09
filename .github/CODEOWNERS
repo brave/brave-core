@@ -175,12 +175,15 @@ android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java
 
 # GitHub configuration
 /.github/ @brave/devops-team
-/.github/CODEOWNERS @brave/devops-team @bsclifton
+/.github/CODEOWNERS @bridiver @bsclifton
 /.github/PULL_REQUEST_TEMPLATE.md @bsclifton
 
 
 # Semgrep configuration
 /.semgrepignore @thypon
+
+# Deprecated android util directory
+android/java/org/chromium/chrome/browser/util @bridiver
 
 # These rules are last to take precedence over directory rules.Do not add any
 # new rules below this line without checking with @bridiver
