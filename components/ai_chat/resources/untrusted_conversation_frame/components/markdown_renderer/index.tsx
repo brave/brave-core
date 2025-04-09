@@ -85,18 +85,20 @@ function CursorDecorator(props: CursorDecoratorProps) {
 interface RenderLinkProps {
   a: React.ComponentProps<'a'>
   allowedLinks?: string[]
+  disableLinkRestrictions?: boolean
 }
 
 export function RenderLink(props: RenderLinkProps) {
-  const { a, allowedLinks } = props
+  const { a, allowedLinks, disableLinkRestrictions} = props
   const { href, children } = a
 
   // Context
   const context = useUntrustedConversationContext()
 
   // Computed
-  const isLinkAllowed =
-    allowedLinks?.some((link) => href?.startsWith(link)) ?? false
+  const isHttps = href?.toLowerCase().startsWith('https://')
+  const isLinkAllowed = isHttps && (disableLinkRestrictions ||
+    (allowedLinks?.some((link) => href?.startsWith(link)) ?? false))
 
   const handleLinkClicked = React.useCallback(() => {
     if (href && isLinkAllowed) {
@@ -132,6 +134,7 @@ interface MarkdownRendererProps {
   text: string
   shouldShowTextCursor: boolean
   allowedLinks?: string[]
+  disableLinkRestrictions?: boolean
 }
 
 export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
@@ -203,6 +206,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
             <RenderLink
               a={props}
               allowedLinks={mainProps.allowedLinks}
+              disableLinkRestrictions={mainProps.disableLinkRestrictions}
             />
           )
         }}
