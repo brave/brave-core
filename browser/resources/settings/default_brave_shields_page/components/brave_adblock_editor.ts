@@ -32,7 +32,7 @@ class AdBlockFiltersEditor extends AdBlockFiltersEditorBase {
     }
   }
 
-  private value: string
+  private declare value: string
 
   override ready() {
     super.ready()

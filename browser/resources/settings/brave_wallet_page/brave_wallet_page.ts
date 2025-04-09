@@ -113,16 +113,16 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     }
   }
 
-  private ethereum_provider_options_: Option[]
-  private solana_provider_options_: SolanaProvider[]
-  private transaction_simulation_opt_in_options_: Option[]
-  private cryptocurrency_list_: CurrencyType[]
-  private currency_list_: CurrencyType[]
-  private isNativeWalletEnabled_: boolean
-  private isNetworkEditor_: boolean
-  private isTransactionSimulationsFeatureEnabled: boolean
-  private isPrivateWindowsEnabled_: chrome.settingsPrivate.PrefObject<boolean>
-  private showRestartToast_: boolean
+  private declare ethereum_provider_options_: Option[]
+  private declare solana_provider_options_: SolanaProvider[]
+  private declare transaction_simulation_opt_in_options_: Option[]
+  private declare cryptocurrency_list_: CurrencyType[]
+  private declare currency_list_: CurrencyType[]
+  private declare isNativeWalletEnabled_: boolean
+  private declare isNetworkEditor_: boolean
+  private declare isTransactionSimulationsFeatureEnabled: boolean
+  private declare isPrivateWindowsEnabled_: chrome.settingsPrivate.PrefObject<boolean>
+  private declare showRestartToast_: boolean
 
   private browserProxy_: BraveWalletBrowserProxy =
     BraveWalletBrowserProxyImpl.getInstance()

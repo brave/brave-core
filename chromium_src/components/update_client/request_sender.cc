@@ -27,8 +27,8 @@ namespace client_update_protocol {
 
 class BraveEcdsa : public Ecdsa {
  public:
-
-  BraveEcdsa(int key_version, base::span<const uint8_t> public_key) : Ecdsa(kBraveKeyVersion, GetKey(kBraveKeyPubBytesBase64)) {}
+  BraveEcdsa(int key_version, base::span<const uint8_t> public_key)
+      : Ecdsa(kBraveKeyVersion, GetKey(kBraveKeyPubBytesBase64)) {}
 
  private:
   static std::vector<uint8_t> GetKey(std::string_view key) {

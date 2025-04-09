@@ -53,13 +53,13 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       }
     }
 
-    private isPremiumUser_: boolean
+    private declare isPremiumUser_: boolean
 
     isHistoryFeatureEnabled_: boolean =
       loadTimeData.getBoolean('isLeoAssistantHistoryAllowed')
 
-    leoAssistantShowOnToolbarPref_: boolean
-    selectedModelDisplayName_: string
+    declare leoAssistantShowOnToolbarPref_: boolean
+    declare selectedModelDisplayName_: string
     defaultModelKeyPrefValue_: string
     models_: ModelWithSubtitle[]
     premiumStatus_: PremiumStatus = PremiumStatus.Unknown
