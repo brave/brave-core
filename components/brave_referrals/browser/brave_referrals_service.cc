@@ -316,15 +316,14 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
 void BraveReferralsService::OnReadPromoCodeComplete(
     const std::string& promo_code) {
   promo_code_ = promo_code;
-  if (!promo_code_.empty() && !IsDefaultReferralCode(promo_code_)) {
+  // store referral code if it's not empty (ex: it's the default code)
+  if (!promo_code_.empty()) {
     pref_service_->SetString(kReferralPromoCode, promo_code_);
+  }
+  if (!promo_code_.empty() && !IsDefaultReferralCode(promo_code_)) {
     DCHECK(!initialization_timer_);
     InitReferral();
   } else {
-    // store referral code if it's not empty (ex: it's the default code)
-    if (!promo_code_.empty()) {
-      pref_service_->SetString(kReferralPromoCode, promo_code_);
-    }
     // No referral code or it's the default, no point of reporting it.
     pref_service_->SetBoolean(kReferralInitialization, true);
     if (g_testing_referral_initialized_callback) {
@@ -411,11 +410,13 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
   if (now - first_run_timestamp_ < base::Seconds(check_time))
     return;
 
+  bool stats_reporting_enabled =
+      pref_service_->GetBoolean(kStatsReportingEnabled);
   // Only check for referral finalization 30 times, with a 24-hour
-  // wait between checks.
+  // wait between checks or if stats reporting is disabled.
   base::Time timestamp = pref_service_->GetTime(kReferralAttemptTimestamp);
   int count = pref_service_->GetInteger(kReferralAttemptCount);
-  if (count >= 30) {
+  if (count >= 30 || !stats_reporting_enabled) {
     pref_service_->ClearPref(kReferralAttemptTimestamp);
     pref_service_->ClearPref(kReferralAttemptCount);
     pref_service_->ClearPref(kReferralDownloadID);
@@ -471,6 +472,15 @@ std::string BraveReferralsService::BuildReferralFinalizationCheckPayload()
 }
 
 void BraveReferralsService::InitReferral() {
+  if (!pref_service_->GetBoolean(kStatsReportingEnabled)) {
+    pref_service_->SetBoolean(kReferralInitialization, true);
+    if (g_testing_referral_initialized_callback) {
+      g_testing_referral_initialized_callback->Run(std::string());
+    }
+    task_runner_->PostTask(FROM_HERE, base::BindOnce(&DeletePromoCodeFile,
+                                                     GetPromoCodeFileName()));
+    return;
+  }
   net::NetworkTrafficAnnotationTag traffic_annotation =
       net::DefineNetworkTrafficAnnotation("brave_referral_initializer", R"(
         semantics {
