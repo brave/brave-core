@@ -5,12 +5,15 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <iterator>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
+#include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
@@ -52,27 +55,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   int32_t index = 0;
   for (const auto& creative_set_conversion : creative_set_conversions) {
-    if (!creative_set_conversion.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/43314): Invalid
-      // creative set conversion.
-      SCOPED_CRASH_KEY_STRING64("Issue43314", "creative_set_conversion_id",
-                                creative_set_conversion.id);
-      SCOPED_CRASH_KEY_STRING256("Issue43314", "url_pattern",
-                                 creative_set_conversion.url_pattern);
-      SCOPED_CRASH_KEY_NUMBER(
-          "Issue43314", "observation_window",
-          creative_set_conversion.observation_window.InDays());
-      SCOPED_CRASH_KEY_NUMBER(
-          "Issue43314", "expire_at",
-          creative_set_conversion.expire_at->ToDeltaSinceWindowsEpoch()
-              .InMicroseconds());
-      SCOPED_CRASH_KEY_STRING64("Issue43314", "failure_reason",
-                                "Invalid creative set conversion");
-      base::debug::DumpWithoutCrashing();
-
-      BLOG(0, "Invalid creative set conversion");
-      continue;
-    }
+    CHECK(creative_set_conversion.IsValid());
 
     BindColumnString(mojom_db_action, index++, creative_set_conversion.id);
     BindColumnString(mojom_db_action, index++,
@@ -133,23 +116,18 @@ void GetCallback(
     const CreativeSetConversionInfo creative_set_conversion =
         FromMojomRow(mojom_db_row);
     if (!creative_set_conversion.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/43314): Invalid
-      // creative set conversion.
-      SCOPED_CRASH_KEY_STRING64("Issue43314", "creative_set_conversion_id",
-                                creative_set_conversion.id);
-      SCOPED_CRASH_KEY_STRING256("Issue43314", "url_pattern",
-                                 creative_set_conversion.url_pattern);
-      SCOPED_CRASH_KEY_NUMBER(
-          "Issue43314", "observation_window",
-          creative_set_conversion.observation_window.InDays());
-      SCOPED_CRASH_KEY_NUMBER(
-          "Issue43314", "expire_at",
-          creative_set_conversion.expire_at->ToDeltaSinceWindowsEpoch()
-              .InMicroseconds());
-      SCOPED_CRASH_KEY_STRING64("Issue43314", "failure_reason",
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "id",
+                            !creative_set_conversion.id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "url_pattern",
+                            !creative_set_conversion.url_pattern.empty());
+      SCOPED_CRASH_KEY_BOOL(
+          "Issue45296", "observation_window",
+          !creative_set_conversion.observation_window.is_negative());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "expire_at",
+                            !!creative_set_conversion.expire_at);
+      SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
                                 "Invalid creative set conversion");
       base::debug::DumpWithoutCrashing();
-
       BLOG(0, "Invalid creative set conversion");
       continue;
     }
@@ -183,14 +161,38 @@ void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 void CreativeSetConversions::Save(
     const CreativeSetConversionList& creative_set_conversions,
     ResultCallback callback) {
-  if (creative_set_conversions.empty()) {
+  CreativeSetConversionList filtered_creative_set_conversions;
+  std::copy_if(
+      creative_set_conversions.cbegin(), creative_set_conversions.cend(),
+      std::back_inserter(filtered_creative_set_conversions),
+      [](const CreativeSetConversionInfo& creative_set_conversion) {
+        const bool is_valid = creative_set_conversion.IsValid();
+        if (!is_valid) {
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "id",
+                                !creative_set_conversion.id.empty());
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "url_pattern",
+                                !creative_set_conversion.url_pattern.empty());
+          SCOPED_CRASH_KEY_BOOL(
+              "Issue45296", "observation_window",
+              !creative_set_conversion.observation_window.is_negative());
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "expire_at",
+                                !!creative_set_conversion.expire_at);
+          SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
+                                    "Invalid creative set conversion");
+          base::debug::DumpWithoutCrashing();
+          BLOG(0, "Invalid creative set conversion");
+        }
+
+        return is_valid;
+      });
+  if (filtered_creative_set_conversions.empty()) {
     return std::move(callback).Run(/*success=*/true);
   }
 
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  Insert(mojom_db_transaction, creative_set_conversions);
+  Insert(mojom_db_transaction, filtered_creative_set_conversions);
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
@@ -322,10 +324,7 @@ void CreativeSetConversions::Insert(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction,
     const CreativeSetConversionList& creative_set_conversions) {
   CHECK(mojom_db_transaction);
-
-  if (creative_set_conversions.empty()) {
-    return;
-  }
+  CHECK(!creative_set_conversions.empty());
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;

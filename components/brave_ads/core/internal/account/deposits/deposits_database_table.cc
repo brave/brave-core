@@ -10,6 +10,8 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/strings/string_util.h"
@@ -104,6 +106,11 @@ void GetForCreativeInstanceIdCallback(
       std::move(mojom_db_transaction_result->rows_union->get_rows().front());
   DepositInfo deposit = FromMojomRow(mojom_db_row);
   if (!deposit.IsValid()) {
+    SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
+                          !deposit.creative_instance_id.empty());
+    SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
+                              "Invalid deposit");
+    base::debug::DumpWithoutCrashing();
     BLOG(0, "Invalid deposit");
     return std::move(callback).Run(/*success=*/false, /*deposit=*/std::nullopt);
   }
@@ -127,6 +134,11 @@ void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   if (!deposit.IsValid()) {
+    SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
+                          !deposit.creative_instance_id.empty());
+    SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
+                              "Invalid deposit");
+    base::debug::DumpWithoutCrashing();
     BLOG(0, "Invalid deposit");
     return std::move(callback).Run(/*success=*/false);
   }
