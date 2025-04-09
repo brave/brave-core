@@ -33,7 +33,6 @@ class YouTubeScriptInjectorTabFeatureBrowserTest : public PlatformBrowserTest {
  public:
   YouTubeScriptInjectorTabFeatureBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    // feature_list_.InitAndEnableFeature(youtube_script_injector::features::kBraveYouTubeScriptInjector);
     feature_list_.InitWithFeatures(
         {youtube_script_injector::features::kBraveYouTubeScriptInjector,
          youtube_script_injector::features::kBraveBackgroundVideoPlayback,
@@ -70,9 +69,6 @@ class YouTubeScriptInjectorTabFeatureBrowserTest : public PlatformBrowserTest {
 
     content::SetupCrossSiteRedirector(&https_server_);
     ASSERT_TRUE(https_server_.Start());
-
-    // html_with_input_ = embedded_test_server()->GetURL("example.com",
-    // "/rewriter-example.html");
   }
 
   base::FilePath GetTestDataDir() {
@@ -81,10 +77,6 @@ class YouTubeScriptInjectorTabFeatureBrowserTest : public PlatformBrowserTest {
   }
 
   void TearDownOnMainThread() override {
-    // source_providers_.clear();
-    // temp_dirs_.clear();
-
-    // ASSERT_TRUE(https_server_.ShutdownAndWaitUntilComplete());
     PlatformBrowserTest::TearDownOnMainThread();
   }
 
@@ -110,7 +102,6 @@ class YouTubeScriptInjectorTabFeatureBrowserTest : public PlatformBrowserTest {
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
-  //   BraveContentBrowserClient test_content_browser_client_;
 };
 
 // TESTS
@@ -187,59 +178,6 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest,
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
-// IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest,
-// RuleMatchTestScriptFalse) {
-//   const GURL url = https_server_.GetURL("b.com", "/simple.html");
-
-//   const char rules[] =
-//       R"(
-//       [
-//         {
-//             "include": [
-//                 "https://b.com/*"
-//             ],
-//             "exclude": [
-//             ],
-//             "version": 1,
-//             "test_script": "b/test.js",
-//             "policy_script": "b/policy.js"
-//         }
-//       ]
-//       )";
-//   psst::PsstRuleRegistry::GetInstance()->OnLoadRules(rules);
-
-//   std::u16string expected_title(u"test");
-//   content::TitleWatcher watcher(web_contents(), expected_title);
-//   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
-//   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
-// }
-
-// IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest, NoMatch) {
-//   const GURL url = https_server_.GetURL("a.com", "/simple.html");
-
-//   const char rules[] =
-//       R"(
-//       [
-//         {
-//             "include": [
-//                 "https://c.com/*"
-//             ],
-//             "exclude": [
-//             ],
-//             "version": 1,
-//             "test_script": "a/test.js",
-//             "policy_script": "a/policy.js"
-//         }
-//       ]
-//       )";
-//   psst::PsstRuleRegistry::GetInstance()->OnLoadRules(rules);
-
-//   std::u16string expected_title(u"OK");
-//   content::TitleWatcher watcher(web_contents(), expected_title);
-//   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
-//   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
-// }
-
 class YouTubeScriptInjectorTabFeatureBrowserDisabledTest
     : public YouTubeScriptInjectorTabFeatureBrowserTest {
  public:
@@ -263,28 +201,5 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserDisabledTest,
   EXPECT_TRUE(youtube_script_injector::YouTubeRegistry::IsYouTubeDomain(url));
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
-
-// class YouTubeScriptInjectorTabFeatureBrowserDisabledFeaturesEnabledTest :
-// public YouTubeScriptInjectorTabFeatureBrowserTest {
-//     public:
-//     YouTubeScriptInjectorTabFeatureBrowserDisabledFeaturesEnabledTest() {
-//         feature_list_.Reset();
-//         feature_list_.InitWithFeatures({youtube_script_injector::features::kBraveBackgroundVideoPlayback,
-//                                         youtube_script_injector::features::kBraveYouTubeExtraControls},
-//                                        {youtube_script_injector::features::kBraveYouTubeScriptInjector});
-//      }
-//    };
-
-// IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserDisabledFeaturesEnabledTest,
-// TestDoesNotInjectScript) {
-//     const GURL url = https_server_.GetURL("youtube.com", "/simple.html");
-//     ASSERT_FALSE(youtube_script_injector::YouTubeRegistry::GetInstance());
-
-//     std::u16string expected_title(u"OK");
-//     content::TitleWatcher watcher(web_contents(), expected_title);
-//     NavigateToURL(url);
-//     EXPECT_TRUE(youtube_script_injector::YouTubeRegistry::IsYouTubeDomain(url));
-//     EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
-// }
 
 }  // namespace youtube_script_injector
