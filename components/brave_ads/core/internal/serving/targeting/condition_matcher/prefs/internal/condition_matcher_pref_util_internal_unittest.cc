@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/prefs/internal/condition_matcher_pref_util_internal.h"
 
 #include "base/containers/span.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_pref_provider.h"
 #include "brave/components/brave_ads/core/internal/common/test/local_state_pref_registry_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_registry_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -15,10 +14,7 @@
 
 namespace brave_ads {
 
-class BraveAdsConditionMatcherPrefUtilTest : public test::TestBase {
- protected:
-  const AdsClientPrefProvider pref_provider_;
-};
+class BraveAdsConditionMatcherPrefUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
        DoNotConvertNoneValueTypeToString) {
@@ -75,8 +71,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetVirtualPrefValue) {
   });
 
   // Act & Assert
-  EXPECT_EQ(base::Value(/*room*/ 303),
-            MaybeGetPrefValue(&pref_provider_, "[virtual]:matrix"));
+  EXPECT_EQ(base::Value(/*room*/ 303), MaybeGetPrefValue("[virtual]:matrix"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, DoNotGetUnknownVirtualPrefValue) {
@@ -86,7 +81,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, DoNotGetUnknownVirtualPrefValue) {
   });
 
   // Act & Assert
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "[virtual]:matrix"));
+  EXPECT_FALSE(MaybeGetPrefValue("[virtual]:matrix"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetBooleanProfilePrefValue) {
@@ -94,7 +89,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetBooleanProfilePrefValue) {
   test::RegisterProfileBooleanPref("boolean", true);
 
   // Act & Assert
-  EXPECT_EQ(base::Value(true), MaybeGetPrefValue(&pref_provider_, "boolean"));
+  EXPECT_EQ(base::Value(true), MaybeGetPrefValue("boolean"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetIntegerProfilePrefValue) {
@@ -102,7 +97,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetIntegerProfilePrefValue) {
   test::RegisterProfileIntegerPref("integer", 123);
 
   // Act & Assert
-  EXPECT_EQ(base::Value(123), MaybeGetPrefValue(&pref_provider_, "integer"));
+  EXPECT_EQ(base::Value(123), MaybeGetPrefValue("integer"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDoubleProfilePrefValue) {
@@ -110,7 +105,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDoubleProfilePrefValue) {
   test::RegisterProfileDoublePref("double", 1.23);
 
   // Act & Assert
-  EXPECT_EQ(base::Value(1.23), MaybeGetPrefValue(&pref_provider_, "double"));
+  EXPECT_EQ(base::Value(1.23), MaybeGetPrefValue("double"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetStringProfilePrefValue) {
@@ -118,7 +113,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetStringProfilePrefValue) {
   test::RegisterProfileStringPref("string", "foo");
 
   // Act & Assert
-  EXPECT_EQ(base::Value("foo"), MaybeGetPrefValue(&pref_provider_, "string"));
+  EXPECT_EQ(base::Value("foo"), MaybeGetPrefValue("string"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDictProfilePrefValue) {
@@ -126,7 +121,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDictProfilePrefValue) {
   test::RegisterProfileDictPref("dict", base::Value::Dict().Set("foo", "bar"));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("bar"), MaybeGetPrefValue(&pref_provider_, "dict|foo"));
+  EXPECT_EQ(base::Value("bar"), MaybeGetPrefValue("dict|foo"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedDictProfilePrefValue) {
@@ -136,8 +131,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedDictProfilePrefValue) {
       base::Value::Dict().Set("foo", base::Value::Dict().Set("bar", "qux")));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("qux"),
-            MaybeGetPrefValue(&pref_provider_, "dict|foo|bar"));
+  EXPECT_EQ(base::Value("qux"), MaybeGetPrefValue("dict|foo|bar"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -149,8 +143,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
                              base::Value::Dict().Set("baz", "qux"))));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("qux"),
-            MaybeGetPrefValue(&pref_provider_, "dict|foo|1|baz"));
+  EXPECT_EQ(base::Value("qux"), MaybeGetPrefValue("dict|foo|1|baz"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -161,8 +154,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
                   "foo.bar", base::Value::Dict().Set("baz.qux", "quux")));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("quux"),
-            MaybeGetPrefValue(&pref_provider_, "dict|foo.bar|baz.qux"));
+  EXPECT_EQ(base::Value("quux"), MaybeGetPrefValue("dict|foo.bar|baz.qux"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -171,10 +163,10 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
                                 base::Value::Dict().Set("foo.bar", "baz"));
 
   // Act & Assert
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "dict|foo.bar|baz"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "dict|"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "|"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, ""));
+  EXPECT_FALSE(MaybeGetPrefValue("dict|foo.bar|baz"));
+  EXPECT_FALSE(MaybeGetPrefValue("dict|"));
+  EXPECT_FALSE(MaybeGetPrefValue("|"));
+  EXPECT_FALSE(MaybeGetPrefValue(""));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetListProfilePrefValue) {
@@ -183,7 +175,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetListProfilePrefValue) {
       "list", base::Value::List().Append("foo").Append("bar"));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("bar"), MaybeGetPrefValue(&pref_provider_, "list|1"));
+  EXPECT_EQ(base::Value("bar"), MaybeGetPrefValue("list|1"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedListProfilePrefValue) {
@@ -193,7 +185,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedListProfilePrefValue) {
                   base::Value::List().Append("foo").Append("bar")));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("bar"), MaybeGetPrefValue(&pref_provider_, "list|0|1"));
+  EXPECT_EQ(base::Value("bar"), MaybeGetPrefValue("list|0|1"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -204,8 +196,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
                   "foo", base::Value::List().Append("bar").Append("baz"))));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("baz"),
-            MaybeGetPrefValue(&pref_provider_, "list|0|foo|1"));
+  EXPECT_EQ(base::Value("baz"), MaybeGetPrefValue("list|0|foo|1"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -217,8 +208,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
                   base::Value::List().Append("baz.qux").Append("quux.corge"))));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("quux.corge"),
-            MaybeGetPrefValue(&pref_provider_, "list|0|foo.bar|1"));
+  EXPECT_EQ(base::Value("quux.corge"), MaybeGetPrefValue("list|0|foo.bar|1"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -228,8 +218,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
       "list", base::Value::List().Append("foo").Append("bar"));
 
   // Act & Assert
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "list|-1"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "list|2"));
+  EXPECT_FALSE(MaybeGetPrefValue("list|-1"));
+  EXPECT_FALSE(MaybeGetPrefValue("list|2"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -237,11 +227,11 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
   test::RegisterProfileListPref("list", base::Value::List().Append("foo"));
 
   // Act & Assert
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "list|0|foo"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "list|bar"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "list|"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "|"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, ""));
+  EXPECT_FALSE(MaybeGetPrefValue("list|0|foo"));
+  EXPECT_FALSE(MaybeGetPrefValue("list|bar"));
+  EXPECT_FALSE(MaybeGetPrefValue("list|"));
+  EXPECT_FALSE(MaybeGetPrefValue("|"));
+  EXPECT_FALSE(MaybeGetPrefValue(""));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetBooleanLocalStatePrefValue) {
@@ -249,7 +239,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetBooleanLocalStatePrefValue) {
   test::RegisterLocalStateBooleanPref("boolean", true);
 
   // Act & Assert
-  EXPECT_EQ(base::Value(true), MaybeGetPrefValue(&pref_provider_, "boolean"));
+  EXPECT_EQ(base::Value(true), MaybeGetPrefValue("boolean"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetIntegerLocalStatePrefValue) {
@@ -257,7 +247,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetIntegerLocalStatePrefValue) {
   test::RegisterLocalStateIntegerPref("integer", 123);
 
   // Act & Assert
-  EXPECT_EQ(base::Value(123), MaybeGetPrefValue(&pref_provider_, "integer"));
+  EXPECT_EQ(base::Value(123), MaybeGetPrefValue("integer"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDoubleLocalStatePrefValue) {
@@ -265,7 +255,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDoubleLocalStatePrefValue) {
   test::RegisterLocalStateDoublePref("double", 1.23);
 
   // Act & Assert
-  EXPECT_EQ(base::Value(1.23), MaybeGetPrefValue(&pref_provider_, "double"));
+  EXPECT_EQ(base::Value(1.23), MaybeGetPrefValue("double"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetStringLocalStatePrefValue) {
@@ -273,7 +263,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetStringLocalStatePrefValue) {
   test::RegisterLocalStateStringPref("string", "foo");
 
   // Act & Assert
-  EXPECT_EQ(base::Value("foo"), MaybeGetPrefValue(&pref_provider_, "string"));
+  EXPECT_EQ(base::Value("foo"), MaybeGetPrefValue("string"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDictLocalStatePrefValue) {
@@ -282,8 +272,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetDictLocalStatePrefValue) {
                                    base::Value::Dict().Set("foo.bar", "baz"));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("baz"),
-            MaybeGetPrefValue(&pref_provider_, "dict|foo.bar"));
+  EXPECT_EQ(base::Value("baz"), MaybeGetPrefValue("dict|foo.bar"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedDictLocalStatePrefValue) {
@@ -293,8 +282,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedDictLocalStatePrefValue) {
       base::Value::Dict().Set("foo", base::Value::Dict().Set("bar", "qux")));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("qux"),
-            MaybeGetPrefValue(&pref_provider_, "dict|foo|bar"));
+  EXPECT_EQ(base::Value("qux"), MaybeGetPrefValue("dict|foo|bar"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -306,8 +294,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
                              base::Value::Dict().Set("baz", "qux"))));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("qux"),
-            MaybeGetPrefValue(&pref_provider_, "dict|foo|1|baz"));
+  EXPECT_EQ(base::Value("qux"), MaybeGetPrefValue("dict|foo|1|baz"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -318,8 +305,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
                   "foo.bar", base::Value::Dict().Set("baz.qux", "quux")));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("quux"),
-            MaybeGetPrefValue(&pref_provider_, "dict|foo.bar|baz.qux"));
+  EXPECT_EQ(base::Value("quux"), MaybeGetPrefValue("dict|foo.bar|baz.qux"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -328,10 +314,10 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
                                    base::Value::Dict().Set("foo.bar", "baz"));
 
   // Act & Assert
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "dict|foo.bar|baz"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "dict|"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "|"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, ""));
+  EXPECT_FALSE(MaybeGetPrefValue("dict|foo.bar|baz"));
+  EXPECT_FALSE(MaybeGetPrefValue("dict|"));
+  EXPECT_FALSE(MaybeGetPrefValue("|"));
+  EXPECT_FALSE(MaybeGetPrefValue(""));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetListLocalStatePrefValue) {
@@ -340,7 +326,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetListLocalStatePrefValue) {
       "list", base::Value::List().Append("foo").Append("bar"));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("bar"), MaybeGetPrefValue(&pref_provider_, "list|1"));
+  EXPECT_EQ(base::Value("bar"), MaybeGetPrefValue("list|1"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedListLocalStatePrefValue) {
@@ -350,7 +336,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetNestedListLocalStatePrefValue) {
                   base::Value::List().Append("foo").Append("bar")));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("bar"), MaybeGetPrefValue(&pref_provider_, "list|0|1"));
+  EXPECT_EQ(base::Value("bar"), MaybeGetPrefValue("list|0|1"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -361,8 +347,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
                   "foo", base::Value::List().Append("bar").Append("baz"))));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("baz"),
-            MaybeGetPrefValue(&pref_provider_, "list|0|foo|1"));
+  EXPECT_EQ(base::Value("baz"), MaybeGetPrefValue("list|0|foo|1"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -374,8 +359,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
                   base::Value::List().Append("baz.qux").Append("quux.corge"))));
 
   // Act & Assert
-  EXPECT_EQ(base::Value("quux.corge"),
-            MaybeGetPrefValue(&pref_provider_, "list|0|foo.bar|1"));
+  EXPECT_EQ(base::Value("quux.corge"), MaybeGetPrefValue("list|0|foo.bar|1"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -384,11 +368,11 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
   test::RegisterLocalStateListPref("list", base::Value::List().Append("foo"));
 
   // Act & Assert
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "list|0|foo"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "list|bar"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "list|"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "|"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, ""));
+  EXPECT_FALSE(MaybeGetPrefValue("list|0|foo"));
+  EXPECT_FALSE(MaybeGetPrefValue("list|bar"));
+  EXPECT_FALSE(MaybeGetPrefValue("list|"));
+  EXPECT_FALSE(MaybeGetPrefValue("|"));
+  EXPECT_FALSE(MaybeGetPrefValue(""));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
@@ -398,13 +382,13 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
       "list", base::Value::List().Append("foo").Append("bar"));
 
   // Act & Assert
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "list|-1"));
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "list|2"));
+  EXPECT_FALSE(MaybeGetPrefValue("list|-1"));
+  EXPECT_FALSE(MaybeGetPrefValue("list|2"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, DoNotGetUnknownPrefValue) {
   // Act & Assert
-  EXPECT_FALSE(MaybeGetPrefValue(&pref_provider_, "foo.bar"));
+  EXPECT_FALSE(MaybeGetPrefValue("foo.bar"));
 }
 
 }  // namespace brave_ads

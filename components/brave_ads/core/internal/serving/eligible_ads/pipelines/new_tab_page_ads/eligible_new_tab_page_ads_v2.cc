@@ -176,9 +176,8 @@ void EligibleNewTabPageAdsV2::ApplyConditionMatcher(
   TRACE_EVENT(kTraceEventCategory, "ApplyConditionMatcher", "creative_ads",
               creative_ads.size());
 
-  std::erase_if(creative_ads, [this](
-                                  const CreativeNewTabPageAdInfo& creative_ad) {
-    return !MatchConditions(&pref_provider_, creative_ad.condition_matchers);
+  std::erase_if(creative_ads, [](const CreativeNewTabPageAdInfo& creative_ad) {
+    return !MatchConditions(creative_ad.condition_matchers);
   });
 }
 

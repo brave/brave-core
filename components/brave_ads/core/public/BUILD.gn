@@ -39,8 +39,6 @@ source_set("headers") {
     "history/site_history.h",
     "prefs/obsolete_pref_util.h",
     "prefs/pref_names.h",
-    "prefs/pref_provider.h",
-    "prefs/pref_provider_interface.h",
     "prefs/pref_registry.h",
     "service/ads_service_callback.h",
     "targeting/geographical/subdivision/supported_subdivisions.h",

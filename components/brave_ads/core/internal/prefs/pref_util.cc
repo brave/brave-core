@@ -16,6 +16,15 @@
 
 namespace brave_ads {
 
+std::optional<base::Value> GetProfilePref(const std::string& path) {
+  if (!GetAdsClient().FindProfilePref(path)) {
+    // The preference does not exist.
+    return std::nullopt;
+  }
+
+  return GetAdsClient().GetProfilePref(path);
+}
+
 bool GetProfileBooleanPref(const std::string& path) {
   const std::optional<base::Value> value = GetAdsClient().GetProfilePref(path);
   if (!value) {
@@ -181,7 +190,21 @@ void ClearProfilePref(const std::string& path) {
 }
 
 bool HasProfilePrefPath(const std::string& path) {
+  if (!GetAdsClient().FindProfilePref(path)) {
+    // The preference does not exist.
+    return false;
+  }
+
   return GetAdsClient().HasProfilePrefPath(path);
+}
+
+std::optional<base::Value> GetLocalStatePref(const std::string& path) {
+  if (!GetAdsClient().FindLocalStatePref(path)) {
+    // The preference does not exist.
+    return std::nullopt;
+  }
+
+  return GetAdsClient().GetLocalStatePref(path);
 }
 
 bool GetLocalStateBooleanPref(const std::string& path) {
@@ -367,7 +390,24 @@ bool FindLocalStatePrefPath(const std::string& path) {
 }
 
 bool HasLocalStatePrefPath(const std::string& path) {
+  if (!GetAdsClient().FindLocalStatePref(path)) {
+    // The preference does not exist.
+    return false;
+  }
+
   return GetAdsClient().HasLocalStatePrefPath(path);
+}
+
+std::optional<base::Value> GetVirtualPref(const std::string& path) {
+  if (path.starts_with(kVirtualPrefPathPrefix)) {
+    const base::Value::Dict virtual_prefs = GetAdsClient().GetVirtualPrefs();
+    if (const base::Value* const value = virtual_prefs.Find(path)) {
+      return value->Clone();
+    }
+  }
+
+  // The preference does not exist.
+  return std::nullopt;
 }
 
 }  // namespace brave_ads

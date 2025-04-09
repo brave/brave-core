@@ -1437,7 +1437,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (base::Value::Dict)getVirtualPrefs {
-  // Intentionally empty.
   return {};
 }
 
@@ -1516,9 +1515,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
       static_cast<brave_ads::mojom::InlineContentAdEventType>(eventType),
       base::BindOnce(completion));
 }
-
-// TODO(https://github.com/brave/brave-browser/issues/33470): Unify Brave Ads
-// new tab page ad serving.
 
 - (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
               creativeInstanceId:(NSString*)creativeInstanceId

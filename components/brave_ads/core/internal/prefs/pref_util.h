@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PREFS_PREF_UTIL_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 
 #include "base/time/time.h"
@@ -14,7 +15,10 @@
 
 namespace brave_ads {
 
+inline constexpr char kVirtualPrefPathPrefix[] = "[virtual]:";
+
 // Gets profile preference values.
+std::optional<base::Value> GetProfilePref(const std::string& path);
 bool GetProfileBooleanPref(const std::string& path);
 int GetProfileIntegerPref(const std::string& path);
 double GetProfileDoublePref(const std::string& path);
@@ -43,6 +47,7 @@ bool FindProfilePref(const std::string& path);
 bool HasProfilePrefPath(const std::string& path);
 
 // Gets local state preference values.
+std::optional<base::Value> GetLocalStatePref(const std::string& path);
 bool GetLocalStateBooleanPref(const std::string& path);
 int GetLocalStateIntegerPref(const std::string& path);
 double GetLocalStateDoublePref(const std::string& path);
@@ -69,6 +74,9 @@ void SetLocalStateTimeDeltaPref(const std::string& path, base::TimeDelta value);
 void ClearLocalStatePref(const std::string& path);
 bool FindLocalStatePref(const std::string& path);
 bool HasLocalStatePrefPath(const std::string& path);
+
+// Gets virtual preference values.
+std::optional<base::Value> GetVirtualPref(const std::string& path);
 
 }  // namespace brave_ads
 

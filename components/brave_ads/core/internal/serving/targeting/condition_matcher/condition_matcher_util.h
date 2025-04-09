@@ -14,8 +14,6 @@ namespace brave_ads {
 using ConditionMatcherMap =
     std::multimap</*pref_path*/ std::string, /*condition*/ std::string>;
 
-class PrefProviderInterface;
-
 // Condition matchers must undergo a privacy review.
 //
 // Matchers are one or more pref paths and conditions, using AND logic, that
@@ -195,8 +193,7 @@ class PrefProviderInterface;
 // malformed condition matchers will be logged to the console, they are not
 // logged to the Rewards log.
 
-bool MatchConditions(const PrefProviderInterface* pref_provider,
-                     const ConditionMatcherMap& condition_matchers);
+bool MatchConditions(const ConditionMatcherMap& condition_matchers);
 
 }  // namespace brave_ads
 

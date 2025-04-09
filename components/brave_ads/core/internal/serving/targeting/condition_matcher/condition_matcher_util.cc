@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/pattern_condition_matcher_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/regex_condition_matcher_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/prefs/condition_matcher_pref_util.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_provider_interface.h"
 
 namespace brave_ads {
 
@@ -48,18 +47,15 @@ bool MatchCondition(std::string_view value, std::string_view condition) {
 
 }  // namespace
 
-bool MatchConditions(const PrefProviderInterface* const pref_provider,
-                     const ConditionMatcherMap& condition_matchers) {
-  CHECK(pref_provider);
-
+bool MatchConditions(const ConditionMatcherMap& condition_matchers) {
   return std::ranges::all_of(
-      condition_matchers, [pref_provider](const auto& condition_matcher) {
+      condition_matchers, [](const auto& condition_matcher) {
         const auto& [pref_path, condition] = condition_matcher;
 
         const std::string stripped_pref_path =
             MaybeStripOperatorPrefix(pref_path);
         const std::optional<std::string> value =
-            MaybeGetPrefValueAsString(pref_provider, stripped_pref_path);
+            MaybeGetPrefValueAsString(stripped_pref_path);
 
         if (HasNotOperator(pref_path)) {
           // Match if the pref path does not exist.

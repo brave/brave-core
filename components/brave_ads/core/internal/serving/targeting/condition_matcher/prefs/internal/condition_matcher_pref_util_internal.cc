@@ -14,7 +14,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/types/cxx23_to_underlying.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_provider_interface.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 
 namespace brave_ads {
 
@@ -49,22 +49,16 @@ std::optional<std::string> ToString(const base::Value& value) {
                << base::to_underlying(value.type());
 }
 
-std::optional<base::Value> MaybeGetRootPrefValue(
-    const PrefProviderInterface* const pref_provider,
-    const std::string& pref_path) {
-  CHECK(pref_provider);
-
+std::optional<base::Value> MaybeGetRootPrefValue(const std::string& pref_path) {
   if (pref_path.starts_with(kVirtualPrefPathPrefix)) {
-    return pref_provider->GetVirtualPref(pref_path);
+    return GetVirtualPref(pref_path);
   }
 
-  if (std::optional<base::Value> pref_value =
-          pref_provider->GetProfilePref(pref_path)) {
+  if (std::optional<base::Value> pref_value = GetProfilePref(pref_path)) {
     return pref_value;
   }
 
-  if (std::optional<base::Value> pref_value =
-          pref_provider->GetLocalStatePref(pref_path)) {
+  if (std::optional<base::Value> pref_value = GetLocalStatePref(pref_path)) {
     return pref_value;
   }
 
@@ -114,11 +108,7 @@ std::optional<base::Value> MaybeGetNextPrefValue(const base::Value& pref_value,
   return std::nullopt;
 }
 
-std::optional<base::Value> MaybeGetPrefValue(
-    const PrefProviderInterface* const pref_provider,
-    const std::string& pref_path) {
-  CHECK(pref_provider);
-
+std::optional<base::Value> MaybeGetPrefValue(const std::string& pref_path) {
   // Split the `pref_path` into individual keys using '|' as the delimiter.
   const std::vector<std::string> keys = base::SplitString(
       pref_path, "|", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
@@ -136,7 +126,7 @@ std::optional<base::Value> MaybeGetPrefValue(
     if (!pref_value) {
       // Attempt to get the root pref value using the current key.
       if (std::optional<base::Value> root_pref_value =
-              MaybeGetRootPrefValue(pref_provider, key)) {
+              MaybeGetRootPrefValue(key)) {
         pref_value = std::move(*root_pref_value);
         continue;
       }
