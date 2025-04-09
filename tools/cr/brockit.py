@@ -940,7 +940,11 @@ class GitHubIssue(Versioned):
             )
             return True
 
-        tag = f'[{upstream_branch}] ' if upstream_branch != 'master' else ''
+        # That's a naive way to think about this, but in general the uplift
+        # branches are upstreamed to 1.77.x, 1.78.x, etc.
+        is_uplift = (versioning.get_uplift_branch_name_from_package() ==
+                     upstream_branch)
+        tag = f'[{upstream_branch}] ' if is_uplift else ''
         cmd = [
             'gh', 'pr', 'create', '--base', upstream_branch, '--head',
             current_branch, '--title', f'{tag}{self.compose_issue_title()}',
@@ -976,6 +980,32 @@ class GitHubIssue(Versioned):
                 f'Failed to create PR for {current_branch}: {e.stderr.strip()}'
             )
             return False
+
+        if is_uplift:
+            # Only uplift branches set milestones.
+            results = json.loads(
+                terminal.run([
+                    'gh', 'api', 'repos/brave/brave-core/milestones', '--jq',
+                    '[.[] | {number, title}]'
+                ]).stdout)
+            if not results:
+                logging.warning('No milestones returned for brave-core')
+                return False
+
+            milestone = next(
+                (entry["number"] for entry in results
+                 if entry["title"].startswith(f'{upstream_branch} - ')), None)
+            if milestone is None:
+                logging.warning('Failed to find milestone for branch %s',
+                                upstream_branch)
+                return False
+
+            pr_number = pr_url.split("/", 1)[-1]
+            terminal.run([
+                'gh', 'api', '-X', 'PATCH',
+                f'repos/brave/brave-core/issues/{pr_number}', '-F',
+                f'milestone={milestone}'
+            ])
 
         return True
 

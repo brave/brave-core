@@ -11,10 +11,12 @@ from unittest.mock import patch
 import repository
 from repository import Repository
 
-from versioning import load_package_file, read_chromium_version_file
+from versioning import (load_package_file, read_chromium_version_file,
+                        get_uplift_branch_name_from_package)
 from versioning import Version
 
 from test.fake_chromium_src import FakeChromiumSrc
+import json
 
 
 class VersioningTest(unittest.TestCase):
@@ -171,6 +173,20 @@ class VersioningTest(unittest.TestCase):
         version_2 = read_chromium_version_file()
         self.assertEqual(str(version_2), test_version_2)
         self.assertEqual(version_2.parts, (5, 6, 7, 8))
+
+    def test_get_uplift_branch_name_from_package(self):
+        """Test the result of get_uplift_branch_name_from_package."""
+        # Update the package.json file with a specific version
+        test_version = '1.2.3'
+        self.fake_chromium_src.write_and_stage_file(
+            'package.json', json.dumps({'version': test_version}),
+            self.fake_chromium_src.brave)
+        self.fake_chromium_src.commit('Update package.json',
+                                      self.fake_chromium_src.brave)
+
+        # Assert the uplift branch name is generated correctly
+        uplift_branch_name = get_uplift_branch_name_from_package()
+        self.assertEqual(uplift_branch_name, '1.2.x')
 
 
 if __name__ == "__main__":
