@@ -105,17 +105,18 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             }
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE, (boolean) newValue);
+            BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_SHOW_SPONSORED_IMAGES.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(
                             BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE,
                             (boolean) newValue);
+            BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_SHOW_TOP_SITES.equals(key)) {
             NtpUtil.setDisplayTopSites((boolean) newValue);
         } else if (PREF_SHOW_BRAVE_STATS.equals(key)) {
             NtpUtil.setDisplayBraveStats((boolean) newValue);
         }
-        BraveRelaunchUtils.askForRelaunch(getActivity());
         return true;
     }
 }
