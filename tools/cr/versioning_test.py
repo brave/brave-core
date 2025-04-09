@@ -4,12 +4,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-from pathlib import PurePath
 import unittest
 from unittest.mock import patch
-
-import repository
-from repository import Repository
 
 from versioning import (load_package_file, read_chromium_version_file,
                         get_uplift_branch_name_from_package)
