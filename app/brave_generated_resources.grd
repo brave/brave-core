@@ -361,6 +361,26 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Block elements
       </message>
 
+      <!-- Element Picker -->
+      <message name="IDS_BRAVE_ELEMENT_PICKER_CREATE_BTN_DISABLED_LABEL" desc="Label for Element picker's create button in disabled state">
+        Select element you want to block
+      </message>
+      <message name="IDS_BRAVE_ELEMENT_PICKER_CREATE_BTN_ENABLED_LABEL" desc="Label for Element picker's create button in enabled state">
+        Block Elements
+      </message>
+      <message name="IDS_BRAVE_ELEMENT_PICKER_MANAGE_BTN_LABEL" desc="Label for Element picker's manage button">
+        Manage filters
+      </message>
+      <message name="IDS_BRAVE_ELEMENT_PICKER_SHOW_RULES_BTN_LABEL" desc="Label for Element picker's show rules button">
+        Show rules
+      </message>
+      <message name="IDS_BRAVE_ELEMENT_PICKER_HIDE_RULES_BTN_LABEL" desc="Label for Element picker's hide rules button">
+        Hide rules
+      </message>
+      <message name="IDS_BRAVE_ELEMENT_PICKER_QUIT_BTN_LABEL" desc="Label for Element picker's quit button">
+        Cancel
+      </message>
+
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">
         .onion
       </message>
