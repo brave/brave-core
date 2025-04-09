@@ -10,6 +10,8 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/strings/string_util.h"
@@ -57,10 +59,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   int32_t index = 0;
   for (const auto& ad_event : ad_events) {
-    if (!ad_event.IsValid()) {
-      BLOG(0, "Invalid ad event");
-      continue;
-    }
+    CHECK(ad_event.IsValid());
 
     BindColumnString(mojom_db_action, index++, ad_event.placement_id);
     BindColumnString(mojom_db_action, index++, ToString(ad_event.type));
@@ -119,6 +118,25 @@ void GetCallback(
        mojom_db_transaction_result->rows_union->get_rows()) {
     const AdEventInfo ad_event = FromMojomRow(mojom_db_row);
     if (!ad_event.IsValid()) {
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "type",
+                            ad_event.type != mojom::AdType::kUndefined);
+      SCOPED_CRASH_KEY_BOOL(
+          "Issue45296", "confirmation_type",
+          ad_event.confirmation_type != mojom::ConfirmationType::kUndefined);
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "placement_id",
+                            !ad_event.placement_id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
+                            !ad_event.creative_instance_id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_set_id",
+                            !ad_event.creative_set_id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "campaign_id",
+                            !ad_event.campaign_id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "target_url",
+                            ad_event.target_url.is_valid());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "created_at", !!ad_event.created_at);
+      SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
+                                "Invalid ad event");
+      base::debug::DumpWithoutCrashing();
       BLOG(0, "Invalid ad event");
       continue;
     }
@@ -237,6 +255,30 @@ void MigrateToV50(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 
 void AdEvents::RecordEvent(const AdEventInfo& ad_event,
                            ResultCallback callback) {
+  if (!ad_event.IsValid()) {
+    SCOPED_CRASH_KEY_BOOL("Issue45296", "type",
+                          ad_event.type != mojom::AdType::kUndefined);
+    SCOPED_CRASH_KEY_BOOL(
+        "Issue45296", "confirmation_type",
+        ad_event.confirmation_type != mojom::ConfirmationType::kUndefined);
+    SCOPED_CRASH_KEY_BOOL("Issue45296", "placement_id",
+                          !ad_event.placement_id.empty());
+    SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
+                          !ad_event.creative_instance_id.empty());
+    SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_set_id",
+                          !ad_event.creative_set_id.empty());
+    SCOPED_CRASH_KEY_BOOL("Issue45296", "campaign_id",
+                          !ad_event.campaign_id.empty());
+    SCOPED_CRASH_KEY_BOOL("Issue45296", "target_url",
+                          ad_event.target_url.is_valid());
+    SCOPED_CRASH_KEY_BOOL("Issue45296", "created_at", !!ad_event.created_at);
+    SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
+                              "Invalid ad event");
+    base::debug::DumpWithoutCrashing();
+    BLOG(0, "Invalid ad event");
+    return std::move(callback).Run(/*success=*/true);
+  }
+
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
@@ -682,10 +724,7 @@ void AdEvents::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 void AdEvents::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                       const AdEventList& ad_events) {
   CHECK(mojom_db_transaction);
-
-  if (ad_events.empty()) {
-    return;
-  }
+  CHECK(!ad_events.empty());
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;

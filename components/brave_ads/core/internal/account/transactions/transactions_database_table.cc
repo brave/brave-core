@@ -5,16 +5,21 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <iterator>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
@@ -55,10 +60,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   int32_t index = 0;
   for (const auto& transaction : transactions) {
-    if (!transaction.IsValid()) {
-      BLOG(0, "Invalid transaction");
-      continue;
-    }
+    CHECK(transaction.IsValid());
 
     BindColumnString(mojom_db_action, index++, transaction.id);
     BindColumnTime(mojom_db_action, index++,
@@ -119,6 +121,21 @@ void GetCallback(
        mojom_db_transaction_result->rows_union->get_rows()) {
     const TransactionInfo transaction = FromMojomRow(mojom_db_row);
     if (!transaction.IsValid()) {
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "id", !transaction.id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "created_at",
+                            !!transaction.created_at);
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
+                            !transaction.creative_instance_id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "segment",
+                            !transaction.segment.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue45296", "ad_type",
+                            transaction.ad_type != mojom::AdType::kUndefined);
+      SCOPED_CRASH_KEY_BOOL(
+          "Issue45296", "confirmation_type",
+          transaction.confirmation_type != mojom::ConfirmationType::kUndefined);
+      SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
+                                "Invalid transaction");
+      base::debug::DumpWithoutCrashing();
       BLOG(0, "Invalid transaction");
       continue;
     }
@@ -198,14 +215,42 @@ void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 
 void Transactions::Save(const TransactionList& transactions,
                         ResultCallback callback) {
-  if (transactions.empty()) {
+  TransactionList filtered_transactions;
+  std::copy_if(
+      transactions.cbegin(), transactions.cend(),
+      std::back_inserter(filtered_transactions),
+      [](const TransactionInfo& transaction) {
+        const bool is_valid = transaction.IsValid();
+        if (!is_valid) {
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "id", !transaction.id.empty());
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "created_at",
+                                !!transaction.created_at);
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
+                                !transaction.creative_instance_id.empty());
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "segment",
+                                !transaction.segment.empty());
+          SCOPED_CRASH_KEY_BOOL(
+              "Issue45296", "ad_type",
+              transaction.ad_type != mojom::AdType::kUndefined);
+          SCOPED_CRASH_KEY_BOOL("Issue45296", "confirmation_type",
+                                transaction.confirmation_type !=
+                                    mojom::ConfirmationType::kUndefined);
+          SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
+                                    "Invalid transaction");
+          base::debug::DumpWithoutCrashing();
+          BLOG(0, "Invalid transaction");
+        }
+
+        return is_valid;
+      });
+  if (filtered_transactions.empty()) {
     return std::move(callback).Run(/*success=*/true);
   }
 
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  Insert(mojom_db_transaction, transactions);
+  Insert(mojom_db_transaction, filtered_transactions);
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
@@ -366,10 +411,7 @@ void Transactions::Insert(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction,
     const TransactionList& transactions) {
   CHECK(mojom_db_transaction);
-
-  if (transactions.empty()) {
-    return;
-  }
+  CHECK(!transactions.empty());
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
