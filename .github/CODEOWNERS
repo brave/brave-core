@@ -175,7 +175,7 @@ android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java
 
 # GitHub configuration
 /.github/ @brave/devops-team
-/.github/CODEOWNERS @brave/devops-team @bsclifton
+/.github/CODEOWNERS @bridiver @bsclifton
 /.github/PULL_REQUEST_TEMPLATE.md @bsclifton
 
 
