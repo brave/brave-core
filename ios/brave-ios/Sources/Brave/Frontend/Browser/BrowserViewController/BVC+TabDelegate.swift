@@ -550,7 +550,7 @@ extension BrowserViewController {
     }
 
     do {
-      let credentials = try await Authenticator.handleAuthRequest(
+      let resolvedCredential = try await Authenticator.handleAuthRequest(
         self,
         credential: credential,
         protectionSpace: protectionSpace,
@@ -560,11 +560,11 @@ extension BrowserViewController {
       if BasicAuthCredentialsManager.validDomains.contains(host) {
         BasicAuthCredentialsManager.setCredential(
           origin: origin,
-          credential: credentials
+          credential: resolvedCredential
         )
       }
 
-      return credential
+      return resolvedCredential
     } catch {
       return nil
     }
