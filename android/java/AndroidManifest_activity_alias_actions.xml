@@ -6,9 +6,6 @@
     <category android:name="android.intent.category.LAUNCHER" />
     <category android:name="android.intent.category.BROWSABLE" />
     <category android:name="android.intent.category.APP_BROWSER" />
-    {% if channel in ['dev', 'canary', 'default'] %}
-    <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
-    {% endif %}
 </intent-filter>
 <meta-data android:name="android.app.shortcuts"
     android:resource="@xml/launchershortcuts" />
