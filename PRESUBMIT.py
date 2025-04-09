@@ -212,8 +212,8 @@ def CheckLicense(input_api, output_api):
         r'.*? Copyright \(c\) %(year)s The Brave Authors\. All rights reserved\.\n'
         r'.*? This Source Code Form is subject to the terms of the Mozilla Public\n'
         r'.*? License, v\. 2\.0\. If a copy of the MPL was not distributed with this file,\n'
-        r'.*? You can obtain one at https://mozilla.org/MPL/2\.0/\.(?: \*/)?\n')
-                                               % {'year': years_re},
+        r'.*? You can obtain one at https://mozilla.org/MPL/2\.0/\..*\n') %
+                                               {'year': years_re},
                                                input_api.re.MULTILINE)
 
     # License regexp to match in EXISTING files, it allows some variance.
@@ -221,18 +221,20 @@ def CheckLicense(input_api, output_api):
         r'.*? Copyright \(c\) %(year)s The Brave Authors\. All rights reserved\.\n'
         r'.*? This Source Code Form is subject to the terms of the Mozilla Public\n'
         r'.*? License, v\. 2\.0\. If a copy of the MPL was not distributed with this(\n.*?)? file,\n?'
-        r'.*? (y|Y)ou can obtain one at https?://mozilla.org/MPL/2\.0/\.(?: \*/)?\n'
-    ) % {'year': years_re}, input_api.re.MULTILINE)
+        r'.*? (y|Y)ou can obtain one at https?://mozilla.org/MPL/2\.0/\..*\n')
+                                                    % {'year': years_re},
+                                                    input_api.re.MULTILINE)
 
     # License template for new files. Includes current year.
     expected_license_template = (
         '%(comment)s Copyright (c) %(year)s The Brave Authors. All rights reserved.\n'
         '%(comment)s This Source Code Form is subject to the terms of the Mozilla Public\n'
         '%(comment)s License, v. 2.0. If a copy of the MPL was not distributed with this file,\n'
-        '%(comment)s You can obtain one at https://mozilla.org/MPL/2.0/.\n') % {
-            'comment': '#',
-            'year': current_year,
-        }
+        '%(comment)s You can obtain one at https://mozilla.org/MPL/2.0/.\n'
+    ) % {
+        'comment': '#',
+        'year': current_year,
+    }
 
     bad_new_files = []
     bad_files = []
@@ -258,15 +260,24 @@ def CheckLicense(input_api, output_api):
         f' * {splitted_expected_license_template[1]}\n'
         f' * {splitted_expected_license_template[2]}\n'
         f' * {splitted_expected_license_template[3]} */\n')
+    xml_multiline_comment_expected_license = (
+        f'<!-- {splitted_expected_license_template[0]}\n'
+        f'     {splitted_expected_license_template[1]}\n'
+        f'     {splitted_expected_license_template[2]}\n'
+        f'     {splitted_expected_license_template[3]} -->\n')
     assert new_file_license_re.search(expected_license_template)
     assert existing_file_license_re.search(expected_license_template)
     assert new_file_license_re.search(multiline_comment_expected_license)
     assert existing_file_license_re.search(multiline_comment_expected_license)
+    assert new_file_license_re.search(xml_multiline_comment_expected_license)
+    assert existing_file_license_re.search(
+        xml_multiline_comment_expected_license)
 
     # Show this to simplify copy-paste when an invalid license is found.
     expected_licenses = (f'{expected_license_template.replace("#", "//")}\n'
                          f'{multiline_comment_expected_license}\n'
-                         f'{expected_license_template}')
+                         f'{expected_license_template}\n'
+                         f'{xml_multiline_comment_expected_license}')
 
     result = []
     if bad_new_files:
