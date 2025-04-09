@@ -122,12 +122,6 @@
         Verify it’s you
       </message>
     </if>
-  <message name="IDS_PROFILES_CREDIT_CARDS_LINK" desc="Text of the menu item leading to the list of saved credit cards.">
-    Payment methods
-  </message>
-  <message name="IDS_PROFILES_ADDRESSES_LINK" desc="Text of the menu item leading to the list of autofill addresses.">
-    Addresses and more
-  </message>
   <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_DESCRIPTION" desc="Text for the sign-in promo in the profile menu when the used is signed out, describing the benefits of signing in.">
     Sign in to get your passwords and more on all your devices
   </message>
@@ -165,9 +159,6 @@
       other {Close this profile (# windows)}
       }
     </message>
-    <message name="IDS_PROFILE_MENU_ADD_NEW_PROFILE" desc="The text label of the add new profile item in the profile menu.">
-      Add new profile
-    </message>
     <message name="IDS_PROFILES_OPEN_SYNC_SETTINGS_BUTTON" desc="Button in the profile menu to open sync settings when sync is on.">
       Sync is on
     </message>
@@ -196,9 +187,6 @@
       =1 {Close This Profile}
       other {Close This Profile (# Windows)}
       }
-    </message>
-    <message name="IDS_PROFILE_MENU_ADD_NEW_PROFILE" desc="The text label of the add new profile item in the profile menu.">
-      Add New Profile
     </message>
     <message name="IDS_PROFILES_OPEN_SYNC_SETTINGS_BUTTON" desc="Button in the profile menu to open sync settings when sync is on.">
       Sync Is On
@@ -1095,6 +1083,18 @@
     </message>
     <message translateable="false" name="IDS_HISTORY_SYNC_OPT_IN_DESCRIPTION" desc="">
       You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+    </message>
+
+    <!-- History Sync Opt-in Expansion Pill Desktop -->
+    <!-- TODO(crbug.com/407708165): Finalize the strings and make them translateable. -->
+    <message translateable="false" name="IDS_AVATAR_BUTTON_BROWSE_ACROSS_DEVICES" desc="">
+      Browse across devices?
+    </message>
+    <message translateable="false" name="IDS_AVATAR_BUTTON_SYNC_TABS_AND_HISTORY" desc="">
+      Sync tabs and history?
+    </message>
+    <message translateable="false" name="IDS_AVATAR_BUTTON_SEE_TABS_FROM_OTHER_DEVICES" desc="">
+      See tabs from other devices?
     </message>
   </if>
 </grit-part>

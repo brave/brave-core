@@ -1734,6 +1734,9 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_SHOW_DOWNLOADS" desc="The show downloads menu in the app menu">
           &amp;Downloads
         </message>
+        <message name="IDS_FIND_EXTENSIONS" desc="The find extensions menu item in the app menu">
+          Find &amp;Extensions
+        </message>
         <message name="IDS_SHOW_EXTENSIONS" desc="The show extensions menu in the app menu">
           &amp;Extensions
         </message>
@@ -1789,6 +1792,9 @@ are declared in tools/grit/grit_args.gni.
         </message>
         <message name="IDS_SHOW_DOWNLOADS" desc="In Title Case: The show downloads menu in the app menu">
           &amp;Downloads
+        </message>
+        <message name="IDS_FIND_EXTENSIONS" desc="In Title Case: The find extensions menu item in the app menu">
+          Find &amp;Extensions
         </message>
         <message name="IDS_SHOW_EXTENSIONS" desc="In Title Case: The show extensions menu in the app menu">
           &amp;Extensions
@@ -4384,6 +4390,9 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_TAB_SHARING_INFOBAR_SHARING_ANOTHER_TAB_LABEL" desc="Text displayed on an infobar when another (non-current) tab is being shared.">
        Sharing <ph name="TAB_NAME">$1<ex>youtube.com</ex></ph> to <ph name="APP_NAME">$2<ex>meet.google.com</ex></ph>
+      </message>
+      <message name="IDS_TAB_SHARING_INFOBAR_SHARING_ANOTHER_TAB_TO_THIS_TAB_LABEL" desc="Text displayed on an infobar when another (non-current) tab is being shared.">
+       Sharing <ph name="TAB_NAME">$1<ex>youtube.com</ex></ph> to this tab
       </message>
       <message name="IDS_TAB_SHARING_INFOBAR_SHARE_BUTTON" desc="Text displayed on the button to share current tab.">
        Share this tab instead
@@ -8359,9 +8368,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_TAB_RESUMPTION_DISMISS_BUTTON" desc="A label for the dismiss button in the dropdown.">
         No longer interested
       </message>
-      <message name="IDS_NTP_TAB_RESUMPTION_TITLE" desc="Name of the tab resumption module in sentence case shown in various UIs.">
-        Tabs from other devices
-      </message>
       <message name="IDS_NTP_MODULES_TAB_RESUMPTION_INFO" desc="Text shown in the body of the info dialog of the tab resumption module.">
         You’re seeing tabs from other devices to help you easily get back to your most recent activity.
         <ph name="BREAK">&lt;br&gt;</ph>
@@ -10924,10 +10930,10 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           other {Add tabs to new group}}
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_SPLIT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
-          Show side-by-side
+          Add tab to split view
         </message>
         <message name="IDS_TAB_CXMENU_REMOVE_SPLIT" desc="The label of the tab context menu submenu for exiting split view." translateable="false">
-          Exit side-by-side
+          Exit split view
         </message>
         <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
           New group
@@ -11031,10 +11037,10 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           other {Add Tabs to New Group}}
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_SPLIT" desc="The label of the tab context menu submenu for creating a split view between the selected tab and the active tab.">
-          Show Side-By-Side
+          Add Tab to Split View
         </message>
         <message name="IDS_TAB_CXMENU_REMOVE_SPLIT" desc="The label of the tab context menu submenu for exiting split view." translateable="false">
-          Exit Side-By-Side
+          Exit Split View
         </message>
         <message name="IDS_TAB_CXMENU_SUBMENU_NEW_GROUP" desc="In Title Case: The label of the tab context menu sub-menu item for adding one more tabs to a new group.">
           New Group
@@ -13962,9 +13968,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_SYNC_NEEDS_VERIFICATION_BUBBLE_VIEW_TITLE" desc="Title in the sync error bubble view/notification for the case where sync needs to verify the user.">
         Sync needs to verify it's you
-      </message>
-      <message name="IDS_SIGNIN_PAUSED_USER_MENU_VERIFY_MESSAGE" desc="This is the text of a card that means the user needs to sign back in to Brave in order to continue saving and using data (like passwords or payment methods) in their Brave sync chain. This is an error message that appears when the user's sign-in credential has expired; to fix the issue, the user needs to sign back in. The tone should be straightforward and motivating.">
-        To keep using the passwords and more in your Brave sync chain, verify it's you
       </message>
       <if expr="use_titlecase">
         <message name="IDS_SYNC_ERROR_USER_MENU_SIGNIN_BUTTON" desc="Button in the header of desktop user menu that prompts the user to sign in again to fix the out-of-date signin info error.">
