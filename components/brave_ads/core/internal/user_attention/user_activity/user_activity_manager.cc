@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <iterator>
 #include <optional>

@@ -20,6 +20,8 @@ CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
     CreativeNewTabPageAdWallpaperType wallpaper_type,
     bool should_generate_random_uuids);
 
+void SaveCreativeNewTabPageAds(const CreativeNewTabPageAdList& creative_ads);
+
 }  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_AD_TEST_UTIL_H_

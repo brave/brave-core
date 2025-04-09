@@ -133,11 +133,10 @@ void BatAdsImpl::TriggerNotificationAdEvent(
                                        std::move(callback));
 }
 
-void BatAdsImpl::ParseAndSaveCreativeNewTabPageAds(
+void BatAdsImpl::ParseAndSaveNewTabPageAds(
     base::Value::Dict data,
-    ParseAndSaveCreativeNewTabPageAdsCallback callback) {
-  GetAds()->ParseAndSaveCreativeNewTabPageAds(std::move(data),
-                                              std::move(callback));
+    ParseAndSaveNewTabPageAdsCallback callback) {
+  GetAds()->ParseAndSaveNewTabPageAds(std::move(data), std::move(callback));
 }
 
 void BatAdsImpl::MaybeServeNewTabPageAd(

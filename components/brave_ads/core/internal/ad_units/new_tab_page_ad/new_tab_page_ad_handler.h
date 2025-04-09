@@ -37,6 +37,9 @@ class NewTabPageAdHandler final : public NewTabPageAdEventHandlerDelegate,
 
   ~NewTabPageAdHandler() override;
 
+  void ParseAndSave(base::Value::Dict dict,
+                    ParseAndSaveNewTabPageAdsCallback callback);
+
   void MaybeServe(MaybeServeNewTabPageAdCallback callback);
 
   void TriggerEvent(const std::string& placement_id,

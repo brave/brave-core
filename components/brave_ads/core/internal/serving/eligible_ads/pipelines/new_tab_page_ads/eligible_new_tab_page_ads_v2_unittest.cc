@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
@@ -59,7 +58,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
   creative_ad_3.segment = "parent-child";
   creative_ads.push_back(creative_ad_3);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -89,7 +88,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoMatchingSegments) {
   creative_ad_2.segment = "parent-child";
   creative_ads.push_back(creative_ad_2);
 
-  database::SaveCreativeNewTabPageAds(creative_ads);
+  test::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
   base::RunLoop run_loop;

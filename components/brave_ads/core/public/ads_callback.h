@@ -31,7 +31,7 @@ using GetDiagnosticsCallback =
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr mojom_statement)>;
 
-using ParseAndSaveCreativeNewTabPageAdsCallback =
+using ParseAndSaveNewTabPageAdsCallback =
     base::OnceCallback<void(bool success)>;
 using MaybeServeNewTabPageAdCallback =
     base::OnceCallback<void(base::optional_ref<const NewTabPageAdInfo> ad)>;

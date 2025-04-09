@@ -93,9 +93,9 @@ class AdsServiceImplIOS : public AdsService {
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
-  void ParseAndSaveCreativeNewTabPageAds(
+  void ParseAndSaveNewTabPageAds(
       base::Value::Dict dict,
-      ParseAndSaveCreativeNewTabPageAdsCallback callback) override;
+      ParseAndSaveNewTabPageAdsCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -175,8 +175,8 @@ class AdsServiceImplIOS : public AdsService {
   // tab page ad business logic.
   void PrefetchNewTabPageAdCallback(
       base::optional_ref<const NewTabPageAdInfo> new_tab_page_ad);
-  void OnParseAndSaveCreativeNewTabPageAdsCallback(
-      ParseAndSaveCreativeNewTabPageAdsCallback callback,
+  void OnParseAndSaveNewTabPageAdsCallback(
+      ParseAndSaveNewTabPageAdsCallback callback,
       bool success);
 
   const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.

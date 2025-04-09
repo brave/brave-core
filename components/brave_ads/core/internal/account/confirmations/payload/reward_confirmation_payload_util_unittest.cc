@@ -39,13 +39,13 @@ TEST_F(BraveAdsRewardConfirmationPayloadUtilTest,
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "blindedPaymentTokens": [
                         "Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="
                       ],
                       "publicKey": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk="
-                    })"),
+                    })JSON"),
             reward_confirmation_payload);
 }
 

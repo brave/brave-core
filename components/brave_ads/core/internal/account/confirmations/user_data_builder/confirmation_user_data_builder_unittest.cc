@@ -49,13 +49,13 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Assert
   UserDataInfo expected_user_data;
   expected_user_data.dynamic = base::test::ParseJsonDict(
-      R"(
+      R"JSON(
           {
             "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
             "systemTimestamp": "2020-11-18T12:00:00.000Z"
-          })");
+          })JSON");
   expected_user_data.fixed = base::test::ParseJsonDict(
-      R"(
+      R"JSON(
           {
             "buildChannel": "release",
             "catalog": [
@@ -70,7 +70,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
             "segment": "untargeted",
             "studies": [],
             "versionNumber": "1.2.3.4"
-          })");
+          })JSON");
 
   EXPECT_EQ(expected_user_data, user_data);
 }
@@ -93,10 +93,10 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Assert
   UserDataInfo expected_user_data;
   expected_user_data.fixed = base::test::ParseJsonDict(
-      R"(
+      R"JSON(
           {
             "foo": "bar"
-          })");
+          })JSON");
 
   EXPECT_EQ(expected_user_data, user_data);
 }

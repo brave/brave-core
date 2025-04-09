@@ -22,7 +22,7 @@ namespace {
 PaymentTokenInfo BuildPaymentToken(const std::string& payment_token_base64) {
   PaymentTokenInfo payment_token;
 
-  payment_token.transaction_id = test::kTransactionId;
+  payment_token.transaction_id = kTransactionId;
 
   payment_token.unblinded_token = cbr::UnblindedToken(payment_token_base64);
   CHECK(payment_token.unblinded_token.has_value());

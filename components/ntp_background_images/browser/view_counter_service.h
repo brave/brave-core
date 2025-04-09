@@ -177,7 +177,7 @@ class ViewCounterService : public KeyedService,
   void OnSponsoredContentDidUpdate(const base::Value::Dict& data) override;
   void OnSuperReferralCampaignDidEnd() override;
 
-  void ParseAndSaveCreativeNewTabPageAdsCallback(bool success);
+  void ParseAndSaveNewTabPageAdsCallback(bool success);
 
   void ResetNotificationState();
   bool IsSponsoredImagesWallpaperOptedIn() const;

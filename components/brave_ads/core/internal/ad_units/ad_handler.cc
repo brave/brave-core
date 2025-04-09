@@ -56,6 +56,12 @@ void AdHandler::TriggerNotificationAdEvent(
                                         std::move(callback));
 }
 
+void AdHandler::ParseAndSaveNewTabPageAds(
+    base::Value::Dict dict,
+    ParseAndSaveNewTabPageAdsCallback callback) {
+  new_tab_page_ad_handler_.ParseAndSave(std::move(dict), std::move(callback));
+}
+
 void AdHandler::MaybeServeNewTabPageAd(
     MaybeServeNewTabPageAdCallback callback) {
   new_tab_page_ad_handler_.MaybeServe(std::move(callback));

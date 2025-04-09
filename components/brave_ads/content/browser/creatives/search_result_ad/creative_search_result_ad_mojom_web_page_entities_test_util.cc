@@ -146,9 +146,9 @@ CreativeSearchResultAdMojomWebPageEntitiesWithProperty(std::string_view name,
       constructor.GetMojomWebPageEntities();
   const auto& mojom_property = mojom_web_page_entities[0]->properties[0];
   auto& mojom_entity = mojom_property->values->get_entity_values()[0];
-  test::AddMojomProperty<std::string>(&mojom_entity->properties,
-                                      /*name=*/std::string(name),
-                                      /*value=*/std::string(value));
+  AddMojomProperty<std::string>(&mojom_entity->properties,
+                                /*name=*/std::string(name),
+                                /*value=*/std::string(value));
   return mojom_web_page_entities;
 }
 

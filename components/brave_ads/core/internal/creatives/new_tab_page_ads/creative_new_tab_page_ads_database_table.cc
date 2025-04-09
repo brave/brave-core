@@ -206,7 +206,7 @@ void GetForSegmentsCallback(
   std::move(callback).Run(/*success=*/true, segments, creative_ads);
 }
 
-void GetAllCallback(
+void GetForActiveCampaignsCallback(
     GetCreativeNewTabPageAdsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
@@ -494,8 +494,9 @@ void CreativeNewTabPageAds::GetForActiveCampaigns(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                 base::BindOnce(&GetAllCallback, std::move(callback)));
+  RunTransaction(
+      FROM_HERE, std::move(mojom_db_transaction),
+      base::BindOnce(&GetForActiveCampaignsCallback, std::move(callback)));
 }
 
 std::string CreativeNewTabPageAds::GetTableName() const {

@@ -235,15 +235,15 @@ void AdsServiceImplIOS::OnFailedToPrefetchNewTabPageAd(
                                /*intentional*/ base::DoNothing());
 }
 
-void AdsServiceImplIOS::ParseAndSaveCreativeNewTabPageAds(
+void AdsServiceImplIOS::ParseAndSaveNewTabPageAds(
     base::Value::Dict dict,
-    ParseAndSaveCreativeNewTabPageAdsCallback callback) {
+    ParseAndSaveNewTabPageAdsCallback callback) {
   if (task_queue_.should_queue()) {
     // TODO(https://github.com/brave/brave-browser/issues/44925): Transition
     // task queue to ads service layer. API calls are fired before the ads
     // service is initialized, we will follow up with a cross platform solution.
     return task_queue_.Add(base::BindOnce(
-        &AdsServiceImplIOS::ParseAndSaveCreativeNewTabPageAds,
+        &AdsServiceImplIOS::ParseAndSaveNewTabPageAds,
         weak_ptr_factory_.GetWeakPtr(), std::move(dict), std::move(callback)));
   }
 
@@ -251,11 +251,10 @@ void AdsServiceImplIOS::ParseAndSaveCreativeNewTabPageAds(
     return std::move(callback).Run(/*success*/ false);
   }
 
-  ads_->ParseAndSaveCreativeNewTabPageAds(
+  ads_->ParseAndSaveNewTabPageAds(
       std::move(dict),
-      base::BindOnce(
-          &AdsServiceImplIOS::OnParseAndSaveCreativeNewTabPageAdsCallback,
-          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(&AdsServiceImplIOS::OnParseAndSaveNewTabPageAdsCallback,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImplIOS::TriggerNewTabPageAdEvent(
@@ -559,8 +558,8 @@ void AdsServiceImplIOS::PrefetchNewTabPageAdCallback(
   }
 }
 
-void AdsServiceImplIOS::OnParseAndSaveCreativeNewTabPageAdsCallback(
-    ParseAndSaveCreativeNewTabPageAdsCallback callback,
+void AdsServiceImplIOS::OnParseAndSaveNewTabPageAdsCallback(
+    ParseAndSaveNewTabPageAdsCallback callback,
     bool success) {
   if (success) {
     PrefetchNewTabPageAd();

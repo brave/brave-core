@@ -43,7 +43,7 @@ TokenIssuerList BuildTokenIssuers() {
 }
 
 std::string BuildIssuersUrlResponseBody() {
-  return R"(
+  return R"JSON(
       {
         "ping": 7200000,
         "issuers": [
@@ -74,7 +74,7 @@ std::string BuildIssuersUrlResponseBody() {
             ]
           }
         ]
-      })";
+      })JSON";
 }
 
 IssuersInfo BuildIssuers(

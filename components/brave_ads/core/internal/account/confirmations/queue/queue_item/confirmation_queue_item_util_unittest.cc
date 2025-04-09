@@ -158,11 +158,11 @@ TEST_F(BraveAdsConfirmationQueueItemUtilTest,
 
   UserDataInfo expected_user_data = rebuilt_confirmation.user_data;
   expected_user_data.dynamic = base::test::ParseJsonDict(
-      R"(
+      R"JSON(
           {
             "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
             "systemTimestamp": "1996-07-08T10:00:00.000Z"
-          })");
+          })JSON");
 
   EXPECT_THAT(
       rebuilt_confirmation,

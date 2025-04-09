@@ -11,7 +11,7 @@
 namespace brave_ads::database {
 
 void PurgeExpiredTransactions() {
-  const database::table::Transactions database_table;
+  const table::Transactions database_table;
   database_table.PurgeExpired(base::BindOnce([](bool success) {
     if (!success) {
       return BLOG(0, "Failed to purge expired transactions");
@@ -22,7 +22,7 @@ void PurgeExpiredTransactions() {
 }
 
 void SaveTransactions(const TransactionList& transactions) {
-  database::table::Transactions database_table;
+  table::Transactions database_table;
   database_table.Save(transactions, base::BindOnce([](bool success) {
                         if (!success) {
                           return BLOG(0, "Failed to save transactions");

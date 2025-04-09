@@ -19,18 +19,18 @@ namespace brave_ads {
 namespace {
 
 constexpr char kReactionMapAsJson[] =
-    R"(
+    R"JSON(
         {
           "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2": 1,
           "untargeted": 2
-        })";
+        })JSON";
 
 constexpr char kReactionSetAsJson[] =
-    R"(
+    R"JSON(
         [
           "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
           "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123"
-        ])";
+        ])JSON";
 
 }  // namespace
 

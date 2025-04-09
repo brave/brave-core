@@ -153,8 +153,8 @@ class NTPBackgroundImagesServiceObserverBridge
   if (_adsService) {
     // Since `data` contains small JSON from a CRX component, cloning it has no
     // performance impact.
-    _adsService->ParseAndSaveCreativeNewTabPageAds(
-        data.Clone(), /*intentional*/ base::DoNothing());
+    _adsService->ParseAndSaveNewTabPageAds(data.Clone(),
+                                           /*intentional*/ base::DoNothing());
   }
 }
 

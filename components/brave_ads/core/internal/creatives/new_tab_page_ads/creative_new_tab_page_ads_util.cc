@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
 
 #include <optional>
 #include <string>
+#include <utility>
 
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
@@ -14,21 +15,22 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_constants.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
 
-namespace brave_ads::database {
+namespace brave_ads {
 
 namespace {
 
 // Schema keys.
 constexpr int kExpectedSchemaVersion = 2;
-inline constexpr char kSchemaVersionKey[] = "schemaVersion";
+constexpr char kSchemaVersionKey[] = "schemaVersion";
 
 // Campaign keys.
 constexpr int kExpectedCampaignVersion = 1;
@@ -92,30 +94,57 @@ constexpr char kCreativeConditionMatchersKey[] = "conditionMatchers";
 constexpr char kCreativeConditionMatcherConditionKey[] = "condition";
 constexpr char kCreativeConditionMatcherPrefPathKey[] = "prefPath";
 
+void SaveCreativeSetConversionsCallback(ResultCallback callback, bool success) {
+  if (!success) {
+    BLOG(0, "Failed to save creative set conversions");
+    return std::move(callback).Run(/*success=*/false);
+  }
+  BLOG(0, "Successfully saved creative set conversions");
+
+  std::move(callback).Run(/*success=*/true);
+}
+
+void SaveCreativeNewTabPageAdsCallback(
+    const CreativeSetConversionList& creative_set_conversions,
+    const base::flat_set<std::string>& creative_instance_ids,
+    ResultCallback callback,
+    bool success) {
+  if (!success) {
+    BLOG(0, "Failed to save creative new tab page ads");
+    return std::move(callback).Run(/*success=*/false);
+  }
+  BLOG(0, "Successfully saved creative new tab page ads");
+
+  SetCreativeInstanceIdsToFallbackToP3a(creative_instance_ids);
+
+  database::table::CreativeSetConversions database_table;
+  database_table.Save(
+      creative_set_conversions,
+      base::BindOnce(&SaveCreativeSetConversionsCallback, std::move(callback)));
+}
+
 }  // namespace
 
-bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
+void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
+                               ResultCallback callback) {
   const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (schema_version != kExpectedSchemaVersion) {
     // Currently, only version 2 is supported. Update this code to maintain.
-    return false;
+    return std::move(callback).Run(/*success=*/false);
   }
 
   const base::Value::List* const campaign_list = dict.FindList(kCampaignsKey);
   if (!campaign_list) {
     BLOG(0, "Campaigns are required");
-    return false;
+    return std::move(callback).Run(/*success=*/false);
   }
 
   CreativeNewTabPageAdList creative_ads;
   CreativeSetConversionList creative_set_conversions;
-
   base::flat_set<std::string> creative_instance_ids;
 
   // Campaigns.
   for (const auto& campaign_value : *campaign_list) {
-    CreativeNewTabPageAdInfo creative_ad;
-
     const base::Value::Dict* const campaign_dict = campaign_value.GetIfDict();
     if (!campaign_dict) {
       BLOG(0, "Malformed campaign, skipping campaign");
@@ -130,6 +159,8 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
       continue;
     }
 
+    CreativeNewTabPageAdInfo creative_ad;
+
     const std::string* const campaign_id =
         campaign_dict->FindString(kCampaignIdKey);
     if (!campaign_id) {
@@ -140,7 +171,8 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
 
     const std::string* const metrics =
         campaign_dict->FindString(kCampaignMetricsKey);
-    const bool should_metrics_fallback_to_p3a = metrics && *metrics == "p3a";
+    const bool should_metrics_fallback_to_p3a =
+        metrics != nullptr && *metrics == "p3a";
 
     const std::string* const advertiser_id =
         campaign_dict->FindString(kCampaignAdvertiserIdKey);
@@ -150,11 +182,10 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
     }
     creative_ad.advertiser_id = *advertiser_id;
 
-    if (const std::string* const start_at =
+    if (const std::string* const value =
             campaign_dict->FindString(kCampaignStartAtKey)) {
       // Start at is optional.
-      if (!base::Time::FromUTCString(start_at->c_str(),
-                                     &creative_ad.start_at)) {
+      if (!base::Time::FromUTCString(value->c_str(), &creative_ad.start_at)) {
         BLOG(0, "Failed to parse campaign start at, skipping campaign");
         continue;
       }
@@ -163,10 +194,10 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
       creative_ad.start_at = base::Time::Now();
     }
 
-    if (const std::string* const end_at =
+    if (const std::string* const value =
             campaign_dict->FindString(kCampaignEndAtKey)) {
       // End at is optional.
-      if (!base::Time::FromUTCString(end_at->c_str(), &creative_ad.end_at)) {
+      if (!base::Time::FromUTCString(value->c_str(), &creative_ad.end_at)) {
         BLOG(0, "Failed to parse campaign end at, skipping campaign");
         continue;
       }
@@ -206,11 +237,11 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
 
     // Dayparts.
     CreativeDaypartSet dayparts;
-    if (const base::Value::List* const daypart_list =
+    if (const base::Value::List* const list =
             campaign_dict->FindList(kCampaignDayPartsKey)) {
       // Dayparts are optional.
-      for (const auto& daypart_value : *daypart_list) {
-        const base::Value::Dict* const daypart_dict = daypart_value.GetIfDict();
+      for (const auto& value : *list) {
+        const base::Value::Dict* const daypart_dict = value.GetIfDict();
         if (!daypart_dict) {
           BLOG(0, "Malformed daypart, skipping campaign");
           continue;
@@ -276,10 +307,10 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
       creative_ad.total_max =
           creative_set_dict->FindInt(kCreativeSetTotalMaxKey).value_or(0);
 
-      if (const std::string* const associated_value =
+      if (const std::string* const value =
               creative_set_dict->FindString(kCreativeSetValueKey)) {
         // Value is optional.
-        if (!base::StringToDouble(*associated_value, &creative_ad.value)) {
+        if (!base::StringToDouble(*value, &creative_ad.value)) {
           BLOG(0, "Failed to parse associated value, skipping creative set");
           continue;
         }
@@ -289,10 +320,10 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
       }
 
       // Split test group.
-      if (const std::string* const split_test_group_value =
+      if (const std::string* const value =
               creative_set_dict->FindString(kCreativeSetSplitTestGroupKey)) {
         // Split test group is optional.
-        creative_ad.split_test_group = *split_test_group_value;
+        creative_ad.split_test_group = *value;
       }
 
       // Conversions.
@@ -345,11 +376,11 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
 
       // Segments.
       SegmentList segments;
-      if (const base::Value::List* const segment_list =
+      if (const base::Value::List* const list =
               creative_set_dict->FindList(kCreativeSetSegmentsKey)) {
         // Segments are optional.
-        for (const auto& segment_value : *segment_list) {
-          const std::string* const segment = segment_value.GetIfString();
+        for (const auto& value : *list) {
+          const std::string* const segment = value.GetIfString();
           if (!segment) {
             BLOG(0, "Malformed segment, skipping segment");
             continue;
@@ -483,27 +514,11 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict dict) {
     }
   }
 
-  SetCreativeInstanceIdsToFallbackToP3a(creative_instance_ids);
-
-  SaveCreativeNewTabPageAds(creative_ads);
-  SaveCreativeSetConversions(creative_set_conversions);
-
-  // It is assumed that the creative new tab page ads were saved successfully.
-  // Once we transition to serving new tab page ads from the ads component for
-  // both non-Rewards and Rewards, we can implement better validation.
-  return true;
+  database::table::CreativeNewTabPageAds database_table;
+  database_table.Save(
+      creative_ads, base::BindOnce(&SaveCreativeNewTabPageAdsCallback,
+                                   creative_set_conversions,
+                                   creative_instance_ids, std::move(callback)));
 }
 
-void SaveCreativeNewTabPageAds(const CreativeNewTabPageAdList& creative_ads) {
-  table::CreativeNewTabPageAds database_table;
-  database_table.Save(creative_ads, base::BindOnce([](bool success) {
-                        if (!success) {
-                          return BLOG(
-                              0, "Failed to save creative new tab page ads");
-                        }
-
-                        BLOG(3, "Successfully saved creative new tab page ads");
-                      }));
-}
-
-}  // namespace brave_ads::database
+}  // namespace brave_ads

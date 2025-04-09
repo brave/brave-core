@@ -22,7 +22,7 @@ namespace {
 // The fields `ad_content`, `category_content`, and `created_at` in the legacy
 // format have been renamed to `adContent`, `categoryContent`, and `createdAt`.
 constexpr char kAdHistoryItemAsJson[] =
-    R"(
+    R"JSON(
         {
           "adContent": {
             "adAction": "view",
@@ -46,10 +46,10 @@ constexpr char kAdHistoryItemAsJson[] =
             "optAction": 0
           },
           "createdAt": "12993327900000000"
-        })";
+        })JSON";
 
 constexpr char kLegacyAdHistoryItemAsJson[] =
-    R"(
+    R"JSON(
         {
           "ad_content": {
             "adAction": "view",
@@ -73,7 +73,7 @@ constexpr char kLegacyAdHistoryItemAsJson[] =
             "optAction": 0
           },
           "created_at": "12993327900000000"
-        })";
+        })JSON";
 
 }  // namespace
 

@@ -16,12 +16,12 @@ namespace brave_ads {
 namespace {
 
 constexpr char kSegmentsAsJson[] =
-    R"(
+    R"JSON(
         [
           "technology & computing",
           "personal finance-banking",
           "food & drink-restaurants"
-        ])";
+        ])JSON";
 
 }  // namespace
 

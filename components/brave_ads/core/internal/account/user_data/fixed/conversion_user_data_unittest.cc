@@ -41,14 +41,14 @@ TEST_F(BraveAdsConversionUserDataBuilderTest, BuildConversionUserData) {
 
   // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "conversion": [
                         {
                           "action": "view"
                         }
                       ]
-                    })"),
+                    })JSON"),
             user_data);
 }
 

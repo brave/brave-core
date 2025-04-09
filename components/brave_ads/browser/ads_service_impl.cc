@@ -868,8 +868,8 @@ void AdsServiceImpl::ResetNewTabPageAd() {
   is_prefetching_new_tab_page_ad_ = false;
 }
 
-void AdsServiceImpl::OnParseAndSaveCreativeNewTabPageAdsCallback(
-    ParseAndSaveCreativeNewTabPageAdsCallback callback,
+void AdsServiceImpl::OnParseAndSaveNewTabPageAdsCallback(
+    ParseAndSaveNewTabPageAdsCallback callback,
     bool success) {
   if (success) {
     PrefetchNewTabPageAd();
@@ -1024,10 +1024,6 @@ void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
 }
 
 void AdsServiceImpl::CloseAllNotificationAds() {
-  // TODO(https://github.com/brave/brave-browser/issues/25410): Temporary
-  // solution until we refactor the shutdown business logic and investigate
-  // calling `NotificationAdManager` to cleanup notification ads.
-
 #if BUILDFLAG(IS_ANDROID)
   if (!ShouldShowCustomNotificationAds()) {
     return;
@@ -1419,18 +1415,17 @@ void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
                                /*intentional*/ base::DoNothing());
 }
 
-void AdsServiceImpl::ParseAndSaveCreativeNewTabPageAds(
+void AdsServiceImpl::ParseAndSaveNewTabPageAds(
     base::Value::Dict dict,
-    ParseAndSaveCreativeNewTabPageAdsCallback callback) {
+    ParseAndSaveNewTabPageAdsCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
 
-  bat_ads_associated_remote_->ParseAndSaveCreativeNewTabPageAds(
+  bat_ads_associated_remote_->ParseAndSaveNewTabPageAds(
       std::move(dict),
-      base::BindOnce(
-          &AdsServiceImpl::OnParseAndSaveCreativeNewTabPageAdsCallback,
-          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(&AdsServiceImpl::OnParseAndSaveNewTabPageAdsCallback,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImpl::TriggerNewTabPageAdEvent(

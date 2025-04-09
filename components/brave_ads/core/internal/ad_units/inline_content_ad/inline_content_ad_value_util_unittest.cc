@@ -19,7 +19,7 @@ namespace brave_ads {
 namespace {
 
 constexpr char kInlineContentAdAsJson[] =
-    R"(
+    R"JSON(
         {
           "advertiserId": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
           "campaignId": "84197fc8-830a-4a8e-8339-7a70c2bfa104",
@@ -34,7 +34,7 @@ constexpr char kInlineContentAdAsJson[] =
           "title": "Test Ad Title",
           "type": "inline_content_ad",
           "uuid": "9bac9ae4-693c-4569-9b3e-300e357780cf"
-        })";
+        })JSON";
 
 }  // namespace
 

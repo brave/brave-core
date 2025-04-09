@@ -27,10 +27,10 @@ TEST_F(BraveAdsSegmentUserDataTest, BuildSegmentUserDataForRewardsUser) {
 
   // Act & Assert
   EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
+                R"JSON(
                     {
                       "segment": "untargeted"
-                    })"),
+                    })JSON"),
             BuildSegmentUserData(transaction));
 }
 

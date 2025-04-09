@@ -20,7 +20,7 @@ TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, ReadIssuers) {
   // Act & Assert
   const IssuersInfo expected_issuers = test::BuildIssuers();
 
-  EXPECT_EQ(expected_issuers, json::reader::ReadIssuers(R"(
+  EXPECT_EQ(expected_issuers, json::reader::ReadIssuers(R"JSON(
     {
       "ping": 7200000,
       "issuers": [
@@ -51,7 +51,7 @@ TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, ReadIssuers) {
           ]
         }
       ]
-    })"));
+    })JSON"));
 }
 
 TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,
@@ -63,7 +63,7 @@ TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,
 TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,
      DoNotReadIssuersIfMissingPing) {
   // Act & Assert
-  EXPECT_FALSE(json::reader::ReadIssuers(R"(
+  EXPECT_FALSE(json::reader::ReadIssuers(R"JSON(
     {
       "issuers": [
         {
@@ -93,16 +93,16 @@ TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,
           ]
         }
       ]
-    })"));
+    })JSON"));
 }
 
 TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,
      DoNotReadIssuersIfMissingTokenIssuers) {
   // Act & Assert
-  EXPECT_FALSE(json::reader::ReadIssuers(R"(
+  EXPECT_FALSE(json::reader::ReadIssuers(R"JSON(
     {
       "ping": 7200000
-    })"));
+    })JSON"));
 }
 
 }  // namespace brave_ads
