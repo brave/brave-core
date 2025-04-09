@@ -52,7 +52,7 @@ export class SettingsBraveAppearanceSidebarElement extends SettingsBraveAppearan
     {value: 1, name: this.i18n('appearanceSettingsShowOptionMouseOver')},
     {value: 3, name: this.i18n('appearanceSettingsShowOptionNever')},
   ]
-  private sidebarShowEnabledLabel_: string
+  private declare sidebarShowEnabledLabel_: string
 
   private onShowOptionChanged_() {
     this.sidebarShowEnabledLabel_ = (this.get('prefs.brave.sidebar.sidebar_show_option.value') === 3)

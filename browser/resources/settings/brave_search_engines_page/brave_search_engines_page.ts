@@ -52,10 +52,10 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
     }
   }
 
-  private privateSearchEngines_: SearchEngine[]
-  private showPrivateSearchEngineListDialog_: boolean
-  private defaultPrivateSearchEngine_: SearchEngine|null
-  private confirmationToastLabel_: string
+  private declare privateSearchEngines_: SearchEngine[]
+  private declare showPrivateSearchEngineListDialog_: boolean
+  private declare defaultPrivateSearchEngine_: SearchEngine|null
+  private declare confirmationToastLabel_: string
 
   browserProxy_ = BraveSearchEnginesPageBrowserProxyImpl.getInstance()
 

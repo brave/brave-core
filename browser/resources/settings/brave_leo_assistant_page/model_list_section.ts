@@ -51,9 +51,9 @@ class ModelListSection extends ModelListSectionBase {
 
   browserProxy_: BraveLeoAssistantBrowserProxy =
     BraveLeoAssistantBrowserProxyImpl.getInstance()
-  customModelsList_: Model[]
-  isEditingModelIndex_: number | null
-  showModelConfig_: boolean
+  declare customModelsList_: Model[]
+  declare isEditingModelIndex_: number | null
+  declare showModelConfig_: boolean
 
   override ready() {
     super.ready()

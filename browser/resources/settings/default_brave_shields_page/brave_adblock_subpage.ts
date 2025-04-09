@@ -61,14 +61,14 @@ class AdBlockSubpage extends AdBlockSubpageBase {
     ]
   }
 
-  private filterList_: FilterList[]
-  private subscriptionList_: SubscriptionInfo[]
-  private customFilters_: string
-  private subscribeUrl_: string
-  private listsUpdatingState_: string
-  private hasListExpanded_: boolean
-  private shouldShowCustomFilters_: boolean
-  private shouldShowCustomScriptlets_: boolean
+  private declare filterList_: FilterList[]
+  private declare subscriptionList_: SubscriptionInfo[]
+  private declare customFilters_: string
+  private declare subscribeUrl_: string
+  private declare listsUpdatingState_: string
+  private declare hasListExpanded_: boolean
+  private declare shouldShowCustomFilters_: boolean
+  private declare shouldShowCustomScriptlets_: boolean
   private customScriptlets_: Scriptlet[]
 
   private browserProxy_: BraveAdblockBrowserProxy =

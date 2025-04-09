@@ -160,23 +160,23 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     }
   }
 
-  private adControlTypes_: ControlType[]
-  private adControlType_: 'allow' | 'block' | 'block_third_party'
-  private isAdBlockRoute_: boolean
-  private cookieControlTypes_: ControlType[]
-  private cookieControlType_: string
-  private httpsUpgradeControlType_: string
-  private isForgetFirstPartyStorageEnabled_: chrome.settingsPrivate.
+  private declare adControlTypes_: ControlType[]
+  private declare adControlType_: 'allow' | 'block' | 'block_third_party'
+  private declare isAdBlockRoute_: boolean
+  private declare cookieControlTypes_: ControlType[]
+  private declare cookieControlType_: string
+  private declare httpsUpgradeControlType_: string
+  private declare isForgetFirstPartyStorageEnabled_: chrome.settingsPrivate.
     PrefObject<boolean>
-  private isFingerprintingEnabled_: chrome.settingsPrivate.PrefObject<boolean>
-  private isContactInfoSaveFlagEnabled_: chrome.settingsPrivate.
+  private declare isFingerprintingEnabled_: chrome.settingsPrivate.PrefObject<boolean>
+  private declare isContactInfoSaveFlagEnabled_: chrome.settingsPrivate.
     PrefObject<boolean>
-  private fingerprintingControlTypes_: ControlType[]
-  private fingerprintingControlType_: string
-  private httpsUpgradeControlTypes_: ControlType[]
-  private isHttpsByDefaultEnabled_: boolean
-  private showStrictFingerprintingMode_: boolean
-  private isForgetFirstPartyStorageFeatureEnabled_: boolean
+  private declare fingerprintingControlTypes_: ControlType[]
+  private declare fingerprintingControlType_: string
+  private declare httpsUpgradeControlTypes_: ControlType[]
+  private declare isHttpsByDefaultEnabled_: boolean
+  private declare showStrictFingerprintingMode_: boolean
+  private declare isForgetFirstPartyStorageFeatureEnabled_: boolean
 
   private browserProxy_: DefaultBraveShieldsBrowserProxy =
     DefaultBraveShieldsBrowserProxyImpl.getInstance()
