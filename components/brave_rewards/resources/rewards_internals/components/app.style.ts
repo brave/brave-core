@@ -46,7 +46,7 @@ export const style = scoped.css`
 
   main {
     margin: 0 auto;
-    max-width: 768px;
+    max-width: 1024px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -116,83 +116,85 @@ export const style = scoped.css`
 `
 
 global.css`
-  & {
-    font: ${font.default.regular};
-    color: ${color.text.primary};
-  }
-
-  h1 {
-    margin: 0;
-    font: ${font.heading.h3};
-    text-align: center;
-  }
-
-  h3 {
-    font: ${font.heading.h3};
-    margin: 0;
-  }
-
-  h4 {
-    font: ${font.heading.h4};
-    margin: 0;
-  }
-
-  .key-value-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 8px 16px;
-
-    > div {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 8px 0;
-
-      &:not(:last-child) {
-        border-bottom: solid 1px ${color.divider.subtle};
-      }
-    }
-  }
-
-  table {
-    flex-grow: 1;
-    margin: 8px;
-
-    th {
-      text-align: left;
+  @scope (${style.selector}) {
+    & {
+      font: ${font.default.regular};
+      color: ${color.text.primary};
     }
 
-    td, th {
-      padding: 8px 0;
+    h1 {
+      margin: 0;
+      font: ${font.heading.h3};
+      text-align: center;
     }
 
-    tbody tr {
-      td, th {
-        border-top: solid 1px ${color.divider.subtle};
-      }
-    }
-  }
-
-  .content-card {
-    border-radius: 16px;
-    padding: 4px;
-    background-color: rgb(from ${color.container.background} r g b / 55%);
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-
-    section {
-      border-radius: 12px;
-      background: ${color.container.background};
-      width: 100%;
-      overflow-x: auto;
+    h3 {
+      font: ${font.heading.h3};
+      margin: 0;
     }
 
     h4 {
-      padding: 8px;
+      font: ${font.heading.h4};
+      margin: 0;
+    }
+
+    .key-value-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px 16px;
+
+      > div {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 8px 0;
+
+        &:not(:last-child) {
+          border-bottom: solid 1px ${color.divider.subtle};
+        }
+      }
+    }
+
+    table {
+      flex-grow: 1;
+      margin: 8px;
+
+      th {
+        text-align: left;
+      }
+
+      td, th {
+        padding: 8px 4px;
+      }
+
+      tbody tr {
+        td, th {
+          border-top: solid 1px ${color.divider.subtle};
+        }
+      }
+    }
+
+    .content-card {
+      border-radius: 16px;
+      padding: 4px;
+      background-color: rgb(from ${color.container.background} r g b / 55%);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      section {
+        border-radius: 12px;
+        background: ${color.container.background};
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      h4 {
+        padding: 8px;
+      }
     }
   }
 `

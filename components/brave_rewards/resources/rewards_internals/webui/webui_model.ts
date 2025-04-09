@@ -123,7 +123,9 @@ export function createModel(): AppModel {
 
       onGetExternalWallet(wallet: any) {
         stateManager.update({
-          externalWallet: externalWalletFromExtensionData(wallet)
+          externalWallet: externalWalletFromExtensionData(wallet),
+          externalWalletAccountId: String(wallet.memberId || ''),
+          externalWalletId: String(wallet.address || '')
         })
       },
 

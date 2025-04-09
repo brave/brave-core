@@ -74,7 +74,11 @@ export function Contributions() {
 
   return (
     <div data-css-scope={style.scope}>
-      {contributions.map(renderContribution)}
+      {
+        contributions.length > 0
+            ? contributions.map(renderContribution)
+            : <p>No contributions</p>
+      }
     </div>
   )
 }

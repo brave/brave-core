@@ -44,9 +44,7 @@ export function RewardsLog() {
         <Button size='small' onClick={download}>Download</Button>
         <Button size='small' onClick={clearLog}>Clear</Button>
       </h4>
-      <section>
-        {log}
-      </section>
+      <textarea value={log} readOnly />
     </div>
   )
 }
