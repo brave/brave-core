@@ -1026,7 +1026,7 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           "Note: Only HTTPS URLs are supported by default. HTTP URLs are "     \
           "only allowed for potentially trustworthy origins like localhost."   \
           "Insecure URLs that don't meet these requirements will be ignored"   \
-          "in favor of official Brave-hosted server",                          \
+          "in favor of the official Brave-hosted server",                      \
           kOsAll,                                                              \
           ORIGIN_LIST_VALUE_TYPE(syncer::kSyncServiceURL, ""),                 \
           kBraveSyncImplLink,                                                  \
