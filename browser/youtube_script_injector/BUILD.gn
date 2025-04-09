@@ -34,17 +34,17 @@ source_set("browser_tests") {
   sources = [ "youtube_script_injector_tab_feature_browsertest.cc" ]
 
   deps = [
-    "//base",
     ":jni_headers",
+    "//base",
     "//brave/components/script_injector/common/mojom",
     "//brave/components/youtube_script_injector/browser/content",
     "//brave/components/youtube_script_injector/browser/core",
     "//brave/components/youtube_script_injector/common",
     "//chrome/common",
     "//chrome/test:test_support",
+    "//chrome/test:test_support_ui_android",
     "//content/test:test_support",
     "//net:test_support",
     "//url",
-    "//chrome/test:test_support_ui_android"
   ]
 }

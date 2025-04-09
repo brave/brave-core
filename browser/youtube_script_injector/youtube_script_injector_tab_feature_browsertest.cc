@@ -31,14 +31,14 @@ namespace youtube_script_injector {
 
 class YouTubeScriptInjectorTabFeatureBrowserTest : public PlatformBrowserTest {
  public:
- YouTubeScriptInjectorTabFeatureBrowserTest()
+  YouTubeScriptInjectorTabFeatureBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-
     // feature_list_.InitAndEnableFeature(youtube_script_injector::features::kBraveYouTubeScriptInjector);
-    feature_list_.InitWithFeatures({youtube_script_injector::features::kBraveYouTubeScriptInjector,
-                                    youtube_script_injector::features::kBraveBackgroundVideoPlayback,
-                                    youtube_script_injector::features::kBraveYouTubeExtraControls}, 
-                                    {});
+    feature_list_.InitWithFeatures(
+        {youtube_script_injector::features::kBraveYouTubeScriptInjector,
+         youtube_script_injector::features::kBraveBackgroundVideoPlayback,
+         youtube_script_injector::features::kBraveYouTubeExtraControls},
+        {});
   }
 
   ~YouTubeScriptInjectorTabFeatureBrowserTest() override = default;
@@ -47,7 +47,7 @@ class YouTubeScriptInjectorTabFeatureBrowserTest : public PlatformBrowserTest {
     PlatformBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
   }
-  
+
   void SetUpInProcessBrowserTestFixture() override {
     PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
     mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
@@ -64,14 +64,15 @@ class YouTubeScriptInjectorTabFeatureBrowserTest : public PlatformBrowserTest {
 
     // Also called in Disabled test.
     if (youtube_script_injector::YouTubeRegistry::GetInstance()) {
-        youtube_script_injector::YouTubeRegistry::GetInstance()->SetComponentPath(
+      youtube_script_injector::YouTubeRegistry::GetInstance()->SetComponentPath(
           test_data_dir.AppendASCII("youtube-script-injector-component-data"));
     }
 
     content::SetupCrossSiteRedirector(&https_server_);
     ASSERT_TRUE(https_server_.Start());
 
-    // html_with_input_ = embedded_test_server()->GetURL("example.com", "/rewriter-example.html");
+    // html_with_input_ = embedded_test_server()->GetURL("example.com",
+    // "/rewriter-example.html");
   }
 
   base::FilePath GetTestDataDir() {
@@ -86,7 +87,7 @@ class YouTubeScriptInjectorTabFeatureBrowserTest : public PlatformBrowserTest {
     // ASSERT_TRUE(https_server_.ShutdownAndWaitUntilComplete());
     PlatformBrowserTest::TearDownOnMainThread();
   }
-  
+
   void TearDownInProcessBrowserTestFixture() override {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
     PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
@@ -109,18 +110,19 @@ class YouTubeScriptInjectorTabFeatureBrowserTest : public PlatformBrowserTest {
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
-//   BraveContentBrowserClient test_content_browser_client_;
+  //   BraveContentBrowserClient test_content_browser_client_;
 };
 
 // TESTS
 
-IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJsonPlayback) {
+IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest,
+                       TestLoadJsonPlayback) {
   const GURL url = https_server_.GetURL("youtube.com", "/simple.html");
   EXPECT_TRUE(youtube_script_injector::YouTubeRegistry::GetInstance());
   EXPECT_TRUE(youtube_script_injector::YouTubeRegistry::IsYouTubeDomain(url));
 
   const char json[] =
-    R"(
+      R"(
         {
         "version": 1,
         "playback_video_script": "playback/playback-video.js",
@@ -137,13 +139,14 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJsonP
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
-IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJsonExtraControls) {
-    const GURL url = https_server_.GetURL("youtube.com", "/simple.html");
-    EXPECT_TRUE(youtube_script_injector::YouTubeRegistry::GetInstance());
-    EXPECT_TRUE(youtube_script_injector::YouTubeRegistry::IsYouTubeDomain(url));
-  
-    const char json[] =
-        R"(
+IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest,
+                       TestLoadJsonExtraControls) {
+  const GURL url = https_server_.GetURL("youtube.com", "/simple.html");
+  EXPECT_TRUE(youtube_script_injector::YouTubeRegistry::GetInstance());
+  EXPECT_TRUE(youtube_script_injector::YouTubeRegistry::IsYouTubeDomain(url));
+
+  const char json[] =
+      R"(
             {
             "version": 1,
             "playback_video_script": "extra-controls/playback-video.js",
@@ -151,22 +154,23 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJsonE
             "extra_controls_pip_script": "extra-controls/extra-controls-pip.js"
             }
         )";
-  
-    youtube_script_injector::YouTubeRegistry::GetInstance()->OnLoadJson(json);
-  
-    std::u16string expected_title(u"EXTRA CONTROLS TESTED");
-    content::TitleWatcher watcher(web_contents(), expected_title);
-    NavigateToURL(url);
-    EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
-  }
 
-IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJson) {
-    const GURL url = https_server_.GetURL("a.com", "/simple.html");
-    EXPECT_TRUE(youtube_script_injector::YouTubeRegistry::GetInstance());
-    EXPECT_FALSE(youtube_script_injector::YouTubeRegistry::IsYouTubeDomain(url));
-  
-    const char json[] =
-        R"(
+  youtube_script_injector::YouTubeRegistry::GetInstance()->OnLoadJson(json);
+
+  std::u16string expected_title(u"EXTRA CONTROLS TESTED");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  NavigateToURL(url);
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest,
+                       TestLoadJson) {
+  const GURL url = https_server_.GetURL("a.com", "/simple.html");
+  EXPECT_TRUE(youtube_script_injector::YouTubeRegistry::GetInstance());
+  EXPECT_FALSE(youtube_script_injector::YouTubeRegistry::IsYouTubeDomain(url));
+
+  const char json[] =
+      R"(
           {
             "version": 1,
             "playback_video_script": "no-match/playback-video.js",
@@ -174,16 +178,17 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJson)
             "extra_controls_pip_script": "no-match/extra-controls-pip.js"
           }
         )";
-  
-    youtube_script_injector::YouTubeRegistry::GetInstance()->OnLoadJson(json);
-  
-    std::u16string expected_title(u"OK");
-    content::TitleWatcher watcher(web_contents(), expected_title);
-    NavigateToURL(url);
-    EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
-  }
 
-// IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest, RuleMatchTestScriptFalse) {
+  youtube_script_injector::YouTubeRegistry::GetInstance()->OnLoadJson(json);
+
+  std::u16string expected_title(u"OK");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  NavigateToURL(url);
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
+
+// IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest,
+// RuleMatchTestScriptFalse) {
 //   const GURL url = https_server_.GetURL("b.com", "/simple.html");
 
 //   const char rules[] =
@@ -235,21 +240,23 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJson)
 //   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 // }
 
-class YouTubeScriptInjectorTabFeatureBrowserDisabledTest : public YouTubeScriptInjectorTabFeatureBrowserTest {
+class YouTubeScriptInjectorTabFeatureBrowserDisabledTest
+    : public YouTubeScriptInjectorTabFeatureBrowserTest {
  public:
- YouTubeScriptInjectorTabFeatureBrowserDisabledTest() {
+  YouTubeScriptInjectorTabFeatureBrowserDisabledTest() {
     feature_list_.Reset();
-    feature_list_.InitWithFeatures({},
-                                   {youtube_script_injector::features::kBraveYouTubeScriptInjector,
-                                    youtube_script_injector::features::kBraveBackgroundVideoPlayback,
-                                    youtube_script_injector::features::kBraveYouTubeExtraControls});
+    feature_list_.InitWithFeatures(
+        {}, {youtube_script_injector::features::kBraveYouTubeScriptInjector,
+             youtube_script_injector::features::kBraveBackgroundVideoPlayback,
+             youtube_script_injector::features::kBraveYouTubeExtraControls});
   }
 };
 
-IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserDisabledTest, TestDoesNotInjectScript) {
+IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserDisabledTest,
+                       TestDoesNotInjectScript) {
   const GURL url = https_server_.GetURL("youtube.com", "/simple.html");
   ASSERT_FALSE(youtube_script_injector::YouTubeRegistry::GetInstance());
-  
+
   std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
   NavigateToURL(url);
@@ -257,20 +264,22 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserDisabledTest, TestD
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
-// class YouTubeScriptInjectorTabFeatureBrowserDisabledFeaturesEnabledTest : public YouTubeScriptInjectorTabFeatureBrowserTest {
+// class YouTubeScriptInjectorTabFeatureBrowserDisabledFeaturesEnabledTest :
+// public YouTubeScriptInjectorTabFeatureBrowserTest {
 //     public:
 //     YouTubeScriptInjectorTabFeatureBrowserDisabledFeaturesEnabledTest() {
 //         feature_list_.Reset();
 //         feature_list_.InitWithFeatures({youtube_script_injector::features::kBraveBackgroundVideoPlayback,
-//                                         youtube_script_injector::features::kBraveYouTubeExtraControls}, 
+//                                         youtube_script_injector::features::kBraveYouTubeExtraControls},
 //                                        {youtube_script_injector::features::kBraveYouTubeScriptInjector});
 //      }
 //    };
 
-// IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserDisabledFeaturesEnabledTest, TestDoesNotInjectScript) {                        
+// IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorTabFeatureBrowserDisabledFeaturesEnabledTest,
+// TestDoesNotInjectScript) {
 //     const GURL url = https_server_.GetURL("youtube.com", "/simple.html");
 //     ASSERT_FALSE(youtube_script_injector::YouTubeRegistry::GetInstance());
-    
+
 //     std::u16string expected_title(u"OK");
 //     content::TitleWatcher watcher(web_contents(), expected_title);
 //     NavigateToURL(url);

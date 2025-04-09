@@ -20,9 +20,12 @@
 class GURL;
 
 namespace youtube_script_injector {
-// Needed for testing private methods in YouTubeScriptInjectorTabFeatureBrowserTest.
-FORWARD_DECLARE_TEST(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJsonPlayback);
-FORWARD_DECLARE_TEST(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJsonExtraControls);
+// Needed for testing private methods in
+// YouTubeScriptInjectorTabFeatureBrowserTest.
+FORWARD_DECLARE_TEST(YouTubeScriptInjectorTabFeatureBrowserTest,
+                     TestLoadJsonPlayback);
+FORWARD_DECLARE_TEST(YouTubeScriptInjectorTabFeatureBrowserTest,
+                     TestLoadJsonExtraControls);
 FORWARD_DECLARE_TEST(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJson);
 
 // This class loads and stores the rules from the youtube.json file.
@@ -60,10 +63,14 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeRegistry {
 
   base::WeakPtrFactory<YouTubeRegistry> weak_factory_{this};
 
-  // Needed for testing private methods in YouTubeScriptInjectorTabFeatureBrowserTest.
-  FRIEND_TEST_ALL_PREFIXES(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJsonPlayback);
-  FRIEND_TEST_ALL_PREFIXES(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJsonExtraControls);
-  FRIEND_TEST_ALL_PREFIXES(YouTubeScriptInjectorTabFeatureBrowserTest, TestLoadJson);
+  // Needed for testing private methods in
+  // YouTubeScriptInjectorTabFeatureBrowserTest.
+  FRIEND_TEST_ALL_PREFIXES(YouTubeScriptInjectorTabFeatureBrowserTest,
+                           TestLoadJsonPlayback);
+  FRIEND_TEST_ALL_PREFIXES(YouTubeScriptInjectorTabFeatureBrowserTest,
+                           TestLoadJsonExtraControls);
+  FRIEND_TEST_ALL_PREFIXES(YouTubeScriptInjectorTabFeatureBrowserTest,
+                           TestLoadJson);
   friend class YouTubeScriptInjectorTabFeatureBrowserTest;
 
   friend struct base::DefaultSingletonTraits<YouTubeRegistry>;
