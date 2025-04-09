@@ -24,6 +24,7 @@ def CheckToModifyInputApi(input_api, _output_api):
 
 # Check Leo variables actually exist
 def CheckLeoVariables(input_api, output_api):
+
     def _web_files_filter(affected_file):
         return input_api.FilterSourceFile(
             affected_file,
@@ -48,6 +49,7 @@ def CheckLeoVariables(input_api, output_api):
         return []
     except RuntimeError as err:
         return [output_api.PresubmitError(err.args[1])]
+
 
 # Check and fix formatting issues (supports --fix).
 def CheckPatchFormatted(input_api, output_api):
@@ -339,6 +341,7 @@ def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
         ]
     return []
 
+
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
 #
 # This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We
@@ -415,23 +418,26 @@ ApplyBanRuleExcludes()
 def CheckForIncludeGuards(original_check, input_api, output_api, **kwargs):
     # Add 'brave/' prefix for header guard checks to properly validate guards.
     def AffectedSourceFiles(self, original_method, source_file):
+
         def PrependBrave(affected_file):
             affected_file = copy.copy(affected_file)
             affected_file._path = f'brave/{affected_file._path}'
             return affected_file
 
         return [
-            PrependBrave(f)
-            for f in filter(self.FilterSourceFile, original_method(source_file))
+            PrependBrave(f) for f in filter(self.FilterSourceFile,
+                                            original_method(source_file))
         ]
 
-    with override_utils.override_scope_function(input_api, AffectedSourceFiles):
+    with override_utils.override_scope_function(input_api,
+                                                AffectedSourceFiles):
         return original_check(input_api, output_api, **kwargs)
 
 
 # Use BanRule.excluded_paths in all BanRule-like checks.
 @override_utils.override_function(globals())
 def _GetMessageForMatchingType(orig, input_api, f, line_num, line, ban_rule):
+
     def IsExcludedFile(affected_file, excluded_paths):
         if not excluded_paths:
             return False
@@ -464,6 +470,7 @@ def CheckJavaStyle(_original_check, input_api, output_api):
     errors are replaced with warnings except UnusedImports.
     When all style error will be fixed, this function should be removed and
     the original function from upstream must be used again """
+
     def _IsJavaFile(input_api, file_path):
         return input_api.os_path.splitext(file_path)[1] == ".java"
 
@@ -484,9 +491,10 @@ def CheckJavaStyle(_original_check, input_api, output_api):
 
     # Filter out non-Java files and files that were deleted.
     java_files = [
-        x.AbsoluteLocalPath() for x in
-        input_api.AffectedSourceFiles(lambda f: input_api.FilterSourceFile(
-            f, files_to_skip=files_to_skip)) if x.LocalPath().endswith('.java')
+        x.AbsoluteLocalPath() for x in input_api.AffectedSourceFiles(
+            lambda f: input_api.FilterSourceFile(f,
+                                                 files_to_skip=files_to_skip))
+        if x.LocalPath().endswith('.java')
     ]
     if not java_files:
         return []
