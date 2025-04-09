@@ -39,7 +39,7 @@ struct MediaScrubber<Label: View>: View {
   @Environment(\.layoutDirection) private var layoutDirection
 
   private var currentValueLabel: Text {
-    return Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
+    return Text(.seconds(currentTime), format: .timestamp)
   }
 
   @ViewBuilder private var remainingTimeLabel: some View {
@@ -47,7 +47,7 @@ struct MediaScrubber<Label: View>: View {
     case .unknown:
       EmptyView()
     case .seconds(let duration):
-      Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
+      Text(.seconds(currentTime - duration), format: .timestamp)
     case .indefinite:
       Text(Strings.Playlist.liveIndicator)
     }
@@ -55,7 +55,7 @@ struct MediaScrubber<Label: View>: View {
 
   private var durationLabel: Text {
     if case .seconds(let duration) = duration {
-      return Text(.seconds(duration), format: .time(pattern: .minuteSecond))
+      return Text(.seconds(duration), format: .timestamp)
     }
     return Text("")
   }
@@ -202,7 +202,7 @@ struct DefaultMediaScrubberLabel: View {
 
   var body: some View {
     HStack {
-      Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
+      Text(.seconds(currentTime), format: .timestamp)
       Spacer()
       switch duration {
       case .unknown:
@@ -214,9 +214,9 @@ struct DefaultMediaScrubberLabel: View {
         } label: {
           Group {
             if isShowingTotalTime {
-              Text(.seconds(duration), format: .time(pattern: .minuteSecond))
+              Text(.seconds(duration), format: .timestamp)
             } else {
-              Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
+              Text(.seconds(currentTime - duration), format: .timestamp)
             }
           }
           .transition(.move(edge: .trailing).combined(with: .opacity))
@@ -245,6 +245,12 @@ private struct MediaScrubberPreview: View {
       MediaScrubber(
         currentTime: $currentTime,
         duration: .seconds(1000),
+        isScrubbing: $isScrubbing
+      )
+      .padding()
+      MediaScrubber(
+        currentTime: $currentTime,
+        duration: .seconds(3600),
         isScrubbing: $isScrubbing
       )
       .padding()
