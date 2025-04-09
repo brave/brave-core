@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 199e3458102a914cd10dc2a0fa9fb2625e1450c1..86841d6d1b4debbeb49d45e0412db03aa7901da2 100644
+index e2ef24295db6955c1fee6dad3411ed15ecf8a21a..989a3a66c9a015e0d191d7eaf429bcbbcd287e5a 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1430,6 +1430,7 @@ const FeatureEntry::FeatureVariation kExplainGeminiEditMenuVariations[] = {
+@@ -1438,6 +1438,7 @@ const FeatureEntry::FeatureVariation kExplainGeminiEditMenuVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const flags_ui::FeatureEntry kFeatureEntries[] = {

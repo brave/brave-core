@@ -1,8 +1,8 @@
 diff --git a/components/regional_capabilities/BUILD.gn b/components/regional_capabilities/BUILD.gn
-index 9874aced1abfdc306b1df44b696fb5c03123e07d..d4d6a58d0ed1874293249eae68f4d2d50f0edb68 100644
+index dddd17ae49ae0b8094db466c6351b7af26154af3..97dff94e5c28214451f9cf15a0ec32b012caea20 100644
 --- a/components/regional_capabilities/BUILD.gn
 +++ b/components/regional_capabilities/BUILD.gn
-@@ -44,6 +44,7 @@ source_set("country_access_reason") {
+@@ -51,6 +51,7 @@ source_set("country_access_reason") {
      "//chrome/browser/ui:ui",
      "//components/search_engines:search_engines",
    ]

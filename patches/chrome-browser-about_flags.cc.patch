@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 801120f12d80456a0a9697b295977afb0c1ae70d..97668cd2d6d5a2cb5f092b5bc5263c55cb612f45 100644
+index 72160e54d7d2b6d0f8e52960253f14041bb2a8b6..d74416b373de08426e50e1148a1e8226189fbc18 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4439,6 +4439,7 @@ const FeatureEntry::FeatureVariation kEnableCanvasNoiseVariations[] = {
+@@ -4409,6 +4409,7 @@ const FeatureEntry::FeatureVariation kEnableCanvasNoiseVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

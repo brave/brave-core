@@ -1,8 +1,8 @@
 diff --git a/third_party/search_engines_data/BUILD.gn b/third_party/search_engines_data/BUILD.gn
-index 863bf32f720d7d1c443713bc7edc20ccafd60619..677da54f1c58eddf688fdca8b787de07807c0e19 100644
+index 6d66e1e24118b7e938a84ea049c437151afdd8b2..f0d5950683643f2c77356050bf198d27a39ac8e9 100644
 --- a/third_party/search_engines_data/BUILD.gn
 +++ b/third_party/search_engines_data/BUILD.gn
-@@ -14,6 +14,7 @@ json_to_struct("prepopulated_engines") {
+@@ -15,6 +15,7 @@ json_to_struct("prepopulated_engines") {
    schema_file = "prepopulated_engines_schema.json"
    namespace = "TemplateURLPrepopulateData"
    deps = [ "//base" ]

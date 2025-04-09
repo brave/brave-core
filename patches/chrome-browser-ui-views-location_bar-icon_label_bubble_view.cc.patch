@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-index e19b941e256379bd3826416ac581c4d3859ef90a..44dc040a8031febf8777cb3401b5e2822d7e420d 100644
+index 3f366d18c62779b66073760937cae9cc0abe3096..2301370ec63977fa7c14cf120e6a3ff81ed35b3f 100644
 --- a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
 +++ b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-@@ -750,6 +750,7 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
+@@ -811,6 +811,7 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
        SkIntToScalar(radii.lower_right()), SkIntToScalar(radii.lower_right()),
        SkIntToScalar(radii.lower_left()),  SkIntToScalar(radii.lower_left())};
  

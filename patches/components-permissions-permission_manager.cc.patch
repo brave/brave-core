@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_manager.cc b/components/permissions/permission_manager.cc
-index 28ef2f325212b8c19a5d61fcd7ad0e78c0945be8..10109f07f76c49080b5bbc32bd1172c50ca1215f 100644
+index d140c48df738a1be806bce0ac09d8b959b07a650..9368ce3b7c5108b3291a56c21e398e3d83dbe1ff 100644
 --- a/components/permissions/permission_manager.cc
 +++ b/components/permissions/permission_manager.cc
-@@ -294,6 +294,7 @@ void PermissionManager::RequestPermissionsFromCurrentDocument(
+@@ -301,6 +301,7 @@ void PermissionManager::RequestPermissionsFromCurrentDocument(
      base::OnceCallback<void(const std::vector<PermissionStatus>&)>
          permission_status_callback) {
    DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -10,7 +10,7 @@ index 28ef2f325212b8c19a5d61fcd7ad0e78c0945be8..10109f07f76c49080b5bbc32bd1172c5
    RequestPermissionsInternal(render_frame_host, request_description,
                               std::move(permission_status_callback));
  }
-@@ -345,6 +346,7 @@ PermissionManager::GetPermissionResultForCurrentDocument(
+@@ -352,6 +353,7 @@ PermissionManager::GetPermissionResultForCurrentDocument(
        PermissionUtil::PermissionTypeToContentSettingsType(permission);
  
    const GURL requesting_origin =

@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 84468eb8c2cfda3a39c89dcea94ed751a70d497f..8cb3d1ae4d45511469e460460153476463a308d1 100644
+index 0f9585d179fa94d83b1535612f4186eb15e8d7ff..9a316d6890a12aa16f581334bff6dec215c6b69e 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -656,6 +656,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -638,6 +638,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // Deprecated 03/2025, migrated to profile pref.
    registry->RegisterIntegerPref(
        prefs::kHomeCustomizationMagicStackSafetyCheckIssuesCount, 0);
@@ -10,7 +10,7 @@ index 84468eb8c2cfda3a39c89dcea94ed751a70d497f..8cb3d1ae4d45511469e4604601534764
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1042,6 +1043,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1028,6 +1029,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Deprecated 02/2025 (migrated to localState prefs).
    registry->RegisterIntegerPref(
        prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
