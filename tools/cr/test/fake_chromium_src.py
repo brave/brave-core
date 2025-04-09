@@ -20,12 +20,22 @@ class FakeChromiumSrc(FakeChromiumRepo):
                                  PurePath(self.brave))
         self.chromium_patch = patch('repository.CHROMIUM_SRC_PATH',
                                     PurePath(self.chromium))
+        self.repository_chromium_patch = patch(
+            'repository.chromium',
+            repository.Repository(PurePath(
+                self.chromium)))  # Patch repository.chromium globally
+        self.repository_brave_patch = patch(
+            'repository.brave', repository.Repository(PurePath(
+                self.brave)))  # Patch repository.brave globally
         self.original_cwd = None
 
     def setup(self):
         """Set up the fake repo and apply patches."""
         self.brave_patch.start()
         self.chromium_patch.start()
+        self.repository_chromium_patch.start(
+        )  # Start the global patch for chromium
+        self.repository_brave_patch.start()  # Start the global patch for brave
 
         # Re-initialize the global instances in the repository module
         repository.chromium = repository.Repository(PurePath(self.chromium))
@@ -39,6 +49,9 @@ class FakeChromiumSrc(FakeChromiumRepo):
         """Clean up the fake repo, patches, and restore the working directory"""
         self.brave_patch.stop()
         self.chromium_patch.stop()
+        self.repository_chromium_patch.stop(
+        )  # Stop the global patch for chromium
+        self.repository_brave_patch.stop()  # Stop the global patch for brave
         if self.original_cwd:
             os.chdir(self.original_cwd)
         super().cleanup()

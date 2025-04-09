@@ -6,12 +6,10 @@
 
 from pathlib import PurePath
 import unittest
-from unittest.mock import patch
 
 import repository
 from repository import Repository
 
-from test.fake_chromium_repo import FakeChromiumRepo
 from test.fake_chromium_src import FakeChromiumSrc
 
 
