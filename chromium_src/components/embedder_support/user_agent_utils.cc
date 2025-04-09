@@ -6,6 +6,7 @@
 #include "components/embedder_support/user_agent_utils.h"
 
 #include "base/strings/strcat.h"
+#include "base/system/sys_info.h"
 
 namespace {
 
@@ -36,10 +37,10 @@ std::string BuildModelInfo() {
 #define BRAVE_GET_ANDROID_OS_INFO \
   include_android_model = IncludeAndroidModel::Exclude;
 
-// In the transation unit `BuildModelInfo` occurrances are translated to
+// In the translation unit `BuildModelInfo` occurrences are translated to
 // `BuildModelInfo_ChromiumImpl`, which cancels out the empty string override.
-// This particular override enforces that defintion.
-#define BRAVE_GET_USER_AGENT_METADATA metadata.model.clear();
+// This particular override enforces that definition.
+#define HardwareModelName() HardwareModelName() == "" ? "" : ""
 
 #define BuildModelInfo BuildModelInfo_ChromiumImpl
 
@@ -48,4 +49,4 @@ std::string BuildModelInfo() {
 #undef BRAVE_GET_USER_AGENT_BRAND_LIST
 #undef BuildModelInfo
 #undef BRAVE_GET_ANDROID_OS_INFO
-#undef BRAVE_GET_USER_AGENT_METADATA
+#undef HardareModelName
