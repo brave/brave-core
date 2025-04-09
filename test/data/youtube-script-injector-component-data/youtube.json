@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "playback_video_script": "playback-video.js",
+  "extra_controls_fullscreen_script": "extra-controls-fullscreen.js",
+  "extra_controls_pip_script": "extra-controls-pip.js"
+}

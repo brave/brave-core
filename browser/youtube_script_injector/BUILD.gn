@@ -26,3 +26,25 @@ generate_jni("jni_headers") {
 
   public_deps = [ "//chrome/android:chrome_jni_headers" ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "youtube_script_injector_tab_feature_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    ":jni_headers",
+    "//brave/components/script_injector/common/mojom",
+    "//brave/components/youtube_script_injector/browser/content",
+    "//brave/components/youtube_script_injector/browser/core",
+    "//brave/components/youtube_script_injector/common",
+    "//chrome/common",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//url",
+    "//chrome/test:test_support_ui_android"
+  ]
+}
