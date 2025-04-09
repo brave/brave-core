@@ -57,7 +57,7 @@ export class SettingsBraveAppearanceBookmarkBarElement
     }
   }
 
-  bookmarkBarStatePref_: chrome.settingsPrivate.PrefObject
+  declare bookmarkBarStatePref_: chrome.settingsPrivate.PrefObject
 
   private bookmarkBarShowOptions_ = [
     {
