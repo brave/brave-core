@@ -26,6 +26,8 @@ import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.chrome.R;
@@ -470,7 +472,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 BottomToolbarConfiguration.isToolbarTopAnchored()
                         ? R.drawable.ic_browser_mobile_tabs_top
                         : R.drawable.ic_browser_mobile_tabs_bottom);
-        updateCustomAppIcon(PREF_CUSTOM_APP_ICONS);
+        PostTask.postTask(
+                TaskTraits.UI_DEFAULT,
+                () -> {
+                    updateCustomAppIcon(PREF_CUSTOM_APP_ICONS);
+                });
     }
 
     private void updateSearchEnginePreference() {
