@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/side_panel/side_panel_entry_id.h b/chrome/browser/ui/views/side_panel/side_panel_entry_id.h
-index 34110251b5766f02fcaded443db1e4917a42dbb0..3cbaa6549e481e531ec5696ddddab58249b7518d 100644
+index a9232eaa871f2082baa87afae9cdbdc696f3bb74..ed73cb06b093522590050f30da34324c16e0d7f6 100644
 --- a/chrome/browser/ui/views/side_panel/side_panel_entry_id.h
 +++ b/chrome/browser/ui/views/side_panel/side_panel_entry_id.h
-@@ -30,6 +30,7 @@
+@@ -31,6 +31,7 @@
    V(kSideSearch, kActionSidePanelShowSideSearch, "SideSearch")                \
    V(kLens, kActionSidePanelShowLens, "Lens")                                  \
    V(kAssistant, kActionSidePanelShowAssistant, "Assistant")                   \
