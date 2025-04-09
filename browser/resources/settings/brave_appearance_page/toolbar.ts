@@ -40,7 +40,7 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
     }
   }
 
-  private isNativeWalletEnabled_: boolean
+  private declare isNativeWalletEnabled_: boolean
   private walletBrowserProxy_: BraveWalletBrowserProxy = BraveWalletBrowserProxyImpl.getInstance()
 
   override ready() {

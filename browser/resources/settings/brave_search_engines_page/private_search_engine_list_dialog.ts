@@ -61,9 +61,9 @@ export class SettingsPrivateSearchEngineListDialogElement extends
     }
   }
 
-  searchEngines: SearchEngine[]
+  declare searchEngines: SearchEngine[]
 
-  private selectedEngineId_: string
+  private declare selectedEngineId_: string
   private browserProxy_: BraveSearchEnginesPageBrowserProxy =
       BraveSearchEnginesPageBrowserProxyImpl.getInstance()
 

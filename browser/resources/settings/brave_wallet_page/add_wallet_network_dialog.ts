@@ -146,32 +146,32 @@ export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAdd
     };
   }
 
-  private addNewAllowed: boolean;
-  private coin: number;
-  private networks: NetworkInfo[];
-  private selectedRpcUrl: string;
-  private rpcUrls: Url[];
-  private iconUrls: Url[];
-  private blockUrls: Url[];
-  private isRpcPlusButtonDisabled_: boolean;
-  private isIconPlusButtonDisabled_: boolean;
-  private isBlockPlusButtonDisabled_: boolean;
-  private isSubmitButtonEnabled_: boolean;
-  private chainIdValue_: string;
-  private invalidChainIdMessage_: string;
-  private chainIdInvalid_: boolean;
-  private chainNameValue_: string;
-  private chainNameInvalid_: boolean;
-  private isCurrencyErrorHidden_: boolean;
-  private isSubmissionErrorHidden_: boolean;
-  private submissionErrorMessage_: string;
-  private selected: NetworkInfo;
-  private currencyNameValue_: string;
-  private currencySymbolValue_: string;
-  private currencyDecimalsValue_: number;
-  private prepopulatedNetworks_: ExtendedNetworkInfo[];
-  private searchValue_: string;
-  private searchItems_: string[];
+  private declare addNewAllowed: boolean;
+  private declare coin: number;
+  private declare networks: NetworkInfo[];
+  private declare selectedRpcUrl: string;
+  private declare rpcUrls: Url[];
+  private declare iconUrls: Url[];
+  private declare blockUrls: Url[];
+  private declare isRpcPlusButtonDisabled_: boolean;
+  private declare isIconPlusButtonDisabled_: boolean;
+  private declare isBlockPlusButtonDisabled_: boolean;
+  private declare isSubmitButtonEnabled_: boolean;
+  private declare chainIdValue_: string;
+  private declare invalidChainIdMessage_: string;
+  private declare chainIdInvalid_: boolean;
+  private declare chainNameValue_: string;
+  private declare chainNameInvalid_: boolean;
+  private declare isCurrencyErrorHidden_: boolean;
+  private declare isSubmissionErrorHidden_: boolean;
+  private declare submissionErrorMessage_: string;
+  private declare selected: NetworkInfo;
+  private declare currencyNameValue_: string;
+  private declare currencySymbolValue_: string;
+  private declare currencyDecimalsValue_: number;
+  private declare prepopulatedNetworks_: ExtendedNetworkInfo[];
+  private declare searchValue_: string;
+  private declare searchItems_: string[];
 
   browserProxy_: BraveWalletBrowserProxy = BraveWalletBrowserProxyImpl.getInstance();
 

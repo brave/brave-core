@@ -36,9 +36,9 @@ export class SettingBraveWeb3DomainsPageElement
   }
 
   private browserProxy_ = BraveWeb3DomainsBrowserProxyImpl.getInstance()
-  resolveMethod_: DropdownMenuOptionList
-  ensOffchainResolveMethod_: DropdownMenuOptionList
-  showEnsOffchainLookupRow_: boolean
+  declare resolveMethod_: DropdownMenuOptionList
+  declare ensOffchainResolveMethod_: DropdownMenuOptionList
+  declare showEnsOffchainLookupRow_: boolean
 
   override ready() {
     super.ready()

@@ -38,11 +38,16 @@ export class SettingsBraveAccountDialogElement extends CrLitElement {
     }
   }
 
-  protected alertMessage: string = ''
-  protected dialogDescription: string
-  protected dialogTitle: string
-  protected horizontalButtons: boolean
-  protected showBackButton: boolean
+  constructor() {
+    super();
+    this.alertMessage = '';
+  }
+
+  protected declare alertMessage: string
+  protected declare dialogDescription: string
+  protected declare dialogTitle: string
+  protected declare horizontalButtons: boolean
+  protected declare showBackButton: boolean
 }
 
 declare global {

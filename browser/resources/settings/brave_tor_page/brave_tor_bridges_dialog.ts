@@ -48,11 +48,11 @@ export class RequestBridgesDialog extends RequestBridgesDialogBase {
     }
   }
 
-  private status_: string
-  private captcha_: string
-  private captchaResolve_: string
-  private renewDisabled_: boolean
-  private submitDisabled_: boolean
+  private declare status_: string
+  private declare captcha_: string
+  private declare captchaResolve_: string
+  private declare renewDisabled_: boolean
+  private declare submitDisabled_: boolean
   public bridges_: Object[]
 
   private browserProxy_: BraveTorBrowserProxy =

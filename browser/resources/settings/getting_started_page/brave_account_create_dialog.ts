@@ -98,8 +98,14 @@ class PasswordStrengthMeter extends I18nMixinLit(CrLitElement) {
     }
   }
 
-  protected category: 'Weak' | 'Medium' | 'Strong' = 'Weak'
-  protected strength: number = 0
+  constructor() {
+    super();
+    this.category = 'Weak';
+    this.strength = 0;
+  }
+
+  protected declare category: 'Weak' | 'Medium' | 'Strong'
+  protected declare strength: number
 }
 
 declare global {
@@ -171,16 +177,29 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
     return this.icon
   }
 
+  constructor() {
+    super();
+    this.email = '';
+    this.icon = 'warning-triangle-filled';
+    this.isCheckboxChecked = false;
+    this.isEmailBraveAlias = false;
+    this.isEmailValid = false;
+    this.password = '';
+    this.passwordConfirmation = '';
+    this.passwordStrength = 0;
+  }
+
+
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
-  protected email: string = ''
-  protected icon: string = 'warning-triangle-filled'
-  protected isCheckboxChecked: boolean = false
-  protected isEmailBraveAlias: boolean = false
-  protected isEmailValid: boolean = false
-  protected password: string = ''
-  protected passwordConfirmation: string = ''
-  protected passwordStrength: number = 0
+  protected declare email: string
+  protected declare icon: string
+  protected declare isCheckboxChecked: boolean
+  protected declare isEmailBraveAlias: boolean
+  protected declare isEmailValid: boolean
+  protected declare password: string
+  protected declare passwordConfirmation: string
+  protected declare passwordStrength: number
   protected registration = new Registration()
 }
 

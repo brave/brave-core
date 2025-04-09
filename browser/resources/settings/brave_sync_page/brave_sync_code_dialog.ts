@@ -78,12 +78,12 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDia
     ];
   }
 
-  private syncCode: string | undefined;
-  private codeType: 'qr' | 'words' | 'choose' | 'input' | null;
-  private syncCodeValidationError: string;
-  private syncCodeWordCount_: number;
-  private hasCopiedSyncCode_: boolean;
-  private qrCodeImageUrl_: string;
+  private declare syncCode: string | undefined;
+  private declare codeType: 'qr' | 'words' | 'choose' | 'input' | null;
+  private declare syncCodeValidationError: string;
+  private declare syncCodeWordCount_: number;
+  private declare hasCopiedSyncCode_: boolean;
+  private declare qrCodeImageUrl_: string;
   private hasCopiedSyncCodeTimer_: ReturnType<typeof window.setTimeout>;
 
   syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();

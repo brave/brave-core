@@ -50,8 +50,14 @@ export class SettingsBraveAccountRow extends CrLitElement {
     }
   }
 
-  protected dialog: Dialog = Dialog.NONE
-  protected signedIn: boolean = false
+  constructor() {
+    super();
+    this.dialog = Dialog.NONE
+    this.signedIn = false
+  }
+
+  protected declare dialog: Dialog
+  protected declare signedIn: boolean
 }
 
 declare global {
