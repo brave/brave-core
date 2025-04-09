@@ -80,9 +80,9 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
     ];
   }
 
-  private fontSizeOptions_: DropdownMenuOptionList
-  private pageZoomLevels_: number[]
-  private defaultZoom_: number;
+  private declare fontSizeOptions_: DropdownMenuOptionList
+  private declare pageZoomLevels_: number[]
+  private declare defaultZoom_: number;
   private appearanceBrowserProxy_: AppearanceBrowserProxy =
       AppearanceBrowserProxyImpl.getInstance();
 

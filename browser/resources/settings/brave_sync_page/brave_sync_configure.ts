@@ -72,11 +72,11 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
     };
   }
 
-  private syncStatus: SyncStatus;
-  private syncCode: string | undefined;
-  private deviceList_: BraveDeviceInfo[];
-  private syncCodeDialogType_: string | null;
-  private syncDoingDeleteAccount_: Boolean | false;
+  private declare syncStatus: SyncStatus;
+  private declare syncCode: string | undefined;
+  private declare deviceList_: BraveDeviceInfo[];
+  private declare syncCodeDialogType_: string | null;
+  private declare syncDoingDeleteAccount_: Boolean | false;
 
   browserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
 
