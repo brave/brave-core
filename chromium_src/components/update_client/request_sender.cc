@@ -27,20 +27,14 @@ namespace client_update_protocol {
 
 class BraveEcdsa : public Ecdsa {
  public:
-  static std::unique_ptr<Ecdsa> Create(int key_version,
-                                       const std::string_view& public_key) {
-    const std::string base64_decoded = GetKey(kBraveKeyPubBytesBase64);
-    return Ecdsa::Create(kBraveKeyVersion, base64_decoded);
-  }
+
+  BraveEcdsa(int key_version, base::span<const uint8_t> public_key) : Ecdsa(kBraveKeyVersion, GetKey(kBraveKeyPubBytesBase64)) {}
 
  private:
-  static std::string GetKey(const char* key_bytes_base64) {
+  static std::vector<uint8_t> GetKey(std::string_view key) {
     // This method is a copy of upstream's RequestSender::GetKey, which is
     // unfortunately private.
-    std::string result;
-    return base::Base64Decode(std::string(key_bytes_base64), &result)
-               ? result
-               : std::string();
+    return std::move(base::Base64Decode(key)).value();
   }
 };
 
