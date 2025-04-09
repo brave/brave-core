@@ -875,7 +875,6 @@ test("brave_browser_tests") {
     "//brave/browser/ui/webui:browser_tests",
     "//brave/browser/ui/webui/ai_chat:browser_tests",
     "//brave/browser/web_discovery:browser_tests",
-    "//brave/browser/youtube_script_injector:browser_tests",
     "//brave/common",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/brave_ads/browser",
@@ -1053,7 +1052,10 @@ test("brave_browser_tests") {
     ]
   }
   if (is_android) {
-    deps += [ "//brave/components/brave_mobile_subscription/renderer/android:browser_tests" ]
+    deps += [ 
+      "//brave/components/brave_mobile_subscription/renderer/android:browser_tests",
+      "//brave/browser/youtube_script_injector:browser_tests" 
+      ]
   }
 
   if (enable_crash_dialog) {
