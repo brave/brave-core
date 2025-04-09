@@ -60,6 +60,8 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
     private CustomTabMinimizationManagerHolder mMinimizationManagerHolder;
     private CustomTabFeatureOverridesManager mCustomTabFeatureOverridesManager;
 
+    public static boolean sIsFullScreenCustomTabActivityClosed;
+
     @Override
     public boolean supportsAppMenu() {
         return false;
@@ -116,6 +118,18 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                     .writeInt(
                             BravePermissionUtils.REWARDS_NOTIFICATION_PERMISSION_COUNT, count + 1);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sIsFullScreenCustomTabActivityClosed = false;
+    }
+
+    @Override
+    public void finish() {
+        sIsFullScreenCustomTabActivityClosed = true;
+        super.finish();
     }
 
     @Override

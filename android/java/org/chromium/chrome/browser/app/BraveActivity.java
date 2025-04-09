@@ -131,6 +131,7 @@ import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
@@ -364,6 +365,15 @@ public abstract class BraveActivity extends ChromeActivity
             if (layout != null && layout.isWalletIconVisible()) {
                 updateWalletBadgeVisibility();
             }
+
+            // If a full screen custom tab was closed and bottom controls are enabled,
+            // show the bottom toolbar controls again
+            if (FullScreenCustomTabActivity.sIsFullScreenCustomTabActivityClosed
+                    && BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
+                layout.onBottomControlsVisibilityChanged(true);
+            }
+            // Reset the flag tracking whether a full screen custom tab was closed
+            FullScreenCustomTabActivity.sIsFullScreenCustomTabActivityClosed = false;
         }
 
         BraveSafeBrowsingApiHandler.getInstance()
