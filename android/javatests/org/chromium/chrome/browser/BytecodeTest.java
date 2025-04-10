@@ -1631,7 +1631,8 @@ public class BytecodeTest {
                         ModalDialogManager.class,
                         Runnable.class,
                         BooleanSupplier.class,
-                        BookmarkManagerOpener.class));
+                        BookmarkManagerOpener.class,
+                        View.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
