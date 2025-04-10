@@ -69,7 +69,7 @@ class AdBlockSubpage extends AdBlockSubpageBase {
   private declare hasListExpanded_: boolean
   private declare shouldShowCustomFilters_: boolean
   private declare shouldShowCustomScriptlets_: boolean
-  private declare customScriptlets_: Scriptlet[]
+  private customScriptlets_: Scriptlet[]
 
   private browserProxy_: BraveAdblockBrowserProxy =
     BraveAdblockBrowserProxyImpl.getInstance()

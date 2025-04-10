@@ -144,7 +144,7 @@ export class SearchableDropDownElement extends PolymerElement {
     };
   }
 
-  override autofocus: boolean;
+  declare autofocus: boolean;
   declare readonly: boolean;
   declare errorMessageAllowed: boolean;
   declare errorMessage: string;

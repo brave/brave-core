@@ -53,7 +53,7 @@ export class RequestBridgesDialog extends RequestBridgesDialogBase {
   private declare captchaResolve_: string
   private declare renewDisabled_: boolean
   private declare submitDisabled_: boolean
-  public bridges_: Object[]
+  public declare bridges_: Object[]
 
   private browserProxy_: BraveTorBrowserProxy =
     BraveTorBrowserProxyImpl.getInstance()

@@ -107,7 +107,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
   declare buttonLabel_: string
   declare isUrlInvalid: boolean
   declare shouldShowUnsafeEndpointLabel: boolean
-  declare isValidAsPrivateEndpoint: boolean
+  isValidAsPrivateEndpoint: boolean
   declare shouldShowUnsafeEndpointModal: boolean
   declare invalidUrlErrorMessage: string
   declare hasVisionSupport: boolean
