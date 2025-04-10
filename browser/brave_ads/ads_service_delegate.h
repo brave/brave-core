@@ -14,7 +14,6 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "components/prefs/pref_service.h"
-#include "components/regional_capabilities/regional_capabilities_country_id.h"
 
 class Profile;
 
@@ -73,7 +72,6 @@ class AdsServiceDelegate : public AdsService::Delegate {
 
   const raw_ref<Profile> profile_;
   const raw_ptr<PrefService> local_state_ = nullptr;  // Not owned.
-  regional_capabilities::CountryIdHolder country_id_holder_;
   const raw_ref<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
       adaptive_captcha_service_;
   std::unique_ptr<NotificationAdPlatformBridge>

@@ -17,46 +17,18 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
+#include "chrome/browser/search_engines/template_url_prepopulate_data_resolver_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "components/regional_capabilities/access/country_access_reason.h"
-#include "components/regional_capabilities/regional_capabilities_country_id.h"
-#include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
+#include "components/search_engines/template_url_prepopulate_data_resolver.h"
 #include "components/search_engines/template_url_service.h"
 
 namespace brave {
-
-// this ugly hack is necessary for now until upstream provides a better way to
-// access the country access key, but for now it requires friend class access as
-// a vetting mechanism.
-class WithCountryAccessKeyAccess {
- public:
-  static void SetBraveAsDefaultPrivateSearchProvider(Profile& profile) {
-    auto& prefs = *profile.GetPrefs();
-    regional_capabilities::CountryIdHolder country_id_holder =
-        regional_capabilities::RegionalCapabilitiesServiceFactory::
-            GetForProfile(&profile)
-                ->GetCountryId();
-
-    auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-        prefs,
-        country_id_holder.GetRestricted(regional_capabilities::CountryAccessKey(
-            regional_capabilities::CountryAccessReason::
-                kTemplateURLPrepopulateDataResolution)),
-        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
-    DCHECK(data);
-    prefs.SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
-                    data->sync_guid);
-    prefs.SetDict(prefs::kSyncedDefaultPrivateSearchProviderData,
-                  TemplateURLDataToDictionary(*data));
-  }
-};
 
 namespace {
 constexpr auto kTargetCountriesForEnableSearchSuggestionsByDefault =
@@ -66,7 +38,17 @@ constexpr auto kTargetCountriesForEnableSearchSuggestionsByDefault =
 }
 
 void SetBraveAsDefaultPrivateSearchProvider(Profile& profile) {
-  WithCountryAccessKeyAccess::SetBraveAsDefaultPrivateSearchProvider(profile);
+  auto& prefs = *profile.GetPrefs();
+  auto* prepopulate_data_resolver =
+      TemplateURLPrepopulateData::ResolverFactory::GetForProfile(&profile);
+  const auto template_url_data =
+      prepopulate_data_resolver->GetPrepopulatedEngine(
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+  DCHECK(template_url_data);
+  prefs.SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
+                  template_url_data->sync_guid);
+  prefs.SetDict(prefs::kSyncedDefaultPrivateSearchProviderData,
+                TemplateURLDataToDictionary(*template_url_data));
 }
 
 void UpdateDefaultPrivateSearchProviderData(Profile& profile) {
