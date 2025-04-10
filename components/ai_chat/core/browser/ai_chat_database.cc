@@ -69,6 +69,15 @@ bool MigrateFrom2To3(sql::Database* db) {
          trimmed_tokens_statement.Run();
 }
 
+bool MigrateFrom3to4(sql::Database* db) {
+  static constexpr char kAddTypeColumnQuery[] =
+      "ALTER TABLE conversation_entry_uploaded_files ADD COLUMN type INTEGER "
+      "DEFAULT 0";
+  sql::Statement statement(db->GetUniqueStatement(kAddTypeColumnQuery));
+
+  return statement.is_valid() && statement.Run();
+}
+
 void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
                               store::WebSourcesEventProto* proto_event) {
   proto_event->clear_sources();
@@ -125,7 +134,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 constexpr int kCompatibleDatabaseVersionNumber = 1;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 3;
+constexpr int kCurrentDatabaseVersion = 4;
 
 AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
@@ -203,6 +212,15 @@ sql::InitStatus AIChatDatabase::InitInternal() {
                             meta_table.SetVersionNumber(3);
       }
       current_version = 3;
+    }
+    if (migration_success && current_version == 3) {
+      migration_success = MigrateFrom3to4(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(4);
+      }
+      current_version = 4;
     }
     // Migration unsuccessful, raze the database and re-init
     if (!migration_success) {
@@ -447,9 +465,9 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
       }
     }
 
-    // Uploaded images
+    // Uploaded files
     sql::Statement uploaded_file_statement(
-        GetDB().GetUniqueStatement("SELECT filename, filesize, data"
+        GetDB().GetUniqueStatement("SELECT filename, filesize, data, type"
                                    " FROM conversation_entry_uploaded_files"
                                    " WHERE conversation_entry_uuid=?"
                                    " ORDER BY file_order ASC"));
@@ -458,16 +476,18 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
     while (uploaded_file_statement.Step()) {
       auto filename = DecryptColumnToString(uploaded_file_statement, 0);
       int64_t filesize = uploaded_file_statement.ColumnInt64(1);
-      auto decrypted_image_str =
+      auto decrypted_bytes_str =
           DecryptColumnToString(uploaded_file_statement, 2);
-      base::span<const uint8_t> image_bytes =
-          base::as_byte_span(decrypted_image_str);
-      std::vector<uint8_t> image_data(image_bytes.begin(), image_bytes.end());
-      if (!entry->uploaded_images) {
-        entry->uploaded_images = std::vector<mojom::UploadedImagePtr>{};
+      base::span<const uint8_t> raw_bytes =
+          base::as_byte_span(decrypted_bytes_str);
+      std::vector<uint8_t> data(raw_bytes.begin(), raw_bytes.end());
+      auto type = static_cast<mojom::UploadedFileType>(
+          uploaded_file_statement.ColumnInt(3));
+      if (!entry->uploaded_files) {
+        entry->uploaded_files = std::vector<mojom::UploadedFilePtr>{};
       }
-      entry->uploaded_images->emplace_back(mojom::UploadedImage::New(
-          std::move(filename), filesize, std::move(image_data)));
+      entry->uploaded_files->emplace_back(mojom::UploadedFile::New(
+          std::move(filename), filesize, std::move(data), type));
     }
 
     // root entry or edited entry
@@ -834,29 +854,30 @@ bool AIChatDatabase::AddConversationEntry(
     }
   }
 
-  if (entry->uploaded_images.has_value()) {
-    for (size_t i = 0; i < entry->uploaded_images->size(); ++i) {
-      const mojom::UploadedImagePtr& uploaded_image =
-          entry->uploaded_images->at(i);
+  if (entry->uploaded_files.has_value()) {
+    for (size_t i = 0; i < entry->uploaded_files->size(); ++i) {
+      const mojom::UploadedFilePtr& uploaded_file =
+          entry->uploaded_files->at(i);
       sql::Statement uploaded_file_statement(GetDB().GetCachedStatement(
           SQL_FROM_HERE,
           "INSERT INTO conversation_entry_uploaded_files"
-          "(file_order, filename, filesize, data,"
+          "(file_order, filename, filesize, data, type,"
           " conversation_entry_uuid)"
-          " VALUES(?, ?, ?, ?, ?)"));
+          " VALUES(?, ?, ?, ?, ?, ?)"));
       CHECK(uploaded_file_statement.is_valid());
       uploaded_file_statement.BindInt(0, static_cast<int>(i));
       if (!BindAndEncryptString(uploaded_file_statement, 1,
-                                uploaded_image->filename)) {
+                                uploaded_file->filename)) {
         return false;
       }
-      uploaded_file_statement.BindInt64(2, uploaded_image->filesize);
+      uploaded_file_statement.BindInt64(2, uploaded_file->filesize);
       if (!BindAndEncryptString(
               uploaded_file_statement, 3,
-              base::as_string_view(base::span(uploaded_image->image_data)))) {
+              base::as_string_view(base::span(uploaded_file->data)))) {
         return false;
       }
-      uploaded_file_statement.BindString(4, entry->uuid.value());
+      uploaded_file_statement.BindInt(4, static_cast<int>(uploaded_file->type));
+      uploaded_file_statement.BindString(5, entry->uuid.value());
       uploaded_file_statement.Run();
     }
   }
@@ -1376,6 +1397,8 @@ bool AIChatDatabase::CreateSchema() {
       "filesize INTEGER NOT NULL,"
       // encrypted file byte data
       "data BLOB NOT NULL,"
+      // mojom::UploadedFileType
+      "type INTEGER NOT NULL,"
       "PRIMARY KEY(conversation_entry_uuid, file_order)"
       ")";
   CHECK(GetDB().IsSQLValid(kCreateUploadedFilesTableQuery));

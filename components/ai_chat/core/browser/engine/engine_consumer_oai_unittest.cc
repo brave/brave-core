@@ -30,6 +30,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -449,7 +450,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
 TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
   EngineConsumer::ConversationHistory history;
   auto* client = GetClient();
-  auto uploaded_images = CreateSampleUploadedImages(3);
+  auto uploaded_images =
+      CreateSampleUploadedFiles(3, mojom::UploadedFileType::kImage);
   constexpr char kTestPrompt[] = "Tell the user what is in the image?";
   constexpr char kAssistantResponse[] = "It's a lion!";
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
@@ -474,8 +476,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
                 }
             )";
             const std::string json_str = base::ReplaceStringPlaceholders(
-                kJsonTemplate,
-                {base::Base64Encode(uploaded_images[0]->image_data)}, nullptr);
+                kJsonTemplate, {base::Base64Encode(uploaded_images[0]->data)},
+                nullptr);
             auto expected_dict = ParseJsonDict(json_str);
 
             EXPECT_EQ(messages[1].GetDict(), expected_dict);

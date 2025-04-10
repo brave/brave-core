@@ -261,7 +261,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetIsRequestInProgress(GetIsRequestInProgressCallback callback) override;
   void SubmitHumanConversationEntry(
       const std::string& input,
-      std::optional<std::vector<mojom::UploadedImagePtr>> uploaded_images)
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files)
       override;
   void SubmitHumanConversationEntry(mojom::ConversationTurnPtr turn);
   void SubmitHumanConversationEntryWithAction(

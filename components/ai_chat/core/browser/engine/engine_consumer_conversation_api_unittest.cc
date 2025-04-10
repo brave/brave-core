@@ -29,6 +29,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -473,7 +474,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
-  auto uploaded_images = CreateSampleUploadedImages(3);
+  auto uploaded_images =
+      CreateSampleUploadedFiles(3, mojom::UploadedFileType::kImage);
   constexpr char kTestPrompt[] = "Tell the user what is in the image?";
   constexpr char kAssistantResponse[] = "It's a lion!";
   auto* mock_api_client = GetMockConversationAPIClient();
@@ -486,10 +488,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
         // Only support one image for now.
         ASSERT_EQ(conversation.size(), 2u);
         EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
-        EXPECT_EQ(
-            conversation[0].content[0],
-            base::StrCat({"data:image/png;base64,",
-                          base::Base64Encode(uploaded_images[0]->image_data)}));
+        EXPECT_EQ(conversation[0].content[0],
+                  base::StrCat({"data:image/png;base64,",
+                                base::Base64Encode(uploaded_images[0]->data)}));
         EXPECT_EQ(conversation[0].type, ConversationAPIClient::UploadImage);
         EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
         EXPECT_EQ(conversation[1].content[0], kTestPrompt);

@@ -658,12 +658,17 @@ void ConversationHandler::GetIsRequestInProgress(
 
 void ConversationHandler::SubmitHumanConversationEntry(
     const std::string& input,
-    std::optional<std::vector<mojom::UploadedImagePtr>> uploaded_images) {
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files) {
   DCHECK(!is_request_in_progress_)
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
 
-  if (uploaded_images && !uploaded_images->empty()) {
+  if (uploaded_files && !uploaded_files->empty() &&
+      std::ranges::any_of(
+          uploaded_files.value(), [](const mojom::UploadedFilePtr& file) {
+            return file->type == mojom::UploadedFileType::kImage ||
+                   file->type == mojom::UploadedFileType::kScreenshot;
+          })) {
     auto* current_model =
         model_service_->GetModel(metadata_->model_key.value_or("").empty()
                                      ? model_service_->GetDefaultModelKey()
@@ -678,7 +683,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
       std::nullopt /* prompt */, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::move(uploaded_images), false);
+      std::move(uploaded_files), false);
   SubmitHumanConversationEntry(std::move(turn));
 }
 

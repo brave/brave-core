@@ -26,6 +26,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -92,7 +93,7 @@ base::Value::List BuildMessages(
   }
 
   for (const mojom::ConversationTurnPtr& turn : conversation_history) {
-    if (turn->uploaded_images) {
+    if (turn->uploaded_files) {
       base::Value::Dict message;
       message.Set("role", "user");
       base::Value::List content;
@@ -103,7 +104,11 @@ base::Value::List BuildMessages(
       size_t counter = 0;
       // Only send the first uploaded_image becasue llama-vision seems to take
       // the last one if there are multiple uploaded_images
-      for (const auto& uploaded_image : turn->uploaded_images.value()) {
+      for (const auto& uploaded_file : turn->uploaded_files.value()) {
+        if (uploaded_file->type != mojom::UploadedFileType::kImage &&
+            uploaded_file->type != mojom::UploadedFileType::kScreenshot) {
+          continue;
+        }
         if (counter++ > 0) {
           break;
         }
@@ -111,7 +116,7 @@ base::Value::List BuildMessages(
         image.Set("type", "image_url");
         base::Value::Dict image_url_dict;
         image_url_dict.Set(
-            "url", EngineConsumer::GetImageDataURL(uploaded_image->image_data));
+            "url", EngineConsumer::GetImageDataURL(uploaded_file->data));
         image.Set("image_url", std::move(image_url_dict));
         content.Append(std::move(image));
       }

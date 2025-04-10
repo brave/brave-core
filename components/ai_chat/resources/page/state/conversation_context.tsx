@@ -16,7 +16,9 @@ import getAPI from '../api'
 import {
   IGNORE_EXTERNAL_LINK_WARNING_KEY, MAX_IMAGES //
 } from '../../common/constants'
-import { updateConversationHistory } from '../../common/conversation_history_utils'
+import {
+  updateConversationHistory, getImageFiles
+} from '../../common/conversation_history_utils'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -27,7 +29,7 @@ export interface CharCountContext {
   inputTextCharCountDisplay: string
 }
 
-export type UploadedImageData = Mojom.UploadedImage
+export type UploadedImageData = Mojom.UploadedFile
 
 export type ConversationContext = SendFeedbackState & CharCountContext & {
   historyInitialized: boolean
@@ -75,7 +77,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   removeImage: (index: number) => void
   setGeneratedUrlToBeOpened: (url?: Url) => void
   setIgnoreExternalLinkWarning: () => void
-  pendingMessageImages: Mojom.UploadedImage[] | null
+  pendingMessageImages: Mojom.UploadedFile[] | null
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -530,9 +532,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.uiHandler?.handleVoiceRecognition(context.conversationUuid)
   }
 
-  const processUploadedImage = (images: Mojom.UploadedImage[]) => {
+  const processUploadedImage = (images: Mojom.UploadedFile[]) => {
         const totalUploadedImages = context.conversationHistory.reduce(
-          (total, turn) => total + (turn.uploadedImages?.length || 0),
+          (total, turn) => total +
+            (getImageFiles(turn.uploadedFiles)?.length || 0),
           0
         )
         const currentPendingImages = context.pendingMessageImages?.length || 0
