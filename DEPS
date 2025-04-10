@@ -26,7 +26,6 @@ deps = {
     "url": "https://github.com/fanquake/libdmg-hfsplus.git@1cc791e4173da9cb0b0cc16c5a1aaa25d5eb5efa",
     "condition": 'checkout_mac and host_os != "mac" and checkout_dmg_tool',
   },
-  "third_party/rapidjson/src": "https://github.com/Tencent/rapidjson.git@06d58b9e848c650114556a23294d0b6440078c61",
   "third_party/reclient_configs/src": "https://github.com/EngFlow/reclient-configs.git@21c8fe69ff771956c179847b8c1d9fd216181967",
   'third_party/android_deps/libs/com_google_android_play_core': {
       'packages': [

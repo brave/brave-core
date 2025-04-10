@@ -672,15 +672,11 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
     "//brave/components/version_info",
-    "//brave/third_party/rapidjson",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
     "//components/variations",
     "//net",
     "//third_party/re2",
   ]
 
-  data = [
-    "//brave/components/brave_ads/core/test/data/",
-    "//brave/components/brave_ads/resources/",
-  ]
+  data = [ "//brave/components/brave_ads/core/test/data/" ]
 }  # source_set("brave_ads_unit_tests")

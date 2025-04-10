@@ -86,10 +86,6 @@ class AdsClient {
                                      int version,
                                      LoadFileCallback callback) = 0;
 
-  // Load a data resource for the specified `name`. Returns the resource if
-  // successful otherwise an empty string.
-  virtual std::string LoadDataResource(const std::string& name) = 0;
-
   // Show a notification indicating that a scheduled captcha with the given
   // `captcha_id` must be solved for the given `payment_id` before the user can
   // continue to be served ads.

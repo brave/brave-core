@@ -30,17 +30,6 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
   // Campaigns
   for (const auto& campaign : catalog.campaigns) {
-    base::Time campaign_start_at;
-    if (!base::Time::FromUTCString(campaign.start_at.c_str(),
-                                   &campaign_start_at)) {
-      BLOG(0, "Campaign id " << campaign.id << " has an invalid start at time");
-    }
-
-    base::Time campaign_end_at;
-    if (!base::Time::FromUTCString(campaign.end_at.c_str(), &campaign_end_at)) {
-      BLOG(0, "Campaign id " << campaign.id << " has an invalid end at time");
-    }
-
     // Geo Targets
     base::flat_set<std::string> geo_targets;
     for (const auto& geo_target : campaign.geo_targets) {
@@ -74,8 +63,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
-        creative_ad.start_at = campaign_start_at;
-        creative_ad.end_at = campaign_end_at;
+        creative_ad.start_at = campaign.start_at;
+        creative_ad.end_at = campaign.end_at;
         creative_ad.daily_cap = campaign.daily_cap;
         creative_ad.priority = campaign.priority;
         creative_ad.pass_through_rate = campaign.pass_through_rate;
@@ -109,8 +98,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
-        creative_ad.start_at = campaign_start_at;
-        creative_ad.end_at = campaign_end_at;
+        creative_ad.start_at = campaign.start_at;
+        creative_ad.end_at = campaign.end_at;
         creative_ad.daily_cap = campaign.daily_cap;
         creative_ad.priority = campaign.priority;
         creative_ad.pass_through_rate = campaign.pass_through_rate;
@@ -147,8 +136,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
-        creative_ad.start_at = campaign_start_at;
-        creative_ad.end_at = campaign_end_at;
+        creative_ad.start_at = campaign.start_at;
+        creative_ad.end_at = campaign.end_at;
         creative_ad.daily_cap = campaign.daily_cap;
         creative_ad.priority = campaign.priority;
         creative_ad.pass_through_rate = campaign.pass_through_rate;

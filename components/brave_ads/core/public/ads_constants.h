@@ -20,9 +20,6 @@ inline constexpr char kClientJsonFilename[] = "client.json";
 // from using JSON state to a more efficient data approach.
 inline constexpr char kConfirmationsJsonFilename[] = "confirmations.json";
 
-inline constexpr char kCatalogJsonSchemaDataResourceName[] =
-    "catalog-schema.json";
-
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CONSTANTS_H_

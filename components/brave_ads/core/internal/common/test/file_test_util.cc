@@ -35,16 +35,4 @@ std::optional<std::string> MaybeReadFileToStringAndReplaceTags(
   return contents;
 }
 
-std::optional<std::string> MaybeReadDataResourceToString(
-    const std::string& name) {
-  const base::FilePath path = DataResourcesPath().AppendASCII(name);
-
-  std::string contents;
-  if (!base::ReadFileToString(path, &contents)) {
-    return std::nullopt;
-  }
-
-  return contents;
-}
-
 }  // namespace brave_ads::test

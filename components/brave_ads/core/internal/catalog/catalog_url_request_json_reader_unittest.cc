@@ -184,8 +184,8 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   catalog_campaign.id = "27a624a1-9c80-494a-bf1b-af327b563f85";
   catalog_campaign.priority = 1;
   catalog_campaign.pass_through_rate = 1.0;
-  catalog_campaign.start_at = test::DistantPastAsIso8601();
-  catalog_campaign.end_at = test::DistantFutureAsIso8601();
+  catalog_campaign.start_at = test::DistantPast();
+  catalog_campaign.end_at = test::DistantFuture();
   catalog_campaign.daily_cap = 10;
   catalog_campaign.advertiser_id = "a437c7f3-9a48-4fe8-b37b-99321bea93fe";
   catalog_campaign.creative_sets = catalog_creative_sets;
@@ -334,8 +334,8 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   catalog_campaign.id = "856fc4bc-a21b-4582-bab7-a20d412359aa";
   catalog_campaign.priority = 2;
   catalog_campaign.pass_through_rate = 0.5;
-  catalog_campaign.start_at = test::DistantPastAsIso8601();
-  catalog_campaign.end_at = test::DistantFutureAsIso8601();
+  catalog_campaign.start_at = test::DistantPast();
+  catalog_campaign.end_at = test::DistantFuture();
   catalog_campaign.daily_cap = 25;
   catalog_campaign.advertiser_id = "7523854c-5f28-4153-9da8-d9da6804ed58";
   catalog_campaign.creative_sets = catalog_creative_sets;
@@ -349,17 +349,70 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
 
 class BraveAdsCatalogUrlRequestJsonReaderTest : public test::TestBase {};
 
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, DoNotReadCatalogWithMissingId) {
+  // Act & Assert
+  EXPECT_FALSE(json::reader::ReadCatalog(
+      R"JSON({
+        "version": 9,
+        "ping": 7200000,
+        "campaigns": []
+      })JSON"));
+}
+
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, DoNotReadCatalogWithEmptyId) {
+  // Act & Assert
+  EXPECT_FALSE(json::reader::ReadCatalog(
+      R"JSON({
+        "catalogId": "",
+        "version": 9,
+        "ping": 7200000,
+        "campaigns": []
+      })JSON"));
+}
+
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
+       DoNotReadCatalogWithMissingVersion) {
+  // Act & Assert
+  EXPECT_FALSE(json::reader::ReadCatalog(
+      R"JSON({
+        "catalogId": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20",
+        "ping": 7200000,
+        "campaigns": []
+      })JSON"));
+}
+
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
+       DoNotReadCatalogWithMismatchingVersion) {
+  // Act & Assert
+  EXPECT_FALSE(json::reader::ReadCatalog(
+      R"JSON({
+        "catalogId": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20",
+        "version": 0,
+        "ping": 7200000,
+        "campaigns": []
+      })JSON"));
+}
+
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
+       DoNotReadCatalogWithMissingCampaigns) {
+  // Act & Assert
+  EXPECT_FALSE(json::reader::ReadCatalog(
+      R"JSON({
+        "catalogId": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20",
+        "ping": 7200000
+      })JSON"));
+}
+
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithSingleCampaign) {
   // Arrange
-  const std::optional<std::string> contents =
+  std::optional<std::string> contents =
       test::MaybeReadFileToStringAndReplaceTags(
           test::kCatalogWithSingleCampaignJsonFilename);
   ASSERT_TRUE(contents);
 
   // Act
-  const std::optional<CatalogInfo> catalog =
-      json::reader::ReadCatalog(*contents);
+  std::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*contents);
   ASSERT_TRUE(catalog);
 
   // Assert
@@ -372,14 +425,13 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithMultipleCampaigns) {
   // Arrange
-  const std::optional<std::string> contents =
+  std::optional<std::string> contents =
       test::MaybeReadFileToStringAndReplaceTags(
           test::kCatalogWithMultipleCampaignsJsonFilename);
   ASSERT_TRUE(contents);
 
   // Act
-  const std::optional<CatalogInfo> catalog =
-      json::reader::ReadCatalog(*contents);
+  std::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*contents);
   ASSERT_TRUE(catalog);
 
   // Assert
@@ -390,16 +442,16 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
                                                 BuildCatalogCampaign2()}));
 }
 
-TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseCatalogWithNoCampaigns) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
+       ParseCatalogWithEmptyCampaigns) {
   // Arrange
-  const std::optional<std::string> contents =
+  std::optional<std::string> contents =
       test::MaybeReadFileToStringAndReplaceTags(
           test::kCatalogWithNoCampaignsJsonFilename);
   ASSERT_TRUE(contents);
 
   // Act
-  const std::optional<CatalogInfo> catalog =
-      json::reader::ReadCatalog(*contents);
+  std::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*contents);
   ASSERT_TRUE(catalog);
 
   // Assert
@@ -409,7 +461,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseCatalogWithNoCampaigns) {
                                    /*campaigns*/ ::testing::IsEmpty()));
 }
 
-TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, MalformedCatalog) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, DoNotReadMalformedCatalog) {
   // Act & Assert
   EXPECT_FALSE(json::reader::ReadCatalog(test::kMalformedJson));
 }

@@ -14,7 +14,6 @@
 #include "base/files/file_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_storage_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_value_test_util_internal.h"
@@ -132,14 +131,6 @@ void MockLoadResourceComponent(AdsClientMock& ads_client_mock,
             base::File file(path, base::File::Flags::FLAG_OPEN |
                                       base::File::Flags::FLAG_READ);
             std::move(callback).Run(std::move(file));
-          }));
-}
-
-void MockLoadDataResource(AdsClientMock& ads_client_mock) {
-  ON_CALL(ads_client_mock, LoadDataResource)
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& name) -> std::string {
-            return MaybeReadDataResourceToString(name).value_or("");
           }));
 }
 

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_geo_target_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_creative_set_info.h"
@@ -32,8 +33,8 @@ struct CatalogCampaignInfo final {
   std::string id;
   int priority = 0;
   double pass_through_rate = 0.0;
-  std::string start_at;
-  std::string end_at;
+  base::Time start_at;
+  base::Time end_at;
   int daily_cap = 0;
   std::string advertiser_id;
   CatalogCreativeSetList creative_sets;

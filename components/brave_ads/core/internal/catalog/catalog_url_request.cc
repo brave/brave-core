@@ -102,7 +102,7 @@ void CatalogUrlRequest::FetchCallback(
   }
 
   BLOG(1, "Parsing catalog");
-  const std::optional<CatalogInfo> catalog =
+  std::optional<CatalogInfo> catalog =
       json::reader::ReadCatalog(mojom_url_response.body);
   if (!catalog) {
     BLOG(0, "Failed to parse catalog");

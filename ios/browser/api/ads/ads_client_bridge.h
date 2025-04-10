@@ -37,7 +37,6 @@
               callback:(brave_ads::GetSiteHistoryCallback)callback;
 - (void)load:(const std::string&)name
     callback:(brave_ads::LoadCallback)callback;
-- (std::string)loadDataResource:(const std::string&)name;
 - (void)log:(const char*)file
             line:(int)line
     verboseLevel:(int)verbose_level
