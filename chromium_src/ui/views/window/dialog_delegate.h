@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_VIEWS_WINDOW_DIALOG_DELEGATE_H_
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_WINDOW_DIALOG_DELEGATE_H_
 
+#include "ui/views/widget/widget_delegate.h"
+
 #define ResetViewShownTimeStampForTesting                                 \
   set_should_ignore_snapping(bool should_ignore_snapping) {               \
     should_ignore_snapping_ = should_ignore_snapping;                     \
