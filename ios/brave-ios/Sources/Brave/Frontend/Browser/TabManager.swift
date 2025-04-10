@@ -1177,23 +1177,28 @@ class TabManager: NSObject {
     delegates.forEach { $0.get()?.tabManagerDidRemoveAllTabs(self, toast: nil) }
   }
 
-  @MainActor func removeAllForCurrentMode(isActiveTabIncluded: Bool = true) {
+  @MainActor func removeAllTabsForPrivateMode(isPrivate: Bool, isActiveTabIncluded: Bool = true) {
     isBulkDeleting = true
 
-    if isActiveTabIncluded {
-      removeTabs(tabsForCurrentMode)
-    } else {
-      let tabsToDelete = tabsForCurrentMode.filter {
-        guard let currentTab = selectedTab else { return false }
-        return currentTab.id != $0.id
-      }
-      removeTabs(tabsToDelete)
+    var tabsToDelete = tabs(isPrivate: isPrivate)
+    if !isActiveTabIncluded, let selectedTab,
+      let index = tabsToDelete.firstIndex(where: { $0.id == selectedTab.id })
+    {
+      tabsToDelete.remove(at: index)
     }
+    removeTabs(tabsToDelete)
 
     isBulkDeleting = false
     // No change needed here regarding to isActiveTabIncluded
     // Toast value is nil and TabsBarViewController is updating the from current tabs
     delegates.forEach { $0.get()?.tabManagerDidRemoveAllTabs(self, toast: nil) }
+  }
+
+  @MainActor func removeAllForCurrentMode(isActiveTabIncluded: Bool = true) {
+    removeAllTabsForPrivateMode(
+      isPrivate: privateBrowsingManager.isPrivateBrowsing,
+      isActiveTabIncluded: isActiveTabIncluded
+    )
   }
 
   func getIndex(_ tab: some TabState) -> Int? {
