@@ -37,6 +37,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -90,6 +91,7 @@ bool IsConversationUpdatedTimeWithinRange(
 
 AIChatService::AIChatService(
     ModelService* model_service,
+    TabTrackerService* tab_tracker_service,
     std::unique_ptr<AIChatCredentialManager> ai_chat_credential_manager,
     PrefService* profile_prefs,
     AIChatMetrics* ai_chat_metrics,
@@ -98,6 +100,7 @@ AIChatService::AIChatService(
     std::string_view channel_string,
     base::FilePath profile_path)
     : model_service_(model_service),
+      tab_tracker_service_(tab_tracker_service),
       profile_prefs_(profile_prefs),
       ai_chat_metrics_(ai_chat_metrics),
       os_crypt_async_(os_crypt_async),
@@ -1019,6 +1022,18 @@ void AIChatService::AssociateContent(
 
 void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
                                        GetSuggestedTopicsCallback callback) {
+  if (!cached_focus_topics_.empty()) {
+    std::move(callback).Run(cached_focus_topics_);
+    return;
+  }
+
+  // First time engaging with tab focus, set up tab data observer.
+  // tab_tracker_service_ can be nullptr in tests.
+  if (tab_tracker_service_ && !tab_data_observer_receiver_.is_bound()) {
+    tab_tracker_service_->AddObserver(
+        tab_data_observer_receiver_.BindNewPipeAndPassRemote());
+  }
+
   GetEngineForTabOrganization(base::BindOnce(
       &AIChatService::GetSuggestedTopicsWithEngine,
       weak_ptr_factory_.GetWeakPtr(), tabs, std::move(callback)));
@@ -1065,7 +1080,25 @@ void AIChatService::GetSuggestedTopicsWithEngine(
     const std::vector<Tab>& tabs,
     GetSuggestedTopicsCallback callback) {
   CHECK(tab_organization_engine_);
-  tab_organization_engine_->GetSuggestedTopics(tabs, std::move(callback));
+  auto internal_callback =
+      base::BindOnce(&AIChatService::OnSuggestedTopicsReceived,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  tab_organization_engine_->GetSuggestedTopics(tabs,
+                                               std::move(internal_callback));
+}
+
+void AIChatService::OnSuggestedTopicsReceived(
+    GetSuggestedTopicsCallback callback,
+    base::expected<std::vector<std::string>, mojom::APIError> topics) {
+  if (tab_data_observer_receiver_.is_bound() && topics.has_value()) {
+    cached_focus_topics_ = topics.value();
+  }
+
+  std::move(callback).Run(std::move(topics));
+}
+
+void AIChatService::TabDataChanged(std::vector<mojom::TabDataPtr> tab_data) {
+  cached_focus_topics_.clear();
 }
 
 void AIChatService::GetFocusTabsWithEngine(const std::vector<Tab>& tabs,

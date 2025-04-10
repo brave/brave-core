@@ -11,6 +11,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
+#include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/skus/skus_service_factory.h"
@@ -55,6 +56,7 @@ AIChatServiceFactory::AIChatServiceFactory()
               .Build()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
   DependsOn(ModelServiceFactory::GetInstance());
+  DependsOn(TabTrackerServiceFactory::GetInstance());
 }
 
 AIChatServiceFactory::~AIChatServiceFactory() = default;
@@ -73,6 +75,7 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
 
   return std::make_unique<AIChatService>(
       ModelServiceFactory::GetForBrowserContext(context),
+      TabTrackerServiceFactory::GetForBrowserContext(context),
       std::move(credential_manager), user_prefs::UserPrefs::Get(context),
       (g_brave_browser_process->process_misc_metrics())
           ? g_brave_browser_process->process_misc_metrics()->ai_chat_metrics()

@@ -34,7 +34,10 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -236,6 +239,7 @@ class AIChatServiceUnitTest : public testing::Test,
             &url_loader_factory_);
 
     model_service_ = std::make_unique<ModelService>(&prefs_);
+    tab_tracker_service_ = std::make_unique<TabTrackerService>();
 
     CreateService();
 
@@ -267,9 +271,9 @@ class AIChatServiceUnitTest : public testing::Test,
         });
 
     ai_chat_service_ = std::make_unique<AIChatService>(
-        model_service_.get(), std::move(credential_manager), &prefs_, nullptr,
-        os_crypt_.get(), shared_url_loader_factory_, "",
-        temp_directory_.GetPath());
+        model_service_.get(), tab_tracker_service_.get(),
+        std::move(credential_manager), &prefs_, nullptr, os_crypt_.get(),
+        shared_url_loader_factory_, "", temp_directory_.GetPath());
 
     client_ =
         std::make_unique<NiceMock<MockServiceClient>>(ai_chat_service_.get());
@@ -345,10 +349,26 @@ class AIChatServiceUnitTest : public testing::Test,
     testing::Mock::VerifyAndClearExpectations(cred_manager);
   }
 
+  void TestGetSuggestedTopics(
+      base::expected<std::vector<std::string>, mojom::APIError> expected_result,
+      const base::Location& location = FROM_HERE) {
+    SCOPED_TRACE(location.ToString());
+    base::RunLoop run_loop;
+    ai_chat_service_->GetSuggestedTopics(
+        {}, base::BindLambdaForTesting(
+                [&](base::expected<std::vector<std::string>, mojom::APIError>
+                        result) {
+                  EXPECT_EQ(result, expected_result);
+                  run_loop.Quit();
+                }));
+    run_loop.Run();
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<AIChatService> ai_chat_service_;
   std::unique_ptr<ModelService> model_service_;
+  std::unique_ptr<TabTrackerService> tab_tracker_service_;
   std::unique_ptr<NiceMock<MockServiceClient>> client_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
@@ -899,6 +919,28 @@ TEST_P(AIChatServiceUnitTest, GetEngineForTabOrganization) {
                                   mojom::PremiumStatus::Active);
   TestGetEngineForTabOrganization(kClaudeHaikuModelName,
                                   mojom::PremiumStatus::Inactive);
+}
+
+TEST_P(AIChatServiceUnitTest, GetSuggestedTopics_CacheTopics) {
+  ai_chat_service_->SetTabOrganizationEngineForTesting(
+      std::make_unique<testing::NiceMock<ai_chat::MockEngineConsumer>>());
+  auto* engine = static_cast<MockEngineConsumer*>(
+      ai_chat_service_->GetTabOrganizationEngineForTesting());
+
+  std::string model_name = kClaudeSonnetModelName;
+  ON_CALL(*engine, GetModelName())
+      .WillByDefault(testing::ReturnRef(model_name));
+
+  std::vector<std::string> topics1{"topic1"};
+  std::vector<std::string> topics2{"topic2"};
+  EXPECT_CALL(*engine, GetSuggestedTopics(_, _))
+      .WillOnce(base::test::RunOnceCallback<1>(topics1))
+      .WillOnce(base::test::RunOnceCallback<1>(topics2));
+
+  TestGetSuggestedTopics(topics1);
+  TestGetSuggestedTopics(topics1);
+  ai_chat_service_->TabDataChanged({});
+  TestGetSuggestedTopics(topics2);
 }
 
 }  // namespace ai_chat
