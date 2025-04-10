@@ -8,14 +8,7 @@
 #include <vector>
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
-#include "brave/components/search_engines/brave_prepopulated_engines_version.h"
 #include "components/search_engines/search_engines_pref_names.h"
-
-// ****************************************************************************
-// IMPORTANT! If you make changes to any of the search engine mappings below,
-// it's critical to also increment the value `kBraveCurrentDataVersion` in
-// `//brave/components/search_engines/brave_prepopulated_engines_version.h`.
-// ****************************************************************************
 
 #define GetDataVersion GetDataVersion_ChromiumImpl
 #define GetPrepopulatedFallbackSearch GetPrepopulatedFallbackSearch_Unused

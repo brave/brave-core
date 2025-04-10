@@ -7,10 +7,6 @@ group("search_engines") {
   deps = [ "//components/search_engines" ]
 }
 
-source_set("brave_prepopulated_engines_version") {
-  sources = [ "brave_prepopulated_engines_version.h" ]
-}
-
 source_set("unit_tests") {
   testonly = true
 

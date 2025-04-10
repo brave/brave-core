@@ -9,7 +9,6 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/span.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
-#include "brave/components/search_engines/brave_prepopulated_engines_version.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 
@@ -20,127 +19,160 @@
 
 namespace regional_capabilities {
 
-using namespace TemplateURLPrepopulateData;
-
 namespace {
 
 // ****************************************************************************
 // IMPORTANT! If you make changes to any of the search engine mappings below,
 // it's critical to also increment the value `kBraveCurrentDataVersion` in
-// `brave/components/search_engines/brave_prepopulated_engines_version.h`.
+// `brave/components/search_engines/brave_prepopulated_engines.h`.
 // ****************************************************************************
 
 // Default order in which engines will appear in the UI.
-constexpr BravePrepopulatedEngineID kBraveEnginesDefault[] = {
-    PREPOPULATED_ENGINE_ID_BRAVE,      PREPOPULATED_ENGINE_ID_GOOGLE,
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO, PREPOPULATED_ENGINE_ID_QWANT,
-    PREPOPULATED_ENGINE_ID_BING,       PREPOPULATED_ENGINE_ID_STARTPAGE,
+constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
+    kBraveEnginesDefault[] = {
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
 // Variations of the order / default options by country.
-constexpr BravePrepopulatedEngineID kBraveEnginesWithEcosia[] = {
-    PREPOPULATED_ENGINE_ID_BRAVE,      PREPOPULATED_ENGINE_ID_GOOGLE,
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO, PREPOPULATED_ENGINE_ID_QWANT,
-    PREPOPULATED_ENGINE_ID_BING,       PREPOPULATED_ENGINE_ID_STARTPAGE,
-    PREPOPULATED_ENGINE_ID_ECOSIA,
+constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
+    kBraveEnginesWithEcosia[] = {
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_ECOSIA,
 };
 
-constexpr BravePrepopulatedEngineID kBraveEnginesWithYandex[] = {
-    PREPOPULATED_ENGINE_ID_YANDEX,    PREPOPULATED_ENGINE_ID_BRAVE,
-    PREPOPULATED_ENGINE_ID_GOOGLE,    PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-    PREPOPULATED_ENGINE_ID_QWANT,     PREPOPULATED_ENGINE_ID_BING,
-    PREPOPULATED_ENGINE_ID_STARTPAGE,
+constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
+    kBraveEnginesWithYandex[] = {
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
-constexpr BravePrepopulatedEngineID kBraveEnginesDE[] = {
-    PREPOPULATED_ENGINE_ID_BRAVE,  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
-    PREPOPULATED_ENGINE_ID_QWANT,  PREPOPULATED_ENGINE_ID_GOOGLE,
-    PREPOPULATED_ENGINE_ID_BING,   PREPOPULATED_ENGINE_ID_STARTPAGE,
-    PREPOPULATED_ENGINE_ID_ECOSIA,
+constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
+    kBraveEnginesDE[] = {
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_ECOSIA,
 };
 
-constexpr BravePrepopulatedEngineID kBraveEnginesFR[] = {
-    PREPOPULATED_ENGINE_ID_BRAVE,  PREPOPULATED_ENGINE_ID_QWANT,
-    PREPOPULATED_ENGINE_ID_GOOGLE, PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-    PREPOPULATED_ENGINE_ID_BING,   PREPOPULATED_ENGINE_ID_STARTPAGE,
-    PREPOPULATED_ENGINE_ID_ECOSIA,
+constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
+    kBraveEnginesFR[] = {
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_ECOSIA,
 };
 
-constexpr BravePrepopulatedEngineID kBraveEnginesAUIE[] = {
-    PREPOPULATED_ENGINE_ID_BRAVE,  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
-    PREPOPULATED_ENGINE_ID_GOOGLE, PREPOPULATED_ENGINE_ID_QWANT,
-    PREPOPULATED_ENGINE_ID_BING,   PREPOPULATED_ENGINE_ID_STARTPAGE,
-    PREPOPULATED_ENGINE_ID_ECOSIA,
+constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
+    kBraveEnginesAUIE[] = {
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_ECOSIA,
 };
 
-constexpr BravePrepopulatedEngineID kBraveEnginesJP[] = {
-    PREPOPULATED_ENGINE_ID_YAHOO_JP,  PREPOPULATED_ENGINE_ID_BRAVE,
-    PREPOPULATED_ENGINE_ID_GOOGLE,    PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-    PREPOPULATED_ENGINE_ID_QWANT,     PREPOPULATED_ENGINE_ID_BING,
-    PREPOPULATED_ENGINE_ID_STARTPAGE,
+constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
+    kBraveEnginesJP[] = {
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO_JP,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
-constexpr BravePrepopulatedEngineID kBraveEnginesKR[] = {
-    PREPOPULATED_ENGINE_ID_BRAVE,
-    PREPOPULATED_ENGINE_ID_NAVER,
-    PREPOPULATED_ENGINE_ID_DAUM,
-    PREPOPULATED_ENGINE_ID_GOOGLE,
+constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
+    kBraveEnginesKR[] = {
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_NAVER,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DAUM,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE,
 };
 
-constexpr BravePrepopulatedEngineID kBraveEnginesNZ[] = {
-    PREPOPULATED_ENGINE_ID_BRAVE,  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
-    PREPOPULATED_ENGINE_ID_GOOGLE, PREPOPULATED_ENGINE_ID_QWANT,
-    PREPOPULATED_ENGINE_ID_BING,   PREPOPULATED_ENGINE_ID_STARTPAGE,
+constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
+    kBraveEnginesNZ[] = {
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING,
+        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
 // A map to keep track of a full list of default engines for countries
 // that don't use the default list.
-constexpr auto kDefaultEnginesByCountryIdMap =
-    base::MakeFixedFlatMap<country_codes::CountryId,
-                           base::span<const BravePrepopulatedEngineID>>(
-        {{country_codes::CountryId("AM"), kBraveEnginesWithYandex},
-         {country_codes::CountryId("AT"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("AU"), kBraveEnginesAUIE},
-         {country_codes::CountryId("AZ"), kBraveEnginesWithYandex},
-         {country_codes::CountryId("BE"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("BY"), kBraveEnginesWithYandex},
-         {country_codes::CountryId("CA"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("CH"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("DE"), kBraveEnginesDE},
-         {country_codes::CountryId("DK"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("ES"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("FI"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("FR"), kBraveEnginesFR},
-         {country_codes::CountryId("GB"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("GR"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("HU"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("IE"), kBraveEnginesAUIE},
-         {country_codes::CountryId("IT"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("JP"), kBraveEnginesJP},
-         {country_codes::CountryId("KG"), kBraveEnginesWithYandex},
-         {country_codes::CountryId("KR"), kBraveEnginesKR},
-         {country_codes::CountryId("KZ"), kBraveEnginesWithYandex},
-         {country_codes::CountryId("LU"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("MD"), kBraveEnginesWithYandex},
-         {country_codes::CountryId("NL"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("NO"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("NZ"), kBraveEnginesNZ},
-         {country_codes::CountryId("PT"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("RU"), kBraveEnginesWithYandex},
-         {country_codes::CountryId("SE"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("TJ"), kBraveEnginesWithYandex},
-         {country_codes::CountryId("TM"), kBraveEnginesWithYandex},
-         {country_codes::CountryId("US"), kBraveEnginesWithEcosia},
-         {country_codes::CountryId("UZ"), kBraveEnginesWithYandex}});
+constexpr auto kDefaultEnginesByCountryIdMap = base::MakeFixedFlatMap<
+    country_codes::CountryId,
+    base::span<const TemplateURLPrepopulateData::BravePrepopulatedEngineID>>(
+    {{country_codes::CountryId("AM"), kBraveEnginesWithYandex},
+     {country_codes::CountryId("AT"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("AU"), kBraveEnginesAUIE},
+     {country_codes::CountryId("AZ"), kBraveEnginesWithYandex},
+     {country_codes::CountryId("BE"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("BY"), kBraveEnginesWithYandex},
+     {country_codes::CountryId("CA"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("CH"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("DE"), kBraveEnginesDE},
+     {country_codes::CountryId("DK"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("ES"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("FI"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("FR"), kBraveEnginesFR},
+     {country_codes::CountryId("GB"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("GR"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("HU"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("IE"), kBraveEnginesAUIE},
+     {country_codes::CountryId("IT"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("JP"), kBraveEnginesJP},
+     {country_codes::CountryId("KG"), kBraveEnginesWithYandex},
+     {country_codes::CountryId("KR"), kBraveEnginesKR},
+     {country_codes::CountryId("KZ"), kBraveEnginesWithYandex},
+     {country_codes::CountryId("LU"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("MD"), kBraveEnginesWithYandex},
+     {country_codes::CountryId("NL"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("NO"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("NZ"), kBraveEnginesNZ},
+     {country_codes::CountryId("PT"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("RU"), kBraveEnginesWithYandex},
+     {country_codes::CountryId("SE"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("TJ"), kBraveEnginesWithYandex},
+     {country_codes::CountryId("TM"), kBraveEnginesWithYandex},
+     {country_codes::CountryId("US"), kBraveEnginesWithEcosia},
+     {country_codes::CountryId("UZ"), kBraveEnginesWithYandex}});
 
 // Builds a vector of PrepulatedEngine objects from the given array of
 // |engine_ids|.
 std::vector<const PrepopulatedEngine*> GetEnginesFromEngineIDs(
-    base::span<const BravePrepopulatedEngineID> engine_ids) {
+    base::span<const TemplateURLPrepopulateData::BravePrepopulatedEngineID>
+        engine_ids) {
   std::vector<const PrepopulatedEngine*> engines;
   const auto& brave_engines_map =
       TemplateURLPrepopulateData::GetBraveEnginesMap();
-  for (BravePrepopulatedEngineID engine_id : engine_ids) {
+  for (TemplateURLPrepopulateData::BravePrepopulatedEngineID engine_id :
+       engine_ids) {
     const PrepopulatedEngine* engine = brave_engines_map.at(engine_id);
     CHECK(engine);
     engines.push_back(engine);
@@ -153,8 +185,8 @@ std::vector<const PrepopulatedEngine*> GetEnginesFromEngineIDs(
 // TemplateURLData.
 std::vector<const PrepopulatedEngine*> GetBravePrepopulatedEnginesForCountryID(
     country_codes::CountryId country_id) {
-  base::span<const BravePrepopulatedEngineID> brave_engine_ids =
-      kBraveEnginesDefault;
+  base::span<const TemplateURLPrepopulateData::BravePrepopulatedEngineID>
+      brave_engine_ids = kBraveEnginesDefault;
 
   // Check for a per-country override of this list
   const auto it_country = kDefaultEnginesByCountryIdMap.find(country_id);
@@ -163,7 +195,8 @@ std::vector<const PrepopulatedEngine*> GetBravePrepopulatedEnginesForCountryID(
   }
   DCHECK_GT(brave_engine_ids.size(), 0ul);
 
-  // Build a vector PrepopulatedEngines from BravePrepopulatedEngineIDs.
+  // Build a vector PrepopulatedEngines from
+  // TemplateURLPrepopulateData::BravePrepopulatedEngineIDs.
   std::vector<const PrepopulatedEngine*> engines =
       GetEnginesFromEngineIDs(brave_engine_ids);
   DCHECK(engines.size() == brave_engine_ids.size());
@@ -174,7 +207,7 @@ std::vector<const PrepopulatedEngine*> GetBravePrepopulatedEnginesForCountryID(
 // A versioned map tracking the singular default search engine per-country.
 //
 // When a profile is created, the current value for `kBraveCurrentDataVersion`
-// in `//brave/components/search_engines/brave_prepopulated_engines_version.h`
+// in `//brave/components/search_engines/brave_prepopulated_engines.h`
 // is stored as a profile preference.
 //
 // See:
@@ -185,263 +218,459 @@ std::vector<const PrepopulatedEngine*> GetBravePrepopulatedEnginesForCountryID(
 // set the default search engine back to what it was when the profile was
 // originally created. This way, a person doesn't get a new unexpected default
 // when they reset the profile; it goes back to the original value.
-BravePrepopulatedEngineID GetDefaultSearchEngine(
+TemplateURLPrepopulateData::BravePrepopulatedEngineID GetDefaultSearchEngine(
     country_codes::CountryId country_id,
     int version) {
-  const BravePrepopulatedEngineID default_v6 = PREPOPULATED_ENGINE_ID_GOOGLE;
+  const TemplateURLPrepopulateData::BravePrepopulatedEngineID default_v6 =
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE;
   static constexpr auto kContentV6 = base::MakeFixedFlatMap<
-      country_codes::CountryId, BravePrepopulatedEngineID>({
+      country_codes::CountryId,
+      TemplateURLPrepopulateData::BravePrepopulatedEngineID>({
       {country_codes::CountryId("AU"),
-       PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
-      {country_codes::CountryId("DE"), PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE},
-      {country_codes::CountryId("FR"), PREPOPULATED_ENGINE_ID_QWANT},
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
+      {country_codes::CountryId("DE"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE},
+      {country_codes::CountryId("FR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT},
       {country_codes::CountryId("IE"),
-       PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
       {country_codes::CountryId("NZ"),
-       PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
   });
   static constexpr auto kContentV8 = base::MakeFixedFlatMap<
-      country_codes::CountryId, BravePrepopulatedEngineID>({
-      {country_codes::CountryId("AM"), PREPOPULATED_ENGINE_ID_YANDEX},
+      country_codes::CountryId,
+      TemplateURLPrepopulateData::BravePrepopulatedEngineID>({
+      {country_codes::CountryId("AM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
       {country_codes::CountryId("AU"),
-       PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
-      {country_codes::CountryId("AZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-      {country_codes::CountryId("BY"), PREPOPULATED_ENGINE_ID_YANDEX},
-      {country_codes::CountryId("DE"), PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE},
-      {country_codes::CountryId("FR"), PREPOPULATED_ENGINE_ID_QWANT},
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
+      {country_codes::CountryId("AZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("BY"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("DE"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE},
+      {country_codes::CountryId("FR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT},
       {country_codes::CountryId("IE"),
-       PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
-      {country_codes::CountryId("KG"), PREPOPULATED_ENGINE_ID_YANDEX},
-      {country_codes::CountryId("KZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-      {country_codes::CountryId("MD"), PREPOPULATED_ENGINE_ID_YANDEX},
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
+      {country_codes::CountryId("KG"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("KZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MD"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
       {country_codes::CountryId("NZ"),
-       PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
-      {country_codes::CountryId("RU"), PREPOPULATED_ENGINE_ID_YANDEX},
-      {country_codes::CountryId("TJ"), PREPOPULATED_ENGINE_ID_YANDEX},
-      {country_codes::CountryId("TM"), PREPOPULATED_ENGINE_ID_YANDEX},
-      {country_codes::CountryId("UZ"), PREPOPULATED_ENGINE_ID_YANDEX},
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
+      {country_codes::CountryId("RU"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TJ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("UZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
   });
-  static constexpr auto kContentV16 =
-      base::MakeFixedFlatMap<country_codes::CountryId,
-                             BravePrepopulatedEngineID>({
-          {country_codes::CountryId("AM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("AZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("BY"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("FR"), PREPOPULATED_ENGINE_ID_QWANT},
-          {country_codes::CountryId("KG"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("KZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MD"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("RU"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TJ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("UZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-      });
-  static constexpr auto kContentV17 =
-      base::MakeFixedFlatMap<country_codes::CountryId,
-                             BravePrepopulatedEngineID>({
-          {country_codes::CountryId("AM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("AZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("BY"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("CA"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("DE"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("FR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("GB"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("KG"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("KZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MD"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("RU"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TJ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("US"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("UZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-      });
+  static constexpr auto kContentV16 = base::MakeFixedFlatMap<
+      country_codes::CountryId,
+      TemplateURLPrepopulateData::BravePrepopulatedEngineID>({
+      {country_codes::CountryId("AM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("AZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("BY"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("FR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT},
+      {country_codes::CountryId("KG"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("KZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MD"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("RU"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TJ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("UZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+  });
+  static constexpr auto kContentV17 = base::MakeFixedFlatMap<
+      country_codes::CountryId,
+      TemplateURLPrepopulateData::BravePrepopulatedEngineID>({
+      {country_codes::CountryId("AM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("AZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("BY"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("CA"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("DE"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("FR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("GB"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("KG"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("KZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MD"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("RU"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TJ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("US"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("UZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+  });
 
-  static constexpr auto kContentV20 =
-      base::MakeFixedFlatMap<country_codes::CountryId,
-                             BravePrepopulatedEngineID>({
-          {country_codes::CountryId("AM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("AT"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("BY"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("CA"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("DE"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("ES"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("FR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("GB"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("KG"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("KZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MD"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MX"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("RU"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TJ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("US"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("UZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-      });
+  static constexpr auto kContentV20 = base::MakeFixedFlatMap<
+      country_codes::CountryId,
+      TemplateURLPrepopulateData::BravePrepopulatedEngineID>({
+      {country_codes::CountryId("AM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("AT"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("BY"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("CA"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("DE"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("ES"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("FR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("GB"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("KG"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("KZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MD"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MX"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("RU"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TJ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("US"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("UZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+  });
 
-  static constexpr auto kContentV21 =
-      base::MakeFixedFlatMap<country_codes::CountryId,
-                             BravePrepopulatedEngineID>({
-          {country_codes::CountryId("AM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("AR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AT"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("BR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("BY"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("CA"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("DE"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("ES"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("FR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("GB"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("KG"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("KZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MD"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MX"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("RU"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TJ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("US"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("UZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-      });
-  static constexpr auto kContentV22 =
-      base::MakeFixedFlatMap<country_codes::CountryId,
-                             BravePrepopulatedEngineID>({
-          {country_codes::CountryId("AM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("AR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AT"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("BR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("BY"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("CA"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("DE"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("ES"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("FR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("GB"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("IN"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("KG"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("KZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MD"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MX"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("RU"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TJ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("US"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("UZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-      });
-  static constexpr auto kContentV25 =
-      base::MakeFixedFlatMap<country_codes::CountryId,
-                             BravePrepopulatedEngineID>({
-          {country_codes::CountryId("AM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("AR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AT"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("BR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("BY"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("CA"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("DE"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("ES"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("FR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("GB"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("IN"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("KG"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("KR"), PREPOPULATED_ENGINE_ID_NAVER},
-          {country_codes::CountryId("KZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MD"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MX"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("RU"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TJ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("US"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("UZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-      });
+  static constexpr auto kContentV21 = base::MakeFixedFlatMap<
+      country_codes::CountryId,
+      TemplateURLPrepopulateData::BravePrepopulatedEngineID>({
+      {country_codes::CountryId("AM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("AR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AT"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("BR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("BY"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("CA"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("DE"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("ES"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("FR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("GB"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("KG"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("KZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MD"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MX"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("RU"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TJ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("US"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("UZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+  });
+  static constexpr auto kContentV22 = base::MakeFixedFlatMap<
+      country_codes::CountryId,
+      TemplateURLPrepopulateData::BravePrepopulatedEngineID>({
+      {country_codes::CountryId("AM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("AR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AT"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("BR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("BY"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("CA"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("DE"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("ES"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("FR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("GB"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("IN"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("KG"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("KZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MD"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MX"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("RU"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TJ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("US"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("UZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+  });
+  static constexpr auto kContentV25 = base::MakeFixedFlatMap<
+      country_codes::CountryId,
+      TemplateURLPrepopulateData::BravePrepopulatedEngineID>({
+      {country_codes::CountryId("AM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("AR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AT"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("BR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("BY"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("CA"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("DE"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("ES"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("FR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("GB"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("IN"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("KG"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("KR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_NAVER},
+      {country_codes::CountryId("KZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MD"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MX"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("RU"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TJ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("US"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("UZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+  });
   // Updated default for IT.
-  static constexpr auto kContentV26 =
-      base::MakeFixedFlatMap<country_codes::CountryId,
-                             BravePrepopulatedEngineID>({
-          {country_codes::CountryId("AM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("AR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AT"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("BR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("BY"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("CA"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("DE"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("ES"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("FR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("GB"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("IN"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("IT"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("KG"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("KR"), PREPOPULATED_ENGINE_ID_NAVER},
-          {country_codes::CountryId("KZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MD"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MX"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("RU"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TJ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("US"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("UZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-      });
+  static constexpr auto kContentV26 = base::MakeFixedFlatMap<
+      country_codes::CountryId,
+      TemplateURLPrepopulateData::BravePrepopulatedEngineID>({
+      {country_codes::CountryId("AM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("AR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AT"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("BR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("BY"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("CA"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("DE"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("ES"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("FR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("GB"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("IN"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("IT"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("KG"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("KR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_NAVER},
+      {country_codes::CountryId("KZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MD"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MX"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("RU"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TJ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("US"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("UZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+  });
   // Updated default for AU.
-  static constexpr auto kContentV30 =
-      base::MakeFixedFlatMap<country_codes::CountryId,
-                             BravePrepopulatedEngineID>({
-          {country_codes::CountryId("AM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("AR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AT"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AU"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("BR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("BY"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("CA"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("DE"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("ES"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("FR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("GB"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("IN"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("IT"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("KG"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("KR"), PREPOPULATED_ENGINE_ID_NAVER},
-          {country_codes::CountryId("KZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MD"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MX"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("RU"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TJ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("US"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("UZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-      });
+  static constexpr auto kContentV30 = base::MakeFixedFlatMap<
+      country_codes::CountryId,
+      TemplateURLPrepopulateData::BravePrepopulatedEngineID>({
+      {country_codes::CountryId("AM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("AR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AT"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AU"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("BR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("BY"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("CA"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("DE"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("ES"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("FR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("GB"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("IN"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("IT"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("KG"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("KR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_NAVER},
+      {country_codes::CountryId("KZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MD"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MX"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("RU"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TJ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("US"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("UZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+  });
 
   // Updated default for JP.
-  static constexpr auto kContentV31 =
-      base::MakeFixedFlatMap<country_codes::CountryId,
-                             BravePrepopulatedEngineID>({
-          {country_codes::CountryId("AM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("AR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AT"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AU"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("AZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("BR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("BY"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("CA"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("DE"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("ES"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("FR"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("GB"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("IN"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("IT"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("JP"), PREPOPULATED_ENGINE_ID_YAHOO_JP},
-          {country_codes::CountryId("KG"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("KR"), PREPOPULATED_ENGINE_ID_NAVER},
-          {country_codes::CountryId("KZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MD"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("MX"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("RU"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TJ"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("TM"), PREPOPULATED_ENGINE_ID_YANDEX},
-          {country_codes::CountryId("US"), PREPOPULATED_ENGINE_ID_BRAVE},
-          {country_codes::CountryId("UZ"), PREPOPULATED_ENGINE_ID_YANDEX},
-      });
+  static constexpr auto kContentV31 = base::MakeFixedFlatMap<
+      country_codes::CountryId,
+      TemplateURLPrepopulateData::BravePrepopulatedEngineID>({
+      {country_codes::CountryId("AM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("AR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AT"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AU"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("AZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("BR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("BY"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("CA"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("DE"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("ES"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("FR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("GB"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("IN"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("IT"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("JP"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO_JP},
+      {country_codes::CountryId("KG"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("KR"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_NAVER},
+      {country_codes::CountryId("KZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MD"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("MX"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("RU"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TJ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("TM"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+      {country_codes::CountryId("US"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE},
+      {country_codes::CountryId("UZ"),
+       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YANDEX},
+  });
 
   if (version > 30) {
     const auto it = kContentV31.find(country_id);
@@ -520,9 +749,10 @@ std::vector<const PrepopulatedEngine*> GetPrepopulatedEngines(
   return GetBravePrepopulatedEnginesForCountryID(country_id);
 }
 
-BravePrepopulatedEngineID GetDefaultEngine(CountryId country_id,
-                                           PrefService& prefs) {
-  int version = kBraveCurrentDataVersion;
+TemplateURLPrepopulateData::BravePrepopulatedEngineID GetDefaultEngine(
+    CountryId country_id,
+    PrefService& prefs) {
+  int version = TemplateURLPrepopulateData::kBraveCurrentDataVersion;
   if (prefs.HasPrefPath(::prefs::kBraveDefaultSearchVersion)) {
     version = prefs.GetInteger(::prefs::kBraveDefaultSearchVersion);
   }

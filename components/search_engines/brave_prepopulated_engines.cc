@@ -11,6 +11,13 @@
 
 namespace TemplateURLPrepopulateData {
 
+// ****************************************************************************
+// IMPORTANT! Make sure to bump the value of kBraveCurrentDataVersion in
+// brave_prepopulated_engines.h if you add, remove, or make changes
+// to the engines in here or to mappings in
+// chromium_src/components/regional_capabilities/regional_capabilities_utils.cc.
+// ****************************************************************************
+
 namespace {
 
 PrepopulatedEngine MakeBravePrepopulatedEngine(const char16_t* const name,
@@ -100,12 +107,6 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
 }
 
 }  // namespace
-
-// ****************************************************************************
-// IMPORTANT! Make sure to bump the value of kBraveCurrentDataVersion in
-// brave_prepopulated_engines_version.h if you add, remove, or make changes
-// to the engines in here or brave_prepopulated_engines.h.
-// ****************************************************************************
 
 const PrepopulatedEngine duckduckgo = MakeBravePrepopulatedEngine(
     u"DuckDuckGo",

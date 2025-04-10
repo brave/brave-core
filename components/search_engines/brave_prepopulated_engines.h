@@ -15,9 +15,22 @@ namespace TemplateURLPrepopulateData {
 
 // ****************************************************************************
 // IMPORTANT! Make sure to bump the value of kBraveCurrentDataVersion in
-// brave_prepopulated_engines_version.h if you add, remove, or make changes
-// to the engines in here or brave_prepopulated_engines.cc.
+// here if you add, remove, or make changes to the engines in here or
+// brave_prepopulated_engines.cc or to mappings in
+// chromium_src/components/regional_capabilities/regional_capabilities_utils.cc.
 // ****************************************************************************
+
+// The version is important to increment because Chromium will cache the list
+// of search engines that are shown. When the version is incremented, Chromium
+// will conditionally merge changes from the new version of the list.
+//
+// For more info, see:
+// ComputeMergeEnginesRequirements in components/search_engines/util.cc;
+
+inline constexpr int kBraveCurrentDataVersion = 32;
+
+// DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
+inline constexpr int kBraveFirstTrackedDataVersion = 6;
 
 // See comments on prepopulated engines ids in
 // components/search_engines/prepopulated_engines_schema.json above the
