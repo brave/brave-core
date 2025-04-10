@@ -65,13 +65,14 @@ template("brave_extra_paks") {
         "$root_gen_dir/brave/brave_generated_resources.pak",
         "$root_gen_dir/brave/brave_unscaled_resources.pak",
         "$root_gen_dir/brave/browser/resources/settings/brave_settings_resources.pak",
+        "$root_gen_dir/brave/components/psst/resources/brave_psst_resources.pak",
+        "$root_gen_dir/brave/components/psst/resources/brave_psst_dialog_generated.pak",
       ]
     }
 
     deps = [
       "//brave/components/brave_ads/resources",
       "//brave/components/brave_rewards/resources",
-      "//brave/components/psst/resources",
       "//brave/components/resources",
     ]
 
@@ -82,6 +83,7 @@ template("brave_extra_paks") {
         "//brave/browser/resources/brave_education:resources_grit",
         "//brave/browser/resources/settings:resources",
         "//brave/components/resources:strings",
+        "//brave/components/psst/resources",
       ]
     }
 

@@ -13,12 +13,15 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/psst/psst_consent_tab_helper_delegate_impl.h"
+#include "brave/browser/ui/webui/psst/brave_psst_dialog.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
@@ -44,10 +47,10 @@ namespace psst {
 
 namespace {
 
-bool IsPsstOperationContextValid(
-    const std::unique_ptr<PsstOperationContext>& context) {
-  return context && context->IsValid();
-}
+// bool IsPsstOperationContextValid(
+//     const std::unique_ptr<PsstOperationContext>& context) {
+//   return context && context->IsValid();
+// }
 
 std::string GetScriptWithParams(const std::string& script,
                                 std::optional<base::Value> params) {
@@ -450,9 +453,9 @@ void PsstTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
     return;
   }
 
-  auto url = web_contents()->GetLastCommittedURL();
-  content::GlobalRenderFrameHostId render_frame_host_id =
-      web_contents()->GetPrimaryMainFrame()->GetGlobalId();
+  // auto url = web_contents()->GetLastCommittedURL();
+  // content::GlobalRenderFrameHostId render_frame_host_id =
+  //     web_contents()->GetPrimaryMainFrame()->GetGlobalId();
 
   LOG(INFO)
       << "[PSST] PsstTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame "
@@ -460,16 +463,20 @@ void PsstTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
       << (psst_operation_context_ ? psst_operation_context_->GetUserId()
                                   : "n/a");
 
-  if (IsPsstOperationContextValid(psst_operation_context_)) {
-    PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
-        url, base::BindOnce(&PsstTabHelper::InsertPolicyScript,
-                            weak_factory_.GetWeakPtr(), render_frame_host_id));
-    return;
-  }
+  // if (IsPsstOperationContextValid(psst_operation_context_)) {
+  //   PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
+  //       url, base::BindOnce(&PsstTabHelper::InsertPolicyScript,
+  //                           weak_factory_.GetWeakPtr(), render_frame_host_id));
+  //   return;
+  // }
 
-  PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
-      url, base::BindOnce(&PsstTabHelper::InsertUserScript,
-                          weak_factory_.GetWeakPtr(), render_frame_host_id));
+  // PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
+  //     url, base::BindOnce(&PsstTabHelper::InsertUserScript,
+  //                         weak_factory_.GetWeakPtr(), render_frame_host_id));
+
+
+  // delegate_->ShowPsstConsentDialog(
+  //   web_contents(), false, base::Value::List(), base::NullCallback(), base::NullCallback(), base::NullCallback());
 }
 
 void PsstTabHelper::OnDisablePsst() {

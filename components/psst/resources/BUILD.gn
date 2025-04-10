@@ -6,6 +6,7 @@
 import("//brave/components/common/typescript.gni")
 import("//brave/resources/brave_grit.gni")
 import("//tools/grit/repack.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
 
 transpile_web_ui("dialog") {
   # what is the output bundle called and what is the entry point file
@@ -14,7 +15,10 @@ transpile_web_ui("dialog") {
         rebase_path("ui/brave_psst_dialog.tsx"),
       ] ]
 
-#  deps = [ "//brave/components/brave_rewards/core/mojom:mojom_js" ]
+  deps = [
+    "//brave/components/psst/browser/core:mojom_js",
+#    "//mojo/public/mojom/base",
+  ]
 
   # what is the directory / pack name
   resource_name = "brave_psst_dialog"
@@ -26,7 +30,7 @@ pack_web_resources("psst_dialog_generated_resources") {
   output_dir = "$root_gen_dir/brave/components/psst/resources"
 
   deps = [
-    ":dialog"
+    ":dialog",
   ]
 }
 
@@ -46,7 +50,8 @@ repack("resources") {
   ]
 
   sources = [
-    "$root_gen_dir/brave/components/psst/resources/brave_psst_dialog_generated.pak",
+#    "$root_gen_dir/mojo/public/js/mojo_bindings_resources.pak",
+    "$root_gen_dir/brave/components/psst/resources/brave_psst_static.pak",
   ]
 
   output = "$root_gen_dir/brave/components/psst/resources/brave_psst_resources.pak"

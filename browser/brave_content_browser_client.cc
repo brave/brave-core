@@ -43,6 +43,7 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
+#include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
@@ -90,6 +91,7 @@
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/psst/browser/core/psst_consent_dialog.mojom.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/skus/common/features.h"
@@ -146,6 +148,7 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_service_factory.h"
@@ -828,6 +831,12 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<
         commands::mojom::CommandsService, BraveSettingsUI>(map);
   }
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+LOG(INFO) << "[PSST] RegisterWebUIControllerInterfaceBinder mojom::PsstConsentHelper";
+content::RegisterWebUIControllerInterfaceBinder<
+psst_consent_dialog::mojom::PsstConsentHelper, psst::BravePsstDialogUI>(map);
 #endif
 
   auto* prefs =

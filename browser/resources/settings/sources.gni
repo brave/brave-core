@@ -160,7 +160,6 @@ if (enable_pin_shortcut) {
   brave_settings_non_web_component_files +=
       [ "pin_shortcut_page/pin_shortcut_page_browser_proxy.ts" ]
 }
-
 brave_settings_ts_definitions = [
   "//brave/components/definitions/chrome_brave_theme.d.ts",
   "//brave/components/definitions/chrome_brave_wallet.d.ts",
