@@ -10,7 +10,6 @@ import LeoSegmentedControl, {
 
 // Shared Styles
 import {
-  layoutPanelWidth,
   layoutSmallWidth //
 } from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
@@ -29,7 +28,7 @@ export const StyledWrapper = styled.div<{ maxWidth?: string }>`
 `
 
 export const SegmentedControl = styled(LeoSegmentedControl).attrs({
-  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'default'
+  size: 'default'
 })<SegmentedControlProps>``
 
 export const ControlItemWrapper = styled.div`
