@@ -12,16 +12,6 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kNotificationAdLastNormalizedDisplayCoordinateX[] =
-    "brave.brave_ads.ad_notification.last_normalized_display_coordinate_x";
-constexpr char kNotificationAdLastNormalizedDisplayCoordinateY[] =
-    "brave.brave_ads.ad_notification.last_normalized_display_coordinate_y";
-
-constexpr char kEpsilonGreedyBanditArms[] =
-    "brave.brave_ads.epsilon_greedy_bandit_arms.v2";
-constexpr char kEpsilonGreedyBanditEligibleSegments[] =
-    "brave.brave_ads.epsilon_greedy_bandit_eligible_segments.v2";
-
 constexpr char kHasMigratedConversionState[] =
     "brave.brave_ads.migrated.conversion_state";
 constexpr char kHasMigratedNotificationState[] =
@@ -35,16 +25,6 @@ constexpr char kShouldMigrateVerifiedRewardsUser[] =
 }  // namespace
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
-  // Added 11/2023.
-  registry->RegisterDoublePref(kNotificationAdLastNormalizedDisplayCoordinateX,
-                               0.0);
-  registry->RegisterDoublePref(kNotificationAdLastNormalizedDisplayCoordinateY,
-                               0.0);
-
-  // Added 04/2024.
-  registry->RegisterDictionaryPref(kEpsilonGreedyBanditArms);
-  registry->RegisterListPref(kEpsilonGreedyBanditEligibleSegments);
-
   // Added 08/2024.
   registry->RegisterBooleanPref(kHasMigratedConversionState, false);
   registry->RegisterBooleanPref(kHasMigratedNotificationState, false);
@@ -55,14 +35,6 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
-  // Added 11/2023.
-  prefs->ClearPref(kNotificationAdLastNormalizedDisplayCoordinateX);
-  prefs->ClearPref(kNotificationAdLastNormalizedDisplayCoordinateY);
-
-  // Added 04/2024.
-  prefs->ClearPref(kEpsilonGreedyBanditArms);
-  prefs->ClearPref(kEpsilonGreedyBanditEligibleSegments);
-
   // Added 08/2024.
   prefs->ClearPref(kHasMigratedConversionState);
   prefs->ClearPref(kHasMigratedNotificationState);
