@@ -24,11 +24,15 @@ function WebSource (props: { source: mojom.WebSource }) {
     context.uiHandler?.openURLFromResponse(source.url)
   }
 
+  const faviconSrc = source.faviconUrl.url.startsWith('chrome-untrusted://')
+    ? source.faviconUrl.url
+    : createSanitizedImageUrl(source.faviconUrl.url)
+
   const host = new URL(source.url.url).hostname
   return (
     <li>
       <a href={source.url.url} title={source.title} onClick={(e) => handleOpenSource(e, source)}>
-        <img src={createSanitizedImageUrl(source.faviconUrl.url)} />
+        <img src={faviconSrc} />
         {host}
       </a>
     </li>
