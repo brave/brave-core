@@ -54,6 +54,9 @@ TEST_F(TabSearchPageHandlerTest, GetSuggestedTopics) {
       ai_chat::AIChatServiceFactory::GetForBrowserContext(profile());
   ai_chat_service->SetTabOrganizationEngineForTesting(
       std::make_unique<testing::NiceMock<ai_chat::MockEngineConsumer>>());
+  // Disable caching suggested topics, caching using tab tracker service is
+  // covered by TabSearchPageHandlerBrowserTest.
+  ai_chat_service->SetTabTrackerServiceForTesting(nullptr);
 
   ai_chat_service->SetCredentialManagerForTesting(
       std::make_unique<testing::NiceMock<MockAIChatCredentialManager>>(

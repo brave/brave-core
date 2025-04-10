@@ -202,9 +202,9 @@ class ConversationHandlerUnitTest : public testing::Test {
     model_service_ = std::make_unique<ModelService>(&prefs_);
 
     ai_chat_service_ = std::make_unique<AIChatService>(
-        model_service_.get(), std::move(credential_manager), &prefs_, nullptr,
-        os_crypt_.get(), shared_url_loader_factory_, "",
-        temp_directory_.GetPath());
+        model_service_.get(), nullptr /* tab_tracker_service */,
+        std::move(credential_manager), &prefs_, nullptr, os_crypt_.get(),
+        shared_url_loader_factory_, "", temp_directory_.GetPath());
 
     conversation_ = mojom::Conversation::New(
         "uuid", "title", base::Time::Now(), false, std::nullopt, 0, 0, nullptr);

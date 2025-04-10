@@ -62,9 +62,9 @@ std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
       std::move(skus_service_getter), GetApplicationContext()->GetLocalState());
   ModelService* model_service = ModelServiceFactory::GetForProfile(profile);
   return std::make_unique<AIChatService>(
-      model_service, std::move(credential_manager),
-      user_prefs::UserPrefs::Get(context), ai_chat_metrics_.get(),
-      GetApplicationContext()->GetOSCryptAsync(),
+      model_service, nullptr /* tab_tracker_service */,
+      std::move(credential_manager), user_prefs::UserPrefs::Get(context),
+      ai_chat_metrics_.get(), GetApplicationContext()->GetOSCryptAsync(),
       context->GetSharedURLLoaderFactory(),
       version_info::GetChannelString(::GetChannel()), profile->GetStatePath());
 }
