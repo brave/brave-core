@@ -101,15 +101,6 @@ class CustomEngineViewController: UIViewController {
     $0.hidesWhenStopped = true
   }
 
-  private var titleLabel = UILabel().then {
-    $0.font = .preferredFont(for: .title3, weight: .semibold)
-    $0.textColor = UIColor(braveSystemName: .textPrimary)
-    $0.textAlignment = .center
-    $0.numberOfLines = 0
-    $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
-    $0.text = Strings.searchSettingAddCustomEngineCellTitle
-  }
   private var tableView = UITableView(frame: .zero, style: .insetGrouped)
 
   private var searchEngineTimer: Timer?
@@ -139,12 +130,7 @@ class CustomEngineViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    navigationController?.do {
-      let appearance = UINavigationBarAppearance()
-      appearance.configureWithTransparentBackground()
-      appearance.backgroundColor = .clear
-      $0.navigationBar.scrollEdgeAppearance = appearance
-    }
+    title = Strings.searchSettingAddCustomEngineCellTitle
 
     navigationItem.do {
       $0.rightBarButtonItem = UIBarButtonItem(
@@ -177,22 +163,14 @@ class CustomEngineViewController: UIViewController {
   // MARK: Internal
 
   private func setTheme() {
-    view.backgroundColor =
-      traitCollection.userInterfaceStyle == .dark
-      ? .secondarySystemGroupedBackground : .systemGroupedBackground
+    view.backgroundColor = UIColor(braveSystemName: .materialThick).withAlphaComponent(0.91)
   }
 
   private func doLayout() {
-    view.addSubview(titleLabel)
     view.addSubview(tableView)
 
-    titleLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().inset(48.0)
-      $0.leading.trailing.equalToSuperview()
-    }
     tableView.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-      $0.leading.bottom.trailing.equalToSuperview()
+      $0.edges.equalToSuperview()
     }
   }
 
@@ -285,6 +263,7 @@ extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource
       let cell =
         tableView.dequeueReusableCell(for: indexPath) as CustomEngineTitleInputTableViewCell
       cell.do {
+        $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
         $0.delegate = self
         $0.selectionStyle = .none
       }
@@ -298,6 +277,7 @@ extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource
     case Section.url.rawValue:
       let cell = tableView.dequeueReusableCell(for: indexPath) as CustomEngineURLInputTableViewCell
       cell.do {
+        $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
         $0.delegate = self
         $0.selectionStyle = .none
       }
@@ -327,6 +307,15 @@ extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource
       return Strings.CustomSearchEngine.customEngineAddDesription
     }
     return nil
+  }
+
+  func tableView(
+    _ tableView: UITableView,
+    willDisplayFooterView view: UIView,
+    forSection section: Int
+  ) {
+    guard let footerView = view as? UITableViewHeaderFooterView else { return }
+    footerView.textLabel?.textColor = UIColor(braveSystemName: .textSecondary)
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

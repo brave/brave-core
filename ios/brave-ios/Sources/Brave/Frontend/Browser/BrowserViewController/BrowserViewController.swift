@@ -1390,6 +1390,7 @@ public class BrowserViewController: UIViewController {
         var shouldEvaluateKeyboardConstraints = false
         var activeKeyboardHeight: CGFloat = 0
         var searchEngineSettingsDismissed = false
+        var clearRecentSearchAlertDismissed = false
 
         if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view) {
           activeKeyboardHeight = keyboardHeight
@@ -1398,14 +1399,25 @@ public class BrowserViewController: UIViewController {
         if let presentedNavigationController = presentedViewController
           as? ModalSettingsNavigationController,
           let presentedRootController = presentedNavigationController.viewControllers.first,
-          presentedRootController is SearchSettingsViewController
+          presentedRootController is SearchQuickEnginesViewController
         {
           searchEngineSettingsDismissed = true
         }
 
+        if let alertController = presentedViewController
+          as? UIAlertController,
+          alertController.preferredStyle == .actionSheet,
+          let action = alertController.actions.first,
+          action.title == Strings.recentSearchClearAlertButton
+        {
+          clearRecentSearchAlertDismissed = true
+        }
+
         shouldEvaluateKeyboardConstraints =
           (activeKeyboardHeight > 0)
-          && (presentedViewController == nil || searchEngineSettingsDismissed)
+          && (presentedViewController == nil
+            || searchEngineSettingsDismissed
+            || clearRecentSearchAlertDismissed)
 
         if shouldEvaluateKeyboardConstraints {
           var offset = -activeKeyboardHeight
@@ -2587,7 +2599,9 @@ extension BrowserViewController: SearchViewControllerDelegate {
         action: #selector(dismissQuickSearchEngines)
       )
     quickSearchEnginesViewController.delegate = searchController
-    let navVC = UINavigationController(rootViewController: quickSearchEnginesViewController)
+    let navVC = ModalSettingsNavigationController(
+      rootViewController: quickSearchEnginesViewController
+    )
     self.present(navVC, animated: true, completion: nil)
   }
 
@@ -2618,7 +2632,10 @@ extension BrowserViewController: SearchViewControllerDelegate {
   }
 
   @objc private func dismissQuickSearchEngines() {
-    dismiss(animated: true)
+    dismiss(animated: true) { [weak self] in
+      self?.updateViewConstraints()
+      self?.searchController?.layoutSearchEngineScrollView()
+    }
   }
 }
 

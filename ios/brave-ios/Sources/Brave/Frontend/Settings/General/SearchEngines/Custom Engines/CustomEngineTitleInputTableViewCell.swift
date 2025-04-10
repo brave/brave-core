@@ -44,6 +44,7 @@ class CustomEngineTitleInputTableViewCell: UITableViewCell, TableViewReusable {
       frame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
     )
     textfield.placeholder = Strings.CustomSearchEngine.engineTitlePlaceholder
+    textfield.textColor = UIColor(braveSystemName: .textTertiary)
 
     contentView.addSubview(textfield)
 

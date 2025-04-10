@@ -233,7 +233,6 @@ class SearchSettingsViewController: UITableViewController {
       rootViewController: customEngineViewController
     ).then {
       $0.modalPresentationStyle = .pageSheet
-      $0.sheetPresentationController?.prefersGrabberVisible = true
     }
 
     present(navVC, animated: true)

@@ -69,7 +69,7 @@ class SearchSuggestionDataSource {
   }
 
   var isAIChatAvailable: Bool {
-    !tabType.isPrivate
+    !isPrivate
       && Preferences.AIChat.leoInQuickSearchBarEnabled.value
       && FeatureList.kAIChat.enabled
   }

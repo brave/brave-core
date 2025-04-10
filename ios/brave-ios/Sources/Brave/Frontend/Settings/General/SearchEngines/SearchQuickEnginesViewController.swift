@@ -250,7 +250,6 @@ extension SearchQuickEnginesViewController {
     }
     let navVC = UINavigationController(rootViewController: addCustomSearchEngineVC)
     navVC.modalPresentationStyle = .pageSheet
-    navVC.sheetPresentationController?.prefersGrabberVisible = true
     self.present(navVC, animated: true)
   }
 }

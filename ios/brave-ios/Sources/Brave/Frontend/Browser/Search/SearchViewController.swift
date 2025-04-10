@@ -170,7 +170,7 @@ public class SearchViewController: UIViewController, LoaderListener {
   private var availableSections: [SearchSuggestionDataSource.SearchListSection] {
     var result = [SearchSuggestionDataSource.SearchListSection]()
 
-    if !dataSource.tabType.isPrivate
+    if !dataSource.isPrivate
       && dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn == true
     {
       result.append(.searchSuggestionsOptIn)
@@ -335,7 +335,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     }
   }
 
-  private func layoutSearchEngineScrollView() {
+  func layoutSearchEngineScrollView() {
     guard dataSource.isAIChatAvailable || dataSource.hasQuickSearchEngines else { return }
 
     let keyboardHeight =
@@ -778,7 +778,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
       )
 
       return !dataSource.searchQuery.looksLikeAURL()
-        && !dataSource.tabType.isPrivate ? searchSuggestionsCount + 1 : 1  // + 1 for quickBar
+        && !dataSource.isPrivate ? searchSuggestionsCount + 1 : 1  // + 1 for quickBar
     case .openTabsAndHistoryAndBookmarks:
       return availableSiteData.count
     case .findInPage:
@@ -897,7 +897,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     case .openTabsAndHistoryAndBookmarks:
       let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchOnYourDeviceCell
       let site = availableSiteData[indexPath.row]
-      cell.setSite(site, isPrivateBrowsing: dataSource.tabType.isPrivate)
+      cell.setSite(site, isPrivateBrowsing: dataSource.isPrivate)
 
       return cell
     }

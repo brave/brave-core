@@ -31,6 +31,7 @@ class CustomEngineAddButtonCell: UITableViewCell, TableViewReusable {
   private func setup() {
     doneButton.do {
       $0.setTitle(Strings.done, for: .normal)
+      $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
       $0.layer.cornerRadius = 12.0
       $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
       $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)

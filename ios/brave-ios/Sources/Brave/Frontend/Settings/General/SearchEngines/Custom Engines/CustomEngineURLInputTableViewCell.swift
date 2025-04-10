@@ -48,7 +48,7 @@ class CustomEngineURLInputTableViewCell: UITableViewCell, TableViewReusable {
       $0.autocorrectionType = .no
       $0.spellCheckingType = .no
       $0.keyboardType = .URL
-      $0.textColor = .braveLabel
+      $0.textColor = UIColor(braveSystemName: .textTertiary)
     }
 
     contentView.addSubview(textview)
