@@ -84,7 +84,7 @@ void RedeemRewardConfirmation::Redeem(
   BLOG(1, "Redeem reward confirmation");
 
   if (!HasIssuers()) {
-    BLOG(1, "Failed to redeem confirmation token due to missing issuers");
+    BLOG(0, "Failed to redeem confirmation token due to missing issuers");
     return redeem_confirmation.FailedToRedeemConfirmation(
         confirmation, /*should_retry=*/true);
   }

@@ -37,7 +37,7 @@ void SearchResultAdEventHandler::FireEvent(
 
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   if (!ad.IsValid()) {
-    BLOG(1,
+    BLOG(0,
          "Failed to fire search result ad event due to the ad being invalid");
 
     return FailedToFireEvent(ad, mojom_ad_event_type, std::move(callback));
@@ -232,7 +232,7 @@ void SearchResultAdEventHandler::FailedToFireEvent(
     const SearchResultAdInfo& ad,
     mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
-  BLOG(1, "Failed to fire search result ad "
+  BLOG(0, "Failed to fire search result ad "
               << mojom_ad_event_type << " event for placement_id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);

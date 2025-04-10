@@ -78,7 +78,7 @@ void AdsImpl::Initialize(mojom::WalletInfoPtr mojom_wallet,
                                     TRACE_ID_LOCAL(this));
 
   if (is_initialized_) {
-    BLOG(1, "Already initialized ads");
+    BLOG(0, "Already initialized ads");
     return FailedToInitialize(std::move(callback));
   }
 

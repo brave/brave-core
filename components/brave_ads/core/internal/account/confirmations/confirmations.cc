@@ -96,7 +96,7 @@ void Confirmations::OnDidProcessConfirmationQueue(
 
 void Confirmations::OnFailedToProcessConfirmationQueue(
     const ConfirmationInfo& confirmation) {
-  BLOG(1, "Failed to process "
+  BLOG(0, "Failed to process "
               << confirmation.type << " confirmation for "
               << confirmation.ad_type << " with transaction id "
               << confirmation.transaction_id << " and creative instance id "

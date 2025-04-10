@@ -34,7 +34,7 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
       GetAdsClient().LoadDataResource(kCatalogJsonSchemaDataResourceName);
 
   if (!helper::json::Validate(&document, json_schema)) {
-    BLOG(1, helper::json::GetLastError(&document));
+    BLOG(0, helper::json::GetLastError(&document));
     return std::nullopt;
   }
 
@@ -42,7 +42,7 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
 
   catalog.id = document["catalogId"].GetString();
   if (catalog.id.empty()) {
-    BLOG(1, "Invalid catalog id");
+    BLOG(0, "Invalid catalog id");
     return std::nullopt;
   }
 
@@ -60,7 +60,7 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
 
     campaign.id = campaign_node["campaignId"].GetString();
     if (campaign.id.empty()) {
-      BLOG(1, "Invalid campaign id");
+      BLOG(0, "Invalid campaign id");
       continue;
     }
     campaign.priority = campaign_node["priority"].GetInt();
@@ -74,7 +74,7 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
 
     campaign.advertiser_id = campaign_node["advertiserId"].GetString();
     if (campaign.advertiser_id.empty()) {
-      BLOG(1, "Invalid advertiser id");
+      BLOG(0, "Invalid advertiser id");
       continue;
     }
 
@@ -113,7 +113,7 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
 
       creative_set.id = creative_set_node["creativeSetId"].GetString();
       if (creative_set.id.empty()) {
-        BLOG(1, "Invalid creative set id");
+        BLOG(0, "Invalid creative set id");
         continue;
       }
 
@@ -125,7 +125,7 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
 
       const char* const value = creative_set_node["value"].GetString();
       if (!base::StringToDouble(value, &creative_set.value)) {
-        BLOG(1, "Failed to parse creative set value " << value);
+        BLOG(0, "Failed to parse creative set value " << value);
         continue;
       }
 
@@ -144,13 +144,13 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
       for (const auto& segment_node : segments_node) {
         const std::string& code = segment_node["code"].GetString();
         if (code.empty()) {
-          BLOG(1, "Failed to parse empty segment code value");
+          BLOG(0, "Failed to parse empty segment code value");
           continue;
         }
 
         const std::string& name = segment_node["name"].GetString();
         if (name.empty()) {
-          BLOG(1, "Failed to parse empty segment name value");
+          BLOG(0, "Failed to parse empty segment name value");
           continue;
         }
 
@@ -195,7 +195,7 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
 
         base::Time end_at;
         if (!base::Time::FromUTCString(campaign.end_at.c_str(), &end_at)) {
-          BLOG(1, "Failed to parse campaign end_at value " << campaign.end_at);
+          BLOG(0, "Failed to parse campaign end_at value " << campaign.end_at);
           continue;
         }
 
@@ -210,7 +210,7 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
         const std::string creative_instance_id =
             creative_node["creativeInstanceId"].GetString();
         if (creative_instance_id.empty()) {
-          BLOG(1, "Invalid creative instance id");
+          BLOG(0, "Invalid creative instance id");
           continue;
         }
 

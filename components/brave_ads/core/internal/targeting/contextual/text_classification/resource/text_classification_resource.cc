@@ -42,7 +42,7 @@ TextClassificationResource::~TextClassificationResource() {
 void TextClassificationResource::ClassifyPage(const std::string& text,
                                               ClassifyPageCallback callback) {
   if (!IsLoaded()) {
-    BLOG(1, "Failed to process text classification as resource not loaded");
+    BLOG(0, "Failed to process text classification as resource not loaded");
     return std::move(callback).Run(/*probabilities=*/{});
   }
 
