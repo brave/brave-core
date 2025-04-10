@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.bookmarks;
 
 import android.content.Context;
+import android.view.View;
 
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -37,7 +38,8 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
             ModalDialogManager modalDialogManager,
             Runnable endSearchRunnable,
             BooleanSupplier incognitoEnabledSupplier,
-            BookmarkManagerOpener bookmarkManagerOpener) {
+            BookmarkManagerOpener bookmarkManagerOpener,
+            View nextFocusableView) {
         super(
                 context,
                 profile,
@@ -53,7 +55,8 @@ class BraveBookmarkToolbarCoordinator extends BookmarkToolbarCoordinator {
                 modalDialogManager,
                 endSearchRunnable,
                 incognitoEnabledSupplier,
-                bookmarkManagerOpener);
+                bookmarkManagerOpener,
+                nextFocusableView);
 
         if (mToolbar instanceof BraveBookmarkToolbar) {
             ((BraveBookmarkToolbar) mToolbar).setBraveBookmarkDelegate(bookmarkDelegateSupplier);
