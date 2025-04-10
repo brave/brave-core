@@ -62,12 +62,6 @@ void BraveProfileMenuView::SetProfileIdentityInfo(
       desired_title, subtitle, management_label, header_art_icon);
 }
 
-// We don't want autofill buttons in this menu.
-void BraveProfileMenuView::BuildAutofillButtons() {}
-
-// We don't want to show any Chromium sync info.
-void BraveProfileMenuView::BuildSyncInfo() {}
-
 // We don't want feature buttons to manage google account
 void BraveProfileMenuView::BuildFeatureButtons() {
   Profile* profile = browser()->profile();
