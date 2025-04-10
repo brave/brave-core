@@ -25,7 +25,7 @@ inline constexpr base::FeatureParam<base::TimeDelta>
 // Set to 0 to always deduplicate clicked ad events.
 inline constexpr base::FeatureParam<base::TimeDelta>
     kDeduplicateClickedAdEventFor{
-        &kAdEventFeature, "deduplicate_clicked_ad_event_for", base::Seconds(0)};
+        &kAdEventFeature, "deduplicate_clicked_ad_event_for", base::Seconds(1)};
 
 }  // namespace brave_ads
 

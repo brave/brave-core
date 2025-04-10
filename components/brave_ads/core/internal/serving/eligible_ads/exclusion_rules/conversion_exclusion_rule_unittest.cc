@@ -35,6 +35,11 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
 TEST_F(BraveAdsConversionExclusionRuleTest,
        ShouldExcludeIfSameCreativeSetHasAlreadyConverted) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_creative_set_exceeds_conversion_cap", "1"}});
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
 
@@ -134,6 +139,11 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
 TEST_F(BraveAdsConversionExclusionRuleTest,
        ShouldIncludeIfCreativeSetHasNotAlreadyConverted) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kExclusionRulesFeature,
+      {{"should_exclude_ad_if_creative_set_exceeds_conversion_cap", "1"}});
+
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_set_id = test::kCreativeSetId;
 

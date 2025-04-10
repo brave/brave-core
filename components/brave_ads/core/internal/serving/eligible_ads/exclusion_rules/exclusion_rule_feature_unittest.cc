@@ -128,7 +128,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
 TEST(BraveAdsExclusionRuleFeatureTest,
      DefaultShouldExcludeAdIfCreativeSetExceedsConversionCap) {
   // Act & Assert
-  EXPECT_EQ(1U, kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get());
+  EXPECT_EQ(0U, kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
@@ -138,7 +138,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
   // Act & Assert
-  EXPECT_EQ(1U, kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get());
+  EXPECT_EQ(0U, kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get());
 }
 
 }  // namespace brave_ads

@@ -63,7 +63,7 @@ TEST(BraveAdsAdEventFeatureTest, DeduplicateClickedAdEventFor) {
 
 TEST(BraveAdsAdEventFeatureTest, DefaultDeduplicateClickedAdEventFor) {
   // Act & Assert
-  EXPECT_EQ(base::Seconds(0), kDeduplicateClickedAdEventFor.Get());
+  EXPECT_EQ(base::Seconds(1), kDeduplicateClickedAdEventFor.Get());
 }
 
 TEST(BraveAdsAdEventFeatureTest,
@@ -73,7 +73,7 @@ TEST(BraveAdsAdEventFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kAdEventFeature);
 
   // Act & Assert
-  EXPECT_EQ(base::Seconds(0), kDeduplicateClickedAdEventFor.Get());
+  EXPECT_EQ(base::Seconds(1), kDeduplicateClickedAdEventFor.Get());
 }
 
 }  // namespace brave_ads

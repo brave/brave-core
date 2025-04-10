@@ -25,7 +25,7 @@ inline constexpr base::FeatureParam<std::string>
 
 // Set to 0 to never cap creative set conversions.
 inline constexpr base::FeatureParam<size_t> kCreativeSetConversionCap{
-    &kConversionsFeature, "creative_set_conversion_cap", 1};
+    &kConversionsFeature, "creative_set_conversion_cap", 0};
 
 }  // namespace brave_ads
 
