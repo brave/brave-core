@@ -673,17 +673,27 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     XCTAssertFalse(manager.allTabs.first!.isPrivate, "The new tab should be a regular tab")
   }
 
-  func testRemoveAllOtherTabs() {
+  func testRemoveAllFromCurrentMode() {
     (0..<10).forEach { index in manager.addTab(isPrivate: false) }
+    manager.selectTab(manager.allTabs.first!)
     manager.removeAllForCurrentMode(isActiveTabIncluded: false)
 
-    XCTAssertFalse(
-      manager.allTabs.count == 1,
-      "The active tab should not be removed and no new tab should be created"
-    )
+    XCTAssertEqual(manager.allTabs.count, 1, "The active tab should not be removed")
     XCTAssertFalse(
       manager.allTabs.first!.isPrivate,
       "The last remaining tab should be a regular tab"
+    )
+  }
+
+  func testRemoveAllWithFilter() {
+    (0..<10).forEach { index in manager.addTab(isPrivate: false) }
+    (0..<10).forEach { index in manager.addTab(isPrivate: true) }
+    manager.removeAllTabsForPrivateMode(isPrivate: true)
+
+    XCTAssertEqual(
+      manager.tabsCountForMode(isPrivate: false),
+      10,
+      "Only private tabs should be removed"
     )
   }
 
