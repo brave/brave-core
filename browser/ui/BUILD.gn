@@ -113,6 +113,20 @@ source_set("ui") {
     "webui/untrusted_sanitized_image_source.h",
   ]
 
+  if (!is_android && !is_ios) {
+    sources += [
+      "webui/psst/brave_psst_dialog_ui.cc",
+      "webui/psst/brave_psst_dialog_ui.h",
+      "webui/psst/brave_psst_dialog.cc",
+      "webui/psst/brave_psst_dialog.h",
+      "webui/psst/psst_dialog_tab_helper_delegate_impl.cc",
+      "webui/psst/psst_dialog_tab_helper_delegate_impl.h",
+    ]
+    deps += [
+      "//brave/components/psst/browser/core:mojom",
+    ]
+  }
+
   # It doesn't make sense to view the webcompat webui on iOS & Android.
   if (!is_android && !is_ios) {
     sources += [
@@ -1003,6 +1017,7 @@ source_set("ui") {
       "//brave/components/brave_webtorrent:static_resources",
       "//brave/components/webcompat_reporter/browser",
       "//brave/components/webcompat_reporter/ui:generated_resources",
+      "//brave/components/psst/resources:psst_dialog_generated_resources",
     ]
   }
 

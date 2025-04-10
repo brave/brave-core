@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/ui/webui/psst/brave_psst_dialog.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -179,9 +180,28 @@ void ShieldsPanelDataHandler::OpenWebCompatWindow() {
     return;
   }
 
-  webcompat_reporter::OpenReporterDialog(
-      active_shields_data_controller_->web_contents(),
-      webcompat_reporter::UISource::kShieldsPanel);
+  psst::OpenPsstDialog(active_shields_data_controller_->web_contents());
+
+  // webcompat_reporter::OpenReporterDialog(
+  //   active_shields_data_controller_->web_contents(),
+  //   webcompat_reporter::UISource::kShieldsPanel);
+}
+
+void ShieldsPanelDataHandler::AreAnyBlockedElementsPresent(
+    AreAnyBlockedElementsPresentCallback callback) {
+  std::move(callback).Run(
+      g_brave_browser_process->ad_block_service()->AreAnyBlockedElementsPresent(
+          active_shields_data_controller_->web_contents()->GetURL().host()));
+}
+
+void ShieldsPanelDataHandler::ResetBlockedElements() {
+  g_brave_browser_process->ad_block_service()->ResetCosmeticFilter(
+      active_shields_data_controller_->web_contents()->GetURL().host());
+
+  webui_controller_->embedder()->CloseUI();
+
+  active_shields_data_controller_->web_contents()->GetController().Reload(
+      content::ReloadType::NORMAL, true);
 }
 
 void ShieldsPanelDataHandler::AreAnyBlockedElementsPresent(

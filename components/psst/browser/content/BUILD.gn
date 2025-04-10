@@ -27,6 +27,7 @@ component("content") {
     "//content/public/browser",
     "//ui/views",
     "//url",
+    "//mojo/public/cpp/bindings",
   ]
 }
 
