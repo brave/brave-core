@@ -156,7 +156,11 @@ export function AllowAddChangeNetworkPanel(props: Props) {
   return (
     <StyledWrapper>
       <CenterColumn>
-        <FavIcon src={`chrome://favicon/size/64@1x/${originInfo.originSpec}`} />
+        <FavIcon
+          src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
+            originInfo.originSpec
+          )}`}
+        />
         <URLText>
           <CreateSiteOrigin
             originSpec={originInfo.originSpec}

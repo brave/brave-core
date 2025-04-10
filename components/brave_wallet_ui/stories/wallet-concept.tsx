@@ -8,16 +8,41 @@ import './locale'
 import WalletPageStory from './wrappers/wallet-page-story-wrapper'
 import Container from '../page/container'
 
+type StorybookWalletConceptArgs = {
+  isPanel: boolean
+}
+
+const panelViewport = {
+  walletPanel: {
+    name: 'Wallet Panel',
+    styles: {
+      width: '390px',
+      height: '650px'
+    }
+  }
+}
+
 export default {
   title: 'Wallet/Desktop',
   argTypes: {
+    isPanel: { control: { type: 'boolean', onboard: false } },
     onboarding: { control: { type: 'boolean', onboard: false } },
     locked: { control: { type: 'boolean', lock: false } }
+  },
+  parameters: {
+    viewport: {
+      viewports: {
+        ...panelViewport
+      }
+    }
   }
 }
 
 export const _DesktopWalletConcept = {
-  render: () => {
+  render: (args: StorybookWalletConceptArgs) => {
+    // Props
+    const { isPanel } = args
+
     return (
       <WalletPageStory
         walletStateOverride={{
@@ -27,7 +52,7 @@ export const _DesktopWalletConcept = {
           hasInitialized: true
         }}
         uiStateOverride={{
-          isPanel: true
+          isPanel: isPanel
         }}
       >
         <Container />

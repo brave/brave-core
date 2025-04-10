@@ -194,7 +194,9 @@ export const SignInWithEthereum = (props: Props) => {
         padding='16px 16px 0px 16px'
       >
         <FavIcon
-          src={`chrome://favicon/size/64@1x/${data.originInfo.originSpec}`}
+          src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
+            data.originInfo.originSpec
+          )}`}
         />
         <OriginName
           isBold={true}

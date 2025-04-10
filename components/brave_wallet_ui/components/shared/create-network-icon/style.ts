@@ -38,6 +38,7 @@ export type IconSize =
   | 'massive'
   | 'huge'
   | 'big'
+  | 'large'
   | 'medium'
   | 'small'
   | 'tiny'
@@ -56,6 +57,8 @@ function getNetworkIconWidthFromSize(size?: IconSize): string {
       return '32px'
     case 'big':
       return '24px'
+    case 'large':
+      return '20px'
     case 'medium':
       return '18px'
     case 'small':

@@ -157,7 +157,9 @@ export const ConnectWithSite = (props: Props) => {
   return (
     <StyledWrapper>
       <BackgroundContainer
-        backgroundImage={`chrome://favicon/size/64@1x/${originInfo.originSpec}`}
+        backgroundImage={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
+          originInfo.originSpec
+        )}`}
       />
 
       <ConnectWithSiteHeader

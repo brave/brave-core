@@ -501,6 +501,14 @@ export class MockedWalletApiProxy {
           BraveWallet.ZK_SYNC_ERA_CHAIN_ID
         ]
       }
+    },
+    getNetworkForAccountOnActiveOrigin: async (
+      account: BraveWallet.AccountId
+    ) => {
+      if (account.coin === BraveWallet.CoinType.SOL) {
+        return { network: mockSolanaMainnetNetwork }
+      }
+      return { network: mockEthMainnet }
     }
   }
 
