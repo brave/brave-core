@@ -90,6 +90,9 @@
   <message name="IDS_AUTOFILL_CC_GENERIC" desc="Generic credit card name.">
     Card
   </message>
+  <message name="IDS_AUTOFILL_IBAN_GENERIC" desc="Generic IBAN name." formatter_data="android_java">
+    Iban
+  </message>
   <message name="IDS_AUTOFILL_ADDRESS_SUMMARY_SEPARATOR" desc="The separator character used in the summary of an address." formatter_data="android_java">
     , '''
   </message>
@@ -178,6 +181,15 @@
     Fill everything
   </message>
 
+  <!-- Autofill Identity Credentials Suggestions -->
+  <message name="IDS_AUTOFILL_IDENTITY_CREDENTIAL_MINOR_TEXT" desc="The minor text to display in an autofill suggestion (e.g. an email) that is verified by a third party website (e.g. google.com)." translateable="false">
+    Verified by <ph name="IDP_ORIGIN">$1<ex>accounts.google.com</ex></ph>
+  </message>
+
+  <message name="IDS_AUTOFILL_IDENTITY_CREDENTIAL_EMAIL_LABEL" desc="The label text to display for verified autofill suggestions. If the user selects such email suggestion, the website receives cryptographic proof that the user has access to the email. The benefit for the user indicate in this message is that they can skip the manual process of receiving a confirmation email and pressing a link to prove ownership of the email." translateable="false">
+    Skip confirmation emails
+  </message>
+
   <if expr="not use_titlecase">
     <message name="IDS_AUTOFILL_MANAGE_ADDRESSES" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage their Autofill preferences for addresses. Imperative. When the user clicks on it, opens the Autofill settings page." meaning="Manage addresses in the user profile that can be used by Chrome Autofill.">
       Manage addresses...
@@ -220,10 +232,6 @@
   </message>
   </if>
 
-  <message name="IDS_AUTOFILL_SHOW_ACCOUNT_CARDS" desc="Text shown as an option in the Autofill dropdown. Imperative. When clicked, additional payment cards (e.g., credit/debit cards) that were previously saved in the user's Brave sync chain will be added to the list of suggestions being displayed.">
-    Show cards from your Brave sync chain
-  </message>
-
   <message name="IDS_AUTOFILL_SAVE_AND_FILL_SUGGESTION_TITLE" desc="Title for the `Save and Fill` suggestion shown in the Autofill dropdown for users who don't have any cards saved in Autofill. When the suggestion is clicked, users are offered to save and fill a credit card with a single click.">
     Save card for faster checkout
   </message>
@@ -244,6 +252,12 @@
 
   <message name="IDS_AUTOFILL_IPH_EXTERNAL_ACCOUNT_PROFILE_SUGGESTION" desc="IPH bubble for a suggestion item with an account profile that was created somewhere outside Brave (e.g. Google Pay)." formatter_data="android_java">
     You can now use addresses from your Brave sync chain
+  </message>
+  <message name="IDS_AUTOFILL_IPH_HOME_AND_WORK_ACCOUNT_PROFILE_SUGGESTION" desc="IPH bubble for a suggestion item suggesting that home and work account profiles are available to use.">
+    Your home and work addresses are now available in Brave
+  </message>
+  <message name="IDS_AUTOFILL_IPH_HOME_AND_WORK_ACCOUNT_PROFILE_SUGGESTION_SCREENREADER" is_accessibility_with_no_ui="true" desc="IPH bubble for a suggestion item suggesting that home and work account profiles are available to use.">
+    Your home and work addresses are now available in Brave
   </message>
 
   <!-- Autofill suggestion label separator -->
@@ -552,7 +566,7 @@
     <message name="IDS_AUTOFILL_SIGNIN_PROMO_TITLE_PASSWORD" desc="This is the body text of a confirmation message and means that the password was only saved locally to the user's device (not in their Brave sync chain). It appears after a password save if the user is not signed in to Brave or their sign-in credentials have expired. If the user wants to save this data to their Brave sync chain, they can click the button at the bottom of this message. The tone should be motivating.">
     Password saved to this device
     </message>
-    <message name="IDS_AUTOFILL_VERIFY_PROMO_SUBTITLE_PASSWORD" desc="This is the body text of a confirmation message and means that the password is in an account-pending storage. In other words, it's waiting to be uploaded to the user's Brave sync chain. It appears when the user was signed in to Brave but their sign-in credentials have expired; now, they need to sign back in to Brave. The string is after the 'Password saved' string. If the user wants to save this data to their Brave sync chain, they can click the 'Verify it's you' button at the bottom of this message. The tone should be motivating.">
+    <message name="IDS_AUTOFILL_VERIFY_PROMO_SUBTITLE_PASSWORD" desc="This is the body text of a confirmation message and means that the password was only saved locally to the user's device (not in their Brave sync chain). It appears when the user was signed in to Brave but their sign-in credentials have expired; now, they need to sign back in to Brave. The string is after the 'Password saved to this device' string. If the user wants to save this data to their Brave sync chain, they can click the 'Verify it's you' button at the bottom of this message. The tone should be motivating.">
     To get this password on all your devices, verify it's you
     </message>
     <message name="IDS_AUTOFILL_POPUP_SEARCH_BAR_CLEAR_SEARCH_BUTTON_A11Y_NAME" desc="The a11y name for the clear button accompanying the autofill popup search bar input.">
@@ -568,7 +582,7 @@
     Address saved to this device
     </message>
     <message name="IDS_AUTOFILL_VERIFY_PROMO_SUBTITLE_ADDRESS" desc="This is the body text of a confirmation message and means that the address was only saved locally to the user's device (not in their Brave sync chain). It appears when the user was signed in to Brave but their sign-in credentials have expired; now, they need to sign back in to Brave. The string is after the 'Address saved to this device' string. If the user wants to save this data to their Brave sync chain, they can click the 'Verify it's you' button at the bottom of this message. The tone should be motivating.">
-    To save and use this address on all your devices, verify it's you
+    To get this address on all your devices, verify it's you
     </message>
   </if>
 
