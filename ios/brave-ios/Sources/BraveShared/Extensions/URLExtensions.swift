@@ -187,24 +187,24 @@ extension URL {
   }
 
   public var strippingBlobURLAuth: URL {
-    if self.scheme == "blob",
-      var components = URLComponents(url: self, resolvingAgainstBaseURL: true)
-    {
-      components.scheme = nil
+    guard self.scheme == "blob" else { return self }
 
-      if let newURL = components.url {
-        if var newComponents = URLComponents(url: newURL, resolvingAgainstBaseURL: true) {
-          newComponents.user = nil
-          newComponents.password = nil
-          newComponents.scheme = newURL.scheme
+    let blobURLString = self.absoluteString.dropFirst("blob:".count)
 
-          if let url = newComponents.url, let result = URL(string: "blob:\(url.absoluteString)") {
-            return result
-          }
-        }
-      }
+    guard let innerURL = URL(string: String(blobURLString)),
+      var components = URLComponents(url: innerURL, resolvingAgainstBaseURL: true)
+    else {
+      return self
     }
-    return self
+
+    components.user = nil
+    components.password = nil
+
+    guard let cleanedInnerURL = components.url else {
+      return self
+    }
+
+    return URL(string: "blob:\(cleanedInnerURL.absoluteString)") ?? self
   }
 
   /// Matches what `window.origin` would return in javascript.
