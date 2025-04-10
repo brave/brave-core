@@ -35,14 +35,8 @@ export class SettingsBraveAccountForgotPasswordDialogElement
     this.isEmailValid = isEmailValid(this.email)
   }
 
-  constructor() {
-    super();
-    this.email = ''
-    this.isEmailValid = false
-  }
-
-  protected declare email: string
-  protected declare isEmailValid: boolean
+  protected email: string = ''
+  protected isEmailValid: boolean = false
 }
 
 declare global {

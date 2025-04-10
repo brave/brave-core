@@ -55,12 +55,6 @@ class AdblockScriptletList extends AdblockScriptletListBase {
   declare editingScriptlet_: Scriptlet | null
   declare isEditing_: boolean
 
-  constructor() {
-    super();
-    this.editingScriptlet_ = null;
-    this.isEditing_ = false;
-  }
-
   browserProxy_ = BraveAdblockBrowserProxyImpl.getInstance()
 
   override ready() {

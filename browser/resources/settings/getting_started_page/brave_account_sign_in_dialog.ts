@@ -42,16 +42,9 @@ export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
     this.isPasswordValid = detail.value.length !== 0
   }
 
-  constructor() {
-    super();
-    this.email = ''
-    this.isEmailValid = false
-    this.isPasswordValid = false
-  }
-
-  protected declare email: string
-  protected declare isEmailValid: boolean
-  protected declare isPasswordValid: boolean
+  protected email: string = ''
+  protected isEmailValid: boolean = false
+  protected isPasswordValid: boolean = false
   protected login = new Login()
 }
 
