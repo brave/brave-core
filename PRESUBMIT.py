@@ -24,6 +24,7 @@ def CheckToModifyInputApi(input_api, _output_api):
 
 # Check Leo variables actually exist
 def CheckLeoVariables(input_api, output_api):
+
     def _web_files_filter(affected_file):
         return input_api.FilterSourceFile(
             affected_file,
@@ -48,6 +49,7 @@ def CheckLeoVariables(input_api, output_api):
         return []
     except RuntimeError as err:
         return [output_api.PresubmitError(err.args[1])]
+
 
 # Check and fix formatting issues (supports --fix).
 def CheckPatchFormatted(input_api, output_api):
@@ -212,8 +214,8 @@ def CheckLicense(input_api, output_api):
         r'.*? Copyright \(c\) %(year)s The Brave Authors\. All rights reserved\.\n'
         r'.*? This Source Code Form is subject to the terms of the Mozilla Public\n'
         r'.*? License, v\. 2\.0\. If a copy of the MPL was not distributed with this file,\n'
-        r'.*? You can obtain one at https://mozilla.org/MPL/2\.0/\.(?: \*/)?\n')
-                                               % {'year': years_re},
+        r'.*? You can obtain one at https://mozilla.org/MPL/2\.0/\..*\n') %
+                                               {'year': years_re},
                                                input_api.re.MULTILINE)
 
     # License regexp to match in EXISTING files, it allows some variance.
@@ -221,18 +223,20 @@ def CheckLicense(input_api, output_api):
         r'.*? Copyright \(c\) %(year)s The Brave Authors\. All rights reserved\.\n'
         r'.*? This Source Code Form is subject to the terms of the Mozilla Public\n'
         r'.*? License, v\. 2\.0\. If a copy of the MPL was not distributed with this(\n.*?)? file,\n?'
-        r'.*? (y|Y)ou can obtain one at https?://mozilla.org/MPL/2\.0/\.(?: \*/)?\n'
-    ) % {'year': years_re}, input_api.re.MULTILINE)
+        r'.*? (y|Y)ou can obtain one at https?://mozilla.org/MPL/2\.0/\..*\n')
+                                                    % {'year': years_re},
+                                                    input_api.re.MULTILINE)
 
     # License template for new files. Includes current year.
     expected_license_template = (
         '%(comment)s Copyright (c) %(year)s The Brave Authors. All rights reserved.\n'
         '%(comment)s This Source Code Form is subject to the terms of the Mozilla Public\n'
         '%(comment)s License, v. 2.0. If a copy of the MPL was not distributed with this file,\n'
-        '%(comment)s You can obtain one at https://mozilla.org/MPL/2.0/.\n') % {
-            'comment': '#',
-            'year': current_year,
-        }
+        '%(comment)s You can obtain one at https://mozilla.org/MPL/2.0/.\n'
+    ) % {
+        'comment': '#',
+        'year': current_year,
+    }
 
     bad_new_files = []
     bad_files = []
@@ -258,15 +262,24 @@ def CheckLicense(input_api, output_api):
         f' * {splitted_expected_license_template[1]}\n'
         f' * {splitted_expected_license_template[2]}\n'
         f' * {splitted_expected_license_template[3]} */\n')
+    xml_multiline_comment_expected_license = (
+        f'<!-- {splitted_expected_license_template[0]}\n'
+        f'     {splitted_expected_license_template[1]}\n'
+        f'     {splitted_expected_license_template[2]}\n'
+        f'     {splitted_expected_license_template[3]} -->\n')
     assert new_file_license_re.search(expected_license_template)
     assert existing_file_license_re.search(expected_license_template)
     assert new_file_license_re.search(multiline_comment_expected_license)
     assert existing_file_license_re.search(multiline_comment_expected_license)
+    assert new_file_license_re.search(xml_multiline_comment_expected_license)
+    assert existing_file_license_re.search(
+        xml_multiline_comment_expected_license)
 
     # Show this to simplify copy-paste when an invalid license is found.
     expected_licenses = (f'{expected_license_template.replace("#", "//")}\n'
                          f'{multiline_comment_expected_license}\n'
-                         f'{expected_license_template}')
+                         f'{expected_license_template}\n'
+                         f'{xml_multiline_comment_expected_license}')
 
     result = []
     if bad_new_files:
@@ -327,6 +340,7 @@ def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
                 'corresponding changes in gn or gni files.')
         ]
     return []
+
 
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
 #
@@ -404,23 +418,26 @@ ApplyBanRuleExcludes()
 def CheckForIncludeGuards(original_check, input_api, output_api, **kwargs):
     # Add 'brave/' prefix for header guard checks to properly validate guards.
     def AffectedSourceFiles(self, original_method, source_file):
+
         def PrependBrave(affected_file):
             affected_file = copy.copy(affected_file)
             affected_file._path = f'brave/{affected_file._path}'
             return affected_file
 
         return [
-            PrependBrave(f)
-            for f in filter(self.FilterSourceFile, original_method(source_file))
+            PrependBrave(f) for f in filter(self.FilterSourceFile,
+                                            original_method(source_file))
         ]
 
-    with override_utils.override_scope_function(input_api, AffectedSourceFiles):
+    with override_utils.override_scope_function(input_api,
+                                                AffectedSourceFiles):
         return original_check(input_api, output_api, **kwargs)
 
 
 # Use BanRule.excluded_paths in all BanRule-like checks.
 @override_utils.override_function(globals())
 def _GetMessageForMatchingType(orig, input_api, f, line_num, line, ban_rule):
+
     def IsExcludedFile(affected_file, excluded_paths):
         if not excluded_paths:
             return False
@@ -453,6 +470,7 @@ def CheckJavaStyle(_original_check, input_api, output_api):
     errors are replaced with warnings except UnusedImports.
     When all style error will be fixed, this function should be removed and
     the original function from upstream must be used again """
+
     def _IsJavaFile(input_api, file_path):
         return input_api.os_path.splitext(file_path)[1] == ".java"
 
@@ -473,9 +491,10 @@ def CheckJavaStyle(_original_check, input_api, output_api):
 
     # Filter out non-Java files and files that were deleted.
     java_files = [
-        x.AbsoluteLocalPath() for x in
-        input_api.AffectedSourceFiles(lambda f: input_api.FilterSourceFile(
-            f, files_to_skip=files_to_skip)) if x.LocalPath().endswith('.java')
+        x.AbsoluteLocalPath() for x in input_api.AffectedSourceFiles(
+            lambda f: input_api.FilterSourceFile(f,
+                                                 files_to_skip=files_to_skip))
+        if x.LocalPath().endswith('.java')
     ]
     if not java_files:
         return []
