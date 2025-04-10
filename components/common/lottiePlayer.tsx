@@ -188,6 +188,7 @@ const canvasStyle = {
 
 function LottiePlayer(props: LottiePlayerProps) {
   const [state, setState] = React.useState<LottiePlayerState | null>(null)
+  const ref = React.useRef<HTMLCanvasElement>(null)
 
   // Make sure the state has an up to date set of props for notifying listeners via the onXXX methods.
   if (state) {
@@ -197,8 +198,10 @@ function LottiePlayer(props: LottiePlayerProps) {
   }
 
   // Handle creating the worker and cleaning up when the component unmounts
-  const initialize = React.useCallback((elem: HTMLElement | null) => {
-    const state = new LottiePlayerState(elem as CanvasElementWithOffscreen, props.play)
+  React.useEffect(() => {
+    if (!ref.current) throw new Error("Canvas element not found")
+
+    const state = new LottiePlayerState(ref.current! as CanvasElementWithOffscreen, props.play)
     setState(state)
 
     return () => {
@@ -206,7 +209,7 @@ function LottiePlayer(props: LottiePlayerProps) {
     }
   }, [])
 
-  return <canvas ref={initialize} style={canvasStyle} />
+  return <canvas ref={ref} style={canvasStyle} />
 }
 
 export default LottiePlayer
