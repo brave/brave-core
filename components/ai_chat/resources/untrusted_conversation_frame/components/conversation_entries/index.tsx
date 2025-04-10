@@ -20,6 +20,7 @@ import AssistantResponse from '../assistant_response'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
 import { getReasoningText } from './conversation_entries_utils'
+import { getImageFiles } from '../../../common/conversation_history_utils'
 import styles from './style.module.scss'
 
 function ConversationEntries() {
@@ -176,13 +177,16 @@ function ConversationEntries() {
                           )}
                         </div>
                         <div className={styles.uploadedImages}>
-                          {!!latestTurn.uploadedImages?.length &&
-                            latestTurn.uploadedImages.map((img) => (
-                              <UploadedImgItem
-                              key={img.filename}
-                              uploadedImage={img}
-                              />
-                          ))}
+                          {(() => {
+                            const imageFiles = getImageFiles(latestTurn.uploadedFiles) || [];
+                            return imageFiles.length > 0 &&
+                              imageFiles.map((img) => (
+                                <UploadedImgItem
+                                  key={img.filename}
+                                  uploadedImage={img}
+                                />
+                              ));
+                          })()}
                         </div>
                       </div>
                     </>

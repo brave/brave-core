@@ -6,13 +6,16 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_TEST_UTILS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_TEST_UTILS_H_
 
+#include <optional>
 #include <vector>
 
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace ai_chat {
 
-std::vector<mojom::UploadedImagePtr> CreateSampleUploadedImages(size_t number);
+std::vector<mojom::UploadedFilePtr> CreateSampleUploadedFiles(
+    size_t number,
+    std::optional<mojom::UploadedFileType> type = std::nullopt);
 
 }  // namespace ai_chat
 

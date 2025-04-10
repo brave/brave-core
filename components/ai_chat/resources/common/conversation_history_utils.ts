@@ -35,3 +35,16 @@ export function updateConversationHistory(
     return [...currentHistory, newEntry]
   }
 }
+
+/**
+ * Filters uploaded files to only include images and screenshots
+ *
+ * @param files - The array of uploaded files to filter
+ * @returns Filtered array containing only image and screenshot files
+ */
+export function getImageFiles(files?: Mojom.UploadedFile[]): Mojom.UploadedFile[] | undefined {
+  return files?.filter(file =>
+    file.type === Mojom.UploadedFileType.kImage ||
+    file.type === Mojom.UploadedFileType.kScreenshot
+  );
+}

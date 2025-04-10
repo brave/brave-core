@@ -197,10 +197,16 @@ struct ConversationTitleEvent {
   string title;
 };
 
-struct UploadedImage {
+enum UploadedFileType {
+  kImage = 0,
+  kScreenshot,
+};
+
+struct UploadedFile {
   string filename;
   uint32 filesize;
-  array<uint8> image_data;
+  array<uint8> data;
+  UploadedFileType type;
 };
 
 // Events that occur during a conversation turn (only assistant for now)
@@ -256,9 +262,8 @@ struct ConversationTurn {
   // engine or displaying the most recent text to users.
   array<ConversationTurn>? edits;
 
-  // Due to server limitation, we only support one image in one turn for the
-  // entire conversation. Each turns will share the same image.
-  array<UploadedImage>? uploaded_images;
+  // User uploaded files, currently including image and screenshot
+  array<UploadedFile>? uploaded_files;
 
   // Whether the turn was generated from Brave Search SERP.
   bool from_brave_search_SERP = false;
@@ -412,7 +417,7 @@ interface AIChatUIHandler {
   // use_media_capture is used on Android only currently. It could
   // be used on desktop as well in the future when a camera support is added.
   UploadImage(bool use_media_capture)
-      => (array<UploadedImage>? uploaded_images);
+      => (array<UploadedFile>? uploaded_images);
 
   // This might be a no-op if the UI isn't closeable
   CloseUI();
@@ -502,7 +507,7 @@ interface ConversationHandler {
   GenerateQuestions();
 
   SubmitHumanConversationEntry(
-      string input, array<UploadedImage>? uploaded_images);
+      string input, array<UploadedFile>? uploaded_files);
   SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
   ModifyConversation(uint32 turn_index, string new_text);
   SubmitSummarizationRequest();
@@ -539,7 +544,7 @@ interface ConversationHandler {
       string feedback,
       string rating_id, bool send_hostname) => (bool is_success);
 
-  GetScreenshots() => (array<UploadedImage>? screenshots);
+  GetScreenshots() => (array<UploadedFile>? screenshots);
 };
 
 // Browser-side handler for a Conversation's UI responsible for displaying

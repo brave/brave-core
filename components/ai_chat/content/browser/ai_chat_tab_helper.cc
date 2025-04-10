@@ -446,15 +446,16 @@ void AIChatTabHelper::OnScreenshotsCaptured(
     mojom::ConversationHandler::GetScreenshotsCallback callback,
     base::expected<std::vector<std::vector<uint8_t>>, std::string> result) {
   if (result.has_value()) {
-    std::vector<mojom::UploadedImagePtr> images;
+    std::vector<mojom::UploadedFilePtr> screenshots;
     size_t screenshot_index = 0;
     for (auto& screenshot : result.value()) {
       size_t screenshot_size = screenshot.size();
-      images.push_back(mojom::UploadedImage::New(
+      screenshots.push_back(mojom::UploadedFile::New(
           base::StringPrintf("fullscreenshot_%i.png", screenshot_index++),
-          screenshot_size, std::move(screenshot)));
+          screenshot_size, std::move(screenshot),
+          mojom::UploadedFileType::kScreenshot));
     }
-    std::move(callback).Run(std::move(images));
+    std::move(callback).Run(std::move(screenshots));
   } else {
     VLOG(1) << result.error();
     std::move(callback).Run(std::nullopt);

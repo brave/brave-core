@@ -170,18 +170,19 @@ void ExpectConversationEntryEquals(base::Location location,
     }
   }
 
-  // compare uploaded images
-  EXPECT_EQ(a->uploaded_images.has_value(), b->uploaded_images.has_value());
-  if (a->uploaded_images.has_value()) {
-    EXPECT_EQ(a->uploaded_images->size(), b->uploaded_images->size());
-    for (size_t i = 0; i < a->uploaded_images->size(); ++i) {
+  // compare uploaded files
+  EXPECT_EQ(a->uploaded_files.has_value(), b->uploaded_files.has_value());
+  if (a->uploaded_files.has_value()) {
+    EXPECT_EQ(a->uploaded_files->size(), b->uploaded_files->size());
+    for (size_t i = 0; i < a->uploaded_files->size(); ++i) {
       SCOPED_TRACE(testing::Message()
-                   << "Comparing uplodaed images at index " << i);
-      const auto& uploaded_image_a = a->uploaded_images->at(i);
-      const auto& uploaded_image_b = b->uploaded_images->at(i);
-      EXPECT_EQ(uploaded_image_a->filename, uploaded_image_b->filename);
-      EXPECT_EQ(uploaded_image_a->filesize, uploaded_image_b->filesize);
-      EXPECT_EQ(uploaded_image_a->image_data, uploaded_image_b->image_data);
+                   << "Comparing uplodaed files at index " << i);
+      const auto& uploaded_file_a = a->uploaded_files->at(i);
+      const auto& uploaded_file_b = b->uploaded_files->at(i);
+      EXPECT_EQ(uploaded_file_a->filename, uploaded_file_b->filename);
+      EXPECT_EQ(uploaded_file_a->filesize, uploaded_file_b->filesize);
+      EXPECT_EQ(uploaded_file_a->data, uploaded_file_b->data);
+      EXPECT_EQ(uploaded_file_a->type, uploaded_file_b->type);
     }
   }
 
@@ -214,15 +215,14 @@ mojom::Conversation* GetConversation(
 std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
     size_t num_query_pairs,
     int32_t future_hours,
-    size_t num_uploaded_images_per_query) {
+    size_t num_uploaded_files_per_query) {
   std::vector<mojom::ConversationTurnPtr> history;
   base::Time now = base::Time::Now();
   for (size_t i = 0; i < num_query_pairs; i++) {
     // query
-    std::optional<std::vector<mojom::UploadedImagePtr>> uploaded_images;
-    if (num_uploaded_images_per_query) {
-      uploaded_images =
-          CreateSampleUploadedImages(num_uploaded_images_per_query);
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files;
+    if (num_uploaded_files_per_query) {
+      uploaded_files = CreateSampleUploadedFiles(num_uploaded_files_per_query);
     }
     history.push_back(mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
@@ -230,7 +230,7 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
         base::StrCat({"query", base::NumberToString(i)}),
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
         now + base::Seconds(i * 60) + base::Hours(future_hours), std::nullopt,
-        std::move(uploaded_images), false));
+        std::move(uploaded_files), false));
     // response
     std::vector<mojom::ConversationEntryEventPtr> events;
     events.emplace_back(mojom::ConversationEntryEvent::NewCompletionEvent(

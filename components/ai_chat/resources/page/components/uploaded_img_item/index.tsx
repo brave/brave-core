@@ -14,7 +14,7 @@ import * as Mojom from '../../../common/mojom'
 import styles from './style.module.scss'
 
 type Props = {
-  uploadedImage: Mojom.UploadedImage
+  uploadedImage: Mojom.UploadedFile
   // removeImage is optional here so we can also reuse
   // this component in the conversation thread where remove
   // is not needed.
@@ -24,7 +24,7 @@ type Props = {
 export default function UploadedImgItem(props: Props) {
   // Memos
   const dataUrl = React.useMemo(() => {
-    const blob = new Blob([new Uint8Array(props.uploadedImage.imageData)], {
+    const blob = new Blob([new Uint8Array(props.uploadedImage.data)], {
       type: 'image/*'
     })
     return URL.createObjectURL(blob)

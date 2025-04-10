@@ -123,7 +123,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -136,7 +136,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent('The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.')],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -149,7 +149,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -162,7 +162,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent(`## How We Created an Accessible, Scalable Color Palette\n\nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor [communication](https://www.google.com) between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product **design** needs.`)],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -175,7 +175,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getPageContentRefineEvent()],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -188,7 +188,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -201,7 +201,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent('The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.')],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -214,7 +214,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -227,7 +227,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent("Hello! As a helpful and respectful AI assistant, I'd be happy to assist you with your question. However, I'm a text-based AI and cannot provide code in a specific programming language like C++. Instead, I can offer a brief explanation of how to write a \"hello world\" program in C++.\n\nTo write a \"hello world\" program in C++, you can use the following code:\n\n```c++\n#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world!\" << std::endl;\n    return 0;\n}\n```\nThis code will print \"Hello, world!\" and uses `iostream` std library. If you have any further questions or need more information, please don't hesitate to ask!")],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -240,7 +240,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -253,7 +253,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.')],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -266,7 +266,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -288,7 +288,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
         { title: 'Tesla Model Y', faviconUrl: { url: 'https://www.tesla.com/favicon.ico' }, url: { url: 'https://www.tesla.com/modely' } }
       ])
     ],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -308,12 +308,12 @@ const HISTORY: Mojom.ConversationTurn[] = [
       createdTime: { internalValue: BigInt('13278618001000000') },
       edits: [],
       events: [],
-      uploadedImages : [],
+      uploadedFiles : [],
       fromBraveSearchSERP: false
     }],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -326,7 +326,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getSearchStatusEvent(), getSearchEvent(['LTT store backpack dimensions', 'Tesla Model Y frunk dimensions'])],
-    uploadedImages : [],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   },
   {
@@ -339,9 +339,11 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedImages : [
+    uploadedFiles : [
       { filename: 'lion.png', filesize: 128,
-        imageData: Array.from(new Uint8Array(128)) }
+        data: Array.from(new Uint8Array(128)),
+        type: Mojom.UploadedFileType.kImage
+      }
     ],
     fromBraveSearchSERP: false
   },
@@ -355,7 +357,81 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent('It is a lion!')],
-    uploadedImages : [],
+    uploadedFiles : [],
+    fromBraveSearchSERP: false
+  },
+  {
+    uuid: undefined,
+    text: 'Summarize this page',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [],
+    uploadedFiles : [
+      { filename: 'full_screenshot_0.png', filesize: 128,
+        data: Array.from(new Uint8Array(128)),
+        type: Mojom.UploadedFileType.kScreenshot
+      },
+      { filename: 'full_screenshot_1.png', filesize: 128,
+        data: Array.from(new Uint8Array(128)),
+        type: Mojom.UploadedFileType.kScreenshot
+      },
+    ],
+    fromBraveSearchSERP: false
+  },
+  {
+    uuid: undefined,
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [getCompletionEvent('This website compares differences between Juniper Model Y and legacy one.')],
+    uploadedFiles : [],
+    fromBraveSearchSERP: false
+  },
+  {
+    uuid: undefined,
+    text: 'Summarize these',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [],
+    uploadedFiles : [
+      { filename: 'full_screenshot_0.png', filesize: 128,
+        data: Array.from(new Uint8Array(128)),
+        type: Mojom.UploadedFileType.kScreenshot
+      },
+      { filename: 'full_screenshot_1.png', filesize: 128,
+        data: Array.from(new Uint8Array(128)),
+        type: Mojom.UploadedFileType.kScreenshot
+      },
+      { filename: 'lion.png', filesize: 128,
+        data: Array.from(new Uint8Array(128)),
+        type: Mojom.UploadedFileType.kImage
+      }
+    ],
+    fromBraveSearchSERP: false
+  },
+  {
+    uuid: undefined,
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [getCompletionEvent('According to screenshots, this website compares differences between Juniper Model Y and legacy one. And a lion image.')],
+    uploadedFiles : [],
     fromBraveSearchSERP: false
   }
 ]

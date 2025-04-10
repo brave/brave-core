@@ -114,7 +114,10 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
     conversation_ui_receiver_.reset();
   }
 
-  MOCK_METHOD(void, OnConversationHistoryUpdate, (mojom::ConversationTurnPtr), (override));
+  MOCK_METHOD(void,
+              OnConversationHistoryUpdate,
+              (mojom::ConversationTurnPtr),
+              (override));
 
   MOCK_METHOD(void, OnAPIRequestInProgress, (bool), (override));
 

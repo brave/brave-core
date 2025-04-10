@@ -196,16 +196,14 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   }
   // history
   for (const auto& message : conversation_history) {
-    if (message->uploaded_images) {
+    if (message->uploaded_files) {
       std::vector<std::string> uploaded_images;
       std::vector<std::string> screenshot_images;
-      for (const auto& uploaded_image : message->uploaded_images.value()) {
-        if (base::StartsWith(uploaded_image->filename, "fullscreenshot")) {
-          screenshot_images.emplace_back(
-              GetImageDataURL(uploaded_image->image_data));
-        } else {
-          uploaded_images.emplace_back(
-              GetImageDataURL(uploaded_image->image_data));
+      for (const auto& uploaded_file : message->uploaded_files.value()) {
+        if (uploaded_file->type == mojom::UploadedFileType::kScreenshot) {
+          screenshot_images.emplace_back(GetImageDataURL(uploaded_file->data));
+        } else if (uploaded_file->type == mojom::UploadedFileType::kImage) {
+          uploaded_images.emplace_back(GetImageDataURL(uploaded_file->data));
         }
       }
       if (!uploaded_images.empty()) {

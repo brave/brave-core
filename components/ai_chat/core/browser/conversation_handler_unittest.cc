@@ -1312,7 +1312,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
 }
 
-TEST_F(ConversationHandlerUnitTest, UploadImage) {
+TEST_F(ConversationHandlerUnitTest, UploadFile) {
   conversation_handler_->SetShouldSendPageContents(false);
   constexpr char kTestPrompt[] = "What is this?";
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
@@ -1323,7 +1323,7 @@ TEST_F(ConversationHandlerUnitTest, UploadImage) {
           base::ok("This is a lion.")));
   ASSERT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
 
-  // No uploaded images
+  // No uploaded files
   base::RunLoop loop;
   EXPECT_CALL(client, OnModelDataChanged).Times(0);
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -1333,10 +1333,10 @@ TEST_F(ConversationHandlerUnitTest, UploadImage) {
                                                       std::nullopt);
   loop.Run();
   EXPECT_FALSE(
-      conversation_handler_->GetConversationHistory().back()->uploaded_images);
+      conversation_handler_->GetConversationHistory().back()->uploaded_files);
   testing::Mock::VerifyAndClearExpectations(&client);
 
-  // Empty uploaded images
+  // Empty uploaded files
   base::RunLoop loop2;
   EXPECT_CALL(client, OnModelDataChanged).Times(0);
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -1346,35 +1346,45 @@ TEST_F(ConversationHandlerUnitTest, UploadImage) {
       kTestPrompt, std::vector<mojom::UploadedFilePtr>());
   loop2.Run();
   EXPECT_FALSE(
-      conversation_handler_->GetConversationHistory().back()->uploaded_images);
+      conversation_handler_->GetConversationHistory().back()->uploaded_files);
   testing::Mock::VerifyAndClearExpectations(&client);
 
-  auto uploaded_images = CreateSampleUploadedImages(3);
+  auto uploaded_files = CreateSampleUploadedFiles(3);
 
   // There are uploaded images.
   // Note that this will need to be put at the end of this test suite
   // because currently there is no perfect timing to call
   // SetEngineForTesting() after auto model switch.
   base::RunLoop loop3;
-  EXPECT_CALL(client, OnModelDataChanged)
-      .WillOnce(base::test::RunClosure(base::BindLambdaForTesting([&]() {
-        // verify auto switched to vision support model
-        EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
-        loop3.Quit();
-      })));
+  if (std::ranges::any_of(
+          uploaded_files, [](const mojom::UploadedFilePtr& file) {
+            return file->type == mojom::UploadedFileType::kImage ||
+                   file->type == mojom::UploadedFileType::kScreenshot;
+          })) {
+    EXPECT_CALL(client, OnModelDataChanged)
+        .WillOnce(base::test::RunClosure(base::BindLambdaForTesting([&]() {
+          // verify auto switched to vision support model
+          EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
+          loop3.Quit();
+        })));
+  } else {
+    EXPECT_CALL(client, OnAPIRequestInProgress(false))
+        .WillOnce(testing::InvokeWithoutArgs(&loop3, &base::RunLoop::Quit));
+  }
 
   conversation_handler_->SubmitHumanConversationEntry(kTestPrompt,
-                                                      Clone(uploaded_images));
+                                                      Clone(uploaded_files));
   loop3.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
   // verify image in history
   auto& last_entry = conversation_handler_->GetConversationHistory().back();
-  EXPECT_TRUE(last_entry->uploaded_images);
-  const auto& images = last_entry->uploaded_images.value();
-  for (size_t i = 0; i < images.size(); ++i) {
-    EXPECT_EQ(images[i]->filename, uploaded_images[i]->filename);
-    EXPECT_EQ(images[i]->filesize, uploaded_images[i]->filesize);
-    EXPECT_EQ(images[i]->image_data, uploaded_images[i]->image_data);
+  EXPECT_TRUE(last_entry->uploaded_files);
+  const auto& files = last_entry->uploaded_files.value();
+  for (size_t i = 0; i < files.size(); ++i) {
+    EXPECT_EQ(files[i]->filename, uploaded_files[i]->filename);
+    EXPECT_EQ(files[i]->filesize, uploaded_files[i]->filesize);
+    EXPECT_EQ(files[i]->data, uploaded_files[i]->data);
+    EXPECT_EQ(files[i]->type, uploaded_files[i]->type);
   }
 }
 

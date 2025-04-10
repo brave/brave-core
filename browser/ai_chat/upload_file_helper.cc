@@ -201,17 +201,18 @@ void UploadFileHelper::MultiFilesSelected(
           [](UploadImageCallback callback,
              std::vector<std::tuple<std::optional<std::vector<uint8_t>>,
                                     std::string>> results) {
-            std::vector<mojom::UploadedImagePtr> uploaded_images;
+            std::vector<mojom::UploadedFilePtr> uploaded_files;
             for (const auto& [image_data, filename] : results) {
               if (image_data) {
-                uploaded_images.push_back(mojom::UploadedImage::New(
-                    std::move(filename), image_data->size(), *image_data));
+                uploaded_files.push_back(mojom::UploadedFile::New(
+                    std::move(filename), image_data->size(), *image_data,
+                    mojom::UploadedFileType::kImage));
               }
             }
             std::move(callback).Run(
-                uploaded_images.empty()
+                uploaded_files.empty()
                     ? std::nullopt
-                    : std::make_optional(std::move(uploaded_images)));
+                    : std::make_optional(std::move(uploaded_files)));
           },
           std::move(upload_image_callback_)));
 
@@ -288,9 +289,10 @@ void UploadFileHelper::OnImageEncoded(
     std::move(upload_image_callback_).Run(std::nullopt);
     return;
   }
-  std::vector<mojom::UploadedImagePtr> images;
-  images.push_back(
-      mojom::UploadedImage::New(std::move(filename), output->size(), *output));
+  std::vector<mojom::UploadedFilePtr> images;
+  images.push_back(mojom::UploadedFile::New(std::move(filename), output->size(),
+                                            *output,
+                                            mojom::UploadedFileType::kImage));
   std::move(upload_image_callback_).Run(std::make_optional(std::move(images)));
 }
 

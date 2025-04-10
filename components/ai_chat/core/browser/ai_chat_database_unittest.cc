@@ -359,8 +359,8 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent_Invalid) {
                                   history);
 }
 
-TEST_P(AIChatDatabaseTest, UploadImage) {
-  constexpr char kUUID[] = "upload_image_uuid";
+TEST_P(AIChatDatabaseTest, UploadFile) {
+  constexpr char kUUID[] = "upload_file_uuid";
   mojom::ConversationPtr metadata = mojom::Conversation::New(
       kUUID, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
       0, nullptr);
@@ -692,10 +692,15 @@ class AIChatDatabaseMigrationTest : public testing::Test,
   std::unique_ptr<AIChatDatabase> db_;
 };
 
-INSTANTIATE_TEST_SUITE_P(,
-                         AIChatDatabaseMigrationTest,
-                         testing::Range(kLowestSupportedDatabaseVersion,
-                                        kCurrentDatabaseVersion));
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    AIChatDatabaseMigrationTest,
+    testing::Range(kLowestSupportedDatabaseVersion, kCurrentDatabaseVersion),
+    [](const testing::TestParamInfo<AIChatDatabaseMigrationTest::ParamType>&
+           info) {
+      return base::StringPrintf("From_v%d_to_v%d", info.param,
+                                kCurrentDatabaseVersion);
+    });
 
 // Tests the migration of the database from version() to kCurrentVersionNumber
 TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
@@ -784,6 +789,48 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     auto* test_conversation = GetConversation(FROM_HERE, conversations, uuid);
     EXPECT_EQ(test_conversation->total_tokens, expected_total_tokens);
     EXPECT_EQ(test_conversation->trimmed_tokens, expected_trimmed_tokens);
+  }
+
+  // V4 Specific Migration checks
+  {
+    if (version() == 3) {
+      auto conversation_with_image =
+          db_->GetConversationData("1ae484fe-ab33-4f42-8813-14080e4addc1");
+      ASSERT_TRUE(conversation_with_image);
+      ASSERT_EQ(conversation_with_image->entries.size(), 2u);
+      ASSERT_TRUE(conversation_with_image->entries[0]->uploaded_files);
+      ASSERT_TRUE(conversation_with_image->entries[1]->uploaded_files);
+      ASSERT_EQ(conversation_with_image->entries[0]->uploaded_files->size(),
+                2u);
+      ASSERT_EQ(conversation_with_image->entries[1]->uploaded_files->size(),
+                1u);
+      EXPECT_EQ(
+          conversation_with_image->entries[0]->uploaded_files->at(0)->type,
+          mojom::UploadedFileType::kImage);
+      EXPECT_EQ(
+          conversation_with_image->entries[0]->uploaded_files->at(1)->type,
+          mojom::UploadedFileType::kImage);
+      EXPECT_EQ(
+          conversation_with_image->entries[1]->uploaded_files->at(0)->type,
+          mojom::UploadedFileType::kImage);
+    }
+
+    // Verify the newly added entry with files after migration have `type`
+    // persisted.
+    auto history = CreateSampleChatHistory(1u, 0, 3u);
+    EXPECT_TRUE(
+        db_->AddConversationEntry("migrationtest2", history[0]->Clone()));
+    auto test_conversation = db_->GetConversationData("migrationtest2");
+    ASSERT_EQ(test_conversation->entries.size(), 2u);
+    ASSERT_TRUE(test_conversation->entries[1]->uploaded_files);
+    ASSERT_TRUE(history[0]->uploaded_files);
+    EXPECT_EQ(test_conversation->entries[1]->uploaded_files->size(),
+              history[0]->uploaded_files->size());
+    for (size_t i = 0;
+         i < test_conversation->entries[1]->uploaded_files->size(); ++i) {
+      EXPECT_EQ(test_conversation->entries[1]->uploaded_files->at(i)->type,
+                history[0]->uploaded_files->at(i)->type);
+    }
   }
 }
 

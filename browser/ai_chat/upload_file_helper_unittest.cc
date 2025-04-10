@@ -11,6 +11,7 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
@@ -46,8 +47,8 @@ class UploadFileHelperTest : public content::RenderViewHostTestHarness {
     file_helper_ = std::make_unique<UploadFileHelper>(web_contents(), profile);
   }
 
-  std::optional<std::vector<mojom::UploadedImagePtr>> UploadImageSync() {
-    base::test::TestFuture<std::optional<std::vector<mojom::UploadedImagePtr>>>
+  std::optional<std::vector<mojom::UploadedFilePtr>> UploadImageSync() {
+    base::test::TestFuture<std::optional<std::vector<mojom::UploadedFilePtr>>>
         future;
     file_helper_->UploadImage(
         std::make_unique<ChromeSelectFilePolicy>(web_contents()),
@@ -135,9 +136,9 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   ASSERT_TRUE(sample_result);
   ASSERT_EQ(1u, sample_result->size());
   EXPECT_EQ((*sample_result)[0]->filename, "sample_png.png");
-  EXPECT_EQ((*sample_result)[0]->filesize,
-            (*sample_result)[0]->image_data.size());
-  auto encoded_bitmap = gfx::PNGCodec::Decode((*sample_result)[0]->image_data);
+  EXPECT_EQ((*sample_result)[0]->filesize, (*sample_result)[0]->data.size());
+  EXPECT_EQ((*sample_result)[0]->type, mojom::UploadedFileType::kImage);
+  auto encoded_bitmap = gfx::PNGCodec::Decode((*sample_result)[0]->data);
   EXPECT_TRUE(gfx::test::AreBitmapsClose(sample_bitmap, encoded_bitmap, 1));
   // Check dimensions are the same.
   EXPECT_EQ(sample_bitmap.width(), encoded_bitmap.width());
@@ -154,10 +155,10 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   ASSERT_TRUE(large_result);
   ASSERT_EQ(1u, large_result->size());
   EXPECT_EQ((*large_result)[0]->filename, "large_png.png");
-  EXPECT_EQ((*large_result)[0]->filesize,
-            (*large_result)[0]->image_data.size());
+  EXPECT_EQ((*large_result)[0]->filesize, (*large_result)[0]->data.size());
+  EXPECT_EQ((*large_result)[0]->type, mojom::UploadedFileType::kImage);
   EXPECT_LE((*large_result)[0]->filesize, large_png_bytes->size());
-  encoded_bitmap = gfx::PNGCodec::Decode((*large_result)[0]->image_data);
+  encoded_bitmap = gfx::PNGCodec::Decode((*large_result)[0]->data);
   EXPECT_EQ(1024, encoded_bitmap.width());
   EXPECT_EQ(768, encoded_bitmap.height());
 
@@ -172,15 +173,17 @@ TEST_F(UploadFileHelperTest, ImageRead) {
   ASSERT_EQ(2u, result->size());
 
   EXPECT_EQ((*result)[0]->filename, "sample_png.png");
-  EXPECT_EQ((*result)[0]->filesize, (*result)[0]->image_data.size());
-  auto encoded_bitmap1 = gfx::PNGCodec::Decode((*result)[0]->image_data);
+  EXPECT_EQ((*result)[0]->filesize, (*result)[0]->data.size());
+  EXPECT_EQ((*result)[0]->type, mojom::UploadedFileType::kImage);
+  auto encoded_bitmap1 = gfx::PNGCodec::Decode((*result)[0]->data);
   EXPECT_TRUE(gfx::test::AreBitmapsClose(sample_bitmap, encoded_bitmap1, 1));
   EXPECT_EQ(sample_bitmap.width(), encoded_bitmap1.width());
   EXPECT_EQ(sample_bitmap.height(), encoded_bitmap1.height());
 
   EXPECT_EQ((*result)[1]->filename, "large_png.png");
-  EXPECT_EQ((*result)[1]->filesize, (*result)[1]->image_data.size());
-  auto encoded_bitmap2 = gfx::PNGCodec::Decode((*result)[1]->image_data);
+  EXPECT_EQ((*result)[1]->filesize, (*result)[1]->data.size());
+  EXPECT_EQ((*result)[1]->type, mojom::UploadedFileType::kImage);
+  auto encoded_bitmap2 = gfx::PNGCodec::Decode((*result)[1]->data);
   EXPECT_EQ(1024, encoded_bitmap2.width());
   EXPECT_EQ(768, encoded_bitmap2.height());
 }
