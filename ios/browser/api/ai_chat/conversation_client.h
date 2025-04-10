@@ -44,7 +44,7 @@ class ConversationClient : public mojom::ConversationUI,
       const std::vector<std::string>& questions,
       mojom::SuggestionGenerationStatus status) override;
   void OnAssociatedContentInfoChanged(
-      const mojom::AssociatedContentPtr site_info,
+      std::vector<mojom::AssociatedContentPtr> site_info,
       bool should_send_content) override;
   void OnConversationDeleted() override;
 
