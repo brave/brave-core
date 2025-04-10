@@ -13,14 +13,9 @@
 
 namespace brave_ads {
 
-class PrefProviderInterface;
-
 std::optional<std::string> ToString(const base::Value& value);
 
-std::optional<base::Value> MaybeGetRootPrefValue(
-    const PrefProviderInterface* pref_provider,
-    const std::string& pref_path);
-
+std::optional<base::Value> MaybeGetRootPrefValue(const std::string& pref_path);
 std::optional<base::Value> MaybeGetDictPrefValue(const base::Value& pref_value,
                                                  const std::string& key);
 
@@ -31,14 +26,11 @@ std::optional<base::Value> MaybeGetNextPrefValue(const base::Value& pref_value,
                                                  const std::string& key);
 
 // Get the pref value from the provider for the given path. Handles nested
-// dictionaries, lists, and dot-separated keys.
-// `base::Value::Find*ByDottedPath` is not used because path keys can contain
-// dots. Returns `std::nullopt` if the path is malformed or unknown. Path keys
-// should be separated by `|`. Example `list|1` would return the second
-// element of a list.
-std::optional<base::Value> MaybeGetPrefValue(
-    const PrefProviderInterface* pref_provider,
-    const std::string& pref_path);
+// dictionaries, lists, and dot-separated keys. `base::Value::Find*ByDottedPath`
+// is not used because path keys can contain dots. Returns `std::nullopt` if the
+// path is malformed or unknown. Path keys should be separated by `|`. Example
+// `list|1` would return the second element of a list.
+std::optional<base::Value> MaybeGetPrefValue(const std::string& pref_path);
 
 }  // namespace brave_ads
 

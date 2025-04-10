@@ -9,7 +9,6 @@
 #include <cstdint>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_pref_provider.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
@@ -81,8 +80,6 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
   const database::table::CreativeNewTabPageAds creative_ads_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
-
-  const AdsClientPrefProvider pref_provider_;
 
   base::WeakPtrFactory<EligibleNewTabPageAdsV2> weak_factory_{this};
 };
