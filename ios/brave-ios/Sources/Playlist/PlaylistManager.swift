@@ -910,7 +910,7 @@ extension PlaylistManager {
               || PlaylistItem.itemExists(pageSrc: item.pageSrc)
             {
               await withCheckedContinuation { continuation in
-                PlaylistItem.updateItem(newItem) {
+                PlaylistItem.updateItem(newItem) { _ in
                   continuation.resume()
                 }
               }
