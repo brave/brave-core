@@ -632,24 +632,18 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  public func autoDownload(item: PlaylistInfo) {
-    guard
-      let downloadType = PlayListDownloadType(
-        rawValue: Preferences.Playlist.autoDownloadVideo.value
-      )
-    else {
-      return
-    }
+  public func canAutoDownload(item: PlaylistInfo) -> Bool {
+    let downloadType = PlayListDownloadType(
+      rawValue: Preferences.Playlist.autoDownloadVideo.value
+    )
 
-    switch downloadType {
-    case .on:
+    // Only download when the preference is on OR when the preference is on Wifi
+    return downloadType == .on || downloadType == .wifi && DeviceInfo.hasWifiConnection()
+  }
+
+  public func autoDownload(item: PlaylistInfo) {
+    if canAutoDownload(item: item) {
       PlaylistManager.shared.download(item: item)
-    case .wifi:
-      if DeviceInfo.hasWifiConnection() {
-        PlaylistManager.shared.download(item: item)
-      }
-    case .off:
-      break
     }
   }
 
