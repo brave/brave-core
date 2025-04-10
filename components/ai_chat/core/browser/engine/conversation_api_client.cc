@@ -419,22 +419,26 @@ mojom::ConversationEntryEventPtr ConversationAPIClient::ParseResponseEvent(
       const std::string* title = source.FindString("title");
       const std::string* url = source.FindString("url");
       const std::string* favicon_url = source.FindString("favicon");
-      if (!title || !url || !favicon_url) {
+      if (!title || !url) {
         DVLOG(2) << "Missing required fields in web source event: "
                  << item.DebugString();
         continue;
       }
       GURL item_url(*url);
-      GURL item_favicon_url(*favicon_url);
+      GURL item_favicon_url =
+          favicon_url
+              ? GURL(*favicon_url)
+              : GURL("chrome-untrusted://resources/brave-icons/globe.svg");
+
       if (!item_url.is_valid() || !item_favicon_url.is_valid()) {
         DVLOG(2) << "Invalid URL in webSource event: " << item.DebugString();
         continue;
       }
       // Validate favicon is private source
-      if (!item_favicon_url.SchemeIs(url::kHttpsScheme) ||
-          base::CompareCaseInsensitiveASCII(item_favicon_url.host_piece(),
-                                            kAllowedWebSourceFaviconHost) !=
-              0) {
+      if (favicon_url && (!item_favicon_url.SchemeIs(url::kHttpsScheme) ||
+                          base::CompareCaseInsensitiveASCII(
+                              item_favicon_url.host_piece(),
+                              kAllowedWebSourceFaviconHost) != 0)) {
         DVLOG(2) << "webSource event contained disallowed host or scheme: "
                  << item.DebugString();
         continue;
