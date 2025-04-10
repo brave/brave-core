@@ -80,7 +80,7 @@ void IssuersUrlRequest::FetchCallback(
   is_fetching_ = false;
 
   if (mojom_url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
-    BLOG(1, "Failed to fetch issuers as a browser upgrade is required");
+    BLOG(0, "Failed to fetch issuers as a browser upgrade is required");
     return AdsNotifierManager::GetInstance()
         .NotifyBrowserUpgradeRequiredToServeAds();
   }
@@ -111,7 +111,7 @@ void IssuersUrlRequest::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
 }
 
 void IssuersUrlRequest::FailedToFetchIssuers() {
-  BLOG(1, "Failed to fetch issuers");
+  BLOG(0, "Failed to fetch issuers");
 
   NotifyFailedToFetchIssuers();
 

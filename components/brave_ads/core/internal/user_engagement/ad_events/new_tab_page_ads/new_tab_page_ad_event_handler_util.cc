@@ -21,7 +21,7 @@ bool ShouldFireAdEvent(const NewTabPageAdInfo& ad,
                        const AdEventList& ad_events,
                        mojom::NewTabPageAdEventType mojom_ad_event_type) {
   if (!WasAdServed(ad, ad_events, mojom_ad_event_type)) {
-    BLOG(1,
+    BLOG(0,
          "New tab page ad: Not allowed because an ad was not served for "
          "placement id "
              << ad.placement_id);

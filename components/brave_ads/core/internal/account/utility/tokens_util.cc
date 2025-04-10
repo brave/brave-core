@@ -69,27 +69,27 @@ std::optional<cbr::UnblindedTokenList> ParseVerifyAndUnblindTokens(
     const cbr::BlindedTokenList& blinded_tokens,
     const cbr::PublicKey& public_key) {
   if (!public_key.has_value()) {
-    BLOG(1, "Invalid public key");
+    BLOG(0, "Invalid public key");
     return std::nullopt;
   }
 
   const std::string* const batch_dleq_proof_base64 =
       dict.FindString(kBatchDLEQProofKey);
   if (!batch_dleq_proof_base64) {
-    BLOG(1, "Failed to parse batch DLEQ proof");
+    BLOG(0, "Failed to parse batch DLEQ proof");
     return std::nullopt;
   }
   cbr::BatchDLEQProof batch_dleq_proof =
       cbr::BatchDLEQProof(*batch_dleq_proof_base64);
   if (!batch_dleq_proof.has_value()) {
-    BLOG(1, "Invalid batch DLEQ proof");
+    BLOG(0, "Invalid batch DLEQ proof");
     return std::nullopt;
   }
 
   const std::optional<cbr::SignedTokenList> signed_tokens =
       ParseSignedTokens(dict);
   if (!signed_tokens) {
-    BLOG(1, "Failed to parse signed tokens");
+    BLOG(0, "Failed to parse signed tokens");
     return std::nullopt;
   }
 
@@ -97,7 +97,7 @@ std::optional<cbr::UnblindedTokenList> ParseVerifyAndUnblindTokens(
       batch_dleq_proof.VerifyAndUnblind(tokens, blinded_tokens, *signed_tokens,
                                         public_key);
   if (!unblinded_tokens || unblinded_tokens->empty()) {
-    BLOG(1, "Failed to verify and unblind tokens");
+    BLOG(0, "Failed to verify and unblind tokens");
     return std::nullopt;
   }
 

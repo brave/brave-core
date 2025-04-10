@@ -91,7 +91,7 @@ std::string LoadFile(const base::FilePath& path) {
 
   const bool success = base::ReadFileToString(path, &json);
   if (!success || json.empty()) {
-    VLOG(1) << "Failed to load file: " << path;
+    VLOG(0) << "Failed to load file: " << path;
     return json;
   }
 
@@ -121,7 +121,8 @@ void ResourceComponent::LoadManifestCallback(const std::string& component_id,
   const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(json);
   if (!dict) {
-    return VLOG(1) << "Failed to parse manifest";
+    VLOG(0) << "Failed to parse manifest";
+    return;
   }
 
   const std::string* const manifest_version =
@@ -148,7 +149,8 @@ void ResourceComponent::LoadResourceCallback(
   const std::optional<base::Value::Dict> root =
       base::JSONReader::ReadDict(json);
   if (!root) {
-    return VLOG(1) << "Failed to parse resource";
+    VLOG(0) << "Failed to parse resource";
+    return;
   }
   const base::Value::Dict& dict = *root;
 
@@ -169,7 +171,8 @@ void ResourceComponent::LoadResourceCallback(
   for (const auto& item : *resources_list) {
     const auto* item_dict = item.GetIfDict();
     if (!item_dict) {
-      return VLOG(1) << "Failed to parse resource";
+      VLOG(0) << "Failed to parse resource";
+      return;
     }
 
     const std::string* const resource_id =

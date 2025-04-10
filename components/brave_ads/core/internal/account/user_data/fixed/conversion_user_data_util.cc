@@ -42,7 +42,7 @@ std::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
       sealed_verifiable_conversion_envelope =
           SealVerifiableConversionEnvelope(*conversion.verifiable);
   if (!sealed_verifiable_conversion_envelope) {
-    BLOG(1, "Failed to seal verifiable conversion envelope for id "
+    BLOG(0, "Failed to seal verifiable conversion envelope for id "
                 << conversion.verifiable->id << " and "
                 << conversion.verifiable->advertiser_public_key_base64
                 << " advertiser public key");

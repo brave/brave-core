@@ -208,7 +208,7 @@ bool NotificationHelperImplWin::IsFocusAssistEnabled() const {
     }
 
     case FAILED: {
-      VLOG(1) << "Failed to determine Focus Assist status";
+      VLOG(0) << "Failed to determine Focus Assist status";
       return false;
     }
 

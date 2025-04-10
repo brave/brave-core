@@ -22,7 +22,7 @@ std::optional<std::string> MaybeParseVerifableConversionIdFromHtmlMetaTag(
   std::string verifiable_conversion_id;
 
   if (!RE2::FindAndConsume(&input, r, &verifiable_conversion_id)) {
-    BLOG(1, "Failed to parse verifiable conversion id for " << id_pattern
+    BLOG(0, "Failed to parse verifiable conversion id for " << id_pattern
                                                             << " id pattern");
     return std::nullopt;
   }

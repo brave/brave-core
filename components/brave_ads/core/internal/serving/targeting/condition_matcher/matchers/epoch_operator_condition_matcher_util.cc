@@ -7,10 +7,9 @@
 
 #include <optional>
 
-#include "base/logging.h"
 #include "base/strings/pattern.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/internal/epoch_operator_condition_matcher_util_internal.h"
 
 namespace brave_ads {
@@ -47,7 +46,7 @@ bool MatchEpochOperator(std::string_view value, std::string_view condition) {
   const std::optional<base::TimeDelta> time_delta = ParseTimeDelta(value);
   if (!time_delta) {
     // Invalid time delta.
-    VLOG(1) << "Invalid epoch operator condition matcher for " << condition;
+    BLOG(1, "Invalid epoch operator condition matcher for " << condition);
     return false;
   }
 
@@ -77,7 +76,7 @@ bool MatchEpochOperator(std::string_view value, std::string_view condition) {
   }
 
   // Unknown operator.
-  VLOG(1) << "Unknown epoch operator condition matcher for " << condition;
+  BLOG(1, "Unknown epoch operator condition matcher for " << condition);
   return false;
 }
 

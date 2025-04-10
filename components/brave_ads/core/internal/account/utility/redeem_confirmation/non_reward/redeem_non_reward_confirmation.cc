@@ -109,7 +109,7 @@ void RedeemNonRewardConfirmation::SuccessfullyRedeemedConfirmation(
 void RedeemNonRewardConfirmation::FailedToRedeemConfirmation(
     const ConfirmationInfo& confirmation,
     bool should_retry) {
-  BLOG(1, "Failed to redeem non-reward "
+  BLOG(0, "Failed to redeem non-reward "
               << confirmation.type << " confirmation for "
               << confirmation.ad_type << " with transaction id "
               << confirmation.transaction_id << " and creative instance id "

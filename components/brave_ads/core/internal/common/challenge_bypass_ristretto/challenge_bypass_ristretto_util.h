@@ -18,7 +18,7 @@ namespace brave_ads::cbr {
 template <typename T, typename U = T>
 std::optional<U> ValueOrLogError(base::expected<T, std::string> result) {
   if (!result.has_value()) {
-    BLOG(1, "Challenge Bypass Ristretto Error: " << result.error());
+    BLOG(0, "Challenge Bypass Ristretto Error: " << result.error());
     return std::nullopt;
   }
   return std::make_optional<U>(std::move(result).value());

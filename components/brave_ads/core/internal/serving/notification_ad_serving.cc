@@ -116,7 +116,7 @@ void NotificationAdServing::GetAdEvents() {
 void NotificationAdServing::GetAdEventsCallback(bool success,
                                                 const AdEventList& ad_events) {
   if (!success) {
-    BLOG(1, "Notification ad not served: Failed to get ad events");
+    BLOG(0, "Notification ad not served: Failed to get ad events");
     return FailedToServeAd();
   }
 
@@ -222,7 +222,7 @@ base::Time NotificationAdServing::MaybeServeAdAfter(base::TimeDelta delay) {
 
 void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
   if (!ad.IsValid()) {
-    BLOG(1, "Notification ad not served: Invalid ad");
+    BLOG(0, "Notification ad not served: Invalid ad");
     return FailedToServeAd();
   }
 

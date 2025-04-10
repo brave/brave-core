@@ -119,7 +119,7 @@ void SubdivisionUrlRequest::SuccessfullyFetchedSubdivision(
 }
 
 void SubdivisionUrlRequest::FailedToFetchSubdivision() {
-  BLOG(1, "Failed to fetch subdivision");
+  BLOG(0, "Failed to fetch subdivision");
 
   NotifyFailedToFetchSubdivision();
 

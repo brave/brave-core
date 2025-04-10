@@ -9,11 +9,11 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/types/cxx23_to_underlying.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 
 namespace brave_ads {
@@ -114,7 +114,7 @@ std::optional<base::Value> MaybeGetPrefValue(const std::string& pref_path) {
       pref_path, "|", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
   if (keys.empty()) {
     // Invalid pref path.
-    VLOG(1) << "Invalid condition matcher pref path: " << pref_path;
+    BLOG(1, "Invalid condition matcher pref path: " << pref_path);
     return std::nullopt;
   }
 
@@ -132,8 +132,8 @@ std::optional<base::Value> MaybeGetPrefValue(const std::string& pref_path) {
       }
 
       // Unknown pref path key.
-      VLOG(1) << "Unknown condition matcher " << key << " key for " << pref_path
-              << " pref path";
+      BLOG(1, "Unknown condition matcher " << key << " key for " << pref_path
+                                           << " pref path");
       return std::nullopt;
     }
 
@@ -141,8 +141,8 @@ std::optional<base::Value> MaybeGetPrefValue(const std::string& pref_path) {
     pref_value = MaybeGetNextPrefValue(*pref_value, key);
     if (!pref_value) {
       // Unknown pref path key.
-      VLOG(1) << "Unknown condition matcher " << key << " key for " << pref_path
-              << " pref path";
+      BLOG(1, "Unknown condition matcher " << key << " key for " << pref_path
+                                           << " pref path");
       return std::nullopt;
     }
 
@@ -153,8 +153,8 @@ std::optional<base::Value> MaybeGetPrefValue(const std::string& pref_path) {
 
     if (iter != keys.cend() - 1) {
       // Invalid pref path, because this should be the last pref path key.
-      VLOG(1) << "Invalid condition matcher " << key << " key for " << pref_path
-              << " pref path";
+      BLOG(1, "Invalid condition matcher " << key << " key for " << pref_path
+                                           << " pref path");
       return std::nullopt;
     }
 

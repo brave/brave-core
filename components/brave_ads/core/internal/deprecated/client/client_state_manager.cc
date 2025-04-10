@@ -121,7 +121,7 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
     SaveState();
   } else {
     if (!FromJson(*json)) {
-      BLOG(1, "Failed to parse client state: " << *json);
+      BLOG(0, "Failed to parse client state: " << *json);
 
       return std::move(callback).Run(/*success=*/false);
     }

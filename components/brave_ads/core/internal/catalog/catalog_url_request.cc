@@ -82,13 +82,13 @@ void CatalogUrlRequest::FetchCallback(
   is_fetching_ = false;
 
   if (mojom_url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
-    BLOG(1, "Failed to request catalog as a browser upgrade is required");
+    BLOG(0, "Failed to request catalog as a browser upgrade is required");
     return AdsNotifierManager::GetInstance()
         .NotifyBrowserUpgradeRequiredToServeAds();
   }
 
   if (mojom_url_response.status_code == net::HTTP_FORBIDDEN) {
-    BLOG(1, "Failed to request catalog as forbidden");
+    BLOG(0, "Failed to request catalog as forbidden");
     return FailedToFetchCatalog(/*should_retry=*/false);
   }
 
@@ -140,7 +140,7 @@ void CatalogUrlRequest::SuccessfullyFetchedCatalog(const CatalogInfo& catalog) {
 }
 
 void CatalogUrlRequest::FailedToFetchCatalog(bool should_retry) {
-  BLOG(1, "Failed to fetch catalog");
+  BLOG(0, "Failed to fetch catalog");
 
   NotifyFailedToFetchCatalog();
 

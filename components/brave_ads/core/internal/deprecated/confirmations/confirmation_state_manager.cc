@@ -58,7 +58,7 @@ void ConfirmationStateManager::LoadCallback(
     SaveState();
   } else {
     if (!FromJson(*json)) {
-      BLOG(1, "Failed to parse confirmation state: " << *json);
+      BLOG(0, "Failed to parse confirmation state: " << *json);
 
       return std::move(callback).Run(/*success=*/false);
     }

@@ -30,7 +30,7 @@ void InlineContentAdEventHandler::FireEvent(
     mojom::InlineContentAdEventType mojom_ad_event_type,
     FireInlineContentAdEventHandlerCallback callback) {
   if (placement_id.empty()) {
-    BLOG(1,
+    BLOG(0,
          "Failed to fire inline content ad event due to an invalid placement "
          "id");
     return FailedToFireEvent(placement_id, creative_instance_id,
@@ -38,7 +38,7 @@ void InlineContentAdEventHandler::FireEvent(
   }
 
   if (creative_instance_id.empty()) {
-    BLOG(1,
+    BLOG(0,
          "Failed to fire inline content ad event due to an invalid creative "
          "instance id");
     return FailedToFireEvent(placement_id, creative_instance_id,
@@ -63,7 +63,7 @@ void InlineContentAdEventHandler::GetForCreativeInstanceIdCallback(
     const std::string& creative_instance_id,
     const CreativeInlineContentAdInfo& creative_ad) {
   if (!success) {
-    BLOG(1,
+    BLOG(0,
          "Failed to fire inline content ad event due to missing creative "
          "instance id "
              << creative_instance_id);
@@ -88,13 +88,13 @@ void InlineContentAdEventHandler::GetForTypeCallback(
     bool success,
     const AdEventList& ad_events) {
   if (!success) {
-    BLOG(1, "Inline content ad: Failed to get ad events");
+    BLOG(0, "Inline content ad: Failed to get ad events");
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
                              mojom_ad_event_type, std::move(callback));
   }
 
   if (!WasAdServed(ad, ad_events, mojom_ad_event_type)) {
-    BLOG(1,
+    BLOG(0,
          "Inline content ad: Not allowed because an ad was not served for "
          "placement id "
              << ad.placement_id);
@@ -178,7 +178,7 @@ void InlineContentAdEventHandler::FailedToFireEvent(
     const std::string& creative_instance_id,
     mojom::InlineContentAdEventType mojom_ad_event_type,
     FireInlineContentAdEventHandlerCallback callback) const {
-  BLOG(1, "Failed to fire inline content ad "
+  BLOG(0, "Failed to fire inline content ad "
               << mojom_ad_event_type << " event for placement id "
               << placement_id << " and creative instance id "
               << creative_instance_id);

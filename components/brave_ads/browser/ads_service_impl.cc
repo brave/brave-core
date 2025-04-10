@@ -441,7 +441,7 @@ void AdsServiceImpl::InitializeBasePathDirectoryCallback(
     size_t current_start_number,
     bool success) {
   if (!success) {
-    VLOG(1) << "Failed to initialize " << ads_service_path_ << " directory";
+    VLOG(0) << "Failed to initialize " << ads_service_path_ << " directory";
     return ShutdownAdsService();
   }
 
@@ -474,7 +474,7 @@ void AdsServiceImpl::InitializeRewardsWalletCallback(
   }
 
   if (!mojom_rewards_wallet && UserHasJoinedBraveRewards()) {
-    VLOG(1) << "Failed to initialize Brave Rewards wallet";
+    VLOG(0) << "Failed to initialize Brave Rewards wallet";
     return ShutdownAdsService();
   }
 
@@ -505,7 +505,7 @@ void AdsServiceImpl::InitializeBatAds(
 void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
   TRACE_EVENT1("brave.ads", "InitializeBatAdsCallback", "success", success);
   if (!success) {
-    VLOG(1) << "Failed to initialize Bat Ads";
+    VLOG(0) << "Failed to initialize Bat Ads";
     return ShutdownAdsService();
   }
 
@@ -1093,7 +1093,7 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
 void AdsServiceImpl::OpenNewTabWithAdCallback(
     std::optional<base::Value::Dict> dict) {
   if (!dict) {
-    return VLOG(1) << "Failed to get notification ad";
+    return VLOG(0) << "Failed to get notification ad";
   }
 
   const NotificationAdInfo notification_ad = NotificationAdFromValue(*dict);
@@ -1107,7 +1107,8 @@ void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
   }
 
   if (!url.is_valid()) {
-    return VLOG(1) << "Failed to open new tab due to invalid URL: " << url;
+    VLOG(0) << "Failed to open new tab due to invalid URL: " << url;
+    return;
   }
 
   delegate_->OpenNewTabWithUrl(url);

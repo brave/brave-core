@@ -32,7 +32,7 @@ void NotificationAdEventHandler::FireEvent(
   const std::optional<NotificationAdInfo> ad =
       NotificationAdManager::GetInstance().MaybeGetForPlacementId(placement_id);
   if (!ad) {
-    BLOG(1, "Failed to fire notification ad event due to missing placement id "
+    BLOG(0, "Failed to fire notification ad event due to missing placement id "
                 << placement_id);
 
     return FailedToFireEvent(placement_id, mojom_ad_event_type,
@@ -75,7 +75,7 @@ void NotificationAdEventHandler::FailedToFireEvent(
     const std::string& placement_id,
     mojom::NotificationAdEventType mojom_ad_event_type,
     FireNotificationAdEventHandlerCallback callback) const {
-  BLOG(1, "Failed to fire notification ad " << mojom_ad_event_type
+  BLOG(0, "Failed to fire notification ad " << mojom_ad_event_type
                                             << " event for placement id "
                                             << placement_id);
 

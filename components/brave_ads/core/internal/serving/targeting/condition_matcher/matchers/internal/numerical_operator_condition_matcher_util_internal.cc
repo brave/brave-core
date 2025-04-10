@@ -9,9 +9,9 @@
 #include <string>
 
 #include "base/check.h"
-#include "base/logging.h"
 #include "base/strings/pattern.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
 namespace brave_ads {
 
@@ -22,16 +22,14 @@ std::optional<double> ParseNumber(std::string_view condition) {
   const size_t pos = condition.find(':');
   if (pos == std::string::npos || pos + 1 >= condition.size()) {
     // Malformed operator.
-    VLOG(1) << "Malformed numerical operator condition matcher for "
-            << condition;
+    BLOG(1, "Malformed numerical operator condition matcher for " << condition);
     return std::nullopt;
   }
 
   double number;
   if (!base::StringToDouble(condition.substr(pos + 1), &number)) {
     // Malformed number.
-    VLOG(1) << "Malformed numerical operator condition matcher for "
-            << condition;
+    BLOG(1, "Malformed numerical operator condition matcher for " << condition);
     return std::nullopt;
   }
 

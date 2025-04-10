@@ -8,10 +8,10 @@
 #include <limits>
 #include <optional>
 
-#include "base/logging.h"
 #include "base/numerics/ranges.h"
 #include "base/strings/pattern.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/internal/numerical_operator_condition_matcher_util_internal.h"
 
 namespace brave_ads {
@@ -49,8 +49,7 @@ bool MatchNumericalOperator(std::string_view value,
   double value_as_double;
   if (!base::StringToDouble(value, &value_as_double)) {
     // Malformed value.
-    VLOG(1) << "Malformed numerical operator condition matcher for "
-            << condition;
+    BLOG(1, "Malformed numerical operator condition matcher for " << condition);
     return false;
   }
 
@@ -82,7 +81,7 @@ bool MatchNumericalOperator(std::string_view value,
   }
 
   // Unknown operator.
-  VLOG(1) << "Unknown numerical operator condition matcher for " << condition;
+  BLOG(1, "Unknown numerical operator condition matcher for " << condition);
   return false;
 }
 

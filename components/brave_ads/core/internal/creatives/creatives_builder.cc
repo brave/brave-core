@@ -33,12 +33,12 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
     base::Time campaign_start_at;
     if (!base::Time::FromUTCString(campaign.start_at.c_str(),
                                    &campaign_start_at)) {
-      BLOG(1, "Campaign id " << campaign.id << " has an invalid start at time");
+      BLOG(0, "Campaign id " << campaign.id << " has an invalid start at time");
     }
 
     base::Time campaign_end_at;
     if (!base::Time::FromUTCString(campaign.end_at.c_str(), &campaign_end_at)) {
-      BLOG(1, "Campaign id " << campaign.id << " has an invalid end at time");
+      BLOG(0, "Campaign id " << campaign.id << " has an invalid end at time");
     }
 
     // Geo Targets
