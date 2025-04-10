@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/cached_permission_status.cc b/third_party/blink/renderer/core/frame/cached_permission_status.cc
-index e0bf619731dcefa800c1590d334433fcc46f8eaf..c44d6b0754a694c6f9539984f3870e9cba75da7c 100644
+index a713098c66e768d4a4561d9a765175363753bedf..719a8748b28af27dcb2b2889a34518837154c7c4 100644
 --- a/third_party/blink/renderer/core/frame/cached_permission_status.cc
 +++ b/third_party/blink/renderer/core/frame/cached_permission_status.cc
 @@ -15,7 +15,6 @@ using mojom::blink::PermissionDescriptorPtr;

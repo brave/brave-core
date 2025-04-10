@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_style.cc b/chrome/browser/ui/tabs/tab_style.cc
-index 2bf8648cf8749cd43f9ff314778eadbf4b193057..1b06b68a138ed9cb0e73f0f1a7e29fb81115e3f6 100644
+index aa9c7167d1d294ab56d5af39ddd881a7f92f8248..11a9222ef22d259cb35cfe7406211ecc00a78e65 100644
 --- a/chrome/browser/ui/tabs/tab_style.cc
 +++ b/chrome/browser/ui/tabs/tab_style.cc
-@@ -192,6 +192,7 @@ float ChromeRefresh2023TabStyle::GetSelectedTabOpacity() const {
+@@ -198,6 +198,7 @@ float ChromeRefresh2023TabStyle::GetSelectedTabOpacity() const {
  
  // static
  const TabStyle* TabStyle::Get() {

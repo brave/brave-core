@@ -1,8 +1,8 @@
 diff --git a/tools/grit/grit/format/minifier.py b/tools/grit/grit/format/minifier.py
-index bd2dc7f9936a3c3a1d892be3b05be02a6910c571..9f176d2f5124036ae748f98aa80e7b9ab60ec716 100644
+index 13f5adf3c7c2c0ce5278de17b3faea3ba3c0a9ba..303a6c680631c02c5f1e2b86b6ad564ce45c96dd 100644
 --- a/tools/grit/grit/format/minifier.py
 +++ b/tools/grit/grit/format/minifier.py
-@@ -48,3 +48,4 @@ def Minify(source, filename):
+@@ -32,3 +32,4 @@ def Minify(source, filename):
      print(stderr)
      sys.exit(p.returncode)
    return stdout
