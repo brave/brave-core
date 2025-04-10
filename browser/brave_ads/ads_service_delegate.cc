@@ -20,14 +20,10 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "build/build_config.h"
-#include "chrome/browser/fullscreen.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_prepopulate_data_resolver_factory.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/common/channel_info.h"
 #include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
@@ -40,6 +36,11 @@
 #include "brave/browser/notifications/brave_notification_platform_bridge_helper_android.h"
 #include "chrome/browser/android/service_tab_launcher.h"
 #include "content/public/browser/page_navigator.h"
+#else
+#include "chrome/browser/fullscreen.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_navigator.h"
 #endif
 
 namespace brave_ads {
