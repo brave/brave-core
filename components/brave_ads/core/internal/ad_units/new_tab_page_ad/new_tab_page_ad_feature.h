@@ -28,7 +28,7 @@ inline constexpr base::FeatureParam<size_t> kMaximumNewTabPageAdsPerDay{
 // Set to 0 to never cap.
 inline constexpr base::FeatureParam<base::TimeDelta>
     kNewTabPageAdMinimumWaitTime{&kNewTabPageAdFeature, "minimum_wait_time",
-                                 base::Minutes(5)};
+                                 base::Minutes(1)};
 
 }  // namespace brave_ads
 

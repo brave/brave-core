@@ -88,7 +88,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest, NewTabPageAdMinimumWaitTime) {
 
 TEST(BraveAdsNewTabPageAdFeatureTest, DefaultNewTabPageAdMinimumWaitTime) {
   // Act & Assert
-  EXPECT_EQ(base::Minutes(5), kNewTabPageAdMinimumWaitTime.Get());
+  EXPECT_EQ(base::Minutes(1), kNewTabPageAdMinimumWaitTime.Get());
 }
 
 TEST(BraveAdsNewTabPageAdFeatureTest,
@@ -98,7 +98,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kNewTabPageAdFeature);
 
   // Act & Assert
-  EXPECT_EQ(base::Minutes(5), kNewTabPageAdMinimumWaitTime.Get());
+  EXPECT_EQ(base::Minutes(1), kNewTabPageAdMinimumWaitTime.Get());
 }
 
 }  // namespace brave_ads

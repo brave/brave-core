@@ -66,7 +66,7 @@ TEST(BraveAdsTextClassificationFeatureTest,
 TEST(BraveAdsTextClassificationFeatureTest,
      DefaultTextClassificationPageProbabilitiesHistorySize) {
   // Act & Assert
-  EXPECT_EQ(5U, kTextClassificationPageProbabilitiesHistorySize.Get());
+  EXPECT_EQ(15U, kTextClassificationPageProbabilitiesHistorySize.Get());
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,
@@ -76,7 +76,7 @@ TEST(BraveAdsTextClassificationFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
   // Act & Assert
-  EXPECT_EQ(5U, kTextClassificationPageProbabilitiesHistorySize.Get());
+  EXPECT_EQ(15U, kTextClassificationPageProbabilitiesHistorySize.Get());
 }
 
 }  // namespace brave_ads

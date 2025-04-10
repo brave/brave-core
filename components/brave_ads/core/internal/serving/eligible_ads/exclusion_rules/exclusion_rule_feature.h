@@ -50,7 +50,7 @@ inline constexpr base::FeatureParam<size_t>
 inline constexpr base::FeatureParam<size_t>
     kShouldExcludeAdIfCreativeSetExceedsConversionCap{
         &kExclusionRulesFeature,
-        "should_exclude_ad_if_creative_set_exceeds_conversion_cap", 1};
+        "should_exclude_ad_if_creative_set_exceeds_conversion_cap", 0};
 
 }  // namespace brave_ads
 
