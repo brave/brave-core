@@ -35,6 +35,9 @@ public struct BraveVPNRegionListView: View {
   private var selectedRegionCities: [GRDRegion] = []
 
   @State
+  private var isVPNEnabled = BraveVPN.isConnected
+
+  @State
   private var regionModificationTimer: Timer?
 
   private var onServerRegionSet: ((_ region: GRDRegion?) -> Void)?
@@ -83,8 +86,10 @@ public struct BraveVPNRegionListView: View {
     }
     .onAppear {
       Task { @MainActor in
+        isLoading = true
         isAutomaticRegion = BraveVPN.isAutomaticRegion
         allRegions = await BraveVPN.fetchRegionData() ?? []
+        isLoading = false
       }
     }
     .onDisappear {
@@ -98,7 +103,8 @@ public struct BraveVPNRegionListView: View {
       )
     }
     .onReceive(NotificationCenter.default.publisher(for: .NEVPNStatusDidChange)) { _ in
-      if BraveVPN.isConnected {
+      self.isVPNEnabled = BraveVPN.isConnected
+      if self.isVPNEnabled {
         cancelTimer()
       }
     }
@@ -129,7 +135,8 @@ public struct BraveVPNRegionListView: View {
 
   @ViewBuilder
   private func countryRegionItem(at index: Int, region: GRDRegion) -> some View {
-    let isSelectedRegion = region.countryISOCode == BraveVPN.activatedRegion?.countryISOCode
+    let isSelectedRegion =
+      self.isVPNEnabled && region.countryISOCode == BraveVPN.activatedRegion?.countryISOCode
 
     Button {
       selectDesignatedVPNRegion(at: index)
@@ -221,9 +228,12 @@ public struct BraveVPNRegionListView: View {
   }
 
   private func selectDesignatedVPNRegion(at index: Int) {
-    guard !isLoading, let desiredRegion = allRegions[safe: index],
-      desiredRegion.regionName != BraveVPN.selectedRegion?.regionName
-    else {
+    guard !isLoading, let desiredRegion = allRegions[safe: index] else {
+      return
+    }
+
+    // If we're already connected to this region, do nothing.
+    if desiredRegion.regionName == BraveVPN.selectedRegion?.regionName && isVPNEnabled {
       return
     }
 
