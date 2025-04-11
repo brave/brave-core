@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import * as Mojom from '../../common/mojom'
 import useIsConversationVisible from '../hooks/useIsConversationVisible'
 import useSendFeedback, { defaultSendFeedbackState, SendFeedbackState } from './useSendFeedback'
@@ -12,7 +13,9 @@ import { isLeoModel } from '../model_utils'
 import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
 import { useAIChat } from './ai_chat_context'
 import getAPI from '../api'
-import { MAX_IMAGES } from '../../common/constants'
+import {
+  IGNORE_EXTERNAL_LINK_WARNING_KEY, MAX_IMAGES //
+} from '../../common/constants'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -47,6 +50,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   selectedActionType: Mojom.ActionType | undefined
   isToolsMenuOpen: boolean
   isCurrentModelLeo: boolean
+  generatedUrlToBeOpened: Url | undefined
   setCurrentModel: (model: Mojom.Model) => void
   switchToBasicModel: () => void
   generateSuggestedQuestions: () => void
@@ -67,6 +71,8 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   setShowAttachments: (show: boolean) => void
   uploadImage: (useMediaCapture: boolean) => void
   removeImage: (index: number) => void
+  setGeneratedUrlToBeOpened: (url?: Url) => void
+  setIgnoreExternalLinkWarning: () => void
   pendingMessageImages: Mojom.UploadedImage[] | null
 }
 
@@ -94,6 +100,7 @@ const defaultContext: ConversationContext = {
   selectedActionType: undefined,
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
+  generatedUrlToBeOpened: undefined,
   setCurrentModel: () => { },
   switchToBasicModel: () => { },
   generateSuggestedQuestions: () => { },
@@ -111,6 +118,8 @@ const defaultContext: ConversationContext = {
   setShowAttachments: () => { },
   uploadImage: (useMediaCapture: boolean) => { },
   removeImage: () => { },
+  setGeneratedUrlToBeOpened: () => { },
+  setIgnoreExternalLinkWarning: () => { },
   pendingMessageImages: null,
   ...defaultSendFeedbackState,
   ...defaultCharCountContext
@@ -548,6 +557,65 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
   }
 
+  const ignoreExternalLinkWarningFromLocalStorage =
+    React.useMemo(() => {
+      return JSON.parse(
+        localStorage.getItem(IGNORE_EXTERNAL_LINK_WARNING_KEY) ?? 'false'
+      )
+    }, [])
+
+  const ignoreExternalLinkWarning = React.useRef(
+    ignoreExternalLinkWarningFromLocalStorage
+  )
+
+  const setIgnoreExternalLinkWarning = () => {
+    localStorage.setItem(IGNORE_EXTERNAL_LINK_WARNING_KEY, 'true')
+    ignoreExternalLinkWarning.current = true
+  }
+
+  // Listen for changes to the IGNORE_EXTERNAL_LINK_WARNING_KEY key in
+  // localStorage
+  React.useEffect(() => {
+    // Update the IGNORE_EXTERNAL_LINK_WARNING_KEY state when the key changes
+    const handleStorageChange = () => {
+      ignoreExternalLinkWarning.current = JSON.parse(
+        localStorage.getItem(IGNORE_EXTERNAL_LINK_WARNING_KEY) ?? 'false'
+      )
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+    }
+  }, [])
+
+  // Listen for userRequestedOpenGeneratedUrl requests from the child frame
+  React.useEffect(() => {
+    async function handleSetOpeningExternalLinkURL(url: Url) {
+      // If the user has ignored the warning, open the link immediately.
+      if (ignoreExternalLinkWarning.current) {
+        getAPI().uiHandler.openURL(url)
+        return
+      }
+      // Otherwise, set the URL to be opened in the modal.
+      setPartialContext({
+        generatedUrlToBeOpened: url
+      })
+    }
+
+    const listenerId = getAPI()
+      .conversationEntriesFrameObserver
+      .userRequestedOpenGeneratedUrl
+      .addListener(handleSetOpeningExternalLinkURL)
+
+    return () => {
+      getAPI()
+        .conversationEntriesFrameObserver
+        .removeListener(listenerId)
+    }
+  }, [])
+
   const store: ConversationContext = {
     ...context,
     ...sendFeedbackState,
@@ -578,7 +646,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     handleVoiceRecognition,
     uploadImage,
     removeImage,
-    conversationHandler
+    conversationHandler,
+    setGeneratedUrlToBeOpened:
+      (url?: Url) => setPartialContext({ generatedUrlToBeOpened: url }),
+    setIgnoreExternalLinkWarning
   }
 
   return (

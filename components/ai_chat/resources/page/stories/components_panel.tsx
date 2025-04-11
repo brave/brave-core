@@ -9,6 +9,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import '@brave/leo/tokens/css/variables.css'
 import '$web-components/app.global.scss'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { InferControlsFromArgs } from '../../../../../.storybook/utils'
 import * as Mojom from '../../common/mojom'
 import { ActiveChatContext, SelectedChatDetails } from '../state/active_chat_context'
@@ -486,6 +487,7 @@ type CustomArgs = {
   isGenerating: boolean
   showAttachments: boolean
   isNewConversation: boolean
+  generatedUrlToBeOpened: Url | undefined
 }
 
 const args: CustomArgs = {
@@ -520,6 +522,7 @@ const args: CustomArgs = {
   isGenerating: false,
   showAttachments: true,
   isNewConversation: false,
+  generatedUrlToBeOpened: undefined
 }
 
 const meta: Meta<CustomArgs> = {
@@ -546,6 +549,10 @@ const meta: Meta<CustomArgs> = {
     },
     deletingConversationId: {
       options: CONVERSATIONS.map(conversation => conversation.uuid),
+      control: { type: 'select' }
+    },
+    generatedUrlToBeOpened: {
+      options: [{ url: 'https://www.example.com' }],
       control: { type: 'select' }
     }
   },
@@ -687,6 +694,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isCharLimitExceeded: inputText.length > 70,
     inputTextCharCountDisplay: `${inputText.length} / 70`,
     pendingMessageImages: null,
+    generatedUrlToBeOpened: options.args.generatedUrlToBeOpened,
     setInputText,
     setCurrentModel: () => { },
     switchToBasicModel,
@@ -705,7 +713,10 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),
     showAttachments: options.args.showAttachments,
     removeImage: () => {},
-    uploadImage: (useMediaCapture: boolean) => {}
+    uploadImage: (useMediaCapture: boolean) => {},
+    setGeneratedUrlToBeOpened:
+      (url?: Url) => setArgs({ generatedUrlToBeOpened: url }),
+    setIgnoreExternalLinkWarning: () => { }
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {
