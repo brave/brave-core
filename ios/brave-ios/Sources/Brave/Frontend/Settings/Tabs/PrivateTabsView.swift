@@ -77,7 +77,7 @@ struct PrivateTabsView: View {
               if newValue {
                 tabManager?.saveAllTabs()
               } else {
-                tabManager?.removeAllForCurrentMode(isActiveTabIncluded: true)
+                tabManager?.removeAllTabsForPrivateMode(isPrivate: true, isActiveTabIncluded: true)
               }
             }
           }
