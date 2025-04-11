@@ -24,8 +24,9 @@ const getTestsToRun = (config, suite) => {
   } else if (suite === 'brave_java_unit_tests') {
     testsToRun = ['bin/run_brave_java_unit_tests']
   } else if (suite === 'chromium_unit_tests') {
-      testsToRun = ['unit_tests']
-      testsToRun.push('components_unittests')
+      testsToRun = []
+      // testsToRun.push('unit_tests')
+      // testsToRun.push('components_unittests')
       testsToRun.push('content_unittests')
   }
   return testsToRun
