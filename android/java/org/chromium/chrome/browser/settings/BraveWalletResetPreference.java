@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
@@ -33,6 +34,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletNativeUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.ui.KeyboardVisibilityDelegate;
 
 /**
@@ -44,10 +46,9 @@ public class BraveWalletResetPreference
 
     private int mPrefAccentColor;
     private final String mConfirmationPhrase;
+    private Profile mProfile;
 
-    /**
-     * Constructor for BraveWalletResetPreference.
-     */
+    /** Constructor for BraveWalletResetPreference. */
     public BraveWalletResetPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -71,6 +72,10 @@ public class BraveWalletResetPreference
         return true;
     }
 
+    public void setProfile(@NonNull final Profile profile) {
+        mProfile = profile;
+    }
+
     private void showBraveWalletResetDialog() {
         LayoutInflater inflater =
                 (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -83,11 +88,12 @@ public class BraveWalletResetPreference
 
         DialogInterface.OnClickListener onClickListener =
                 (dialog, button) -> {
+                    assert mProfile != null;
                     if (button == AlertDialog.BUTTON_POSITIVE) {
                         String inputText = input.getText().toString().trim();
                         if (TextUtils.equals(inputText, mConfirmationPhrase)) {
                             Log.w(TAG, "Reset");
-                            WalletNativeUtils.resetWallet(Utils.getProfile(false));
+                            WalletNativeUtils.resetWallet(mProfile);
                             KeystoreHelper.resetBiometric();
                             Utils.setCryptoOnboarding(true);
 
