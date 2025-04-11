@@ -217,6 +217,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       // Still need to insert Yahoo! JAPAN in the engine list during `InitialSearchEngines` initialization
       // but not override the current DSE value
       Preferences.Search.shouldOverrideDSEForJapanRegion.value = false
+    } else if Preferences.Search.yahooJPPhaseOneCompleted.value {
+      Preferences.Search.shouldOverrideDSEForJapanRegion.value = false
     }
 
     Preferences.General.isFirstLaunch.value = false
