@@ -422,6 +422,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/webui/settings/brave_wallet_handler_unittest.cc",
       "//brave/chromium_src/chrome/browser/devtools/url_constants_unittest.cc",
       "//brave/chromium_src/chrome/browser/profiles/profile_avatar_icon_util_unittest.cc",
+      "//brave/chromium_src/chrome/browser/signin/signin_promo_disabled_unittest.cc",
       "//brave/chromium_src/components/update_client/request_sender_unittest.cc",
       "//chrome/browser/push_messaging/push_messaging_app_identifier_unittest.cc",
       "//chrome/browser/push_messaging/push_messaging_notification_manager_unittest.cc",
