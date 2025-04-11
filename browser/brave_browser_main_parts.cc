@@ -210,12 +210,8 @@ void ChromeBrowserMainParts::PostProfileInit(Profile* profile,
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile)->extension_service();
-  if (service) {
-    extensions::ComponentLoader* loader = service->component_loader();
-    static_cast<extensions::BraveComponentLoader*>(loader)
-        ->AddEthereumRemoteClientExtensionOnStartup();
-  }
+  static_cast<extensions::BraveComponentLoader*>(
+      extensions::ComponentLoader::Get(profile))
+      ->AddEthereumRemoteClientExtensionOnStartup();
 #endif
 }

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h b/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h
-index 6de26745d5489ce89aa00fba9d19e0330db0ed3c..2116cd7fbe9c5898e2575e634c1fc1a834c1aab5 100644
+index 1ea1fe3db3bce4ae9163e1bd23ccebf001d38664..a7838ccee5cb228345de74df27c2681bd6534a01 100644
 --- a/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h
 +++ b/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h
 @@ -14,7 +14,7 @@
@@ -11,8 +11,8 @@ index 6de26745d5489ce89aa00fba9d19e0330db0ed3c..2116cd7fbe9c5898e2575e634c1fc1a8
   public:
    // `drag_data` is a copy of the drag configuration for the full session.
    // `attached_context` is the context in which the tabs are being dragged.
-@@ -27,7 +27,7 @@ class DraggingTabsSession final : public TabDragWithScrollManager {
-                                int mouse_offset,
+@@ -28,7 +28,7 @@ class DraggingTabsSession final : public TabDragWithScrollManager {
+                                float offset_to_width_ratio_,
                                 bool initial_move,
                                 gfx::Point point_in_screen);
 -  ~DraggingTabsSession() final;

@@ -66,14 +66,14 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
       TemplateURLServiceFactory::GetForProfile(browser()->profile());
   search_test_utils::WaitForTemplateURLServiceToLoad(service);
 
-  regional_capabilities::CountryIdHolder country_id_holder =
+  auto regional_engines =
       regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
           browser()->profile())
-          ->GetCountryId();
+          ->GetRegionalPrepopulatedEngines();
 
   // Check that changing the default engine triggers emitting of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(), country_id_holder.GetForTesting(),
+      *browser()->profile()->GetPrefs(), regional_engines,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   TemplateURL ddg_url(*ddg_data);
 
@@ -83,7 +83,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
 
   // Check switching back to original engine.
   auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(), country_id_holder.GetForTesting(),
+      *browser()->profile()->GetPrefs(), regional_engines,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   TemplateURL brave_url(*brave_data);
   service->SetUserSelectedDefaultSearchProvider(&brave_url);
@@ -112,13 +112,13 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
       TemplateURLServiceFactory::GetForProfile(browser()->profile());
   search_test_utils::WaitForTemplateURLServiceToLoad(service);
 
-  regional_capabilities::CountryIdHolder country_id_holder =
+  auto regional_engines =
       regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
           browser()->profile())
-          ->GetCountryId();
+          ->GetRegionalPrepopulatedEngines();
   // Check that changing the default engine triggers emission of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(), country_id_holder.GetForTesting(),
+      *browser()->profile()->GetPrefs(), regional_engines,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   TemplateURL ddg_url(*ddg_data);
 
@@ -129,7 +129,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
 
   // Check additional changes.
   auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(), country_id_holder.GetForTesting(),
+      *browser()->profile()->GetPrefs(), regional_engines,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
   TemplateURL brave_url(*brave_data);
 
@@ -139,7 +139,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
 
   // Check additional changes.
   auto bing_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      *browser()->profile()->GetPrefs(), country_id_holder.GetForTesting(),
+      *browser()->profile()->GetPrefs(), regional_engines,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
   TemplateURL bing_url(*bing_data);
 

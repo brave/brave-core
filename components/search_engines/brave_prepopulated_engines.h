@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SEARCH_ENGINES_BRAVE_PREPOPULATED_ENGINES_H_
 #define BRAVE_COMPONENTS_SEARCH_ENGINES_BRAVE_PREPOPULATED_ENGINES_H_
 
-#include <cstddef>
 #include <map>
 
 #include "build/build_config.h"
@@ -14,16 +13,21 @@
 
 namespace TemplateURLPrepopulateData {
 
-// IMPORTANT! Make sure to bump this value if you make changes to the
-// engines below or add/remove engines.
-inline constexpr int kBraveCurrentDataVersion = 32;
+// ****************************************************************************
+// IMPORTANT! Make sure to bump the value of kBraveCurrentDataVersion in
+// here if you add, remove, or make changes to the engines in here or
+// brave_prepopulated_engines.cc or to mappings in
+// chromium_src/components/regional_capabilities/regional_capabilities_utils.cc.
+// ****************************************************************************
 
 // The version is important to increment because Chromium will cache the list
 // of search engines that are shown. When the version is incremented, Chromium
 // will conditionally merge changes from the new version of the list.
 //
 // For more info, see:
-// https://source.chromium.org/chromium/chromium/src/+/main:components/search_engines/util.cc;l=53-125;drc=17b1d05d2ccda19c3ebd903075227bc8e851acf0
+// ComputeMergeEnginesRequirements in components/search_engines/util.cc;
+
+inline constexpr int kBraveCurrentDataVersion = 32;
 
 // DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
 inline constexpr int kBraveFirstTrackedDataVersion = 6;
@@ -32,10 +36,11 @@ inline constexpr int kBraveFirstTrackedDataVersion = 6;
 // components/search_engines/prepopulated_engines_schema.json above the
 // definition of the id field and in
 // third_party/search_engines_data/resources/definitions/prepopulated_engines.json
-// at the top of the file. Currently taken ids range under 90, but we'd want to
-// leave room for additions by Chromium, so starting our ids from 500. Potential
-// problem: Chromium adds one of these engines to their list with a different
-// id.
+// at the top of the file. Currently taken ids range under 120, but we'd want to
+// leave room for additions by Chromium, so starting our ids from 500. If
+// Chromium adds one of these engines to their list with a different id we need
+// to either patch theirs out or use ModifyEngineParams function to match our
+// previous definition (likely including the engine id).
 enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_INVALID = 0,
 
@@ -133,6 +138,7 @@ extern const PrepopulatedEngine brave_search;
 extern const PrepopulatedEngine brave_search_tor;
 extern const PrepopulatedEngine brave_bing;
 extern const PrepopulatedEngine brave_yahoo_jp;
+extern const PrepopulatedEngine brave_google;
 
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
 GetBraveEnginesMap();

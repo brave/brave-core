@@ -3,7 +3,7 @@ URL: https://crates.io/crates/async-trait
 Version: 0.1.64
 Revision: 6a13fce88235ebd11c0c67f419a3153dcd349eb9
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/async-trait-0.1.64/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/async-trait-v0_1/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

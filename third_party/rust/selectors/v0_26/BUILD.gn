@@ -12,30 +12,30 @@ cargo_crate("lib") {
   crate_name = "selectors"
   epoch = "0.26"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/attr.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/bloom.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/build.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/builder.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/context.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/kleene_value.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/matching.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/nth_index_cache.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/parser.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/relative_selector/cache.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/relative_selector/filter.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/relative_selector/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/sink.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/tree.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/visitor.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/attr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/bloom.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/build.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/context.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/kleene_value.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/matching.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/nth_index_cache.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/parser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/relative_selector/cache.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/relative_selector/filter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/relative_selector/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/sink.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/tree.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/visitor.rs",
   ]
   inputs = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/.cargo-checksum.json",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/.cargo_vcs_info.json",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/CHANGES.md",
-    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/README.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/.cargo-checksum.json",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/.cargo_vcs_info.json",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/CHANGES.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/README.md",
   ]
 
   build_native_rust_unit_tests = false
@@ -67,8 +67,8 @@ cargo_crate("lib") {
     debug_unreachable = "//brave/third_party/rust/new_debug_unreachable/v1:lib"
   }
   build_deps = [ "//brave/third_party/rust/phf_codegen/v0_11:buildrs_support" ]
-  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/build.rs"
-  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/selectors-0.26.0/build.rs" ]
+  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/build.rs"
+  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/build.rs" ]
   build_script_outputs = [ "ascii_case_insensitive_html_attributes.rs" ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates

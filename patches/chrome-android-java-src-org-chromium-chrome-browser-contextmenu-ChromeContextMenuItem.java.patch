@@ -1,36 +1,36 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 5ca4da57e644dc7aad76a712eacac70221d82d4f..35c347d7c5f0276d5777914a2dcc23fd4017d26d 100644
+index f47448fc9920df59866f69fe935fc04d8f6fca09..5f757014ce25b5eb9184f5c3219b7aa779cf241b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-@@ -67,6 +67,7 @@ class ChromeContextMenuItem {
-         Item.SAVE_PAGE,
-         Item.SHARE_PAGE,
-         Item.PRINT_PAGE,
+@@ -71,6 +71,7 @@ class ChromeContextMenuItem {
+         Item.FORWARD,
+         Item.RELOAD,
+         Item.INSPECT_ELEMENT,
 +        Item.COPY_CLEAN_LINK,
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
-@@ -119,7 +120,7 @@ class ChromeContextMenuItem {
-         int SHARE_PAGE = 36;
-         int PRINT_PAGE = 37;
+@@ -128,7 +129,7 @@ class ChromeContextMenuItem {
+         // Developer Group
+         int INSPECT_ELEMENT = 41;
          // ALWAYS UPDATE!
--        int NUM_ENTRIES = 38;
-+        int COPY_CLEAN_LINK = 38;int NUM_ENTRIES = 39;
+-        int NUM_ENTRIES = 42;
++        int COPY_CLEAN_LINK = 42;int NUM_ENTRIES = 43;
      }
  
      /** Mapping from {@link Item} to the ID found in the ids.xml. */
-@@ -162,6 +163,7 @@ class ChromeContextMenuItem {
-         R.id.contextmenu_save_page, // Item.SAVE_PAGE
-         R.id.contextmenu_share_page, // Item.SHARE_PAGE
-         R.id.contextmenu_print_page, // Item.PRINT_PAGE
+@@ -175,6 +176,7 @@ class ChromeContextMenuItem {
+         R.id.contextmenu_forward, // Item.FORWARD
+         R.id.contextmenu_reload, // Item.RELOAD
+         R.id.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
 +        R.id.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
-@@ -204,6 +206,7 @@ class ChromeContextMenuItem {
-         R.string.contextmenu_save_page, // Item.SAVE_PAGE
-         R.string.contextmenu_share_page, // Item.SHARE_PAGE
-         R.string.contextmenu_print_page, // Item.PRINT_PAGE
+@@ -221,6 +223,7 @@ class ChromeContextMenuItem {
+         R.string.contextmenu_forward, // Item.FORWARD
+         R.string.contextmenu_reload, // Item.RELOAD
+         R.string.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
 +        R.string.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  

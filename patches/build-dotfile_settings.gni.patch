@@ -1,9 +1,9 @@
 diff --git a/build/dotfile_settings.gni b/build/dotfile_settings.gni
-index f0a0a01d9444faf87b8c7e246749f6a0a27b5fee..76df86aa4a55c61922f88033f15fdfcd51fb98af 100644
+index bf0c43e299d1098c4d85991bba7054ab6f89bafe..ebe97cefa7df7c19b9acfd7d01f96949ae8b5032 100644
 --- a/build/dotfile_settings.gni
 +++ b/build/dotfile_settings.gni
-@@ -46,3 +46,4 @@ build_dotfile_settings = {
-   # so that we don't need to keep supporting `exec_script_whitelist`.
-   exec_script_whitelist = exec_script_allowlist
+@@ -42,3 +42,4 @@ build_dotfile_settings = {
+     "//build/util/branding.gni",
+   ]
  }
 +import("//brave/build/dotfile_settings.gni") build_dotfile_settings.exec_script_allowlist += brave_exec_script_allowlist

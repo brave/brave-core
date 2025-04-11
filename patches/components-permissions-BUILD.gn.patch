@@ -1,5 +1,5 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index 7eea9cf2814729617dafc2e717c8d84d2726a44f..6050a332095fa7f0f8f65017609f52cc1fc6133b 100644
+index 02d04168f48a6240c5666425448104fbf15de30c..1342acaebcbcbfbfd2ddd74022f570bc8c693331 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
 @@ -6,7 +6,7 @@ import("//components/guest_view/buildflags/buildflags.gni")
@@ -11,7 +11,7 @@ index 7eea9cf2814729617dafc2e717c8d84d2726a44f..6050a332095fa7f0f8f65017609f52cc
    sources = [
      "constants.cc",
      "constants.h",
-@@ -167,6 +167,7 @@ source_set("permissions") {
+@@ -166,6 +166,7 @@ source_set("permissions") {
    if (enable_guest_view) {
      deps += [ "//components/guest_view/browser" ]
    }

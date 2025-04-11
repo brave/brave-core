@@ -224,7 +224,8 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
 
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile_)->extension_service();
-  extensions::ComponentLoader* loader = service->component_loader();
+  extensions::ComponentLoader* loader =
+      extensions::ComponentLoader::Get(profile_);
 
   if (enabled) {
     if (!loader->Exists(brave_webtorrent_extension_id)) {

@@ -12,17 +12,17 @@ cargo_crate("lib") {
   crate_name = "generic_array"
   epoch = "0.14"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-0.14.6/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-0.14.6/src/arr.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-0.14.6/src/functional.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-0.14.6/src/hex.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-0.14.6/src/impl_serde.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-0.14.6/src/impl_zeroize.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-0.14.6/src/impls.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-0.14.6/src/iter.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-0.14.6/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-0.14.6/src/sequence.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/src/arr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/src/functional.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/src/hex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/src/impl_serde.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/src/impl_zeroize.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/src/impls.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/src/iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/src/sequence.rs",
   ]
   inputs = []
 
@@ -42,8 +42,8 @@ cargo_crate("lib") {
   deps = [ "//brave/third_party/rust/typenum/v1:lib" ]
   build_deps = [ "//brave/third_party/rust/version_check/v0_9:buildrs_support" ]
   features = [ "more_lengths" ]
-  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-0.14.6/build.rs"
-  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-0.14.6/build.rs" ]
+  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/build.rs"
+  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/build.rs" ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

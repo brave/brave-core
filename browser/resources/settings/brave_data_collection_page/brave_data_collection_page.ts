@@ -70,10 +70,10 @@ extends SettingBraveDataCollectionPageElementBase
     }
   }
 
-  private p3aEnabledPref_: Object
-  private statsUsagePingEnabledPref_: Object
-  private metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>
-  private showRestartForMetricsReporting_: boolean
+  private declare p3aEnabledPref_: Object
+  private declare statsUsagePingEnabledPref_: Object
+  private declare metricsReportingPref_: chrome.settingsPrivate.PrefObject<boolean>
+  private declare showRestartForMetricsReporting_: boolean
 
   browserProxy_ = BraveDataCollectionBrowserProxyImpl.getInstance()
 

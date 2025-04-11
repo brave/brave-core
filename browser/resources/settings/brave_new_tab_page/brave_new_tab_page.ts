@@ -35,8 +35,8 @@ export class SettingsBraveNewTabPageElement extends SettingsBraveNewTabPageEleme
     };
   }
 
-  private newTabShowOptions_: NewTabOption[];
-  private showNewTabDashboardSettings_: boolean;
+  private declare newTabShowOptions_: NewTabOption[];
+  private declare showNewTabDashboardSettings_: boolean;
 
   browserProxy_: BraveNewTabBrowserProxy = BraveNewTabBrowserProxyImpl.getInstance();
 

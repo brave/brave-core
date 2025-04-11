@@ -12,19 +12,19 @@ cargo_crate("lib") {
   crate_name = "thiserror_impl"
   epoch = "2"
   crate_type = "proc-macro"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-2.0.11/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-2.0.11/src/ast.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-2.0.11/src/attr.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-2.0.11/src/expand.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-2.0.11/src/fallback.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-2.0.11/src/fmt.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-2.0.11/src/generics.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-2.0.11/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-2.0.11/src/prop.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-2.0.11/src/scan_expr.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-2.0.11/src/unraw.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-2.0.11/src/valid.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2/src/ast.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2/src/attr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2/src/expand.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2/src/fallback.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2/src/fmt.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2/src/generics.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2/src/prop.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2/src/scan_expr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2/src/unraw.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2/src/valid.rs",
   ]
   inputs = []
 
