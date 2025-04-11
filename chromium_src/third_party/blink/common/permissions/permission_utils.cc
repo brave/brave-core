@@ -88,6 +88,6 @@
     return PermissionType::BRAVE_OPEN_AI_CHAT;
 
 #include "src/third_party/blink/common/permissions/permission_utils.cc"
-
+#undef BRAVE_PERMISSION_UTIL_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE
 #undef kDisplayCapture
 #undef PERMISSION_UTIL_GET_PERMISSION_STRING
