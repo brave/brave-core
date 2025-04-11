@@ -4059,7 +4059,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       3. Toggle <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START">&lt;auto_reconnect_vpn_tutorial&gt;</ph>Always-on VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END">&lt;/auto_reconnect_vpn_tutorial&gt;</ph> to enable it.
     </message>
     <message name="IDS_AUTO_RECONNECT_VPN_TUTORIAL_TEXT_4" desc="Vpn auto reconnect tutorial text">
-      Note that because of Android limitations, Block connections without VPN doesn't work as expected. <ph name="LEARN_MORE_START">&lt;learn_more&gt;</ph>Learn more.<ph name="LEARN_MORE_END">&lt;/learn_more&gt;</ph>
+      Note that because of Android limitations, "Block connections without VPN" doesn't work as expected. <ph name="LEARN_MORE_START">&lt;learn_more&gt;</ph>Learn more.<ph name="LEARN_MORE_END">&lt;/learn_more&gt;</ph>
     </message>
     <message name="IDS_AUTO_RECONNECT_VPN_ACTION_TEXT" desc="Vpn auto reconnect tutorial action text">
       Open Android settings
