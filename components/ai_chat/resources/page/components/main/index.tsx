@@ -341,10 +341,12 @@ function Main() {
           />
         </div>
         <DeleteConversationModal />
-        <OpenExternalLinkModal />
+        <OpenExternalLinkModal
+          context={{ ...conversationContext, ...aiChatContext }}
+        />
       </div>
     </main>
-  )
+  ) 
 }
 
 export default Main

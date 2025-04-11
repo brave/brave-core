@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Markdown from 'react-markdown'
 import type { Root, Element as HastElement } from 'hast'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 import { visit } from 'unist-util-visit'
 
@@ -102,7 +103,9 @@ export function RenderLink(props: RenderLinkProps) {
 
   const handleLinkClicked = React.useCallback(() => {
     if (href && isLinkAllowed) {
-      context.parentUiFrame?.setOpeningExternalLinkURL(href)
+      const mojomUrl = new Url()
+      mojomUrl.url = href
+      context.parentUiFrame?.userRequestedOpenGeneratedUrl(mojomUrl)
     }
   }, [context, href])
 

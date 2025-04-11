@@ -8,76 +8,48 @@ import Button from '@brave/leo/react/button'
 import Checkbox from '@brave/leo/react/checkbox'
 import Dialog from '@brave/leo/react/dialog'
 import { getLocale } from '$web-common/locale'
+import { AIChatContext } from '../../state/ai_chat_context'
 import styles from './style.module.scss'
-import getAPI from '../../api'
 import {
   IGNORE_EXTERNAL_LINK_WARNING_KEY //
 } from '../../../common/constants'
+import { ConversationContext } from '../../state/conversation_context'
 
-export default function OpenExternalLinkModal() {
-  // API
-  const api = getAPI()
+type Props = Pick<
+  ConversationContext,
+  'generatedUrlToBeOpened' | 'setGeneratedUrlToBeOpened'
+> &
+  Pick<AIChatContext, 'uiHandler'>
+
+interface OpenExternalLinkModalProps {
+  context: Props
+}
+
+export default function OpenExternalLinkModal(
+  props: OpenExternalLinkModalProps
+) {
+  const { context } = props
 
   // State
   const [ignoreChecked, setIgnoreChecked] = React.useState(false)
-  const [openingExternalLinkURL, setOpeningExternalLinkURL] = React.useState('')
-
-  // Local storage
-  const ignoreExternalLinkWarning = JSON.parse(
-    localStorage.getItem(IGNORE_EXTERNAL_LINK_WARNING_KEY) ?? 'false'
-  )
 
   // Methods
-  const handleOpenExternalLink = (url: string) => {
-    if (chrome.tabs !== undefined) {
-      chrome.tabs.create({ url }, () => {
-        if (chrome.runtime.lastError) {
-          console.error(
-            'tabs.create failed: ' + chrome.runtime.lastError.message
-          )
-        }
-      })
-    } else {
-      // Tabs.create is desktop specific. Using window.open for android.
-      window.open(url, '_blank', 'noopener noreferrer')
-    }
-  }
 
   const onOpenClicked = React.useCallback(() => {
     if (ignoreChecked) {
       localStorage.setItem(IGNORE_EXTERNAL_LINK_WARNING_KEY, 'true')
     }
-    handleOpenExternalLink(openingExternalLinkURL)
-    setOpeningExternalLinkURL('')
-  }, [ignoreChecked, openingExternalLinkURL])
-
-  // Listen for setOpeningExternalLinkURL requests from the child frame
-  React.useEffect(() => {
-    async function handleSetOpeningExternalLinkURL(url: string) {
-      // If the user has ignored the warning, open the link immediately.
-      if (ignoreExternalLinkWarning) {
-        handleOpenExternalLink(url)
-        return
-      }
-      // Otherwise, set the URL to be opened in the modal.
-      setOpeningExternalLinkURL(url)
+    if (context.generatedUrlToBeOpened) {
+      context.uiHandler?.openURL(context.generatedUrlToBeOpened)
     }
-
-    const listenerId =
-      api.conversationEntriesFrameObserver.setOpeningExternalLinkURL.addListener(
-        handleSetOpeningExternalLinkURL
-      )
-
-    return () => {
-      api.conversationEntriesFrameObserver.removeListener(listenerId)
-    }
-  }, [api, handleOpenExternalLink, ignoreExternalLinkWarning])
+    context.setGeneratedUrlToBeOpened(undefined)
+  }, [ignoreChecked, context.generatedUrlToBeOpened, context.uiHandler])
 
   return (
     <Dialog
-      isOpen={openingExternalLinkURL !== ''}
+      isOpen={!!context.generatedUrlToBeOpened}
       showClose
-      onClose={() => setOpeningExternalLinkURL('')}
+      onClose={() => context.setGeneratedUrlToBeOpened(undefined)}
       className={styles.dialog}
     >
       <div
@@ -103,7 +75,7 @@ export default function OpenExternalLinkModal() {
           <Button
             kind='plain-faint'
             size='medium'
-            onClick={() => setOpeningExternalLinkURL('')}
+            onClick={() => context.setGeneratedUrlToBeOpened(undefined)}
           >
             {getLocale('cancelButtonLabel')}
           </Button>
