@@ -313,11 +313,16 @@ class WebKitTabState: TabState, TabStateImpl {
       return
     }
 
-    // Doing this after the Web View is created seems to break things but at the same time, this
-    // shouldn't really be done here unless the we move script handling into Web...
-    configuration.userContentController.removeAllScriptMessageHandlers()
+    // We need to ensure that each tab has isolated WKUserContentController & WKPreferences, because
+    // as of now we specifically adjust these values per web view created rather than when the
+    // configuration is created.
+    //
+    // This must happen prior to WKWebView's creation.
+    let configuration = initialConfiguration
+    configuration.userContentController = .init()
+    configuration.preferences = initialConfiguration.preferences.copy() as! WKPreferences
 
-    let webView = WKWebView(frame: .zero, configuration: initialConfiguration)
+    let webView = WKWebView(frame: .zero, configuration: configuration)
     webView.navigationDelegate = navigationHandler
     webView.uiDelegate = uiHandler
     webView.allowsBackForwardNavigationGestures = true
