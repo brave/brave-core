@@ -184,6 +184,11 @@ extension Preferences {
       key: "search.yahoo-jp-phase-one-completed",
       default: false
     )
+    /// Whether or not Yahoo! JAPAN search engine phase two has been completed
+    public static let yahooJPPhaseTwoCompleted = Option<Bool>(
+      key: "search.yahoo-jp-phase-two-completed",
+      default: false
+    )
     /// User picked DSE name for normal mode
     public static let userPickedDSEName = Option<String?>(
       key: "search.user-picked-dse-name",
