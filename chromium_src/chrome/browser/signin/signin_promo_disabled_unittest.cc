@@ -125,6 +125,11 @@ TEST_F(ShowSigninPromoTestWithFeatureFlagsIsDisabled, DoNotShowBookmarkPromo) {
   ASSERT_FALSE(ShouldShowBookmarkSignInPromo(*profile()));
 }
 
+TEST_F(ShowSigninPromoTestWithFeatureFlagsIsDisabled,
+       ShowExtensionsPromoWithNoAccount) {
+  EXPECT_FALSE(ShouldShowExtensionSignInPromo(*profile(), *CreateExtension()));
+}
+
 #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
 
 }  // namespace signin
