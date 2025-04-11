@@ -11,7 +11,6 @@ class CustomEngineURLInputTableViewCell: UITableViewCell, TableViewReusable {
   // MARK: UX
 
   struct UX {
-    static let textViewHeight: CGFloat = 88
     static let textViewInset: CGFloat = 16
   }
 
@@ -49,7 +48,7 @@ class CustomEngineURLInputTableViewCell: UITableViewCell, TableViewReusable {
       $0.autocorrectionType = .no
       $0.spellCheckingType = .no
       $0.keyboardType = .URL
-      $0.textColor = .braveLabel
+      $0.textColor = UIColor(braveSystemName: .textTertiary)
     }
 
     contentView.addSubview(textview)
@@ -57,7 +56,6 @@ class CustomEngineURLInputTableViewCell: UITableViewCell, TableViewReusable {
     textview.snp.makeConstraints({ make in
       make.leading.trailing.equalToSuperview().inset(UX.textViewInset)
       make.bottom.top.equalToSuperview()
-      make.height.equalTo(UX.textViewHeight)
     })
   }
 }

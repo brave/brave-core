@@ -1390,6 +1390,7 @@ public class BrowserViewController: UIViewController {
         var shouldEvaluateKeyboardConstraints = false
         var activeKeyboardHeight: CGFloat = 0
         var searchEngineSettingsDismissed = false
+        var clearRecentSearchAlertDismissed = false
 
         if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view) {
           activeKeyboardHeight = keyboardHeight
@@ -1398,14 +1399,25 @@ public class BrowserViewController: UIViewController {
         if let presentedNavigationController = presentedViewController
           as? ModalSettingsNavigationController,
           let presentedRootController = presentedNavigationController.viewControllers.first,
-          presentedRootController is SearchSettingsViewController
+          presentedRootController is SearchQuickEnginesViewController
         {
           searchEngineSettingsDismissed = true
         }
 
+        if let alertController = presentedViewController
+          as? UIAlertController,
+          alertController.preferredStyle == .actionSheet,
+          let action = alertController.actions.first,
+          action.title == Strings.recentSearchClearAlertButton
+        {
+          clearRecentSearchAlertDismissed = true
+        }
+
         shouldEvaluateKeyboardConstraints =
           (activeKeyboardHeight > 0)
-          && (presentedViewController == nil || searchEngineSettingsDismissed)
+          && (presentedViewController == nil
+            || searchEngineSettingsDismissed
+            || clearRecentSearchAlertDismissed)
 
         if shouldEvaluateKeyboardConstraints {
           var offset = -activeKeyboardHeight
@@ -2574,16 +2586,23 @@ extension BrowserViewController: SearchViewControllerDelegate {
     self.topToolbar.setLocation(suggestion, search: true)
   }
 
-  func presentSearchSettingsController() {
-    let settingsNavigationController = SearchSettingsViewController(
+  func presentQuickSearchEnginesViewController() {
+    let quickSearchEnginesViewController = SearchQuickEnginesViewController(
       profile: profile,
-      privateBrowsingManager: privateBrowsingManager
+      isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
     )
-    let navController = ModalSettingsNavigationController(
-      rootViewController: settingsNavigationController
+    quickSearchEnginesViewController.navigationItem.leftBarButtonItem =
+      UIBarButtonItem(
+        title: Strings.close,
+        style: .done,
+        target: self,
+        action: #selector(dismissQuickSearchEngines)
+      )
+    quickSearchEnginesViewController.delegate = searchController
+    let navVC = ModalSettingsNavigationController(
+      rootViewController: quickSearchEnginesViewController
     )
-
-    self.present(navController, animated: true, completion: nil)
+    self.present(navVC, animated: true, completion: nil)
   }
 
   func searchViewController(
@@ -2610,6 +2629,13 @@ extension BrowserViewController: SearchViewControllerDelegate {
       return false
     }
     return true
+  }
+
+  @objc private func dismissQuickSearchEngines() {
+    dismiss(animated: true) { [weak self] in
+      self?.updateViewConstraints()
+      self?.searchController?.layoutSearchEngineScrollView()
+    }
   }
 }
 

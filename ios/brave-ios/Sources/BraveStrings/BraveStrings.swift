@@ -1014,8 +1014,8 @@ extension Strings {
     "FindInPageFormat",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Find \"%@\"",
-    comment: "Find %@ text in page."
+    value: "Find ",
+    comment: "Find `search query`"
   )
 }
 
@@ -1066,7 +1066,14 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Voice Search",
-    comment: "Accessibility Label for the tab toolbar Reload button"
+    comment: "Accessibility Label for the tab toolbar voice search button"
+  )
+  public static let tabToolbarPasteAndGoButtonAccessibilityLabel = NSLocalizedString(
+    "tabToolbarPasteAndGoButtonAccessibilityLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Paste and Go",
+    comment: "Accessibility Label for the tab toolbar paste and go button"
   )
   public static let tabToolbarSearchAddressPlaceholderText = NSLocalizedString(
     "TabToolbarSearchAddressPlaceholderText",
@@ -1123,7 +1130,7 @@ extension Strings {
     "SearchHistorySectionHeader",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Open Tabs & Bookmarks & History",
+    value: "On Your Device",
     comment: "Section header for history and bookmarks and open tabs option"
   )
   public static let searchSuggestionOpenTabActionTitle = NSLocalizedString(
@@ -1799,6 +1806,20 @@ extension Strings {
       bundle: .module,
       value: "A search engine with the same name already exists.",
       comment: "The warning description shown to user when custom search engine already exists."
+    )
+    public static let engineTitlePlaceholder = NSLocalizedString(
+      "customSearchEngine.engineTitlePlaceholder",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Enter search engine name",
+      comment: "A placeholder in the text filed for user to input the custom search engine name."
+    )
+    public static let addCustomSearchEngineAccessibilityTitle = NSLocalizedString(
+      "customSearchEngine.addCustomSearchEngineAccessibilityTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Add a custom search engine",
+      comment: "Accessibility Title for the button that adds a new custom search engine to the browser."
     )
   }
 }
@@ -2499,6 +2520,13 @@ extension Strings {
     bundle: .module,
     value: "Quick-Search Engines",
     comment: "Title for quick-search engines settings section."
+  )
+  public static let editQuickSearchEnginesAccessibilityTitle = NSLocalizedString(
+    "EditQuickSearchEnginesAccessibilityTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Edit quick-search engines",
+    comment: "Accessibility Title for the button that edits the quick-search engines list."
   )
   public static let customSearchEngines = NSLocalizedString(
     "CustomSearchEngines",
@@ -8287,26 +8315,25 @@ extension Strings {
     value: "Favorites",
     comment: "Recent Search Favorites Section Title"
   )
-  public static let recentSearchPasteAndGo = NSLocalizedString(
-    "RecentSearchPasteAndGo",
+  public static let recentSearchSectionHeaderTitle = NSLocalizedString(
+    "recentSearchSectionHeaderTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Paste & Go",
-    comment: "Recent Search Paste & Go Button Title"
+    value: "Recent Searches",
+    comment: "Recent Search Section Header Title"
   )
   public static let recentSearchSectionTitle = NSLocalizedString(
     "RecentSearchSectionTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Recent Searches",
+    value: "Recent Searches allow you to privately access past searches.",
     comment: "Recent Search Section Title"
   )
   public static let recentSearchSectionDescription = NSLocalizedString(
     "RecentSearchSectionDescription",
     tableName: "BraveShared",
     bundle: .module,
-    value:
-      "Recent Searches allow you to privately access past searches. Would you like to enable Recent Searches?",
+    value: "Would you like to enable Recent Searches?",
     comment: "Recent Search Section Description"
   )
   public static let recentSearchClear = NSLocalizedString(
@@ -8406,6 +8433,20 @@ extension Strings {
     bundle: .module,
     value: "Clear Recent",
     comment: "The button title that shows when you clear all recent searches"
+  )
+  public static let searchSuggestionsSubtitle = NSLocalizedString(
+    "searchSuggestionsSubtitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Would you like to enable Search Suggestion?",
+    comment: "Search suggestions optin subtitle when prompting to turn on suggestions"
+  )
+  public static let searchQuickBarPrefix = NSLocalizedString(
+    "searchQuickBarPrefix",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Search \"%@\"",
+    comment: "The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list."
   )
 }
 

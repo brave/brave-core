@@ -18,19 +18,6 @@ public func == <T>(lhs: T, rhs: T) -> Bool where T: Identifiable {
 open class Site: Identifiable, Hashable {
   public enum SiteType {
     case unknown, bookmark, history, tab
-
-    public var icon: UIImage? {
-      switch self {
-      case .history:
-        return UIImage(systemName: "clock.fill")
-      case .bookmark:
-        return UIImage(systemName: "book.fill")
-      case .tab:
-        return UIImage(systemName: "square.filled.on.square")
-      default:
-        return nil
-      }
-    }
   }
 
   open var id: Int?

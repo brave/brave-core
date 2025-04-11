@@ -31,5 +31,11 @@ extension Preferences {
       key: "aichat.show-premium-feedback-ad",
       default: true
     )
+
+    /// A boolean indicating whether or not to show Leo button inside the Quick Search Engines Bar
+    public static let leoInQuickSearchBarEnabled = Option<Bool>(
+      key: "aichat.leo-in-quick-search-bar-enabled",
+      default: true
+    )
   }
 }

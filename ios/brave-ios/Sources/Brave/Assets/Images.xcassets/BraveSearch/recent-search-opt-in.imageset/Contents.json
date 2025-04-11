@@ -15,7 +15,7 @@
       "scale" : "1x"
     },
     {
-      "filename" : "brave-search-promotion@2x.png",
+      "filename" : "recent-search-opt-in@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -26,12 +26,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "brave_search_promo_icon_dark_mode@2x.png",
+      "filename" : "search_history_icon_dark_mode@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "brave-search-promotion@3x.png",
+      "filename" : "recent-search-opt-in@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -42,7 +42,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "brave_search_promo_icon_dark_mode@3x.png",
+      "filename" : "search_history_icon_dark_mode@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

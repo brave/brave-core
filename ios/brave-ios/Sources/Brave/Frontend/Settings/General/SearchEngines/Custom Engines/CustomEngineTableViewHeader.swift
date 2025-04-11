@@ -19,7 +19,7 @@ class SearchEngineTableViewHeader: UITableViewHeaderFooterView, TableViewReusabl
 
   var titleLabel = UILabel().then {
     $0.font = UIFont.preferredFont(forTextStyle: .footnote)
-    $0.textColor = .secondaryBraveLabel
+    $0.textColor = UIColor(braveSystemName: .textSecondary)
   }
 
   lazy var addEngineButton = OpenSearchEngineButton(

@@ -31,11 +31,12 @@ enum FavoritesDataWrapper: Hashable {
 
   // Recent searches are static, we do not need any wrapper class for them.
   case recentSearch(NSManagedObjectID)
+
+  case recentSearchOptIn
 }
 
 /// Favourites VC sections
 enum FavoritesSection: Int, CaseIterable {
-  case pasteboard
   case favorites
   case recentSearches
   case recentSearchesOptIn

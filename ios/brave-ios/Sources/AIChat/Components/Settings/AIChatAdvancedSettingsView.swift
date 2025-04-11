@@ -186,6 +186,12 @@ public struct AIChatAdvancedSettingsView: View {
           option: Preferences.AIChat.autocompleteSuggestionsEnabled
         )
 
+        OptionToggleView(
+          title: Strings.AIChat.advancedSettingsShowInQSEBarTitle,
+          subtitle: Strings.AIChat.advancedSettingsShowInQSEBarDescription,
+          option: Preferences.AIChat.leoInQuickSearchBarEnabled
+        )
+
         NavigationLink {
           AIChatDefaultModelView(aiModel: model)
         } label: {

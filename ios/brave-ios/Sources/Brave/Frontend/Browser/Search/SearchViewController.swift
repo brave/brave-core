@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Data
+import DesignSystem
 import Favicon
 import Preferences
 import Shared
@@ -31,7 +32,7 @@ protocol SearchViewControllerDelegate: AnyObject {
     _ searchViewController: SearchViewController,
     didLongPressSuggestion suggestion: String
   )
-  func presentSearchSettingsController()
+  func presentQuickSearchEnginesViewController()
   func searchViewController(
     _ searchViewController: SearchViewController,
     didHighlightText text: String,
@@ -46,7 +47,7 @@ protocol SearchViewControllerDelegate: AnyObject {
 
 // MARK: - SearchViewController
 
-public class SearchViewController: SiteTableViewController, LoaderListener {
+public class SearchViewController: UIViewController, LoaderListener {
 
   // MARK: SearchViewControllerUX
 
@@ -58,12 +59,68 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     static let searchButtonMargin: CGFloat = 8
 
     static let faviconSize: CGFloat = 29
-    static let iconBorderColor = UIColor(white: 0, alpha: 0.1)
-    static let iconBorderWidth: CGFloat = 0.5
+    static let separatorSize = CGSize(width: 1.0, height: 20.0)
+  }
+
+  // MARK: ReuseIdentifier
+
+  private struct SupplementaryViewReuseIdentifier {
+    static let inYourDeviceSectionFooterIdentifer =
+      "in_your_device_footer"
+    static let searchHeaderIdentifier = "search_header"
+  }
+
+  private struct CollectionViewCellReuseIdentifier {
+    static let searchOptinSeparatorCellIdentifier = "search_optin_separator"
+  }
+
+  // MARK: NSCollectionLayoutDecorationItemElementKind
+
+  private struct CollectionLayoutDecorationItemElementKind {
+    static let backgroundWithHeader = "background_with_header"
+    static let backgroundPlain = "background_plain"
   }
 
   // MARK: Properties
 
+  // UI Properties
+  lazy var collectionView: UICollectionView =
+    UICollectionView(
+      frame: .zero,
+      collectionViewLayout: compositionalLayout
+    )
+
+  private let layoutConfig = UICollectionViewCompositionalLayoutConfiguration().then {
+    $0.interSectionSpacing = 8.0
+  }
+
+  private lazy var compositionalLayout = UICollectionViewCompositionalLayout(
+    sectionProvider: { [weak self] sectionIndex, _ in
+      guard let self else { return nil }
+      let section = self.availableSections[sectionIndex]
+      switch section {
+      case .searchSuggestionsOptIn:
+        return self.searchSuggestionOptinLayoutSection()
+      case .searchSuggestions, .findInPage, .openTabsAndHistoryAndBookmarks:
+        return self.searchLayoutSection(
+          headerEnabled: section != .searchSuggestions,
+          footerEnabled: section == .openTabsAndHistoryAndBookmarks
+        )
+      case .braveSearchPromotion:
+        return self.braveSearchPromotionLayoutSection()
+      }
+    },
+    configuration: layoutConfig
+  ).then {
+    $0.register(
+      FavoritesSectionBackgroundView.self,
+      forDecorationViewOfKind: "background_with_header"
+    )
+    $0.register(
+      SearchSectionBackgroundView.self,
+      forDecorationViewOfKind: "background_plain"
+    )
+  }
   // Views for displaying the bottom scrollable search engine list. searchEngineScrollView is the
   // scrollable container; searchEngineScrollViewContent contains the actual set of search engine buttons.
   private let searchEngineScrollView = ButtonScrollView().then { scrollView in
@@ -78,9 +135,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       $0.leading.trailing.equalTo(scrollView.frameLayoutGuide)
     }
   }
-  private let backgroundView = UIVisualEffectView(
-    effect: UIBlurEffect(style: .systemUltraThinMaterial)
-  )
+  private let backgroundView = UIView()
   private let searchEngineScrollViewContent = UIView()
 
   private lazy var suggestionLongPressGesture = UILongPressGestureRecognizer(
@@ -89,6 +144,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   )
 
   weak var searchDelegate: SearchViewControllerDelegate?
+
   var isUsingBottomBar: Bool = false {
     didSet {
       layoutSearchEngineScrollView()
@@ -98,6 +154,47 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   let dataSource: SearchSuggestionDataSource
   public static var userAgent: String?
   private var browserColors: any BrowserColors
+  private var allSiteData = [Site]()
+  private var showAllSiteData: Bool = false
+  private var availableSiteData: [Site] {
+    if showAllSiteData {
+      return allSiteData
+    } else {
+      return Array(allSiteData.prefix(5))
+    }
+  }
+  private var isSiteDataShowMoreAvailable: Bool {
+    availableSiteData.count < allSiteData.count
+  }
+
+  private var availableSections: [SearchSuggestionDataSource.SearchListSection] {
+    var result = [SearchSuggestionDataSource.SearchListSection]()
+
+    if !dataSource.isPrivate
+      && dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn == true
+    {
+      result.append(.searchSuggestionsOptIn)
+    } else {
+      result.append(.searchSuggestions)
+    }
+
+    if dataSource.braveSearchPromotionAvailable {
+      result.append(.braveSearchPromotion)
+    }
+
+    if let sd = searchDelegate, sd.searchViewControllerAllowFindInPage() {
+      result.append(.findInPage)
+    }
+    if !Preferences.Search.showBrowserSuggestions.value {
+    } else if Preferences.Privacy.privateBrowsingOnly.value
+      && dataSource.searchEngines?.shouldShowSearchSuggestions == false
+    {
+    } else if !availableSiteData.isEmpty {
+      result.append(.openTabsAndHistoryAndBookmarks)
+    }
+
+    return result
+  }
 
   // MARK: Lifecycle
 
@@ -126,38 +223,45 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   override public func viewDidLoad() {
     super.viewDidLoad()
 
-    view.insertSubview(backgroundView, belowSubview: tableView)
+    view.addSubview(backgroundView)
+    view.addSubview(collectionView)
 
     backgroundView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
 
-    // Have to apply a custom alpha here because UIVisualEffectView blurs come with their own tint
-    backgroundView.contentView.backgroundColor = browserColors.containerFrostedGlass
-      .withAlphaComponent(0.8)
-    searchEngineScrollView.backgroundColor = browserColors.containerBackground
+    backgroundView.backgroundColor = browserColors.browserButtonBackgroundHover
+    searchEngineScrollView.backgroundColor = browserColors.chromeBackground
 
     setupSearchEngineScrollViewIfNeeded()
 
+    collectionView.do {
+      $0.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "search_optin_separator")
+      $0.register(SearchActionsCell.self)
+      $0.register(SearchSuggestionCell.self)
+      $0.register(SearchFindInPageCell.self)
+      $0.register(SearchOnYourDeviceCell.self)
+      $0.register(
+        SearchSectionHeaderView.self,
+        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+        withReuseIdentifier: SupplementaryViewReuseIdentifier.searchHeaderIdentifier
+      )
+      $0.register(
+        FavoritesRecentSearchFooterView.self,
+        forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+        withReuseIdentifier: SupplementaryViewReuseIdentifier.inYourDeviceSectionFooterIdentifer
+      )
+      $0.alwaysBounceVertical = true
+      $0.backgroundColor = .clear
+      $0.delegate = self
+      $0.dataSource = self
+      $0.keyboardDismissMode = .interactive
+      $0.addGestureRecognizer(suggestionLongPressGesture)
+      $0.contentInset = .init(top: 8, left: 0, bottom: 8, right: 0)
+    }
+
     KeyboardHelper.defaultHelper.addDelegate(self)
 
-    tableView.do {
-      $0.keyboardDismissMode = .interactive
-      $0.separatorStyle = .none
-      $0.sectionHeaderTopPadding = 5
-      $0.backgroundColor = .clear
-      $0.addGestureRecognizer(suggestionLongPressGesture)
-      $0.register(
-        SearchSuggestionPromptCell.self,
-        forCellReuseIdentifier: SearchSuggestionPromptCell.identifier
-      )
-      $0.register(SuggestionCell.self, forCellReuseIdentifier: SuggestionCell.identifier)
-      $0.register(
-        BraveSearchPromotionCell.self,
-        forCellReuseIdentifier: BraveSearchPromotionCell.identifier
-      )
-      $0.register(UITableViewCell.self, forCellReuseIdentifier: "default")
-    }
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(dynamicFontChanged),
@@ -169,7 +273,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     reloadSearchEngines()
-    reloadData()
+    reloadSearchData()
   }
 
   override public func viewWillTransition(
@@ -180,7 +284,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     // The height of the suggestions row may change, so call reloadData() to recalculate cell heights.
     coordinator.animate(
       alongsideTransition: { _ in
-        self.tableView.reloadData()
+        self.collectionView.reloadData()
       },
       completion: nil
     )
@@ -200,20 +304,24 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
 
   @objc func dynamicFontChanged(_ notification: Notification) {
     if notification.name == .dynamicFontChanged {
-      reloadData()
+      reloadSearchData()
     }
   }
 
   // MARK: Internal
 
   private func setupSearchEngineScrollViewIfNeeded() {
-    if !dataSource.hasQuickSearchEngines { return }
+    guard dataSource.isAIChatAvailable || dataSource.hasQuickSearchEngines
+    else {
+      layoutCollectionView()
+      return
+    }
 
     view.addSubview(searchEngineScrollView)
     searchEngineScrollView.addSubview(searchEngineScrollViewContent)
 
     layoutSearchEngineScrollView()
-    layoutTable()
+    layoutCollectionView()
 
     searchEngineScrollViewContent.snp.makeConstraints { make in
       make.center.equalTo(searchEngineScrollView).priority(.low)
@@ -227,8 +335,8 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     }
   }
 
-  private func layoutSearchEngineScrollView() {
-    if !dataSource.hasQuickSearchEngines { return }
+  func layoutSearchEngineScrollView() {
+    guard dataSource.isAIChatAvailable || dataSource.hasQuickSearchEngines else { return }
 
     let keyboardHeight =
       KeyboardHelper.defaultHelper.currentState?.intersectionHeightForView(view) ?? 0
@@ -250,28 +358,19 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     }
   }
 
-  private func layoutSuggestionsOptInPrompt() {
-    if dataSource.isPrivate
-      || dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn == false
-    {
-      reloadData()
-      return
-    }
-
-    layoutTable()
-  }
-
-  private func layoutTable() {
-    tableView.snp.remakeConstraints { make in
+  private func layoutCollectionView() {
+    collectionView.snp.remakeConstraints { make in
       make.top.equalTo(view.snp.top)
       make.leading.trailing.equalTo(view)
-      make.bottom.equalTo(
-        dataSource.hasQuickSearchEngines ? searchEngineScrollView.snp.top : self.view
-      )
+      if searchEngineScrollView.superview == nil {
+        make.bottom.equalTo(view.safeArea.bottom)
+      } else {
+        make.bottom.equalTo(searchEngineScrollView.snp.top)
+      }
     }
   }
 
-  override func reloadData() {
+  func reloadSearchData() {
     dataSource.querySuggestClient()
   }
 
@@ -284,7 +383,6 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
 
     // Reload the footer list of search engines.
     reloadSearchEngines()
-    layoutSuggestionsOptInPrompt()
   }
 
   func setSearchQuery(query: String, showSearchSuggestions: Bool = true) {
@@ -299,38 +397,70 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     searchEngineScrollViewContent.subviews.forEach { $0.removeFromSuperview() }
     var leftEdge = searchEngineScrollViewContent.snp.left
 
-    // search settings icon
-    let searchButton = UIButton()
-    searchButton.setImage(
-      UIImage(named: "quickSearch", in: .module, compatibleWith: nil)!.template,
-      for: []
-    )
-    searchButton.imageView?.contentMode = .center
-    searchButton.backgroundColor = .clear
-    searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
-    searchButton.accessibilityLabel = Strings.searchSettingsButtonTitle
-    searchButton.tintColor = .braveBlurpleTint
+    if dataSource.isAIChatAvailable {
+      let leoButtonContainer = UIView().then {
+        $0.layer.cornerRadius = 8.0
+        $0.clipsToBounds = true
+      }
 
-    searchButton.imageView?.snp.makeConstraints { make in
-      make.width.height.equalTo(SearchViewControllerUX.searchImageWidth)
-      return
-    }
+      let leoButtonBackgroundView = GradientView(braveSystemName: .iconsActive)
 
-    searchEngineScrollViewContent.addSubview(searchButton)
-    searchButton.snp.makeConstraints { make in
-      make.size.equalTo(SearchViewControllerUX.faviconSize)
-      // offset the left edge to align with search results
-      make.left.equalTo(leftEdge).offset(SearchViewControllerUX.searchButtonMargin * 2)
-      make.top.equalTo(searchEngineScrollViewContent).offset(
-        SearchViewControllerUX.searchButtonMargin
+      let leoButton = UIButton()
+      leoButton.setImage(
+        UIImage(braveSystemNamed: "leo.product.brave-leo")!.template,
+        for: []
       )
-      make.bottom.equalTo(searchEngineScrollViewContent).offset(
-        -SearchViewControllerUX.searchButtonMargin
-      )
+      leoButton.imageView?.contentMode = .center
+      leoButton.addTarget(self, action: #selector(didClickLeoButton), for: .touchUpInside)
+      leoButton.accessibilityLabel = Strings.searchSettingsButtonTitle
+      leoButton.tintColor = .white
+      leoButton.imageView?.snp.makeConstraints { make in
+        make.width.height.equalTo(SearchViewControllerUX.searchImageWidth)
+        return
+      }
+
+      leoButtonContainer.addSubview(leoButtonBackgroundView)
+      leoButtonContainer.addSubview(leoButton)
+
+      leoButtonBackgroundView.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+      leoButton.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+
+      searchEngineScrollViewContent.addSubview(leoButtonContainer)
+      leoButtonContainer.snp.makeConstraints { make in
+        make.size.equalTo(SearchViewControllerUX.faviconSize)
+        // offset the left edge to align with search results
+        make.left.equalTo(leftEdge).offset(
+          SearchViewControllerUX.searchButtonMargin * 2
+        )
+        make.top.equalTo(searchEngineScrollViewContent).offset(
+          SearchViewControllerUX.searchButtonMargin
+        )
+        make.bottom.equalTo(searchEngineScrollViewContent).offset(
+          -SearchViewControllerUX.searchButtonMargin
+        )
+      }
+
+      leftEdge = leoButtonContainer.snp.right
+
+      let separator = UIView().then {
+        $0.backgroundColor = UIColor(braveSystemName: .materialSeparator)
+      }
+
+      searchEngineScrollView.addSubview(separator)
+      separator.snp.makeConstraints { make in
+        make.size.equalTo(SearchViewControllerUX.separatorSize)
+        make.left.equalTo(leftEdge).offset(SearchViewControllerUX.searchButtonMargin * 2)
+        make.centerY.equalTo(leoButtonBackgroundView)
+      }
+
+      leftEdge = separator.snp.right
     }
 
     // search engines
-    leftEdge = searchButton.snp.right
     for engine in dataSource.quickSearchEngines {
       let engineButton = UIButton()
       engineButton.setImage(engine.image, for: [])
@@ -353,42 +483,59 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
         make.left.equalTo(leftEdge)
         make.top.equalTo(searchEngineScrollViewContent)
         make.bottom.equalTo(searchEngineScrollViewContent)
-
-        if engine === dataSource.searchEngines?.quickSearchEngines.last {
-          make.right.equalTo(searchEngineScrollViewContent)
-        }
       }
       leftEdge = engineButton.snp.right
     }
+
+    let settingsButton = UIButton()
+    settingsButton.setImage(
+      UIImage(braveSystemNamed: "leo.settings")!.template,
+      for: []
+    )
+    settingsButton.imageView?.contentMode = .center
+    settingsButton.backgroundColor = .clear
+    settingsButton.addTarget(self, action: #selector(didClickSettingsButton), for: .touchUpInside)
+    settingsButton.accessibilityLabel = Strings.searchSettingsButtonTitle
+    settingsButton.tintColor = UIColor(braveSystemName: .iconDefault)
+
+    settingsButton.imageView?.snp.makeConstraints { make in
+      make.width.height.equalTo(SearchViewControllerUX.searchImageWidth)
+      return
+    }
+
+    searchEngineScrollViewContent.addSubview(settingsButton)
+    settingsButton.snp.makeConstraints { make in
+      make.size.equalTo(SearchViewControllerUX.faviconSize)
+      // offset the left edge to align with search results
+      make.left.equalTo(leftEdge).offset(
+        SearchViewControllerUX.searchButtonMargin
+      )
+      make.top.equalTo(searchEngineScrollViewContent).offset(
+        SearchViewControllerUX.searchButtonMargin
+      )
+      make.bottom.equalTo(searchEngineScrollViewContent).inset(
+        SearchViewControllerUX.searchButtonMargin
+      )
+      make.right.equalTo(searchEngineScrollViewContent).inset(
+        SearchViewControllerUX.searchButtonMargin * 2
+      )
+    }
+  }
+
+  private func searchSuggestionOptin(enable: Bool) {
+    dataSource.searchEngines?.shouldShowSearchSuggestions = enable
+    dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn = false
+
+    if enable {
+      self.dataSource.querySuggestClient()
+    }
+
+    collectionView.reloadData()
   }
 
   public func loader(dataLoaded data: [Site]) {
-    self.data = Array(data.prefix(5))
-    tableView.reloadData()
-  }
-
-  private func isBraveSearchPrompt(for indexPath: IndexPath) -> Bool {
-    guard let section = dataSource.availableSections[safe: indexPath.section] else {
-      return false
-    }
-
-    switch section {
-    case .searchSuggestionsOptIn:
-      return indexPath.row == 1 && dataSource.braveSearchPromotionAvailable
-    case .searchSuggestions:
-      let index =
-        traitCollection.horizontalSizeClass == .regular && UIDevice.current.orientation.isPortrait
-        ? 4 : 2
-      switch dataSource.suggestions.count {
-      case 0...index:
-        return indexPath.row == dataSource.suggestions.count
-          && dataSource.braveSearchPromotionAvailable
-      default:
-        return indexPath.row == index && dataSource.braveSearchPromotionAvailable
-      }
-    default:
-      return false
-    }
+    allSiteData = data
+    collectionView.reloadData()
   }
 
   private func changeBraveSearchPromotionState() {
@@ -418,6 +565,135 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     )
   }
 
+  private func searchLayoutSection(
+    headerEnabled: Bool,
+    footerEnabled: Bool
+  ) -> NSCollectionLayoutSection {
+    let itemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(52)
+    )
+    let item = NSCollectionLayoutItem(layoutSize: itemSize)
+    let groupSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(52)
+    )
+    let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+    let section = NSCollectionLayoutSection(group: group)
+    section.contentInsets = .init(top: 12, leading: 8, bottom: 12, trailing: 8)
+
+    var supplementaryItems = [NSCollectionLayoutBoundarySupplementaryItem]()
+    if headerEnabled {
+      let headerItemSize = NSCollectionLayoutSize(
+        widthDimension: .fractionalWidth(1),
+        heightDimension: .absolute(50)
+      )
+      let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
+        layoutSize: headerItemSize,
+        elementKind: UICollectionView.elementKindSectionHeader,
+        alignment: .top
+      )
+      headerItem.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+      supplementaryItems.append(headerItem)
+
+      let backgroundItem = NSCollectionLayoutDecorationItem.background(
+        elementKind: CollectionLayoutDecorationItemElementKind.backgroundWithHeader
+      )
+      backgroundItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+      section.decorationItems = [backgroundItem]
+    } else {
+      let backgroundItem = NSCollectionLayoutDecorationItem.background(
+        elementKind: CollectionLayoutDecorationItemElementKind.backgroundPlain
+      )
+      backgroundItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+      section.decorationItems = [backgroundItem]
+    }
+
+    if footerEnabled {
+      if isSiteDataShowMoreAvailable {
+        let footerItemSize = NSCollectionLayoutSize(
+          widthDimension: .fractionalWidth(1),
+          heightDimension: .estimated(30)
+        )
+        let footerItem = NSCollectionLayoutBoundarySupplementaryItem(
+          layoutSize: footerItemSize,
+          elementKind: UICollectionView.elementKindSectionFooter,
+          alignment: .bottom
+        )
+        footerItem.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+        supplementaryItems.append(footerItem)
+      }
+    }
+
+    section.boundarySupplementaryItems = supplementaryItems
+
+    return section
+  }
+
+  private func searchSuggestionOptinLayoutSection() -> NSCollectionLayoutSection {
+    let quickBarItemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(52)
+    )
+    let quickBarItem = NSCollectionLayoutItem(layoutSize: quickBarItemSize)
+
+    let separatorItemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .absolute(1)
+    )
+    let separatorItem = NSCollectionLayoutItem(layoutSize: separatorItemSize)
+    separatorItem.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+
+    let optinItemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(130)
+    )
+    let optinItem = NSCollectionLayoutItem(layoutSize: optinItemSize)
+
+    let groupSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(183)
+    )
+    let group = NSCollectionLayoutGroup.vertical(
+      layoutSize: groupSize,
+      subitems: [quickBarItem, separatorItem, optinItem]
+    )
+    group.interItemSpacing = .fixed(8)
+    let section = NSCollectionLayoutSection(group: group)
+    section.contentInsets = .init(top: 16, leading: 12, bottom: 8, trailing: 12)
+
+    let backgroundItem = NSCollectionLayoutDecorationItem.background(
+      elementKind: CollectionLayoutDecorationItemElementKind.backgroundPlain
+    )
+    backgroundItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+    section.decorationItems = [backgroundItem]
+
+    return section
+  }
+
+  private func braveSearchPromotionLayoutSection() -> NSCollectionLayoutSection {
+    let itemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(1)
+    )
+    let item = NSCollectionLayoutItem(layoutSize: itemSize)
+    let groupSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(168)
+    )
+    let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+    let section = NSCollectionLayoutSection(group: group)
+    section.contentInsets = .init(top: 4, leading: 12, bottom: 4, trailing: 12)
+
+    let backgroundItem = NSCollectionLayoutDecorationItem.background(
+      elementKind: CollectionLayoutDecorationItemElementKind.backgroundPlain
+    )
+    backgroundItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+    section.decorationItems = [backgroundItem]
+
+    return section
+  }
+
   // MARK: Actions
 
   @objc func didSelectEngine(_ sender: UIButton) {
@@ -441,28 +717,266 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     searchDelegate?.searchViewController(self, didSelectURL: url)
   }
 
-  @objc func didClickSearchButton() {
-    self.searchDelegate?.presentSearchSettingsController()
+  @objc func didClickSettingsButton() {
+    self.searchDelegate?.presentQuickSearchEnginesViewController()
   }
 
-  // MARK: UITableViewDelegate, UITableViewDataSource
+  @objc func didClickLeoButton() {
+    submitSearchQueryToAIChat()
+  }
 
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let section = dataSource.availableSections[safe: indexPath.section] else { return }
+  @objc func onShowMorePressed() {
+    showAllSiteData = true
+    collectionView.reloadData()
+  }
+
+  @objc func onBraveSearchPromotionOptinButton() {
+    submitSeachTemplateQuery(isBraveSearchPromotion: true)
+    collectionView.reloadData()
+  }
+
+  @objc func onBraveSearchPromtionIgnoreButton() {
+    changeBraveSearchPromotionState()
+    collectionView.reloadData()
+  }
+
+  @objc func onSearchSuggestionEnableButton() {
+    searchSuggestionOptin(enable: true)
+  }
+
+  @objc func onSearchSuggestionDisableButton() {
+    searchSuggestionOptin(enable: false)
+  }
+}
+
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
+extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+  public func numberOfSections(in collectionView: UICollectionView) -> Int {
+    availableSections.count
+  }
+
+  public func collectionView(
+    _ collectionView: UICollectionView,
+    numberOfItemsInSection section: Int
+  ) -> Int {
+    let section = availableSections[section]
 
     switch section {
-    case .quickBar:
-      submitSeachTemplateQuery(isBraveSearchPromotion: false)
-    case .aiChat:
-      submitSearchQueryToAIChat()
-    case .searchSuggestionsOptIn: return
+    case .searchSuggestionsOptIn:
+      return 3  // quick bar + separator + optin
     case .searchSuggestions:
-      if !isBraveSearchPrompt(for: indexPath) {
+      guard
+        let shouldShowSuggestions = dataSource.searchEngines?.shouldShowSearchSuggestions,
+        shouldShowSuggestions
+      else {
+        return 1  // quick bar
+      }
+
+      let searchSuggestionsCount = min(
+        dataSource.suggestions.count,
+        dataSource.maxSearchSuggestions
+      )
+
+      return !dataSource.searchQuery.looksLikeAURL()
+        && !dataSource.isPrivate ? searchSuggestionsCount + 1 : 1  // + 1 for quickBar
+    case .openTabsAndHistoryAndBookmarks:
+      return availableSiteData.count
+    case .findInPage:
+      return 1
+    case .braveSearchPromotion:
+      return 1
+    }
+  }
+
+  public func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
+    let section = availableSections[indexPath.section]
+    switch section {
+    case .searchSuggestionsOptIn:
+      if indexPath.row == 0 {
+        // quick bar
+        let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchSuggestionCell
+        cell.setTitle(String(format: Strings.searchQuickBarPrefix, dataSource.searchQuery))
+
+        return cell
+      } else if indexPath.row == 1 {
+        let cell = collectionView.dequeueReusableCell(
+          withReuseIdentifier: CollectionViewCellReuseIdentifier.searchOptinSeparatorCellIdentifier,
+          for: indexPath
+        )
+        cell.backgroundColor = UIColor(braveSystemName: .dividerSubtle)
+
+        return cell
+      } else {
+        let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchActionsCell
+        cell.do {
+          $0.layer.cornerRadius = 12
+          $0.layer.cornerCurve = .continuous
+          $0.titleLabel.text = Strings.recentSearchSuggestionsTitle
+          $0.subtitleLabel.text = Strings.searchSuggestionsSubtitle
+          $0.imageView.image = UIImage(named: "search-suggestion-opt-in", in: .module, with: nil)
+          $0.primaryButton.setTitle(
+            Strings.recentSearchEnableSuggestions,
+            for: .normal
+          )
+          $0.primaryButton.addTarget(
+            self,
+            action: #selector(onSearchSuggestionEnableButton),
+            for: .touchUpInside
+          )
+          $0.secondaryButton.setTitle(
+            Strings.recentSearchDisableSuggestions,
+            for: .normal
+          )
+          $0.secondaryButton.addTarget(
+            self,
+            action: #selector(onSearchSuggestionDisableButton),
+            for: .touchUpInside
+          )
+        }
+
+        return cell
+      }
+    case .searchSuggestions:
+      let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchSuggestionCell
+      if indexPath.row == 0 {
+        // quick bar
+        cell.setTitle(String(format: Strings.searchQuickBarPrefix, dataSource.searchQuery))
+
+        return cell
+      } else {  // search suggestion opt-in
+        if let suggestion = dataSource.suggestions[safe: indexPath.row - 1] {
+          cell.setTitle(suggestion)
+          cell.openButtonActionHandler = { [weak self] in
+            guard let self = self else { return }
+
+            self.searchDelegate?.searchViewController(self, didLongPressSuggestion: suggestion)
+          }
+        }
+
+        return cell
+      }
+    case .braveSearchPromotion:
+      let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchActionsCell
+      cell.do {
+        $0.backgroundColor = UIColor(braveSystemName: .containerInteractive)
+        $0.layer.cornerRadius = 12
+        $0.titleLabel.text = Strings.BraveSearchPromotion.braveSearchPromotionBannerTitle
+        $0.subtitleLabel.text = Strings.BraveSearchPromotion.braveSearchPromotionBannerDescription
+        $0.imageView.image = UIImage(named: "brave-search-promotion", in: .module, with: nil)
+        $0.primaryButton.setTitle(
+          Strings.BraveSearchPromotion.braveSearchPromotionBannerTryButtonTitle,
+          for: .normal
+        )
+        $0.primaryButton.addTarget(
+          self,
+          action: #selector(onBraveSearchPromotionOptinButton),
+          for: .touchUpInside
+        )
+        $0.secondaryButton.setTitle(
+          Preferences.BraveSearch.braveSearchPromotionCompletionState.value
+            != BraveSearchPromotionState.maybeLaterUpcomingSession.rawValue
+            ? Strings.BraveSearchPromotion.braveSearchPromotionBannerMaybeLaterButtonTitle
+            : Strings.BraveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle,
+          for: .normal
+        )
+        $0.secondaryButton.addTarget(
+          self,
+          action: #selector(onBraveSearchPromtionIgnoreButton),
+          for: .touchUpInside
+        )
+      }
+
+      return cell
+    case .findInPage:
+      let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchFindInPageCell
+      cell.setCellTitle(dataSource.searchQuery)
+      return cell
+    case .openTabsAndHistoryAndBookmarks:
+      let cell = collectionView.dequeueReusableCell(for: indexPath) as SearchOnYourDeviceCell
+      let site = availableSiteData[indexPath.row]
+      cell.setSite(site, isPrivateBrowsing: dataSource.isPrivate)
+
+      return cell
+    }
+  }
+
+  public func collectionView(
+    _ collectionView: UICollectionView,
+    viewForSupplementaryElementOfKind kind: String,
+    at indexPath: IndexPath
+  ) -> UICollectionReusableView {
+    let section = availableSections[indexPath.section]
+
+    if kind == UICollectionView.elementKindSectionHeader {
+      if let header =
+        collectionView
+        .dequeueReusableSupplementaryView(
+          ofKind: kind,
+          withReuseIdentifier: SupplementaryViewReuseIdentifier.searchHeaderIdentifier,
+          for: indexPath
+        ) as? SearchSectionHeaderView
+      {
+        switch section {
+        case .searchSuggestionsOptIn, .searchSuggestions, .braveSearchPromotion:
+          assertionFailure("no header for search suggestion")
+        case .findInPage:
+          header.setTitle(Strings.findOnPageSectionHeader)
+        case .openTabsAndHistoryAndBookmarks:
+          header.setTitle(Strings.searchHistorySectionHeader)
+        }
+        return header
+      }
+    } else if kind == UICollectionView.elementKindSectionFooter {
+      let footer =
+        collectionView
+        .dequeueReusableSupplementaryView(
+          ofKind: kind,
+          withReuseIdentifier: SupplementaryViewReuseIdentifier.inYourDeviceSectionFooterIdentifer,
+          for: indexPath
+        )
+      let tapGesture = UITapGestureRecognizer(
+        target: self,
+        action: #selector(onShowMorePressed)
+      )
+      footer.addGestureRecognizer(tapGesture)
+      footer.isUserInteractionEnabled = true
+
+      return footer
+    }
+    return
+      collectionView
+      .dequeueReusableSupplementaryView(
+        ofKind: kind,
+        withReuseIdentifier: SupplementaryViewReuseIdentifier.searchHeaderIdentifier,
+        for: indexPath
+      )
+  }
+
+  public func collectionView(
+    _ collectionView: UICollectionView,
+    didSelectItemAt indexPath: IndexPath
+  ) {
+    guard let section = availableSections[safe: indexPath.section] else { return }
+
+    switch section {
+    case .searchSuggestionsOptIn:
+      if indexPath.row == 0 {
+        // quick bar
+        submitSeachTemplateQuery(isBraveSearchPromotion: false)
+      }
+    case .searchSuggestions:
+      if indexPath.row == 0 {
+        // quick bar
+        submitSeachTemplateQuery(isBraveSearchPromotion: false)
+      } else {
         // Assume that only the default search engine can provide search suggestions.
         let engine = dataSource.searchEngines?.defaultEngine(
           forType: dataSource.isPrivate ? .privateMode : .standard
         )
-        let suggestion = dataSource.suggestions[indexPath.row]
+        let suggestion = dataSource.suggestions[indexPath.row - 1]
 
         var url = URIFixup.getURL(suggestion)
         if url == nil {
@@ -476,8 +990,13 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
           searchDelegate?.searchViewController(self, didSelectURL: url)
         }
       }
+    case .braveSearchPromotion:
+      return
+    case .findInPage:
+      let localSearchQuery = dataSource.searchQuery.lowercased()
+      searchDelegate?.searchViewController(self, shouldFindInPage: localSearchQuery)
     case .openTabsAndHistoryAndBookmarks:
-      let site = data[indexPath.row]
+      let site = availableSiteData[indexPath.row]
       if let url = URL(string: site.url) {
         if site.siteType == .tab {
           var tabId: UUID?
@@ -489,359 +1008,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
           searchDelegate?.searchViewController(self, didSelectURL: url)
         }
       }
-    case .findInPage:
-      let localSearchQuery = dataSource.searchQuery.lowercased()
-      searchDelegate?.searchViewController(self, shouldFindInPage: localSearchQuery)
     }
-  }
-
-  override public func tableView(
-    _ tableView: UITableView,
-    heightForRowAt indexPath: IndexPath
-  ) -> CGFloat {
-    if let currentSection = dataSource.availableSections[safe: indexPath.section] {
-      switch currentSection {
-      case .quickBar, .aiChat, .openTabsAndHistoryAndBookmarks, .findInPage:
-        return super.tableView(tableView, heightForRowAt: indexPath)
-      case .searchSuggestionsOptIn:
-        return isBraveSearchPrompt(for: indexPath) ? UITableView.automaticDimension : 100.0
-      case .searchSuggestions:
-        return isBraveSearchPrompt(for: indexPath) ? UITableView.automaticDimension : 44.0
-      }
-    }
-
-    return 0
-  }
-
-  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    guard let searchSection = dataSource.availableSections[safe: section] else { return nil }
-
-    switch searchSection {
-    case .quickBar, .aiChat: return nil
-    case .searchSuggestionsOptIn: return nil
-    case .searchSuggestions:
-      if let defaultSearchEngine = dataSource.searchEngines?.defaultEngine(
-        forType: dataSource.isPrivate ? .privateMode : .standard
-      ) {
-        if defaultSearchEngine.shortName.contains(
-          Strings.searchSuggestionSectionTitleNoSearchFormat
-        ) || defaultSearchEngine.shortName.lowercased().contains("search") {
-          return defaultSearchEngine.displayName
-        }
-        return String(
-          format: Strings.searchSuggestionSectionTitleFormat,
-          defaultSearchEngine.displayName
-        )
-      }
-      return Strings.searchSuggestionsSectionHeader
-    case .openTabsAndHistoryAndBookmarks: return Strings.searchHistorySectionHeader
-    case .findInPage: return Strings.findOnPageSectionHeader
-    }
-  }
-
-  func tableView(
-    _ tableView: UITableView,
-    willDisplayHeaderView view: UIView,
-    forSection section: Int
-  ) {
-    if let headerView = view as? UITableViewHeaderFooterView {
-      headerView.textLabel?.textColor = .bravePrimary
-    }
-  }
-
-  override public func tableView(
-    _ tableView: UITableView,
-    heightForHeaderInSection section: Int
-  ) -> CGFloat {
-    guard let searchSection = dataSource.availableSections[safe: section] else { return 0 }
-    let headerHeight: CGFloat = 22
-
-    switch searchSection {
-    case .quickBar, .aiChat, .searchSuggestionsOptIn:
-      return 0.0
-    case .searchSuggestions:
-      return dataSource.suggestions.isEmpty ? 0 : headerHeight * 2.0
-    case .openTabsAndHistoryAndBookmarks:
-      // Check for History Bookmarks Open Tabs suggestions
-      // Show Browser Suggestions Preference effects all the modes
-      if !Preferences.Search.showBrowserSuggestions.value {
-        return 0
-      }
-
-      // Private Browsing Mode (PBM) should *not* show items from normal mode History etc
-      // when search suggestions is not enabled
-      if Preferences.Privacy.privateBrowsingOnly.value,
-        dataSource.searchEngines?.shouldShowSearchSuggestions == false
-      {
-        return 0
-      }
-
-      return data.isEmpty ? 0 : 2.0 * headerHeight
-    case .findInPage:
-      if let sd = searchDelegate, sd.searchViewControllerAllowFindInPage() {
-        return headerHeight
-      }
-      return 0.0
-    }
-  }
-
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return UIView()
-  }
-
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    guard let searchSection = dataSource.availableSections[safe: section] else { return 0 }
-    let footerHeight: CGFloat = 10.0
-
-    switch searchSection {
-    case .quickBar, .searchSuggestions, .findInPage, .openTabsAndHistoryAndBookmarks:
-      return CGFloat.leastNormalMagnitude
-    case .searchSuggestionsOptIn:
-      return footerHeight
-    case .aiChat:
-      return footerHeight
-    }
-  }
-
-  override public func tableView(
-    _ tableView: UITableView,
-    cellForRowAt indexPath: IndexPath
-  ) -> UITableViewCell {
-    func createSearchSuggestionPromotionCell() -> UITableViewCell {
-      let cell = tableView.dequeueReusableCell(
-        withIdentifier: BraveSearchPromotionCell.identifier,
-        for: indexPath
-      )
-      if let promotionSearchCell = cell as? BraveSearchPromotionCell {
-        promotionSearchCell.trySearchEngineTapped = { [weak self] in
-          self?.submitSeachTemplateQuery(isBraveSearchPromotion: true)
-        }
-
-        promotionSearchCell.dismissTapped = { [weak self] in
-          self?.changeBraveSearchPromotionState()
-          tableView.reloadData()
-        }
-      }
-
-      return cell
-    }
-
-    guard let section = dataSource.availableSections[safe: indexPath.section] else {
-      return UITableViewCell()
-    }
-
-    switch section {
-    case .quickBar:
-      let cell = TwoLineTableViewCell().then {
-        $0.textLabel?.text = dataSource.searchQuery
-        $0.textLabel?.textColor = .bravePrimary
-        $0.imageView?.image = UIImage(
-          named: "search_bar_find_in_page_icon",
-          in: .module,
-          compatibleWith: nil
-        )?.withRenderingMode(.alwaysTemplate)
-        $0.imageView?.tintColor = browserColors.iconDefault
-        $0.imageView?.contentMode = .center
-        $0.backgroundColor = .clear
-      }
-
-      return cell
-    case .aiChat:
-      let cell = TwoLineTableViewCell().then {
-        $0.textLabel?.text =
-          "\(dataSource.searchQuery) - \(Strings.AIChat.askLeoSearchSuggestionTitle)"
-        $0.textLabel?.textColor = .bravePrimary
-        $0.imageView?.image = UIImage(named: "aichat-avatar", in: .module, compatibleWith: nil)
-        $0.imageView?.tintColor = browserColors.iconDefault
-        $0.imageView?.contentMode = .center
-        $0.backgroundColor = .clear
-      }
-
-      return cell
-    case .searchSuggestionsOptIn:
-      var cell: UITableViewCell?
-
-      if isBraveSearchPrompt(for: indexPath) {
-        cell = createSearchSuggestionPromotionCell()
-      } else {
-        cell = tableView.dequeueReusableCell(
-          withIdentifier: SearchSuggestionPromptCell.identifier,
-          for: indexPath
-        )
-        if let promptCell = cell as? SearchSuggestionPromptCell {
-          promptCell.selectionStyle = .none
-          promptCell.onOptionSelected = { [weak self] option in
-            guard let self = self else { return }
-
-            self.dataSource.searchEngines?.shouldShowSearchSuggestions = option
-            self.dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn = false
-
-            if option {
-              self.dataSource.querySuggestClient()
-            }
-            self.layoutSuggestionsOptInPrompt()
-            self.reloadSearchEngines()
-            self.tableView.reloadData()
-          }
-        }
-      }
-
-      guard let tableViewCell = cell else { return UITableViewCell() }
-      tableViewCell.separatorInset = .zero
-
-      return tableViewCell
-    case .searchSuggestions:
-      var cell: UITableViewCell?
-
-      if isBraveSearchPrompt(for: indexPath) {
-        cell = createSearchSuggestionPromotionCell()
-      } else {
-        cell = tableView.dequeueReusableCell(
-          withIdentifier: SuggestionCell.identifier,
-          for: indexPath
-        )
-
-        if let suggestionCell = cell as? SuggestionCell,
-          let suggestion = dataSource.suggestions[safe: indexPath.row]
-        {
-          suggestionCell.setTitle(suggestion)
-          suggestionCell.separatorInset = UIEdgeInsets(
-            top: 0.0,
-            left: view.bounds.width,
-            bottom: 0.0,
-            right: -view.bounds.width
-          )
-          suggestionCell.openButtonActionHandler = { [weak self] in
-            guard let self = self else { return }
-
-            self.searchDelegate?.searchViewController(self, didLongPressSuggestion: suggestion)
-          }
-        }
-      }
-
-      guard let tableViewCell = cell else { return UITableViewCell() }
-      tableViewCell.separatorInset = .zero
-
-      return tableViewCell
-    case .openTabsAndHistoryAndBookmarks:
-      let cell = super.tableView(tableView, cellForRowAt: indexPath)
-      let site = data[indexPath.row]
-
-      let detailTextForTabSuggestions = NSMutableAttributedString()
-
-      detailTextForTabSuggestions.append(
-        NSAttributedString(
-          string: Strings.searchSuggestionOpenTabActionTitle,
-          attributes: [
-            .font: DynamicFontHelper.defaultHelper.smallSizeBoldWeightAS,
-            .foregroundColor: browserColors.textSecondary,
-          ]
-        )
-      )
-
-      detailTextForTabSuggestions.append(
-        NSAttributedString(
-          string: " · \(site.url)",
-          attributes: [
-            .font: DynamicFontHelper.defaultHelper.smallSizeRegularWeightAS,
-            .foregroundColor: browserColors.textSecondary,
-          ]
-        )
-      )
-
-      if let cell = cell as? TwoLineTableViewCell {
-        cell.textLabel?.textColor = browserColors.textPrimary
-        if site.siteType == .tab {
-          cell.setLines(
-            site.title,
-            detailText: nil,
-            detailAttributedText: detailTextForTabSuggestions
-          )
-        } else {
-          cell.setLines(site.title, detailText: site.url)
-        }
-        cell.setRightBadge(site.siteType.icon?.template ?? nil)
-        cell.accessoryView?.tintColor = browserColors.iconDefault
-
-        cell.imageView?.contentMode = .scaleAspectFit
-        cell.imageView?.layer.borderColor = SearchViewControllerUX.iconBorderColor.cgColor
-        cell.imageView?.layer.borderWidth = SearchViewControllerUX.iconBorderWidth
-        cell.imageView?.loadFavicon(
-          for: site.tileURL,
-          isPrivateBrowsing: dataSource.isPrivate
-        )
-        cell.backgroundColor = .clear
-      }
-
-      return cell
-    case .findInPage:
-      let cell = tableView.dequeueReusableCell(withIdentifier: "default", for: indexPath)
-      cell.textLabel?.text = String(format: Strings.findInPageFormat, dataSource.searchQuery)
-      cell.textLabel?.textColor = browserColors.textPrimary
-      cell.textLabel?.numberOfLines = 2
-      cell.textLabel?.font = .systemFont(ofSize: 15.0)
-      cell.textLabel?.lineBreakMode = .byWordWrapping
-      cell.textLabel?.textAlignment = .left
-      cell.backgroundColor = .clear
-
-      return cell
-    }
-  }
-
-  override public func tableView(
-    _ tableView: UITableView,
-    numberOfRowsInSection section: Int
-  ) -> Int {
-    guard let section = dataSource.availableSections[safe: section] else {
-      return 0
-    }
-
-    switch section {
-    case .quickBar, .aiChat:
-      return 1
-    case .searchSuggestionsOptIn:
-      return dataSource.braveSearchPromotionAvailable ? 2 : 1
-    case .searchSuggestions:
-      guard let shouldShowSuggestions = dataSource.searchEngines?.shouldShowSearchSuggestions else {
-        return 0
-      }
-
-      var searchSuggestionsCount = min(
-        dataSource.suggestions.count,
-        dataSource.maxSearchSuggestions
-      )
-      if dataSource.braveSearchPromotionAvailable {
-        searchSuggestionsCount += 1
-      }
-
-      return shouldShowSuggestions && !dataSource.searchQuery.looksLikeAURL()
-        && !dataSource.isPrivate ? searchSuggestionsCount : 0
-    case .openTabsAndHistoryAndBookmarks:
-      // Check for History Bookmarks Open Tabs suggestions
-      // Show Browser Suggestions Preference effects all the modes
-      if !Preferences.Search.showBrowserSuggestions.value {
-        return 0
-      }
-
-      // Private Browsing Mode (PBM) should *not* show items from normal mode History etc
-      // when search suggestions is not enabled
-      if Preferences.Privacy.privateBrowsingOnly.value,
-        dataSource.searchEngines?.shouldShowSearchSuggestions == false
-      {
-        return 0
-      }
-
-      return data.count
-    case .findInPage:
-      if let sd = searchDelegate, sd.searchViewControllerAllowFindInPage() {
-        return 1
-      }
-      return 0
-    }
-  }
-
-  func numberOfSections(in tableView: UITableView) -> Int {
-    return dataSource.availableSections.count
   }
 }
 
@@ -849,7 +1016,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
 
 extension SearchViewController: SearchSuggestionDataSourceDelegate {
   func searchSuggestionDataSourceReloaded() {
-    tableView.reloadData()
+    collectionView.reloadData()
   }
 }
 
@@ -874,17 +1041,25 @@ extension SearchViewController: KeyboardHelperDelegate {
 // MARK: - UILongPressGestureRecognizer
 
 extension SearchViewController {
-  func onSuggestionLongPressed(_ gestureRecognizer: UILongPressGestureRecognizer) {
+  @objc func onSuggestionLongPressed(_ gestureRecognizer: UILongPressGestureRecognizer) {
     if gestureRecognizer.state == .began {
-      let location = gestureRecognizer.location(in: self.tableView)
-      if let indexPath = tableView.indexPathForRow(at: location),
-        let section = dataSource.availableSections[safe: indexPath.section],
-        let suggestion = dataSource.suggestions[safe: indexPath.row],
+      let location = gestureRecognizer.location(in: self.collectionView)
+      if let indexPath = collectionView.indexPathForItem(at: location),
+        let section = availableSections[safe: indexPath.section],
+        let suggestion = dataSource.suggestions[safe: indexPath.row - 1],
         section == .searchSuggestions
       {
         searchDelegate?.searchViewController(self, didLongPressSuggestion: suggestion)
       }
     }
+  }
+}
+
+// MARK: - SearchQuickEnginesViewControllerDelegate
+
+extension SearchViewController: SearchQuickEnginesViewControllerDelegate {
+  func searchQuickEnginesUpdated() {
+    reloadSearchEngines()
   }
 }
 

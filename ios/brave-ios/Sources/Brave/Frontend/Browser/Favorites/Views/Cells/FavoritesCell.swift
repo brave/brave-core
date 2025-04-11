@@ -43,7 +43,7 @@ class FavoritesCell: UICollectionViewCell, CollectionViewReusable {
     $0.numberOfLines = 2
   }
 
-  let imageView = LargeFaviconView()
+  let imageView = LargeFaviconView(config: FaviconConfiguration.defaultConfig)
 
   override var isHighlighted: Bool {
     didSet {

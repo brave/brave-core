@@ -15,16 +15,12 @@ import os.log
 class FavoritesViewController: UIViewController {
 
   // UI Properties
-  let collectionView: UICollectionView
-  private let backgroundView = UIVisualEffectView(
-    effect: UIBlurEffect(style: .systemUltraThinMaterial)
-  )
-
-  private let layout = UICollectionViewFlowLayout().then {
-    $0.sectionInset = UIEdgeInsets(top: 12, left: 0, bottom: 22, right: 0)
-    $0.minimumInteritemSpacing = 0
-    $0.minimumLineSpacing = 8
-  }
+  lazy var collectionView: UICollectionView =
+    UICollectionView(
+      frame: .zero,
+      collectionViewLayout: compositionalLayout
+    )
+  private let backgroundView = UIView()
 
   private var favoriteGridSize: CGSize = .zero
 
@@ -37,9 +33,36 @@ class FavoritesViewController: UIViewController {
     DataSource(
       collectionView: self.collectionView,
       cellProvider: { [weak self] collectionView, indexPath, wrapper -> UICollectionViewCell? in
-        self?.cellProvider(collectionView: collectionView, indexPath: indexPath, wrapper: wrapper)
+        self?.cellProvider(
+          collectionView: collectionView,
+          indexPath: indexPath,
+          wrapper: wrapper
+        )
       }
     )
+  private let layoutConfig = UICollectionViewCompositionalLayoutConfiguration().then {
+    $0.interSectionSpacing = 8.0
+  }
+  private lazy var compositionalLayout = UICollectionViewCompositionalLayout(
+    sectionProvider: { [weak self] sectionIndex, _ in
+      guard let self else { return nil }
+      let section = self.availableSections[sectionIndex]
+      switch section {
+      case .favorites:
+        return self.favoritesLayoutSection()
+      case .recentSearches:
+        return self.recentSearchesLayoutSection()
+      case .recentSearchesOptIn:
+        return self.recentSearchesOptInLayoutSection()
+      }
+    },
+    configuration: layoutConfig
+  ).then {
+    $0.register(
+      FavoritesSectionBackgroundView.self,
+      forDecorationViewOfKind: "background"
+    )
+  }
 
   // Actions
   var bookmarkAction: (Favorite, BookmarksAction) -> Void
@@ -55,9 +78,6 @@ class FavoritesViewController: UIViewController {
 
   var availableSections: [FavoritesSection] {
     var sections = [FavoritesSection]()
-    if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs {
-      sections.append(.pasteboard)
-    }
 
     if let favoritesObjects = favoritesFRC.fetchedObjects, !favoritesObjects.isEmpty {
       sections.append(.favorites)
@@ -88,18 +108,13 @@ class FavoritesViewController: UIViewController {
     self.bookmarkAction = bookmarkAction
     self.recentSearchAction = recentSearchAction
     self.privateBrowsingManager = privateBrowsingManager
-    collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 
     super.init(nibName: nil, bundle: nil)
 
     collectionView.do {
-      $0.register(
-        FavoritesRecentSearchClipboardHeaderView.self,
-        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-        withReuseIdentifier: "pasteboard_header"
-      )
-      $0.register(FavoritesCell.self)
+      $0.register(FavoritesCollectionViewCell.self)
       $0.register(FavoritesRecentSearchCell.self)
+      $0.register(SearchActionsCell.self)
       $0.register(
         FavoritesHeaderView.self,
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -110,13 +125,12 @@ class FavoritesViewController: UIViewController {
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
         withReuseIdentifier: "recent_searches_header"
       )
-
       $0.register(
-        FavoritesRecentSearchOptInHeaderView.self,
-        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-        withReuseIdentifier: "recent_searches_opt-in_header"
+        FavoritesRecentSearchFooterView.self,
+        forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+        withReuseIdentifier: "recent_search_footer"
       )
-
+      $0.contentInset = .init(top: 8, left: 0, bottom: 8, right: 0)
     }
 
     favoritesFRC.delegate = self
@@ -162,25 +176,130 @@ class FavoritesViewController: UIViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    calculateAppropriateGrid()
-
     if let state = KeyboardHelper.defaultHelper.currentState {
       updateKeyboardInset(state, animated: false)
     }
   }
 
-  override func viewWillLayoutSubviews() {
-    super.viewWillLayoutSubviews()
+  private func favoritesLayoutSection() -> NSCollectionLayoutSection {
+    let itemSize = NSCollectionLayoutSize(
+      widthDimension: .absolute(64),
+      heightDimension: .estimated(78)
+    )
+    let item = NSCollectionLayoutItem(layoutSize: itemSize)
+    let groupSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(114)
+    )
+    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+    group.interItemSpacing = .flexible(8)
+    group.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+    let section = NSCollectionLayoutSection(group: group)
+    section.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
 
-    collectionView.contentInset = collectionView.contentInset.with {
-      $0.left = self.view.readableContentGuide.layoutFrame.minX
-      $0.right = self.view.readableContentGuide.layoutFrame.minX
-    }
+    let headerItemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .absolute(50)
+    )
+    let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
+      layoutSize: headerItemSize,
+      elementKind: UICollectionView.elementKindSectionHeader,
+      alignment: .top
+    )
+    headerItem.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+    section.boundarySupplementaryItems = [headerItem]
+
+    let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: "background")
+    backgroundItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+    section.decorationItems = [backgroundItem]
+
+    return section
   }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    calculateAppropriateGrid()
+  private func recentSearchesLayoutSection() -> NSCollectionLayoutSection {
+    let itemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(44)
+    )
+    let item = NSCollectionLayoutItem(layoutSize: itemSize)
+    let groupSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(44)
+    )
+    let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+    let section = NSCollectionLayoutSection(group: group)
+    section.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
+
+    var supplementaryItems = [NSCollectionLayoutBoundarySupplementaryItem]()
+
+    let headerItemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .absolute(50)
+    )
+    let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
+      layoutSize: headerItemSize,
+      elementKind: UICollectionView.elementKindSectionHeader,
+      alignment: .top
+    )
+    headerItem.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+    supplementaryItems.append(headerItem)
+
+    if let fetchedObjects = recentSearchesFRC.fetchedObjects {
+      let totalCount = RecentSearch.totalCount()
+      if fetchedObjects.count < totalCount {
+        let footerItemSize = NSCollectionLayoutSize(
+          widthDimension: .fractionalWidth(1),
+          heightDimension: .estimated(30)
+        )
+        let footerItem = NSCollectionLayoutBoundarySupplementaryItem(
+          layoutSize: footerItemSize,
+          elementKind: UICollectionView.elementKindSectionFooter,
+          alignment: .bottom
+        )
+        footerItem.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
+        supplementaryItems.append(footerItem)
+      }
+    }
+    section.boundarySupplementaryItems = supplementaryItems
+
+    let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: "background")
+    backgroundItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+    section.decorationItems = [backgroundItem]
+
+    return section
+  }
+
+  private func recentSearchesOptInLayoutSection() -> NSCollectionLayoutSection {
+    let itemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(184)
+    )
+    let item = NSCollectionLayoutItem(layoutSize: itemSize)
+    let groupSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .estimated(184)
+    )
+    let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+    let section = NSCollectionLayoutSection(group: group)
+    section.contentInsets = .init(top: 0, leading: 12, bottom: 0, trailing: 12)
+
+    let headerItemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1),
+      heightDimension: .absolute(50)
+    )
+    let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
+      layoutSize: headerItemSize,
+      elementKind: UICollectionView.elementKindSectionHeader,
+      alignment: .top
+    )
+    headerItem.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+    section.boundarySupplementaryItems = [headerItem]
+
+    let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: "background")
+    backgroundItem.contentInsets = .init(top: 0, leading: 8, bottom: 0, trailing: 8)
+    section.decorationItems = [backgroundItem]
+
+    return section
   }
 
   private func doLayout() {
@@ -191,14 +310,14 @@ class FavoritesViewController: UIViewController {
       $0.edges.equalToSuperview()
     }
     collectionView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.leading.trailing.equalToSuperview()
+      $0.bottom.equalTo(view.safeArea.bottom)
     }
   }
 
   private func setTheme() {
     collectionView.do {
       $0.alwaysBounceVertical = true
-      $0.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
       $0.backgroundColor = .clear
       $0.dataSource = dataSource
       $0.delegate = self
@@ -208,6 +327,8 @@ class FavoritesViewController: UIViewController {
       // Drag should be enabled to rearrange favourite
       $0.dragInteractionEnabled = true
       $0.keyboardDismissMode = .interactive
+      $0.alwaysBounceVertical = true
+      $0.showsHorizontalScrollIndicator = false
     }
 
     updateColors()
@@ -215,36 +336,7 @@ class FavoritesViewController: UIViewController {
 
   private func updateColors() {
     let browserColors = privateBrowsingManager.browserColors
-    // Have to apply a custom alpha here because UIVisualEffectView blurs come with their own tint
-    backgroundView.contentView.backgroundColor = browserColors.containerFrostedGlass
-      .withAlphaComponent(0.8)
-  }
-
-  private func calculateAppropriateGrid() {
-    let width =
-      collectionView.bounds.width - (layout.sectionInset.left + layout.sectionInset.right)
-      - (collectionView.contentInset.left + collectionView.contentInset.right)
-    // Want to fit _at least_ 4 on all devices, but on larger devices
-    // allowing the cells to be a bit bigger
-    let minimumNumberOfColumns = 4
-    let minWidth = floor(width / CGFloat(minimumNumberOfColumns))
-    // Default width should be 82, but may get smaller or bigger
-    var itemSize = CGSize(width: 82, height: FavoritesCell.height(forWidth: 82))
-    if minWidth < 82 {
-      itemSize = CGSize(
-        width: floor(width / 4.0),
-        height: FavoritesCell.height(forWidth: floor(width / 4.0))
-      )
-    } else if traitCollection.horizontalSizeClass == .regular {
-      // On iPad's or Max/Plus phones allow the icons to get bigger to an
-      // extent
-      if width / CGFloat(minimumNumberOfColumns) > 100.0 {
-        itemSize = CGSize(width: 100, height: FavoritesCell.height(forWidth: 100))
-      }
-    }
-
-    favoriteGridSize = itemSize
-    layout.invalidateLayout()
+    backgroundView.backgroundColor = browserColors.browserButtonBackgroundHover
   }
 
   private func fetchRecentSearches() {
@@ -269,7 +361,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     }
 
     switch section {
-    case .pasteboard, .recentSearchesOptIn:
+    case .recentSearchesOptIn:
       break
     case .favorites:
       guard let bookmark = favoritesFRC.fetchedObjects?[safe: indexPath.item] else {
@@ -282,7 +374,6 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
       }
       recentSearchAction(searchItem, true)
     }
-
   }
 
   func collectionView(
@@ -292,53 +383,6 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
   ) -> IndexPath {
     currentIndexPath.section == proposedIndexPath.section ? proposedIndexPath : currentIndexPath
   }
-
-  func collectionView(
-    _ collectionView: UICollectionView,
-    layout collectionViewLayout: UICollectionViewLayout,
-    referenceSizeForHeaderInSection section: Int
-  ) -> CGSize {
-    guard let section = availableSections[safe: section] else {
-      assertionFailure("Invalid Section")
-      return .zero
-    }
-
-    switch section {
-    case .pasteboard:
-      return CGSize(width: collectionView.bounds.width, height: 40.0)
-    case .favorites:
-      return CGSize(width: collectionView.bounds.width, height: 32.0)
-    case .recentSearches:
-      return CGSize(width: collectionView.bounds.width, height: 22.0)
-    case .recentSearchesOptIn:
-      return CGSize(width: collectionView.bounds.width, height: 150.0)
-    }
-  }
-
-  func collectionView(
-    _ collectionView: UICollectionView,
-    layout collectionViewLayout: UICollectionViewLayout,
-    sizeForItemAt indexPath: IndexPath
-  ) -> CGSize {
-    guard let section = availableSections[safe: indexPath.section] else {
-      assertionFailure("Invalid Section")
-      return .zero
-    }
-
-    let collectionViewWidth =
-      collectionView.bounds.width - (layout.sectionInset.left + layout.sectionInset.right)
-      - (collectionView.contentInset.left + collectionView.contentInset.right)
-
-    switch section {
-    case .pasteboard, .recentSearchesOptIn:
-      assertionFailure("Pasteboard/Recent Search Opt-In section should have no items")
-      return .zero
-    case .favorites:
-      return favoriteGridSize
-    case .recentSearches:
-      return CGSize(width: collectionViewWidth, height: 28.0)
-    }
-  }
 }
 
 // MARK: - Action
@@ -346,11 +390,6 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 extension FavoritesViewController {
   func onOpenRecentSearch(_ recentSearch: RecentSearch) {
     recentSearchAction(recentSearch, false)
-  }
-
-  @objc
-  func onPasteboardAction() {
-    recentSearchAction(nil, true)
   }
 
   @objc
@@ -418,6 +457,10 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
     availableSections.contains(.recentSearches)
   }
 
+  private var recentSearchesOptInSectionExists: Bool {
+    availableSections.contains(.recentSearchesOptIn)
+  }
+
   private func updateUIWithSnapshot() {
     do {
       try favoritesFRC.performFetch()
@@ -445,6 +488,8 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
         objects.compactMap({ .recentSearch($0.objectID) }),
         toSection: .recentSearches
       )
+    } else if recentSearchesOptInSectionExists {
+      snapshot.appendItems([.recentSearchOptIn], toSection: .recentSearchesOptIn)
     }
 
     dataSource.apply(snapshot, animatingDifferences: false)
@@ -503,6 +548,14 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
           toSection: .recentSearches
         )
       }
+
+      // New snapshot is created, need to add back `.recentSearchesOptIn` if there is one before
+      if recentSearchesOptInSectionExists {
+        newSnapshot.appendItems(
+          currentSnapshot.itemIdentifiers(inSection: .recentSearchesOptIn),
+          toSection: .recentSearchesOptIn
+        )
+      }
     }
 
     if controller === recentSearchesFRC {
@@ -547,7 +600,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
     case .favorite(let favoriteWrapper):
       guard let favorite = Favorite.get(with: favoriteWrapper.objectID) else { return nil }
 
-      let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoritesCell
+      let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoritesCollectionViewCell
 
       cell.textLabel.text = favorite.displayTitle ?? favorite.url
       if let url = favorite.url?.asURL {
@@ -624,8 +677,35 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
       }
 
       return cell
-    }
+    case .recentSearchOptIn:
+      let cell =
+        collectionView.dequeueReusableCell(for: indexPath) as SearchActionsCell
+      cell.do {
+        $0.titleLabel.text = Strings.recentSearchSectionTitle
+        $0.subtitleLabel.text = Strings.recentSearchSectionDescription
+        $0.imageView.image = UIImage(named: "recent-search-opt-in", in: .module, with: nil)
+        $0.primaryButton.setTitle(
+          Strings.recentSearchShow,
+          for: .normal
+        )
+        $0.primaryButton.addTarget(
+          self,
+          action: #selector(onRecentSearchShowPressed),
+          for: .touchUpInside
+        )
+        $0.secondaryButton.setTitle(
+          Strings.recentSearchHide,
+          for: .normal
+        )
+        $0.secondaryButton.addTarget(
+          self,
+          action: #selector(onRecentSearchHidePressed(_:)),
+          for: .touchUpInside
+        )
+      }
 
+      return cell
+    }
   }
 
   private func supplementaryViewProvider(
@@ -640,16 +720,6 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
 
     if kind == UICollectionView.elementKindSectionHeader {
       switch section {
-      case .pasteboard:
-        if let header = collectionView.dequeueReusableSupplementaryView(
-          ofKind: kind,
-          withReuseIdentifier: "pasteboard_header",
-          for: indexPath
-        ) as? FavoritesRecentSearchClipboardHeaderView {
-          header.button.removeTarget(self, action: nil, for: .touchUpInside)
-          header.button.addTarget(self, action: #selector(onPasteboardAction), for: .touchUpInside)
-          return header
-        }
       case .favorites:
         return
           collectionView
@@ -658,58 +728,41 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
             withReuseIdentifier: "fav_header",
             for: indexPath
           )
-      case .recentSearches:
+      case .recentSearches, .recentSearchesOptIn:
         if let header = collectionView.dequeueReusableSupplementaryView(
           ofKind: kind,
           withReuseIdentifier: "recent_searches_header",
           for: indexPath
         ) as? FavoritesRecentSearchHeaderView {
-          header.showMoreButton.addTarget(
-            self,
-            action: #selector(onRecentSearchShowMorePressed),
-            for: .touchUpInside
-          )
-
           header.clearButton.addTarget(
             self,
             action: #selector(onRecentSearchClearPressed(_:)),
             for: .touchUpInside
           )
 
-          var showMoreButtonVisible = false
-
-          if let fetchedObjects = recentSearchesFRC.fetchedObjects {
-            let totalCount = RecentSearch.totalCount()
-            showMoreButtonVisible = fetchedObjects.count < totalCount
-          }
-
           header.setButtonVisibility(
-            showMoreButtonVisible: showMoreButtonVisible
-          )
-
-          return header
-        }
-      case .recentSearchesOptIn:
-        if let header = collectionView.dequeueReusableSupplementaryView(
-          ofKind: kind,
-          withReuseIdentifier: "recent_searches_opt-in_header",
-          for: indexPath
-        ) as? FavoritesRecentSearchOptInHeaderView {
-
-          header.showButton.addTarget(
-            self,
-            action: #selector(onRecentSearchShowPressed),
-            for: .touchUpInside
-          )
-          header.hideButton.addTarget(
-            self,
-            action: #selector(onRecentSearchHidePressed(_:)),
-            for: .touchUpInside
+            showClearButtonVisible: section != .recentSearchesOptIn && RecentSearch.totalCount() > 0
           )
 
           return header
         }
       }
+    } else if kind == UICollectionView.elementKindSectionFooter {
+      let footer =
+        collectionView
+        .dequeueReusableSupplementaryView(
+          ofKind: kind,
+          withReuseIdentifier: "recent_search_footer",
+          for: indexPath
+        )
+      let tapGesture = UITapGestureRecognizer(
+        target: self,
+        action: #selector(onRecentSearchShowMorePressed)
+      )
+      footer.addGestureRecognizer(tapGesture)
+      footer.isUserInteractionEnabled = true
+
+      return footer
     }
     return UICollectionReusableView()
   }
