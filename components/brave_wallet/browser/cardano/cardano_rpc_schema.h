@@ -6,14 +6,19 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_RPC_SCHEMA_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_RPC_SCHEMA_H_
 
+#include <array>
 #include <optional>
 #include <vector>
 
-#include "base/values.h"
-
 namespace brave_wallet::cardano_rpc {
 
-// Adapter of Blockfrost's EpochParameters struct for wallets use.
+namespace blockfrost_api {
+struct EpochParameters;
+struct Block;
+struct UnspentOutput;
+}  // namespace blockfrost_api
+
+// Adapter of Blockfrost's EpochParameters struct for wallet's use.
 struct EpochParameters {
   bool operator==(const EpochParameters& other) const = default;
 
@@ -21,10 +26,10 @@ struct EpochParameters {
   uint64_t min_fee_constant = 0;
 
   static std::optional<EpochParameters> FromBlockfrostApiValue(
-      const base::Value& value);
+      std::optional<blockfrost_api::EpochParameters> api_epoch_parameters);
 };
 
-// Adapter of Blockfrost's Block struct for wallets use.
+// Adapter of Blockfrost's Block struct for wallet's use.
 struct Block {
   bool operator==(const Block& other) const = default;
 
@@ -32,10 +37,11 @@ struct Block {
   uint64_t slot = 0;
   uint32_t epoch = 0;
 
-  static std::optional<Block> FromBlockfrostApiValue(const base::Value& value);
+  static std::optional<Block> FromBlockfrostApiValue(
+      std::optional<blockfrost_api::Block> api_block);
 };
 
-// Adapter of Blockfrost's UnspentOutput struct for wallets use.
+// Adapter of Blockfrost's UnspentOutput struct for wallet's use.
 struct UnspentOutput {
   bool operator==(const UnspentOutput& other) const = default;
 
@@ -44,7 +50,7 @@ struct UnspentOutput {
   uint64_t lovelace_amount = 0;
 
   static std::optional<UnspentOutput> FromBlockfrostApiValue(
-      const base::Value& value);
+      std::optional<blockfrost_api::UnspentOutput> api_unspent_output);
 };
 
 using UnspentOutputs = std::vector<UnspentOutput>;

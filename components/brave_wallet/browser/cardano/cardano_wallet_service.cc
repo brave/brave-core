@@ -32,8 +32,8 @@ namespace {
 mojom::CardanoBalancePtr BalanceFromUtxos(GetCardanoUtxosTask::UtxoMap& utxos) {
   auto result = mojom::CardanoBalance::New();
 
-  for (auto& items : utxos) {
-    for (auto& utxo : items.second) {
+  for (const auto& items : utxos) {
+    for (const auto& utxo : items.second) {
       result->total_balance += utxo.lovelace_amount;
     }
   }
@@ -106,7 +106,7 @@ void CardanoWalletService::GetUtxos(mojom::AccountIdPtr account_id,
   }
 
   std::vector<CardanoAddress> cardano_addresses;
-  for (auto& address : *addresses) {
+  for (const auto& address : *addresses) {
     if (auto cardano_address =
             CardanoAddress::FromString(address->address_string)) {
       cardano_addresses.push_back(std::move(*cardano_address));
@@ -208,7 +208,7 @@ bool CardanoWalletService::SignTransactionInternal(
   }
 
   std::map<CardanoAddress, mojom::CardanoKeyIdPtr> address_map;
-  for (auto& addr : *addresses) {
+  for (const auto& addr : *addresses) {
     auto cardano_address = CardanoAddress::FromString(addr->address_string);
     if (!cardano_address) {
       continue;
@@ -220,7 +220,7 @@ bool CardanoWalletService::SignTransactionInternal(
   auto hash = CardanoSerializer::GetTxHash(tx);
 
   std::vector<CardanoTransaction::TxWitness> witnesses;
-  for (auto& input : tx.inputs()) {
+  for (const auto& input : tx.inputs()) {
     if (!address_map.contains(input.utxo_address)) {
       return false;
     }

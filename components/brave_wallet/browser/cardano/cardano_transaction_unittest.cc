@@ -5,14 +5,11 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 
-#include <memory>
-#include <string>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
-#include "brave/components/json/json_helper.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -60,26 +57,14 @@ TEST(CardanoTransaction, TxInput_Value) {
 }
 
 TEST(CardanoTransaction, TxInput_FromRpcUtxo) {
-  const std::string rpc_utxo_json = R"(
-    {
-      "tx_hash": "f80875bfaa0726fadc0068cca851f3252762670df345e6c7a483fe841af98e98",
-      "output_index": 1,
-      "amount": [
-        {
-          "unit": "lovelace",
-          "quantity": 555
-        }
-      ]
-    }
-  )";
-
-  auto rpc_utxo =
-      cardano_rpc::UnspentOutput::FromBlockfrostApiValue(base::test::ParseJson(
-          json::convert_all_numbers_to_string(rpc_utxo_json, "")));
-  ASSERT_TRUE(rpc_utxo);
+  cardano_rpc::UnspentOutput rpc_utxo;
+  rpc_utxo.tx_hash = test::HexToArray<32>(
+      "f80875bfaa0726fadc0068cca851f3252762670df345e6c7a483fe841af98e98");
+  rpc_utxo.output_index = 1;
+  rpc_utxo.lovelace_amount = 555;
 
   auto input = CardanoTransaction::TxInput::FromRpcUtxo(
-      *CardanoAddress::FromString(kAddress1), *rpc_utxo);
+      *CardanoAddress::FromString(kAddress1), rpc_utxo);
   ASSERT_TRUE(input);
 
   EXPECT_EQ(input->utxo_address, *CardanoAddress::FromString(kAddress1));

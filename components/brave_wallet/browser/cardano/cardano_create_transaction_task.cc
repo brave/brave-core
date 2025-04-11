@@ -28,8 +28,8 @@ namespace {
 std::vector<CardanoTransaction::TxInput> TxInputsFromUtxoMap(
     const std::map<CardanoAddress, cardano_rpc::UnspentOutputs>& map) {
   std::vector<CardanoTransaction::TxInput> result;
-  for (auto& [key, value] : map) {
-    for (auto& utxo : value) {
+  for (const auto& [key, value] : map) {
+    for (const auto& utxo : value) {
       if (auto input = CardanoTransaction::TxInput::FromRpcUtxo(key, utxo)) {
         result.push_back(std::move(*input));
       }
@@ -209,7 +209,8 @@ void CreateCardanoTransactionTask::OnDiscoverNextUnusedChangeAddress(
   }
   DCHECK_EQ(address.value()->payment_key_id->role,
             mojom::CardanoKeyRole::kInternal);
-  // TODO(apaymyshev): should update account pref with new address.
+  // TODO(https://github.com/brave/brave-browser/issues/45278): should update
+  // account pref with new address.
   change_address_ = std::move(address.value());
   WorkOnTask();
 }
