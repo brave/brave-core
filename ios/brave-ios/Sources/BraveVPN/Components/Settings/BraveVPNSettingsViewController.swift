@@ -30,7 +30,6 @@ public class BraveVPNSettingsViewController: TableViewController {
 
   // Cell/section tags so we can update them dynamically.
   private let serverSectionId = "server"
-  private let hostCellId = "host"
   private let locationCellId = "location"
   private let protocolCellId = "protocol"
   private let resetCellId = "reset"
@@ -354,21 +353,29 @@ public class BraveVPNSettingsViewController: TableViewController {
 
   private func updateServerInfo() {
     guard
-      let hostIndexPath =
-        dataSource
-        .indexPath(rowUUID: hostCellId, sectionUUID: serverSectionId)
-    else { return }
-
-    guard
       let locationIndexPath =
         dataSource
         .indexPath(rowUUID: locationCellId, sectionUUID: serverSectionId)
     else { return }
 
-    dataSource.sections[hostIndexPath.section].rows[hostIndexPath.row]
-      .detailText = hostname
+    guard
+      let protocolIndexPath =
+        dataSource
+        .indexPath(rowUUID: protocolCellId, sectionUUID: serverSectionId)
+    else { return }
+
     dataSource.sections[locationIndexPath.section].rows[locationIndexPath.row]
-      .detailText = BraveVPN.serverLocation.hostName ?? "-"
+      .text = BraveVPN.serverLocationDetailed.city ?? "-"
+    dataSource.sections[locationIndexPath.section].rows[locationIndexPath.row]
+      .detailText = BraveVPN.serverLocationDetailed.country ?? hostname
+    dataSource.sections[locationIndexPath.section].rows[locationIndexPath.row]
+      .image =
+      BraveVPN.serverLocation.isoCode?.regionFlagImage ?? UIImage(braveSystemNamed: "leo.globe")
+
+    dataSource.sections[protocolIndexPath.section].rows[protocolIndexPath.row]
+      .detailText = GRDTransportProtocol.prettyTransportProtocolString(
+        for: GRDTransportProtocol.getUserPreferredTransportProtocol()
+      )
   }
 
   private func sendContactSupportEmail() {
@@ -445,6 +452,8 @@ public class BraveVPNSettingsViewController: TableViewController {
     }
 
     let vpnRegionListView = BraveVPNRegionListView { [weak self] _ in
+      self?.updateServerInfo()
+
       let controller = PopupViewController(
         rootView: BraveVPNRegionConfirmationView(
           country: BraveVPN.serverLocationDetailed.country,
