@@ -19,8 +19,7 @@ constexpr char kNativeLovelaceToken[] = "lovelace";
 
 // static
 std::optional<EpochParameters> EpochParameters::FromBlockfrostApiValue(
-    const base::Value& value) {
-  auto api_epoch_parameters = blockfrost_api::EpochParameters::FromValue(value);
+    std::optional<blockfrost_api::EpochParameters> api_epoch_parameters) {
   if (!api_epoch_parameters) {
     return std::nullopt;
   }
@@ -39,8 +38,8 @@ std::optional<EpochParameters> EpochParameters::FromBlockfrostApiValue(
 }
 
 // static
-std::optional<Block> Block::FromBlockfrostApiValue(const base::Value& value) {
-  auto api_block = blockfrost_api::Block::FromValue(value);
+std::optional<Block> Block::FromBlockfrostApiValue(
+    std::optional<blockfrost_api::Block> api_block) {
   if (!api_block) {
     return std::nullopt;
   }
@@ -61,8 +60,7 @@ std::optional<Block> Block::FromBlockfrostApiValue(const base::Value& value) {
 
 // static
 std::optional<UnspentOutput> UnspentOutput::FromBlockfrostApiValue(
-    const base::Value& value) {
-  auto api_unspent_output = blockfrost_api::UnspentOutput::FromValue(value);
+    std::optional<blockfrost_api::UnspentOutput> api_unspent_output) {
   if (!api_unspent_output) {
     return std::nullopt;
   }
@@ -76,7 +74,7 @@ std::optional<UnspentOutput> UnspentOutput::FromBlockfrostApiValue(
     return std::nullopt;
   }
   bool found_lovelace = false;
-  for (auto& asset : api_unspent_output->amount) {
+  for (const auto& asset : api_unspent_output->amount) {
     if (asset.unit == kNativeLovelaceToken) {
       if (!base::StringToUint64(asset.quantity, &result.lovelace_amount)) {
         return std::nullopt;

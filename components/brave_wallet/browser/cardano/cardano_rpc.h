@@ -8,7 +8,6 @@
 
 #include <map>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
@@ -63,11 +62,18 @@ class CardanoRpc {
   void SetUrlLoaderFactoryForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
+  bool IsIdleForTesting();
+
  private:
-  void RequestInternal(const GURL& request_url,
-                       RequestIntermediateCallback callback,
-                       APIRequestHelper::ResponseConversionCallback
-                           conversion_callback = base::NullCallback());
+  void DoGetRequestInternal(const GURL& request_url,
+                            RequestIntermediateCallback callback,
+                            APIRequestHelper::ResponseConversionCallback
+                                conversion_callback = base::NullCallback());
+  void DoPostRequestInternal(const GURL& request_url,
+                             std::string payload,
+                             RequestIntermediateCallback callback,
+                             APIRequestHelper::ResponseConversionCallback
+                                 conversion_callback = base::NullCallback());
   void OnRequestInternalDone(const GURL& endpoint_host,
                              RequestIntermediateCallback callback,
                              APIRequestResult api_request_result);

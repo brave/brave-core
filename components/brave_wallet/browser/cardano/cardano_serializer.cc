@@ -18,7 +18,7 @@ namespace brave_wallet {
 
 cbor::Value::ArrayValue SerializeInputs(const CardanoTransaction& tx) {
   cbor::Value::ArrayValue result;
-  for (auto& input : tx.inputs()) {
+  for (const auto& input : tx.inputs()) {
     cbor::Value::ArrayValue input_value;
     input_value.emplace_back(input.utxo_outpoint.txid);
     input_value.emplace_back(int64_t(input.utxo_outpoint.index));
@@ -30,7 +30,7 @@ cbor::Value::ArrayValue SerializeInputs(const CardanoTransaction& tx) {
 
 cbor::Value::ArrayValue SerializeOutputs(const CardanoTransaction& tx) {
   cbor::Value::ArrayValue result;
-  for (auto& output : tx.outputs()) {
+  for (const auto& output : tx.outputs()) {
     cbor::Value::ArrayValue output_value;
     output_value.emplace_back(output.address.ToCborBytes());
     output_value.emplace_back(static_cast<int64_t>(output.amount));
@@ -63,7 +63,7 @@ cbor::Value SerializeWitnessSet(const CardanoTransaction& tx) {
 
   if (tx.witnesses().empty()) {
     // Serialize with dummy signatures for size calculation.
-    for (auto& _ : tx.inputs()) {
+    for (const auto& _ : tx.inputs()) {
       cbor::Value::ArrayValue input_array;
       input_array.emplace_back(
           CardanoTransaction::TxWitness::DummyTxWitness().witness_bytes);
@@ -72,7 +72,7 @@ cbor::Value SerializeWitnessSet(const CardanoTransaction& tx) {
   } else {
     CHECK(tx.IsSigned());
 
-    for (auto& witness : tx.witnesses()) {
+    for (const auto& witness : tx.witnesses()) {
       cbor::Value::ArrayValue input_array;
       auto [pubkey, signature] =
           base::span(witness.witness_bytes).split_at<32>();

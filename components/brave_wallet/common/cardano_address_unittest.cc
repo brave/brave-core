@@ -141,4 +141,21 @@ TEST(CardanoAddress, TestVectors) {
                                 test::HexToArray<28>(kStakePartHash)));
 }
 
+TEST(CardanoAddress, InvalidInput) {
+  auto invalid_cases = std::to_array({
+      "",
+      "1",
+      "a",
+      "addr2qx2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3n0d3vllmyqwsx5wktc"
+      "d8cc3sq835lu7drv2xwl2wywfgse35a3x",
+      "addr1qx2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3n0d3vllmyqwsx5wktc"
+      "d8cc3sq835lu7drv2xwl2wywfgse35a3xse35a3x",
+  });
+
+  for (auto* address : invalid_cases) {
+    EXPECT_FALSE(CardanoAddress::FromString(address))
+        << testing::Message(address);
+  }
+}
+
 }  // namespace brave_wallet

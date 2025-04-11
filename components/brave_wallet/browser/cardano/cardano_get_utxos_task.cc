@@ -48,7 +48,7 @@ void GetCardanoUtxosTask::MaybeSendRequests() {
     return;
   }
 
-  for (auto& address : addresses_) {
+  for (const auto& address : addresses_) {
     cardano_wallet_service_->cardano_rpc().GetUtxoList(
         chain_id_, address.ToString(),
         base::BindOnce(&GetCardanoUtxosTask::OnGetUtxoList,

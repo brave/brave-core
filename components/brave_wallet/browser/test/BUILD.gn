@@ -34,6 +34,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/brave_wallet_utils_unittest.cc",
     "//brave/components/brave_wallet/browser/cardano/cardano_hd_keyring_unittest.cc",
     "//brave/components/brave_wallet/browser/cardano/cardano_knapsack_solver_unittest.cc",
+    "//brave/components/brave_wallet/browser/cardano/cardano_rpc_schema_unittest.cc",
     "//brave/components/brave_wallet/browser/cardano/cardano_rpc_unittest.cc",
     "//brave/components/brave_wallet/browser/cardano/cardano_serializer_unittest.cc",
     "//brave/components/brave_wallet/browser/cardano/cardano_transaction_unittest.cc",

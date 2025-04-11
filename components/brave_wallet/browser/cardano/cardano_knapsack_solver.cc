@@ -169,6 +169,7 @@ base::expected<CardanoTransaction, std::string> CardanoKnapsackSolver::Solve() {
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE));
   }
 
+  // Clear dummy witnesses used for tx size calculation.
   best_solution->SetWitnesses({});
 
   return base::ok(std::move(*best_solution));

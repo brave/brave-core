@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 
-#include <algorithm>
 #include <optional>
 #include <string_view>
 #include <utility>
@@ -13,6 +12,7 @@
 
 #include "base/numerics/clamped_math.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/types/optional_util.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 
 namespace brave_wallet {
@@ -22,77 +22,71 @@ namespace {
 constexpr char kChangeOuputType[] = "change";
 constexpr char kTargetOutputType[] = "target";
 
-bool ReadStringTo(const base::Value::Dict& dict,
-                  std::string_view key,
-                  std::string& to) {
-  auto* str = dict.FindString(key);
-  if (!str) {
-    return false;
-  }
-  to = *str;
-  return true;
+std::optional<std::string> ReadString(const base::Value::Dict& dict,
+                                      std::string_view key) {
+  return base::OptionalFromPtr(dict.FindString(key));
 }
 
-bool ReadCardanoAddressTo(const base::Value::Dict& dict,
-                          std::string_view key,
-                          CardanoAddress& to) {
-  std::string address_string;
-  if (!ReadStringTo(dict, key, address_string)) {
-    return false;
+std::optional<CardanoAddress> ReadCardanoAddress(const base::Value::Dict& dict,
+                                                 std::string_view key) {
+  auto address_string = ReadString(dict, key);
+  if (!address_string) {
+    return std::nullopt;
   }
 
-  auto cardano_address = CardanoAddress::FromString(address_string);
-  if (!cardano_address) {
-    return false;
-  }
-
-  to = std::move(*cardano_address);
-  return true;
+  return CardanoAddress::FromString(*address_string);
 }
 
-bool ReadUint64StringTo(const base::Value::Dict& dict,
-                        std::string_view key,
-                        uint64_t& to) {
+std::optional<uint64_t> ReadUint64String(const base::Value::Dict& dict,
+                                         std::string_view key) {
   auto* str = dict.FindString(key);
   if (!str) {
-    return false;
+    return std::nullopt;
   }
-  return base::StringToUint64(*str, &to);
+
+  uint64_t result = 0;
+  if (!base::StringToUint64(*str, &result)) {
+    return std::nullopt;
+  }
+  return result;
 }
 
-bool ReadUint32StringTo(const base::Value::Dict& dict,
-                        std::string_view key,
-                        uint32_t& to) {
+std::optional<uint32_t> ReadUint32String(const base::Value::Dict& dict,
+                                         std::string_view key) {
   auto* str = dict.FindString(key);
   if (!str) {
-    return false;
+    return std::nullopt;
   }
-  return base::StringToUint(*str, &to);
+
+  uint32_t result = 0;
+  if (!base::StringToUint(*str, &result)) {
+    return std::nullopt;
+  }
+  return result;
 }
 
 template <class T>
-bool ReadDictTo(const base::Value::Dict& dict, std::string_view key, T& to) {
+std::optional<T> ReadDict(const base::Value::Dict& dict, std::string_view key) {
   auto* key_dict = dict.FindDict(key);
   if (!key_dict) {
-    return false;
+    return std::nullopt;
   }
-  auto t_opt = T::FromValue(*key_dict);
-  if (!t_opt) {
-    return false;
-  }
-  to = std::move(*t_opt);
-  return true;
+  return T::FromValue(*key_dict);
 }
 
 template <size_t SZ>
-bool ReadHexByteArrayTo(const base::Value::Dict& dict,
-                        std::string_view key,
-                        std::array<uint8_t, SZ>& to) {
+std::optional<std::array<uint8_t, SZ>> ReadHexByteArray(
+    const base::Value::Dict& dict,
+    std::string_view key) {
   auto* str = dict.FindString(key);
   if (!str) {
-    return false;
+    return std::nullopt;
   }
-  return base::HexStringToSpan(*str, to);
+  std::array<uint8_t, SZ> result = {};
+  if (!base::HexStringToSpan(*str, result)) {
+    return std::nullopt;
+  }
+  return result;
 }
 
 }  // namespace
@@ -177,15 +171,18 @@ std::optional<CardanoTransaction::TxInput>
 CardanoTransaction::TxInput::FromValue(const base::Value::Dict& value) {
   CardanoTransaction::TxInput result;
 
-  if (!ReadCardanoAddressTo(value, "utxo_address", result.utxo_address)) {
+  if (!base::OptionalUnwrapTo(ReadCardanoAddress(value, "utxo_address"),
+                              result.utxo_address)) {
     return std::nullopt;
   }
 
-  if (!ReadDictTo(value, "utxo_outpoint", result.utxo_outpoint)) {
+  if (!base::OptionalUnwrapTo(ReadDict<Outpoint>(value, "utxo_outpoint"),
+                              result.utxo_outpoint)) {
     return std::nullopt;
   }
 
-  if (!ReadUint64StringTo(value, "utxo_value", result.utxo_value)) {
+  if (!base::OptionalUnwrapTo(ReadUint64String(value, "utxo_value"),
+                              result.utxo_value)) {
     return std::nullopt;
   }
 
@@ -234,7 +231,9 @@ std::optional<CardanoTransaction::TxWitness>
 CardanoTransaction::TxWitness::FromValue(const base::Value::Dict& value) {
   CardanoTransaction::TxWitness result;
 
-  if (!ReadHexByteArrayTo(value, "witness_bytes", result.witness_bytes)) {
+  if (!base::OptionalUnwrapTo(
+          ReadHexByteArray<kCardanoWitnessSize>(value, "witness_bytes"),
+          result.witness_bytes)) {
     return std::nullopt;
   }
 
@@ -273,19 +272,23 @@ std::optional<CardanoTransaction::TxOutput>
 CardanoTransaction::TxOutput::FromValue(const base::Value::Dict& value) {
   CardanoTransaction::TxOutput result;
 
-  std::string type_string;
-  if (!ReadStringTo(value, "type", type_string) &&
-      type_string != kChangeOuputType && type_string != kTargetOutputType) {
-    return std::nullopt;
-  }
-  result.type = type_string == kTargetOutputType ? TxOutputType::kTarget
-                                                 : TxOutputType::kChange;
-
-  if (!ReadCardanoAddressTo(value, "address", result.address)) {
+  if (auto type = ReadString(value, "type")) {
+    if (*type != kChangeOuputType && *type != kTargetOutputType) {
+      return std::nullopt;
+    }
+    result.type = *type == kTargetOutputType ? TxOutputType::kTarget
+                                             : TxOutputType::kChange;
+  } else {
     return std::nullopt;
   }
 
-  if (!ReadUint64StringTo(value, "amount", result.amount)) {
+  if (!base::OptionalUnwrapTo(ReadCardanoAddress(value, "address"),
+                              result.address)) {
+    return std::nullopt;
+  }
+
+  if (!base::OptionalUnwrapTo(ReadUint64String(value, "amount"),
+                              result.amount)) {
     return std::nullopt;
   }
 
@@ -296,12 +299,12 @@ base::Value::Dict CardanoTransaction::ToValue() const {
   base::Value::Dict dict;
 
   auto& inputs_value = dict.Set("inputs", base::Value::List())->GetList();
-  for (auto& input : inputs_) {
+  for (const auto& input : inputs_) {
     inputs_value.Append(input.ToValue());
   }
 
   auto& outputs_value = dict.Set("outputs", base::Value::List())->GetList();
-  for (auto& output : outputs_) {
+  for (const auto& output : outputs_) {
     outputs_value.Append(output.ToValue());
   }
 
@@ -322,7 +325,7 @@ std::optional<CardanoTransaction> CardanoTransaction::FromValue(
   if (!inputs_list) {
     return std::nullopt;
   }
-  for (auto& item : *inputs_list) {
+  for (const auto& item : *inputs_list) {
     if (!item.is_dict()) {
       return std::nullopt;
     }
@@ -337,7 +340,7 @@ std::optional<CardanoTransaction> CardanoTransaction::FromValue(
   if (!outputs_list) {
     return std::nullopt;
   }
-  for (auto& item : *outputs_list) {
+  for (const auto& item : *outputs_list) {
     if (!item.is_dict()) {
       return std::nullopt;
     }
@@ -348,15 +351,17 @@ std::optional<CardanoTransaction> CardanoTransaction::FromValue(
     result.outputs_.push_back(std::move(*output_opt));
   }
 
-  if (!ReadUint32StringTo(value, "invalid_after", result.invalid_after_)) {
+  if (!base::OptionalUnwrapTo(ReadUint32String(value, "invalid_after"),
+                              result.invalid_after_)) {
     return std::nullopt;
   }
 
-  if (!ReadCardanoAddressTo(value, "to", result.to_)) {
+  if (!base::OptionalUnwrapTo(ReadCardanoAddress(value, "to"), result.to_)) {
     return std::nullopt;
   }
 
-  if (!ReadUint64StringTo(value, "amount", result.amount_)) {
+  if (!base::OptionalUnwrapTo(ReadUint64String(value, "amount"),
+                              result.amount_)) {
     return std::nullopt;
   }
 
@@ -376,7 +381,7 @@ bool CardanoTransaction::IsSigned() const {
 
 uint64_t CardanoTransaction::TotalInputsAmount() const {
   uint64_t result = 0;
-  for (auto& input : inputs_) {
+  for (const auto& input : inputs_) {
     result += input.utxo_value;
   }
   return result;
@@ -384,7 +389,7 @@ uint64_t CardanoTransaction::TotalInputsAmount() const {
 
 uint64_t CardanoTransaction::TotalOutputsAmount() const {
   uint64_t result = 0;
-  for (auto& output : outputs_) {
+  for (const auto& output : outputs_) {
     result += output.amount;
   }
   return result;
@@ -403,7 +408,7 @@ void CardanoTransaction::AddInput(TxInput input) {
 }
 
 void CardanoTransaction::AddInputs(std::vector<TxInput> inputs) {
-  for (auto& input : inputs) {
+  for (auto input : inputs) {
     inputs_.push_back(std::move(input));
   }
 }
@@ -435,7 +440,7 @@ void CardanoTransaction::ClearChangeOutput() {
 }
 
 const CardanoTransaction::TxOutput* CardanoTransaction::TargetOutput() const {
-  for (auto& output : outputs_) {
+  for (const auto& output : outputs_) {
     if (output.type == CardanoTransaction::TxOutputType::kTarget) {
       return &output;
     }
@@ -444,7 +449,7 @@ const CardanoTransaction::TxOutput* CardanoTransaction::TargetOutput() const {
 }
 
 const CardanoTransaction::TxOutput* CardanoTransaction::ChangeOutput() const {
-  for (auto& output : outputs_) {
+  for (const auto& output : outputs_) {
     if (output.type == CardanoTransaction::TxOutputType::kChange) {
       return &output;
     }

@@ -7,6 +7,8 @@
 
 #include <algorithm>
 #include <optional>
+#include <string>
+#include <utility>
 
 #include "base/check.h"
 #include "base/check_is_test.h"
@@ -18,6 +20,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_blockfrost_api.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
@@ -169,6 +172,8 @@ std::optional<std::string> ConvertPlainStringToJsonArray(
 namespace brave_wallet::cardano_rpc {
 
 struct QueuedRequestData {
+  std::string method = net::HttpRequestHeaders::kGetMethod;
+  std::string payload;
   GURL request_url;
   CardanoRpc::RequestIntermediateCallback callback;
   CardanoRpc::ResponseConversionCallback conversion_callback;
@@ -198,8 +203,8 @@ void CardanoRpc::GetLatestBlock(const std::string& chain_id,
   auto internal_callback =
       base::BindOnce(&CardanoRpc::OnGetLatestBlock,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(request_url, std::move(internal_callback),
-                  base::BindOnce(&ConvertAllNumbersToString, ""));
+  DoGetRequestInternal(request_url, std::move(internal_callback),
+                       base::BindOnce(&ConvertAllNumbersToString, ""));
 }
 
 void CardanoRpc::OnGetLatestBlock(GetLatestBlockCallback callback,
@@ -208,7 +213,8 @@ void CardanoRpc::OnGetLatestBlock(GetLatestBlockCallback callback,
     return ReplyWithInternalError(std::move(callback));
   }
 
-  auto block = Block::FromBlockfrostApiValue(api_request_result.value_body());
+  auto block = Block::FromBlockfrostApiValue(
+      blockfrost_api::Block::FromValue(api_request_result.value_body()));
   if (!block) {
     return ReplyWithInvalidJsonError(std::move(callback));
   }
@@ -227,8 +233,8 @@ void CardanoRpc::GetLatestEpochParameters(
   auto internal_callback =
       base::BindOnce(&CardanoRpc::OnGetLatestEpochParameters,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(request_url, std::move(internal_callback),
-                  base::BindOnce(&ConvertAllNumbersToString, ""));
+  DoGetRequestInternal(request_url, std::move(internal_callback),
+                       base::BindOnce(&ConvertAllNumbersToString, ""));
 }
 
 void CardanoRpc::OnGetLatestEpochParameters(
@@ -238,8 +244,9 @@ void CardanoRpc::OnGetLatestEpochParameters(
     return ReplyWithInternalError(std::move(callback));
   }
 
-  auto epoch_parameters =
-      EpochParameters::FromBlockfrostApiValue(api_request_result.value_body());
+  auto epoch_parameters = EpochParameters::FromBlockfrostApiValue(
+      blockfrost_api::EpochParameters::FromValue(
+          api_request_result.value_body()));
   if (!epoch_parameters) {
     return ReplyWithInvalidJsonError(std::move(callback));
   }
@@ -259,8 +266,8 @@ void CardanoRpc::GetUtxoList(const std::string& chain_id,
   auto internal_callback =
       base::BindOnce(&CardanoRpc::OnGetUtxoList, weak_ptr_factory_.GetWeakPtr(),
                      std::move(callback), address);
-  RequestInternal(request_url, std::move(internal_callback),
-                  base::BindOnce(&ConvertAllNumbersToString, ""));
+  DoGetRequestInternal(request_url, std::move(internal_callback),
+                       base::BindOnce(&ConvertAllNumbersToString, ""));
 }
 
 void CardanoRpc::OnGetUtxoList(GetUtxoListCallback callback,
@@ -277,7 +284,8 @@ void CardanoRpc::OnGetUtxoList(GetUtxoListCallback callback,
 
   UnspentOutputs result;
   for (const auto& item : *items) {
-    auto utxo = UnspentOutput::FromBlockfrostApiValue(item);
+    auto utxo = UnspentOutput::FromBlockfrostApiValue(
+        blockfrost_api::UnspentOutput::FromValue(item));
     if (!utxo) {
       return ReplyWithInvalidJsonError(std::move(callback));
     }
@@ -296,16 +304,13 @@ void CardanoRpc::PostTransaction(const std::string& chain_id,
     return ReplyWithInternalError(std::move(callback));
   }
 
-  auto payload = base::HexEncode(transaction);
-
   auto internal_callback =
       base::BindOnce(&CardanoRpc::OnPostTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  api_request_helper_.Request(net::HttpRequestHeaders::kPostMethod, request_url,
-                              payload, "", std::move(internal_callback), {},
-                              {.auto_retry_on_network_change = true},
-                              base::BindOnce(&ConvertPlainStringToJsonArray));
+  DoPostRequestInternal(request_url, base::HexEncode(transaction),
+                        std::move(internal_callback),
+                        base::BindOnce(&ConvertPlainStringToJsonArray));
 }
 
 void CardanoRpc::OnPostTransaction(PostTransactionCallback callback,
@@ -331,7 +336,7 @@ void CardanoRpc::OnPostTransaction(PostTransactionCallback callback,
   std::move(callback).Run(base::ok(txid));
 }
 
-void CardanoRpc::RequestInternal(
+void CardanoRpc::DoGetRequestInternal(
     const GURL& request_url,
     RequestIntermediateCallback callback,
     APIRequestHelper::ResponseConversionCallback
@@ -343,6 +348,29 @@ void CardanoRpc::RequestInternal(
   auto& endpoint = endpoints_[endpoint_host.host()];
 
   auto& request = endpoint.requests_queue.emplace_back();
+  request.method = net::HttpRequestHeaders::kGetMethod;
+  request.request_url = request_url;
+  request.callback = std::move(callback);
+  request.conversion_callback = std::move(conversion_callback);
+
+  MaybeStartQueuedRequest(endpoint_host);
+}
+
+void CardanoRpc::DoPostRequestInternal(
+    const GURL& request_url,
+    std::string payload,
+    RequestIntermediateCallback callback,
+    APIRequestHelper::ResponseConversionCallback
+        conversion_callback /* = base::NullCallback() */) {
+  DCHECK(request_url.is_valid());
+
+  auto endpoint_host = EndpointHost(request_url);
+
+  auto& endpoint = endpoints_[endpoint_host.host()];
+
+  auto& request = endpoint.requests_queue.emplace_back();
+  request.method = net::HttpRequestHeaders::kPostMethod;
+  request.payload = std::move(payload);
   request.request_url = request_url;
   request.callback = std::move(callback);
   request.conversion_callback = std::move(conversion_callback);
@@ -380,7 +408,7 @@ void CardanoRpc::MaybeStartQueuedRequest(const GURL& endpoint_host) {
 
   endpoint.active_requests++;
   api_request_helper_.Request(
-      net::HttpRequestHeaders::kGetMethod, request.request_url, "", "",
+      request.method, request.request_url, std::move(request.payload), "",
       base::BindOnce(&CardanoRpc::OnRequestInternalDone,
                      weak_ptr_factory_.GetWeakPtr(), endpoint_host,
                      std::move(request.callback)),
@@ -393,6 +421,13 @@ void CardanoRpc::SetUrlLoaderFactoryForTesting(
   CHECK_IS_TEST();
   api_request_helper_.SetUrlLoaderFactoryForTesting(  // IN-TEST
       std::move(url_loader_factory));
+}
+
+bool CardanoRpc::IsIdleForTesting() {
+  return std::ranges::all_of(endpoints_, [](auto& endpoint) {
+    return endpoint.second.requests_queue.empty() &&
+           endpoint.second.active_requests == 0;
+  });
 }
 
 GURL CardanoRpc::GetNetworkURL(const std::string& chain_id) {

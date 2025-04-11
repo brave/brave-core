@@ -52,6 +52,8 @@ TEST(CardanoSerializerTest, ReferenceTransaction) {
   EXPECT_EQ(HexEncodeLower(CardanoSerializer::GetTxHash(tx)),
             "a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba");
 
+  EXPECT_EQ(CardanoSerializer::CalcTransactionSize(tx), 288u);
+
   tx.SetWitnesses({witness});
 
   EXPECT_EQ(HexEncodeLower(CardanoSerializer::SerializeTransaction(tx)),
