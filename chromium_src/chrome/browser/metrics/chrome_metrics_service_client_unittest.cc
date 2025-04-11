@@ -4,15 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/gtest_prod_util.h"
-FORWARD_DECLARE_TEST(ChromeMetricsServiceClientTest,
-                     BraveTestRegisterUKMProviders);
-
-#define cloned_install_subscription_                         \
-  cloned_install_subscription_;                              \
-  FRIEND_TEST_ALL_PREFIXES(::ChromeMetricsServiceClientTest, \
-                           BraveTestRegisterUKMProviders)
-#include "components/ukm/ukm_service.h"
-#undef cloned_install_subscription_
 
 // Disable the original tests we're going to override.
 #define TestRegisterUKMProviders DISABLED_TestRegisterUKMProviders
