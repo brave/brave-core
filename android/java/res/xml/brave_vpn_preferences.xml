@@ -40,8 +40,8 @@
             android:key="server_change_location"/>
 
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="always_on"
-            android:title="@string/always_on_vpn"/>
+            android:key="auto_reconnect_vpn"
+            android:title="@string/auto_reconnect_vpn"/>
 
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:key="split_tunneling"
