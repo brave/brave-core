@@ -14,9 +14,6 @@
 #define RecentlyClosedTabsFromCurrentSession \
   DISABLED_RecentlyClosedTabsFromCurrentSession
 
-#define RecentlyClosedTabsAndWindowsFromLastSession \
-  DISABLED_RecentlyClosedTabsAndWindowsFromLastSession
-
 #define RecentlyClosedGroupsFromCurrentSession \
   DISABLED_RecentlyClosedGroupsFromCurrentSession
 
@@ -58,7 +55,6 @@
 #undef RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh
 #undef MaxTabsPerSessionAndRecency
 #undef MaxSessionsAndRecency
-#undef RecentlyClosedTabsAndWindowsFromLastSession
 #undef RecentlyClosedTabsFromCurrentSession
 #undef RecentlyClosedGroupsFromCurrentSession
 
