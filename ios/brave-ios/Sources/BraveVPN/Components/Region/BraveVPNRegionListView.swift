@@ -5,6 +5,7 @@
 
 import BraveShared
 import BraveStrings
+import BraveUI
 import GuardianConnect
 import SwiftUI
 
@@ -104,64 +105,22 @@ public struct BraveVPNRegionListView: View {
     }
   }
 
-  private func infoButtonView(index: Int) -> some View {
-    Button(
-      action: {
-        guard !isLoading else {
-          return
-        }
-
-        isRegionDetailsPresented = true
-        if let designatedRegion = allRegions[safe: index],
-          let desiredRegion = allRegions[safe: index]
-        {
-          selectedRegion = desiredRegion
-          selectedRegionCities = designatedRegion.cities
-        }
-      },
-      label: {
-        Image(systemName: "info.circle")
-          .foregroundStyle(Color(braveSystemName: .iconInteractive))
-      }
-    )
-    .buttonStyle(.plain)
-  }
-
   @ViewBuilder
   private func countryRegionItem(at index: Int, region: GRDRegion) -> some View {
-    let isSelectedRegion = region.countryISOCode == BraveVPN.activatedRegion?.countryISOCode
-
-    Button {
+    BraveVPNCountryRegionView(region: region) {
       selectDesignatedVPNRegion(at: index)
-    } label: {
-      HStack {
-        region.countryISOCode.regionFlag ?? Image(braveSystemName: "leo.globe")
-        VStack(alignment: .leading) {
-          Text("\(region.displayName)")
-            .font(.body)
-            .foregroundStyle(
-              isSelectedRegion
-                ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textPrimary)
-            )
-          Text(generateServerCountDetails(for: region))
-            .font(.footnote)
-            .foregroundStyle(
-              isSelectedRegion
-                ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textSecondary)
-            )
-        }
-        Spacer()
-        if isSelectedRegion {
-          Text(Strings.VPN.connectedRegionDescription)
-            .font(.body)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
-        }
-        infoButtonView(index: index)
-          .hidden()
+    } onInfoButtonPressed: {
+      guard !isLoading else {
+        return
       }
-    }
-    .overlay(alignment: .trailing) {
-      infoButtonView(index: index)
+
+      isRegionDetailsPresented = true
+      if let designatedRegion = allRegions[safe: index],
+        let desiredRegion = allRegions[safe: index]
+      {
+        selectedRegion = desiredRegion
+        selectedRegionCities = designatedRegion.cities
+      }
     }
   }
 
@@ -186,23 +145,6 @@ public struct BraveVPNRegionListView: View {
     .foregroundStyle(Color(braveSystemName: .textPrimary))
     .tint(.accentColor)
     .listRowBackground(Color(braveSystemName: .iosBrowserElevatedIos))
-  }
-
-  private func generateServerCountDetails(for region: GRDRegion) -> String {
-    let cityCount = region.cities.count
-    let serverCount = Int(truncating: region.serverCount)
-
-    let cityCountTitle =
-      cityCount > 1
-      ? String(format: Strings.VPN.multipleCityCountTitle, cityCount)
-      : String(format: Strings.VPN.cityCountTitle, cityCount)
-
-    let serverCountTitle =
-      serverCount > 1
-      ? String(format: Strings.VPN.multipleServerCountTitle, serverCount)
-      : String(format: Strings.VPN.serverCountTitle, serverCount)
-
-    return "\(cityCountTitle) - \(serverCountTitle)"
   }
 
   private func enableAutomaticServer(_ enabled: Bool) {
@@ -260,6 +202,106 @@ public struct BraveVPNRegionListView: View {
     // Invalidate the modification timer if it is still running
     regionModificationTimer?.invalidate()
     regionModificationTimer = nil
+  }
+}
+
+private struct BraveVPNCountryRegionView: View {
+  @State
+  private var showPopover = false
+
+  let region: GRDRegion
+  let onRegionSelected: () -> Void
+  let onInfoButtonPressed: () -> Void
+
+  var body: some View {
+    let isSelectedRegion = region.countryISOCode == BraveVPN.activatedRegion?.countryISOCode
+
+    Button {
+      onRegionSelected()
+    } label: {
+      HStack {
+        region.countryISOCode.regionFlag ?? Image(braveSystemName: "leo.globe")
+        VStack(alignment: .leading) {
+          HStack {
+            Text("\(region.displayName)")
+              .font(.body)
+              .foregroundStyle(
+                isSelectedRegion
+                  ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textPrimary)
+              )
+
+            Button {
+              showPopover.toggle()
+            } label: {
+              Label {
+                Text(Strings.VPN.smartProxyPopoverTitle)
+              } icon: {
+                Image(braveSystemName: "leo.smart.proxy-routing")
+                  .foregroundStyle(Color(braveSystemName: .iconDefault))
+                  .padding(4.0)
+                  .background(Color(braveSystemName: .containerHighlight))
+                  .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+              }
+              .labelStyle(.iconOnly)
+            }
+            .bravePopover(isPresented: $showPopover, arrowDirection: [.down]) {
+              Text(Strings.VPN.smartProxyPopoverTitle)
+                .font(.subheadline)
+                .foregroundStyle(Color(braveSystemName: .textTertiary))
+                .fixedSize(horizontal: false, vertical: true)
+                .padding()
+            }
+          }
+          Text(generateServerCountDetails(for: region))
+            .font(.footnote)
+            .foregroundStyle(
+              isSelectedRegion
+                ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textSecondary)
+            )
+        }
+        Spacer()
+        if isSelectedRegion {
+          Text(Strings.VPN.connectedRegionDescription)
+            .font(.body)
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
+        }
+        infoButtonView()
+          .hidden()
+      }
+    }
+    .overlay(alignment: .trailing) {
+      infoButtonView()
+    }
+  }
+
+  private func infoButtonView() -> some View {
+    Button(
+      action: {
+        onInfoButtonPressed()
+      },
+      label: {
+        Image(systemName: "info.circle")
+          .foregroundStyle(Color(braveSystemName: .iconInteractive))
+      }
+    )
+    .buttonStyle(.plain)
+  }
+
+  private func generateServerCountDetails(for region: GRDRegion) -> String {
+    let cityCount = region.cities.count
+    let serverCount = Int(truncating: region.serverCount)
+
+    let cityCountTitle =
+      cityCount > 1
+      ? String(format: Strings.VPN.multipleCityCountTitle, cityCount)
+      : String(format: Strings.VPN.cityCountTitle, cityCount)
+
+    let serverCountTitle =
+      serverCount > 1
+      ? String(format: Strings.VPN.multipleServerCountTitle, serverCount)
+      : String(format: Strings.VPN.serverCountTitle, serverCount)
+
+    return "\(cityCountTitle) - \(serverCountTitle)"
   }
 }
 
