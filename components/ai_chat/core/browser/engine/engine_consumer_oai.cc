@@ -94,23 +94,20 @@ base::Value::List BuildMessages(
 
   for (const mojom::ConversationTurnPtr& turn : conversation_history) {
     if (turn->uploaded_files) {
-      base::Value::Dict message;
-      message.Set("role", "user");
-      base::Value::List content;
-      base::Value::Dict user_message;
-      user_message.Set("type", "text");
-      user_message.Set("text", "These images are uploaded by the users");
-      content.Append(std::move(user_message));
-      size_t counter = 0;
-      // Only send the first uploaded_image becasue llama-vision seems to take
-      // the last one if there are multiple uploaded_images
+      base::Value::List content_uploaded_images;
+      base::Value::List content_screenshots;
+      content_uploaded_images.Append(
+          base::Value::Dict()
+              .Set("type", "text")
+              .Set("text", "These images are uploaded by the users"));
+      content_screenshots.Append(
+          base::Value::Dict()
+              .Set("type", "text")
+              .Set("text", "These images are screenshots"));
       for (const auto& uploaded_file : turn->uploaded_files.value()) {
         if (uploaded_file->type != mojom::UploadedFileType::kImage &&
             uploaded_file->type != mojom::UploadedFileType::kScreenshot) {
           continue;
-        }
-        if (counter++ > 0) {
-          break;
         }
         base::Value::Dict image;
         image.Set("type", "image_url");
@@ -118,10 +115,23 @@ base::Value::List BuildMessages(
         image_url_dict.Set(
             "url", EngineConsumer::GetImageDataURL(uploaded_file->data));
         image.Set("image_url", std::move(image_url_dict));
-        content.Append(std::move(image));
+        if (uploaded_file->type == mojom::UploadedFileType::kImage) {
+          content_uploaded_images.Append(std::move(image));
+        } else {
+          content_screenshots.Append(std::move(image));
+        }
       }
-      message.Set("content", std::move(content));
-      messages.Append(std::move(message));
+      if (content_uploaded_images.size() > 1) {
+        messages.Append(
+            base::Value::Dict()
+                .Set("role", "user")
+                .Set("content", std::move(content_uploaded_images)));
+      }
+      if (content_screenshots.size() > 1) {
+        messages.Append(base::Value::Dict()
+                            .Set("role", "user")
+                            .Set("content", std::move(content_screenshots)));
+      }
     }
     base::Value::Dict message;
     message.Set("role", turn->character_type == CharacterType::HUMAN

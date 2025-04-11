@@ -452,8 +452,15 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
   auto* client = GetClient();
   auto uploaded_images =
       CreateSampleUploadedFiles(3, mojom::UploadedFileType::kImage);
-  constexpr char kTestPrompt[] = "Tell the user what is in the image?";
-  constexpr char kAssistantResponse[] = "It's a lion!";
+  auto screenshot_images =
+      CreateSampleUploadedFiles(3, mojom::UploadedFileType::kScreenshot);
+  uploaded_images.insert(uploaded_images.end(),
+                         std::make_move_iterator(screenshot_images.begin()),
+                         std::make_move_iterator(screenshot_images.end()));
+  constexpr char kTestPrompt[] = "Tell the user what these images are?";
+  constexpr char kAssistantResponse[] =
+      "There are images of a lion, a dragon and a stag. And screenshots appear "
+      "to be telling the story of Game of Thrones";
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce(
           [kTestPrompt, kAssistantResponse, &uploaded_images](
@@ -463,27 +470,50 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
             EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
 
             constexpr char kJsonTemplate[] = R"({
-                 "content": [ {
-                    "text": "These images are uploaded by the users",
+                 "content": [{
+                    "text": "$1",
                     "type": "text"
                  }, {
                     "image_url": {
-                       "url": "data:image/png;base64,$1"
+                       "url": "data:image/png;base64,$2"
                     },
                     "type": "image_url"
-                 } ],
+                 }, {
+                    "image_url": {
+                       "url": "data:image/png;base64,$3"
+                    },
+                    "type": "image_url"
+                 }, {
+                    "image_url": {
+                       "url": "data:image/png;base64,$4"
+                    },
+                    "type": "image_url"
+                 }],
                  "role": "user"
                 }
             )";
-            const std::string json_str = base::ReplaceStringPlaceholders(
-                kJsonTemplate, {base::Base64Encode(uploaded_images[0]->data)},
+            ASSERT_EQ(uploaded_images.size(), 6u);
+            const std::string image_json_str = base::ReplaceStringPlaceholders(
+                kJsonTemplate,
+                {"These images are uploaded by the users",
+                 base::Base64Encode(uploaded_images[0]->data),
+                 base::Base64Encode(uploaded_images[1]->data),
+                 base::Base64Encode(uploaded_images[2]->data)},
                 nullptr);
-            auto expected_dict = ParseJsonDict(json_str);
+            EXPECT_EQ(messages[1].GetDict(), ParseJsonDict(image_json_str));
+            const std::string screenshot_json_str =
+                base::ReplaceStringPlaceholders(
+                    kJsonTemplate,
+                    {"These images are screenshots",
+                     base::Base64Encode(uploaded_images[3]->data),
+                     base::Base64Encode(uploaded_images[4]->data),
+                     base::Base64Encode(uploaded_images[5]->data)},
+                    nullptr);
+            EXPECT_EQ(messages[2].GetDict(),
+                      ParseJsonDict(screenshot_json_str));
 
-            EXPECT_EQ(messages[1].GetDict(), expected_dict);
-
-            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[2].GetDict().Find("content"), kTestPrompt);
+            EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[3].GetDict().Find("content"), kTestPrompt);
 
             std::move(completed_callback)
                 .Run(EngineConsumer::GenerationResult(kAssistantResponse));
@@ -491,7 +521,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
 
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
-      "What is this image?", kTestPrompt, std::nullopt, std::nullopt,
+      "What are these images?", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_images), false));
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse(false, "", history, "", base::DoNothing(),
