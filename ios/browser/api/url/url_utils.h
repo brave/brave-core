@@ -37,6 +37,13 @@ OBJC_EXPORT
 /// Returns the canonicalized URL's spec.
 @property(readonly) NSString* brave_spec NS_SWIFT_NAME(spec);
 
+/// Returns the host's ETLD+1
+@property(readonly) NSString* brave_ETLDPlusOne NS_SWIFT_NAME(etldPlusOne);
+
+/// Returns the ETLD+1 for the given host.
++ (NSString*)brave_ETLDPlusOne:(NSString*)host
+    NS_SWIFT_NAME(etldPlusOne(host:));
+
 /// Appends the key=value query parameter, escaping if needed.
 - (NSURL*)brave_addingQueryParameter:(NSString*)key
                                value:(NSString*)value

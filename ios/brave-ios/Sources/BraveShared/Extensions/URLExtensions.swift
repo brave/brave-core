@@ -216,6 +216,22 @@ extension URL {
     return components.url ?? self
   }
 
+  /// Returns the ETLD+1 of the URL.
+  /// For example, for the URL www.bbc.co.uk, the base domain would be bbc.co.uk.
+  /// The base domain includes the public suffix (co.uk) + one level down (bbc).
+  /// - returns The eTLD+1 string for the given URL.
+  public var etldPlusOne: String? {
+    guard !isIPv6, let host = host else { return nil }
+
+    // If this is just a hostname and not a FQDN, use the entire hostname.
+    if !host.contains(".") {
+      return host
+    }
+
+    let etldPlusOne = (self as NSURL).etldPlusOne
+    return etldPlusOne.isEmpty ? nil : etldPlusOne
+  }
+
   /// Returns true if we should show Shred option for the given URL.
   public var isShredAvailable: Bool {
     urlToShred != nil

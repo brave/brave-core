@@ -4,8 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/url/url_utils.h"
+
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
+#include "components/lookalikes/core/lookalike_url_util.h"
 #import "net/base/apple/url_conversions.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
@@ -64,6 +66,16 @@ std::string GetRegistry(const GURL& url) {
 
 - (NSString*)brave_spec {
   return base::SysUTF8ToNSString(net::GURLWithNSURL(self).spec());
+}
+
+- (NSString*)brave_ETLDPlusOne {
+  return base::SysUTF8ToNSString(
+      lookalikes::GetETLDPlusOne(net::GURLWithNSURL(self).host()));
+}
+
++ (NSString*)brave_ETLDPlusOne:(NSString*)host {
+  return base::SysUTF8ToNSString(
+      lookalikes::GetETLDPlusOne(base::SysNSStringToUTF8(host)));
 }
 
 - (NSURL*)brave_addingQueryParameter:(NSString*)key value:(NSString*)value {

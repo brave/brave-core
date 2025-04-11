@@ -256,6 +256,28 @@ class URLExtensionTests: XCTestCase {
     XCTAssertFalse(URL.isValidURLWithoutEncoding(text: "https://google.ca/search?q=hello world"))
     XCTAssertFalse(URL.isValidURLWithoutEncoding(text: "hello world"))
   }
+
+  // swift-format-ignore: lineLength
+  func testETLDPlusOne() {
+    XCTAssertEqual(URL(string: "http://brave.com")?.etldPlusOne, "brave.com")
+    XCTAssertEqual(URL(string: "https://brave.com")?.etldPlusOne, "brave.com")
+    XCTAssertEqual(URL(string: "http://community.brave.com")?.etldPlusOne, "brave.com")
+    XCTAssertEqual(URL(string: "https://community.brave.com")?.etldPlusOne, "brave.com")
+
+    XCTAssertEqual(URL(string: "http://test.co.uk")?.etldPlusOne, "test.co.uk")
+    XCTAssertEqual(URL(string: "https://test.co.uk")?.etldPlusOne, "test.co.uk")
+
+    // Test cases where `baseDomain` would be empty due to inclusion in effective_tld_names.dat
+    // brave-browser#44214
+    XCTAssertEqual(URL(string: "http://cloudflare.net")?.etldPlusOne, "cloudflare.net")
+    XCTAssertEqual(URL(string: "https://cloudflare.net")?.etldPlusOne, "cloudflare.net")
+    XCTAssertEqual(URL(string: "http://httpbin.org")?.etldPlusOne, "httpbin.org")
+    XCTAssertEqual(URL(string: "https://httpbin.org")?.etldPlusOne, "httpbin.org")
+
+    // Wildcard in effective_tld_names.dat, ex. `*.otap.co`
+    XCTAssertEqual(URL(string: "https://otap.co")?.etldPlusOne, "otap.co")
+    XCTAssertEqual(URL(string: "https://test.otap.co")?.etldPlusOne, "otap.co")
+  }
 }
 
 private class NavigationDelegate: NSObject, WKNavigationDelegate {
