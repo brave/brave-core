@@ -144,6 +144,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser:transaction",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/browser/bitcoin:generated_bitcoin_rpc_responses",
+    "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
     "//brave/components/brave_wallet/browser/internal:hd_key",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:buildflags",
