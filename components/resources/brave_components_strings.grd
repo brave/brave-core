@@ -801,6 +801,7 @@
       <part file="tor_strings.grdp" />
       <part file="brave_news_strings.grdp" />
       <part file="commands.grdp" />
+      <part file="app_management_additional.grdp" />
       <part file="speedreader_strings.grdp" />
       <part file="ai_chat_prompts.grdp" />
       <part file="ai_chat_ui_strings.grdp" />
