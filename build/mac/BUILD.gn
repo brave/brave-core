@@ -35,12 +35,6 @@ upstream_pkg_path = "$upstream_packaged_basename.pkg"
 upstream_zip_path = "$upstream_packaged_basename.zip"
 upstream_crx_path = "$upstream_packaged_basename.crx3"
 
-if (is_release_channel) {
-  channel_nonempty = "release"
-} else {
-  channel_nonempty = brave_channel
-}
-
 if (is_universal_binary) {
   assert(target_cpu == "arm64")
   x64_arch_app_path = "$root_out_dir/x64/$brave_exe"
@@ -275,6 +269,18 @@ if (install_omaha4_with_pkg) {
   }
 }
 
+if (is_official_build && !skip_signing) {
+  if (is_release_channel) {
+    provisionprofile_basename = "release"
+  } else {
+    provisionprofile_basename = brave_channel
+  }
+  copy("copy_provisionprofile") {
+    sources = [ "${provisionprofile_basename}.provisionprofile" ]
+    outputs = [ "${packaging_dir}/${provisionprofile_basename}.9c57a508dc89402964eb013d30ef6df4da849aa9.provisionprofile" ]
+  }
+}
+
 action("package") {
   outputs = [
     upstream_dmg_path,
@@ -308,15 +314,14 @@ action("package") {
     "--identity=$mac_signing_identifier",
     "--installer-identity=$installer_identity",
   ]
-  if (is_official_build) {
-    deps += [ ":copy_provisionprofile" ]
-  } else {
+  if (!is_official_build) {
     args += [ "--development" ]
   }
   if (skip_signing) {
     args += [ "--skip_signing" ]
-  } else {
-    args += [ "--provisioning_profile_basename=$channel_nonempty" ]
+  } else if (is_official_build) {
+    deps += [ ":copy_provisionprofile" ]
+    args += [ "--provisioning_profile_basename=$provisionprofile_basename" ]
   }
   if (notarize) {
     args += [ "--notarize" ]
@@ -381,13 +386,6 @@ copy("copy_helper_entitlements") {
   sources = [ "//brave/app/helper-entitlements.plist" ]
   public_deps = [ "//chrome/installer/mac" ]
   outputs = [ "$packaging_dir/{{source_file_part}}" ]
-}
-
-if (is_official_build) {
-  copy("copy_provisionprofile") {
-    sources = [ "${channel_nonempty}.provisionprofile" ]
-    outputs = [ "${packaging_dir}/${channel_nonempty}.9c57a508dc89402964eb013d30ef6df4da849aa9.provisionprofile" ]
-  }
 }
 
 group("create_dist_mac") {
