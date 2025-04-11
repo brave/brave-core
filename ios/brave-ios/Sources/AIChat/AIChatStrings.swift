@@ -794,8 +794,16 @@ extension Strings {
       "aichat.promptPlaceHolderDescription",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Enter a prompt here",
+      value: "How can I help you today?",
       comment: "The text for placeholder on textfield for entering questions for AI"
+    )
+    public static let promptFollowUpPlaceHolderDescription = NSLocalizedString(
+      "aichat.promptFollowUpPlaceHolderDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Ask follow-up",
+      comment:
+        "The text for placeholder on textfield for entering questions for AI, after the user has asked initial question"
     )
     public static let termsConditionsTitle = NSLocalizedString(
       "aichat.termsConditionsTitle",
