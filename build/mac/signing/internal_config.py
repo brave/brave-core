@@ -43,7 +43,7 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
 
     @property
     def codesign_requirements_basic(self):
-        return 'and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists / and certificate leaf[field.1.2.840.113635.100.6.1.13] / exists */'  # pylint: disable=line-too-long
+        return 'and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = KL8N8XSYF4'  # pylint: disable=line-too-long
 
     @property
     def provisioning_profile_basename(self):
