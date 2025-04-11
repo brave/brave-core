@@ -51,6 +51,8 @@ public class BraveWalletPreferences extends BravePreferenceFragment
     private static final String PREF_DEFAULT_ETHEREUM_WALLET = "default_ethereum_wallet";
     private static final String PREF_DEFAULT_SOLANA_WALLET = "default_solana_wallet";
 
+    private static final String PREF_BRAVE_WALLET_RESET = "pref_brave_wallet_reset";
+
     private BraveDialogPreference mDefaultEthereumWallet;
     private BraveDialogPreference mDefaultSolanaWallet;
     private BraveWalletAutoLockPreferences mPrefAutolock;
@@ -79,6 +81,12 @@ public class BraveWalletPreferences extends BravePreferenceFragment
 
         mPageTitle.set(getString(R.string.brave_ui_brave_wallet));
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_wallet_preferences);
+
+        BraveWalletResetPreference braveWalletResetPreference =
+                findPreference(PREF_BRAVE_WALLET_RESET);
+        if (braveWalletResetPreference != null) {
+            braveWalletResetPreference.setProfile(getProfile());
+        }
 
         setUpNftDiscoveryPreference();
         mDefaultEthereumWallet = findPreference(PREF_DEFAULT_ETHEREUM_WALLET);
