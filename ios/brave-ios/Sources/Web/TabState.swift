@@ -48,11 +48,22 @@ public class TabStateFactory {
   public static func create(with params: CreateTabParams) -> any TabState {
     let wkConfiguration = params.initialConfiguration ?? .init()
     wkConfiguration.enablePageTopColorSampling()
-    let tabState = WebKitTabState(id: params.id, configuration: wkConfiguration)
-    if let lastActiveTime = params.lastActiveTime {
-      tabState.lastActiveTime = lastActiveTime
+    if let braveCore = params.braveCore, FeatureList.kUseChromiumWebViews.enabled {
+      let cwvConfiuration =
+        wkConfiguration.websiteDataStore.isPersistent
+        ? braveCore.defaultWebViewConfiguration
+        : braveCore.nonPersistentWebViewConfiguration
+      return ChromiumTabState(
+        id: params.id,
+        configuration: cwvConfiuration,
+        wkConfiguration: wkConfiguration
+      )
     }
-    return tabState
+    let webKitTabState = WebKitTabState(id: params.id, configuration: wkConfiguration)
+    if let lastActiveTime = params.lastActiveTime {
+      webKitTabState.lastActiveTime = lastActiveTime
+    }
+    return webKitTabState
   }
 }
 
@@ -242,6 +253,9 @@ public protocol TabState: AnyObject {
   var viewScale: CGFloat { get set }
   /// Clears the back forward list of the WKWebView
   func clearBackForwardList()
+
+  // MARK: - Chromium specific
+  func updateScripts()
 }
 
 extension TabState {

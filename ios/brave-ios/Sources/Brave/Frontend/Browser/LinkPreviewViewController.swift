@@ -26,15 +26,15 @@ class LinkPreviewViewController: UIViewController {
   required init?(coder aDecoder: NSCoder) { fatalError() }
 
   override func viewDidLoad() {
-    guard let parentTab = parentTab,
-      let browserController
-    else {
+    guard let browserController else {
       return
     }
 
+    let isPrivate = parentTab?.isPrivate ?? false
     let tab = TabStateFactory.create(
       with: .init(
-        initialConfiguration: parentTab.configuration,
+        initialConfiguration: isPrivate
+          ? TabManager.privateConfiguration : TabManager.defaultConfiguration,
         braveCore: browserController.braveCore
       )
     )
@@ -44,6 +44,7 @@ class LinkPreviewViewController: UIViewController {
     tab.delegate = browserController
     tab.downloadDelegate = browserController
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
+    tab.isVisible = true
     self.currentTab = tab
 
     guard let currentTab = currentTab else {

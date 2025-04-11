@@ -479,46 +479,47 @@ extension BrowserViewController: TabPolicyDecider {
       return .allow
     }
 
+    if requestURL.scheme?.contains("brave") == true || requestURL.scheme?.contains("chrome") == true
+    {
+      return .allow
+    }
+
     // Standard schemes are handled in previous if-case.
     // This check handles custom app schemes to open external apps.
     // Our own 'brave' scheme does not require the switch-app prompt.
-    if requestURL.scheme?.contains("brave") == false {
-      // Do not allow opening external URLs from child tabs
-      let shouldOpen = await handleExternalURL(
-        requestURL,
-        tab: tab,
-        requestInfo: requestInfo
-      )
-      let isSyntheticClick = !requestInfo.isUserInitiated
+    // Do not allow opening external URLs from child tabs
+    let shouldOpen = await handleExternalURL(
+      requestURL,
+      tab: tab,
+      requestInfo: requestInfo
+    )
+    let isSyntheticClick = !requestInfo.isUserInitiated
 
-      // Do not show error message for JS navigated links or redirect
-      // as it's not the result of a user action.
-      if let tabData = tab.browserData, !shouldOpen,
-        requestInfo.navigationType == .linkActivated && !isSyntheticClick
+    // Do not show error message for JS navigated links or redirect
+    // as it's not the result of a user action.
+    if let tabData = tab.browserData, !shouldOpen,
+      requestInfo.navigationType == .linkActivated && !isSyntheticClick
+    {
+      if self.presentedViewController == nil && self.presentingViewController == nil
+        && !tabData.isExternalAppAlertPresented && !tabData.isExternalAppAlertSuppressed
       {
-        if self.presentedViewController == nil && self.presentingViewController == nil
-          && !tabData.isExternalAppAlertPresented && !tabData.isExternalAppAlertSuppressed
-        {
-          return await withCheckedContinuation { continuation in
-            // This alert does not need to be a BrowserAlertController because we return a policy
-            // without waiting for user action
-            let alert = UIAlertController(
-              title: Strings.unableToOpenURLErrorTitle,
-              message: Strings.unableToOpenURLError,
-              preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
-            self.present(alert, animated: true) {
-              continuation.resume(returning: shouldOpen ? .allow : .cancel)
-            }
+        return await withCheckedContinuation { continuation in
+          // This alert does not need to be a BrowserAlertController because we return a policy
+          // without waiting for user action
+          let alert = UIAlertController(
+            title: Strings.unableToOpenURLErrorTitle,
+            message: Strings.unableToOpenURLError,
+            preferredStyle: .alert
+          )
+          alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
+          self.present(alert, animated: true) {
+            continuation.resume(returning: shouldOpen ? .allow : .cancel)
           }
         }
       }
-
-      return shouldOpen ? .allow : .cancel
     }
 
-    return .cancel
+    return shouldOpen ? .allow : .cancel
   }
 }
 

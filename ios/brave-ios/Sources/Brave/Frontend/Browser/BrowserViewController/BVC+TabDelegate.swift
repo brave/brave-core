@@ -647,16 +647,14 @@ extension BrowserViewController {
       if traitCollection.horizontalSizeClass == .compact && view.bounds.width < screenWidth / 2 {
         return mobile
       }
-      return UserAgent.shouldUseDesktopMode() ? desktop : mobile
+      return traitCollection.userInterfaceIdiom == .pad
+        && braveCore.defaultHostContentSettings.defaultPageMode == .desktop ? desktop : mobile
     case .desktop: return desktop
     case .mobile: return mobile
     }
   }
 
   public func tab(_ tab: some TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType {
-    if Preferences.UserAgent.alwaysRequestDesktopSite.value {
-      return .desktop
-    }
-    return .mobile
+    return braveCore.defaultHostContentSettings.defaultPageMode == .desktop ? .desktop : .mobile
   }
 }
