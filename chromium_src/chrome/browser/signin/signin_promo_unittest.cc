@@ -13,7 +13,7 @@ namespace signin {
 // `ShowSigninPromoTestExplicitBrowserSignin` in filter files won't affect these
 // disable tests.
 class ShowSigninPromoTestExplicitBrowserSigninIsDisabled
-    : public ShowSigninPromoTestExplicitBrowserSignin {};
+    : public ShowSigninPromoTestWithFeatureFlags {};
 
 TEST_F(ShowSigninPromoTestExplicitBrowserSigninIsDisabled,
        ShowPromoWithNoAccount) {
@@ -42,6 +42,11 @@ TEST_F(ShowSigninPromoTestExplicitBrowserSigninIsDisabled,
 TEST_F(ShowSigninPromoTestExplicitBrowserSigninIsDisabled,
        DoNotShowBookmarkPromo) {
   ASSERT_FALSE(ShouldShowBookmarkSignInPromo(*profile()));
+}
+
+TEST_F(ShowSigninPromoTestExplicitBrowserSigninIsDisabled,
+       ShowExtensionsPromoWithNoAccount) {
+  EXPECT_FALSE(ShouldShowExtensionSignInPromo(*profile(), *CreateExtension()));
 }
 
 #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
