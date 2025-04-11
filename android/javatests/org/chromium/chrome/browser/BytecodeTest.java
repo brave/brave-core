@@ -2005,6 +2005,14 @@ public class BytecodeTest {
                         "mCurrentOrientation"));
         Assert.assertTrue(
                 fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mInitializedWithNative"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mTabGroupUiOneshotSupplier"));
+        Assert.assertTrue(
+                fieldExists(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mOptionalButtonController"));
         Assert.assertTrue(
