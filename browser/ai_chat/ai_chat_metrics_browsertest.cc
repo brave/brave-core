@@ -3,15 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+
 #include <memory>
 
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -37,8 +38,10 @@ class AIChatMetricsTest : public InProcessBrowserTest {
              ->GetActiveWebContents()
              ->GetPrimaryMainFrame(),
         params);
-    ai_chat_metrics_ =
-        g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
+    auto* profile_metrics =
+        misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+            browser()->profile());
+    ai_chat_metrics_ = profile_metrics->GetAIChatMetrics();
   }
 
   void TearDownOnMainThread() override { menu_ = nullptr; }

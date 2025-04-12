@@ -14,6 +14,8 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
@@ -24,6 +26,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
 #include "chrome/browser/ui/views/toolbar/app_menu.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -229,10 +232,14 @@ void BraveAppMenu::RecordMenuUsage(int command_id) {
   misc_metrics::MenuGroup group;
 
   if (command_id == IDC_TOGGLE_AI_CHAT) {
-    ai_chat::AIChatMetrics* metrics =
-        g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
-    CHECK(metrics);
-    metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kMenuItem);
+    auto* profile_metrics =
+        misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+            browser_->profile());
+    if (profile_metrics) {
+      auto* ai_chat_metrics = profile_metrics->GetAIChatMetrics();
+      CHECK(ai_chat_metrics);
+      ai_chat_metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kMenuItem);
+    }
   }
 
   switch (command_id) {
