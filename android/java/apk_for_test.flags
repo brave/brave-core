@@ -967,3 +967,11 @@
 -keep class org.chromium.chrome.browser.quickactionsearchwidget.BraveQuickActionSearchWidgetProvider {
     public <init>(...);
 }
+
+-keep class org.chromium.components.search_engines.TemplateUrlService {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.search_engines.BraveTemplateUrlService {
+    public <init>(...);
+}
