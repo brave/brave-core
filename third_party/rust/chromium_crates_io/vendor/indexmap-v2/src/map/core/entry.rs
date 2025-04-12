@@ -39,6 +39,19 @@ impl<'a, K, V> Entry<'a, K, V> {
         }
     }
 
+    /// Sets the value of the entry (after inserting if vacant), and returns an `OccupiedEntry`.
+    ///
+    /// Computes in **O(1)** time (amortized average).
+    pub fn insert_entry(self, value: V) -> OccupiedEntry<'a, K, V> {
+        match self {
+            Entry::Occupied(mut entry) => {
+                entry.insert(value);
+                entry
+            }
+            Entry::Vacant(entry) => entry.insert_entry(value),
+        }
+    }
+
     /// Inserts the given default value in the entry if it is vacant and returns a mutable
     /// reference to it. Otherwise a mutable reference to an already existent value is returned.
     ///
@@ -136,6 +149,13 @@ pub struct OccupiedEntry<'a, K, V> {
 }
 
 impl<'a, K, V> OccupiedEntry<'a, K, V> {
+    pub(crate) fn new(
+        entries: &'a mut Entries<K, V>,
+        index: hash_table::OccupiedEntry<'a, usize>,
+    ) -> Self {
+        Self { entries, index }
+    }
+
     /// Return the index of the key-value pair
     #[inline]
     pub fn index(&self) -> usize {
@@ -180,6 +200,11 @@ impl<'a, K, V> OccupiedEntry<'a, K, V> {
     pub fn into_mut(self) -> &'a mut V {
         let index = self.index();
         &mut self.entries[index].value
+    }
+
+    pub(super) fn into_muts(self) -> (&'a mut K, &'a mut V) {
+        let index = self.index();
+        self.entries[index].muts()
     }
 
     /// Sets the value of the entry to `value`, and returns the entry's old value.
@@ -269,6 +294,7 @@ impl<'a, K, V> OccupiedEntry<'a, K, V> {
     /// ***Panics*** if `to` is out of bounds.
     ///
     /// Computes in **O(n)** time (average).
+    #[track_caller]
     pub fn move_index(self, to: usize) {
         let index = self.index();
         self.into_ref_mut().move_index(index, to);
@@ -343,9 +369,18 @@ impl<'a, K, V> VacantEntry<'a, K, V> {
 
     /// Inserts the entry's key and the given value into the map, and returns a mutable reference
     /// to the value.
-    pub fn insert(mut self, value: V) -> &'a mut V {
-        let i = self.map.insert_unique(self.hash, self.key, value);
-        &mut self.map.entries[i].value
+    ///
+    /// Computes in **O(1)** time (amortized average).
+    pub fn insert(self, value: V) -> &'a mut V {
+        self.insert_entry(value).into_mut()
+    }
+
+    /// Inserts the entry's key and the given value into the map, and returns an `OccupiedEntry`.
+    ///
+    /// Computes in **O(1)** time (amortized average).
+    pub fn insert_entry(self, value: V) -> OccupiedEntry<'a, K, V> {
+        let Self { map, hash, key } = self;
+        map.insert_unique(hash, key, value)
     }
 
     /// Inserts the entry's key and the given value into the map at its ordered
@@ -498,6 +533,7 @@ impl<'a, K, V> IndexedEntry<'a, K, V> {
     /// ***Panics*** if `to` is out of bounds.
     ///
     /// Computes in **O(n)** time (average).
+    #[track_caller]
     pub fn move_index(mut self, to: usize) {
         self.map.move_index(self.index, to);
     }

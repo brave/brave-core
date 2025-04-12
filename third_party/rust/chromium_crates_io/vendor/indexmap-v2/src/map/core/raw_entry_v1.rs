@@ -618,10 +618,9 @@ impl<'a, K, V, S> RawVacantEntryMut<'a, K, V, S> {
 
     /// Inserts the given key and value into the map with the provided hash,
     /// and returns mutable references to them.
-    pub fn insert_hashed_nocheck(mut self, hash: u64, key: K, value: V) -> (&'a mut K, &'a mut V) {
+    pub fn insert_hashed_nocheck(self, hash: u64, key: K, value: V) -> (&'a mut K, &'a mut V) {
         let hash = HashValue(hash as usize);
-        let i = self.map.insert_unique(hash, key, value);
-        self.map.entries[i].muts()
+        self.map.insert_unique(hash, key, value).into_muts()
     }
 
     /// Inserts the given key and value into the map at the given index,

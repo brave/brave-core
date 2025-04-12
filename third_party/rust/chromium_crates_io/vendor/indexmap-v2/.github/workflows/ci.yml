@@ -1,8 +1,8 @@
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   merge_group:
 
 name: CI
@@ -26,8 +26,6 @@ jobs:
           - rust: stable
             features: rayon
           - rust: stable
-            features: rustc-rayon
-          - rust: stable
             features: serde
           - rust: stable
             features: borsh
@@ -45,6 +43,12 @@ jobs:
         with:
           path: ~/.cargo/registry/index
           key: cargo-git-index
+      - name: Lock MSRV-compatible dependencies
+        if: matrix.rust == '1.63.0'
+        env:
+          CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS: fallback
+        # Note that this uses the runner's pre-installed stable cargo
+        run: cargo generate-lockfile
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
@@ -79,6 +83,12 @@ jobs:
         with:
           path: ~/.cargo/registry/index
           key: cargo-git-index
+      - name: Lock MSRV-compatible dependencies
+        if: matrix.rust == '1.63.0'
+        env:
+          CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS: fallback
+        # Note that this uses the runner's pre-installed stable cargo
+        run: cargo generate-lockfile
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
@@ -103,8 +113,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@nightly
         with:
-          components: miri
-      - run: cargo miri test
+          components: miri, rust-src
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest
+      - run: cargo miri nextest run
+      - run: cargo miri test --doc
 
   minimal-versions:
     name: Check MSRV and minimal-versions
@@ -120,7 +134,10 @@ jobs:
       - uses: taiki-e/install-action@v2
         with:
           tool: cargo-hack
-      - run: cargo +nightly hack generate-lockfile --remove-dev-deps -Z direct-minimal-versions
+      - name: Lock minimal direct dependencies
+        run: cargo +nightly hack generate-lockfile --remove-dev-deps -Z direct-minimal-versions
+        env:
+          CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS: fallback
       - name: Build (nightly)
         run: cargo +nightly build --verbose --all-features
       - name: Build (MSRV)
