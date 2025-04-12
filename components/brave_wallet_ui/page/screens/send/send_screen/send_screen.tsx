@@ -464,6 +464,7 @@ export const SendScreen = React.memo((props: Props) => {
           network: networkFromParams,
           fromAccount,
           to: toAddress,
+          sendingMaxAmount: sendingMaxAmount,
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
             .toHex(),
