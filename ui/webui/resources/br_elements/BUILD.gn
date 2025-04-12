@@ -13,6 +13,5 @@ import("sources.gni")
 # and rollup compile (etc.) from that directory.
 preprocess_if_expr("preprocess") {
   out_folder = "$root_gen_dir/ui/webui/resources/cr_elements/preprocessed"
-  in_files =
-      brave_br_elements_non_web_component_files + brave_br_elements_css_files
+  in_files = brave_br_elements_ts_files + brave_br_elements_css_files
 }
