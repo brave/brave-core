@@ -47,6 +47,7 @@ cargo_crate("lib") {
   ]
   features = [
     "alloc",
+    "default",
     "num-bigint",
     "num-integer",
     "num-traits",

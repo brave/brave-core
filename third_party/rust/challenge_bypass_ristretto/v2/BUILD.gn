@@ -54,6 +54,7 @@ cargo_crate("lib") {
   features = [
     "alloc",
     "base64",
+    "default",
     "serde",
     "serde_base64",
     "std",

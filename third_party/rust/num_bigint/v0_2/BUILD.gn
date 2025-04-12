@@ -42,7 +42,10 @@ cargo_crate("lib") {
     "//brave/third_party/rust/num_traits/v0_2:lib",
   ]
   build_deps = [ "//brave/third_party/rust/autocfg/v1:buildrs_support" ]
-  features = [ "std" ]
+  features = [
+    "default",
+    "std",
+  ]
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-v0_2/build.rs"
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-v0_2/build.rs" ]
   rustflags = [

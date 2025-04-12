@@ -57,6 +57,7 @@ cargo_crate("lib") {
     "alloc",
     "bits",
     "blake2b_simd",
+    "default",
     "lazy_static",
     "sqrt-table",
   ]

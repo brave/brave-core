@@ -56,7 +56,10 @@ cargo_crate("lib") {
     "//brave/third_party/rust/num_traits/v0_2:lib",
     "//brave/third_party/rust/paste/v1:lib",
   ]
-  features = [ "std" ]
+  features = [
+    "default",
+    "std",
+  ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

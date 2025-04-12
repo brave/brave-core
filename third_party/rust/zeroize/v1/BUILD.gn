@@ -37,6 +37,7 @@ cargo_crate("lib") {
   deps = [ "//brave/third_party/rust/zeroize_derive/v1:lib" ]
   features = [
     "alloc",
+    "default",
     "derive",
     "zeroize_derive",
   ]

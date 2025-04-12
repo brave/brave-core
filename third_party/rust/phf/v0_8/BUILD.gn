@@ -41,6 +41,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/proc_macro_hack/v0_5:lib",
   ]
   features = [
+    "default",
     "macros",
     "phf_macros",
     "proc-macro-hack",
