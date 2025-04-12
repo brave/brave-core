@@ -1,7 +1,35 @@
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index c9600922e50e0007c453ba8956916cd9ed60e739..c9182e85bf7a8b7e0e9eb12806c808a7c5c0c0ce 100644
+index c9600922e50e0007c453ba8956916cd9ed60e739..672692ab39ae5feecc0c34e41a3794e5102da37b 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
+@@ -111,7 +111,7 @@ class BrowserProcessImpl : public BrowserProcess,
+   ~BrowserProcessImpl() override;
+ 
+   // Called to complete initialization.
+-  void Init();
++  virtual void Init();
+ 
+ #if !BUILDFLAG(IS_ANDROID)
+   // Sets a closure to be run to break out of a run loop on browser shutdown
+@@ -136,15 +136,15 @@ class BrowserProcessImpl : public BrowserProcess,
+   // Called after the threads have been created but before the message loops
+   // starts running. Allows the browser process to do any initialization that
+   // requires all threads running.
+-  void PreMainMessageLoopRun();
++  virtual void PreMainMessageLoopRun();
+ 
+   // Most cleanup is done by these functions, driven from
+   // ChromeBrowserMain based on notifications from the content
+   // framework, rather than in the destructor, so that we can
+   // interleave cleanup with threads being stopped.
+ #if !BUILDFLAG(IS_ANDROID)
+-  void StartTearDown();
+-  void PostDestroyThreads();
++  virtual void StartTearDown();
++  virtual void PostDestroyThreads();
+ #endif
+ 
+   // Sets |metrics_services_manager_| and |metrics_services_manager_client_|
 @@ -243,6 +243,7 @@ class BrowserProcessImpl : public BrowserProcess,
    void CreateGlobalFeaturesForTesting() override;
  
