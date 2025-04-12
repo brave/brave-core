@@ -1,0 +1,28 @@
+diff --git a/chrome/test/base/testing_browser_process.cc b/chrome/test/base/testing_browser_process.cc
+index 1778d1bc382b3831ee539331830527345d0576e7..673d55f6ce63c8d8bea1fa1b1138bef676547cec 100644
+--- a/chrome/test/base/testing_browser_process.cc
++++ b/chrome/test/base/testing_browser_process.cc
+@@ -125,6 +125,7 @@ void TestingBrowserProcess::CreateInstance() {
+         std::move(fake_geolocation_system_permission_manager));
+   }
+ #endif  // BUILDFLAG(OS_LEVEL_GEOLOCATION_PERMISSION_SUPPORTED)
++  TestingBraveBrowserProcess::CreateInstance();
+ }
+ 
+ // static
+@@ -133,6 +134,7 @@ void TestingBrowserProcess::DeleteInstance() {
+   BrowserProcess* browser_process = g_browser_process;
+   g_browser_process = nullptr;
+   delete browser_process;
++  TestingBraveBrowserProcess::DeleteInstance();
+ }
+ 
+ // static
+@@ -147,6 +149,7 @@ void TestingBrowserProcess::StartTearDown() {
+ void TestingBrowserProcess::TearDownAndDeleteInstance() {
+   TestingBrowserProcess::StartTearDown();
+   TestingBrowserProcess::DeleteInstance();
++  TestingBraveBrowserProcess::TearDownAndDeleteInstance();
+ }
+ 
+ TestingBrowserProcess::TestingBrowserProcess()
