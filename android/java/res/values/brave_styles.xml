@@ -499,7 +499,6 @@
         When there will be more places where roboto_mono is used,
         then worth to embed and actually use roboto_mono.
     -->
-    <item name="android:typeface">monospace</item>
-  </style>
-
+        <item name="android:typeface">monospace</item>
+    </style>
 </resources>
