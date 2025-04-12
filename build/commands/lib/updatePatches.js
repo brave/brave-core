@@ -38,7 +38,7 @@ async function writePatchFiles (modifiedPaths, gitRepoPath, patchDirPath) {
 
   let writeOpsDoneCount = 0
   let writePatchOps = modifiedPaths.map(async (old, i) => {
-    const singleDiffArgs = ['diff', '--src-prefix=a/', '--dst-prefix=b/', '--full-index', old]
+    const singleDiffArgs = ['diff', '--src-prefix=a/', '--dst-prefix=b/', '--default-prefix', '--full-index', old]
     const patchContents = await util.runAsync('git', singleDiffArgs, { cwd: gitRepoPath, verbose: false })
     const patchFilename = patchFilenames[i]
     await fs.writeFile(path.join(patchDirPath, patchFilename), patchContents)
