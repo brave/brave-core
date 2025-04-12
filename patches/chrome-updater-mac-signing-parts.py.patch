@@ -1,0 +1,10 @@
+diff --git a/chrome/updater/mac/signing/parts.py b/chrome/updater/mac/signing/parts.py
+index f310c2e3b16f0b4a12cd8caf113333acbe4a0347..5d0e06695a6a01e9fa8653b11c3993c221682417 100644
+--- a/chrome/updater/mac/signing/parts.py
++++ b/chrome/updater/mac/signing/parts.py
+@@ -91,3 +91,4 @@ def sign_all(paths, config):
+         signing.sign_part(paths, config, part)
+         signing.verify_part(paths, part)
+     signing.validate_app(paths, config, parts[-1])
++from brave_chromium_utils import inline_file; inline_file("//brave/chromium_src/chrome/updater/mac/signing/parts.py", globals(), locals())
+\ No newline at end of file

@@ -19,6 +19,7 @@ class Invoker(standard_invoker.Invoker):
         standard_invoker.Invoker.register_arguments(parser)
         parser.add_argument("--skip_signing", action="store_true")
         parser.add_argument("--universal", action="store_true")
+        parser.add_argument("--provisioning_profile_basename")
 
     def __init__(self, args, config):
         super().__init__(args, config)

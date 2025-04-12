@@ -13,8 +13,7 @@ import("//chrome/version.gni")
 import("//components/crx_file/crx3.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
-packaging_dir = "$root_out_dir/" +
-                string_replace("$chrome_product_full_name Packaging", " ", "_")
+packaging_dir = "$root_out_dir/$chrome_product_full_name Packaging"
 packaging_out_dir = "$root_out_dir/packaged"
 
 unsigned_app_path = "$root_out_dir/$brave_exe"
@@ -270,6 +269,18 @@ if (install_omaha4_with_pkg) {
   }
 }
 
+if (is_official_build && !skip_signing) {
+  if (is_release_channel) {
+    provisionprofile_basename = "release"
+  } else {
+    provisionprofile_basename = brave_channel
+  }
+  copy("copy_provisionprofile") {
+    sources = [ "${provisionprofile_basename}.provisionprofile" ]
+    outputs = [ "${packaging_dir}/${provisionprofile_basename}.9c57a508dc89402964eb013d30ef6df4da849aa9.provisionprofile" ]
+  }
+}
+
 action("package") {
   outputs = [
     upstream_dmg_path,
@@ -303,13 +314,14 @@ action("package") {
     "--identity=$mac_signing_identifier",
     "--installer-identity=$installer_identity",
   ]
-  if (is_official_build) {
-    deps += [ ":copy_provisionprofile" ]
-  } else {
+  if (!is_official_build) {
     args += [ "--development" ]
   }
   if (skip_signing) {
     args += [ "--skip_signing" ]
+  } else if (is_official_build) {
+    deps += [ ":copy_provisionprofile" ]
+    args += [ "--provisioning_profile_basename=$provisionprofile_basename" ]
   }
   if (notarize) {
     args += [ "--notarize" ]
@@ -374,18 +386,6 @@ copy("copy_helper_entitlements") {
   sources = [ "//brave/app/helper-entitlements.plist" ]
   public_deps = [ "//chrome/installer/mac" ]
   outputs = [ "$packaging_dir/{{source_file_part}}" ]
-}
-
-if (is_official_build) {
-  copy("copy_provisionprofile") {
-    if (is_release_channel) {
-      channel_nonempty = "release"
-    } else {
-      channel_nonempty = brave_channel
-    }
-    sources = [ "${channel_nonempty}.provisionprofile" ]
-    outputs = [ "${packaging_dir}/${channel_nonempty}.9c57a508dc89402964eb013d30ef6df4da849aa9.provisionprofile" ]
-  }
 }
 
 group("create_dist_mac") {
