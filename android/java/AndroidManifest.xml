@@ -221,3 +221,5 @@
 <activity android:name="org.chromium.chrome.browser.searchwidget.SearchWidgetProviderActivity"
     android:theme="@style/Theme.Chromium.SearchActivity"
     android:exported="true"/>
+
+{% include "//brave/android/java/AndroidManifest_activity_alias.xml" %}
