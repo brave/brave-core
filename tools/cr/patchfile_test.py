@@ -311,6 +311,220 @@ class PatchfileTest(unittest.TestCase):
                 'patches/build-android-gyp-dex.py.patch')).path_from_repo(),
             'brave/patches/build-android-gyp-dex.py.patch')
 
+    def test_fetch_source_from_git(self):
+        """Test fetch_source_from_git with renamed patch file."""
+        test_idl = Path('chrome/common/extensions/api/developer_private.idl')
+        self.fake_chromium_src.write_and_stage_file(
+            test_idl, """
+                enum ExtensionType {
+                    HOSTED_APP,
+                    PLATFORM_APP,
+                    LEGACY_PACKAGED_APP,
+                    EXTENSION,
+                    THEME,
+                    SHARED_MODULE
+                  };
+                """, self.fake_chromium_src.chromium)
+
+        self.fake_chromium_src.commit('Add developer_private.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Create a patch for the file
+        target_file = self.fake_chromium_src.chromium / test_idl
+        target_file.write_text(target_file.read_text().replace(
+            'HOSTED_APP', 'HOSTED_APP,\n    NEW_TYPE'))
+        self.fake_chromium_src.run_update_patches()
+
+        # Rename the patch file
+        original_patch_path = (
+            self.fake_chromium_src.get_patchfile_path_for_source(
+                self.fake_chromium_src.chromium, test_idl))
+        renamed_patch_path = original_patch_path.with_name(
+            'renamed_developer_private.idl.patch')
+        (self.fake_chromium_src.brave / original_patch_path).rename(
+            self.fake_chromium_src.brave / renamed_patch_path)
+
+        # Fetch the source from the renamed patch file
+        patchfile = Patchfile(path=renamed_patch_path)
+
+        # Verify the source file path matches the original file
+        self.assertEqual(
+            str(patchfile.fetch_source_from_git().source_from_git),
+            str(test_idl))
+
+    def test_get_last_commit_for_source(self):
+        """Test get_last_commit_for_source method."""
+        test_file = Path('chrome/common/extensions/api/developer_private.idl')
+        self.fake_chromium_src.write_and_stage_file(
+            test_file, """
+                enum ExtensionType {
+                    HOSTED_APP,
+                    PLATFORM_APP,
+                    LEGACY_PACKAGED_APP,
+                    EXTENSION,
+                    THEME,
+                    SHARED_MODULE
+                  };
+                """, self.fake_chromium_src.chromium)
+
+        # Commit the file and get the short commit hash
+        initial_commit_hash = self.fake_chromium_src.commit(
+            'Add developer_private.idl', self.fake_chromium_src.chromium)[:7]
+
+        # Create a patch for the file
+        target_file = self.fake_chromium_src.chromium / test_file
+        target_file.write_text(target_file.read_text().replace(
+            'HOSTED_APP', 'HOSTED_APP,\n    NEW_TYPE'))
+        self.fake_chromium_src.run_update_patches()
+
+        # Add a few empty commits
+        self.fake_chromium_src.commit_empty('Empty commit 1',
+                                            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit_empty('Empty commit 2',
+                                            self.fake_chromium_src.chromium)
+
+        # Verify the last commit for the source matches the initial commit hash
+        patchfile_path = self.fake_chromium_src.get_patchfile_path_for_source(
+            self.fake_chromium_src.chromium, test_file)
+        patchfile = Patchfile(path=patchfile_path)
+        self.assertEqual(patchfile.get_last_commit_for_source(),
+                         initial_commit_hash)
+
+        # Delete the file and commit
+        self.fake_chromium_src.delete_file(test_file,
+                                           self.fake_chromium_src.chromium)
+        delete_commit_hash = self.fake_chromium_src.commit(
+            'Delete developer_private.idl',
+            self.fake_chromium_src.chromium)[:7]
+
+        # Add a few more empty commits
+        self.fake_chromium_src.commit_empty('Empty commit 3',
+                                            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit_empty('Empty commit 4',
+                                            self.fake_chromium_src.chromium)
+
+        # Get the patch file path
+        patchfile = Patchfile(path=patchfile_path)
+
+        # Verify the last commit for the source matches the delete commit hash
+        self.assertEqual(patchfile.get_last_commit_for_source(),
+                         delete_commit_hash)
+
+    def test_get_source_removal_status(self):
+        """Test get_source_removal_status for a deleted source file."""
+        test_file = Path('chrome/common/extensions/api/developer_private.idl')
+        self.fake_chromium_src.write_and_stage_file(
+            test_file, """
+                enum ExtensionType {
+                    HOSTED_APP,
+                    PLATFORM_APP,
+                    LEGACY_PACKAGED_APP,
+                    EXTENSION,
+                    THEME,
+                    SHARED_MODULE
+                  };
+                """, self.fake_chromium_src.chromium)
+
+        # Commit the file
+        self.fake_chromium_src.commit('Add developer_private.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Add a few empty commits
+        self.fake_chromium_src.commit_empty('Empty commit 1',
+                                            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit_empty('Empty commit 2',
+                                            self.fake_chromium_src.chromium)
+
+        # Create a patch for the file
+        target_file = self.fake_chromium_src.chromium / test_file
+        target_file.write_text(target_file.read_text().replace(
+            'HOSTED_APP', 'HOSTED_APP,\n    NEW_TYPE'))
+        self.fake_chromium_src.run_update_patches()
+
+        # Delete the file and commit
+        self.fake_chromium_src.delete_file(test_file,
+                                           self.fake_chromium_src.chromium)
+        delete_commit_hash = self.fake_chromium_src.commit(
+            'Delete developer_private.idl', self.fake_chromium_src.chromium)
+
+        # Get the patch file path
+        patchfile_path = self.fake_chromium_src.get_patchfile_path_for_source(
+            self.fake_chromium_src.chromium, test_file)
+        patchfile = Patchfile(path=patchfile_path)
+
+        # Add a few more empty commits
+        self.fake_chromium_src.commit_empty('Empty commit 3',
+                                            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit_empty('Empty commit 4',
+                                            self.fake_chromium_src.chromium)
+
+        # Verify the source removal status
+        removal_status = patchfile.get_source_removal_status(
+            delete_commit_hash)
+        self.assertEqual(removal_status.status, 'D')  # 'D' indicates deletion
+        self.assertIn('Delete developer_private.idl',
+                      removal_status.commit_details)
+        self.assertIsNone(removal_status.renamed_to)
+
+    def test_get_source_rename_status(self):
+        """Test get_source_removal_status for a renamed source file."""
+        test_file = Path('chrome/common/extensions/api/developer_private.idl')
+        renamed_file = Path('chrome/common/extensions/api/renamed_private.idl')
+
+        # Write and commit the original file
+        self.fake_chromium_src.write_and_stage_file(
+            test_file, """
+                enum ExtensionType {
+                    HOSTED_APP,
+                    PLATFORM_APP,
+                    LEGACY_PACKAGED_APP,
+                    EXTENSION,
+                    THEME,
+                    SHARED_MODULE
+                  };
+                """, self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add developer_private.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Add a few empty commits
+        self.fake_chromium_src.commit_empty('Empty commit 1',
+                                            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit_empty('Empty commit 2',
+                                            self.fake_chromium_src.chromium)
+
+        # Create a patch for the file
+        target_file = self.fake_chromium_src.chromium / test_file
+        target_file.write_text(target_file.read_text().replace(
+            'HOSTED_APP', 'HOSTED_APP,\n    NEW_TYPE'))
+        self.fake_chromium_src.run_update_patches()
+
+        # Rename the file and commit
+        (self.fake_chromium_src.chromium / test_file).rename(
+            self.fake_chromium_src.chromium / renamed_file)
+        self.fake_chromium_src._run_git_command(
+            ['add', '-A'], self.fake_chromium_src.chromium)
+        rename_commit_hash = self.fake_chromium_src.commit(
+            'Rename developer_private.idl to renamed_private.idl',
+            self.fake_chromium_src.chromium)
+
+        # Get the patch file path
+        patchfile_path = self.fake_chromium_src.get_patchfile_path_for_source(
+            self.fake_chromium_src.chromium, test_file)
+        patchfile = Patchfile(path=patchfile_path)
+
+        # Add a few more empty commits
+        self.fake_chromium_src.commit_empty('Empty commit 3',
+                                            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit_empty('Empty commit 4',
+                                            self.fake_chromium_src.chromium)
+
+        # Verify the source rename status
+        rename_status = patchfile.get_source_removal_status(rename_commit_hash)
+        self.assertEqual(rename_status.status, 'R')  # 'R' indicates rename
+        self.assertIn('Rename developer_private.idl to renamed_private.idl',
+                      rename_status.commit_details)
+        self.assertEqual(rename_status.renamed_to, str(renamed_file))
+
 
 if __name__ == "__main__":
     unittest.main()
