@@ -211,7 +211,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
     self.requestInProgress = state.isRequestInProgress
     self.suggestedQuestions = state.suggestedQuestions
     self.suggestionsStatus = state.suggestionStatus
-    self.siteInfo = state.associatedContent
+    self.siteInfo = state.associatedContent?[0]
     self._shouldSendPageContents = state.shouldSendContent
     self.apiError = state.error
     self.models = state.allModels

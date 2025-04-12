@@ -369,8 +369,11 @@ void AIChatMetrics::RecordNewPrompt(ConversationHandlerForMetrics* handler,
 #endif
 
   if (handler->should_send_page_contents() &&
-      conversation->associated_content &&
-      conversation->associated_content->content_used_percentage < 100) {
+      !conversation->associated_content.empty() &&
+      std::ranges::any_of(conversation->associated_content,
+                          [](const auto& content) {
+                            return content->content_used_percentage < 100;
+                          })) {
     context_limit_storage_.AddDelta(1u);
   }
   ReportLimitMetrics();
