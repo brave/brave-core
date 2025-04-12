@@ -72,6 +72,17 @@ OBJC_EXPORT
 /// `triggerSearchResultAdClickedEvent`.
 - (BOOL)shouldShowSearchResultAdClickedInfoBar;
 
+/// Returns `true` if the new tab takeover infobar should be displayed
+/// when a user views a new tab takeover. This should be called before calling
+/// `triggerNewTabPageAdEvent` for the `kViewedImpression` event type.
+- (BOOL)shouldShowNewTabTakeoverInfoBar;
+
+/// Records that the new tab takeover infobar was shown.
+- (void)recordNewTabTakeoverInfobarWasShown;
+
+/// Suppresses the new tab takeover infobar.
+- (void)suppressNewTabTakeoverInfobar;
+
 /// Used to notify the ads service that the user has opted-in/opted-out to
 /// Brave News.
 - (void)notifyBraveNewsIsEnabledPreferenceDidChange:(BOOL)isEnabled;

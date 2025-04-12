@@ -8,6 +8,8 @@ import("//testing/test.gni")
 
 source_set("ntp_background") {
   sources = [
+    "new_tab_takeover_infobar_delegate.cc",
+    "new_tab_takeover_infobar_delegate.h",
     "ntp_p3a_helper_impl.cc",
     "ntp_p3a_helper_impl.h",
     "ntp_tab_helper.cc",
@@ -18,6 +20,7 @@ source_set("ntp_background") {
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit_grit",
     "//brave/browser:browser_process",
     "//brave/browser/brave_ads",
     "//brave/components/brave_ads/browser",
@@ -29,11 +32,18 @@ source_set("ntp_background") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
     "//chrome/browser:browser_process",
+    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles:profile",
+    "//components/infobars/content",
+    "//components/infobars/core",
     "//components/keyed_service/content",
     "//components/pref_registry",
     "//components/prefs",
+    "//components/strings:components_strings_grit",
+    "//components/vector_icons",
+    "//content/public/browser",
+    "//ui/base",
     "//url",
   ]
 
@@ -61,7 +71,10 @@ source_set("ntp_background") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "ntp_p3a_helper_impl_unittest.cc" ]
+  sources = [
+    "new_tab_takeover_infobar_delegate_unittest.cc",
+    "ntp_p3a_helper_impl_unittest.cc",
+  ]
 
   deps = [
     ":ntp_background",
@@ -71,7 +84,10 @@ source_set("unit_tests") {
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/core",
     "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
+    "//chrome/test:test_support",
+    "//components/infobars/content",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
     "//content/test:test_support",
