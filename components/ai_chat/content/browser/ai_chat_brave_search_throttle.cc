@@ -123,7 +123,10 @@ void AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce(
       web_contents->GetBrowserContext()->GetPermissionController();
   content::PermissionResult permission_status =
       permission_controller->GetPermissionResultForCurrentDocument(
-          blink::PermissionType::BRAVE_OPEN_AI_CHAT, rfh);
+          content::PermissionDescriptorUtil::
+              CreatePermissionDescriptorForPermissionType(
+                  blink::PermissionType::BRAVE_OPEN_AI_CHAT),
+          rfh);
 
   if (permission_status.status == content::PermissionStatus::DENIED) {
     CancelDeferredNavigation(content::NavigationThrottle::CANCEL);
