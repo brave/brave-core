@@ -1,5 +1,31 @@
 # Releases
 
+## 2.9.0 (2025-04-04)
+
+- Added a `get_disjoint_mut` method to `IndexMap`, matching Rust 1.86's
+  `HashMap` method.
+- Added a `get_disjoint_indices_mut` method to `IndexMap` and `map::Slice`,
+  matching Rust 1.86's `get_disjoint_mut` method on slices.
+- Deprecated the `borsh` feature in favor of their own `indexmap` feature,
+  solving a cyclic dependency that occured via `borsh-derive`.
+
+## 2.8.0 (2025-03-10)
+
+- Added `indexmap_with_default!` and `indexset_with_default!` to be used with
+  alternative hashers, especially when using the crate without `std`.
+- Implemented `PartialEq` between each `Slice` and `[]`/arrays.
+- Removed the internal `rustc-rayon` feature and dependency.
+
+## 2.7.1 (2025-01-19)
+
+- Added `#[track_caller]` to functions that may panic.
+- Improved memory reservation for `insert_entry`.
+
+## 2.7.0 (2024-11-30)
+
+- Added methods `Entry::insert_entry` and `VacantEntry::insert_entry`, returning
+  an `OccupiedEntry` after insertion.
+
 ## 2.6.0 (2024-10-01)
 
 - Implemented `Clone` for `map::IntoIter` and `set::IntoIter`.

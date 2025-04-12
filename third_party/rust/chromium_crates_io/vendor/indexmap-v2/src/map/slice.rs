@@ -2,7 +2,8 @@ use super::{
     Bucket, Entries, IndexMap, IntoIter, IntoKeys, IntoValues, Iter, IterMut, Keys, Values,
     ValuesMut,
 };
-use crate::util::try_simplify_range;
+use crate::util::{slice_eq, try_simplify_range};
+use crate::GetDisjointMutError;
 
 use alloc::boxed::Box;
 use alloc::vec::Vec;
@@ -270,6 +271,51 @@ impl<K, V> Slice<K, V> {
         self.entries
             .partition_point(move |a| pred(&a.key, &a.value))
     }
+
+    /// Get an array of `N` key-value pairs by `N` indices
+    ///
+    /// Valid indices are *0 <= index < self.len()* and each index needs to be unique.
+    pub fn get_disjoint_mut<const N: usize>(
+        &mut self,
+        indices: [usize; N],
+    ) -> Result<[(&K, &mut V); N], GetDisjointMutError> {
+        let indices = indices.map(Some);
+        let key_values = self.get_disjoint_opt_mut(indices)?;
+        Ok(key_values.map(Option::unwrap))
+    }
+
+    #[allow(unsafe_code)]
+    pub(crate) fn get_disjoint_opt_mut<const N: usize>(
+        &mut self,
+        indices: [Option<usize>; N],
+    ) -> Result<[Option<(&K, &mut V)>; N], GetDisjointMutError> {
+        // SAFETY: Can't allow duplicate indices as we would return several mutable refs to the same data.
+        let len = self.len();
+        for i in 0..N {
+            if let Some(idx) = indices[i] {
+                if idx >= len {
+                    return Err(GetDisjointMutError::IndexOutOfBounds);
+                } else if indices[..i].contains(&Some(idx)) {
+                    return Err(GetDisjointMutError::OverlappingIndices);
+                }
+            }
+        }
+
+        let entries_ptr = self.entries.as_mut_ptr();
+        let out = indices.map(|idx_opt| {
+            match idx_opt {
+                Some(idx) => {
+                    // SAFETY: The base pointer is valid as it comes from a slice and the reference is always
+                    // in-bounds & unique as we've already checked the indices above.
+                    let kv = unsafe { (*(entries_ptr.add(idx))).ref_mut() };
+                    Some(kv)
+                }
+                None => None,
+            }
+        });
+
+        Ok(out)
+    }
 }
 
 impl<'a, K, V> IntoIterator for &'a Slice<K, V> {
@@ -335,9 +381,55 @@ impl<K: fmt::Debug, V: fmt::Debug> fmt::Debug for Slice<K, V> {
     }
 }
 
-impl<K: PartialEq, V: PartialEq> PartialEq for Slice<K, V> {
-    fn eq(&self, other: &Self) -> bool {
-        self.len() == other.len() && self.iter().eq(other)
+impl<K, V, K2, V2> PartialEq<Slice<K2, V2>> for Slice<K, V>
+where
+    K: PartialEq<K2>,
+    V: PartialEq<V2>,
+{
+    fn eq(&self, other: &Slice<K2, V2>) -> bool {
+        slice_eq(&self.entries, &other.entries, |b1, b2| {
+            b1.key == b2.key && b1.value == b2.value
+        })
+    }
+}
+
+impl<K, V, K2, V2> PartialEq<[(K2, V2)]> for Slice<K, V>
+where
+    K: PartialEq<K2>,
+    V: PartialEq<V2>,
+{
+    fn eq(&self, other: &[(K2, V2)]) -> bool {
+        slice_eq(&self.entries, other, |b, t| b.key == t.0 && b.value == t.1)
+    }
+}
+
+impl<K, V, K2, V2> PartialEq<Slice<K2, V2>> for [(K, V)]
+where
+    K: PartialEq<K2>,
+    V: PartialEq<V2>,
+{
+    fn eq(&self, other: &Slice<K2, V2>) -> bool {
+        slice_eq(self, &other.entries, |t, b| t.0 == b.key && t.1 == b.value)
+    }
+}
+
+impl<K, V, K2, V2, const N: usize> PartialEq<[(K2, V2); N]> for Slice<K, V>
+where
+    K: PartialEq<K2>,
+    V: PartialEq<V2>,
+{
+    fn eq(&self, other: &[(K2, V2); N]) -> bool {
+        <Self as PartialEq<[_]>>::eq(self, other)
+    }
+}
+
+impl<K, V, const N: usize, K2, V2> PartialEq<Slice<K2, V2>> for [(K, V); N]
+where
+    K: PartialEq<K2>,
+    V: PartialEq<V2>,
+{
+    fn eq(&self, other: &Slice<K2, V2>) -> bool {
+        <[_] as PartialEq<_>>::eq(self, other)
     }
 }
 
