@@ -307,7 +307,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettingsObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/privacy/secure_dns/BraveSecureDnsProviderPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/privacy/settings/BravePrivacySettings.java",
-  "../../brave/android/java/org/chromium/chrome/browser/profiles/ProfileUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/BarcodeTracker.java",
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/BarcodeTrackerFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/CameraSource.java",
