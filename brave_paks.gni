@@ -54,7 +54,6 @@ template("brave_extra_paks") {
                            ])
     output = "${invoker.output_dir}/brave_resources.pak"
     sources = [
-      "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak",
       "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak",
       "$root_gen_dir/components/brave_components_resources.pak",
     ]
@@ -69,7 +68,6 @@ template("brave_extra_paks") {
     }
 
     deps = [
-      "//brave/components/brave_ads/resources",
       "//brave/components/brave_rewards/resources",
       "//brave/components/resources",
     ]

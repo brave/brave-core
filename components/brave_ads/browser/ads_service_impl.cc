@@ -21,7 +21,6 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -44,13 +43,11 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
-#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/user_attention/user_idle_detection/user_idle_detection_feature.h"
-#include "brave/components/brave_ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
@@ -83,14 +80,6 @@ namespace {
 constexpr int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 
 constexpr char kClearDataHistogramName[] = "Brave.Ads.ClearData";
-
-int ResourceBundleId(const std::string& name) {
-  if (name == kCatalogJsonSchemaDataResourceName) {
-    return IDR_ADS_CATALOG_SCHEMA;
-  }
-
-  NOTREACHED();
-}
 
 std::string URLMethodToRequestType(
     mojom::UrlRequestMethodType mojom_url_request_method) {
@@ -1830,23 +1819,6 @@ void AdsServiceImpl::LoadResourceComponent(
             std::move(callback).Run(std::move(*file));
           },
           std::move(callback)));
-}
-
-void AdsServiceImpl::LoadDataResource(const std::string& name,
-                                      LoadDataResourceCallback callback) {
-  const int resource_bundle_id = ResourceBundleId(name);
-
-  std::string data_resource;
-
-  const auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-  if (resource_bundle.IsGzipped(resource_bundle_id)) {
-    data_resource = resource_bundle.LoadDataResourceString(resource_bundle_id);
-  } else {
-    data_resource = static_cast<std::string>(
-        resource_bundle.GetRawDataResource(resource_bundle_id));
-  }
-
-  std::move(callback).Run(data_resource);
 }
 
 void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,

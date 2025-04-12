@@ -29,7 +29,6 @@ source_set("ads") {
   ]
 
   deps = [
-    ":ads_resources",
     ":brave_ads_mojom_wrappers",
     "//base",
     "//brave/components/brave_ads/core",
@@ -66,9 +65,4 @@ ios_objc_mojom_wrappers("brave_ads_mojom_wrappers") {
 
   # The module name is `BraveAds` now which matches the class we already have
   generate_namespace = false
-}
-
-bundle_data("ads_resources") {
-  sources = [ "//brave/components/brave_ads/resources/catalog-schema.json" ]
-  outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
 }

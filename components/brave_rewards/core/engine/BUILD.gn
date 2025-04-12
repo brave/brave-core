@@ -406,7 +406,6 @@ static_library("engine") {
     "//brave/components/brave_rewards/core/mojom:engine",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/third_party/bip39wally-core-native:bip39wally-core",
-    "//brave/third_party/rapidjson",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
     "//brave/vendor/brave_base",
     "//crypto",

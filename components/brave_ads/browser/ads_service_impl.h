@@ -372,8 +372,6 @@ class AdsServiceImpl final : public AdsService,
   void LoadResourceComponent(const std::string& id,
                              int version,
                              LoadResourceComponentCallback callback) override;
-  void LoadDataResource(const std::string& name,
-                        LoadDataResourceCallback callback) override;
 
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;

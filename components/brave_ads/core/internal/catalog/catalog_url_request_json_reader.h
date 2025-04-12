@@ -9,7 +9,6 @@
 #include <optional>
 #include <string>
 
-
 namespace brave_ads {
 
 struct CatalogInfo;

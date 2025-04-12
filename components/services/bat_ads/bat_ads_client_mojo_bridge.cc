@@ -199,16 +199,6 @@ void BatAdsClientMojoBridge::Load(const std::string& name,
   bat_ads_client_associated_remote_->Load(name, std::move(callback));
 }
 
-std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
-  if (!bat_ads_client_associated_remote_.is_bound()) {
-    return {};
-  }
-
-  std::string value;
-  bat_ads_client_associated_remote_->LoadDataResource(name, &value);
-  return value;
-}
-
 void BatAdsClientMojoBridge::ShowScheduledCaptcha(
     const std::string& payment_id,
     const std::string& captcha_id) {

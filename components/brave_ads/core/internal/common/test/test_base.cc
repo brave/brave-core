@@ -236,8 +236,6 @@ void TestBase::MockAdsClient() {
 
   MockLoadResourceComponent(ads_client_mock_, ProfilePath());
 
-  MockLoadDataResource(ads_client_mock_);
-
   MockFindProfilePref(ads_client_mock_);
   MockGetProfilePref(ads_client_mock_);
   MockSetProfilePref(ads_client_mock_, *this);

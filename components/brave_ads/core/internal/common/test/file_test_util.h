@@ -21,10 +21,6 @@ std::optional<std::string> MaybeReadFileToString(const std::string& name);
 std::optional<std::string> MaybeReadFileToStringAndReplaceTags(
     const std::string& name);
 
-// Read bundled .pak data resources.
-std::optional<std::string> MaybeReadDataResourceToString(
-    const std::string& name);
-
 }  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TEST_FILE_TEST_UTIL_H_

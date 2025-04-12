@@ -97,9 +97,6 @@ interface BatAdsClient {
   LoadResourceComponent(string id, int32 version) =>
       (mojo_base.mojom.File? file);
 
-  [Sync]
-  LoadDataResource(string name) => (mojo_base.mojom.BigString value);
-
   ShowScheduledCaptcha(string payment_id, string captcha_id);
 
   RecordP2AEvents(array<string> events);

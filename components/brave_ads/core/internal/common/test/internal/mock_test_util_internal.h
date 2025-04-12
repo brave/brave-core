@@ -32,8 +32,6 @@ void MockLoad(AdsClientMock& ads_client_mock,
 void MockLoadResourceComponent(AdsClientMock& ads_client_mock,
                                const base::FilePath& profile_path);
 
-void MockLoadDataResource(AdsClientMock& ads_client_mock);
-
 void MockFindProfilePref(const AdsClientMock& ads_client_mock);
 void MockGetProfilePref(const AdsClientMock& ads_client_mock);
 void MockSetProfilePref(const AdsClientMock& ads_client_mock,

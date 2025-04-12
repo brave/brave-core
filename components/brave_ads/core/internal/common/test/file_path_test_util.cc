@@ -21,10 +21,6 @@ base::FilePath RootPath() {
 
 }  // namespace
 
-base::FilePath DataResourcesPath() {
-  return RootPath().AppendASCII("resources");
-}
-
 base::FilePath DataPath() {
   return RootPath().AppendASCII("core").AppendASCII("test").AppendASCII("data");
 }

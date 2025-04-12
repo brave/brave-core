@@ -81,7 +81,6 @@ source_set("test") {
     "//brave/components/brave_rewards/core/engine:publishers_proto",
     "//brave/components/brave_rewards/core/mojom:engine",
     "//brave/components/challenge_bypass_ristretto",
-    "//brave/third_party/rapidjson",
     "//components/sync_preferences:test_support",
     "//net:net",
     "//sql:sql",

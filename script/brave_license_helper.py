@@ -244,12 +244,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
                 "/brave/vendor/omaha/third_party/googletest/LICENSE"
             ],
         },
-        os.path.join('brave', 'third_party', 'rapidjson'): {
-            "Name": "RapidJSON",
-            "URL": "https://github.com/Tencent/rapidjson",
-            "License": "MIT",
-            "License File": ["/brave/third_party/rapidjson/src/license.txt"],
-        },
         os.path.join('brave', 'third_party', 'reclient_configs'): {
             "Name": "reclient-configs",
             "URL": "https://github.com/EngFlow/reclient-configs",
