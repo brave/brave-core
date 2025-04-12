@@ -45,6 +45,7 @@
 #include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/permission_controller.h"
+#include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/permission_result.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/scoped_accessibility_mode.h"
@@ -429,7 +430,10 @@ bool AIChatTabHelper::HasOpenAIChatPermission() const {
       web_contents()->GetBrowserContext()->GetPermissionController();
   content::PermissionResult permission_status =
       permission_controller->GetPermissionResultForCurrentDocument(
-          blink::PermissionType::BRAVE_OPEN_AI_CHAT, rfh);
+          content::PermissionDescriptorUtil::
+              CreatePermissionDescriptorForPermissionType(
+                  blink::PermissionType::BRAVE_OPEN_AI_CHAT),
+          rfh);
   return permission_status.status == content::PermissionStatus::GRANTED;
 }
 
