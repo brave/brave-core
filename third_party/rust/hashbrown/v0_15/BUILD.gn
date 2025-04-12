@@ -59,6 +59,7 @@ cargo_crate("lib") {
   ]
   features = [
     "allocator-api2",
+    "default",
     "default-hasher",
     "equivalent",
     "inline-more",

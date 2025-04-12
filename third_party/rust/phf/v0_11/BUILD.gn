@@ -42,6 +42,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/phf_shared/v0_11:lib",
   ]
   features = [
+    "default",
     "macros",
     "phf_macros",
     "std",

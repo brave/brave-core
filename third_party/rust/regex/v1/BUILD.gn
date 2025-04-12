@@ -51,6 +51,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/regex_syntax/v0_8:lib",
   ]
   features = [
+    "default",
     "perf",
     "perf-backtrack",
     "perf-cache",

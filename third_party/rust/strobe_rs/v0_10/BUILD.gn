@@ -43,6 +43,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/subtle/v2:lib",
     "//brave/third_party/rust/zeroize/v1:lib",
   ]
+  features = [ "default" ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

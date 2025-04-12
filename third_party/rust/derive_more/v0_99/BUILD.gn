@@ -70,6 +70,7 @@ cargo_crate("lib") {
     "as_ref",
     "constructor",
     "convert_case",
+    "default",
     "deref",
     "deref_mut",
     "display",
