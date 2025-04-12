@@ -32,14 +32,12 @@ import androidx.annotation.Nullable;
 
 import org.jni_zero.CalledByNative;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -650,6 +648,6 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     }
 
     public static boolean shouldShowNewRewardsUI() {
-        return ChromeFeatureList.isEnabled(BraveFeatureList.NEW_REWARDS_UI_FEATURE);
+        return true;
     }
 }

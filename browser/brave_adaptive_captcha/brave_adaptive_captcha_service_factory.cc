@@ -51,7 +51,7 @@ class CaptchaDelegate
     if (!coordinator) {
       return false;
     }
-    return coordinator->ShowAdaptiveCaptcha();
+    return coordinator->OpenRewardsPanel();
 #endif
   }
 

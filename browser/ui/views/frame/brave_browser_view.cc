@@ -22,7 +22,6 @@
 #include "brave/browser/translate/brave_translate_utils.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
-#include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
@@ -34,7 +33,6 @@
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
-#include "brave/browser/ui/views/brave_rewards/tip_panel_bubble_host.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -260,11 +258,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
       brave_rewards::RewardsServiceFactory::GetForProfile(browser_->profile());
   if (rewards_service) {
     brave_rewards::RewardsPanelCoordinator::CreateForBrowser(browser_.get());
-    brave_rewards::TipPanelCoordinator::CreateForBrowser(browser_.get(),
-                                                         rewards_service);
   }
-
-  brave_rewards::TipPanelBubbleHost::MaybeCreateForBrowser(browser_.get());
 
   brave_shields::CookieListOptInBubbleHost::MaybeCreateForBrowser(
       browser_.get());
@@ -376,11 +370,6 @@ BraveBrowserView::~BraveBrowserView() {
   // destroyed before all `SupportsUserData` is cleared.
   if (brave_shields::CookieListOptInBubbleHost::FromBrowser(browser_.get())) {
     brave_shields::CookieListOptInBubbleHost::RemoveFromBrowser(browser_.get());
-  }
-
-  // Same as above.
-  if (brave_rewards::TipPanelBubbleHost::FromBrowser(browser_.get())) {
-    brave_rewards::TipPanelBubbleHost::RemoveFromBrowser(browser_.get());
   }
 
   DCHECK(!tab_cycling_event_handler_);

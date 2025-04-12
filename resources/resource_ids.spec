@@ -51,28 +51,13 @@
   "brave/components/brave_webtorrent/resources.grd": {
     "includes": [30320],
   },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_panel/brave_rewards_panel.grd": {
-    "META": {"sizes": {"includes": [20]}},
-    "includes": [30330],
-  },
   "brave/components/brave_rewards/resources/brave_rewards_static_resources.grd": {
     "includes": [30350],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_page/brave_rewards_page.grd": {
-    "META": {"sizes": {"includes": [20]}},
-    "includes": [30360],
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-rewards_internals/rewards_internals.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [30380],
-  },
-  # This file is generated during the build.
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_rewards_tip/brave_rewards_tip.grd": {
-    "META": {"sizes": {"includes": [20]}},
-    "includes": [30390],
   },
   "brave/components/resources/brave_components_strings.grd": {
     "messages": [30410],
