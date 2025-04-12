@@ -133,7 +133,7 @@
     "eslint-plugin-jest": "28.11.0",
     "eslint-plugin-licenses": "1.0.2",
     "eslint-plugin-no-unsanitized": "4.0.2",
-    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-n": "14.0.0",
     "eslint-plugin-promise": "6.1.1",
     "eslint-plugin-react-hooks": "4.6.0",
     "ethereum-blockies": "github:brave/blockies#0880fa9867b7da039e6d6f143b8f6c57b9f9eb3b",
