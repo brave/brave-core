@@ -19,17 +19,56 @@
 #include "url/gurl.h"
 
 namespace {
-constexpr char16_t kYoutubeBackgroundPlaybackScript[] =
-    u"(function() {"
-    "    if (document._addEventListener === undefined) {"
-    "        document._addEventListener = document.addEventListener;"
-    "        document.addEventListener = function(a,b,c) {"
-    "            if(a != 'visibilitychange') {"
-    "                document._addEventListener(a,b,c);"
-    "            }"
-    "        };"
-    "    }"
-    "}());";
+constexpr char16_t kYoutubeBackgroundPlaybackAndPipScript[] =
+    uR"(
+(function() {
+    if (document._addEventListener === undefined) {
+        document._addEventListener = document.addEventListener;
+        document.addEventListener = function(a,b,c) {
+            if(a != 'visibilitychange') {
+                document._addEventListener(a,b,c);
+            }
+        };
+    }
+}());
+// Function to modify the flags if the target object exists.
+function modifyYtcfgFlags() {
+  if (!window.ytcfg) {
+    return;
+  }
+  const config = window.ytcfg.get("WEB_PLAYER_CONTEXT_CONFIGS")?.WEB_PLAYER_CONTEXT_CONFIG_ID_MWEB_WATCH
+  if (config && config.serializedExperimentFlags) {
+    let flags = config.serializedExperimentFlags;
+
+    // Replace target flags.
+    flags = flags
+      .replace("html5_picture_in_picture_blocking_ontimeupdate=true", "html5_picture_in_picture_blocking_ontimeupdate=false")
+      .replace("html5_picture_in_picture_blocking_onresize=true", "html5_picture_in_picture_blocking_onresize=false")
+      .replace("html5_picture_in_picture_blocking_document_fullscreen=true", "html5_picture_in_picture_blocking_document_fullscreen=false")
+      .replace("html5_picture_in_picture_blocking_standard_api=true", "html5_picture_in_picture_blocking_standard_api=false")
+      .replace("html5_picture_in_picture_logging_onresize=true", "html5_picture_in_picture_logging_onresize=false");
+
+    // Assign updated flags back to config.
+    config.serializedExperimentFlags = flags;
+    if (observer) {
+      observer.disconnect();
+    }
+  }
+}
+const observer = new MutationObserver((mutations) => {
+  for (const mutation of mutations) {
+    if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+      mutation.addedNodes.forEach((node) => {
+        if (node.tagName === "SCRIPT") {
+          // Check and modify flags when a new script is added.
+          modifyYtcfgFlags();
+        }
+      });
+    }
+  }
+});
+observer.observe(document.documentElement, { childList: true, subtree: true });
+)";
 
 bool IsYouTubeDomain(const GURL& url) {
   if (net::registry_controlled_domains::SameDomainOrHost(
@@ -73,7 +112,7 @@ void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
   }
   if (IsBackgroundVideoPlaybackEnabled(web_contents())) {
     web_contents()->GetPrimaryMainFrame()->ExecuteJavaScript(
-        kYoutubeBackgroundPlaybackScript, base::NullCallback());
+        kYoutubeBackgroundPlaybackAndPipScript, base::NullCallback());
   }
 }
 
