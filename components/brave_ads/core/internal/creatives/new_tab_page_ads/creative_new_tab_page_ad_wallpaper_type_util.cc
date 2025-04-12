@@ -5,9 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_util.h"
 
-#include <ostream>
-
-#include "base/notreached.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_constants.h"
 
@@ -23,7 +22,15 @@ CreativeNewTabPageAdWallpaperType ToCreativeNewTabPageAdWallpaperType(
     return CreativeNewTabPageAdWallpaperType::kRichMedia;
   }
 
-  NOTREACHED() << "Unexpected value for wallpaper_type: " << wallpaper_type;
+  SCOPED_CRASH_KEY_STRING64("Issue45288", "wallpaper_type", wallpaper_type);
+  SCOPED_CRASH_KEY_STRING64("Issue45288", "failure_reason",
+                            "Invalid new tab page ad wallpaper type");
+  base::debug::DumpWithoutCrashing();
+
+  // Defaulting to image as a fallback for unrecognized wallpaper types.
+  // This is a temporary measure while investigating the root cause of
+  // https://github.com/brave/brave-browser/issues/45288.
+  return CreativeNewTabPageAdWallpaperType::kImage;
 }
 
 std::string ToString(CreativeNewTabPageAdWallpaperType wallpaper_type) {
@@ -37,12 +44,18 @@ std::string ToString(CreativeNewTabPageAdWallpaperType wallpaper_type) {
     }
 
     default: {
-      break;
+      SCOPED_CRASH_KEY_NUMBER("Issue45288", "wallpaper_type",
+                              base::to_underlying(wallpaper_type));
+      SCOPED_CRASH_KEY_STRING64("Issue45288", "failure_reason",
+                                "Invalid new tab page ad wallpaper type");
+      base::debug::DumpWithoutCrashing();
+
+      // Defaulting to image as a fallback for unrecognized wallpaper types.
+      // This is a temporary measure while investigating the root cause of
+      // https://github.com/brave/brave-browser/issues/45288.
+      return kCreativeNewTabPageAdImageWallpaperType;
     }
   }
-
-  NOTREACHED() << "Unexpected value for CreativeNewTabPageAdWallpaperType: "
-               << base::to_underlying(wallpaper_type);
 }
 
 }  // namespace brave_ads
