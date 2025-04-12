@@ -5,9 +5,9 @@
 
 import("//tools/json_schema_compiler/json_schema_api.gni")
 
-generated_types("generated_cardano_rpc_responses") {
-  sources = [ "cardano_rpc_responses.idl" ]
-  root_namespace = "brave_wallet::%(namespace)s"
+generated_types("generated_cardano_rpc_blockfrost_api") {
+  sources = [ "cardano_rpc_blockfrost_api.idl" ]
+  root_namespace = "brave_wallet::cardano_rpc::blockfrost_api"
   deps = [ "//base" ]
   visibility = [
     "//brave/components/brave_wallet/browser",

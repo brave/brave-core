@@ -14,6 +14,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_create_transaction_task.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_get_utxos_task.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -22,6 +23,7 @@
 namespace brave_wallet {
 
 class KeyringService;
+class CardanoTransaction;
 class NetworkManager;
 
 class CardanoWalletService : public mojom::CardanoWalletService {
@@ -40,6 +42,30 @@ class CardanoWalletService : public mojom::CardanoWalletService {
   void GetBalance(mojom::AccountIdPtr account_id,
                   GetBalanceCallback callback) override;
 
+  using DiscoverNextUnusedAddressCallback = base::OnceCallback<void(
+      base::expected<mojom::CardanoAddressPtr, std::string>)>;
+  void DiscoverNextUnusedAddress(const mojom::AccountIdPtr& account_id,
+                                 mojom::CardanoKeyRole role,
+                                 DiscoverNextUnusedAddressCallback callback);
+
+  using GetUtxosCallback = base::OnceCallback<void(
+      base::expected<GetCardanoUtxosTask::UtxoMap, std::string>)>;
+  void GetUtxos(mojom::AccountIdPtr account_id, GetUtxosCallback callback);
+
+  using CreateTransactionCallback =
+      base::OnceCallback<void(base::expected<CardanoTransaction, std::string>)>;
+  void CreateTransaction(mojom::AccountIdPtr account_id,
+                         const CardanoAddress& address_to,
+                         uint64_t amount,
+                         bool sending_max_amount,
+                         CreateTransactionCallback callback);
+
+  using SignAndPostTransactionCallback =
+      base::OnceCallback<void(std::string, CardanoTransaction, std::string)>;
+  void SignAndPostTransaction(const mojom::AccountIdPtr& account_id,
+                              CardanoTransaction cardano_transaction,
+                              SignAndPostTransactionCallback callback);
+
   cardano_rpc::CardanoRpc& cardano_rpc() { return cardano_rpc_; }
   KeyringService& keyring_service() { return *keyring_service_; }
   NetworkManager& network_manager() { return *network_manager_; }
@@ -52,15 +78,33 @@ class CardanoWalletService : public mojom::CardanoWalletService {
   const raw_ref<NetworkManager> network_manager_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
-  void OnGetCardanoUtxosTaskDone(
+  void OnGetUtxosForGetBalance(
+      GetBalanceCallback callback,
+      base::expected<GetCardanoUtxosTask::UtxoMap, std::string> utxos);
+
+  void OnGetUtxosTaskDone(
       GetCardanoUtxosTask* task,
       base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result);
+
+  void OnCreateTransactionTaskDone(
+      CreateCardanoTransactionTask* task,
+      base::expected<CardanoTransaction, std::string> result);
+
+  void OnPostTransaction(CardanoTransaction bitcoin_transaction,
+                         SignAndPostTransactionCallback callback,
+                         base::expected<std::string, std::string> txid);
+
+  bool SignTransactionInternal(CardanoTransaction& tx,
+                               const mojom::AccountIdPtr& account_id);
 
   mojo::ReceiverSet<mojom::CardanoWalletService> receivers_;
   cardano_rpc::CardanoRpc cardano_rpc_;
 
-  std::list<std::pair<std::unique_ptr<GetCardanoUtxosTask>, GetBalanceCallback>>
+  std::list<std::pair<std::unique_ptr<GetCardanoUtxosTask>, GetUtxosCallback>>
       get_cardano_utxo_tasks_;
+  std::list<std::pair<std::unique_ptr<CreateCardanoTransactionTask>,
+                      CreateTransactionCallback>>
+      create_transaction_tasks_;
 
   base::WeakPtrFactory<CardanoWalletService> weak_ptr_factory_{this};
 };
