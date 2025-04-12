@@ -13,18 +13,6 @@ import("sources.gni")
 # and rollup compile (etc.) from that directory.
 preprocess_if_expr("preprocess") {
   out_folder = "$root_gen_dir/ui/webui/resources/cr_elements/preprocessed"
-  in_files = br_elements_non_web_component_files + br_elements_css_files
-}
-
-# preprocess_if_expr doesn't play well with paths which aren't in the current
-# directory. So we copy them directly to the preprocess directory (which is
-#fine as there is no preprocessing required).
-copy("copy_lottie") {
-  sources = [
-    "//chrome/browser/resources/settings/privacy_page/cr_lottie.css",
-    "//chrome/browser/resources/settings/privacy_page/cr_lottie.html.ts",
-    "//chrome/browser/resources/settings/privacy_page/cr_lottie.ts",
-  ]
-
-  outputs = [ "$root_gen_dir/ui/webui/resources/cr_elements/preprocessed/cr_lottie/{{source_file_part}}" ]
+  in_files =
+      brave_br_elements_non_web_component_files + brave_br_elements_css_files
 }

@@ -21,8 +21,8 @@ export default function VPNShieldsConnecting() {
     <LottieBox>
       <LottiePlayer
         animationUrl={shieldsConnectingAnimation}
-        autoPlay
-        singleLoop={false}
+        play
+        loop
       />
     </LottieBox>
   )

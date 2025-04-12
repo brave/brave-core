@@ -3,31 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-br_elements_non_web_component_files = [
+brave_br_elements_non_web_component_files = [
   "br_toolbar/br_toolbar_search_field.ts",
   "br_toolbar/br_toolbar_search_field.html.ts",
 ]
 
-br_elements_css_files = [ "br_toolbar/br_toolbar_search_field.css" ]
-
-# These files don't run through the same preprocessing pipeline as the others
-# as we copy them directly from upstreams files.
-br_elements_non_web_component_files_no_preprocess = [
-  "cr_lottie/cr_lottie.ts",
-  "cr_lottie/cr_lottie.html.ts",
-]
-br_elements_css_files_no_preprocess = [ "cr_lottie/cr_lottie.css" ]
-
-brave_br_elements_non_web_component_files =
-    br_elements_non_web_component_files +
-    br_elements_non_web_component_files_no_preprocess
-
-brave_br_elements_css_files =
-    br_elements_css_files + br_elements_css_files_no_preprocess
+brave_br_elements_css_files = [ "br_toolbar/br_toolbar_search_field.css" ]
 
 brave_br_elements_ts_definitions = []
 
-brave_br_elements_preprocess_extra_deps = [
-  "//brave/ui/webui/resources/br_elements:copy_lottie",
-  "//brave/ui/webui/resources/br_elements:preprocess",
-]
+brave_br_elements_preprocess_extra_deps =
+    [ "//brave/ui/webui/resources/br_elements:preprocess" ]
