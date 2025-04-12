@@ -250,6 +250,7 @@ impl<T, S> IndexSet<T, S> {
     ///
     /// ***Panics*** if the starting point is greater than the end point or if
     /// the end point is greater than the length of the set.
+    #[track_caller]
     pub fn drain<R>(&mut self, range: R) -> Drain<'_, T>
     where
         R: RangeBounds<usize>,
@@ -264,6 +265,7 @@ impl<T, S> IndexSet<T, S> {
     /// the elements `[0, at)` with its previous capacity unchanged.
     ///
     /// ***Panics*** if `at > len`.
+    #[track_caller]
     pub fn split_off(&mut self, at: usize) -> Self
     where
         S: Clone,
@@ -426,6 +428,7 @@ where
     /// assert_eq!(set.get_index_of(&'+'), Some(27));
     /// assert_eq!(set.len(), 28);
     /// ```
+    #[track_caller]
     pub fn insert_before(&mut self, index: usize, value: T) -> (usize, bool) {
         let (index, existing) = self.map.insert_before(index, value, ());
         (index, existing.is_none())
@@ -483,6 +486,7 @@ where
     /// // This is an invalid index for moving an existing value!
     /// set.shift_insert(set.len(), 'a');
     /// ```
+    #[track_caller]
     pub fn shift_insert(&mut self, index: usize, value: T) -> bool {
         self.map.shift_insert(index, value, ()).is_none()
     }
@@ -584,6 +588,7 @@ where
     /// assert!(set.into_iter().eq([0, 1, 5, 3, 2, 4]));
     /// assert_eq!(removed, &[2, 3]);
     /// ```
+    #[track_caller]
     pub fn splice<R, I>(&mut self, range: R, replace_with: I) -> Splice<'_, I::IntoIter, T, S>
     where
         R: RangeBounds<usize>,
@@ -1050,6 +1055,7 @@ impl<T, S> IndexSet<T, S> {
     /// ***Panics*** if `from` or `to` are out of bounds.
     ///
     /// Computes in **O(n)** time (average).
+    #[track_caller]
     pub fn move_index(&mut self, from: usize, to: usize) {
         self.map.move_index(from, to)
     }
@@ -1059,6 +1065,7 @@ impl<T, S> IndexSet<T, S> {
     /// ***Panics*** if `a` or `b` are out of bounds.
     ///
     /// Computes in **O(1)** time (average).
+    #[track_caller]
     pub fn swap_indices(&mut self, a: usize, b: usize) {
         self.map.swap_indices(a, b)
     }
@@ -1099,8 +1106,12 @@ impl<T, S> Index<usize> for IndexSet<T, S> {
     ///
     /// ***Panics*** if `index` is out of bounds.
     fn index(&self, index: usize) -> &T {
-        self.get_index(index)
-            .expect("IndexSet: index out of bounds")
+        self.get_index(index).unwrap_or_else(|| {
+            panic!(
+                "index out of bounds: the len is {len} but the index is {index}",
+                len = self.len()
+            );
+        })
     }
 }
 

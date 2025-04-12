@@ -183,6 +183,7 @@ impl<K, V> IndexMapCore<K, V> {
         }
     }
 
+    #[track_caller]
     pub(crate) fn drain<R>(&mut self, range: R) -> vec::Drain<'_, Bucket<K, V>>
     where
         R: RangeBounds<usize>,
@@ -205,8 +206,14 @@ impl<K, V> IndexMapCore<K, V> {
         self.entries.par_drain(range)
     }
 
+    #[track_caller]
     pub(crate) fn split_off(&mut self, at: usize) -> Self {
-        assert!(at <= self.entries.len());
+        let len = self.entries.len();
+        assert!(
+            at <= len,
+            "index out of bounds: the len is {len} but the index is {at}. Expected index <= len"
+        );
+
         self.erase_indices(at, self.entries.len());
         let entries = self.entries.split_off(at);
 
@@ -215,6 +222,7 @@ impl<K, V> IndexMapCore<K, V> {
         Self { indices, entries }
     }
 
+    #[track_caller]
     pub(crate) fn split_splice<R>(&mut self, range: R) -> (Self, vec::IntoIter<Bucket<K, V>>)
     where
         R: RangeBounds<usize>,
@@ -316,6 +324,17 @@ impl<K, V> IndexMapCore<K, V> {
         self.indices.find(hash.get(), eq).copied()
     }
 
+    /// Append a key-value pair to `entries`,
+    /// *without* checking whether it already exists.
+    fn push_entry(&mut self, hash: HashValue, key: K, value: V) {
+        if self.entries.len() == self.entries.capacity() {
+            // Reserve our own capacity synced to the indices,
+            // rather than letting `Vec::push` just double it.
+            self.borrow_mut().reserve_entries(1);
+        }
+        self.entries.push(Bucket { hash, key, value });
+    }
+
     pub(crate) fn insert_full(&mut self, hash: HashValue, key: K, value: V) -> (usize, Option<V>)
     where
         K: Eq,
@@ -330,7 +349,7 @@ impl<K, V> IndexMapCore<K, V> {
             hash_table::Entry::Vacant(entry) => {
                 let i = self.entries.len();
                 entry.insert(i);
-                self.borrow_mut().push_entry(hash, key, value);
+                self.push_entry(hash, key, value);
                 debug_assert_eq!(self.indices.len(), self.entries.len());
                 (i, None)
             }
@@ -362,7 +381,7 @@ impl<K, V> IndexMapCore<K, V> {
             hash_table::Entry::Vacant(entry) => {
                 let i = self.entries.len();
                 entry.insert(i);
-                self.borrow_mut().push_entry(hash, key, value);
+                self.push_entry(hash, key, value);
                 debug_assert_eq!(self.indices.len(), self.entries.len());
                 (i, None)
             }
@@ -392,11 +411,13 @@ impl<K, V> IndexMapCore<K, V> {
     }
 
     #[inline]
+    #[track_caller]
     pub(super) fn move_index(&mut self, from: usize, to: usize) {
         self.borrow_mut().move_index(from, to);
     }
 
     #[inline]
+    #[track_caller]
     pub(crate) fn swap_indices(&mut self, a: usize, b: usize) {
         self.borrow_mut().swap_indices(a, b);
     }
@@ -501,6 +522,18 @@ impl<K, V> IndexMapCore<K, V> {
     }
 }
 
+/// Reserve entries capacity, rounded up to match the indices (via `try_capacity`).
+fn reserve_entries<K, V>(entries: &mut Entries<K, V>, additional: usize, try_capacity: usize) {
+    // Use a soft-limit on the maximum capacity, but if the caller explicitly
+    // requested more, do it and let them have the resulting panic.
+    let try_capacity = try_capacity.min(IndexMapCore::<K, V>::MAX_ENTRIES_CAPACITY);
+    let try_add = try_capacity - entries.len();
+    if try_add > additional && entries.try_reserve_exact(try_add).is_ok() {
+        return;
+    }
+    entries.reserve_exact(additional);
+}
+
 impl<'a, K, V> RefMut<'a, K, V> {
     #[inline]
     fn new(indices: &'a mut Indices, entries: &'a mut Entries<K, V>) -> Self {
@@ -508,51 +541,31 @@ impl<'a, K, V> RefMut<'a, K, V> {
     }
 
     /// Reserve entries capacity, rounded up to match the indices
+    #[inline]
     fn reserve_entries(&mut self, additional: usize) {
-        // Use a soft-limit on the maximum capacity, but if the caller explicitly
-        // requested more, do it and let them have the resulting panic.
-        let new_capacity = Ord::min(
-            self.indices.capacity(),
-            IndexMapCore::<K, V>::MAX_ENTRIES_CAPACITY,
-        );
-        let try_add = new_capacity - self.entries.len();
-        if try_add > additional && self.entries.try_reserve_exact(try_add).is_ok() {
-            return;
-        }
-        self.entries.reserve_exact(additional);
+        reserve_entries(self.entries, additional, self.indices.capacity());
     }
 
-    /// Append a key-value pair to `entries`,
+    /// Insert a key-value pair in `entries`,
     /// *without* checking whether it already exists.
-    fn push_entry(&mut self, hash: HashValue, key: K, value: V) {
+    fn insert_unique(self, hash: HashValue, key: K, value: V) -> OccupiedEntry<'a, K, V> {
+        let i = self.indices.len();
+        debug_assert_eq!(i, self.entries.len());
+        let entry = self
+            .indices
+            .insert_unique(hash.get(), i, get_hash(self.entries));
         if self.entries.len() == self.entries.capacity() {
-            // Reserve our own capacity synced to the indices,
-            // rather than letting `Vec::push` just double it.
-            self.reserve_entries(1);
+            // We can't call `indices.capacity()` while this `entry` has borrowed it, so we'll have
+            // to amortize growth on our own. It's still an improvement over the basic `Vec::push`
+            // doubling though, since we also consider `MAX_ENTRIES_CAPACITY`.
+            reserve_entries(self.entries, 1, 2 * self.entries.capacity());
         }
         self.entries.push(Bucket { hash, key, value });
+        OccupiedEntry::new(self.entries, entry)
     }
 
     /// Insert a key-value pair in `entries` at a particular index,
     /// *without* checking whether it already exists.
-    fn insert_entry(&mut self, index: usize, hash: HashValue, key: K, value: V) {
-        if self.entries.len() == self.entries.capacity() {
-            // Reserve our own capacity synced to the indices,
-            // rather than letting `Vec::insert` just double it.
-            self.reserve_entries(1);
-        }
-        self.entries.insert(index, Bucket { hash, key, value });
-    }
-
-    fn insert_unique(&mut self, hash: HashValue, key: K, value: V) -> usize {
-        let i = self.indices.len();
-        self.indices
-            .insert_unique(hash.get(), i, get_hash(self.entries));
-        debug_assert_eq!(i, self.entries.len());
-        self.push_entry(hash, key, value);
-        i
-    }
-
     fn shift_insert_unique(&mut self, index: usize, hash: HashValue, key: K, value: V) {
         let end = self.indices.len();
         assert!(index <= end);
@@ -565,7 +578,12 @@ impl<'a, K, V> RefMut<'a, K, V> {
             let i = if i < index { i } else { i - 1 };
             entries[i].hash.get()
         });
-        self.insert_entry(index, hash, key, value);
+        if self.entries.len() == self.entries.capacity() {
+            // Reserve our own capacity synced to the indices,
+            // rather than letting `Vec::insert` just double it.
+            self.reserve_entries(1);
+        }
+        self.entries.insert(index, Bucket { hash, key, value });
     }
 
     /// Remove an entry by shifting all entries that follow it
@@ -666,6 +684,7 @@ impl<'a, K, V> RefMut<'a, K, V> {
         }
     }
 
+    #[track_caller]
     fn move_index(&mut self, from: usize, to: usize) {
         let from_hash = self.entries[from].hash;
         let _ = self.entries[to]; // explicit bounds check
@@ -687,6 +706,7 @@ impl<'a, K, V> RefMut<'a, K, V> {
         }
     }
 
+    #[track_caller]
     fn swap_indices(&mut self, a: usize, b: usize) {
         // If they're equal and in-bounds, there's nothing to do.
         if a == b && a < self.entries.len() {
