@@ -11,7 +11,13 @@ import Shared
 import Static
 import Web
 
-class NTPTableViewController: TableViewController {
+private struct FooterViewUX {
+  static let font = UIFont.preferredFont(forTextStyle: .footnote)
+  static let horizontalPadding: CGFloat = 15
+  static let verticalPadding: CGFloat = 6
+}
+
+class NTPTableViewController: TableViewController, UITextViewDelegate {
   enum BackgroundType: RepresentableOptionType {
 
     case defaultImages
@@ -34,9 +40,12 @@ class NTPTableViewController: TableViewController {
   }
 
   private let rewards: BraveRewards?
+  private let tabManager: TabManager?
+  private let linkUrl = "https://support.brave.com/hc/en-us/articles/35182999599501"
 
-  init(_ rewards: BraveRewards?) {
+  init(rewards: BraveRewards?, tabManager: TabManager?) {
     self.rewards = rewards
+    self.tabManager = tabManager
 
     super.init(style: .insetGrouped)
   }
@@ -110,6 +119,56 @@ class NTPTableViewController: TableViewController {
     }
   }
 
+  private func imageTypeSelectionDescription() -> UIView {
+    let label = UITextView()
+    label.textAlignment = .left
+    label.textColor = .braveLabel
+    label.font = FooterViewUX.font
+    label.backgroundColor = .clear
+    label.isEditable = false
+    label.isScrollEnabled = false
+    label.isSelectable = true
+    label.delegate = self
+    label.textContainerInset = UIEdgeInsets(
+      top: FooterViewUX.verticalPadding,
+      left: FooterViewUX.horizontalPadding,
+      bottom: FooterViewUX.verticalPadding,
+      right: FooterViewUX.horizontalPadding
+    )
+
+    let learnMoreText = Strings.NTP.imageTypeSelectionDescriptionLearnMore
+    let attributes: [NSAttributedString.Key: Any] = [
+      .foregroundColor: UIColor.braveLabel,
+      .font: FooterViewUX.font,
+    ]
+
+    let linkAttributes: [NSAttributedString.Key: Any] = [
+      .font: FooterViewUX.font,
+      .foregroundColor: UIColor.braveLabel,
+      .underlineStyle: 1,
+    ]
+    label.linkTextAttributes = linkAttributes
+
+    let nsLabelAttributedString = NSMutableAttributedString(
+      string: Strings.NTP.imageTypeSelectionDescription + " ",
+      attributes: attributes
+    )
+    let nsLinkAttributedString = NSMutableAttributedString(
+      string: learnMoreText,
+      attributes: linkAttributes
+    )
+
+    if let url = URL(string: self.linkUrl) {
+      let linkTextRange = NSRange(location: 0, length: learnMoreText.count)
+      nsLinkAttributedString.addAttribute(.link, value: url, range: linkTextRange)
+      nsLabelAttributedString.append(nsLinkAttributedString)
+      label.isUserInteractionEnabled = true
+    }
+    label.attributedText = nsLabelAttributedString
+
+    return label
+  }
+
   private func backgroundImageOptions() -> [BackgroundType] {
     var available: [BackgroundType] = [.defaultImages]
     if rewards?.ads.shouldShowSponsoredImagesAndVideosSetting() == true {
@@ -139,7 +198,7 @@ class NTPTableViewController: TableViewController {
       // Show options for tab bar visibility
       let optionsViewController = OptionSelectionViewController<BackgroundType>(
         headerText: Strings.NTP.settingsBackgroundImageSubMenu,
-        footerText: Strings.NTP.imageTypeSelectionDescription,
+        footerView: self.imageTypeSelectionDescription(),
         style: .insetGrouped,
         options: self.backgroundImageOptions(),
         selectedOption: self.selectedItem(),
@@ -167,6 +226,20 @@ class NTPTableViewController: TableViewController {
       self.navigationController?.pushViewController(optionsViewController, animated: true)
     }
     return row
+  }
+
+  func textView(
+    _ textView: UITextView,
+    shouldInteractWith url: URL,
+    in characterRange: NSRange,
+    interaction: UITextItemInteraction
+  ) -> Bool {
+    self.tabManager?.addTabAndSelect(
+      URLRequest(url: URL(string: self.linkUrl)!),
+      isPrivate: false
+    )
+    self.dismiss(animated: true)
+    return false
   }
 }
 

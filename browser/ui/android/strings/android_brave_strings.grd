@@ -1451,6 +1451,9 @@ Are you sure you want to do this?
       <message name="IDS_SHOW_SPONSORED_IMAGES" desc ="Title of show sponsored images option.">
         Show Sponsored Images
       </message>
+      <message name="IDS_SPONSORED_IMAGES_LEARN_MORE" desc="Title of learn more about Sponsored images.">
+        <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Learn more about Sponsored images<ph name="END_LINK1">&lt;/link1&gt;</ph>
+      </message>
       <message name="IDS_WIDGETS" desc ="Categary of Widget option.">
         Widgets
       </message>

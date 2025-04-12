@@ -7,13 +7,15 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 // Common components
-import { SettingsText } from '../../../components/default'
+import { LearnMoreLink, LearnMoreText, SettingsText } from '../../../components/default'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 import Tooltip from '@brave/leo/react/tooltip'
 
 // Utilities
 import { getLocale } from '../../../../common/locale'
+
+const sponsoredImagesLearnMoreLink = 'https://support.brave.com/hc/en-us/articles/35182999599501'
 
 interface Props {
   onChange: () => void
@@ -32,6 +34,11 @@ const ToggleRow = styled.div`
   justify-content: space-between;
   padding: 8px 0px;
   background-color: var(--background1);
+`
+
+const VerticalContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `
 
 const ControlsContainer = styled.span`
@@ -171,7 +178,16 @@ export default function SponsoredImageToggle (
   return (
     <div>
       <ToggleRow>
-        <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
+        <VerticalContainer>
+          <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
+          <LearnMoreText>
+            {getLocale('sponsoredImageOptInDescription')}
+            {' '}
+            <LearnMoreLink href={sponsoredImagesLearnMoreLink}>
+              {getLocale('sponsoredImageOptInLearnMore')}
+            </LearnMoreLink>
+          </LearnMoreText>
+        </VerticalContainer>
         <ControlsContainer>
           {showInfoIcon &&
             <InfoTooltip mode='default' positionStrategy='fixed' tabIndex={0}>

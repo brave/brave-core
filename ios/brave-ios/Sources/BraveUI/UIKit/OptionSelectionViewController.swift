@@ -40,9 +40,20 @@ public class OptionSelectionViewController<OptionType: RepresentableOptionType>:
     }
   }
 
+  public var footerView: UIView? {
+    didSet {
+      guard let view = footerView else {
+        dataSource.sections[0].footer = nil
+        return
+      }
+      dataSource.sections[0].footer = .autoLayoutView(view)
+    }
+  }
+
   public init(
     headerText: String? = nil,
     footerText: String? = nil,
+    footerView: UIView? = nil,
     style: UITableView.Style = .grouped,
     options: [OptionType],
     selectedOption: OptionType? = nil,
@@ -65,6 +76,8 @@ public class OptionSelectionViewController<OptionType: RepresentableOptionType>:
 
     if let footerText = footerText {
       footer = .title(footerText)
+    } else if let footerView = footerView {
+      footer = .autoLayoutView(footerView)
     }
 
     dataSource.sections = [

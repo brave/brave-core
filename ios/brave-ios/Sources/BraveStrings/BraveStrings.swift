@@ -4196,6 +4196,14 @@ extension Strings {
           "'Sponsored' are additional branded backgrounds you can earn from with Brave Rewards enabled.",
         comment: "The text description of image type which is being used NTP"
       )
+    public static let imageTypeSelectionDescriptionLearnMore =
+      NSLocalizedString(
+        "ntp.imageTypeSelectionDescriptionLearnMore",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Learn more",
+        comment: "The text label of image type learn more link"
+      )
 
     public static let settingsTitle = NSLocalizedString(
       "ntp.settingsTitle",
