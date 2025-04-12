@@ -38,6 +38,7 @@
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
 #include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
+#include "brave/components/brave_ads/core/browser/service/new_tab_page_ad_prefetch_handler.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
@@ -197,6 +198,8 @@ AdsServiceImpl::AdsServiceImpl(
       host_content_settings_map_(host_content_settings_map),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
       device_id_(std::move(device_id)),
+      new_tab_page_ad_prefetch_handler_(
+          std::make_unique<NewTabPageAdPrefetchHandler>(*this)),
       bat_ads_service_factory_(std::move(bat_ads_service_factory)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
@@ -848,20 +851,20 @@ void AdsServiceImpl::RefetchNewTabPageAd() {
 
 void AdsServiceImpl::RefetchNewTabPageAdCallback(bool success) {
   if (success) {
-    PrefetchNewTabPageAd();
+    new_tab_page_ad_prefetch_handler_->PrefetchNewTabPageAd();
   }
 }
 
 void AdsServiceImpl::ResetNewTabPageAd() {
-  prefetched_new_tab_page_ad_.reset();
-  is_prefetching_new_tab_page_ad_ = false;
+  new_tab_page_ad_prefetch_handler_ =
+      std::make_unique<NewTabPageAdPrefetchHandler>(*this);
 }
 
 void AdsServiceImpl::OnParseAndSaveNewTabPageAdsCallback(
     ParseAndSaveNewTabPageAdsCallback callback,
     bool success) {
   if (success) {
-    PrefetchNewTabPageAd();
+    new_tab_page_ad_prefetch_handler_->PrefetchNewTabPageAd();
   }
 
   std::move(callback).Run(success);
@@ -1029,23 +1032,6 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   }
 
   prefs_->SetList(prefs::kNotificationAds, {});
-}
-
-void AdsServiceImpl::PrefetchNewTabPageAdCallback(
-    std::optional<base::Value::Dict> dict) {
-  CHECK(!prefetched_new_tab_page_ad_);
-
-  if (!is_prefetching_new_tab_page_ad_) {
-    // `is_prefetching_new_tab_page_ad_` can be reset during shutdown, so fail
-    // gracefully.
-    return;
-  }
-
-  is_prefetching_new_tab_page_ad_ = false;
-
-  if (dict) {
-    prefetched_new_tab_page_ad_ = NewTabPageAdFromValue(*dict);
-  }
 }
 
 void AdsServiceImpl::MaybeOpenNewTabWithAd() {
@@ -1368,32 +1354,12 @@ void AdsServiceImpl::TriggerInlineContentAdEvent(
 }
 
 void AdsServiceImpl::PrefetchNewTabPageAd() {
-  if (!bat_ads_associated_remote_.is_bound()) {
-    return;
-  }
-
-  if (!prefetched_new_tab_page_ad_ && !is_prefetching_new_tab_page_ad_) {
-    is_prefetching_new_tab_page_ad_ = true;
-
-    bat_ads_associated_remote_->MaybeServeNewTabPageAd(
-        base::BindOnce(&AdsServiceImpl::PrefetchNewTabPageAdCallback,
-                       weak_ptr_factory_.GetWeakPtr()));
-  }
+  new_tab_page_ad_prefetch_handler_->PrefetchNewTabPageAd();
 }
 
 std::optional<NewTabPageAdInfo>
 AdsServiceImpl::MaybeGetPrefetchedNewTabPageAd() {
-  if (!bat_ads_associated_remote_.is_bound()) {
-    return std::nullopt;
-  }
-
-  std::optional<NewTabPageAdInfo> ad;
-  if (prefetched_new_tab_page_ad_ && prefetched_new_tab_page_ad_->IsValid()) {
-    ad = prefetched_new_tab_page_ad_;
-    prefetched_new_tab_page_ad_.reset();
-  }
-
-  return ad;
+  return new_tab_page_ad_prefetch_handler_->MaybeGetPrefetchedNewTabPageAd();
 }
 
 void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
@@ -1416,6 +1382,28 @@ void AdsServiceImpl::ParseAndSaveNewTabPageAds(
       std::move(dict),
       base::BindOnce(&AdsServiceImpl::OnParseAndSaveNewTabPageAdsCallback,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::MaybeServeNewTabPageAd(
+    MaybeServeNewTabPageAdCallback callback) {
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*ad*/ std::nullopt);
+  }
+
+  auto callback_wrapper = base::BindOnce(
+      [](MaybeServeNewTabPageAdCallback callback,
+         std::optional<base::Value::Dict> dict) {
+        if (!dict) {
+          return std::move(callback).Run(
+              /*ad*/ std::nullopt);
+        }
+
+        std::move(callback).Run(NewTabPageAdFromValue(*dict));
+      },
+      std::move(callback));
+
+  bat_ads_associated_remote_->MaybeServeNewTabPageAd(
+      std::move(callback_wrapper));
 }
 
 void AdsServiceImpl::TriggerNewTabPageAdEvent(
