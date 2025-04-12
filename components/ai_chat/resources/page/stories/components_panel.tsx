@@ -687,6 +687,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isCharLimitExceeded: inputText.length > 70,
     inputTextCharCountDisplay: `${inputText.length} / 70`,
     pendingMessageImages: null,
+    generatedUrlToBeOpened: undefined,
     setInputText,
     setCurrentModel: () => { },
     switchToBasicModel,
@@ -705,7 +706,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),
     showAttachments: options.args.showAttachments,
     removeImage: () => {},
-    uploadImage: (useMediaCapture: boolean) => {}
+    uploadImage: (useMediaCapture: boolean) => {},
+    setGeneratedUrlToBeOpened: () => { },
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {
