@@ -139,7 +139,7 @@ std::vector<gfx::Rect> CalculateVerticalTabBounds(
 }
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
-    const std::vector<raw_ptr<TabSlotView, VectorExperimental>>& views,
+    const std::vector<TabSlotView*>& views,
     TabStrip* tab_strip) {
   const bool is_vertical_tabs_floating =
       static_cast<BraveTabStrip*>(tab_strip)->IsVerticalTabsFloating();
@@ -180,7 +180,7 @@ void UpdateInsertionIndexForVerticalTabs(
     const gfx::Rect& dragged_bounds,
     int first_dragged_tab_index,
     int num_dragged_tabs,
-    std::optional<tab_groups::TabGroupId> dragged_group,
+    bool dragged_group,
     int candidate_index,
     TabStripController* tab_strip_controller,
     TabContainer* tab_container,
@@ -188,7 +188,7 @@ void UpdateInsertionIndexForVerticalTabs(
     int& min_distance_index,
     TabStrip* tab_strip) {
   // We don't allow tab groups to be dragged over pinned tabs area.
-  if (dragged_group.has_value() && candidate_index != 0 &&
+  if (dragged_group && candidate_index != 0 &&
       tab_strip_controller->IsTabPinned(candidate_index - 1)) {
     return;
   }

@@ -28,17 +28,17 @@ void BlobURLStoreImpl::ResolveAsURLLoaderFactory(
       url, std::move(receiver), std::move(callback));
 }
 
-void BlobURLStoreImpl::ResolveForNavigation(
+void BlobURLStoreImpl::ResolveAsBlobURLToken(
     const GURL& url,
     mojo::PendingReceiver<blink::mojom::BlobURLToken> token,
     bool is_top_level_navigation,
-    ResolveForNavigationCallback callback) {
+    ResolveAsBlobURLTokenCallback callback) {
   if (!IsBlobResolvable(url)) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
-  BlobURLStoreImpl_ChromiumImpl::ResolveForNavigation(
+  BlobURLStoreImpl_ChromiumImpl::ResolveAsBlobURLToken(
       url, std::move(token), is_top_level_navigation, std::move(callback));
 }
 

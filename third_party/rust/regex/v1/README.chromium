@@ -1,8 +1,9 @@
 Name: regex
 URL: https://crates.io/crates/regex
 Version: 1.11.1
+Revision: 9870c06e6c772daaad7ab612faab29130753e41c
 License: Apache-2.0
-License File:
+License File: //brave/third_party/rust/chromium_crates_io/vendor/regex-1.11.1/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

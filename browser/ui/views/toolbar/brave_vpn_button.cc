@@ -52,9 +52,7 @@ constexpr int kBadgeSize = 10;
 // For error icon's inner color.
 class ConnectErrorIconBackground : public views::Background {
  public:
-  explicit ConnectErrorIconBackground(SkColor color) {
-    SetNativeControlColor(color);
-  }
+  explicit ConnectErrorIconBackground(SkColor color) { SetColor(color); }
 
   ConnectErrorIconBackground(const ConnectErrorIconBackground&) = delete;
   ConnectErrorIconBackground& operator=(const ConnectErrorIconBackground&) =
@@ -63,7 +61,8 @@ class ConnectErrorIconBackground : public views::Background {
   void Paint(gfx::Canvas* canvas, views::View* view) const override {
     auto bounds = view->GetLocalBounds();
     bounds.Inset(gfx::Insets::TLBR(2, 4, 2, 4));
-    canvas->FillRect(bounds, get_color());
+    canvas->FillRect(bounds,
+                     color().ConvertToSkColor(view->GetColorProvider()));
   }
 };
 

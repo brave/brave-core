@@ -1,8 +1,8 @@
 diff --git a/definitions/prepopulated_engines.json b/definitions/prepopulated_engines.json
-index a2dd37ccec874ada3a7db0c279d0ff351ce43ffd..2522e9b7d1f0a7e69660b6cb6f991872b8146f43 100644
+index 347439d0c8c95beaad47df46640117717df5a70b..37a5348ba4832088361cede08858ad33e3f6c0a4 100644
 --- a/definitions/prepopulated_engines.json
 +++ b/definitions/prepopulated_engines.json
-@@ -121,23 +121,6 @@
+@@ -123,23 +123,6 @@
        "id": 68
      },
  
@@ -26,7 +26,7 @@ index a2dd37ccec874ada3a7db0c279d0ff351ce43ffd..2522e9b7d1f0a7e69660b6cb6f991872
      "ecosia": {
        "name": "Ecosia",
        "keyword": "ecosia.org",
-@@ -307,28 +290,6 @@
+@@ -386,29 +369,6 @@
        "id": 108
      },
  
@@ -36,6 +36,7 @@ index a2dd37ccec874ada3a7db0c279d0ff351ce43ffd..2522e9b7d1f0a7e69660b6cb6f991872
 -      "favicon_url": "https://www.qwant.com/favicon.ico",
 -      "search_url": "https://www.qwant.com/?q={searchTerms}",
 -      "suggest_url": "https://api.qwant.com/api/suggest/?q={searchTerms}",
+-      "new_tab_url": "https://www.qwant.com/newtab?client=cs-chrome-newtab",
 -      "type": "SEARCH_ENGINE_QWANT",
 -      "id": 94,
 -      "regulatory_extensions": [

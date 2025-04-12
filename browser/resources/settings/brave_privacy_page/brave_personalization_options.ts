@@ -72,6 +72,8 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
 
   private webRTCPolicies_: Object[]
   private webRTCPolicy_: String
+  private isDebounceFeatureEnabled_: boolean
+  private isRequestOTRFeatureEnabled_: boolean
   private requestOTRActions_: Object[]
   private requestOTRAction_: String
 

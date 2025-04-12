@@ -543,7 +543,7 @@ void BraveCompoundTabContainer::UpdatePinnedTabContainerBorder() {
       ShouldShowVerticalTabs() && pinned_tab_container_->GetTabCount() != 0 &&
       unpinned_tab_container_->GetTabCount() != 0;
   if (should_have_separator_between_pinned_and_unpinned) {
-    pinned_tab_container_->SetBorder(views::CreateThemedSolidSidedBorder(
+    pinned_tab_container_->SetBorder(views::CreateSolidSidedBorder(
         gfx::Insets().set_bottom(1), kColorBraveVerticalTabSeparator));
   } else {
     pinned_tab_container_->SetBorder(nullptr);

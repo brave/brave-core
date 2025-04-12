@@ -128,7 +128,12 @@
 -ServiceWorker/ExtensionManagementApiTest.*
 -ServiceWorkerPushMessagingTest.OnPush
 -SigninUtilWinBrowserTest5/SigninUtilWinBrowserTest.*
+-SigninUtilWinBrowserTest5/SigninUtilWinBrowserTestWithParams.FixReauth/0
+-SigninUtilWinBrowserTest5/SigninUtilWinBrowserTestWithParams.Run/0
 -SigninUtilWinBrowserTest6/SigninUtilWinBrowserTest.*
+-SigninUtilWinBrowserTest6/SigninUtilWinBrowserTestWithParams.FixReauth/0
+-SigninUtilWinBrowserTest6/SigninUtilWinBrowserTestWithParams.Run/0
+-SigninUtilWinNoStartingWindowBrowserTest.FRESigninFlow
 -SpellcheckServiceBrowserTest.*
 -SSLUIMITMSoftwareEnabledTest.*
 -StartupBrowserCreatorCorruptProfileTest.*

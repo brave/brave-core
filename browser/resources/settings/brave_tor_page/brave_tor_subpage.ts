@@ -171,12 +171,15 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   private loadedConfig_: any
   private useBridges_: number
+  private useBridgesValue_: string
+  private builtInBridgesTypes_: { name: string, value: number }[]
   private builtinBridges_: number
   private requestedBridges_: string
   private providedBridges_: string
   private isUsingBridgesPref_: chrome.settingsPrivate.PrefObject
   private shouldShowBridgesGroup_: boolean
   private requestedBridgesPlaceholder_: string
+  private providedBridgesPlaceholder_: string
   private disableTorOption_: boolean
   private torEnabledPref_: chrome.settingsPrivate.PrefObject
   private torSnowflakeExtensionEnabledPref_: chrome.settingsPrivate.PrefObject

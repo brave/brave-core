@@ -29,6 +29,7 @@ void NotificationAdPopupWidget::InitWidget(
   CHECK(delegate);
 
   views::Widget::InitParams params(
+      Widget::InitParams::CLIENT_OWNS_WIDGET,
       views::Widget::InitParams::TYPE_WINDOW_FRAMELESS);
   params.delegate = delegate;
   params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;

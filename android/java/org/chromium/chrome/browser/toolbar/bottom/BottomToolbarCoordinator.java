@@ -27,6 +27,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
+import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpenerImpl;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
@@ -78,6 +80,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private LocationBarModel mLocationBarModel;
     private HomepageManager mHomepageManager;
+    private BookmarkManagerOpener mBookmarkManagerOpener;
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
@@ -127,6 +130,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
         mBookmarkModelSupplier = bookmarkModelSupplier;
         mLocationBarModel = locationBarModel;
+        mBookmarkManagerOpener = new BookmarkManagerOpenerImpl();
     }
 
     /**
@@ -357,7 +361,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
         } else if (v == mBookmarksButton) {
             TabUtils.showBookmarkTabPopupMenu(
-                    mContext, v, mBookmarkModelSupplier, mLocationBarModel);
+                    mContext, v, mBookmarkModelSupplier, mLocationBarModel, mBookmarkManagerOpener);
             return true;
         } else if (v == mNewTabButton) {
             TabUtils.showTabPopupMenu(mContext, v);

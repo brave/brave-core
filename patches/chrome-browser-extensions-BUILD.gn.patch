@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 668e8d6f415a3e17efd4dc7bbf3667d0e2fd2786..f0e41257dee6a0ab776d289d66f6bbad2109a613 100644
+index 2d9d04b6be20000c8fdd496595a4b977b964e04d..ff4c09cd4ce05d9dcdcff678c9a4af4acc8d20e5 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1476,6 +1476,7 @@ source_set("extensions") {
-       allow_circular_includes_from += [ "//chrome/browser/glic:impl" ]
+@@ -1506,6 +1506,7 @@ source_set("extensions") {
+       deps += [ "//chrome/browser/ui/toasts" ]
      }
    }  # if (enable_extensions)
 +  deps += brave_extensions_resources

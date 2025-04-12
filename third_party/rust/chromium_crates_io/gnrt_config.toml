@@ -219,7 +219,7 @@ build_script_outputs = [ "generated.rs", "named_entities.rs", ]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.num-bigint]
-extra_input_roots = [ "../README.md" ]
+license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { raw_gn = '''
 if (target_cpu == "arm64" || target_cpu == "x64") {
   rustenv = [ "CARGO_CFG_TARGET_POINTER_WIDTH=64" ]
@@ -233,7 +233,11 @@ if (epoch != "0.2") {
 }
 ''' }
 
+[crate.num-integer]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
 [crate.num-traits]
+license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] }
 
 [crate.phf_macros]
@@ -272,9 +276,6 @@ license_files = ['LICENSE.Apache-2.0']
 [crate.selectors]
 build_script_outputs = [ "ascii_case_insensitive_html_attributes.rs" ]
 license_files = ['../../../../../common/licenses/MPL-2.0']
-
-[crate.semver]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.serde_derive]
 license_files = ['../../../../../common/licenses/Apache-2.0']
@@ -369,4 +370,7 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.zcash_client_backend]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.zerocopy]
 license_files = ['../../../../../common/licenses/Apache-2.0']
