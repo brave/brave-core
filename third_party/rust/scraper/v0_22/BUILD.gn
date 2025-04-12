@@ -55,6 +55,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/tendril/v0_4:lib",
   ]
   features = [
+    "default",
     "errors",
     "getopts",
     "main",

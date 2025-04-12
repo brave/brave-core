@@ -48,6 +48,7 @@ cargo_crate("lib") {
     "bits",
     "bitvec",
     "byteorder",
+    "default",
     "derive",
     "ff_derive",
     "std",

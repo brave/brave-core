@@ -47,6 +47,7 @@ cargo_crate("lib") {
   ]
   features = [
     "attributes",
+    "default",
     "release_max_level_debug",
     "std",
     "tracing-attributes",

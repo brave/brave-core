@@ -47,6 +47,7 @@ cargo_crate("lib") {
     debug_unreachable = "//brave/third_party/rust/new_debug_unreachable/v1:lib"
   }
   features = [
+    "default",
     "serde",
     "serde_support",
   ]

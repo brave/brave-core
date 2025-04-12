@@ -81,6 +81,7 @@ cargo_crate("lib") {
   }
   features = [
     "alloc",
+    "default",
     "getrandom",
     "getrandom_package",
     "libc",

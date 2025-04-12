@@ -40,6 +40,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/tracing_core/v0_1:lib",
   ]
   features = [
+    "default",
     "log-tracer",
     "std",
   ]

@@ -43,7 +43,10 @@ cargo_crate("lib") {
     "//brave/third_party/rust/arrayvec/v0_7:lib",
     "//brave/third_party/rust/constant_time_eq/v0_2:lib",
   ]
-  features = [ "std" ]
+  features = [
+    "default",
+    "std",
+  ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

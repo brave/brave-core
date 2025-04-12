@@ -90,6 +90,7 @@ cargo_crate("lib") {
   ]
   features = [
     "clone-impls",
+    "default",
     "derive",
     "extra-traits",
     "fold",
@@ -203,6 +204,7 @@ cargo_crate("buildrs_support") {
   ]
   features = [
     "clone-impls",
+    "default",
     "derive",
     "extra-traits",
     "fold",

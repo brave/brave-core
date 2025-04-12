@@ -60,6 +60,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/memchr/v2:lib",
   ]
   features = [
+    "default",
     "encoding",
     "encoding_rs",
   ]

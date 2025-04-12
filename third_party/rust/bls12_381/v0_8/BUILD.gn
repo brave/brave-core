@@ -61,6 +61,7 @@ cargo_crate("lib") {
   features = [
     "alloc",
     "bits",
+    "default",
     "digest",
     "experimental",
     "group",
