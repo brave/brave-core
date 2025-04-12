@@ -17,14 +17,18 @@ source_set("browser_tests") {
     "playlist_media_discovery_browsertests.cc",
   ]
 
+  deps = []
+
   if (enable_playlist_webui) {
     sources += [
       "playlist_active_tab_tracker_browsertest.cc",
       "playlist_browsertest.cc",
     ]
+
+    deps += [ "//brave/browser/ui/sidebar" ]
   }
 
-  deps = [
+  deps += [
     "//base",
     "//brave/components/playlist/browser",
     "//chrome/app:command_ids",

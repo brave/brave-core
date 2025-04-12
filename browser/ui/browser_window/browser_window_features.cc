@@ -9,7 +9,10 @@
 #include "base/notreached.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/views/side_panel/mobile_view/mobile_view_side_panel_manager.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/sidebar/common/features.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
@@ -45,11 +48,13 @@ BraveVPNController* BrowserWindowFeatures::brave_vpn_controller() {
 #endif
 }
 
-void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
-  BrowserWindowFeatures_ChromiumImpl::Init(browser);
+void BrowserWindowFeatures::Init(
+    BrowserWindowInterface* browser_window_interface) {
+  BrowserWindowFeatures_ChromiumImpl::Init(browser_window_interface);
 
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
-    split_view_browser_data_ = std::make_unique<SplitViewBrowserData>(browser);
+    split_view_browser_data_ =
+        std::make_unique<SplitViewBrowserData>(browser_window_interface);
   }
 }
 
@@ -61,4 +66,18 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_ = std::make_unique<BraveVPNController>(browser_view);
 #endif
+
+  if (base::FeatureList::IsEnabled(sidebar::features::kSidebarMobileView)) {
+    mobile_view_side_panel_manager_ =
+        std::make_unique<MobileViewSidePanelManager>(
+            *side_panel_coordinator()->GetWindowRegistry());
+  }
+}
+
+void BrowserWindowFeatures::TearDownPreBrowserViewDestruction() {
+  // Destroy before upstream's |side_panel_coordinator_| as this panel manager
+  // depends on it.
+  mobile_view_side_panel_manager_.reset();
+
+  BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserViewDestruction();
 }

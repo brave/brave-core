@@ -5,6 +5,8 @@
 
 #include "brave/components/sidebar/browser/sidebar_item.h"
 
+#include "brave/components/sidebar/common/features.h"
+
 namespace sidebar {
 
 // static
@@ -58,6 +60,14 @@ bool SidebarItem::IsValidItem() const {
   // WebType
   return url.is_valid() &&
          built_in_item_type == SidebarItem::BuiltInItemType::kNone;
+}
+
+bool SidebarItem::IsMobileViewItem() const {
+  if (!base::FeatureList::IsEnabled(sidebar::features::kSidebarMobileView)) {
+    return false;
+  }
+
+  return url.is_valid() && mobile_view;
 }
 
 }  // namespace sidebar
