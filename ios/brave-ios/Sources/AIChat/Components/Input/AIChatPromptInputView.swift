@@ -33,6 +33,8 @@ struct AIChatPromptInputView: View {
 
   var focusedField: FocusState<AIChatView.Field?>.Binding
 
+  var messageCount: Int
+
   var onSubmit: (String) -> Void
 
   @Environment(\.isEnabled) private var isEnabled
@@ -48,6 +50,7 @@ struct AIChatPromptInputView: View {
       )?
     >,
     focusedField: FocusState<AIChatView.Field?>.Binding,
+    messageCount: Int,
     onSubmit: @escaping (String) -> Void
   ) {
     self._prompt = prompt
@@ -55,6 +58,7 @@ struct AIChatPromptInputView: View {
     self._isShowingSlashTools = isShowingSlashTools
     self._slashToolsOption = slashToolsOption
     self.focusedField = focusedField
+    self.messageCount = messageCount
     self.onSubmit = onSubmit
   }
 
@@ -71,11 +75,11 @@ struct AIChatPromptInputView: View {
       }
 
       AIChatPaddedTextView(
-        Strings.AIChat.promptPlaceHolderDescription,
+        promptPlaceholder,
         text: $prompt,
         textColor: isEnabled
           ? UIColor(braveSystemName: .textPrimary) : UIColor(braveSystemName: .textDisabled),
-        prompt: Strings.AIChat.promptPlaceHolderDescription,
+        prompt: promptPlaceholder,
         promptColor: isEnabled
           ? UIColor(braveSystemName: .textTertiary) : UIColor(braveSystemName: .textDisabled),
         font: .preferredFont(forTextStyle: .subheadline),
@@ -220,6 +224,12 @@ struct AIChatPromptInputView: View {
       isNoMicrophonePermissionPresented = true
     }
   }
+
+  private var promptPlaceholder: String {
+    messageCount == 0
+      ? Strings.AIChat.promptPlaceHolderDescription
+      : Strings.AIChat.promptFollowUpPlaceHolderDescription
+  }
 }
 
 #if DEBUG
@@ -237,7 +247,8 @@ struct AIChatPromptInputView_Preview: PreviewProvider {
       speechRecognizer: SpeechRecognizer(),
       isShowingSlashTools: .constant(false),
       slashToolsOption: .constant((group, entry)),
-      focusedField: $focusedField
+      focusedField: $focusedField,
+      messageCount: 0
     ) {
       print("Prompt Submitted: \($0)")
     }

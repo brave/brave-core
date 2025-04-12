@@ -90,7 +90,10 @@ struct AIChatPaddedTextView: UIViewRepresentable {
   }
 
   func updateUIView(_ view: UITextView, context: Context) {
+    guard let view = view as? ResizableTextView else { return }
+
     view.text = text
+    view.placeholderText = prompt
   }
 
   class ResizableTextView: UITextView, UITextViewDelegate {

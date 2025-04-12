@@ -339,7 +339,8 @@ public struct AIChatView: View {
           speechRecognizer: speechRecognizer,
           isShowingSlashTools: $isShowingSlashTools,
           slashToolsOption: $slashToolsOption,
-          focusedField: $focusedField
+          focusedField: $focusedField,
+          messageCount: model.conversationHistory.count
         ) { prompt in
           hasSeenIntro.value = true
 
@@ -837,7 +838,8 @@ struct AIChatView_Preview: PreviewProvider {
         speechRecognizer: SpeechRecognizer(),
         isShowingSlashTools: .constant(false),
         slashToolsOption: .constant(nil),
-        focusedField: $focusedField
+        focusedField: $focusedField,
+        messageCount: 0
       ) {
         print("Prompt Submitted: \($0)")
       }
