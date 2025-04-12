@@ -649,6 +649,47 @@ std::unique_ptr<Rule> BravePrefProvider::GetRule(
                                off_the_record, partition_key);
 }
 
+BravePrefProvider::CookieType BravePrefProvider::GetCookieType(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    const ContentSetting& value,
+    bool incognito) const {
+  const auto find_cookie =
+      [&primary_pattern, &secondary_pattern,
+       &value](const std::vector<std::unique_ptr<Rule>>& rules) {
+        for (const auto& rule : rules) {
+          if (rule->primary_pattern == primary_pattern &&
+              rule->secondary_pattern == secondary_pattern &&
+              rule->value == value) {
+            return true;
+          }
+        }
+        return false;
+      };
+
+  if (find_cookie(brave_shield_down_rules_.at(incognito))) {
+    return CookieType::kShieldsDownCookie;
+  }
+
+  if (find_cookie(brave_cookie_rules_.at(incognito))) {
+    return CookieType::kCustomShielsCookie;
+  }
+
+  const bool google_sign_in_flag_enabled =
+      google_sign_in_permission::IsGoogleSignInFeatureEnabled();
+  if (!google_sign_in_flag_enabled &&
+      prefs_->FindPreference(kGoogleLoginControlType) &&
+      prefs_->GetBoolean(kGoogleLoginControlType)) {
+    if ((primary_pattern == google_sign_in_permission::GetGoogleAuthPattern() ||
+         primary_pattern ==
+             google_sign_in_permission::GetFirebaseAuthPattern()) &&
+        secondary_pattern == ContentSettingsPattern::Wildcard()) {
+      return CookieType::kGoogleSignInCookie;
+    }
+  }
+  return CookieType::kRegularCookie;
+}
+
 void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
                                           bool incognito) {
   std::vector<std::unique_ptr<Rule>> rules;
