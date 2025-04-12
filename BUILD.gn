@@ -249,6 +249,19 @@ if (!is_ios) {
   }
 }
 
+# Chromium unit tests
+if (!is_ios) {
+  group("chromium_unit_tests") {
+    testonly = true
+
+    deps = [
+      "//chrome/test:unit_tests",
+      "//components:components_unittests",
+      "//content/test:content_unittests",
+    ]
+  }
+}
+
 if (!is_ios) {
   brave_paks("packed_resources") {
     if (is_mac) {
