@@ -251,6 +251,11 @@ extension Preferences {
       key: "chromium.last.bookmark.folder.node.id",
       default: nil
     )
+    /// Sync Device Restoration Token
+    public static let hasSyncDeviceRestorationToken = Option<Bool>(
+      key: "chromium.sync.hasSyncDeviceRestorationToken",
+      default: false
+    )
   }
 
   public final class Debug {

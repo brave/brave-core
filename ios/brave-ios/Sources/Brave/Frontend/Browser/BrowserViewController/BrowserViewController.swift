@@ -1042,6 +1042,11 @@ public class BrowserViewController: UIViewController {
       }
       .store(in: &cancellables)
 
+    Task {
+      // Track sync chain restoration via backup
+      try await braveCore.syncAPI.setupDeviceRestorationTracking()
+    }
+
     syncPlaylistFolders()
     checkCrashRestorationOrSetupTabs()
   }
