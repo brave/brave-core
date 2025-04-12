@@ -60,7 +60,7 @@ brave_settings_web_component_files = [
   "ui/searchable_drop_down_cros.ts",
 ]
 
-brave_settings_non_web_component_files = [
+brave_settings_ts_files = [
   "brave_appearance_page/brave_appearance_browser_proxy.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
@@ -151,14 +151,13 @@ brave_settings_local_css_files = [
 if (enable_brave_vpn_wireguard) {
   brave_settings_web_component_files +=
       [ "brave_system_page/brave_vpn_page.ts" ]
-  brave_settings_non_web_component_files +=
-      [ "brave_system_page/brave_vpn_browser_proxy.ts" ]
+  brave_settings_ts_files += [ "brave_system_page/brave_vpn_browser_proxy.ts" ]
 }
 
 if (enable_pin_shortcut) {
   brave_settings_web_component_files +=
       [ "pin_shortcut_page/pin_shortcut_page.ts" ]
-  brave_settings_non_web_component_files +=
+  brave_settings_ts_files +=
       [ "pin_shortcut_page/pin_shortcut_page_browser_proxy.ts" ]
 }
 
@@ -169,7 +168,7 @@ brave_settings_ts_definitions = [
 
 # Generate the list for inclusion via preprocess and exclusion for chromium's preprocess
 brave_settings_local_ts_files =
-    brave_settings_web_component_files + brave_settings_non_web_component_files
+    brave_settings_web_component_files + brave_settings_ts_files
 
 brave_settings_local_html_files = []
 foreach(component_file, brave_settings_web_component_files) {
