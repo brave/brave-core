@@ -110,6 +110,10 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         type: Boolean,
         value: false,
       },
+
+      isZCashShieldedTxEnabled_: {
+        type: Boolean
+      },
     }
   }
 
@@ -123,6 +127,7 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   private isTransactionSimulationsFeatureEnabled: boolean
   private isPrivateWindowsEnabled_: chrome.settingsPrivate.PrefObject<boolean>
   private showRestartToast_: boolean
+  private isZCashShieldedTxEnabled_: boolean
 
   private browserProxy_: BraveWalletBrowserProxy =
     BraveWalletBrowserProxyImpl.getInstance()
@@ -156,6 +161,9 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         type: chrome.settingsPrivate.PrefType.BOOLEAN,
         value: val,
       }
+    })
+    this.browserProxy_.isZCashShieldedTxEnabled().then(val => {
+      this.isZCashShieldedTxEnabled_ = val
     })
 
     this.cryptocurrency_list_ = [
@@ -257,6 +265,15 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     }
     this.browserProxy_.resetWallet()
     window.alert(this.i18n('walletResetConfirmed'))
+  }
+
+  private onResetZCashSyncState_() {
+    const message = this.i18n('resetZCashSyncStateConfirmation')
+    if (window.prompt(message) !== this.i18n('walletResetConfirmationPhrase')) {
+      return
+    }
+    this.browserProxy_.resetZCashSyncState()
+    window.alert(this.i18n('resetZCashSyncStateConfirmed'))
   }
 
   private onResetTransactionInfo_() {
