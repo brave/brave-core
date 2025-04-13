@@ -5,16 +5,12 @@
 
 #include <memory>
 
-#include "base/strings/utf_string_conversions.h"
-#include "base/test/bind.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
-#include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
-#include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
@@ -24,7 +20,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/prefs/pref_service.h"
+#include "content/public/browser/download_manager.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -49,6 +45,7 @@ constexpr char kTestNotOnion[] = "/not_onion";
 constexpr char kTestNotOnionURL[] = "https://brave.com";
 constexpr char kTestErrorPage[] = "/errorpage";
 constexpr char kTestAttackerOnionURL[] = "https://attacker.onion";
+constexpr char kDownload[] = "/download";
 
 std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
     const net::test_server::HttpRequest& request) {
@@ -56,7 +53,14 @@ std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
       new net::test_server::BasicHttpResponse());
   http_response->set_code(net::HTTP_OK);
   http_response->set_content_type("text/html");
-  http_response->set_content("<html><head></head></html>");
+  http_response->set_content(R"html(
+    <html><head></head>
+    <body>
+      <a id="download" href="/download"></a>
+    </body>
+    </html>
+  )html");
+
   if (request.GetURL().path_piece() == kTestOnionPath) {
     http_response->AddCustomHeader("onion-location", kTestOnionURL);
     // Subsequent headers should be ignored.
@@ -77,6 +81,11 @@ std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
           </head>
         </html>
       )html");
+  } else if (request.GetURL().path_piece() == kDownload) {
+    http_response->set_content_type("application/octet-stream");
+    http_response->set_content("Some data");
+    http_response->AddCustomHeader("onion-location", kTestAttackerOnionURL);
+    http_response->AddCustomHeader("Content-Disposition", "attachment");
   }
   return std::move(http_response);
 }
@@ -386,4 +395,45 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, History) {
 
     EXPECT_TRUE(GetOnionLocationView(browser())->GetVisible());
   }
+}
+
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, Download) {
+  const GURL url = test_server()->GetURL("/onion");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  class DownloadAwaiter : public content::DownloadManager::Observer {
+   public:
+    DownloadAwaiter() = default;
+    ~DownloadAwaiter() override = default;
+
+    void Wait() { download_run_loop_.Run(); }
+
+    // content::DownloadManager::Observer implementation.
+    void OnDownloadCreated(content::DownloadManager* manager,
+                           download::DownloadItem* item) override {
+      download_run_loop_.Quit();
+      item->Cancel(true);
+    }
+
+   private:
+    base::RunLoop download_run_loop_;
+  };
+
+  content::DownloadManager* download_manager =
+      browser()->profile()->GetDownloadManager();
+  auto download_awaiter = std::make_unique<DownloadAwaiter>();
+  download_manager->AddObserver(download_awaiter.get());
+
+  ASSERT_TRUE(content::ExecJs(web_contents,
+                              "document.getElementById('download').click()"));
+
+  download_awaiter->Wait();
+  download_manager->RemoveObserver(download_awaiter.get());
+
+  // Onion location is not changed.
+  auto* helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  EXPECT_TRUE(helper->should_show_icon());
+  EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
 }

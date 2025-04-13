@@ -50,14 +50,14 @@ namespace tor {
 OnionLocationTabHelper::~OnionLocationTabHelper() = default;
 
 // static
-void OnionLocationTabHelper::SetOnionLocation(
+void OnionLocationTabHelper::SetOnionLocationByThrottle(
     content::WebContents* web_contents,
     const GURL& onion_location) {
   auto* tab_helper = OnionLocationTabHelper::FromWebContents(web_contents);
   if (!tab_helper) {
     return;
   }
-  tab_helper->onion_location_ = onion_location;
+  tab_helper->throttle_reported_onion_location_ = onion_location;
 }
 
 OnionLocationTabHelper::OnionLocationTabHelper(
@@ -76,18 +76,20 @@ void OnionLocationTabHelper::DidFinishNavigation(
   }
   auto* entry = navigation_handle->GetNavigationEntry();
   if (!entry) {
-    return;
-  }
-
-  if (navigation_handle->IsServedFromBackForwardCache()) {
+    // Throttle could block the request and set up the onion location if user
+    // tried to open .onion domain in the normal window. In this case we should
+    // show the error page with .onion location.
+    onion_location_ = throttle_reported_onion_location_;
+  } else if (navigation_handle->IsServedFromBackForwardCache()) {
     onion_location_ = OnionLocation::Get(entry);
-    if (auto* delegate = web_contents()->GetDelegate()) {
-      // This forces the page action to update the ui state.
-      delegate->NavigationStateChanged(
-          web_contents(), content::InvalidateTypes::INVALIDATE_TYPE_URL);
-    }
   } else {
-    OnionLocation::Set(entry, onion_location_);
+    onion_location_ = throttle_reported_onion_location_;
+    OnionLocation::Set(entry, throttle_reported_onion_location_);
+  }
+  if (auto* delegate = web_contents()->GetDelegate()) {
+    // This forces the page action to update the ui state.
+    delegate->NavigationStateChanged(
+        web_contents(), content::InvalidateTypes::INVALIDATE_TYPE_URL);
   }
 }
 

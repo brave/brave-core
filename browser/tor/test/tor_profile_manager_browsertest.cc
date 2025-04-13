@@ -390,7 +390,8 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToURLEvents) {
   EXPECT_CALL(delegate, NavigationStateChanged(testing::_, testing::_))
       .Times(testing::AnyNumber());
   EXPECT_CALL(delegate, NavigationStateChanged(web_contents,
-                                               content::INVALIDATE_TYPE_URL));
+                                               content::INVALIDATE_TYPE_URL))
+      .Times(testing::AnyNumber());
   web_contents->SetDelegate(&delegate);
 
   content::WaitForLoadStop(
@@ -399,7 +400,8 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NavigateToURLEvents) {
             url);
 
   EXPECT_CALL(delegate, NavigationStateChanged(web_contents,
-                                               content::INVALIDATE_TYPE_ALL));
+                                               content::INVALIDATE_TYPE_ALL))
+      .Times(testing::AnyNumber());
   // Tor connected
   GetTorLauncherFactory()->NotifyObservers(
       base::BindLambdaForTesting([](TorLauncherObserver& observer) {
