@@ -52,7 +52,7 @@
             android:paddingVertical="12dp"
             android:paddingHorizontal="16dp"
             android:textAllCaps="false"
-            android:text="@string/auto_reconnect_vpn_action_text" 
+            android:text="@string/auto_reconnect_vpn_action_text"
             android:textColor="@android:color/white" />
     </LinearLayout>
 </ScrollView>
