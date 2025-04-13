@@ -473,16 +473,21 @@ class WebKitTabState: TabState, TabStateImpl {
     let configuration = WKSnapshotConfiguration()
     configuration.rect = rect
 
-    do {
-      return try await withCheckedThrowingContinuation { continuation in
-        webView.takeSnapshot(with: configuration) { image, error in
-          if let error {
-            continuation.resume(throwing: error)
-            return
-          }
-          continuation.resume(returning: image)
-        }
+    // If a PDF is displayed and we attempt to `takeSnapshot`, it crashes on iOS 18+
+    // We must either render the PDF ourselves or only take a snapshot of the visible view hierarchy.
+    //
+    if webView.dataForDisplayedPDF != nil {
+      let format = UIGraphicsImageRendererFormat()
+      format.scale = UIScreen.main.scale
+
+      let renderer = UIGraphicsImageRenderer(bounds: webView.bounds, format: format)
+      return renderer.image { _ in
+        webView.drawHierarchy(in: webView.bounds, afterScreenUpdates: true)
       }
+    }
+
+    do {
+      return try await webView.takeSnapshot(configuration: configuration)
     } catch {
       Logger.module.error("Failed to take snapshot for web view: \(error)")
       return nil
@@ -491,11 +496,7 @@ class WebKitTabState: TabState, TabStateImpl {
 
   @MainActor func createFullPagePDF() async throws -> Data? {
     guard let webView else { return nil }
-    return try await withCheckedThrowingContinuation { continuation in
-      webView.createPDF { result in
-        continuation.resume(with: result)
-      }
-    }
+    return try await webView.pdf()
   }
 
   func presentFindInteraction(with text: String) {

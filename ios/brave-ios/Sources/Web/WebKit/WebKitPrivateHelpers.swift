@@ -18,7 +18,7 @@ extension WKWebView {
     guard responds(to: Selector(("_dataForDisplayedPDF"))) else {
       return nil
     }
-    return perform(Selector(("_dataForDisplayedPDF"))).takeUnretainedValue() as? Data
+    return perform(Selector(("_dataForDisplayedPDF")))?.takeUnretainedValue() as? Data
   }
 
   var viewScale: CGFloat? {
