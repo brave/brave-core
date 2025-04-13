@@ -102,12 +102,12 @@ public class BraveVpnUtils {
         activity.startActivity(braveVpnSupportIntent);
     }
 
-    public static void openAlwaysOnActivity(Activity activity) {
+    public static void openAutoReconnectVpnActivity(Activity activity) {
         if (activity == null) {
             return;
         }
-        Intent vpnAlwaysOnActivityIntent = new Intent(activity, VpnAlwaysOnActivity.class);
-        activity.startActivity(vpnAlwaysOnActivityIntent);
+        Intent autoReconnectVpnActivityIntent = new Intent(activity, VpnAlwaysOnActivity.class);
+        activity.startActivity(autoReconnectVpnActivityIntent);
     }
 
     public static void openVpnSettings(Activity activity) {
