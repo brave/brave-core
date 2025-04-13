@@ -48,7 +48,7 @@ function loadChromiumPathFilter(filePath) {
 chromiumPathFilter = loadChromiumPathFilter(
     path.join(config.braveCoreDir, 'build', 'update_patches_exclusions.cfg'))
 
-module.exports = function RunCommand (options) {
+module.exports = function RunCommand (filePaths, options) {
   config.update(options)
 
   const chromiumDir = config.srcDir
@@ -68,17 +68,17 @@ module.exports = function RunCommand (options) {
 
   Promise.all([
     // chromium
-    updatePatches(chromiumDir, patchDir, chromiumPathFilter),
+    updatePatches(chromiumDir, patchDir, filePaths, chromiumPathFilter),
     // v8
-    updatePatches(v8Dir, v8PatchDir),
+    updatePatches(v8Dir, v8PatchDir, filePaths),
     // third_party/catapult
-    updatePatches(catapultDir, catapultPatchDir),
+    updatePatches(catapultDir, catapultPatchDir, filePaths),
     // third_party/devtools-frontend/src
-    updatePatches(devtoolsFrontendDir, devtoolsFrontendPatchDir),
+    updatePatches(devtoolsFrontendDir, devtoolsFrontendPatchDir, filePaths),
     // third_party/tflite/src
-    updatePatches(tfliteDir, tflitePatchDir),
+    updatePatches(tfliteDir, tflitePatchDir, filePaths),
     // third_party/search_engines_data
-    updatePatches(searchEngineDataDir, searchEngineDataPatchDir),
+    updatePatches(searchEngineDataDir, searchEngineDataPatchDir, filePaths),
   ])
   .then(() => {
     console.log('Done.')
