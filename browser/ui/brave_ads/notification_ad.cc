@@ -20,7 +20,7 @@ NotificationAd::NotificationAd(const std::string& id,
 NotificationAd::NotificationAd(scoped_refptr<NotificationAdDelegate> delegate,
                                const NotificationAd& other)
     : NotificationAd(other) {
-  delegate_ = delegate;
+  delegate_ = std::move(delegate);
 }
 
 NotificationAd::NotificationAd(const std::string& id,

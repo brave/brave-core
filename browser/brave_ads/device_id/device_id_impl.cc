@@ -31,8 +31,8 @@ class MacAddressInfoMatcher {
   template <typename... Args>
   constexpr MacAddressInfoMatcher(Args... args)  // NOLINT(runtime/explicit)
       : address_{static_cast<uint8_t>(args)...}, size_(sizeof...(args)) {
-    std::ranges::fill(base::span(address_).split_at(size_).second, 0u);
-    static_assert(sizeof...(args) <= 6u, "Invalid MAC address size");
+    std::ranges::fill(base::span(address_).split_at(size_).second, 0U);
+    static_assert(sizeof...(args) <= 6U, "Invalid MAC address size");
   }
 
   constexpr MacAddressInfoMatcher(const MacAddressInfoMatcher&) = default;
@@ -49,7 +49,7 @@ class MacAddressInfoMatcher {
 
  private:
   // The MAC address mask.
-  std::array<uint8_t, 6u> address_;
+  std::array<uint8_t, 6U> address_;
 
   // The size of the partial mask.
   size_t size_;
@@ -174,11 +174,11 @@ constexpr auto kInvalidMacAddresses =
 // binary search for the elements could fall past the bunch, if we had
 // submasking groups, and then it wouldn't find the actual mask.
 constexpr bool HasNoSubmaskingOnInvalidAddresses() {
-  if constexpr (kInvalidMacAddresses.size() < 2u) {
+  if constexpr (kInvalidMacAddresses.size() < 2U) {
     return true;
   }
 
-  const auto next_in_range = base::span(kInvalidMacAddresses).subspan<1u>();
+  const auto next_in_range = base::span(kInvalidMacAddresses).subspan<1U>();
   for (const auto [it, next] : base::zip(kInvalidMacAddresses, next_in_range)) {
     if (it.mask() ==
         next.mask().first(std::min(it.mask().size(), next.mask().size()))) {
@@ -193,7 +193,7 @@ static_assert(HasNoSubmaskingOnInvalidAddresses(),
 std::optional<std::string> ComputeHmacSha256(std::string_view key,
                                              std::string_view text) {
   crypto::HMAC hmac(crypto::HMAC::SHA256);
-  std::array<uint8_t, 32u> digest;
+  std::array<uint8_t, 32U> digest;
   if (!hmac.Init(key) || !hmac.Sign(base::as_byte_span(text), digest)) {
     return std::nullopt;
   }

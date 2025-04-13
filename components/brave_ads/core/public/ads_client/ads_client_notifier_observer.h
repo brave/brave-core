@@ -18,14 +18,6 @@ namespace brave_ads {
 
 class AdsClientNotifierObserver : public base::CheckedObserver {
  public:
-  AdsClientNotifierObserver();
-
-  AdsClientNotifierObserver(const AdsClientNotifierObserver&) = delete;
-  AdsClientNotifierObserver& operator=(const AdsClientNotifierObserver&) =
-      delete;
-
-  ~AdsClientNotifierObserver() override;
-
   // Called when ads did initialize.
   virtual void OnNotifyDidInitializeAds() {}
 

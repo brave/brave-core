@@ -14,10 +14,11 @@ class BackgroundHelper {
  public:
   class Observer {
    public:
-    virtual ~Observer() = default;
-
     virtual void OnBrowserDidEnterForeground() = 0;
     virtual void OnBrowserDidEnterBackground() = 0;
+
+   protected:
+    virtual ~Observer() = default;
   };
 
   BackgroundHelper(const BackgroundHelper&) = delete;

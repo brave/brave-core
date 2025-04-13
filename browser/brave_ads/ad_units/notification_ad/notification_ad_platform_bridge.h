@@ -22,7 +22,7 @@ class NotificationAdPlatformBridge {
   NotificationAdPlatformBridge& operator=(const NotificationAdPlatformBridge&) =
       delete;
 
-  ~NotificationAdPlatformBridge();
+  ~NotificationAdPlatformBridge() = default;
 
   void ShowNotificationAd(NotificationAd notification_ad);
   void CloseNotificationAd(const std::string& notification_id);

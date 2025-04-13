@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/do_not_disturb_permission_rule.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"

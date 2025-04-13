@@ -14,14 +14,16 @@ namespace brave_ads::database {
 
 class TableInterface {
  public:
-  virtual ~TableInterface() = default;
-
   virtual std::string GetTableName() const = 0;
 
   virtual void Create(
       const mojom::DBTransactionInfoPtr& mojom_db_transaction) = 0;
+
   virtual void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                        int to_version);
+
+ protected:
+  virtual ~TableInterface() = default;
 };
 
 }  // namespace brave_ads::database

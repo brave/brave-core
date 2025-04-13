@@ -17,7 +17,9 @@ class DiagnosticEntryInterface {
   virtual ~DiagnosticEntryInterface() = default;
 
   virtual DiagnosticEntryType GetType() const = 0;
+
   virtual std::string GetName() const = 0;
+
   virtual std::string GetValue() const = 0;
 };
 

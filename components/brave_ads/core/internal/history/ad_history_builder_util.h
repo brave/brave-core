@@ -12,8 +12,8 @@
 
 namespace brave_ads {
 
-struct AdInfo;
 struct AdHistoryItemInfo;
+struct AdInfo;
 
 AdHistoryItemInfo BuildAdHistoryItem(
     const AdInfo& ad,

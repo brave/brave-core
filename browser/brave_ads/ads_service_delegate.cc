@@ -242,7 +242,7 @@ void AdsServiceDelegate::ShowNotificationAd(const std::string& id,
                                             bool is_custom) {
   if (is_custom) {
     notification_ad_platform_bridge_->ShowNotificationAd(
-        NotificationAd(id, title, body, nullptr));
+        NotificationAd(id, title, body, /*delegate=*/nullptr));
   } else {
     message_center::RichNotificationData notification_data;
     notification_data.context_message = u" ";

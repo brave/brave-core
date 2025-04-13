@@ -16,14 +16,15 @@ namespace brave_ads {
 
 class ResourceComponentRegistrarDelegate {
  public:
-  virtual ~ResourceComponentRegistrarDelegate() = default;
-
   virtual void OnResourceComponentRegistered(
       const std::string& component_id,
       const base::FilePath& install_dir) = 0;
 
   virtual void OnResourceComponentUnregistered(
       const std::string& component_id) = 0;
+
+ protected:
+  virtual ~ResourceComponentRegistrarDelegate() = default;
 };
 
 }  // namespace brave_ads

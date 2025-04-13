@@ -189,7 +189,7 @@ void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdViewedEvent(
 
 void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdViewedEventCallback(
     mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad,
-    const base::Value value) {
+    base::Value value) {
   const bool is_visible = value.is_bool() && value.GetBool();
   if (!is_visible) {
     // If the ad is not visible, we should not trigger the viewed event.

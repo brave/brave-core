@@ -17,13 +17,12 @@
 #include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/template_url_prepopulate_data_resolver.h"
 
+class NotificationDisplayService;
 class Profile;
 
 namespace brave_adaptive_captcha {
 class BraveAdaptiveCaptchaService;
-}
-
-class NotificationDisplayService;
+}  // namespace brave_adaptive_captcha
 
 namespace brave_ads {
 

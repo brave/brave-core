@@ -33,7 +33,6 @@ source_set("search_result_ad") {
     "//components/infobars/content",
     "//components/infobars/core",
     "//components/prefs",
-    "//components/strings:components_strings_grit",
     "//components/vector_icons",
     "//ui/base",
     "//url",

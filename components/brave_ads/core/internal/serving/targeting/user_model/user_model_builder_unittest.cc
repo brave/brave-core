@@ -8,7 +8,6 @@
 #include <memory>
 #include <vector>
 
-#include "base/metrics/field_trial_params.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
