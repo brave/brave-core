@@ -426,6 +426,10 @@ inline constexpr char16_t kSyncLearnMoreURL[] = u"https://support.brave.com/";
 inline constexpr char kSigninOnDesktopLearnMoreURL[] =
     "https://support.brave.com/";
 
+// The URL for the "Learn more" page for adding a new profile to Chrome.
+inline constexpr char kAddNewProfileOnDesktopLearnMoreURL[] =
+    "https://support.brave.com/";
+
 // The URL for the "Learn more" page for AI settings for managed users.
 inline constexpr char16_t kAiSettingsLearnMorePageManagedUrl[] =
     u"https://support.brave.com/";
