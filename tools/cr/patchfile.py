@@ -6,7 +6,7 @@
 from dataclasses import dataclass, field, replace
 from enum import Enum, auto
 import logging
-from pathlib import PurePath
+from pathlib import PurePath, Path
 import re
 import subprocess
 from typing import Optional, NamedTuple

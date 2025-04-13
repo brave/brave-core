@@ -179,6 +179,7 @@ import sys
 from typing import Optional, List, Dict
 
 from incendiary_error_handler import IncendiaryErrorHandler
+from git_status import GitStatus
 from patchfile import Patchfile
 import repository
 from repository import Repository, CHROMIUM_SRC_PATH
@@ -303,38 +304,6 @@ def _get_apply_patches_list():
         return json.loads(match.group(0))
 
     return None
-
-
-class GitStatus:
-    """Runs `git status` and provides a summary.
-    """
-
-    def __init__(self):
-        self.git_status = repository.brave.run_git('status', '--short')
-
-        # a list of all deleted files, regardless of their staged status.
-        self.deleted = []
-
-        # a list of all modified files, regardless of their staged status.
-        self.modified = []
-
-        # a list of all untracked files.
-        self.untracked = []
-
-        for line in self.git_status.splitlines():
-            [status, path] = line.lstrip().split(' ', 1)
-            if status == 'D':
-                self.deleted.append(path)
-            elif status == 'M':
-                self.modified.append(path)
-            elif status == '??':
-                self.untracked.append(path)
-
-    def has_deleted_patch_files(self):
-        return any(path.endswith('.patch') for path in self.deleted)
-
-    def has_untracked_patch_files(self):
-        return any(path.endswith('.patch') for path in self.untracked)
 
 
 @dataclass(frozen=True)
