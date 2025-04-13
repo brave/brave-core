@@ -31,14 +31,9 @@
 // `identity_info_container_->RemoveAllChildViews()` being called, and the new
 // pointers being assigned to those members.
 void BraveProfileMenuView::SetProfileIdentityInfo(
-    const std::u16string& profile_name,
-    SkColor profile_background_color,
-    std::optional<EditButtonParams> edit_button_params,
     const ui::ImageModel& image_model,
-    const ui::ImageModel& management_badge,
     const std::u16string& title,
     const std::u16string& subtitle,
-    const std::u16string& management_label,
     const gfx::VectorIcon* header_art_icon) {
   // For non-guest sessions, we want to eliminate the subtitle
   // IDS_PROFILES_LOCAL_PROFILE_STATE("Not signed in"). In order to do that, we
@@ -56,10 +51,8 @@ void BraveProfileMenuView::SetProfileIdentityInfo(
 
   // We never show the profile name (displayed above the user avatar) nor the
   // edit buttons, so pass in default values for those parameters.
-  ProfileMenuView::SetProfileIdentityInfo(
-      /*profile_name=*/std::u16string(), profile_background_color,
-      /*edit_button_params=*/std::nullopt, image_model, management_badge,
-      desired_title, subtitle, management_label, header_art_icon);
+  ProfileMenuView::SetProfileIdentityInfo(image_model, title, subtitle,
+                                          header_art_icon);
 }
 
 // We don't want feature buttons to manage google account
@@ -86,9 +79,4 @@ void BraveProfileMenuView::BuildFeatureButtons() {
           vector_icons::kCloseIcon);
     }
   }
-}
-
-gfx::ImageSkia BraveProfileMenuView::GetSyncIcon() const {
-  // We don't need sync overlay.
-  return gfx::ImageSkia();
 }
