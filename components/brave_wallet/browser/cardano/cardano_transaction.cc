@@ -159,6 +159,8 @@ CardanoTransaction::TxInput& CardanoTransaction::TxInput::operator=(
 base::Value::Dict CardanoTransaction::TxInput::ToValue() const {
   base::Value::Dict dict;
 
+  // TODO(https://github.com/brave/brave-browser/issues/45411): implement with
+  // json_schema_compiler.
   dict.Set("utxo_address", utxo_address.ToString());
   dict.Set("utxo_outpoint", utxo_outpoint.ToValue());
   dict.Set("utxo_value", base::NumberToString(utxo_value));

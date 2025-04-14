@@ -7,10 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_CREATE_TRANSACTION_TASK_H_
 
 #include <map>
-#include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
@@ -22,8 +20,11 @@ namespace brave_wallet {
 class CardanoWalletService;
 class CardanoTransaction;
 
-// This class handles logic of creating a Cardano transaction based on wallet's
-// account, destination address and amount of native coins to send.
+// This class implements `CardanoWalletService::CreateTransaction` logic of
+// creating a Cardano transaction based on wallet's account, destination address
+// and amount of native coins to send. Fetches latest block and epoch
+// parameters, utxos associated with account . Searches for best utxo set to
+// minimize fee. Responds with to-be-signed transaction to `callback_`.
 class CreateCardanoTransactionTask {
  public:
   using UtxoMap = std::map<CardanoAddress, cardano_rpc::UnspentOutputs>;
@@ -43,12 +44,11 @@ class CreateCardanoTransactionTask {
   void ScheduleWorkOnTask();
 
  private:
-  void SetError(const std::string& error_string) { error_ = error_string; }
-
   CardanoTransaction::TxOutput CreateTargetOutput();
   CardanoTransaction::TxOutput CreateChangeOutput();
 
   void WorkOnTask();
+  void StopWithError(std::string error_string);
 
   void OnGetLatestEpochParameters(base::expected<cardano_rpc::EpochParameters,
                                                  std::string> epoch_parameters);
@@ -69,8 +69,8 @@ class CreateCardanoTransactionTask {
   std::optional<cardano_rpc::Block> latest_block_;
 
   bool has_solved_transaction_ = false;
-  std::map<CardanoAddress, cardano_rpc::UnspentOutputs> utxo_map_;
-  std::optional<std::string> error_;
+  std::optional<std::map<CardanoAddress, cardano_rpc::UnspentOutputs>>
+      utxo_map_;
   Callback callback_;
   base::WeakPtrFactory<CreateCardanoTransactionTask> weak_ptr_factory_{this};
 };

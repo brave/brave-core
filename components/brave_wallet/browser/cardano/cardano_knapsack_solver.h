@@ -20,7 +20,7 @@ namespace brave_wallet {
 // https://github.com/bitcoin/bitcoin/blob/v25.1/src/wallet/coinselection.cpp#L255
 // Tries to find the best set of inputs(minimal fee) for a transaction.
 // Does two runs of search: with and without change output. See
-// `SolveForTransaction` for details.
+// `RunSolverForTransaction` for details.
 // TODO(https://github.com/brave/brave-browser/issues/45278): consider moving
 // this calculation to separate thread.
 class CardanoKnapsackSolver {
@@ -35,13 +35,14 @@ class CardanoKnapsackSolver {
 
  private:
   CardanoTransaction base_transaction_;
+  std::optional<CardanoTransaction> current_best_solution_;
   uint64_t min_fee_coefficient_ = 0;
   uint64_t min_fee_constant_ = 0;
   std::vector<CardanoTransaction::TxInput> inputs_;
 
-  void SolveForTransaction(
-      const CardanoTransaction& transaction,
-      std::optional<CardanoTransaction>& current_best_solution);
+  // Runs solver algorithm for the `transaction`.
+  // Updates `current_best_solution_` when transaction with lesser fee is found.
+  void RunSolverForTransaction(const CardanoTransaction& transaction);
 };
 
 }  // namespace brave_wallet

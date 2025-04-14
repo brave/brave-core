@@ -65,9 +65,8 @@ CardanoKnapsackSolver::CardanoKnapsackSolver(
       inputs_(std::move(inputs)) {}
 CardanoKnapsackSolver::~CardanoKnapsackSolver() = default;
 
-void CardanoKnapsackSolver::SolveForTransaction(
-    const CardanoTransaction& transaction,
-    std::optional<CardanoTransaction>& current_best_solution) {
+void CardanoKnapsackSolver::RunSolverForTransaction(
+    const CardanoTransaction& transaction) {
   if (inputs_.empty()) {
     return;
   }
@@ -131,10 +130,10 @@ void CardanoKnapsackSolver::SolveForTransaction(
 
         if (next_transaction.AmountsAreValid(min_fee)) {
           has_valid_transaction_for_iteration = true;
-          if (!current_best_solution ||
-              current_best_solution->EffectiveFeeAmount() >
+          if (!current_best_solution_ ||
+              current_best_solution_->EffectiveFeeAmount() >
                   next_transaction.EffectiveFeeAmount()) {
-            current_best_solution = next_transaction;
+            current_best_solution_ = next_transaction;
           }
         } else {
           picked_inputs[input_index] = true;
@@ -151,28 +150,26 @@ base::expected<CardanoTransaction, std::string> CardanoKnapsackSolver::Solve() {
   DCHECK(base_transaction_.ChangeOutput());
   DCHECK(!base_transaction_.sending_max_amount());
 
-  std::optional<CardanoTransaction> best_solution;
-
   // Try to find the best transaction with a change output which receives a
   // fee surplus.
-  SolveForTransaction(base_transaction_, best_solution);
+  RunSolverForTransaction(base_transaction_);
 
   // Drop the change output from the transaction and try to find the best
   // transaction again. Might find a transaction with a slightly higher fee
   // but still less than the cost of having a change output.
   auto no_change_transaction = base_transaction_;
   no_change_transaction.ClearChangeOutput();
-  SolveForTransaction(no_change_transaction, best_solution);
+  RunSolverForTransaction(no_change_transaction);
 
-  if (!best_solution) {
+  if (!current_best_solution_) {
     return base::unexpected(
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE));
   }
 
   // Clear dummy witnesses used for tx size calculation.
-  best_solution->SetWitnesses({});
+  current_best_solution_->SetWitnesses({});
 
-  return base::ok(std::move(*best_solution));
+  return base::ok(std::move(*current_best_solution_));
 }
 
 }  // namespace brave_wallet

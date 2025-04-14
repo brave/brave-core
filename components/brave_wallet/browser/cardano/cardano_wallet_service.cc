@@ -141,12 +141,12 @@ void CardanoWalletService::OnGetUtxosTaskDone(
   std::move(cb).Run(std::move(result));
 }
 
-void CardanoWalletService::CreateTransaction(
+void CardanoWalletService::CreateCardanoTransaction(
     mojom::AccountIdPtr account_id,
     const CardanoAddress& address_to,
     uint64_t amount,
     bool sending_max_amount,
-    CreateTransactionCallback callback) {
+    CreateCardanoTransactionCallback callback) {
   CHECK(IsCardanoAccount(account_id));
 
   auto& task = create_transaction_tasks_.emplace_back(
@@ -155,13 +155,13 @@ void CardanoWalletService::CreateTransaction(
       std::move(callback));
 
   task.first->set_callback(
-      base::BindOnce(&CardanoWalletService::OnCreateTransactionTaskDone,
+      base::BindOnce(&CardanoWalletService::OnCreateCardanoTransactionTaskDone,
                      weak_ptr_factory_.GetWeakPtr(), task.first.get()));
 
   task.first->ScheduleWorkOnTask();
 }
 
-void CardanoWalletService::OnCreateTransactionTaskDone(
+void CardanoWalletService::OnCreateCardanoTransactionTaskDone(
     CreateCardanoTransactionTask* task,
     base::expected<CardanoTransaction, std::string> result) {
   auto it = std::ranges::find(create_transaction_tasks_, task,

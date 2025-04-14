@@ -9,6 +9,7 @@
 
 #include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
@@ -91,11 +92,6 @@ void CreateCardanoTransactionTask::WorkOnTask() {
     return;
   }
 
-  if (error_) {
-    std::move(callback_).Run(base::unexpected(*error_));
-    return;
-  }
-
   if (!latest_epoch_parameters_) {
     cardano_wallet_service_->cardano_rpc().GetLatestEpochParameters(
         GetNetworkForCardanoAccount(account_id_),
@@ -113,7 +109,7 @@ void CreateCardanoTransactionTask::WorkOnTask() {
     return;
   }
 
-  if (utxo_map_.empty()) {
+  if (!utxo_map_) {
     cardano_wallet_service_->GetUtxos(
         account_id_.Clone(),
         base::BindOnce(&CreateCardanoTransactionTask::OnGetUtxos,
@@ -140,13 +136,12 @@ void CreateCardanoTransactionTask::WorkOnTask() {
       CardanoKnapsackSolver solver(
           transaction_, latest_epoch_parameters_->min_fee_coefficient,
           latest_epoch_parameters_->min_fee_constant,
-          TxInputsFromUtxoMap(utxo_map_));
+          TxInputsFromUtxoMap(*utxo_map_));
       solved_transaction = solver.Solve();
     }
 
     if (!solved_transaction.has_value()) {
-      SetError(solved_transaction.error());
-      ScheduleWorkOnTask();
+      StopWithError(solved_transaction.error());
       return;
     }
 
@@ -157,12 +152,17 @@ void CreateCardanoTransactionTask::WorkOnTask() {
   std::move(callback_).Run(base::ok(std::move(transaction_)));
 }
 
+void CreateCardanoTransactionTask::StopWithError(std::string error_string) {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(std::move(callback_),
+                                base::unexpected(std::move(error_string))));
+}
+
 void CreateCardanoTransactionTask::OnGetLatestEpochParameters(
     base::expected<cardano_rpc::EpochParameters, std::string>
         epoch_parameters) {
   if (!epoch_parameters.has_value()) {
-    SetError(std::move(epoch_parameters.error()));
-    WorkOnTask();
+    StopWithError(std::move(epoch_parameters.error()));
     return;
   }
 
@@ -173,8 +173,7 @@ void CreateCardanoTransactionTask::OnGetLatestEpochParameters(
 void CreateCardanoTransactionTask::OnGetLatestBlock(
     base::expected<cardano_rpc::Block, std::string> block) {
   if (!block.has_value()) {
-    SetError(std::move(block.error()));
-    WorkOnTask();
+    StopWithError(std::move(block.error()));
     return;
   }
 
@@ -185,14 +184,12 @@ void CreateCardanoTransactionTask::OnGetLatestBlock(
 void CreateCardanoTransactionTask::OnGetUtxos(
     base::expected<UtxoMap, std::string> utxos) {
   if (!utxos.has_value()) {
-    SetError(std::move(utxos.error()));
-    WorkOnTask();
+    StopWithError(std::move(utxos.error()));
     return;
   }
 
   if (utxos->empty()) {
-    SetError(WalletInternalErrorMessage());
-    WorkOnTask();
+    StopWithError(WalletInternalErrorMessage());
     return;
   }
 
@@ -203,8 +200,7 @@ void CreateCardanoTransactionTask::OnGetUtxos(
 void CreateCardanoTransactionTask::OnDiscoverNextUnusedChangeAddress(
     base::expected<mojom::CardanoAddressPtr, std::string> address) {
   if (!address.has_value()) {
-    SetError(std::move(address.error()));
-    WorkOnTask();
+    StopWithError(std::move(address.error()));
     return;
   }
   DCHECK_EQ(address.value()->payment_key_id->role,

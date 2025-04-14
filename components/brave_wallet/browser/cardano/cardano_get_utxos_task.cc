@@ -13,9 +13,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
 
 namespace brave_wallet {
@@ -60,8 +58,8 @@ void GetCardanoUtxosTask::OnGetUtxoList(
     CardanoAddress address,
     base::expected<cardano_rpc::UnspentOutputs, std::string> utxos) {
   if (!utxos.has_value()) {
-    error_ = utxos.error();
-    return WorkOnTask();
+    StopWithError(std::move(utxos.error()));
+    return;
   }
 
   utxos_[address] = std::move(utxos.value());
@@ -75,17 +73,18 @@ void GetCardanoUtxosTask::OnGetUtxoList(
 }
 
 void GetCardanoUtxosTask::WorkOnTask() {
-  if (error_) {
-    std::move(callback_).Run(base::unexpected(std::move(*error_)));
-    return;
-  }
-
   if (result_) {
     std::move(callback_).Run(base::ok(std::move(*result_)));
     return;
   }
 
   MaybeSendRequests();
+}
+
+void GetCardanoUtxosTask::StopWithError(std::string error_string) {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(std::move(callback_),
+                                base::unexpected(std::move(error_string))));
 }
 
 }  // namespace brave_wallet
