@@ -1,7 +1,7 @@
-diff --git i/tools/polymer/css_to_wrapper.py w/tools/polymer/css_to_wrapper.py
-index d76a3aa579e89..900ec9159da17 100644
---- i/tools/polymer/css_to_wrapper.py
-+++ w/tools/polymer/css_to_wrapper.py
+diff --git a/tools/polymer/css_to_wrapper.py b/tools/polymer/css_to_wrapper.py
+index d76a3aa579e895ec9f237c76e022a3ebaafc02a3..900ec9159da17da16fd546116a96631333583bff 100644
+--- a/tools/polymer/css_to_wrapper.py
++++ b/tools/polymer/css_to_wrapper.py
 @@ -275,7 +275,7 @@ def main(argv):
  
      content = ''
