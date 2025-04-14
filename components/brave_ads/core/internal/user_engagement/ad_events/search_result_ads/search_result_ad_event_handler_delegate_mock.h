@@ -25,20 +25,16 @@ class SearchResultAdEventHandlerDelegateMock
 
   MOCK_METHOD(void,
               OnDidFireSearchResultAdServedEvent,
-              (const SearchResultAdInfo& ad));
-
+              (const SearchResultAdInfo&));
   MOCK_METHOD(void,
               OnDidFireSearchResultAdViewedEvent,
-              (const SearchResultAdInfo& ad));
-
+              (const SearchResultAdInfo&));
   MOCK_METHOD(void,
               OnDidFireSearchResultAdClickedEvent,
-              (const SearchResultAdInfo& ad));
-
+              (const SearchResultAdInfo&));
   MOCK_METHOD(void,
               OnFailedToFireSearchResultAdEvent,
-              (const SearchResultAdInfo& ad,
-               mojom::SearchResultAdEventType mojom_ad_event_type));
+              (const SearchResultAdInfo&, mojom::SearchResultAdEventType));
 };
 
 }  // namespace brave_ads

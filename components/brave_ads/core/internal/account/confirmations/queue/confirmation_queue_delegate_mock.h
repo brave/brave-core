@@ -21,26 +21,18 @@ class ConfirmationQueueDelegateMock : public ConfirmationQueueDelegate {
 
   ~ConfirmationQueueDelegateMock() override;
 
-  MOCK_METHOD(void,
-              OnDidAddConfirmationToQueue,
-              (const ConfirmationInfo& confirmation));
-
+  MOCK_METHOD(void, OnDidAddConfirmationToQueue, (const ConfirmationInfo&));
   MOCK_METHOD(void,
               OnFailedToAddConfirmationToQueue,
-              (const ConfirmationInfo& confirmation));
+              (const ConfirmationInfo&));
 
   MOCK_METHOD(void,
               OnWillProcessConfirmationQueue,
-              (const ConfirmationInfo& confirmation, base::Time process_at));
-
-  MOCK_METHOD(void,
-              OnDidProcessConfirmationQueue,
-              (const ConfirmationInfo& confirmation));
-
+              (const ConfirmationInfo&, base::Time));
+  MOCK_METHOD(void, OnDidProcessConfirmationQueue, (const ConfirmationInfo&));
   MOCK_METHOD(void,
               OnFailedToProcessConfirmationQueue,
-              (const ConfirmationInfo& confirmation));
-
+              (const ConfirmationInfo&));
   MOCK_METHOD(void, OnFailedToProcessNextConfirmationInQueue, ());
 
   MOCK_METHOD(void, OnDidExhaustConfirmationQueue, ());

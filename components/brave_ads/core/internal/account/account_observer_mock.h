@@ -23,17 +23,15 @@ class AccountObserverMock : public AccountObserver {
 
   ~AccountObserverMock() override;
 
-  MOCK_METHOD(void, OnDidInitializeWallet, (const WalletInfo& wallet));
+  MOCK_METHOD(void, OnDidInitializeWallet, (const WalletInfo&));
 
   MOCK_METHOD(void, OnFailedToInitializeWallet, ());
 
-  MOCK_METHOD(void, OnDidProcessDeposit, (const TransactionInfo& transaction));
+  MOCK_METHOD(void, OnDidProcessDeposit, (const TransactionInfo&));
 
   MOCK_METHOD(void,
               OnFailedToProcessDeposit,
-              (const std::string& creative_instance_id,
-               mojom::AdType mojom_ad_type,
-               mojom::ConfirmationType mojom_confirmation_type));
+              (const std::string&, mojom::AdType, mojom::ConfirmationType));
 };
 
 }  // namespace brave_ads

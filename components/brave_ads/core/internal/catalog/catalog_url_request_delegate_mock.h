@@ -21,14 +21,10 @@ class CatalogUrlRequestDelegateMock : public CatalogUrlRequestDelegate {
 
   ~CatalogUrlRequestDelegateMock() override;
 
-  MOCK_METHOD(void, OnWillFetchCatalog, (base::Time fetch_at));
-
-  MOCK_METHOD(void, OnDidFetchCatalog, (const CatalogInfo& catalog));
-
+  MOCK_METHOD(void, OnWillFetchCatalog, (base::Time));
+  MOCK_METHOD(void, OnDidFetchCatalog, (const CatalogInfo&));
   MOCK_METHOD(void, OnFailedToFetchCatalog, ());
-
-  MOCK_METHOD(void, OnWillRetryFetchingCatalog, (base::Time retry_at));
-
+  MOCK_METHOD(void, OnWillRetryFetchingCatalog, (base::Time));
   MOCK_METHOD(void, OnDidRetryFetchingCatalog, ());
 };
 

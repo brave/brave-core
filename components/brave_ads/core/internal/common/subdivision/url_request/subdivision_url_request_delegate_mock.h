@@ -24,14 +24,10 @@ class SubdivisionUrlRequestDelegateMock : public SubdivisionUrlRequestDelegate {
 
   ~SubdivisionUrlRequestDelegateMock() override;
 
-  MOCK_METHOD(void, OnWillFetchSubdivision, (base::Time fetch_at));
-
-  MOCK_METHOD(void, OnDidFetchSubdivision, (const std::string& subdivision));
-
+  MOCK_METHOD(void, OnWillFetchSubdivision, (base::Time));
+  MOCK_METHOD(void, OnDidFetchSubdivision, (const std::string&));
   MOCK_METHOD(void, OnFailedToFetchSubdivision, ());
-
-  MOCK_METHOD(void, OnWillRetryFetchingSubdivision, (base::Time retry_at));
-
+  MOCK_METHOD(void, OnWillRetryFetchingSubdivision, (base::Time));
   MOCK_METHOD(void, OnDidRetryFetchingSubdivision, ());
 };
 

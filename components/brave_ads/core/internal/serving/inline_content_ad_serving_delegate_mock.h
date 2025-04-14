@@ -29,8 +29,7 @@ class InlineContentAdServingDelegateMock
 
   MOCK_METHOD(void,
               OnDidServeInlineContentAd,
-              (int32_t tab_id, const InlineContentAdInfo& ad));
-
+              (int32_t, const InlineContentAdInfo&));
   MOCK_METHOD(void, OnFailedToServeInlineContentAd, ());
 };
 

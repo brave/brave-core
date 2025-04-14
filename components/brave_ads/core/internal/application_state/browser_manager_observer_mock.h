@@ -22,11 +22,9 @@ class BrowserManagerObserverMock : public BrowserManagerObserver {
   ~BrowserManagerObserverMock() override;
 
   MOCK_METHOD(void, OnBrowserDidBecomeActive, ());
-
   MOCK_METHOD(void, OnBrowserDidResignActive, ());
 
   MOCK_METHOD(void, OnBrowserDidEnterForeground, ());
-
   MOCK_METHOD(void, OnBrowserDidEnterBackground, ());
 };
 

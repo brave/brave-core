@@ -22,21 +22,15 @@ class ReactionsObserverMock : public ReactionsObserver {
 
   ~ReactionsObserverMock() override;
 
-  MOCK_METHOD(void, OnDidLikeAd, (const std::string& advertiser_id));
+  MOCK_METHOD(void, OnDidLikeAd, (const std::string&));
+  MOCK_METHOD(void, OnDidDislikeAd, (const std::string&));
 
-  MOCK_METHOD(void, OnDidDislikeAd, (const std::string& advertiser_id));
+  MOCK_METHOD(void, OnDidLikeSegment, (const std::string&));
+  MOCK_METHOD(void, OnDidDislikeSegment, (const std::string&));
 
-  MOCK_METHOD(void, OnDidLikeSegment, (const std::string& segment));
+  MOCK_METHOD(void, OnDidToggleSaveAd, (const std::string&));
 
-  MOCK_METHOD(void, OnDidDislikeSegment, (const std::string& segment));
-
-  MOCK_METHOD(void,
-              OnDidToggleSaveAd,
-              (const std::string& creative_instance_id));
-
-  MOCK_METHOD(void,
-              OnDidToggleMarkAdAsInappropriate,
-              (const std::string& creative_set));
+  MOCK_METHOD(void, OnDidToggleMarkAdAsInappropriate, (const std::string&));
 };
 
 }  // namespace brave_ads

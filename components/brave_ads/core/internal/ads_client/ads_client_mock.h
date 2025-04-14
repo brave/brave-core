@@ -39,65 +39,45 @@ class AdsClientMock : public AdsClient {
               CanShowNotificationAdsWhileBrowserIsBackgrounded,
               (),
               (const));
-  MOCK_METHOD(void, ShowNotificationAd, (const NotificationAdInfo& ad));
-  MOCK_METHOD(void, CloseNotificationAd, (const std::string& placement_id));
+  MOCK_METHOD(void, ShowNotificationAd, (const NotificationAdInfo&));
+  MOCK_METHOD(void, CloseNotificationAd, (const std::string&));
 
-  MOCK_METHOD(void,
-              GetSiteHistory,
-              (int max_count,
-               int recent_day_range,
-               GetSiteHistoryCallback callback));
+  MOCK_METHOD(void, GetSiteHistory, (int, int, GetSiteHistoryCallback));
 
-  MOCK_METHOD(void,
-              UrlRequest,
-              (mojom::UrlRequestInfoPtr mojom_url_request,
-               UrlRequestCallback callback));
+  MOCK_METHOD(void, UrlRequest, (mojom::UrlRequestInfoPtr, UrlRequestCallback));
 
   MOCK_METHOD(void,
               Save,
-              (const std::string& name,
-               const std::string& value,
-               SaveCallback callback));
-  MOCK_METHOD(void, Load, (const std::string& name, LoadCallback callback));
+              (const std::string&, const std::string&, SaveCallback));
+  MOCK_METHOD(void, Load, (const std::string&, LoadCallback));
 
   MOCK_METHOD(void,
               LoadResourceComponent,
-              (const std::string& id, int version, LoadFileCallback callback));
+              (const std::string&, int, LoadFileCallback));
 
   MOCK_METHOD(void,
               ShowScheduledCaptcha,
-              (const std::string& payment_id, const std::string& captcha_id));
+              (const std::string&, const std::string&));
 
-  MOCK_METHOD(void, RecordP2AEvents, (const std::vector<std::string>& events));
+  MOCK_METHOD(void, RecordP2AEvents, (const std::vector<std::string>&));
 
-  MOCK_METHOD(bool, FindProfilePref, (const std::string& path), (const));
-  MOCK_METHOD(std::optional<base::Value>,
-              GetProfilePref,
-              (const std::string& path));
-  MOCK_METHOD(void,
-              SetProfilePref,
-              (const std::string& path, base::Value value));
-  MOCK_METHOD(void, ClearProfilePref, (const std::string& path));
-  MOCK_METHOD(bool, HasProfilePrefPath, (const std::string& path), (const));
+  MOCK_METHOD(bool, FindProfilePref, (const std::string&), (const));
+  MOCK_METHOD(std::optional<base::Value>, GetProfilePref, (const std::string&));
+  MOCK_METHOD(void, SetProfilePref, (const std::string&, base::Value));
+  MOCK_METHOD(void, ClearProfilePref, (const std::string&));
+  MOCK_METHOD(bool, HasProfilePrefPath, (const std::string&), (const));
 
-  MOCK_METHOD(bool, FindLocalStatePref, (const std::string& path), (const));
+  MOCK_METHOD(bool, FindLocalStatePref, (const std::string&), (const));
   MOCK_METHOD(std::optional<base::Value>,
               GetLocalStatePref,
-              (const std::string& path));
-  MOCK_METHOD(void,
-              SetLocalStatePref,
-              (const std::string& path, base::Value value));
-  MOCK_METHOD(void, ClearLocalStatePref, (const std::string& path));
-  MOCK_METHOD(bool, HasLocalStatePrefPath, (const std::string& path), (const));
+              (const std::string&));
+  MOCK_METHOD(void, SetLocalStatePref, (const std::string&, base::Value));
+  MOCK_METHOD(void, ClearLocalStatePref, (const std::string&));
+  MOCK_METHOD(bool, HasLocalStatePrefPath, (const std::string&), (const));
 
   MOCK_METHOD(base::Value::Dict, GetVirtualPrefs, (), (const));
 
-  MOCK_METHOD(void,
-              Log,
-              (const char* file,
-               int line,
-               int verbose_level,
-               const std::string& message));
+  MOCK_METHOD(void, Log, (const char*, int, int, const std::string&));
 };
 
 }  // namespace brave_ads

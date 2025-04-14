@@ -22,7 +22,7 @@ class SubdivisionObserverMock : public SubdivisionObserver {
 
   ~SubdivisionObserverMock() override;
 
-  MOCK_METHOD(void, OnDidUpdateSubdivision, (const std::string& subdivision));
+  MOCK_METHOD(void, OnDidUpdateSubdivision, (const std::string&));
 };
 
 }  // namespace brave_ads
