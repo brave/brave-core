@@ -18,6 +18,7 @@ include_rules = [
   "+third_party/tflite",
   "+third_party/tflite_support",
   "+ui/base",
+  "+ui/gfx/image",
 ]
 
 specific_include_rules = {

@@ -12,6 +12,7 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "components/paint_preview/browser/compositor_utils.h"
 #include "components/paint_preview/browser/paint_preview_base_service.h"
 #include "components/paint_preview/common/recording_map.h"
@@ -210,42 +211,9 @@ void FullScreenshotter::OnBitmapReceived(
     return;
   }
 
-  constexpr int kTargetWidth = 1024;
-  constexpr int kTargetHeight = 768;
-
-  SkBitmap scaled_bitmap;
-  scaled_bitmap.allocN32Pixels(kTargetWidth, kTargetHeight);
-
-  SkCanvas canvas(scaled_bitmap);
-  canvas.clear(SK_ColorTRANSPARENT);
-
-  // Use high-quality scaling options
-  SkSamplingOptions sampling_options(SkFilterMode::kLinear,
-                                     SkMipmapMode::kLinear);
-
-  // Maintain aspect ratio while fitting within target dimensions
-  float src_aspect = static_cast<float>(bitmap.width()) / bitmap.height();
-  float dst_aspect = static_cast<float>(kTargetWidth) / kTargetHeight;
-
-  SkRect dst_rect;
-  if (src_aspect > dst_aspect) {
-    // Source is wider - fit to width
-    float scaled_height = kTargetWidth / src_aspect;
-    float y_offset = (kTargetHeight - scaled_height) / 2;
-    dst_rect = SkRect::MakeXYWH(0, y_offset, kTargetWidth, scaled_height);
-  } else {
-    // Source is taller - fit to height
-    float scaled_width = kTargetHeight * src_aspect;
-    float x_offset = (kTargetWidth - scaled_width) / 2;
-    dst_rect = SkRect::MakeXYWH(x_offset, 0, scaled_width, kTargetHeight);
-  }
-
-  // Draw scaled bitmap with high-quality sampling
-  canvas.drawImageRect(bitmap.asImage(), dst_rect, sampling_options);
-
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&FullScreenshotter::EncodeBitmap, scaled_bitmap),
+      base::BindOnce(&FullScreenshotter::EncodeBitmap, ScaleDownBitmap(bitmap)),
       base::BindOnce(&FullScreenshotter::OnBitmapEncoded,
                      weak_ptr_factory_.GetWeakPtr(), std::move(pending),
                      index));

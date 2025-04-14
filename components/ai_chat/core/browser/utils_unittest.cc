@@ -5,10 +5,12 @@
 
 #include "brave/components/ai_chat/core/browser/utils.h"
 
-#include <string>
 #include <string_view>
+#include <utility>
+#include <vector>
 
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/gfx/image/image_unittest_util.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -26,6 +28,27 @@ TEST(AIChatUtilsUnitTest, IsBraveSearchSERP) {
   EXPECT_FALSE(IsBraveSearchSERP(GURL("http://search.brave.com/search?q=foo")));
   // Wrong host.
   EXPECT_FALSE(IsBraveSearchSERP(GURL("https://brave.com/search?q=foo")));
+}
+
+TEST(AIChatUtilsUnitTest, ScaleDownBitmap) {
+  const std::vector<std::pair<int, int>> large_test_dimensions = {
+      {2560, 1440}, {1024, 1440}, {2560, 768}};
+  for (auto& [width, height] : large_test_dimensions) {
+    SCOPED_TRACE(testing::Message() << width << "x" << height);
+    const auto bitmap = gfx::test::CreateBitmap(width, height);
+    const auto scaled_bitmap = ScaleDownBitmap(bitmap);
+    EXPECT_EQ(scaled_bitmap.width(), 1024);
+    EXPECT_EQ(scaled_bitmap.height(), 768);
+  }
+
+  const std::vector<std::pair<int, int>> no_change_test_dimensions = {
+      {1024, 768}, {1024, 720}, {960, 768}, {960, 720}};
+  for (auto& [width, height] : no_change_test_dimensions) {
+    SCOPED_TRACE(testing::Message() << width << "x" << height);
+    const auto bitmap = gfx::test::CreateBitmap(width, height);
+    const auto scaled_bitmap = ScaleDownBitmap(bitmap);
+    EXPECT_TRUE(gfx::test::AreBitmapsEqual(bitmap, scaled_bitmap));
+  }
 }
 
 }  // namespace ai_chat
