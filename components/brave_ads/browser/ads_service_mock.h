@@ -29,8 +29,7 @@ class AdsServiceMock final : public AdsService {
 
   MOCK_METHOD(void,
               AddBatAdsObserver,
-              (mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
-                   bat_ads_observer_pending_remote));
+              (mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>));
 
   MOCK_METHOD(bool, IsBrowserUpgradeRequiredToServeAds, (), (const));
 
@@ -71,7 +70,7 @@ class AdsServiceMock final : public AdsService {
               (const std::string&, const std::string&));
   MOCK_METHOD(void,
               ParseAndSaveNewTabPageAds,
-              (base::Value::Dict dict, ParseAndSaveNewTabPageAdsCallback));
+              (base::Value::Dict, ParseAndSaveNewTabPageAdsCallback));
 
   MOCK_METHOD(void,
               TriggerPromotedContentAdEvent,
@@ -97,7 +96,7 @@ class AdsServiceMock final : public AdsService {
               GetAdHistory,
               (base::Time, base::Time, GetAdHistoryForUICallback));
 
-  MOCK_METHOD(void, ClearData, (ClearDataCallback callback));
+  MOCK_METHOD(void, ClearData, (ClearDataCallback));
 
   MOCK_METHOD(void,
               ToggleLikeAd,
@@ -120,26 +119,18 @@ class AdsServiceMock final : public AdsService {
 
   MOCK_METHOD(void,
               NotifyTabTextContentDidChange,
-              (int32_t tab_id,
-               const std::vector<GURL>& redirect_chain,
-               const std::string& text));
+              (int32_t, const std::vector<GURL>&, const std::string&));
   MOCK_METHOD(void,
               NotifyTabHtmlContentDidChange,
-              (int32_t tab_id,
-               const std::vector<GURL>& redirect_chain,
-               const std::string& html));
-  MOCK_METHOD(void, NotifyTabDidStartPlayingMedia, (int32_t tab_id));
-  MOCK_METHOD(void, NotifyTabDidStopPlayingMedia, (int32_t tab_id));
+              (int32_t, const std::vector<GURL>&, const std::string&));
+  MOCK_METHOD(void, NotifyTabDidStartPlayingMedia, (int32_t));
+  MOCK_METHOD(void, NotifyTabDidStopPlayingMedia, (int32_t));
   MOCK_METHOD(void,
               NotifyTabDidChange,
-              (int32_t tab_id,
-               const std::vector<GURL>& redirect_chain,
-               bool is_new_navigation,
-               bool is_restoring,
-               bool is_visible));
-  MOCK_METHOD(void, NotifyTabDidLoad, (int32_t tab_id, int http_status_code));
-  MOCK_METHOD(void, NotifyDidCloseTab, (int32_t tab_id));
-  MOCK_METHOD(void, NotifyUserGestureEventTriggered, (int32_t tab_id));
+              (int32_t, const std::vector<GURL>&, bool, bool, bool));
+  MOCK_METHOD(void, NotifyTabDidLoad, (int32_t, int));
+  MOCK_METHOD(void, NotifyDidCloseTab, (int32_t));
+  MOCK_METHOD(void, NotifyUserGestureEventTriggered, (int32_t));
   MOCK_METHOD(void, NotifyBrowserDidBecomeActive, ());
   MOCK_METHOD(void, NotifyBrowserDidResignActive, ());
 

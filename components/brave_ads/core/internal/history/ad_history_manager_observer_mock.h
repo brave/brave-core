@@ -23,9 +23,7 @@ class AdHistoryManagerObserverMock : public AdHistoryManagerObserver {
 
   ~AdHistoryManagerObserverMock() override;
 
-  MOCK_METHOD(void,
-              OnDidAddAdHistoryItem,
-              (const AdHistoryItemInfo& ad_history_item));
+  MOCK_METHOD(void, OnDidAddAdHistoryItem, (const AdHistoryItemInfo&));
 };
 
 }  // namespace brave_ads

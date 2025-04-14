@@ -22,25 +22,12 @@ class SiteVisitObserverMock : public SiteVisitObserver {
 
   ~SiteVisitObserverMock() override;
 
-  MOCK_METHOD(void,
-              OnMaybeLandOnPage,
-              (const AdInfo& ad, base::TimeDelta after));
-
-  MOCK_METHOD(void,
-              OnDidSuspendPageLand,
-              (int32_t tab_id, base::TimeDelta remaining_time));
-
-  MOCK_METHOD(void,
-              OnDidResumePageLand,
-              (int32_t tab_id, base::TimeDelta remaining_time));
-
-  MOCK_METHOD(void,
-              OnDidLandOnPage,
-              (int32_t tab_id, int http_status_code, const AdInfo& ad));
-
-  MOCK_METHOD(void, OnDidNotLandOnPage, (int32_t tab_id, const AdInfo& ad));
-
-  MOCK_METHOD(void, OnCanceledPageLand, (int32_t tab_id, const AdInfo& ad));
+  MOCK_METHOD(void, OnMaybeLandOnPage, (const AdInfo&, base::TimeDelta));
+  MOCK_METHOD(void, OnDidSuspendPageLand, (int32_t, base::TimeDelta));
+  MOCK_METHOD(void, OnDidResumePageLand, (int32_t, base::TimeDelta));
+  MOCK_METHOD(void, OnDidLandOnPage, (int32_t, int, const AdInfo&));
+  MOCK_METHOD(void, OnDidNotLandOnPage, (int32_t, const AdInfo&));
+  MOCK_METHOD(void, OnCanceledPageLand, (int32_t, const AdInfo&));
 };
 
 }  // namespace brave_ads

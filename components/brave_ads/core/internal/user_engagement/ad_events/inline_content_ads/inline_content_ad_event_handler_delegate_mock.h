@@ -27,21 +27,18 @@ class InlineContentAdEventHandlerDelegateMock
 
   MOCK_METHOD(void,
               OnDidFireInlineContentAdServedEvent,
-              (const InlineContentAdInfo& ad));
-
+              (const InlineContentAdInfo&));
   MOCK_METHOD(void,
               OnDidFireInlineContentAdViewedEvent,
-              (const InlineContentAdInfo& ad));
-
+              (const InlineContentAdInfo&));
   MOCK_METHOD(void,
               OnDidFireInlineContentAdClickedEvent,
-              (const InlineContentAdInfo& ad));
-
+              (const InlineContentAdInfo&));
   MOCK_METHOD(void,
               OnFailedToFireInlineContentAdEvent,
-              (const std::string& placement_id,
-               const std::string& creative_instance_id,
-               mojom::InlineContentAdEventType mojom_ad_event_type));
+              (const std::string&,
+               const std::string&,
+               mojom::InlineContentAdEventType));
 };
 
 }  // namespace brave_ads

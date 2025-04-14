@@ -20,8 +20,7 @@ class CatalogObserverMock : public CatalogObserver {
 
   ~CatalogObserverMock() override;
 
-  MOCK_METHOD(void, OnDidFetchCatalog, (const CatalogInfo& catalog));
-
+  MOCK_METHOD(void, OnDidFetchCatalog, (const CatalogInfo&));
   MOCK_METHOD(void, OnFailedToFetchCatalog, ());
 };
 

@@ -24,10 +24,9 @@ class NotificationAdServingDelegateMock : public NotificationAdServingDelegate {
 
   MOCK_METHOD(void,
               OnOpportunityAroseToServeNotificationAd,
-              (const SegmentList& segments));
+              (const SegmentList&));
 
-  MOCK_METHOD(void, OnDidServeNotificationAd, (const NotificationAdInfo& ad));
-
+  MOCK_METHOD(void, OnDidServeNotificationAd, (const NotificationAdInfo&));
   MOCK_METHOD(void, OnFailedToServeNotificationAd, ());
 };
 

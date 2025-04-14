@@ -24,8 +24,7 @@ class NewTabPageAdServingDelegateMock : public NewTabPageAdServingDelegate {
 
   MOCK_METHOD(void, OnOpportunityAroseToServeNewTabPageAd, ());
 
-  MOCK_METHOD(void, OnDidServeNewTabPageAd, (const NewTabPageAdInfo& ad));
-
+  MOCK_METHOD(void, OnDidServeNewTabPageAd, (const NewTabPageAdInfo&));
   MOCK_METHOD(void, OnFailedToServeNewTabPageAd, ());
 };
 

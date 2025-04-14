@@ -27,28 +27,22 @@ class NotificationAdEventHandlerDelegateMock
 
   MOCK_METHOD(void,
               OnDidFireNotificationAdServedEvent,
-              (const NotificationAdInfo& ad));
-
+              (const NotificationAdInfo&));
   MOCK_METHOD(void,
               OnDidFireNotificationAdViewedEvent,
-              (const NotificationAdInfo& ad));
-
+              (const NotificationAdInfo&));
   MOCK_METHOD(void,
               OnDidFireNotificationAdClickedEvent,
-              (const NotificationAdInfo& ad));
-
+              (const NotificationAdInfo&));
   MOCK_METHOD(void,
               OnDidFireNotificationAdDismissedEvent,
-              (const NotificationAdInfo& ad));
-
+              (const NotificationAdInfo&));
   MOCK_METHOD(void,
               OnDidFireNotificationAdTimedOutEvent,
-              (const NotificationAdInfo& ad));
-
+              (const NotificationAdInfo&));
   MOCK_METHOD(void,
               OnFailedToFireNotificationAdEvent,
-              (const std::string& placement_id,
-               mojom::NotificationAdEventType mojom_ad_event_type));
+              (const std::string&, mojom::NotificationAdEventType));
 };
 
 }  // namespace brave_ads

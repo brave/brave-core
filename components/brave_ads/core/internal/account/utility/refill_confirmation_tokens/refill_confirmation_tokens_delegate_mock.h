@@ -26,19 +26,15 @@ class RefillConfirmationTokensDelegateMock
 
   ~RefillConfirmationTokensDelegateMock() override;
 
-  MOCK_METHOD(void, OnWillRefillConfirmationTokens, (size_t count));
+  MOCK_METHOD(void, OnWillRefillConfirmationTokens, (size_t));
   MOCK_METHOD(void, OnDidRefillConfirmationTokens, ());
-
   MOCK_METHOD(void, OnFailedToRefillConfirmationTokens, ());
-
-  MOCK_METHOD(void,
-              OnWillRetryRefillingConfirmationTokens,
-              (base::Time retry_at));
+  MOCK_METHOD(void, OnWillRetryRefillingConfirmationTokens, (base::Time));
   MOCK_METHOD(void, OnDidRetryRefillingConfirmationTokens, ());
 
   MOCK_METHOD(void,
               OnCaptchaRequiredToRefillConfirmationTokens,
-              (const std::string& captcha_id));
+              (const std::string&));
 };
 
 }  // namespace brave_ads

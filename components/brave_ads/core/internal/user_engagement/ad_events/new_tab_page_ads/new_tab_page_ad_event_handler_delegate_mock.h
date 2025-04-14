@@ -27,37 +27,30 @@ class NewTabPageAdEventHandlerDelegateMock
 
   MOCK_METHOD(void,
               OnDidFireNewTabPageAdServedEvent,
-              (const NewTabPageAdInfo& ad));
-
+              (const NewTabPageAdInfo&));
   MOCK_METHOD(void,
               OnDidFireNewTabPageAdViewedEvent,
-              (const NewTabPageAdInfo& ad));
-
+              (const NewTabPageAdInfo&));
   MOCK_METHOD(void,
               OnDidFireNewTabPageAdClickedEvent,
-              (const NewTabPageAdInfo& ad));
-
+              (const NewTabPageAdInfo&));
   MOCK_METHOD(void,
               OnDidFireNewTabPageAdInteractionEvent,
-              (const NewTabPageAdInfo& ad));
-
+              (const NewTabPageAdInfo&));
   MOCK_METHOD(void,
               OnDidFireNewTabPageAdMediaPlayEvent,
-              (const NewTabPageAdInfo& ad));
-
+              (const NewTabPageAdInfo&));
   MOCK_METHOD(void,
               OnDidFireNewTabPageAdMedia25Event,
-              (const NewTabPageAdInfo& ad));
-
+              (const NewTabPageAdInfo&));
   MOCK_METHOD(void,
               OnDidFireNewTabPageAdMedia100Event,
-              (const NewTabPageAdInfo& ad));
-
+              (const NewTabPageAdInfo&));
   MOCK_METHOD(void,
               OnFailedToFireNewTabPageAdEvent,
-              (const std::string& placement_id,
-               const std::string& creative_instance_id,
-               mojom::NewTabPageAdEventType mojom_ad_event_type));
+              (const std::string&,
+               const std::string&,
+               mojom::NewTabPageAdEventType));
 };
 
 }  // namespace brave_ads

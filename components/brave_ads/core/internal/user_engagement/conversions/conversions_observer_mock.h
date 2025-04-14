@@ -22,11 +22,8 @@ class ConversionsObserverMock : public ConversionsObserver {
 
   ~ConversionsObserverMock() override;
 
-  MOCK_METHOD(void, OnDidConvertAd, (const ConversionInfo& conversion));
-
-  MOCK_METHOD(void,
-              OnFailedToConvertAd,
-              (const std::string& creative_instance_id));
+  MOCK_METHOD(void, OnDidConvertAd, (const ConversionInfo&));
+  MOCK_METHOD(void, OnFailedToConvertAd, (const std::string&));
 };
 
 }  // namespace brave_ads
