@@ -24,24 +24,27 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 public class VpnAlwaysOnActivity extends AsyncInitializationActivity {
     private void initializeViews() {
-        setContentView(R.layout.activity_vpn_always_on);
+        setContentView(R.layout.activity_auto_reconnect_vpn);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getResources().getString(R.string.always_on_vpn));
+        actionBar.setTitle(getResources().getString(R.string.auto_reconnect_vpn));
 
-        ViewPager killSwitchTutorialViewPager = findViewById(R.id.kill_switch_tutorial_view_pager);
+        ViewPager autoReconnectVpnTutorialViewPager =
+                findViewById(R.id.auto_reconnect_vpn_tutorial_view_pager);
 
         AlwaysOnPagerAdapter alwaysOnPagerAdapter = new AlwaysOnPagerAdapter(this);
-        killSwitchTutorialViewPager.setAdapter(alwaysOnPagerAdapter);
-        TabLayout killSwitchTutorialTabLayout = findViewById(R.id.kill_switch_tutorial_tab_layout);
-        killSwitchTutorialTabLayout.setupWithViewPager(killSwitchTutorialViewPager, true);
+        autoReconnectVpnTutorialViewPager.setAdapter(alwaysOnPagerAdapter);
+        TabLayout autoReconnectVpnTutorialTabLayout =
+                findViewById(R.id.auto_reconnect_vpn_tutorial_tab_layout);
+        autoReconnectVpnTutorialTabLayout.setupWithViewPager(
+                autoReconnectVpnTutorialViewPager, true);
 
-        Button killSwitchTutorialAction = findViewById(R.id.kill_switch_action_button);
-        killSwitchTutorialAction.setOnClickListener(
+        Button autoReconnectVpnAction = findViewById(R.id.auto_reconnect_vpn_action_button);
+        autoReconnectVpnAction.setOnClickListener(
                 v -> {
                     BraveVpnUtils.openVpnSettings(VpnAlwaysOnActivity.this);
                 });
