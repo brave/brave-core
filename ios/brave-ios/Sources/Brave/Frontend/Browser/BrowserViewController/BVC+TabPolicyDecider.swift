@@ -696,7 +696,7 @@ extension BrowserViewController {
     // Handle invalid upgrade to https
     guard let originalRequest = tab.upgradedHTTPSRequest,
       let originalURL = originalRequest.url,
-      responseURL.baseDomain == originalURL.baseDomain
+      responseURL.etldPlusOne == originalURL.etldPlusOne
     else {
       return nil
     }
