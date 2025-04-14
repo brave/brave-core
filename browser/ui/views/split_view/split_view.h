@@ -11,9 +11,9 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "base/scoped_observation.h"
 #include "base/types/pass_key.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
-#include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
+#include "brave/browser/ui/split_view/split_view_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
@@ -44,14 +44,15 @@ class SplitViewLayoutManager;
 class SplitViewLocationBar;
 class SplitViewSeparator;
 
-// Contains a pair of contents container view.
+// This is view part of split view module and contains a pair of contents
+// container view. SplitViewController controls how view works.
 class SplitView : public views::View,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
                   public ReaderModeToolbarView::Delegate,
 #endif
                   public views::WidgetObserver,
                   public FullscreenObserver,
-                  public SplitViewBrowserDataObserver {
+                  public SplitViewView {
   METADATA_HEADER(SplitView, views::View)
  public:
   using BrowserViewKey = base::PassKey<BraveBrowserView>;
@@ -64,9 +65,6 @@ class SplitView : public views::View,
             ContentsWebView* contents_web_view);
 
   ~SplitView() override;
-
-  // true when active tab is in tile.
-  bool IsSplitViewActive() const;
 
   void ListenFullscreenChanges();
 
@@ -118,10 +116,8 @@ class SplitView : public views::View,
   void Layout(PassKey) override;
   void AddedToWidget() override;
 
-  // SplitViewBrowserDataObserver:
-  void OnTileTabs(const TabTile& tile) override;
-  void OnDidBreakTile(const TabTile& tile) override;
-  void OnSwapTabsInTile(const TabTile& tile) override;
+  // SplitViewView:
+  void Update() override;
 
   // views::WidgetObserver:
   void OnWidgetDestroying(views::Widget* widget) override;
@@ -136,9 +132,6 @@ class SplitView : public views::View,
   friend class SplitViewLocationBarBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, SplitView);
 
-  tabs::TabHandle GetActiveTabHandle() const;
-  bool IsActiveWebContentsTiled(const TabTile& tile) const;
-  bool IsWebContentsTiled(content::WebContents* contents) const;
   void UpdateSplitViewSizeDelta(content::WebContents* old_contents,
                                 content::WebContents* new_contents);
   void UpdateContentsWebViewVisual();
@@ -169,8 +162,6 @@ class SplitView : public views::View,
   std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
   std::unique_ptr<views::Widget> secondary_location_bar_widget_;
 
-  base::ScopedObservation<SplitViewBrowserData, SplitViewBrowserDataObserver>
-      split_view_observation_{this};
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
   base::ScopedObservation<FullscreenController, FullscreenObserver>

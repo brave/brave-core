@@ -10,7 +10,9 @@
 #include "base/types/to_address.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/split_view/split_view_controller.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -66,12 +68,12 @@ END_METADATA
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 
-bool IsTabDistilled(tabs::TabHandle tab_handle) {
-  if (!tab_handle.Get() || !tab_handle.Get()->GetContents()) {
+bool IsTabDistilled(content::WebContents* web_contents) {
+  if (!web_contents) {
     return false;
   }
-  if (auto* th = speedreader::SpeedreaderTabHelper::FromWebContents(
-          tab_handle.Get()->GetContents())) {
+  if (auto* th =
+          speedreader::SpeedreaderTabHelper::FromWebContents(web_contents)) {
     return speedreader::DistillStates::IsDistilled(th->PageDistillState());
   }
   return false;
@@ -131,18 +133,11 @@ SplitView::SplitView(Browser& browser,
       contents_container_, secondary_contents_container_,
       split_view_separator_));
 
-  auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
-  CHECK(split_view_browser_data);
-  split_view_observation_.Observe(split_view_browser_data);
+  browser_->GetFeatures().split_view_controller()->set_split_view_view(this);
 }
 
-SplitView::~SplitView() = default;
-
-bool SplitView::IsSplitViewActive() const {
-  auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
-  return split_view_browser_data->GetTile(GetActiveTabHandle()).has_value();
+SplitView::~SplitView() {
+  browser_->GetFeatures().split_view_controller()->set_split_view_view(nullptr);
 }
 
 void SplitView::ListenFullscreenChanges() {
@@ -154,23 +149,24 @@ void SplitView::WillChangeActiveWebContents(
     BrowserViewKey,
     content::WebContents* old_contents,
     content::WebContents* new_contents) {
+  auto* controller = browser_->GetFeatures().split_view_controller();
   // Early return if this active state changes is not related with split view.
   // |secondary_contents_container_| is not visible if previous active contents
-  // is not in tile.
+  // is not shown in split view.
   if (!secondary_contents_container_->GetVisible() &&
-      !IsWebContentsTiled(new_contents)) {
+      !controller->IsOpenedFor(new_contents)) {
     // In this state, we don't need to call DidChangeActiveWebContents() after
     // changing primary WebContents but it's ok as it's no-op.
     // Otherwise, we need to use another flag to avoid calling it.
     return;
   }
 
-  // This helps reduce flickering when switching between tiled tabs.
+  // This helps reduce flickering when switching between tabs in split view.
   contents_web_view_->SetFastResize(true);
   secondary_contents_web_view_->SetFastResize(true);
 
-  if (!IsWebContentsTiled(new_contents)) {
-    // This will help reduce flickering when switching to non tiled tab by
+  if (!controller->IsOpenedFor(new_contents)) {
+    // This will help reduce flickering when switching to non split view tab by
     // hiding secondary web view before detaching web contents.
     UpdateSecondaryContentsWebViewVisibility();
   }
@@ -268,122 +264,56 @@ void SplitView::AddedToWidget() {
   UpdateSecondaryContentsWebViewVisibility();
 }
 
-void SplitView::OnTileTabs(const TabTile& tile) {
-  if (!IsActiveWebContentsTiled(tile)) {
-    return;
-  }
-
+void SplitView::Update() {
   // Update separator visibility first before starting split view layout
   // to give their final position.
   static_cast<BraveBrowserView*>(browser_->window())
       ->UpdateContentsSeparatorVisibility();
 
   UpdateContentsWebViewVisual();
-}
-
-void SplitView::OnDidBreakTile(const TabTile& tile) {
-  if (!IsActiveWebContentsTiled(tile)) {
-    return;
-  }
-
-  // Update separator visibility first before starting split view layout
-  // to give their final position.
-  static_cast<BraveBrowserView*>(browser_->window())
-      ->UpdateContentsSeparatorVisibility();
-
-  UpdateContentsWebViewVisual();
-}
-
-void SplitView::OnSwapTabsInTile(const TabTile& tile) {
-  if (!IsActiveWebContentsTiled(tile)) {
-    return;
-  }
-
-  UpdateSecondaryContentsWebViewVisibility();
-}
-
-tabs::TabHandle SplitView::GetActiveTabHandle() const {
-  auto* model = browser_->tab_strip_model();
-  if (model->empty()) {
-    return {};
-  }
-  return model->GetTabAtIndex(model->active_index())->GetHandle();
-}
-
-bool SplitView::IsActiveWebContentsTiled(const TabTile& tile) const {
-  auto active_tab_handle = GetActiveTabHandle();
-  return tile.first == active_tab_handle || tile.second == active_tab_handle;
-}
-
-bool SplitView::IsWebContentsTiled(content::WebContents* contents) const {
-  const int tab_index =
-      browser_->tab_strip_model()->GetIndexOfWebContents(contents);
-  if (tab_index == TabStripModel::kNoTab) {
-    return false;
-  }
-  const auto tab_handle =
-      browser_->tab_strip_model()->GetTabAtIndex(tab_index)->GetHandle();
-  return browser_->GetFeatures().split_view_browser_data()->IsTabTiled(
-      tab_handle);
 }
 
 void SplitView::UpdateSplitViewSizeDelta(content::WebContents* old_contents,
                                          content::WebContents* new_contents) {
-  auto get_index_of = [this](content::WebContents* contents) {
-    return browser_->tab_strip_model()->GetIndexOfWebContents(contents);
-  };
-  if (get_index_of(old_contents) == TabStripModel::kNoTab ||
-      get_index_of(new_contents) == TabStripModel::kNoTab) {
+  auto* model = browser_->tab_strip_model();
+  if (model->GetIndexOfWebContents(old_contents) == TabStripModel::kNoTab ||
+      model->GetIndexOfWebContents(new_contents) == TabStripModel::kNoTab) {
     // This can happen on start-up or closing a tab.
     return;
   }
 
-  auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
-  auto get_tab_handle = [this, &get_index_of](content::WebContents* contents) {
-    return browser_->tab_strip_model()
-        ->GetTabAtIndex(get_index_of(contents))
-        ->GetHandle();
-  };
-  auto old_tab_handle = get_tab_handle(old_contents);
-  auto new_tab_handle = get_tab_handle(new_contents);
-
-  auto old_tab_tile = split_view_browser_data->GetTile(old_tab_handle);
-  auto new_tab_tile = split_view_browser_data->GetTile(new_tab_handle);
-  if ((!old_tab_tile && !new_tab_tile) || old_tab_tile == new_tab_tile) {
-    // Both tabs are not tiled, or in a same tile. So we don't need to update
-    // size delta
+  auto* controller = browser_->GetFeatures().split_view_controller();
+  // Both tabs are not related with split view, or shown together.
+  // So we don't need to update size delta.
+  if (!controller->IsOpenedFor(old_contents) &&
+      !controller->IsOpenedFor(new_contents)) {
+    return;
+  }
+  if (controller->AreShowingTogether({old_contents, new_contents})) {
     return;
   }
 
   auto* split_view_layout_manager =
       static_cast<SplitViewLayoutManager*>(GetLayoutManager());
-  if (old_tab_tile) {
-    split_view_browser_data->SetSizeDelta(
-        old_tab_handle, split_view_layout_manager->split_view_size_delta());
+  if (controller->IsOpenedFor(old_contents)) {
+    controller->CacheSizeDeltaFor(
+        old_contents, split_view_layout_manager->split_view_size_delta());
   }
 
-  if (new_tab_tile) {
+  if (controller->IsOpenedFor(new_contents)) {
     split_view_layout_manager->set_split_view_size_delta(
-        split_view_browser_data->GetSizeDelta(new_tab_handle));
+        controller->GetSizeDeltaFor(new_contents));
   }
 }
 
 void SplitView::UpdateContentsWebViewVisual() {
-  auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
-  if (!split_view_browser_data) {
-    return;
-  }
-
   UpdateContentsWebViewBorder();
   UpdateSecondaryContentsWebViewVisibility();
 }
 
 void SplitView::UpdateContentsWebViewBorder() {
-  auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
-  if (!split_view_browser_data) {
+  auto* controller = browser_->GetFeatures().split_view_controller();
+  if (!controller) {
     return;
   }
 
@@ -401,11 +331,9 @@ void SplitView::UpdateContentsWebViewBorder() {
     return;
   }
 
-  DCHECK(split_view_browser_data);
-
   // In tab-fullscreen mode, don't need any border if secondary contents is not
   // visible as user only can see primary contents.
-  if (split_view_browser_data->GetTile(GetActiveTabHandle()) &&
+  if (controller->IsSplitViewActive() &&
       !ShouldHideSecondaryContentsByTabFullscreen()) {
     const auto kRadius =
         BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
@@ -455,46 +383,30 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
   UpdateSecondaryReaderModeToolbarVisibility();
 #endif
 
-  auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
-  DCHECK(split_view_browser_data);
-
-  auto active_tab_handle = GetActiveTabHandle();
-  if (auto tile = split_view_browser_data->GetTile(active_tab_handle)) {
-    const bool second_tile_is_active_web_contents =
-        active_tab_handle == tile->second;
-
-    // Active tab should be put in the original |contents_web_view_| as many
-    // other UI components are dependent on it. So, in case |tile.second| is
-    // the active tab, we let it be held by |contents_web_view_| and
-    // |tile.first| by |secondary_contents_web_view_|. But we should rotate
-    // the layout order. The layout rotation is done by
-    // SplitViewLayoutManager.
-    //
-    // ex1) When tile.first is the active tab
-    //  Tiled tabs | tile.first(active) |         tile.second          |
-    //                        ||                        ||
-    //  Contents   | contents_web_view_ | secondary_contents_web_view_ |
-    //
-    // ex2) When tile.second is the active tab
-    //  Tiled tabs |           tile.first         | tile.second(active) |
-    //                             ||                        ||
-    //  Contents   | secondary_contents_web_view_ | contents_web_view_  |
-    auto* model = browser_->tab_strip_model();
-    auto* contents = model->GetWebContentsAt(model->GetIndexOfTab(
-        second_tile_is_active_web_contents ? tile->first.Get()
-                                           : tile->second.Get()));
-    CHECK_NE(contents, contents_web_view_->web_contents());
-    if (secondary_contents_web_view_->web_contents() != contents) {
-      secondary_contents_web_view_->SetWebContents(contents);
-      secondary_location_bar_->SetWebContents(contents);
+  auto* controller = browser_->GetFeatures().split_view_controller();
+  CHECK(controller);
+  if (controller->IsSplitViewActive()) {
+    auto* secondary_contents = controller->GetNonActiveWebContents();
+    CHECK_NE(secondary_contents, contents_web_view_->web_contents());
+    if (secondary_contents_web_view_->web_contents() != secondary_contents) {
+      secondary_contents_web_view_->SetWebContents(secondary_contents);
+      secondary_location_bar_->SetWebContents(secondary_contents);
     }
 
     secondary_contents_container_->SetVisible(true);
     UpdateSecondaryDevtoolsLayoutAndVisibility();
 
+    // Active tab should be put in the original |contents_web_view_| as many
+    // other UI components are dependent on it. The layout rotation is done by
+    // SplitViewLayoutManager.
+    //
+    // ex1) When left is the active tab
+    //  Contents   | contents_web_view_ | secondary_contents_web_view_ |
+    //
+    // ex2) When right is the active tab
+    //  Contents   | secondary_contents_web_view_ | contents_web_view_  |
     GetSplitViewLayoutManager()->show_main_web_contents_at_tail(
-        second_tile_is_active_web_contents);
+        controller->ShouldShowActiveWebContentsAtRight());
   } else {
     secondary_location_bar_->SetWebContents(nullptr);
     secondary_contents_web_view_->SetWebContents(nullptr);
@@ -532,15 +444,10 @@ void SplitView::OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) {
 }
 
 void SplitView::UpdateSecondaryReaderModeToolbarVisibility() {
-  auto active_tab_handle = GetActiveTabHandle();
-  auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
-  if (auto tile = split_view_browser_data->GetTile(active_tab_handle)) {
-    if (tile->first == active_tab_handle) {
-      secondary_reader_mode_toolbar_->SetVisible(IsTabDistilled(tile->second));
-    } else {
-      secondary_reader_mode_toolbar_->SetVisible(IsTabDistilled(tile->first));
-    }
+  auto* controller = browser_->GetFeatures().split_view_controller();
+  if (controller->IsSplitViewActive()) {
+    secondary_reader_mode_toolbar_->SetVisible(
+        IsTabDistilled(controller->GetNonActiveWebContents()));
   } else if (secondary_reader_mode_toolbar_) {
     secondary_reader_mode_toolbar_->SetVisible(false);
   }
@@ -556,10 +463,8 @@ void SplitView::UpdateSecondaryReaderModeToolbar() {
 
   ReaderModeToolbarView* primary_toolbar = browser_view->reader_mode_toolbar();
 
-  auto* split_view_browser_data =
-      browser_->GetFeatures().split_view_browser_data();
-  if (split_view_browser_data &&
-      split_view_browser_data->IsTabTiled(GetActiveTabHandle())) {
+  auto* controller = browser_->GetFeatures().split_view_controller();
+  if (controller && controller->IsSplitViewActive()) {
     // We need to swap the WebContents of the toolbars because, when the active
     // browser tab is switched, the split view swaps both the views displaying
     // the pages and the WebContents within those views. The toolbar does the
@@ -567,9 +472,9 @@ void SplitView::UpdateSecondaryReaderModeToolbar() {
     // DevTools views do the same.
     primary_toolbar->SwapToolbarContents(secondary_reader_mode_toolbar_.get());
   } else {
-    // In case we activate the non-tiled tab then restore straight toolbars'
-    // contents. It means in the non-tiled tab we always see the primary
-    // toolbar.
+    // In case we activate the non split view tab then restore straight
+    // toolbars' contents. It means in split view disabled we always see the
+    // primary toolbar.
     primary_toolbar->RestoreToolbarContents(
         secondary_reader_mode_toolbar_.get());
   }
@@ -617,7 +522,7 @@ void SplitView::OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
 void SplitView::OnFullscreenStateChanged() {
   // Hide secondary contents when tab fullscreen is initiated by
   // primary contents.
-  if (!IsSplitViewActive()) {
+  if (!browser_->GetFeatures().split_view_controller()->IsSplitViewActive()) {
     return;
   }
 

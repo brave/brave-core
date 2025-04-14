@@ -10,6 +10,7 @@
 
 class BraveVPNController;
 class SplitViewBrowserData;
+class SplitViewController;
 
 namespace sidebar {
 class SidebarController;
@@ -28,7 +29,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
       BrowserWindowFeaturesFactory factory);
 
   // BrowserWindowFeatures_ChromiumImpl:
-  void Init(BrowserWindowInterface* browser) override;
+  void Init(BrowserWindowInterface* browser_window_interface) override;
   void InitPostBrowserViewConstruction(BrowserView* browser_view) override;
   void InitPostWindowConstruction(Browser* browser) override;
   void TearDownPreBrowserViewDestruction() override;
@@ -37,8 +38,9 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return sidebar_controller_.get();
   }
   BraveVPNController* brave_vpn_controller();
-  SplitViewBrowserData* split_view_browser_data() {
-    return split_view_browser_data_.get();
+  SplitViewBrowserData* split_view_browser_data();
+  SplitViewController* split_view_controller() {
+    return split_view_controller_.get();
   }
 
  protected:
@@ -47,7 +49,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;
-  std::unique_ptr<SplitViewBrowserData> split_view_browser_data_;
+  std::unique_ptr<SplitViewController> split_view_controller_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_

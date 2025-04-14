@@ -17,9 +17,9 @@
 #include "base/observer_list.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 
-class BrowserWindowInterface;
 class SplitViewTabStripModelAdapter;
 class SplitViewBrowserDataObserver;
+class TabStripModel;
 
 struct TabTile {
   tabs::TabHandle first;
@@ -38,10 +38,11 @@ struct TabTile {
   }
 };
 
+// TODO(https://github.com/brave/brave-browser/issues/45508): Rename to
+// SplitViewTabTileData.
 class SplitViewBrowserData {
  public:
-  explicit SplitViewBrowserData(
-      BrowserWindowInterface* browser_window_interface);
+  explicit SplitViewBrowserData(TabStripModel* tab_strip_model);
   virtual ~SplitViewBrowserData();
 
   // When calling this, make sure that |tile.first| has a smaller model index

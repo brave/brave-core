@@ -630,6 +630,7 @@ source_set("ui") {
 
     deps += [
       "//brave/browser/ui/side_panel",
+      "//brave/browser/ui/split_view",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_view_lib",
