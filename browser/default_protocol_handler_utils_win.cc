@@ -3,17 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/browser/default_protocol_handler_utils_win.h"
 
 #include <shobjidl.h>
-
 #include <winternl.h>
+
 #include <wrl/client.h>
 
 #include <memory>
@@ -22,6 +16,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/compiler_specific.h"
 #include "base/containers/span.h"
 #include "base/containers/span_reader.h"
 #include "base/files/file_path.h"
@@ -66,7 +61,8 @@ std::wstring HashString(base::wcstring_view input) {
     // there's nothing for us to do with small strings.
     return std::wstring();
   }
-  auto bytes = base::as_bytes(base::span(input.data(), input.size() + 1));
+  auto bytes =
+      base::as_bytes(UNSAFE_TODO(base::span(input.data(), input.size() + 1)));
 
   // Compute an MD5 hash. md5[0] and md5[1] will be used as constant multipliers
   // in the scramble below.

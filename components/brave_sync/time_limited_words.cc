@@ -3,18 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_sync/time_limited_words.h"
 
 #include <cmath>
 #include <string>
 #include <vector>
 
+#include "base/compiler_specific.h"
 #include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/notreached.h"
@@ -158,7 +153,8 @@ TimeLimitedWords::ParseImpl(const std::string& time_limited_words,
   if (num_words == kPureWordsCount) {
     if (now < GetWordsV1SunsetDay()) {
       std::string recombined_pure_words = base::JoinString(
-          base::span<std::string>(words.begin(), kPureWordsCount), " ");
+          UNSAFE_TODO(base::span<std::string>(words.begin(), kPureWordsCount)),
+          " ");
       if (crypto::IsPassphraseValid(recombined_pure_words)) {
         return recombined_pure_words;
       } else {
@@ -169,7 +165,8 @@ TimeLimitedWords::ParseImpl(const std::string& time_limited_words,
     }
   } else if (num_words == kWordsV2Count) {
     std::string recombined_pure_words = base::JoinString(
-        base::span<std::string>(words.begin(), kPureWordsCount), " ");
+        UNSAFE_TODO(base::span<std::string>(words.begin(), kPureWordsCount)),
+        " ");
     if (crypto::IsPassphraseValid(recombined_pure_words)) {
       int days_actual =
           GetRoundedDaysDiff(GetWordsV2Epoch(), now) % BIP39_WORDLIST_LEN;

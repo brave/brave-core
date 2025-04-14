@@ -3,18 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 
 #include <memory>
 #include <string>
 #include <utility>
 
+#include "base/compiler_specific.h"
 #include "base/feature_list.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -128,8 +123,8 @@ BraveSettingsUI::~BraveSettingsUI() = default;
 void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                    Profile* profile) {
   for (size_t i = 0; i < kBraveSettingsResourcesSize; ++i) {
-    html_source->AddResourcePath(kBraveSettingsResources[i].path,
-                                 kBraveSettingsResources[i].id);
+    html_source->AddResourcePath(UNSAFE_TODO(kBraveSettingsResources[i]).path,
+                                 UNSAFE_TODO(kBraveSettingsResources[i]).id);
   }
 
   // These resource files are generated from the files in
@@ -139,8 +134,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   // doesn't interfere with the Polymer tree/styles.
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     for (size_t i = 0; i < kCommandsGeneratedSize; ++i) {
-      html_source->AddResourcePath(kCommandsGenerated[i].path,
-                                   kCommandsGenerated[i].id);
+      html_source->AddResourcePath(UNSAFE_TODO(kCommandsGenerated[i]).path,
+                                   UNSAFE_TODO(kCommandsGenerated[i]).id);
     }
   }
 

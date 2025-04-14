@@ -3,17 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/tor/tor_control.h"
 
 #include <utility>
 #include <vector>
 
+#include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
@@ -59,9 +54,9 @@ constexpr char kGetCircuitEstablishedReply[] = "status/circuit-established=";
 static std::string escapify(const char* buf, int len) {
   std::ostringstream s;
   for (int i = 0; i < len; i++) {
-    unsigned char ch = static_cast<unsigned char>(buf[i]);
+    unsigned char ch = static_cast<unsigned char>(UNSAFE_TODO(buf[i]));
     if (::isprint(ch)) {
-      s << buf[i];
+      s << UNSAFE_TODO(buf[i]);
       continue;
     }
     switch (ch) {
@@ -80,8 +75,8 @@ static std::string escapify(const char* buf, int len) {
       default:
         const char hex[] = "0123456789abcdef";
         s << "\\x";
-        s << hex[(ch >> 4) & 0xf];
-        s << hex[(ch >> 0) & 0xf];
+        s << UNSAFE_TODO(hex[(ch >> 4) & 0xf]);
+        s << UNSAFE_TODO(hex[(ch >> 0) & 0xf]);
         break;
     }
   }
@@ -803,9 +798,9 @@ void TorControl::ReadDone(int rv) {
   for (int i = 0; i < rv; i++) {
     if (!read_cr_) {
       // No CR yet.  Accept CR or non-LF; reject LF.
-      if (data[i] == 0x0d) {  // CR
+      if (UNSAFE_TODO(data[i]) == 0x0d) {  // CR
         read_cr_ = true;
-      } else if (data[i] == 0x0a) {  // LF
+      } else if (UNSAFE_TODO(data[i]) == 0x0a) {  // LF
         VLOG(1) << "tor: stray line feed";
         Error();
         return;
@@ -814,7 +809,7 @@ void TorControl::ReadDone(int rv) {
       }
     } else {
       // CR seen.  Accept LF; reject all else.
-      if (data[i] == 0x0a) {  // LF
+      if (UNSAFE_TODO(data[i]) == 0x0a) {  // LF
         // CRLF seen, so we must have i >= 2.  Emit a line and advance
         // to the next one, unless anything went wrong with the line.
         assert(i >= 1);

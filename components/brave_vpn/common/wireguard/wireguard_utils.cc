@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
 
 #include <stdint.h>
@@ -17,6 +11,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/compiler_specific.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -86,8 +81,8 @@ WireguardKeyPair GenerateNewX25519Keypair() {
   uint8_t pubkey[32] = {}, privkey[32] = {};
   X25519_keypair(pubkey, privkey);
   return std::make_tuple(
-      EncodeBase64(std::vector<uint8_t>(pubkey, pubkey + 32)),
-      EncodeBase64(std::vector<uint8_t>(privkey, privkey + 32)));
+      EncodeBase64(std::vector<uint8_t>(pubkey, UNSAFE_TODO(pubkey + 32))),
+      EncodeBase64(std::vector<uint8_t>(privkey, UNSAFE_TODO(privkey + 32))));
 }
 
 std::optional<std::string> ValidateKey(const std::string& key,

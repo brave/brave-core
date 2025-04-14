@@ -3,15 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(crbug.com/ABC): Remove this and convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/third_party/blink/renderer/platform/brave_audio_farbling_helper.h"
 
 #include <limits.h>
 
+#include "base/compiler_specific.h"
 #include "third_party/blink/renderer/platform/audio/audio_utilities.h"
 
 namespace blink {
@@ -60,17 +56,18 @@ void BraveAudioFarblingHelper::FarbleFloatTimeDomainData(
     for (size_t i = 0; i < len; ++i) {
       v = lfsr_next(v);
       float value = (v / maxUInt64AsDouble) / 10;
-      destination[i] = value;
+      UNSAFE_TODO(destination[i]) = value;
     }
   } else {
     for (size_t i = 0; i < len; ++i) {
       // Buffer access is protected due to modulo operation.
       float value =
           fudge_factor_ *
-          input_buffer[(i + write_index - fft_size + input_buffer_size) %
-                       input_buffer_size];
+          UNSAFE_TODO(
+              input_buffer[(i + write_index - fft_size + input_buffer_size) %
+                           input_buffer_size]);
 
-      destination[i] = value;
+      UNSAFE_TODO(destination[i]) = value;
     }
   }
 }
@@ -100,15 +97,16 @@ void BraveAudioFarblingHelper::FarbleByteTimeDomainData(
         scaled_value = UCHAR_MAX;
       }
 
-      destination[i] = static_cast<unsigned char>(scaled_value);
+      UNSAFE_TODO(destination[i]) = static_cast<unsigned char>(scaled_value);
     }
   } else {
     for (size_t i = 0; i < len; ++i) {
       // Buffer access is protected due to modulo operation.
       float value =
           fudge_factor_ *
-          input_buffer[(i + write_index - fft_size + input_buffer_size) %
-                       input_buffer_size];
+          UNSAFE_TODO(
+              input_buffer[(i + write_index - fft_size + input_buffer_size) %
+                           input_buffer_size]);
 
       // Scale from nominal -1 -> +1 to unsigned byte.
       double scaled_value = 128 * (value + 1);
@@ -121,7 +119,7 @@ void BraveAudioFarblingHelper::FarbleByteTimeDomainData(
         scaled_value = UCHAR_MAX;
       }
 
-      destination[i] = static_cast<unsigned char>(scaled_value);
+      UNSAFE_TODO(destination[i]) = static_cast<unsigned char>(scaled_value);
     }
   }
 }
@@ -153,11 +151,11 @@ void BraveAudioFarblingHelper::FarbleConvertToByteData(
         scaled_value = UCHAR_MAX;
       }
 
-      destination[i] = static_cast<unsigned char>(scaled_value);
+      UNSAFE_TODO(destination[i]) = static_cast<unsigned char>(scaled_value);
     }
   } else {
     for (size_t i = 0; i < len; ++i) {
-      float linear_value = fudge_factor_ * source[i];
+      float linear_value = fudge_factor_ * UNSAFE_TODO(source[i]);
       double db_mag = audio_utilities::LinearToDecibels(linear_value);
 
       // The range m_minDecibels to m_maxDecibels will be scaled to byte values
@@ -173,7 +171,7 @@ void BraveAudioFarblingHelper::FarbleConvertToByteData(
         scaled_value = UCHAR_MAX;
       }
 
-      destination[i] = static_cast<unsigned char>(scaled_value);
+      UNSAFE_TODO(destination[i]) = static_cast<unsigned char>(scaled_value);
     }
   }
 }
@@ -188,13 +186,13 @@ void BraveAudioFarblingHelper::FarbleConvertFloatToDb(const float* source,
       v = lfsr_next(v);
       float linear_value = (v / maxUInt64AsDouble) / 10;
       double db_mag = audio_utilities::LinearToDecibels(linear_value);
-      destination[i] = static_cast<float>(db_mag);
+      UNSAFE_TODO(destination[i]) = static_cast<float>(db_mag);
     }
   } else {
     for (size_t i = 0; i < len; ++i) {
-      float linear_value = fudge_factor_ * source[i];
+      float linear_value = fudge_factor_ * UNSAFE_TODO(source[i]);
       double db_mag = audio_utilities::LinearToDecibels(linear_value);
-      destination[i] = static_cast<float>(db_mag);
+      UNSAFE_TODO(destination[i]) = static_cast<float>(db_mag);
     }
   }
 }

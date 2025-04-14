@@ -3,15 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
-#include "chrome/install_static/product_install_details.h"
-
 #include "base/base_paths.h"
+#include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/i18n/case_conversion.h"
 #include "base/path_service.h"
@@ -23,6 +16,7 @@
 #include "chrome/install_static/install_constants.h"
 #include "chrome/install_static/install_details.h"
 #include "chrome/install_static/install_modes.h"
+#include "chrome/install_static/product_install_details.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

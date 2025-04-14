@@ -3,15 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(crbug.com/ABC): Remove this and convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 
 #include <string_view>
 
+#include "base/compiler_specific.h"
 #include "base/debug/alias.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
@@ -365,7 +361,8 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
   base::span<UChar> destination;
   WTF::String value = WTF::String::CreateUninitialized(length, destination);
   for (auto& c : destination) {
-    c = kLettersForRandomStrings[v % kLettersForRandomStringsLength];
+    c = UNSAFE_TODO(
+        kLettersForRandomStrings[v % kLettersForRandomStringsLength]);
     v = lfsr_next(v);
   }
   return value;

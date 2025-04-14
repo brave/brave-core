@@ -3,13 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "components/permissions/permissions_client.h"
+
+#include "base/compiler_specific.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -38,17 +34,18 @@ TEST_F(PermissionsClientUnitTest, BraveCanBypassEmbeddingOriginCheck) {
   for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); ++i) {
     GURL embedding_origin("https://test.com");
     EXPECT_TRUE(client->BraveCanBypassEmbeddingOriginCheck(
-        cases[i].requesting_origin, embedding_origin, cases[i].type))
+        UNSAFE_TODO(cases[i]).requesting_origin, embedding_origin,
+        UNSAFE_TODO(cases[i]).type))
         << "case: " << i;
 
     GURL embedding_origin_with_port("https://test.com:123");
     EXPECT_TRUE(client->BraveCanBypassEmbeddingOriginCheck(
-        cases[i].requesting_origin_with_port, embedding_origin_with_port,
-        cases[i].type))
+        UNSAFE_TODO(cases[i]).requesting_origin_with_port,
+        embedding_origin_with_port, UNSAFE_TODO(cases[i]).type))
         << "case: " << i;
 
     EXPECT_FALSE(client->BraveCanBypassEmbeddingOriginCheck(
-        cases[i].requesting_origin, embedding_origin,
+        UNSAFE_TODO(cases[i]).requesting_origin, embedding_origin,
         ContentSettingsType::GEOLOCATION))
         << "case: " << i;
   }

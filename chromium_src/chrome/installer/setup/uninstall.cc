@@ -3,12 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
+#include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
@@ -50,15 +45,18 @@ void DeleteBraveFileKeys(HKEY root) {
   // http://msdn.microsoft.com/en-us/library/bb166549
   std::wstring file_assoc_key;
   std::wstring open_with_progids_key;
-  for (int i = 0; ShellUtil::kPotentialFileAssociations[i] != nullptr; ++i) {
+  for (int i = 0;
+       UNSAFE_TODO(ShellUtil::kPotentialFileAssociations[i]) != nullptr; ++i) {
     file_assoc_key.assign(ShellUtil::kRegClasses);
     file_assoc_key.push_back(base::FilePath::kSeparators[0]);
-    file_assoc_key.append(ShellUtil::kPotentialFileAssociations[i]);
+    file_assoc_key.append(
+        UNSAFE_TODO(ShellUtil::kPotentialFileAssociations[i]));
     file_assoc_key.push_back(base::FilePath::kSeparators[0]);
 
     open_with_progids_key.assign(file_assoc_key);
     open_with_progids_key.append(ShellUtil::kRegOpenWithProgids);
-    if (ShouldUseFileTypeProgId(ShellUtil::kPotentialFileAssociations[i])) {
+    if (ShouldUseFileTypeProgId(
+            UNSAFE_TODO(ShellUtil::kPotentialFileAssociations[i]))) {
       DeleteRegistryValue(root, open_with_progids_key, WorkItem::kWow64Default,
                           GetProgIdForFileType());
     }

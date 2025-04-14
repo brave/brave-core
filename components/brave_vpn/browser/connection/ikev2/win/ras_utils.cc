@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_vpn/browser/connection/ikev2/win/ras_utils.h"
 
 #include <windows.h>
@@ -20,6 +14,7 @@
 #include <optional>
 
 #include "base/command_line.h"
+#include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_file.h"
@@ -265,12 +260,12 @@ RasOperationResult DisconnectEntry(const std::wstring& entry_name) {
               << " : The following RAS connections are currently active:"
               << dw_connections;
       for (DWORD i = 0; i < dw_connections; i++) {
-        std::wstring name(lp_ras_conn[i].szEntryName);
-        std::wstring type(lp_ras_conn[i].szDeviceType);
+        std::wstring name(UNSAFE_TODO(lp_ras_conn[i]).szEntryName);
+        std::wstring type(UNSAFE_TODO(lp_ras_conn[i]).szDeviceType);
         VLOG(2) << __func__ << " : " << name << ", " << type;
         if (name.compare(entry_name) == 0 && type.compare(L"VPN") == 0) {
           VLOG(2) << __func__ << " : Disconnect... " << entry_name;
-          dw_ret = RasHangUp(lp_ras_conn[i].hrasconn);
+          dw_ret = RasHangUp(UNSAFE_TODO(lp_ras_conn[i]).hrasconn);
           if (dw_ret != ERROR_SUCCESS) {
             caller = "RasHangUp()";
           }
@@ -679,8 +674,8 @@ CheckConnectionResult CheckConnection(const std::wstring& entry_name) {
   // If successful, find connection with |entry_name|.
   CheckConnectionResult result = CheckConnectionResult::DISCONNECTED;
   for (DWORD i = 0; i < dw_connections; i++) {
-    if (entry_name.compare(lp_ras_conn[i].szEntryName) == 0) {
-      result = GetConnectionState(lp_ras_conn[i].hrasconn);
+    if (entry_name.compare(UNSAFE_TODO(lp_ras_conn[i]).szEntryName) == 0) {
+      result = GetConnectionState(UNSAFE_TODO(lp_ras_conn[i]).hrasconn);
       break;
     }
   }

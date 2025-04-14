@@ -3,17 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/tor/tor_file_watcher.h"
 
 #include <string>
 #include <utility>
 
+#include "base/compiler_specific.h"
 #include "base/files/file.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
@@ -201,7 +196,7 @@ bool TorFileWatcher::EatControlCookie(std::vector<uint8_t>& cookie,
   // indicate the file is abnormally large.
   constexpr size_t kBufSiz = 33;
   char buf[kBufSiz];
-  int nread = cookiefile.ReadAtCurrentPos(buf, kBufSiz);
+  int nread = UNSAFE_TODO(cookiefile.ReadAtCurrentPos(buf, kBufSiz));
   if (nread <= 0) {
     VLOG(0) << "tor: failed to read Tor control auth cookie";
     return false;
@@ -212,7 +207,7 @@ bool TorFileWatcher::EatControlCookie(std::vector<uint8_t>& cookie,
   }
 
   // Success!
-  cookie.assign(buf, buf + nread);
+  cookie.assign(buf, UNSAFE_TODO(buf + nread));
   mtime = info.last_accessed;
   VLOG(3) << "Control cookie " << base::HexEncode(buf, nread) << ", mtime "
           << mtime;
@@ -246,7 +241,7 @@ bool TorFileWatcher::EatControlPort(int& port, base::Time& mtime) {
   // Read up to 27/28 octets, the maximum we will ever need.
   const size_t kBufSiz = sizeof(kControlPortMaxTmpl);
   char buf[kBufSiz];
-  int nread = portfile.ReadAtCurrentPos(buf, sizeof buf);
+  int nread = UNSAFE_TODO(portfile.ReadAtCurrentPos(buf, sizeof buf));
   if (nread < 0) {
     VLOG(0) << "tor: failed to read control port";
     return false;
@@ -260,7 +255,7 @@ bool TorFileWatcher::EatControlPort(int& port, base::Time& mtime) {
     return false;
   }
 
-  buf[nread] = '\0';
+  UNSAFE_TODO(buf[nread]) = '\0';
   std::string text(buf);
 
   // Sanity-check the content.
