@@ -468,24 +468,27 @@ class WebKitTabState: TabState, TabStateImpl {
     true
   }
 
-  @MainActor func takeSnapshot(rect: CGRect) async -> UIImage? {
-    guard let webView else { return nil }
+  // There is a bug in WebKit where if you call -[WKWebView takeSnapshotWithConfiguration:...]
+  // multiple times without waiting for the result the completion handlers are disassociated with
+  // the caller, which means if you use Swift Concurrency you can't rely on the closure being
+  // called (leaked continuation), and you cant rely on it being called only once (resumed
+  // continuation more than once), so we have to ensure we use the standard closure based
+  // implementation and allow the calling of `handler` more than once using a standard closure
+  func takeSnapshot(rect: CGRect, handler: @escaping (UIImage?) -> Void) {
+    guard let webView else {
+      handler(nil)
+      return
+    }
     let configuration = WKSnapshotConfiguration()
     configuration.rect = rect
 
-    do {
-      return try await withCheckedThrowingContinuation { continuation in
-        webView.takeSnapshot(with: configuration) { image, error in
-          if let error {
-            continuation.resume(throwing: error)
-            return
-          }
-          continuation.resume(returning: image)
-        }
+    webView.takeSnapshot(with: configuration) { image, error in
+      if let error {
+        Logger.module.error("Failed to take snapshot for web view: \(error)")
+        handler(nil)
+        return
       }
-    } catch {
-      Logger.module.error("Failed to take snapshot for web view: \(error)")
-      return nil
+      handler(image)
     }
   }
 

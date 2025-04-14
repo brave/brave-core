@@ -37,8 +37,8 @@ class ScreenshotHelper {
       if !tab.canTakeSnapshot {
         return
       }
-      Task { @MainActor in
-        let image = await tab.takeSnapshot(rect: .null)
+      tab.takeSnapshot(rect: .null) { [weak tab] image in
+        guard let tab else { return }
         if let image = image {
           tab.browserData?.setScreenshot(image)
         } else {
