@@ -8,6 +8,8 @@ source_set("service") {
     "ads_service.cc",
     "ads_service.h",
     "ads_service_observer.h",
+    "new_tab_page_ad_prefetcher.cc",
+    "new_tab_page_ad_prefetcher.h",
   ]
 
   public_deps = [

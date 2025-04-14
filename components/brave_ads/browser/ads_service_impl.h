@@ -67,6 +67,7 @@ class BatAdsServiceFactory;
 class DeviceId;
 class ResourceComponent;
 struct NewTabPageAdInfo;
+class NewTabPageAdPrefetcher;
 
 class AdsServiceImpl final : public AdsService,
                              public bat_ads::mojom::BatAdsClient,
@@ -203,10 +204,6 @@ class AdsServiceImpl final : public AdsService,
   void NotificationAdTimedOut(const std::string& placement_id);
   void CloseAllNotificationAds();
 
-  // TODO(https://github.com/brave/brave-browser/issues/26192) Decouple new
-  // tab page ad business logic.
-  void PrefetchNewTabPageAdCallback(std::optional<base::Value::Dict> dict);
-
   // TODO(https://github.com/brave/brave-browser/issues/26193) Decouple open
   // new tab with ad business logic.
   void MaybeOpenNewTabWithAd();
@@ -273,6 +270,7 @@ class AdsServiceImpl final : public AdsService,
   void ParseAndSaveNewTabPageAds(
       base::Value::Dict dict,
       ParseAndSaveNewTabPageAdsCallback callback) override;
+  void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -456,9 +454,6 @@ class AdsServiceImpl final : public AdsService,
   std::map<std::string, std::unique_ptr<base::OneShotTimer>>
       notification_ad_timers_;
 
-  std::optional<NewTabPageAdInfo> prefetched_new_tab_page_ad_;
-  bool is_prefetching_new_tab_page_ad_ = false;
-
   std::optional<std::string> retry_opening_new_tab_for_ad_with_placement_id_;
 
   base::CancelableTaskTracker history_service_task_tracker_;
@@ -488,6 +483,8 @@ class AdsServiceImpl final : public AdsService,
   const std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
 
   const std::unique_ptr<DeviceId> device_id_;
+
+  std::unique_ptr<NewTabPageAdPrefetcher> new_tab_page_ad_prefetcher_;
 
   const std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory_;
 
