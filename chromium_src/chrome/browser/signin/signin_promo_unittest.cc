@@ -6,22 +6,27 @@
 #include "src/chrome/browser/signin/signin_promo_unittest.cc"
 
 namespace signin {
+
 #if BUILDFLAG(ENABLE_DICE_SUPPORT)
 
-class ShowSigninPromoTestWithFeatureFlagsIsDisabled
-    : public ShowSigninPromoTestWithFeatureFlags {};
+// Creating a derived class, so disabling
+// `ShowSigninPromoTestExplicitBrowserSignin` in filter files won't affect these
+// disable tests.
+class ShowSigninPromoTestExplicitBrowserSigninIsDisabled
+    : public ShowSigninPromoTestExplicitBrowserSignin {};
 
-TEST_F(ShowSigninPromoTestWithFeatureFlagsIsDisabled, ShowPromoWithNoAccount) {
+TEST_F(ShowSigninPromoTestExplicitBrowserSigninIsDisabled,
+       ShowPromoWithNoAccount) {
   EXPECT_FALSE(ShouldShowPasswordSignInPromo(*profile()));
 }
 
-TEST_F(ShowSigninPromoTestWithFeatureFlagsIsDisabled,
+TEST_F(ShowSigninPromoTestExplicitBrowserSigninIsDisabled,
        ShowPromoWithWebSignedInAccount) {
   MakeAccountAvailable(identity_manager(), "test@email.com");
   EXPECT_FALSE(ShouldShowPasswordSignInPromo(*profile()));
 }
 
-TEST_F(ShowSigninPromoTestWithFeatureFlagsIsDisabled,
+TEST_F(ShowSigninPromoTestExplicitBrowserSigninIsDisabled,
        ShowPromoWithSignInPendingAccount) {
   AccountInfo info = MakePrimaryAccountAvailable(
       identity_manager(), "test@email.com", ConsentLevel::kSignin);
@@ -29,11 +34,13 @@ TEST_F(ShowSigninPromoTestWithFeatureFlagsIsDisabled,
   EXPECT_FALSE(ShouldShowPasswordSignInPromo(*profile()));
 }
 
-TEST_F(ShowSigninPromoTestWithFeatureFlagsIsDisabled, DoNotShowAddressPromo) {
+TEST_F(ShowSigninPromoTestExplicitBrowserSigninIsDisabled,
+       DoNotShowAddressPromo) {
   ASSERT_FALSE(ShouldShowAddressSignInPromo(*profile(), CreateAddress()));
 }
 
-TEST_F(ShowSigninPromoTestWithFeatureFlagsIsDisabled, DoNotShowBookmarkPromo) {
+TEST_F(ShowSigninPromoTestExplicitBrowserSigninIsDisabled,
+       DoNotShowBookmarkPromo) {
   ASSERT_FALSE(ShouldShowBookmarkSignInPromo(*profile()));
 }
 
