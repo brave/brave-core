@@ -23,8 +23,6 @@ namespace test {
 
 class BraveAdsConversionsTestBase : public TestBase {
  public:
-  BraveAdsConversionsTestBase();
-
   BraveAdsConversionsTestBase(const BraveAdsConversionsTestBase&) = delete;
   BraveAdsConversionsTestBase& operator=(const BraveAdsConversionsTestBase&) =
       delete;
@@ -36,6 +34,8 @@ class BraveAdsConversionsTestBase : public TestBase {
   void TearDown() override;
 
  protected:
+  BraveAdsConversionsTestBase();
+
   void VerifyOnDidConvertAdExpectation(
       const AdInfo& ad,
       ConversionActionType action_type,

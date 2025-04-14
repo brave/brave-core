@@ -16,6 +16,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_interface.h"
 
 class GURL;
 
@@ -24,7 +25,9 @@ namespace brave_ads {
 // A testing implementation of `AdsClientNotifier` designed to ensure that
 // background tasks execute until there are no remaining tasks.
 
-class AdsClientNotifierForTesting : public AdsClientNotifier {
+class AdsClientNotifierObserver;
+
+class AdsClientNotifierForTesting : public AdsClientNotifierInterface {
  public:
   AdsClientNotifierForTesting();
 
@@ -42,22 +45,19 @@ class AdsClientNotifierForTesting : public AdsClientNotifier {
     task_environment_ = task_environment;
   }
 
+  // AdsClientNotifierInterface:
+  void AddObserver(AdsClientNotifierObserver* observer) override;
+  void RemoveObserver(AdsClientNotifierObserver* observer) override;
   void NotifyPendingObservers() override;
-
   void NotifyDidInitializeAds() override;
-
   void NotifyLocaleDidChange(const std::string& locale) override;
-
   void NotifyPrefDidChange(const std::string& path) override;
-
   void NotifyResourceComponentDidChange(const std::string& manifest_version,
                                         const std::string& id) override;
   void NotifyDidUnregisterResourceComponent(const std::string& id) override;
-
   void NotifyRewardsWalletDidUpdate(
       const std::string& payment_id,
       const std::string& recovery_seed_base64) override;
-
   void NotifyTabTextContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,
                                      const std::string& text) override;
@@ -73,19 +73,14 @@ class AdsClientNotifierForTesting : public AdsClientNotifier {
                           bool is_visible) override;
   void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
-
   void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;
-
   void NotifyUserDidBecomeIdle() override;
   void NotifyUserDidBecomeActive(base::TimeDelta idle_time,
                                  bool screen_was_locked) override;
-
   void NotifyBrowserDidEnterForeground() override;
   void NotifyBrowserDidEnterBackground() override;
-
   void NotifyBrowserDidBecomeActive() override;
   void NotifyBrowserDidResignActive() override;
-
   void NotifyDidSolveAdaptiveCaptcha() override;
 
   // Simulate helper functions.
@@ -105,6 +100,8 @@ class AdsClientNotifierForTesting : public AdsClientNotifier {
 
   raw_ptr<base::test::TaskEnvironment> task_environment_ =
       nullptr;  // Not owned.
+
+  AdsClientNotifier ads_client_notifier_;
 
   std::optional<int32_t> visible_tab_id_;
   std::map</*tab_id*/ int32_t, std::vector<GURL>> redirect_chains_;
