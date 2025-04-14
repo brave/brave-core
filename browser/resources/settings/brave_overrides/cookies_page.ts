@@ -66,17 +66,15 @@ const BraveSettingsCookiePageBehavior = {
   ready: function (this: SettingsCookiesPageElement) {
     const siteList = this.shadowRoot!.getElementById('allow3pcExceptionsList')
     if (!siteList) {
-      console.error(
+      throw new Error(
         '[Brave Settings Overrides] Could not find allow3pcExceptionsList'
       )
-      return
     }
     const listHeader = siteList.shadowRoot!.getElementById('listHeader')
     if (!listHeader) {
-      console.error(
+      throw new Error(
         '[Brave Settings Overrides] Could not find allow3pcExceptionsList'
       )
-      return
     }
     const wrapper = document.createElement('div')
     listHeader.parentNode!.insertBefore(wrapper, listHeader)

@@ -27,7 +27,7 @@ class BravePrefProvider : public PrefProvider, public Observer {
   enum class CookieType {
     kRegularCookie,
     kShieldsDownCookie,
-    kCustomShielsCookie,
+    kCustomShieldsCookie,
     kGoogleSignInCookie,
   };
 

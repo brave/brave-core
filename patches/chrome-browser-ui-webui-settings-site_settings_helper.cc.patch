@@ -46,7 +46,7 @@ index e5e4877a45971b773704a139a88dede0efc31eff..c75608e4a0d4cf26224f0a55b48fad66
    exception.Set(kSource, SiteSettingSourceToString(source));
    exception.Set(kIncognito, incognito);
    exception.Set(kIsEmbargoed, is_embargoed);
-+  BRAVE_GET_EXCTEPTION_FOR_PAGE
++  BRAVE_GET_EXCEPTION_FOR_PAGE
    return exception;
  }
  

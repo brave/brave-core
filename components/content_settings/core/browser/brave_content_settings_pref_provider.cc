@@ -159,8 +159,9 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   // Incognito inherits from regular profile, so nothing to do.
   // Guest doesn't inherit, but only keeps settings for the duration of the
   // session, so also nothing to do.
-  if (incognito)
+  if (incognito) {
     return;
+  }
 
   const int version = prefs_->GetInteger(kBraveShieldsSettingsVersion);
   const auto& shields_cookies = prefs_->GetDict(kObsoleteShieldCookies);
@@ -179,8 +180,9 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
       content_settings::ContentSettingsRegistry::GetInstance();
   for (const auto content_type : kNoWildcardTypes) {
     const auto* info = content_settings->Get(content_type);
-    if (!info)
+    if (!info) {
       continue;
+    }
 
     // We need to bind PostTask to break the stack trace because if we get there
     // from the sync the ChangeProcessor will ignore this update.
@@ -250,16 +252,18 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
 
         // For "ads" and "cookies" we need to adapt the name to the new one,
         // otherwise it will refer to upstream's "ads" and "cookies" settings.
-        if (resource_identifier == brave_shields::kObsoleteAds)
+        if (resource_identifier == brave_shields::kObsoleteAds) {
           shields_preference_name = brave_shields::kAds;
-        else if (resource_identifier == brave_shields::kObsoleteCookies)
+        } else if (resource_identifier == brave_shields::kObsoleteCookies) {
           shields_preference_name = brave_shields::kObsoleteShieldsCookies;
-        else
+        } else {
           shields_preference_name = resource_identifier;
+        }
 
         // Protect against non registered paths (unlikely, but possible).
-        if (!IsShieldsContentSettingsTypeName(shields_preference_name))
+        if (!IsShieldsContentSettingsTypeName(shields_preference_name)) {
           continue;
+        }
 
         // Drop a "global" value of brave shields, that actually shouldn't exist
         // at all since we don't have any global toggle for this.
@@ -313,12 +317,14 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIdsForOneType(
 
 void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {
   // Check if migration is needed.
-  if (prefs_->GetInteger(kBraveShieldsSettingsVersion) != 1)
+  if (prefs_->GetInteger(kBraveShieldsSettingsVersion) != 1) {
     return;
+  }
 
   // All sources in Brave-specific ContentSettingsType(s) we want to migrate.
-  for (const auto& content_type : GetShieldsContentSettingsTypes())
+  for (const auto& content_type : GetShieldsContentSettingsTypes()) {
     MigrateShieldsSettingsV1ToV2ForOneType(content_type);
+  }
 
   // ContentSettingsType::JAVASCRIPT.
   MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType::JAVASCRIPT);
@@ -329,8 +335,9 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {
 
 void BravePrefProvider::MigrateShieldsSettingsV2ToV3() {
   // Check if migration is needed.
-  if (prefs_->GetInteger(kBraveShieldsSettingsVersion) != 2)
+  if (prefs_->GetInteger(kBraveShieldsSettingsVersion) != 2) {
     return;
+  }
 
   const ContentSettingsPattern& wildcard = ContentSettingsPattern::Wildcard();
   const ContentSettingsPattern first_party(
@@ -394,8 +401,9 @@ void BravePrefProvider::MigrateShieldsSettingsV2ToV3() {
 }
 
 void BravePrefProvider::MigrateShieldsSettingsV3ToV4(int start_version) {
-  if (prefs_->GetInteger(kBraveShieldsSettingsVersion) != 3)
+  if (prefs_->GetInteger(kBraveShieldsSettingsVersion) != 3) {
     return;
+  }
 
   if (start_version == 3) {
     // Because of
@@ -453,8 +461,9 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
 }
 
 void BravePrefProvider::MigrateFingerprintingSettings() {
-  if (prefs_->GetBoolean(kBraveShieldsFPSettingsMigration) || off_the_record_)
+  if (prefs_->GetBoolean(kBraveShieldsFPSettingsMigration) || off_the_record_) {
     return;
+  }
 
   // Find rules that can be migrated and create replacement rules for them.
   std::vector<std::unique_ptr<Rule>> rules;
@@ -486,8 +495,9 @@ void BravePrefProvider::MigrateFingerprintingSettings() {
 }
 
 void BravePrefProvider::MigrateFingerprintingSetingsToOriginScoped() {
-  if (off_the_record_)
+  if (off_the_record_) {
     return;
+  }
 
   // Find rules that can be migrated and create replacement rules for them.
   std::vector<std::unique_ptr<Rule>> rules;
@@ -613,8 +623,9 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
       content_settings::ValueToContentSetting(in_value) !=
           CONTENT_SETTING_DEFAULT &&
       secondary_pattern ==
-          ContentSettingsPattern::FromString("https://balanced/*"))
+          ContentSettingsPattern::FromString("https://balanced/*")) {
     return false;
+  }
 
   return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
                                          content_type, std::move(in_value),
@@ -672,7 +683,7 @@ BravePrefProvider::CookieType BravePrefProvider::GetCookieType(
   }
 
   if (find_cookie(brave_cookie_rules_.at(incognito))) {
-    return CookieType::kCustomShielsCookie;
+    return CookieType::kCustomShieldsCookie;
   }
 
   const bool google_sign_in_flag_enabled =
