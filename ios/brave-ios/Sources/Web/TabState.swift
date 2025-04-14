@@ -189,8 +189,8 @@ public protocol TabState: AnyObject {
   /// Whether or not the TabState can be captured in a snapshot
   var canTakeSnapshot: Bool { get }
   /// Takes a snapshot of the web contents with the given rect. Pass in a `null` rect to capture
-  /// the entire page
-  func takeSnapshot(rect: CGRect) async -> UIImage?
+  /// the entire page. `handler` may be called more than once
+  func takeSnapshot(rect: CGRect, handler: @escaping (UIImage?) -> Void)
   /// Creates a full page PDF of the web contents
   func createFullPagePDF() async throws -> Data?
   /// Presents the find in page interaction using the provided text as an initial search query

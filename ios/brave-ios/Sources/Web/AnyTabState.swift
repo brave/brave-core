@@ -161,8 +161,8 @@ public class AnyTabState: TabState {
     tab.canTakeSnapshot
   }
 
-  public func takeSnapshot(rect: CGRect) async -> UIImage? {
-    await tab.takeSnapshot(rect: rect)
+  public func takeSnapshot(rect: CGRect, handler: @escaping (UIImage?) -> Void) {
+    tab.takeSnapshot(rect: rect, handler: handler)
   }
 
   public func createFullPagePDF() async throws -> Data? {
