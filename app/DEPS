@@ -65,6 +65,7 @@ include_rules += [
   "+components/translate/core/common/translate_util.h",
   "+google_apis/gaia/gaia_switches.h",
   "+services/network/public/cpp/is_potentially_trustworthy.h",
+  "+services/network/public/cpp/network_switches.h",
 ]
 
 specific_include_rules = {
