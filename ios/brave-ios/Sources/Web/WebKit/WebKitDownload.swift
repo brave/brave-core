@@ -24,18 +24,9 @@ class WebKitDownload: Download {
     self.webView = download.webView
     self.downloadDecisionHandler = downloadDecisionHandler
 
-    // The original url is the download's url
-    var originalURL = download.originalRequest?.url
-
-    // For downloads that are data URI (base64), the original url is the page/frame's url
-    // IE: It's the main document url of that frame.
-    if originalURL?.scheme == "data" {
-      originalURL = download.originalRequest?.mainDocumentURL
-    }
-
     super.init(
       suggestedFilename: suggestedFileName,
-      originalURL: originalURL,
+      originalURL: download.originalRequest?.url,
       mimeType: response.mimeType
     )
 
