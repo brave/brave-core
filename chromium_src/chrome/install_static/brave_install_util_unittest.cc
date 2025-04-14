@@ -3,16 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include <objbase.h>
 
 #include <tuple>
 
+#include "base/compiler_specific.h"
 #include "base/stl_util.h"
 #include "base/test/test_reg_util_win.h"
 #include "chrome/chrome_elf/nt_registry/nt_registry.h"
@@ -357,7 +352,7 @@ TEST_P(InstallStaticUtilTest, GetChromeInstallSubDirectory) {
   static_assert(std::size(kInstallDirs) == NUM_INSTALL_MODES,
                 "kInstallDirs out of date.");
   EXPECT_THAT(GetChromeInstallSubDirectory(),
-              StrCaseEq(kInstallDirs[std::get<0>(GetParam())]));
+              StrCaseEq(UNSAFE_TODO(kInstallDirs[std::get<0>(GetParam())])));
 }
 
 TEST_P(InstallStaticUtilTest, GetRegistryPath) {
@@ -380,7 +375,7 @@ TEST_P(InstallStaticUtilTest, GetRegistryPath) {
   static_assert(std::size(kRegistryPaths) == NUM_INSTALL_MODES,
                 "kRegistryPaths out of date.");
   EXPECT_THAT(GetRegistryPath(),
-              StrCaseEq(kRegistryPaths[std::get<0>(GetParam())]));
+              StrCaseEq(UNSAFE_TODO(kRegistryPaths[std::get<0>(GetParam())])));
 }
 
 TEST_P(InstallStaticUtilTest, GetUninstallRegistryPath) {
@@ -407,8 +402,9 @@ TEST_P(InstallStaticUtilTest, GetUninstallRegistryPath) {
 #endif
   static_assert(std::size(kUninstallRegistryPaths) == NUM_INSTALL_MODES,
                 "kUninstallRegistryPaths out of date.");
-  EXPECT_THAT(GetUninstallRegistryPath(),
-              StrCaseEq(kUninstallRegistryPaths[std::get<0>(GetParam())]));
+  EXPECT_THAT(
+      GetUninstallRegistryPath(),
+      StrCaseEq(UNSAFE_TODO(kUninstallRegistryPaths[std::get<0>(GetParam())])));
 }
 
 TEST_P(InstallStaticUtilTest, GetAppGuid) {
@@ -444,7 +440,8 @@ TEST_P(InstallStaticUtilTest, GetBaseAppId) {
 #endif
   static_assert(std::size(kBaseAppIds) == NUM_INSTALL_MODES,
                 "kBaseAppIds out of date.");
-  EXPECT_THAT(GetBaseAppId(), StrCaseEq(kBaseAppIds[std::get<0>(GetParam())]));
+  EXPECT_THAT(GetBaseAppId(),
+              StrCaseEq(UNSAFE_TODO(kBaseAppIds[std::get<0>(GetParam())])));
 }
 
 TEST_P(InstallStaticUtilTest, GetToastActivatorClsid) {
@@ -501,14 +498,15 @@ TEST_P(InstallStaticUtilTest, GetToastActivatorClsid) {
                 "kToastActivatorClsids out of date.");
 
   EXPECT_EQ(GetToastActivatorClsid(),
-            kToastActivatorClsids[std::get<0>(GetParam())]);
+            UNSAFE_TODO(kToastActivatorClsids[std::get<0>(GetParam())]));
 
   constexpr int kCLSIDSize = 39;
   wchar_t clsid_str[kCLSIDSize];
   ASSERT_EQ(::StringFromGUID2(GetToastActivatorClsid(), clsid_str, kCLSIDSize),
             kCLSIDSize);
   EXPECT_THAT(clsid_str,
-              StrCaseEq(kToastActivatorClsidsString[std::get<0>(GetParam())]));
+              StrCaseEq(UNSAFE_TODO(
+                  kToastActivatorClsidsString[std::get<0>(GetParam())])));
 }
 
 TEST_P(InstallStaticUtilTest, UsageStatsAbsent) {
@@ -590,7 +588,8 @@ TEST_P(InstallStaticUtilTest, GetChromeChannel) {
     version_info::Channel::UNKNOWN,
   };
 #endif
-  EXPECT_EQ(kChannels[std::get<0>(GetParam())], GetChromeChannel());
+  EXPECT_EQ(UNSAFE_TODO(kChannels[std::get<0>(GetParam())]),
+            GetChromeChannel());
 }
 
 #if defined(OFFICIAL_BUILD)

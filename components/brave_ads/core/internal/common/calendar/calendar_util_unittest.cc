@@ -3,14 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
 
+#include "base/compiler_specific.h"
 #include "base/time/time.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -45,7 +40,8 @@ TEST(BraveAdsCalendarUtilTest, DaysInMonth) {
 
   // Act & Assert
   for (size_t i = 0; i < 12; ++i) {
-    EXPECT_EQ(kLastDayInMonth[i], DaysInMonth(/*year=*/2021, /*month=*/i + 1));
+    EXPECT_EQ(UNSAFE_TODO(kLastDayInMonth[i]),
+              DaysInMonth(/*year=*/2021, /*month=*/i + 1));
   }
 }
 
@@ -56,7 +52,8 @@ TEST(BraveAdsCalendarUtilTest, DaysInMonthForLeapYear) {
 
   // Act & Assert
   for (size_t i = 0; i < 12; ++i) {
-    EXPECT_EQ(kDaysInMonth[i], DaysInMonth(/*year=*/2020, /*month=*/i + 1));
+    EXPECT_EQ(UNSAFE_TODO(kDaysInMonth[i]),
+              DaysInMonth(/*year=*/2020, /*month=*/i + 1));
   }
 }
 

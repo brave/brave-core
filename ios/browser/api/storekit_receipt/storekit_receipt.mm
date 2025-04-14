@@ -3,16 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/ios/browser/api/storekit_receipt/storekit_receipt.h"
 
 #include <vector>
 
+#include "base/compiler_specific.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
@@ -71,8 +66,8 @@ NSString* decode_asn1_string(bssl::der::Input value) {
 
   if (type == V_ASN1_IA5STRING) {
     std::string result;
-    if (bssl::der::ParseIA5String(bssl::der::Input(base::span(
-                                      data, static_cast<std::size_t>(length))),
+    if (bssl::der::ParseIA5String(bssl::der::Input(UNSAFE_TODO(base::span(
+                                      data, static_cast<std::size_t>(length)))),
                                   &result)) {
       return base::SysUTF8ToNSString(result);
     }
@@ -326,9 +321,9 @@ bool pkcs7_get_signed_content(
     }
 
     for (auto&& octet : result) {
-      auto receipt_input_ = bssl::der::Input(base::span(
+      auto receipt_input_ = bssl::der::Input(UNSAFE_TODO(base::span(
           ASN1_STRING_data(octet.get()),
-          static_cast<std::size_t>(ASN1_STRING_length(octet.get()))));
+          static_cast<std::size_t>(ASN1_STRING_length(octet.get())))));
 
       if (receipt_input_.empty()) {
         VLOG(1) << "Cannot parse receipt data from PKCS7 container";

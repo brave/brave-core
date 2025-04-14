@@ -3,17 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_rewards/content/diagnostic_log.h"
 
 #include <memory>
 #include <utility>
 
+#include "base/compiler_specific.h"
 #include "base/files/file_util.h"
 #include "base/i18n/time_formatting.h"
 #include "base/strings/stringprintf.h"
@@ -126,12 +121,12 @@ int64_t SeekFromEnd(base::File* file, int num_lines) {
       return -1;
     }
 
-    if (file->ReadAtCurrentPos(chunk, chunk_size) == -1) {
+    if (UNSAFE_TODO(file->ReadAtCurrentPos(chunk, chunk_size)) == -1) {
       return -1;
     }
 
     for (int i = chunk_size - 1; i >= 0; i--) {
-      if (chunk[i] == '\n') {
+      if (UNSAFE_TODO(chunk[i]) == '\n') {
         line_count++;
         if (line_count == num_lines + 1) {
           return length;
@@ -170,7 +165,7 @@ bool TrimBeginningOfFile(base::File* file, int keep_num_lines) {
   const int64_t size = file->GetLength() - offset;
   std::unique_ptr<char[]> buffer = std::make_unique<char[]>(size + 1);
 
-  if (file->ReadAtCurrentPos(buffer.get(), size) == -1) {
+  if (UNSAFE_TODO(file->ReadAtCurrentPos(buffer.get(), size)) == -1) {
     return false;
   }
 
@@ -181,7 +176,7 @@ bool TrimBeginningOfFile(base::File* file, int keep_num_lines) {
   const std::string data = std::string(buffer.get());
   const int64_t new_size = data.size();
 
-  if (file->WriteAtCurrentPos(data.c_str(), new_size) == -1) {
+  if (UNSAFE_TODO(file->WriteAtCurrentPos(data.c_str(), new_size)) == -1) {
     return false;
   }
 
@@ -246,7 +241,7 @@ std::string ReadLastNLinesOnFileTaskRunner(const base::FilePath& file_path,
   const int64_t size = file.GetLength() - offset;
   std::unique_ptr<char[]> buffer = std::make_unique<char[]>(size + 1);
 
-  if (file.ReadAtCurrentPos(buffer.get(), size) == -1) {
+  if (UNSAFE_TODO(file.ReadAtCurrentPos(buffer.get(), size)) == -1) {
     return "";
   }
 
@@ -269,10 +264,11 @@ bool WriteOnFileTaskRunner(const base::FilePath& file_path,
 
   if (first_write) {
     const std::string divider = std::string(kDividerLength, '-') + "\n";
-    file.WriteAtCurrentPos(divider.c_str(), divider.length());
+    UNSAFE_TODO(file.WriteAtCurrentPos(divider.c_str(), divider.length()));
   }
 
-  if (file.WriteAtCurrentPos(log_entry.c_str(), log_entry.length()) == -1) {
+  if (UNSAFE_TODO(file.WriteAtCurrentPos(log_entry.c_str(),
+                                         log_entry.length())) == -1) {
     return false;
   }
 

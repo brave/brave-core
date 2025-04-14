@@ -3,16 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/tor/tor_control.h"
 
 #include <memory>
 
+#include "base/compiler_specific.h"
 #include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
@@ -70,11 +65,12 @@ TEST(TorControlTest, ParseQuoted) {
   for (i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
     std::string value;
     size_t end;
-    bool ok = TorControl::ParseQuoted(cases[i].input, &value, &end);
-    if (cases[i].output) {
+    bool ok =
+        TorControl::ParseQuoted(UNSAFE_TODO(cases[i]).input, &value, &end);
+    if (UNSAFE_TODO(cases[i]).output) {
       EXPECT_TRUE(ok) << i;
-      EXPECT_EQ(value, cases[i].output) << i;
-      EXPECT_EQ(end, cases[i].end) << i;
+      EXPECT_EQ(value, UNSAFE_TODO(cases[i]).output) << i;
+      EXPECT_EQ(end, UNSAFE_TODO(cases[i]).end) << i;
     } else {
       EXPECT_FALSE(ok) << i;
     }
@@ -102,22 +98,23 @@ TEST(TorControlTest, ParseKV) {
     std::string key;
     std::string value;
     size_t end;
-    bool ok = TorControl::ParseKV(cases[i].input, &key, &value, &end);
-    if (cases[i].value) {
-      EXPECT_TRUE(ok) << i << ": " << cases[i].input << "\nkey  : " << key
-                      << "\nvalue: " << value;
-      EXPECT_EQ(key, cases[i].key)
-          << i << ": " << cases[i].input << "\nkey  : " << key
+    bool ok =
+        TorControl::ParseKV(UNSAFE_TODO(cases[i]).input, &key, &value, &end);
+    if (UNSAFE_TODO(cases[i]).value) {
+      EXPECT_TRUE(ok) << i << ": " << UNSAFE_TODO(cases[i]).input
+                      << "\nkey  : " << key << "\nvalue: " << value;
+      EXPECT_EQ(key, UNSAFE_TODO(cases[i]).key)
+          << i << ": " << UNSAFE_TODO(cases[i]).input << "\nkey  : " << key
           << "\nvalue: " << value;
-      EXPECT_EQ(value, cases[i].value)
-          << i << ": " << cases[i].input << "\nkey  : " << key
+      EXPECT_EQ(value, UNSAFE_TODO(cases[i]).value)
+          << i << ": " << UNSAFE_TODO(cases[i]).input << "\nkey  : " << key
           << "\nvalue: " << value;
-      EXPECT_EQ(end, cases[i].end)
-          << i << ": " << cases[i].input << "\nkey  : " << key
+      EXPECT_EQ(end, UNSAFE_TODO(cases[i]).end)
+          << i << ": " << UNSAFE_TODO(cases[i]).input << "\nkey  : " << key
           << "\nvalue: " << value;
     } else {
-      EXPECT_FALSE(ok) << i << ": " << cases[i].input << "\nkey  : " << key
-                       << "\nvalue: " << value;
+      EXPECT_FALSE(ok) << i << ": " << UNSAFE_TODO(cases[i]).input
+                       << "\nkey  : " << key << "\nvalue: " << value;
     }
   }
 }

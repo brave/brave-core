@@ -3,18 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/p3a/nitro_utils/cose.h"
 
 #include <optional>
 #include <set>
 #include <string_view>
 
+#include "base/compiler_specific.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
@@ -47,8 +42,9 @@ bool ConvertCoseSignatureToDER(const std::vector<uint8_t>& input,
   if (!r_comp) {
     return false;
   }
-  BIGNUM* s_comp = BN_bin2bn(input.data() + kSignatureComponentSize,
-                             kSignatureComponentSize, nullptr);
+  BIGNUM* s_comp =
+      BN_bin2bn(UNSAFE_TODO(input.data() + kSignatureComponentSize),
+                kSignatureComponentSize, nullptr);
   if (!s_comp) {
     BN_free(r_comp);
     return false;
@@ -83,8 +79,8 @@ bool ConvertCoseSignatureToDER(const std::vector<uint8_t>& input,
   }
 
   const uint8_t* sig_cbb_data = CBB_data(&sig_cbb);
-  *output =
-      std::vector<uint8_t>(sig_cbb_data, sig_cbb_data + CBB_len(&sig_cbb));
+  *output = std::vector<uint8_t>(sig_cbb_data,
+                                 UNSAFE_TODO(sig_cbb_data + CBB_len(&sig_cbb)));
 
   CBB_cleanup(&sig_cbb);
   ECDSA_SIG_free(ecdsa_sig);

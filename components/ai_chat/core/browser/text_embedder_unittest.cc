@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
 
 #include <string.h>
@@ -17,6 +11,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/location.h"
 #include "base/path_service.h"
@@ -328,15 +323,16 @@ TEST_F(TextEmbedderUnitTest, RefineTopKSimilarity) {
   };
   for (size_t i = 0; i < sizeof(test_cases) / sizeof(test_cases[0]); ++i) {
     SCOPED_TRACE("Test case index: " + base::NumberToString(i));
-    SetSegments(embedder_.get(), test_cases[i].segments);
-    auto result = RefineTopKSimilarity(test_cases[i].ranked_sentences,
-                                       test_cases[i].context_limit);
-    if (test_cases[i].has_value) {
+    SetSegments(embedder_.get(), UNSAFE_TODO(test_cases[i]).segments);
+    auto result =
+        RefineTopKSimilarity(UNSAFE_TODO(test_cases[i]).ranked_sentences,
+                             UNSAFE_TODO(test_cases[i]).context_limit);
+    if (UNSAFE_TODO(test_cases[i]).has_value) {
       EXPECT_TRUE(result.has_value());
-      EXPECT_EQ(result.value(), test_cases[i].expected);
+      EXPECT_EQ(result.value(), UNSAFE_TODO(test_cases[i]).expected);
     } else {
       EXPECT_FALSE(result.has_value());
-      EXPECT_EQ(result.error(), test_cases[i].expected);
+      EXPECT_EQ(result.error(), UNSAFE_TODO(test_cases[i]).expected);
     }
   }
 }

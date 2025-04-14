@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/p3a/nitro_utils/attestation.h"
 
 #include <algorithm>
@@ -22,6 +16,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/compiler_specific.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -128,7 +123,8 @@ bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
           << "Nitro verification: user data is missing sha256 hash prefix";
       return false;
     }
-    if (memcmp(server_cert_fp.data, user_data_bytes.data() + kHashPrefixLength,
+    if (memcmp(server_cert_fp.data,
+               UNSAFE_TODO(user_data_bytes.data() + kHashPrefixLength),
                kSHA256HashLength) == 0) {
       return true;
     }
@@ -146,7 +142,7 @@ bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
       return false;
     }
     if (memcmp(server_cert_fp.data,
-               user_data_bytes.data() + kMultihashPrefixLength,
+               UNSAFE_TODO(user_data_bytes.data() + kMultihashPrefixLength),
                kSHA256HashLength) == 0) {
       return true;
     }

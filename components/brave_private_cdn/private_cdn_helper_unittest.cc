@@ -3,16 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
+#include "brave/components/brave_private_cdn/private_cdn_helper.h"
 
 #include <string>
 #include <string_view>
 
-#include "brave/components/brave_private_cdn/private_cdn_helper.h"
+#include "base/compiler_specific.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 TEST(BravePrivateCdnHelper, RemovePadding) {
@@ -78,8 +74,8 @@ TEST(BravePrivateCdnHelper, RemovePadding) {
                 "Inputs and outputs must have the same number of elements.");
 
   for (size_t i = 0; i < kInputCount; i++) {
-    std::string_view padded_string(inputs[i]);
+    std::string_view padded_string(UNSAFE_TODO(inputs[i]));
     EXPECT_TRUE(brave::private_cdn::RemovePadding(&padded_string));
-    EXPECT_EQ(padded_string, outputs[i]);
+    EXPECT_EQ(padded_string, UNSAFE_TODO(outputs[i]));
   }
 }

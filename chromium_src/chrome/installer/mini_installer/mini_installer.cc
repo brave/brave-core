@@ -3,12 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
+#include "base/compiler_specific.h"
 #include "build/branding_buildflags.h"
 
 #define BRAVE_RUN_SETUP                                                      \
@@ -52,23 +47,24 @@ void SafeStrASCIIUpper(wchar_t* str, size_t size) {
   if (!str || !size)
     return;
 
-  for (size_t i = 0; i < size && str[i] != L'\0'; ++i) {
-    wchar_t c = str[i];
+  for (size_t i = 0; i < size && UNSAFE_TODO(str[i]) != L'\0'; ++i) {
+    wchar_t c = UNSAFE_TODO(str[i]);
     if (c >= L'a' && c <= L'z')
-      str[i] += L'A' - L'a';
+      UNSAFE_TODO(str[i]) += L'A' - L'a';
   }
 }
 
 bool ParseStandardReferralCode(const wchar_t* filename,
                 ReferralCodeString* referral_code) {
   // Scan backwards for last dash in filename.
-  const wchar_t* anchor = filename + lstrlen(filename) - 1;
+  const wchar_t* anchor = UNSAFE_TODO(filename + lstrlen(filename) - 1);
   const wchar_t* scan = anchor;
   while (scan != filename && *scan != L'-')
-    --scan;
+    UNSAFE_TODO(--scan);
 
-  if (*scan++ != L'-')
+  if (*UNSAFE_TODO(scan++) != L'-') {
     return false;
+  }
 
   if (anchor - scan + 1 != kStandardReferralCodeLen)
     return false;
@@ -78,16 +74,18 @@ bool ParseStandardReferralCode(const wchar_t* filename,
 
   // Ensure that first half of referral code is alphabetic.
   for (size_t i = 0; i < kStandardReferralCodeLen / 2; ++i) {
-    if ((ref_code[i] < L'a' || ref_code[i] > L'z') &&
-        (ref_code[i] < L'A' || ref_code[i] > L'Z'))
+    if ((UNSAFE_TODO(ref_code[i]) < L'a' || UNSAFE_TODO(ref_code[i]) > L'z') &&
+        (UNSAFE_TODO(ref_code[i]) < L'A' || UNSAFE_TODO(ref_code[i]) > L'Z')) {
       return false;
+    }
   }
 
   // Ensure that second half of referral code is numeric.
   for (size_t i = kStandardReferralCodeLen / 2; i < kStandardReferralCodeLen;
        ++i) {
-    if (ref_code[i] < L'0' || ref_code[i] > L'9')
+    if (UNSAFE_TODO(ref_code[i]) < L'0' || UNSAFE_TODO(ref_code[i]) > L'9') {
       return false;
+    }
   }
 
   if (!SafeStrCopy(ref_code_normalized, kStandardReferralCodeLen + 1, ref_code))
@@ -105,28 +103,33 @@ bool ParseExtendedReferralCode(const wchar_t* filename,
                 ReferralCodeString* referral_code) {
   // Scan backwards for second-to-last dash in filename, since this
   // type of referral code has an embedded dash.
-  const wchar_t* scan = filename + lstrlen(filename) - 1;
+  const wchar_t* scan = UNSAFE_TODO(filename + lstrlen(filename) - 1);
   while (scan != filename && *scan != L'-')
-    --scan;
+    UNSAFE_TODO(--scan);
 
-  if (*scan-- != L'-')
+  if (*UNSAFE_TODO(scan--) != L'-') {
     return false;
+  }
 
   while (scan != filename && *scan != L'-')
-    --scan;
+    UNSAFE_TODO(--scan);
 
-  if (*scan++ != L'-')
+  if (*UNSAFE_TODO(scan++) != L'-') {
     return false;
+  }
 
   // Ensure that referral code is alphabetic.
   const wchar_t* ref_code = scan;
   int dashes = 0;
   for (int i = 0; i < lstrlen(ref_code); ++i) {
-    if ((ref_code[i] < L'a' || ref_code[i] > L'z') &&
-        (ref_code[i] < L'A' || ref_code[i] > L'Z') && (ref_code[i] != L'-'))
+    if ((UNSAFE_TODO(ref_code[i]) < L'a' || UNSAFE_TODO(ref_code[i]) > L'z') &&
+        (UNSAFE_TODO(ref_code[i]) < L'A' || UNSAFE_TODO(ref_code[i]) > L'Z') &&
+        (UNSAFE_TODO(ref_code[i]) != L'-')) {
       return false;
-    if (ref_code[i] == L'-')
+    }
+    if (UNSAFE_TODO(ref_code[i]) == L'-') {
       ++dashes;
+    }
   }
 
   // Ensure that referral code contains exactly one dash.
@@ -147,30 +150,32 @@ bool ParseReferralCode(const wchar_t* installer_filename,
     return false;
 
   // Strip extension from filename.
-  const wchar_t* scan = filename.get() + filename.length() - 1;
+  const wchar_t* scan = UNSAFE_TODO(filename.get() + filename.length() - 1);
   while (scan != filename.get() && *scan != L'.')
-    --scan;
+    UNSAFE_TODO(--scan);
 
   if (*scan == L'.')
     filename.truncate_at(scan - filename.get());
 
   // Strip any de-duplicating suffix from filename, e.g. "(1)".
-  scan = filename.get() + filename.length() - 1;
+  scan = UNSAFE_TODO(filename.get() + filename.length() - 1);
   if (*scan == L')') {
-    --scan;
+    UNSAFE_TODO(--scan);
     while (scan != filename.get() && *scan >= '0' && *scan <= '9')
-      --scan;
+      UNSAFE_TODO(--scan);
     if (*scan == L'(')
       filename.truncate_at(scan - filename.get());
   }
 
   // Strip trailing spaces from filename.
-  scan = filename.get() + filename.length() - 1;
+  scan = UNSAFE_TODO(filename.get() + filename.length() - 1);
   while (scan != filename.get() && *scan == L' ')
-    --scan;
+    UNSAFE_TODO(--scan);
 
-  if (scan != filename.get() && (scan != filename.get() + filename.length()))
+  if (scan != filename.get() &&
+      (scan != UNSAFE_TODO(filename.get() + filename.length()))) {
     filename.truncate_at(scan - filename.get() + 1);
+  }
 
   // First check for 6-character standard referral code XXXDDD, where
   // X is an alphabetic character and D is a numeric character. If not
