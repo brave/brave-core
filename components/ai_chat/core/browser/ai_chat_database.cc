@@ -630,7 +630,7 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
   CHECK(!conversation_uuid.empty());
   CHECK(!associated_content.empty());
 
-  // Check what ids already exist in our database.
+  // Check which content ids already exist for this conversation.
   base::flat_set<std::string> existing_ids_set;
   {
     static constexpr char kSelectExistingAssociatedContentIds[] =

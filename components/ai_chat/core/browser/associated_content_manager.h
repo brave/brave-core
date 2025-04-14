@@ -18,6 +18,12 @@
 
 namespace ai_chat {
 
+// This class is responsible for managing the content associated with a
+// conversation. This includes:
+// - Adding/removing content
+// - Loading archived content
+// - Archiving content as the user navigates aways
+// - Managing whether content should be used as part of the context
 class AssociatedContentManager
     : public ConversationHandler::AssociatedContentDelegate::Observer {
  public:
