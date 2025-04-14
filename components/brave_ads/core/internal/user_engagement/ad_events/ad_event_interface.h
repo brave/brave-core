@@ -15,6 +15,7 @@ class AdEventInterface {
  public:
   virtual ~AdEventInterface() = default;
 
+  // Invoked to fire an ad event.
   virtual void FireEvent(const T&, ResultCallback callback) = 0;
 };
 

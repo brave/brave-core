@@ -41,7 +41,7 @@ AdsImpl::AdsImpl(AdsClient& ads_client,
 
 AdsImpl::~AdsImpl() = default;
 
-void AdsImpl::AddObserver(std::unique_ptr<AdsObserverInterface> observer) {
+void AdsImpl::AddObserver(std::unique_ptr<AdsObserver> observer) {
   // `AdsNotifierManager` takes ownership of `observer`.
   AdsNotifierManager::GetInstance().AddObserver(std::move(observer));
 }

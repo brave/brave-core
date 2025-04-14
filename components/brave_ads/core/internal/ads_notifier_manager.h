@@ -13,7 +13,7 @@
 
 namespace brave_ads {
 
-class AdsObserverInterface;
+class AdsObserver;
 
 class AdsNotifierManager final {
  public:
@@ -26,7 +26,7 @@ class AdsNotifierManager final {
 
   static AdsNotifierManager& GetInstance();
 
-  void AddObserver(std::unique_ptr<AdsObserverInterface> ads_observer);
+  void AddObserver(std::unique_ptr<AdsObserver> ads_observer);
 
   void NotifyAdRewardsDidChange() const;
 
@@ -37,7 +37,7 @@ class AdsNotifierManager final {
   void NotifyRemindUser(mojom::ReminderType mojom_reminder_type) const;
 
  private:
-  std::vector<std::unique_ptr<AdsObserverInterface>> observers_;
+  std::vector<std::unique_ptr<AdsObserver>> observers_;
 };
 
 }  // namespace brave_ads

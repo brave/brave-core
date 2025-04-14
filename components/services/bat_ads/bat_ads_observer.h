@@ -6,14 +6,14 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_OBSERVER_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_OBSERVER_H_
 
-#include "brave/components/brave_ads/core/public/ads_observer_interface.h"
+#include "brave/components/brave_ads/core/public/ads_observer.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace bat_ads {
 
-class BatAdsObserver : public brave_ads::AdsObserverInterface {
+class BatAdsObserver : public brave_ads::AdsObserver {
  public:
   explicit BatAdsObserver(mojo::PendingRemote<mojom::BatAdsObserver>
                               bat_ads_observer_pending_remote);

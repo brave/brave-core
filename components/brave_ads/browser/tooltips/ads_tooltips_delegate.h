@@ -21,7 +21,7 @@ class AdsTooltipsDelegate {
  public:
   virtual ~AdsTooltipsDelegate() = default;
 
-  // Called to show the captcha tooltip
+  // Called to show the captcha tooltip.
   virtual void ShowCaptchaTooltip(
       const std::string& payment_id,
       const std::string& captcha_id,
@@ -29,7 +29,7 @@ class AdsTooltipsDelegate {
       ShowScheduledCaptchaCallback show_captcha_callback,
       SnoozeScheduledCaptchaCallback snooze_captcha_callback) = 0;
 
-  // Called to close the captcha tooltip
+  // Called to close the captcha tooltip.
   virtual void CloseCaptchaTooltip() = 0;
 };
 

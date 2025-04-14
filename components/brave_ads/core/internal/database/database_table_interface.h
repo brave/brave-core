@@ -14,11 +14,15 @@ namespace brave_ads::database {
 
 class TableInterface {
  public:
+  // Returns the name of the database table.
   virtual std::string GetTableName() const = 0;
 
+  // Invoked to create a table in the database. This ensures that the necessary
+  // structure is in place for storing and managing data.
   virtual void Create(
       const mojom::DBTransactionInfoPtr& mojom_db_transaction) = 0;
 
+  // Invoked to migrate the database table to the given version.
   virtual void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                        int to_version);
 

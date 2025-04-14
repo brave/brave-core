@@ -16,10 +16,16 @@ class DiagnosticEntryInterface {
  public:
   virtual ~DiagnosticEntryInterface() = default;
 
+  // Returns the type of the diagnostic entry, which categorizes the entry for
+  // diagnostic purposes.
   virtual DiagnosticEntryType GetType() const = 0;
 
+  // Returns the name of the diagnostic entry, providing a human-readable
+  // identifier for this entry.
   virtual std::string GetName() const = 0;
 
+  // Returns the value associated with this diagnostic entry, representing
+  // relevant diagnostic data.
   virtual std::string GetValue() const = 0;
 };
 

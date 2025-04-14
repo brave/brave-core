@@ -41,7 +41,7 @@ class AdsImpl final : public Ads {
   ~AdsImpl() override;
 
   // Ads:
-  void AddObserver(std::unique_ptr<AdsObserverInterface> observer) override;
+  void AddObserver(std::unique_ptr<AdsObserver> observer) override;
 
   void SetSysInfo(mojom::SysInfoPtr mojom_sys_info) override;
   void SetBuildChannel(mojom::BuildChannelInfoPtr mojom_build_channel) override;

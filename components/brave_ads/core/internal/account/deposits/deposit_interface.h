@@ -18,6 +18,7 @@ class DepositInterface {
  public:
   virtual ~DepositInterface() = default;
 
+  // Returns the deposit value for the given `creative_instance_id`.
   virtual void GetValue(const std::string& creative_instance_id,
                         GetDepositCallback callback) = 0;
 };
