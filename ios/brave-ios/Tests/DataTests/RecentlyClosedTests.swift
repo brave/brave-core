@@ -133,7 +133,7 @@ class RecentlyClosedTests: CoreDataTestCase {
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
   }
 
-  func testRemoveBaseDomains() {
+  func testRemoveETLDPlusOnes() {
     let braveURL = URL(string: "https://brave.com")!
     let braveURLTitle = "Brave"
 
@@ -179,7 +179,7 @@ class RecentlyClosedTests: CoreDataTestCase {
     XCTAssertNotNil(RecentlyClosed.get(with: googleQueryURL.absoluteString))
 
     backgroundSaveAndWaitForExpectation {
-      RecentlyClosed.remove(baseDomains: .init(["brave.com"]))
+      RecentlyClosed.remove(etldPlusOnes: .init(["brave.com"]))
     }
 
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)

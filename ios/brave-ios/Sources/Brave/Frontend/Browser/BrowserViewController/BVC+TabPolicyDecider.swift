@@ -253,8 +253,8 @@ extension BrowserViewController: TabPolicyDecider {
         // if we navigated away from the previous domain
         if let currentURL = tab.visibleURL,
           !InternalURL.isValid(url: currentURL),
-          let currentETLDP1 = currentURL.baseDomain,
-          mainDocumentURL.baseDomain != currentETLDP1
+          let currentETLDP1 = currentURL.etldPlusOne,
+          mainDocumentURL.etldPlusOne != currentETLDP1
         {
           tabManager.forgetDataIfNeeded(for: currentURL, in: tab)
         }

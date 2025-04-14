@@ -54,7 +54,7 @@ struct ShredSettingsView: View {
           }
         )
       } header: {
-        Text(settings.url.displayURL?.baseDomain ?? settings.url.absoluteString)
+        Text(settings.url.displayURL?.etldPlusOne ?? settings.url.absoluteString)
       }.listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .scrollContentBackground(.hidden)

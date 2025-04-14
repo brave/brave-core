@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import CoreData
 import Foundation
 import Shared
@@ -56,25 +57,25 @@ public final class RecentlyClosed: NSManagedObject, CRUD {
     }
   }
 
-  /// Removes the `RecentlyClosed` objects whose url belongs to one of the `baseDomains` provided.
-  public class func remove(baseDomains: Set<String>) {
+  /// Removes the `RecentlyClosed` objects whose url belongs to one of the `etldPlusOne`s provided.
+  public class func remove(etldPlusOnes: Set<String>) {
     DataController.perform { context in
       // Filter down CoreData db as much as we can
-      let predicates = baseDomains.map { baseDomain in
-        NSPredicate(format: "url CONTAINS[c] %@", baseDomain)
+      let predicates = etldPlusOnes.map { etldPlusOne in
+        NSPredicate(format: "url CONTAINS[c] %@", etldPlusOne)
       }
       let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
-      guard let itemsContainingBaseDomains = self.all(where: predicate, context: context) else {
+      guard let itemsContainingETLDPlusOnes = self.all(where: predicate, context: context) else {
         return
       }
-      // Above we filter for RecentlyClosed items where the url contains the baseDomain,
+      // Above we filter for RecentlyClosed items where the url contains the etldPlusOne,
       // but this does not verify it's the actual domain (ex. could be in a query param).
       // Verify each item's eTLD matches before we remove from RecentlyClosed.
-      for recentlyClosedTabItem in itemsContainingBaseDomains {
-        // validate baseDomain matches
+      for recentlyClosedTabItem in itemsContainingETLDPlusOnes {
+        // validate etldPlusOne matches
         guard let url = URL(string: recentlyClosedTabItem.url),
-          let baseDomain = url.baseDomain,
-          baseDomains.contains(where: { $0 == baseDomain })
+          let etldPlusOne = url.etldPlusOne,
+          etldPlusOnes.contains(where: { $0 == etldPlusOne })
         else {
           // eTLD of the url does not match
           continue

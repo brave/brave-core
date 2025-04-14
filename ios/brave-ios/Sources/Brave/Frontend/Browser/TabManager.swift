@@ -777,9 +777,9 @@ class TabManager: NSObject {
   ) {
     guard FeatureList.kBraveShredFeature.enabled else { return }
     guard let url = url.urlToShred,
-      let etldP1 = url.baseDomain
+      let etldPlusOne = url.etldPlusOne
     else { return }
-    forgetTasks[tab.isPrivate]?[etldP1]?.cancel()
+    forgetTasks[tab.isPrivate]?[etldPlusOne]?.cancel()
     let siteDomain = Domain.getOrCreate(
       forUrl: url,
       persistent: !tab.isPrivate
@@ -796,7 +796,8 @@ class TabManager: NSObject {
         existingTab !== tab
       }
       // Ensure that no othe tabs are open for this domain
-      guard !tabs.contains(where: { $0.visibleURL?.urlToShred?.baseDomain == etldP1 }) else {
+      guard !tabs.contains(where: { $0.visibleURL?.urlToShred?.etldPlusOne == etldPlusOne })
+      else {
         return
       }
       forgetDataDelayed(for: url, in: tab, delay: 30)
@@ -805,7 +806,7 @@ class TabManager: NSObject {
 
   @MainActor func shredData(for url: URL, in tab: some TabState) {
     guard let url = url.urlToShred,
-      let etldP1 = url.baseDomain
+      let etldP1 = url.etldPlusOne
     else { return }
 
     // Select the next or previous tab that is not being destroyed
@@ -814,7 +815,7 @@ class TabManager: NSObject {
       // First seach down or up for a tab that is not being destroyed
       var increasingIndex = index + 1
       while nextTab == nil, increasingIndex < allTabs.count {
-        if allTabs[increasingIndex].visibleURL?.urlToShred?.baseDomain != etldP1
+        if allTabs[increasingIndex].visibleURL?.urlToShred?.etldPlusOne != etldP1
           && allTabs[increasingIndex].isPrivate == tab.isPrivate
         {
           nextTab = allTabs[increasingIndex]
@@ -824,7 +825,7 @@ class TabManager: NSObject {
 
       var decreasingIndex = index - 1
       while nextTab == nil, decreasingIndex > 0 {
-        if allTabs[decreasingIndex].visibleURL?.urlToShred?.baseDomain != etldP1
+        if allTabs[decreasingIndex].visibleURL?.urlToShred?.etldPlusOne != etldP1
           && allTabs[decreasingIndex].isPrivate == tab.isPrivate
         {
           nextTab = allTabs[decreasingIndex]
@@ -840,7 +841,7 @@ class TabManager: NSObject {
 
     // Remove all unwanted tabs
     for tab in allTabs {
-      guard tab.visibleURL?.urlToShred?.baseDomain == etldP1 else { continue }
+      guard tab.visibleURL?.urlToShred?.etldPlusOne == etldP1 else { continue }
       // The Tab's WebView is not deinitialized immediately, so it's possible the
       // WebView still stores data after we shred but before the WebView is deinitialized.
       // Delete the web view to prevent data being stored after data is Shred.
@@ -862,12 +863,12 @@ class TabManager: NSObject {
     delay: TimeInterval
   ) {
     guard let url = url.urlToShred,
-      let etldP1 = url.baseDomain
+      let etldPlusOne = url.etldPlusOne
     else { return }
     forgetTasks[tab.isPrivate] = forgetTasks[tab.isPrivate] ?? [:]
     // Start a task to delete all data for this etldP1
     // The task may be delayed in case we want to cancel it
-    forgetTasks[tab.isPrivate]?[etldP1] = Task {
+    forgetTasks[tab.isPrivate]?[etldPlusOne] = Task {
       try await Task.sleep(seconds: delay)
       await self.forgetData(for: url, in: tab)
     }
@@ -876,21 +877,21 @@ class TabManager: NSObject {
   @MainActor private func forgetData(for url: URL, in tab: (any TabState)?) async {
     await forgetData(for: [url], dataStore: tab?.configuration.websiteDataStore)
 
-    ContentBlockerManager.log.debug("Cleared website data for `\(url.baseDomain ?? "")`")
-    if let etldP1 = url.baseDomain, let tab {
-      forgetTasks[tab.isPrivate]?.removeValue(forKey: etldP1)
+    ContentBlockerManager.log.debug("Cleared website data for `\(url.etldPlusOne ?? "")`")
+    if let etldPlusOne = url.etldPlusOne, let tab {
+      forgetTasks[tab.isPrivate]?.removeValue(forKey: etldPlusOne)
     }
   }
 
   @MainActor private func forgetData(for urls: [URL], dataStore: WKWebsiteDataStore? = nil) async {
-    var urls = urls.compactMap(\.urlToShred)
-    let baseDomains = Set(urls.compactMap { $0.baseDomain })
-    guard !baseDomains.isEmpty else { return }
+    let urls = urls.compactMap(\.urlToShred)
+    let etldPlusOnes = Set(urls.compactMap { $0.etldPlusOne })
+    guard !etldPlusOnes.isEmpty else { return }
 
     let dataStore = dataStore ?? WKWebsiteDataStore.default()
     // Delete 1P data records
     await dataStore.deleteDataRecords(
-      forDomains: baseDomains
+      forDomains: etldPlusOnes
     )
 
     if BraveCore.FeatureList.kBraveShredCacheData.enabled {
@@ -907,7 +908,7 @@ class TabManager: NSObject {
     // Delete the history for forgotten websites
     if let historyAPI = self.historyAPI {
       // if we're only forgetting 1 site, we can query history by it's domain
-      let query = urls.count == 1 ? urls.first?.baseDomain : nil
+      let query = urls.count == 1 ? urls.first?.etldPlusOne : nil
 
       let nodes = await withCheckedContinuation { continuation in
         var historyCancellable: HistoryCancellable?
@@ -927,13 +928,13 @@ class TabManager: NSObject {
           }
         )
       }.filter { node in
-        guard let baseDomain = node.url.baseDomain else { return false }
-        return baseDomains.contains(baseDomain)
+        guard let etldPlusOne = node.url.etldPlusOne else { return false }
+        return etldPlusOnes.contains(etldPlusOne)
       }
       historyAPI.removeHistory(for: nodes)
     }
 
-    RecentlyClosed.remove(baseDomains: baseDomains)
+    RecentlyClosed.remove(etldPlusOnes: etldPlusOnes)
 
     for url in urls {
       await FaviconFetcher.deleteCache(for: url)
@@ -942,7 +943,7 @@ class TabManager: NSObject {
 
   /// Cancel a forget data request in case we navigate back to the tab within a certain period
   @MainActor func cancelForgetData(for url: URL, in tab: some TabState) {
-    guard let etldP1 = url.urlToShred?.baseDomain else { return }
+    guard let etldP1 = url.urlToShred?.etldPlusOne else { return }
     forgetTasks[tab.isPrivate]?[etldP1]?.cancel()
     forgetTasks[tab.isPrivate]?.removeValue(forKey: etldP1)
   }
