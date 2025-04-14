@@ -12,6 +12,7 @@ namespace brave_ads {
 
 class UrlRequestBuilderInterface {
  public:
+  // Invoked to build and return a URL request.
   virtual mojom::UrlRequestInfoPtr Build() = 0;
 
  protected:

@@ -16,6 +16,8 @@ class TokenGeneratorInterface {
  public:
   virtual ~TokenGeneratorInterface() = default;
 
+  // Generates a list of cryptographic tokens that can be redeemed for purposes
+  // such as privacy-preserving ad interactions.
   virtual cbr::TokenList Generate(size_t count) const = 0;
 };
 

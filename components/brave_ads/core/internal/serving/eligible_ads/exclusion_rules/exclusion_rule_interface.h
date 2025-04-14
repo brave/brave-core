@@ -15,8 +15,11 @@ class ExclusionRuleInterface {
  public:
   virtual ~ExclusionRuleInterface() = default;
 
+  // Return a unique cache key for the given creative ad.
   virtual std::string GetCacheKey(const T&) const = 0;
 
+  // Returns whether the given creative ad should be included based on the
+  // exclusion rule.
   virtual bool ShouldInclude(const T&) const = 0;
 };
 

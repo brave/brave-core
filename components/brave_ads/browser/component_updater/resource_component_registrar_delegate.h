@@ -16,10 +16,12 @@ namespace brave_ads {
 
 class ResourceComponentRegistrarDelegate {
  public:
+  // Invoked when a resource component is registered.
   virtual void OnResourceComponentRegistered(
       const std::string& component_id,
       const base::FilePath& install_dir) = 0;
 
+  // Invoked when a resource component is unregistered.
   virtual void OnResourceComponentUnregistered(
       const std::string& component_id) = 0;
 

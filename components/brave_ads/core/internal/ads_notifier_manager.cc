@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_observer_interface.h"
+#include "brave/components/brave_ads/core/public/ads_observer.h"
 
 namespace brave_ads {
 
@@ -22,8 +22,7 @@ AdsNotifierManager& AdsNotifierManager::GetInstance() {
   return GlobalState::GetInstance()->GetAdsNotifierManager();
 }
 
-void AdsNotifierManager::AddObserver(
-    std::unique_ptr<AdsObserverInterface> observer) {
+void AdsNotifierManager::AddObserver(std::unique_ptr<AdsObserver> observer) {
   observers_.push_back(std::move(observer));
 }
 

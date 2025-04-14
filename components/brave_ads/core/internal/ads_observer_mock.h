@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_OBSERVER_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_OBSERVER_MOCK_H_
 
-#include "brave/components/brave_ads/core/public/ads_observer_interface.h"
+#include "brave/components/brave_ads/core/public/ads_observer.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 
-class AdsObserverMock : public AdsObserverInterface {
+class AdsObserverMock : public AdsObserver {
  public:
   AdsObserverMock();
 
