@@ -67,6 +67,7 @@ public class OnboardingPrefManager {
 
     public static final String BRAVE = "Brave";
     public static final String YANDEX = "Yandex";
+    public static final String YAHOO_JP = "Yahoo! JAPAN";
 
     private OnboardingPrefManager() {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();

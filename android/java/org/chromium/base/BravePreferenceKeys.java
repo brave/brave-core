@@ -96,6 +96,9 @@ public final class BravePreferenceKeys {
 
     public static final String DEFAULT_SEARCH_ENGINE_CHANGED = "default_search_engine_changed";
 
+    public static final String BRAVE_DEFAULT_SEARCH_ENGINE_MIGRATED_JP =
+            "brave_default_search_engine_migrated_jp";
+
     /*
      * Checks if preference key is used in Brave.
      * It's no op currently. We might reconsider
