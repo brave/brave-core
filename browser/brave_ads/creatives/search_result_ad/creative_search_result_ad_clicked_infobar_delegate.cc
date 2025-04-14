@@ -6,6 +6,7 @@
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_clicked_infobar_delegate.h"
 
 #include <memory>
+#include <utility>
 
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -14,7 +15,6 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
-#include "components/strings/grit/components_strings.h"
 #include "components/vector_icons/vector_icons.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -44,11 +44,11 @@ void CreativeSearchResultAdClickedInfoBarDelegate::Create(
 
   infobars::ContentInfoBarManager* infobar_manager =
       infobars::ContentInfoBarManager::FromWebContents(web_contents);
-  if (!infobar_manager) {
-    return;
+  if (infobar_manager) {
+    std::unique_ptr<infobars::InfoBar> infobar = CreateConfirmInfoBar(
+        std::make_unique<CreativeSearchResultAdClickedInfoBarDelegate>());
+    infobar_manager->AddInfoBar(std::move(infobar));
   }
-  infobar_manager->AddInfoBar(CreateConfirmInfoBar(
-      std::make_unique<CreativeSearchResultAdClickedInfoBarDelegate>()));
 }
 
 CreativeSearchResultAdClickedInfoBarDelegate::

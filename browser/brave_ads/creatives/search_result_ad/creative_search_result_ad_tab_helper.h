@@ -66,7 +66,7 @@ class CreativeSearchResultAdTabHelper final
       mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad);
   void MaybeHandleCreativeAdViewedEventCallback(
       mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad,
-      const base::Value value);
+      base::Value value);
 
   void MaybeHandleCreativeAdClickedEvent(const GURL& url);
   void MaybeHandleCreativeAdClickedEventCallback(

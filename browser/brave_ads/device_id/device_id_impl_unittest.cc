@@ -23,22 +23,22 @@ struct DisallowedMask {
     return base::span(address).first(size);
   }
 
-  std::array<uint8_t, 6u> address;
+  std::array<uint8_t, 6U> address;
   size_t size;
 };
 
 void TestDisallowedRange(DisallowedMask mask) {
-  std::array<uint8_t, 6u> address;
+  std::array<uint8_t, 6U> address;
 
   // test the lower bound of the match
-  std::ranges::fill(address, 0u);
+  std::ranges::fill(address, 0U);
   base::as_writable_byte_span(address).first(mask.size).copy_from(
       mask.as_span());
   EXPECT_FALSE(DeviceIdImpl::IsValidMacAddress(address));
 
   // test the upper bound of the match
   std::ranges::fill(
-      base::as_writable_byte_span(address).split_at(mask.size).second, 0xffu);
+      base::as_writable_byte_span(address).split_at(mask.size).second, 0xffU);
   EXPECT_FALSE(DeviceIdImpl::IsValidMacAddress(address));
 
   // test accepted just outside the upper bound
@@ -46,7 +46,7 @@ void TestDisallowedRange(DisallowedMask mask) {
       mask.as_span());
   base::as_writable_byte_span(address).first(mask.size).last<1>()[0] += 0x01;
   std::ranges::fill(
-      base::as_writable_byte_span(address).split_at(mask.size).second, 0x00u);
+      base::as_writable_byte_span(address).split_at(mask.size).second, 0x00U);
   EXPECT_TRUE(DeviceIdImpl::IsValidMacAddress(address));
 
   // test accepted just outside the lower bound
@@ -54,7 +54,7 @@ void TestDisallowedRange(DisallowedMask mask) {
       mask.as_span());
   base::as_writable_byte_span(address).first(mask.size).last<1>()[0] -= 0x01;
   std::ranges::fill(
-      base::as_writable_byte_span(address).split_at(mask.size).second, 0xffu);
+      base::as_writable_byte_span(address).split_at(mask.size).second, 0xffU);
   EXPECT_TRUE(DeviceIdImpl::IsValidMacAddress(address));
 }
 

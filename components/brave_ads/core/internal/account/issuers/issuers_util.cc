@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 
-#include <algorithm>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"

@@ -226,7 +226,7 @@ class SampleBraveAdsCreativeSearchResultAdTabHelperTest
     mojom_creative_ad->headline_text =
         base::StrCat({"data-headline-text", index});
     mojom_creative_ad->description = base::StrCat({"data-description", index});
-    mojom_creative_ad->value = 0.5 + ad_index;
+    mojom_creative_ad->value = 0.5 + static_cast<double>(ad_index);
 
     auto mojom_conversion = mojom::CreativeSetConversionInfo::New();
     mojom_conversion->url_pattern =
@@ -254,8 +254,8 @@ class SampleBraveAdsCreativeSearchResultAdTabHelperTest
         .WillRepeatedly(
             [this, &run_loop1, &run_loop2](
                 mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                mojom::SearchResultAdEventType mojom_ad_event_type,
-                TriggerAdEventCallback callback) {
+                mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
+                TriggerAdEventCallback /*callback*/) {
               ASSERT_TRUE(mojom_creative_ad);
 
               EXPECT_EQ(mojom_creative_ad,
@@ -305,12 +305,12 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([this, &run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback callback) {
+                    TriggerAdEventCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
         // We clicked on the first ad in `search_result_ad_sample.html`.
-        EXPECT_EQ(1u, GetIndexByPlacementId(mojom_creative_ad->placement_id));
+        EXPECT_EQ(1U, GetIndexByPlacementId(mojom_creative_ad->placement_id));
 
         EXPECT_EQ(mojom_creative_ad, GenerateCreativeSearchResultAd(
                                          mojom_creative_ad->placement_id));
@@ -342,12 +342,12 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([this, &run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback callback) {
+                    TriggerAdEventCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
         // We clicked on the first ad in `search_result_ad_sample.html`.
-        EXPECT_EQ(1u, GetIndexByPlacementId(mojom_creative_ad->placement_id));
+        EXPECT_EQ(1U, GetIndexByPlacementId(mojom_creative_ad->placement_id));
 
         EXPECT_EQ(mojom_creative_ad, GenerateCreativeSearchResultAd(
                                          mojom_creative_ad->placement_id));
@@ -373,12 +373,12 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([this, &run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback callback) {
+                    TriggerAdEventCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
         // We clicked on the second ad in `search_result_ad_sample.html`.
-        EXPECT_EQ(2u, GetIndexByPlacementId(mojom_creative_ad->placement_id));
+        EXPECT_EQ(2U, GetIndexByPlacementId(mojom_creative_ad->placement_id));
 
         // VerifyCreativeAdMetadataExpectations(
         //     mojom_creative_ad, mojom_creative_ad->placement_id, ad_index);
@@ -412,12 +412,12 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([this, &run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback callback) {
+                    TriggerAdEventCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
         // We clicked on the second ad in `search_result_ad_sample.html`.
-        EXPECT_EQ(2u, GetIndexByPlacementId(mojom_creative_ad->placement_id));
+        EXPECT_EQ(2U, GetIndexByPlacementId(mojom_creative_ad->placement_id));
 
         // VerifyCreativeAdMetadataExpectations(
         //     mojom_creative_ad, mojom_creative_ad->placement_id, ad_index);
@@ -456,12 +456,12 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([this, &run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback callback) {
+                    TriggerAdEventCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
         // We clicked on the first ad in `search_result_ad_sample.html`.
-        EXPECT_EQ(1u, GetIndexByPlacementId(mojom_creative_ad->placement_id));
+        EXPECT_EQ(1U, GetIndexByPlacementId(mojom_creative_ad->placement_id));
 
         // VerifyCreativeAdMetadataExpectations(
         //     mojom_creative_ad, mojom_creative_ad->placement_id, ad_index);
@@ -499,12 +499,12 @@ IN_PROC_BROWSER_TEST_F(
       .WillOnce([this, &run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback callback) {
+                    TriggerAdEventCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
         // We clicked on the first ad in `search_result_ad_sample.html`.
-        EXPECT_EQ(1u, GetIndexByPlacementId(mojom_creative_ad->placement_id));
+        EXPECT_EQ(1U, GetIndexByPlacementId(mojom_creative_ad->placement_id));
 
         // VerifyCreativeAdMetadataExpectations(
         //     mojom_creative_ad, mojom_creative_ad->placement_id, ad_index);
@@ -541,12 +541,12 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([this, &run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback callback) {
+                    TriggerAdEventCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
         // We clicked on the first ad in `search_result_ad_sample.html`.
-        EXPECT_EQ(1u, GetIndexByPlacementId(mojom_creative_ad->placement_id));
+        EXPECT_EQ(1U, GetIndexByPlacementId(mojom_creative_ad->placement_id));
 
         // VerifyCreativeAdMetadataExpectations(
         //     mojom_creative_ad, mojom_creative_ad->placement_id, ad_index);
@@ -583,12 +583,12 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([this, &run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback callback) {
+                    TriggerAdEventCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
         // We clicked on the first ad in `search_result_ad_sample.html`.
-        EXPECT_EQ(1u, GetIndexByPlacementId(mojom_creative_ad->placement_id));
+        EXPECT_EQ(1U, GetIndexByPlacementId(mojom_creative_ad->placement_id));
 
         // VerifyCreativeAdMetadataExpectations(
         //     mojom_creative_ad, mojom_creative_ad->placement_id, ad_index);

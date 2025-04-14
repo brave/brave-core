@@ -298,7 +298,6 @@ static_library("internal") {
     "ad_units/search_result_ad/search_result_ad_info.h",
     "ads.cc",
     "ads_client/ads_client_notifier.cc",
-    "ads_client/ads_client_notifier_observer.cc",
     "ads_client/ads_client_util.cc",
     "ads_client/ads_client_util.h",
     "ads_core/ads_core.cc",

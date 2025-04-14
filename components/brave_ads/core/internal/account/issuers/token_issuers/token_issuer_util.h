@@ -12,8 +12,8 @@
 
 namespace brave_ads {
 
-struct TokenIssuerInfo;
 struct IssuersInfo;
+struct TokenIssuerInfo;
 
 namespace cbr {
 class PublicKey;

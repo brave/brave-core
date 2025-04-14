@@ -77,8 +77,6 @@ class PassThroughDelegate final : public NotificationAdDelegate {
 NotificationAdPlatformBridge::NotificationAdPlatformBridge(Profile& profile)
     : profile_(profile) {}
 
-NotificationAdPlatformBridge::~NotificationAdPlatformBridge() = default;
-
 void NotificationAdPlatformBridge::ShowNotificationAd(
     NotificationAd notification_ad) {
   // If there's no delegate, replace it with a PassThroughDelegate so clicks go

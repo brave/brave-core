@@ -14,8 +14,8 @@ class Time;
 
 namespace brave_ads {
 
-struct CreativeAdInfo;
 struct AdEventInfo;
+struct CreativeAdInfo;
 
 namespace test {
 

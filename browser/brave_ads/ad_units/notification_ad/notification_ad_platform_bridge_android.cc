@@ -16,8 +16,6 @@ namespace brave_ads {
 NotificationAdPlatformBridge::NotificationAdPlatformBridge(Profile& profile)
     : profile_(profile) {}
 
-NotificationAdPlatformBridge::~NotificationAdPlatformBridge() = default;
-
 void NotificationAdPlatformBridge::ShowNotificationAd(
     NotificationAd notification_ad) {
   JNIEnv* env = base::android::AttachCurrentThread();

@@ -62,7 +62,7 @@ AdsTooltipsController::AsWeakPtr() {
 }
 
 void AdsTooltipsController::OnTooltipWidgetDestroyed(
-    const std::string& tooltip_id) {
+    const std::string& /*tooltip_id*/) {
   brave_tooltips::BraveTooltipPopupHandler::Destroy(kScheduledCaptchaTooltipId);
 }
 
