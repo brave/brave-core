@@ -2708,7 +2708,10 @@ public abstract class BraveActivity extends ChromeActivity
                             ? QuickSearchEnginesUtil.GOOGLE_SEARCH_ENGINE_URL
                             : quickSearchEnginesModel.getUrl();
             LoadUrlParams loadUrlParams =
-                    new LoadUrlParams(quickSearchEngineUrl.replace("{searchTerms}", query));
+                    new LoadUrlParams(
+                            quickSearchEngineUrl
+                                    .replace("{searchTerms}", query)
+                                    .replace("{inputEncoding}", "UTF-8"));
             getActivityTab().loadUrl(loadUrlParams);
         }
         getBraveToolbarLayout().clearOmniboxFocus();
