@@ -44,7 +44,6 @@ source_set("split_view") {
     "//brave/browser/misc_metrics",
     "//brave/browser/ui:brave_tab_features",
     "//brave/components/misc_metrics",
-    "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:tab_model",
     "//chrome/browser/ui/tabs:tab_strip",
   ]
