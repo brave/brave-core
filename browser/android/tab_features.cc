@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/android/tab_features_android.h"
+#include "brave/browser/android/tab_features.h"
 
 #include <memory>
 
@@ -13,9 +13,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
 
-TabFeaturesAndroid::TabFeaturesAndroid(content::WebContents* web_contents,
-                                       Profile* profile)
-    : TabFeaturesAndroid_Chromium(web_contents, profile) {
+namespace tabs {
+
+TabFeatures::TabFeatures(content::WebContents* web_contents, Profile* profile)
+    : TabFeatures_Chromium(web_contents, profile) {
   if (ai_chat::IsAllowedForContext(profile)) {
     tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
         TabAndroid::FromWebContents(web_contents)->GetAndroidId(),
@@ -23,4 +24,6 @@ TabFeaturesAndroid::TabFeaturesAndroid(content::WebContents* web_contents,
   }
 }
 
-TabFeaturesAndroid::~TabFeaturesAndroid() = default;
+TabFeatures::~TabFeatures() = default;
+
+}  // namespace tabs
