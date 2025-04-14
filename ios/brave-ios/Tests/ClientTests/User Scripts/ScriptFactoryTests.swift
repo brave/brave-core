@@ -13,8 +13,8 @@ class ScriptFactoryTests: XCTestCase {
   func testLoadingFarblingProtectionScript() throws {
     // Given
     // Different ETLD+1s
-    let etld = URL(string: "https://example.com")!.baseDomain!
-    let etld2 = URL(string: "https://brave.com")!.baseDomain!
+    let etld = URL(string: "https://example.com")!.etldPlusOne!
+    let etld2 = URL(string: "https://brave.com")!.etldPlusOne!
 
     // When
     // Making scripts from the different ETLD+1s
