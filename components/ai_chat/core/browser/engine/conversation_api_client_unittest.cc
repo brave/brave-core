@@ -695,28 +695,72 @@ TEST(ParseResponseEventTest, ParsesConversationTitleEvent) {
 }
 
 TEST(ParseResponseEventTest, ParsesWebSourcesEvent) {
-  base::Value::Dict web_sources_event;
-  web_sources_event.Set("type", "webSources");
-  base::Value::List sources;
+  // Case 1: Valid favicon from allowed brave host
+  base::Value::Dict event_with_valid_favicon;
+  event_with_valid_favicon.Set("type", "webSources");
+  base::Value::List sources1;
 
   base::Value::Dict source1;
-  source1.Set("title", "Example Site");
-  source1.Set("url", "https://example.com/");
+  source1.Set("title", "Example 1");
+  source1.Set("url", "https://example.com/1");
   source1.Set("favicon", "https://imgs.search.brave.com/favicon.ico");
-  sources.Append(std::move(source1));
+  sources1.Append(std::move(source1));
 
-  web_sources_event.Set("sources", std::move(sources));
+  event_with_valid_favicon.Set("sources", std::move(sources1));
 
-  mojom::ConversationEntryEventPtr event =
-      ConversationAPIClient::ParseResponseEvent(web_sources_event);
-  ASSERT_FALSE(event.is_null());
-  ASSERT_TRUE(event->is_sources_event());
-  EXPECT_EQ(event->get_sources_event()->sources.size(), 1u);
-  EXPECT_EQ(event->get_sources_event()->sources[0]->title, "Example Site");
-  EXPECT_EQ(event->get_sources_event()->sources[0]->url.spec(),
-            "https://example.com/");
-  EXPECT_EQ(event->get_sources_event()->sources[0]->favicon_url.spec(),
+  mojom::ConversationEntryEventPtr result1 =
+      ConversationAPIClient::ParseResponseEvent(event_with_valid_favicon);
+  ASSERT_FALSE(result1.is_null());
+  ASSERT_TRUE(result1->is_sources_event());
+  EXPECT_EQ(result1->get_sources_event()->sources.size(), 1u);
+  EXPECT_EQ(result1->get_sources_event()->sources[0]->title, "Example 1");
+  EXPECT_EQ(result1->get_sources_event()->sources[0]->url.spec(),
+            "https://example.com/1");
+  EXPECT_EQ(result1->get_sources_event()->sources[0]->favicon_url.spec(),
             "https://imgs.search.brave.com/favicon.ico");
+
+  // Case 2: Missing favicon, should use default
+  base::Value::Dict event_with_missing_favicon;
+  event_with_missing_favicon.Set("type", "webSources");
+  base::Value::List sources2;
+
+  base::Value::Dict source2;
+  source2.Set("title", "Example 2");
+  source2.Set("url", "https://example.com/2");
+  sources2.Append(std::move(source2));
+
+  event_with_missing_favicon.Set("sources", std::move(sources2));
+
+  mojom::ConversationEntryEventPtr result2 =
+      ConversationAPIClient::ParseResponseEvent(event_with_missing_favicon);
+  ASSERT_FALSE(result2.is_null());
+  ASSERT_TRUE(result2->is_sources_event());
+  EXPECT_EQ(result2->get_sources_event()->sources.size(), 1u);
+  EXPECT_EQ(result2->get_sources_event()->sources[0]->title, "Example 2");
+  EXPECT_EQ(result2->get_sources_event()->sources[0]->url.spec(),
+            "https://example.com/2");
+  EXPECT_EQ(result2->get_sources_event()->sources[0]->favicon_url.spec(),
+            "chrome-untrusted://resources/brave-icons/globe.svg");
+
+  // Case 3: Disallowed favicon host, should be skipped
+  // We manage the allowed list in kAllowedWebSourceFaviconHost
+  base::Value::Dict event_with_disallowed_favicon;
+  event_with_disallowed_favicon.Set("type", "webSources");
+  base::Value::List sources3;
+
+  base::Value::Dict source3;
+  source3.Set("title", "Example 3");
+  source3.Set("url", "https://example.com/3");
+  source3.Set("favicon",
+              "https://untrusted.com/favicon.ico");  // disallowed host
+  sources3.Append(std::move(source3));
+
+  event_with_disallowed_favicon.Set("sources", std::move(sources3));
+
+  mojom::ConversationEntryEventPtr result3 =
+      ConversationAPIClient::ParseResponseEvent(event_with_disallowed_favicon);
+  EXPECT_TRUE(result3.is_null())
+      << "Disallowed favicon host should be filtered out";
 }
 
 TEST(ParseResponseEventTest, HandlesInvalidEvent) {
