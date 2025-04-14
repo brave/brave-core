@@ -23,14 +23,14 @@
             android:minHeight="?attr/actionBarSize"/>
 
                     <org.chromium.chrome.browser.custom_layout.HeightWrappingViewPager
-                        android:id="@+id/kill_switch_tutorial_view_pager"
+                        android:id="@+id/auto_reconnect_vpn_tutorial_view_pager"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:paddingHorizontal="24dp"/>
 
                     <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/kill_switch_tutorial_tab_layout"
+                        android:id="@+id/auto_reconnect_vpn_tutorial_tab_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/vpn_plan_margin"
@@ -40,7 +40,7 @@
                         app:tabIndicatorHeight="0dp"/>
 
         <android.widget.Button
-            android:id="@+id/kill_switch_action_button"
+            android:id="@+id/auto_reconnect_vpn_action_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -52,7 +52,7 @@
             android:paddingVertical="12dp"
             android:paddingHorizontal="16dp"
             android:textAllCaps="false"
-            android:text="@string/kill_switch_action_text" 
+            android:text="@string/auto_reconnect_vpn_action_text"
             android:textColor="@android:color/white" />
     </LinearLayout>
 </ScrollView>
