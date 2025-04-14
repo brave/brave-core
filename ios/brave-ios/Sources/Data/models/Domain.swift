@@ -109,9 +109,9 @@ public final class Domain: NSManagedObject, CRUD {
     case .standard:
       guard let urlString = self.url else { return globalLevel }
       guard let url = URL(string: urlString) else { return globalLevel }
-      guard let etldP1 = url.baseDomain else { return globalLevel }
+      guard let etldPlusOne = url.etldPlusOne else { return globalLevel }
 
-      if alwaysAggressiveETLDs.contains(etldP1) {
+      if alwaysAggressiveETLDs.contains(etldPlusOne) {
         return .aggressive
       } else {
         return globalLevel

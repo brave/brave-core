@@ -87,7 +87,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
         // For subframes which may use different etld+1 than the main frame (example `reddit.com` and `redditmedia.com`)
         // We simply check the known subframeURLs on this page.
         guard
-          tab.visibleURL?.baseDomain == windowOriginURL.baseDomain
+          tab.visibleURL?.etldPlusOne == windowOriginURL.etldPlusOne
             || tab.currentPageData?.allSubframeURLs.contains(windowOriginURL) == true
         else {
           replyHandler(shouldBlock, nil)
@@ -96,7 +96,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
 
         if shouldBlock, Preferences.PrivacyReports.captureShieldsData.value,
           let domainURL = URL(string: domainURLString),
-          let blockedResourceHost = requestURL.baseDomain,
+          let blockedResourceHost = requestURL.etldPlusOne,
           !isPrivateBrowsing
         {
           PrivacyReportsManager.pendingBlockedRequests.append(

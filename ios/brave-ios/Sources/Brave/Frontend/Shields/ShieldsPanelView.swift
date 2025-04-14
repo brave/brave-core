@@ -263,7 +263,7 @@ struct ShieldsPanelView: View {
       ShieldSettingRow {
         NavigationLink {
           AdblockBlockedRequestsView(
-            url: url.baseDomain ?? url.absoluteDisplayString,
+            url: url.etldPlusOne ?? url.absoluteDisplayString,
             contentBlockerHelper: contentBlocker
           )
         } label: {

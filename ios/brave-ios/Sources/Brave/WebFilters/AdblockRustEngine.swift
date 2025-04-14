@@ -29,7 +29,8 @@ extension AdblockEngine {
       return false
     }
 
-    guard let requestDomain = requestURL.baseDomain, let sourceDomain = sourceURL.baseDomain else {
+    guard let requestDomain = requestURL.etldPlusOne, let sourceDomain = sourceURL.etldPlusOne
+    else {
       return false
     }
 

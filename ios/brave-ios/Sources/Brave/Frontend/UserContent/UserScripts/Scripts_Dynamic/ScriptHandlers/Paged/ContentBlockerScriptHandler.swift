@@ -120,7 +120,7 @@ extension ContentBlockerHelper: TabContentScript {
           // For subframes which may use different etld+1 than the main frame (example `reddit.com` and `redditmedia.com`)
           // We simply check the known subframeURLs on this page.
           guard
-            self.tab?.visibleURL?.baseDomain == sourceURL.baseDomain
+            self.tab?.visibleURL?.etldPlusOne == sourceURL.etldPlusOne
               || self.tab?.currentPageData?.allSubframeURLs.contains(sourceURL) == true
           else {
             return
@@ -128,7 +128,7 @@ extension ContentBlockerHelper: TabContentScript {
 
           if blockedType == .ad, Preferences.PrivacyReports.captureShieldsData.value,
             let domainURL = URL(string: domainURLString),
-            let blockedResourceHost = requestURL.baseDomain,
+            let blockedResourceHost = requestURL.etldPlusOne,
             !tab.isPrivate
           {
             PrivacyReportsManager.pendingBlockedRequests.append(

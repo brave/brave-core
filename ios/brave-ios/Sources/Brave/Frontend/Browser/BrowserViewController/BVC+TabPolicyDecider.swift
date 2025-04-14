@@ -419,7 +419,7 @@ extension BrowserViewController: TabPolicyDecider {
       pendingRequests[requestURL.absoluteString] = request
 
       if requestInfo.isMainFrame,
-        let etldP1 = requestURL.baseDomain,
+        let etldP1 = requestURL.etldPlusOne,
         tab.proceedAnywaysDomainList?.contains(etldP1) == false
       {
         let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
