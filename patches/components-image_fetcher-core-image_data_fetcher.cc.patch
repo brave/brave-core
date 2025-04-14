@@ -1,13 +1,12 @@
 diff --git a/components/image_fetcher/core/image_data_fetcher.cc b/components/image_fetcher/core/image_data_fetcher.cc
-index 217f196fe7d1187060d78a1b8dc55352954f068e..10cb50725b41fff069f00859562013f632c69509 100644
+index 217f196fe7d1187060d78a1b8dc55352954f068e..e482b9da16d03a5cf98b0abf3a6f40ba6721f902 100644
 --- a/components/image_fetcher/core/image_data_fetcher.cc
 +++ b/components/image_fetcher/core/image_data_fetcher.cc
-@@ -128,7 +128,7 @@ void ImageDataFetcher::FetchImageData(const GURL& image_url,
+@@ -128,6 +128,7 @@ void ImageDataFetcher::FetchImageData(const GURL& image_url,
    } else {
      request->credentials_mode = network::mojom::CredentialsMode::kOmit;
    }
--
 +  BRAVE_ADJUST_HEADERS(request);
+ 
    std::unique_ptr<network::SimpleURLLoader> loader =
        network::SimpleURLLoader::Create(std::move(request),
-                                        params.traffic_annotation());
