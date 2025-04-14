@@ -31,7 +31,14 @@ open class Download: NSObject {
     originalURL: URL?,
     mimeType: String? = nil
   ) {
-    self.filename = suggestedFilename
+
+    // Strip out Unicode Bidi Control characters for RLO — Right-to-Left Override & LRO overrides
+    self.filename = String(
+      suggestedFilename.unicodeScalars.filter {
+        !$0.properties.isBidiControl
+      }.map(Character.init)
+    )
+
     self.originalURL = originalURL
     self.mimeType = mimeType ?? "application/octet-stream"
 
