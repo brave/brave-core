@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_ANDROID_TAB_FEATURES_ANDROID_H_
-#define BRAVE_BROWSER_ANDROID_TAB_FEATURES_ANDROID_H_
+#ifndef BRAVE_BROWSER_ANDROID_TAB_FEATURES_H_
+#define BRAVE_BROWSER_ANDROID_TAB_FEATURES_H_
 
 #include <memory>
 
-#include "chrome/browser/android/tab_features_android.h"
+#include "chrome/browser/android/tab_features.h"
 
 namespace ai_chat {
 class TabDataWebContentsObserver;
@@ -20,13 +20,17 @@ class WebContents;
 
 class Profile;
 
-class TabFeaturesAndroid : public TabFeaturesAndroid_Chromium {
+namespace tabs {
+
+class TabFeatures : public TabFeatures_Chromium {
  public:
-  TabFeaturesAndroid(content::WebContents* web_contents, Profile* profile);
-  ~TabFeaturesAndroid();
+  TabFeatures(content::WebContents* web_contents, Profile* profile);
+  ~TabFeatures();
 
  private:
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
 };
 
-#endif  // BRAVE_BROWSER_ANDROID_TAB_FEATURES_ANDROID_H_
+}  // namespace tabs
+
+#endif  // BRAVE_BROWSER_ANDROID_TAB_FEATURES_H_
