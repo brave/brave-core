@@ -288,7 +288,7 @@ def _is_gh_cli_logged_in():
 
 
 def _get_apply_patches_list():
-    """Retrieves the list of patches to be applied by running 
+    """Retrieves the list of patches to be applied by running
     `npm run apply_patches`
     """
 
@@ -1325,7 +1325,9 @@ class Upgrade(Versioned):
 
         return False
 
-    def _continue(self, no_conflict_continuation: bool) -> bool:
+    def _continue(self,
+                  no_conflict_continuation: bool = False,
+                  apply_record: Optional[ApplyPatchesRecord] = None) -> bool:
         """Continues the upgrade process.
 
     This function is responsible for continuing the upgrade process. It will
@@ -1344,24 +1346,24 @@ class Upgrade(Versioned):
             Indicates that a continuation does not produce a conflict-resolved
             change.
         """
-        if not no_conflict_continuation:
-            # There's no need to try to create a `conflict-resolved` commit if
-            # all changes have already been committed during the run's break.
-            continuation = ContinuationFile.load(self.target_version)
+        if not apply_record:
+            apply_record = (ContinuationFile.load(
+                self.target_version).apply_record)
 
-            if continuation.apply_record.requires_conflict_resolution():
-                if not self._run_update_patches_with_no_deletions():
-                    return False
+        if not self._run_update_patches_with_no_deletions():
+            return False
 
-            continuation.apply_record.stage_all_patches(
-                ignore_deleted_files=True)
+        apply_record.stage_all_patches(ignore_deleted_files=True)
+        has_changes = repository.brave.has_staged_changed()
 
-            if not repository.brave.has_staged_changed():
-                logging.error(
-                    'Nothing has been staged to commit conflict-resolved '
-                    'patches.')
-                return False
+        if not has_changes and not no_conflict_continuation:
+            logging.error(
+                'Nothing has been staged to commit conflict-resolved '
+                'patches. (Did you mean to pass '
+                '[bold cyan]--no-conflict-change[/]?)')
+            return False
 
+        if has_changes:
             self._save_conflict_resolved_patches()
 
         self._save_updated_patches()
@@ -1453,17 +1455,11 @@ class Upgrade(Versioned):
                         '--continue[/])')
                     return False
 
-                if not self._run_update_patches_with_no_deletions():
-                    return False
-
-                apply_record.stage_all_patches()
-                self._save_conflict_resolved_patches()
-
                 # With all conflicts resolved, it is necessary to close the
                 # upgrade with all the same steps produced when running an
                 # upgrade continuation, as recovering from a conflict-
                 # resolution failure.
-                return self._continue(no_conflict_continuation=True)
+                return self._continue(apply_record=apply_record)
             if e.returncode != 0:
                 logging.error('Failures found when running npm run init\n%s',
                               e.stderr)
