@@ -136,9 +136,11 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const net::SiteForCookies& site_for_cookies,
     base::optional_ref<const url::Origin> top_frame_origin,
     net::CookieSettingOverrides overrides,
+    base::optional_ref<const net::CookiePartitionKey> cookie_partition_key,
     CookieSettingWithMetadata* cookie_settings) const {
   bool allow = IsFullCookieAccessAllowed_ChromiumImpl(
-      url, site_for_cookies, top_frame_origin, overrides, cookie_settings);
+      url, site_for_cookies, top_frame_origin, overrides, cookie_partition_key,
+      cookie_settings);
 
   const bool is_1p_ephemeral_feature_enabled = base::FeatureList::IsEnabled(
       net::features::kBraveFirstPartyEphemeralStorage);
@@ -213,6 +215,17 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
   }
 
   return false;
+}
+
+bool CookieSettingsBase::IsFullCookieAccessAllowed(
+    const GURL& url,
+    const net::SiteForCookies& site_for_cookies,
+    base::optional_ref<const url::Origin> top_frame_origin,
+    net::CookieSettingOverrides overrides,
+    CookieSettingWithMetadata* cookie_settings) const {
+  return IsFullCookieAccessAllowed(
+      url, site_for_cookies, top_frame_origin, overrides,
+      /*cookie_partition_key=*/std::nullopt, cookie_settings);
 }
 
 // Determines whether a 3p cookies block should be applied if a requesting URL
