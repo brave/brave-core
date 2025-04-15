@@ -22,7 +22,7 @@ export function initializeTopSites(
 
     topSitesListKind: 'custom',
 
-    topSites: [...Array(12).keys()].flatMap((i) => {
+    topSites: [...Array(11).keys()].flatMap((i) => {
       return [
         {
           title: 'Brave',
