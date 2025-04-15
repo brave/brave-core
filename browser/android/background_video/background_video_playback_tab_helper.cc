@@ -32,8 +32,8 @@ constexpr char16_t kYoutubeBackgroundPlaybackAndPipScript[] =
     }
 }());
 // Function to modify the flags if the target object exists.
-function modifyYtcfgFlags() {
-  if (!window.ytcfg) {
+function modifyYtcfgFlags(checkYtcfgInstance) {
+  if (checkYtcfgInstance && !window.ytcfg) {
     return;
   }
   const config = window.ytcfg.get("WEB_PLAYER_CONTEXT_CONFIGS")?.WEB_PLAYER_CONTEXT_CONFIG_ID_MWEB_WATCH
@@ -53,13 +53,18 @@ function modifyYtcfgFlags() {
   }
 }
 
-document.addEventListener('load', (event) => {
-  const target = event.target;
-  if (target.tagName === 'SCRIPT') {
-    // Check and modify flags when a new script is added.
-    modifyYtcfgFlags();
-  }
-}, true);
+if (window.ytcfg) {
+  // Pass `false` as there's no need to check again for `window.ytcfg`.
+  modifyYtcfgFlags(false);
+} else {
+  document.addEventListener('load', (event) => {
+    const target = event.target;
+    if (target.tagName === 'SCRIPT') {
+      // Check and modify flags when a new script is added.
+      modifyYtcfgFlags(true);
+    }
+  }, true); 
+}
 )";
 
 bool IsYouTubeDomain(const GURL& url) {
@@ -106,15 +111,6 @@ BackgroundVideoPlaybackTabHelper::BackgroundVideoPlaybackTabHelper(
           *contents) {}
 
 BackgroundVideoPlaybackTabHelper::~BackgroundVideoPlaybackTabHelper() {}
-
-void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  if (navigation_handle->IsInPrimaryMainFrame() &&
-      navigation_handle->HasCommitted() &&
-      navigation_handle->IsSameDocument()) {
-    InjectScriptOnYouTubeDomain(web_contents());
-  }
-}
 
 void BackgroundVideoPlaybackTabHelper::PrimaryMainDocumentElementAvailable() {
   InjectScriptOnYouTubeDomain(web_contents());
