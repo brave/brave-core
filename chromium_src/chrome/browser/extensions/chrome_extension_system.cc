@@ -5,7 +5,7 @@
 
 #include "brave/browser/extensions/brave_extension_service.h"
 #include "chrome/browser/extensions/crx_installer.h"
-#include "chrome/browser/extensions/update_install_gate.h"
+#include "extensions/browser/update_install_gate.h"
 
 #define ExtensionService BraveExtensionService
 #include "src/chrome/browser/extensions/chrome_extension_system.cc"
