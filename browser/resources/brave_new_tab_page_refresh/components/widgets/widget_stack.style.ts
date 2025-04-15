@@ -37,5 +37,8 @@ export const style = scoped.css`
   .widget {
     flex: 1 1 auto;
     padding: 16px;
+    max-height: var(--widget-height, unset);
+    overflow-y: auto;
+    scrollbar-width: none;
   }
 `
