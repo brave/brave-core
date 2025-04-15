@@ -76,7 +76,7 @@ public class CustomAppIconsFragment extends Fragment implements CustomAppIconsLi
     }
 
     private void handleIconSwitch(CustomAppIconsEnum icon) {
-        CustomAppIconsManager.switchIcon(requireActivity(), icon);
+        CustomAppIconsManager.getInstance().switchIcon(icon);
         requireActivity().onBackPressed();
     }
 }

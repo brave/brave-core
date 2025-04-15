@@ -101,3 +101,18 @@ java_strings_grd("java_strings_grd") {
                 android_bundle_locales_as_resources,
                 [ "values-{{source_name_part}}/android_custom_app_icons_strings.xml" ])
 }
+
+robolectric_library("junit_tests") {
+  sources = [ "junit/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsManagerTest.java" ]
+
+  deps = [
+    ":java",
+    ":java_resources",
+    "//base:base_java_test_support",
+    "//base:base_junit_test_support",
+    "//chrome/browser/preferences:java",
+    "//third_party/androidx:androidx_test_core_java",
+    "//third_party/junit",
+    "//third_party/mockito:mockito_java",
+  ]
+}

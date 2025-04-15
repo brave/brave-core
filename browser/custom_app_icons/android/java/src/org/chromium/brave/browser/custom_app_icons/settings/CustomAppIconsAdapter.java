@@ -48,8 +48,7 @@ public class CustomAppIconsAdapter extends RecyclerView.Adapter<CustomAppIconsAd
                         : currentIcon.getIcon());
 
         boolean isSelected =
-                currentIcon.equals(
-                        CustomAppIconsManager.getCurrentIcon(holder.itemView.getContext()));
+                currentIcon.equals(CustomAppIconsManager.getInstance().getCurrentIcon());
         holder.mCheck.setVisibility(isSelected ? View.VISIBLE : View.GONE);
 
         holder.itemView.setOnClickListener(

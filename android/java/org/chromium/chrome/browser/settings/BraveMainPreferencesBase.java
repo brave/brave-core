@@ -396,7 +396,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private void updateCustomAppIcon(String preferenceString) {
         Preference preference = findPreference(preferenceString);
-        CustomAppIconsEnum currentIcon = CustomAppIconsManager.getCurrentIcon(getContext());
+        CustomAppIconsEnum currentIcon = CustomAppIconsManager.getInstance().getCurrentIcon();
         int iconResource =
                 currentIcon.equals(CustomAppIconsEnum.ICON_DEFAULT)
                         ? R.drawable.ic_launcher_round
