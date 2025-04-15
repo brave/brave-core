@@ -26,7 +26,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.tabmodel.TabWindowManager;
+import org.chromium.chrome.browser.tabwindow.TabWindowManager;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
