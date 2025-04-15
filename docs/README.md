@@ -30,8 +30,10 @@ This is only an estimate. The **github** view may differ.
 ## Document Index
 
 ### Checking Out and Patching
-*   [Upgrading Chromium](chromium_version_upgrade.md) Upgrading `brave-core` to a newer
-    Chromium version.
+*   [Upgrading Chromium](chromium_version_upgrade.md) Upgrading `brave-core` to
+    a newer Chromium version.
+*   [Patching with `plaster`](plaster.md) A patching engine for semantical
+    patching of upstream Chromium.
 *   [WebUI Overriding](webui_overriding.md)
 *   [DevTools Frontend Patching](devtools_frontend_patching.md) Managing
     changes to the upstream project.
