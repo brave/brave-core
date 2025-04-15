@@ -16,7 +16,7 @@ export function initializeVPN(store: Store<VPNState>): VPNActions {
     ...defaultVPNState(),
     vpnFeatureEnabled: true,
     showVpnWidget: true,
-    vpnPurchased: false,
+    vpnPurchased: true,
     vpnConnectionState: 'connecting',
     vpnConnectionRegion: {
       country: 'Brazil',

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color } from '@brave/leo/tokens/css/variables'
-import { scoped, global } from '../../lib/scoped_css'
+import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
   & {
@@ -38,20 +38,16 @@ export const style = scoped.css`
   }
 `
 
-global.css`
-  @scope (${style.selector}) {
+style.passthrough.css`
+  .selected-marker {
+    --leo-icon-color: #fff;
+    --leo-icon-size: 24px;
 
-    .selected-marker {
-      --leo-icon-color: #fff;
-      --leo-icon-size: 24px;
-
-      position: absolute;
-      inset-block-start: 10px;
-      inset-inline-end: 10px;
-      background: ${color.icon.interactive};
-      border-radius: 50%;
-      padding: 6px;
-    }
-
+    position: absolute;
+    inset-block-start: 10px;
+    inset-inline-end: 10px;
+    background: ${color.icon.interactive};
+    border-radius: 50%;
+    padding: 6px;
   }
 `

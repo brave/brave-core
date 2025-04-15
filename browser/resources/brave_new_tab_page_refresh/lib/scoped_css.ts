@@ -27,6 +27,23 @@ class ScopedCSSAttribute {
   get selector() {
     return `[${scopeAttributeName}=${CSS.escape(this[scopeAttributeName])}]`
   }
+
+  get passthrough() {
+    const { selector } = this
+    return {
+      // Adds styles that "pass-through" descendants with a "data-css-scope"
+      // attribute. Pass-through styles can be useful for containers that need
+      // to supply styling to children (e.g. flex properties) that might
+      // themselves define a style scope.
+      css(callsite: TemplateStringsArray, ...values: any[]) {
+        addStyles(`
+          @scope (${selector}) {
+            ${String.raw(callsite, ...values)}
+          }
+        `)
+      }
+    }
+  }
 }
 
 let nextScopeID = 0x5c09ed;
@@ -47,12 +64,5 @@ export const scoped = {
       }
     `)
     return attr
-  }
-}
-
-// Adds global CSS to the document.
-export const global = {
-  css(callsite: TemplateStringsArray, ...values: any[]) {
-    addStyles(String.raw(callsite, ...values))
   }
 }

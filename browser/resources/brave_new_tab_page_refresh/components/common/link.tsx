@@ -11,6 +11,7 @@ interface Props {
   url: string
   className?: string
   onClick?: () => void
+  openInNewTab?: boolean
   children: React.ReactNode
 }
 
@@ -28,6 +29,7 @@ export function Link(props: Props) {
       href={sanitizedURL}
       className={props.className}
       rel='noopener noreferrer'
+      target={props.openInNewTab ? '_blank' : '_self'}
       onClick={props.onClick}
     >
       {props.children}
