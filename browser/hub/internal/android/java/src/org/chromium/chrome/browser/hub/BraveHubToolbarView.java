@@ -16,7 +16,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.ContextUtils;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 /**
  * Brave's extension for {@link HubToolbarView}. Here we control what elements should be visible in
@@ -65,11 +65,10 @@ public class BraveHubToolbarView extends HubToolbarView {
 
     private void updateButtonsVisibility() {
         boolean shouldHideButtons =
-                ContextUtils.getAppSharedPreferences()
-                                .getBoolean(BravePreferenceKeys.BRAVE_TOOLBAR_TOP_ANCHORED, true)
-                        && ContextUtils.getAppSharedPreferences()
-                                .getBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true);
-
+                ChromeSharedPreferences.getInstance()
+                                .readBoolean(BravePreferenceKeys.BRAVE_TOOLBAR_TOP_ANCHORED, true)
+                        && ChromeSharedPreferences.getInstance()
+                                .readBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true);
         mActionButton.setVisibility(shouldHideButtons ? View.INVISIBLE : View.VISIBLE);
         mMenuButton.setVisibility(shouldHideButtons ? View.INVISIBLE : View.VISIBLE);
     }
