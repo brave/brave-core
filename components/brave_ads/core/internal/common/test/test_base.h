@@ -36,8 +36,6 @@ namespace test {
 
 class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
  public:
-  TestBase();
-
   TestBase(const TestBase&) = delete;
   TestBase& operator=(const TestBase&) = delete;
 
@@ -48,6 +46,8 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   void TearDown() override;
 
  protected:
+  TestBase();
+
   // Override `SetUp` and call `test::TestBase::SetUp` with
   // `is_integration_test` set to `true` to test functionality and performance
   // under product-like circumstances with data to replicate live settings to
