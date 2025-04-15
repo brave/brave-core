@@ -188,8 +188,7 @@ public class BraveWalletPreferences extends BravePreferenceFragment
                                     "<LINK_1>",
                                     "</LINK_1>",
                                     new ChromeClickableSpan(
-                                            requireContext(),
-                                            R.color.brave_link,
+                                            requireContext().getColor(R.color.brave_link),
                                             result -> {
                                                 TabUtils.openUrlInCustomTab(
                                                         requireContext(),

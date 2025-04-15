@@ -1058,16 +1058,14 @@ public class BraveRewardsPanel
 
         ChromeClickableSpan resetClickableSpan =
                 new ChromeClickableSpan(
-                        mActivity,
-                        R.color.rewards_panel_notification_secondary_text_color,
+                        mActivity.getColor(R.color.rewards_panel_notification_secondary_text_color),
                         (textView) -> {
                             TabUtils.openUrlInNewTab(false, BraveActivity.BRAVE_REWARDS_RESET_PAGE);
                             dismiss();
                         });
         ChromeClickableSpan tosClickableSpan =
                 new ChromeClickableSpan(
-                        mActivity,
-                        R.color.brave_blue_tint_color,
+                        mActivity.getColor(R.color.brave_blue_tint_color),
                         (textView) -> {
                             TabUtils.openUrlInNewTab(false, BraveActivity.BRAVE_TERMS_PAGE);
                             dismiss();
@@ -1604,8 +1602,7 @@ public class BraveRewardsPanel
 
         ChromeClickableSpan clickableSpan =
                 new ChromeClickableSpan(
-                        mActivity,
-                        R.color.brave_rewards_modal_theme_color,
+                        mActivity.getColor(R.color.brave_rewards_modal_theme_color),
                         (textView) -> {
                             CustomTabActivity.showInfoPage(mActivity, NEW_SIGNUP_DISABLED_URL);
                         });
@@ -1627,8 +1624,7 @@ public class BraveRewardsPanel
 
         ChromeClickableSpan clickableSpan =
                 new ChromeClickableSpan(
-                        mActivity,
-                        R.color.brave_rewards_modal_theme_color,
+                        mActivity.getColor(R.color.brave_rewards_modal_theme_color),
                         (textView) -> {
                             CustomTabActivity.showInfoPage(mActivity, clickUrl);
                         });
