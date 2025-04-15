@@ -16,7 +16,11 @@ import { TopSiteEditModal } from './top_site_edit_modal'
 import { Popover } from '../common/popover'
 import classNames from '$web-common/classnames'
 
-import { style, collapsedTileCount, maxTileCount } from './top_sites.style'
+import {
+  style,
+  collapsedTileCount,
+  maxTileColumnCount,
+  maxTileCount } from './top_sites.style'
 
 export function TopSites() {
   const { getString } = useLocale()
@@ -84,9 +88,13 @@ export function TopSites() {
     <div
       ref={rootRef}
       className={classNames({
-        expanded,
-        collapsed: !expanded,
-        hidden: !showTopSites || tileCount === 0
+        'expanded': expanded,
+        'collapsed': !expanded,
+        'hidden': !showTopSites || tileCount === 0,
+        'single-row': tileCount <= maxTileColumnCount,
+        'double-row':
+          tileCount > maxTileColumnCount &&
+          tileCount <= maxTileColumnCount * 2
        })}
       style={inlineCSSVars({ '--self-tile-count': tileCount })}
       onClick={maybeCollapseOnClick}

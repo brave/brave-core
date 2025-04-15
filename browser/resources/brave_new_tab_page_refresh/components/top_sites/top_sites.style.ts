@@ -12,7 +12,6 @@ export const maxTileRowCount = 4;
 export const maxTileCount = maxTileColumnCount * maxTileRowCount
 
 export const style = scoped.css`
-
   & {
     --self-tile-width: 72px;
     --self-tile-height: 82px;
@@ -73,6 +72,20 @@ export const style = scoped.css`
       @starting-style {
         background: rgba(0, 0, 0, 0);
         backdrop-filter: blur(0);
+      }
+    }
+  }
+
+  @container (width > 930px) {
+    &.single-row, &.double-row {
+      .top-sites::backdrop {
+        display: none;
+      }
+    }
+
+    &.double-row {
+      &.expanded {
+        height: calc(var(--self-tile-height) * 2 + 16px);
       }
     }
   }
