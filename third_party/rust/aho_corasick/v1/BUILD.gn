@@ -67,6 +67,7 @@ cargo_crate("lib") {
     "perf-literal",
     "std",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

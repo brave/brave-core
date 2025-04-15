@@ -44,6 +44,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/unsigned_varint/v0_8:lib",
   ]
   features = [ "alloc" ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

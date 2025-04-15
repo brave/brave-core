@@ -48,6 +48,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/parking_lot_core/v0_9:lib",
   ]
   features = [ "default" ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

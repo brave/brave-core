@@ -51,6 +51,7 @@ cargo_crate("lib") {
     "serde",
     "serde_support",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

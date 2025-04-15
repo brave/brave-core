@@ -64,6 +64,7 @@ cargo_crate("lib") {
     "encoding",
     "encoding_rs",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

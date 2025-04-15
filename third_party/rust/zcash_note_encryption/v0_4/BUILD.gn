@@ -43,6 +43,7 @@ cargo_crate("lib") {
     "alloc",
     "default",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

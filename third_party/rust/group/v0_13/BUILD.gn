@@ -48,6 +48,7 @@ cargo_crate("lib") {
     "memuse",
     "wnaf-memuse",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

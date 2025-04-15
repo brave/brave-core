@@ -36,6 +36,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/phf_shared/v0_8:lib",
     "//brave/third_party/rust/rand/v0_7:lib",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

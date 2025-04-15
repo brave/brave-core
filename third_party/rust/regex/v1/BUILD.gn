@@ -69,6 +69,7 @@ cargo_crate("lib") {
     "unicode-script",
     "unicode-segment",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
@@ -115,6 +116,7 @@ cargo_crate("buildrs_support") {
     "//brave/third_party/rust/regex_automata/v0_4:lib",
     "//brave/third_party/rust/regex_syntax/v0_8:lib",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

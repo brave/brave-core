@@ -47,6 +47,7 @@ cargo_crate("lib") {
     "proc-macro-hack",
     "std",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

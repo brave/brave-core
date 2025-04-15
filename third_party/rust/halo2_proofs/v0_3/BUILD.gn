@@ -97,6 +97,7 @@ cargo_crate("lib") {
     "floor-planner-v1-legacy-pdqsort",
     "halo2_legacy_pdqsort",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

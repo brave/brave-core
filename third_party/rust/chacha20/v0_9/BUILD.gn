@@ -46,6 +46,7 @@ cargo_crate("lib") {
     deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
   }
   features = [ "zeroize" ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

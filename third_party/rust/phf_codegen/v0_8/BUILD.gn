@@ -33,6 +33,7 @@ cargo_crate("buildrs_support") {
     "//brave/third_party/rust/phf_generator/v0_8:lib",
     "//brave/third_party/rust/phf_shared/v0_8:lib",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

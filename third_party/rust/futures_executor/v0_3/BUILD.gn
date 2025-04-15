@@ -41,6 +41,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/futures_util/v0_3:lib",
   ]
   features = [ "std" ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

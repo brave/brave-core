@@ -40,6 +40,7 @@ cargo_crate("lib") {
   aliased_deps = {
     debug_unreachable = "//brave/third_party/rust/new_debug_unreachable/v1:lib"
   }
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

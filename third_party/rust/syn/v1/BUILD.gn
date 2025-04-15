@@ -106,6 +106,7 @@ cargo_crate("lib") {
       "//brave/third_party/rust/chromium_crates_io/vendor/syn-v1/build.rs"
   build_sources =
       [ "//brave/third_party/rust/chromium_crates_io/vendor/syn-v1/build.rs" ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
@@ -220,6 +221,7 @@ cargo_crate("buildrs_support") {
       "//brave/third_party/rust/chromium_crates_io/vendor/syn-v1/build.rs"
   build_sources =
       [ "//brave/third_party/rust/chromium_crates_io/vendor/syn-v1/build.rs" ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

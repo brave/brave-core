@@ -60,6 +60,7 @@ cargo_crate("lib") {
     "getopts",
     "main",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
