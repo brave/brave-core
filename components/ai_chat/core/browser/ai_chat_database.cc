@@ -11,6 +11,7 @@
 #include <optional>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/strings/string_split.h"
@@ -544,7 +545,7 @@ AIChatDatabase::GetArchiveContentsForConversation(
 }
 
 bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
-                                     std::optional<std::string> contents,
+                                     std::vector<std::string> contents,
                                      mojom::ConversationTurnPtr first_entry) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(!conversation->uuid.empty());
@@ -613,8 +614,9 @@ bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
 bool AIChatDatabase::AddOrUpdateAssociatedContent(
     std::string_view conversation_uuid,
     std::vector<mojom::AssociatedContentPtr> associated_content,
-    std::optional<std::string> contents) {
+    std::vector<std::string> contents) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   if (!LazyInit()) {
     return false;
   }
@@ -648,7 +650,10 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
     existing_ids_set = existing_ids;
   }
 
-  for (const auto& content : associated_content) {
+  for (size_t i = 0; i < associated_content.size(); ++i) {
+    auto& content = associated_content[i];
+    auto content_text = contents.empty() ? "" : std::move(contents[i]);
+
     sql::Statement insert_or_update_statement;
     bool exists = existing_ids_set.contains(content->uuid);
     if (exists) {
@@ -685,7 +690,8 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
                                  content->url.spec());
     insert_or_update_statement.BindInt(
         index++, base::to_underlying(content->content_type));
-    BindAndEncryptOptionalString(insert_or_update_statement, index++, contents);
+    BindAndEncryptOptionalString(insert_or_update_statement, index++,
+                                 content_text);
     insert_or_update_statement.BindInt(index++,
                                        content->content_used_percentage);
     insert_or_update_statement.BindBool(index++, content->is_content_refined);

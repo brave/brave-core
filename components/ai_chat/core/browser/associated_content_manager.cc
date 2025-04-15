@@ -213,7 +213,8 @@ void AssociatedContentManager::GetContent(
           return;
         }
         self->conversation_->OnAssociatedContentUpdated();
-        std::move(callback).Run(self->cached_text_content_, false, "");
+        std::move(callback).Run(self->GetCachedTextContent(), self->IsVideo(),
+                                "");
       },
       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
@@ -235,17 +236,7 @@ void AssociatedContentManager::GetContent(
                 return;
               }
 
-              // If we only have one content driver directly return the content.
-              // Otherwise, wrap each content in <page> tags.
-              if (results.size() == 1) {
-                self->cached_text_content_ = results[0];
-              } else if (results.size() > 0) {
-                self->cached_text_content_ = base::StrCat(
-                    {"<page>", base::JoinString(results, "</page><page>"),
-                     "</page>"});
-              } else {
-                self->cached_text_content_ = "";
-              }
+              self->cached_text_content_ = std::move(results);
               self->on_page_text_fetch_complete_->Signal();
               self->on_page_text_fetch_complete_ = nullptr;
             },
@@ -292,10 +283,33 @@ void AssociatedContentManager::GetTopSimilarityWithPromptTilContextLimit(
       prompt, text, context_limit, std::move(callback));
 }
 
-std::string_view AssociatedContentManager::GetCachedTextContent() {
+std::string AssociatedContentManager::GetCachedTextContent() const {
   DVLOG(1) << __func__;
 
-  return cached_text_content_;
+  // If we only have one content driver directly return the content.
+  // Otherwise, wrap each content in <page> tags.
+  if (cached_text_content_.size() == 1) {
+    return cached_text_content_[0];
+  }
+
+  if (cached_text_content_.size() > 0) {
+    return base::StrCat(
+        {"<page>", base::JoinString(cached_text_content_, "</page><page>"),
+         "</page>"});
+  }
+  return "";
+}
+
+std::vector<std::string_view> AssociatedContentManager::GetCachedContent()
+    const {
+  DVLOG(1) << __func__;
+
+  std::vector<std::string_view> result;
+  for (const auto& content : cached_text_content_) {
+    result.push_back(content);
+  }
+
+  return result;
 }
 
 bool AssociatedContentManager::HasOpenAIChatPermission() const {
