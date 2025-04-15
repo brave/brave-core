@@ -34,7 +34,7 @@ gfx::NativeWindow GetBrowserNativeWindow() {
 }
 
 // A NotificationAdDelegate that passes through events to the ads service
-class PassThroughDelegate final : public NotificationAdDelegate {
+class PassThroughDelegate : public NotificationAdDelegate {
  public:
   PassThroughDelegate(Profile& profile, const NotificationAd& notification_ad)
       : profile_(profile), notification_ad_(notification_ad) {}

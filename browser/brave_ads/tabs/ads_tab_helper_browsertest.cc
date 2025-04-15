@@ -149,7 +149,7 @@ MATCHER_P(FileName, filename, "") {
   return arg.ExtractFileName() == filename;
 }
 
-class MediaWaiter : public content::WebContentsObserver {
+class MediaWaiter final : public content::WebContentsObserver {
  public:
   explicit MediaWaiter(content::WebContents* const web_contents)
       : content::WebContentsObserver(web_contents) {}
