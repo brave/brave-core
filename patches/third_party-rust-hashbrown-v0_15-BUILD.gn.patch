@@ -1,0 +1,25 @@
+diff --git a/third_party/rust/hashbrown/v0_15/BUILD.gn b/third_party/rust/hashbrown/v0_15/BUILD.gn
+index 8595d7b24c4bb087c6dc04d811533e29fe50e593..b00d59e3e19325780e8d374d19432096c7521f64 100644
+--- a/third_party/rust/hashbrown/v0_15/BUILD.gn
++++ b/third_party/rust/hashbrown/v0_15/BUILD.gn
+@@ -43,7 +43,19 @@ cargo_crate("lib") {
+     "//third_party/rust/chromium_crates_io/vendor/hashbrown-v0_15/src/util.rs",
+   ]
+   inputs = []
+-
++  deps = [
++    "//brave/third_party/rust/allocator_api2/v0_2:lib",
++    "//brave/third_party/rust/equivalent/v1:lib",
++    "//brave/third_party/rust/foldhash/v0_1:lib",
++  ]
++  features = [
++    "allocator-api2",
++    "default",
++    "default-hasher",
++    "equivalent",
++    "inline-more",
++    "raw-entry",
++  ]
+   build_native_rust_unit_tests = false
+   edition = "2021"
+   cargo_pkg_version = "0.15.2"

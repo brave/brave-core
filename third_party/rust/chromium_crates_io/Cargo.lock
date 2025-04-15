@@ -959,8 +959,7 @@ dependencies = [
 
 [[package]]
 name = "hashbrown"
-version = "0.15.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+version = "0.15.2"
 dependencies = [
  "allocator-api2",
  "equivalent",
