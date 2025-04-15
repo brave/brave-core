@@ -36,6 +36,9 @@ struct AIChatIntroMessageView: View {
 
     case .chatVisionBasic:
       return Strings.AIChat.introMessageLlamaVisionMessageDescription
+
+    case .chatDeepseekR1:
+      return Strings.AIChat.introMessageDeepSeekR1MessageDescription
     }
   }
 

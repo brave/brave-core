@@ -17,6 +17,7 @@ public enum AIChatModelKey: String {
   case chatClaudeHaiku = "chat-claude-haiku"
   case chatClaudeSonnet = "chat-claude-sonnet"
   case chatVisionBasic = "chat-vision-basic"
+  case chatDeepseekR1 = "chat-deepseek-r1"
 }
 
 public protocol AIChatWebDelegate: AnyObject {

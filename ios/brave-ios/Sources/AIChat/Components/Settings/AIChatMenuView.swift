@@ -275,6 +275,9 @@ struct AIChatMenuView: View {
 
     case .chatVisionBasic:
       return Strings.AIChat.introMessageLlamaVisionModelPurposeDescription
+
+    case .chatDeepseekR1:
+      return Strings.AIChat.introMessageDeepSeekR1ModelPurposeDescription
     }
   }
 
