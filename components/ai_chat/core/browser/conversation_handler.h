@@ -32,7 +32,6 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/browser/text_embedder.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -119,40 +118,15 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void GetScreenshots(
         mojom::ConversationHandler::GetScreenshotsCallback callback);
 
-    void GetTopSimilarityWithPromptTilContextLimit(
-        const std::string& prompt,
-        const std::string& text,
-        uint32_t context_limit,
-        TextEmbedder::TopSimilarityCallback callback);
-
-    void SetTextEmbedderForTesting(
-        std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter>
-            text_embedder) {
-      text_embedder_ = std::move(text_embedder);
-    }
-    TextEmbedder* GetTextEmbedderForTesting() { return text_embedder_.get(); }
-
     base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
       return weak_ptr_factory_.GetWeakPtr();
     }
 
    protected:
     // Content has navigated
-    virtual void OnNewPage(int64_t navigation_id);
+    virtual void OnNewPage(int64_t navigation_id) {}
 
    private:
-    void OnTextEmbedderInitialized(bool initialized);
-
-    // Owned by this class so that all associated conversation can benefit from
-    // a single cache as page content is unlikely to change between messages
-    // and conversations.
-    std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter> text_embedder_;
-    std::vector<std::tuple<std::string,  // prompt
-                           std::string,  // text
-                           uint32_t,     // context_limit
-                           TextEmbedder::TopSimilarityCallback>>
-        pending_top_similarity_requests_;
-
     base::WeakPtrFactory<AssociatedContentDelegate> weak_ptr_factory_{this};
   };
 
@@ -415,12 +389,6 @@ class ConversationHandler : public mojom::ConversationHandler,
                                      std::string contents_text,
                                      bool is_video,
                                      std::string invalidation_token);
-  void OnGetRefinedPageContent(
-      EngineConsumer::GenerationDataCallback data_received_callback,
-      EngineConsumer::GenerationCompletedCallback data_completed_callback,
-      std::string page_content,
-      bool is_video,
-      base::expected<std::string, std::string> refined_page_content);
   void OnEngineCompletionDataReceived(mojom::ConversationEntryEventPtr result);
   void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);
   void OnSuggestedQuestionsResponse(
@@ -479,7 +447,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   // but change AssociatedContentDelegate as the active Tab navigates to
   // different pages.
   bool should_send_page_contents_ = false;
-  bool is_content_refined_ = false;
   // When this is true, the most recent content retrieval was different to the
   // previous one.
   bool is_content_different_ = true;

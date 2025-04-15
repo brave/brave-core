@@ -37,7 +37,6 @@ constexpr base::FilePath::CharType kComponentInstallDir[] =
 constexpr base::FilePath::CharType kDeprecatedComponentInstallDir[] =
     FILE_PATH_LITERAL("LeoLocalModels");
 constexpr char kComponentName[] = "Leo Local Models Updater";
-constexpr char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
 constexpr uint8_t kPublicKeySHA256[32] = {
     0x49, 0x74, 0x99, 0xc0, 0xe0, 0xe7, 0xf6, 0x7d, 0x1b, 0x23, 0x29,
     0x8b, 0xd3, 0xa0, 0xd6, 0x54, 0xb6, 0xc3, 0x23, 0x87, 0x75, 0xec,
@@ -61,10 +60,10 @@ base::FilePath GetDeprecatedComponentDir() {
 
 }  // namespace
 
-LocalModelsComponentInstallerPolicy::
-    LocalModelsComponentInstallerPolicy() = default;
-LocalModelsComponentInstallerPolicy::
-    ~LocalModelsComponentInstallerPolicy() = default;
+LocalModelsComponentInstallerPolicy::LocalModelsComponentInstallerPolicy() =
+    default;
+LocalModelsComponentInstallerPolicy::~LocalModelsComponentInstallerPolicy() =
+    default;
 
 void LocalModelsComponentInstallerPolicy::DeleteComponent() {
   base::DeletePathRecursively(GetComponentDir());
@@ -141,8 +140,7 @@ LocalModelsUpdaterState* LocalModelsUpdaterState::GetInstance() {
   return instance.get();
 }
 
-void LocalModelsUpdaterState::SetInstallDir(
-    const base::FilePath& install_dir) {
+void LocalModelsUpdaterState::SetInstallDir(const base::FilePath& install_dir) {
   if (install_dir.empty()) {
     return;
   }
@@ -167,20 +165,12 @@ void ManageLocalModelsComponentRegistration(
   if (base::PathExists(GetDeprecatedComponentDir())) {
     base::DeletePathRecursively(GetDeprecatedComponentDir());
   }
-  if (!ai_chat::features::IsAIChatEnabled() ||
-      !ai_chat::features::IsPageContentRefineEnabled() || !cus) {
-    LocalModelsComponentInstallerPolicy::DeleteComponent();
-    return;
-  }
 
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<LocalModelsComponentInstallerPolicy>());
-  installer->Register(
-      // After Register, run the callback with component id.
-      cus, base::BindOnce([]() {
-        brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->EnsureInstalled(kComponentId);
-      }));
+  // TODO(fallaciousreasoning): Confirm this is the right approach.
+  // It seems like this was only being used for text embedding so we need to
+  // delete the component now?
+  // Maybe this whole thing should be deleted?
+  LocalModelsComponentInstallerPolicy::DeleteComponent();
 }
 
 }  // namespace ai_chat

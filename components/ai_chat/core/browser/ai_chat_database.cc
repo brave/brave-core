@@ -310,8 +310,6 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
           static_cast<mojom::ContentType>(statement.ColumnInt(index++));
       conversation->associated_content->content_used_percentage =
           statement.ColumnInt(index++);
-      conversation->associated_content->is_content_refined =
-          statement.ColumnBool(index++);
     }
   }
 
@@ -659,7 +657,8 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
                     base::to_underlying(associated_content->content_type));
   BindAndEncryptOptionalString(statement, index++, contents);
   statement.BindInt(index++, associated_content->content_used_percentage);
-  statement.BindBool(index++, associated_content->is_content_refined);
+  // TODO(fallaciousreasoning): Should we remove this entirely now?
+  statement.BindBool(index++, false);
   statement.BindString(index++, associated_content->uuid);
   statement.BindString(index, conversation_uuid);
 
