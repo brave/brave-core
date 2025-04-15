@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_URL_REQUEST_ISSUERS_URL_REQUEST_DELEGATE_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_URL_REQUEST_ISSUERS_URL_REQUEST_DELEGATE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_DELEGATE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_DELEGATE_H_
 
 #include "base/time/time.h"
 
@@ -12,7 +12,7 @@ namespace brave_ads {
 
 struct IssuersInfo;
 
-class IssuersUrlRequestDelegate {
+class IssuersDelegate {
  public:
   // Invoked to tell the delegate we will fetch the issuers at `fetch_at`.
   virtual void OnWillFetchIssuers(base::Time fetch_at) {}
@@ -31,9 +31,9 @@ class IssuersUrlRequestDelegate {
   virtual void OnDidRetryFetchingIssuers() {}
 
  protected:
-  virtual ~IssuersUrlRequestDelegate() = default;
+  virtual ~IssuersDelegate() = default;
 };
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_URL_REQUEST_ISSUERS_URL_REQUEST_DELEGATE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_DELEGATE_H_

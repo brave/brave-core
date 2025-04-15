@@ -9,8 +9,8 @@
 #include <cstddef>
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
@@ -25,7 +25,7 @@ namespace brave_ads {
 struct IssuersInfo;
 
 class UserRewards final : public AdsClientNotifierObserver,
-                          public IssuersUrlRequestDelegate,
+                          public IssuersDelegate,
                           public RedeemPaymentTokensDelegate,
                           public RefillConfirmationTokensDelegate {
  public:
@@ -46,7 +46,7 @@ class UserRewards final : public AdsClientNotifierObserver,
   // AdsClientNotifierObserver:
   void OnNotifyDidSolveAdaptiveCaptcha() override;
 
-  // IssuersUrlRequestDelegate:
+  // IssuersDelegate:
   void OnDidFetchIssuers(const IssuersInfo& issuers) override;
 
   // RedeemPaymentTokensDelegate:
@@ -62,7 +62,7 @@ class UserRewards final : public AdsClientNotifierObserver,
   void OnCaptchaRequiredToRefillConfirmationTokens(
       const std::string& captcha_id) override;
 
-  IssuersUrlRequest issuers_url_request_;
+  Issuers issuers_;
   RefillConfirmationTokens refill_confirmation_tokens_;
   RedeemPaymentTokens redeem_payment_tokens_;
 
