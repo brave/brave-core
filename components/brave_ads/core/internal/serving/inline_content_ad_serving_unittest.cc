@@ -76,6 +76,9 @@ TEST_F(BraveAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
 
 TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kInlineContentAdServingFeature);
+
   test::ForcePermissionRules();
 
   const CreativeInlineContentAdInfo creative_ad =
@@ -100,6 +103,9 @@ TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
 TEST_F(BraveAdsInlineContentAdServingTest,
        DoNotServeAdForNonExistentDimensions) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kInlineContentAdServingFeature);
+
   test::ForcePermissionRules();
 
   const CreativeInlineContentAdInfo creative_ad =
@@ -123,6 +129,9 @@ TEST_F(BraveAdsInlineContentAdServingTest,
 TEST_F(BraveAdsInlineContentAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kInlineContentAdServingFeature);
+
   const CreativeInlineContentAdInfo creative_ad =
       test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   database::SaveCreativeInlineContentAds({creative_ad});

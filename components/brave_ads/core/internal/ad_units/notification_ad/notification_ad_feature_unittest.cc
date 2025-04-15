@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 
-#include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
+#include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,94 +18,26 @@ TEST(BraveAdsNotificationAdFeatureTest, IsEnabled) {
   EXPECT_TRUE(base::FeatureList::IsEnabled(kNotificationAdFeature));
 }
 
-TEST(BraveAdsNotificationAdFeatureTest, IsDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
-
+TEST(BraveAdsNotificationAdFeatureTest, NotificationAdTimeout) {
   // Act & Assert
-  EXPECT_FALSE(base::FeatureList::IsEnabled(kNotificationAdFeature));
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  EXPECT_EQ(base::Minutes(2), kNotificationAdTimeout.Get());
+#else
+  EXPECT_EQ(base::Seconds(30), kNotificationAdTimeout.Get());
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 }
 
 TEST(BraveAdsNotificationAdFeatureTest, DefaultNotificationAdsPerHour) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kNotificationAdFeature, {{"default_ads_per_hour", "42"}});
-
-  // Act & Assert
-  EXPECT_EQ(42, kDefaultNotificationAdsPerHour.Get());
-}
-
-TEST(BraveAdsNotificationAdFeatureTest, DefaultDefaultNotificationAdsPerHour) {
-  // Act & Assert
-  EXPECT_EQ(10, kDefaultNotificationAdsPerHour.Get());
-}
-
-TEST(BraveAdsNotificationAdFeatureTest,
-     DefaultDefaultNotificationAdsPerHourWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
-
   // Act & Assert
   EXPECT_EQ(10, kDefaultNotificationAdsPerHour.Get());
 }
 
 TEST(BraveAdsNotificationAdFeatureTest, MaximumNotificationAdsPerDay) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kNotificationAdFeature, {{"maximum_ads_per_day", "24"}});
-
-  // Act & Assert
-  EXPECT_EQ(24U, kMaximumNotificationAdsPerDay.Get());
-}
-
-TEST(BraveAdsNotificationAdFeatureTest, DefaultMaximumNotificationAdsPerDay) {
   // Act & Assert
   EXPECT_EQ(100U, kMaximumNotificationAdsPerDay.Get());
-}
-
-TEST(BraveAdsNotificationAdFeatureTest,
-     DefaultMaximumNotificationAdsPerDayWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
-
-  // Act & Assert
-  EXPECT_EQ(100U, kMaximumNotificationAdsPerDay.Get());
-}
-
-TEST(BraveAdsNotificationAdFeatureTest,
-     CanFallbackToCustomNotificationAdsDefault) {
-  // Act & Assert
-  EXPECT_FALSE(kCanFallbackToCustomNotificationAds.Get());
 }
 
 TEST(BraveAdsNotificationAdFeatureTest, CanFallbackToCustomNotificationAds) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kNotificationAdFeature,
-      {{"can_fallback_to_custom_notifications", "true"}});
-
-  // Act & Assert
-  EXPECT_TRUE(kCanFallbackToCustomNotificationAds.Get());
-}
-
-TEST(BraveAdsNotificationAdFeatureTest,
-     DefaultCanFallbackToCustomNotificationAds) {
-  // Act & Assert
-  EXPECT_FALSE(kCanFallbackToCustomNotificationAds.Get());
-}
-
-TEST(BraveAdsNotificationAdFeatureTest,
-     DefaultCanFallbackToCustomNotificationAdsWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
-
   // Act & Assert
   EXPECT_FALSE(kCanFallbackToCustomNotificationAds.Get());
 }

@@ -17,12 +17,18 @@ namespace brave_ads {
 class BraveAdsFullScreenModePermissionRuleTest : public test::TestBase {};
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAllow) {
-  // Act & Assert
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   EXPECT_TRUE(HasFullScreenModePermission());
 }
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnAndroid) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
   test::MockIsBrowserInFullScreenMode(ads_client_mock_, true);
@@ -33,6 +39,9 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnAndroid) {
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   test::MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
   test::MockIsBrowserInFullScreenMode(ads_client_mock_, true);
@@ -43,6 +52,9 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnIOS) {
 
 TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldNotAllow) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   test::MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act & Assert

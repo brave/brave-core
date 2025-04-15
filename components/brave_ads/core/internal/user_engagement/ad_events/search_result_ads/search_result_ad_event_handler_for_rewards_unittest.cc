@@ -110,6 +110,9 @@ class BraveAdsSearchResultAdEventHandlerForRewardsTest : public test::TestBase {
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
        FireServedEventWithConversion) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
           /*should_generate_random_uuids=*/true);
@@ -128,6 +131,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
        FireServedEventWithoutConversion) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
@@ -145,6 +151,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
        FireViewedEventWithConversion) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
           /*should_generate_random_uuids=*/true);
@@ -164,6 +173,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
        FireViewedEventWithoutConversion) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
@@ -182,6 +194,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
           /*should_generate_random_uuids=*/true);
@@ -204,6 +219,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
        DoNotFireViewedEventIfAdPlacementWasNotServed) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
           /*should_generate_random_uuids=*/true);
@@ -224,6 +242,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
        FireClickedEventWithConversion) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
           /*should_generate_random_uuids=*/true);
@@ -244,6 +265,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
        FireClickedEventWithoutConversion) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
@@ -263,6 +287,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
           /*should_generate_random_uuids=*/true);
@@ -285,6 +312,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
        DoNotFireEventIfMissingAdPlacement) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
           /*should_generate_random_uuids=*/true);
@@ -306,6 +336,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
        DoNotFireEventWithInvalidPlacementId) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
           /*should_generate_random_uuids=*/true);
@@ -327,6 +360,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
        DoNotFireEventWithInvalidCreativeInstanceId) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
           /*should_generate_random_uuids=*/true);

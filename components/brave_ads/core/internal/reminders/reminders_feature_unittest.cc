@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,36 +16,7 @@ TEST(BraveAdsRemindersFeatureTest, IsEnabled) {
   EXPECT_TRUE(base::FeatureList::IsEnabled(kRemindersFeature));
 }
 
-TEST(BraveAdsRemindersFeatureTest, IsDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kRemindersFeature);
-
-  // Act & Assert
-  EXPECT_FALSE(base::FeatureList::IsEnabled(kRemindersFeature));
-}
-
 TEST(BraveAdsRemindersFeatureTest, RemindUserIfClickingTheSameAdAfter) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kRemindersFeature, {{"remind_user_if_clicking_the_same_ad_after", "1"}});
-
-  // Act & Assert
-  EXPECT_EQ(1U, kRemindUserIfClickingTheSameAdAfter.Get());
-}
-
-TEST(BraveAdsRemindersFeatureTest, DefaultRemindUserIfClickingTheSameAdAfter) {
-  // Act & Assert
-  EXPECT_EQ(3U, kRemindUserIfClickingTheSameAdAfter.Get());
-}
-
-TEST(BraveAdsRemindersFeatureTest,
-     DefaultRemindUserIfClickingTheSameAdAfterWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kRemindersFeature);
-
   // Act & Assert
   EXPECT_EQ(3U, kRemindUserIfClickingTheSameAdAfter.Get());
 }

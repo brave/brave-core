@@ -25,6 +25,9 @@ TEST_F(BraveAdsMediaPermissionRuleTest, ShouldAllowIfMediaIsNotPlaying) {
 TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldAllowIfMediaIsStoppedForSingleTab) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   SimulateOpeningNewTab(/*tab_id=*/1,
                         /*redirect_chain=*/{GURL("https://brave.com")},
                         net::HTTP_OK);
@@ -40,6 +43,9 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldAllowIfMediaIsStoppedOnMultipleTabs) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   SimulateOpeningNewTab(/*tab_id=*/1,
                         /*redirect_chain=*/{GURL("https://brave.com")},
                         net::HTTP_OK);
@@ -57,6 +63,9 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldAllowIfMediaIsPlayingOnMultipleTabsButStoppedForVisibleTab) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   SimulateOpeningNewTab(/*tab_id=*/1,
                         /*redirect_chain=*/{GURL("https://brave.com")},
                         net::HTTP_OK);
@@ -73,6 +82,9 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldNotAllowIfMediaIsPlayingOnVisibleTab) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   SimulateOpeningNewTab(/*tab_id=*/1,
                         /*redirect_chain=*/{GURL("https://brave.com")},
                         net::HTTP_OK);
@@ -105,6 +117,9 @@ TEST_F(
 TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldNotAllowIfMediaIsPlayingOnMultipleTabs) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   SimulateOpeningNewTab(/*tab_id=*/1,
                         /*redirect_chain=*/{GURL("https://brave.com")},
                         net::HTTP_OK);
@@ -119,6 +134,9 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
 TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldNotAllowIfMediaIsPlayingOnMultipleTabsButStoppedForOccludedTab) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   SimulateOpeningNewTab(/*tab_id=*/1,
                         /*redirect_chain=*/{GURL("https://brave.com")},
                         net::HTTP_OK);

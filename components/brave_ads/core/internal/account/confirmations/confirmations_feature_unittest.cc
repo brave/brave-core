@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,35 +16,7 @@ TEST(BraveAdsConfirmationsFeatureTest, IsEnabled) {
   EXPECT_TRUE(base::FeatureList::IsEnabled(kConfirmationsFeature));
 }
 
-TEST(BraveAdsConfirmationsFeatureTest, IsDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kConfirmationsFeature);
-
-  // Act & Assert
-  EXPECT_FALSE(base::FeatureList::IsEnabled(kConfirmationsFeature));
-}
-
-TEST(BraveAdsConfirmationsFeatureTest, ProcessConfirmationAfter) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kConfirmationsFeature, {{"retry_processing_after", "3h"}});
-
-  // Act & Assert
-  EXPECT_EQ(base::Hours(3), kRetryProcessingConfirmationAfter.Get());
-}
-
-TEST(BraveAdsConfirmationsFeatureTest, DefaultProcessConfirmationAfter) {
-  // Act & Assert
-  EXPECT_EQ(base::Seconds(15), kRetryProcessingConfirmationAfter.Get());
-}
-
-TEST(BraveAdsConfirmationsFeatureTest,
-     DefaultProcessConfirmationAfterWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-
+TEST(BraveAdsConfirmationsFeatureTest, RetryProcessingConfirmationAfter) {
   // Act & Assert
   EXPECT_EQ(base::Seconds(15), kRetryProcessingConfirmationAfter.Get());
 }

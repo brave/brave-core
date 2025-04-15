@@ -8,12 +8,14 @@
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -65,6 +67,9 @@ class BraveAdsInlineContentAdIntegrationTest : public test::TestBase {
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, ServeAd) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kInlineContentAdServingFeature});
+
   test::ForcePermissionRules();
 
   // Act & Assert
@@ -82,6 +87,10 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, ServeAd) {
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest,
        DoNotServeAdIfPermissionRulesAreDenied) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kInlineContentAdServingFeature});
+
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
@@ -96,6 +105,9 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
 TEST_F(BraveAdsInlineContentAdIntegrationTest,
        DoNotServeAdIfUserHasNotOptedInToBraveNewsAds) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kInlineContentAdServingFeature});
+
   test::ForcePermissionRules();
 
   test::OptOutOfBraveNewsAds();
@@ -113,6 +125,9 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kInlineContentAdServingFeature});
+
   test::ForcePermissionRules();
 
   base::RunLoop run_loop;
@@ -138,6 +153,9 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kInlineContentAdServingFeature});
+
   test::ForcePermissionRules();
 
   base::RunLoop run_loop;
@@ -169,6 +187,9 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
 TEST_F(BraveAdsInlineContentAdIntegrationTest,
        DoNotTriggerEventForInvalidCreativeInstanceId) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kInlineContentAdServingFeature});
+
   test::ForcePermissionRules();
 
   base::RunLoop run_loop;

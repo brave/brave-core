@@ -8,12 +8,14 @@
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -136,6 +138,9 @@ class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kNewTabPageAdServingFeature});
+
   test::ForcePermissionRules();
 
   MockCreativeNewTabPageAds();
@@ -156,6 +161,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
        DoNotServeAdIfPermissionRulesAreDenied) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kNewTabPageAdServingFeature});
+
   MockCreativeNewTabPageAds();
 
   // Act & Assert
@@ -172,6 +180,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
        DoNotServeAdIfUserHasNotOptedInToNewTabPageAds) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kNewTabPageAdServingFeature});
+
   test::ForcePermissionRules();
 
   test::OptOutOfNewTabPageAds();
@@ -191,6 +202,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kNewTabPageAdServingFeature});
+
   test::ForcePermissionRules();
 
   MockCreativeNewTabPageAds();
@@ -217,6 +231,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
        TriggerViewedEventForNonRewardsUser) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kNewTabPageAdServingFeature});
+
   test::DisableBraveRewards();
 
   MockCreativeNewTabPageAds();
@@ -242,6 +259,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kNewTabPageAdServingFeature});
+
   test::ForcePermissionRules();
 
   MockCreativeNewTabPageAds();
@@ -273,6 +293,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
        TriggerClickedEventForNonRewardsUser) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kNewTabPageAdServingFeature});
+
   test::DisableBraveRewards();
 
   MockCreativeNewTabPageAds();
@@ -304,6 +327,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
        DoNotTriggerEventForInvalidCreativeInstanceId) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kNewTabPageAdServingFeature});
+
   test::ForcePermissionRules();
 
   MockCreativeNewTabPageAds();

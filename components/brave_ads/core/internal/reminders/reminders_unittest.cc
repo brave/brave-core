@@ -55,6 +55,8 @@ class BraveAdsRemindersTest : public test::TestBase {
 TEST_F(BraveAdsRemindersTest,
        DoNotShowUserClickTheSameAdMultipleTimesReminderForAndroid) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
   BuildAndSaveAdHistory(
@@ -74,6 +76,8 @@ TEST_F(BraveAdsRemindersTest,
 TEST_F(BraveAdsRemindersTest,
        DoNotShowUserClickTheSameAdMultipleTimesReminderForIOS) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   test::MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
   BuildAndSaveAdHistory(
@@ -93,6 +97,8 @@ TEST_F(BraveAdsRemindersTest,
 TEST_F(BraveAdsRemindersTest,
        ShowReminderWhenUserClicksTheSameAdMultipleTimesForWindows) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   test::MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   BuildAndSaveAdHistory(
@@ -113,6 +119,8 @@ TEST_F(BraveAdsRemindersTest,
 TEST_F(BraveAdsRemindersTest,
        ShowReminderWhenUserClicksTheSameAdMultipleTimesForMacOs) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   test::MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
 
   BuildAndSaveAdHistory(
@@ -133,6 +141,8 @@ TEST_F(BraveAdsRemindersTest,
 TEST_F(BraveAdsRemindersTest,
        ShowReminderWhenUserClicksTheSameAdMultipleTimesForLinux) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   test::MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
 
   BuildAndSaveAdHistory(
@@ -153,6 +163,8 @@ TEST_F(BraveAdsRemindersTest,
 TEST_F(BraveAdsRemindersTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimes) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   BuildAndSaveAdHistory(
       mojom::AdType::kNotificationAd,
       /*clicked_count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 2);

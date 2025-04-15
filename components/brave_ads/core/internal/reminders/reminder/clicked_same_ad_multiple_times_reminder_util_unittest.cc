@@ -33,6 +33,9 @@ class BraveAdsClickedSameAdMultipleTimesReminderUtilTest
 };
 
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest, ShouldRemindUser) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   // Act & Assert
   EXPECT_TRUE(ShouldRemindUser());
 }
@@ -61,6 +64,8 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        UserClickedTheSameAdMultipleTimes) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
       mojom::AdType::kNotificationAd,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
@@ -76,6 +81,8 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        UserDidNotClickTheSameAdMultipleTimes) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
       mojom::AdType::kNotificationAd,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
@@ -91,6 +98,8 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        UserClickedTheSameAdMultipleTimesConsecutively) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
       mojom::AdType::kNotificationAd,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
@@ -106,6 +115,8 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        UserDidNotClickTheSameAdMultipleTimesConsecutively) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
       mojom::AdType::kNotificationAd,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
@@ -121,6 +132,8 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        UserClickedDifferentAdsMultipleTimes) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
       mojom::AdType::kNotificationAd,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
@@ -135,6 +148,9 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserTheyDoNotNeedToClickToEarnRewards) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_,
               OnRemindUser(mojom::ReminderType::kClickedSameAdMultipleTimes));
@@ -144,6 +160,8 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        RemindUserMultipleTimesTheyDoNotNeedToClickToEarnRewards) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kRemindersFeature);
+
   RemindUserTheyDoNotNeedToClickToEarnRewards();
 
   // Act & Assert

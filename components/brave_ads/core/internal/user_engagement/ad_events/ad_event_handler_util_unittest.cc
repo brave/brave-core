@@ -23,6 +23,8 @@ class BraveAdsAdEventHandlerUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsAdEventHandlerUtilTest, HasFiredAdEvent) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kAdEventFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
 
@@ -39,6 +41,8 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, HasFiredAdEvent) {
 
 TEST_F(BraveAdsAdEventHandlerUtilTest, HasNeverFiredAdEvent) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kAdEventFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
 
@@ -55,6 +59,8 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, HasNeverFiredAdEvent) {
 
 TEST_F(BraveAdsAdEventHandlerUtilTest, HasFiredAdEventWithinTimeWindow) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kAdEventFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
 
@@ -72,6 +78,8 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, HasFiredAdEventWithinTimeWindow) {
 
 TEST_F(BraveAdsAdEventHandlerUtilTest, HasNeverFiredAdEventWithinTimeWindow) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kAdEventFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
 
@@ -91,6 +99,8 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, HasNeverFiredAdEventWithinTimeWindow) {
 
 TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdServed) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kAdEventFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
 
@@ -107,6 +117,8 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdServed) {
 
 TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdServedIfNoPreviousEvents) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kAdEventFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
 
@@ -117,6 +129,8 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdServedIfNoPreviousEvents) {
 
 TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdNeverServed) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kAdEventFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
 

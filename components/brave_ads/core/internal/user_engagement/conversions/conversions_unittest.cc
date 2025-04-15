@@ -25,6 +25,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -36,6 +37,8 @@ class BraveAdsConversionsTest : public test::BraveAdsConversionsTestBase {};
 TEST_F(BraveAdsConversionsTest,
        DoNotCapConversionsWithinDifferentCreativeSets) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   const AdInfo ad_1 = test::BuildAd(mojom::AdType::kInlineContentAd,
                                     /*should_generate_random_uuids=*/true);
   test::BuildAndSaveCreativeSetConversion(ad_1.creative_set_id,
@@ -132,6 +135,8 @@ TEST_F(BraveAdsConversionsTest, CapConversionsWithinTheSameCreativeSet) {
 
 TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
@@ -152,6 +157,8 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
@@ -175,6 +182,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertAdIfThereIsNoCreativeSetConversion) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
@@ -190,6 +199,8 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertAdIfThereIsNoMatchingCreativeSetConversion) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
@@ -208,6 +219,8 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertAdIfAnotherAdHasConvertedWithinTheSameCreativeSet) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   const AdInfo ad_1 = test::BuildAd(mojom::AdType::kNotificationAd,
                                     /*should_generate_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad_1.creative_set_id,
@@ -238,6 +251,8 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfUrlPatternDoesNotMatch) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
@@ -256,6 +271,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfUrlPatternDoesNotMatch) {
 TEST_F(BraveAdsConversionsTest,
        ConvertAdIfCreativeSetConversionIsOnTheCuspOfExpiring) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
@@ -277,6 +294,8 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertAdIfTheCreativeSetConversionHasExpired) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
@@ -295,6 +314,8 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        FallbackToDefaultConversionIfVerifiableAdvertiserPublicKeyIsEmpty) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
@@ -320,6 +341,8 @@ TEST_F(
     BraveAdsConversionsTest,
     FallbackToDefaultConversionIfResourceIdPatternDoesNotMatchRedirectChain) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
@@ -344,6 +367,8 @@ TEST_F(
 TEST_F(BraveAdsConversionsTest,
        FallbackToDefaultConversionIfVerifiableUrlConversionIdDoesNotExist) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
@@ -367,6 +392,8 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
@@ -394,6 +421,8 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
 TEST_F(BraveAdsConversionsTest,
        FallbackToDefaultConversionIfVerifiableHtmlConversionIdDoesNotExist) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
@@ -417,6 +446,8 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
@@ -446,6 +477,8 @@ TEST_F(
     BraveAdsConversionsTest,
     FallbackToDefaultConversionIfVerifiableHtmlMetaTagConversionIdDoesNotExist) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
@@ -470,6 +503,8 @@ TEST_F(
 TEST_F(BraveAdsConversionsTest,
        ConvertAdIfVerifiableHtmlMetaTagConversionIdExists) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
@@ -497,6 +532,8 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, VerifiableConversion) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
@@ -525,6 +562,13 @@ TEST_F(BraveAdsConversionsTest, VerifiableConversion) {
 
 TEST_F(BraveAdsConversionsTest, FallbackToDefaultConversionForNonRewardsUser) {
   // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeatures(
+      /*enabled_features=*/
+      {kShouldAlwaysTriggerBraveSearchResultAdEventsFeature,
+       kConversionsFeature},
+      /*disabled_features=*/{});
+
   test::DisableBraveRewards();
 
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
