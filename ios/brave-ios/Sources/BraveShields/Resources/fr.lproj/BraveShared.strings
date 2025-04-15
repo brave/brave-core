@@ -41,7 +41,7 @@
 "BlockAdsAndTrackingStandard" = "Standard";
 
 /* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Blocage des messages promotionnels « Installer l'appli »";
+"blockMobileAnnoyances" = "Blocage des demandes d’installation d’applications";
 
 /* Title for the brave player feature */
 "BravePlayer" = "Lecteur Brave";
@@ -74,7 +74,7 @@
 "CustomFilterListsURL" = "URL de la liste de filtres personnalisés";
 
 /* A title for a section that allows a user to insert custom filter list text */
-"CustomFilters" = "Filtres Personnalisés";
+"CustomFilters" = "Filtres personnalisés";
 
 /* A description of the custom filters section */
 "CustomFiltersDescription" = "Ajoutez des filtres personnalisés ici. Veillez à utiliser la syntaxe de filtre Adblock.";
@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "Domaine bloqué";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "Active l'API JS du Global Privacy Control";
+"EnableGPCDescription" = "Demande aux sites de ne pas vendre ni de partager vos données. [En savoir plus](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Activer Global Privacy Control";
@@ -137,7 +137,7 @@
 "FilterListsDownloadPending" = "Téléchargement en attente";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Édition";
+"FilterListsEdit" = "Modifier";
 
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "Saisissez l'URL de la liste de filtres";

@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Leesmodus aan/uit";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Vertaal";
+"TranslatePage" = "Vertaal pagina";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Wil je de zoeksuggesties aanzetten?";

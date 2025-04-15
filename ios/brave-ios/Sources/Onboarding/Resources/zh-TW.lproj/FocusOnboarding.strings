@@ -2,10 +2,10 @@
 "focusOnboarding.continueButtonTitle" = "繼續";
 
 /* The subtitle of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenDescription" = "使用 Brave 的隱私保護功能開啟您所點選的每一個連結";
+"focusOnboarding.defaultBrowserScreenDescription" = "立即將 Brave 設為預設瀏覽器。";
 
 /* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "將 Brave 設定為您的預設瀏覽器";
+"focusOnboarding.defaultBrowserScreenTitle" = "讓您前往的每個網站都有廣告攔截功能";
 
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "現在不要";
@@ -16,20 +16,17 @@
 /* The title of the screen that shows ads embeded in video are blocked */
 "focusOnboarding.noVideoAdsScreenTitle" = "觀看串流媒體時防止受到中斷";
 
-/* The title of the button that opens the website abouyt privacy preserving analytics. */
-"focusOnboarding.p3aInformationButtonTitle" = "深入瞭解保護隱私的產品分析 (P3A)";
-
 /* The subtitle of the screen that asks user to enable privacy preserving analytics. */
 "focusOnboarding.p3aScreenDescription" = "請告訴我們您最喜愛的功能有哪些。";
 
 /* The title of the screen which asks user to enable privacy preserving analytics. */
-"focusOnboarding.p3aScreenTitle" = "提升 Brave 品質。";
+"focusOnboarding.p3aScreenTitle" = "讓 Brave 更好";
 
-/* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "您隨時可以在「Brave Shields 與隱私權」下的「Brave 設定」中加以變更。";
+/* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
+"focusOnboarding.p3aToggleDescription" = "您可以隨時在**盾牌與隱私**的「設定」中選擇退出。[進一步了解](#p3a-learn-more) 我們的隱私保護產品分析。";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "分享不公開 & 匿名的產品深入分析。";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "分享**完全不公開的&匿名**產品深入分析。";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "開始瀏覽";

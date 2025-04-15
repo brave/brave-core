@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Skift læsetilstand";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Oversæt";
+"TranslatePage" = "Oversæt side";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Vil du aktivere søgeforslag?";

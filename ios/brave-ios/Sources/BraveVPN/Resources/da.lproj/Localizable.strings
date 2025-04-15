@@ -278,7 +278,7 @@
 "vpn.settingsViewReceipt" = "Se App Store-kvittering";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
-"vpn.settingsVPNKillSwitchDescription" = "Når den er aktiveret, vil din enhed automatisk blive afbrudt fra internettet, hvis din VPN-forbindelse uventet afbrydes, for at forhindre lækage af IP-adresser og data. [Læs mere](%@)";
+"vpn.settingsVPNKillSwitchDescription" = "Når den er aktiveret, vil din enhed automatisk blive afbrudt fra internettet, hvis din VPN-forbindelse uventet afbrydes, for at forhindre lækage af IP-adresser og data. [Få mere at vide](%@)";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchTitle" = "Aktivér kill switch";

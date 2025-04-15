@@ -272,7 +272,7 @@
 "wallet.buy" = "Acheter";
 
 /* The description of a buy button on the buy/send/swap/deposit modal */
-"wallet.buyDescription" = "Achetez des cryptos avec Apple Pay ou une carte bancaire via Wyre.";
+"wallet.buyDescription" = "Achetez des cryptos avec Apple Pay ou une carte bancaire.";
 
 /* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to approve but cancelled after. For exapmple: 10 ETH allowance has not been approve under account 0x345...436 */
 "wallet.cancelERC20ApprovalTxRevertMsg" = "non approuvés pour";
@@ -530,7 +530,7 @@
 "wallet.dappsSettingsConnectedSitesSectionTitle" = "DApps connectés";
 
 /* The title of the section that will display settings for default wallet and dapp provider api access permission */
-"wallet.dappsSettingsGeneralSectionTitle" = "Généraux";
+"wallet.dappsSettingsGeneralSectionTitle" = "Général";
 
 /* The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc. */
 "wallet.dappsSettingsNavTitle" = "Paramètres de %@";
@@ -584,7 +584,7 @@
 "wallet.dateIntervalYearAccessibilityLabel" = "1 an";
 
 /* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
-"wallet.decimalsPrecision" = "Précision décimale";
+"wallet.decimalsPrecision" = "Ajouter les décimales";
 
 /* The message displayed when the user takes a screenshot of their dapp decrypt request. */
 "wallet.decryptMessageScreenshotDetectedMessage" = "Avertissement : Une capture d'écran de votre message peut être sauvegardée sur un service de fichiers sur le cloud et lisible par n'importe quelle application disposant d'un accès aux photos. Brave vous recommande de ne pas enregistrer cette capture d'écran et de la supprimer dès que possible.";
@@ -632,7 +632,7 @@
 "wallet.duplicationTokenError" = "Ce jeton a déjà été ajouté à votre portefeuille.";
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
-"wallet.editButtonTitle" = "Édition";
+"wallet.editButtonTitle" = "Modifier";
 
 /* A pop up message that will prompt to user before user confirms to edit the existing network. */
 "wallet.editExistingNetworkAlertMsg" = "Voulez-vous mettre à jour le réseau existant ?";
@@ -752,7 +752,7 @@
 "wallet.enterPasswordForBiometricsNavTitle" = "Activer la biométrie";
 
 /* The title displayed on the screen to enter password to enable biometrics unlock from wallet settings. */
-"wallet.enterPasswordForBiometricsTitle" = "Entrez le mot de passe de votre portefeuille pour activer la biométrie (vous n'aurez à le faire qu'une fois)";
+"wallet.enterPasswordForBiometricsTitle" = "Saisissez le mot de passe de votre portefeuille pour activer la biométrie (vous n'aurez à le faire qu'une fois)";
 
 /* A placeholder for the text field that users will input the custom token Coingecko ID. */
 "wallet.enterTokenCoingeckoId" = "Saisir l'identifiant CoinGecko du jeton";
@@ -878,7 +878,7 @@
 "wallet.hideSmallBalancesDescription" = "Actifs d'une valeur inférieure à 0,05 $";
 
 /* The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings. */
-"wallet.hideSmallBalancesTitle" = "Masquez les soldes avec de petits montants";
+"wallet.hideSmallBalancesTitle" = "Masquer les soldes avec de petits montants";
 
 /* The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
 "wallet.hideUnownedNFTsDescription" = "Masquer les NFT sans solde";
@@ -1064,7 +1064,7 @@
 "wallet.nftCollected" = "Collecté";
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
-"wallet.nftDetailBlockchain" = "Chaîne de blocs";
+"wallet.nftDetailBlockchain" = "Blockchain";
 
 /* The title of a section in NFT detail screen that will display NFT's description if there is any. */
 "wallet.nftDetailDescription" = "Description";
@@ -1184,7 +1184,7 @@
 "wallet.onbordingCompletedSubTitle" = "Votre portefeuille Brave est prêt à être utilisé.";
 
 /* The title of the last step of creating a new wallet. */
-"wallet.onbordingCompletedTitle" = "Vous êtes prêt !";
+"wallet.onbordingCompletedTitle" = "C'est tout bon !";
 
 /* The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain. */
 "wallet.originalTransactionIsConfirmed" = "La transaction initiale a été confirmée.";
@@ -1199,7 +1199,7 @@
 "wallet.passwordDoesNotMeetRequirementsError" = "Le mot de passe doit contenir au moins 8 caractères.";
 
 /* A placeholder string that will be used on password text fields */
-"wallet.passwordPlaceholder" = "Entrez votre mot de passe";
+"wallet.passwordPlaceholder" = "Saisissez votre mot de passe";
 
 /* The error displayed when entering two passwords that do not match that are expected to match */
 "wallet.passwordsDontMatchError" = "Le mot de passe de confirmation ne correspond pas";
@@ -1208,7 +1208,7 @@
 "wallet.passwordStatusMedium" = "Intermédiaire";
 
 /* A label will be displayed beside input password when it is considered as a strong password */
-"wallet.passwordStatusStrong" = "Très bon";
+"wallet.passwordStatusStrong" = "Fort";
 
 /* A label will be displayed beside input password when it is considered as a weak password */
 "wallet.passwordStatusWeak" = "Faible";
@@ -1316,7 +1316,7 @@
 "wallet.restoreWalletPhraseInvalidError" = "Phrase de récupération non valide";
 
 /* The placeholder on the mneomic/recovery phrase text field of each grid. */
-"wallet.restoreWalletPhrasePlaceholder" = "Nb de mots%d";
+"wallet.restoreWalletPhrasePlaceholder" = "Mot %d";
 
 /* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
 "wallet.restoreWalletShowRecoveryPhrase" = "Afficher la phrase de récupération";
@@ -1391,7 +1391,7 @@
 "wallet.selectNetworksDescription" = "Sélectionner les réseaux à filtrer par";
 
 /* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
-"wallet.selectNetworksTitle" = "Sélectionnez les réseaux";
+"wallet.selectNetworksTitle" = "Sélectionner les réseaux";
 
 /* The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens. */
 "wallet.selectTokenToSendNoTokens" = "Aucun jeton disponible";
@@ -1457,7 +1457,7 @@
 "wallet.setDefaultNetwork" = "Définir comme option par défaut";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
-"wallet.settings" = "Réglages";
+"wallet.settings" = "Paramètres";
 
 /* The title that appears before the current default base currency code. Example: "Default base currency: USD" */
 "wallet.settingsDefaultBaseCurrencyTitle" = "Devise de base par défaut";
@@ -1523,7 +1523,7 @@
 "wallet.setupCryptoSubtitle" = "Prenez le contrôle de votre crypto-monnaie et de vos NFT. Le portefeuille Brave prend en charge Ethereum, les chaînes EVM, Solana et plus encore.";
 
 /* The title displayed on the 'setup crypto' onboarding screen */
-"wallet.setupCryptoTitle" = "Natif du navigateur.\nGarde autonome.\nEt multi-chaîne.";
+"wallet.setupCryptoTitle" = "Le portefeuille intégré au navigateur.\nEn garde autonome.\nEt multi-chaîne.";
 
 /* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
 "wallet.showNFTNetworkLogoDescription" = "Afficher le logo du réseau sur les NFT";
@@ -2148,7 +2148,7 @@ The message after the title when a swap transaction failed to be confirmed on th
 "wallet.verifyRecoveryPhraseError" = "La phrase de récupération ne correspond pas.";
 
 /* The sub-title of the screen that user will verify his/her recovery phrase. */
-"wallet.verifyRecoveryPhraseSubTitle" = "Entrez le mot en **position %d** de votre phrase de récupération.";
+"wallet.verifyRecoveryPhraseSubTitle" = "Saisissez le mot en **position %d** de votre phrase de récupération.";
 
 /* The title of the screen that user will verify his/her recovery phrase. */
 "wallet.verifyRecoveryPhraseTitle" = "Vérifions";

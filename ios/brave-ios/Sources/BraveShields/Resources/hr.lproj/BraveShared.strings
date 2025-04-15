@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "Blokirana domena";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "Omogućite globalnu kontrolu privatnosti JS API";
+"EnableGPCDescription" = "Zatražite da internetske stranice ne prodaju ili dijele vaše podatke. [Doznajte više](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Omogući globalnu kontrolu privatnosti";

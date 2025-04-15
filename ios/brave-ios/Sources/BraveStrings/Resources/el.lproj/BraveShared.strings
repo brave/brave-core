@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Εναλλαγή λειτουργίας αναγνώστη";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Μετάφραση";
+"TranslatePage" = "Μετάφραση σελίδας";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Ενεργοποίηση προτάσεων αναζήτησης;";

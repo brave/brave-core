@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Bật chế độ Đọc";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Dịch";
+"TranslatePage" = "Dịch Trang";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Bật gợi ý tìm kiếm?";

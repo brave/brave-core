@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "Verkkotunnus estetty";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "Ota Global Privacy Controlin JS-sovellusliittymä käyttöön";
+"EnableGPCDescription" = "Pyydä verkkosivustoja olemaan myymättä tai jakamatta tietojasi. [Lue lisää](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Ota Global Privacy Control käyttöön";

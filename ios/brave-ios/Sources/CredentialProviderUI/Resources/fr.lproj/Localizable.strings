@@ -11,7 +11,7 @@
 "CredentialProvider.copyMenuItemTitle" = "Copier";
 
 /* The title shown at the top of a list of credentials. 'Brave' in this case is the company name */
-"CredentialProvider.credentialListTitle" = "Mots de passe Brave Software Brave";
+"CredentialProvider.credentialListTitle" = "Mots de passe Brave";
 
 /* The password field in the details form. Shows the password (if revealed) or a mask of the users password for the website next to it */
 "CredentialProvider.detailsFormPasswordField" = "Mot de passe";
