@@ -77,9 +77,12 @@ chromium_src/**/extensions/**/*_features.json @brave/sec-team
 chromium_src/tools/json_schema_compiler/ @brave/sec-team
 common/extensions/api/ @brave/sec-team
 
+# chromium_src Typescript and CSS overrides
+chromium_src/**/*.css @brave/chromium-src-web-reviewers
+chromium_src/**/*.ts @brave/chromium-src-web-reviewers
+
 # Lit Mangling
-chromium_src/**/*.lit_mangler.ts @fallaciousreasoning
-tools/chromium_src/lit_mangler/ @fallaciousreasoning
+tools/chromium_src/lit_mangler/ @brave/chromium-src-web-reviewers
 
 # Brave theme
 browser/themes @simonhong
