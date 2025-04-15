@@ -37,6 +37,7 @@ cargo_crate("lib") {
   if (current_cpu == "arm64") {
     deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
   }
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

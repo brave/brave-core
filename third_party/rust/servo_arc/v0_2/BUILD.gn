@@ -39,6 +39,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/nodrop/v0_1:lib",
     "//brave/third_party/rust/stable_deref_trait/v1:lib",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

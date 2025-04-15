@@ -70,6 +70,7 @@ cargo_crate("lib") {
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/build.rs"
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/selectors-v0_26/build.rs" ]
   build_script_outputs = [ "ascii_case_insensitive_html_attributes.rs" ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

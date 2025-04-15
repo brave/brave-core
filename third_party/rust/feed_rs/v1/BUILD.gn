@@ -65,6 +65,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/url/v2:lib",
     "//brave/third_party/rust/uuid/v1:lib",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

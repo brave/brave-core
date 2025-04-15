@@ -30,6 +30,7 @@ cargo_crate("buildrs_support") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [ "//brave/third_party/rust/semver/v1:lib" ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

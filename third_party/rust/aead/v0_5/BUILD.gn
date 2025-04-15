@@ -38,6 +38,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/crypto_common/v0_1:lib",
     "//brave/third_party/rust/generic_array/v0_14:lib",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
