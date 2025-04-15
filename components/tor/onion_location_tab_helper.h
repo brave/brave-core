@@ -21,22 +21,24 @@ class OnionLocationTabHelper
   OnionLocationTabHelper& operator=(const OnionLocationTabHelper&) = delete;
   ~OnionLocationTabHelper() override;
 
-  static void SetOnionLocation(content::WebContents* web_contents,
-                               const GURL& onion_location);
-
   bool should_show_icon() const { return !onion_location_.is_empty(); }
 
   const GURL& onion_location() const { return onion_location_; }
 
  private:
   friend class content::WebContentsUserData<OnionLocationTabHelper>;
+  friend class OnionLocationNavigationThrottle;
 
   explicit OnionLocationTabHelper(content::WebContents* web_contents);
+
+  static void SetOnionLocationByThrottle(content::WebContents* web_contents,
+                                         const GURL& onion_location);
 
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
+  GURL throttle_reported_onion_location_;
   GURL onion_location_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();

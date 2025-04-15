@@ -80,10 +80,10 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
             navigation_handle()->GetWebContents())) {
       return content::NavigationThrottle::PROCEED;
     }
-    OnionLocationTabHelper::SetOnionLocation(
+    OnionLocationTabHelper::SetOnionLocationByThrottle(
         navigation_handle()->GetWebContents(), url);
   } else {
-    OnionLocationTabHelper::SetOnionLocation(
+    OnionLocationTabHelper::SetOnionLocationByThrottle(
         navigation_handle()->GetWebContents(), GURL());
   }
   return content::NavigationThrottle::PROCEED;
@@ -92,15 +92,15 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
 content::NavigationThrottle::ThrottleCheckResult
 OnionLocationNavigationThrottle::WillStartRequest() {
   // Clear onion location.
-  OnionLocationTabHelper::SetOnionLocation(
+  OnionLocationTabHelper::SetOnionLocationByThrottle(
       navigation_handle()->GetWebContents(), GURL());
 
   // If a user enters .onion address in non-Tor window, we block the request and
   // offer "Open in Tor" button or automatically opening it in Tor window.
   if (!is_tor_profile_) {
-    GURL url = navigation_handle()->GetURL();
+    const GURL& url = navigation_handle()->GetURL();
     if (url.SchemeIsHTTPOrHTTPS() && net::IsOnion(url)) {
-      OnionLocationTabHelper::SetOnionLocation(
+      OnionLocationTabHelper::SetOnionLocationByThrottle(
           navigation_handle()->GetWebContents(), url);
       return content::NavigationThrottle::BLOCK_REQUEST;
     }
