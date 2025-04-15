@@ -6,7 +6,6 @@
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -18,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_util.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -30,13 +28,8 @@ class BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest
   void SetUp() override {
     test::TestBase::SetUp();
 
-    scoped_feature_list_.InitAndEnableFeature(
-        kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
-
     test::DisableBraveRewards();
   }
-
-  base::test::ScopedFeatureList scoped_feature_list_;
 
   database::table::CreativeSetConversions
       creative_set_conversions_database_table_;
@@ -157,21 +150,6 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
           IsAllowedToFireAdEvent(mojom_creative_ad, mojom_ad_event_type));
     }
   }
-}
-
-TEST_F(
-    BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
-    NotAllowedToFireClickedEventWithConversionIfShouldNotAlwaysTriggerAdEvents) {
-  // Arrange
-  scoped_feature_list_.Reset();
-
-  const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
-
-  // Act & Assert
-  EXPECT_FALSE(IsAllowedToFireAdEvent(
-      mojom_creative_ad, mojom::SearchResultAdEventType::kClicked));
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,

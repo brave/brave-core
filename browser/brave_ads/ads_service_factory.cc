@@ -108,7 +108,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
 }
 
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
-  return false;
+  return true;
 }
 
 }  // namespace brave_ads

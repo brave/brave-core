@@ -190,10 +190,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   return brave_ads::ShouldAlwaysRunService();
 }
 
-+ (BOOL)shouldSupportSearchResultAds {
-  return brave_ads::ShouldSupportSearchResultAds();
-}
-
 - (BOOL)shouldShowSponsoredImagesAndVideosSetting {
   const std::string country_code =
       brave_l10n::GetCountryCode(self->_localStatePrefService);
