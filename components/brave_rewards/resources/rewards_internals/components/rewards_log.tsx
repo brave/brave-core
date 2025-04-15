@@ -15,7 +15,23 @@ export function RewardsLog() {
   const actions = useAppActions()
   const log = useAppState((state) => state.rewardsLog)
 
+  const textAreaRef = React.useRef<HTMLTextAreaElement>(null)
+  const [logLoaded, setLogLoaded] = React.useState(log.length > 0)
+
   React.useEffect(() => { actions.loadRewardsLog() }, [])
+
+  React.useEffect(() => {
+    if (!logLoaded && log.length > 0) {
+      setLogLoaded(true)
+    }
+  }, [log, logLoaded])
+
+  React.useEffect(() => {
+    const elem = textAreaRef.current
+    if (logLoaded && elem) {
+      elem.scrollTo({ top: elem.scrollHeight })
+    }
+  }, [logLoaded])
 
   function download() {
     actions.fetchFullRewardsLog().then((fullLog) => {
@@ -44,7 +60,7 @@ export function RewardsLog() {
         <Button size='small' onClick={download}>Download</Button>
         <Button size='small' onClick={clearLog}>Clear</Button>
       </h4>
-      <textarea value={log} readOnly />
+      <textarea ref={textAreaRef} value={log} readOnly />
     </div>
   )
 }
