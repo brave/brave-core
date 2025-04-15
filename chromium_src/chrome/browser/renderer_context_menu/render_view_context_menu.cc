@@ -14,6 +14,8 @@
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -544,10 +546,18 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
   auto [action_type, p3a_action] = GetActionTypeAndP3A(command);
   auto selected_text = base::UTF16ToUTF8(params_.selection_text);
 
-  auto* ai_chat_metrics =
-      g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
-  if (ai_chat_metrics) {
-    ai_chat_metrics->OnQuickActionStatusChange(true);
+  auto* browser = GetBrowser();
+  ai_chat::AIChatMetrics* ai_chat_metrics = nullptr;
+  if (browser) {
+    auto* profile_metrics =
+        misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+            browser->profile());
+    if (profile_metrics) {
+      ai_chat_metrics = profile_metrics->GetAIChatMetrics();
+      if (ai_chat_metrics) {
+        ai_chat_metrics->OnQuickActionStatusChange(true);
+      }
+    }
   }
 
   if (rewrite_in_place) {
@@ -568,7 +578,6 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
                        source_web_contents_->GetWeakPtr(), selected_text,
                        action_type));
   } else {
-    auto* browser = GetBrowser();
     if (!browser) {
       VLOG(1) << "Can't get browser";
       return;

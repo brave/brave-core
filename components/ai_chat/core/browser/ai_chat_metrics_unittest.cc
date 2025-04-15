@@ -18,6 +18,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -34,8 +35,11 @@ class AIChatMetricsUnitTest : public testing::Test {
   void SetUp() override {
     auto* registry = local_state_.registry();
     AIChatMetrics::RegisterPrefs(registry);
+    profile_prefs_.registry()->RegisterBooleanPref(
+        prefs::kBraveAIChatTabOrganizationEnabled, false);
     task_environment_.FastForwardBy(base::Days(30));
-    ai_chat_metrics_ = std::make_unique<AIChatMetrics>(&local_state_);
+    ai_chat_metrics_ =
+        std::make_unique<AIChatMetrics>(&local_state_, &profile_prefs_);
   }
 
   void RecordPrompts(std::string id, size_t prompt_count) {
@@ -101,6 +105,7 @@ class AIChatMetricsUnitTest : public testing::Test {
   bool is_premium_ = false;
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
+  TestingPrefServiceSimple profile_prefs_;
   base::HistogramTester histogram_tester_;
   std::unique_ptr<AIChatMetrics> ai_chat_metrics_;
 };
