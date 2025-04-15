@@ -9,6 +9,7 @@
 namespace brave_ads::test {
 
 void DisableBraveRewards();
+void DisconnectExternalBraveRewardsWallet();
 
 void OptOutOfBraveNewsAds();
 

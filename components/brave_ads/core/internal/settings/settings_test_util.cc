@@ -15,6 +15,12 @@ namespace brave_ads::test {
 
 void DisableBraveRewards() {
   SetProfileBooleanPrefValue(brave_rewards::prefs::kEnabled, false);
+  DisconnectExternalBraveRewardsWallet();
+}
+
+void DisconnectExternalBraveRewardsWallet() {
+  test::SetProfileStringPrefValue(brave_rewards::prefs::kExternalWalletType,
+                                  "");
 }
 
 void OptOutOfBraveNewsAds() {

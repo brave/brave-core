@@ -12,7 +12,9 @@
 namespace brave_ads {
 
 bool HasIssuersPermission() {
-  if (!UserHasJoinedBraveRewards()) {
+  if (!UserHasJoinedBraveRewardsAndConnectedWallet()) {
+    // Allow ads if the user has not joined Brave Rewards and connected a
+    // wallet, as issuers are not fetched in this case.
     return true;
   }
 
