@@ -1170,6 +1170,7 @@ test("brave_browser_tests") {
       "//brave/browser/brave_ads",
       "//brave/browser/brave_ads:browser_tests",
       "//brave/browser/brave_ads/tabs:browser_tests",
+      "//brave/components/brave_ads/browser:browser_tests",
       "//brave/components/brave_ads/browser",
       "//brave/components/brave_ads/core",
     ]

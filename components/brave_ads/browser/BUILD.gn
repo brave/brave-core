@@ -88,6 +88,29 @@ static_library("browser") {
   public_deps += [ "//brave/components/services/bat_ads/public/interfaces" ]
 }
 
+source_set("browser_tests") {
+  testonly = true
+
+  if (!is_android) {
+    sources = [ "ads_service_browsertest.cc" ]
+
+    deps = [
+      "//brave/browser/brave_ads",
+      "//brave/components/brave_ads/core/browser/service:test_support",
+      "//brave/components/brave_ads/core/public:headers",
+      "//brave/components/brave_rewards/core",
+      "//brave/components/constants",
+      "//chrome/browser/profiles/keep_alive",
+      "//chrome/browser/ui",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui",
+      "//net:test_support",
+    ]
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
 

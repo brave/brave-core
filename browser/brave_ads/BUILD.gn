@@ -164,6 +164,7 @@ source_set("browser_tests") {
   testonly = true
 
   sources = [
+    "ads_service_impl_browsertest.cc",
     "ads_service_waiter.cc",
     "ads_service_waiter.h",
     "analytics/p3a/brave_stats_helper_browsertest.cc",
