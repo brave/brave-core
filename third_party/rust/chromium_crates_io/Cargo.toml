@@ -233,6 +233,10 @@ package = "rand"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4"
 package = "regex-automata"
 
+[patch.crates-io.regex-syntax_v0_8]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-syntax-v0_8"
+package = "regex-syntax"
+
 [patch.crates-io.rustversion_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/rustversion-v1"
 package = "rustversion"
