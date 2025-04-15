@@ -38,6 +38,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "build/build_config.h"
+#include "chrome/browser/buildflags.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/history/core/browser/features.h"
@@ -87,6 +88,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/components/brave_education/features.h"
+#endif
+
+#if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_UPDATER)
+#include "brave/browser/mac_features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -509,6 +514,19 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
   })
 #else
 #define BRAVE_EDUCATION_FEATURE_ENTRIES
+#endif
+
+#if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_UPDATER)
+#define BRAVE_UPDATER_FEATURE_ENTRIES                  \
+  EXPAND_FEATURE_ENTRIES({                             \
+      "brave-use-omaha4-alpha",                        \
+      "Use Omaha 4 Alpha",                             \
+      "Use the new automatic update system",           \
+      kOsDesktop | kOsMac,                             \
+      FEATURE_VALUE_TYPE(brave::kBraveUseOmaha4Alpha), \
+  })
+#else
+#define BRAVE_UPDATER_FEATURE_ENTRIES
 #endif
 
 // Keep the last item empty.
@@ -1033,6 +1051,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
   BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
   BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS                                              \
   BRAVE_EDUCATION_FEATURE_ENTRIES                                              \
+  BRAVE_UPDATER_FEATURE_ENTRIES                                                \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

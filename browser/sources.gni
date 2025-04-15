@@ -50,6 +50,7 @@ import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
+import("//chrome/browser/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_chrome_browser_visibility = [
@@ -646,4 +647,8 @@ if (is_android) {
 if (!is_android) {
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/ui/webui/brave_new_tab_page_refresh" ]
+}
+
+if (target_os == "mac" && enable_updater) {
+  brave_chrome_browser_deps += [ "//brave/browser:mac_features" ]
 }
