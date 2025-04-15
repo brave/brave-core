@@ -42,7 +42,6 @@ private struct TabLocationViewUX {
 class TabLocationView: UIView {
   var delegate: TabLocationViewDelegate?
   let contentView = UIView()
-  private var tabObservers: TabObservers!
   private var privateModeCancellable: AnyCancellable?
 
   var url: URL? {
@@ -137,7 +136,6 @@ class TabLocationView: UIView {
 
   deinit {
     NotificationCenter.default.removeObserver(self)
-    unregister(tabObservers)
   }
 
   var readerModeState: ReaderModeState {
@@ -331,8 +329,6 @@ class TabLocationView: UIView {
     isVoiceSearchAvailable = voiceSearchSupported
 
     super.init(frame: .zero)
-
-    tabObservers = registerFor(.didChangeContentBlocking, .didGainFocus, queue: .main)
 
     addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapLocationBar)))
 
@@ -618,14 +614,6 @@ class TabLocationView: UIView {
 }
 
 // MARK: - TabEventHandler
-
-extension TabLocationView: TabEventHandler {
-  func tabDidGainFocus(_ tab: some TabState) {
-  }
-
-  func tabDidChangeContentBlockerStatus(_ tab: some TabState) {
-  }
-}
 
 private class DisplayURLLabel: UILabel {
   let pathPadding: CGFloat = 5.0

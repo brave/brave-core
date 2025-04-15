@@ -61,7 +61,6 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
     }
   }
 
-  var data = [Site]()
   var tableView = UITableView()
 
   override public func viewDidLoad() {
@@ -103,7 +102,7 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
   }
 
   public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return data.count
+    return 0
   }
 
   public func tableView(

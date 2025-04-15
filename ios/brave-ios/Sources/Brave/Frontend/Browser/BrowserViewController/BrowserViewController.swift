@@ -2160,8 +2160,6 @@ public class BrowserViewController: UIViewController {
           tabManager.saveTab(tab)
         }
       }
-
-      TabEvent.post(.didChangeURL(url), for: tab)
     }
 
     tabsBar.reloadDataAndRestoreSelectedTab(isAnimated: false)

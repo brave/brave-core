@@ -19,14 +19,6 @@ struct FavoritesHelper {
     Favorite.addDefaults(from: FavoritesPreloadedData.getList())
   }
 
-  static func convertToBookmarks(_ sites: [Site]) {
-    sites.forEach { site in
-      if let url = URL(string: site.url) {
-        Favorite.add(url: url, title: url.normalizedHost() ?? site.url)
-      }
-    }
-  }
-
   static func add(url: URL, title: String?) {
     Favorite.add(url: url, title: title)
   }

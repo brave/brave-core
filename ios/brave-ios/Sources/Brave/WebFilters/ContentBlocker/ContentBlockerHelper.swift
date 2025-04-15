@@ -74,9 +74,6 @@ class ContentBlockerHelper: ObservableObject {
   var stats: TPPageStats = TPPageStats() {
     didSet {
       guard let tab = self.tab else { return }
-      if stats.total <= 1 {
-        TabEvent.post(.didChangeContentBlocking, for: tab)
-      }
       statsDidChange?(stats)
     }
   }

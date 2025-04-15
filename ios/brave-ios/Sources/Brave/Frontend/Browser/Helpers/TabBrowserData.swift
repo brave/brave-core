@@ -152,12 +152,7 @@ class TabBrowserData: NSObject, TabObserver {
     }
   }
 
-  // PageMetadata is derived from the page content itself, and as such lags behind the
-  // rest of the tab.
-  var pageMetadata: PageMetadata?
   var lastTitle: String?
-
-  var userActivity: NSUserActivity?
 
   var isDisplayingBasicAuthPrompt = false
 
@@ -505,32 +500,6 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
 
   func getContentScript(_ name: String) -> TabContentScript? {
     return helpers[name]
-  }
-}
-
-/// Computed variables based on TabBrowserData
-extension TabState {
-  var canonicalURL: URL? {
-    if let string = self.pageMetadata?.siteURL,
-      let siteURL = URL(string: string)
-    {
-      return siteURL
-    }
-    return self.visibleURL
-  }
-
-  /// The URL that should be shared when requested by the user via the share sheet
-  ///
-  /// If the canonical URL of the page points to a different base domain entirely, this will result in
-  /// sharing the canonical URL. This is to ensure pages such as Google's AMP share the correct URL while
-  /// also ensuring single page applications which don't update their canonical URLs on navigation share
-  /// the current pages URL
-  var shareURL: URL? {
-    guard let url = visibleURL else { return nil }
-    if let canonicalURL = canonicalURL, canonicalURL.baseDomain != url.baseDomain {
-      return canonicalURL
-    }
-    return url
   }
 }
 

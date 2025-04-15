@@ -25,6 +25,9 @@ extension BrowserViewController: TabManagerDelegate {
     SnackBarTabHelper.create(for: tab)
     tab.braveUserAgentExceptions = braveCore.braveUserAgentExceptions
     tab.translateHelper = .init(tab: tab, delegate: self)
+    tab.pageMetadataHelper = .init(tab: tab)
+    tab.faviconTabHelper = .init(tab: tab)
+    tab.userActivityHelper = .init(tab: tab)
   }
 
   func tabManager(

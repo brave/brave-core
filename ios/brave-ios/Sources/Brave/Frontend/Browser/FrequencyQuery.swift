@@ -11,6 +11,19 @@ import Shared
 import Storage
 import Web
 
+public struct Site: Hashable {
+  public enum SiteType {
+    case unknown, bookmark, history, tab
+  }
+  public var url: String
+  public var title: String
+  public var siteType: SiteType = .unknown
+  public var tabID: String?
+  var tileURL: URL {
+    return URL(string: url)?.domainURL ?? URL(string: "about:blank")!
+  }
+}
+
 class FrequencyQuery {
 
   private let historyAPI: BraveHistoryAPI
@@ -33,9 +46,7 @@ class FrequencyQuery {
 
   @MainActor
   private func fetchOpenTabs(containing query: String) async -> [Site] {
-    let startTime = Date()
-    let openTabSites = try? fetchSitesFromTabs(tabManager.tabsForCurrentMode(for: query))
-    return openTabSites ?? []
+    return (try? fetchSitesFromTabs(tabManager.tabsForCurrentMode(for: query))) ?? []
   }
 
   @MainActor

@@ -10,18 +10,29 @@ import Storage
 import UIKit
 import Web
 
-class FaviconHandler {
+extension TabDataValues {
+  private struct FaviconTabHelperKey: TabDataKey {
+    static var defaultValue: FaviconTabHelper?
+  }
+
+  var faviconTabHelper: FaviconTabHelper? {
+    get { self[FaviconTabHelperKey.self] }
+    set { self[FaviconTabHelperKey.self] = newValue }
+  }
+}
+
+class FaviconTabHelper: TabObserver {
   static let maximumFaviconSize = 1 * 1024 * 1024  // 1 MiB file size limit
 
-  private var tabObservers: TabObservers!
-  private let backgroundQueue = OperationQueue()
+  private weak var tab: (any TabState)?
 
-  init() {
-    self.tabObservers = registerFor(.didLoadPageMetadata, queue: backgroundQueue)
+  init(tab: some TabState) {
+    self.tab = tab
+    tab.addObserver(self)
   }
 
   deinit {
-    unregister(tabObservers)
+    tab?.removeObserver(self)
   }
 
   @MainActor func loadFaviconURL(
@@ -36,10 +47,8 @@ class FaviconHandler {
     tab.favicon = favicon
     return favicon
   }
-}
 
-extension FaviconHandler: TabEventHandler {
-  func tab(_ tab: some TabState, didLoadPageMetadata metadata: PageMetadata) {
+  func tabDidUpdateURL(_ tab: some TabState) {
     if let currentURL = tab.visibleURL {
       Task { @MainActor in
         if let favicon = await FaviconFetcher.getIconFromCache(for: currentURL) {
@@ -48,10 +57,13 @@ extension FaviconHandler: TabEventHandler {
           tab.favicon = Favicon.default
         }
         let favicon = try await loadFaviconURL(currentURL, forTab: tab)
-        TabEvent.post(.didLoadFavicon(favicon), for: tab)
       }
     } else {
       tab.favicon = Favicon.default
     }
+  }
+
+  func tabWillBeDestroyed(_ tab: some TabState) {
+    tab.removeObserver(self)
   }
 }
