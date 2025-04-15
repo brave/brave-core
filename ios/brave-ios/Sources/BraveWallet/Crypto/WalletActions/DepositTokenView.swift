@@ -491,8 +491,11 @@ private struct DepositDetailsView: View {
     if let bitcoinAccount = bitcoinAccounts[account.accountId.uniqueKey] {
       return .init(name: account.name, address: bitcoinAccount.nextReceiveAddress.addressString)
     } else if let zcashAccount = zcashAccounts[account.accountId.uniqueKey] {
-      return .init(name: account.name, address: zcashAccount.nextTransparentReceiveAddress.addressString)
-    }else {
+      return .init(
+        name: account.name,
+        address: zcashAccount.nextTransparentReceiveAddress.addressString
+      )
+    } else {
       return .init(name: account.name, address: account.address)
     }
   }

@@ -11,11 +11,17 @@ import SwiftUI
 struct BraveWalletDebugMenu: View {
 
   @ObservedObject var enableBitcoinTestnet = Preferences.Wallet.isBitcoinTestnetEnabled
+  @ObservedObject var enableZcashTestnet = Preferences.Wallet.isZcashTestnetEnabled
 
   var body: some View {
     Form {
       Section {
         Toggle("Enable Bitcoin Testnet", isOn: $enableBitcoinTestnet.value)
+          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+      }
+
+      Section {
+        Toggle("Enable Zcash Testnet", isOn: $enableZcashTestnet.value)
           .toggleStyle(SwitchToggleStyle(tint: .accentColor))
       }
     }

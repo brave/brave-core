@@ -179,7 +179,7 @@ extension BraveWallet.AccountInfo {
       return ""
     }
   }
-  
+
   var blockieSeed: String {
     accountId.blockieSeed
   }

@@ -403,12 +403,21 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         )?.first {
           balance = BDouble(assetBalance.balance)
         } else {
-          balance = await self.rpcService.balance(
-            for: selectedSendToken,
-            in: selectedAccount.address,
-            network: network,
-            decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
-          )
+          if selectedAccount.coin == .zec {
+            let zecBalance =
+              await self.zcashWalletService.fetchZECTransparentBalances(
+                networkId: selectedSendToken.chainId,
+                accountId: selectedAccount.accountId
+              ) ?? 0
+            balance = BDouble(zecBalance)
+          } else {
+            balance = await self.rpcService.balance(
+              for: selectedSendToken,
+              in: selectedAccount.address,
+              network: network,
+              decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
+            )
+          }
         }
       }
 
@@ -447,6 +456,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       case .btc:
         validateBitcoinSendAddress(fromAccount: selectedAccount)
       case .zec:
+        break
+      case .ada:
         break
       @unknown default:
         break

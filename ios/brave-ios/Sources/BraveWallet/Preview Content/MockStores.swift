@@ -159,6 +159,7 @@ extension AssetDetailStore {
       ipfsApi: TestIpfsAPI(),
       swapService: MockSwapService(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
+      zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
       userAssetManager: TestableWalletUserAssetManager(),
       assetDetailType: .blockchainToken(.previewToken)
     )
@@ -211,6 +212,7 @@ extension AccountActivityStore {
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
       ipfsApi: TestIpfsAPI(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
+      zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
       userAssetManager: TestableWalletUserAssetManager()
     )
   }
@@ -293,6 +295,7 @@ extension AccountsStore {
       walletService: MockBraveWalletService(),
       assetRatioService: MockAssetRatioService(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
+      zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
       userAssetManager: TestableWalletUserAssetManager()
     )
   }

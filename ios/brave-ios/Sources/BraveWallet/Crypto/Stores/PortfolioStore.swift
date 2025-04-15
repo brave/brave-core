@@ -328,6 +328,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let ipfsApi: IpfsAPI
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let zcashWalletService: BraveWalletZCashWalletService
   private let assetManager: WalletUserAssetManagerType
   private var rpcServiceObserver: JsonRpcServiceObserver?
   private var keyringServiceObserver: KeyringServiceObserver?
@@ -345,6 +346,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     blockchainRegistry: BraveWalletBlockchainRegistry,
     ipfsApi: IpfsAPI,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
+    zcashWalletService: BraveWalletZCashWalletService,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.keyringService = keyringService
@@ -354,6 +356,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     self.blockchainRegistry = blockchainRegistry
     self.ipfsApi = ipfsApi
     self.bitcoinWalletService = bitcoinWalletService
+    self.zcashWalletService = zcashWalletService
     self.assetManager = userAssetManager
 
     // cache balance update observer
@@ -530,7 +533,10 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
             of: TokenBalanceCache.self,
             body: {
               @MainActor
-              [tokenBalancesCache, rpcService, bitcoinWalletService, assetManager]
+              [
+                tokenBalancesCache, rpcService, bitcoinWalletService,
+                zcashWalletService, assetManager
+              ]
               group in
               group.addTask { @MainActor in
                 let token = tokenNetworkAccounts.token
@@ -547,6 +553,15 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                     balanceForToken = await bitcoinWalletService.fetchBTCBalance(
                       accountId: account.accountId,
                       type: .total
+                    )
+                  } else if account.coin == .zec,
+                    tokenNetwork.supportedKeyrings.contains(
+                      account.keyringId.rawValue as NSNumber
+                    )
+                  {
+                    balanceForToken = await zcashWalletService.fetchZECTransparentBalances(
+                      networkId: tokenNetworkAccounts.network.chainId,
+                      accountId: account.accountId
                     )
                   } else {
                     balanceForToken = await rpcService.balance(
