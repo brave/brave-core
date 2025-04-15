@@ -53,6 +53,11 @@ def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
 
     active_report_hashes = set()
     for category, notifications in presubmit_entries.items():
+        if category == 'notifications':
+            # There's no need to report info messages to PRs, as they are not
+            # actionable, and become noise.
+            continue
+
         for report in notifications:
             # Hashing of the report is done so we can add it to the comment
             # itself as a html comment, and then check if it already exists,
@@ -86,10 +91,6 @@ def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
                         '> [!WARNING]\n'
                         '> You have got a presubmit warning. Please address '
                         'it if possible.')
-                if category == 'notifications':
-                    return (
-                        '> [!NOTE]\n> You have got a presubmit notification. '
-                        'No action required.')
 
                 raise ValueError(f'Unknown category: {category}')
 
