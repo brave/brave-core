@@ -23,6 +23,7 @@ class BackgroundVideoPlaybackTabHelper
   // content::WebContentsObserver overrides:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
+  void PrimaryMainDocumentElementAvailable() override;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
