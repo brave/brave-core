@@ -625,12 +625,8 @@ extension SceneDelegate {
       urlToOpen = nil
     }
 
-    scene.userActivity = BrowserState.userActivity(for: windowId.uuidString, isPrivate: isPrivate)
-    BrowserState.setWindowInfo(
-      for: scene.session,
-      windowId: windowId.uuidString,
-      isPrivate: isPrivate
-    )
+    scene.userActivity = BrowserState.userActivity(for: windowId.uuidString, isPrivate: false)
+    BrowserState.setWindowInfo(for: scene.session, windowId: windowId.uuidString, isPrivate: false)
 
     // Create a browser instance
     let browserViewController = BrowserViewController(
