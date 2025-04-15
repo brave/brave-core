@@ -9,9 +9,9 @@
 
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
@@ -27,7 +27,7 @@ UserRewards::UserRewards(WalletInfo wallet) : wallet_(std::move(wallet)) {
 
   GetAdsClient().AddObserver(this);
 
-  issuers_url_request_.SetDelegate(this);
+  issuers_.SetDelegate(this);
   refill_confirmation_tokens_.SetDelegate(this);
   redeem_payment_tokens_.SetDelegate(this);
 }
@@ -37,7 +37,7 @@ UserRewards::~UserRewards() {
 }
 
 void UserRewards::FetchIssuers() {
-  issuers_url_request_.PeriodicallyFetch();
+  issuers_.PeriodicallyFetch();
 }
 
 void UserRewards::MaybeRefillConfirmationTokens() {

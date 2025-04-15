@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers.h"
 
 #include <optional>
 #include <utility>
@@ -38,13 +38,13 @@ base::TimeDelta GetFetchDelay() {
 
 }  // namespace
 
-IssuersUrlRequest::IssuersUrlRequest() = default;
+Issuers::Issuers() = default;
 
-IssuersUrlRequest::~IssuersUrlRequest() {
+Issuers::~Issuers() {
   delegate_ = nullptr;
 }
 
-void IssuersUrlRequest::PeriodicallyFetch() {
+void Issuers::PeriodicallyFetch() {
   if (!is_periodically_fetching_) {
     is_periodically_fetching_ = true;
     Fetch();
@@ -53,7 +53,7 @@ void IssuersUrlRequest::PeriodicallyFetch() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void IssuersUrlRequest::Fetch() {
+void Issuers::Fetch() {
   if (is_fetching_ || timer_.IsRunning()) {
     return;
   }
@@ -67,13 +67,12 @@ void IssuersUrlRequest::Fetch() {
   BLOG(6, UrlRequestToString(mojom_url_request));
   BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
-  GetAdsClient().UrlRequest(std::move(mojom_url_request),
-                            base::BindOnce(&IssuersUrlRequest::FetchCallback,
-                                           weak_factory_.GetWeakPtr()));
+  GetAdsClient().UrlRequest(
+      std::move(mojom_url_request),
+      base::BindOnce(&Issuers::FetchCallback, weak_factory_.GetWeakPtr()));
 }
 
-void IssuersUrlRequest::FetchCallback(
-    const mojom::UrlResponseInfo& mojom_url_response) {
+void Issuers::FetchCallback(const mojom::UrlResponseInfo& mojom_url_response) {
   BLOG(6, UrlResponseToString(mojom_url_response));
   BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
@@ -100,7 +99,7 @@ void IssuersUrlRequest::FetchCallback(
   SuccessfullyFetchedIssuers(*issuers);
 }
 
-void IssuersUrlRequest::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
+void Issuers::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
   BLOG(1, "Successfully fetched issuers");
 
   StopRetrying();
@@ -110,7 +109,7 @@ void IssuersUrlRequest::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
   FetchAfterDelay();
 }
 
-void IssuersUrlRequest::FailedToFetchIssuers() {
+void Issuers::FailedToFetchIssuers() {
   BLOG(0, "Failed to fetch issuers");
 
   NotifyFailedToFetchIssuers();
@@ -118,19 +117,19 @@ void IssuersUrlRequest::FailedToFetchIssuers() {
   Retry();
 }
 
-void IssuersUrlRequest::FetchAfterDelay() {
+void Issuers::FetchAfterDelay() {
   CHECK(!timer_.IsRunning());
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, GetFetchDelay(),
-      base::BindOnce(&IssuersUrlRequest::Fetch, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&Issuers::Fetch, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at));
 
   NotifyWillFetchIssuers(fetch_at);
 }
 
-void IssuersUrlRequest::Retry() {
+void Issuers::Retry() {
   if (timer_.IsRunning()) {
     // The function `WallClockTimer::PowerSuspendObserver::OnResume` restarts
     // the timer to fire at the desired run time after system power is resumed.
@@ -140,17 +139,16 @@ void IssuersUrlRequest::Retry() {
     return;
   }
 
-  const base::Time retry_at =
-      timer_.StartWithPrivacy(FROM_HERE, kRetryAfter,
-                              base::BindOnce(&IssuersUrlRequest::RetryCallback,
-                                             weak_factory_.GetWeakPtr()));
+  const base::Time retry_at = timer_.StartWithPrivacy(
+      FROM_HERE, kRetryAfter,
+      base::BindOnce(&Issuers::RetryCallback, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry fetching issuers " << FriendlyDateAndTime(retry_at));
 
   NotifyWillRetryFetchingIssuers(retry_at);
 }
 
-void IssuersUrlRequest::RetryCallback() {
+void Issuers::RetryCallback() {
   BLOG(1, "Retry fetching issuers");
 
   NotifyDidRetryFetchingIssuers();
@@ -158,37 +156,35 @@ void IssuersUrlRequest::RetryCallback() {
   Fetch();
 }
 
-void IssuersUrlRequest::StopRetrying() {
+void Issuers::StopRetrying() {
   timer_.Stop();
 }
 
-void IssuersUrlRequest::NotifyDidFetchIssuers(
-    const IssuersInfo& issuers) const {
+void Issuers::NotifyDidFetchIssuers(const IssuersInfo& issuers) const {
   if (delegate_) {
     delegate_->OnDidFetchIssuers(issuers);
   }
 }
 
-void IssuersUrlRequest::NotifyFailedToFetchIssuers() const {
+void Issuers::NotifyFailedToFetchIssuers() const {
   if (delegate_) {
     delegate_->OnFailedToFetchIssuers();
   }
 }
 
-void IssuersUrlRequest::NotifyWillFetchIssuers(base::Time fetch_at) const {
+void Issuers::NotifyWillFetchIssuers(base::Time fetch_at) const {
   if (delegate_) {
     delegate_->OnWillFetchIssuers(fetch_at);
   }
 }
 
-void IssuersUrlRequest::NotifyWillRetryFetchingIssuers(
-    base::Time retry_at) const {
+void Issuers::NotifyWillRetryFetchingIssuers(base::Time retry_at) const {
   if (delegate_) {
     delegate_->OnWillRetryFetchingIssuers(retry_at);
   }
 }
 
-void IssuersUrlRequest::NotifyDidRetryFetchingIssuers() const {
+void Issuers::NotifyDidRetryFetchingIssuers() const {
   if (delegate_) {
     delegate_->OnDidRetryFetchingIssuers();
   }
