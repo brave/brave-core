@@ -277,6 +277,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &sharing_hub::kDesktopScreenshots,
 #endif
+      &features::kDesktopPWAsTabStripSettings,
   };
 
   for (const auto* feature : enabled_features) {
