@@ -184,6 +184,9 @@ license_files = ['LICENSE']
 [crate.encoding_rs]
 license_files = ['LICENSE-APACHE']
 
+[crate.equivalent]
+license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/equivalent-v1/LICENSE-APACHE']
+
 [crate.ff_derive]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 

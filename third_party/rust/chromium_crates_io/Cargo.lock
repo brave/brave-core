@@ -674,8 +674,7 @@ dependencies = [
 
 [[package]]
 name = "equivalent"
-version = "1.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+version = "1.0.2"
 
 [[package]]
 name = "feed-rs"
