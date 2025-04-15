@@ -205,6 +205,9 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.halo2_proofs]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
+[crate.indexmap]
+license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/indexmap-v2/LICENSE-APACHE']
+
 [crate.itoa]
 license_files = ['LICENSE-APACHE']
 

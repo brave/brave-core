@@ -165,6 +165,10 @@ package = "getrandom"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/hex-v0_4"
 package = "hex"
 
+[patch.crates-io.indexmap_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/indexmap-v2"
+package = "indexmap"
+
 [patch.crates-io.itoa_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/itoa-v1"
 package = "itoa"
