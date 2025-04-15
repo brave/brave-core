@@ -418,7 +418,8 @@ TEST_P(InstallStaticUtilTest, GetAppGuid) {
   };
   static_assert(std::size(kAppGuids) == NUM_INSTALL_MODES,
                 "kAppGuids out of date.");
-  EXPECT_THAT(GetAppGuid(), StrCaseEq(kAppGuids[std::get<0>(GetParam())]));
+  EXPECT_THAT(GetAppGuid(),
+              StrCaseEq(UNSAFE_TODO(kAppGuids[std::get<0>(GetParam())])));
 #else
   // For brands that do not integrate with Omaha/Google Update, the app guid is
   // an empty string.

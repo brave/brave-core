@@ -148,8 +148,9 @@ TEST(InstallModes, GetClientStateMediumKeyPath) {
 
 #if defined(OFFICIAL_BUILD)
 TEST(InstallModes, NightlyModesTest) {
-  EXPECT_TRUE(kInstallModes[NIGHTLY_INDEX].supports_system_level);
-  EXPECT_TRUE(kInstallModes[NIGHTLY_INDEX].supports_set_as_default_browser);
+  EXPECT_TRUE(UNSAFE_TODO(kInstallModes[NIGHTLY_INDEX]).supports_system_level);
+  EXPECT_TRUE(UNSAFE_TODO(kInstallModes[NIGHTLY_INDEX])
+                  .supports_set_as_default_browser);
 }
 #endif
 

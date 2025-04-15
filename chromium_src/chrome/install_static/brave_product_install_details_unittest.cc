@@ -182,7 +182,7 @@ class MakeProductDetailsTest : public testing::TestWithParam<TestData> {
     std::wstring result(L"Software\\");
 #if defined(OFFICIAL_BUILD)
       result.append(L"BraveSoftware\\Update\\ClientState\\");
-      result.append(kInstallModes[test_data().index].app_guid);
+      result.append(UNSAFE_TODO(kInstallModes[test_data().index]).app_guid);
 #else
       result.append(kProductPathName);
 #endif
