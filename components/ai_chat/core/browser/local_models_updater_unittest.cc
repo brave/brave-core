@@ -37,9 +37,6 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
  public:
   LocalModelsUpdaterUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
-    feature_list_.InitWithFeatures(
-        {ai_chat::features::kAIChat, ai_chat::features::kPageContentRefine},
-        {});
   }
 
   ~LocalModelsUpdaterUnitTest() override = default;
@@ -84,23 +81,6 @@ TEST_F(LocalModelsUpdaterUnitTest, ComponentReady) {
   policy->ComponentReadyForTesting(base::Version("1.0.0"), install_dir_, {});
   EXPECT_EQ(ai_chat::LocalModelsUpdaterState::GetInstance()->GetInstallDir(),
             install_dir_);
-}
-
-TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
-  for (const auto& disable_feature : std::vector<base::test::FeatureRef>(
-           {ai_chat::features::kAIChat,
-            ai_chat::features::kPageContentRefine})) {
-    SCOPED_TRACE(disable_feature->name);
-    base::CreateDirectory(install_dir_);
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitAndDisableFeature(*disable_feature);
-    EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
-    EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
-        .Times(0);
-    ai_chat::ManageLocalModelsComponentRegistration(cus_.get());
-    EXPECT_FALSE(PathExists(install_dir_));
-    task_environment_.RunUntilIdle();
-  }
 }
 
 TEST_F(LocalModelsUpdaterUnitTest, DeprecatedComponentDir) {

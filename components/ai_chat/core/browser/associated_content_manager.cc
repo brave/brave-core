@@ -291,24 +291,6 @@ void AssociatedContentManager::GetStagedEntriesFromContent(
   content_delegates_[0]->GetStagedEntriesFromContent(std::move(callback));
 }
 
-void AssociatedContentManager::GetTopSimilarityWithPromptTilContextLimit(
-    const std::string& prompt,
-    const std::string& text,
-    uint32_t context_limit,
-    TextEmbedder::TopSimilarityCallback callback) {
-  // TODO(https://github.com/brave/brave-browser/issues/45731): Remove this
-  // function
-  DVLOG(1) << __func__;
-
-  if (content_delegates_.size() != 1) {
-    std::move(callback).Run(base::unexpected("No content delegate"));
-    return;
-  }
-
-  content_delegates_[0]->GetTopSimilarityWithPromptTilContextLimit(
-      prompt, text, context_limit, std::move(callback));
-}
-
 std::string AssociatedContentManager::GetCachedTextContent() const {
   DVLOG(1) << __func__;
 

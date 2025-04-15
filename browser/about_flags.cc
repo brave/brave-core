@@ -409,15 +409,6 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kContextMenuRewriteInPlace),   \
       },                                                                       \
       {                                                                        \
-          "brave-ai-chat-page-content-refine",                                 \
-          "Brave AI Chat Page Content Refine",                                 \
-          "Enable local text embedding for long page content in order to "     \
-          "find "                                                              \
-          "most relevant parts to the prompt within context limit.",           \
-          kOsDesktop | kOsAndroid,                                             \
-          FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),           \
-      },                                                                       \
-      {                                                                        \
           "brave-ai-chat-allow-private-ips",                                   \
           "Private IP Addresses for Custom Model Endpoints",                   \
           "Permits the use of private IP addresses as model endpoint URLs",    \

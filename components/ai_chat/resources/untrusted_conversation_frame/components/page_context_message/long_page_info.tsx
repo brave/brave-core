@@ -13,9 +13,7 @@ import styles from './style.module.scss'
 export default function LongPageInfo() {
   const context = useUntrustedConversationContext()
   let warningText
-  if (context.isContentRefined) {
-    warningText = getLocale('pageContentRefinedWarning')
-  } else if (context.trimmedTokens > 0 && context.totalTokens > 0) {
+  if (context.trimmedTokens > 0 && context.totalTokens > 0) {
       const percentage = 100 - Math.floor((Number(context.trimmedTokens) / Number(context.totalTokens)) * 100)
       warningText = formatMessage(getLocale('trimmedTokensWarning'), {
         placeholders: {

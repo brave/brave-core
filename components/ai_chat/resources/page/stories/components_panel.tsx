@@ -73,13 +73,6 @@ function getWebSourcesEvent(sources: Mojom.WebSource[]): Mojom.ConversationEntry
   }
 }
 
-function getPageContentRefineEvent(): Mojom.ConversationEntryEvent {
-  return {
-    ...eventTemplate,
-    pageContentRefineEvent: { isRefining: true }
-  }
-}
-
 const CONVERSATIONS: Mojom.Conversation[] = [
   {
     title: 'Star Trek Poem',
@@ -166,20 +159,6 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent(`# Title 1\n ## Title 2\n ## **Title 2** using bold that doesn't look different\n### Title 3\n#### Title 4\n \nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor [communication](https://www.google.com) between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product **design** needs.`)],
-    uploadedFiles : [],
-    fromBraveSearchSERP: false,
-    modelKey: '1'
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getPageContentRefineEvent()],
     uploadedFiles : [],
     fromBraveSearchSERP: false,
     modelKey: '1'
@@ -552,7 +531,6 @@ const ASSOCIATED_CONTENT: Mojom.AssociatedContent = {
   title: 'Tiny Tweaks to Neurons Can Rewire Animal Motion',
   contentUsedPercentage: 40,
   url: { url: 'https://www.example.com/a' },
-  isContentRefined: false,
   contentId: 1,
 }
 
@@ -582,7 +560,6 @@ type CustomArgs = {
   isDefaultConversation: boolean
   shouldShowLongConversationInfo: boolean
   shouldShowLongPageWarning: boolean
-  shouldShowRefinedWarning: boolean
   totalTokens: number
   trimmedTokens: number
   isGenerating: boolean
@@ -618,7 +595,6 @@ const args: CustomArgs = {
   isDefaultConversation: true,
   shouldShowLongConversationInfo: false,
   shouldShowLongPageWarning: false,
-  shouldShowRefinedWarning: false,
   totalTokens: 0,
   trimmedTokens: 0,
   isGenerating: false,
@@ -836,10 +812,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     conversationHistory: conversationContext.conversationHistory,
     isGenerating: conversationContext.isGenerating,
     isLeoModel: conversationContext.isCurrentModelLeo,
-    contentUsedPercentage: (options.args.shouldShowLongPageWarning ||
-                            options.args.shouldShowRefinedWarning)
+    contentUsedPercentage: options.args.shouldShowLongPageWarning
       ? 48 : 100,
-    isContentRefined: options.args.shouldShowRefinedWarning,
     totalTokens: BigInt(options.args.totalTokens),
     trimmedTokens: BigInt(options.args.trimmedTokens),
     canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
