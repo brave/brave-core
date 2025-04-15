@@ -15,7 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIcons;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIcons.AppIconType;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.brave.browser.custom_app_icons.R;
 import org.chromium.brave.browser.custom_app_icons.confirm_dialog.BraveConfirmationDialog;
@@ -41,16 +42,16 @@ public class CustomAppIconsFragment extends Fragment implements CustomAppIconsLi
     }
 
     private CustomAppIconsAdapter createAdapter() {
-        return new CustomAppIconsAdapter(CustomAppIconsEnum.values(), this);
+        return new CustomAppIconsAdapter(CustomAppIcons.getAllIcons(), this);
     }
 
     @Override
-    public void onCustomAppIconSelected(CustomAppIconsEnum icon) {
-        showConfirmationDialog(icon);
+    public void onCustomAppIconSelected(@AppIconType int appIconType) {
+        showConfirmationDialog(appIconType);
     }
 
-    private void showConfirmationDialog(CustomAppIconsEnum icon) {
-        OnConfirmationDialogListener listener = createDialogListener(icon);
+    private void showConfirmationDialog(@AppIconType int appIconType) {
+        OnConfirmationDialogListener listener = createDialogListener(appIconType);
         new BraveConfirmationDialog()
                 .showConfirmDialog(
                         getContext(),
@@ -61,11 +62,11 @@ public class CustomAppIconsFragment extends Fragment implements CustomAppIconsLi
                         listener);
     }
 
-    private OnConfirmationDialogListener createDialogListener(CustomAppIconsEnum icon) {
+    private OnConfirmationDialogListener createDialogListener(@AppIconType int appIconType) {
         return new OnConfirmationDialogListener() {
             @Override
             public void onPositiveButtonClicked() {
-                handleIconSwitch(icon);
+                handleIconSwitch(appIconType);
             }
 
             @Override
@@ -75,8 +76,8 @@ public class CustomAppIconsFragment extends Fragment implements CustomAppIconsLi
         };
     }
 
-    private void handleIconSwitch(CustomAppIconsEnum icon) {
-        CustomAppIconsManager.getInstance().switchIcon(icon);
+    private void handleIconSwitch(@AppIconType int appIconType) {
+        CustomAppIconsManager.getInstance().switchIcon(appIconType);
         requireActivity().onBackPressed();
     }
 }

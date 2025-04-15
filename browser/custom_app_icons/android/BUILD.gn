@@ -10,7 +10,7 @@ import("//tools/grit/grit_rule.gni")
 
 android_library("java") {
   sources = [
-    "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsEnum.java",
+    "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIcons.java",
     "java/src/org/chromium/brave/browser/custom_app_icons/CustomAppIconsManager.java",
     "java/src/org/chromium/brave/browser/custom_app_icons/confirm_dialog/BraveConfirmationDialog.java",
     "java/src/org/chromium/brave/browser/custom_app_icons/confirm_dialog/OnConfirmationDialogListener.java",

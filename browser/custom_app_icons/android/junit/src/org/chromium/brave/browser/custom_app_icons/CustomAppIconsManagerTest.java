@@ -1,3 +1,8 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 package org.chromium.brave.browser.custom_app_icons;
 
 import static org.junit.Assert.assertEquals;
@@ -17,6 +22,7 @@ import org.robolectric.annotation.Config;
 
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIcons.AppIconType;
 
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
@@ -42,19 +48,19 @@ public class CustomAppIconsManagerTest {
 
     @Test
     public void testSwitchIcon_DisablesAll_EnablesTarget_SavesPreference() {
-        CustomAppIconsEnum selectedIcon = CustomAppIconsEnum.ICON_AQUA;
+        @AppIconType int selectedIcon = CustomAppIcons.ICON_AQUA;
         mCustomAppIconsManager.switchIcon(selectedIcon);
-        when(mPrefManager.readString("current_app_icon", CustomAppIconsEnum.ICON_DEFAULT.name()))
-                .thenReturn(selectedIcon.name());
+        when(mPrefManager.readInt("current_app_icon", CustomAppIcons.ICON_DEFAULT))
+                .thenReturn(selectedIcon);
         assertEquals(selectedIcon, mCustomAppIconsManager.getCurrentIcon());
     }
 
     @Test
     public void testGetCurrentIcon_ReturnsValueFromPreferences() {
-        when(mPrefManager.readString("current_app_icon", CustomAppIconsEnum.ICON_DEFAULT.name()))
-                .thenReturn(CustomAppIconsEnum.ICON_AQUA.name());
+        when(mPrefManager.readInt("current_app_icon", CustomAppIcons.ICON_DEFAULT))
+                .thenReturn(CustomAppIcons.ICON_AQUA);
 
-        CustomAppIconsEnum currentIcon = mCustomAppIconsManager.getCurrentIcon();
-        assertEquals(CustomAppIconsEnum.ICON_AQUA, currentIcon);
+        @AppIconType int currentIcon = mCustomAppIconsManager.getCurrentIcon();
+        assertEquals(CustomAppIcons.ICON_AQUA, currentIcon);
     }
 }

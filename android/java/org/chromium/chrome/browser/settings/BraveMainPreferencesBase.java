@@ -28,7 +28,8 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
-import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIcons;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIcons.AppIconType;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
@@ -396,11 +397,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private void updateCustomAppIcon(String preferenceString) {
         Preference preference = findPreference(preferenceString);
-        CustomAppIconsEnum currentIcon = CustomAppIconsManager.getInstance().getCurrentIcon();
+        @AppIconType int currentIcon = CustomAppIconsManager.getInstance().getCurrentIcon();
         int iconResource =
-                currentIcon.equals(CustomAppIconsEnum.ICON_DEFAULT)
+                currentIcon == CustomAppIcons.ICON_DEFAULT
                         ? R.drawable.ic_launcher_round
-                        : currentIcon.getIcon();
+                        : CustomAppIcons.getIcon(currentIcon);
         if (preference != null) {
             Drawable drawable =
                     getCircularDrawable(getContext(), iconResource, dpToPx(getContext(), 16));

@@ -14,16 +14,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIcons;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIcons.AppIconType;
 import org.chromium.brave.browser.custom_app_icons.CustomAppIconsManager;
 import org.chromium.brave.browser.custom_app_icons.R;
 
 public class CustomAppIconsAdapter extends RecyclerView.Adapter<CustomAppIconsAdapter.ViewHolder> {
-    private final CustomAppIconsEnum[] mCustomAppIcons;
+    private final @AppIconType int[] mCustomAppIcons;
     private final CustomAppIconsListener mListener;
 
     public CustomAppIconsAdapter(
-            CustomAppIconsEnum[] customAppIcons, CustomAppIconsListener listener) {
+            @AppIconType int[] customAppIcons, CustomAppIconsListener listener) {
         mCustomAppIcons = customAppIcons;
         mListener = listener;
     }
@@ -39,16 +40,15 @@ public class CustomAppIconsAdapter extends RecyclerView.Adapter<CustomAppIconsAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CustomAppIconsEnum currentIcon = mCustomAppIcons[position];
+        @AppIconType int currentIcon = mCustomAppIcons[position];
 
-        holder.mTitle.setText(currentIcon.getDesc());
+        holder.mTitle.setText(CustomAppIcons.getTitle(currentIcon));
         holder.mIcon.setImageResource(
-                currentIcon.equals(CustomAppIconsEnum.ICON_DEFAULT)
+                currentIcon == CustomAppIcons.ICON_DEFAULT
                         ? R.drawable.ic_launcher
-                        : currentIcon.getIcon());
+                        : CustomAppIcons.getIcon(currentIcon));
 
-        boolean isSelected =
-                currentIcon.equals(CustomAppIconsManager.getInstance().getCurrentIcon());
+        boolean isSelected = currentIcon == CustomAppIconsManager.getInstance().getCurrentIcon();
         holder.mCheck.setVisibility(isSelected ? View.VISIBLE : View.GONE);
 
         holder.itemView.setOnClickListener(

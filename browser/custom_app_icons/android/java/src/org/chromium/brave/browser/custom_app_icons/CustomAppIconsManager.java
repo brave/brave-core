@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIcons.AppIconType;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 public class CustomAppIconsManager {
@@ -39,42 +40,41 @@ public class CustomAppIconsManager {
         return instance;
     }
 
-    public void switchIcon(CustomAppIconsEnum newIcon) {
+    public void switchIcon(@AppIconType int newAppIconType) {
         disableAllIcons();
-        enableIcon(newIcon);
-        setCurrentIcon(newIcon);
+        enableIcon(newAppIconType);
+        setCurrentIcon(newAppIconType);
     }
 
     private void disableAllIcons() {
-        for (CustomAppIconsEnum icon : CustomAppIconsEnum.values()) {
-            setIconState(icon, PackageManager.COMPONENT_ENABLED_STATE_DISABLED);
+        for (@AppIconType int appIconType : CustomAppIcons.getAllIcons()) {
+            setIconState(appIconType, PackageManager.COMPONENT_ENABLED_STATE_DISABLED);
         }
     }
 
-    private void enableIcon(CustomAppIconsEnum icon) {
-        setIconState(icon, PackageManager.COMPONENT_ENABLED_STATE_ENABLED);
+    private void enableIcon(@AppIconType int appIconType) {
+        setIconState(appIconType, PackageManager.COMPONENT_ENABLED_STATE_ENABLED);
     }
 
-    private void setIconState(CustomAppIconsEnum icon, int state) {
-        ComponentName component = new ComponentName(mPackageName, getIconComponentClassName(icon));
+    private void setIconState(@AppIconType int appIconType, int state) {
+        ComponentName component =
+                new ComponentName(mPackageName, getIconComponentClassName(appIconType));
         mPackageManager.setComponentEnabledSetting(component, state, PackageManager.DONT_KILL_APP);
     }
 
-    public CustomAppIconsEnum getCurrentIcon() {
-        String currentIcon =
-                mPrefManager.readString(CURRENT_APP_ICON, CustomAppIconsEnum.ICON_DEFAULT.name());
-        return CustomAppIconsEnum.valueOf(currentIcon);
+    public @AppIconType int getCurrentIcon() {
+        return mPrefManager.readInt(CURRENT_APP_ICON, CustomAppIcons.ICON_DEFAULT);
     }
 
-    private void setCurrentIcon(CustomAppIconsEnum icon) {
-        mPrefManager.writeString(CURRENT_APP_ICON, icon.name());
+    private void setCurrentIcon(@AppIconType int appIconType) {
+        mPrefManager.writeInt(CURRENT_APP_ICON, appIconType);
     }
 
-    private String getIconComponentClassName(CustomAppIconsEnum icon) {
-        if (icon == CustomAppIconsEnum.ICON_DEFAULT) {
+    private String getIconComponentClassName(@AppIconType int appIconType) {
+        if (appIconType == CustomAppIcons.ICON_DEFAULT) {
             return DEFAULT_ACTIVITY_CLASS;
         }
-        return mPackageName + icon.getAlias();
+        return mPackageName + CustomAppIcons.getAlias(appIconType);
     }
 
     public void setPrefManagerForTesting(SharedPreferencesManager testPrefManager) {

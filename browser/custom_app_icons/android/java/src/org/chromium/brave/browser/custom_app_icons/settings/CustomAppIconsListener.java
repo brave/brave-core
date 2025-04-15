@@ -5,13 +5,13 @@
 
 package org.chromium.brave.browser.custom_app_icons.settings;
 
-import org.chromium.brave.browser.custom_app_icons.CustomAppIconsEnum;
+import org.chromium.brave.browser.custom_app_icons.CustomAppIcons.AppIconType;
 
 public interface CustomAppIconsListener {
     /**
      * Called when a custom app icon is selected by the user.
      *
-     * @param icon The selected custom app icon enum value
+     * @param appIconType The selected custom app icon enum value
      */
-    void onCustomAppIconSelected(CustomAppIconsEnum icon);
+    void onCustomAppIconSelected(@AppIconType int appIconType);
 }
