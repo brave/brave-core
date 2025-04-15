@@ -1,8 +1,8 @@
 diff --git a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
-index b8f394259a4..25091c2eb4c 100644
+index 38a4bd496af..39908589b50 100644
 --- a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs
 +++ b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
-@@ -54,14 +54,14 @@ cargo_crate("{{this.name}}") {
+@@ -58,14 +58,14 @@ cargo_crate("{{this.name}}") {
      ":lib",
      {{/if}}
      {{#each this.packages}}
@@ -19,7 +19,7 @@ index b8f394259a4..25091c2eb4c 100644
        {{/each}}
      ]
    }
-@@ -70,7 +70,7 @@ cargo_crate("{{this.name}}") {
+@@ -74,7 +74,7 @@ cargo_crate("{{this.name}}") {
    {{#if aliased_deps}}
    aliased_deps = {
      {{#each aliased_deps}}
@@ -28,7 +28,7 @@ index b8f394259a4..25091c2eb4c 100644
      {{/each}}
    }
    {{/if}}
-@@ -78,14 +78,14 @@ cargo_crate("{{this.name}}") {
+@@ -82,14 +82,14 @@ cargo_crate("{{this.name}}") {
    {{#if @first}}
    build_deps = [
      {{#each this.packages}}
@@ -45,33 +45,32 @@ index b8f394259a4..25091c2eb4c 100644
      {{/each}}
      ]
    }
-@@ -120,6 +120,16 @@ cargo_crate("{{this.name}}") {
-   ]
-   {{/with}}
+@@ -142,12 +142,37 @@ cargo_crate("{{this.name}}") {
+       {{/each}}
+     {{/with}}
    {{/if}}
-+  {{#if (or rustenv extra_kv.rustenv)}}
 +  rustenv = [
-+    {{#each rustenv}}
-+    "{{this}}",
-+    {{/each}}
-+    {{#each extra_kv.rustenv}}
-+    "{{this}}",
-+    {{/each}}
++    {{#if rustenv}}
++      {{#each rustenv}}
++        "{{this}}",
++      {{/each}}
++    {{/if}}
++    {{#if extra_kv.rustenv}}
++      {{#each extra_kv.rustenv}}
++        "{{this}}",
++      {{/each}}
++    {{/if}}
 +  ]
-+  {{/if}}
-   {{#with extra_kv.configs_to_remove}}
-   {{#each this}}
-     library_configs -= [ "{{this}}" ]
-@@ -136,10 +146,21 @@ cargo_crate("{{this.name}}") {
-   {{/with}}
    rustflags = [
      "--cap-lints=allow",  # Suppress all warnings in crates.io crates
-+  {{#if (or rustflags extra_kv.rustflags)}}
++  {{#if rustflags}}
 +    {{#each rustflags}}
-+    "{{this}}",
++      "{{this}}",
 +    {{/each}}
++  {{/if}}
++  {{#if extra_kv.rustflags}}
 +    {{#each extra_kv.rustflags}}
-+    "{{this}}",
++      "{{this}}",
 +    {{/each}}
 +  {{/if}}
    ]
@@ -79,12 +78,12 @@ index b8f394259a4..25091c2eb4c 100644
    output_dir = "{{output_dir}}"
    {{/if}}
 +  {{#if extra_kv.raw_gn}}
-+  {{extra_kv.raw_gn}}
++    {{extra_kv.raw_gn}}
 +  {{/if}}
    {{#if native_libs}}
    native_libs = [
    {{#each native_libs}}
-@@ -148,20 +169,6 @@ cargo_crate("{{this.name}}") {
+@@ -156,22 +181,6 @@ cargo_crate("{{this.name}}") {
    ]
    {{/if}}
    {{/with}}
@@ -99,9 +98,11 @@ index b8f394259a4..25091c2eb4c 100644
 -  # it from first-party code.
 -  visibility = [ "//third_party/rust/*" ]
 -  {{/if}}
--  {{#each detail.extra_kv.visibility}}
--  visibility += [ "{{this}}" ]
--  {{/each}}
+-  {{#if detail.extra_kv.visibility}}
+-    {{#each detail.extra_kv.visibility}}
+-      visibility += [ "{{this}}" ]
+-    {{/each}}
+-  {{/if}}
    {{#if gn_visibility.testonly}}
    testonly = true
    {{/if}}

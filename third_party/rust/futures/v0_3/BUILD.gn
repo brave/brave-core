@@ -45,6 +45,7 @@ cargo_crate("lib") {
     "futures-executor",
     "std",
   ]
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

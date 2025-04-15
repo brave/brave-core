@@ -46,6 +46,7 @@ cargo_crate("lib") {
   aliased_deps = {
     utf8 = "//brave/third_party/rust/utf_8/v0_7:lib"
   }
+  rustenv = []
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
