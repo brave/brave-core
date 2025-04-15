@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/first_run/upgrade_util_win.cc b/chrome/browser/first_run/upgrade_util_win.cc
-index def4e171b791d35ca59dc94d07e4289f52daf0d9..a9f160ecdb5132c57bc7a0509652753848a3e7d8 100644
+index def4e171b791d35ca59dc94d07e4289f52daf0d9..7be9db55873ce103097ca994756b519283d8e1e3 100644
 --- a/chrome/browser/first_run/upgrade_util_win.cc
 +++ b/chrome/browser/first_run/upgrade_util_win.cc
 @@ -62,7 +62,7 @@
@@ -20,11 +20,12 @@ index def4e171b791d35ca59dc94d07e4289f52daf0d9..a9f160ecdb5132c57bc7a05096527538
  // Holds the result of the IPC to CoCreate `GoogleUpdate3Web`.
  struct CreateGoogleUpdate3WebResult
      : public base::RefCountedThreadSafe<CreateGoogleUpdate3WebResult> {
-@@ -217,7 +217,7 @@ Microsoft::WRL::ComPtr<IUnknown> CreateGoogleUpdate3Web() {
+@@ -217,7 +217,8 @@ Microsoft::WRL::ComPtr<IUnknown> CreateGoogleUpdate3Web() {
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
  
  bool InvokeGoogleUpdateForRename() {
 -#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++  return InvokeGoogleUpdateForRenameBrave();
 +#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || defined(OFFICIAL_BUILD)
    // This has been identified as very slow on some startups. Detailed trace
    // events below try to shine a light on each steps. crbug.com/1252004
