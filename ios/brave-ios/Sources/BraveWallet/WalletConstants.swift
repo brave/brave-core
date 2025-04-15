@@ -111,7 +111,7 @@ public struct WalletConstants {
       // 1. Remove this check
       // 2. Enable bitcoin feature via build argument
       if isUnitTesting {
-        result = [.eth, .sol, .fil, .btc, .zec]
+        return [.eth, .sol, .fil, .btc, .zec]
       }
       #endif
       // Any non-debug build will check bitcoin & zcash feature flag from core

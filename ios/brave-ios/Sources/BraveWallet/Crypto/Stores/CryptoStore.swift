@@ -168,7 +168,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       rpcService: rpcService,
       walletService: walletService,
       txService: txService,
-      bitcoinWalletService: bitcoinWalletService
+      bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService
     )
     self.origin = origin
 
@@ -188,6 +189,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       blockchainRegistry: blockchainRegistry,
       ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: userAssetManager
     )
     self.nftStore = .init(
@@ -218,6 +220,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       walletService: walletService,
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: userAssetManager
     )
     self.marketStore = .init(
@@ -522,6 +525,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       ipfsApi: ipfsApi,
       swapService: swapService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: userAssetManager,
       assetDetailType: assetDetailType
     )
@@ -560,6 +564,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: userAssetManager
     )
     accountActivityStore = store

@@ -82,6 +82,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   private let ipfsApi: IpfsAPI
   private let swapService: BraveWalletSwapService
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let zcashWalletService: BraveWalletZCashWalletService
   private let assetManager: WalletUserAssetManagerType
   /// A list of tokens that are supported with the current selected network for all supported
   /// on-ramp providers.
@@ -138,6 +139,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     ipfsApi: IpfsAPI,
     swapService: BraveWalletSwapService,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
+    zcashWalletService: BraveWalletZCashWalletService,
     userAssetManager: WalletUserAssetManagerType,
     assetDetailType: AssetDetailType
   ) {
@@ -151,6 +153,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     self.ipfsApi = ipfsApi
     self.swapService = swapService
     self.bitcoinWalletService = bitcoinWalletService
+    self.zcashWalletService = zcashWalletService
     self.assetManager = userAssetManager
     self.assetDetailType = assetDetailType
 
@@ -471,11 +474,18 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
             )?.first {
               tokenBalance = Double(assetBalancePerAccount.balance)
             } else {
-              tokenBalance = await self.rpcService.balance(
-                for: token,
-                in: accountAssetViewModel.account,
-                network: network
-              )
+              if accountAssetViewModel.account.coin == .zec {
+                tokenBalance = await self.zcashWalletService.fetchZECTransparentBalances(
+                  networkId: network.chainId,
+                  accountId: accountAssetViewModel.account.accountId
+                )
+              } else {
+                tokenBalance = await self.rpcService.balance(
+                  for: token,
+                  in: accountAssetViewModel.account,
+                  network: network
+                )
+              }
             }
           }
           return [AccountBalance(accountAssetViewModel.account, tokenBalance)]

@@ -15,6 +15,7 @@ import XCTest
   override class func tearDown() {
     super.tearDown()
     Preferences.Wallet.isBitcoinTestnetEnabled.reset()
+    Preferences.Wallet.isZcashTestnetEnabled.reset()
   }
 
   private var cancellables: Set<AnyCancellable> = .init()
@@ -31,6 +32,8 @@ import XCTest
   let filTestnetAccount: BraveWallet.AccountInfo = .mockFilTestnetAccount
   let btcAccount1: BraveWallet.AccountInfo = .mockBtcAccount
   let btcTestnetAccount: BraveWallet.AccountInfo = .mockBtcTestnetAccount
+  let zcashAccount1: BraveWallet.AccountInfo = .mockZcashAccount
+  let zcashTestnetAccount: BraveWallet.AccountInfo = .mockZcashTestnetAccount
 
   let mockETHBalanceAccount1: Double = 0.896
   let mockETHPrice: String = "3059.99"
@@ -91,17 +94,33 @@ import XCTest
     price: mockBTCPrice,
     assetTimeframeChange: "-57.23"
   )
+  let mockZECBalanceAccount1: Double = 0
+  let mockZECTestnetBalanceAccount1: Double = 0
+  let mockZECPrice: String = "36.46"
+  lazy var mockZECAssetPrice: BraveWallet.AssetPrice = .init(
+    fromAsset: "zec",
+    toAsset: "usd",
+    price: mockZECPrice,
+    assetTimeframeChange: "4.32"
+  )
   let btcMainnetTokens: [BraveWallet.BlockchainToken] = [
     BraveWallet.NetworkInfo.mockBitcoinMainnet.nativeToken
   ]
   let btcTestnetTokens: [BraveWallet.BlockchainToken] = [
     BraveWallet.NetworkInfo.mockBitcoinTestnet.nativeToken
   ]
+  let zcashMainnetTokens: [BraveWallet.BlockchainToken] = [
+    BraveWallet.NetworkInfo.mockZcashMainnet.nativeToken
+  ]
+  let zcashTestnetTokens: [BraveWallet.BlockchainToken] = [
+    BraveWallet.NetworkInfo.mockZcashTestnet.nativeToken
+  ]
 
   let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
-  func updateHelper(bitcoinTestnetEnabled: Bool) async {
-    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
+  func updateHelper(bitcoinAndZcashTestnetEnabled: Bool) async {
+    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinAndZcashTestnetEnabled
+    Preferences.Wallet.isZcashTestnetEnabled.value = bitcoinAndZcashTestnetEnabled
     let ethBalanceWei =
       formatter.weiString(
         from: mockETHBalanceAccount1,
@@ -145,6 +164,18 @@ import XCTest
         radix: .decimal,
         decimals: Int(BraveWallet.NetworkInfo.mockBitcoinTestnet.nativeToken.decimals)
       ) ?? ""
+    let mockZcashBalanceInWei =
+      formatter.weiString(
+        from: mockZECBalanceAccount1,
+        radix: .decimal,
+        decimals: Int(BraveWallet.NetworkInfo.mockZcashMainnet.nativeToken.decimals)
+      ) ?? ""
+    let mockZcashTestnetBalanceInWei =
+      formatter.weiString(
+        from: mockZECTestnetBalanceAccount1,
+        radix: .decimal,
+        decimals: Int(BraveWallet.NetworkInfo.mockZcashTestnet.nativeToken.decimals)
+      ) ?? ""
 
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
@@ -156,6 +187,7 @@ import XCTest
             self.solAccount1, self.filAccount1,
             self.filTestnetAccount,
             self.btcAccount1, self.btcTestnetAccount,
+            self.zcashAccount1, self.zcashTestnetAccount,
           ],
           selectedAccount: self.ethAccount1,
           ethDappSelectedAccount: self.ethAccount1,
@@ -187,6 +219,14 @@ import XCTest
         completion(mockBtcBalanceInWei, .success, "")
       } else if coin == .btc,
         chainId == BraveWallet.BitcoinTestnet
+      {
+        completion(mockBtcTestnetBalanceInWei, .success, "")
+      } else if coin == .zec,
+        chainId == BraveWallet.ZCashMainnet
+      {
+        completion(mockBtcBalanceInWei, .success, "")
+      } else if coin == .zec,
+        chainId == BraveWallet.ZCashTestnet
       {
         completion(mockBtcTestnetBalanceInWei, .success, "")
       } else {
@@ -223,6 +263,7 @@ import XCTest
           self.mockSOLAssetPrice,
           self.mockFILAssetPrice,
           self.mockBTCAssetPrice,
+          self.mockZECAssetPrice,
         ]
       )
     }
@@ -260,6 +301,16 @@ import XCTest
           tokens: self.btcTestnetTokens,
           sortOrder: 5
         ),
+        NetworkAssets(
+          network: .mockZcashMainnet,
+          tokens: self.zcashMainnetTokens,
+          sortOrder: 6
+        ),
+        NetworkAssets(
+          network: .mockZcashTestnet,
+          tokens: self.zcashTestnetTokens,
+          sortOrder: 7
+        ),
       ].filter { networkAsset in
         networks.contains(where: { $0.chainId == networkAsset.network.chainId })
       }
@@ -291,6 +342,34 @@ import XCTest
         )
       }
     }
+    let zecMainnetBalance: UInt64 = 100_000_0
+    let zecTestnetBalance: UInt64 = 100_000
+    let zcashWalletService = BraveWallet.TestZCashWalletService()
+    zcashWalletService._balance = { chainId, accountId, completion in
+      if chainId == BraveWallet.ZCashMainnet {
+        completion(
+          .init(
+            totalBalance: zecMainnetBalance,
+            transparentBalance: zecMainnetBalance,
+            shieldedBalance: 0,
+            shieldedPendingBalance: 0,
+            balances: [:]
+          ),
+          nil
+        )
+      } else {
+        completion(
+          .init(
+            totalBalance: zecTestnetBalance,
+            transparentBalance: zecTestnetBalance,
+            shieldedBalance: 0,
+            shieldedPendingBalance: 0,
+            balances: [:]
+          ),
+          nil
+        )
+      }
+    }
 
     let store = AccountsStore(
       keyringService: keyringService,
@@ -298,6 +377,7 @@ import XCTest
       walletService: walletService,
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: userAssetManager
     )
 
@@ -311,7 +391,10 @@ import XCTest
           XCTFail("Expected account details models")
           return
         }
-        let accountNumber = bitcoinTestnetEnabled ? 7 : 6
+        var accountNumber = 9
+        if !bitcoinAndZcashTestnetEnabled {
+          accountNumber -= 2
+        }
         XCTAssertEqual(accountDetails.count, accountNumber)
 
         XCTAssertEqual(accountDetails[safe: 0]?.account, self.ethAccount1)
@@ -342,10 +425,22 @@ import XCTest
         XCTAssertEqual(accountDetails[safe: 5]?.tokensWithBalance, self.btcMainnetTokens)
         XCTAssertEqual(accountDetails[safe: 5]?.totalBalanceFiat, "$0.657")
 
-        if bitcoinTestnetEnabled {
+        if bitcoinAndZcashTestnetEnabled {
           XCTAssertEqual(accountDetails[safe: 6]?.account, self.btcTestnetAccount)
           XCTAssertEqual(accountDetails[safe: 6]?.tokensWithBalance, self.btcTestnetTokens)
           XCTAssertEqual(accountDetails[safe: 6]?.totalBalanceFiat, "$6.573")
+
+          XCTAssertEqual(accountDetails[safe: 7]?.account, self.zcashAccount1)
+          XCTAssertEqual(accountDetails[safe: 7]?.tokensWithBalance, self.zcashMainnetTokens)
+          XCTAssertEqual(accountDetails[safe: 7]?.totalBalanceFiat, "$0.365")
+
+          XCTAssertEqual(accountDetails[safe: 8]?.account, self.zcashTestnetAccount)
+          XCTAssertEqual(accountDetails[safe: 8]?.tokensWithBalance, self.zcashTestnetTokens)
+          XCTAssertEqual(accountDetails[safe: 8]?.totalBalanceFiat, "$0.0365")
+        } else {
+          XCTAssertEqual(accountDetails[safe: 6]?.account, self.zcashAccount1)
+          XCTAssertEqual(accountDetails[safe: 6]?.tokensWithBalance, self.zcashMainnetTokens)
+          XCTAssertEqual(accountDetails[safe: 6]?.totalBalanceFiat, "$0.365")
         }
       }.store(in: &cancellables)
 
@@ -355,10 +450,10 @@ import XCTest
   }
 
   func testUpdate() async {
-    await updateHelper(bitcoinTestnetEnabled: false)
+    await updateHelper(bitcoinAndZcashTestnetEnabled: false)
   }
 
   func testUpdateBitcoinTestnet() async {
-    await updateHelper(bitcoinTestnetEnabled: true)
+    await updateHelper(bitcoinAndZcashTestnetEnabled: true)
   }
 }

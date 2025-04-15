@@ -101,6 +101,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
       }
     }
     Preferences.Wallet.isBitcoinTestnetEnabled.observe(from: self)
+    Preferences.Wallet.isZcashTestnetEnabled.observe(from: self)
   }
 
   func tearDown() {
@@ -500,25 +501,46 @@ extension NetworkStore: PreferencesObserver {
   public func preferencesDidChange(for key: String) {
     // only observe `Preferences.Wallet.isBitcoinTestnetEnabled`
     Task { @MainActor in
-      guard key == Preferences.Wallet.isBitcoinTestnetEnabled.key else { return }
-      let btcDefaultNetwork = await rpcService.network(coin: .btc, origin: nil)
-      let isBitcoinTestnetEnabled = Preferences.Wallet.isBitcoinTestnetEnabled.value
-      if !isBitcoinTestnetEnabled, btcDefaultNetwork.chainId == BraveWallet.BitcoinTestnet {
-        // bitcoin testnet is disabled but the btc coin type
-        // default network is testnet. Need to change it to btc
-        // mainnet, to prevent user hide the default network
-        if hiddenChains.contains(where: { $0.chainId == BraveWallet.BitcoinMainnet }) {
-          // bitcoin mainnet is currently hidden. unhide it then set it to default network
-          await rpcService.removeHiddenNetwork(
+      if key == Preferences.Wallet.isBitcoinTestnetEnabled.key {
+        let btcDefaultNetwork = await rpcService.network(coin: .btc, origin: nil)
+        let isBitcoinTestnetEnabled = Preferences.Wallet.isBitcoinTestnetEnabled.value
+        if !isBitcoinTestnetEnabled, btcDefaultNetwork.chainId == BraveWallet.BitcoinTestnet {
+          // bitcoin testnet is disabled but the btc coin type
+          // default network is testnet. Need to change it to btc
+          // mainnet, to prevent user hide the default network
+          if hiddenChains.contains(where: { $0.chainId == BraveWallet.BitcoinMainnet }) {
+            // bitcoin mainnet is currently hidden. unhide it then set it to default network
+            await rpcService.removeHiddenNetwork(
+              coin: .btc,
+              chainId: BraveWallet.BitcoinMainnet
+            )
+          }
+          await rpcService.setNetwork(
+            chainId: BraveWallet.BitcoinMainnet,
             coin: .btc,
-            chainId: BraveWallet.BitcoinMainnet
+            origin: nil
           )
         }
-        await rpcService.setNetwork(
-          chainId: BraveWallet.BitcoinMainnet,
-          coin: .btc,
-          origin: nil
-        )
+      } else if key == Preferences.Wallet.isZcashTestnetEnabled.key {
+        let zcashDefaultNetwork = await rpcService.network(coin: .zec, origin: nil)
+        let isZcashTestnetEnabled = Preferences.Wallet.isZcashTestnetEnabled.value
+        if !isZcashTestnetEnabled, zcashDefaultNetwork.chainId == BraveWallet.ZCashTestnet {
+          // zcash testnet is disabled but the zcash coin type
+          // default network is testnet. Need to change it to zcash
+          // mainnet, to prevent user hide the default network
+          if hiddenChains.contains(where: { $0.chainId == BraveWallet.ZCashMainnet }) {
+            // zcash mainnet is currently hidden. unhide it then set it to default network
+            await rpcService.removeHiddenNetwork(
+              coin: .zec,
+              chainId: BraveWallet.ZCashMainnet
+            )
+          }
+          await rpcService.setNetwork(
+            chainId: BraveWallet.ZCashMainnet,
+            coin: .zec,
+            origin: nil
+          )
+        }
       }
     }
   }
@@ -543,6 +565,11 @@ extension Array where Element == BraveWallet.NetworkInfo {
     filter {
       if !Preferences.Wallet.isBitcoinTestnetEnabled.value
         && $0.chainId == BraveWallet.BitcoinTestnet
+      {
+        return false
+      }
+      if !Preferences.Wallet.isZcashTestnetEnabled.value
+        && $0.chainId == BraveWallet.ZCashTestnet
       {
         return false
       }

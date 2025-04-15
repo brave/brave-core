@@ -31,6 +31,7 @@ import XCTest
     Preferences.Wallet.nonSelectedAccountsFilter.reset()
     Preferences.Wallet.nonSelectedNetworksFilter.reset()
     Preferences.Wallet.isBitcoinTestnetEnabled.reset()
+    Preferences.Wallet.isZcashTestnetEnabled.reset()
   }
 
   // Accounts
@@ -64,6 +65,8 @@ import XCTest
     $0.name = "Bitcoin Account 2"
   }
   let btcTestnetAccount: BraveWallet.AccountInfo = .mockBtcTestnetAccount
+  let zcashAccount1: BraveWallet.AccountInfo = .mockZcashAccount
+  let zcashTestnetAccount: BraveWallet.AccountInfo = .mockZcashTestnetAccount
 
   // ETH Asset, balance, price, history
   let mockETHBalanceAccount1: Double = 0.896
@@ -138,6 +141,18 @@ import XCTest
     .init(date: Date(), price: mockBTCPrice),
   ]
   let mockBTCBalanceTestnet: Double = 0.00001
+  let mockZECTransparentBalanceAccount1: Double = 0.00001
+  let mockZECPrice: String = "39.50"
+  lazy var mockZECAssetPrice: BraveWallet.AssetPrice = .init(
+    fromAsset: "zec",
+    toAsset: "usd",
+    price: mockZECPrice,
+    assetTimeframeChange: "2.93"
+  )
+  lazy var mockZECPriceHistory: [BraveWallet.AssetTimePrice] = [
+    .init(date: Date(timeIntervalSinceNow: -1000), price: "36.0"),
+    .init(date: Date(), price: mockZECPrice),
+  ]
 
   var totalBalance: String {
     let totalEthBalanceValue: Double =
@@ -150,9 +165,11 @@ import XCTest
       (Double(mockFILAssetPrice.price) ?? 0) * mockFILBalanceAccount1
     let totalBtcBalanceValue: Double =
       (Double(mockBTCAssetPrice.price) ?? 0) * mockBTCBalanceAccount1
+    let totalZecBalanceValue: Double =
+      (Double(mockZECAssetPrice.price) ?? 0) * mockZECTransparentBalanceAccount1
     let totalBalanceValue =
       totalEthBalanceValue + totalSolBalanceValue + totalUSDCBalanceValue
-      + totalFilBalanceValue + totalBtcBalanceValue
+      + totalFilBalanceValue + totalBtcBalanceValue + totalZecBalanceValue
     return currencyFormatter.formatAsFiat(totalBalanceValue) ?? ""
   }
 
@@ -225,6 +242,13 @@ import XCTest
       BraveWallet.NetworkInfo.mockBitcoinTestnet.nativeToken.copy(asVisibleAsset: true)
     ]
 
+    let mockZcashUserAssets: [BraveWallet.BlockchainToken] = [
+      BraveWallet.NetworkInfo.mockZcashMainnet.nativeToken.copy(asVisibleAsset: true)
+    ]
+    let mockZcashTestnetUserAssets: [BraveWallet.BlockchainToken] = [
+      BraveWallet.NetworkInfo.mockZcashTestnet.nativeToken.copy(asVisibleAsset: true)
+    ]
+
     // setup test services
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
@@ -242,6 +266,7 @@ import XCTest
             self.filTestnetAccount,
             self.btcAccount1, self.btcAccount2,
             self.btcTestnetAccount,
+            self.zcashAccount1, self.zcashTestnetAccount,
           ],
           selectedAccount: self.ethAccount1,
           ethDappSelectedAccount: self.ethAccount1,
@@ -303,7 +328,7 @@ import XCTest
         true,
         [
           self.mockETHAssetPrice, self.mockUSDCAssetPrice, self.mockSOLAssetPrice,
-          self.mockFILAssetPrice, self.mockBTCAssetPrice,
+          self.mockFILAssetPrice, self.mockBTCAssetPrice, self.mockZECAssetPrice,
         ]
       )
     }
@@ -319,6 +344,8 @@ import XCTest
         completion(true, self.mockFILPriceHistory)  // for both mainnet and testnet
       case "btc":
         completion(true, self.mockBTCPriceHistory)  // for both mainnet and testnet
+      case "zec":
+        completion(true, self.mockZECPriceHistory)  // for both mainnet and testnet
       default:
         completion(false, [])
       }
@@ -355,51 +382,22 @@ import XCTest
         NetworkAssets(
           network: .mockBitcoinMainnet,
           tokens: mockBtcUserAssets.filter(\.visible),
-          sortOrder: 3
+          sortOrder: 5
         ),
         NetworkAssets(
           network: .mockBitcoinTestnet,
           tokens: mockBtcTestnetUserAssets.filter(\.visible),
-          sortOrder: 4
-        ),
-      ].filter { networkAsset in networks.contains(where: { $0 == networkAsset.network }) }
-    }
-    mockAssetManager._getUserAssets = { networks, _ in
-      [
-        NetworkAssets(
-          network: .mockMainnet,
-          tokens: mockEthUserAssets.filter(\.visible),
-          sortOrder: 0
+          sortOrder: 6
         ),
         NetworkAssets(
-          network: .mockSolana,
-          tokens: mockSolUserAssets.filter(\.visible),
-          sortOrder: 1
+          network: .mockZcashMainnet,
+          tokens: mockZcashUserAssets.filter(\.visible),
+          sortOrder: 7
         ),
         NetworkAssets(
-          network: .mockSepolia,
-          tokens: mockEthSepoliaUserAssets.filter(\.visible),
-          sortOrder: 2
-        ),
-        NetworkAssets(
-          network: .mockFilecoinMainnet,
-          tokens: mockFilUserAssets.filter(\.visible),
-          sortOrder: 3
-        ),
-        NetworkAssets(
-          network: .mockFilecoinTestnet,
-          tokens: mockFilTestnetUserAssets.filter(\.visible),
-          sortOrder: 4
-        ),
-        NetworkAssets(
-          network: .mockBitcoinMainnet,
-          tokens: mockBtcUserAssets.filter(\.visible),
-          sortOrder: 3
-        ),
-        NetworkAssets(
-          network: .mockBitcoinTestnet,
-          tokens: mockBtcTestnetUserAssets.filter(\.visible),
-          sortOrder: 4
+          network: .mockZcashTestnet,
+          tokens: mockZcashTestnetUserAssets.filter(\.visible),
+          sortOrder: 8
         ),
       ].filter { networkAsset in networks.contains(where: { $0 == networkAsset.network }) }
     }
@@ -462,6 +460,38 @@ import XCTest
         )
       }
     }
+    let zecTransparentBalanceInSatoshi =
+      formatter.weiString(
+        from: mockZECTransparentBalanceAccount1,
+        radix: .decimal,
+        decimals: Int(BraveWallet.BlockchainToken.mockZECToken.decimals)
+      ) ?? ""
+    let zcashWalletService = BraveWallet.TestZCashWalletService()
+    zcashWalletService._balance = { chainId, accountId, completion in
+      if chainId == BraveWallet.ZCashMainnet {
+        completion(
+          .init(
+            totalBalance: UInt64(zecTransparentBalanceInSatoshi) ?? 0,
+            transparentBalance: UInt64(zecTransparentBalanceInSatoshi) ?? 0,
+            shieldedBalance: 0,
+            shieldedPendingBalance: 0,
+            balances: [:]
+          ),
+          nil
+        )
+      } else {
+        completion(
+          .init(
+            totalBalance: 0,
+            transparentBalance: 0,
+            shieldedBalance: 0,
+            shieldedPendingBalance: 0,
+            balances: [:]
+          ),
+          nil
+        )
+      }
+    }
 
     return PortfolioStore(
       keyringService: keyringService,
@@ -471,6 +501,7 @@ import XCTest
       blockchainRegistry: BraveWallet.TestBlockchainRegistry(),
       ipfsApi: TestIpfsAPI(),
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       userAssetManager: mockAssetManager
     )
   }
@@ -499,8 +530,8 @@ import XCTest
           return
         }
 
-        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Sepolia, FIL on Filecoin mainnet, FIL on Filecoin testnet, BTC on Bitcoin mainnet. No BTC on Bitcoin testnet
-        XCTAssertEqual(group.assets.count, 5)
+        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Sepolia, FIL on Filecoin mainnet, FIL on Filecoin testnet, BTC on Bitcoin mainnet. No BTC on Bitcoin testnet No ZEC on Zcash testnet
+        XCTAssertEqual(group.assets.count, 6)
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(
           group.assets[safe: 0]?.token.symbol,
@@ -559,7 +590,7 @@ import XCTest
           String(format: "%.04f", self.mockFILBalanceAccount1)
         )
         XCTAssertEqual(
-          group.assets[safe: 0]?.btcBalances,
+          group.assets[safe: 2]?.btcBalances,
           [:]  // FIL so no btcBalances
         )
 
@@ -612,11 +643,33 @@ import XCTest
             ],
           ]
         )
+        // ZEC (value $0.00396) on mainnet
+        XCTAssertEqual(
+          group.assets[safe: 5]?.token.symbol,
+          BraveWallet.BlockchainToken.mockZECToken.symbol
+        )
+        XCTAssertEqual(
+          group.assets[safe: 5]?.price,
+          self.mockZECAssetPrice.price
+        )
+        XCTAssertEqual(
+          group.assets[safe: 5]?.history,
+          self.mockZECPriceHistory
+        )
+        XCTAssertEqual(
+          group.assets[safe: 5]?.quantity,
+          String(format: "%.04f", self.mockZECTransparentBalanceAccount1)
+        )
+        XCTAssertEqual(
+          group.assets[safe: 5]?.btcBalances,
+          [:]  // ZEC so no btcBalances
+        )
 
         // ETH Sepolia (value = 0), hidden because test networks not selected by default
         // FIL Testnet (value = $400.00), hidden because test networks not selected by default
-        // BIT Testnet (value = 0.00), hidden because Bitcoin testnet is disabled by default
-        XCTAssertNil(group.assets[safe: 5])
+        // BTC Testnet (value = 0.00), hidden because Bitcoin testnet is disabled by default
+        // ZEC Testnet (value = 0.00), hidden because Zcash testnet is disabled by default
+        XCTAssertNil(group.assets[safe: 6])
       }
       .store(in: &cancellables)
 
@@ -706,8 +759,9 @@ import XCTest
   }
 
   /// Test `assetGroups` will be sorted to from smallest to highest fiat value when `sortOrder` filter is `valueAsc`.
-  func filterSortHelper(bitcoinTestnetEnabled: Bool) async {
-    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
+  func filterSortHelper(bitcoinAndZcashTestnetEnabled: Bool) async {
+    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinAndZcashTestnetEnabled
+    Preferences.Wallet.isZcashTestnetEnabled.value = bitcoinAndZcashTestnetEnabled
     let store = setupStore()
     let sortExpectation = expectation(description: "update-sortOrder")
     store.$assetGroups
@@ -725,79 +779,111 @@ import XCTest
           XCTFail("Unexpected test result")
           return
         }
-        // USDC on Ethereum mainnet, SOL on Solana mainnet, ETH on Ethereum mainnet, FIL on Filecoin mainnet, FIL on Filecoin testnet, BTC on Bitcoin mainnet. No BTC on Bitcoin testnet since Bitcoin tesnet is disabled by default
-        let assetGroupNumber = bitcoinTestnetEnabled ? 8 : 7
-        XCTAssertEqual(group.assets.count, assetGroupNumber)
+        // USDC on Ethereum mainnet, SOL on Solana mainnet, ETH on Ethereum mainnet, FIL on Filecoin mainnet, FIL on Filecoin testnet, BTC on Bitcoin mainnet, ZEC on Zcash mainnet. No BTC/ZEC on Bitcoin/Zcash testnet since Bitcoin/Zcash tesnet is disabled by defaultfor group in lastUpdatedAssetGroups {
+        let assetsNumber = bitcoinAndZcashTestnetEnabled ? 10 : 8
+        XCTAssertEqual(group.assets.count, assetsNumber)
+        for asset in group.assets {
+          print(asset.token.id)
+        }
+        var zecTestnetIndex = 0
+        var btcTestnetIndex = 0
+        var zecMainnetIndex = 1
+        var btcMainnetIndex = 2
+        var usdcMainnetIndex = 3
+        var filMainnetIndex = 4
+        var filTestnetIndex = 5
+        var solMainnetIndex = 6
+        var ethMainnetIndex = 7
+        if bitcoinAndZcashTestnetEnabled {
+          zecTestnetIndex = 1
+          zecMainnetIndex = 2
+          btcMainnetIndex = 3
+          usdcMainnetIndex = 4
+          btcTestnetIndex = 5
+          filMainnetIndex = 6
+          filTestnetIndex = 7
+          solMainnetIndex = 8
+          ethMainnetIndex = 9
+        }
+
         // ETH Sepolia (value = $0)
         XCTAssertEqual(
           group.assets[safe: 0]?.token.symbol,
           BraveWallet.BlockchainToken.previewToken.symbol
         )
-        XCTAssertEqual(group.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
+        if bitcoinAndZcashTestnetEnabled {
+          // ZEC testnet (value = $0)
+          XCTAssertEqual(
+            group.assets[safe: zecTestnetIndex]?.token.symbol,
+            BraveWallet.BlockchainToken.mockZECToken.symbol
+          )
+          // BTC testnet (value = $0.65726)
+          XCTAssertEqual(
+            group.assets[safe: btcTestnetIndex]?.token.symbol,
+            BraveWallet.BlockchainToken.mockBTCToken.symbol
+          )
+          XCTAssertEqual(group.assets[safe: btcTestnetIndex]?.quantity, String(format: "%.04f", 0))
+        }
+        // ZEC mainnet (value = $0.000395)
+        XCTAssertEqual(
+          group.assets[safe: zecMainnetIndex]?.token.id,
+          BraveWallet.BlockchainToken.mockZECToken.id
+        )
+
         // BTC mainnet (value = $0.0065726)
         XCTAssertEqual(
-          group.assets[safe: 1]?.token.symbol,
+          group.assets[safe: btcMainnetIndex]?.token.symbol,
           BraveWallet.BlockchainToken.mockBTCToken.symbol
         )
-        XCTAssertEqual(group.assets[safe: 1]?.quantity, String(format: "%.04f", 0))
+        XCTAssertEqual(group.assets[safe: btcMainnetIndex]?.quantity, String(format: "%.04f", 0))
+
         // USDC (value = $0.04)
         XCTAssertEqual(
-          group.assets[safe: 2]?.token.symbol,
+          group.assets[safe: usdcMainnetIndex]?.token.symbol,
           BraveWallet.BlockchainToken.mockUSDCToken.symbol
         )
         XCTAssertEqual(
-          group.assets[safe: 2]?.quantity,
+          group.assets[safe: usdcMainnetIndex]?.quantity,
           String(format: "%.04f", self.mockUSDCBalanceAccount1 + self.mockUSDCBalanceAccount2)
         )
-        var offset = 2
-        if bitcoinTestnetEnabled {
-          offset += 1
-          // BTC testnet (value = $0.65726)
-          XCTAssertEqual(
-            group.assets[safe: offset]?.token.symbol,
-            BraveWallet.BlockchainToken.mockBTCToken.symbol
-          )
-          XCTAssertEqual(group.assets[safe: offset]?.quantity, String(format: "%.04f", 0))
-        }
 
         // FIL (value = $4.00) on filecoin mainnet
-        offset += 1
         XCTAssertEqual(
-          group.assets[safe: offset]?.token.symbol,
+          group.assets[safe: filMainnetIndex]?.token.symbol,
           BraveWallet.BlockchainToken.mockFilToken.symbol
         )
         XCTAssertEqual(
-          group.assets[safe: offset]?.quantity,
+          group.assets[safe: filMainnetIndex]?.quantity,
           String(format: "%.04f", self.mockFILBalanceAccount1)
         )
+
         // FIL (value = $400.00) on filecoin testnet
-        offset += 1
         XCTAssertEqual(
-          group.assets[safe: offset]?.token.symbol,
+          group.assets[safe: filTestnetIndex]?.token.symbol,
           BraveWallet.BlockchainToken.mockFilToken.symbol
         )
         XCTAssertEqual(
-          group.assets[safe: offset]?.quantity,
+          group.assets[safe: filTestnetIndex]?.quantity,
           String(format: "%.04f", self.mockFILBalanceTestnet)
         )
+
         // SOL (value = $775.3)
-        offset += 1
         XCTAssertEqual(
-          group.assets[safe: offset]?.token.symbol,
+          group.assets[safe: solMainnetIndex]?.token.symbol,
           BraveWallet.BlockchainToken.mockSolToken.symbol
         )
         XCTAssertEqual(
-          group.assets[safe: offset]?.quantity,
+          group.assets[safe: solMainnetIndex]?.quantity,
           String(format: "%.04f", self.mockSOLBalance)
         )
+
         // ETH Mainnet (value ~= $2741.7510399999996)
-        offset += 1
         XCTAssertEqual(
-          group.assets[safe: offset]?.token.symbol,
+          group.assets[safe: ethMainnetIndex]?.token.symbol,
           BraveWallet.BlockchainToken.previewToken.symbol
         )
         XCTAssertEqual(
-          group.assets[safe: offset]?.quantity,
+          group.assets[safe: ethMainnetIndex]?.quantity,
           String(format: "%.04f", self.mockETHBalanceAccount1)
         )
       }.store(in: &cancellables)
@@ -814,6 +900,7 @@ import XCTest
         accounts: [
           ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2,
           filTestnetAccount, btcAccount1, btcAccount2, btcTestnetAccount,
+          zcashAccount1, zcashTestnetAccount,
         ].map {
           .init(isSelected: true, model: $0)
         },
@@ -827,11 +914,11 @@ import XCTest
   }
 
   func testFilterSort() async {
-    await filterSortHelper(bitcoinTestnetEnabled: false)
+    await filterSortHelper(bitcoinAndZcashTestnetEnabled: false)
   }
 
-  func testFilterSortBitcoinTestnet() async {
-    await filterSortHelper(bitcoinTestnetEnabled: true)
+  func testFilterSortBitcoinAndZcashTestnet() async {
+    await filterSortHelper(bitcoinAndZcashTestnetEnabled: true)
   }
 
   /// Test `assetGroups` will be filtered to remove small balances when `hideSmallBalances` filter is true.
@@ -905,7 +992,7 @@ import XCTest
         isShowingNFTNetworkLogo: store.filters.isShowingNFTNetworkLogo,
         accounts: [
           ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2,
-          filTestnetAccount, btcAccount1, btcAccount2,
+          filTestnetAccount, btcAccount1, btcAccount2, zcashAccount1,
         ].map {
           .init(isSelected: true, model: $0)
         },
@@ -919,9 +1006,10 @@ import XCTest
   }
 
   /// Test `assetGroups` will be filtered by accounts when `accounts` filter is has de-selected accounts.
-  func filterAccountsHelper(bitcoinTestnetEnabled: Bool) async {
+  func filterAccountsHelper(bitcoinAndZcashTestnetEnabled: Bool) async {
     // test without bitcoin testnet enabled
-    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
+    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinAndZcashTestnetEnabled
+    Preferences.Wallet.isZcashTestnetEnabled.value = bitcoinAndZcashTestnetEnabled
     let store = setupStore()
     let accountsExpectation = expectation(description: "update-accounts-bitcoin-testnet")
     store.$assetGroups
@@ -939,8 +1027,8 @@ import XCTest
           XCTFail("Unexpected test result")
           return
         }
-        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Sepolia, FIL on mainnet and testnet, BTC on mainnet and testnet
-        let assetGroupNumber: Int = bitcoinTestnetEnabled ? 8 : 7
+        // ETH on Ethereum mainnet, SOL on Solana mainnet, USDC on Ethereum mainnet, ETH on Sepolia, FIL on mainnet and testnet, BTC on mainnet and testnet, ZEC on mainnet and testnet
+        let assetGroupNumber: Int = bitcoinAndZcashTestnetEnabled ? 10 : 8
         XCTAssertEqual(group.assets.count, assetGroupNumber)
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(
@@ -979,7 +1067,7 @@ import XCTest
           String(format: "%.04f", self.mockFILBalanceAccount1)
         )
         var offset: Int = 4
-        if bitcoinTestnetEnabled {
+        if bitcoinAndZcashTestnetEnabled {
           // BTC testnet (value = $0.65726)
           XCTAssertEqual(
             group.assets[safe: offset]?.token.symbol,
@@ -1010,6 +1098,13 @@ import XCTest
           group.assets[safe: offset]?.quantity,
           String(format: "%.04f", self.mockBTCBalanceAccount1)
         )
+        offset += 1
+        // ZEC mainnet (value = $0) for same balance native token first
+        XCTAssertEqual(
+          group.assets[safe: offset]?.token.symbol,
+          BraveWallet.NetworkInfo.mockZcashMainnet.nativeToken.symbol
+        )
+        XCTAssertEqual(group.assets[safe: offset]?.quantity, String(format: "%.04f", 0))
         offset += 1
         // ETH Sepolia (value = $0)
         XCTAssertEqual(
@@ -1042,11 +1137,11 @@ import XCTest
   }
 
   func testFilterAccounts() async {
-    await filterAccountsHelper(bitcoinTestnetEnabled: false)
+    await filterAccountsHelper(bitcoinAndZcashTestnetEnabled: false)
   }
 
-  func testFilterAccountsWithBitcoinTestnet() async {
-    await filterAccountsHelper(bitcoinTestnetEnabled: true)
+  func testFilterAccountsWithBitcoinAndZcashTestnet() async {
+    await filterAccountsHelper(bitcoinAndZcashTestnetEnabled: true)
   }
 
   /// Test `assetGroups` will be filtered by network when `networks` filter is has de-selected networks.
@@ -1148,8 +1243,9 @@ import XCTest
 
   /// Test `assetGroups` will be grouped by account when `GroupBy` filter is assigned `.account`.
   /// Additionally, test de-selecting/hiding one of the available accounts.
-  func groupByAccountsHelper(bitcoinTestnetEnabled: Bool) async {
-    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
+  func groupByAccountsHelper(bitcoinAndZcashTestnetEnabled: Bool) async {
+    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinAndZcashTestnetEnabled
+    Preferences.Wallet.isZcashTestnetEnabled.value = bitcoinAndZcashTestnetEnabled
     let store = setupStore()
     let assetGroupsExpectation = expectation(description: "update-assetGroups")
     XCTAssertTrue(store.assetGroups.isEmpty)  // Initial state
@@ -1163,23 +1259,27 @@ import XCTest
           XCTFail("Unexpected test result")
           return
         }
-        // grouping by .account; eth has 2 accounts, sol has 2 accounts, fil has 3 accounts, btc has 3 accounts (one tesnet)
-        let assetGroupNumber = bitcoinTestnetEnabled ? 10 : 9
+        // grouping by .account; eth has 2 accounts, sol has 2 accounts, fil has 3 accounts, btc has 3 accounts (one tesnet) zec has 2 accounts (one testnet)
+        let assetGroupNumber = bitcoinAndZcashTestnetEnabled ? 12 : 10
         XCTAssertEqual(lastUpdatedAssetGroups.count, assetGroupNumber)
 
         var btcTestnetIndex = 0
+        var zecTestIndex = 0
         var ethAccount2Index = 4
         var btcAccount1Index = 5
-        var solAccount2Index = 6
-        var btcAccount2Index = 7
-        var filAccount2Index = 8
-        if bitcoinTestnetEnabled {
+        var zecAccountIndex = 6
+        var solAccount2Index = 7
+        var btcAccount2Index = 8
+        var filAccount2Index = 9
+        if bitcoinAndZcashTestnetEnabled {
           btcTestnetIndex = 4
           ethAccount2Index = 5
           btcAccount1Index = 6
-          solAccount2Index = 7
-          btcAccount2Index = 8
-          filAccount2Index = 9
+          zecAccountIndex = 7
+          solAccount2Index = 8
+          btcAccount2Index = 9
+          zecTestIndex = 10
+          filAccount2Index = 11
         }
         guard let ethAccount1Group = lastUpdatedAssetGroups[safe: 0],
           let solAccount1Group = lastUpdatedAssetGroups[safe: 1],
@@ -1187,6 +1287,7 @@ import XCTest
           let filAccount1Group = lastUpdatedAssetGroups[safe: 3],
           let ethAccount2Group = lastUpdatedAssetGroups[safe: ethAccount2Index],
           let btcAccount1Group = lastUpdatedAssetGroups[safe: btcAccount1Index],
+          let zecAccountGroup = lastUpdatedAssetGroups[safe: zecAccountIndex],
           let solAccount2Group = lastUpdatedAssetGroups[safe: solAccount2Index],
           let btcAccount2Group = lastUpdatedAssetGroups[safe: btcAccount2Index],
           let filAccount2Group = lastUpdatedAssetGroups[safe: filAccount2Index]
@@ -1195,8 +1296,10 @@ import XCTest
           return
         }
 
-        if bitcoinTestnetEnabled {
-          guard let btcTestnetAccountGroup = lastUpdatedAssetGroups[safe: btcTestnetIndex]
+        if bitcoinAndZcashTestnetEnabled {
+          guard
+            let btcTestnetAccountGroup = lastUpdatedAssetGroups[safe: btcTestnetIndex],
+            let zecTestnetAccountGroup = lastUpdatedAssetGroups[safe: zecTestIndex]
           else {
             XCTFail("Unexpected test result")
             return
@@ -1222,6 +1325,18 @@ import XCTest
                 .total: self.mockBTCBalanceTestnet,
               ]
             ]
+          )
+
+          XCTAssertEqual(zecTestnetAccountGroup.groupType, .account(self.zcashTestnetAccount))
+          XCTAssertEqual(zecTestnetAccountGroup.assets.count, 1)
+          // ZEC (value = $0)
+          XCTAssertEqual(
+            zecTestnetAccountGroup.assets[safe: 0]?.token.symbol,
+            BraveWallet.BlockchainToken.mockZECToken.symbol
+          )
+          XCTAssertEqual(
+            zecTestnetAccountGroup.assets[safe: 0]?.quantity,
+            String(format: "%.04f", 0)
           )
         }
 
@@ -1321,6 +1436,15 @@ import XCTest
           BraveWallet.BlockchainToken.mockBTCToken.symbol
         )
 
+        XCTAssertEqual(zecAccountGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
+        XCTAssertEqual(zecAccountGroup.groupType, .account(self.zcashAccount1))
+        XCTAssertEqual(zecAccountGroup.assets.count, 1)
+        // ZEC mainnet (value = $0.000395)
+        XCTAssertEqual(
+          zecAccountGroup.assets[safe: 0]?.token.symbol,
+          BraveWallet.BlockchainToken.mockZECToken.symbol
+        )
+
         XCTAssertEqual(solAccount2Group.groupType, .account(self.solAccount2))
         XCTAssertEqual(solAccount2Group.assets.count, 1)
         // SOL (value = $0)
@@ -1390,7 +1514,7 @@ import XCTest
         }
 
         // grouping by .account; 1 for each of the 2 accounts selected accounts
-        let groupNumber = bitcoinTestnetEnabled ? 5 : 4
+        let groupNumber = bitcoinAndZcashTestnetEnabled ? 5 : 4
         XCTAssertEqual(lastUpdatedAssetGroups.count, groupNumber)
         guard let ethAccount1Group = lastUpdatedAssetGroups[safe: 0],
           let solAccountGroup = lastUpdatedAssetGroups[safe: 1],
@@ -1451,7 +1575,7 @@ import XCTest
           String(format: "%.04f", self.mockFILBalanceAccount1)
         )
 
-        if bitcoinTestnetEnabled {
+        if bitcoinAndZcashTestnetEnabled {
           guard let btcTestnetAccountGroup = lastUpdatedAssetGroups[safe: 4]
           else {
             XCTFail("Unexpected test result")
@@ -1482,7 +1606,7 @@ import XCTest
         }
 
         // ethAccount2 hidden as it's de-selected, solAccount2 hidden for small balance, filAccount2 hidden for small balance, btcAccount1/btcAccount2 hidden for small balance
-        let lastIndex = bitcoinTestnetEnabled ? 5 : 4
+        let lastIndex = bitcoinAndZcashTestnetEnabled ? 5 : 4
         XCTAssertNil(lastUpdatedAssetGroups[safe: lastIndex])
       }
       .store(in: &cancellables)
@@ -1508,17 +1632,18 @@ import XCTest
   }
 
   func testGroupByAccounts() async {
-    await groupByAccountsHelper(bitcoinTestnetEnabled: false)
+    await groupByAccountsHelper(bitcoinAndZcashTestnetEnabled: false)
   }
 
-  func testGroupByAccountsBitcoinTestnet() async {
-    await groupByAccountsHelper(bitcoinTestnetEnabled: true)
+  func testGroupByAccountsBitcoinAndZcashTestnet() async {
+    await groupByAccountsHelper(bitcoinAndZcashTestnetEnabled: true)
   }
 
   /// Test `assetGroups` will be grouped by network when `GroupBy` filter is assigned `.network`.
   /// Additionally, test de-selecting/hiding one of the available networks.
-  func groupByNetworksHelper(bitcoinTestnetEnabled: Bool) async {
-    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled
+  func groupByNetworksHelper(bitcoinAndZcashTestnetEnabled: Bool) async {
+    Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinAndZcashTestnetEnabled
+    Preferences.Wallet.isZcashTestnetEnabled.value = bitcoinAndZcashTestnetEnabled
     let store = setupStore()
     let assetGroupsExpectation = expectation(description: "update-assetGroups")
     XCTAssertTrue(store.assetGroups.isEmpty)  // Initial state
@@ -1535,12 +1660,11 @@ import XCTest
 
         // grouping by .network; 1 for each of the 2 networks (Bitcoin testnet can be disabled)
         // network groups order should be the same as the order of all networks in `Filters`
-        let assetGroupNumber = bitcoinTestnetEnabled ? 7 : 6
+        let assetGroupNumber = bitcoinAndZcashTestnetEnabled ? 9 : 7
         XCTAssertEqual(lastUpdatedAssetGroups.count, assetGroupNumber)
 
-        let offset = bitcoinTestnetEnabled ? 1 : 0
-        if bitcoinTestnetEnabled {
-
+        let offset = bitcoinAndZcashTestnetEnabled ? 1 : 0
+        if bitcoinAndZcashTestnetEnabled {
           guard let btcTestnetGroup = lastUpdatedAssetGroups[safe: 4]
           else {
             XCTFail("Unexpected test result")
@@ -1554,6 +1678,20 @@ import XCTest
             BraveWallet.BlockchainToken.mockBTCToken.symbol
           )
           XCTAssertEqual(btcTestnetGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
+
+          guard let zcashTestnetGroup = lastUpdatedAssetGroups.last
+          else {
+            XCTFail("Unexpected test result")
+            return
+          }
+          XCTAssertEqual(zcashTestnetGroup.groupType, .network(.mockZcashTestnet))
+          XCTAssertEqual(zcashTestnetGroup.assets.count, 1)
+          // Zcash testnet (value = $0)
+          XCTAssertEqual(
+            zcashTestnetGroup.assets[safe: 0]?.token.symbol,
+            BraveWallet.BlockchainToken.mockZECToken.symbol
+          )
+          XCTAssertEqual(btcTestnetGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
         }
 
         guard let ethMainnetGroup = lastUpdatedAssetGroups[safe: 0],
@@ -1561,7 +1699,8 @@ import XCTest
           let filTestnetGroup = lastUpdatedAssetGroups[safe: 2],
           let filMainnetGroup = lastUpdatedAssetGroups[safe: 3],
           let btcMainnetGroup = lastUpdatedAssetGroups[safe: 4 + offset],
-          let ethSepoliaGroup = lastUpdatedAssetGroups[safe: 5 + offset]
+          let zcashMainnetGroup = lastUpdatedAssetGroups[safe: 5 + offset],
+          let ethSepoliaGroup = lastUpdatedAssetGroups[safe: 6 + offset]
         else {
           XCTFail("Unexpected test result")
           return
@@ -1633,6 +1772,15 @@ import XCTest
         )
         XCTAssertEqual(btcMainnetGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
 
+        XCTAssertEqual(zcashMainnetGroup.groupType, .network(.mockZcashMainnet))
+        XCTAssertEqual(zcashMainnetGroup.assets.count, 1)  // ZEC
+        // ZEC mainnet (value = $0)
+        XCTAssertEqual(
+          zcashMainnetGroup.assets[safe: 0]?.token.symbol,
+          BraveWallet.BlockchainToken.mockZECToken.symbol
+        )
+        XCTAssertEqual(zcashMainnetGroup.assets[safe: 0]?.quantity, String(format: "%.04f", 0))
+
         XCTAssertEqual(ethSepoliaGroup.groupType, .network(.mockSepolia))
         XCTAssertEqual(ethSepoliaGroup.assets.count, 1)  // ETH Sepolia
         // ETH Sepolia (value = $0)
@@ -1660,6 +1808,7 @@ import XCTest
         accounts: [
           ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2,
           filTestnetAccount, btcAccount1, btcAccount2, btcTestnetAccount,
+          zcashAccount1, zcashTestnetAccount,
         ].map {
           .init(isSelected: true, model: $0)
         },
@@ -1683,7 +1832,7 @@ import XCTest
           return
         }
         // grouping by .network; 1 group for Solana network, 1 group for Filecoin mainnet, 1 group for Filecoin testnet
-        let groupNumber = bitcoinTestnetEnabled ? 4 : 3
+        let groupNumber = bitcoinAndZcashTestnetEnabled ? 4 : 3
         XCTAssertEqual(lastUpdatedAssetGroups.count, groupNumber)
         guard let solMainnetGroup = lastUpdatedAssetGroups[safe: 0],
           let filTestnetGroup = lastUpdatedAssetGroups[safe: 1],
@@ -1692,7 +1841,7 @@ import XCTest
           XCTFail("Unexpected test result")
           return
         }
-        if bitcoinTestnetEnabled {
+        if bitcoinAndZcashTestnetEnabled {
           guard let btcTestnetGroup = lastUpdatedAssetGroups[safe: 3]
           else {
             XCTFail("Unexpected test result")
@@ -1750,7 +1899,7 @@ import XCTest
         // eth mainnet group hidden as network de-selected
         // sepolia network group hidden for small balance
         // Bitcoin network group hidden for small balance
-        let lastIndex = bitcoinTestnetEnabled ? 4 : 3
+        let lastIndex = bitcoinAndZcashTestnetEnabled ? 4 : 3
         XCTAssertNil(lastUpdatedAssetGroups[safe: lastIndex])
       }
       .store(in: &cancellables)
@@ -1764,6 +1913,7 @@ import XCTest
         accounts: [
           ethAccount1, ethAccount2, solAccount1, solAccount2, filAccount1, filAccount2,
           filTestnetAccount, btcAccount1, btcAccount2, btcTestnetAccount,
+          zcashAccount1, zcashTestnetAccount,
         ].map {
           .init(isSelected: true, model: $0)
         },
@@ -1778,11 +1928,11 @@ import XCTest
   }
 
   func testGroupByNetworks() async {
-    await groupByNetworksHelper(bitcoinTestnetEnabled: false)
+    await groupByNetworksHelper(bitcoinAndZcashTestnetEnabled: false)
   }
 
-  func testGroupByNetworkBitcoinTestnet() async {
-    await groupByNetworksHelper(bitcoinTestnetEnabled: true)
+  func testGroupByNetworkBitcoinAndZcashTestnet() async {
+    await groupByNetworksHelper(bitcoinAndZcashTestnetEnabled: true)
   }
 }
 

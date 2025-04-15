@@ -526,6 +526,34 @@ extension BraveWallet.AccountInfo {
     name: "Bitcoin Testnet 1",
     hardware: nil
   )
+
+  static let mockZcashAccount: BraveWallet.AccountInfo = .init(
+    accountId: .init(
+      coin: .zec,
+      keyringId: BraveWallet.KeyringId.zCashMainnet,
+      kind: .derived,
+      address: "",
+      accountIndex: 0,
+      uniqueKey: "6_0_0_0"
+    ),
+    address: "",
+    name: "Zcash Account 1",
+    hardware: nil
+  )
+
+  static let mockZcashTestnetAccount: BraveWallet.AccountInfo = .init(
+    accountId: .init(
+      coin: .zec,
+      keyringId: BraveWallet.KeyringId.zCashTestnet,
+      kind: .derived,
+      address: "",
+      accountIndex: 0,
+      uniqueKey: "7_0_0_0"
+    ),
+    address: "",
+    name: "Zcash Testnet 1",
+    hardware: nil
+  )
 }
 
 extension BraveWallet.AllAccountsInfo {

@@ -36,7 +36,8 @@ extension WalletStore {
         privateMode: privateMode
       ),
       let zcashWalletService = BraveWallet.ZCashWalletServiceFactory.get(
-        privateMode: privateMode)
+        privateMode: privateMode
+      )
     else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
       return nil

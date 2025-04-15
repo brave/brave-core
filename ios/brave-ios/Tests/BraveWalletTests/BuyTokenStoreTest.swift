@@ -19,7 +19,8 @@ class BuyTokenStoreTests: XCTestCase {
     BraveWallet.TestBlockchainRegistry, BraveWallet.TestKeyringService,
     BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService,
     BraveWallet.TestAssetRatioService,
-    BraveWallet.TestBitcoinWalletService
+    BraveWallet.TestBitcoinWalletService,
+    BraveWallet.TestZCashWalletService
   ) {
     let mockTokenList: [BraveWallet.BlockchainToken] = [
       .init(
@@ -179,10 +180,13 @@ class BuyTokenStoreTests: XCTestCase {
 
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
 
+    let zcashWalletService = BraveWallet.TestZCashWalletService()
+
     return (
       blockchainRegistry, keyringService,
       rpcService, walletService,
-      assetRatioService, bitcoinWalletService
+      assetRatioService, bitcoinWalletService,
+      zcashWalletService
     )
   }
 
@@ -190,7 +194,8 @@ class BuyTokenStoreTests: XCTestCase {
     let (
       blockchainRegistry, keyringService,
       rpcService, walletService,
-      assetRatioService, bitcoinWalletService
+      assetRatioService, bitcoinWalletService,
+      zcashWalletService
     ) = setupServices()
     var store = BuyTokenStore(
       blockchainRegistry: blockchainRegistry,
@@ -199,6 +204,7 @@ class BuyTokenStoreTests: XCTestCase {
       walletService: walletService,
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil
     )
     XCTAssertNil(store.selectedBuyToken)
@@ -210,6 +216,7 @@ class BuyTokenStoreTests: XCTestCase {
       walletService: walletService,
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .previewToken
     )
 
@@ -226,7 +233,8 @@ class BuyTokenStoreTests: XCTestCase {
     let (
       blockchainRegistry, keyringService,
       rpcService, walletService,
-      assetRatioService, bitcoinWalletService
+      assetRatioService, bitcoinWalletService,
+      zcashWalletService
     ) = setupServices()
     rpcService._network = { coin, origin, completion in
       completion(selectedNetwork)
@@ -246,6 +254,7 @@ class BuyTokenStoreTests: XCTestCase {
       walletService: walletService,
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .mockSolToken  // not on mainnet
     )
     await store.updateInfo()
@@ -259,7 +268,8 @@ class BuyTokenStoreTests: XCTestCase {
     let (
       blockchainRegistry, keyringService,
       rpcService, walletService,
-      assetRatioService, bitcoinWalletService
+      assetRatioService, bitcoinWalletService,
+      zcashWalletService
     ) = setupServices(selectedNetwork: .mockSepolia)
     let store = BuyTokenStore(
       blockchainRegistry: blockchainRegistry,
@@ -268,6 +278,7 @@ class BuyTokenStoreTests: XCTestCase {
       walletService: walletService,
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil
     )
 
@@ -288,7 +299,8 @@ class BuyTokenStoreTests: XCTestCase {
     let (
       blockchainRegistry, keyringService,
       rpcService, walletService,
-      assetRatioService, bitcoinWalletService
+      assetRatioService, bitcoinWalletService,
+      zcashWalletService
     ) = setupServices(selectedNetwork: .mockMainnet)
     let store = BuyTokenStore(
       blockchainRegistry: blockchainRegistry,
@@ -297,6 +309,7 @@ class BuyTokenStoreTests: XCTestCase {
       walletService: walletService,
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil
     )
 
@@ -318,7 +331,8 @@ class BuyTokenStoreTests: XCTestCase {
     let (
       _, keyringService,
       rpcService, walletService,
-      assetRatioService, bitcoinWalletService
+      assetRatioService, bitcoinWalletService,
+      zcashWalletService
     ) = setupServices()
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
     blockchainRegistry._buyTokens = {
@@ -345,6 +359,7 @@ class BuyTokenStoreTests: XCTestCase {
       walletService: walletService,
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil
     )
 
@@ -372,7 +387,8 @@ class BuyTokenStoreTests: XCTestCase {
     let (
       _, keyringService,
       rpcService, walletService,
-      assetRatioService, bitcoinWalletService
+      assetRatioService, bitcoinWalletService,
+      zcashWalletService
     ) = setupServices(selectedNetwork: selectedNetwork)
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
     blockchainRegistry._buyTokens = {
@@ -399,6 +415,7 @@ class BuyTokenStoreTests: XCTestCase {
       walletService: walletService,
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil
     )
 
@@ -415,7 +432,8 @@ class BuyTokenStoreTests: XCTestCase {
     let (
       blockchainRegistry, keyringService,
       rpcService, walletService,
-      assetRatioService, bitcoinWalletService
+      assetRatioService, bitcoinWalletService,
+      zcashWalletService
     ) = setupServices()
     blockchainRegistry._onRampCurrencies = {
       $0([.mockUSD, .mockCAD, .mockGBP, .mockEuro])
@@ -428,6 +446,7 @@ class BuyTokenStoreTests: XCTestCase {
       walletService: walletService,
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil
     )
     await store.updateInfo()

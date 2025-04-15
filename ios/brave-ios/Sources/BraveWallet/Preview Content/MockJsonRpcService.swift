@@ -17,6 +17,7 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
     .mockSolana, .mockSolanaTestnet,
     .mockFilecoinMainnet, .mockFilecoinTestnet,
     .mockBitcoinMainnet, .mockBitcoinTestnet,
+    .mockZcashMainnet, .mockZcashTestnet,
   ]
 
   var selectedNetworkForCoin: [BraveWallet.CoinType: BraveWallet.NetworkInfo] = [
@@ -24,6 +25,7 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
     .sol: .mockSolana,
     .fil: .mockFilecoinMainnet,
     .btc: .mockBitcoinMainnet,
+    .zec: .mockZcashMainnet,
   ]
 
   var allCustomNetworks: [BraveWallet.NetworkInfo] = []
@@ -256,6 +258,32 @@ extension BraveWallet.NetworkInfo {
     decimals: 8,
     coin: .btc,
     supportedKeyrings: [BraveWallet.KeyringId.bitcoin84Testnet.rawValue].map(NSNumber.init(value:))
+  )
+  static let mockZcashMainnet: BraveWallet.NetworkInfo = .init(
+    chainId: BraveWallet.ZCashMainnet,
+    chainName: "Zcash Mainnet",
+    blockExplorerUrls: ["https://zcashblockexplorer.com/"],
+    iconUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://mainnet.lightwalletd.com/")!],
+    symbol: "ZEC",
+    symbolName: "Zcash",
+    decimals: 8,
+    coin: .zec,
+    supportedKeyrings: [BraveWallet.KeyringId.zCashMainnet.rawValue].map(NSNumber.init(value:))
+  )
+  static let mockZcashTestnet: BraveWallet.NetworkInfo = .init(
+    chainId: BraveWallet.ZCashTestnet,
+    chainName: "Zcash Testnet",
+    blockExplorerUrls: ["https://testnet.zcashblockexplorer.com/"],
+    iconUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://testnet.lightwalletd.com")!],
+    symbol: "ZEC",
+    symbolName: "Zcash",
+    decimals: 8,
+    coin: .zec,
+    supportedKeyrings: [BraveWallet.KeyringId.zCashTestnet.rawValue].map(NSNumber.init(value:))
   )
 }
 
