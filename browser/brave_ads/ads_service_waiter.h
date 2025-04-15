@@ -14,7 +14,8 @@ namespace brave_ads {
 
 class AdsService;
 
-// This class waits for the ads service to be initialized.
+namespace test {
+
 class AdsServiceWaiter final : public AdsServiceObserver {
  public:
   explicit AdsServiceWaiter(AdsService* ads_service);
@@ -40,6 +41,8 @@ class AdsServiceWaiter final : public AdsServiceObserver {
 
   base::ScopedObservation<AdsService, AdsServiceObserver> observation_{this};
 };
+
+}  // namespace test
 
 }  // namespace brave_ads
 

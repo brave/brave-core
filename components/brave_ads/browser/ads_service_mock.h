@@ -18,7 +18,7 @@
 
 namespace brave_ads {
 
-class AdsServiceMock final : public AdsService {
+class AdsServiceMock : public AdsService {
  public:
   explicit AdsServiceMock(std::unique_ptr<Delegate> delegate);
 

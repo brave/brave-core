@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-class NotificationHelperImplMock final : public NotificationHelperImpl {
+class NotificationHelperImplMock : public NotificationHelperImpl {
  public:
   NotificationHelperImplMock();
 

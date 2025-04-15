@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 AdsServiceWaiter::AdsServiceWaiter(AdsService* ads_service) {
   CHECK(ads_service);
@@ -44,4 +44,4 @@ void AdsServiceWaiter::OnDidClearAdsServiceData() {
   on_did_clear_ads_service_data_run_loop_.Quit();
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
