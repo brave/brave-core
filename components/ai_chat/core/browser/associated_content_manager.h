@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_MANAGER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_MANAGER_H_
 
+#include <string_view>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
@@ -63,7 +64,12 @@ class AssociatedContentManager
 
   std::vector<mojom::AssociatedContentPtr> GetAssociatedContent() const;
 
-  std::string_view GetCachedTextContent();
+  // Deprecated: Instead use GetCachedContent() - it should be preferred so that
+  // the engine layer can decide how to handle multiple pieces of content.
+  // TODO(fallaciousreasoning): We should remove this method and pass the vector
+  // directly to the engine layer.
+  std::string GetCachedTextContent() const;
+  std::vector<std::string_view> GetCachedContent() const;
 
   bool HasOpenAIChatPermission() const;
   bool HasNonArchiveContent() const;
@@ -106,7 +112,7 @@ class AssociatedContentManager
       content_observations_{this};
 
   std::unique_ptr<base::OneShotEvent> on_page_text_fetch_complete_ = nullptr;
-  std::string cached_text_content_;
+  std::vector<std::string> cached_text_content_;
 
   base::WeakPtrFactory<AssociatedContentManager> weak_ptr_factory_{this};
 };

@@ -97,10 +97,10 @@ class AIChatService : public KeyedService,
   // ConversationHandler::Observer
   void OnRequestInProgressChanged(ConversationHandler* handler,
                                   bool in_progress) override;
-  void OnConversationEntryAdded(
-      ConversationHandler* handler,
-      mojom::ConversationTurnPtr& entry,
-      std::optional<std::string_view> associated_content_value) override;
+  void OnConversationEntryAdded(ConversationHandler* handler,
+                                mojom::ConversationTurnPtr& entry,
+                                std::optional<std::vector<std::string_view>>
+                                    maybe_associated_content) override;
   void OnConversationEntryRemoved(ConversationHandler* handler,
                                   std::string entry_uuid) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
@@ -250,15 +250,15 @@ class AIChatService : public KeyedService,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
           associated_content);
   void MaybeUnloadConversation(ConversationHandler* conversation);
-  void HandleFirstEntry(
+  void HandleFirstEntry(ConversationHandler* handler,
+                        mojom::ConversationTurnPtr& entry,
+                        std::vector<std::string> content,
+                        mojom::ConversationPtr& conversation);
+  void HandleNewEntry(
       ConversationHandler* handler,
       mojom::ConversationTurnPtr& entry,
-      std::optional<std::string_view> associated_content_value,
+      std::optional<std::vector<std::string>> maybe_associated_content,
       mojom::ConversationPtr& conversation);
-  void HandleNewEntry(ConversationHandler* handler,
-                      mojom::ConversationTurnPtr& entry,
-                      std::optional<std::string_view> associated_content_value,
-                      mojom::ConversationPtr& conversation);
 
   void OnUserOptedIn();
   void OnSkusServiceReceived(

@@ -185,7 +185,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void OnConversationEntryAdded(
         ConversationHandler* handler,
         mojom::ConversationTurnPtr& entry,
-        std::optional<std::string_view> associated_content_value) {}
+        std::optional<std::vector<std::string_view>> associated_content_value) {
+    }
     virtual void OnConversationEntryRemoved(ConversationHandler* handler,
                                             std::string turn_uuid) {}
 

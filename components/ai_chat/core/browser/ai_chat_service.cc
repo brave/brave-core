@@ -10,6 +10,7 @@
 #include <compare>
 #include <functional>
 #include <ios>
+#include <iterator>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -747,15 +748,26 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
 void AIChatService::OnConversationEntryAdded(
     ConversationHandler* handler,
     mojom::ConversationTurnPtr& entry,
-    std::optional<std::string_view> associated_content_value) {
+    std::optional<std::vector<std::string_view>> maybe_associated_content) {
   auto conversation_it = conversations_.find(handler->get_conversation_uuid());
   CHECK(conversation_it != conversations_.end());
   mojom::ConversationPtr& conversation = conversation_it->second;
+  std::optional<std::vector<std::string>> associated_content;
+  if (maybe_associated_content.has_value()) {
+    associated_content = std::vector<std::string>();
+    std::ranges::transform(maybe_associated_content.value(),
+                           std::back_inserter(associated_content.value()),
+                           [](const auto& view) { return std::string(view); });
+  }
 
   if (!conversation->has_content) {
-    HandleFirstEntry(handler, entry, associated_content_value, conversation);
+    HandleFirstEntry(handler, entry,
+                     associated_content.has_value()
+                         ? std::move(associated_content.value())
+                         : std::vector<std::string>(),
+                     conversation);
   } else {
-    HandleNewEntry(handler, entry, associated_content_value, conversation);
+    HandleNewEntry(handler, entry, std::move(associated_content), conversation);
   }
 
   conversation->has_content = true;
@@ -766,19 +778,17 @@ void AIChatService::OnConversationEntryAdded(
 void AIChatService::HandleFirstEntry(
     ConversationHandler* handler,
     mojom::ConversationTurnPtr& entry,
-    std::optional<std::string_view> associated_content_value,
+    std::vector<std::string> associated_content,
     mojom::ConversationPtr& conversation) {
   DVLOG(1) << __func__ << " Conversation " << conversation->uuid
-           << " being persisted for first time. Associated content value: "
-           << associated_content_value.value_or("<null>");
+           << " being persisted for first time.";
   CHECK(entry->uuid.has_value());
 
   // We can persist the conversation metadata for the first time as well as the
   // entry.
   if (ai_chat_db_) {
     ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversation))
-        .WithArgs(conversation->Clone(),
-                  std::optional<std::string>(associated_content_value),
+        .WithArgs(conversation->Clone(), std::move(associated_content),
                   entry->Clone());
   }
   // Record metrics
@@ -792,14 +802,12 @@ void AIChatService::HandleFirstEntry(
 void AIChatService::HandleNewEntry(
     ConversationHandler* handler,
     mojom::ConversationTurnPtr& entry,
-    std::optional<std::string_view> associated_content_value,
+    std::optional<std::vector<std::string>> maybe_associated_content,
     mojom::ConversationPtr& conversation) {
   CHECK(entry->uuid.has_value());
   DVLOG(1) << __func__ << " Conversation " << conversation->uuid
            << " persisting new entry. Count of entries: "
-           << handler->GetConversationHistory().size()
-           << " associated content value: "
-           << associated_content_value.value_or("<null>");
+           << handler->GetConversationHistory().size();
 
   // Persist the new entry and update the associated content data, if present
   if (ai_chat_db_) {
@@ -808,14 +816,14 @@ void AIChatService::HandleNewEntry(
         .WithArgs(handler->get_conversation_uuid(), entry.Clone(),
                   conversation->model_key, std::nullopt);
 
-    if (associated_content_value.has_value() &&
+    if (maybe_associated_content.has_value() &&
         !conversation->associated_content.empty()) {
       ai_chat_db_
           .AsyncCall(
               base::IgnoreResult(&AIChatDatabase::AddOrUpdateAssociatedContent))
           .WithArgs(conversation->uuid,
                     CloneAssociatedContent(conversation->associated_content),
-                    std::optional<std::string>(associated_content_value));
+                    std::move(maybe_associated_content.value()));
     }
   }
 

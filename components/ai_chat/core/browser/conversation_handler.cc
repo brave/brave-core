@@ -419,7 +419,7 @@ void ConversationHandler::InitEngine() {
   // When the model changes, the content truncation might be different,
   // and the UI needs to know.
   if (associated_content_manager_ &&
-      !associated_content_manager_->GetCachedTextContent().empty()) {
+      !associated_content_manager_->GetCachedContent().empty()) {
     OnAssociatedContentUpdated();
   }
 }
@@ -1589,10 +1589,9 @@ void ConversationHandler::OnConversationEntryAdded(
     OnHistoryUpdate(nullptr);
     return;
   }
-  std::optional<std::string> associated_content_value;
+  std::optional<std::vector<std::string_view>> associated_content_value;
   if (is_content_different_ && associated_content_manager_->HasContent()) {
-    associated_content_value =
-        associated_content_manager_->GetCachedTextContent();
+    associated_content_value = associated_content_manager_->GetCachedContent();
     is_content_different_ = false;
   }
   // If this is the first entry that isn't staged, notify about all previous

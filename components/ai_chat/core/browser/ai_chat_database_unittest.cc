@@ -125,7 +125,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     // mojom::Conversation is not persisted and instead is taken from the most
     // recent entry.
     const GURL page_url = GURL("https://example.com/page");
-    const std::string expected_contents = "Page contents";
+    const std::vector<std::string> expected_contents = {"Page contents"};
     std::vector<mojom::AssociatedContentPtr> associated_content;
     if (has_content) {
       associated_content.push_back(mojom::AssociatedContent::New(
@@ -143,7 +143,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
 
     EXPECT_TRUE(db_->AddConversation(
         metadata->Clone(),
-        has_content ? std::make_optional(expected_contents) : std::nullopt,
+        has_content ? expected_contents : std::vector<std::string>(),
         history[0]->Clone()));
 
     // Test getting the conversation metadata
@@ -163,7 +163,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     EXPECT_EQ(result->associated_content.size(), has_content ? 1u : 0u);
     if (has_content) {
       EXPECT_EQ(result->associated_content[0]->content_uuid, content_uuid);
-      EXPECT_EQ(result->associated_content[0]->content, expected_contents);
+      EXPECT_EQ(result->associated_content[0]->content, expected_contents[0]);
     }
 
     // Add another pair of entries
@@ -292,8 +292,7 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent) {
             mojom::WebSourcesEvent::New(std::move(sources_second))));
   }
 
-  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
-                                   history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
   EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
   EXPECT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
   EXPECT_TRUE(db_->AddConversationEntry(uuid, history[3]->Clone()));
@@ -340,8 +339,7 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent_Invalid) {
             mojom::WebSourcesEvent::New()));
   }
 
-  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
-                                   history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
   EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
   EXPECT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
   EXPECT_TRUE(db_->AddConversationEntry(uuid, history[3]->Clone()));
@@ -367,8 +365,7 @@ TEST_P(AIChatDatabaseTest, UploadFile) {
       0, std::vector<mojom::AssociatedContentPtr>());
   auto history = CreateSampleChatHistory(2u, 0, 3u);
 
-  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
-                                   history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
   EXPECT_TRUE(db_->AddConversationEntry(kUUID, history[1]->Clone()));
   EXPECT_TRUE(db_->AddConversationEntry(kUUID, history[2]->Clone()));
   EXPECT_TRUE(db_->AddConversationEntry(kUUID, history[3]->Clone()));
@@ -408,8 +405,8 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
     // Persist the first entry (and get the response ready)
     const auto history = CreateSampleChatHistory(1u);
 
-    EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
-                                     history[0]->Clone()));
+    EXPECT_TRUE(
+        db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
 
     // Verify initial title
     std::vector<mojom::ConversationPtr> conversations =
@@ -440,8 +437,7 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTokenInfo) {
 
   // Persist the first entry (and get the response ready)
   const auto history = CreateSampleChatHistory(1u);
-  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
-                                   history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
 
   // Verify initial token info
   std::vector<mojom::ConversationPtr> conversations =
@@ -481,34 +477,33 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
 
   auto history = CreateSampleChatHistory(1u);
 
-  std::string expected_contents = "First contents";
-  EXPECT_TRUE(db_->AddConversation(metadata->Clone(),
-                                   std::make_optional(expected_contents),
+  std::vector<std::string> expected_contents = {"First contents"};
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), expected_contents,
                                    history[0]->Clone()));
 
   // Verify data is persisted
   mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
   EXPECT_EQ(result->associated_content.size(), 1u);
   EXPECT_EQ(result->associated_content[0]->content_uuid, content_uuid);
-  EXPECT_EQ(result->associated_content[0]->content, expected_contents);
+  EXPECT_EQ(result->associated_content[0]->content, expected_contents[0]);
   auto conversations = db_->GetAllConversations();
   EXPECT_EQ(conversations.size(), 1u);
   ExpectConversationEquals(FROM_HERE, conversations[0], metadata);
 
   // Change data and call AddOrUpdateAssociatedContent
-  expected_contents = "Second contents";
+  expected_contents[0] = "Second contents";
   metadata->associated_content[0]->content_used_percentage = 50;
 
   associated_content.push_back(metadata->associated_content[0]->Clone());
   EXPECT_TRUE(
       db_->AddOrUpdateAssociatedContent(uuid, std::move(associated_content),
-                                        std::make_optional(expected_contents)));
+                                        expected_contents));
   // Verify data is changed
   result = db_->GetConversationData(uuid);
   EXPECT_EQ(result->associated_content.size(), 1u);
   EXPECT_EQ(result->associated_content[0]->content_uuid,
             metadata->associated_content[0]->uuid);
-  EXPECT_EQ(result->associated_content[0]->content, expected_contents);
+  EXPECT_EQ(result->associated_content[0]->content, expected_contents[0]);
   conversations = db_->GetAllConversations();
   EXPECT_EQ(conversations.size(), 1u);
   ExpectConversationEquals(FROM_HERE, conversations[0], metadata);
@@ -523,8 +518,7 @@ TEST_P(AIChatDatabaseTest, DeleteAllData) {
 
   auto history = CreateSampleChatHistory(1u);
 
-  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
-                                   history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
 
   // Verify data is persisted
   {
@@ -550,7 +544,7 @@ TEST_P(AIChatDatabaseTest, DeleteAllData) {
 
 TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   GURL page_url = GURL("https://example.com/page");
-  std::string expected_contents = "First contents";
+  std::vector<std::string> expected_contents = {"First contents"};
 
   // Note: This is reused for all conversations, as it is moved into the
   // conversation ptr.
@@ -575,12 +569,10 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   auto history_first = CreateSampleChatHistory(1u, -2);
   auto history_second = CreateSampleChatHistory(1u, -1);
 
-  EXPECT_TRUE(db_->AddConversation(metadata_first->Clone(),
-                                   std::make_optional(expected_contents),
+  EXPECT_TRUE(db_->AddConversation(metadata_first->Clone(), expected_contents,
                                    history_first[0]->Clone()));
 
-  EXPECT_TRUE(db_->AddConversation(metadata_second->Clone(),
-                                   std::make_optional(expected_contents),
+  EXPECT_TRUE(db_->AddConversation(metadata_second->Clone(), expected_contents,
                                    history_second[0]->Clone()));
 
   // Verify data is persisted
@@ -594,12 +586,14 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   EXPECT_EQ(archive_result->associated_content.size(), 1u);
   EXPECT_EQ(archive_result->associated_content[0]->content_uuid,
             "first-content");
-  EXPECT_EQ(archive_result->associated_content[0]->content, expected_contents);
+  EXPECT_EQ(archive_result->associated_content[0]->content,
+            expected_contents[0]);
   archive_result = db_->GetConversationData("second");
   EXPECT_EQ(archive_result->associated_content.size(), 1u);
   EXPECT_EQ(archive_result->associated_content[0]->content_uuid,
             "second-content");
-  EXPECT_EQ(archive_result->associated_content[0]->content, expected_contents);
+  EXPECT_EQ(archive_result->associated_content[0]->content,
+            expected_contents[0]);
 
   // Delete associated content to only consider the second conversation
   EXPECT_TRUE(db_->DeleteAssociatedWebContent(
@@ -620,7 +614,8 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   EXPECT_EQ(archive_result->associated_content.size(), 1u);
   EXPECT_EQ(archive_result->associated_content[0]->content_uuid,
             "first-content");
-  EXPECT_EQ(archive_result->associated_content[0]->content, expected_contents);
+  EXPECT_EQ(archive_result->associated_content[0]->content,
+            expected_contents[0]);
 }
 
 // Test the migration for each version upgrade
@@ -742,8 +737,8 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     // Edit the prompt to show that the prompt is persisted
     history[0]->prompt = "first entry prompt";
 
-    EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
-                                     history[0]->Clone()));
+    EXPECT_TRUE(
+        db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
     // Persist the response entry
     EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
 
@@ -795,9 +790,8 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
 
     // Add a conversation entry
     auto history = CreateSampleChatHistory(1u);
-    std::string expected_contents = "Test content";
-    EXPECT_TRUE(db_->AddConversation(metadata->Clone(),
-                                     std::make_optional(expected_contents),
+    std::vector<std::string> expected_contents = {"Test content"};
+    EXPECT_TRUE(db_->AddConversation(metadata->Clone(), expected_contents,
                                      history[0]->Clone()));
 
     // Verify the token values were properly stored after migration
