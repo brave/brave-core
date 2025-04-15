@@ -58,7 +58,7 @@ class SendTokenStoreTests: XCTestCase {
     BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService,
     BraveWallet.TestBraveWalletService, BraveWallet.TestEthTxManagerProxy,
     BraveWallet.TestSolanaTxManagerProxy, BraveWallet.TestBitcoinWalletService,
-    WalletUserAssetManagerType
+    BraveWallet.TestZCashWalletService, WalletUserAssetManagerType
   ) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
@@ -128,6 +128,8 @@ class SendTokenStoreTests: XCTestCase {
       completion(bitcoinBalance, "")
     }
 
+    let zcashWalletService = BraveWallet.TestZCashWalletService()
+
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getUserAssets = { _, _ in
       userAssets.map { (network, tokens) in
@@ -137,7 +139,7 @@ class SendTokenStoreTests: XCTestCase {
 
     return (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     )
   }
 
@@ -145,7 +147,7 @@ class SendTokenStoreTests: XCTestCase {
   func testPrefilledToken() {
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices()
 
     var store = SendTokenStore(
@@ -158,6 +160,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -174,6 +177,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .previewToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -199,7 +203,7 @@ class SendTokenStoreTests: XCTestCase {
     var selectedNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices()
     rpcService._network = { coin, _, completion in
       completion(selectedNetwork)
@@ -221,6 +225,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .mockSolToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -251,7 +256,7 @@ class SendTokenStoreTests: XCTestCase {
 
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(balance: mockBalanceWei)
     let store = SendTokenStore(
       keyringService: keyringService,
@@ -263,6 +268,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -304,7 +310,7 @@ class SendTokenStoreTests: XCTestCase {
   func testMakeSendETHEIP1559Transaction() {
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices()
     let store = SendTokenStore(
       keyringService: keyringService,
@@ -316,6 +322,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .previewToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -335,7 +342,7 @@ class SendTokenStoreTests: XCTestCase {
   func testMakeSendETHTransaction() {
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices()
     let store = SendTokenStore(
       keyringService: keyringService,
@@ -347,6 +354,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .previewToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -366,7 +374,7 @@ class SendTokenStoreTests: XCTestCase {
   func testMakeSendERC20EIP1559Transaction() {
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices()
     let store = SendTokenStore(
       keyringService: keyringService,
@@ -378,6 +386,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -418,7 +427,7 @@ class SendTokenStoreTests: XCTestCase {
   func testMakeSendERC20Transaction() {
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices()
     let store = SendTokenStore(
       keyringService: keyringService,
@@ -430,6 +439,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .previewToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -449,7 +459,7 @@ class SendTokenStoreTests: XCTestCase {
   func testMakeSendERC721Transaction() {
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices()
     ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
       completion(true, .init())
@@ -464,6 +474,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .mockERC721NFTToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -483,7 +494,7 @@ class SendTokenStoreTests: XCTestCase {
   func testSendFullBalanceNoRounding() {
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, _
+      bitcoinWalletService, zcashWalletService, _
     ) =
       setupServices()
     let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
@@ -516,6 +527,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .previewToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -553,7 +565,7 @@ class SendTokenStoreTests: XCTestCase {
     let mockBalance: UInt64 = 47
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       userAssets: [.mockSolana: [.mockSolToken]],
       selectedCoin: .sol,
@@ -572,6 +584,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: BraveWallet.NetworkInfo.mockSolana.nativeToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -595,7 +608,7 @@ class SendTokenStoreTests: XCTestCase {
     let splTokenBalance = "1000000"
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       userAssets: [.mockSolana: [.mockSpdToken]],
       selectedCoin: .sol,
@@ -614,6 +627,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .mockSpdToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -636,7 +650,7 @@ class SendTokenStoreTests: XCTestCase {
   func testMakeSendFILTransaction() {
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices()
     let store = SendTokenStore(
       keyringService: keyringService,
@@ -648,6 +662,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .previewToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -666,7 +681,7 @@ class SendTokenStoreTests: XCTestCase {
   func testMakeSendBTCTransaction() {
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices()
     let store = SendTokenStore(
       keyringService: keyringService,
@@ -678,6 +693,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .mockBTCToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -698,7 +714,7 @@ class SendTokenStoreTests: XCTestCase {
     let mockBalance: UInt64 = 47
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       userAssets: [.mockSolana: [.mockSolToken, .mockSpdToken]],
       selectedCoin: .sol,
@@ -720,6 +736,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .mockSolToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -743,7 +760,7 @@ class SendTokenStoreTests: XCTestCase {
     let mockBalance: UInt64 = 47
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       userAssets: [.mockSolana: [.mockSolToken, .mockSpdToken]],
       selectedCoin: .sol,
@@ -766,6 +783,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .mockSpdToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -787,7 +805,7 @@ class SendTokenStoreTests: XCTestCase {
   func testFetchSelectedSendNFTMetadataERC721() {
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices()
     ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
       completion(true, .init())
@@ -803,6 +821,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -836,7 +855,7 @@ class SendTokenStoreTests: XCTestCase {
   func testFetchSelectedSendNFTMetadataSolNFT() {
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices()
     ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
       completion(true, .init())
@@ -852,6 +871,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -889,7 +909,7 @@ class SendTokenStoreTests: XCTestCase {
 
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedAccount: .mockSolAccount,
       selectedCoin: .sol,
@@ -906,6 +926,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -934,7 +955,7 @@ class SendTokenStoreTests: XCTestCase {
     let expectedAddress = ""
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedAccount: .mockSolAccount,
       selectedCoin: .sol,
@@ -951,6 +972,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -987,7 +1009,7 @@ class SendTokenStoreTests: XCTestCase {
     let expectedAddress = "xxxxxxxxxxyyyyyyyyyyzzzzzzzzzz0000000000"
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedAccount: .mockSolAccount,
       selectedCoin: .sol,
@@ -1008,6 +1030,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -1046,7 +1069,7 @@ class SendTokenStoreTests: XCTestCase {
 
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedCoin: .eth,
       ensGetEthAddr: expectedAddress
@@ -1062,6 +1085,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -1091,7 +1115,7 @@ class SendTokenStoreTests: XCTestCase {
 
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedCoin: .eth,
       ensGetEthAddr: expectedAddress
@@ -1110,6 +1134,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -1140,7 +1165,7 @@ class SendTokenStoreTests: XCTestCase {
     let expectedAddress = ""
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedCoin: .eth,
       ensGetEthAddr: expectedAddress
@@ -1156,6 +1181,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -1192,7 +1218,7 @@ class SendTokenStoreTests: XCTestCase {
     let expectedAddress = "0xxxxxxxxxxxyyyyyyyyyyzzzzzzzzzz0000000000"
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedCoin: .eth,
       ensGetEthAddr: expectedAddress
@@ -1212,6 +1238,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: nil,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -1252,7 +1279,7 @@ class SendTokenStoreTests: XCTestCase {
 
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedCoin: .eth,
       unstoppableDomainsGetWalletAddr: expectedAddress
@@ -1268,6 +1295,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .previewToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -1310,7 +1338,7 @@ class SendTokenStoreTests: XCTestCase {
     let domain = "brave.eth"
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedCoin: .eth
     )
@@ -1328,6 +1356,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .previewToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -1380,7 +1409,7 @@ class SendTokenStoreTests: XCTestCase {
 
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedCoin: .sol,
       unstoppableDomainsGetWalletAddr: expectedAddress
@@ -1396,6 +1425,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .mockSolToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -1441,7 +1471,7 @@ class SendTokenStoreTests: XCTestCase {
 
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedCoin: .eth
     )
@@ -1463,6 +1493,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: .previewToken,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -1557,7 +1588,7 @@ class SendTokenStoreTests: XCTestCase {
   @MainActor func testDidSelectSameAccountSameNetwork() async {
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedAccount: account,
       userAssets: [.mockSepolia: [ethSepolia, usdcSepolia]],
@@ -1573,6 +1604,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: ethSepolia,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -1609,7 +1641,7 @@ class SendTokenStoreTests: XCTestCase {
       .copy(asVisibleAsset: true)
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedAccount: account,
       userAssets: [.mockSepolia: [ethSepolia]],
@@ -1631,6 +1663,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: ethSepolia,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -1659,7 +1692,7 @@ class SendTokenStoreTests: XCTestCase {
     var selectedNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedAccount: account,
       userAssets: [.mockMainnet: [ethMainnet], .mockSepolia: [usdcSepolia]],
@@ -1693,6 +1726,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: ethMainnet,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
@@ -1735,7 +1769,7 @@ class SendTokenStoreTests: XCTestCase {
     var selectedAccount: BraveWallet.AccountInfo = account
     let (
       keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy,
-      bitcoinWalletService, mockAssetManager
+      bitcoinWalletService, zcashWalletService, mockAssetManager
     ) = setupServices(
       selectedAccount: selectedAccount,
       userAssets: [
@@ -1795,6 +1829,7 @@ class SendTokenStoreTests: XCTestCase {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       prefilledToken: usdcSepolia,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager

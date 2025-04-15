@@ -37,6 +37,8 @@ struct NetworkListView: View {
     networkStore.allChains.filter {
       if $0.chainId == BraveWallet.BitcoinTestnet {
         return Preferences.Wallet.isBitcoinTestnetEnabled.value
+      } else if $0.chainId == BraveWallet.ZCashTestnet {
+        return Preferences.Wallet.isZcashTestnetEnabled.value
       }
       return true
     }

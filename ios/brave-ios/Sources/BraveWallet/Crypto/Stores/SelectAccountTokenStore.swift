@@ -276,12 +276,24 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
               balancesForAccountsCache.merge(with: [account.id: result])
             } else {
               group.addTask {  // get balance for all tokens this account supports
-                let balancesForTokens: [String: Double] = await self.rpcService
-                  .fetchBalancesForTokens(
-                    account: account,
-                    networkAssets: networkAssets
-                  )
-                return [account.id: balancesForTokens]
+                if account.coin == .zec,
+                  let zecNetworkAsset = networkAssets.first,
+                  let zec = zecNetworkAsset.tokens.first
+                {
+                  let zecBalance =
+                    await self.zcashWalletService.fetchZECTransparentBalances(
+                      networkId: zecNetworkAsset.network.chainId,
+                      accountId: account.accountId
+                    ) ?? 0
+                  return [account.id: [zec.id: zecBalance]]
+                } else {
+                  let balancesForTokens: [String: Double] = await self.rpcService
+                    .fetchBalancesForTokens(
+                      account: account,
+                      networkAssets: networkAssets
+                    )
+                  return [account.id: balancesForTokens]
+                }
               }
             }
           }

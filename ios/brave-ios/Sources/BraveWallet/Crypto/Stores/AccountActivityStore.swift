@@ -45,6 +45,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let ipfsApi: IpfsAPI
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let zcashWalletService: BraveWalletZCashWalletService
   private let assetManager: WalletUserAssetManagerType
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
@@ -78,6 +79,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
+    zcashWalletService: BraveWalletZCashWalletService,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.account = account
@@ -92,6 +94,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     self.solTxManagerProxy = solTxManagerProxy
     self.ipfsApi = ipfsApi
     self.bitcoinWalletService = bitcoinWalletService
+    self.zcashWalletService = zcashWalletService
     self.assetManager = userAssetManager
     self._isSwapSupported = .init(
       wrappedValue: account.coin == .eth || account.coin == .sol
@@ -262,6 +265,19 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
             $0[tokenId] = Double($1.balance) ?? 0
           }
         } else {
+          if account.coin == .zec {
+            let zecNetworkAsset = allUserNetworkAssets.first {
+              $0.network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
+            }
+            if let zecToken = zecNetworkAsset?.tokens.first {
+              let zecBalance =
+                await self.zcashWalletService.fetchZECTransparentBalances(
+                  networkId: zecToken.chainId,
+                  accountId: account.accountId
+                ) ?? 0
+              tokenBalances = [zecToken.id: zecBalance]
+            }
+          }
           tokenBalances = await self.rpcService.fetchBalancesForTokens(
             account: account,
             networkAssets: allUserNetworkAssets

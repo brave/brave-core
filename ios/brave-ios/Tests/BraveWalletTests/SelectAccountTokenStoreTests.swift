@@ -218,6 +218,7 @@ class SelectAccountTokenStoreTests: XCTestCase {
     }
 
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
+    let zcashWalletService = BraveWallet.TestZCashWalletService()
 
     let store = SelectAccountTokenStore(
       didSelect: { _, _ in },
@@ -226,6 +227,7 @@ class SelectAccountTokenStoreTests: XCTestCase {
       walletService: walletService,
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
+      zcashWalletService: zcashWalletService,
       ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )

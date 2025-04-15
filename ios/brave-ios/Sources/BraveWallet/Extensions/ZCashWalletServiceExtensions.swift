@@ -34,4 +34,23 @@ extension BraveWalletZCashWalletService {
       }
     )
   }
+
+  /// Fetch all bitcoin balance types (total, available, pending) for a given account.
+  /// - Parameters:
+  ///     - accountId: The `BraveWallet.AccountId` for the account
+  /// - Returns: The BTC balances of the given `BraveWallet.AccountId` in `Double`; Will return a nil if there is an issue fetching balance.
+  func fetchZECTransparentBalances(
+    networkId: String,
+    accountId: BraveWallet.AccountId
+  ) async -> Double? {
+    let (zecBalance, _) = await self.balance(networkId: networkId, accountId: accountId)
+
+    guard
+      let balance = zecBalance?.transparentBalance
+    else {
+      return nil
+    }
+
+    return Double(balance) / 100_000_000
+  }
 }

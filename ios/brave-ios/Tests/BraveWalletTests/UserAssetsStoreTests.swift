@@ -85,7 +85,7 @@ class UserAssetsStoreTests: XCTestCase {
       .dropFirst()
       .sink { assetStores in
         defer { assetStoresException.fulfill() }
-        XCTAssertEqual(assetStores.count, 8)
+        XCTAssertEqual(assetStores.count, 9)
 
         XCTAssertEqual(
           assetStores[0].token.symbol,
@@ -139,6 +139,13 @@ class UserAssetsStoreTests: XCTestCase {
         )
         XCTAssertTrue(assetStores[7].token.visible)
         XCTAssertEqual(assetStores[7].network, BraveWallet.NetworkInfo.mockBitcoinMainnet)
+
+        XCTAssertEqual(
+          assetStores[8].token.symbol,
+          BraveWallet.NetworkInfo.mockZcashMainnet.nativeToken.symbol
+        )
+        XCTAssertTrue(assetStores[8].token.visible)
+        XCTAssertEqual(assetStores[8].network, BraveWallet.NetworkInfo.mockZcashMainnet)
       }
       .store(in: &cancellables)
 
