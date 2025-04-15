@@ -128,7 +128,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "Antwort als gut markiert";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Feedback für Brave-KI geben";
+"aichat.feedbackViewMainTitle" = "Feedback für Brave KI geben";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "Jetzt Premium sichern";
@@ -317,7 +317,7 @@
 "aichat.premiumSubscriptionTitle" = "Premium-Abonnement";
 
 /* The text for placeholder on textfield for entering questions for AI */
-"aichat.promptPlaceHolderDescription" = "Befehl hier eingeben";
+"aichat.promptPlaceHolderDescription" = "Prompt hier eingeben";
 
 /* The title of action for quick menu which displaying advanced settings */
 "aichat.quickMenuAdvancedSettingsActionTitle" = "Erweiterte Einstellungen";
@@ -386,7 +386,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Ok, für mich";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo ist ein persönlicher, intelligenter KI-Assistent, der Ihnen die Nutzung des Internets erleichtert. Die Nutzung von Leo ist kostenlos mit eingeschränktem Zugang. Brave Leo Premium bietet weitere Modelle, höhere Limits und ermöglicht Abonnenten einen frühzeitigen Zugang zu neuen Funktionen. Das Standardmodell für alle User ist derzeit Mixtral 8x7B. Weitere Informationen findest du im Brave **[Hilfe-Center](%1$@)**.\n\nWenn Sie Leo eine Frage stellen, kann er standardmäßig den Inhalt der von dir angezeigten Website oder jeden Text, den Sie auf einer Seite markieren, an Brave Leo senden und verwenden, um eine Antwort zu geben. In einigen Fällen sendet Leo aus deinen Eingaben abgeleitete Suchanfragen an die Brave Suche und verwendet die Suchergebnisse, um deine Frage besser zu beantworten. Die Richtigkeit der Antworten wird nicht garantiert und kann ungenaue, irreführende oder falsche Informationen enthalten. Gebe keine sensiblen oder privaten Daten ein und sei vorsichtig bei Antworten, die sich auf Gesundheit, Finanzen, persönliche Sicherheit oder Ähnliches beziehen. Du kannst die Optionen von Leo in den Einstellungen jederzeit anpassen. Gehe zu Einstellungen > Leo.\n\nLeo sammelt keine Identifikatoren wie deine IP-Adresse, die mit dir in Verbindung gebracht werden können. Es werden keine Daten verwendet, um die KI-Modelle zu trainieren. Die KI-Modelle speichern keine persönlichen Daten (außer Anthropic, das Daten 30 Tage lang speichert, bevor es sie löscht). Weitere Informationen findest du in der **[Datenschutzrichtlinie](%2$@)**.";
+"aichat.termsConditionsDescription" = "Brave Leo ist ein persönlicher, intelligenter KI-Assistent, der dir die Nutzung des Internets erleichtert. Die Nutzung von Leo ist kostenlos mit eingeschränktem Zugang. Brave Leo Premium bietet weitere Modelle, höhere Limits und ermöglicht Abonnenten einen frühzeitigen Zugang zu neuen Funktionen. Das Standardmodell für alle User ist derzeit Mixtral 8x7B. Weitere Informationen findest du im Brave **[Hilfe-Center](%1$@)**.\n\nWenn du Leo eine Frage stellst, kann er standardmäßig den Inhalt der von dir angezeigten Website oder jeden Text, den du auf einer Seite markierst, an Brave Leo senden und verwenden, um eine Antwort zu geben. In einigen Fällen sendet Leo aus deinen Eingaben abgeleitete Suchanfragen an die Brave Suche und verwendet die Suchergebnisse, um deine Frage besser zu beantworten. Die Richtigkeit der Antworten wird nicht garantiert und kann ungenaue, irreführende oder falsche Informationen enthalten. Gebe keine sensiblen oder privaten Daten ein und sei vorsichtig bei Antworten, die sich auf Gesundheit, Finanzen, persönliche Sicherheit oder Ähnliches beziehen. Du kannst die Optionen von Leo in den Einstellungen jederzeit anpassen. Gehe zu Einstellungen > Leo.\n\nLeo sammelt keine Identifikatoren wie deine IP-Adresse, die mit dir in Verbindung gebracht werden können. Es werden keine Daten verwendet, um die KI-Modelle zu trainieren. Die KI-Modelle speichern keine persönlichen Daten (außer Anthropic, das Daten 30 Tage lang speichert, bevor es sie löscht). Weitere Informationen findest du in der **[Datenschutzrichtlinie](%2$@)**.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Chatte privat mit Brave Leo";

@@ -278,7 +278,7 @@
 "vpn.settingsViewReceipt" = "Переглянути квитанцію App Store";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
-"vpn.settingsVPNKillSwitchDescription" = "Якщо цю функцію увімкнено, якщо ваше VPN-з'єднання несподівано розірветься, ваш пристрій буде автоматично відключено від Інтернету, щоб уникнути витоку IP-адреси та даних. [Дізнатися більше] (%@)";
+"vpn.settingsVPNKillSwitchDescription" = "Якщо ввімкнено, у разі раптового розриву VPN-з'єднання пристрій автоматично відключиться від інтернету для захисту IP-адреси та даних. [Дізнатися більше] (%@)";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchTitle" = "Увімкнути Kill Switch";

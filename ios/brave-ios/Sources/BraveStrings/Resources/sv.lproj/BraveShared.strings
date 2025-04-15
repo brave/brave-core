@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Växla läsläge";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Översätt";
+"TranslatePage" = "Översätt sida";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Sätt på sökförslag?";

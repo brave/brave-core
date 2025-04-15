@@ -3539,7 +3539,7 @@
 "ToggleReaderMode" = "Activează/dezactivează modul Cititor";
 
 /* Title of an action that allows the user to translate the current web-page to another language */
-"TranslatePage" = "Tradu";
+"TranslatePage" = "Tradu pagina";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Activează sugestiile de căutare?";

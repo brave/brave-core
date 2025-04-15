@@ -1067,7 +1067,7 @@
 "wallet.nftDetailBlockchain" = "Lanac podatkovnih blokova";
 
 /* The title of a section in NFT detail screen that will display NFT's description if there is any. */
-"wallet.nftDetailDescription" = "Description";
+"wallet.nftDetailDescription" = "Opis";
 
 /* This is one type of token standard. And most likey this does not need to be translated */
 "wallet.nftDetailERC721" = "ERC 721";

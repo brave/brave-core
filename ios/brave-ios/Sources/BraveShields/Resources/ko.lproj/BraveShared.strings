@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "도메인 차단";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "글로벌 프라이버시 컨트롤 JS API 활성화";
+"EnableGPCDescription" = "웹사이트에서 내 데이터를 판매 또는 공유하지 않도록 요청하세요. [자세히 알아보기](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "글로벌 프라이버시 컨트롤 활성화";

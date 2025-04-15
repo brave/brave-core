@@ -5,7 +5,7 @@
 "AppMenuViewDesktopSiteTitleString" = "Demander la version pour ordinateur";
 
 /* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
-"AppMenuViewMobileSiteTitleString" = "Demander la version pour mobiles";
+"AppMenuViewMobileSiteTitleString" = "Demander la version pour mobile";
 
 /* General settings bookmarks last visited folder toggle title */
 "BookmarksLastVisitedFolderTitle" = "Afficher les derniers favoris consultés";
@@ -86,13 +86,13 @@
 "ScanQRCodeErrorOKButton" = "OK";
 
 /* Text for the instructions label, displayed in the QR scanner view */
-"ScanQRCodeInstructionsLabel" = "Placer le code QR dans le cadre pour qu'il soit analysé";
+"ScanQRCodeInstructionsLabel" = "Placer le code QR dans le cadre pour le scanner";
 
 /* Text of the prompt that is shown to the user when the data is invalid */
 "ScanQRCodeInvalidDataErrorMessage" = "Les données ne sont pas valides";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Autorisez Brave à accéder à l'appareil photo de votre appareil dans Paramètres -> Confidentialité -> Appareil photo.";
+"ScanQRCodePermissionErrorMessage" = "Autorisez Brave à accéder à l'appareil photo de votre appareil dans Réglages -> Confidentialité et sécurité -> Caméra.";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Analyser le code QR";
@@ -104,7 +104,7 @@
 "SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "En savoir plus / Désinscription";
 
 /* General settings section title */
-"SettingsGeneralSectionTitle" = "Généraux";
+"SettingsGeneralSectionTitle" = "Général";
 
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "Terminé";
@@ -119,10 +119,10 @@
 "UnableToAddPassErrorDismiss" = "OK";
 
 /* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorMessage" = "Une erreur s'est produite lors de l'ajout du pass à l'application Wallet. Réessayez ultérieurement.";
+"UnableToAddPassErrorMessage" = "Une erreur s'est produite lors de l'ajout de la carte ou du billet dans Cartes. Veuillez réessayer.";
 
 /* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorTitle" = "Échec lors de l'ajout du passe";
+"UnableToAddPassErrorTitle" = "Impossible d'ajouter la carte ou le billet";
 
 /* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
 "UnableToOpenURLError" = "Brave ne peut pas ouvrir la page, car l'adresse n'est pas valide.";

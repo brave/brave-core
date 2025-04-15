@@ -1,3 +1,6 @@
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle AirPlay */
+"playlist.accessibilityAirPlay" = "AirPlay";
+
 /* A label that VoiceOver accessibility technology will read out if the user taps the media progress bar */
 "playlist.accessibilityCurrentMediaTime" = "Trenutačno vrijeme medija";
 
