@@ -373,6 +373,27 @@ extension Strings {
       value: "The Sync Agent is currently offline or not reachable. Please try again later.",
       comment: "Message for sync initialization error alert"
     )
+    public static let deviceRestoreDetectedTitle = NSLocalizedString(
+      "sync.deviceRestoreDetectedTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Restore Detected",
+      comment: "Title for alert when the user has restored their device from a backup"
+    )
+    public static let deviceRestoreDetectedMessage = NSLocalizedString(
+      "sync.deviceRestoreDetectedMessage",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Brave has detected a restore from backup. Your sync chain should be reset and you should rejoin the sync chain.",
+      comment: "Message for alert when the user has restored their device from a backup"
+    )
+    public static let deviceRestoreResetActionTitle = NSLocalizedString(
+      "sync.deviceRestoreResetActionTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Reset Sync Chain",
+      comment: "Alert button title when the user has restored their device from a backup, to reset their sync chain"
+    )
     // Remove device popups
     public static let removeLastDeviceTitle = NSLocalizedString(
       "sync.removeLastDeviceTitle",
