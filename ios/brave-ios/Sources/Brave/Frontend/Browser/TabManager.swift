@@ -278,9 +278,10 @@ class TabManager: NSObject {
       .blockPopups.value
     configuration.websiteDataStore = isPrivate ? sharedNonPersistentStore() : .default()
 
-    // Dev note: Do NOT add `.link` to the list, it breaks interstitial pages
-    // and pages that don't want the URL highlighted!
-    configuration.dataDetectorTypes = [.phoneNumber]
+    // Dev note: Do NOT add dataDetectorTypes
+    // IE: configuration.dataDetectorTypes = [.phoneNumber]
+    // will break rendering!
+    // See: https://github.com/brave/brave-browser/issues/45439
     configuration.userContentController = WKUserContentController()
     configuration.preferences = WKPreferences()
     configuration.preferences.javaScriptCanOpenWindowsAutomatically = false
