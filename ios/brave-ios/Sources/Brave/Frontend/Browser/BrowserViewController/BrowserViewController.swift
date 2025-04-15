@@ -1042,9 +1042,25 @@ public class BrowserViewController: UIViewController {
       }
       .store(in: &cancellables)
 
-    Task {
+    Task { @MainActor in
       // Track sync chain restoration via backup
-      try await braveCore.syncAPI.setupDeviceRestorationTracking()
+      let shouldDeleteSyncChain = try await braveCore.syncAPI.setupDeviceRestorationTracking()
+      if shouldDeleteSyncChain {
+        let alert = UIAlertController(
+          title: Strings.Sync.deviceRestoreDetectedTitle,
+          message: Strings.Sync.deviceRestoreDetectedMessage,
+          preferredStyle: .alert
+        )
+        alert.addAction(
+          .init(title: Strings.Sync.deviceRestoreResetActionTitle, style: .default) {
+            [weak self] _ in
+            self?.braveCore.syncAPI.resetSyncChain()
+          }
+        )
+
+        alert.addAction(.init(title: Strings.CancelString, style: .destructive))
+        self.present(alert, animated: true)
+      }
     }
 
     syncPlaylistFolders()

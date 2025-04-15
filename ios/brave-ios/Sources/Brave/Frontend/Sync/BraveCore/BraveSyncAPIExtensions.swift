@@ -118,18 +118,23 @@ extension BraveSyncAPI {
     }
   }
 
+  /// Stores a token that is NOT backed up when the user backs up to iCloud
+  /// This lets us track whether the app's data has been restored and sync chain should be reset
+  /// Returns true if the user should reset their sync chain, as they restored from iCloud backup
+  /// Returns false if they should not reset their sync chain
   @MainActor
-  func setupDeviceRestorationTracking() async throws {
+  func setupDeviceRestorationTracking() async throws -> Bool {
     guard
-      var fileURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first?
+      var fileURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+        .first?
         .appendingPathComponent("restore_check.dat")
     else {
-      return
+      return false
     }
 
     if await AsyncFileManager.default.fileExists(atPath: fileURL.path) {
       // File exists, no restore has occurred
-      return
+      return false
     }
 
     let createTokenFile: () async throws -> Void = {
@@ -148,14 +153,12 @@ extension BraveSyncAPI {
     if !Preferences.Chromium.hasSyncDeviceRestorationToken.value {
       // First time, update the token
       try await createTokenFile()
-      return
+      return false
     }
 
     // Restore has happened
     try await createTokenFile()
-
-    // Reset sync chain
-    resetSyncChain()
+    return true
   }
 
   /// Method to add observer for SyncService for onStateChanged and onSyncShutdown
