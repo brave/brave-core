@@ -86,8 +86,7 @@ class BravePermissionDialogModel {
                                 "<LINK>",
                                 "</LINK>",
                                 new ChromeClickableSpan(
-                                        context,
-                                        R.color.brave_link,
+                                        context.getColor(R.color.brave_link),
                                         result -> {
                                             openUrlInCustomTab(context, URL_WIDEVINE_LEARN_MORE);
                                         })));
