@@ -491,7 +491,7 @@ extension SceneDelegate {
       scene.browserViewController?.switchToTabForURLOrOpen(
         url,
         isPrivate: isPrivateBrowsing,
-        isPrivileged: true
+        isPrivileged: false
       )
       return
     }
