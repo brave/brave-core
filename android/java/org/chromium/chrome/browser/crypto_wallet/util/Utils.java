@@ -1148,7 +1148,8 @@ public class Utils {
         URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
         for (URLSpan urlSpan : spans) {
             ChromeClickableSpan linkSpan =
-                    new ChromeClickableSpan(context, R.color.brave_link, onClickListener::onClick);
+                    new ChromeClickableSpan(
+                            context.getColor(R.color.brave_link), onClickListener::onClick);
             int spanStart = spannable.getSpanStart(urlSpan);
             int spanEnd = spannable.getSpanEnd(urlSpan);
             spannable.setSpan(linkSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

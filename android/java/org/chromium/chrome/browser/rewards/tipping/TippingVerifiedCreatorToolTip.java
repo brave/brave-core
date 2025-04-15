@@ -79,8 +79,7 @@ public class TippingVerifiedCreatorToolTip {
 
         ChromeClickableSpan clickableSpan =
                 new ChromeClickableSpan(
-                        context,
-                        R.color.brave_rewards_modal_theme_color,
+                        context.getColor(R.color.brave_rewards_modal_theme_color),
                         (textView) -> {
                             CustomTabActivity.showInfoPage(context, NEW_SIGNUP_DISABLED_URL);
                         });

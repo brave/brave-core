@@ -78,8 +78,7 @@ public class AlwaysOnPagerAdapter extends PagerAdapter {
                     mContext.getResources().getString(mTexts.get(position + 1));
             ChromeClickableSpan learnMoreClickableSpan =
                     new ChromeClickableSpan(
-                            mContext,
-                            R.color.brave_blue_tint_color,
+                            mContext.getColor(R.color.brave_blue_tint_color),
                             (textView) -> {
                                 CustomTabActivity.showInfoPage(mContext, AUTO_RECONNECT_VPN_LINK);
                             });

@@ -333,8 +333,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         SpannableString textSpannableString = new SpannableString(textSpanned.toString());
         ChromeClickableSpan monthlyContributionClickableSpan =
                 new ChromeClickableSpan(
-                        getActivity(),
-                        R.color.monthly_contributions_text_color,
+                        getActivity().getColor(R.color.monthly_contributions_text_color),
                         (textView) -> {
                             TabUtils.openUrlInNewTab(
                                     false, BraveActivity.BRAVE_REWARDS_SETTINGS_MONTHLY_URL);

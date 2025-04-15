@@ -128,7 +128,7 @@ public class AndroidUtils {
     public static SpannableString createClickableSpanString(
             Context context, @StringRes int id, Callback listener) {
         ChromeClickableSpan chromeClickableSpan =
-                new ChromeClickableSpan(context, R.color.brave_link, listener);
+                new ChromeClickableSpan(context.getColor(R.color.brave_link), listener);
         SpannableString spannableString = new SpannableString(context.getString(id));
         spannableString.setSpan(chromeClickableSpan, 0, spannableString.length(), 0);
         return spannableString;
