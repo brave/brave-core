@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/task/bind_post_task.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
 
@@ -27,6 +28,11 @@ GetCardanoUtxosTask::GetCardanoUtxosTask(
       addresses_(std::move(addresses)) {}
 
 GetCardanoUtxosTask::~GetCardanoUtxosTask() = default;
+
+void GetCardanoUtxosTask::Start(Callback callback) {
+  callback_ = base::BindPostTaskToCurrentDefault(std::move(callback));
+  ScheduleWorkOnTask();
+}
 
 void GetCardanoUtxosTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
@@ -82,9 +88,7 @@ void GetCardanoUtxosTask::WorkOnTask() {
 }
 
 void GetCardanoUtxosTask::StopWithError(std::string error_string) {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(callback_),
-                                base::unexpected(std::move(error_string))));
+  std::move(callback_).Run(base::unexpected(std::move(error_string)));
 }
 
 }  // namespace brave_wallet

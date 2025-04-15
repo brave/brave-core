@@ -33,11 +33,10 @@ class GetCardanoUtxosTask {
                       std::vector<CardanoAddress> addresses);
   ~GetCardanoUtxosTask();
 
-  void set_callback(Callback callback) { callback_ = std::move(callback); }
-
-  void ScheduleWorkOnTask();
+  void Start(Callback callback);
 
  private:
+  void ScheduleWorkOnTask();
   void WorkOnTask();
   void StopWithError(std::string error_string);
 

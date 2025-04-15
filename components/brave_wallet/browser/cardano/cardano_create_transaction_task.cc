@@ -13,6 +13,7 @@
 
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/task/bind_post_task.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_knapsack_solver.h"
@@ -42,7 +43,7 @@ std::vector<CardanoTransaction::TxInput> TxInputsFromUtxoMap(
 
 }  // namespace
 
-CreateCardanoTransactionTask::CreateCardanoTransactionTask(
+CardanoCreateTransactionTask::CardanoCreateTransactionTask(
     CardanoWalletService& cardano_wallet_service,
     const mojom::AccountIdPtr& account_id,
     const CardanoAddress& address_to,
@@ -57,16 +58,21 @@ CreateCardanoTransactionTask::CreateCardanoTransactionTask(
   transaction_.set_sending_max_amount(sending_max_amount);
 }
 
-CreateCardanoTransactionTask::~CreateCardanoTransactionTask() = default;
+CardanoCreateTransactionTask::~CardanoCreateTransactionTask() = default;
 
-void CreateCardanoTransactionTask::ScheduleWorkOnTask() {
+void CardanoCreateTransactionTask::Start(Callback callback) {
+  callback_ = base::BindPostTaskToCurrentDefault(std::move(callback));
+  ScheduleWorkOnTask();
+}
+
+void CardanoCreateTransactionTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&CreateCardanoTransactionTask::WorkOnTask,
+      FROM_HERE, base::BindOnce(&CardanoCreateTransactionTask::WorkOnTask,
                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 CardanoTransaction::TxOutput
-CreateCardanoTransactionTask::CreateTargetOutput() {
+CardanoCreateTransactionTask::CreateTargetOutput() {
   CardanoTransaction::TxOutput target_output;
   target_output.type = CardanoTransaction::TxOutputType::kTarget;
   target_output.amount =
@@ -77,7 +83,7 @@ CreateCardanoTransactionTask::CreateTargetOutput() {
 }
 
 CardanoTransaction::TxOutput
-CreateCardanoTransactionTask::CreateChangeOutput() {
+CardanoCreateTransactionTask::CreateChangeOutput() {
   CardanoTransaction::TxOutput change_output;
   change_output.type = CardanoTransaction::TxOutputType::kChange;
   change_output.amount = 0;
@@ -87,16 +93,12 @@ CreateCardanoTransactionTask::CreateChangeOutput() {
   return change_output;
 }
 
-void CreateCardanoTransactionTask::WorkOnTask() {
-  if (!callback_) {
-    return;
-  }
-
+void CardanoCreateTransactionTask::WorkOnTask() {
   if (!latest_epoch_parameters_) {
     cardano_wallet_service_->cardano_rpc().GetLatestEpochParameters(
         GetNetworkForCardanoAccount(account_id_),
         base::BindOnce(
-            &CreateCardanoTransactionTask::OnGetLatestEpochParameters,
+            &CardanoCreateTransactionTask::OnGetLatestEpochParameters,
             weak_ptr_factory_.GetWeakPtr()));
     return;
   }
@@ -104,7 +106,7 @@ void CreateCardanoTransactionTask::WorkOnTask() {
   if (!latest_block_) {
     cardano_wallet_service_->cardano_rpc().GetLatestBlock(
         GetNetworkForCardanoAccount(account_id_),
-        base::BindOnce(&CreateCardanoTransactionTask::OnGetLatestBlock,
+        base::BindOnce(&CardanoCreateTransactionTask::OnGetLatestBlock,
                        weak_ptr_factory_.GetWeakPtr()));
     return;
   }
@@ -112,7 +114,7 @@ void CreateCardanoTransactionTask::WorkOnTask() {
   if (!utxo_map_) {
     cardano_wallet_service_->GetUtxos(
         account_id_.Clone(),
-        base::BindOnce(&CreateCardanoTransactionTask::OnGetUtxos,
+        base::BindOnce(&CardanoCreateTransactionTask::OnGetUtxos,
                        weak_ptr_factory_.GetWeakPtr()));
     return;
   }
@@ -121,7 +123,7 @@ void CreateCardanoTransactionTask::WorkOnTask() {
     cardano_wallet_service_->DiscoverNextUnusedAddress(
         account_id_.Clone(), mojom::CardanoKeyRole::kInternal,
         base::BindOnce(
-            &CreateCardanoTransactionTask::OnDiscoverNextUnusedChangeAddress,
+            &CardanoCreateTransactionTask::OnDiscoverNextUnusedChangeAddress,
             weak_ptr_factory_.GetWeakPtr()));
     return;
   }
@@ -133,10 +135,8 @@ void CreateCardanoTransactionTask::WorkOnTask() {
       transaction_.AddOutput(CreateTargetOutput());
       transaction_.AddOutput(CreateChangeOutput());
 
-      CardanoKnapsackSolver solver(
-          transaction_, latest_epoch_parameters_->min_fee_coefficient,
-          latest_epoch_parameters_->min_fee_constant,
-          TxInputsFromUtxoMap(*utxo_map_));
+      CardanoKnapsackSolver solver(transaction_, *latest_epoch_parameters_,
+                                   TxInputsFromUtxoMap(*utxo_map_));
       solved_transaction = solver.Solve();
     }
 
@@ -152,13 +152,11 @@ void CreateCardanoTransactionTask::WorkOnTask() {
   std::move(callback_).Run(base::ok(std::move(transaction_)));
 }
 
-void CreateCardanoTransactionTask::StopWithError(std::string error_string) {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(std::move(callback_),
-                                base::unexpected(std::move(error_string))));
+void CardanoCreateTransactionTask::StopWithError(std::string error_string) {
+  std::move(callback_).Run(base::unexpected(std::move(error_string)));
 }
 
-void CreateCardanoTransactionTask::OnGetLatestEpochParameters(
+void CardanoCreateTransactionTask::OnGetLatestEpochParameters(
     base::expected<cardano_rpc::EpochParameters, std::string>
         epoch_parameters) {
   if (!epoch_parameters.has_value()) {
@@ -170,7 +168,7 @@ void CreateCardanoTransactionTask::OnGetLatestEpochParameters(
   WorkOnTask();
 }
 
-void CreateCardanoTransactionTask::OnGetLatestBlock(
+void CardanoCreateTransactionTask::OnGetLatestBlock(
     base::expected<cardano_rpc::Block, std::string> block) {
   if (!block.has_value()) {
     StopWithError(std::move(block.error()));
@@ -181,7 +179,7 @@ void CreateCardanoTransactionTask::OnGetLatestBlock(
   WorkOnTask();
 }
 
-void CreateCardanoTransactionTask::OnGetUtxos(
+void CardanoCreateTransactionTask::OnGetUtxos(
     base::expected<UtxoMap, std::string> utxos) {
   if (!utxos.has_value()) {
     StopWithError(std::move(utxos.error()));
@@ -197,7 +195,7 @@ void CreateCardanoTransactionTask::OnGetUtxos(
   WorkOnTask();
 }
 
-void CreateCardanoTransactionTask::OnDiscoverNextUnusedChangeAddress(
+void CardanoCreateTransactionTask::OnDiscoverNextUnusedChangeAddress(
     base::expected<mojom::CardanoAddressPtr, std::string> address) {
   if (!address.has_value()) {
     StopWithError(std::move(address.error()));

@@ -52,13 +52,13 @@ class CardanoWalletService : public mojom::CardanoWalletService {
       base::expected<GetCardanoUtxosTask::UtxoMap, std::string>)>;
   void GetUtxos(mojom::AccountIdPtr account_id, GetUtxosCallback callback);
 
-  using CreateCardanoTransactionCallback =
+  using CardanoCreateTransactionTaskCallback =
       base::OnceCallback<void(base::expected<CardanoTransaction, std::string>)>;
   void CreateCardanoTransaction(mojom::AccountIdPtr account_id,
                                 const CardanoAddress& address_to,
                                 uint64_t amount,
                                 bool sending_max_amount,
-                                CreateCardanoTransactionCallback callback);
+                                CardanoCreateTransactionTaskCallback callback);
 
   using SignAndPostTransactionCallback =
       base::OnceCallback<void(std::string, CardanoTransaction, std::string)>;
@@ -87,7 +87,7 @@ class CardanoWalletService : public mojom::CardanoWalletService {
       base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result);
 
   void OnCreateCardanoTransactionTaskDone(
-      CreateCardanoTransactionTask* task,
+      CardanoCreateTransactionTask* task,
       base::expected<CardanoTransaction, std::string> result);
 
   void OnPostTransaction(CardanoTransaction bitcoin_transaction,
@@ -102,8 +102,8 @@ class CardanoWalletService : public mojom::CardanoWalletService {
 
   std::list<std::pair<std::unique_ptr<GetCardanoUtxosTask>, GetUtxosCallback>>
       get_cardano_utxo_tasks_;
-  std::list<std::pair<std::unique_ptr<CreateCardanoTransactionTask>,
-                      CreateCardanoTransactionCallback>>
+  std::list<std::pair<std::unique_ptr<CardanoCreateTransactionTask>,
+                      CardanoCreateTransactionTaskCallback>>
       create_transaction_tasks_;
 
   base::WeakPtrFactory<CardanoWalletService> weak_ptr_factory_{this};

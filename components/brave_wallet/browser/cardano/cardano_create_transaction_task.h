@@ -25,27 +25,27 @@ class CardanoTransaction;
 // and amount of native coins to send. Fetches latest block and epoch
 // parameters, utxos associated with account . Searches for best utxo set to
 // minimize fee. Responds with to-be-signed transaction to `callback_`.
-class CreateCardanoTransactionTask {
+class CardanoCreateTransactionTask {
  public:
   using UtxoMap = std::map<CardanoAddress, cardano_rpc::UnspentOutputs>;
   using Callback =
       base::OnceCallback<void(base::expected<CardanoTransaction, std::string>)>;
 
-  CreateCardanoTransactionTask(CardanoWalletService& cardano_wallet_service,
+  CardanoCreateTransactionTask(CardanoWalletService& cardano_wallet_service,
                                const mojom::AccountIdPtr& account_id,
                                const CardanoAddress& address_to,
                                uint64_t amount,
                                bool sending_max_amount);
 
-  ~CreateCardanoTransactionTask();
+  ~CardanoCreateTransactionTask();
 
-  void set_callback(Callback callback) { callback_ = std::move(callback); }
-
-  void ScheduleWorkOnTask();
+  void Start(Callback callback);
 
  private:
   CardanoTransaction::TxOutput CreateTargetOutput();
   CardanoTransaction::TxOutput CreateChangeOutput();
+
+  void ScheduleWorkOnTask();
 
   void WorkOnTask();
   void StopWithError(std::string error_string);
@@ -72,7 +72,7 @@ class CreateCardanoTransactionTask {
   std::optional<std::map<CardanoAddress, cardano_rpc::UnspentOutputs>>
       utxo_map_;
   Callback callback_;
-  base::WeakPtrFactory<CreateCardanoTransactionTask> weak_ptr_factory_{this};
+  base::WeakPtrFactory<CardanoCreateTransactionTask> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

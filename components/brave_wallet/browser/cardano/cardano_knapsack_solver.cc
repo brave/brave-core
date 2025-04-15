@@ -56,12 +56,10 @@ uint64_t GetCostOfChangeOutput(const CardanoTransaction& tx,
 
 CardanoKnapsackSolver::CardanoKnapsackSolver(
     CardanoTransaction base_transaction,
-    uint64_t min_fee_coefficient,
-    uint64_t min_fee_constant,
+    cardano_rpc::EpochParameters latest_epoch_parameters,
     std::vector<CardanoTransaction::TxInput> inputs)
     : base_transaction_(std::move(base_transaction)),
-      min_fee_coefficient_(min_fee_coefficient),
-      min_fee_constant_(min_fee_constant),
+      latest_epoch_parameters_(std::move(latest_epoch_parameters)),
       inputs_(std::move(inputs)) {}
 CardanoKnapsackSolver::~CardanoKnapsackSolver() = default;
 
@@ -76,8 +74,9 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
   // value.
   uint64_t dust_output_threshold =
       transaction.ChangeOutput()
-          ? GetCostOfChangeOutput(transaction, min_fee_coefficient_,
-                                  min_fee_constant_)
+          ? GetCostOfChangeOutput(transaction,
+                                  latest_epoch_parameters_.min_fee_coefficient,
+                                  latest_epoch_parameters_.min_fee_constant)
           : 0;
 
   std::vector<uint8_t> picked_inputs(inputs_.size(), false);
@@ -115,7 +114,8 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
         // Minimum fee required for this transaction to be accepted.
         // Depends on transaction's size and current fee rate.
         uint64_t min_fee = ApplyFeeRate(
-            min_fee_coefficient_, min_fee_constant_,
+            latest_epoch_parameters_.min_fee_coefficient,
+            latest_epoch_parameters_.min_fee_constant,
             CardanoSerializer::CalcTransactionSize(next_transaction));
 
         // Move everything except `min_fee` to change output(if any). Throw

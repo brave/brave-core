@@ -40,32 +40,6 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
   ~CardanoKnapsackSolverUnitTest() override = default;
 
  protected:
-  CardanoTransaction MakeTypicalTransaction(uint32_t inputs, uint32_t outputs) {
-    CardanoTransaction transaction;
-    transaction.set_to(*CardanoAddress::FromString(
-        keyring_
-            .GetAddress(
-                1, mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal, 0))
-            ->address_string));
-    transaction.set_amount(100000);
-    transaction.set_invalid_after(12345);
-
-    for (auto i = 0u; i < inputs; ++i) {
-      transaction.AddInput(MakeMockTxInput(100000, 0));
-      transaction.AddWitness(CardanoTransaction::TxWitness::DummyTxWitness());
-    }
-
-    for (auto i = 0u; i < outputs; ++i) {
-      CardanoTransaction::TxOutput output;
-      output.type = CardanoTransaction::TxOutputType::kTarget;
-      output.amount = transaction.amount();
-      output.address = transaction.to();
-      transaction.AddOutput(std::move(output));
-    }
-
-    return transaction;
-  }
-
   CardanoTransaction MakeMockTransaction(uint64_t amount,
                                          uint32_t receive_index = 123) {
     CardanoTransaction transaction;
@@ -117,6 +91,11 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
   uint64_t send_amount() const { return 10000; }
   uint64_t min_fee_coefficient() const { return 44; }
   uint64_t min_fee_constant() const { return 155381; }
+  cardano_rpc::EpochParameters latest_epoch_parameters() {
+    return cardano_rpc::EpochParameters{
+        .min_fee_coefficient = min_fee_coefficient(),
+        .min_fee_constant = min_fee_constant()};
+  }
   uint32_t dust_change_threshold() const { return 2684; }
 
   bool testnet_ = false;
@@ -127,8 +106,7 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
 TEST_F(CardanoKnapsackSolverUnitTest, NoInputs) {
   auto base_tx = MakeMockTransaction(send_amount());
 
-  CardanoKnapsackSolver solver(base_tx, min_fee_coefficient(),
-                               min_fee_constant(), {});
+  CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), {});
 
   // Can't send exactly what we have as we need to add some fee.
   EXPECT_EQ(l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE),
@@ -140,8 +118,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NotEnoughInputsForFee) {
 
   std::vector<CardanoTransaction::TxInput> inputs;
   inputs.push_back(MakeMockTxInput(send_amount(), 0));
-  CardanoKnapsackSolver solver(base_tx, min_fee_coefficient(),
-                               min_fee_constant(), inputs);
+  CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
 
   // Can't send exact amount of coin we have as we need to add some fee.
   EXPECT_EQ(l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE),
@@ -160,8 +137,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
     uint32_t total_input = send_amount() + min_fee;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input, 0));
-    CardanoKnapsackSolver solver(base_tx, min_fee_coefficient(),
-                                 min_fee_constant(), inputs);
+    CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -177,8 +153,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
     uint32_t total_input = send_amount() + min_fee - 1;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input, 0));
-    CardanoKnapsackSolver solver(base_tx, min_fee_coefficient(),
-                                 min_fee_constant(), inputs);
+    CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
     // We have a bit less than send amount + fee. Can't create transaction.
     ASSERT_FALSE(tx.has_value());
@@ -190,8 +165,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoChangeGenerated) {
     uint32_t total_input = send_amount() + min_fee + 1;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input, 0));
-    CardanoKnapsackSolver solver(base_tx, min_fee_coefficient(),
-                                 min_fee_constant(), inputs);
+    CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -217,8 +191,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
     uint32_t total_input = send_amount() + min_fee + dust_change_threshold();
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input, 0));
-    CardanoKnapsackSolver solver(base_tx, min_fee_coefficient(),
-                                 min_fee_constant(), inputs);
+    CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -236,8 +209,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
         send_amount() + min_fee + dust_change_threshold() - 1;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input, 0));
-    CardanoKnapsackSolver solver(base_tx, min_fee_coefficient(),
-                                 min_fee_constant(), inputs);
+    CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -255,8 +227,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
         send_amount() + min_fee + dust_change_threshold() + 1;
     std::vector<CardanoTransaction::TxInput> inputs;
     inputs.push_back(MakeMockTxInput(total_input, 0));
-    CardanoKnapsackSolver solver(base_tx, min_fee_coefficient(),
-                                 min_fee_constant(), inputs);
+    CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
     auto tx = solver.Solve();
     ASSERT_TRUE(tx.has_value());
 
@@ -285,8 +256,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, RandomTest) {
 
   auto base_tx = MakeMockTransaction(total_inputs / 2);
 
-  CardanoKnapsackSolver solver(base_tx, min_fee_coefficient(),
-                               min_fee_constant(), inputs);
+  CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
   auto tx = solver.Solve();
   ASSERT_TRUE(tx.has_value());
 }

@@ -26,18 +26,21 @@ namespace brave_wallet {
 class CardanoKnapsackSolver {
  public:
   CardanoKnapsackSolver(CardanoTransaction base_transaction,
-                        uint64_t min_fee_coefficient,
-                        uint64_t min_fee_constant,
+                        cardano_rpc::EpochParameters latest_epoch_parameters,
                         std::vector<CardanoTransaction::TxInput> inputs);
   ~CardanoKnapsackSolver();
 
+  // Searches for best transaction(lesser fee).
   base::expected<CardanoTransaction, std::string> Solve();
 
  private:
+  // Initial transaction we are trying to find inputs for.
   CardanoTransaction base_transaction_;
+  // Best transaction(lesser fee) found so far.
   std::optional<CardanoTransaction> current_best_solution_;
-  uint64_t min_fee_coefficient_ = 0;
-  uint64_t min_fee_constant_ = 0;
+  // Current state of blockchain. Used to calculate fee.
+  cardano_rpc::EpochParameters latest_epoch_parameters_;
+  // Set of possible inputs to pick for transaction.
   std::vector<CardanoTransaction::TxInput> inputs_;
 
   // Runs solver algorithm for the `transaction`.
