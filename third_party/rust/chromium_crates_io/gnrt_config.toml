@@ -202,6 +202,9 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.itoa]
 license_files = ['LICENSE-APACHE']
 
+[crate.hashbrown]
+license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/hashbrown-v0_15/LICENSE-APACHE']
+
 [crate.libm]
 extra_kv = { rustenv = [ "OPT_LEVEL=0" ]}
 
