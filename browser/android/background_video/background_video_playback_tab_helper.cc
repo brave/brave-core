@@ -50,24 +50,16 @@ function modifyYtcfgFlags() {
 
     // Assign updated flags back to config.
     config.serializedExperimentFlags = flags;
-    if (observer) {
-      observer.disconnect();
-    }
   }
 }
-const observer = new MutationObserver((mutations) => {
-  for (const mutation of mutations) {
-    if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
-      mutation.addedNodes.forEach((node) => {
-        if (node.tagName === "SCRIPT") {
-          // Check and modify flags when a new script is added.
-          modifyYtcfgFlags();
-        }
-      });
-    }
+
+document.addEventListener('load', (event) => {
+  const target = event.target;
+  if (target.tagName === 'SCRIPT') {
+    // Check and modify flags when a new script is added.
+    modifyYtcfgFlags();
   }
-});
-observer.observe(document.documentElement, { childList: true, subtree: true });
+}, true);
 )";
 
 bool IsYouTubeDomain(const GURL& url) {
