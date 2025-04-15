@@ -926,7 +926,14 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveShieldsSaveContactInfo",
        IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL},
       {"braveShieldsSaveContactInfoSublabel",
-       IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL_SUBLABEL}};
+       IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL_SUBLABEL},
+      {"cookieControlledByShieldsHeader",
+       IDS_SETTINGS_COOKIE_CONTROLLED_BY_SHIELDS_HEADER_TEXT},
+      {"cookieControlledByShieldsTooltip",
+       IDS_SETTINGS_COOKIE_CONTROLLED_BY_SHIELDS_TOOLTIP_TEXT},
+      {"cookieControlledByGoogleSigninTooltip",
+       IDS_SETTINGS_COOKIE_CONTROLLED_BY_GOOGLE_SIGN_IN_TOOLTIP_TEXT},
+  };
 
   html_source->AddLocalizedStrings(localized_strings);
   // <Brave Account>

@@ -3,7 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
+import {
+  html,
+  RegisterPolymerComponentBehaviors,
+  RegisterPolymerTemplateModifications
+} from 'chrome://resources/brave/polymer_overriding.js'
+
+import { loadTimeData } from '../i18n_setup.js'
+
+import { SettingsCookiesPageElement } from '../privacy_page/cookies_page.js'
 
 RegisterPolymerTemplateModifications({
   'settings-cookies-page': (templateContent) => {
@@ -52,4 +60,31 @@ RegisterPolymerTemplateModifications({
       doNotTrackToggle.setAttribute('hidden', 'true')
     }
   }
+})
+
+const BraveSettingsCookiePageBehavior = {
+  ready: function (this: SettingsCookiesPageElement) {
+    const siteList = this.shadowRoot!.getElementById('allow3pcExceptionsList')
+    if (!siteList) {
+      throw new Error(
+        '[Brave Settings Overrides] Could not find allow3pcExceptionsList'
+      )
+    }
+    const listHeader = siteList.shadowRoot!.getElementById('listHeader')
+    if (!listHeader) {
+      throw new Error(
+        '[Brave Settings Overrides] Could not find allow3pcExceptionsList'
+      )
+    }
+    const wrapper = document.createElement('div')
+    listHeader.parentNode!.insertBefore(wrapper, listHeader)
+    wrapper.appendChild(listHeader)
+    wrapper.appendChild(
+      html`<b>${loadTimeData.getString('cookieControlledByShieldsHeader')}</b>`
+    )
+  }
+}
+
+RegisterPolymerComponentBehaviors({
+  'settings-cookies-page': [BraveSettingsCookiePageBehavior]
 })
