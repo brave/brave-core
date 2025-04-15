@@ -93,10 +93,10 @@ def BraveModifyPartsForSigning(parts, config):
         parts['sparkle-framework'].options = full_hardened_runtime_options
 
     # Overwrite to avoid TeamID mismatch with widevine dylib.
-    # parts['helper-app'].entitlements = 'helper-entitlements.plist'
-    # parts['helper-app'].options = (CodeSignOptions.RESTRICT
-    #                                | CodeSignOptions.KILL
-    #                                | CodeSignOptions.HARDENED_RUNTIME)
+    parts['helper-app'].entitlements = 'helper-entitlements.plist'
+    parts['helper-app'].options = (CodeSignOptions.RESTRICT
+                                   | CodeSignOptions.KILL
+                                   | CodeSignOptions.HARDENED_RUNTIME)
 
     if config.enable_updater:
         # The privileged helper is com.brave.Browser.UpdaterPrivilegedHelper.
