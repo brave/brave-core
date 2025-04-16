@@ -6,7 +6,10 @@
 .markdownContainer {
 
   h1,h2,h3,h4,h5,h6 {
-    margin: 0 0 var(--leo-spacing-xl) 0;
+    margin: var(--leo-spacing-xl) 0 0 0;
+  }
+  h1 strong, h2 strong, h3 strong, h4 strong, h5 strong, h6 strong, {
+    font-weight: 600 !important;
   }
 
   h1 {
@@ -30,11 +33,18 @@
   }
 
   ul,ol {
-    padding-left: 15px;
+    padding-left: var(--leo-spacing-xl);
   }
 
   p {
-    margin: 0 0 var(--leo-spacing-xl)  0;
+    margin: var(--leo-spacing-m) 0 0 0;
+  }
+  
+  li {
+    margin: var(--leo-spacing-m) 0 0 0;
+  }
+  hr{
+    margin: var(--leo-spacing-2xl) 0;
   }
 
   // Markdown elements have a margin which introduces additional space to the message layout.
@@ -46,6 +56,7 @@
   >*:last-child {
     margin-bottom: 0;
   }
+  
   word-break: break-word;
 }
 
@@ -71,7 +82,6 @@
   border: none;
   margin: 0px;
   padding: 0px;
-  font: var(--leo-font-default-regular);
   text-decoration: underline;
   color: var(--leo-color-text-primary);
   &:hover {
