@@ -29,7 +29,7 @@ interface ParentUIFrame {
   // and fixes centering the modal in the page view. The parent frame
   // then deals with whether to display the modal or to continue opening
   // the link.
-  SetOpeningExternalLinkURL(string url);
+  UserRequestedOpenGeneratedUrl(url.mojom.Url url);
 };
 
 // Browser-side handler for untrusted frame that handles rendering of

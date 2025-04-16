@@ -8,76 +8,42 @@ import Button from '@brave/leo/react/button'
 import Checkbox from '@brave/leo/react/checkbox'
 import Dialog from '@brave/leo/react/dialog'
 import { getLocale } from '$web-common/locale'
+import { useAIChat } from '../../state/ai_chat_context'
+import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
-import getAPI from '../../api'
-import {
-  IGNORE_EXTERNAL_LINK_WARNING_KEY //
-} from '../../../common/constants'
 
 export default function OpenExternalLinkModal() {
-  // API
-  const api = getAPI()
+  // Context
+  const conversationContext = useConversation()
+  const aiChatContext = useAIChat()
 
   // State
   const [ignoreChecked, setIgnoreChecked] = React.useState(false)
-  const [openingExternalLinkURL, setOpeningExternalLinkURL] = React.useState('')
-
-  // Local storage
-  const ignoreExternalLinkWarning = JSON.parse(
-    localStorage.getItem(IGNORE_EXTERNAL_LINK_WARNING_KEY) ?? 'false'
-  )
 
   // Methods
-  const handleOpenExternalLink = (url: string) => {
-    if (chrome.tabs !== undefined) {
-      chrome.tabs.create({ url }, () => {
-        if (chrome.runtime.lastError) {
-          console.error(
-            'tabs.create failed: ' + chrome.runtime.lastError.message
-          )
-        }
-      })
-    } else {
-      // Tabs.create is desktop specific. Using window.open for android.
-      window.open(url, '_blank', 'noopener noreferrer')
-    }
-  }
-
   const onOpenClicked = React.useCallback(() => {
     if (ignoreChecked) {
-      localStorage.setItem(IGNORE_EXTERNAL_LINK_WARNING_KEY, 'true')
+      conversationContext.setIgnoreExternalLinkWarning()
     }
-    handleOpenExternalLink(openingExternalLinkURL)
-    setOpeningExternalLinkURL('')
-  }, [ignoreChecked, openingExternalLinkURL])
-
-  // Listen for setOpeningExternalLinkURL requests from the child frame
-  React.useEffect(() => {
-    async function handleSetOpeningExternalLinkURL(url: string) {
-      // If the user has ignored the warning, open the link immediately.
-      if (ignoreExternalLinkWarning) {
-        handleOpenExternalLink(url)
-        return
-      }
-      // Otherwise, set the URL to be opened in the modal.
-      setOpeningExternalLinkURL(url)
-    }
-
-    const listenerId =
-      api.conversationEntriesFrameObserver.setOpeningExternalLinkURL.addListener(
-        handleSetOpeningExternalLinkURL
+    if (conversationContext.generatedUrlToBeOpened) {
+      aiChatContext.uiHandler?.openURL(
+        conversationContext.generatedUrlToBeOpened
       )
-
-    return () => {
-      api.conversationEntriesFrameObserver.removeListener(listenerId)
     }
-  }, [api, handleOpenExternalLink, ignoreExternalLinkWarning])
+    conversationContext.setGeneratedUrlToBeOpened(undefined)
+  }, [
+    ignoreChecked,
+    conversationContext.generatedUrlToBeOpened,
+    conversationContext.setIgnoreExternalLinkWarning,
+    conversationContext.setGeneratedUrlToBeOpened,
+    aiChatContext.uiHandler
+  ])
 
   return (
     <Dialog
-      isOpen={openingExternalLinkURL !== ''}
+      isOpen={!!conversationContext.generatedUrlToBeOpened}
       showClose
-      onClose={() => setOpeningExternalLinkURL('')}
+      onClose={() => conversationContext.setGeneratedUrlToBeOpened(undefined)}
       className={styles.dialog}
     >
       <div
@@ -103,7 +69,9 @@ export default function OpenExternalLinkModal() {
           <Button
             kind='plain-faint'
             size='medium'
-            onClick={() => setOpeningExternalLinkURL('')}
+            onClick={() =>
+              conversationContext.setGeneratedUrlToBeOpened(undefined)
+            }
           >
             {getLocale('cancelButtonLabel')}
           </Button>
