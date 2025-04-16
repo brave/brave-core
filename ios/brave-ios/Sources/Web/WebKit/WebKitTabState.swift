@@ -40,7 +40,7 @@ class WebKitTabState: TabState, TabStateImpl {
   /// Each tab has separate list of website overrides.
   private var userAgentOverrides: [String: UserAgentType] = [:]
   func userAgentTypeForURL(_ url: URL) -> UserAgentType {
-    url.baseDomain.flatMap { userAgentOverrides[$0] } ?? .automatic
+    url.etldPlusOne.flatMap { userAgentOverrides[$0] } ?? .automatic
   }
 
   func updateSecureContentState() async {
@@ -406,7 +406,7 @@ class WebKitTabState: TabState, TabStateImpl {
   }
   var isRestoring: Bool = false
   var currentUserAgentType: UserAgentType {
-    if let urlString = visibleURL?.baseDomain, let override = userAgentOverrides[urlString] {
+    if let urlString = visibleURL?.etldPlusOne, let override = userAgentOverrides[urlString] {
       return override
     }
     if let delegate, let visibleURL {
@@ -440,7 +440,7 @@ class WebKitTabState: TabState, TabStateImpl {
   }
 
   func reloadWithUserAgentType(_ userAgentType: UserAgentType) {
-    if let urlString = visibleURL?.baseDomain {
+    if let urlString = visibleURL?.etldPlusOne {
       userAgentOverrides[urlString] = userAgentType
     }
     reload()
