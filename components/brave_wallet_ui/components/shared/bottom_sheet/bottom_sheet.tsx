@@ -25,7 +25,10 @@ export const BottomSheet = (props: Props) => {
 
   return (
     <>
-      <Background isOpen={isOpen} />
+      <Background
+        isOpen={isOpen}
+        onClick={onClose}
+      />
       <BottomCard
         fullWidth={true}
         isOpen={isOpen}
