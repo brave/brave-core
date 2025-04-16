@@ -32,10 +32,7 @@ constexpr char16_t kYoutubeBackgroundPlaybackAndPipScript[] =
     }
 }());
 // Function to modify the flags if the target object exists.
-function modifyYtcfgFlags(checkYtcfgInstance) {
-  if (checkYtcfgInstance && !window.ytcfg) {
-    return;
-  }
+function modifyYtcfgFlags() {
   const config = window.ytcfg.get("WEB_PLAYER_CONTEXT_CONFIGS")?.WEB_PLAYER_CONTEXT_CONFIG_ID_MWEB_WATCH
   if (config && config.serializedExperimentFlags) {
     let flags = config.serializedExperimentFlags;
@@ -57,14 +54,13 @@ function modifyYtcfgFlags(checkYtcfgInstance) {
 if (!window._pipScriptInjected) {
   window._pipScriptInjected = true;
   if (window.ytcfg) {
-    // Pass `false` as there's no need to check again for `window.ytcfg`.
-    modifyYtcfgFlags(false);
+    modifyYtcfgFlags();
   } else {
     document.addEventListener('load', (event) => {
       const target = event.target;
-      if (target.tagName === 'SCRIPT') {
+      if (target.tagName === 'SCRIPT' && window.ytcfg) {
         // Check and modify flags when a new script is added.
-        modifyYtcfgFlags(true);
+        modifyYtcfgFlags();
       }
     }, true);
   }
