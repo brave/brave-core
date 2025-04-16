@@ -43,7 +43,7 @@ if (include_polymer) {
 
     # Ensure all the files are relative to this dir (with a brave/ prefix),
     # and not //ui/webui/resources which is the default for build_cr_component.
-    non_web_component_files = [
+    ts_files = [
       "lit_overriding.ts",
       "polymer_overriding.ts",
       "js/brave_browser_command/brave_browser_command_proxy.ts",
