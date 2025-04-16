@@ -266,6 +266,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &blink::features::kReduceUserAgentMinorVersion,
       &blink::features::kUACHOverrideBlank,
       &features::kCertificateTransparencyAskBeforeEnabling,
+      &features::kDesktopPWAsTabStripSettings,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
 #endif
@@ -277,7 +278,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &sharing_hub::kDesktopScreenshots,
 #endif
-      &features::kDesktopPWAsTabStripSettings,
   };
 
   for (const auto* feature : enabled_features) {

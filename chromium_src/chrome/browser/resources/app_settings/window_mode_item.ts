@@ -66,8 +66,8 @@ export class WindowModeItemElement extends CrLitElement {
     ]
   }
 
-  windowModeLabel: string = '';
-  app: App = createDummyApp();
+  accessor windowModeLabel: string = '';
+  accessor app: App = createDummyApp();
 
   onChange(e: { value: string }) {
     BrowserProxy.getInstance().handler.setWindowMode(this.app.id, parseInt(e.value) as WindowMode);
