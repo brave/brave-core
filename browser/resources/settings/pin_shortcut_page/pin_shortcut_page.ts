@@ -31,7 +31,7 @@ class SettingsPinShortcutPage extends SettingsPinShortcutPageBase {
     }
   }
 
-  private pinned_: boolean
+  declare private pinned_: boolean
 
   private browserProxy_: SettingsPinShortcutPageBrowserProxyImpl =
     SettingsPinShortcutPageBrowserProxyImpl.getInstance()
