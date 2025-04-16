@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/signin/signin_promo_util.cc b/chrome/browser/signin/signin_promo_util.cc
+index da1ad448e9bd16669c613917ff1d2fc52beedb38..33b63cd036963281775e200fecae7d2ad010ec48 100644
+--- a/chrome/browser/signin/signin_promo_util.cc
++++ b/chrome/browser/signin/signin_promo_util.cc
+@@ -112,6 +112,7 @@ bool ShouldShowPromoBasedOnImpressionOrDismissalCount(Profile& profile,
+ // `ShouldShowAddressSignInPromo` and `ShouldShowPasswordSignInPromo`).
+ // `profile` is the profile of the tab the promo would be shown on.
+ bool ShouldShowSignInPromoCommon(Profile& profile, SignInPromoType type) {
++  SHOULD_SHOW_SIGNIN_PROMO_COMMON
+   // Don't show the promo if it does not pass the sync base checks.
+   if (!signin::ShouldShowSyncPromo(profile)) {
+     return false;

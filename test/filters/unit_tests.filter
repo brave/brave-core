@@ -59,6 +59,9 @@
 # BraveToolbarView is set to nullptr
 -PinnedToolbarActionsContainerTest.*
 
+# Disabling signin promo tests as brave does not support them.
+-ShowSigninPromoTestExplicitBrowserSignin.*
+
 # This test crashes due to invalid memory access as described in the comment in
 # PrefChangeRegistrar::~PrefChangeRegistrar:
 # // If you see an invalid memory access in this destructor, this
@@ -252,8 +255,6 @@
 -PeopleHandlerWebOnlySigninTest.ChromeSigninUserAvailableOnWebSignin
 -ShowPromoTest.ShowPromoWithNoAccount
 -ShowPromoTest.ShowPromoWithSignedInAccount
--ShowSigninPromoTestExplicitBrowserSignin.RecordSignInPromoShownWithAccount
--ShowSigninPromoTestExplicitBrowserSignin.RecordSignInPromoShownWithAccount_PromoShouldShowForDifferentType
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed/*
 -SignInPromoVersionTest.SignInPromoVersions
