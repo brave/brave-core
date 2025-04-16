@@ -61,8 +61,7 @@ std::wstring HashString(base::wcstring_view input) {
     // there's nothing for us to do with small strings.
     return std::wstring();
   }
-  auto bytes =
-      base::as_bytes(UNSAFE_TODO(base::span(input.data(), input.size() + 1)));
+  auto bytes = base::byte_span_with_nul_from_cstring_view(input);
 
   // Compute an MD5 hash. md5[0] and md5[1] will be used as constant multipliers
   // in the scramble below.
