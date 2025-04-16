@@ -7,12 +7,19 @@ implemented.
 ## chromium_src overrides
 
 This is probably the simplest approach. Similarly to our C++ overrides just add
-a new file at the same path but in the `chromium_src` director and it will
+a new file at the same path but in the `chromium_src` directory and it will
 replace the upstream version of the file. The upstream version can be imported
-via `./<filename>-chromium.ext` if you need to reexport something from it.
+via `./<filename>-chromium.<ext>` if you need to reexport something from it.
 
 **Note:** You don't need to reexport upstream stuff if you're completely
 replacing it.
+
+Similarly to C++ `chromium_src` overrides should be as minimal as possible to
+provide the hooks Brave needs. When you need to do something more substantial
+you should [add a new target](#adding-new-files) and make most of your changes
+there. This makes code easier to follow, and means you don't have to jump back
+and forward between `chromium_src` and `brave` files. As a bonus, it means you
+won't need `chromium_src` approvals most of the time!
 
 ### Example Typescript
 
@@ -21,7 +28,7 @@ replacing it.
 import { frob as frobChromium } from './file-chromium.js'
 
 // export everything from upstream
-export * from './file-chroimum.js'
+export * from './file-chromium.js'
 
 // in Brave, all frobs are twice as good.
 export function frob() {
@@ -120,6 +127,13 @@ mangle(e => {
 // select the list items
 }, t => t.text.startsWith('<li'))
 ```
+
+These overrides have an automatically generated test which checks to see whether
+the mangler still applies. To generate (or update the test) run
+`npm run test-unit -- "mangled files should have up to date snapshots" -u`.
+
+If the test fails it indicates that upstream has changed and we should check the
+override still applies. If it does, then it is safe to update the snapshot.
 
 ## Polymer Template Modifications
 
