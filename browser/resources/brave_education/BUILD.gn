@@ -10,7 +10,7 @@ import("//ui/webui/resources/tools/build_webui.gni")
 build_webui("build") {
   grd_prefix = "brave_education"
   static_files = [ "brave_education.html" ]
-  non_web_component_files = [
+  ts_files = [
     "brave_education_app.html.ts",
     "brave_education_app.ts",
     "brave_education_proxy.ts",
