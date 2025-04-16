@@ -654,28 +654,17 @@ async function createDefaultAccounts({
       if (
         !allowedNewWalletAccountTypeNetworkIds.includes(
           networkEntityAdapter.selectId(net)
-        )
+        ) ||
+        net.coin === BraveWallet.CoinType.ETH ||
+        net.coin === BraveWallet.CoinType.SOL
       ) {
         return
       }
-
-      switch (net.coin) {
-        case BraveWallet.CoinType.BTC: {
-          await keyringService.addAccount(
-            net.coin,
-            keyringIdForNewAccount(net.coin, net.chainId),
-            suggestNewAccountName(accounts, net)
-          )
-          return
-        }
-        case BraveWallet.CoinType.FIL: {
-          await keyringService.addAccount(
-            net.coin,
-            keyringIdForNewAccount(net.coin, net.chainId),
-            suggestNewAccountName(accounts, net)
-          )
-        }
-      }
+      await keyringService.addAccount(
+        net.coin,
+        keyringIdForNewAccount(net.coin, net.chainId),
+        suggestNewAccountName(accounts, net)
+      )
     }
   )
 }
