@@ -897,7 +897,7 @@ extension PlayerModel {
       MPNowPlayingInfoPropertyElapsedPlaybackTime: currentTime,
       MPNowPlayingInfoPropertyMediaType: mediaType.rawValue,
       MPNowPlayingInfoPropertyPlaybackRate: playbackSpeed.rate,
-      MPMediaItemPropertyArtist: selectedItem.pageSrc.asURL?.baseDomain ?? selectedItem.pageSrc,
+      MPMediaItemPropertyArtist: selectedItem.pageSrc.asURL?.etldPlusOne ?? selectedItem.pageSrc,
       MPMediaItemPropertyPlaybackDuration: duration.seconds ?? 0,
       MPMediaItemPropertyTitle: selectedItem.name,
     ]

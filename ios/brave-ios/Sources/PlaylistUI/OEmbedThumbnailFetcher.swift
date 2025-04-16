@@ -42,8 +42,8 @@ actor OEmbedThumbnailFetcher {
   private func endpoint(for url: URL) async -> Provider.Endpoint? {
     await loadProviders()
 
-    let domain = url.baseDomain
-    guard let provider = providers.first(where: { $0.providerURL?.baseDomain == domain }) else {
+    let domain = url.etldPlusOne
+    guard let provider = providers.first(where: { $0.providerURL?.etldPlusOne == domain }) else {
       return nil
     }
 

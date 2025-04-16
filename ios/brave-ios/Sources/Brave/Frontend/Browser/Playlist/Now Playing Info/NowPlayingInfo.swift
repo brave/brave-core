@@ -17,7 +17,7 @@ final class NowPlayingInfo {
     nowPlayingInfo.merge(with: [
       MPNowPlayingInfoPropertyMediaType: NSNumber(value: mediaType.rawValue),
       MPMediaItemPropertyTitle: item.name,
-      MPMediaItemPropertyArtist: URL(string: item.pageSrc)?.baseDomain ?? item.pageSrc,
+      MPMediaItemPropertyArtist: URL(string: item.pageSrc)?.etldPlusOne ?? item.pageSrc,
       MPMediaItemPropertyPlaybackDuration: item.duration,
       MPNowPlayingInfoPropertyPlaybackRate: player.rate,
       MPNowPlayingInfoPropertyAssetURL: URL(string: item.pageSrc) as Any,

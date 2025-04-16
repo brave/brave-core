@@ -164,7 +164,7 @@ class PlaylistCellRedacted: UITableViewCell {
   func loadThumbnail(for url: URL) {
     hostingController.rootView.thumbnail = nil
 
-    let cacheKey = url.baseDomain ?? url.absoluteString
+    let cacheKey = url.etldPlusOne ?? url.absoluteString
     if let image = PlaylistCellRedacted.cache.object(forKey: cacheKey as NSString) {
       faviconTask = nil
       hostingController.rootView.thumbnail = image

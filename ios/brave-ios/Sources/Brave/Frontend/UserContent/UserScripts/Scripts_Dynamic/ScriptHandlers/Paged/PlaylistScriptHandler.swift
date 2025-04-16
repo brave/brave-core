@@ -122,7 +122,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
       return
     }
 
-    if handler.url?.baseDomain != "soundcloud.com", item.isInvisible {
+    if handler.url?.etldPlusOne != "soundcloud.com", item.isInvisible {
       DispatchQueue.main.async {
         handler.delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
       }

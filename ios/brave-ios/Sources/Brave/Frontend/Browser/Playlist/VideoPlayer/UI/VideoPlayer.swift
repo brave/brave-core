@@ -659,7 +659,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     if displayTitle.isEmpty {
       var hostDomain = ""
 
-      if let host = URL(string: videoDomain)?.baseDomain {
+      if let host = URL(string: videoDomain)?.etldPlusOne {
         hostDomain = host
       }
 
