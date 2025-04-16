@@ -60,6 +60,7 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
   void UndoFocusTabs(UndoFocusTabsCallback callback) override;
   void OpenLeoGoPremiumPage() override;
   void SetTabFocusEnabled() override;
+  void GetTabFocusShowFRE(GetTabFocusShowFRECallback callback) override;
 
   void SetOriginalTabsInfoByWindowForTesting(
       const base::flat_map<SessionID, std::vector<TabInfo>>&
