@@ -6,21 +6,99 @@ import BraveCore
 import BraveShared
 import BraveUI
 import Combine
-import DeviceCheck
 import Shared
-import Static
+import SwiftUI
 import UIKit
 import Web
 
-class BraveRewardsSettingsViewController: TableViewController {
-
+private class BraveRewardsSettingsViewModel: ObservableObject {
   let rewards: BraveRewards
-  var walletTransferLearnMoreTapped: (() -> Void)?
+  private var rewardsObserver: RewardsObserver?
+  private var isEnabledObserver: NSKeyValueObservation?
 
-  init(_ rewards: BraveRewards) {
+  init(rewards: BraveRewards) {
     self.rewards = rewards
 
-    super.init(style: .insetGrouped)
+    if let rewardsAPI = rewards.rewardsAPI {
+      isWalletInitialized = rewardsAPI.isInitialized
+    }
+
+    isEnabledObserver = rewards.ads.observe(\.isEnabled, options: [.new]) { [weak self] _, change in
+      if let newValue = change.newValue {
+        self?.isRewardsEnabled = newValue
+      }
+    }
+  }
+
+  var isRewardsEnabled: Bool {
+    get {
+      rewards.isEnabled || rewards.isTurningOnRewards
+    }
+    set {
+      if rewards.rewardsAPI == nil {
+        rewards.startRewardsService { [weak self] in
+          guard let self else { return }
+          if let rewardsAPI = self.rewards.rewardsAPI {
+            let observer = RewardsObserver(rewardsAPI: rewardsAPI)
+            rewardsAPI.add(observer)
+            self.rewardsObserver = observer
+            observer.walletInitalized = { [weak self] _ in
+              DispatchQueue.main.async {
+                self?.isWalletInitialized = true
+              }
+            }
+          }
+          self.rewards.isEnabled = newValue
+          self.objectWillChange.send()
+        }
+      } else {
+        rewards.isEnabled = newValue
+        self.objectWillChange.send()
+      }
+    }
+  }
+
+  @Published private(set) var isWalletInitialized: Bool = false
+}
+
+struct BraveRewardsSettingsView: View {
+  @ObservedObject private var model: BraveRewardsSettingsViewModel
+  fileprivate init(model: BraveRewardsSettingsViewModel) {
+    self.model = model
+  }
+  var body: some View {
+    Form {
+      Section {
+        Toggle(isOn: $model.isRewardsEnabled) {
+          VStack(alignment: .leading) {
+            Text(Strings.Rewards.settingsToggleTitle)
+            Text(Strings.Rewards.settingsToggleMessage)
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .font(.footnote)
+          }
+        }
+        .tint(Color(braveSystemName: .primary50))
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
+      if model.isWalletInitialized, let rewardsAPI = model.rewards.rewardsAPI {
+        Section {
+          NavigationLink {
+            UIKitController(RewardsInternalsViewController(rewardsAPI: rewardsAPI))
+          } label: {
+            Text(Strings.RewardsInternals.title)
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }
+      }
+    }
+    .scrollContentBackground(.hidden)
+    .background(Color(.braveGroupedBackground))
+  }
+}
+
+class BraveRewardsSettingsViewController: UIHostingController<BraveRewardsSettingsView> {
+  init(rewards: BraveRewards) {
+    super.init(rootView: BraveRewardsSettingsView(model: .init(rewards: rewards)))
   }
 
   @available(*, unavailable)
@@ -28,54 +106,8 @@ class BraveRewardsSettingsViewController: TableViewController {
     fatalError()
   }
 
-  private func reloadSections() {
-    dataSource.sections = [
-      .init(
-        rows: [
-          Row(
-            text: Strings.Rewards.settingsToggleTitle,
-            detailText: Strings.Rewards.settingsToggleMessage,
-            accessory: .switchToggle(
-              value: rewards.isEnabled,
-              { [unowned self] isOn in
-                self.rewards.isEnabled = isOn
-              }
-            ),
-            cellClass: MultilineSubtitleCell.self
-          )
-        ]
-      )
-    ]
-
-    if let rewardsAPI = rewards.rewardsAPI {
-      rewardsAPI.rewardsInternalInfo { [weak self] info in
-        if let info = info, !info.paymentId.isEmpty {
-          self?.dataSource.sections += [
-            Section(rows: [
-              Row(
-                text: Strings.RewardsInternals.title,
-                selection: {
-                  guard let self = self else { return }
-                  let controller = RewardsInternalsViewController(rewardsAPI: rewardsAPI)
-                  self.navigationController?.pushViewController(controller, animated: true)
-                },
-                accessory: .disclosureIndicator
-              )
-            ])
-          ]
-        }
-      }
-    }
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
-
     title = Strings.braveRewardsTitle
-
-    rewards.startRewardsService { [weak self] in
-      guard let self = self else { return }
-      self.reloadSections()
-    }
   }
 }

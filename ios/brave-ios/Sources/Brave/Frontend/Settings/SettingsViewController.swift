@@ -379,15 +379,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.braveRewardsSettingsTitle,
           selection: { [unowned self] in
-            let rewardsVC = BraveRewardsSettingsViewController(rewards)
-            rewardsVC.walletTransferLearnMoreTapped = { [weak self] in
-              guard let self = self else { return }
-              self.dismiss(animated: true) {
-                self.presentingViewController?.dismiss(animated: true) {
-                  self.settingsDelegate?.settingsOpenURLInNewTab(.brave.rewardsOniOS)
-                }
-              }
-            }
+            let rewardsVC = BraveRewardsSettingsViewController(rewards: rewards)
             self.navigationController?.pushViewController(rewardsVC, animated: true)
           },
           image: UIImage(braveSystemNamed: "leo.product.bat-outline"),
