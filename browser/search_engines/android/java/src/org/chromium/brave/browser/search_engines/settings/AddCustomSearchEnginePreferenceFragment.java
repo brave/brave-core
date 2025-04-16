@@ -32,6 +32,7 @@ import org.chromium.components.search_engines.BraveTemplateUrlService;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.widget.Toast;
+import org.chromium.url.GURL;
 
 import java.util.List;
 import java.util.Locale;
@@ -300,7 +301,8 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
     }
 
     private boolean isUrlValid(String url) {
-        boolean isValid = !url.isEmpty() && CustomSearchEnginesUtil.isSearchQuery(url);
+        GURL gurl = new GURL(url);
+        boolean isValid = !GURL.isEmptyOrInvalid(gurl) && url.contains("%s");
 
         if (!isValid) {
             mUrlLayout.setError(

@@ -6,7 +6,6 @@
 package org.chromium.brave.browser.search_engines.settings;
 
 import android.content.Context;
-import android.util.Patterns;
 import android.widget.ImageView;
 
 import org.json.JSONArray;
@@ -25,8 +24,6 @@ import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.net.NetworkTrafficAnnotationTag;
 import org.chromium.url.GURL;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -113,20 +110,6 @@ public class CustomSearchEnginesUtil {
                 customSearchEnginesList.set(index, newSearchEngineKeyword);
             }
             saveCustomSearchEngines(customSearchEnginesList);
-        }
-    }
-
-    public static boolean isSearchQuery(String text) {
-        return text.contains("%s");
-    }
-
-    public static boolean isValidUrl(String url) {
-        try {
-            String encodedUrl = URLEncoder.encode(url, "UTF-8");
-            return Patterns.WEB_URL.matcher(encodedUrl).matches();
-        } catch (UnsupportedEncodingException e) {
-            Log.e(TAG, "UnsupportedEncodingException : " + e.getMessage());
-            return false;
         }
     }
 
