@@ -70,6 +70,7 @@ module.exports = {
     'object-shorthand': 0,
     'n/no-callback-literal': 0,
     'no-template-curly-in-string': 0,
+    '@typescript-eslint/array-type': 0,
     '@typescript-eslint/await-thenable': 0,
     '@typescript-eslint/consistent-generic-constructors': 0,
     '@typescript-eslint/ban-ts-comment': 0,
