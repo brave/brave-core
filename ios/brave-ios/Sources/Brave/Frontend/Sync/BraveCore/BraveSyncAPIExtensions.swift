@@ -123,7 +123,7 @@ extension BraveSyncAPI {
   /// Returns true if the user should reset their sync chain, as they restored from iCloud backup
   /// Returns false if they should not reset their sync chain
   @MainActor
-  func setupDeviceRestorationTracking() async throws -> Bool {
+  func isSyncChainFromCloudRestoration() async throws -> Bool {
     guard
       var fileURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
         .first?
