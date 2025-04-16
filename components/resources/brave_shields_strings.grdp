@@ -13,24 +13,24 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_UP" desc="Status label for when Brave Shields is enabled.">
-    Shields are UP <ph name="LINK_BEFORE">$1</ph>for<ph name="LINK_AFTER">$2</ph>
+    <ph name="STATUS_BEFORE">$1</ph>Shields are UP<ph name="STATUS_AFTER">$1</ph> for <ph name="HOST">$2</ph>
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_DOWN" desc="Status label for when Brave Shields is disabled.">
-    Shields are DOWN <ph name="LINK_BEFORE">$1</ph>for<ph name="LINK_AFTER">$2</ph>
+    <ph name="STATUS_BEFORE">$1</ph>Shields are DOWN<ph name="STATUS_AFTER">$1</ph> for <ph name="HOST">$2</ph>
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_BROKEN" desc="A footnote below the main Shields switch button.">
     If this site seems broken, try Shields down.
-    <ph name="LINK_BEFORE">$1</ph>Note: this may reduce Brave's privacy protections.<ph name="LINK_AFTER">$2</ph>
+    <ph name="NOTE_BEFORE">$1</ph>Note: this may reduce Brave's privacy protections.<ph name="NOTE_AFTER">$1</ph>
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_BLOCKED_NOTE" desc="Description to convey trackers, advertisement and more are being blocked.">
-    Trackers, ads, and more blocked <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Trackers, ads, and more blocked <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$1</ph>
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_NOT_BLOCKED_NOTE" desc="Description to convey trackers, advertisement and more are not being blocked. Do not translate Brave SHields.">
-    Not protected by Brave Shields <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
+    Not protected by Brave Shields <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$1</ph>
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_ADVANCED_CTRLS" desc="A button label to expand/collapse more options.">
