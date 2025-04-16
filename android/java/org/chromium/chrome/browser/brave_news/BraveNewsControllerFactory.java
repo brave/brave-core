@@ -13,6 +13,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskRunner;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.BraveNewsController;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -39,13 +40,14 @@ public class BraveNewsControllerFactory {
     }
 
     public Promise<BraveNewsController> getBraveNewsController(
-            ConnectionErrorHandler connectionErrorHandler) {
+            Profile profile, ConnectionErrorHandler connectionErrorHandler) {
         final Promise<BraveNewsController> promise = new Promise<>();
 
         mTaskRunner.execute(
                 () -> {
                     long nativeHandle =
-                            BraveNewsControllerFactoryJni.get().getInterfaceToBraveNewsController();
+                            BraveNewsControllerFactoryJni.get()
+                                    .getInterfaceToBraveNewsController(profile);
                     MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
                     BraveNewsController braveNewsController =
                             BraveNewsController.MANAGER.attachProxy(handle, 0);
@@ -64,6 +66,6 @@ public class BraveNewsControllerFactory {
 
     @NativeMethods
     interface Natives {
-        long getInterfaceToBraveNewsController();
+        long getInterfaceToBraveNewsController(Profile profile);
     }
 }

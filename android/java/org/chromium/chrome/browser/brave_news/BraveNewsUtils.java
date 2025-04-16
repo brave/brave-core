@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.brave_news;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.Article;
@@ -26,6 +27,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesDataListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 
@@ -43,12 +45,68 @@ public class BraveNewsUtils {
     private static Map<Integer, DisplayAd> sCurrentDisplayAds;
     private static String mLocale;
     private static List<Channel> mChannelList;
-    private static List<Publisher> sGlobalPublisherList;
+    private static List<Publisher> mGlobalPublisherList;
     private static List<Publisher> mPublisherList;
     private static List<Channel> mFollowingChannelList;
     private static List<Publisher> mFollowingPublisherList;
     private static List<String> mSuggestionsList;
     private static HashMap<String, Integer> mChannelIcons = new HashMap<>();
+
+    // TODO(sergz): Ideally we want to move all news related files into it's
+    // own component in the future
+    public static class BraveNewsSettingsDataFetcher
+            implements BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate {
+        private Profile mProfile;
+        private boolean mConnectionClosed;
+        private BraveNewsController mBraveNewsController;
+
+        public BraveNewsSettingsDataFetcher(Profile profile) {
+            mProfile = profile;
+            mConnectionClosed = false;
+        }
+
+        public void getBraveNewsSettingsData() {
+            ThreadUtils.assertOnUiThread();
+            BraveNewsControllerFactory.getInstance()
+                    .getBraveNewsController(mProfile, new BraveNewsConnectionErrorHandler(this))
+                    .then(
+                            braveNewsController -> {
+                                mBraveNewsController = braveNewsController;
+                                BraveNewsUtils.getBraveNewsSettingsData(
+                                        braveNewsController,
+                                        null,
+                                        () -> {
+                                            mConnectionClosed = true;
+                                            braveNewsController.close();
+                                        });
+                            });
+        }
+
+        @Override
+        public void initBraveNewsControllerFromAWorkerThread() {
+            // if mConnectionClosed is set, it means that it was a controllable
+            // close event and not a channel connection failure
+            if (mConnectionClosed) {
+                return;
+            }
+            // A connection failure event is executed on a background thread,
+            // but a mojo channel creation has to be done on the main thread
+            PostTask.postTask(
+                    TaskTraits.UI_DEFAULT,
+                    () -> {
+                        new BraveNewsUtils.BraveNewsSettingsDataFetcher(mProfile)
+                                .getBraveNewsSettingsData();
+                    });
+        }
+
+        @Override
+        public void cleanUpBraveNewsController() {
+            if (mConnectionClosed) {
+                return;
+            }
+            mBraveNewsController.close();
+        }
+    }
 
     public static String getPromotionIdItem(FeedItemsCard items) {
         String creativeInstanceId = "null";
@@ -219,8 +277,8 @@ public class BraveNewsUtils {
 
     public static void setFollowingPublisherList() {
         List<Publisher> publisherList = new ArrayList<>();
-        if (sGlobalPublisherList != null && sGlobalPublisherList.size() > 0) {
-            for (Publisher publisher : sGlobalPublisherList) {
+        if (mGlobalPublisherList != null && mGlobalPublisherList.size() > 0) {
+            for (Publisher publisher : mGlobalPublisherList) {
                 if (publisher.userEnabledStatus == UserEnabled.ENABLED
                         || (publisher.type == PublisherType.DIRECT_SOURCE
                                 && publisher.userEnabledStatus != UserEnabled.DISABLED)) {
@@ -276,8 +334,8 @@ public class BraveNewsUtils {
 
     public static List<Publisher> searchPublisher(String search) {
         List<Publisher> publisherList = new ArrayList<>();
-        if (sGlobalPublisherList != null && sGlobalPublisherList.size() > 0) {
-            for (Publisher publisher : sGlobalPublisherList) {
+        if (mGlobalPublisherList != null && mGlobalPublisherList.size() > 0) {
+            for (Publisher publisher : mGlobalPublisherList) {
                 if (publisher.publisherName.toLowerCase(Locale.ROOT).contains(search)
                         || publisher.categoryName.toLowerCase(Locale.ROOT).contains(search)
                         || publisher.feedSource.url.toLowerCase(Locale.ROOT).contains(search)
@@ -292,8 +350,8 @@ public class BraveNewsUtils {
 
     public static boolean searchPublisherForRss(String feedUrl) {
         boolean isFound = false;
-        if (sGlobalPublisherList != null && sGlobalPublisherList.size() > 0) {
-            for (Publisher publisher : sGlobalPublisherList) {
+        if (mGlobalPublisherList != null && mGlobalPublisherList.size() > 0) {
+            for (Publisher publisher : mGlobalPublisherList) {
                 if (publisher.feedSource.url.equalsIgnoreCase(feedUrl)
                         || publisher.siteUrl.url.equalsIgnoreCase(feedUrl)) {
                     isFound = true;
@@ -304,49 +362,80 @@ public class BraveNewsUtils {
         return isFound;
     }
 
-    public static void getBraveNewsSettingsData(BraveNewsController braveNewsController,
-            BraveNewsPreferencesDataListener braveNewsPreferencesDataListener) {
-        PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
-            if (braveNewsController != null) {
-                braveNewsController.getLocale((locale) -> {
-                    setLocale(locale);
-                    getChannels(braveNewsController, braveNewsPreferencesDataListener);
-                    getPublishers(braveNewsController, braveNewsPreferencesDataListener);
-                    getSuggestionsSources(braveNewsController, braveNewsPreferencesDataListener);
+    public static void getBraveNewsSettingsData(
+            BraveNewsController braveNewsController,
+            BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
+            final Runnable postAction) {
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT,
+                () -> {
+                    if (braveNewsController == null) {
+                        return;
+                    }
+                    braveNewsController.getLocale(
+                            (locale) -> {
+                                setLocale(locale);
+                                getChannels(
+                                        braveNewsController,
+                                        braveNewsPreferencesDataListener,
+                                        () -> {
+                                            getPublishers(
+                                                    braveNewsController,
+                                                    braveNewsPreferencesDataListener,
+                                                    () -> {
+                                                        getSuggestionsSources(
+                                                                braveNewsController,
+                                                                braveNewsPreferencesDataListener,
+                                                                postAction);
+                                                    });
+                                        });
+                            });
                 });
-            }
-        });
     }
 
-    private static void getChannels(BraveNewsController braveNewsController,
-            BraveNewsPreferencesDataListener braveNewsPreferencesDataListener) {
-        braveNewsController.getChannels((channels) -> {
-            List<Channel> channelList = new ArrayList<>();
-            for (Map.Entry<String, Channel> entry : channels.entrySet()) {
-                Channel channel = entry.getValue();
-                channelList.add(channel);
-            }
+    private static void getChannels(
+            BraveNewsController braveNewsController,
+            BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
+            final Runnable postAction) {
+        braveNewsController.getChannels(
+                (channels) -> {
+                    List<Channel> channelList = new ArrayList<>();
+                    for (Map.Entry<String, Channel> entry : channels.entrySet()) {
+                        Channel channel = entry.getValue();
+                        channelList.add(channel);
+                    }
 
-            Comparator<Channel> compareByName = (Channel o1, Channel o2)
-                    -> o1.channelName.toLowerCase(Locale.ROOT)
-                               .compareTo(o2.channelName.toLowerCase(Locale.ROOT));
-            Collections.sort(channelList, compareByName);
+                    Comparator<Channel> compareByName =
+                            (Channel o1, Channel o2) ->
+                                    o1.channelName
+                                            .toLowerCase(Locale.ROOT)
+                                            .compareTo(o2.channelName.toLowerCase(Locale.ROOT));
+                    Collections.sort(channelList, compareByName);
 
-            setChannelList(channelList);
-            if (braveNewsPreferencesDataListener != null) {
-                braveNewsPreferencesDataListener.onChannelReceived();
-            }
-        });
+                    setChannelList(channelList);
+                    if (braveNewsPreferencesDataListener != null) {
+                        braveNewsPreferencesDataListener.onChannelReceived();
+                    }
+                    if (postAction != null) {
+                        postAction.run();
+                    }
+                });
     }
 
-    private static void getPublishers(BraveNewsController braveNewsController,
-            BraveNewsPreferencesDataListener braveNewsPreferencesDataListener) {
-        braveNewsController.getPublishers((publishers) -> {
-            setPublishers(publishers);
-            if (braveNewsPreferencesDataListener != null) {
-                braveNewsPreferencesDataListener.onPublisherReceived();
-            }
-        });
+    private static void getPublishers(
+            BraveNewsController braveNewsController,
+            BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
+            final Runnable postAction) {
+        braveNewsController.getPublishers(
+                (publishers) -> {
+                    setPublishers(publishers);
+                    if (braveNewsPreferencesDataListener != null) {
+                        braveNewsPreferencesDataListener.onPublisherReceived();
+                    }
+                    if (postAction != null) {
+                        postAction.run();
+                    }
+                });
     }
 
     public static void setPublishers(Map<String, Publisher> publishers) {
@@ -371,7 +460,7 @@ public class BraveNewsUtils {
 
         Collections.sort(globalPublisherList, compareByName);
 
-        sGlobalPublisherList = globalPublisherList;
+        mGlobalPublisherList = globalPublisherList;
 
         Collections.sort(publisherList, compareByName);
 
@@ -384,13 +473,19 @@ public class BraveNewsUtils {
         setPopularSources(publisherList);
     }
 
-    public static void getSuggestionsSources(BraveNewsController braveNewsController,
-            BraveNewsPreferencesDataListener braveNewsPreferencesDataListener) {
-        braveNewsController.getSuggestedPublisherIds((publisherIds) -> {
-            setSuggestionsIds(Arrays.asList(publisherIds));
-            if (braveNewsPreferencesDataListener != null) {
-                braveNewsPreferencesDataListener.onSuggestionsReceived();
-            }
-        });
+    public static void getSuggestionsSources(
+            BraveNewsController braveNewsController,
+            BraveNewsPreferencesDataListener braveNewsPreferencesDataListener,
+            final Runnable postAction) {
+        braveNewsController.getSuggestedPublisherIds(
+                (publisherIds) -> {
+                    setSuggestionsIds(Arrays.asList(publisherIds));
+                    if (braveNewsPreferencesDataListener != null) {
+                        braveNewsPreferencesDataListener.onSuggestionsReceived();
+                    }
+                    if (postAction != null) {
+                        postAction.run();
+                    }
+                });
     }
 }

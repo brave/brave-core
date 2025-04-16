@@ -126,7 +126,7 @@ public class BraveNewTabPageLayout
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
     private static final int HOUR_MS = 3_600_000;
 
-    // To delete in bytecode, parent variable will be used instead.
+    // To be removed in bytecode, parent variable will be used instead.
     private ViewGroup mMvTilesContainerLayout;
 
     @SuppressWarnings("UnusedVariable")
@@ -141,6 +141,7 @@ public class BraveNewTabPageLayout
     private SponsoredRichMediaWebView mSponsoredRichMediaWebView;
     private FrameLayout mBackgroundSponsoredRichMediaView;
 
+    // To be removed in bytecode, parent variable will be used instead.
     private Profile mProfile;
     private SponsoredTab mSponsoredTab;
     private boolean mIsTablet;
@@ -197,30 +198,7 @@ public class BraveNewTabPageLayout
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mProfile = ProfileManager.getLastUsedRegularProfile();
-        mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
-        mNTPBackgroundImagesBridge.setNewTabPageListener(mNewTabPageListener);
         mDatabaseHelper = DatabaseHelper.getInstance();
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-
-        mFeedHash = "";
-        initBraveNewsController(null);
-        try {
-            if (BraveNewsUtils.shouldDisplayNewsFeed()
-                    && BraveActivity.getBraveActivity().isLoadedFeed()) {
-                CopyOnWriteArrayList<FeedItemsCard> existingNewsFeedObject =
-                        BraveActivity.getBraveActivity().getNewsItemsFeedCards();
-                if (existingNewsFeedObject != null) {
-                    mNewsItemsFeedCard = existingNewsFeedObject;
-                }
-            }
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onFinishInflate " + e);
-        }
     }
 
     protected void updateTileGridPlaceholderVisibility() {
@@ -867,7 +845,7 @@ public class BraveNewTabPageLayout
         mNtpAdapter.setDisplayNewsFeed(mIsDisplayNewsFeed);
 
         if (isOptin && mBraveNewsController != null && BraveNewsUtils.getLocale() == null) {
-            BraveNewsUtils.getBraveNewsSettingsData(mBraveNewsController, null);
+            BraveNewsUtils.getBraveNewsSettingsData(mBraveNewsController, null, null);
         }
     }
 
@@ -1216,7 +1194,8 @@ public class BraveNewTabPageLayout
                 windowAndroid,
                 isTablet,
                 tabStripHeightSupplier);
-
+        mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
+        mNTPBackgroundImagesBridge.setNewTabPageListener(mNewTabPageListener);
         mIsTablet = isTablet;
         mWindowAndroid = windowAndroid;
 
@@ -1237,6 +1216,15 @@ public class BraveNewTabPageLayout
         mActivity = activity;
         ((BraveActivity) mActivity).dismissShieldsTooltip();
         ((BraveActivity) mActivity).setNewTabPageManager(manager);
+        mFeedHash = "";
+        initBraveNewsController(null);
+        if (BraveNewsUtils.shouldDisplayNewsFeed() && ((BraveActivity) mActivity).isLoadedFeed()) {
+            CopyOnWriteArrayList<FeedItemsCard> existingNewsFeedObject =
+                    ((BraveActivity) mActivity).getNewsItemsFeedCards();
+            if (existingNewsFeedObject != null) {
+                mNewsItemsFeedCard = existingNewsFeedObject;
+            }
+        }
     }
 
     protected boolean useFixedMVTLayout() {
@@ -1541,7 +1529,7 @@ public class BraveNewTabPageLayout
         }
 
         BraveNewsControllerFactory.getInstance()
-                .getBraveNewsController(this)
+                .getBraveNewsController(mProfile, this)
                 .then(
                         braveNewsController -> {
                             mBraveNewsController = braveNewsController;

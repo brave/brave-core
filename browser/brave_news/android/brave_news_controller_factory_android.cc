@@ -8,14 +8,14 @@
 #include "base/android/jni_android.h"
 #include "chrome/android/chrome_jni_headers/BraveNewsControllerFactory_jni.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace chrome {
 namespace android {
 static jlong JNI_BraveNewsControllerFactory_GetInterfaceToBraveNewsController(
-    JNIEnv* env) {
-  auto* profile = ProfileManager::GetActiveUserProfile();
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& profile_android) {
+  auto* profile = Profile::FromJavaObject(profile_android);
   auto pending =
       brave_news::BraveNewsControllerFactory::GetInstance()->GetRemoteService(
           profile);

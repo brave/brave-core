@@ -170,11 +170,14 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             updateFollowerCount();
 
             if (!mIsSuggestionAvailable) {
-                PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
-                    if (mBraveNewsController != null) {
-                        BraveNewsUtils.getSuggestionsSources(mBraveNewsController, this);
-                    }
-                });
+                PostTask.postTask(
+                        TaskTraits.BEST_EFFORT,
+                        () -> {
+                            if (mBraveNewsController != null) {
+                                BraveNewsUtils.getSuggestionsSources(
+                                        mBraveNewsController, this, null);
+                            }
+                        });
             }
         }
     }
@@ -236,7 +239,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
                 BraveNewsUtils.setChannelIcons();
             }
             if (BraveNewsUtils.getLocale() == null && mBraveNewsController != null) {
-                BraveNewsUtils.getBraveNewsSettingsData(mBraveNewsController, this);
+                BraveNewsUtils.getBraveNewsSettingsData(mBraveNewsController, this, null);
             } else {
                 mTvSearch.setVisibility(View.VISIBLE);
                 mLayoutPopularSources.setVisibility(View.VISIBLE);
@@ -288,7 +291,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
         }
 
         BraveNewsControllerFactory.getInstance()
-                .getBraveNewsController(this)
+                .getBraveNewsController(getProfile(), this)
                 .then(
                         braveNewsController -> {
                             mBraveNewsController = braveNewsController;

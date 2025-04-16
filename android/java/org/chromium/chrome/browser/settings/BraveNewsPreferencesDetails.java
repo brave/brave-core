@@ -151,7 +151,7 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
         }
 
         BraveNewsControllerFactory.getInstance()
-                .getBraveNewsController(this)
+                .getBraveNewsController(getProfile(), this)
                 .then(
                         braveNewsController -> {
                             mBraveNewsController = braveNewsController;
