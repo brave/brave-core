@@ -130,7 +130,7 @@ class WalletConnectionView: UIControl {
     }
     let emphasisedFont = self.font(forTextStyle: .subheadline, weight: .bold)
 
-    if let originEtldPlusOne = origin.url?.baseDomain {
+    if let originEtldPlusOne = origin.url?.etldPlusOne {
       // eTLD+1 available, bold it
       let displayString = String.localizedStringWithFormat(
         Strings.Wallet.dappsConnectionNotificationOriginTitle,

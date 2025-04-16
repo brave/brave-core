@@ -14,7 +14,7 @@ extension Text {
       self = Text(Strings.Wallet.braveWallet)
     } else {
       let origin = urlOrigin.url?.absoluteString ?? ""
-      let eTldPlusOne = urlOrigin.url?.baseDomain ?? ""
+      let eTldPlusOne = urlOrigin.url?.etldPlusOne ?? ""
       if let range = origin.range(of: eTldPlusOne) {
         let originStart = origin[origin.startIndex..<range.lowerBound]
         let etldPlusOne = origin[range.lowerBound..<range.upperBound]
