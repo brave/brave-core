@@ -446,6 +446,14 @@ inline constexpr char kComposeLearnMorePageManagedURL[] =
 inline constexpr char kHistorySearchLearnMorePageURL[] =
     "https://support.brave.com/";
 
+// The URL for the "Learn more about shortcuts" page for Glic.
+inline constexpr char kGlicKeyboardShortcutLearnMoreURL[] =
+    "https://support.brave.com/";
+
+// The URL for the "Learn more about shortcuts" page for Glic for managed users.
+inline constexpr char kGlicKeyboardShortcutLearnMoreManagedURL[] =
+    "https://support.brave.com/";
+
 // The URL for the "Learn more" links for pages related to History search for
 // managed users.
 inline constexpr char kHistorySearchLearnMorePageManagedURL[] =
