@@ -210,8 +210,8 @@ extension FeedItem.Content {
     // Sometimes link blogs will post multiple <link> entries in their RSS feeds. This is more clear in
     // JSON RSS which have `url` and `external_url` fields and are more concise.
     func entryURL(from urls: [URL], feedURL: URL) -> URL? {
-      guard let feedURLDomain = feedURL.baseDomain,
-        let postURL = urls.first(where: { $0.baseDomain == feedURLDomain })
+      guard let feedURLDomain = feedURL.etldPlusOne,
+        let postURL = urls.first(where: { $0.etldPlusOne == feedURLDomain })
       else {
         return urls.first
       }

@@ -52,7 +52,7 @@ public class BraveNewsAddSourceResultsViewController: UITableViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = searchedURL.baseDomain
+    title = searchedURL.etldPlusOne
 
     navigationItem.largeTitleDisplayMode = .never
     navigationItem.rightBarButtonItem = doneButton

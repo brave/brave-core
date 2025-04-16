@@ -914,14 +914,14 @@ public class FeedDataSource: ObservableObject {
     dispatchPrecondition(condition: .onQueue(.main))
 
     fetchHistory { historyNodeList in
-      let lastVisitedDomains = historyNodeList.compactMap { $0.url.baseDomain }
+      let lastVisitedDomains = historyNodeList.compactMap { $0.url.etldPlusOne }
 
       let followedSources = FeedSourceOverride.all().filter(\.enabled).map(\.publisherID)
       self.todayQueue.async {
         let items: [FeedItem] = feeds.compactMap { content in
           var score = content.baseScore ?? Double.greatestFiniteMagnitude
-          if let feedBaseDomain = content.url?.baseDomain,
-            lastVisitedDomains.contains(feedBaseDomain)
+          if let feedETLDPlusOne = content.url?.etldPlusOne,
+            lastVisitedDomains.contains(feedETLDPlusOne)
           {
             score -= 5
           }
