@@ -1163,6 +1163,7 @@
   <message name="IDS_BRAVE_WALLET_CLEAR_FILTERS" desc="Clear filters label">Clear filters</message>
   <message name="IDS_BRAVE_WALLET_SHOW_MORE" desc="Show more label">Show more</message>
   <message name="IDS_BRAVE_WALLET_DETAILS" desc="Details label">Details</message>
+  <message name="IDS_BRAVE_WALLET_VERIFIED" desc="Verified label">Verified by DappRadar</message>
   <message name="IDS_BRAVE_WALLET_SWITCH_TO_SHIELDED_ACCOUNT" desc="Switch to a shielded account button text">Switch to a shielded account</message>
   <message name="IDS_BRAVE_WALLET_SHIELD_ACCOUNT" desc="Shield account button text">Shield account</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_NOT_SHIELDED_DESCRIPTION" desc="ZCash account not shielded description.">Currently this account supports transparent transactions which means they are visible to everyone on the blockchain.</message>
