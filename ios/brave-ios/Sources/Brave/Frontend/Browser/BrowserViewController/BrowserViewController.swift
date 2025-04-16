@@ -1044,7 +1044,7 @@ public class BrowserViewController: UIViewController {
 
     Task { @MainActor in
       // Track sync chain restoration via backup
-      let shouldDeleteSyncChain = try await braveCore.syncAPI.setupDeviceRestorationTracking()
+      let shouldDeleteSyncChain = try await braveCore.syncAPI.isSyncChainFromCloudRestoration()
       if shouldDeleteSyncChain {
         let alert = UIAlertController(
           title: Strings.Sync.deviceRestoreDetectedTitle,
