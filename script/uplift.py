@@ -163,6 +163,10 @@ def parse_args():
         '--title',
         help='title to use (instead of inferring one from the first commit)',
         default=None)
+    parser.add_argument(
+        '--copy-ci-labels',
+        action='store_true',
+        help='copy the `CI/*` labels from the PR (if present)')
 
     return parser.parse_args()
 
@@ -231,6 +235,16 @@ def main():
             merged_at = str(response['merged_at']).strip()
             config.title = str(response['title']).strip()
             issues_fixed = parse_issues_fixed(response['body'])
+
+            # optionally copy the CI/* labels (ex: skip platform, etc)
+            if args.copy_ci_labels:
+                print('copying `CI/*` labels from PR...')
+                for label in response['labels']:
+                    if label != 'None':
+                        label_name = str(label['name'])
+                        if label_name.startswith("CI/"):
+                            print('adding label "' + label_name + '"')
+                            config.labels.append(label_name)
 
         except Exception as e:
             print(
