@@ -35,9 +35,6 @@
   <message name="IDS_COLLABORATION_SEVERAL_GROUPS_REMOVED_NOTIFICATION" desc="Format for the notification text appearing when more than 2 tab groups are no longer shared with the user.">
     <ph name="GROUP_COUNT">$1<ex>5</ex></ph> tab groups no longer available
   </message>
-  <message name="IDS_COLLABORATION_LOADING_TEXT" desc="The text message that appears when tab group is loading." formatter_data="android_java">
-    Loading tab group
-  </message>
   <!-- Error Messages -->
   <message name="IDS_COLLABORATION_SOMETHING_WENT_WRONG_HEADER" desc="The header of the error dialog something went wrong.">
     Something went wrong.
@@ -107,6 +104,12 @@
   <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_TAB_ADDED" desc="Text on a recent activity bottom sheet row that says user added a tab.">
     <ph name="USER_DISPLAY_NAME">$1<ex>User 1</ex></ph> added a tab
   </message>
+  <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_MEMBER_ADDED_THIS_TAB" desc="A description of the user adding the current tab for the recent activity dialog. Only for Desktop.">
+    <ph name="MEMBER_FIRST_NAME">$1<ex>Ali</ex></ph> added this tab
+  </message>
+  <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_MEMBER_CHANGED_THIS_TAB" desc="A description of the user changing the current tab for the recent activity dialog. Only for Desktop.">
+    <ph name="MEMBER_FIRST_NAME">$1<ex>Ali</ex></ph> changed this tab
+  </message>
   <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_TAB_REMOVED" desc="Text on a recent activity bottom sheet row that says user removed a tab.">
     <ph name="USER_DISPLAY_NAME">$1<ex>User 1</ex></ph> removed a tab
   </message>
@@ -148,5 +151,35 @@
     Deleted account
   </message>
   <!-- Recent Activity -->
+
+  <!-- Instant Messages -->
+  <message name="IDS_DATA_SHARING_TOAST_TAB_REMOVED" desc="Toast text describing that someone has removed a tab.">
+    <ph name="MEMBER_FIRST_NAME">$1<ex>Ali</ex></ph> removed tab “<ph name="WEBSITE_TITLE">$2<ex>chromium.org</ex></ph>”
+  </message>
+  <message name="IDS_DATA_SHARING_TOAST_TAB_UPDATED" desc="Toast text describing that someone has updated a tab.">
+    <ph name="MEMBER_FIRST_NAME">$1<ex>Ali</ex></ph> updated tab “<ph name="WEBSITE_TITLE">$2<ex>chromium.org</ex></ph>”
+  </message>
+  <message name="IDS_DATA_SHARING_TOAST_TAB_REMOVED_ACTION" desc="The action button text on the tab removed toast clicking on which will reopen the tab that was removed.">
+    Reopen
+  </message>
+  <message name="IDS_DATA_SHARING_TOAST_NEW_MEMBER" desc="Toast text describing that a new member has joined the group.">
+    <ph name="MEMBER_FIRST_NAME">$1<ex>Ali</ex></ph> joined "<ph name="GROUP_NAME">$2<ex>Vacation</ex></ph>" tab group
+  </message>
+  <message name="IDS_DATA_SHARING_TOAST_NEW_MEMBER_MULTIPLE_MEMBERS" desc="Toast text describing that multiple new members have joined the group.">
+    <ph name="MEMBER_COUNT">$1<ex>7</ex></ph> members joined "<ph name="GROUP_NAME">$2<ex>Vacation</ex></ph>" tab group
+  </message>
+  <message name="IDS_DATA_SHARING_TOAST_NEW_MEMBER_ACTION" desc="The action button text on the new member joined toast clicking on which will open the group members management screen.">
+    Manage
+  </message>
+  <message name="IDS_DATA_SHARING_TOAST_BLOCK_LEAVE" desc="Toast text describing that the user has lost access to a shared group.">
+    The "<ph name="GROUP_NAME">$1<ex>Vacation</ex></ph>" tab group is no longer available
+  </message>
+  <message name="IDS_DATA_SHARING_TOAST_BLOCK_LEAVE_MULTIPLE_GROUPS" desc="Toast text describing that the user has lost access to multiple shared groups.">
+    <ph name="GROUP_COUNT">$1<ex>7</ex></ph> tab groups no longer available
+  </message>
+  <message name="IDS_DATA_SHARING_TAB_GROUP_DEFAULT_TITLE_TABS_COUNT" desc="Title of unnamed saved tab group in toast text. [ICU_Syntax]">
+    {NUM_TABS, plural, =1 {1 tab} other {# tabs}}
+  </message>
+  <!-- Instant Messages -->
 
 </grit-part>

@@ -65,6 +65,7 @@ class BraveShieldsActionView
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
+  void OnTabGroupChanged(const TabGroupChange& change) override;
 
   raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
   raw_ref<Profile> profile_;

@@ -17,6 +17,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
@@ -133,13 +134,11 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
                           BrowserWindowInterface* browser_window_interface,
                           Edge fixed_flat_edge,
                           Edge animated_flat_edge,
-                          views::View* anchor_view,
                           TabStrip* tab_strip)
       : BraveTabSearchButton(tab_strip_controller,
                              browser_window_interface,
                              fixed_flat_edge,
                              animated_flat_edge,
-                             anchor_view,
                              tab_strip) {
     SetPreferredSize(
         gfx::Size{ToggleButton::GetIconWidth(), ToggleButton::GetIconWidth()});
@@ -147,15 +146,22 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
     SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_TAB_SEARCH));
     SetBorder(nullptr);
 
-    vertical_tab_on_right_.Init(
-        brave_tabs::kVerticalTabsOnRight,
-        region_view->browser()->profile()->GetPrefs(),
-        base::BindRepeating(&VerticalTabSearchButton::UpdateBubbleArrow,
-                            base::Unretained(this)));
-    UpdateBubbleArrow();
+    // We can have this host here because this bubble is only used in vertical
+    // tab mode. BrowserView::tab_search_bubble_host_ is used for horizontal
+    // mode.
+    tab_search_bubble_host_ = std::make_unique<BraveTabSearchBubbleHost>(
+        this, browser_window_interface, tab_strip->AsWeakPtr());
   }
 
   ~VerticalTabSearchButton() override = default;
+
+  BraveTabSearchBubbleHost* tab_search_bubble_host() {
+    return tab_search_bubble_host_.get();
+  }
+
+  void SetBubbleArrow(views::BubbleBorder::Arrow arrow) {
+    tab_search_bubble_host_->SetBubbleArrow(arrow);
+  }
 
   // BraveTabSearchButton:
   void UpdateColors() override {
@@ -200,15 +206,7 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
   }
 
  private:
-  void UpdateBubbleArrow() {
-    if (*vertical_tab_on_right_) {
-      SetBubbleArrow(views::BubbleBorder::RIGHT_TOP);
-    } else {
-      SetBubbleArrow(views::BubbleBorder::LEFT_TOP);
-    }
-  }
-
-  BooleanPrefMember vertical_tab_on_right_;
+  std::unique_ptr<BraveTabSearchBubbleHost> tab_search_bubble_host_;
 };
 
 BEGIN_METADATA(VerticalTabSearchButton)
@@ -241,7 +239,7 @@ class ShortcutBox : public views::View {
     shortcut_part->SetFontList(shortcut_font.DeriveWithSizeDelta(
         kFontSize - shortcut_font.GetFontSize()));
     shortcut_part->SetEnabledColor(kColorBraveVerticalTabNTBShortcutTextColor);
-    shortcut_part->SetBorder(views::CreateThemedRoundedRectBorder(
+    shortcut_part->SetBorder(views::CreateRoundedRectBorder(
         /*thickness*/ 1, /*radius*/ 4, kColorBraveVerticalTabSeparator));
 
     // Give padding and set minimum to width.
@@ -379,8 +377,8 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
       bg_color_id = kColorBraveVerticalTabHoveredBackground;
     }
 
-    SetBackground(views::CreateThemedRoundedRectBackground(bg_color_id,
-                                                           GetCornerRadius()));
+    SetBackground(
+        views::CreateRoundedRectBackground(bg_color_id, GetCornerRadius()));
   }
 
  private:
@@ -464,7 +462,7 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
     // way to change its bubble arrow from TOP_RIGHT at the moment.
     tab_search_button_ = AddChildView(std::make_unique<VerticalTabSearchButton>(
         region_view, region_view->tab_strip()->controller(),
-        browser_window_interface, Edge::kNone, Edge::kNone, this,
+        browser_window_interface, Edge::kNone, Edge::kNone,
         region_view->tab_strip()));
     UpdateTabSearchButtonVisibility();
 
@@ -477,7 +475,7 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
   }
   ~HeaderView() override = default;
 
-  BraveTabSearchButton* tab_search_button() { return tab_search_button_; }
+  VerticalTabSearchButton* tab_search_button() { return tab_search_button_; }
 
   void UpdateTabSearchButtonVisibility() {
     tab_search_button_->SetVisible(
@@ -539,7 +537,7 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
   raw_ptr<const TabStrip> tab_strip_ = nullptr;
   raw_ptr<ToggleButton> toggle_button_ = nullptr;
   raw_ptr<views::View> spacer_ = nullptr;
-  raw_ptr<BraveTabSearchButton> tab_search_button_ = nullptr;
+  raw_ptr<VerticalTabSearchButton> tab_search_button_ = nullptr;
   BooleanPrefMember vertical_tab_on_right_;
 };
 
@@ -615,7 +613,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
   header_view_->toggle_button()->SetHighlighted(state_ == State::kExpanded);
   separator_ = AddChildView(std::make_unique<views::View>());
   separator_->SetBackground(
-      views::CreateThemedSolidBackground(kColorBraveVerticalTabSeparator));
+      views::CreateSolidBackground(kColorBraveVerticalTabSeparator));
   new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
       original_region_view_->tab_strip_,
       base::BindRepeating(&TabStrip::NewTabButtonPressed,
@@ -623,7 +621,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       GetShortcutTextForNewTabButton(browser_view)));
 
   resize_area_ = AddChildView(std::make_unique<ResettableResizeArea>(this));
-  SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
+  SetBackground(views::CreateSolidBackground(kColorToolbar));
 
   auto* prefs = browser_->profile()->GetPrefs();
 
@@ -675,6 +673,8 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       brave_tabs::kVerticalTabsOnRight, browser()->profile()->GetPrefs(),
       base::BindRepeating(&VerticalTabStripRegionView::OnBrowserPanelsMoved,
                           base::Unretained(this)));
+
+  UpdateBubbleArrow();
 
   widget_observation_.Observe(browser_view->GetWidget());
 
@@ -958,6 +958,17 @@ void VerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
 void VerticalTabStripRegionView::OnBrowserPanelsMoved() {
   UpdateBorder();
   PreferredSizeChanged();
+  UpdateBubbleArrow();
+}
+
+void VerticalTabStripRegionView::UpdateBubbleArrow() {
+  if (*vertical_tab_on_right_) {
+    header_view_->tab_search_button()->SetBubbleArrow(
+        views::BubbleBorder::RIGHT_TOP);
+  } else {
+    header_view_->tab_search_button()->SetBubbleArrow(
+        views::BubbleBorder::LEFT_TOP);
+  }
 }
 
 void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
@@ -1394,6 +1405,10 @@ std::u16string VerticalTabStripRegionView::GetShortcutTextForNewTabButton(
 
 views::LabelButton& VerticalTabStripRegionView::GetToggleButtonForTesting() {
   return *header_view_->toggle_button();
+}
+
+TabSearchButton* VerticalTabStripRegionView::GetTabSearchButtonForTesting() {
+  return header_view_->tab_search_button();
 }
 
 bool VerticalTabStripRegionView::IsMenuShowing() const {

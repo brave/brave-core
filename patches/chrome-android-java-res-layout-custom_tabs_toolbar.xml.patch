@@ -1,13 +1,12 @@
 diff --git a/chrome/android/java/res/layout/custom_tabs_toolbar.xml b/chrome/android/java/res/layout/custom_tabs_toolbar.xml
-index 9f991b6b098fc04faf1c1af561c418e8fda5b39a..824ec7987acb8011b10c06be4b803dad544512fb 100644
+index 7b86465d123f55a417ca099f391a33d7b8a54327..63c857f20a1f7fd0034e3f09add03111136dd01a 100644
 --- a/chrome/android/java/res/layout/custom_tabs_toolbar.xml
 +++ b/chrome/android/java/res/layout/custom_tabs_toolbar.xml
-@@ -147,7 +147,7 @@ found in the LICENSE file.
-             style="@style/ToolbarHoverableButton" />
+@@ -148,6 +148,7 @@ found in the LICENSE file.
        </LinearLayout>
  
--
+ 
 +    <include layout="@layout/brave_custom_tabs_toolbar" android:layout_height="wrap_content" android:layout_width="match_parent" />
+     <!-- LINT.IfChange(MenuButton) -->
      <org.chromium.chrome.browser.toolbar.menu_button.MenuButton
          android:layout_height="wrap_content"
-         android:layout_gravity="center_vertical|end"

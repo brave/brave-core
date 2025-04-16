@@ -1,12 +1,12 @@
 diff --git a/tools/crates/gnrt/gen.rs b/tools/crates/gnrt/gen.rs
-index 0bbabb4f770cb34387e633f686c2623002fa9bd1..298990185fd8c1a36b4fb5361dcd8febcdefecd3 100644
+index 41286f0194adc3f6ec5ca629ec598b7d1b22c2df..499cf4319aca7224ac3911c9953e773982f923fb 100644
 --- a/tools/crates/gnrt/gen.rs
 +++ b/tools/crates/gnrt/gen.rs
-@@ -272,6 +272,7 @@ fn generate_for_third_party(args: GenCommandArgs, paths: &paths::ChromiumPaths)
-     // Remove any excluded dep entries.
-     dependencies
-         .retain(|dep| !config.resolve.remove_crates.iter().any(|r| **r == dep.package_name));
-+    dependencies.retain(|dep| !dep.is_local );
- 
-     // Remove dev dependencies since tests aren't run.
-     dependencies.retain(|dep| {
+@@ -268,6 +268,7 @@ fn generate_for_third_party(args: GenCommandArgs, paths: &paths::ChromiumPaths)
+     let all_build_files: HashMap<PathBuf, gn::BuildFile> = {
+         let mut map = HashMap::new();
+         for dep in &dependencies {
++            if dep.is_local { continue; }
+             let build_file = gn::build_file_from_deps(
+                 std::iter::once(dep),
+                 paths,

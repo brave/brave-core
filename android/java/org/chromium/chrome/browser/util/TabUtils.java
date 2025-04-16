@@ -13,6 +13,7 @@ import static androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_LIGHT;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Browser;
@@ -32,12 +33,14 @@ import org.jni_zero.CalledByNative;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
-import org.chromium.chrome.browser.bookmarks.BookmarkUtils;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -50,12 +53,16 @@ import org.chromium.ui.util.ColorUtils;
 
 import java.lang.reflect.Field;
 
+@NullMarked
 public class TabUtils {
     private static final String TAG = "TabUtils";
 
-    public static void showBookmarkTabPopupMenu(Context context, View view,
+    public static void showBookmarkTabPopupMenu(
+            Context context,
+            View view,
             ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
-            LocationBarModel locationBarModel) {
+            LocationBarModel locationBarModel,
+            BookmarkManagerOpener bookmarkManagerOpener) {
         Context wrapper = new ContextThemeWrapper(context, R.style.BookmarkTabPopupMenu);
 
         PopupMenu popup = new PopupMenu(wrapper, view);
@@ -78,11 +85,16 @@ public class TabUtils {
         }
 
         Tab currentTab = locationBarModel != null ? locationBarModel.getTab() : null;
-        BookmarkModel bridge = bookmarkModelSupplier != null ? bookmarkModelSupplier.get() : null;
+        BookmarkModel bookmarkModel =
+                bookmarkModelSupplier != null ? bookmarkModelSupplier.get() : null;
         boolean isBookmarked =
-                currentTab != null && bridge != null && bridge.hasBookmarkIdForTab(currentTab);
+                currentTab != null
+                        && bookmarkModel != null
+                        && bookmarkModel.hasBookmarkIdForTab(currentTab);
         boolean editingAllowed =
-                currentTab == null || bridge == null || bridge.isEditBookmarksEnabled();
+                currentTab == null
+                        || bookmarkModel == null
+                        || bookmarkModel.isEditBookmarksEnabled();
 
         MenuCompat.setGroupDividerEnabled(popup.getMenu(), true);
 
@@ -92,14 +104,11 @@ public class TabUtils {
         MenuItem deleteMenuItem = popup.getMenu().findItem(R.id.delete_bookmark);
 
         if (GlobalNightModeStateProviderHolder.getInstance().isInNightMode()) {
-            addMenuItem.getIcon().setTint(
-                    ContextCompat.getColor(context, R.color.bookmark_menu_text_color));
-            editMenuItem.getIcon().setTint(
-                    ContextCompat.getColor(context, R.color.bookmark_menu_text_color));
-            viewMenuItem.getIcon().setTint(
-                    ContextCompat.getColor(context, R.color.bookmark_menu_text_color));
-            deleteMenuItem.getIcon().setTint(
-                    ContextCompat.getColor(context, R.color.bookmark_menu_text_color));
+            int tintColor = ContextCompat.getColor(context, R.color.bookmark_menu_text_color);
+            tintIcon(addMenuItem.getIcon(), tintColor);
+            tintIcon(editMenuItem.getIcon(), tintColor);
+            tintIcon(viewMenuItem.getIcon(), tintColor);
+            tintIcon(addMenuItem.getIcon(), tintColor);
         }
 
         if (editingAllowed) {
@@ -133,13 +142,20 @@ public class TabUtils {
                         if (id == R.id.add_bookmark || id == R.id.delete_bookmark) {
                             activity.addOrEditBookmark(currentTab);
                             return true;
-                        } else if (id == R.id.edit_bookmark && bridge != null) {
-                            BookmarkId bookmarkId = bridge.getUserBookmarkIdForTab(currentTab);
-                            if (bookmarkId != null) {
-                                BookmarkUtils.startEditActivity(
-                                        activity, currentTab.getProfile(), bookmarkId);
-                                return true;
-                            }
+                        } else if (id == R.id.edit_bookmark && bookmarkModel != null) {
+                            BraveActivity activity_final = activity;
+                            bookmarkModel.finishLoadingBookmarkModel(
+                                    () -> {
+                                        BookmarkId bookmarkId =
+                                                bookmarkModel.getUserBookmarkIdForTab(currentTab);
+                                        if (bookmarkId != null) {
+                                            bookmarkManagerOpener.startEditActivity(
+                                                    activity_final,
+                                                    currentTab.getProfile(),
+                                                    bookmarkId);
+                                        }
+                                    });
+                            return true;
                         } else if (id == R.id.view_bookmarks) {
                             activity.showBookmarkManager(currentTab.getProfile());
                             return true;
@@ -363,5 +379,9 @@ public class TabUtils {
             return transition;
         }
         return 0;
+    }
+
+    private static void tintIcon(@Nullable Drawable icon, int color) {
+        if (icon != null) icon.setTint(color);
     }
 }

@@ -1,8 +1,8 @@
 diff --git a/tools/crates/gnrt/lib/gn.rs b/tools/crates/gnrt/lib/gn.rs
-index 06ca0a9e6b6a144615bb158bda56ad8b2b516b6b..981b57207f2fbfabe1c56e8b81bc0ccbc2870ce2 100644
+index 4a61217a166dadf8a44752b92cd362105d8fa022..6a28c161f4cc2f037b8d7696d5b63df843ebafa2 100644
 --- a/tools/crates/gnrt/lib/gn.rs
 +++ b/tools/crates/gnrt/lib/gn.rs
-@@ -202,8 +202,9 @@ pub fn build_rule_from_dep(
+@@ -201,8 +201,9 @@ pub fn build_rule_from_dep(
          let mut aliases = Vec::new();
          for dep in &normal_deps {
              let target_name = NormalizedName::from_crate_name(&dep.package_name).to_string();
@@ -13,7 +13,7 @@ index 06ca0a9e6b6a144615bb158bda56ad8b2b516b6b..981b57207f2fbfabe1c56e8b81bc0ccb
              }
          }
          aliases.sort_unstable();
-@@ -537,6 +538,7 @@ fn target_os_to_condition(target_os: &str) -> &'static str {
+@@ -768,6 +769,7 @@ fn target_os_to_condition(target_os: &str) -> Condition {
      for (t, c) in &[
          ("android", "is_android"),
          ("darwin", "is_mac"),

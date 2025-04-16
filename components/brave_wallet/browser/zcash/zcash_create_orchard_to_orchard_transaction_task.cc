@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_orchard_transaction_task.h"
 
 #include <utility>
+#include <variant>
 
 #include "base/numerics/checked_math.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -17,7 +18,7 @@ namespace brave_wallet {
 
 ZCashCreateOrchardToOrchardTransactionTask::
     ZCashCreateOrchardToOrchardTransactionTask(
-        absl::variant<
+        std::variant<
             base::PassKey<class ZCashCreateOrchardToOrchardTransactionTaskTest>,
             base::PassKey<ZCashWalletService>> pass_key,
         ZCashWalletService& zcash_wallet_service,

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/tab_search/BUILD.gn b/chrome/browser/resources/tab_search/BUILD.gn
-index 06e7993d57ea7d35473ee7dc409ea9f8c5b69bd2..4c8a0fc5dc59b691456f98e55ad3e097c453841a 100644
+index 375e5b14111ce47249f71ef79f67202574e5ac14..96c706451753ebf28d9f444a5131637cf8ac7b5b 100644
 --- a/chrome/browser/resources/tab_search/BUILD.gn
 +++ b/chrome/browser/resources/tab_search/BUILD.gn
-@@ -123,4 +123,5 @@ build_webui("build") {
+@@ -124,4 +124,5 @@ build_webui("build") {
      optimize_webui_host = "tab-search.top-chrome"
      optimize_webui_in_files = [ "tab_search.js" ]
    }

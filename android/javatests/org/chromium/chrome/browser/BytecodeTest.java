@@ -53,6 +53,7 @@ import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
+import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.BookmarkMoveSnackbarManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkOpener;
@@ -106,6 +107,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdow
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
+import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
@@ -119,6 +121,7 @@ import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
+import org.chromium.chrome.browser.tasks.tab_management.TabGroupCreationUiFlow;
 import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneCoordinatorFactory;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
@@ -127,6 +130,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.reload_button.ReloadButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToggleTabStackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
@@ -534,7 +538,9 @@ public class BytecodeTest {
                         Activity.class,
                         int.class,
                         Callback.class,
-                        boolean.class));
+                        boolean.class,
+                        BookmarkManagerOpener.class,
+                        PriceDropNotificationManager.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/permissions/PermissionDialogModelFactory",
@@ -1058,6 +1064,27 @@ public class BytecodeTest {
 
     @Test
     @SmallTest
+    public void testInnerClassConstructorsExistAndMatch() throws Exception {
+        Assert.assertTrue(
+                innerClassesConstructorsMatch(
+                        "org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources", // presubmit: ignore-long-line
+                        "ResourceItem",
+                        "org/chromium/components/browser_ui/site_settings/ContentSettingsResources",
+                        "ResourceItem",
+                        int.class,
+                        int.class,
+                        Integer.class,
+                        Integer.class,
+                        int.class,
+                        int.class,
+                        int.class,
+                        int.class,
+                        int.class,
+                        int.class));
+    }
+
+    @Test
+    @SmallTest
     public void testConstructorsExistAndMatch() throws Exception {
         Assert.assertTrue(
                 constructorsMatch(
@@ -1268,7 +1295,8 @@ public class BytecodeTest {
                         DesktopWindowStateManager.class,
                         OneshotSupplier.class,
                         OnLongClickListener.class,
-                        ToolbarProgressBar.class));
+                        ToolbarProgressBar.class,
+                        ReloadButtonCoordinator.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
@@ -1571,7 +1599,8 @@ public class BytecodeTest {
                         ModalDialogManager.class,
                         Runnable.class,
                         BookmarkMoveSnackbarManager.class,
-                        BooleanSupplier.class));
+                        BooleanSupplier.class,
+                        BookmarkManagerOpener.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerCoordinator",
@@ -1582,7 +1611,8 @@ public class BytecodeTest {
                         Profile.class,
                         BookmarkUiPrefs.class,
                         BookmarkOpener.class,
-                        ComponentName.class));
+                        BookmarkManagerOpener.class,
+                        PriceDropNotificationManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
@@ -1608,7 +1638,9 @@ public class BytecodeTest {
                         SnackbarManager.class,
                         BooleanSupplier.class,
                         Consumer.class,
-                        BookmarkMoveSnackbarManager.class));
+                        BookmarkMoveSnackbarManager.class,
+                        BookmarkManagerOpener.class,
+                        PriceDropNotificationManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
@@ -1759,7 +1791,8 @@ public class BytecodeTest {
                         DoubleConsumer.class,
                         UserEducationHelper.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        TabGroupCreationUiFlow.class));
 
         Assert.assertTrue(
                 constructorsMatch(
@@ -2321,6 +2354,10 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesLayoutBase"));
         Assert.assertTrue(
                 checkSuperName(
+                        "org/chromium/chrome/browser/suggestions/tile/TilesLinearLayout",
+                        "android/widget/GridLayout"));
+        Assert.assertTrue(
+                checkSuperName(
                         "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                         "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessorBase"));
         Assert.assertTrue(
@@ -2481,16 +2518,50 @@ public class BytecodeTest {
         }
     }
 
+    private Class getInnerClass(Class parentClass, String innerClassName) {
+        String innerClassPath = parentClass.getName() + "$" + innerClassName;
+        for (Class<?> innerClass : parentClass.getDeclaredClasses()) {
+            if (innerClass.getName().equals(innerClassPath)) {
+                return innerClass;
+            }
+        }
+        return null;
+    }
+
+    private boolean innerClassesConstructorsMatch(
+            String class1Name,
+            String innerClass1Name,
+            String class2Name,
+            String innerClass2Name,
+            Class<?>... parameterTypes) {
+        Class class1 = getClassForPath(class1Name);
+        Class class2 = getClassForPath(class2Name);
+        if (class1 == null || class2 == null) {
+            return false;
+        }
+        Class innerClass1 = getInnerClass(class1, innerClass1Name);
+        Class innerClass2 = getInnerClass(class2, innerClass2Name);
+        if (innerClass1 == null || innerClass2 == null) {
+            return false;
+        }
+        return constructorsMatchImpl(innerClass1, innerClass2, parameterTypes);
+    }
+
     private boolean constructorsMatch(
             String class1Name, String class2Name, Class<?>... parameterTypes) {
-        Class c1 = getClassForPath(class1Name);
-        Class c2 = getClassForPath(class2Name);
-        if (c1 == null || c2 == null) {
+        Class class1 = getClassForPath(class1Name);
+        Class class2 = getClassForPath(class2Name);
+
+        return constructorsMatchImpl(class1, class2, parameterTypes);
+    }
+
+    private boolean constructorsMatchImpl(Class class1, Class class2, Class<?>... parameterTypes) {
+        if (class1 == null || class2 == null) {
             return false;
         }
         try {
-            Constructor ctor1 = c1.getDeclaredConstructor(parameterTypes);
-            Constructor ctor2 = c2.getDeclaredConstructor(parameterTypes);
+            Constructor ctor1 = class1.getDeclaredConstructor(parameterTypes);
+            Constructor ctor2 = class2.getDeclaredConstructor(parameterTypes);
             if (ctor1 != null && ctor2 != null) {
                 return true;
             }

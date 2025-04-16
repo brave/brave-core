@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/notreached.h"
 #include "brave/app/brave_command_ids.h"
@@ -107,8 +108,11 @@ views::BubbleDialogDelegate* WaybackMachineActionIconView::GetBubble() const {
     return nullptr;
   }
 
-  auto* widget =
-      views::Widget::GetWidgetForNativeWindow(tab_helper->active_window());
+  std::optional<gfx::NativeWindow> active_window = tab_helper->active_window();
+  if (!active_window.has_value()) {
+    return nullptr;
+  }
+  auto* widget = views::Widget::GetWidgetForNativeWindow(active_window.value());
   if (!widget) {
     return nullptr;
   }

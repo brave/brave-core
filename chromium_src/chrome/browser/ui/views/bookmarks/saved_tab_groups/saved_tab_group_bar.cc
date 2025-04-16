@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 
 #define SavedTabGroupButton BraveSavedTabGroupButton
 

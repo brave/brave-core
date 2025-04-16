@@ -36,8 +36,8 @@ RegisterPolymerTemplateModifications({
       // default route, rather than always showing, otherwise when we navigate,
       // we'll get all the toggles showing up.
       const nonStyleChildren = (
-        Array.from(templateContent.children) as HTMLElement[]
-      ).filter((t) => t.tagName !== 'STYLE')
+        Array.from(templateContent.children)
+      ).filter((t: any) => t.tagName !== 'STYLE')
 
       templateContent.appendChild(html`
         <settings-animated-pages id="pages" section="system">

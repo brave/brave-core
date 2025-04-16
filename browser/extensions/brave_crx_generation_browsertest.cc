@@ -91,8 +91,7 @@ class BraveCrxGenerationTest : public InProcessBrowserTest {
 
   bool InstallExtension(const base::FilePath& crx_path,
                         crx_file::VerifierFormat format) {
-    auto installer = CrxInstaller::CreateSilent(
-        ExtensionSystem::Get(browser()->profile())->extension_service());
+    auto installer = CrxInstaller::CreateSilent(browser()->profile());
     installer->set_allow_silent_install(true);
     installer->set_install_cause(extension_misc::INSTALL_CAUSE_USER_DOWNLOAD);
     installer->set_creation_flags(Extension::FROM_WEBSTORE);

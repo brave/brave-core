@@ -640,6 +640,15 @@ Config.prototype.buildArgs = function () {
       args.default_min_sdk_version = 28
     }
 
+    if (args.target_android_output_format == 'apk' &&
+        (this.targetArch == "arm64" || this.targetArch == "x64")) {
+      // We want to have both 32 and 64 bit native libs in arm64/x64 apks
+      // Starting from cr136 it is defaulted to false.
+      // For local build you can add --gn=enable_android_secondary_abi:false
+      // to have only 64 bit libs.
+      args.enable_android_secondary_abi = true;
+    }
+
     // These do not exist on android
     // TODO - recheck
     delete args.enable_nacl
@@ -1078,7 +1087,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       // Use hermetic toolchain only internally.
       env.USE_BRAVE_HERMETIC_TOOLCHAIN = '1'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
-      env.GYP_MSVS_HASH_7393122652 = 'd325744cf9'
+      env.GYP_MSVS_HASH_076960eda6 = '970c977bc2'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = `${this.internalDepsUrl}/windows-hermetic-toolchain/`
     }
 

@@ -18,12 +18,11 @@ bool IsRegionSupported(PrefService* pref_service,
     const std::vector<std::string>& regions,
     bool allow_list)  {
   bool is_supported = !allow_list;
-  const int32_t user_region_id =
+  const country_codes::CountryId user_region_id =
       country_codes::GetCountryIDFromPrefs(pref_service);
 
   for (const auto& region : regions) {
-    const int32_t region_id = country_codes::CountryCharsToCountryID(
-        region.at(0), region.at(1));
+    auto region_id = country_codes::CountryId(region);
     if (user_region_id == region_id) {
       is_supported = !is_supported;
       break;

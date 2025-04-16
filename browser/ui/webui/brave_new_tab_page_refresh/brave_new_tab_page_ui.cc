@@ -25,8 +25,8 @@
 #include "chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
-#include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
+#include "components/tab_collections/public/tab_interface.h"
 
 namespace {
 

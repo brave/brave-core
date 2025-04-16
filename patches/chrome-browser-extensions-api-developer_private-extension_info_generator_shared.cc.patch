@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/api/developer_private/extension_info_generator_shared.cc b/chrome/browser/extensions/api/developer_private/extension_info_generator_shared.cc
-index a107d8a5bfef4e2797e7792edb7743d9f683b47c..184fe1c68d8efadfcbc807e9cf83765852d60293 100644
+index 1f48db0821bb71955c56daa0f96bb395ffe0094a..9b358678303dab6d7939961d26d4324e3f4486e6 100644
 --- a/chrome/browser/extensions/api/developer_private/extension_info_generator_shared.cc
 +++ b/chrome/browser/extensions/api/developer_private/extension_info_generator_shared.cc
-@@ -601,6 +601,7 @@ void ExtensionInfoGeneratorShared::FillExtensionInfo(
+@@ -585,6 +585,7 @@ void ExtensionInfoGeneratorShared::FillExtensionInfo(
  #else
    info.incognito_access_pending_change = false;
  #endif
 +  BRAVE_CREATE_EXTENSION_INFO_HELPER
  
    // User Scripts toggle.
-   info.user_scripts_access.is_enabled = CanRunOrRequestUserScripts(extension);
+   info.user_scripts_access.is_enabled =
