@@ -43,9 +43,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.brave.playlist.util.ConstantUtils;
-import com.brave.playlist.util.PlaylistPreferenceUtils;
-import com.brave.playlist.util.PlaylistUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -145,6 +142,9 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
+import org.chromium.chrome.browser.playlist.util.ConstantUtils;
+import org.chromium.chrome.browser.playlist.util.PlaylistPreferenceUtils;
+import org.chromium.chrome.browser.playlist.util.PlaylistUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
@@ -229,6 +229,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardUtils;
 import org.chromium.ui.widget.Toast;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -290,6 +291,8 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String BRAVE_SEARCH_ENGINE_KEYWORD = ":br";
     public static final String BING_SEARCH_ENGINE_KEYWORD = ":b";
     public static final String STARTPAGE_SEARCH_ENGINE_KEYWORD = ":sp";
+
+    private static final String PLAYLIST_DB_NAME = "playlist.db";
 
     private static final boolean ENABLE_IN_APP_UPDATE =
             Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
@@ -1030,6 +1033,20 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        // Check and remove legacy playlist database if needed
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                () -> {
+                    // Get path to playlist database
+                    File playlistDatabasePath =
+                            ContextUtils.getApplicationContext().getDatabasePath(PLAYLIST_DB_NAME);
+
+                    // Delete the database file if it exists
+                    if (playlistDatabasePath.exists()) {
+                        ContextUtils.getApplicationContext().deleteDatabase(PLAYLIST_DB_NAME);
+                    }
+                });
 
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
 

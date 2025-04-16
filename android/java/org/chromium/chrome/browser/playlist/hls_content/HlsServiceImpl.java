@@ -15,19 +15,17 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment;
 
-import com.brave.playlist.local_database.PlaylistRepository;
-import com.brave.playlist.model.HlsContentProgressModel;
-import com.brave.playlist.model.HlsContentQueueModel;
-import com.brave.playlist.model.PlaylistItemModel;
-import com.brave.playlist.playback_service.VideoPlaybackService;
-import com.brave.playlist.util.MediaUtils;
-import com.brave.playlist.util.PlaylistUtils;
-
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
+import org.chromium.chrome.browser.playlist.model.HlsContentProgressModel;
+import org.chromium.chrome.browser.playlist.model.HlsContentQueueModel;
+import org.chromium.chrome.browser.playlist.model.PlaylistItemModel;
+import org.chromium.chrome.browser.playlist.playback_service.VideoPlaybackService;
+import org.chromium.chrome.browser.playlist.util.MediaUtils;
+import org.chromium.chrome.browser.playlist.util.PlaylistUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -71,12 +69,7 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 () -> {
-                    PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
-                    if (playlistRepository == null) {
-                        return;
-                    }
-                    HlsContentQueueModel hlsContentQueueModel =
-                            playlistRepository.getFirstHlsContentQueueModel();
+                    HlsContentQueueModel hlsContentQueueModel = null;
                     if (hlsContentQueueModel == null || mPlaylistService == null) {
                         return;
                     }
@@ -84,13 +77,6 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                     mPlaylistService.getPlaylistItem(
                             playlistItemId,
                             playlistItem -> {
-                                if (playlistItem == null) {
-                                    PostTask.postTask(
-                                            TaskTraits.USER_VISIBLE_MAY_BLOCK,
-                                            () -> {
-                                                removeContentAndStartNextDownload(playlistItemId);
-                                            });
-                                }
                                 currentDownloadingPlaylistItemId = playlistItemId;
                                 HlsUtils.getManifestFile(
                                         mContext,
@@ -153,9 +139,6 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                                                                             addNewPlaylistItemModel(
                                                                                     playlistItem
                                                                                             .id);
-                                                                            removeContentAndStartNextDownload(
-                                                                                    playlistItem
-                                                                                            .id);
                                                                         });
                                                             }
                                                         });
@@ -163,20 +146,6 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                                         });
                             });
                 });
-    }
-
-    private void removeContentAndStartNextDownload(String playlistItemId) {
-        PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
-        if (playlistRepository == null) {
-            return;
-        }
-        playlistRepository.deleteHlsContentQueueModel(playlistItemId);
-        currentDownloadingPlaylistItemId = "";
-        if (playlistRepository.getFirstHlsContentQueueModel() != null) {
-            startHlsContentFromQueue();
-        } else {
-            getService().stopSelf();
-        }
     }
 
     private void addNewPlaylistItemModel(String playlistItemId) {

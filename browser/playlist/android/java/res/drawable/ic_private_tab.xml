@@ -1,0 +1,17 @@
+<!--
+  ~ Copyright (c) 2023 The Brave Authors. All rights reserved.
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  ~ You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@color/day_night_icon_color"
+        android:fillType="evenOdd"
+        android:pathData="M3.095,11.369C3.236,11.829 3.519,14.491 4.368,15.259C5.242,16.049 8.541,16.036 9.173,15.694C10.587,14.928 11.16,12.452 11.41,11.368C11.551,10.755 11.999,10.755 11.999,10.755C11.999,10.755 12.474,10.755 12.616,11.368C12.866,12.452 13.414,14.935 14.826,15.7C15.458,16.043 18.757,16.056 19.633,15.266C20.48,14.498 20.763,11.828 20.904,11.368C21.045,10.908 21.752,10.447 21.893,10.294C22.035,10.141 22.035,9.527 21.893,9.373C21.611,9.067 18.276,8.793 14.684,9.22C13.968,9.305 13.696,9.526 11.999,9.526C10.303,9.526 10.029,9.304 9.313,9.22C5.725,8.794 2.389,9.067 2.106,9.374C1.965,9.527 1.965,10.142 2.106,10.295C2.247,10.448 2.954,10.908 3.095,11.369Z" />
+</vector>

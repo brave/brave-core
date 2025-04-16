@@ -2,8 +2,7 @@
 <!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
      This Source Code Form is subject to the terms of the Mozilla Public
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
-     You can obtain one at http://mozilla.org/MPL/2.0/
--->
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <resources>
     <!-- Theme colors -->
@@ -270,9 +269,7 @@
     <color name="schemes_surface_container_highest">#303034</color>
     <color name="schemes_surface_container_lowest">#0D0E11</color>
     <color name="text_interactive">#7c91ff</color>
-
     <color name="button_background_widget_promo">#C1C6FF</color>
-
     <color name="open_yt_dialog_bg">#000000</color>
 
     <!-- Empty state icon Colors -->

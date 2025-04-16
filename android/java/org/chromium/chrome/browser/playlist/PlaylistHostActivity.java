@@ -5,42 +5,33 @@
 
 package org.chromium.chrome.browser.playlist;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.brave.playlist.PlaylistViewModel;
-import com.brave.playlist.enums.PlaylistOptionsEnum;
-import com.brave.playlist.fragment.AllPlaylistFragment;
-import com.brave.playlist.fragment.PlaylistFragment;
-import com.brave.playlist.listener.PlaylistOptionsListener;
-import com.brave.playlist.local_database.PlaylistRepository;
-import com.brave.playlist.model.HlsContentProgressModel;
-import com.brave.playlist.model.MoveOrCopyModel;
-import com.brave.playlist.model.PlaylistItemModel;
-import com.brave.playlist.model.PlaylistModel;
-import com.brave.playlist.model.PlaylistOptionsModel;
-import com.brave.playlist.playback_service.VideoPlaybackService;
-import com.brave.playlist.util.ConstantUtils;
-import com.brave.playlist.util.PlaylistUtils;
-import com.brave.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
-
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.task.PostTask;
-import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
-import org.chromium.chrome.browser.playlist.hls_content.HlsService;
-import org.chromium.chrome.browser.playlist.hls_content.HlsServiceImpl;
+import org.chromium.chrome.browser.playlist.fragment.AllPlaylistFragment;
+import org.chromium.chrome.browser.playlist.fragment.PlaylistFragment;
+import org.chromium.chrome.browser.playlist.listener.PlaylistOptionsListener;
+import org.chromium.chrome.browser.playlist.model.HlsContentProgressModel;
+import org.chromium.chrome.browser.playlist.model.MoveOrCopyModel;
+import org.chromium.chrome.browser.playlist.model.PlaylistItemModel;
+import org.chromium.chrome.browser.playlist.model.PlaylistModel;
+import org.chromium.chrome.browser.playlist.model.PlaylistOptionsModel;
+import org.chromium.chrome.browser.playlist.playback_service.VideoPlaybackService;
+import org.chromium.chrome.browser.playlist.util.ConstantUtils;
+import org.chromium.chrome.browser.playlist.util.PlaylistUtils;
+import org.chromium.chrome.browser.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -181,7 +172,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                 return;
                             }
                             for (PlaylistItemModel playlistItem : playlistItems.getItems()) {
-                                deleteHLSContent(playlistItem.getId());
                                 mPlaylistService.removeItemFromPlaylist(
                                         playlistItems.getId(), playlistItem.getId());
                             }
@@ -199,9 +189,10 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                 return;
                             }
                             if (moveOrCopyModel.getPlaylistOptionsEnum()
-                                            == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM
+                                            == PlaylistModel.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM
                                     || moveOrCopyModel.getPlaylistOptionsEnum()
-                                            == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS) {
+                                            == PlaylistModel.PlaylistOptionsEnum
+                                                    .MOVE_PLAYLIST_ITEMS) {
                                 for (PlaylistItemModel playlistItem :
                                         moveOrCopyModel.getPlaylistItems()) {
                                     mPlaylistService.moveItem(
@@ -235,15 +226,18 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                             if (mPlaylistService == null) {
                                 return;
                             }
-                            PlaylistOptionsEnum option = playlistOptionsModel.getOptionType();
-                            if (option == PlaylistOptionsEnum.DELETE_PLAYLIST) {
+                            PlaylistModel.PlaylistOptionsEnum option =
+                                    playlistOptionsModel.getOptionType();
+                            if (option == PlaylistModel.PlaylistOptionsEnum.DELETE_PLAYLIST) {
                                 if (playlistOptionsModel.getPlaylistModel() != null) {
                                     mPlaylistService.removePlaylist(
                                             playlistOptionsModel.getPlaylistModel().getId());
                                 }
-                            } else if (option == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS) {
                                 showMoveOrCopyPlaylistBottomSheet();
-                            } else if (option == PlaylistOptionsEnum.COPY_PLAYLIST_ITEMS) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum.COPY_PLAYLIST_ITEMS) {
                                 showMoveOrCopyPlaylistBottomSheet();
                             }
                         });
@@ -256,25 +250,31 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                             if (mPlaylistService == null) {
                                 return;
                             }
-                            PlaylistOptionsEnum option = playlistItemOption.getOptionType();
-                            if (option == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM) {
+                            PlaylistModel.PlaylistOptionsEnum option =
+                                    playlistItemOption.getOptionType();
+                            if (option == PlaylistModel.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM) {
                                 showMoveOrCopyPlaylistBottomSheet();
-                            } else if (option == PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
                                 showMoveOrCopyPlaylistBottomSheet();
-                            } else if (option == PlaylistOptionsEnum.DELETE_ITEMS_OFFLINE_DATA) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum
+                                            .DELETE_ITEMS_OFFLINE_DATA) {
                                 mPlaylistService.removeLocalDataForItem(
                                         playlistItemOption.getPlaylistItemModel().getId());
                                 // Playlist item will be updated based on event
-                            } else if (option == PlaylistOptionsEnum.OPEN_IN_NEW_TAB) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum.OPEN_IN_NEW_TAB) {
                                 openPlaylistInTab(
                                         false,
                                         playlistItemOption.getPlaylistItemModel().getPageSource());
-                            } else if (option == PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB) {
                                 openPlaylistInTab(
                                         true,
                                         playlistItemOption.getPlaylistItemModel().getPageSource());
-                            } else if (option == PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
-                                deleteHLSContent(playlistItemOption.getPlaylistItemModel().getId());
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
                                 mPlaylistService.removeItemFromPlaylist(
                                         playlistItemOption.getPlaylistId(),
                                         playlistItemOption.getPlaylistItemModel().getId());
@@ -419,7 +419,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
 
     @Override
     public void onPlaylistOptionClicked(PlaylistOptionsModel playlistOptionsModel) {
-        if (PlaylistOptionsEnum.DELETE_PLAYLIST == playlistOptionsModel.getOptionType()
+        if (PlaylistModel.PlaylistOptionsEnum.DELETE_PLAYLIST
+                        == playlistOptionsModel.getOptionType()
                 && mPlaylistService != null
                 && playlistOptionsModel.getPlaylistModel() != null) {
             mPlaylistService.removePlaylist(playlistOptionsModel.getPlaylistModel().getId());
@@ -430,25 +431,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     private void openPlaylistInTab(boolean isIncognito, String url) {
         finish();
         TabUtils.openUrlInNewTab(isIncognito, url);
-    }
-
-    private void deleteHLSContent(String playlistItemId) {
-        PostTask.postTask(
-                TaskTraits.BEST_EFFORT_MAY_BLOCK,
-                () -> {
-                    PlaylistRepository playlistRepository =
-                            new PlaylistRepository(PlaylistHostActivity.this);
-                    if (playlistRepository != null
-                            && playlistRepository.isHlsContentQueueModelExists(playlistItemId)) {
-                        playlistRepository.deleteHlsContentQueueModel(playlistItemId);
-                    }
-                    if (HlsServiceImpl.currentDownloadingPlaylistItemId.equals(playlistItemId)) {
-                        HlsServiceImpl.currentDownloadingPlaylistItemId = "";
-                        mPlaylistService.cancelQuery(playlistItemId);
-                        stopService(new Intent(PlaylistHostActivity.this, HlsService.class));
-                        PlaylistUtils.checkAndStartHlsDownload(PlaylistHostActivity.this);
-                    }
-                });
     }
 
     @Override
