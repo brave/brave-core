@@ -9,7 +9,6 @@
 #include <list>
 #include <memory>
 #include <string>
-#include <utility>
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
@@ -74,6 +73,11 @@ class CardanoWalletService : public mojom::CardanoWalletService {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
  private:
+  using CardanoGetUtxosTaskList =
+      std::list<std::unique_ptr<GetCardanoUtxosTask>>;
+  using CardanoCreateTransactionTaskList =
+      std::list<std::unique_ptr<CardanoCreateTransactionTask>>;
+
   const raw_ref<KeyringService> keyring_service_;
   const raw_ref<NetworkManager> network_manager_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
@@ -83,11 +87,13 @@ class CardanoWalletService : public mojom::CardanoWalletService {
       base::expected<GetCardanoUtxosTask::UtxoMap, std::string> utxos);
 
   void OnGetUtxosTaskDone(
-      GetCardanoUtxosTask* task,
+      CardanoGetUtxosTaskList::iterator task,
+      GetUtxosCallback callback,
       base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result);
 
   void OnCreateCardanoTransactionTaskDone(
-      CardanoCreateTransactionTask* task,
+      CardanoCreateTransactionTaskList::iterator task,
+      CardanoCreateTransactionTaskCallback callback,
       base::expected<CardanoTransaction, std::string> result);
 
   void OnPostTransaction(CardanoTransaction bitcoin_transaction,
@@ -100,11 +106,8 @@ class CardanoWalletService : public mojom::CardanoWalletService {
   mojo::ReceiverSet<mojom::CardanoWalletService> receivers_;
   cardano_rpc::CardanoRpc cardano_rpc_;
 
-  std::list<std::pair<std::unique_ptr<GetCardanoUtxosTask>, GetUtxosCallback>>
-      get_cardano_utxo_tasks_;
-  std::list<std::pair<std::unique_ptr<CardanoCreateTransactionTask>,
-                      CardanoCreateTransactionTaskCallback>>
-      create_transaction_tasks_;
+  CardanoGetUtxosTaskList get_cardano_utxo_tasks_;
+  CardanoCreateTransactionTaskList create_transaction_tasks_;
 
   base::WeakPtrFactory<CardanoWalletService> weak_ptr_factory_{this};
 };

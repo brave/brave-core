@@ -7,13 +7,12 @@
 
 #include <stdint.h>
 
-#include <algorithm>
 #include <map>
+#include <memory>
 #include <optional>
 #include <utility>
 #include <vector>
 
-#include "base/notreached.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_create_transaction_task.h"
@@ -113,30 +112,24 @@ void CardanoWalletService::GetUtxos(mojom::AccountIdPtr account_id,
     }
   }
 
-  auto& task = get_cardano_utxo_tasks_.emplace_back(
+  auto it = get_cardano_utxo_tasks_.insert(
+      get_cardano_utxo_tasks_.end(),
       std::make_unique<GetCardanoUtxosTask>(
           *this, GetNetworkForCardanoAccount(account_id),
-          std::move(cardano_addresses)),
-      std::move(callback));
+          std::move(cardano_addresses)));
 
-  task.first->Start(base::BindOnce(&CardanoWalletService::OnGetUtxosTaskDone,
-                                   weak_ptr_factory_.GetWeakPtr(),
-                                   task.first.get()));
+  (*it)->Start(base::BindOnce(&CardanoWalletService::OnGetUtxosTaskDone,
+                              weak_ptr_factory_.GetWeakPtr(), it,
+                              std::move(callback)));
 }
 
 void CardanoWalletService::OnGetUtxosTaskDone(
-    GetCardanoUtxosTask* task,
+    CardanoGetUtxosTaskList::iterator task,
+    GetUtxosCallback callback,
     base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result) {
-  auto it = std::ranges::find(get_cardano_utxo_tasks_, task,
-                              [](auto& t) { return t.first.get(); });
-  if (it == get_cardano_utxo_tasks_.end()) {
-    NOTREACHED();
-  }
+  get_cardano_utxo_tasks_.erase(task);
 
-  auto cb = std::move(it->second);
-  get_cardano_utxo_tasks_.erase(it);
-
-  std::move(cb).Run(std::move(result));
+  std::move(callback).Run(std::move(result));
 }
 
 void CardanoWalletService::CreateCardanoTransaction(
@@ -147,29 +140,23 @@ void CardanoWalletService::CreateCardanoTransaction(
     CardanoCreateTransactionTaskCallback callback) {
   CHECK(IsCardanoAccount(account_id));
 
-  auto& task = create_transaction_tasks_.emplace_back(
+  auto it = create_transaction_tasks_.insert(
+      create_transaction_tasks_.end(),
       std::make_unique<CardanoCreateTransactionTask>(
-          *this, account_id, address_to, amount, sending_max_amount),
-      std::move(callback));
+          *this, account_id, address_to, amount, sending_max_amount));
 
-  task.first->Start(
+  (*it)->Start(
       base::BindOnce(&CardanoWalletService::OnCreateCardanoTransactionTaskDone,
-                     weak_ptr_factory_.GetWeakPtr(), task.first.get()));
+                     weak_ptr_factory_.GetWeakPtr(), it, std::move(callback)));
 }
 
 void CardanoWalletService::OnCreateCardanoTransactionTaskDone(
-    CardanoCreateTransactionTask* task,
+    CardanoCreateTransactionTaskList::iterator task,
+    CardanoCreateTransactionTaskCallback callback,
     base::expected<CardanoTransaction, std::string> result) {
-  auto it = std::ranges::find(create_transaction_tasks_, task,
-                              [](auto& t) { return t.first.get(); });
-  if (it == create_transaction_tasks_.end()) {
-    NOTREACHED();
-  }
+  create_transaction_tasks_.erase(task);
 
-  auto cb = std::move(it->second);
-  create_transaction_tasks_.erase(it);
-
-  std::move(cb).Run(std::move(result));
+  std::move(callback).Run(std::move(result));
 }
 
 void CardanoWalletService::SignAndPostTransaction(
