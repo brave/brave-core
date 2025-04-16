@@ -201,10 +201,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
             String keyword,
             String url) {
         String queryReplacedUrl = url.replace("%s", "{searchTerms}");
-        boolean isUpdated =
-                templateUrlService.updateSearchEngine(
-                        searchEngineKeyword, title, keyword, queryReplacedUrl);
-        if (isUpdated) {
+        if (templateUrlService.update(searchEngineKeyword, title, keyword, queryReplacedUrl)) {
             CustomSearchEnginesUtil.updateCustomSearchEngine(searchEngineKeyword, keyword);
             handleBackPressed();
         } else {
@@ -228,7 +225,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
             return;
         }
 
-        if (templateUrlService.addSearchEngine(title, keyword, queryReplacedUrl)) {
+        if (templateUrlService.add(title, keyword, queryReplacedUrl)) {
             CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
             handleBackPressed();
         } else {

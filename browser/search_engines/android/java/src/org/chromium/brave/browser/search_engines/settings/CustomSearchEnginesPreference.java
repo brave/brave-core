@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.components.search_engines.BraveTemplateUrlService;
+import org.chromium.ui.widget.Toast;
 
 import java.util.List;
 
@@ -146,12 +147,25 @@ public class CustomSearchEnginesPreference extends Preference
                 v -> {
                     Runnable templateUrlServiceReady =
                             () -> {
-                                ((BraveTemplateUrlService)
-                                                TemplateUrlServiceFactory.getForProfile(mProfile))
-                                        .removeSearchEngine(searchEngineKeyword);
-                                CustomSearchEnginesUtil.removeCustomSearchEngine(
-                                        searchEngineKeyword);
-                                updateCustomSearchEngines();
+                                boolean isSuccess =
+                                        ((BraveTemplateUrlService)
+                                                        TemplateUrlServiceFactory.getForProfile(
+                                                                mProfile))
+                                                .remove(searchEngineKeyword);
+                                if (isSuccess) {
+                                    CustomSearchEnginesUtil.removeCustomSearchEngine(
+                                            searchEngineKeyword);
+                                    updateCustomSearchEngines();
+                                } else {
+                                    Toast.makeText(
+                                                    getContext(),
+                                                    getContext()
+                                                            .getString(
+                                                                    R.string
+                                                                            .failed_to_delete_search_engine),
+                                                    Toast.LENGTH_SHORT)
+                                            .show();
+                                }
                             };
                     TemplateUrlServiceFactory.getForProfile(mProfile)
                             .runWhenLoaded(templateUrlServiceReady);

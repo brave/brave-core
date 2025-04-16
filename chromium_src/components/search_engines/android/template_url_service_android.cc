@@ -24,17 +24,11 @@ jboolean TemplateUrlServiceAndroid::DoesDefaultSearchEngineHaveLogo(
   return DoesDefaultSearchEngineHaveLogo_ChromiumImpl(env, obj);
 }
 
-jboolean TemplateUrlServiceAndroid::AddSearchEngine(
+jboolean TemplateUrlServiceAndroid::Add(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& search_engine_title,
     const base::android::JavaParamRef<jstring>& search_engine_keyword,
     const base::android::JavaParamRef<jstring>& search_engine_url) {
-  const TemplateURL* existing = template_url_service_->GetTemplateURLForKeyword(
-      base::android::ConvertJavaStringToUTF16(env, search_engine_keyword));
-  if (existing) {
-    return false;
-  }
-
   TemplateURLData template_url_data;
   template_url_data.SetShortName(
       base::android::ConvertJavaStringToUTF16(env, search_engine_title));
@@ -47,7 +41,7 @@ jboolean TemplateUrlServiceAndroid::AddSearchEngine(
   return (template_url != nullptr);
 }
 
-jboolean TemplateUrlServiceAndroid::UpdateSearchEngine(
+jboolean TemplateUrlServiceAndroid::Update(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& existing_keyword,
     const base::android::JavaParamRef<jstring>& search_engine_title,
@@ -70,12 +64,16 @@ jboolean TemplateUrlServiceAndroid::UpdateSearchEngine(
                                        TemplateURL(template_url_data));
 }
 
-void TemplateUrlServiceAndroid::RemoveSearchEngine(
+jboolean TemplateUrlServiceAndroid::Remove(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& search_engine_keyword) {
   const TemplateURL* existing = template_url_service_->GetTemplateURLForKeyword(
       base::android::ConvertJavaStringToUTF16(env, search_engine_keyword));
-  if (existing) {
+  const TemplateURL* default_search_provider =
+      template_url_service_->GetDefaultSearchProvider();
+  if (existing && existing != default_search_provider) {
     template_url_service_->Remove(existing);
+    return true;
   }
+  return false;
 }

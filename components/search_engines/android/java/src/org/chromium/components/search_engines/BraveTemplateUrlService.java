@@ -17,35 +17,31 @@ public class BraveTemplateUrlService extends TemplateUrlService {
         mNativeTemplateUrlServiceAndroid = nativeTemplateUrlServiceAndroid;
     }
 
-    public boolean addSearchEngine(String title, String keyword, String url) {
+    public boolean add(String title, String keyword, String url) {
         return BraveTemplateUrlServiceJni.get()
-                .addSearchEngine(mNativeTemplateUrlServiceAndroid, title, keyword, url);
+                .add(mNativeTemplateUrlServiceAndroid, title, keyword, url);
     }
 
-    public boolean updateSearchEngine(
-            String existingKeyword, String title, String keyword, String url) {
+    public boolean update(String existingKeyword, String title, String keyword, String url) {
         return BraveTemplateUrlServiceJni.get()
-                .updateSearchEngine(
-                        mNativeTemplateUrlServiceAndroid, existingKeyword, title, keyword, url);
+                .update(mNativeTemplateUrlServiceAndroid, existingKeyword, title, keyword, url);
     }
 
-    public void removeSearchEngine(String keyword) {
-        BraveTemplateUrlServiceJni.get()
-                .removeSearchEngine(mNativeTemplateUrlServiceAndroid, keyword);
+    public boolean remove(String keyword) {
+        return BraveTemplateUrlServiceJni.get().remove(mNativeTemplateUrlServiceAndroid, keyword);
     }
 
     @NativeMethods
     public interface Natives {
-        boolean addSearchEngine(
-                long nativeTemplateUrlServiceAndroid, String title, String keyword, String url);
+        boolean add(long nativeTemplateUrlServiceAndroid, String title, String keyword, String url);
 
-        boolean updateSearchEngine(
+        boolean update(
                 long nativeTemplateUrlServiceAndroid,
                 String existingKeyword,
                 String title,
                 String keyword,
                 String url);
 
-        void removeSearchEngine(long nativeTemplateUrlServiceAndroid, String keyword);
+        boolean remove(long nativeTemplateUrlServiceAndroid, String keyword);
     }
 }

@@ -197,6 +197,9 @@
         <message name="IDS_FAILED_TO_UPDATE_SEARCH_ENGINE" desc="Failed to update search engine text">
           Failed to update search engine.
         </message>
+        <message name="IDS_FAILED_TO_DELETE_SEARCH_ENGINE" desc="Failed to delete search engine text">
+          Failed to delete search engine. The search engine you're trying to delete may be set as the default one.
+        </message>
         <message name="IDS_DELETE_CUSTOM_SEARCH_ENGINE_TITLE" desc="Delete custom search engine title">
           Delete custom search engine
         </message>
