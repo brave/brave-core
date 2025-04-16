@@ -219,6 +219,9 @@
       <message name="IDS_LEARN_MORE" desc="Generic label for menu item to learn more about a feature. [CHAR_LIMIT=32]">
         Learn more
       </message>
+      <message name="IDS_LEARN_MORE_ABOUT_SETTING" desc="Learn more lable combined with a setting title.">
+        Learn more about <ph name="SETTING_TITLE">%1$s<ex>protected content</ex></ph>
+      </message>
       <message name="IDS_MORE" desc="Generic label for a button to show more items or options. [CHAR_LIMIT=20]">
         More
       </message>
@@ -337,6 +340,9 @@
       <message name="IDS_ACCESSIBILITY_TOOLBAR_MULTI_SELECT" desc="Accessibility announcement to inform users about more items selected.">
         <ph name="ITEM_COUNT">%1$s<ex>3</ex></ph> selected
       </message>
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_EXIT_SELECT" desc="Accessibility announcement to inform users that they have just exited selection mode.">
+        Exited selection mode
+      </message>
       <message name="IDS_ACCESSIBILITY_CANCEL_SELECTION" desc="Content description for the cancel selection button that deselects the selected items in a selectable list view.">
         Cancel selection
       </message>
@@ -362,6 +368,9 @@
         This page is dangerous
       </message>
 
+      <message name="IDS_CONCAT_TWO_STRINGS_WITH_COMMA" desc="This string concatenates two other strings. In the English language, this particular concatenation is done via a comma and a whitespace in between the other strings. For example: '1 compromised password, 2 weak passwords'">
+        <ph name="TYPE_1">%1$s<ex>2 compromised passwords</ex></ph>, <ph name="TYPE_2">%2$s<ex>7 weak passwords</ex></ph>
+      </message>
       <message name="IDS_CONCAT_TWO_STRINGS_WITH_PERIODS" desc="This string concatenates two other strings. In the English language, this particular concatenation is done via a period and a whitespace after the first string, and a period after the second string. For example: '1 compromised password. 2 weak passwords.'">
         <ph name="TYPE_1">%1$s<ex>2 compromised passwords</ex></ph>. <ph name="TYPE_2">%2$s<ex>7 weak passwords</ex></ph>.
       </message>
@@ -1076,15 +1085,6 @@
       <!-- Tab resumption module strings -->
       <message name="IDS_TAB_RESUMPTION_MODULE_SEE_MORE" desc="Text of a link shown beside the title of the module. Clicking the link launches the &quot;Recent tabs&quot; page.">
         See more
-      </message>
-      <message name="IDS_TAB_RESUMPTION_MODULE_DOMAIN_URL_AND_DEVICE_NAME" desc="The domain URL and device name shown on the tab resumption module.">
-        <ph name="DOMAIN_URL">%1$s<ex>wikipedia.org</ex></ph> <ph name="SEPARATOR1">•</ph> <ph name="DEVICE_NAME">%2$s<ex>My Pixel 7</ex></ph>
-      </message>
-      <message name="IDS_TAB_RESUMPTION_MODULE_OTHER_DEVICES_NAME" desc="The name of feature to show suggested tabs from other devices in the tab resumption module, to appear, e.g., on the Settings page to toggle the feature.">
-        Tabs from other devices
-      </message>
-      <message name="IDS_TAB_RESUMPTION_MODULE_DEFAULT_REASON" desc="The string for a default reason why a Tab is chosen to show on the tab resumption module.">
-        You visited <ph name="RECENCY">%1$s<ex>1 hr ago</ex></ph>
       </message>
 
       <message name="IDS_ACCESSIBILITY_EXPANDED" is_accessibility_with_no_ui="true" desc="Content description when the search resumption module is expanded.">
