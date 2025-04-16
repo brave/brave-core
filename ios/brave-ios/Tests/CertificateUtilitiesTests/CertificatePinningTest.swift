@@ -26,7 +26,11 @@ class CertificatePinningTest: XCTestCase {
         return
       }
 
-      let sessionManager = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
+      let sessionManager = URLSession(
+        configuration: .ephemeral,
+        delegate: self,
+        delegateQueue: .main
+      )
       managers.append(sessionManager)
 
       sessionManager.dataTask(with: hostUrl) { data, response, error in
@@ -63,7 +67,11 @@ class CertificatePinningTest: XCTestCase {
         return
       }
 
-      let sessionManager = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
+      let sessionManager = URLSession(
+        configuration: .ephemeral,
+        delegate: self,
+        delegateQueue: .main
+      )
       managers.append(sessionManager)
 
       sessionManager.dataTask(with: hostUrl) { data, response, error in
