@@ -353,3 +353,63 @@ extension AIChatViewModel: AIChatDelegate {
     self._canShowPremiumPrompt = state.canShowPremiumPrompt
   }
 }
+
+extension AiChat.Model {
+  var introMessage: String {
+    guard let modelKey = AIChatModelKey(rawValue: self.key) else {
+      return String(format: Strings.AIChat.introMessageGenericMessageDescription, self.displayName)
+    }
+
+    switch modelKey {
+    case .chatBasic:
+      return Strings.AIChat.introMessageLlamaMessageDescription
+
+    case .chatExpanded:
+      return Strings.AIChat.introMessageMixtralMessageDescription
+
+    case .chatQwen:
+      return Strings.AIChat.introMessageQwenMessageDescription
+
+    case .chatClaudeHaiku:
+      return Strings.AIChat.introMessageClaudeHaikuMessageDescription
+
+    case .chatClaudeSonnet:
+      return Strings.AIChat.introMessageClaudeSonnetMessageDescription
+
+    case .chatVisionBasic:
+      return Strings.AIChat.introMessageLlamaVisionMessageDescription
+
+    case .chatDeepseekR1:
+      return Strings.AIChat.introMessageDeepSeekR1MessageDescription
+    }
+  }
+
+  var purposeDescription: String {
+    guard let modelKey = AIChatModelKey(rawValue: self.key) else {
+      return self.displayName
+    }
+
+    switch modelKey {
+    case .chatBasic:
+      return Strings.AIChat.introMessageLlamaModelPurposeDescription
+
+    case .chatExpanded:
+      return Strings.AIChat.introMessageMixtralModelPurposeDescription
+
+    case .chatQwen:
+      return Strings.AIChat.introMessageQwenModelPurposeDescription
+
+    case .chatClaudeHaiku:
+      return Strings.AIChat.introMessageClaudeHaikuModelPurposeDescription
+
+    case .chatClaudeSonnet:
+      return Strings.AIChat.introMessageClaudeSonnetModelPurposeDescription
+
+    case .chatVisionBasic:
+      return Strings.AIChat.introMessageLlamaVisionModelPurposeDescription
+
+    case .chatDeepseekR1:
+      return Strings.AIChat.introMessageDeepSeekR1ModelPurposeDescription
+    }
+  }
+}

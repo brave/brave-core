@@ -13,35 +13,6 @@ struct AIChatIntroMessageView: View {
 
   var model: AiChat.Model
 
-  private var introMessage: String {
-    guard let modelKey = AIChatModelKey(rawValue: model.key) else {
-      return String(format: Strings.AIChat.introMessageGenericMessageDescription, model.displayName)
-    }
-
-    switch modelKey {
-    case .chatBasic:
-      return Strings.AIChat.introMessageLlamaMessageDescription
-
-    case .chatExpanded:
-      return Strings.AIChat.introMessageMixtralMessageDescription
-
-    case .chatQwen:
-      return Strings.AIChat.introMessageQwenMessageDescription
-
-    case .chatClaudeHaiku:
-      return Strings.AIChat.introMessageClaudeHaikuMessageDescription
-
-    case .chatClaudeSonnet:
-      return Strings.AIChat.introMessageClaudeSonnetMessageDescription
-
-    case .chatVisionBasic:
-      return Strings.AIChat.introMessageLlamaVisionMessageDescription
-
-    case .chatDeepseekR1:
-      return Strings.AIChat.introMessageDeepSeekR1MessageDescription
-    }
-  }
-
   var body: some View {
     VStack(alignment: .leading, spacing: 0.0) {
       AIChatProductIcon(containerShape: Circle(), padding: 9.0)
@@ -87,7 +58,7 @@ struct AIChatIntroMessageView: View {
             backgroundColor: UIColor(braveSystemName: .containerBackground)
           ) {
             VStack {
-              Text(introMessage)
+              Text(model.introMessage)
                 .font(.footnote)
                 .foregroundStyle(Color(braveSystemName: .textPrimary))
                 .fixedSize(horizontal: false, vertical: true)

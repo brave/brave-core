@@ -217,7 +217,7 @@ struct AIChatMenuView: View {
       label: {
         AIChatMenuItemView(
           title: model.displayName,
-          subtitle: modelPurpose(for: model),
+          subtitle: model.purposeDescription,
           isSelected: model.key == currentModel?.key
         ) {
           switch model.options.tag {
@@ -249,35 +249,6 @@ struct AIChatMenuView: View {
     if let lastModel = modelOptions.last, model.key != lastModel.key {
       Color(braveSystemName: .dividerSubtle)
         .frame(height: 1.0)
-    }
-  }
-
-  private func modelPurpose(for model: AiChat.Model) -> String {
-    guard let modelKey = AIChatModelKey(rawValue: model.key) else {
-      return model.displayName
-    }
-
-    switch modelKey {
-    case .chatBasic:
-      return Strings.AIChat.introMessageLlamaModelPurposeDescription
-
-    case .chatExpanded:
-      return Strings.AIChat.introMessageMixtralModelPurposeDescription
-
-    case .chatQwen:
-      return Strings.AIChat.introMessageQwenModelPurposeDescription
-
-    case .chatClaudeHaiku:
-      return Strings.AIChat.introMessageClaudeHaikuModelPurposeDescription
-
-    case .chatClaudeSonnet:
-      return Strings.AIChat.introMessageClaudeSonnetModelPurposeDescription
-
-    case .chatVisionBasic:
-      return Strings.AIChat.introMessageLlamaVisionModelPurposeDescription
-
-    case .chatDeepseekR1:
-      return Strings.AIChat.introMessageDeepSeekR1ModelPurposeDescription
     }
   }
 
