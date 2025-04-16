@@ -111,11 +111,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
 
   private let rewardsServiceStartGroup = DispatchGroup()
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    rewardsView.rewardsToggle.isOn = rewards.isEnabled
-
+  private func startRewardService() {
     rewardsServiceStartGroup.enter()
     rewards.startRewardsService { [weak self] in
       guard let self = self else { return }
@@ -135,6 +131,18 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
         }
       }
       self.reloadData()
+    }
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    rewardsView.rewardsToggle.isOn = rewards.isEnabled
+
+    if rewards.isEnabled {
+      startRewardService()
+    } else {
+      reloadData()
     }
 
     view.snp.makeConstraints {
@@ -160,6 +168,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
 
   private var isCreatingWallet: Bool = false
   @objc private func rewardsToggleValueChanged() {
+    startRewardService()
     rewardsServiceStartGroup.notify(queue: .main) { [self] in
       rewardsView.rewardsToggle.isUserInteractionEnabled = false
       DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
