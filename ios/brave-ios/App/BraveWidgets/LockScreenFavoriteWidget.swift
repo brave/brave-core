@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import BraveWidgetsModels
 import FaviconModels
 import Foundation
@@ -101,7 +102,7 @@ private struct LockScreenFavoriteView: View {
               .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
               .padding(12)
           } else {
-            Text(verbatim: fav.url.baseDomain?.first?.uppercased() ?? "")
+            Text(verbatim: fav.url.etldPlusOne?.first?.uppercased() ?? "")
               .frame(maxWidth: .infinity, maxHeight: .infinity)
               .font(.system(size: 28))
               .clipped()

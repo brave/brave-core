@@ -655,7 +655,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
           let websiteUrl = recentSearch.websiteUrl
         {
           let website =
-            URL(string: websiteUrl)?.baseDomain ?? URL(string: websiteUrl)?.host ?? websiteUrl
+            URL(string: websiteUrl)?.etldPlusOne ?? URL(string: websiteUrl)?.host ?? websiteUrl
           var searchIsUsingDefaultEngine = false
           if let dse = defaultSearchEngine,
             dse.searchTemplate.contains(website)

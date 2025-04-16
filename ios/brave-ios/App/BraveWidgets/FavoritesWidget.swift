@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import BraveWidgetsModels
 import FaviconModels
 import Strings
@@ -148,7 +149,7 @@ private struct FavoritesGridView: View {
                   FaviconImage(image: image, contentMode: .scaleAspectFit, includePadding: false)
                     .background(Color(attributes.backgroundColor))
                 } else {
-                  Text(verbatim: favorite.url.baseDomain?.first?.uppercased() ?? "")
+                  Text(verbatim: favorite.url.etldPlusOne?.first?.uppercased() ?? "")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .font(.system(size: 36))
                     .aspectRatio(1.0, contentMode: .fit)
