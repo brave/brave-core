@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
@@ -19,8 +20,6 @@
 #include "content/public/browser/render_widget_host_view.h"
 #include "mojo/public/cpp/base/proto_wrapper.h"
 #include "third_party/skia/include/core/SkBitmap.h"
-#include "third_party/skia/include/core/SkCanvas.h"
-#include "third_party/skia/include/core/SkImage.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/geometry/rect.h"
 
@@ -34,12 +33,7 @@ FullScreenshotter::FullScreenshotter()
       paint_preview_compositor_service_(nullptr,
                                         base::OnTaskRunnerDeleter(nullptr)),
       paint_preview_compositor_client_(nullptr,
-                                       base::OnTaskRunnerDeleter(nullptr)) {
-  paint_preview_compositor_service_ = paint_preview::StartCompositorService(
-      base::BindOnce(&FullScreenshotter::OnCompositorServiceDisconnected,
-                     weak_ptr_factory_.GetWeakPtr()));
-  CHECK(paint_preview_compositor_service_);
-}
+                                       base::OnTaskRunnerDeleter(nullptr)) {}
 
 FullScreenshotter::~FullScreenshotter() = default;
 
@@ -49,12 +43,18 @@ FullScreenshotter::PendingScreenshots::~PendingScreenshots() = default;
 void FullScreenshotter::CaptureScreenshots(
     const raw_ptr<content::WebContents> web_contents,
     CaptureScreenshotsCallback callback) {
-  current_web_contents_ = web_contents;
   if (!web_contents) {
     std::move(callback).Run(
-        base::unexpected("The given web contents no longer valid"));
+        base::unexpected("The given web contents is no longer valid"));
     return;
   }
+  auto* view = web_contents->GetRenderWidgetHostView();
+  if (!view || view->GetVisibleViewportSize().IsEmpty()) {
+    std::move(callback).Run(
+        base::unexpected("No visible render widget host view available"));
+    return;
+  }
+  viewport_bounds_ = view->GetVisibleViewportSize();
 
   // Start capturing via Paint Preview.
   CaptureParams capture_params;
@@ -65,6 +65,14 @@ void FullScreenshotter::CaptureScreenshots(
       capture_params,
       base::BindOnce(&FullScreenshotter::OnScreenshotCaptured,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void FullScreenshotter::InitCompositorServiceForTest(
+    std::unique_ptr<paint_preview::PaintPreviewCompositorService,
+                    base::OnTaskRunnerDeleter> service) {
+  paint_preview_compositor_service_ = std::move(service);
+  paint_preview_compositor_client_ =
+      paint_preview_compositor_service_->CreateCompositor(base::DoNothing());
 }
 
 void FullScreenshotter::OnScreenshotCaptured(
@@ -80,6 +88,11 @@ void FullScreenshotter::OnScreenshotCaptured(
   }
 
   if (!paint_preview_compositor_client_) {
+    if (!paint_preview_compositor_service_) {
+      paint_preview_compositor_service_ = paint_preview::StartCompositorService(
+          base::BindOnce(&FullScreenshotter::OnCompositorServiceDisconnected,
+                         weak_ptr_factory_.GetWeakPtr()));
+    }
     paint_preview_compositor_client_ =
         paint_preview_compositor_service_->CreateCompositor(
             base::BindOnce(&FullScreenshotter::SendCompositeRequest,
@@ -139,26 +152,23 @@ void FullScreenshotter::OnCompositeFinished(
     paint_preview::mojom::PaintPreviewBeginCompositeResponsePtr response) {
   if (status != paint_preview::mojom::PaintPreviewCompositor::
                     BeginCompositeStatus::kSuccess) {
-    std::move(callback).Run(base::unexpected("Failed to begin composite"));
+    std::move(callback).Run(base::unexpected("BeginMainFrameComposite failed"));
     return;
   }
 
-  auto* view = current_web_contents_->GetRenderWidgetHostView();
-  if (!view) {
-    std::move(callback).Run(
-        base::unexpected("No render widget host view available"));
+  if (!response->frames.contains(response->root_frame_guid)) {
+    std::move(callback).Run(base::unexpected("Root frame data not found"));
     return;
   }
 
   const auto& frame_data = response->frames[response->root_frame_guid];
   const auto& content_size = frame_data->scroll_extents;
-  const auto viewport_bounds = view->GetVisibleViewportSize();
 
   auto pending = std::make_unique<PendingScreenshots>();
 
   // Calculate number of full viewport screenshots needed
   int total_height = content_size.height();
-  int viewport_height = viewport_bounds.height();
+  int viewport_height = viewport_bounds_.height();
   int num_screenshots = (total_height + viewport_height - 1) /
                         viewport_height;  // Ceiling division
 

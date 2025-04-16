@@ -13,14 +13,20 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/types/expected.h"
 #include "components/paint_preview/browser/paint_preview_base_service.h"
 #include "components/paint_preview/public/paint_preview_compositor_service.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/size.h"
 
 namespace ai_chat {
 
+// This class uses paint preview service and compositor service to capture
+// screenshot of a web_contents and split it into multiple ones based on the
+// viewport height. If a single screenshot is larger than 1024x768, it will be
+// scaled down to that resolution.
 class FullScreenshotter : public paint_preview::PaintPreviewBaseService {
  public:
   FullScreenshotter();
@@ -33,6 +39,14 @@ class FullScreenshotter : public paint_preview::PaintPreviewBaseService {
       base::expected<std::vector<std::vector<uint8_t>>, std::string>)>;
   void CaptureScreenshots(const raw_ptr<content::WebContents> web_contents,
                           CaptureScreenshotsCallback callback);
+
+  void InitCompositorServiceForTest(
+      std::unique_ptr<paint_preview::PaintPreviewCompositorService,
+                      base::OnTaskRunnerDeleter> service);
+
+  paint_preview::PaintPreviewCompositorClient* GetCompositorClientForTest() {
+    return paint_preview_compositor_client_.get();
+  }
 
  private:
   void OnScreenshotCaptured(
@@ -82,7 +96,7 @@ class FullScreenshotter : public paint_preview::PaintPreviewBaseService {
                   base::OnTaskRunnerDeleter>
       paint_preview_compositor_client_;
 
-  raw_ptr<content::WebContents> current_web_contents_;
+  gfx::Size viewport_bounds_;
 
   base::WeakPtrFactory<FullScreenshotter> weak_ptr_factory_{this};
 };
