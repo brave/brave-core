@@ -495,9 +495,8 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   metadata->associated_content[0]->content_used_percentage = 50;
 
   associated_content.push_back(metadata->associated_content[0]->Clone());
-  EXPECT_TRUE(
-      db_->AddOrUpdateAssociatedContent(uuid, std::move(associated_content),
-                                        expected_contents));
+  EXPECT_TRUE(db_->AddOrUpdateAssociatedContent(
+      uuid, std::move(associated_content), expected_contents));
   // Verify data is changed
   result = db_->GetConversationData(uuid);
   EXPECT_EQ(result->associated_content.size(), 1u);
@@ -507,6 +506,83 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   conversations = db_->GetAllConversations();
   EXPECT_EQ(conversations.size(), 1u);
   ExpectConversationEquals(FROM_HERE, conversations[0], metadata);
+}
+
+TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent_MultiContent) {
+  const std::string uuid = "for_associated_content";
+  auto content_1 = mojom::AssociatedContent::New(
+      "content_1", mojom::ContentType::PageContent, "one", 1,
+      GURL("https://one.com"), 61, true);
+  auto content_2 = mojom::AssociatedContent::New(
+      "content_2", mojom::ContentType::PageContent, "two", 2,
+      GURL("https://two.com"), 62, true);
+
+  // Note: This is reused for all conversations, as it is moved into the
+  // conversation ptr.
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  associated_content.push_back(content_1->Clone());
+  associated_content.push_back(content_2->Clone());
+
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt, 0,
+      0, std::move(associated_content));
+
+  auto history = CreateSampleChatHistory(1u);
+
+  std::vector<std::string> expected_contents = {"First contents",
+                                                "Second contents"};
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), expected_contents,
+                                   history[0]->Clone()));
+
+  // Verify data is persisted
+  mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
+  EXPECT_EQ(result->associated_content.size(), 2u);
+  EXPECT_EQ(result->associated_content[0]->content_uuid, content_1->uuid);
+  EXPECT_EQ(result->associated_content[0]->content, expected_contents[0]);
+  EXPECT_EQ(result->associated_content[1]->content_uuid, content_2->uuid);
+  EXPECT_EQ(result->associated_content[1]->content, expected_contents[1]);
+
+  auto conversations = db_->GetAllConversations();
+  EXPECT_EQ(conversations.size(), 1u);
+  ExpectConversationEquals(FROM_HERE, conversations[0], metadata);
+
+  // Change data and call AddOrUpdateAssociatedContent
+  expected_contents[0] = "New first contents";
+  metadata->associated_content[1]->title = "Updated title!";
+
+  associated_content.push_back(metadata->associated_content[0]->Clone());
+  associated_content.push_back(metadata->associated_content[1]->Clone());
+
+  EXPECT_TRUE(db_->AddOrUpdateAssociatedContent(
+      uuid, std::move(associated_content), expected_contents));
+  // Verify data is changed
+  result = db_->GetConversationData(uuid);
+  EXPECT_EQ(result->associated_content.size(), 2u);
+  EXPECT_EQ(result->associated_content[0]->content_uuid,
+            metadata->associated_content[0]->uuid);
+  EXPECT_EQ(result->associated_content[0]->content, expected_contents[0]);
+  EXPECT_EQ(result->associated_content[1]->content_uuid,
+            metadata->associated_content[1]->uuid);
+  EXPECT_EQ(result->associated_content[1]->content, expected_contents[1]);
+  conversations = db_->GetAllConversations();
+  EXPECT_EQ(conversations.size(), 1u);
+  ExpectConversationEquals(FROM_HERE, conversations[0], metadata);
+
+  // Delete the associated content
+  EXPECT_TRUE(db_->DeleteAssociatedWebContent(
+      base::Time::Now() - base::Hours(3), std::nullopt));
+
+  // Verify the associated content is deleted
+  result = db_->GetConversationData(uuid);
+  EXPECT_EQ(result->associated_content.size(), 0u);
+
+  conversations = db_->GetAllConversations();
+  EXPECT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->associated_content.size(), 2u);
+  EXPECT_EQ(conversations[0]->associated_content[0]->title, "");
+  EXPECT_EQ(conversations[0]->associated_content[0]->url, GURL());
+  EXPECT_EQ(conversations[0]->associated_content[1]->title, "");
+  EXPECT_EQ(conversations[0]->associated_content[1]->url, GURL());
 }
 
 TEST_P(AIChatDatabaseTest, DeleteAllData) {
