@@ -36,6 +36,7 @@ class NewTabPageInitializer {
   void AddCSPOverrides();
   void AddLoadTimeValues();
   void AddStrings();
+  void AddPluralStrings();
   void AddFaviconDataSource();
   void AddCustomImageDataSource();
   void AddSanitizedImageDataSource();
