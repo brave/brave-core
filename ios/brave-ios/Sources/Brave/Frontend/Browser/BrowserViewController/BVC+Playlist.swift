@@ -380,14 +380,8 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
               webLoaderFactory: LivePlaylistWebLoaderFactory()
             )
 
-            let newItem = (try? await mediaStreamer.loadMediaStreamingAsset(item)) ?? item
+            let newItem = try await mediaStreamer.loadMediaStreamingAsset(item)
             PlaylistManager.shared.autoDownload(item: newItem)
-
-            self.updatePlaylistURLBar(
-              tab: self.tabManager.selectedTab,
-              state: .existingItem,
-              item: newItem
-            )
           }
         } else {
           PlaylistManager.shared.autoDownload(item: item)

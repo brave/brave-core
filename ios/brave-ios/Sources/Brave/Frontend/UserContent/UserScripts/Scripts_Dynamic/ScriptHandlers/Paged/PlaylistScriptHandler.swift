@@ -133,6 +133,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
     // This is due to a iFrames security
     item.pageSrc = tab.visibleURL?.absoluteString ?? item.pageSrc
     item.pageTitle = tab.title ?? item.pageTitle
+    item.lastPlayedOffset = 0.0
 
     Self.queue.async { [weak handler] in
       guard let handler = handler else { return }

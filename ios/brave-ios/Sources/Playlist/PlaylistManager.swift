@@ -633,6 +633,10 @@ public class PlaylistManager: NSObject {
   }
 
   public func canAutoDownload(item: PlaylistInfo) -> Bool {
+    if let url = URL(string: item.src), url.scheme == "blob" {
+      return false
+    }
+
     let downloadType = PlayListDownloadType(
       rawValue: Preferences.Playlist.autoDownloadVideo.value
     )
