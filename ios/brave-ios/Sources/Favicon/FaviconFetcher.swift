@@ -103,7 +103,7 @@ public class FaviconFetcher {
     let textColor = !attributes.isDefaultBackgroundColor ? attributes.textColor : nil
     let backColor = !attributes.isDefaultBackgroundColor ? attributes.backgroundColor : nil
     var monogramText = attributes.monogramString
-    if let monogramString = monogramString ?? url.baseDomain?.first {
+    if let monogramString = monogramString ?? url.etldPlusOne?.first {
       monogramText = String(monogramString)
     }
 

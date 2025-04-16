@@ -24,7 +24,7 @@ private struct UIConstants {
 private struct FaviconUtils {
   /// Obtain the letter which will be used for monogram favicons based one of
   /// the following (in order):
-  ///     1. The `baseDomain`'s first character (i.e. www.amazon.co.uk becomes
+  ///     1. The `etldPlusOne`'s first character (i.e. www.amazon.co.uk becomes
   ///        amazon.co.uk, which then gets a
   ///     2. The fallback character provided (for special cases such as
   ///        Bookmarks which have a title and we will use the first character
@@ -40,7 +40,7 @@ private struct FaviconUtils {
     guard let finalFallback = url.absoluteString.first else {
       return "W"
     }
-    return (url.baseDomain?.first ?? fallbackCharacter ?? url.host?.first ?? finalFallback)
+    return (url.etldPlusOne?.first ?? fallbackCharacter ?? url.host?.first ?? finalFallback)
       .uppercased()
   }
 }
@@ -179,7 +179,7 @@ extension UIImage {
     let imageSize = CGSize(width: 64.0, height: 64.0)
 
     let createBackgroundColor = { (url: URL) -> UIColor in
-      guard let hash = url.baseDomain?.fnv1a else {
+      guard let hash = url.etldPlusOne?.fnv1a else {
         return .gray
       }
       let index = abs(hash) % (UIConstants.defaultColorStrings.count - 1)
