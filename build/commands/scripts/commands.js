@@ -207,6 +207,8 @@ program
 
 program
   .command('update_patches')
+  .arguments('[filePaths...]')
+  .description("Updates all patches in the brave-core repo. If a filePath is provider, only that specific file will be updated.")
   .action(updatePatches)
 
 program
