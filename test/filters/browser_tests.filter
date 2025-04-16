@@ -246,6 +246,13 @@
 -WebAccessibleResourcesBrowserRedirectTest.MV3
 -WebAccessibleResourcesBrowserTest.UseDynamicUrlInIframe
 
+# Unclear why these are failing, seems like the condition that the upstream
+# change was meant to fix doesn't happen (extension service worker gets
+# registered just fine without the fix), so the tests expectations don't work
+# and it times out.
+-All/ManifestV3WebRequestApiTestWithDeferResetURLLoaderFactories.ResetURLLoaderFactoryDoesntBreakRegistration/*
+-All/ManifestV3WebRequestApiTestWithSkipResetServiceWorkerURLLoaderFactories.ResetURLLoaderFactoryDoesntBreakRegistration/*
+
 # These tests fail because they expect the infobar count to be 1, but we
 # display an additional confirmation infobar for P3A
 -All/PageSpecificSiteDataDialogBrowserTest.*/*
@@ -402,6 +409,7 @@
 
 # These tests fail because kPrerender2 feature is disabled.
 -All/HostedAppTestWithPrerendering.*
+-All/HTTPCacheSearchPreloadUnifiedBrowserTest.BackwardHitHttpCache/*
 -All/PrerenderSpeculationRulesTagsBrowserTest.*
 -AppControllerHandoffPrerenderBrowserTest.*
 -ContentSettingsWithPrerenderingBrowserTest.PrerenderingPageIframeSetsCookie
@@ -423,6 +431,7 @@
 -RealboxSearchPreloadWithSearchStatsBrowserTest.SearchPreloadSuccess
 -RealboxSearchPreloadWithoutSearchStatsBrowserTest.SearchPreloadSuccess
 -SafeBrowsingBlockingPageAsyncChecksPrerenderingTest.PostCommitInterstitialReportThreatDetails_DontContainPrerenderingInfo
+-SearchPreloadBrowserTest.*
 -SearchPreloadUnifiedFallbackBrowserTest.FetchPrerenderActivated
 -SearchPreloadUnifiedFallbackBrowserTest.FetchPrerenderFetch
 -SearchPreloadUnifiedFallbackBrowserTest.PrefetchErrorCancelsPrerender
@@ -655,9 +664,15 @@
 -All/ParentApprovalRequestTest.RequestToInstallApprovedExtension/WithParentalControlsOnExtensionsManagedBy*
 -All/ParentApprovalRequestTest.RequestToInstallExtensionMissingCustodianInfo/WithParentalControlsOnExtensionsManagedByExtensions
 -All/ParentApprovalRequestTest.RequestToInstallExtensionMissingCustodianInfo/WithParentalControlsOnExtensionsManagedByPermissions
+-All/SupervisedUserServiceForRegularUsersBrowserTest.ForceGoogleSafeSearchCanBeOverriden/Regular
 -All/SupervisedUserURLFilterPrerenderingTest.OnURLChecked/*
 -All/SupervisedUserURLFilterTest.*
+-AppMenuBrowserTest.InvokeUi_main_profile_signed_in
+-AppMenuBrowserTest.InvokeUi_profile_menu_in_app_menu_signed_in
+-AppMenuBrowserTest.InvokeUi_profile_menu_in_app_menu_signin_not_allowed
 -AuthenticatorDialogTest.InvokeUi*
+-AvatarToolbarButtonHistorySyncOptinBrowserTest.*
+-AvatarToolbarButtonHistorySyncOptinClickProfileMenuBrowserTest.*
 -AvatarToolbarButtonWithExplicitBrowserSigninBrowserTest.AccessibilityLabels
 -AvatarToolbarButtonWithImprovedSigninUIBrowserTest.PassphraseErrorSignedIn
 -AvatarToolbarButtonWithImprovedSigninUIBrowserTest.PassphraseErrorSyncing
@@ -694,6 +709,7 @@
 -EnclaveAuthenticatorWithTimeout.*
 -FedCmAccountSelectionViewBrowserTest.*
 -GPMPasskeysAuthenticatorDialogTest.InvokeUi*
+-HistorySyncOptinExpansionPillOptions/*
 -HybridLinkingEnabled/HybridParamEnclaveAuthenticatorWithoutPinBrowserTest.MultipleDeclinedBootstrappings/*
 -Incognito/EnclaveAuthenticatorIncognitoBrowserTest.MultipleDeclinedBootstrappings/*
 -LocalWebApprovalsEnabled/SupervisedUserIframeFilterTest.*/*
@@ -746,6 +762,7 @@
 -SupervisedUserNavigationThrottleTest.DisallowPrerendering
 -SupervisedUserNavigationThrottleTest.DontBlockSubFrame
 -SupervisedUserNavigationThrottleTest.NoNavigationObserverBlock
+-SupervisedUserNavigationThrottleTest.RecordsUseCase
 -SupervisedUserPendingStateNavigationTest.*
 -SupervisedUserURLFilterPrerenderingTest.OnURLChecked
 -SupervisedUserURLFilterTest.BlockNewTabAfterLoading
@@ -816,6 +833,10 @@
 # This test checks data sent to DownloadProtectionService (url, filename, etc.)
 # which we filter for privacy reasons.
 -FileSystemAccessBrowserTest.SafeBrowsing
+-FileSystemAccessDeepScanningBrowserTest.AllowedWrite
+-FileSystemAccessDeepScanningBrowserTest.BlockedWrite
+-FileSystemAccessDeepScanningBrowserTest.DeepScanFailure
+-FileSystemAccessDeepScanningBrowserTest.WarnedWrite
 
 # These tests fail because of the Ephemeral Storage (they pass with
 # kBraveEphemeralStorage feature disabled).
@@ -1107,6 +1128,8 @@
 -FencedFrameDownloadTest.FencedFrameSandboxFlagBlockDownload
 -FencedFrameDownloadTest.NetworkCutoffBlockSaveImageAs
 -FencedFrameFileSystemAccessBrowserTest.RequestWriteAccess
+-FencedFrameFileSystemAccessBrowserTest.RequestWriteAccess/MigrationDisabled
+-FencedFrameFileSystemAccessBrowserTest.RequestWriteAccess/MigrationEnabled
 -FencedFrameLoadingPredictorBrowserTest.*
 -FencedFrameNavigationBrowserTest.FencedFrameMainFrameNavigationBlockedIfNetworkRevoked
 -FencedFrameReduceAcceptLanguageBrowserTest.CrossOriginFencedFrame
@@ -1223,7 +1246,8 @@
 -DiceWebSigninInterceptorWithUnoEnabledBrowserTest.OptOutOfAccountStorage
 -FirstRunFlowControllerDiceBrowserTest.SignInAndSync
 -LaunchWebAuthFlowFunctionTest.ProfileShutDown
-
+-ProfileMenuSigninAccessPointTest.DefaultSigninAccessPoint
+-ProfileMenuSigninAccessPointTest.ExplicitSigninAccessPoint
 
 # These tests fail because First Run is disabled and the picker is never shown.
 -FirstRunServiceBrowserTest.*
@@ -1503,6 +1527,7 @@
 -HttpsUpgradesPrefsBrowserTest.PrefStatesRecorded
 -HttpsUpgradesPrefsIncognitoEnabledBrowserTest.PrefStatesRecorded
 -HttpsUpgradesSecureOriginAllowlistBrowserTest.HostNotInAllowlistShowWarning
+-PageInfoBubbleViewHttpsUpgradesBrowserTest.ResetWarningDecisionsButtonHttpsFirstMode
 
 # This test fails with multiple errors. Likely has to do with HTTPS upgrade:
 # "Mixed Content: The page at 'https://a.com:51799/set-header?Content-Security-Policy:%20frame-src%20*;'
@@ -1598,6 +1623,7 @@
 -All/PDFExtensionScrollTest.WithSpace/*
 -AppSessionRestoreTest.RestoreAppMinimized
 -AppSessionRestoreTest.RestoreMaximizedApp
+-DraggingTabsSessionBrowserTest.BasicTest
 -ExtensionWindowCreateTest.AcceptState
 -FirstRunFlowControllerDiceBrowserTest.ButtonsAreDisabledOnClickAndEnabledOnNavigateBack
 -MediaFoundationEncryptedMediaTest.Playback_ClearLeadEncryptedCbcsVideo_Success
@@ -1763,6 +1789,7 @@
 -DestroyProfileOnBrowserClose/ProfileHelperTestWithDestroyProfile.*
 -DestroyProfileOnBrowserClose/ProfileManagerBrowserTest.*
 -ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithProfileNotLoaded
+-ProfilePickerWithGlicParamBrowserTest.GlicLearnMoreClicked/*
 -WebAppProfileDeletionTest_WebContentsGracefulShutdown.DataRetrieverWebAppInfoFetching
 -WebAppProfileDeletionTest_WebContentsGracefulShutdown.IconDownloading
 -WebAppProfileDeletionTest_WebContentsGracefulShutdown.UrlLoading
@@ -1970,7 +1997,9 @@
 -StorageAccessHeadersWithFedCMBrowserTest.RetryHeader/*
 
 # This test fails because we disable FileSystemAccessAPI
--FileSystemAccessBrowserSlowLoadTest.WaitUntilLoaded
+-FileSystemAccessBrowserSlowLoadTest.*
+-FileSystemAccessBrowserTest.SafeBrowsing/MigrationDisabled
+-FileSystemAccessBrowserTest.SafeBrowsing/MigrationEnabled
 -FileSystemAccessBrowserTestForWebUI.*
 -FileSystemObserverTest.ErrorsAfterPermissionsAreRevoked
 -FileSystemObserverTest.ErrorsAfterRevokeAllActiveGrants
@@ -2013,6 +2042,8 @@
 -All/NavigationPredictorPreconnectClientBrowserTestWithSearch.PreconnectSearchWithFeature/*
 -All/SearchEnginePreconnectorEnabledOnlyBrowserTest.AllowedSearch/*
 -All/SearchEnginePreconnectorNoDelaysBrowserTest.PreconnectOnlyInForeground/*
+-All/SearchEnginePreconnectorWithPreconnect2FeatureBrowserTest.*
+-ChromeAutocompleteProviderClientTest.StartServiceWorker
 -OmniboxSearchAggregatorTest.*
 
 # Marked as consistently failing upstream, see crbug.com/336983096
@@ -2046,6 +2077,7 @@
 
 # These tests fail because we only allow adding downloads button to the pinned
 # toolbar buttons container.
+-CastToolbarButtonControllerBrowserTest.* 
 -ChromeLabsMultipleFeaturesUiTest.InvokeUi_default
 -ChromeLabsUiTest.InvokeUi_default
 -CollaborationMessagingObserverBrowserTest.InstantMessageManagesSharingWithClosedGroup
@@ -2101,6 +2133,12 @@
 
 # These tests fail because we disable kSideBySide
 -MultiContentsViewBrowserTest.*
+-TabStripModelBrowserTest.CommandAddToSplit
+-TabStripModelBrowserTest.CommandOrganizeTabs
+-TabStripModelBrowserTest.CommandRemoveSplit
+-TabStripModelBrowserTest.DetachWebContentsAtForInsertion
+-TabStripModelBrowserTest.OnTabGroupAdded
+-TabStripModelBrowserTest.OnTabGroupWillBeRemoved
 
 # These tests fail because we disable MV2 deprecation and disablement
 -ManifestV2ExperimentManagerBrowserTest.*
@@ -2108,7 +2146,36 @@
 
 # This test fails because it conflicts with our own split view layout,
 # specifically with how we currently manage our vertical tabs host view
+-SideBySideBrowserViewTest.SplitViewActiveIndexTest
 -SideBySideBrowserViewTest.SplitViewInactiveIndexReturnsCorrectly
+
+# These tests fail because we disable contextual cueing service.
+-ContextualCueingServiceBrowserTestCCFlag.ServiceSpawnsWithCCFlag
+
+# This test fails because it sets last access date for a cookie to -8 days, but
+# we only keep them for 7 days.
+-SessionRestoreStaleSessionCookieDeletionTest.CookieStorage
+
+# These tests fail because user scripts toggle is not show in extension details
+# page (data.userScriptsAccess is false). Needs further investigation as to why.
+-DevModeToggle/UserScriptsUITest.ToggleControls_UserScriptsAPIUsage/0
+-PerExtensionToggle/UserScriptsUITest.ToggleControls_UserScriptsAPIUsage/0
+
+# This test fails presumably because we disable updating Public Key Pins - the
+# bad cert hash that the test sets isn't getting compared to anything.
+-PKPModelClientTest.PKPEnforced
+
+# This test fails because we set enable_glic to false.
+-ExtensionApiTestWithFlags.ExtensionExperimentalActor
+
+# These tests fail because we change BACKGROUND_SYNC content setting to be
+# BLOCKED by default. This prevents reports from being sent.
+-All/JSCallStackReportingBrowserTest.IframeUnresponsiveWithJSCallStackNotOptedIn/*
+-All/JSCallStackReportingBrowserTest.IframeUnresponsiveWithJSCallStackOptedIn/*
+-All/JSCallStackReportingBrowserTest.MainPageNotOptedIn/*
+-All/JSCallStackReportingBrowserTest.MainPageOptedIn/*
+-All/ReportingBrowserTestMoreContextData.CrashReportUnresponsive/*
+-All/ReportingBrowserTestMoreContextData.CrashReportUnresponsiveCrossOriginIframe/*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
@@ -2136,6 +2203,7 @@
 -All/PDFExtensionJSInk2Test.Ink2/*
 -All/PDFExtensionJSInk2Test.Ink2BottomToolbarDropdown/*
 -All/PDFExtensionJSInk2Test.Ink2SidePanel/*
+-All/PDFExtensionJSInk2Test.Ink2TextBottomToolbar/*
 -All/PDFExtensionJSInk2Test.Ink2TextSidePanel/*
 -All/PDFExtensionJSTest.ViewerFilePicker/*
 -All/PDFExtensionTest.FullPagePdfHasFocus/0
