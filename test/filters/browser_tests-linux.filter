@@ -43,6 +43,10 @@
 # These tests fail because kPrerender2 feature is disabled.
 -MediaEngagementPreThirdPartyCookieDeprecationBrowserTest.Ignored
 
+# These tests fail because the primary account consent level is null instead of
+# signin::ConsentLevel::kSignin
+-All/AvatarToolbarButtonEnterpriseBadgingWithSyncPromoParamsBrowserTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
