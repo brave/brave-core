@@ -57,6 +57,7 @@ class SidebarModel : public SidebarService::Observer,
                              size_t index,
                              bool user_gesture) {}
     virtual void OnItemMoved(const SidebarItem& item, size_t from, size_t to) {}
+    virtual void OnWillRemoveItem(const SidebarItem& item) {}
     virtual void OnItemRemoved(size_t index) {}
     virtual void OnActiveIndexChanged(std::optional<size_t> old_index,
                                       std::optional<size_t> new_index) {}
