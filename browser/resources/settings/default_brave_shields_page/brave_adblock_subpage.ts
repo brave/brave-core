@@ -51,7 +51,8 @@ class AdBlockSubpage extends AdBlockSubpageBase {
         value: false
       },
       shouldShowCustomFilters_: Boolean,
-      shouldShowCustomScriptlets_: Boolean
+      shouldShowCustomScriptlets_: Boolean,
+      customScriptlets_: Array
     }
   }
 
@@ -69,7 +70,7 @@ class AdBlockSubpage extends AdBlockSubpageBase {
   private declare hasListExpanded_: boolean
   private declare shouldShowCustomFilters_: boolean
   private declare shouldShowCustomScriptlets_: boolean
-  private customScriptlets_: Scriptlet[]
+  private declare customScriptlets_: Scriptlet[]
 
   private browserProxy_: BraveAdblockBrowserProxy =
     BraveAdblockBrowserProxyImpl.getInstance()
@@ -116,7 +117,7 @@ class AdBlockSubpage extends AdBlockSubpageBase {
   ) {
     this.shouldShowCustomScriptlets_ =
       devMode !== undefined &&
-      customScriptlets != undefined &&
+      customScriptlets !== undefined &&
       loadTimeData.getBoolean('cosmeticFilteringCustomScriptletsEnabled') &&
       (customScriptlets.length > 0 || devMode)
 
