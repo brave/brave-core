@@ -204,23 +204,6 @@ void ShieldsPanelDataHandler::ResetBlockedElements() {
       content::ReloadType::NORMAL, true);
 }
 
-void ShieldsPanelDataHandler::AreAnyBlockedElementsPresent(
-    AreAnyBlockedElementsPresentCallback callback) {
-  std::move(callback).Run(
-      g_brave_browser_process->ad_block_service()->AreAnyBlockedElementsPresent(
-          active_shields_data_controller_->web_contents()->GetURL().host()));
-}
-
-void ShieldsPanelDataHandler::ResetBlockedElements() {
-  g_brave_browser_process->ad_block_service()->ResetCosmeticFilter(
-      active_shields_data_controller_->web_contents()->GetURL().host());
-
-  webui_controller_->embedder()->CloseUI();
-
-  active_shields_data_controller_->web_contents()->GetController().Reload(
-      content::ReloadType::NORMAL, true);
-}
-
 void ShieldsPanelDataHandler::UpdateFavicon() {
   if (!active_shields_data_controller_) {
     return;

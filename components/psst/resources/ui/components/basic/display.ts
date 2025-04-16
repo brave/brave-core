@@ -7,6 +7,8 @@
 import styled from 'styled-components'
 import { color, font } from '@brave/leo/tokens/css/variables'
 import { LeftAlignedItem, TextSection } from "./structure";
+import Ring from '@brave/leo/react/progressRing'
+import Icon from '@brave/leo/react/icon';
 
 export const ModalTitle = styled(TextSection)`
   box-sizing: border-box;
@@ -35,4 +37,14 @@ export const SettingGridHeaderRow = styled(LeftAlignedItem)`
 export const SettingGridRow = styled(LeftAlignedItem)`
   padding: 16px;
   border-bottom: 1px solid #eee;
+`
+export const SettingProgressRing = styled(Ring)`
+  --leo-progressring-size: 20px;
+`
+
+export const CheckBoxIconCompleted = styled(Icon)`
+  --leo-icon-color: #079235;
+`
+export const CheckBoxIconFailed = styled(Icon)`
+  --leo-icon-color: #f10a0a;
 `

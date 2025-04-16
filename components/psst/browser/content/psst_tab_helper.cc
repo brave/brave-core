@@ -20,12 +20,12 @@
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/browser/psst/psst_consent_tab_helper_delegate_impl.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
+#include "brave/components/psst/common/psst_constants.h"
 #include "brave/components/psst/common/psst_prefs.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -47,10 +47,10 @@ namespace psst {
 
 namespace {
 
-// bool IsPsstOperationContextValid(
-//     const std::unique_ptr<PsstOperationContext>& context) {
-//   return context && context->IsValid();
-// }
+bool IsPsstOperationContextValid(
+    const std::unique_ptr<PsstOperationContext>& context) {
+  return context && context->IsValid();
+}
 
 std::string GetScriptWithParams(const std::string& script,
                                 std::optional<base::Value> params) {
@@ -108,7 +108,7 @@ void OpenNewTab(content::WebContents* contents, const std::optional<GURL> url) {
 // static
 std::unique_ptr<PsstTabHelper> PsstTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents,
-    std::unique_ptr<Delegate> delegate) {
+    std::unique_ptr<PsstDialogDelegate> delegate) {
   // TODO(ssahib): add check for Request-OTR.
   // LOG(INFO) << "[PSST] MaybeCreateForWebContents #100 OffTheRecord:" <<
   // contents->GetBrowserContext()->IsOffTheRecord() << " feature:" <<
@@ -124,7 +124,7 @@ std::unique_ptr<PsstTabHelper> PsstTabHelper::MaybeCreateForWebContents(
 }
 
 PsstTabHelper::PsstTabHelper(content::WebContents* web_contents,
-                             std::unique_ptr<Delegate> delegate,
+                             std::unique_ptr<PsstDialogDelegate> delegate,
                              const int32_t world_id)
     : WebContentsObserver(web_contents),
       delegate_(std::move(delegate)),
@@ -141,6 +141,12 @@ PsstTabHelper::PsstTabHelper(content::WebContents* web_contents,
 
 PsstTabHelper::~PsstTabHelper() {
   LOG(INFO) << "[PSST] PsstTabHelper destroyed";
+}
+
+
+PsstDialogDelegate* PsstTabHelper::GetPsstDialogDelegate()
+    const {
+  return delegate_.get();
 }
 
 void PsstTabHelper::OnPolicyScriptResult(
@@ -181,7 +187,7 @@ void PsstTabHelper::OnPolicyScriptResult(
       }
 
       applied_list.push_back(*desc);
-      delegate_->SetRequestDone(web_contents(), *url, false);
+      delegate_->SetRequestDone(web_contents(), *url, std::nullopt);
     }
   }
 
@@ -201,7 +207,7 @@ void PsstTabHelper::OnPolicyScriptResult(
         continue;
       }
       const auto error_label_text = base::StrCat({*desc, " (", *err, ")"});
-      delegate_->SetRequestDone(web_contents(), key, true);
+      delegate_->SetRequestDone(web_contents(), key, error_label_text);
       errors_list.push_back(error_label_text);
     }
   }
@@ -245,7 +251,7 @@ void PsstTabHelper::OnUserScriptResult(
   }
 
   auto* params = script_result.GetIfDict();
-  const std::string* user_id = params->FindString("user");
+  const std::string* user_id = params->FindString(kUserScriptResultUserPropName);
   if (!user_id) {
     LOG(INFO) << "[PSST] could not get user id for PSST.";
     ResetContext();
@@ -277,9 +283,16 @@ void PsstTabHelper::OnUserScriptResult(
     return;
   }
 
-  const auto* tasks = params->FindList("tasks");
+  const auto* tasks = params->FindList(kUserScriptResultTasksPropName);
   if (!tasks) {
     LOG(INFO) << "[PSST] PsstTabHelper::OnUserScriptResult tasks: N/A";
+    ResetContext();
+    return;
+  }
+
+  const auto* site_name = params->FindString(kUserScriptResultSiteNamePropName);
+  if (!site_name) {
+    LOG(INFO) << "[PSST] PsstTabHelper::OnUserScriptResult site_name: N/A";
     ResetContext();
     return;
   }
@@ -289,16 +302,19 @@ void PsstTabHelper::OnUserScriptResult(
             << " prompt_for_new_version:" << prompt_for_new_version;
 
   delegate_->ShowPsstConsentDialog(
-      web_contents(), prompt_for_new_version, tasks->Clone(),
-      base::BindOnce(&PsstTabHelper::OnUserDialogAction,
-                     weak_factory_.GetWeakPtr(), true, *user_id, rule,
-                     std::move(script_result), render_frame_host_id, kAllow),
-      base::BindOnce(&PsstTabHelper::OnUserDialogAction,
-                     weak_factory_.GetWeakPtr(), true, *user_id, rule,
-                     std::nullopt /* no params needed */, render_frame_host_id,
-                     kBlock),
-      base::BindOnce(&PsstTabHelper::OnDisablePsst,
-                     weak_factory_.GetWeakPtr()));
+      web_contents(), std::make_unique<PsstDialogDelegate::ShowDialogData>(
+        prompt_for_new_version,
+        *site_name,
+        tasks->Clone(),
+        base::BindOnce(&PsstTabHelper::OnUserDialogAction,
+          weak_factory_.GetWeakPtr(), true, *user_id, rule,
+          std::move(script_result), render_frame_host_id, kAllow),
+        base::BindOnce(&PsstTabHelper::OnUserDialogAction,
+            weak_factory_.GetWeakPtr(), true, *user_id, rule,
+            std::nullopt /* no params needed */, render_frame_host_id,
+            kBlock),
+        base::BindOnce(&PsstTabHelper::OnDisablePsst,
+              weak_factory_.GetWeakPtr())));
 }
 
 void PsstTabHelper::OnUserDialogAction(
@@ -453,9 +469,9 @@ void PsstTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
     return;
   }
 
-  // auto url = web_contents()->GetLastCommittedURL();
-  // content::GlobalRenderFrameHostId render_frame_host_id =
-  //     web_contents()->GetPrimaryMainFrame()->GetGlobalId();
+  auto url = web_contents()->GetLastCommittedURL();
+  content::GlobalRenderFrameHostId render_frame_host_id =
+      web_contents()->GetPrimaryMainFrame()->GetGlobalId();
 
   LOG(INFO)
       << "[PSST] PsstTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame "
@@ -463,20 +479,17 @@ void PsstTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
       << (psst_operation_context_ ? psst_operation_context_->GetUserId()
                                   : "n/a");
 
-  // if (IsPsstOperationContextValid(psst_operation_context_)) {
-  //   PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
-  //       url, base::BindOnce(&PsstTabHelper::InsertPolicyScript,
-  //                           weak_factory_.GetWeakPtr(), render_frame_host_id));
-  //   return;
-  // }
+  if (IsPsstOperationContextValid(psst_operation_context_)) {
+    PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
+        url, base::BindOnce(&PsstTabHelper::InsertPolicyScript,
+                            weak_factory_.GetWeakPtr(), render_frame_host_id));
+    return;
+  }
 
-  // PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
-  //     url, base::BindOnce(&PsstTabHelper::InsertUserScript,
-  //                         weak_factory_.GetWeakPtr(), render_frame_host_id));
+  PsstRuleRegistryAccessor::GetInstance()->Registry()->CheckIfMatch(
+      url, base::BindOnce(&PsstTabHelper::InsertUserScript,
+                          weak_factory_.GetWeakPtr(), render_frame_host_id));
 
-
-  // delegate_->ShowPsstConsentDialog(
-  //   web_contents(), false, base::Value::List(), base::NullCallback(), base::NullCallback(), base::NullCallback());
 }
 
 void PsstTabHelper::OnDisablePsst() {

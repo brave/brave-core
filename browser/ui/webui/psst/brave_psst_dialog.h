@@ -6,7 +6,7 @@
  #ifndef BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_DIALOG_H_
  #define BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_DIALOG_H_
 
-#include "content/public/browser/web_contents.h"
+#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 
 namespace psst {
 

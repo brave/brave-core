@@ -115,6 +115,8 @@ source_set("ui") {
 
   if (!is_android && !is_ios) {
     sources += [
+      "webui/psst/brave_psst_consent_helper_handler.cc",
+      "webui/psst/brave_psst_consent_helper_handler.h",
       "webui/psst/brave_psst_dialog_ui.cc",
       "webui/psst/brave_psst_dialog_ui.h",
       "webui/psst/brave_psst_dialog.cc",
@@ -579,11 +581,6 @@ source_set("ui") {
       "views/overlay/brave_video_overlay_window_views.h",
       "views/page_action/brave_page_action_icon_container_view.cc",
       "views/page_action/brave_page_action_icon_container_view.h",
-      "views/psst/psst_consent_dialog.cc",
-      "views/psst/psst_consent_dialog.h",
-      "views/psst/psst_consent_dialog_tracker.cc",
-      "views/psst/psst_consent_dialog_tracker.h",
-      "views/psst/psst_consent_tab_helper_delegate_impl_views.cc",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
       "views/side_panel/ai_chat/ai_chat_side_panel_utils_views.cc",

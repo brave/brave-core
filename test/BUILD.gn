@@ -870,7 +870,6 @@ test("brave_browser_tests") {
     "//brave/browser/ntp_background",
     "//brave/browser/permissions:browser_tests",
     "//brave/browser/profiles:util",
-    "//brave/browser/psst:browser_tests",
     "//brave/browser/sandbox:browser_tests",
     "//brave/browser/script_injector:browser_tests",
     "//brave/browser/sessions:browser_tests",

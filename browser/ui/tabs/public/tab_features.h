@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
 class Profile;
@@ -35,6 +36,10 @@ class TabFeatures : public TabFeatures_Chromium {
   ~TabFeatures() override;
 
   void Init(TabInterface& tab, Profile* profile) override;
+
+#if BUILDFLAG(ENABLE_PSST)
+  psst::PsstTabHelper* GetPsstTabHelper();
+#endif
 
  private:
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;

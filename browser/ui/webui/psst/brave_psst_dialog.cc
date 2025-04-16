@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/psst/brave_psst_dialog.h"
+#include <memory>
 
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
@@ -45,14 +46,15 @@ GURL PsstDialogDelegate::GetDialogContentURL() const {
     return GURL(kBraveUIPsstURL);
 }
 void PsstDialogDelegate::OnDialogClosed(
-    const std::string& /* json_retval */) {}
+    const std::string& /* json_retval */) {
+LOG(INFO) << "[PSST] OnDialogClosed";
+}
 
 void PsstDialogDelegate::OnCloseContents(content::WebContents* /* source */,
                                                       bool* out_close_dialog) {
+LOG(INFO) << "[PSST] OnCloseContents";
   *out_close_dialog = true;
 }
-
-
 
 void OpenPsstDialog(content::WebContents* initiator) {
     base::Value::Dict params_dict;
@@ -71,7 +73,6 @@ void OpenPsstDialog(content::WebContents* initiator) {
         initiator->GetBrowserContext(),
         std::make_unique<PsstDialogDelegate>(std::move(params_dict)),
         initiator, min_size, max_size);
-  
 }
 
 }  // namespace psst

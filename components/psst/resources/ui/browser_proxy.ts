@@ -6,39 +6,44 @@
 import * as mojom from 'gen/brave/components/psst/browser/core/psst_consent_dialog.mojom.m.js'
 export * from 'gen/brave/components/psst/browser/core/psst_consent_dialog.mojom.m.js'
 
-export function closeDialog() {
-  chrome.send('dialogClose')
-}
+let instance: BravePsstConsentDialogProxy | null = null
 
-export interface BravePsstConsentDialogProxy {
-  getPsstConsentHelper(): mojom.PsstConsentHelperRemote;
-  getCallbackRouter(): mojom.PsstConsentDialogCallbackRouter
-}
+export class BravePsstConsentDialogProxy {
+  consentHelper: mojom.PsstConsentHelperRemote
+  callbackRouter: mojom.PsstConsentDialogCallbackRouter
 
-let consentHelper: mojom.PsstConsentHelperRemote
-let callbackRouter: mojom.PsstConsentDialogCallbackRouter
+  constructor(
+    consentHelper: mojom.PsstConsentHelperRemote,
+    callbackRouter: mojom.PsstConsentDialogCallbackRouter) {
+    this.consentHelper = consentHelper
+    this.callbackRouter = callbackRouter
+  }
 
-export class BravePsstConsentDialogProxyImpl
-    implements BravePsstConsentDialogProxy {
+  static getInstance(): BravePsstConsentDialogProxy {
+    if (!instance) {
+      const consentHelper = new mojom.PsstConsentHelperRemote()
+      const callbackRouter = new mojom.PsstConsentDialogCallbackRouter()
 
-      static getInstance(): BravePsstConsentDialogProxyImpl {
-        if (consentHelper === undefined && callbackRouter === undefined) {
-          consentHelper = mojom.PsstConsentHelper.getRemote()
-          callbackRouter = new mojom.PsstConsentDialogCallbackRouter()
-          consentHelper.setClientPage(callbackRouter.$.bindNewPipeAndPassRemote())
-        }
-    
-         return instance || (instance = new BravePsstConsentDialogProxyImpl())
-       }
-    
+      //const psstConsentDialog = 
+
+      mojom.PsstConsentFactory.getRemote().createPsstConsentHandler(
+        consentHelper.$.bindNewPipeAndPassReceiver(),
+        callbackRouter.$.bindNewPipeAndPassRemote())
+
+     // consentHelper.setClientPage(callbackRouter.$.bindNewPipeAndPassRemote())
+      instance = new BravePsstConsentDialogProxy(consentHelper, callbackRouter)
+    }
+
+    return instance
+  }
+
 
   getPsstConsentHelper(): mojom.PsstConsentHelperRemote {
-    return consentHelper
+    return this.consentHelper
   }
   getCallbackRouter(): mojom.PsstConsentDialogCallbackRouter {
-    return callbackRouter
+    return this.callbackRouter
   }
 
 }
 
-let instance: BravePsstConsentDialogProxyImpl|null = null

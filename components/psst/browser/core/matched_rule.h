@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/component_export.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 
 namespace psst {

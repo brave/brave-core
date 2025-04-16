@@ -5,10 +5,34 @@
 
 module psst_consent_dialog.mojom;
 
+// Used by the WebUI page to bootstrap bidirectional communication.
+interface PsstConsentFactory {
+    // The WebUI calls this method when the page is first initialized.
+    CreatePsstConsentHandler(pending_receiver<PsstConsentHelper> psst_consent_helper,
+        pending_remote<PsstConsentDialog> psst_consent_dialog);
+};
+  
+
+// Handler for the UI to backend calls
 interface PsstConsentHelper {
-    SetClientPage(pending_remote<PsstConsentDialog> dialog);
+ //   SetClientPage(pending_remote<PsstConsentDialog> dialog);
+    ApplyChanges(array<string> disabled_settings_list);
+    CloseDialog();
 };
 
+struct SettingCardDataItem {
+    string description;
+    string url;
+};
+
+struct SettingCardData {
+    string site_name;
+    array<SettingCardDataItem> items;
+};
+
+// Handler for the backend to UI calls
 interface PsstConsentDialog {
-    OnSetRequestDone(string url, bool val);
+    SetSettingsCardData(SettingCardData scd);
+    OnSetRequestDone(string url, string? error);
+    OnSetCompleted(array<string> applied_checks, array<string> errors);
 };

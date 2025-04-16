@@ -846,9 +846,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-LOG(INFO) << "[PSST] RegisterWebUIControllerInterfaceBinder mojom::PsstConsentHelper";
 content::RegisterWebUIControllerInterfaceBinder<
-psst_consent_dialog::mojom::PsstConsentHelper, psst::BravePsstDialogUI>(map);
+psst_consent_dialog::mojom::PsstConsentFactory, psst::BravePsstDialogUI>(map);
 #endif
 
   auto* prefs =

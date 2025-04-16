@@ -16,12 +16,16 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "base/values.h"
 #include "brave/components/psst/browser/core/matched_rule.h"
+#include "brave/components/psst/browser/core/psst_dialog_delegate.h"
 #include "brave/components/psst/browser/core/psst_opeartion_context.h"
 #include "brave/components/psst/common/psst_prefs.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/devtools_agent_host_client.h"
@@ -38,50 +42,26 @@ class PsstRuleRegistry;
 class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
     : public content::WebContentsObserver {
  public:
-  class Delegate {
-   public:
-    using ConsentCallback = base::OnceCallback<void(
-        const std::vector<std::string>& disabled_checks)>;
-    using ShareCallback = base::OnceCallback<void()>;
 
-    virtual ~Delegate() = default;
-    virtual void ShowPsstConsentDialog(
-        content::WebContents* contents,
-        bool prompt_for_new_version,
-        const base::Value::List requests,
-        ConsentCallback yes_cb,
-        ConsentCallback no_cb,
-        base::OnceClosure never_ask_me_callback) = 0;
-    virtual void SetProgressValue(content::WebContents* contents,
-                                  const double value) = 0;
-    virtual void SetRequestDone(content::WebContents* contents,
-                                const std::string& url,
-                                const bool is_error) = 0;
-    virtual void SetCompletedView(
-        content::WebContents* contents,
-        const std::vector<std::string>& applied_checks,
-        const std::vector<std::string>& errors,
-        ShareCallback share_cb) = 0;
-    virtual void Close(content::WebContents* contents) = 0;
-  };
+  
 
-  //   struct PsstOperationContext {
-  //     std::string user_id;
-  //     std::string share_experience_link;
-  //     std::string rule_name;
-  //   };
+//   void AddObserver(Delegate::Observer* obs);
+//   void RemoveObserver(Delegate::Observer* obs);
+//   bool HasObserver(Delegate::Observer* observer);
 
   static std::unique_ptr<PsstTabHelper> MaybeCreateForWebContents(
       content::WebContents* contents,
-      std::unique_ptr<Delegate> delegate);
+      std::unique_ptr<PsstDialogDelegate> delegate);
 
   ~PsstTabHelper() override;
   PsstTabHelper(const PsstTabHelper&) = delete;
   PsstTabHelper& operator=(const PsstTabHelper&) = delete;
 
+  PsstDialogDelegate* GetPsstDialogDelegate() const;
+
  private:
   PsstTabHelper(content::WebContents*,
-                std::unique_ptr<Delegate> delegate,
+                std::unique_ptr<PsstDialogDelegate> delegate,
                 const int32_t world_id);
 
   // Insert scripts for the rfh using the script_injector mojo interface.
@@ -133,8 +113,7 @@ class COMPONENT_EXPORT(PSST_BROWSER_CONTENT) PsstTabHelper
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
 
   std::unique_ptr<PsstOperationContext> psst_operation_context_;
-
-  std::unique_ptr<Delegate> delegate_;
+  std::unique_ptr<PsstDialogDelegate> delegate_;
   const int32_t world_id_;
   PrefChangeRegistrar pref_change_registrar_;
   const raw_ptr<PrefService> prefs_;

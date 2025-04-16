@@ -6,7 +6,6 @@
 #include "brave/components/psst/browser/content/psst_tab_helper.h"
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/psst/psst_consent_tab_helper_delegate_impl.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/psst_prefs.h"
