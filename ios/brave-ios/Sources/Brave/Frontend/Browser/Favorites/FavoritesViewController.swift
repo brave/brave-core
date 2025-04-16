@@ -99,15 +99,20 @@ class FavoritesViewController: UIViewController {
   // Private Browsing
   var privateBrowsingManager: PrivateBrowsingManager
   private var privateModeCancellable: AnyCancellable?
+  
+  // Search Engines
+  private let defaultSearchEngine: OpenSearchEngine?
 
   init(
     privateBrowsingManager: PrivateBrowsingManager,
+    defaultSearchEngine: OpenSearchEngine?,
     bookmarkAction: @escaping (Favorite, BookmarksAction) -> Void,
     recentSearchAction: @escaping (RecentSearch?, Bool) -> Void
   ) {
     self.bookmarkAction = bookmarkAction
     self.recentSearchAction = recentSearchAction
     self.privateBrowsingManager = privateBrowsingManager
+    self.defaultSearchEngine = defaultSearchEngine
 
     super.init(nibName: nil, bundle: nil)
 
@@ -651,23 +656,31 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
         {
           let website =
             URL(string: websiteUrl)?.baseDomain ?? URL(string: websiteUrl)?.host ?? websiteUrl
+          var searchIsUsingDefaultEngine = false
+          if let dse = defaultSearchEngine,
+            dse.searchTemplate.contains(website)
+          {
+            searchIsUsingDefaultEngine = true
+          }
 
           let title = NSMutableAttributedString(
             string: text,
             attributes: [.font: UIFont.systemFont(ofSize: 15.0)]
           )
-          title.append(
-            NSAttributedString(
-              string: " \(Strings.recentSearchQuickSearchOnWebsite) ",
-              attributes: [.font: UIFont.systemFont(ofSize: 15.0, weight: .semibold)]
+          if !searchIsUsingDefaultEngine {
+            title.append(
+              NSAttributedString(
+                string: " \(Strings.recentSearchQuickSearchOnWebsite) ",
+                attributes: [.font: UIFont.systemFont(ofSize: 15.0, weight: .semibold)]
+              )
             )
-          )
-          title.append(
-            NSAttributedString(
-              string: website,
-              attributes: [.font: UIFont.systemFont(ofSize: 15.0)]
+            title.append(
+              NSAttributedString(
+                string: website,
+                attributes: [.font: UIFont.systemFont(ofSize: 15.0)]
+              )
             )
-          )
+          }
           cell.setAttributedTitle(title)
         } else if let websiteUrl = recentSearch.websiteUrl {
           cell.setTitle(websiteUrl)
