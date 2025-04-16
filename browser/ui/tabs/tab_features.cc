@@ -15,7 +15,7 @@
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
-#include "chrome/browser/ui/tabs/public/tab_interface.h"
+#include "components/tab_collections/public/tab_interface.h"
 
 namespace tabs {
 namespace {

@@ -29,6 +29,7 @@ import {
   BraveSyncBrowserProxy,
   BraveSyncStatus
 } from './brave_sync_browser_proxy.js'
+import {SyncPrefs} from '/shared/settings/people_page/sync_browser_proxy.js';
 
 import {getTemplate} from './brave_sync_subpage.html.js'
 
@@ -101,6 +102,7 @@ class SettingBraveSyncSubpage extends SettingBraveSyncSubpageBase {
   }
 
   private pageStatus_: PageStatus
+  private syncPrefs: SyncPrefs | undefined
   private syncStatus: BraveSyncStatus
   private syncCodeDialogType: 'qr' | 'words' | 'input' | 'choose' | null
   private syncDisabledByAdmin_: boolean

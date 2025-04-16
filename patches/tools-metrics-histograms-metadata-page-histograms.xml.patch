@@ -1,10 +1,10 @@
 diff --git a/tools/metrics/histograms/metadata/page/histograms.xml b/tools/metrics/histograms/metadata/page/histograms.xml
-index 581bcf9d15c49d1e8cfeb4cc83c8ff8c4c29318d..0378d33393ec9097e75d4132c3f45b88b3ed9472 100644
+index 6935503c51b1f6af449598e2a0b572078590a7a0..5c5167345375a279b48ae768cdc5c089ae85fa95 100644
 --- a/tools/metrics/histograms/metadata/page/histograms.xml
 +++ b/tools/metrics/histograms/metadata/page/histograms.xml
-@@ -248,6 +248,17 @@ chromium-metrics-reviews@google.com.
-   <variant name=".ShoppingInsightsSidePanel"/>
+@@ -242,6 +242,17 @@ chromium-metrics-reviews@google.com.
    <variant name=".TabSearch"/>
+   <variant name=".UserEducation"/>
    <variant name=".UserNotesSidePanel"/>
 +<!-- Brave additions, as it is necessary for all types derived from
 +BubbleContentsWrapperT.
@@ -19,4 +19,4 @@ index 581bcf9d15c49d1e8cfeb4cc83c8ff8c4c29318d..0378d33393ec9097e75d4132c3f45b88
 +  <variant name=".WalletPanel"/>
  </variants>
  
- <!-- LINT.ThenChange(//tools/metrics/histograms/metadata/others/histograms.xml:TopChromeWebUIName) -->
+ <!-- LINT.ThenChange(//tools/metrics/histograms/metadata/ui/histograms.xml:TopChromeWebUIName) -->

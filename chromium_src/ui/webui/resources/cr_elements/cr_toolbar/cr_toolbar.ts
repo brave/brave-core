@@ -105,26 +105,26 @@ export class CrToolbarElement extends CrLitElement {
     }
   }
 
-  pageName = ''
-  searchPrompt = ''
-  clearLabel = ''
-  menuLabel = ''
-  menuPromo = ''
-  spinnerActive = false
-  showMenu = false
-  showMenuPromo = false
-  showSearch = true
-  narrow = false
-  narrowThreshold = 900
+  accessor pageName: string = ''
+  accessor searchPrompt: string = ''
+  accessor clearLabel: string = ''
+  accessor menuLabel: string = ''
+  accessor menuPromo: string = ''
+  accessor spinnerActive: boolean = false;
+  accessor showMenu: boolean = false;
+  accessor showMenuPromo: boolean = false;
+  accessor showSearch: boolean = true
+  accessor narrow: boolean = false
+  accessor narrowThreshold: number = 900
   narrowQuery_: MediaQueryList | null = null
-  closeMenuPromo = ''
+  accessor closeMenuPromo: string = ''
   showingSearch = false
   showRewardsButton = true
-  isBraveWalletAllowed_ = loadTimeData.getBoolean('brToolbarShowRewardsButton')
+  accessor isBraveWalletAllowed_: boolean = loadTimeData.getBoolean('brToolbarShowRewardsButton')
 
-  alwaysShowLogo = false
-  searchIconOverride?: string
-  searchInputAriaDescription = ''
+  accessor alwaysShowLogo:boolean = false
+  accessor searchIconOverride: string|undefined
+  accessor searchInputAriaDescription: string = ''
 
   // Localized strings:
   historyTitle = loadTimeData.getString('brToolbarHistoryTitle')
@@ -135,10 +135,10 @@ export class CrToolbarElement extends CrLitElement {
   walletsTitle = loadTimeData.getString('brToolbarWalletsTitle')
 
   // Settings from `loadTimeData`
-  shouldShowRewardsButton_ = loadTimeData.getBoolean('brToolbarShowRewardsButton')
+  accessor shouldShowRewardsButton_: boolean = loadTimeData.getBoolean('brToolbarShowRewardsButton')
 
   // Non-observed properties
-  fontsLoadedClassName = ''
+  accessor fontsLoadedClassName: string = ''
 
   // Slotted content
   toolbarExtraSlot: HTMLSlotElement | null = null
@@ -170,7 +170,7 @@ export class CrToolbarElement extends CrLitElement {
       // Wait for next animation frame in case dom-if has not applied yet and
       // added the menu button.
       const menuButton =
-        this.shadowRoot!.querySelector<HTMLElement>('#menuButton');
+          this.shadowRoot.querySelector<HTMLElement>('#menuButton');
       if (menuButton) {
         menuButton.focus();
       }
@@ -179,8 +179,8 @@ export class CrToolbarElement extends CrLitElement {
 
   /** @return {boolean} */
   isMenuFocused() {
-    return !!this.shadowRoot!.activeElement &&
-      this.shadowRoot!.activeElement.id === 'menuButton';
+    return !!this.shadowRoot.activeElement &&
+        this.shadowRoot.activeElement.id === 'menuButton';
   }
 
   /**
@@ -218,7 +218,7 @@ export class CrToolbarElement extends CrLitElement {
   initSlotFilledDetection() {
     // Style the 'extra items' slot only if it contains
     // content.
-    const toolbarExtraElement = this.shadowRoot!.querySelector('.toolbar-extra')
+    const toolbarExtraElement = this.shadowRoot.querySelector('.toolbar-extra')
     if (!toolbarExtraElement) {
       console.error('Could not find "toolbar-extra" element')
       return

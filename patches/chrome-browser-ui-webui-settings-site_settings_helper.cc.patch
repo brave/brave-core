@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index e5e4877a45971b773704a139a88dede0efc31eff..79958c69ed043a5ef3ec44170a613060db2de8fa 100644
+index 4edd921f2e284039dc8c027acad09823c6d7ea74..361d76d7d8923a8ce35b43450a54b6cfc63c3b3b 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -248,6 +248,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
+@@ -249,6 +249,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
      // POINTER_LOCK has been deprecated.
      {ContentSettingsType::POINTER_LOCK, nullptr},
      {ContentSettingsType::REVOKED_DISRUPTIVE_NOTIFICATION_PERMISSIONS, nullptr},
@@ -10,7 +10,7 @@ index e5e4877a45971b773704a139a88dede0efc31eff..79958c69ed043a5ef3ec44170a613060
  });
  
  static_assert(
-@@ -508,6 +509,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -509,6 +510,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -18,7 +18,7 @@ index e5e4877a45971b773704a139a88dede0efc31eff..79958c69ed043a5ef3ec44170a613060
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -522,6 +524,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -523,6 +525,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
@@ -26,7 +26,7 @@ index e5e4877a45971b773704a139a88dede0efc31eff..79958c69ed043a5ef3ec44170a613060
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -698,6 +701,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -702,6 +705,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -34,7 +34,7 @@ index e5e4877a45971b773704a139a88dede0efc31eff..79958c69ed043a5ef3ec44170a613060
      case ProviderType::kWebuiAllowlistProvider:
        return SiteSettingSource::kAllowlist;
      case ProviderType::kPolicyProvider:
-@@ -724,6 +728,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -728,6 +732,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  
  std::string ProviderToDefaultSettingSourceString(const ProviderType provider) {
    switch (provider) {
@@ -42,7 +42,7 @@ index e5e4877a45971b773704a139a88dede0efc31eff..79958c69ed043a5ef3ec44170a613060
      case ProviderType::kPolicyProvider:
        return "policy";
      case ProviderType::kSupervisedProvider:
-@@ -849,6 +854,7 @@ base::Value::Dict GetExceptionForPage(
+@@ -853,6 +858,7 @@ base::Value::Dict GetExceptionForPage(
    exception.Set(kSource, SiteSettingSourceToString(source));
    exception.Set(kIncognito, incognito);
    exception.Set(kIsEmbargoed, is_embargoed);

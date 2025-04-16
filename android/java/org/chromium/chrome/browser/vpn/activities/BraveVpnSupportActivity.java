@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +25,8 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.about_settings.AboutChromeSettings;
 import org.chromium.chrome.browser.about_settings.AboutSettingsBridge;
@@ -37,8 +38,9 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 
 import java.util.TimeZone;
 
+@NullMarked
 public class BraveVpnSupportActivity extends AsyncInitializationActivity {
-    private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
+    private @Nullable BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private final OneshotSupplier<ProfileProvider> mProfileSupplier;
 
     public BraveVpnSupportActivity() {
@@ -148,7 +150,7 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
         mFirstRunFlowSequencer =
                 new BraveFirstRunFlowSequencer(mProfileSupplier) {
                     @Override
-                    public void onFlowIsKnown(Bundle freProperties) {
+                    public void onFlowIsKnown(boolean isChild) {
                         initializeViews();
                     }
                 };

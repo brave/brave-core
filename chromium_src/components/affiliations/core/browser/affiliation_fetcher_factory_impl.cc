@@ -12,8 +12,10 @@ class BraveHashAffiliationFetcher
  public:
   using HashAffiliationFetcher::HashAffiliationFetcher;
 
-  void StartRequest(const std::vector<affiliations::FacetURI>& facet_uris,
-                    RequestInfo request_info) override {}
+  void StartRequest(
+      const std::vector<affiliations::FacetURI>& facet_uris,
+      RequestInfo request_info,
+      base::OnceCallback<void(FetchResult)> result_callback) override {}
 };
 
 }  // namespace

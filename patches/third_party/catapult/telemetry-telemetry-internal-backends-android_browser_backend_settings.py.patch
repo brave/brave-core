@@ -1,8 +1,8 @@
 diff --git a/telemetry/telemetry/internal/backends/android_browser_backend_settings.py b/telemetry/telemetry/internal/backends/android_browser_backend_settings.py
-index 7f808b55dc7f2938d5b51dc229d4a677598baea2..56dfe59a950f535578bd93666b50914eb2061af1 100644
+index aea93976e644b924c6ac4574f6d327cae16ec835..5b123441fc910d4bd01da1ef059e7e5994401691 100644
 --- a/telemetry/telemetry/internal/backends/android_browser_backend_settings.py
 +++ b/telemetry/telemetry/internal/backends/android_browser_backend_settings.py
-@@ -600,3 +600,4 @@ ANDROID_BACKEND_SETTINGS = (
+@@ -602,3 +602,4 @@ ANDROID_BACKEND_SETTINGS = (
      ANDROID_CHROME_CANARY,
      ANDROID_SYSTEM_CHROME,
  )

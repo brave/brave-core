@@ -27,6 +27,8 @@ export class BraveSettingsSocialBlockingPage extends PolymerElement {
       },
     };
   }
+
+  private isGoogleSignInFeatureEnabled_: boolean
 }
 
 customElements.define(BraveSettingsSocialBlockingPage.is, BraveSettingsSocialBlockingPage);

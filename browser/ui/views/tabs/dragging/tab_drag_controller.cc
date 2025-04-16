@@ -30,7 +30,7 @@
 namespace {
 
 int GetXCoordinateAdjustmentForMultiSelectedTabs(
-    const std::vector<raw_ptr<TabSlotView, VectorExperimental>>& dragged_views,
+    const std::vector<TabSlotView*>& dragged_views,
     int source_view_index) {
   if (dragged_views.at(source_view_index)->GetTabSlotViewType() ==
           TabSlotView::ViewType::kTabGroupHeader ||
@@ -57,7 +57,7 @@ TabDragController::~TabDragController() = default;
 TabDragController::Liveness TabDragController::Init(
     TabDragContext* source_context,
     TabSlotView* source_view,
-    const std::vector<raw_ptr<TabSlotView, VectorExperimental>>& dragging_views,
+    const std::vector<TabSlotView*>& dragging_views,
     const gfx::Point& mouse_offset,
     int source_view_offset,
     ui::ListSelectionModel initial_selection_model,
@@ -68,6 +68,8 @@ TabDragController::Liveness TabDragController::Init(
           event_source) == TabDragController::Liveness::DELETED) {
     return TabDragController::Liveness::DELETED;
   }
+
+  mouse_offset_ = mouse_offset;
 
   auto* widget = source_view->GetWidget();
   DCHECK(widget);
@@ -95,29 +97,15 @@ TabDragController::Liveness TabDragController::Init(
   }
 
   // Adjust coordinate for vertical mode.
-  const int x = mouse_offset.x() - GetXCoordinateAdjustmentForMultiSelectedTabs(
-                                       dragging_views, source_view_index_);
+  const int x =
+      mouse_offset.x() - GetXCoordinateAdjustmentForMultiSelectedTabs(
+                             dragging_views, drag_data_.source_view_index_);
   source_view_offset = mouse_offset.y();
   start_point_in_screen_ = gfx::Point(x, source_view_offset);
   views::View::ConvertPointToScreen(source_view, &start_point_in_screen_);
 
   last_point_in_screen_ = start_point_in_screen_;
   return TabDragController::Liveness::ALIVE;
-}
-
-gfx::Point TabDragController::GetAttachedDragPoint(
-    const gfx::Point& point_in_screen) {
-  if (!is_showing_vertical_tabs_) {
-    return TabDragControllerChromium::GetAttachedDragPoint(point_in_screen);
-  }
-
-  DCHECK(attached_context_);  // The tab must be attached.
-
-  gfx::Point tab_loc(point_in_screen);
-  views::View::ConvertPointFromScreen(attached_context_, &tab_loc);
-  const int x = drag_data_.front().pinned ? tab_loc.x() - mouse_offset_.x() : 0;
-  const int y = tab_loc.y() - mouse_offset_.y();
-  return {x, y};
 }
 
 gfx::Vector2d TabDragController::CalculateWindowDragOffset() {
@@ -137,19 +125,15 @@ gfx::Vector2d TabDragController::CalculateWindowDragOffset() {
   return new_offset.OffsetFromOrigin();
 }
 
-void TabDragController::MoveAttached(const gfx::Point& point_in_screen,
-                                     bool just_attached) {
-  TabDragControllerChromium::MoveAttached(point_in_screen, just_attached);
-  if (!is_showing_vertical_tabs_) {
-    return;
-  }
-
-  // Unlike upstream, We always update coordinate, as we use y coordinate. Since
-  // we don't have threshold there's no any harm for this.
-  gfx::Point point_in_attached_context = point_in_screen;
-  views::View::ConvertPointFromScreen(attached_context_,
-                                      &point_in_attached_context);
-  last_move_attached_context_loc_ = point_in_attached_context.y();
+void TabDragController::StartDraggingTabsSession(
+    bool initial_move,
+    gfx::Point start_point_in_screen) {
+  TabDragControllerChromium::StartDraggingTabsSession(initial_move,
+                                                      start_point_in_screen);
+  CHECK(dragging_tabs_session_);
+  dragging_tabs_session_->set_mouse_y_offset(mouse_offset_.y());
+  dragging_tabs_session_->set_is_showing_vertical_tabs(
+      is_showing_vertical_tabs_);
 }
 
 views::Widget* TabDragController::GetAttachedBrowserWidget() {
@@ -204,8 +188,8 @@ void TabDragController::DetachAndAttachToNewContext(
     std::vector<tabs::TabHandle> tabs;
     auto* tab_strip_model = browser->tab_strip_model();
     DCHECK_EQ(tab_strip_model, attached_context_->GetTabStripModel());
-    auto drag_data =
-        base::span(drag_data_).subspan(static_cast<size_t>(first_tab_index()));
+    auto drag_data = base::span(drag_data_.tab_drag_data_)
+                         .subspan(static_cast<size_t>(first_tab_index()));
     for (const auto& data : drag_data) {
       tabs.push_back(tab_strip_model
                          ->GetTabAtIndex(tab_strip_model->GetIndexOfWebContents(
@@ -263,15 +247,14 @@ void TabDragController::DetachAndAttachToNewContext(
   // Relayout tabs with expanded bounds.
   attached_context_->ForceLayout();
 
-  std::vector<raw_ptr<TabSlotView, VectorExperimental>> views(
-      drag_data_.size());
-  for (size_t i = 0; i < drag_data_.size(); ++i) {
-    views[i] = drag_data_[i].attached_view.get();
+  std::vector<TabSlotView*> views(drag_data_.tab_drag_data_.size());
+  for (size_t i = 0; i < drag_data_.tab_drag_data_.size(); ++i) {
+    views[i] = drag_data_.tab_drag_data_[i].attached_view.get();
   }
 
   attached_context_->LayoutDraggedViewsAt(
-      std::move(views), source_view_drag_data()->attached_view,
-      GetCursorScreenPoint(), initial_move_);
+      std::move(views), drag_data_.source_view_drag_data()->attached_view,
+      GetCursorScreenPoint(), false);
 
   if (old_split_view_browser_data) {
     auto* new_browser = BrowserView::GetBrowserViewForNativeWindow(
@@ -338,22 +321,4 @@ gfx::Vector2d TabDragController::GetVerticalTabStripWidgetOffset() {
   auto tabstrip_widget_bounds = tabstrip_widget->GetWindowBoundsInScreen();
 
   return browser_widget_bounds.origin() - tabstrip_widget_bounds.origin();
-}
-
-void TabDragController::InitDragData(TabSlotView* view,
-                                     TabDragData* drag_data) {
-  // This seems to be a bug from upstream. If the `view` is a group header,
-  // there can't be contents or pinned state which are bound to this `view`.
-  if (view->GetTabSlotViewType() == TabSlotView::ViewType::kTabGroupHeader) {
-    std::optional<tab_groups::TabGroupId> tab_group_id = view->group();
-    DCHECK(tab_group_id.has_value());
-    drag_data->tab_group_data = TabDragData::TabGroupData{
-        tab_group_id.value(), *source_context_->GetTabStripModel()
-                                   ->group_model()
-                                   ->GetTabGroup(tab_group_id.value())
-                                   ->visual_data()};
-    return;
-  }
-
-  TabDragControllerChromium::InitDragData(view, drag_data);
 }

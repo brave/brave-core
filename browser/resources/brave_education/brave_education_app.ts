@@ -57,7 +57,7 @@ export class BraveEducationAppElement extends CrLitElement {
     };
   }
 
-  protected url_: string = '';
+  protected accessor url_: string = '';
 
   private eventTracker_: EventTracker = new EventTracker();
 

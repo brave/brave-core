@@ -125,7 +125,7 @@ class SidebarSeparator : public views::View {
  public:
   SidebarSeparator() {
     SetBackground(
-        views::CreateThemedSolidBackground(kColorBraveVerticalTabSeparator));
+        views::CreateSolidBackground(kColorBraveVerticalTabSeparator));
   }
 };
 BEGIN_METADATA(SidebarSeparator)
@@ -137,7 +137,7 @@ class ContentsBackground : public views::View {
   METADATA_HEADER(ContentsBackground, views::View)
  public:
   ContentsBackground() {
-    SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
+    SetBackground(views::CreateSolidBackground(kColorToolbar));
     SetEnabled(false);
   }
 };
@@ -236,7 +236,8 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
           devtools_web_view(), contents_web_view(), contents_scrim_view(),
-          nullptr, watermark_view_.get(), reader_mode_toolbar_));
+          lens_overlay_view_, nullptr, watermark_view_.get(),
+          reader_mode_toolbar_));
 #endif
 
   if (use_rounded_corners) {
@@ -638,17 +639,18 @@ void BraveBrowserView::AddedToWidget() {
   UpdateWebViewRoundedCorners();
 
   if (vertical_tab_strip_host_view_) {
+    vertical_tab_strip_widget_ = VerticalTabStripWidgetDelegateView::Create(
+        this, vertical_tab_strip_host_view_);
     vertical_tab_strip_widget_delegate_view_ =
-        VerticalTabStripWidgetDelegateView::Create(
-            this, vertical_tab_strip_host_view_);
+        static_cast<VerticalTabStripWidgetDelegateView*>(
+            vertical_tab_strip_widget_->widget_delegate());
 
     // By setting this property to the widget for vertical tabs,
     // BrowserView::GetBrowserViewForNativeWindow() will return browser view
     // properly even when we pass the native window for vertical tab strip.
     // As a result, we don't have to call GetTopLevelWidget() in order to
     // get browser view from the vertical tab strip's widget.
-    SetNativeWindowPropertyForWidget(
-        vertical_tab_strip_widget_delegate_view_->GetWidget());
+    SetNativeWindowPropertyForWidget(vertical_tab_strip_widget_.get());
 
     GetBrowserViewLayout()->set_vertical_tab_strip_host(
         vertical_tab_strip_host_view_.get());

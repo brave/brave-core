@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <string>
 #include <utility>
+#include <variant>
 
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -65,7 +66,7 @@ class TiledItemsView : public views::BoxLayoutView {
     DCHECK_GE(items.size(), 1u);
 
     SetPreferredSize(gfx::Size(464, 72));
-    SetBorder(views::CreateThemedRoundedRectBorder(
+    SetBorder(views::CreateRoundedRectBorder(
         /*thickness=*/1, kCornerRadius, kColorBravePlaylistListBorder));
     SetInsideBorderInsets(gfx::Insets(8));
     SetBetweenChildSpacing(16);
@@ -366,7 +367,7 @@ PlaylistNewPlaylistDialog::PlaylistNewPlaylistDialog(
         std::make_unique<views::ScrollView>());
     scroll_view->ClipHeightTo(/*min_height=*/0, /*max_height=*/224);
     scroll_view->SetDrawOverflowIndicator(false);
-    scroll_view->SetBorder(views::CreateThemedRoundedRectBorder(
+    scroll_view->SetBorder(views::CreateRoundedRectBorder(
         /*thickness=*/1,
         /*corner_radius=*/4.f, kColorBravePlaylistListBorder));
 
@@ -487,7 +488,7 @@ PlaylistMoveDialog::PlaylistMoveDialog(PassKey, MoveParam param)
     : PlaylistMoveDialog(std::move(param)) {}
 
 PlaylistMoveDialog::PlaylistMoveDialog(
-    absl::variant<raw_ptr<playlist::PlaylistTabHelper>, MoveParam> source)
+    std::variant<raw_ptr<playlist::PlaylistTabHelper>, MoveParam> source)
     : source_(std::move(source)) {
   thumbnail_provider_ =
       is_from_tab_helper()
@@ -556,7 +557,7 @@ void PlaylistMoveDialog::EnterChoosePlaylistMode() {
       contents_container_->AddChildView(std::make_unique<views::ScrollView>());
   scroll_view->ClipHeightTo(/*min_height=*/0, /*max_height=*/224);
   scroll_view->SetDrawOverflowIndicator(false);
-  scroll_view->SetBorder(views::CreateThemedRoundedRectBorder(
+  scroll_view->SetBorder(views::CreateRoundedRectBorder(
       /*thickness=*/1,
       /*corner_radius=*/4.f, kColorBravePlaylistListBorder));
   list_view_ =

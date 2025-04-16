@@ -11,7 +11,11 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/patterns.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using base::test::IsSupersetOfValue;
+using testing::Pointee;
 
 namespace web_discovery {
 
@@ -92,53 +96,42 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateQueryPayloads) {
   ASSERT_EQ(payloads.size(), 3u);
 
   const auto* payload = &payloads[0];
-  const auto* inner_payload = payload->FindDict(kInnerPayloadKey);
-  ASSERT_TRUE(inner_payload);
-  base::ExpectDictStringValue("single_action", *payload, kActionKey);
-
-  EXPECT_EQ(inner_payload->size(), 3u);
-
-  base::ExpectDictStringValue("us", *inner_payload, "ctry");
-  base::ExpectDictStringValue("value1", *inner_payload, "ab");
-  base::ExpectDictStringValue("value2", *inner_payload, "cd");
+  EXPECT_THAT(payload,
+              Pointee(IsSupersetOfValue(
+                  base::Value::Dict()
+                      .Set(kActionKey, "single_action")
+                      .Set(kInnerPayloadKey, base::Value::Dict()
+                                                 .Set("ctry", "us")
+                                                 .Set("ab", "value1")
+                                                 .Set("cd", "value2")))));
 
   payload = &payloads[1];
-  inner_payload = payload->FindDict(kInnerPayloadKey);
-  ASSERT_TRUE(inner_payload);
-  base::ExpectDictStringValue("single_action", *payload, kActionKey);
-
-  EXPECT_EQ(inner_payload->size(), 3u);
-
-  base::ExpectDictStringValue("us", *inner_payload, "ctry");
-  base::ExpectDictStringValue("value3", *inner_payload, "ef");
-  base::ExpectDictStringValue("value4", *inner_payload, "gh");
+  EXPECT_THAT(payload,
+              Pointee(IsSupersetOfValue(
+                  base::Value::Dict()
+                      .Set(kActionKey, "single_action")
+                      .Set(kInnerPayloadKey, base::Value::Dict()
+                                                 .Set("ctry", "us")
+                                                 .Set("ef", "value3")
+                                                 .Set("gh", "value4")))));
 
   payload = &payloads[2];
-  inner_payload = payload->FindDict(kInnerPayloadKey);
-  ASSERT_TRUE(inner_payload);
-  base::ExpectDictStringValue("query", *payload, kActionKey);
-
-  EXPECT_EQ(inner_payload->size(), 2u);
-
-  const auto* r_dict = inner_payload->FindDict("r");
-  ASSERT_TRUE(r_dict);
-  EXPECT_EQ(r_dict->size(), 4u);
-  base::ExpectDictStringValue("https://example.com/test1", *inner_payload,
-                              "qurl");
-
-  const auto* r0_dict = r_dict->FindDict("0");
-  const auto* r1_dict = r_dict->FindDict("1");
-  const auto* r2_dict = r_dict->FindDict("2");
-  const auto* r3_dict = r_dict->FindDict("3");
-  ASSERT_TRUE(r0_dict && r1_dict && r2_dict && r3_dict);
-  EXPECT_EQ(r0_dict->size(), 1u);
-  EXPECT_EQ(r1_dict->size(), 1u);
-  EXPECT_EQ(r2_dict->size(), 1u);
-  EXPECT_EQ(r3_dict->size(), 1u);
-  base::ExpectDictStringValue("joinvalue1", *r0_dict, "njk");
-  base::ExpectDictStringValue("joinvalue2", *r1_dict, "abc");
-  base::ExpectDictStringValue("joinvalue3", *r2_dict, "njk");
-  base::ExpectDictStringValue("joinvalue4", *r3_dict, "abc");
+  ASSERT_THAT(
+      payload,
+      Pointee(IsSupersetOfValue(
+          base::Value::Dict()
+              .Set(kActionKey, "query")
+              .Set(kInnerPayloadKey,
+                   base::Value::Dict().Set(
+                       "r", base::Value::Dict()
+                                .Set("0", base::Value::Dict().Set("njk",
+                                                                  "joinvalue1"))
+                                .Set("1", base::Value::Dict().Set("abc",
+                                                                  "joinvalue2"))
+                                .Set("2", base::Value::Dict().Set("njk",
+                                                                  "joinvalue3"))
+                                .Set("3", base::Value::Dict().Set(
+                                              "abc", "joinvalue4")))))));
 }
 
 TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateAlivePayload) {
@@ -146,15 +139,14 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateAlivePayload) {
 
   auto alive_payload = GenerateAlivePayload(*server_config_.get(), date_hour);
 
-  base::ExpectDictStringValue("alive", alive_payload, "action");
-
-  const auto* inner_payload = alive_payload.FindDict("payload");
-
-  ASSERT_TRUE(inner_payload);
-
-  base::ExpectDictStringValue("us", *inner_payload, "ctry");
-  base::ExpectDictStringValue(date_hour, *inner_payload, "t");
-  base::ExpectDictBooleanValue(true, *inner_payload, "status");
+  ASSERT_THAT(
+      alive_payload,
+      IsSupersetOfValue(base::Value::Dict()
+                            .Set(kActionKey, "alive")
+                            .Set(kInnerPayloadKey, base::Value::Dict()
+                                                       .Set("ctry", "us")
+                                                       .Set("t", date_hour)
+                                                       .Set("status", true))));
 }
 
 TEST_F(WebDiscoveryPayloadGeneratorTest, ExcludePrivateResult) {
@@ -182,21 +174,20 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, ExcludePrivateResult) {
 
   auto payloads = GenerateQueryPayloadsHelper(std::move(scrape_result));
   ASSERT_EQ(payloads.size(), 1u);
-
-  const auto* payload = &payloads[0];
-  const auto* inner_payload = payload->FindDict("payload");
-  const auto* r_dict = inner_payload->FindDict("r");
-  ASSERT_TRUE(inner_payload && r_dict);
-
-  ASSERT_EQ(r_dict->size(), 4u);
-
-  for (int i = 0; i < 4; i++) {
-    const auto* ri_dict = r_dict->FindDict(base::NumberToString(i));
-    ASSERT_TRUE(ri_dict);
-
-    base::ExpectDictStringValue(
-        "https://example.com/result" + base::NumberToString(i), *ri_dict, "u");
-  }
+  EXPECT_THAT(
+      payloads[0],
+      IsSupersetOfValue(base::Value::Dict().Set(
+          kInnerPayloadKey,
+          base::Value::Dict().Set(
+              "r", base::Value::Dict()
+                       .Set("0", base::Value::Dict().Set(
+                                     "u", "https://example.com/result0"))
+                       .Set("1", base::Value::Dict().Set(
+                                     "u", "https://example.com/result1"))
+                       .Set("2", base::Value::Dict().Set(
+                                     "u", "https://example.com/result2"))
+                       .Set("3", base::Value::Dict().Set(
+                                     "u", "https://example.com/result3"))))));
 }
 
 TEST_F(WebDiscoveryPayloadGeneratorTest, ShouldDropSearchResult) {

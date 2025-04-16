@@ -57,7 +57,7 @@ SharedPinnedTabDummyViewViews::SharedPinnedTabDummyViewViews(
       ->SetOrientation(views::LayoutOrientation::kVertical)
       .SetCrossAxisAlignment(views::LayoutAlignment::kCenter)
       .SetMainAxisAlignment(views::LayoutAlignment::kCenter);
-  SetBackground(views::CreateThemedSolidBackground(
+  SetBackground(views::CreateSolidBackground(
       kColorBraveSharedPinnedTabDummyViewBackground));
 
   constexpr auto kTitleFontSize = 22;
@@ -71,7 +71,7 @@ SharedPinnedTabDummyViewViews::SharedPinnedTabDummyViewViews(
 
   views::Builder<SharedPinnedTabDummyViewViews>(this)
       .AddChild(views::Builder<views::View>()
-                    .SetBorder(views::CreateThemedRoundedRectBorder(
+                    .SetBorder(views::CreateRoundedRectBorder(
                         kThumbnailBorderThickness, kThumbnailRadius,
                         kColorBraveSharedPinnedTabDummyViewThumbnailBorder))
                     .SetPreferredSize(kThumbnailSize)

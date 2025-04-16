@@ -14,8 +14,6 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
-#include "components/search_engines/template_url_prepopulate_data_resolver.h"
 
 class NotificationDisplayService;
 class Profile;
@@ -73,8 +71,6 @@ class AdsServiceDelegate : public AdsService::Delegate {
 
   const raw_ref<Profile> profile_;
   const raw_ptr<PrefService> local_state_ = nullptr;  // Not owned.
-  TemplateURLPrepopulateData::Resolver prepopulate_data_resolver_;
-  search_engines::SearchEngineChoiceService search_engine_choice_service_;
   const raw_ref<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
       adaptive_captcha_service_;
   std::unique_ptr<NotificationAdPlatformBridge>

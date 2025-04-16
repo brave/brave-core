@@ -9,6 +9,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <variant>
 
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
@@ -138,7 +139,7 @@ base::WeakPtr<SpeedreaderTabHelper> SpeedreaderTabHelper::GetWeakPtr() {
 
 void SpeedreaderTabHelper::ProcessIconClick() {
   if (DistillStates::IsViewOriginal(distill_state_)) {
-    const auto& vo = absl::get<DistillStates::ViewOriginal>(distill_state_);
+    const auto& vo = std::get<DistillStates::ViewOriginal>(distill_state_);
     if (!vo.was_auto_distilled ||
         !GetSpeedreaderService()->IsEnabledForSite(web_contents())) {
       GetDistilledHTML(

@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
@@ -67,11 +68,35 @@ void BraveWaybackMachineTabHelper::FetchWaybackURL() {
 void BraveWaybackMachineTabHelper::SetWaybackStateChangedCallback(
     WaybackStateChangedCallback callback) {
   // callback should be set only once.
-  // And it should be cleared only when there is existing one.
   if (callback) {
-    CHECK(!wayback_state_changed_callback_);
-  } else {
-    CHECK(wayback_state_changed_callback_);
+    // Some upstream tests (ex, *.TestGroupDetachedAndReInserted)
+    // do tab group detach & re-attach by raw api w/o updating active tab state
+    // that happens in product.
+    // In production, let say we have 4 tabs (tab A, B, C and D) in window A.
+    // made a tab group with tab A and B. and Current active tab is D.
+    // When that tab group is dragged and detached, tab A becomes active tab
+    // during the dragging(before detach) and active tab could be
+    // tab C or D in window A after detached. Then, new window B is created
+    // after tab group is detached. And tab A(or B) could become active tab in
+    // window B. If that tab group in window B is detached, tab A(in window B)
+    // becomes as inactive tab and it becomes active tab in window A after that
+    // tab group is attached to window A. This is a tab activation flow in
+    // production. In the test(ex,
+    // TabGroupsApiTest.TestGroupDetachedAndReInserted), that tab group is
+    // detached by calling DetachTabGroupForInsertion(group). During that
+    // detaching, any tab activation change signal is not delivered because this
+    // test omits tab group dragging step before detaching. So, tab D is still
+    // active Tab after calling that api. And then, this tab group is
+    // re-inserted by calling InsertDetachedTabGroupAt(). When this happens,
+    // window A gets active tab changed signal via OnTabStripModelChanged(). and
+    // |selection| args delivered by OnTabStripModelChanged() gives true for
+    // `active_tab_changed()`. and |selection.new_contents| points to D. Because
+    // of this tab D gets activated signal twice. Or `active_tab_changed()`
+    // should give false if active tab is still D. In production, tab A is
+    // active tab instead of tab D. IMO, that upstream test should be improved.
+    if (wayback_state_changed_callback_) {
+      CHECK_IS_TEST();
+    }
   }
 
   wayback_state_changed_callback_ = std::move(callback);

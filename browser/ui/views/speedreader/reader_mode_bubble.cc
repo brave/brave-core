@@ -106,7 +106,7 @@ void ReaderModeBubble::Init() {
 
     if (!border.IsEmpty()) {
       box->SetBorder(
-          views::CreateThemedSolidSidedBorder(border, ui::kColorMenuSeparator));
+          views::CreateSolidSidedBorder(border, ui::kColorMenuSeparator));
     }
 
     auto label = std::make_unique<views::Label>();

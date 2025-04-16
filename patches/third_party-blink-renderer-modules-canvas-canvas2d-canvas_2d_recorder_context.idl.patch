@@ -1,0 +1,19 @@
+diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.idl b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.idl
+index fa7c035c21cbd5951243ef19d3352a654c403111..ae790eb342455681c8939de93b12bf57170da3d3 100644
+--- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.idl
++++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.idl
+@@ -66,10 +66,10 @@ interface mixin Canvas2DRecorderContext {
+ 
+     [HighEntropy] void clip(optional CanvasFillRule winding);
+     [HighEntropy] void clip(Path2D path, optional CanvasFillRule winding);
+-    [HighEntropy, MeasureAs=Canvas2DIsPointInPath] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+-    [HighEntropy, MeasureAs=Canvas2DIsPointInPath] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+-    [HighEntropy, MeasureAs=Canvas2DIsPointInStroke] boolean isPointInStroke(unrestricted double x, unrestricted double y);
+-    [HighEntropy, MeasureAs=Canvas2DIsPointInStroke] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=Canvas2DIsPointInPath] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=Canvas2DIsPointInPath] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=Canvas2DIsPointInStroke] boolean isPointInStroke(unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=Canvas2DIsPointInStroke] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
+ 
+     // drawing images
+     [RaisesException] void drawImage(CanvasImageSource image, unrestricted double x, unrestricted double y);

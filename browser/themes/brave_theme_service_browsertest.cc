@@ -74,9 +74,8 @@ class BraveThemeServiceTest : public InProcessBrowserTest {
     extensions::TestExtensionRegistryObserver observer(
         extensions::ExtensionRegistry::Get(browser()->profile()));
 
-    auto installer = extensions::CrxInstaller::CreateSilent(
-        extensions::ExtensionSystem::Get(browser()->profile())
-            ->extension_service());
+    auto installer =
+        extensions::CrxInstaller::CreateSilent(browser()->profile());
     installer->set_allow_silent_install(true);
     installer->set_install_cause(extension_misc::INSTALL_CAUSE_USER_DOWNLOAD);
     installer->set_creation_flags(extensions::Extension::FROM_WEBSTORE);

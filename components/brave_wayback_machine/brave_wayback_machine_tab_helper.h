@@ -39,8 +39,12 @@ class BraveWaybackMachineTabHelper
       const BraveWaybackMachineTabHelper&) = delete;
 
   void SetWaybackStateChangedCallback(WaybackStateChangedCallback callback);
-  void set_active_window(gfx::NativeWindow window) { active_window_ = window; }
-  gfx::NativeWindow active_window() const { return active_window_; }
+  void set_active_window(std::optional<gfx::NativeWindow> window) {
+    active_window_ = window;
+  }
+  std::optional<gfx::NativeWindow> active_window() const {
+    return active_window_;
+  }
   WaybackState wayback_state() const { return wayback_state_; }
 
   void FetchWaybackURL();
@@ -69,7 +73,7 @@ class BraveWaybackMachineTabHelper
   std::optional<int64_t> wayback_url_navigation_id_;
 
   // If not null, this tab has active window.
-  gfx::NativeWindow active_window_ = nullptr;
+  std::optional<gfx::NativeWindow> active_window_;
   WaybackState wayback_state_ = WaybackState::kInitial;
   WaybackStateChangedCallback wayback_state_changed_callback_;
   raw_ref<PrefService> pref_service_;
