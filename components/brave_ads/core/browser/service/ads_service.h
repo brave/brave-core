@@ -145,6 +145,11 @@ class AdsService : public KeyedService {
       base::Value::Dict dict,
       ParseAndSaveCreativeNewTabPageAdsCallback callback) = 0;
 
+  // Called to serve a new tab page ad. The callback takes one argument -
+  // `NewTabPageAdInfo` containing the info for the ad.
+  virtual void MaybeServeNewTabPageAd(
+      MaybeServeNewTabPageAdCallback callback) = 0;
+
   // Called when a user views or interacts with a new tab page ad to trigger a
   // `mojom_ad_event_type` event for the specified `placement_id` and
   // `creative_instance_id`. `placement_id` should be a 128-bit random GUID in

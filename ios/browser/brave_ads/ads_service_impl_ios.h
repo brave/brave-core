@@ -31,7 +31,7 @@ namespace brave_ads {
 class Ads;
 class AdsClient;
 struct NewTabPageAdInfo;
-
+class NewTabPageAdPrefetcher;
 class AdsServiceImplIOS : public AdsService {
  public:
   explicit AdsServiceImplIOS(PrefService* prefs);
@@ -96,6 +96,7 @@ class AdsServiceImplIOS : public AdsService {
   void ParseAndSaveCreativeNewTabPageAds(
       base::Value::Dict dict,
       ParseAndSaveCreativeNewTabPageAdsCallback callback) override;
+  void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -171,13 +172,10 @@ class AdsServiceImplIOS : public AdsService {
   void ClearAdsData(ClearDataCallback callback, bool success);
   void ClearAdsDataCallback(ClearDataCallback callback);
 
-  // TODO(https://github.com/brave/brave-browser/issues/26192) Decouple new
-  // tab page ad business logic.
-  void PrefetchNewTabPageAdCallback(
-      base::optional_ref<const NewTabPageAdInfo> new_tab_page_ad);
   void OnParseAndSaveCreativeNewTabPageAdsCallback(
       ParseAndSaveCreativeNewTabPageAdsCallback callback,
       bool success);
+  void ResetNewTabPageAd();
 
   const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
 
@@ -191,8 +189,7 @@ class AdsServiceImplIOS : public AdsService {
   mojom::BuildChannelInfoPtr mojom_build_channel_;
   mojom::WalletInfoPtr mojom_wallet_;
 
-  std::optional<NewTabPageAdInfo> prefetched_new_tab_page_ad_;
-  bool is_prefetching_new_tab_page_ad_ = false;
+  std::unique_ptr<NewTabPageAdPrefetcher> new_tab_page_ad_prefetcher_;
 
   std::unique_ptr<Ads> ads_;
 
