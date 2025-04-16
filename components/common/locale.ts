@@ -185,9 +185,9 @@ export function formatString<T extends Replacement>(text: string, replacements: 
     // contents so the contents doesn't include the key.
     end += key.length
 
-    const value = typeof replacements[key] === 'function'
+    const value: React.ReactNode | string = typeof replacements[key] === 'function'
       ? replacements[key](contents)
-      : replacements[key] as React.ReactNode | string
+      : replacements[key]
 
     // Keep track of whether we have any non-text replacements.
     onlyText = onlyText && typeof value === 'string'

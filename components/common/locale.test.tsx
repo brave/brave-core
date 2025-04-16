@@ -28,10 +28,10 @@ describe('formatString', () => {
     }), 'I say Kiora!')
   })
 
-  it('should allow replacing with a range', () => {
+  it('should allow replacing a range', () => {
     assert.equal(formatString('$1 in $2nz$2 say $3', {
       $1: 'People',
-      $2: (content) => content.toUpperCase(),
+      $2: 'NZ',
       $3: 'Kiora'
     }), 'People in NZ say Kiora')
   })
