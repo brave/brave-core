@@ -253,6 +253,10 @@ package = "serde_derive"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/serde-v1"
 package = "serde"
 
+[patch.crates-io.serde_json_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_json-v1"
+package = "serde_json"
+
 [patch.crates-io.static_assertions_v0_1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/static_assertions-v1"
 package = "static_assertions"
