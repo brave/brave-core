@@ -52,6 +52,9 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldAlwaysInclude) {
 
 TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kExclusionRulesFeature);
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = test::kCampaignId;
@@ -357,7 +360,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 }
 
 TEST_F(BraveAdsDismissedExclusionRuleTest,
-       ShouldIncludeWithSameCampaignIdIfClickedThenDismissedTwiceWhenDisabled) {
+       ShouldIncludeWithSameCampaignIdIfClickedThenDismissedTwiceIfZeroTime) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
@@ -432,6 +435,9 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
 TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithDifferentCampaignIdAfter2Days) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kExclusionRulesFeature);
+
   CreativeAdInfo creative_ad_1;
   creative_ad_1.creative_instance_id = test::kCreativeInstanceId;
   creative_ad_1.campaign_id = test::kCampaignId;

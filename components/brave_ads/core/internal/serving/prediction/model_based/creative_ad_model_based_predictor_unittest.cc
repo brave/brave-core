@@ -24,6 +24,9 @@ class BraveAdsCreativeAdModelBasedPredictorTest : public test::TestBase {};
 
 TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, PredictCreativeAd) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kCreativeNotificationAdModelBasedPredictorFeature);
+
   CreativeNotificationAdList creative_ads;
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/

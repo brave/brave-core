@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_feature.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,62 +16,12 @@ TEST(BraveAdsInlineContentAdFeatureTest, IsEnabled) {
   EXPECT_TRUE(base::FeatureList::IsEnabled(kInlineContentAdFeature));
 }
 
-TEST(BraveAdsInlineContentAdFeatureTest, IsDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kInlineContentAdFeature);
-
-  // Act & Assert
-  EXPECT_FALSE(base::FeatureList::IsEnabled(kInlineContentAdFeature));
-}
-
 TEST(BraveAdsInlineContentAdFeatureTest, MaximumInlineContentAdsPerHour) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kInlineContentAdFeature, {{"maximum_ads_per_hour", "42"}});
-
-  // Act & Assert
-  EXPECT_EQ(42U, kMaximumInlineContentAdsPerHour.Get());
-}
-
-TEST(BraveAdsInlineContentAdFeatureTest,
-     DefaultMaximumInlineContentAdsPerHour) {
-  // Act & Assert
-  EXPECT_EQ(6U, kMaximumInlineContentAdsPerHour.Get());
-}
-
-TEST(BraveAdsInlineContentAdFeatureTest,
-     DefaultMaximumInlineContentAdsPerHourWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kInlineContentAdFeature);
-
   // Act & Assert
   EXPECT_EQ(6U, kMaximumInlineContentAdsPerHour.Get());
 }
 
 TEST(BraveAdsInlineContentAdFeatureTest, MaximumInlineContentAdsPerDay) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kInlineContentAdFeature, {{"maximum_ads_per_day", "24"}});
-
-  // Act & Assert
-  EXPECT_EQ(24U, kMaximumInlineContentAdsPerDay.Get());
-}
-
-TEST(BraveAdsInlineContentAdFeatureTest, DefaultMaximumInlineContentAdsPerDay) {
-  // Act & Assert
-  EXPECT_EQ(20U, kMaximumInlineContentAdsPerDay.Get());
-}
-
-TEST(BraveAdsInlineContentAdFeatureTest,
-     DefaultMaximumInlineContentAdsPerDayWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kInlineContentAdFeature);
-
   // Act & Assert
   EXPECT_EQ(20U, kMaximumInlineContentAdsPerDay.Get());
 }

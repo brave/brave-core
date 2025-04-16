@@ -39,6 +39,9 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldAlwaysInclude) {
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
        ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kExclusionRulesFeature);
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
 
@@ -50,6 +53,9 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldIncludeAfter1Hour) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kExclusionRulesFeature);
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
 
@@ -71,6 +77,9 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldIncludeAfter1Hour) {
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
        ShouldIncludeAfter1HourForMultipleAdTypes) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kExclusionRulesFeature);
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
 
@@ -111,6 +120,9 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
        ShouldExcludeTheSameAdWithin1Hour) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kExclusionRulesFeature);
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
 

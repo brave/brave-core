@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_feature.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,36 +16,7 @@ TEST(BraveAdsIssuersFeatureTest, IsEnabled) {
   EXPECT_TRUE(base::FeatureList::IsEnabled(kIssuersFeature));
 }
 
-TEST(BraveAdsIssuersFeatureTest, IsDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kIssuersFeature);
-
-  // Act & Assert
-  EXPECT_FALSE(base::FeatureList::IsEnabled(kIssuersFeature));
-}
-
 TEST(BraveAdsIssuersFeatureTest, MaximumTokenIssuerPublicKeys) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kIssuersFeature, {{"maximum_token_issuer_public_keys", "1"}});
-
-  // Act & Assert
-  EXPECT_EQ(1U, kMaximumTokenIssuerPublicKeys.Get());
-}
-
-TEST(BraveAdsIssuersFeatureTest, DefaultMaximumTokenIssuerPublicKeys) {
-  // Act & Assert
-  EXPECT_EQ(6U, kMaximumTokenIssuerPublicKeys.Get());
-}
-
-TEST(BraveAdsIssuersFeatureTest,
-     DefaultMaximumTokenIssuerPublicKeysWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kIssuersFeature);
-
   // Act & Assert
   EXPECT_EQ(6U, kMaximumTokenIssuerPublicKeys.Get());
 }

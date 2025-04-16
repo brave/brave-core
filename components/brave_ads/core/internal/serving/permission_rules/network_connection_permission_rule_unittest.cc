@@ -17,12 +17,19 @@ namespace brave_ads {
 class BraveAdsNetworkConnectionPermissionRuleTest : public test::TestBase {};
 
 TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, ShouldAllow) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   // Act & Assert
   EXPECT_TRUE(HasNetworkConnectionPermission());
 }
 
 TEST_F(BraveAdsNetworkConnectionPermissionRuleTest, ShouldNotAllow) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   test::MockIsNetworkConnectionAvailable(ads_client_mock_, false);
 
   // Act & Assert

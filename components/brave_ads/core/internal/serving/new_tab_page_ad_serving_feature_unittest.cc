@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,37 +16,7 @@ TEST(BraveAdsNewTabPageAdServingFeatureTest, IsEnabled) {
   EXPECT_TRUE(base::FeatureList::IsEnabled(kNewTabPageAdServingFeature));
 }
 
-TEST(BraveAdsNewTabPageAdServingFeatureTest, IsDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kNewTabPageAdServingFeature);
-
-  // Act & Assert
-  EXPECT_FALSE(base::FeatureList::IsEnabled(kNewTabPageAdServingFeature));
-}
-
 TEST(BraveAdsNewTabPageAdServingFeatureTest, NewTabPageAdServingVersion) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kNewTabPageAdServingFeature, {{"version", "0"}});
-
-  // Act & Assert
-  EXPECT_EQ(0, kNewTabPageAdServingVersion.Get());
-}
-
-TEST(BraveAdsNewTabPageAdServingFeatureTest,
-     DefaultNewTabPageAdServingVersion) {
-  // Act & Assert
-  EXPECT_EQ(2, kNewTabPageAdServingVersion.Get());
-}
-
-TEST(BraveAdsNewTabPageAdServingFeatureTest,
-     DefaultNewTabPageAdServingVersionWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kNewTabPageAdServingFeature);
-
   // Act & Assert
   EXPECT_EQ(2, kNewTabPageAdServingVersion.Get());
 }

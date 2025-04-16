@@ -17,6 +17,9 @@ class BraveAdsBrowserIsActivePermissionRuleTest : public test::TestBase {};
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldAllow) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
 
@@ -26,6 +29,9 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldAllow) {
 
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldNotAllow) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   NotifyBrowserDidResignActive();
   NotifyBrowserDidEnterBackground();
 
@@ -51,6 +57,9 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
        ShouldNotAllowIfWindowIsActiveAndBrowserIsBackgrounded) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterBackground();
 
@@ -61,6 +70,9 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
        ShouldNotAllowIfWindowIsInactiveAndBrowserIsForegrounded) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   NotifyBrowserDidResignActive();
   NotifyBrowserDidEnterForeground();
 
@@ -71,6 +83,9 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
 TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
        ShouldNotAllowIfWindowIsInactiveAndBrowserIsBackgrounded) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kPermissionRulesFeature);
+
   NotifyBrowserDidResignActive();
   NotifyBrowserDidEnterBackground();
 

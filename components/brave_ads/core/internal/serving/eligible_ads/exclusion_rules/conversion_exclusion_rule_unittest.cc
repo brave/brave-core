@@ -23,6 +23,9 @@ class BraveAdsConversionExclusionRuleTest : public test::TestBase {};
 TEST_F(BraveAdsConversionExclusionRuleTest,
        ShouldIncludeIfThereIsNoConversionHistory) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kExclusionRulesFeature);
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
 

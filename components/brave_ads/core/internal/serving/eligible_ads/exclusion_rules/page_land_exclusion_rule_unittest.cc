@@ -49,6 +49,9 @@ TEST_F(BraveAdsPageLandExclusionRuleTest, ShouldAlwaysInclude) {
 
 TEST_F(BraveAdsPageLandExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kExclusionRulesFeature);
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = test::kCampaignId;
@@ -143,7 +146,6 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
        ShouldExcludeWithSameCampaignIdWithin2Days) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
-
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(
       kExclusionRulesFeature,

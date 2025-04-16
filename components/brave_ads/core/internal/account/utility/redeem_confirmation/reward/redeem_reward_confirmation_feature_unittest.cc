@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_feature.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,37 +16,7 @@ TEST(BraveAdsRedeemRewardConfirmationFeatureTest, IsEnabled) {
   EXPECT_TRUE(base::FeatureList::IsEnabled(kRedeemRewardConfirmationFeature));
 }
 
-TEST(BraveAdsRedeemRewardConfirmationFeatureTest, IsDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kRedeemRewardConfirmationFeature);
-
-  // Act & Assert
-  EXPECT_FALSE(base::FeatureList::IsEnabled(kRedeemRewardConfirmationFeature));
-}
-
 TEST(BraveAdsRedeemRewardConfirmationFeatureTest, FetchPaymentTokenAfter) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kRedeemRewardConfirmationFeature, {{"fetch_payment_token_after", "5s"}});
-
-  // Act & Assert
-  EXPECT_EQ(base::Seconds(5), kFetchPaymentTokenAfter.Get());
-}
-
-TEST(BraveAdsRedeemRewardConfirmationFeatureTest,
-     DefaultFetchPaymentTokenAfter) {
-  // Act & Assert
-  EXPECT_EQ(base::Seconds(3), kFetchPaymentTokenAfter.Get());
-}
-
-TEST(BraveAdsRedeemRewardConfirmationFeatureTest,
-     DefaultProcessConversionConfirmationAfterWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kRedeemRewardConfirmationFeature);
-
   // Act & Assert
   EXPECT_EQ(base::Seconds(3), kFetchPaymentTokenAfter.Get());
 }

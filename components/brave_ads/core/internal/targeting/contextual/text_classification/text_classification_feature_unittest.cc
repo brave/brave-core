@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,64 +16,13 @@ TEST(BraveAdsTextClassificationFeatureTest, IsEnabled) {
   EXPECT_TRUE(base::FeatureList::IsEnabled(kTextClassificationFeature));
 }
 
-TEST(BraveAdsTextClassificationFeatureTest, IsDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
-
-  // Act & Assert
-  EXPECT_FALSE(base::FeatureList::IsEnabled(kTextClassificationFeature));
-}
-
 TEST(BraveAdsTextClassificationFeatureTest, TextClassificationResourceVersion) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kTextClassificationFeature, {{"flatbuffers_resource_version", "0"}});
-
-  // Act & Assert
-  EXPECT_EQ(0, kTextClassificationResourceVersion.Get());
-}
-
-TEST(BraveAdsTextClassificationFeatureTest,
-     DefaultTextClassificationResourceVersion) {
-  // Act & Assert
-  EXPECT_EQ(1, kTextClassificationResourceVersion.Get());
-}
-
-TEST(BraveAdsTextClassificationFeatureTest,
-     DefaultTextClassificationResourceVersionWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
-
   // Act & Assert
   EXPECT_EQ(1, kTextClassificationResourceVersion.Get());
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,
      TextClassificationPageProbabilitiesHistorySize) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kTextClassificationFeature, {{"page_probabilities_history_size", "3"}});
-
-  // Act & Assert
-  EXPECT_EQ(3U, kTextClassificationPageProbabilitiesHistorySize.Get());
-}
-
-TEST(BraveAdsTextClassificationFeatureTest,
-     DefaultTextClassificationPageProbabilitiesHistorySize) {
-  // Act & Assert
-  EXPECT_EQ(15U, kTextClassificationPageProbabilitiesHistorySize.Get());
-}
-
-TEST(BraveAdsTextClassificationFeatureTest,
-     DefaultTextClassificationPageProbabilitiesHistorySizeWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
-
   // Act & Assert
   EXPECT_EQ(15U, kTextClassificationPageProbabilitiesHistorySize.Get());
 }

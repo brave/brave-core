@@ -37,6 +37,9 @@ class BraveAdsInterestSegmentsTest : public test::TestBase {
 
 TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kTextClassificationFeature);
+
   targeting_helper_->MockInterest();
 
   // Act & Assert
@@ -47,6 +50,10 @@ TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
 }
 
 TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegmentsIfNoTargeting) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kTextClassificationFeature);
+
   // Act & Assert
   base::MockCallback<BuildSegmentsCallback> callback;
   EXPECT_CALL(callback, Run(/*segments=*/::testing::IsEmpty()));

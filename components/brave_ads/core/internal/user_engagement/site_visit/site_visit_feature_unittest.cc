@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,84 +16,17 @@ TEST(BraveAdsSiteVisitFeatureTest, IsEnabled) {
   EXPECT_TRUE(base::FeatureList::IsEnabled(kSiteVisitFeature));
 }
 
-TEST(BraveAdsSiteVisitFeatureTest, IsDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kSiteVisitFeature);
-
-  // Act & Assert
-  EXPECT_FALSE(base::FeatureList::IsEnabled(kSiteVisitFeature));
-}
-
 TEST(BraveAdsSiteVisitFeatureTest, PageLandAfter) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kSiteVisitFeature, {{"page_land_after", "7s"}});
-
-  // Act & Assert
-  EXPECT_EQ(base::Seconds(7), kPageLandAfter.Get());
-}
-
-TEST(BraveAdsSiteVisitFeatureTest, DefaultPageLandAfter) {
-  // Act & Assert
-  EXPECT_EQ(base::Seconds(5), kPageLandAfter.Get());
-}
-
-TEST(BraveAdsSiteVisitFeatureTest, DefaultPageLandAfterWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kSiteVisitFeature);
-
   // Act & Assert
   EXPECT_EQ(base::Seconds(5), kPageLandAfter.Get());
 }
 
 TEST(BraveAdsSiteVisitFeatureTest, PageLandCap) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kSiteVisitFeature, {{"page_land_cap", "7"}});
-
-  // Act & Assert
-  EXPECT_EQ(7U, kPageLandCap.Get());
-}
-
-TEST(BraveAdsSiteVisitFeatureTest, DefaultPageLandCap) {
-  // Act & Assert
-  EXPECT_EQ(0U, kPageLandCap.Get());
-}
-
-TEST(BraveAdsSiteVisitFeatureTest, DefaultPageLandCapWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kSiteVisitFeature);
-
   // Act & Assert
   EXPECT_EQ(0U, kPageLandCap.Get());
 }
 
 TEST(BraveAdsSiteVisitFeatureTest, ShouldSuspendAndResumePageLand) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kSiteVisitFeature, {{"should_suspend_and_resume_page_land", "false"}});
-
-  // Act & Assert
-  EXPECT_FALSE(kShouldSuspendAndResumePageLand.Get());
-}
-
-TEST(BraveAdsSiteVisitFeatureTest, DefaultShouldSuspendAndResumePageLand) {
-  // Act & Assert
-  EXPECT_TRUE(kShouldSuspendAndResumePageLand.Get());
-}
-
-TEST(BraveAdsSiteVisitFeatureTest,
-     DefaultShouldSuspendAndResumePageLandWhenDisabled) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kSiteVisitFeature);
-
   // Act & Assert
   EXPECT_TRUE(kShouldSuspendAndResumePageLand.Get());
 }

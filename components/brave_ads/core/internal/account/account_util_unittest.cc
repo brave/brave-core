@@ -9,10 +9,12 @@
 
 #include <cstddef>
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
@@ -154,6 +156,9 @@ TEST_F(BraveAdsAccountUtilTest,
 TEST_F(BraveAdsAccountUtilTest,
        OnlyAllowSearchResultAdConversionDepositForNonRewardsUser) {
   // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      {kShouldAlwaysTriggerBraveSearchResultAdEventsFeature});
+
   test::DisableBraveRewards();
 
   // Act & Assert
