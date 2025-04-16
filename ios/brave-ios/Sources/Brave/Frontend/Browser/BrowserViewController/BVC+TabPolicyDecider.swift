@@ -169,7 +169,7 @@ extension BrowserViewController: TabPolicyDecider {
             $0.name.caseInsensitiveCompare("alternativeDistributionPackage") == .orderedSame
           })?.value?.asURL,
           requestInfo.isMainFrame,
-          adpURL.baseDomain == request.url?.baseDomain
+          adpURL.etldPlusOne == request.url?.etldPlusOne
         {
           return .allow
         }
